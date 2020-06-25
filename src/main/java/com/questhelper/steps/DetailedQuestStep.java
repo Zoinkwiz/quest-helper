@@ -183,6 +183,10 @@ public class DetailedQuestStep extends QuestStep
 			}
 			String equipText = "";
 			Color equipColor = Color.GREEN;
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(text)
+				.leftColor(color)
+				.build());
 			if (itemRequirement.isEquip())
 			{
 				equipText = "(equipped)";
@@ -190,13 +194,11 @@ public class DetailedQuestStep extends QuestStep
 				{
 					equipColor = Color.RED;
 				}
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(equipText)
+					.leftColor(equipColor)
+					.build());
 			}
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(text)
-				.right(equipText)
-				.rightColor(equipColor)
-				.leftColor(color)
-				.build());
 			if (itemRequirement.getTip() != null && color == Color.RED)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()

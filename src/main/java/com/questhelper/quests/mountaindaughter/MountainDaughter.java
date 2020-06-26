@@ -25,6 +25,7 @@
 package com.questhelper.quests.mountaindaughter;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.steps.conditional.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -184,7 +185,7 @@ public class MountainDaughter extends BasicQuestHelper
 		inTheCamp = new Conditions(new ZoneCondition(CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3));
 		askedAboutDiplomacy = new Conditions(new VarbitCondition(262, 10));
 
-		VarbitCondition askedAboutFood = new VarbitCondition(263, 10, VarbitCondition.Operation.GREATER_EQUAL);
+		VarbitCondition askedAboutFood = new VarbitCondition(263, 10, Operation.GREATER_EQUAL);
 		askedAboutFoodAndDiplomacy = new Conditions(new VarbitCondition(262, 10), askedAboutFood);
 		spokenToSvidi = new Conditions(new VarbitCondition(262, 20), askedAboutFood);
 		spokenToBrundt = new Conditions(new VarbitCondition(262, 30), askedAboutFood);

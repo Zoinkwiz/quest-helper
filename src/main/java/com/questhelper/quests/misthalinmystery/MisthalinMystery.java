@@ -25,6 +25,7 @@
 package com.questhelper.quests.misthalinmystery;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.steps.conditional.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -264,7 +265,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		playedD = new Conditions(new VarbitCondition(4044, 1), new VarbitCondition(4049, 1));
 		playedE = new Conditions(new VarbitCondition(4045, 1), new VarbitCondition(4049, 2));
 		playedA = new Conditions(new VarbitCondition(4046, 1), new VarbitCondition(4049, 3));
-		playedAnyKey = new VarbitCondition(4049, 1, VarbitCondition.Operation.GREATER_EQUAL);
+		playedAnyKey = new VarbitCondition(4049, 1, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetTextCondition(554, 20, "C");
 		hasEmeraldKey = new ItemRequirementCondition(emeraldKey);
 		hasNotes3 = new ItemRequirementCondition(notes3);
@@ -275,7 +276,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		selectedEmerald = new Conditions(new VarbitCondition(4054, 1), new VarbitCondition(4050, 4));
 		selectedOnyx = new Conditions(new VarbitCondition(4055, 1), new VarbitCondition(4050, 5));
 		selectedRuby = new Conditions(new VarbitCondition(4056, 1), new VarbitCondition(4050, 6));
-		selectAnyGem = new VarbitCondition(4050, 1, VarbitCondition.Operation.GREATER_EQUAL);
+		selectAnyGem = new VarbitCondition(4050, 1, Operation.GREATER_EQUAL);
 		hasSapphireKey = new ItemRequirementCondition(sapphireKey);
 		inBossRoom = new ZoneCondition(bossRoom);
 		hasKillersKnife = new ItemRequirementCondition(killersKnife);

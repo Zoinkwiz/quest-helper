@@ -24,45 +24,8 @@
  */
 package com.questhelper.steps.conditional;
 
-import net.runelite.api.Client;
-
-public class VarbitCondition extends ConditionForStep
-{
-
-	private final int varbitId;
-	private final int value;
-	private final Operation operation;
-
-	public VarbitCondition(int varbitId, int value)
-	{
-		this.varbitId = varbitId;
-		this.value = value;
-		this.operation = Operation.EQUAL;
-	}
-
-	public VarbitCondition(int varbitId, int value, Operation operation)
-	{
-		this.varbitId = varbitId;
-		this.value = value;
-		this.operation = operation;
-	}
-
-	@Override
-	public boolean checkCondition(Client client)
-	{
-		if (operation == Operation.EQUAL)
-		{
-			return client.getVarbitValue(varbitId) == value;
-		}
-		else if (operation == Operation.LESS_EQUAL)
-		{
-			return client.getVarbitValue(varbitId) <= value;
-		}
-
-		else if (operation == Operation.GREATER_EQUAL)
-		{
-			return client.getVarbitValue(varbitId) >= value;
-		}
-		return false;
-	}
+public enum Operation {
+	LESS_EQUAL,
+	EQUAL,
+	GREATER_EQUAL
 }

@@ -26,23 +26,23 @@ package com.questhelper.steps.conditional;
 
 import net.runelite.api.Client;
 
-public class VarbitCondition extends ConditionForStep
+public class VarplayerCondition extends ConditionForStep
 {
 
-	private final int varbitId;
+	private final int varplayerId;
 	private final int value;
 	private final Operation operation;
 
-	public VarbitCondition(int varbitId, int value)
+	public VarplayerCondition(int varplayerId, int value)
 	{
-		this.varbitId = varbitId;
+		this.varplayerId = varplayerId;
 		this.value = value;
 		this.operation = Operation.EQUAL;
 	}
 
-	public VarbitCondition(int varbitId, int value, Operation operation)
+	public VarplayerCondition(int varplayerId, int value, Operation operation)
 	{
-		this.varbitId = varbitId;
+		this.varplayerId = varplayerId;
 		this.value = value;
 		this.operation = operation;
 	}
@@ -52,16 +52,16 @@ public class VarbitCondition extends ConditionForStep
 	{
 		if (operation == Operation.EQUAL)
 		{
-			return client.getVarbitValue(varbitId) == value;
+			return client.getVarpValue(varplayerId) == value;
 		}
 		else if (operation == Operation.LESS_EQUAL)
 		{
-			return client.getVarbitValue(varbitId) <= value;
+			return client.getVarpValue(varplayerId) <= value;
 		}
 
 		else if (operation == Operation.GREATER_EQUAL)
 		{
-			return client.getVarbitValue(varbitId) >= value;
+			return client.getVarpValue(varplayerId) >= value;
 		}
 		return false;
 	}

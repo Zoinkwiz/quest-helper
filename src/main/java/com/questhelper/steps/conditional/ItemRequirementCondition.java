@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Client;
-import com.questhelper.steps.conditional.VarbitCondition.Operation;
+import com.questhelper.steps.conditional.Operation;
 import com.questhelper.ItemRequirement;
 
 public class ItemRequirementCondition extends ConditionForStep

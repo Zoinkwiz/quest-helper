@@ -29,6 +29,7 @@ import java.util.Arrays;
 import lombok.Getter;
 import com.questhelper.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import lombok.Setter;
 
 public class PanelDetails {
 	@Getter
@@ -36,6 +37,9 @@ public class PanelDetails {
 
 	@Getter
 	ArrayList<QuestStep> steps;
+
+	@Getter
+	QuestStep lockingQuest;
 
 	@Getter
 	ArrayList<ItemRequirement> itemRequirements;
@@ -55,6 +59,11 @@ public class PanelDetails {
 		this.header = header;
 		this.steps = steps;
 		this.itemRequirements = new ArrayList<>(Arrays.asList(itemRequirements));
+	}
+
+	public void setLockingStep(QuestStep lockingStep)
+	{
+		this.lockingQuest = lockingStep;
 	}
 
 	public boolean checkSteps(QuestStep step) {

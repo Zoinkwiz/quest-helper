@@ -80,8 +80,8 @@ public abstract class BasicQuestHelper extends QuestHelper
 		return null;
 	}
 
-	public String getCombatRequirements() {
-		return "None";
+	public ArrayList<String> getCombatRequirements() {
+		return null;
 	};
 
 	public ArrayList<PanelDetails> getPanels() {
@@ -90,6 +90,11 @@ public abstract class BasicQuestHelper extends QuestHelper
 			panelSteps.add(new PanelDetails("", step));
 		});
 		return panelSteps;
+	}
+
+	public ArrayList<String> getNotes()
+	{
+		return null;
 	}
 
 	public abstract Map<Integer, QuestStep> loadSteps();

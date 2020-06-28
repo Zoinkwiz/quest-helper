@@ -72,6 +72,16 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	public void addStep(Conditions conditions, QuestStep step)
 	{
 		this.steps.put(conditions, step);
+
+		checkForChatConditions(conditions);
+		checkForNpcConditions(conditions);
+	}
+
+	public void addStep(Conditions conditions, QuestStep step, boolean isLockable)
+	{
+		step.setLockable(isLockable);
+		this.steps.put(conditions, step);
+
 		checkForChatConditions(conditions);
 		checkForNpcConditions(conditions);
 	}
@@ -79,6 +89,17 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	public void addStep(ConditionForStep condition, QuestStep step)
 	{
 		this.steps.put(new Conditions(condition), step);
+
+		checkForChatConditions(condition);
+		checkForNpcConditions(condition);
+	}
+
+	public void addStep(ConditionForStep condition, QuestStep step, boolean isLockable)
+	{
+		Conditions conditions = new Conditions(condition);
+		step.setLockable(isLockable);
+		this.steps.put(conditions, step);
+
 		checkForChatConditions(condition);
 		checkForNpcConditions(condition);
 	}
@@ -152,8 +173,6 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
-		System.out.println("EVENT CHANGE DETECTED");
-		System.out.println(event.getGameState());
 		if (event.getGameState() == GameState.LOADING || event.getGameState() == GameState.HOPPING)
 		{
 			for (Conditions conditions : steps.keySet())
@@ -198,17 +217,43 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected void updateSteps()
 	{
+		Conditions lastConditions = null;
 		for (Conditions conditions : steps.keySet())
 		{
-			if (conditions != null && conditions.checkCondition(client))
+			if (conditions != null && steps.get(conditions).isLocked())
 			{
+				if (!conditions.checkCondition(client))
+				{
+					steps.get(conditions).setLockedAutomatically(false);
+				}
+
+				if (lastConditions != null)
+				{
+					startUpStep(steps.get(lastConditions));
+				}
+				else
+				{
+					startUpStep(steps.get(conditions));
+				}
+				return;
+			}
+			else if (conditions != null && (conditions.checkCondition(client)))
+			{
+				if (steps.get(conditions).isLockable())
+				{
+					steps.get(conditions).setLockedAutomatically(true);
+				}
 				startUpStep(steps.get(conditions));
 				return;
 			}
+			lastConditions = conditions;
 		}
 
 		startUpStep(steps.get(null));
 	}
+
+	// if (has eel) show next panel step
+	// if (in place, has rod) fish lava eel
 
 	protected void startUpStep(QuestStep step)
 	{

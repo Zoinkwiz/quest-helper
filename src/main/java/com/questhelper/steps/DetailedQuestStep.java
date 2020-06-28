@@ -245,7 +245,6 @@ public class DetailedQuestStep extends QuestStep
 
 		if (!newTileHighlights.containsKey(tile))
 		{
-			System.out.println("RETURNIN");
 			return;
 		}
 		System.out.println(newTileHighlights.get(tile));

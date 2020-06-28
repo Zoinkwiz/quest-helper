@@ -34,15 +34,20 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.SwingUtil;
 
 public class QuestStepPanel extends JPanel
 {
 	private static final int TITLE_PADDING = 5;
 
+	PanelDetails panelDetails;
 
     private final JPanel headerPanel = new JPanel();
 	private final JLabel headerLabel = new JLabel();
 	private final JPanel bodyPanel = new JPanel();
+	private final JCheckBox lockStep = new JCheckBox();
+	private JPanel leftTitleContainer;
+	private JPanel viewControls;
 
 	private QuestStep currentlyHighlighted = null;
 
@@ -50,8 +55,12 @@ public class QuestStepPanel extends JPanel
 
     public QuestStepPanel(PanelDetails panelDetails, QuestStep currentStep)
 	{
+		this.panelDetails = panelDetails;
+
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
+
+		leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 
 		headerLabel.setText(panelDetails.getHeader());
 		headerLabel.setFont(FontManager.getRunescapeBoldFont());
@@ -60,19 +69,39 @@ public class QuestStepPanel extends JPanel
 
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.X_AXIS));
 		headerPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+
+		headerPanel.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
+		leftTitleContainer.add(headerLabel, BorderLayout.CENTER);
+		headerPanel.add(leftTitleContainer, BorderLayout.WEST);
+
+		viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
+
+		SwingUtil.addModalTooltip(lockStep, "Mark section as uncomplete", "Mark section as complete");
+		lockStep.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		lockStep.addActionListener(ev -> lockSection(lockStep.isSelected()));
+		lockStep.setVisible(false);
+		headerPanel.add(lockStep, BorderLayout.EAST);
+
+		viewControls.add(lockStep);
+
+		headerPanel.add(viewControls, BorderLayout.EAST);
+
 		if (panelDetails.getSteps().contains(currentStep))
 		{
 			headerLabel.setForeground(Color.BLACK);
 			headerPanel.setBackground(ColorScheme.BRAND_ORANGE);
+			viewControls.setBackground(ColorScheme.BRAND_ORANGE);
+			leftTitleContainer.setBackground(ColorScheme.BRAND_ORANGE);
 		}
 		else
 		{
 			headerLabel.setForeground(Color.WHITE);
 			headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+			viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+			leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 		}
-		headerPanel.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
-		headerPanel.add(headerLabel);
 
+		/* Body */
 		bodyPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		bodyPanel.setLayout(new BorderLayout());
 		bodyPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
@@ -168,6 +197,11 @@ public class QuestStepPanel extends JPanel
     	return new ArrayList<>(steps.keySet());
 	}
 
+	public void setLockable()
+	{
+		lockStep.setVisible(true);
+	}
+
     public void updateHighlight(QuestStep currentStep)
 	{
 		if (currentlyHighlighted != null)
@@ -178,6 +212,8 @@ public class QuestStepPanel extends JPanel
 		{
 			headerLabel.setForeground(Color.BLACK);
 			headerPanel.setBackground(ColorScheme.BRAND_ORANGE);
+			viewControls.setBackground(ColorScheme.BRAND_ORANGE);
+			leftTitleContainer.setBackground(ColorScheme.BRAND_ORANGE);
 		}
 
 		if (steps.get(currentStep) != null)
@@ -187,20 +223,67 @@ public class QuestStepPanel extends JPanel
 		currentlyHighlighted = currentStep;
 	}
 
-	public void removeHighlight() {
-    	if (currentlyHighlighted != null) {
-    		headerLabel.setForeground(Color.WHITE);
+	public void removeHighlight()
+	{
+		if (currentlyHighlighted != null)
+		{
+			headerLabel.setForeground(Color.WHITE);
 			if (isCollapsed())
 			{
 				applyDimmer(false, headerPanel);
 			}
-    		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
-			if(steps.get(currentlyHighlighted) != null)
+			headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+			viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+			leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+			if (steps.get(currentlyHighlighted) != null)
 			{
 				steps.get(currentlyHighlighted).setForeground(Color.WHITE);
 			}
-    		currentlyHighlighted = null;
+			currentlyHighlighted = null;
 		}
+	}
+
+	public void updateLock()
+	{
+		if (panelDetails.lockingQuest == null)
+		{
+			return;
+		}
+
+		if (panelDetails.lockingQuest.isUnlockable())
+		{
+			lockStep.setEnabled(true);
+		}
+		else
+		{
+			lockStep.setEnabled(false);
+		}
+
+		if (panelDetails.lockingQuest.isLocked())
+		{
+			lockStep.setSelected(true);
+		}
+	}
+
+	private void lockSection(boolean locked)
+	{
+		if (locked)
+		{
+			panelDetails.lockingQuest.setLockedManually(true);
+			if (!isCollapsed())
+			{
+				collapse();
+			}
+		}
+		else
+		{
+			panelDetails.lockingQuest.setLockedManually(false);
+			if (isCollapsed())
+			{
+				expand();
+			}
+		}
+
 	}
 
 	void collapse()

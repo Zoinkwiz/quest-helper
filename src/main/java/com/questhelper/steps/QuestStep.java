@@ -66,6 +66,17 @@ public abstract class QuestStep implements Module
 	protected String text;
 
 
+	/* Locking applies to ConditionalSteps. Intended to be used as a method of forcing a step to run if it's been locked */
+	@Getter
+	private boolean locked;
+
+	@Getter
+	@Setter
+	private boolean isLockable;
+
+	@Getter
+	private boolean unlockable = true;
+
 	private int currentChoice = 0;
 	private int currentCutsceneStatus = 0;
 	protected boolean inCutscene;
@@ -168,6 +179,24 @@ public abstract class QuestStep implements Module
 	}
 
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin){
+	}
+
+	public void setLockedAutomatically(boolean isLocked)
+	{
+		if (isLocked)
+		{
+			locked = true;
+			unlockable = false;
+		}
+		else
+		{
+			unlockable = true;
+		}
+	}
+
+	public void setLockedManually(boolean isLocked)
+	{
+		locked = isLocked;
 	}
 
 	public QuestStep getActiveStep() {

@@ -184,6 +184,7 @@ public class QuestHelperPlugin extends Plugin
 					lastStep = currentStep;
 					panel.updateHighlight(currentStep);
 				}
+				panel.updateLocks();
 			}
 		}
 	}

@@ -98,6 +98,12 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
 
+	private static final String MENUOP_PHOENIXGANG = "Start Quest Helper (Phoenix Gang)";
+	private static final String MENUOP_BLACKARMGANG = "Start Quest Helper (Black Arm Gang)";
+
+	private static final String SHIELD_OF_ARRAV_PHOENIX_GANG = "Shield of Arrav - Phoenix Gang";
+	private static final String SHIELD_OF_ARRAV_BLACK_ARM_GANG = "Shield of Arrav - Black Arm Gang";
+
 	@Inject
 	private Client client;
 
@@ -225,6 +231,17 @@ public class QuestHelperPlugin extends Plugin
 				case MENUOP_STOPHELPER:
 					event.consume();
 					shutDownQuest();
+					break;
+				case MENUOP_PHOENIXGANG:
+					event.consume();
+					shutDownQuest();
+					startUpQuest(quests.get(SHIELD_OF_ARRAV_PHOENIX_GANG));
+					break;
+				case MENUOP_BLACKARMGANG:
+					event.consume();
+					shutDownQuest();
+					startUpQuest(quests.get(SHIELD_OF_ARRAV_BLACK_ARM_GANG));
+					break;
 			}
 		}
 	}
@@ -239,27 +256,47 @@ public class QuestHelperPlugin extends Plugin
 
 		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
 		{
-			QuestHelper questHelper = quests.get(target);
-			if (questHelper != null && !questHelper.isCompleted())
+			if (target.equals("Shield of Arrav"))
 			{
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-				menuEntry.setTarget(event.getTarget());
-				menuEntry.setParam0(widgetIndex);
-				menuEntry.setParam1(widgetID);
-				menuEntry.setType(MenuAction.RUNELITE.getId());
-
-				if (selectedQuest != null && selectedQuest.getQuest().getName().equals(target))
+				QuestHelper questHelperPhoenix = quests.get(SHIELD_OF_ARRAV_PHOENIX_GANG);
+				QuestHelper questHelperBlackArm = quests.get(SHIELD_OF_ARRAV_BLACK_ARM_GANG);
+				if (questHelperBlackArm != null && !questHelperBlackArm.isCompleted()
+				|| questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 				{
-					menuEntry.setOption(MENUOP_STOPHELPER);
+					if (selectedQuest != null &&
+						(selectedQuest.getQuest().getName().equals(SHIELD_OF_ARRAV_PHOENIX_GANG) ||
+							selectedQuest.getQuest().getName().equals(SHIELD_OF_ARRAV_BLACK_ARM_GANG)))
+					{
+						menuEntries = addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
+					}
+					else
+					{
+						if (questHelperBlackArm.getVar() < 3)
+						{
+							// TODO: Change Var to actual var
+							menuEntries = addNewEntry(menuEntries, MENUOP_PHOENIXGANG, event.getTarget(), widgetIndex, widgetID);
+						}
+						if (questHelperPhoenix.getVar() < 6)
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_BLACKARMGANG, event.getTarget(), widgetIndex, widgetID);
+						}
+					}
 				}
-				else
+			}
+			else
+			{
+				QuestHelper questHelper = quests.get(target);
+				if (questHelper != null && !questHelper.isCompleted())
 				{
-					menuEntry.setOption(MENUOP_STARTHELPER);
+					if (selectedQuest != null && selectedQuest.getQuest().getName().equals(target))
+					{
+						menuEntries = addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
+					}
+					else
+					{
+						menuEntries = addNewEntry(menuEntries, MENUOP_STARTHELPER, event.getTarget(), widgetIndex, widgetID);
+					}
 				}
-
-				client.setMenuEntries(menuEntries);
 			}
 		}
 
@@ -267,17 +304,23 @@ public class QuestHelperPlugin extends Plugin
 			&& "Quest List".equals(event.getOption())
 			&& selectedQuest != null)
 		{
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setParam0(widgetIndex);
-			menuEntry.setParam1(widgetID);
-			menuEntry.setType(MenuAction.RUNELITE.getId());
-			menuEntry.setOption(MENUOP_STOPHELPER);
-
-			client.setMenuEntries(menuEntries);
+			menuEntries = addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
 		}
+	}
+
+	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID) {
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+		menuEntry.setTarget(target);
+		menuEntry.setParam0(widgetIndex);
+		menuEntry.setParam1(widgetID);
+		menuEntry.setType(MenuAction.RUNELITE.getId());
+		menuEntry.setOption(newEntry);
+
+		client.setMenuEntries(menuEntries);
+
+		return menuEntries;
 	}
 
 	private void startUpQuest(QuestHelper questHelper)

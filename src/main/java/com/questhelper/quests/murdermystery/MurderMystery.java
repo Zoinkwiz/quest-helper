@@ -17,7 +17,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
@@ -154,7 +154,7 @@ public class MurderMystery extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToGuard = new NpcTalkStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor north of Camelot.");
+		talkToGuard = new NpcStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor north of Camelot.");
 		talkToGuard.addDialogStep("Sure, I'll help.");
 
 		pickUpPungentPot = new DetailedQuestStep(this, new WorldPoint(2747, 3579, 0), "Enter the mansion and pick up the pungent pot inside the east room.", pungentPot);
@@ -182,10 +182,10 @@ public class MurderMystery extends BasicQuestHelper
 		compareSilverToMurdererPrint.addSubSteps(getAndComparePrintsOfNecklaceOrBook);
 
 
-		talkToGossip = new NpcTalkStep(this, NpcID.GOSSIP, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
+		talkToGossip = new NpcStep(this, NpcID.GOSSIP, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
 		talkToGossip.addDialogStep("Who do you think was responsible?");
 
-		talkToPoisonSalesman = new NpcTalkStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the Posion Salesman in the Seer's Village pub.");
+		talkToPoisonSalesman = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the Posion Salesman in the Seer's Village pub.");
 		talkToPoisonSalesman.addDialogStep("Who did you sell Poison to at the house?");
 
 		talkToTheSuspect = new DetailedQuestStep(this, "Talk to the person who you matched prints to and ask what they did with the poison.");

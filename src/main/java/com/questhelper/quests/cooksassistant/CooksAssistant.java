@@ -31,14 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
@@ -54,7 +53,7 @@ public class CooksAssistant extends BasicQuestHelper
 		setupItemRequirements();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, new NpcTalkStep(this, NpcID.COOK_4626, new WorldPoint(3206, 3214, 0),
+		steps.put(0, new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3206, 3214, 0),
 			"Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest.",
 			egg, milk, flour));
 		steps.get(0).addDialogStep("I'll get right on it.");
@@ -89,11 +88,5 @@ public class CooksAssistant extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Bring the cook cake ingredients", new ArrayList<>(Arrays.asList(new DetailedQuestStep(this, "Bring the cook the ingredients he needs."))), egg, flour, milk));
 		return allSteps;
-	}
-
-	@Override
-	public String getCombatRequirements()
-	{
-		return null;
 	}
 }

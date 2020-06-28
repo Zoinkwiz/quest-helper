@@ -42,7 +42,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
@@ -212,7 +212,7 @@ public class MountainDaughter extends BasicQuestHelper
 			"Return to the Mountain Camp.",
 			rope);
 
-		talkToHamal = new NpcTalkStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0), "Speak to Hamal the Chieftain in the Mountain Camp.",
+		talkToHamal = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0), "Speak to Hamal the Chieftain in the Mountain Camp.",
 			spade, rope, pickaxe, axe, plank, pole, gloves);
 		talkToHamal.addDialogStep("Why is everyone so hostile?");
 		talkToHamal.addDialogStep("So what are you doing up here?");
@@ -246,20 +246,20 @@ public class MountainDaughter extends BasicQuestHelper
 		plankRocksReturn.addDialogStep("Yes.");
 		plankRocksReturn.addIcon(ItemID.PLANK);
 
-		talkToHamalAfterSpirit = new NpcTalkStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		talkToHamalAfterSpirit = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
 			"Speak to Hamal the Chieftain in the Mountain Camp.",
 			spade, rope, pickaxe, axe, plank, pole, gloves);
 		talkToHamalAfterSpirit.addDialogStep("About the people of Rellekka...");
 
-		talkToJokul = new NpcTalkStep(this, NpcID.JOKUL, new WorldPoint(2812, 3680, 0),
+		talkToJokul = new NpcStep(this, NpcID.JOKUL, new WorldPoint(2812, 3680, 0),
 			"Speak to Jokul north of Hamal's tent.");
 
-		talkToSvidi = new NpcTalkStep(this, NpcID.SVIDI, new WorldPoint(2717, 3666, 0),
+		talkToSvidi = new NpcStep(this, NpcID.SVIDI, new WorldPoint(2717, 3666, 0),
 			"Speak to Svidi who roams in the forest east of Rellekka.",
 			pickaxe);
 		talkToSvidi.addDialogStep("Can't I persuade you to go in there somehow?");
 
-		speakToBrundt = new NpcTalkStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
+		speakToBrundt = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
 			"Speak to Brundt the Chieftain in the Rellekka's longhall.",
 			spade, rope, pickaxe, axe, plank, pole, gloves);
 		speakToBrundt.addDialogStep("Ask about the mountain camp.");
@@ -270,12 +270,12 @@ public class MountainDaughter extends BasicQuestHelper
 			pickaxe);
 		getRockFragment.addIcon(ItemID.BRONZE_PICKAXE);
 
-		returnToBrundt = new NpcTalkStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
+		returnToBrundt = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
 			"Return to Brundt the Chieftain in the Rellekka's longhall.",
 			halfRock);
 		returnToBrundt.addDialogStep("Ask about the mountain camp.");
 
-		returnToSvidi = new NpcTalkStep(this, NpcID.SVIDI, new WorldPoint(2717, 3666, 0),
+		returnToSvidi = new NpcStep(this, NpcID.SVIDI, new WorldPoint(2717, 3666, 0),
 			"Return to Svidi who roams in the forest east of Rellekka.",
 			safetyGuarantee);
 
@@ -285,12 +285,12 @@ public class MountainDaughter extends BasicQuestHelper
 
 		eatFruit = new DetailedQuestStep(this, "Eat the White Pearl.", whitePearl);
 
-		returnToHamalAboutDiplomacy = new NpcTalkStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		returnToHamalAboutDiplomacy = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
 			"Return to Hamal the Chieftain in the Mountain Camp.",
 			whitePearlSeed);
 		returnToHamalAboutDiplomacy.addDialogStep("About the people of Rellekka...");
 
-		returnToHamalAboutFood = new NpcTalkStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		returnToHamalAboutFood = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
 			"Return to Hamal the Chieftain in the Mountain Camp.",
 			whitePearlSeed);
 		returnToHamalAboutFood.addDialogStep("About your food supplies...");
@@ -306,7 +306,7 @@ public class MountainDaughter extends BasicQuestHelper
 			"Cut through the trees north east of the lake and enter the cave there. Bring combat gear.",
 			axe);
 
-		talkToKendal = new NpcTalkStep(this, NpcID.THE_KENDAL, new WorldPoint(2788, 10081, 0),
+		talkToKendal = new NpcStep(this, NpcID.THE_KENDAL, new WorldPoint(2788, 10081, 0),
 			"Speak to the Kendal, then kill him.");
 		talkToKendal.addDialogStep("It's just me, no one special.");
 		talkToKendal.addDialogStep("You mean a sacrifice?");
@@ -316,7 +316,7 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToKendal.addDialogStep("I will kill you myself!");
 
 		grabCorpse = new TileStep(this, new WorldPoint(2784, 10078, 0), "Pick up the Corpse of Woman.");
-		bringCorpseToHamal = new NpcTalkStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		bringCorpseToHamal = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
 			"Bring the corpse to Hamal.",
 			corpse);
 		bringCorpseToHamal.addDialogStep("But he's not a god!");
@@ -324,7 +324,7 @@ public class MountainDaughter extends BasicQuestHelper
 
 		collectRocks = new DetailedQuestStep(this, "Collect Muddy Rocks from around the camp.", muddyRocks);
 
-		speakRagnar = new NpcTalkStep(this, NpcID.RAGNAR, new WorldPoint(2766, 3676, 0),
+		speakRagnar = new NpcStep(this, NpcID.RAGNAR, new WorldPoint(2766, 3676, 0),
 			"Speak to Ragnar.",
 			corpse, muddyRocks);
 		speakRagnar.addDialogStep("Thank you. I will make sure she's given a proper burial now.");
@@ -354,9 +354,9 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
-	public String getCombatRequirements()
+	public ArrayList<String> getCombatRequirements()
 	{
-		return "The Kendal (level 70)";
+		return new ArrayList<>(Arrays.asList("The Kendal (level 70)"));
 	}
 
 	@Override

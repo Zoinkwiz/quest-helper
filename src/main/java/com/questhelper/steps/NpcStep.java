@@ -41,7 +41,7 @@ import com.questhelper.QuestHelperPlugin;
 import static com.questhelper.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class NpcTalkStep extends DetailedQuestStep
+public class NpcStep extends DetailedQuestStep
 {
 	@Inject
 	protected Client client;
@@ -49,7 +49,7 @@ public class NpcTalkStep extends DetailedQuestStep
 	private final int npcID;
 	private NPC npc;
 
-	public NpcTalkStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
+	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
 	{
 		super(questHelper, worldPoint, text, itemRequirements);
 		this.npcID = npcID;
@@ -105,7 +105,6 @@ public class NpcTalkStep extends DetailedQuestStep
 		{
 			client.setHintArrow(npc);
 		} else if (worldPoint != null
-			&& client.getHintArrowPoint() == null
 			&& (client.getHintArrowNpc() == null
 			|| !client.getHintArrowNpc().equals(npc)))
 		{
@@ -118,6 +117,7 @@ public class NpcTalkStep extends DetailedQuestStep
 		}
 	}
 
+	@Override
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{

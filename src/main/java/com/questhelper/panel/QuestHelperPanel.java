@@ -67,10 +67,11 @@ class QuestHelperPanel extends PluginPanel
 	private final JPanel actionsContainer = new JPanel();
     private final JPanel titlePanel = new JPanel();
 
-    private final JPanel overviewPanel = new JPanel();
+    private final JPanel introPanel = new JPanel();
 	private final JPanel questItemRequirementsListPanel = new JPanel();
 	private final JPanel questItemRecommendedListPanel = new JPanel();
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
+	private final JPanel questOverviewListPanel = new JPanel();
 
     private final JPanel questStepsContainer = new JPanel();
 	private final JLabel questNameLabel = new JLabel();
@@ -122,16 +123,15 @@ class QuestHelperPanel extends PluginPanel
 		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 
 		/* Quest overview panel */
-		overviewPanel.setBorder(BorderFactory.createCompoundBorder(
+		introPanel.setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
 			BorderFactory.createEmptyBorder(5, 5, 5, 5)
 		));
-		overviewPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		overviewPanel.setLayout(new BorderLayout());
-		overviewPanel.setVisible(false);
+		introPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		introPanel.setLayout(new BorderLayout());
+		introPanel.setVisible(false);
 
 		/* Item requirements */
-
 		JPanel questItemRequirementsPanel = new JPanel();
 		questItemRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		questItemRequirementsPanel.setLayout(new BorderLayout());
@@ -179,7 +179,6 @@ class QuestHelperPanel extends PluginPanel
 		questItemRecommendedPanel.add(questItemRecommendedListPanel, BorderLayout.CENTER);
 
 		/* Combat requirements */
-
 		JPanel questCombatRequirementsPanel = new JPanel();
 		questCombatRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		questCombatRequirementsPanel.setLayout(new BorderLayout());
@@ -202,15 +201,46 @@ class QuestHelperPanel extends PluginPanel
 		questCombatRequirementsPanel.add(questCombatRequirementsHeader, BorderLayout.NORTH);
 		questCombatRequirementsPanel.add(questCombatRequirementsListPanel, BorderLayout.CENTER);
 
-		overviewPanel.add(questItemRequirementsPanel, BorderLayout.NORTH);
-		overviewPanel.add(questItemRecommendedPanel, BorderLayout.CENTER);
-		overviewPanel.add(questCombatRequirementsPanel, BorderLayout.SOUTH);
+		/* Quest notes */
+		JPanel questOverviewPanel = new JPanel();
+		questOverviewPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		questOverviewPanel.setLayout(new BorderLayout());
+		questOverviewPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+		JPanel questOverviewHeader = new JPanel();
+		questOverviewHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		questOverviewHeader.setLayout(new BorderLayout());
+		questOverviewHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
+
+		JLabel questOverview = new JLabel();
+		questOverview.setForeground(Color.WHITE);
+		questOverview.setText("Notes:");
+		questOverview.setMinimumSize(new Dimension(1, questOverviewHeader.getPreferredSize().height));
+		questOverviewHeader.add(questOverview, BorderLayout.NORTH);
+
+		questOverviewListPanel.setLayout(new BorderLayout());
+		questOverviewListPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
+
+		questOverviewPanel.add(questOverviewHeader, BorderLayout.NORTH);
+		questOverviewPanel.add(questOverviewListPanel, BorderLayout.CENTER);
 
 		/* Layout */
-        final JPanel layoutPanel = new JPanel();
-        BoxLayout boxLayout = new BoxLayout(layoutPanel, BoxLayout.Y_AXIS);
+		final JPanel layoutPanel = new JPanel();
+		BoxLayout boxLayout = new BoxLayout(layoutPanel, BoxLayout.Y_AXIS);
         layoutPanel.setLayout(boxLayout);
         add(layoutPanel, BorderLayout.NORTH);
+
+		final JPanel overviewPanel = new JPanel();
+		BoxLayout boxLayoutOverview = new BoxLayout(overviewPanel, BoxLayout.Y_AXIS);
+		overviewPanel.setLayout(boxLayoutOverview);
+
+		overviewPanel.add(questItemRequirementsPanel);
+		overviewPanel.add(questItemRecommendedPanel);
+		overviewPanel.add(questCombatRequirementsPanel);
+		overviewPanel.add(questOverviewPanel);
+
+		introPanel.add(overviewPanel, BorderLayout.NORTH);
+		/* Setup overview panel */
 
         titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         titlePanel.setLayout(new BorderLayout());
@@ -224,7 +254,7 @@ class QuestHelperPanel extends PluginPanel
 
 		layoutPanel.add(titlePanel);
 		layoutPanel.add(actionsContainer);
-		layoutPanel.add(overviewPanel);
+		layoutPanel.add(introPanel);
         layoutPanel.add(questStepsContainer);
     }
 
@@ -239,7 +269,7 @@ class QuestHelperPanel extends PluginPanel
 			actionsContainer.setVisible(true);
 
 			setupQuestRequirements(quest);
-			overviewPanel.setVisible(true);
+			introPanel.setVisible(true);
 
 			steps.forEach((step) -> {
 				QuestStepPanel newStep = new QuestStepPanel(step, currentStep);
@@ -296,10 +326,11 @@ class QuestHelperPanel extends PluginPanel
 
     public void removeQuest() {
 		actionsContainer.setVisible(false);
-		overviewPanel.setVisible(false);
+		introPanel.setVisible(false);
         questStepsContainer.removeAll();
 		questItemRequirementsListPanel.removeAll();
 		questItemRecommendedListPanel.removeAll();
+		questOverviewListPanel.removeAll();
         repaint();
         revalidate();
     }
@@ -365,16 +396,43 @@ class QuestHelperPanel extends PluginPanel
 		/* Combat requirements */
 		JLabel combatLabel = new JLabel();
 		combatLabel.setForeground(Color.GRAY);
-		if (quest.getCombatRequirements() == null)
+		ArrayList<String> combatRequirementList = quest.getCombatRequirements();
+		StringBuilder textCombat = new StringBuilder();
+		if (combatRequirementList == null)
 		{
-			combatLabel.setText("<html><body style = 'text-align:left'>None</body></html>");
+			textCombat.append("None");
 		} else
 		{
-			combatLabel.setText("<html><body style = 'text-align:left'>" + quest.getCombatRequirements() + "</body></html>");
+			for (String combatRequirement : combatRequirementList)
+			{
+				textCombat.append(combatRequirement);
+				textCombat.append("<br>");
+			}
 		}
+		combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat+ "</body></html>");
 
 		questCombatRequirementsListPanel.add(combatLabel);
 
+		/* Quest overview */
+		JLabel overviewLabel = new JLabel();
+		overviewLabel.setForeground(Color.GRAY);
+		ArrayList<String> notes = quest.getNotes();
+		StringBuilder textNote = new StringBuilder();
+		if (notes == null) {
+			textNote.append("None");
+		}
+		else
+		{
+			for (String note : notes)
+			{
+				textNote.append(note);
+				textNote.append("<br><br>");
+			}
+		}
+
+		overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
+
+		questOverviewListPanel.add(overviewLabel);
 	}
 
     public void rebuild()

@@ -47,7 +47,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
@@ -234,11 +234,11 @@ public class PlagueCity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEdmond = new NpcTalkStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
+		talkToEdmond = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
 		talkToEdmond.addDialogStep("What's happened to her?");
 		talkToEdmond.addDialogStep("Yes.");
-		talkToAlrena = new NpcTalkStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena nearby.", dwellberries);
-		talkToEdmondAgain = new NpcTalkStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
+		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena nearby.", dwellberries);
+		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
 		useWaterOnMudPatch1 = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
 			"Use four buckets of water on the mud patch in Edmond's garden patch.", fourBucketsOfWater);
 		useWaterOnMudPatch1.addIcon(ItemID.BUCKET_OF_WATER);
@@ -271,30 +271,30 @@ public class PlagueCity extends BasicQuestHelper
 		useRopeOnGrill = new ObjectStep(this, NullObjectID.NULL_11422, new WorldPoint(2514,9739,0), "Use a rope on the grill.", rope);
 		useRopeOnGrill.addIcon(ItemID.ROPE);
 
-		talkToEdmondUnderground = new NpcTalkStep(this, NpcID.EDMOND_4256, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
+		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
 
 		climbThroughPipe = new ObjectStep(this, ObjectID.PIPE, new WorldPoint(2514, 9738, 0), "Climb through the pipe.", gasMask);
 
-		talkToJethick = new NpcTalkStep(this, NpcID.JETHICK_8974, new WorldPoint(2540, 3305, 0), "Talk to Jethick east of where you emerge.", gasMask, pictureOfElena);
+		talkToJethick = new NpcStep(this, NpcID.JETHICK_8974, new WorldPoint(2540, 3305, 0), "Talk to Jethick east of where you emerge.", gasMask, pictureOfElena);
 		talkToJethick.addDialogStep("Yes, I'll return it for you.");
 
 		enterMarthasHouse = new ObjectStep(this, ObjectID.DOOR_2537, new WorldPoint(2531, 3328, 0), "Enter the tall house in north West Ardougne.");
 
-		talkToMartha = new NpcTalkStep(this, NpcID.MARTHA_REHNISON, new WorldPoint(2531, 3331, 0), "Talk to Martha or Ted Renison");
+		talkToMartha = new NpcStep(this, NpcID.MARTHA_REHNISON, new WorldPoint(2531, 3331, 0), "Talk to Martha or Ted Renison");
 
 		goUpstairsInMarthasHouse = new ObjectStep(this, ObjectID.STAIRS_2539, new WorldPoint(2528, 3333, 0), "Talk to Milli upstairs.");
-		talkToMilli = new NpcTalkStep(this, NpcID.MILLI_REHNISON, new WorldPoint(2531, 3331, 1), "Talk to Milli.");
+		talkToMilli = new NpcStep(this, NpcID.MILLI_REHNISON, new WorldPoint(2531, 3331, 1), "Talk to Milli.");
 		goUpstairsInMarthasHouse.addSubSteps(talkToMilli);
 
 		tryToEnterPlagueHouse = new ObjectStep(this, NullObjectID.NULL_37321, new WorldPoint(2540, 3273, 0), "Try to enter the house in the south-east corner of West Ardougne.");
 		tryToEnterPlagueHouse.addDialogStep("I fear not a mere plague.");
 		tryToEnterPlagueHouse.addDialogStep("I want to check anyway.");
 
-		talkToClerk = new NpcTalkStep(this, NpcID.CLERK, new WorldPoint(2528, 3317, 0), "Talk to the Clerk in the large building north of the manhole.");
+		talkToClerk = new NpcStep(this, NpcID.CLERK, new WorldPoint(2528, 3317, 0), "Talk to the Clerk in the large building north of the manhole.");
 		talkToClerk.addDialogStep("I need permission to enter a plague house.");
 		talkToClerk.addDialogStep("This is urgent though! Someone's been kidnapped!");
 
-		talkToBravek = new NpcTalkStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek in the room to the east.");
+		talkToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek in the room to the east.");
 
 		talkToBravek.addDialogStep("This is really important though!");
 		talkToBravek.addDialogStep("Do you know what's in the cure?");
@@ -302,9 +302,9 @@ public class PlagueCity extends BasicQuestHelper
 		useDustOnMilk = new DetailedQuestStep(this, "Use your chocolate dust on the bucket of milk.", bucketOfMilk, chocolateDust);
 		useSnapeGrassOnChocolateMilk = new DetailedQuestStep(this, "Use the snape grass on the chocolatey milk", bucketOfChocolateMilk, snapeGrass);
 
-		giveHangoverCureToBravek = new NpcTalkStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.", hangoverCure);
+		giveHangoverCureToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.", hangoverCure);
 
-		talkToBravekAgain = new NpcTalkStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.", warrant);
+		talkToBravekAgain = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.", warrant);
 		talkToBravekAgain.addDialogStep("They won't listen to me!");
 
 		giveHangoverCureToBravek.addSubSteps(talkToBravekAgain);
@@ -317,7 +317,7 @@ public class PlagueCity extends BasicQuestHelper
 		goUpstairsInPlagueHouse = new ObjectStep(this, ObjectID.SPOOKY_STAIRS_2523, new WorldPoint(2537, 9672, 0), "Go back upstairs to get the key for Elena's cell.");
 		searchBarrel.addSubSteps(goUpstairsInPlagueHouse);
 
-		talkToElena = new NpcTalkStep(this, NpcID.ELENA_4257, new WorldPoint(2541, 9671, 0), "Enter the jail and talk to Elena.", key);
+		talkToElena = new NpcStep(this, NpcID.ELENA_4257, new WorldPoint(2541, 9671, 0), "Enter the jail and talk to Elena.", key);
 
 		goUpstairsInPlagueHouseToFinish = new ObjectStep(this, ObjectID.SPOOKY_STAIRS_2523, new WorldPoint(2537, 9672, 0), "Go back upstairs and return to Edmond to finish the quest.");
 
@@ -326,7 +326,7 @@ public class PlagueCity extends BasicQuestHelper
 
 		climbMudPileToFinish = new ObjectStep(this, ObjectID.MUD_PILE_2533, new WorldPoint(2519,9760,0), "Climb the mud pile to return to Edmond.");
 
-		talkToEdmondToFinish = new NpcTalkStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
+		talkToEdmondToFinish = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
 		talkToEdmondToFinish.addSubSteps(goUpstairsInPlagueHouseToFinish, goDownManhole, goDownManhole2, climbMudPileToFinish);
 	}
 
@@ -356,11 +356,5 @@ public class PlagueCity extends BasicQuestHelper
 			giveHangoverCureToBravek, tryToEnterPlagueHouseAgain, searchBarrel, goDownstairsInPlagueHouse, talkToElena))));
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(talkToEdmondToFinish))));
 		return allSteps;
-	}
-
-	@Override
-	public String getCombatRequirements()
-	{
-		return null;
 	}
 }

@@ -33,7 +33,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -301,7 +300,7 @@ public class MisthalinMystery extends BasicQuestHelper
 	}
 
 	public void setupSteps() {
-		talkToAbigale = new NpcTalkStep(this, NpcID.ABIGALE, new WorldPoint(3237, 3155, 0), "Talk to Abigale in the south east corner of Lumbridge Swamp.");
+		talkToAbigale = new NpcStep(this, NpcID.ABIGALE, new WorldPoint(3237, 3155, 0), "Talk to Abigale in the south east corner of Lumbridge Swamp.");
 		talkToAbigale.addDialogStep("What has happened here?");
 		talkToAbigale.addDialogStep("What do you want me to do?");
 		takeTheBoat = new ObjectStep(this, ObjectID.ROWBOAT_30108, new WorldPoint(3240, 3140, 0), "Board the rowboat south of Abigale.");
@@ -381,13 +380,13 @@ public class MisthalinMystery extends BasicQuestHelper
 
 		pickUpKillersKnife = new DetailedQuestStep(this, "Pick up the killer's knife.", killersKnife);
 
-		fightAbigale = new NpcTalkStep(this, NpcID.ABIGALE_7635, new WorldPoint(1623, 4829, 0),
+		fightAbigale = new NpcStep(this, NpcID.ABIGALE_7635, new WorldPoint(1623, 4829, 0),
 			"Equip the killer's knife, then select Fight on Abigale (no actual combat will occur).", killersKnife);
 
 		leaveSapphireRoom = new ObjectStep(this, ObjectID.DOOR_30119, new WorldPoint(1628, 4829, 0),
 			"Attempt to go through the sapphire door.");
 
-		talkToMandy = new NpcTalkStep(this, NpcID.MANDY_7630, new WorldPoint(1636, 4817, 0),
+		talkToMandy = new NpcStep(this, NpcID.MANDY_7630, new WorldPoint(1636, 4817, 0),
 			"Talk to Mandy just outside the manor to complete the quest.");
 	}
 

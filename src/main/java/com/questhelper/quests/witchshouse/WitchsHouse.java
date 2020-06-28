@@ -32,7 +32,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
@@ -172,7 +172,7 @@ public class WitchsHouse extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToBoy = new NpcTalkStep(this, NpcID.BOY, new WorldPoint(2928, 3456, 0), "Talk to the Boy in Taverley to start.");
+		talkToBoy = new NpcStep(this, NpcID.BOY, new WorldPoint(2928, 3456, 0), "Talk to the Boy in Taverley to start.");
 		getKey = new ObjectStep(this, ObjectID.POTTED_PLANT_2867, new WorldPoint(2900, 3474, 0), "Look under the potted plant just outside the witch's house.");
 		enterHouse = new ObjectStep(this, ObjectID.DOOR_2861, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
 		pickUpDiary = new DetailedQuestStep(this, new WorldPoint(2903, 3471, 0), "Pick up the diary in the house", houseKey, diary);
@@ -195,13 +195,13 @@ public class WitchsHouse extends BasicQuestHelper
 		grabBall = new DetailedQuestStep(this, new WorldPoint(2936, 3470, 0), "If an experiment hasn't spawned, attempt to pick up the ball once.", ball);
 		killWitchsExperiment = new DetailedQuestStep(this, "Kill all four forms of the Witch's experiment (levels 19, 30, 42, and 53). You can safe spot the last two forms from the crate in the south of the room.");
 		killWitchsExperiment.addSubSteps(killWitchsExperiment1, killWitchsExperiment2, killWitchsExperiment3, killWitchsExperiment4, grabBall);
-		killWitchsExperiment1 = new NpcTalkStep(this, NpcID.WITCHS_EXPERIMENT, new WorldPoint(3936, 3473, 0), "Kill the first experiment's form.");
-		killWitchsExperiment2 = new NpcTalkStep(this, NpcID.WITCHS_EXPERIMENT_SECOND_FORM, new WorldPoint(3936, 3473, 0), "Kill the second experiment's form.");
-		killWitchsExperiment3 = new NpcTalkStep(this, NpcID.WITCHS_EXPERIMENT_THIRD_FORM, new WorldPoint(3936, 3473, 0), "Kill the third experiment's form. You can safespot behind the crate here.");
-		killWitchsExperiment4 = new NpcTalkStep(this, NpcID.WITCHS_EXPERIMENT_FOURTH_FORM, new WorldPoint(3936, 3473, 0), "Kill the fourth experiment's form. You can safespot behind the crate here.");
+		killWitchsExperiment1 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT, new WorldPoint(3936, 3473, 0), "Kill the first experiment's form.");
+		killWitchsExperiment2 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT_SECOND_FORM, new WorldPoint(3936, 3473, 0), "Kill the second experiment's form.");
+		killWitchsExperiment3 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT_THIRD_FORM, new WorldPoint(3936, 3473, 0), "Kill the third experiment's form. You can safespot behind the crate here.");
+		killWitchsExperiment4 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT_FOURTH_FORM, new WorldPoint(3936, 3473, 0), "Kill the fourth experiment's form. You can safespot behind the crate here.");
 
 		pickupBall = new DetailedQuestStep(this, new WorldPoint(2936, 3470, 0), "Pick up the ball.", ball);
-		returnToBoy = new NpcTalkStep(this, NpcID.BOY, new WorldPoint(2928, 3456, 0), "Return the ball to the boy. Make sure the witch doesn't spot you or you'll have to get the ball back again..");
+		returnToBoy = new NpcStep(this, NpcID.BOY, new WorldPoint(2928, 3456, 0), "Return the ball to the boy. Make sure the witch doesn't spot you or you'll have to get the ball back again..");
 	}
 
 	@Override
@@ -222,9 +222,9 @@ public class WitchsHouse extends BasicQuestHelper
 	}
 
 	@Override
-	public String getCombatRequirements()
+	public ArrayList<String> getCombatRequirements()
 	{
-		return "Witch's experiment (level 19, 30, 42 and 53)";
+		return new ArrayList<>(Arrays.asList("Witch's experiment (level 19, 30, 42 and 53)"));
 	}
 
 	@Override

@@ -31,13 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.QuestDescriptor;
 
@@ -55,7 +54,7 @@ public class ImpCatcher extends BasicQuestHelper
 
 		setupRequirements();
 
-		steps.put(0, new NpcTalkStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
+		steps.put(0, new NpcStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
 			"Talk to Wizard Mizgog on the top floor of the Wizards' Tower with the required items to finish the quest.",
 			blackBead, whiteBead, redBead, yellowBead));
 
@@ -92,8 +91,8 @@ public class ImpCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public String getCombatRequirements()
+	public ArrayList<String> getCombatRequirements()
 	{
-		return "Imps (level 8) if you plan on collecting the beads yourself";
+		return new ArrayList<>(Arrays.asList("Imps (level 8) if you plan on collecting the beads yourself"));
 	}
 }

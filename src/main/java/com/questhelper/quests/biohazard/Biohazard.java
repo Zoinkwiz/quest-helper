@@ -32,7 +32,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
@@ -215,10 +215,10 @@ public class Biohazard extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToElena = new NpcTalkStep(this, NpcID.ELENA, new WorldPoint(2592, 3336, 0), "Talk to Elena in her house west of the northern Ardougne bank.");
+		talkToElena = new NpcStep(this, NpcID.ELENA, new WorldPoint(2592, 3336, 0), "Talk to Elena in her house west of the northern Ardougne bank.");
 		talkToElena.addDialogStep("Yes.");
 
-		talkToJerico = new NpcTalkStep(this, NpcID.JERICO, new WorldPoint(2612, 3324, 0), "Talk to Jerico in his house south of the northern Ardougne bank");
+		talkToJerico = new NpcStep(this, NpcID.JERICO, new WorldPoint(2612, 3324, 0), "Talk to Jerico in his house south of the northern Ardougne bank");
 
 		getBirdFeed = new ObjectStep(this, ObjectID.CUPBOARD_2056, new WorldPoint(2612, 3326, 0), "Get birdfeed from the cupboard in Jerico's house.");
 		getBirdFeed2 = new ObjectStep(this, ObjectID.CUPBOARD_2057, new WorldPoint(2612, 3326, 0), "Get birdfeed from the cupboard in Jerico's house.");
@@ -226,15 +226,15 @@ public class Biohazard extends BasicQuestHelper
 		getBirdFeed.addSubSteps(getBirdFeed2);
 
 		getPigeonCage = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get a pigeon cage from behind Jerico's house.", birdCage, birdFeed);
-		talkToOmart = new NpcTalkStep(this, NpcID.OMART_9002, new WorldPoint(2559, 3266, 0), "Talk to Omart, south west of Ardougne Castle.", birdCage, birdFeed);
+		talkToOmart = new NpcStep(this, NpcID.OMART_9002, new WorldPoint(2559, 3266, 0), "Talk to Omart, south west of Ardougne Castle.", birdCage, birdFeed);
 
 		investigateWatchtower = new ObjectStep(this, ObjectID.WATCHTOWER, new WorldPoint(2562, 3301, 0), "Investigate the watchtower near the entrance to West Ardougne.", birdFeed, birdCage);
 
 		clickPigeonCage = new DetailedQuestStep(this, new WorldPoint(2562, 3300, 0), "Open the Pigeon cage next to the watchtower.");
 
-		talkToOmartAgain = new NpcTalkStep(this, NpcID.OMART_9002, new WorldPoint(2559, 3266, 0), "Talk to Omart to enter West Ardougne.", gasMask);
+		talkToOmartAgain = new NpcStep(this, NpcID.OMART_9002, new WorldPoint(2559, 3266, 0), "Talk to Omart to enter West Ardougne.", gasMask);
 		talkToOmartAgain.addDialogStep("Okay, lets do it.");
-		talkToOmartToReturnToWest = new NpcTalkStep(this, NpcID.OMART_9002, new WorldPoint(2559, 3266, 0), "Talk to Omart to return to West Ardougne");
+		talkToOmartToReturnToWest = new NpcStep(this, NpcID.OMART_9002, new WorldPoint(2559, 3266, 0), "Talk to Omart to return to West Ardougne");
 		talkToOmartToReturnToWest.addDialogStep("Okay, lets do it.");
 		talkToOmartAgain.addSubSteps(talkToOmartToReturnToWest);
 
@@ -249,42 +249,42 @@ public class Biohazard extends BasicQuestHelper
 		enterMournerHeadquaters = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0), "Enter the Mourners' Headquaters whilst wearing the medical gown.", medicalGown);
 
 		goUpstairsInMournerBuilding = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2543, 3325, 0), "Go upstairs and kill the mourner there.");
-		killMourner = new NpcTalkStep(this, NpcID.MOURNER_9008, new WorldPoint(2549, 3325, 1), "Kill the mourner here for a key to the caged area.");
+		killMourner = new NpcStep(this, NpcID.MOURNER_9008, new WorldPoint(2549, 3325, 1), "Kill the mourner here for a key to the caged area.");
 		goUpstairsInMournerBuilding.addSubSteps(killMourner);
 
 		searchCrateForDistillator = new ObjectStep(this, ObjectID.CRATE_2064, new WorldPoint(2554, 3327, 1), "Search the crate in the caged area for Elena's Distillator.");
 
 		goBackDownstairsInMournersHeadquaters = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(2543, 3325, 1), "Return to Elena. Go back downstairs or teleport out.");
 
-		talkToKilron = new NpcTalkStep(this, NpcID.KILRON_9001, new WorldPoint(2556, 3266, 0), "Return to Elena. Talk to Kilron to return back to East Ardougne.");
+		talkToKilron = new NpcStep(this, NpcID.KILRON_9001, new WorldPoint(2556, 3266, 0), "Return to Elena. Talk to Kilron to return back to East Ardougne.");
 		talkToKilron.addDialogStep("Yes I do.");
 
-		talkToElenaWithDistillator = new NpcTalkStep(this, NpcID.ELENA, new WorldPoint(2592, 3336, 0), "Return to Elena.");
+		talkToElenaWithDistillator = new NpcStep(this, NpcID.ELENA, new WorldPoint(2592, 3336, 0), "Return to Elena.");
 		talkToElenaWithDistillator.addSubSteps(goBackDownstairsInMournersHeadquaters, talkToKilron);
 
-		talkToTheChemist = new NpcTalkStep(this, NpcID.CHEMIST, new WorldPoint(2933, 3210, 0),
+		talkToTheChemist = new NpcStep(this, NpcID.CHEMIST, new WorldPoint(2933, 3210, 0),
 			"Take the Plague Sample to the Chemist in Rimmington. You can take a boat from Ardougne Dock to Rimmington for 30gp.", plagueSample, liquidHoney, sulphuricBroline, ethenea);
 		talkToTheChemist.addDialogStep("Your quest.");
 
 		giveChemicals = new DetailedQuestStep(this, new WorldPoint(2930, 3220, 0), "Give Hops the Sulphuric Broline. Give Da Vinci the Ethenea. Give Chancy the Liquid honey.", sulphuricBroline, liquidHoney, ethenea);
 		goToVarrock = new DetailedQuestStep(this, new WorldPoint(3270, 3390, 0), "Go speak to Hops, Da Vinci and Chancy in the pub in the south east of Varrock. If you lost any of the chemicals, return to Elena to get more.", plagueSample, touchPaper);
-		vinciVarrock = new NpcTalkStep(this, NpcID.DA_VINCI_1104, new WorldPoint(3270, 3390, 0), "Talk to Da Vinci for the Ethenea.");
-		hopsVarrock = new NpcTalkStep(this, NpcID.HOPS_1108, new WorldPoint(3270, 3390, 0), "Talk to Hops for the Sulphuric Broline.");
-		chancyVarrock = new NpcTalkStep(this, NpcID.CHANCY_1106, new WorldPoint(3270, 3390, 0), "Talk to Chancy for the Liquid honey.");
+		vinciVarrock = new NpcStep(this, NpcID.DA_VINCI_1104, new WorldPoint(3270, 3390, 0), "Talk to Da Vinci for the Ethenea.");
+		hopsVarrock = new NpcStep(this, NpcID.HOPS_1108, new WorldPoint(3270, 3390, 0), "Talk to Hops for the Sulphuric Broline.");
+		chancyVarrock = new NpcStep(this, NpcID.CHANCY_1106, new WorldPoint(3270, 3390, 0), "Talk to Chancy for the Liquid honey.");
 		goToVarrock.addSubSteps(vinciVarrock, hopsVarrock, chancyVarrock);
 
-		talkToAsyff = new NpcTalkStep(this, NpcID.ASYFF, new WorldPoint(3277, 3397, 0), "Talk to Asyff to get a free priest gown. You can only get the free set once.");
+		talkToAsyff = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3277, 3397, 0), "Talk to Asyff to get a free priest gown. You can only get the free set once.");
 		talkToAsyff.addDialogStep("Do you have a spare Priest Gown?");
 
-		talkToGuidor = new NpcTalkStep(this, NpcID.GUIDOR, new WorldPoint(3284, 3382, 0),
+		talkToGuidor = new NpcStep(this, NpcID.GUIDOR, new WorldPoint(3284, 3382, 0),
 			"Talk to Guidor in his house to the south.",
 			priestGownBottom, priestGownTop, plagueSample, sulphuricBroline, liquidHoney, ethenea, touchPaper);
 		talkToGuidor.addDialogStep("I've come to ask your assistance in stopping a plague.");
 
-		returnToElenaAfterSampling = new NpcTalkStep(this, NpcID.ELENA, new WorldPoint(2592, 3336, 0),
+		returnToElenaAfterSampling = new NpcStep(this, NpcID.ELENA, new WorldPoint(2592, 3336, 0),
 			"Return to Elena and inform her that the plague is a hoax.");
 
-		informTheKing = new NpcTalkStep(this, NpcID.KING_LATHAS_9005, new WorldPoint(2578, 3293, 1), "Tell King Lathas that the Plague is a hoax.");
+		informTheKing = new NpcStep(this, NpcID.KING_LATHAS_9005, new WorldPoint(2578, 3293, 1), "Tell King Lathas that the Plague is a hoax.");
 		informTheKingGoUpstairs = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2572, 3296, 0), "Tell King Lathas that the Plague is a hoax.");
 		informTheKing.addSubSteps(informTheKingGoUpstairs);
 	}

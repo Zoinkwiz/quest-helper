@@ -9,7 +9,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -18,7 +17,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
@@ -212,7 +211,7 @@ public class EaglesPeak extends BasicQuestHelper
 	}
 
 	public void setupSteps() {
-		speakToCharlie = new NpcTalkStep(this, NpcID.CHARLIE_1495, new WorldPoint(2607, 3264, 0),
+		speakToCharlie = new NpcStep(this, NpcID.CHARLIE_1495, new WorldPoint(2607, 3264, 0),
 			"Speak to Charlie in the Ardougne Zoo.");
 		speakToCharlie.addDialogStep("Ah, you sound like someone who needs a quest doing!");
 		speakToCharlie.addDialogStep("Sure.  Any idea where I should start looking?");
@@ -232,7 +231,7 @@ public class EaglesPeak extends BasicQuestHelper
 		enterPeak = new ObjectStep(this, NullObjectID.NULL_19790, new WorldPoint(2328, 3494, 0),
 			"Enter Eagles' Peak through the Rocky Outcrop.");
 
-		shoutAtNickolaus = new NpcTalkStep(this, NpcID.NICKOLAUS_1484, new WorldPoint(2006, 4960, 3),
+		shoutAtNickolaus = new NpcStep(this, NpcID.NICKOLAUS_1484, new WorldPoint(2006, 4960, 3),
 			"Shout to Nickolaus from across the chasm.");
 		shoutAtNickolaus.addDialogStep("The Ardougne zookeeper sent me to find you.");
 		shoutAtNickolaus.addDialogStep("Well if you gave me a ferret I could take it back for you.");
@@ -241,11 +240,11 @@ public class EaglesPeak extends BasicQuestHelper
 		pickupFeathers = new ObjectStep(this, ObjectID.GIANT_FEATHERS, new WorldPoint(2007, 4973, 3),  "Pick up 10 Eagle feathers from the piles in the main cavern.",
 			true, tenEagleFeathers);
 
-		goToFancyStore = new NpcTalkStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398,0), "Go speak to Asyff in south-east Varrock to have a disguise made.",
+		goToFancyStore = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398,0), "Go speak to Asyff in south-east Varrock to have a disguise made.",
 			yellowDye, coins, tar, tenEagleFeathers);
 		goToFancyStore.addDialogStep("Well, specifically I'm after a couple of bird costumes.");
 
-		speakAsyffAgain = new NpcTalkStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398,0), "Speak to Asyff again.",
+		speakAsyffAgain = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398,0), "Speak to Asyff again.",
 			yellowDye, coins, tar, tenEagleFeathers);
 		speakAsyffAgain.addDialogStep("I've got the feathers and materials you requested.");
 		speakAsyffAgain.addDialogStep("Okay, here are the materials. Eagle me up.");
@@ -279,7 +278,7 @@ public class EaglesPeak extends BasicQuestHelper
 
 		inspectOpening = new ObjectStep(this, ObjectID.OPENING, new WorldPoint(1971, 4886, 2), "Inspect the opening north of the second rock.");
 
-		threatenKebbit = new NpcTalkStep(this, NpcID.KEBBIT, new WorldPoint(1971, 4880, 2), "Threaten the Kebbit that appears. If the kebbit's gone, re-inspect the opening.");
+		threatenKebbit = new NpcStep(this, NpcID.KEBBIT, new WorldPoint(1971, 4880, 2), "Threaten the Kebbit that appears. If the kebbit's gone, re-inspect the opening.");
 		threatenKebbit.addDialogStep("Taunt the kebbit.");
 
 		pickupSilverFeather = new ObjectStep(this, ObjectID.OPENING, new WorldPoint(1971, 4886, 2), "Pick up the silver feather. If it's despawned, inspect the opening to get it.");
@@ -352,20 +351,20 @@ public class EaglesPeak extends BasicQuestHelper
 			goldFeather, silverFeather, bronzeFeather);
 		useGoldSilverFeathersOnStoneDoor.addIcon(ItemID.GOLDEN_FEATHER);
 
-		sneakPastEagle = new NpcTalkStep(this, NpcID.EAGLE, new WorldPoint(2008, 4955, 3),
+		sneakPastEagle = new NpcStep(this, NpcID.EAGLE, new WorldPoint(2008, 4955, 3),
 			"Go through the feather door and sneak past the Eagle whilst wearing your eagle disguise.",
 			fakeBeak, eagleCape);
 
-		speakToNickolaus = new NpcTalkStep(this, NpcID.NICKOLAUS_1485, new WorldPoint(2006, 4960, 3),
+		speakToNickolaus = new NpcStep(this, NpcID.NICKOLAUS_1485, new WorldPoint(2006, 4960, 3),
 			"Speak to Nickolaus.",
 			fakeBeak, eagleCape);
 
-		speakToNickolausInTheCamp = new NpcTalkStep(this, NpcID.NICKOLAUS_1485, new WorldPoint(2317, 3504, 0),
+		speakToNickolausInTheCamp = new NpcStep(this, NpcID.NICKOLAUS_1485, new WorldPoint(2317, 3504, 0),
 			"Speak to Nickolaus in his camp north of Eagles' Peak.");
 		speakToNickolausInTheCamp.addDialogStep("Well I was originally sent to find you because of a ferret.");
 		speakToNickolausInTheCamp.addDialogStep("That sounds good to me.");
 
-		speakToCharlieAgain = new NpcTalkStep(this, NpcID.CHARLIE_1495, new WorldPoint(2607, 3264, 0),
+		speakToCharlieAgain = new NpcStep(this, NpcID.CHARLIE_1495, new WorldPoint(2607, 3264, 0),
 			"Bring the ferret back to Charlie in Ardougne Zoo.", ferret);
 	}
 
@@ -395,11 +394,5 @@ public class EaglesPeak extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Free Nickolaus", new ArrayList<>(Arrays.asList(useFeathersOnStoneDoor, sneakPastEagle, speakToNickolaus))));
 		allSteps.add(new PanelDetails("Learn how to catch ferrets", new ArrayList<>(Arrays.asList(speakToNickolausInTheCamp, speakToCharlieAgain))));
 		return allSteps;
-	}
-
-	@Override
-	public String getCombatRequirements()
-	{
-		return null;
 	}
 }

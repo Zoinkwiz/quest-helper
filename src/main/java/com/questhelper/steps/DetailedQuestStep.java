@@ -44,6 +44,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.eventbus.Subscribe;
@@ -144,6 +145,19 @@ public class DetailedQuestStep extends QuestStep
 		client.clearHintArrow();
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (worldPoint != null)
+		{
+			setArrow();
+		}
+		else
+		{
+			clearArrow();
+		}
+	}
+
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
 	{
 		super.makeOverlayHint(panelComponent, plugin);
@@ -225,25 +239,26 @@ public class DetailedQuestStep extends QuestStep
 	}
 
 	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOADING)
-		{
-			newTileHighlights.clear();
-		}
-	}
-
-	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		Tile tile = itemDespawned.getTile();
 
 		if (!newTileHighlights.containsKey(tile))
 		{
+			System.out.println("RETURNIN");
 			return;
 		}
-
+		System.out.println(newTileHighlights.get(tile));
 		newTileHighlights.get(tile).remove((Object) itemDespawned.getItem().getId());
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			newTileHighlights.clear();
+		}
 	}
 
 	private void addItemTiles()

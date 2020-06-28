@@ -148,7 +148,9 @@ public abstract class QuestStep implements Module
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text(questHelper.getQuest().getName()).build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(questHelper.getQuest().getName())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(text)

@@ -49,7 +49,7 @@ public class PiratesTreasure extends BasicQuestHelper
 {
 	private ItemRequirement sixtyCoins, spade;
 
-	private NpcTalkStep speakToRedbeard;
+	private NpcStep speakToRedbeard;
 	private RumSmugglingStep smuggleRum;
 	private QuestStep readPirateMessage;
 	private ObjectStep openChest;
@@ -63,7 +63,7 @@ public class PiratesTreasure extends BasicQuestHelper
 
         Map<Integer, QuestStep> steps = new HashMap<>();
 
-		speakToRedbeard = new NpcTalkStep(this, NpcID.REDBEARD_FRANK, new WorldPoint(3053, 3251, 0),
+		speakToRedbeard = new NpcStep(this, NpcID.REDBEARD_FRANK, new WorldPoint(3053, 3251, 0),
 			"Talk to Redbeard Frank in Port Sarim.");
 		speakToRedbeard.addDialogStep("I'm in search of treasure.");
 		speakToRedbeard.addDialogStep("Ok, I will bring you some rum");
@@ -121,9 +121,9 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public String getCombatRequirements()
+	public ArrayList<String> getCombatRequirements()
 	{
-		return "Gardener (level 4)";
+		return new ArrayList<>(Arrays.asList("Gardener (level 4)"));
 	}
 
 	@Override

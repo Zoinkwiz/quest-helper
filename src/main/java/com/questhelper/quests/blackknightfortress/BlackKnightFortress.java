@@ -9,7 +9,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -17,7 +16,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
@@ -161,7 +160,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	}
 
 	private void setupSteps() {
-		speakToAmik = new NpcTalkStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2), "Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
+		speakToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2), "Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
 		speakToAmik.addDialogStep("I seek a quest!");
 		speakToAmik.addDialogStep("I laugh in the face of danger!");
 		speakToAmik.addDialogStep("Ok, I'll do my best.");
@@ -213,7 +212,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		exitTopOfFortress = new ObjectStep(this, ObjectID.STAIRCASE_17155, new WorldPoint(3010, 3516, 3), "Leave the basement to continue.");
 		exitWestRoomFirstFloor = new ObjectStep(this, ObjectID.STAIRCASE_17155, new WorldPoint(3011, 3515, 1), "Go back downstairs to continue");
 
-		returnToAmik = new NpcTalkStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2), "Return to Sir Amik Varze in Falador Castle to complete the quest.");
+		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2), "Return to Sir Amik Varze in Falador Castle to complete the quest.");
 	}
 
 	@Override
@@ -239,9 +238,9 @@ public class BlackKnightFortress extends BasicQuestHelper
 	}
 
 	@Override
-	public String getCombatRequirements()
+	public ArrayList<String> getCombatRequirements()
 	{
-		return "Able to survive being attacked by multiple level 33 Black Knights";
+		return new ArrayList<>(Arrays.asList("Able to survive being attacked by multiple level 33 Black Knights"));
 	}
 
 	@Override

@@ -117,11 +117,11 @@ public class TheRestlessGhost extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToAereck = new NpcTalkStep(this, NpcID.FATHER_AERECK, new WorldPoint(3243, 3206, 0), "Talk to Father Aereck in the Lumbridge Church.");
+		talkToAereck = new NpcStep(this, NpcID.FATHER_AERECK, new WorldPoint(3243, 3206, 0), "Talk to Father Aereck in the Lumbridge Church.");
 		talkToAereck.addDialogStep("I'm looking for a quest!");
 		talkToAereck.addDialogStep("Ok, let me help then.");
 
-		talkToUrhney = new NpcTalkStep(this, NpcID.FATHER_URHNEY, new WorldPoint(3147, 3175, 0), "Talk to Father Urhney in the south west of Lumbridge Swamp.");
+		talkToUrhney = new NpcStep(this, NpcID.FATHER_URHNEY, new WorldPoint(3147, 3175, 0), "Talk to Father Urhney in the south west of Lumbridge Swamp.");
 		talkToUrhney.addDialogStep("Father Aereck sent me to talk to you.");
 		talkToUrhney.addDialogStep("He's got a ghost haunting his graveyard.");
 
@@ -137,7 +137,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 		searchCoffin.addDialogStep("Yes, ok. Do you know WHY you're a ghost?");
 		searchCoffin.addDialogStep("Yes, ok. Do you know why you're a ghost?");
 
-		speakToGhost = new NpcTalkStep(this, NpcID.RESTLESS_GHOST, new WorldPoint(3250, 3195, 0), "Speak to the Ghost that appears whilst wearing your Ghostspeak Amulet.", ghostspeakAmulet);
+		speakToGhost = new NpcStep(this, NpcID.RESTLESS_GHOST, new WorldPoint(3250, 3195, 0), "Speak to the Ghost that appears whilst wearing your Ghostspeak Amulet.", ghostspeakAmulet);
 		speakToGhost.addDialogStep("Yep, now tell me what the problem is.");
 		speakToGhost.addDialogStep("Yep, clever aren't I?.");
 		speakToGhost.addDialogStep("Yes, ok. Do you know WHY you're a ghost?");
@@ -169,7 +169,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
-	public String getCombatRequirements() {
-		return "A skeleton (level 13) you can run away from";
+	public ArrayList<String> getCombatRequirements() {
+		return new ArrayList<>(Arrays.asList("A skeleton (level 13) you can run away from"));
 	}
 }

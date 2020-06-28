@@ -36,7 +36,7 @@ import com.questhelper.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcTalkStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.QuestDescriptor;
 
@@ -74,7 +74,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	}
 
 	private void setupSteps() {
-		speakVeosLumbridge = new NpcTalkStep(this, NpcID.VEOS_8484, new WorldPoint(3228, 3242, 0),
+		speakVeosLumbridge = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3228, 3242, 0),
 			"Talk to Veos in The Sheared Ram pub in Lumbridge to start the quest.");
 
 		digOutsideBob = new DigStep(this, new WorldPoint(3230, 3209, 0),
@@ -93,11 +93,11 @@ public class XMarksTheSpot extends BasicQuestHelper
 			"Dig in the pig pen just west where Martin the Master Gardener is.",
 			new ItemRequirement("Treasure scroll", ItemID.TREASURE_SCROLL_23070));
 
-		speakVeosSarim = new NpcTalkStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
+		speakVeosSarim = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",
 			new ItemRequirement("Ancient casket", ItemID.ANCIENT_CASKET));
 
-		speakVeosSarimWithoutCasket = new NpcTalkStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
+		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.");
 	}
 

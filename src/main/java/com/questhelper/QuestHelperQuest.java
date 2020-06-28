@@ -27,7 +27,8 @@ public enum QuestHelperQuest
 	ROMEO__JULIET(313, "Romeo & Juliet", QuestVarPlayer.QUEST_ROMEO_AND_JULIET),
 	RUNE_MYSTERIES(314, "Rune Mysteries", QuestVarPlayer.QUEST_RUNE_MYSTERIES),
 	SHEEP_SHEARER(315, "Sheep Shearer", QuestVarPlayer.QUEST_SHEEP_SHEARER),
-	SHIELD_OF_ARRAV(316, "Shield of Arrav", QuestVarPlayer.QUEST_SHIELD_OF_ARRAV),
+	SHIELD_OF_ARRAV_PHOENIX_GANG(316, "Shield of Arrav - Phoenix Gang", QuestVarPlayer.QUEST_SHIELD_OF_ARRAV),
+	SHIELD_OF_ARRAV_BLACK_ARM_GANG(316, "Shield of Arrav - Black Arm Gang", QuestVarPlayer.QUEST_SHIELD_OF_ARRAV_STATE_146),
 	VAMPYRE_SLAYER(317, "Vampyre Slayer", QuestVarPlayer.QUEST_VAMPIRE_SLAYER),
 	WITCHS_POTION(318, "Witch's Potion", QuestVarPlayer.QUEST_WITCHS_POTION),
 	X_MARKS_THE_SPOT(550, "X Marks the Spot", QuestVarbits.QUEST_X_MARKS_THE_SPOT),
@@ -154,9 +155,9 @@ public enum QuestHelperQuest
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters", QuestVarbits.QUEST_ZOGRE_FLESH_EATERS),
 	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", QuestVarbits.QUEST_THE_FORSAKEN_TOWER),
-	SONG_OF_THE_ELVES(603, "Song of the Elves"),
-	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
-	SINS_OF_THE_FATHER(1276, "Sins of the Father"),
+	//SONG_OF_THE_ELVES(603, "Song of the Elves"),
+	//THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
+	//SINS_OF_THE_FATHER(1276, "Sins of the Father"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss", QuestVarPlayer.QUEST_ENTER_THE_ABYSS),
@@ -182,14 +183,6 @@ public enum QuestHelperQuest
 	private final QuestVarbits varbit;
 
 	private final QuestVarPlayer varPlayer;
-
-	QuestHelperQuest(int id, String name)
-	{
-		this.id = id;
-		this.name = name;
-		this.varbit = null;
-		this.varPlayer = null;
-	}
 
 	QuestHelperQuest(int id, String name, QuestVarbits varbit)
 	{
@@ -227,9 +220,13 @@ public enum QuestHelperQuest
 		{
 			return client.getVarbitValue(varbit.getId());
 		}
-		else
+		else if (varPlayer != null)
 		{
 			return client.getVarpValue(varPlayer.getId());
+		}
+		else
+		{
+			return -1;
 		}
 	}
 }

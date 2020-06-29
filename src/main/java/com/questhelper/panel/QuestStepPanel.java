@@ -76,7 +76,7 @@ public class QuestStepPanel extends JPanel
 
 		viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 
-		SwingUtil.addModalTooltip(lockStep, "Mark section as uncomplete", "Mark section as complete");
+		SwingUtil.addModalTooltip(lockStep, "Mark section as incomplete", "Mark section as complete");
 		lockStep.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		lockStep.addActionListener(ev -> lockSection(lockStep.isSelected()));
 		lockStep.setVisible(false);

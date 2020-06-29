@@ -108,7 +108,10 @@ public abstract class QuestHelper implements Module
 	{
 		try
 		{
-			injector.injectMembers(questStep);
+			if (questStep != null)
+			{
+				injector.injectMembers(questStep);
+			}
 		}
 		catch (CreationException ex)
 		{

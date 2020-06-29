@@ -28,6 +28,7 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.questhelper.QuestVarbits;
+import com.questhelper.steps.conditional.ConditionForStep;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -77,6 +78,10 @@ public abstract class QuestStep implements Module
 	@Getter
 	private boolean unlockable = true;
 
+	@Getter
+	@Setter
+	private ConditionForStep lockingCondition;
+
 	private int currentChoice = 0;
 	private int currentCutsceneStatus = 0;
 	protected boolean inCutscene;
@@ -91,7 +96,7 @@ public abstract class QuestStep implements Module
 	protected DialogChoiceSteps choices = new DialogChoiceSteps();
 
 	@Getter
-	private ArrayList<QuestStep> substeps = new ArrayList<>();
+	private final ArrayList<QuestStep> substeps = new ArrayList<>();
 
 	@Getter
 	@Setter
@@ -181,22 +186,20 @@ public abstract class QuestStep implements Module
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin){
 	}
 
-	public void setLockedAutomatically(boolean isLocked)
-	{
-		if (isLocked)
-		{
-			locked = true;
-			unlockable = false;
-		}
-		else
-		{
-			unlockable = true;
-		}
-	}
-
 	public void setLockedManually(boolean isLocked)
 	{
 		locked = isLocked;
+	}
+
+	public boolean isLocked()
+	{
+		boolean autoLocked = lockingCondition != null && lockingCondition.checkCondition(client);
+		unlockable = !autoLocked;
+		if (autoLocked)
+		{
+			locked = true;
+		}
+		return locked;
 	}
 
 	public QuestStep getActiveStep() {

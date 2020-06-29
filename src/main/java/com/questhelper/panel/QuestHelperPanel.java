@@ -333,9 +333,7 @@ class QuestHelperPanel extends PluginPanel
 
 	public void updateLocks()
 	{
-		questStepPanelList.forEach(panel -> {
-			panel.updateLock();
-		});
+		questStepPanelList.forEach(QuestStepPanel::updateLock);
 
 		repaint();
 		revalidate();
@@ -456,22 +454,6 @@ class QuestHelperPanel extends PluginPanel
 		overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
 
 		questOverviewListPanel.add(overviewLabel);
-	}
-
-	public void rebuild()
-	{
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 1;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-
-		boolean empty = constraints.gridy == 0;
-		noQuestView.setVisible(empty);
-		title.setVisible(!empty);
-
-		repaint();
-		revalidate();
 	}
 
 	/**

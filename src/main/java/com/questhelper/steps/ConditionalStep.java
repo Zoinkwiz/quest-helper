@@ -217,43 +217,31 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected void updateSteps()
 	{
-		Conditions lastConditions = null;
+		Conditions lastPossibleCondition = null;
+
 		for (Conditions conditions : steps.keySet())
 		{
-			if (conditions != null && steps.get(conditions).isLocked())
+			boolean stepIsLocked = steps.get(conditions).isLocked();
+			if (conditions != null && conditions.checkCondition(client) && !stepIsLocked)
 			{
-				if (!conditions.checkCondition(client))
-				{
-					steps.get(conditions).setLockedAutomatically(false);
-				}
-
-				if (lastConditions != null)
-				{
-					startUpStep(steps.get(lastConditions));
-				}
-				else
-				{
-					startUpStep(steps.get(conditions));
-				}
-				return;
-			}
-			else if (conditions != null && (conditions.checkCondition(client)))
-			{
-				if (steps.get(conditions).isLockable())
-				{
-					steps.get(conditions).setLockedAutomatically(true);
-				}
 				startUpStep(steps.get(conditions));
 				return;
 			}
-			lastConditions = conditions;
+			else if (conditions != null && !stepIsLocked)
+			{
+				lastPossibleCondition = conditions;
+			}
 		}
 
-		startUpStep(steps.get(null));
+		if (!steps.get(null).isLocked())
+		{
+			startUpStep(steps.get(null));
+		}
+		else
+		{
+			startUpStep(steps.get(lastPossibleCondition));
+		}
 	}
-
-	// if (has eel) show next panel step
-	// if (in place, has rod) fish lava eel
 
 	protected void startUpStep(QuestStep step)
 	{

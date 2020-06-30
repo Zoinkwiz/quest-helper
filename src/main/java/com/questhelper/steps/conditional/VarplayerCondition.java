@@ -24,6 +24,7 @@
  */
 package com.questhelper.steps.conditional;
 
+import java.math.BigInteger;
 import net.runelite.api.Client;
 
 public class VarplayerCondition extends ConditionForStep
@@ -33,11 +34,17 @@ public class VarplayerCondition extends ConditionForStep
 	private final int value;
 	private final Operation operation;
 
+	private final int bitPosition;
+	private final boolean bitIsSet;
+
 	public VarplayerCondition(int varplayerId, int value)
 	{
 		this.varplayerId = varplayerId;
 		this.value = value;
 		this.operation = Operation.EQUAL;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
 	}
 
 	public VarplayerCondition(int varplayerId, int value, Operation operation)
@@ -45,11 +52,28 @@ public class VarplayerCondition extends ConditionForStep
 		this.varplayerId = varplayerId;
 		this.value = value;
 		this.operation = operation;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+	}
+
+	public VarplayerCondition(int varplayerId, boolean bitIsSet, int bitPosition)
+	{
+		this.varplayerId = varplayerId;
+		this.value = -1;
+		this.operation = Operation.EQUAL;
+
+		this.bitPosition = bitPosition;
+		this.bitIsSet = bitIsSet;
 	}
 
 	@Override
 	public boolean checkCondition(Client client)
 	{
+		if (bitPosition >= 0)
+		{
+			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
+		}
 		if (operation == Operation.EQUAL)
 		{
 			return client.getVarpValue(varplayerId) == value;

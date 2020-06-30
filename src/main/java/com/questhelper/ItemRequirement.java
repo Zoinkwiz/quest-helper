@@ -25,24 +25,21 @@
 package com.questhelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.client.game.ItemManager;
 
 public class ItemRequirement
 {
 	@Getter
 	private final int id;
 
-	private String name;
+	private final String name;
 
 	@Getter
 	private final int quantity;
@@ -75,24 +72,23 @@ public class ItemRequirement
 		this.equip = equip;
 	}
 
-	public void addAlternates(List<Integer> alternates) {
+	public void addAlternates(List<Integer> alternates)
+	{
 		this.alternates.addAll(alternates);
 	}
 
-	public void addAlternates(Integer... alternates) {
+	public void addAlternates(Integer... alternates)
+	{
 		Collections.addAll(this.alternates, alternates);
 	}
 
-	public void addName(String name)
+	public boolean showQuantity()
 	{
-		this.name = name;
-	}
-
-	public boolean showQuantity() {
 		return quantity != -1;
 	}
 
-	public boolean isActualItem() {
+	public boolean isActualItem()
+	{
 		return id != -1;
 	}
 
@@ -101,7 +97,8 @@ public class ItemRequirement
 		return name;
 	}
 
-	public ArrayList<Integer> getAllIds() {
+	public ArrayList<Integer> getAllIds()
+	{
 		ArrayList<Integer> ids = new ArrayList<>(alternates);
 		ids.add(id);
 		return ids;
@@ -112,7 +109,7 @@ public class ItemRequirement
 		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
 		int tempQuantity = quantity;
 
-		if(equipped != null)
+		if (equipped != null)
 		{
 			Item[] equippedItems = equipped.getItems();
 
@@ -132,9 +129,10 @@ public class ItemRequirement
 			}
 		}
 
-		if(!checkEquippedOnly) {
+		if (!checkEquippedOnly)
+		{
 			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			if(inventory != null)
+			if (inventory != null)
 			{
 				Item[] inventoryItems = inventory.getItems();
 				for (Item item : inventoryItems)
@@ -156,7 +154,8 @@ public class ItemRequirement
 		return false;
 	}
 
-	public boolean check(Client client) {
+	public boolean check(Client client)
+	{
 		return check(client, false);
 	}
 }

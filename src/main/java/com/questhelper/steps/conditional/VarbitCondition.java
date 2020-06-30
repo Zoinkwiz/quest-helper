@@ -24,6 +24,7 @@
  */
 package com.questhelper.steps.conditional;
 
+import java.math.BigInteger;
 import net.runelite.api.Client;
 
 public class VarbitCondition extends ConditionForStep
@@ -33,11 +34,17 @@ public class VarbitCondition extends ConditionForStep
 	private final int value;
 	private final Operation operation;
 
+	private final boolean bitIsSet;
+	private final int bitPosition;
+
 	public VarbitCondition(int varbitId, int value)
 	{
 		this.varbitId = varbitId;
 		this.value = value;
 		this.operation = Operation.EQUAL;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
 	}
 
 	public VarbitCondition(int varbitId, int value, Operation operation)
@@ -45,11 +52,29 @@ public class VarbitCondition extends ConditionForStep
 		this.varbitId = varbitId;
 		this.value = value;
 		this.operation = operation;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+	}
+
+	public VarbitCondition(int varbitId, boolean bitIsSet, int bitPosition)
+	{
+		this.varbitId = varbitId;
+		this.value = -1;
+		this.operation = Operation.EQUAL;
+
+		this.bitPosition = bitPosition;
+		this.bitIsSet = bitIsSet;
 	}
 
 	@Override
 	public boolean checkCondition(Client client)
 	{
+		if (bitPosition >= 0)
+		{
+			return bitIsSet == BigInteger.valueOf(client.getVarbitValue(varbitId)).testBit(bitPosition);
+		}
+
 		if (operation == Operation.EQUAL)
 		{
 			return client.getVarbitValue(varbitId) == value;
@@ -63,6 +88,7 @@ public class VarbitCondition extends ConditionForStep
 		{
 			return client.getVarbitValue(varbitId) >= value;
 		}
+
 		return false;
 	}
 }

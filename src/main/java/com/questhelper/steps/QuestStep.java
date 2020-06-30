@@ -66,7 +66,6 @@ public abstract class QuestStep implements Module
 	@Getter
 	protected String text;
 
-
 	/* Locking applies to ConditionalSteps. Intended to be used as a method of forcing a step to run if it's been locked */
 	@Getter
 	private boolean locked;
@@ -160,6 +159,14 @@ public abstract class QuestStep implements Module
 	public void addDialogStep(String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(choice));
+	}
+
+	public void addDialogSteps(String... newChoices)
+	{
+		for (String choice : newChoices)
+		{
+			choices.addChoice(new DialogChoiceStep(choice));
+		}
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)

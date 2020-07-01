@@ -42,7 +42,7 @@ import com.questhelper.steps.QuestStep;
 public abstract class QuestHelper implements Module
 {
 	@Inject
-	private Client client;
+	protected Client client;
 
 	@Inject
 	private EventBus eventBus;

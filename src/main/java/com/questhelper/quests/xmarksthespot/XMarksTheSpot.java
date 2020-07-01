@@ -76,29 +76,34 @@ public class XMarksTheSpot extends BasicQuestHelper
 	private void setupSteps() {
 		speakVeosLumbridge = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3228, 3242, 0),
 			"Talk to Veos in The Sheared Ram pub in Lumbridge to start the quest.");
+		speakVeosLumbridge.addDialogStep("I'm looking for a quest.");
+		speakVeosLumbridge.addDialogStep("Sounds good, what should I do?");
 
 		digOutsideBob = new DigStep(this, new WorldPoint(3230, 3209, 0),
-			"Dig north of Bob's Brilliant Axes, on the west side of the plant against the wall of his house.",
-			new ItemRequirement("Treasure scroll", ItemID.TREASURE_SCROLL));
+			"Dig north of Bob's Brilliant Axes, on the west side of the plant against the wall of his house.");
+		digOutsideBob.addDialogStep("Okay, thanks Veos.");
 
 		digCastle = new DigStep(this, new WorldPoint(3203, 3212, 0),
-			"Dig behind Lumbridge Castle, just outside the kitchen door.",
-			new ItemRequirement("Treasure scroll", ItemID.TREASURE_SCROLL_23068));
+			"Dig behind Lumbridge Castle, just outside the kitchen door.");
 
 		digDraynor = new DigStep(this, new WorldPoint(3109, 3264, 0),
-			"Dig north-west of the Draynor Village jail, just by the wheat farm.",
-			new ItemRequirement("Mysterious orb", ItemID.MYSTERIOUS_ORB_23069));
+			"Dig north-west of the Draynor Village jail, just by the wheat farm.");
 
 		digMartin = new DigStep(this, new WorldPoint(3078, 3259, 0),
 			"Dig in the pig pen just west where Martin the Master Gardener is.",
 			new ItemRequirement("Treasure scroll", ItemID.TREASURE_SCROLL_23070));
 
+		ItemRequirement ancientCasket = new ItemRequirement("Ancient casket", ItemID.ANCIENT_CASKET);
+		ancientCasket.setTip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
+
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",
-			new ItemRequirement("Ancient casket", ItemID.ANCIENT_CASKET));
+			ancientCasket);
 
 		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.");
+
+		speakVeosSarim.addSubSteps(speakVeosSarimWithoutCasket);
 	}
 
 	@Override

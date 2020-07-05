@@ -36,13 +36,16 @@ public class PanelDetails {
 	String header;
 
 	@Getter
-	ArrayList<QuestStep> steps;
+	private ArrayList<QuestStep> steps;
 
 	@Getter
-	QuestStep lockingQuest;
+	private QuestStep lockingQuestSteps;
 
 	@Getter
-	ArrayList<ItemRequirement> itemRequirements;
+	private ArrayList<ItemRequirement> itemRequirements;
+
+	@Getter
+	private ArrayList<Integer> vars;
 
 	public PanelDetails(String header) {
 		this.header = header;
@@ -61,9 +64,14 @@ public class PanelDetails {
 		this.itemRequirements = new ArrayList<>(Arrays.asList(itemRequirements));
 	}
 
+	public void setVars(Integer... vars)
+	{
+		this.vars = new ArrayList<>(Arrays.asList(vars));
+	}
+
 	public void setLockingStep(QuestStep lockingStep)
 	{
-		this.lockingQuest = lockingStep;
+		this.lockingQuestSteps = lockingStep;
 	}
 
 	public void addSteps(QuestStep... steps) {

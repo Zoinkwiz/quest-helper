@@ -24,27 +24,28 @@
  */
 package com.questhelper.steps.conditional;
 
-import ch.qos.logback.core.joran.conditional.Condition;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import net.runelite.api.Client;
 
 public class Conditions extends ConditionForStep
 {
-	public Conditions(ConditionForStep... conditions) {
+	public Conditions(ConditionForStep... conditions)
+	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		logicType = LogicType.AND;
 	}
 
-	public Conditions(LogicType logicType, ConditionForStep... conditions) {
+	public Conditions(LogicType logicType, ConditionForStep... conditions)
+	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.logicType = logicType;
 	}
 
-	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, ConditionForStep... conditions) {
+	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, ConditionForStep... conditions)
+	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
@@ -79,9 +80,10 @@ public class Conditions extends ConditionForStep
 		}
 
 		if ((conditionsPassed > 0 && logicType == LogicType.OR)
-		|| (conditionsPassed == 0 && logicType == LogicType.NOR)
-		|| (conditionsPassed == conditions.size() && logicType == LogicType.AND)
-		|| (conditionsPassed < conditions.size() && logicType == LogicType.NAND)) {
+			|| (conditionsPassed == 0 && logicType == LogicType.NOR)
+			|| (conditionsPassed == conditions.size() && logicType == LogicType.AND)
+			|| (conditionsPassed < conditions.size() && logicType == LogicType.NAND))
+		{
 			hasPassed = true;
 			return true;
 		}

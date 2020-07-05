@@ -26,11 +26,14 @@ package com.questhelper.steps;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -48,6 +51,8 @@ public class NpcStep extends DetailedQuestStep
 
 	private final int npcID;
 	private NPC npc;
+
+	private BufferedImage npcIcon;
 
 	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
 	{
@@ -93,6 +98,17 @@ public class NpcStep extends DetailedQuestStep
 		if (event.getNpc().equals(npc))
 		{
 			npc = null;
+		}
+	}
+
+	@Subscribe
+	@Override
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		super.onGameStateChanged(event);
+		if (event.getGameState() == GameState.LOADING)
+		{
+			// TODO: Handler for npc marker on loading boundaries
 		}
 	}
 
@@ -144,7 +160,16 @@ public class NpcStep extends DetailedQuestStep
 		{
 			return;
 		}
-
-		OverlayUtil.renderActorOverlayImage(graphics, npc, getQuestImage(), Color.CYAN, IMAGE_Z_OFFSET);
+		if (npcIcon == null)
+		{
+			npcIcon = getQuestImage();
+		}
+		if (iconItemID != -1 && itemIcon == null)
+		{
+			addIconImage();
+			npcIcon = itemIcon;
+		}
+			OverlayUtil.renderActorOverlayImage(graphics, npc, npcIcon, Color.CYAN, IMAGE_Z_OFFSET);
 	}
+
 }

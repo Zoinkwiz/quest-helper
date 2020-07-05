@@ -27,9 +27,12 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +50,9 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import com.questhelper.ItemRequirement;
@@ -247,7 +253,6 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		System.out.println(newTileHighlights.get(tile));
 		newTileHighlights.get(tile).remove((Object) itemDespawned.getItem().getId());
 	}
 
@@ -303,12 +308,42 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
+		renderInventory(graphics);
+
 		newTileHighlights.forEach((tile, ids) -> {
 			checkAllTilesForHighlighting(tile, ids, graphics);
 		});
 	}
 
-	private void addIconImage()
+	private void renderInventory(Graphics2D graphics)
+	{
+		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+		if (inventoryWidget == null || inventoryWidget.isHidden())
+		{
+			return;
+		}
+
+		if(itemRequirements == null)
+		{
+			return;
+		}
+
+		for (WidgetItem item : inventoryWidget.getWidgetItems())
+		{
+			for (ItemRequirement itemRequirement : itemRequirements)
+			{
+				if (itemRequirement.isHighlightInInventory() && itemRequirement.getAllIds().contains(item.getId()))
+				{
+					Rectangle slotBounds = item.getCanvasBounds();
+					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.fill(slotBounds);
+				}
+
+			}
+		}
+	}
+
+	protected void addIconImage()
 	{
 		BufferedImage itemImg = itemManager.getImage(iconItemID);
 		BufferedImage mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");

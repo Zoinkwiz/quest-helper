@@ -221,8 +221,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 		hideInArheinCrate.addSubSteps(goBackDownStairsCamelot);
 		hideInArheinCrate.addDialogStep("Yes.");
 
-		goToFirstFloor = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2770, 3405, 0), "Go the stairs in the fortress.");
-		goToSecondFloor = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2770, 3399, 1), "Go the stairs in the fortress.");
+		goToFirstFloor = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2770, 3405, 0), "Go up the stairs in the fortress.");
+		goToSecondFloor = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2770, 3399, 1), "Go up another floor.");
 		attackMordred = new NpcStep(this, NpcID.SIR_MORDRED, new WorldPoint(2770, 3403, 2), "Attack Sir Mordred down to 0hp to cause Morgan Le Faye to spawn.");
 		attackMordred.addDialogStep("Tell me how to untrap Merlin and I might.");
 		attackMordred.addDialogStep("Ok I will do all that.");
@@ -312,17 +312,21 @@ public class MerlinsCrystal extends BasicQuestHelper
 		PanelDetails getBlackCandlePanel = new PanelDetails("Get a Black Candle",
 			new ArrayList<>(Arrays.asList(goToCatherbyAfterFortress, optionalGetRepellent, optionalGetBucket, optionalUseRepellent, talkToCandleMaker)), combatGear);
 		getBlackCandlePanel.setLockingStep(getBlackCandle);
+		getBlackCandlePanel.setVars(4);
+
 		allSteps.add(getBlackCandlePanel);
 
 		PanelDetails getExcalaburPanel = new PanelDetails("Get Excalabur",
 			new ArrayList<>(Arrays.asList(talkToLadyOfLake, enterSarimShopAndTalk, talkToBeggar)), bread);
 		getExcalaburPanel.setLockingStep(getExcalabur);
+		getExcalaburPanel.setVars(4);
 
 		allSteps.add(getExcalaburPanel);
 
 		PanelDetails readMagicWordsPanel = new PanelDetails("Learn magic words",
 			new ArrayList<>(Collections.singletonList(goReadMagicWords)));
 		readMagicWordsPanel.setLockingStep(goReadMagicWords);
+		readMagicWordsPanel.setVars(4);
 
 		allSteps.add(readMagicWordsPanel);
 

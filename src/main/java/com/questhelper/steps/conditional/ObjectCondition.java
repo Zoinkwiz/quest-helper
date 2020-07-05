@@ -35,38 +35,71 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 public class ObjectCondition extends ConditionForStep
 {
 	private final int objectID;
+	private final WorldPoint worldPoint;
 
 	public ObjectCondition(int objectID) {
 		this.objectID = objectID;
+		this.worldPoint = null;
+	}
+
+	public ObjectCondition(int objectID, WorldPoint worldPoint) {
+		this.objectID = objectID;
+		this.worldPoint = worldPoint;
 	}
 
 	public boolean checkCondition(Client client)
 	{
-		Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
-
-		for (int x = 0; x < SCENE_SIZE; x++)
+		if (worldPoint != null)
 		{
-			for (int y = 0; y < SCENE_SIZE; y++)
+			LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+			if (localPoint == null)
 			{
-				if (tiles[x][y] == null)
-				{
-					continue;
-				}
+				return false;
+			}
 
-				for (GameObject object : tiles[x][y].getGameObjects())
+			Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+			return checkTile(tile);
+		}
+		else
+		{
+			Tile[][] tiles;
+			tiles = client.getScene().getTiles()[client.getPlane()];
+
+			for (int x = 0; x < SCENE_SIZE; x++)
+			{
+				for (int y = 0; y < SCENE_SIZE; y++)
 				{
-					if (checkForObjects(object)) return true;
+					if (checkTile(tiles[x][y]))
+					{
+						return true;
+					}
 				}
-				if (checkForObjects(tiles[x][y].getDecorativeObject())) return true;
-				if (checkForObjects(tiles[x][y].getGroundObject())) return true;
-				if (checkForObjects(tiles[x][y].getWallObject())) return true;
 			}
 		}
+
+		return false;
+	}
+
+	private boolean checkTile (Tile tile)
+	{
+		if (tile == null)
+		{
+			return false;
+		}
+
+		for (GameObject object : tile.getGameObjects())
+		{
+			if (checkForObjects(object)) return true;
+		}
+		if (checkForObjects(tile.getDecorativeObject())) return true;
+		if (checkForObjects(tile.getGroundObject())) return true;
+		if (checkForObjects(tile.getWallObject())) return true;
 
 		return false;
 	}
@@ -78,6 +111,6 @@ public class ObjectCondition extends ConditionForStep
 
 	@Override
 	public void loadingHandler() {
-		// Once this has checks done in ConditionalStep, thi will need to set the boolean condition to false
+		// Once this has checks done in ConditionalStep, this will need to set the boolean condition to false
 	}
 }

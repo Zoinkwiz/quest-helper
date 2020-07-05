@@ -51,6 +51,10 @@ public class ItemRequirement
 	@Getter
 	private String tip;
 
+	@Getter
+	@Setter
+	private boolean highlightInInventory;
+
 	private final List<Integer> alternates = new ArrayList<>();
 
 	public ItemRequirement(String name, int id)
@@ -70,6 +74,18 @@ public class ItemRequirement
 	{
 		this(name, id, quantity);
 		this.equip = equip;
+	}
+
+	public ItemRequirement(boolean highlightInInventory, String name, int id)
+	{
+		this(name, id);
+		this.highlightInInventory = highlightInInventory;
+	}
+
+	public ItemRequirement(String name, List<Integer> items)
+	{
+		this(name, items.get(0), 1);
+		this.addAlternates(items.subList(1, items.size()));
 	}
 
 	public void addAlternates(List<Integer> alternates)

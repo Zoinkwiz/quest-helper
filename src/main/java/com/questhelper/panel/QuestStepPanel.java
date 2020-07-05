@@ -46,10 +46,11 @@ public class QuestStepPanel extends JPanel
 	private final JLabel headerLabel = new JLabel();
 	private final JPanel bodyPanel = new JPanel();
 	private final JCheckBox lockStep = new JCheckBox();
-	private JPanel leftTitleContainer;
-	private JPanel viewControls;
+	private final JPanel leftTitleContainer;
+	private final JPanel viewControls;
 
 	private QuestStep currentlyHighlighted = null;
+	private boolean stepAutoLocked;
 
 	private final HashMap<QuestStep, JLabel> steps = new HashMap<>();
 
@@ -197,9 +198,9 @@ public class QuestStepPanel extends JPanel
     	return new ArrayList<>(steps.keySet());
 	}
 
-	public void setLockable()
+	public void setLockable(boolean canLock)
 	{
-		lockStep.setVisible(true);
+		lockStep.setVisible(canLock);
 	}
 
     public void updateHighlight(QuestStep currentStep)
@@ -245,21 +246,27 @@ public class QuestStepPanel extends JPanel
 
 	public void updateLock()
 	{
-		if (panelDetails.lockingQuest == null)
+		if (panelDetails.getLockingQuestSteps() == null)
 		{
 			return;
 		}
 
-		if (panelDetails.lockingQuest.isUnlockable())
+		if (panelDetails.getLockingQuestSteps().isUnlockable())
 		{
+			stepAutoLocked = false;
 			lockStep.setEnabled(true);
 		}
 		else
 		{
+			if (!stepAutoLocked)
+			{
+				collapse();
+			}
+			stepAutoLocked = true;
 			lockStep.setEnabled(false);
 		}
 
-		if (panelDetails.lockingQuest.isLocked())
+		if (panelDetails.getLockingQuestSteps().isLocked())
 		{
 			lockStep.setSelected(true);
 		}
@@ -269,7 +276,7 @@ public class QuestStepPanel extends JPanel
 	{
 		if (locked)
 		{
-			panelDetails.lockingQuest.setLockedManually(true);
+			panelDetails.getLockingQuestSteps().setLockedManually(true);
 			if (!isCollapsed())
 			{
 				collapse();
@@ -277,7 +284,7 @@ public class QuestStepPanel extends JPanel
 		}
 		else
 		{
-			panelDetails.lockingQuest.setLockedManually(false);
+			panelDetails.getLockingQuestSteps().setLockedManually(false);
 			if (isCollapsed())
 			{
 				expand();

@@ -39,6 +39,7 @@ import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
@@ -81,7 +82,6 @@ public abstract class QuestStep implements Module
 	@Setter
 	private ConditionForStep lockingCondition;
 
-	private int currentChoice = 0;
 	private int currentCutsceneStatus = 0;
 	protected boolean inCutscene;
 
@@ -127,12 +127,6 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-	int newChoice = client.getVarbitValue(QuestVarbits.DIALOG_CHOICE.getId());
-		if(currentChoice == 0 && newChoice == 1) {
-			clientThread.invokeLater(this::highlightChoice);
-		}
-		currentChoice = newChoice;
-
 		int newCutsceneStatus = client.getVarbitValue(QuestVarbits.CUTSCENE.getId());
 		if (currentCutsceneStatus == 0 && newCutsceneStatus == 1) {
 			enteredCutscene();
@@ -140,6 +134,15 @@ public abstract class QuestStep implements Module
 			leftCutscene();
 		}
 		currentCutsceneStatus = newCutsceneStatus;
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if(event.getGroupId() == 219)
+		{
+			clientThread.invokeLater(this::highlightChoice);
+		}
 	}
 
 	public void enteredCutscene()

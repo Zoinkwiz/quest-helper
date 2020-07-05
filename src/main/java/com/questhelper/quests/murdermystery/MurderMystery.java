@@ -187,7 +187,7 @@ public class MurderMystery extends BasicQuestHelper
 
 		talkToPoisonSalesman = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the Posion Salesman in the Seer's Village pub.");
 		talkToPoisonSalesman.addDialogStep("Who did you sell Poison to at the house?");
-
+		talkToPoisonSalesman.addDialogStep("Talk about the Murder Mystery Quest");
 		talkToTheSuspect = new DetailedQuestStep(this, "Talk to the person who you matched prints to and ask what they did with the poison.");
 
 		disproveSuspectStory = new DetailedQuestStep(this, "Search the item they say they used the poison on.");

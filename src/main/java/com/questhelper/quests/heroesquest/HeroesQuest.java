@@ -396,9 +396,7 @@ public class HeroesQuest extends BasicQuestHelper
 		enterPhoenixBaseAgain = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Bring the candlestick back to Straven.");
 		bringCandlestickToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Bring the candlestick back to Straven.");
 		bringCandlestickToStraven.addSubSteps(enterPhoenixBaseAgain);
-		// 1042 went 23456 -> 23488
 
-		// Prepare to defeat a level 111 Ice Queen
 		mineEntranceRocks = new ObjectStep(this, ObjectID.ROCK_SLIDE, new WorldPoint(2839, 3518, 0), "Head to White Wolf Mountain, and mine a rockslide in the northern part.", pickaxe);
 		takeLadder1Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2848, 3513, 0), "Take the south east ladder down.");
 		takeLadder2Up = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2824, 9907, 0), "Follow the tunnel south, then go up the ladder there.");

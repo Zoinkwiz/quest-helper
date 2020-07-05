@@ -64,6 +64,7 @@ class QuestHelperPanel extends PluginPanel
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noQuestView = new PluginErrorPanel();
 	private QuestHelperPlugin plugin;
+	private BasicQuestHelper currentQuest;
 
 	private final JPanel actionsContainer = new JPanel();
 	private final JPanel titlePanel = new JPanel();
@@ -261,6 +262,7 @@ class QuestHelperPanel extends PluginPanel
 
 	public void addQuest(BasicQuestHelper quest)
 	{
+		currentQuest = quest;
 		ArrayList<PanelDetails> steps = quest.getPanels();
 
 		if (quest.getCurrentStep() != null)
@@ -277,9 +279,11 @@ class QuestHelperPanel extends PluginPanel
 			{
 				PanelDetails panelDetail = steps.get(i);
 				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep);
-				if (panelDetail.lockingQuest != null)
+				if (panelDetail.getLockingQuestSteps() != null &&
+					(panelDetail.getVars() == null
+						|| panelDetail.getVars().contains(currentQuest.getVar())))
 				{
-					newStep.setLockable();
+					newStep.setLockable(true);
 				}
 				questStepPanelList.add(newStep);
 				questStepsContainer.add(newStep);
@@ -312,6 +316,16 @@ class QuestHelperPanel extends PluginPanel
 	{
 		questStepPanelList.forEach(panel -> {
 			boolean highlighted = false;
+			if (panel.panelDetails.getLockingQuestSteps() != null &&
+				(panel.panelDetails.getVars() == null
+					|| panel.panelDetails.getVars().contains(currentQuest.getVar())))
+			{
+				panel.setLockable(true);
+			}
+			else
+			{
+				panel.setLockable(false);
+			}
 			for (QuestStep step : panel.getSteps())
 			{
 				if (step == newStep || step.getSubsteps().contains(newStep))
@@ -346,6 +360,7 @@ class QuestHelperPanel extends PluginPanel
 		questStepsContainer.removeAll();
 		questItemRequirementsListPanel.removeAll();
 		questItemRecommendedListPanel.removeAll();
+		currentQuest = null;
 		questOverviewListPanel.removeAll();
 		repaint();
 		revalidate();

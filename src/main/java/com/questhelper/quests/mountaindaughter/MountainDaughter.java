@@ -204,9 +204,10 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	private void loadQuestSteps() {
-		enterCamp = new ObjectStep(this, ObjectID.BOULDER_5842, new WorldPoint(2765, 3666, 0),
+		enterCamp = new ObjectStep(this, ObjectID.BOULDER_5842, new WorldPoint(2766, 3667, 0),
 			"Use your rope on the boulder outside the Mountain Camp east of Rellekka.",
 			rope);
+		enterCamp.addIcon(ItemID.ROPE);
 
 		enterCampOverRocks = new ObjectStep(this, ObjectID.ROCKSLIDE_5847,  new WorldPoint(2760, 3658, 0),
 			"Return to the Mountain Camp.",
@@ -347,7 +348,6 @@ public class MountainDaughter extends BasicQuestHelper
 		reqs.add(pickaxe);
 		reqs.add(axe);
 		reqs.add(plank);
-		reqs.add(pole);
 		reqs.add(gloves);
 
 		return reqs;
@@ -363,7 +363,7 @@ public class MountainDaughter extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels() {
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Speak to Hamal", new ArrayList<>(Arrays.asList(enterCamp, talkToHamal)), rope, spade, pole, plank, pickaxe));
+		allSteps.add(new PanelDetails("Speak to Hamal", new ArrayList<>(Arrays.asList(enterCamp, talkToHamal)), rope, spade, plank, pickaxe));
 		allSteps.add(new PanelDetails("Go to the centre of the lake", new ArrayList<>(Arrays.asList(rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit))));
 		allSteps.add(new PanelDetails("Find out how to help", new ArrayList<>(Arrays.asList(talkToHamalAfterSpirit, talkToJokul))));
 		allSteps.add(new PanelDetails("Making peace with Rellekka", new ArrayList<>(Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi))));

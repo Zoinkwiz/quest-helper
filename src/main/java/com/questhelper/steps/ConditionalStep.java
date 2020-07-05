@@ -25,17 +25,26 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
+import com.questhelper.steps.conditional.WidgetTextCondition;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
@@ -46,6 +55,7 @@ import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.NpcCondition;
 import com.questhelper.steps.conditional.OwnerStep;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.util.Text;
 
 
 /* Conditions are checked in the order they were added */
@@ -59,6 +69,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected final LinkedHashMap<Conditions, QuestStep> steps;
 	protected final ArrayList<ChatMessageCondition> chatConditions = new ArrayList<>();
 	protected final ArrayList<NpcCondition> npcConditions = new ArrayList<>();
+	protected final ArrayList<WidgetTextCondition> widgetConditions = new ArrayList<>();
 
 	private QuestStep currentStep;
 
@@ -75,6 +86,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 		checkForChatConditions(conditions);
 		checkForNpcConditions(conditions);
+		checkForWidgetConditions(conditions);
 	}
 
 	public void addStep(Conditions conditions, QuestStep step, boolean isLockable)
@@ -84,6 +96,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 		checkForChatConditions(conditions);
 		checkForNpcConditions(conditions);
+		checkForWidgetConditions(conditions);
 	}
 
 	public void addStep(ConditionForStep condition, QuestStep step)
@@ -92,6 +105,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 		checkForChatConditions(condition);
 		checkForNpcConditions(condition);
+		checkForWidgetConditions(condition);
 	}
 
 	public void addStep(ConditionForStep condition, QuestStep step, boolean isLockable)
@@ -102,6 +116,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 		checkForChatConditions(condition);
 		checkForNpcConditions(condition);
+		checkForWidgetConditions(condition);
 	}
 
 	public void checkForChatConditions(ConditionForStep condition)
@@ -122,7 +137,8 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 	}
 
-	public void checkForNpcConditions(ConditionForStep condition) {
+	public void checkForNpcConditions(ConditionForStep condition)
+	{
 		if (condition != null && condition.getConditions() == null)
 		{
 			if (condition.getClass() == NpcCondition.class && !npcConditions.contains(condition))
@@ -135,6 +151,24 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 			for (ConditionForStep subCondition : condition.getConditions())
 			{
 				checkForNpcConditions(subCondition);
+			}
+		}
+	}
+
+	public void checkForWidgetConditions(ConditionForStep condition)
+	{
+		if (condition != null && condition.getConditions() == null)
+		{
+			if (condition.getClass() == WidgetTextCondition.class && !widgetConditions.contains(condition))
+			{
+				widgetConditions.add((WidgetTextCondition) condition);
+			}
+		}
+		else
+		{
+			for (ConditionForStep subCondition : condition.getConditions())
+			{
+				checkForWidgetConditions(subCondition);
 			}
 		}
 	}
@@ -212,6 +246,18 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		for (NpcCondition condition : npcConditions)
 		{
 			condition.checkNpcDespawned(event.getNpc().getId());
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(final WidgetLoaded event)
+	{
+		for (WidgetTextCondition condition : widgetConditions)
+		{
+			if (condition.getGroupId() == event.getGroupId())
+			{
+				condition.checkWidgetText(client);
+			}
 		}
 	}
 

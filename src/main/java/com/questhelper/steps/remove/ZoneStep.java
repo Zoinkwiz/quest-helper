@@ -54,7 +54,7 @@ public class ZoneStep extends QuestStep implements OwnerStep
 
 	public ZoneStep(QuestHelper questHelper, LinkedHashMap<Zone, QuestStep> steps)
 	{
-		super(questHelper, null);
+		super(questHelper, "");
 		this.steps = steps;
 	}
 

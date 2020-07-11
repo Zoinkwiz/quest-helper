@@ -33,6 +33,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -65,7 +66,7 @@ public abstract class QuestStep implements Module
 
 	@Setter
 	@Getter
-	protected String text;
+	protected ArrayList<String> text;
 
 	/* Locking applies to ConditionalSteps. Intended to be used as a method of forcing a step to run if it's been locked */
 	@Getter
@@ -102,6 +103,12 @@ public abstract class QuestStep implements Module
 	private boolean showInSidebar = true;
 
 	public QuestStep(QuestHelper questHelper, String text)
+	{
+		this.text = new ArrayList<>(Collections.singletonList(text));
+		this.questHelper = questHelper;
+	}
+
+	public QuestStep(QuestHelper questHelper, ArrayList<String> text)
 	{
 		this.text = text;
 		this.questHelper = questHelper;
@@ -178,10 +185,13 @@ public abstract class QuestStep implements Module
 			.left(questHelper.getQuest().getName())
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(text)
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+		for (String line : text)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(line)
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
 	}
 
 	public void addIcon(int iconItemID)

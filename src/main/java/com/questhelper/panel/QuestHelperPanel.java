@@ -312,20 +312,23 @@ class QuestHelperPanel extends PluginPanel
 		}
 	}
 
+	public void updateSteps()
+	{
+		questStepPanelList.forEach(panel -> {
+			for (QuestStep step : panel.getSteps())
+			{
+				panel.getStepsLabels().get(step).setText(panel.generateText(step));
+			}
+		});
+	}
+
 	public void updateHighlight(QuestStep newStep)
 	{
 		questStepPanelList.forEach(panel -> {
 			boolean highlighted = false;
-			if (panel.panelDetails.getLockingQuestSteps() != null &&
+			panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
 				(panel.panelDetails.getVars() == null
-					|| panel.panelDetails.getVars().contains(currentQuest.getVar())))
-			{
-				panel.setLockable(true);
-			}
-			else
-			{
-				panel.setLockable(false);
-			}
+					|| panel.panelDetails.getVars().contains(currentQuest.getVar())));
 			for (QuestStep step : panel.getSteps())
 			{
 				if (step == newStep || step.getSubsteps().contains(newStep))

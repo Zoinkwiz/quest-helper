@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.steps.DetailedQuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.questhelper.ItemRequirement;
@@ -170,14 +171,7 @@ public class QuestStepPanel extends JPanel
 			questStepLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
 			questStepLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			questStepLabel.setVerticalAlignment(SwingConstants.TOP);
-
-			StringBuilder text = new StringBuilder();
-
-			if(step.equals(currentStep)) {
-				questStepLabel.setForeground(ColorScheme.BRAND_ORANGE);
-			}
-			text.append(step.getText());
-			questStepLabel.setText("<html><body style = 'text-align:left'>" + text + "</body></html>");
+			questStepLabel.setText(generateText(step));
 
 			steps.put(step, questStepLabel);
 			questStepsPanel.add(questStepLabel);
@@ -194,8 +188,25 @@ public class QuestStepPanel extends JPanel
 		}
     }
 
+    public String generateText(QuestStep step)
+	{
+		StringBuilder text = new StringBuilder();
+
+		for (String line : step.getText())
+		{
+			text.append(line + " ");
+		}
+
+		return "<html><body style = 'text-align:left'>" + text + "</body></html>";
+	}
+
     public ArrayList<QuestStep> getSteps() {
     	return new ArrayList<>(steps.keySet());
+	}
+
+	public HashMap<QuestStep, JLabel> getStepsLabels()
+	{
+		return steps;
 	}
 
 	public void setLockable(boolean canLock)

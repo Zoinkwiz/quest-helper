@@ -53,7 +53,7 @@ public class ItemRequirementStep extends QuestStep implements OwnerStep
 
 	public ItemRequirementStep(QuestHelper questHelper, LinkedHashMap<ItemRequirements, QuestStep> steps)
 	{
-		super(questHelper, null);
+		super(questHelper, "");
 		this.steps = steps;
 	}
 

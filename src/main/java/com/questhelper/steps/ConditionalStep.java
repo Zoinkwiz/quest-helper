@@ -75,7 +75,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	public ConditionalStep(QuestHelper questHelper, QuestStep step)
 	{
-		super(questHelper, null);
+		super(questHelper, "");
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
 	}

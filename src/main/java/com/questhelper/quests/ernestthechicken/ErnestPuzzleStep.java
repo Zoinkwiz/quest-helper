@@ -69,7 +69,7 @@ public class ErnestPuzzleStep extends QuestStep implements OwnerStep
 	//THIS IS A TEMP SOLUTION I KNOW THIS IS TRASH
 	public ErnestPuzzleStep(QuestHelper questHelper)
 	{
-		super(questHelper, null);
+		super(questHelper, "");
 		loadSteps();
 	}
 

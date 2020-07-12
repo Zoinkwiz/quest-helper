@@ -123,7 +123,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToMorgan = new NpcStep(this, NpcID.MORGAN, new WorldPoint(3098, 3268, 0), "Talk to Morgan in the north of Draynor Village.");
-		talkToMorgan.addDialogStep("What terrible threat?");
+		talkToMorgan.addDialogStep("Ok, I'm up for an adventure.");
 		talkToMorgan.addDialogStep("Accept quest");
 		goUpstairsMorgan = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(3100, 3267, 0), "Go upstairs in Morgan's house and search the cupboard for some garlic.");
 		getGarlic = new ObjectStep(this, ObjectID.CUPBOARD_2613, new WorldPoint(3096, 3270, 1), "Search the cupboard upstairs in Morgan's house.");

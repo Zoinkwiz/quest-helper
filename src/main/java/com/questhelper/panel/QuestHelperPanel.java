@@ -70,10 +70,12 @@ class QuestHelperPanel extends PluginPanel
 	private final JPanel titlePanel = new JPanel();
 
 	private final JPanel introPanel = new JPanel();
+	private final JLabel questOverviewNotes = new JLabel();
+
 	private final JPanel questItemRequirementsListPanel = new JPanel();
 	private final JPanel questItemRecommendedListPanel = new JPanel();
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
-	private final JPanel questOverviewListPanel = new JPanel();
+	private final JPanel questOverviewNotesPanel = new JPanel();
 
 	private final JPanel questStepsContainer = new JPanel();
 	private final JLabel questNameLabel = new JLabel();
@@ -214,17 +216,16 @@ class QuestHelperPanel extends PluginPanel
 		questOverviewHeader.setLayout(new BorderLayout());
 		questOverviewHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
 
-		JLabel questOverview = new JLabel();
-		questOverview.setForeground(Color.WHITE);
-		questOverview.setText("Notes:");
-		questOverview.setMinimumSize(new Dimension(1, questOverviewHeader.getPreferredSize().height));
-		questOverviewHeader.add(questOverview, BorderLayout.NORTH);
+		questOverviewNotes.setForeground(Color.WHITE);
+		questOverviewNotes.setText("Notes:");
+		questOverviewNotes.setMinimumSize(new Dimension(1, questOverviewHeader.getPreferredSize().height));
+		questOverviewHeader.add(questOverviewNotes, BorderLayout.NORTH);
 
-		questOverviewListPanel.setLayout(new BorderLayout());
-		questOverviewListPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
+		questOverviewNotesPanel.setLayout(new BorderLayout());
+		questOverviewNotesPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		questOverviewPanel.add(questOverviewHeader, BorderLayout.NORTH);
-		questOverviewPanel.add(questOverviewListPanel, BorderLayout.CENTER);
+		questOverviewPanel.add(questOverviewNotesPanel, BorderLayout.CENTER);
 
 		/* Layout */
 		final JPanel layoutPanel = new JPanel();
@@ -242,8 +243,8 @@ class QuestHelperPanel extends PluginPanel
 		overviewPanel.add(questOverviewPanel);
 
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
-		/* Setup overview panel */
 
+		/* Setup overview panel */
 		titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		titlePanel.setLayout(new BorderLayout());
 
@@ -364,7 +365,7 @@ class QuestHelperPanel extends PluginPanel
 		questItemRequirementsListPanel.removeAll();
 		questItemRecommendedListPanel.removeAll();
 		currentQuest = null;
-		questOverviewListPanel.removeAll();
+		questOverviewNotesPanel.removeAll();
 		repaint();
 		revalidate();
 	}
@@ -456,22 +457,25 @@ class QuestHelperPanel extends PluginPanel
 		overviewLabel.setForeground(Color.GRAY);
 		ArrayList<String> notes = quest.getNotes();
 		StringBuilder textNote = new StringBuilder();
-		if (notes == null)
-		{
-			textNote.append("None");
-		}
-		else
+		if (notes != null)
 		{
 			for (String note : notes)
 			{
 				textNote.append(note);
 				textNote.append("<br><br>");
 			}
+			overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
+
+			questOverviewNotesPanel.add(overviewLabel);
+			questOverviewNotesPanel.setVisible(true);
+			questOverviewNotes.setVisible(true);
+		}
+		else
+		{
+			questOverviewNotes.setVisible(false);
+			questOverviewNotesPanel.setVisible(false);
 		}
 
-		overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
-
-		questOverviewListPanel.add(overviewLabel);
 	}
 
 	/**

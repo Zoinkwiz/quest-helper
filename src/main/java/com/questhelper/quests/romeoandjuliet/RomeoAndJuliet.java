@@ -84,11 +84,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		bringPotionToJuliet.addStep(hasPotion, goUpToJuliet2);
 
 		steps.put(50, bringPotionToJuliet);
-
-
 		steps.put(60, finishQuest);
-
-
 
 		return steps;
 	}

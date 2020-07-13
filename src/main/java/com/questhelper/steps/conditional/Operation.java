@@ -24,7 +24,8 @@
  */
 package com.questhelper.steps.conditional;
 
-public enum Operation {
+public enum Operation
+{
 	LESS_EQUAL,
 	EQUAL,
 	GREATER_EQUAL

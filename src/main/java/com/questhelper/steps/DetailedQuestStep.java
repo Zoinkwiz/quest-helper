@@ -27,12 +27,10 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +40,7 @@ import java.util.List;
 import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
@@ -201,7 +200,6 @@ public class DetailedQuestStep extends QuestStep
 			{
 				color = Color.RED;
 			}
-			String equipText = "";
 			Color equipColor = Color.GREEN;
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(text)
@@ -209,7 +207,7 @@ public class DetailedQuestStep extends QuestStep
 				.build());
 			if (itemRequirement.isEquip())
 			{
-				equipText = "(equipped)";
+				String equipText = "(equipped)";
 				if (!itemRequirement.check(client, true))
 				{
 					equipColor = Color.RED;
@@ -310,9 +308,7 @@ public class DetailedQuestStep extends QuestStep
 
 		renderInventory(graphics);
 
-		newTileHighlights.forEach((tile, ids) -> {
-			checkAllTilesForHighlighting(tile, ids, graphics);
-		});
+		newTileHighlights.forEach((tile, ids) -> checkAllTilesForHighlighting(tile, ids, graphics));
 	}
 
 	private void renderInventory(Graphics2D graphics)
@@ -323,7 +319,7 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if(itemRequirements == null)
+		if (itemRequirements == null)
 		{
 			return;
 		}
@@ -375,8 +371,14 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
+		Player player = client.getLocalPlayer();
 
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
+		if (player == null)
+		{
+			return;
+		}
+
+		LocalPoint playerLocation = player.getLocalLocation();
 		if (!ids.isEmpty())
 		{
 			LocalPoint location = tile.getLocalLocation();

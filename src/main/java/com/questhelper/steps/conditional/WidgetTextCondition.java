@@ -28,12 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.util.Text;
 
 public class WidgetTextCondition extends ConditionForStep
 {
@@ -68,7 +64,7 @@ public class WidgetTextCondition extends ConditionForStep
 		this.text = new ArrayList<>(Arrays.asList(text));
 	}
 
-	public WidgetTextCondition(int groupId, int childId, boolean checkChildren, boolean onlyNeedToPassOnce,  String... text)
+	public WidgetTextCondition(int groupId, int childId, boolean checkChildren, boolean onlyNeedToPassOnce, String... text)
 	{
 		this(groupId, childId, checkChildren, text);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;

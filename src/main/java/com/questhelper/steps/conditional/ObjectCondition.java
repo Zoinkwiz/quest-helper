@@ -43,12 +43,14 @@ public class ObjectCondition extends ConditionForStep
 	private final int objectID;
 	private final WorldPoint worldPoint;
 
-	public ObjectCondition(int objectID) {
+	public ObjectCondition(int objectID)
+	{
 		this.objectID = objectID;
 		this.worldPoint = null;
 	}
 
-	public ObjectCondition(int objectID, WorldPoint worldPoint) {
+	public ObjectCondition(int objectID, WorldPoint worldPoint)
+	{
 		this.objectID = objectID;
 		this.worldPoint = worldPoint;
 	}
@@ -86,7 +88,7 @@ public class ObjectCondition extends ConditionForStep
 		return false;
 	}
 
-	private boolean checkTile (Tile tile)
+	private boolean checkTile(Tile tile)
 	{
 		if (tile == null)
 		{
@@ -110,7 +112,8 @@ public class ObjectCondition extends ConditionForStep
 	}
 
 	@Override
-	public void loadingHandler() {
+	public void loadingHandler()
+	{
 		// Once this has checks done in ConditionalStep, this will need to set the boolean condition to false
 	}
 }

@@ -129,7 +129,8 @@ public abstract class QuestStep implements Module
 	{
 	}
 
-	public void addSubSteps(QuestStep... substep) {
+	public void addSubSteps(QuestStep... substep)
+	{
 		this.substeps.addAll(Arrays.asList(substep));
 	}
 
@@ -137,9 +138,12 @@ public abstract class QuestStep implements Module
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		int newCutsceneStatus = client.getVarbitValue(QuestVarbits.CUTSCENE.getId());
-		if (currentCutsceneStatus == 0 && newCutsceneStatus == 1) {
+		if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
+		{
 			enteredCutscene();
-		} else if (currentCutsceneStatus == 1 && newCutsceneStatus == 0){
+		}
+		else if (currentCutsceneStatus == 1 && newCutsceneStatus == 0)
+		{
 			leftCutscene();
 		}
 		currentCutsceneStatus = newCutsceneStatus;
@@ -173,11 +177,13 @@ public abstract class QuestStep implements Module
 		inCutscene = false;
 	}
 
-	public void highlightChoice() {
+	public void highlightChoice()
+	{
 		choices.checkChoices(client);
 	}
 
-	public void highlightWidgetChoice() {
+	public void highlightWidgetChoice()
+	{
 		widgetChoices.checkChoices(client);
 	}
 
@@ -228,7 +234,8 @@ public abstract class QuestStep implements Module
 	{
 	}
 
-	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin){
+	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
 	}
 
 	public void setLockedManually(boolean isLocked)
@@ -247,7 +254,8 @@ public abstract class QuestStep implements Module
 		return locked;
 	}
 
-	public QuestStep getActiveStep() {
+	public QuestStep getActiveStep()
+	{
 		return this;
 	}
 

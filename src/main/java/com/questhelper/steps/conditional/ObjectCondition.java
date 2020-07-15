@@ -59,14 +59,25 @@ public class ObjectCondition extends ConditionForStep
 	{
 		if (worldPoint != null)
 		{
-			LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
-			if (localPoint == null)
+			Collection<WorldPoint> wps = WorldPoint.toLocalInstance(client, worldPoint);
+			if (wps == null)
 			{
 				return false;
 			}
-
-			Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-			return checkTile(tile);
+			for (WorldPoint wp : wps)
+			{
+				LocalPoint localPoint = LocalPoint.fromWorld(client, wp);
+				if (localPoint == null)
+				{
+					continue;
+				}
+				Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+				boolean inTile = checkTile(tile);
+				if (inTile)
+				{
+					return true;
+				}
+			}
 		}
 		else
 		{

@@ -162,13 +162,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		talkToVulcana.addDialogStep("I'll get going.");
 		talkToUndor = new NpcStep(this, NpcID.UNDOR, new WorldPoint(1624, 3942, 0), "Talk to Undor at the entrance to Wintertodt. You can teleport there using a Games Necklace, or run north through Arceuus.");
 		talkToUndor.addDialogStep("I've been sent to help you.");
-		/* 7796 0->1  = Quest state
-		 *  7847 0->15
-		 *  7807 0->1
-		 *  7809 0->1
-		 *  7804 0->1 inspected the hammer
-		 *  7798 0->2 inspected furnace coolant hole
-		 * */
+
 		enterTheForsakenTower = new ObjectStep(this, ObjectID.DOOR_33491, new WorldPoint(1382, 3817, 0), "Enter the Forsaken Tower, west of Lovakengj.");
 		inspectDisplayCase = new ObjectStep(this, NullObjectID.NULL_34588, new WorldPoint(1382, 3821, 0), "Inspect the display case in the Forsaken Tower.");
 

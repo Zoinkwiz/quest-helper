@@ -235,7 +235,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		for (NpcCondition condition : npcConditions)
 		{
-			condition.checkNpcSpawned(event.getNpc().getId());
+			condition.checkNpcSpawned(event.getNpc());
 		}
 	}
 

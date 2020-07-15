@@ -57,7 +57,6 @@ import com.questhelper.steps.conditional.OwnerStep;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.Text;
 
-
 /* Conditions are checked in the order they were added */
 public class ConditionalStep extends QuestStep implements OwnerStep
 {
@@ -71,7 +70,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected final ArrayList<NpcCondition> npcConditions = new ArrayList<>();
 	protected final ArrayList<WidgetTextCondition> widgetConditions = new ArrayList<>();
 
-	private QuestStep currentStep;
+	protected QuestStep currentStep;
 
 	public ConditionalStep(QuestHelper questHelper, QuestStep step)
 	{
@@ -308,7 +307,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 	}
 
-	private void shutDownStep()
+	protected void shutDownStep()
 	{
 		if (currentStep != null)
 		{

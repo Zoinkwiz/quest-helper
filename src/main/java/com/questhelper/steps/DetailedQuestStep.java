@@ -163,6 +163,11 @@ public class DetailedQuestStep extends QuestStep
 		}
 	}
 
+	public void addItemRequirement(ItemRequirement itemRequirement)
+	{
+		itemRequirements.add(itemRequirement);
+	}
+
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
 	{
 		super.makeOverlayHint(panelComponent, plugin);
@@ -306,9 +311,13 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		renderInventory(graphics);
-
 		newTileHighlights.forEach((tile, ids) -> checkAllTilesForHighlighting(tile, ids, graphics));
+	}
+
+	@Override
+	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		renderInventory(graphics);
 	}
 
 	private void renderInventory(Graphics2D graphics)
@@ -334,7 +343,6 @@ public class DetailedQuestStep extends QuestStep
 					graphics.setColor(new Color(0, 255, 255, 65));
 					graphics.fill(slotBounds);
 				}
-
 			}
 		}
 	}

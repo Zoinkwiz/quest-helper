@@ -28,6 +28,8 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.questhelper.QuestVarbits;
+import com.questhelper.steps.choice.WidgetChoiceStep;
+import com.questhelper.steps.choice.WidgetChoiceSteps;
 import com.questhelper.steps.conditional.ConditionForStep;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -38,7 +40,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
@@ -51,7 +52,6 @@ import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public abstract class QuestStep implements Module
 {
@@ -69,7 +69,6 @@ public abstract class QuestStep implements Module
 	protected ArrayList<String> text;
 
 	/* Locking applies to ConditionalSteps. Intended to be used as a method of forcing a step to run if it's been locked */
-	@Getter
 	private boolean locked;
 
 	@Getter
@@ -94,6 +93,9 @@ public abstract class QuestStep implements Module
 
 	@Getter
 	protected DialogChoiceSteps choices = new DialogChoiceSteps();
+
+	@Getter
+	protected WidgetChoiceSteps widgetChoices = new WidgetChoiceSteps();
 
 	@Getter
 	private final ArrayList<QuestStep> substeps = new ArrayList<>();
@@ -146,10 +148,19 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if(event.getGroupId() == 219)
+		if (event.getGroupId() == 219)
 		{
 			clientThread.invokeLater(this::highlightChoice);
 		}
+
+		for (WidgetChoiceStep choice : widgetChoices.getChoices())
+		{
+			if (event.getGroupId() == choice.getGroupId())
+			{
+				clientThread.invokeLater(this::highlightWidgetChoice);
+			}
+		}
+
 	}
 
 	public void enteredCutscene()
@@ -166,6 +177,10 @@ public abstract class QuestStep implements Module
 		choices.checkChoices(client);
 	}
 
+	public void highlightWidgetChoice() {
+		widgetChoices.checkChoices(client);
+	}
+
 	public void addDialogStep(String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(choice));
@@ -177,6 +192,16 @@ public abstract class QuestStep implements Module
 		{
 			choices.addChoice(new DialogChoiceStep(choice));
 		}
+	}
+
+	public void addWidgetChoice(String text, int groupID, int childID)
+	{
+		widgetChoices.addChoice(new WidgetChoiceStep(text, groupID, childID));
+	}
+
+	public void addWidgetChoice(int id, int groupID, int childID)
+	{
+		widgetChoices.addChoice(new WidgetChoiceStep(id, groupID, childID));
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)

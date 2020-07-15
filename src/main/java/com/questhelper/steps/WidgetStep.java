@@ -24,10 +24,13 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.steps.choice.WidgetChoiceStep;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.widgets.Widget;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
@@ -35,6 +38,8 @@ import com.questhelper.questhelpers.QuestHelper;
 public class WidgetStep extends QuestStep
 {
 	private ArrayList<WidgetDetails> widgetDetails = new ArrayList<>();
+
+	private WidgetChoiceStep textChoice;
 
 	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID)
 	{
@@ -56,6 +61,7 @@ public class WidgetStep extends QuestStep
 
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+		super.makeWidgetOverlayHint(graphics, plugin);
 		for (WidgetDetails widgetDetail : widgetDetails)
 		{
 			Widget widget = client.getWidget(widgetDetail.groupID, widgetDetail.childID);

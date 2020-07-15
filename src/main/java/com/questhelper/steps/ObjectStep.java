@@ -35,7 +35,7 @@ public class ObjectStep extends DetailedQuestStep
 {
 	private final int objectID;
 	private TileObject object;
-	private boolean highlightAll;
+	private final boolean highlightAll;
 
 	private final List<TileObject> objects = new ArrayList<>();
 
@@ -228,6 +228,7 @@ public class ObjectStep extends DetailedQuestStep
 
 		if (object.getId() == objectID)
 		{
+			System.out.println("OBJECT FOUND: " + objectID + " and loc "+ object.getWorldLocation());
 			if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
 			{
 				this.object = object;
@@ -247,7 +248,7 @@ public class ObjectStep extends DetailedQuestStep
 
 		if (impostorIds != null && Ints.contains(comp.getImpostorIds(), objectID))
 		{
-			if (localWorldPoints.contains(object.getWorldLocation()))
+			if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
 			{
 				this.object = object;
 				setArrow();    //TODO: better object arrows, probably hydrox's thing

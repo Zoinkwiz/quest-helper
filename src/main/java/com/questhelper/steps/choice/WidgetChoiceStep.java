@@ -33,23 +33,24 @@ import net.runelite.api.widgets.WidgetInfo;
 
 public class WidgetChoiceStep
 {
-    @Getter
-    private final String choice;
+	@Getter
+	private final String choice;
 
-    private final int choiceById;
+	private final int choiceById;
 
-    private final int groupId;
-    private final int childId;
+	@Getter
+	private final int groupId;
+	private final int childId;
 
-    private final int TEXT_HIGHLIGHT_COLOR = Color.CYAN.darker().getRGB();
+	private final int TEXT_HIGHLIGHT_COLOR = Color.CYAN.darker().getRGB();
 
-    public WidgetChoiceStep(String choice, int groupId, int childId)
-    {
-        this.choice = choice;
-        this.choiceById = -1;
-        this.groupId = groupId;
-        this.childId = childId;
-    }
+	public WidgetChoiceStep(String choice, int groupId, int childId)
+	{
+		this.choice = choice;
+		this.choiceById = -1;
+		this.groupId = groupId;
+		this.childId = childId;
+	}
 
 	public WidgetChoiceStep(int choiceId, int groupId, int childId)
 	{
@@ -59,12 +60,14 @@ public class WidgetChoiceStep
 		this.childId = childId;
 	}
 
-    public void highlightChoice(Client client) {
+	public void highlightChoice(Client client)
+	{
 		Widget dialogChoice = client.getWidget(groupId, childId);
-
-		if (dialogChoice != null) {
+		if (dialogChoice != null)
+		{
 			Widget[] choices = dialogChoice.getChildren();
-			if (choices != null) {
+			if (choices != null)
+			{
 				if (choiceById != -1 && choices[choiceById] != null)
 				{
 					highlightText(choices[choiceById]);
@@ -84,7 +87,8 @@ public class WidgetChoiceStep
 		}
 	}
 
-	private void highlightText(Widget text) {
+	private void highlightText(Widget text)
+	{
 		text.setTextColor(TEXT_HIGHLIGHT_COLOR);
 		text.setOnMouseLeaveListener((JavaScriptCallback) ev -> text.setTextColor(TEXT_HIGHLIGHT_COLOR));
 	}

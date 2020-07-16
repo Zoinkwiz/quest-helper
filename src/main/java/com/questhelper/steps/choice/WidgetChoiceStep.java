@@ -60,6 +60,14 @@ public class WidgetChoiceStep
 		this.childId = childId;
 	}
 
+	public WidgetChoiceStep(int choiceId, String choice, int groupId, int childId)
+	{
+		this.choice = choice;
+		this.choiceById = choiceId;
+		this.groupId = groupId;
+		this.childId = childId;
+	}
+
 	public void highlightChoice(Client client)
 	{
 		Widget dialogChoice = client.getWidget(groupId, childId);
@@ -70,7 +78,10 @@ public class WidgetChoiceStep
 			{
 				if (choiceById != -1 && choices[choiceById] != null)
 				{
-					highlightText(choices[choiceById]);
+					if (choice == null || choice.equals(choices[choiceById].getText()))
+					{
+						highlightText(choices[choiceById]);
+					}
 				}
 				else
 				{

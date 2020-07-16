@@ -192,6 +192,11 @@ public abstract class QuestStep implements Module
 		choices.addChoice(new DialogChoiceStep(choice));
 	}
 
+	public void addDialogStep(int id, String choice)
+	{
+		choices.addChoice(new DialogChoiceStep(id, choice));
+	}
+
 	public void addDialogSteps(String... newChoices)
 	{
 		for (String choice : newChoices)

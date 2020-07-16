@@ -318,7 +318,11 @@ class QuestHelperPanel extends PluginPanel
 		questStepPanelList.forEach(panel -> {
 			for (QuestStep step : panel.getSteps())
 			{
-				panel.getStepsLabels().get(step).setText(panel.generateText(step));
+				JLabel label = panel.getStepsLabels().get(step);
+				if (label != null)
+				{
+					label.setText(panel.generateText(step));
+				}
 			}
 		});
 	}

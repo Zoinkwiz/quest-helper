@@ -51,6 +51,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -159,8 +160,16 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		establishPeace8.addStep(hasGiantNib, makePen);
 		establishPeace8.addStep(inMiscCastleFirstFloor, goDownMiscDip3);
 
-		// TODO: Add in female/male check
-		ConditionalStep courting = courtAstrid;
+		ConditionalStep courting;
+
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
+		{
+			courting = courtBrand;
+		}
+		else
+		{
+			courting = courtAstrid;
+		}
 
 		ConditionalStep becomeRoyalty1 = new ConditionalStep(this, courting);
 		ConditionalStep becomeRoyalty2 = new ConditionalStep(this, courting);
@@ -316,7 +325,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		talkToVargas.addSubSteps(goUpToVargas);
 
 		/* Winning over Astrid */
-		talkAstrid1 = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Keep talking to Princess Astrid.");
+		talkAstrid1 = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Talk to Princess Astrid a few times.");
 		talkAstrid1.addDialogStep("Archery is a noble Art!");
 		talkAstrid1.addDialogStep("He's been very helpful.");
 		talkAstrid1.addDialogStep("Hahahaha!");
@@ -340,7 +349,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		useRingOnAstrid = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Use a ring on Astrid.", ring);
 		useRingOnAstrid.addDialogStep("Yes");
 
-		talkBrand1 = new NpcStep(this, NpcID.PRINCE_BRAND, new WorldPoint(2502, 3852, 1), "Keep talking to Prince Brand.");
+		talkBrand1 = new NpcStep(this, NpcID.PRINCE_BRAND, new WorldPoint(2502, 3852, 1), "Talk to Prince Brand a few times.");
 		talkBrand1.addDialogStep("Be still, my heart.");
 		talkBrand1.addDialogStep("You will be the greatest bard!");
 		talkBrand1.addDialogStep("They don't understand your poetry as I do.");
@@ -361,10 +370,10 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		clapForBrand = new DetailedQuestStep(this, "Use the Clap emote next to Prince Brand");
 		useRingOnBrand = new NpcStep(this, NpcID.PRINCE_BRAND, new WorldPoint(2502, 3852, 1), "Use a ring on Prince Brand.", ring);
 
-
-		/* TODO: Add go upstairs to overall conditional not just above 2 */
 		goUpstairsToBrand = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3849, 0), "Go upstairs in the Miscellania castle.");
+		goUpstairsToBrand.setShowInSidebar(false);
 		goUpstairsToAstrid = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3872, 0), "Go upstairs in the Miscellania castle.");
+		goUpstairsToAstrid.setShowInSidebar(false);
 
 		goUpEtcDip1 = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2614, 3868, 0), "Go upstairs in Etceteria castle, east of Miscellania.");
 		talkToSigridDip1 = new NpcStep(this, NpcID.QUEEN_SIGRID, new WorldPoint(2612, 3875, 1), "Talk to Queen Sigrid in Etceteria castle.");
@@ -450,9 +459,15 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reqs.add(logs);
 		reqs.add(ring);
 		reqs.add(flowerOr15Coins);
-		// TODO: Make cake/bow dependant on male/female
-		reqs.add(cake);
-		reqs.add(bow);
+
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
+		{
+			reqs.add(bow);
+		}
+		else
+		{
+			reqs.add(cake);
+		}
 		reqs.add(reputationItems);
 		return reqs;
 	}
@@ -478,21 +493,34 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		ItemRequirement giftItem;
-		// TODO: Conditional on male/female
-		giftItem = bow;
+		Player player = client.getLocalPlayer();
+		if (player != null && player.getPlayerComposition() != null && player.getPlayerComposition().isFemale())
+		{
+			giftItem = bow;
+		}
+		else
+		{
+			giftItem = cake;
+		}
 
 		allSteps.add(new PanelDetails("Talk to King Vargas", new ArrayList<>(Arrays.asList(travelToMisc, getFlowers, talkToVargas)), flowerOr15Coins, giftItem, ring, ironBar, logs, reputationItems));
 
 		PanelDetails astridPanel = new PanelDetails("Win over Astrid",
-			new ArrayList<>(Arrays.asList(talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,
+			new ArrayList<>(Arrays.asList(goUpstairsToAstrid, talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,
 				giveBowToAstrid, talkAstrid3, blowKissToAstrid, useRingOnAstrid)));
 
 		PanelDetails brandPanel = new PanelDetails("Win over Brand",
-			new ArrayList<>(Arrays.asList(talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
+			new ArrayList<>(Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
 				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand)));
 
-		//  TODO: Conditional on male/female
-		allSteps.add(astridPanel);
+		if (player != null && player.getPlayerComposition() != null && player.getPlayerComposition().isFemale())
+		{
+			allSteps.add(astridPanel);
+		}
+		else
+		{
+			allSteps.add(brandPanel);
+		}
 
 		allSteps.add(new PanelDetails("Establish peace",
 			new ArrayList<>(Arrays.asList(talkToSigridDip1, talkToVargasDip1, talkToSigridDip2, talkToBrandDip, talkToGhrimDip, talkToSigridDip3, talkToVargasDip2,

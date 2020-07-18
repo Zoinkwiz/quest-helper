@@ -42,7 +42,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
@@ -59,15 +58,9 @@ class QuestHelperPanel extends PluginPanel
 		EXPAND_ICON = new ImageIcon(expandedImg);
 	}
 
-	private final Client client;
-
-	private final JLabel title = new JLabel();
-	private final PluginErrorPanel noQuestView = new PluginErrorPanel();
-	private QuestHelperPlugin plugin;
 	private BasicQuestHelper currentQuest;
 
 	private final JPanel actionsContainer = new JPanel();
-	private final JPanel titlePanel = new JPanel();
 
 	private final JPanel introPanel = new JPanel();
 	private final JLabel questOverviewNotes = new JLabel();
@@ -90,9 +83,6 @@ class QuestHelperPanel extends PluginPanel
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, Client client)
 	{
 		super();
-
-		this.plugin = questHelperPlugin;
-		this.client = client;
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -245,9 +235,11 @@ class QuestHelperPanel extends PluginPanel
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
 		/* Setup overview panel */
+		JPanel titlePanel = new JPanel();
 		titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		titlePanel.setLayout(new BorderLayout());
 
+		JLabel title = new JLabel();
 		title.setText("Quest Helper");
 		title.setForeground(Color.WHITE);
 		titlePanel.add(title, BorderLayout.WEST);
@@ -276,9 +268,8 @@ class QuestHelperPanel extends PluginPanel
 			setupQuestRequirements(quest);
 			introPanel.setVisible(true);
 
-			for (int i = 0; i < steps.size(); i++)
+			for (PanelDetails panelDetail : steps)
 			{
-				PanelDetails panelDetail = steps.get(i);
 				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep);
 				if (panelDetail.getLockingQuestSteps() != null &&
 					(panelDetail.getVars() == null

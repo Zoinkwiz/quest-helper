@@ -75,8 +75,8 @@ import net.runelite.client.util.Text;
 public class QuestHelperPlugin extends Plugin
 {
 
-	private static int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
-	private static int QUESTTAB_GROUP_ID = 629;
+	private static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
+	private static final int QUESTTAB_GROUP_ID = 629;
 
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
 		{
@@ -132,7 +132,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private Map<String, QuestHelper> quests;
 
-
 	@Inject
 	SpriteManager spriteManager;
 
@@ -143,7 +142,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
-		quests = scanAndInstantiate(getClass().getClassLoader(), QUEST_PACKAGE);
+		quests = scanAndInstantiate(getClass().getClassLoader());
 		overlayManager.add(questHelperOverlay);
 		overlayManager.add(questHelperWorldOverlay);
 		overlayManager.add(questHelperWidgetOverlay);
@@ -161,7 +160,7 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(questHelperOverlay);
 		overlayManager.remove(questHelperWorldOverlay);
@@ -306,7 +305,7 @@ public class QuestHelperPlugin extends Plugin
 			&& "Quest List".equals(event.getOption())
 			&& selectedQuest != null)
 		{
-			menuEntries = addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
+			addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
 		}
 	}
 
@@ -354,15 +353,15 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	private Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
+	private Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader) throws IOException
 	{
 		Map<QuestHelperQuest, Class<? extends QuestHelper>> quests = new HashMap<>();
 
 		Map<String, QuestHelper> scannedQuests = new HashMap<>();
 		ClassPath classPath = ClassPath.from(classLoader);
 
-		ImmutableSet<ClassPath.ClassInfo> classes = packageName == null ? classPath.getAllClasses()
-			: classPath.getTopLevelClassesRecursive(packageName);
+		ImmutableSet<ClassPath.ClassInfo> classes = QuestHelperPlugin.QUEST_PACKAGE == null ? classPath.getAllClasses()
+			: classPath.getTopLevelClassesRecursive(QuestHelperPlugin.QUEST_PACKAGE);
 		for (ClassPath.ClassInfo classInfo : classes)
 		{
 			Class<?> clazz = classInfo.load();

@@ -34,7 +34,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,9 +78,8 @@ public class DetailedQuestStep extends QuestStep
 
 	protected WorldPoint worldPoint;
 	protected List<ItemRequirement> itemRequirements = new ArrayList<>();
-	protected HashMap<Integer, List<Tile>> tileHighlights = new HashMap<>();
 
-	protected HashMap<Tile, List<Integer>> newTileHighlights = new HashMap<>();
+	protected HashMap<Tile, List<Integer>> tileHighlights = new HashMap<>();
 
 	protected QuestHelperWorldMapPoint mapPoint;
 
@@ -225,8 +223,8 @@ public class DetailedQuestStep extends QuestStep
 		{
 			if (itemRequirement.getAllIds().contains(item.getId()))
 			{
-				newTileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
-				newTileHighlights.get(tile).add(itemRequirement.getId());
+				tileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
+				tileHighlights.get(tile).add(itemRequirement.getId());
 			}
 		}
 	}
@@ -236,11 +234,11 @@ public class DetailedQuestStep extends QuestStep
 	{
 		Tile tile = itemDespawned.getTile();
 
-		if (!newTileHighlights.containsKey(tile))
+		if (!tileHighlights.containsKey(tile))
 		{
 			return;
 		}
-		newTileHighlights.get(tile).remove((Object) itemDespawned.getItem().getId());
+		tileHighlights.get(tile).remove((Object) itemDespawned.getItem().getId());
 	}
 
 	@Subscribe
@@ -248,7 +246,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
-			newTileHighlights.clear();
+			tileHighlights.clear();
 		}
 	}
 
@@ -270,8 +268,8 @@ public class DetailedQuestStep extends QuestStep
 							{
 								if (itemRequirement.isActualItem() && itemRequirement.getAllIds().contains(item.getId()))
 								{
-									newTileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
-									newTileHighlights.get(tile).add(item.getId());
+									tileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
+									tileHighlights.get(tile).add(item.getId());
 									break;
 								}
 							}
@@ -285,6 +283,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
+		currentRender = (currentRender + 1) % 48;
 		if (client.getLocalPlayer() == null)
 		{
 			return;
@@ -294,24 +293,27 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		if (worldPoint != null && worldPoint.isInScene(client))
+		if (currentRender < 24)
 		{
-			currentRender = (currentRender +1 ) % 48;
-			if (currentRender < 24)
-			{
-				renderArrow(graphics);
-			}
+			renderArrow(graphics);
 		}
-		newTileHighlights.forEach((tile, ids) -> checkAllTilesForHighlighting(tile, ids, graphics));
+
+		tileHighlights.forEach((tile, ids) -> checkAllTilesForHighlighting(tile, ids, graphics));
 	}
 
 	public void renderArrow(Graphics2D graphics)
 	{
+		if (worldPoint == null || !worldPoint.isInScene(client))
+		{
+			return;
+		}
+
 		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
 		if (lp == null)
 		{
 			return;
 		}
+
 		BufferedImage arrow = getArrow();
 
 		Point arrowPoint = Perspective.getCanvasImageLocation(client, lp, arrow, 30);

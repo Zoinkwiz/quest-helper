@@ -39,9 +39,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class DigStep extends DetailedQuestStep
 {
-	@Inject
-	Client client;
-
 	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
 	{
 		super(questHelper, worldPoint, text, itemRequirements);

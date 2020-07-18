@@ -2,6 +2,9 @@ package com.questhelper.steps;
 
 import com.google.common.primitives.Ints;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -173,7 +176,7 @@ public class ObjectStep extends DetailedQuestStep
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
-		if (objects == null)
+		if (objects.isEmpty())
 		{
 			return;
 		}
@@ -195,21 +198,32 @@ public class ObjectStep extends DetailedQuestStep
 
 		if (iconItemID != -1 && object != null)
 		{
-			LocalPoint lp = LocalPoint.fromWorld(client, object.getWorldLocation());
-			if (lp != null)
+			Shape clickbox = object.getClickbox();
+			if (clickbox != null)
 			{
-				addItemImageToLocation(graphics, lp);
+				Rectangle2D boundingBox = clickbox.getBounds2D();
+				addItemImageToLocation(graphics, (int) boundingBox.getCenterX() - 15, (int) boundingBox.getCenterY() - 10);
 			}
 		}
 	}
 
 	@Override
-	public void setArrow()
+	public void renderArrow(Graphics2D graphics)
 	{
-		super.setArrow();
-		if (object != null && !inCutscene)
+		if (object == null)
 		{
-			client.setHintArrow(object.getWorldLocation());
+			return;
+		}
+		Shape clickbox = object.getClickbox();
+		if (clickbox != null)
+		{
+			BufferedImage arrow = getArrow();
+			Rectangle2D boundingBox = clickbox.getBounds2D();
+			int x = (int) boundingBox.getCenterX() - ARROW_SHIFT_X;
+			int y = (int) boundingBox.getMinY() - ARROW_SHIFT_Y;
+			Point point = new Point(x, y);
+
+			OverlayUtil.renderImageLocation(graphics, point, arrow);
 		}
 	}
 
@@ -233,7 +247,6 @@ public class ObjectStep extends DetailedQuestStep
 			{
 				this.object = object;
 				this.objects.add(object);
-				setArrow();
 				return;
 			}
 			if (highlightAll)
@@ -251,7 +264,6 @@ public class ObjectStep extends DetailedQuestStep
 			if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
 			{
 				this.object = object;
-				setArrow();    //TODO: better object arrows, probably hydrox's thing
 			}
 			if (highlightAll)
 			{

@@ -26,27 +26,31 @@ package com.questhelper.steps;
 
 import com.google.inject.Binder;
 import com.google.inject.Inject;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.RenderOverview;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.widgets.Widget;
@@ -79,7 +83,11 @@ public class DetailedQuestStep extends QuestStep
 
 	protected HashMap<Tile, List<Integer>> newTileHighlights = new HashMap<>();
 
+	protected QuestHelperWorldMapPoint mapPoint;
+
 	protected static final int MAX_DISTANCE = 2350;
+	protected static final int MAX_DRAW_DISTANCE = 16;
+	protected int currentRender = 0;
 
 	@Getter
 	public DialogChoiceSteps choices = new DialogChoiceSteps();
@@ -107,8 +115,8 @@ public class DetailedQuestStep extends QuestStep
 	{
 		if (worldPoint != null)
 		{
-			worldMapPointManager.add(new QuestHelperWorldMapPoint(worldPoint, getQuestImage()));
-			setArrow();
+			mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
+			worldMapPointManager.add(mapPoint);
 		}
 		addItemTiles();
 	}
@@ -132,35 +140,11 @@ public class DetailedQuestStep extends QuestStep
 	public void leftCutscene()
 	{
 		super.leftCutscene();
-		setArrow();
-	}
-
-	public void setArrow()
-	{
-		Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
-		if (localWorldPoints.isEmpty())
-		{
-			return;
-		}
-		client.setHintArrow(localWorldPoints.iterator().next());
 	}
 
 	public void clearArrow()
 	{
 		client.clearHintArrow();
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		if (worldPoint != null)
-		{
-			setArrow();
-		}
-		else
-		{
-			clearArrow();
-		}
 	}
 
 	public void addItemRequirement(ItemRequirement itemRequirement)
@@ -310,14 +294,262 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-
+		if (worldPoint != null && worldPoint.isInScene(client))
+		{
+			currentRender = (currentRender +1 ) % 48;
+			if (currentRender < 24)
+			{
+				renderArrow(graphics);
+			}
+		}
 		newTileHighlights.forEach((tile, ids) -> checkAllTilesForHighlighting(tile, ids, graphics));
+	}
+
+	public void renderArrow(Graphics2D graphics)
+	{
+		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		if (lp == null)
+		{
+			return;
+		}
+		BufferedImage arrow = getArrow();
+
+		Point arrowPoint = Perspective.getCanvasImageLocation(client, lp, arrow, 30);
+		if (arrowPoint == null)
+		{
+			return;
+		}
+		graphics.drawImage(arrow, arrowPoint.getX(), arrowPoint.getY(), null);
+	}
+
+	public void renderMinimapArrow(Graphics2D graphics)
+	{
+		int MAX_DRAW_DISTANCE = 16;
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return;
+		}
+
+		WorldPoint playerLocation = player.getWorldLocation();
+
+		if (worldPoint.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		{
+			createMinimapDirectionArrow(graphics);
+			return;
+		}
+
+		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		if (lp == null)
+		{
+			return;
+		}
+
+		Point posOnMinimap = Perspective.localToMinimap(client, lp);
+		if (posOnMinimap == null)
+		{
+			return;
+		}
+
+		graphics.drawImage(getSmallArrow(), posOnMinimap.getX() - 5, posOnMinimap.getY() - 14, null);
+	}
+
+	protected void createMinimapDirectionArrow(Graphics2D graphics)
+	{
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return;
+		}
+
+		LocalPoint playerPoint = player.getLocalLocation();
+		LocalPoint destinationPoint = LocalPoint.fromWorld(client, worldPoint);
+
+		if (destinationPoint == null)
+		{
+			return;
+		}
+		Point playerPosOnMinimap = Perspective.localToMinimap(client, playerPoint);
+		Point destinationPosOnMinimap = Perspective.localToMinimap(client, destinationPoint, 10000000);
+
+		if (playerPosOnMinimap == null || destinationPosOnMinimap == null)
+		{
+			return;
+		}
+
+		double xDiff = playerPosOnMinimap.getX() - destinationPosOnMinimap.getX();
+		double yDiff =   destinationPosOnMinimap.getY() - playerPosOnMinimap.getY();
+		double angle = Math.atan2(yDiff, xDiff);
+
+		int startX = (int) (playerPosOnMinimap.getX() - (Math.cos(angle) * 55));
+		int startY = (int) (playerPosOnMinimap.getY() + (Math.sin(angle) * 55));
+
+		int endX = (int) (playerPosOnMinimap.getX() - (Math.cos(angle) * 65));
+		int endY = (int) ( playerPosOnMinimap.getY() + (Math.sin(angle) * 65));
+
+		Line2D.Double line = new Line2D.Double(startX,startY,endX,endY);
+
+		drawMinimapArrow(graphics, line);
+	}
+
+	private void drawArrowHead(Graphics2D g2d, Line2D.Double line, AffineTransform tx, Polygon arrowHead) {
+		tx.setToIdentity();
+		double angle = Math.atan2(line.y2-line.y1, line.x2-line.x1);
+		tx.translate(line.x2, line.y2);
+		tx.rotate((angle-Math.PI/2d));
+
+		Graphics2D g = (Graphics2D) g2d.create();
+		g.setTransform(tx);
+		g.fill(arrowHead);
+		g.dispose();
+	}
+
+	protected void drawMinimapArrow(Graphics2D graphics, Line2D.Double line)
+	{
+		AffineTransform tx = new AffineTransform();
+
+		graphics.setStroke(new BasicStroke(7));
+		graphics.setColor(Color.BLACK);
+		graphics.draw(line);
+		Polygon arrowHead = new Polygon();
+		arrowHead.addPoint( 0,5);
+		arrowHead.addPoint( -7, -5);
+		arrowHead.addPoint( 7,-5);
+		drawArrowHead(graphics, line, tx, arrowHead);
+
+		graphics.setStroke(new BasicStroke(4));
+		graphics.setColor(Color.CYAN);
+		graphics.draw(line);
+		Polygon arrowHead2 = new Polygon();
+		arrowHead2.addPoint( 0,4);
+		arrowHead2.addPoint( -6, -5);
+		arrowHead2.addPoint( 6,-5);
+		drawArrowHead(graphics, line, tx, arrowHead2);
 	}
 
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		renderInventory(graphics);
+
+		if (mapPoint == null)
+		{
+			return;
+		}
+
+		WorldPoint point = mapPoint.getWorldPoint();
+
+		if (currentRender < 24)
+		{
+			renderMinimapArrow(graphics);
+		}
+
+
+		Point drawPoint = mapWorldPointToGraphicsPoint(point);
+		final Rectangle mapViewArea = getWorldMapClipArea();
+
+		renderWorldMapArrow(mapViewArea, drawPoint);
+	}
+
+	public Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
+	{
+		RenderOverview ro = client.getRenderOverview();
+
+		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
+		{
+			return null;
+		}
+
+		float pixelsPerTile = ro.getWorldMapZoom();
+
+		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		if (map != null)
+		{
+			Rectangle worldMapRect = map.getBounds();
+
+			int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
+			int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
+
+			Point worldMapPosition = ro.getWorldMapPosition();
+
+			//Offset in tiles from anchor sides
+			int yTileMax = worldMapPosition.getY() - heightInTiles / 2;
+			int yTileOffset = (yTileMax - worldPoint.getY() - 1) * -1;
+			int xTileOffset = worldPoint.getX() + widthInTiles / 2 - worldMapPosition.getX();
+
+			int xGraphDiff = ((int) (xTileOffset * pixelsPerTile));
+			int yGraphDiff = (int) (yTileOffset * pixelsPerTile);
+
+			//Center on tile.
+			yGraphDiff -= pixelsPerTile - Math.ceil(pixelsPerTile / 2);
+			xGraphDiff += pixelsPerTile - Math.ceil(pixelsPerTile / 2);
+
+			yGraphDiff = worldMapRect.height - yGraphDiff;
+			yGraphDiff += (int) worldMapRect.getY();
+			xGraphDiff += (int) worldMapRect.getX();
+
+			return new Point(xGraphDiff, yGraphDiff);
+		}
+		return null;
+	}
+
+	private void renderWorldMapArrow(Rectangle mapViewArea, Point drawPoint)
+	{
+		if (mapViewArea != null &&  drawPoint != null && !mapViewArea.contains(drawPoint.getX(), drawPoint.getY()))
+		{
+			if (drawPoint.getX() < mapViewArea.getMinX())
+			{
+				if (drawPoint.getY() < mapViewArea.getMinY())
+				{
+					mapPoint.rotateArrow(225);
+				}
+				else if (drawPoint.getY() > mapViewArea.getMaxY())
+				{
+					mapPoint.rotateArrow(135);
+				}
+				else
+				{
+					mapPoint.rotateArrow(180);
+				}
+			}
+			else if (drawPoint.getX() > mapViewArea.getMaxX())
+			{
+				if (drawPoint.getY() < mapViewArea.getMinY())
+				{
+					mapPoint.rotateArrow(315);
+				}
+				else if (drawPoint.getY() > mapViewArea.getMaxY())
+				{
+					mapPoint.rotateArrow(45);
+				}
+				else
+				{
+					mapPoint.rotateArrow(0);
+				}
+			}
+			else
+			{
+				if (drawPoint.getY() < mapViewArea.getMinY())
+				{
+					mapPoint.rotateArrow(270);
+				}
+				else if (drawPoint.getY() > mapViewArea.getMaxY())
+				{
+					mapPoint.rotateArrow(90);
+				}
+			}
+		}
+	}
+
+	private Rectangle getWorldMapClipArea()
+	{
+		Widget widget = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		if (widget == null)
+		{
+			return null;
+		}
+
+		return widget.getBounds();
 	}
 
 	private void renderInventory(Graphics2D graphics)
@@ -350,11 +582,11 @@ public class DetailedQuestStep extends QuestStep
 	protected void addIconImage()
 	{
 		BufferedImage itemImg = itemManager.getImage(iconItemID);
-		BufferedImage mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
-		itemIcon = new BufferedImage(mapArrow.getWidth(), mapArrow.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage iconBackground = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+		itemIcon = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics tmpGraphics = itemIcon.getGraphics();
-		tmpGraphics.drawImage(mapArrow, 0, 0, null);
-		int buffer = mapArrow.getWidth() / 2 - itemImg.getWidth() / 2;
+		tmpGraphics.drawImage(iconBackground, 0, 0, null);
+		int buffer = iconBackground.getWidth() / 2 - itemImg.getWidth() / 2;
 		buffer = Math.max(buffer, 0);
 		tmpGraphics.drawImage(itemImg, buffer, buffer, null);
 	}
@@ -371,6 +603,21 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 		OverlayUtil.renderTileOverlay(client, graphics, lp, itemIcon, Color.CYAN);
+	}
+
+	protected void addItemImageToLocation(Graphics2D graphics, int x, int y)
+	{
+		if (itemIcon == null)
+		{
+			addIconImage();
+		}
+
+		if (inCutscene)
+		{
+			return;
+		}
+
+		graphics.drawImage(itemIcon, x, y, null);
 	}
 
 	private void checkAllTilesForHighlighting(Tile tile, List<Integer> ids, Graphics2D graphics)

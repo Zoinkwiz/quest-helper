@@ -52,6 +52,7 @@ import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.util.ImageUtil;
 
 public abstract class QuestStep implements Module
 {
@@ -67,6 +68,9 @@ public abstract class QuestStep implements Module
 	@Setter
 	@Getter
 	protected ArrayList<String> text;
+
+	protected int ARROW_SHIFT_X = 8;
+	protected int ARROW_SHIFT_Y = 20;
 
 	/* Locking applies to ConditionalSteps. Intended to be used as a method of forcing a step to run if it's been locked */
 	private boolean locked;
@@ -267,5 +271,15 @@ public abstract class QuestStep implements Module
 	public BufferedImage getQuestImage()
 	{
 		return spriteManager.getSprite(SpriteID.TAB_QUESTS, 0);
+	}
+
+	public BufferedImage getArrow()
+	{
+		return ImageUtil.getResourceStreamFromClass(getClass(), "/quest_arrow.png");
+	}
+
+	public BufferedImage getSmallArrow()
+	{
+		return ImageUtil.getResourceStreamFromClass(getClass(), "/quest_minimap_arrow_small.png");
 	}
 }

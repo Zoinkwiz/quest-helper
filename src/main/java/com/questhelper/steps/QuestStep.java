@@ -171,6 +171,11 @@ public abstract class QuestStep implements Module
 
 	}
 
+	public void addText(String newLine)
+	{
+		this.text.add(newLine);
+	}
+
 	public void enteredCutscene()
 	{
 		inCutscene = true;

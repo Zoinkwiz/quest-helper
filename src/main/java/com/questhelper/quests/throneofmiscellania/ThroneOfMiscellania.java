@@ -396,7 +396,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		getAnotherAwfulAnthem = new NpcStep(this, NpcID.PRINCE_BRAND, new WorldPoint(2502, 3852, 1), "Talk to Prince Brand in Miscellania castle for another Awful Anthem.", awfulAnthem);
 		talkToBrandDip.addSubSteps(goDownEtcDip2, goUpMiscDip2, getAnotherAwfulAnthem);
 
-		talkToGhrimDip = new NpcStep(this, NpcID.ADVISOR_GHRIM, new WorldPoint(2502, 3860, 1), "Talk to Advisor Ghrim.");
+		talkToGhrimDip = new NpcStep(this, NpcID.ADVISOR_GHRIM, new WorldPoint(2499, 3857, 1), "Talk to Advisor Ghrim.");
 
 		goDownMiscDip2 = new ObjectStep(this, ObjectID.STAIRCASE_16676, new WorldPoint(2506, 3849, 1), "Go downstairs and return to Queen Sigrid.");
 		goDownMiscDip2.addDialogStep("Climb down the stairs.");

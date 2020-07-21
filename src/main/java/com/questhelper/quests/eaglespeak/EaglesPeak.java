@@ -237,8 +237,7 @@ public class EaglesPeak extends BasicQuestHelper
 		shoutAtNickolaus.addDialogStep("Well if you gave me a ferret I could take it back for you.");
 		shoutAtNickolaus.addDialogStep("Could I help at all?");
 
-		pickupFeathers = new ObjectStep(this, ObjectID.GIANT_FEATHERS, new WorldPoint(2007, 4973, 3),  "Pick up 10 Eagle feathers from the piles in the main cavern.",
-			true, tenEagleFeathers);
+		pickupFeathers = new ObjectStep(this, ObjectID.GIANT_FEATHERS, "Pick up 10 Eagle feathers from the piles in the main cavern.", tenEagleFeathers);
 
 		goToFancyStore = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398,0), "Go speak to Asyff in south-east Varrock to have a disguise made.",
 			yellowDye, coins, tar, tenEagleFeathers);
@@ -338,7 +337,7 @@ public class EaglesPeak extends BasicQuestHelper
 		useSilverFeathersOnStoneDoor = new ObjectStep(this, ObjectID.STONE_DOOR_19918, new WorldPoint(2003, 4948, 3), "Use the silver feather on the door.",
 			silverFeather);
 		useSilverFeathersOnStoneDoor.addIcon(ItemID.SILVER_FEATHER);
-		useGoldFeathersOnStoneDoor = new ObjectStep(this, ObjectID.STONE_DOOR_19917, new WorldPoint(2003, 4948, 3), "Use the golden feather on the door.", true,
+		useGoldFeathersOnStoneDoor = new ObjectStep(this, ObjectID.STONE_DOOR_19917, new WorldPoint(2003, 4948, 3), "Use the golden feather on the door.",
 			goldFeather);
 		useGoldFeathersOnStoneDoor.addIcon(ItemID.GOLDEN_FEATHER);
 		useBronzeSilverFeathersOnStoneDoor = new ObjectStep(this, ObjectID.STONE_DOOR_19916, new WorldPoint(2003, 4948, 3), "Use the bronze and silver feathers on the door.",

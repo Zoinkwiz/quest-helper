@@ -6,6 +6,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.api.GameObject;
@@ -37,8 +38,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class ObjectStep extends DetailedQuestStep
 {
 	private final int objectID;
+	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
 	private TileObject object;
-	private final boolean highlightAll;
 
 	private final List<TileObject> objects = new ArrayList<>();
 
@@ -46,15 +47,14 @@ public class ObjectStep extends DetailedQuestStep
 	{
 		super(questHelper, worldPoint, text, itemRequirements);
 		this.objectID = objectID;
-		this.highlightAll = false;
 	}
 
-	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, boolean highlightAll, ItemRequirement... itemRequirements)
+	public ObjectStep(QuestHelper questHelper, int objectID, String text, ItemRequirement... itemRequirements)
 	{
-		super(questHelper, worldPoint, text, itemRequirements);
-		this.highlightAll = highlightAll;
+		super(questHelper, null, text, itemRequirements);
 		this.objectID = objectID;
 	}
+
 
 	@Override
 	public void startUp()
@@ -87,6 +87,27 @@ public class ObjectStep extends DetailedQuestStep
 				}
 			}
 		}
+		else
+		{
+			Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
+			for (Tile[] lineOfTiles : tiles)
+			{
+				for (Tile tile : lineOfTiles)
+				{
+					if (tile != null)
+					{
+						for (GameObject object : tile.getGameObjects())
+						{
+							handleObjects(object);
+						}
+
+						handleObjects(tile.getDecorativeObject());
+						handleObjects(tile.getGroundObject());
+						handleObjects(tile.getWallObject());
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -106,6 +127,11 @@ public class ObjectStep extends DetailedQuestStep
 			object = null;
 			objects.clear();
 		}
+	}
+
+	public void addAlternateObjects(Integer... alternateObjectIDs)
+	{
+		this.alternateObjectIDs.addAll(Arrays.asList(alternateObjectIDs));
 	}
 
 	@Subscribe
@@ -239,34 +265,19 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
 		}
-
-		if (object.getId() == objectID)
+		
+		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
-			System.out.println("OBJECT FOUND: " + objectID + " and loc "+ object.getWorldLocation());
+			System.out.println("OBJECT FOUND: " + object.getId() + " and loc "+ object.getWorldLocation());
 			if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
 			{
 				this.object = object;
 				this.objects.add(object);
 				return;
 			}
-			if (highlightAll)
-			{
-				this.objects.add(object);
-			}
-		}
-
-		// Check impostors
-		final ObjectComposition comp = client.getObjectDefinition(object.getId());
-		final int[] impostorIds = comp.getImpostorIds();
-
-		if (impostorIds != null && Ints.contains(comp.getImpostorIds(), objectID))
-		{
-			if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
+			if (worldPoint == null)
 			{
 				this.object = object;
-			}
-			if (highlightAll)
-			{
 				this.objects.add(object);
 			}
 		}

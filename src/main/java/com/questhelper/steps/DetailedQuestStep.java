@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -77,6 +78,10 @@ public class DetailedQuestStep extends QuestStep
 	WorldMapPointManager worldMapPointManager;
 
 	protected WorldPoint worldPoint;
+
+	@Setter
+	protected WorldPoint worldMapPoint;
+
 	protected List<ItemRequirement> itemRequirements = new ArrayList<>();
 
 	protected HashMap<Tile, List<Integer>> tileHighlights = new HashMap<>();
@@ -111,7 +116,12 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void startUp()
 	{
-		if (worldPoint != null)
+		if(worldMapPoint != null)
+		{
+			mapPoint = new QuestHelperWorldMapPoint(worldMapPoint, getQuestImage());
+			worldMapPointManager.add(mapPoint);
+		}
+		else if (worldPoint != null)
 		{
 			mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
 			worldMapPointManager.add(mapPoint);

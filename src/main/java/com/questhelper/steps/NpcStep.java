@@ -27,6 +27,7 @@ package com.questhelper.steps;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import javax.inject.Inject;
@@ -142,12 +143,16 @@ public class NpcStep extends DetailedQuestStep
 		else
 		{
 			BufferedImage arrow = getArrow();
-			Rectangle rect = npc.getConvexHull().getBounds();
-			int x = (int) rect.getCenterX() - ARROW_SHIFT_X;
-			int y = (int) rect.getMinY() - ARROW_SHIFT_Y;
-			Point point = new Point(x, y);
+			Shape hull = npc.getConvexHull();
+			if (hull != null)
+			{
+				Rectangle rect = hull.getBounds();
+				int x = (int) rect.getCenterX() - ARROW_SHIFT_X;
+				int y = (int) rect.getMinY() - ARROW_SHIFT_Y;
+				Point point = new Point(x, y);
 
-			OverlayUtil.renderImageLocation(graphics, point, arrow);
+				OverlayUtil.renderImageLocation(graphics, point, arrow);
+			}
 		}
 	}
 
@@ -163,7 +168,7 @@ public class NpcStep extends DetailedQuestStep
 
 		WorldPoint playerLocation = player.getWorldLocation();
 
-		if (npc != null)
+		if (npc != null && npc.getMinimapLocation() != null)
 		{
 			graphics.drawImage(getSmallArrow(), npc.getMinimapLocation().getX() - 5, npc.getMinimapLocation().getY() - 14, null);
 			return;

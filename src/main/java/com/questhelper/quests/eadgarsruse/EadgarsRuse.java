@@ -581,7 +581,6 @@ public class EadgarsRuse extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToSanfew))));
 
-
 		allSteps.add(travelToEadgarPanel);
 
 		allSteps.add(new PanelDetails("Talk to Burntmeat", new ArrayList<>(Arrays.asList(leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, talkToEadgarFromCook)), climbingBoots));

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.handinthesand;
+package com.questhelper.quests.thehandinthesand;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.DetailedQuestStep;
@@ -272,7 +272,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToBert))));
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(giveCaptainABeer, ringBell, talkToBertAboutRota, searchSandysDesk, pickpocketSandy))));
+		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(giveCaptainABeer, ringBell, talkToBertAboutRota, searchSandysDesk, pickpocketSandy)), beerOr2Coins));
 		allSteps.add(new PanelDetails("Making a truth serum", new ArrayList<>(Arrays.asList(talkToBertAboutScroll, ringBellAgain, talkToRarveAgain, talkToBetty, addRedberries, addWhiteberries, useDyeOnLanternLens,
 			talkToBettyAgain, useLensOnCounter, talkToBettyOnceMore)), vial2, lanternLens, redberries, whiteberries));
 		allSteps.add(new PanelDetails("Uncover the truth", new ArrayList<>(Arrays.asList(talkToSandyWithPotion, useSerumOnCoffee, activateMagicalOrb, interrogateSandy)), truthSerum, magicalOrb));

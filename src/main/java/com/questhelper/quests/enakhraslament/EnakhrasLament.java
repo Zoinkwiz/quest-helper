@@ -103,18 +103,21 @@ public class EnakhrasLament extends BasicQuestHelper
 		makeAndPlaceBase.addStep(has32, useChiselOn32Sandstone);
 
 		steps.put(10, makeAndPlaceBase);
-
-		// Currently this goes the absolute shortest route, skipping two outside rooms
+		
 		ConditionalStep exploreBottomLayer = new ConditionalStep(this, enterTemple);
 		exploreBottomLayer.addStep(new Conditions(hasCamelHead, inPuzzleFloor), useStoneHeadOnPedestal);
 		exploreBottomLayer.addStep(hasCamelMould, useChiselOnGranite);
 		exploreBottomLayer.addStep(inPuzzleFloor, useSoftClayOnPedestal);
-		exploreBottomLayer.addStep(inCentreRoom, goUpToPuzzles);
-		exploreBottomLayer.addStep(mPlaced, enterMDoor);
-		exploreBottomLayer.addStep(new Conditions(hasMSigil, hasGottenRightArm, hasGottenRightLeg, inTempleGroundFloor, openedDoor1), enterMDoor);
-		exploreBottomLayer.addStep(new Conditions(hasMSigil, hasGottenRightArm, hasGottenRightLeg, inTempleGroundFloor, openedDoor1), enterDoor2);
-		exploreBottomLayer.addStep(new Conditions(hasMSigil, hasGottenRightArm, hasGottenRightLeg, inTempleGroundFloor), enterDoor1);
-		exploreBottomLayer.addStep(new Conditions(hasGottenRightArm, hasGottenRightLeg, inTempleGroundFloor), takeM);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, openedDoor4), goUpToPuzzles);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, hasKSigil), enterDoor4);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3), takeK);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, hasRSigil), enterDoor3);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2), takeR);
+		// It's possible to skip the rest of this, but it skips some of the quest story and leaves doors locked after you finish, so this encourages players to explore
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, hasZSigil), enterDoor2);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1), takeZ);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, hasMSigil), enterDoor1);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor), takeM);
 		exploreBottomLayer.addStep(new Conditions(startedTemple, inTempleGroundFloor), cutOffLimb);
 		exploreBottomLayer.addStep(inTempleGroundFloor, talkToLazimInTemple);
 		exploreBottomLayer.addStep(inTempleEntranceRoom, enterTempleDownLadder);
@@ -296,6 +299,8 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		zPlaced = new VarbitCondition(1611, 1);
 		mPlaced = new VarbitCondition(1612, 1);
+		rPlaced = new VarbitCondition(1613, 1);
+		kPlaced = new VarbitCondition(1614, 1);
 
 		goneUpstairs = new VarbitCondition(1618, 1);
 
@@ -362,13 +367,13 @@ public class EnakhrasLament extends BasicQuestHelper
 		takeM = new ObjectStep(this, ObjectID.PEDESTAL_11061, new WorldPoint(3128, 9319, 0), "Take the M sigil from the pedestal in the room.");
 		takeZ = new ObjectStep(this, ObjectID.PEDESTAL_11060, new WorldPoint(3097, 9336, 0), "Take the Z sigil from the pedestal in the north room.");
 		takeK = new ObjectStep(this, ObjectID.PEDESTAL_11063, new WorldPoint(3080, 9305, 0), "Take the K sigil from the pedestal in the west room.");
-		takeR = new ObjectStep(this, ObjectID.PEDESTAL_11062, new WorldPoint(3128, 9319, 0), "Take the R sigil from the pedestal in the south room.");
+		takeR = new ObjectStep(this, ObjectID.PEDESTAL_11062, new WorldPoint(3111, 9288, 0), "Take the R sigil from the pedestal in the south room.");
 		talkToLazimForHead = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3127, 9324, 0), "Talk to Lazim in the temple for the stone head.");
 		talkToLazimForHead.addDialogStep("Do you know where the statue's head is?");
 
 		enterDoor1 = new ObjectStep(this, ObjectID.DOOR_11066, new WorldPoint(3126, 9337, 0), "Enter the right arm door.", rightArm);
 		enterDoor2 = new ObjectStep(this, ObjectID.DOOR_11068, new WorldPoint(3079, 9334, 0), "Enter the left leg door.", leftLeg);
-		enterDoor3 = new ObjectStep(this, ObjectID.DOOR_11069, new WorldPoint(3126, 9337, 0), "Enter the left arm door.", leftArm);
+		enterDoor3 = new ObjectStep(this, ObjectID.DOOR_11064, new WorldPoint(3082, 9387, 0), "Enter the left arm door.", leftArm);
 		enterDoor4 = new ObjectStep(this, ObjectID.DOOR_11070, new WorldPoint(3129, 9290, 0), "Enter the right leg door.", rightLeg);
 
 		enterKDoor = new ObjectStep(this, ObjectID.DOOR_11057, new WorldPoint(3111, 9312, 0), "Enter the door with a K.", kSigil);
@@ -376,7 +381,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		enterMDoor = new ObjectStep(this, ObjectID.DOOR_11053, new WorldPoint(3097, 9312, 0), "Enter the door with an M.", mSigil);
 		enterZDoor = new ObjectStep(this, ObjectID.DOOR_11051, new WorldPoint(3104, 9305, 0), "Enter the door with a Z.", zSigil);
 
-		goUpToPuzzles = new ObjectStep(this, ObjectID.LADDER_11041, new WorldPoint(3104, 9309, 0), "Go up the ladder in the central room.");
+		goUpToPuzzles = new ObjectStep(this, ObjectID.LADDER_11041, new WorldPoint(3104, 9309, 0), "Open the central room's doors using the metal letters. Go up the ladder in the central room.");
 
 		useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use soft clay on the pedestal.", softClay);
 		useChiselOnGranite = new DetailedQuestStep(this, "Use a chisel on granite (5kg).", granite, chisel);

@@ -42,6 +42,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -59,7 +60,7 @@ public class EnakhrasLament extends BasicQuestHelper
 {
 	ItemRequirement pickaxe, chisel, sandstone32, sandstone20, base, body, head, granite2, granite, leftArm, rightArm, leftLeg,
 		rightLeg, kSigil, rSigil, mSigil, zSigil, softClay, camelMould, camelHead, breadOrCake, fireSpellRunes, airSpellRunes,
-		mapleLog, log, oakLog, willowLog, coal, candle, air2, chaos, earth2, sandstone5, tinderbox;
+		mapleLog, log, oakLog, willowLog, coal, candle, air2, chaos, earth2, sandstone5, tinderbox, crumbleUndeadRunes, sandstone52;
 
 	ConditionForStep hasBase, hasBody, has32, has20, hasPlacedBase, hasTalkedToLazimAfterBase, hasPlacedBody, chiseledStatue,
 		canChooseHead, has2Granite, hasGranite, hasHead, inTempleEntranceRoom, inTempleGroundFloor, startedTemple, hasMSigil,
@@ -103,7 +104,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		makeAndPlaceBase.addStep(has32, useChiselOn32Sandstone);
 
 		steps.put(10, makeAndPlaceBase);
-		
+
 		ConditionalStep exploreBottomLayer = new ConditionalStep(this, enterTemple);
 		exploreBottomLayer.addStep(new Conditions(hasCamelHead, inPuzzleFloor), useStoneHeadOnPedestal);
 		exploreBottomLayer.addStep(hasCamelMould, useChiselOnGranite);
@@ -178,6 +179,9 @@ public class EnakhrasLament extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.setHighlightInInventory(true);
+
+		sandstone32 = new ItemRequirement("52 kg of sandstone", -1, -1);
+
 		sandstone32 = new ItemRequirement("Sandstone 32kg", ItemID.SANDSTONE_32KG);
 		sandstone32.setHighlightInInventory(true);
 		sandstone20 = new ItemRequirement("Sandstone 20kg", ItemID.SANDSTONE_20KG);
@@ -221,6 +225,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		airSpellRunes = new ItemRequirement("Runes for an air spell", -1, -1);
 		fireSpellRunes = new ItemRequirement("Runes for a fire spell", -1, -1);
+		crumbleUndeadRunes = new ItemRequirement("Runes for crumbe undead spell", -1, -1);
 
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		log.setHighlightInInventory(true);
@@ -428,15 +433,29 @@ public class EnakhrasLament extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-
-		return reqs;
-	}
-
-	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
-	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-
+		reqs.add(pickaxe);
+		reqs.add(chisel);
+		reqs.add(softClay);
+		reqs.add(breadOrCake);
+		reqs.add(tinderbox);
+		reqs.add(log);
+		reqs.add(oakLog);
+		reqs.add(willowLog);
+		reqs.add(mapleLog);
+		reqs.add(candle);
+		reqs.add(coal);
+		reqs.add(fireSpellRunes);
+		reqs.add(airSpellRunes);
+		reqs.add(crumbleUndeadRunes);
+		int miningLevel = client.getRealSkillLevel(Skill.MINING);
+		if (miningLevel < 45)
+		{
+			reqs.add(granite2);
+		}
+		if (miningLevel < 35)
+		{
+			reqs.add(sandstone52);
+		}
 		return reqs;
 	}
 

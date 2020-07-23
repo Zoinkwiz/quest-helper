@@ -22,6 +22,13 @@ public class WidgetModelCondition extends ConditionForStep
 		this.id = id;
 	}
 
+	public WidgetModelCondition(int groupId, int childId, int id)
+	{
+		this.groupId = groupId;
+		this.childId = childId;
+		this.id = id;
+	}
+
 	@Override
 	public boolean checkCondition(Client client)
 	{

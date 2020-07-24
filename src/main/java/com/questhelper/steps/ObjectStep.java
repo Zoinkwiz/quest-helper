@@ -1,6 +1,5 @@
 package com.questhelper.steps;
 
-import com.google.common.primitives.Ints;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
@@ -11,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -41,6 +39,8 @@ public class ObjectStep extends DetailedQuestStep
 	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
 	private TileObject object;
 
+	private boolean shouldShowArrow = true;
+
 	private final List<TileObject> objects = new ArrayList<>();
 
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
@@ -54,7 +54,6 @@ public class ObjectStep extends DetailedQuestStep
 		super(questHelper, null, text, itemRequirements);
 		this.objectID = objectID;
 	}
-
 
 	@Override
 	public void startUp()
@@ -127,6 +126,11 @@ public class ObjectStep extends DetailedQuestStep
 			object = null;
 			objects.clear();
 		}
+	}
+
+	public void showArrow(boolean shouldShowArrow)
+	{
+		this.shouldShowArrow = shouldShowArrow;
 	}
 
 	public void addAlternateObjects(Integer... alternateObjectIDs)
@@ -236,7 +240,7 @@ public class ObjectStep extends DetailedQuestStep
 	@Override
 	public void renderArrow(Graphics2D graphics)
 	{
-		if (object == null)
+		if (object == null || ! shouldShowArrow)
 		{
 			return;
 		}

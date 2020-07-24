@@ -29,6 +29,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -53,7 +55,12 @@ public class NpcStep extends DetailedQuestStep
 	protected Client client;
 
 	private final int npcID;
+	private final ArrayList<Integer> alternateNpcIDs = new ArrayList<>();
+
+	private boolean allowMultipleHighlights;
+
 	private NPC npc;
+	private ArrayList<NPC> otherNpcs = new ArrayList<>();
 
 	private BufferedImage npcIcon;
 
@@ -63,17 +70,38 @@ public class NpcStep extends DetailedQuestStep
 		this.npcID = npcID;
 	}
 
+	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, boolean allowMultipleHighlights, ItemRequirement... itemRequirements)
+	{
+		super(questHelper, worldPoint, text, itemRequirements);
+		this.allowMultipleHighlights = allowMultipleHighlights;
+		this.npcID = npcID;
+	}
+
+
 	@Override
 	public void startUp()
 	{
 		super.startUp();
+
 		for (NPC npc : client.getNpcs())
 		{
-			if (npcID == npc.getId())
+			if (npcID == npc.getId() || alternateNpcIDs.contains(npc.getId()))
 			{
-				this.npc = npc;
+				if (this.npc == null)
+				{
+					this.npc = npc;
+				}
+				else if (allowMultipleHighlights)
+				{
+					this.otherNpcs.add(npc);
+				}
 			}
 		}
+	}
+
+	public void addAlternateNpcs(Integer... alternateNpcIDs)
+	{
+		this.alternateNpcIDs.addAll(Arrays.asList(alternateNpcIDs));
 	}
 
 	@Override
@@ -81,14 +109,22 @@ public class NpcStep extends DetailedQuestStep
 	{
 		super.shutDown();
 		npc = null;
+		otherNpcs = new ArrayList<>();
 	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (event.getNpc().getId() == npcID && npc == null)
+		if (event.getNpc().getId() == npcID || alternateNpcIDs.contains(event.getNpc().getId()))
 		{
-			npc = event.getNpc();
+			if (npc == null)
+			{
+				npc = event.getNpc();
+			}
+			else if (allowMultipleHighlights)
+			{
+				otherNpcs.add(event.getNpc());
+			}
 		}
 	}
 
@@ -98,7 +134,14 @@ public class NpcStep extends DetailedQuestStep
 		if (event.getNpc().equals(npc))
 		{
 			npc = null;
+			if (allowMultipleHighlights && !otherNpcs.isEmpty())
+			{
+				npc = otherNpcs.get(0);
+				otherNpcs.remove(0);
+			}
 		}
+
+		otherNpcs.remove(event.getNpc());
 	}
 
 	@Override
@@ -117,19 +160,27 @@ public class NpcStep extends DetailedQuestStep
 			return;
 		}
 
-		if (npc == null)
-		{
-			return;
-		}
 		if (npcIcon == null)
 		{
 			npcIcon = getQuestImage();
 		}
+
 		if (iconItemID != -1 && itemIcon == null)
 		{
 			addIconImage();
 			npcIcon = itemIcon;
 		}
+
+		for (NPC otherNpc : otherNpcs)
+		{
+			OverlayUtil.renderActorOverlayImage(graphics, otherNpc, npcIcon, Color.CYAN, IMAGE_Z_OFFSET);
+		}
+
+		if (npc == null)
+		{
+			return;
+		}
+
 		OverlayUtil.renderActorOverlayImage(graphics, npc, npcIcon, Color.CYAN, IMAGE_Z_OFFSET);
 	}
 

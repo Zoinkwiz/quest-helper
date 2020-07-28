@@ -13,27 +13,12 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class PuzzleStep extends QuestStep
 {
-	int[] solvedPositions =
-		{
-			0, 0, 1, 0, 4, 1,
-			3, 0, 4, 3, 0, 1,
-			0, 3, 4, 3, 3, 1,
-			1, 4, 2, 0, 2, 2,
-			2, 3, 2, 0, 0, 1,
-			3, 4, 4, 0, 1, 2
-		};
-
-	boolean[] currentPositionCorrect = new boolean[36];
-
 	private final int FLIP_BUTTON = 33;
 	private final int DOWN_BUTTON = 32;
 	private final int LEFT_BUTTON = 31;
 	private final int RIGHT_BUTTON = 30;
 	private final int UP_BUTTON = 29;
 	private final int ROTATE_BUTTON = 28;
-	private final int SELECT_1_BUTTON = 22;
-	private final int SELECT_2_BUTTON = 23;
-	private final int SELECT_3_BUTTON = 24;
 
 	private final int HORIZONTAL = 0;
 	private final int VERTICAL = 1;
@@ -44,9 +29,9 @@ public class PuzzleStep extends QuestStep
 
 	private HashMap<Integer, Integer> highlightButtons = new HashMap<>();
 
-	private HashMap<Integer, Integer>[] pieces = new HashMap[3];
+	private final HashMap<Integer, Integer>[] pieces = new HashMap[3];
 
-	private HashMap<Integer, Integer>[] solvedPieces = new HashMap[3];
+	private final HashMap<Integer, Integer>[] solvedPieces = new HashMap[3];
 
 	public PuzzleStep(QuestHelper questHelper)
 	{
@@ -99,8 +84,11 @@ public class PuzzleStep extends QuestStep
 		highlightButtons.put(RIGHT_BUTTON, 0);
 		highlightButtons.put(UP_BUTTON, 0);
 		highlightButtons.put(ROTATE_BUTTON, 0);
+		int SELECT_1_BUTTON = 22;
 		highlightButtons.put(SELECT_1_BUTTON, 0);
+		int SELECT_2_BUTTON = 23;
 		highlightButtons.put(SELECT_2_BUTTON, 0);
+		int SELECT_3_BUTTON = 24;
 		highlightButtons.put(SELECT_3_BUTTON, 0);
 	}
 

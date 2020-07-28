@@ -225,7 +225,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			for (ChatMessageCondition step : chatConditions)
 			{
-				step.validateCondition(chatMessage.getMessage());
+				step.validateCondition(client, chatMessage.getMessage());
 			}
 		}
 	}

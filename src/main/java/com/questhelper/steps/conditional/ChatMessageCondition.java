@@ -34,10 +34,18 @@ public class ChatMessageCondition extends ConditionForStep
 	@Setter
 	private boolean hasReceivedChatMessage = false;
 
+	private ConditionForStep condition;
+
 	private ArrayList<String> messages;
 
 	public ChatMessageCondition(String... message)
 	{
+		this.messages = new ArrayList<>(Arrays.asList(message));
+	}
+
+	public ChatMessageCondition(ConditionForStep condition, String... message)
+	{
+		this.condition = condition;
 		this.messages = new ArrayList<>(Arrays.asList(message));
 	}
 
@@ -47,12 +55,15 @@ public class ChatMessageCondition extends ConditionForStep
 		return hasReceivedChatMessage;
 	}
 
-	public void validateCondition(String chatMessage) {
+	public void validateCondition(Client client, String chatMessage) {
 		if (!hasReceivedChatMessage)
 		{
 			if (messages.contains(chatMessage))
 			{
-				hasReceivedChatMessage = true;
+				if (condition == null || condition.checkCondition(client))
+				{
+					hasReceivedChatMessage = true;
+				}
 			}
 		}
 	}

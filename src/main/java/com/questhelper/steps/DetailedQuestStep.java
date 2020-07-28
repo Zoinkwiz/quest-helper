@@ -92,9 +92,6 @@ public class DetailedQuestStep extends QuestStep
 	protected static final int MAX_DRAW_DISTANCE = 16;
 	protected int currentRender = 0;
 
-	@Getter
-	public DialogChoiceSteps choices = new DialogChoiceSteps();
-
 	public DetailedQuestStep(QuestHelper questHelper, String text, ItemRequirement... itemRequirements)
 	{
 		super(questHelper, text);

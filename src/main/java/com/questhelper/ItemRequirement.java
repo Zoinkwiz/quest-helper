@@ -41,8 +41,9 @@ public class ItemRequirement
 
 	private final String name;
 
+	@Setter
 	@Getter
-	private final int quantity;
+	private int quantity;
 
 	@Getter
 	private boolean equip;

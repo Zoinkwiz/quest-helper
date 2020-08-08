@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
@@ -64,6 +65,8 @@ public class NpcStep extends DetailedQuestStep
 
 	private BufferedImage npcIcon;
 
+	private final int MAX_ROAM_RANGE = 48;
+
 	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
 	{
 		super(questHelper, worldPoint, text, itemRequirements);
@@ -87,7 +90,7 @@ public class NpcStep extends DetailedQuestStep
 		{
 			if (npcID == npc.getId() || alternateNpcIDs.contains(npc.getId()))
 			{
-				if (this.npc == null)
+				if (this.npc == null && npc.getWorldLocation().distanceTo(worldPoint) < MAX_ROAM_RANGE)
 				{
 					this.npc = npc;
 				}
@@ -119,11 +122,17 @@ public class NpcStep extends DetailedQuestStep
 		{
 			if (npc == null)
 			{
-				npc = event.getNpc();
+				if (event.getNpc().getWorldLocation().distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				{
+					npc = event.getNpc();
+				}
 			}
 			else if (allowMultipleHighlights)
 			{
-				otherNpcs.add(event.getNpc());
+				if (event.getNpc().getWorldLocation().distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				{
+					otherNpcs.add(event.getNpc());
+				}
 			}
 		}
 	}

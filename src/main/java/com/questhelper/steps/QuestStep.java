@@ -65,7 +65,6 @@ public abstract class QuestStep implements Module
 	@Inject
 	SpriteManager spriteManager;
 
-	@Setter
 	@Getter
 	protected ArrayList<String> text;
 
@@ -189,6 +188,16 @@ public abstract class QuestStep implements Module
 	public void highlightChoice()
 	{
 		choices.checkChoices(client);
+	}
+
+	public void setText(String text)
+	{
+		this.text =  new ArrayList<>(Collections.singletonList(text));
+	}
+
+	public void setText(ArrayList<String> text)
+	{
+		this.text =  text;
 	}
 
 	public void highlightWidgetChoice()

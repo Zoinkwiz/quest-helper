@@ -120,7 +120,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 				if (!fluidFound)
 				{
 					getFluid.addWidgetChoice(correctFluid-1, 187, 3);
-					getFluid.setText(new ArrayList<>(Collections.singletonList("Take Fluid " + correctFluid + " from the table.")));
+					getFluid.setText("Take Fluid " + correctFluid + " from the table.");
 
 					useFluidOnRefinery.addItemRequirement(fluids[correctFluid]);
 					useFluidOnRefinery.addIcon(fluids[correctFluid].getId());

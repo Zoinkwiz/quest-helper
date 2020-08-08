@@ -92,6 +92,8 @@ public class DetailedQuestStep extends QuestStep
 	protected static final int MAX_DRAW_DISTANCE = 16;
 	protected int currentRender = 0;
 
+	protected boolean started;
+
 	public DetailedQuestStep(QuestHelper questHelper, String text, ItemRequirement... itemRequirements)
 	{
 		super(questHelper, text);
@@ -124,6 +126,7 @@ public class DetailedQuestStep extends QuestStep
 			worldMapPointManager.add(mapPoint);
 		}
 		addItemTiles();
+		started = true;
 	}
 
 	@Override
@@ -132,6 +135,7 @@ public class DetailedQuestStep extends QuestStep
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
 		tileHighlights.clear();
 		clearArrow();
+		started = false;
 	}
 
 	@Override
@@ -399,6 +403,33 @@ public class DetailedQuestStep extends QuestStep
 		Line2D.Double line = new Line2D.Double(startX,startY,endX,endY);
 
 		drawMinimapArrow(graphics, line);
+	}
+
+
+	public void setWorldPoint(WorldPoint worldPoint)
+	{
+		this.worldPoint = worldPoint;
+		if(worldMapPoint == null && started)
+		{
+			if (mapPoint != null)
+			{
+				worldMapPointManager.remove(mapPoint);
+			}
+			if (worldPoint != null)
+			{
+				mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
+				worldMapPointManager.add(mapPoint);
+			}
+			else
+			{
+				mapPoint = null;
+			}
+		}
+	}
+
+	public void setWorldPoint(int x, int y, int z)
+	{
+		setWorldPoint(new WorldPoint(x, y, z));
 	}
 
 	private void drawArrowHead(Graphics2D g2d, Line2D.Double line, AffineTransform tx, Polygon arrowHead) {

@@ -90,7 +90,7 @@ public class GiveItems extends NpcStep
 		}
 		if (itemRequirements.isEmpty())
 		{
-			setText(new ArrayList<>(Arrays.asList("Talk to Eblis in the east of the Bandit Camp.")));
+			setText("Talk to Eblis in the east of the Bandit Camp.");
 		}
 	}
 }

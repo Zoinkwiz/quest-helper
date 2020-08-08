@@ -90,7 +90,8 @@ public class NpcStep extends DetailedQuestStep
 		{
 			if (npcID == npc.getId() || alternateNpcIDs.contains(npc.getId()))
 			{
-				if (this.npc == null && npc.getWorldLocation().distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
+				if (this.npc == null && npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
 				{
 					this.npc = npc;
 				}
@@ -120,16 +121,17 @@ public class NpcStep extends DetailedQuestStep
 	{
 		if (event.getNpc().getId() == npcID || alternateNpcIDs.contains(event.getNpc().getId()))
 		{
+			WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, event.getNpc().getLocalLocation());
 			if (npc == null)
 			{
-				if (event.getNpc().getWorldLocation().distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
 				{
 					npc = event.getNpc();
 				}
 			}
 			else if (allowMultipleHighlights)
 			{
-				if (event.getNpc().getWorldLocation().distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
 				{
 					otherNpcs.add(event.getNpc());
 				}

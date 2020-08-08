@@ -37,6 +37,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
@@ -314,12 +315,18 @@ public class DetailedQuestStep extends QuestStep
 
 	public void renderArrow(Graphics2D graphics)
 	{
-		if (worldPoint == null || !worldPoint.isInScene(client))
+		Collection<WorldPoint> allPoints = WorldPoint.toLocalInstance(client, worldPoint);
+		if (allPoints.isEmpty())
+		{
+			return;
+		}
+		WorldPoint wp = allPoints.iterator().next();
+		if (wp == null || !wp.isInScene(client))
 		{
 			return;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint lp = LocalPoint.fromWorld(client, wp);
 		if (lp == null)
 		{
 			return;
@@ -345,14 +352,19 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		WorldPoint playerLocation = player.getWorldLocation();
-
-		if (worldPoint.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		Collection<WorldPoint> allPoints = WorldPoint.toLocalInstance(client, worldPoint);
+		if (allPoints.isEmpty())
+		{
+			return;
+		}
+		WorldPoint wp = allPoints.iterator().next();
+		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
 		{
 			createMinimapDirectionArrow(graphics);
 			return;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint lp = LocalPoint.fromWorld(client, wp);
 		if (lp == null)
 		{
 			return;

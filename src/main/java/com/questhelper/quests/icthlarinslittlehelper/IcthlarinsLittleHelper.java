@@ -387,6 +387,12 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Arrays.asList("Level 75 or 81 guardian", "Possessed priest (level 91)"));
+	}
+
+	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		return new ArrayList<>(Collections.singletonList(food));

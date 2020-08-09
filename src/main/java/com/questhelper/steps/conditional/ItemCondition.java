@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -19,17 +20,17 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class ItemCondition extends ConditionForStep
 {
-	private int itemID;
+	private ArrayList<Integer> itemID;
 	private boolean npcInScene = false;
 
 	public ItemCondition(int itemID)
 	{
-		this.itemID = itemID;
+		this.itemID = new ArrayList<>(Collections.singleton(itemID));
 	}
 
 	public ItemCondition(ItemRequirement item)
 	{
-		this.itemID = item.getId();
+		this.itemID = item.getAllIds();
 	}
 
 	public boolean checkCondition(Client client)
@@ -52,7 +53,7 @@ public class ItemCondition extends ConditionForStep
 					{
 						for (TileItem item : items)
 						{
-							if (itemID == item.getId())
+							if (itemID.contains(item.getId()))
 							{
 								return true;
 							}

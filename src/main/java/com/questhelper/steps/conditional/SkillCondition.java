@@ -32,6 +32,10 @@ public class SkillCondition extends ConditionForStep
 		{
 			return client.getRealSkillLevel(skill) == value;
 		}
+		else if (operation == Operation.NOT_EQUAL)
+		{
+			return client.getRealSkillLevel(skill) != value;
+		}
 		else if (operation == Operation.LESS_EQUAL)
 		{
 			return client.getRealSkillLevel(skill) <= value;

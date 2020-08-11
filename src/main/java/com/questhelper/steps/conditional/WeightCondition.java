@@ -28,6 +28,10 @@ public class WeightCondition extends ConditionForStep
 		{
 			return client.getWeight() == weight;
 		}
+		else if (operation == Operation.NOT_EQUAL)
+		{
+			return client.getWeight() != weight;
+		}
 		else if (operation == Operation.LESS_EQUAL)
 		{
 			return client.getWeight() <= weight;

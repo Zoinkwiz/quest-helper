@@ -78,6 +78,10 @@ public class VarplayerCondition extends ConditionForStep
 		{
 			return client.getVarpValue(varplayerId) == value;
 		}
+		else if (operation == Operation.NOT_EQUAL)
+		{
+			return client.getVarpValue(varplayerId) != value;
+		}
 		else if (operation == Operation.LESS_EQUAL)
 		{
 			return client.getVarpValue(varplayerId) <= value;

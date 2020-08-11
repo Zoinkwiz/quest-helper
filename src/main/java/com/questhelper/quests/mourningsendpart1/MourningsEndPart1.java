@@ -481,7 +481,8 @@ public class MourningsEndPart1 extends BasicQuestHelper
 		allSteps.add(enterWestArdougnePanel);
 
 		allSteps.add(new PanelDetails("Dye the sheep", new ArrayList<>(Arrays.asList(getToads, dyeSheep, enterBaseAfterSheep, enterBasementAfterSheep, talkToEssylltAfterSheep)), fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
-
+ 
+		 
 		allSteps.add(new PanelDetails("Poison the citizens",
 			new ArrayList<>(Arrays.asList(pickUpRottenApple, talkToElena, pickUpBarrel, useBarrelOnPile, useApplesOnPress, getNaphtha, useNaphthaOnBarrel, useSieveOnBarrel, cookNaphtha, usePowderOnFood1, usePowderOnFood2, talkToEssylltAfterPoison)), coal20OrNaphtha));
 

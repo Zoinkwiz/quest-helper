@@ -73,12 +73,22 @@ public class ItemRequirementCondition extends ConditionForStep
 				successes++;
 			}
 		}
-		if (comparisonType != null) {
-			if (comparisonType == Operation.EQUAL) {
+		if (comparisonType != null)
+		{
+			if (comparisonType == Operation.EQUAL)
+			{
 				return successes == compareValue;
-			} else if (comparisonType == Operation.GREATER_EQUAL) {
+			}
+			if (comparisonType == Operation.NOT_EQUAL)
+			{
+				return successes != compareValue;
+			}
+			else if (comparisonType == Operation.GREATER_EQUAL)
+			{
 				return successes >= compareValue;
-			} else if (comparisonType == Operation.LESS_EQUAL) {
+			}
+			else if (comparisonType == Operation.LESS_EQUAL)
+			{
 				return successes <= compareValue;
 			}
 		}

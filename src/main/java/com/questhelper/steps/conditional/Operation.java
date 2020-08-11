@@ -28,5 +28,6 @@ public enum Operation
 {
 	LESS_EQUAL,
 	EQUAL,
-	GREATER_EQUAL
+	GREATER_EQUAL,
+	NOT_EQUAL
 }

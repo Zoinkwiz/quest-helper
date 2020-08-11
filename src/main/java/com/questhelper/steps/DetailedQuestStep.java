@@ -315,6 +315,10 @@ public class DetailedQuestStep extends QuestStep
 
 	public void renderArrow(Graphics2D graphics)
 	{
+		if (worldPoint == null)
+		{
+			return;
+		}
 		Collection<WorldPoint> allPoints = WorldPoint.toLocalInstance(client, worldPoint);
 		if (allPoints.isEmpty())
 		{

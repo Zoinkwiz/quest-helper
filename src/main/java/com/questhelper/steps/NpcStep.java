@@ -67,6 +67,12 @@ public class NpcStep extends DetailedQuestStep
 
 	private final int MAX_ROAM_RANGE = 48;
 
+	public NpcStep(QuestHelper questHelper, int npcID, String text, ItemRequirement... itemRequirements)
+	{
+		super(questHelper, text, itemRequirements);
+		this.npcID = npcID;
+	}
+
 	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
 	{
 		super(questHelper, worldPoint, text, itemRequirements);
@@ -91,7 +97,7 @@ public class NpcStep extends DetailedQuestStep
 			if (npcID == npc.getId() || alternateNpcIDs.contains(npc.getId()))
 			{
 				WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-				if (this.npc == null && npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				if (this.npc == null && (worldPoint == null || npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE))
 				{
 					this.npc = npc;
 				}
@@ -124,14 +130,22 @@ public class NpcStep extends DetailedQuestStep
 			WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, event.getNpc().getLocalLocation());
 			if (npc == null)
 			{
-				if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				if (worldPoint == null)
+				{
+					npc = event.getNpc();
+				}
+				else if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
 				{
 					npc = event.getNpc();
 				}
 			}
 			else if (allowMultipleHighlights)
 			{
-				if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				if (worldPoint == null)
+				{
+					npc = event.getNpc();
+				}
+				else if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
 				{
 					otherNpcs.add(event.getNpc());
 				}
@@ -165,10 +179,13 @@ public class NpcStep extends DetailedQuestStep
 			return;
 		}
 
-		Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
-		if (localWorldPoints.isEmpty())
+		if (worldPoint != null)
 		{
-			return;
+			Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
+			if (localWorldPoints.isEmpty())
+			{
+				return;
+			}
 		}
 
 		if (npcIcon == null)
@@ -233,6 +250,11 @@ public class NpcStep extends DetailedQuestStep
 		if (npc != null && npc.getMinimapLocation() != null)
 		{
 			graphics.drawImage(getSmallArrow(), npc.getMinimapLocation().getX() - 5, npc.getMinimapLocation().getY() - 14, null);
+			return;
+		}
+
+		if (worldPoint == null)
+		{
 			return;
 		}
 

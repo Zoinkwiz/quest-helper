@@ -35,6 +35,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import lombok.Getter;
 import lombok.Setter;
@@ -135,6 +136,11 @@ public abstract class QuestStep implements Module
 	public void addSubSteps(QuestStep... substep)
 	{
 		this.substeps.addAll(Arrays.asList(substep));
+	}
+
+	public void addSubSteps(Collection<QuestStep> substeps)
+	{
+		this.substeps.addAll(substeps);
 	}
 
 	@Subscribe

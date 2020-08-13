@@ -95,9 +95,6 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 	{
 		Widget widget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 
-		// 7798 3->4
-		// 7796 4->5
-
 		if (widget != null)
 		{
 			String text = widget.getText().replace("<br>", " ");
@@ -368,7 +365,6 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 		allSteps.add(furnacePanel);
 		return allSteps;
 	}
-
 
 	@Override
 	public Collection<QuestStep> getSteps()

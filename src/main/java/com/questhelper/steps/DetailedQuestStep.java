@@ -83,6 +83,7 @@ public class DetailedQuestStep extends QuestStep
 	@Setter
 	protected WorldPoint worldMapPoint;
 
+	@Setter
 	protected List<ItemRequirement> itemRequirements = new ArrayList<>();
 
 	protected HashMap<Tile, List<Integer>> tileHighlights = new HashMap<>();
@@ -162,6 +163,10 @@ public class DetailedQuestStep extends QuestStep
 		itemRequirements.add(itemRequirement);
 	}
 
+	public void addItemRequirement(ArrayList<ItemRequirement> itemRequirement)
+	{
+		itemRequirements.addAll(itemRequirement);
+	}
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
 	{
 		super.makeOverlayHint(panelComponent, plugin);

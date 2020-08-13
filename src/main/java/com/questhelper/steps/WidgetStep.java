@@ -34,12 +34,12 @@ import lombok.Setter;
 import net.runelite.api.widgets.Widget;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
+import net.runelite.api.widgets.WidgetItem;
 
-public class WidgetStep extends QuestStep
+public class WidgetStep extends DetailedQuestStep
 {
+	@Setter
 	private ArrayList<WidgetDetails> widgetDetails = new ArrayList<>();
-
-	private WidgetChoiceStep textChoice;
 
 	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID)
 	{
@@ -60,15 +60,29 @@ public class WidgetStep extends QuestStep
 	}
 
 	@Override
-	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
 		super.makeWidgetOverlayHint(graphics, plugin);
 		for (WidgetDetails widgetDetail : widgetDetails)
 		{
 			Widget widget = client.getWidget(widgetDetail.groupID, widgetDetail.childID);
-			if (widget != null && widgetDetail.childChildID != -1)  {
-				widget = widget.getChild(widgetDetail.childChildID);
+			if (widget != null && widgetDetail.childChildID != -1)
+			{
+				Widget tmpWidget = widget.getChild(widgetDetail.childChildID);
+				if (tmpWidget != null)
+				{
+					widget = tmpWidget;
+				}
+				else
+				{
+					WidgetItem widgetItem = widget.getWidgetItem(widgetDetail.childChildID);
+					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.fill(widgetItem.getCanvasBounds());
+					graphics.setColor(Color.CYAN);
+					graphics.draw(widgetItem.getCanvasBounds());
+					continue;
+				}
 			}
-
 			if (widget != null)
 			{
 				graphics.setColor(new Color(0, 255, 255, 65));

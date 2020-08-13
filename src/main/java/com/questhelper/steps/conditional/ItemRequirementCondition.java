@@ -35,7 +35,7 @@ public class ItemRequirementCondition extends ConditionForStep
 {
 	private final List<ItemRequirement> itemRequirements;
 
-	private Operation comparisonType;
+	private final Operation comparisonType;
 	private int compareValue;
 
 	public ItemRequirementCondition(ItemRequirement... itemRequirements)
@@ -43,6 +43,7 @@ public class ItemRequirementCondition extends ConditionForStep
 		this.itemRequirements = new ArrayList<>();
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = LogicType.AND;
+		this.comparisonType = Operation.GREATER_EQUAL;
 	}
 
 	public ItemRequirementCondition(LogicType logicType,  ItemRequirement... itemRequirements)
@@ -50,6 +51,7 @@ public class ItemRequirementCondition extends ConditionForStep
 		this.itemRequirements = new ArrayList<>();
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = logicType;
+		this.comparisonType = Operation.GREATER_EQUAL;
 	}
 
 

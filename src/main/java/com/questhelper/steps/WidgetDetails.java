@@ -8,5 +8,4 @@ public class WidgetDetails
 	public int groupID;
 	public int childID;
 	public int childChildID;
-
 }

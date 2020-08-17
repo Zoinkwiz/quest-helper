@@ -379,7 +379,8 @@ public class GrimTales extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToSylas))));
 		allSteps.add(new PanelDetails("Griffin feather", new ArrayList<>(Arrays.asList(talkToGrimgnash, stealFeather, returnFeatherToSylas))));
 		allSteps.add(new PanelDetails("Rupert's helmet", new ArrayList<>(Arrays.asList(climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard, talkToMiazrqa,
-			enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion, climb1, climb2, climb3, climb4, climb5, takePendant, givePendant)), tarrominUnf2));
+			enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion, climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet)), tarrominUnf2));
+		allSteps.add(new PanelDetails("Golden goblin", new ArrayList<>(Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin, giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish)), combatGear, dibber, can, axe, shrinkPotion));
 		return allSteps;
 	}
 }

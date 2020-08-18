@@ -175,4 +175,9 @@ public class ItemRequirement
 	{
 		return check(client, false);
 	}
+
+	public boolean checkConsideringSlot(Client client)
+	{
+		return check(client, equip);
+	}
 }

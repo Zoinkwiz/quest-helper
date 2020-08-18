@@ -357,7 +357,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGrish, talkToGuard, goDownStairs, searchSkeleton, killZombie, openBackpack, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin, searchCoffinProperly))));
 		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToZavistic, goUpToSith, searchWardrobe, searchCupboard, searchDrawers, usePapyrusOnSith, useTankardOnBartender, usePortraitOnBartender, bringSignedPortraitToZavistic))));
 		allSteps.add(new PanelDetails("Discover the truth", new ArrayList<>(Arrays.asList(goUpToSith, usePotionOnTea, goDownstairsFromSith, goUpToOgreSith, talkToSithForAnswers))));
-		allSteps.add(new PanelDetails("Help the ogres", new ArrayList<>(Arrays.asList(talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors, goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish))));
+		allSteps.add(new PanelDetails("Help the ogres", new ArrayList<>(Arrays.asList(talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors, goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish)), combatGear));
 
 		return allSteps;
 	}

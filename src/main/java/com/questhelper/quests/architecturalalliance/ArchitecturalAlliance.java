@@ -54,7 +54,6 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -76,11 +75,6 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
-	{
-
-	}
-
 	public void setupConditions()
 	{
 		talkedToArcis = new VarbitCondition(4971, 1);
@@ -89,7 +83,6 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		talkedToPiliar = new VarbitCondition(4974, 1);
 		talkedToShayda = new VarbitCondition(4975, 1);
 		talkedToHosaStart = new VarbitCondition(4976, 1);
-		// 4977 arc fella
 	}
 
 	public void setupSteps()

@@ -72,6 +72,7 @@ class QuestHelperPanel extends PluginPanel
 
 	private final JPanel questStepsContainer = new JPanel();
 	private final JLabel questNameLabel = new JLabel();
+	private final JPanel questPromptPanel = new JPanel();
 
 	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
 
@@ -247,7 +248,19 @@ class QuestHelperPanel extends PluginPanel
 		/* Container for quest steps */
 		questStepsContainer.setLayout(new BoxLayout(questStepsContainer, BoxLayout.Y_AXIS));
 
+		JLabel questPromptLabel = new JLabel();
+		questPromptLabel.setForeground(Color.GRAY);
+		questPromptLabel.setText("<html><body style = 'text-align:left'>Right-click a quest in the quest guide and select 'Start Quest Helper' to begin. Be aware that not all quests currently have a helper.</body></html>");
+		questPromptLabel.setMinimumSize(new Dimension(1, questItemRequirementsHeader.getPreferredSize().height));
+
+		questPromptPanel.setLayout(new BorderLayout());
+		questPromptPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
+		questPromptPanel.add(questPromptLabel);
+
 		layoutPanel.add(titlePanel);
+
+		layoutPanel.add(questPromptPanel);
+
 		layoutPanel.add(actionsContainer);
 		layoutPanel.add(introPanel);
 		layoutPanel.add(questStepsContainer);
@@ -255,6 +268,7 @@ class QuestHelperPanel extends PluginPanel
 
 	public void addQuest(BasicQuestHelper quest)
 	{
+		questPromptPanel.setVisible(false);
 		currentQuest = quest;
 		ArrayList<PanelDetails> steps = quest.getPanels();
 
@@ -354,6 +368,7 @@ class QuestHelperPanel extends PluginPanel
 
 	public void removeQuest()
 	{
+		questPromptPanel.setVisible(true);
 		actionsContainer.setVisible(false);
 		introPanel.setVisible(false);
 		questStepsContainer.removeAll();

@@ -57,8 +57,6 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 
 		graphics.drawImage(image, buffer, buffer, null);
 
-
-
 		questWorldImagePoint = new Point(questWorldImage.getWidth() / 2, questWorldImage.getHeight());
 
 		arrows.put(0, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow.png"));

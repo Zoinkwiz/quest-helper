@@ -601,7 +601,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 			pickUpBucket, useBucketOnWater, useBucketOnFire, killMother)), combatRangeMelee));
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(talkToMyArmAfterFight, talkToWomAfterFight, talkToSnowflakeAfterFight,
 			pickUpGoatDung, bringDungToSnowflake, readNotes, talkToSnowflakeToFinish))));
-		
+
 		return allSteps;
 	}
 }

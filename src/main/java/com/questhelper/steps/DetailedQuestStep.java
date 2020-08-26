@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
@@ -63,7 +62,6 @@ import com.questhelper.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -82,6 +80,9 @@ public class DetailedQuestStep extends QuestStep
 
 	@Setter
 	protected WorldPoint worldMapPoint;
+
+	@Setter
+	protected ArrayList<WorldPoint> linePoints;
 
 	@Setter
 	protected List<ItemRequirement> itemRequirements = new ArrayList<>();
@@ -366,6 +367,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
+
 		WorldPoint wp = allPoints.iterator().next();
 		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
 		{
@@ -426,6 +428,42 @@ public class DetailedQuestStep extends QuestStep
 		drawMinimapArrow(graphics, line);
 	}
 
+	protected void createMinimapLines(Graphics2D graphics)
+	{
+		if (linePoints == null || linePoints.size() < 2)
+		{
+			return;
+		}
+		for (int i = 0; i < linePoints.size() - 1; i++)
+		{
+			LocalPoint startPoint = LocalPoint.fromWorld(client, linePoints.get(i));
+			LocalPoint destinationPoint = LocalPoint.fromWorld(client, linePoints.get(i+1));
+			if (startPoint == null || destinationPoint == null)
+			{
+				continue;
+			}
+
+			Point startPosOnMinimap = Perspective.localToMinimap(client, startPoint, 10000000);
+			Point destinationPosOnMinimap = Perspective.localToMinimap(client, destinationPoint, 10000000);
+
+			if (destinationPosOnMinimap == null || startPosOnMinimap == null)
+			{
+				continue;
+			}
+
+			Line2D.Double line = new Line2D.Double(startPosOnMinimap.getX(), startPosOnMinimap.getY(), destinationPosOnMinimap.getX(), destinationPosOnMinimap.getY());
+
+			Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
+			Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
+
+			if (minimapWidget != null)
+			{
+				bounds = minimapWidget.getBounds();
+			}
+			boolean isEndOfLine = (linePoints.size() - 2) == i;
+			drawLine(graphics, line, isEndOfLine, bounds);
+		}
+	}
 
 	public void setWorldPoint(WorldPoint worldPoint)
 	{
@@ -488,6 +526,15 @@ public class DetailedQuestStep extends QuestStep
 		drawArrowHead(graphics, line, tx, arrowHead2);
 	}
 
+	protected void drawLine(Graphics2D graphics, Line2D.Double line, boolean endOfLine, Rectangle clippingRegion)
+	{
+		// TODO: Work on aesthetic of line
+		graphics.setStroke(new BasicStroke(1));
+		graphics.setClip(clippingRegion);
+		graphics.setColor(Color.CYAN);
+		graphics.draw(line);
+	}
+
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
@@ -504,12 +551,26 @@ public class DetailedQuestStep extends QuestStep
 		{
 			renderMinimapArrow(graphics);
 		}
+		createMinimapLines(graphics);
 
-
-		Point drawPoint = mapWorldPointToGraphicsPoint(point);
 		final Rectangle mapViewArea = getWorldMapClipArea();
 
+		Point drawPoint = mapWorldPointToGraphicsPoint(point);
 		renderWorldMapArrow(mapViewArea, drawPoint);
+
+		if (linePoints == null || linePoints.size() < 2)
+		{
+			return;
+		}
+
+		for (int i = 0; i < linePoints.size() - 1; i++)
+		{
+			Point startPoint = mapWorldPointToGraphicsPoint(linePoints.get(i));
+			Point endPoint = mapWorldPointToGraphicsPoint(linePoints.get(i + 1));
+
+			boolean isEndOfLine = (linePoints.size() - 2) == i;
+			renderWorldMapLines(graphics, mapViewArea, startPoint, endPoint, isEndOfLine);
+		}
 	}
 
 	public Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
@@ -600,6 +661,21 @@ public class DetailedQuestStep extends QuestStep
 				}
 			}
 		}
+	}
+
+	private void renderWorldMapLines(Graphics2D graphics, Rectangle mapViewArea, Point startPoint, Point endPoint, boolean isEndOfLine)
+	{
+		if (mapViewArea == null || startPoint == null || endPoint == null)
+		{
+			return;
+		}
+		if (!mapViewArea.contains(startPoint.getX(), startPoint.getY()) && !mapViewArea.contains(endPoint.getX(), endPoint.getY()))
+		{
+			return;
+		}
+
+		Line2D.Double line = new Line2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
+		drawLine(graphics, line, isEndOfLine, getWorldMapClipArea());
 	}
 
 	private Rectangle getWorldMapClipArea()

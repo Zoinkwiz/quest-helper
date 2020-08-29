@@ -180,7 +180,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.setHighlightInInventory(true);
 
-		sandstone32 = new ItemRequirement("52 kg of sandstone", -1, -1);
+		sandstone52 = new ItemRequirement("52 kg of sandstone", -1, -1);
 
 		sandstone32 = new ItemRequirement("Sandstone 32kg", ItemID.SANDSTONE_32KG);
 		sandstone32.setHighlightInInventory(true);

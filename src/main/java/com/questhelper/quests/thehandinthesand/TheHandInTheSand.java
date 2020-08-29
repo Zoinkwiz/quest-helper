@@ -172,7 +172,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		wizardsHead.setTip("You can get another from Mazion on Entrana");
 
 		teleportsToBrimhaven = new ItemRequirement("Teleports to Brimhaven, or to near a boat to Brimhaven", ItemID.BRIMHAVEN_TELEPORT, -1);
-		teleportsToBrimhaven = new ItemRequirement("Teleports to Yanille, such as dueling ring or minigame teleport", ItemID.YANILLE_TELEPORT, -1);
+		teleportsToYanille = new ItemRequirement("Teleports to Yanille, such as dueling ring or minigame teleport", ItemID.YANILLE_TELEPORT, -1);
 	}
 
 	public void loadZones()

@@ -494,7 +494,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		ItemRequirement giftItem;
 		Player player = client.getLocalPlayer();
-		if (player != null && player.getPlayerComposition() != null && player.getPlayerComposition().isFemale())
+		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
 		{
 			giftItem = bow;
 		}
@@ -513,7 +513,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
 				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand)));
 
-		if (player != null && player.getPlayerComposition() != null && player.getPlayerComposition().isFemale())
+		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
 		{
 			allSteps.add(astridPanel);
 		}

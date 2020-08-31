@@ -39,12 +39,6 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 
 public class QuestHelperWidgetOverlay extends Overlay
 {
-	public static final int IMAGE_Z_OFFSET = 30;
-
-	public static final Color CLICKBOX_BORDER_COLOR = Color.CYAN;
-	public static final Color CLICKBOX_HOVER_BORDER_COLOR = CLICKBOX_BORDER_COLOR.darker();
-	public static final Color CLICKBOX_FILL_COLOR = new Color(0, 255, 0, 20);
-
 	private final QuestHelperPlugin plugin;
 
 	@Inject

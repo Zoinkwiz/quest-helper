@@ -89,6 +89,9 @@ public abstract class QuestStep implements Module
 	private int currentCutsceneStatus = 0;
 	protected boolean inCutscene;
 
+	@Setter
+	protected boolean allowInCutscene = false;
+
 	protected int iconItemID = -1;
 	protected BufferedImage itemIcon;
 
@@ -146,16 +149,19 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int newCutsceneStatus = client.getVarbitValue(QuestVarbits.CUTSCENE.getId());
-		if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
+		if (!allowInCutscene)
 		{
-			enteredCutscene();
+			int newCutsceneStatus = client.getVarbitValue(QuestVarbits.CUTSCENE.getId());
+			if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
+			{
+				enteredCutscene();
+			}
+			else if (currentCutsceneStatus == 1 && newCutsceneStatus == 0)
+			{
+				leftCutscene();
+			}
+			currentCutsceneStatus = newCutsceneStatus;
 		}
-		else if (currentCutsceneStatus == 1 && newCutsceneStatus == 0)
-		{
-			leftCutscene();
-		}
-		currentCutsceneStatus = newCutsceneStatus;
 	}
 
 	@Subscribe

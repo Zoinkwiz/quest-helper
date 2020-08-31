@@ -453,7 +453,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		repairBridge1.addSubSteps(repairBridge1Second, repairBridge2);
 
 		talkToMawnisAfterRepair = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Report back to Mawnis.");
-		
+
 		talkToGjukiToReport = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
 		travelToJatizsoToReport = new NpcStep(this, NpcID.MORD_GUNNARS, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
 		leaveNeitiznotToReport = new NpcStep(this, NpcID.MARIA_GUNNARS, new WorldPoint(2311, 3781, 0), "Travel back to Rellekka with Maria.");

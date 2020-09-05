@@ -102,4 +102,30 @@ public class ItemCollections
 		ItemID.LAZY_HELL_CAT,
 		ItemID.WILY_HELLCAT)
 	);
+
+	@Getter
+    private static List<Integer> bows = new ArrayList<>(Arrays.asList(
+            ItemID.SHORTBOW,
+            ItemID.LONGBOW,
+            ItemID.MAGIC_SHORTBOW,
+            ItemID.MAGIC_LONGBOW,
+            ItemID.MAPLE_SHORTBOW,
+            ItemID.MAPLE_LONGBOW,
+            ItemID.OAK_SHORTBOW,
+            ItemID.OAK_LONGBOW,
+            ItemID.WILLOW_SHORTBOW,
+            ItemID.WILLOW_LONGBOW,
+            ItemID.YEW_SHORTBOW,
+            ItemID.YEW_LONGBOW
+    ));
+
+	@Getter
+    private static List<Integer> metalArrows = new ArrayList<>(Arrays.asList(
+            ItemID.BRONZE_ARROW,
+            ItemID.IRON_ARROW,
+            ItemID.STEEL_ARROW,
+            ItemID.MITHRIL_ARROW,
+            ItemID.ADAMANT_ARROW,
+            ItemID.RUNE_ARROW
+    ));
 }

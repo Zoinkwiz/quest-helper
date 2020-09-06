@@ -491,7 +491,14 @@ public class DetailedQuestStep extends QuestStep
 		setWorldPoint(new WorldPoint(x, y, z));
 	}
 
-	private void drawArrowHead(Graphics2D g2d, Line2D.Double line, AffineTransform tx, Polygon arrowHead) {
+	private void drawArrowHead(Graphics2D g2d, Line2D.Double line) {
+		AffineTransform tx = new AffineTransform();
+
+		Polygon arrowHead = new Polygon();
+		arrowHead.addPoint( 0,4);
+		arrowHead.addPoint( -6, -5);
+		arrowHead.addPoint( 6,-5);
+
 		tx.setToIdentity();
 		double angle = Math.atan2(line.y2-line.y1, line.x2-line.x1);
 		tx.translate(line.x2, line.y2);
@@ -505,25 +512,15 @@ public class DetailedQuestStep extends QuestStep
 
 	protected void drawMinimapArrow(Graphics2D graphics, Line2D.Double line)
 	{
-		AffineTransform tx = new AffineTransform();
-
 		graphics.setStroke(new BasicStroke(7));
 		graphics.setColor(Color.BLACK);
 		graphics.draw(line);
-		Polygon arrowHead = new Polygon();
-		arrowHead.addPoint( 0,5);
-		arrowHead.addPoint( -7, -5);
-		arrowHead.addPoint( 7,-5);
-		drawArrowHead(graphics, line, tx, arrowHead);
+		drawArrowHead(graphics, line);
 
 		graphics.setStroke(new BasicStroke(4));
 		graphics.setColor(Color.CYAN);
 		graphics.draw(line);
-		Polygon arrowHead2 = new Polygon();
-		arrowHead2.addPoint( 0,4);
-		arrowHead2.addPoint( -6, -5);
-		arrowHead2.addPoint( 6,-5);
-		drawArrowHead(graphics, line, tx, arrowHead2);
+		drawArrowHead(graphics, line);
 	}
 
 	protected void drawLine(Graphics2D graphics, Line2D.Double line, boolean endOfLine, Rectangle clippingRegion)
@@ -533,6 +530,8 @@ public class DetailedQuestStep extends QuestStep
 		graphics.setClip(clippingRegion);
 		graphics.setColor(Color.CYAN);
 		graphics.draw(line);
+
+		drawArrowHead(graphics, line);
 	}
 
 	@Override

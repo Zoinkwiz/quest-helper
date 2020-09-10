@@ -80,6 +80,10 @@ public abstract class QuestStep implements Module
 	private boolean isLockable;
 
 	@Getter
+	@Setter
+	private boolean blocker;
+
+	@Getter
 	private boolean unlockable = true;
 
 	@Getter

@@ -1,10 +1,9 @@
 package com.questhelper.quests.deserttreasure;
 
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.NpcStep;
 import java.util.ArrayList;
-import java.util.Arrays;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullItemID;
 import net.runelite.api.coords.WorldPoint;
@@ -56,39 +55,39 @@ public class GiveItems extends NpcStep
 
 	private void itemQuantitiesLeft()
 	{
-		itemRequirements = new ArrayList<>();
+		requirements = new ArrayList<>();
 		if (client.getVarbitValue(bonesId) != 1)
 		{
-			itemRequirements.add(bones);
+			requirements.add(bones);
 		}
 		if (client.getVarbitValue(bloodRuneId) != 1)
 		{
-			itemRequirements.add(bloodRune);
+			requirements.add(bloodRune);
 		}
 		if (client.getVarbitValue(ashesId) != 1)
 		{
-			itemRequirements.add(ashes);
+			requirements.add(ashes);
 		}
 		if (client.getVarbitValue(charcoalId) != 1)
 		{
-			itemRequirements.add(charcoal);
+			requirements.add(charcoal);
 		}
 		if (client.getVarbitValue(magicLogId) != 12)
 		{
 			magicLogs.setQuantity(12 - client.getVarbitValue(magicLogId));
-			itemRequirements.add(magicLogs);
+			requirements.add(magicLogs);
 		}
 		if (client.getVarbitValue(steelBarsId) != 6)
 		{
 			steelBars.setQuantity(6 - client.getVarbitValue(steelBarsId));
-			itemRequirements.add(steelBars);
+			requirements.add(steelBars);
 		}
 		if (client.getVarbitValue(moltenGlassId) != 6)
 		{
 			moltenGlass.setQuantity(6 - client.getVarbitValue(moltenGlassId));
-			itemRequirements.add(moltenGlass);
+			requirements.add(moltenGlass);
 		}
-		if (itemRequirements.isEmpty())
+		if (requirements.isEmpty())
 		{
 			setText("Talk to Eblis in the east of the Bandit Camp.");
 		}

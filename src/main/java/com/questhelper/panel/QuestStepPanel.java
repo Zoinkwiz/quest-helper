@@ -24,10 +24,9 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.steps.DetailedQuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import net.runelite.client.ui.ColorScheme;
 

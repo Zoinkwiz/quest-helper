@@ -1,6 +1,6 @@
 package com.questhelper.quests.myarmsbigadventure;
 
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class AddDung extends ObjectStep
 	{
 		int numCompToAdd = 3 - client.getVarbitValue(2791);
 		dung.setQuantity(numCompToAdd);
-		this.setItemRequirements(new ArrayList<>(Collections.singletonList(dung)));
+		this.setRequirements(new ArrayList<>(Collections.singletonList(dung)));
 		this.setText("Add " + numCompToAdd + " ugthanki dung on My Arm's soil patch.");
 	}
 }

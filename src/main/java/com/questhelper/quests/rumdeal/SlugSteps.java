@@ -1,6 +1,6 @@
 package com.questhelper.quests.rumdeal;
 
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ConditionalStep;

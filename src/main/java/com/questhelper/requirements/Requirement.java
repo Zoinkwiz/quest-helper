@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,65 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper;
+package com.questhelper.requirements;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.client.game.ItemManager;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class ItemRequirements
+abstract public class Requirement
 {
-	Set<ItemRequirement> itemRequirements;
+	abstract public boolean check(Client client);
 
-	Set<ItemRequirements> alternates = new HashSet<>();
-
-	public ItemRequirements(ItemManager itemManager, int id)
-	{
-		this(itemManager, id, 1);
-	}
-
-	public ItemRequirements(ItemManager itemManager, int id, int quantity)
-	{
-		this(itemManager, id, quantity, false);
-	}
-
-	public ItemRequirements(ItemManager itemManager, int id, int quantity, boolean equip)
-	{
-		itemRequirements = new HashSet<>();
-		itemRequirements.add(new ItemRequirement("name", id, quantity, equip));
-	}
-
-	public ItemRequirements(ItemRequirement... itemRequirements)
-	{
-		this.itemRequirements = new HashSet<>();
-		Collections.addAll(this.itemRequirements, itemRequirements);
-	}
-
-	public void addAlternate(ItemRequirements... itemRequirements)
-	{
-		Collections.addAll(alternates, itemRequirements);
-	}
-
-	public boolean check(Client client)
-	{
-		for (ItemRequirements itemRequirements : alternates)
-		{
-			if (itemRequirements.check(client))
-			{
-				return true;
-			}
-		}
-
-		for (ItemRequirement itemRequirement : itemRequirements)
-		{
-			if (!itemRequirement.check(client))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
+	abstract public ArrayList<LineComponent> getDisplayText(Client client);
 }

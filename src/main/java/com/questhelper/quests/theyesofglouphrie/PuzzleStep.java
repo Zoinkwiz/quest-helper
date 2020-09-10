@@ -25,7 +25,7 @@
 package com.questhelper.quests.theyesofglouphrie;
 
 import com.google.inject.Inject;
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
@@ -147,7 +147,6 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 	public void solvePuzzle1()
 	{
-		// TODO: Fix these varp and widget IDs
 		int heldDisc = client.getVarpValue(856);
 		Widget insertWidget = client.getWidget(447, 0);
 
@@ -179,7 +178,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		if (items1 == -1)
 		{
-			getPieces.setItemRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
+			getPieces.setRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
 			startUpStep(getPieces);
 			return;
 		}
@@ -201,14 +200,14 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 				ids = getClickableItems(ids, new ArrayList<>(items1));
 
 				insertDisc.setWidgetDetails(ids);
-				insertDisc.setItemRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
+				insertDisc.setRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
 
 				startUpStep(insertDisc);
 			}
 			return;
 		}
 
-		solvePuzzle.setItemRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
+		solvePuzzle.setRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
 		startUpStep(solvePuzzle);
 	}
 
@@ -376,12 +375,12 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		// TODO: Group up multiple of the same item into a single req, so they don't all highlight as had despite only having 1
 		if (mostMatch2 != 1 || newMostMatch3 != 2 || mostMatch4 != 3)
 		{
-			getPieces.setItemRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
-			getPieces.addItemRequirement(items2);
-			getPieces.addItemRequirement(slot2Item);
-			getPieces.addItemRequirement(items3);
-			getPieces.addItemRequirement(slot3Item);
-			getPieces.addItemRequirement(items4);
+			getPieces.setRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
+			getPieces.addItemRequirements(items2);
+			getPieces.addRequirement(slot2Item);
+			getPieces.addItemRequirements(items3);
+			getPieces.addRequirement(slot3Item);
+			getPieces.addItemRequirements(items4);
 			startUpStep(getPieces);
 			return;
 		}
@@ -430,22 +429,22 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 					ids = getClickableItems(ids, items4.iterator().next().getAllIds());
 				}
 				insertDisc.setWidgetDetails(ids);
-				insertDisc.setItemRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
-				insertDisc.addItemRequirement(items2);
-				insertDisc.addItemRequirement(slot2Item);
-				insertDisc.addItemRequirement(items3);
-				insertDisc.addItemRequirement(slot3Item);
-				insertDisc.addItemRequirement(items4);
+				insertDisc.setRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
+				insertDisc.addItemRequirements(items2);
+				insertDisc.addRequirement(slot2Item);
+				insertDisc.addItemRequirements(items3);
+				insertDisc.addRequirement(slot3Item);
+				insertDisc.addItemRequirements(items4);
 				startUpStep(insertDisc);
 			}
 			return;
 		}
-		solvePuzzle.setItemRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
-		solvePuzzle.addItemRequirement(items2);
-		solvePuzzle.addItemRequirement(slot2Item);
-		solvePuzzle.addItemRequirement(items3);
-		solvePuzzle.addItemRequirement(slot3Item);
-		solvePuzzle.addItemRequirement(items4);
+		solvePuzzle.setRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
+		solvePuzzle.addItemRequirements(items2);
+		solvePuzzle.addRequirement(slot2Item);
+		solvePuzzle.addItemRequirements(items3);
+		solvePuzzle.addRequirement(slot3Item);
+		solvePuzzle.addItemRequirements(items4);
 		startUpStep(solvePuzzle);
 	}
 

@@ -272,6 +272,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 				startUpStep(steps.get(conditions));
 				return;
 			}
+			else if (steps.get(conditions).isBlocker() && stepIsLocked)
+			{
+				startUpStep(steps.get(lastPossibleCondition));
+				return;
+			}
 			else if (conditions != null && !stepIsLocked)
 			{
 				lastPossibleCondition = conditions;

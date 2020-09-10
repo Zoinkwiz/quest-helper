@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps;
+package com.questhelper.requirements;
 
-import com.questhelper.requirements.Requirement;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import net.runelite.api.ItemID;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.QuestHelperPlugin;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class DigStep extends DetailedQuestStep
+public class SpellbookRequirement extends Requirement
 {
-	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
+	int spellBook;
+
+	HashMap<Integer, String> spellBooks = new HashMap<>();
+
+	public SpellbookRequirement(int spellBook)
 	{
-		super(questHelper, worldPoint, text, requirements);
-		this.requirements.add(new ItemRequirement("Spade", ItemID.SPADE));
+		spellBooks.put(0, "Normal");
+		spellBooks.put(1, "Ancient");
+		spellBooks.put(2, "Lunar");
+		spellBooks.put(3, "Arceuus");
+
+		this.spellBook = spellBook;
 	}
 
 	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	public boolean check(Client client)
 	{
-		super.makeWorldOverlayHint(graphics, plugin);
-
-		if (inCutscene)
-		{
-			return;
-		}
-
-		LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
-
-		if (localLocation == null)
-		{
-			return;
-		}
-
-		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), Color.ORANGE);
+		int currentSpellbook = client.getVarbitValue(4070);
+		return currentSpellbook == spellBook;
 	}
 
-	private BufferedImage getSpadeImage()
+	@Override
+	public ArrayList<LineComponent> getDisplayText(Client client)
 	{
-		return itemManager.getImage(ItemID.SPADE);
+		ArrayList<LineComponent> lines = new ArrayList<>();
+
+		String text = "You must be on the " + spellBooks.get(spellBook) + " spellbook.";
+		Color color = Color.RED;
+		if (check(client))
+		{
+			color = Color.GREEN;
+		}
+
+		lines.add(LineComponent.builder()
+			.left(text)
+			.leftColor(color)
+			.build());
+
+		return lines;
 	}
 }

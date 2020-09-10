@@ -28,8 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Client;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 
 public class ItemRequirementCondition extends ConditionForStep
 {

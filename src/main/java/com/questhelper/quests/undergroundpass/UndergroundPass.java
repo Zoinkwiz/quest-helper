@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.questhelper.*;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.conditional.*;
 import net.runelite.api.*;

@@ -52,6 +52,14 @@ public class Conditions extends ConditionForStep
 		this.logicType = logicType;
 	}
 
+	public Conditions(boolean onlyNeedToPassOnce, ConditionForStep... conditions)
+	{
+		this.conditions = new ArrayList<>();
+		Collections.addAll(this.conditions, conditions);
+		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
+		this.logicType = LogicType.OR;
+	}
+
 	@Override
 	public void initialize(Client client)
 	{

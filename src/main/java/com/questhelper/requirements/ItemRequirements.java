@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
@@ -22,80 +23,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.requirements;
 
-import com.google.inject.Inject;
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Map;
-import net.runelite.client.game.ItemManager;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
+import java.util.Arrays;
+import net.runelite.api.Client;
 
-public abstract class BasicQuestHelper extends QuestHelper
+public class ItemRequirements extends ItemRequirement
 {
-	protected Map<Integer, QuestStep> steps;
-	protected int var;
+	ArrayList<ItemRequirement> itemRequirements = new ArrayList<>();
 
-	@Inject
-	protected ItemManager itemManager;
+	public ItemRequirements(String name, ItemRequirement... itemRequirements)
+	{
+		super(name, -1, -1);
+		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
+	}
 
 	@Override
-	public void startUp()
+	public boolean check(Client client)
 	{
-		if(steps == null)
+		for (ItemRequirement itemRequirement : itemRequirements)
 		{
-			steps = loadSteps();
-			instantiateSteps(steps.values());
-			var = getVar();
-			startUpStep(steps.get(var));
+			if (!itemRequirement.check(client))
+			{
+				return false;
+			}
 		}
+		return true;
 	}
 
 	@Override
-	public void shutDown()
+	protected Color getColor(Client client)
 	{
-		steps = null;
-		shutDownStep();
-	}
+		Color color;
 
-	@Override
-	public boolean updateQuest()
-	{
-		if (var < getVar())
+		if (this.check(client))
 		{
-			var = getVar();
-			shutDownStep();
-			startUpStep(steps.get(var));
-			return true;
+			color = Color.GREEN;
 		}
-		return false;
+		else
+		{
+			color = Color.RED;
+		}
+		return color;
 	}
-
-	public ArrayList<ItemRequirement> getItemRequirements() {
-		return null;
-	}
-
-	public ArrayList<ItemRequirement> getItemRecommended() {
-		return null;
-	}
-
-	public ArrayList<String> getCombatRequirements() {
-		return null;
-	};
-
-	public ArrayList<PanelDetails> getPanels() {
-		ArrayList<PanelDetails> panelSteps = new ArrayList<>();
-		steps.forEach((id, step) -> {
-			panelSteps.add(new PanelDetails("", step));
-		});
-		return panelSteps;
-	}
-
-	public ArrayList<String> getNotes()
-	{
-		return null;
-	}
-
-	public abstract Map<Integer, QuestStep> loadSteps();
 }

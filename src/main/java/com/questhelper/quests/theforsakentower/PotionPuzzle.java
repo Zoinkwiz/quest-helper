@@ -1,7 +1,7 @@
 package com.questhelper.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -18,7 +18,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.Client;
@@ -122,7 +121,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					getFluid.addWidgetChoice(correctFluid-1, 187, 3);
 					getFluid.setText("Take Fluid " + correctFluid + " from the table.");
 
-					useFluidOnRefinery.addItemRequirement(fluids[correctFluid]);
+					useFluidOnRefinery.addRequirement(fluids[correctFluid]);
 					useFluidOnRefinery.addIcon(fluids[correctFluid].getId());
 
 					fluidFound = true;

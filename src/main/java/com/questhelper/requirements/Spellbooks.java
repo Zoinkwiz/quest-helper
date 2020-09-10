@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps;
+package com.questhelper.requirements;
 
-import com.questhelper.requirements.Requirement;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import net.runelite.api.ItemID;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.QuestHelperPlugin;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public class DigStep extends DetailedQuestStep
+@AllArgsConstructor
+@Getter
+public enum Spellbooks
 {
-	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
-	{
-		super(questHelper, worldPoint, text, requirements);
-		this.requirements.add(new ItemRequirement("Spade", ItemID.SPADE));
-	}
+	NORMAL(0),
+	ANCIENT(1),
+	LUNAR(2),
+	ARCEUUS(3);
 
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		super.makeWorldOverlayHint(graphics, plugin);
-
-		if (inCutscene)
-		{
-			return;
-		}
-
-		LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
-
-		if (localLocation == null)
-		{
-			return;
-		}
-
-		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), Color.ORANGE);
-	}
-
-	private BufferedImage getSpadeImage()
-	{
-		return itemManager.getImage(ItemID.SPADE);
-	}
+	private final int id;
 }

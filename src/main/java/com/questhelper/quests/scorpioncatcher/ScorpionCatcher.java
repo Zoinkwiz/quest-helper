@@ -3,7 +3,7 @@ package com.questhelper.quests.scorpioncatcher;
 import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Map;
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
@@ -22,8 +23,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper;
+package com.questhelper.requirements;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +35,9 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class ItemRequirement
+public class ItemRequirement extends Requirement
 {
 	@Getter
 	private final int id;
@@ -58,6 +61,9 @@ public class ItemRequirement
 
 	private final List<Integer> alternates = new ArrayList<>();
 
+	@Setter
+	private boolean exclusiveToOneItemType;
+
 	public ItemRequirement(String name, int id)
 	{
 		this(name, id, 1);
@@ -76,6 +82,7 @@ public class ItemRequirement
 		this(name, id, quantity);
 		this.equip = equip;
 	}
+
 
 	public ItemRequirement(boolean highlightInInventory, String name, int id)
 	{
@@ -121,29 +128,108 @@ public class ItemRequirement
 		return ids;
 	}
 
+	public ArrayList<LineComponent> getDisplayText(Client client)
+	{
+		ArrayList<LineComponent> lines = new ArrayList<>();
+
+		String text = "";
+		if (this.showQuantity())
+		{
+			text = this.getQuantity() + " x ";
+		}
+		text = text + this.getName();
+
+		Color color = getColor(client);
+
+		lines.add(LineComponent.builder()
+			.left(text)
+			.leftColor(color)
+			.build());
+
+		lines.addAll(getAdditionalText(client));
+
+		return lines;
+	}
+
+	protected Color getColor(Client client)
+	{
+		Color color;
+		if (!this.isActualItem())
+		{
+			color = Color.GRAY;
+		}
+		else if (this.check(client))
+		{
+			color = Color.GREEN;
+		}
+		else
+		{
+			color = Color.RED;
+		}
+		return color;
+	}
+
+	private ArrayList<LineComponent> getAdditionalText(Client client)
+	{
+		Color equipColor = Color.GREEN;
+
+		ArrayList<LineComponent> lines = new ArrayList<>();
+
+		if (this.isEquip())
+		{
+			String equipText = "(equipped)";
+			if (!this.check(client, true))
+			{
+				equipColor = Color.RED;
+			}
+			lines.add(LineComponent.builder()
+				.left(equipText)
+				.leftColor(equipColor)
+				.build());
+		}
+
+		if (this.getTip() != null && !check(client))
+		{
+			lines.add(LineComponent.builder()
+				.left("- " + this.getTip())
+				.leftColor(Color.WHITE)
+				.build());
+		}
+
+		return lines;
+	}
+
 	public boolean check(Client client, boolean checkEquippedOnly)
+	{
+		int remainder = checkSpecificItem(client, id, checkEquippedOnly);
+		if (remainder <= 0)
+		{
+			return true;
+		}
+
+		for (int alternate : alternates)
+		{
+			if (exclusiveToOneItemType)
+			{
+				remainder = quantity;
+			}
+			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkEquippedOnly));
+			if (remainder <= 0)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int checkSpecificItem(Client client, int itemID, boolean checkEquippedOnly)
 	{
 		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
 		int tempQuantity = quantity;
 
 		if (equipped != null)
 		{
-			Item[] equippedItems = equipped.getItems();
-
-			for (Item item : equippedItems)
-			{
-				if (item.getId() == id || alternates.contains(item.getId()))
-				{
-					if (item.getQuantity() >= tempQuantity)
-					{
-						return true;
-					}
-					else
-					{
-						tempQuantity -= item.getQuantity();
-					}
-				}
-			}
+			tempQuantity = getNumMatches(equipped, tempQuantity, itemID);
 		}
 
 		if (!checkEquippedOnly)
@@ -151,24 +237,34 @@ public class ItemRequirement
 			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 			if (inventory != null)
 			{
-				Item[] inventoryItems = inventory.getItems();
-				for (Item item : inventoryItems)
+				tempQuantity -= (quantity - getNumMatches(inventory, tempQuantity, itemID));
+			}
+		}
+
+		return tempQuantity;
+	}
+
+	public int getNumMatches(ItemContainer items, int startQuantity, int itemID)
+	{
+		int tempQuantity = startQuantity;
+
+		Item[] equippedItems = items.getItems();
+
+		for (Item item : equippedItems)
+		{
+			if (item.getId() == itemID)
+			{
+				if (item.getQuantity() >= tempQuantity)
 				{
-					if (item.getId() == id || alternates.contains(item.getId()))
-					{
-						if (item.getQuantity() >= tempQuantity)
-						{
-							return true;
-						}
-						else
-						{
-							tempQuantity -= item.getQuantity();
-						}
-					}
+					return tempQuantity - item.getQuantity();
+				}
+				else
+				{
+					tempQuantity -= item.getQuantity();
 				}
 			}
 		}
-		return false;
+		return tempQuantity;
 	}
 
 	public boolean check(Client client)

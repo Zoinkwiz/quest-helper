@@ -1,5 +1,6 @@
 package com.questhelper.steps;
 
+import com.questhelper.requirements.Requirement;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
@@ -25,7 +26,6 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
-import com.questhelper.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_FILL_COLOR;
@@ -43,15 +43,15 @@ public class ObjectStep extends DetailedQuestStep
 
 	private final List<TileObject> objects = new ArrayList<>();
 
-	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
+	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
-		super(questHelper, worldPoint, text, itemRequirements);
+		super(questHelper, worldPoint, text, requirements);
 		this.objectID = objectID;
 	}
 
-	public ObjectStep(QuestHelper questHelper, int objectID, String text, ItemRequirement... itemRequirements)
+	public ObjectStep(QuestHelper questHelper, int objectID, String text, Requirement... requirements)
 	{
-		super(questHelper, null, text, itemRequirements);
+		super(questHelper, null, text, requirements);
 		this.objectID = objectID;
 	}
 

@@ -1,5 +1,6 @@
 package com.questhelper.steps;
 
+import com.questhelper.requirements.Requirement;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -8,9 +9,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
-import com.questhelper.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.questhelpers.QuestHelper;
@@ -27,9 +25,9 @@ public class TileStep extends DetailedQuestStep
 
 	private WorldPoint worldPoint;
 
-	public TileStep(QuestHelper questHelper, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
+	public TileStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
-		super(questHelper, text, itemRequirements);
+		super(questHelper, text, requirements);
 		this.worldPoint = worldPoint;
 	}
 

@@ -24,6 +24,7 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.requirements.Requirement;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
@@ -43,7 +45,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
-import com.questhelper.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.QuestHelperPlugin;
 import static com.questhelper.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
@@ -64,23 +65,24 @@ public class NpcStep extends DetailedQuestStep
 
 	private BufferedImage npcIcon;
 
-	private final int MAX_ROAM_RANGE = 48;
+	@Setter
+	private int maxRoamRange = 48;
 
-	public NpcStep(QuestHelper questHelper, int npcID, String text, ItemRequirement... itemRequirements)
+	public NpcStep(QuestHelper questHelper, int npcID, String text, Requirement... requirements)
 	{
-		super(questHelper, text, itemRequirements);
+		super(questHelper, text, requirements);
 		this.npcID = npcID;
 	}
 
-	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
+	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
-		super(questHelper, worldPoint, text, itemRequirements);
+		super(questHelper, worldPoint, text, requirements);
 		this.npcID = npcID;
 	}
 
-	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, boolean allowMultipleHighlights, ItemRequirement... itemRequirements)
+	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, boolean allowMultipleHighlights, Requirement... requirements)
 	{
-		super(questHelper, worldPoint, text, itemRequirements);
+		super(questHelper, worldPoint, text, requirements);
 		this.allowMultipleHighlights = allowMultipleHighlights;
 		this.npcID = npcID;
 	}
@@ -96,7 +98,7 @@ public class NpcStep extends DetailedQuestStep
 			if (npcID == npc.getId() || alternateNpcIDs.contains(npc.getId()))
 			{
 				WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-				if (this.npc == null && (worldPoint == null || npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE))
+				if (this.npc == null && (worldPoint == null || npcPoint.distanceTo(worldPoint) < maxRoamRange))
 				{
 					this.npc = npc;
 				}
@@ -133,7 +135,7 @@ public class NpcStep extends DetailedQuestStep
 				{
 					npc = event.getNpc();
 				}
-				else if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				else if (npcPoint.distanceTo(worldPoint) < maxRoamRange)
 				{
 					npc = event.getNpc();
 				}
@@ -144,7 +146,7 @@ public class NpcStep extends DetailedQuestStep
 				{
 					npc = event.getNpc();
 				}
-				else if (npcPoint.distanceTo(worldPoint) < MAX_ROAM_RANGE)
+				else if (npcPoint.distanceTo(worldPoint) < maxRoamRange)
 				{
 					otherNpcs.add(event.getNpc());
 				}

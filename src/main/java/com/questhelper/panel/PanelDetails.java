@@ -27,9 +27,8 @@ package com.questhelper.panel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import lombok.Getter;
-import com.questhelper.ItemRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.QuestStep;
-import lombok.Setter;
 
 public class PanelDetails {
 	@Getter

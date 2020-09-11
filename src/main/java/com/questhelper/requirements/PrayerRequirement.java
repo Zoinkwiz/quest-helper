@@ -24,25 +24,30 @@
  */
 package com.questhelper.requirements;
 
+import com.google.common.base.CaseFormat;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import net.runelite.api.Client;
+import net.runelite.api.Prayer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class SpellbookRequirement extends Requirement
+public class PrayerRequirement extends Requirement
 {
-	Spellbook spellBook;
+	Prayer prayer;
+	String text;
 
-	public SpellbookRequirement(Spellbook spellBook)
+	public PrayerRequirement(String text, Prayer prayer)
 	{
-		this.spellBook = spellBook;
+		this.prayer = prayer;
+		this.text = text;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		int currentSpellbook = client.getVarbitValue(4070);
-		return currentSpellbook == spellBook.getId();
+		int currentPrayer = client.getVar(prayer.getVarbit());
+		return currentPrayer == 1;
 	}
 
 	@Override
@@ -50,7 +55,6 @@ public class SpellbookRequirement extends Requirement
 	{
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
-		String text = "You must be on the " + spellBook.getName() + " spellbook.";
 		Color color = Color.RED;
 		if (check(client))
 		{

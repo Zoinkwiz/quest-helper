@@ -4,7 +4,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.SpellbookRequirement;
-import com.questhelper.requirements.Spellbooks;
+import com.questhelper.requirements.Spellbook;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.conditional.ChatMessageCondition;
@@ -506,7 +506,7 @@ public class LegendsQuest extends BasicQuestHelper
 		heartCrystal2 = new ItemRequirement("Heart crystal", ItemID.HEART_CRYSTAL_745);
 		heartCrystal2.setHighlightInInventory(true);
 
-		normalSpellbook = new SpellbookRequirement(Spellbooks.NORMAL.getId());
+		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		darkDagger = new ItemRequirement("Dark dagger", ItemID.DARK_DAGGER);
 		darkDagger.setHighlightInInventory(true);

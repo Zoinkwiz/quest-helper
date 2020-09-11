@@ -29,12 +29,15 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Spellbooks
+public enum Spellbook
 {
-	NORMAL(0),
-	ANCIENT(1),
-	LUNAR(2),
-	ARCEUUS(3);
+	NORMAL(0, "Normal"),
+	ANCIENT(1, "Ancient"),
+	LUNAR(2, "Lunar"),
+	ARCEUUS(3, "Arceuus");
 
 	private final int id;
+
+	@Getter
+	private final String name;
 }

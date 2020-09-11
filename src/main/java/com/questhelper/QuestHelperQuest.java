@@ -155,9 +155,10 @@ public enum QuestHelperQuest
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters", QuestVarbits.QUEST_ZOGRE_FLESH_EATERS),
 	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", QuestVarbits.QUEST_THE_FORSAKEN_TOWER),
-	//SONG_OF_THE_ELVES(603, "Song of the Elves"),
-	//THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
-	//SINS_OF_THE_FATHER(1276, "Sins of the Father"),
+	SONG_OF_THE_ELVES(603, "Song of the Elves", QuestVarbits.QUEST_SONG_OF_THE_ELVES),
+	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles", QuestVarbits.QUEST_THE_FREMENNIK_EXILES),
+	SINS_OF_THE_FATHER(1276, "Sins of the Father", QuestVarbits.QUEST_SINS_OF_THE_FATHER),
+	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest", QuestVarbits.QUEST_A_PORCINE_OF_INTEREST),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss", QuestVarPlayer.QUEST_ENTER_THE_ABYSS),
@@ -171,8 +172,8 @@ public enum QuestHelperQuest
 	THE_MAGE_ARENA(327, "The Mage Arena", QuestVarPlayer.QUEST_THE_MAGE_ARENA),
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor", QuestVarbits.QUEST_LAIR_OF_TARN_RAZORLOR),
 	FAMILY_PEST(329, "Family Pest", QuestVarbits.QUEST_FAMILY_PEST),
-	THE_MAGE_ARENA_II(330, "The Mage Arena II", QuestVarbits.QUEST_THE_MAGE_ARENA_II);
-	//IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge");
+	THE_MAGE_ARENA_II(330, "The Mage Arena II", QuestVarbits.QUEST_THE_MAGE_ARENA_II),
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge", QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE);
 
 	@Getter
 	private final int id;

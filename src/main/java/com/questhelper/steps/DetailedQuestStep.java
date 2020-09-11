@@ -41,7 +41,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.api.Constants;
+import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -291,7 +295,40 @@ public class DetailedQuestStep extends QuestStep
 			renderArrow(graphics);
 		}
 
+		if (linePoints != null && linePoints.size() > 1)
+		{
+			drawLinesOnWorld(graphics);
+		}
+
 		tileHighlights.forEach((tile, ids) -> checkAllTilesForHighlighting(tile, ids, graphics));
+	}
+
+	public void drawLinesOnWorld(Graphics2D graphics)
+	{
+		for (int i = 0; i < linePoints.size() - 1; i++)
+		{
+			Collection<WorldPoint> startPoints = WorldPoint.toLocalInstance(client, linePoints.get(i));
+			Collection<WorldPoint> endPoints = WorldPoint.toLocalInstance(client, linePoints.get(i+1));
+			if (startPoints.isEmpty() || endPoints.isEmpty())
+			{
+				continue;
+			}
+			WorldPoint startWp = startPoints.iterator().next();
+			WorldPoint endWp = endPoints.iterator().next();
+			if (startWp == null || endWp == null || !startWp.isInScene(client) || !endWp.isInScene(client))
+			{
+				return;
+			}
+
+			LocalPoint startLp = LocalPoint.fromWorld(client, startWp);
+			LocalPoint endLp = LocalPoint.fromWorld(client, endWp);
+
+			Line2D.Double newLine = getWorldLines(client, startLp, endLp);
+			if (newLine != null)
+			{
+				OverlayUtil.renderPolygon(graphics, newLine, Color.CYAN);
+			}
+		}
 	}
 
 	public void renderArrow(Graphics2D graphics)
@@ -470,9 +507,9 @@ public class DetailedQuestStep extends QuestStep
 		AffineTransform tx = new AffineTransform();
 
 		Polygon arrowHead = new Polygon();
-		arrowHead.addPoint( 0,4);
-		arrowHead.addPoint( -6, -5);
-		arrowHead.addPoint( 6,-5);
+		arrowHead.addPoint( 0,0);
+		arrowHead.addPoint( -3, -6);
+		arrowHead.addPoint( 3,-6);
 
 		tx.setToIdentity();
 		double angle = Math.atan2(line.y2-line.y1, line.x2-line.x1);
@@ -650,6 +687,41 @@ public class DetailedQuestStep extends QuestStep
 
 		Line2D.Double line = new Line2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
 		drawLine(graphics, line, isEndOfLine, getWorldMapClipArea());
+	}
+
+	public static Line2D.Double getWorldLines(@Nonnull Client client, @Nonnull LocalPoint startLocation, LocalPoint endLocation)
+	{
+		final int plane = client.getPlane();
+
+		final int startX = startLocation.getX();
+		final int startY = startLocation.getY();
+		final int endX = endLocation.getX();
+		final int endY = endLocation.getY();
+
+		final int sceneX = startLocation.getSceneX();
+		final int sceneY = startLocation.getSceneY();
+
+		if (sceneX < 0 || sceneY < 0 || sceneX >= Constants.SCENE_SIZE || sceneY >= Constants.SCENE_SIZE)
+		{
+			return null;
+		}
+
+		int tilePlane = plane;
+
+		final int startHeight = Perspective.getTileHeight(client, startLocation, tilePlane);
+		final int endHeight = Perspective.getTileHeight(client, endLocation, tilePlane);
+
+		Point p1 = Perspective.localToCanvas(client, startX, startY, startHeight);
+		Point p2 = Perspective.localToCanvas(client, endX, endY, endHeight);
+
+		if (p1 == null || p2 == null)
+		{
+			return null;
+		}
+
+		Line2D.Double line = new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+
+		return line;
 	}
 
 	private Rectangle getWorldMapClipArea()

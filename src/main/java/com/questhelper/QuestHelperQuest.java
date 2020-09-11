@@ -173,7 +173,8 @@ public enum QuestHelperQuest
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor", QuestVarbits.QUEST_LAIR_OF_TARN_RAZORLOR),
 	FAMILY_PEST(329, "Family Pest", QuestVarbits.QUEST_FAMILY_PEST),
 	THE_MAGE_ARENA_II(330, "The Mage Arena II", QuestVarbits.QUEST_THE_MAGE_ARENA_II),
-	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge", QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE);
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge", QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE),
+	DADDYS_HOME(1688, "Daddy's Home", QuestVarbits.QUEST_DADDYS_HOME);
 
 	@Getter
 	private final int id;

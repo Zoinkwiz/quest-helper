@@ -337,8 +337,7 @@ class QuestHelperPanel extends PluginPanel
 		questStepPanelList.forEach(panel -> {
 			boolean highlighted = false;
 			panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
-				(panel.panelDetails.getVars() == null
-					|| panel.panelDetails.getVars().contains(currentQuest.getVar())));
+				(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
 			for (QuestStep step : panel.getSteps())
 			{
 				if (step == newStep || step.getSubsteps().contains(newStep))

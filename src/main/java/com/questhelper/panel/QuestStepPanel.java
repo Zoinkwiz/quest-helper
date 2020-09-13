@@ -217,7 +217,7 @@ public class QuestStepPanel extends JPanel
 	{
 		if (currentlyHighlighted != null)
 		{
-			steps.get(currentlyHighlighted).setForeground(Color.WHITE);
+			steps.get(currentlyHighlighted).setForeground(Color.LIGHT_GRAY);
 		}
 		else
 		{
@@ -248,7 +248,7 @@ public class QuestStepPanel extends JPanel
 			leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 			if (steps.get(currentlyHighlighted) != null)
 			{
-				steps.get(currentlyHighlighted).setForeground(Color.WHITE);
+				steps.get(currentlyHighlighted).setForeground(Color.LIGHT_GRAY);
 			}
 			currentlyHighlighted = null;
 		}

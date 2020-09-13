@@ -82,11 +82,14 @@ public class NpcStep extends DetailedQuestStep
 
 	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, boolean allowMultipleHighlights, Requirement... requirements)
 	{
-		super(questHelper, worldPoint, text, requirements);
+		this(questHelper, npcID, worldPoint, text, requirements);
 		this.allowMultipleHighlights = allowMultipleHighlights;
-		this.npcID = npcID;
 	}
 
+	public NpcStep(QuestHelper questHelper, int npcID, String text, boolean allowMultipleHighlights, Requirement... requirements)
+	{
+		this(questHelper, npcID, null, text, allowMultipleHighlights, requirements);
+	}
 
 	@Override
 	public void startUp()

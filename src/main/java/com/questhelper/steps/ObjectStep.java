@@ -272,7 +272,6 @@ public class ObjectStep extends DetailedQuestStep
 		
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
-			System.out.println("OBJECT FOUND: " + object.getId() + " and loc "+ object.getWorldLocation());
 			if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
 			{
 				this.object = object;

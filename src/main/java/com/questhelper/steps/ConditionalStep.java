@@ -25,26 +25,21 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.conditional.WidgetTextCondition;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
@@ -55,7 +50,7 @@ import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.NpcCondition;
 import com.questhelper.steps.conditional.OwnerStep;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 
 /* Conditions are checked in the order they were added */
 public class ConditionalStep extends QuestStep implements OwnerStep
@@ -72,9 +67,20 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected QuestStep currentStep;
 
-	public ConditionalStep(QuestHelper questHelper, QuestStep step)
+	protected Requirement[] requirements;
+
+	public ConditionalStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
-		super(questHelper, "");
+		super(questHelper);
+		this.requirements = requirements;
+		this.steps = new LinkedHashMap<>();
+		this.steps.put(null, step);
+	}
+
+	public ConditionalStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)
+	{
+		super(questHelper, text);
+		this.requirements = requirements;
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
 	}
@@ -323,11 +329,32 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)
 	{
+		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
+
 		if (currentStep != null)
 		{
-			currentStep.makeOverlayHint(panelComponent, plugin);
+			if (text == null)
+			{
+				currentStep.makeOverlayHint(panelComponent, plugin, allRequirements);
+			}
+			else
+			{
+				currentStep.makeOverlayHint(panelComponent, plugin, text, allRequirements);
+			}
+		}
+	}
+
+	// This should only have been called from a parent ConditionalStep, so default the additional text to the passed in text
+	@Override
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	{
+		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
+
+		if (currentStep != null)
+		{
+			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, allRequirements);
 		}
 	}
 
@@ -347,10 +374,23 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			return currentStep.getActiveStep();
 		}
-		else
+
+		return this;
+	}
+
+	@Override
+	public QuestStep getSidePanelStep()
+	{
+		if (text != null)
 		{
 			return this;
 		}
+		else if (currentStep != null)
+		{
+			return currentStep.getSidePanelStep();
+		}
+
+		return this;
 	}
 
 	@Override

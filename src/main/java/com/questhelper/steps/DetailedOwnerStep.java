@@ -27,16 +27,21 @@ package com.questhelper.steps;
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.conditional.OwnerStep;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Collection;
 import net.runelite.api.Client;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class DetailedOwnerStep extends QuestStep implements OwnerStep
 {
 	protected QuestStep currentStep;
+
+	protected Requirement[] requirements;
 
 	@Inject
 	protected EventBus eventBus;
@@ -44,9 +49,16 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 	@Inject
 	protected Client client;
 
-	public DetailedOwnerStep(QuestHelper questHelper)
+	public DetailedOwnerStep(QuestHelper questHelper, Requirement... requirements)
 	{
-		super(questHelper, "");
+		super(questHelper);
+		this.requirements = requirements;
+	}
+
+	public DetailedOwnerStep(QuestHelper questHelper, String text, Requirement... requirements)
+	{
+		super(questHelper, text);
+		this.requirements = requirements;
 	}
 
 	@Override
@@ -91,11 +103,32 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)
 	{
+		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
+
 		if (currentStep != null)
 		{
-			currentStep.makeOverlayHint(panelComponent, plugin);
+			if (text == null)
+			{
+				currentStep.makeOverlayHint(panelComponent, plugin, allRequirements);
+			}
+			else
+			{
+				currentStep.makeOverlayHint(panelComponent, plugin, text, allRequirements);
+			}
+		}
+	}
+
+	// This should only have been called from a parent ConditionalStep, so default the additional text to the passed in text
+	@Override
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	{
+		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
+
+		if (currentStep != null)
+		{
+			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, allRequirements);
 		}
 	}
 

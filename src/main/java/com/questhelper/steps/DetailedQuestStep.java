@@ -45,7 +45,6 @@ import javax.annotation.Nonnull;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -99,6 +98,8 @@ public class DetailedQuestStep extends QuestStep
 	protected static final int MAX_DISTANCE = 2350;
 	protected static final int MAX_DRAW_DISTANCE = 16;
 	protected int currentRender = 0;
+
+	private final Color ARROW_COLOUR = new Color(0, 168, 243);
 
 	protected boolean started;
 
@@ -183,28 +184,40 @@ public class DetailedQuestStep extends QuestStep
 		requirements.addAll(requirement);
 	}
 
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
+	@Override
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
 	{
-		super.makeOverlayHint(panelComponent, plugin);
-
-		if (requirements.isEmpty())
-		{
-			return;
-		}
+		super.makeOverlayHint(panelComponent, plugin, additionalText);
 
 		if (inCutscene)
 		{
 			return;
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder().left("Required Items:").build());
-		for (Requirement requirement : requirements)
+		if (!requirements.isEmpty())
 		{
-			ArrayList<LineComponent> lines = requirement.getDisplayText(client);
-
-			for (LineComponent line : lines)
+			panelComponent.getChildren().add(LineComponent.builder().left("Requirements:").build());
+			for (Requirement requirement : requirements)
 			{
-				panelComponent.getChildren().add(line);
+				ArrayList<LineComponent> lines = requirement.getDisplayText(client);
+
+				for (LineComponent line : lines)
+				{
+					panelComponent.getChildren().add(line);
+				}
+			}
+		}
+
+		if (additionalRequirements != null)
+		{
+			for (Requirement requirement : additionalRequirements)
+			{
+				ArrayList<LineComponent> lines = requirement.getDisplayText(client);
+
+				for (LineComponent line : lines)
+				{
+					panelComponent.getChildren().add(line);
+				}
 			}
 		}
 	}
@@ -426,7 +439,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		double xDiff = playerPosOnMinimap.getX() - destinationPosOnMinimap.getX();
-		double yDiff =   destinationPosOnMinimap.getY() - playerPosOnMinimap.getY();
+		double yDiff = destinationPosOnMinimap.getY() - playerPosOnMinimap.getY();
 		double angle = Math.atan2(yDiff, xDiff);
 
 		int startX = (int) (playerPosOnMinimap.getX() - (Math.cos(angle) * 55));
@@ -522,17 +535,36 @@ public class DetailedQuestStep extends QuestStep
 		g.dispose();
 	}
 
+	private void drawMinimapArrowHead(Graphics2D g2d, Line2D.Double line) {
+		AffineTransform tx = new AffineTransform();
+
+		Polygon arrowHead = new Polygon();
+		arrowHead.addPoint( 0,4);
+		arrowHead.addPoint( -6, -5);
+		arrowHead.addPoint( 6,-5);
+
+		tx.setToIdentity();
+		double angle = Math.atan2(line.y2-line.y1, line.x2-line.x1);
+		tx.translate(line.x2, line.y2);
+		tx.rotate((angle-Math.PI/2d));
+
+		Graphics2D g = (Graphics2D) g2d.create();
+		g.setTransform(tx);
+		g.fill(arrowHead);
+		g.dispose();
+	}
+
 	protected void drawMinimapArrow(Graphics2D graphics, Line2D.Double line)
 	{
 		graphics.setStroke(new BasicStroke(7));
 		graphics.setColor(Color.BLACK);
 		graphics.draw(line);
-		drawArrowHead(graphics, line);
+		drawMinimapArrowHead(graphics, line);
 
 		graphics.setStroke(new BasicStroke(4));
-		graphics.setColor(Color.CYAN);
+		graphics.setColor(ARROW_COLOUR);
 		graphics.draw(line);
-		drawArrowHead(graphics, line);
+		drawMinimapArrowHead(graphics, line);
 	}
 
 	protected void drawLine(Graphics2D graphics, Line2D.Double line, boolean endOfLine, Rectangle clippingRegion)

@@ -61,7 +61,7 @@ public class DigStep extends DetailedQuestStep
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), Color.ORANGE);
+		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), Color.CYAN);
 	}
 
 	private BufferedImage getSpadeImage()

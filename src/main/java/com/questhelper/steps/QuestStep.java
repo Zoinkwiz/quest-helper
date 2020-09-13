@@ -27,7 +27,9 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestVarbits;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
 import com.questhelper.steps.conditional.ConditionForStep;
@@ -47,7 +49,6 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import com.questhelper.questhelpers.QuestHelper;
-import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
@@ -114,6 +115,11 @@ public abstract class QuestStep implements Module
 	@Getter
 	@Setter
 	private boolean showInSidebar = true;
+
+	public QuestStep(QuestHelper questHelper)
+	{
+		this.questHelper = questHelper;
+	}
 
 	public QuestStep(QuestHelper questHelper, String text)
 	{
@@ -188,7 +194,12 @@ public abstract class QuestStep implements Module
 
 	public void addText(String newLine)
 	{
-		this.text.add(newLine);
+		if (text == null)
+		{
+			text = new ArrayList<>();
+		}
+
+		text.add(newLine);
 	}
 
 	public void enteredCutscene()
@@ -208,12 +219,12 @@ public abstract class QuestStep implements Module
 
 	public void setText(String text)
 	{
-		this.text =  new ArrayList<>(Collections.singletonList(text));
+		this.text = new ArrayList<>(Collections.singletonList(text));
 	}
 
 	public void setText(ArrayList<String> text)
 	{
-		this.text =  text;
+		this.text = text;
 	}
 
 	public void highlightWidgetChoice()
@@ -251,17 +262,48 @@ public abstract class QuestStep implements Module
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
 	{
+		makeOverlayHint(panelComponent, plugin, null, null);
+	}
+
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)
+	{
+		makeOverlayHint(panelComponent, plugin, null, additionalRequirements);
+	}
+
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	{
+		addTitleToPanel(panelComponent);
+
+		if (additionalText != null)
+		{
+			for (String line : additionalText)
+			{
+				addTextToPanel(panelComponent, line);
+			}
+		}
+
+		if (text != null)
+		{
+			for (String line : text)
+			{
+				addTextToPanel(panelComponent, line);
+			}
+		}
+	}
+
+	private void addTitleToPanel(PanelComponent panelComponent)
+	{
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(questHelper.getQuest().getName())
 			.build());
+	}
 
-		for (String line : text)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(line)
-				.leftColor(TITLED_CONTENT_COLOR)
-				.build());
-		}
+	private void addTextToPanel(PanelComponent panelComponent, String line)
+	{
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(line)
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 	}
 
 	public void addIcon(int iconItemID)
@@ -296,6 +338,11 @@ public abstract class QuestStep implements Module
 	public QuestStep getActiveStep()
 	{
 		return this;
+	}
+
+	public QuestStep getSidePanelStep()
+	{
+		return getActiveStep();
 	}
 
 	public BufferedImage getQuestImage()

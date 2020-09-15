@@ -688,8 +688,8 @@ public class LunarDiplomacy extends BasicQuestHelper
 		addGuamToMarrentill = new DetailedQuestStep(this, "Add guam to the marr vial.", marrentilPotion, guam);
 		addGuam.addSubSteps(addGuamToMarrentill);
 
-		addMarrentil = new DetailedQuestStep(this, "Add marrentill to the guam vial", marrentill, guamPotion);
-		grindTooth = new DetailedQuestStep(this, "Grind the suqah tooth", suqahTooth, pestle);
+		addMarrentil = new DetailedQuestStep(this, "Add marrentill to the guam vial.", marrentill, guamPotion);
+		grindTooth = new DetailedQuestStep(this, "Grind the suqah tooth.", suqahTooth, pestle);
 
 		addToothToPotion = new DetailedQuestStep(this, "Add the ground tooth to the guam-marr potion.", groundTooth, guamMarrentilPotionHighlighted);
 
@@ -875,6 +875,12 @@ public class LunarDiplomacy extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		return new ArrayList<>(Arrays.asList(combatGear, combatRunes));
+	}
+
+	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Arrays.asList("Multiple Suqah (level 111)", "Me (level 79)"));
 	}
 
 	@Override

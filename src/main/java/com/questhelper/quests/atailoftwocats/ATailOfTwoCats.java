@@ -185,7 +185,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3413, 0), "Talk to Gertrude west of Varrock.", cat, catspeakEWorn);
 		talkToGertrude.addDialogStep("Ask about Bob's parents.");
 
-		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0), "Talk to Reldo in the Varrock Museum.", cat, catspeakEWorn);
+		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0), "Talk to Reldo in the Varrock Castle's library.", cat, catspeakEWorn);
 		talkToReldo.addDialogStep("Ask about Robert the Strong.");
 		findBobAgain = new DetailedQuestStep(this, "Use the catspeak amulet (e) again to locate Bob the Cat.", catspeakE);
 		talkToBobAgain = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat again.", cat, catspeakEWorn);

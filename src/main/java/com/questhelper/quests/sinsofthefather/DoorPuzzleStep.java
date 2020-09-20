@@ -2,6 +2,7 @@ package com.questhelper.quests.sinsofthefather;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
@@ -281,8 +282,8 @@ public class DoorPuzzleStep extends DetailedQuestStep
     }
 
     @Override
-    public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin) {
-        super.makeOverlayHint(panelComponent, plugin);
+    public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... requirement) {
+        super.makeOverlayHint(panelComponent, plugin, requirement);
         Widget panels = client.getWidget(665, 32);
         if (result == null && panels != null) {
             String text = "Unable to calculate an answer for this puzzle. Good luck!";

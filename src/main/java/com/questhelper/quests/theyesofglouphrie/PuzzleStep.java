@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetDetails;
@@ -617,11 +618,11 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... requirements)
 	{
 		if (currentStep != null)
 		{
-			currentStep.makeOverlayHint(panelComponent, plugin);
+			currentStep.makeOverlayHint(panelComponent, plugin, requirements);
 		}
 	}
 

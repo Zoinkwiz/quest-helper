@@ -260,11 +260,6 @@ public abstract class QuestStep implements Module
 		widgetChoices.addChoice(new WidgetChoiceStep(id, groupID, childID));
 	}
 
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
-	{
-		makeOverlayHint(panelComponent, plugin, null, null);
-	}
-
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)
 	{
 		makeOverlayHint(panelComponent, plugin, null, additionalRequirements);

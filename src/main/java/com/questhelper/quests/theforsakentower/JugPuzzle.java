@@ -6,6 +6,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -266,11 +267,11 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... requirements)
 	{
 		if (currentStep != null)
 		{
-			currentStep.makeOverlayHint(panelComponent, plugin);
+			currentStep.makeOverlayHint(panelComponent, plugin, requirements);
 		}
 	}
 

@@ -29,7 +29,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.conditional.WidgetTextCondition;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import net.runelite.api.ChatMessageType;

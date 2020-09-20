@@ -24,12 +24,10 @@
  */
 package com.questhelper.steps;
 
-import com.questhelper.steps.choice.WidgetChoiceStep;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.widgets.Widget;
 import com.questhelper.QuestHelperPlugin;

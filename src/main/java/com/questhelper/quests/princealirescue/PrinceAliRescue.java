@@ -33,10 +33,12 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.WidgetTextCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
@@ -48,6 +50,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.PRINCE_ALI_RESCUE
@@ -57,7 +60,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	ItemRequirement softClay, ballsOfWool3, yellowDye, redberries, ashes, bucketOfWater, potOfFlour, bronzeBar, pinkSkirt, beers3, rope, coins100, wig, dyedWig, paste, keyMould, key,
 	ropeReqs, yellowDyeReqs, glory;
 
-	ConditionForStep hasWig, hasDyedWig, hasKey, hasPaste, hasKeyMould, inCell, givenKeyMould;
+	ConditionForStep hasWig, hasDyedWig, hasKey, hasPaste, hasOrGivenKeyMould, inCell, givenKeyMould;
 
 	QuestStep talkToHassan, talkToOsman, talkToNed, talkToAggie, dyeWig, talkToKeli, bringImprintToOsman, talkToLeela, talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli, returnToHassan;
 
@@ -85,14 +88,14 @@ public class PrinceAliRescue extends BasicQuestHelper
 		makePaste.setLockingCondition(hasPaste);
 
 		makeKeyMould = new ConditionalStep(this, talkToKeli);
-		makeKeyMould.setLockingCondition(new Conditions(hasKeyMould, hasKey));
+		makeKeyMould.setLockingCondition(hasOrGivenKeyMould);
 
-		getKey = new ConditionalStep(this, talkToLeela);
-		getKey.addStep(hasKeyMould, bringImprintToOsman);
-		getKey.setLockingCondition(hasKey);
+		getKey = new ConditionalStep(this, bringImprintToOsman);
+		getKey.setLockingCondition(givenKeyMould);
 
 		ConditionalStep prepareToSaveAli = new ConditionalStep(this, makeDyedWig);
-		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste, hasKeyMould), getKey);
+		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste, givenKeyMould), talkToLeela);
+		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste, hasOrGivenKeyMould), getKey);
 		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste), makeKeyMould);
 		prepareToSaveAli.addStep(hasDyedWig, makePaste);
 
@@ -157,8 +160,12 @@ public class PrinceAliRescue extends BasicQuestHelper
 		hasWig = new ItemRequirementCondition(wig);
 		hasKey = new ItemRequirementCondition(key);
 		hasPaste = new ItemRequirementCondition(paste);
-		hasKeyMould = new ItemRequirementCondition(keyMould);
-		givenKeyMould = new VarbitCondition(200, 1);
+		givenKeyMould = new Conditions(true, LogicType.OR,
+			new WidgetTextCondition(119, 3, true, "I have duplicated a key, I need to get it from"),
+			new WidgetTextCondition(119, 3, true, "I got a duplicated cell door key"),
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Pick the key up from Leela."),
+			hasKey);
+		hasOrGivenKeyMould = new Conditions(LogicType.OR, new ItemRequirementCondition(keyMould), givenKeyMould, hasKey);
 	}
 
 	public void setupZones()
@@ -181,14 +188,14 @@ public class PrinceAliRescue extends BasicQuestHelper
 		talkToAggie = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3257, 0), "Talk to Aggie in Draynor Village to get some paste.", redberries, ashes, potOfFlour, bucketOfWater);
 		talkToAggie.addDialogStep("Could you think of a way to make skin paste?");
 		talkToAggie.addDialogStep("Yes please. Mix me some skin paste.");
-		talkToKeli = new NpcStep(this, NpcID.LADY_KELI, new WorldPoint(3127, 3244, 0), "Talk to Keli in the jail east of Draynor Village.");
+		talkToKeli = new NpcStep(this, NpcID.LADY_KELI, new WorldPoint(3127, 3244, 0), "Talk to Keli in the jail east of Draynor Village. If you've already made the key mould, open the quest journal to re-sync.", softClay);
 		talkToKeli.addDialogStep("Heard of you? You are famous in Gielinor!");
 		talkToKeli.addDialogStep("What is your latest plan then?");
 		talkToKeli.addDialogStep("Can you be sure they will not try to get him out?");
 		talkToKeli.addDialogStep("Could I see the key please?");
 		talkToKeli.addDialogStep("Could I touch the key for a moment please?");
-		bringImprintToOsman = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3285, 3179, 0), "Bring the key print to Osman north of the Al Kharid Palace.", keyMould);
-		talkToLeela = new NpcStep(this, NpcID.LEELA, new WorldPoint(3113, 3262, 0), "Get a key from Leela east of Draynor Village.");
+		bringImprintToOsman = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3285, 3179, 0), "Bring the key print to Osman north of the Al Kharid Palace. If you already have, open the quest journal to re-sync.", keyMould);
+		talkToLeela = new NpcStep(this, NpcID.LEELA, new WorldPoint(3113, 3262, 0), "Talk to Leela east of Draynor Village.", dyedWig, paste);
 		talkToJoe = new NpcStep(this, NpcID.JOE_4275, new WorldPoint(3124, 3245, 0), "Bring everything to the jail and give Joe there three beers.", beers3, key, dyedWig, paste, rope);
 		talkToJoe.addDialogStep("I have some beer here, fancy one?");
 		useRopeOnKeli = new NpcStep(this, NpcID.LADY_KELI, new WorldPoint(3127, 3244, 0), "Use rope on Keli.", rope);
@@ -246,21 +253,23 @@ public class PrinceAliRescue extends BasicQuestHelper
 		makeWigPanel.setLockingStep(makeDyedWig);
 		allSteps.add(makeWigPanel);
 
-		PanelDetails makePastePanel = new PanelDetails("Make paste", new ArrayList<>(Arrays.asList(talkToAggie)), redberries, ashes, potOfFlour, bucketOfWater);
+		PanelDetails makePastePanel = new PanelDetails("Make paste", new ArrayList<>(Collections.singletonList(talkToAggie)), redberries, ashes, potOfFlour, bucketOfWater);
 		makePastePanel.setLockingStep(makePaste);
 		allSteps.add(makePastePanel);
 
-		PanelDetails makeKeyMouldPanel = new PanelDetails("Make a key mould", new ArrayList<>(Arrays.asList(talkToKeli)), softClay);
+		PanelDetails makeKeyMouldPanel = new PanelDetails("Make a key mould", new ArrayList<>(Collections.singletonList(talkToKeli)), softClay);
 		makeKeyMouldPanel.setLockingStep(makeKeyMould);
 		allSteps.add(makeKeyMouldPanel);
 
-		PanelDetails getKeyPanel = new PanelDetails("Get key", new ArrayList<>(Arrays.asList(bringImprintToOsman, talkToLeela)), bronzeBar, keyMould);
+		PanelDetails getKeyPanel = new PanelDetails("Make the key", new ArrayList<>(Collections.singletonList(bringImprintToOsman)), bronzeBar, keyMould);
 		getKeyPanel.setLockingStep(getKey);
 		allSteps.add(getKeyPanel);
 
+		allSteps.add(new PanelDetails("Return with the items", new ArrayList<>(Collections.singletonList(talkToLeela)), dyedWig, paste));
+
 		allSteps.add(new PanelDetails("Free Ali", new ArrayList<>(Arrays.asList(talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli)), dyedWig, paste, key, rope, beers3));
 
-		allSteps.add(new PanelDetails("Return to Al Kharid", new ArrayList<>(Arrays.asList(returnToHassan))));
+		allSteps.add(new PanelDetails("Return to Al Kharid", new ArrayList<>(Collections.singletonList(returnToHassan))));
 		return allSteps;
 	}
 }

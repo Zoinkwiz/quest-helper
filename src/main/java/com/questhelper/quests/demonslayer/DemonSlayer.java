@@ -58,7 +58,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class DemonSlayer extends BasicQuestHelper
 {
-	ItemRequirement bucket, bucketOfWater, key1, key2, key3, bones, silverlight, combatGear;
+	ItemRequirement bucket, bucketOfWater, key1, key2, key3, bones, silverlight, combatGear, silverlightEquipped;
 
 	ConditionForStep inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1, hasBucket, hasFilledBucket, hasFirstKey, hasSecondKey, hasThirdKey,
 		hasPouredWaterIntoDrain, inTowerFloor1, obtainedSilverlight, hasSilverlight, delrithNearby, delrithWeakenedNearby, inInstance;
@@ -128,7 +128,8 @@ public class DemonSlayer extends BasicQuestHelper
 		key2 = new ItemRequirement("Silverlight key", ItemID.SILVERLIGHT_KEY_2401);
 		key3 = new ItemRequirement("Silverlight key", ItemID.SILVERLIGHT_KEY);
 		bones = new ItemRequirement("Bones (UNNOTED)", ItemID.BONES, 25);
-		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true);
+		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
+		silverlightEquipped = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true);
 		combatGear = new ItemRequirement("Armour + food", -1, -1);
 	}
 
@@ -209,7 +210,7 @@ public class DemonSlayer extends BasicQuestHelper
 		getSilverlightBack = new NpcStep(this, NpcID.SIR_PRYSIN, new WorldPoint(3203, 3472, 0), "Get Silverlight back from Sir Prysin in the south west of Varrock Castle.");
 		returnToPrysin.addSubSteps(getSilverlightBack);
 
-		killDelrithStep = new NpcStep(this, NpcID.DELRITH, new WorldPoint(3227, 3370, 0), "Kill Delrith (level 27) using Silverlight at the dark wizards south of Varrock. Once defeated, you'll need to say the magic words to banish him.", silverlight, combatGear);
+		killDelrithStep = new NpcStep(this, NpcID.DELRITH, new WorldPoint(3227, 3370, 0), "Kill Delrith (level 27) using Silverlight at the dark wizards south of Varrock. Once defeated, you'll need to say the magic words to banish him.", silverlightEquipped, combatGear);
 
 		killDelrith = new IncantationStep(this, killDelrithStep);
 	}

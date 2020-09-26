@@ -38,11 +38,14 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.NpcCondition;
 import com.questhelper.steps.conditional.ObjectCondition;
 import com.questhelper.steps.conditional.VarplayerCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -59,11 +62,10 @@ public class WitchsHouse extends BasicQuestHelper
 	ItemRequirement cheese, leatherGloves, houseKey, magnet, diary, shedKey, ball, armourAndWeapon;
 
 	ConditionForStep hasKey, hasMagnet, hasDiary, inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
-		ratHasMagnet, hasShedKey, inShed, experiment1Nearby, experiment2Nearby, experiment3Nearby, experiment4Nearby, hasBall;
+		ratHasMagnet, hasShedKey, inShed, hasBall, experimentNearby;
 
 	QuestStep talkToBoy, getKey, pickUpDiary, readDiary, goDownstairs, enterGate, goDownstairsFromTop, openCupboardAndLoot, openCupboardAndLoot2,
-		goBackUpstairs, useCheeseOnHole, enterHouse, searchFountain, enterShed, enterShedWithoutKey, killWitchsExperiment, killWitchsExperiment1, killWitchsExperiment2,
-		killWitchsExperiment3, killWitchsExperiment4, returnToBoy, pickupBall, grabBall;
+		goBackUpstairs, useCheeseOnHole, enterHouse, searchFountain, enterShed, enterShedWithoutKey, killWitchsExperiment, returnToBoy, pickupBall, grabBall;
 
 	Zone house, upstairsHouse, downstairsHouseEast, downstairsHouseWest, garden1, garden2, garden3, shed;
 
@@ -101,7 +103,8 @@ public class WitchsHouse extends BasicQuestHelper
 
 		ConditionalStep killExperiment = new ConditionalStep(this, getKey);
 		// Potentially logic of highlighting each experiment, if no experiment highlight ball. Need to decide if highlight arrows on combat NPCs would be annoying
-		killExperiment.addStep(inShed, killWitchsExperiment1);
+		killExperiment.addStep(new Conditions(inShed, experimentNearby), killWitchsExperiment);
+		killExperiment.addStep(inShed, grabBall);
 		killExperiment.addStep(new Conditions(ratHasMagnet, inHouseOrGarden, hasShedKey), enterShed);
 		killExperiment.addStep(new Conditions(ratHasMagnet, inHouseOrGarden), searchFountain);
 		killExperiment.addStep(new Conditions(ratHasMagnet, inDownstairsHouse), goBackUpstairs);
@@ -137,6 +140,7 @@ public class WitchsHouse extends BasicQuestHelper
 		magnet = new ItemRequirement("Magnet", ItemID.MAGNET);
 		diary = new ItemRequirement("Diary", ItemID.DIARY);
 		shedKey = new ItemRequirement("Key", ItemID.KEY_2411);
+		shedKey.setHighlightInInventory(true);
 		ball = new ItemRequirement("Ball", ItemID.BALL);
 		armourAndWeapon = new ItemRequirement("Combat gear and food for monsters up to level 53", -1, -1);
 	}
@@ -167,12 +171,18 @@ public class WitchsHouse extends BasicQuestHelper
 		ratHasMagnet = new VarplayerCondition(226, 3);
 		hasShedKey = new ItemRequirementCondition(shedKey);
 		inShed = new ZoneCondition(shed);
+		experimentNearby = new Conditions(LogicType.OR,
+			new NpcCondition(NpcID.WITCHS_EXPERIMENT),
+			new NpcCondition(NpcID.WITCHS_EXPERIMENT_SECOND_FORM),
+			new NpcCondition(NpcID.WITCHS_EXPERIMENT_THIRD_FORM),
+			new NpcCondition(NpcID.WITCHS_EXPERIMENT_FOURTH_FORM));
 		hasBall = new ItemRequirementCondition(ball);
 	}
 
 	public void setupSteps()
 	{
 		talkToBoy = new NpcStep(this, NpcID.BOY, new WorldPoint(2928, 3456, 0), "Talk to the Boy in Taverley to start.");
+		talkToBoy.addDialogSteps("What's the matter?", "Ok, I'll see what I can do.");
 		getKey = new ObjectStep(this, ObjectID.POTTED_PLANT_2867, new WorldPoint(2900, 3474, 0), "Look under the potted plant just outside the witch's house.");
 		enterHouse = new ObjectStep(this, ObjectID.DOOR_2861, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
 		pickUpDiary = new DetailedQuestStep(this, new WorldPoint(2903, 3471, 0), "Pick up the diary in the house", houseKey, diary);
@@ -193,12 +203,9 @@ public class WitchsHouse extends BasicQuestHelper
 		enterShed.addIcon(ItemID.KEY_2411);
 
 		grabBall = new DetailedQuestStep(this, new WorldPoint(2936, 3470, 0), "If an experiment hasn't spawned, attempt to pick up the ball once.", ball);
-		killWitchsExperiment = new DetailedQuestStep(this, "Kill all four forms of the Witch's experiment (levels 19, 30, 42, and 53). You can safe spot the last two forms from the crate in the south of the room.");
-		killWitchsExperiment.addSubSteps(killWitchsExperiment1, killWitchsExperiment2, killWitchsExperiment3, killWitchsExperiment4, grabBall);
-		killWitchsExperiment1 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT, new WorldPoint(3936, 3473, 0), "Kill the first experiment's form.");
-		killWitchsExperiment2 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT_SECOND_FORM, new WorldPoint(3936, 3473, 0), "Kill the second experiment's form.");
-		killWitchsExperiment3 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT_THIRD_FORM, new WorldPoint(3936, 3473, 0), "Kill the third experiment's form. You can safespot behind the crate here.");
-		killWitchsExperiment4 = new NpcStep(this, NpcID.WITCHS_EXPERIMENT_FOURTH_FORM, new WorldPoint(3936, 3473, 0), "Kill the fourth experiment's form. You can safespot behind the crate here.");
+		killWitchsExperiment = new NpcStep(this, NpcID.WITCHS_EXPERIMENT, new WorldPoint(2935, 3463, 0), "Kill all four forms of the Witch's experiment (levels 19, 30, 42, and 53). You can safe spot the last two forms from the crate in the south of the room.");
+		((NpcStep)killWitchsExperiment).addAlternateNpcs(NpcID.WITCHS_EXPERIMENT_SECOND_FORM, NpcID.WITCHS_EXPERIMENT_THIRD_FORM, NpcID.WITCHS_EXPERIMENT_FOURTH_FORM);
+		killWitchsExperiment.addSubSteps(grabBall);
 
 		pickupBall = new DetailedQuestStep(this, new WorldPoint(2936, 3470, 0), "Pick up the ball.", ball);
 		returnToBoy = new NpcStep(this, NpcID.BOY, new WorldPoint(2928, 3456, 0), "Return the ball to the boy. Make sure the witch doesn't spot you or you'll have to get the ball back again..");
@@ -224,14 +231,14 @@ public class WitchsHouse extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Witch's experiment (level 19, 30, 42 and 53)"));
+		return new ArrayList<>(Collections.singletonList("Witch's experiment (level 19, 30, 42 and 53)"));
 	}
 
 	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Arrays.asList(talkToBoy)), cheese, leatherGloves, armourAndWeapon));
+		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToBoy)), cheese, leatherGloves, armourAndWeapon));
 		allSteps.add(new PanelDetails("Accessing the garden", new ArrayList<>(Arrays.asList(getKey, enterHouse, pickUpDiary, readDiary, goDownstairs, enterGate,
 			openCupboardAndLoot, goBackUpstairs, useCheeseOnHole))));
 		allSteps.add(new PanelDetails("Defeat the witch's experiment", new ArrayList<>(Arrays.asList(searchFountain, enterShed, killWitchsExperiment, pickupBall, returnToBoy))));

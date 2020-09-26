@@ -59,13 +59,13 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class WitchsHouse extends BasicQuestHelper
 {
-	ItemRequirement cheese, leatherGloves, houseKey, magnet, diary, shedKey, ball, armourAndWeapon;
+	ItemRequirement cheese, leatherGloves, houseKey, magnet, shedKey, ball, armourAndWeapon;
 
-	ConditionForStep hasKey, hasMagnet, hasDiary, inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
+	ConditionForStep hasKey, hasMagnet, inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
 		ratHasMagnet, hasShedKey, inShed, hasBall, experimentNearby;
 
-	QuestStep talkToBoy, getKey, pickUpDiary, readDiary, goDownstairs, enterGate, goDownstairsFromTop, openCupboardAndLoot, openCupboardAndLoot2,
-		goBackUpstairs, useCheeseOnHole, enterHouse, searchFountain, enterShed, enterShedWithoutKey, killWitchsExperiment, returnToBoy, pickupBall, grabBall;
+	QuestStep talkToBoy, getKey, goDownstairs, enterGate, goDownstairsFromTop, openCupboardAndLoot, openCupboardAndLoot2, goBackUpstairs, useCheeseOnHole,
+		enterHouse, searchFountain, enterShed, enterShedWithoutKey, killWitchsExperiment, returnToBoy, pickupBall, grabBall;
 
 	Zone house, upstairsHouse, downstairsHouseEast, downstairsHouseWest, garden1, garden2, garden3, shed;
 
@@ -80,15 +80,6 @@ public class WitchsHouse extends BasicQuestHelper
 
 		steps.put(0, talkToBoy);
 
-		ConditionalStep learnOfMagnet = new ConditionalStep(this, getKey);
-		learnOfMagnet.addStep(inUpstairsHouse, goDownstairsFromTop);
-		learnOfMagnet.addStep(inDownstairsHouse, goBackUpstairs);
-		learnOfMagnet.addStep(hasDiary, readDiary);
-		learnOfMagnet.addStep(inHouse, pickUpDiary);
-		learnOfMagnet.addStep(hasKey, enterHouse);
-
-		steps.put(1, learnOfMagnet);
-
 		ConditionalStep getTheMagnet = new ConditionalStep(this, getKey);
 		getTheMagnet.addStep(new Conditions(inHouse, hasMagnet), useCheeseOnHole);
 		getTheMagnet.addStep(new Conditions(inDownstairsHouse, hasMagnet), goBackUpstairs);
@@ -99,10 +90,10 @@ public class WitchsHouse extends BasicQuestHelper
 		getTheMagnet.addStep(inUpstairsHouse, goDownstairsFromTop);
 		getTheMagnet.addStep(hasKey, enterHouse);
 
+		steps.put(1, getTheMagnet);
 		steps.put(2, getTheMagnet);
 
 		ConditionalStep killExperiment = new ConditionalStep(this, getKey);
-		// Potentially logic of highlighting each experiment, if no experiment highlight ball. Need to decide if highlight arrows on combat NPCs would be annoying
 		killExperiment.addStep(new Conditions(inShed, experimentNearby), killWitchsExperiment);
 		killExperiment.addStep(inShed, grabBall);
 		killExperiment.addStep(new Conditions(ratHasMagnet, inHouseOrGarden, hasShedKey), enterShed);
@@ -128,7 +119,6 @@ public class WitchsHouse extends BasicQuestHelper
 		returnBall.addStep(inUpstairsHouse, goDownstairsFromTop);
 
 		steps.put(6, returnBall);
-		// Experiment dies. Varp 226 3->6,
 		return steps;
 	}
 
@@ -138,7 +128,6 @@ public class WitchsHouse extends BasicQuestHelper
 		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true);
 		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
 		magnet = new ItemRequirement("Magnet", ItemID.MAGNET);
-		diary = new ItemRequirement("Diary", ItemID.DIARY);
 		shedKey = new ItemRequirement("Key", ItemID.KEY_2411);
 		shedKey.setHighlightInInventory(true);
 		ball = new ItemRequirement("Ball", ItemID.BALL);
@@ -160,7 +149,6 @@ public class WitchsHouse extends BasicQuestHelper
 	public void setupConditions()
 	{
 		hasMagnet = new ItemRequirementCondition(magnet);
-		hasDiary = new ItemRequirementCondition(diary);
 		hasKey = new ItemRequirementCondition(houseKey);
 		inHouse = new ZoneCondition(house);
 		inUpstairsHouse = new ZoneCondition(upstairsHouse);
@@ -185,8 +173,6 @@ public class WitchsHouse extends BasicQuestHelper
 		talkToBoy.addDialogSteps("What's the matter?", "Ok, I'll see what I can do.");
 		getKey = new ObjectStep(this, ObjectID.POTTED_PLANT_2867, new WorldPoint(2900, 3474, 0), "Look under the potted plant just outside the witch's house.");
 		enterHouse = new ObjectStep(this, ObjectID.DOOR_2861, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
-		pickUpDiary = new DetailedQuestStep(this, new WorldPoint(2903, 3471, 0), "Pick up the diary in the house", houseKey, diary);
-		readDiary = new DetailedQuestStep(this, "Read the diary", diary);
 		goDownstairs = new ObjectStep(this, ObjectID.LADDER_24718, new WorldPoint(2907, 3476, 0), "Go down the ladder to the basement.");
 		enterGate = new ObjectStep(this, ObjectID.GATE_2866, new WorldPoint(2902, 9873, 0), "Go through the gate whilst wearing gloves.", leatherGloves);
 		openCupboardAndLoot = new ObjectStep(this, ObjectID.CUPBOARD_2868, new WorldPoint(2898, 9874, 0), "Open the cupboard and get a magnet from it");
@@ -239,7 +225,7 @@ public class WitchsHouse extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToBoy)), cheese, leatherGloves, armourAndWeapon));
-		allSteps.add(new PanelDetails("Accessing the garden", new ArrayList<>(Arrays.asList(getKey, enterHouse, pickUpDiary, readDiary, goDownstairs, enterGate,
+		allSteps.add(new PanelDetails("Accessing the garden", new ArrayList<>(Arrays.asList(getKey, enterHouse, goDownstairs, enterGate,
 			openCupboardAndLoot, goBackUpstairs, useCheeseOnHole))));
 		allSteps.add(new PanelDetails("Defeat the witch's experiment", new ArrayList<>(Arrays.asList(searchFountain, enterShed, killWitchsExperiment, pickupBall, returnToBoy))));
 		return allSteps;

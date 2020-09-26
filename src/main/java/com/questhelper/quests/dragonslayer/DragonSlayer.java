@@ -70,7 +70,7 @@ public class DragonSlayer extends BasicQuestHelper
 		inDemonRoom, inLastMelzarRoom, hasShield, inShipHull, onShipDeck, hasFullMap, hasBoughtBoat, hasRepairedHullOnce, hasRepairedHullTwice,
 		fullyRepairedHull, onCrandorSurface, inCrandorUnderground, inElvargArea, inKaramjaVolcano, unlockedShortcut;
 
-	ConditionalStep getLozarPiece, getThalzarPiece, getMelzarPiece;
+	ConditionalStep getLozarPiece, getThalzarPiece, getMelzarPiece, getShieldSteps;
 
 	QuestStep startQuest, talkToOziach, returnToGuildmaster, askAboutShield, askAboutMelzar, askAboutThalzar, askAboutLozar, talkToOracle,
 		goIntoDwarvenMine, useSilkOnDoor, usePotOnDoor, useUnfiredBowlOnDoor, useMindBombOnDoor, searchThalzarChest, searchThalzarChest2,
@@ -103,7 +103,6 @@ public class DragonSlayer extends BasicQuestHelper
 		askQuestions.addStep(new Conditions(askedAboutShip, askedAboutShield, askedAboutMelzar), askAboutThalzar);
 		askQuestions.addStep(new Conditions(askedAboutShip, askedAboutShield), askAboutMelzar);
 		askQuestions.addStep(askedAboutShip, askAboutShield);
-		askQuestions.setLockingCondition(askedAllQuestions);
 
 		getThalzarPiece = new ConditionalStep(this, talkToOracle);
 		getThalzarPiece.addStep(new Conditions(thalzarDoorOpened, inDwarvenMines, thalzarChest2Nearby), searchThalzarChest2);
@@ -114,6 +113,7 @@ public class DragonSlayer extends BasicQuestHelper
 		getThalzarPiece.addStep(new Conditions(askedOracleAboutMap, inDwarvenMines), useSilkOnDoor);
 		getThalzarPiece.addStep(askedOracleAboutMap, goIntoDwarvenMine);
 		getThalzarPiece.setLockingCondition(hasMapPart1);
+		getThalzarPiece.setBlocker(true);
 
 		getLozarPiece = new ConditionalStep(this, optionsForLozarPiece);
 		getLozarPiece.setLockingCondition(hasMapPart2);
@@ -137,8 +137,10 @@ public class DragonSlayer extends BasicQuestHelper
 		getMelzarPiece.addStep(inPostRatRoom, goUpRatLadder);
 		getMelzarPiece.addStep(new Conditions(inRatRoom, hasRatKey), openRedDoor);
 		getMelzarPiece.addStep(inRatRoom, killRat);
-
 		getMelzarPiece.setLockingCondition(hasMapPart3);
+
+		getShieldSteps = new ConditionalStep(this, getShield);
+		getShieldSteps.setLockingCondition(hasShield);
 
 		ConditionalStep getBoat = new ConditionalStep(this, talkToKlarense);
 		getBoat.addStep(new Conditions(hasBoughtBoat, inShipHull, hasRepairedHullTwice), repairShip3);
@@ -156,7 +158,7 @@ public class DragonSlayer extends BasicQuestHelper
 		ConditionalStep getMapAndBoat = new ConditionalStep(this, askQuestions);
 		getMapAndBoat.addStep(new Conditions(hasMapPart1, hasMapPart2, hasMapPart3, askedAllQuestions, hasShield, fullyRepairedHull), getCaptain);
 		getMapAndBoat.addStep(new Conditions(hasMapPart1, hasMapPart2, hasMapPart3, askedAllQuestions, hasShield), getBoat);
-		getMapAndBoat.addStep(new Conditions(hasMapPart1, hasMapPart2, hasMapPart3, askedAllQuestions), getShield);
+		getMapAndBoat.addStep(new Conditions(hasMapPart1, hasMapPart2, hasMapPart3, askedAllQuestions), getShieldSteps);
 		getMapAndBoat.addStep(new Conditions(LogicType.OR, inMelzarsMaze, new Conditions(hasMapPart1, hasMapPart2, askedAllQuestions)), getMelzarPiece);
 		getMapAndBoat.addStep(new Conditions(hasMapPart1, askedAllQuestions), getLozarPiece);
 		getMapAndBoat.addStep(askedAllQuestions, getThalzarPiece);
@@ -279,10 +281,10 @@ public class DragonSlayer extends BasicQuestHelper
 		askedAllQuestions = new Conditions(askedAboutShip, askedAboutShield, askedAboutMelzar, askedAboutThalzar, askedAboutLozar);
 		askedOracleAboutMap = new VarbitCondition(1832, 1);
 		inDwarvenMines = new ZoneCondition(dwarvenMines);
-		silkUsed = new VarplayerCondition(177, false, 17);
-		unfiredBowlUsed = new VarplayerCondition(177, false, 18);
-		lobsterPotUsed = new VarplayerCondition(177, false, 19);
-		mindBombUsed = new VarplayerCondition(177, false, 20);
+		silkUsed = new VarplayerCondition(177, true, 17);
+		unfiredBowlUsed = new VarplayerCondition(177, true, 18);
+		lobsterPotUsed = new VarplayerCondition(177, true, 19);
+		mindBombUsed = new VarplayerCondition(177, true, 20);
 		thalzarDoorOpened = new Conditions(silkUsed, unfiredBowlUsed, lobsterPotUsed, mindBombUsed);
 		thalzarChest2Nearby = new ObjectCondition(ObjectID.CHEST_2588);
 		hasFullMap = new ItemRequirementCondition(fullMap);
@@ -310,7 +312,7 @@ public class DragonSlayer extends BasicQuestHelper
 		inDemonRoom = new ZoneCondition(demonRoom1, demonRoom2);
 		inLastMelzarRoom = new ZoneCondition(lastMelzarRoom1, lastMelzarRoom2);
 
-		hasShield = new ItemRequirementCondition(antidragonShield);
+		hasShield = new Conditions(new ItemRequirementCondition(antidragonShield));
 
 		onShipDeck = new ZoneCondition(shipDeck);
 		inShipHull = new ZoneCondition(shipHull);
@@ -330,7 +332,7 @@ public class DragonSlayer extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(2763, 3513, 0), "Talk to the Guildmaster in the Champions' Guild, south of Varrock.");
+		startQuest = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(3190, 3360, 0), "Talk to the Guildmaster in the Champions' Guild, south of Varrock.");
 		startQuest.addDialogStep("Can I have a quest?");
 
 		talkToOziach = new NpcStep(this, NpcID.OZIACH, new WorldPoint(3068, 3517, 0), "Talk to Oziach in his house in north western Edgeville.");
@@ -339,19 +341,19 @@ public class DragonSlayer extends BasicQuestHelper
 		talkToOziach.addDialogStep("I thought you were going to give me a quest.");
 		talkToOziach.addDialogStep("A dragon, that sounds like fun.");
 
-		returnToGuildmaster = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(2763, 3513, 0), "Return to the Guildmaster and ask him all the available questions.");
+		returnToGuildmaster = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(3190, 3360, 0), "Return to the Guildmaster and ask him all the available questions.");
 		returnToGuildmaster.addDialogSteps("About my quest to kill the dragon...", "I talked to Oziach...", "Where can I find the right ship?");
 
-		askAboutShield = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(2763, 3513, 0), "Return to the Guildmaster and ask him all the available questions.");
+		askAboutShield = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(3190, 3360, 0), "Return to the Guildmaster and ask him all the available questions.");
 		askAboutShield.addDialogSteps("About my quest to kill the dragon...", "I talked to Oziach...", "How can I protect myself from the dragon's breath?");
 
-		askAboutMelzar = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(2763, 3513, 0), "Return to the Guildmaster and ask him all the available questions.");
+		askAboutMelzar = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(3190, 3360, 0), "Return to the Guildmaster and ask him all the available questions.");
 		askAboutMelzar.addDialogSteps("About my quest to kill the dragon...", "I talked to Oziach...", "How can I find the route to Crandor?", "Where is Melzar's map piece?");
 
-		askAboutThalzar = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(2763, 3513, 0), "Return to the Guildmaster and ask him all the available questions.");
+		askAboutThalzar = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(3190, 3360, 0), "Return to the Guildmaster and ask him all the available questions.");
 		askAboutThalzar.addDialogSteps("About my quest to kill the dragon...", "I talked to Oziach...", "How can I find the route to Crandor?", "Where is Thalzar's map piece?");
 
-		askAboutLozar = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(2763, 3513, 0), "Return to the Guildmaster and ask him all the available questions.");
+		askAboutLozar = new NpcStep(this, NpcID.GUILDMASTER, new WorldPoint(3190, 3360, 0), "Return to the Guildmaster and ask him all the available questions.");
 		askAboutLozar.addDialogSteps("About my quest to kill the dragon...", "I talked to Oziach...", "How can I find the route to Crandor?", "Where is Lozar's map piece?");
 
 		returnToGuildmaster.addSubSteps(askAboutShield, askAboutMelzar, askAboutLozar, askAboutThalzar);
@@ -362,9 +364,13 @@ public class DragonSlayer extends BasicQuestHelper
 		goIntoDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450,0), "Go down the ladder in the dwarven camp to the south into the Dwarven Mines.", silk, lobsterPot, mindBomb, unfiredBowl);
 
 		useSilkOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the silk on the magic door.", silk, lobsterPot, mindBomb, unfiredBowl);
+		useSilkOnDoor.addIcon(ItemID.SILK);
 		usePotOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the lobster pot on the magic door.", lobsterPot, mindBomb, unfiredBowl);
+		usePotOnDoor.addIcon(ItemID.LOBSTER_POT);
 		useUnfiredBowlOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the unfired bowl on the magic door.",  mindBomb, unfiredBowl);
+		useUnfiredBowlOnDoor.addIcon(ItemID.UNFIRED_BOWL);
 		useMindBombOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the wizard's mind bomb on the magic door (BE CAREFUL NOT TO DRINK IT).", lobsterPot, mindBomb, unfiredBowl);
+		useMindBombOnDoor.addIcon(ItemID.WIZARDS_MIND_BOMB);
 
 		searchThalzarChest = new ObjectStep(this, ObjectID.CHEST_2587, new WorldPoint(3057, 9841, 0), "Search the chest for Thalzar's map piece.");
 		searchThalzarChest2 = new ObjectStep(this, ObjectID.CHEST_2588, new WorldPoint(3057, 9841, 0), "Search the chest for Thalzar's map piece.");
@@ -392,19 +398,14 @@ public class DragonSlayer extends BasicQuestHelper
 		goDownSkeletonLadder = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2940, 3240, 2), "Climb down the ladder.");
 
 		goDownLadderRoomLadder = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2937, 3240, 1), "Climb down again.");
-
 		goDownBasementEntryLadder = new ObjectStep(this, ObjectID.LADDER_2605, new WorldPoint(2932, 3240, 0), "Climb down the ladder into the basement.");
-
 		killZombie = new NpcStep(this, NpcID.ZOMBIE_3980, new WorldPoint(2932, 9643, 0), "Kill the marked zombie for a key", zombieKey);
-
 		openBlueDoor = new ObjectStep(this, ObjectID.BLUE_DOOR, new WorldPoint(2931, 9644, 0), "Go through the blue door in the north west corner.");
 
 		killMelzar = new NpcStep(this, NpcID.MELZAR_THE_MAD, new WorldPoint(2929, 9649, 0), "Kill Melzar the Mad for a magenta key.", melzarKey);
-
 		openMagntaDoor = new ObjectStep(this, ObjectID.MAGENTA_DOOR, new WorldPoint(2929, 9652, 0), "Go through the magenta door.");
 
 		killLesserDemon = new NpcStep(this, NpcID.LESSER_DEMON_3982, new WorldPoint(2936, 9652, 0), "Kill the lesser demon. You can safe spot it from the spot east of the magenta door.", demonKey);
-
 		openGreenDoor = new ObjectStep(this, ObjectID.GREEN_DOOR, new WorldPoint(2936, 9655, 0), "Go through the green door.", demonKey);
 
 		openMelzarChest = new ObjectStep(this, ObjectID.CHEST_2603, new WorldPoint(2935, 9657, 0), "Open the chest and get Melzar's map part.");
@@ -413,26 +414,25 @@ public class DragonSlayer extends BasicQuestHelper
 		getShield.addDialogStep("I seek a shield that will protect me from dragonbreath.");
 		getShield.addDialogStep("Elvarg, the dragon of Crandor island!");
 		getShield.addDialogStep("Yes");
-		getShield.addDialogStep("So are you going to give me the shield or not?");
-		getShield.setLockingCondition(hasShield);
+		getShield.addDialogStep("So, are you going to give me the shield or not?");
 
 		talkToKlarense = new NpcStep(this, NpcID.KLARENSE, new WorldPoint(3044, 3203, 0), "Talk to Klarense on the south Port Sarim docks and buy his boat.", planks3, nails90, hammer, twoThousandCoins);
 		talkToKlarense.addDialogStep("I'd like to buy her.");
 		talkToKlarense.addDialogStep("Yep, sounds good.");
 
 		boardShip1 = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails90, planks3, hammer);
-		boardShip2 = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails90, planks3, hammer);
+		boardShip2 = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails60, planks2, hammer);
 		boardShip3 = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails30, planks1, hammer);
 		boardShip1.addSubSteps(boardShip2, boardShip3);
 
 		goDownShipLadder = new ObjectStep(this, ObjectID.LADDER_2590, new WorldPoint(3049, 3208, 1), "Go down into the ship's hull.");
 
 		repairShip = new ObjectStep(this, NullObjectID.NULL_25036, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 3 times.", nails90, planks3, hammer);
-		repairShip2 = new ObjectStep(this, NullObjectID.NULL_25036, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 2 more times.", nails90, planks3, hammer);
+		repairShip2 = new ObjectStep(this, NullObjectID.NULL_25036, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 2 more times.", nails60, planks2, hammer);
 		repairShip3 = new ObjectStep(this, NullObjectID.NULL_25036, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 1 more time.", nails30, planks1, hammer);
 		repairShip.addSubSteps(repairShip2, repairShip3);
 
-		repairMap = new DetailedQuestStep(this, "Use the three map parts together to repair the map", mapPart1, mapPart2, mapPart3);
+		repairMap = new DetailedQuestStep(this, "Use the three map parts together to repair the map.", mapPart1, mapPart2, mapPart3);
 		talkToNed = new NpcStep(this, NpcID.NED, new WorldPoint(3098, 3257, 0), "Bring Ned your map and ask him to be your captain.", fullMap);
 		talkToNed.addDialogStep("You're a sailor? Could you take me to Crandor?");
 
@@ -529,7 +529,7 @@ public class DragonSlayer extends BasicQuestHelper
 		allSteps.add(melzarPanel);
 
 		PanelDetails antiDragonPanel = new PanelDetails("Get an anti-dragon shield", new ArrayList<>(Collections.singletonList(getShield)));
-		antiDragonPanel.setLockingStep(getShield);
+		antiDragonPanel.setLockingStep(getShieldSteps);
 
 		allSteps.add(antiDragonPanel);
 

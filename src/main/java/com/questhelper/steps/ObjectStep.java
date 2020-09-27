@@ -62,7 +62,7 @@ public class ObjectStep extends DetailedQuestStep
 
 		if (worldPoint != null)
 		{
-			Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
+			Collection<WorldPoint> localWorldPoints = toLocalInstance(client, worldPoint);
 
 			for (WorldPoint point : localWorldPoints)
 			{
@@ -267,7 +267,7 @@ public class ObjectStep extends DetailedQuestStep
 		Collection<WorldPoint> localWorldPoints = null;
 		if (worldPoint != null)
 		{
-			localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
+			localWorldPoints = toLocalInstance(client, worldPoint);
 		}
 		
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))

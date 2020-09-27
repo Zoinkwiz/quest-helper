@@ -185,7 +185,7 @@ public class NpcStep extends DetailedQuestStep
 
 		if (worldPoint != null)
 		{
-			Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
+			Collection<WorldPoint> localWorldPoints = toLocalInstance(client, worldPoint);
 			if (localWorldPoints.isEmpty())
 			{
 				return;

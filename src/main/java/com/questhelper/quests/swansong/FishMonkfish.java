@@ -58,13 +58,6 @@ public class FishMonkfish extends DetailedOwnerStep
 	{
 		super(questHelper);
 		smallNet.setTip("You can get one from Arnold");
-		setupSteps();
-	}
-
-	@Override
-	public void startUp()
-	{
-		updateSteps();
 	}
 
 	@Subscribe
@@ -73,6 +66,7 @@ public class FishMonkfish extends DetailedOwnerStep
 		updateSteps();
 	}
 
+	@Override
 	protected void updateSteps()
 	{
 		int numHandedIn = client.getVarbitValue(2105) - 1;
@@ -111,12 +105,12 @@ public class FishMonkfish extends DetailedOwnerStep
 		}
 	}
 
-	private void setupSteps()
+	@Override
+	protected void setupSteps()
 	{
 		fishMonkfish = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13477, new WorldPoint(2311, 3696, 0), "Fish at least 5 fresh monkfish. Sea Trolls will appear, and you'll need to kill them.", smallNet, combatGear);
 		cookMonkfish = new ObjectStep(getQuestHelper(), ObjectID.RANGE_12611, new WorldPoint(2316, 3669, 0), "Cook 5 monkfish. If you burn any, catch some more.", rawMonkfish);
 		talkToArnoldWithMonkfish = new NpcStep(getQuestHelper(), NpcID.ARNOLD_LYDSPOR, new WorldPoint(2329, 3688, 0), "Bring the monkfish to Arnold at the bank.", cookedMonkfish);
-
 	}
 
 	@Override

@@ -19,17 +19,10 @@ public class NumberChallenge extends DetailedOwnerStep
 	public NumberChallenge(QuestHelper questHelper)
 	{
 		super(questHelper, "Select the correct numbers to finish the pattern.");
-		setupSteps();
 	}
 
 	@Override
-	public void startUp()
-	{
-		super.startUp();
-		setupNumbers();
-	}
-
-	public void setupSteps()
+	protected void setupSteps()
 	{
 		press0 = new ObjectStep(getQuestHelper(), ObjectID.ZERO, new WorldPoint(1783, 5062, 2),
 			"Press the zero.");
@@ -53,8 +46,6 @@ public class NumberChallenge extends DetailedOwnerStep
 			"Press the nine.");
 
 		catchStep = new DetailedQuestStep(getQuestHelper(), "Press the numbers to finish the pattern.");
-
-		addSubSteps(press0, press1, press2, press3, press4, press5, press6, press7, press8, press9, catchStep);
 	}
 
 	@Subscribe
@@ -62,10 +53,11 @@ public class NumberChallenge extends DetailedOwnerStep
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		super.onVarbitChanged(varbitChanged);
-		setupNumbers();
+		updateSteps();
 	}
 
-	public void setupNumbers()
+	@Override
+	protected void updateSteps()
 	{
 		switch (client.getVarbitValue(2417))
 		{
@@ -134,7 +126,7 @@ public class NumberChallenge extends DetailedOwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return Arrays.asList(press0, press1, press2, press3, press4, press5, press6, press7, press8, press9);
+		return Arrays.asList(press0, press1, press2, press3, press4, press5, press6, press7, press8, press9, catchStep);
 	}
 
 	public Collection<QuestStep> getDisplaySteps()

@@ -247,13 +247,14 @@ public class TheGolem extends BasicQuestHelper
 		talkToCurator = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum.");
 		talkToCurator.addDialogStep("I'm looking for a statuette recovered from the city of Uzer.");
 		pickpocketCurator = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig.");
-		goUpInMuseum = new ObjectStep(this, ObjectID.STAIRCASE_11798, new WorldPoint(3267, 3453, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", strangeImplement);
-		openCabinet = new ObjectStep(this, NullObjectID.NULL_24626, new WorldPoint(3257, 3453, 1), "Right-click open the golem statue's display case.", strangeImplement);
+		goUpInMuseum = new ObjectStep(this, ObjectID.STAIRCASE_11798, new WorldPoint(3267, 3453, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", key);
+		openCabinet = new ObjectStep(this, NullObjectID.NULL_24626, new WorldPoint(3257, 3453, 1), "Right-click open the golem statue's display case.", key);
 
 		stealFeather = new NpcStep(this, NpcID.DESERT_PHOENIX, new WorldPoint(3414, 3154, 0), "Steal a feather from the desert phoenix north of Uzer.");
 
 		enterRuin = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", statuette, pestleAndMortar, vial, papyrus);
 		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		enterRuin.addSubSteps(enterRuinWithoutStatuette);
 
 		useImplementOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlight);
 		useImplementOnGolem.addIcon(ItemID.STRANGE_IMPLEMENT);

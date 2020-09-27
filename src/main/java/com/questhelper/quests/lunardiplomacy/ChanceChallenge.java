@@ -9,12 +9,12 @@ import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 
 public class ChanceChallenge extends DetailedOwnerStep
@@ -29,14 +29,6 @@ public class ChanceChallenge extends DetailedOwnerStep
 	{
 		super(questHelper, "Flip the dice to sum up to the correct number.");
 		setupSolutions();
-		setupSteps();
-	}
-
-	@Override
-	public void startUp()
-	{
-		super.startUp();
-		setupCurrentStep();
 	}
 
 	public void setupSolutions()
@@ -73,17 +65,16 @@ public class ChanceChallenge extends DetailedOwnerStep
 		spinD4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17020, new WorldPoint(1732, 5060, 2), "Flip the south west die.");
 		spinD5 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17022, new WorldPoint(1739, 5067, 2), "Flip the north east die.");
 		spinD6 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17021, new WorldPoint(1739, 5060, 2), "Flip the south east die.");
-
-		addSubSteps(talk, spinD1, spinD2, spinD3, spinD4, spinD5, spinD6);
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		setupCurrentStep();
+		updateSteps();
 	}
 
-	public void setupCurrentStep()
+	@Override
+	protected void updateSteps()
 	{
 		currentGoal = client.getVarbitValue(2411);
 
@@ -195,7 +186,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 
 	public Collection<QuestStep> getDisplaySteps()
 	{
-		return Arrays.asList(talk);
+		return Collections.singletonList(talk);
 	}
 }
 

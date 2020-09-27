@@ -21,14 +21,6 @@ public class MimicChallenge extends DetailedOwnerStep
 	public MimicChallenge(QuestHelper questHelper)
 	{
 		super(questHelper, "Copy the emotes that the NPC does.");
-		setupSteps();
-	}
-
-	@Override
-	public void startUp()
-	{
-		super.startUp();
-		setupCurrentStep();
 	}
 
 	public void setupSteps()
@@ -40,7 +32,6 @@ public class MimicChallenge extends DetailedOwnerStep
 		think = new EmoteStep(getQuestHelper(), Emote.THINK, new WorldPoint(1772, 5070, 2), "Perform the think emote.");
 		talk = new NpcStep(getQuestHelper(), NpcID.ETHEREAL_MIMIC, "Talk to the Ethereal Mimic.");
 		talk.addDialogStep("Suppose I may as well have a go.");
-		addSubSteps(cry, bow, dance, wave, think, talk);
 	}
 
 	@Subscribe
@@ -48,10 +39,11 @@ public class MimicChallenge extends DetailedOwnerStep
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		super.onVarbitChanged(varbitChanged);
-		setupCurrentStep();
+		updateSteps();
 	}
 
-	public void setupCurrentStep()
+	@Override
+	protected void updateSteps()
 	{
 		if (client.getVarbitValue(2419) == 0)
 		{

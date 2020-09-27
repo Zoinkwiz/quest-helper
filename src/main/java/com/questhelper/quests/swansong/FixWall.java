@@ -49,18 +49,9 @@ public class FixWall extends DetailedOwnerStep
 	public FixWall(QuestHelper questHelper)
 	{
 		super(questHelper);
-
 		ironBars.setHighlightInInventory(true);
 		ironSheets.setHighlightInInventory(true);
-		setupSteps();
 	}
-
-	@Override
-	public void startUp()
-	{
-		updateSteps();
-	}
-
 
 	@Subscribe
 	public void onGameTick(GameTick event)
@@ -68,6 +59,7 @@ public class FixWall extends DetailedOwnerStep
 		updateSteps();
 	}
 
+	@Override
 	protected void updateSteps()
 	{
 		int wall1Fixed = client.getVarbitValue(2100);
@@ -110,7 +102,8 @@ public class FixWall extends DetailedOwnerStep
 		}
 	}
 
-	private void setupSteps()
+	@Override
+	protected void setupSteps()
 	{
 		useIronBar = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13701, new WorldPoint(2342, 3676, 0), "Flatten 5 iron bars using the metal press.", ironBars);
 		useIronBar.addIcon(ItemID.IRON_BAR);

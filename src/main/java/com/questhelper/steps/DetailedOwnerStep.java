@@ -53,17 +53,22 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 	{
 		super(questHelper);
 		this.requirements = requirements;
+		setupSteps();
+		addSubSteps(getSteps());
 	}
 
 	public DetailedOwnerStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
 		super(questHelper, text);
 		this.requirements = requirements;
+		setupSteps();
+		addSubSteps(getSteps());
 	}
 
 	@Override
 	public void startUp()
 	{
+		updateSteps();
 	}
 
 	@Override
@@ -100,6 +105,10 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 			currentStep.shutDown();
 			currentStep = null;
 		}
+	}
+
+	protected void updateSteps()
+	{
 	}
 
 	@Override
@@ -152,6 +161,11 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 		{
 			return this;
 		}
+	}
+
+
+	protected void setupSteps()
+	{
 	}
 
 	@Override

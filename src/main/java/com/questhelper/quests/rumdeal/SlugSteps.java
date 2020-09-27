@@ -34,36 +34,14 @@ public class SlugSteps extends DetailedOwnerStep
 
 	ConditionForStep onIslandF0, onIslandF1, onIslandF2;
 
-
-	// TODO: Support Karamthulu being used as well
 	ItemRequirement sluglings = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
 	ItemRequirement sluglingsHighlight = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
 	ItemRequirement netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_AND_NET);
 
-
 	public SlugSteps(QuestHelper questHelper)
 	{
 		super(questHelper);
-
-		netBowl.setTip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
-		sluglingsHighlight.setHighlightInInventory(true);
-		sluglingsHighlight.addAlternates(ItemID.KARAMTHULHU, ItemID.KARAMTHULHU_6717);
-		sluglings.addAlternates(ItemID.KARAMTHULHU, ItemID.KARAMTHULHU_6717);
-
-
-		islandF0 = new Zone(new WorldPoint(2110, 5054, 0), new WorldPoint(2178, 5185, 0));
-		islandF1 = new Zone(new WorldPoint(2110, 5054, 1), new WorldPoint(2178, 5185, 1));
-		islandF2 = new Zone(new WorldPoint(2110, 5054, 2), new WorldPoint(2178, 5185, 2));
-		onIslandF0 = new ZoneCondition(islandF0);
-		onIslandF1 = new ZoneCondition(islandF1);
-		onIslandF2 = new ZoneCondition(islandF2);
 		setupSteps();
-	}
-
-	@Override
-	public void startUp()
-	{
-		updateSteps();
 	}
 
 	@Subscribe
@@ -105,8 +83,21 @@ public class SlugSteps extends DetailedOwnerStep
 		}
 	}
 
-	private void setupSteps()
+	@Override
+	protected void setupSteps()
 	{
+		netBowl.setTip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
+		sluglingsHighlight.setHighlightInInventory(true);
+		sluglingsHighlight.addAlternates(ItemID.KARAMTHULHU, ItemID.KARAMTHULHU_6717);
+		sluglings.addAlternates(ItemID.KARAMTHULHU, ItemID.KARAMTHULHU_6717);
+
+		islandF0 = new Zone(new WorldPoint(2110, 5054, 0), new WorldPoint(2178, 5185, 0));
+		islandF1 = new Zone(new WorldPoint(2110, 5054, 1), new WorldPoint(2178, 5185, 1));
+		islandF2 = new Zone(new WorldPoint(2110, 5054, 2), new WorldPoint(2178, 5185, 2));
+		onIslandF0 = new ZoneCondition(islandF0);
+		onIslandF1 = new ZoneCondition(islandF1);
+		onIslandF2 = new ZoneCondition(islandF2);
+
 		talkToPete = new NpcStep(getQuestHelper(), NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.");
 		talkToPete.addDialogSteps("Okay!");
 		addSluglings = new ObjectStep(getQuestHelper(), ObjectID.PRESSURE_BARREL, new WorldPoint(2142, 5102, 2),

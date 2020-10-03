@@ -161,7 +161,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		steps.put(120, defeatAgrith);
 
 		steps.put(124, unequipDarklight);
-		
+
 		return steps;
 	}
 

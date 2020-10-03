@@ -95,6 +95,7 @@ public class WaterfallQuest extends BasicQuestHelper
 
 		steps.put(2, goReadBook);
 
+		// TODO: Add lines to guide through maze
 		goGetPebble = new ConditionalStep(this, enterGnomeDungeon);
 		goGetPebble.addStep(inGolrieRoom, talkToGolrie);
 		goGetPebble.addStep(new Conditions(inGnomeBasement, hasKey), enterGnomeDoor);
@@ -187,7 +188,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		inFalls = new ZoneCondition(falls);
 		inEndRoom = new ZoneCondition(endRoom);
 		inEnd2 = new ZoneCondition(end2);
-		hasGlarialsAmulet = new ItemRequirementCondition(glarialsAmulet);
+		hasGlarialsAmulet = new ItemRequirementCondition(unequippedAmulet);
 		hasGlarialsPebble = new ItemRequirementCondition(glarialsPebble);
 		hasGlarialsUrn = new ItemRequirementCondition(glarialsUrn);
 		hasKey = new ItemRequirementCondition(key);

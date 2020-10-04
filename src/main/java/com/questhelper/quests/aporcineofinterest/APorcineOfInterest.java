@@ -102,7 +102,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 
-		slashItem = new ItemRequirement("A knife of slash weapon", ItemID.KNIFE);
+		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE);
 
 		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.REINFORCED_GOGGLES, 1, true);
 		reinforcedGoggles.setTip("You can get another pair from Spria");

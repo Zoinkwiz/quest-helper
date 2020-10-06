@@ -30,7 +30,7 @@ import com.questhelper.steps.conditional.LogicType;
 )
 public class MurderMystery extends BasicQuestHelper
 {
-	private ItemRequirement pot, pungentPot, criminalsDagger, criminalsDagger1, criminalsDagger2, criminalsThread, criminalsThread1, criminalsThread2, criminalsThread3,
+	private ItemRequirement pot, pot3, pungentPot, criminalsDagger, criminalsDagger1, criminalsDagger2, criminalsThread, criminalsThread1, criminalsThread2, criminalsThread3,
 		threeFlypaper, potOfFlour, flypaper, unknownPrint, silverNecklace, silverBook, silverBookFlour, silverNecklaceFlour, annasPrint, davidsPrint, killersPrint;
 
 	private ConditionForStep hasPot, hasCriminalsThread, hasCriminalsDagger, hasPungentPot, hasThreeFlypaper, hasCriminalsDaggerNoFlour, hasCriminalsDaggerWithflour,
@@ -126,6 +126,7 @@ public class MurderMystery extends BasicQuestHelper
 
 	public void setupItemRequirements() {
 		pot = new ItemRequirement("Pot", ItemID.POT);
+		pot3 = new ItemRequirement("Pot", ItemID.POT, 3);
 		pungentPot = new ItemRequirement("Pungent pot", ItemID.PUNGENT_POT);
 		// I have dagger 1
 		criminalsDagger = new ItemRequirement("Criminal's dagger", ItemID.CRIMINALS_DAGGER);
@@ -205,7 +206,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements() {
 		ArrayList<ItemRequirement> required = new ArrayList<>();
-		required.add(pot);
+		required.add(pot3);
 		return required;
 	}
 
@@ -213,7 +214,7 @@ public class MurderMystery extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels() {
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Go to the Sinclair Manor", new ArrayList<>(Collections.singletonList(talkToGuard)), pot));
+		allSteps.add(new PanelDetails("Go to the Sinclair Manor", new ArrayList<>(Collections.singletonList(talkToGuard)), pot3));
 		allSteps.add(new PanelDetails("Collect evidence", new ArrayList<>(Arrays.asList(pickUpPungentPot, pickUpDagger, searchWindowForThread))));
 		allSteps.add(new PanelDetails("Collect fingerprints", new ArrayList<>(Arrays.asList(collectThreeFlypaper, getSilverItems, fillPotWithFlour, useFlourOnDagger, useFlypaperOnDagger, compareSilverToMurdererPrint))));
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(remainingSteps, talkToGossip, talkToPoisonSalesman, talkToTheSuspect, disproveSuspectStory, finishQuest))));

@@ -61,7 +61,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TrollStronghold extends BasicQuestHelper
 {
-	ItemRequirement climbingBoots, climbingBootsOr12Coins, foodAndPotions, gamesNecklace, coins12, prisonKey, cellKey1, cellKey2, mageRangedGear;
+	ItemRequirement climbingBoots, climbingBootsOr12Coins, climbingBootsEquipped, foodAndPotions, gamesNecklace, coins12, prisonKey, cellKey1, cellKey2, mageRangedGear;
 
 	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inArena, inNorthArena,
 		beatenDad, inArenaCave, inTrollheimArea, hasPrisonKey, prisonKeyNearby, prisonDoorUnlocked, inPrisonStairsRoom, inPrison, hasCellKey1, hasCellKey2,
@@ -117,7 +117,8 @@ public class TrollStronghold extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
+		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
 		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", -1, -1);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemID.GAMES_NECKLACE8);
 		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
@@ -188,7 +189,7 @@ public class TrollStronghold extends BasicQuestHelper
 		travelToTenzing.addSubSteps(getCoinsOrBoots, buyClimbingBoots);
 
 		climbOverStile = new ObjectStep(this, ObjectID.STILE_3730, new WorldPoint(2817, 3563, 0), "Climb over the stile north of Tenzing.");
-		climbOverRocks = new ObjectStep(this, ObjectID.ROCKS_3748, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBoots);
+		climbOverRocks = new ObjectStep(this, ObjectID.ROCKS_3748, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBootsEquipped);
 		enterArena = new ObjectStep(this, ObjectID.ARENA_ENTRANCE_3783, new WorldPoint(2897, 3619, 0), "Follow the path from here east until you enter the arena.");
 		fightDad = new NpcStep(this, NpcID.DAD, new WorldPoint(2913, 3617, 0), "Fight Dad until he gives up. You can safe spot him from the gate you entered through.");
 		fightDad.addDialogStep("I accept your challenge!");

@@ -513,7 +513,6 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		receivedList = new VarbitCondition(1327, 1);
 
-
 		final int RED = 1;
 		final int YELLOW = 2;
 		final int GREEN = 3;
@@ -1018,7 +1017,6 @@ public class MourningsEndPartII extends BasicQuestHelper
 			puzzle6Pillar11, puzzle6Pillar12, puzzle6Pillar13, goDownToMiddleFromSouthPuzzle6, goUpFromMiddleToNorthPuzzle6, puzzle6Pillar14, puzzle6Pillar15, puzzle6Pillar16, puzzle6Pillar17, goDownToCentre, turnKeyMirror))));
 
 		allSteps.add(new PanelDetails("Repair the defences", new ArrayList<>(Arrays.asList(enterDeathAltarBarrier, getDeathTalisman, enterDeathAltar, useCrystalOnAltar, leaveDeathAltar, returnToArianwyn)), deathTalisman, newlyMadeCrystal));
-
 
 		return allSteps;
 	}

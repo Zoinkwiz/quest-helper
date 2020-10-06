@@ -62,7 +62,7 @@ public class EadgarsRuse extends BasicQuestHelper
 {
 	ItemRequirement climbingBoots, climbingBootsOr12Coins, vodka, vodkaHighlight, pineappleChunks, pineappleChunksHighlight, logs2, grain10, rawChicken5, tinderbox, pestleAndMortar, ranarrPotionUnf, ardougneTeleport,
 		coins12, cellKey2, alcoChunks, parrot, parrotHighlighted, robe, logs1, thistle, logHighlight, tinderboxHighlight, driedThistle, pestleAndMortarHighlight, groundThistle, ranarrUnfHighlight, trollPotion, trainedParrot,
-		fakeMan, storeroomKey, goutweed;
+		fakeMan, storeroomKey, goutweed, climbingBootsEquipped;
 
 	ConditionForStep inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, hasAlcoChunks, hasParrot, hasRobe, hasLog, hasTinderbox, hasThistle, fireNearby, hasGroundThistle, hasDriedThistle,
@@ -235,7 +235,8 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
+		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
 		climbingBootsOr12Coins =  new ItemRequirement("Climbing boots or 12 coins", -1, -1);
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);

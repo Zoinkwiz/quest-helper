@@ -52,7 +52,7 @@ public class RumSmugglingStep extends ConditionalStep
 {
 	private Zone karamjaZone1, karamjaZone2, karamjaBoat;
 
-	private ItemRequirement karamjanRum, tenBananas, whiteApron, whiteApronHanging;
+	private ItemRequirement karamjanRum, tenBananas, whiteApron, whiteApronEquipped, whiteApronHanging;
 
 	private ConditionForStep onKaramja;
 	private ConditionForStep atStart;
@@ -129,7 +129,8 @@ public class RumSmugglingStep extends ConditionalStep
 	private void setupItemRequirements() {
 		karamjanRum = new ItemRequirement("Karamjan rum", ItemID.KARAMJAN_RUM);
 		tenBananas = new ItemRequirement("Banana", ItemID.BANANA, 10);
-		whiteApron = new ItemRequirement("White apron", ItemID.WHITE_APRON, 1, true);
+		whiteApron = new ItemRequirement("White apron", ItemID.WHITE_APRON);
+		whiteApronEquipped = new ItemRequirement("White apron", ItemID.WHITE_APRON, 1, true);
 		whiteApronHanging = new ItemRequirement("White apron", ItemID.WHITE_APRON_7957);
 		whiteApronHanging.addAlternates(ItemID.WHITE_APRON);
 	}
@@ -217,7 +218,7 @@ public class RumSmugglingStep extends ConditionalStep
 			"Grab the white apron from the Fishing Shop.", whiteApronHanging);
 
 		getRumFromCrate = new ObjectStep(getQuestHelper(), ObjectID.CRATE_2071, new WorldPoint(3009, 3207, 0),
-			"Search the crate in the back room of the Port Sarim food shop. Make sure you're wearing your white apron.", whiteApron);
+			"Search the crate in the back room of the Port Sarim food shop. Make sure you're wearing your white apron.", whiteApronEquipped);
 		getRumFromCrate.addDialogStep("Well, can I get a job here?");
 
 		bringRumToRedbeard = new NpcStep(getQuestHelper(), NpcID.REDBEARD_FRANK, new WorldPoint(3053, 3251, 0),

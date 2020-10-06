@@ -55,7 +55,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class MisthalinMystery extends BasicQuestHelper
 {
-	private ItemRequirement bucket, manorKey, knife, notes1, rubyKey, tinderbox, notes2, emeraldKey, notes3, sapphireKey, killersKnife;
+	private ItemRequirement bucket, manorKey, knife, notes1, rubyKey, tinderbox, notes2, emeraldKey, notes3, sapphireKey, killersKnife, killersKnifeEquipped;
 
 	private Zone island, outside1, outside2, outside3, bossRoom;
 
@@ -86,45 +86,37 @@ public class MisthalinMystery extends BasicQuestHelper
 		ConditionalStep investigatingTheBarrel = new ConditionalStep(this, takeTheBoat);
 		investigatingTheBarrel.addStep(new Conditions(onIsland, hasBucket), searchTheBarrel);
 		investigatingTheBarrel.addStep(onIsland, takeTheBucket);
-
 		steps.put(10, investigatingTheBarrel);
-
 		steps.put(15, investigatingTheBarrel);
 
 		ConditionalStep emptyTheBarrel = new ConditionalStep(this, takeTheBoat);
 		emptyTheBarrel.addStep(new Conditions(onIsland, hasBucket), useBucketOnBarrel);
 		emptyTheBarrel.addStep(onIsland, takeTheBucket);
-
 		steps.put(20, emptyTheBarrel);
 
 		ConditionalStep enterTheHouse = new ConditionalStep(this, takeTheBoat);
 		enterTheHouse.addStep(new Conditions(onIsland, hasManorKey), openManorDoor);
 		enterTheHouse.addStep(onIsland, searchTheBarrelForKey);
-
 		steps.put(25, enterTheHouse);
 
 		ConditionalStep pinkDoor = new ConditionalStep(this, takeTheBoat);
 		pinkDoor.addStep(hasKnife, tryToOpenPinkKnobDoor);
 		pinkDoor.addStep(onIsland, takeKnife);
-
 		steps.put(30, pinkDoor);
 
 		ConditionalStep pickUpAndReadNotes1 = new ConditionalStep(this, takeTheBoat);
 		pickUpAndReadNotes1.addStep(new Conditions(onIsland, hasNotes1), readNotes1);
 		pickUpAndReadNotes1.addStep(onIsland, takeNote1);
-
 		steps.put(35, pickUpAndReadNotes1);
 
 		ConditionalStep cutPainting = new ConditionalStep(this, takeTheBoat);
 		cutPainting.addStep(new Conditions(onIsland, hasKnife), useKnifeOnPainting);
 		cutPainting.addStep(onIsland, takeKnife);
-
 		steps.put(40, cutPainting);
 
 		ConditionalStep enterRubyRoom = new ConditionalStep(this, takeTheBoat);
 		enterRubyRoom.addStep(new Conditions(onIsland, hasRubyKey), goThroughRubyDoor);
 		enterRubyRoom.addStep(onIsland, searchPainting);
-
 		steps.put(45, enterRubyRoom);
 
 		ConditionalStep lightCandles = new ConditionalStep(this, takeTheBoat);
@@ -133,27 +125,23 @@ public class MisthalinMystery extends BasicQuestHelper
 		lightCandles.addStep(new Conditions(onIsland, hasTinderbox, litCandle1), lightCandle2);
 		lightCandles.addStep(new Conditions(onIsland, hasTinderbox), lightCandle1);
 		lightCandles.addStep(onIsland, takeTinderbox);
-
 		steps.put(50, lightCandles);
 
 		ConditionalStep lightFuseOnBarrel = new ConditionalStep(this, takeTheBoat);
 		lightFuseOnBarrel.addStep(new Conditions(onIsland, hasTinderbox), lightBarrel);
 		lightFuseOnBarrel.addStep(onIsland, takeTinderbox);
 		steps.put(55, lightFuseOnBarrel);
-
 		steps.put(60, leaveExplosionRoom);
 
 		ConditionalStep goToLacey = new ConditionalStep(this, takeTheBoat);
 		goToLacey.addStep(inOutsideArea, observeThroughTree);
 		goToLacey.addStep(onIsland, climbWall);
-
 		steps.put(65, goToLacey);
 
 		ConditionalStep pickUpAndReadNotes2 = new ConditionalStep(this, takeTheBoat);
 		pickUpAndReadNotes2.addStep(hasNotes2, readNotes2);
 		pickUpAndReadNotes2.addStep(inOutsideArea, takeNote2);
 		pickUpAndReadNotes2.addStep(onIsland, climbWall);
-
 		steps.put(70, pickUpAndReadNotes2);
 
 		ConditionalStep playMusic = new ConditionalStep(this, takeTheBoat);
@@ -164,7 +152,6 @@ public class MisthalinMystery extends BasicQuestHelper
 		playMusic.addStep(inPianoWidget, playD);
 		playMusic.addStep(inOutsideArea, playPiano);
 		playMusic.addStep(onIsland, climbWall);
-
 		steps.put(75, playMusic);
 
 		ConditionalStep openingTheEmeraldDoor = new ConditionalStep(this, takeTheBoat);
@@ -172,24 +159,20 @@ public class MisthalinMystery extends BasicQuestHelper
 		openingTheEmeraldDoor.addStep(inOutsideArea, searchThePiano);
 		openingTheEmeraldDoor.addStep(new Conditions(onIsland, hasEmeraldKey), openEmeraldDoor);
 		openingTheEmeraldDoor.addStep(onIsland, climbWall);
-
 		steps.put(80, openingTheEmeraldDoor);
 
 		ConditionalStep enterBandosGodswordRoom = new ConditionalStep(this, takeTheBoat);
 		enterBandosGodswordRoom.addStep(onIsland, enterBandosGodswordRoomStep);
-
 		steps.put(85, enterBandosGodswordRoom);
 
 		ConditionalStep startPuzzle3 = new ConditionalStep(this, takeTheBoat);
 		startPuzzle3.addStep(new Conditions(onIsland, hasNotes3), readNotes3);
 		startPuzzle3.addStep(onIsland, takeNote3);
-
 		steps.put(90, startPuzzle3);
 
 		ConditionalStep openFireplace = new ConditionalStep(this, takeTheBoat);
 		openFireplace.addStep(new Conditions(onIsland, hasKnife), useKnifeOnFireplace);
 		openFireplace.addStep(onIsland, takeKnife);
-
 		steps.put(95, openFireplace);
 
 		ConditionalStep solveFireplacePuzzle = new ConditionalStep(this, takeTheBoat);
@@ -201,43 +184,35 @@ public class MisthalinMystery extends BasicQuestHelper
 		solveFireplacePuzzle.addStep(selectAnyGem, restartGems);
 		solveFireplacePuzzle.addStep(inGemWidget, clickSapphire);
 		solveFireplacePuzzle.addStep(onIsland, searchFireplace);
-
 		steps.put(100, solveFireplacePuzzle);
 
 		ConditionalStep openSapphireDoor = new ConditionalStep(this, takeTheBoat);
 		openSapphireDoor.addStep(new Conditions(onIsland, hasSapphireKey), goThroughSapphireDoor);
 		openSapphireDoor.addStep(onIsland, searchFireplaceForSapphireKey);
-
 		steps.put(105, openSapphireDoor);
 
 		ConditionalStep goDoBoss = new ConditionalStep(this, takeTheBoat);
 		goDoBoss.addStep(inBossRoom, reflectKnives);
 		goDoBoss.addStep(onIsland, goThroughSapphireDoor);
-
 		steps.put(110, goDoBoss);
 		steps.put(111, goDoBoss);
 
 		ConditionalStep watchRevealCutscene = new ConditionalStep(this, takeTheBoat);
 		watchRevealCutscene.addStep(onIsland, continueThroughSapphireDoor);
-
 		steps.put(115, watchRevealCutscene);
 
-		ConditionalStep fightAbigale = new ConditionalStep(this, takeTheBoat);
-		fightAbigale.addStep(new Conditions(inBossRoom, hasKillersKnife), this.fightAbigale);
-		fightAbigale.addStep(inBossRoom, pickUpKillersKnife);
-		fightAbigale.addStep(onIsland, continueThroughSapphireDoor);
-
-		steps.put(120, fightAbigale);
+		ConditionalStep goFightAbigale = new ConditionalStep(this, takeTheBoat);
+		goFightAbigale.addStep(new Conditions(inBossRoom, hasKillersKnife), fightAbigale);
+		goFightAbigale.addStep(inBossRoom, pickUpKillersKnife);
+		goFightAbigale.addStep(onIsland, continueThroughSapphireDoor);
+		steps.put(120, goFightAbigale);
 
 		ConditionalStep attemptToLeaveSapphireRoom = new ConditionalStep(this, takeTheBoat);
 		attemptToLeaveSapphireRoom.addStep(onIsland, leaveSapphireRoom);
-
-
 		steps.put(125, attemptToLeaveSapphireRoom);
 
 		ConditionalStep finishTheQuest = new ConditionalStep(this, takeTheBoat);
 		finishTheQuest.addStep(onIsland, talkToMandy);
-
 		steps.put(130, finishTheQuest);
 
 		return steps;
@@ -296,7 +271,8 @@ public class MisthalinMystery extends BasicQuestHelper
 		emeraldKey = new ItemRequirement("Emerald key", ItemID.EMERALD_KEY_21054);
 		notes3 = new ItemRequirement("Notes", ItemID.NOTES_21058);
 		sapphireKey = new ItemRequirement("Sapphire key", ItemID.SAPPHIRE_KEY_21055);
-		killersKnife = new ItemRequirement("Killer's knife", ItemID.KILLERS_KNIFE_21059, 1, true);
+		killersKnife = new ItemRequirement("Killer's knife", ItemID.KILLERS_KNIFE_21059);
+		killersKnifeEquipped = new ItemRequirement("Killer's knife", ItemID.KILLERS_KNIFE_21059, 1, true);
 	}
 
 	public void setupSteps() {
@@ -378,10 +354,10 @@ public class MisthalinMystery extends BasicQuestHelper
 		continueThroughSapphireDoor = new ObjectStep(this, ObjectID.DOOR_30119, new WorldPoint(1628, 4829, 0),
 			"Go through the sapphire door to continue.");
 
-		pickUpKillersKnife = new DetailedQuestStep(this, "Pick up the killer's knife.", killersKnife);
+		pickUpKillersKnife = new DetailedQuestStep(this, "Pick up the killer's knife.", killersKnifeEquipped);
 
 		fightAbigale = new NpcStep(this, NpcID.ABIGALE_7635, new WorldPoint(1623, 4829, 0),
-			"Equip the killer's knife, then select Fight on Abigale (no actual combat will occur).", killersKnife);
+			"Equip the killer's knife, then select Fight on Abigale (no actual combat will occur).", killersKnifeEquipped);
 
 		leaveSapphireRoom = new ObjectStep(this, ObjectID.DOOR_30119, new WorldPoint(1628, 4829, 0),
 			"Attempt to go through the sapphire door.");

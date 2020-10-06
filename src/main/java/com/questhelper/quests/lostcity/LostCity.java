@@ -57,7 +57,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class LostCity extends BasicQuestHelper
 {
-	ItemRequirement knife, axe, combatGear, teleport, bronzeAxe, dramenBranch, dramenStaff;
+	ItemRequirement knife, axe, combatGear, teleport, bronzeAxe, dramenBranch, dramenStaff, dramenStaffEquipped;
 
 	ConditionForStep onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, hasBronzeAxe, dramenSpiritNearby, hasBranch, hasStaff;
 
@@ -118,7 +118,8 @@ public class LostCity extends BasicQuestHelper
 		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best.", -1, -1);
 		teleport = new ItemRequirement("Teleport to Lumbridge. Home teleport will work if off cooldown.", ItemID.LUMBRIDGE_TELEPORT);
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
-		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF, 1, true);
+		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
+		dramenStaffEquipped = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF, 1, true);
 	}
 
 	public void loadZones() {
@@ -158,7 +159,7 @@ public class LostCity extends BasicQuestHelper
 		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches.", dramenBranch);
 		getAnotherBranch = new DetailedQuestStep(this, "If you've lost your Dramen branch/staff, you will need to return to Entrana and cut another. You will not need to defeat the Tree Spirit again.");
 		craftBranch = new DetailedQuestStep(this, "Use a knife on the dramen branch to craft a dramen staff.", knife, dramenBranch);
-		enterZanaris = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0), "Enter the shed south of Lumbridge with your Dramen Staff equipped.", dramenStaff);
+		enterZanaris = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0), "Enter the shed south of Lumbridge with your Dramen Staff equipped.", dramenStaffEquipped);
 	}
 
 	@Override

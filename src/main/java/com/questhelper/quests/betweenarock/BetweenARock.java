@@ -59,7 +59,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 public class BetweenARock extends BasicQuestHelper
 {
 	ItemRequirement coins5, pickaxe, page1, page2, page3, pages, dwarvenLore, dwarvenLoreHighlight, goldBar, goldBarHighlight, goldCannonball, cannonMould, goldCannonballHighlight, schematic,
-		baseSchematic, schematicEngineer, khorvakSchematic, goldHelmet, hammer, goldBars3, schematicHighlight, solvedSchematic, combatGear, goldOre6, goldBars4, coins1000;
+		baseSchematic, schematicEngineer, khorvakSchematic, goldHelmet, hammer, goldBars3, schematicHighlight, solvedSchematic, combatGear,
+		goldOre6, goldBars4, coins1000, goldHelmetEquipped;
 
 	ConditionForStep inTrollRoom, inDwarfEntrance, inDwarfMine, inKeldagrim, inDwarvenMine, hasPage1, hasPage2, hasPage3, hasPages, hasUsedGoldBar, hasCannonball, shotGoldCannonball, hasBaseSchematic,
 		hasSchematicEngineer, inKhorvakRoom, hasGoldHelmet, hasKhorvakSchematic, hasSolvedSchematic, has6Ore, inRealm, avatarNearby;
@@ -198,8 +199,8 @@ public class BetweenARock extends BasicQuestHelper
 
 		schematicEngineer = new ItemRequirement("Schematics", ItemID.SCHEMATICS);
 
-		goldHelmet = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET, 1, true);
-
+		goldHelmet = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET);
+		goldHelmetEquipped = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET, 1, true);
 		khorvakSchematic = new ItemRequirement("Khorvak schematic", ItemID.SCHEMATICS_4577);
 
 		solvedSchematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC_4578);
@@ -241,7 +242,7 @@ public class BetweenARock extends BasicQuestHelper
 		shotGoldCannonball = new VarbitCondition(313, 1);
 		hasCannonball = new Conditions(LogicType.OR, new ItemRequirementCondition(goldCannonball), shotGoldCannonball);
 		hasBaseSchematic = new ItemRequirementCondition(baseSchematic);
-		hasGoldHelmet = new Conditions(true, LogicType.OR, new ItemRequirementCondition(goldHelmet));
+		hasGoldHelmet = new Conditions(true, new ItemRequirementCondition(goldHelmet));
 		hasSchematicEngineer = new ItemRequirementCondition(schematicEngineer);
 		hasSolvedSchematic = new VarbitCondition(305, 1);
 		has6Ore = new ItemRequirementCondition(goldOre6);
@@ -337,13 +338,13 @@ public class BetweenARock extends BasicQuestHelper
 
 		assembleSchematic = new PuzzleStep(this, schematicHighlight);
 
-		enterDwarfCaveWithHelmet = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmet, solvedSchematic, pickaxe, combatGear);
-		enterDwarfCave2WithHelmet = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmet, solvedSchematic, pickaxe, combatGear);
-		talkToFerrymanWithHelmet = new NpcStep(this, NpcID.DWARVEN_FERRYMAN, new WorldPoint(2829, 10129, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmet, solvedSchematic, pickaxe, combatGear);
+		enterDwarfCaveWithHelmet = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe, combatGear);
+		enterDwarfCave2WithHelmet = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe, combatGear);
+		talkToFerrymanWithHelmet = new NpcStep(this, NpcID.DWARVEN_FERRYMAN, new WorldPoint(2829, 10129, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe, combatGear);
 		talkToFerrymanWithHelmet.addDialogStep("Yes please.");
-		talkToDondakanWithHelmet = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmet, solvedSchematic, pickaxe, combatGear);
+		talkToDondakanWithHelmet = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe, combatGear);
 		talkToDondakanWithHelmet.addDialogStep("You may fire when ready!");
-		talkToDondakanForEnd = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmet, pickaxe, combatGear);
+		talkToDondakanForEnd = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, pickaxe, combatGear);
 		talkToDondakanForEnd.addDialogStep("Ready as I'll ever be.");
 		talkToDondakanWithHelmet.addSubSteps(enterDwarfCaveWithHelmet, enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanForEnd);
 

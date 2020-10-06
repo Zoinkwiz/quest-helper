@@ -57,7 +57,7 @@ import net.runelite.api.coords.WorldPoint;
 public class Biohazard extends BasicQuestHelper
 {
 	ItemRequirement gasMask, birdFeed, birdCage, rottenApple, medicalGown, key, distillator, plagueSample, ethenea, liquidHoney, sulphuricBroline,
-		touchPaper, priestGownTop, priestGownBottom, teleports;
+		touchPaper, priestGownTop, priestGownBottom, teleports, priestGownBottomEquipped, priestGownTopEquipped, medicalGownEquipped;
 
 	ConditionForStep hasBirdFeed, hasPigeonCage, talkedToOmart, inMournerBackyard, inWestArdougne, hasRottenApple, hasDistillator,
 		inMournerBuilding, upstairsInMournerBuilding, hasMedicalGown, hasKey, hasLiquidHoney, hasEthenea, hasBroline, hasChemicals, inVarrockSouthEast,
@@ -159,7 +159,8 @@ public class Biohazard extends BasicQuestHelper
 		birdCage = new ItemRequirement("Pigeon cage", ItemID.PIGEON_CAGE);
 		birdFeed = new ItemRequirement("Bird feed", ItemID.BIRD_FEED);
 		rottenApple = new ItemRequirement("Rotten apple", ItemID.ROTTEN_APPLE);
-		medicalGown = new ItemRequirement("Medical gown", ItemID.MEDICAL_GOWN, 1, true);
+		medicalGown = new ItemRequirement("Medical gown", ItemID.MEDICAL_GOWN);
+		medicalGownEquipped = new ItemRequirement("Medical gown", ItemID.MEDICAL_GOWN, 1, true);
 		key = new ItemRequirement("Key", ItemID.KEY_423);
 		distillator = new ItemRequirement("Distillator", ItemID.DISTILLATOR);
 		plagueSample = new ItemRequirement("Plague sample", ItemID.PLAGUE_SAMPLE);
@@ -172,8 +173,10 @@ public class Biohazard extends BasicQuestHelper
 		sulphuricBroline.setTip("You can get another from Elena in East Ardougne.");
 		touchPaper = new ItemRequirement("Touch paper", ItemID.TOUCH_PAPER);
 		touchPaper.setTip("You can get more from the Chemist in Rimmington.");
-		priestGownBottom = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428, 1, true);
-		priestGownTop = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN, 1, true);
+		priestGownBottom = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428);
+		priestGownTop = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN);
+		priestGownBottomEquipped = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428, 1, true);
+		priestGownTopEquipped = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN, 1, true);
 		teleports = new ItemRequirement("Teleports to Varrock, Ardougne, and Rimmington.", -1, -1);
 	}
 

@@ -276,7 +276,6 @@ public class KingsRansom extends BasicQuestHelper
 		hasTelegrabItems = new Conditions(new ItemRequirementCondition(airRune), new ItemRequirementCondition(lawRune));
 
 		inBoxWidget = new WidgetModelCondition(390, 0, 27488);
-
 	}
 
 	public void setupSteps()

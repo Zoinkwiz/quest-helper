@@ -61,7 +61,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TempleOfIkov extends BasicQuestHelper
 {
-	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey, armadylPendant, staffOfArmadyl;
+	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
+		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped;
 
 	ConditionForStep hasPendantOfLucien, hasBootsOfLightness, belowMinus1Weight, below4Weight, hasYewBow, hasLimpwurts,
 		inEntryRoom, inNorthRoom, inBootsRoom, dontHaveBoots, inMainOrNorthRoom, hasLever, leverNearby, pulledLever, inArrowRoom,
@@ -171,8 +172,10 @@ public class TempleOfIkov extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		pendantOfLucien = new ItemRequirement("Pendant of lucien", ItemID.PENDANT_OF_LUCIEN, 1, true);
-		bootsOfLightness = new ItemRequirement("Boots of lightness", ItemID.BOOTS_OF_LIGHTNESS, 1, true);
+		pendantOfLucien = new ItemRequirement("Pendant of lucien", ItemID.PENDANT_OF_LUCIEN);
+		pendantOfLucienEquipped = new ItemRequirement("Pendant of lucien", ItemID.PENDANT_OF_LUCIEN, 1, true);
+		bootsOfLightness = new ItemRequirement("Boots of lightness", ItemID.BOOTS_OF_LIGHTNESS);
+		bootsOfLightnessEquipped = new ItemRequirement("Boots of lightness", ItemID.BOOTS_OF_LIGHTNESS, 1, true);
 		limpwurt20 = new ItemRequirement("Limpwurt (unnoted)", ItemID.LIMPWURT_ROOT, 20);
 		yewOrBetterBow = new ItemRequirement("Yew, magic, or dark bow", ItemID.YEW_SHORTBOW);
 		yewOrBetterBow.addAlternates(ItemID.YEW_LONGBOW, ItemID.YEW_COMP_BOW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I, ItemID.MAGIC_LONGBOW, ItemID.DARK_BOW);
@@ -252,25 +255,25 @@ public class TempleOfIkov extends BasicQuestHelper
 		talkToLucien = new NpcStep(this, NpcID.LUCIEN_3444, new WorldPoint(2573, 3321, 0), "Talk to Lucien in the pub north of East Ardougne castle.");
 		prepare = new DetailedQuestStep(this,
 			"Get your weight below 0kg. You can get boots of lightness from the Temple of Ikov north of East Ardougne for -4.5kg.",
-			pendantOfLucien, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, limpwurt20, yewOrBetterBow);
 
 		prepareBelow0 = new DetailedQuestStep(this,
 			"Get your weight below 0kg.",
-			pendantOfLucien, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, limpwurt20, yewOrBetterBow);
 
 		prepare.addSubSteps(prepareBelow0);
 
 		enterDungeonForBoots = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2677, 3405, 0),
 			"Enter the Temple of Ikov. You can get Boots of Lightness inside to get -4.5kg.",
-			pendantOfLucien, knife, lightSource, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, knife, lightSource, limpwurt20, yewOrBetterBow);
 
 		enterDungeon = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2677, 3405, 0),
-			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucien, yewOrBetterBow, limpwurt20);
+			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, yewOrBetterBow, limpwurt20);
 
 		enterDungeon.addSubSteps(enterDungeonForBoots);
 
 		goDownToBoots = new ObjectStep(this, ObjectID.STAIRS_98, new WorldPoint(2651, 9805, 0), "Go down the west stairs to get boots of lightness.", lightSource, knife);
-		getBoots = new ItemStep(this, "Get the boots of lightness in the north east corner.", bootsOfLightness);
+		getBoots = new ItemStep(this, "Get the boots of lightness in the north east corner.", bootsOfLightnessEquipped);
 		goUpFromBoots = new ObjectStep(this, ObjectID.STAIRS_96, new WorldPoint(2639, 9764, 0), "Go back upstairs.");
 
 		pickUpLever = new DetailedQuestStep(this, new WorldPoint(2637, 9819, 0), "Cross the bridge in the north room and pick up the lever whilst weighing less than 0kg.", lever);
@@ -284,7 +287,6 @@ public class TempleOfIkov extends BasicQuestHelper
 		collectArrows.addAlternateObjects(ObjectID.OPEN_CHEST);
 
 		returnToMainRoom = new ObjectStep(this, ObjectID.GATE_89, new WorldPoint(2662, 9803, 0), "Return back to the entry room when you have enough arrows.");
-		//gate 89
 
 		goSearchThievingLever = new ObjectStep(this, ObjectID.LEVER_91, new WorldPoint(2665, 9855, 0),
 			"Go into the north room, then on the north side right-click search the lever there for traps, then pull it.");
@@ -301,17 +303,17 @@ public class TempleOfIkov extends BasicQuestHelper
 			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBow, iceArrows);
 
 		enterDungeonKilledLes = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2677, 3405, 0),
-			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucien, limpwurt20);
+			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, limpwurt20);
 
 		enterLesDoor = new ObjectStep(this, ObjectID.DOOR_93, new WorldPoint(2646, 9870, 0),
-			"Go all the way north and talk to Winelda there.", pendantOfLucien, limpwurt20);
+			"Go all the way north and talk to Winelda there.", pendantOfLucienEquipped, limpwurt20);
 
 		enterLesDoor.addSubSteps(enterDungeonKilledLes);
 
 		giveWineldaLimps = new NpcStep(this, NpcID.WINELDA, new WorldPoint(2655, 9876, 0), "Give Winelda 20 unnoted limpwurts.", limpwurt20);
 
 		enterDungeonGivenLimps = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2677, 3405, 0),
-			"Enter the Temple of Ikov north of East Ardougne. If you got the shiny key, get it and enter via Mcgrubber's wood west of Seers' Village.", pendantOfLucien);
+			"Enter the Temple of Ikov north of East Ardougne. If you got the shiny key, get it and enter via Mcgrubber's wood west of Seers' Village.", pendantOfLucienEquipped);
 
 		enterFromMcgrubbors = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2659, 3492, 0), "Enter the house at Mcgrubbor's wood and go down the ladder.", shinyKey);
 

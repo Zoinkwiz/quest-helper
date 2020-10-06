@@ -168,7 +168,7 @@ public class DemonSlayer extends BasicQuestHelper
 		talkToAris.addDialogStep("Ok, here you go.");
 		talkToAris.addDialogStep("Okay, where is he? I'll kill him for you!");
 		talkToAris.addDialogStep("So how did Wally kill Delrith?");
-		talkToPrysin = new NpcStep(this, NpcID.SIR_PRYSIN, new WorldPoint(3203, 3472, 0), "Talk to Sir Prysin in the south west of Varrock Castle.");
+		talkToPrysin = new NpcStep(this, NpcID.SIR_PRYSIN, new WorldPoint(3203, 3472, 0), "Talk to Sir Prysin in the south west corner of Varrock Castle.");
 		talkToPrysin.addDialogStep("Gypsy Aris said I should come and talk to you.");
 		talkToPrysin.addDialogStep("I need to find Silverlight.");
 		talkToPrysin.addDialogStep("He's back and unfortunately I've got to deal with him.");

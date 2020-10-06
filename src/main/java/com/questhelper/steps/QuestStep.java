@@ -189,7 +189,6 @@ public abstract class QuestStep implements Module
 				clientThread.invokeLater(this::highlightWidgetChoice);
 			}
 		}
-
 	}
 
 	public void addText(String newLine)

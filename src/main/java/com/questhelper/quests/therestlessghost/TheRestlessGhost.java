@@ -54,7 +54,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class TheRestlessGhost extends BasicQuestHelper
 {
-	private ItemRequirement lumbridgeTeleports, ghostspeakAmulet, skull;
+	private ItemRequirement lumbridgeTeleports, ghostspeakAmulet, skull, passage;
 
 	private Zone basement;
 
@@ -78,12 +78,10 @@ public class TheRestlessGhost extends BasicQuestHelper
 		ConditionalStep talkToGhost = new ConditionalStep(this, openCoffin);
 		talkToGhost.addStep(ghostSpawned, speakToGhost);
 		talkToGhost.addStep(coffinOpened, searchCoffin);
-
 		steps.put(2, talkToGhost);
 
 		ConditionalStep getSkullForGhost = new ConditionalStep(this, enterWizardsTowerBasement);
 		getSkullForGhost.addStep(inBasement, searchAltarAndRun);
-
 		steps.put(3, getSkullForGhost);
 
 		ConditionalStep returnSkullToGhost = new ConditionalStep(this, enterWizardsTowerBasement);
@@ -91,28 +89,33 @@ public class TheRestlessGhost extends BasicQuestHelper
 		returnSkullToGhost.addStep(new Conditions(hasSkull, coffinOpened), putSkullInCoffin);
 		returnSkullToGhost.addStep(hasSkull, openCoffinToPutSkullIn);
 		returnSkullToGhost.addStep(inBasement, searchAltarAndRun);
-
 		steps.put(4, returnSkullToGhost);
+
 		return steps;
 	}
 
-	public void setupZones() {
+	public void setupZones()
+	{
 		basement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
 	}
 
-	public void setupConditions() {
+	public void setupConditions()
+	{
 		ghostSpawned = new NpcCondition(NpcID.RESTLESS_GHOST);
 		coffinOpened = new ObjectCondition(NullObjectID.NULL_15061);
 		inBasement = new ZoneCondition(basement);
 		hasSkull = new VarbitCondition(2130, 1);
 	}
 
-	public void setupItemRequirements() {
+	public void setupItemRequirements()
+	{
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, -1);
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeakAmulet.setTip("If you've lost it you can get another from Father Urhney in his hut in the south east of Lumbridge Swamp");
 		skull = new ItemRequirement("Ghost's skull", ItemID.GHOSTS_SKULL);
 		skull.setTip("Check your bank if you don't have this item on you.");
+		passage = new ItemRequirement("Necklace of passage", ItemID.NECKLACE_OF_PASSAGE5);
+		passage.addAlternates(ItemID.NECKLACE_OF_PASSAGE1, ItemID.NECKLACE_OF_PASSAGE2, ItemID.NECKLACE_OF_PASSAGE3, ItemID.NECKLACE_OF_PASSAGE4);
 	}
 
 	public void setupSteps()
@@ -151,14 +154,17 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended() {
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
 		ArrayList<ItemRequirement> recommended = new ArrayList<>();
 		recommended.add(lumbridgeTeleports);
+		recommended.add(passage);
 		return recommended;
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels() {
+	public ArrayList<PanelDetails> getPanels()
+	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Talk to Father Aereck", new ArrayList<>(Collections.singletonList(talkToAereck))));
@@ -169,7 +175,8 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements() {
+	public ArrayList<String> getCombatRequirements()
+	{
 		return new ArrayList<>(Arrays.asList("A skeleton (level 13) you can run away from"));
 	}
 }

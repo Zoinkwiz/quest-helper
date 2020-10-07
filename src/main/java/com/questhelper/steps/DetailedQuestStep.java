@@ -126,6 +126,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void startUp()
 	{
+		super.startUp();
 		if(worldMapPoint != null)
 		{
 			mapPoint = new QuestHelperWorldMapPoint(worldMapPoint, getQuestImage());

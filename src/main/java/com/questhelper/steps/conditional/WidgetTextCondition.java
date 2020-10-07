@@ -125,19 +125,24 @@ public class WidgetTextCondition extends ConditionForStep
 			if (childChildId != -1)
 			{
 				widget = widget.getChild(childChildId);
+				System.out.println(widget.getText());
 			}
-			for (String textOption : text)
+			if (widget != null)
 			{
-				if (checkChildren)
+				for (String textOption : text)
 				{
-					if (getChildren(widget, textOption))
+					if (checkChildren)
+					{
+						if (getChildren(widget, textOption))
+						{
+							return true;
+						}
+					}
+
+					if (widget.getText().contains(textOption))
 					{
 						return true;
 					}
-				}
-				if (widget.getText().contains(textOption))
-				{
-					return true;
 				}
 			}
 		}

@@ -140,6 +140,8 @@ public abstract class QuestStep implements Module
 
 	public void startUp()
 	{
+		clientThread.invokeLater(this::highlightChoice);
+		clientThread.invokeLater(this::highlightWidgetChoice);
 	}
 
 	public void shutDown()

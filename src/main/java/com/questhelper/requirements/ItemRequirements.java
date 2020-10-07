@@ -25,6 +25,8 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.Operation;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,23 +36,37 @@ public class ItemRequirements extends ItemRequirement
 {
 	ArrayList<ItemRequirement> itemRequirements = new ArrayList<>();
 
+	LogicType logicType;
+
 	public ItemRequirements(String name, ItemRequirement... itemRequirements)
 	{
 		super(name, -1, -1);
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
+		this.logicType = LogicType.AND;
+	}
+
+	public ItemRequirements(LogicType logicType, String name, ItemRequirement... itemRequirements)
+	{
+		super(name, -1, -1);
+		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
+		this.logicType = logicType;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
+		int successes = 0;
 		for (ItemRequirement itemRequirement : itemRequirements)
 		{
-			if (!itemRequirement.check(client))
+			if (itemRequirement.check(client))
 			{
-				return false;
+				successes++;
 			}
 		}
-		return true;
+		return (successes == itemRequirements.size() && logicType == LogicType.AND)
+			|| (successes > 0 && logicType == LogicType.OR)
+			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)
+			|| (successes == 0 && logicType == LogicType.NOR);
 	}
 
 	@Override

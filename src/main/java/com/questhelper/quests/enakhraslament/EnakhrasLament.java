@@ -26,11 +26,15 @@ package com.questhelper.quests.enakhraslament;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.Spellbook;
+import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
@@ -58,9 +62,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class EnakhrasLament extends BasicQuestHelper
 {
-	ItemRequirement pickaxe, chisel, sandstone32, sandstone20, base, body, head, granite2, granite, leftArm, rightArm, leftLeg,
+	ItemRequirement pickaxe, chiselHighlighted, sandstone32, sandstone20, base, body, head, granite2, granite, leftArm, rightArm, leftLeg,
 		rightLeg, kSigil, rSigil, mSigil, zSigil, softClay, camelMould, camelHead, breadOrCake, fireSpellRunes, airSpellRunes,
-		mapleLog, log, oakLog, willowLog, coal, candle, air2, chaos, earth2, sandstone5, tinderbox, crumbleUndeadRunes, sandstone52;
+		mapleLog, log, oakLog, willowLog, coal, candle, air2, chaos, earth2, sandstone5, tinderbox, crumbleUndeadRunes, sandstone52,
+		airStaff, airRuneOrStaff, earthRuneOrStaff, earthStaff;
+
+	SpellbookRequirement onNormals;
 
 	ConditionForStep hasBase, hasBody, has32, has20, hasPlacedBase, hasTalkedToLazimAfterBase, hasPlacedBody, chiseledStatue,
 		canChooseHead, has2Granite, hasGranite, hasHead, inTempleEntranceRoom, inTempleGroundFloor, startedTemple, hasMSigil,
@@ -177,8 +184,8 @@ public class EnakhrasLament extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
-		chisel.setHighlightInInventory(true);
+		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chiselHighlighted.setHighlightInInventory(true);
 
 		sandstone52 = new ItemRequirement("52 kg of sandstone", -1, -1);
 
@@ -206,7 +213,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		leftLeg = new ItemRequirement("Stone left leg", ItemID.STONE_LEFT_LEG);
 		leftLeg.setTip("You can get another from Lazim");
-		leftArm = new ItemRequirement("Stone eft arm", ItemID.STONE_LEFT_ARM);
+		leftArm = new ItemRequirement("Stone left arm", ItemID.STONE_LEFT_ARM);
 		leftArm.setTip("You can get another from Lazim");
 		rightLeg = new ItemRequirement("Stone right leg", ItemID.STONE_RIGHT_LEG);
 		rightLeg.setTip("You can get another from Lazim");
@@ -240,14 +247,20 @@ public class EnakhrasLament extends BasicQuestHelper
 		candle = new ItemRequirement("Candle", ItemID.CANDLE);
 		candle.setHighlightInInventory(true);
 
-		air2 = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 2);
-		earth2 = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE, 2);
+		air2 = new ItemRequirement("Air rune", ItemCollections.getAirRune(), 2);
+		airStaff = new ItemRequirement("Air staff", ItemCollections.getAirStaff(), 1, true);
+		airRuneOrStaff = new ItemRequirements(LogicType.OR, "2 air runes", air2, airStaff);
+		earth2 = new ItemRequirement("Earth rune", ItemCollections.getEarthRune(), 2);
+		earthStaff = new ItemRequirement("Air staff", ItemCollections.getEarthStaff(), 1, true);
+		earthRuneOrStaff = new ItemRequirements(LogicType.OR, "2 earth runes", earth2, earthStaff);
 		chaos = new ItemRequirement("Chaos rune", ItemID.CHAOS_RUNE);
 
 		sandstone5 = new ItemRequirement("Sandstone (5kg)", ItemID.SANDSTONE_5KG);
 		sandstone5.setHighlightInInventory(true);
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+
+		onNormals = new SpellbookRequirement(Spellbook.NORMAL);
 	}
 
 	public void loadZones()
@@ -327,7 +340,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToLazim = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Talk to Lazim in the quarry south of the Bandit Camp.", pickaxe);
+		talkToLazim = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Talk to Lazim in the quarry south of the Bandit Camp.", pickaxe, onNormals);
 		talkToLazim.addDialogStep("Of course!");
 		bringLazim32Sandstone = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Get 32kg of sandstone and give it to Lazim. This can be done in batches, and you can mine some nearby.");
 		bringLazim32Sandstone.addDialogStep("Okay, I'll get on with it.");
@@ -336,7 +349,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		bringLazim32Sandstone.addDialogStep("Here's a medium 5 kg block.");
 		bringLazim32Sandstone.addDialogStep("Here's a small 2 kg block.");
 		bringLazim32Sandstone.addDialogStep("Here's a tiny 1 kg block.");
-		useChiselOn32Sandstone = new DetailedQuestStep(this, "Use a chisel on the sandstone 32kg.", chisel, sandstone32);
+		useChiselOn32Sandstone = new DetailedQuestStep(this, "Use a chisel on the sandstone 32kg.", chiselHighlighted, sandstone32);
 		placeBase = new ObjectStep(this, NullObjectID.NULL_10952, new WorldPoint(3190, 2926, 0), "Place the base on the flat ground nearby.", base);
 		talkToLazimAboutBody = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Talk to Lazim again.");
 		talkToLazimAboutBody.addDialogStep("I'll do it right away!");
@@ -349,15 +362,15 @@ public class EnakhrasLament extends BasicQuestHelper
 		bringLazim20Sandstone.addDialogStep("Here's a small 2 kg block.");
 		bringLazim20Sandstone.addDialogStep("Here's a tiny 1 kg block.");
 
-		useChiselOn20Sandstone = new DetailedQuestStep(this, "Use a chisel on the sandstone 20kg.", chisel, sandstone20);
+		useChiselOn20Sandstone = new DetailedQuestStep(this, "Use a chisel on the sandstone 20kg.", chiselHighlighted, sandstone20);
 		placeBody = new ObjectStep(this, NullObjectID.NULL_10952, new WorldPoint(3190, 2926, 0), "Place the body on the sandstone base.", body);
 		talkToLazimToChooseHead = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Talk to Lazim and choose the head you'd like the statue to have.");
 		getGranite = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Get 2 x granite 5kg, and then craft one into the head you chose. You can mine some nearby.", granite2);
 
 		// TODO: Change head highlight text based on choice
-		craftHead = new DetailedQuestStep(this, "Use a chisel on a piece of granite 5kg, and choose the head you decided on to craft.",  chisel, granite);
+		craftHead = new DetailedQuestStep(this, "Use a chisel on a piece of granite 5kg, and choose the head you decided on to craft.", chiselHighlighted, granite);
 
-		chiselStatue = new ObjectStep(this, NullObjectID.NULL_10952, new WorldPoint(3190, 2926, 0), "Use a chisel on the headless statue.", chisel);
+		chiselStatue = new ObjectStep(this, NullObjectID.NULL_10952, new WorldPoint(3190, 2926, 0), "Use a chisel on the headless statue.", chiselHighlighted);
 		chiselStatue.addIcon(ItemID.CHISEL);
 
 		giveLazimHead = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Give Lazim the head.", head);
@@ -366,7 +379,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		enterTempleDownLadder = new ObjectStep(this, ObjectID.LADDER_11042, new WorldPoint(3127, 9329, 1), "Enter the temple south of the Bandit's Camp.");
 		talkToLazimInTemple = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3127, 9324, 0), "Talk to Lazim in the temple.");
 
-		cutOffLimb = new ObjectStep(this, NullObjectID.NULL_10970, new WorldPoint(3130, 9326, 0), "Use a chisel on the fallen statue to get all its limbs.");
+		cutOffLimb = new ObjectStep(this, NullObjectID.NULL_10970, new WorldPoint(3130, 9326, 0), "Use a chisel on the fallen statue to get all its limbs.", chiselHighlighted);
 		cutOffLimb.addDialogSteps("Remove the statue's left arm", "Remove the statue's right arm", "Remove the statue's left leg", "Remove the statue's right leg");
 
 		takeM = new ObjectStep(this, ObjectID.PEDESTAL_11061, new WorldPoint(3128, 9319, 0), "Take the M sigil from the pedestal in the room.");
@@ -389,31 +402,31 @@ public class EnakhrasLament extends BasicQuestHelper
 		goUpToPuzzles = new ObjectStep(this, ObjectID.LADDER_11041, new WorldPoint(3104, 9309, 0), "Open the central room's doors using the metal letters. Go up the ladder in the central room.");
 
 		useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use soft clay on the pedestal.", softClay);
-		useChiselOnGranite = new DetailedQuestStep(this, "Use a chisel on granite (5kg).", granite, chisel);
+		useChiselOnGranite = new DetailedQuestStep(this, "Use a chisel on granite (5kg).", granite, chiselHighlighted);
 		useStoneHeadOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use the camel stone head on the pedestal.", camelHead);
 		useStoneHeadOnPedestal.addIcon(ItemID.STONE_HEAD_7002);
 
 		useBread = new NpcStep(this, NpcID.PENTYN, new WorldPoint(3091, 9324, 1), "Use bread or cake on Pentyn.", breadOrCake);
-		castFireSpell = new NpcStep(this, NpcID.CRUST_OF_ICE, new WorldPoint(3092, 9308, 1), "Cast a fire spell on the frozen fountain.", fireSpellRunes);
-		castAirSpell = new NpcStep(this, NpcID.FURNACE_GRATE, new WorldPoint(3116, 9323, 1), "Cast an air spell on the furnace", airSpellRunes);
-		useMapleLog = new ObjectStep(this, NullObjectID.NULL_11014, new WorldPoint(3114, 9309, 1), "Use a maple log on the north west brazier", mapleLog);
+		castFireSpell = new NpcStep(this, NpcID.CRUST_OF_ICE, new WorldPoint(3092, 9308, 1), "Cast a fire spell on the frozen fountain.", fireSpellRunes, onNormals);
+		castAirSpell = new NpcStep(this, NpcID.FURNACE_GRATE, new WorldPoint(3116, 9323, 1), "Cast an air spell on the furnace.", airSpellRunes, onNormals);
+		useMapleLog = new ObjectStep(this, NullObjectID.NULL_11014, new WorldPoint(3114, 9309, 1), "Use a maple log on the north west brazier.", mapleLog);
 		useMapleLog.addIcon(ItemID.MAPLE_LOGS);
-		useOakLog = new ObjectStep(this, NullObjectID.NULL_11012, new WorldPoint(3116, 9306, 1), "Use an oak log on the south brazier", oakLog);
+		useOakLog = new ObjectStep(this, NullObjectID.NULL_11012, new WorldPoint(3116, 9306, 1), "Use an oak log on the south brazier.", oakLog);
 		useOakLog.addIcon(ItemID.OAK_LOGS);
-		useLog = new ObjectStep(this, NullObjectID.NULL_11011, new WorldPoint(3114, 9306, 1), "Use a normal log on the south east brazier", log);
+		useLog = new ObjectStep(this, NullObjectID.NULL_11011, new WorldPoint(3114, 9306, 1), "Use a normal log on the south east brazier.", log);
 		useLog.addIcon(ItemID.LOGS);
-		useWillowLog = new ObjectStep(this, NullObjectID.NULL_11013, new WorldPoint(3118, 9306, 1), "Use a willow log on the south west brazier", willowLog);
+		useWillowLog = new ObjectStep(this, NullObjectID.NULL_11013, new WorldPoint(3118, 9306, 1), "Use a willow log on the south west brazier.", willowLog);
 		useWillowLog.addIcon(ItemID.WILLOW_LOGS);
-		useCoal = new ObjectStep(this, NullObjectID.NULL_11016, new WorldPoint(3118, 9309, 1), "Use coal on the north east brazier", coal);
+		useCoal = new ObjectStep(this, NullObjectID.NULL_11016, new WorldPoint(3118, 9309, 1), "Use coal on the north east brazier.", coal);
 		useCoal.addIcon(ItemID.COAL);
-		useCandle = new ObjectStep(this, NullObjectID.NULL_11015, new WorldPoint(3116, 9309, 1), "Use a candle on the north brazier", candle);
+		useCandle = new ObjectStep(this, NullObjectID.NULL_11015, new WorldPoint(3116, 9309, 1), "Use a candle on the north brazier.", candle);
 		useCandle.addIcon(ItemID.CANDLE);
 
 		passBarrier = new ObjectStep(this, ObjectID.MAGIC_BARRIER, new WorldPoint(3104, 9319, 1), "Pass through the magic barrier and go up the ladder.");
 		goUpFromPuzzleRoom = new ObjectStep(this, ObjectID.LADDER_11041, new WorldPoint(3104, 9332, 1), "Go up the ladder.");
 		passBarrier.addSubSteps(goUpFromPuzzleRoom);
 
-		castCrumbleUndead = new NpcStep(this, NpcID.BONEGUARD, new WorldPoint(3104, 9307, 2), "Cast crumble undead on the Boneguard.", earth2, air2, chaos);
+		castCrumbleUndead = new NpcStep(this, NpcID.BONEGUARD, new WorldPoint(3104, 9307, 2), "Cast crumble undead on the Boneguard.", earth2, airRuneOrStaff, chaos, onNormals);
 
 		goDownToFinalRoom = new ObjectStep(this, ObjectID.STONE_LADDER_11044, new WorldPoint(3105, 9300, 2), "Climb down the stone ladder past the Boneguard.");
 
@@ -422,7 +435,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		repairWall.addDialogStep("Of course I'll help you out.");
 		repairWall.addIcon(ItemID.SANDSTONE_5KG);
 
-		useChiselOnWall =  new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Use a chisel on the wall.", chisel);
+		useChiselOnWall =  new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Use a chisel on the wall.", chiselHighlighted);
 		useChiselOnWall.addDialogStep("Of course I'll help you out.");
 		useChiselOnWall.addIcon(ItemID.CHISEL);
 
@@ -434,7 +447,7 @@ public class EnakhrasLament extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(pickaxe);
-		reqs.add(chisel);
+		reqs.add(chiselHighlighted);
 		reqs.add(softClay);
 		reqs.add(breadOrCake);
 		reqs.add(tinderbox);
@@ -466,7 +479,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToLazim))));
 		allSteps.add(new PanelDetails("Craft a statue", new ArrayList<>(Arrays.asList(bringLazim32Sandstone, useChiselOn32Sandstone, placeBase, talkToLazimAboutBody,
 			bringLazim20Sandstone, useChiselOn20Sandstone, placeBody, chiselStatue, talkToLazimToChooseHead, getGranite, craftHead, giveLazimHead)),
-			pickaxe, chisel, softClay, breadOrCake, tinderbox, log, oakLog, willowLog, mapleLog, candle, coal, fireSpellRunes, airSpellRunes, earth2, air2, chaos));
+			pickaxe, chiselHighlighted, softClay, breadOrCake, tinderbox, log, oakLog, willowLog, mapleLog, candle, coal, fireSpellRunes, airSpellRunes, earth2, air2, chaos));
 		allSteps.add(new PanelDetails("Explore the ground floor", new ArrayList<>(Arrays.asList(talkToLazimInTemple, cutOffLimb, takeM, enterDoor1, enterDoor2, enterMDoor, goUpToPuzzles))));
 		allSteps.add(new PanelDetails("Solve the puzzles", new ArrayList<>(Arrays.asList(useSoftClayOnPedestal, useChiselOnGranite, useStoneHeadOnPedestal, useBread, castFireSpell, castAirSpell,
 			useLog, useOakLog, useWillowLog, useMapleLog, useCandle, useCoal))));

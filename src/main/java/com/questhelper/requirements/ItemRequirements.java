@@ -58,7 +58,7 @@ public class ItemRequirements extends ItemRequirement
 		int successes = 0;
 		for (ItemRequirement itemRequirement : itemRequirements)
 		{
-			if (itemRequirement.check(client))
+			if (itemRequirement.checkConsideringSlot(client))
 			{
 				successes++;
 			}

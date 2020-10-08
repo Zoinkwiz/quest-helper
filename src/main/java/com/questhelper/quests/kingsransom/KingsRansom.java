@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.kingsransom;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -183,9 +184,8 @@ public class KingsRansom extends BasicQuestHelper
 		blackHelm = new ItemRequirement("Black knight helm", ItemID.BLACK_KNIGHT_HELM);
 		criminalsThread = new ItemRequirement("Criminal's thread", ItemID.CRIMINALS_THREAD_1809);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
-		airRune.addAlternates(ItemID.AIR_BATTLESTAFF, ItemID.MYSTIC_AIR_STAFF, ItemID.STAFF_OF_AIR, ItemID.DUST_RUNE, ItemID.MIST_RUNE, ItemID.SMOKE_RUNE,
-			ItemID.SMOKE_BATTLESTAFF, ItemID.MYSTIC_SMOKE_STAFF, ItemID.DUST_BATTLESTAFF, ItemID.MYSTIC_DUST_STAFF, ItemID.MYSTIC_MIST_STAFF, ItemID.MIST_BATTLESTAFF);
+		airRune = new ItemRequirement("Air rune", ItemCollections.getAirRune());
+		airRune.addAlternates(ItemCollections.getAirStaff());
 		hairclip = new ItemRequirement("Hair clip", ItemID.HAIR_CLIP);
 		hairclip.setHighlightInInventory(true);
 

@@ -96,6 +96,19 @@ public class ItemRequirement extends Requirement
 		this.addAlternates(items.subList(1, items.size()));
 	}
 
+	public ItemRequirement(String name, List<Integer> items, int quantity)
+	{
+		this(name, items.get(0), quantity);
+		this.addAlternates(items.subList(1, items.size()));
+	}
+
+	public ItemRequirement(String name, List<Integer> items, int quantity, boolean equip)
+	{
+		this(name, items.get(0), quantity);
+		this.equip = equip;
+		this.addAlternates(items.subList(1, items.size()));
+	}
+
 	public void addAlternates(List<Integer> alternates)
 	{
 		this.alternates.addAll(alternates);

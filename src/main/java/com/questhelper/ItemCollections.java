@@ -33,7 +33,7 @@ import net.runelite.api.ItemID;
 public class ItemCollections
 {
 	@Getter
-	private static List<Integer> axes = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> axes = new ArrayList<>(Arrays.asList(
 		ItemID.BRONZE_AXE,
 		ItemID.IRON_AXE,
 		ItemID.STEEL_AXE,
@@ -49,7 +49,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static List<Integer> pickaxes = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> pickaxes = new ArrayList<>(Arrays.asList(
 			ItemID.BRONZE_PICKAXE,
 			ItemID.IRON_PICKAXE,
 			ItemID.STEEL_PICKAXE,
@@ -65,7 +65,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static List<Integer> cats = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> cats = new ArrayList<>(Arrays.asList(
 		ItemID.PET_KITTEN,
 		ItemID.PET_KITTEN_1556,
 		ItemID.PET_KITTEN_1557,
@@ -104,7 +104,7 @@ public class ItemCollections
 	);
 
 	@Getter
-    private static List<Integer> bows = new ArrayList<>(Arrays.asList(
+    private static final List<Integer> bows = new ArrayList<>(Arrays.asList(
             ItemID.SHORTBOW,
             ItemID.LONGBOW,
             ItemID.MAGIC_SHORTBOW,
@@ -120,7 +120,7 @@ public class ItemCollections
     ));
 
 	@Getter
-    private static List<Integer> metalArrows = new ArrayList<>(Arrays.asList(
+    private static final List<Integer> metalArrows = new ArrayList<>(Arrays.asList(
             ItemID.BRONZE_ARROW,
             ItemID.IRON_ARROW,
             ItemID.STEEL_ARROW,
@@ -128,4 +128,88 @@ public class ItemCollections
             ItemID.ADAMANT_ARROW,
             ItemID.RUNE_ARROW
     ));
+
+	@Getter
+	private static final List<Integer> airRune = new ArrayList<>(Arrays.asList(
+		ItemID.AIR_RUNE,
+		ItemID.MIST_RUNE,
+		ItemID.SMOKE_RUNE,
+		ItemID.DUST_RUNE
+	));
+
+	@Getter
+	private static final List<Integer> airStaff = new ArrayList<>(Arrays.asList(
+		ItemID.AIR_BATTLESTAFF,
+		ItemID.MYSTIC_AIR_STAFF,
+		ItemID.STAFF_OF_AIR,
+		ItemID.SMOKE_BATTLESTAFF,
+		ItemID.MYSTIC_SMOKE_STAFF,
+		ItemID.DUST_BATTLESTAFF,
+		ItemID.MYSTIC_DUST_STAFF,
+		ItemID.MIST_BATTLESTAFF,
+		ItemID.MYSTIC_MIST_STAFF
+	));
+
+	@Getter
+	private static final List<Integer> fireRune = new ArrayList<>(Arrays.asList(
+		ItemID.FIRE_RUNE,
+		ItemID.LAVA_RUNE,
+		ItemID.SMOKE_RUNE,
+		ItemID.STEAM_RUNE
+	));
+
+	@Getter
+	private static final List<Integer> fireStaff = new ArrayList<>(Arrays.asList(
+		ItemID.FIRE_BATTLESTAFF,
+		ItemID.MYSTIC_FIRE_STAFF,
+		ItemID.STAFF_OF_FIRE,
+		ItemID.SMOKE_BATTLESTAFF,
+		ItemID.MYSTIC_SMOKE_STAFF,
+		ItemID.LAVA_BATTLESTAFF,
+		ItemID.MYSTIC_LAVA_STAFF,
+		ItemID.STEAM_BATTLESTAFF,
+		ItemID.MYSTIC_STEAM_STAFF
+	));
+
+	@Getter
+	private static final List<Integer> waterRune = new ArrayList<>(Arrays.asList(
+		ItemID.WATER_RUNE,
+		ItemID.MUD_RUNE,
+		ItemID.MIST_RUNE,
+		ItemID.STEAM_RUNE
+	));
+
+	@Getter
+	private static final List<Integer> waterStaff = new ArrayList<>(Arrays.asList(
+		ItemID.FIRE_BATTLESTAFF,
+		ItemID.MYSTIC_FIRE_STAFF,
+		ItemID.STAFF_OF_FIRE,
+		ItemID.MUD_BATTLESTAFF,
+		ItemID.MYSTIC_MUD_STAFF,
+		ItemID.MIST_BATTLESTAFF,
+		ItemID.MYSTIC_MIST_STAFF,
+		ItemID.STEAM_BATTLESTAFF,
+		ItemID.MYSTIC_STEAM_STAFF
+	));
+
+	@Getter
+	private static final List<Integer> earthRune = new ArrayList<>(Arrays.asList(
+		ItemID.EARTH_RUNE,
+		ItemID.MUD_RUNE,
+		ItemID.LAVA_RUNE,
+		ItemID.DUST_RUNE
+	));
+
+	@Getter
+	private static final List<Integer> earthStaff = new ArrayList<>(Arrays.asList(
+		ItemID.EARTH_BATTLESTAFF,
+		ItemID.MYSTIC_EARTH_STAFF,
+		ItemID.STAFF_OF_EARTH,
+		ItemID.MUD_BATTLESTAFF,
+		ItemID.MYSTIC_MUD_STAFF,
+		ItemID.DUST_BATTLESTAFF,
+		ItemID.MYSTIC_DUST_STAFF,
+		ItemID.LAVA_BATTLESTAFF,
+		ItemID.MYSTIC_LAVA_STAFF
+	));
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,57 +22,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.watchtower;
+package com.questhelper.requirements;
 
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.eventbus.Subscribe;
+import com.questhelper.steps.conditional.Operation;
+import java.awt.Color;
+import java.util.ArrayList;
+import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class SkavidChoice extends NpcStep
+public class WeightRequirement extends Requirement
 {
-	public SkavidChoice(QuestHelper questHelper)
+	int weight;
+	String text;
+	Operation operation;
+
+	public WeightRequirement(String text, int weight, Operation operation)
 	{
-		super(questHelper, NpcID.MAD_SKAVID, new WorldPoint(2526, 9413, 0), "Talk to the mad skavid.");
+		this.weight = weight;
+		this.text = text;
+		this.operation = operation;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	@Override
+	public boolean check(Client client)
 	{
-		updateCorrectChoice();
+		if (operation == Operation.EQUAL)
+		{
+			return client.getWeight() == weight;
+		}
+		else if (operation == Operation.NOT_EQUAL)
+		{
+			return client.getWeight() != weight;
+		}
+		else if (operation == Operation.LESS_EQUAL)
+		{
+			return client.getWeight() <= weight;
+		}
+		else if (operation == Operation.GREATER_EQUAL)
+		{
+			return client.getWeight() >= weight;
+		}
+		return false;
 	}
 
-	private void updateCorrectChoice()
+	@Override
+	public ArrayList<LineComponent> getDisplayText(Client client)
 	{
-		Widget widget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-		if (widget == null)
+		ArrayList<LineComponent> lines = new ArrayList<>();
+
+		Color color = Color.RED;
+		if (check(client))
 		{
-			return;
+			color = Color.GREEN;
 		}
 
-		switch (widget.getText())
-		{
-			case "Bidith ig...":
-				choices = new DialogChoiceSteps();
-				addDialogStep("Cur.");
-				break;
-			case "Ar cur...":
-				choices = new DialogChoiceSteps();
-				addDialogStep("Gor.");
-				break;
-			case "Gor nod...":
-				choices = new DialogChoiceSteps();
-				addDialogStep("Tanath.");
-				break;
-			case "Cur tanath...":
-				choices = new DialogChoiceSteps();
-				addDialogStep("Bidith.");
-				break;
-		}
+		lines.add(LineComponent.builder()
+			.left(text)
+			.leftColor(color)
+			.build());
+
+		return lines;
 	}
 }

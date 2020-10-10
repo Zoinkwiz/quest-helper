@@ -101,12 +101,9 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_PHOENIXGANG = "Start Quest Helper (Phoenix Gang)";
 	private static final String MENUOP_BLACKARMGANG = "Start Quest Helper (Black Arm Gang)";
 
-	private static final String MENUOP_PIRATE_PETE = "Start Quest Helper (Pirate Pete)";
-
-	private static final String SHIELD_OF_ARRAV_PHOENIX_GANG = "Shield of Arrav - Phoenix Gang";
-	private static final String SHIELD_OF_ARRAV_BLACK_ARM_GANG = "Shield of Arrav - Black Arm Gang";
-
-	private static final String RFD_PIRATE_PETE = "Recipe for Disaster - Pirate Pete";
+	private static final String MENUOP_RFD_START = "Start Quest Helper (Starting off)";
+	private static final String MENUOP_RFD_PIRATE_PETE = "Start Quest Helper (Pirate Pete)";
+	private static final String MENUOP_RFD_LUMBRIDGE_GUIDE = "Start Quest Helper (Lumbridge Guide)";
 
 	@Inject
 	private Client client;
@@ -240,17 +237,27 @@ public class QuestHelperPlugin extends Plugin
 				case MENUOP_PHOENIXGANG:
 					event.consume();
 					shutDownQuest();
-					startUpQuest(quests.get(SHIELD_OF_ARRAV_PHOENIX_GANG));
+					startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
 					break;
 				case MENUOP_BLACKARMGANG:
 					event.consume();
 					shutDownQuest();
-					startUpQuest(quests.get(SHIELD_OF_ARRAV_BLACK_ARM_GANG));
+					startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
 					break;
-				case MENUOP_PIRATE_PETE:
+				case MENUOP_RFD_START:
 					event.consume();
 					shutDownQuest();
-					startUpQuest(quests.get(RFD_PIRATE_PETE));
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
+					break;
+				case MENUOP_RFD_PIRATE_PETE:
+					event.consume();
+					shutDownQuest();
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()));
+					break;
+				case MENUOP_RFD_LUMBRIDGE_GUIDE:
+					event.consume();
+					shutDownQuest();
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE.getName()));
 					break;
 			}
 		}
@@ -268,14 +275,14 @@ public class QuestHelperPlugin extends Plugin
 		{
 			if (target.equals("Shield of Arrav"))
 			{
-				QuestHelper questHelperPhoenix = quests.get(SHIELD_OF_ARRAV_PHOENIX_GANG);
-				QuestHelper questHelperBlackArm = quests.get(SHIELD_OF_ARRAV_BLACK_ARM_GANG);
+				QuestHelper questHelperPhoenix = quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName());
+				QuestHelper questHelperBlackArm = quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName());
 				if (questHelperBlackArm != null && !questHelperBlackArm.isCompleted()
 				|| questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 				{
 					if (selectedQuest != null &&
-						(selectedQuest.getQuest().getName().equals(SHIELD_OF_ARRAV_PHOENIX_GANG) ||
-							selectedQuest.getQuest().getName().equals(SHIELD_OF_ARRAV_BLACK_ARM_GANG)))
+						(selectedQuest.getQuest().getName().equals(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()) ||
+							selectedQuest.getQuest().getName().equals(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName())))
 					{
 						menuEntries = addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
 					}
@@ -295,16 +302,26 @@ public class QuestHelperPlugin extends Plugin
 			else if (target.equals("Recipe for Disaster"))
 			{
 				if (selectedQuest != null &&
-					(selectedQuest.getQuest().getName().equals(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()) ||
-						selectedQuest.getQuest().getName().equals(QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF.getName())))
+					(selectedQuest.getQuest().getId() == QuestHelperQuest.RECIPE_FOR_DISASTER.getId()))
 				{
 					menuEntries = addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
 				}
 				else
 				{
-					if (quests.get(RFD_PIRATE_PETE).getVar() < 110)
+					if (quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()).getVar() < 3)
 					{
-						menuEntries = addNewEntry(menuEntries, MENUOP_PIRATE_PETE, event.getTarget(), widgetIndex, widgetID);
+						menuEntries = addNewEntry(menuEntries, MENUOP_RFD_START, event.getTarget(), widgetIndex, widgetID);
+					}
+					else
+					{
+						if (quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE.getName()).getVar() < 5)
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_LUMBRIDGE_GUIDE, event.getTarget(), widgetIndex, widgetID);
+						}
+						if (quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()).getVar() < 110)
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_PIRATE_PETE, event.getTarget(), widgetIndex, widgetID);
+						}
 					}
 				}
 			}

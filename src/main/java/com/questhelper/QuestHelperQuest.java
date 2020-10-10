@@ -4,8 +4,6 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 
 public enum QuestHelperQuest
 {
@@ -117,10 +115,11 @@ public enum QuestHelperQuest
 	RAG_AND_BONE_MAN_II(411, "Rag and Bone Man II", QuestVarPlayer.QUEST_RAG_AND_BONE_MAN_II),
 	RATCATCHERS(412, "Ratcatchers", QuestVarbits.QUEST_RATCATCHERS),
 	RECIPE_FOR_DISASTER(413, "Recipe for Disaster", QuestVarbits.QUEST_RECIPE_FOR_DISASTER),
+	RECIPE_FOR_DISASTER_START(413, "RFD - Start", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_START),
 //	RECIPE_FOR_DISASTER_DWARF(413, "Recipe for Disaster - Dwarf", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF),
 //	RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE(413, "Recipe for Disaster - Wartface & Bentnoze", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE),
-	RECIPE_FOR_DISASTER_PIRATE_PETE(413, "Recipe for Disaster - Pirate Pete", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE),
-//	RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE(413, "Recipe for Disaster - Lumbridge Guide", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE),
+	RECIPE_FOR_DISASTER_PIRATE_PETE(413, "RFD - Pirate Pete", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE),
+	RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE(413, "RFD - Lumbridge Guide", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE),
 //	RECIPE_FOR_DISASTER_EVIL_DAVE(413, "Recipe for Disaster - Evil Dave", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_EVIL_DAVE),
 //	RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR(413, "Recipe for Disaster - Monkey Ambassador", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR),
 //	RECIPE_FOR_DISASTER_SIR_AMIK_VARZE(413, "Recipe for Disaster - Sir Amik Varze", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE),

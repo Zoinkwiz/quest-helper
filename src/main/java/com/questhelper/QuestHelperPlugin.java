@@ -101,8 +101,12 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_PHOENIXGANG = "Start Quest Helper (Phoenix Gang)";
 	private static final String MENUOP_BLACKARMGANG = "Start Quest Helper (Black Arm Gang)";
 
+	private static final String MENUOP_PIRATE_PETE = "Start Quest Helper (Pirate Pete)";
+
 	private static final String SHIELD_OF_ARRAV_PHOENIX_GANG = "Shield of Arrav - Phoenix Gang";
 	private static final String SHIELD_OF_ARRAV_BLACK_ARM_GANG = "Shield of Arrav - Black Arm Gang";
+
+	private static final String RFD_PIRATE_PETE = "Recipe for Disaster - Pirate Pete";
 
 	@Inject
 	private Client client;
@@ -243,6 +247,11 @@ public class QuestHelperPlugin extends Plugin
 					shutDownQuest();
 					startUpQuest(quests.get(SHIELD_OF_ARRAV_BLACK_ARM_GANG));
 					break;
+				case MENUOP_PIRATE_PETE:
+					event.consume();
+					shutDownQuest();
+					startUpQuest(quests.get(RFD_PIRATE_PETE));
+					break;
 			}
 		}
 	}
@@ -274,13 +283,28 @@ public class QuestHelperPlugin extends Plugin
 					{
 						if (questHelperBlackArm.getVar() < 3)
 						{
-							// TODO: Change Var to actual var
 							menuEntries = addNewEntry(menuEntries, MENUOP_PHOENIXGANG, event.getTarget(), widgetIndex, widgetID);
 						}
 						if (questHelperPhoenix.getVar() < 6)
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_BLACKARMGANG, event.getTarget(), widgetIndex, widgetID);
 						}
+					}
+				}
+			}
+			else if (target.equals("Recipe for Disaster"))
+			{
+				if (selectedQuest != null &&
+					(selectedQuest.getQuest().getName().equals(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()) ||
+						selectedQuest.getQuest().getName().equals(QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF.getName())))
+				{
+					menuEntries = addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
+				}
+				else
+				{
+					if (quests.get(RFD_PIRATE_PETE).getVar() < 110)
+					{
+						menuEntries = addNewEntry(menuEntries, MENUOP_PIRATE_PETE, event.getTarget(), widgetIndex, widgetID);
 					}
 				}
 			}

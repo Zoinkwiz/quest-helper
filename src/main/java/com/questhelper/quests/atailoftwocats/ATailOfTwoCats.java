@@ -206,6 +206,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		useMilkOnTable = new ObjectStep(this, NullObjectID.NULL_9435, new WorldPoint(2921, 3556, 0), "Use a bucket of milk on Unferth's table.", milk);
 		useMilkOnTable.addIcon(ItemID.BUCKET_OF_MILK);
 		useShearsOnUnferth = new ObjectStep(this, NpcID.UNFERTH_4241, new WorldPoint(2919, 3559, 0), "Use some shears on Unferth in north east Burthorpe.", shears);
+		((NpcStep)(useShearsOnUnferth)).addAlternateNpcs(NpcID.UNFERTH, NpcID.UNFERTH_4238, NpcID.UNFERTH_4239, NpcID.UNFERTH_4240);
 		useShearsOnUnferth.addIcon(ItemID.SHEARS);
 
 		waitForPotatoesToGrow = new DetailedQuestStep(this, "You now need to wait 15-35 minutes for the potatoes to grow.");

@@ -185,7 +185,7 @@ class QuestHelperPanel extends PluginPanel
 		final String[] searchTerms = text.toLowerCase().split(" ");
 		questSelectPanels.forEach(listItem ->
 		{
-			if (Text.matchesSearchTerms(searchTerms, listItem.getKeywords()))
+			if (Text.matchesSearchTerms(Arrays.asList(searchTerms), listItem.getKeywords()))
 			{
 				questListPanel.add(listItem);
 			}

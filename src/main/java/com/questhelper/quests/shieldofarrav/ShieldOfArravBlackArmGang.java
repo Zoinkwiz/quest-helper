@@ -25,6 +25,8 @@
 package com.questhelper.quests.shieldofarrav;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarPlayer;
+import com.questhelper.QuestVarbits;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -194,5 +196,12 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 			Arrays.asList("You can also do this quest by joining the Phoenix Gang, which instead requires you to kill Jonny the beard (level 2).",
 			"Once you're accepted into one of the gangs, you CANNOT change gang.",
 			"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there."));
+	}
+
+	@Override
+	public boolean isCompleted()
+	{
+		boolean partComplete = super.isCompleted();
+		return (partComplete || QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getVar(client) >= 6);
 	}
 }

@@ -127,4 +127,10 @@ public class RFDStart extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Help the Cook", new ArrayList<>(Arrays.asList(talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom)), eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast));
 		return allSteps;
 	}
+
+	@Override
+	public boolean isCompleted()
+	{
+		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_START.getId()) >= 3);
+	}
 }

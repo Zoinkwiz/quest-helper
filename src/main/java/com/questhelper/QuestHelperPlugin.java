@@ -34,12 +34,16 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -52,6 +56,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
@@ -112,6 +117,9 @@ public class QuestHelperPlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private EventBus eventBus;
 
 	@Inject
@@ -129,6 +137,9 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	private QuestHelper selectedQuest = null;
 
+	@Setter
+	private QuestHelper sidebarSelectedQuest = null;
+
 	private QuestStep lastStep = null;
 
 	private Map<String, QuestHelper> quests;
@@ -140,6 +151,8 @@ public class QuestHelperPlugin extends Plugin
 
 	private NavigationButton navButton;
 
+	private boolean loadQuestList;
+
 	@Override
 	protected void startUp() throws IOException
 	{
@@ -149,7 +162,8 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.add(questHelperWidgetOverlay);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/quest_icon.png");
-		panel = new QuestHelperPanel(this, client);
+
+		panel = new QuestHelperPanel(this);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)
@@ -174,7 +188,12 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (selectedQuest != null)
+		if (sidebarSelectedQuest != null)
+		{
+			startUpQuest(sidebarSelectedQuest);
+			sidebarSelectedQuest = null;
+		}
+		else if (selectedQuest != null)
 		{
 			if (selectedQuest.getCurrentStep() != null)
 			{
@@ -188,6 +207,11 @@ public class QuestHelperPlugin extends Plugin
 				panel.updateLocks();
 			}
 		}
+		if (loadQuestList)
+		{
+			loadQuestList = false;
+			updateQuestList();
+		}
 	}
 
 	@Subscribe
@@ -195,9 +219,18 @@ public class QuestHelperPlugin extends Plugin
 	{
 		final GameState state = event.getGameState();
 
-		if (state == GameState.LOGIN_SCREEN && selectedQuest != null && selectedQuest.getCurrentStep() != null)
+		if (state == GameState.LOGIN_SCREEN)
 		{
-			shutDownQuest();
+			panel.refresh(new ArrayList<>(), true);
+			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
+			{
+				shutDownQuest();
+			}
+		}
+
+		if (state == GameState.LOGGED_IN)
+		{
+			loadQuestList = true;
 		}
 	}
 
@@ -217,6 +250,15 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
+	public void updateQuestList()
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			List<QuestHelper> questHelpers = quests.values().stream().filter(quest -> !quest.isCompleted()).collect(Collectors.toList());
+			SwingUtilities.invokeLater(() -> panel.refresh(questHelpers, false));
+		}
+	}
+
 	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
@@ -226,7 +268,6 @@ public class QuestHelperPlugin extends Plugin
 			{
 				case MENUOP_STARTHELPER:
 					event.consume();
-					shutDownQuest();
 					String quest = Text.removeTags(event.getMenuTarget());
 					startUpQuest(quests.get(quest));
 					break;
@@ -236,27 +277,22 @@ public class QuestHelperPlugin extends Plugin
 					break;
 				case MENUOP_PHOENIXGANG:
 					event.consume();
-					shutDownQuest();
 					startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
 					break;
 				case MENUOP_BLACKARMGANG:
 					event.consume();
-					shutDownQuest();
 					startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
 					break;
 				case MENUOP_RFD_START:
 					event.consume();
-					shutDownQuest();
 					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
 					break;
 				case MENUOP_RFD_PIRATE_PETE:
 					event.consume();
-					shutDownQuest();
 					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()));
 					break;
 				case MENUOP_RFD_LUMBRIDGE_GUIDE:
 					event.consume();
-					shutDownQuest();
 					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE.getName()));
 					break;
 			}
@@ -288,11 +324,11 @@ public class QuestHelperPlugin extends Plugin
 					}
 					else
 					{
-						if (questHelperBlackArm.getVar() < 3)
+						if (!questHelperPhoenix.isCompleted())
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_PHOENIXGANG, event.getTarget(), widgetIndex, widgetID);
 						}
-						if (questHelperPhoenix.getVar() < 6)
+						if (!questHelperBlackArm.isCompleted())
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_BLACKARMGANG, event.getTarget(), widgetIndex, widgetID);
 						}
@@ -308,17 +344,17 @@ public class QuestHelperPlugin extends Plugin
 				}
 				else
 				{
-					if (quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()).getVar() < 3)
+					if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()).isCompleted())
 					{
 						menuEntries = addNewEntry(menuEntries, MENUOP_RFD_START, event.getTarget(), widgetIndex, widgetID);
 					}
 					else
 					{
-						if (quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE.getName()).getVar() < 5)
+						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE.getName()).isCompleted())
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_LUMBRIDGE_GUIDE, event.getTarget(), widgetIndex, widgetID);
 						}
-						if (quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()).getVar() < 110)
+						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()).isCompleted())
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_PIRATE_PETE, event.getTarget(), widgetIndex, widgetID);
 						}
@@ -365,8 +401,15 @@ public class QuestHelperPlugin extends Plugin
 		return menuEntries;
 	}
 
-	private void startUpQuest(QuestHelper questHelper)
+	public void startUpQuest(QuestHelper questHelper)
 	{
+		if (!(client.getGameState() == GameState.LOGGED_IN))
+		{
+			return;
+		}
+
+		shutDownQuest();
+
 		if (!questHelper.isCompleted())
 		{
 			selectedQuest = questHelper;
@@ -374,11 +417,23 @@ public class QuestHelperPlugin extends Plugin
 			selectedQuest.startUp();
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
-				panel.addQuest((BasicQuestHelper) questHelper);
+				panel.addQuest((BasicQuestHelper) questHelper, true);
 			});
 		}
 		else
 		{
+			panel.removeQuest();
+			selectedQuest = null;
+		}
+	}
+
+	public void shutDownQuestFromSidebar()
+	{
+		if (selectedQuest != null)
+		{
+			selectedQuest.shutDown();
+			SwingUtilities.invokeLater(() -> panel.removeQuest());
+			eventBus.unregister(selectedQuest);
 			selectedQuest = null;
 		}
 	}
@@ -388,6 +443,7 @@ public class QuestHelperPlugin extends Plugin
 		if (selectedQuest != null)
 		{
 			selectedQuest.shutDown();
+			updateQuestList();
 			SwingUtilities.invokeLater(() -> panel.removeQuest());
 			eventBus.unregister(selectedQuest);
 			selectedQuest = null;

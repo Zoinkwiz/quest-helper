@@ -193,7 +193,7 @@ public class QuestStepPanel extends JPanel
 
 		for (String line : step.getText())
 		{
-			text.append(line + " ");
+			text.append(line).append(" ");
 		}
 
 		return "<html><body style = 'text-align:left'>" + text + "</body></html>";

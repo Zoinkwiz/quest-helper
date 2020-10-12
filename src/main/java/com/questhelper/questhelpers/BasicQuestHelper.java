@@ -82,13 +82,11 @@ public abstract class BasicQuestHelper extends QuestHelper
 
 	public ArrayList<String> getCombatRequirements() {
 		return null;
-	};
+	}
 
 	public ArrayList<PanelDetails> getPanels() {
 		ArrayList<PanelDetails> panelSteps = new ArrayList<>();
-		steps.forEach((id, step) -> {
-			panelSteps.add(new PanelDetails("", step));
-		});
+		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));
 		return panelSteps;
 	}
 

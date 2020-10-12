@@ -200,4 +200,11 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 			"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there."));
 
 	}
+
+	@Override
+	public boolean isCompleted()
+	{
+		boolean partComplete = super.isCompleted();
+		return (partComplete || QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getVar(client) >= 3);
+	}
 }

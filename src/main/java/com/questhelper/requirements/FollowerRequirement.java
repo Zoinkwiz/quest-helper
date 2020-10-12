@@ -24,13 +24,72 @@
  */
 package com.questhelper.requirements;
 
+import com.google.common.base.CaseFormat;
+import com.questhelper.NpcCollections;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.Prayer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-abstract public class Requirement
+public class FollowerRequirement extends Requirement
 {
-	abstract public boolean check(Client client);
+	ArrayList<Integer> followers;
+	String text;
 
-	abstract public ArrayList<LineComponent> getDisplayText(Client client);
+	public FollowerRequirement(String text, Integer... followers)
+	{
+		this.text = text;
+		this.followers = new ArrayList<>();
+		Collections.addAll(this.followers, followers);
+	}
+
+	public FollowerRequirement(String text, ArrayList<Integer> followers)
+	{
+		this.text = text;
+		this.followers = followers;
+	}
+
+	@Override
+	public boolean check(Client client)
+	{
+		for (NPC npc : client.getNpcs())
+		{
+			Actor ta = npc.getInteracting();
+			if (ta != null && client.getLocalPlayer() == ta)
+			{
+				if (followers.contains(npc.getId()))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public ArrayList<LineComponent> getDisplayText(Client client)
+	{
+		ArrayList<LineComponent> lines = new ArrayList<>();
+
+		Color color = Color.RED;
+		if (check(client))
+		{
+			color = Color.GREEN;
+		}
+
+		lines.add(LineComponent.builder()
+			.left(text)
+			.leftColor(color)
+			.build());
+
+		return lines;
+	}
 }

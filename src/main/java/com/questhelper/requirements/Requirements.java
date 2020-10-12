@@ -24,13 +24,81 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.steps.conditional.LogicType;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-abstract public class Requirement
+public class Requirements extends Requirement
 {
-	abstract public boolean check(Client client);
+	ArrayList<Requirement> requirements = new ArrayList<>();
+	LogicType logicType;
+	String name;
 
-	abstract public ArrayList<LineComponent> getDisplayText(Client client);
+	public Requirements(String name, Requirement... requirements)
+	{
+		this.name = name;
+		this.requirements.addAll(Arrays.asList(requirements));
+		this.logicType = LogicType.AND;
+	}
+
+	public Requirements(LogicType logicType, String name, Requirement... requirements)
+	{
+		this.name = name;
+		this.requirements.addAll(Arrays.asList(requirements));
+		this.logicType = logicType;
+	}
+
+	@Override
+	public boolean check(Client client)
+	{
+		int successes = 0;
+		for (Requirement requirement : requirements)
+		{
+			if (requirement.check(client))
+			{
+				successes++;
+			}
+		}
+		return (successes == requirements.size() && logicType == LogicType.AND)
+			|| (successes > 0 && logicType == LogicType.OR)
+			|| (successes < requirements.size() && logicType == LogicType.NAND)
+			|| (successes == 0 && logicType == LogicType.NOR);
+	}
+
+	@Override
+	public ArrayList<LineComponent> getDisplayText(Client client)
+	{
+		ArrayList<LineComponent> lines = new ArrayList<>();
+
+		Color color = Color.RED;
+		if (check(client))
+		{
+			color = Color.GREEN;
+		}
+
+		lines.add(LineComponent.builder()
+			.left(name)
+			.leftColor(color)
+			.build());
+
+		return lines;
+	}
+
+	protected Color getColor(Client client)
+	{
+		Color color;
+
+		if (this.check(client))
+		{
+			color = Color.GREEN;
+		}
+		else
+		{
+			color = Color.RED;
+		}
+		return color;
+	}
 }

@@ -25,7 +25,10 @@
 package com.questhelper.quests.icthlarinslittlehelper;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.FollowerRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -62,6 +65,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 {
 	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar, coinsOrLinen, coins30, linen, holySymbol,
 		unholySymbol;
+
+	Requirement catFollower;
 
 	ConditionForStep inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar, killedGuardian,
 		hasJar, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter, givenCarpenterLogs, inEastRoom,
@@ -197,6 +202,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	{
 		cat = new ItemRequirement("Any cat", ItemID.PET_CAT);
 		cat.addAlternates(ItemCollections.getCats());
+
+		catFollower = new FollowerRequirement("Any cat following you", NpcCollections.getCats());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		waterskin4 = new ItemRequirement("Waterskin(4), bring a few to avoid drinking it", ItemID.WATERSKIN4);
 		coins600 = new ItemRequirement("600 coins or more for various payments", ItemID.COINS_995, 600);
@@ -274,7 +281,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToWanderer = new NpcStep(this, NpcID.WANDERER_4194, new WorldPoint(3316, 2849, 0), "Talk to the Wanderer west of the Agility Pyramid.", cat, waterskin4, tinderbox);
+		talkToWanderer = new NpcStep(this, NpcID.WANDERER_4194, new WorldPoint(3316, 2849, 0), "Talk to the Wanderer west of the Agility Pyramid.", catFollower, waterskin4, tinderbox);
 		talkToWanderer.addDialogStep("Why? What's your problem with it?");
 		talkToWanderer.addDialogStep("Ok I'll get your supplies.");
 
@@ -291,7 +298,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		solveDoorPuzzle = new DoorPuzzleStep(this);
 
-		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3301, 2785, 0), "Talk to the Sphinx in Sophenham with your cat, and answer its riddle with '9.'.", cat);
+		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3301, 2785, 0), "Talk to the Sphinx in Sophenham with your cat, and answer its riddle with '9.'.", catFollower);
 		talkToSphinx.addDialogStep("I need help.");
 		talkToSphinx.addDialogStep("Okay, that sounds fair.");
 		talkToSphinx.addDialogStep("9.");
@@ -301,7 +308,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		talkToHighPriestWithoutToken = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in the south west of Sophanem.");
 		talkToHighPriest.addSubSteps(talkToHighPriestWithoutToken);
 
-		openPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Right-click open the south pyramid's door in Sophanem.", cat);
+		openPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Right-click open the south pyramid's door in Sophanem.", catFollower);
 
 		jumpPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
@@ -356,18 +363,18 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		buyLinen = new NpcStep(this, NpcID.RAETUL, new WorldPoint(3311, 2787, 0), "Get some linen. You can buy some from Raetul in east Sophanem for 30 coins.", coinsOrLinen);
 
 		enterRockWithItems = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0),
-			"Enter the rock west of the Agility Pyramid to re-enter Sophanhem. Make sure to bring the items you need.", bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog, cat);
+			"Enter the rock west of the Agility Pyramid to re-enter Sophanhem. Make sure to bring the items you need.", bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog, catFollower);
 
-		openPyramidDoorWithSymbol = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Right-click open the south pyramid's door in Sophanem.", cat, holySymbol);
+		openPyramidDoorWithSymbol = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Right-click open the south pyramid's door in Sophanem.", catFollower, holySymbol);
 
-		jumpPitWithSymbol = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.", cat, holySymbol);
+		jumpPitWithSymbol = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.", holySymbol);
 
 		enterEastRoom = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Enter the east room.");
 		useSymbolOnSarcopagus = new ObjectStep(this, ObjectID.SARCOPHAGUS_6630, new WorldPoint(3312, 9197, 0), "Use the unholy symbol on a sarcophagus.", unholySymbol);
 
 		leaveEastRoom = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Leave the east room.");
 
-		jumpPitWithSymbolAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Jump over the pit.", cat, holySymbol);
+		jumpPitWithSymbolAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Jump over the pit.", holySymbol);
 
 		enterEastRoomAgain = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Enter the east room again.");
 

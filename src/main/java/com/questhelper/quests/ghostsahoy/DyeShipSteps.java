@@ -97,7 +97,6 @@ public class DyeShipSteps extends DetailedOwnerStep
 		}
 
 		String text = dyed.getText();
-		System.out.println(text);
 		if (text.isEmpty())
 		{
 			return;

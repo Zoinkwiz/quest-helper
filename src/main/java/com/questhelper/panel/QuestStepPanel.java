@@ -300,7 +300,6 @@ public class QuestStepPanel extends JPanel
 				expand();
 			}
 		}
-
 	}
 
 	void collapse()

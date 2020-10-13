@@ -55,7 +55,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.DRAGON_SLAYER_II
+	quest = QuestHelperQuest.A_TAIL_OF_TWO_CATS
 )
 public class ATailOfTwoCats extends BasicQuestHelper
 {

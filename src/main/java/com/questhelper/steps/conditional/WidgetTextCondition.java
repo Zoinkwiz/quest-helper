@@ -125,7 +125,6 @@ public class WidgetTextCondition extends ConditionForStep
 			if (childChildId != -1)
 			{
 				widget = widget.getChild(childChildId);
-				System.out.println(widget.getText());
 			}
 			if (widget != null)
 			{

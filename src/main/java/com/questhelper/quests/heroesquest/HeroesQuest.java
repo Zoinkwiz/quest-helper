@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -63,8 +64,8 @@ import net.runelite.api.coords.WorldPoint;
 public class HeroesQuest extends BasicQuestHelper
 {
 	ItemRequirement iceGloves, equippedIceGloves, fishingRod, fishingBait, dustyKey, dustyKeyHint, harralanderUnf, pickaxe, blamishSlime, blamishOil,
-		oilRod, jailKey, rawLavaEel, lavaEel, thievesArmband, rangedMage, miscKey, blackFullHelm, blackPlatebody,
-		blackPlatelegs, idPapers, candlestick, gripsKey, fireFeather, combatGear, antifireShield, varrockTeleport;
+		oilRod, jailKey, rawLavaEel, lavaEel, thievesArmband, rangedMage, miscKey, blackFullHelm, blackPlatebody, blackPlatelegs, idPapers, candlestick,
+		gripsKey, fireFeather, combatGear, antifireShield, varrockTeleport;
 
 	ConditionForStep inTaverleyDungeon, hasOil, hasSlime, hasDustyKey, has70Agility, inDeepTaverleyDungeon, hasOilRod, hasRawLavaEel, hasLavaEel, hasThievesArmband,
 		talkedToKatrine, talkedToStraven, hasJailKey, inJailCell, inBlackArmGang, inPhoenixBase, talkedToAlfonse, hasMiscKey, blackArmGangDoorUnlocked, gottenPapers,
@@ -74,10 +75,9 @@ public class HeroesQuest extends BasicQuestHelper
 
 	QuestStep talkToAchietties, talkToGerrant, makeBlamishOil, useOilOnRod, enterTaverleyDungeon, goThroughPipe, killJailerForKey, getDustyFromAdventurer,
 		enterDeeperTaverley, fishLavaEel, cookLavaEel, talkToKatrine, tryToEnterTrobertHouse, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey,
-		enterTreasureRoom, searchChest, searchChest2, returnToKatrine, enterPhoenixBase, talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie,
-		useKeyOnDoor, pushWall, killGrip, enterPhoenixBaseAgain, bringCandlestickToStraven, mineEntranceRocks, takeLadder1Down, takeLadder2Up,
-		takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen, pickupIceGloves, goToEntrana, getCandlestick, getAnotherArmbandBlackArm,
-		getAnotherArmbandPhoenix, killFireBird, pickupFireFeather, finishQuest;
+		enterTreasureRoom, searchChest, returnToKatrine, enterPhoenixBase, talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, useKeyOnDoor, pushWall,
+		killGrip, enterPhoenixBaseAgain, bringCandlestickToStraven, mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down,
+		killIceQueen, pickupIceGloves, goToEntrana, getCandlestick, killFireBird, pickupFireFeather, finishQuest;
 
 	ConditionalStep getThievesArmband, getIceGloves, getLavaEel, getFireFeather;
 
@@ -88,7 +88,6 @@ public class HeroesQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		/* Done for Black Arm Gang */
 		loadZones();
 		setupItemRequirements();
 		setupConditions();
@@ -113,7 +112,6 @@ public class HeroesQuest extends BasicQuestHelper
 		{
 			thievesArmband.setTip("You can get another from Katrine in the Black Arm Gang base.");
 			getThievesArmband = new ConditionalStep(this, talkToKatrine);
-			getThievesArmband.addStep(finishedBlackArm, getAnotherArmbandBlackArm);
 			getThievesArmband.addStep(hasCandlestick, returnToKatrine);
 			getThievesArmband.addStep(new Conditions(inTreasureRoom, chestOpen), searchChest);
 			getThievesArmband.addStep(inTreasureRoom, searchChest);
@@ -124,14 +122,12 @@ public class HeroesQuest extends BasicQuestHelper
 			getThievesArmband.addStep(gottenPapers, enterMansion);
 			getThievesArmband.addStep(blackArmGangDoorUnlocked, talkToTrobert);
 			getThievesArmband.addStep(talkedToKatrine, tryToEnterTrobertHouse);
-			getThievesArmband.setLockingCondition(hasThievesArmband);
 			getThievesArmband.setLockingCondition(finishedBlackArm);
 		}
 		else
 		{
 			thievesArmband.setTip("You can get another from Straven in the Phoenix Gang base.");
 			getThievesArmband = new ConditionalStep(this, enterPhoenixBase);
-			getThievesArmband.addStep(finishedPhoenix, getAnotherArmbandPhoenix);
 			getThievesArmband.addStep(new Conditions(hasCandlestick, inPhoenixBase), bringCandlestickToStraven);
 			getThievesArmband.addStep(hasCandlestick, enterPhoenixBaseAgain);
 			getThievesArmband.addStep(unlockedCandlestickPhoenix, getCandlestick);
@@ -153,7 +149,6 @@ public class HeroesQuest extends BasicQuestHelper
 		getIceGloves.addStep(inIceAboveGround1, takeLadder3Down);
 		getIceGloves.addStep(inIceUndergroundRoom1, takeLadder2Up);
 		getIceGloves.addStep(inIceEntrance, takeLadder1Down);
-
 		getIceGloves.setLockingCondition(hasIceGloves);
 
 		getFireFeather = new ConditionalStep(this, goToEntrana);
@@ -166,7 +161,6 @@ public class HeroesQuest extends BasicQuestHelper
 		wholeQuest.addStep(new Conditions(hasLavaEel, hasThievesArmband, hasIceGloves), getFireFeather);
 		wholeQuest.addStep(new Conditions(hasLavaEel, hasThievesArmband), getIceGloves);
 		wholeQuest.addStep(hasLavaEel, getThievesArmband);
-
 
 		steps.put(1, wholeQuest);
 		steps.put(2, wholeQuest);
@@ -276,18 +270,18 @@ public class HeroesQuest extends BasicQuestHelper
 		has70Agility = new SkillCondition(Skill.AGILITY, 70, Operation.GREATER_EQUAL);
 
 		hasThievesArmband = new ItemRequirementCondition(thievesArmband);
-		talkedToKatrine = new VarplayerCondition(188, 7);
-		blackArmGangDoorUnlocked = new VarplayerCondition(188, 8);
-		gottenPapers = new VarplayerCondition(188, 9);
-		enteredMansion = new VarplayerCondition(188, 10);
-		talkedToGrip = new VarplayerCondition(188, 11);
+		talkedToKatrine = new VarplayerCondition(188, 7, Operation.GREATER_EQUAL);
+		blackArmGangDoorUnlocked = new VarplayerCondition(188, 8, Operation.GREATER_EQUAL);
+		gottenPapers = new VarplayerCondition(188, 9, Operation.GREATER_EQUAL);
+		enteredMansion = new VarplayerCondition(188, 10, Operation.GREATER_EQUAL);
+		talkedToGrip = new VarplayerCondition(188, 11, Operation.GREATER_EQUAL);
 		unlockedCandlestickBlackArm = new VarplayerCondition(188, 12);
-		finishedBlackArm = new VarplayerCondition(188, 13);
-		talkedToStraven = new VarplayerCondition(188, 2);
-		talkedToAlfonse = new VarplayerCondition(188, 3);
-		talkedToCharlie = new VarplayerCondition(188, 4);
-		unlockedCandlestickPhoenix = new VarplayerCondition(188, 5);
-		finishedPhoenix = new VarplayerCondition(188, 6);
+		finishedBlackArm = new VarplayerCondition(188, 13, Operation.GREATER_EQUAL);
+		talkedToStraven = new VarplayerCondition(188, 2, Operation.GREATER_EQUAL);
+		talkedToAlfonse = new VarplayerCondition(188, 3, Operation.GREATER_EQUAL);
+		talkedToCharlie = new VarplayerCondition(188, 4, Operation.GREATER_EQUAL);
+		unlockedCandlestickPhoenix = new VarplayerCondition(188, 5, Operation.GREATER_EQUAL);
+		finishedPhoenix = new VarplayerCondition(188, 6, Operation.GREATER_EQUAL);
 		hasMiscKey = new ItemRequirementCondition(miscKey);
 		inSecretRoom = new ZoneCondition(secretRoom);
 		inGarden = new ZoneCondition(garden1, garden2);
@@ -297,7 +291,7 @@ public class HeroesQuest extends BasicQuestHelper
 		inTreasureRoom = new ZoneCondition(treasureRoom);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_2633);
 
-		inBlackArmGang = new VarplayerCondition(146, 4);
+		inBlackArmGang = new VarplayerCondition(146, 4, Operation.GREATER_EQUAL);
 		inPhoenixBase = new ZoneCondition(phoenixBase, phoenixEntry);
 
 		inIceEntrance = new ZoneCondition(iceEntrance);
@@ -345,8 +339,8 @@ public class HeroesQuest extends BasicQuestHelper
 		getDustyFromAdventurer = new NpcStep(this, NpcID.VELRAK_THE_EXPLORER, new WorldPoint(2930, 9685, 0), "Use the jail key on the south door and talk to Velrak for a dusty key.", jailKey);
 		getDustyFromAdventurer.addDialogStep("So... do you know anywhere good to explore?");
 		enterDeeperTaverley = new ObjectStep(this, ObjectID.GATE_2623, new WorldPoint(2924, 9803, 0), "Enter the gate to the deeper Taverley dungeon.", dustyKey);
-		fishLavaEel = new NpcStep(this, NpcID.FISHING_SPOT_4928, new WorldPoint(2988, 9764, 0), "Fish a lava eel from the lava south of the blue dragons.", oilRod, fishingBait);
-		cookLavaEel = new DetailedQuestStep(this, "Cook the Lava Eel at a range. You cannot fail this", rawLavaEel);
+		fishLavaEel = new NpcStep(this, NpcID.FISHING_SPOT_4928, new WorldPoint(2898, 9764, 0), "Fish a lava eel from the lava south of the blue dragons.", oilRod, fishingBait);
+		cookLavaEel = new DetailedQuestStep(this, "Cook the Lava Eel at a range. You cannot fail this.", rawLavaEel);
 
 		enterTaverleyDungeon.addSubSteps(goThroughPipe, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
 
@@ -372,8 +366,7 @@ public class HeroesQuest extends BasicQuestHelper
 		enterTreasureRoom = new ObjectStep(this, ObjectID.DOOR_2621, new WorldPoint(2764, 3197, 0), "Use Grip's keyring on the treasure room door.", gripsKey);
 		enterTreasureRoom.addIcon(ItemID.GRIPS_KEYRING);
 		searchChest = new ObjectStep(this, ObjectID.CHEST_2632, new WorldPoint(2766, 3199, 0), "Search the chest in the treasure room for two candlesticks.");
-		searchChest2 = new ObjectStep(this, ObjectID.CHEST_2633, new WorldPoint(2766, 3199, 0), "Search the chest in the treasure room for two candlesticks.");
-		searchChest.addSubSteps(searchChest2);
+		((ObjectStep)(searchChest)).addAlternateObjects(ObjectID.CHEST_2633);
 
 		returnToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Give one of Pete's candlesticks to your partner. Afterwards, return to Katrine with Pete's candlestick", candlestick);
 		returnToKatrine.addDialogStep("I have a candlestick now.");
@@ -409,6 +402,7 @@ public class HeroesQuest extends BasicQuestHelper
 
 		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3047, 3236, 0), "Travel to Entrana with the monks in Port Sarim.", equippedIceGloves);
 		killFireBird = new NpcStep(this, NpcID.ENTRANA_FIREBIRD, new WorldPoint(2840, 3374, 0), "Kill the entrana firebird on the north of Entrana.", equippedIceGloves);
+		pickupFireFeather = new ItemStep(this, "Pick up the fire feather.", fireFeather);
 
 		finishQuest =  new NpcStep(this, NpcID.ACHIETTIES, new WorldPoint(2904, 3511, 0), "Bring Achietties all the items to finish.", fireFeather, thievesArmband, lavaEel);
 	}

@@ -172,6 +172,11 @@ public class QuestHelperPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			loadQuestList = true;
+		}
 	}
 
 	@Override

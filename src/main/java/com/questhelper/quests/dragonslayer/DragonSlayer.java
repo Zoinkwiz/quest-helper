@@ -192,7 +192,7 @@ public class DragonSlayer extends BasicQuestHelper
 		unfiredBowl.setTip("You can make one with soft clay at a Potter's Wheel with 8 Crafting.");
 		mindBomb = new ItemRequirement("Wizard's mind bomb", ItemID.WIZARDS_MIND_BOMB);
 		mindBomb.setTip("You can buy one from the Rising Sun Inn in Falador.");
-		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
+		lobsterPot = new ItemRequirement("Lobster cage", ItemID.LOBSTER_POT);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		telegrabOrTenK = new ItemRequirement("Either 1. 33 Magic for Telegrab and a ranged/mage weapon, or 2. 10,000 coins", -1, -1);
 		ringsOfRecoil = new ItemRequirement("Rings of Recoil for Elvarg", ItemID.RING_OF_RECOIL, -1);

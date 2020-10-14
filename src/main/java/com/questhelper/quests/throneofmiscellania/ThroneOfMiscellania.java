@@ -429,7 +429,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		String rakePatch = "Rake the farming patches. ";
 		String mineCoal = "Mining coal. ";
 		String cuttingMaples = "Cutting maple trees. ";
-		String fishing = "Fish tuna with a harpoon or lobsters with a lobster pot.";
+		String fishing = "Fish tuna with a harpoon or lobsters with a lobster cage.";
 
 		if (client.getRealSkillLevel(Skill.FARMING) >= 10)
 		{

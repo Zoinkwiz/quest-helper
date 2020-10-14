@@ -109,6 +109,7 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_RFD_START = "Start Quest Helper (Starting off)";
 	private static final String MENUOP_RFD_PIRATE_PETE = "Start Quest Helper (Pirate Pete)";
 	private static final String MENUOP_RFD_LUMBRIDGE_GUIDE = "Start Quest Helper (Lumbridge Guide)";
+	private static final String MENUOP_RFD_SIR_AMIK_VARZE = "Start Quest Helper (Sir Amik Varze)";
 
 	@Inject
 	private Client client;
@@ -300,6 +301,10 @@ public class QuestHelperPlugin extends Plugin
 					event.consume();
 					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE.getName()));
 					break;
+				case MENUOP_RFD_SIR_AMIK_VARZE:
+					event.consume();
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getName()));
+					break;
 			}
 		}
 	}
@@ -362,6 +367,10 @@ public class QuestHelperPlugin extends Plugin
 						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()).isCompleted())
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_PIRATE_PETE, event.getTarget(), widgetIndex, widgetID);
+						}
+						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getName()).isCompleted())
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_SIR_AMIK_VARZE, event.getTarget(), widgetIndex, widgetID);
 						}
 					}
 				}

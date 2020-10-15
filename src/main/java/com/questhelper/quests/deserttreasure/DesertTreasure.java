@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.deserttreasure;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -62,7 +63,8 @@ public class DesertTreasure extends BasicQuestHelper
 	ItemRequirement coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal, bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots,
 		climbingBoots, faceMask, tinderbox, manyLockpicks, etchings, translation, warmKey, smokeDiamond, shadowDiamond, iceDiamond, bloodDiamond, iceGloves,
 		waterSpellOrMelee, cross, ringOfVisibility, antipoison, silverPot, silverPot2, potOfBlood, potWithGarlic, potWithSpice, potComplete, fireSpells,
-		spikedBootsEquipped, combatGear, food, prayerPotions, restorePotions, energyOrStaminas;
+		spikedBootsEquipped, combatGear, food, prayerPotions, restorePotions, energyOrStaminas, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted,
+		shadowDiamondHighlighted;
 
 	ConditionForStep hasWarmKey, gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3,
 		litTorch4, unlockedFareedDoor, killedFareed, talkedToRasolo, unlockedCrossChest, gotRing, inShadowDungeon, damis1Nearby, damis2Nearby, talkedToMalak,
@@ -235,6 +237,16 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamond = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
 		bloodDiamond.setTip("You can get another from Malak in Canifis");
 
+		smokeDiamondHighlighted = new ItemRequirement("Smoke diamond", ItemID.SMOKE_DIAMOND);
+		smokeDiamondHighlighted.setTip("You can get another from the room you killed Fareed in inside the Smoke Dungeon");
+		shadowDiamondHighlighted = new ItemRequirement("Shadow diamond", ItemID.SHADOW_DIAMOND);
+		shadowDiamondHighlighted.setTip("You can get another from the east room of the Shadow Dungeon");
+
+		iceDiamondHighlighted = new ItemRequirement("Ice diamond", ItemID.ICE_DIAMOND);
+		iceDiamondHighlighted.setTip("You can get another from the Troll Child north of Trollheim");
+		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
+		bloodDiamondHighlighted.setTip("You can get another from Malak in Canifis");
+
 		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true);
 		iceGloves.setTip("You can kill the Ice Queen under White Wolf Mountain for these");
 
@@ -246,7 +258,7 @@ public class DesertTreasure extends BasicQuestHelper
 		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
 		ringOfVisibility.setTip("You can get another from Rasolo south of Baxtorian Falls");
 
-		antipoison = new ItemRequirement("Antipoisons", ItemID.ANTIPOISON3);
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
 
 		silverPot = new ItemRequirement("Silver pot", ItemID.SILVER_POT_4658);
 		silverPot2 = new ItemRequirement("Blessed pot", ItemID.BLESSED_POT);
@@ -480,16 +492,16 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToTrolls = new NpcStep(this, NpcID.TROLL_MOTHER, new WorldPoint(2826, 3812, 2), "Talk to the troll parents at the end of the Ice Path.");
 		talkToChildTrollAfterFreeing = new NpcStep(this, NpcID.TROLL_CHILD, new WorldPoint(2835, 3740, 0), "Talk to the Troll Child north of Trollheim to get the ice diamond.");
 
-		placeBlood = new ObjectStep(this, NullObjectID.NULL_6482, new WorldPoint(3221, 2910, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", bloodDiamond, smokeDiamond, iceDiamond, shadowDiamond);
+		placeBlood = new ObjectStep(this, NullObjectID.NULL_6482, new WorldPoint(3221, 2910, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", bloodDiamondHighlighted, smokeDiamond, iceDiamond, shadowDiamond);
 		placeBlood.addIcon(ItemID.BLOOD_DIAMOND);
 
-		placeSmoke = new ObjectStep(this, NullObjectID.NULL_6485, new WorldPoint(3245, 2910, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", smokeDiamond, iceDiamond, shadowDiamond);
+		placeSmoke = new ObjectStep(this, NullObjectID.NULL_6485, new WorldPoint(3245, 2910, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", smokeDiamondHighlighted, iceDiamond, shadowDiamond);
 		placeSmoke.addIcon(ItemID.SMOKE_DIAMOND);
 
-		placeIce = new ObjectStep(this, NullObjectID.NULL_6488, new WorldPoint(3245, 2886, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", iceDiamond, shadowDiamond);
+		placeIce = new ObjectStep(this, NullObjectID.NULL_6488, new WorldPoint(3245, 2886, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", iceDiamondHighlighted, shadowDiamond);
 		placeIce.addIcon(ItemID.ICE_DIAMOND);
 
-		placeShadow = new ObjectStep(this, NullObjectID.NULL_6491, new WorldPoint(3221, 2886, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", shadowDiamond);
+		placeShadow = new ObjectStep(this, NullObjectID.NULL_6491, new WorldPoint(3221, 2886, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", shadowDiamondHighlighted);
 		placeShadow.addIcon(ItemID.SHADOW_DIAMOND);
 
 		placeBlood.addSubSteps(placeSmoke, placeShadow, placeIce);

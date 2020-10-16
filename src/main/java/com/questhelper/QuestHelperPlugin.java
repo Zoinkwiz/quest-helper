@@ -111,6 +111,7 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_RFD_PIRATE_PETE = "Start Quest Helper (Pirate Pete)";
 	private static final String MENUOP_RFD_LUMBRIDGE_GUIDE = "Start Quest Helper (Lumbridge Guide)";
 	private static final String MENUOP_RFD_SIR_AMIK_VARZE = "Start Quest Helper (Sir Amik Varze)";
+	private static final String MENUOP_RFD_MONKEY_AMBASSADOR = "Start Quest Helper (Monkey Ambassador)";
 
 	@Inject
 	private Client client;
@@ -310,6 +311,10 @@ public class QuestHelperPlugin extends Plugin
 					event.consume();
 					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getName()));
 					break;
+				case MENUOP_RFD_MONKEY_AMBASSADOR:
+					event.consume();
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getName()));
+					break;
 			}
 		}
 	}
@@ -380,6 +385,10 @@ public class QuestHelperPlugin extends Plugin
 						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getName()).isCompleted())
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_SIR_AMIK_VARZE, event.getTarget(), widgetIndex, widgetID);
+						}
+						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getName()).isCompleted())
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_MONKEY_AMBASSADOR, event.getTarget(), widgetIndex, widgetID);
 						}
 					}
 				}

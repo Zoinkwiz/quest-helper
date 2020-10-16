@@ -165,6 +165,6 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (client.getVarbitValue(1896) >= 5 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_START.getId()) < 3);
+		return (client.getVarbitValue(1896) >= 5 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
 	}
 }

@@ -255,6 +255,6 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE.getId()) >= 170 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_START.getId()) < 3);
+		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE.getId()) >= 170 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
 	}
 }

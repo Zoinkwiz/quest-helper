@@ -196,9 +196,6 @@ public class RFDAwowogei extends BasicQuestHelper
 
 		askedAboutBanana = new VarbitCondition(1915, 10, Operation.GREATER_EQUAL);
 		askedAboutNut = new VarbitCondition(1916, 10, Operation.GREATER_EQUAL);
-		// Asked about banana
-		// 1915 = 10
-		// 1918 = 1, increments with getting banana
 
 		hasRawStuffedSnake = new ItemRequirementCondition(rawStuffedSnake);
 
@@ -269,7 +266,7 @@ public class RFDAwowogei extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getNotes()
 	{
-		return new ArrayList<>(Arrays.asList("If you don't have the ninja/gorilla/zombie greegrees ready, it's recommended you get them all in a single run to Zooknock to save time."));
+		return new ArrayList<>(Collections.singletonList("If you don't have the ninja/gorilla/zombie greegrees ready, it's recommended you get them all in a single run to Zooknock to save time."));
 	}
 
 	@Override
@@ -286,6 +283,6 @@ public class RFDAwowogei extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId()) >= 50 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_START.getId()) < 3);
+		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId()) >= 50 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
 	}
 }

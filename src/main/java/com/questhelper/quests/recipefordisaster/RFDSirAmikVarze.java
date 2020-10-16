@@ -343,6 +343,6 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getId()) >= 20 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_START.getId()) < 3);
+		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getId()) >= 20 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
 	}
 }

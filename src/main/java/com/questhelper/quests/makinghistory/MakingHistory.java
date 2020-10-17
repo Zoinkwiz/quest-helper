@@ -58,7 +58,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class MakingHistory extends BasicQuestHelper
 {
-	ItemRequirement spade, saphAmulet, ghostSpeakAmulet, ardougneTeleport, ectophial, ringOfDueling, enchantedKey, chest, journal, scroll, letter;
+	ItemRequirement spade, saphAmulet, ghostSpeakAmulet, ardougneTeleport, ectophial, ringOfDueling, enchantedKey, chest, journal, scroll, letter,
+		passage, enchantedKeyHighlighted;
 
 	ConditionForStep hasEnchantedKey, hasChest, hasJournal, hasScroll, talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak,
 		inCastle, gotKey, gotChest, gotScroll, handedInJournal, handedInScroll, finishedFrem, finishedKey, finishedGhost, handedInEverything;
@@ -123,14 +124,21 @@ public class MakingHistory extends BasicQuestHelper
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemID.RING_OF_DUELING8);
 		enchantedKey = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
 		enchantedKey.setTip("You can get another from the silver merchant in East Ardougne's market");
+
+		enchantedKeyHighlighted = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
+		enchantedKeyHighlighted.setTip("You can get another from the silver merchant in East Ardougne's market");
+		enchantedKeyHighlighted.setHighlightInInventory(true);
+
 		journal = new ItemRequirement("Journal", ItemID.JOURNAL_6755);
 		chest = new ItemRequirement("Chest", ItemID.CHEST);
 		chest.setTip("You can dig up another from north of Castle Wars");
 		chest.setHighlightInInventory(true);
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL);
 		scroll.setTip("You can get another from Droalak in Port Phasmatys");
-		letter = new ItemRequirement("Letter", ItemID.LETTER_6756);
+		letter = new ItemRequirement("Letter", ItemID.LETTER_6757);
 		letter.setTip("You can get another from King Lathas in East Ardougne castle");
+		passage = new ItemRequirement("Necklace of passage", ItemID.NECKLACE_OF_PASSAGE1);
+		passage.addAlternates(ItemID.NECKLACE_OF_PASSAGE2, ItemID.NECKLACE_OF_PASSAGE3, ItemID.NECKLACE_OF_PASSAGE5, ItemID.NECKLACE_OF_PASSAGE5);
 	}
 
 	public void loadZones()
@@ -153,13 +161,13 @@ public class MakingHistory extends BasicQuestHelper
 		handedInScroll = new VarbitCondition(1386, 6);
 
 		inCastle = new ZoneCondition(castle);
-		gotKey = new VarbitCondition(1384, 1);
+		gotKey = new VarbitCondition(1384, 1, Operation.GREATER_EQUAL);
 		gotChest = new VarbitCondition(1384, 2, Operation.GREATER_EQUAL);
 		handedInJournal = new VarbitCondition(1384, 4);
 		handedInEverything = new Conditions(handedInJournal, handedInScroll, talkedToDron);
 		finishedFrem = talkedToDron;
 		finishedGhost = new Conditions(LogicType.OR, handedInScroll, gotScroll);
-		finishedKey = new Conditions(LogicType.OR, handedInJournal, gotChest);
+		finishedKey = new Conditions(LogicType.OR, handedInJournal, hasJournal);
 	}
 
 	public void setupSteps()
@@ -170,8 +178,8 @@ public class MakingHistory extends BasicQuestHelper
 		talkToSilverMerchant = new NpcStep(this, NpcID.SILVER_MERCHANT_8722, new WorldPoint(2658, 3316, 0), "Talk to the Silver Merchant in the East Ardougne Market.");
 		talkToSilverMerchant.addDialogStep("Ask about the outpost.");
 		dig = new DigStep(this, new WorldPoint(2442, 3140, 0), "Dig at the marked spot north of Castle Wars.", enchantedKey);
-		openChest = new DetailedQuestStep(this, "Use the enchanted key on the chest.", enchantedKey, chest);
-		talkToBlanin = new NpcStep(this, NpcID.BLANIN, new WorldPoint(2673, 3660, 0), "Talk to Blanin in south east Rellekka.");
+		openChest = new DetailedQuestStep(this, "Use the enchanted key on the chest.", enchantedKeyHighlighted, chest);
+		talkToBlanin = new NpcStep(this, NpcID.BLANIN, new WorldPoint(2673, 3670, 0), "Talk to Blanin in south east Rellekka.");
 		talkToDron = new NpcStep(this, NpcID.DRON, new WorldPoint(2661, 3698, 0), "Talk to Dron in north Rellekka.");
 		talkToDron.addDialogStep("I'm after important answers.");
 		talkToDron.addDialogStep("Why, you're the famous warrior Dron!");
@@ -194,6 +202,7 @@ public class MakingHistory extends BasicQuestHelper
 		returnToDroalak = new NpcStep(this, NpcID.DROALAK_3494, new WorldPoint(3659, 3468, 0), "Return to Droalak outside the general store.");
 		returnToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3346, 0), "Return to Jorral north of West Ardougne with the scroll and journal.", scroll, journal);
 		continueTalkingToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3346, 0), "Return to Jorral north of West Ardougne.");
+		returnToJorral.addSubSteps(continueTalkingToJorral);
 		goUpToLathas = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2572, 3296, 0), "Talk to King Lathas in East Ardougne castle.");
 		talkToLathas = new NpcStep(this, NpcID.KING_LATHAS_9005, new WorldPoint(2578, 3293, 1), "Talk to King Lathas in East Ardougne castle.");
 		talkToLathas.addDialogStep("Talk about the outpost.");
@@ -218,6 +227,7 @@ public class MakingHistory extends BasicQuestHelper
 		reqs.add(ardougneTeleport);
 		reqs.add(ectophial);
 		reqs.add(ringOfDueling);
+		reqs.add(passage);
 		return reqs;
 	}
 

@@ -72,27 +72,10 @@ public abstract class BasicQuestHelper extends QuestHelper
 		return false;
 	}
 
-	public ArrayList<ItemRequirement> getItemRequirements() {
-		return null;
-	}
-
-	public ArrayList<ItemRequirement> getItemRecommended() {
-		return null;
-	}
-
-	public ArrayList<String> getCombatRequirements() {
-		return null;
-	}
-
 	public ArrayList<PanelDetails> getPanels() {
 		ArrayList<PanelDetails> panelSteps = new ArrayList<>();
 		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));
 		return panelSteps;
-	}
-
-	public ArrayList<String> getNotes()
-	{
-		return null;
 	}
 
 	public abstract Map<Integer, QuestStep> loadSteps();

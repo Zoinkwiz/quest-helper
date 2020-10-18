@@ -458,7 +458,7 @@ public class QuestHelperPlugin extends Plugin
 			selectedQuest.startUp();
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
-				panel.addQuest((BasicQuestHelper) questHelper, true);
+				panel.addQuest(questHelper, true);
 			});
 		}
 		else

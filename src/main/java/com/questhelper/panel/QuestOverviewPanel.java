@@ -27,6 +27,7 @@ package com.questhelper.panel;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.BasicQuestHelper;
 
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
@@ -55,7 +56,7 @@ import net.runelite.client.util.SwingUtil;
 public class QuestOverviewPanel extends JPanel
 {
 	private final QuestHelperPlugin questHelperPlugin;
-	public BasicQuestHelper currentQuest;
+	public QuestHelper currentQuest;
 
 	private final JPanel questStepsContainer = new JPanel();
 	private final JPanel actionsContainer = new JPanel();
@@ -241,7 +242,7 @@ public class QuestOverviewPanel extends JPanel
 		add(questStepsContainer);
 	}
 
-	public void addQuest(BasicQuestHelper quest, boolean isActive)
+	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		currentQuest = quest;
 
@@ -378,7 +379,7 @@ public class QuestOverviewPanel extends JPanel
 			.count() == questStepPanelList.size();
 	}
 
-	public void setupQuestRequirements(BasicQuestHelper quest)
+	public void setupQuestRequirements(QuestHelper quest)
 	{
 		ArrayList<ItemRequirement> itemRequirements = quest.getItemRequirements();
 

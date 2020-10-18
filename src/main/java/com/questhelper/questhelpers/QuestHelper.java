@@ -29,6 +29,9 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.requirements.ItemRequirement;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -128,4 +131,23 @@ public abstract class QuestHelper implements Module
 	{
 		return quest.getVar(client);
 	}
+
+	public ArrayList<ItemRequirement> getItemRequirements() {
+		return null;
+	}
+
+	public ArrayList<ItemRequirement> getItemRecommended() {
+		return null;
+	}
+
+	public ArrayList<String> getCombatRequirements() {
+		return null;
+	}
+
+	public ArrayList<String> getNotes()
+	{
+		return null;
+	}
+
+	public abstract ArrayList<PanelDetails> getPanels();
 }

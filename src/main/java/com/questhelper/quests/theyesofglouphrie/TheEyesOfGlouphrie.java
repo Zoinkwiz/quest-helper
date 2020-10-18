@@ -213,7 +213,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		talkToBrimstail = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstail.addDialogStep("What's that cute creature wandering around?");
 		talkToBrimstail.addDialogStep("Yes, that sounds fascinating...");
-		talkToBrimstail.addDialogStep("Oh yes, I love a bit of History.");
+		talkToBrimstail.addDialogStep("Oh, yes I love a bit of History.");
 		enterCave.addSubSteps(talkToBrimstail);
 		inspectBowl = new ObjectStep(this, ObjectID.SINGING_BOWL, new WorldPoint(2388, 9813, 0), "Inspect the singing bowl in the west room.");
 		inspectMachine = new ObjectStep(this, ObjectID.OAKNOCKS_MACHINE_17241, new WorldPoint(2390, 9826, 0), "Attempt to unlock oaknock's machine in the north of the cave.");

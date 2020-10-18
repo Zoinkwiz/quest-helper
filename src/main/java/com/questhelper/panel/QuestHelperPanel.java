@@ -216,7 +216,7 @@ class QuestHelperPanel extends PluginPanel
 		showMatchingQuests("");
 	}
 
-	public void addQuest(BasicQuestHelper quest, boolean isActive)
+	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		questPromptPanel.setVisible(false);
 		scrollableContainer.setViewportView(questOverviewWrapper);

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +23,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.quests.enchantedkey;
 
-import com.google.inject.Inject;
-import java.util.ArrayList;
-import java.util.Map;
-import net.runelite.client.game.ItemManager;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
+import com.google.common.collect.Sets;
+import java.util.Set;
+import javax.annotation.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.client.util.Text;
 
-public abstract class BasicQuestHelper extends QuestHelper
+@AllArgsConstructor
+@Getter
+public enum EnchantedKeyTemperature
 {
-	protected Map<Integer, QuestStep> steps;
-	protected int var;
+	FREEZING("It's freezing", 500, 5000),
+	COLD("It's cold",  120, 499),
+	WARM("It's warm", 60, 119),
+	VERY_HOT("It's very hot", 30, 59),
+	BURNING("Ouch! It's burning hot", 5, 29),
+	STEAMING("The key is steaming.", 0, 4);
 
-	@Inject
-	protected ItemManager itemManager;
+	public static final Set<EnchantedKeyTemperature> temperatureSet = Sets.immutableEnumSet(
+		FREEZING,
+		COLD,
+		WARM,
+		VERY_HOT,
+		BURNING,
+		STEAMING
+	);
 
-	@Override
-	public void startUp()
+	private final String text;
+	private final int minDistance;
+	private final int maxDistance;
+
+	@Nullable
+	public static EnchantedKeyTemperature getFromTemperatureSet(final String message)
 	{
-		if(steps == null)
+		for (final EnchantedKeyTemperature temperature : temperatureSet)
 		{
-			steps = loadSteps();
-			instantiateSteps(steps.values());
-			var = getVar();
-			startUpStep(steps.get(var));
+			if (message.contains(temperature.getText()))
+			{
+				return temperature;
+			}
 		}
-	}
 
-	@Override
-	public void shutDown()
-	{
-		steps = null;
-		shutDownStep();
+		return null;
 	}
-
-	@Override
-	public boolean updateQuest()
-	{
-		if (var < getVar())
-		{
-			var = getVar();
-			shutDownStep();
-			startUpStep(steps.get(var));
-			return true;
-		}
-		return false;
-	}
-
-	public ArrayList<PanelDetails> getPanels() {
-		ArrayList<PanelDetails> panelSteps = new ArrayList<>();
-		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));
-		return panelSteps;
-	}
-
-	public abstract Map<Integer, QuestStep> loadSteps();
 }

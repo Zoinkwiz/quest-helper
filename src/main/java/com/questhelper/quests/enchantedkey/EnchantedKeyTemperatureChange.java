@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +23,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.quests.enchantedkey;
 
-import com.google.inject.Inject;
-import java.util.ArrayList;
-import java.util.Map;
-import net.runelite.client.game.ItemManager;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public abstract class BasicQuestHelper extends QuestHelper
+@AllArgsConstructor
+public enum EnchantedKeyTemperatureChange
 {
-	protected Map<Integer, QuestStep> steps;
-	protected int var;
+	WARMER("and warmer than"),
+	SAME("and the same temperature as"),
+	COLDER("but colder than");
 
-	@Inject
-	protected ItemManager itemManager;
+	@Getter
+	private final String text;
 
-	@Override
-	public void startUp()
+	public static EnchantedKeyTemperatureChange of(final String message)
 	{
-		if(steps == null)
+		if (!message.endsWith(" last time"))
 		{
-			steps = loadSteps();
-			instantiateSteps(steps.values());
-			var = getVar();
-			startUpStep(steps.get(var));
+			return null;
 		}
-	}
 
-	@Override
-	public void shutDown()
-	{
-		steps = null;
-		shutDownStep();
-	}
-
-	@Override
-	public boolean updateQuest()
-	{
-		if (var < getVar())
+		for (final EnchantedKeyTemperatureChange change : values())
 		{
-			var = getVar();
-			shutDownStep();
-			startUpStep(steps.get(var));
-			return true;
+			if (message.contains(change.text))
+			{
+				return change;
+			}
 		}
-		return false;
-	}
 
-	public ArrayList<PanelDetails> getPanels() {
-		ArrayList<PanelDetails> panelSteps = new ArrayList<>();
-		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));
-		return panelSteps;
+		return null;
 	}
-
-	public abstract Map<Integer, QuestStep> loadSteps();
 }

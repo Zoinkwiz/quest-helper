@@ -390,6 +390,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		WorldPoint playerLocation = player.getWorldLocation();
+
 		Collection<WorldPoint> allPoints = toLocalInstance(client, worldPoint);
 		if (allPoints.isEmpty())
 		{
@@ -397,6 +398,10 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		WorldPoint wp = allPoints.iterator().next();
+		if (wp == null)
+		{
+			return;
+		}
 		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
 		{
 			createMinimapDirectionArrow(graphics);

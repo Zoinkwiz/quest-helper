@@ -42,15 +42,11 @@ public class FixWall extends DetailedOwnerStep
 {
 	DetailedQuestStep useIronBar, repairWall1, repairWall2, repairWall3, repairWall4, repairWall5;
 
-	ItemRequirement ironSheets = new ItemRequirement("Iron sheet", ItemID.IRON_SHEET, 5);
-	ItemRequirement ironBars = new ItemRequirement("Iron bars", ItemID.IRON_BAR, 5);
-	ItemRequirement hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+	ItemRequirement ironSheets, ironBars, hammer;
 
 	public FixWall(QuestHelper questHelper)
 	{
 		super(questHelper);
-		ironBars.setHighlightInInventory(true);
-		ironSheets.setHighlightInInventory(true);
 	}
 
 	@Subscribe
@@ -105,6 +101,12 @@ public class FixWall extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
+		ironSheets = new ItemRequirement("Iron sheet", ItemID.IRON_SHEET, 5);
+		ironBars = new ItemRequirement("Iron bars", ItemID.IRON_BAR, 5);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		ironBars.setHighlightInInventory(true);
+		ironSheets.setHighlightInInventory(true);
+
 		useIronBar = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13701, new WorldPoint(2342, 3676, 0), "Flatten 5 iron bars using the metal press.", ironBars);
 		useIronBar.addIcon(ItemID.IRON_BAR);
 		repairWall1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13612, new WorldPoint(2311, 3688, 0), "Repair the west wall.", ironSheets, hammer);

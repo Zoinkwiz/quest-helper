@@ -82,12 +82,20 @@ public class PlagueCity extends BasicQuestHelper
 
 		steps.put(0, talkToEdmond);
 		steps.put(1, talkToAlrena);
-		steps.put(2, talkToEdmondAgain);
+
+		ConditionalStep getPictureThenTalkEdmond = new ConditionalStep(this, grabPictureOfElena);
+		getPictureThenTalkEdmond.addStep(hasPictureOfElena, talkToEdmondAgain);
+		steps.put(2, getPictureThenTalkEdmond);
+
 		steps.put(3, useWaterOnMudPatch1);
 		steps.put(4, useWaterOnMudPatch2);
 		steps.put(5, useWaterOnMudPatch3);
 		steps.put(6, useWaterOnMudPatch4);
-		steps.put(7, digHole);
+
+		ConditionalStep getPictureThenDig = new ConditionalStep(this, grabPictureOfElena);
+		getPictureThenDig.addStep(hasPictureOfElena, digHole);
+		steps.put(7, getPictureThenDig);
+
 		ConditionalStep attemptToOpenGrill = new ConditionalStep(this, grabPictureOfElena);
 		attemptToOpenGrill.addStep(new Conditions(hasTriedToPullGrill, inUnderground, hasPictureOfElena), useRopeOnGrill);
 		attemptToOpenGrill.addStep(new Conditions(inUnderground, hasPictureOfElena), attemptToPullGrill);
@@ -183,18 +191,26 @@ public class PlagueCity extends BasicQuestHelper
 	{
 		dwellberries = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
+		rope.setHighlightInInventory(true);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade.setHighlightInInventory(true);
 		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);
+		fourBucketsOfWater.setHighlightInInventory(true);
 		fourBucketsOfWater.setTip("You can use the nearby bucket on the sink nearby");
 		threeBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 3);
+		threeBucketsOfWater.setHighlightInInventory(true);
 		threeBucketsOfWater.setTip("You can use the nearby bucket on the sink nearby");
 		twoBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 2);
+		twoBucketsOfWater.setHighlightInInventory(true);
 		twoBucketsOfWater.setTip("You can use the nearby bucket on the sink nearby");
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
-		bucketOfWater.addAlternates(ItemID.BUCKET);
+		bucketOfWater.setHighlightInInventory(true);
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
+		bucketOfMilk.setHighlightInInventory(true);
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
+		chocolateDust.setHighlightInInventory(true);
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
+		snapeGrass.setHighlightInInventory(true);
 		pictureOfElena = new ItemRequirement("Picture", ItemID.PICTURE);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
 		gasMask.setTip("You can get another from the cupboard in Edmond's house.");

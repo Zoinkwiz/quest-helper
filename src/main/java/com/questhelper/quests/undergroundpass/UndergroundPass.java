@@ -445,7 +445,7 @@ public class UndergroundPass extends BasicQuestHelper {
         imbuingTheDoll.addStep(kalragKilled, searchCage);
         imbuingTheDoll.addStep(dollAshed, killKalrag);
         imbuingTheDoll.addStep(pouredBrew, useTinderboxOnTomb);
-        imbuingTheDoll.addStep(haveBrew, useBucketOnBrew);
+        imbuingTheDoll.addStep(haveBrew, useBrewOnTomb);
         imbuingTheDoll.addStep(new Conditions(dollImbued, isInDwarfCavern), useBucketOnBrew);
         imbuingTheDoll.addStep(dollImbued, returnToDwarfs);
         imbuingTheDoll.addStep(new Conditions(LogicType.NOR, haveAmuletHolthion), killHolthion);

@@ -1,78 +1,114 @@
+/*
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, llamositopia <https://github.com/llamositopia>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.quests.undergroundpass;
 
 import com.google.common.collect.ImmutableMap;
-import com.questhelper.*;
+import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.steps.*;
-import com.questhelper.steps.conditional.*;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
+import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.steps.conditional.Conditions;
+import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.UNDERGROUND_PASS
 )
 public class UndergroundPass extends BasicQuestHelper
 {
-
-	private static int OBJECTID_ORB_OF_LIGHT1 = 37326;
-	private static int OBJECTID_ORB_OF_LIGHT2 = 37325;
-	private static int OBJECTID_ORB_OF_LIGHT3 = 37324;
-	private static int OBJECTID_ORB_OF_LIGHT4 = 35944;
-	private static int OBJECTID_BOULDER = 4543;
-
 	ItemRequirement rope1, rope2, ropeHighlight, bow, arrows, arrowsHighlight, spade, spadeHighlight, plank,
 		plankHighlight, bucket, tinderbox, tinderboxHighlight, combatEquipment, food, staminaPotions, coins,
 		agilityPotions, telegrabRunes, oilyCloth, oilyClothHighlight, fireArrow, litArrow, litArrowEquipped,
 		orb1, orb2, orb3, orb4, railing, railingHighlight, unicornHorn, badgeJerro, badgeCarl, badgeHarry,
 		badgeJerroHighlight, badgeCarlHighlight, badgeHarryHighlight, unicornHornHighlight, klanksGauntlets,
 		witchsCat, amuletHolthion, amuletHolthionHighlight, amuletDoomion, amuletDoomionHighlight, amuletOthanian,
-		amuletOthanianHighlight, dollOfIban, bucketHighlight, brew, klanksGauntletsEquipped, robeTop, robeBottom;
+		amuletOthanianHighlight, dollOfIban, bucketHighlight, brew, klanksGauntletsEquipped, robeTop, robeBottom,
+		ibansAshes, ibansDove, ibansShadow, dollOfIbanHighlighted, robeTopEquipped, robeBottomEquipped;
 
 	Zone castleFloor2, westArdougne, beforeRockslide1, beforeRockslide2, beforeRockslide3, beforeBridge,
 		northEastOfBridge, westOfBridge, beforeThePit, afterThePit, beforeTheGrid, atTheGrid, afterTheGrid,
 		beforeTrap1, beforeTrap2, beforeTrap3, beforeTrap4, beforeTrap5, wellArea, beforePlank2, beforePlank3,
-		atOrb1, beforeCellPicklock, insideCell, beforeLedge, afterMaze, afterMazeShortcut, inUnicornArea,
-		inUnicornArea2, inKnightsArea, beforeIbansDoor, inDwarfCavern, catArea, inWitchsHouse, beforeTemple,
-		inTemple;
+		atOrb1, insideCell, beforeLedge, afterMaze, afterMazeShortcut, inUnicornArea, inUnicornArea2, inKnightsArea1,
+		inKnightsArea2, inKnightsArea3, beforeIbansDoor, inDwarfCavern, inFinalArea, inTemple, inFallArea,
+		inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4,
+		inUndergroundSection3, inMaze1, inMaze2, inPostIbanArea;
 
 	ConditionForStep inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
 		isBeforeBridge, isNorthEastOfBridge, haveOilyCloth, haveFireArrow, haveLitArrow, haveLitArrowEquipped,
 		havePlank, isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
 		isBeforeTrap2, isBeforeTrap3, isBeforeTrap4, isBeforeTrap5, isInWellArea, isBeforePlank2, isBeforePlank3,
-		isAtOrb1, haveOrb1, haveOrb2, haveOrb3, haveOrb4, isBeforeCellPicklock, isInsideCell, isBeforeLedge,
-		isAfterMaze, hasRailing, isInUnicornArea, isInUnicornArea2, haveUnicornHorn, isInKnightsArea, haveBadgeJerro,
-		haveBadgeCarl, haveBadgeHarry, isBeforeIbansDoor, isInDwarfCavern, haveKlanksGauntlets, isInCatArea,
-		haveWitchsCat, isInWitchsHouse, haveAmuletHolthion, haveAmuletDoomion, haveAmuletOthanian, dollImbued,
-		haveBrew, pouredBrew, dollAshed, kalragKilled, doveSmeared, isBeforeTemple, haveRobeTop, haveRobeBottom,
-		spokeToKoftikAfterTemple;
+		isAtOrb1, haveOrb1, haveOrb2, haveOrb3, haveOrb4, isInsideCell, isBeforeLedge, isAfterMaze, hasRailing,
+		isInUnicornArea, isInUnicornArea2, haveUnicornHorn, isInKnightsArea, isNextToKnights, haveBadgeJerro,
+		haveBadgeCarl, haveBadgeHarry, isBeforeIbansDoor, isInDwarfCavern, haveKlanksGauntlets, isInFinalArea,
+		haveWitchsCat, haveAmuletHolthion, haveAmuletDoomion, haveAmuletOthanian, dollImbued, haveBrew, pouredBrew,
+		dollAshed, kalragKilled, doveSmeared, haveRobeTop, haveRobeBottom, clothInBag, isInFallArea, isInUndergroundSection2,
+		usedOrb1, usedOrb2, usedOrb3, usedOrb4, destroyedAllOrbs, isInUndergroundSection3, isInMaze, usedHorn, usedBadgeJerro,
+		usedBadgeCarl, usedBadgeHarry, givenWitchCat, hasIbansAshes, hasIbansShadow, hasIbansDove, isInTemple, isInPostIbanArea;
 
-	QuestStep goToArdougneCastleFloor2, talkToKingLathas, goDownCastleStairs, enterWestArdougne, talkToKoftik,
+	DetailedQuestStep goToArdougneCastleFloor2, talkToKingLathas, goDownCastleStairs, enterWestArdougne, talkToKoftik,
 		enterTheDungeon, climbOverRockslide1, climbOverRockslide2, climbOverRockslide3, talkToKoftikAtBridge,
-		useClothOnArrow, lightArrow, walkNorthEastOfBridge, shootBridgeRope, collectPlank,
+		useClothOnArrow, lightArrow, walkNorthEastOfBridge, shootBridgeRope, collectPlank, searchBagForCloth,
 		crossThePit, climbOverRockslide4, climbOverRockslide5, crossTheGrid, pullLeverAfterGrid, passTrap1,
 		passTrap2, passTrap3, passTrap4, passTrap5, plankRock1, plankRock2, plankRock3, collectOrb1, collectOrb2,
 		collectOrb3, collectOrb4, orbsToFurnace, climbDownWell, pickCellLock, digMud, crossLedge, navigateMaze,
 		goThroughPipe, searchUnicornCage, useRailingOnBoulder, searchUnicornCageAgain, leaveUnicornArea,
 		walkToKnights, killJerro, killCarl, killHarry, useBadgeJerroOnWell, useBadgeHarryOnWell, useBadgeCarlOnWell,
 		useUnicornHornOnWell, openIbansDoor, descendCave, talkToNiloof, talkToKlank, goBackUpToIbansCavern,
-		searchWitchsWindow, pickUpWitchsCat, useCatOnDoor, searchWitchsChest, killHolthion, killDoomion, killOthanian,
+		pickUpWitchsCat, useCatOnDoor, searchWitchsChest, killHolthion, killDoomion, killOthanian,
 		searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag,
 		ascendToHalfSouless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
-		talkToKingLathasAfterTemple;
+		talkToKingLathasAfterTemple, leaveFallArea, useAshOnDoll, useShadowOnDoll, useDoveOnDoll, goUpToLathasToFinish;
 
 	private void setupItemReqs()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
-		rope2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
+		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE, -1);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
-		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.getBows());
+		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.getBows(), 1, true);
 		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.getMetalArrows());
 		arrowsHighlight = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.getMetalArrows());
 		arrowsHighlight.setHighlightInInventory(true);
@@ -115,7 +151,9 @@ public class UndergroundPass extends BasicQuestHelper
 		railingHighlight = new ItemRequirement("Railing", ItemID.PIECE_OF_RAILING);
 		railingHighlight.setHighlightInInventory(true);
 		unicornHorn = new ItemRequirement("Unicorn Horn", ItemID.UNICORN_HORN_1487);
+		unicornHorn.setTip("You can get this from the cage in the previous room");
 		unicornHornHighlight = new ItemRequirement("Unicorn Horn", ItemID.UNICORN_HORN_1487);
+		unicornHornHighlight.setTip("You can get this from the cage in the previous room");
 		unicornHornHighlight.setHighlightInInventory(true);
 		badgeJerro = new ItemRequirement("Badge (Sir Jerro)", ItemID.PALADINS_BADGE);
 		badgeJerroHighlight = new ItemRequirement("Badge (Sir Jerro)", ItemID.PALADINS_BADGE);
@@ -128,6 +166,7 @@ public class UndergroundPass extends BasicQuestHelper
 		badgeHarryHighlight.setHighlightInInventory(true);
 		klanksGauntlets = new ItemRequirement("Klank's gauntlets", ItemID.KLANKS_GAUNTLETS);
 		klanksGauntletsEquipped = new ItemRequirement("Klank's gauntlets", ItemID.KLANKS_GAUNTLETS, 1, true);
+		klanksGauntletsEquipped.setTip("You can get a pair from Klank in the Dwarf camp");
 		witchsCat = new ItemRequirement("Witch's Cat", ItemID.WITCHS_CAT);
 		witchsCat.setHighlightInInventory(true);
 		amuletHolthion = new ItemRequirement("Holthion's Amulet", ItemID.AMULET_OF_HOLTHION);
@@ -140,21 +179,41 @@ public class UndergroundPass extends BasicQuestHelper
 		amuletOthanianHighlight = new ItemRequirement("Othanian's Amulet", ItemID.AMULET_OF_OTHANIAN);
 		amuletOthanianHighlight.setHighlightInInventory(true);
 		dollOfIban = new ItemRequirement("Doll of Iban", ItemID.DOLL_OF_IBAN);
+		dollOfIbanHighlighted = new ItemRequirement("Doll of Iban", ItemID.DOLL_OF_IBAN);
+		dollOfIbanHighlighted.setHighlightInInventory(true);
 		brew = new ItemRequirement("Dwarf brew", ItemID.DWARF_BREW);
 		brew.setHighlightInInventory(true);
-		robeTop = new ItemRequirement("Zamorak monk top", ItemID.ZAMORAK_MONK_TOP, 1, true);
-		robeBottom = new ItemRequirement("Zamorak monk bottom", ItemID.ZAMORAK_MONK_TOP, 1, true);
+		robeTop = new ItemRequirement("Zamorak monk top", ItemID.ZAMORAK_MONK_TOP);
+		robeBottom = new ItemRequirement("Zamorak monk bottom", ItemID.ZAMORAK_MONK_BOTTOM);
+		robeTopEquipped = new ItemRequirement("Zamorak monk top", ItemID.ZAMORAK_MONK_TOP, 1, true);
+		robeBottomEquipped = new ItemRequirement("Zamorak monk bottom", ItemID.ZAMORAK_MONK_BOTTOM, 1, true);
+		ibansAshes = new ItemRequirement("Iban's ashes", ItemID.IBANS_ASHES);
+		ibansAshes.setHighlightInInventory(true);
+		ibansDove = new ItemRequirement("Iban's dove", ItemID.IBANS_DOVE);
+		ibansDove.setHighlightInInventory(true);
+		ibansShadow = new ItemRequirement("Iban's shadow", ItemID.IBANS_SHADOW);
+		ibansShadow.setHighlightInInventory(true);
 	}
 
 	private void setupZones()
 	{
 		castleFloor2 = new Zone(new WorldPoint(2568, 3283, 1), new WorldPoint(2591, 3310, 1));
 		westArdougne = new Zone(new WorldPoint(2433, 3264, 0), new WorldPoint(2557, 3337, 2));
+
+		// Section 1
 		beforeRockslide1 = new Zone(new WorldPoint(2473, 9713, 0), new WorldPoint(2500, 9720, 0));
 		beforeRockslide2 = new Zone(new WorldPoint(2471, 9705, 0), new WorldPoint(2481, 9712, 0));
 		beforeRockslide3 = new Zone(new WorldPoint(2457, 9704, 0), new WorldPoint(2470, 9711, 0));
-		beforeBridge = new Zone(new WorldPoint(2445, 9713, 0), new WorldPoint(2461, 9719, 0));
+		beforeBridge = new Zone(new WorldPoint(2445, 9713, 0), new WorldPoint(2467, 9719, 0));
 		northEastOfBridge = new Zone(new WorldPoint(2445, 9719, 0), new WorldPoint(2456, 9727, 0));
+		inFallArea = new Zone(new WorldPoint(2440, 9628, 0), new WorldPoint(2486, 9657, 0));
+
+		// Section 2
+		inUndergroundSection2P1 = new Zone(new WorldPoint(2431, 9660, 0), new WorldPoint(2443, 9728, 0));
+		inUndergroundSection2P2 = new Zone(new WorldPoint(2444, 9660, 0), new WorldPoint(2494, 9703, 0));
+		inUndergroundSection2P3 = new Zone(new WorldPoint(2485, 9704, 0), new WorldPoint(2494, 9707, 0));
+		inUndergroundSection2P4 = new Zone(new WorldPoint(2380, 9663, 0), new WorldPoint(2430, 9698, 0));
+		inUndergroundSection3 = new Zone(new WorldPoint(2365, 9590, 0), new WorldPoint(2430, 9661, 0));
 		westOfBridge = new Zone(new WorldPoint(2431, 9684, 0), new WorldPoint(2443, 9728, 0));
 		beforeThePit = new Zone(new WorldPoint(2439, 9691, 0), new WorldPoint(2463, 9703, 0));
 		afterThePit = new Zone(new WorldPoint(2463, 9691, 0), new WorldPoint(2493, 9709, 0));
@@ -170,33 +229,38 @@ public class UndergroundPass extends BasicQuestHelper
 		beforePlank2 = new Zone(new WorldPoint(2416, 9682, 0), new WorldPoint(2420, 9684, 0));
 		beforePlank3 = new Zone(new WorldPoint(2414, 9686, 0), new WorldPoint(2420, 9688, 0));
 		atOrb1 = new Zone(new WorldPoint(2412, 9690, 0), new WorldPoint(2422, 9698, 0));
-		beforeCellPicklock = new Zone(new WorldPoint(2391, 9648, 0), new WorldPoint(2433, 9663, 0));
+
 		insideCell = new Zone(new WorldPoint(2392, 9650, 0), new WorldPoint(2394, 9654, 0));
-		beforeLedge = new Zone(new WorldPoint(2374, 9642, 0), new WorldPoint(2395, 9647, 0));
-		afterMaze = new Zone(new WorldPoint(2416, 9597, 0), new WorldPoint(2432, 9640, 0));
+		beforeLedge = new Zone(new WorldPoint(2374, 9639, 0), new WorldPoint(2395, 9647, 0));
+		inMaze1 = new Zone(new WorldPoint(2369, 9616, 0), new WorldPoint(2415, 9638, 0));
+		inMaze2 = new Zone(new WorldPoint(2398, 9639, 0), new WorldPoint(2404, 9646, 0));
+		afterMaze = new Zone(new WorldPoint(2416, 9597, 0), new WorldPoint(2432, 9645, 0));
 		afterMazeShortcut = new Zone(new WorldPoint(2404, 9615, 0), new WorldPoint(2420, 9624, 0));
 		inUnicornArea = new Zone(new WorldPoint(2391, 9586, 0), new WorldPoint(2415, 9612, 0));
 		inUnicornArea2 = new Zone(new WorldPoint(2366, 9586, 0), new WorldPoint(2390, 9612, 0));
-		inKnightsArea = new Zone(new WorldPoint(2420, 9714, 0), new WorldPoint(2429, 9728, 0));
+		inKnightsArea1 = new Zone(new WorldPoint(2369, 9666, 0), new WorldPoint(2379, 9728, 0));
+		inKnightsArea2 = new Zone(new WorldPoint(2379, 9693, 0), new WorldPoint(2413, 9728, 0));
+		inKnightsArea3 = new Zone(new WorldPoint(2414, 9705, 0), new WorldPoint(2429, 9728, 0));
 		beforeIbansDoor = new Zone(new WorldPoint(2367, 9709, 0), new WorldPoint(2386, 9727, 0));
+
+		inFinalArea = new Zone(new WorldPoint(2110, 4544, 1), new WorldPoint(2177, 4739, 1));
 		inDwarfCavern = new Zone(new WorldPoint(2304, 9789, 0), new WorldPoint(2365, 9921, 0));
-		catArea = new Zone(new WorldPoint(2121, 4581, 1), new WorldPoint(2147, 4606, 1));
-		inWitchsHouse = new Zone(new WorldPoint(2157, 4565, 1), new WorldPoint(2157, 4566, 1));
-		beforeTemple = new Zone(new WorldPoint(2142, 4629, 1), new WorldPoint(2164, 4662, 1));
-		inTemple = new Zone(new WorldPoint(2131, 4641, 1), new WorldPoint(2143, 4654, 1));
+
+		inTemple = new Zone(new WorldPoint(2132, 4641, 1), new WorldPoint(2143, 4654, 1));
+		inPostIbanArea = new Zone(new WorldPoint(2439, 9603, 0), new WorldPoint(2491, 9615, 0));
 	}
 
 	private void setupConditions()
 	{
-		// Started quest:
-		// 9139, 9140, 9141, 9142, 9143 = 1
-		// Talked to koftik
-		// 9141 = 0
+		clothInBag = new VarbitCondition(9138, 1);
+
+
 		inCastleFloor2 = new ZoneCondition(castleFloor2);
 		inWestArdougne = new ZoneCondition(westArdougne);
 		isBeforeRockslide1 = new ZoneCondition(beforeRockslide1);
 		isBeforeRockslide2 = new ZoneCondition(beforeRockslide2);
 		isBeforeRockslide3 = new ZoneCondition(beforeRockslide3);
+		isInFallArea = new ZoneCondition(inFallArea);
 		isBeforeBridge = new ZoneCondition(beforeBridge);
 		isNorthEastOfBridge = new ZoneCondition(northEastOfBridge);
 		haveOilyCloth = new ItemRequirementCondition(oilyCloth);
@@ -214,45 +278,64 @@ public class UndergroundPass extends BasicQuestHelper
 		isBeforeTrap3 = new ZoneCondition(beforeTrap3);
 		isBeforeTrap4 = new ZoneCondition(beforeTrap4);
 		isBeforeTrap5 = new ZoneCondition(beforeTrap5);
-		haveOrb1 = new ItemRequirementCondition(orb1);
-		haveOrb2 = new ItemRequirementCondition(orb2);
-		haveOrb3 = new ItemRequirementCondition(orb3);
-		haveOrb4 = new ItemRequirementCondition(orb4);
+		usedOrb1 = new VarbitCondition(9122, 1);
+		usedOrb2 = new VarbitCondition(9121, 1);
+		usedOrb3 = new VarbitCondition(9120, 1);
+		usedOrb4 = new VarbitCondition(9119, 1);
+		destroyedAllOrbs = new Conditions(usedOrb1, usedOrb2, usedOrb3, usedOrb4);
+
+		haveOrb1 = new Conditions(LogicType.OR, usedOrb1, new ItemRequirementCondition(orb1));
+		haveOrb2 = new Conditions(LogicType.OR, usedOrb2, new ItemRequirementCondition(orb2));
+		haveOrb3 = new Conditions(LogicType.OR, usedOrb3, new ItemRequirementCondition(orb3));
+		haveOrb4 = new Conditions(LogicType.OR, usedOrb4, new ItemRequirementCondition(orb4));
 		isInWellArea = new ZoneCondition(wellArea);
+		isInUndergroundSection2 = new ZoneCondition(inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4);
+		isInUndergroundSection3 = new ZoneCondition(inUndergroundSection3);
 		isBeforePlank2 = new ZoneCondition(beforePlank2);
 		isBeforePlank3 = new ZoneCondition(beforePlank3);
 		isAtOrb1 = new ZoneCondition(atOrb1);
-		isBeforeCellPicklock = new ZoneCondition(beforeCellPicklock);
 		isInsideCell = new ZoneCondition(insideCell);
 		isBeforeLedge = new ZoneCondition(beforeLedge);
+		isInMaze = new ZoneCondition(inMaze1, inMaze2);
 		isAfterMaze = new ZoneCondition(afterMaze, afterMazeShortcut);
 		hasRailing = new ItemRequirementCondition(railing);
 		isInUnicornArea = new ZoneCondition(inUnicornArea);
 		isInUnicornArea2 = new ZoneCondition(inUnicornArea2);
-		haveUnicornHorn = new ItemRequirementCondition(unicornHorn);
-		isInKnightsArea = new ZoneCondition(inKnightsArea);
-		haveBadgeCarl = new ItemRequirementCondition(badgeCarl);
-		haveBadgeHarry = new ItemRequirementCondition(badgeHarry);
-		haveBadgeJerro = new ItemRequirementCondition(badgeJerro);
+		usedHorn = new VarbitCondition(9136, 1);
+		haveUnicornHorn = new Conditions(LogicType.OR, new ItemRequirementCondition(unicornHorn), usedHorn);
+		isInKnightsArea = new ZoneCondition(inKnightsArea1, inKnightsArea2, inKnightsArea3);
+		isNextToKnights = new ZoneCondition(inKnightsArea3);
+
+		usedBadgeJerro = new VarbitCondition(9128, 1);
+		usedBadgeCarl = new VarbitCondition(9129, 1);
+		usedBadgeHarry = new VarbitCondition(9130, 1);
+
+		haveBadgeCarl = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeCarl), usedBadgeCarl);
+		haveBadgeHarry = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeHarry), usedBadgeHarry);
+		haveBadgeJerro = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeJerro), usedBadgeJerro);
 		isBeforeIbansDoor = new ZoneCondition(beforeIbansDoor);
+		isInFinalArea = new ZoneCondition(inFinalArea);
 		isInDwarfCavern = new ZoneCondition(inDwarfCavern);
 		haveKlanksGauntlets = new ItemRequirementCondition(klanksGauntlets);
-		isInCatArea = new ZoneCondition(catArea);
 		haveWitchsCat = new ItemRequirementCondition(witchsCat);
-		isInWitchsHouse = new ZoneCondition(inWitchsHouse);
+		givenWitchCat = new VarbitCondition(9123, 1);
 		haveAmuletHolthion = new ItemRequirementCondition(amuletHolthion);
 		haveAmuletDoomion = new ItemRequirementCondition(amuletDoomion);
 		haveAmuletOthanian = new ItemRequirementCondition(amuletOthanian);
-		dollImbued = new VarbitCondition(9118, 1); // todo confirm this varbit is set when liquid is poured on doll
+		dollImbued = new VarbitCondition(9118, 1);
 		haveBrew = new ItemRequirementCondition(brew);
-		pouredBrew = new VarbitCondition(9134, 1); // todo confirm this varbit is set when pouring brew on tomb
-		dollAshed = new VarbitCondition(9117, 1); // todo confirm this varbit is set when ashes are rubbed on the doll after lighting the tomb
-		kalragKilled = new VarbitCondition(9115, 1); // todo confirm this varbit is set when kalrag the spider is killed
-		doveSmeared = new VarbitCondition(9116, 1); // todo confirm this varbit is set when kalrag the spider is killed
-		isBeforeTemple = new ZoneCondition(beforeTemple);
+		pouredBrew = new VarbitCondition(9134, 1);
+		dollAshed = new VarbitCondition(9117, 1);
+		kalragKilled = new VarbitCondition(9115, 1);
+		doveSmeared = new VarbitCondition(9116, 1);
 		haveRobeTop = new ItemRequirementCondition(robeTop);
 		haveRobeBottom = new ItemRequirementCondition(robeBottom);
-		spokeToKoftikAfterTemple = new VarbitCondition(9143, 1);
+		isInTemple = new ZoneCondition(inTemple);
+		isInPostIbanArea = new ZoneCondition(inPostIbanArea);
+
+		hasIbansAshes = new ItemRequirementCondition(ibansAshes);
+		hasIbansShadow = new ItemRequirementCondition(ibansShadow);
+		hasIbansDove = new ItemRequirementCondition(ibansDove);
 	}
 
 	public void setupSteps()
@@ -268,72 +351,116 @@ public class UndergroundPass extends BasicQuestHelper
 		talkToKoftik.addDialogStep("I'll take my chances.");
 		talkToKoftik.addSubSteps(goDownCastleStairs, enterWestArdougne);
 
-		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the dungeon.");
+		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the dungeon.", rope1, bow, arrows, spade, plank, bucket, tinderbox);
 		climbOverRockslide1 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2480, 9713, 0), "Climb-over rockslide.");
 		climbOverRockslide2 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2471, 9706, 0), "Climb-over rockslide.");
 		climbOverRockslide3 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2458, 9712, 0), "Climb-over rockslide.");
 		talkToKoftikAtBridge = new NpcStep(this, NpcID.KOFTIK_8976, "Talk to Koftik inside the cave.");
 		talkToKoftikAtBridge.addSubSteps(enterTheDungeon, climbOverRockslide1, climbOverRockslide2, climbOverRockslide3);
 
+		searchBagForCloth = new ObjectStep(this, ObjectID.ABANDONED_EQUIPMENT, new WorldPoint(2452, 9715, 0), "Search the abandoned equipment for an oily cloth.");
 		useClothOnArrow = new DetailedQuestStep(this, "Use the oily cloth on an arrow.", oilyClothHighlight, arrowsHighlight);
-		lightArrow = new DetailedQuestStep(this, "Use the tinderbox on the fire arrow.", fireArrow, tinderboxHighlight);
+		lightArrow = new DetailedQuestStep(this, "Use the tinderbox on the fire arrow. If you don't have a tinderbox, use the arrow on the nearby fire instead.", fireArrow, tinderboxHighlight);
 		walkNorthEastOfBridge = new TileStep(this, new WorldPoint(2447, 9722, 0), "Walk to the room north of Koftik.", litArrowEquipped);
-		shootBridgeRope = new ObjectStep(this, ObjectID.GUIDE_ROPE, "Wield a lit arrow and shoot the guide-rope.", litArrowEquipped);
-		shootBridgeRope.addSubSteps(useClothOnArrow, lightArrow, walkNorthEastOfBridge);
+		shootBridgeRope = new ObjectStep(this, ObjectID.GUIDE_ROPE, "Wield a lit arrow and shoot the guide-rope.", bow, litArrowEquipped);
+		shootBridgeRope.addSubSteps(searchBagForCloth, useClothOnArrow, lightArrow, walkNorthEastOfBridge);
 
-		collectPlank = new ItemStep(this, "Pick up the plank in the north room.");
+		leaveFallArea = new ObjectStep(this, ObjectID.PILE_OF_ROCKS, new WorldPoint(2443, 9652, 0), "Follow the path west to leave.");
+		leaveFallArea.setLinePoints(new ArrayList<>(Arrays.asList(
+			new WorldPoint(2485, 9648, 0),
+			new WorldPoint(2485, 9645, 0),
+			new WorldPoint(2483, 9642, 0),
+			new WorldPoint(2483, 9635, 0),
+			new WorldPoint(2481, 9629, 0),
+			new WorldPoint(2476, 9629, 0),
+			new WorldPoint(2476, 9636, 0),
+			new WorldPoint(2474, 9637, 0),
+			new WorldPoint(2470, 9635, 0),
+			new WorldPoint(2467, 9637, 0),
+			new WorldPoint(2467, 9639, 0),
+			new WorldPoint(2471, 9642, 0),
+			new WorldPoint(2471, 9646, 0),
+			new WorldPoint(2465, 9646, 0),
+			new WorldPoint(2460, 9640, 0),
+			new WorldPoint(2460, 9633, 0),
+			new WorldPoint(2455, 9633, 0),
+			new WorldPoint(2452, 9637, 0),
+			new WorldPoint(2452, 9640, 0),
+			new WorldPoint(2459, 9645, 0),
+			new WorldPoint(2459, 9647, 0),
+			new WorldPoint(2454, 9647, 0),
+			new WorldPoint(2449, 9650, 0),
+			new WorldPoint(2444, 9651, 0)
+		)));
+
+		collectPlank = new DetailedQuestStep(this, new WorldPoint(2435, 9726, 0), "Pick up the plank in the north room.", plank);
 		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, "Swing across the pit with a rope.", ropeHighlight);
+		crossThePit.addIcon(ItemID.ROPE);
 		crossThePit.addSubSteps(collectPlank);
 		climbOverRockslide4 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2491, 9691, 0), "Climb-over rockslide");
 		climbOverRockslide5 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2482, 9679, 0), "Climb-over rockslide");
-		crossTheGrid = new DetailedQuestStep(this, "Cross the grid by trail and error. Keep health above 15, and remember the path for Regicide.");
+		crossTheGrid = new DetailedQuestStep(this, "Cross the grid by trial and error. Keep health above 15, and remember the path for Regicide.");
 		pullLeverAfterGrid = new ObjectStep(this, ObjectID.LEVER_3337, "Pull the lever to raise the gate.");
 		crossTheGrid.addSubSteps(climbOverRockslide4, climbOverRockslide5, pullLeverAfterGrid);
 
 		passTrap1 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2443, 9678, 0), "Either disable or walk past the traps.");
 		passTrap2 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2440, 9678, 0), "Either disable or walk past the traps.");
-		passTrap3 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2435, 9675, 0), "Either disable or walk past the traps.");
-		passTrap4 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2432, 9675, 0), "Either disable or walk past the traps.");
-		passTrap5 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2430, 9675, 0), "Either disable or walk past the traps.");
+		passTrap3 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2435, 9676, 0), "Either disable or walk past the traps.");
+		passTrap4 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2432, 9676, 0), "Either disable or walk past the traps.");
+		passTrap5 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2430, 9676, 0), "Either disable or walk past the traps.");
 		passTrap1.addSubSteps(passTrap2, passTrap3, passTrap4, passTrap5);
 
+		final int OBJECTID_ORB_OF_LIGHT1 = NullObjectID.NULL_37326;
+		final int OBJECTID_ORB_OF_LIGHT2 = NullObjectID.NULL_37325;
+		final int OBJECTID_ORB_OF_LIGHT3 = NullObjectID.NULL_37324;
+
 		collectOrb1 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT1, "Take the first orb of light.");
-		plankRock1 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9681, 0), "Use a plank on the flat rock to cross it.");
-		plankRock2 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9685, 0), "Use a plank on the flat rock to cross it.");
-		plankRock3 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2416, 9689, 0), "Use a plank on the flat rock to cross it.");
+		plankRock1 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9681, 0), "Use a plank on the flat rock to cross it.", plankHighlight);
+		plankRock1.addIcon(ItemID.PLANK);
+		plankRock2 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9685, 0), "Use a plank on the flat rock to cross it.", plankHighlight);
+		plankRock2.addIcon(ItemID.PLANK);
+		plankRock3 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2416, 9689, 0), "Use a plank on the flat rock to cross it.", plankHighlight);
+		plankRock3.addIcon(ItemID.PLANK);
 		collectOrb1.addSubSteps(plankRock1, plankRock2, plankRock3);
 
-		collectOrb2 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT2, "Take the second orb of light.");
-		collectOrb3 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT3, "Take the third orb of light. Remember to use a plank on the flat rocks to cross them.");
-		collectOrb4 = new ObjectStep(this, ObjectID.FLAT_ROCK_3339, new WorldPoint(2382, 9668, 0), "Search the flat rock to remove the trap and take the fourth orb.");
+		collectOrb2 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT2, new WorldPoint(2385, 9685, 0), "Take the second orb of light north west of the well.");
+		collectOrb3 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT3, new WorldPoint(2386, 9677, 0), "Take the third orb of light west of the well. Remember to use a plank on the flat rocks to cross them.");
+		collectOrb4 = new ObjectStep(this, ObjectID.FLAT_ROCK_3339, new WorldPoint(2382, 9668, 0), "Search the flat rock to remove the trap and take the fourth orb to the south west of the well.");
+		collectOrb4.addDialogStep("Yes, I'll give it a go.");
 		orbsToFurnace = new ObjectStep(this, ObjectID.FURNACE_3294, new WorldPoint(2455, 9683, 0), "Return to the furnace to the east, and use the orbs on it.");
-		climbDownWell = new ObjectStep(this, ObjectID.WELL_3264, new WorldPoint(2416, 9675, 0), "Climb down the well.");
+		climbDownWell = new ObjectStep(this, ObjectID.WELL_3264, new WorldPoint(2417, 9675, 0), "Climb down the well.");
 
 		navigateMaze = new DetailedQuestStep(this, "Navigate the maze, or use the shortcut to the south with 50 Thieving.");
 		pickCellLock = new ObjectStep(this, ObjectID.GATE_3266, new WorldPoint(2393, 9655, 0), "Pick the lock to enter the cell.");
 		digMud = new ObjectStep(this, ObjectID.LOOSE_MUD, new WorldPoint(2393, 9650, 0), "Dig the loose mud.", spadeHighlight);
+		digMud.addIcon(ItemID.SPADE);
 		crossLedge = new ObjectStep(this, ObjectID.LEDGE_3238, new WorldPoint(2374, 9644, 0), "Cross the ledge.");
 		goThroughPipe = new ObjectStep(this, ObjectID.PIPE_3237, new WorldPoint(2418, 9605, 0), "Enter the pipe to the next section.");
 		navigateMaze.addSubSteps(pickCellLock, digMud, crossLedge, goThroughPipe);
 
 		searchUnicornCage = new ObjectStep(this, ObjectID.CAGE, new WorldPoint(2398, 9605, 0), "Search the unicorn cage.");
-		useRailingOnBoulder = new ObjectStep(this, OBJECTID_BOULDER, new WorldPoint(2397, 9595, 0), "Use the railing on the boulder.", railingHighlight);
+		useRailingOnBoulder = new NpcStep(this, NpcID.BOULDER_4543, new WorldPoint(2397, 9596, 0), "Use the railing on the boulder.", railingHighlight);
+		useRailingOnBoulder.addIcon(ItemID.PIECE_OF_RAILING);
 
-		searchUnicornCageAgain = new ObjectStep(this, ObjectID.SMASHED_CAGE, "Search the cage again.");
-		leaveUnicornArea = new ObjectStep(this, ObjectID.TUNNEL_3219, "Enter the tunnel.");
+		searchUnicornCageAgain = new ObjectStep(this, ObjectID.SMASHED_CAGE, new WorldPoint(2372, 9605, 0), "Search the cage again.");
+		leaveUnicornArea = new ObjectStep(this, ObjectID.TUNNEL_3219, new WorldPoint(2375, 9611, 0), "Enter the tunnel.");
 		walkToKnights = new TileStep(this, new WorldPoint(2424, 9715, 0), "Travel through the tunnel to find some knights.");
 		walkToKnights.addSubSteps(leaveUnicornArea);
 
-		killJerro = new NpcStep(this, NpcID.SIR_JERRO, "Kill Sir Jerro and take his badge. Optionally: talk to one of the knights first to receive food and potions.");
-		killCarl = new NpcStep(this, NpcID.SIR_CARL, "Kill Sir Carl and take his badge.");
-		killHarry = new NpcStep(this, NpcID.SIR_HARRY, "Kill Sir Harry and take his badge.");
+		killJerro = new NpcStep(this, NpcID.SIR_JERRO, new WorldPoint(2425, 9720, 0), "Kill Sir Jerro and take his badge. Optionally: talk to one of the knights first to receive food and potions.", badgeJerro);
+		killCarl = new NpcStep(this, NpcID.SIR_CARL, new WorldPoint(2425, 9720, 0), "Kill Sir Carl and take his badge.", badgeCarl);
+		killHarry = new NpcStep(this, NpcID.SIR_HARRY, new WorldPoint(2425, 9720, 0), "Kill Sir Harry and take his badge.", badgeHarry);
 
-		useBadgeJerroOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2373, 9718, 0), "Use the badges and unicorn horn on the well.", badgeJerroHighlight);
-		useBadgeHarryOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2373, 9718, 0), "Use the badges and unicorn horn on the well.", badgeHarryHighlight);
-		useBadgeCarlOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2373, 9718, 0), "Use the badges and unicorn horn on the well.", badgeCarlHighlight);
-		useUnicornHornOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2373, 9718, 0), "Use the badges and unicorn horn on the well.", unicornHornHighlight);
+		useBadgeJerroOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2374, 9719, 0), "Use the badges and unicorn horn on the well.", badgeJerroHighlight);
+		useBadgeJerroOnWell.addIcon(ItemID.PALADINS_BADGE);
+		useBadgeHarryOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2374, 9719, 0), "Use the badges and unicorn horn on the well.", badgeHarryHighlight);
+		useBadgeHarryOnWell.addIcon(ItemID.PALADINS_BADGE_1489);
+		useBadgeCarlOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2374, 9719, 0), "Use the badges and unicorn horn on the well.", badgeCarlHighlight);
+		useBadgeCarlOnWell.addIcon(ItemID.PALADINS_BADGE_1490);
+		useUnicornHornOnWell = new ObjectStep(this, ObjectID.WELL_3305, new WorldPoint(2374, 9719, 0), "Use the badges and unicorn horn on the well.", unicornHornHighlight);
+		useUnicornHornOnWell.addIcon(ItemID.UNICORN_HORN_1487);
 		useBadgeJerroOnWell.addSubSteps(useBadgeHarryOnWell, useBadgeCarlOnWell, useUnicornHornOnWell);
-		openIbansDoor = new ObjectStep(this, ObjectID.DOOR_3221, "Open the door.");
+		openIbansDoor = new ObjectStep(this, ObjectID.DOOR_3221, new WorldPoint(2369, 9720, 0), "Open the door at the end of the path.");
 
 		descendCave = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Follow the edge of the cavern down to enter a cave on the south wall.");
 		talkToNiloof = new NpcStep(this, NpcID.NILOOF, new WorldPoint(2313, 9806, 0), "Talk to Niloof.");
@@ -342,32 +469,125 @@ public class UndergroundPass extends BasicQuestHelper
 		talkToKlank = new NpcStep(this, NpcID.KLANK, "Talk to Klank.");
 		talkToKlank.addDialogStep("What happened to them?");
 
-		goBackUpToIbansCavern = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2336, 9793, 0), "Return to Iban's Cavern.");
-		searchWitchsWindow = new ObjectStep(this, ObjectID.WINDOW_3362, "Search the witch's window from OUTSIDE the house.");
-		searchWitchsWindow.addSubSteps(goBackUpToIbansCavern);
-		pickUpWitchsCat = new NpcStep(this, NpcID.WITCHS_CAT, new WorldPoint(2131, 4602, 1), "Go northwest along the bridges and retrieve the witch's cat.");
-		useCatOnDoor = new ObjectStep(this, ObjectID.DOOR_3270, new WorldPoint(2158, 4566, 1), "Use the cat on the witch's door to distract her.", witchsCat);
-		searchWitchsChest = new ObjectStep(this, ObjectID.CHEST, new WorldPoint(2157, 4564, 1), "Search the chest in the witch's house. You'll need 4 empty inventory slots.");
+		goBackUpToIbansCavern = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2336, 9793, 0), "Return up to Iban's Cavern.");
 
-		killHolthion = new NpcStep(this, NpcID.HOLTHION, new WorldPoint(2133, 4555, 1), "Kill Holthion and pick up his amulet.");
-		killDoomion = new NpcStep(this, NpcID.DOOMION, new WorldPoint(2135, 4566, 1), "Kill Doomion and pick up his amulet.");
-		killOthanian = new NpcStep(this, NpcID.OTHAINIAN, new WorldPoint(2123, 4563, 1), "Kill Othanian and pick up his amulet.");
+		pickUpWitchsCat = new NpcStep(this, NpcID.WITCHS_CAT, new WorldPoint(2131, 4602, 1), "Start from the south east corner of the bridges, and go northwest along them and retrieve the witch's cat.");
+		pickUpWitchsCat.addSubSteps(goBackUpToIbansCavern);
+		pickUpWitchsCat.setLinePoints(new ArrayList<>(Arrays.asList(
+			new WorldPoint(2149, 4547, 1),
+			new WorldPoint(2172, 4547, 1),
+			new WorldPoint(2172, 4582, 1),
+			new WorldPoint(2152, 4582, 1),
+			new WorldPoint(2152, 4583, 1),
+			new WorldPoint(2144, 4583, 1),
+			new WorldPoint(2143, 4585, 1),
+			new WorldPoint(2143, 4593, 1),
+			new WorldPoint(2142, 4595, 1),
+			new WorldPoint(2136, 4595, 1),
+			new WorldPoint(2136, 4592, 1),
+			new WorldPoint(2132, 4592, 1),
+			new WorldPoint(2132, 4600, 1)
+		)));
+
+		useCatOnDoor = new ObjectStep(this, ObjectID.DOOR_3270, new WorldPoint(2158, 4566, 1), "Use the cat on the witch's door in the south east corner of the area to distract her.", witchsCat);
+		useCatOnDoor.addIcon(ItemID.WITCHS_CAT);
+		searchWitchsChest = new ObjectStep(this, ObjectID.CHEST_3272, new WorldPoint(2157, 4564, 1), "Search the chest in the witch's house. You'll need 4 empty inventory slots.");
+
+		killHolthion = new NpcStep(this, NpcID.HOLTHION, new WorldPoint(2133, 4555, 1), "From the south east corner of the area, head west then south along the pathways. Kill Holthion and pick up his amulet.", amuletHolthion);
+		killHolthion.setLinePoints(new ArrayList<>(Arrays.asList(
+			new WorldPoint(2169, 4582, 1),
+			new WorldPoint(2152, 4582, 1),
+			new WorldPoint(2151, 4583, 1),
+			new WorldPoint(2142, 4582, 1),
+			new WorldPoint(2142, 4556, 1),
+			new WorldPoint(2137, 4556, 1)
+		)));
+
+		killDoomion = new NpcStep(this, NpcID.DOOMION, new WorldPoint(2135, 4566, 1), "Kill Doomion and pick up his amulet.", amuletDoomion);
+		killOthanian = new NpcStep(this, NpcID.OTHAINIAN, new WorldPoint(2123, 4563, 1), "Kill Othanian and pick up his amulet.", amuletOthanian);
+		useShadowOnDoll = new DetailedQuestStep(this, "Use the shadow on the doll.", ibansShadow, dollOfIbanHighlighted);
 		searchDoomionsChest = new ObjectStep(this, ObjectID.CHEST_3274, new WorldPoint(2136, 4578, 1), "Search the chest north of Doomion.");
+		searchDoomionsChest.addSubSteps(useShadowOnDoll);
+		useAshOnDoll = new DetailedQuestStep(this, "Use the ashes on the doll.", ibansAshes, dollOfIbanHighlighted);
+		useDoveOnDoll = new DetailedQuestStep(this, "Use the dove on the doll.", ibansDove, dollOfIbanHighlighted);
 		returnToDwarfs = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Return to the dwarf encampment on the lower level.");
-		useBucketOnBrew = new ObjectStep(this, ObjectID.BREW_BARREL, new WorldPoint(2327, 9799, 0), "Use a bucket on the brew barrel.", bucketHighlight);
-		useBrewOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9803, 0), "Use the bucket of brew on the tomb.", brew);
-		useTinderboxOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9803, 0), "Light the tomb with a tinderbox.", tinderboxHighlight);
-		killKalrag = new NpcStep(this, NpcID.KALRAG, new WorldPoint(2356, 9913, 0), "Kill Kalrag the spider. Protect From Melee can keep you safe in this fight.");
-		ascendToHalfSouless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again.");
-		searchCage = new ObjectStep(this, ObjectID.CAGE_3351, new WorldPoint(2135, 4702, 1), "Search the marked cage while wearing Klank's gauntlets.");
-		searchCage.addSubSteps(ascendToHalfSouless);
+		useBucketOnBrew = new ObjectStep(this, ObjectID.BREW_BARREL, new WorldPoint(2327, 9799, 0), "Use a bucket on the brew barrel in the dwarf encampment on the south west.", bucketHighlight);
+		useBucketOnBrew.addIcon(ItemID.BUCKET);
+		useBrewOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9802, 0), "Use the bucket of brew on the tomb in the south east corner of the area.", brew);
+		useBrewOnTomb.addIcon(ItemID.DWARF_BREW);
+		useTinderboxOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9802, 0), "Light the tomb with a tinderbox.", tinderboxHighlight);
+		useTinderboxOnTomb.addSubSteps(useAshOnDoll);
+		useTinderboxOnTomb.addIcon(ItemID.TINDERBOX);
+		killKalrag = new NpcStep(this, NpcID.KALRAG, new WorldPoint(2356, 9913, 0), "Kill Kalrag the spider. Protect From Melee can keep you safe in this fight.", dollOfIban);
+		ascendToHalfSouless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again via the north west exit.");
+		searchCage = new ObjectStep(this, ObjectID.CAGE_3351, new WorldPoint(2135, 4703, 1), "Search the marked cage in the north west of the area while wearing Klank's gauntlets.", klanksGauntletsEquipped);
+		searchCage.setLinePoints(new ArrayList<>(Arrays.asList(
+			new WorldPoint(2116, 4729, 1),
+			new WorldPoint(2116, 4686, 1),
+			new WorldPoint(2128, 4686, 1),
+			new WorldPoint(2128, 4691, 1),
+			new WorldPoint(2129, 4693, 1),
+			new WorldPoint(2129, 4696, 1),
+			new WorldPoint(2132, 4698, 1),
+			new WorldPoint(2138, 4698, 1),
+			new WorldPoint(2140, 4700, 1),
+			new WorldPoint(2140, 4702, 1),
+			new WorldPoint(2136, 4702, 1)
+		)));
+		searchCage.addSubSteps(ascendToHalfSouless, useDoveOnDoll);
 
-		killDisciple = new NpcStep(this, NpcID.DISCIPLE_OF_IBAN, new WorldPoint(2163, 4648, 1), "Kill a disciple of Iban and take their robe.");
-		enterTemple = new ObjectStep(this, ObjectID.DOOR_3333, new WorldPoint(2144, 4648, 1), "Enter the Temple of Iban wearing monk robes. Prepare for the following steps before entering, as Iban can deal lots of damage quickly.", robeTop, robeBottom);
-		useDollOnWell = new ObjectStep(this, ObjectID.WELL_3359, new WorldPoint(2137, 4648, 1), "Right-click USE the doll on the well. Standing north of the well can prevent Iban from hitting.");
+		killDisciple = new NpcStep(this, NpcID.DISCIPLE_OF_IBAN, new WorldPoint(2163, 4648, 1), "Travel along the pathways from the north west corner of the area to the middle. Kill a disciple of Iban and take their robes.", true, dollOfIban);
+		killDisciple.setLinePoints(new ArrayList<>(Arrays.asList(
+			new WorldPoint(2117, 4686, 1),
+			new WorldPoint(2128, 4686, 1),
+			new WorldPoint(2130, 4685, 1),
+			new WorldPoint(2134, 4687, 1),
+			new WorldPoint(2135, 4689, 1),
+			new WorldPoint(2140, 4689, 1),
+			new WorldPoint(2140, 4685, 1),
+			new WorldPoint(2152, 4685, 1),
+			new WorldPoint(2153, 4682, 1),
+			new WorldPoint(2153, 4678, 1),
+			new WorldPoint(2154, 4676, 1),
+			new WorldPoint(2160, 4676, 1),
+			new WorldPoint(2160, 4670, 1),
+			new WorldPoint(2165, 4670, 1),
+			new WorldPoint(2165, 4667, 1),
+			new WorldPoint(2162, 4667, 1),
+			new WorldPoint(2162, 4660, 1),
+			new WorldPoint(2161, 4659, 1),
+			new WorldPoint(2161, 4654, 1)
+		)));
+		enterTemple = new ObjectStep(this, ObjectID.DOOR_3333, new WorldPoint(2144, 4648, 1), "Enter the Temple of Iban wearing monk robes. Prepare to use Iban's doll on the well, as Iban can deal lots of damage quickly.", robeTopEquipped, robeBottomEquipped);
+		enterTemple.setLinePoints(new ArrayList<>(Arrays.asList(
+			new WorldPoint(2117, 4686, 1),
+			new WorldPoint(2128, 4686, 1),
+			new WorldPoint(2130, 4685, 1),
+			new WorldPoint(2134, 4687, 1),
+			new WorldPoint(2135, 4689, 1),
+			new WorldPoint(2140, 4689, 1),
+			new WorldPoint(2140, 4685, 1),
+			new WorldPoint(2152, 4685, 1),
+			new WorldPoint(2153, 4682, 1),
+			new WorldPoint(2153, 4678, 1),
+			new WorldPoint(2154, 4676, 1),
+			new WorldPoint(2160, 4676, 1),
+			new WorldPoint(2160, 4670, 1),
+			new WorldPoint(2165, 4670, 1),
+			new WorldPoint(2165, 4667, 1),
+			new WorldPoint(2162, 4667, 1),
+			new WorldPoint(2162, 4660, 1),
+			new WorldPoint(2161, 4659, 1),
+			new WorldPoint(2161, 4654, 1)
+		)));
+		useDollOnWell = new ObjectStep(this, ObjectID.WELL_3359, new WorldPoint(2137, 4648, 1), "Right-click USE the doll on the well. Standing north of the well can prevent Iban from hitting.", dollOfIbanHighlighted);
+		useDollOnWell.addIcon(ItemID.DOLL_OF_IBAN);
 
 		talkToKoftikAfterTemple = new NpcStep(this, NpcID.KOFTIK_8976, new WorldPoint(2444, 9607, 0), "Talk to Koftik.");
+
+		goUpToLathasToFinish = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2572, 3296, 0), "Return to King Lathas to finish the quest.");
 		talkToKingLathasAfterTemple = new NpcStep(this, NpcID.KING_LATHAS_9005, new WorldPoint(2578, 3293, 1), "Return to King Lathas to finish the quest.");
+		talkToKingLathasAfterTemple.addSubSteps(goUpToLathasToFinish);
 	}
 
 	@Override
@@ -386,6 +606,7 @@ public class UndergroundPass extends BasicQuestHelper
 		startDungeon.addStep(inWestArdougne, talkToKoftik);
 
 		ConditionalStep crossTheBridge = new ConditionalStep(this, enterTheDungeon);
+		crossTheBridge.addStep(isInFallArea, leaveFallArea);
 		crossTheBridge.addStep(isBeforeRockslide1, climbOverRockslide1);
 		crossTheBridge.addStep(isBeforeRockslide2, climbOverRockslide2);
 		crossTheBridge.addStep(isBeforeRockslide3, climbOverRockslide3);
@@ -393,6 +614,8 @@ public class UndergroundPass extends BasicQuestHelper
 		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveLitArrow), walkNorthEastOfBridge);
 		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveFireArrow), lightArrow);
 		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveOilyCloth), useClothOnArrow);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), clothInBag), searchBagForCloth);
+		crossTheBridge.addStep(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), talkToKoftikAtBridge);
 
 		ConditionalStep theUndergroundPass = new ConditionalStep(this, climbDownWell);
 		theUndergroundPass.addStep(new Conditions(LogicType.NOR, havePlank), collectPlank);
@@ -401,80 +624,104 @@ public class UndergroundPass extends BasicQuestHelper
 		theUndergroundPass.addStep(isBeforeTheGrid, climbOverRockslide5);
 		theUndergroundPass.addStep(isAtTheGrid, crossTheGrid);
 		theUndergroundPass.addStep(isAfterTheGrid, pullLeverAfterGrid);
+		theUndergroundPass.addStep(destroyedAllOrbs, climbDownWell);
 		theUndergroundPass.addStep(new Conditions(haveOrb1, haveOrb2, haveOrb3, haveOrb4), orbsToFurnace);
-		theUndergroundPass.addStep(new Conditions(new Conditions(LogicType.NOR, haveOrb1), isInWellArea), plankRock1);
-		theUndergroundPass.addStep(new Conditions(new Conditions(LogicType.NOR, haveOrb1), isBeforePlank2), plankRock2);
-		theUndergroundPass.addStep(new Conditions(new Conditions(LogicType.NOR, haveOrb1), isBeforePlank3), plankRock3);
-		theUndergroundPass.addStep(new Conditions(new Conditions(LogicType.NOR, haveOrb1), isAtOrb1), collectOrb1);
-		theUndergroundPass.addStep(haveOrb1, collectOrb2);
-		theUndergroundPass.addStep(haveOrb2, collectOrb3);
-		theUndergroundPass.addStep(haveOrb3, collectOrb4);
+		theUndergroundPass.addStep(new Conditions(haveOrb1, haveOrb2, haveOrb3), collectOrb4);
+		theUndergroundPass.addStep(new Conditions(haveOrb1, haveOrb2), collectOrb3);
+		theUndergroundPass.addStep(new Conditions(haveOrb1), collectOrb2);
+		theUndergroundPass.addStep(isInWellArea, plankRock1);
+		theUndergroundPass.addStep(isBeforePlank2, plankRock2);
+		theUndergroundPass.addStep(isBeforePlank3, plankRock3);
+		theUndergroundPass.addStep(isAtOrb1, collectOrb1);
+
 		theUndergroundPass.addStep(isBeforeTrap1, passTrap1);
 		theUndergroundPass.addStep(isBeforeTrap2, passTrap2);
 		theUndergroundPass.addStep(isBeforeTrap3, passTrap3);
 		theUndergroundPass.addStep(isBeforeTrap4, passTrap4);
 		theUndergroundPass.addStep(isBeforeTrap5, passTrap5);
 
-		ConditionalStep descendingDeeper = new ConditionalStep(this, navigateMaze);
-		descendingDeeper.addStep(isBeforeCellPicklock, pickCellLock);
-		descendingDeeper.addStep(isInsideCell, digMud);
-		descendingDeeper.addStep(isBeforeLedge, crossLedge);
+		ConditionalStep travelThroughPassSection2 = new ConditionalStep(this, crossTheBridge);
+		travelThroughPassSection2.addStep(isInUndergroundSection2, theUndergroundPass);
+
+		ConditionalStep descendingDeeper = new ConditionalStep(this, pickCellLock);
 		descendingDeeper.addStep(isAfterMaze, goThroughPipe);
-		descendingDeeper.addStep(new Conditions(new Conditions(LogicType.NOR, hasRailing), isInUnicornArea), searchUnicornCage);
+		descendingDeeper.addStep(isInMaze, navigateMaze);
+		descendingDeeper.addStep(isBeforeLedge, crossLedge);
+		descendingDeeper.addStep(isInsideCell, digMud);
 		descendingDeeper.addStep(new Conditions(isInUnicornArea, hasRailing), useRailingOnBoulder);
+		descendingDeeper.addStep(isInUnicornArea, searchUnicornCage);
 
-		ConditionalStep killedAUnicorn = new ConditionalStep(this, walkToKnights);
-		descendingDeeper.addStep(new Conditions(new Conditions(LogicType.NOR, haveUnicornHorn), isInUnicornArea2), searchUnicornCageAgain);
-		descendingDeeper.addStep(new Conditions(haveUnicornHorn, isInUnicornArea2), leaveUnicornArea);
-		descendingDeeper.addStep(new Conditions(isInKnightsArea, new Conditions(LogicType.NOR, haveBadgeJerro)), killJerro);
-		descendingDeeper.addStep(new Conditions(isInKnightsArea, new Conditions(LogicType.NOR, haveBadgeCarl)), killCarl);
-		descendingDeeper.addStep(new Conditions(isInKnightsArea, new Conditions(LogicType.NOR, haveBadgeHarry)), killHarry);
-		descendingDeeper.addStep(new Conditions(isBeforeIbansDoor, haveBadgeJerro), useBadgeJerroOnWell);
-		descendingDeeper.addStep(new Conditions(isBeforeIbansDoor, haveBadgeHarry), useBadgeHarryOnWell);
-		descendingDeeper.addStep(new Conditions(isBeforeIbansDoor, haveBadgeCarl), useBadgeCarlOnWell);
-		descendingDeeper.addStep(new Conditions(isBeforeIbansDoor, haveUnicornHorn), useUnicornHornOnWell);
-		descendingDeeper.addStep(isBeforeIbansDoor, openIbansDoor);
-		descendingDeeper.addStep(new Conditions(haveBadgeJerro, haveBadgeHarry, haveBadgeCarl, new Conditions(LogicType.NOR, isBeforeIbansDoor)), useBadgeJerroOnWell);
+		ConditionalStep travelThroughPassSection3 = new ConditionalStep(this, crossTheBridge);
+		travelThroughPassSection3.addStep(isInUndergroundSection3, descendingDeeper);
+		travelThroughPassSection3.addStep(isInUndergroundSection2, theUndergroundPass);
 
-		ConditionalStep talkingToNiloof = new ConditionalStep(this, descendCave);
+		ConditionalStep killedAUnicorn = new ConditionalStep(this, travelThroughPassSection3);
+		killedAUnicorn.addStep(new Conditions(isInKnightsArea, usedHorn, usedBadgeCarl, usedBadgeHarry, usedBadgeJerro), openIbansDoor);
+		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, usedHorn, usedBadgeCarl, usedBadgeHarry, haveBadgeJerro), useBadgeJerroOnWell);
+		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, usedHorn, usedBadgeCarl, haveBadgeHarry, haveBadgeJerro), useBadgeHarryOnWell);
+		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, usedHorn, haveBadgeCarl, haveBadgeHarry, haveBadgeJerro), useBadgeCarlOnWell);
+		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, haveBadgeCarl, haveBadgeHarry, haveBadgeJerro), useUnicornHornOnWell);
+		killedAUnicorn.addStep(new Conditions(isNextToKnights, new Conditions(LogicType.NOR, haveBadgeJerro)), killJerro);
+		killedAUnicorn.addStep(new Conditions(isNextToKnights, new Conditions(LogicType.NOR, haveBadgeCarl)), killCarl);
+		killedAUnicorn.addStep(new Conditions(isNextToKnights, new Conditions(LogicType.NOR, haveBadgeHarry)), killHarry);
+		killedAUnicorn.addStep(isInKnightsArea, walkToKnights);
+		killedAUnicorn.addStep(new Conditions(haveUnicornHorn, isInUnicornArea2), leaveUnicornArea);
+		killedAUnicorn.addStep(isInUnicornArea2, searchUnicornCageAgain);
+
+		ConditionalStep gettingToFinalSection = new ConditionalStep(this, travelThroughPassSection3);
+		gettingToFinalSection.addStep(isInKnightsArea, openIbansDoor);
+		gettingToFinalSection.addStep(isInUnicornArea2, leaveUnicornArea);
+
+		ConditionalStep talkingToNiloof = new ConditionalStep(this, gettingToFinalSection);
 		talkingToNiloof.addStep(isInDwarfCavern, talkToNiloof);
+		talkingToNiloof.addStep(isInFinalArea, descendCave);
 
-		ConditionalStep theWitch = new ConditionalStep(this, searchWitchsWindow);
+		ConditionalStep theWitch = new ConditionalStep(this, gettingToFinalSection);
+		theWitch.addStep(new Conditions(isInFinalArea, givenWitchCat), searchWitchsChest);
+		theWitch.addStep(new Conditions(isInFinalArea, haveWitchsCat), useCatOnDoor);
+		theWitch.addStep(isInFinalArea, pickUpWitchsCat);
 		theWitch.addStep(new Conditions(isInDwarfCavern, haveKlanksGauntlets), goBackUpToIbansCavern);
-		theWitch.addStep(new Conditions(isInDwarfCavern, new Conditions(LogicType.NOR, haveKlanksGauntlets)), talkToKlank);
-		theWitch.addStep(isInCatArea, pickUpWitchsCat); // todo find a way to detect that we've searched the window
-		theWitch.addStep(haveWitchsCat, useCatOnDoor);
-		theWitch.addStep(isInWitchsHouse, searchWitchsChest); // todo find a way to detect we've used cat on door
+		theWitch.addStep(new Conditions(isInDwarfCavern), talkToKlank);
 
-		ConditionalStep imbuingTheDoll = new ConditionalStep(this, searchCage);
-		imbuingTheDoll.addStep(new Conditions(isBeforeTemple, doveSmeared), enterTemple);
-		imbuingTheDoll.addStep(doveSmeared, killDisciple);
-		imbuingTheDoll.addStep(new Conditions(kalragKilled, isInDwarfCavern), ascendToHalfSouless);
-		imbuingTheDoll.addStep(kalragKilled, searchCage);
-		imbuingTheDoll.addStep(dollAshed, killKalrag);
-		imbuingTheDoll.addStep(pouredBrew, useTinderboxOnTomb);
-		imbuingTheDoll.addStep(haveBrew, useBrewOnTomb);
-		imbuingTheDoll.addStep(new Conditions(dollImbued, isInDwarfCavern), useBucketOnBrew);
-		imbuingTheDoll.addStep(dollImbued, returnToDwarfs);
-		imbuingTheDoll.addStep(new Conditions(LogicType.NOR, haveAmuletHolthion), killHolthion);
-		imbuingTheDoll.addStep(new Conditions(LogicType.NOR, haveAmuletDoomion), killDoomion);
-		imbuingTheDoll.addStep(new Conditions(LogicType.NOR, haveAmuletOthanian), killOthanian);
-		imbuingTheDoll.addStep(new Conditions(haveAmuletHolthion, haveAmuletDoomion, haveAmuletOthanian), searchDoomionsChest);
+		ConditionalStep imbuingTheDoll = new ConditionalStep(this, gettingToFinalSection);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared, haveRobeBottom, haveRobeTop), enterTemple);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared), killDisciple);
+		imbuingTheDoll.addStep(new Conditions(dollImbued, dollAshed, kalragKilled, hasIbansDove), useDoveOnDoll);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled), searchCage);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSouless);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed), killKalrag);
+		imbuingTheDoll.addStep(new Conditions(dollImbued, pouredBrew, hasIbansAshes), useAshOnDoll);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew), useTinderboxOnTomb);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, haveBrew), useBrewOnTomb);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued), useBucketOnBrew);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued), returnToDwarfs);
+		imbuingTheDoll.addStep(new Conditions(hasIbansShadow), useShadowOnDoll);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, haveAmuletHolthion, haveAmuletDoomion, haveAmuletOthanian), searchDoomionsChest);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, haveAmuletHolthion, haveAmuletDoomion), killOthanian);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, haveAmuletHolthion), killDoomion);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea), killHolthion);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern), goBackUpToIbansCavern);
 
-		ConditionalStep wrappingUp = new ConditionalStep(this, talkToKoftikAfterTemple);
-		wrappingUp.addStep(spokeToKoftikAfterTemple, talkToKingLathasAfterTemple);
+		ConditionalStep goDestroyDoll = new ConditionalStep(this, gettingToFinalSection);
+		goDestroyDoll.addStep(new Conditions(isInTemple), useDollOnWell);
+		goDestroyDoll.addStep(new Conditions(isInFinalArea, haveRobeBottom, haveRobeTop), enterTemple);
+		goDestroyDoll.addStep(isInFinalArea, killDisciple);
+		goDestroyDoll.addStep(isInDwarfCavern, ascendToHalfSouless);
+
+		ConditionalStep wrappingUp = new ConditionalStep(this, talkToKingLathasAfterTemple);
+		wrappingUp.addStep(isInPostIbanArea, talkToKoftikAfterTemple);
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(0, beginWithLathas)
 			.put(1, startDungeon)
 			.put(2, crossTheBridge)
-			.put(3, theUndergroundPass)
-			.put(4, descendingDeeper)
+			.put(3, travelThroughPassSection2)
+			.put(4, travelThroughPassSection3)
 			.put(5, killedAUnicorn)
 			.put(6, talkingToNiloof)
 			.put(7, theWitch)
 			.put(8, imbuingTheDoll)
-			.put(9, useDollOnWell)
+			.put(9, goDestroyDoll)
 			.put(10, wrappingUp)
 			.build();
 	}
@@ -483,7 +730,7 @@ public class UndergroundPass extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(rope1);
+		reqs.add(rope2);
 		reqs.add(bow);
 		reqs.add(arrows);
 		reqs.add(spade);
@@ -498,7 +745,6 @@ public class UndergroundPass extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(rope2);
 		reqs.add(food);
 		reqs.add(staminaPotions);
 		reqs.add(coins);
@@ -536,7 +782,7 @@ public class UndergroundPass extends BasicQuestHelper
 		allSteps.add(new PanelDetails("The Underground Pass", new ArrayList<>(Arrays.asList(talkToKoftikAtBridge, shootBridgeRope, crossThePit, crossTheGrid, passTrap1, collectOrb1, collectOrb2, collectOrb3, collectOrb4, orbsToFurnace, climbDownWell))));
 		allSteps.add(new PanelDetails("Descending Deeper", new ArrayList<>(Arrays.asList(navigateMaze, searchUnicornCage, useRailingOnBoulder))));
 		allSteps.add(new PanelDetails("Cold-blooded Killing", new ArrayList<>(Arrays.asList(searchUnicornCageAgain, walkToKnights, killJerro, killHarry, killCarl, useBadgeJerroOnWell, openIbansDoor))));
-		allSteps.add(new PanelDetails("The Witch Kardia", new ArrayList<>(Arrays.asList(talkToNiloof, searchWitchsWindow, pickUpWitchsCat, useCatOnDoor, searchWitchsChest))));
+		allSteps.add(new PanelDetails("The Witch Kardia", new ArrayList<>(Arrays.asList(talkToNiloof, pickUpWitchsCat, useCatOnDoor, searchWitchsChest))));
 		allSteps.add(new PanelDetails("Imbuing the Doll", new ArrayList<>(Arrays.asList(killHolthion, killDoomion, killOthanian, searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag, searchCage))));
 		allSteps.add(new PanelDetails("Entering the Temple", new ArrayList<>(Arrays.asList(killDisciple, enterTemple, useDollOnWell))));
 		allSteps.add(new PanelDetails("Foggy Memories", new ArrayList<>(Arrays.asList(talkToKoftikAfterTemple, talkToKingLathasAfterTemple))));

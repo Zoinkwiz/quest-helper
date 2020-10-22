@@ -11,7 +11,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.OwnerStep;
+import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.awt.Graphics2D;
 import java.util.ArrayList;

@@ -33,7 +33,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetDetails;
 import com.questhelper.steps.WidgetStep;
-import com.questhelper.steps.conditional.OwnerStep;
+import com.questhelper.steps.OwnerStep;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;

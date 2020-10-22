@@ -456,6 +456,11 @@ public class QuestHelperPlugin extends Plugin
 			selectedQuest = questHelper;
 			eventBus.register(selectedQuest);
 			selectedQuest.startUp();
+			if (selectedQuest.getCurrentStep() == null)
+			{
+				shutDownQuest();
+				return;
+			}
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,67 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.quests.dreammentor;
 
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
 
-public class WidgetModelCondition extends ConditionForStep
+enum CyrisusBankItem
 {
+	DRAGON_CHAINBODY("Dragon chainbody", 3140, 1),
+	AHRIM_ROBETOP("Ahrim's robetop", 2, 4712),
+	KARILS_TOP("Karil's leathertop", 3, 4736),
+	DRAGON_MED_HELM("Dragon med helm", 15, 1149),
+	SPLITBARK_HELM("Splitbark helm", 16, 3385),
+	ROBIN_HOOD("Robin hood hat", 17, 2581),
+	ABYSSAL_WHIP("Abyssal whip", 19, 4151),
+	ANCIENT_STAFF("Ancient staff", 20, 4675),
+	MAGIC_SHORTBOW("Magic shortbown", 21, 861),
+	TORAG_LEG("Torag's platelegs", 26, 4970),
+	AHRIM_SKIRT("Ahrim's robeskirt", 27, 4714),
+	BLACK_CHAPS("Black d'hide chaps", 28, 2497),
+	INFINITY_BOOTS("Infinity boots", 29, 6920),
+	RANGER_BOOTS("Ranger boots", 30, 2577),
+	ADAMANT_BOOTS("Adamant boots", 31, 4129);
+
+
 	@Getter
-	private final int groupId;
+	private final String name;
 
-	private final int childId;
-	private final int id;
-	private int childChildId = -1;
+	@Getter
+	private final int varbitID;
 
-	public WidgetModelCondition(int groupId, int childId, int childChildId, int id)
+	@Getter
+	private final int widgetID;
+
+
+	CyrisusBankItem(String name, int varbitID, int widgetID)
 	{
-		this.groupId = groupId;
-		this.childId = childId;
-		this.childChildId = childChildId;
-		this.id = id;
-	}
-
-	public WidgetModelCondition(int groupId, int childId, int id)
-	{
-		this.groupId = groupId;
-		this.childId = childId;
-		this.id = id;
-	}
-
-	@Override
-	public boolean checkCondition(Client client)
-	{
-		if (onlyNeedToPassOnce && hasPassed)
-		{
-			return true;
-		}
-		return checkWidget(client);
-	}
-
-	public boolean checkWidget(Client client)
-	{
-		Widget widget = client.getWidget(groupId, childId);
-		if (widget == null)
-		{
-			return false;
-		}
-		if (childChildId != -1)
-		{
-			widget = widget.getChild(childChildId);
-		}
-		if (widget != null)
-		{
-			return widget.getModelId() == id;
-		}
-		return false;
-	}
-
-	public void checkWidgetText(Client client)
-	{
-		hasPassed = hasPassed || checkWidget(client);
+		this.name = name;
+		this.varbitID = varbitID;
+		this.widgetID = widgetID;
 	}
 }
 

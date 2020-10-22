@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.quests.dreammentor;
 
-import java.util.Collection;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.conditional.ConditionForStep;
+import net.runelite.api.Client;
 
-public interface OwnerStep
+public class CyrisusBankConditional extends ConditionForStep
 {
-	Collection<QuestStep> getSteps();
+	@Override
+	public boolean checkCondition(Client client)
+	{
+
+		return CyrisusArmourSet.isReady(client);
+	}
 }
+

@@ -47,7 +47,6 @@ import com.questhelper.steps.conditional.ChatMessageCondition;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.OwnerStep;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import org.apache.commons.lang3.ArrayUtils;
 

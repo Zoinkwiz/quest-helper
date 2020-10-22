@@ -216,7 +216,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		rake = new ItemRequirement("Rake", ItemID.RAKE);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		harpoon = new ItemRequirement("Harpoon", ItemID.HARPOON);
-		lobsterPot = new ItemRequirement("Lobster cage", ItemID.LOBSTER_POT);
+		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING, -1);
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);
 		flowerOr15Coins = new ItemRequirement("A flower of 15 coins to buy some during the quest", ItemID.BLACK_FLOWERS, -1);
@@ -247,7 +247,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		{
 			repItemsString += "an axe, ";
 		}
-		repItemsString += "a harpoon or a lobster cage.";
+		repItemsString += "a harpoon or a lobster pot.";
 		reputationItems = new ItemRequirement(repItemsString, -1, -1);
 	}
 
@@ -429,7 +429,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		String rakePatch = "Rake the farming patches. ";
 		String mineCoal = "Mining coal. ";
 		String cuttingMaples = "Cutting maple trees. ";
-		String fishing = "Fish tuna with a harpoon or lobsters with a lobster cage.";
+		String fishing = "Fish tuna with a harpoon or lobsters with a lobster pot.";
 
 		if (client.getRealSkillLevel(Skill.FARMING) >= 10)
 		{

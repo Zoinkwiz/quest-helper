@@ -13,7 +13,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.OwnerStep;
+import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.awt.Graphics2D;

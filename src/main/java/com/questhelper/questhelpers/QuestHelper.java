@@ -39,7 +39,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.client.eventbus.EventBus;
-import com.questhelper.steps.conditional.OwnerStep;
+import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
 
 public abstract class QuestHelper implements Module

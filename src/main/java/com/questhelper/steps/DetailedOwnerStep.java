@@ -28,7 +28,6 @@ import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.conditional.OwnerStep;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;

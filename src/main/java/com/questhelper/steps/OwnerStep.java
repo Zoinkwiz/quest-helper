@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,67 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.steps;
 
-import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
+import java.util.Collection;
+import com.questhelper.steps.QuestStep;
 
-public class WidgetModelCondition extends ConditionForStep
+public interface OwnerStep
 {
-	@Getter
-	private final int groupId;
-
-	private final int childId;
-	private final int id;
-	private int childChildId = -1;
-
-	public WidgetModelCondition(int groupId, int childId, int childChildId, int id)
-	{
-		this.groupId = groupId;
-		this.childId = childId;
-		this.childChildId = childChildId;
-		this.id = id;
-	}
-
-	public WidgetModelCondition(int groupId, int childId, int id)
-	{
-		this.groupId = groupId;
-		this.childId = childId;
-		this.id = id;
-	}
-
-	@Override
-	public boolean checkCondition(Client client)
-	{
-		if (onlyNeedToPassOnce && hasPassed)
-		{
-			return true;
-		}
-		return checkWidget(client);
-	}
-
-	public boolean checkWidget(Client client)
-	{
-		Widget widget = client.getWidget(groupId, childId);
-		if (widget == null)
-		{
-			return false;
-		}
-		if (childChildId != -1)
-		{
-			widget = widget.getChild(childChildId);
-		}
-		if (widget != null)
-		{
-			return widget.getModelId() == id;
-		}
-		return false;
-	}
-
-	public void checkWidgetText(Client client)
-	{
-		hasPassed = hasPassed || checkWidget(client);
-	}
+	Collection<QuestStep> getSteps();
 }
-

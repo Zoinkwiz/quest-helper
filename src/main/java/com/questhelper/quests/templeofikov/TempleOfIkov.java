@@ -62,7 +62,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 public class TempleOfIkov extends BasicQuestHelper
 {
 	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
-		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped;
+		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, emptyInventorySpot;
 
 	ConditionForStep hasPendantOfLucien, hasBootsOfLightness, belowMinus1Weight, below4Weight, hasYewBow, hasLimpwurts,
 		inEntryRoom, inNorthRoom, inBootsRoom, dontHaveBoots, inMainOrNorthRoom, hasLever, leverNearby, pulledLever, inArrowRoom,
@@ -195,6 +195,8 @@ public class TempleOfIkov extends BasicQuestHelper
 		armadylPendant.setHighlightInInventory(true);
 
 		staffOfArmadyl = new ItemRequirement("Staff of Armadyl", ItemID.STAFF_OF_ARMADYL);
+
+		emptyInventorySpot = new ItemRequirement("An empty inventory slot", -1, -1);
 	}
 
 	public void loadZones()
@@ -252,7 +254,8 @@ public class TempleOfIkov extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToLucien = new NpcStep(this, NpcID.LUCIEN_3444, new WorldPoint(2573, 3321, 0), "Talk to Lucien in the pub north of East Ardougne castle.");
+		talkToLucien = new NpcStep(this, NpcID.LUCIEN_3444, new WorldPoint(2573, 3321, 0), "Talk to Lucien in the pub north of East Ardougne castle.", emptyInventorySpot);
+		talkToLucien.addDialogSteps("I'm a mighty hero!", "That sounds like a laugh!");
 		prepare = new DetailedQuestStep(this,
 			"Get your weight below 0kg. You can get boots of lightness from the Temple of Ikov north of East Ardougne for -4.5kg.",
 			pendantOfLucienEquipped, limpwurt20, yewOrBetterBow);

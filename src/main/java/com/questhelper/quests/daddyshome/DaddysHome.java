@@ -157,7 +157,6 @@ public class DaddysHome extends BasicQuestHelper
 
 		hasPlanks = new ItemRequirementCondition(waxwoodPlank3);
 		hasLogs = new ItemRequirementCondition(waxwoodLog3);
-		// 10563 - 10569l
 	}
 
 	public void setupSteps()

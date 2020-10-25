@@ -197,9 +197,12 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (!requirements.isEmpty())
+		if (!requirements.isEmpty() || (additionalRequirements != null && additionalRequirements.length > 0))
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Requirements:").build());
+		}
+		if (!requirements.isEmpty())
+		{
 			for (Requirement requirement : requirements)
 			{
 				ArrayList<LineComponent> lines = requirement.getDisplayText(client);

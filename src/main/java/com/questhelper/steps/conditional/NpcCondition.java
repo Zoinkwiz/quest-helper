@@ -1,5 +1,6 @@
 package com.questhelper.steps.conditional;
 
+import com.questhelper.Zone;
 import java.util.Arrays;
 import java.util.Collection;
 import net.runelite.api.Client;
@@ -12,16 +13,21 @@ public class NpcCondition extends ConditionForStep
 	private final int npcID;
 	private NPC npc;
 	private boolean npcInScene = false;
-	private final WorldPoint worldPoint;
+	private final Zone zone;
 
 	public NpcCondition(int npcID) {
 		this.npcID = npcID;
-		this.worldPoint = null;
+		this.zone = null;
 	}
 
 	public NpcCondition(int npcID, WorldPoint worldPoint) {
 		this.npcID = npcID;
-		this.worldPoint = worldPoint;
+		this.zone = new Zone(worldPoint, worldPoint);
+	}
+
+	public NpcCondition(int npcID, Zone zone) {
+		this.npcID = npcID;
+		this.zone = zone;
 	}
 
 	@Override
@@ -39,15 +45,14 @@ public class NpcCondition extends ConditionForStep
 
 	public boolean checkCondition(Client client)
 	{
-		if (worldPoint != null)
+		if (zone != null)
 		{
 			if (npc != null)
 			{
-				WorldPoint wp = npc.getWorldLocation();
+				WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
 				if (wp != null)
 				{
-					Collection<WorldPoint> wps = WorldPoint.toLocalInstance(client, worldPoint);
-					return wps.contains(wp);
+					return zone.contains(wp);
 				}
 			}
 			return false;

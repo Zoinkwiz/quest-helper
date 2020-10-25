@@ -63,7 +63,7 @@ public class TheLostTribe extends BasicQuestHelper
 	ConditionForStep inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, hasBrooch, hasBook, inMines,
 		hasKey, foundRobes, inHamBase, foundSilverware;
 
-	DetailedQuestStep goDownFromF2, goToLumbridge, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
+	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
 		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, goUpFromBasement, showBroochToDuke,
 		searchBookcase, readBook, talkToGenerals, walkToMistag, emoteAtMistag, pickpocketSigmund, unlockChest,
 		enterHamLair, searchHamCrates, talkToKazgar, talkToMistagForEnd;
@@ -176,7 +176,6 @@ public class TheLostTribe extends BasicQuestHelper
 		goDownFromF2 = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(3205, 3208, 2), "Go downstairs.");
 		talkToSigmund = new NpcStep(this, NpcID.SIGMUND_5322, new WorldPoint(3210, 3222, 1), "");
 		talkToSigmund.addDialogStep("Do you have any quests for me?");
-		goToLumbridge = new DetailedQuestStep(this, new WorldPoint(3220, 3220, 0), "");
 
 		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "");
 		talkToHans.addDialogStep("Do you know what happened in the castle cellar?");
@@ -314,7 +313,6 @@ public class TheLostTribe extends BasicQuestHelper
 		travelToMakePeace.addStep(inMines, talkToMistagForEnd);
 		travelToMakePeace.addStep(inTunnels, talkToKazgar);
 		travelToMakePeace.addStep(inBasement, climbThroughHole);
-		travelToMakePeace.addSubSteps(walkToMistag);
 	}
 
 	@Override

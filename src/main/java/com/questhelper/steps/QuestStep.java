@@ -279,6 +279,10 @@ public abstract class QuestStep implements Module
 					addTextToPanel(panelComponent, line);
 				}
 			}
+			if (text != null && (text.size() > 0 && !text.get(0).isEmpty()))
+			{
+				addTextToPanel(panelComponent, "");
+			}
 		}
 
 		if (text != null)

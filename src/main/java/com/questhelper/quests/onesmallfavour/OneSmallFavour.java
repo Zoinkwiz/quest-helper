@@ -427,7 +427,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	public void loadZones()
 	{
 		sanfewRoom = new Zone(new WorldPoint(2893, 3423, 1), new WorldPoint(2903, 3433, 1));
-		hamBase = new Zone(new WorldPoint(3140, 9600, 0), new WorldPoint(3190, 9650, 0));
+		hamBase = new Zone(new WorldPoint(3140, 9600, 0), new WorldPoint(3190, 9655, 0));
 		dwarvenMine = new Zone(new WorldPoint(2960, 9696, 0), new WorldPoint(3062, 9854, 0));
 		goblinCave = new Zone(new WorldPoint(2560, 9792, 0), new WorldPoint(2623, 9855, 0));
 		scrollSpot = new Zone(new WorldPoint(2616, 9835, 0), new WorldPoint(2619, 9835, 0));

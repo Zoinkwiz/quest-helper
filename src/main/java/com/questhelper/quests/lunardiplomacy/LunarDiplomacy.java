@@ -809,7 +809,6 @@ public class LunarDiplomacy extends BasicQuestHelper
 		leaveLecturn.addDialogStep("Yes");
 		finishQuest = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0),
 			"Talk to the Oneiromancer in the south east of Lunar Isle to finish the quest!", sealOfPassage);
-
 	}
 
 	private void setupConditionalSteps()

@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,27 +29,58 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.util.ImageUtil;
 
-public class EmoteStep extends DetailedQuestStep
+public class NpcEmoteStep extends NpcStep
 {
 	private boolean hasScrolled;
 	private final QuestEmote emote;
 
-	public EmoteStep(QuestHelper questHelper, QuestEmote emote, String text, Requirement... requirements)
+	public NpcEmoteStep(QuestHelper questHelper, int npcID, QuestEmote emote, String text, Requirement... requirements)
 	{
-		super(questHelper, text, requirements);
+		super(questHelper, npcID, text, requirements);
 		this.emote = emote;
 	}
 
-	public EmoteStep(QuestHelper questHelper, QuestEmote emote, WorldPoint worldPoint, String text, Requirement... requirements)
+	public NpcEmoteStep(QuestHelper questHelper, int npcID, QuestEmote emote, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
-		super(questHelper, worldPoint, text, requirements);
+		super(questHelper, npcID, worldPoint, text, requirements);
 		this.emote = emote;
+	}
+
+	@Override
+	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (emote.getSpriteId() != -1 && icon == null)
+		{
+			addEmoteImage();
+			npcIcon = icon;
+		}
+
+		super.makeWorldOverlayHint(graphics, plugin);
+	}
+
+	protected void addEmoteImage()
+	{
+		BufferedImage iconBackground = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+		icon = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		BufferedImage emoteImg = spriteManager.getSprite(emote.getSpriteId(), 0);
+		Graphics tmpGraphics = icon.getGraphics();
+		tmpGraphics.drawImage(iconBackground, 0, 0, null);
+
+		int buffer = iconBackground.getWidth() / 2 - emoteImg.getWidth() / 2;
+		buffer = Math.max(buffer, 3);
+		tmpGraphics.drawImage(emoteImg, buffer, buffer, iconBackground.getWidth() - 10, iconBackground.getHeight() - 10, null);
 	}
 
 	@Override

@@ -98,7 +98,7 @@ public abstract class QuestStep implements Module
 	protected boolean allowInCutscene = false;
 
 	protected int iconItemID = -1;
-	protected BufferedImage itemIcon;
+	protected BufferedImage icon;
 
 	@Getter
 	protected final QuestHelper questHelper;
@@ -274,7 +274,10 @@ public abstract class QuestStep implements Module
 		{
 			for (String line : additionalText)
 			{
-				addTextToPanel(panelComponent, line);
+				if (!line.isEmpty())
+				{
+					addTextToPanel(panelComponent, line);
+				}
 			}
 		}
 
@@ -282,7 +285,10 @@ public abstract class QuestStep implements Module
 		{
 			for (String line : text)
 			{
-				addTextToPanel(panelComponent, line);
+				if (!line.isEmpty())
+				{
+					addTextToPanel(panelComponent, line);
+				}
 			}
 		}
 	}

@@ -63,7 +63,7 @@ public class NpcStep extends DetailedQuestStep
 	private NPC npc;
 	private ArrayList<NPC> otherNpcs = new ArrayList<>();
 
-	private BufferedImage npcIcon;
+	protected BufferedImage npcIcon;
 
 	@Setter
 	private int maxRoamRange = 48;
@@ -197,10 +197,10 @@ public class NpcStep extends DetailedQuestStep
 			npcIcon = getQuestImage();
 		}
 
-		if (iconItemID != -1 && itemIcon == null)
+		if (iconItemID != -1 && icon == null)
 		{
 			addIconImage();
-			npcIcon = itemIcon;
+			npcIcon = icon;
 		}
 
 		for (NPC otherNpc : otherNpcs)

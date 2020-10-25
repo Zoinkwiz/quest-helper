@@ -255,6 +255,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Subscribe
 	public void onWidgetLoaded(final WidgetLoaded event)
 	{
+		super.onWidgetLoaded(event);
 		for (WidgetTextCondition condition : widgetConditions)
 		{
 			if (condition.getGroupId() == event.getGroupId())

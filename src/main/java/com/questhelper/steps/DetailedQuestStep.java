@@ -333,7 +333,7 @@ public class DetailedQuestStep extends QuestStep
 			WorldPoint endWp = endPoints.iterator().next();
 			if (startWp == null || endWp == null || !startWp.isInScene(client) || !endWp.isInScene(client))
 			{
-				return;
+				continue;
 			}
 
 			LocalPoint startLp = LocalPoint.fromWorld(client, startWp);
@@ -814,8 +814,8 @@ public class DetailedQuestStep extends QuestStep
 	{
 		BufferedImage itemImg = itemManager.getImage(iconItemID);
 		BufferedImage iconBackground = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
-		itemIcon = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics tmpGraphics = itemIcon.getGraphics();
+		icon = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics tmpGraphics = icon.getGraphics();
 		tmpGraphics.drawImage(iconBackground, 0, 0, null);
 		int buffer = iconBackground.getWidth() / 2 - itemImg.getWidth() / 2;
 		buffer = Math.max(buffer, 0);
@@ -824,7 +824,7 @@ public class DetailedQuestStep extends QuestStep
 
 	protected void addItemImageToLocation(Graphics2D graphics, LocalPoint lp)
 	{
-		if (itemIcon == null)
+		if (icon == null)
 		{
 			addIconImage();
 		}
@@ -833,12 +833,12 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		OverlayUtil.renderTileOverlay(client, graphics, lp, itemIcon, Color.CYAN);
+		OverlayUtil.renderTileOverlay(client, graphics, lp, icon, Color.CYAN);
 	}
 
 	protected void addItemImageToLocation(Graphics2D graphics, int x, int y)
 	{
-		if (itemIcon == null)
+		if (icon == null)
 		{
 			addIconImage();
 		}
@@ -848,7 +848,7 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		graphics.drawImage(itemIcon, x, y, null);
+		graphics.drawImage(icon, x, y, null);
 	}
 
 	private void checkAllTilesForHighlighting(Tile tile, List<Integer> ids, Graphics2D graphics)

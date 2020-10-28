@@ -99,15 +99,11 @@ public class RoyalTrouble extends BasicQuestHelper
 		steps.put(10, talkWithPartner);
 
 		ConditionalStep investigateForSigrid = new ConditionalStep(this, goUpToSigrid);
-		investigateForSigrid.addStep(new Conditions(talkedToEtcSubject, talkedToMiscSubject, inMiscFloor1), talkToVargasAfterSigrid);
-		investigateForSigrid.addStep(new Conditions(talkedToEtcSubject, talkedToMiscSubject, hasCoalOrPickaxe), goBackUpToVargasFromSigrid);
-		investigateForSigrid.addStep(new Conditions(talkedToEtcSubject, talkedToMiscSubject, inEtcFloor1), goDownFromSigridToVargas);
-		investigateForSigrid.addStep(new Conditions(talkedToEtcSubject, talkedToMiscSubject), getCoalOrPickaxe);
 		investigateForSigrid.addStep(new Conditions(talkedToMiscSubject, talkedToSigrid, inEtcFloor1), goDownFromSigridToMatilda);
 		investigateForSigrid.addStep(new Conditions(talkedToMiscSubject, talkedToSigrid), talkToMatilda);
 		investigateForSigrid.addStep(new Conditions(talkedToMiscSubject, inEtcFloor1), talkToSigrid);
 
-		ConditionalStep continueInvestigationForVargas = new ConditionalStep(this, goUpToGhrim2);
+		ConditionalStep continueInvestigationForVargas = new ConditionalStep(this, getCoalOrPickaxe);
 		continueInvestigationForVargas.addStep(new Conditions(enteredDungeon, new Conditions(LogicType.OR, hasCoalOrPickaxe, hasFullEngine)), goDownToDungeonNoScroll);
 		continueInvestigationForVargas.addStep(new Conditions(gottenScrollFromVargas, inMiscFloor1), goDownStairsToDungeon);
 		continueInvestigationForVargas.addStep(new Conditions(gottenScrollFromVargas, hasCoalOrPickaxe), goDownLadderToDungeon);
@@ -118,6 +114,9 @@ public class RoyalTrouble extends BasicQuestHelper
 		continueInvestigationForVargas.addStep(new Conditions(talkedToGhrimInInvestigation), talkToSailor);
 		continueInvestigationForVargas.addStep(new Conditions(reportedToVargas, inMiscFloor1), talkToGhrim2);
 		continueInvestigationForVargas.addStep(new Conditions(reportedToVargas), goUpToGhrim2);
+		continueInvestigationForVargas.addStep(new Conditions(inMiscFloor1), talkToVargasAfterSigrid);
+		continueInvestigationForVargas.addStep(new Conditions(hasCoalOrPickaxe), goBackUpToVargasFromSigrid);
+		continueInvestigationForVargas.addStep(new Conditions(inEtcFloor1), goDownFromSigridToVargas);
 
 		ConditionalStep repairLift = new ConditionalStep(this, takePulley);
 		repairLift.addStep(new Conditions(hasRepairedScaffold, new Conditions(LogicType.OR, hasRope, attachedRope)), useLift);
@@ -592,7 +591,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		}
 		else
 		{
-			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid)), coal5, combatGear, antipoison));
+			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon)), coal5, combatGear, antipoison));
 		}
 		allSteps.add(new PanelDetails("Repair the lift", new ArrayList<>(Arrays.asList(talkToDonal, usePropOnCrevice, enterCrevice, takePulley, usePulleyOnScaffold, takePulley2, takeBeam, useBeamOnPulley, takeBeam2, useBeamOnLongPulley, useLongerPulleyOnScaffold, takePulley3, usePulleyOnScaffold2, takeRope, useRopeOnScaffold, takeBeam3, useBeamOnPlatform, pickUpEngine, useEngineOnPlatform, putCoalIntoEngine))));
 		allSteps.add(new PanelDetails("Investigate the caves", new ArrayList<>(Arrays.asList(useLift, takePlank, enterTunnelFromPlankRoom, attachRope, swingOverRope, searchFire1, plankRock1, searchFire2, searchFire3, searchFire4, searchFire5, readDiary, enterSnakesRoom))));

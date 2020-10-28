@@ -2,14 +2,6 @@
 //
 //import net.runelite.api.*;
 //import net.runelite.api.coords.WorldPoint;
-//import net.runelite.client.plugins.questhelper.ItemRequirement;
-//import net.runelite.client.plugins.questhelper.Zone;
-//import net.runelite.client.plugins.questhelper.dialog.DialogueChoiceStep;
-//import net.runelite.client.plugins.questhelper.questhelpers.QuestHelper;
-//import net.runelite.client.plugins.questhelper.steps.ItemInteractionStep;
-//import net.runelite.client.plugins.questhelper.steps.MultiStageStep;
-//import net.runelite.client.plugins.questhelper.steps.NpcTalkStep;
-//import net.runelite.client.plugins.questhelper.steps.ObjectStep;
 //
 //public class TempleTrekStep extends MultiStageStep {
 //    private Zone[] zones;

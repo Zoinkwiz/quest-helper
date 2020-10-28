@@ -56,7 +56,7 @@ import net.runelite.api.coords.WorldPoint;
 public class ShadesOfMortton extends BasicQuestHelper
 {
 	ItemRequirement combatGear, tarrominUnf2, tarrominUnfHighlighted, tinderbox, ashes2, ashesHighlighted, coins5000, hammerOrFlam, flamHammer,
-		morttonTele, food, flamtaerBracelet, log, pyreLog, serum207Highlighted, serum208, sacredOilHighlighted, oliveOil, timber5, swampPaste25, lime5, diary, loar2,
+		morttonTele, food, flamtaerBracelet, log, pyreLog, serum207Highlighted, serum208, sacredOilHighlighted, oliveOil, timber5, swampPaste25, lime5, diary, loar5,
 		loar, serum207, oliveOilHighlighted, logHighlighted;
 
 	ConditionForStep hasDiary, hadSerum208, razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, hasSacredOil, has20Sanctity, hasPyreLog, curedRazmire, curedUlsquire;
@@ -187,7 +187,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		diary.setHighlightInInventory(true);
 		loar = new ItemRequirement("Loar remains", ItemID.LOAR_REMAINS);
 		loar.setHighlightInInventory(true);
-		loar2 = new ItemRequirement("Loar remains", ItemID.LOAR_REMAINS, 2);
+		loar5 = new ItemRequirement("Loar remains", ItemID.LOAR_REMAINS, 5);
 	}
 
 	public void setupConditions()
@@ -220,22 +220,22 @@ public class ShadesOfMortton extends BasicQuestHelper
 		talkToRazmire.addDialogSteps("What are all these shadowy creatures?", "Yes, I'll dispatch those dark and evil creatures.");
 		((NpcStep)(talkToRazmire)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
 
-		kill5Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 5 Loar Shades. Pick up and keep at least 3 Loar shade remain.", true);
+		kill5Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 5 Loar Shades and pick up their remains.", true);
 		((NpcStep)(kill5Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill4Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 4 Loar Shades. Pick up and keep at least 3 Loar shade remain.", true);
+		kill4Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 4 Loar Shades and pick up their remains.", true);
 		((NpcStep)(kill4Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill3Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 3 Loar Shades. Pick up and keep at least 3 Loar shade remain.", true);
+		kill3Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 3 Loar Shades and pick up their remains.", true);
 		((NpcStep)(kill3Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill2Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 2 Loar Shades. Pick up and keep at least 3 Loar shade remain.", true);
+		kill2Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 2 Loar Shades and pick up their remains.", true);
 		((NpcStep)(kill2Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill1Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 1 Loar Shades. Pick up and keep at least 3 Loar shade remain.", true);
+		kill1Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 1 Loar Shades and pick up their remains.", true);
 		((NpcStep)(kill1Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
 		kill5Shades.addSubSteps(kill1Shades, kill2Shades, kill3Shades, kill4Shades);
 
-		use207OnRazmireAgain = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Use the serum 207 on Razmire in the north of Mort'ton.", serum207Highlighted, loar2);
+		use207OnRazmireAgain = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Use the serum 207 on Razmire in the north of Mort'ton.", serum207Highlighted, loar5);
 		((NpcStep)(use207OnRazmireAgain)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
 		use207OnRazmireAgain.addIcon(ItemID.SERUM_207_4);
-		talkToRazmireAgain = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Talk to Razmire in the north of Mort'ton.", serum207Highlighted, loar2);
+		talkToRazmireAgain = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Talk to Razmire in the north of Mort'ton.", serum207Highlighted, loar5);
 		((NpcStep)(talkToRazmireAgain)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
 		buyTimberLimeAndSwamp = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Buy 5 timber beams, 5 limestone bricks, and 25 swamp paste from Razmire's builders' store.", timber5, lime5, swampPaste25);
 		buyTimberLimeAndSwamp.addDialogSteps("Can you open a store for me?", "Can I see the building store please?");

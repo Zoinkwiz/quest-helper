@@ -146,7 +146,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		milk.setHighlightInInventory(true);
 		shears = new ItemRequirement("Shears", ItemID.SHEARS);
 		shears.setHighlightInInventory(true);
-		potatoSeed4 = new ItemRequirement("Potato seeds", ItemID.POTATO_SEED);
+		potatoSeed4 = new ItemRequirement("Potato seeds", ItemID.POTATO_SEED, 4);
 		potatoSeed4.setHighlightInInventory(true);
 		rake = new ItemRequirement("Rake", ItemID.RAKE);
 		rake.setHighlightInInventory(true);

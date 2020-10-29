@@ -39,13 +39,13 @@ public class TheGolem extends BasicQuestHelper
 
 	ConditionForStep inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4, hasLetter, hasReadLetter, added1Clay, added2Clay, added3Clay,
 		talkedToElissa, hasVarmenNotes, hasReadNotes, talkedToCurator, hasKey, inUpstairsMuseum, stolenStatuette, inThroneRoom, hasImplement, openedHead,
-		hasMushroom, hasInk, hasFeather, hasQuill, hasProgram;
+		hasMushroom, hasInk, hasFeather, hasQuill, hasProgram, enteredRuins;
 
 	Zone ruin, upstairsMuseum, throneRoom;
 
 	QuestStep pickUpLetter, readLetter, talkToGolem, useClay, useClay2, useClay3, useClay4, talkToElissa, searchBookcase, readBook, talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet,
 		stealFeather, enterRuin, useStatuette, turnStatue1, turnStatue2, turnStatue3, turnStatue4, enterThroneRoom, leaveThroneRoom, leaveRuin, pickBlackMushroom, grindMushroom,
-		useFeatherOnInk, talkToGolemAfterPortal, useQuillOnPapyrus, useImplementOnGolem, useProgramOnGolem, pickUpImplement, enterRuinWithoutStatuette;
+		useFeatherOnInk, talkToGolemAfterPortal, useQuillOnPapyrus, useImplementOnGolem, useProgramOnGolem, pickUpImplement, enterRuinWithoutStatuette, enterRuinForFirstTime;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -67,10 +67,13 @@ public class TheGolem extends BasicQuestHelper
 
 		ConditionalStep goTalkToElissa = new ConditionalStep(this, pickUpLetter);
 		goTalkToElissa.addStep(talkedToCurator, pickpocketCurator);
-		goTalkToElissa.addStep(hasReadNotes, talkToCurator);
-		goTalkToElissa.addStep(hasVarmenNotes, readBook);
-		goTalkToElissa.addStep(talkedToElissa, searchBookcase);
-		goTalkToElissa.addStep(hasReadLetter, talkToElissa);
+		goTalkToElissa.addStep(new Conditions(hasReadNotes, enteredRuins), talkToCurator);
+		goTalkToElissa.addStep(new Conditions(hasVarmenNotes, enteredRuins), readBook);
+		goTalkToElissa.addStep(new Conditions(talkedToElissa, enteredRuins), searchBookcase);
+		goTalkToElissa.addStep(new Conditions(inRuin, hasImplement), talkToElissa);
+		goTalkToElissa.addStep(new Conditions(inRuin), pickUpImplement);
+		goTalkToElissa.addStep(new Conditions(hasReadLetter, enteredRuins), talkToElissa);
+		goTalkToElissa.addStep(hasReadLetter, enterRuinForFirstTime);
 		goTalkToElissa.addStep(hasLetter, readLetter);
 
 		steps.put(2, goTalkToElissa);
@@ -194,10 +197,25 @@ public class TheGolem extends BasicQuestHelper
 		inUpstairsMuseum = new ZoneCondition(upstairsMuseum);
 		inThroneRoom = new ZoneCondition(throneRoom);
 
+		hasReadLetter = new VarbitCondition(347, 1, Operation.GREATER_EQUAL);
+		talkedToElissa = new VarbitCondition(347, 2, Operation.GREATER_EQUAL);
+		hasReadNotes = new VarbitCondition(347, 3, Operation.GREATER_EQUAL);
+		talkedToCurator = new VarbitCondition(347, 4, Operation.GREATER_EQUAL);
+
+		added1Clay = new VarbitCondition(348, 1);
+		added2Clay = new VarbitCondition(348, 2);
+		added3Clay = new VarbitCondition(348, 3);
+
 		turnedStatue1 = new VarbitCondition(349, 1);
 		turnedStatue2 = new VarbitCondition(350, 1);
 		turnedStatue3 = new VarbitCondition(351, 0);
 		turnedStatue4 = new VarbitCondition(352, 2);
+
+		openedHead = new VarbitCondition(353, 1);
+
+		stolenStatuette = new Conditions(LogicType.OR, new VarbitCondition(355, 1), new ItemRequirementCondition(statuette));
+
+		enteredRuins = new VarbitCondition(356, 1);
 
 		hasLetter = new ItemRequirementCondition(letter);
 		hasVarmenNotes = new ItemRequirementCondition(notesHighlight);
@@ -208,19 +226,6 @@ public class TheGolem extends BasicQuestHelper
 		hasFeather = new ItemRequirementCondition(phoenixFeather);
 		hasQuill = new ItemRequirementCondition(quill);
 		hasProgram = new ItemRequirementCondition(programHighlight);
-
-		added1Clay = new VarbitCondition(348, 1);
-		added2Clay = new VarbitCondition(348, 2);
-		added3Clay = new VarbitCondition(348, 3);
-
-		stolenStatuette = new Conditions(LogicType.OR, new VarbitCondition(355, 1), new ItemRequirementCondition(statuette));
-
-		hasReadLetter = new VarbitCondition(347, 1, Operation.GREATER_EQUAL);
-		talkedToElissa = new VarbitCondition(347, 2, Operation.GREATER_EQUAL);
-		hasReadNotes = new VarbitCondition(347, 3, Operation.GREATER_EQUAL);
-		talkedToCurator = new VarbitCondition(347, 4, Operation.GREATER_EQUAL);
-
-		openedHead = new VarbitCondition(353, 1);
 	}
 
 	private void setupSteps()
@@ -239,6 +244,8 @@ public class TheGolem extends BasicQuestHelper
 		useClay3.addIcon(ItemID.SOFT_CLAY);
 		useClay4 = new NpcStep(this, NpcID.DAMAGED_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 1 soft clay on the Golem in Uzer.", clay1Highlight);
 		useClay4.addIcon(ItemID.SOFT_CLAY);
+
+		enterRuinForFirstTime = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
 
 		talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north east of the Digsite.");
 		talkToElissa.addDialogStep("I found a letter in the desert with your name on.");
@@ -299,9 +306,9 @@ public class TheGolem extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGolem, useClay, pickUpLetter)), clay4Highlight));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGolem, useClay, pickUpLetter, enterRuinForFirstTime, pickUpImplement)), clay4Highlight));
 		allSteps.add(new PanelDetails("Finding the statuette", new ArrayList<>(Arrays.asList(talkToElissa, searchBookcase, readBook, talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet))));
-		allSteps.add(new PanelDetails("Opening the portal", new ArrayList<>(Arrays.asList(enterRuin, useStatuette, turnStatue1, pickUpImplement, enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
+		allSteps.add(new PanelDetails("Opening the portal", new ArrayList<>(Arrays.asList(enterRuin, useStatuette, turnStatue1, enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
 			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useProgramOnGolem)), vial, pestleAndMortar, papyrus));
 
 		return allSteps;

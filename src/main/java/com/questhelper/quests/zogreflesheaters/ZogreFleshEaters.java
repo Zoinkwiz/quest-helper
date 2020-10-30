@@ -61,7 +61,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class ZogreFleshEaters extends BasicQuestHelper
 {
-	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portBook, goodPort,
+	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portBook, goodPort, strangePotionHighlighted,
 		badPort, charcoal, papyrus, signedPort, cupOfTea, strangePotion, grishKey, ogreRelic, combatGear;
 
 	ConditionForStep askedAboutSickies, inSurface, inTombF2, killedZombie, hasBackpack, hasTankard, hasTornPage, hasBlackPrism, searchedCoffin, usedKnife, openedCoffin,
@@ -169,7 +169,10 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		cupOfTea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_4838);
 		strangePotion = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION);
 		strangePotion.setTip("You can get another from Zavistic Rarve");
-		strangePotion.setHighlightInInventory(true);
+
+		strangePotionHighlighted = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION);
+		strangePotionHighlighted.setTip("You can get another from Zavistic Rarve");
+		strangePotionHighlighted.setHighlightInInventory(true);
 
 		grishKey = new ItemRequirement("Ogre gate key", ItemID.OGRE_GATE_KEY);
 		ogreRelic = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT);
@@ -293,7 +296,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		bringSignedPortraitToZavistic.addDialogStep("I'm here about the sicks...err Zogres");
 		bringSignedPortraitToZavistic.addDialogStep("I have some items that I'd like you to look at.");
 
-		usePotionOnTea = new DetailedQuestStep(this, new WorldPoint(2593, 3103, 1), "Use the strange potion on the cup of tea next to Sithik.", strangePotion);
+		usePotionOnTea = new DetailedQuestStep(this, new WorldPoint(2593, 3103, 1), "Use the strange potion on the cup of tea next to Sithik.", strangePotionHighlighted);
 		usePotionOnTea.addIcon(ItemID.STRANGE_POTION);
 		goUpToSithAgain = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0), "Go upstairs to Sithik upstairs in north Yanille.", strangePotion);
 

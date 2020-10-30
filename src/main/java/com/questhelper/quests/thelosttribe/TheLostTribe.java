@@ -178,7 +178,7 @@ public class TheLostTribe extends BasicQuestHelper
 		talkToSigmund.addDialogStep("Do you have any quests for me?");
 
 		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "");
-		talkToHans.addDialogStep("Do you know what happened in the castle cellar?");
+		talkToHans.addDialogStep("Do you know what happened in the cellar?");
 
 		talkToDuke = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3222, 1), "");
 
@@ -267,7 +267,7 @@ public class TheLostTribe extends BasicQuestHelper
 		goTalkToSigmundToStart = new ConditionalStep(this, goToF1Steps, "Talk to Sigmund in Lumbridge Castle.");
 		goTalkToSigmundToStart.addStep(inLumbridgeF1, talkToSigmund);
 
-		talkToHansSteps = new ConditionalStep(this, talkToHans, "Talk to the Hans who roams around Lumbridge Castle.");
+		talkToHansSteps = new ConditionalStep(this, talkToHans, "Talk to Hans who roams around Lumbridge Castle.");
 		talkToHansSteps.addStep(inLumbridgeF2, goDownFromF2);
 		talkToHansSteps.addStep(inLumbridgeF1, goDownFromF1);
 		talkToHansSteps.addStep(inBasement, goUpFromBasement);

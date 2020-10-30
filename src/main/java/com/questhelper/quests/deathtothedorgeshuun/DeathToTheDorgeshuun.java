@@ -209,7 +209,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		hamSet2 = new ItemRequirements("2 full ham robe sets (7 pieces)", hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2);
 
 		zanik = new ItemRequirement("Zanik", ItemID.ZANIK);
-		zanikFollower = new FollowerRequirement("Zanik following you", NpcID.ZANIK_4508);
+		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from Lumbridge Basement", NpcID.ZANIK_4508);
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 
@@ -372,7 +372,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkToJunaMore = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2), "Talk to Juna with both hands free. Collect 20 tears of Guthix.", lightSource);
 		talkToJunaMore.addDialogStep("Yes.");
 
-		searchCrate = new ObjectStep(this, ObjectID.CRATE_15704, new WorldPoint(3228, 3280, 0), "Search a crate south of the farm east of the Lumbridge.", combatGear, hamSet);
+		searchCrate = new ObjectStep(this, ObjectID.CRATE_15704, new WorldPoint(3228, 3280, 0), "Search a crate south of the farm east of the Lumbridge.", zanikFollower, combatGear, hamSet);
 		searchCrate.addDialogSteps("I don't know, what are you thinking?", "Good idea.");
 		enterMill = new ObjectStep(this,NullObjectID.NULL_15765, new WorldPoint(3230, 3286, 0), "Enter the trapdoor outside the farm.", combatGear, hamSet);
 		killGuards = new NpcStep(this, NpcID.GUARD, new WorldPoint(2000, 5087, 0), "Kill the guards to the west.", true);

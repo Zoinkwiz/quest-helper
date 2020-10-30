@@ -72,11 +72,11 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkedToShopkeeper, talkedToWoman, talkedToDuke, talkedToAereck, talkedToGoblins, goneOutside, heardSpeaker, isBehindGuard1,
 		killedGuard1, isNearGuard4, isNearGuard5, inStoreroom, killedGuard2, killedGuard3, killedGuard4, killedGuard5, zanikWaitingFor4,
 		zanikWaitingFor5, isDisguisedZanikFollowing, zanikPickedUp, ropeAddedToHole, minedRocks, inSwamp, inJunaRoom, holdingCrate,
-		inMill, killedGuards;
+		inMill, killedGuards, talkedToJohn;
 
 	DetailedQuestStep goDownFromF2, talkToMistag, talkToZanik, talkToMistagToTravel, talkToCook, talkToDuke, talkToHans,
 		talkToWoman, talkToBob, talkToAereck, talkToGuide, approachGoblins, talkToShopkeeper, goOutside, talkToZanikAboutOrigin,
-		listenToSpeaker, standNearTrapdoor, goDownTrapdoor, standBehindGuard1, talkToGuard1, talkToGuard2, tellZanikToKillGuard3,
+		listenToSpeaker, standNearTrapdoor, goDownTrapdoor, standBehindGuard1, talkToGuard1, talkToGuard2, tellZanikToKillGuard3, talkToJohanhus,
 		standNearGuard4, tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor,
 		checkZanikCorpse, mineRocks, climbIntoSwamp, enterJunaArea, talkToJuna, talkToJunaMore, searchCrate, enterMill, killGuards, killSigmund,
 	    smashDrill, enterExit, goDownFromF1, goUpToF1, goDownIntoBasement, climbThroughHole,  goUpFromBasement, enterHamLair, talkToKazgar;
@@ -114,7 +114,8 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		ConditionalStep infiltrateTheHam = new ConditionalStep(this, goHaveZanikFollow);
 		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase, heardSpeaker), standNearTrapdoor);
-		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase), listenToSpeaker);
+		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase, talkedToJohn), listenToSpeaker);
+		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase), talkToJohanhus);
 		infiltrateTheHam.addStep(zanikIsFollowing, goIntoHamLair);
 		steps.put(4, infiltrateTheHam);
 
@@ -263,6 +264,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		zanikIsFollowing = new Conditions(LogicType.OR, new VarbitCondition(2264, 0));
 		talkedToShopkeeper = new VarbitCondition(2265, 1);
 		heardSpeaker = new VarbitCondition(2268, 1);
+		talkedToJohn = new VarbitCondition(2269, 1);
 
 		killedGuard1 = new VarbitCondition(2275, 1);
 		killedGuard2 = new VarbitCondition(2277, 1);
@@ -318,6 +320,9 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		climbThroughHole = new ObjectStep(this, NullObjectID.NULL_6898, new WorldPoint(3219, 9618, 0), "");
 
 		enterHamLair = new ObjectStep(this, NullObjectID.NULL_5492, new WorldPoint(3166, 3252, 0), "");
+
+		talkToJohanhus = new NpcStep(this, NpcID.JOHANHUS_ULSBRECHT, new WorldPoint(3173, 9619, 0), "Talk to Johanhus in the south east of the base.");
+		talkToJohanhus.addDialogStep("Are you planning to do anything about the cave goblins?");
 
 		listenToSpeaker = new DetailedQuestStep(this, new WorldPoint(3166, 9623, 0), "Go stand at the south of the stage until Zanik talks about the speaker. Don't skip the dialog.");
 

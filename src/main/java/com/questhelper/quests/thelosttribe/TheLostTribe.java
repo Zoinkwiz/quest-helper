@@ -177,11 +177,12 @@ public class TheLostTribe extends BasicQuestHelper
 		talkToSigmund = new NpcStep(this, NpcID.SIGMUND_5322, new WorldPoint(3210, 3222, 1), "");
 		talkToSigmund.addDialogStep("Do you have any quests for me?");
 
+		// This isn't just talk to Hans, it's a random one of the NPCs to chat to
 		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "");
 		talkToHans.addDialogStep("Do you know what happened in the cellar?");
 
 		talkToDuke = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3222, 1), "");
-
+		// Name of person who said they saw something changes
 		usePickaxeOnRubble = new ObjectStep(this, NullObjectID.NULL_6898, new WorldPoint(3219, 9618, 0), "");
 		usePickaxeOnRubble.addIcon(ItemID.BRONZE_PICKAXE);
 

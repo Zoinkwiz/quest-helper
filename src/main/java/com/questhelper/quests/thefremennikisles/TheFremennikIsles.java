@@ -293,13 +293,13 @@ public class TheFremennikIsles extends BasicQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 
 		tuna.setTip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
-		if (client.getRealSkillLevel(Skill.MINING) >= 10)
-		{
-			ores = new ItemRequirement("Coal", ItemID.COAL, 7);
-		}
-		else if (client.getRealSkillLevel(Skill.MINING) >= 55)
+		if (client.getRealSkillLevel(Skill.MINING) >= 55)
 		{
 			ores = new ItemRequirement("Mithril ore", ItemID.MITHRIL_ORE, 6);
+		}
+		else if (client.getRealSkillLevel(Skill.MINING) >= 10)
+		{
+			ores = new ItemRequirement("Coal", ItemID.COAL, 7);
 		}
 		else
 		{

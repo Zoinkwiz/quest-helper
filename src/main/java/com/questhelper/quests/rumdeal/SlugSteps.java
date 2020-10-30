@@ -58,9 +58,9 @@ public class SlugSteps extends DetailedOwnerStep
 
 	ConditionForStep onIslandF0, onIslandF1, onIslandF2;
 
-	ItemRequirement sluglings = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
-	ItemRequirement sluglingsHighlight = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
-	ItemRequirement netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_AND_NET);
+	ItemRequirement sluglings;
+	ItemRequirement sluglingsHighlight;
+	ItemRequirement netBowl;
 
 	public SlugSteps(QuestHelper questHelper)
 	{
@@ -109,6 +109,9 @@ public class SlugSteps extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
+		sluglings = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
+		sluglingsHighlight = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
+		netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_AND_NET);
 		netBowl.setTip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
 		sluglingsHighlight.setHighlightInInventory(true);
 		sluglingsHighlight.addAlternates(ItemID.KARAMTHULHU, ItemID.KARAMTHULHU_6717);

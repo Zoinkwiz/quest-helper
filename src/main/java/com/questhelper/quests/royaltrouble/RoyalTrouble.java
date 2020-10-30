@@ -154,7 +154,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		dungeonExplore.addStep(inBossRoom, killBoss);
 		dungeonExplore.addStep(new Conditions(inPath4, talkedToKids), enterBossRoom);
 		dungeonExplore.addStep(inPath4, talkToArmod);
-		dungeonExplore.addStep(new Conditions(hasReadDiary, inPath3), enterSnakesRoom);
+		dungeonExplore.addStep(new Conditions(searchedFire5, hasReadDiary, inPath3), enterSnakesRoom);
 		dungeonExplore.addStep(new Conditions(searchedFire5, inPath3, hasDiary5), readDiary);
 		dungeonExplore.addStep(new Conditions(searchedFire4, inPath3), searchFire5);
 		dungeonExplore.addStep(new Conditions(searchedFire3, inPath3), searchFire4);
@@ -368,7 +368,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		searchedFire2 = new VarbitCondition(2148, 2);
 		searchedFire3 = new VarbitCondition(2148, 3);
 		searchedFire4 = new VarbitCondition(2148, 4, Operation.GREATER_EQUAL);
-		searchedFire5 = new VarbitCondition(2148, 5);
+		searchedFire5 = new VarbitCondition(2148, 5, Operation.GREATER_EQUAL);
 
 		// TODO: hasReadyDiary probably wrong varbit, need to verify
 		hasReadDiary = new VarbitCondition(2149, 1);
@@ -445,7 +445,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		talkToGhrim2.addSubSteps(goUpToGhrim2);
 
 		goDownToSailor = new ObjectStep(this, ObjectID.STAIRCASE_16676, new WorldPoint(2506, 3849, 1), "Talk to the Sailor on the Miscellania docks.");
-		talkToSailor = new NpcStep(this, NpcID.SAILOR_3936, new WorldPoint(2540, 3820, 0), "Talk to the Sailor on the Miscellania docks.");
+		talkToSailor = new NpcStep(this, NpcID.SAILOR_3936, new WorldPoint(2578, 3845, 0), "Talk to the Sailor on the Miscellania docks.");
 		talkToSailor.addDialogStep("I'm looking for a sailor...");
 		talkToSailor.addSubSteps(goDownToSailor);
 

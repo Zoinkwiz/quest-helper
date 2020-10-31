@@ -310,7 +310,7 @@ public class GhostsAhoy extends BasicQuestHelper
 	{
 		enterPhas = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
 		talkToVelorina = new NpcStep(this, NpcID.VELORINA, new WorldPoint(3677, 3508, 0), "Talk to Velorina in east Port Phasmatys.", ghostspeak);
-		talkToVelorina.addDialogSteps("Why, what's the matter?", "Yes, I do. It is a very sad story.", "Yes.");
+		talkToVelorina.addDialogSteps("Why, what is the matter?", "Yes, I do. It is a very sad story.", "Yes.");
 		talkToNecrovarus = new NpcStep(this, NpcID.NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus.", ghostspeak);
 		enterPhasAfterNecro = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
 		talkToVelorinaAfterNecro = new NpcStep(this, NpcID.VELORINA, new WorldPoint(3677, 3508, 0), "Return to Velorina in east Port Phasmatys.", ghostspeak);

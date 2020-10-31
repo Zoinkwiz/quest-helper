@@ -219,6 +219,8 @@ public class ASoulsBane extends BasicQuestHelper
 		killUnicorn = new NpcStep(this, NpcID.ANGRY_UNICORN, new WorldPoint(3027, 5232, 0),  "", true);
 		killUnicorn.setText(killText);
 
+		killAnimals.addSubSteps(killBears, killGoblins, killRats, killUnicorn);
+
 		leaveAngerRoom = new ObjectStep(this, ObjectID.EXIT_13882, new WorldPoint(3038, 5229, 0), "Go to the next room.");
 
 		lookInsideHole0 = new ObjectStep(this, ObjectID.DARK_HOLE_13891, new WorldPoint(3066, 5245, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
@@ -228,9 +230,8 @@ public class ASoulsBane extends BasicQuestHelper
 		lookInsideHole4 = new ObjectStep(this, ObjectID.DARK_HOLE_13895, new WorldPoint(3046, 5230, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
 		lookInsideHole5 = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
 
-		lookInsideHole0.addSubSteps(lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5);
-
 		killReaper = new NpcStep(this, NpcID.FEAR_REAPER, new WorldPoint(3058, 5230, 0), "Kill the Fear Reaper.");
+		lookInsideHole0.addSubSteps(lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5, killReaper);
 
 		leaveFearRoom = new ObjectStep(this, NullObjectID.NULL_13898, new WorldPoint(3046, 5236, 0), "Continue to the next room.");
 

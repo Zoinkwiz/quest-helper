@@ -49,20 +49,20 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.DADDYS_HOME
+		quest = QuestHelperQuest.DADDYS_HOME
 )
 public class DaddysHome extends BasicQuestHelper
 {
-	ItemRequirement plank10, nails20, bolt5, hammer, saw, waxwoodLog3, waxwoodPlank3, bolt2, bolt3, nails2, nails4, plank, plank3, plank2;
+	ItemRequirement plank10, nails20, bolt5, hammer, saw, waxwoodLog3, waxwoodPlank3, bolt2, bolt3, nails2, nails4, plank, plank3, plank2, lumberyardTeleport, varrockTeleport3;
 
 	ConditionForStep removedChair, removedTable, removedTable2, removedStool, removedStool2, removedCampbed,
-		removedCarpet, hasLogs, hasPlanks, repairedCampbed, repairedCarpet, repairedStool, repairedTable,
-		repairedChair, repairedStool2, repairedTable2;
+			removedCarpet, hasLogs, hasPlanks, repairedCampbed, repairedCarpet, repairedStool, repairedTable,
+			repairedChair, repairedStool2, repairedTable2;
 
 	DetailedQuestStep talkToMarlo, talkToYarlo, removeChair, removeCarpet, removeStool,
-		removeStool2, removeTable, removeTable2, removeCampbed, talkToYarloAgain, searchCrate,
-		talkToOperator, buildChair, buildCarpet, buildStool, buildStool2, buildTable, buildTable2, buildCampbed,
-		talkToYarloOnceMore, talkToMarloToFinish;
+			removeStool2, removeTable, removeTable2, removeCampbed, talkToYarloAgain, searchCrate,
+			talkToOperator, buildChair, buildCarpet, buildStool, buildStool2, buildTable, buildTable2, buildCampbed,
+			talkToYarloOnceMore, talkToMarloToFinish;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -132,6 +132,8 @@ public class DaddysHome extends BasicQuestHelper
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		plank3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
 		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
+		lumberyardTeleport = new ItemRequirement("Lumberyard Teleport", ItemID.LUMBERYARD_TELEPORT);
+		varrockTeleport3 = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 3);
 	}
 
 	public void setupConditions()
@@ -157,6 +159,7 @@ public class DaddysHome extends BasicQuestHelper
 
 		hasPlanks = new ItemRequirementCondition(waxwoodPlank3);
 		hasLogs = new ItemRequirementCondition(waxwoodLog3);
+		// 10563 - 10569l
 	}
 
 	public void setupSteps()
@@ -197,9 +200,15 @@ public class DaddysHome extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(plank10, nails20, bolt5, saw, hammer));
+	}
+
+	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return new ArrayList<>(Arrays.asList(lumberyardTeleport, varrockTeleport3));
 	}
 
 	@Override
@@ -210,4 +219,3 @@ public class DaddysHome extends BasicQuestHelper
 		return allSteps;
 	}
 }
-

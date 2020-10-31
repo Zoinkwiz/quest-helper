@@ -49,7 +49,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 
 @QuestDescriptor(
-		quest = QuestHelperQuest.DADDYS_HOME
+	quest = QuestHelperQuest.DADDYS_HOME
 )
 public class DaddysHome extends BasicQuestHelper
 {
@@ -159,7 +159,6 @@ public class DaddysHome extends BasicQuestHelper
 
 		hasPlanks = new ItemRequirementCondition(waxwoodPlank3);
 		hasLogs = new ItemRequirementCondition(waxwoodLog3);
-		// 10563 - 10569l
 	}
 
 	public void setupSteps()

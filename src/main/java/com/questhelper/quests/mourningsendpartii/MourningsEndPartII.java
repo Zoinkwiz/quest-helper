@@ -399,8 +399,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		deathTalisman = new ItemRequirement("Death talisman", ItemID.DEATH_TALISMAN);
 		deathTalisman.addAlternates(ItemID.DEATH_TALISMAN, ItemID.RUNECRAFT_CAPE);
 
-		deathTalismanHeader = new ItemRequirement("Death talisman or 50 items asked of you by a dwarf", ItemID.DEATH_TALISMAN, -1);
-		deathTalismanNote = new ItemRequirement("Death talisman, or if you're an ironman you can earn one later", ItemID.DEATH_TALISMAN, -1);
+		deathTalismanHeader = new ItemRequirement("Death talisman or 50 items asked of you by a dwarf", ItemID.DEATH_TALISMAN);
+		deathTalismanNote = new ItemRequirement("Death talisman, or if you're an ironman you can earn one later", ItemID.DEATH_TALISMAN);
 
 		mournersOutfit = new ItemRequirement("Full Mourner's outfit", -1, -1);
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);

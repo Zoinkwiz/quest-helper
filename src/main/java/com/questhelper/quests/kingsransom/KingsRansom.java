@@ -26,6 +26,7 @@ package com.questhelper.quests.kingsransom;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.LogicType;
@@ -61,7 +62,7 @@ public class KingsRansom extends BasicQuestHelper
 {
 	ItemRequirement scrapPaper, addressForm, blackHelm, criminalsThread, hairclip, lawRune, airRune, bronzeMed, ironChain, bronzeMedWorn, ironChainWorn,
 		blackKnightLeg, blackKnightLegWorn, blackKnightBody, blackKnightBodyWorn, blackKnightHelm, blackKnightHelmWorn, animateRock, lockpick, grabOrLockpick,
-		hairclipOrLockpick, holyGrail, granite, ardougneTeleport, camelotTeleport, edgevilleTeleport;
+		hairclipOrLockpick, holyGrail, granite, ardougneTeleport, camelotTeleport, edgevilleTeleport, telegrab;
 
 	ConditionForStep hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, hasCriminalsThread, inTrialRoom, handlerInRoom, butlerInRoom,
 		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasLockpickOrHairpin, hasTelegrabItems,
@@ -208,7 +209,11 @@ public class KingsRansom extends BasicQuestHelper
 		animateRock.setTip("If you don't have one, you can get another from Wizard Cromperty in Ardougne");
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
-		grabOrLockpick = new ItemRequirement("Runes for telekinetic grab or a lockpick", ItemID.LOCKPICK);
+
+		telegrab = new ItemRequirements("Telegrab runes", new ItemRequirement("Law rune", ItemID.LAW_RUNE),
+			new ItemRequirements(LogicType.OR, "Air runes or staff", new ItemRequirement("Air runes", ItemCollections.getAirRune(), 5), new ItemRequirement("Air staff", ItemCollections.getAirStaff())));
+
+		grabOrLockpick = new ItemRequirements(LogicType.OR, "Runes for telekinetic grab or a lockpick", new ItemRequirement("Lockpick", ItemID.LOCKPICK), telegrab);
 
 		hairclipOrLockpick = new ItemRequirement("Hair clip or Lockpick", ItemID.LOCKPICK);
 		hairclipOrLockpick.addAlternates(ItemID.HAIR_CLIP);

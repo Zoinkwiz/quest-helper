@@ -33,7 +33,7 @@ public class MemoryChallenge extends DetailedQuestStep
 	public void setupPaths()
 	{
 		// Path 1
-		if (client.getVarbitValue(2413) == 83)
+		if (client.getVarbitValue(2414) == 83)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1731, 5106, 2),
@@ -58,7 +58,7 @@ public class MemoryChallenge extends DetailedQuestStep
 		}
 
 		// Path 2
-		if (client.getVarbitValue(2413) == 192)
+		if (client.getVarbitValue(2414) == 192)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1737, 5106, 2),
@@ -196,7 +196,7 @@ public class MemoryChallenge extends DetailedQuestStep
 		}
 
 		// Path 8
-		if (client.getVarbitValue(2412) == 0)
+		if (client.getVarbitValue(2414) == 91)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1734, 5106, 2),
@@ -209,6 +209,51 @@ public class MemoryChallenge extends DetailedQuestStep
 				new WorldPoint(1737, 5094, 2),
 				new WorldPoint(1734, 5094, 2),
 				new WorldPoint(1734, 5091, 2),
+				new WorldPoint(1734, 5088, 2),
+				new WorldPoint(1737, 5088, 2),
+				new WorldPoint(1737, 5085, 2),
+				new WorldPoint(1737, 5083, 2)
+			)));
+			setWorldPoint(1737, 5083, 2);
+		}
+
+		// Path 9
+		if (client.getVarbitValue(2413) == 3)
+		{
+			setLinePoints(new ArrayList<>(Arrays.asList(
+				new WorldPoint(1740, 5106, 2),
+				new WorldPoint(1740, 5103, 2),
+				new WorldPoint(1740, 5100, 2),
+
+				new WorldPoint(1737, 5100, 2),
+				new WorldPoint(1737, 5097, 2),
+				new WorldPoint(1737, 5094, 2),
+
+				new WorldPoint(1740, 5094, 2),
+				new WorldPoint(1740, 5091, 2),
+				new WorldPoint(1740, 5088, 2),
+				new WorldPoint(1737, 5088, 2),
+				new WorldPoint(1734, 5088, 2),
+				new WorldPoint(1734, 5085, 2),
+				new WorldPoint(1734, 5083, 2)
+			)));
+			setWorldPoint(1734, 5083, 2);
+		}
+
+		// Path 10
+		if (client.getVarbitValue(2412) == 30)
+		{
+			setLinePoints(new ArrayList<>(Arrays.asList(
+				new WorldPoint(1734, 5106, 2),
+				new WorldPoint(1734, 5103, 2),
+				new WorldPoint(1737, 5103, 2),
+				new WorldPoint(1737, 5100, 2),
+				new WorldPoint(1737, 5097, 2),
+				new WorldPoint(1734, 5097, 2),
+				new WorldPoint(1731, 5097, 2),
+				new WorldPoint(1731, 5094, 2),
+				new WorldPoint(1731, 5091, 2),
+				new WorldPoint(1731, 5088, 2),
 				new WorldPoint(1734, 5088, 2),
 				new WorldPoint(1737, 5088, 2),
 				new WorldPoint(1737, 5085, 2),

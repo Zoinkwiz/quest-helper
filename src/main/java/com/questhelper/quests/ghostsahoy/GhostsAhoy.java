@@ -402,7 +402,6 @@ public class GhostsAhoy extends BasicQuestHelper
 		bringCroneAmulet = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Bring a ghostspeak amulet to the Old Crone east of the Slayer Tower.", ghostspeak);
 		bringCroneAmulet.addDialogSteps("I'm here about Necrovarus.");
 		returnToCrone.addSubSteps(bringCroneAmulet);
-		returnToCrone.addDialogSteps("I'm here about Necrovarus.");
 		talkToNecroAfterCurse = new NpcStep(this, NpcID.NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus.", enchantedGhostspeakEquipped);
 		talkToNecroAfterCurse.addDialogStep("Let any ghost who so wishes pass on into the next world.");
 		enterPhasFinal = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys. You don't need ecto-tokens for this any more.", ghostspeak);

@@ -93,6 +93,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		getLeverPiece.addStep(new Conditions(hasEnoughArrows, inMainOrNorthRoom), goSearchThievingLever);
 		getLeverPiece.addStep(new Conditions(hasEnoughArrows, inArrowRoom), returnToMainRoom);
 		getLeverPiece.addStep(inArrowRoom, collectArrows);
+		getLeverPiece.addStep(new Conditions(inMainOrNorthRoom, pulledLever), enterArrowRoom);
 		getLeverPiece.addStep(leverNearby, pullLever);
 		getLeverPiece.addStep(new Conditions(inMainOrNorthRoom, hasLever), useLeverOnHole);
 		getLeverPiece.addStep(new Conditions(inBootsRoom, hasLever), goUpFromBoots);
@@ -238,7 +239,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		inBootsRoom = new ZoneCondition(bootsRoom);
 		inMainOrNorthRoom = new Conditions(LogicType.OR, inEntryRoom, inNorthRoom, inLesRoom);
 
-		pulledLever = new WidgetTextCondition(229, 1, "You hear the clunking of some hidden machinery.");
+		pulledLever = new Conditions(true, LogicType.OR, new WidgetTextCondition(229, 1, "You hear the clunking of some hidden machinery."));
 		leverNearby = new ObjectCondition(ObjectID.LEVER_87, new WorldPoint(2671, 9804, 0));
 		inArrowRoom = new ZoneCondition(arrowRoom1, arrowRoom2, arrowRoom3);
 		hasEnoughArrows = new Conditions(true, LogicType.OR, new ItemRequirementCondition(iceArrows20));

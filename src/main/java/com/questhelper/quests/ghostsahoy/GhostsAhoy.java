@@ -316,10 +316,13 @@ public class GhostsAhoy extends BasicQuestHelper
 		talkToVelorinaAfterNecro = new NpcStep(this, NpcID.VELORINA, new WorldPoint(3677, 3508, 0), "Return to Velorina in east Port Phasmatys.", ghostspeak);
 		talkToVelorinaAfterNecro.addSubSteps(enterPhasAfterNecro);
 		talkToCrone = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone east of the Slayer Tower.", nettleTea, milk);
+		talkToCrone.addDialogSteps("I'm here about Necrovarus.");
 		useTeaOnCup = new DetailedQuestStep(this, "Use the nettle tea on the porcelain cup.", nettleTeaHighlighted, cup);
 		useMilkOnTea = new DetailedQuestStep(this, "Use the bucket of milk on the porcelain cup.", milkHighlighted, cupWithTea);
 		talkToCroneAgain = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone east of the Slayer Tower.", cupWithMilkyTea);
+		talkToCroneAgain.addDialogSteps("I'm here about Necrovarus.");
 		talkToCroneAgainForShip = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone and offer to help.");
+		talkToCroneAgainForShip.addDialogSteps("I'm here about Necrovarus.");
 		talkToCroneAgainForShip.addDialogSteps("You are doing so much for me - is there anything I can do for you?", "I am afraid I have lost the boat you gave to me.");
 		repairShip = new DetailedQuestStep(this, "Use the silk on the model ship.", silkHighlighted, needle, thread, knife, modelShip);
 
@@ -395,7 +398,9 @@ public class GhostsAhoy extends BasicQuestHelper
 		takeRobes = new ObjectStep(this, ObjectID.COFFIN_16644, new WorldPoint(3660, 3514, 1), "Search the coffin.");
 		((ObjectStep)(takeRobes)).addAlternateObjects(ObjectID.COFFIN_16645);
 		returnToCrone = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Bring the items to the Old Crone east of the Slayer Tower.", robes, book, manual, ghostspeak);
+		returnToCrone.addDialogSteps("I'm here about Necrovarus.");
 		bringCroneAmulet = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Bring a ghostspeak amulet to the Old Crone east of the Slayer Tower.", ghostspeak);
+		bringCroneAmulet.addDialogSteps("I'm here about Necrovarus.");
 		returnToCrone.addSubSteps(bringCroneAmulet);
 		talkToNecroAfterCurse = new NpcStep(this, NpcID.NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus.", enchantedGhostspeakEquipped);
 		talkToNecroAfterCurse.addDialogStep("Let any ghost who so wishes pass on into the next world.");

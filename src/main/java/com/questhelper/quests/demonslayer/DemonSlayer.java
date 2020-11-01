@@ -58,7 +58,8 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class DemonSlayer extends BasicQuestHelper
 {
-	ItemRequirement bucket, bucketOfWater, key1, key2, key3, bones, silverlight, combatGear, silverlightEquipped;
+	ItemRequirement bucket, bucketOfWater, key1, key2, key3, bones, silverlight, combatGear, silverlightEquipped, bucketOfWaterOptional, varrockTeleport,
+		wizardsTowerTeleport, coin, food;
 
 	ConditionForStep inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1, hasBucket, hasFilledBucket, hasFirstKey, hasSecondKey, hasThirdKey,
 		hasPouredWaterIntoDrain, inTowerFloor1, obtainedSilverlight, hasSilverlight, delrithNearby, delrithWeakenedNearby, inInstance;
@@ -131,6 +132,11 @@ public class DemonSlayer extends BasicQuestHelper
 		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
 		silverlightEquipped = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true);
 		combatGear = new ItemRequirement("Armour + food", -1, -1);
+
+		bucketOfWaterOptional = new ItemRequirement("Bucket of water (obtainable during quest)", ItemID.BUCKET_OF_WATER);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		wizardsTowerTeleport = new ItemRequirement("Teleport to the Wizards' Tower", ItemID.NECKLACE_OF_PASSAGE5);
+		coin = new ItemRequirement("Coin", ItemID.COINS_995);
 	}
 
 	public void setupConditions()
@@ -218,9 +224,19 @@ public class DemonSlayer extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(bones);
-		return reqs;
+		return new ArrayList<>(Arrays.asList(coin, bones, bucketOfWaterOptional, combatGear, food));
+	}
+
+	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return new ArrayList<>(Arrays.asList(varrockTeleport, wizardsTowerTeleport));
+	}
+
+	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList("Delirth (level 27)"));
 	}
 
 	@Override
@@ -228,8 +244,8 @@ public class DemonSlayer extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToAris, talkToPrysin))));
-		PanelDetails rovinPanel = new PanelDetails("Get Rovin's key", new ArrayList<>(Collections.singletonList(talkToRovin)));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToAris, talkToPrysin)), coin, bucketOfWaterOptional));
+		PanelDetails rovinPanel = new PanelDetails("Get Rovin's key", new ArrayList<>(Collections.singletonList(talkToRovin)), bucketOfWaterOptional);
 		rovinPanel.setLockingStep(getFirstKey);
 		allSteps.add(rovinPanel);
 
@@ -241,7 +257,7 @@ public class DemonSlayer extends BasicQuestHelper
 		traibornPanel.setLockingStep(getThirdKey);
 		allSteps.add(traibornPanel);
 
-		PanelDetails killDelrithPanel = new PanelDetails("Kill Delrith", new ArrayList<>(Arrays.asList(returnToPrysin, killDelrithStep)));
+		PanelDetails killDelrithPanel = new PanelDetails("Kill Delrith", new ArrayList<>(Arrays.asList(returnToPrysin, killDelrithStep)), silverlight, combatGear, food);
 		allSteps.add(killDelrithPanel);
 		return allSteps;
 	}

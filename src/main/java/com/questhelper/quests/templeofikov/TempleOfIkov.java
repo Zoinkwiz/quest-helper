@@ -62,11 +62,11 @@ import com.questhelper.steps.conditional.ConditionForStep;
 public class TempleOfIkov extends BasicQuestHelper
 {
 	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
-		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, emptyInventorySpot;
+		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, emptyInventorySpot, iceArrowsEquipped;
 
 	ConditionForStep hasPendantOfLucien, hasBootsOfLightness, belowMinus1Weight, below4Weight, hasYewBow, hasLimpwurts,
 		inEntryRoom, inNorthRoom, inBootsRoom, dontHaveBoots, inMainOrNorthRoom, hasLever, leverNearby, pulledLever, inArrowRoom,
-		hasEnoughArrows, lesNearby, inLesRoom, inWitchRoom, hasShinyKey, inDemonArea, inArmaRoom, hasStaffOfArmadyl;
+		hasEnoughArrows, lesNearby, inLesRoom, inWitchRoom, hasShinyKey, inDemonArea, inArmaRoom, hasStaffOfArmadyl, hasArrows;
 
 	QuestStep talkToLucien, prepare, prepareBelow0, enterDungeonForBoots, enterDungeon, goDownToBoots, getBoots, goUpFromBoots, pickUpLever,
 		useLeverOnHole, pullLever, enterArrowRoom, returnToMainRoom, goSearchThievingLever, goPullThievingLever, fightLes, tryToEnterWitchRoom,
@@ -90,7 +90,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		steps.put(0, talkToLucien);
 
 		ConditionalStep getLeverPiece = new ConditionalStep(this, prepare);
-		getLeverPiece.addStep(new Conditions(hasEnoughArrows, inMainOrNorthRoom), goSearchThievingLever);
+		getLeverPiece.addStep(new Conditions(hasArrows, inMainOrNorthRoom), goSearchThievingLever);
 		getLeverPiece.addStep(new Conditions(hasEnoughArrows, inArrowRoom), returnToMainRoom);
 		getLeverPiece.addStep(inArrowRoom, collectArrows);
 		getLeverPiece.addStep(new Conditions(inMainOrNorthRoom, pulledLever), enterArrowRoom);
@@ -110,7 +110,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		steps.put(10, getLeverPiece);
 
 		ConditionalStep pullLeverForLes = new ConditionalStep(this, prepare);
-		pullLeverForLes.addStep(new Conditions(hasEnoughArrows, inMainOrNorthRoom), goPullThievingLever);
+		pullLeverForLes.addStep(new Conditions(hasArrows, inMainOrNorthRoom), goPullThievingLever);
 		pullLeverForLes.addStep(new Conditions(hasEnoughArrows, inArrowRoom), returnToMainRoom);
 		pullLeverForLes.addStep(inArrowRoom, collectArrows);
 		pullLeverForLes.addStep(leverNearby, pullLever);
@@ -129,8 +129,8 @@ public class TempleOfIkov extends BasicQuestHelper
 		steps.put(20, pullLeverForLes);
 
 		ConditionalStep goFightLes = new ConditionalStep(this, prepare);
-		goFightLes.addStep(new Conditions(hasEnoughArrows, inLesRoom, lesNearby), fightLes);
-		goFightLes.addStep(new Conditions(hasEnoughArrows, inMainOrNorthRoom), tryToEnterWitchRoom);
+		goFightLes.addStep(new Conditions(inLesRoom, lesNearby), fightLes);
+		goFightLes.addStep(new Conditions(hasArrows, inMainOrNorthRoom), tryToEnterWitchRoom);
 		goFightLes.addStep(new Conditions(hasEnoughArrows, inArrowRoom), returnToMainRoom);
 		goFightLes.addStep(inArrowRoom, collectArrows);
 		goFightLes.addStep(leverNearby, pullLever);
@@ -185,8 +185,8 @@ public class TempleOfIkov extends BasicQuestHelper
 
 		iceArrows20 = new ItemRequirement("Ice arrows", ItemID.ICE_ARROWS, 20);
 
-		iceArrows = new ItemRequirement("Ice arrows", ItemID.ICE_ARROWS, 1, true);
-
+		iceArrows = new ItemRequirement("Ice arrows", ItemID.ICE_ARROWS);
+		iceArrowsEquipped = new ItemRequirement("Ice arrows", ItemID.ICE_ARROWS, 1, true);
 		lever = new ItemRequirement("Lever", ItemID.LEVER);
 		lever.setHighlightInInventory(true);
 
@@ -243,6 +243,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		leverNearby = new ObjectCondition(ObjectID.LEVER_87, new WorldPoint(2671, 9804, 0));
 		inArrowRoom = new ZoneCondition(arrowRoom1, arrowRoom2, arrowRoom3);
 		hasEnoughArrows = new Conditions(true, LogicType.OR, new ItemRequirementCondition(iceArrows20));
+		hasArrows = new ItemRequirementCondition(iceArrows);
 		lesNearby = new NpcCondition(NpcID.FIRE_WARRIOR_OF_LESARKUS);
 		inWitchRoom = new ZoneCondition(witchRoom);
 		hasShinyKey = new ItemRequirementCondition(shinyKey);
@@ -301,10 +302,10 @@ public class TempleOfIkov extends BasicQuestHelper
 		goSearchThievingLever.addSubSteps(goPullThievingLever);
 
 		tryToEnterWitchRoom = new ObjectStep(this, ObjectID.DOOR_93, new WorldPoint(2646, 9870, 0),
-			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows.", yewOrBetterBow, iceArrows);
+			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows.", yewOrBetterBow, iceArrowsEquipped);
 
 		fightLes = new NpcStep(this, NpcID.FIRE_WARRIOR_OF_LESARKUS, new WorldPoint(2646, 9866, 0),
-			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBow, iceArrows);
+			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBow, iceArrowsEquipped);
 
 		enterDungeonKilledLes = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2677, 3405, 0),
 			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, limpwurt20);
@@ -339,6 +340,7 @@ public class TempleOfIkov extends BasicQuestHelper
 
 		killLucien = new NpcStep(this, NpcID.LUCIEN, new WorldPoint(3122, 3484, 0), "Equip the Armadyl Pendant and kill Lucien in the house west of the Grand Exchange.", armadylPendant);
 		bringStaffToLucien = new NpcStep(this, NpcID.LUCIEN, new WorldPoint(3122, 3484, 0), "Bring the Staff of Armadyl to Lucien in the house west of the Grand Exchange.", staffOfArmadyl);
+		bringStaffToLucien.addDialogSteps("Yes! Here it is.");
 
 		returnToLucien = new DetailedQuestStep(this, "Either return to Lucien west of the Grand Exchange with the Staff of Armadyl, or kill him whilst wearing the Pendant of Armadyl.");
 		returnToLucien.addSubSteps(killLucien, bringStaffToLucien);

@@ -460,7 +460,9 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reqs.add(ring);
 		reqs.add(flowerOr15Coins);
 
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
+		Player player = client.getLocalPlayer();
+
+		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
 		{
 			reqs.add(bow);
 		}

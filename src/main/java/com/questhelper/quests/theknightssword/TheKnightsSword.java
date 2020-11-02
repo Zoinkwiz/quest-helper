@@ -53,7 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheKnightsSword extends BasicQuestHelper
 {
-	ItemRequirement pickaxe, redberryPie, ironBars, bluriteOre, varrockTeleport, faladorTeleports, bluriteSword, portrait;
+	ItemRequirement pickaxe, redberryPie, ironBars, bluriteOre, varrockTeleport, faladorTeleports, bluriteSword, portrait, homeTele;
 
 	ConditionForStep hasPortrait, hasBluriteOre, hasBluriteSword, inDungeon, inFaladorCastle1, inFaladorCastle2;
 
@@ -103,6 +103,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 4);
+		homeTele = new ItemRequirement("A teleport near Mudskipper Point, such as POH teleport or Fairy Ring to AIQ", -1, -1);
 		portrait = new ItemRequirement("Portrait", ItemID.PORTRAIT);
 	}
 
@@ -132,7 +133,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		talkToSquire.addDialogStep("Ok, I'll give it a go.");
 		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0), "Talk to Reldo in Varrock Castle's library.");
 		talkToReldo.addDialogStep("What do you know about the Imcando dwarves?");
-		talkToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo south of Port Sarim and give him a Redberry pie.", redberryPie);
+		talkToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo south of Port Sarim and give him a redberry pie.", redberryPie);
 		talkToThurgo.addDialogStep("Would you like a redberry pie?");
 		talkToThurgoAgain = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo again.");
 		talkToThurgoAgain.addDialogStep("Can you make a special sword for me?");
@@ -165,6 +166,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
 		reqs.add(faladorTeleports);
+		reqs.add(homeTele);
 		return reqs;
 	}
 

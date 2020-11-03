@@ -868,7 +868,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		goUpFromMiddleToNorthPuzzle6 = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1891, 4642, 1), "Go up the stairs to the north.");
 
 		puzzle6Pillar14 = new ObjectStep(this, NullObjectID.NULL_9965, new WorldPoint(1898, 4650, 2), "Place a mirror in the pillar north east of the stairs pointing west.", mirror);
-		puzzle6Pillar14.addIcon(ItemID.MIRROR);
+		puzzle6Pillar14.addIcon(ItemID.HAND_MIRROR);
 		puzzle6Pillar15 = new ObjectStep(this, NullObjectID.NULL_9964, new WorldPoint(1887, 4650, 2), "Place the blue crystal in the pillar to the west.", blueCrystal);
 		puzzle6Pillar15.addIcon(ItemID.BLUE_CRYSTAL);
 

@@ -429,7 +429,7 @@ public class DesertTreasure extends BasicQuestHelper
 		killFareed = new NpcStep(this, NpcID.FAREED, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", iceGloves, waterSpellOrMelee);
 
 		talkToRasolo = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
-		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
+		talkToRasolo.addDialogStep(1, "Ask about the Diamonds of Azzanadra");
 		talkToRasolo.addDialogStep("Yes");
 
 		getCross = new ObjectStep(this, ObjectID.SECURE_CHEST, new WorldPoint(3169, 2967, 0), "Bring antipoison, food, and as many picklocks as you can to the Bandit Camp, and try opening the chest in the south of the Bandit Camp. Keep trying until you succeed.", manyLockpicks, antipoison);

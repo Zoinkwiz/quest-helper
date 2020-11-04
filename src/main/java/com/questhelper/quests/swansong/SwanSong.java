@@ -173,6 +173,7 @@ public class SwanSong extends BasicQuestHelper
 		smallNet.setTip("You can get one from Arnold");
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer.setTip("Franklin will give you one");
 		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true);
 		brownApron.setTip("Malignius will give you one");
 		monkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH_7943, 5);

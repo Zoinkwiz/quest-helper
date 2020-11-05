@@ -360,6 +360,14 @@ public class PlagueCity extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(fourBucketsOfWater);
+		return reqs;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

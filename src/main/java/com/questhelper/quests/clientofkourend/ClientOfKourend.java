@@ -126,7 +126,7 @@ public class ClientOfKourend extends BasicQuestHelper
 
 		useFeatherOnScroll = new DetailedQuestStep(this, "Use a feather on the Enchanted Scroll", feather, enchantedScroll);
 
-		talkToLeenz = new NpcStep(this, NpcID.LEENZ, new WorldPoint(2807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedQuill);
+		talkToLeenz = new NpcStep(this, NpcID.LEENZ, new WorldPoint(1807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedQuill);
 		talkToLeenz.addDialogStep("Can I ask you about Port Piscarilius?");
 		talkToLeenz.addDialogStep("Why should I gain favour with Port Piscarilius?");
 		talkToHorace = new NpcStep(this, NpcID.HORACE, new WorldPoint(1774, 3589, 0), "Talk to Horace in the Hosidius general store.", enchantedQuill);

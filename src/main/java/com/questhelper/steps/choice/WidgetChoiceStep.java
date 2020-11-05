@@ -36,6 +36,10 @@ public class WidgetChoiceStep
 	@Getter
 	private final String choice;
 
+	private String excludedString;
+	private int excludedGroupId;
+	private int excludedChildId;
+
 	private final int choiceById;
 
 	@Getter
@@ -68,8 +72,31 @@ public class WidgetChoiceStep
 		this.childId = childId;
 	}
 
+	public void addExclusion(String excludedString, int excludedGroupId, int excludedChildId)
+	{
+		this.excludedString = excludedString;
+		this.excludedGroupId = excludedGroupId;
+		this.excludedChildId = excludedChildId;
+	}
+
 	public void highlightChoice(Client client)
 	{
+		Widget exclusionDialogChoice = client.getWidget(excludedGroupId, excludedChildId);
+		if (exclusionDialogChoice != null)
+		{
+			Widget[] exclusionChoices = exclusionDialogChoice.getChildren();
+			if (exclusionChoices != null)
+			{
+				for (Widget currentExclusionChoice : exclusionChoices)
+				{
+					if (currentExclusionChoice.getText().equals(excludedString))
+					{
+						return;
+					}
+				}
+			}
+		}
+
 		Widget dialogChoice = client.getWidget(groupId, childId);
 		if (dialogChoice != null)
 		{

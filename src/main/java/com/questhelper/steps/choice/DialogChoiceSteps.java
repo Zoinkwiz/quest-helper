@@ -43,6 +43,12 @@ public class DialogChoiceSteps
         choices.add(choice);
     }
 
+    public void addDialogChoiceWithExclusion(DialogChoiceStep choice, String exclusionString)
+	{
+		choice.addExclusion(exclusionString, 219, 1);
+		addChoice(choice);
+	}
+
     public void checkChoices(Client client) {
         if (choices.size() == 0) {
             return;

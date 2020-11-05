@@ -202,7 +202,7 @@ public class DemonSlayer extends BasicQuestHelper
 		useFilledBucketOnDrain = new ObjectStep(this, ObjectID.DRAIN_17424, new WorldPoint(3225, 3496, 0), "Use the bucket of water on the drain outside the kitchen.", bucketOfWater);
 		useFilledBucketOnDrain.addIcon(ItemID.BUCKET_OF_WATER);
 		useFilledBucketOnDrain.addSubSteps(goDownstairsFromRovin, goDownstairsFromRovin2, goUpToBucket, pickupBucket, goDownFromBucket, fillBucket);
-		goDownManhole = new ObjectStep(this, ObjectID.MANHOLE_882, new WorldPoint(3237, 3458, 0), "Go down into Varrock Sewer via the Manhole south west of Varrock Castle.");
+		goDownManhole = new ObjectStep(this, ObjectID.MANHOLE_882, new WorldPoint(3237, 3458, 0), "Go down into Varrock Sewer via the Manhole south east of Varrock Castle.");
 		pickupSecondKey = new ObjectStep(this, NullObjectID.NULL_17431, new WorldPoint(3225, 9897, 0), "Pick up the Rusty Key north of the Sewer entrance.");
 
 		goUpManhole = new ObjectStep(this, ObjectID.LADDER_11806, new WorldPoint(3237, 9858, 0), "Bring Wizard Traiborn 25 bones in the Wizards' Tower.", bones);

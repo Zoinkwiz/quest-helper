@@ -61,14 +61,14 @@ public class TheLostTribe extends BasicQuestHelper
 	ItemRequirement pickaxe, lightSource, brooch, book, key, silverware, treaty, varrockTeleport, faladorTeleport, lumbridgeTeleports;
 
 	ConditionForStep inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, hasBrooch, hasBook, inMines,
-		hasKey, foundRobes, inHamBase, foundSilverware;
+		hasKey, foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
 
 	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
 		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, goUpFromBasement, showBroochToDuke,
 		searchBookcase, readBook, talkToGenerals, walkToMistag, emoteAtMistag, pickpocketSigmund, unlockChest,
-		enterHamLair, searchHamCrates, talkToKazgar, talkToMistagForEnd;
+		enterHamLair, searchHamCrates, talkToKazgar, talkToMistagForEnd, talkToCook, talkToBob, talkToAereck, talkToAllAboutCellar;
 
-	ConditionalStep goToF1Steps, goDownToBasement, goTalkToSigmundToStart, talkToHansSteps, goTalkToDukeAfterHans,
+	ConditionalStep goToF1Steps, goDownToBasement, goTalkToSigmundToStart, findGoblinWitnessSteps, goTalkToDukeAfterHans,
 		goMineRubble, enterTunnels, goShowBroochToDuke, goTalkToDukeAfterEmote, goTravelToMistag, goGetKey, goOpenRobeChest,
 		goIntoHamLair, goToDukeWithSilverware, travelToMakePeace;
 
@@ -85,7 +85,7 @@ public class TheLostTribe extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, goTalkToSigmundToStart);
-		steps.put(1, talkToHansSteps);
+		steps.put(1, findGoblinWitnessSteps);
 		steps.put(2, goTalkToDukeAfterHans);
 		steps.put(3, goMineRubble);
 
@@ -164,6 +164,12 @@ public class TheLostTribe extends BasicQuestHelper
 
 		foundRobes = new VarbitCondition(534, 1, Operation.GREATER_EQUAL);
 		foundSilverware = new VarbitCondition(534, 3, Operation.GREATER_EQUAL);
+
+		hansKnows = new VarbitCondition(537, 0);
+		bobKnows = new VarbitCondition(537, 1);
+
+		// 537 0->2->0, Hans
+		// 537 0->1, Bob
 	}
 
 	public void setupSteps()
@@ -175,11 +181,19 @@ public class TheLostTribe extends BasicQuestHelper
 		goUpFromBasement = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(3209, 9616, 0), "Go up to the surface.");
 		goDownFromF2 = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(3205, 3208, 2), "Go downstairs.");
 		talkToSigmund = new NpcStep(this, NpcID.SIGMUND_5322, new WorldPoint(3210, 3222, 1), "");
-		talkToSigmund.addDialogStep("Do you have any quests for me?");
+		talkToSigmund.addDialogSteps("Do you have any quests for me?", "Yes.");
 
 		// This isn't just talk to Hans, it's a random one of the NPCs to chat to
-		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "");
+		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "Talk to Hans who is roaming around the castle.");
 		talkToHans.addDialogStep("Do you know what happened in the cellar?");
+
+		talkToBob = new NpcStep(this, NpcID.BOB_2812, new WorldPoint(3231, 3203, 0), "Talk to Bob in the south of Lumbridge.");
+		talkToBob.addDialogStep("Do you know what happened in the castle cellar?");
+
+		talkToAllAboutCellar = new NpcStep(this, NpcID.COOK_4626, "Talk to the Cook, Hans, Father Aereck, and Bob in Lumbridge until one tells you about seeing a goblin.");
+		((NpcStep)(talkToAllAboutCellar)).addAlternateNpcs(NpcID.FATHER_AERECK);
+		talkToAllAboutCellar.addDialogSteps("Ask about what happened in the castle cellar");
+		talkToAllAboutCellar.addSubSteps(talkToHans, talkToBob);
 
 		talkToDuke = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3222, 1), "");
 		// Name of person who said they saw something changes
@@ -268,10 +282,12 @@ public class TheLostTribe extends BasicQuestHelper
 		goTalkToSigmundToStart = new ConditionalStep(this, goToF1Steps, "Talk to Sigmund in Lumbridge Castle.");
 		goTalkToSigmundToStart.addStep(inLumbridgeF1, talkToSigmund);
 
-		talkToHansSteps = new ConditionalStep(this, talkToHans, "Talk to Hans who roams around Lumbridge Castle.");
-		talkToHansSteps.addStep(inLumbridgeF2, goDownFromF2);
-		talkToHansSteps.addStep(inLumbridgeF1, goDownFromF1);
-		talkToHansSteps.addStep(inBasement, goUpFromBasement);
+		findGoblinWitnessSteps = new ConditionalStep(this, talkToAllAboutCellar);
+		findGoblinWitnessSteps.addStep(inLumbridgeF2, goDownFromF2);
+		findGoblinWitnessSteps.addStep(inLumbridgeF1, goDownFromF1);
+		findGoblinWitnessSteps.addStep(inBasement, goUpFromBasement);
+		findGoblinWitnessSteps.addStep(hansKnows, talkToHans);
+		findGoblinWitnessSteps.addStep(bobKnows, talkToBob);
 
 		goTalkToDukeAfterHans = new ConditionalStep(this, goToF1Steps, "Talk to Duke Horacio in Lumbridge Castle.");
 		goTalkToDukeAfterHans.addDialogStep("Hans says he saw something in the cellar");
@@ -332,7 +348,7 @@ public class TheLostTribe extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(goTalkToSigmundToStart, talkToHansSteps, goTalkToDukeAfterHans))));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(goTalkToSigmundToStart, talkToAllAboutCellar, goTalkToDukeAfterHans))));
 		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(goMineRubble, enterTunnels, grabBrooch, goShowBroochToDuke)), pickaxe, lightSource));
 		allSteps.add(new PanelDetails("Learning about goblins", new ArrayList<>(Arrays.asList(searchBookcase, readBook, talkToGenerals))));
 		allSteps.add(new PanelDetails("Making contact", new ArrayList<>(Arrays.asList(goTravelToMistag, emoteAtMistag, goTalkToDukeAfterEmote)), lightSource));

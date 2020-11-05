@@ -137,6 +137,7 @@ public class DemonSlayer extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardsTowerTeleport = new ItemRequirement("Teleport to the Wizards' Tower", ItemID.NECKLACE_OF_PASSAGE5);
 		coin = new ItemRequirement("Coin", ItemID.COINS_995);
+		food = new ItemRequirement("Food", -1, -1);
 	}
 
 	public void setupConditions()

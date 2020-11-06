@@ -132,7 +132,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 		folder.setHighlightInInventory(true);
 
 		bowl = new ItemRequirement("Bowl", ItemID.BOWL);
-		chaosRunes15 = new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE);
+		chaosRunes15 = new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 15);
 		wand = new ItemRequirement("Wand", ItemID.WAND);
 		wandHighlight = new ItemRequirement("Wand", ItemID.WAND);
 		wandHighlight.setHighlightInInventory(true);

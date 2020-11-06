@@ -176,6 +176,7 @@ public class GhostsAhoy extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		ectoToken2 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 2);
+		charos = new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA);
 		ectoTokensCharos = new ItemRequirement("20 Ecto-token, OR 10 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, -1);
 		ectoTokensNoCharos = new ItemRequirement("31 Ecto-token, OR 25 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, -1);
 		ectoToken4 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 4);

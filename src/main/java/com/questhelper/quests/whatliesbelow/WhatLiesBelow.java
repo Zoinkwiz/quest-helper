@@ -85,11 +85,11 @@ public class WhatLiesBelow extends BasicQuestHelper
 		steps.put(20, talkToRatAfterFolder);
 
 		steps.put(25, talkToSurok);
-		steps.put(30, talkToSurok);
 
-		steps.put(40, talkToSurok);
-		steps.put(45, talkToSurok);
-		steps.put(46, talkToSurok);
+		steps.put(30, talkToSurokNoLetter);
+		steps.put(40, talkToSurokNoLetter);
+		steps.put(45, talkToSurokNoLetter);
+		steps.put(46, talkToSurokNoLetter);
 
 		ConditionalStep chargeWand = new ConditionalStep(this, enterChaosAltar);
 		chargeWand.addStep(inChaosAltar, useWandOnAltar);
@@ -179,7 +179,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 		talkToSurok = new NpcStep(this, NpcID.SUROK_MAGIS, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.", letterToSurok);
 		talkToSurokNoLetter = new NpcStep(this, NpcID.SUROK_MAGIS, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.");
-		talkToSurokNoLetter.addDialogStep("Go on, then!");
+		talkToSurokNoLetter.addDialogSteps("Go on, then!", "Go on then!");
 
 		talkToSurok.addSubSteps(talkToSurokNoLetter);
 

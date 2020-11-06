@@ -58,7 +58,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class HauntedMine extends BasicQuestHelper
 {
-	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear;
+	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear, zealotsKeyHighlighted;
 
 	ConditionForStep askedAboutKey, hasKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve, hasGlowingFungus, hasChisel,
 		inLiftRoom, inLevel2North, inLevel3North, inLevel2South, inLevel3South, inCartRoom, inCollectRoom, leverAWrong, leverBWrong,
@@ -66,7 +66,7 @@ public class HauntedMine extends BasicQuestHelper
 		inFloodedRoom, daythNearby, inDaythRoom, inCrystalRoom, inCrystalEntrance, killedDayth, hasCrystalMineKey, inCrystalOrCrystalEntranceRoom,
 		inDarkDaythRoom, inDarkCrystalRoom;
 
-	QuestStep talkToZealot, pickpocketZealot, enterMine, goDownFromLevel1South, goDownFromLevel2North, goDownFromLevel3NorthEast,
+	DetailedQuestStep talkToZealot, pickpocketZealot, enterMine, goDownFromLevel1South, goDownFromLevel2North, goDownFromLevel3NorthEast,
 		useKeyOnValve, openValve, goDownLift, pickUpChisel, goUpFromLiftRoom, goUpFromCollectRoom, goDownToCollectFungus, collectFungus,
 		goDownFromLevel2South, goDownToFungusRoom, pickFungus, pullLeverA, pullLeverB, pullLeverC, pullLeverD, pullLeverE, pullLeverF,
 		pullLeverG, pullLeverH, readPanel, putFungusInCart, goUpFromFungusRoom, goUpFromLevel3South, goUpFromLevel2South, leaveLevel1South,
@@ -157,6 +157,10 @@ public class HauntedMine extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		zealotsKey = new ItemRequirement("Zealot's key", ItemID.ZEALOTS_KEY);
+
+		zealotsKeyHighlighted = new ItemRequirement("Zealot's key", ItemID.ZEALOTS_KEY);
+		zealotsKeyHighlighted.setHighlightInInventory(true);
+
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		glowingFungus = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
@@ -290,7 +294,8 @@ public class HauntedMine extends BasicQuestHelper
 		solvePuzzle.addSubSteps(pullLeverA, pullLeverB, pullLeverC, pullLeverD, pullLeverE, pullLeverF, pullLeverG, pullLeverH);
 
 		useKeyOnValve = new ObjectStep(this, ObjectID.WATER_VALVE, new WorldPoint(2808, 4496, 0),
-			"Use the Zealot's key on the water valve. Make sure you have some energy as you'll need to race to the lift afterwards.");
+			"Use the Zealot's key on the water valve. Make sure you have some energy as you'll need to race to the lift afterwards.", zealotsKeyHighlighted);
+		useKeyOnValve.addIcon(ItemID.ZEALOTS_KEY);
 
 		openValve = new ObjectStep(this, ObjectID.WATER_VALVE, new WorldPoint(2808, 4496, 0),
 			"Turn the valve. Make sure you have some energy as you'll need to race to the lift afterwards.");

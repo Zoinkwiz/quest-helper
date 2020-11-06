@@ -73,7 +73,7 @@ public class HauntedMine extends BasicQuestHelper
 		enterMineNorth, goDownLevel1North, goDownLevel2North, goDownToDayth, goDownToCrystals, tryToPickUpKey, killDayth, pickUpKey, goUpFromDayth,
 		cutCrystal, leaveCrystalRoom, goBackUpLift, leaveDarkCrystalRoom, leaveDarkDaythRoom, solvePuzzle;
 
-	Zone entryRoom1, level1South, liftRoom, level2South, level2North, level2North2, level3North1, level3North2, level3North3, level3North4,
+	Zone entryRoom1, level1South, liftRoom1, liftRoom2, level2South, level2North, level2North2, level3North1, level3North2, level3North3, level3North4,
 		level3South1, level3South2, level3South3, cartRoom, collectRoom, level1North, floodedRoom, daythRoom1, daythRoom2, crystalRoom1,
 		crystalRoom2, crystalRoom3, crystalEntrance, crystalEntranceDark, daythRoomDark;
 
@@ -187,8 +187,9 @@ public class HauntedMine extends BasicQuestHelper
 		level3South2 = new Zone(new WorldPoint(2718, 4484, 0), new WorldPoint(2729, 4490, 0));
 		level3South3 = new Zone(new WorldPoint(2710, 4491, 0), new WorldPoint(2718, 4495, 0));
 
-		liftRoom = new Zone(new WorldPoint(2794, 4489, 0), new WorldPoint(2812, 4532, 0));
-		cartRoom = new Zone(new WorldPoint(2757, 4483, 0), new WorldPoint(2794, 4545, 0));
+		liftRoom1 = new Zone(new WorldPoint(2798, 4489, 0), new WorldPoint(2812, 4532, 0));
+		liftRoom2 = new Zone(new WorldPoint(2794, 4524, 0), new WorldPoint(2797, 4532, 0));
+		cartRoom = new Zone(new WorldPoint(2757, 4483, 0), new WorldPoint(2795, 4545, 0));
 
 		collectRoom = new Zone(new WorldPoint(2772, 4535, 0), new WorldPoint(2776, 4542, 0));
 
@@ -217,7 +218,7 @@ public class HauntedMine extends BasicQuestHelper
 
 		inLevel3South = new ZoneCondition(level3South1, level3South2, level3South3);
 		inLevel3North = new ZoneCondition(level3North1, level3North2, level3North3, level3North4);
-		inLiftRoom = new ZoneCondition(liftRoom);
+		inLiftRoom = new ZoneCondition(liftRoom1, liftRoom2);
 		inCartRoom = new ZoneCondition(cartRoom);
 		inCollectRoom = new ZoneCondition(collectRoom);
 		inFloodedRoom = new ZoneCondition(floodedRoom);

@@ -190,7 +190,6 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		talkToBobAgain = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat again.", cat, catspeakEWorn);
 		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3302, 2784, 0), "Talk to the Sphinx in Sophanem.", cat, catspeakEWorn);
 		talkToSphinx.addDialogStep("Ask the Sphinx for help for Bob.");
-		talkToSphinx.addDialogStep("View the cutscene (5 mins 20 secs).");
 		useRake = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Rake Unferth's patch", rake);
 		useRake.addIcon(ItemID.RAKE);
 		plantSeeds = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch", dibber, potatoSeed4);

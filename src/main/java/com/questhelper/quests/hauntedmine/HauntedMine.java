@@ -106,7 +106,7 @@ public class HauntedMine extends BasicQuestHelper
 		exploreMine.addStep(new Conditions(hasGlowingFungus, inFloodedRoom, hasCrystalMineKey, hasChisel), goDownToCrystals);
 		exploreMine.addStep(new Conditions(inFloodedRoom, hasCrystalMineKey), goBackUpLift);
 		exploreMine.addStep(new Conditions(inDaythRoom, hasCrystalMineKey), goUpFromDayth);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inDaythRoom, killedDayth), pickUpKey);
+		exploreMine.addStep(new Conditions(inDaythRoom, killedDayth), pickUpKey);
 		exploreMine.addStep(new Conditions(daythNearby), killDayth);
 		exploreMine.addStep(new Conditions(hasGlowingFungus, inDaythRoom), tryToPickUpKey);
 		exploreMine.addStep(new Conditions(hasGlowingFungus, inFloodedRoom), goDownToDayth);

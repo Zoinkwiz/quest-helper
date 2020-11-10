@@ -71,7 +71,7 @@ public class OlafsQuest extends BasicQuestHelper
 		keyInterfaceOpen, hasCrossKey, hasSquareKey, hasTriangleKey, hasCircleKey, hasStarKey, ulfricNearby, killedUlfric;
 
 	QuestStep talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid, talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks, digHole, pickUpKey, searchPainting, doPuzzle, pickUpItems,
-		pickupItems2, useBarrel, useBarrel2, openGate, chooseSquare, chooseCross, chooseTriangle, chooseCircle, chooseStar, killUlfric;
+		pickUpItems2, useBarrel, useBarrel2, openGate, chooseSquare, chooseCross, chooseTriangle, chooseCircle, chooseStar, killUlfric;
 
 	NpcStep killSkeleton;
 
@@ -117,7 +117,7 @@ public class OlafsQuest extends BasicQuestHelper
 		solvePuzzleSteps.addStep(new Conditions(hasCrossKey, keyInterfaceOpen), chooseCross);
 		solvePuzzleSteps.addStep(new Conditions(hasKey, placedBarrel2), openGate);
 		solvePuzzleSteps.addStep(new Conditions(hasKey, placedBarrel1, hasBarrel3Ropes), useBarrel2);
-		solvePuzzleSteps.addStep(new Conditions(placedBarrel1, inSecondArea, hasKey), pickupItems2);
+		solvePuzzleSteps.addStep(new Conditions(placedBarrel1, inSecondArea, hasKey), pickUpItems2);
 		solvePuzzleSteps.addStep(new Conditions(has2Barrels6Ropes, hasKey), useBarrel);
 		solvePuzzleSteps.addStep(new Conditions(inSecondArea, hasKey), pickUpItems);
 		solvePuzzleSteps.addStep(puzzleOpen, doPuzzle);
@@ -229,6 +229,8 @@ public class OlafsQuest extends BasicQuestHelper
 		doPuzzle = new PaintingWall(this);
 
 		pickUpItems = new DetailedQuestStep(this, "Pick up 2 rotten barrels and 6 ropes from around the room.", rottenBarrels2, ropes6);
+		pickUpItems2 = new DetailedQuestStep(this, "Pick up 1 rotten barrels and 3 ropes from around the room.", rottenBarrel, ropes3);
+		pickUpItems.addSubSteps(pickUpItems2);
 
 		useBarrel = new ObjectStep(this, ObjectID.WALKWAY, new WorldPoint(2722, 10168, 0), "WALK onto the walkway to the east, and use a barrel on it to repair it.", rottenBarrel, ropes3);
 		useBarrel.addIcon(ItemID.ROTTEN_BARREL_11045);

@@ -191,8 +191,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 		steps.put(200, collectTax);
 
 		ConditionalStep collectTaxOnBeards = new ConditionalStep(this, travelToJatizsoToReport);
-		collectTaxOnBeards.addStep(new Conditions(inJatizso, collectedHring, collectedRaum, collectedSkuli, collectedFlosi), talkToGjukiAfterCollection2);
-		collectTaxOnBeards.addStep(new Conditions(inJatizso, collectedHring, collectedRaum, collectedSkuli), collectFromFlosi);
+		collectTaxOnBeards.addStep(new Conditions(inJatizso, collectedHring, collectedRaum, collectedSkuli, collectedKeepa, collectedFlosi), talkToGjukiAfterCollection2);
+		collectTaxOnBeards.addStep(new Conditions(inJatizso, collectedHring, collectedRaum, collectedSkuli, collectedKeepa), collectFromFlosi);
 		collectTaxOnBeards.addStep(new Conditions(inJatizso, collectedHring, collectedRaum, collectedSkuli), collectFromKeepaAgain);
 		collectTaxOnBeards.addStep(new Conditions(inJatizso, collectedHring, collectedRaum), collectFromSkuliAgain);
 		collectTaxOnBeards.addStep(new Conditions(inJatizso, collectedHring), collectFromRaum);

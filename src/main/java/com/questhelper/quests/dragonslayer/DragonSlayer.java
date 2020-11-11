@@ -449,7 +449,7 @@ public class DragonSlayer extends BasicQuestHelper
 		returnThroughShortcut = new ObjectStep(this, ObjectID.WALL_2606, new WorldPoint(2836, 9600, 0), "Return back through the shortcut.");
 
 		enterElvargArea = new ObjectStep(this, ObjectID.WALL_25161, new WorldPoint(2846, 9635, 0), "Enter Elvarg's area and kill her.", antidragonShieldEquipped);
-		goDownIntoKaramjaVolcano = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2856, 3168, 0), "Prepare to fight Elvarg again, and go to the Karamja volcano and enter it.", antidragonShieldEquipped, combatGear);
+		goDownIntoKaramjaVolcano = new ObjectStep(this, ObjectID.ROCKS_11441, new WorldPoint(2857, 3169, 0), "Prepare to fight Elvarg again, and go to the Karamja volcano and enter it.", antidragonShieldEquipped, combatGear);
 		repairShipAgainAndSail = new DetailedQuestStep(this, "As you did not unlock the shortcut, you will need to repair your ship again and sail to Crandor.", planks3, nails90, hammer);
 		enterElvargArea.addSubSteps(goDownIntoKaramjaVolcano, repairShipAgainAndSail);
 

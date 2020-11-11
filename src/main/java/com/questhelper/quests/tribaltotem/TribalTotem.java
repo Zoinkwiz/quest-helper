@@ -55,11 +55,11 @@ import com.questhelper.steps.QuestStep;
 )
 public class TribalTotem extends BasicQuestHelper
 {
-    ItemRequirement coins, amuletOfGlory, ardougneTeleports;
+    ItemRequirement coins, amuletOfGlory, ardougneTeleports, addressLabel, addressLabelHighlighted;
 
-    ConditionForStep inArdougne, hasLabel;
+    QuestStep talkToKangaiMau, travelToArdougne, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, investigateStairs, climbStairs, searchChest, talkToKangaiMauAgain;
 
-    QuestStep talkToKangaiMau, travelToArdougne, investigateCrate, useLabel, talkToEmployee, travelToCromperty, talkToCromperty, enterPassword, investigateStairs, climbStairs, searchChest, talkToKangaiMauAgain;
+    ConditionForStep inArdougne;
 
     Zone ardougne, brimhaven, houseGroundFloor, houseFirstFloor;
 
@@ -68,10 +68,29 @@ public class TribalTotem extends BasicQuestHelper
     {
         setupItemRequirements();
         setupZones();
-        setupConditions();
         setupSteps();
         Map<Integer, QuestStep> steps = new HashMap<>();
 
+        steps.put(0, talkToKangaiMau);
+        steps.put(1, talkToKangaiMau);
+
+        ConditionalStep travelAndInvestigateCrate = new ConditionalStep(this, travelToArdougne);
+        travelAndInvestigateCrate.addStep(inArdougne, investigateCrate);
+        steps.put(5, travelAndInvestigateCrate);
+
+        steps.put(10, useLabel);
+        steps.put(15, talkToEmployee);
+
+        steps.put(20, talkToCromperty);
+        steps.put(21, talkToCromperty);
+        steps.put(22, talkToCromperty);
+        steps.put(23, talkToCromperty);
+
+        steps.put(25, enterPassword);
+        steps.put(30, investigateStairs);
+        steps.put(35, climbStairs);
+        steps.put(40, searchChest);
+        steps.put(45, talkToKangaiMauAgain);
 
         return steps;
     }
@@ -81,6 +100,9 @@ public class TribalTotem extends BasicQuestHelper
         coins = new ItemRequirement("Coins", ItemID.COINS, 90);
         amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.getAmuletOfGlories());
         ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT);
+        addressLabel = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
+        addressLabelHighlighted = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
+        addressLabelHighlighted.setHighlightInInventory(true);
     }
 
     @Override
@@ -93,37 +115,36 @@ public class TribalTotem extends BasicQuestHelper
         return reqs;
     }
 
-    public void setupConditions()
-    {
-        inArdougne = new ZoneCondition(ardougne);
-        hasLabel = new ItemCondition(ItemID.ADDRESS_LABEL);
-    }
-
     public void setupZones()
     {
-        ardougne = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0));
-        brimhaven = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0));
+        ardougne = new Zone(new WorldPoint(2686, 3248, 0), new WorldPoint(2640, 3265, 0));
+        brimhaven = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(2794, 3182, 0));
         houseGroundFloor = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0));
         houseFirstFloor = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0));
     }
 
+    public void setupConditions()
+    {
+        inArdougne = new ZoneCondition(ardougne);
+    }
+
     public void setupSteps()
     {
-        talkToKangaiMau = new NpcStep(this, NpcID.KANGAI_MAU, new WorldPoint(0, 0, 0), "Talk to Kangai Mau in the Brimhaven food store.");
-        talkToKangaiMau.addDialogStep("placeholder text option 1");
-        talkToKangaiMau.addDialogStep("placeholder text option 2");
+        talkToKangaiMau = new NpcStep(this, NpcID.KANGAI_MAU, new WorldPoint(2794, 3182, 0), "Talk to Kangai Mau in the Brimhaven food store.");
+        talkToKangaiMau.addDialogStep("I'm in search of adventure!");
+        talkToKangaiMau.addDialogStep("Ok, I will get it back.");
 
-        travelToArdougne = new DetailedQuestStep(this, new WorldPoint(0, 0, 0), "Go to Ardougne and head west of the ship to the GPDT depot, located to the south of the eastern bank.");
-        investigateCrate = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Investigate the most northeastern crate for the label.");
-        useLabel = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Use the label on the crate located 2 tiles to the south of the first crate.");
-        talkToEmployee = new NpcStep(this, NpcID.GPDT_EMPLOYEE, new WorldPoint(0, 0, 0), "Talk to a GPDT employee.");
+        travelToArdougne = new DetailedQuestStep(this, new WorldPoint(2662, 3305, 0), "Go to Ardougne and head west of the ship to the GPDT depot, located to the south of the eastern bank.");
+        investigateCrate = new ObjectStep(this, ObjectID.CRATE_2707, new WorldPoint(2650, 3273, 0), "Investigate the most northeastern crate for the label.");
+        useLabel = new ObjectStep(this, ObjectID.CRATE_2708, new WorldPoint(2650, 3271, 0), "Use the label on the crate located 2 tiles to the south of the first crate.", addressLabelHighlighted);
+        useLabel.addIcon(ItemID.ADDRESS_LABEL);
+        talkToEmployee = new NpcStep(this, NpcID.GPDT_EMPLOYEE, new WorldPoint(2647, 3272, 0), "Talk to a GPDT employee.");
 
-        travelToCromperty = new DetailedQuestStep(this, new WorldPoint(0, 0, 0), "Go to Ardougne and head west of the ship to the GPDT depot, located to the south of the eastern bank.");
-        talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(0, 0, 0), "Talk to Wizard Cromperty.");
-        talkToCromperty.addDialogStep("placeholder text option 2");
-        talkToCromperty.addDialogStep("placeholder text option 2");
-        talkToCromperty.addDialogStep("placeholder text option 2");
-        talkToCromperty.addDialogStep("placeholder text option 1");
+        talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2683, 3326, 0), "Talk to Wizard Cromperty.");
+        talkToCromperty.addDialogStep("Chat.");
+        talkToCromperty.addDialogStep("So what have you invented?");
+        talkToCromperty.addDialogStep("Can I be teleported please?");
+        talkToCromperty.addDialogStep("Yes, that sounds good. Teleport me!");
 
         enterPassword = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Go west 2 doors and enter the password KURT.");
         investigateStairs = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Right-click Investigate the stairs.");

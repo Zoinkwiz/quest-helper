@@ -151,6 +151,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		trySecondPotion.addStep(new Conditions(inSerafinaHouse, hasBloodVial), searchForHerb);
 		trySecondPotion.addStep(new Conditions(inSerafinaHouse, hasVial), talkToSafalaanAfterPotion);
 		trySecondPotion.addStep(new Conditions(inSerafinaHouse), searchForVial);
+		steps.put(82, trySecondPotion);
 		steps.put(83, trySecondPotion);
 		steps.put(84, trySecondPotion);
 

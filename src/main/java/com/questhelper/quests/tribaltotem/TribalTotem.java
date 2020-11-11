@@ -57,40 +57,35 @@ public class TribalTotem extends BasicQuestHelper
 {
     ItemRequirement coins, amuletOfGlory, ardougneTeleports, addressLabel, addressLabelHighlighted;
 
-    QuestStep talkToKangaiMau, travelToArdougne, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, investigateStairs, climbStairs, searchChest, talkToKangaiMauAgain;
+    QuestStep talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, investigateStairs, climbStairs, searchChest, talkToKangaiMauAgain;
 
-    ConditionForStep inArdougne;
+    ConditionForStep hasLabel;
 
     Zone ardougne, brimhaven, houseGroundFloor, houseFirstFloor;
 
     @Override
     public Map<Integer, QuestStep> loadSteps()
     {
+        loadZones();
         setupItemRequirements();
-        setupZones();
+        setupConditions();
         setupSteps();
         Map<Integer, QuestStep> steps = new HashMap<>();
 
         steps.put(0, talkToKangaiMau);
-        steps.put(1, talkToKangaiMau);
 
-        ConditionalStep travelAndInvestigateCrate = new ConditionalStep(this, travelToArdougne);
-        travelAndInvestigateCrate.addStep(inArdougne, investigateCrate);
-        steps.put(5, travelAndInvestigateCrate);
+        ConditionalStep useLabelOnCrate = new ConditionalStep(this, investigateCrate);
+        useLabelOnCrate.addStep(hasLabel, useLabel);
+        steps.put(1, useLabelOnCrate);
 
-        steps.put(10, useLabel);
-        steps.put(15, talkToEmployee);
+        steps.put(2, talkToEmployee);
+        steps.put(3, talkToCromperty);
 
-        steps.put(20, talkToCromperty);
-        steps.put(21, talkToCromperty);
-        steps.put(22, talkToCromperty);
-        steps.put(23, talkToCromperty);
-
-        steps.put(25, enterPassword);
-        steps.put(30, investigateStairs);
-        steps.put(35, climbStairs);
-        steps.put(40, searchChest);
-        steps.put(45, talkToKangaiMauAgain);
+        steps.put(4, enterPassword);
+        steps.put(5, investigateStairs);
+        steps.put(6, climbStairs);
+        steps.put(7, searchChest);
+        steps.put(8, talkToKangaiMauAgain);
 
         return steps;
     }
@@ -115,17 +110,17 @@ public class TribalTotem extends BasicQuestHelper
         return reqs;
     }
 
-    public void setupZones()
+    public void loadZones()
     {
-        ardougne = new Zone(new WorldPoint(2686, 3248, 0), new WorldPoint(2640, 3265, 0));
-        brimhaven = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(2794, 3182, 0));
+        ardougne = new Zone(new WorldPoint(2640, 3265, 0), new WorldPoint(2686, 3248, 0));
+        brimhaven = new Zone(new WorldPoint(2744, 3205, 0), new WorldPoint(2815, 3153, 0));
         houseGroundFloor = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0));
         houseFirstFloor = new Zone(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0));
     }
 
     public void setupConditions()
     {
-        inArdougne = new ZoneCondition(ardougne);
+        hasLabel = new ItemRequirementCondition(addressLabel);
     }
 
     public void setupSteps()
@@ -134,11 +129,11 @@ public class TribalTotem extends BasicQuestHelper
         talkToKangaiMau.addDialogStep("I'm in search of adventure!");
         talkToKangaiMau.addDialogStep("Ok, I will get it back.");
 
-        travelToArdougne = new DetailedQuestStep(this, new WorldPoint(2662, 3305, 0), "Go to Ardougne and head west of the ship to the GPDT depot, located to the south of the eastern bank.");
-        investigateCrate = new ObjectStep(this, ObjectID.CRATE_2707, new WorldPoint(2650, 3273, 0), "Investigate the most northeastern crate for the label.");
-        useLabel = new ObjectStep(this, ObjectID.CRATE_2708, new WorldPoint(2650, 3271, 0), "Use the label on the crate located 2 tiles to the south of the first crate.", addressLabelHighlighted);
+        investigateCrate = new ObjectStep(this, ObjectID.CRATE_2707, new WorldPoint(2650, 3273, 0), "Travel to the GPDT depot in Ardougne and investigate the most northeastern crate for the label.");
+        useLabel = new ObjectStep(this, ObjectID.CRATE_2708, new WorldPoint(2650, 3271, 0), "Use the label on the crate located 2 tiles to the south of the first crate.", addressLabel);
         useLabel.addIcon(ItemID.ADDRESS_LABEL);
         talkToEmployee = new NpcStep(this, NpcID.GPDT_EMPLOYEE, new WorldPoint(2647, 3272, 0), "Talk to a GPDT employee.");
+        talkToEmployee.addDialogStep("So, when are you going to deliver this crate?");
 
         talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2683, 3326, 0), "Talk to Wizard Cromperty.");
         talkToCromperty.addDialogStep("Chat.");
@@ -155,9 +150,18 @@ public class TribalTotem extends BasicQuestHelper
     }
 
     @Override
+    public ArrayList<ItemRequirement> getItemRequirements()
+    {
+        return new ArrayList<>();
+    }
+
+    @Override
     public ArrayList<PanelDetails> getPanels()
     {
         ArrayList<PanelDetails> allSteps = new ArrayList<>();
+        allSteps.add(new PanelDetails("Retrieving the totem",
+                new ArrayList<>(Arrays.asList(talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, investigateStairs, climbStairs, searchChest, talkToKangaiMauAgain)), coins, amuletOfGlory, ardougneTeleports));
+
         return allSteps;
     }
 }

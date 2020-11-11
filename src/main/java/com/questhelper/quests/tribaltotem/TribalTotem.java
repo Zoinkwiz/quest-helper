@@ -57,9 +57,9 @@ public class TribalTotem extends BasicQuestHelper
 {
     ItemRequirement coins, amuletOfGlory, ardougneTeleports, addressLabel, addressLabelHighlighted;
 
-    QuestStep talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, investigateStairs, climbStairs, searchChest, talkToKangaiMauAgain;
+    QuestStep talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, investigateStairs, searchChest, talkToKangaiMauAgain;
 
-    ConditionForStep hasLabel;
+    ConditionForStep hasLabel, openedLockWidget;
 
     Zone ardougne, brimhaven, houseGroundFloor, houseFirstFloor;
 
@@ -81,11 +81,13 @@ public class TribalTotem extends BasicQuestHelper
         steps.put(2, talkToEmployee);
         steps.put(3, talkToCromperty);
 
-        steps.put(4, enterPassword);
+        ConditionalStep solveCombinationLock = new ConditionalStep(this, enterPassword);
+        solveCombinationLock.addStep(openedLockWidget, solvePassword);
+        steps.put(4, solveCombinationLock);
+
         steps.put(5, investigateStairs);
-        steps.put(6, climbStairs);
-        steps.put(7, searchChest);
-        steps.put(8, talkToKangaiMauAgain);
+        steps.put(6, searchChest);
+        steps.put(7, talkToKangaiMauAgain);
 
         return steps;
     }
@@ -121,6 +123,7 @@ public class TribalTotem extends BasicQuestHelper
     public void setupConditions()
     {
         hasLabel = new ItemRequirementCondition(addressLabel);
+        openedLockWidget = new WidgetTextCondition(369, 54,"Combination Lock Door");
     }
 
     public void setupSteps()
@@ -141,9 +144,9 @@ public class TribalTotem extends BasicQuestHelper
         talkToCromperty.addDialogStep("Can I be teleported please?");
         talkToCromperty.addDialogStep("Yes, that sounds good. Teleport me!");
 
-        enterPassword = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Go west 2 doors and enter the password KURT.");
-        investigateStairs = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Right-click Investigate the stairs.");
-        climbStairs = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Climb the stairs.");
+        enterPassword = new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Go west 2 doors and enter the password KURT.");
+        solvePassword = new CombinationLockStep(this);
+        investigateStairs = new ObjectStep(this, ObjectID.STAIRS_2711, new WorldPoint(2631, 3322, 0), "Right-click Investigate the stairs, then climb them.");
         searchChest = new ObjectStep(this, 0, new WorldPoint(0, 0, 0), "Search the chest on the top floor for the totem.");
         investigateStairs.addDialogStep("whatever the option is to remove");
         talkToKangaiMauAgain = new NpcStep(this, NpcID.KANGAI_MAU, new WorldPoint(0, 0, 0), "Return to Kangai Mau.");
@@ -160,7 +163,7 @@ public class TribalTotem extends BasicQuestHelper
     {
         ArrayList<PanelDetails> allSteps = new ArrayList<>();
         allSteps.add(new PanelDetails("Retrieving the totem",
-                new ArrayList<>(Arrays.asList(talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, investigateStairs, climbStairs, searchChest, talkToKangaiMauAgain)), coins, amuletOfGlory, ardougneTeleports));
+                new ArrayList<>(Arrays.asList(talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, investigateStairs, searchChest, talkToKangaiMauAgain)), coins, amuletOfGlory, ardougneTeleports));
 
         return allSteps;
     }

@@ -1,19 +1,40 @@
+/*
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, Twinkle <https://github.com/twinkle-is-dum>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.quests.tribaltotem;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.WidgetTextCondition;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CombinationLockStep extends QuestStep {
 
@@ -48,6 +69,12 @@ public class CombinationLockStep extends QuestStep {
         highlightButtons.put(ARROW_FOUR_LEFT, 4);
     }
 
+    @Override
+    public void startUp()
+    {
+        updateSolvedPositionState();
+    }
+
     @Subscribe
     public void onGameTick(GameTick gameTick)
     {
@@ -56,31 +83,25 @@ public class CombinationLockStep extends QuestStep {
 
     private void updateSolvedPositionState()
     {
-        int ArrowOneId = matchStateToSolution(SLOT_ONE, ENTRY_ONE, ARROW_ONE_RIGHT);
-        int ArrowTwoId = matchStateToSolution(SLOT_TWO, ENTRY_TWO, ARROW_TWO_LEFT);
-        int ArrowThreeId = matchStateToSolution(SLOT_THREE, ENTRY_THREE, ARROW_THREE_LEFT);
-        int ArrowFourId = matchStateToSolution(SLOT_FOUR, ENTRY_FOUR, ARROW_FOUR_LEFT);
-
-        if (ArrowOneId + ArrowTwoId + ArrowThreeId + ArrowFourId == 0)
+        highlightButtons.replace(1, matchStateToSolution(SLOT_ONE, ENTRY_ONE, ARROW_ONE_RIGHT, ARROW_ONE_LEFT));
+        highlightButtons.replace(2, matchStateToSolution(SLOT_TWO, ENTRY_TWO, ARROW_TWO_RIGHT, ARROW_TWO_LEFT));
+        highlightButtons.replace(3, matchStateToSolution(SLOT_THREE, ENTRY_THREE, ARROW_THREE_RIGHT, ARROW_THREE_LEFT));
+        highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR,ARROW_FOUR_RIGHT, ARROW_FOUR_LEFT));
+        if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0)
         {
             highlightButtons.clear();
-            highlightButtons.put(COMPLETE, 1);
-            return;
+            highlightButtons.put(1, COMPLETE);
         }
-
-        highlightButtons.clear();
-        if (ArrowOneId != 0) highlightButtons.put(ArrowOneId, 1);
-        if (ArrowTwoId != 0) highlightButtons.put(ArrowTwoId, 2);
-        if (ArrowThreeId != 0) highlightButtons.put(ArrowThreeId, 3);
-        if (ArrowFourId != 0) highlightButtons.put(ArrowFourId, 4);
     }
 
-    private int matchStateToSolution(int slot, String entry, int arrowId)
+    private int matchStateToSolution(int slot, String target, int arrowRightId, int arrowLeftId)
     {
         Widget widget = client.getWidget(369, slot);
         assert widget != null;
-        String letter = widget.getText();
-        if(!letter.equals(entry)) return arrowId;
+        String current = widget.getText();
+        int distance = Math.abs(current.charAt(1) - target.charAt(1));
+        int Id = distance < 13 ? arrowRightId : arrowLeftId;
+        if(distance != 0) return Id;
         return 0;
     }
 
@@ -95,7 +116,7 @@ public class CombinationLockStep extends QuestStep {
                 continue;
             }
 
-            Widget widget = client.getWidget(369, entry.getKey());
+            Widget widget = client.getWidget(369, entry.getValue());
             if (widget != null)
             {
                 graphics.setColor(new Color(0, 255, 255, 65));

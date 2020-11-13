@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
  * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, Twinkle <https://github.com/twinkle-is-dum>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +25,7 @@
  */
 package com.questhelper.quests.tribaltotem;
 
+import com.google.common.collect.ImmutableMap;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -36,12 +37,9 @@ import com.questhelper.steps.conditional.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
@@ -70,32 +68,30 @@ public class TribalTotem extends BasicQuestHelper
         setupItemRequirements();
         setupConditions();
         setupSteps();
-        Map<Integer, QuestStep> steps = new HashMap<>();
-
-        steps.put(0, talkToKangaiMau);
 
         ConditionalStep useLabelOnCrate = new ConditionalStep(this, investigateCrate);
         useLabelOnCrate.addStep(hasLabel, useLabel);
-        steps.put(1, useLabelOnCrate);
 
-        steps.put(2, talkToEmployee);
-        steps.put(3, talkToCromperty);
+        ConditionalStep navigateMansion = new ConditionalStep(this, enterPassword);
+        navigateMansion.addStep(hasTotem, talkToKangaiMauAgain);
+        navigateMansion.addStep(openedLockWidget, solvePassword);
+        navigateMansion.addStep(inStairway, climbStairs);
+        navigateMansion.addStep(isUpstairs, searchChest);
 
-        ConditionalStep solveCombinationLock = new ConditionalStep(this, enterPassword);
-        solveCombinationLock.addStep(hasTotem, talkToKangaiMauAgain);
-        solveCombinationLock.addStep(openedLockWidget, solvePassword);
-        solveCombinationLock.addStep(inStairway, climbStairs);
-        solveCombinationLock.addStep(isUpstairs, searchChest);
-        steps.put(4, solveCombinationLock);
-
-        return steps;
+        return new ImmutableMap.Builder<Integer, QuestStep>()
+                .put(0, talkToKangaiMau)
+                .put(1, useLabelOnCrate)
+                .put(2, talkToEmployee)
+                .put(3, talkToCromperty)
+                .put(4, navigateMansion)
+                .build();
     }
 
     public void setupItemRequirements()
     {
-        coins = new ItemRequirement("Coins", ItemID.COINS, 90);
+        coins = new ItemRequirement("At least 90 coins for boat trips", ItemID.COINS, 90);
         amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.getAmuletOfGlories());
-        ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT);
+        ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
         addressLabel = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
         totem = new ItemRequirement("Totem", ItemID.TOTEM);
     }
@@ -153,18 +149,11 @@ public class TribalTotem extends BasicQuestHelper
     }
 
     @Override
-    public ArrayList<ItemRequirement> getItemRequirements()
-    {
-        return new ArrayList<>();
-    }
-
-    @Override
     public ArrayList<PanelDetails> getPanels()
     {
         ArrayList<PanelDetails> allSteps = new ArrayList<>();
         allSteps.add(new PanelDetails("Retrieving the totem",
                 new ArrayList<>(Arrays.asList(talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, talkToKangaiMauAgain))));
-
         return allSteps;
     }
 }

@@ -500,7 +500,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(goTalkToMistag, goTalkToZanik)), lightSource, hamSet2));
 		allSteps.add(new PanelDetails("Exploring Lumbridge", new ArrayList<>(Arrays.asList(goTalkToCook, goTalkToDuke, goOutsideSteps, goTalkToWoman, goTalkToGuide, goTalkToBob, goTalkToAereck, goNearGoblins,
 			goTalkToShopkeeper, talkToZanikAboutOrigin)), lightSource, hamSet2));
-		allSteps.add(new PanelDetails("Infiltrate the H.A.M", new ArrayList<>(Arrays.asList(goIntoHamLair, listenToSpeaker, standNearTrapdoor, goDownTrapdoor)), lightSource, hamSet));
+		allSteps.add(new PanelDetails("Infiltrate the H.A.M", new ArrayList<>(Arrays.asList(goIntoHamLair, talkToJohanhus, listenToSpeaker, standNearTrapdoor, goDownTrapdoor)), lightSource, hamSet));
 		allSteps.add(new PanelDetails("Reaching the meeting", new ArrayList<>(Arrays.asList(standBehindGuard1, talkToGuard2, tellZanikToKillGuard3, standNearGuard4,
 			tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor))));
 		allSteps.add(new PanelDetails("Saving Zanik", new ArrayList<>(Arrays.asList(checkZanikCorpse, goToJunaSteps, learnZanikStory)), lightSource, tinderbox));

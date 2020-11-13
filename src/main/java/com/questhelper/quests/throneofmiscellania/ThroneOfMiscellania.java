@@ -219,7 +219,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING, -1);
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);
-		flowerOr15Coins = new ItemRequirement("A flower of 15 coins to buy some during the quest", ItemID.BLACK_FLOWERS, -1);
+		flowerOr15Coins = new ItemRequirement("A flower or 15 coins to buy some during the quest", ItemID.BLACK_FLOWERS, -1);
 		flowers = getAllFlowers();
 		flowers.setHighlightInInventory(true);
 		cake = new ItemRequirement("Cake", ItemID.CAKE);

@@ -274,7 +274,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 		allSteps.add(getGaugeAndTubePanel);
 
 		PanelDetails getCanPanel = new PanelDetails("Get the oil can",
-			new ArrayList<>(Arrays.asList(searchBookcase, goDownLadder, pullDownLeverB, pullDownLeverA, pullDownLeverD, pullUpLeverB, pullUpLeverA, pullDownLeverF, pullDownLeverE, pullDownLeverC, pullUpLeverE, pickupOilCan)));
+			new ArrayList<>(Arrays.asList(searchBookcase, goDownLadder, pullDownLeverA, pullDownLeverB, pullDownLeverD, pullUpLeverB, pullUpLeverA, pullDownLeverF, pullDownLeverE, pullDownLeverC, pullUpLeverE, pickupOilCan)));
 		getCanPanel.setLockingStep(getCan);
 		allSteps.add(getCanPanel);
 

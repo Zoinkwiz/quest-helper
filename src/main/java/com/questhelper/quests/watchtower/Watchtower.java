@@ -248,7 +248,7 @@ public class Watchtower extends BasicQuestHelper
 		skavidMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP);
 		skavidMap.setTip("You can get another from the city guard in south east Gu'Tanoth.");
 
-		lightSource = new ItemRequirement("A light source", -1, -1);
+		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 

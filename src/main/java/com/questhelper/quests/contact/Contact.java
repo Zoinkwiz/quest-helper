@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.contact;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.steps.ConditionalStep;
@@ -114,7 +115,7 @@ public class Contact extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		lightSource = new ItemRequirement("A light source", -1, -1);
+		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
 

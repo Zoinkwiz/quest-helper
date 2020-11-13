@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.templeofikov;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -181,7 +182,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		yewOrBetterBow = new ItemRequirement("Yew, magic, or dark bow", ItemID.YEW_SHORTBOW);
 		yewOrBetterBow.addAlternates(ItemID.YEW_LONGBOW, ItemID.YEW_COMP_BOW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I, ItemID.MAGIC_LONGBOW, ItemID.DARK_BOW);
 		knife = new ItemRequirement("Knife to get the boots of lightness", ItemID.KNIFE);
-		lightSource = new ItemRequirement("A light source to get the boots of lightness", -1, -1);
+		lightSource = new ItemRequirement("A light source to get the boots of lightness", ItemCollections.getLightSources());
 
 		iceArrows20 = new ItemRequirement("Ice arrows", ItemID.ICE_ARROWS, 20);
 

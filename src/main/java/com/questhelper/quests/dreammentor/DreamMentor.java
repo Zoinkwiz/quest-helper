@@ -328,7 +328,6 @@ public class DreamMentor extends BasicQuestHelper
 		talkToOneiromancer = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Talk to the Oneiromancer in the south east of Lunar Isle.", sealOfPassage);
 		talkToOneiromancer.addDialogStep("Cyrisus.");
 
-		fillVialWithWater = new DetailedQuestStep(this, "Fill the vial with water.", dreamVial);
 		fillVialWithWater = new ObjectStep(this, ObjectID.SINK_16705, new WorldPoint(2091, 3922, 0), "Fill the vial with water.", dreamVial);
 		fillVialWithWater.addIcon(ItemID.DREAM_VIAL_EMPTY);
 

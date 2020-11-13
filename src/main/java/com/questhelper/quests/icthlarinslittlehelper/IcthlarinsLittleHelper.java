@@ -298,7 +298,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		solveDoorPuzzle = new DoorPuzzleStep(this);
 
-		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3301, 2785, 0), "Talk to the Sphinx in Sophenham with your cat, and answer its riddle with '9.'.", catFollower);
+		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3301, 2785, 0), "Talk to the Sphinx in Sophanem with your cat, and answer its riddle with '9.'.", catFollower);
 		talkToSphinx.addDialogStep("I need help.");
 		talkToSphinx.addDialogStep("Okay, that sounds fair.");
 		talkToSphinx.addDialogStep("9.");

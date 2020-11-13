@@ -258,6 +258,18 @@ public class ItemCollections
 	));
 
 	@Getter
+	private static final List<Integer> antivenoms = new ArrayList<>(Arrays.asList(
+		ItemID.ANTIVENOM1,
+		ItemID.ANTIVENOM2,
+		ItemID.ANTIVENOM3,
+		ItemID.ANTIVENOM4,
+		ItemID.ANTIVENOM1_12919,
+		ItemID.ANTIVENOM2_12917,
+		ItemID.ANTIVENOM3_12915,
+		ItemID.ANTIVENOM4_12913
+	));
+
+	@Getter
 	private static final List<Integer> gamesNecklaces = new ArrayList<>(Arrays.asList(
 			ItemID.GAMES_NECKLACE1,
 			ItemID.GAMES_NECKLACE2,
@@ -357,5 +369,56 @@ public class ItemCollections
 			ItemID.DIGSITE_PENDANT_4,
 			ItemID.DIGSITE_PENDANT_5
 	));
-	
+
+	@Getter
+	private static final List<Integer> nails = new ArrayList<>(Arrays.asList(
+		ItemID.BRONZE_NAILS,
+		ItemID.IRON_NAILS,
+		ItemID.STEEL_NAILS,
+		ItemID.BLACK_NAILS,
+		ItemID.MITHRIL_NAILS,
+		ItemID.ADAMANTITE_NAILS,
+		ItemID.RUNE_NAILS
+	));
+
+	@Getter
+	private static final List<Integer> machete = new ArrayList<>(Arrays.asList(
+		ItemID.MACHETE,
+		ItemID.OPAL_MACHETE,
+		ItemID.JADE_MACHETE,
+		ItemID.RED_TOPAZ_MACHETE
+	));
+
+	@Getter
+	private static final List<Integer> lightSources = new ArrayList<>(Arrays.asList(
+		ItemID.LIT_TORCH,
+		ItemID.LIT_CANDLE,
+		ItemID.LIT_BLACK_CANDLE,
+		ItemID.CANDLE_LANTERN_4531,
+		ItemID.CANDLE_LANTERN_4534,
+		ItemID.OIL_LAMP_4524,
+		ItemID.OIL_LANTERN_4539,
+		ItemID.BULLSEYE_LANTERN_4550,
+		ItemID.SAPPHIRE_LANTERN_4702,
+		ItemID.EMERALD_LANTERN_9065,
+		ItemID.MINING_HELMET_5014,
+		ItemID.FIREMAKING_CAPE,
+		ItemID.KANDARIN_HEADGEAR_1,
+		ItemID.KANDARIN_HEADGEAR_2,
+		ItemID.KANDARIN_HEADGEAR_3,
+		ItemID.KANDARIN_HEADGEAR_4,
+		ItemID.BRUMA_TORCH
+	));
+
+	@Getter
+	private static final List<Integer> antifireShields = new ArrayList<>(Arrays.asList(
+		ItemID.DRAGONFIRE_SHIELD,
+		ItemID.DRAGONFIRE_SHIELD_11284,
+		ItemID.DRAGONFIRE_WARD,
+		ItemID.DRAGONFIRE_WARD_22003,
+		ItemID.ANCIENT_WYVERN_SHIELD,
+		ItemID.ANCIENT_WYVERN_SHIELD_21634,
+		ItemID.ANTIDRAGON_SHIELD,
+		ItemID.ANTIDRAGON_SHIELD_8282
+	));
 }

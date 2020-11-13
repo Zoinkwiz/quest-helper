@@ -16,13 +16,17 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
@@ -63,7 +67,6 @@ public class ObjectStep extends DetailedQuestStep
 		if (worldPoint != null)
 		{
 			Collection<WorldPoint> localWorldPoints = toLocalInstance(client, worldPoint);
-
 			for (WorldPoint point : localWorldPoints)
 			{
 				LocalPoint localPoint = LocalPoint.fromWorld(client, point);
@@ -71,18 +74,25 @@ public class ObjectStep extends DetailedQuestStep
 				{
 					return;
 				}
-
-				Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-				if (tile != null)
+				Tile[][][] tiles = client.getScene().getTiles();
+				if (tiles == null)
 				{
-					for (GameObject object : tile.getGameObjects())
+					return;
+				}
+				for (Tile[][] plane : tiles)
+				{
+					Tile tile = plane[localPoint.getSceneX()][localPoint.getSceneY()];
+					if (tile != null)
 					{
-						handleObjects(object);
-					}
+						for (GameObject object : tile.getGameObjects())
+						{
+							handleObjects(object);
+						}
 
-					handleObjects(tile.getDecorativeObject());
-					handleObjects(tile.getGroundObject());
-					handleObjects(tile.getWallObject());
+						handleObjects(tile.getDecorativeObject());
+						handleObjects(tile.getGroundObject());
+						handleObjects(tile.getWallObject());
+					}
 				}
 			}
 		}
@@ -147,11 +157,14 @@ public class ObjectStep extends DetailedQuestStep
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
-		if (event.getGameObject().equals(object))
-		{
-			object = null;
-			clearArrow();
-		}
+		handleRemoveObjects(event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectChanged(GameObjectChanged event)
+	{
+		handleRemoveObjects(event.getPrevious());
+		handleObjects(event.getGameObject());
 	}
 
 	@Subscribe
@@ -163,11 +176,14 @@ public class ObjectStep extends DetailedQuestStep
 	@Subscribe
 	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
-		if (event.getGroundObject().equals(object))
-		{
-			object = null;
-			clearArrow();
-		}
+		handleRemoveObjects(event.getGroundObject());
+	}
+
+	@Subscribe
+	public void onGroundObjectChanged(GroundObjectChanged event)
+	{
+		handleRemoveObjects(event.getPrevious());
+		handleObjects(event.getGroundObject());
 	}
 
 	@Subscribe
@@ -179,11 +195,14 @@ public class ObjectStep extends DetailedQuestStep
 	@Subscribe
 	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
-		if (event.getDecorativeObject().equals(object))
-		{
-			object = null;
-			clearArrow();
-		}
+		handleRemoveObjects(event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
+	{
+		handleRemoveObjects(event.getPrevious());
+		handleObjects(event.getDecorativeObject());
 	}
 
 	@Subscribe
@@ -195,11 +214,14 @@ public class ObjectStep extends DetailedQuestStep
 	@Subscribe
 	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
-		if (event.getWallObject().equals(object))
-		{
-			object = null;
-			clearArrow();
-		}
+		handleRemoveObjects(event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectChanged(WallObjectChanged event)
+	{
+		handleRemoveObjects(event.getPrevious());
+		handleObjects(event.getWallObject());
 	}
 
 	@Override
@@ -254,6 +276,20 @@ public class ObjectStep extends DetailedQuestStep
 			Point point = new Point(x, y);
 
 			OverlayUtil.renderImageLocation(graphics, point, arrow);
+		}
+	}
+
+	private void handleRemoveObjects(TileObject object)
+	{
+		if (object.equals(this.object))
+		{
+			this.object = null;
+			clearArrow();
+		}
+
+		if (objects.contains(object))
+		{
+			objects.remove(object);
 		}
 	}
 

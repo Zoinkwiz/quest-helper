@@ -55,6 +55,11 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public boolean check(Client client)
 	{
+		return check(client, true);
+	}
+
+	public boolean check(Client client, boolean checkEquippedOnly)
+	{
 		int successes = 0;
 		for (ItemRequirement itemRequirement : itemRequirements)
 		{

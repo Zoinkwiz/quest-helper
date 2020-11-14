@@ -57,9 +57,9 @@ public class TribalTotem extends BasicQuestHelper
 
     QuestStep talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, leaveHouse, talkToKangaiMauAgain;
 
-    ConditionForStep hasLabel, openedLockWidget, inStairway, investigatedStairs, isUpstairs, chestOpened, hasTotem;
+    ConditionForStep hasLabel, inEntrance, inMiddleRoom, openedLockWidget, inStairway, investigatedStairs, isUpstairs, chestOpened, hasTotem;
 
-    Zone houseGroundFloor, houseFirstFloor;
+    Zone houseGroundFloorEntrance, houseGroundFloorMiddleRoom, houseGroundFloor, houseFirstFloor;
 
     @Override
     public Map<Integer, QuestStep> loadSteps()
@@ -72,24 +72,25 @@ public class TribalTotem extends BasicQuestHelper
         ConditionalStep useLabelOnCrate = new ConditionalStep(this, investigateCrate);
         useLabelOnCrate.addStep(hasLabel, useLabel);
 
-        ConditionalStep navigateMansion = new ConditionalStep(this, enterPassword);
+        ConditionalStep navigateMansion = new ConditionalStep(this, talkToCromperty);
         navigateMansion.addStep(hasTotem, talkToKangaiMauAgain);
-        navigateMansion.addStep(openedLockWidget, solvePassword);
+        navigateMansion.addStep(new Conditions(openedLockWidget, inMiddleRoom), solvePassword);
         navigateMansion.addStep(inStairway, climbStairs);
         navigateMansion.addStep(isUpstairs, searchChest);
+        navigateMansion.addStep(inEntrance, enterPassword);
+        navigateMansion.addStep(inMiddleRoom, enterPassword);
 
         return new ImmutableMap.Builder<Integer, QuestStep>()
                 .put(0, talkToKangaiMau)
                 .put(1, useLabelOnCrate)
                 .put(2, talkToEmployee)
-                .put(3, talkToCromperty)
                 .put(4, navigateMansion)
                 .build();
     }
 
     public void setupItemRequirements()
     {
-        coins = new ItemRequirement("At least 90 coins for boat trips", ItemID.COINS, 90);
+        coins = new ItemRequirement("Coins or more for boat trips", ItemID.COINS, 90);
         amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.getAmuletOfGlories());
         ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
         addressLabel = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
@@ -108,6 +109,8 @@ public class TribalTotem extends BasicQuestHelper
 
     public void loadZones()
     {
+        houseGroundFloorEntrance = new Zone(new WorldPoint(2637, 3320, 0), new WorldPoint(2639, 3325, 0));
+        houseGroundFloorMiddleRoom = new Zone(new WorldPoint(2634, 3322, 0), new WorldPoint(2636, 3324, 0));
         houseGroundFloor = new Zone(new WorldPoint(2629, 3321, 0), new WorldPoint(2633, 3325, 0));
         houseFirstFloor = new Zone(new WorldPoint(2630, 3319, 1), new WorldPoint(2638, 3323, 1));
     }
@@ -115,6 +118,8 @@ public class TribalTotem extends BasicQuestHelper
     public void setupConditions()
     {
         hasLabel = new ItemRequirementCondition(addressLabel);
+        inEntrance = new ZoneCondition(houseGroundFloorEntrance);
+        inMiddleRoom = new ZoneCondition(houseGroundFloorMiddleRoom);
         openedLockWidget = new WidgetTextCondition(369, 54,"Combination Lock Door");
         inStairway = new ZoneCondition(houseGroundFloor);
         investigatedStairs = new WidgetTextCondition(229, 1, "Your trained senses as a thief enable you to see that there is a trap<br>in these stairs. You make a note of its location for future reference<br>when using these stairs.");
@@ -131,21 +136,21 @@ public class TribalTotem extends BasicQuestHelper
         investigateCrate = new ObjectStep(this, ObjectID.CRATE_2707, new WorldPoint(2650, 3273, 0), "Travel to the GPDT depot in Ardougne and investigate the most northeastern crate for a label.");
         useLabel = new ObjectStep(this, ObjectID.CRATE_2708, new WorldPoint(2650, 3271, 0), "Use the label on the highlighted crate.", addressLabel);
         useLabel.addIcon(ItemID.ADDRESS_LABEL);
-        talkToEmployee = new NpcStep(this, NpcID.GPDT_EMPLOYEE, new WorldPoint(2647, 3272, 0), "Talk to a GPDT employee.");
+        talkToEmployee = new NpcStep(this, NpcID.GPDT_EMPLOYEE, new WorldPoint(2647, 3272, 0), "Talk to a nearby GPDT employee.");
         talkToEmployee.addDialogStep("So, when are you going to deliver this crate?");
 
-        talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2683, 3326, 0), "Talk to Wizard Cromperty.");
+        talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2683, 3326, 0), "Talk to Wizard Cromperty in north east Ardougne.");
         talkToCromperty.addDialogSteps("Chat.", "So what have you invented?", "Can I be teleported please?", "Yes, that sounds good. Teleport me!");
 
-        enterPassword = new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Go west 2 doors and enter the password KURT.");
+        enterPassword = new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Try and open the door to the west.");
         solvePassword = new CombinationLockStep(this);
-        climbStairs = new ObjectStep(this, ObjectID.STAIRS_2711, new WorldPoint(2632, 3323, 0), "Right-click 'Investigate' the stairs, then climb the stairs.");
+        climbStairs = new ObjectStep(this, ObjectID.STAIRS_2711, new WorldPoint(2632, 3323, 0), "FIRST Right-click 'Investigate' the stairs to disable a trap, then climb the stairs.");
 
         searchChest = new ObjectStep(this, ObjectID.CHEST_2709, new WorldPoint(2638, 3324, 1), "Open the chest on the top floor and search it for the totem.");
         ((ObjectStep)(searchChest)).addAlternateObjects(ObjectID.CHEST_2710);
 
         leaveHouse = new DetailedQuestStep(this, "Travel back to Brimhaven.");
-        talkToKangaiMauAgain = new NpcStep(this, NpcID.KANGAI_MAU, new WorldPoint(2794, 3182, 0), "Talk to Kangai Mau.", totem);
+        talkToKangaiMauAgain = new NpcStep(this, NpcID.KANGAI_MAU, new WorldPoint(2794, 3182, 0), "Return to Kangai Mau in Brimhaven.", totem);
     }
 
     @Override

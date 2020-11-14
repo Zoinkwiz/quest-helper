@@ -62,17 +62,11 @@ public class CombinationLockStep extends QuestStep {
     private final HashMap<Integer, Integer> highlightButtons = new HashMap<>();
 
     public CombinationLockStep(QuestHelper questHelper) {
-        super(questHelper, "Click the highlighted arrows to move the pieces to the correct spots.");
-        highlightButtons.put(ARROW_ONE_RIGHT, 1);
-        highlightButtons.put(ARROW_TWO_LEFT, 2);
-        highlightButtons.put(ARROW_THREE_LEFT, 3);
-        highlightButtons.put(ARROW_FOUR_LEFT, 4);
-    }
-
-    @Override
-    public void startUp()
-    {
-        updateSolvedPositionState();
+        super(questHelper, "Click the highlighted arrows to move the slots to the correct letters.");
+        highlightButtons.put(1, ARROW_ONE_RIGHT);
+        highlightButtons.put(2, ARROW_TWO_RIGHT);
+        highlightButtons.put(3, ARROW_THREE_RIGHT);
+        highlightButtons.put(4, ARROW_FOUR_RIGHT);
     }
 
     @Subscribe
@@ -89,19 +83,19 @@ public class CombinationLockStep extends QuestStep {
         highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR,ARROW_FOUR_RIGHT, ARROW_FOUR_LEFT));
         if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0)
         {
-            highlightButtons.clear();
-            highlightButtons.put(1, COMPLETE);
+            highlightButtons.put(5, COMPLETE);
+        } else {
+            highlightButtons.put(5, 0);
         }
     }
 
     private int matchStateToSolution(int slot, String target, int arrowRightId, int arrowLeftId)
     {
         Widget widget = client.getWidget(369, slot);
-        assert widget != null;
+        if (widget == null) return 0;
         String current = widget.getText();
-        int distance = Math.abs(current.charAt(1) - target.charAt(1));
-        int Id = distance < 13 ? arrowRightId : arrowLeftId;
-        if(distance != 0) return Id;
+        int Id = current.charAt(0) < target.charAt(0) ? arrowRightId : arrowLeftId;
+        if(current.charAt(0) != target.charAt(0)) return Id;
         return 0;
     }
 

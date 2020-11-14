@@ -41,14 +41,14 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class LegendsQuest extends BasicQuestHelper
 {
-	ItemRequirement axe, machete, radimusNotes, papyrus3, charcoal3, papyrus, charcoal, radimusNotesHighlight, completeNotes, bullRoarer,  lockpick,
+	ItemRequirement axe, machete, radimusNotes, papyrus3, charcoal3, papyrus, charcoal, radimusNotesHighlight, completeNotesHighlighted, bullRoarer,  lockpick,
 		soulRune, mindRune, earthRune, lawRune2, opal, jade, sapphire, ruby, diamond, pickaxe, bullRoarerHighlight, sketch, lawRuneHighlight,
 		soulRuneHighlight, mindRuneHighlight, earthRuneHighlight, opalHighlighted, jadeHighlighted, topazHighlighted, sapphireHighlighted,
 		emeraldHighlighted, rubyHighlighted, diamondHighlighted, topaz, emerald, bindingBook, bindingBookHighlighted, goldBar2, hammer, goldBowl,
 		goldBowlHighlighted, combatGear, goldBowlBlessed, goldBowlFull, goldBowlFullHighlighted, reed, macheteHighlighted, yommiSeeds, germinatedSeeds,
 		germinatedSeedsHighlighted, runeOrDragonAxe, ardrigal, snakeWeed, vialOfWater, unpoweredOrb, ardrigalMixture, braveryPotion, braveryPotionHighlighted,
 		snakeMixture, rope, elemental30, cosmic3, ropeHighlighted, lumpCrystal, chunkCrystal, hunkCrystal, heartCrystal, heartCrystal2, darkDagger, glowingDagger,
-		force, forceHighlighted, yommiTotem, yommiTotemHighlighted, gildedTotem;
+		force, forceHighlighted, yommiTotem, yommiTotemHighlighted, gildedTotem, completeNotes;
 
 	ItemRequirements chargeOrbRunes;
 
@@ -372,7 +372,10 @@ public class LegendsQuest extends BasicQuestHelper
 
 		completeNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
 		completeNotes.setTip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
-		completeNotes.setHighlightInInventory(true);
+
+		completeNotesHighlighted = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
+		completeNotesHighlighted.setTip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
+		completeNotesHighlighted.setHighlightInInventory(true);
 
 		sketch = new ItemRequirement("Sketch", ItemID.SKETCH);
 		sketch.setTip("You can get another by summoning Gujuo with the bull roarer again");
@@ -649,7 +652,7 @@ public class LegendsQuest extends BasicQuestHelper
 		sketchMiddle.addDialogStep("Start Mapping Khazari Jungle.");
 		sketchWest = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0), "Stand in the west of the Khazari Jungle and right-click complete the Radimus note.", radimusNotesHighlight, papyrus, charcoal);
 		sketchWest.addDialogStep("Start Mapping Khazari Jungle.");
-		useNotes = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2867, 2942, 0), "Use the Radimus notes on a Jungle Foreseter outside the Khazari Jungle.", true, completeNotes);
+		useNotes = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2867, 2942, 0), "Use the Radimus notes on a Jungle Foreseter outside the Khazari Jungle.", true, completeNotesHighlighted);
 		useNotes.addAlternateNpcs(NpcID.JUNGLE_FORESTER_3955);
 		useNotes.addDialogStep("Yes, go ahead make a copy!");
 		enterJungleWithRoarer = new DetailedQuestStep(this, "Re-enter the Khazari Jungle. You'll need to cut through some trees and bushes to enter.", bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, sapphire, ruby, diamond);
@@ -939,7 +942,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(
 			returnToRadimus, talkToRadimusInGuild, talkToRadimusInGuildAgain)),
-			gildedTotem, completeNotes));
+			gildedTotem, completeNotesHighlighted));
 
 		return allSteps;
 	}

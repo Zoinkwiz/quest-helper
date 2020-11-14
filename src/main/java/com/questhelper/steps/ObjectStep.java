@@ -126,6 +126,7 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 		object = null;
+		objects.clear();
 		checkTileForObject(worldPoint);
 	}
 
@@ -165,7 +166,7 @@ public class ObjectStep extends DetailedQuestStep
 	public void shutDown()
 	{
 		super.shutDown();
-		this.objects.clear();
+		objects.clear();
 	}
 
 	@Subscribe

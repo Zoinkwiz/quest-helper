@@ -655,7 +655,7 @@ public class LegendsQuest extends BasicQuestHelper
 		useNotes = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2867, 2942, 0), "Use the Radimus notes on a Jungle Foreseter outside the Khazari Jungle.", true, completeNotesHighlighted);
 		useNotes.addAlternateNpcs(NpcID.JUNGLE_FORESTER_3955);
 		useNotes.addDialogStep("Yes, go ahead make a copy!");
-		enterJungleWithRoarer = new DetailedQuestStep(this, "Re-enter the Khazari Jungle. You'll need to cut through some trees and bushes to enter.", bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, sapphire, ruby, diamond);
+		enterJungleWithRoarer = new DetailedQuestStep(this, "Re-enter the Khazari Jungle. You'll need to cut through some trees and bushes to enter.", bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond);
 		spinBull = new DetailedQuestStep(this, "Spin the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuo = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo.");
 		talkToGujuo.addDialogSteps("I was hoping to attract the attention of a native.", "I want to develop friendly relations with your people.", "Can you get your people together?", "What can we do instead then?", "How do we make the totem pole?", "I will release Ungadulu...");

@@ -362,7 +362,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		if (canUseCharos)
 		{
 			enterPhasForDigging = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", charos, ectoToken12, spade, map, ghostspeak);
-			takeRowingBoat = new NpcStep(this, NpcID.GHOST_CAPTAIN, new WorldPoint(3703, 3487, 0), "Talk to the Ghost captain at the rowing boat on the docks with your Ring of Charos (e) equipped.", charos, ectoToken10, spade, map);
+			takeRowingBoat = new NpcStep(this, NpcID.GHOST_CAPTAIN, new WorldPoint(3703, 3487, 0), "Talk to the Ghost captain at the rowing boat on the docks with your Ring of Charos (a) equipped.", charos, ectoToken10, spade, map);
 		}
 		else
 		{

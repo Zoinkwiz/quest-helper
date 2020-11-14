@@ -98,10 +98,6 @@ public class MurderMystery extends BasicQuestHelper
 
 		steps.put(1, investigating);
 
-		// 195 0->5 starting in league
-		// Thread is 1810, blue
-		// Elizabeth is responsible
-
 		return steps;
 	}
 

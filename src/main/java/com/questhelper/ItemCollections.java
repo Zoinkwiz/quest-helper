@@ -66,6 +66,16 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> harpoons = new ArrayList<>(Arrays.asList(
+		ItemID.HARPOON,
+		ItemID.BARBTAIL_HARPOON,
+		ItemID.DRAGON_HARPOON,
+		ItemID.INFERNAL_HARPOON,
+		ItemID.TRAILBLAZER_HARPOON,
+		ItemID.TRAILBLAZER_HARPOON_25114)
+	);
+
+	@Getter
 	private static final List<Integer> cats = new ArrayList<>(Arrays.asList(
 		ItemID.PET_KITTEN,
 		ItemID.PET_KITTEN_1556,

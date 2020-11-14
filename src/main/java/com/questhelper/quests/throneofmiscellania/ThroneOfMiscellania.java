@@ -215,7 +215,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		rake = new ItemRequirement("Rake", ItemID.RAKE);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		harpoon = new ItemRequirement("Harpoon", ItemID.HARPOON);
+		harpoon = new ItemRequirement("Harpoon", ItemCollections.getHarpoons());
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING, -1);
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);

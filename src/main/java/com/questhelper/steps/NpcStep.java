@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
@@ -36,12 +37,14 @@ import java.util.Collection;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
@@ -124,6 +127,18 @@ public class NpcStep extends DetailedQuestStep
 		super.shutDown();
 		npc = null;
 		otherNpcs = new ArrayList<>();
+	}
+
+	@Subscribe
+	@Override
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		super.onGameStateChanged(event);
+		if (event.getGameState() == GameState.HOPPING)
+		{
+			npc = null;
+			otherNpcs.clear();
+		}
 	}
 
 	@Subscribe

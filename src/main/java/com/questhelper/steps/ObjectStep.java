@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

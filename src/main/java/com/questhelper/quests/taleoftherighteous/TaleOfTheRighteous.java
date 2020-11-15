@@ -192,7 +192,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		talkToPhileas.addDialogStep("What do you need?");
 		teleportToArchive = new NpcStep(this, NpcID.ARCHEIO, new WorldPoint(1625, 3808, 0), "Bring a melee weapon, ranged weapon, and runes for magic attacks and teleport with Archeio in the Arceuus Library.", rangedWeapon, runesForCombat);
 		teleportToArchive.addDialogStep("Yes please!");
-		talkToPagida = new NpcStep(this, NpcID.PAGIDA, new WorldPoint(10, 10, 0), "Talk to Pagida in the Library Historical Archive.");
+		talkToPagida = new NpcStep(this, NpcID.PAGIDA, new WorldPoint(1553, 10223, 0), "Talk to Pagida in the Library Historical Archive.");
 		talkToPagida.addDialogStep("I have a question about King Shayzien VII.");
 		talkToPagida.addDialogStep("Yes please.");
 		pushStrangeDeviceWest = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0), "Push the Strange Device all the way to the west.");

@@ -37,7 +37,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	ObjectStep enterWarrens, enterWarrens2, enterWarrens3;
 	NpcStep talkToQueenOfThieves;
 
-	ZoneCondition inWarrens, inKingstown, inUpstairsHughesHouse;
+	ZoneCondition inWarrens, inUpstairsHughesHouse;
 	Zone warrens, kingstown, upstairsHughesHouse;
 
 	@Override
@@ -112,7 +112,6 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inWarrens = new ZoneCondition(warrens);
-		inKingstown = new ZoneCondition(kingstown);
 		inUpstairsHughesHouse = new ZoneCondition(upstairsHughesHouse);
 	}
 
@@ -153,6 +152,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 
 		goToKingstown = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(1672, 3681, 0), "Go up the stairs in Councillor Hughes' home in Kingstown.");
 		openChest = new ObjectStep(this, ObjectID.CHEST_31710, new WorldPoint(1681, 3677, 1), "Pick the locked chest.");
+
+		// This does not seem to properly highlight the object.
 		leaveKingtstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1672, 3681, 1), "Go downstairs.");
 
 		// Talk to Lawry again

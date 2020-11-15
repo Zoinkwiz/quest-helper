@@ -74,9 +74,6 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		searchHughesChest.addStep(inWarrens, exitWarrens);
 		searchHughesChest.addStep(inUpstairsHughesHouse, openChest);
 
-		ConditionalStep returnToLawry = new ConditionalStep(this, talkToLawry);
-
-
 		steps.put(0, talkToLawry);
 		steps.put(1, talkToPoorLookingPerson);
 		steps.put(2, talkToOReilly);
@@ -177,7 +174,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		openChest = new ObjectStep(this, ObjectID.CHEST_31710, new WorldPoint(1681, 3677, 1), "Pick the locked chest.");
 
 		// This does not seem to properly highlight the object.
-		leaveKingtstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1672, 3681, 1), "Go downstairs.");
+		leaveKingtstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, "Go downstairs.");
 
 		// Talk to Lawry again
 		talkToLawry2 = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.");

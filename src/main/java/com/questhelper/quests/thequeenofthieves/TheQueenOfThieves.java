@@ -136,6 +136,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 
 		exitWarrens = new ObjectStep(this, ObjectID.LADDER_31708, ladderPoint, "Exit the Warrens.");
 
+		// Could potentially add a dialog step for Brutally or Softly, but seems unnecessary since either works.
 		killConrad = new NpcStep(this, NpcID.CONRAD_KING, new WorldPoint(1847, 3734, 0), "Murder Conrad King.");
 
 		// Enter the Warrens again.

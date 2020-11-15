@@ -36,7 +36,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CombinationLockStep extends QuestStep {
+public class PuzzleStep extends QuestStep {
 
     private final String ENTRY_ONE = "K";
     private final String ENTRY_TWO = "U";
@@ -61,8 +61,8 @@ public class CombinationLockStep extends QuestStep {
 
     private final HashMap<Integer, Integer> highlightButtons = new HashMap<>();
 
-    public CombinationLockStep(QuestHelper questHelper) {
-        super(questHelper, "Click the highlighted arrows to move the slots to the correct letters.");
+    public PuzzleStep(QuestHelper questHelper) {
+        super(questHelper, "Click the highlighted arrows to move the slots to the solution 'KURT'.");
         highlightButtons.put(1, ARROW_ONE_RIGHT);
         highlightButtons.put(2, ARROW_TWO_RIGHT);
         highlightButtons.put(3, ARROW_THREE_RIGHT);
@@ -93,9 +93,10 @@ public class CombinationLockStep extends QuestStep {
     {
         Widget widget = client.getWidget(369, slot);
         if (widget == null) return 0;
-        String current = widget.getText();
-        int Id = current.charAt(0) < target.charAt(0) ? arrowRightId : arrowLeftId;
-        if(current.charAt(0) != target.charAt(0)) return Id;
+        char current = widget.getText().charAt(0);
+        int currentPos = (int)current - (int)'A';
+        int id = Math.floorMod(currentPos - target.charAt(0), 26) < Math.floorMod(target.charAt(0) - currentPos, 26) ? arrowRightId : arrowLeftId;
+        if(current != target.charAt(0)) return id;
         return 0;
     }
 

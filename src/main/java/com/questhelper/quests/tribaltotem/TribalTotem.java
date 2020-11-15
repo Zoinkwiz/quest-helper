@@ -84,6 +84,7 @@ public class TribalTotem extends BasicQuestHelper
                 .put(0, talkToKangaiMau)
                 .put(1, useLabelOnCrate)
                 .put(2, talkToEmployee)
+                .put(3, talkToCromperty)
                 .put(4, navigateMansion)
                 .build();
     }
@@ -94,6 +95,7 @@ public class TribalTotem extends BasicQuestHelper
         amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.getAmuletOfGlories());
         ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
         addressLabel = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
+        addressLabel.setHighlightInInventory(true);
         totem = new ItemRequirement("Totem", ItemID.TOTEM);
     }
 
@@ -112,7 +114,7 @@ public class TribalTotem extends BasicQuestHelper
         houseGroundFloorEntrance = new Zone(new WorldPoint(2637, 3320, 0), new WorldPoint(2639, 3325, 0));
         houseGroundFloorMiddleRoom = new Zone(new WorldPoint(2634, 3322, 0), new WorldPoint(2636, 3324, 0));
         houseGroundFloor = new Zone(new WorldPoint(2629, 3321, 0), new WorldPoint(2633, 3325, 0));
-        houseFirstFloor = new Zone(new WorldPoint(2630, 3319, 1), new WorldPoint(2638, 3323, 1));
+        houseFirstFloor = new Zone(new WorldPoint(2630, 3318, 1), new WorldPoint(2639, 3323, 1));
     }
 
     public void setupConditions()
@@ -136,14 +138,14 @@ public class TribalTotem extends BasicQuestHelper
         investigateCrate = new ObjectStep(this, ObjectID.CRATE_2707, new WorldPoint(2650, 3273, 0), "Travel to the GPDT depot in Ardougne and investigate the most northeastern crate for a label.");
         useLabel = new ObjectStep(this, ObjectID.CRATE_2708, new WorldPoint(2650, 3271, 0), "Use the label on the highlighted crate.", addressLabel);
         useLabel.addIcon(ItemID.ADDRESS_LABEL);
-        talkToEmployee = new NpcStep(this, NpcID.GPDT_EMPLOYEE, new WorldPoint(2647, 3272, 0), "Talk to a nearby GPDT employee.");
+        talkToEmployee = new NpcStep(this, NpcID.GPDT_EMPLOYEE, new WorldPoint(2647, 3272, 0), "Talk to a nearby GPDT employee.", true);
         talkToEmployee.addDialogStep("So, when are you going to deliver this crate?");
 
         talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2683, 3326, 0), "Talk to Wizard Cromperty in north east Ardougne.");
         talkToCromperty.addDialogSteps("Chat.", "So what have you invented?", "Can I be teleported please?", "Yes, that sounds good. Teleport me!");
 
         enterPassword = new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Try and open the door to the west.");
-        solvePassword = new CombinationLockStep(this);
+        solvePassword = new PuzzleStep(this);
         climbStairs = new ObjectStep(this, ObjectID.STAIRS_2711, new WorldPoint(2632, 3323, 0), "FIRST Right-click 'Investigate' the stairs to disable a trap, then climb the stairs.");
 
         searchChest = new ObjectStep(this, ObjectID.CHEST_2709, new WorldPoint(2638, 3324, 1), "Open the chest on the top floor and search it for the totem.");

@@ -116,12 +116,13 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	}
 
 	public void setupSteps() {
+		WorldPoint tomasPoint = new WorldPoint(1796, 3781, 0);
 		WorldPoint manholePoint = new WorldPoint(1813, 3745, 0);
 		WorldPoint ladderPoint = new WorldPoint(1813, 10145, 0);
 		WorldPoint devanPoint = new WorldPoint(1767, 10146, 0);
 		WorldPoint queenOfThievesPoint = new WorldPoint(1764, 10158, 0);
 
-		talkToLawry = new NpcStep(this, NpcID.TOMAS_LAWRY, new WorldPoint(1796, 3781, 0), "Speak to Tomas Lawry in Port Piscarilius.");
+		talkToLawry = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.");
 		talkToLawry.addDialogStep("I'm looking for a quest.");
 		talkToLawry.addDialogStep("Absolutely.");
 
@@ -158,7 +159,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		leaveKingtstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1672, 3681, 1), "Go downstairs.");
 
 		// Talk to Lawry again
-		talkToLawry2 = new NpcStep(this, NpcID.TOMAS_LAWRY, new WorldPoint(1796, 3781, 0), "Speak to Tomas Lawry in Port Piscarilius.");
+		talkToLawry2 = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.");
 
 		// Enter the Warrens again
 		enterWarrens3 = new ObjectStep(this, ObjectID.MANHOLE_31706, manholePoint, "Enter the Warrens.");

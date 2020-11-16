@@ -60,13 +60,11 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	Zone topOfShip, deck;
 
-	ItemRequirement modelShip = new ItemRequirement("Model ship", ItemID.MODEL_SHIP_4254);
+	ItemRequirement modelShip;
 
 	public DyeShipSteps(QuestHelper questHelper)
 	{
 		super(questHelper);
-
-		modelShip.setHighlightInInventory(true);
 
 		topOfShip = new Zone(new WorldPoint(3616, 3541, 2), new WorldPoint(3622, 3545, 2));
 		deck = new Zone(new WorldPoint(3600, 3541, 1), new WorldPoint(3623, 3545, 1));
@@ -237,6 +235,9 @@ public class DyeShipSteps extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
+		modelShip = new ItemRequirement("Model ship", ItemID.MODEL_SHIP_4254);
+		modelShip.setHighlightInInventory(true);
+
 		searchMast = new ObjectStep(getQuestHelper(), ObjectID.MAST_16640, new WorldPoint(3619, 3543, 2), "Search the Mast repeatedly until you've found out all the colours for the toy boat.");
 		dyeTop = new DetailedQuestStep(getQuestHelper(), "Dye the top of the model ship's flag to match the real ship.", modelShip);
 		dyeBottom = new DetailedQuestStep(getQuestHelper(), "Dye the bottom of the model ship's flag to match the real ship.", modelShip);

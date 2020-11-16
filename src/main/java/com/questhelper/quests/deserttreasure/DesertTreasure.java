@@ -426,6 +426,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		enterFareedRoom = new ObjectStep(this, ObjectID.GATE_6452, new WorldPoint(3305, 9376, 0),
 			"Enter the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", iceGloves, waterSpellOrMelee);
+		useWarmKey.addSubSteps(enterFareedRoom);
 		killFareed = new NpcStep(this, NpcID.FAREED, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", iceGloves, waterSpellOrMelee);
 
 		talkToRasolo = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");

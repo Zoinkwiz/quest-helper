@@ -132,15 +132,18 @@ public abstract class QuestHelper implements Module
 		return quest.getVar(client);
 	}
 
-	public ArrayList<ItemRequirement> getItemRequirements() {
+	public ArrayList<ItemRequirement> getItemRequirements()
+	{
 		return null;
 	}
 
-	public ArrayList<ItemRequirement> getItemRecommended() {
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
 		return null;
 	}
 
-	public ArrayList<String> getCombatRequirements() {
+	public ArrayList<String> getCombatRequirements()
+	{
 		return null;
 	}
 

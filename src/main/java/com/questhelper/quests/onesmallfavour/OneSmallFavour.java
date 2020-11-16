@@ -774,6 +774,12 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList("Slagilith (level 92)"));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

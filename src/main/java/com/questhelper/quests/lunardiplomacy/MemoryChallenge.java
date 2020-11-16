@@ -56,9 +56,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1737, 5083, 2);
 		}
-
 		// Path 2
-		if (client.getVarbitValue(2414) == 192)
+		else if (client.getVarbitValue(2414) == 192)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1737, 5106, 2),
@@ -77,9 +76,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1731, 5083, 2);
 		}
-
 		// Path 3
-		if (client.getVarbitValue(2415) == 7)
+		else if (client.getVarbitValue(2415) == 7)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1731, 5106, 2),
@@ -101,9 +99,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1740, 5083, 2);
 		}
-
-		// Path 4
-		if (client.getVarbitValue(2412) == 28)
+		// Path 4, shared varbit with 3 but will 3 has already passed
+		else if (client.getVarbitValue(2412) == 28)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1734, 5106, 2),
@@ -123,9 +120,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1731, 5083, 2);
 		}
-
 		// Path 5
-		if (client.getVarbitValue(2412) == 14)
+		else if (client.getVarbitValue(2415) == 123)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1734, 5106, 2),
@@ -148,9 +144,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1740, 5083, 2);
 		}
-
 		// Path 6
-		if (client.getVarbitValue(2414) == 42)
+		else if (client.getVarbitValue(2414) == 42)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1731, 5106, 2),
@@ -172,9 +167,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1740, 5083, 2);
 		}
-
 		// Path 7
-		if (client.getVarbitValue(2412) == 14)
+		else if (client.getVarbitValue(2413) == 218)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1734, 5106, 2),
@@ -194,9 +188,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1737, 5083, 2);
 		}
-
 		// Path 8
-		if (client.getVarbitValue(2414) == 91)
+		else if (client.getVarbitValue(2414) == 91)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1734, 5106, 2),
@@ -216,19 +209,16 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1737, 5083, 2);
 		}
-
 		// Path 9
-		if (client.getVarbitValue(2413) == 3)
+		else if (client.getVarbitValue(2413) == 3)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1740, 5106, 2),
 				new WorldPoint(1740, 5103, 2),
 				new WorldPoint(1740, 5100, 2),
-
 				new WorldPoint(1737, 5100, 2),
 				new WorldPoint(1737, 5097, 2),
 				new WorldPoint(1737, 5094, 2),
-
 				new WorldPoint(1740, 5094, 2),
 				new WorldPoint(1740, 5091, 2),
 				new WorldPoint(1740, 5088, 2),
@@ -239,9 +229,8 @@ public class MemoryChallenge extends DetailedQuestStep
 			)));
 			setWorldPoint(1734, 5083, 2);
 		}
-
 		// Path 10
-		if (client.getVarbitValue(2412) == 30)
+		else if (client.getVarbitValue(2412) == 30)
 		{
 			setLinePoints(new ArrayList<>(Arrays.asList(
 				new WorldPoint(1734, 5106, 2),

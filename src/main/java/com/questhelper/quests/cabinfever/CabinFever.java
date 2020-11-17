@@ -574,6 +574,7 @@ public class CabinFever extends BasicQuestHelper
 		useRopeOnSailWithLoot = new ObjectStep(this, ObjectID.HOISTED_SAIL_11297, new WorldPoint(1822, 4835, 2), "Return the plunder to the chest in Bill's hull.", ropeHighlight);
 		useRopeOnSailWithLoot.addIcon(ItemID.ROPE);
 		enterHullWithLoot = new ObjectStep(this, ObjectID.SHIPS_LADDER_11309, new WorldPoint(1815, 4836, 1), "Return the plunder to the chest in Bill's hull.");
+		enterHullWithLoot.addSubSteps(leaveEnemyHullWithLoot, climbNetWithLoot, useRopeOnSailWithLoot);
 		useLootOnChest = new ObjectStep(this, ObjectID.PLUNDER_STORAGE, new WorldPoint(1815, 4824, 0), "Add the plunder to the plunder storage.", plunderHighlight);
 		useLootOnChest.addIcon(ItemID.PLUNDER);
 
@@ -653,8 +654,8 @@ public class CabinFever extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Sabotage", new ArrayList<>(Arrays.asList(take4Ropes, take1Fuse, takeTinderbox, leaveHullForSabo, climbUpNetForSabo,
 			useRopeOnSailForSabo, useFuseOnEnemyBarrel, lightEnemyFuse, climbEnemyNetAfterSabo, useRopeOnEnemySailAfterSabo, talkToBillAfterSabo))));
 		allSteps.add(new PanelDetails("Repair", new ArrayList<>(Arrays.asList(goDownToFixLeak, takeHoleItems1, repairHole1, pasteHole1, goUpAfterRepair, talkToBillAfterRepair))));
-		allSteps.add(new PanelDetails("Plunder the pirates", new ArrayList<>(Arrays.asList(goUpToSailToLoot, useRopeOnSailToLoot, enterEnemyHullForLoot, lootEnemyShip, leaveEnemyHullWithLoot,
-			climbNetWithLoot, useRopeOnSailWithLoot, enterHullWithLoot, useLootOnChest, goUpAfterLoot, talkToBillAfterLoot))));
+		allSteps.add(new PanelDetails("Plunder the pirates", new ArrayList<>(Arrays.asList(goUpToSailToLoot, useRopeOnSailToLoot, enterEnemyHullForLoot, lootEnemyShip,
+			enterHullWithLoot, useLootOnChest, goUpAfterLoot, talkToBillAfterLoot))));
 		allSteps.add(new PanelDetails("Repair the cannon", new ArrayList<>(Arrays.asList(goDownForBarrel, takeBarrel, goUpWithBarrel, useBarrel, talkToBillAfterBarrel))));
 		allSteps.add(new PanelDetails("Fire canisters", new ArrayList<>(Arrays.asList(goDownForRamrod, getRamrod,goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon))));
 		allSteps.add(new PanelDetails("Fire cannon balls", new ArrayList<>(Arrays.asList(goDownForBalls, getBalls, goUpToCannonWithBalls, getPowderForBalls, usePowderForBalls, useRamrodForBalls, useBall, useFuseForBalls, fireCannonForBalls, repeatBallSteps))));

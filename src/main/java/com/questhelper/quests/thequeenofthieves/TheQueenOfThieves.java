@@ -49,7 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheQueenOfThieves extends BasicQuestHelper
 {
-	ItemRequirement stew;
+	ItemRequirement stew, hughesLetter;
 
 	QuestStep talkToLawry, talkToPoorLookingPerson, talkToOReilly, talkToDevan, exitWarrens, killConrad,
 	tellDevanAboutConrad, exitWarrens2, goToKingstown, openChest, leaveKingtstown, talkToLawry2,
@@ -121,6 +121,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 
 	public void setupItemRequirements() {
 		stew = new ItemRequirement("Stew", ItemID.STEW);
+		hughesLetter = new ItemRequirement("Letter", ItemID.LETTER_21774);
 	}
 
 	public void loadZones() {
@@ -178,11 +179,11 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		goToKingstown = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(1672, 3681, 0), "Go up the stairs in Councillor Hughes' home in Kingstown.");
 		openChest = new ObjectStep(this, ObjectID.CHEST_31710, new WorldPoint(1681, 3677, 1), "Pick the locked chest.");
 
-		// This does not seem to properly highlight the object.
 		leaveKingtstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1672, 3682, 1), "Go downstairs.");
 
 		// Talk to Lawry again
-		talkToLawry2 = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.");
+		talkToLawry2 = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.", hughesLetter);
+		talkToLawry2.addDialogStep("Let's talk about my quest.");
 
 		// Enter the Warrens again
 		enterWarrens4 = new ObjectStep(this, ObjectID.MANHOLE_31706, manholePoint, "Enter the Warrens.");

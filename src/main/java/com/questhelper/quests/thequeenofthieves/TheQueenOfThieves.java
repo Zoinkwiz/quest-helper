@@ -210,7 +210,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigation", new ArrayList<>(Arrays.asList(talkToLawry, talkToPoorLookingPerson, talkToOReilly)), stew));
 		allSteps.add(new PanelDetails("Gaining Trust", new ArrayList<>(Arrays.asList(enterWarrens, talkToDevan, exitWarrens, killConrad, enterWarrens2, tellDevanAboutConrad))));
-		allSteps.add(new PanelDetails("Exposing Hughes", new ArrayList<>(Arrays.asList(talkToQueenOfThieves, exitWarrens2, goToKingstown, openChest, leaveKingtstown, talkToLawry2, enterWarrens3, talkToShauna))));
+		allSteps.add(new PanelDetails("Exposing Hughes", new ArrayList<>(Arrays.asList(enterWarrens3, talkToQueenOfThieves, exitWarrens2, goToKingstown, openChest, leaveKingtstown, talkToLawry2, enterWarrens4, talkToShauna))));
 		return allSteps;
 	}
 }

@@ -145,7 +145,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		talkToLawry.addDialogStep("Absolutely.");
 
 		talkToPoorLookingPerson = new NpcStep(this, NpcID.POOR_LOOKING_WOMAN_7923, new WorldPoint(1803, 3738, 0), "Speak to the poor looking woman.");
-		talkToOReilly = new NpcStep(this, NpcID.ROBERT_OREILLY, new WorldPoint(1794, 3757, 0), "Speak to Robert O'Reilly, and give him the bowl of stew.");
+		talkToOReilly = new NpcStep(this, NpcID.ROBERT_OREILLY, new WorldPoint(1794, 3757, 0), "Speak to Robert O'Reilly, and give him the bowl of stew.", stew);
 		talkToOReilly.addDialogStep("Okay.");
 
 		enterWarrens = new ObjectStep(this, ObjectID.MANHOLE_31706, manholePoint, "Enter the Warrens.");

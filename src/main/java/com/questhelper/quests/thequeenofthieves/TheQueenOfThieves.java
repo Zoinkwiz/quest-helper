@@ -55,7 +55,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	tellDevanAboutConrad, exitWarrens2, goToKingstown, openChest, leaveKingtstown, talkToLawry2,
 	talkToShauna;
 
-	ObjectStep enterWarrens, enterWarrens2, enterWarrens3;
+	ObjectStep enterWarrens, enterWarrens2, enterWarrens3, enterWarrens4;
 	NpcStep talkToQueenOfThieves;
 
 	ZoneCondition inWarrens, inUpstairsHughesHouse;
@@ -96,8 +96,10 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		tellDevanAboutConradConditional.addStep(inWarrens, tellDevanAboutConrad);
 		steps.put(7, tellDevanAboutConradConditional);
 
-		steps.put(8, talkToQueenOfThieves);
-		steps.put(9, talkToQueenOfThieves);
+		ConditionalStep talkToQueenOfThievesConditional = new ConditionalStep(this, enterWarrens3);
+		talkToQueenOfThievesConditional.addStep(inWarrens, talkToQueenOfThieves);
+		steps.put(8, talkToQueenOfThievesConditional);
+		steps.put(9, talkToQueenOfThievesConditional);
 
 		ConditionalStep exposeHughes = new ConditionalStep(this, goToKingstown);
 		exposeHughes.addStep(inWarrens, exitWarrens2);
@@ -109,7 +111,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		talkToLawry2Conditional.addStep(inUpstairsHughesHouse, leaveKingtstown);
 		steps.put(11, talkToLawry2Conditional);
 
-		ConditionalStep talkToShaunaConditional = new ConditionalStep(this, enterWarrens3);
+		ConditionalStep talkToShaunaConditional = new ConditionalStep(this, enterWarrens4);
 		talkToShaunaConditional.addStep(inWarrens, talkToShauna);
 
 		steps.put(12, talkToShaunaConditional);
@@ -164,6 +166,9 @@ public class TheQueenOfThieves extends BasicQuestHelper
 
 		tellDevanAboutConrad = new NpcStep(this, NpcID.DEVAN_RUTTER, devanPoint, "Tell Devan Rutter about the murder.");
 
+		enterWarrens3 = new ObjectStep(this, ObjectID.MANHOLE_31706, manholePoint, "Enter the Warrens.");
+		enterWarrens3.addAlternateObjects(ObjectID.MANHOLE_31707);
+
 		talkToQueenOfThieves = new NpcStep(this, NpcID.THE_QUEEN_OF_THIEVES, queenOfThievesPoint, "Talk to the Queen of Thieves.");
 		talkToQueenOfThieves.addAlternateNpcs(NpcID.LADY_SHAUNA_PISCARILIUS);
 
@@ -180,8 +185,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		talkToLawry2 = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.");
 
 		// Enter the Warrens again
-		enterWarrens3 = new ObjectStep(this, ObjectID.MANHOLE_31706, manholePoint, "Enter the Warrens.");
-		enterWarrens3.addAlternateObjects(ObjectID.MANHOLE_31707);
+		enterWarrens4 = new ObjectStep(this, ObjectID.MANHOLE_31706, manholePoint, "Enter the Warrens.");
+		enterWarrens4.addAlternateObjects(ObjectID.MANHOLE_31707);
 
 		talkToShauna = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS, queenOfThievesPoint, "Talk to Lady Shauna Piscarilius.");
 	}

@@ -122,6 +122,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public void setupItemRequirements() {
 		stew = new ItemRequirement("Stew", ItemID.STEW);
 		hughesLetter = new ItemRequirement("Letter", ItemID.LETTER_21774);
+		hughesLetter.setTip("You can get another letter by searching the chest upstairs in Hughes' house in Kingstown.");
 	}
 
 	public void loadZones() {

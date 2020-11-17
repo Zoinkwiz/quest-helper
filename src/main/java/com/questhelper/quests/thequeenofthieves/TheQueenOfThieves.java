@@ -52,7 +52,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	ItemRequirement stew, hughesLetter;
 
 	QuestStep talkToLawry, talkToPoorLookingPerson, talkToOReilly, talkToDevan, exitWarrens, killConrad,
-	tellDevanAboutConrad, exitWarrens2, goToKingstown, openChest, leaveKingtstown, talkToLawry2,
+	tellDevanAboutConrad, exitWarrens2, goToKingstown, openChest, leaveKingstown, talkToLawry2,
 	talkToShauna;
 
 	ObjectStep enterWarrens, enterWarrens2, enterWarrens3, enterWarrens4;
@@ -108,7 +108,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		steps.put(10, exposeHughes);
 
 		ConditionalStep talkToLawry2Conditional = new ConditionalStep(this, talkToLawry2);
-		talkToLawry2Conditional.addStep(inUpstairsHughesHouse, leaveKingtstown);
+		talkToLawry2Conditional.addStep(inUpstairsHughesHouse, leaveKingstown);
 		steps.put(11, talkToLawry2Conditional);
 
 		ConditionalStep talkToShaunaConditional = new ConditionalStep(this, enterWarrens4);
@@ -179,7 +179,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		goToKingstown = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(1672, 3681, 0), "Go up the stairs in Councillor Hughes' home in Kingstown.");
 		openChest = new ObjectStep(this, ObjectID.CHEST_31710, new WorldPoint(1681, 3677, 1), "Pick the locked chest.");
 
-		leaveKingtstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1672, 3682, 1), "Go downstairs.");
+		leaveKingstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1672, 3682, 1), "Go downstairs.");
 
 		// Talk to Lawry again
 		talkToLawry2 = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.", hughesLetter);
@@ -210,7 +210,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigation", new ArrayList<>(Arrays.asList(talkToLawry, talkToPoorLookingPerson, talkToOReilly)), stew));
 		allSteps.add(new PanelDetails("Gaining Trust", new ArrayList<>(Arrays.asList(enterWarrens, talkToDevan, exitWarrens, killConrad, enterWarrens2, tellDevanAboutConrad))));
-		allSteps.add(new PanelDetails("Exposing Hughes", new ArrayList<>(Arrays.asList(enterWarrens3, talkToQueenOfThieves, exitWarrens2, goToKingstown, openChest, leaveKingtstown, talkToLawry2, enterWarrens4, talkToShauna))));
+		allSteps.add(new PanelDetails("Exposing Hughes", new ArrayList<>(Arrays.asList(enterWarrens3, talkToQueenOfThieves, exitWarrens2, goToKingstown, openChest, leaveKingstown, talkToLawry2, enterWarrens4, talkToShauna))));
 		return allSteps;
 	}
 }

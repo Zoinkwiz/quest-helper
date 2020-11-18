@@ -137,9 +137,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		axeHighlighted.setHighlightInInventory(true);
 		ironSpit = new ItemRequirement("Iron spit", ItemID.IRON_SPIT);
 		ironSpit.setHighlightInInventory(true);
-		log = new ItemRequirement("Any log to burn", ItemID.LOGS);
-		log.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.MAPLE_LOGS, ItemID.YEW_LOGS, ItemID.TEAK_LOGS,
-			ItemID.MAHOGANY_LOGS, ItemID.ARCTIC_PINE_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
+		log = new ItemRequirement("Any log to burn", ItemCollections.getLogsForFire());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS);

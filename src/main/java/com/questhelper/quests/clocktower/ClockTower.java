@@ -223,10 +223,10 @@ public class ClockTower extends BasicQuestHelper
         allSteps.add(blackCog);
         PanelDetails whiteCog = new PanelDetails("Obtaining the white cog",
                 new ArrayList<>(Arrays.asList(northWesternDoor, pickUpRatPoison, pullFirstLever, pullSecondLever, ratPoisonFood, westernGate, pickUpWhiteCog, climbWhiteLadder, goToSecondFloor, whiteCogOnWhiteSpindle, gotoFirstFloorFromSecondFloor, goToGroundFloorFromFirstFloor)));
-        allSteps.add(blackCog);
+        allSteps.add(whiteCog);
         PanelDetails finishingOff = new PanelDetails("Finishing off",
                 new ArrayList<>(Arrays.asList(kojoReward)));
-        allSteps.add(blackCog);
+        allSteps.add(finishingOff);
 
         return allSteps;
     }

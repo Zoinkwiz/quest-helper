@@ -431,4 +431,35 @@ public class ItemCollections
 		ItemID.ANTIDRAGON_SHIELD,
 		ItemID.ANTIDRAGON_SHIELD_8282
 	));
+
+	@Getter
+	private static final List<Integer> logsForFire = new ArrayList<>(Arrays.asList(
+			ItemID.REDWOOD_LOGS,
+			ItemID.MAGIC_LOGS,
+			ItemID.BLISTERWOOD_LOGS,
+			ItemID.YEW_LOGS,
+			ItemID.MAHOGANY_LOGS,
+			ItemID.MAPLE_LOGS,
+			ItemID.ARCTIC_PINE_LOGS,
+			ItemID.TEAK_LOGS,
+			ItemID.WILLOW_LOGS,
+			ItemID.OAK_LOGS,
+			ItemID.ACHEY_TREE_LOGS,
+			ItemID.LOGS,
+			ItemID.REDWOOD_PYRE_LOGS,
+			ItemID.MAGIC_PYRE_LOGS,
+			ItemID.YEW_PYRE_LOGS,
+			ItemID.MAHOGANY_PYRE_LOGS,
+			ItemID.MAPLE_PYRE_LOGS,
+			ItemID.ARCTIC_PYRE_LOGS,
+			ItemID.TEAK_PYRE_LOGS,
+			ItemID.WILLOW_PYRE_LOGS,
+			ItemID.OAK_PYRE_LOGS,
+			ItemID.PYRE_LOGS,
+			ItemID.GREEN_LOGS,
+			ItemID.RED_LOGS,
+			ItemID.PURPLE_LOGS,
+			ItemID.WHITE_LOGS,
+			ItemID.BLUE_LOGS
+	));
 }

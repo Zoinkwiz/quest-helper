@@ -662,4 +662,3 @@ public class CabinFever extends BasicQuestHelper
 		return allSteps;
 	}
 }
-

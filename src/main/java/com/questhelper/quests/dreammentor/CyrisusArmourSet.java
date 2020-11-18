@@ -54,9 +54,9 @@ enum CyrisusArmourSet
 		float rangedCombatLevel = client.getRealSkillLevel(Skill.RANGED) * (3f/2f);
 		float magicCombatLevel = client.getRealSkillLevel(Skill.MAGIC) * (3f/2f);
 
-		if (meleeCombatLevel > rangedCombatLevel)
+		if (meleeCombatLevel >= rangedCombatLevel)
 		{
-			if (meleeCombatLevel > magicCombatLevel)
+			if (meleeCombatLevel >= magicCombatLevel)
 			{
 				return MELEE;
 			}

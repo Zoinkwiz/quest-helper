@@ -423,7 +423,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		goUpF1ToF2 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1), "Travel to the Shipyard on Karamja.", royalSeal);
 		goUpF2ToF3 = new ObjectStep(this, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "Travel to the Shipyard on Karamja.", royalSeal);
 
-		flyGandius = new NpcStep(this, NpcID.CAPTAIN_ERRDO_6091, new WorldPoint(2464, 3501, 3), "Fly with Captain Errdo to Gandius.");
+		flyGandius = new NpcStep(this, NpcID.CAPTAIN_ERRDO_10467, new WorldPoint(2464, 3501, 3), "Fly with Captain Errdo to Gandius.");
 		flyGandius.addSubSteps(goUpF0ToF1, goUpF1ToF2, goUpF2ToF3);
 
 		talkToCaranock = new NpcStep(this, NpcID.GLO_CARANOCK, new WorldPoint(2955, 3025, 0), "Talk to G.L.O. Caranock in the shipyard.");

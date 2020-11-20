@@ -444,7 +444,7 @@ public class DetailedQuestStep extends QuestStep
 
 		for (WorldPoint point : points)
 		{
-			if (point != null && point.getPlane() == wp.getPlane() && point.isInScene(client))
+			if (point != null && point.isInScene(client))
 			{
 				return point;
 			}

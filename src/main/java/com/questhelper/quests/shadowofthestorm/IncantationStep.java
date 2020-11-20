@@ -26,36 +26,42 @@ package com.questhelper.quests.shadowofthestorm;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import net.runelite.api.ItemID;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+
+import java.util.HashMap;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.eventbus.Subscribe;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class IncantationStep extends DetailedQuestStep
 {
-	private final HashMap<Integer, String> words;
+	private final HashMap<Integer, String> words = new HashMap<Integer, String>()
+	{{
+		put(0, "Caldar");
+		put(1, "Nahudu");
+		put(2, "Agrith-Naar");
+		put(3, "Camerinthum");
+		put(4, "Tarren");
+	}};
 
 	private final boolean reverse;
+	private String[] incantationOrder;
+	private int incantationPosition = 0;
 
 	public IncantationStep(QuestHelper questHelper, boolean reverse)
 	{
 		super(questHelper, "Click the demonic sigil and read the incantation.");
-
 		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
 		sigilHighlighted.setHighlightInInventory(true);
 		this.addItemRequirements(new ArrayList<>(Collections.singletonList(sigilHighlighted)));
 		this.reverse = reverse;
-
-		words = new HashMap<>();
-		words.put(0, "Caldar");
-		words.put(1, "Nahudu");
-		words.put(2, "Agrith-Naar");
-		words.put(3, "Camerinthum");
-		words.put(4, "Tarren");
 	}
 
 	@Override
@@ -65,30 +71,86 @@ public class IncantationStep extends DetailedQuestStep
 		updateHints();
 	}
 
-	protected void updateHints()
+	@Override
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (client.getVarbitValue(1374) == 0 && client.getVarbitValue(1375) == 0)
+		int groupId = event.getGroupId();
+		if (groupId == WidgetID.DIALOG_OPTION_GROUP_ID)
+		{
+			clientThread.invokeLater(this::updateChoiceIfRequired);
+		}
+
+		super.onWidgetLoaded(event);
+	}
+
+	/**
+	 * This checks for the demonic sigil being clicked, indicating the start of the incantation.
+	 */
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if(event.getWidgetId() == WidgetInfo.INVENTORY.getId() && event.getMenuOption().equals("Chant"))
+		{
+			incantationPosition = 0;
+		}
+	}
+
+	/**
+	 * Updates the choices highlighted as the incantation progresses.
+	 */
+	private void updateChoiceIfRequired()
+	{
+		if (!shouldUpdateChoice())
 		{
 			return;
 		}
 
-		String incantString = "Say the following in order: ";
+		// As the incantations have all the same dialogs we want to reset the choices after each dialog
+		// as we want only the correct one to be highlighted
+		choices.resetChoices();
+		addDialogStep(incantationOrder[incantationPosition]);
+		incantationPosition++;
+	}
+
+	private boolean shouldUpdateChoice()
+	{
+		Widget widget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
+		if (widget == null)
+		{
+			return false;
+		}
+
+		Widget[] children = widget.getChildren();
+		if (children == null || children.length < 3)
+		{
+			return false;
+		}
+
+		Widget childWidget = widget.getChild(2);
+		return childWidget != null && "Nahudu".equals(childWidget.getText());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void updateHints()
+	{
+		if (incantationOrder != null || (client.getVarbitValue(1374) == 0 && client.getVarbitValue(1375) == 0))
+		{
+			return;
+		}
+		incantationOrder = new String[]{
+			words.get(client.getVarbitValue(2562)),
+			words.get(client.getVarbitValue(2563)),
+			words.get(client.getVarbitValue(2564)),
+			words.get(client.getVarbitValue(2565)),
+			words.get(client.getVarbitValue(2566)),
+		};
 		if (reverse)
 		{
-			incantString += words.get(client.getVarbitValue(1377)) + ", ";
-			incantString += words.get(client.getVarbitValue(1376)) + ", ";
-			incantString += words.get(client.getVarbitValue(1375)) + ", ";
-			incantString += words.get(client.getVarbitValue(1374)) + ", ";
-			incantString += words.get(client.getVarbitValue(1373)) + ".";
+			ArrayUtils.reverse(incantationOrder);
 		}
-		else
-		{
-			incantString += words.get(client.getVarbitValue(1373)) + ", ";
-			incantString += words.get(client.getVarbitValue(1374)) + ", ";
-			incantString += words.get(client.getVarbitValue(1375)) + ", ";
-			incantString += words.get(client.getVarbitValue(1376)) + ", ";
-			incantString += words.get(client.getVarbitValue(1377)) + ".";
-		}
+		String incantString = "Say the following in order: " + String.join(", ", incantationOrder);
 
 		setText("Click the demonic sigil and read the incantation.");
 		addText(incantString);

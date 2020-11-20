@@ -252,7 +252,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 	}
 
-	@Subscribe
+	@Override
 	public void onWidgetLoaded(final WidgetLoaded event)
 	{
 		super.onWidgetLoaded(event);

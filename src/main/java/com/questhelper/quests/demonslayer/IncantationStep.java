@@ -48,9 +48,11 @@ public class IncantationStep extends ConditionalStep
     private final String RESET_INCANTATION_TEXT = "Now what was that incantation again?";
     private String[] incantationOrder;
     private int incantationPosition = 0;
+    private QuestStep incantationStep;
 
     public IncantationStep(QuestHelper questHelper, QuestStep incantationStep) {
         super(questHelper, incantationStep);
+        this.incantationStep = incantationStep;
         this.steps.get(null).getText().add("Incantation is currently unknown.");
     }
 
@@ -101,12 +103,12 @@ public class IncantationStep extends ConditionalStep
 
     private boolean ShouldUpdateChoice() {
         Widget widget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
-        if (widget != null) {
+        if (widget == null) {
             return false;
         }
 
         Widget[] children = widget.getChildren();
-        if (children != null && children.length >= 3){
+        if (children == null || children.length < 3){
             return false;
         }
 
@@ -115,6 +117,9 @@ public class IncantationStep extends ConditionalStep
     }
 
     @Override
+    /**
+     * {@inheritDoc}
+     */
     protected void updateSteps() {
         if (incantationOrder != null || (client.getVarbitValue(2562) == 0 && client.getVarbitValue(2563) == 0)) {
             return;
@@ -128,6 +133,6 @@ public class IncantationStep extends ConditionalStep
         };
         String incantString = "Say the following in order: " + String.join(", ", incantationOrder);
         steps.get(null).getText().set(1, incantString);
-        startUpStep(this);
+        startUpStep(incantationStep);
     }
 }

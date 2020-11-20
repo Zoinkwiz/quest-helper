@@ -58,4 +58,11 @@ public class DialogChoiceSteps
 			currentChoice.highlightChoice(client);
         }
     }
+
+    /**
+     * Clears all choices previously set for this dialogs step.
+     */
+    public void ResetChoices() {
+	    choices.clear();
+    }
 }

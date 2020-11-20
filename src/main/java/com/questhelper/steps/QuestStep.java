@@ -62,7 +62,7 @@ public abstract class QuestStep implements Module
 	protected Client client;
 
 	@Inject
-	private ClientThread clientThread;
+	protected ClientThread clientThread;
 
 	@Inject
 	SpriteManager spriteManager;

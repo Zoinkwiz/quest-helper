@@ -341,7 +341,7 @@ public class LegendsQuest extends BasicQuestHelper
 		caveRoom4P2 = new Zone(new WorldPoint(2779, 9300, 0), new WorldPoint(2784, 9313, 0));
 		caveRoom4P3 = new Zone(new WorldPoint(2774, 9307, 0), new WorldPoint(2778, 9313, 0));
 		caveRoom5P1 = new Zone(new WorldPoint(2753, 9281, 0), new WorldPoint(2785, 9299, 0));
-		caveRoom5P2 = new Zone(new WorldPoint(2754, 9300, 0), new WorldPoint(2788, 9307, 0));
+		caveRoom5P2 = new Zone(new WorldPoint(2754, 9300, 0), new WorldPoint(2778, 9307, 0));
 		caveRoom5P3 = new Zone(new WorldPoint(2754, 9308, 0), new WorldPoint(2771, 9313, 0));
 		caveRoom6P1 = new Zone(new WorldPoint(2754, 9316, 0), new WorldPoint(2771, 9340, 0));
 		caveRoom6P2 = new Zone(new WorldPoint(2772, 9316, 0), new WorldPoint(2779, 9330, 0));

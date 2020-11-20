@@ -238,7 +238,7 @@ public class DetailedQuestStep extends QuestStep
 			if (requirement.getClass() == ItemRequirement.class && ((ItemRequirement) requirement).getAllIds().contains(item.getId()))
 			{
 				tileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
-				tileHighlights.get(tile).add(((ItemRequirement) requirement).getId());
+				tileHighlights.get(tile).add((itemSpawned.getItem().getId()));
 			}
 		}
 	}
@@ -248,11 +248,10 @@ public class DetailedQuestStep extends QuestStep
 	{
 		Tile tile = itemDespawned.getTile();
 
-		if (!tileHighlights.containsKey(tile))
+		if (tileHighlights.containsKey(tile))
 		{
-			return;
+			tileHighlights.get(tile).remove(Integer.valueOf(itemDespawned.getItem().getId()));
 		}
-		tileHighlights.get(tile).remove((Object) itemDespawned.getItem().getId());
 	}
 
 	@Subscribe

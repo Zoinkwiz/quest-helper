@@ -62,7 +62,7 @@ public class DialogChoiceSteps
     /**
      * Clears all choices previously set for this dialogs step.
      */
-    public void ResetChoices() {
+    public void resetChoices() {
 	    choices.clear();
     }
 }

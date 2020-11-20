@@ -72,7 +72,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 
 	DetailedQuestStep talkToReen, talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, enterPortal,
 		talkToDenath, talkToJennifer, talkToMatthew, smeltSigil, talkToGolem, readBook, enterRuinAfterBook, enterPortalAfterBook,
-		talkToMatthewAfterBook, talkToDenathForRitual, standInCircle, pickUpSigil, leavePortal, tellDaveToReturn, pickUpImplementAfterRitual,
+		talkToMatthewAfterBook, standInCircle, pickUpSigil, leavePortal, tellDaveToReturn, pickUpImplementAfterRitual,
 		goUpToBadden, talkToBaddenAfterRitual, talkToReenAfterRitual, talkToTheGolemAfterRitual, useImplementOnGolem, pickUpSigil2,
 		talkToGolemAfterReprogramming, enterRuinAfterRecruiting, enterPortalAfterRecruiting, talkToMatthewToStartFight, killDemon,
 		standInCircleAgain, enterRuinNoDark, enterRuinForRitual, enterPortalForRitual, enterRuinForDave, enterPortalForFight,
@@ -121,7 +121,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		steps.put(60, completeSubTasks);
 
 		ConditionalStep startRitual = new ConditionalStep(this, enterRuinForRitual);
-		startRitual.addStep(inThroneRoom, talkToDenathForRitual);
+		startRitual.addStep(inThroneRoom, talkToMatthewAfterBook);
 		startRitual.addStep(inRuin, enterPortalForRitual);
 		steps.put(70, startRitual);
 
@@ -179,7 +179,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		darkItems.addAlternates(ItemID.BLACK_DESERT_ROBE, ItemID.BLACK_CHAINBODY, ItemID.BLACK_PLATEBODY, ItemID.BLACK_PLATELEGS, ItemID.BLACK_FULL_HELM, ItemID.BLACK_MED_HELM, ItemID.BLACK_GLOVES, ItemID.PRIEST_GOWN, ItemID.PRIEST_GOWN_428, ItemID.MYSTIC_HAT_DARK,
 			ItemID.MYSTIC_ROBE_BOTTOM_DARK, ItemID.MYSTIC_ROBE_TOP_DARK, ItemID.GHOSTLY_BOOTS, ItemID.GHOSTLY_CLOAK, ItemID.GHOSTLY_GLOVES, ItemID.GHOSTLY_HOOD, ItemID.GHOSTLY_ROBE, ItemID.GHOSTLY_ROBE_6108, ItemID.SHADE_ROBE, ItemID.SHADE_ROBE_TOP, ItemID.ANTISANTA_BOOTS,
 			ItemID.ANTISANTA_GLOVES, ItemID.ANTISANTA_JACKET, ItemID.ANTISANTA_MASK, ItemID.ANTISANTA_PANTALOONS, ItemID.WIZARD_HAT, ItemID.BLACK_CAPE, ItemID.BLACK_PARTYHAT, ItemID.BLACK_HWEEN_MASK, ItemID.BLACK_DRAGON_MASK, ItemID.BLACK_UNICORN_MASK, ItemID.BLACK_DEMON_MASK,
-			ItemID.BLACK_DHIDE_BODY, ItemID.BLACK_DHIDE_CHAPS, ItemID.BLACK_DHIDE_VAMBRACES);
+			ItemID.BLACK_DHIDE_BODY, ItemID.BLACK_DHIDE_CHAPS, ItemID.BLACK_DHIDE_VAMBRACES, ItemID.BLACK_ROBE);
 		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
 		silverlight.setTip("You can get another from Father Reen in Al Kharid if you've lost it");
 		strangeImplement = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
@@ -266,14 +266,12 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		enterRuinAfterBook = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyed, book, sigil);
 		enterPortalAfterBook = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal.", book, sigil);
 
-		talkToMatthewAfterBook = new NpcStep(this, NpcID.MATTHEW, new WorldPoint(2727, 4897, 2), "Bring the book to Matthew in the Demon Throne Room.", book);
+		talkToMatthewAfterBook = new NpcStep(this, NpcID.MATTHEW, new WorldPoint(2727, 4897, 2), "Bring the book to Matthew in the Demon Throne Room. Afterwards Denath should start the ritual. If he doesn't, leave and re-enter the throne room and talk to Matthew again.", book);
 		talkToMatthewAfterBook.addSubSteps(enterRuinAfterBook, enterPortalAfterBook);
 
 		enterRuinForRitual = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", sigil, silverlightDyed, combatGear);
 		enterPortalForRitual = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal.");
 
-		talkToDenathForRitual = new NpcStep(this, NpcID.DENATH, new WorldPoint(2720, 4912, 2), "Talk to Denath next to the throne.");
-		talkToDenathForRitual.addSubSteps(enterRuinForRitual, enterPortalForRitual);
 		standInCircle = new DetailedQuestStep(this, new WorldPoint(2718, 4902, 2), "Stand in the correct spot in the circle.", sigil);
 		readIncantation = new IncantationStep(this, true);
 		pickUpSigil = new ItemStep(this, "Pick up the sigil.", sigil);
@@ -346,7 +344,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToReen))));
 		allSteps.add(new PanelDetails("Infiltrate the cult", new ArrayList<>(Arrays.asList(talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, talkToJennifer, talkToMatthew)), silverlight, darkItems));
-		allSteps.add(new PanelDetails("Uncovering the truth", new ArrayList<>(Arrays.asList(smeltSigil, talkToGolem, searchKiln, readBook, talkToMatthewAfterBook, talkToDenathForRitual, standInCircle, readIncantation)), silverBar, silverlightDyed, combatGear));
+		allSteps.add(new PanelDetails("Uncovering the truth", new ArrayList<>(Arrays.asList(smeltSigil, talkToGolem, searchKiln, readBook, talkToMatthewAfterBook, standInCircle, readIncantation)), silverBar, silverlightDyed, combatGear));
 		allSteps.add(new PanelDetails("Defeating Agrith-Naar", new ArrayList<>(Arrays.asList(pickUpSigil, leavePortal, pickUpSigil2, tellDaveToReturn, talkToBaddenAfterRitual, talkToReenAfterRitual, talkToTheGolemAfterRitual, useImplementOnGolem, talkToGolemAfterReprogramming,
 			talkToMatthewToStartFight, standInCircleAgain, incantRitual, killDemon, unequipDarklight)), silverlightDyed, combatGear));
 		return allSteps;

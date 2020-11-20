@@ -105,7 +105,7 @@ public class IncantationStep extends ConditionalStep
 
 		// As the incantation have all the same dialogs we want to reset the choices after each dialog
 		// as we want only the correct one to be highlighted
-		choices.ResetChoices();
+		choices.resetChoices();
 		addDialogStep(incantationOrder[incantationPosition]);
 		incantationPosition++;
 	}

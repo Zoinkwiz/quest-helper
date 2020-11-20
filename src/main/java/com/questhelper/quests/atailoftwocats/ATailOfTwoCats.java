@@ -134,7 +134,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		deathRune5 = new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 5);
 		catItem = new ItemRequirement("Any cat", ItemCollections.getCats());
 		catFollower = new FollowerRequirement("Any cat following you", NpcCollections.getCats());
-		cat = new Requirements(LogicType.OR, "Any cat", cat, catFollower);
+		cat = new Requirements(LogicType.OR, "Any cat", catItem, catFollower);
 
 		chocolateCake = new ItemRequirement("Chocolate cake", ItemID.CHOCOLATE_CAKE);
 		chocolateCake.setHighlightInInventory(true);

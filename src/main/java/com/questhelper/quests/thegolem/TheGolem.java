@@ -238,7 +238,7 @@ public class TheGolem extends BasicQuestHelper
 		talkToGolem.addDialogStep("Shall I try to repair you?");
 		useClay = new NpcStep(this, NpcID.DAMAGED_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 4 soft clay on the Golem in Uzer.", clay4Highlight);
 		useClay.addIcon(ItemID.SOFT_CLAY);
-		useClay2 = new NpcStep(this, NpcID.DAMAGED_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 3 soft clay on the Golem in Uzer.", clay3Highlight);
+		useClay2 = new NpcStep(this, NpcID.BROKEN_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 3 soft clay on the Golem in Uzer.", clay3Highlight);
 		useClay2.addIcon(ItemID.SOFT_CLAY);
 		useClay3 = new NpcStep(this, NpcID.DAMAGED_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 2 soft clay on the Golem in Uzer.", clay2Highlight);
 		useClay3.addIcon(ItemID.SOFT_CLAY);
@@ -250,7 +250,7 @@ public class TheGolem extends BasicQuestHelper
 		talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north east of the Digsite.");
 		talkToElissa.addDialogStep("I found a letter in the desert with your name on.");
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_6292, new WorldPoint(3367, 3332, 0), "Search the bookcase in the south east corner of the Digsite Exam Centre.");
-		readBook = new DetailedQuestStep(this, "Read the notes.");
+		readBook = new DetailedQuestStep(this, "Read the notes.", notesHighlight);
 		talkToCurator = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum.");
 		talkToCurator.addDialogStep("I'm looking for a statuette recovered from the city of Uzer.");
 		pickpocketCurator = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig.");

@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ItemRequirement extends Requirement
@@ -242,7 +243,7 @@ public class ItemRequirement extends Requirement
 
 		if (equipped != null)
 		{
-			tempQuantity = getNumMatches(equipped, tempQuantity, itemID);
+			tempQuantity -= getNumMatches(equipped, itemID);
 		}
 
 		if (!checkEquippedOnly)
@@ -250,31 +251,24 @@ public class ItemRequirement extends Requirement
 			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 			if (inventory != null)
 			{
-				tempQuantity -= (quantity - getNumMatches(inventory, tempQuantity, itemID));
+				tempQuantity -= getNumMatches(inventory, itemID);
 			}
 		}
 
 		return tempQuantity;
 	}
 
-	public int getNumMatches(ItemContainer items, int startQuantity, int itemID)
+	public int getNumMatches(ItemContainer items, int itemID)
 	{
-		int tempQuantity = startQuantity;
+		int tempQuantity = 0;
 
-		Item[] equippedItems = items.getItems();
+		Item[] containerItems = items.getItems();
 
-		for (Item item : equippedItems)
+		for (Item item : containerItems)
 		{
 			if (item.getId() == itemID)
 			{
-				if (item.getQuantity() >= tempQuantity)
-				{
-					return tempQuantity - item.getQuantity();
-				}
-				else
-				{
-					tempQuantity -= item.getQuantity();
-				}
+				tempQuantity += item.getQuantity();
 			}
 		}
 		return tempQuantity;

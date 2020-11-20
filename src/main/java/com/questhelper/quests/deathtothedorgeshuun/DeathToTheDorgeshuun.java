@@ -113,7 +113,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		steps.put(3, takeZanikAbout);
 
 		ConditionalStep infiltrateTheHam = new ConditionalStep(this, goHaveZanikFollow);
-		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase, heardSpeaker), standNearTrapdoor);
+		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase, talkedToJohn, heardSpeaker), standNearTrapdoor);
 		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase, talkedToJohn), listenToSpeaker);
 		infiltrateTheHam.addStep(new Conditions(zanikIsFollowing, inHamBase), talkToJohanhus);
 		infiltrateTheHam.addStep(zanikIsFollowing, goIntoHamLair);

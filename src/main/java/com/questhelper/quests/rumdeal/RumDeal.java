@@ -452,4 +452,3 @@ public class RumDeal extends BasicQuestHelper
 		return allSteps;
 	}
 }
-

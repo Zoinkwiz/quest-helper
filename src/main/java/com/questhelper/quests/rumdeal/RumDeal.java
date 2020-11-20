@@ -25,6 +25,7 @@
 package com.questhelper.quests.rumdeal;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -61,6 +62,8 @@ public class RumDeal extends BasicQuestHelper
 {
 	ItemRequirement combatGear, dibber, rake, slayerGloves, blindweedSeed, rakeHighlight, blindweedSeedHighlight, blindweed, blindweedHighlight, bucket, bucketHighlight,
 		stagnantWater, stagnantWaterHighlight, netBowl, sluglings5, holyWrench, wrench, spiderCarcass, spiderCarcassHighlight, swill;
+
+	Requirement prayerPoints47;
 
 	ConditionForStep onIsland, onIslandF1, onIslandF2, onIslandF0, rakedPatch, plantedPatch, grownPatch, hasBlindweed, onNorthIsland, hasStagnantWater, added5Sluglings,
 		inSpiderRoom, hasHolyWrench, evilSpiritNearby, hasSpiderCarcass, hasSwill, carcassNearby;
@@ -275,6 +278,8 @@ public class RumDeal extends BasicQuestHelper
 		spiderCarcassHighlight.setHighlightInInventory(true);
 
 		swill = new ItemRequirement("Unsanitary swill", ItemID.UNSANITARY_SWILL);
+
+		prayerPoints47 = new ItemRequirement("47 prayer points", -1, -1);
 	}
 
 	public void loadZones()
@@ -384,7 +389,7 @@ public class RumDeal extends BasicQuestHelper
 		talkToDavey = new NpcStep(this, NpcID.DAVEY, new WorldPoint(2132, 5100, 1), "Talk to Davey south west of Captain Braindeath.", wrench);
 		useWrenchOnControl = new ObjectStep(this, NullObjectID.NULL_10104, new WorldPoint(2144, 5101, 1), "Use the holy wrench on the brewing control. Be prepared to fight an evil spirit.", holyWrench);
 		useWrenchOnControl.addIcon(ItemID.HOLY_WRENCH);
-		killSpirit = new NpcStep(this, NpcID.EVIL_SPIRIT, "Kill the Evil Spirit.");
+		killSpirit = new NpcStep(this, NpcID.EVIL_SPIRIT, "Kill the Evil Spirit.", prayerPoints47);
 
 		goUpFromSpiders = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Go up the ladder.");
 
@@ -398,7 +403,6 @@ public class RumDeal extends BasicQuestHelper
 		dropSpider = new ObjectStep(this, ObjectID.HOPPER_10170, new WorldPoint(2142, 5102, 2), "Add the spider body to the hopper on the top floor.", spiderCarcassHighlight);
 		dropSpider.addIcon(ItemID.FEVER_SPIDER_BODY);
 		dropSpider.addSubSteps(goUpFromSpidersWithCorpse, goUpToDropSpider);
-
 
 		goDownAfterSpider = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
 		talkToBraindeathAfterSpider = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");

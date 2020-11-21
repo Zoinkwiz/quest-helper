@@ -31,6 +31,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.concurrent.locks.Condition;
+
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
@@ -81,6 +83,14 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		this.requirements = requirements;
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
+	}
+
+	public ConditionalStep(QuestHelper questHelper, Conditions conditions, QuestStep step, Requirement... requirements)
+	{
+		super(questHelper);
+		this.requirements = requirements;
+		this.steps = new LinkedHashMap<>();
+		this.steps.put(conditions, step);
 	}
 
 	public void addStep(Conditions conditions, QuestStep step)

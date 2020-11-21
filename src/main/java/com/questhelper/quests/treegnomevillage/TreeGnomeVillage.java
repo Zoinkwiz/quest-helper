@@ -159,7 +159,6 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToKingBolren.addDialogStep("Can I help at all?");
 		talkToKingBolren.addDialogStep("I would be glad to help.");
 
-
 		talkToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai.");
 		talkToCommanderMontai.addDialogStep("Ok, I'll gather some wood.");
 

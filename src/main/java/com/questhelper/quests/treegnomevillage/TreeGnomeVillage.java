@@ -47,20 +47,20 @@ import java.util.*;
 )
 public class TreeGnomeVillage extends BasicQuestHelper
 {
-
-	QuestStep talkToKingBolren, talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
-		firstTracker, secondTracker, thirdTracker, fireBallista, climbTheLadder, getOrbFromChest, talkToKingBolrenFirstOrb,
+	private QuestStep talkToKingBolren, talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
+		firstTracker, secondTracker, thirdTracker, fireBallista, climbTheLadder, talkToKingBolrenFirstOrb,
 		talkToTheWarlord, fightTheWarlord, returnOrbs;
 
-	ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker,
+	private ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker,
 		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker;
 
 	private Conditions talkToFirstTracker, talkToSecondTracker, talkToThirdTracker, shouldFireBallista;
 
+	private ConditionalStep retrieveOrb;
+
 	Zone upstairsTower;
 	ZoneCondition isUpstairsTower;
 	ItemRequirement logRequirement;
-	ItemCondition hasOrb;
 
 	private final int TRACKER_1_VARBITID = 599;
 	private final int TRACKER_2_VARBITID = 600;
@@ -103,10 +103,11 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep retrieveOrbStep()
 	{
-		ConditionalStep retrieveOrb = new ConditionalStep(this, climbTheLadder);
-		getOrbFromChest = new ObjectStep(this, 2183, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
+		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Retrieve the first orb from chest.");
+		ObjectStep getOrbFromChest = new ObjectStep(this, 2183, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
 		retrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
-		return retrieveOrbStep();
+		retrieveOrb.addSubSteps(getOrbFromChest, climbTheLadder);
+		return retrieveOrb;
 	}
 
 	private QuestStep defeatWarlordStep()
@@ -116,8 +117,11 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7622, new WorldPoint(2456, 3301, 0), "Defeat the warlord and retrieve orbs");
 		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7621, new WorldPoint(2456, 3301, 0), "Retrieve the orbs from the warlord.");
 
-		ConditionalStep defeatTheWarlord = new ConditionalStep(this, talkToTheWarlord);
+		ConditionalStep defeatTheWarlord = new ConditionalStep(this, talkToTheWarlord,
+			new ItemRequirement("Food", -1),
+			new ItemRequirement("Armor & Weapons", -1));
 		defeatTheWarlord.addStep(fightingWarlord, fightTheWarlord);
+
 		return defeatTheWarlord;
 	}
 
@@ -155,6 +159,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToKingBolren.addDialogStep("Can I help at all?");
 		talkToKingBolren.addDialogStep("I would be glad to help.");
 
+
 		talkToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai.");
 		talkToCommanderMontai.addDialogStep("Ok, I'll gather some wood.");
 
@@ -171,7 +176,11 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		climbTheLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2503, 3252, 0), "Climb the ladder");
 
-		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		ItemRequirement firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
+		firstOrb.setTip("If you have lost the orb you can get another from the chest");
+		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
+			"Speak to King Bolren in the centre of the Tree Gnome Maze.",
+			firstOrb);
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
 
 		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.");
@@ -181,11 +190,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> steps = new ArrayList<>();
+
 		steps.add(new PanelDetails("Getting started", new ArrayList<>(Arrays.asList(talkToKingBolren))));
 		steps.add(new PanelDetails("The three trackers", new ArrayList<>(Arrays.asList(
 			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 			firstTracker, secondTracker, thirdTracker, fireBallista)), logRequirement));
-		steps.add(new PanelDetails("Retrieving the orbs", new ArrayList<>(Arrays.asList(getOrbFromChest, talkToKingBolrenFirstOrb,
+		steps.add(new PanelDetails("Retrieving the orbs", new ArrayList<>(Arrays.asList(retrieveOrb, talkToKingBolrenFirstOrb,
 			talkToTheWarlord, fightTheWarlord, returnOrbs))));
 		return steps;
 	}

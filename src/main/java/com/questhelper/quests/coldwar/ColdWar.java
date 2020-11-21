@@ -271,13 +271,13 @@ public class ColdWar extends BasicQuestHelper
 
 		talkToLarryInRelleka = new NpcStep(this, NpcID.LARRY_828, "Talk to Larry in Relleka.");
 
-		enterPoh = new DetailedQuestStep(this, "Travel to your POH or another POH with a Crafting table 3 or 4.", clockworkOrSteelBar);
+		enterPoh = new DetailedQuestStep(this, "Travel to your POH or another POH with a Crafting table 3 or 4.", clockworkOrSteelBar, plank, silk);
 
 		makeClockwork = new ObjectStep(this, ObjectID.CLOCKMAKERS_BENCH_6798, "Craft a steel bar into a clockwork at a crafting table 3.", steelBar);
 		makeClockwork.addDialogStep("Clockwork mechanism");
 		((ObjectStep)makeClockwork).addAlternateObjects(ObjectID.CLOCKMAKERS_BENCH_6799);
 
-		makePenguin = new ObjectStep(this, ObjectID.CLOCKMAKERS_BENCH_6798, "Craft a clockwork penguin at a crafting table 3.", clockwork);
+		makePenguin = new ObjectStep(this, ObjectID.CLOCKMAKERS_BENCH_6798, "Craft a clockwork penguin at a crafting table 3 or 4.", clockwork, plank, silk);
 		makePenguin.addDialogStep("Clockwork toy");
 		makePenguin.addDialogStep("Clockwork penguin");
 		((ObjectStep)makePenguin).addAlternateObjects(ObjectID.CLOCKMAKERS_BENCH_6799);

@@ -204,7 +204,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		ringBell = new ObjectStep(this, ObjectID.BELL_6847, new WorldPoint(2598, 3085, 0), "Ring the bell outside the Wizards' Guild in Yanille. Talk to Zavistic Rarve when he appears.", beerHand);
 		talkToBertAboutRota = new NpcStep(this, NpcID.BERT, new WorldPoint(2551, 3099, 0), "Return to Bert in west Yanille.");
 
-		searchSandysDesk = new ObjectStep(this, ObjectID.SANDYS_DESK, new WorldPoint(2788, 3175, 0), "Travel to Brimhaven, then enter Sandy's building south of the restaurant. Search Sandy's desk for Sandy's rota.");
+		searchSandysDesk = new ObjectStep(this, ObjectID.SANDYS_DESK, new WorldPoint(2789, 3174, 0), "Travel to Brimhaven, then enter Sandy's building south of the restaurant. Search Sandy's desk for Sandy's rota.");
 
 		pickpocketSandy = new NpcStep(this, NpcID.SANDY, new WorldPoint(2790, 3175, 0), "Pickpocket Sandy for some sand.");
 		talkToBertAboutScroll = new NpcStep(this, NpcID.BERT, new WorldPoint(2551, 3099, 0), "Return to Bert in west Yanille with the rota and sand.", bertsRota, sandysRota);
@@ -222,7 +222,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		talkToBettyAgain = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3014, 3258, 0), "Talk to Betty with the pink lens.");
 		talkToBettyAgain.addDialogStep("Talk to Betty about the Hand in the Sand.");
 
-		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3015, 3259, 0), "Stand in the Betty's doorway and use the rose-tinted lens on the counter.");
+		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in the Betty's doorway and use the rose-tinted lens on the counter.");
 		useLensOnCounter = new ObjectStep(this, ObjectID.COUNTER, new WorldPoint(3013, 3259, 0), "\"Stand in the Betty's doorway and use the rose-tinted lens on the counter.", roseLens);
 		useLensOnCounter.addIcon(ItemID.ROSE_TINTED_LENS);
 		useLensOnCounter.addSubSteps(standInDoorway);

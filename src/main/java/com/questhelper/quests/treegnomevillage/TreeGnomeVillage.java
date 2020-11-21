@@ -186,6 +186,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<ItemRequirement> getItemRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(logRequirement));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> steps = new ArrayList<>();

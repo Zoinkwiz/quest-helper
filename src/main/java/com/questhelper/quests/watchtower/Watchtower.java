@@ -140,7 +140,7 @@ public class Watchtower extends BasicQuestHelper
 
 		steps.put(5, getCrystal1);
 
-		ConditionalStep goTalkToScaredSkavid = new ConditionalStep(this, syncStep);
+		ConditionalStep goTalkToScaredSkavid = new ConditionalStep(this, enterScaredSkavidCave);
 		goTalkToScaredSkavid.addStep(new Conditions(talkedToSkavid1, talkedToSkavid2, talkedToSkavid3, talkedToSkavid4, inInsaneSkavidRoom), talkToInsaneSkavid);
 		goTalkToScaredSkavid.addStep(new Conditions(talkedToSkavid1, talkedToSkavid2, talkedToSkavid3, talkedToSkavid4, inInsaneSkavidPath), enterInsaneSkavidCave);
 		goTalkToScaredSkavid.addStep(new Conditions(talkedToSkavid1, talkedToSkavid2, talkedToSkavid3, talkedToSkavid4), tryToGoThroughToInsaneSkavid);
@@ -157,7 +157,7 @@ public class Watchtower extends BasicQuestHelper
 		goTalkToScaredSkavid.addStep(new Conditions(talkedToScaredSkavid, talkedToSkavid1, talkedToSkavid2), enterSkavid3Cave);
 		goTalkToScaredSkavid.addStep(new Conditions(talkedToScaredSkavid, talkedToSkavid1), enterSkavid2Cave);
 		goTalkToScaredSkavid.addStep(talkedToScaredSkavid, enterSkavid1Cave);
-		goTalkToScaredSkavid.addStep(new Conditions(LogicType.OR, hasBeenAtEndOfPath, inScaredSkavidRoom), talkToScaredSkavid);
+		goTalkToScaredSkavid.addStep(inScaredSkavidRoom, talkToScaredSkavid);
 
 		steps.put(6, goTalkToScaredSkavid);
 

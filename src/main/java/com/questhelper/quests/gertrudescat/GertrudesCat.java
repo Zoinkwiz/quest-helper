@@ -48,7 +48,8 @@ public class GertrudesCat extends BasicQuestHelper
 		return getSteps();
 	}
 
-	private Map<Integer, QuestStep> getSteps() {
+	private Map<Integer, QuestStep> getSteps()
+	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToGertrude = getTalkToGertrude());
@@ -60,12 +61,14 @@ public class GertrudesCat extends BasicQuestHelper
 		return steps;
 	}
 
-	private NpcStep returnToGertrude() {
+	private NpcStep returnToGertrude()
+	{
 		return new NpcStep(this, NpcID.GERTRUDE,
-			new WorldPoint(3148,3413, 0), "Talk to Gertrude.");
+			new WorldPoint(3148, 3413, 0), "Talk to Gertrude.");
 	}
 
-	private QuestStep findFluffsKitten() {
+	private QuestStep findFluffsKitten()
+	{
 
 		//Need to find to ways to hide arrow
 		searchNearbyCrates = new NpcStep(this, NpcID.CRATE,
@@ -88,12 +91,14 @@ public class GertrudesCat extends BasicQuestHelper
 		return conditionalKitten;
 	}
 
-	private ObjectStep goDownLadderStep(){
-		return new ObjectStep(this, ObjectID.LADDER_11795, new WorldPoint(3310,3509,1)
+	private ObjectStep goDownLadderStep()
+	{
+		return new ObjectStep(this, ObjectID.LADDER_11795, new WorldPoint(3310, 3509, 1)
 			, "Climb down ladder");
 	}
 
-	private QuestStep getFeedCat() {
+	private QuestStep getFeedCat()
+	{
 		gertrudesCat2 = getGertrudesCat("Use seasoned Sardine on Gertrudes cat.");
 		gertrudesCat2.addIcon(ItemID.SEASONED_SARDINE);
 
@@ -107,7 +112,8 @@ public class GertrudesCat extends BasicQuestHelper
 		return lumberyard;
 	}
 
-	private QuestStep getLumberyard() {
+	private QuestStep getLumberyard()
+	{
 		gertrudesCat = getGertrudesCat("Use bucket of milk on Gertrudes cat.");
 		gertrudesCat.addIcon(ItemID.BUCKET_OF_MILK);
 
@@ -121,22 +127,26 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 
-	private NpcStep getGertrudesCat(String text) {
+	private NpcStep getGertrudesCat(String text)
+	{
 		return new NpcStep(this, NpcID.GERTRUDES_CAT_3497,
-			new WorldPoint(3308,3511,1), text, bucketOfMilk);
+			new WorldPoint(3308, 3511, 1), text, bucketOfMilk);
 	}
-	private QuestStep getTalkToChildren() {
+
+	private QuestStep getTalkToChildren()
+	{
 		NpcStep talkToChildren = new NpcStep(this, NpcID.SHILOP,
-			new WorldPoint(3222,3435, 0), "Talk to Shilop or Wilough.", true, coins);
+			new WorldPoint(3222, 3435, 0), "Talk to Shilop or Wilough.", true, coins);
 		talkToChildren.addAlternateNpcs(NpcID.WILOUGH);
 		talkToChildren.addDialogStep("What will make you tell me?");
 		talkToChildren.addDialogStep("Okay then, I'll pay.");
 		return talkToChildren;
 	}
 
-	private QuestStep getTalkToGertrude() {
+	private QuestStep getTalkToGertrude()
+	{
 		NpcStep talkToGertrude = new NpcStep(this, NpcID.GERTRUDE,
-			new WorldPoint(3148,3413, 0), "Talk to Gertrude.");
+			new WorldPoint(3148, 3413, 0), "Talk to Gertrude.");
 		talkToGertrude.addDialogStep("Yes.");
 		return talkToGertrude;
 	}
@@ -144,22 +154,26 @@ public class GertrudesCat extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK, 1);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 100);;
+		coins = new ItemRequirement("Coins", ItemID.COINS_995, 100);
+		;
 		seasonedSardine = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE, 1);
 		seasonedSardine.setTip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
 	}
 
-	private void setupZones() {
-		Zone zone = new Zone(new WorldPoint(3306,3507,12), new WorldPoint(3312,3513, 1));
+	private void setupZones()
+	{
+		Zone zone = new Zone(new WorldPoint(3306, 3507, 12), new WorldPoint(3312, 3513, 1));
 
 		isUpstairsLumberyard = new ZoneCondition(zone);
 	}
 
-	private void setupConditions() {
+	private void setupConditions()
+	{
 		hasFluffsKitten = new ItemRequirementCondition(new ItemRequirement("Fluffs Kitten", ItemID.FLUFFS_KITTEN, 1));
 	}
 
-	private ObjectStep getClimbLadder() {
+	private ObjectStep getClimbLadder()
+	{
 		return new ObjectStep(this, ObjectID.LADDER_11794,
 			new WorldPoint(3310, 3509, 0), "Climb ladder");
 	}
@@ -181,7 +195,7 @@ public class GertrudesCat extends BasicQuestHelper
 		steps.add(startingPanel);
 
 		PanelDetails lumberYardPanel = new PanelDetails("The secret playground (Lumber Yard)",
-			new ArrayList<>(Arrays.asList(gertrudesCat, gertrudesCat2, searchNearbyCrates, giveKittenToFluffy )),
+			new ArrayList<>(Arrays.asList(gertrudesCat, gertrudesCat2, searchNearbyCrates, giveKittenToFluffy)),
 			seasonedSardine, bucketOfMilk);
 		steps.add(lumberYardPanel);
 

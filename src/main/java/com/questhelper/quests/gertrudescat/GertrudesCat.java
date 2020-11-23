@@ -75,9 +75,13 @@ public class GertrudesCat extends BasicQuestHelper
 			"Search for a kitten.", true);
 		ObjectStep climbDownLadderStep = goDownLadderStep();
 		ObjectStep climbUpLadderStep = getClimbLadder();
+		ArrayList<ItemRequirement> fluffsKittenRequirement = new ArrayList();
+		fluffsKittenRequirement.add(new ItemRequirement("Fluffs Kitten", ItemID.FLUFFS_KITTEN));
+
+		climbUpLadderStep.addItemRequirements(fluffsKittenRequirement);
 		Conditions hasFluffsKittenUpstairs = new Conditions(hasFluffsKitten, isUpstairsLumberyard);
 
-		giveKittenToFluffy = getGertrudesCat("Return the kitten to Gertrude's Cat");
+		giveKittenToFluffy = getGertrudesCat("Return the kitten to Gertrude's Cat", new ItemRequirement("Fluffs Kitten", ItemID.FLUFFS_KITTEN));
 		giveKittenToFluffy.addIcon(ItemID.FLUFFS_KITTEN);
 
 		ConditionalStep conditionalKitten = new ConditionalStep(this, searchNearbyCrates);
@@ -99,7 +103,7 @@ public class GertrudesCat extends BasicQuestHelper
 
 	private QuestStep getFeedCat()
 	{
-		gertrudesCat2 = getGertrudesCat("Use seasoned Sardine on Gertrudes cat.");
+		gertrudesCat2 = getGertrudesCat("Use seasoned Sardine on Gertrudes cat.", null);
 		gertrudesCat2.addIcon(ItemID.SEASONED_SARDINE);
 
 		ObjectStep climbLadder = new ObjectStep(this, ObjectID.LADDER_11794,
@@ -114,7 +118,7 @@ public class GertrudesCat extends BasicQuestHelper
 
 	private QuestStep getLumberyard()
 	{
-		gertrudesCat = getGertrudesCat("Use bucket of milk on Gertrudes cat.");
+		gertrudesCat = getGertrudesCat("Use bucket of milk on Gertrudes cat.", new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK));
 		gertrudesCat.addIcon(ItemID.BUCKET_OF_MILK);
 
 		ObjectStep climbLadder = getClimbLadder();
@@ -127,10 +131,18 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 
-	private NpcStep getGertrudesCat(String text)
+	private NpcStep getGertrudesCat(String text, ItemRequirement requirement)
 	{
-		return new NpcStep(this, NpcID.GERTRUDES_CAT_3497,
-			new WorldPoint(3308, 3511, 1), text, bucketOfMilk);
+		if (requirement == null)
+		{
+			return new NpcStep(this, NpcID.GERTRUDES_CAT_3497,
+				new WorldPoint(3308, 3511, 1), text);
+		}
+		else
+		{
+			return new NpcStep(this, NpcID.GERTRUDES_CAT_3497,
+				new WorldPoint(3308, 3511, 1), text, requirement);
+		}
 	}
 
 	private QuestStep getTalkToChildren()
@@ -155,7 +167,7 @@ public class GertrudesCat extends BasicQuestHelper
 	{
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK, 1);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995, 100);
-		;
+
 		seasonedSardine = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE, 1);
 		seasonedSardine.setTip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
 	}

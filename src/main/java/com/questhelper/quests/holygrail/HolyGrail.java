@@ -247,7 +247,7 @@ public class HolyGrail extends BasicQuestHelper
 
 		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.");
 		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3348, 0), "Talk to the High Priest.");
-		talkToHighPriest.addDialogStep("Ok, I will go searching.");
+		talkToHighPriest.addDialogSteps("Ask about the Holy Grail Quest", "Ok, I will go searching.");
 
 		goToGalahad = new DetailedQuestStep(this, new WorldPoint(2612, 3475, 0), "Travel to Galahad's House. His house is west of McGrubor's Woods.");
 		talkToGalahad = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3475, 0), "Talk to Galahad.");
@@ -266,12 +266,12 @@ public class HolyGrail extends BasicQuestHelper
 		blowWhistle1 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle1, excalibur);
 
 		attackTitan = new NpcStep(this, NpcID.BLACK_KNIGHT_TITAN, "Kill the Black Knight Titan with Excalibur. (You only need to deal the killing blow with excalibur!)", twoMagicWhistles, excalibur);
-		talkToFisherman = new NpcStep(this, NpcID.FISHERMAN_4065, "Talk to the fisherman by the river. After talking to him walk West to the castle.");
+		talkToFisherman = new NpcStep(this, NpcID.FISHERMAN_4065, new WorldPoint(2798, 4706, 0), "Talk to the fisherman by the river. After talking to him walk West to the castle.");
 		talkToFisherman.addDialogStep("Any idea how to get into the castle?");
 		pickupBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Pickup the bell outside of the castle.");
 		ringBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Ring the grail bell directly north of the broken castle wall (Where you picked up the bell)", highlightGrailBell);
 		ringBell.addIcon(ItemID.GRAIL_BELL);
-		goUpStairsBrokenCastle = new ObjectStep(this, ObjectID.STAIRCASE_16671, "Go up the stairs inside of the castle.");
+		goUpStairsBrokenCastle = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2762, 4681, 0), "Go up the stairs inside of the castle.");
 		talkToFisherKing = new NpcStep(this, NpcID.THE_FISHER_KING, "Talk to The Fisher King.");
 		talkToFisherKing.addDialogStep("You don't look too well.");
 

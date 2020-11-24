@@ -296,7 +296,7 @@ public class ObjectStep extends DetailedQuestStep
 	@Override
 	public void renderArrow(Graphics2D graphics)
 	{
-		if (object == null || ! hideWorldArrow)
+		if (object == null || hideWorldArrow)
 		{
 			return;
 		}

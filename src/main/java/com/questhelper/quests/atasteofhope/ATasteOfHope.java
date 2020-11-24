@@ -71,7 +71,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain, useMeatOnBlood, useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes,
 		enterBaseAfterSerafina, killAbomination, enterOldManRalBasement, talkToSafalaanInRalBasement, talkToVertidaInRalBasement, readFlaygianNotes, getSickle, getChain,
 		useEmeraldOnSickle, enchantSickle, addSickleToRod, talkToSafalaanAfterFlail, talkToKael, killRanis, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd,
-		talkToSafalaanForAbominationFight, talkToSafalaanAfterAbominationFight, enterRalWithFlail, talkToKaelSidebar;
+		talkToSafalaanForAbominationFight, talkToSafalaanAfterAbominationFight, enterRalWithFlail, talkToKaelSidebar, killRanisSidebar;
 
 	Zone myrequeBase, theatreP1, theatreP2, theatreP3, theatreP4, theatreP5, theatreP6, serafinaHouse, newBase, ranisFight;
 
@@ -232,7 +232,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
 		rodOfIvandis.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
 			ItemID.ROD_OF_IVANDIS_6, ItemID.ROD_OF_IVANDIS_7, ItemID.ROD_OF_IVANDIS_8, ItemID.ROD_OF_IVANDIS_9);
-		rodOfIvandis.setTip("You can get another from Veliaf Hurtz in Burgh de Rott");
+		rodOfIvandis.setTip("You can get another from Veliaf Hurtz in Burgh de Rott AFTER talking to Verdita in Old Man Ral's basement");
 
 		rodOfIvandisHighlighted = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
 		rodOfIvandisHighlighted.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
@@ -476,12 +476,17 @@ public class ATasteOfHope extends BasicQuestHelper
 		talkToKaelSidebar = new NpcStep(this, NpcID.KAEL_FORSHAW_8231, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood, prepared to fight Ranis.", ivandisFlailEquipped);
 		talkToKaelSidebar.addSubSteps(talkToKael);
 
-		killRanis = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis.", ivandisFlailEquipped);
+		killRanisSidebar = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis.", ivandisFlailEquipped);
+		((NpcStep)(killRanisSidebar)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
+		killRanisSidebar.addText("He can only be hurt by the flail, and uses magic and melee attacks.");
+		killRanisSidebar.addText("He will occasionally charge an attack and explode, dealing damage close to him. Just run away for this attack.");
+		killRanisSidebar.addText("During the fight he will spawn vyrewatch which you'll need to kill. Whilst fighting them Ranis will be throwing blood bombs at your current location, so make sure to move around.");
+		killRanisSidebar.addText("In his last phase he will only attack with melee, so make sure to use protect from melee!");
+
+
+		killRanis = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His various mechanics are listed in the helper's sidebar.", ivandisFlailEquipped);
 		((NpcStep)(killRanis)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
-		killRanis.addText("He can only be hurt by the flail, and uses magic and melee attacks.");
-		killRanis.addText("He will occasionally charge an attack and explode, dealing damage close to him. Just run away for this attack.");
-		killRanis.addText("During the fight he will spawn vyrewatch which you'll need to kill. Whilst fighting them Ranis will be throwing blood bombs at your current location, so make sure to move around.");
-		killRanis.addText("In his last phase he will only attack with melee, so make sure to use protect from melee!");
+		killRanisSidebar.addSubSteps(killRanis);
 
 		talkToKaelAgain = new NpcStep(this, NpcID.KAEL_FORSHAW_8231, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood again.");
 		enterRalForEnd = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.");
@@ -512,7 +517,7 @@ public class ATasteOfHope extends BasicQuestHelper
 			enterBaseAfterSerafina, talkToSafalaanForAbominationFight, killAbomination, talkToSafalaanAfterAbominationFight)), combatGear, vialOfWater));
 		allSteps.add(new PanelDetails("Plotting revenge", new ArrayList<>(Arrays.asList(enterOldManRalBasement, talkToSafalaanInRalBasement, talkToVertidaInRalBasement, readFlaygianNotes, getSickle, getChain, useEmeraldOnSickle,
 			enchantSickle, addSickleToRod, talkToSafalaanAfterFlail)), emerald, chisel, enchantEmeraldRunesOrTablet));
-		allSteps.add(new PanelDetails("Rising up", new ArrayList<>(Arrays.asList(talkToKaelSidebar, killRanis, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd)), combatGear, ivandisFlail));
+		allSteps.add(new PanelDetails("Rising up", new ArrayList<>(Arrays.asList(talkToKaelSidebar, killRanisSidebar, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd)), combatGear, ivandisFlail));
 		return allSteps;
 	}
 }

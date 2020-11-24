@@ -94,7 +94,7 @@ public class MurderMystery extends BasicQuestHelper
 		investigating.addStep(new Conditions(hasKillersPrint), new SolvingTheCrimeStep(this, remainingSteps));
 
 		/* compare prints */
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsThread2, hasUnknownPrint, hasAnyThread1Item), getAndComparePrintsOfCupOrBottle);
+		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsThread1, hasUnknownPrint, hasAnyThread1Item), getAndComparePrintsOfCupOrBottle);
 		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsThread2, hasUnknownPrint, hasAnyThread2Item), getAndComparePrintsOfNecklaceOrBook);
 		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsThread3, hasUnknownPrint, hasAnyThread3Item), getAndComparePrintsOfNeeedleOrPot);
 
@@ -102,7 +102,7 @@ public class MurderMystery extends BasicQuestHelper
 		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerWithflour, hasCriminalsThreadAny), useFlypaperOnDagger);
 		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThreadAny, hasPotOfFlour), useFlourOnDagger);
 
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThread2, hasSilverCup, hasSilverBottle), fillPotWithFlour);
+		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThread1, hasSilverCup, hasSilverBottle), fillPotWithFlour);
 		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThread2, hasSilverNecklace, hasSilverBook), fillPotWithFlour);
 		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThread3, hasSilverNeedle, hasSilverPot), fillPotWithFlour);
 

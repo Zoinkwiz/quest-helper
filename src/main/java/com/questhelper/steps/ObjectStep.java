@@ -60,8 +60,6 @@ import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_FILL_COLOR;
 import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class ObjectStep extends DetailedQuestStep
@@ -69,8 +67,6 @@ public class ObjectStep extends DetailedQuestStep
 	private final int objectID;
 	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
 	private TileObject object;
-
-	private boolean shouldShowArrow = true;
 
 	private final List<TileObject> objects = new ArrayList<>();
 
@@ -179,11 +175,6 @@ public class ObjectStep extends DetailedQuestStep
 			object = null;
 			objects.clear();
 		}
-	}
-
-	public void showArrow(boolean shouldShowArrow)
-	{
-		this.shouldShowArrow = shouldShowArrow;
 	}
 
 	public void addAlternateObjects(Integer... alternateObjectIDs)
@@ -305,7 +296,7 @@ public class ObjectStep extends DetailedQuestStep
 	@Override
 	public void renderArrow(Graphics2D graphics)
 	{
-		if (object == null || ! shouldShowArrow)
+		if (object == null || ! hideWorldArrow)
 		{
 			return;
 		}

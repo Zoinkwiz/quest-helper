@@ -105,6 +105,9 @@ public class DetailedQuestStep extends QuestStep
 
 	protected boolean started;
 
+	@Setter
+	protected boolean hideWorldArrow;
+
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
 		super(questHelper, text);
@@ -342,7 +345,7 @@ public class DetailedQuestStep extends QuestStep
 
 	public void renderArrow(Graphics2D graphics)
 	{
-		if (worldPoint == null)
+		if (worldPoint == null || hideWorldArrow)
 		{
 			return;
 		}

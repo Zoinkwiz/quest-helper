@@ -289,7 +289,7 @@ public class TempleOfIkov extends BasicQuestHelper
 
 		enterArrowRoom = new ObjectStep(this, ObjectID.GATE_89, new WorldPoint(2662, 9803, 0), "Enter the south gate.");
 		collectArrows = new ObjectStep(this, ObjectID.CLOSED_CHEST, "Search the chests in the ice area of this room until you have at least 20 Ice Arrows or more to be safe. A random chest has the arrows each time.", iceArrows20);
-		collectArrows.showArrow(false);
+		collectArrows.setHideWorldArrow(true);
 		collectArrows.addAlternateObjects(ObjectID.OPEN_CHEST);
 
 		returnToMainRoom = new ObjectStep(this, ObjectID.GATE_89, new WorldPoint(2662, 9803, 0), "Return back to the entry room when you have enough arrows.");

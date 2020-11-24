@@ -32,6 +32,7 @@ import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,10 +46,14 @@ import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -57,13 +62,13 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import com.questhelper.panel.QuestHelperPanel;
-import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.client.ui.ClientToolbar;
@@ -74,12 +79,11 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Quest Helper",
-	description = "Helps you with your quests"
+	description = "Helps you with questing"
 )
 @Slf4j
 public class QuestHelperPlugin extends Plugin
 {
-
 	private static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
 	private static final int QUESTTAB_GROUP_ID = 629;
 
@@ -114,6 +118,8 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_RFD_MONKEY_AMBASSADOR = "Start Quest Helper (Monkey Ambassador)";
 	private static final String MENUOP_RFD_FINALE = "Start Quest Helper (Finale)";
 
+	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
+
 	@Inject
 	private Client client;
 
@@ -138,6 +144,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private QuestHelperWorldOverlay questHelperWorldOverlay;
 
+	@Inject
+	private QuestHelperConfig config;
+
 	@Getter
 	private QuestHelper selectedQuest = null;
 
@@ -156,6 +165,12 @@ public class QuestHelperPlugin extends Plugin
 	private NavigationButton navButton;
 
 	private boolean loadQuestList;
+
+	@Provides
+	QuestHelperConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(QuestHelperConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws IOException
@@ -424,6 +439,49 @@ public class QuestHelperPlugin extends Plugin
 			&& selectedQuest != null)
 		{
 			addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (config.autoStartQuests() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
+		{
+			if (selectedQuest == null && chatMessage.getMessage().contains("You've started a new quest"))
+			{
+				String questName = chatMessage.getMessage().substring(chatMessage.getMessage().indexOf(">") + 1);
+				questName = questName.substring(0, questName.indexOf("<"));
+				if (questName.equals("Shield of Arrav"))
+				{
+					Player player = client.getLocalPlayer();
+					if (player == null)
+					{
+						return;
+					}
+					WorldPoint location = player.getWorldLocation();
+
+					if (PHOENIX_START_ZONE.contains(location))
+					{
+						startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
+					}
+					else
+					{
+						startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
+					}
+				}
+				else if (questName.equals("Recipe for Disaster"))
+				{
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
+				}
+				else
+				{
+					QuestHelper questHelper = quests.get(questName);
+					if (questHelper != null)
+					{
+						startUpQuest(questHelper);
+					}
+				}
+			}
 		}
 	}
 

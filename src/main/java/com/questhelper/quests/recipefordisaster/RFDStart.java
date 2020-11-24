@@ -65,8 +65,6 @@ public class RFDStart extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		int tmp = QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId();
-
 		steps.put(0, talkToCook);
 
 		ConditionalStep goGiveCookItems = new ConditionalStep(this, useAshesOnFruitBlast);

@@ -18,7 +18,7 @@
  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * ON ANY THEORY OF LIABI`LITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
@@ -31,19 +31,20 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.api.IconID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -54,13 +55,15 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class GertrudesCat extends BasicQuestHelper
 {
-	private ItemRequirement bucketOfMilk, coins, seasonedSardine;
+	private ItemRequirement bucketOfMilk, coins, seasonedSardine, sardine, doogleLeaves;
 
 	private QuestStep talkToGertrude, talkToChildren,
 		gertrudesCat, gertrudesCat2, searchNearbyCrates, giveKittenToFluffy,
 		finishQuest;
 
 	private ConditionForStep isUpstairsLumberyard, hasFluffsKitten;
+
+	QuestStep pickupDoogle, makeSeasonedSardine;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -93,7 +96,6 @@ public class GertrudesCat extends BasicQuestHelper
 
 	private QuestStep findFluffsKitten()
 	{
-
 		//Need to find to ways to hide arrow
 		searchNearbyCrates = new NpcStep(this, NpcID.CRATE,
 			"Search for a kitten.", true);
@@ -101,7 +103,6 @@ public class GertrudesCat extends BasicQuestHelper
 		ObjectStep climbUpLadderStep = getClimbLadder();
 		ArrayList<ItemRequirement> fluffsKittenRequirement = new ArrayList();
 		fluffsKittenRequirement.add(new ItemRequirement("Fluffs' Kitten", ItemID.FLUFFS_KITTEN));
-
 		climbUpLadderStep.addItemRequirements(fluffsKittenRequirement);
 		Conditions hasFluffsKittenUpstairs = new Conditions(hasFluffsKitten, isUpstairsLumberyard);
 
@@ -128,7 +129,7 @@ public class GertrudesCat extends BasicQuestHelper
 
 	private QuestStep getFeedCat()
 	{
-		gertrudesCat2 = getGertrudesCat(null);
+		gertrudesCat2 = getGertrudesCat();
 		gertrudesCat2.addIcon(ItemID.SEASONED_SARDINE);
 
 		ObjectStep climbLadder = new ObjectStep(this, ObjectID.LADDER_11794,
@@ -163,12 +164,21 @@ public class GertrudesCat extends BasicQuestHelper
 
 	private QuestStep getTalkToChildren()
 	{
+		pickupDoogle = new ItemStep(this, "Pickup Doogle Leaves", new ItemRequirement("Doogle Leaves", ItemID.DOOGLE_LEAVES), sardine );
+		makeSeasonedSardine = new DetailedQuestStep(this, "Use your Doogle Leaves on  the Sardine.", sardine, doogleLeaves);
+
+		ConditionalStep conditionalTalkToChildren = new ConditionalStep(this, pickupDoogle , "Talk to Shilop or Wilough.");
+		conditionalTalkToChildren.addStep(new ItemRequirementCondition(LogicType.AND, sardine, doogleLeaves), makeSeasonedSardine);
+		conditionalTalkToChildren.addStep(new ItemRequirementCondition(seasonedSardine), talkToChildren);
+
 		NpcStep talkToChildren = new NpcStep(this, NpcID.SHILOP,
-			new WorldPoint(3222, 3435, 0), "Talk to Shilop or Wilough.", true, coins);
+			new WorldPoint(3222, 3435, 0), "", true, seasonedSardine, coins);
 		talkToChildren.addAlternateNpcs(NpcID.WILOUGH);
 		talkToChildren.addDialogStep("What will make you tell me?");
 		talkToChildren.addDialogStep("Okay then, I'll pay.");
-		return talkToChildren;
+
+		conditionalTalkToChildren.addSubSteps(talkToChildren,makeSeasonedSardine, pickupDoogle);
+		return conditionalTalkToChildren;
 	}
 
 	private QuestStep getTalkToGertrude()
@@ -181,11 +191,18 @@ public class GertrudesCat extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK, 1);
+		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995, 100);
 
-		seasonedSardine = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE, 1);
+		doogleLeaves = new ItemRequirement("Doogle Leaves", ItemID.DOOGLE_LEAVES);
+
+		seasonedSardine = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE);
 		seasonedSardine.setTip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
+
+		sardine = new ItemRequirement("Raw Sardine", ItemID.RAW_SARDINE);
+		sardine.setHighlightInInventory(true);
+		doogleLeaves = new ItemRequirement("Doogle Leaves", ItemID.DOOGLE_LEAVES);
+		doogleLeaves.setHighlightInInventory(true);
 	}
 
 	private void setupZones()
@@ -209,7 +226,7 @@ public class GertrudesCat extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(bucketOfMilk, coins, seasonedSardine));
+		return new ArrayList<>(Arrays.asList(bucketOfMilk, coins, sardine));
 	}
 
 	@Override

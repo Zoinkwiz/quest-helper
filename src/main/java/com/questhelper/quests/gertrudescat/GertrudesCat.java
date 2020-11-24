@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2020, Patyfatycake <https://github.com/Patyfatycake/>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.quests.gertrudescat;
 
 import com.questhelper.QuestDescriptor;
@@ -98,7 +122,7 @@ public class GertrudesCat extends BasicQuestHelper
 	private ObjectStep goDownLadderStep()
 	{
 		return new ObjectStep(this, ObjectID.LADDER_11795, new WorldPoint(3310, 3509, 1)
-			, "Climb down ladder");
+			, "Climb down ladder in the Lumberyard.");
 	}
 
 	private QuestStep getFeedCat()
@@ -130,19 +154,10 @@ public class GertrudesCat extends BasicQuestHelper
 		return lumberyard;
 	}
 
-
-	private NpcStep getGertrudesCat(String text, ItemRequirement requirement)
+	private NpcStep getGertrudesCat(String text, ItemRequirement... requirement)
 	{
-		if (requirement == null)
-		{
-			return new NpcStep(this, NpcID.GERTRUDES_CAT_3497,
-				new WorldPoint(3308, 3511, 1), text);
-		}
-		else
-		{
-			return new NpcStep(this, NpcID.GERTRUDES_CAT_3497,
-				new WorldPoint(3308, 3511, 1), text, requirement);
-		}
+		return new NpcStep(this, NpcID.GERTRUDES_CAT_3497,
+			new WorldPoint(3308, 3511, 1), text, requirement);
 	}
 
 	private QuestStep getTalkToChildren()
@@ -181,13 +196,13 @@ public class GertrudesCat extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		hasFluffsKitten = new ItemRequirementCondition(new ItemRequirement("Fluffs Kitten", ItemID.FLUFFS_KITTEN, 1));
+		hasFluffsKitten = new ItemRequirementCondition(new ItemRequirement("Fluffs' kitten", ItemID.FLUFFS_KITTEN));
 	}
 
 	private ObjectStep getClimbLadder()
 	{
 		return new ObjectStep(this, ObjectID.LADDER_11794,
-			new WorldPoint(3310, 3509, 0), "Climb ladder");
+			new WorldPoint(3310, 3509, 0), "Climb up the ladder in the Lumberyard.");
 	}
 
 	@Override

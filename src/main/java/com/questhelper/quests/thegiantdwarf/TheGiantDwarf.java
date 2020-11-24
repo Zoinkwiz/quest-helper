@@ -32,7 +32,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -51,7 +50,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.VarbitComposition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -66,17 +64,19 @@ public class TheGiantDwarf extends BasicQuestHelper
 		weightBelow30, inventorySpace,
 		bookOnCostumes, exquisiteClothes, exquisiteBoots, dwarvenBattleaxe,
 		leftBoot, dwarvenBattleaxeBroken, dwarvenBattleaxeSapphires;
-	Zone keldagrim,	keldagrim2, trollRoom, dwarfEntrance;
+	Zone keldagrim, keldagrim2, trollRoom, dwarfEntrance, consortium;
 	ConditionForStep inTrollRoom, inKeldagrim, inDwarfEntrance,
 		talkedToVermundi, talkedToLibrarian, hasBookOnCostumes, talkedToVermundiWithBook, usedCoalOnMachine, startedMachine, hasExquisiteClothes,
 		talkedToSaro, talkedToDromund, hasLeftBoot, hasExquisiteBoots,
-		talkedToSantiri, hasDwarvenBattleaxe,
-		givenExquisiteClothes, givenExquisiteBoots, givenDwarvenBattleaxe;
+		talkedToSantiri, usedSapphires, hasDwarvenBattleaxe,
+		givenExquisiteClothes, givenExquisiteBoots, givenDwarvenBattleaxe,
+		inConsortium, completedSecretaryTasks, completedDirectorTasks, joinedCompany;
 	QuestStep enterDwarfCave, enterDwarfCave2, talkToBoatman, talkToVeldaban, talkToBlasidar,
 		talkToVermundi, talkToLibrarian, climbBookcase, talkToVermundiWithBook, useCoalOnMachine, startMachine, talkToVermundiWithMachine,
 		talkToSaro, talkToDromund, takeLeftBoot, takeRightBoot,
-		talkToSantiri, useSapphires,
-		giveItemsToRiki, talkToBlasidarAfterItems;
+		talkToSantiri, useSapphires, talkToThurgo,
+		giveItemsToRiki, talkToBlasidarAfterItems,
+		enterConsortium, talkToSecretary, talkToDirector, joinCompany, talkToDirectorAfterJoining, leaveConsortium, talkToVeldabanAfterJoining;
 
 	public void setupItemRequirements()
 	{
@@ -134,15 +134,15 @@ public class TheGiantDwarf extends BasicQuestHelper
 		bookOnCostumes = new ItemRequirement("Book on costumes", ItemID.BOOK_ON_COSTUMES);
 		exquisiteClothes = new ItemRequirement("Exquisite clothes", ItemID.EXQUISITE_CLOTHES);
 		exquisiteBoots = new ItemRequirement("Exquisite boots", ItemID.EXQUISITE_BOOTS);
-		dwarvenBattleaxe = new ItemRequirement("Exquisite boots", ItemID.DWARVEN_BATTLEAXE_5061);
+		dwarvenBattleaxe = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE_5059);
 
 		leftBoot = new ItemRequirement("Left boot", ItemID.LEFT_BOOT);
 
 		dwarvenBattleaxeBroken = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE);
-		dwarvenBattleaxeBroken.addAlternates(ItemID.DWARVEN_BATTLEAXE_5057, ItemID.DWARVEN_BATTLEAXE_5058);
+		dwarvenBattleaxeBroken.addAlternates(ItemID.DWARVEN_BATTLEAXE_5057);
+		dwarvenBattleaxeBroken.setHighlightInInventory(true);
 
-		dwarvenBattleaxeSapphires = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE_5059);
-		dwarvenBattleaxeSapphires.addAlternates(ItemID.DWARVEN_BATTLEAXE_5060);
+		dwarvenBattleaxeSapphires = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE_5058);
 	}
 
 	public void setupZones()
@@ -151,7 +151,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		dwarfEntrance = new Zone(new WorldPoint(2814, 10121, 0), new WorldPoint(2884, 10139, 0));
 		keldagrim = new Zone(new WorldPoint(2816, 10177, 0), new WorldPoint(2943, 10239, 0));
 		keldagrim2 = new Zone(new WorldPoint(2901, 10150, 0), new WorldPoint(2943, 10177, 0));
-
+		consortium = new Zone(new WorldPoint(2861, 10186, 1), new WorldPoint(2897, 10212, 1));
 	}
 
 	public void setupConditions()
@@ -162,8 +162,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		talkedToVermundi = new Conditions(true, LogicType.OR,
 			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Great, thanks a lot, I'll check out the library!"));
-			// TODO: Find widget text
-			//new WidgetTextCondition(119, 3, true, true, "N/A"));
+		// TODO: Find widget text
+		//new WidgetTextCondition(119, 3, true, true, "N/A"));
 
 		talkedToLibrarian = new Conditions(true, LogicType.OR,
 			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Well, thanks, I'll have a look."),
@@ -185,7 +185,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		givenExquisiteClothes = new Conditions(true, LogicType.OR,
 			new VarbitCondition(576, 2),
-			new WidgetTextCondition(119, 3, true, true, "<str>I have given some exquisitely designed clothes to Riki, the"));
+			new VarbitCondition(576, 3),
+			new VarbitCondition(576, 6),
+			new VarbitCondition(576, 7));
 		hasExquisiteClothes = new Conditions(true, LogicType.OR,
 			givenExquisiteClothes,
 			new ItemRequirementCondition(exquisiteClothes),
@@ -203,7 +205,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		givenExquisiteBoots = new Conditions(true, LogicType.OR,
 			new VarbitCondition(576, 1),
-			new WidgetTextCondition(119, 3, true, true, "<str>I have given an exquisite pair of boots to Riki, the"));
+			new VarbitCondition(576, 3),
+			new VarbitCondition(576, 5),
+			new VarbitCondition(576, 7));
 		hasExquisiteBoots = new Conditions(true, LogicType.OR,
 			givenExquisiteBoots,
 			new ItemRequirementCondition(exquisiteBoots),
@@ -211,13 +215,36 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		talkedToSantiri = new Conditions(true, new ItemRequirementCondition(dwarvenBattleaxeBroken));
 
+		usedSapphires = new Conditions(true, LogicType.OR,
+			new ChatMessageCondition("Great, all it needs now is a little sharpening!"),
+			new ItemRequirementCondition(dwarvenBattleaxeSapphires));
+
 		givenDwarvenBattleaxe = new Conditions(true, LogicType.OR,
-			//new VarbitCondition(-1, -1),
-			new WidgetTextCondition(119, 3, true, true, "Something about given axe"));
+			new VarbitCondition(576, 4),
+			new VarbitCondition(576, 5),
+			new VarbitCondition(576, 6),
+			new VarbitCondition(576, 7));
 		hasDwarvenBattleaxe = new Conditions(true, LogicType.OR,
 			givenDwarvenBattleaxe,
 			new ItemRequirementCondition(dwarvenBattleaxe),
-			new WidgetTextCondition(119, 3, true, true, "Something about having axe"));
+			new WidgetTextCondition(119, 3, true, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
+
+		inConsortium = new ZoneCondition(consortium);
+
+		completedSecretaryTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "I'm afraid I have no more work to offer you"));
+		completedDirectorTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Have you ever considered joining"));
+		joinedCompany = new Conditions(true, LogicType.OR,
+			new VarbitCondition(578, 1),
+			new VarbitCondition(578, 2),
+			// Opal is 3
+			new VarbitCondition(578, 3),
+			new VarbitCondition(578, 4),
+			new VarbitCondition(578, 5),
+			new VarbitCondition(578, 6),
+			new VarbitCondition(578, 7),
+			new VarbitCondition(578, 8),
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "I will not disappoint you."),
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Come in, come in my friend!"));
 	}
 
 	public void setupSteps()
@@ -274,12 +301,49 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToSantiri.addDialogStep("Blasidar the sculptor needs it for his statue.");
 		talkToSantiri.addDialogStep("Perhaps I can repair the axe?");
 
-		useSapphires = new DetailedQuestStep(this, "Use the 3 sapphires on the axe.");
+		useSapphires = new DetailedQuestStep(this, "Use the 3 sapphires on the axe.", dwarvenBattleaxeBroken, sapphires3);
+
+		talkToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3001, 3144, 0), "Talk to Thurgo at Mudskipper Point.", redberryPie, ironBar);
+		talkToThurgo.addDialogStep("Something else.");
+		talkToThurgo.addDialogStep("Would you like a redberry pie?");
+		talkToThurgo.addDialogStep("Can you help me with this ancient axe?");
+		talkToThurgo.addDialogStep("Return to Keldagrim immediately.");
 
 		// Halfway there
-		giveItemsToRiki = new NpcStep(this, NpcID.RIKI_THE_SCULPTORS_MODEL, new WorldPoint(2887, 10188, 0), "Talk to Ricky the sculptor's model to give him the clothes, axe and boots.", exquisiteClothes);
+		giveItemsToRiki = new NpcStep(this, NpcID.RIKI_THE_SCULPTORS_MODEL, new WorldPoint(2887, 10188, 0), "Talk to Ricky the sculptor's model to give him the clothes, axe and boots.", exquisiteClothes, exquisiteBoots, dwarvenBattleaxe);
 		((NpcStep) giveItemsToRiki).addAlternateNpcs(NpcID.RIKI_THE_SCULPTORS_MODEL_2349, NpcID.RIKI_THE_SCULPTORS_MODEL_2350, NpcID.RIKI_THE_SCULPTORS_MODEL_2351, NpcID.RIKI_THE_SCULPTORS_MODEL_2352, NpcID.RIKI_THE_SCULPTORS_MODEL_2353, NpcID.RIKI_THE_SCULPTORS_MODEL_2354, NpcID.RIKI_THE_SCULPTORS_MODEL_2355);
 		talkToBlasidarAfterItems = new NpcStep(this, NpcID.BLASIDAR_THE_SCULPTOR, new WorldPoint(2907, 10205, 0), "Talk to Blasidar the sculptor.");
+
+		// Joining the consortium
+		enterConsortium = new ObjectStep(this, ObjectID.STAIRS_6087, "Go to the upper floor of the market.");
+
+		talkToSecretary = new NpcStep(this, NpcID.BLUE_OPAL_SECRETARY, new WorldPoint(2879, 10199, 1), "Keep talking to the same secretary and complete the tasks given.");
+		//TODO: Add a way to check which company is chosen
+		//((NpcStep) talkToSecretary).addAlternateNpcs(NpcID.PURPLE_PEWTER_SECRETARY, NpcID.GREEN_GEMSTONE_SECRETARY, NpcID.SILVER_COG_SECRETARY, NpcID.WHITE_CHISEL_SECRETARY);
+		talkToSecretary.addDialogStep("Is there anything I can help you with?");
+		talkToSecretary.addDialogStep("Do you have another task for me?");
+
+		talkToDirector = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1), "Keep talking to the director of the same secretary and complete the tasks given.");
+		((NpcStep) talkToDirector).addAlternateNpcs(NpcID.BLUE_OPAL_DIRECTOR);
+		talkToDirector.addDialogStep("Do you have any more tasks for me?");
+
+		joinCompany = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1), "Talk to the director to join the company.");
+		((NpcStep) joinCompany).addAlternateNpcs(NpcID.BLUE_OPAL_DIRECTOR);
+		joinCompany.addDialogStep("I'd like to officially join your company.");
+
+		talkToDirectorAfterJoining = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1), "Talk to the director after joining the company.");
+		((NpcStep) talkToDirectorAfterJoining).addAlternateNpcs(NpcID.BLUE_OPAL_DIRECTOR);
+		talkToDirectorAfterJoining.addDialogStep("Blasidar the sculptor has sent me.");
+		talkToDirectorAfterJoining.addDialogStep("I would support you.");
+		//TODO: Make this conditional for the company chosen
+		talkToDirectorAfterJoining.addDialogStep("Yes! Long live the Blue Opal!");
+
+		leaveConsortium = new ObjectStep(this, ObjectID.STAIRS_6088, "Talk to Commander Veldaban.");
+
+		talkToVeldabanAfterJoining = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0), "Talk to Commander Veldaban.");
+		talkToVeldabanAfterJoining.addDialogStep("I'm ready.");
+		talkToVeldabanAfterJoining.addDialogStep("I do NOT want to attend, I don't have time to waste.");
+		talkToVeldabanAfterJoining.addDialogStep("I just have a lot of smithing to do today, I can't attend.");
 	}
 
 	@Override
@@ -295,26 +359,15 @@ public class TheGiantDwarf extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
-	{
-		return new ArrayList<>(Arrays.asList());
-	}
-
-	@Override
-	public ArrayList<String> getNotes()
-	{
-		return new ArrayList<>(Arrays.asList());
-	}
-
-	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", new ArrayList<>(Arrays.asList(talkToBoatman, talkToVeldaban, talkToBlasidar))));
 		allSteps.add(new PanelDetails("Clothes fit for a king", new ArrayList<>(Arrays.asList(talkToVermundi, talkToLibrarian, climbBookcase, talkToVermundiWithBook, useCoalOnMachine, startMachine, talkToVermundiWithMachine)), weightBelow30, logs, coal, tinderbox, coins2500, inventorySpace));
 		allSteps.add(new PanelDetails("Boots fit for a king", new ArrayList<>(Arrays.asList(talkToSaro, talkToDromund, takeLeftBoot, takeRightBoot)), lawRune, airRune));
-		allSteps.add(new PanelDetails("An axe fit for a king", new ArrayList<>(Arrays.asList(talkToSantiri, useSapphires)), sapphires3, ironBar, redberryPie));
-		allSteps.add(new PanelDetails("Halfway there", new ArrayList<>(Arrays.asList(giveItemsToRiki)), exquisiteClothes, exquisiteBoots, dwarvenBattleaxe));
+		allSteps.add(new PanelDetails("An axe fit for a king", new ArrayList<>(Arrays.asList(talkToSantiri, useSapphires, talkToThurgo)), sapphires3, ironBar, redberryPie));
+		allSteps.add(new PanelDetails("Halfway there", new ArrayList<>(Arrays.asList(giveItemsToRiki, talkToBlasidarAfterItems)), exquisiteClothes, exquisiteBoots, dwarvenBattleaxe));
+		allSteps.add(new PanelDetails("Joining the consortium", new ArrayList<>(Arrays.asList(enterConsortium, talkToSecretary, talkToDirector, joinCompany, talkToDirectorAfterJoining, talkToVeldabanAfterJoining)), oresBars, staminaPotions));
 		return allSteps;
 	}
 
@@ -354,16 +407,30 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		// An axe fit for a king
 		ConditionalStep getDwarvenBattleaxe = new ConditionalStep(this, talkToSantiri);
+		getDwarvenBattleaxe.addStep(usedSapphires, talkToThurgo);
 		getDwarvenBattleaxe.addStep(talkedToSantiri, useSapphires);
 
 		// Halfway there
 		ConditionalStep getItems = new ConditionalStep(this, getExquisiteClothes);
-		getItems.addStep(new Conditions(LogicType.AND, givenExquisiteClothes, givenExquisiteBoots, givenDwarvenBattleaxe), talkToBlasidar);
+		getItems.addStep(new Conditions(LogicType.AND, givenExquisiteClothes, givenExquisiteBoots, givenDwarvenBattleaxe), talkToBlasidarAfterItems);
 		getItems.addStep(new Conditions(LogicType.AND, hasExquisiteClothes, hasExquisiteBoots, hasDwarvenBattleaxe), giveItemsToRiki);
 		getItems.addStep(new Conditions(LogicType.AND, hasExquisiteClothes, hasExquisiteBoots), getDwarvenBattleaxe);
 		getItems.addStep(hasExquisiteClothes, getExquisiteBoots);
 
 		steps.put(20, getItems);
+
+		ConditionalStep joinConsortium = new ConditionalStep(this, enterConsortium);
+		joinConsortium.addStep(joinedCompany, talkToDirectorAfterJoining);
+		joinConsortium.addStep(completedDirectorTasks, joinCompany);
+		joinConsortium.addStep(completedSecretaryTasks, talkToDirector);
+		joinConsortium.addStep(inConsortium, talkToSecretary);
+
+		steps.put(30, joinConsortium);
+
+		ConditionalStep finishQuest = new ConditionalStep(this, talkToVeldabanAfterJoining);
+		finishQuest.addStep(inConsortium, leaveConsortium);
+
+		steps.put(40, finishQuest);
 
 		return steps;
 	}

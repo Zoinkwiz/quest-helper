@@ -308,9 +308,9 @@ public class MerlinsCrystal extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(startQuest, talkToGawain, goUpstairsInCamelot, talkToLancelot))));
-		allSteps.add(new PanelDetails("Infiltrate the fortress", new ArrayList<>(Arrays.asList(hideInArheinCrate, goToFirstFloor, goToSecondFloor, attackMordred, talkToMorgan))));
+		allSteps.add(new PanelDetails("Infiltrate the fortress", new ArrayList<>(Arrays.asList(hideInArheinCrate, goToFirstFloor, goToSecondFloor, attackMordred, talkToMorgan)), combatGear));
 		PanelDetails getBlackCandlePanel = new PanelDetails("Get a Black Candle",
-			new ArrayList<>(Arrays.asList(goToCatherbyAfterFortress, optionalGetRepellent, optionalGetBucket, optionalUseRepellent, talkToCandleMaker)), combatGear);
+			new ArrayList<>(Arrays.asList(goToCatherbyAfterFortress, optionalGetRepellent, optionalGetBucket, optionalUseRepellent, talkToCandleMaker)));
 		getBlackCandlePanel.setLockingStep(getBlackCandle);
 		getBlackCandlePanel.setVars(4);
 

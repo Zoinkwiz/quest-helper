@@ -92,7 +92,7 @@ public class CabinFever extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, talkToBill);
+		steps.put(0, temp());
 
 		ConditionalStep setSail = new ConditionalStep(this, goOnBillBoat);
 		setSail.addStep(onBoatAtDock, talkToBillOnBoat);
@@ -328,6 +328,68 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(130, fireCannonsWithBalls);
 
 		return steps;
+	}
+
+	private QuestStep temp (){
+
+		NpcStep talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
+		talkToKingBolren.addDialogStep("Can I help at all?");
+		talkToKingBolren.addDialogStep("I would be glad to help.");
+
+		DetailedQuestStep goThroughMaze = new DetailedQuestStep(this, new WorldPoint(2541, 3170, 0), "Follow the marked path to walk through the maze.");
+		ArrayList<WorldPoint> pathThroughMaze = new ArrayList<>(Arrays.asList(
+			new WorldPoint(2505, 3190, 0),
+			new WorldPoint(2512, 3190, 0),
+			new WorldPoint(2512, 3188, 0),
+			new WorldPoint(2532, 3188, 0),
+			new WorldPoint(2532, 3182, 0),
+			new WorldPoint(2523, 3181, 0),
+			new WorldPoint(2523, 3185, 0),
+			new WorldPoint(2521, 3185, 0),
+			new WorldPoint(2520, 3179, 0),
+			new WorldPoint(2514, 3179, 0),
+			new WorldPoint(2514, 3177, 0),
+			new WorldPoint(2527, 3177, 0),
+			new WorldPoint(2527, 3179, 0),
+			new WorldPoint(2529, 3179, 0),
+			new WorldPoint(2529, 3177, 0),
+			new WorldPoint(2531, 3177, 0),
+			new WorldPoint(2531, 3179, 0),
+			new WorldPoint(2533, 3179, 0),
+			new WorldPoint(2533, 3177, 0),
+			new WorldPoint(2544, 3177, 0),
+			new WorldPoint(2544, 3174, 0),
+			new WorldPoint(2549, 3174, 0),
+			new WorldPoint(2549, 3165, 0),
+			new WorldPoint(2545, 3165, 0),
+			new WorldPoint(2545, 3159, 0),
+			new WorldPoint(2550, 3159, 0),
+			new WorldPoint(2550, 3156, 0),
+			new WorldPoint(2548, 3156, 0),
+			new WorldPoint(2548, 3145, 0),
+			new WorldPoint(2538, 3145, 0),
+			new WorldPoint(2538, 3150, 0),
+			new WorldPoint(2541, 3150, 0),
+			new WorldPoint(2541, 3148, 0),
+			new WorldPoint(2544, 3148, 0),
+			new WorldPoint(2544, 3150, 0),
+			new WorldPoint(2545, 3150, 0),
+			new WorldPoint(2545, 3156, 0),
+			new WorldPoint(2520, 3156, 0),
+			new WorldPoint(2520, 3159, 0),
+			new WorldPoint(2515, 3159, 0)));
+		goThroughMaze.setLinePoints(pathThroughMaze);
+
+		Zone zoneVillage = new Zone(new WorldPoint(2514,3158,0), new WorldPoint(2542, 3175, 0));
+
+		ZoneCondition insideGnomeVillage = new ZoneCondition(zoneVillage);
+
+		ConditionalStep talkToBolrenAtCentreOfMaze = new ConditionalStep(this, goThroughMaze,
+			"Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		talkToBolrenAtCentreOfMaze.addStep(insideGnomeVillage, talkToKingBolren);
+		talkToBolrenAtCentreOfMaze.addSubSteps(talkToKingBolren, goThroughMaze);
+
+		return talkToBolrenAtCentreOfMaze;
 	}
 
 	public void setupItemRequirements()

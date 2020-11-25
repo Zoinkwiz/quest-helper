@@ -31,6 +31,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -54,12 +55,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker,
 		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker;
 
-	private Conditions talkToFirstTracker, talkToSecondTracker, talkToThirdTracker, shouldFireBallista;
+	private Conditions talkToSecondTracker, talkToThirdTracker, shouldFireBallista;
 
-	private ConditionalStep retrieveOrb;
+	private ConditionalStep retrieveOrb,talkToBolrenAtCentreOfMaze;
 
-	Zone upstairsTower;
-	ZoneCondition isUpstairsTower;
+	Zone upstairsTower, zoneVillage;
+	ZoneCondition isUpstairsTower, insideGnomeVillage;
 	ItemRequirement logRequirement;
 
 	private final int TRACKER_1_VARBITID = 599;
@@ -80,7 +81,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private Map<Integer, QuestStep> CreateSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		steps.put(0, talkToKingBolren);
+		steps.put(0, talkToBolrenAtCentreOfMaze);
 		steps.put(1, talkToCommanderMontai);
 		steps.put(2, bringWoodToCommanderMontai);
 		steps.put(3, talkToCommanderMontaiAgain);
@@ -103,7 +104,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep retrieveOrbStep()
 	{
-		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Retrieve the first orb from chest.");
+		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Enter the tower by the Crumbled wall and climb the ladder to etrieve the first orb from chest.");
 		ObjectStep getOrbFromChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_2183, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
 		getOrbFromChest.addAlternateObjects(ObjectID.OPEN_CHEST_2182);
 		retrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
@@ -134,6 +135,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private void setupZones()
 	{
 		upstairsTower = new Zone(new WorldPoint(2500, 3251, 1), new WorldPoint(2506, 3259, 1));
+		zoneVillage = new Zone(new WorldPoint(2514,3158,0), new WorldPoint(2542, 3175, 0));
 	}
 
 	public void setupConditions()
@@ -146,9 +148,9 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		completeSecondTracker = new VarbitCondition(TRACKER_2_VARBITID, 1);
 		completeThirdTracker = new VarbitCondition(TRACKER_3_VARBITID, 1);
 
+		insideGnomeVillage = new ZoneCondition(zoneVillage);
 		isUpstairsTower = new ZoneCondition(upstairsTower);
 
-		talkToFirstTracker = new Conditions(notCompleteFirstTracker);
 		talkToSecondTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteSecondTracker);
 		talkToThirdTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteThirdTracker);
 		shouldFireBallista = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker, completeThirdTracker);
@@ -156,9 +158,58 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
 		talkToKingBolren.addDialogStep("Can I help at all?");
 		talkToKingBolren.addDialogStep("I would be glad to help.");
+
+		DetailedQuestStep goThroughMaze = new DetailedQuestStep(this, new WorldPoint(2541, 3170, 0), "Follow the marked path to walk through the maze.");
+		ArrayList<WorldPoint> pathThroughMaze = new ArrayList<>(Arrays.asList(
+			new WorldPoint(2505, 3190, 0),
+			new WorldPoint(2512, 3190, 0),
+			new WorldPoint(2512, 3188, 0),
+			new WorldPoint(2532, 3188, 0),
+			new WorldPoint(2532, 3182, 0),
+			new WorldPoint(2523, 3181, 0),
+			new WorldPoint(2523, 3185, 0),
+			new WorldPoint(2521, 3185, 0),
+			new WorldPoint(2520, 3179, 0),
+			new WorldPoint(2514, 3179, 0),
+			new WorldPoint(2514, 3177, 0),
+			new WorldPoint(2527, 3177, 0),
+			new WorldPoint(2527, 3179, 0),
+			new WorldPoint(2529, 3179, 0),
+			new WorldPoint(2529, 3177, 0),
+			new WorldPoint(2531, 3177, 0),
+			new WorldPoint(2531, 3179, 0),
+			new WorldPoint(2533, 3179, 0),
+			new WorldPoint(2533, 3177, 0),
+			new WorldPoint(2544, 3177, 0),
+			new WorldPoint(2544, 3174, 0),
+			new WorldPoint(2549, 3174, 0),
+			new WorldPoint(2549, 3165, 0),
+			new WorldPoint(2545, 3165, 0),
+			new WorldPoint(2545, 3159, 0),
+			new WorldPoint(2550, 3159, 0),
+			new WorldPoint(2550, 3156, 0),
+			new WorldPoint(2548, 3156, 0),
+			new WorldPoint(2548, 3145, 0),
+			new WorldPoint(2538, 3145, 0),
+			new WorldPoint(2538, 3150, 0),
+			new WorldPoint(2541, 3150, 0),
+			new WorldPoint(2541, 3148, 0),
+			new WorldPoint(2544, 3148, 0),
+			new WorldPoint(2544, 3150, 0),
+			new WorldPoint(2545, 3150, 0),
+			new WorldPoint(2545, 3156, 0),
+			new WorldPoint(2520, 3156, 0),
+			new WorldPoint(2520, 3159, 0),
+			new WorldPoint(2515, 3159, 0)));
+		goThroughMaze.setLinePoints(pathThroughMaze);
+
+		talkToBolrenAtCentreOfMaze = new ConditionalStep(this, goThroughMaze,
+			"Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		talkToBolrenAtCentreOfMaze.addStep(insideGnomeVillage, talkToKingBolren);
+		talkToBolrenAtCentreOfMaze.addSubSteps(talkToKingBolren, goThroughMaze);
 
 		talkToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai.");
 		talkToCommanderMontai.addDialogStep("Ok, I'll gather some wood.");

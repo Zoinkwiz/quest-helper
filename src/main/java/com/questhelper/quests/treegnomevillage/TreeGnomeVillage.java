@@ -32,6 +32,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -53,7 +54,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToTheWarlord, fightTheWarlord, returnOrbs;
 
 	private ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker,
-		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker;
+		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker, pickupOrbsOfProtection;
 
 	private Conditions talkToSecondTracker, talkToThirdTracker, completedTrackers,
 		shouldFireBallista1, shouldFireBallista2, shouldFireBallista3, shouldFireBallista4;
@@ -62,7 +63,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	Zone upstairsTower, zoneVillage;
 	ZoneCondition isUpstairsTower, insideGnomeVillage;
-	ItemRequirement logRequirement;
+	ItemRequirement logRequirement, orbsOfProtection;
 
 	private final int TRACKER_1_VARBITID = 599;
 	private final int TRACKER_2_VARBITID = 600;
@@ -128,10 +129,17 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7622, new WorldPoint(2456, 3301, 0), "Defeat the warlord and retrieve orbs");
 		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7621, new WorldPoint(2456, 3301, 0), "Retrieve the orbs from the warlord.");
 
+		ItemStep pickupOrb = new ItemStep(this,
+			"Pick up the nearby \"Orbs of Protection\".", orbsOfProtection);
+
 		ConditionalStep defeatTheWarlord = new ConditionalStep(this, talkToTheWarlord,
 			new ItemRequirement("Food", -1),
 			new ItemRequirement("Armor & Weapons", -1));
+
+		pickupOrbsOfProtection = new ItemCondition(ItemID.ORBS_OF_PROTECTION);
 		defeatTheWarlord.addStep(fightingWarlord, fightTheWarlord);
+		defeatTheWarlord.addStep(pickupOrbsOfProtection, pickupOrb);
+		defeatTheWarlord.addSubSteps(pickupOrb);
 
 		return defeatTheWarlord;
 	}
@@ -139,6 +147,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private void setupItemRequirements()
 	{
 		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6);
+		orbsOfProtection = new ItemRequirement("Orbs of protection", ItemID.ORBS_OF_PROTECTION);
+		orbsOfProtection.setTip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
 	}
 
 	private void setupZones()
@@ -159,6 +169,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		insideGnomeVillage = new ZoneCondition(zoneVillage);
 		isUpstairsTower = new ZoneCondition(upstairsTower);
+
+		orbsOnGround = new ItemCondition(ItemID.ORBS_OF_PROTECTION);
 
 		talkToSecondTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteSecondTracker);
 		talkToThirdTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteThirdTracker);
@@ -257,7 +269,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 			firstOrb);
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
 
-		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.", orbsOfProtection);
 	}
 
 	@Override

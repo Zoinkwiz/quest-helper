@@ -49,15 +49,15 @@ import java.util.*;
 public class TreeGnomeVillage extends BasicQuestHelper
 {
 	private QuestStep talkToKingBolren, talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
-		firstTracker, secondTracker, thirdTracker, fireBallista, climbTheLadder, talkToKingBolrenFirstOrb,
+		firstTracker, secondTracker, thirdTracker, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder, talkToKingBolrenFirstOrb,
 		talkToTheWarlord, fightTheWarlord, returnOrbs;
 
 	private ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker,
 		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker;
 
-	private Conditions talkToSecondTracker, talkToThirdTracker, shouldFireBallista;
+	private Conditions talkToSecondTracker, talkToThirdTracker, shouldFireBallista1, shouldFireBallista2, shouldFireBallista3, shouldFireBallista4;
 
-	private ConditionalStep retrieveOrb,talkToBolrenAtCentreOfMaze;
+	private ConditionalStep retrieveOrb, talkToBolrenAtCentreOfMaze;
 
 	Zone upstairsTower, zoneVillage;
 	ZoneCondition isUpstairsTower, insideGnomeVillage;
@@ -98,7 +98,10 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		ConditionalStep talkToTrackers = new ConditionalStep(this, firstTracker);
 		talkToTrackers.addStep(talkToSecondTracker, secondTracker);
 		talkToTrackers.addStep(talkToThirdTracker, thirdTracker);
-		talkToTrackers.addStep(shouldFireBallista, fireBallista);
+		talkToTrackers.addStep(shouldFireBallista1, fireBallista1);
+		talkToTrackers.addStep(shouldFireBallista2, fireBallista2);
+		talkToTrackers.addStep(shouldFireBallista3, fireBallista3);
+		talkToTrackers.addStep(shouldFireBallista4, fireBallista4);
 		return talkToTrackers;
 	}
 
@@ -135,7 +138,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private void setupZones()
 	{
 		upstairsTower = new Zone(new WorldPoint(2500, 3251, 1), new WorldPoint(2506, 3259, 1));
-		zoneVillage = new Zone(new WorldPoint(2514,3158,0), new WorldPoint(2542, 3175, 0));
+		zoneVillage = new Zone(new WorldPoint(2514, 3158, 0), new WorldPoint(2542, 3175, 0));
 	}
 
 	public void setupConditions()
@@ -153,7 +156,14 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		talkToSecondTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteSecondTracker);
 		talkToThirdTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteThirdTracker);
-		shouldFireBallista = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker, completeThirdTracker);
+		shouldFireBallista1 = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker,
+			completeThirdTracker, new VarbitCondition(602, 0));
+		shouldFireBallista2 = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker,
+			completeThirdTracker, new VarbitCondition(602, 1));
+		shouldFireBallista3 = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker,
+			completeThirdTracker, new VarbitCondition(602, 2));
+		shouldFireBallista4 = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker,
+			completeThirdTracker, new VarbitCondition(602, 3));
 	}
 
 	private void setupSteps()
@@ -223,7 +233,14 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		secondTracker = new NpcStep(this, NpcID.TRACKER_GNOME_2, new WorldPoint(2524, 3257, 0), "Talk to the second tracker gnome inside the jail.");
 		thirdTracker = new NpcStep(this, NpcID.TRACKER_GNOME_3, new WorldPoint(2497, 3234, 0), "Talk to the third tracker gnome to the southwest.");
 
-		fireBallista = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "Fire the ballista.");
+		fireBallista1 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "Fire the ballista.");
+		fireBallista1.addDialogStep("0001");
+		fireBallista2 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "Fire the ballista.");
+		fireBallista2.addDialogStep("0002");
+		fireBallista3 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "Fire the ballista.");
+		fireBallista3.addDialogStep("0003");
+		fireBallista4 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "Fire the ballista.");
+		fireBallista4.addDialogStep("0004");
 
 		climbTheLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2503, 3252, 0), "Climb the ladder");
 

@@ -104,7 +104,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private QuestStep retrieveOrbStep()
 	{
 		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Retrieve the first orb from chest.");
-		ObjectStep getOrbFromChest = new ObjectStep(this, 2183, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
+		ObjectStep getOrbFromChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_2183, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
+		getOrbFromChest.addAlternateObjects(ObjectID.OPEN_CHEST_2182);
 		retrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
 		retrieveOrb.addSubSteps(getOrbFromChest, climbTheLadder);
 		return retrieveOrb;
@@ -162,7 +163,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai.");
 		talkToCommanderMontai.addDialogStep("Ok, I'll gather some wood.");
 
-		bringWoodToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai again to give him the wood.");
+		bringWoodToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai again to give him the wood.", logRequirement);
 
 		talkToCommanderMontaiAgain = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai.");
 		talkToCommanderMontaiAgain.addDialogStep("I'll try my best.");
@@ -178,7 +179,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		ItemRequirement firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
 		firstOrb.setTip("If you have lost the orb you can get another from the chest");
 		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
-			"Speak to King Bolren in the centre of the Tree Gnome Maze.",
+			"Speak to King Bolren in the centre of the Tree Gnome Maze. You can do can talk to Elkoy outside the maze to travel to the centre.",
 			firstOrb);
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
 
@@ -189,6 +190,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(logRequirement));
+	}
+
+	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList("Khazard Warlord (level 112)"));
 	}
 
 	@Override

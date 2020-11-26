@@ -36,7 +36,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private ZoneCondition isFirstFloorCastle, isSecondFloorCastle,
 		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
-		isInSirSpishyusRoom;
+		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom;
 
 	private ConditionalStep conditionalTalkToSirAmikVarze;
 
@@ -54,6 +54,18 @@ public class RecruitmentDrive extends BasicQuestHelper
 	// Sir Spishyus
 	QuestStep moveChickenOnRightToLeft, moveFoxOnRightToLeft, moveChickenOnLeftToRight,
 			moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain;
+
+	// Sir Ren
+	SirRenItchoodStep sirRenStep;
+
+	// Lady Table
+	LadyTableStep tableStep;
+
+
+	private int chickenOnRightId = 7279;
+	private int chickenOnLeftId = 7280;
+	private int grainOnRightId = 7282;
+	private int foxOnRightId = 7275;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -96,6 +108,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 			new WorldPoint(2466,4970, 0));
 		Zone sirSphishyusZone = new Zone(new WorldPoint(2469,4968,0),
 			new WorldPoint(2492, 4980, 0));
+		Zone sirRenItchoodZone = new Zone(new WorldPoint(2438,4952, 0),
+			new WorldPoint(2448,4962, 0));
+		Zone ladyTableZone = new Zone(new WorldPoint(2445, 4974, 0),
+			new WorldPoint(2461,4987, 0));
 
 		isFirstFloorCastle = new ZoneCondition(firstFloorZone);
 		isSecondFloorCastle = new ZoneCondition(secondFloorZone);
@@ -103,6 +119,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 		isInMsHynnRoom = new ZoneCondition(msHynnRoomZone);
 		isInSirKuamsRoom = new ZoneCondition(sirKuamRoomZone);
 		isInSirSpishyusRoom = new ZoneCondition(sirSphishyusZone);
+		isInSirRenItchood = new ZoneCondition(sirRenItchoodZone);
+		isInladyTableRoom = new ZoneCondition(ladyTableZone);
 	}
 
 	private QuestStep TalkToSirTiffanyInFaladorPark()
@@ -118,21 +136,29 @@ public class RecruitmentDrive extends BasicQuestHelper
 		talkToSirTiffany = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, "Talk to Sir Tiffany Cashien in Falador Park. Ensure you are a female character as one of the tests require you to be.",
 			emptyInventory, wearingNothing);
 
-		ConditionalStep conditionalTalkToSirTiffany = new ConditionalStep(this, talkToSirTiffany, "Test");
+		ConditionalStep conditionalTalkToSirTiffany = new ConditionalStep(this, talkToSirTiffany);
 		conditionalTalkToSirTiffany.addStep(isSecondFloorCastle, climbDownSecondFloorStaircase);
 		conditionalTalkToSirTiffany.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
 		talkToSirTiffany.addDialogStep("Yes, let's go!");
 		talkToSirTiffany.addSubSteps(climbDownfirstFloorStaircase,
 			climbDownSecondFloorStaircase);
 
-//		addSirTinley(conditionalTalkToSirTiffany);
-	addSirKuam(conditionalTalkToSirTiffany);
+	    addSirKuam(conditionalTalkToSirTiffany);
 		addSirSpishyus(conditionalTalkToSirTiffany);
-
 		// Testing steps below
-	//	conditionalTalkToSirTiffany.addStep(isInMsHynnRoom, getMsHynnTerprett());
+		conditionalTalkToSirTiffany.addStep(isInSirTinleysRoom, getSirTinley());
+		conditionalTalkToSirTiffany.addStep(isInMsHynnRoom, getMsHynnTerprett());
+		conditionalTalkToSirTiffany.addStep(isInSirRenItchood, getSirRenItchood());
+		conditionalTalkToSirTiffany.addStep(isInladyTableRoom, getTableStep());
 	//	conditionalTalkToSirTiffany.addStep(isInSirKuamsRoom, getSirKuam());
 		return conditionalTalkToSirTiffany;
+	}
+
+	private ConditionalStep getTableStep()
+	{
+		// TODO find out when thing dissapears
+		tableStep = new LadyTableStep(this, null);
+		return getTableStep();
 	}
 
 	private void addSirKuam(ConditionalStep sirTiffany)
@@ -149,32 +175,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 		sirTiffany.addStep(isInSirKuamsRoom, talkToSirKuam);
 	}
 
-	private void addSirTinley(ConditionalStep sirTiffany) {
-		talkToSirTinley = new NpcStep(this, NpcID.SIR_TINLEY, "Talk to Sir Tinley. \n Once you have pressed continue do not do anything or you will fail.");
-		doNothingStep = new DetailedQuestStep(this, "Do nothing and wait for Sir Tinley to talk to you to pass.");
-
-		VarbitCondition waitForCondition = new VarbitCondition(667, 1, Operation.GREATER_EQUAL);
-		VarbitCondition finishedRoom = new VarbitCondition(662, 1);
-
-		leaveSirTinsleyRoom = new ObjectStep(this, ObjectID.DOOR, "Leaves through the portal to continue.");
-		addRoomConditionToStep(sirTiffany, isInSirTinleysRoom, waitForCondition, doNothingStep);
-		addRoomConditionToStep(sirTiffany, isInSirTinleysRoom, finishedRoom, leaveSirTinsleyRoom);
-		sirTiffany.addStep(isInSirTinleysRoom, talkToSirTinley);
-	}
-
 	private void addRoomConditionToStep(ConditionalStep tiffanyStep, ZoneCondition zone, ConditionForStep secondaryCondition, QuestStep step)
 	{
 		tiffanyStep.addStep(new Conditions(LogicType.AND, zone, secondaryCondition), step);
 	}
-
-	private int chickenOnRightId = 7279;
-	private int chickenOnLeftId = 7280;
-
-	private int grainOnRightId = 7282;
-	private int grainOnLeftId = 7283;
-
-	private int foxOnRightId = 7275;
-	private int foxOnLeftId = 7276;
 
 	private void addSirSpishyus(ConditionalStep sirTiffany)
 	{
@@ -266,6 +270,34 @@ public class RecruitmentDrive extends BasicQuestHelper
 		return "Move to the " + dropSide + " and drop the "	+ itemName;
 	}
 
+	private QuestStep getSirRenItchood()
+	{
+		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.SIR_REN_ITCHOOD, "Talk to Sir Ren Itchood to recieve the clue");
+		talkToSirRenItchood.addDialogSteps("Can I have the clue for the door?");
+
+		sirRenStep = new SirRenItchoodStep(this, talkToSirRenItchood);
+		return sirRenStep;
+	}
+
+	private QuestStep getSirTinley()
+	{
+		ConditionalStep sirTinleyStep = new ConditionalStep(this, talkToSirTinley);
+		talkToSirTinley = new NpcStep(this, NpcID.SIR_TINLEY, "Talk to Sir Tinley. \n Once you have pressed continue do not do anything or you will fail.");
+		doNothingStep = new DetailedQuestStep(this, "Do nothing and wait for Sir Tinley to talk to you to pass.");
+
+		VarbitCondition waitForCondition = new VarbitCondition(667, 1, Operation.GREATER_EQUAL);
+		VarbitCondition finishedRoom = new VarbitCondition(662, 1);
+
+		sirTinleyStep.addStep(finishedRoom, leaveSirTinsleyRoom);
+		sirTinleyStep.addStep(waitForCondition, doNothingStep);
+
+		leaveSirTinsleyRoom = new ObjectStep(this, ObjectID.DOOR, "Leaves through the portal to continue.");
+	//	addRoomConditionToStep(sirTiffany, isInSirTinleysRoom, waitForCondition, doNothingStep);
+	//	addRoomConditionToStep(sirTiffany, isInSirTinleysRoom, finishedRoom, leaveSirTinsleyRoom);
+	//	sirTiffany.addStep(isInSirTinleysRoom, talkToSirTinley);
+		return sirTinleyStep;
+	}
+
 	private QuestStep getMsHynnTerprett()
 	{
 		talkToMsHynnTerprett = new NpcStep(this, NpcID.MS_HYNN_TERPRETT,
@@ -276,11 +308,11 @@ public class RecruitmentDrive extends BasicQuestHelper
 			": Her daughter is 10 years old.", // TODO
 			"Bucket A (32 degrees)",
 			"Zero.", // TODO
-			"Logic dictates that the number of false statements must be three. There are four possible answers, so for one of them to be true, all others must be false.", // TODO
+			"The number of false statements here is three.", // TODO
 			": Zero.");
 
-		ConditionalStep conditionalMsHynnTerprett = new ConditionalStep(this, talkToMsHynnTerprett,
-			"Solve the riddle for Ms Hynn Terprett");
+		ConditionalStep conditionalMsHynnTerprett = new ConditionalStep(this,
+			talkToMsHynnTerprett);
 
 		return conditionalMsHynnTerprett;
 	}
@@ -305,7 +337,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 		return conditionalTalkToSirAmikVarze;
 	}
 
-
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
@@ -319,7 +350,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
-
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> steps = new ArrayList<>();
@@ -330,25 +360,28 @@ public class RecruitmentDrive extends BasicQuestHelper
 		PanelDetails testing = new PanelDetails("Start the testing",
 			new ArrayList<>(Arrays.asList(talkToSirTiffany)), emptyInventory, wearingNothing);
 
-		/*PanelDetails sirTinleysRoom = new PanelDetails("Sir Tinley",
+		PanelDetails sirTinleysRoom = new PanelDetails("Sir Tinley",
 			new ArrayList<>(Arrays.asList(talkToSirTinley, doNothingStep, leaveSirTinsleyRoom)));
 
 		PanelDetails msHynnsRoom = new PanelDetails("Ms HynnTerprett",
 			new ArrayList<>(Arrays.asList(talkToMsHynnTerprett)));
-*/
 
 		PanelDetails sirKuamRoom = new PanelDetails("Sir Kuam",
-			new ArrayList<>(Arrays.asList(killSirLeye, talkToSirKuam, leaveSirKuamRoom)));
+			new ArrayList<>(Arrays.asList(talkToSirKuam, killSirLeye, leaveSirKuamRoom)));
 
 		PanelDetails sirSpishyusRoom = new PanelDetails("Sir Spishyus",
 			new ArrayList<>(Arrays.asList(moveChickenOnRightToLeft, moveFoxOnRightToLeft,
 				moveChickenOnLeftToRight, moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain)));
+
+		PanelDetails sirRensRoom = new PanelDetails("Sir Ren Itchood", sirRenStep.getPanelSteps());
+
 		steps.add(startingPanel);
 		steps.add(testing);
 		steps.add(sirKuamRoom);
 		steps.add(sirSpishyusRoom);
-		/*steps.add(msHynnsRoom);
-		steps.add(sirTinleysRoom);*/
+		steps.add(msHynnsRoom);
+		steps.add(sirTinleysRoom);
+		steps.add(sirRensRoom);
 		return steps;
 	}
 }

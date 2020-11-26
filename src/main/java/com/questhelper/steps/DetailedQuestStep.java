@@ -190,6 +190,10 @@ public class DetailedQuestStep extends QuestStep
 		requirements.addAll(requirement);
 	}
 
+	public void setText(String text) {
+		this.text = new ArrayList<>(Collections.singletonList(text));
+	}
+
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
 	{

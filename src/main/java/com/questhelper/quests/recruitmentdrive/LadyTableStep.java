@@ -21,18 +21,14 @@ import net.runelite.api.Model;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_NPC_GROUP_ID;
-import net.runelite.client.eventbus.Subscribe;
 
 public class LadyTableStep
 {
 	private QuestHelper questHelper;
-
-	private boolean startTracking = false;
 
 	private Statue missingStatue = null;
 
@@ -65,6 +61,7 @@ public class LadyTableStep
 
 		String missingStatueText = "Click on the " + missingStatue.color + " " + missingStatue.weapon + " statue. ";
 		clickMissingStatue = new ObjectStep(questHelper, missingStatue.gameId, missingStatue.point, missingStatueText);
+		questHelper.instantiateStep(clickMissingStatue);
 		conditionalStep.addStep(new Conditions(statueFound, textCondition), clickMissingStatue);
 
 
@@ -98,7 +95,6 @@ public class LadyTableStep
 		private String[] weapons = new String[]{"Sword", "Halberd", "Axe", "Mace"};
 
 		private Statue[] statues;
-
 
 		public WaitForStatueStep(QuestHelper questHelper, String text, Requirement... requirements)
 		{
@@ -135,27 +131,6 @@ public class LadyTableStep
 			}
 		}
 
-		@Subscribe
-		public void onGameTick(final GameTick event)
-		{
-			if (!startTracking || statueModels.size() > 0)
-			{
-				return;
-			}
-
-			statueModels.clear();
-			for (Statue statue : statues)
-			{
-				checkForStatues(statue.point);
-			}
-			procesModels();
-		}
-
-		@Override
-		public void startUp()
-		{
-			started = true;
-		}
 
 		@Override
 		/**
@@ -183,7 +158,11 @@ public class LadyTableStep
 
 			if (TRACKING_TEXT.equals(characterText))
 			{
-				startTracking = true;
+				for (Statue statue : statues)
+				{
+					checkForStatues(statue.point);
+				}
+				procesModels();
 			}
 		}
 
@@ -257,16 +236,19 @@ public class LadyTableStep
 
 		private void getStatue(HashMap<Integer, Integer> colorsMap, HashMap<Integer, Integer> weaponMap)
 		{
+
 			List<Integer> weaponList = new ArrayList(weaponMap.keySet());
 			List<Integer> colorsList = new ArrayList(colorsMap.keySet());
 
 			Integer lowestWeapon = getMinKey(weaponMap, weaponMap.keySet().toArray(new Integer[weaponMap.keySet().size()]));
 			Integer lowestColor = getMinKey(colorsMap, colorsMap.keySet().toArray(new Integer[colorsMap.keySet().size()]));
 
+			Collections.sort(weaponList, Collections.reverseOrder());
+			Collections.sort(colorsList, Collections.reverseOrder());
 			int weaponPosition = weaponList.indexOf(lowestWeapon);
 			int colorsPosition = colorsList.indexOf(lowestColor);
 
-			String missingWeapon = weapons[weaponPosition];
+			String missingWeapon = triangleCountOrder[weaponPosition];
 			String missingColor = colorOrder[colorsPosition];
 
 			for (Statue statue : statues)

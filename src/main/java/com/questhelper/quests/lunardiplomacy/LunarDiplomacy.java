@@ -693,7 +693,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		addToothToPotion = new DetailedQuestStep(this, "Add the ground tooth to the guam-marr potion.", groundTooth, guamMarrentilPotionHighlighted);
 
-		killSuqahForTooth = new NpcStep(this, NpcID.SUQAH, "Kill the Suqah outside the town for a . You'll also need 4 hides for later, so pick them up.", true);
+		killSuqahForTooth = new NpcStep(this, NpcID.SUQAH, "Kill the Suqah outside the town for a tooth. You'll also need 4 hides for later, so pick them up.", true);
 		pickUpTooth = new ItemStep(this, "Pick up the suqah tooth.", suqahTooth);
 
 		bringPotionToOneiromancer = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Return to the Oneiromancer with the waking sleep vial.", sealOfPassage, sleepPotion);

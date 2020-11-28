@@ -105,8 +105,8 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 		if (DIALOG_QUIZ.equals(characterText) ||
 			DIALOG_QUIZ2.equals(characterText)){
 			dialogEntry = true;
-			talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle with the code\n \n 20");
-			dialogQuizStep.setText("Enter the answer \n \n 20 when prompted with a dialogue box.");
+			talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle with the code\n \n 0");
+			dialogQuizStep.setText("Enter the answer \n \n 0 when prompted with a dialogue box.");
 		} else if (DIALOG_QUIZ3.equals(characterText)){
 			dialogEntry = true;
 			talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle with the code\n \n 10");

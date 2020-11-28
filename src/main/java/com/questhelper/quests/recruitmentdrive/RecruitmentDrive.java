@@ -165,9 +165,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private ConditionalStep getTableStep()
 	{
-		LadyTableStep ladyTableStep = new LadyTableStep(this, -1, "TEST");
+		LadyTableStep ladyTableStep = new LadyTableStep(this);
 		// TODO find out when thing dissapears
-		tableStep = new ConditionalStep(this, ladyTableStep) ;
+		tableStep = ladyTableStep.getConditionalStep();
 		return tableStep;
 	}
 

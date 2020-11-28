@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2020, Patyfatycake <https://github.com/Patyfatycake/>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABI`LITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.questhelpers.QuestHelper;
@@ -6,6 +30,7 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,16 +51,20 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class LadyTableStep extends DetailedOwnerStep
 {
+
+	private final int VARBIT_FINISHED_ROOM = 660;
+
 	private Statue missingStatue = null;
-
 	private WaitForStatueStep waitForStatueStep;
+	private ObjectStep clickMissingStatue, leaveRoom;
 
-	private ObjectStep clickMissingStatue;
+	VarbitCondition finishedRoom = new VarbitCondition(VARBIT_FINISHED_ROOM, 1);
 
 	public LadyTableStep(QuestHelper questHelper, Requirement... requirements)
 	{
 		super(questHelper, requirements);
-		waitForStatueStep = new WaitForStatueStep(questHelper, "Wait for the statues to appear.");
+		waitForStatueStep = new WaitForStatueStep(questHelper, "Wait to select the missing statue.");
+		leaveRoom = new ObjectStep(questHelper, 7302, "Leaves through the door to enter the portal and continue.");
 	}
 
 	@Override
@@ -48,13 +77,18 @@ public class LadyTableStep extends DetailedOwnerStep
 		{
 			step.add(clickMissingStatue);
 		}
+		step.add(leaveRoom);
 		return step;
 	}
 
 	@Override
 	protected void updateSteps()
 	{
-		if (missingStatue != null)
+		if (finishedRoom.checkCondition(client))
+		{
+			startUpStep(leaveRoom);
+		}
+		else if (missingStatue != null)
 		{
 			startUpStep(clickMissingStatue);
 		}
@@ -62,6 +96,19 @@ public class LadyTableStep extends DetailedOwnerStep
 		{
 			startUpStep(waitForStatueStep);
 		}
+	}
+
+	public ArrayList<QuestStep> getPanelSteps()
+	{
+		ArrayList<QuestStep> steps = new ArrayList<>();
+
+		steps.add(waitForStatueStep);
+		if (missingStatue != null)
+		{
+			steps.add(clickMissingStatue);
+		}
+		steps.add(leaveRoom);
+		return steps;
 	}
 
 	@Subscribe
@@ -251,6 +298,8 @@ public class LadyTableStep extends DetailedOwnerStep
 		{
 			String missingStatueText = "Click on the " + missingStatue.color + " " + missingStatue.weapon + " statue. ";
 			clickMissingStatue = new ObjectStep(questHelper, missingStatue.gameId, missingStatue.point, missingStatueText);
+			waitForStatueStep.setText("Wait to select the missing statue " + missingStatue.color + " " + missingStatue.weapon);
+			waitForStatueStep.addSubSteps(clickMissingStatue);
 			questHelper.instantiateStep(clickMissingStatue);
 		}
 

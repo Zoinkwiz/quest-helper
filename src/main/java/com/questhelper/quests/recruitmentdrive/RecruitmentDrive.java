@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2020, Patyfatycake <https://github.com/Patyfatycake/>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABI`LITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.QuestDescriptor;
@@ -6,6 +30,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.NoItemRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -31,12 +56,11 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class RecruitmentDrive extends BasicQuestHelper
 {
-	private ItemRequirement coinsRequirement, emptyInventory, wearingNothing;
-
+	private ItemRequirement coinsRequirement;
+	private NoItemRequirement noItemRequirement;
 	private ZoneCondition isFirstFloorCastle, isSecondFloorCastle,
 		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
-		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom,
-		isInMsCheeversRoom;
+		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom;
 
 	private ConditionalStep conditionalTalkToSirAmikVarze;
 
@@ -56,7 +80,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	SirRenItchoodStep sirRenStep;
 
 	// Lady Table
-	LadyTableStep tableStep;
+	LadyTableStep ladyTableStep;
 
 	// Ms Hynn
 	private QuestStep talkToMsHynnTerprett;
@@ -92,8 +116,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemID.COINS, 3000);
-		emptyInventory = new ItemRequirement("Empty Inventory", -1, 28);
-		wearingNothing = new ItemRequirement("Have nothing equipped", -1, -1);
+		noItemRequirement = new NoItemRequirement("No items or equipment carried", NoItemRequirement.ALL_EQUIPMENT_AND_INVENTORY_SLOTS);
 	}
 
 	public void SetupZones()
@@ -137,7 +160,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 			firstFloorStairsPosition, "Climb down the stairs from the first floor.");
 
 		talkToSirTiffany = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, "Talk to Sir Tiffany Cashien in Falador Park. Ensure you are a female character as one of the tests require you to be.",
-			emptyInventory, wearingNothing);
+			noItemRequirement);
 
 		ConditionalStep conditionalTalkToSirTiffany = new ConditionalStep(this, talkToSirTiffany);
 		conditionalTalkToSirTiffany.addStep(isSecondFloorCastle, climbDownSecondFloorStaircase);
@@ -151,7 +174,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		conditionalTalkToSirTiffany.addStep(isInSirTinleysRoom, getSirTinley());
 		conditionalTalkToSirTiffany.addStep(isInMsHynnRoom, getMsHynnTerprett());
 		conditionalTalkToSirTiffany.addStep(isInSirRenItchood, getSirRenItchood());
-		conditionalTalkToSirTiffany.addStep(isInladyTableRoom, getTableStep());
+		conditionalTalkToSirTiffany.addStep(isInladyTableRoom, getLadyTableStep());
 		conditionalTalkToSirTiffany.addStep(isInSirSpishyusRoom, getSirSpishyus());
 		conditionalTalkToSirTiffany.addStep(isInSirKuamsRoom, getSirKuam());
 
@@ -161,11 +184,11 @@ public class RecruitmentDrive extends BasicQuestHelper
 		return conditionalTalkToSirTiffany;
 	}
 
-	private LadyTableStep getTableStep()
+	private LadyTableStep getLadyTableStep()
 	{
 		LadyTableStep ladyTableStep = new LadyTableStep(this);
-		tableStep = ladyTableStep;
-		return tableStep;
+		this.ladyTableStep = ladyTableStep;
+		return this.ladyTableStep;
 	}
 
 	private QuestStep getSirKuam()
@@ -354,7 +377,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(conditionalTalkToSirAmikVarze)));
 
 		PanelDetails testing = new PanelDetails("Start the testing",
-			new ArrayList<>(Arrays.asList(talkToSirTiffany)), emptyInventory, wearingNothing);
+			new ArrayList<>(Arrays.asList(talkToSirTiffany)), noItemRequirement);
 
 		PanelDetails sirTinleysRoom = new PanelDetails("Sir Tinley",
 			new ArrayList<>(Arrays.asList(talkToSirTinley, doNothingStep, leaveSirTinleyRoom)));
@@ -375,6 +398,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		PanelDetails missCheeversRoom = new PanelDetails("Mis Cheevers", msCheevesSetup.GetPanelSteps());
 
+		PanelDetails ladyTable = new PanelDetails("Lady Table", ladyTableStep.getPanelSteps());
+
 		steps.add(startingPanel);
 		steps.add(testing);
 		steps.add(sirKuamRoom);
@@ -383,6 +408,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		steps.add(sirTinleysRoom);
 		steps.add(sirRensRoom);
 		steps.add(missCheeversRoom);
+		steps.add(ladyTable);
 		return steps;
 	}
 }

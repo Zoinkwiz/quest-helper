@@ -32,15 +32,16 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class NoItemRequirement extends Requirement
+public class NoItemRequirement extends ItemRequirement
 {
 	public static final int ALL_EQUIPMENT_SLOTS = -1;
 	public static final int ALL_INVENTORY_SLOTS = -2;
 	public static final int ALL_EQUIPMENT_AND_INVENTORY_SLOTS = -3;
 	int slot;
 
-	public NoItemRequirement(int slot)
+	public NoItemRequirement(String text, int slot)
 	{
+		super(text, -1);
 		this.slot = slot;
 	}
 

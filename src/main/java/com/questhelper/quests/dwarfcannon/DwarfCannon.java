@@ -19,9 +19,9 @@ import net.runelite.api.coords.WorldPoint;
 
 public class DwarfCannon extends BasicQuestHelper{
 
-    ItemRequirement staminas,teleToAsg, hammer, railing, dwarfRemains,toolkit,cannonballMould;
-    ConditionForStep upTower1, upTower2, inCave, bar1,bar2,bar3,bar4,bar5,bar6,hasRailings,hasHammer,hasRemains,foundLollk,hasToolkit,cannonFixed,hasCannonballMould;
-    QuestStep talkToCaptainLawgof, talkToCaptainLawgof2, gotoTower, goToTower2, talkToCaptainLawgof3, gotoCave,inspectRailings1,inspectRailings2,inspectRailings3,inspectRailings4,inspectRailings5,inspectRailings6,getRemainsStep, downTower, downTower2, searchCrates,talkToCaptainLawgof4,useToolkit,talkToCaptainLawgof5,talkToNulodion,talkToCaptainLawgof6;
+    ItemRequirement staminas,teleToAsg,teleToKand,hammer,railing,dwarfRemains,toolkit,cannonballMould,nulodionsNotes;
+    ConditionForStep upTower1,upTower2,inCave,bar1,bar2,bar3,bar4,bar5,bar6,hasRailings,hasHammer,hasRemains,hasToolkit,springFixed,safetyFixed,cannonFixed,hasCannonballMould,hasNulodionsNotes;
+    QuestStep talkToCaptainLawgof,talkToCaptainLawgof2,gotoTower,goToTower2,talkToCaptainLawgof3,gotoCave,inspectRailings1,inspectRailings2,inspectRailings3,inspectRailings4,inspectRailings5,inspectRailings6,getRemainsStep, downTower, downTower2, searchCrates,talkToCaptainLawgof4,useToolkit,talkToCaptainLawgof5,talkToNulodion,talkToCaptainLawgof6;
     Zone cave,tower1,tower2;
 
     @Override
@@ -35,6 +35,7 @@ public class DwarfCannon extends BasicQuestHelper{
         //Start
         steps.put(0, talkToCaptainLawgof);
 
+        //TODO: This section needs testing
         //Repair Bars
         ConditionalStep fixedRailings = new ConditionalStep(this,inspectRailings1);
         fixedRailings.addStep(new Conditions(hasHammer,hasRailings,bar6),talkToCaptainLawgof2);
@@ -56,27 +57,38 @@ public class DwarfCannon extends BasicQuestHelper{
         returnRemains.addStep(hasRemains,talkToCaptainLawgof3);
         returnRemains.addStep(new Conditions(hasRemains,upTower1),downTower);
         steps.put(3,returnRemains);
+        steps.put(4,returnRemains);
+        //End TODO section
 
         //Go to the cave, find Lollk, return and fix cannon
         ConditionalStep findLollk = new ConditionalStep(this,gotoCave);
-        findLollk.addStep(new Conditions(foundLollk),talkToCaptainLawgof4);
-        findLollk.addStep(new Conditions(inCave),searchCrates);
-        steps.put(3,findLollk);
+        findLollk.addStep(inCave,searchCrates);
+        steps.put(5,findLollk);
+        steps.put(6,talkToCaptainLawgof4);
 
         ConditionalStep fixUpCannon = new ConditionalStep(this,useToolkit);
-        fixUpCannon.addStep(cannonFixed,talkToCaptainLawgof5);
-        steps.put(4,fixUpCannon);
+        fixUpCannon.addStep(new Conditions(safetyFixed,springFixed,cannonFixed),talkToCaptainLawgof5);
+        steps.put(7,fixUpCannon);
+        steps.put(8,fixUpCannon);
+
+        //Ammo mould and back
+        ConditionalStep captainLawgofFinal = new ConditionalStep(this,talkToNulodion);
+        captainLawgofFinal.addStep(new Conditions(hasNulodionsNotes,hasCannonballMould),talkToCaptainLawgof6);
+        steps.put(9,captainLawgofFinal);
+        steps.put(10,captainLawgofFinal);
 
         return steps;
     }
     public void setupItemRequirements() {
         staminas = new ItemRequirement("Stamina Potions",-1);
-        teleToAsg = new ItemRequirement("Teleport to Falador or Amulet of Glory",-1);
+        teleToAsg = new ItemRequirement("Teleport to Falador, Amulet of Glory, or Combat Bracelet",-1);
+        teleToKand = new ItemRequirement("Teleport to Ardougne, Skills Necklace, or Games Necklace",-1);
         hammer = new ItemRequirement("Hammer",ItemID.HAMMER);
         railing = new ItemRequirement("Railing",ItemID.RAILING);
         toolkit = new ItemRequirement("Toolkit",ItemID.TOOLKIT);
         dwarfRemains = new ItemRequirement("Dwarf Remains",ItemID.DWARF_REMAINS);
         cannonballMould = new ItemRequirement("Cannonball Mould",ItemID.AMMO_MOULD);
+        nulodionsNotes = new ItemRequirement("Nulodion's Notes",ItemID.NULODIONS_NOTES);
     }
 
     public void setupConditions() {
@@ -86,6 +98,7 @@ public class DwarfCannon extends BasicQuestHelper{
         hasRemains = new ItemRequirementCondition(dwarfRemains);
         hasToolkit = new ItemRequirementCondition(toolkit);
         hasCannonballMould = new ItemRequirementCondition(cannonballMould);
+        hasNulodionsNotes = new ItemRequirementCondition(nulodionsNotes);
 
         //Varbits
         bar1 = new VarbitCondition(2240, 1);
@@ -96,8 +109,9 @@ public class DwarfCannon extends BasicQuestHelper{
         bar6 = new VarbitCondition(2245, 1);
         //All Complete varbit 2246
 
-        foundLollk = new VarbitCondition(0000,1);
-        cannonFixed = new VarbitCondition(0000,1);
+        springFixed = new VarbitCondition(2239,1);
+        safetyFixed = new VarbitCondition(2238,1);
+        cannonFixed = new VarbitCondition(2235,1);
 
         //Zones
         upTower1 = new ZoneCondition(tower1);
@@ -105,8 +119,7 @@ public class DwarfCannon extends BasicQuestHelper{
         inCave = new ZoneCondition(cave);
     }
 
-    public void setupZones()
-    {
+    public void setupZones(){
         cave = new Zone(new WorldPoint(2557,9790,0), new WorldPoint(2624,9859,0));
         tower1 = new Zone(new WorldPoint(2568,3439,1), new WorldPoint(2572,3445,1));
         tower2 = new Zone(new WorldPoint(2566,3441,2), new WorldPoint(2572,3445,2));
@@ -128,47 +141,48 @@ public class DwarfCannon extends BasicQuestHelper{
         talkToCaptainLawgof2 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof again.  Make sure to complete the entire dialogue.");
         gotoTower = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2570,3441,0),"Go to the top floor of the tower south of Captain Lawgof.");
         goToTower2 = new ObjectStep(this, ObjectID.LADDER_11, new WorldPoint(2570,3443,1), "Go up the second ladder.");
-        //TODO: Highlight on dwarf remains isn't working
+
+        //TODO: Highlight on dwarf remains isn't working, highlight tile is workaround
         //getRemainsStep = new ObjectStep(this,ObjectID.DWARF_REMAINS,new WorldPoint(2567,3444,2),"Get the dwarf remains at the top of the tower.");
         getRemainsStep = new TileStep(this,new WorldPoint(2567,3444,2),"Get the dwarf remains at the top of the tower.");
+
         downTower = new ObjectStep(this,ObjectID.LADDER_16679,new WorldPoint(2570,3443,2),"Go down the first ladder");
         downTower2 = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2570,3441,1),"Go down the second ladder");
         talkToCaptainLawgof3 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Go back down the ladders and return the remains to Captain Lawgof.");
 
         //Cave
-        gotoCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2622,3391,0),"Go to the cave east of the Fishing Guild door.");
-        searchCrates = new ObjectStep(this, ObjectID.CRATE, new WorldPoint(2571,9850,0),"Search the crates to find Lollk");
+        gotoCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624,3393,0),"Go to the cave entrance east of the Fishing Guild door.");
+        searchCrates = new ObjectStep(this, ObjectID.CRATE, new WorldPoint(2571,9850,0),"Search the crates in the North West corner to find Lollk.");
         talkToCaptainLawgof4 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Return to Captain Lawgof.");
         talkToCaptainLawgof4.addDialogStep("Okay, I'll see what I can do.");
 
-        useToolkit = new ObjectStep(this,NullObjectID.NULL_15597, new WorldPoint(2563,3462,0),"Use the toolkit on the broken multicannon.");
+        //Fix cannon
+        useToolkit = new ObjectStep(this,NullObjectID.NULL_15597, new WorldPoint(2563,3462,0),"Use the toolkit on the broken multicannon.  Use the right tool on the spring, the middle tool on the Safety switch, and the left ool on the gear.");
         useToolkit.addIcon(ItemID.TOOLKIT);
-
         talkToCaptainLawgof5 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof.");
         talkToCaptainLawgof5.addDialogStep("Okay then, just for you!");
 
         //Cannonball mould
-        talkToNulodion = new NpcStep(this, NpcID.NULODION,new WorldPoint(0,0,0),"Go talk to Nulodion at the Dwarven Black Guard camp (north-est of Falador, South of ICe Mountain).");
-        talkToCaptainLawgof6 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Finally, return to Captain Lawgof with the cannonball mould.");
+        talkToNulodion = new NpcStep(this, NpcID.NULODION,new WorldPoint(3012,3453,0),"Go talk to Nulodion at the Dwarven Black Guard camp (north-east of Falador, South of Ice Mountain).");
+        talkToCaptainLawgof6 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Finally, return to Captain Lawgof with the ammo mould and Nulodion's Notes.");
     }
 
     @Override
-    public ArrayList<ItemRequirement> getItemRecommended()
-    {
+    public ArrayList<ItemRequirement> getItemRecommended(){
         ArrayList<ItemRequirement> reqs = new ArrayList<>();
         reqs.add(staminas);
         reqs.add(teleToAsg);
+        reqs.add(teleToKand);
         return reqs;
     }
 
     @Override
-    public ArrayList<PanelDetails> getPanels()
-    {
+    public ArrayList<PanelDetails> getPanels(){
         ArrayList<PanelDetails> allSteps = new ArrayList<>();
         allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToCaptainLawgof))));
         allSteps.add(new PanelDetails("Repair and Retrieval", new ArrayList<>(Arrays.asList(inspectRailings6,talkToCaptainLawgof2,gotoTower,getRemainsStep,talkToCaptainLawgof3))));
-        allSteps.add(new PanelDetails("Find Lollk and Fix Cannon",new ArrayList<>(Arrays.asList(gotoCave,searchCrates,talkToCaptainLawgof4,useToolkit))));
-        allSteps.add(new PanelDetails("Get Cannonball mould",new ArrayList<>(Arrays.asList(talkToNulodion,talkToCaptainLawgof6))));
+        allSteps.add(new PanelDetails("Find Lollk and Fix Cannon",new ArrayList<>(Arrays.asList(gotoCave,searchCrates,talkToCaptainLawgof4,useToolkit,talkToCaptainLawgof5))));
+        allSteps.add(new PanelDetails("Get Ammo Mould",new ArrayList<>(Arrays.asList(talkToNulodion,talkToCaptainLawgof6))));
         return allSteps;
     }
 }

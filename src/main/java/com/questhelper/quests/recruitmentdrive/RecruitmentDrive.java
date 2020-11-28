@@ -11,7 +11,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.NpcCondition;
@@ -21,7 +20,6 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -58,7 +56,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	SirRenItchoodStep sirRenStep;
 
 	// Lady Table
-	ConditionalStep tableStep;
+	LadyTableStep tableStep;
 
 	// Ms Hynn
 	private QuestStep talkToMsHynnTerprett;
@@ -163,11 +161,11 @@ public class RecruitmentDrive extends BasicQuestHelper
 		return conditionalTalkToSirTiffany;
 	}
 
-	private ConditionalStep getTableStep()
+	private LadyTableStep getTableStep()
 	{
 		LadyTableStep ladyTableStep = new LadyTableStep(this);
 		// TODO find out when thing dissapears
-		tableStep = ladyTableStep.getConditionalStep();
+		tableStep = ladyTableStep;
 		return tableStep;
 	}
 

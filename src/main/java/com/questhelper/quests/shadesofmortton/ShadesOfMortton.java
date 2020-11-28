@@ -220,15 +220,15 @@ public class ShadesOfMortton extends BasicQuestHelper
 		talkToRazmire.addDialogSteps("What are all these shadowy creatures?", "Yes, I'll dispatch those dark and evil creatures.");
 		((NpcStep)(talkToRazmire)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
 
-		kill5Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 5 Loar Shades and pick up their remains.", true);
+		kill5Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 5 Loar Shades and pick up their remains.", true, loar5);
 		((NpcStep)(kill5Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill4Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 4 Loar Shades and pick up their remains.", true);
+		kill4Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 4 Loar Shades and pick up their remains.", true, loar5);
 		((NpcStep)(kill4Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill3Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 3 Loar Shades and pick up their remains.", true);
+		kill3Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 3 Loar Shades and pick up their remains.", true, loar5);
 		((NpcStep)(kill3Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill2Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 2 Loar Shades and pick up their remains.", true);
+		kill2Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 2 Loar Shades and pick up their remains.", true, loar5);
 		((NpcStep)(kill2Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill1Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 1 Loar Shades and pick up their remains.", true);
+		kill1Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 1 Loar Shades and pick up their remains.", true, loar5);
 		((NpcStep)(kill1Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
 		kill5Shades.addSubSteps(kill1Shades, kill2Shades, kill3Shades, kill4Shades);
 

@@ -43,7 +43,6 @@ public class SirRenItchoodStep extends ConditionalStep
 
 	private void loadConditions()
 	{
-
 		hasAnswer = new ConditionForStep()
 		{
 			@Override

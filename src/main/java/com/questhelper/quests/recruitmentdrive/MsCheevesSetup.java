@@ -54,12 +54,12 @@ public class MsCheevesSetup
 	ItemRequirementCondition hasGypsumTin, hasTinKeyPrint, hasTinCupricOre, hasTinWithTinOre, hasTinWithAllOre;
 
 	private final int VARBIT_NITROUS_OXIDE = 5581;
-	private final int VARBIT_VIAL_OF_LIQUID = 671; // Possibly acetric acide?
-	private final int VARBIT_ACETIC_ACIDE = 672; // Possibly  Vial of Liquid
+	private final int VARBIT_VIAL_OF_LIQUID = 671;
+	private final int VARBIT_ACETIC_ACIDE = 672;
 	private final int VARBIT_CUPRIC_SULFATE = 673;
 	private final int VARBIT_GYPSUM = 674;
 	private final int VARBIT_SODIUM_CHLORIDE = 675;
-	private final int VARBIT_NITROuS_OXIDE = 676;
+	private final int VARBIT_NITROUS_OXIDE_RETRIEVED = 676;
 	private final int VARBIT_TIN_ORE_POWDER = 677;
 	private final int VARBIT_CUPRIC_ORE_POWDER = 678;
 	private final int VARBIT_THREE_VIALS = 679; //(0 -> 3)
@@ -156,9 +156,8 @@ public class MsCheevesSetup
 	private void addSteps()
 	{
 		conditionalStep = new ConditionalStep(questHelper, getMagnetStep);
-
 		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasBronzeKey, finishedRoom), leaveRoom);
-		createSecondDoorKey();
+		setupSecondDoorKeyStep();
 		destroyFirstDoorSteps();
 		retrieveItemSteps();
 	}
@@ -197,7 +196,10 @@ public class MsCheevesSetup
 		return steps;
 	}
 
-	private void createSecondDoorKey()
+	/***
+	 * 	Steps and conditions required to create the key for the second door.
+	 */
+	private void setupSecondDoorKeyStep()
 	{
 		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasTinWithAllOre), useEquipmentOnTin);
 		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasTinWithTinOre), useTinOnBunsenBurner);
@@ -206,9 +208,11 @@ public class MsCheevesSetup
 		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasGypsumTin), useTinOnKey);
 		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasLiquidInTin), useGypsumOnTin);
 		conditionalStep.addStep(new Conditions(hasFirstDoorOpen), useVialOfLiquidOnCakeTin);
-
 	}
 
+	/***
+	 * 	Steps and conditions required to destroy the first door.
+	 */
 	private void destroyFirstDoorSteps()
 	{
 		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasGypsum,
@@ -232,6 +236,9 @@ public class MsCheevesSetup
 			hasRetrievedThreeVials, hasKnife, hasMetalSpade), useSpadeOnBunsenBurner);
 	}
 
+	/**
+	 * First stage to retrieve all required items to pass the room.
+	 */
 	private void retrieveItemSteps()
 	{
 		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,

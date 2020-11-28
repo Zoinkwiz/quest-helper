@@ -6,7 +6,6 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.WidgetTextCondition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

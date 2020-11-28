@@ -50,7 +50,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	// Sir Spishyus
 	QuestStep moveChickenOnRightToLeft, moveFoxOnRightToLeft, moveChickenOnLeftToRight,
-			moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain, finishedSpishyusRoom;
+		moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain, finishedSpishyusRoom;
 
 	// Sir Ren
 	SirRenItchoodStep sirRenStep;
@@ -103,18 +103,18 @@ public class RecruitmentDrive extends BasicQuestHelper
 		Zone secondFloorZone = new Zone(new WorldPoint(2955, 3334, 1),
 			new WorldPoint(2964, 3342, 2));
 
-		Zone sirTinleyRoomZone = new Zone(new WorldPoint(2471,4954,0),
-			new WorldPoint(2481,4960, 0));
+		Zone sirTinleyRoomZone = new Zone(new WorldPoint(2471, 4954, 0),
+			new WorldPoint(2481, 4960, 0));
 		Zone msHynnRoomZone = new Zone(new WorldPoint(2446, 4934, 0),
 			new WorldPoint(2457, 4946, 0));
-		Zone sirKuamRoomZone = new Zone(new WorldPoint(2453,4958, 0),
-			new WorldPoint(2466,4970, 0));
-		Zone sirSphishyusZone = new Zone(new WorldPoint(2469,4968,0),
+		Zone sirKuamRoomZone = new Zone(new WorldPoint(2453, 4958, 0),
+			new WorldPoint(2466, 4970, 0));
+		Zone sirSphishyusZone = new Zone(new WorldPoint(2469, 4968, 0),
 			new WorldPoint(2492, 4980, 0));
-		Zone sirRenItchoodZone = new Zone(new WorldPoint(2438,4952, 0),
-			new WorldPoint(2448,4962, 0));
+		Zone sirRenItchoodZone = new Zone(new WorldPoint(2438, 4952, 0),
+			new WorldPoint(2448, 4962, 0));
 		Zone ladyTableZone = new Zone(new WorldPoint(2445, 4974, 0),
-			new WorldPoint(2461,4987, 0));
+			new WorldPoint(2461, 4987, 0));
 
 		isFirstFloorCastle = new ZoneCondition(firstFloorZone);
 		isSecondFloorCastle = new ZoneCondition(secondFloorZone);
@@ -164,7 +164,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 	private LadyTableStep getTableStep()
 	{
 		LadyTableStep ladyTableStep = new LadyTableStep(this);
-		// TODO find out when thing dissapears
 		tableStep = ladyTableStep;
 		return tableStep;
 	}
@@ -180,7 +179,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leaves through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);
 
-		ConditionalStep sirKuamConditional = new ConditionalStep(this,talkToSirKuam );
+		ConditionalStep sirKuamConditional = new ConditionalStep(this, talkToSirKuam);
 
 		sirKuamConditional.addStep(finishedRoom, leaveSirKuamRoom);
 		sirKuamConditional.addStep(npcCondition, killSirLeye);
@@ -220,12 +219,12 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		moveChickenOnRightToLeft = new ObjectStep(this, chickenOnRightId, chickenOnRightPoint,
 			getSpishyusPickupText("Chicken", true));
-		finishedSpishyusRoom =  new ObjectStep(this, 7274, "Leaves through the portal to continue.");
+		finishedSpishyusRoom = new ObjectStep(this, 7274, "Leaves through the portal to continue.");
 
 		moveFoxOnRightToLeft = new ObjectStep(this, foxOnRightId, foxOnRightPoint,
 			getSpishyusPickupText("Fox", true));
 
-		DetailedQuestStep moveChickenToLeft = new DetailedQuestStep(this , getSpishyusMoveText("Chicken", false));
+		DetailedQuestStep moveChickenToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
 		moveChickenOnRightToLeft.addSubSteps(moveChickenToLeft);
 
 		DetailedQuestStep moveFoxToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Fox", false));
@@ -243,7 +242,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		moveChickenOnRightToLeftAgain = new ObjectStep(this, chickenOnRightId, chickenOnRightPoint,
 			getSpishyusPickupText("Chicken", true));
-		DetailedQuestStep moveChickenToLeftAgain = new DetailedQuestStep(this , getSpishyusMoveText("Chicken", false));
+		DetailedQuestStep moveChickenToLeftAgain = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
 		moveChickenOnRightToLeftAgain.addSubSteps(moveChickenToLeftAgain);
 
 		ConditionalStep sirSpishyus = new ConditionalStep(this, moveChickenOnRightToLeft);
@@ -269,13 +268,13 @@ public class RecruitmentDrive extends BasicQuestHelper
 		String firstSide = moveRightToLeft ? "right" : "left";
 		String secondSide = moveRightToLeft ? "left" : "right";
 		return "Pickup the " + itemName + " on the " + firstSide + " and move it to the "
-			+ secondSide +" side by crossing the bridge";
+			+ secondSide + " side by crossing the bridge";
 	}
 
 	private String getSpishyusMoveText(String itemName, boolean rightSide)
 	{
 		String dropSide = rightSide ? "right" : "left";
-		return "Move to the " + dropSide + " and drop the "	+ itemName;
+		return "Move to the " + dropSide + " and drop the " + itemName;
 	}
 
 	private QuestStep getSirRenItchood()

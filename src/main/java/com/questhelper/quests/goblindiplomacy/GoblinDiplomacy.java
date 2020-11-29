@@ -164,14 +164,18 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		dyeOrange = new DetailedQuestStep(this, "Use the orange dye on one of the goblin mail.", orangeDye, goblinMail);
 
 		talkToGeneral1 = new NpcStep(this, NpcID.GENERAL_BENTNOZE, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village.", orangeArmour);
+		talkToGeneral1.addDialogStep("So how is life for the goblins?");
 		talkToGeneral1.addDialogStep("Yes, Wartface looks fat");
 		talkToGeneral1.addDialogStep("Do you want me to pick an armour colour for you?");
 		talkToGeneral1.addDialogStep("What about a different colour?");
 		talkToGeneral1.addDialogStep("I have some orange armour here");
 
 		talkToGeneral2 = new NpcStep(this, NpcID.GENERAL_BENTNOZE, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village again.", blueArmour);
+		talkToGeneral2.addDialogStep("So how is life for the goblins?");
 		talkToGeneral2.addDialogStep("I have some blue armour here");
+
 		talkToGeneral3 = new NpcStep(this, NpcID.GENERAL_BENTNOZE, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village once more.", goblinMail);
+		talkToGeneral3.addDialogStep("So how is life for the goblins?");
 		talkToGeneral3.addDialogStep("I have some brown armour here");
 	}
 

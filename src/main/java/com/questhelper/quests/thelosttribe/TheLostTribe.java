@@ -307,7 +307,7 @@ public class TheLostTribe extends BasicQuestHelper
 		goTravelToMistag.addStep(inBasement, climbThroughHole);
 		goTravelToMistag.addSubSteps(walkToMistag);
 
-		goTalkToDukeAfterEmote = new ConditionalStep(this, goToF1Steps, "Talk to Duke Horacio in Lumbridge Castle.");
+		goTalkToDukeAfterEmote = new ConditionalStep(this, goToF1Steps, "Talk to Duke Horacio in Lumbridge Castle. You can fast-travel with Mistag back to Lumbridge.");
 		goTalkToDukeAfterEmote.addDialogSteps("I've made contact with the cave goblins...");
 		goTalkToDukeAfterEmote.addStep(inLumbridgeF1, talkToDuke);
 

@@ -373,6 +373,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 				}
 			}
 		}
+		lastPosition = currentPosition;
 	}
 
 	@Subscribe

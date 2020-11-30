@@ -119,7 +119,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		setupConditionalSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, doAgilitySection);
+		steps.put(0, talkToNarnode);
 
 		ConditionalStep investigatingGlough = new ConditionalStep(this, goInvestigateGloughHouse);
 		investigatingGlough.addStep(talkedToAnita, goInvestigateUpstairs);

@@ -96,6 +96,7 @@ public enum QuestVarbits
 	QUEST_THE_FREMENNIK_EXILES(9459),
 	QUEST_SINS_OF_THE_FATHER(7255),
 	QUEST_A_PORCINE_OF_INTEREST(10582),
+	QUEST_GETTING_AHEAD(693),
 
 	/**
 	 * mini-quest varbits, these don't hold the completion value.

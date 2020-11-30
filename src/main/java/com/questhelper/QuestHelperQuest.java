@@ -190,6 +190,7 @@ public enum QuestHelperQuest
 	SONG_OF_THE_ELVES(603, "Song of the Elves", QuestVarbits.QUEST_SONG_OF_THE_ELVES),
 	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles", QuestVarbits.QUEST_THE_FREMENNIK_EXILES),
 	SINS_OF_THE_FATHER(1276, "Sins of the Father", QuestVarbits.QUEST_SINS_OF_THE_FATHER),
+	GETTING_AHEAD(752, "Getting Ahead", QuestVarbits.QUEST_GETTING_AHEAD),
 	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest", QuestVarbits.QUEST_A_PORCINE_OF_INTEREST),
 
 	//Miniquests

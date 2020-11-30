@@ -275,12 +275,12 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		if(shouldUsePath4V2)
 		{
 			newRoute.addAll(path4V2);
-			newRoute.addAll(workOutFifthSection(0,-1, 0));
+			newRoute.addAll(workOutFifthSection(0, new ArrayList<>(), 0));
 		}
 		else
 		{
 			newRoute.addAll(path4V1);
-			newRoute.addAll(workOutFifthSection(0, -1, 2));
+			newRoute.addAll(workOutFifthSection(0, new ArrayList<>(), 2));
 		}
 		traverseDungeonThirdSection.setLinePoints(newRoute);
 	}
@@ -303,8 +303,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 	}
 
-	public ArrayList<WorldPoint> workOutFifthSection(int currentDepth, int previousId, int id)
+	public ArrayList<WorldPoint> workOutFifthSection(int currentDepth, ArrayList<Integer> previousIds, int id)
 	{
+		previousIds.add(id);
 		if (currentDepth > MAX_DEPTH)
 		{
 			return new ArrayList<>();
@@ -318,7 +319,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		if (currentCorrectRoute != -1)
 		{
-			if (currentNode.getPaths()[currentCorrectRoute].getIdEnd() == previousId)
+			if (previousIds.contains(currentNode.getPaths()[currentCorrectRoute].getIdEnd()))
 			{
 				// If we're going back onto ourself, we've done something wrong. Set back to unknown
 				fifthSectionRightPaths[id] = -1;
@@ -327,17 +328,17 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			{
 				nextNodeId = currentNode.getPaths()[currentCorrectRoute].getIdEnd();
 				newPoints.addAll(currentNode.getPaths()[currentCorrectRoute].getPath());
-				newPoints.addAll(workOutFifthSection(currentDepth + 1, id, nextNodeId));
+				newPoints.addAll(workOutFifthSection(currentDepth + 1, previousIds, nextNodeId));
 				return newPoints;
 			}
 		}
 		for (int i = 0; i < currentNode.getPaths().length; i++)
 		{
-			if (currentNode.getPaths()[i] != null && !currentNode.getPaths()[i].getWrongWay().checkCondition(client) && currentNode.getPaths()[i].getIdEnd() != previousId)
+			if (currentNode.getPaths()[i] != null && !currentNode.getPaths()[i].getWrongWay().checkCondition(client) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
 			{
 				nextNodeId = currentNode.getPaths()[i].getIdEnd();
 				newPoints.addAll(currentNode.getPaths()[i].getPath());
-				newPoints.addAll(workOutFifthSection(currentDepth + 1, id, nextNodeId));
+				newPoints.addAll(workOutFifthSection(currentDepth + 1, previousIds, nextNodeId));
 				return newPoints;
 			}
 		}

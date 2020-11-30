@@ -45,7 +45,6 @@ public class DwarfCannon extends BasicQuestHelper{
 
         steps.put(1,fixedRailings);
 
-        //TODO: This section needs testing
         //Go to tower, get remains, come back
         ConditionalStep getRemains = new ConditionalStep(this,gotoTower);
         getRemains.addStep(new Conditions(hasRemains,nearLawgof),talkToCaptainLawgof3);

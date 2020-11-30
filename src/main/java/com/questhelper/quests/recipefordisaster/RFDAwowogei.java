@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.recipefordisaster;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
@@ -136,9 +137,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		zombieGreegree = new ItemRequirement("Zombie greegree", ItemID.ZOMBIE_MONKEY_GREEGREE, 1, true);
 		zombieGreegree.setTip("Kill a zombie monkey under the monkey temple and make a greegree from them");
 		zombieGreegree.addAlternates(ItemID.ZOMBIE_MONKEY_GREEGREE_4030);
-		greegreeEquipped = new ItemRequirement("Any greegree", ItemID.GORILLA_GREEGREE, 1, true);
-		greegreeEquipped.addAlternates(ItemID.ANCIENT_GORILLA_GREEGREE, ItemID.BEARDED_GORILLA_GREEGREE, ItemID.KARAMJAN_MONKEY_GREEGREE, ItemID.KRUK_MONKEY_GREEGREE,
-			ItemID.NINJA_MONKEY_GREEGREE, ItemID.ZOMBIE_MONKEY_GREEGREE, ItemID.ZOMBIE_MONKEY_GREEGREE_4030, ItemID.NINJA_MONKEY_GREEGREE_4025);
+		greegreeEquipped = new ItemRequirement("Any greegree", ItemCollections.getGreegrees(), 1, true);
 		bananaHighlighted = new ItemRequirement("Banana", ItemID.BANANA);
 		bananaHighlighted.setHighlightInInventory(true);
 		monkeyNutsHighlighted = new ItemRequirement("Monkey nuts", ItemID.MONKEY_NUTS);

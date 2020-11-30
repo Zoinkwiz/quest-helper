@@ -462,4 +462,17 @@ public class ItemCollections
 			ItemID.WHITE_LOGS,
 			ItemID.BLUE_LOGS
 	));
+
+	@Getter
+	private static final List<Integer> greegrees = new ArrayList<>(Arrays.asList(
+		ItemID.GORILLA_GREEGREE,
+		ItemID.ANCIENT_GORILLA_GREEGREE,
+		ItemID.BEARDED_GORILLA_GREEGREE,
+		ItemID.KARAMJAN_MONKEY_GREEGREE,
+		ItemID.KRUK_MONKEY_GREEGREE,
+		ItemID.NINJA_MONKEY_GREEGREE,
+		ItemID.ZOMBIE_MONKEY_GREEGREE,
+		ItemID.ZOMBIE_MONKEY_GREEGREE_4030,
+		ItemID.NINJA_MONKEY_GREEGREE_4025
+	));
 }

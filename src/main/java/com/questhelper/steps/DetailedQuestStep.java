@@ -108,6 +108,9 @@ public class DetailedQuestStep extends QuestStep
 	@Setter
 	protected boolean hideWorldArrow;
 
+	@Setter
+	protected boolean hideMinimapLines;
+
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
 		super(questHelper, text);
@@ -384,7 +387,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
 		{
-			createMinimapDirectionArrow(graphics);
+			createMinimapDirectionArrow(graphics, wp);
 			return;
 		}
 
@@ -403,7 +406,7 @@ public class DetailedQuestStep extends QuestStep
 		graphics.drawImage(getSmallArrow(), posOnMinimap.getX() - 5, posOnMinimap.getY() - 14, null);
 	}
 
-	protected void createMinimapDirectionArrow(Graphics2D graphics)
+	protected void createMinimapDirectionArrow(Graphics2D graphics, WorldPoint wp)
 	{
 		Player player = client.getLocalPlayer();
 		if (player == null)
@@ -412,7 +415,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		LocalPoint playerPoint = player.getLocalLocation();
-		LocalPoint destinationPoint = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint destinationPoint = LocalPoint.fromWorld(client, wp);
 
 		if (destinationPoint == null)
 		{
@@ -626,7 +629,10 @@ public class DetailedQuestStep extends QuestStep
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		renderInventory(graphics);
-		createMinimapLines(graphics);
+		if (!hideMinimapLines)
+		{
+			createMinimapLines(graphics);
+		}
 		createWorldMapLines(graphics);
 
 		if (mapPoint == null)

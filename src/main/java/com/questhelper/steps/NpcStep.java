@@ -276,14 +276,19 @@ public class NpcStep extends DetailedQuestStep
 		{
 			return;
 		}
-
-		if (worldPoint.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		WorldPoint wp = getInstanceWorldPoint(worldPoint);
+		if (wp == null)
 		{
-			createMinimapDirectionArrow(graphics);
 			return;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		{
+			createMinimapDirectionArrow(graphics, wp);
+			return;
+		}
+
+		LocalPoint lp = LocalPoint.fromWorld(client, wp);
 		if (lp == null)
 		{
 			return;

@@ -170,8 +170,6 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		insideGnomeVillage = new ZoneCondition(zoneVillage);
 		isUpstairsTower = new ZoneCondition(upstairsTower);
 
-		orbsOnGround = new ItemCondition(ItemID.ORBS_OF_PROTECTION);
-
 		talkToSecondTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteSecondTracker);
 		talkToThirdTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteThirdTracker);
 

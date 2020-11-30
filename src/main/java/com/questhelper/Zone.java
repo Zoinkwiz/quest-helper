@@ -57,6 +57,16 @@ public class Zone
 		maxPlane = Math.max(p1.getPlane(), p2.getPlane());
 	}
 
+	public Zone(WorldPoint p)
+	{
+		minX = p.getX();
+		maxX = p.getX();
+		minY = p.getY();
+		maxY = p.getY();
+		minPlane = p.getPlane();
+		maxPlane = p.getPlane();
+	}
+
 	public Zone(int regionID)
 	{
 		int regionX = (regionID >> 8) & 0xff;

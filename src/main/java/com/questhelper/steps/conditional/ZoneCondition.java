@@ -45,10 +45,30 @@ public class ZoneCondition extends ConditionForStep
 		this.checkInZone = true;
 	}
 
+	public ZoneCondition(WorldPoint... worldPoints)
+	{
+		this.zones = new ArrayList<>();
+		for (WorldPoint worldPoint : worldPoints)
+		{
+			this.zones.add(new Zone(worldPoint));
+		}
+		this.checkInZone = true;
+	}
+
 	public ZoneCondition(boolean checkInZone, Zone... zone)
 	{
 		this.zones = new ArrayList<>();
 		Collections.addAll(this.zones, zone);
+		this.checkInZone = checkInZone;
+	}
+
+	public ZoneCondition(boolean checkInZone, WorldPoint... worldPoints)
+	{
+		this.zones = new ArrayList<>();
+		for (WorldPoint worldPoint : worldPoints)
+		{
+			this.zones.add(new Zone(worldPoint));
+		}
 		this.checkInZone = checkInZone;
 	}
 

@@ -206,7 +206,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		hamCloak2 = new ItemRequirement("Ham cloak", ItemID.HAM_CLOAK, 2);
 
 		hamSet = new ItemRequirements("Full ham robe sets (7 pieces)(equipped)", hamShirt, hamRobe, hamHood, hamBoot, hamGloves, hamLogo, hamCloak);
-		hamSet2 = new ItemRequirements("2 full ham robe sets (7 pieces)", hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2);
+		hamSet2 = new ItemRequirements("2 full ham robe sets (7 pieces/set)", hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2);
 
 		zanik = new ItemRequirement("Zanik", ItemID.ZANIK);
 		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from Lumbridge Basement", NpcID.ZANIK_4508);

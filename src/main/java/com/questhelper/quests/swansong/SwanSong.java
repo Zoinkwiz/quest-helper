@@ -137,7 +137,6 @@ public class SwanSong extends BasicQuestHelper
 
 		steps.put(180, talkToHermanToFinish);
 		steps.put(190, talkToHermanToFinish);
-		steps.put(200, talkToHermanToFinish);
 		return steps;
 	}
 

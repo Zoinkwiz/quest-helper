@@ -50,10 +50,10 @@ import java.util.*;
 public class TreeGnomeVillage extends BasicQuestHelper
 {
 	private QuestStep talkToKingBolren, talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
-		firstTracker, secondTracker, thirdTracker, fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder, talkToKingBolrenFirstOrb,
-		talkToTheWarlord, fightTheWarlord, returnOrbs;
+		firstTracker, secondTracker, thirdTracker, fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder,
+		talkToKingBolrenFirstOrb, talkToTheWarlord, fightTheWarlord, returnOrbs, finishQuestDialog;
 
-	private ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker,
+	ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker, handedInOrbs,
 		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker, pickupOrbsOfProtection;
 
 	private Conditions talkToSecondTracker, talkToThirdTracker, completedTrackers,
@@ -72,10 +72,10 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupSteps();
 		setupZones();
-		setupConditions();
 		setupItemRequirements();
+		setupConditions();
+		setupSteps();
 
 		return CreateSteps();
 	}
@@ -91,7 +91,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		steps.put(5, retrieveOrbStep());
 		steps.put(6, talkToKingBolrenFirstOrb);
 		steps.put(7, defeatWarlordStep());
-		steps.put(8, returnOrbs);
+		steps.put(8, returnOrbsStep());
 		return steps;
 	}
 
@@ -114,7 +114,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep retrieveOrbStep()
 	{
-		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Enter the tower by the Crumbled wall and climb the ladder to etrieve the first orb from chest.");
+		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Enter the tower by the Crumbled wall and climb the ladder to retrieve the first orb from chest.");
 		ObjectStep getOrbFromChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_2183, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
 		getOrbFromChest.addAlternateObjects(ObjectID.OPEN_CHEST_2182);
 		retrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
@@ -142,6 +142,16 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		defeatTheWarlord.addSubSteps(pickupOrb);
 
 		return defeatTheWarlord;
+	}
+
+	private QuestStep returnOrbsStep()
+	{
+		handedInOrbs = new VarbitCondition(598, 1, Operation.GREATER_EQUAL);
+
+		ConditionalStep returnOrbsSteps = new ConditionalStep(this, returnOrbs);
+		returnOrbsSteps.addStep(handedInOrbs, finishQuestDialog);
+
+		return returnOrbs;
 	}
 
 	private void setupItemRequirements()
@@ -268,12 +278,15 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
 
 		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.", orbsOfProtection);
+
+		finishQuestDialog = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		returnOrbs.addSubSteps(finishQuestDialog);
 	}
 
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(logRequirement));
+		return new ArrayList<>(Collections.singletonList(logRequirement));
 	}
 
 	@Override
@@ -287,7 +300,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> steps = new ArrayList<>();
 
-		steps.add(new PanelDetails("Getting started", new ArrayList<>(Arrays.asList(talkToKingBolren))));
+		steps.add(new PanelDetails("Getting started", new ArrayList<>(Collections.singletonList(talkToKingBolren))));
 		steps.add(new PanelDetails("The three trackers", new ArrayList<>(Arrays.asList(
 			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 			firstTracker, secondTracker, thirdTracker, fireBalistaConditional)), logRequirement));

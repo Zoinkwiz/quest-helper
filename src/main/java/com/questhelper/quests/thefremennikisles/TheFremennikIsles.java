@@ -461,7 +461,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		talkToGjukiToReport.addSubSteps(travelToJatizsoToReport, leaveNeitiznotToReport);
 
 		collectFromHring = new NpcStep(this, NpcID.HRING_HRING, new WorldPoint(2397, 3797, 0), "Collect 8000 coins from Hring Hring in south west Jatizso.");
-		collectFromHring.addDialogStep("But, rules are rules. Pay up!");
+		collectFromHring.addDialogStep("But rules are rules. Pay up!");
 		collectFromSkuli = new NpcStep(this, NpcID.SKULI_MYRKA, new WorldPoint(2395, 3804, 0), "Collect 6000 coins from Skuli in north west Jatizso.");
 		collectFromSkuli.addDialogStep("But, rules are rules. Pay up!");
 		collectFromVanligga = new NpcStep(this, NpcID.VANLIGGA_GASTFRIHET, new WorldPoint(2405, 3813, 0), "Collect 5000 coins from Vanligga north of Gjuki's building.");

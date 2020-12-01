@@ -216,9 +216,10 @@ public class MM2Sabotage extends ConditionalStep
 
 	}
 
-	@Subscribe
+	@Override
 	public void onGameTick(GameTick event)
 	{
+		super.onGameTick(event);
 		int currentlyNeededExplosives = 6;
 		if (placedSatchel1.checkCondition(client))
 		{

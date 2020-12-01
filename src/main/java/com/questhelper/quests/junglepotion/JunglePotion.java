@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.junglepotion;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -44,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
@@ -52,7 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class JunglePotion extends BasicQuestHelper
 {
-	private QuestStep startQuest;
+	private QuestStep startQuest, finishQuest;
 	private ObjectStep getSnakeWeed, getArdrigal, getSitoFoil, getVolenciaMoss, enterCave, getRoguePurseHerb;
 	private ConditionalStep cleanAndReturnSnakeWeed, cleanAndReturnArdrigal, cleanAndReturnSitoFoil, cleanAndReturnVolenciaMoss,
 		getRoguesPurse, cleanAndReturnRoguesPurse;
@@ -116,12 +118,13 @@ public class JunglePotion extends BasicQuestHelper
 		steps.put(8, returnVolenciaMoss());
 		steps.put(9, getRoguesPurse());
 		steps.put(10, returnRoguesPurse());
+		steps.put(11, finishQuestStep());
 		return steps;
 	}
 
 	private QuestStep startQuestStep()
 	{
-		startQuest = talkToTrufitus("Talk to Trufitus");
+		startQuest = talkToTrufitus("Talk to Trufitus in Tai Bwo Wannai on Karamja.");
 		startQuest.addDialogSteps("It's a nice village, where is everyone?");
 		startQuest.addDialogSteps("Me? How can I help?");
 		startQuest.addDialogSteps("It sounds like just the challenge for me.");
@@ -155,40 +158,45 @@ public class JunglePotion extends BasicQuestHelper
 		return cleanAndReturnRoguesPurse;
 	}
 
-
 	private ConditionalStep getReturnHerbStep(String herbName, ItemRequirement grimyHerb, ItemRequirement cleanHerb)
 	{
 		NpcStep returnHerb = talkToTrufitus("", cleanHerb);
 		returnHerb.addDialogSteps("Of course!");
 		DetailedQuestStep cleanGrimyHerb = new DetailedQuestStep(this, "", grimyHerb);
 
-		ConditionalStep cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return a piece of " + herbName + " to Trificus.");
+		ConditionalStep cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return the " + herbName + " to Trufitus.");
 		cleanAndReturnHerb.addStep(new ItemRequirementCondition(cleanHerb), returnHerb);
 		return cleanAndReturnHerb;
 	}
 
 	private QuestStep getSnakeWeed()
 	{
-		return getSnakeWeed = new ObjectStep(this, ObjectID.MARSHY_JUNGLE_VINE, new WorldPoint(2763, 3044, 0),
-			"Search the marshy jungle vine for a snake weed herb.\n\n If you want to do Zogre flesh eaters or Legends Quest grab one for each as you will need them later.");
+		getSnakeWeed = new ObjectStep(this, ObjectID.MARSHY_JUNGLE_VINE, new WorldPoint(2763, 3044, 0),
+			"Search a marshy jungle vine south of Tai Bwo Wannai for some snake weed.");
+		getSnakeWeed.addText("If you want to do Zogre Flesh Eaters or Legends' Quest grab one for each as you will need them later.");
+		return getSnakeWeed;
 	}
 
 	private QuestStep getArdrigal()
 	{
-		return getArdrigal = new ObjectStep(this, ObjectID.PALM_TREE_2577, new WorldPoint(2871, 3116, 0),
-			"Search the palm trees for an Ardrigal herb.\n\n If you want to do Legends Quest grab one an additional one.");
+		getArdrigal = new ObjectStep(this, ObjectID.PALM_TREE_2577, new WorldPoint(2871, 3116, 0),
+			"Search the palm trees north east of Tai Bwo Wannai for an Ardrigal herb.");
+		getArdrigal.addText("If you want to do Zogre Flesh Eaters or Legends' Quest grab one for each as you will need them later.");
+		return getArdrigal;
 	}
 
 	private QuestStep getSitoFoil()
 	{
 		return getSitoFoil = new ObjectStep(this, ObjectID.SCORCHED_EARTH, new WorldPoint(2791, 3047, 0),
-			"Search the scorched earth for a Sito Foil herb.");
+			"Search the scorched earth in the south of Tai Bwo Wannai for a Sito Foil herb.");
 	}
 
 	private QuestStep getVolenciaMoss()
 	{
-		return getVolenciaMoss = new ObjectStep(this, ObjectID.ROCK_2581, new WorldPoint(2851, 3036, 0),
-			"Search the rock for a Volencia Moss herb. If you plan on doing Fairy Tail I then take an extra.");
+		getVolenciaMoss = new ObjectStep(this, ObjectID.ROCK_2581, new WorldPoint(2851, 3036, 0),
+			"Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
+		getVolenciaMoss.addText("If you plan on doing Fairy Tail I then take an extra.");
+		return getVolenciaMoss;
 	}
 
 	private QuestStep getRoguesPurse()
@@ -196,14 +204,20 @@ public class JunglePotion extends BasicQuestHelper
 		enterCave = new ObjectStep(this, ObjectID.ROCKS_2584, new WorldPoint(2825, 3119, 0),
 			"Enter the cave to the north by clicking on the rocks.");
 		enterCave.addDialogStep("Yes, I'll enter the cave.");
-		getRoguePurseHerb = new ObjectStep(this, 2583, "Get the Rogues Purse from the fungus covered wall in the underground dungeon. If you are planning on doing Zogre Flesh Eaters then take an extra.");
+		getRoguePurseHerb = new ObjectStep(this, NullObjectID.NULL_1417, "Get the Rogues Purse from the fungus covered wall in the underground dungeon.");
+		getRoguePurseHerb.addText("If you are planning on doing Zogre Flesh Eaters then take an extra.");
 
-		getRoguesPurse = new ConditionalStep(this, enterCave, "");
+		getRoguesPurse = new ConditionalStep(this, enterCave);
 		getRoguesPurse.addStep(isUnderground, getRoguePurseHerb);
 
 		getRoguesPurse.addSubSteps(enterCave);
 		return getRoguesPurse;
+	}
 
+	private QuestStep finishQuestStep()
+	{
+		finishQuest = talkToTrufitus("Talk to Trufitus to finish the quest.");
+		return finishQuest;
 	}
 
 	private NpcStep talkToTrufitus(String text, Requirement... requirements)
@@ -224,8 +238,8 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(new ItemRequirement("Food", -1));
-		reqs.add(new ItemRequirement("Antipoison", -1));
-		reqs.add(new ItemRequirement("Teleport(Glory preffered)", -1));
+		reqs.add(new ItemRequirement("Antipoison", ItemCollections.getAntipoisons()));
+		reqs.add(new ItemRequirement("Teleport to Karamja (Glory/house teleport)", -1));
 		return reqs;
 	}
 

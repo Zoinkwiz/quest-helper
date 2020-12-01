@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, INSERT_YOUR_NAME_HERE
+ * Copyright (c) 2020, slaytostay
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

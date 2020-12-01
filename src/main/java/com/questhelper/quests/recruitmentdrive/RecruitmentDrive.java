@@ -97,6 +97,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
+		// TODO: Properly restart puzzle states should you fail and re-enter
+		// TODO: Check if varbit 667 pertains to the statue answer
+		// If it does, 8 = Silver mace, 6 = Gold Sword
 		setupItemRequirements();
 		SetupZones();
 
@@ -123,7 +126,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		Zone firstFloorZone = new Zone(new WorldPoint(2954, 3335, 1),
 			new WorldPoint(2966, 3343, 1));
-		Zone secondFloorZone = new Zone(new WorldPoint(2955, 3334, 1),
+		Zone secondFloorZone = new Zone(new WorldPoint(2955, 3334, 2),
 			new WorldPoint(2964, 3342, 2));
 
 		Zone sirTinleyRoomZone = new Zone(new WorldPoint(2471, 4954, 0),
@@ -288,21 +291,21 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private String getSpishyusPickupText(String itemName, boolean moveRightToLeft)
 	{
-		String firstSide = moveRightToLeft ? "right" : "left";
-		String secondSide = moveRightToLeft ? "left" : "right";
+		String firstSide = moveRightToLeft ? "east" : "west";
+		String secondSide = moveRightToLeft ? "west" : "east";
 		return "Pickup the " + itemName + " on the " + firstSide + " and move it to the "
 			+ secondSide + " side by crossing the bridge";
 	}
 
 	private String getSpishyusMoveText(String itemName, boolean rightSide)
 	{
-		String dropSide = rightSide ? "right" : "left";
-		return "Move to the " + dropSide + " and drop the " + itemName;
+		String dropSide = rightSide ? "east" : "west";
+		return "Cross the bridge to the " + dropSide + " and drop the " + itemName + " from your equipped items.";
 	}
 
 	private QuestStep getSirRenItchood()
 	{
-		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.SIR_REN_ITCHOOD, "Talk to Sir Ren Itchood to recieve the clue");
+		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.SIR_REN_ITCHOOD, "Talk to Sir Ren Itchood to recieve the clue.");
 		talkToSirRenItchood.addDialogSteps("Can I have the clue for the door?");
 
 		sirRenStep = new SirRenItchoodStep(this, talkToSirRenItchood);
@@ -341,7 +344,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		WorldPoint bottomStairsPosition = new WorldPoint(2955, 3339, 0);
 		WorldPoint secondStairsPosition = new WorldPoint(2961, 3339, 1);
 		ObjectStep climbBottomSteps = new ObjectStep(this, ObjectID.STAIRCASE_24072, bottomStairsPosition,
-			"Climb up the stairs to the first floor.");
+			"Climb up the stairs to the first floor on the Falador Castle.");
 
 		ObjectStep climbSecondSteps = new ObjectStep(this, ObjectID.STAIRCASE_24072, secondStairsPosition,
 			"Climb up the stairs to talk to Sir Amik Vaze.");

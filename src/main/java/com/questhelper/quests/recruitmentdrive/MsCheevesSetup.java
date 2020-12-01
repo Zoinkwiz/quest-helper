@@ -132,7 +132,7 @@ public class MsCheevesSetup
 		getThreeVials = new ObjectStep(questHelper, ObjectID.SHELVES_7340, "Get Three Vials Of Liquid from the Shelves.");
 		getThreeVials.addDialogStep("Take all three vials");
 		getKnife = new ObjectStep(questHelper, ObjectID.OLD_BOOKSHELF_7329, "Get a Knife from the old bookshelf.");
-		getMetalSpade = new ItemStep(questHelper, "Get the metal spade off the table");
+		getMetalSpade = new ItemStep(questHelper, "Get the metal spade off the table", metalSpade);
 
 		useSpadeOnBunsenBurner = new ObjectStep(questHelper, ObjectID.BUNSEN_BURNER, "Use the spade in your inventory on the bunsen burner"
 			, metalSpade);
@@ -170,6 +170,7 @@ public class MsCheevesSetup
 
 		useTinOnBunsenBurner = new ObjectStep(questHelper, ObjectID.BUNSEN_BURNER,
 			"Use your tin with the bunsen burner to create a bronze key.", tinWithTinOre);
+		useTinOnBunsenBurner.addIcon(ItemID.TIN_5597);
 
 		useEquipmentOnTin = new DetailedQuestStep(questHelper, "Use your chisel,knife or bronze wires on your tin in your inventory.",
 			tinWithAllOre, chisel, knife, bronzeWire);

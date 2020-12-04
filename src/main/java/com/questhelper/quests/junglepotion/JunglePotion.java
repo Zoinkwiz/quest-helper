@@ -204,7 +204,7 @@ public class JunglePotion extends BasicQuestHelper
 		enterCave = new ObjectStep(this, ObjectID.ROCKS_2584, new WorldPoint(2825, 3119, 0),
 			"Enter the cave to the north by clicking on the rocks.");
 		enterCave.addDialogStep("Yes, I'll enter the cave.");
-		getRoguePurseHerb = new ObjectStep(this, NullObjectID.NULL_1417, "Get the Rogues Purse from the fungus covered wall in the underground dungeon.");
+		getRoguePurseHerb = new ObjectStep(this, 2583, "Get the Rogues Purse from the fungus covered wall in the underground dungeon.");
 		getRoguePurseHerb.addText("If you are planning on doing Zogre Flesh Eaters then take an extra.");
 
 		getRoguesPurse = new ConditionalStep(this, enterCave);

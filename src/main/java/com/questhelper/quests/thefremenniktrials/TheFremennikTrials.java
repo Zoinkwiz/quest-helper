@@ -429,7 +429,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		hasReplacedBeer = new Conditions(true, LogicType.AND, new ChatMessageCondition("You empty the keg and refill it with low alcohol beer."));
 		finishedManniTask = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("Congratulations! You have completed the Reveller's Trial!"),
+			new ChatMessageCondition("Congratulations! You have completed the Revellers' Trial!"),
 			new WidgetTextCondition(119, 3, true, true, "I now have the Reveller's vote"));
 
 		hasKegOfBeer = new ItemRequirementCondition(kegOfBeer);
@@ -497,6 +497,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 			new WidgetTextCondition(217, 4, true, "cash. You should go ask him"),
 			new WidgetTextCondition(119, 3, true, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is <col=800000>some money<col=000080>!"));
 
+		// TODO: No gz message
 		finishedSigmundTask = new Conditions(true, LogicType.OR,
 			new ChatMessageCondition("Congratulations! You have completed the Merchant's Trial!"),
 			new WidgetTextCondition(119, 3, true, true, "I now have the Merchant's vote"));
@@ -534,7 +535,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		syncedThorvald = new Conditions(talkedToThorvald);
 
 		finishedThorvaldTask = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("Congratulations! You have completed the Warrior's Trial!"),
+			new ChatMessageCondition("Congratulations! You have completed the warrior's trial!"),
 			new WidgetTextCondition(119, 3, true, true, "I now have the Warrior's vote"));
 
 		talkedToSwensen = new Conditions(true, LogicType.OR,

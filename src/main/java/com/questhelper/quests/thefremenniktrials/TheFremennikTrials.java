@@ -322,7 +322,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		fiscalStatement = new ItemRequirement("Fiscal statement", ItemID.FISCAL_STATEMENT);
 		sturdyBoots = new ItemRequirement("Sturdy boots", ItemID.STURDY_BOOTS);
 		ballad = new ItemRequirement("Fremennik ballad", ItemID.FREMENNIK_BALLAD);
-		exoticFlower = new ItemRequirement("Exotic flower", ItemID.BALLAD);
+		exoticFlower = new ItemRequirement("Exotic flower", ItemID.EXOTIC_FLOWER);
 		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil.", -1, -1);
 		optionalKoscheiGear = new ItemRequirement("Optionally a Dramen branch + knife to make a dramen staff once inside Koschei's arena", -1, -1);
 		redHerring = new ItemRequirement(true, "Red herring", ItemID.RED_HERRING);
@@ -438,6 +438,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		hasChargedHuntersTalisman = new ItemRequirementCondition(chargedHuntersTalisman);
 
+		// No gz message
 		finishedSigliTask = new Conditions(true, LogicType.OR,
 			new ChatMessageCondition("Congratulations! You have completed the Hunter's Trial!"),
 			new WidgetTextCondition(119, 3, true, true, "I now have the Hunter's vote"));

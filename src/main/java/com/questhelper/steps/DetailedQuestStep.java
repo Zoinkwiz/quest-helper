@@ -55,6 +55,7 @@ import net.runelite.api.RenderOverview;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldMapData;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -450,6 +451,13 @@ public class DetailedQuestStep extends QuestStep
 
 	protected Point getMinimapPoint(WorldPoint start, WorldPoint destination)
 	{
+		RenderOverview ro = client.getRenderOverview();
+		if (ro.getWorldMapData().surfaceContainsPosition(start.getX(), start.getY()) !=
+			ro.getWorldMapData().surfaceContainsPosition(destination.getX(), destination.getY()))
+		{
+			return null;
+		}
+
 		int x = (destination.getX() - start.getX());
 		int y = (destination.getY() - start.getY());
 

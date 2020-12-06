@@ -236,7 +236,7 @@ public class TheGolem extends BasicQuestHelper
 
 		talkToGolem = new NpcStep(this, NpcID.BROKEN_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
 		talkToGolem.addDialogStep("Shall I try to repair you?");
-		useClay = new NpcStep(this, NpcID.DAMAGED_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 4 soft clay on the Golem in Uzer.", clay4Highlight);
+		useClay = new NpcStep(this, NpcID.BROKEN_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 4 soft clay on the Golem in Uzer.", clay4Highlight);
 		useClay.addIcon(ItemID.SOFT_CLAY);
 		useClay2 = new NpcStep(this, NpcID.BROKEN_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 3 soft clay on the Golem in Uzer.", clay3Highlight);
 		useClay2.addIcon(ItemID.SOFT_CLAY);

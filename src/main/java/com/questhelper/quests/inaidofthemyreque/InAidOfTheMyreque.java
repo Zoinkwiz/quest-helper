@@ -26,6 +26,9 @@ package com.questhelper.quests.inaidofthemyreque;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.Spellbook;
+import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -64,6 +67,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		steelBars2Highlighted, coalHiglighted, tinderboxHighlighted, planks3, planks2, planks6, nails12, nails8, crate, tinderbox3, snails10, mackerel10,
 		nails24, planks5, nails20, templeLibraryKey, sleepingSeven, hammerHighlighted, mould, silvRod, softClayHighlighted, enchantedRod, rodOfIvandis,
 		enchantedRodHighlighted;
+
+	Requirement normalSpellbook;
 
 	ItemRequirement steelmedChainLegsSickle, morttonTeleport, canifisTeleport;
 
@@ -288,6 +293,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
 		rodOfIvandis.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
 			ItemID.ROD_OF_IVANDIS_6, ItemID.ROD_OF_IVANDIS_7, ItemID.ROD_OF_IVANDIS_8, ItemID.ROD_OF_IVANDIS_9);
+
+		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}
 
 	public void loadZones()
@@ -462,7 +469,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		useClayOnCoffin = new ObjectStep(this, ObjectID.COFFIN_12802, new WorldPoint(3511, 9864, 0), "Use a piece of soft clay on the coffin.", softClayHighlighted);
 		useClayOnCoffin.addIcon(ItemID.SOFT_CLAY);
 		makeRod = new DetailedQuestStep(this, "Make a silvthrill rod at any furnace.", mould, mithrilBar, silverBar, sapphire);
-		enchantRod = new DetailedQuestStep(this, "Cast Lvl-1 enchant on the rod.", silvRod, waterRune, cosmicRune);
+		enchantRod = new DetailedQuestStep(this, "Cast Lvl-1 enchant on the rod.", silvRod, waterRune, cosmicRune, normalSpellbook);
 		useRodOnWell = new ObjectStep(this, ObjectID.WELL_3485, new WorldPoint(3423, 9890, 0), "", enchantedRodHighlighted, rope);
 		useRodOnWell.addIcon(ItemID.SILVTHRILL_ROD_7638);
 		talkToVeliafToFinish = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3494, 9628, 0), "");
@@ -510,6 +517,12 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	{
 		return new ArrayList<>(Arrays.asList(food, spade, bucketTo5, pickaxe, hammer, planks11, nails44, swampPaste, rawMackerelOrSnail10, bronzeAxes10, tinderboxes4, steelBars2,
 			coal, efaritaysAidOrSilverWeapon, softClay, rope, silverBar, mithrilBar, sapphire, cosmicRune, waterRune));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList(normalSpellbook));
 	}
 
 	@Override

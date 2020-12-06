@@ -24,18 +24,12 @@
  */
 package com.questhelper.requirements;
 
-import com.google.common.base.CaseFormat;
-import com.questhelper.NpcCollections;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.Prayer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class FollowerRequirement extends Requirement
@@ -75,7 +69,7 @@ public class FollowerRequirement extends Requirement
 	}
 
 	@Override
-	public ArrayList<LineComponent> getDisplayText(Client client)
+	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
 	{
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
@@ -86,10 +80,16 @@ public class FollowerRequirement extends Requirement
 		}
 
 		lines.add(LineComponent.builder()
-			.left(text)
+			.left(getDisplayText())
 			.leftColor(color)
 			.build());
 
 		return lines;
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		return text;
 	}
 }

@@ -31,6 +31,7 @@ import com.google.inject.Module;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.inject.Inject;
@@ -133,6 +134,11 @@ public abstract class QuestHelper implements Module
 	}
 
 	public ArrayList<ItemRequirement> getItemRequirements()
+	{
+		return null;
+	}
+
+	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		return null;
 	}

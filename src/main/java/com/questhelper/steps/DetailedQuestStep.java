@@ -55,7 +55,6 @@ import net.runelite.api.RenderOverview;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.Varbits;
-import net.runelite.api.WorldMapData;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -217,7 +216,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : requirements)
 			{
-				ArrayList<LineComponent> lines = requirement.getDisplayText(client);
+				ArrayList<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
 
 				for (LineComponent line : lines)
 				{
@@ -230,7 +229,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : additionalRequirements)
 			{
-				ArrayList<LineComponent> lines = requirement.getDisplayText(client);
+				ArrayList<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
 
 				for (LineComponent line : lines)
 				{

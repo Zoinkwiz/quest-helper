@@ -144,7 +144,7 @@ public class IncantationStep extends DetailedQuestStep
 			words.get(client.getVarbitValue(1374)),
 			words.get(client.getVarbitValue(1375)),
 			words.get(client.getVarbitValue(1376)),
-			words.get(client.getVarbitValue(1377)),
+			words.get(client.getVarbitValue(1377))
 		};
 		if (reverse)
 		{

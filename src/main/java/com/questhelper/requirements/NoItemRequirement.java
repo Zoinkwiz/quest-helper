@@ -77,11 +77,9 @@ public class NoItemRequirement extends ItemRequirement
 	}
 
 	@Override
-	public ArrayList<LineComponent> getDisplayText(Client client)
+	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
 	{
 		ArrayList<LineComponent> lines = new ArrayList<>();
-		String text = "Nothing in your " + ItemSlots.getById(slot);
-
 
 		Color color = Color.RED;
 		if (check(client))
@@ -90,10 +88,16 @@ public class NoItemRequirement extends ItemRequirement
 		}
 
 		lines.add(LineComponent.builder()
-			.left(text)
+			.left(getDisplayText())
 			.leftColor(color)
 			.build());
 
 		return lines;
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		return "Nothing in your " + ItemSlots.getById(slot);
 	}
 }

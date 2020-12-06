@@ -69,7 +69,7 @@ public class Requirements extends Requirement
 	}
 
 	@Override
-	public ArrayList<LineComponent> getDisplayText(Client client)
+	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
 	{
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
@@ -80,11 +80,17 @@ public class Requirements extends Requirement
 		}
 
 		lines.add(LineComponent.builder()
-			.left(name)
+			.left(getDisplayText())
 			.leftColor(color)
 			.build());
 
 		return lines;
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		return name;
 	}
 
 	protected Color getColor(Client client)

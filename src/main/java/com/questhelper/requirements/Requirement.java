@@ -32,5 +32,6 @@ abstract public class Requirement
 {
 	abstract public boolean check(Client client);
 
-	abstract public ArrayList<LineComponent> getDisplayText(Client client);
+	abstract public ArrayList<LineComponent> getDisplayTextWithChecks(Client client);
+	abstract public String getDisplayText();
 }

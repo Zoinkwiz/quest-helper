@@ -142,7 +142,7 @@ public class ItemRequirement extends Requirement
 		return ids;
 	}
 
-	public ArrayList<LineComponent> getDisplayText(Client client)
+	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
 	{
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
@@ -163,6 +163,12 @@ public class ItemRequirement extends Requirement
 		lines.addAll(getAdditionalText(client));
 
 		return lines;
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		return getName();
 	}
 
 	protected Color getColor(Client client)

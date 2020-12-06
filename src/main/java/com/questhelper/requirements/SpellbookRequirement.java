@@ -46,11 +46,11 @@ public class SpellbookRequirement extends Requirement
 	}
 
 	@Override
-	public ArrayList<LineComponent> getDisplayText(Client client)
+	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
 	{
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
-		String text = "You must be on the " + spellBook.getName() + " spellbook.";
+		String text = getDisplayText();
 		Color color = Color.RED;
 		if (check(client))
 		{
@@ -63,5 +63,11 @@ public class SpellbookRequirement extends Requirement
 			.build());
 
 		return lines;
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		return "You must be on the " + spellBook.getName() + " spellbook.";
 	}
 }

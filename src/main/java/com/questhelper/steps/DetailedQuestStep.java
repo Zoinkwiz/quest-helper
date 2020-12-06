@@ -153,7 +153,6 @@ public class DetailedQuestStep extends QuestStep
 	{
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
 		tileHighlights.clear();
-		clearArrow();
 		started = false;
 	}
 
@@ -161,18 +160,12 @@ public class DetailedQuestStep extends QuestStep
 	public void enteredCutscene()
 	{
 		super.enteredCutscene();
-		clearArrow();
 	}
 
 	@Override
 	public void leftCutscene()
 	{
 		super.leftCutscene();
-	}
-
-	public void clearArrow()
-	{
-		client.clearHintArrow();
 	}
 
 	public void addRequirement(Requirement requirement)

@@ -32,6 +32,7 @@ import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.NpcCondition;
+import com.questhelper.steps.conditional.NpcHintArrowCondition;
 import com.questhelper.steps.conditional.Operation;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.VarplayerCondition;
@@ -250,7 +251,7 @@ public class HauntedMine extends BasicQuestHelper
 		fungusInCart = new VarbitCondition(2395, 1);
 		fungusOnOtherSide = new VarbitCondition(2396, 1);
 
-		daythNearby = new NpcCondition(NpcID.TREUS_DAYTH);
+		daythNearby = new NpcHintArrowCondition(NpcID.TREUS_DAYTH, NpcID.GHOST_3617);
 
 		killedDayth = new VarplayerCondition(382, 9, Operation.GREATER_EQUAL);
 
@@ -263,7 +264,7 @@ public class HauntedMine extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToZealot = new NpcStep(this, NpcID.ZEALOT, new WorldPoint(3443, 3258, 0), "Talk to the Zealot outside the Abandoned Mine in south west Morytania.");
-		talkToZealot.addDialogStep("Is there any other way into the mines?");
+		talkToZealot.addDialogSteps("And what sort of purpose would that be?", "Yes.", "Is there any other way into the mines?");
 		pickpocketZealot =  new NpcStep(this, NpcID.ZEALOT, new WorldPoint(3443, 3258, 0), "Pickpocket the Zealot outside the Abandoned Mine in south west Morytania.");
 
 		enterMine = new ObjectStep(this, ObjectID.CART_TUNNEL_4915, new WorldPoint(3429, 3225, 0), "Enter the south cart tunnel around the back of the mine.");

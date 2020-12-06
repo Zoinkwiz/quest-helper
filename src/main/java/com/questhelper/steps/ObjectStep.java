@@ -318,7 +318,6 @@ public class ObjectStep extends DetailedQuestStep
 		if (object.equals(this.object))
 		{
 			this.object = null;
-			clearArrow();
 		}
 
 		if (objects.contains(object))

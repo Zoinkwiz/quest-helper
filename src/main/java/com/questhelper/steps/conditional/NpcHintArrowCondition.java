@@ -25,85 +25,53 @@
 package com.questhelper.steps.conditional;
 
 import com.questhelper.Zone;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 
-public class NpcCondition extends ConditionForStep
+public class NpcHintArrowCondition extends ConditionForStep
 {
-	private final int npcID;
-	private NPC npc;
-	private boolean npcInScene = false;
+	private final ArrayList<Integer> npcIDs;
+
 	private final Zone zone;
 
-	public NpcCondition(int npcID) {
-		this.npcID = npcID;
+	public NpcHintArrowCondition(int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
 		this.zone = null;
 	}
 
-	public NpcCondition(int npcID, WorldPoint worldPoint) {
-		this.npcID = npcID;
+	public NpcHintArrowCondition(WorldPoint worldPoint, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
-	public NpcCondition(int npcID, Zone zone) {
-		this.npcID = npcID;
+	public NpcHintArrowCondition(Zone zone, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
 		this.zone = zone;
-	}
-
-	@Override
-	public void initialize(Client client)
-	{
-		for (NPC npc : client.getNpcs())
-		{
-			if (npcID == npc.getId())
-			{
-				this.npc = npc;
-				npcInScene = true;
-			}
-		}
 	}
 
 	public boolean checkCondition(Client client)
 	{
-		if (zone != null)
+		NPC currentNPC = client.getHintArrowNpc();
+		if (currentNPC == null)
 		{
-			if (npc != null)
-			{
-				WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-				if (wp != null)
-				{
-					return zone.contains(wp);
-				}
-			}
 			return false;
 		}
-		else
-		{
-			return npcInScene;
-		}
-	}
+		WorldPoint wp = WorldPoint.fromLocalInstance(client, currentNPC.getLocalLocation());
 
-	public void checkNpcSpawned(NPC npc)
-	{
-		if (npc.getId() == this.npcID)
+		if (zone != null && !zone.contains(wp))
 		{
-			this.npc = npc;
-			npcInScene = true;
+			return false;
 		}
-	}
 
-	public void checkNpcDespawned(int npcID)
-	{
-		if (npcID == this.npcID)
+		if (npcIDs.contains(currentNPC.getId()))
 		{
-			npc = null;
-			npcInScene = false;
+			return true;
 		}
-	}
 
-	@Override
-	public void loadingHandler() {
-		npcInScene = false;
+		return false;
 	}
 }

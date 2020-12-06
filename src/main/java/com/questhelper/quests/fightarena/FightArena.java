@@ -188,8 +188,9 @@ public class FightArena extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew)), coins));
-		allSteps.add(new PanelDetails("Fight!", new ArrayList<>(Arrays.asList(getCellKeys, openCell)), combatGear));
+		allSteps.add(new PanelDetails("Start quest", new ArrayList<>(Arrays.asList(startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew)), coins));
+		allSteps.add(new PanelDetails("Fight!", new ArrayList<>(Arrays.asList(getCellKeys, openCell, killOgre, talkToHengrad, killScorpion, killBouncer)), combatGear));
+		allSteps.add(new PanelDetails("Finish quest", new ArrayList<>(Arrays.asList(leaveArena, endQuest))));
 		return allSteps;
 	}
 }

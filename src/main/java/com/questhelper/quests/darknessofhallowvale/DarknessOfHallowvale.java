@@ -328,7 +328,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		talkToCitizen = new NpcStep(this, NpcID.MEIYERDITCH_CITIZEN, new WorldPoint(3601, 3189, 0), "Talk to a Meiyerditch citizen.", true);
 		talkToCitizen.addDialogSteps("(whisper) Do you know about the Myreque?", "(whisper) I really need to meet the Myreque.", "How can Old Man Ral help me?");
-		((NpcStep)talkToCitizen).addAlternateNpcs(NpcID.MEIYERDITCH_CITIZEN_3781, NpcID.MEIYERDITCH_CITIZEN_3782, NpcID.MEIYERDITCH_CITIZEN_3783, NpcID.MEIYERDITCH_CITIZEN_3784, NpcID.MEIYERDITCH_CITIZEN_3785,
+		((NpcStep) talkToCitizen).addAlternateNpcs(NpcID.MEIYERDITCH_CITIZEN_3781, NpcID.MEIYERDITCH_CITIZEN_3782, NpcID.MEIYERDITCH_CITIZEN_3783, NpcID.MEIYERDITCH_CITIZEN_3784, NpcID.MEIYERDITCH_CITIZEN_3785,
 			NpcID.MEIYERDITCH_CITIZEN_3786, NpcID.MEIYERDITCH_CITIZEN_3787, NpcID.MEIYERDITCH_CITIZEN_3788, NpcID.MEIYERDITCH_CITIZEN_3789, NpcID.MEIYERDITCH_CITIZEN_3790, NpcID.MEIYERDITCH_CITIZEN_3791, NpcID.MEIYERDITCH_CITIZEN_3792,
 			NpcID.MEIYERDITCH_CITIZEN_3793, NpcID.MEIYERDITCH_CITIZEN_3794, NpcID.MEIYERDITCH_CITIZEN_3795, NpcID.MEIYERDITCH_CITIZEN_3796, NpcID.MEIYERDITCH_CITIZEN_3797, NpcID.MEIYERDITCH_CITIZEN_3798, NpcID.MEIYERDITCH_CITIZEN_3799,
 			NpcID.MEIYERDITCH_CITIZEN_3800, NpcID.MEIYERDITCH_CITIZEN_3801, NpcID.MEIYERDITCH_CITIZEN_3802, NpcID.MEIYERDITCH_CITIZEN_3803, NpcID.MEIYERDITCH_CITIZEN_3804, NpcID.MEIYERDITCH_CITIZEN_3805, NpcID.MEIYERDITCH_CITIZEN_3806,
@@ -485,7 +485,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToVertida = new NpcStep(this, NpcID.VERTIDA_SEFALATIS, new WorldPoint(3627, 9644, 0), "Talk to Vertida in the north room.");
 
 		goDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_3432, new WorldPoint(3422, 3485, 0), "");
-		((ObjectStep)(goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
+		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
 		talkToDrezel = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "");
 
 
@@ -498,8 +498,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		goToMines = new NpcStep(this, NpcID.VYREWATCH, new WorldPoint(3615, 3263, 0), "Talk to a Vyrewatch to be sent to the mines.", true);
 		goToMines.addDialogSteps("Send me to the mines.", "Send me to the mines! (Do a bit of menial work)");
-		((NpcStep)(goToMines)).setMaxRoamRange(1000);
-		((NpcStep)(goToMines)).addAlternateNpcs(NpcID.VYREWATCH_3710, NpcID.VYREWATCH_3711, NpcID.VYREWATCH_3712, NpcID.VYREWATCH_3713, NpcID.VYREWATCH_3714, NpcID.VYREWATCH_3715, NpcID.VYREWATCH_3716,
+		((NpcStep) (goToMines)).setMaxRoamRange(1000);
+		((NpcStep) (goToMines)).addAlternateNpcs(NpcID.VYREWATCH_3710, NpcID.VYREWATCH_3711, NpcID.VYREWATCH_3712, NpcID.VYREWATCH_3713, NpcID.VYREWATCH_3714, NpcID.VYREWATCH_3715, NpcID.VYREWATCH_3716,
 			NpcID.VYREWATCH_3717, NpcID.VYREWATCH_3718, NpcID.VYREWATCH_3719, NpcID.VYREWATCH_3720, NpcID.VYREWATCH_3721, NpcID.VYREWATCH_3722, NpcID.VYREWATCH_3723, NpcID.VYREWATCH_3724,
 			NpcID.VYREWATCH_3725, NpcID.VYREWATCH_3726, NpcID.VYREWATCH_3727, NpcID.VYREWATCH_3728, NpcID.VYREWATCH_3729, NpcID.VYREWATCH_3730, NpcID.VYREWATCH_3748, NpcID.VYREWATCH_3749,
 			NpcID.VYREWATCH_3750, NpcID.VYREWATCH_3751, NpcID.VYREWATCH_3752, NpcID.VYREWATCH_3753, NpcID.VYREWATCH_3754, NpcID.VYREWATCH_3755, NpcID.VYREWATCH_3756, NpcID.VYREWATCH_3757,
@@ -548,7 +548,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		drawWestWall = new DetailedQuestStep(this, new WorldPoint(3522, 3357, 0), "");
 		drawSouthWall = new DetailedQuestStep(this, new WorldPoint(3572, 3331, 0), "");
 		tankVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_3735, new WorldPoint(3572, 3331, 0), "Tank Vanstrom for 5 hits.");
-		((NpcStep)tankVanstrom).addAlternateNpcs(NpcID.VANSTROM_KLAUSE_3734);
+		((NpcStep) tankVanstrom).addAlternateNpcs(NpcID.VANSTROM_KLAUSE_3734);
 		finishSouthSketch = new DetailedQuestStep(this, new WorldPoint(3572, 3331, 0), "");
 		talkToSarius = new NpcStep(this, NpcID.SARIUS_GUILE, new WorldPoint(3572, 3331, 0), "");
 		talkToSafalaanInBase = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan in the north room.");

@@ -351,25 +351,25 @@ public class Watchtower extends BasicQuestHelper
 
 		knownOgreStep = new Conditions(true, LogicType.OR,
 			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "In the meantime, I'll throw those fingernails out for you."),
-			new WidgetTextCondition(119, 3, true, true, "deal with the tribal ogres."));
+			new WidgetTextCondition(119, 3, true, "deal with the tribal ogres."));
 
 		talkedToGrew = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "The morsel is back.", "Heheheheh!"),
-			new WidgetTextCondition(119, 3, true, true, "Grew wants me to give him", "I have <col=800000>one of Gorad's teeth"));
+			new WidgetTextCondition(119, 3, true, "Grew wants me to give him", "I have <col=800000>one of Gorad's teeth"));
 
 		talkedToOg = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Here is a key to the chest it's in.", "Where my gold from dat dirty Toban?"),
-			new WidgetTextCondition(119, 3, true, true, "Og wants me to", "I have Og's <col=800000>stolen gold"), hasTobansKey);
+			new WidgetTextCondition(119, 3, true, "Og wants me to", "I have Og's <col=800000>stolen gold"), hasTobansKey);
 
 		talkedToToban = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Prove to me your might", "Hahaha! Small t'ing returns."),
-			new WidgetTextCondition(119, 3, true, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
+			new WidgetTextCondition(119, 3, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
 
 		hasRelic1 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(relic1),
-			new WidgetTextCondition(119, 3, true, true, "I returned Og's stolen gold."));
+			new WidgetTextCondition(119, 3, true, "I returned Og's stolen gold."));
 
 		hasRelic2 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(relic2),
-			new WidgetTextCondition(119, 3, true, true, "I knocked out one of Gorad's teeth and gave it to Grew."));
+			new WidgetTextCondition(119, 3, true, "I knocked out one of Gorad's teeth and gave it to Grew."));
 
 		hasRelic3 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(relic3),
-			new WidgetTextCondition(119, 3, true, true, "I gave the dragon bones to Toban."));
+			new WidgetTextCondition(119, 3, true, "I gave the dragon bones to Toban."));
 
 		gettingOgreRockCake = new VarbitCondition(3120, 1);
 		gaveCake = new VarbitCondition(3118, 1);
@@ -377,16 +377,16 @@ public class Watchtower extends BasicQuestHelper
 		knowsRiddle = new VarbitCondition(3121, 1);
 
 		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Master, how are you doing", "Those will gets you started."),
-			new WidgetTextCondition(119, 3, true, true, "ar, nod, gor, ig, cur"));
+			new WidgetTextCondition(119, 3, true, "ar, nod, gor, ig, cur"));
 
 		talkedToSkavid1 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom1, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, true, "'Bidith tanath'"));
+			new WidgetTextCondition(119, 3, true, "'Bidith tanath'"));
 		talkedToSkavid2 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom2, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, true, "'Gor cur'"));
+			new WidgetTextCondition(119, 3, true, "'Gor cur'"));
 		talkedToSkavid3 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom3, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, true, "'Cur bidith'"));
+			new WidgetTextCondition(119, 3, true, "'Cur bidith'"));
 		talkedToSkavid4 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom4, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, true, "'Gor nod'"));
+			new WidgetTextCondition(119, 3, true, "'Gor nod'"));
 
 		seenShamans = new VarbitCondition(3125, 1);
 		hasGroundBatBones = new ItemRequirementCondition(groundBatBones);

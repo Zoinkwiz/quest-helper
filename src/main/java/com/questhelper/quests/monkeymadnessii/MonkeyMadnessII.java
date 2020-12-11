@@ -528,21 +528,21 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		enterTrollStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold, ready to fight Kob.");
 
 		talkToKob = new NpcStep(this, NpcID.KOB, new WorldPoint(2831, 10060, 2), "Talk to Kob with Protect from Melee on, ready to fight..");
-		talkToKob.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 		talkToKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
+		talkToKob.addDialogSteps("I know about your deal with the monkeys.", "You won't be around to crush anyone when I'm done with you.", "I accept your challenge.");
 
 		fightKob = new NpcStep(this, NpcID.KOB_7107, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.");
 		fightKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
-		fightKob.addDialogSteps("I know about your deal with the monkeys.", "You won't be around to crush anyone when I'm done with you.", "I accept your challenge.");
 
 		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 70)
 		{
 			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Get to him via the agility shortcut next to him. Be prepared to fight him and pray Protect from Melee.");
+			talkToKeef.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 		}
 		else
 		{
 			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Be prepared to fight him and pray Protect from Melee.", coins20);
-
+			talkToKeef.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 		}
 
 		fightKeef = new NpcStep(this, NpcID.KEEF_7105, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.");

@@ -260,17 +260,17 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		repairBridge1.addSubSteps(repairBridge2, repairBridge3);
 		talkToCurpile = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile.addDialogStep("I've come to help the Myreque. I've brought weapons.");
-		talkToCurpile1 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod 1.");
+		talkToCurpile1 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile1.addDialogStep("Sani Piliu.");
-		talkToCurpile2 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod 2.");
+		talkToCurpile2 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile2.addDialogStep("Ivan Strom.");
-		talkToCurpile3 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod 3.");
+		talkToCurpile3 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile3.addDialogStep("Veliaf Hurtz.");
-		talkToCurpile4 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod 4.");
+		talkToCurpile4 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile4.addDialogStep("Cyreg Paddlehorn.");
-		talkToCurpile5 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod 5.");
+		talkToCurpile5 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile5.addDialogStep("Drakan.");
-		talkToCurpile6 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod 6.");
+		talkToCurpile6 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile6.addDialogStep("Polmafi Ferdygris.");
 		talkToCurpile.addSubSteps(talkToCurpile1, talkToCurpile3, talkToCurpile4, talkToCurpile5, talkToCurpile6);
 		enterDoors = new ObjectStep(this, ObjectID.WOODEN_DOORS_5061, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.",

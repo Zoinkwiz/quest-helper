@@ -54,6 +54,7 @@ import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -152,7 +153,6 @@ public class DetailedQuestStep extends QuestStep
 	{
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
 		tileHighlights.clear();
-		clearArrow();
 		started = false;
 	}
 
@@ -160,18 +160,12 @@ public class DetailedQuestStep extends QuestStep
 	public void enteredCutscene()
 	{
 		super.enteredCutscene();
-		clearArrow();
 	}
 
 	@Override
 	public void leftCutscene()
 	{
 		super.leftCutscene();
-	}
-
-	public void clearArrow()
-	{
-		client.clearHintArrow();
 	}
 
 	public void addRequirement(Requirement requirement)
@@ -215,7 +209,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : requirements)
 			{
-				ArrayList<LineComponent> lines = requirement.getDisplayText(client);
+				ArrayList<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
 
 				for (LineComponent line : lines)
 				{
@@ -228,7 +222,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : additionalRequirements)
 			{
-				ArrayList<LineComponent> lines = requirement.getDisplayText(client);
+				ArrayList<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
 
 				for (LineComponent line : lines)
 				{
@@ -418,15 +412,14 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		LocalPoint playerPoint = player.getLocalLocation();
-		LocalPoint destinationPoint = LocalPoint.fromWorld(client, wp);
-
-		if (destinationPoint == null)
+		if (wp == null)
 		{
 			return;
 		}
-		Point playerPosOnMinimap = Perspective.localToMinimap(client, playerPoint);
-		Point destinationPosOnMinimap = Perspective.localToMinimap(client, destinationPoint, 10000000);
+
+		Point playerPosOnMinimap = player.getMinimapLocation();
+
+		Point destinationPosOnMinimap = getMinimapPoint(player.getWorldLocation(), wp);
 
 		if (playerPosOnMinimap == null || destinationPosOnMinimap == null)
 		{
@@ -448,13 +441,67 @@ public class DetailedQuestStep extends QuestStep
 		drawMinimapArrow(graphics, line);
 	}
 
+	protected Point getMinimapPoint(WorldPoint start, WorldPoint destination)
+	{
+		RenderOverview ro = client.getRenderOverview();
+		if (ro.getWorldMapData().surfaceContainsPosition(start.getX(), start.getY()) !=
+			ro.getWorldMapData().surfaceContainsPosition(destination.getX(), destination.getY()))
+		{
+			return null;
+		}
+
+		int x = (destination.getX() - start.getX());
+		int y = (destination.getY() - start.getY());
+
+		float maxDistance = Math.max(Math.abs(x), Math.abs(y));
+		x = x * 100;
+		y = y * 100;
+		x /= maxDistance;
+		y /= maxDistance;
+
+		Widget minimapDrawWidget;
+		if (client.isResized())
+		{
+			if (client.getVar(Varbits.SIDE_PANELS) == 1)
+			{
+				minimapDrawWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
+			}
+			else
+			{
+				minimapDrawWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_DRAW_AREA);
+			}
+		}
+		else
+		{
+			minimapDrawWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+		}
+
+		if (minimapDrawWidget == null)
+		{
+			return null;
+		}
+
+		final int angle = client.getMapAngle() & 0x7FF;
+
+		final int sin = Perspective.SINE[angle];
+		final int cos = Perspective.COSINE[angle];
+
+		final int xx = y * sin + cos * x >> 16;
+		final int yy = sin * x - y * cos >> 16;
+
+		Point loc = minimapDrawWidget.getCanvasLocation();
+		int miniMapX = loc.getX() + xx + minimapDrawWidget.getWidth() / 2;
+		int miniMapY = minimapDrawWidget.getHeight() / 2 + loc.getY() + yy;
+		return new Point(miniMapX, miniMapY);
+	}
+
 	protected WorldPoint getInstanceWorldPoint(WorldPoint wp)
 	{
 		Collection<WorldPoint> points = toLocalInstance(client, wp);
 
 		for (WorldPoint point : points)
 		{
-			if (point != null && point.isInScene(client))
+			if (point != null)
 			{
 				return point;
 			}

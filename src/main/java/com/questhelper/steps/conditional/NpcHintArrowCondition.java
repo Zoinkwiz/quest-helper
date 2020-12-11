@@ -22,74 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.steps.conditional;
 
-import java.awt.Color;
+import com.questhelper.Zone;
 import java.util.ArrayList;
-import java.util.Collections;
-import net.runelite.api.Actor;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.api.coords.WorldPoint;
 
-public class FollowerRequirement extends Requirement
+public class NpcHintArrowCondition extends ConditionForStep
 {
-	ArrayList<Integer> followers;
-	String text;
+	private final ArrayList<Integer> npcIDs;
 
-	public FollowerRequirement(String text, Integer... followers)
-	{
-		this.text = text;
-		this.followers = new ArrayList<>();
-		Collections.addAll(this.followers, followers);
+	private final Zone zone;
+
+	public NpcHintArrowCondition(int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
+		this.zone = null;
 	}
 
-	public FollowerRequirement(String text, ArrayList<Integer> followers)
-	{
-		this.text = text;
-		this.followers = followers;
+	public NpcHintArrowCondition(WorldPoint worldPoint, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
+		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
-	@Override
-	public boolean check(Client client)
+	public NpcHintArrowCondition(Zone zone, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
+		this.zone = zone;
+	}
+
+	public boolean checkCondition(Client client)
 	{
-		for (NPC npc : client.getNpcs())
+		NPC currentNPC = client.getHintArrowNpc();
+		if (currentNPC == null)
 		{
-			Actor ta = npc.getInteracting();
-			if (ta != null && client.getLocalPlayer() == ta)
-			{
-				if (followers.contains(npc.getId()))
-				{
-					return true;
-				}
-			}
+			return false;
+		}
+		WorldPoint wp = WorldPoint.fromLocalInstance(client, currentNPC.getLocalLocation());
+
+		if (zone != null && !zone.contains(wp))
+		{
+			return false;
+		}
+
+		if (npcIDs.contains(currentNPC.getId()))
+		{
+			return true;
 		}
 
 		return false;
-	}
-
-	@Override
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
-	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
-
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
-
-		lines.add(LineComponent.builder()
-			.left(getDisplayText())
-			.leftColor(color)
-			.build());
-
-		return lines;
-	}
-
-	@Override
-	public String getDisplayText()
-	{
-		return text;
 	}
 }

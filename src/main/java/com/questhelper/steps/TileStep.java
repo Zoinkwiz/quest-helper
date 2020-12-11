@@ -41,7 +41,6 @@ public class TileStep extends DetailedQuestStep
 	public void shutDown()
 	{
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
-		clearArrow();
 	}
 
 	@Override

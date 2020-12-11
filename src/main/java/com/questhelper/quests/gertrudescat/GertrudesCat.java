@@ -172,14 +172,14 @@ public class GertrudesCat extends BasicQuestHelper
 		pickupDoogle = new DetailedQuestStep(this, "Pickup some Doogle Leaves south of Gertrude's house.", new ItemRequirement("Doogle Leaves", ItemID.DOOGLE_LEAVES), sardine);
 		makeSeasonedSardine = new DetailedQuestStep(this, "Use your Doogle Leaves on  the Sardine.", sardine, doogleLeaves);
 
-		ConditionalStep conditionalTalkToChildren = new ConditionalStep(this, pickupDoogle, "Talk to Shilop or Wilough.");
-		conditionalTalkToChildren.addStep(new ItemRequirementCondition(LogicType.AND, sardine, doogleLeaves), makeSeasonedSardine);
-		conditionalTalkToChildren.addStep(new ItemRequirementCondition(seasonedSardine), talkToChildren);
-
 		NpcStep talkToChildren = new NpcStep(this, NpcID.SHILOP,
 			new WorldPoint(3222, 3435, 0), "", true, seasonedSardine, coins);
 		talkToChildren.addAlternateNpcs(NpcID.WILOUGH);
 		talkToChildren.addDialogSteps("What will make you tell me?", "Okay then, I'll pay.");
+
+		ConditionalStep conditionalTalkToChildren = new ConditionalStep(this, pickupDoogle, "Talk to Shilop or Wilough.");
+		conditionalTalkToChildren.addStep(new ItemRequirementCondition(LogicType.AND, sardine, doogleLeaves), makeSeasonedSardine);
+		conditionalTalkToChildren.addStep(new ItemRequirementCondition(seasonedSardine), talkToChildren);
 
 		return conditionalTalkToChildren;
 	}

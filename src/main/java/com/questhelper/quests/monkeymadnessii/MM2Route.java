@@ -68,8 +68,8 @@ public enum MM2Route
 		new ChatMessageCondition(new ZoneCondition(new WorldPoint(2588, 9231, 1)), "Something about this route feels wrong."),
 		new ArrayList<>(Arrays.asList(new WorldPoint(2588, 9231, 1), new WorldPoint(2588, 9226, 1)))),
 
-	S2E6(2, 6, new Zone(new WorldPoint(2601, 9232, 1)), new Zone(new WorldPoint(2600, 9232, 1)),
-		new ChatMessageCondition(new ZoneCondition(new WorldPoint(2601, 9232, 1)), "Something about this route feels wrong."),
+	S2E6(2, 6, new Zone(new WorldPoint(2604, 9229, 1)), new Zone(new WorldPoint(2604, 9230, 1)),
+		new ChatMessageCondition(new ZoneCondition(new WorldPoint(2604, 9229, 1)), "Something about this route feels wrong."),
 		new ArrayList<>(Arrays.asList(new WorldPoint(2604, 9228, 1), new WorldPoint(2604, 9230, 1), new WorldPoint(2602, 9230, 1),
 			new WorldPoint(2602, 9232, 1)))),
 

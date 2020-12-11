@@ -140,11 +140,11 @@ public class IncantationStep extends DetailedQuestStep
 			return;
 		}
 		incantationOrder = new String[]{
-			words.get(client.getVarbitValue(2562)),
-			words.get(client.getVarbitValue(2563)),
-			words.get(client.getVarbitValue(2564)),
-			words.get(client.getVarbitValue(2565)),
-			words.get(client.getVarbitValue(2566)),
+			words.get(client.getVarbitValue(1373)),
+			words.get(client.getVarbitValue(1374)),
+			words.get(client.getVarbitValue(1375)),
+			words.get(client.getVarbitValue(1376)),
+			words.get(client.getVarbitValue(1377))
 		};
 		if (reverse)
 		{

@@ -164,14 +164,14 @@ public class TheGiantDwarf extends BasicQuestHelper
 		inKeldagrim = new ZoneCondition(keldagrim, keldagrim2);
 
 		talkedToVermundi = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Great, thanks a lot, I'll check out the library!"),
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Great, thanks a lot, I'll check out the library!"),
 			new WidgetTextCondition(219, 1, 2, "Yes, about those special clothes again..."));
 		// TODO: Find widget text
 		//new WidgetTextCondition(119, 3, true, true, "N/A"));
 
 		talkedToLibrarian = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Well, thanks, I'll have a look."),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I must find the <col=800000>original axe<col=000080> of <col=800000>King Alvis<col=000080>."));
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Well, thanks, I'll have a look."),
+			new WidgetTextCondition(119, 3, true, "<col=000080>I must find the <col=800000>original axe<col=000080> of <col=800000>King Alvis<col=000080>."));
 
 		hasBookOnCostumes = new Conditions(true, new ItemRequirementCondition(bookOnCostumes));
 
@@ -179,11 +179,11 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		usedCoalOnMachine = new Conditions(true, LogicType.OR,
 			new ChatMessageCondition("You load the spinning machine with coal and logs."),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
+			new WidgetTextCondition(119, 3, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
 
 		startedMachine = new Conditions(true, LogicType.OR,
 			new ChatMessageCondition("...and successfully start the engine!"),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
+			new WidgetTextCondition(119, 3, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
 
 		givenExquisiteClothes = new Conditions(true, LogicType.OR,
 			new VarbitCondition(576, 2),
@@ -193,16 +193,16 @@ public class TheGiantDwarf extends BasicQuestHelper
 		hasExquisiteClothes = new Conditions(true, LogicType.OR,
 			givenExquisiteClothes,
 			new ItemRequirementCondition(exquisiteClothes),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
+			new WidgetTextCondition(119, 3, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
 
 		talkedToSaro = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "And if you're going to try to get the boots off him,"),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "And if you're going to try to get the boots off him,"),
+			new WidgetTextCondition(119, 3, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
 			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "I thought I already told you where to get them?"));
 
 		talkedToDromund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Get out you pesky human! The boots are mine and"),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Get out you pesky human! The boots are mine and"),
+			new WidgetTextCondition(119, 3, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
 			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Are you sure you don't want to give me those boots?"));
 
 		hasLeftBoot = new Conditions(true, new ItemRequirementCondition(leftBoot));
@@ -215,7 +215,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		hasExquisiteBoots = new Conditions(true, LogicType.OR,
 			givenExquisiteBoots,
 			new ItemRequirementCondition(exquisiteBoots),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs."));
+			new WidgetTextCondition(119, 3, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs."));
 
 		talkedToSantiri = new Conditions(true, new ItemRequirementCondition(dwarvenBattleaxeBroken));
 
@@ -233,12 +233,12 @@ public class TheGiantDwarf extends BasicQuestHelper
 		hasDwarvenBattleaxe = new Conditions(true, LogicType.OR,
 			givenDwarvenBattleaxe,
 			new ItemRequirementCondition(dwarvenBattleaxe),
-			new WidgetTextCondition(119, 3, true, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
+			new WidgetTextCondition(119, 3, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
 
 		inConsortium = new ZoneCondition(consortium);
 
-		completedSecretaryTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "I'm afraid I have no more work to offer you", "You should speak directly to the director."));
-		completedDirectorTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Have you ever considered joining"));
+		completedSecretaryTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "I'm afraid I have no more work to offer you", "You should speak directly to the director."));
+		completedDirectorTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Have you ever considered joining"));
 		joinedCompany = new Conditions(true, LogicType.OR,
 			new VarbitCondition(578, 1),
 			new VarbitCondition(578, 2),
@@ -249,8 +249,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new VarbitCondition(578, 6),
 			new VarbitCondition(578, 7),
 			new VarbitCondition(578, 8),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "I will not disappoint you."),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, true, "Come in, come in my friend!"));
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "I will not disappoint you."),
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Come in, come in my friend!"));
 	}
 
 	public void setupSteps()

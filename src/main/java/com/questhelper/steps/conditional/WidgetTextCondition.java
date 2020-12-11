@@ -53,25 +53,12 @@ public class WidgetTextCondition extends ConditionForStep
 		this.text = new ArrayList<>(Arrays.asList(text));
 	}
 
-	public WidgetTextCondition(WidgetInfo widgetInfo, boolean onlyNeedToPassOnce, String... text)
-	{
-
-		this(widgetInfo, text);
-		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
-	}
-
 	public WidgetTextCondition(int groupId, int childId, boolean checkChildren, String... text)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
 		this.checkChildren = checkChildren;
 		this.text = new ArrayList<>(Arrays.asList(text));
-	}
-
-	public WidgetTextCondition(int groupId, int childId, boolean checkChildren, boolean onlyNeedToPassOnce, String... text)
-	{
-		this(groupId, childId, checkChildren, text);
-		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
 	}
 
 	public WidgetTextCondition(int groupId, int childId, String... text)
@@ -98,10 +85,6 @@ public class WidgetTextCondition extends ConditionForStep
 	@Override
 	public boolean checkCondition(Client client)
 	{
-		if (onlyNeedToPassOnce && hasPassed)
-		{
-			return true;
-		}
 		return checkWidget(client);
 	}
 

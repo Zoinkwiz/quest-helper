@@ -238,7 +238,7 @@ public class NpcStep extends DetailedQuestStep
 		{
 			super.renderArrow(graphics);
 		}
-		else if (!hideWorldArrow)
+		else if (!hideWorldArrow && client.getHintArrowNpc() != npc)
 		{
 			BufferedImage arrow = getArrow();
 			Shape hull = npc.getConvexHull();

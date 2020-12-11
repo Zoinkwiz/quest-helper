@@ -569,7 +569,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		talkedToUngadulu = new Conditions(true, LogicType.OR,
 			new WidgetTextCondition(229, 1, "The Shaman throws himself down on the floor and starts convulsing."),
-			new WidgetTextCondition(119, 3, true, true, "is acting weird and talking a lot of nonsense"));
+			new WidgetTextCondition(119, 3, true, "is acting weird and talking a lot of nonsense"));
 
 		hadSketch = new Conditions(true, LogicType.OR, new ItemRequirementCondition(sketch));
 

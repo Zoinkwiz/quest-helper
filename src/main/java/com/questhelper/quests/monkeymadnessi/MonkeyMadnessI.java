@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.monkeymadnessi;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -61,7 +62,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 {
 	ItemRequirement monkeyBonesOrCorpse, ballOfWool, goldBar, royalSeal, narnodesOrders, monkeyDentures, mould, monkeyDenturesHighlight, mouldHighlight, barHighlight, enchantedBar,
 		enchantedBarHighlight, ballOfWoolHighlight, unstrungAmuletHighlight, amulet, banana5, amuletWorn, talisman, talismanHighlight, karamjanGreegree, monkeyBonesOrCorpseHighlight,
-		monkey, karamjanGreegreeEquipped, sigilEquipped, combatGear;
+		monkey, karamjanGreegreeEquipped, sigilEquipped, combatGear, antipoison;
 
 	ConditionForStep inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,
 		talkedToDaeroAfterPuzzle, onCrashIsland, talkedToLumdo, talkedToWaydar, onApeAtollSouth, inPrison, onApeAtollNorth, talkedToGarkor, inDentureBuilding,
@@ -284,6 +285,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		sigilEquipped.setTip("You can get another from Garkor");
 
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
 	}
 
 	public void loadZones()
@@ -489,6 +492,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		goDownFromDentures.addDialogStep("Yes, I'm sure.");
 
 		searchForMould = new ObjectStep(this, ObjectID.CRATE_4724, new WorldPoint(2782, 9172, 0), "Search the crate in the north west of the room for a M'amulet mould.");
+		searchForMould.addDialogStep("Yes");
 
 		leaveToPrepareForBar = new DetailedQuestStep(this, "Teleport out to prepare for a dangerous portion. You'll want energy/stamina potions, food and prayer potions.");
 
@@ -690,6 +694,12 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(goldBar, ballOfWool, monkeyBonesOrCorpse));
+	}
+
+	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return new ArrayList<>(Arrays.asList(combatGear, antipoison));
 	}
 
 	@Override

@@ -107,10 +107,11 @@ public class TheFeud extends BasicQuestHelper
 		steps.put(5, getFirstJob());
 		steps.put(6, pickPocketVillager());
 		steps.put(7, pickPocketVillagerWithUrchin());
-		steps.put(8, blackjackVillager());
-		steps.put(9, blackjackVillager());
-		steps.put(10, blackjackVillager());
-		steps.put(11, blackjackVillager());
+		QuestStep blackjack = blackjackVillager();
+		steps.put(8, blackjack);
+		steps.put(9, blackjack);
+		steps.put(10, blackjack);
+		steps.put(11, blackjack);
 		steps.put(12, getSecondJob());
 		steps.put(13, secondJob());
 		steps.put(14, openTheDoor());
@@ -275,7 +276,7 @@ public class TheFeud extends BasicQuestHelper
 		conditionalStep.addStep(givenPoisonToHag, talkToAliTheKebabSalesman);
 		conditionalStep.addStep(hasSnakeBasketFull, givePoisonToAliTheHag);
 		conditionalStep.addStep(new Conditions(talkedToAliTheHag, snakeCharm, hasSnakeBasket), catchSnake);
-		conditionalStep.addStep(talkedToAliTheHag, giveCoinToSnakeCharmer);// TODO pfind better condition/varbit for this. Currently doesn't work
+		conditionalStep.addStep(talkedToAliTheHag, giveCoinToSnakeCharmer);
 		conditionalStep.addStep(talkedToBarman, talkToAliTheHag);
 		return conditionalStep;
 	}
@@ -339,10 +340,11 @@ public class TheFeud extends BasicQuestHelper
 		blackJackVillager.addAlternateNpcs(NpcID.VILLAGER_3555, NpcID.VILLAGER_3557, NpcID.VILLAGER_3558, NpcID.VILLAGER_3560);
 
 		DetailedQuestStep equipBlackjack = new DetailedQuestStep(this, "Equip your oak blackjack in your inventory.", oakBlackjack);
+
 		ConditionalStep blackjackVillagerStep = new ConditionalStep(this, getBlackjackFromAli);
 		blackjackVillagerStep.addStep(oakBlackjackEquipped, blackJackVillager);
 		blackjackVillagerStep.addStep(hasOakBlackjack, equipBlackjack);
-		blackjackVillagerStep.addSubSteps(equipBlackjack);
+		blackJackVillager.addSubSteps(equipBlackjack);
 
 		return blackjackVillagerStep;
 	}

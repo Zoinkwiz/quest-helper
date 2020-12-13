@@ -754,7 +754,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		readDiary = new DetailedQuestStep(this, "Read Aivas' Diary.", aivasDiary);
 		talkToDallasAfterDiary = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3549, 10419, 0), "Talk to Dallas again.");
 
-		talkToBob = new NpcStep(this, NpcID.BOB_8034, "Use a catspeak amulet (e) to locate Bob the Cat and talk to him.", catspeakAmulet);
+		talkToBob = new NpcStep(this, NpcID.BOB_8034, "Use a catspeak amulet (e) to locate Bob the Cat and talk to him. He's often in Catherby Archery Shop or at the Varrock Anvil.", catspeakAmulet);
 		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3301, 2785, 0), "Talk to the Sphinx in Sophanem.");
 		talkToSphinx.addDialogStep("Ask the Sphinx for help with Bob's memories.");
 		// Sphinx allows you to always talk to cats: 6144 0->1, 6145 1->0

@@ -179,7 +179,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		talkToUnferth = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0), "Talk to Unferth in north east Burthorpe.", cat, catspeak);
 		talkToUnferth.addDialogStep("I'll help you.");
 		talkToHild = new NpcStep(this, NpcID.HILD_4112, new WorldPoint(2930, 3568, 0), "Talk to Hild in the house north east of Unferth.", deathRune5, catspeak);
-		findBob = new DetailedQuestStep(this, "Operate the catspeak amulet (e) to locate Bob the Cat.", catspeakE);
+		findBob = new DetailedQuestStep(this, "Operate the catspeak amulet (e) to locate Bob the Cat. He's often in Catherby Archery Shop or at the Varrock Anvil.", catspeakE);
 		talkToBob = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat.", cat, catspeakEWorn);
 		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3413, 0), "Talk to Gertrude west of Varrock.", cat, catspeakEWorn);
 		talkToGertrude.addDialogStep("Ask about Bob's parents.");

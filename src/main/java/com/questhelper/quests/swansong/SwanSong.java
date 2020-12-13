@@ -59,7 +59,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 public class SwanSong extends BasicQuestHelper
 {
 	ItemRequirement mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammer, brownApron, monkfish5, rawMonkfish5, combatGear, potHiglight,
-		potLidHiglight, tinderboxHiglight, ironBar5Higlight, logHiglight, ironSheet5, smallNet, airtightPot, combatGearRanged, boneSeeds;
+		potLidHiglight, tinderboxHiglight, ironBar5Higlight, logHiglight, ironSheet5, smallNet, airtightPot, combatGearRanged, boneSeeds, hammerPanel;
 
 	ConditionForStep inColonyEntrance, talkedToFranklin, addedLog, litLog, has5Sheets, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed, has5RawMonk,
 		has5CookedMonk, talkedToArnold, finishedFranklin, inBasement, queenNearby, hasAirtightPot;
@@ -171,6 +171,7 @@ public class SwanSong extends BasicQuestHelper
 		smallNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET);
 		smallNet.setTip("You can get one from Arnold");
 
+		hammerPanel = new ItemRequirement("Hammer (obtainable in quest)", ItemID.HAMMER);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		hammer.setTip("Franklin will give you one");
 		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true);
@@ -271,7 +272,7 @@ public class SwanSong extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox));
+		return new ArrayList<>(Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammerPanel));
 	}
 
 
@@ -289,10 +290,10 @@ public class SwanSong extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToHerman, talkToWom)), blood5, mist10, lava10));
-		allSteps.add(new PanelDetails("Entering the colony", new ArrayList<>(Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding)), combatGear, log, tinderbox, ironBar5));
+		allSteps.add(new PanelDetails("Entering the colony", new ArrayList<>(Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding)), combatGear, log, tinderbox, ironBar5, hammerPanel));
 		ArrayList<QuestStep> helpingSteps = new ArrayList<>(Arrays.asList(talkToFranklin, useLog, useTinderbox));
 		helpingSteps.addAll(repairWall.getDisplaySteps());
-		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, combatGear, log, tinderbox, ironBar5));
+		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, combatGear, log, tinderbox, ironBar5, hammerPanel));
 
 		ArrayList<QuestStep> helpingArnoldSteps = new ArrayList<>(Collections.singletonList(talkToArnold));
 		helpingArnoldSteps.addAll(fishAndCookMonkfish.getSteps());

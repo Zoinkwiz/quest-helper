@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.conditional.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -58,7 +59,7 @@ public class MountainDaughter extends BasicQuestHelper
 {
 	private Zone CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3, LAKE_ISLAND_1, LAKE_ISLAND_2, LAKE_ISLAND_3, KENDAL_CAVE;
 
-	private ItemRequirement axe, pickaxe, spade, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope;
+	private ItemRequirement axe, pickaxe, spade, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope, slayerRing;
 
 	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock, hasCorpse,
 		gottenGuarantee, givenGuaranteeToSvidi, gottenFruit, gottenSeed, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, hasRocks, hasNecklace, hasBuried;
@@ -175,6 +176,8 @@ public class MountainDaughter extends BasicQuestHelper
 		corpse = new ItemRequirement("Corpse of woman", ItemID.CORPSE_OF_WOMAN);
 		corpse.setTip("You can find this corpse again in the Kendal's cave.");
 		muddyRocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
+
+		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.getSlayerRings());
 	}
 
 	private void loadConditions() {
@@ -354,6 +357,12 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return new ArrayList<>(Collections.singletonList(slayerRing));
+	}
+
+	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Arrays.asList("The Kendal (level 70)"));
@@ -367,7 +376,7 @@ public class MountainDaughter extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Go to the centre of the lake", new ArrayList<>(Arrays.asList(rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit))));
 		allSteps.add(new PanelDetails("Find out how to help", new ArrayList<>(Arrays.asList(talkToHamalAfterSpirit, talkToJokul))));
 		allSteps.add(new PanelDetails("Making peace with Rellekka", new ArrayList<>(Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi))));
-		allSteps.add(new PanelDetails("Find a new food source", new ArrayList<>(Arrays.asList(getFruit, eatFruit))));
+		allSteps.add(new PanelDetails("Find a new food source", new ArrayList<>(Arrays.asList(getFruit, eatFruit)), axe, gloves));
 		allSteps.add(new PanelDetails("Prepare for a fight", new ArrayList<>(Arrays.asList(new DetailedQuestStep(this, "Prepare to fight The Kendal (level 70)"))), pole, plank, axe, whitePearlSeed));
 		allSteps.add(new PanelDetails("Tell Hamal about your success", new ArrayList<>(Arrays.asList(returnToHamalAboutDiplomacy, returnToHamalAboutFood))));
 		allSteps.add(new PanelDetails("Tell Asleif about your success", new ArrayList<>(Arrays.asList(returnToSpirit))));

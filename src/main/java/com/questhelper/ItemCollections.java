@@ -381,6 +381,19 @@ public class ItemCollections
 	));
 
 	@Getter
+	private static final List<Integer> slayerRings = new ArrayList<>(Arrays.asList(
+		ItemID.SLAYER_RING_1,
+		ItemID.SLAYER_RING_2,
+		ItemID.SLAYER_RING_3,
+		ItemID.SLAYER_RING_4,
+		ItemID.SLAYER_RING_5,
+		ItemID.SLAYER_RING_6,
+		ItemID.SLAYER_RING_7,
+		ItemID.SLAYER_RING_8,
+		ItemID.SLAYER_RING_ETERNAL
+	));
+
+	@Getter
 	private static final List<Integer> nails = new ArrayList<>(Arrays.asList(
 		ItemID.BRONZE_NAILS,
 		ItemID.IRON_NAILS,

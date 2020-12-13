@@ -205,7 +205,9 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		message.setTip("You can get another from Vertida in the Meiyditch Myreque base");
 
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
+		charcoal.setHighlightInInventory(true);
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
+		papyrus.setHighlightInInventory(true);
 		sketch1 = new ItemRequirement("Castle sketch 1", ItemID.CASTLE_SKETCH_1);
 		sketch2 = new ItemRequirement("Castle sketch 2", ItemID.CASTLE_SKETCH_2);
 		sketch3 = new ItemRequirement("Castle sketch 3", ItemID.CASTLE_SKETCH_3);
@@ -622,10 +624,10 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		goToSafalaan.addStep(onDrakanWalls, talkToSafalaan);
 		goToSafalaan.addDialogStep("Okay, lead the way.");
 
-		goSketchNorth = new ConditionalStep(this, navigateWalls, "Sketch the north side of Castle Drakan.", papyrus, charcoal);
+		goSketchNorth = new ConditionalStep(this, navigateWalls, "Sketch the north side of Castle Drakan by using the charcoal on some papyrus.", papyrus, charcoal);
 		goSketchNorth.addStep(onDrakanWalls, drawNorthWall);
 
-		goSketchWest = new ConditionalStep(this, navigateWalls, "Sketch the west side of Castle Drakan.", papyrus, charcoal);
+		goSketchWest = new ConditionalStep(this, navigateWalls, "Sketch the west side of Castle Drakan by using the charcoal on some papyrus.", papyrus, charcoal);
 		goSketchWest.addStep(onDrakanWalls, drawWestWall);
 
 		goSketchSouth = new ConditionalStep(this, navigateWalls, "Sketch the south side of Castle Drakan. Be prepared to tank some hits from Vanstrom Klause.", papyrus, charcoal);

@@ -7,9 +7,15 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 
 public class ItemStep extends DetailedQuestStep
 {
+	public ItemStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, requirements);
+	}
+
 	public ItemStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
 		super(questHelper, text, requirements);

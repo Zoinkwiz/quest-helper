@@ -58,18 +58,14 @@ public class DeathPlateau extends BasicQuestHelper
 {
 	ItemRequirement asgarnianAle, premadeBlurb, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
 		yellowStone, pinkStone, greenStone;
-	Zone castleUpstairs, barDownstairs, barUpstairs, haroldsRoom1, haroldsRoom2;
-	ConditionForStep hasAsgarnianAle, inCastleUpstairs, inBarDownstairs, inBarUpstairs, inHaroldsRoom,
-		givenHaroldBlurberry;
+	Zone castleDownstairs, castleUpstairs, barDownstairs, barUpstairs, haroldsRoom1, haroldsRoom2, sabaCave;
+	ConditionForStep hasAsgarnianAle, inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs,
+		inHaroldsRoom, givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
+		isGreenStoneDone, inSabaCave;
 	QuestStep talkToDenulth, goToEohric1, talkToEohric1, goToHaroldStairs1, goToHaroldDoor1, talkToHarold1, goToEohric2,
 		talkToEohric2, takeAsgarnianAle, goToHaroldStairs2, goToHaroldDoor2, talkToHarold2, giveHaroldBlurberry,
-		gambleWithHarold;
-	private QuestStep readIou;
-	private ItemCondition isRedStoneDone;
-	private ItemCondition isBlueStoneDone;
-	private ItemCondition isYellowStoneDone;
-	private ItemCondition isPinkStoneDone;
-	private ItemCondition isGreenStoneDone;
+		gambleWithHarold,  readIou, placeRedStone, placeBlueStone, placeYellowStone, placePinkStone, placeGreenStone,
+		placeStones, enterCave, talkToSaba;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -107,7 +103,15 @@ public class DeathPlateau extends BasicQuestHelper
 
 		steps.put(55, readIou);
 
-		//steps.put(60, blahSteps);
+		ConditionalStep stoneSteps = new ConditionalStep(this, placeStones);
+		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone), placeGreenStone);
+		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone, isBlueStoneDone, isYellowStoneDone), placePinkStone);
+		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone, isBlueStoneDone), placeYellowStone);
+		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone), placeBlueStone);
+		stoneSteps.addStep(new Conditions(inCastleDownstairs), placeRedStone);
+		steps.put(60, stoneSteps);
+
+		steps.put(70, enterCave);
 
 		return steps;
 	}
@@ -138,26 +142,30 @@ public class DeathPlateau extends BasicQuestHelper
 
 	public void setupZones()
 	{
+		castleDownstairs = new Zone(new WorldPoint(2893, 3558, 0), new WorldPoint(2904, 3569, 0));
 		castleUpstairs = new Zone(new WorldPoint(2891, 3556, 1), new WorldPoint(2906, 3571, 1));
 		barDownstairs = new Zone(new WorldPoint(2905, 3536, 0), new WorldPoint(2915, 3543, 0));
 		barUpstairs = new Zone(new WorldPoint(2905, 3536, 1), new WorldPoint(2915, 3544, 1));
 		haroldsRoom1 = new Zone(new WorldPoint(2905, 3536, 1), new WorldPoint(2906, 3542, 1));
 		haroldsRoom2 = new Zone(new WorldPoint(2907, 3542, 1), new WorldPoint(2907, 3542, 1));
+		sabaCave = new Zone(new WorldPoint(2266, 4752, 0), new WorldPoint(2273, 4762, 0));
 	}
 
 	public void setupConditions()
 	{
 		hasAsgarnianAle = new ItemRequirementCondition(asgarnianAle);
+		inCastleDownstairs = new ZoneCondition(castleDownstairs);
 		inCastleUpstairs = new ZoneCondition(castleUpstairs);
 		inBarDownstairs = new ZoneCondition(barDownstairs);
 		inBarUpstairs = new ZoneCondition(barUpstairs);
 		inHaroldsRoom = new ZoneCondition(haroldsRoom1, haroldsRoom2);
 		givenHaroldBlurberry = new ChatMessageCondition("You give Harold a Blurberry Special.");
-		isRedStoneDone = new ItemCondition(redStone, new WorldPoint(2894, 3562, 0));
-		isBlueStoneDone = new ItemCondition(redStone, new WorldPoint(2894, 3562, 0));
-		isYellowStoneDone = new ItemCondition(redStone, new WorldPoint(2894, 3562, 0));
-		isPinkStoneDone = new ItemCondition(redStone, new WorldPoint(2894, 3562, 0));
-		isGreenStoneDone = new ItemCondition(redStone, new WorldPoint(2894, 3562, 0));
+		isRedStoneDone = new ItemCondition(redStone, new WorldPoint(2894, 3563, 0));
+		isBlueStoneDone = new ItemCondition(blueStone, new WorldPoint(2894, 3562, 0));
+		isYellowStoneDone = new ItemCondition(yellowStone, new WorldPoint(2895, 3562, 0));
+		isPinkStoneDone = new ItemCondition(pinkStone, new WorldPoint(2895, 3563, 0));
+		isGreenStoneDone = new ItemCondition(greenStone, new WorldPoint(2895, 3564, 0));
+		inSabaCave = new ZoneCondition(sabaCave);
 	}
 
 	public void setupSteps()
@@ -196,7 +204,18 @@ public class DeathPlateau extends BasicQuestHelper
 
 		readIou = new DetailedQuestStep(this, "Read the IOU, and then keep the IOU for the end of the quest.", iouHighlight);
 
-		DetailedQuestStep step = new DetailedQuestStep(this, new WorldPoint(2895, 3563, 0), "test");
+		placeRedStone = new DetailedQuestStep(this, new WorldPoint(2894, 3563, 0), "Use the red stone on the mechanism.", redStone);
+		placeBlueStone = new DetailedQuestStep(this, new WorldPoint(2894, 3562, 0), "Use the blue stone on the mechanism.", blueStone);
+		placeYellowStone = new DetailedQuestStep(this, new WorldPoint(2895, 3562, 0), "Use the yellow stone on the mechanism.", yellowStone);
+		placePinkStone = new DetailedQuestStep(this, new WorldPoint(2895, 3563, 0), "Use the pink stone on the mechanism.", pinkStone);
+		placeGreenStone = new DetailedQuestStep(this, new WorldPoint(2895, 3564, 0), "Use the green stone on the mechanism.", greenStone);
+		placeStones = new DetailedQuestStep(this, new WorldPoint(2896, 3563, 0), "Go back to Burthorpe castle, and place the coloured stone balls in the correct spots on the mechanism.");
+		placeStones.addSubSteps(placeRedStone, placeBlueStone, placeYellowStone, placePinkStone, placeGreenStone);
+
+		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3735, new WorldPoint(2858, 3579, 0), "Ask Saba about another way up Death Plateau.");
+		talkToSaba = new NpcStep(this, NpcID.SABA, new WorldPoint(2270, 4756, 0), "Ask Saba about another way up Death Plateau.");
+		talkToSaba.addDialogStep(2, "Do you know of another way up Death Plateau?");
+		talkToSaba.addSubSteps(enterCave);
 	}
 
 	@Override

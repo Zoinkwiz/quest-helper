@@ -35,6 +35,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.EventBus;
@@ -223,7 +224,16 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		for (NpcCondition condition : npcConditions)
 		{
-			condition.checkNpcDespawned(event.getNpc().getId());
+			condition.checkNpcDespawned(event.getNpc());
+		}
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged npcCompositionChanged)
+	{
+		for (NpcCondition condition : npcConditions)
+		{
+			condition.checkNpcChanged(npcCompositionChanged);
 		}
 	}
 

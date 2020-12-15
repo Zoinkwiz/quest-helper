@@ -25,28 +25,33 @@
 package com.questhelper.steps.conditional;
 
 import com.questhelper.Zone;
+import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.NpcChanged;
 
 public class NpcCondition extends ConditionForStep
 {
 	private final int npcID;
-	private NPC npc;
+	private final ArrayList<NPC> npcs = new ArrayList<>();
 	private boolean npcInScene = false;
 	private final Zone zone;
 
-	public NpcCondition(int npcID) {
+	public NpcCondition(int npcID)
+	{
 		this.npcID = npcID;
 		this.zone = null;
 	}
 
-	public NpcCondition(int npcID, WorldPoint worldPoint) {
+	public NpcCondition(int npcID, WorldPoint worldPoint)
+	{
 		this.npcID = npcID;
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
-	public NpcCondition(int npcID, Zone zone) {
+	public NpcCondition(int npcID, Zone zone)
+	{
 		this.npcID = npcID;
 		this.zone = zone;
 	}
@@ -58,7 +63,7 @@ public class NpcCondition extends ConditionForStep
 		{
 			if (npcID == npc.getId())
 			{
-				this.npc = npc;
+				this.npcs.add(npc);
 				npcInScene = true;
 			}
 		}
@@ -68,12 +73,18 @@ public class NpcCondition extends ConditionForStep
 	{
 		if (zone != null)
 		{
-			if (npc != null)
+			for (NPC npc : npcs)
 			{
-				WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-				if (wp != null)
+				if (npc != null)
 				{
-					return zone.contains(wp);
+					WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
+					if (wp != null)
+					{
+						if (zone.contains(wp))
+						{
+							return true;
+						}
+					}
 				}
 			}
 			return false;
@@ -88,22 +99,38 @@ public class NpcCondition extends ConditionForStep
 	{
 		if (npc.getId() == this.npcID)
 		{
-			this.npc = npc;
+			npcs.add(npc);
 			npcInScene = true;
 		}
 	}
 
-	public void checkNpcDespawned(int npcID)
+	public void checkNpcDespawned(NPC npc)
 	{
-		if (npcID == this.npcID)
+		if (npcs.contains(npc))
 		{
-			npc = null;
+			npcs.remove(npc);
 			npcInScene = false;
 		}
 	}
 
+	public void checkNpcChanged(NpcChanged npcChanged)
+	{
+		if (npcs.contains(npcChanged.getNpc()) && npcChanged.getNpc().getId() != this.npcID)
+		{
+			this.npcs.remove(npcChanged.getNpc());
+			npcInScene = false;
+		}
+
+		if (npcChanged.getNpc().getId() == this.npcID)
+		{
+			this.npcs.add(npcChanged.getNpc());
+			npcInScene = true;
+		}
+	}
+
 	@Override
-	public void loadingHandler() {
+	public void loadingHandler()
+	{
 		npcInScene = false;
 	}
 }

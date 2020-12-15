@@ -70,6 +70,8 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
 	private final JPanel questOverviewNotesPanel = new JPanel();
 
+	private final JPanel questGeneralRequirementsHeader = new JPanel();
+
 	private final JLabel questNameLabel = new JLabel();
 
 	private static final ImageIcon CLOSE_ICON;
@@ -138,7 +140,6 @@ public class QuestOverviewPanel extends JPanel
 		questGeneralRequirementsPanel.setLayout(new BorderLayout());
 		questGeneralRequirementsPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		JPanel questGeneralRequirementsHeader = new JPanel();
 		questGeneralRequirementsHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		questGeneralRequirementsHeader.setLayout(new BorderLayout());
 		questGeneralRequirementsHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
@@ -421,16 +422,18 @@ public class QuestOverviewPanel extends JPanel
 					textGeneralRequirements.append("<br>");
 				}
 				textGeneralRequirements.append(generalRequirement.getDisplayText());
+				questGeneralRequirementsListPanel.add(generalReqLabel);
+				generalReqLabel.setText("<html><body style = 'text-align:left'>" + textGeneralRequirements + "</body></html>");
+
+				questGeneralRequirementsListPanel.setVisible(true);
+				questGeneralRequirementsHeader.setVisible(true);
 			}
 		}
 		else
 		{
-			textGeneralRequirements.append("None");
+			questGeneralRequirementsListPanel.setVisible(false);
+			questGeneralRequirementsHeader.setVisible(false);
 		}
-
-		questGeneralRequirementsListPanel.add(generalReqLabel);
-
-		generalReqLabel.setText("<html><body style = 'text-align:left'>" + textGeneralRequirements + "</body></html>");
 
 
 		/* Required items */

@@ -61,18 +61,18 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class ZogreFleshEaters extends BasicQuestHelper
 {
-	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portBook, goodPort, strangePotionHighlighted,
-		badPort, charcoal, papyrus, signedPort, cupOfTea, strangePotion, grishKey, ogreRelic, combatGear;
+	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portrait, goodPort, strangePotionHighlighted,
+		badPort, charcoal, papyrus, signedPort, cupOfTea, strangePotion, grishKey, ogreRelic, combatGear, knifeHighlighted, tankardHighlighted;
 
 	ConditionForStep askedAboutSickies, inSurface, inTombF2, killedZombie, hasBackpack, hasTankard, hasTornPage, hasBlackPrism, searchedCoffin, usedKnife, openedCoffin,
-		talkedToZavistic, hasBackpackOrTankard, atSith, askedSithToLookAround, hasOrShownNecroBook, hasOrShownHamBook, readPortBook, readNecroBook, readHamBook,
-		hasGoodPort, hasBadPort, hasPapyrus, shownNecroBook, shownHamBook, shownTankard, usedTankardOnBartender, usedPortraitOnBartender, hasOrShownSignedPortrait,
+		talkedToZavistic, hasBackpackOrTankard, atSith, askedSithToLookAround, hasOrShownNecroBook, hasOrShownHamBook, hasPortait, hasNecroBook, hasHamBook,
+		hasGoodPortrait, hasBadPortrait, hasPapyrus, shownNecroBook, shownHamBook, shownTankard, usedTankardOnBartender, usedPortraitOnBartender, hasOrShownSignedPortrait,
 		shownSignedPortrait, sithTransformed, askedAboutDisease, askedAboutGettingRidOfUndead, askedAboutBow, inTombF0, inTombF2ToBoss, ogreRelicNearby;
 
-	QuestStep talkToGrish, talkToGrishOfferHelp, talkToGuard, climbBarricade, goDownStairs, searchSkeleton, killZombie, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin,
-		openBackpack, searchCoffinProperly, useTankardOnBartender, talkToZavistic, goUpToSith, talkToSith, searchDrawers, searchCupboard, searchWardrobe, readPort, readNecro, readHam,
+	QuestStep talkToGrish, talkToGuard, climbBarricade, goDownStairs, searchSkeleton, killZombie, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin,
+		openBackpack, searchCoffinProperly, useTankardOnBartender, talkToZavistic, goUpToSith, talkToSith, searchDrawers, searchCupboard, searchWardrobe, dropPortraitAndSearchDrawers,
 		usePapyrusOnSith, usePortraitOnBartender, bringSignedPortraitToZavistic, goUpToSithAgain, usePotionOnTea, goDownstairsFromSith, goUpToOgreSith, talkToSithForAnswers,
-		askAboutRemovingUndead, askAboutRemovingDisease, talkToGrishForKey, talkToGrishForKeyUpstairs, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors,
+		askAboutRemovingUndead, askAboutRemovingDisease, talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors,
 		goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish;
 
 	Zone surface, tombF2, sith, tombF0, tombF2ToBoss;
@@ -86,17 +86,15 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		ConditionalStep talkToGrishSteps = new ConditionalStep(this, talkToGrish);
-		talkToGrishSteps.addStep(askedAboutSickies, talkToGrishOfferHelp);
-
-		steps.put(0, talkToGrishSteps);
+		steps.put(0, talkToGrish);
 		steps.put(2, talkToGuard);
 
 		ConditionalStep explore = new ConditionalStep(this, climbBarricade);
 		explore.addStep(new Conditions(hasOrShownHamBook, hasOrShownNecroBook, hasOrShownSignedPortrait), bringSignedPortraitToZavistic);
-		explore.addStep(new Conditions(hasOrShownHamBook, hasOrShownNecroBook, hasGoodPort, usedTankardOnBartender), usePortraitOnBartender);
-		explore.addStep(new Conditions(hasTankard, hasOrShownHamBook, hasOrShownNecroBook, hasGoodPort), useTankardOnBartender);
+		explore.addStep(new Conditions(hasOrShownHamBook, hasOrShownNecroBook, hasGoodPortrait, usedTankardOnBartender), usePortraitOnBartender);
+		explore.addStep(new Conditions(hasTankard, hasOrShownHamBook, hasOrShownNecroBook, hasGoodPortrait), useTankardOnBartender);
 		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook, hasOrShownNecroBook, hasPapyrus), usePapyrusOnSith);
+		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook, hasOrShownNecroBook, hasBadPortrait), dropPortraitAndSearchDrawers);
 		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook, hasOrShownNecroBook), searchDrawers);
 		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook), searchCupboard);
 		explore.addStep(new Conditions(hasTankard, atSith, askedSithToLookAround), searchWardrobe);
@@ -126,9 +124,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		steps.put(6, askSithQuestions);
 
 		ConditionalStep askAboutDiseaseAndOgres = new ConditionalStep(this, goUpToOgreSith);
-		askAboutDiseaseAndOgres.addStep(new Conditions(askedAboutGettingRidOfUndead, askedAboutDisease, atSith), talkToGrishForKeyUpstairs);
 		askAboutDiseaseAndOgres.addStep(new Conditions(askedAboutGettingRidOfUndead, askedAboutDisease), talkToGrishForKey);
-		askAboutDiseaseAndOgres.addStep(new Conditions(atSith, askedAboutGettingRidOfUndead, askedAboutDisease), askAboutRemovingDisease);
+		askAboutDiseaseAndOgres.addStep(new Conditions(askedAboutGettingRidOfUndead, atSith), askAboutRemovingDisease);
 		askAboutDiseaseAndOgres.addStep(atSith, askAboutRemovingUndead);
 		steps.put(8, askAboutDiseaseAndOgres);
 
@@ -153,12 +150,16 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		backpack = new ItemRequirement("Ruined backpack", ItemID.RUINED_BACKPACK);
 		backpack.setHighlightInInventory(true);
 		tankard = new ItemRequirement("Dragon inn tankard", ItemID.DRAGON_INN_TANKARD);
+		tankardHighlighted = new ItemRequirement("Dragon inn tankard", ItemID.DRAGON_INN_TANKARD);
+		tankardHighlighted.setHighlightInInventory(true);
 		tornPage = new ItemRequirement("Torn page", ItemID.TORN_PAGE);
 		blackPrism = new ItemRequirement("Black prism", ItemID.BLACK_PRISM);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE);
+		knifeHighlighted.setHighlightInInventory(true);
 		necroBook = new ItemRequirement("Necromancy book", ItemID.NECROMANCY_BOOK);
 		hamBook = new ItemRequirement("Book of 'h.a.m'", ItemID.BOOK_OF_HAM);
-		portBook = new ItemRequirement("Book of portraiture", ItemID.BOOK_OF_PORTRAITURE);
+		portrait = new ItemRequirement("Book of portraiture", ItemID.BOOK_OF_PORTRAITURE);
 		goodPort = new ItemRequirement("Sithik portrait", ItemID.SITHIK_PORTRAIT);
 		goodPort.setHighlightInInventory(true);
 		badPort = new ItemRequirement("Sithik portrait", ItemID.SITHIK_PORTRAIT_4815);
@@ -211,9 +212,9 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 		atSith = new ZoneCondition(sith);
 
-		readPortBook = new ItemRequirementCondition(portBook);
-		readNecroBook = new ItemRequirementCondition(necroBook);
-		readHamBook = new ItemRequirementCondition(hamBook);
+		hasPortait = new ItemRequirementCondition(portrait);
+		hasNecroBook = new ItemRequirementCondition(necroBook);
+		hasHamBook = new ItemRequirementCondition(hamBook);
 		usedTankardOnBartender = new VarbitCondition(489, 1);
 		usedPortraitOnBartender = new VarbitCondition(490, 1);
 		shownNecroBook = new VarbitCondition(491, 1);
@@ -221,13 +222,12 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		shownTankard = new VarbitCondition(493, 1);
 		shownSignedPortrait = new VarbitCondition(494, 1);
 
-		hasOrShownHamBook = new Conditions(LogicType.OR, shownHamBook, new ItemRequirementCondition(hamBook));
-		hasOrShownNecroBook = new Conditions(LogicType.OR, shownNecroBook, new ItemRequirementCondition(necroBook));
+		hasOrShownHamBook = new Conditions(LogicType.OR, shownHamBook, hasHamBook);
+		hasOrShownNecroBook = new Conditions(LogicType.OR, shownNecroBook, hasNecroBook);
 		hasOrShownSignedPortrait = new Conditions(LogicType.OR, shownSignedPortrait, new ItemRequirementCondition(signedPort));
-//		hasOrReadPortBook = new Conditions(LogicType.OR, readPortBook, new ItemRequirementCondition(portBook));
 
-		hasGoodPort = new ItemRequirementCondition(goodPort);
-		hasBadPort = new ItemRequirementCondition(badPort);
+		hasGoodPortrait = new ItemRequirementCondition(goodPort);
+		hasBadPortrait = new ItemRequirementCondition(badPort);
 		hasPapyrus = new ItemRequirementCondition(papyrus);
 
 		sithTransformed = new VarbitCondition(495, 1);
@@ -243,10 +243,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToGrish = new NpcStep(this, NpcID.GRISH, new WorldPoint(2447, 3049, 0), "Talk to Grish south of Castle Wars.");
-		talkToGrish.addDialogSteps("What do you mean sickies?", "Ok, I'll check things out then and report back.", "Yes, I'm really sure!", "Yes, I want to help you out and find out about the zogres.");
-
-		talkToGrishOfferHelp = new NpcStep(this, NpcID.GRISH, new WorldPoint(2447, 3049, 0), "Talk to Grish south of Castle Wars.");
-		talkToGrishOfferHelp.addDialogStep("Can I help in any way?");
+		talkToGrish.addDialogStepWithExclusion("What do you mean sickies?", "Can I help in any way?");
+		talkToGrish.addDialogSteps("Can I help in any way?", "Ok, I'll check things out then and report back.", "Yes, I'm really sure!", "Yes, I want to help you out and find out about the zogres.");
 
 		talkToGuard = new NpcStep(this, NpcID.OGRE_GUARD, new WorldPoint(2454, 3048, 0), "Talk to the guard east of Grish.");
 		climbBarricade = new ObjectStep(this, NullObjectID.NULL_6878, new WorldPoint(2456, 3048, 0), "Climb over the barricade east of Grish.");
@@ -258,7 +256,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 		searchLectern = new ObjectStep(this, ObjectID.BROKEN_LECTURN, new WorldPoint(2443, 9459, 2), "Search the broken lecturn in the north west corner of the tombs.");
 		searchCoffin = new ObjectStep(this, NullObjectID.NULL_6843, new WorldPoint(2439, 9459, 2), "Search the ogre coffin next to the skeleton.");
-		useKnifeOnCoffin = new ObjectStep(this, NullObjectID.NULL_6843, new WorldPoint(2439, 9459, 2), "Use a knife on the ogre coffin next to the skeleton.", knife);
+		useKnifeOnCoffin = new ObjectStep(this, NullObjectID.NULL_6843, new WorldPoint(2439, 9459, 2), "Use a knife on the ogre coffin next to the skeleton.", knifeHighlighted);
 		useKnifeOnCoffin.addIcon(ItemID.KNIFE);
 		openCoffin = new ObjectStep(this, NullObjectID.NULL_6843, new WorldPoint(2439, 9459, 2), "Search the coffin next to the skeleton again. It may take a few attempts to open.");
 		searchCoffinProperly = new ObjectStep(this, NullObjectID.NULL_6843, new WorldPoint(2439, 9459, 2), "Search the coffin for a black prism.");
@@ -273,19 +271,17 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 		searchWardrobe = new ObjectStep(this, ObjectID.WARDROBE_6877, new WorldPoint(2590, 3103, 1), "Search Sithik's wardrobe.");
 		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_6876, new WorldPoint(2593, 3105, 1), "Search Sithik's cupboard.");
-		searchDrawers = new ObjectStep(this, ObjectID.DRAWERS_6875, new WorldPoint(2593, 3103, 1), "Search Sithik's drawers.");
-		readNecro = new DetailedQuestStep(this, "Read the necromancy book.", necroBook);
-		readHam = new DetailedQuestStep(this, "Read the Book of 'h.a.m'", hamBook);
-		readPort = new DetailedQuestStep(this, "Read the book of portraiture.", portBook);
 
 		goUpToOgreSith = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0), "Go talk to Sithik upstairs in north Yanille.");
 
 		searchDrawers = new ObjectStep(this, ObjectID.DRAWERS_6875, new WorldPoint(2593, 3103, 1), "Search Sithik's drawers for more papyrus.");
+		dropPortraitAndSearchDrawers = new ObjectStep(this, ObjectID.DRAWERS_6875, new WorldPoint(2593, 3103, 1), "The portrait drawn is wrong. Drop it and try drawing him again.");
+		searchDrawers.addSubSteps(dropPortraitAndSearchDrawers);
 
 		usePapyrusOnSith = new ObjectStep(this, NullObjectID.NULL_6887, new WorldPoint(2591, 3104, 1), "Use the papyrus on Sithik Ints.", papyrus, charcoal);
 		usePapyrusOnSith.addIcon(ItemID.PAPYRUS);
 
-		useTankardOnBartender = new NpcStep(this, NpcID.BARTENDER_1320, new WorldPoint(2555, 3080, 0), "Travel to the Dragon Inn in Yanille and use the dragon inn tankard on the bartender.");
+		useTankardOnBartender = new NpcStep(this, NpcID.BARTENDER_1320, new WorldPoint(2555, 3080, 0), "Travel to the Dragon Inn in Yanille and use the dragon inn tankard on the bartender.", tankardHighlighted);
 		useTankardOnBartender.addIcon(ItemID.DRAGON_INN_TANKARD);
 
 		usePortraitOnBartender = new NpcStep(this, NpcID.BARTENDER_1320, new WorldPoint(2555, 3080, 0), "Use the portrait on the bartender.", goodPort);
@@ -313,13 +309,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		askAboutRemovingDisease.addDialogStep("How do I get rid of the disease?");
 		talkToSithForAnswers.addSubSteps(askAboutRemovingDisease, askAboutRemovingUndead);
 
-		talkToGrishForKeyUpstairs = new NpcStep(this, NpcID.GRISH, new WorldPoint(2447, 3049, 0), "Talk to Grish south of Castle Wars. Be prepared to fight Slash Bash. You'll need to use either brutal arrows or the Crumble Undead spell.");
-		talkToGrishForKeyUpstairs.addDialogStep("Sorry, I have to go.");
-
 		talkToGrishForKey = new NpcStep(this, NpcID.GRISH, new WorldPoint(2447, 3049, 0), "Talk to Grish south of Castle Wars. Be prepared to fight Slash Bash. You'll need to use either brutal arrows or the Crumble Undead spell.");
-		talkToGrishForKey.addDialogStep("I found who's responsible for the Zogres being here.");
-		talkToGrishForKeyUpstairs.addSubSteps(talkToGrishForKey);
-
+		talkToGrishForKey.addDialogSteps("I found who's responsible for the Zogres being here.");
 		talkToGrishForBow = new NpcStep(this, NpcID.GRISH, new WorldPoint(2447, 3049, 0), "Talk to Grish south of Castle Wars again to learn how to make composite ogre bows.");
 		talkToGrishForBow.addDialogStep("There must be an easier way to kill these zogres!");
 

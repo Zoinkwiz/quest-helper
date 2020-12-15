@@ -26,7 +26,7 @@ package com.questhelper.requirements;
 
 public enum ItemSlots
 {
-	ANY_EQUIPPED_AND_INVENTORY(-3, "equipped or your inventory slots"),
+	ANY_EQUIPPED_AND_INVENTORY(-3, "inventory or equipped"),
 	ANY_INVENTORY(-2, "inventory slots"),
 	ANY_EQUIPPED(-1, "equipped slots"),
 	HEAD(0, "head slot"),

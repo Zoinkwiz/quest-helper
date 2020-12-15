@@ -490,7 +490,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		travelToBurgh.addStep(inMyrequeCave, leaveMyrequeCave);
 		travelToBurgh.addStep(inCaves, leaveCavesIntoSwamp);
 
-		returnToHideout = new ConditionalStep(this, goToHollowBase, "Return the Myreque Hideout under the Canifis Pub and talk to Veliaf there.");
+		returnToHideout = new ConditionalStep(this, goToHollowBase, "Return the Myreque Hideout under the Canifis Pub and talk to Veliaf there. Bank any followers before going.");
 		returnToHideout.addStep(inMyrequeCave, talkToVeliafInHideoutAgain);
 
 		goTalkToPolmafi = new ConditionalStep(this, goToHollowBase, "Talk to Polmafi in the Myreque Hideout.");

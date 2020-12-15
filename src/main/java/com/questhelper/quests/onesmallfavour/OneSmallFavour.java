@@ -571,7 +571,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToCromperty.addDialogStep("Oh! Ok, one more 'small favour' isn't going to kill me...I hope!");
 
 		talkToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Talk to the Tindel Merchant in Port Khazard.");
-		talkToTindel.addDialogSteps("Wizard Cromperty sent me to get some iron oxide.", "Ask about iron oxide.", "Ok, I'll do it!");
+		talkToTindel.addDialogSteps("Wizard Cromperty sent me to get some iron oxide.", "Ask about iron oxide.", "Okay, I'll do it!");
 
 		talkToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2969, 0), "Talk to Rantz in Feldip Hills.");
 		talkToRantz.addDialogStep("I need to talk to you about a mattress.");

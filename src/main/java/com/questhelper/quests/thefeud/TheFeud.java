@@ -106,9 +106,10 @@ public class TheFeud extends BasicQuestHelper
 		steps.put(4, talkToGangsAgain());
 		steps.put(5, getFirstJob());
 		steps.put(6, pickPocketVillager());
-		steps.put(7, pickPocketVillagerWithUrchin());
+		QuestStep pickPocketWithUrchin = pickPocketVillagerWithUrchin();
+		steps.put(7, pickPocketWithUrchin);
+		steps.put(8, pickPocketWithUrchin);
 		QuestStep blackjack = blackjackVillager();
-		steps.put(8, blackjack);
 		steps.put(9, blackjack);
 		steps.put(10, blackjack);
 		steps.put(11, blackjack);
@@ -136,7 +137,7 @@ public class TheFeud extends BasicQuestHelper
 		talkedToThug = new VarbitCondition(315, 2);
 		talkedToBandit = new VarbitCondition(315, 3);
 
-		talkedToBanditReturn = new VarbitCondition(316, 1); // Might have missed?
+		talkedToBanditReturn = new VarbitCondition(316, true,0); // Might have missed?
 		// 340 -> 1 when pickpocket villager
 		doorOpen = new VarbitCondition(320, 1);
 
@@ -200,7 +201,7 @@ public class TheFeud extends BasicQuestHelper
 		talkToBanditLeader = new NpcStep(this, NpcID.BANDIT_LEADER, new WorldPoint(3353, 3002, 0),
 			"Talk to the bandit leader and be prepared to the fight a bandit champion. You can safe spot him with the stool.");
 
-		DetailedQuestStep killBanditChampion = new DetailedQuestStep(this, "Kill the bandit champion spawned, you can safe spot him with the stool. \n If he's not spawned then talk to the Bandit Leader again");
+		DetailedQuestStep killBanditChampion = new DetailedQuestStep(this, "Kill the bandit champion spawned, you can safe spot him with the stool. \n If he's not spawned then talk to the Bandit Leader again.");
 		ConditionalStep conditionalStep = new ConditionalStep(this, talkToAVillager);
 		conditionalStep.addStep(banditChampionSpawned, killBanditChampion);
 		conditionalStep.addStep(talkedToVillagerAboutMenaphite, talkToBanditLeader);
@@ -245,7 +246,7 @@ public class TheFeud extends BasicQuestHelper
 			redHotSauce);
 		getDung.addSubSteps(getBucket);
 		getDung.addIcon(ItemID.RED_HOT_SAUCE);
-		givenDungToHag = talkToAliTheHagStep("Talk to Ali the Hag and give her your dung", dung);
+		givenDungToHag = talkToAliTheHagStep("Talk to Ali the Hag and give her your dung.", dung);
 
 		ConditionalStep conditionalStep = new ConditionalStep(this, talkToAliTheKebabSalesman);
 
@@ -266,7 +267,7 @@ public class TheFeud extends BasicQuestHelper
 			"Use money on the money pot to attract the snake charmers attention.", highlightedCoins);
 		giveCoinToSnakeCharmer.addIcon(ItemID.COINS);
 		catchSnake = new NpcStep(this, NpcID.DESERT_SNAKE, new WorldPoint(3332, 2958, 0),
-			"Use the Snake Charm on the snake to capture it.", true,
+			"Use the Snake Charm on a snake to capture it.", true,
 			snakeCharmHighlighted, snakeBasket);
 		catchSnake.addIcon(ItemID.SNAKE_CHARM);
 
@@ -292,8 +293,8 @@ public class TheFeud extends BasicQuestHelper
 
 	private QuestStep returnTheJewels()
 	{
-		ObjectStep goDownStairs = new ObjectStep(this, ObjectID.STAIRCASE_6245, "Go down the stairs");
-		giveTheJewelsToAli = talkToAliTheOperatorStep("Give Ali the Operator the jewels to get your final task from him");
+		ObjectStep goDownStairs = new ObjectStep(this, ObjectID.STAIRCASE_6245, "Go down the stairs.");
+		giveTheJewelsToAli = talkToAliTheOperatorStep("Give Ali the Operator the jewels to get your final task from him.");
 		giveTheJewelsToAli.addSubSteps(goDownStairs);
 		ConditionalStep conditionalStep = new ConditionalStep(this, giveTheJewelsToAli);
 		conditionalStep.addStep(secondFloorMansion, goDownStairs);
@@ -303,11 +304,11 @@ public class TheFeud extends BasicQuestHelper
 	private QuestStep openTheDoor()
 	{
 
-		openTheDoor = new ObjectStep(this, 6238, "Open the door", doorKeys);
+		openTheDoor = new ObjectStep(this, 6238, "Open the door.", doorKeys);
 		openTheDoor.addAlternateObjects(6240);
 		openTheDoor.addIcon(ItemID.KEYS);
 
-		goUpStairs = new ObjectStep(this, ObjectID.STAIRCASE_6244, "Go up the stairs");
+		goUpStairs = new ObjectStep(this, ObjectID.STAIRCASE_6244, "Go up the stairs.");
 		crackTheSafe = new ObjectStep(this, 6276, "Search the painting to reveal the safe. Enter the code 1, 1, 2, 3, 5, 8.");
 
 		crackTheSafe.addSubSteps(goUpStairs);
@@ -319,7 +320,7 @@ public class TheFeud extends BasicQuestHelper
 
 	private QuestStep getSecondJob()
 	{
-		talkToAliToGetSecondJob = talkToAliTheOperatorStep("Talk to Ali the Operator to get the second job");
+		talkToAliToGetSecondJob = talkToAliTheOperatorStep("Talk to Ali the Operator to get the second job.");
 		return talkToAliToGetSecondJob;
 	}
 
@@ -333,7 +334,7 @@ public class TheFeud extends BasicQuestHelper
 
 	private QuestStep blackjackVillager()
 	{
-		getBlackjackFromAli = talkToAliTheOperatorStep("Talk to Ali the Operator to get a blackjack");
+		getBlackjackFromAli = talkToAliTheOperatorStep("Talk to Ali the Operator to get a blackjack.");
 		getBlackjackFromAli.addDialogStep("Yeah, I could do with a bit of advice.");
 
 		blackJackVillager = new NpcStep(this, NpcID.VILLAGER, "Lure a villager to secluded place, knock them out and then pickpocket them.", true);
@@ -357,7 +358,8 @@ public class TheFeud extends BasicQuestHelper
 
 	private QuestStep pickPocketVillager()
 	{
-		pickpocketVillager = new NpcStep(this, NpcID.VILLAGER, "Pickpocket a villager", true);
+		pickpocketVillager = new NpcStep(this, NpcID.VILLAGER, new WorldPoint(3356, 2962, 0), "Pickpocket a villager.", true);
+		pickpocketVillager.setHideWorldArrow(true);
 		pickpocketVillager.addAlternateNpcs(NpcID.VILLAGER_3555, NpcID.VILLAGER_3558);
 
 		return pickpocketVillager;
@@ -373,7 +375,7 @@ public class TheFeud extends BasicQuestHelper
 	private QuestStep talkToGangsAgain()
 	{
 		talkToBanditReturnedCamel = talkToBanditStep("Tell the bandits that the Menaphites have agreed to return the camel.");
-		talkToMenaphiteReturnedCamel = talkToMenaphiteStep("Tell the Menaphites the bandits have agreed to return the camcel.");
+		talkToMenaphiteReturnedCamel = talkToMenaphiteStep("Tell the Menaphites the bandits have agreed to return the camel.");
 		ConditionalStep firstJob = new ConditionalStep(this, talkToBanditReturnedCamel);
 		firstJob.addStep(talkedToBanditReturn, talkToMenaphiteReturnedCamel);
 		return firstJob;
@@ -455,10 +457,10 @@ public class TheFeud extends BasicQuestHelper
 
 	private QuestStep findBeef()
 	{
-		ConditionalStep firstJobStep = new ConditionalStep(this, talkToThug);
 		talkToThug = talkToMenaphiteStep("Talk to a Menaphite Thug to figure out how their dispute started with the bandits.");
 		talkToBandit = talkToBanditStep("Talk to a bandit to figure out their issues with the Menaphites.");
 
+		ConditionalStep firstJobStep = new ConditionalStep(this, talkToThug);
 		firstJobStep.addStep(talkedToBandit, talkToCamelman);
 		firstJobStep.addStep(talkedToThug, talkToBandit);
 
@@ -467,17 +469,18 @@ public class TheFeud extends BasicQuestHelper
 
 	private QuestStep getPollnivneachStep()
 	{
-		QuestStep goToShanty = new ObjectStep(this, ObjectID.SHANTAY_PASS, new WorldPoint(3304, 3116, 0), "Go through Shanty Pass", shantyPass);
-		buyDisguiseGear = talkToAliStep("Buy a Kharidian Headpiece and a Fake Beard to create a disguise", unspecifiedCoins);
+		QuestStep goToShanty = new ObjectStep(this, ObjectID.SHANTAY_PASS, new WorldPoint(3304, 3116, 0), "Go through Shanty Pass.", shantyPass);
+		buyDisguiseGear = talkToAliStep("Buy a Kharidian Headpiece and a Fake Beard to create a disguise.", unspecifiedCoins);
 		NpcStep buyShantypass = new NpcStep(this, NpcID.SHANTAY, new WorldPoint(3303, 3122, 0),
-			"Buy a shanty pass from Shantay", unspecifiedCoins);
+			"Buy a shanty pass from Shantay.", unspecifiedCoins);
 		buyDisguiseGear.addDialogStep("Okay.");
 		createDisguise = new DetailedQuestStep(this, "Create a disguise by using the Kharidian Headpiece on the Fake Beard. This is used later in the quest.",
 			headPiece, fakeBeard);
 
-		goToPollniveachStep = new DetailedQuestStep(this, "Go through shanty pass and travel to Pollnivneach");
+		goToPollniveachStep = new DetailedQuestStep(this, "Go through shanty pass and travel to Pollnivneach.");
 		NpcStep talkToRugMerchant = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3311, 3109, 0),
-			"Talk to rug merchant and travel to Pollnivneach via magic carpet.", unspecifiedCoins);
+			"Talk to the rug merchant and travel to Pollnivneach via magic carpet.", unspecifiedCoins);
+		talkToRugMerchant.addDialogStep("Pollnivneach");
 
 		drunkenAli = new NpcStep(this, NpcID.DRUNKEN_ALI, new WorldPoint(3360, 2957, 0),
 			"Buy 3 beers from the bartender and use them on Drunken Ali to get him to explain where his son is.",

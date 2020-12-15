@@ -39,6 +39,7 @@ import com.questhelper.steps.conditional.WidgetTextCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -332,7 +333,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear));
+		return new ArrayList<>(Collections.singletonList(combatGear));
 	}
 
 

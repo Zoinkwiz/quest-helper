@@ -87,7 +87,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		climbUpDrakanWalls, talkToSafalaan, drawNorthWall, drawWestWall,
 		drawSouthWall, tankVanstrom, finishSouthSketch, talkToSarius, talkToSafalaanInBase;
 
-	DetailedQuestStep lookAtFireplace, useKnifeOnFireplace, readMessage, inspectPortrait, useKnifeOnPortrait, leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab,
+	DetailedQuestStep useKnifeOnFireplace, readMessage, inspectPortrait, useKnifeOnPortrait, leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab,
 		getRunes, telegrabBook, leaveLab;
 
 	ConditionalStep startQuest, goTravelToMyrequeBase, talkToVeliafAfterContact, talkToVeliafAfterLetter, talkToDrezelAfterVeliaf, talkToDrezelAfterBushes,
@@ -555,8 +555,29 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToSarius = new NpcStep(this, NpcID.SARIUS_GUILE, new WorldPoint(3572, 3331, 0), "");
 		talkToSafalaanInBase = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan in the north room.");
 
-		lookAtFireplace = new ObjectStep(this, ObjectID.FIREPLACE_18039, new WorldPoint(3627, 3253, 0), "");
+		ArrayList<WorldPoint> pathFromMineToFireplace = new ArrayList<>(Arrays.asList(
+			new WorldPoint(3623, 3324, 0),
+			new WorldPoint(3631, 3324, 0),
+			new WorldPoint(3631, 3303, 0),
+			new WorldPoint(3628, 3300, 0),
+			new WorldPoint(3628, 3294, 0),
+			new WorldPoint(3633, 3294, 0),
+			new WorldPoint(3633, 3288, 0),
+			new WorldPoint(3635, 3288, 0),
+			new WorldPoint(3635, 3284, 0),
+			new WorldPoint(3632, 3284, 0),
+			new WorldPoint(3632, 3277, 0),
+			new WorldPoint(3634, 3277, 0),
+			new WorldPoint(3634, 3267, 0),
+			new WorldPoint(3631, 3267, 0),
+			new WorldPoint(3631, 3261, 0),
+			new WorldPoint(3624, 3261, 0),
+			new WorldPoint(3624, 3252, 0),
+			new WorldPoint(2627, 3252, 0)
+		));
+
 		useKnifeOnFireplace = new ObjectStep(this, ObjectID.FIREPLACE_18039, new WorldPoint(3627, 3253, 0), "");
+		useKnifeOnFireplace.setLinePoints(pathFromMineToFireplace);
 		useKnifeOnFireplace.addIcon(ItemID.KNIFE);
 		readMessage = new DetailedQuestStep(this, "Read the message.", messageFromFireplace);
 		useKnifeOnPortrait = new ObjectStep(this, NullObjectID.NULL_18126, new WorldPoint(3627, 3248, 0), "Use a knife on the portrait south of the fireplace.");
@@ -564,7 +585,33 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		inspectPortrait = new ObjectStep(this, NullObjectID.NULL_18126, new WorldPoint(3627, 3248, 0), "Inspect the portrait south of the fireplace.");
 		useKnifeOnPortrait.addSubSteps(inspectPortrait);
 		leaveMeiyerBase = new ObjectStep(this, ObjectID.LADDER_17986, new WorldPoint(3626, 9617, 0), "Go up to the surface.");
+
+		ArrayList<WorldPoint> pathFromBaseToTapestry = new ArrayList<>(Arrays.asList(
+			new WorldPoint(3640, 3253, 0),
+			new WorldPoint(2640, 3258, 0),
+			new WorldPoint(3639, 3258, 0),
+			new WorldPoint(3639, 3255, 1),
+			new WorldPoint(3636, 3256, 1),
+			new WorldPoint(3632, 3256, 1),
+			new WorldPoint(3631, 3258, 1),
+			new WorldPoint(3631, 3259, 0),
+			new WorldPoint(3631, 3267, 0),
+			new WorldPoint(3634, 3267, 0),
+			new WorldPoint(3634, 3278, 0),
+			new WorldPoint(3632, 3278, 0),
+			new WorldPoint(3632, 3283, 0),
+			new WorldPoint(3635, 3283, 0),
+			new WorldPoint(3635, 3289, 0),
+			new WorldPoint(3633, 3289, 0),
+			new WorldPoint(3633, 3293, 0),
+			new WorldPoint(3635, 3293, 0),
+			new WorldPoint(3635, 3300, 0),
+			new WorldPoint(3640, 3300, 0),
+			new WorldPoint(3640, 3302, 0)
+		));
+
 		useKnifeOnTapestry = new ObjectStep(this, NullObjectID.NULL_18125, new WorldPoint(3638, 3304, 0), "Slash the tapestry in the building in north east Meiyerditch.");
+		useKnifeOnTapestry.setLinePoints(pathFromBaseToTapestry);
 		useKnifeOnTapestry.addIcon(ItemID.KNIFE);
 		useKeyOnStatue = new ObjectStep(this, NullObjectID.NULL_18127, new WorldPoint(3641, 3304, 0), "Use the ornate key on the nearby statue.", largeOrnateKey);
 		useKeyOnStatue.addIcon(ItemID.LARGE_ORNATE_KEY);

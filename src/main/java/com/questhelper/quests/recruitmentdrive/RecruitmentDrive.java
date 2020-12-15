@@ -64,7 +64,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private ConditionalStep conditionalTalkToSirAmikVarze;
 
-	private QuestStep talkToSirTiffany;
+	private QuestStep talkToSirTiffy;
 
 	//Sir Tinsley steps
 	QuestStep doNothingStep, talkToSirTinley, leaveSirTinleyRoom;
@@ -111,7 +111,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, TalkToSirAmikVarze());
-		steps.put(1, TalkToSirTiffanyInFaladorPark());
+		steps.put(1, TalkToSirTiffyInFaladorPark());
 
 		return steps;
 	}
@@ -152,7 +152,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		isInladyTableRoom = new ZoneCondition(ladyTableZone);
 	}
 
-	private QuestStep TalkToSirTiffanyInFaladorPark()
+	private QuestStep TalkToSirTiffyInFaladorPark()
 	{
 		WorldPoint firstFloorStairsPosition = new WorldPoint(2955, 3338, 1);
 		WorldPoint secondFloorStairsPosition = new WorldPoint(2960, 3339, 2);
@@ -162,29 +162,29 @@ public class RecruitmentDrive extends BasicQuestHelper
 		ObjectStep climbDownfirstFloorStaircase = new ObjectStep(this, ObjectID.STAIRCASE_24074,
 			firstFloorStairsPosition, "Climb down the stairs from the first floor.");
 
-		talkToSirTiffany = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, "Talk to Sir Tiffany Cashien in Falador Park. Ensure you are a female character as one of the tests require you to be.",
+		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, "Talk to Sir Tiffy Cashien in Falador Park. Ensure you are a female character as one of the tests require you to be.",
 			noItemRequirement);
 
-		ConditionalStep conditionalTalkToSirTiffany = new ConditionalStep(this, talkToSirTiffany);
-		conditionalTalkToSirTiffany.addStep(isSecondFloorCastle, climbDownSecondFloorStaircase);
-		conditionalTalkToSirTiffany.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
-		talkToSirTiffany.addDialogStep("Yes, let's go!");
-		talkToSirTiffany.addSubSteps(climbDownfirstFloorStaircase,
+		ConditionalStep conditionalTalkToSirTiffy = new ConditionalStep(this, talkToSirTiffy);
+		conditionalTalkToSirTiffy.addStep(isSecondFloorCastle, climbDownSecondFloorStaircase);
+		conditionalTalkToSirTiffy.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
+		talkToSirTiffy.addDialogStep("Yes, let's go!");
+		talkToSirTiffy.addSubSteps(climbDownfirstFloorStaircase,
 			climbDownSecondFloorStaircase);
 		getMsCheeves();
 
 		// Testing steps below
-		conditionalTalkToSirTiffany.addStep(isInSirTinleysRoom, getSirTinley());
-		conditionalTalkToSirTiffany.addStep(isInMsHynnRoom, getMsHynnTerprett());
-		conditionalTalkToSirTiffany.addStep(isInSirRenItchood, getSirRenItchood());
-		conditionalTalkToSirTiffany.addStep(isInladyTableRoom, getLadyTableStep());
-		conditionalTalkToSirTiffany.addStep(isInSirSpishyusRoom, getSirSpishyus());
-		conditionalTalkToSirTiffany.addStep(isInSirKuamsRoom, getSirKuam());
+		conditionalTalkToSirTiffy.addStep(isInSirTinleysRoom, getSirTinley());
+		conditionalTalkToSirTiffy.addStep(isInMsHynnRoom, getMsHynnTerprett());
+		conditionalTalkToSirTiffy.addStep(isInSirRenItchood, getSirRenItchood());
+		conditionalTalkToSirTiffy.addStep(isInladyTableRoom, getLadyTableStep());
+		conditionalTalkToSirTiffy.addStep(isInSirSpishyusRoom, getSirSpishyus());
+		conditionalTalkToSirTiffy.addStep(isInSirKuamsRoom, getSirKuam());
 
-		conditionalTalkToSirTiffany.addStep(msCheevesSetup.getIsInMsCheeversRoom(), msCheevesSetup.getConditionalStep());
+		conditionalTalkToSirTiffy.addStep(msCheevesSetup.getIsInMsCheeversRoom(), msCheevesSetup.getConditionalStep());
 
-		//	conditionalTalkToSirTiffany.addStep(isInSirKuamsRoom, getSirKuam());
-		return conditionalTalkToSirTiffany;
+		//	conditionalTalkToSirTiffy.addStep(isInSirKuamsRoom, getSirKuam());
+		return conditionalTalkToSirTiffy;
 	}
 
 	private LadyTableStep getLadyTableStep()
@@ -380,7 +380,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(conditionalTalkToSirAmikVarze)));
 
 		PanelDetails testing = new PanelDetails("Start the testing",
-			new ArrayList<>(Arrays.asList(talkToSirTiffany)), noItemRequirement);
+			new ArrayList<>(Arrays.asList(talkToSirTiffy)), noItemRequirement);
 
 		PanelDetails sirTinleysRoom = new PanelDetails("Sir Tinley",
 			new ArrayList<>(Arrays.asList(talkToSirTinley, doNothingStep, leaveSirTinleyRoom)));

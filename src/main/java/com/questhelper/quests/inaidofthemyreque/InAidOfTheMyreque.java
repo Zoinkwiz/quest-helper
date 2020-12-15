@@ -438,7 +438,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		lightFurnace.addDialogStep("Yes.");
 		talkToGadderanks = new NpcStep(this, NpcID.GADDERANKS, new WorldPoint(3515, 3241, 0), "Talk to Gadderanks in the shop.");
 		talkToJuvinate = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_4482, new WorldPoint(3515, 3241, 0), "Talk to a juvinate in the shop.");
-		talkToWiskit = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_4482, new WorldPoint(3515, 3241, 0), "Talk to Wiskit in the shop. Be prepared to fight the vampyres and Gadderanks.", efaritaysAidOrSilverWeapon);
+		talkToWiskit = new NpcStep(this, NpcID.WISKIT, new WorldPoint(3515, 3241, 0), "Talk to Wiskit in the shop. Be prepared to fight the vampyres and Gadderanks.", efaritaysAidOrSilverWeapon);
 		killGadderanksAndJuvinates = new NpcStep(this, NpcID.GADDERANKS_4484, new WorldPoint(3515, 3241, 0), "Defeat Gadderanks and the juvinates.", true, efaritaysAidOrSilverWeapon);
 		((NpcStep) (killGadderanksAndJuvinates)).addAlternateNpcs(NpcID.VAMPYRE_JUVINATE_4486, NpcID.VAMPYRE_JUVINATE_4487);
 		talkToGadderanksAgain = new NpcStep(this, NpcID.GADDERANKS_4485, new WorldPoint(3515, 3241, 0), "Talk to Gadderanks.");

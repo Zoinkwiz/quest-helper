@@ -270,7 +270,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		ninjaGreegreeEquipped.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
 		translationBook = new ItemRequirement("Translation book", ItemID.TRANSLATION_BOOK);
 		translationBook.setHighlightInInventory(true);
-		translationBook.setTip("You can get another from Narnode if you've lost it");
+		translationBook.setTip("Check your bank, or if not you can get another from Narnode if you've lost it");
 
 		magicLog = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
 		food = new ItemRequirement("Food", -1, -1);

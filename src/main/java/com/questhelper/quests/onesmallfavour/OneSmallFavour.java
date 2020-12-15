@@ -66,14 +66,14 @@ public class OneSmallFavour extends BasicQuestHelper
 		uncutOpal, uncutJade, uncutRedTopaz, stodgyMattress, mattress, animateRockScroll, animateRockScrollHighlight, ironOxide, brokenVane1, brokenVane2, brokenVane3, ornament,
 		weathervanePillar, directionals, weatherReport, unfiredPotLid, potLid, potWithLid, breathingSalts, chickenCages5, sharpenedAxe, redMahog;
 
-	ConditionForStep inSanfewRoom, inHamBase, inDwarvenMine, brianAskingQuestion, sanfewAskingQuestion, hasGuthixRest, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
+	ConditionForStep inSanfewRoom, inHamBase, inDwarvenMine, hasGuthixRest, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
 		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full,lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, hasSapphire, hasOpal,
 		hasJade, hasRedTopaz, hasPigeonCages, inScrollSpot, slagilithNearby, petraNearby, inSeersVillageUpstairs, onRoof, hasOrnament, hasWeathervanePillar, hasDirectionals, hasPot,
 		addedOrnaments, addedDirectionals, addedWeathervanePillar, hasOrUsedOrnament, hasOrUsedDirectionals, hasOrUsedWeathervanePillar, hasPotWithLid, hasPotLid, hasUnfiredPotLid;
 
-	DetailedQuestStep talkToYanni, talkToJungleForester, talkToBrian, talkToBrianAnswer, talkToAggie, goDownToJohanhus, talkToJohanhus, talkToFred, talkToSeth, talkToHorvik,
+	DetailedQuestStep talkToYanni, talkToJungleForester, talkToBrian, talkToAggie, goDownToJohanhus, talkToJohanhus, talkToFred, talkToSeth, talkToHorvik,
 		talkToApoth, talkToTassie, goDownToHammerspike, talkToHammerspike, goUpToSanfew, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave,
-		searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, talkToSanfewQuestion, talkToBleemadgeNoTea, take1, take2, take3, take4, take5, take6, take7, take8,
+		searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, talkToBleemadgeNoTea, take1, take2, take3, take4, take5, take6, take7, take8,
 		cutSaph, cutJade, cutTopaz, cutOpal, put1, put2, put3, put4, put5, put6, put7, put8, talkToGnormadiumAgain, returnToRantz, returnToTindel, returnToCromperty, getPigeonCages,
 		enterGoblinCaveAgain, standNextToSculpture, readScroll, killSlagilith, readScrollAgain, talkToPetra, returnToPhantuwti, goUpLadder, goUpToRoof, searchVane, useHammerOnVane,
 		goDownFromRoof, goDownLadderToSeers, useVane123OnAnvil, useVane2OnAnvil, useVane3OnAnvil, goBackUpLadder, goBackUpToRoof, useVane1, useVane2, useVane3,
@@ -96,11 +96,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		steps.put(0, talkToYanni);
 		steps.put(5, talkToJungleForester);
 
-		ConditionalStep conversationWithBrian = new ConditionalStep(this, talkToBrian);
-		conversationWithBrian.addStep(brianAskingQuestion, talkToBrianAnswer);
-
-		steps.put(10, conversationWithBrian);
-		steps.put(15, conversationWithBrian);
+		steps.put(10, talkToBrian);
+		steps.put(15, talkToBrian);
 
 		steps.put(20, talkToAggie);
 
@@ -127,7 +124,6 @@ public class OneSmallFavour extends BasicQuestHelper
 		steps.put(70, goTalkToHammerspike);
 
 		ConditionalStep goTalkToSanfew = new ConditionalStep(this, goUpToSanfew);
-		goTalkToSanfew.addStep(new Conditions(inSanfewRoom, sanfewAskingQuestion), talkToSanfewQuestion);
 		goTalkToSanfew.addStep(inSanfewRoom, talkToSanfew);
 
 		steps.put(75, goTalkToSanfew);
@@ -441,8 +437,6 @@ public class OneSmallFavour extends BasicQuestHelper
 		inHamBase = new ZoneCondition(hamBase);
 		inDwarvenMine = new ZoneCondition(dwarvenMine);
 		inGoblinCave = new ZoneCondition(goblinCave);
-		brianAskingQuestion = new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Oh, please. It would mean such a lot to me!");
-		sanfewAskingQuestion = new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Dwarves? Well now");
 		hasGuthixRest = new ItemRequirementCondition(guthixRest);
 
 		lamp1Empty = new VarbitCondition(6225, 1);
@@ -506,11 +500,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToJungleForester.addDialogStep("Okay, I'll take your axe to get it sharpened.");
 		talkToBrian = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Talk to Brian in the Port Sarim axe shop.");
 		talkToBrian.addDialogStep("Do you sharpen axes?");
-		talkToBrian.addDialogStep("Look, can you sharpen this cursed axe or what?");
+		talkToBrian.addDialogStepWithExclusion("Look, can you sharpen this cursed axe or what?", "Ok, ok, I'll do it! I'll go and see Aggie.");
 		talkToBrian.addDialogStep("Ok, ok, I'll do it! I'll go and see Aggie.");
-
-		talkToBrianAnswer = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Talk to Brian in the Port Sarim axe shop.");
-		talkToBrianAnswer.addDialogStep("Ok, ok, I'll do it! I'll go and see Aggie.");
 
 		talkToAggie = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Talk to Aggie in Draynor Village.");
 		talkToAggie.addDialogStep("Could I ask you about being a character witness?");
@@ -549,14 +540,9 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		goUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
-		talkToSanfew.addDialogStep("Are you taking any new initiates?");
-		talkToSanfew.addDialogStep("Do you accept dwarves?");
+		talkToSanfew.addDialogStepWithExclusion("Are you taking any new initiates?", "Ask about the Diamonds of Azzanadra");
+		talkToSanfew.addDialogStepWithExclusion("Do you accept dwarves?", "A dwarf I know wants to become an initiate.");
 		talkToSanfew.addDialogStep("Yep, it's a deal.");
-
-		talkToSanfewQuestion = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
-		talkToSanfewQuestion.addDialogStep("A dwarf I know wants to become an initiate.");
-
-		talkToSanfew.addSubSteps(goUpToSanfew, talkToSanfewQuestion);
 
 		makeGuthixRest = new DetailedQuestStep(this, "Make Guthix Rest by using a bowl of hot water on an empty tea cup, then using 2 guams, a marrentill and a harralander on it.", emptyCup, hotWater, guam2, marrentill, harralander);
 		talkToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.", guthixRest);

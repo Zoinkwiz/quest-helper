@@ -26,6 +26,7 @@ package com.questhelper.panel;
 
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -33,14 +34,17 @@ import javax.swing.border.EmptyBorder;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicButtonUI;
 import lombok.extern.slf4j.Slf4j;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -62,6 +66,15 @@ class QuestHelperPanel extends PluginPanel
 
 	QuestHelperPlugin questHelperPlugin;
 
+	private static final ImageIcon DISCORD_ICON;
+
+	static
+	{
+		final BufferedImage discordImage = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/discord.png");
+		final BufferedImage scaledImage = ImageUtil.resizeImage(discordImage, 16, 16);
+		DISCORD_ICON = new ImageIcon(scaledImage);
+	}
+
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)
 	{
 		super(false);
@@ -80,6 +93,27 @@ class QuestHelperPanel extends PluginPanel
 		title.setText("Quest Helper");
 		title.setForeground(Color.WHITE);
 		titlePanel.add(title, BorderLayout.WEST);
+
+		JButton discordBtn = new JButton();
+		SwingUtil.removeButtonDecorations(discordBtn);
+		discordBtn.setIcon(DISCORD_ICON);
+		discordBtn.setToolTipText("Get help with the Quest Helper or make suggestions on Discord");
+		discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		discordBtn.setUI(new BasicButtonUI());
+		discordBtn.addActionListener((ev) -> LinkBrowser.browse("https://discord.gg/XCfwNnz6RB"));
+		discordBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				discordBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+			}
+		});
+		titlePanel.add(discordBtn, BorderLayout.EAST);
 
 		JLabel questPromptLabel = new JLabel();
 		questPromptLabel.setForeground(Color.GRAY);

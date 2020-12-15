@@ -725,7 +725,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToForester = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2861, 2942, 0), "Return to a Jungle Forester south of Shilo Village.", sharpenedAxe);
 		returnToForester.addDialogStep("Good news, I have your sharpened axe!");
 		returnToYanni = new NpcStep(this, NpcID.YANNI_SALIKA, new WorldPoint(2836, 2983, 0), "Return to Yanni Salika in Shilo Village.", redMahog);
-		returnToYanni.addDialogStep("Here's the mahogany you asked for.");
+		returnToYanni.addDialogStep("Here's the red mahogany you asked for.");
 	}
 
 	@Override

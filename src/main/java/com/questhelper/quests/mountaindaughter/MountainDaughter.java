@@ -59,7 +59,7 @@ public class MountainDaughter extends BasicQuestHelper
 {
 	private Zone CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3, LAKE_ISLAND_1, LAKE_ISLAND_2, LAKE_ISLAND_3, KENDAL_CAVE;
 
-	private ItemRequirement axe, pickaxe, spade, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope, slayerRing;
+	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope, slayerRing;
 
 	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock, hasCorpse,
 		gottenGuarantee, givenGuaranteeToSvidi, gottenFruit, gottenSeed, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, hasRocks, hasNecklace, hasBuried;
@@ -149,7 +149,6 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	private void loadItemRequirements() {
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		pickaxe = new ItemRequirement("A pickaxe", ItemID.BRONZE_PICKAXE);
 		pickaxe.addAlternates(ItemCollections.getPickaxes());
@@ -217,7 +216,7 @@ public class MountainDaughter extends BasicQuestHelper
 			rope);
 
 		talkToHamal = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0), "Speak to Hamal the Chieftain in the Mountain Camp.",
-			spade, rope, pickaxe, axe, plank, pole, gloves);
+			rope, pickaxe, axe, plank, pole, gloves);
 		talkToHamal.addDialogStep("Why is everyone so hostile?");
 		talkToHamal.addDialogStep("So what are you doing up here?");
 		talkToHamal.addDialogStep("I will search for her!");
@@ -252,7 +251,7 @@ public class MountainDaughter extends BasicQuestHelper
 
 		talkToHamalAfterSpirit = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
 			"Speak to Hamal the Chieftain in the Mountain Camp.",
-			spade, rope, pickaxe, axe, plank, pole, gloves);
+			rope, pickaxe, axe, plank, pole, gloves);
 		talkToHamalAfterSpirit.addDialogStep("About the people of Rellekka...");
 
 		talkToJokul = new NpcStep(this, NpcID.JOKUL, new WorldPoint(2812, 3680, 0),
@@ -265,7 +264,7 @@ public class MountainDaughter extends BasicQuestHelper
 
 		speakToBrundt = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
 			"Speak to Brundt the Chieftain in the Rellekka's longhall.",
-			spade, rope, pickaxe, axe, plank, pole, gloves);
+			rope, pickaxe, axe, plank, pole, gloves);
 		speakToBrundt.addDialogStep("Ask about the mountain camp.");
 		speakToBrundt.addDialogStep("Did it look pretty?");
 
@@ -346,7 +345,6 @@ public class MountainDaughter extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(spade);
 		reqs.add(rope);
 		reqs.add(pickaxe);
 		reqs.add(axe);
@@ -372,7 +370,7 @@ public class MountainDaughter extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels() {
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Speak to Hamal", new ArrayList<>(Arrays.asList(enterCamp, talkToHamal)), rope, spade, plank, pickaxe));
+		allSteps.add(new PanelDetails("Speak to Hamal", new ArrayList<>(Arrays.asList(enterCamp, talkToHamal)), rope, plank, pickaxe));
 		allSteps.add(new PanelDetails("Go to the centre of the lake", new ArrayList<>(Arrays.asList(rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit))));
 		allSteps.add(new PanelDetails("Find out how to help", new ArrayList<>(Arrays.asList(talkToHamalAfterSpirit, talkToJokul))));
 		allSteps.add(new PanelDetails("Making peace with Rellekka", new ArrayList<>(Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi))));

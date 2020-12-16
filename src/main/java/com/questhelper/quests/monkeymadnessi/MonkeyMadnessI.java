@@ -405,13 +405,14 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
 			new WidgetTextCondition(119, 3, true, "<str> - Some kind of monkey remains."));
 
-		hasMonkey = new ItemRequirementCondition(monkey);
+		hasMonkey = new Conditions(true, new ItemRequirementCondition(monkey));
 
 		talkedToGarkorWithGreeGree = new VarbitCondition(126, 3, Operation.GREATER_EQUAL);
 		talkedToGuard = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "He goes by the name of Kruk."));
 		talkedToKruk = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "As you wish.", "I see. Very well, you look genuine enough. Follow me."));
 
-		givenMonkey = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."), new WidgetTextCondition(119, 3, true,"appear to have earnt Awowogei's favour."));
+		givenMonkey = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."),
+			new WidgetTextCondition(119, 3, true,"appear to have earnt Awowogei's favour."));
 
 		gotSigil = new VarbitCondition(126, 6, Operation.GREATER_EQUAL);
 	}

@@ -284,10 +284,9 @@ public class BetweenARock extends BasicQuestHelper
 
 		mineRock = new DetailedQuestStep(this, "Mine low level rocks for a page.", pickaxe);
 
-		goBackUpToRolad = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3019, 9850, 0), "Go back up to Rolad.", page1, page2, page3);
+		goBackUpToRolad = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3019, 9850, 0), "Go back up to Rolad.", pages);
 
-		returnToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0),
-			"Talk Rolad again.", page1, page2, page3);
+		returnToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0), "Talk Rolad again.", pages);
 		returnToRolad.addSubSteps(goBackUpToRolad);
 
 		readEntireBook = new DetailedQuestStep(this, "Read the entire dwarven lore book.", dwarvenLoreHighlight);
@@ -315,7 +314,7 @@ public class BetweenARock extends BasicQuestHelper
 		useGoldCannonballOnDondakan.addDialogStep("Yes, I'm sure this will crack open the rock.");
 		useGoldCannonballOnDondakan.addSubSteps(enterDwarfCave2WithCannonball, enterDwarfCave2WithCannonball, talkToFerrymanWithCannonball);
 
-		talkToDondakanAfterShot = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "talk to Dondakan.");
+		talkToDondakanAfterShot = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Talk to Dondakan.");
 		talkToDondakanAfterShot.addDialogStep("So you want to... fire me into the rock?");
 		talkToDondakanAfterShot.addDialogStep("I can't argue with that, shoot me in!");
 
@@ -329,6 +328,8 @@ public class BetweenARock extends BasicQuestHelper
 		talkToEngineerAgain.addSubSteps(travelBackWithFerrymanAgain, talkToBoatmanAgain, travelToKeldagrimAgain);
 
 		useGoldBarOnAnvil = new ObjectStep(this, ObjectID.ANVIL_6150, new WorldPoint(2869, 10202, 0), "Use 3 gold bars on an anvil to make a gold helmet.", goldBars3, hammer);
+		useGoldBarOnAnvil.addDialogStep("Golden helmet."); // For accounts which have already completed the Legend's Quest.
+		useGoldBarOnAnvil.addDialogStep("Yes."); // For accounts which haven't completed the Legend's Quest yet.
 
 		enterKhorvakRoom = new ObjectStep(this, ObjectID.STAIRS_55, new WorldPoint(2821, 3485, 0), "Talk to Khorvak under White Wolf Mountain.");
 

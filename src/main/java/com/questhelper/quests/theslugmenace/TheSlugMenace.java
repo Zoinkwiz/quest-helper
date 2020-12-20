@@ -278,6 +278,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		scanWithComm = new DetailedQuestStep(this, "Try scanning with the commorb.", commorb);
 		pickUpDeadSlug = new ItemStep(this, "Pick up the dead sea slug next to the imposing door.", deadSeaSlug);
 		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3347, 0), "Talk to Jorral north of West Ardougne.");
+		talkToJorral.addDialogStep("Translations");
 		talkToNiall3 = new NpcStep(this, NpcID.COL_ONIALL, new WorldPoint(2739, 3311, 0), "Return to Col. O'Niall on the pier in Witchaven.");
 		talkToMaledict2 = new NpcStep(this, NpcID.BROTHER_MALEDICT, new WorldPoint(2724, 3283, 0), "Talk to Brother Maledict in the church.");
 		talkToMaledict3 = new NpcStep(this, NpcID.BROTHER_MALEDICT_4788, new WorldPoint(2724, 3283, 0), "Talk to Brother Maledict in the church.");

@@ -225,6 +225,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		superCompost = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
+		superCompost.addAlternates(ItemID.ULTRACOMPOST);
 		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGout.setTip("You can get more from Murcaily");
 		combatGear = new ItemRequirement("Combat gear, food + potions", -1, -1);
@@ -237,6 +238,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE);
 		spadeHighlight.setHighlightInInventory(true);
 		superCompostHighlight = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
+		superCompostHighlight.addAlternates(ItemID.ULTRACOMPOST);
 		superCompostHighlight.setHighlightInInventory(true);
 		hardyGoutHighlight = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGoutHighlight.setTip("You can get more from Murcaily");

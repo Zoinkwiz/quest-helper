@@ -281,7 +281,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToVermundiWithBook = new NpcStep(this, NpcID.VERMUNDI, new WorldPoint(2887, 10188, 0), "Talk to Vermundi with the book on costumes.", bookOnCostumes);
 		talkToVermundiWithBook.addDialogStep("Yes, about those special clothes again...");
 
-		useCoalOnMachine = new ObjectStep(this, ObjectID.SPINNING_MACHINE, new WorldPoint(2885, 10189, 0), "Use your coal on the spinning machine light it with a tinder box.", coal);
+		useCoalOnMachine = new ObjectStep(this, ObjectID.SPINNING_MACHINE, new WorldPoint(2885, 10189, 0), "Use your coal on the spinning machine light it with a tinder box.", coal, logs);
 		useCoalOnMachine.addIcon(ItemID.COAL);
 
 		startMachine = new ObjectStep(this, ObjectID.SPINNING_MACHINE, new WorldPoint(2885, 10189, 0), "Start the spinning machine with a tinder box.", tinderbox);

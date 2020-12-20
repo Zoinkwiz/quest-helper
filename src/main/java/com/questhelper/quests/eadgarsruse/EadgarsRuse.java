@@ -363,6 +363,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	{
 		goUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
+		talkToSanfew.addDialogStep("Ask general questions.");
 		talkToSanfew.addDialogStep("Have you any more work for me, to help reclaim the circle?");
 		talkToSanfew.addDialogStep("I'll do it.");
 		talkToSanfew.addSubSteps(goUpToSanfew);
@@ -549,6 +550,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		returnUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
+		returnToSanfew.addDialogStep("Ask general questions.");
 		returnToSanfew.addSubSteps(returnUpToSanfew);
 	}
 

@@ -261,26 +261,26 @@ public class ItemCollections
 		ItemID.SANFEW_SERUM2,
 		ItemID.SANFEW_SERUM3,
 		ItemID.SANFEW_SERUM4,
-		ItemID.ANTIVENOM1,
-		ItemID.ANTIVENOM2,
-		ItemID.ANTIVENOM3,
-		ItemID.ANTIVENOM4,
-		ItemID.ANTIVENOM1_12919,
-		ItemID.ANTIVENOM2_12917,
+		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
-		ItemID.ANTIVENOM4_12913
+		ItemID.ANTIVENOM2_12917,
+		ItemID.ANTIVENOM1_12919,
+		ItemID.ANTIVENOM4,
+		ItemID.ANTIVENOM3,
+		ItemID.ANTIVENOM2,
+		ItemID.ANTIVENOM1
 	));
 
 	@Getter
 	private static final List<Integer> antivenoms = new ArrayList<>(Arrays.asList(
-		ItemID.ANTIVENOM1,
-		ItemID.ANTIVENOM2,
-		ItemID.ANTIVENOM3,
-		ItemID.ANTIVENOM4,
-		ItemID.ANTIVENOM1_12919,
-		ItemID.ANTIVENOM2_12917,
+		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
-		ItemID.ANTIVENOM4_12913
+		ItemID.ANTIVENOM2_12917,
+		ItemID.ANTIVENOM1_12919,
+		ItemID.ANTIVENOM4,
+		ItemID.ANTIVENOM3,
+		ItemID.ANTIVENOM2,
+		ItemID.ANTIVENOM1
 	));
 
 	@Getter
@@ -410,14 +410,15 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> machete = new ArrayList<>(Arrays.asList(
-		ItemID.MACHETE,
-		ItemID.OPAL_MACHETE,
+		ItemID.RED_TOPAZ_MACHETE,
 		ItemID.JADE_MACHETE,
-		ItemID.RED_TOPAZ_MACHETE
+		ItemID.OPAL_MACHETE,
+		ItemID.MACHETE
 	));
 
 	@Getter
 	private static final List<Integer> lightSources = new ArrayList<>(Arrays.asList(
+		ItemID.BULLSEYE_LANTERN_4550,
 		ItemID.LIT_TORCH,
 		ItemID.LIT_CANDLE,
 		ItemID.LIT_BLACK_CANDLE,
@@ -425,7 +426,6 @@ public class ItemCollections
 		ItemID.CANDLE_LANTERN_4534,
 		ItemID.OIL_LAMP_4524,
 		ItemID.OIL_LANTERN_4539,
-		ItemID.BULLSEYE_LANTERN_4550,
 		ItemID.SAPPHIRE_LANTERN_4702,
 		ItemID.EMERALD_LANTERN_9065,
 		ItemID.MINING_HELMET_5014,
@@ -480,6 +480,66 @@ public class ItemCollections
 		ItemID.PURPLE_LOGS,
 		ItemID.WHITE_LOGS,
 		ItemID.BLUE_LOGS
+	));
+
+	@Getter
+	private static final List<Integer> ghostspeak = new ArrayList<>(Arrays.asList(
+		ItemID.GHOSTSPEAK_AMULET,
+		ItemID.GHOSTSPEAK_AMULET_4250,
+		ItemID.MORYTANIA_LEGS_1,
+		ItemID.MORYTANIA_LEGS_2,
+		ItemID.MORYTANIA_LEGS_3,
+		ItemID.MORYTANIA_LEGS_4
+	));
+
+	@Getter
+	private static final List<Integer> prayerPotions = new ArrayList<>(Arrays.asList(
+		ItemID.PRAYER_POTION4,
+		ItemID.PRAYER_POTION1,
+		ItemID.PRAYER_POTION2,
+		ItemID.PRAYER_POTION3
+	));
+
+	@Getter
+	private static final List<Integer> restorePotions = new ArrayList<>(Arrays.asList(
+		ItemID.SUPER_RESTORE4,
+		ItemID.RESTORE_POTION4,
+		ItemID.RESTORE_POTION1,
+		ItemID.RESTORE_POTION2,
+		ItemID.RESTORE_POTION3,
+		ItemID.SUPER_RESTORE1,
+		ItemID.SUPER_RESTORE2,
+		ItemID.SUPER_RESTORE3
+	));
+
+	@Getter
+	private static final List<Integer> staminaPotions = new ArrayList<>(Arrays.asList(
+		ItemID.STAMINA_POTION4,
+		ItemID.STAMINA_POTION1,
+		ItemID.STAMINA_POTION2,
+		ItemID.STAMINA_POTION3,
+		ItemID.STAMINA_MIX1,
+		ItemID.STAMINA_MIX2
+	));
+
+	@Getter
+	private static final List<Integer> agilityPotions = new ArrayList<>(Arrays.asList(
+		ItemID.AGILITY_POTION4,
+		ItemID.AGILITY_POTION3,
+		ItemID.AGILITY_POTION2,
+		ItemID.AGILITY_POTION1
+	));
+
+	@Getter
+	private static final List<Integer> flowers = new ArrayList<>(Arrays.asList(
+		ItemID.RED_FLOWERS,
+		ItemID.YELLOW_FLOWERS,
+		ItemID.PURPLE_FLOWERS,
+		ItemID.ORANGE_FLOWERS,
+		ItemID.MIXED_FLOWERS,
+		ItemID.ASSORTED_FLOWERS,
+		ItemID.BLACK_FLOWERS,
+		ItemID.WHITE_FLOWERS
 	));
 
 	@Getter

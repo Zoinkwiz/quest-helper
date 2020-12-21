@@ -72,6 +72,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+import net.runelite.client.plugins.banktags.PluginBankTagService;
+import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -87,6 +89,8 @@ public class QuestHelperPlugin extends Plugin
 {
 	private static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
 	private static final int QUESTTAB_GROUP_ID = 629;
+
+	private final String QUEST_BANK_TAG = "quest";
 
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
 		{
@@ -122,6 +126,7 @@ public class QuestHelperPlugin extends Plugin
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
 	@Inject
+	@Getter
 	private Client client;
 
 	@Inject
@@ -132,6 +137,12 @@ public class QuestHelperPlugin extends Plugin
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private TagManager tagManager;
+
+	@Inject
+	private QuestHelperBankTagService questHelperBankTagService;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -200,6 +211,8 @@ public class QuestHelperPlugin extends Plugin
 		{
 			loadQuestList = true;
 		}
+
+		tagManager.addPluginTags(QUEST_BANK_TAG, questHelperBankTagService);
 	}
 
 	@Override
@@ -209,8 +222,15 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.remove(questHelperWorldOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
 		clientToolbar.removeNavigation(navButton);
+		tagManager.removePluginTags(QUEST_BANK_TAG);
 		quests = null;
 		shutDownQuest();
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(PluginBankTagService.class).to(QuestHelperBankTagService.class);
 	}
 
 	@Subscribe

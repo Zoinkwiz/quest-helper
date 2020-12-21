@@ -24,7 +24,10 @@
  */
 package com.questhelper.quests.mourningsendpartii;
 
+import com.questhelper.BankSlotIcons;
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -402,7 +405,6 @@ public class MourningsEndPartII extends BasicQuestHelper
 		deathTalismanHeader = new ItemRequirement("Death talisman or 50 items asked of you by a dwarf", ItemID.DEATH_TALISMAN);
 		deathTalismanNote = new ItemRequirement("Death talisman, or if you're an ironman you can earn one later", ItemID.DEATH_TALISMAN);
 
-		mournersOutfit = new ItemRequirement("Full Mourner's outfit", -1, -1);
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
 		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true);
@@ -410,13 +412,16 @@ public class MourningsEndPartII extends BasicQuestHelper
 		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true);
 		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true);
 
+		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves);
+
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
-		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee", -1, -1);
+		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee", ItemCollections.getPrayerPotions());
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY);
 		newKey.setTip("You can get another from Essyllt's desk");
@@ -430,7 +435,6 @@ public class MourningsEndPartII extends BasicQuestHelper
 		newlyMadeCrystalHighlight = new ItemRequirement("Newly made crystal", ItemID.NEWLY_MADE_CRYSTAL);
 		newlyMadeCrystalHighlight.setTip("You can get another from Arianwyn in Llyeta");
 		newlyMadeCrystalHighlight.setHighlightInInventory(true);
-
 
 		newlyIfOneTrip = new ItemRequirement("Newly made crystal (if already have death talisman)", ItemID.NEWLY_MADE_CRYSTAL);
 

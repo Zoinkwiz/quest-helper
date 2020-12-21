@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.naturespirit;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -185,8 +186,9 @@ public class NatureSpirit extends BasicQuestHelper
 		mushroom = new ItemRequirement("Mort myre fungus", ItemID.MORT_MYRE_FUNGUS);
 		mushroomHighlighted = new ItemRequirement("Mort myre fungus", ItemID.MORT_MYRE_FUNGUS);
 		mushroomHighlighted.setHighlightInInventory(true);
-		salveTele = new ItemRequirement("2 Salve Graveyard Teleports", ItemID.SALVE_GRAVEYARD_TELEPORT, -1);
+		salveTele = new ItemRequirement("2 Salve Graveyard Teleports", ItemID.SALVE_GRAVEYARD_TELEPORT);
 		combatGear = new ItemRequirement("Combat gear to kill the ghasts", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()

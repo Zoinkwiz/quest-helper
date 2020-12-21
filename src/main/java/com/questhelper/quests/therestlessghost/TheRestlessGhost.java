@@ -109,7 +109,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, -1);
+		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT);
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeakAmulet.setTip("If you've lost it you can get another from Father Urhney in his hut in the south east of Lumbridge Swamp");
 		skull = new ItemRequirement("Ghost's skull", ItemID.GHOSTS_SKULL);

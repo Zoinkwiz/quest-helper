@@ -24,8 +24,10 @@
  */
 package com.questhelper.quests.thefremenniktrials;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -282,7 +284,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		rawShark.addAlternates(ItemID.RAW_MANTA_RAY, ItemID.RAW_SEA_TURTLE);
 
 		dramenBranch = new ItemRequirement("Dramen branch for Koschei", ItemID.DRAMEN_BRANCH);
-		ringsOfRecoil = new ItemRequirement("Rings of recoil for Koschei", ItemID.RING_OF_RECOIL, -1);
+		ringsOfRecoil = new ItemRequirement("Rings of recoil for Koschei", ItemID.RING_OF_RECOIL);
 		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);
 		rellekkaTeleports = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT);
 
@@ -308,6 +310,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		kegOfBeer = new ItemRequirement("Keg of beer", ItemID.KEG_OF_BEER);
 
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		huntersTalisman = new ItemRequirement("Hunters' talisman", ItemID.HUNTERS_TALISMAN_3697);
 		chargedHuntersTalisman = new ItemRequirement("Hunters' talisman", ItemID.HUNTERS_TALISMAN);
 		promissoryNote = new ItemRequirement("Promissory note", ItemID.PROMISSORY_NOTE);
@@ -322,9 +325,17 @@ public class TheFremennikTrials extends BasicQuestHelper
 		fiscalStatement = new ItemRequirement("Fiscal statement", ItemID.FISCAL_STATEMENT);
 		sturdyBoots = new ItemRequirement("Sturdy boots", ItemID.STURDY_BOOTS);
 		ballad = new ItemRequirement("Fremennik ballad", ItemID.FREMENNIK_BALLAD);
+<<<<<<< HEAD
 		exoticFlower = new ItemRequirement("Exotic flower", ItemID.EXOTIC_FLOWER);
 		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil.", -1, -1);
 		optionalKoscheiGear = new ItemRequirement("Optionally a Dramen branch + knife to make a dramen staff once inside Koschei's arena", -1, -1);
+=======
+		exoticFlower = new ItemRequirement("Exotic flower", ItemID.BALLAD);
+		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil", -1, -1);
+		koscheiGear.setDisplayItemId(ItemID.CAKE_OF_GUIDANCE);
+		optionalKoscheiGear = new ItemRequirements(LogicType.AND, "Optionally a Dramen branch + knife to make a dramen staff once inside Koschei's arena",
+			new ItemRequirement("Knife", ItemID.KNIFE), new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH));
+>>>>>>> Improve existing quests to work better with Bank Tag system
 		redHerring = new ItemRequirement(true, "Red herring", ItemID.RED_HERRING);
 		woodenDisk = new ItemRequirement(true, "Wooden disk", ItemID.WOODEN_DISK);
 		redDiskOld = new ItemRequirement(true, "Old red disk", ItemID.OLD_RED_DISK);

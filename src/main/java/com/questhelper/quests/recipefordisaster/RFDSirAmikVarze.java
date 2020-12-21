@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.recipefordisaster;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -175,6 +176,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
 		antifirePotion = new ItemRequirement("Antifire potion", ItemID.ANTIFIRE_POTION4);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		milkyMixture = new ItemRequirement("Milky mixture", ItemID.MILKY_MIXTURE);
 		milkyMixture.setHighlightInInventory(true);

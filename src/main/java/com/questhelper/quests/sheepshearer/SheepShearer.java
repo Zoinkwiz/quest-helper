@@ -143,7 +143,7 @@ import java.util.Map;
 		{
 			ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-			allSteps.add(new PanelDetails("Bring Fred some wool", new ArrayList<>(Collections.singletonList(startStep))));
+			allSteps.add(new PanelDetails("Bring Fred some wool", new ArrayList<>(Collections.singletonList(startStep)), twentyBallsOfWool));
 			return allSteps;
 		}
     }

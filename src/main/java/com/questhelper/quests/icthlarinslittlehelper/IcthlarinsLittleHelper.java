@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.icthlarinslittlehelper;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
@@ -218,6 +219,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
 
 		food = new ItemRequirement("Combat gear, food + prayer potions", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		sphinxsToken = new ItemRequirement("Sphinx's token", ItemID.SPHINXS_TOKEN);
 		sphinxsToken.setTip("You can get another from the Sphinx");

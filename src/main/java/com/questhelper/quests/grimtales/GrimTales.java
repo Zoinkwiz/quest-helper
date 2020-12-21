@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.grimtales;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
@@ -176,6 +177,7 @@ public class GrimTales extends BasicQuestHelper
 		can.addAlternates(ItemID.WATERING_CAN2, ItemID.WATERING_CAN3, ItemID.WATERING_CAN4, ItemID.WATERING_CAN5, ItemID.WATERING_CAN6, ItemID.WATERING_CAN7, ItemID.WATERING_CAN8, ItemID.GRICOLLERS_CAN);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		griffinFeather = new ItemRequirement("Griffin feather", ItemID.GRIFFIN_FEATHER);
 		rupertsHelmet = new ItemRequirement("Rupert's helmet", ItemID.RUPERTS_HELMET);
 		miazrqasPendant = new ItemRequirement("Miazrqa's pendant", ItemID.MIAZRQAS_PENDANT);

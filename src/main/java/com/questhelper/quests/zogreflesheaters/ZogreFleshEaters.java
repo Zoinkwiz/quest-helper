@@ -24,7 +24,10 @@
  */
 package com.questhelper.quests.zogreflesheaters;
 
+import com.questhelper.BankSlotIcons;
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -180,7 +183,20 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		ogreRelic = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT);
 		ogreRelic.setTip("You can get another by searching the stand where you fought Slash Bash");
 
-		combatGear = new ItemRequirement("Either brutal arrows or Crumble Undead for fighting Slash Bash", -1, -1);
+		ItemRequirement brutalArrows = new ItemRequirement("Brutal arrows", ItemID.RUNE_BRUTAL);
+		brutalArrows.addAlternates(ItemID.ADAMANT_BRUTAL, ItemID.MITHRIL_BRUTAL, ItemID.BLACK_BRUTAL, ItemID.STEEL_BRUTAL,
+			ItemID.IRON_BRUTAL, ItemID.BRONZE_BRUTAL);
+
+		ItemRequirement ogreCompBow = new ItemRequirement("Comp ogre bow", ItemID.COMP_OGRE_BOW);
+
+		ItemRequirements crumbleUndead = new ItemRequirements("Crumble undead runes",
+			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE),
+			new ItemRequirement("Earth runes", ItemID.EARTH_RUNE),
+			new ItemRequirement("Air runes", ItemID.AIR_RUNE));
+
+		combatGear = new ItemRequirements(LogicType.OR, "Either brutal arrows or Crumble Undead for fighting Slash Bash",
+			ogreCompBow, crumbleUndead);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()
@@ -349,7 +365,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGrish, talkToGuard, goDownStairs, searchSkeleton, killZombie, openBackpack, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin, searchCoffinProperly))));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGrish, talkToGuard, goDownStairs, searchSkeleton, killZombie, openBackpack, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin, searchCoffinProperly)), combatGear));
 		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToZavistic, goUpToSith, searchWardrobe, searchCupboard, searchDrawers, usePapyrusOnSith, useTankardOnBartender, usePortraitOnBartender, bringSignedPortraitToZavistic))));
 		allSteps.add(new PanelDetails("Discover the truth", new ArrayList<>(Arrays.asList(goUpToSith, usePotionOnTea, goDownstairsFromSith, goUpToOgreSith, talkToSithForAnswers))));
 		allSteps.add(new PanelDetails("Help the ogres", new ArrayList<>(Arrays.asList(talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors, goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish)), combatGear));

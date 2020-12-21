@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.thetouristtrap;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
@@ -186,6 +187,7 @@ public class TheTouristTrap extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
 		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
 		desertBoot = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
@@ -235,7 +237,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		anaInABarrelHighlighted = new ItemRequirement("Ana in a barrel", ItemID.ANA_IN_A_BARREL);
 		anaInABarrelHighlighted.setHighlightInInventory(true);
 
-		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
+		waterskins = new ItemRequirement("Waterskins, preferably more", ItemID.WATERSKIN4);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		coins100 = new ItemRequirement("Coins", ItemID.COINS_995, 100);

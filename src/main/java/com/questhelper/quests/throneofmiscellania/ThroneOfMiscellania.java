@@ -217,14 +217,14 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		harpoon = new ItemRequirement("Harpoon", ItemCollections.getHarpoons());
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
-		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING, -1);
+		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING);
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);
-		flowerOr15Coins = new ItemRequirement("A flower or 15 coins to buy some during the quest", ItemID.BLACK_FLOWERS, -1);
-		flowers = getAllFlowers();
+		flowerOr15Coins = new ItemRequirement("A flower or 15 coins to buy some during the quest", ItemCollections.getFlowers());
+		flowers = new ItemRequirement("Flowers", ItemCollections.getFlowers());
 		flowers.setHighlightInInventory(true);
 		cake = new ItemRequirement("Cake", ItemID.CAKE);
 		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
-		bow = new ItemRequirement("Any normal/willow/maple/yew shortbow or longbow", -1, -1);
+		bow = new ItemRequirement("Any normal/willow/maple/yew shortbow or longbow", ItemCollections.getBows());
 		bow.setHighlightInInventory(true);
 		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemID.DRAMEN_STAFF);
 		giantNib = new ItemRequirement("Giant nib", ItemID.GIANT_NIB);
@@ -269,7 +269,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		inEtcCastleFirstFloor = new ZoneCondition(etcCastleFirstFloor);
 		inBrandRoom = new ZoneCondition(brandRoom1, brandRoom2);
 		inAstridRoom = new ZoneCondition(astridRoom1, astridRoom2);
-		hasFlowers = new ItemRequirementCondition(LogicType.OR, getAllFlowers());
+		hasFlowers = new ItemRequirementCondition(flowers);
 
 		talked1P1 = new VarbitCondition(85, 1);
 		talked1P2 = new VarbitCondition(86, 1);
@@ -304,13 +304,6 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		hasGiantPen = new ItemRequirementCondition(giantPen);
 		hasTreaty = new ItemRequirementCondition(treaty);
 		has75Support = new VarbitCondition(72, 96, Operation.GREATER_EQUAL);
-	}
-
-	public ItemRequirement getAllFlowers()
-	{
-		return new ItemRequirement("Flowers",
-			new ArrayList<>(Arrays.asList(ItemID.RED_FLOWERS, ItemID.YELLOW_FLOWERS, ItemID.PURPLE_FLOWERS, ItemID.ORANGE_FLOWERS,
-				ItemID.MIXED_FLOWERS, ItemID.ASSORTED_FLOWERS, ItemID.BLACK_FLOWERS, ItemID.WHITE_FLOWERS)));
 	}
 
 	public void setupSteps()

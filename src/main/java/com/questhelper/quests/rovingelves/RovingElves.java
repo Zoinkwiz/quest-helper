@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.rovingelves;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -125,6 +126,7 @@ public class RovingElves extends BasicQuestHelper
 		highlightRope.setHighlightInInventory(true);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemID.PRAYER_POTION4);
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
 
 	public void setupConditions()

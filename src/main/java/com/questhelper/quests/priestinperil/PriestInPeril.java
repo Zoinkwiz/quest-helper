@@ -24,12 +24,14 @@
  */
 package com.questhelper.quests.priestinperil;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -194,14 +196,21 @@ public class PriestInPeril extends BasicQuestHelper
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlighted = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlighted.setHighlightInInventory(true);
-		runePouches = new ItemRequirement("Rune pouches for carrying essence", ItemID.SMALL_POUCH, -1);
-		runePouches.addAlternates(ItemID.MEDIUM_POUCH, ItemID.LARGE_POUCH, ItemID.GIANT_POUCH);
+		runePouches = new ItemRequirements(LogicType.AND, "Rune pouches for carrying essence",
+			new ItemRequirement("Small pouch", ItemID.SMALL_POUCH),
+			new ItemRequirement("Medium pouch", ItemID.MEDIUM_POUCH),
+			new ItemRequirement("Large pouch", ItemID.LARGE_POUCH),
+			new ItemRequirement("Giant pouch", ItemID.GIANT_POUCH)
+			);
+
 		varrockTeleport = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 3);
 		weaponAndArmour = new ItemRequirement("Ranged or melee weapon + armour", -1, -1);
+		weaponAndArmour.setDisplayItemId(BankSlotIcons.getCombatGear());
 		goldenKey = new ItemRequirement("Golden key", ItemID.GOLDEN_KEY);
 		goldenKeyHighlighted = new ItemRequirement("Golden key", ItemID.GOLDEN_KEY);
 		goldenKeyHighlighted.setHighlightInInventory(true);
 		rangedMagedGear = new ItemRequirement("Combat gear, ranged or mage to safespot", -1, -1);
+		rangedMagedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		lotsOfRuneEssence = new ItemRequirement("As much essence as you can carry, you'll need to bring 50 UNNOTED in total", ItemID.PURE_ESSENCE, -1);
 		murkyWater = new ItemRequirement("Murky water", ItemID.MURKY_WATER);
 		ironKey = new ItemRequirement("Iron key", ItemID.IRON_KEY);

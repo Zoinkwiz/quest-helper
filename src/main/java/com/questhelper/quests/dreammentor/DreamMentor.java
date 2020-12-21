@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.dreammentor;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
@@ -185,14 +186,19 @@ public class DreamMentor extends BasicQuestHelper
 		dreamPotion = new ItemRequirement("Dream potion", ItemID.DREAM_POTION);
 
 		foodAll = new ItemRequirement("3 different types of food, 7 of two and 6 of one", -1, -1);
+		foodAll.setDisplayItemId(ItemID.SHARK);
 		food14 = new ItemRequirement("14 food, 5x of 2 different types of food, and 4x of another", -1, -1);
+		food14.setDisplayItemId(ItemID.SHARK);
 		food4 = new ItemRequirement("4 food, 1x of 2 different types of food, and 2x of another", -1, -1);
+		food4.setDisplayItemId(ItemID.SHARK);
 		food6 = new ItemRequirement("6 food, 2x of 3 different types of food", -1, -1);
+		food6.setDisplayItemId(ItemID.SHARK);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 
 		chest = new ItemRequirement("Cyrisus's chest", ItemID.CYRISUSS_CHEST);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()

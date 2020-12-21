@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.myarmsbigadventure;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -229,6 +230,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGout.setTip("You can get more from Murcaily");
 		combatGear = new ItemRequirement("Combat gear, food + potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		plantCure = new ItemRequirement("Plant cure", ItemID.PLANT_CURE);
 
 		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE);

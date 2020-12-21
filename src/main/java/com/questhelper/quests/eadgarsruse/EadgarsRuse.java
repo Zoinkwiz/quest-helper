@@ -238,7 +238,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	{
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
-		climbingBootsOr12Coins =  new ItemRequirement("Climbing boots or 12 coins", -1, -1);
+		climbingBootsOr12Coins =  new ItemRequirement("Climbing boots or 12 coins", ItemID.CLIMBING_BOOTS);
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		logs2 = new ItemRequirement("Logs", ItemID.LOGS, 2);

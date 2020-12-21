@@ -24,7 +24,9 @@
  */
 package com.questhelper.quests.dragonslayer;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
@@ -194,7 +196,12 @@ public class DragonSlayer extends BasicQuestHelper
 		mindBomb.setTip("You can buy one from the Rising Sun Inn in Falador.");
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
+
+		ItemRequirement telegrab = new ItemRequirement("Telekinetic grab", ItemID.TELEKINETIC_GRAB, 1);
+
 		telegrabOrTenK = new ItemRequirement("Either 1. 33 Magic for Telegrab and a ranged/mage weapon, or 2. 10,000 coins", -1, -1);
+		telegrabOrTenK = new ItemRequirements(LogicType.OR, "Either 1. 33 Magic for Telegrab and a ranged/mage weapon, or 2. 10,000 coins",
+			new ItemRequirement("Coins", ItemID.COINS_995, 10000), telegrab);
 		ringsOfRecoil = new ItemRequirement("Rings of Recoil for Elvarg", ItemID.RING_OF_RECOIL, -1);
 		chronicle = new ItemRequirement("The Chronicle for teleports to Champions' Guild", ItemID.CHRONICLE);
 		antifirePotion = new ItemRequirement("Antifire potion for Elvarg", ItemID.ANTIFIRE_POTION4, -1);
@@ -213,6 +220,7 @@ public class DragonSlayer extends BasicQuestHelper
 		melzarKey = new ItemRequirement("Key", ItemID.KEY_1547);
 		demonKey = 	new ItemRequirement("Key", ItemID.KEY_1548);
 		combatGear = new ItemRequirement("Combat equipment and food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
 		antidragonShieldEquipped = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD, 1, true);
 		planks3 = new ItemRequirement("Planks", ItemID.PLANK, 3);

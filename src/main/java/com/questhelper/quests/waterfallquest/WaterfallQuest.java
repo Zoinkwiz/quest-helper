@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.waterfallquest;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -159,6 +160,7 @@ public class WaterfallQuest extends BasicQuestHelper
 
 		gamesNecklace = new ItemRequirement("Games necklace", ItemID.GAMES_NECKLACE8);
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
 
 	public void loadZones()

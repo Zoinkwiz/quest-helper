@@ -30,6 +30,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -182,7 +183,7 @@ public class Biohazard extends BasicQuestHelper
 		priestGownTop = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN);
 		priestGownBottomEquipped = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428, 1, true);
 		priestGownTopEquipped = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN, 1, true);
-		teleports = new ItemRequirement("Teleports to Varrock, Ardougne, and Rimmington.", -1, -1);
+		teleports = new ItemRequirements("Teleports to Varrock, Ardougne and Rimmington", new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT), new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT), new ItemRequirement("Rimmington teleport", ItemID.RIMMINGTON_TELEPORT));
 	}
 
 	public void loadZones()

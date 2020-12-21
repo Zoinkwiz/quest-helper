@@ -24,8 +24,10 @@
  */
 package com.questhelper.quests.royaltrouble;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
@@ -218,17 +220,22 @@ public class RoyalTrouble extends BasicQuestHelper
 
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
+			coalOrPickaxe = new ItemRequirements(LogicType.OR, "Either 5 coal or a pickaxe", pickaxe, coal5);
 			coal5.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal4.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal3.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal2.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal1.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 		}
+		else
+		{
+			coalOrPickaxe = coal5;
+		}
 
 		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.getPickaxes());
-		coalOrPickaxe = new ItemRequirement("Either 5 coal or a pickaxe", -1, -1);
 		combatGear = new ItemRequirement("Combat gear, food, and prayer potions", -1, -1);
-		antipoison = new ItemRequirement("Antipoisons", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL_7968);
 		scroll.setTip("You can get another from King Vargas");
 		prop = new ItemRequirement("Mining prop", ItemID.MINING_PROP);

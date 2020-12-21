@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.witchshouse;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -132,6 +133,7 @@ public class WitchsHouse extends BasicQuestHelper
 		shedKey.setHighlightInInventory(true);
 		ball = new ItemRequirement("Ball", ItemID.BALL);
 		armourAndWeapon = new ItemRequirement("Combat gear and food for monsters up to level 53", -1, -1);
+		armourAndWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()

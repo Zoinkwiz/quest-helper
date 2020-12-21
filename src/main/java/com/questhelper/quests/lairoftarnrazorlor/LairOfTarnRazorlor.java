@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.lairoftarnrazorlor;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.PrayerRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -123,6 +124,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		diary = new ItemRequirement("Tarn's diary", ItemID.TARNS_DIARY);
 		diary.setHighlightInInventory(true);
 		protectFromMagic = new PrayerRequirement("Activate Protect from Magic", Prayer.PROTECT_FROM_MAGIC);

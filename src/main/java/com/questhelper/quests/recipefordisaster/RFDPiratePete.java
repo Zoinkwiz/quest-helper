@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.recipefordisaster;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
@@ -187,6 +188,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		breadcrumbs = new ItemRequirement("Breadcrumbs", ItemID.BREADCRUMBS);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()

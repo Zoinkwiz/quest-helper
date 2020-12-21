@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.betweenarock;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
@@ -206,6 +207,7 @@ public class BetweenARock extends BasicQuestHelper
 		solvedSchematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC_4578);
 
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		goldOre6 = new ItemRequirement("Gold ore", ItemID.GOLD_ORE, 6);
 

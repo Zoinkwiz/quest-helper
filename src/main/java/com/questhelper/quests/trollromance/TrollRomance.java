@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.trollromance;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -150,6 +151,7 @@ public class TrollRomance extends BasicQuestHelper
 		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLWEISS);
 		trollweissFlowers.setTip("You can get another from the Trollweiss mountain");
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()

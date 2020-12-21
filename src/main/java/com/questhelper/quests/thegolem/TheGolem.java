@@ -1,5 +1,6 @@
 package com.questhelper.quests.thegolem;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -187,7 +188,8 @@ public class TheGolem extends BasicQuestHelper
 		statuetteHighlight.setTip("If you've lost it, talk to the Curator in the Varrock museum again");
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		digsiteTeleport = new ItemRequirement("Digsite teleport", -1, -1);
+		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemID.DIGSITE_TELEPORT);
+		digsiteTeleport.addAlternates(ItemCollections.getDigsitePendants());
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 	}
 

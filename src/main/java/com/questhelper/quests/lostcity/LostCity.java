@@ -116,6 +116,7 @@ public class LostCity extends BasicQuestHelper
 		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE);
 		axe.addAlternates(ItemCollections.getAxes());
 		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best.", -1, -1);
+		combatGear.setDisplayItemId(ItemID.RUNE_DISPLAY_CASE);
 		teleport = new ItemRequirement("Teleport to Lumbridge. Home teleport will work if off cooldown.", ItemID.LUMBRIDGE_TELEPORT);
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);

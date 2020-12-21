@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.makingfriendswithmyarm;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
@@ -257,7 +258,8 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		mahogPlanks5 = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK, 5);
 		cadavaBerries = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
 		combatRangeMelee = new ItemRequirement("Combat gear, preferably ranged or melee", -1, -1);
-		trollTele = new ItemRequirement("Trollheim teleports", ItemID.TROLLHEIM_TELEPORT, -1);
+		combatRangeMelee.setDisplayItemId(BankSlotIcons.getCombatGear());
+		trollTele = new ItemRequirement("Trollheim teleports", ItemID.TROLLHEIM_TELEPORT);
 		varrockTele = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		draynorTele = new ItemRequirement("Draynor teleport", ItemID.DRAYNOR_MANOR_TELEPORT);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());

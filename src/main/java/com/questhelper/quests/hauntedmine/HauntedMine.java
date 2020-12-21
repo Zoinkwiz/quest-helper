@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.hauntedmine;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -170,6 +171,7 @@ public class HauntedMine extends BasicQuestHelper
 		crystalMineKey = new ItemRequirement("Crystal-mine key", ItemID.CRYSTALMINE_KEY);
 
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()

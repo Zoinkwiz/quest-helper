@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.dragonslayerii;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -446,11 +447,14 @@ public class DragonSlayerII extends BasicQuestHelper
 		runesForFireWaveOrSurge3 = new ItemRequirements(LogicType.OR, "3 casts of Fire Wave or Fire Surge", fireWave3Runes, fireSurge3Runes);
 
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 
 		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
-		dragonfireProtection = new ItemRequirement("Protection from dragonfire", -1, -1);
+		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
+		dragonfireProtection = new ItemRequirement("Protection from dragonfire", ItemCollections.getAntifireShields());
 		venomProtection = new ItemRequirement("Anti venom", ItemCollections.getAntivenoms());
 		salveE = new ItemRequirement("Salve amulet", ItemID.SALVE_AMULET);
 		salveE.addAlternates(ItemID.SALVE_AMULET_E, ItemID.SALVE_AMULETEI, ItemID.SALVE_AMULETI);
@@ -537,7 +541,15 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.getAntifireShields(), 1, true);
 
-		teleports = new ItemRequirement("Teleports to Ardougne, Varrock, Falador, Morytania, Karamja, and Rellekka", -1, -1);
+		ItemRequirement ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		ItemRequirement varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		ItemRequirement faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
+		ItemRequirement morytaniaTeleport = new ItemRequirement("Port Phasmatys teleport", ItemID.ECTOPHIAL_4252);
+		ItemRequirement karamjaTeleport = new ItemRequirement("Karamja teleport", ItemID.TAI_BWO_WANNAI_TELEPORT);
+		ItemRequirement rellekkaTeleport = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
+
+		teleports = new ItemRequirements("Teleports to Ardougne, Varrock, Falador, Morytania, Karamja, and Rellekka",
+			ardougneTeleport, varrockTeleport, faladorTeleport, morytaniaTeleport, karamjaTeleport, rellekkaTeleport);
 	}
 
 	public void setupZones()

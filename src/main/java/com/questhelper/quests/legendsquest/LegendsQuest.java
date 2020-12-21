@@ -1,5 +1,6 @@
 package com.questhelper.quests.legendsquest;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.QuestHelperQuest;
@@ -441,6 +442,7 @@ public class LegendsQuest extends BasicQuestHelper
 		goldBowlHighlighted.setHighlightInInventory(true);
 
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		goldBowlBlessed = new ItemRequirement("Blessed gold bowl", ItemID.BLESSED_GOLD_BOWL);
 

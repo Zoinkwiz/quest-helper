@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.contact;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -120,6 +121,7 @@ public class Contact extends BasicQuestHelper
 		parchment.setHighlightInInventory(true);
 
 		combatGear = new ItemRequirement("Combat gear, food, prayer potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 	}

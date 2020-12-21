@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.insearchofthemyreque;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -191,7 +192,8 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 			new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA),
 			new ItemRequirement("Coins", ItemID.COINS_995, 10));
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
-		morttonTeleport = new ItemRequirement("Teleport to Mort'ton, such as minigame teleport or Barrows Teleport", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		morttonTeleport = new ItemRequirement("Teleport to Mort'ton, such as minigame teleport or Barrows Teleport", ItemID.MORTTON_TELEPORT);
 	}
 
 	public void loadZones()

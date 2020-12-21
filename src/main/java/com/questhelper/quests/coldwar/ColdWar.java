@@ -1,11 +1,13 @@
 package com.questhelper.quests.coldwar;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.*;
 import com.questhelper.steps.conditional.*;
 import net.runelite.api.ItemID;
@@ -177,7 +179,13 @@ public class ColdWar extends BasicQuestHelper
 		mahoganyPlank = new ItemRequirement("Mahogany Plank", ItemID.MAHOGANY_PLANK, 1);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER, 1);
 		cowbell = new ItemRequirement("Cowbell", ItemID.COWBELLS, 1);
-		teleports = new ItemRequirement("Teleports to Lumbridge, POH and Ardougne", -1);
+
+		ItemRequirement ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		ItemRequirement lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
+		ItemRequirement pohTeleport = new ItemRequirement("POH teleport", ItemID.TELEPORT_TO_HOUSE);
+
+
+		teleports = new ItemRequirements("Teleports to Lumbridge, POH and Ardougne", ardougneTeleport, pohTeleport, lumbridgeTeleport);
 		clockworkBookHighlight = new ItemRequirement("Clockwork book", ItemID.CLOCKWORK_BOOK);
 		clockworkBookHighlight.setHighlightInInventory(true);
 		clockworkSuit = new ItemRequirement("Clockwork suit", ItemID.CLOCKWORK_SUIT);
@@ -194,6 +202,7 @@ public class ColdWar extends BasicQuestHelper
 		kgpId = new ItemRequirement("Kgp id card", ItemID.KGP_ID_CARD);
 		kgpId.setTip("You can get another from Noodle");
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void setupZones()

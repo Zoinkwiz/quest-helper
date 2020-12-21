@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.deathtothedorgeshuun;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.FollowerRequirement;
@@ -216,6 +217,8 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		crate = new ItemRequirement("Crate with Zanik", ItemID.CRATE_WITH_ZANIK, 1, true);
 
 		combatGear = new ItemRequirement("Magic or melee combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		
 		gamesNecklace = new ItemRequirement("Games necklace (requires Tears of Guthix to teleport to Juna)", ItemID.GAMES_NECKLACE8);
 	}
 

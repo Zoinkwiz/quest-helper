@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.olafsquest;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
@@ -134,6 +135,7 @@ public class OlafsQuest extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear, food + prayer potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
@@ -147,6 +149,7 @@ public class OlafsQuest extends BasicQuestHelper
 		cruderCarving.setTip("You can get another from Olaf");
 
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 
 		key = new ItemRequirement("Key", ItemID.KEY_11039);
 		key.addAlternates(ItemID.KEY_11040, ItemID.KEY_11041, ItemID.KEY_11042, ItemID.KEY_11043);

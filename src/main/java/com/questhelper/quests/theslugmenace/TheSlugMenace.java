@@ -24,7 +24,9 @@
  */
 package com.questhelper.quests.theslugmenace;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -185,14 +187,31 @@ public class TheSlugMenace extends BasicQuestHelper
 		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE_9697);
 
 		meleeGear = new ItemRequirement("Melee weapon to fight the Slug Prince", -1, -1);
+		meleeGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		doorTranscript = new ItemRequirement("Door transcription", ItemID.DOOR_TRANSCRIPTION);
 
 		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
-		essence5 = new ItemRequirement("At least 5 rune/pure essence, 15 to be safe", ItemID.PURE_ESSENCE, -1);
+		essence5 = new ItemRequirement("Rune/pure essence, 15 to be safe", ItemID.PURE_ESSENCE, 5);
 		essence5.addAlternates(ItemID.RUNE_ESSENCE);
 
-		accessToAltars = new ItemRequirement("Access to air, water, earth, fire, and mind runecrafting altars", -1, -1);
+		ItemRequirement airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN);
+		airTalisman.addAlternates(ItemID.AIR_TIARA);
+
+		ItemRequirement waterTalisman = new ItemRequirement("Water talisman", ItemID.WATER_TALISMAN);
+		waterTalisman.addAlternates(ItemID.WATER_TIARA);
+
+		ItemRequirement earthTalisman = new ItemRequirement("Air talisman", ItemID.EARTH_TALISMAN);
+		earthTalisman.addAlternates(ItemID.EARTH_TIARA);
+
+		ItemRequirement fireTalisman = new ItemRequirement("Fire talisman", ItemID.FIRE_TALISMAN);
+		fireTalisman.addAlternates(ItemID.FIRE_TIARA);
+
+		ItemRequirement mindTalisman = new ItemRequirement("Mind talisman", ItemID.MIND_TALISMAN);
+		mindTalisman.addAlternates(ItemID.MIND_TIARA);
+
+		accessToAltars = new ItemRequirements(LogicType.OR, "Access to air, water, earth, fire, and mind runecrafting altars",
+			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman);
 	}
 
 	public void loadZones()

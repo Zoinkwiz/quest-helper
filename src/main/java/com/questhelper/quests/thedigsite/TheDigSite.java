@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.thedigsite;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -211,7 +212,8 @@ public class TheDigSite extends BasicQuestHelper
 		trowelHighlighted.setTip("You can get another from one of the Examiners");
 		pick = new ItemRequirement("Rock pick", ItemID.ROCK_PICK);
 		varrock2 = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
-		digsiteTeleports = new ItemRequirement("Digsite teleports", -1, -1);
+		digsiteTeleports = new ItemRequirement("Digsite teleports", ItemID.DIGSITE_TELEPORT);
+		digsiteTeleports.addAlternates(ItemCollections.getDigsitePendants());
 		sealedLetter = new ItemRequirement("Sealed letter", ItemID.SEALED_LETTER);
 		sealedLetter.setTip("You can get another from Curator Haig in the Varrock Museum");
 		specialCup = new ItemRequirement("Special cup", ItemID.SPECIAL_CUP);

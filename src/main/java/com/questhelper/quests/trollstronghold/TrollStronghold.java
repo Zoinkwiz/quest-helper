@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.trollstronghold;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -119,11 +120,13 @@ public class TrollStronghold extends BasicQuestHelper
 	{
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
-		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", -1, -1);
+		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", ItemID.CLIMBING_BOOTS);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemID.GAMES_NECKLACE8);
 		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
 		mageRangedGear = new ItemRequirement("Mage or ranged gear for safe spotting", -1, -1);
+		mageRangedGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		foodAndPotions = new ItemRequirement("Food + prayer potions", -1, -1);
+		foodAndPotions.setDisplayItemId(BankSlotIcons.getFood());
 		prisonKey = new ItemRequirement("Prison key", ItemID.PRISON_KEY);
 		cellKey1 = new ItemRequirement("Cell key 1", ItemID.CELL_KEY_1);
 		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);

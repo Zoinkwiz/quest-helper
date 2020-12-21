@@ -165,7 +165,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 		beerOr2Coins = new ItemRequirement("Beer or 2 gp", ItemID.BEER);
 		earthRunes5 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 5);
-		coins = new ItemRequirement("Around 150 coins for boat travel", -1, -1);
+		coins = new ItemRequirement("Around 150 coins for boat travel", ItemID.COINS_995, 150);
 		bucketOfSand = new ItemRequirement("Bucket of sand", ItemID.BUCKET_OF_SAND);
 
 		wizardsHead = new ItemRequirement("Wizard's head", ItemID.WIZARDS_HEAD);

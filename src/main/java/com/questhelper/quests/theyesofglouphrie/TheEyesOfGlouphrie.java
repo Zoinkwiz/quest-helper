@@ -274,7 +274,8 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Learning", new ArrayList<>(Arrays.asList(enterCave, inspectBowl, talkToBrimstailAgain, talkToHazelmere, talkToBrimstailAfterHazelmere, repairMachine, talkToBrimstailForMoreDisks, unlockMachine))));
+		allSteps.add(new PanelDetails("Learning", new ArrayList<>(Arrays.asList(enterCave, inspectBowl, talkToBrimstailAgain, talkToHazelmere, talkToBrimstailAfterHazelmere, repairMachine, talkToBrimstailForMoreDisks, unlockMachine)),
+			bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar));
 
 		allSteps.add(new PanelDetails("Kill the spies", new ArrayList<>(Arrays.asList(talkToBrimstailAfterIllusion, killCreature1, killCreature5, killCreature6, killCreature4, killCreature3, killCreature2, talkToNarnode))));
 

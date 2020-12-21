@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.atasteofhope;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.ItemRequirements;
@@ -246,6 +247,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		vialOfWater.setHighlightInInventory(true);
 		vialOfWater.setTip("You can fill the vial upstairs on the broken fountain");
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 		herb = new ItemRequirement("Mysterious herb", ItemID.MYSTERIOUS_HERB);
 		herb.setHighlightInInventory(true);

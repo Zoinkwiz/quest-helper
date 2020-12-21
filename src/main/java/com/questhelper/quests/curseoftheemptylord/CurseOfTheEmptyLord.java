@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.curseoftheemptylord;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -122,8 +123,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		ringOfVis = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
-		// TODO: Check for mory legs
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
 	}
 
 	public void setupConditions()

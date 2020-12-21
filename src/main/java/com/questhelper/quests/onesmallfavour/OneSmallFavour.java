@@ -335,11 +335,11 @@ public class OneSmallFavour extends BasicQuestHelper
 		pot.setHighlightInInventory(true);
 		hotWater = new ItemRequirement("Bowl of hot water", ItemID.BOWL_OF_HOT_WATER);
 		hotWater.setTip("You can find a bowl in Lumbridge castle. Fill it up, then boil it on the range");
-		varrockTeleports = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, -1);
-		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
-		ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, -1);
-		camelotTeleports = new ItemRequirement("Teleports to Camelot", ItemID.CAMELOT_TELEPORT, -1);
-		lumbridgeTeleports = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT, -1);
+		varrockTeleports = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT);
+		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT);
+		ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT);
+		camelotTeleports = new ItemRequirement("Teleports to Camelot", ItemID.CAMELOT_TELEPORT);
+		lumbridgeTeleports = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
 
 		bluntAxe = new ItemRequirement("Blunt axe", ItemID.BLUNT_AXE);
 		bluntAxe.setTip("You can get another from a Jungle Forester south of Shilo Village");

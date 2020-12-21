@@ -31,6 +31,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -177,8 +178,8 @@ public class GhostsAhoy extends BasicQuestHelper
 	{
 		ectoToken2 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 2);
 		charos = new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA);
-		ectoTokensCharos = new ItemRequirement("20 Ecto-token, OR 10 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, -1);
-		ectoTokensNoCharos = new ItemRequirement("31 Ecto-token, OR 25 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, -1);
+		ectoTokensCharos = new ItemRequirement("20 Ecto-token, OR 10 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, 20);
+		ectoTokensNoCharos = new ItemRequirement("31 Ecto-token, OR 25 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, 31);
 		ectoToken4 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 4);
 		ectoToken12 = new ItemRequirement("Ecto-token, or travel by Charter Ship and 10 ecto-tokens", ItemID.ECTOTOKEN, 12);
 		ectoToken27 = new ItemRequirement("Ecto-token, or travel by Charter Ship and 25 ecto-tokens", ItemID.ECTOTOKEN, 27);
@@ -213,7 +214,14 @@ public class GhostsAhoy extends BasicQuestHelper
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted.setHighlightInInventory(true);
-		dyes = new ItemRequirement("3 colours of dyes. Which you'll need is random. To be prepared, bring 3 red/blue/yellow dyes", -1, -1);
+		ItemRequirement redDye = new ItemRequirement("Red dye", ItemID.RED_DYE, 3);
+		ItemRequirement blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE, 3);
+		ItemRequirement yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE, 3);
+		ItemRequirement greenDye = new ItemRequirement("Green dye", ItemID.GREEN_DYE, 3);
+		ItemRequirement orangeDye = new ItemRequirement("Orange dye", ItemID.ORANGE_DYE, 3);
+		ItemRequirement purpleDye = new ItemRequirement("Purple dye", ItemID.PURPLE_DYE, 3);
+		dyes = new ItemRequirements("3 colours of dyes. Which you'll need is random. To be prepared, bring 3 red/blue/yellow dyes",
+			redDye, blueDye, yellowDye, greenDye, orangeDye, purpleDye);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		oakLongbow = new ItemRequirement("Oak longbow", ItemID.OAK_LONGBOW);
 

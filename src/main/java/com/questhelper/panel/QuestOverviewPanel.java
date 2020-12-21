@@ -86,8 +86,6 @@ public class QuestOverviewPanel extends JPanel
 
 	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
 
-	private final Notifier notifier;
-
 	static
 	{
 		final BufferedImage closeImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/close.png");
@@ -97,10 +95,9 @@ public class QuestOverviewPanel extends JPanel
 		COPY_ICON = new ImageIcon(copyImg);
 	}
 
-	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, Notifier notifier)
+	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin)
 	{
 		super();
-		this.notifier = notifier;
 		this.questHelperPlugin = questHelperPlugin;
 
 		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -176,39 +173,13 @@ public class QuestOverviewPanel extends JPanel
 		JPanel questItemRequirementsHeader = new JPanel();
 		questItemRequirementsHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		questItemRequirementsHeader.setLayout(new BorderLayout());
-		questItemRequirementsHeader.setBorder(new EmptyBorder(0, 0, 0, 0));
+		questItemRequirementsHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
 
-		JLabel questItemReqsTitleText = new JLabel();
-		questItemReqsTitleText.setForeground(Color.WHITE);
-		questItemReqsTitleText.setText("Item requirements:");
-		questItemReqsTitleText.setMinimumSize(new Dimension(1, questItemRequirementsHeader.getPreferredSize().height));
-
-		/* Item requirement controls */
-		itemRequirementTitleContainer.setLayout(new BorderLayout());
-		itemRequirementTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		itemRequirementTitleContainer.setPreferredSize(new Dimension(0, 30));
-		itemRequirementTitleContainer.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		final JPanel itemControls = new JPanel(new GridLayout(1, 3, 10, 0));
-		itemControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
-		JButton copyItemsBtn = new JButton();
-		SwingUtil.removeButtonDecorations(copyItemsBtn);
-		copyItemsBtn.setIcon(COPY_ICON);
-		copyItemsBtn.setToolTipText("Copy item tag list for this quest");
-		copyItemsBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		copyItemsBtn.setUI(new BasicButtonUI());
-		copyItemsBtn.addActionListener(ev -> copyItems());
-		itemControls.add(copyItemsBtn);
-
-		final JPanel leftItemRequirementContainer = new JPanel(new BorderLayout(5, 0));
-		leftItemRequirementContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		leftItemRequirementContainer.add(questItemReqsTitleText, BorderLayout.WEST);
-
-		itemRequirementTitleContainer.add(leftItemRequirementContainer, BorderLayout.WEST);
-		itemRequirementTitleContainer.add(itemControls, BorderLayout.EAST);
-
-		questItemRequirementsHeader.add(itemRequirementTitleContainer, BorderLayout.NORTH);
+		JLabel questItemReqs = new JLabel();
+		questItemReqs.setForeground(Color.WHITE);
+		questItemReqs.setText("Item requirements:");
+		questItemReqs.setMinimumSize(new Dimension(1, questItemRequirementsHeader.getPreferredSize().height));
+		questItemRequirementsHeader.add(questItemReqs, BorderLayout.NORTH);
 
 		questItemRequirementsListPanel.setLayout(new BorderLayout());
 		questItemRequirementsListPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
@@ -433,27 +404,6 @@ public class QuestOverviewPanel extends JPanel
 	private void closeHelper()
 	{
 		questHelperPlugin.shutDownQuestFromSidebar();
-	}
-
-	private void copyItems()
-	{
-		if (currentQuest == null || currentQuest.getItemRequirements() == null)
-		{
-			return;
-		}
-		StringBuilder bankTag = new StringBuilder("quest-helper");
-		bankTag.append(",").append("9813");
-		for (ItemRequirement itemRequirement : currentQuest.getItemRequirements())
-		{
-			if (itemRequirement.getId() != -1)
-			{
-				bankTag.append(",").append(itemRequirement.getId());
-			}
-		}
-		StringSelection stringSelection = new StringSelection(bankTag.toString());
-		Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clpbrd.setContents (stringSelection, null);
-		notifier.notify("Quest item requirements copied to clipboard. Use this to create a bank tab. You can search for all the required items in the GE by searching 'tag:quest-helper'.");
 	}
 
 	void updateCollapseText()

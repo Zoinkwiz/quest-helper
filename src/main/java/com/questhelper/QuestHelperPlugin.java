@@ -60,7 +60,6 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -172,9 +171,6 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	SpriteManager spriteManager;
 
-	@Inject
-	Notifier notifier;
-
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -197,7 +193,7 @@ public class QuestHelperPlugin extends Plugin
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/quest_icon.png");
 
-		panel = new QuestHelperPanel(this, notifier);
+		panel = new QuestHelperPanel(this);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)

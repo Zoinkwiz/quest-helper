@@ -218,7 +218,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Magic or melee combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		
+
 		gamesNecklace = new ItemRequirement("Games necklace (requires Tears of Guthix to teleport to Juna)", ItemID.GAMES_NECKLACE8);
 	}
 

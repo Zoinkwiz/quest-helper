@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.treegnomevillage;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -132,9 +133,15 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		ItemStep pickupOrb = new ItemStep(this,
 			"Pick up the nearby \"Orbs of Protection\".", orbsOfProtection);
 
+		ItemRequirement food = new ItemRequirement("Food", -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+
+		ItemRequirement combatGear = new ItemRequirement("Armor & Weapons", -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
 		ConditionalStep defeatTheWarlord = new ConditionalStep(this, talkToTheWarlord,
-			new ItemRequirement("Food", -1),
-			new ItemRequirement("Armor & Weapons", -1));
+			food,
+			combatGear);
 
 		pickupOrbsOfProtection = new ItemCondition(ItemID.ORBS_OF_PROTECTION);
 		defeatTheWarlord.addStep(fightingWarlord, fightTheWarlord);

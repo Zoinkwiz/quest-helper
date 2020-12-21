@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.thegiantdwarf;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -109,11 +110,13 @@ public class TheGiantDwarf extends BasicQuestHelper
 		redberryPieNoInfo = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 
 		// Recommended
-		houseTeleport = new ItemRequirement("A house teleport if your house is in Rimmington and if you have no faster way to Mudskipper Point", -1, -1);
+		houseTeleport = new ItemRequirement("A house teleport if your house is in Rimmington and if you have no faster way to Mudskipper Point", ItemID.RIMMINGTON_TELEPORT);
 		rellekkaTeleport = new ItemRequirement("A Camelot/Rellekka teleport (for starting the quest)", -1, -1);
+		rellekkaTeleport.setDisplayItemId(ItemID.RELLEKKA_TELEPORT);
 		fairyRings = new ItemRequirement("Access to fairy rings", -1, -1);
-		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", -1, -1);
-		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", -1, -1);
+		fairyRings.setDisplayItemId(ItemID.FAIRY_RING);
+		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", ItemCollections.getStaminaPotions());
+		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", ItemID.VARROCK_TELEPORT);
 		clay10 = new ItemRequirement("Clay", ItemID.CLAY, 10);
 		copperOre10 = new ItemRequirement("Copper ore", ItemID.COPPER_ORE, 10);
 		tinOre10 = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 10);

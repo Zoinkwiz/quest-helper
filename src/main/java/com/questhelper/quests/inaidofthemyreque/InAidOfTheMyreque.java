@@ -24,8 +24,10 @@
  */
 package com.questhelper.quests.inaidofthemyreque;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.Spellbook;
 import com.questhelper.requirements.SpellbookRequirement;
@@ -216,6 +218,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		food = new ItemRequirement("Any food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET, 5);
 		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET);
@@ -225,10 +228,12 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		planks11 = new ItemRequirement("Plank", ItemID.PLANK, 11);
 		nails44 = new ItemRequirement("Any nails", ItemCollections.getNails(), 44);
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
-		rawMackerelOrSnail10 = new ItemRequirement("10 Raw mackerel or raw snail meat (random for each player)", -1, -1);
 		snails10 = new ItemRequirement("Raw snail", ItemID.THIN_SNAIL_MEAT);
 		snails10.addAlternates(ItemID.FAT_SNAIL_MEAT, ItemID.LEAN_SNAIL_MEAT);
 		mackerel10 = new ItemRequirement("Raw mackerel", ItemID.RAW_MACKEREL, 10);
+		rawMackerelOrSnail10 = new ItemRequirements("10 Raw mackerel or raw snail meat (random for each player)",
+			mackerel10,
+			snails10);
 		bronzeAxes10 = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE, 10);
 		tinderboxes4 = new ItemRequirement("Tinderbox", ItemID.TINDERBOX, 4);
 		tinderbox3 = new ItemRequirement("Tinderbox", ItemID.TINDERBOX, 3);
@@ -254,7 +259,11 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
 
-		steelmedChainLegsSickle = new ItemRequirement("Steel med helm/chainbody/plate legs and a sickle for Ivan", -1, -1);
+		steelmedChainLegsSickle = new ItemRequirements("Steel med helm/chainbody/plate legs and a sickle for Ivan",
+			new ItemRequirement("Steel med helm", ItemID.STEEL_MED_HELM),
+			new ItemRequirement("Steel chainbody", ItemID.STEEL_CHAINBODY),
+			new ItemRequirement("Steel Platelegs", ItemID.STEEL_PLATELEGS),
+			new ItemRequirement("Silver sickle", ItemID.SILVER_SICKLE));
 		morttonTeleport = new ItemRequirement("Teleports to Mort'ton (minigame tele, teleport scroll)", ItemID.MORTTON_TELEPORT);
 		canifisTeleport = new ItemRequirement("Canifis teleports (ancients spell, nearby fairy ring bip)", ItemID.KHARYRLL_TELEPORT);
 

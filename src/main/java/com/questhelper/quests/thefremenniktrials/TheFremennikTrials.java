@@ -325,17 +325,11 @@ public class TheFremennikTrials extends BasicQuestHelper
 		fiscalStatement = new ItemRequirement("Fiscal statement", ItemID.FISCAL_STATEMENT);
 		sturdyBoots = new ItemRequirement("Sturdy boots", ItemID.STURDY_BOOTS);
 		ballad = new ItemRequirement("Fremennik ballad", ItemID.FREMENNIK_BALLAD);
-<<<<<<< HEAD
-		exoticFlower = new ItemRequirement("Exotic flower", ItemID.EXOTIC_FLOWER);
-		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil.", -1, -1);
 		optionalKoscheiGear = new ItemRequirement("Optionally a Dramen branch + knife to make a dramen staff once inside Koschei's arena", -1, -1);
-=======
-		exoticFlower = new ItemRequirement("Exotic flower", ItemID.BALLAD);
-		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil", -1, -1);
-		koscheiGear.setDisplayItemId(ItemID.CAKE_OF_GUIDANCE);
 		optionalKoscheiGear = new ItemRequirements(LogicType.AND, "Optionally a Dramen branch + knife to make a dramen staff once inside Koschei's arena",
 			new ItemRequirement("Knife", ItemID.KNIFE), new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH));
->>>>>>> Improve existing quests to work better with Bank Tag system
+		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil", -1, -1);
+		koscheiGear.setDisplayItemId(ItemID.CAKE_OF_GUIDANCE);
 		redHerring = new ItemRequirement(true, "Red herring", ItemID.RED_HERRING);
 		woodenDisk = new ItemRequirement(true, "Wooden disk", ItemID.WOODEN_DISK);
 		redDiskOld = new ItemRequirement(true, "Old red disk", ItemID.OLD_RED_DISK);

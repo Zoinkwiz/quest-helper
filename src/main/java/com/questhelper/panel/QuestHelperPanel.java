@@ -65,7 +65,7 @@ class QuestHelperPanel extends PluginPanel
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
 
 	QuestHelperPlugin questHelperPlugin;
-	
+
 	private static final ImageIcon DISCORD_ICON;
 
 	static

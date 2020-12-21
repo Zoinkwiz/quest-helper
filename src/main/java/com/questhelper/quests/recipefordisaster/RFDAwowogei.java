@@ -24,11 +24,8 @@
  */
 package com.questhelper.quests.recipefordisaster;
 
-<<<<<<< HEAD
 import com.questhelper.ItemCollections;
-=======
 import com.questhelper.BankSlotIcons;
->>>>>>> Improve existing quests to work better with Bank Tag system
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;

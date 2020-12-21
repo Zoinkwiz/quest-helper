@@ -79,9 +79,9 @@ public class DwarfCannon extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		staminas = new ItemRequirement("Stamina Potions", -1);
-		teleToAsg = new ItemRequirement("Teleport to Falador, Amulet of Glory, or Combat Bracelet", -1);
-		teleToKand = new ItemRequirement("Teleport to Ardougne, Skills Necklace, or Games Necklace", -1);
+		staminas = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
+		teleToAsg = new ItemRequirement("Teleport to Falador, Amulet of Glory, or Combat Bracelet", ItemID.FALADOR_TELEPORT);
+		teleToKand = new ItemRequirement("Teleport to Ardougne, Skills Necklace, or Games Necklace", ItemID.ARDOUGNE_TELEPORT);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		railing = new ItemRequirement("Railing", ItemID.RAILING);
 		railing.setTip("You can get more from Captain Lawgof");

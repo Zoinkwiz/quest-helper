@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.thefeud;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -410,7 +411,8 @@ public class TheFeud extends BasicQuestHelper
 		};
 		notThroughShantyGate = new Conditions(LogicType.NAND, thoughShantyGate);
 		hasDungInInventory = new ItemRequirementCondition(dung);
-		combatGear = new ItemRequirement("Combat gear to beat NPC's", -1, -1);
+		combatGear = new ItemRequirement("Combat gear to fight NPCs", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	private void setupItemRequirements()

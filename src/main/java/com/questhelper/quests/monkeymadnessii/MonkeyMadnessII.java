@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.monkeymadnessii;
 
+import com.questhelper.BankSlotIcons;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.FollowerRequirement;
@@ -274,10 +275,12 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		magicLog = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
 		food = new ItemRequirement("Food", -1, -1);
-		staminaPotions = new ItemRequirement("Stamina potions", -1, -1);
-		prayerPotions = new ItemRequirement("Prayer potions", -1, -1);
-		antidote = new ItemRequirement("Antidote", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
+		antidote = new ItemRequirement("Antidote", ItemCollections.getAntipoisons());
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		handkerchief = new ItemRequirement("Handkerchief", ItemID.HANDKERCHIEF);
 		mysteriousNote = new ItemRequirement("Mysterious note", ItemID.MYSTERIOUS_NOTE);
@@ -323,6 +326,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		chargedOnyx.setHighlightInInventory(true);
 
 		combatGear2 = new ItemRequirement("2 styles of combat gear", -1, -1);
+		combatGear2.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		nieveFollower = new FollowerRequirement("Nieve", NpcID.NIEVE_7109);
 	}

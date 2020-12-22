@@ -180,10 +180,6 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 		goUpstairsMonastery = new ObjectStep(this, ObjectID.LADDER_2641, new WorldPoint(3057, 3483, 0), "Talk to the Mysterious Ghost upstairs in the Edgeville Monastery.");
 
-		if(pathID==2){
-			talkToDhalak.addSubSteps(goUpstairsMonastery);
-		}
-
 		goDownIntoEdgevilleDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3097, 3468, 0), "Talk to the Mysterious Ghost in the Edgeville Wilderness Dungeon, near the Earth Warriors.");
 		goDownIntoEdgevilleDungeon.addAlternateObjects(ObjectID.TRAPDOOR_1581);
 
@@ -192,6 +188,11 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		goUpstairsRoguesCastle = new ObjectStep(this, ObjectID.STAIRCASE_14735, new WorldPoint(3281, 3937, 0), "Talk to the Mysterious Ghost Viggora upstairs in the Rogues' Castle in 54 Wilderness.");
 
 		goUpstairsPartyRoom = new ObjectStep(this, ObjectID.STAIRCASE_24249, new WorldPoint(3054, 3384, 0), "Talk to the Mysterious Ghost upstairs in the Falador Party Room.");
+
+		if(pathID==2){
+			talkToDhalak.addSubSteps(goUpstairsMonastery);
+			talkToViggora.addSubSteps(goUpstairsSlayerTower);
+		}
 	}
 
 	public void updateSteps(int pathID)

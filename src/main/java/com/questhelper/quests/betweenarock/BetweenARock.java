@@ -312,7 +312,7 @@ public class BetweenARock extends BasicQuestHelper
 		useGoldCannonballOnDondakan = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Use a gold cannon ball on Dondakan.", goldCannonballHighlight);
 		useGoldCannonballOnDondakan.addIcon(ItemID.CANNON_BALL);
 		useGoldCannonballOnDondakan.addDialogStep("Yes, I'm sure this will crack open the rock.");
-		useGoldCannonballOnDondakan.addSubSteps(enterDwarfCave2WithCannonball, enterDwarfCave2WithCannonball, talkToFerrymanWithCannonball);
+		useGoldCannonballOnDondakan.addSubSteps(enterDwarfCaveWithCannonball, enterDwarfCave2WithCannonball, talkToFerrymanWithCannonball);
 
 		talkToDondakanAfterShot = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Talk to Dondakan.");
 		talkToDondakanAfterShot.addDialogStep("So you want to... fire me into the rock?");

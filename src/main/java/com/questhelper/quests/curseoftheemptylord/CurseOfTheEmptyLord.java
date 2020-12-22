@@ -176,23 +176,18 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		talkToViggora = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3455, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Viggora.", ghostspeak, ringOfVis);
 		talkToViggora.addDialogStep("Tell me your story");
 
-		updateSteps(pathID);
-
 		goUpstairsMonastery = new ObjectStep(this, ObjectID.LADDER_2641, new WorldPoint(3057, 3483, 0), "Talk to the Mysterious Ghost upstairs in the Edgeville Monastery.");
+
+		goUpstairsSlayerTower = new ObjectStep(this, ObjectID.STAIRCASE, new WorldPoint(3436, 3538, 0), "Talk to the Mysterious Ghost upstairs in the Slayer Tower, near the Infernal Mages.");
 
 		goDownIntoEdgevilleDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3097, 3468, 0), "Talk to the Mysterious Ghost in the Edgeville Wilderness Dungeon, near the Earth Warriors.");
 		goDownIntoEdgevilleDungeon.addAlternateObjects(ObjectID.TRAPDOOR_1581);
-
-		goUpstairsSlayerTower = new ObjectStep(this, ObjectID.STAIRCASE, new WorldPoint(3436, 3538, 0), "Talk to the Mysterious Ghost upstairs in the Slayer Tower, near the Infernal Mages.");
 
 		goUpstairsRoguesCastle = new ObjectStep(this, ObjectID.STAIRCASE_14735, new WorldPoint(3281, 3937, 0), "Talk to the Mysterious Ghost Viggora upstairs in the Rogues' Castle in 54 Wilderness.");
 
 		goUpstairsPartyRoom = new ObjectStep(this, ObjectID.STAIRCASE_24249, new WorldPoint(3054, 3384, 0), "Talk to the Mysterious Ghost upstairs in the Falador Party Room.");
 
-		if(pathID==2){
-			talkToDhalak.addSubSteps(goUpstairsMonastery);
-			talkToViggora.addSubSteps(goUpstairsSlayerTower);
-		}
+		updateSteps(pathID);
 	}
 
 	public void updateSteps(int pathID)
@@ -213,7 +208,9 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 			talkToViggora.setText("Talk to the Mysterious Ghost Viggora upstairs in the Rogues' Castle in 54 Wilderness.");
 			talkToViggora.setWorldPoint(3295, 3934, 1);
-		} else if (pathID == 2)
+			talkToViggora.addSubSteps(goUpstairsRoguesCastle);
+		}
+		else if (pathID == 2)
 		{
 			talkToRennard.setText("Talk to the Mysterious Ghost in the Bandit Camp in the Wilderness.");
 			talkToRennard.setWorldPoint(3031, 3703, 0);
@@ -226,11 +223,14 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost upstairs in the Edgeville Monastery.");
 			talkToDhalak.setWorldPoint(3052, 3497, 1);
+			talkToDhalak.addSubSteps(goUpstairsMonastery);
 
 			talkToViggora.setText("Talk to the Mysterious Ghost upstairs in the Slayer Tower, near the Infernal Mages.");
 			talkToViggora.setWorldPoint(3447, 3547, 1);
+			talkToViggora.addSubSteps(goUpstairsSlayerTower);
 
-		} else if (pathID == 3)
+		}
+		else if (pathID == 3)
 		{
 			talkToRennard.setText("Talk to the Mysterious Ghost in the Bandit Camp in the desert.");
 			talkToRennard.setWorldPoint(3163, 2981, 0);
@@ -243,9 +243,11 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost upstairs in the Falador Party Room.");
 			talkToDhalak.setWorldPoint(3052, 3378, 1);
+			talkToDhalak.addSubSteps(goUpstairsPartyRoom);
 
 			talkToViggora.setText("Talk to the Mysterious Ghost in the Edgeville Wilderness Dungeon, near the Earth Warriors.");
 			talkToViggora.setWorldPoint(3121, 9995, 0);
+			talkToViggora.addSubSteps(goDownIntoEdgevilleDungeon);
 		}
 	}
 

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.mourningsendpart1;
+package com.questhelper.quests.mourningsendparti;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
@@ -57,7 +57,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 @QuestDescriptor(
 	quest = QuestHelperQuest.MOURNINGS_END_PART_I
 )
-public class MourningsEndPart1 extends BasicQuestHelper
+public class MourningsEndPartI extends BasicQuestHelper
 {
 	ItemRequirement bearFur, silk2, redDye, yellowDye, greenDye, blueDye, waterBucket, feather, rottenApple, toadCrunchies, magicLogs, leather, ogreBellows, coal20,
 		coal20OrNaphtha, blueBellow, redBellow, yellowBellow, greenBellow, mournerMask, bloodyMournerBody, mournerLegsBroken, mournerBoots, mournerGloves, mournerCloak,

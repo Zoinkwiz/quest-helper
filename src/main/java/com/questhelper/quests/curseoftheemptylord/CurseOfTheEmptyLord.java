@@ -180,6 +180,10 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 		goUpstairsMonastery = new ObjectStep(this, ObjectID.LADDER_2641, new WorldPoint(3057, 3483, 0), "Talk to the Mysterious Ghost upstairs in the Edgeville Monastery.");
 
+		if(pathID==2){
+			talkToDhalak.addSubSteps(goUpstairsMonastery);
+		}
+
 		goDownIntoEdgevilleDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3097, 3468, 0), "Talk to the Mysterious Ghost in the Edgeville Wilderness Dungeon, near the Earth Warriors.");
 		goDownIntoEdgevilleDungeon.addAlternateObjects(ObjectID.TRAPDOOR_1581);
 

@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.eadgarsruse;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -241,7 +242,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		logs2 = new ItemRequirement("Logs", ItemID.LOGS, 2);
-		logs1 = new ItemRequirement("Logs", ItemID.LOGS);
+		logs1 = new ItemRequirement("Logs", ItemCollections.getLogsForFire());
 		grain10 = new ItemRequirement("Grain", ItemID.GRAIN, 10);
 		rawChicken5 = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN, 5);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
@@ -273,7 +274,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		thistle = new ItemRequirement("Troll thistle", ItemID.TROLL_THISTLE);
 		thistle.setHighlightInInventory(true);
 
-		logHighlight = new ItemRequirement("Logs", ItemID.LOGS);
+		logHighlight = new ItemRequirement("Logs", ItemCollections.getLogsForFire());
 		logHighlight.setHighlightInInventory(true);
 
 		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);

@@ -150,7 +150,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 		batBonesOptional = new ItemRequirement("Bat bones (obtainable during quest)", ItemID.BAT_BONES);
 		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		camelotTeleport = new ItemRequirement("Teleport to Camelot", ItemID.CAMELOT_TELEPORT);
-		twoFaladorTeleports = new ItemRequirement("Two teleports to Falador", ItemID.FALADOR_TELEPORT);
+		twoFaladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 2);
 		combatGear = new ItemRequirement("Combat gear + food for Sir Mordred (level 39)", -1, -1);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		repellent = new ItemRequirement("Insect repellent", ItemID.INSECT_REPELLENT);

@@ -26,28 +26,29 @@
 package com.questhelper.requirements;
 
 import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.Operation;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import lombok.Getter;
 import net.runelite.api.Client;
 
 public class ItemRequirements extends ItemRequirement
 {
+	@Getter
 	ArrayList<ItemRequirement> itemRequirements = new ArrayList<>();
 
 	LogicType logicType;
 
 	public ItemRequirements(String name, ItemRequirement... itemRequirements)
 	{
-		super(name, -1, -1);
+		super(name, itemRequirements[0].getId(), -1);
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = LogicType.AND;
 	}
 
 	public ItemRequirements(LogicType logicType, String name, ItemRequirement... itemRequirements)
 	{
-		super(name, -1, -1);
+		super(name, itemRequirements[0].getId(), -1);
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = logicType;
 	}
@@ -88,5 +89,17 @@ public class ItemRequirements extends ItemRequirement
 			color = Color.RED;
 		}
 		return color;
+	}
+
+	@Override
+	public ArrayList<Integer> getAllIds()
+	{
+		ArrayList<Integer> ids = new ArrayList<>();
+		for (ItemRequirement itemRequirement : itemRequirements)
+		{
+			ids.addAll(itemRequirement.getAllIds());
+		}
+
+		return ids;
 	}
 }

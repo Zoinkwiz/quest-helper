@@ -84,7 +84,6 @@ public class ItemRequirement extends Requirement
 		this.equip = equip;
 	}
 
-
 	public ItemRequirement(boolean highlightInInventory, String name, int id)
 	{
 		this(name, id);

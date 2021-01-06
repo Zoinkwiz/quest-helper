@@ -26,6 +26,7 @@ package com.questhelper.steps;
 
 import com.google.inject.Binder;
 import com.google.inject.Inject;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -872,7 +873,12 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : requirements)
 			{
-				if (requirement.getClass() == ItemRequirement.class && ((ItemRequirement)requirement).isHighlightInInventory() && ((ItemRequirement)requirement).getAllIds().contains(item.getId()))
+				if ((requirement instanceof ItemRequirement
+					  && ((ItemRequirement)requirement).isHighlightInInventory()
+					  && ((ItemRequirement)requirement).getAllIds().contains(item.getId()))
+					|| (requirement instanceof ItemRequirements
+					  && ((ItemRequirements)requirement).isHighlightInInventory()
+					  && ((ItemRequirements)requirement).getAllIds().contains(item.getId())))
 				{
 					Rectangle slotBounds = item.getCanvasBounds();
 					graphics.setColor(new Color(0, 255, 255, 65));

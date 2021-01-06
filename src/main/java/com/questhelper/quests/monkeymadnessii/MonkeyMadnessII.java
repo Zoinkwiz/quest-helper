@@ -174,7 +174,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		ConditionalStep goTalkToSmith = new ConditionalStep(this, findSmith);
 		goTalkToSmith.addStep(smithNearby, talkToSmith);
-	//	goTalkToSmith.addStep(smithInLocation4, goUpTo4);
+		//	goTalkToSmith.addStep(smithInLocation4, goUpTo4);
 		steps.put(66, goTalkToSmith);
 
 		steps.put(70, talkToGarkorAfterSmith);
@@ -584,21 +584,21 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		enterNorthOfTree = new ObjectStep(this, NullObjectID.NULL_28807, new WorldPoint(2435, 3520, 0), "Enter the breach north west of the Grand Tree with Nieve.", combatGear2, food, prayerPotions);
 		enterNorthOfTree.addDialogStep("Yes, let's go.");
 		enterStrongholdCave = new ObjectStep(this, ObjectID.CAVERN_ENTRANCE_28686, new WorldPoint(2027, 5613, 0), "Enter the cavern to the north east.");
-	    killTorturedAndDemonic = new NpcStep(this, NpcID.TORTURED_GORILLA_7150, new WorldPoint(2129, 5682, 0), "Talk to Glough in the north of the cavern. After, defeat the tortured and demonic gorillas.", true, combatGear2);
+		killTorturedAndDemonic = new NpcStep(this, NpcID.TORTURED_GORILLA_7150, new WorldPoint(2129, 5682, 0), "Talk to Glough in the north of the cavern. After, defeat the tortured and demonic gorillas.", true, combatGear2);
 		// TODO: 7152 and 7153 are the non-attackable version. Once NPC changes are properly checked, remove these
-	    ((NpcStep)(killTorturedAndDemonic)).addAlternateNpcs(NpcID.TORTURED_GORILLA_7151, NpcID.TORTURED_GORILLA_7153, NpcID.DEMONIC_GORILLA_7152, NpcID.DEMONIC_GORILLA, NpcID.DEMONIC_GORILLA_7145,
+		((NpcStep) (killTorturedAndDemonic)).addAlternateNpcs(NpcID.TORTURED_GORILLA_7151, NpcID.TORTURED_GORILLA_7153, NpcID.DEMONIC_GORILLA_7152, NpcID.DEMONIC_GORILLA, NpcID.DEMONIC_GORILLA_7145,
 			NpcID.DEMONIC_GORILLA_7146);
 
 		enterNorthOfTreeNoNieve = new ObjectStep(this, NullObjectID.NULL_28807, new WorldPoint(2435, 3520, 0), "Enter the breach north west of the Grand Tree.", combatGear, food, prayerPotions);
 
 		fightGlough = new NpcStep(this, NpcID.GLOUGH_7101, new WorldPoint(2075, 5677, 0), "Defeat Glough. He has 3 phases, changing rooms each time. You can safe spot the first 2 phases. Protect from Melee if you're next to him, or Protect from Magic if not in the third phase.", true);
 		fightGlough.addText("The easiest way to do phase 3 is to attack him from 1 tile away, have Protect from Magic on, and step away a tile whenever he pulls you closer.");
-		((NpcStep)(fightGlough)).addAlternateNpcs(NpcID.GLOUGH_7102, NpcID.GLOUGH_7103, NpcID.GLOUGH_7100);
-		((NpcStep)(fightGlough)).setMaxRoamRange(200);
+		((NpcStep) (fightGlough)).addAlternateNpcs(NpcID.GLOUGH_7102, NpcID.GLOUGH_7103, NpcID.GLOUGH_7100);
+		((NpcStep) (fightGlough)).setMaxRoamRange(200);
 		fightGlough.addSubSteps(enterNorthOfTreeNoNieve);
-	    talkToZooknockToFinish = new NpcStep(this, NpcID.ZOOKNOCK_7113, new WorldPoint(2027, 5610, 0), "Talk to Zooknock to teleport to the Grand Tree.");
-	    talkToZooknockToFinish.addDialogStep("Yes.");
-	    talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk Narnode to finish the madness!");
+		talkToZooknockToFinish = new NpcStep(this, NpcID.ZOOKNOCK_7113, new WorldPoint(2027, 5610, 0), "Talk to Zooknock to teleport to the Grand Tree.");
+		talkToZooknockToFinish.addDialogStep("Yes.");
+		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk Narnode to finish the madness!");
 
 	}
 
@@ -673,7 +673,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana)), lemon, grapesHighlighted, pestleHighlighted, logs, noCombatItems));
 
 		ArrayList<QuestStep> chapter2Steps = new ArrayList<>(Arrays.asList(talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor));
-		chapter2Steps.addAll(((AgilityDungeonSteps)(doAgilitySection)).getDisplaySteps());
+		chapter2Steps.addAll(((AgilityDungeonSteps) (doAgilitySection)).getDisplaySteps());
 		chapter2Steps.addAll(Arrays.asList(pickUpKrukCorpse, leaveKrukDungeon, goDownToZooknock, talkToZooknock, talkToAwowAsKruk, talkToGarkorAfterKruk));
 		allSteps.add(new PanelDetails("Going undercover", chapter2Steps, ninjaGreegree, mspeakAmulet, talismanOr1000Coins, lightSource, combatGear, food, prayerPotions, staminaPotions));
 
@@ -697,4 +697,3 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		return allSteps;
 	}
 }
-

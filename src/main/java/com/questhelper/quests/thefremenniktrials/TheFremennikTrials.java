@@ -771,7 +771,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		talkToSwensen.addDialogStep("Yes");
 		talkToSwensen.addDialogStep("Ask about becoming a Fremennik");
 		goDownLadderSwensen = new ObjectStep(this, ObjectID.LADDER_4158, new WorldPoint(2644, 3657, 0), "Climb down Swensen's ladder.");
-		swensen1South = new ObjectStep(this, ObjectID.PORTAL_4150, new WorldPoint(2631, 10002, 0), "Go through the south portal.");
+		swensen1South = new ObjectStep(this, ObjectID.PORTAL, new WorldPoint(2631, 10002, 0), "Go through the south portal.");
 		swensen2West = new ObjectStep(this, ObjectID.PORTAL_4151, new WorldPoint(2639, 10015, 0), "Go through the west portal.");
 		swensen3East = new ObjectStep(this, ObjectID.PORTAL_4152, new WorldPoint(2656, 10004, 0), "Go through the east portal.");
 		swensen4North = new ObjectStep(this, ObjectID.PORTAL_4153, new WorldPoint(2665, 10018, 0), "Go through the north portal.");

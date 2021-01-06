@@ -109,7 +109,6 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		super.onVarbitChanged(varbitChanged);
-		System.out.println(questHelper.getVar());
 		if (questHelper.getVar() != currentVar)
 		{
 			currentVar = questHelper.getVar();

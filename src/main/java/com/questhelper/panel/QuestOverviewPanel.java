@@ -329,6 +329,10 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateSteps()
 	{
+		if (questStepPanelList == null)
+		{
+			return;
+		}
 		questStepPanelList.forEach(panel -> {
 			for (QuestStep step : panel.getSteps())
 			{

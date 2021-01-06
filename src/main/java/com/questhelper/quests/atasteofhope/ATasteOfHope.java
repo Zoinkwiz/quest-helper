@@ -459,7 +459,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		readFlaygianNotes = new DetailedQuestStep(this, "Read Flaygian's notes.", flaygianNotes);
 		getSickle = new ObjectStep(this, ObjectID.CRATE_32575, new WorldPoint(3597, 9615, 0), "Search the north west crate for a blessed sickle.");
 		getChain = new ObjectStep(this, ObjectID.CRATE_32576, new WorldPoint(3601, 9610, 0), "Search the south east crate for a chain.");
-		useEmeraldOnSickle = new DetailedQuestStep(this, "Use an emerald on the blessed sickle.", emeraldHighlighted, sickleB);
+		useEmeraldOnSickle = new DetailedQuestStep(this, "Use an emerald on the blessed sickle.", emeraldHighlighted, sickleB, chisel);
 		useEmeraldOnSickle.addDialogStep("Yes.");
 		enchantSickle = new DetailedQuestStep(this, "Cast enchant emerald on the emerald sickle.", emeraldSickleB, enchantEmeraldRunesOrTablet);
 		addSickleToRod = new DetailedQuestStep(this, "Add the enchanted emerald sickle to the rod of ivandis.", enchantedEmeraldSickleB, rodOfIvandisHighlighted);

@@ -44,6 +44,7 @@ public class ItemCollections
 		ItemID.RUNE_AXE,
 		ItemID.DRAGON_AXE,
 		ItemID.INFERNAL_AXE,
+		ItemID.INFERNAL_AXE_OR,
 		ItemID._3RD_AGE_AXE,
 		ItemID.CRYSTAL_AXE)
 	);
@@ -64,7 +65,8 @@ public class ItemCollections
 		ItemID.INFERNAL_PICKAXE,
 		ItemID._3RD_AGE_PICKAXE,
 		ItemID.CRYSTAL_PICKAXE,
-		ItemID.TRAILBLAZER_PICKAXE)
+		ItemID.TRAILBLAZER_PICKAXE,
+		ItemID.INFERNAL_PICKAXE_OR)
 	);
 
 	@Getter
@@ -73,7 +75,8 @@ public class ItemCollections
 		ItemID.BARBTAIL_HARPOON,
 		ItemID.DRAGON_HARPOON,
 		ItemID.INFERNAL_HARPOON,
-		ItemID.TRAILBLAZER_HARPOON)
+		ItemID.TRAILBLAZER_HARPOON,
+		ItemID.INFERNAL_HARPOON_OR)
 	);
 
 	@Getter
@@ -431,7 +434,9 @@ public class ItemCollections
 		ItemID.KANDARIN_HEADGEAR_2,
 		ItemID.KANDARIN_HEADGEAR_3,
 		ItemID.KANDARIN_HEADGEAR_4,
-		ItemID.BRUMA_TORCH
+		ItemID.BRUMA_TORCH,
+		ItemID.FIREMAKING_CAPE,
+		ItemID.FIREMAKING_CAPET
 	));
 
 	@Getter

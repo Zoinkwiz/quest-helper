@@ -300,7 +300,8 @@ public class TowerOfLife extends BasicQuestHelper
 		fixPressureMachineGetWheels = new ObjectStep(this, ObjectID.CRATE_21912, new WorldPoint(2655, 3217, 0), "Get 4 Valve wheels");
 		Conditions hasAllPressureItems = new Conditions(hasPressureMachineSheets, hasPressureMachineBalls, hasPressureMachineWheels);
 
-		buildPressureMachine = new ObjectStep(this, ObjectID.PRESSURE_MACHINE, new WorldPoint(2649, 3223, 1), "Build the Pressure Machine");
+		buildPressureMachine = new ObjectStep(this, ObjectID.PRESSURE_MACHINE, new WorldPoint(2649, 3223, 1), "Build the Pressure Machine", saw, hammer);
+		buildPressureMachine.addDialogStep("Yes");
 		buildPressureMachine.addSubSteps(
 			fixPressureMachineGetSheets, fixPressureMachineGetBalls, fixPressureMachineGetWheels,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2

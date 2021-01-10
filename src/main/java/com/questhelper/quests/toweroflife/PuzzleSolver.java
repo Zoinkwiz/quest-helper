@@ -107,11 +107,11 @@ public class PuzzleSolver
 			}
 			else if (!prss_3_plugged && ball3Pos >= 3)
 			{ //Go past the hole
-				highlights.add(PRSS_3_WHEEL_RIGHT);
+				highlights.add(PRSS_3_WHEEL_LEFT);
 			}
 			else if (!prss_3_plugged)
 			{ //go back to plug the hole
-				highlights.add(PRSS_3_WHEEL_LEFT);
+				highlights.add(PRSS_3_WHEEL_RIGHT);
 			}
 			else
 			{
@@ -133,11 +133,11 @@ public class PuzzleSolver
 			}
 			else if (!prss_4_plugged && ball4Pos >= 4)
 			{
-				highlights.add(PRSS_4_WHEEL_RIGHT);
+				highlights.add(PRSS_4_WHEEL_LEFT);
 			}
 			else if (!prss_4_plugged)
 			{
-				highlights.add(PRSS_4_WHEEL_LEFT);
+				highlights.add(PRSS_4_WHEEL_RIGHT);
 			}
 			else
 			{

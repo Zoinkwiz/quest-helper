@@ -61,7 +61,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.THE_FREMENNIK_EXILES
+	quest = QuestHelperQuest.SONG_OF_THE_ELVES
 )
 public class SongOfTheElves extends BasicQuestHelper
 {

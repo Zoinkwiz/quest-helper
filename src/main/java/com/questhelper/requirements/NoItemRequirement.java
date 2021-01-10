@@ -27,8 +27,8 @@ package com.questhelper.requirements;
 import java.awt.Color;
 import java.util.ArrayList;
 import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
@@ -50,15 +50,63 @@ public class NoItemRequirement extends ItemRequirement
 	{
 		if (slot == ALL_EQUIPMENT_SLOTS)
 		{
-			return client.getItemContainer(InventoryID.EQUIPMENT) == null;
+			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+			if (equipment == null)
+			{
+				return true;
+			}
+			for (Item item : equipment.getItems())
+			{
+				if (item.getId() != -1)
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 		if (slot == ALL_INVENTORY_SLOTS)
 		{
-			return client.getItemContainer(InventoryID.INVENTORY) == null;
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventory == null)
+			{
+				return true;
+			}
+			for (Item item : inventory.getItems())
+			{
+				if (item.getId() != -1)
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 		if (slot == ALL_EQUIPMENT_AND_INVENTORY_SLOTS)
 		{
-			return client.getItemContainer(InventoryID.EQUIPMENT) == null && client.getItemContainer(InventoryID.INVENTORY) == null;
+			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+			if (inventory != null)
+			{
+				for (Item item : inventory.getItems())
+				{
+					if (item.getId() != -1)
+					{
+						return false;
+					}
+				}
+			}
+
+			if (equipment != null)
+			{
+				for (Item item : equipment.getItems())
+				{
+					if (item.getId() != -1)
+					{
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 
 		if (client.getLocalPlayer() == null || client.getLocalPlayer().getPlayerComposition() == null)

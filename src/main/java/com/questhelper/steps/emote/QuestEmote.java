@@ -36,7 +36,8 @@ public enum QuestEmote
 	WAVE("Wave", EMOTE_WAVE),
 	THINK("Think", EMOTE_THINK),
 	GOBLIN_BOW("Goblin bow", EMOTE_GOBLIN_BOW),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS);
+	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
+	SPIN("Spin", EMOTE_SPIN);
 
 	private String name;
 	private int spriteId;

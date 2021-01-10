@@ -166,7 +166,7 @@ public class DwarfCannon extends BasicQuestHelper
 
 		//Fix cannon
 		// TODO: Update this to highlight widgets as you progress, indicating what tool to use on what
-		useToolkit = new ObjectStep(this, NullObjectID.NULL_15597, new WorldPoint(2563, 3462, 0), "Use the toolkit on the broken multicannon.  Use the right tool on the spring, the middle tool on the Safety switch, and the left ool on the gear.");
+		useToolkit = new ObjectStep(this, NullObjectID.NULL_15597, new WorldPoint(2563, 3462, 0), "Use the toolkit on the broken multicannon.  Use the right tool on the spring, the middle tool on the Safety switch, and the left tool on the gear.");
 		useToolkit.addIcon(ItemID.TOOLKIT);
 		talkToCaptainLawgof5 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof (There will be a short pause in dialogue.  Both need to be completed.).");
 		talkToCaptainLawgof5.addDialogStep("Okay then, just for you!");

@@ -321,16 +321,16 @@ public class TowerOfLife extends BasicQuestHelper
 		fixPressureMachine.addStep(new Conditions(hasPressureMachineSheets, hasPressureMachineBalls), fixPressureMachineGetWheels);
 		fixPressureMachine.addStep(hasPressureMachineSheets, fixPressureMachineGetBalls);
 
-
 		fixPipeMachineGetPipes = new ObjectStep(this, ObjectID.CRATE_21909, new WorldPoint(2648, 3222, 0), "Get 4 Pipes");
 		fixPipeMachineGetRings = new ObjectStep(this, ObjectID.CRATE_21910, new WorldPoint(2652, 3222, 0), "Get 5 Pipe rings");
 		fixPipeMachineGetRivets = new ObjectStep(this, ObjectID.CRATE_21911, new WorldPoint(2654, 3220, 0), "Get 6 Rivets");
 		Conditions hasAllPipeItems = new Conditions(hasPipeMachinePipes, hasPipeMachineRings, hasPipeMachineRivets);
 
 		buildPipeMachine = new ObjectStep(this, 21943, new WorldPoint(2650, 3214, 2), "Build the Pipe Machine");
+		buildPipeMachine.addDialogStep("Yes");
 		buildPipeMachine.addSubSteps(fixPipeMachineGetPipes, fixPipeMachineGetRings, fixPipeMachineGetRivets,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);
-		solvePipeMachinePuzzle = new PuzzleStep(this, "Calibrate the pipe machine", new PuzzleSolver(client)::pipeSolver);
+		solvePipeMachinePuzzle = new PuzzleStep(this, "Calibrate the pipe machine. Select pipe pieces on the right side of the UI to see where to put them", new PuzzleSolver(client)::pipeSolver);
 
 		fixPipeMachine = new ConditionalStep(this, fixPipeMachineGetPipes);
 		fixPipeMachine.addStep(isPipeMachineBuilt, solvePipeMachinePuzzle);
@@ -350,6 +350,7 @@ public class TowerOfLife extends BasicQuestHelper
 		Conditions hasAllCageItems = new Conditions(hasCageMetalBars, hasCageBindingFluid);
 
 		buildCage = new ObjectStep(this, 21941, new WorldPoint(2649, 3218, 3), "Build the cage");
+		buildCage.addDialogStep("Yes");
 		buildCage.addSubSteps(fixCageGetBars, fixCageGetFluid,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);
 		solveCagePuzzle = new PuzzleStep(this, "Assemble the cage", new PuzzleSolver(client)::cageSolver);

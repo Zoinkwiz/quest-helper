@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, RobertDIV <https://github.com/RobertDIV>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

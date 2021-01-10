@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -320,10 +321,7 @@ public class ObjectStep extends DetailedQuestStep
 			this.object = null;
 		}
 
-		if (objects.contains(object))
-		{
-			objects.remove(object);
-		}
+		objects.remove(object);
 	}
 
 	private void handleObjects(TileObject object)
@@ -338,20 +336,37 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			localWorldPoints = toLocalInstance(client, worldPoint);
 		}
-		
+
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
-			if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
+			setObjects(object, localWorldPoints);
+			return;
+		}
+
+		final ObjectComposition comp = client.getObjectDefinition(object.getId());
+		final int[] impostorIds = comp.getImpostorIds();
+
+		if (impostorIds != null)
+		{
+			if (comp.getImpostor().getId() == objectID || alternateObjectIDs.contains(comp.getImpostor().getId()))
 			{
-				this.object = object;
-				this.objects.add(object);
-				return;
+				setObjects(object, localWorldPoints);
 			}
-			if (worldPoint == null)
-			{
-				this.object = object;
-				this.objects.add(object);
-			}
+		}
+	}
+
+	private void setObjects(TileObject object, Collection<WorldPoint> localWorldPoints)
+	{
+		if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
+		{
+			this.object = object;
+			this.objects.add(object);
+			return;
+		}
+		if (worldPoint == null)
+		{
+			this.object = object;
+			this.objects.add(object);
 		}
 	}
 }

@@ -127,7 +127,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		catspeak = new ItemRequirement("Catspeak amulet", ItemID.CATSPEAK_AMULET);
+		catspeak = new ItemRequirement("Catspeak amulet", ItemID.CATSPEAK_AMULET,1,true);
 		catspeakE = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE);
 		catspeakEWorn = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakE.setHighlightInInventory(true);

@@ -37,7 +37,7 @@ public enum QuestHelperQuest
 	THE_CORSAIR_CURSE(301, "The Corsair Curse", QuestVarbits.QUEST_THE_CORSAIR_CURSE),
 	DEMON_SLAYER(302, "Demon Slayer", QuestVarbits.QUEST_DEMON_SLAYER),
 	DORICS_QUEST(303, "Doric's Quest", QuestVarPlayer.QUEST_DORICS_QUEST),
-	DRAGON_SLAYER(304, "Dragon Slayer", QuestVarPlayer.QUEST_DRAGON_SLAYER),
+	DRAGON_SLAYER(304, "Dragon Slayer I", QuestVarPlayer.QUEST_DRAGON_SLAYER),
 	ERNEST_THE_CHICKEN(305, "Ernest the Chicken", QuestVarPlayer.QUEST_ERNEST_THE_CHICKEN),
 	GOBLIN_DIPLOMACY(306, "Goblin Diplomacy", QuestVarbits.QUEST_GOBLIN_DIPLOMACY),
 	IMP_CATCHER(307, "Imp Catcher", QuestVarPlayer.QUEST_IMP_CATCHER),

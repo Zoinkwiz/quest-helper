@@ -30,6 +30,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
@@ -364,9 +366,34 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		return this;
 	}
 
+	public Collection<Conditions> getConditions()
+	{
+		return steps.keySet();
+	}
+
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
 		return steps.values();
+	}
+
+	public ConditionalStep copy()
+	{
+		ConditionalStep newStep = new ConditionalStep(getQuestHelper(), steps.get(null));
+		if (text != null)
+		{
+			newStep.setText(text);
+		}
+		for (Conditions conditions : getConditions())
+		{
+			if (conditions == null)
+			{
+				continue;
+			}
+
+			newStep.addStep(conditions, steps.get(conditions));
+		}
+
+		return newStep;
 	}
 }

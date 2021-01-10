@@ -93,6 +93,9 @@ public class DetailedQuestStep extends QuestStep
 	protected ArrayList<WorldPoint> linePoints;
 
 	@Setter
+	protected ArrayList<WorldPoint> worldLinePoints;
+
+	@Setter
 	protected List<Requirement> requirements = new ArrayList<>();
 
 	protected HashMap<Tile, List<Integer>> tileHighlights = new HashMap<>();
@@ -384,6 +387,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
+
 		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
 		{
 			createMinimapDirectionArrow(graphics, wp);
@@ -502,7 +506,7 @@ public class DetailedQuestStep extends QuestStep
 
 		for (WorldPoint point : points)
 		{
-			if (point != null)
+			if (point != null && point.isInScene(client))
 			{
 				return point;
 			}
@@ -579,13 +583,19 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		Rectangle mapViewArea = getWorldMapClipArea();
-		for (int i = 0; i < linePoints.size() - 1; i++)
+		ArrayList<WorldPoint> worldMapLines = linePoints;
+		if (worldLinePoints != null && worldLinePoints.size() > 1)
 		{
-			Point startPoint = mapWorldPointToGraphicsPoint(linePoints.get(i));
-			Point endPoint = mapWorldPointToGraphicsPoint(linePoints.get(i + 1));
+			worldMapLines = worldLinePoints;
+		}
+		Rectangle mapViewArea = getWorldMapClipArea();
 
-			boolean isEndOfLine = (linePoints.size() - 2) == i;
+		for (int i = 0; i < worldMapLines.size() - 1; i++)
+		{
+			Point startPoint = mapWorldPointToGraphicsPoint(worldMapLines.get(i));
+			Point endPoint = mapWorldPointToGraphicsPoint(worldMapLines.get(i + 1));
+
+			boolean isEndOfLine = (worldMapLines.size() - 2) == i;
 			renderWorldMapLines(graphics, mapViewArea, startPoint, endPoint, isEndOfLine);
 		}
 	}

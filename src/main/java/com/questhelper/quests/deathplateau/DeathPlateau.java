@@ -258,7 +258,7 @@ public class DeathPlateau extends BasicQuestHelper
 		enterSabaCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3735, new WorldPoint(2858, 3579, 0), "Enter the cave north west of Burthorpe.");
 
 		talkToSaba = new NpcStep(this, NpcID.SABA, new WorldPoint(2270, 4757, 0), "Talk to Saba.");
-		talkToSaba.addDialogStep("Do you know another way up to Death Plateau?");
+		talkToSaba.addDialogStep("Do you know another way up Death Plateau?");
 
 		leaveSabaCave = new ObjectStep(this, ObjectID.CAVE_EXIT_3736, new WorldPoint(2269, 4751, 0), "Leave Saba's cave.");
 

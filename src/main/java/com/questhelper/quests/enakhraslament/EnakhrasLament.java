@@ -232,7 +232,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		airSpellRunes = new ItemRequirement("Runes for an air spell", -1, -1);
 		fireSpellRunes = new ItemRequirement("Runes for a fire spell", -1, -1);
-		crumbleUndeadRunes = new ItemRequirement("Runes for crumbe undead spell", -1, -1);
+		crumbleUndeadRunes = new ItemRequirement("Runes for crumble undead spell", -1, -1);
 
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		log.setHighlightInInventory(true);

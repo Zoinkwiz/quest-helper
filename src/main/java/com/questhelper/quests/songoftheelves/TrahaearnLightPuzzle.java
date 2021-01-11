@@ -63,7 +63,7 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 	ConditionalStep goToF0NW, goToF0SW, goToF2SW, goToF2E, goToF1, goToF2SE;
 
 	ConditionForStep hasMirrorsAndCrystal, onF1, onF2, onF0, onF0SW, onF2E, onF2SW, onF2NW, onF2M, onF2SE, onF2S,
-		notResetMeilyr, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22;
+		notResetHefin, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22;
 
 	public TrahaearnLightPuzzle(QuestHelper questHelper, ConditionalStep goToF1Steps)
 	{
@@ -75,8 +75,8 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 		setupConditionalSteps();
 		collectMirrors.addSubSteps(goToF1Steps);
 
-		addStep(new Conditions(onF1, notResetMeilyr), resetPuzzle);
-		addStep(new Conditions(notResetMeilyr), goToF1Steps);
+		addStep(new Conditions(onF1, notResetHefin), resetPuzzle);
+		addStep(new Conditions(notResetHefin), goToF1Steps);
 
 		addStep(new Conditions(r22, onF2E), p1Pillar23);
 		addStep(new Conditions(r21, onF2E), p1Pillar22);
@@ -393,7 +393,7 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 		int YELLOW = 6;
 		int GREEN = 7;
 
-		notResetMeilyr = new VarbitCondition(8741, YELLOW);
+		notResetHefin = new VarbitCondition(8725, GREEN);
 
 		r1 = new VarbitCondition(8932, WHITE);
 		r2 = new VarbitCondition(8931, WHITE);

@@ -73,6 +73,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.client.plugins.banktags.PluginBankTagService;
 import net.runelite.client.plugins.banktags.TagManager;
+import net.runelite.client.plugins.cluescrolls.ClueBankTagService;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -184,6 +185,12 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(PluginBankTagService.class).to(QuestHelperBankTagService.class);
+	}
+
+	@Override
 	protected void startUp() throws IOException
 	{
 		quests = scanAndInstantiate(getClass().getClassLoader());
@@ -221,12 +228,6 @@ public class QuestHelperPlugin extends Plugin
 		tagManager.removePluginTags(QUEST_BANK_TAG);
 		quests = null;
 		shutDownQuest();
-	}
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(PluginBankTagService.class).to(QuestHelperBankTagService.class);
 	}
 
 	@Subscribe

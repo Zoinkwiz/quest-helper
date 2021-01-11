@@ -29,7 +29,6 @@ import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.conditional.LogicType;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.InventoryID;

@@ -21,7 +21,7 @@ dependencies {
 	testImplementation 'junit:junit:4.12'
 	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
 
-    implementation files('client-1.6.36-SNAPSHOT.jar')
+    implementation files('client-1.6.37-SNAPSHOT.jar')
 }
 
 group = 'com.questhelper'

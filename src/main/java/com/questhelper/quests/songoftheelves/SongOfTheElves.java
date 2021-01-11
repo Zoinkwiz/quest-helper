@@ -138,7 +138,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	QuestStep enterWellCaveForFight, enterWellOfVoyage, leaveIbanRoom, goDownToDwarves, talkToBaxAtDwarves, talkToElenaAtDwarves, fillHole1, fillHole2, fillHole3, fillHole4, fillHole5, fillHole6, fillHole7,
 		talkToBaxAfterFillingHoles, defendDwarfCamp, defeatEssyllt;
 
-	QuestStep enterWellCaveForFragmentFight, defeatFragmentOfSeren, talkToBaxToFinish;
+	QuestStep enterWellCaveForFragmentFight, defeatFragmentOfSeren, defeatFragmentSidebar, talkToBaxToFinish;
 
 	ConditionalStep finalBattle;
 
@@ -510,11 +510,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(182, goToDwarves);
 		steps.put(184, goToDwarves);
 
-		finalBattle = new ConditionalStep(this, enterWellCaveForFragmentFight, "Defeat the Fragment of Seren. Protect from Ranged, and keep your distance.", magicCombatGear);
-		finalBattle.addText("She is only susceptible to magic damage, so bring your best magic gear.");
-		finalBattle.addText("If she moves you close to her and locks you in place, she is about to hit 99% of your max health. Eat up.");
-		finalBattle.addText("If she spawns a healing spell, attack it to destroy it.");
-		finalBattle.addText("If she splits into multiple fragments, attack the one with crystal under it.");
+		finalBattle = new ConditionalStep(this, enterWellCaveForFragmentFight, "Defeat the Fragment of Seren with magic. Protect from Ranged, and keep your distance.", magicCombatGear);
 		finalBattle.addStep(inBossArea, defeatFragmentOfSeren);
 		finalBattle.addStep(inPassF1, goDownToDwarves);
 		finalBattle.addStep(inIbanRoom, leaveIbanRoom);
@@ -1216,6 +1212,12 @@ public class SongOfTheElves extends BasicQuestHelper
 		defeatFragmentOfSeren = new NpcStep(this, NpcID.FRAGMENT_OF_SEREN, "");
 		defeatFragmentOfSeren.addSubSteps(enterWellCaveForFragmentFight);
 
+		defeatFragmentSidebar = new DetailedQuestStep(this, "Defeat the Fragment of Seren. Protect from Ranged, and keep your distance.");
+		defeatFragmentSidebar.addText("She is only susceptible to magic damage, so bring your best magic gear.");
+		defeatFragmentSidebar.addText("If she moves you close to her and locks you in place, she is about to hit 99% of your max health. Eat up.");
+		defeatFragmentSidebar.addText("If she spawns a healing spell, attack it to destroy it.");
+		defeatFragmentSidebar.addText("If she splits into multiple fragments, attack the light coloured one.");
+
 		talkToBaxToFinish = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2241, 3266, 0), "Talk to Baxtorian outside of Prifddinas to finish the quest, and unlock Prifddinas!");
 	}
 
@@ -1357,7 +1359,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Defending the Temple", new ArrayList<>(Arrays.asList(enterWellCaveForFight, talkToBaxAtDwarves, talkToElenaAtDwarves, fillHole1, talkToBaxAfterFillingHoles, defendDwarfCamp, defeatEssyllt)), combatGear));
 
-		allSteps.add(new PanelDetails("Defeat the Fragment", new ArrayList<>(Arrays.asList(finalBattle, talkToBaxToFinish)), magicCombatGear, saradominBrews, superRestorePotions));
+		allSteps.add(new PanelDetails("Defeat the Fragment", new ArrayList<>(Arrays.asList(defeatFragmentSidebar, talkToBaxToFinish)), magicCombatGear, saradominBrews, superRestorePotions));
 
 		return allSteps;
 	}

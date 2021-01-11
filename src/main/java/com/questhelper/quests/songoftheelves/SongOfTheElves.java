@@ -215,13 +215,13 @@ public class SongOfTheElves extends BasicQuestHelper
 		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToMarketStalls, talkedToTownCrier), talkToZenesha);
 		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToMarketStalls), talkToTownCrier);
 
-		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2, talkedToSilverMerchant, talkedToBaker1, talkedToGemMerchant), talkToSpiceSeller);
-		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2, talkedToSilverMerchant, talkedToBaker1), talkToGemMerchant);
-		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2, talkedToSilverMerchant), talkToBaker1);
-		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2), talkToSilverMerchant);
-		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant), talkToBaker2);
-		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader), talkToSilkMerchant);
-		riseUp.addStep(new Conditions(talkedToWestArdougne), talkToFurTrader);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToSilverMerchant, talkedToBaker2, talkedToBaker1, talkedToGemMerchant, talkedToFurTrader, talkedToSpiceSeller), talkToSilkMerchant);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToSilverMerchant, talkedToBaker2, talkedToBaker1, talkedToGemMerchant, talkedToFurTrader), talkToSpiceSeller);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToSilverMerchant, talkedToBaker2, talkedToBaker1, talkedToGemMerchant), talkToFurTrader);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToSilverMerchant, talkedToBaker2, talkedToBaker1), talkToGemMerchant);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToSilverMerchant, talkedToBaker2), talkToBaker1);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToSilverMerchant), talkToBaker2);
+		riseUp.addStep(new Conditions(talkedToWestArdougne), talkToSilverMerchant);
 
 		riseUp.addStep(new Conditions(burnedGrain1, talkedToPriest1, burnedGrain2, talkedToSarah, burnedGrain3), talkToChadwell);
 		riseUp.addStep(new Conditions(burnedGrain1, talkedToPriest1, burnedGrain2, talkedToSarah), useTinderboxOnSWGrain);
@@ -688,8 +688,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkedToChadwell = new VarbitCondition(9065, 1);
 		talkedToWestArdougne = new Conditions(burnedGrain1, burnedGrain2, burnedGrain3, talkedToPriest1, talkedToSarah, talkedToChadwell);
 		talkedToSilverMerchant = new VarbitCondition(9074, 1);
-		talkedToBaker1 = new VarbitCondition(9081, 1);
-		talkedToBaker2 = new VarbitCondition(9073, 1);
+		talkedToBaker1 = new VarbitCondition(9081, 1); // East baker
+		talkedToBaker2 = new VarbitCondition(9073, 1); // West baker
 		talkedToGemMerchant = new VarbitCondition(9072, 1);
 		talkedToFurTrader = new VarbitCondition(9071, 1);
 		talkedToSpiceSeller = new VarbitCondition(9070, 1);

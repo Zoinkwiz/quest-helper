@@ -134,7 +134,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 
 		hasRock = new ItemRequirementCondition(rockHighlighted);
 		hasStoneBowl = new ItemRequirementCondition(stoneBowl);
-		
+
 		// 452 = 1, gone through Juna's first dialog
 	}
 

@@ -409,7 +409,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		saw = new ItemRequirement("Saw", ItemID.SAW);
 		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakAmulet.setTip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
-		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET);
+		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET,1,true);
 		ghostspeakOrMory2.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
 		goutweed.setHighlightInInventory(true);
@@ -760,7 +760,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		// Sphinx allows you to always talk to cats: 6144 0->1, 6145 1->0
 
 		talkToOneiromancer = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Talk to the Oneiromancer in the south east of Lunar Isle.", sealOfPassage);
-		talkToOneiromancer.addDialogStep("No thanks.");
+		talkToOneiromancer.addDialogSteps("Bob's memories","No thanks.");
 		fillDreamVial = new ObjectStep(this, ObjectID.SINK_16705, new WorldPoint(2091, 3922, 0), "Fill the vial with water.", dreamVial);
 		fillDreamVial.addIcon(ItemID.DREAM_VIAL_EMPTY);
 
@@ -1114,7 +1114,7 @@ public class DragonSlayerII extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToAlec, talkToDallas, talkToDallasOnCrandor, usePickaxeOnBlockage, enterBlockage, investigateMural, killSpawn,
-			investigateMuralAgain)), pickaxe, combatGear));
+			investigateMuralAgain,talkToDallasAfterMural)), pickaxe, combatGear));
 		allSteps.add(new PanelDetails("Investigating Fossil Island", new ArrayList<>(Arrays.asList(enterHouseOnTheHill, talkToDallasInHouse, searchNorthChest,
 			goUpstairsForMap, searchStoneChestNorth, leaveHouseForMap, searchFungi, searchBriar, searchMushtree, enterHouseWithMapPieces, startMapPuzzle,
 			talkToDallasAfterSolvingMap))));

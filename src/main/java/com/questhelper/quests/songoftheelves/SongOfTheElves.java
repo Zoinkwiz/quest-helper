@@ -215,7 +215,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToMarketStalls, talkedToTownCrier), talkToZenesha);
 		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToMarketStalls), talkToTownCrier);
 
-		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2, talkedToSilverMerchant, talkedToBaker1), talkToSpiceSeller);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2, talkedToSilverMerchant, talkedToBaker1, talkedToGemMerchant), talkToSpiceSeller);
+		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2, talkedToSilverMerchant, talkedToBaker1), talkToGemMerchant);
 		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2, talkedToSilverMerchant), talkToBaker1);
 		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant, talkedToBaker2), talkToSilverMerchant);
 		riseUp.addStep(new Conditions(talkedToWestArdougne, talkedToFurTrader, talkedToSilkMerchant), talkToBaker2);

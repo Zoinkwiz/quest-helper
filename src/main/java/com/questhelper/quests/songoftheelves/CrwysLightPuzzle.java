@@ -226,7 +226,7 @@ public class CrwysLightPuzzle extends ConditionalStep
 		goToF1.addStep(onF0, goF0ToF1);
 
 		goToF2 = new ConditionalStep(getQuestHelper(), talkToAmlodd, "Go to the top floor of the library.");
-		goToF2.addStep(onF1, goF1ToF0);
+		goToF2.addStep(onF1, goF1ToF2);
 		goToF2.addStep(onF0, goF0ToF1);
 	}
 

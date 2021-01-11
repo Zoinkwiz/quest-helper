@@ -858,7 +858,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		searchBed = new ObjectStep(this, NullObjectID.NULL_37265, new WorldPoint(2533, 3333, 0), "Search the bed in the house west of the Mourner base.");
 		searchBed.addDialogStep("Climb through it.");
 		talkToElenaInHideout = new NpcStep(this, NpcID.ELENA_8798, new WorldPoint(2545, 9746, 0), "Talk to Elena in the hideout.");
-		talkToElenaInHideout.addDialogSteps("It's all in a day's work.", "I am.");
+		talkToElenaInHideout.addDialogSteps("It's not good, but it might be our only option.","It's all in a day's work.", "I am.");
 		leaveHideout = new ObjectStep(this, ObjectID.LADDER_35799, new WorldPoint(2546, 9744, 0), "Leave the hideout.");
 
 		useTinderboxOnGrain = new ObjectStep(this, NullObjectID.NULL_37330, new WorldPoint(2517, 3315, 0), "Use a tinderbox on the grain in the West Ardougne council building.", tinderboxHighlighted, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
@@ -1290,8 +1290,8 @@ public class SongOfTheElves extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, useRedDyeOnSteelFullHelm, talkToAlrena,
-			useTabardOnPlatebody, talkToEdmondWithOutfit, goDownstairsCastle, goUpFromCastleBasement, searchElenaCabinet, talkToElenaInCellAgain, talkToEdmondAfterFreeingElena)), steelFullHelm, steelPlatebody, steelPlatelegs, redDye, purpleDye, silk, mournersOutfit, tinderbox));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, talkToAlrena, useRedDyeOnSteelFullHelm,
+			useTabardOnPlatebody, talkToEdmondWithOutfit, goDownstairsCastle, talkToElenaInCell, goUpFromCastleBasement, searchElenaCabinet, talkToElenaInCellAgain, talkToEdmondAfterFreeingElena)), steelFullHelm, steelPlatebody, steelPlatelegs, redDye, purpleDye, silk, mournersOutfit, tinderbox));
 
 		allSteps.add(new PanelDetails("Inciting the citizens", new ArrayList<>(Arrays.asList(searchBed, talkToElenaInHideout, leaveHideout, useTinderboxOnGrain, talkToPriest, useTinderboxOnChurchGrain, talkToSarah, useTinderboxOnSWGrain, talkToChadwell, talkToSilverMerchant,
 			talkToBaker1, talkToGemMerchant, talkToFurTrader, talkToSpiceSeller, talkToSilkMerchant, talkToTownCrier, talkToZenesha, talkToEstateAgent, talkToProbita, talkToAemad, talkToPriest2, talkToOrbon)), tinderbox, mournersOutfit, ardyFullHelm, ardyPlatebody, ardyPlatelegs));
@@ -1352,7 +1352,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defending Llyeta", new ArrayList<>(Arrays.asList(enterLlyetaForFighting, searchTableForEoin, goUpLletyaLadder, searchCookingPots, fightArianwyn)), combatGear));
 
 		allSteps.add(new PanelDetails("Finding Ithell and Meilyr", new ArrayList<>(Arrays.asList(talkToBaxAfterLletyaFightForIthellClue, checkSymbol1, checkSymbol2, checkSymbol3,
-			goToSecondFloorSymbols, checkSymbol4, checkSymbol5, buildStatue, talkToIthell, digNearSwamp, digNearSTASH, digOutsidePrif, spinOutsidePass, talkToMeilyr)), limestoneBricks8, saw, hammer, limestoneBricks8, spade, combatGear));
+			goToSecondFloorSymbols, checkSymbol4, checkSymbol5, buildStatue, talkToIthell, digNearSwamp, digNearSTASH, digOutsidePrif, spinOutsidePass, talkToMeilyr)), limestoneBricks8, saw, hammer, spade, combatGear));
 
 		allSteps.add(new PanelDetails("Defending the Temple", new ArrayList<>(Arrays.asList(enterWellCaveForFight, talkToBaxAtDwarves, talkToElenaAtDwarves, fillHole1, talkToBaxAfterFillingHoles, defendDwarfCamp, defeatEssyllt)), combatGear));
 

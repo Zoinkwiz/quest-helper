@@ -136,7 +136,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY, 1, true);
 		ironChainbody.setTip("You can buy one from the Chainmail Shop in south Falador");
 		cabbage = new ItemRequirement("Cabbage (NOT from Draynor Manor)", ItemID.CABBAGE);
-		cabbage.setTip("You can get one from the Edgeville Monastary east of the Black Knights; Fortress.");
+		cabbage.setTip("You can get one from the Edgeville Monastery east of the Black Knights' Fortress.");
 		bronzeMed = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM, 1, true);
 		bronzeMed.setTip("You can get one from the helmet shop in Barbarian Village.");
 	}

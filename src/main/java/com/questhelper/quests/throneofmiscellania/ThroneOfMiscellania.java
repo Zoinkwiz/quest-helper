@@ -60,7 +60,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ThroneOfMiscellania extends BasicQuestHelper
 {
-	ItemRequirement ironBar, logs, pickaxe, rake, axe, harpoon, lobsterPot, reputationItems, ring, flowerOr15Coins, flowers, cake, bow, dramenStaff,
+	ItemRequirement ironBar, logs, pickaxe, rake, axe, harpoon, lobsterPot, reputationItems, ring, flowers, cake, bow, dramenStaff,
 		giantNib, giantPen, goodAnthem, awfulAnthem, treaty;
 
 	ConditionForStep inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom, hasFlowers,
@@ -219,8 +219,9 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING, -1);
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);
-		flowerOr15Coins = new ItemRequirement("A flower or 15 coins to buy some during the quest", ItemID.BLACK_FLOWERS, -1);
+
 		flowers = getAllFlowers();
+		flowers.setTip("You can buy some from the Flower Girl on Miscellania for 15 coins");
 		flowers.setHighlightInInventory(true);
 		cake = new ItemRequirement("Cake", ItemID.CAKE);
 		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
@@ -458,7 +459,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reqs.add(ironBar);
 		reqs.add(logs);
 		reqs.add(ring);
-		reqs.add(flowerOr15Coins);
+		reqs.add(flowers);
 
 		Player player = client.getLocalPlayer();
 
@@ -505,7 +506,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 			giftItem = cake;
 		}
 
-		allSteps.add(new PanelDetails("Talk to King Vargas", new ArrayList<>(Arrays.asList(travelToMisc, getFlowers, talkToVargas)), flowerOr15Coins, giftItem, ring, ironBar, logs, reputationItems));
+		allSteps.add(new PanelDetails("Talk to King Vargas", new ArrayList<>(Arrays.asList(travelToMisc, getFlowers,
+			talkToVargas)), flowers, giftItem, ring, ironBar, logs, reputationItems));
 
 		PanelDetails astridPanel = new PanelDetails("Win over Astrid",
 			new ArrayList<>(Arrays.asList(goUpstairsToAstrid, talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,

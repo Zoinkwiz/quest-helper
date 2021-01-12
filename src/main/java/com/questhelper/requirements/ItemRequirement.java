@@ -126,7 +126,7 @@ public class ItemRequirement extends Requirement
 
 	public boolean isActualItem()
 	{
-		return id != -1;
+		return id != -1 && quantity != -1;
 	}
 
 	public String getName()

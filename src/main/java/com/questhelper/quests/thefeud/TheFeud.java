@@ -44,6 +44,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.Client;
@@ -137,7 +138,7 @@ public class TheFeud extends BasicQuestHelper
 		talkedToThug = new VarbitCondition(315, 2);
 		talkedToBandit = new VarbitCondition(315, 3);
 
-		talkedToBanditReturn = new VarbitCondition(316, true,0); // Might have missed?
+		talkedToBanditReturn = new VarbitCondition(316, true, 0); // Might have missed?
 		// 340 -> 1 when pickpocket villager
 		doorOpen = new VarbitCondition(320, 1);
 
@@ -328,8 +329,7 @@ public class TheFeud extends BasicQuestHelper
 	{
 		hideBehindCactus = new ObjectStep(this, ObjectID.CACTUS_6277, new WorldPoint(3364, 2968, 0)
 			, "Hide behind the cactus", glovesEquipped, disguiseEquipped);
-		ConditionalStep secondJob = new ConditionalStep(this, hideBehindCactus);
-		return secondJob;
+		return new ConditionalStep(this, hideBehindCactus);
 	}
 
 	private QuestStep blackjackVillager()
@@ -543,6 +543,12 @@ public class TheFeud extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return new ArrayList<>(Collections.singletonList(combatGear));
+	}
+
+	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Arrays.asList("Bandit champion (level 70) - Safespottable", "Tough Guy (level 75) - Safespottable"));
@@ -554,7 +560,7 @@ public class TheFeud extends BasicQuestHelper
 		ArrayList<PanelDetails> steps = new ArrayList<>();
 
 		PanelDetails startingPanel = new PanelDetails("Starting out",
-			new ArrayList<>(Arrays.asList(startQuest)),
+			new ArrayList<>(Collections.singletonList(startQuest)),
 			unspecifiedCoins);
 		steps.add(startingPanel);
 

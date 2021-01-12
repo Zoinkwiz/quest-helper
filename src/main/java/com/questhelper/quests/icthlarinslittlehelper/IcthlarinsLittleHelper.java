@@ -216,6 +216,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS);
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
+		bucketOfSap.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
+			"inventory");
 
 		food = new ItemRequirement("Combat gear, food + prayer potions", -1, -1);
 

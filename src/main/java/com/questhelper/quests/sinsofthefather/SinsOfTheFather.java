@@ -456,7 +456,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		vyrewatchOutfitOrCoins = new ItemRequirement("Vyrewatch outfit or 1950 coins", -1, -1);
+		vyrewatchOutfitOrCoins = new ItemRequirements("Vyrewatch outfit or 1950 coins", vyreShoes, vyreLegs, vyreTop);
 
 		drakanMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION);
 		moryLegs3 = new ItemRequirement("Morytania legs 3/4", ItemID.MORYTANIA_LEGS_3);

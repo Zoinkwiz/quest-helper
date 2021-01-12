@@ -189,7 +189,11 @@ public class GhostsAhoy extends BasicQuestHelper
 		chestKey.setHighlightInInventory(true);
 
 		nettleTea = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
+		nettleTea.setTip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
+			"then using them on a bowl of water. Cook this to have nettle tea");
 		nettleTeaHighlighted = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
+		nettleTeaHighlighted.setTip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
+			"then using them on a bowl of water. Cook this to have nettle tea");
 		nettleTeaHighlighted.setHighlightInInventory(true);
 
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);

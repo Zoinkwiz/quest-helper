@@ -468,7 +468,7 @@ public class QuestOverviewPanel extends JPanel
 			JLabel itemRequiredLabel = new JLabel();
 			itemRequiredLabel.setForeground(Color.GRAY);
 			itemRequiredLabel.setText("None");
-			questItemRecommendedListPanel.add(itemRequiredLabel);
+			questItemRequirementsListPanel.add(itemRequiredLabel);
 		}
 
 		/* Recommended items */

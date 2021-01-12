@@ -103,6 +103,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	private void setupItemRequirements()
 	{
 		litSapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702);
+		litSapphireLantern.setTip("You can make this by using a cut sapphire on a bullseye lantern");
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
@@ -110,8 +111,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 
 
 		litSapphireLanternHighlighted = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702);
-		litSapphireLanternHighlighted.setTip("You can make this by using a cut sapphire on a bullseye lantern then " +
-			"lighting it");
+		litSapphireLanternHighlighted.setTip("You can make this by using a cut sapphire on a bullseye lantern");
 		litSapphireLanternHighlighted.setHighlightInInventory(true);
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselHighlighted.setHighlightInInventory(true);

@@ -57,9 +57,10 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class ATasteOfHope extends BasicQuestHelper
 {
-	ItemRequirement coins1000, knife, emerald, chisel, enchantEmeraldRunesOrTablet, rodOfIvandis, pestleAndMortarHighlighted, vialOfWater, combatGear, airRune3, airStaff,
-		cosmicRune, enchantTablet, enchantRunes, vial, herb, meatHighlighted, crushedMeat, unfinishedPotion, unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes,
-		flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB, ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted;
+	ItemRequirement coins1000, knife, emerald, chisel, enchantEmeraldRunesOrTablet, rodOfIvandis, pestleAndMortarHighlighted, vialOfWater,
+		combatGear, airRune3, airStaff, cosmicRune, enchantTablet, enchantRunes, vial, herb, meatHighlighted, crushedMeat, unfinishedPotion,
+		unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes, flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB,
+		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip;
 
 	ConditionForStep inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6, inSerafinaHouse, hasHerb, hasMeat, hasPestle, hasVialOrVialOfWater,
 		hasVialOfWater, hasCrushedMeat, hasUnfinishedPotion, hasUnfinishedBloodPotion, hasBloodVial, hasBloodPotion, hasPotion, hasVial, hasOldNotes, hasSickle, hasEmeraldSickle,
@@ -242,6 +243,8 @@ public class ATasteOfHope extends BasicQuestHelper
 
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted.setHighlightInInventory(true);
+		vialOfWaterNoTip = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
+
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
 		vialOfWater.setHighlightInInventory(true);
 		vialOfWater.setTip("You can fill the vial upstairs on the broken fountain");
@@ -497,7 +500,8 @@ public class ATasteOfHope extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins1000, vialOfWater, knife, emerald, chisel, enchantEmeraldRunesOrTablet, combatGear));
+		return new ArrayList<>(Arrays.asList(coins1000, vialOfWaterNoTip, knife, emerald, chisel,
+			enchantEmeraldRunesOrTablet, combatGear));
 	}
 
 	@Override
@@ -514,7 +518,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Spying", new ArrayList<>(Arrays.asList(climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof, climbSecondVent, climbUpToRoof, climbDownFromRoof, lookThroughWindow))));
 		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(returnToBase, talkToSafalaanAfterSpying, talkToFlaygian, enterSerafinaHouse, talkToSafalaanInSerafinaHouse, searchForHerb, searchForMeat,
 			searchForPestle, useHerbOnVial, usePestleOnMeat, useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain, useMeatOnBlood, useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes,
-			enterBaseAfterSerafina, talkToSafalaanForAbominationFight, killAbomination, talkToSafalaanAfterAbominationFight)), combatGear, vialOfWater));
+			enterBaseAfterSerafina, talkToSafalaanForAbominationFight, killAbomination,
+			talkToSafalaanAfterAbominationFight)), combatGear, vialOfWaterNoTip));
 		allSteps.add(new PanelDetails("Plotting revenge", new ArrayList<>(Arrays.asList(enterOldManRalBasement, talkToSafalaanInRalBasement, talkToVertidaInRalBasement, readFlaygianNotes, getSickle, getChain, useEmeraldOnSickle,
 			enchantSickle, addSickleToRod, talkToSafalaanAfterFlail)), emerald, chisel, enchantEmeraldRunesOrTablet));
 		allSteps.add(new PanelDetails("Rising up", new ArrayList<>(Arrays.asList(talkToKaelSidebar, killRanisSidebar, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd)), combatGear, ivandisFlail));

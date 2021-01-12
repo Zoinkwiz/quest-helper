@@ -25,6 +25,7 @@
 package com.questhelper.quests.mourningsendpartii;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -402,13 +403,13 @@ public class MourningsEndPartII extends BasicQuestHelper
 		deathTalismanHeader = new ItemRequirement("Death talisman or 50 items asked of you by a dwarf", ItemID.DEATH_TALISMAN);
 		deathTalismanNote = new ItemRequirement("Death talisman, or if you're an ironman you can earn one later", ItemID.DEATH_TALISMAN);
 
-		mournersOutfit = new ItemRequirement("Full Mourner's outfit", -1, -1);
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
 		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true);
 		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true);
 		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true);
 		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true);
+		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves);
 
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);

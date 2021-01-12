@@ -220,7 +220,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		tryToEnterBarrier.addSubSteps(killLizardman);
 
 		inspectUnstableAltar = new ObjectStep(this, ObjectID.UNSTABLE_ALTAR, new WorldPoint(1172, 9929, 0), "Inspect the Unstable Altar in the south room.");
-		leaveCave = new ObjectStep(this, ObjectID.ROPE_31967, new WorldPoint(1168, 9973, 0), "Leave the cavern. You can log out and back in to appear back at the entrance.");
+		leaveCave = new ObjectStep(this, ObjectID.ROPE_31967, new WorldPoint(1168, 9973, 0), "Leave the cavern. You can hop worlds to appear back at the entrance.");
 		returnToDuffy = new NpcStep(this, NpcID.HISTORIAN_DUFFY_8163, new WorldPoint(1278, 3561, 0), "Return to Historian Duffy.");
 		enterCreviceAgain = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0), "Enter the crevice west side of Quidamortem again.");
 		enterCreviceAgain.addDialogStep("Yes.");

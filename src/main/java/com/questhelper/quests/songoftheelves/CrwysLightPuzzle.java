@@ -118,7 +118,7 @@ public class CrwysLightPuzzle extends ConditionalStep
 		p1Pillar1.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35276, new WorldPoint(2595, 6144, 1),
-			"Add the fractured crystal to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
+			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
 		p1Pillar2.setWorldMapPoint(new WorldPoint(2787, 6144, 1));
 		p1Pillar2.addIcon(ItemID.HAND_MIRROR_23775);
 

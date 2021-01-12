@@ -51,11 +51,7 @@ public class SpellbookRequirement extends Requirement
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
 		String text = getDisplayText();
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
+		Color color = getColor(client);
 
 		lines.add(LineComponent.builder()
 			.left(text)
@@ -63,6 +59,17 @@ public class SpellbookRequirement extends Requirement
 			.build());
 
 		return lines;
+	}
+
+	@Override
+	public Color getColor(Client client)
+	{
+		Color color = Color.RED;
+		if (check(client))
+		{
+			color = Color.GREEN;
+		}
+		return color;
 	}
 
 	@Override

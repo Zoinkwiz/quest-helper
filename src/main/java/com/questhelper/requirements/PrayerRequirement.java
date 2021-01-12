@@ -55,11 +55,7 @@ public class PrayerRequirement extends Requirement
 	{
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
+		Color color = getColor(client);
 
 		lines.add(LineComponent.builder()
 			.left(getDisplayText())
@@ -67,6 +63,16 @@ public class PrayerRequirement extends Requirement
 			.build());
 
 		return lines;
+	}
+
+	public Color getColor(Client client)
+	{
+		Color color = Color.RED;
+		if (check(client))
+		{
+			color = Color.GREEN;
+		}
+		return color;
 	}
 
 	@Override

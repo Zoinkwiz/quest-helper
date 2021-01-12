@@ -170,7 +170,8 @@ public class ItemRequirement extends Requirement
 		return getName();
 	}
 
-	protected Color getColor(Client client)
+	@Override
+	public Color getColor(Client client)
 	{
 		Color color;
 		if (!this.isActualItem())

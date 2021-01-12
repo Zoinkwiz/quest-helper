@@ -76,7 +76,7 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	protected Color getColor(Client client)
+	public Color getColor(Client client)
 	{
 		Color color;
 

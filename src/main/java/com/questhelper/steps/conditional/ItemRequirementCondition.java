@@ -67,7 +67,7 @@ public class ItemRequirementCondition extends ConditionForStep
 		int successes = 0;
 		for (ItemRequirement itemRequirement : itemRequirements)
 		{
-			if (itemRequirement.checkConsideringSlot(client))
+			if (itemRequirement.check(client, true))
 			{
 				successes++;
 			}

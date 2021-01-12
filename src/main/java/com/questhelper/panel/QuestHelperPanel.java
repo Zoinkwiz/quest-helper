@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.BankItems;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,6 +39,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import lombok.extern.slf4j.Slf4j;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -295,5 +297,10 @@ class QuestHelperPanel extends PluginPanel
 	public void emptyBar()
 	{
 		searchBar.setText("");
+	}
+
+	public void updateItemRequirements(Client client, BankItems bankItems)
+	{
+		questOverviewPanel.updateRequirements(client, bankItems);
 	}
 }

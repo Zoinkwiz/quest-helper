@@ -25,6 +25,7 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.BankItems;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +36,6 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ItemRequirement extends Requirement
@@ -189,6 +189,32 @@ public class ItemRequirement extends Requirement
 		return color;
 	}
 
+	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
+	{
+		Color color;
+		if (!this.isActualItem())
+		{
+			color = Color.GRAY;
+		}
+		else if (this.check(client, checkConsideringSlotRestrictions))
+		{
+			color = Color.GREEN;
+		}
+		else
+		{
+			color = Color.RED;
+		}
+		if (color == Color.RED && bankItems != null)
+		{
+			if (check(client, false, bankItems))
+			{
+				color = Color.WHITE;
+			}
+		}
+
+		return color;
+	}
+
 	private ArrayList<LineComponent> getAdditionalText(Client client)
 	{
 		Color equipColor = Color.GREEN;
@@ -219,9 +245,9 @@ public class ItemRequirement extends Requirement
 		return lines;
 	}
 
-	public boolean check(Client client, boolean checkEquippedOnly)
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
-		int remainder = checkSpecificItem(client, id, checkEquippedOnly);
+		int remainder = checkSpecificItem(client, id, checkConsideringSlotRestrictions, items);
 		if (remainder <= 0)
 		{
 			return true;
@@ -233,7 +259,7 @@ public class ItemRequirement extends Requirement
 			{
 				remainder = quantity;
 			}
-			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkEquippedOnly));
+			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkConsideringSlotRestrictions, items));
 			if (remainder <= 0)
 			{
 				return true;
@@ -242,7 +268,7 @@ public class ItemRequirement extends Requirement
 		return false;
 	}
 
-	public int checkSpecificItem(Client client, int itemID, boolean checkEquippedOnly)
+	public int checkSpecificItem(Client client, int itemID, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
 		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
 		int tempQuantity = quantity;
@@ -252,7 +278,7 @@ public class ItemRequirement extends Requirement
 			tempQuantity -= getNumMatches(equipped, itemID);
 		}
 
-		if (!checkEquippedOnly)
+		if (!checkConsideringSlotRestrictions || !equip)
 		{
 			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 			if (inventory != null)
@@ -261,16 +287,24 @@ public class ItemRequirement extends Requirement
 			}
 		}
 
+		if (items != null)
+		{
+			tempQuantity -= getNumMatches(items, itemID);
+		}
+
 		return tempQuantity;
 	}
 
 	public int getNumMatches(ItemContainer items, int itemID)
 	{
+		return getNumMatches(items.getItems(), itemID);
+	}
+
+	public int getNumMatches(Item[] items, int itemID)
+	{
 		int tempQuantity = 0;
 
-		Item[] containerItems = items.getItems();
-
-		for (Item item : containerItems)
+		for (Item item : items)
 		{
 			if (item.getId() == itemID)
 			{
@@ -285,8 +319,8 @@ public class ItemRequirement extends Requirement
 		return check(client, false);
 	}
 
-	public boolean checkConsideringSlot(Client client)
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
-		return check(client, equip);
+		return check(client, checkConsideringSlotRestrictions, null);
 	}
 }

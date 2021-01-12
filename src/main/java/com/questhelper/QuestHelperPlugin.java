@@ -49,6 +49,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
@@ -56,6 +58,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
@@ -119,6 +122,8 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_RFD_FINALE = "Start Quest Helper (Finale)";
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
+
+	private BankItems bankItems = new BankItems();
 
 	@Inject
 	private Client client;
@@ -239,6 +244,22 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
+		{
+			bankItems.setItems(null);
+			bankItems.setItems(event.getItemContainer().getItems());
+		}
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		panel.updateItemRequirements(client, bankItems);
+	}
+
+	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
 		final GameState state = event.getGameState();
@@ -246,6 +267,7 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGIN_SCREEN)
 		{
 			panel.refresh(new ArrayList<>(), true);
+			bankItems.setItems(null);
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
 				shutDownQuest();
@@ -522,6 +544,7 @@ public class QuestHelperPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
+				panel.updateItemRequirements(client, bankItems);
 			});
 		}
 		else

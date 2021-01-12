@@ -46,7 +46,7 @@ public class QuestHelperOverlay extends OverlayPanel
 	public QuestHelperOverlay(QuestHelperPlugin plugin)
 	{
 		this.plugin = plugin;
-		setPriority(OverlayPriority.LOW);
+		setPriority(OverlayPriority.HIGHEST);
 	}
 
 	@Override

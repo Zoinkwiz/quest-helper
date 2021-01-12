@@ -56,14 +56,15 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class TearsOfGuthix extends BasicQuestHelper
 {
-	ItemRequirement litSapphireLantern, chisel, tinderbox, pickaxe, rope, litSapphireLanternHighlighted, ropeHighlighted, tinderboxHighlighted, pickaxeHighlighted,
-		chiselHighlighted, rockHighlighted, stoneBowl;
+	ItemRequirement litSapphireLantern, chisel, tinderbox, pickaxe, rope, litSapphireLanternHighlighted,
+		ropeHighlighted, tinderboxHighlighted, pickaxeHighlighted, chiselHighlighted, rockHighlighted, stoneBowl;
 
 	ConditionForStep inSwamp, inJunaRoom, atRocks, addedRope, hasRock, hasStoneBowl;
 
 	Zone swamp, junaRoom, rocks;
 
-	QuestStep addRope, enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock, talkToJunaToFinish;
+	QuestStep addRope, enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock,
+		talkToJunaToFinish;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -109,6 +110,8 @@ public class TearsOfGuthix extends BasicQuestHelper
 
 
 		litSapphireLanternHighlighted = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702);
+		litSapphireLanternHighlighted.setTip("You can make this by using a cut sapphire on a bullseye lantern then " +
+			"lighting it");
 		litSapphireLanternHighlighted.setHighlightInInventory(true);
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselHighlighted.setHighlightInInventory(true);
@@ -140,19 +143,26 @@ public class TearsOfGuthix extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		addRope = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0), "Enter the hole to Lumbridge swamp.", ropeHighlighted, litSapphireLantern, chisel, pickaxe, tinderbox);
+		addRope = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+			"Enter the hole to Lumbridge swamp.", ropeHighlighted, litSapphireLantern, chisel, pickaxe, tinderbox);
 		addRope.addIcon(ItemID.ROPE);
 
-		enterSwamp = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0), "Enter the hole to Lumbridge swamp.", litSapphireLantern, chisel, pickaxe, tinderbox);
+		enterSwamp = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+			"Enter the hole to Lumbridge swamp.", litSapphireLantern, chisel, pickaxe, tinderbox);
 		enterSwamp.addSubSteps(addRope);
 
-		enterJunaRoom = new ObjectStep(this, ObjectID.TUNNEL_6659, new WorldPoint(3226, 9540, 0), "Enter the cave in the south east corner of the swamp.");
-		talkToJuna = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2), "Talk to Juna.");
+		enterJunaRoom = new ObjectStep(this, ObjectID.TUNNEL_6659, new WorldPoint(3226, 9540, 0),
+			"Enter the cave in the south east corner of the swamp.");
+		talkToJuna = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2),
+			"Talk to Juna.");
 		talkToJuna.addDialogStep("Okay...");
-		useLanternOnLightCreature = new NpcStep(this, NpcID.LIGHT_CREATURE_5783, new WorldPoint(3228, 9518, 2), "Go back up the rocks and use the lit sapphire lantern on one of the light creatures nearby.", litSapphireLanternHighlighted);
-		mineRock = new ObjectStep(this, ObjectID.ROCKS_6670, new WorldPoint(3229, 9497, 2), "Mine one of the rocks.", pickaxe);
+		useLanternOnLightCreature = new NpcStep(this, NpcID.LIGHT_CREATURE_5783, new WorldPoint(3228, 9518, 2),
+			"Go back up the rocks and use the lit sapphire lantern on one of the light creatures nearby.", litSapphireLanternHighlighted);
+		mineRock = new ObjectStep(this, ObjectID.ROCKS_6670, new WorldPoint(3229, 9497, 2),
+			"Mine one of the rocks.", pickaxe);
 		useChiselOnRock = new DetailedQuestStep(this, "Use a chisel on the magic stone.", chiselHighlighted, rockHighlighted);
-		talkToJunaToFinish = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2), "Talk to Juna to complete the quest.");
+		talkToJunaToFinish = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2),
+			"Talk to Juna to complete the quest.");
 
 	}
 

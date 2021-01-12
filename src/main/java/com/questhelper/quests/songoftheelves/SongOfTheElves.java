@@ -1386,7 +1386,8 @@ public class SongOfTheElves extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Able to survive Shadows (level 73) continually attacking you"));
+		return new ArrayList<>(Arrays.asList("Many Mourners, Paladins and Knights of Ardougne", "Arianwyn" +
+			" (level 182)", "Essyllt (level 236)", "Fragment of Seren (level 494)"));
 	}
 
 	@Override

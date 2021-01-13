@@ -31,7 +31,7 @@ public enum Operation
 	LESS_EQUAL((x,y) -> x <= y),
 	EQUAL(Integer::equals),
 	GREATER_EQUAL((x,y) -> x >= y),
-	NOT_EQUAL((x,y) -> x != y);
+	NOT_EQUAL((x,y) -> !x.equals(y));
 
 	private final BiFunction<Integer, Integer, Boolean> operation;
 	Operation(BiFunction<Integer, Integer, Boolean> operation) {

@@ -9,18 +9,19 @@ import net.runelite.api.Favour;
 @Getter
 public class FavourRequirement extends Requirement
 {
-	private Favour kourendFavour;
-	private double percentage;
+	private Favour houseFavour;
+	private int percentage;
 
 	@Override
 	public boolean check(Client client)
 	{
-		return client.getVarbit() >= percentage;
+		int realFavour = client.getVar(houseFavour.getVarbit());
+		return (realFavour / 10) >= percentage;
 	}
 
 	@Override
 	public String getDisplayText()
 	{
-		return null;
+		return percentage + "% " + houseFavour.getName() + " favour";
 	}
 }

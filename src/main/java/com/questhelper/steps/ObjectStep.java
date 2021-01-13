@@ -25,6 +25,8 @@
 package com.questhelper.steps;
 
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.overlay.DirectionArrow;
+import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -126,7 +128,7 @@ public class ObjectStep extends DetailedQuestStep
 
 	public void checkTileForObject(WorldPoint wp)
 	{
-		Collection<WorldPoint> localWorldPoints = toLocalInstance(client, wp);
+		Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, wp);
 
 		for (WorldPoint point : localWorldPoints)
 		{
@@ -287,13 +289,16 @@ public class ObjectStep extends DetailedQuestStep
 		if (iconItemID != -1 && object != null && questHelper.getConfig().showSymbolOverlay())
 		{
 			Shape clickbox = object.getClickbox();
-			if (clickbox != null)
+			if (clickbox != null && !inCutscene)
 			{
 				Rectangle2D boundingBox = clickbox.getBounds2D();
-				addItemImageToLocation(graphics, (int) boundingBox.getCenterX() - 15, (int) boundingBox.getCenterY() - 10);
+				graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15,  (int) boundingBox.getCenterY() - 10,
+					null);
 			}
 		}
 	}
+
+
 
 	@Override
 	public void renderArrow(Graphics2D graphics)
@@ -309,7 +314,7 @@ public class ObjectStep extends DetailedQuestStep
 			int x = (int) boundingBox.getCenterX();
 			int y = (int) boundingBox.getMinY() - 20;
 
-			drawWorldArrow(graphics, x, y);
+			DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
 		}
 	}
 
@@ -333,7 +338,7 @@ public class ObjectStep extends DetailedQuestStep
 		Collection<WorldPoint> localWorldPoints = null;
 		if (worldPoint != null)
 		{
-			localWorldPoints = toLocalInstance(client, worldPoint);
+			localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
 		}
 
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))

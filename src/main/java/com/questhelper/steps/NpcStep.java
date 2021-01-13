@@ -26,11 +26,12 @@
 package com.questhelper.steps;
 
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.overlay.DirectionArrow;
+import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,10 +40,6 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
@@ -65,8 +62,6 @@ public class NpcStep extends DetailedQuestStep
 	private boolean allowMultipleHighlights;
 
 	private final ArrayList<NPC> npcs = new ArrayList<>();
-
-	protected BufferedImage npcIcon;
 
 	@Setter
 	private int maxRoamRange = 48;
@@ -172,7 +167,6 @@ public class NpcStep extends DetailedQuestStep
 		npcs.remove(event.getNpc());
 	}
 
-
 	@Subscribe
 	public void onNpcChanged(NpcChanged npcChanged)
 	{
@@ -202,22 +196,11 @@ public class NpcStep extends DetailedQuestStep
 
 		if (worldPoint != null)
 		{
-			Collection<WorldPoint> localWorldPoints = toLocalInstance(client, worldPoint);
+			Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
 			if (localWorldPoints.isEmpty())
 			{
 				return;
 			}
-		}
-
-		if (npcIcon == null)
-		{
-			npcIcon = getQuestImage();
-		}
-
-		if (iconItemID != -1 && icon == null)
-		{
-			addIconImage();
-			npcIcon = icon;
 		}
 
 		if (!questHelper.getConfig().showSymbolOverlay())
@@ -227,7 +210,8 @@ public class NpcStep extends DetailedQuestStep
 
 		for (NPC otherNpc : npcs)
 		{
-			OverlayUtil.renderActorOverlayImage(graphics, otherNpc, npcIcon, questHelper.getConfig().targetOverlayColor(), IMAGE_Z_OFFSET);
+			OverlayUtil.renderActorOverlayImage(graphics, otherNpc, icon, questHelper.getConfig().targetOverlayColor(),
+				IMAGE_Z_OFFSET);
 		}
 
 		if (npcs.size() == 0)
@@ -235,7 +219,8 @@ public class NpcStep extends DetailedQuestStep
 			return;
 		}
 
-		OverlayUtil.renderActorOverlayImage(graphics, npcs.get(0), npcIcon, questHelper.getConfig().targetOverlayColor(), IMAGE_Z_OFFSET);
+		OverlayUtil.renderActorOverlayImage(graphics, npcs.get(0), icon, questHelper.getConfig().targetOverlayColor(),
+			IMAGE_Z_OFFSET);
 	}
 
 	@Override
@@ -254,7 +239,7 @@ public class NpcStep extends DetailedQuestStep
 				int x = (int) rect.getCenterX();
 				int y = (int) rect.getMinY() - ARROW_SHIFT_Y;
 
-				drawWorldArrow(graphics, x, y);
+				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
 			}
 		}
 	}
@@ -262,55 +247,16 @@ public class NpcStep extends DetailedQuestStep
 	@Override
 	public void renderMinimapArrow(Graphics2D graphics)
 	{
-		Player player = client.getLocalPlayer();
-
-		if (player == null)
-		{
-			return;
-		}
-
-		WorldPoint playerLocation = player.getWorldLocation();
-
 		if (!npcs.isEmpty() && npcs.get(0).getMinimapLocation() != null)
 		{
 			int x = npcs.get(0).getMinimapLocation().getX();
 			int y = npcs.get(0).getMinimapLocation().getY();
 			Line2D.Double line = new Line2D.Double(x, y - 18, x, y - 8);
 
-			drawMinimapArrow(graphics, line);
+			DirectionArrow.drawMinimapArrow(graphics, line, getQuestHelper().getConfig().targetOverlayColor());
 			return;
 		}
 
-		if (worldPoint == null)
-		{
-			return;
-		}
-		WorldPoint wp = getInstanceWorldPoint(worldPoint);
-		if (wp == null)
-		{
-			return;
-		}
-
-		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
-		{
-			createMinimapDirectionArrow(graphics, wp);
-			return;
-		}
-
-		LocalPoint lp = LocalPoint.fromWorld(client, wp);
-		if (lp == null)
-		{
-			return;
-		}
-
-		Point posOnMinimap = Perspective.localToMinimap(client, lp);
-		if (posOnMinimap == null)
-		{
-			return;
-		}
-		Line2D.Double line = new Line2D.Double(posOnMinimap.getX(), posOnMinimap.getY() - 18, posOnMinimap.getX(),
-			posOnMinimap.getY() - 8);
-
-		drawMinimapArrow(graphics, line);
+		super.renderMinimapArrow(graphics);
 	}
 }

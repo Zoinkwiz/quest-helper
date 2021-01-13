@@ -45,16 +45,10 @@ public class WidgetStep extends DetailedQuestStep
 		widgetDetails.add(new WidgetDetails(groupID, childID, -1));
 	}
 
-	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID, int childChildID)
-	{
-		super(questHelper, text);
-		widgetDetails.add(new WidgetDetails(groupID, childID, childChildID));
-	}
-
 	public WidgetStep(QuestHelper questHelper, String text, WidgetDetails... widgetDetails)
 	{
 		super(questHelper, text);
-		this.widgetDetails = new ArrayList(Arrays.asList(widgetDetails));
+		this.widgetDetails.addAll(Arrays.asList(widgetDetails));
 	}
 
 	@Override

@@ -31,6 +31,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.steps.tools.QuestPerspective;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -119,10 +120,10 @@ public class LadyTableStep extends DetailedOwnerStep
 
 	class Statue
 	{
-		private String weapon;
-		private String color;
-		private WorldPoint point;
-		private int gameId;
+		private final String weapon;
+		private final String color;
+		private final WorldPoint point;
+		private final int gameId;
 
 		public Statue(String weapon, String color, WorldPoint point, int gameId)
 		{
@@ -332,7 +333,7 @@ public class LadyTableStep extends DetailedOwnerStep
 		 */
 		public void checkForStatues(WorldPoint wp)
 		{
-			Collection<WorldPoint> localWorldPoints = toLocalInstance(client, wp);
+			Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, wp);
 
 			for (WorldPoint point : localWorldPoints)
 			{

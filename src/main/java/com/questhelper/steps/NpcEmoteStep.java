@@ -28,28 +28,19 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
+import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.util.ImageUtil;
 
 public class NpcEmoteStep extends NpcStep
 {
 	private boolean hasScrolled;
 	private final QuestEmote emote;
-
-	public NpcEmoteStep(QuestHelper questHelper, int npcID, QuestEmote emote, String text, Requirement... requirements)
-	{
-		super(questHelper, npcID, text, requirements);
-		this.emote = emote;
-	}
 
 	public NpcEmoteStep(QuestHelper questHelper, int npcID, QuestEmote emote, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
@@ -58,29 +49,17 @@ public class NpcEmoteStep extends NpcStep
 	}
 
 	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	protected void setupIcon()
 	{
 		if (emote.getSpriteId() != -1 && icon == null)
 		{
-			addEmoteImage();
-			npcIcon = icon;
+			BufferedImage emoteImage = spriteManager.getSprite(emote.getSpriteId(), 0);
+			if (emoteImage != null)
+			{
+				icon = IconOverlay.createIconImage(emoteImage);
+			}
 		}
-
-		super.makeWorldOverlayHint(graphics, plugin);
-	}
-
-	protected void addEmoteImage()
-	{
-		BufferedImage iconBackground = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
-		icon = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-		BufferedImage emoteImg = spriteManager.getSprite(emote.getSpriteId(), 0);
-		Graphics tmpGraphics = icon.getGraphics();
-		tmpGraphics.drawImage(iconBackground, 0, 0, null);
-
-		int buffer = iconBackground.getWidth() / 2 - emoteImg.getWidth() / 2;
-		buffer = Math.max(buffer, 3);
-		tmpGraphics.drawImage(emoteImg, buffer, buffer, iconBackground.getWidth() - 10, iconBackground.getHeight() - 10, null);
+		super.setupIcon();
 	}
 
 	@Override
@@ -121,15 +100,15 @@ public class NpcEmoteStep extends NpcStep
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			scrollToWidget(WidgetInfo.EMOTE_CONTAINER, WidgetInfo.EMOTE_SCROLLBAR, finalEmoteWidget);
+			scrollToWidget(finalEmoteWidget);
 		}
 	}
 
-	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget widget)
+	void scrollToWidget(Widget widget)
 	{
-		final Widget parent = client.getWidget(list);
+		final Widget parent = client.getWidget(WidgetInfo.EMOTE_CONTAINER);
 
-		if (widget == null)
+		if (widget == null || parent == null)
 		{
 			return;
 		}
@@ -139,8 +118,8 @@ public class NpcEmoteStep extends NpcStep
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			scrollbar.getId(),
-			list.getId(),
+			WidgetInfo.EMOTE_SCROLLBAR.getId(),
+			WidgetInfo.EMOTE_CONTAINER.getId(),
 			newScroll
 		);
 	}

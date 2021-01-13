@@ -29,8 +29,10 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
+import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
@@ -40,12 +42,6 @@ public class EmoteStep extends DetailedQuestStep
 {
 	private boolean hasScrolled;
 	private final QuestEmote emote;
-
-	public EmoteStep(QuestHelper questHelper, QuestEmote emote, String text, Requirement... requirements)
-	{
-		super(questHelper, text, requirements);
-		this.emote = emote;
-	}
 
 	public EmoteStep(QuestHelper questHelper, QuestEmote emote, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
@@ -90,15 +86,15 @@ public class EmoteStep extends DetailedQuestStep
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			scrollToWidget(WidgetInfo.EMOTE_CONTAINER, WidgetInfo.EMOTE_SCROLLBAR, finalEmoteWidget);
+			scrollToWidget(finalEmoteWidget);
 		}
 	}
 
-	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget widget)
+	void scrollToWidget(Widget widget)
 	{
-		final Widget parent = client.getWidget(list);
+		final Widget parent = client.getWidget(WidgetInfo.EMOTE_CONTAINER);
 
-		if (widget == null)
+		if (widget == null || parent == null)
 		{
 			return;
 		}
@@ -108,9 +104,23 @@ public class EmoteStep extends DetailedQuestStep
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			scrollbar.getId(),
-			list.getId(),
+			WidgetInfo.EMOTE_SCROLLBAR.getId(),
+			WidgetInfo.EMOTE_CONTAINER.getId(),
 			newScroll
 		);
+	}
+
+	@Override
+	protected void setupIcon()
+	{
+		if (emote.getSpriteId() != -1 && icon == null)
+		{
+			BufferedImage emoteImage = spriteManager.getSprite(emote.getSpriteId(), 0);
+			if (emoteImage != null)
+			{
+				icon = IconOverlay.createIconImage(emoteImage);
+			}
+		}
+		super.setupIcon();
 	}
 }

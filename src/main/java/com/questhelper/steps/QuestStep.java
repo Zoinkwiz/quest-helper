@@ -33,6 +33,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
 import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.QuestHelperPlugin;
@@ -64,12 +66,14 @@ public abstract class QuestStep implements Module
 	protected ClientThread clientThread;
 
 	@Inject
+	ItemManager itemManager;
+
+	@Inject
 	SpriteManager spriteManager;
 
 	@Getter
 	protected ArrayList<String> text;
 
-	protected int ARROW_SHIFT_X = 8;
 	protected int ARROW_SHIFT_Y = 15;
 
 	/* Locking applies to ConditionalSteps. Intended to be used as a method of forcing a step to run if it's been locked */
@@ -141,6 +145,8 @@ public abstract class QuestStep implements Module
 	{
 		clientThread.invokeLater(this::highlightChoice);
 		clientThread.invokeLater(this::highlightWidgetChoice);
+
+		setupIcon();
 	}
 
 	public void shutDown()
@@ -234,7 +240,6 @@ public abstract class QuestStep implements Module
 
 	public void addDialogStep(String choice)
 	{
-		System.out.println(questHelper.getConfig().textHighlightColor());
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
 	}
 
@@ -354,6 +359,18 @@ public abstract class QuestStep implements Module
 	public QuestStep getSidePanelStep()
 	{
 		return getActiveStep();
+	}
+
+	protected void setupIcon()
+	{
+		if (iconItemID != -1 && icon == null)
+		{
+			icon = IconOverlay.createIconImage(itemManager.getImage(iconItemID));
+		}
+		else if (icon == null)
+		{
+			icon = getQuestImage();
+		}
 	}
 
 	public BufferedImage getQuestImage()

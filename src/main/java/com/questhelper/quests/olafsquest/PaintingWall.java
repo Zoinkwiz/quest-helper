@@ -89,9 +89,11 @@ public class PaintingWall extends QuestStep
 			Widget widget = client.getWidget(253, highlightWidget);
 			if (widget != null)
 			{
-				graphics.setColor(new Color(0, 255, 255, 65));
+				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+					questHelper.getConfig().targetOverlayColor().getGreen(),
+					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
 				graphics.fill(widget.getBounds());
-				graphics.setColor(Color.CYAN);
+				graphics.setColor(questHelper.getConfig().targetOverlayColor());
 				graphics.draw(widget.getBounds());
 			}
 		}

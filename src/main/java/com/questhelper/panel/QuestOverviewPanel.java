@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.BankItems;
 import com.questhelper.QuestHelperPlugin;
 
 import com.questhelper.questhelpers.QuestHelper;
@@ -33,6 +34,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -46,9 +48,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
+import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
@@ -65,6 +71,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JLabel questOverviewNotes = new JLabel();
 
 	private final JPanel questGeneralRequirementsListPanel = new JPanel();
+
 	private final JPanel questItemRequirementsListPanel = new JPanel();
 	private final JPanel questItemRecommendedListPanel = new JPanel();
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
@@ -75,16 +82,20 @@ public class QuestOverviewPanel extends JPanel
 	private final JLabel questNameLabel = new JLabel();
 
 	private static final ImageIcon CLOSE_ICON;
+	private static final ImageIcon INFO_ICON;
 
 	private final JButton collapseBtn = new JButton();
 
 	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
 
+	private final List<QuestRequirementPanel> requirementPanels = new ArrayList<>();
+
 	static
 	{
 		final BufferedImage closeImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/close.png");
-
+		final BufferedImage infoImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/info_icon.png");
 		CLOSE_ICON = new ImageIcon(closeImg);
+		INFO_ICON = new ImageIcon(infoImg);
 	}
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin)
@@ -173,7 +184,7 @@ public class QuestOverviewPanel extends JPanel
 		questItemReqs.setMinimumSize(new Dimension(1, questItemRequirementsHeader.getPreferredSize().height));
 		questItemRequirementsHeader.add(questItemReqs, BorderLayout.NORTH);
 
-		questItemRequirementsListPanel.setLayout(new BorderLayout());
+		questItemRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
 		questItemRequirementsListPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		questItemRequirementsPanel.add(questItemRequirementsHeader, BorderLayout.NORTH);
@@ -196,7 +207,7 @@ public class QuestOverviewPanel extends JPanel
 		questItemRecommended.setMinimumSize(new Dimension(1, questItemRecommendedHeader.getPreferredSize().height));
 		questItemRecommendedHeader.add(questItemRecommended, BorderLayout.NORTH);
 
-		questItemRecommendedListPanel.setLayout(new BorderLayout());
+		questItemRecommendedListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
 		questItemRecommendedListPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		questItemRecommendedPanel.add(questItemRecommendedHeader, BorderLayout.NORTH);
@@ -443,61 +454,42 @@ public class QuestOverviewPanel extends JPanel
 		/* Required items */
 		ArrayList<ItemRequirement> itemRequirements = quest.getItemRequirements();
 
-		JLabel itemLabel = new JLabel();
-		itemLabel.setForeground(Color.GRAY);
-		StringBuilder text = new StringBuilder();
 		if (itemRequirements != null)
 		{
 			for (ItemRequirement itemRequirement : itemRequirements)
 			{
-				if (!text.toString().equals(""))
-				{
-					text.append("<br>");
-				}
-				if (itemRequirement.showQuantity())
-				{
-					text.append(itemRequirement.getQuantity()).append(" x ");
-				}
-				text.append(itemRequirement.getDisplayText());
+				QuestRequirementPanel reqPanel = new QuestRequirementPanel(itemRequirement);
+				requirementPanels.add(reqPanel);
+				questItemRequirementsListPanel.add(reqPanel);
 			}
 		}
 		else
 		{
-			text.append("None");
+			JLabel itemRequiredLabel = new JLabel();
+			itemRequiredLabel.setForeground(Color.GRAY);
+			itemRequiredLabel.setText("None");
+			questItemRequirementsListPanel.add(itemRequiredLabel);
 		}
-
-		questItemRequirementsListPanel.add(itemLabel);
-
-		itemLabel.setText("<html><body style = 'text-align:left'>" + text + "</body></html>");
 
 		/* Recommended items */
 		ArrayList<ItemRequirement> itemRecommended = quest.getItemRecommended();
-		JLabel itemRecommendedLabel = new JLabel();
-		itemRecommendedLabel.setForeground(Color.GRAY);
-		StringBuilder textRecommended = new StringBuilder();
-		if (itemRecommended == null)
+
+		if (itemRecommended != null)
 		{
-			textRecommended.append("None");
+			for (ItemRequirement itemRecommend : itemRecommended)
+			{
+				QuestRequirementPanel reqPanel = new QuestRequirementPanel(itemRecommend);
+				requirementPanels.add(reqPanel);
+				questItemRecommendedListPanel.add(reqPanel);
+			}
 		}
 		else
 		{
-			for (ItemRequirement itemRequirement : itemRecommended)
-			{
-				if (!textRecommended.toString().equals(""))
-				{
-					textRecommended.append("<br>");
-				}
-				if (itemRequirement.showQuantity())
-				{
-					textRecommended.append(itemRequirement.getQuantity()).append(" x ");
-				}
-				textRecommended.append(itemRequirement.getName());
-			}
+			JLabel itemRecommendedLabel = new JLabel();
+			itemRecommendedLabel.setForeground(Color.GRAY);
+			itemRecommendedLabel.setText("None");
+			questItemRecommendedListPanel.add(itemRecommendedLabel);
 		}
-
-		itemRecommendedLabel.setText("<html><body style = 'text-align:left'>" + textRecommended + "</body></html>");
-
-		questItemRecommendedListPanel.add(itemRecommendedLabel);
 
 		/* Combat requirements */
 		JLabel combatLabel = new JLabel();
@@ -549,5 +541,31 @@ public class QuestOverviewPanel extends JPanel
 	public Dimension getPreferredSize()
 	{
 		return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
+	}
+
+	public void updateRequirements(Client client, BankItems bankItems)
+	{
+		for (QuestRequirementPanel requirementPanel : requirementPanels)
+		{
+			Color newColor = requirementPanel.getItemRequirement().getColorConsideringBank(client, false,
+			bankItems.getItems());
+
+			if (newColor == Color.WHITE)
+			{
+				requirementPanel.getLabel().setToolTipText("In bank");
+			}
+			else
+			{
+				requirementPanel.getLabel().setToolTipText("");
+			}
+
+			requirementPanel.getLabel().setForeground(newColor);
+		}
+
+		for (QuestStepPanel questStepPanel : questStepPanelList)
+		{
+			questStepPanel.updateRequirements(client, bankItems);
+		}
+		revalidate();
 	}
 }

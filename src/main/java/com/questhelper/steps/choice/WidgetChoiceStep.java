@@ -24,15 +24,18 @@
  */
 package com.questhelper.steps.choice;
 
+import com.questhelper.QuestHelperConfig;
 import java.awt.Color;
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+
 
 public class WidgetChoiceStep
 {
+	private final QuestHelperConfig config;
+
 	@Getter
 	private final String choice;
 
@@ -46,26 +49,27 @@ public class WidgetChoiceStep
 	private final int groupId;
 	private final int childId;
 
-	private final int TEXT_HIGHLIGHT_COLOR = Color.CYAN.darker().getRGB();
-
-	public WidgetChoiceStep(String choice, int groupId, int childId)
+	public WidgetChoiceStep(QuestHelperConfig config, String choice, int groupId, int childId)
 	{
+		this.config = config;
 		this.choice = choice;
 		this.choiceById = -1;
 		this.groupId = groupId;
 		this.childId = childId;
 	}
 
-	public WidgetChoiceStep(int choiceId, int groupId, int childId)
+	public WidgetChoiceStep(QuestHelperConfig config, int choiceId, int groupId, int childId)
 	{
+		this.config = config;
 		this.choice = null;
 		this.choiceById = choiceId;
 		this.groupId = groupId;
 		this.childId = childId;
 	}
 
-	public WidgetChoiceStep(int choiceId, String choice, int groupId, int childId)
+	public WidgetChoiceStep(QuestHelperConfig config, int choiceId, String choice, int groupId, int childId)
 	{
+		this.config = config;
 		this.choice = choice;
 		this.choiceById = choiceId;
 		this.groupId = groupId;
@@ -127,7 +131,11 @@ public class WidgetChoiceStep
 
 	private void highlightText(Widget text)
 	{
-		text.setTextColor(TEXT_HIGHLIGHT_COLOR);
-		text.setOnMouseLeaveListener((JavaScriptCallback) ev -> text.setTextColor(TEXT_HIGHLIGHT_COLOR));
+		if (!config.showTextHighlight())
+		{
+			return;
+		}
+		text.setTextColor(config.textHighlightColor().getRGB());
+		text.setOnMouseLeaveListener((JavaScriptCallback) ev -> text.setTextColor(config.textHighlightColor().getRGB()));
 	}
 }

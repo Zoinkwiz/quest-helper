@@ -28,6 +28,7 @@ import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.ItemRequirement;
@@ -48,6 +49,9 @@ public abstract class QuestHelper implements Module
 	@Inject
 	protected Client client;
 
+	@Getter
+	protected QuestHelperConfig config;
+
 	@Inject
 	private EventBus eventBus;
 
@@ -66,7 +70,7 @@ public abstract class QuestHelper implements Module
 	{
 	}
 
-	public abstract void startUp();
+	public abstract void startUp(QuestHelperConfig config);
 
 	public abstract void shutDown();
 

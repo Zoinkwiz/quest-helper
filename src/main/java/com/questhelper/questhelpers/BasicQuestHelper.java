@@ -25,6 +25,7 @@
 package com.questhelper.questhelpers;
 
 import com.google.inject.Inject;
+import com.questhelper.QuestHelperConfig;
 import java.util.ArrayList;
 import java.util.Map;
 import net.runelite.client.game.ItemManager;
@@ -41,8 +42,9 @@ public abstract class BasicQuestHelper extends QuestHelper
 	protected ItemManager itemManager;
 
 	@Override
-	public void startUp()
+	public void startUp(QuestHelperConfig config)
 	{
+		this.config = config;
 		if(steps == null)
 		{
 			steps = loadSteps();

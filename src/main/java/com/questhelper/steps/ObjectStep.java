@@ -25,10 +25,10 @@
 package com.questhelper.steps;
 
 import com.questhelper.requirements.Requirement;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,9 +57,6 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
-import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_BORDER_COLOR;
-import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_FILL_COLOR;
-import static com.questhelper.QuestHelperWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import com.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -279,11 +276,15 @@ public class ObjectStep extends DetailedQuestStep
 			if (tileObject.getPlane() == client.getPlane())
 			{
 				OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition,
-					CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
+					new Color(getQuestHelper().getConfig().targetOverlayColor().getRed(),
+						getQuestHelper().getConfig().targetOverlayColor().getGreen(),
+						getQuestHelper().getConfig().targetOverlayColor().getBlue(), 20),
+					getQuestHelper().getConfig().targetOverlayColor().darker(),
+					getQuestHelper().getConfig().targetOverlayColor());
 			}
 		}
 
-		if (iconItemID != -1 && object != null)
+		if (iconItemID != -1 && object != null && questHelper.getConfig().showSymbolOverlay())
 		{
 			Shape clickbox = object.getClickbox();
 			if (clickbox != null)
@@ -304,13 +305,11 @@ public class ObjectStep extends DetailedQuestStep
 		Shape clickbox = object.getClickbox();
 		if (clickbox != null)
 		{
-			BufferedImage arrow = getArrow();
 			Rectangle2D boundingBox = clickbox.getBounds2D();
-			int x = (int) boundingBox.getCenterX() - ARROW_SHIFT_X;
-			int y = (int) boundingBox.getMinY() - ARROW_SHIFT_Y;
-			Point point = new Point(x, y);
+			int x = (int) boundingBox.getCenterX();
+			int y = (int) boundingBox.getMinY() - 20;
 
-			OverlayUtil.renderImageLocation(graphics, point, arrow);
+			drawWorldArrow(graphics, x, y);
 		}
 	}
 

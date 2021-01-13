@@ -24,15 +24,19 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.BankItems;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.SwingUtil;
 
@@ -42,7 +46,7 @@ public class QuestStepPanel extends JPanel
 
 	PanelDetails panelDetails;
 
-    private final JPanel headerPanel = new JPanel();
+	private final JPanel headerPanel = new JPanel();
 	private final JLabel headerLabel = new JLabel();
 	private final JPanel bodyPanel = new JPanel();
 	private final JCheckBox lockStep = new JCheckBox();
@@ -54,7 +58,9 @@ public class QuestStepPanel extends JPanel
 
 	private final HashMap<QuestStep, JLabel> steps = new HashMap<>();
 
-    public QuestStepPanel(PanelDetails panelDetails, QuestStep currentStep)
+	private final ArrayList<QuestRequirementPanel> requirementPanels = new ArrayList<>();
+
+	public QuestStepPanel(PanelDetails panelDetails, QuestStep currentStep)
 	{
 		this.panelDetails = panelDetails;
 
@@ -107,7 +113,8 @@ public class QuestStepPanel extends JPanel
 		bodyPanel.setLayout(new BorderLayout());
 		bodyPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
-		if(!panelDetails.getItemRequirements().isEmpty()) {
+		if (!panelDetails.getItemRequirements().isEmpty())
+		{
 			JPanel questItemRequirementsPanel = new JPanel();
 			questItemRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			questItemRequirementsPanel.setLayout(new BorderLayout());
@@ -125,27 +132,20 @@ public class QuestStepPanel extends JPanel
 			questItemRequirementsHeader.add(questItemReqsTitle, BorderLayout.NORTH);
 
 			JPanel questItemRequirementsListPanel = new JPanel();
-			questItemRequirementsListPanel.setLayout(new BorderLayout());
+			questItemRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
 			questItemRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-			JLabel itemLabel = new JLabel();
-			itemLabel.setForeground(Color.GRAY);
-			StringBuilder itemText = new StringBuilder();
-			for (ItemRequirement itemRequirement : panelDetails.getItemRequirements())
+			ArrayList<ItemRequirement> itemRequirements = panelDetails.getItemRequirements();
+
+			if (itemRequirements != null)
 			{
-				if(!itemText.toString().equals("")) {
-					itemText.append("<br>");
-				}
-				if (itemRequirement.showQuantity())
+				for (ItemRequirement itemRequirement : itemRequirements)
 				{
-					itemText.append(itemRequirement.getQuantity()).append(" x ");
+					QuestRequirementPanel reqPanel = new QuestRequirementPanel(itemRequirement);
+					requirementPanels.add(reqPanel);
+					questItemRequirementsListPanel.add(reqPanel);
 				}
-				itemText.append(itemRequirement.getName());
 			}
-
-			itemLabel.setText("<html><body style = 'text-align:left'>" + itemText + "</body></html>");
-
-			questItemRequirementsListPanel.add(itemLabel);
 
 			questItemRequirementsPanel.add(questItemRequirementsHeader, BorderLayout.NORTH);
 			questItemRequirementsPanel.add(questItemRequirementsListPanel, BorderLayout.CENTER);
@@ -157,7 +157,7 @@ public class QuestStepPanel extends JPanel
 		questStepsPanel.setLayout(new BoxLayout(questStepsPanel, BoxLayout.Y_AXIS));
 		questStepsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		for(QuestStep step : panelDetails.getSteps())
+		for (QuestStep step : panelDetails.getSteps())
 		{
 			if (!step.isShowInSidebar())
 			{
@@ -185,9 +185,9 @@ public class QuestStepPanel extends JPanel
 		{
 			collapse();
 		}
-    }
+	}
 
-    public String generateText(QuestStep step)
+	public String generateText(QuestStep step)
 	{
 		StringBuilder text = new StringBuilder();
 
@@ -199,8 +199,9 @@ public class QuestStepPanel extends JPanel
 		return "<html><body style = 'text-align:left'>" + text + "</body></html>";
 	}
 
-    public ArrayList<QuestStep> getSteps() {
-    	return new ArrayList<>(steps.keySet());
+	public ArrayList<QuestStep> getSteps()
+	{
+		return new ArrayList<>(steps.keySet());
 	}
 
 	public HashMap<QuestStep, JLabel> getStepsLabels()
@@ -213,7 +214,7 @@ public class QuestStepPanel extends JPanel
 		lockStep.setVisible(canLock);
 	}
 
-    public void updateHighlight(QuestStep currentStep)
+	public void updateHighlight(QuestStep currentStep)
 	{
 		if (currentlyHighlighted != null)
 		{
@@ -332,6 +333,26 @@ public class QuestStepPanel extends JPanel
 			Color color = component.getForeground();
 
 			component.setForeground(brighten ? color.brighter() : color.darker());
+		}
+	}
+
+	public void updateRequirements(Client client, BankItems bankItems)
+	{
+		for (QuestRequirementPanel requirementPanel : requirementPanels)
+		{
+			Color newColor = requirementPanel.getItemRequirement().getColorConsideringBank(client, false,
+				bankItems.getItems());
+
+			if (newColor == Color.WHITE)
+			{
+				requirementPanel.getLabel().setToolTipText("In bank");
+			}
+			else
+			{
+				requirementPanel.getLabel().setToolTipText("");
+			}
+
+			requirementPanel.getLabel().setForeground(newColor);
 		}
 	}
 }

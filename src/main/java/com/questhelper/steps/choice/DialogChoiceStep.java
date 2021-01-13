@@ -1,21 +1,21 @@
 package com.questhelper.steps.choice;
 
-import net.runelite.api.widgets.WidgetInfo;
+import com.questhelper.QuestHelperConfig;
 
 public class DialogChoiceStep extends WidgetChoiceStep
 {
-	public DialogChoiceStep(String choice)
+	public DialogChoiceStep(QuestHelperConfig config, String choice)
 	{
-		super(choice,219, 1);
+		super(config, choice, 219, 1);
 	}
 
-	public DialogChoiceStep(int choiceId, String choice)
+	public DialogChoiceStep(QuestHelperConfig config, int choiceId, String choice)
 	{
-		super(choiceId, choice,219, 1);
+		super(config, choiceId, choice, 219, 1);
 	}
 
-	public DialogChoiceStep(int choice)
+	public DialogChoiceStep(QuestHelperConfig config, int choice)
 	{
-		super(choice, 219, 1);
+		super(config, choice, 219, 1);
 	}
 }

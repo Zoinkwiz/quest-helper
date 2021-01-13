@@ -241,6 +241,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		climbingBootsOr12Coins =  new ItemRequirement("Climbing boots or 12 coins", -1, -1);
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
+		pineappleChunks.setTip("You can make these by using a knife on a pineapple");
 		logs2 = new ItemRequirement("Logs", ItemID.LOGS, 2);
 		logs1 = new ItemRequirement("Logs", ItemCollections.getLogsForFire());
 		grain10 = new ItemRequirement("Grain", ItemID.GRAIN, 10);

@@ -24,6 +24,7 @@
  */
 package com.questhelper;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -39,5 +40,45 @@ public interface QuestHelperConfig extends Config
 	default boolean autoStartQuests()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "textHighlightColor",
+		name = "Text highlight color",
+		description = "Change the color of dialog choices highlighted by the helper"
+	)
+	default Color textHighlightColor()
+	{
+		return Color.CYAN.darker();
+	}
+
+	@ConfigItem(
+		keyName = "showTextHighlight",
+		name = "Highlight correct dialog",
+		description = "Highlight correct dialog choices"
+	)
+	default boolean showTextHighlight()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSymbolOverlay",
+		name = "Display icons on NPCs and objects",
+		description = "Choose whether NPCs should icons marking them as the current target or not"
+	)
+	default boolean showSymbolOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "targetOverlayColor",
+		name = "Color of target overlay",
+		description = "Change the color which target NPCs/Objects will be highlighted with"
+	)
+	default Color targetOverlayColor()
+	{
+		return Color.CYAN;
 	}
 }

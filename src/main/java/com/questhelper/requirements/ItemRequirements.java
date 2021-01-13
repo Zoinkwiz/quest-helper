@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 
 public class ItemRequirements extends ItemRequirement
 {
@@ -56,15 +57,15 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return check(client, true);
+		return check(client, false);
 	}
 
-	public boolean check(Client client, boolean checkEquippedOnly)
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
 		int successes = 0;
 		for (ItemRequirement itemRequirement : itemRequirements)
 		{
-			if (itemRequirement.checkConsideringSlot(client))
+			if (itemRequirement.check(client, checkConsideringSlotRestrictions))
 			{
 				successes++;
 			}
@@ -76,11 +77,28 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	protected Color getColor(Client client)
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
+	{
+		int successes = 0;
+		for (ItemRequirement itemRequirement : itemRequirements)
+		{
+			if (itemRequirement.check(client, checkConsideringSlotRestrictions, items))
+			{
+				successes++;
+			}
+		}
+		return (successes == itemRequirements.size() && logicType == LogicType.AND)
+			|| (successes > 0 && logicType == LogicType.OR)
+			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)
+			|| (successes == 0 && logicType == LogicType.NOR);
+	}
+
+	@Override
+	public Color getColor(Client client)
 	{
 		Color color;
 
-		if (this.check(client))
+		if (this.check(client, true))
 		{
 			color = Color.GREEN;
 		}
@@ -88,6 +106,32 @@ public class ItemRequirements extends ItemRequirement
 		{
 			color = Color.RED;
 		}
+		return color;
+	}
+
+	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
+	{
+		Color color;
+		if (!this.isActualItem())
+		{
+			color = Color.GRAY;
+		}
+		else if (this.check(client, checkConsideringSlotRestrictions))
+		{
+			color = Color.GREEN;
+		}
+		else
+		{
+			color = Color.RED;
+		}
+		if (color == Color.RED && bankItems != null)
+		{
+			if (check(client, false, bankItems))
+			{
+				color = Color.WHITE;
+			}
+		}
+
 		return color;
 	}
 

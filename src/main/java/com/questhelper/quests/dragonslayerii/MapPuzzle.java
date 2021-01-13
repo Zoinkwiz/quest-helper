@@ -163,12 +163,12 @@ public class MapPuzzle extends QuestStep
 
 					graphics.setColor(new Color(0, 255, 255, 65));
 					graphics.fill(widget1.getBounds());
-					graphics.setColor(Color.CYAN);
+					graphics.setColor(questHelper.getConfig().targetOverlayColor());
 					graphics.draw(widget1.getBounds());
 
 					graphics.setColor(new Color(0, 255, 255, 65));
 					graphics.fill(widget2.getBounds());
-					graphics.setColor(Color.CYAN);
+					graphics.setColor(questHelper.getConfig().targetOverlayColor());
 					graphics.draw(widget2.getBounds());
 
 					graphics.setStroke(new BasicStroke(3));
@@ -183,9 +183,11 @@ public class MapPuzzle extends QuestStep
 				Widget widget = widgetWrapper.getChild(i);
 				if (widget != null && currentRotationValue[i] != 0)
 				{
-					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+						questHelper.getConfig().targetOverlayColor().getGreen(),
+						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
 					graphics.fill(widget.getBounds());
-					graphics.setColor(Color.CYAN);
+					graphics.setColor(questHelper.getConfig().targetOverlayColor());
 					graphics.draw(widget.getBounds());
 
 					int widgetX = widget.getCanvasLocation().getX() + (widget.getWidth() / 2) - 4;

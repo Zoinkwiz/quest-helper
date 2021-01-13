@@ -156,6 +156,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.setHighlightInInventory(true);
 		wolfBones4 = new ItemRequirement("Wolf bones", ItemID.WOLF_BONES, 4);
+		wolfBones4.setTip("You can kill wolves (level 64) around Feldip for bones");
 		acheyLogs = new ItemRequirement("Achey tree logs", ItemID.ACHEY_TREE_LOGS);
 		acheyLogs.setHighlightInInventory(true);
 

@@ -190,19 +190,20 @@ public class PlagueCity extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		dwellberries = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES);
+		dwellberries.setTip("You can get these from McGrubor's Wood west of Seers' Village");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		spade.setHighlightInInventory(true);
 		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);
 		fourBucketsOfWater.setHighlightInInventory(true);
-		fourBucketsOfWater.setTip("You can use the nearby bucket on the sink nearby");
+		fourBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
 		threeBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 3);
 		threeBucketsOfWater.setHighlightInInventory(true);
-		threeBucketsOfWater.setTip("You can use the nearby bucket on the sink nearby");
+		threeBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
 		twoBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 2);
 		twoBucketsOfWater.setHighlightInInventory(true);
-		twoBucketsOfWater.setTip("You can use the nearby bucket on the sink nearby");
+		twoBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.setHighlightInInventory(true);
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);

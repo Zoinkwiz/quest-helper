@@ -270,7 +270,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		ninjaGreegreeEquipped.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
 		translationBook = new ItemRequirement("Translation book", ItemID.TRANSLATION_BOOK);
 		translationBook.setHighlightInInventory(true);
-		translationBook.setTip("Check your bank, or if not you can get another from Narnode if you've lost it");
+		translationBook.setTip("If it's not in your bank you can get another from Narnode during the quest");
 
 		magicLog = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
 		food = new ItemRequirement("Food", -1, -1);
@@ -670,7 +670,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off",
 			new ArrayList<>(Arrays.asList(talkToNarnode, goInvestigateGloughHouse, goTalkToAnita, goToGlough3rdFloor, investigateStatue, searchRemains, searchCrate,
 				usePestleOnLemon, useNotesOnCandles, usePestleOnGrapes, useBrushOnNote, readScrawledNote, useTranslationOnNote, goShowNoteToNarnode, goTalkToAnitaWithNote,
-				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana)), lemon, grapesHighlighted, pestleHighlighted, logs, noCombatItems));
+				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana)), lemon, grapesHighlighted, translationBook, pestleHighlighted, logs, noCombatItems));
 
 		ArrayList<QuestStep> chapter2Steps = new ArrayList<>(Arrays.asList(talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor));
 		chapter2Steps.addAll(((AgilityDungeonSteps) (doAgilitySection)).getDisplaySteps());

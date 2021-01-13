@@ -200,12 +200,6 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
-	{
-		return new ArrayList<>(Arrays.asList());
-	}
-
-	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

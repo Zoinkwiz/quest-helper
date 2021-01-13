@@ -159,7 +159,11 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
+		bucketOfSap.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
+			"inventory");
 		bucketOfSapHiglight = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
+		bucketOfSapHiglight.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
+			"inventory");
 		bucketOfSapHiglight.setHighlightInInventory(true);
 
 		groundMud = new ItemRequirement("Ground mud runes", ItemID.GROUND_MUD_RUNES);

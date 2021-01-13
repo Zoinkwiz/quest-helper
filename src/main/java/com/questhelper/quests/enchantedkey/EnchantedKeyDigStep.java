@@ -153,7 +153,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), Color.CYAN);
+		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), questHelper.getConfig().targetOverlayColor());
 	}
 
 	@Subscribe

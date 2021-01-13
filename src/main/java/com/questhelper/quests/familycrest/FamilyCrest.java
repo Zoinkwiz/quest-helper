@@ -147,7 +147,8 @@ public class FamilyCrest extends BasicQuestHelper
 		necklaceMould = new ItemRequirement("Necklace mould", ItemID.NECKLACE_MOULD);
 
 		antipoison = new ItemRequirement("At least one dose of antipoison or superantipoison", ItemID.ANTIPOISON1);
-		antipoison.addAlternates(ItemID.ANTIPOISON2, ItemID.ANTIPOISON3, ItemID.ANTIPOISON4, ItemID.SUPERANTIPOISON1, ItemID.SUPERANTIPOISON2, ItemID.SUPERANTIPOISON3, ItemID.SUPERANTIPOISON4);
+		antipoison.addAlternates(ItemID.ANTIPOISON2, ItemID.ANTIPOISON3, ItemID.ANTIPOISON4, ItemID.SUPERANTIPOISON1,
+			ItemID.SUPERANTIPOISON2, ItemID.SUPERANTIPOISON3, ItemID.SUPERANTIPOISON4);
 
 		runesForBlasts = new ItemRequirement("Runes for casting each of the blast spells", -1, -1);
 
@@ -179,13 +180,13 @@ public class FamilyCrest extends BasicQuestHelper
 	{
 		inDwarvenMines = new ZoneCondition(dwarvenMines);
 		inHobgoblinDungeon = new ZoneCondition(hobgoblinDungeon);
-		northWallUp = new ObjectCondition(ObjectID.LEVER_2422, new WorldPoint(2722, 9710,0));
-		southRoomUp = new ObjectCondition(ObjectID.LEVER_2424, new WorldPoint(2724, 9669,0));
-		northRoomUp = new ObjectCondition(ObjectID.LEVER_2426, new WorldPoint(2722, 9718,0));
+		northWallUp = new ObjectCondition(ObjectID.LEVER_2422, new WorldPoint(2722, 9710, 0));
+		southRoomUp = new ObjectCondition(ObjectID.LEVER_2424, new WorldPoint(2724, 9669, 0));
+		northRoomUp = new ObjectCondition(ObjectID.LEVER_2426, new WorldPoint(2722, 9718, 0));
 
-		northWallDown = new ObjectCondition(ObjectID.LEVER_2421, new WorldPoint(2722, 9710,0));
-		southRoomDown = new ObjectCondition(ObjectID.LEVER_2423, new WorldPoint(2724, 9669,0));
-		northRoomDown = new ObjectCondition(ObjectID.LEVER_2425, new WorldPoint(2722, 9718,0));
+		northWallDown = new ObjectCondition(ObjectID.LEVER_2421, new WorldPoint(2722, 9710, 0));
+		southRoomDown = new ObjectCondition(ObjectID.LEVER_2423, new WorldPoint(2724, 9669, 0));
+		northRoomDown = new ObjectCondition(ObjectID.LEVER_2425, new WorldPoint(2722, 9718, 0));
 
 		hasGold2 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(gold2));
 		hasGoldBar2 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(goldBar2));
@@ -217,7 +218,7 @@ public class FamilyCrest extends BasicQuestHelper
 		talkToCalebWithFish = new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0),
 			"Talk to Caleb again with the required fish.", shrimp, salmon, tuna, bass, swordfish);
 
-		talkToCalebOnceMore =  new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0), "Talk to Caleb in Catherby.");
+		talkToCalebOnceMore = new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0), "Talk to Caleb in Catherby.");
 		talkToCalebOnceMore.addDialogStep("Uh.. what happened to the rest of the crest?");
 		talkToCalebWithFish.addSubSteps(talkToCalebOnceMore);
 
@@ -225,48 +226,57 @@ public class FamilyCrest extends BasicQuestHelper
 		talkToGemTrader.addDialogStep("I'm in search of a man named Avan Fitzharmon.");
 		talkToMan = new NpcStep(this, NpcID.MAN, new WorldPoint(3295, 3275, 0), "Talk to the man south of the Al Kharid mine.");
 		talkToMan.addDialogStep("I'm looking for a man named Avan Fitzharmon.");
-		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450,0), "Talk to Boot in the south western Dwarven Mines.");
+		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0),
+			"Talk to Boot in the south western Dwarven Mines.");
 		talkToBoot = new NpcStep(this, NpcID.BOOT, new WorldPoint(2984, 9810, 0), "Talk to Boot in the south western Dwarven Mines.");
 		talkToBoot.addDialogStep("Hello. I'm in search of very high quality gold.");
 		talkToBoot.addSubSteps(enterDwarvenMine);
 
-		enterWitchavenDungeon = new ObjectStep(this, ObjectID.OLD_RUIN_ENTRANCE, new WorldPoint(2696, 3283, 0), "Enter the old ruin entrance west of Witchaven.");
+		enterWitchavenDungeon = new ObjectStep(this, ObjectID.OLD_RUIN_ENTRANCE, new WorldPoint(2696, 3283, 0),
+			"Enter the old ruin entrance west of Witchaven.");
 
-		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_2421, new WorldPoint(2722, 9710, 0), "Follow the path around, and pull the lever on the wall in the north east corner.");
+		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_2421, new WorldPoint(2722, 9710, 0),
+			"Follow the path around, and pull the lever on the wall in the north east corner.");
 		pullSouthRoomLever = new ObjectStep(this, ObjectID.LEVER_2423, new WorldPoint(2724, 9669, 0), "Pull the lever in the south room up.");
 
-		pullNorthLeverAgain =  new ObjectStep(this, ObjectID.LEVER_2422, new WorldPoint(2722, 9710, 0), "Pull the north wall lever again.");
+		pullNorthLeverAgain = new ObjectStep(this, ObjectID.LEVER_2422, new WorldPoint(2722, 9710, 0), "Pull the north wall lever again.");
 
 		pullNorthRoomLever = new ObjectStep(this, ObjectID.LEVER_2425, new WorldPoint(2722, 9718, 0), "Pull the lever in the north room up.");
 
-		pullNorthLever3 =  new ObjectStep(this, ObjectID.LEVER_2421, new WorldPoint(2722, 9710, 0), "Pull the north wall lever again.");
+		pullNorthLever3 = new ObjectStep(this, ObjectID.LEVER_2421, new WorldPoint(2722, 9710, 0), "Pull the north wall lever again.");
 
 		pullSouthRoomLever2 = new ObjectStep(this, ObjectID.LEVER_2424, new WorldPoint(2724, 9669, 0), "Pull the lever in the south room down.");
 
 		followPathAroundEast = new DetailedQuestStep(this, new WorldPoint(2721, 9700, 0), "Follow the dungeon around to the east.");
 
-		mineGold = new ObjectStep(this, ObjectID.ROCKS_11371, new WorldPoint(2732, 9680, 0), "Mine 2 perfect gold in the east room.", pickaxe, gold2);
+		mineGold = new ObjectStep(this, ObjectID.ROCKS_11371, new WorldPoint(2732, 9680, 0),
+			"Mine 2 perfect gold in the east room.", pickaxe, gold2);
 
 		smeltGold = new DetailedQuestStep(this, "Smelt the perfect gold ore into bars.", gold2);
 
 		makeNecklace = new DetailedQuestStep(this, "Make a perfect ruby necklace at a furnace.", goldBar, ruby, necklaceMould);
 		makeRing = new DetailedQuestStep(this, "Make a perfect ruby ring at a furnace.", goldBar, ruby, ringMould);
 
-		returnToMan = new NpcStep(this, NpcID.AVAN, new WorldPoint(3295, 3275, 0), "Return to the man south of the Al Kharid mine.", perfectRing, perfectNecklace);
+		returnToMan = new NpcStep(this, NpcID.AVAN, new WorldPoint(3295, 3275, 0),
+			"Return to the man south of the Al Kharid mine.", perfectRing, perfectNecklace);
 
-		goUpToJohnathon = new ObjectStep(this, ObjectID.STAIRCASE_11797, new WorldPoint(3286, 3494, 0), "Go upstairs in the Jolly Boar Inn north east of Varrock and talk to Johnathon.", antipoison);
+		goUpToJohnathon = new ObjectStep(this, ObjectID.STAIRCASE_11797, new WorldPoint(3286, 3494, 0),
+			"Go upstairs in the Jolly Boar Inn north east of Varrock and talk to Johnathon.", antipoison);
 
 		talkToJohnathon = new NpcStep(this, NpcID.JOHNATHON, new WorldPoint(3277, 3504, 1), "Talk to Johnathon.", antipoison);
-		giveJohnathonAntipoison = new NpcStep(this, NpcID.JOHNATHON, new WorldPoint(3277, 3504, 1), "Give Johnathon some antipoison.", antipoison);
+		giveJohnathonAntipoison = new NpcStep(this, NpcID.JOHNATHON, new WorldPoint(3277, 3504, 1),
+			"Give Johnathon some antipoison.", antipoison);
 		giveJohnathonAntipoison.addIcon(ItemID.ANTIPOISON3);
 
 		goUpToJohnathon.addSubSteps(talkToJohnathon);
 
-		goDownToChronizon = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0), "Enter the Edgeville Wilderness Dungeon, ready to kill Chronizon. Other players will be able to attack you.", runesForBlasts);
+		goDownToChronizon = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+			"Enter the Edgeville Wilderness Dungeon, ready to kill Chronizon. Other players will be able to attack you.", runesForBlasts);
 		goDownToChronizon.addAlternateObjects(ObjectID.TRAPDOOR_1579);
 
 		killChronizon = new NpcStep(this, NpcID.CHRONOZON, new WorldPoint(3087, 9936, 0),
-			"Kill Chronizon in the south west corner of the Edgeville Wilderness Dungeon. You need to hit him at least once with all 4 elemental blast spell.", runesForBlasts);
+			"Kill Chronizon in the south west corner of the Edgeville Wilderness Dungeon. You need to hit him at least once with all 4 elemental blast spell.",
+			runesForBlasts);
 		killChronizon.addSubSteps(goDownToChronizon);
 
 		pickUpCrest3 = new ItemStep(this, "Pick up the crest part.", crestPiece3);
@@ -274,7 +284,8 @@ public class FamilyCrest extends BasicQuestHelper
 
 		repairCrest = new DetailedQuestStep(this, "Combine the 3 crest parts together.", crestPiece1, crestPiece2, crestPiece3);
 
-		returnCrest = new NpcStep(this, NpcID.DIMINTHEIS, new WorldPoint(3280, 3402, 0), "Return the family crest to Dimintheis in south east Varrock.", crest);
+		returnCrest = new NpcStep(this, NpcID.DIMINTHEIS, new WorldPoint(3280, 3402, 0),
+			"Return the family crest to Dimintheis in south east Varrock.", crest);
 	}
 
 	@Override
@@ -310,8 +321,11 @@ public class FamilyCrest extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToDimintheis))));
 		allSteps.add(new PanelDetails("Caleb's piece", new ArrayList<>(Arrays.asList(talkToCaleb, talkToCalebWithFish)), shrimp, salmon, tuna, bass, swordfish));
-		allSteps.add(new PanelDetails("Avan's piece", new ArrayList<>(Arrays.asList(talkToGemTrader, talkToMan, talkToBoot, enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLever, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2, mineGold, smeltGold, makeNecklace, makeRing, returnToMan)), pickaxe, ruby2, necklaceMould, ringMould));
-		allSteps.add(new PanelDetails("Johnathon's piece", new ArrayList<>(Arrays.asList(goUpToJohnathon, giveJohnathonAntipoison, killChronizon)), runesForBlasts, antipoison));
+		allSteps.add(new PanelDetails("Avan's piece", new ArrayList<>(Arrays.asList(talkToGemTrader, talkToMan, talkToBoot, enterWitchavenDungeon, pullNorthLever,
+			pullSouthRoomLever, pullNorthLever, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2, mineGold, smeltGold, makeNecklace, makeRing, returnToMan)),
+			pickaxe, ruby2, necklaceMould, ringMould));
+		allSteps.add(new PanelDetails("Johnathon's piece", new ArrayList<>(Arrays.asList(goUpToJohnathon, giveJohnathonAntipoison, killChronizon)),
+			runesForBlasts, antipoison));
 		allSteps.add(new PanelDetails("Return the crest", new ArrayList<>(Arrays.asList(repairCrest, returnCrest))));
 		return allSteps;
 	}

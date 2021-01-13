@@ -24,14 +24,18 @@
  */
 package com.questhelper.requirements;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 abstract public class Requirement
 {
+	public abstract Color getColor(Client client);
+
 	abstract public boolean check(Client client);
 
 	abstract public ArrayList<LineComponent> getDisplayTextWithChecks(Client client);
+
 	abstract public String getDisplayText();
 }

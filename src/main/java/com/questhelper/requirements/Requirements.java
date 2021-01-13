@@ -93,7 +93,7 @@ public class Requirements extends Requirement
 		return name;
 	}
 
-	protected Color getColor(Client client)
+	public Color getColor(Client client)
 	{
 		Color color;
 

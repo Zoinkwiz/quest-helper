@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+
 @RequiredArgsConstructor
 public class CombatLevelRequirement extends Requirement
 {

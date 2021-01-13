@@ -78,8 +78,8 @@ public class SongOfTheElves extends BasicQuestHelper
 	NoItemRequirement nothingEquipped;
 
 	ConditionForStep inArdougneCastleF1, inPassF0, inPassF1, inWellEntrance, inIbanRoom, inArdyPrison, inHideout, inWestArdyInstance, inMournerBaseHQInstance,
-		inEastArdyInstance, inArdougneCastleF1Instance, inLlyetaF1, onHudonIsland, onDeadTreeIsland, onLedge, inFalls, inBaxThroneRoom, inIorwerthCave,
-		inLlyetaF0Battle, inLlyetaF1Battle, inLlyetaF1Damaged, inBossArea, hasArdyHelm, hasArdyLegs, hasArdyBody, hasTabard, hasBaxKey, hasOdeBook, hasCrystal,
+		inEastArdyInstance, inArdougneCastleF1Instance, inLletyaF1, onHudonIsland, onDeadTreeIsland, onLedge, inFalls, inBaxThroneRoom, inIorwerthCave,
+		inLletyaF0Battle, inLletyaF1Battle, inLletyaF1Damaged, inBossArea, hasArdyHelm, hasArdyLegs, hasArdyBody, hasTabard, hasBaxKey, hasOdeBook, hasCrystal,
 		hasCrystalDust, hasCadantineVial, hasInversionPotion, askedAboutCrwys, askedAboutHefin, learnedHowToMakeStatue, dugNearTyras, dugNearStash, dugNearPrif,
 		spunOutsideUndergroundPass;
 
@@ -102,12 +102,12 @@ public class SongOfTheElves extends BasicQuestHelper
 	DetailedQuestStep searchBedAgain, talkToElenaForFight, defeat10Mourners, mournerBattleGoDownTrapdoor, defeat11Mourners, talkToElenaForEastArdyFight, defeat15Knights,
 		defeat15KnightsF1, talkToLathasAfterFight, watchArdyFightCutscene;
 
-	QuestStep talkToArianwyn, goUpToYsgawyn, talkToYsgawyn, goDownToElena, talkToElenaInLlyeta, talkToArianwynAfterElena, talkToArianwynAfterMeeting;
+	QuestStep talkToArianwyn, goUpToYsgawyn, talkToYsgawyn, goDownToElena, talkToElenaInLletya, talkToArianwynAfterElena, talkToArianwynAfterMeeting;
 
 	QuestStep boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchCrateForKey, enterBaxThroneRoom, talkToArianwynInBax, readOdeToEternity,
 		pillarPuzzle, talkToBax;
 
-	DetailedQuestStep talkToArianwynAfterBax, talkToElenaAfterBax, plantCadantine, talkToBaxInLlyeta, talkToElunedWithSeed, rubCrystal, talkToFigure, talkToBaxAfterValley,
+	DetailedQuestStep talkToArianwynAfterBax, talkToElenaAfterBax, plantCadantine, talkToBaxInLletya, talkToElunedWithSeed, rubCrystal, talkToFigure, talkToBaxAfterValley,
 		enterCaveToWell, usePickaxeOnWall, enterCrevice, useHammerOnExoskeleton, talkToTrahaearn, talkToElenaAfterTra, talkToArianwynAfterTra,
 		usePestleOnCrystal, useCadantineOnVial, useDustOnVial, talkToArianwynAfterPotion, talkToArianwynAfterGivingPotion;
 
@@ -130,7 +130,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	QuestStep enterIorwerthCave, kill2IorwerthCaves, searchChestForOrb, talkToBaxWithOrb;
 
-	QuestStep talkToElenaAfterOrb, inspectMushrooms, track1, track2, track3, track4, track5, track6, talkToYsgawynInClearing, enterLlyetaForFighting;
+	QuestStep talkToElenaAfterOrb, inspectMushrooms, track1, track2, track3, track4, track5, track6, talkToYsgawynInClearing, enterLletyaForFighting;
 
 	QuestStep searchTableForEoin, goUpLletyaLadder, searchCookingPots, fightArianwyn;
 
@@ -269,14 +269,14 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(56, talkToArianwyn);
 
 		ConditionalStep goTalkToYs = new ConditionalStep(this, goUpToYsgawyn);
-		goTalkToYs.addStep(inLlyetaF1, talkToYsgawyn);
+		goTalkToYs.addStep(inLletyaF1, talkToYsgawyn);
 		steps.put(58, goTalkToYs);
 
-		ConditionalStep goTalkToElenaInLlyeta = new ConditionalStep(this, talkToElenaInLlyeta);
-		goTalkToElenaInLlyeta.addStep(inLlyetaF1, goDownToElena);
-		steps.put(59, goTalkToElenaInLlyeta);
+		ConditionalStep goTalkToElenaInLletya = new ConditionalStep(this, talkToElenaInLletya);
+		goTalkToElenaInLletya.addStep(inLletyaF1, goDownToElena);
+		steps.put(59, goTalkToElenaInLletya);
 
-		steps.put(60, goTalkToElenaInLlyeta);
+		steps.put(60, goTalkToElenaInLletya);
 
 		steps.put(62, talkToArianwynAfterElena);
 		steps.put(64, talkToArianwynAfterMeeting);
@@ -306,9 +306,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(75, talkToElenaAfterBax);
 		steps.put(76, plantCadantine);
 
-		steps.put(78, talkToBaxInLlyeta);
+		steps.put(78, talkToBaxInLletya);
 
-		ConditionalStep findAmlodd = new ConditionalStep(this, talkToBaxInLlyeta);
+		ConditionalStep findAmlodd = new ConditionalStep(this, talkToBaxInLletya);
 		findAmlodd.addStep(inValley, talkToFigure);
 		findAmlodd.addStep(gottenTeleportCrystal, rubCrystal);
 		findAmlodd.addStep(askedAboutAmlodd, talkToElunedWithSeed);
@@ -399,7 +399,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(110, goTalkToArianwynAfterLibrary);
 		steps.put(112, talkToArianwynAfterLightPuzzle);
 
-		steps.put(114, talkToBaxInLlyeta);
+		steps.put(114, talkToBaxInLletya);
 
 		ConditionalStep askAboutHefinAndCrwys = new ConditionalStep(this, askBaxtorianHowToFindCrwys);
 		askAboutHefinAndCrwys.addStep(new Conditions(foundHefin, revealedCrwys), talkToCrwys);
@@ -439,22 +439,22 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		steps.put(140, talkToYsgawynInClearing);
 
-		ConditionalStep findChildren = new ConditionalStep(this, enterLlyetaForFighting);
-		findChildren.addStep(new Conditions(inLlyetaF1Battle, foundEoin), searchCookingPots);
-		findChildren.addStep(new Conditions(inLlyetaF0Battle, foundEoin), goUpLletyaLadder);
-		findChildren.addStep(new Conditions(LogicType.OR, inLlyetaF0Battle, inLlyetaF1Battle), searchTableForEoin);
+		ConditionalStep findChildren = new ConditionalStep(this, enterLletyaForFighting);
+		findChildren.addStep(new Conditions(inLletyaF1Battle, foundEoin), searchCookingPots);
+		findChildren.addStep(new Conditions(inLletyaF0Battle, foundEoin), goUpLletyaLadder);
+		findChildren.addStep(new Conditions(LogicType.OR, inLletyaF0Battle, inLletyaF1Battle), searchTableForEoin);
 		steps.put(142, findChildren);
 		steps.put(144, findChildren);
 
-		steps.put(146, enterLlyetaForFighting);
-		steps.put(148, enterLlyetaForFighting);
-		steps.put(150, enterLlyetaForFighting);
+		steps.put(146, enterLletyaForFighting);
+		steps.put(148, enterLletyaForFighting);
+		steps.put(150, enterLletyaForFighting);
 
-		ConditionalStep goDefeatArianwyn = new ConditionalStep(this, enterLlyetaForFighting);
-		goDefeatArianwyn.addStep(inLlyetaF0Battle, fightArianwyn);
+		ConditionalStep goDefeatArianwyn = new ConditionalStep(this, enterLletyaForFighting);
+		goDefeatArianwyn.addStep(inLletyaF0Battle, fightArianwyn);
 		steps.put(152, goDefeatArianwyn);
 
-		steps.put(154, enterLlyetaForFighting);
+		steps.put(154, enterLletyaForFighting);
 
 		steps.put(156, talkToBaxAfterLletyaFightForIthellClue);
 		steps.put(158, talkToBaxAfterLletyaFightForIthellClue);
@@ -468,9 +468,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		findingIthellAndMeilyr.addStep(new Conditions(builtStatue, askedAboutMeilyr), talkToIthell);
 		findingIthellAndMeilyr.addStep(new Conditions(learnedHowToMakeStatue, askedAboutMeilyr), buildStatue);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2,
-				checkedSymbol3, checkedSymbol4, inLlyetaF1Damaged), checkSymbol5);
+				checkedSymbol3, checkedSymbol4, inLletyaF1Damaged), checkSymbol5);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2,
-				checkedSymbol3, inLlyetaF1Damaged), checkSymbol4);
+				checkedSymbol3, inLletyaF1Damaged), checkSymbol4);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2,
 				checkedSymbol3), goToSecondFloorSymbols);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2), checkSymbol3);
@@ -660,7 +660,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		inMournerBaseHQInstance = new Conditions(new InInstanceCondition(), new ZoneCondition(mournerBasement));
 		inEastArdyInstance = new Conditions(new InInstanceCondition(), new ZoneCondition(eastArdy));
 		inArdougneCastleF1Instance = new Conditions(new InInstanceCondition(), new ZoneCondition(ardougneCastleF1));
-		inLlyetaF1 = new ZoneCondition(llyetaF1);
+		inLletyaF1 = new ZoneCondition(llyetaF1);
 		inValley = new ZoneCondition(valley);
 		inTraRoom = new ZoneCondition(traRoom);
 		inLightPuzzle = new ZoneCondition(lightPuzzleRoom);
@@ -675,9 +675,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		inBaxThroneRoom = new ZoneCondition(baxThroneRoom);
 
 		inIorwerthCave = new ZoneCondition(iorwerthCave);
-		inLlyetaF0Battle = new Conditions(new ZoneCondition(llyetaF0Battle));
-		inLlyetaF1Battle = new Conditions(new ZoneCondition(llyetaF1Battle));
-		inLlyetaF1Damaged = new ZoneCondition(llyetaF1Damaged);
+		inLletyaF0Battle = new Conditions(new ZoneCondition(llyetaF0Battle));
+		inLletyaF1Battle = new Conditions(new ZoneCondition(llyetaF1Battle));
+		inLletyaF1Damaged = new ZoneCondition(llyetaF1Damaged);
 
 		inPassF0 = new ZoneCondition(passF0);
 		inPassF1 = new ZoneCondition(passF1);
@@ -976,10 +976,10 @@ public class SongOfTheElves extends BasicQuestHelper
 		goUpToYsgawyn = new ObjectStep(this, ObjectID.LADDER_8744, new WorldPoint(2352, 3180, 0), "Go up to Ysgawyn in Lletya.");
 		talkToYsgawyn = new NpcStep(this, NpcID.YSGAWYN, new WorldPoint(2335, 3167, 1), "Talk to Ysgawyn.");
 		talkToYsgawyn.addSubSteps(goUpToYsgawyn);
-		goDownToElena = new ObjectStep(this, ObjectID.LADDER_8746, new WorldPoint(2352, 3180, 1), "Talk to Elena in the south west of Llyeta.");
-		talkToElenaInLlyeta = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0), "Talk to Elena in the south west of Llyeta.");
-		talkToElenaInLlyeta.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.");
-		talkToElenaInLlyeta.addSubSteps(goDownToElena);
+		goDownToElena = new ObjectStep(this, ObjectID.LADDER_8746, new WorldPoint(2352, 3180, 1), "Talk to Elena in the south west of Lletya.");
+		talkToElenaInLletya = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0), "Talk to Elena in the south west of Lletya.");
+		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.");
+		talkToElenaInLletya.addSubSteps(goDownToElena);
 		talkToArianwynAfterElena = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn again.");
 		talkToArianwynAfterMeeting = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn after the meeting.");
 
@@ -1008,21 +1008,23 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		talkToArianwynAfterBax = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToElenaAfterBax = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
-			"Talk to Elena in the south west of Llyeta.", seedDibber, cadantineSeed);
+			"Talk to Elena in the south west of Lletya.", seedDibber, cadantineSeed);
 
 		plantCadantine = new ObjectStep(this, NullObjectID.NULL_37270, new WorldPoint(2322, 3152, 0),
 			"Plant a cadantine seed in the Lletya farm patch.", seedDibber, cadantineSeed);
 		plantCadantine.addIcon(ItemID.CADANTINE_SEED);
 
-		talkToBaxInLlyeta = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Talk to Baxtorian in Llyeta.");
-		talkToBaxInLlyeta.addDialogStep("How do I find Lord Amlodd?");
-		talkToElunedWithSeed = new NpcStep(this, NpcID.ELUNED_8767, new WorldPoint(2322, 3160, 0), "Talk to Eluned in Llyeta.");
+		talkToBaxInLletya = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Talk to Baxtorian in " +
+			"Lletya.");
+		talkToBaxInLletya.addDialogStep("How do I find Lord Amlodd?");
+		talkToElunedWithSeed = new NpcStep(this, NpcID.ELUNED_8767, new WorldPoint(2322, 3160, 0), "Talk to Eluned in" +
+			" Lletya.");
 		talkToElunedWithSeed.addDialogStep("I have a seed from Baxtorian that I think needs enchanting.");
 		rubCrystal = new DetailedQuestStep(this, "Rub the teleport crystal to teleport.", crystalSeed);
 		talkToFigure = new NpcStep(this, NpcID.MYSTERIOUS_FIGURE, new WorldPoint(3051, 4486, 0), 
 				"Talk to the Mysterious Figure.");
 		talkToBaxAfterValley = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0),
-				"Talk to Baxtorian in Llyeta about Trahaearn.");
+				"Talk to Baxtorian in Lletya about Trahaearn.");
 		talkToBaxAfterValley.addDialogStep("How do I find Lady Trahaearn?");
 
 		enterCaveToWell = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_4006, new WorldPoint(2314, 3217, 0),
@@ -1053,7 +1055,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToTrahaearn = new NpcStep(this, NpcID.LADY_TANGWEN_TRAHAEARN, new WorldPoint(2334, 9574, 0), "Talk to Lady Tangwen Trahararn.");
 
 		talkToElenaAfterTra = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
-			"Return to Elena in the south west of Llyeta.");
+			"Return to Elena in the south west of Lletya.");
 		talkToArianwynAfterTra = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0),
 			"Talk to Arianwyn in Lletya.", elderCadantine);
 		usePestleOnCrystal = new DetailedQuestStep(this, "Use a pestle and mortar on the crystal.", pestleAndMortarHighlighted, crystal);
@@ -1154,7 +1156,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		askBaxtorianHowToFindHefin.addDialogStep("How do I find Lady Hefin?");
 		askBaxtorianHowToFindCrwys.addSubSteps(askBaxtorianHowToFindHefin);
 		crossSteppingStones = new NpcStep(this, NpcID.ELF_HERMIT, new WorldPoint(2276, 3094, 0),
-			"Hop across the stepping stones in the swamp south of the magic trees near Llyeta. Talk to the Elf Hermit on the island you reach.");
+			"Hop across the stepping stones in the swamp south of the magic trees near Lletya. Talk to the Elf Hermit" +
+				" on the island you reach.");
 		((NpcStep)crossSteppingStones).addAlternateNpcs(NpcID.LADY_CARYS_HEFIN);
 		((DetailedQuestStep) crossSteppingStones).setLinePoints(new ArrayList<>(Arrays.asList(
 			new WorldPoint(2299, 3114, 0),
@@ -1184,7 +1187,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		)));
 		talkToCrwys = new NpcStep(this, NpcID.LORD_PIQUAN_CRWYS, new WorldPoint(2177, 3210, 0), "Talk to Lord Crwys.");
 
-		talkToBaxAfterHefinAndCrwys = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Return to Baxtorian in Llyeta.");
+		talkToBaxAfterHefinAndCrwys = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Return to Baxtorian in Lletya.");
 
 
 		enterIorwerthCave = new ObjectStep(this, ObjectID.CAVE_35846, new WorldPoint(2202, 3263, 0),
@@ -1194,13 +1197,13 @@ public class SongOfTheElves extends BasicQuestHelper
 		((NpcStep) kill2IorwerthCaves).addAlternateNpcs(NpcID.IORWERTH_WARRIOR_8922);
 		searchChestForOrb = new ObjectStep(this, ObjectID.CHEST_35848, new WorldPoint(2200, 9681, 0), "Search the chest for the orb.");
 		((ObjectStep) searchChestForOrb).addAlternateObjects(ObjectID.CHEST_35849);
-		talkToBaxWithOrb = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Return to Baxtorian in Llyeta.");
+		talkToBaxWithOrb = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Return to Baxtorian in Lletya.");
 
 		talkToElenaAfterOrb = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
-				"Talk to Elena in the south west of Llyeta.");
+				"Talk to Elena in the south west of Lletya.");
 		talkToElenaAfterOrb.addDialogSteps("That's fair. Anyway, I wanted to ask you about Ysgawyn.");
 		inspectMushrooms = new ObjectStep(this, NullObjectID.NULL_37292, new WorldPoint(2302, 3195, 0),
-			"Inspect the mushrooms just outside Llyeta.");
+			"Inspect the mushrooms just outside Lletya.");
 
 		track1 = new ObjectStep(this, NullObjectID.NULL_37297, new WorldPoint(2291, 3187, 0), "Inspect the rocks to the west.");
 		track2 = new ObjectStep(this, NullObjectID.NULL_37296, new WorldPoint(2277, 3184, 0),
@@ -1214,8 +1217,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToYsgawynInClearing = new NpcStep(this, NpcID.YSGAWYN, new WorldPoint(2256, 3168, 0), "Talk to Ysgawyn.");
 		talkToYsgawynInClearing.addDialogStep("So what have you been discussing?");
 
-		enterLlyetaForFighting = new ObjectStep(this, ObjectID.TREE_8742, new WorldPoint(2305, 3193, 0), "Enter Llyeta.", combatGear);
-		enterLlyetaForFighting.addDialogStep("Yes.");
+		enterLletyaForFighting = new ObjectStep(this, ObjectID.TREE_8742, new WorldPoint(2305, 3193, 0), "Enter Lletya.", combatGear);
+		enterLletyaForFighting.addDialogStep("Yes.");
 
 		searchTableForEoin = new ObjectStep(this, ObjectID.TABLE_35873, new WorldPoint(2916, 6166, 0),
 			"Search the table to the south for Eoin.");
@@ -1226,12 +1229,12 @@ public class SongOfTheElves extends BasicQuestHelper
 			"Defeat Arianwyn. Protect from Ranged. Move when he shoots orange arrows.");
 
 		talkToBaxAfterLletyaFightForIthellClue = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2801, 6116, 0),
-			"Talk to Baxtorian in Llyeta about Ithell and Meilyr.");
+			"Talk to Baxtorian in Lletya about Ithell and Meilyr.");
 		talkToBaxAfterLletyaFightForIthellClue.addDialogStep("What's Lady Ithell's clue?");
 		talkToBaxAfterLletyaFightForIthellClue.setWorldMapPoint(new WorldPoint(2354, 3171, 0));
 
 		talkToBaxAfterLletyaFightForMeilyrClue = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2801, 6116, 0),
-			"Talk to Baxtorian in Llyeta about Ithell and Meilyr.");
+			"Talk to Baxtorian in Lletya about Ithell and Meilyr.");
 		talkToBaxAfterLletyaFightForMeilyrClue.addDialogStep("What's Lady Meilyr's clue?");
 		talkToBaxAfterLletyaFightForMeilyrClue.setWorldMapPoint(new WorldPoint(2354, 3171, 0));
 
@@ -1245,7 +1248,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		checkSymbol3 = new ObjectStep(this, NullObjectID.NULL_37306, new WorldPoint(2789, 6127, 0), "Touch the symbol in the General Store.");
 		checkSymbol3.setWorldMapPoint(new WorldPoint(2341, 3183, 0));
 
-		goToSecondFloorSymbols = new ObjectStep(this, ObjectID.LADDER_8744, new WorldPoint(2783, 6127, 0), "Go up to the top floor of Llyeta.");
+		goToSecondFloorSymbols = new ObjectStep(this, ObjectID.LADDER_8744, new WorldPoint(2783, 6127, 0), "Go up to the top floor of Lletya.");
 		goToSecondFloorSymbols.setWorldMapPoint(new WorldPoint(2335, 3183, 0));
 		checkSymbol4 = new ObjectStep(this, NullObjectID.NULL_37304, new WorldPoint(2783, 6129, 1), "Touch the symbol above the General Store.");
 		checkSymbol4.setWorldMapPoint(new WorldPoint(2335, 3185, 1));
@@ -1253,10 +1256,10 @@ public class SongOfTheElves extends BasicQuestHelper
 		checkSymbol5.setWorldMapPoint(new WorldPoint(2352, 3174, 1));
 
 		buildStatue = new ObjectStep(this, NullObjectID.NULL_37309, new WorldPoint(2786, 6116, 0),
-			"Make a statue in the middle of Llyeta.", saw, hammer, limestoneBricks8);
+			"Make a statue in the middle of Lletya.", saw, hammer, limestoneBricks8);
 		buildStatue.setWorldMapPoint(new WorldPoint(2338, 3172, 0));
 
-		talkToIthell = new NpcStep(this, NpcID.LADY_KELYN_ITHELL, new WorldPoint(2783, 6115, 0), "Talk to Lady Kelyn Ithell in Llyeta.");
+		talkToIthell = new NpcStep(this, NpcID.LADY_KELYN_ITHELL, new WorldPoint(2783, 6115, 0), "Talk to Lady Kelyn Ithell in Lletya.");
 		talkToIthell.setWorldMapPoint(new WorldPoint(2334, 3172, 0));
 
 		digNearSwamp = new DigStep(this, new WorldPoint(2225, 3133, 0), "Dig at the marked spot near Port Tyras.");
@@ -1406,14 +1409,14 @@ public class SongOfTheElves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Overthrowing the King", new ArrayList<>(Arrays.asList(talkToElenaForFight, defeat10Mourners, mournerBattleGoDownTrapdoor,
 				defeat11Mourners, talkToElenaForEastArdyFight, defeat15Knights, talkToLathasAfterFight, watchArdyFightCutscene)), combatGear));
 
-		allSteps.add(new PanelDetails("Helping Arianwyn", new ArrayList<>(Arrays.asList(talkToArianwyn, talkToYsgawyn, talkToElenaInLlyeta, talkToArianwynAfterElena,
+		allSteps.add(new PanelDetails("Helping Arianwyn", new ArrayList<>(Arrays.asList(talkToArianwyn, talkToYsgawyn, talkToElenaInLletya, talkToArianwynAfterElena,
 				talkToArianwynAfterMeeting))));
 
 		allSteps.add(new PanelDetails("Freeing Baxtorian", new ArrayList<>(Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchCrateForKey,
 				enterBaxThroneRoom, talkToArianwynInBax, pillarPuzzle, talkToBax)),
 				rope, iritLeafOrFlowers, cabbage, wineOfZamorakOrZamorakBrew, natureRune, adamantChainbody, blackKnifeOrBlackDagger));
 
-		allSteps.add(new PanelDetails("Finding Amlodd", new ArrayList<>(Arrays.asList(talkToArianwynAfterBax, talkToElenaAfterBax, plantCadantine, talkToBaxInLlyeta,
+		allSteps.add(new PanelDetails("Finding Amlodd", new ArrayList<>(Arrays.asList(talkToArianwynAfterBax, talkToElenaAfterBax, plantCadantine, talkToBaxInLletya,
 				talkToElunedWithSeed, rubCrystal, talkToFigure)), seedDibber, cadantineSeed));
 
 		allSteps.add(new PanelDetails("Finding Trahaearn", new ArrayList<>(Arrays.asList(talkToBaxAfterValley, enterCaveToWell, usePickaxeOnWall, enterCrevice,
@@ -1465,7 +1468,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Locating Ysgawyn", new ArrayList<>(Arrays.asList(talkToElenaAfterOrb, inspectMushrooms, track1, track2, track3, track4,
 				track5, track6, talkToYsgawynInClearing)), combatGear));
 
-		allSteps.add(new PanelDetails("Defending Llyeta", new ArrayList<>(Arrays.asList(enterLlyetaForFighting, searchTableForEoin, goUpLletyaLadder,
+		allSteps.add(new PanelDetails("Defending Lletya", new ArrayList<>(Arrays.asList(enterLletyaForFighting, searchTableForEoin, goUpLletyaLadder,
 				searchCookingPots, fightArianwyn)), combatGear));
 
 		allSteps.add(new PanelDetails("Finding Ithell and Meilyr", new ArrayList<>(Arrays.asList(talkToBaxAfterLletyaFightForIthellClue, checkSymbol1,

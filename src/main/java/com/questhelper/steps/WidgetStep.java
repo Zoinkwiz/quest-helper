@@ -79,16 +79,20 @@ public class WidgetStep extends DetailedQuestStep
 				else
 				{
 					WidgetItem widgetItem = widget.getWidgetItem(widgetDetail.childChildID);
-					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+						questHelper.getConfig().targetOverlayColor().getGreen(),
+						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
 					graphics.fill(widgetItem.getCanvasBounds());
-					graphics.setColor(Color.CYAN);
+					graphics.setColor(questHelper.getConfig().targetOverlayColor());
 					graphics.draw(widgetItem.getCanvasBounds());
 					continue;
 				}
 			}
-			graphics.setColor(new Color(0, 255, 255, 65));
+			graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+				questHelper.getConfig().targetOverlayColor().getGreen(),
+				questHelper.getConfig().targetOverlayColor().getBlue(), 65));
 			graphics.fill(widget.getBounds());
-			graphics.setColor(Color.CYAN);
+			graphics.setColor(questHelper.getConfig().targetOverlayColor());
 			graphics.draw(widget.getBounds());
 		}
 	}

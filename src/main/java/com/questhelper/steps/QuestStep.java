@@ -27,6 +27,7 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.questhelper.QuestHelperConfig;
 import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestVarbits;
 import com.questhelper.requirements.Requirement;
@@ -71,7 +72,7 @@ public abstract class QuestStep implements Module
 	protected ArrayList<String> text;
 
 	protected int ARROW_SHIFT_X = 8;
-	protected int ARROW_SHIFT_Y = 20;
+	protected int ARROW_SHIFT_Y = 15;
 
 	/* Locking applies to ConditionalSteps. Intended to be used as a method of forcing a step to run if it's been locked */
 	private boolean locked;
@@ -235,35 +236,36 @@ public abstract class QuestStep implements Module
 
 	public void addDialogStep(String choice)
 	{
-		choices.addChoice(new DialogChoiceStep(choice));
+		System.out.println(questHelper.getConfig().textHighlightColor());
+		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
 	}
 
 	public void addDialogStepWithExclusion(String choice, String exclusionString)
 	{
-		choices.addDialogChoiceWithExclusion(new DialogChoiceStep(choice), exclusionString);
+		choices.addDialogChoiceWithExclusion(new DialogChoiceStep(questHelper.getConfig(), choice), exclusionString);
 	}
 
 	public void addDialogStep(int id, String choice)
 	{
-		choices.addChoice(new DialogChoiceStep(id, choice));
+		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, choice));
 	}
 
 	public void addDialogSteps(String... newChoices)
 	{
 		for (String choice : newChoices)
 		{
-			choices.addChoice(new DialogChoiceStep(choice));
+			choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
 		}
 	}
 
 	public void addWidgetChoice(String text, int groupID, int childID)
 	{
-		widgetChoices.addChoice(new WidgetChoiceStep(text, groupID, childID));
+		widgetChoices.addChoice(new WidgetChoiceStep(questHelper.getConfig(), text, groupID, childID));
 	}
 
 	public void addWidgetChoice(int id, int groupID, int childID)
 	{
-		widgetChoices.addChoice(new WidgetChoiceStep(id, groupID, childID));
+		widgetChoices.addChoice(new WidgetChoiceStep(questHelper.getConfig(), id, groupID, childID));
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)
@@ -359,15 +361,5 @@ public abstract class QuestStep implements Module
 	public BufferedImage getQuestImage()
 	{
 		return spriteManager.getSprite(SpriteID.TAB_QUESTS, 0);
-	}
-
-	public BufferedImage getArrow()
-	{
-		return ImageUtil.getResourceStreamFromClass(getClass(), "/quest_arrow.png");
-	}
-
-	public BufferedImage getSmallArrow()
-	{
-		return ImageUtil.getResourceStreamFromClass(getClass(), "/quest_minimap_arrow_small.png");
 	}
 }

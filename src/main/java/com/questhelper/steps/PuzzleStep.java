@@ -51,9 +51,11 @@ public class PuzzleStep extends DetailedQuestStep{
             Widget widget = client.getWidget(button.getGroupID(), button.getChildID());
             if (widget != null)
             {
-                graphics.setColor(new Color(0, 255, 255, 65));
+                graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+					questHelper.getConfig().targetOverlayColor().getGreen(),
+					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
                 graphics.fill(widget.getBounds());
-                graphics.setColor(Color.CYAN);
+                graphics.setColor(questHelper.getConfig().targetOverlayColor());
                 graphics.draw(widget.getBounds());
             }
 

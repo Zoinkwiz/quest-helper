@@ -82,7 +82,8 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Quest Helper",
-	description = "Helps you with questing"
+	description = "Helps you with questing",
+	tags = { "quest", "helper", "overlay" }
 )
 @Slf4j
 public class QuestHelperPlugin extends Plugin
@@ -123,7 +124,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
-	private BankItems bankItems = new BankItems();
+	private final BankItems bankItems = new BankItems();
 
 	@Inject
 	private Client client;
@@ -535,7 +536,7 @@ public class QuestHelperPlugin extends Plugin
 		{
 			selectedQuest = questHelper;
 			eventBus.register(selectedQuest);
-			selectedQuest.startUp();
+			selectedQuest.startUp(config);
 			if (selectedQuest.getCurrentStep() == null)
 			{
 				shutDownQuest();

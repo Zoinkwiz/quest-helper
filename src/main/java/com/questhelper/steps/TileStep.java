@@ -65,6 +65,6 @@ public class TileStep extends DetailedQuestStep
 			return;
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, Color.cyan);
+		OverlayUtil.renderPolygon(graphics, poly, questHelper.getConfig().targetOverlayColor());
 	}
 }

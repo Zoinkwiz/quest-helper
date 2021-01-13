@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -220,9 +221,14 @@ public class NpcStep extends DetailedQuestStep
 			npcIcon = icon;
 		}
 
+		if (!questHelper.getConfig().showSymbolOverlay())
+		{
+			return;
+		}
+
 		for (NPC otherNpc : npcs)
 		{
-			OverlayUtil.renderActorOverlayImage(graphics, otherNpc, npcIcon, Color.CYAN, IMAGE_Z_OFFSET);
+			OverlayUtil.renderActorOverlayImage(graphics, otherNpc, npcIcon, questHelper.getConfig().targetOverlayColor(), IMAGE_Z_OFFSET);
 		}
 
 		if (npcs.size() == 0)
@@ -230,7 +236,7 @@ public class NpcStep extends DetailedQuestStep
 			return;
 		}
 
-		OverlayUtil.renderActorOverlayImage(graphics, npcs.get(0), npcIcon, Color.CYAN, IMAGE_Z_OFFSET);
+		OverlayUtil.renderActorOverlayImage(graphics, npcs.get(0), npcIcon, questHelper.getConfig().targetOverlayColor(), IMAGE_Z_OFFSET);
 	}
 
 	@Override
@@ -242,16 +248,14 @@ public class NpcStep extends DetailedQuestStep
 		}
 		else if (!hideWorldArrow && !npcs.contains(client.getHintArrowNpc()))
 		{
-			BufferedImage arrow = getArrow();
 			Shape hull = npcs.get(0).getConvexHull();
 			if (hull != null)
 			{
 				Rectangle rect = hull.getBounds();
-				int x = (int) rect.getCenterX() - ARROW_SHIFT_X;
+				int x = (int) rect.getCenterX();
 				int y = (int) rect.getMinY() - ARROW_SHIFT_Y;
-				Point point = new Point(x, y);
 
-				OverlayUtil.renderImageLocation(graphics, point, arrow);
+				drawWorldArrow(graphics, x, y);
 			}
 		}
 	}
@@ -270,7 +274,11 @@ public class NpcStep extends DetailedQuestStep
 
 		if (!npcs.isEmpty() && npcs.get(0).getMinimapLocation() != null)
 		{
-			graphics.drawImage(getSmallArrow(), npcs.get(0).getMinimapLocation().getX() - 5, npcs.get(0).getMinimapLocation().getY() - 14, null);
+			int x = npcs.get(0).getMinimapLocation().getX();
+			int y = npcs.get(0).getMinimapLocation().getY();
+			Line2D.Double line = new Line2D.Double(x, y - 18, x, y - 8);
+
+			drawMinimapArrow(graphics, line);
 			return;
 		}
 
@@ -301,7 +309,9 @@ public class NpcStep extends DetailedQuestStep
 		{
 			return;
 		}
+		Line2D.Double line = new Line2D.Double(posOnMinimap.getX(), posOnMinimap.getY() - 18, posOnMinimap.getX(),
+			posOnMinimap.getY() - 8);
 
-		graphics.drawImage(getSmallArrow(), posOnMinimap.getX() - 5, posOnMinimap.getY() - 14, null);
+		drawMinimapArrow(graphics, line);
 	}
 }

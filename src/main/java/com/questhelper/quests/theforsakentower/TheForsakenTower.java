@@ -160,7 +160,11 @@ public class TheForsakenTower extends BasicQuestHelper
 		talkToVulcana = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ, new WorldPoint(1483, 3747, 0), "Talk to Lady Vulcana Lovakengj in the south of Lovakengj.");
 		talkToVulcana.addDialogStep("I'm looking for a quest.");
 		talkToVulcana.addDialogStep("I'll get going.");
-		talkToUndor = new NpcStep(this, NpcID.UNDOR, new WorldPoint(1624, 3942, 0), "Talk to Undor at the entrance to Wintertodt. You can teleport there using a Games Necklace, or run north through Arceuus.");
+		talkToUndor = new NpcStep(this, NpcID.UNDOR, new WorldPoint(1624, 3942, 0),
+			"Talk to Undor at the entrance to Wintertodt. If you've never talked to Insignia before, you'll need " +
+				"to talk to her first. She is just north east of Undor. You can " +
+				"teleport there using a Games Necklace, or run" +
+				" north through Arceuus.");
 		talkToUndor.addDialogStep("I've been sent to help you.");
 
 		enterTheForsakenTower = new ObjectStep(this, ObjectID.DOOR_33491, new WorldPoint(1382, 3817, 0), "Enter the Forsaken Tower, west of Lovakengj.");

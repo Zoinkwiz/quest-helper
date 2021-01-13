@@ -32,6 +32,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -60,7 +62,7 @@ public class MountainDaughter extends BasicQuestHelper
 {
 	private Zone CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3, LAKE_ISLAND_1, LAKE_ISLAND_2, LAKE_ISLAND_3, KENDAL_CAVE;
 
-	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope, slayerRing;
+	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope, slayerRing, combatGear;
 
 	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock, hasCorpse,
 		gottenGuarantee, givenGuaranteeToSvidi, gottenFruit, gottenSeed, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, fightableKendalNearby, hasRocks,
@@ -154,19 +156,21 @@ public class MountainDaughter extends BasicQuestHelper
 
 	private void loadItemRequirements() {
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		pickaxe = new ItemRequirement("A pickaxe", ItemID.BRONZE_PICKAXE);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);
 		pickaxe.addAlternates(ItemCollections.getPickaxes());
 
-		axe = new ItemRequirement("An axe", ItemID.BRONZE_AXE);
+		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE);
 		axe.addAlternates(ItemCollections.getAxes());
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		pole = new ItemRequirement("A staff or a Pole", ItemID.POLE);
+		pole.addAlternates(ItemID.LUNAR_STAFF);
 		pole.setTip("You can find one in the north part of the Mountain Camp.");
-		gloves = new ItemRequirement("Gloves", ItemID.LEATHER_GLOVES);
+		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES);
+		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES, ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_SPEAR, ItemID.HARDLEATHER_GLOVES, ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
 		gloves.setTip("You can use most other gloves, with a few exceptions (Slayer, Mystic, Ranger, Moonclan, Lunar, Infinity, vambraces).");
 
 		mud = new ItemRequirement("Mud", ItemID.MUD);
-		mud.setTip("You can get some mud from the mud pool south of Hamal's tent. You'll need a spade.");
+		mud.setTip("You can get some mud from the mud pool south of Hamal's tent.");
 
 		halfRock = new ItemRequirement("Half a rock", ItemID.HALF_A_ROCK);
 		halfRock.setTip("You can get another piece by using a pickaxe on the Ancient Rock in the Mountain Camp.");
@@ -179,8 +183,8 @@ public class MountainDaughter extends BasicQuestHelper
 		corpse = new ItemRequirement("Corpse of woman", ItemID.CORPSE_OF_WOMAN);
 		corpse.setTip("You can find this corpse again in the Kendal's cave.");
 		muddyRocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
-
 		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.getSlayerRings());
+		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1);
 	}
 
 	private void loadConditions() {
@@ -359,14 +363,13 @@ public class MountainDaughter extends BasicQuestHelper
 		reqs.add(axe);
 		reqs.add(plank);
 		reqs.add(gloves);
-
 		return reqs;
 	}
 
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(slayerRing));
+		return new ArrayList<>(Arrays.asList(slayerRing, combatGear));
 	}
 
 	@Override

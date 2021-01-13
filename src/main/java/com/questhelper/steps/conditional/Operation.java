@@ -24,10 +24,21 @@
  */
 package com.questhelper.steps.conditional;
 
+import java.util.function.BiFunction;
+
 public enum Operation
 {
-	LESS_EQUAL,
-	EQUAL,
-	GREATER_EQUAL,
-	NOT_EQUAL
+	LESS_EQUAL((x,y) -> x <= y),
+	EQUAL(Integer::equals),
+	GREATER_EQUAL((x,y) -> x >= y),
+	NOT_EQUAL((x,y) -> x != y);
+
+	private final BiFunction<Integer, Integer, Boolean> operation;
+	Operation(BiFunction<Integer, Integer, Boolean> operation) {
+		this.operation = operation;
+	}
+
+	public boolean check(int numberToCheck, int numberToCheckAgainst) {
+		return operation.apply(numberToCheck, numberToCheckAgainst);
+	}
 }

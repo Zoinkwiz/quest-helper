@@ -24,13 +24,10 @@
  */
 package com.questhelper.requirements;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class NoItemRequirement extends ItemRequirement
 {
@@ -122,25 +119,6 @@ public class NoItemRequirement extends ItemRequirement
 		}
 
 		return equipment[slot] <= 512;
-	}
-
-	@Override
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
-	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
-
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
-
-		lines.add(LineComponent.builder()
-			.left(getDisplayText())
-			.leftColor(color)
-			.build());
-
-		return lines;
 	}
 
 	@Override

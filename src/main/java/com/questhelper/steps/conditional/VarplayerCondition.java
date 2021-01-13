@@ -74,23 +74,6 @@ public class VarplayerCondition extends ConditionForStep
 		{
 			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
 		}
-		if (operation == Operation.EQUAL)
-		{
-			return client.getVarpValue(varplayerId) == value;
-		}
-		else if (operation == Operation.NOT_EQUAL)
-		{
-			return client.getVarpValue(varplayerId) != value;
-		}
-		else if (operation == Operation.LESS_EQUAL)
-		{
-			return client.getVarpValue(varplayerId) <= value;
-		}
-
-		else if (operation == Operation.GREATER_EQUAL)
-		{
-			return client.getVarpValue(varplayerId) >= value;
-		}
-		return false;
+		return operation.check(client.getVarpValue(varplayerId), value);
 	}
 }

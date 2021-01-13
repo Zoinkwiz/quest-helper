@@ -31,11 +31,25 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 
 abstract public class Requirement
 {
-	public abstract Color getColor(Client client);
+	public Color getColor(Client client) {
+		return check(client) ? Color.GREEN : Color.RED;
+	}
 
 	abstract public boolean check(Client client);
 
-	abstract public ArrayList<LineComponent> getDisplayTextWithChecks(Client client);
+	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client) {
+		ArrayList<LineComponent> lines = new ArrayList<>();
+
+		String text = getDisplayText();
+		Color color = getColor(client);
+
+		lines.add(LineComponent.builder()
+			.left(text)
+			.leftColor(color)
+			.build());
+
+		return lines;
+	}
 
 	abstract public String getDisplayText();
 }

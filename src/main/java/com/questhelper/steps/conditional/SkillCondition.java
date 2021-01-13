@@ -28,24 +28,6 @@ public class SkillCondition extends ConditionForStep
 	@Override
 	public boolean checkCondition(Client client)
 	{
-		if (operation == Operation.EQUAL)
-		{
-			return client.getRealSkillLevel(skill) == value;
-		}
-		else if (operation == Operation.NOT_EQUAL)
-		{
-			return client.getRealSkillLevel(skill) != value;
-		}
-		else if (operation == Operation.LESS_EQUAL)
-		{
-			return client.getRealSkillLevel(skill) <= value;
-		}
-
-		else if (operation == Operation.GREATER_EQUAL)
-		{
-			return client.getRealSkillLevel(skill) >= value;
-		}
-
-		return false;
+		return operation.check(client.getRealSkillLevel(skill), value);
 	}
 }

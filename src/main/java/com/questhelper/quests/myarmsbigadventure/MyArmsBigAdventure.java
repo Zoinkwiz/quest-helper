@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -459,7 +460,8 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		req.add(new QuestRequirement(Quest.JUNGLE_POTION, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 10));
 		req.add(new SkillRequirement(Skill.FARMING, 29, true));
-		req.add(new ItemRequirement("At least 60% favor in the Tai Bwo Wannai Cleanup minigame", -1, -1));
+		// 907 is the Varbit for tai bwo wannai cleanup favour
+		req.add(new VarbitRequirement(907, Operation.GREATER_EQUAL, 60, "At least 60% favor in the Tai Bwo Wannai Cleanup minigame"));
 		return req;
 	}
 }

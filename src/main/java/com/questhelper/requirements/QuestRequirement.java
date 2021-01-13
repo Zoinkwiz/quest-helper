@@ -1,5 +1,6 @@
 package com.questhelper.requirements;
 
+import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Quest;
@@ -35,7 +36,7 @@ public class QuestRequirement extends Requirement
 	@Override
 	public String getDisplayText()
 	{
-		String text = Character.toUpperCase(requiredState.name().charAt(0)) + requiredState.name().substring(1);
+		String text = Character.toUpperCase(requiredState.name().charAt(0)) + requiredState.name().toLowerCase(Locale.ROOT).substring(1);
 		return text.replaceAll("_", " ") + " " + quest.getName();
 	}
 }

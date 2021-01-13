@@ -46,23 +46,7 @@ public class WeightRequirement extends Requirement
 	@Override
 	public boolean check(Client client)
 	{
-		if (operation == Operation.EQUAL)
-		{
-			return client.getWeight() == weight;
-		}
-		else if (operation == Operation.NOT_EQUAL)
-		{
-			return client.getWeight() != weight;
-		}
-		else if (operation == Operation.LESS_EQUAL)
-		{
-			return client.getWeight() <= weight;
-		}
-		else if (operation == Operation.GREATER_EQUAL)
-		{
-			return client.getWeight() >= weight;
-		}
-		return false;
+		return operation.check(client.getWeight(), weight);
 	}
 
 	@Override

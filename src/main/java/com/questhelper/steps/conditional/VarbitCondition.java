@@ -75,24 +75,6 @@ public class VarbitCondition extends ConditionForStep
 			return bitIsSet == BigInteger.valueOf(client.getVarbitValue(varbitId)).testBit(bitPosition);
 		}
 
-		if (operation == Operation.EQUAL)
-		{
-			return client.getVarbitValue(varbitId) == value;
-		}
-		else if (operation == Operation.NOT_EQUAL)
-		{
-			return client.getVarbitValue(varbitId) != value;
-		}
-		else if (operation == Operation.LESS_EQUAL)
-		{
-			return client.getVarbitValue(varbitId) <= value;
-		}
-
-		else if (operation == Operation.GREATER_EQUAL)
-		{
-			return client.getVarbitValue(varbitId) >= value;
-		}
-
-		return false;
+		return operation.check(client.getVarbitValue(varbitId), value);
 	}
 }

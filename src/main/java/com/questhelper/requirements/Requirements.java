@@ -25,11 +25,9 @@
 package com.questhelper.requirements;
 
 import com.questhelper.steps.conditional.LogicType;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class Requirements extends Requirement
 {
@@ -54,14 +52,8 @@ public class Requirements extends Requirement
 	@Override
 	public boolean check(Client client)
 	{
-		int successes = 0;
-		for (Requirement requirement : requirements)
-		{
-			if (requirement.check(client))
-			{
-				successes++;
-			}
-		}
+		int successes = (int) requirements.stream().filter(r -> r.check(client)).count();
+
 		return (successes == requirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)
 			|| (successes < requirements.size() && logicType == LogicType.NAND)
@@ -69,42 +61,8 @@ public class Requirements extends Requirement
 	}
 
 	@Override
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
-	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
-
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
-
-		lines.add(LineComponent.builder()
-			.left(getDisplayText())
-			.leftColor(color)
-			.build());
-
-		return lines;
-	}
-
-	@Override
 	public String getDisplayText()
 	{
 		return name;
-	}
-
-	public Color getColor(Client client)
-	{
-		Color color;
-
-		if (this.check(client))
-		{
-			color = Color.GREEN;
-		}
-		else
-		{
-			color = Color.RED;
-		}
-		return color;
 	}
 }

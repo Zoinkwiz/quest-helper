@@ -24,13 +24,8 @@
  */
 package com.questhelper.requirements;
 
-import com.google.common.base.CaseFormat;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class PrayerRequirement extends Requirement
 {
@@ -48,31 +43,6 @@ public class PrayerRequirement extends Requirement
 	{
 		int currentPrayer = client.getVar(prayer.getVarbit());
 		return currentPrayer == 1;
-	}
-
-	@Override
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
-	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
-
-		Color color = getColor(client);
-
-		lines.add(LineComponent.builder()
-			.left(getDisplayText())
-			.leftColor(color)
-			.build());
-
-		return lines;
-	}
-
-	public Color getColor(Client client)
-	{
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
-		return color;
 	}
 
 	@Override

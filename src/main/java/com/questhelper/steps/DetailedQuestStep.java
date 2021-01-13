@@ -106,8 +106,6 @@ public class DetailedQuestStep extends QuestStep
 	protected static final int MAX_DRAW_DISTANCE = 16;
 	protected int currentRender = 0;
 
-	private final Color ARROW_COLOUR = new Color(0, 168, 243);
-
 	protected boolean started;
 
 	@Setter
@@ -172,18 +170,9 @@ public class DetailedQuestStep extends QuestStep
 		super.leftCutscene();
 	}
 
-	public void addRequirement(Requirement requirement)
-	{
-		requirements.add(requirement);
-	}
-
 	public void addRequirement(ItemRequirement requirement)
 	{
 		requirements.add(requirement);
-	}
-	public void addRequirement(ArrayList<Requirement> requirement)
-	{
-		requirements.addAll(requirement);
 	}
 
 	public void addItemRequirements(ArrayList<ItemRequirement> requirement)
@@ -381,18 +370,19 @@ public class DetailedQuestStep extends QuestStep
 	{
 		Line2D.Double line = new Line2D.Double(startX, startY - 13, startX, startY);
 
-		int headWidth = 4;
+		int headWidth = 5;
+		int headHeight = 4;
 		int lineWidth = 9;
 
 		graphics.setColor(Color.BLACK);
 		graphics.setStroke(new BasicStroke(lineWidth));
 		graphics.draw(line);
-		drawWorldArrowHead(graphics, line, headWidth, headWidth + 1);
+		drawWorldArrowHead(graphics, line, headHeight, headWidth);
 
 		graphics.setColor(getQuestHelper().getConfig().targetOverlayColor());
 		graphics.setStroke(new BasicStroke(lineWidth - 3));
 		graphics.draw(line);
-		drawWorldArrowHead(graphics, line, headWidth - 2, headWidth - 2);
+		drawWorldArrowHead(graphics, line, headHeight - 2, headWidth - 2);
 		graphics.setStroke(new BasicStroke(1));
 	}
 
@@ -888,10 +878,8 @@ public class DetailedQuestStep extends QuestStep
 			return null;
 		}
 
-		int tilePlane = plane;
-
-		final int startHeight = Perspective.getTileHeight(client, startLocation, tilePlane);
-		final int endHeight = Perspective.getTileHeight(client, endLocation, tilePlane);
+		final int startHeight = Perspective.getTileHeight(client, startLocation, plane);
+		final int endHeight = Perspective.getTileHeight(client, endLocation, plane);
 
 		Point p1 = Perspective.localToCanvas(client, startX, startY, startHeight);
 		Point p2 = Perspective.localToCanvas(client, endX, endY, endHeight);
@@ -901,9 +889,7 @@ public class DetailedQuestStep extends QuestStep
 			return null;
 		}
 
-		Line2D.Double line = new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-
-		return line;
+		return new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
 	private Rectangle getWorldMapClipArea()
@@ -963,20 +949,6 @@ public class DetailedQuestStep extends QuestStep
 		int buffer = iconBackground.getWidth() / 2 - itemImg.getWidth() / 2;
 		buffer = Math.max(buffer, 0);
 		tmpGraphics.drawImage(itemImg, buffer, buffer, null);
-	}
-
-	protected void addItemImageToLocation(Graphics2D graphics, LocalPoint lp)
-	{
-		if (icon == null)
-		{
-			addIconImage();
-		}
-
-		if (inCutscene)
-		{
-			return;
-		}
-		OverlayUtil.renderTileOverlay(client, graphics, lp, icon, questHelper.getConfig().targetOverlayColor());
 	}
 
 	protected void addItemImageToLocation(Graphics2D graphics, int x, int y)

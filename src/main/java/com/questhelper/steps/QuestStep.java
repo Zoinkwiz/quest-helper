@@ -27,7 +27,6 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.questhelper.QuestHelperConfig;
 import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestVarbits;
 import com.questhelper.requirements.Requirement;
@@ -55,7 +54,6 @@ import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.util.ImageUtil;
 
 public abstract class QuestStep implements Module
 {

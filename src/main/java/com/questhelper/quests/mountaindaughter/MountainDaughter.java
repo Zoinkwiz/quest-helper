@@ -142,19 +142,21 @@ public class MountainDaughter extends BasicQuestHelper
 		return steps;
 	}
 
-	private void loadZones() {
-		CAMP_ZONE_1 = new Zone(new WorldPoint(2758,3660,0), new WorldPoint(2821,3664,0));
-		CAMP_ZONE_2 = new Zone(new WorldPoint(2767,3653,0), new WorldPoint(2821,3712,0));
-		CAMP_ZONE_3 = new Zone(new WorldPoint(2751,3671,0), new WorldPoint(2767,3712,0));
+	private void loadZones()
+	{
+		CAMP_ZONE_1 = new Zone(new WorldPoint(2758, 3660, 0), new WorldPoint(2821, 3664, 0));
+		CAMP_ZONE_2 = new Zone(new WorldPoint(2767, 3653, 0), new WorldPoint(2821, 3712, 0));
+		CAMP_ZONE_3 = new Zone(new WorldPoint(2751, 3671, 0), new WorldPoint(2767, 3712, 0));
 
-		LAKE_ISLAND_1 = new Zone(new WorldPoint(2770,3681,0), new WorldPoint(2775,3688,0));
-		LAKE_ISLAND_2 = new Zone(new WorldPoint(2770,3689,0), new WorldPoint(2776,3694,0));
-		LAKE_ISLAND_3 = new Zone(new WorldPoint(2776,3688,0), new WorldPoint(2787,3698,0));
+		LAKE_ISLAND_1 = new Zone(new WorldPoint(2770, 3681, 0), new WorldPoint(2775, 3688, 0));
+		LAKE_ISLAND_2 = new Zone(new WorldPoint(2770, 3689, 0), new WorldPoint(2776, 3694, 0));
+		LAKE_ISLAND_3 = new Zone(new WorldPoint(2776, 3688, 0), new WorldPoint(2787, 3698, 0));
 
-		KENDAL_CAVE = new Zone(new WorldPoint(2828,10118,0), new WorldPoint(2746,10047,0));
+		KENDAL_CAVE = new Zone(new WorldPoint(2828, 10118, 0), new WorldPoint(2746, 10047, 0));
 	}
 
-	private void loadItemRequirements() {
+	private void loadItemRequirements()
+	{
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);
 		pickaxe.addAlternates(ItemCollections.getPickaxes());
@@ -166,7 +168,9 @@ public class MountainDaughter extends BasicQuestHelper
 		pole.addAlternates(ItemID.LUNAR_STAFF);
 		pole.setTip("You can find one in the north part of the Mountain Camp.");
 		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES);
-		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES, ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_SPEAR, ItemID.HARDLEATHER_GLOVES, ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
+		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
+			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
+			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
 		gloves.setTip("You can use most other gloves, with a few exceptions (Slayer, Mystic, Ranger, Moonclan, Lunar, Infinity, vambraces).");
 
 		mud = new ItemRequirement("Mud", ItemID.MUD);
@@ -187,7 +191,8 @@ public class MountainDaughter extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1);
 	}
 
-	private void loadConditions() {
+	private void loadConditions()
+	{
 		onIsland1 = new Conditions(new ZoneCondition(LAKE_ISLAND_1));
 		onIsland2 = new Conditions(new ZoneCondition(LAKE_ISLAND_2));
 		onIsland3 = new Conditions(new ZoneCondition(LAKE_ISLAND_3));
@@ -215,13 +220,14 @@ public class MountainDaughter extends BasicQuestHelper
 		hasBuried = new Conditions(new VarbitCondition(273, 1));
 	}
 
-	private void loadQuestSteps() {
+	private void loadQuestSteps()
+	{
 		enterCamp = new ObjectStep(this, ObjectID.BOULDER_5842, new WorldPoint(2766, 3667, 0),
 			"Use your rope on the boulder outside the Mountain Camp east of Rellekka.",
 			rope);
 		enterCamp.addIcon(ItemID.ROPE);
 
-		enterCampOverRocks = new ObjectStep(this, ObjectID.ROCKSLIDE_5847,  new WorldPoint(2760, 3658, 0),
+		enterCampOverRocks = new ObjectStep(this, ObjectID.ROCKSLIDE_5847, new WorldPoint(2760, 3658, 0),
 			"Return to the Mountain Camp.",
 			rope);
 
@@ -379,7 +385,8 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels() {
+	public ArrayList<PanelDetails> getPanels()
+	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Speak to Hamal", new ArrayList<>(Arrays.asList(enterCamp, talkToHamal)), rope, plank, pickaxe));

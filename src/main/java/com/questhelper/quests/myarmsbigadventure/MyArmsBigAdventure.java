@@ -444,4 +444,3 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		return allSteps;
 	}
 }
-

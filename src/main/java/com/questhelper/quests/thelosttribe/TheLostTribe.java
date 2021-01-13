@@ -26,6 +26,9 @@ package com.questhelper.quests.thelosttribe;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcEmoteStep;
@@ -44,6 +47,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -356,5 +362,16 @@ public class TheLostTribe extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Resolving tensions", new ArrayList<>(Arrays.asList(goGetKey, goOpenRobeChest, goIntoHamLair, goToDukeWithSilverware, travelToMakePeace)), lightSource));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.GOBLIN_DIPLOMACY, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 13, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 13, true));
+		req.add(new SkillRequirement(Skill.MINING, 17, true));
+		return req;
 	}
 }

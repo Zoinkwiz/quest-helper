@@ -26,6 +26,10 @@ package com.questhelper.quests.heroesquest;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -55,6 +59,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -511,5 +517,22 @@ public class HeroesQuest extends BasicQuestHelper
 		allSteps.add(fifthPanel);
 		allSteps.add(sixthPanel);
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new ItemRequirement("A partner", -1, -1));
+		req.add(new QuestPointRequirement(55));
+		req.add(new SkillRequirement(Skill.COOKING, 53, true));
+		req.add(new SkillRequirement(Skill.FISHING, 53, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 25, true));
+		req.add(new SkillRequirement(Skill.MINING, 50, true));
+		req.add(new QuestRequirement(Quest.SHIELD_OF_ARRAV, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.LOST_CITY, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.MERLINS_CRYSTAL, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.DRAGON_SLAYER, QuestState.FINISHED));
+		return req;
 	}
 }

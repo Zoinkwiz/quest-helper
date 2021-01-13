@@ -25,6 +25,8 @@
 package com.questhelper.quests.thegolem;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
@@ -39,6 +41,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -336,5 +339,11 @@ public class TheGolem extends BasicQuestHelper
 			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useProgramOnGolem)), vial, pestleAndMortar, papyrus));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20), new SkillRequirement(Skill.THIEVING, 25, true)));
 	}
 }

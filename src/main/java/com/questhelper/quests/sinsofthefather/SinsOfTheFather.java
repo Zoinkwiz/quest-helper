@@ -32,6 +32,9 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -55,6 +58,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.HashMap;
@@ -843,5 +849,21 @@ public class SinsOfTheFather extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight, fightVanstrom, finishQuest)), combatGear, blisterwoodFlail));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.VAMPYRE_SLAYER, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.A_TASTE_OF_HOPE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 62));
+		req.add(new SkillRequirement(Skill.FLETCHING, 60));
+		req.add(new SkillRequirement(Skill.CRAFTING, 56));
+		req.add(new SkillRequirement(Skill.AGILITY, 52));
+		req.add(new SkillRequirement(Skill.ATTACK, 50));
+		req.add(new SkillRequirement(Skill.SLAYER, 50));
+		req.add(new SkillRequirement(Skill.MAGIC, 49));
+		return req;
 	}
 }

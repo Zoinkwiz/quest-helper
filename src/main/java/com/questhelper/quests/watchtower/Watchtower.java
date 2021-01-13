@@ -26,6 +26,8 @@ package com.questhelper.quests.watchtower;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -45,6 +47,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -624,5 +627,17 @@ public class Watchtower extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Getting the other crystals", new ArrayList<>(Arrays.asList(talkToWizardAgainEnclave, useJangerberriesOnGuam, grindBatBones, useBonesOnPotion, talkToWizardWithPotion, useNightshadeOnGuardAgain, usePotionOnOgre1, mineRock, talkToWizardWithCrystals, useCrystal1, pullLever)),
 			guamUnf, jangerberries, pestleAndMortar, batBones, nightshade, pickaxe));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.MAGIC, 15));
+		req.add(new SkillRequirement(Skill.THIEVING, 15));
+		req.add(new SkillRequirement(Skill.AGILITY, 25, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 14, true));
+		req.add(new SkillRequirement(Skill.MINING, 40, true));
+		return req;
 	}
 }

@@ -25,6 +25,8 @@
 package com.questhelper.quests.enchantedkey;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,6 +37,8 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.QuestDescriptor;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ENCHANTED_KEY
@@ -96,5 +100,13 @@ public class EnchantedKey extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Dig for treasure", new ArrayList<>(Arrays.asList(solvePuzzle)), key, spade));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.MAKING_HISTORY, QuestState.FINISHED));
+		return req;
 	}
 }

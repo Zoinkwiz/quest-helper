@@ -30,12 +30,15 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.conditional.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.*;
@@ -459,5 +462,11 @@ public class TowerOfLife extends BasicQuestHelper
 		allSteps.add(new PanelDetails("The Alchemists' Secret", talkToEffigyAgain, followTheAlchemists, confrontEffigy, confrontTheHomunculus, scareTheAlchemists, talkToHomunculusInDungeon));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.CONSTRUCTION, 10)));
 	}
 }

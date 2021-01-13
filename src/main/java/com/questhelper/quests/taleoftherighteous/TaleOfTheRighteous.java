@@ -26,6 +26,10 @@ package com.questhelper.quests.taleoftherighteous;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.FavourRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.NpcCondition;
@@ -35,10 +39,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -300,5 +308,16 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 			rope, combatGear));
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(returnToShiro, returnToPhileasTent, finishQuest))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED));
+		req.add(new FavourRequirement(Favour.SHAYZIEN, 20));
+		req.add(new SkillRequirement(Skill.STRENGTH, 16));
+		req.add(new SkillRequirement(Skill.MINING, 10));
+		return req;
 	}
 }

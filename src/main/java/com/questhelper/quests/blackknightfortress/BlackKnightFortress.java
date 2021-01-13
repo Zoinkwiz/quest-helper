@@ -1,6 +1,8 @@
 package com.questhelper.quests.blackknightfortress;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -257,5 +259,11 @@ public class BlackKnightFortress extends BasicQuestHelper
 				goUpLadderToCabbageZone, pushWall2, useCabbageOnHole))));
 		allSteps.add(new PanelDetails("Return to Sir Amik Varze", new ArrayList<>(Collections.singletonList(returnToAmik))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new QuestPointRequirement(12)));
 	}
 }

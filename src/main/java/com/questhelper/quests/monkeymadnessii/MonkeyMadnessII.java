@@ -28,7 +28,9 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.FollowerRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -61,6 +63,8 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -695,5 +699,24 @@ public class MonkeyMadnessII extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(talkToNarnodeAfterLab, talkToNieve, killGorillasInStronghold, enterNorthOfTree, enterStrongholdCave, killTorturedAndDemonic,
 				fightGlough, talkToZooknockToFinish, talkToNarnodeToFinish)), combatGear2));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.RECIPE_FOR_DISASTER, QuestState.IN_PROGRESS, "Finished the 'Freeing King Awowogei' subquest of RFD"));
+		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.WATCHTOWER, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.SLAYER, 69));
+		req.add(new SkillRequirement(Skill.CRAFTING, 70));
+		req.add(new SkillRequirement(Skill.HUNTER, 60));
+		req.add(new SkillRequirement(Skill.AGILITY, 55));
+		req.add(new SkillRequirement(Skill.THIEVING, 55));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 60));
+		req.add(new ItemRequirement("It is beneficial to have a high Combat and Agility level", -1, -1));
+		return req;
 	}
 }

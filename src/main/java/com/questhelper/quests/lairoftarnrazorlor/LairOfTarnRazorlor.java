@@ -26,6 +26,9 @@ package com.questhelper.quests.lairoftarnrazorlor;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.PrayerRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -46,6 +49,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Prayer;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -308,6 +314,15 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Traversing the dungeon", new ArrayList<>(Arrays.asList(enterHauntedMine, enterLair, goThroughRoom1, goThroughRoom2, goThroughRoom3,
 			goThroughRoom4, goThroughRoom5, jumpToPillar1, pressSwitch, jumpToNorthLedge, goThroughRoom6, goThroughRoom7, enterBossRoom, killTarn1, killTarn2, enterFinalRoom, pickUpDiary)), combatGear));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.HAUNTED_MINE, QuestState.IN_PROGRESS));
+		req.add(new SkillRequirement(Skill.SLAYER, 40));
+		return req;
 	}
 }
 

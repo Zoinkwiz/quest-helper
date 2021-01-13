@@ -25,6 +25,8 @@
 package com.questhelper.quests.architecturalalliance;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -35,6 +37,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.NpcID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
@@ -106,6 +109,16 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Repairing the statue", new ArrayList<>(Arrays.asList(talkToHosa, talkToArcis, talkToPiliar, talkToShayda, talkToLovada, talkToHosaToFinish))));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.CRAFTING, 30));
+		req.add(new SkillRequirement(Skill.MINING, 42));
+		req.add(new SkillRequirement(Skill.SLAYER, 10, false, "10 Slayer, or started Plague City for Gas mask"));
+		return req;
 	}
 }
 

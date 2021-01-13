@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.FollowerRequirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -48,6 +49,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -426,5 +429,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus, leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest, talkToHighPriestInPyramid, leavePyramidToFinish)), cat));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new QuestRequirement(Quest.GERTRUDES_CAT, QuestState.FINISHED)));
 	}
 }

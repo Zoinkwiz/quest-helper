@@ -26,6 +26,8 @@ package com.questhelper.quests.bigchompybirdhunting;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -46,6 +48,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -325,6 +328,16 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Cooking Chompy", new ArrayList<>(Arrays.asList(enterCaveAgain, talkToBugs, talkToFycie, leaveCaveAgain, getIngredients, cookChompy, giveRantzSeasonedChompy))));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.RANGED, 30));
+		req.add(new SkillRequirement(Skill.COOKING, 30, true));
+		req.add(new SkillRequirement(Skill.FLETCHING, 5, true));
+		return req;
 	}
 }
 

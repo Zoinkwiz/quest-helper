@@ -24,12 +24,16 @@
  */
 package com.questhelper.quests.biohazard;
 
+import com.questhelper.requirements.FavourRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -48,10 +52,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -337,5 +345,15 @@ public class Biohazard extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Revealing the truth", returnToElenaAfterSampling, informTheKing));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> requirements = new ArrayList<>();
+		requirements.add(new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED));
+		requirements.add(new FavourRequirement(Favour.ARCEUUS, 20));
+		requirements.add(new SkillRequirement(Skill.HUNTER, 12));
+		return requirements;
 	}
 }

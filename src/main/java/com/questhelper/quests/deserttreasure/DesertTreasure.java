@@ -26,6 +26,9 @@ package com.questhelper.quests.deserttreasure;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -45,6 +48,9 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullItemID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -579,5 +585,23 @@ public class DesertTreasure extends BasicQuestHelper
 		allSteps.add(iceDiamondPanel);
 		allSteps.add(finishingPanel);
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_DIG_SITE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.TEMPLE_OF_IKOV, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.THE_TOURIST_TRAP, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.NATURE_SPIRIT, QuestState.IN_PROGRESS));
+		req.add(new SkillRequirement(Skill.THIEVING, 52));
+		req.add(new SkillRequirement(Skill.MAGIC, 50));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
+		req.add(new SkillRequirement(Skill.SLAYER, 10, false, "10 Slayer (unless you have a Gas mask from Plague City)"));
+		return req;
 	}
 }

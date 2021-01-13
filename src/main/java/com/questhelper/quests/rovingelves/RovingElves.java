@@ -25,6 +25,9 @@
 package com.questhelper.quests.rovingelves;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -42,6 +45,9 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -215,5 +221,16 @@ public class RovingElves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Plant the seed",
 			new ArrayList<>(Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchFallsCrate, useKeyOnFallsDoor, plantSeed, returnToIslwyn)), spade, rope, blessedSeed));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.REGICIDE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 56, true));
+		req.add(new ItemRequirement("The ability to defeat a level 84 enemy without runes, weapons, or armour", -1, -1));
+		return req;
 	}
 }

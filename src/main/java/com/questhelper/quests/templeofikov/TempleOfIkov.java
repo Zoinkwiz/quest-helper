@@ -26,6 +26,8 @@ package com.questhelper.quests.templeofikov;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -47,6 +49,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -377,5 +380,14 @@ public class TempleOfIkov extends BasicQuestHelper
 				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever, tryToEnterWitchRoom, fightLes)), yewOrBetterBow, knife, lightSource, limpwurt20));
 		allSteps.add(new PanelDetails("Explore deeper", new ArrayList<>(Arrays.asList(enterLesDoor, giveWineldaLimps, pickUpKey, pushWall, makeChoice, returnToLucien))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
+		req.add(new SkillRequirement(Skill.RANGED, 40));
+		return req;
 	}
 }

@@ -25,6 +25,9 @@
 package com.questhelper.quests.whatliesbelow;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -39,6 +42,9 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -238,5 +244,15 @@ public class WhatLiesBelow extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Help Surok", new ArrayList<>(Arrays.asList(talkToSurok, enterChaosAltar, useWandOnAltar, bringWandToSurok)), chaosRunes15, chaosTalismanOrAbyss, bowl));
 		allSteps.add(new PanelDetails("Defeat Surok", new ArrayList<>(Arrays.asList(talkToRatAfterSurok, talkToZaff, talkToSurokToFight, fightRoald, talkToRatToFinish))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.RUNECRAFT, 35));
+		req.add(new SkillRequirement(Skill.MINING, 42, false, "42 Mining (unless you have access to The Abyss)"));
+		return req;
 	}
 }

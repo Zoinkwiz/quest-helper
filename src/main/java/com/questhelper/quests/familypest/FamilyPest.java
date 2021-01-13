@@ -26,6 +26,8 @@
 package com.questhelper.quests.familypest;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -146,4 +148,12 @@ public class FamilyPest extends BasicQuestHelper{
         allSteps.add(new PanelDetails("Talk to the Brothers", new ArrayList<>(Arrays.asList(talkToDimintheis,talkToAvan,talkToCaleb,goUpstairs,talkToDimintheis2))));
         return allSteps;
     }
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.FAMILY_CREST, QuestState.FINISHED));
+		return req;
+	}
 }

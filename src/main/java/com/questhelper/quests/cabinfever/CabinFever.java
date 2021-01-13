@@ -25,6 +25,10 @@
 package com.questhelper.quests.cabinfever;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -39,10 +43,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -660,5 +668,20 @@ public class CabinFever extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Fire canisters", new ArrayList<>(Arrays.asList(goDownForRamrod, getRamrod,goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon))));
 		allSteps.add(new PanelDetails("Fire cannon balls", new ArrayList<>(Arrays.asList(goDownForBalls, getBalls, goUpToCannonWithBalls, getPowderForBalls, usePowderForBalls, useRamrodForBalls, useBall, useFuseForBalls, fireCannonForBalls, repeatBallSteps))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.PIRATES_TREASURE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.RUM_DEAL, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 42));
+		req.add(new SkillRequirement(Skill.CRAFTING, 45));
+		req.add(new SkillRequirement(Skill.SMITHING, 50));
+		req.add(new SkillRequirement(Skill.RANGED, 40));
+		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11));
+		return req;
 	}
 }

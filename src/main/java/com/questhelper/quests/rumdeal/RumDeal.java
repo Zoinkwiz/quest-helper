@@ -25,7 +25,10 @@
 package com.questhelper.quests.rumdeal;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -42,10 +45,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -450,5 +457,20 @@ public class RumDeal extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Giving swill to Donnie", new ArrayList<>(Arrays.asList(talkToBraindeathAfterSpider, useBucketOnTap, talkToDonnie, talkToBraindeathToFinish))));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.ZOGRE_FLESH_EATERS, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.CRAFTING, 42, true));
+		req.add(new SkillRequirement(Skill.FISHING, 50, true));
+		req.add(new SkillRequirement(Skill.FARMING, 40, true));
+		req.add(new SkillRequirement(Skill.PRAYER, 47, true));
+		req.add(new SkillRequirement(Skill.SLAYER, 42));
+		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 6));
+		return req;
 	}
 }

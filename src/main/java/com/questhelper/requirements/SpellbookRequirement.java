@@ -24,10 +24,7 @@
  */
 package com.questhelper.requirements;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class SpellbookRequirement extends Requirement
 {
@@ -43,33 +40,6 @@ public class SpellbookRequirement extends Requirement
 	{
 		int currentSpellbook = client.getVarbitValue(4070);
 		return currentSpellbook == spellBook.getId();
-	}
-
-	@Override
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
-	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
-
-		String text = getDisplayText();
-		Color color = getColor(client);
-
-		lines.add(LineComponent.builder()
-			.left(text)
-			.leftColor(color)
-			.build());
-
-		return lines;
-	}
-
-	@Override
-	public Color getColor(Client client)
-	{
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
-		return color;
 	}
 
 	@Override

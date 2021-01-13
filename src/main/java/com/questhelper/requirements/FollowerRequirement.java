@@ -24,13 +24,11 @@
  */
 package com.questhelper.requirements;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class FollowerRequirement extends Requirement
 {
@@ -66,32 +64,6 @@ public class FollowerRequirement extends Requirement
 		}
 
 		return false;
-	}
-
-	@Override
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
-	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
-
-		Color color = getColor(client);
-
-		lines.add(LineComponent.builder()
-			.left(getDisplayText())
-			.leftColor(color)
-			.build());
-
-		return lines;
-	}
-
-	@Override
-	public Color getColor(Client client)
-	{
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
-		return color;
 	}
 
 	@Override

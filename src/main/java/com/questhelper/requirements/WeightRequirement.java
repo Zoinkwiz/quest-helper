@@ -50,32 +50,6 @@ public class WeightRequirement extends Requirement
 	}
 
 	@Override
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
-	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
-
-		Color color = getColor(client);
-
-		lines.add(LineComponent.builder()
-			.left(getDisplayText())
-			.leftColor(color)
-			.build());
-
-		return lines;
-	}
-
-	@Override
-	public Color getColor(Client client)
-	{
-		Color color = Color.RED;
-		if (check(client))
-		{
-			color = Color.GREEN;
-		}
-		return color;
-	}
-
-	@Override
 	public String getDisplayText()
 	{
 		return text;

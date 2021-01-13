@@ -31,7 +31,9 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 
 abstract public class Requirement
 {
-	public abstract Color getColor(Client client);
+	public Color getColor(Client client) {
+		return check(client) ? Color.GREEN : Color.RED;
+	}
 
 	abstract public boolean check(Client client);
 

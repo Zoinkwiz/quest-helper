@@ -96,22 +96,12 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public Color getColor(Client client)
 	{
-		Color color;
-
-		if (this.check(client, true))
-		{
-			color = Color.GREEN;
-		}
-		else
-		{
-			color = Color.RED;
-		}
-		return color;
+		return this.check(client, true) ? Color.GREEN : Color.RED;
 	}
 
 	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
 	{
-		Color color;
+		Color color = Color.RED;
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
@@ -120,10 +110,7 @@ public class ItemRequirements extends ItemRequirement
 		{
 			color = Color.GREEN;
 		}
-		else
-		{
-			color = Color.RED;
-		}
+
 		if (color == Color.RED && bankItems != null)
 		{
 			if (check(client, false, bankItems))

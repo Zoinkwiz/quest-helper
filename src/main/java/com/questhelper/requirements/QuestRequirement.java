@@ -1,7 +1,5 @@
 package com.questhelper.requirements;
 
-import java.awt.Color;
-import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Quest;
@@ -22,12 +20,6 @@ public class QuestRequirement extends Requirement
 	public QuestRequirement(Quest quest, QuestState requiredState, String displayText) {
 		this(quest, requiredState);
 		this.displayText = displayText;
-	}
-
-	@Override
-	public Color getColor(Client client)
-	{
-		return check(client) ? Color.GREEN : Color.RED;
 	}
 
 	@Override

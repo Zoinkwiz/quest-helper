@@ -390,10 +390,11 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 
 		int WHITE = 1;
 		int CYAN = 2;
+		int BLUE = 3;
 		int YELLOW = 6;
 		int GREEN = 7;
 
-		notResetHefin = new VarbitCondition(8725, GREEN);
+		notResetHefin = new VarbitCondition(8837, BLUE);
 
 		r1 = new VarbitCondition(8932, WHITE);
 		r2 = new VarbitCondition(8931, WHITE);

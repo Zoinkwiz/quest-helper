@@ -26,6 +26,9 @@ package com.questhelper.quests.grimtales;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -46,6 +49,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -382,5 +388,18 @@ public class GrimTales extends BasicQuestHelper
 			enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion, climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet)), tarrominUnf2));
 		allSteps.add(new PanelDetails("Golden goblin", new ArrayList<>(Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin, giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish)), combatGear, dibber, can, axe, shrinkPotion));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.WITCHS_HOUSE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.FARMING, 45, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 52, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 58, true));
+		req.add(new SkillRequirement(Skill.AGILITY, 59, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 71, true));
+		return req;
 	}
 }

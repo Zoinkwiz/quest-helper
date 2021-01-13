@@ -3,6 +3,10 @@ package com.questhelper.quests.legendsquest;
 import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.requirements.Spellbook;
 import com.questhelper.steps.DetailedQuestStep;
@@ -22,6 +26,9 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -945,5 +952,28 @@ public class LegendsQuest extends BasicQuestHelper
 			gildedTotem, completeNotesHighlighted));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestPointRequirement(107));
+		req.add(new QuestRequirement(Quest.FAMILY_CREST, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.HEROES_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.SHILO_VILLAGE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.UNDERGROUND_PASS, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 50, true));
+		req.add(new SkillRequirement(Skill.CRAFTING, 50, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 45, true));
+		req.add(new SkillRequirement(Skill.MAGIC, 56, true));
+		req.add(new SkillRequirement(Skill.MINING, 52, true));
+		req.add(new SkillRequirement(Skill.PRAYER, 42, true));
+		req.add(new SkillRequirement(Skill.SMITHING, 50, true));
+		req.add(new SkillRequirement(Skill.STRENGTH, 50, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
+		return req;
 	}
 }

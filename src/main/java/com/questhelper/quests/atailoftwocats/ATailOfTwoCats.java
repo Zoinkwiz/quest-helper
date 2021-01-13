@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.FollowerRequirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.Requirements;
 import com.questhelper.steps.ConditionalStep;
@@ -52,6 +53,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -242,5 +245,11 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		allSteps.add(new PanelDetails("'Curing' Unferth", new ArrayList<>(Arrays.asList(talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish, talkToUnferthToFinish)), catItem, catspeakE, vialOfWater));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new QuestRequirement(Quest.ICTHLARINS_LITTLE_HELPER, QuestState.FINISHED)));
 	}
 }

@@ -30,6 +30,10 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.Spellbook;
+import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -50,6 +54,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -443,5 +448,17 @@ public class TheGiantDwarf extends BasicQuestHelper
 		steps.put(40, finishQuest);
 
 		return steps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SpellbookRequirement(Spellbook.NORMAL));
+		req.add(new SkillRequirement(Skill.CRAFTING, 12));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 16));
+		req.add(new SkillRequirement(Skill.MAGIC, 33, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 14, true));
+		return req;
 	}
 }

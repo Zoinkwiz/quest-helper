@@ -25,6 +25,8 @@
 package com.questhelper.quests.skippyandthemogres;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
@@ -34,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -128,5 +131,14 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Help Skippy", new ArrayList<>(Arrays.asList(soberSkippy, useTeaOnSkippy, useChocolateDustOnMilk, useSnapeGrassOnMilk, useHangoverCure)), bucketOfWater, nettleTea, bucketOfMilk, chocolateDust, snapeGrass));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.COOKING, 20));
+		req.add(new SkillRequirement(Skill.SLAYER, 32, false, "32 Slayer (if you wish to slay the mogres after the miniquest)"));
+		return req;
 	}
 }

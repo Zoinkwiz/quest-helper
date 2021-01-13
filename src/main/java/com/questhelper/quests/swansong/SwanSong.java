@@ -25,6 +25,10 @@
 package com.questhelper.quests.swansong;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -44,6 +48,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -303,6 +310,22 @@ public class SwanSong extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Making an army", new ArrayList<>(Arrays.asList(talkToFruscone, talkToMalignius, talkToCrafter, makeAirtightPot, talkToMaligniusWithPot)), bones7, pot, potLid, combatGearRanged));
 		allSteps.add(new PanelDetails("Defeating the trolls", new ArrayList<>(Arrays.asList(talkToHermanForFinalFight, killQueen, talkToHermanToFinish)), combatGearRanged));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestPointRequirement(100));
+		req.add(new QuestRequirement(Quest.ONE_SMALL_FAVOUR, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.GARDEN_OF_TRANQUILLITY, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.MAGIC, 66, true));
+		req.add(new SkillRequirement(Skill.COOKING, 62, true));
+		req.add(new SkillRequirement(Skill.FISHING, 62, true));
+		req.add(new SkillRequirement(Skill.SMITHING, 45, true));
+		req.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 42));
+		return req;
 	}
 }
 

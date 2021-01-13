@@ -27,6 +27,8 @@ package com.questhelper.quests.enakhraslament;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.Spellbook;
 import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -487,5 +489,16 @@ public class EnakhrasLament extends BasicQuestHelper
 
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.CRAFTING, 50));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 45, true));
+		req.add(new SkillRequirement(Skill.PRAYER, 43));
+		req.add(new SkillRequirement(Skill.MAGIC, 39));
+		return req;
 	}
 }

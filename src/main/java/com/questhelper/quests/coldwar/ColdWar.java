@@ -6,12 +6,15 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.conditional.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
@@ -428,5 +431,18 @@ public class ColdWar extends BasicQuestHelper
 		allSteps.add(new PanelDetails("The War Room", new ArrayList<>(Arrays.asList(openControlDoor, enterWarRoom, killIcelords, useChasm, tellLarryPlans)), clockworkSuit, combatGear));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.HUNTER,10, true));
+		req.add(new SkillRequirement(Skill.AGILITY,30));
+		req.add(new SkillRequirement(Skill.CRAFTING,30));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION,34, true));
+		req.add(new SkillRequirement(Skill.THIEVING,15));
+		req.add(new ItemRequirement("Access to a Crafting Table 3", -1));
+		return req;
 	}
 }

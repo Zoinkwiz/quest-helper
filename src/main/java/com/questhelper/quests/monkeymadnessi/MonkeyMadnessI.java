@@ -26,6 +26,8 @@ package com.questhelper.quests.monkeymadnessi;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -45,6 +47,8 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -743,6 +747,15 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeat the demon", new ArrayList<>(Arrays.asList(prepareForBattle, killDemon, talkToNarnodeToFinish)), combatGear));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_GRAND_TREE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
+		return req;
 	}
 }
 

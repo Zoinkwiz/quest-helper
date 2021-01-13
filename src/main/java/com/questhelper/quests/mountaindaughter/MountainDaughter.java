@@ -25,6 +25,8 @@
 package com.questhelper.quests.mountaindaughter;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.conditional.NpcHintArrowCondition;
 import com.questhelper.steps.conditional.Operation;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ItemRequirement;
@@ -395,5 +398,11 @@ public class MountainDaughter extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Bury Asleif", new ArrayList<>(Arrays.asList(collectRocks, speakRagnar, buryCorpseOnIsland, createCairn))));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.AGILITY, 20, true)));
 	}
 }

@@ -25,6 +25,9 @@
 package com.questhelper.quests.myarmsbigadventure;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -44,6 +47,9 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -442,6 +448,19 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Karamja adventure", new ArrayList<>(Arrays.asList(talkToBarnaby, talkAfterBoat, talkToMyArmAtTai, talkToMurcaily, talkToMyArmAfterMurcaily))));
 		allSteps.add(new PanelDetails("Troll farming", new ArrayList<>(Arrays.asList(talkToMyArmForFight, giveRake, giveSupercompost, giveHardyGout, giveDibber, talkToMyArmAfterGrow, killBabyRoc, killGiantRoc, giveSpade, talkToMyArmAfterHarvest, talkToBurntmeatAgain, talkToMyArmFinish)), combatGear, rake, superCompost, dibber, plantCure));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.EADGARS_RUSE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.THE_FEUD, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.JUNGLE_POTION, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 10));
+		req.add(new SkillRequirement(Skill.FARMING, 29, true));
+		req.add(new ItemRequirement("At least 60% favor in the Tai Bwo Wannai Cleanup minigame", -1, -1));
+		return req;
 	}
 }
 

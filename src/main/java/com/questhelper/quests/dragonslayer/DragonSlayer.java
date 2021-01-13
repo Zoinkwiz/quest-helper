@@ -25,6 +25,8 @@
 package com.questhelper.quests.dragonslayer;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
@@ -547,5 +549,11 @@ public class DragonSlayer extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Finish the quest", new ArrayList<>(Collections.singletonList(finishQuest))));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new QuestPointRequirement(32)));
 	}
 }

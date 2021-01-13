@@ -31,6 +31,9 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.NoItemRequirement;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -49,6 +52,8 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -413,5 +418,14 @@ public class RecruitmentDrive extends BasicQuestHelper
 		steps.add(missCheeversRoom);
 		steps.add(ladyTable);
 		return steps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> reqs = new ArrayList<>();
+		reqs.add(new QuestRequirement(Quest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
+		reqs.add(new QuestRequirement(Quest.DRUIDIC_RITUAL, QuestState.FINISHED));
+		return reqs;
 	}
 }

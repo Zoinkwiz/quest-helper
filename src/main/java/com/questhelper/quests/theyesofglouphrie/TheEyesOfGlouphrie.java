@@ -26,6 +26,9 @@ package com.questhelper.quests.theyesofglouphrie;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -48,6 +51,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -284,5 +290,15 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_GRAND_TREE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 5));
+		req.add(new SkillRequirement(Skill.MAGIC, 46));
+		return req;
 	}
 }

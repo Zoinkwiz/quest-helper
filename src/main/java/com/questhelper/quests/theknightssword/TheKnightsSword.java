@@ -27,6 +27,8 @@ package com.questhelper.quests.theknightssword;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -46,6 +48,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -189,5 +192,11 @@ public class TheKnightsSword extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Making the sword", new ArrayList<>(Arrays.asList(enterDungeon, mineBlurite, bringThurgoOre)), pickaxe, portrait, ironBars));
 		allSteps.add(new PanelDetails("Return the sword", new ArrayList<>(Collections.singletonList(finishQuest))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.MINING, 10, true)));
 	}
 }

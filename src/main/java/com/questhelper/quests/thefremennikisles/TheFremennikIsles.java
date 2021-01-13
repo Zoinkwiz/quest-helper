@@ -26,6 +26,9 @@ package com.questhelper.quests.thefremennikisles;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -49,6 +52,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -564,5 +569,15 @@ public class TheFremennikIsles extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Killing the king", new ArrayList<>(Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest)), yakBottom, yakTop, roundShield, meleeWeapon, food));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
+		return req;
 	}
 }

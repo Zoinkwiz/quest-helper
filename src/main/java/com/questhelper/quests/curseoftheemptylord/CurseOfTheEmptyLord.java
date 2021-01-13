@@ -25,6 +25,8 @@
 package com.questhelper.quests.curseoftheemptylord;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -38,6 +40,8 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -265,5 +269,14 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(talkToValdez, talkToRennard, talkToKharrim, talkToLennissa, talkToDhalak, talkToViggora)), ghostspeak, ringOfVis));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.DESERT_TREASURE, QuestState.IN_PROGRESS));
+		req.add(new QuestRequirement(Quest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS));
+		return req;
 	}
 }

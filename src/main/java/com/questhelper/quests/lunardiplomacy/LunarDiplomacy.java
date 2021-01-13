@@ -26,6 +26,9 @@ package com.questhelper.quests.lunardiplomacy;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DigStep;
@@ -47,6 +50,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -933,5 +939,24 @@ public class LunarDiplomacy extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Tree challenge", new ArrayList<>(Arrays.asList(goToTrees, doTreeChallenge))));
 		allSteps.add(new PanelDetails("Final challenge", new ArrayList<>(Arrays.asList(talkWithEtherealToFight, fightMe, leaveLecturn, finishQuest))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.LOST_CITY, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.SHILO_VILLAGE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.HERBLORE, 5));
+		req.add(new SkillRequirement(Skill.CRAFTING, 61));
+		req.add(new SkillRequirement(Skill.DEFENCE, 40));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 49));
+		req.add(new SkillRequirement(Skill.MAGIC, 65));
+		req.add(new SkillRequirement(Skill.MINING, 60));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 55));
+		req.add(new ItemRequirement("Access to the following altars: \nAir, Earth, Fire, Water", -1, -1));
+		return req;
 	}
 }

@@ -25,6 +25,9 @@
 package com.questhelper.quests.dreammentor;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.CombatLevelRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -44,6 +47,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -379,5 +384,15 @@ public class DreamMentor extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeating his fear", new ArrayList<>(Arrays.asList(talkToOneiromancer, fillVialWithWater, addGoutweed,
 			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy, killEverlasting, killUntouchable, killIllusive, returnToOneiromancer)), goutweed, astralRune, hammer, pestleAndMortar, tinderbox, combatGear));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new CombatLevelRequirement(85));
+		req.add(new QuestRequirement(Quest.LUNAR_DIPLOMACY, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.EADGARS_RUSE, QuestState.FINISHED));
+		return req;
 	}
 }

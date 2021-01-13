@@ -27,6 +27,9 @@ package com.questhelper.quests.kingsransom;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.LogicType;
@@ -40,6 +43,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -421,5 +427,18 @@ public class KingsRansom extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Saving Arthur", new ArrayList<>(Arrays.asList(talkToCromperty, enterFortress, enterWallInFortress, goDownToArthur, freeArthur, talkToArthur, talkToArthurInCamelot)), bronzeMed, ironChain, blackKnightHelm, blackKnightBody, blackKnightLeg, granite));
 
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.HOLY_GRAIL, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.MURDER_MYSTERY, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.ONE_SMALL_FAVOUR, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.MAGIC, 46));
+		req.add(new SkillRequirement(Skill.DEFENCE, 65));
+		return req;
 	}
 }

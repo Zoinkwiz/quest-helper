@@ -25,6 +25,8 @@
 package com.questhelper.quests.makinghistory;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -41,6 +43,8 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -250,5 +254,11 @@ public class MakingHistory extends BasicQuestHelper
 		allSteps.add(ghostPanel);
 		allSteps.add(finishingPanel);
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new QuestRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED), new QuestRequirement(Quest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS)));
 	}
 }

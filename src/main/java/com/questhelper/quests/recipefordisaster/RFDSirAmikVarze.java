@@ -31,8 +31,12 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -50,10 +54,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
+import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
@@ -324,6 +330,19 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Arrays.asList("Evil Chicken (level " + evilChickenLevel + ")", "Black dragon (level 227)"));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestPointRequirement(107));
+		req.add(new QuestRequirement(Quest.FAMILY_CREST, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.HEROES_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.SHILO_VILLAGE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.UNDERGROUND_PASS, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
+		return req;
 	}
 
 	@Override

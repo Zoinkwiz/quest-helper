@@ -33,7 +33,10 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.PrayerRequirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -56,6 +59,9 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Prayer;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -66,7 +72,7 @@ public class RFDAwowogei extends BasicQuestHelper
 	ItemRequirement cookedSnake, cookedSnakeHighlighted, mAmulet, gorillaGreegree, ninjaGreegree, zombieGreegree, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted,
 		knife, pestleAndMortar, tchikiNuts, tchikiNutsHighlighted, redBanana, redBananaHighlighted, snakeCorpse, snakeCorpseHighlighted,
 		rawStuffedSnake, rawStuffedSnakeHighlighted, slicedBanana, greegreeEquipped, paste, combatGear;
-	
+
 	Requirement protectMelee;
 
 	ConditionForStep inDiningRoom, askedAboutBanana, askedAboutNut, onCrashIsland, inSnakeHole, inNutHole, inTempleDungeon, hasRawStuffedSnake,
@@ -239,7 +245,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		stuffSnake = new DetailedQuestStep(this, "Use the paste on the snake to stuff it.", paste, slicedBanana, snakeCorpseHighlighted);
 
 		enterZombieDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_4880, new WorldPoint(2807, 2785, 0), "Enter the trapdoor in the monkey temple.", zombieGreegree, rawStuffedSnake);
-		((ObjectStep)(enterZombieDungeon)).addAlternateObjects(ObjectID.TRAPDOOR_4879);
+		((ObjectStep) (enterZombieDungeon)).addAlternateObjects(ObjectID.TRAPDOOR_4879);
 		enterCookingHole = new ObjectStep(this, ObjectID.EXIT_16061, new WorldPoint(2805, 9199, 0), "Enter the hole just under where you entered,", zombieGreegree, rawStuffedSnake);
 		cookSnake = new ObjectStep(this, NullObjectID.NULL_26175, new WorldPoint(3056, 5485, 0), "Go across the hot rocks with the zombie greegree equipped. Cook the stuffed snake on the rock at the end of the room.", zombieGreegree, rawStuffedSnakeHighlighted);
 		cookSnake.addIcon(ItemID.RAW_STUFFED_SNAKE);
@@ -267,6 +273,19 @@ public class RFDAwowogei extends BasicQuestHelper
 	{
 		return new ArrayList<>(Collections.singletonList("If you don't have the ninja/gorilla/zombie greegrees ready, it's recommended you get them all in a single run to Zooknock to save time."));
 	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId(), Operation.GREATER_EQUAL, 3,
+			"Started Recipe for Disaster"));
+		req.add(new QuestRequirement(Quest.MONKEY_MADNESS_I, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 48));
+		req.add(new SkillRequirement(Skill.COOKING, 70, true));
+		return req;
+	}
+
 
 	@Override
 	public ArrayList<PanelDetails> getPanels()

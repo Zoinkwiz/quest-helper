@@ -31,6 +31,10 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -45,6 +49,9 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -152,6 +159,20 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(milk, egg, flour, tin));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.COOKING, 40, true));
+		req.add(new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.BIOHAZARD, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.DEMON_SLAYER, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.MURDER_MYSTERY, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.NATURE_SPIRIT, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.WITCHS_HOUSE, QuestState.FINISHED));
+		return req;
 	}
 
 	@Override

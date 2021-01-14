@@ -271,6 +271,12 @@ public class TheHandInTheSand extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.THIEVING, 17), new SkillRequirement(Skill.CRAFTING, 49)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -281,11 +287,5 @@ public class TheHandInTheSand extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Uncover the truth", new ArrayList<>(Arrays.asList(talkToSandyWithPotion, useSerumOnCoffee, activateMagicalOrb, interrogateSandy)), truthSerum, magicalOrb));
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(ringBellAfterInterrogation, talkToMazion, ringBellEnd)), earthRunes5, bucketOfSand));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.THIEVING, 17), new SkillRequirement(Skill.CRAFTING, 49)));
 	}
 }

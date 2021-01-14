@@ -218,7 +218,7 @@ public class HeroesQuest extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Weapons, armour and food for the Ice Queen", -1, -1);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		antifireShield  = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
+		antifireShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
 	}
 
 	public void loadZones()
@@ -257,7 +257,7 @@ public class HeroesQuest extends BasicQuestHelper
 		iceThrone2 = new Zone(new WorldPoint(2874, 9937, 0), new WorldPoint(2879, 9965, 0));
 		iceThrone3 = new Zone(new WorldPoint(2860, 9917, 0), new WorldPoint(2866, 9918, 0));
 
-		entrana = new Zone(new WorldPoint(2798, 3327,0), new WorldPoint(2878, 3394,1));
+		entrana = new Zone(new WorldPoint(2798, 3327, 0), new WorldPoint(2878, 3394, 1));
 
 	}
 
@@ -372,7 +372,7 @@ public class HeroesQuest extends BasicQuestHelper
 		enterTreasureRoom = new ObjectStep(this, ObjectID.DOOR_2621, new WorldPoint(2764, 3197, 0), "Use Grip's keyring on the treasure room door.", gripsKey);
 		enterTreasureRoom.addIcon(ItemID.GRIPS_KEYRING);
 		searchChest = new ObjectStep(this, ObjectID.CHEST_2632, new WorldPoint(2766, 3199, 0), "Search the chest in the treasure room for two candlesticks.");
-		((ObjectStep)(searchChest)).addAlternateObjects(ObjectID.CHEST_2633);
+		((ObjectStep) (searchChest)).addAlternateObjects(ObjectID.CHEST_2633);
 
 		returnToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Give one of Pete's candlesticks to your partner. Afterwards, return to Katrine with Pete's candlestick", candlestick);
 		returnToKatrine.addDialogStep("I have a candlestick now.");
@@ -410,7 +410,7 @@ public class HeroesQuest extends BasicQuestHelper
 		killFireBird = new NpcStep(this, NpcID.ENTRANA_FIREBIRD, new WorldPoint(2840, 3374, 0), "Kill the entrana firebird on the north of Entrana.", equippedIceGloves);
 		pickupFireFeather = new ItemStep(this, "Pick up the fire feather.", fireFeather);
 
-		finishQuest =  new NpcStep(this, NpcID.ACHIETTIES, new WorldPoint(2904, 3511, 0), "Bring Achietties all the items to finish.", fireFeather, thievesArmband, lavaEel);
+		finishQuest = new NpcStep(this, NpcID.ACHIETTIES, new WorldPoint(2904, 3511, 0), "Bring Achietties all the items to finish.", fireFeather, thievesArmband, lavaEel);
 	}
 
 	@Override

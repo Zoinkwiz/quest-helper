@@ -216,6 +216,13 @@ public class TheForsakenTower extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.LOVAKENGJ, 20),
+			new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -230,11 +237,5 @@ public class TheForsakenTower extends BasicQuestHelper
 		allSteps.addAll(altarPuzzle.panelDetails());
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(getHammer, returnToUndor, returnToVulcana))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.LOVAKENGJ, 20), new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
 	}
 }

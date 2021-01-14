@@ -25,6 +25,8 @@
 package com.questhelper.quests.doricsquest;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.NpcStep;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +39,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -73,6 +76,14 @@ public class DoricsQuest extends BasicQuestHelper
 		talkToDoric = new NpcStep(this, NpcID.DORIC, new WorldPoint(2951, 3451, 0), "Bring Doric north of Falador all the required items. You can mine them all in the Dwarven Mines, or buy them from the Grand Exchange.", clay, copper, iron);
 		talkToDoric.addDialogStep("I wanted to use your anvils.");
 		talkToDoric.addDialogStep("Yes, I will get you the materials.");
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.MINING, 15, true, "15 Mining to get ores yourself"));
+		return req;
 	}
 
 	@Override

@@ -554,6 +554,6 @@ public class DragonSlayer extends BasicQuestHelper
 	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new QuestPointRequirement(32)));
+		return new ArrayList<>(Collections.singletonList(new QuestPointRequirement(32)));
 	}
 }

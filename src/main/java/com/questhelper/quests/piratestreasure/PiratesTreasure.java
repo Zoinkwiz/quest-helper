@@ -56,12 +56,12 @@ public class PiratesTreasure extends BasicQuestHelper
 	private QuestStep digUpTreasure;
 
 	@Override
-    public Map<Integer, QuestStep> loadSteps()
-    {
-    	sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
-    	spade = new ItemRequirement("Spade", ItemID.SPADE);
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
+		spade = new ItemRequirement("Spade", ItemID.SPADE);
 
-        Map<Integer, QuestStep> steps = new HashMap<>();
+		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		speakToRedbeard = new NpcStep(this, NpcID.REDBEARD_FRANK, new WorldPoint(3053, 3251, 0),
 			"Talk to Redbeard Frank in Port Sarim.");
@@ -72,32 +72,32 @@ public class PiratesTreasure extends BasicQuestHelper
 
 		smuggleRum = new RumSmugglingStep(this);
 
-        steps.put(1, smuggleRum);
+		steps.put(1, smuggleRum);
 
 		ItemRequirement pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATE_MESSAGE);
-        ItemRequirement chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
-        chestKey.setTip("You can get another one from Redbeard Frank");
+		ItemRequirement chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
+		chestKey.setTip("You can get another one from Redbeard Frank");
 
 		ItemRequirementCondition hasPirateMessage = new ItemRequirementCondition(pirateMessage);
 
-        readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage);
+		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage);
 		openChest = new ObjectStep(this, ObjectID.CHEST_2079, new WorldPoint(3219, 3396, 1),
-                "Open the chest upstairs in The Blue Moon Inn in Varrock by using the key on it.",
-                chestKey);
+			"Open the chest upstairs in The Blue Moon Inn in Varrock by using the key on it.",
+			chestKey);
 		openChest.addDialogStep("Ok thanks, I'll go and get it.");
 		openChest.addIcon(ItemID.CHEST_KEY);
 
-        ConditionalStep getTreasureMap = new ConditionalStep(this, openChest);
-        getTreasureMap.addStep(hasPirateMessage, readPirateMessage);
+		ConditionalStep getTreasureMap = new ConditionalStep(this, openChest);
+		getTreasureMap.addStep(hasPirateMessage, readPirateMessage);
 
-        steps.put(2, getTreasureMap);
+		steps.put(2, getTreasureMap);
 
-        digUpTreasure = new DigStep(this, new WorldPoint(2999, 3383, 0),
+		digUpTreasure = new DigStep(this, new WorldPoint(2999, 3383, 0),
 			"Dig in the middle of the cross in Falador Park, and kill the Gardener (level 4) who appears. Once killed, dig again.");
 
-        steps.put(3, digUpTreasure);
-        return steps;
-    }
+		steps.put(3, digUpTreasure);
+		return steps;
+	}
 
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
@@ -123,11 +123,12 @@ public class PiratesTreasure extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Gardener (level 4)"));
+		return new ArrayList<>(Collections.singletonList("Gardener (level 4)"));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels() {
+	public ArrayList<PanelDetails> getPanels()
+	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Talk to Redbeard Frank", new ArrayList<>(Collections.singletonList(speakToRedbeard)), sixtyCoins));

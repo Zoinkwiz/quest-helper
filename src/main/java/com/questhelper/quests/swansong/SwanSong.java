@@ -293,6 +293,22 @@ public class SwanSong extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestPointRequirement(100));
+		req.add(new QuestRequirement(Quest.ONE_SMALL_FAVOUR, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.GARDEN_OF_TRANQUILLITY, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.MAGIC, 66, true));
+		req.add(new SkillRequirement(Skill.COOKING, 62, true));
+		req.add(new SkillRequirement(Skill.FISHING, 62, true));
+		req.add(new SkillRequirement(Skill.SMITHING, 45, true));
+		req.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 42));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -311,21 +327,4 @@ public class SwanSong extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeating the trolls", new ArrayList<>(Arrays.asList(talkToHermanForFinalFight, killQueen, talkToHermanToFinish)), combatGearRanged));
 		return allSteps;
 	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestPointRequirement(100));
-		req.add(new QuestRequirement(Quest.ONE_SMALL_FAVOUR, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.GARDEN_OF_TRANQUILLITY, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.MAGIC, 66, true));
-		req.add(new SkillRequirement(Skill.COOKING, 62, true));
-		req.add(new SkillRequirement(Skill.FISHING, 62, true));
-		req.add(new SkillRequirement(Skill.SMITHING, 45, true));
-		req.add(new SkillRequirement(Skill.CRAFTING, 40, true));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 42));
-		return req;
-	}
 }
-

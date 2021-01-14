@@ -261,6 +261,15 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.DEATH_PLATEAU, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 15, true, "15 Agility (47+ Agility is recommended)"));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -269,14 +278,5 @@ public class TrollStronghold extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Free the prisoners", new ArrayList<>(Arrays.asList(killGeneral, goDownInStronghold, goThroughPrisonDoor, goDownToPrison, getBerryKey, freeEadgar, getTwigKey, freeGodric))));
 		allSteps.add(new PanelDetails("Finish off", new ArrayList<>(Collections.singletonList(goToDunstan))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.DEATH_PLATEAU, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.AGILITY, 15, true, "15 Agility (47+ Agility is recommended)"));
-		return req;
 	}
 }

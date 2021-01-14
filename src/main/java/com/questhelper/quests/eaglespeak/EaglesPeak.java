@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2020, Zoinkwiz
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.quests.eaglespeak;
 
 import com.questhelper.QuestHelperQuest;
@@ -7,6 +31,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.conditional.ItemCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -426,11 +451,11 @@ public class EaglesPeak extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Arrays.asList(speakToCharlie))));
+		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(speakToCharlie))));
 		allSteps.add(new PanelDetails("Go to Eagles' Peak", new ArrayList<>(Arrays.asList(inspectBooks, clickBook, useFeatherOnDoor))));
 		allSteps.add(new PanelDetails("In Eagles' Peak", new ArrayList<>(Arrays.asList(enterPeak, shoutAtNickolaus, pickupFeathers))));
 		allSteps.add(new PanelDetails("Make a disguise", new ArrayList<>(Arrays.asList(goToFancyStore, speakAsyffAgain)), yellowDye, coins, tar, tenEagleFeathers));
-		allSteps.add(new PanelDetails("Return to Eagles' Peak", new ArrayList<>(Arrays.asList(returnToEaglesPeak)), fakeBeak, eagleCape));
+		allSteps.add(new PanelDetails("Return to Eagles' Peak", new ArrayList<>(Collections.singletonList(returnToEaglesPeak)), fakeBeak, eagleCape));
 		allSteps.add(new PanelDetails("Get the bronze feather", new ArrayList<>(Arrays.asList(enterBronzeRoom, attemptToTakeBronzeFeather, winch1, grabBronzeFeather))));
 		allSteps.add(new PanelDetails("Get the silver feather", new ArrayList<>(Arrays.asList(enterSilverRoom, inspectSilverPedestal, inspectRocks1, inspectRocks2, inspectOpening, threatenKebbit, pickupSilverFeather))));
 		allSteps.add(new PanelDetails("Get the golden feather", new ArrayList<>(Arrays.asList(enterGoldRoom, collectFeed, pullLever1Down, fillFeeder1, fillFeeder2, pullLever2Down, pushLever1Up, fillFeeder4, pullLever3Down, fillFeeder5,
@@ -443,6 +468,6 @@ public class EaglesPeak extends BasicQuestHelper
 	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.HUNTER, 27, true)));
+		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.HUNTER, 27, true)));
 	}
 }

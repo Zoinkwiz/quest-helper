@@ -126,19 +126,18 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.COOKING, 20));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Help Skippy", new ArrayList<>(Arrays.asList(soberSkippy, useTeaOnSkippy, useChocolateDustOnMilk, useSnapeGrassOnMilk, useHangoverCure)), bucketOfWater, nettleTea, bucketOfMilk, chocolateDust, snapeGrass));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.COOKING, 20));
-		req.add(new SkillRequirement(Skill.SLAYER, 32, false, "32 Slayer (if you wish to slay the mogres after the miniquest)"));
-		return req;
 	}
 }

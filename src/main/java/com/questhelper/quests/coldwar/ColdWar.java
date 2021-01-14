@@ -5,11 +5,13 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.conditional.*;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -41,7 +43,7 @@ public class ColdWar extends BasicQuestHelper
 	QuestStep talkToLarry, talkToLarryAgain, usePlankOnFirmSnow, useSpadeOnBirdHide, learnPenguinEmotes,
 		talkToLarryAfterEmotes, returnToRelleka, talkToLarryInRelleka, enterPoh, makeClockwork, makePenguin,
 		bringSuitToLarry, talkToLarryOnIcebergWithSuit, tuxedoTime, enterPenguinPen, talkToZooPenguin, emoteAtPenguin,
-	    exitSuit, talkToLarryMissionReport, readMissionReport, tuxedoTimeLumbridge, talkToThing, emoteAtPenguinInLumbridge,
+		exitSuit, talkToLarryMissionReport, readMissionReport, tuxedoTimeLumbridge, talkToThing, emoteAtPenguinInLumbridge,
 		returnToZooPenguin, returnToThing, fredTheFarmer, stealCowbell, askThingAboutOutpost, tellLarryAboutOutpost, kgpAgent,
 		emoteAtPenguinOutpost, noodle1, noodle2, kgpAgent2, enterAvalanche, kgpAgentInAvalanche, enterAgilityCourse, agilityCourse,
 		agilityEnterWater, agilityExitWater, agilityJumpStones, agilityTreadSoftly, agilityCrossIce, agilityDone,
@@ -278,12 +280,12 @@ public class ColdWar extends BasicQuestHelper
 
 		makeClockwork = new ObjectStep(this, ObjectID.CLOCKMAKERS_BENCH_6798, "Craft a steel bar into a clockwork at a crafting table 3.", steelBar);
 		makeClockwork.addDialogStep("Clockwork mechanism");
-		((ObjectStep)makeClockwork).addAlternateObjects(ObjectID.CLOCKMAKERS_BENCH_6799);
+		((ObjectStep) makeClockwork).addAlternateObjects(ObjectID.CLOCKMAKERS_BENCH_6799);
 
 		makePenguin = new ObjectStep(this, ObjectID.CLOCKMAKERS_BENCH_6798, "Craft a clockwork penguin at a crafting table 3 or 4.", clockwork, plank, silk);
 		makePenguin.addDialogStep("Clockwork toy");
 		makePenguin.addDialogStep("Clockwork penguin");
-		((ObjectStep)makePenguin).addAlternateObjects(ObjectID.CLOCKMAKERS_BENCH_6799);
+		((ObjectStep) makePenguin).addAlternateObjects(ObjectID.CLOCKMAKERS_BENCH_6799);
 
 		bringSuitToLarry = new NpcStep(this, NpcID.LARRY, new WorldPoint(2597, 3266, 0), "Talk to Larry back in the Ardougne Zoo.");
 		bringSuitToLarry.addDialogStep("Yes, I have it.");
@@ -345,7 +347,7 @@ public class ColdWar extends BasicQuestHelper
 		enterAvalanche = new ObjectStep(this, ObjectID.AVALANCHE, "Enter the avalanche.");
 
 		kgpAgentInAvalanche = new NpcStep(this, NpcID.KGP_AGENT, new WorldPoint(2647, 10384, 0), "Talk to the KGP Agent in the first room to the west of the entrance.");
-		((NpcStep)kgpAgentInAvalanche).setMaxRoamRange(12);
+		((NpcStep) kgpAgentInAvalanche).setMaxRoamRange(12);
 		enterAgilityCourse = new ObjectStep(this, ObjectID.DOOR_21169, new WorldPoint(2633, 10404, 0), "Enter the door to the west of the KGP Agent to begin the agility course.");
 
 		agilityCourse = new DetailedQuestStep(this, "Complete the agility course.");
@@ -360,7 +362,7 @@ public class ColdWar extends BasicQuestHelper
 		tellLarryAboutArmy = new NpcStep(this, NpcID.LARRY_829, "Return to Larry to tell him about the penguin army. You can quickly return to him by removing the penguin suit.");
 
 		kgpBeforePingPong = new NpcStep(this, NpcID.KGP_AGENT, new WorldPoint(2655, 10408, 0), "Re-enter the outpost and talk to the KGP agent north of the entrance.");
-		((NpcStep)kgpBeforePingPong).setMaxRoamRange(2);
+		((NpcStep) kgpBeforePingPong).setMaxRoamRange(2);
 
 		pingPong1 = new NpcStep(this, NpcID.PING_839, "Talk to Ping or Pong in the room to the east.");
 		((NpcStep) pingPong1).addAlternateNpcs(NpcID.PONG_840);
@@ -382,7 +384,7 @@ public class ColdWar extends BasicQuestHelper
 
 		enterWarRoom = new ObjectStep(this, ObjectID.DOOR_21160, new WorldPoint(2671, 10418, 0), "Enter the war room and walk a few steps in to be captured.");
 
-		killIcelords = new NpcStep(this, NpcID.ICELORD, new WorldPoint(2647, 10425, 0),  "Kill icelords until you are able to leave through the door to the west. May take up to 3 kills.", true);
+		killIcelords = new NpcStep(this, NpcID.ICELORD, new WorldPoint(2647, 10425, 0), "Kill icelords until you are able to leave through the door to the west. May take up to 3 kills.", true);
 		((NpcStep) killIcelords).addAlternateNpcs(NpcID.ICELORD_853, NpcID.ICELORD_854, NpcID.ICELORD_855);
 		exitIcelordPen = new ObjectStep(this, ObjectID.DOOR_21167, new WorldPoint(2639, 10424, 0), "Leave through the door to the west.");
 		killIcelords.addSubSteps(killIcelords);
@@ -434,15 +436,22 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new ItemRequirement("Access to a Crafting Table 3", -1));
+		return req;
+	}
+
+	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.HUNTER,10, true));
-		req.add(new SkillRequirement(Skill.AGILITY,30));
-		req.add(new SkillRequirement(Skill.CRAFTING,30));
-		req.add(new SkillRequirement(Skill.CONSTRUCTION,34, true));
-		req.add(new SkillRequirement(Skill.THIEVING,15));
-		req.add(new ItemRequirement("Access to a Crafting Table 3", -1));
+		req.add(new SkillRequirement(Skill.HUNTER, 10, true));
+		req.add(new SkillRequirement(Skill.AGILITY, 30));
+		req.add(new SkillRequirement(Skill.CRAFTING, 30));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 34, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 15));
 		return req;
 	}
 }

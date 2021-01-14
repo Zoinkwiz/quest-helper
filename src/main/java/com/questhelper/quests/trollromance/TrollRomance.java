@@ -273,6 +273,15 @@ public class TrollRomance extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 28));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -283,14 +292,5 @@ public class TrollRomance extends BasicQuestHelper
 
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.AGILITY, 28));
-		return req;
 	}
 }

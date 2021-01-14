@@ -142,7 +142,7 @@ public class DwarfCannon extends BasicQuestHelper
 		inspectRailings3 = new ObjectStep(this, NullObjectID.NULL_15592, new WorldPoint(2559, 3458, 0), "Inspect the railings to fix them.", hammer, railing);
 		inspectRailings4 = new ObjectStep(this, NullObjectID.NULL_15593, new WorldPoint(2563, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
 		inspectRailings5 = new ObjectStep(this, NullObjectID.NULL_15594, new WorldPoint(2573, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings6 =new ObjectStep(this, NullObjectID.NULL_15595, new WorldPoint(2577, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
+		inspectRailings6 = new ObjectStep(this, NullObjectID.NULL_15595, new WorldPoint(2577, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
 		inspectRailings1.addSubSteps(inspectRailings2, inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6);
 
 		//Get dwarf remains
@@ -190,7 +190,7 @@ public class DwarfCannon extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToCaptainLawgof))));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToCaptainLawgof))));
 		allSteps.add(new PanelDetails("Repair and Retrieval", new ArrayList<>(Arrays.asList(inspectRailings1, talkToCaptainLawgof2, gotoTower, talkToCaptainLawgof3))));
 		allSteps.add(new PanelDetails("Find Lollk and Fix Cannon", new ArrayList<>(Arrays.asList(gotoCave, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5))));
 		allSteps.add(new PanelDetails("Get Ammo Mould", new ArrayList<>(Arrays.asList(talkToNulodion, talkToCaptainLawgof6))));

@@ -322,8 +322,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		mournerHQ = new Zone(new WorldPoint(2547, 3321,0), new WorldPoint(2555, 3327, 0));
-		mournerHQ2 = new Zone(new WorldPoint(2542, 3324,0), new WorldPoint(2546, 3327, 0));
+		mournerHQ = new Zone(new WorldPoint(2547, 3321, 0), new WorldPoint(2555, 3327, 0));
+		mournerHQ2 = new Zone(new WorldPoint(2542, 3324, 0), new WorldPoint(2546, 3327, 0));
 		mournerBasement = new Zone(new WorldPoint(2034, 4628, 0), new WorldPoint(2045, 4651, 0));
 	}
 
@@ -459,6 +459,18 @@ public class MourningsEndPartI extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.ROVING_ELVES, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.SHEEP_HERDER, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.RANGED, 60));
+		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -487,8 +499,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 		allSteps.add(enterWestArdougnePanel);
 
 		allSteps.add(new PanelDetails("Dye the sheep", new ArrayList<>(Arrays.asList(getToads, dyeSheep, enterBaseAfterSheep, enterBasementAfterSheep, talkToEssylltAfterSheep)), fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
- 
-		 
+
+
 		allSteps.add(new PanelDetails("Poison the citizens",
 			new ArrayList<>(Arrays.asList(pickUpRottenApple, talkToElena, pickUpBarrel, useBarrelOnPile, useApplesOnPress, getNaphtha, useNaphthaOnBarrel, useSieveOnBarrel, cookNaphtha, usePowderOnFood1, usePowderOnFood2, talkToEssylltAfterPoison)), coal20OrNaphtha));
 
@@ -497,17 +509,5 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.ROVING_ELVES, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.SHEEP_HERDER, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.RANGED, 60));
-		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
-		return req;
 	}
 }

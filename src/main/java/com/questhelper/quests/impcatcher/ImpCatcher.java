@@ -26,7 +26,7 @@ package com.questhelper.quests.impcatcher;
 
 import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -47,6 +47,8 @@ public class ImpCatcher extends BasicQuestHelper
 {
 	ItemRequirement blackBead, whiteBead, redBead, yellowBead;
 
+	QuestStep doQuest;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -54,11 +56,13 @@ public class ImpCatcher extends BasicQuestHelper
 
 		setupRequirements();
 
-		steps.put(0, new NpcStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
+		doQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
 			"Talk to Wizard Mizgog on the top floor of the Wizards' Tower with the required items to finish the quest.",
-			blackBead, whiteBead, redBead, yellowBead));
+			blackBead, whiteBead, redBead, yellowBead);
 
-		steps.put(1, steps.get(0));
+		steps.put(0, doQuest);
+
+		steps.put(1, doQuest);
 
 		return steps;
 	}
@@ -86,13 +90,14 @@ public class ImpCatcher extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Bring Mizgog his beads", new ArrayList<>(Arrays.asList(new DetailedQuestStep(this, "Bring Mizgog his beads. You can either buy them, or kill imps for them."))), blackBead, whiteBead, redBead, yellowBead));
+		allSteps.add(new PanelDetails("Bring Mizgog his beads", new ArrayList<>(Collections.singletonList(doQuest)),
+			blackBead, whiteBead, redBead, yellowBead));
 		return allSteps;
 	}
 
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Imps (level 8) if you plan on collecting the beads yourself"));
+		return new ArrayList<>(Collections.singletonList("Imps (level 8) if you plan on collecting the beads yourself"));
 	}
 }

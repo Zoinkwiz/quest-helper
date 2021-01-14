@@ -991,6 +991,14 @@ public class MourningsEndPartII extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.MOURNINGS_END_PART_I, QuestState.FINISHED));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -1024,13 +1032,5 @@ public class MourningsEndPartII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Repair the defences", new ArrayList<>(Arrays.asList(enterDeathAltarBarrier, getDeathTalisman, enterDeathAltar, useCrystalOnAltar, leaveDeathAltar, returnToArianwyn)), deathTalisman, newlyMadeCrystal));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.MOURNINGS_END_PART_I, QuestState.FINISHED));
-		return req;
 	}
 }

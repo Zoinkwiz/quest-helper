@@ -33,6 +33,10 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -53,6 +57,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -216,7 +223,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		killJubbly = new NpcStep(this, NpcID.JUBBLY_BIRD, "Kill then pluck jubbly.", ogreBowAndArrows);
 		pickUpRawJubbly = new ItemStep(this, "Pick up the raw jubbly.", rawJubbly);
 		lootJubbly = new NpcStep(this, NpcID.JUBBLY_BIRD_4864, "Pluck the jubbly's carcass.");
-		cookJubbly = new ObjectStep(this, NullObjectID.NULL_6895, new WorldPoint(2631, 2990, 0),"Cook the raw jubbly on Rantz's spit.", rawJubbly);
+		cookJubbly = new ObjectStep(this, NullObjectID.NULL_6895, new WorldPoint(2631, 2990, 0), "Cook the raw jubbly on Rantz's spit.", rawJubbly);
 		cookJubbly.addIcon(ItemID.RAW_JUBBLY);
 
 		enterDiningRoomAgain = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Go give the jubbly to Skrach Uglogwee to finish the quest.", cookedJubbly);
@@ -235,6 +242,16 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Arrays.asList("Jubbly (level 9)"));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.COOKING, 41, true));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 20, true));
+		req.add(new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
+		return req;
 	}
 
 	@Override

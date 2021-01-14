@@ -206,7 +206,7 @@ public class GrimTales extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		house = new Zone(new WorldPoint(2901, 3466,0), new WorldPoint(2907, 3476, 0));
+		house = new Zone(new WorldPoint(2901, 3466, 0), new WorldPoint(2907, 3476, 0));
 		basement = new Zone(new WorldPoint(2897, 9870, 0), new WorldPoint(2909, 9878, 0));
 		towerBase = new Zone(new WorldPoint(2966, 3460, 0), new WorldPoint(2970, 3464, 0));
 		towerUpstairs = new Zone(new WorldPoint(2966, 3465, 2), new WorldPoint(2972, 3473, 2));

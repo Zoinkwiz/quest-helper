@@ -440,18 +440,6 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
-	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToBurntmeat, talkToMyArm))));
-		allSteps.add(new PanelDetails("Preparing to grow", new ArrayList<>(Arrays.asList(useBucketOnPot, talkToArmWithLump, talkToMyArmUpstairs, readBook, talkToMyArmAfterReading,
-			useUgthankiDung, useCompost, talkToMyArmAfterFertilising)), bucket, supercompost7, ugthanki3));
-		allSteps.add(new PanelDetails("Karamja adventure", new ArrayList<>(Arrays.asList(talkToBarnaby, talkAfterBoat, talkToMyArmAtTai, talkToMurcaily, talkToMyArmAfterMurcaily))));
-		allSteps.add(new PanelDetails("Troll farming", new ArrayList<>(Arrays.asList(talkToMyArmForFight, giveRake, giveSupercompost, giveHardyGout, giveDibber, talkToMyArmAfterGrow, killBabyRoc, killGiantRoc, giveSpade, talkToMyArmAfterHarvest, talkToBurntmeatAgain, talkToMyArmFinish)), combatGear, rake, superCompost, dibber, plantCure));
-		return allSteps;
-	}
-
-	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
@@ -463,5 +451,17 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		// 907 is the Varbit for tai bwo wannai cleanup favour
 		req.add(new VarbitRequirement(907, Operation.GREATER_EQUAL, 60, "At least 60% favor in the Tai Bwo Wannai Cleanup minigame"));
 		return req;
+	}
+
+	@Override
+	public ArrayList<PanelDetails> getPanels()
+	{
+		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToBurntmeat, talkToMyArm))));
+		allSteps.add(new PanelDetails("Preparing to grow", new ArrayList<>(Arrays.asList(useBucketOnPot, talkToArmWithLump, talkToMyArmUpstairs, readBook, talkToMyArmAfterReading,
+			useUgthankiDung, useCompost, talkToMyArmAfterFertilising)), bucket, supercompost7, ugthanki3));
+		allSteps.add(new PanelDetails("Karamja adventure", new ArrayList<>(Arrays.asList(talkToBarnaby, talkAfterBoat, talkToMyArmAtTai, talkToMurcaily, talkToMyArmAfterMurcaily))));
+		allSteps.add(new PanelDetails("Troll farming", new ArrayList<>(Arrays.asList(talkToMyArmForFight, giveRake, giveSupercompost, giveHardyGout, giveDibber, talkToMyArmAfterGrow, killBabyRoc, killGiantRoc, giveSpade, talkToMyArmAfterHarvest, talkToBurntmeatAgain, talkToMyArmFinish)), combatGear, rake, superCompost, dibber, plantCure));
+		return allSteps;
 	}
 }

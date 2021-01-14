@@ -473,7 +473,7 @@ public class Watchtower extends BasicQuestHelper
 
 		stealRockCake = new ObjectStep(this, ObjectID.COUNTER_2793, new WorldPoint(2514, 3036, 0), "Steal a rock cake from Gu'Tanoth's market.");
 
-		talkToGuardBattlement =  new NpcStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement.");
+		talkToGuardBattlement = new NpcStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement.");
 		talkToGuardBattlement.addDialogStep("But I am a friend to ogres...");
 		talkToGuardWithRockCake = new NpcStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement again with a rock cake.", rockCake);
 		jumpGap = new ObjectStep(this, ObjectID.GAP, new WorldPoint(2530, 3026, 0), "Jump over the broken bridge.", coins20);
@@ -615,6 +615,18 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.MAGIC, 15));
+		req.add(new SkillRequirement(Skill.THIEVING, 15));
+		req.add(new SkillRequirement(Skill.AGILITY, 25, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 14, true));
+		req.add(new SkillRequirement(Skill.MINING, 40, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -627,17 +639,5 @@ public class Watchtower extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Getting the other crystals", new ArrayList<>(Arrays.asList(talkToWizardAgainEnclave, useJangerberriesOnGuam, grindBatBones, useBonesOnPotion, talkToWizardWithPotion, useNightshadeOnGuardAgain, usePotionOnOgre1, mineRock, talkToWizardWithCrystals, useCrystal1, pullLever)),
 			guamUnf, jangerberries, pestleAndMortar, batBones, nightshade, pickaxe));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.MAGIC, 15));
-		req.add(new SkillRequirement(Skill.THIEVING, 15));
-		req.add(new SkillRequirement(Skill.AGILITY, 25, true));
-		req.add(new SkillRequirement(Skill.HERBLORE, 14, true));
-		req.add(new SkillRequirement(Skill.MINING, 40, true));
-		return req;
 	}
 }

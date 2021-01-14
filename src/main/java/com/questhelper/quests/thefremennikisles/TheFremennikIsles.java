@@ -484,7 +484,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		collectFromKeepaAgain.addDialogStep("But rules are rules. Pay up!");
 		collectFromFlosi = new NpcStep(this, NpcID.FLOSI_DALKSSON, new WorldPoint(2418, 3813, 0), "Collect tax from Flossi in north east Jatizso.");
 		collectFromFlosi.addDialogStep("But rules are rules. Pay up!");
-		talkToGjukiAfterCollection2 =  new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
+		talkToGjukiAfterCollection2 = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
 
 		travelToNeitiznotToSpyAgain = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
 		returnToRellekkaFromJatizsoToSpyAgain = new NpcStep(this, NpcID.MORD_GUNNARS_1940, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
@@ -555,6 +555,16 @@ public class TheFremennikIsles extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -569,15 +579,5 @@ public class TheFremennikIsles extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Killing the king", new ArrayList<>(Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest)), yakBottom, yakTop, roundShield, meleeWeapon, food));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
-		return req;
 	}
 }

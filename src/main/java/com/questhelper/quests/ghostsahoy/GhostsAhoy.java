@@ -338,10 +338,10 @@ public class GhostsAhoy extends BasicQuestHelper
 		repairShip = new DetailedQuestStep(this, "Use the silk on the model ship.", silkHighlighted, needle, thread, knife, modelShip);
 
 		searchChestForLobster = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3618, 3542, 0), "Attempt to search the chest in the east of the hull of the ship west of Port Phasmatys. A giant lobster will spawn you need to kill.");
-		((ObjectStep)(searchChestForLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
+		((ObjectStep) (searchChestForLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
 		killLobster = new NpcStep(this, NpcID.GIANT_LOBSTER, "Kill the Giant Lobster.");
 		searchChestAfterLobster = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3618, 3542, 0), "Search the chest in the east of the hull again.");
-		((ObjectStep)(searchChestAfterLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
+		((ObjectStep) (searchChestAfterLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
 
 		dyeFlags = new DyeShipSteps(this);
 		useKeyOnChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_16116, new WorldPoint(3619, 3545, 1), "Use the key on the chest in the Captain's Room, then search it.", chestKey);
@@ -355,8 +355,8 @@ public class GhostsAhoy extends BasicQuestHelper
 		goAcrossPlank.addSubSteps(goDownFromMast, goUpToDeck);
 
 		openThirdChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3606, 3564, 0), "Jump across the rocks to the chest and search it for a map piece.");
-		((ObjectStep)(openThirdChest)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
-		((ObjectStep)(openThirdChest)).setLinePoints(new ArrayList<>(Arrays.asList(
+		((ObjectStep) (openThirdChest)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
+		((ObjectStep) (openThirdChest)).setLinePoints(new ArrayList<>(Arrays.asList(
 			new WorldPoint(3604, 3550, 0),
 			new WorldPoint(3601, 3550, 0),
 			new WorldPoint(3601, 3552, 0),
@@ -407,7 +407,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_5244, new WorldPoint(3656, 3514, 1), "Use the key on the south room's door.", boneKeyHighlighted);
 		useKeyOnDoor.addIcon(ItemID.BONE_KEY_4272);
 		takeRobes = new ObjectStep(this, ObjectID.COFFIN_16644, new WorldPoint(3660, 3514, 1), "Search the coffin.");
-		((ObjectStep)(takeRobes)).addAlternateObjects(ObjectID.COFFIN_16645);
+		((ObjectStep) (takeRobes)).addAlternateObjects(ObjectID.COFFIN_16645);
 		returnToCrone = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Bring the items to the Old Crone east of the Slayer Tower.", robes, book, manual, ghostspeak);
 		returnToCrone.addDialogSteps("I'm here about Necrovarus.");
 		bringCroneAmulet = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Bring a ghostspeak amulet to the Old Crone east of the Slayer Tower.", ghostspeak);

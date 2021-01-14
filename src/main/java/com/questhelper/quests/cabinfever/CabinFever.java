@@ -560,7 +560,7 @@ public class CabinFever extends BasicQuestHelper
 		pasteHole3 = new ObjectStep(this, NullObjectID.NULL_11223, new WorldPoint(1817, 4830, 0), "Waterproof the hole.", paste1);
 		pasteHole1.addSubSteps(pasteHole2, pasteHole3);
 
-		goUpAfterRepair =  new ObjectStep(this, ObjectID.SHIPS_LADDER_11308, new WorldPoint(1815, 4836, 0), "Go up to the deck.");
+		goUpAfterRepair = new ObjectStep(this, ObjectID.SHIPS_LADDER_11308, new WorldPoint(1815, 4836, 0), "Go up to the deck.");
 		talkToBillAfterRepair = new NpcStep(this, NpcID.BILL_TEACH_4014, new WorldPoint(1815, 4834, 1), "Talk to Bill Teach.");
 
 		take2Ropes = new ObjectStep(this, ObjectID.REPAIR_LOCKER, new WorldPoint(1814, 4832, 0), "Search the repair locker for 2 ropes.", ropes2);
@@ -665,9 +665,17 @@ public class CabinFever extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Plunder the pirates", new ArrayList<>(Arrays.asList(goUpToSailToLoot, useRopeOnSailToLoot, enterEnemyHullForLoot, lootEnemyShip,
 			enterHullWithLoot, useLootOnChest, goUpAfterLoot, talkToBillAfterLoot))));
 		allSteps.add(new PanelDetails("Repair the cannon", new ArrayList<>(Arrays.asList(goDownForBarrel, takeBarrel, goUpWithBarrel, useBarrel, talkToBillAfterBarrel))));
-		allSteps.add(new PanelDetails("Fire canisters", new ArrayList<>(Arrays.asList(goDownForRamrod, getRamrod,goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon))));
+		allSteps.add(new PanelDetails("Fire canisters", new ArrayList<>(Arrays.asList(goDownForRamrod, getRamrod, goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon))));
 		allSteps.add(new PanelDetails("Fire cannon balls", new ArrayList<>(Arrays.asList(goDownForBalls, getBalls, goUpToCannonWithBalls, getPowderForBalls, usePowderForBalls, useRamrodForBalls, useBall, useFuseForBalls, fireCannonForBalls, repeatBallSteps))));
 		return allSteps;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11));
+		return req;
 	}
 
 	@Override
@@ -681,7 +689,6 @@ public class CabinFever extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 45));
 		req.add(new SkillRequirement(Skill.SMITHING, 50));
 		req.add(new SkillRequirement(Skill.RANGED, 40));
-		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11));
 		return req;
 	}
 }

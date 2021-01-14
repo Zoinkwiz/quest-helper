@@ -296,6 +296,17 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED));
+		req.add(new FavourRequirement(Favour.SHAYZIEN, 20));
+		req.add(new SkillRequirement(Skill.STRENGTH, 16));
+		req.add(new SkillRequirement(Skill.MINING, 10));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -308,16 +319,5 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 			rope, combatGear));
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(returnToShiro, returnToPhileasTent, finishQuest))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED));
-		req.add(new FavourRequirement(Favour.SHAYZIEN, 20));
-		req.add(new SkillRequirement(Skill.STRENGTH, 16));
-		req.add(new SkillRequirement(Skill.MINING, 10));
-		return req;
 	}
 }

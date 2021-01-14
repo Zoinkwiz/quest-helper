@@ -72,7 +72,7 @@ public class TheLostTribe extends BasicQuestHelper
 	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
 		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, goUpFromBasement, showBroochToDuke,
 		searchBookcase, readBook, talkToGenerals, walkToMistag, emoteAtMistag, pickpocketSigmund, unlockChest,
-		enterHamLair, searchHamCrates, talkToKazgar, talkToMistagForEnd, talkToCook, talkToBob, talkToAereck, talkToAllAboutCellar;
+		enterHamLair, searchHamCrates, talkToKazgar, talkToMistagForEnd, talkToBob, talkToAllAboutCellar;
 
 	ConditionalStep goToF1Steps, goDownToBasement, goTalkToSigmundToStart, findGoblinWitnessSteps, goTalkToDukeAfterHans,
 		goMineRubble, enterTunnels, goShowBroochToDuke, goTalkToDukeAfterEmote, goTravelToMistag, goGetKey, goOpenRobeChest,
@@ -352,6 +352,17 @@ public class TheLostTribe extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.GOBLIN_DIPLOMACY, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 13, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 13, true));
+		req.add(new SkillRequirement(Skill.MINING, 17, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -362,16 +373,5 @@ public class TheLostTribe extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Resolving tensions", new ArrayList<>(Arrays.asList(goGetKey, goOpenRobeChest, goIntoHamLair, goToDukeWithSilverware, travelToMakePeace)), lightSource));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.GOBLIN_DIPLOMACY, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.AGILITY, 13, true));
-		req.add(new SkillRequirement(Skill.THIEVING, 13, true));
-		req.add(new SkillRequirement(Skill.MINING, 17, true));
-		return req;
 	}
 }

@@ -246,7 +246,7 @@ public class PriestInPeril extends BasicQuestHelper
 		goToTemple.addDialogSteps("I'll get going.", "Roald sent me to check on Drezel.", "Sure. I'm a helpful person!");
 		goDownToDog = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3405, 3507, 0), "Go down the ladder north of the temple.");
 		goDownToDog.addDialogStep("Yes.");
-		((ObjectStep)(goDownToDog)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
+		((ObjectStep) (goDownToDog)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
 		killTheDog = new NpcStep(this, NpcID.TEMPLE_GUARDIAN, new WorldPoint(3405, 9901, 0),
 			"Kill the Temple Guardian (level 30). It is immune to magic so you will need to use either ranged or melee.");
 		climbUpAfterKillingDog = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(3405, 9907, 0),
@@ -268,14 +268,14 @@ public class PriestInPeril extends BasicQuestHelper
 		fillBucket = new ObjectStep(this, ObjectID.WELL_3485, new WorldPoint(3423, 9890, 0), "Use the bucket on the well in the central room.", bucketHighlighted);
 		fillBucket.addIcon(ItemID.BUCKET);
 
-		useKeyForKey = new DetailedQuestStep(this,  "Got to the central room, and study the monuments to find which has a key on it. Use the Golden Key on it.", goldenKeyHighlighted);
+		useKeyForKey = new DetailedQuestStep(this, "Got to the central room, and study the monuments to find which has a key on it. Use the Golden Key on it.", goldenKeyHighlighted);
 		useKeyForKey.addIcon(ItemID.GOLDEN_KEY);
 
 		goDownToFloorOneTemple = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(3410, 3485, 2), "Go down to the underground of the temple.", bucket);
 		goDownToGroundFloorTemple = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(3417, 3485, 0), "Go down to the underground of the temple.", bucket);
 		enterUnderground = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3405, 3507, 0), "Go down to the underground of the temple.", bucket);
 		enterUnderground.addSubSteps(goDownToFloorOneTemple, goDownToGroundFloorTemple);
-		((ObjectStep)(enterUnderground)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
+		((ObjectStep) (enterUnderground)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
 
 		goUpWithWaterToSurface = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(3405, 9907, 0),
 			"Go back up to the top floor of the temple.");
@@ -295,7 +295,7 @@ public class PriestInPeril extends BasicQuestHelper
 		goDownToFloorOneAfterFreeing = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(3410, 3485, 2), "Go down to the underground of the temple.", lotsOfRuneEssence);
 		goDownToGroundFloorAfterFreeing = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(3417, 3485, 0), "Go down to the underground of the temple.", lotsOfRuneEssence);
 		enterUndergroundAfterFreeing = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3405, 3507, 0), "Go down to the underground of the temple.", lotsOfRuneEssence);
-		((ObjectStep)(enterUndergroundAfterFreeing)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
+		((ObjectStep) (enterUndergroundAfterFreeing)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
 		talkToDrezelUnderground = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel in the east of the underground temple area.", lotsOfRuneEssence);
 		talkToDrezelUnderground.addSubSteps(goDownToFloorOneAfterFreeing, goDownToGroundFloorAfterFreeing, enterUndergroundAfterFreeing);
 

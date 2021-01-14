@@ -35,7 +35,6 @@ import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -45,7 +44,6 @@ import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +67,7 @@ public class Biohazard extends BasicQuestHelper
 {
 	ItemRequirement gasMask, birdFeed, birdCage, rottenApple, medicalGown, key, distillator, plagueSample, ethenea, liquidHoney, sulphuricBroline,
 		touchPaper, priestGownTop, priestGownBottom, teleports, priestGownBottomEquipped, priestGownTopEquipped, medicalGownEquipped,
-		birdCageHighlighted, gasMaskNoHint;
+		birdCageHighlighted;
 
 	ConditionForStep hasBirdFeed, hasPigeonCage, inMournerBackyard, inWestArdougne, hasRottenApple, hasDistillator,
 		inMournerBuilding, upstairsInMournerBuilding, hasMedicalGown, hasKey, hasLiquidHoney, hasEthenea, hasBroline, hasChemicals, inVarrockSouthEast,
@@ -78,8 +76,8 @@ public class Biohazard extends BasicQuestHelper
 	QuestStep talkToElena, talkToJerico, getBirdFeed, getBirdFeed2, getPigeonCage, investigateWatchtower, clickPigeonCage, talkToOmartAgain,
 		talkToOmartToReturnToWest, talkToKilron, enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard,
 		searchSarahsCupboard2, enterMournerHeadquaters, goUpstairsInMournerBuilding, killMourner, searchCrateForDistillator,
-	goBackDownstairsInMournersHeadquaters, talkToElenaWithDistillator, talkToTheChemist, goToVarrock, vinciVarrock, chancyVarrock, hopsVarrock,
-	talkToAsyff, talkToGuidor, returnToElenaAfterSampling, informTheKing, informTheKingGoUpstairs;
+		goBackDownstairsInMournersHeadquaters, talkToElenaWithDistillator, talkToTheChemist, goToVarrock, vinciVarrock, chancyVarrock, hopsVarrock,
+		talkToAsyff, talkToGuidor, returnToElenaAfterSampling, informTheKing, informTheKingGoUpstairs;
 
 	GiveIngredientsToHelpersStep giveChemicals;
 
@@ -196,14 +194,14 @@ public class Biohazard extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		mournerBackyard = new Zone(new WorldPoint(2542, 3328,0), new WorldPoint(2555, 3333, 0));
-		westArdougne1 = new Zone(new WorldPoint(2460,3279,0), new WorldPoint(2556, 3334,2));
-		westArdougne2 = new Zone(new WorldPoint(2434,3305,0), new WorldPoint(2464, 3323,2));
-		westArdougne3 = new Zone(new WorldPoint(2510,3265,0), new WorldPoint(2556, 3280,2));
-		mournerBuilding1 = new Zone(new WorldPoint(2547, 3321,0), new WorldPoint(2555, 3327, 0));
-		mournerBuilding2 = new Zone(new WorldPoint(2542, 3324,0), new WorldPoint(2546, 3327, 0));
-		mournersBuildingUpstairs = new Zone(new WorldPoint(2542, 3321,1), new WorldPoint(2555, 3327, 1));
-		varrockSouthEast = new Zone(new WorldPoint(3265, 3376,0), new WorldPoint(3287, 3407, 1));
+		mournerBackyard = new Zone(new WorldPoint(2542, 3328, 0), new WorldPoint(2555, 3333, 0));
+		westArdougne1 = new Zone(new WorldPoint(2460, 3279, 0), new WorldPoint(2556, 3334, 2));
+		westArdougne2 = new Zone(new WorldPoint(2434, 3305, 0), new WorldPoint(2464, 3323, 2));
+		westArdougne3 = new Zone(new WorldPoint(2510, 3265, 0), new WorldPoint(2556, 3280, 2));
+		mournerBuilding1 = new Zone(new WorldPoint(2547, 3321, 0), new WorldPoint(2555, 3327, 0));
+		mournerBuilding2 = new Zone(new WorldPoint(2542, 3324, 0), new WorldPoint(2546, 3327, 0));
+		mournersBuildingUpstairs = new Zone(new WorldPoint(2542, 3321, 1), new WorldPoint(2555, 3327, 1));
+		varrockSouthEast = new Zone(new WorldPoint(3265, 3376, 0), new WorldPoint(3287, 3407, 1));
 		upstairsArdougneCastle = new Zone(new WorldPoint(2570, 3283, 1), new WorldPoint(2590, 3310, 1));
 	}
 
@@ -336,7 +334,7 @@ public class Biohazard extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(talkToJerico, getBirdFeed, getPigeonCage, investigateWatchtower, clickPigeonCage, talkToOmartAgain))));
 		allSteps.add(new PanelDetails("Getting the Distillator",
 			enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard, enterMournerHeadquaters,
-				goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
+			goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
 
 		ArrayList<QuestStep> testingSteps = new ArrayList<>(Arrays.asList(talkToTheChemist, goToVarrock, talkToAsyff, talkToGuidor));
 		testingSteps.addAll(giveChemicals.getDisplaySteps());
@@ -351,9 +349,7 @@ public class Biohazard extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> requirements = new ArrayList<>();
-		requirements.add(new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED));
-		requirements.add(new FavourRequirement(Favour.ARCEUUS, 20));
-		requirements.add(new SkillRequirement(Skill.HUNTER, 12));
+		requirements.add(new QuestRequirement(Quest.PLAGUE_CITY, QuestState.FINISHED));
 		return requirements;
 	}
 }

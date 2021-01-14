@@ -29,6 +29,7 @@ import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -98,7 +99,7 @@ public class EnchantedKey extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Dig for treasure", new ArrayList<>(Arrays.asList(solvePuzzle)), key, spade));
+		allSteps.add(new PanelDetails("Dig for treasure", new ArrayList<>(Collections.singletonList(solvePuzzle)), key, spade));
 		return allSteps;
 	}
 

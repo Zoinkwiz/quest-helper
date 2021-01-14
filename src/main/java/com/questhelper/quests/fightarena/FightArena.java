@@ -56,7 +56,7 @@ public class FightArena extends BasicQuestHelper
 {
 	ItemRequirement coins, khazardHelmet, khazardPlatebody, khazardHelmetEquipped, khazardPlatebodyEquipped, khaliBrew,
 		cellKeys, combatGear;
-	Zone arena1, arena2;
+	Zone arena1;
 	ConditionForStep hasKhazardArmour, hasKhaliBrew, hasCellKeys, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
 	QuestStep startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew, getCellKeys, openCell, talkToSammy, killOgre,
 		talkToKhazard, talkToHengrad, talkToSammyForScorpion, killScorpion, talkToSammyForBouncer, killBouncer, leaveArena, endQuest;
@@ -150,7 +150,7 @@ public class FightArena extends BasicQuestHelper
 			"Talk to Lady Servil, west-southwest of the Monastery south of Ardougne.");
 		startQuest.addDialogStep(2, "Can I help you?");
 		searchChest = new ObjectStep(this, ObjectID.CHEST, new WorldPoint(2613, 3189, 0), "Search the chest to the east for some Khazard armour.");
-		((ObjectStep)searchChest).addAlternateObjects(ObjectID.CHEST_76);
+		((ObjectStep) searchChest).addAlternateObjects(ObjectID.CHEST_76);
 		talkToGuard = new NpcStep(this, NpcID.KHAZARD_GUARD_1209, new WorldPoint(2615, 3143, 0),
 			"Equip Khazard armour, talk to the Khazard Guard in the southeast of the prison.", khazardHelmetEquipped, khazardPlatebodyEquipped);
 		buyKhaliBrew = new NpcStep(this, NpcID.KHAZARD_BARMAN, new WorldPoint(2567, 3140, 0),
@@ -164,11 +164,11 @@ public class FightArena extends BasicQuestHelper
 			"Get ready to fight the monsters (all safespottable), starting with Khazard Ogre (level 63). Use the keys on Sammy's cell door to free him.", combatGear, cellKeys);
 		openCell.addIcon(ItemID.KHAZARD_CELL_KEYS);
 		talkToSammy = new NpcStep(this, NpcID.SAMMY_SERVIL_1221, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the ogre.");
-		killOgre = new NpcStep(this, NpcID.KHAZARD_OGRE, new WorldPoint(2601,3163, 0),
+		killOgre = new NpcStep(this, NpcID.KHAZARD_OGRE, new WorldPoint(2601, 3163, 0),
 			"Kill the Ogre. You can lure it behind a skeleton to safespot it.", combatGear);
 		killOgre.addSubSteps(talkToSammy);
 		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.");
-		talkToHengrad = new NpcStep(this, NpcID.HENGRAD, new WorldPoint(2599,3143, 0),
+		talkToHengrad = new NpcStep(this, NpcID.HENGRAD, new WorldPoint(2599, 3143, 0),
 			"Talk to Hengrad.");
 		talkToHengrad.addSubSteps(talkToKhazard);
 		talkToSammyForScorpion = new NpcStep(this, NpcID.SAMMY_SERVIL_1221, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the scorpion.");

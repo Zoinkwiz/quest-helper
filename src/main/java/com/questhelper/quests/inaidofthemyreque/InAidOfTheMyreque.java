@@ -456,7 +456,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		killJuvinates = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_4443, new WorldPoint(2859, 4564, 0), "Kill the juvenates.", true, efaritaysAidOrSilverWeapon);
 		killJuvinates2 = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_4442, new WorldPoint(2839, 4589, 0), "Kill the juvenates.", true, efaritaysAidOrSilverWeapon);
 		goDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_3432, new WorldPoint(3422, 3485, 0), "Talk to Drezel under the Paterdomus Temple.");
-		((ObjectStep)(goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
+		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
 		talkToDrezel = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
 		talkToDrezel.addDialogSteps("Veliaf told me about Ivandis.", "Is there somewhere that I might get more information on Ivandis?",
 			"The lives of those pitiful few left in Morytania could rest on this!");
@@ -469,7 +469,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		useHammerOnBoards = new ObjectStep(this, NullObjectID.NULL_12772, new WorldPoint(3483, 9832, 0), "Use a hammer on the boarded up cave.", hammerHighlighted);
 		useHammerOnBoards.addDialogStep("Yes.");
 		useHammerOnBoards.addIcon(ItemID.HAMMER);
-		enterCoffinRoom =  new ObjectStep(this, ObjectID.CAVE_ENTRANCE_12770, new WorldPoint(3484, 9832, 0), "Enter the cave.");
+		enterCoffinRoom = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_12770, new WorldPoint(3484, 9832, 0), "Enter the cave.");
 
 		useClayOnCoffin = new ObjectStep(this, ObjectID.COFFIN_12802, new WorldPoint(3511, 9864, 0), "Use a piece of soft clay on the coffin.", softClayHighlighted);
 		useClayOnCoffin.addIcon(ItemID.SOFT_CLAY);
@@ -525,10 +525,17 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public ArrayList<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(normalSpellbook);
+		return req;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(Quest.IN_SEARCH_OF_THE_MYREQUE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.CRAFTING, 25));
 		req.add(new SkillRequirement(Skill.MINING, 15));

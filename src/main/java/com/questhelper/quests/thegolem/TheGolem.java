@@ -329,21 +329,25 @@ public class TheGolem extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20),
+			new SkillRequirement(Skill.THIEVING, 25, true)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGolem, useClay, pickUpLetter, enterRuinForFirstTime, pickUpImplement)), clay4Highlight));
-		allSteps.add(new PanelDetails("Finding the statuette", new ArrayList<>(Arrays.asList(talkToElissa, searchBookcase, readBook, talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet))));
-		allSteps.add(new PanelDetails("Opening the portal", new ArrayList<>(Arrays.asList(enterRuin, useStatuette, turnStatue1, enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGolem, useClay, pickUpLetter, enterRuinForFirstTime,
+			pickUpImplement)), clay4Highlight));
+		allSteps.add(new PanelDetails("Finding the statuette", new ArrayList<>(Arrays.asList(talkToElissa, searchBookcase, readBook,
+			talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet))));
+		allSteps.add(new PanelDetails("Opening the portal", new ArrayList<>(Arrays.asList(enterRuin, useStatuette, turnStatue1,
+			enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
 			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useProgramOnGolem)), vial, pestleAndMortar, papyrus));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20), new SkillRequirement(Skill.THIEVING, 25, true)));
 	}
 }

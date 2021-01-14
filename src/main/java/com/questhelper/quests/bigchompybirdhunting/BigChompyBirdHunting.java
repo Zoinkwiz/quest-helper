@@ -340,4 +340,3 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		return req;
 	}
 }
-

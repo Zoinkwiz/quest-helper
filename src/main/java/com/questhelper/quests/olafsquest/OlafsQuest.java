@@ -245,11 +245,11 @@ public class OlafsQuest extends BasicQuestHelper
 
 		openGate = new ObjectStep(this, ObjectID.GATE_23216, new WorldPoint(2725, 10168, 0), "Open the gate on the walkway, clicking the key hole which matches your key.", key);
 
-		chooseSquare = new WidgetStep(this,  "Click the square key hole.", 252, 3);
-		chooseCross = new WidgetStep(this,  "Click the cross key hole.", 252, 4);
-		chooseTriangle = new WidgetStep(this,  "Click the triangle key hole.", 252, 5);
-		chooseCircle = new WidgetStep(this,  "Click the circle key hole.", 252, 6);
-		chooseStar = new WidgetStep(this,  "Click the star key hole.", 252, 7);
+		chooseSquare = new WidgetStep(this, "Click the square key hole.", 252, 3);
+		chooseCross = new WidgetStep(this, "Click the cross key hole.", 252, 4);
+		chooseTriangle = new WidgetStep(this, "Click the triangle key hole.", 252, 5);
+		chooseCircle = new WidgetStep(this, "Click the circle key hole.", 252, 6);
+		chooseStar = new WidgetStep(this, "Click the star key hole.", 252, 7);
 		openGate.addSubSteps(chooseCircle, chooseCross, chooseSquare, chooseStar, chooseTriangle);
 
 		searchChest = new ObjectStep(this, ObjectID.CHEST_14197, new WorldPoint(2740, 10164, 0), "WALK off the remaining walkway, and search the chest in the wreck. Be prepared to fight Ulfric.");
@@ -280,6 +280,16 @@ public class OlafsQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 40, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -289,15 +299,5 @@ public class OlafsQuest extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Finding treasure",
 			new ArrayList<>(Arrays.asList(digHole, killSkeleton, searchPainting, doPuzzle, pickUpItems, useBarrel, useBarrel2, openGate, searchChest, killUlfric, searchChestAgain))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 40, true));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
-		return req;
 	}
 }

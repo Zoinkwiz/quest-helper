@@ -177,6 +177,6 @@ public class TheRestlessGhost extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("A skeleton (level 13) you can run away from"));
+		return new ArrayList<>(Collections.singletonList("A skeleton (level 13) you can run away from"));
 	}
 }

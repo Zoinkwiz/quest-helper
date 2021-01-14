@@ -36,6 +36,7 @@ import com.questhelper.steps.conditional.ObjectCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -152,7 +153,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0), "Go back up to the surface.");
 		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD, new WorldPoint(3222, 3395, 0), "Kill Jonny the Beard in the Blue Moon Inn in Varrock.");
 		pickupIntelReport = new DetailedQuestStep(this, "Pick up the Intel Report.", intelReport);
-		returnDownLadder =  new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Return to the Phoenix Gang's base.");
+		returnDownLadder = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Return to the Phoenix Gang's base.");
 		talkToStravenAgain = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Staven again.");
 
 		getShieldHalf = new ObjectStep(this, ObjectID.CHEST_2403, new WorldPoint(3235, 9761, 0), "Search the chest in the Phoenix base for half of the Shield of Arrav.");
@@ -189,7 +190,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Jonny the beard (level 2)"));
+		return new ArrayList<>(Collections.singletonList("Jonny the beard (level 2)"));
 	}
 
 	@Override

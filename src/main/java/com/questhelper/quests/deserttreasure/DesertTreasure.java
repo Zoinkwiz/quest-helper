@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.Requirements;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -196,7 +197,7 @@ public class DesertTreasure extends BasicQuestHelper
 		coins650 = new ItemRequirement("Coins", ItemID.COINS_995, 650);
 		magicLogs12 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 12);
 		magicLogs12.addAlternates(NullItemID.NULL_1514);
-		steelBars6 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR,  6);
+		steelBars6 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 6);
 		steelBars6.addAlternates(NullItemID.NULL_2354);
 		moltenGlass6 = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 6);
 		moltenGlass6.addAlternates(NullItemID.NULL_1776);
@@ -280,11 +281,11 @@ public class DesertTreasure extends BasicQuestHelper
 
 		fireSpells = new ItemRequirement("Fire spells", -1, -1);
 
-		combatGear = new ItemRequirement("Decent combat gear",-1, -1);
-		food = new ItemRequirement("Food",-1, -1);
-		prayerPotions = new ItemRequirement("Prayer potions",-1, -1);
-		restorePotions = new ItemRequirement("Restore potions",-1, -1);
-		energyOrStaminas = new ItemRequirement("Energy/Stamina potions",-1, -1);
+		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
+		food = new ItemRequirement("Food", -1, -1);
+		prayerPotions = new ItemRequirement("Prayer potions", -1, -1);
+		restorePotions = new ItemRequirement("Restore potions", -1, -1);
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", -1, -1);
 	}
 
 	public void loadZones()
@@ -295,7 +296,7 @@ public class DesertTreasure extends BasicQuestHelper
 		draynorSewer = new Zone(new WorldPoint(3078, 9641, 0), new WorldPoint(3129, 9699, 0));
 		trollArea = new Zone(new WorldPoint(2839, 3716, 0), new WorldPoint(2868, 3741, 0));
 		path1 = new Zone(new WorldPoint(2872, 3714, 0), new WorldPoint(2903, 3771, 0));
-		path2 = new Zone(new WorldPoint(2817, 3748, 0), new WorldPoint( 2892, 3869, 0));
+		path2 = new Zone(new WorldPoint(2817, 3748, 0), new WorldPoint(2892, 3869, 0));
 		icePath = new Zone(new WorldPoint(2830, 3785, 1), new WorldPoint(2870, 3825, 1));
 		iceBridge = new Zone(new WorldPoint(2823, 3807, 2), new WorldPoint(2855, 3812, 2));
 		floor1 = new Zone(new WorldPoint(2893, 4944, 3), new WorldPoint(2931, 4973, 3));
@@ -601,7 +602,9 @@ public class DesertTreasure extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 52));
 		req.add(new SkillRequirement(Skill.MAGIC, 50));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
-		req.add(new SkillRequirement(Skill.SLAYER, 10, false, "10 Slayer (unless you have a Gas mask from Plague City)"));
+		req.add(new Requirements(LogicType.OR, "10 Slayer for face mask, or started Plague City for" +
+			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
+			new QuestRequirement(Quest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;
 	}
 }

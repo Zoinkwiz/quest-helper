@@ -205,7 +205,17 @@ public class RovingElves extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Moss Guardian (level 84) whilst bare-handed"));
+		return new ArrayList<>(Collections.singletonList("Moss Guardian (level 84) without runes, weapons, or armour"));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.REGICIDE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 56, true));
+		return req;
 	}
 
 	@Override
@@ -219,18 +229,8 @@ public class RovingElves extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(enterGlarialsTombstone, killGuardian, pickUpSeed, returnSeedToEluned)), glarialsPebble));
 
 		allSteps.add(new PanelDetails("Plant the seed",
-			new ArrayList<>(Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchFallsCrate, useKeyOnFallsDoor, plantSeed, returnToIslwyn)), spade, rope, blessedSeed));
+			new ArrayList<>(Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchFallsCrate, useKeyOnFallsDoor,
+				plantSeed, returnToIslwyn)), spade, rope, blessedSeed));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.REGICIDE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.AGILITY, 56, true));
-		req.add(new ItemRequirement("The ability to defeat a level 84 enemy without runes, weapons, or armour", -1, -1));
-		return req;
 	}
 }

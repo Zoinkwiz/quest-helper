@@ -497,6 +497,19 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.HEROES_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 45, false, "45 Woodcutting (or any of the other skill requirements)"));
+		req.add(new SkillRequirement(Skill.FARMING, 10, false, "10 Farming (or any of the other skill requirements)"));
+		req.add(new SkillRequirement(Skill.MINING, 30, false, "30 Mining (or any of the other skill requirements)"));
+		req.add(new SkillRequirement(Skill.SMITHING, 35, false, "35 Smithing (or any of the other skill requirements)"));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -537,18 +550,5 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Get support", new ArrayList<>(Arrays.asList(get75Support, finishQuest))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.HEROES_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 45, false, "45 Woodcutting (or any of the other skill requirements)"));
-		req.add(new SkillRequirement(Skill.FARMING, 10, false, "10 Farming (or any of the other skill requirements)"));
-		req.add(new SkillRequirement(Skill.MINING, 30, false, "30 Mining (or any of the other skill requirements)"));
-		req.add(new SkillRequirement(Skill.SMITHING, 35, false, "35 Smithing (or any of the other skill requirements)"));
-		return req;
 	}
 }

@@ -207,16 +207,16 @@ public class ASoulsBane extends BasicQuestHelper
 		killAnimals = new DetailedQuestStep(this, "");
 		killAnimals.setText(killText);
 
-		killBears = new NpcStep(this, NpcID.ANGRY_BEAR, new WorldPoint(3027, 5232, 0),  "", true);
+		killBears = new NpcStep(this, NpcID.ANGRY_BEAR, new WorldPoint(3027, 5232, 0), "", true);
 		killBears.setText(killText);
 
-		killGoblins = new NpcStep(this, NpcID.ANGRY_GOBLIN, new WorldPoint(3027, 5232, 0),  "", true);
+		killGoblins = new NpcStep(this, NpcID.ANGRY_GOBLIN, new WorldPoint(3027, 5232, 0), "", true);
 		killGoblins.setText(killText);
 
-		killRats = new NpcStep(this, NpcID.ANGRY_GIANT_RAT, new WorldPoint(3027, 5232, 0),  "", true);
+		killRats = new NpcStep(this, NpcID.ANGRY_GIANT_RAT, new WorldPoint(3027, 5232, 0), "", true);
 		killRats.setText(killText);
 
-		killUnicorn = new NpcStep(this, NpcID.ANGRY_UNICORN, new WorldPoint(3027, 5232, 0),  "", true);
+		killUnicorn = new NpcStep(this, NpcID.ANGRY_UNICORN, new WorldPoint(3027, 5232, 0), "", true);
 		killUnicorn.setText(killText);
 
 		killAnimals.addSubSteps(killBears, killGoblins, killRats, killUnicorn);

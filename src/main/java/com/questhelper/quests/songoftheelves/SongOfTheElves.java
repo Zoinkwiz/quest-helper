@@ -1400,6 +1400,32 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.MOURNINGS_END_PART_II, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.MAKING_HISTORY, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 70));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 70));
+		req.add(new SkillRequirement(Skill.FARMING, 70));
+		req.add(new SkillRequirement(Skill.HERBLORE, 70));
+		req.add(new SkillRequirement(Skill.HUNTER, 70));
+		req.add(new SkillRequirement(Skill.MINING, 70));
+		req.add(new SkillRequirement(Skill.SMITHING, 70));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 70));
+		return req;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new ItemRequirement("Recommended: 75 Magic", -1, -1));
+		req.add(new ItemRequirement("Recommended: 40+ Prayer", -1, -1));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels() {
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, talkToAlrena,
@@ -1488,24 +1514,5 @@ public class SongOfTheElves extends BasicQuestHelper
 				magicCombatGear, saradominBrews, superRestorePotions));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.MOURNINGS_END_PART_II, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.MAKING_HISTORY, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.AGILITY, 70));
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 70));
-		req.add(new SkillRequirement(Skill.FARMING, 70));
-		req.add(new SkillRequirement(Skill.HERBLORE, 70));
-		req.add(new SkillRequirement(Skill.HUNTER, 70));
-		req.add(new SkillRequirement(Skill.MINING, 70));
-		req.add(new SkillRequirement(Skill.SMITHING, 70));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 70));
-		req.add(new ItemRequirement("Recommended: 75 Magic", -1, -1));
-		req.add(new ItemRequirement("Recommended: 40+ Prayer", -1, -1));
-		return req;
 	}
 }

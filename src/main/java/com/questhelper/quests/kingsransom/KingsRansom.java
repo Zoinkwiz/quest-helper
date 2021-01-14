@@ -246,12 +246,12 @@ public class KingsRansom extends BasicQuestHelper
 		keepF1 = new Zone(new WorldPoint(1689, 4250, 1), new WorldPoint(1701, 4264, 1));
 		keepF2 = new Zone(new WorldPoint(1689, 4250, 2), new WorldPoint(1701, 4264, 2));
 		basement = new Zone(new WorldPoint(1862, 4231, 0), new WorldPoint(1871, 4246, 0));
-		secretRoomFloor0 = new Zone(new WorldPoint(3015, 3517,0), new WorldPoint(3016, 3519,0));
+		secretRoomFloor0 = new Zone(new WorldPoint(3015, 3517, 0), new WorldPoint(3016, 3519, 0));
 		secretBasement = new Zone(new WorldPoint(1862, 4264, 0), new WorldPoint(1873, 4229, 0));
-		mainEntrance1 = new Zone(new WorldPoint(3008, 3513,0), new WorldPoint(3012, 3518,0));
-		mainEntrance2 = new Zone(new WorldPoint(3012, 3514,0), new WorldPoint(3014, 3516,0));
-		mainEntrance3 = new Zone(new WorldPoint(3015, 3515,0), new WorldPoint(3019, 3516,0));
-		mainEntrance4 = new Zone(new WorldPoint(3019, 3513,0), new WorldPoint(3019, 3517,0));
+		mainEntrance1 = new Zone(new WorldPoint(3008, 3513, 0), new WorldPoint(3012, 3518, 0));
+		mainEntrance2 = new Zone(new WorldPoint(3012, 3514, 0), new WorldPoint(3014, 3516, 0));
+		mainEntrance3 = new Zone(new WorldPoint(3015, 3515, 0), new WorldPoint(3019, 3516, 0));
+		mainEntrance4 = new Zone(new WorldPoint(3019, 3513, 0), new WorldPoint(3019, 3517, 0));
 	}
 
 	public void setupConditions()
@@ -418,18 +418,6 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
-	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain))));
-		allSteps.add(new PanelDetails("Freeing Anna", new ArrayList<>(Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison, callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial))));
-		allSteps.add(new PanelDetails("Saving Merlin and Knights", new ArrayList<>(Arrays.asList(enterStatue, talkToMerlin, reachForVent, useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable)), grabOrLockpick));
-		allSteps.add(new PanelDetails("Saving Arthur", new ArrayList<>(Arrays.asList(talkToCromperty, enterFortress, enterWallInFortress, goDownToArthur, freeArthur, talkToArthur, talkToArthurInCamelot)), bronzeMed, ironChain, blackKnightHelm, blackKnightBody, blackKnightLeg, granite));
-
-		return allSteps;
-	}
-
-	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
@@ -440,5 +428,17 @@ public class KingsRansom extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.MAGIC, 46));
 		req.add(new SkillRequirement(Skill.DEFENCE, 65));
 		return req;
+	}
+
+	@Override
+	public ArrayList<PanelDetails> getPanels()
+	{
+		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain))));
+		allSteps.add(new PanelDetails("Freeing Anna", new ArrayList<>(Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison, callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial))));
+		allSteps.add(new PanelDetails("Saving Merlin and Knights", new ArrayList<>(Arrays.asList(enterStatue, talkToMerlin, reachForVent, useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable)), grabOrLockpick));
+		allSteps.add(new PanelDetails("Saving Arthur", new ArrayList<>(Arrays.asList(talkToCromperty, enterFortress, enterWallInFortress, goDownToArthur, freeArthur, talkToArthur, talkToArthurInCamelot)), bronzeMed, ironChain, blackKnightHelm, blackKnightBody, blackKnightLeg, granite));
+
+		return allSteps;
 	}
 }

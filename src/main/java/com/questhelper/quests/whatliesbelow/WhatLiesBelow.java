@@ -202,7 +202,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 		talkToZaff = new NpcStep(this, NpcID.ZAFF, new WorldPoint(3202, 3434, 0), "Talk to Zaff in the Varrock staff shop.");
 		talkToZaff.addDialogStep("Rat Burgiss sent me!");
-		talkToSurokToFight =  new NpcStep(this, NpcID.SUROK_MAGIS_4160, new WorldPoint(3211, 3493, 0), "Prepare to fight King Roald (level 47), then go talk to Surok Magis in the Varrock Library.", beaconRing);
+		talkToSurokToFight = new NpcStep(this, NpcID.SUROK_MAGIS_4160, new WorldPoint(3211, 3493, 0), "Prepare to fight King Roald (level 47), then go talk to Surok Magis in the Varrock Library.", beaconRing);
 		talkToSurokToFight.addDialogStep("Bring it on!");
 		fightRoald = new NpcStep(this, NpcID.KING_ROALD_4163, new WorldPoint(3211, 3493, 0), "Fight King Roald. When he's at 1hp, right-click operate the beacon ring.", beaconRing);
 		talkToRatToFinish = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock to finish the quest.");
@@ -236,6 +236,23 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.RUNECRAFT, 35));
+		return req;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.MINING, 42, false, "42 Mining to unlock a shortcut to the Chaos altar"));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -244,15 +261,5 @@ public class WhatLiesBelow extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Help Surok", new ArrayList<>(Arrays.asList(talkToSurok, enterChaosAltar, useWandOnAltar, bringWandToSurok)), chaosRunes15, chaosTalismanOrAbyss, bowl));
 		allSteps.add(new PanelDetails("Defeat Surok", new ArrayList<>(Arrays.asList(talkToRatAfterSurok, talkToZaff, talkToSurokToFight, fightRoald, talkToRatToFinish))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.RUNECRAFT, 35));
-		req.add(new SkillRequirement(Skill.MINING, 42, false, "42 Mining (unless you have access to The Abyss)"));
-		return req;
 	}
 }

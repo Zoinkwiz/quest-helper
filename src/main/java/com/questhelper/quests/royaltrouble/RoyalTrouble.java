@@ -477,7 +477,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		putCoalIntoEngine5 = new DetailedQuestStep(this, "Put 1 more coal into the engine.", engine, coal1);
 		putCoalIntoEngine.addSubSteps(putCoalIntoEngine2, putCoalIntoEngine3, putCoalIntoEngine4, putCoalIntoEngine5);
 
-		putCoalIntoEnginePlaced = new ObjectStep(this, NullObjectID.NULL_15238, new WorldPoint(2508, 10287, 0), "Read the nearby lift manual, then put 5 coal into the engine.",  coal5);
+		putCoalIntoEnginePlaced = new ObjectStep(this, NullObjectID.NULL_15238, new WorldPoint(2508, 10287, 0), "Read the nearby lift manual, then put 5 coal into the engine.", coal5);
 		putCoalIntoEnginePlaced2 = new ObjectStep(this, NullObjectID.NULL_15238, new WorldPoint(2508, 10287, 0), "Put 4 more coal into the engine.", coal4);
 		putCoalIntoEnginePlaced3 = new ObjectStep(this, NullObjectID.NULL_15238, new WorldPoint(2508, 10287, 0), "Put 3 more coal into the engine.", coal3);
 		putCoalIntoEnginePlaced4 = new ObjectStep(this, NullObjectID.NULL_15238, new WorldPoint(2508, 10287, 0), "Put 2 more coal into the engine.", coal2);
@@ -585,6 +585,16 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THRONE_OF_MISCELLANIA, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
+		req.add(new SkillRequirement(Skill.SLAYER, 40, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -603,15 +613,5 @@ public class RoyalTrouble extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Investigate the caves", new ArrayList<>(Arrays.asList(talkToArmod, enterBossRoom, killBoss, pickUpBox, leaveBossRoom, goUpRope, talkToSigridToFinish, talkToVargasToFinish))));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THRONE_OF_MISCELLANIA, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
-		req.add(new SkillRequirement(Skill.SLAYER, 40, true));
-		return req;
 	}
 }

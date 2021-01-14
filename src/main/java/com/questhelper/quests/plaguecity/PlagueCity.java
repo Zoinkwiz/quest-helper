@@ -24,7 +24,6 @@
  */
 package com.questhelper.quests.plaguecity;
 
-
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -35,6 +34,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -372,14 +372,14 @@ public class PlagueCity extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Arrays.asList(talkToEdmond)), dwellberries, spade, rope, bucketOfMilk, chocolateDust, snapeGrass));
+		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToEdmond)), dwellberries, spade, rope, bucketOfMilk, chocolateDust, snapeGrass));
 		allSteps.add(new PanelDetails("Infiltrate West Ardougne", new ArrayList<>(Arrays.asList(talkToAlrena, talkToEdmondAgain, useWaterOnMudPatch1,
 			grabPictureOfElena, digHole, goDownHole, attemptToPullGrill, useRopeOnGrill, talkToEdmondUnderground, climbThroughPipe))));
 		allSteps.add(new PanelDetails("Discover Elena's location", new ArrayList<>(Arrays.asList(talkToJethick, enterMarthasHouse, talkToMartha,
 			goUpstairsInMarthasHouse))));
 		allSteps.add(new PanelDetails("Freeing Elena", new ArrayList<>(Arrays.asList(tryToEnterPlagueHouse, talkToClerk, talkToBravek, useDustOnMilk, useSnapeGrassOnChocolateMilk,
 			giveHangoverCureToBravek, tryToEnterPlagueHouseAgain, searchBarrel, goDownstairsInPlagueHouse, talkToElena))));
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(talkToEdmondToFinish))));
+		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Collections.singletonList(talkToEdmondToFinish))));
 		return allSteps;
 	}
 }

@@ -189,7 +189,6 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		return reqs;
 	}
 
-
 	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{

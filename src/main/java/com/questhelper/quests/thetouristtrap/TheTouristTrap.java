@@ -252,7 +252,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		slope = new Zone(new WorldPoint(3282, 3032, 0), new WorldPoint(3283, 3037, 0));
 		cliff = new Zone(new WorldPoint(3279, 3037, 0), new WorldPoint(3281, 3038, 0));
 		secondCliff = new Zone(new WorldPoint(3273, 3035, 0), new WorldPoint(3278, 3039, 0));
-		mine1 = new Zone(new WorldPoint(3266,9410, 0), new WorldPoint(3282, 9466, 0));
+		mine1 = new Zone(new WorldPoint(3266, 9410, 0), new WorldPoint(3282, 9466, 0));
 		deepMine = new Zone(new WorldPoint(3282, 9408, 0), new WorldPoint(3326, 9470, 0));
 		deepMineP1 = new Zone(new WorldPoint(3283, 9409, 0), new WorldPoint(3314, 9427, 0));
 		deepMineP2P1 = new Zone(new WorldPoint(3315, 9416, 0), new WorldPoint(3326, 9470, 0));
@@ -400,6 +400,13 @@ public class TheTouristTrap extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.FLETCHING, 10, true),
+			new SkillRequirement(Skill.SMITHING, 20, true)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -415,11 +422,5 @@ public class TheTouristTrap extends BasicQuestHelper
 			slaveTop, slaveRobe, slaveBoot));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.FLETCHING, 10, true), new SkillRequirement(Skill.SMITHING, 20, true)));
 	}
 }

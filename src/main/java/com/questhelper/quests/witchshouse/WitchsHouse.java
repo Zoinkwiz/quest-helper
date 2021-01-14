@@ -139,8 +139,8 @@ public class WitchsHouse extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		house = new Zone(new WorldPoint(2901, 3466,0), new WorldPoint(2907, 3476, 0));
-		upstairsHouse = new Zone(new WorldPoint(2900, 3466,1), new WorldPoint(2907, 3476, 1));
+		house = new Zone(new WorldPoint(2901, 3466, 0), new WorldPoint(2907, 3476, 0));
+		upstairsHouse = new Zone(new WorldPoint(2900, 3466, 1), new WorldPoint(2907, 3476, 1));
 		downstairsHouseWest = new Zone(new WorldPoint(2897, 9870, 0), new WorldPoint(2902, 9878, 0));
 		downstairsHouseEast = new Zone(new WorldPoint(2903, 9870, 0), new WorldPoint(2909, 9878, 0));
 		garden1 = new Zone(new WorldPoint(2900, 3459, 0), new WorldPoint(2933, 3465, 0));
@@ -193,7 +193,7 @@ public class WitchsHouse extends BasicQuestHelper
 
 		grabBall = new DetailedQuestStep(this, new WorldPoint(2936, 3470, 0), "If an experiment hasn't spawned, attempt to pick up the ball once.", ball);
 		killWitchsExperiment = new NpcStep(this, NpcID.WITCHS_EXPERIMENT, new WorldPoint(2935, 3463, 0), "Kill all four forms of the Witch's experiment (levels 19, 30, 42, and 53). You can safe spot the last two forms from the crate in the south of the room.");
-		((NpcStep)killWitchsExperiment).addAlternateNpcs(NpcID.WITCHS_EXPERIMENT_SECOND_FORM, NpcID.WITCHS_EXPERIMENT_THIRD_FORM, NpcID.WITCHS_EXPERIMENT_FOURTH_FORM);
+		((NpcStep) killWitchsExperiment).addAlternateNpcs(NpcID.WITCHS_EXPERIMENT_SECOND_FORM, NpcID.WITCHS_EXPERIMENT_THIRD_FORM, NpcID.WITCHS_EXPERIMENT_FOURTH_FORM);
 		killWitchsExperiment.addSubSteps(grabBall);
 
 		pickupBall = new DetailedQuestStep(this, new WorldPoint(2936, 3470, 0), "Pick up the ball.", ball);
@@ -224,6 +224,12 @@ public class WitchsHouse extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		return new ArrayList<>(Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 2)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -232,11 +238,5 @@ public class WitchsHouse extends BasicQuestHelper
 			openCupboardAndLoot, goBackUpstairs, useCheeseOnHole))));
 		allSteps.add(new PanelDetails("Defeat the witch's experiment", new ArrayList<>(Arrays.asList(searchFountain, enterShed, killWitchsExperiment, pickupBall, returnToBoy))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 2)));
 	}
 }

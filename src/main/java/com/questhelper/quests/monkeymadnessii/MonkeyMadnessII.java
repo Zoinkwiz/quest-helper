@@ -26,11 +26,13 @@ package com.questhelper.quests.monkeymadnessii;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarbits;
 import com.questhelper.requirements.FollowerRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -541,13 +543,12 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 70)
 		{
 			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Get to him via the agility shortcut next to him. Be prepared to fight him and pray Protect from Melee.");
-			talkToKeef.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 		}
 		else
 		{
 			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Be prepared to fight him and pray Protect from Melee.", coins20);
-			talkToKeef.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 		}
+		talkToKeef.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 
 		fightKeef = new NpcStep(this, NpcID.KEEF_7105, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.");
 		talkToGarkorAfterKeef = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", krukGreegree);
@@ -702,12 +703,21 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new ItemRequirement("It is beneficial to have a high Combat and Agility level", -1, -1));
+		return req;
+	}
+
+	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(Quest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
 		req.add(new QuestRequirement(Quest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.RECIPE_FOR_DISASTER, QuestState.IN_PROGRESS, "Finished the 'Freeing King Awowogei' subquest of RFD"));
+		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId(),
+			Operation.GREATER_EQUAL,  50, "Finished the 'Freeing King Awowogei' subquest of RFD"));
 		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		req.add(new QuestRequirement(Quest.WATCHTOWER, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.SLAYER, 69));
@@ -716,7 +726,6 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 55));
 		req.add(new SkillRequirement(Skill.THIEVING, 55));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 60));
-		req.add(new ItemRequirement("It is beneficial to have a high Combat and Agility level", -1, -1));
 		return req;
 	}
 }

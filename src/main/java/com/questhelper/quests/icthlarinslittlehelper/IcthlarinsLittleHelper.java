@@ -411,6 +411,12 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList(new QuestRequirement(Quest.GERTRUDES_CAT, QuestState.FINISHED)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -429,11 +435,5 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus, leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest, talkToHighPriestInPyramid, leavePyramidToFinish)), cat));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new QuestRequirement(Quest.GERTRUDES_CAT, QuestState.FINISHED)));
 	}
 }

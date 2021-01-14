@@ -58,7 +58,7 @@ import net.runelite.api.widgets.WidgetInfo;
 public class PrinceAliRescue extends BasicQuestHelper
 {
 	ItemRequirement softClay, ballsOfWool3, yellowDye, redberries, ashes, bucketOfWater, potOfFlour, bronzeBar, pinkSkirt, beers3, rope, coins100, wig, dyedWig, paste, keyMould, key,
-	ropeReqs, yellowDyeReqs, glory, ropeHighlighted;
+		ropeReqs, yellowDyeReqs, glory, ropeHighlighted;
 
 	ConditionForStep hasWig, hasDyedWig, hasKey, hasPaste, hasOrGivenKeyMould, inCell, givenKeyMould;
 

@@ -31,6 +31,11 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.Requirements;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.WeightRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -52,6 +57,9 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -75,6 +83,8 @@ public class RFDPiratePete extends BasicQuestHelper
 	AskAboutFishCake talkToCook;
 
 	Zone diningRoom, underwater;
+
+	ArrayList<Requirement> generalReqs;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -219,6 +229,15 @@ public class RFDPiratePete extends BasicQuestHelper
 		hasGroundCod = new ItemRequirementCondition(groundCod);
 		hasBreadcrumbs = new ItemRequirementCondition(breadcrumbs);
 
+		generalReqs = new ArrayList<>();
+		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
+		if (client.getAccountType().isIronman())
+		{
+			generalReqs.add(new Requirements(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
+				new SkillRequirement(Skill.CRAFTING, 42, true),
+				new QuestRequirement(Quest.RUM_DEAL, QuestState.IN_PROGRESS)));
+		}
+
 		// 1852 = number of people saved
 		// Talked to cook through base dialog: 1854 0->1
 
@@ -249,7 +268,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		pickUpRocks = new DetailedQuestStep(this, new WorldPoint(2950, 9511, 1), "Pick up 5 rocks in the west of the area.", rocks5);
 		enterCave = new ObjectStep(this, ObjectID.UNDERWATER_CAVERN_ENTRANCE_12461, new WorldPoint(2950, 9516, 1), "Enter the underwater cave entrance.");
 		killMudksippers5 = new NpcStep(this, NpcID.MUDSKIPPER, new WorldPoint(2951, 9526, 1), "Kill mudskippers for 5 hides.", true, mudskipperHide5);
-		((NpcStep)(killMudksippers5)).addAlternateNpcs(NpcID.MUDSKIPPER_4821);
+		((NpcStep) (killMudksippers5)).addAlternateNpcs(NpcID.MUDSKIPPER_4821);
 		returnToNung = new NpcStep(this, NpcID.NUNG, new WorldPoint(2971, 9513, 1), "Bring the hides to Nung.", mudskipperHide5);
 		talkToNungAgain = new NpcStep(this, NpcID.NUNG, new WorldPoint(2971, 9513, 1), "Talk to Nung again.");
 		returnToNung.addSubSteps(talkToNungAgain);
@@ -290,6 +309,12 @@ public class RFDPiratePete extends BasicQuestHelper
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Arrays.asList("5 Mudskippers (level 30/31)", "Crab (level 21/23)"));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return generalReqs;
 	}
 
 	@Override

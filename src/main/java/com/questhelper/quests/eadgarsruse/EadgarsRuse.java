@@ -243,7 +243,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	{
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
-		climbingBootsOr12Coins =  new ItemRequirement("Climbing boots or 12 coins", -1, -1);
+		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", -1, -1);
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		pineappleChunks.setTip("You can make these by using a knife on a pineapple");
@@ -346,7 +346,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		inTrollheimArea = new ZoneCondition(trollheimArea);
 
 		askedAboutAlcohol = new Conditions(true, LogicType.AND, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Just recently."));
-		askedAboutPineapple =  new Conditions(true, LogicType.AND, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
+		askedAboutPineapple = new Conditions(true, LogicType.AND, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
 		hasAlcoChunks = new ItemRequirementCondition(alcoChunks);
 		hasParrot = new ItemRequirementCondition(parrot);
 		hasRobe = new ItemRequirementCondition(robe);

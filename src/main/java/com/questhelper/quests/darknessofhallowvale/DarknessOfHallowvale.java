@@ -26,6 +26,7 @@ package com.questhelper.quests.darknessofhallowvale;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -48,6 +49,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -729,10 +731,17 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public ArrayList<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(normalSpellbook);
+		return req;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 5));
 		req.add(new SkillRequirement(Skill.MINING, 20));

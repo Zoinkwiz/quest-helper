@@ -192,6 +192,15 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.CRAFTING, 31, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 36, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -201,14 +210,5 @@ public class LostCity extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Entering Zanaris", new ArrayList<>(Arrays.asList(craftBranch, enterZanaris)), knife));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.CRAFTING, 31, true));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 36, true));
-		return req;
 	}
 }

@@ -344,6 +344,16 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_GOLEM, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.DEMON_SLAYER, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.CRAFTING, 30, true));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -354,15 +364,5 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeating Agrith-Naar", new ArrayList<>(Arrays.asList(pickUpSigil, leavePortal, pickUpSigil2, tellDaveToReturn, talkToBaddenAfterRitual, talkToReenAfterRitual, talkToTheGolemAfterRitual, useImplementOnGolem, talkToGolemAfterReprogramming,
 			talkToMatthewToStartFight, standInCircleAgain, incantRitual, killDemon, unequipDarklight)), silverlightDyed, combatGear));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_GOLEM, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.DEMON_SLAYER, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.CRAFTING, 30, true));
-		return req;
 	}
 }

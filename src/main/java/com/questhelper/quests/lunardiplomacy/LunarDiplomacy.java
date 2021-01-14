@@ -889,6 +889,25 @@ public class LunarDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.LOST_CITY, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.SHILO_VILLAGE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.HERBLORE, 5));
+		req.add(new SkillRequirement(Skill.CRAFTING, 61));
+		req.add(new SkillRequirement(Skill.DEFENCE, 40));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 49));
+		req.add(new SkillRequirement(Skill.MAGIC, 65));
+		req.add(new SkillRequirement(Skill.MINING, 60));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 55));
+		req.add(new ItemRequirement("Access to the following altars: \nAir, Earth, Fire, Water", -1, -1));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -939,24 +958,5 @@ public class LunarDiplomacy extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Tree challenge", new ArrayList<>(Arrays.asList(goToTrees, doTreeChallenge))));
 		allSteps.add(new PanelDetails("Final challenge", new ArrayList<>(Arrays.asList(talkWithEtherealToFight, fightMe, leaveLecturn, finishQuest))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.LOST_CITY, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.SHILO_VILLAGE, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.HERBLORE, 5));
-		req.add(new SkillRequirement(Skill.CRAFTING, 61));
-		req.add(new SkillRequirement(Skill.DEFENCE, 40));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 49));
-		req.add(new SkillRequirement(Skill.MAGIC, 65));
-		req.add(new SkillRequirement(Skill.MINING, 60));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 55));
-		req.add(new ItemRequirement("Access to the following altars: \nAir, Earth, Fire, Water", -1, -1));
-		return req;
 	}
 }

@@ -148,7 +148,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		givePortraitToThurgo.addDialogStep("About that sword...");
 		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars, portrait);
 		mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0), "Mine a blurite ore in the eastern cavern.", pickaxe);
-		bringThurgoOre =  new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Return to Thurgo with a blurite ore, two iron bars and the portrait.", bluriteOre, ironBars, portrait);
+		bringThurgoOre = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Return to Thurgo with a blurite ore, two iron bars and the portrait.", bluriteOre, ironBars, portrait);
 		bringThurgoOre.addDialogStep("Can you make that replacement sword now?");
 		finishQuest = new NpcStep(this, NpcID.SQUIRE_4737, new WorldPoint(2978, 3341, 0), "Return to the Squire with the sword to finish the quest.", bluriteSword);
 	}
@@ -182,21 +182,21 @@ public class TheKnightsSword extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.MINING, 10, true)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-    	allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToSquire, talkToReldo))));
-    	allSteps.add(new PanelDetails("Finding an Imcando", new ArrayList<>(Arrays.asList(talkToThurgo, talkToThurgoAgain)), redberryPie));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToSquire, talkToReldo))));
+		allSteps.add(new PanelDetails("Finding an Imcando", new ArrayList<>(Arrays.asList(talkToThurgo, talkToThurgoAgain)), redberryPie));
 		allSteps.add(new PanelDetails("Find the portrait", new ArrayList<>(Arrays.asList(talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, givePortraitToThurgo))));
 		allSteps.add(new PanelDetails("Making the sword", new ArrayList<>(Arrays.asList(enterDungeon, mineBlurite, bringThurgoOre)), pickaxe, portrait, ironBars));
 		allSteps.add(new PanelDetails("Return the sword", new ArrayList<>(Collections.singletonList(finishQuest))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.MINING, 10, true)));
 	}
 }

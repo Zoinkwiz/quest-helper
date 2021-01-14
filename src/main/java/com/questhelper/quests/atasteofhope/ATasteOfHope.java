@@ -445,7 +445,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		useBloodOnDoor.addDialogStep("Yes.");
 		useBloodOnDoor.addIcon(ItemID.BLOOD_POTION);
 		getOldNotes = new ObjectStep(this, ObjectID.CHEST_32572, new WorldPoint(3596, 9683, 0), "Search the chest for some notes.");
-		((ObjectStep)(getOldNotes)).addAlternateObjects(ObjectID.CHEST_32573);
+		((ObjectStep) (getOldNotes)).addAlternateObjects(ObjectID.CHEST_32573);
 		talkToSafalaanWithNotes = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan with the notes.", oldNotes);
 		talkToSafalaanWithNotes.addDialogStep("Here you go.");
 		enterBaseAfterSerafina = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Prepare for a fight, then return to the Meiyerditch Myreque base.");
@@ -453,16 +453,16 @@ public class ATasteOfHope extends BasicQuestHelper
 
 		talkToSafalaanForAbominationFight = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan, ready for a fight.");
 		killAbomination = new NpcStep(this, NpcID.ABOMINATION, new WorldPoint(3627, 9644, 0), "Kill the abomination. It can be safe spotted with a long-ranged weapon.");
-		((NpcStep)(killAbomination)).addAlternateNpcs(NpcID.ABOMINATION_8261, NpcID.ABOMINATION_8262);
+		((NpcStep) (killAbomination)).addAlternateNpcs(NpcID.ABOMINATION_8261, NpcID.ABOMINATION_8262);
 		talkToSafalaanAfterAbominationFight = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8219, new WorldPoint(3627, 9644, 0), "Talk to Safalaan.");
 
 		enterOldManRalBasement = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
 			rodOfIvandis, emerald, chisel, enchantEmeraldRunesOrTablet);
-		((ObjectStep)(enterOldManRalBasement)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (enterOldManRalBasement)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 
 		enterRalWithFlail = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
 			ivandisFlail);
-		((ObjectStep)(enterRalWithFlail)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (enterRalWithFlail)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 		talkToSafalaanInRalBasement = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3598, 9614, 0), "Talk to Safalaan.");
 		talkToVertidaInRalBasement = new NpcStep(this, NpcID.VERTIDA_SEFALATIS, new WorldPoint(3598, 9614, 0), "Talk to Vertida.");
 		readFlaygianNotes = new DetailedQuestStep(this, "Read Flaygian's notes.", flaygianNotes);
@@ -486,7 +486,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		talkToKaelSidebar.addSubSteps(talkToKael);
 
 		killRanisSidebar = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis.", ivandisFlailEquipped);
-		((NpcStep)(killRanisSidebar)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
+		((NpcStep) (killRanisSidebar)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
 		killRanisSidebar.addText("He can only be hurt by the flail, and uses magic and melee attacks.");
 		killRanisSidebar.addText("He will occasionally charge an attack and explode, dealing damage close to him. Just run away for this attack.");
 		killRanisSidebar.addText("During the fight he will spawn vyrewatch which you'll need to kill. Whilst fighting them Ranis will be throwing blood bombs at your current location, so make sure to move around.");
@@ -494,12 +494,12 @@ public class ATasteOfHope extends BasicQuestHelper
 
 
 		killRanis = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His various mechanics are listed in the helper's sidebar.", ivandisFlailEquipped);
-		((NpcStep)(killRanis)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
+		((NpcStep) (killRanis)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
 		killRanisSidebar.addSubSteps(killRanis);
 
 		talkToKaelAgain = new NpcStep(this, NpcID.KAEL_FORSHAW_8231, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood again.");
 		enterRalForEnd = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.");
-		((ObjectStep)(enterRalForEnd)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (enterRalForEnd)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 		talkToSafalaanForEnd = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3598, 9614, 0), "Talk to Safalaan to complete the quest!");
 	}
 

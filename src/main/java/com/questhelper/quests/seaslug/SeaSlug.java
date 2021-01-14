@@ -166,7 +166,8 @@ public class SeaSlug extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements() {
+	public void setupItemRequirements()
+	{
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
 		dampSticks = new ItemRequirement("Damp sticks", ItemID.DAMP_STICKS);
 		drySticks = new ItemRequirement("Dry sticks", ItemID.DRY_STICKS);
@@ -176,13 +177,15 @@ public class SeaSlug extends BasicQuestHelper
 
 	}
 
-	public void loadZones() {
+	public void loadZones()
+	{
 		platformGroundFloor = new Zone(new WorldPoint(2760, 3271, 0), new WorldPoint(2795, 3293, 0));
 		platformFirstFloor = new Zone(new WorldPoint(2760, 3271, 1), new WorldPoint(2795, 3293, 1));
 		island = new Zone(new WorldPoint(2787, 3312, 0), new WorldPoint(2802, 3327, 0));
 	}
 
-	public void setupConditions() {
+	public void setupConditions()
+	{
 		hasDampSticks = new ItemRequirementCondition(dampSticks);
 		hasDrySticks = new ItemRequirementCondition(drySticks);
 		hasTorch = new ItemRequirementCondition(torch);
@@ -194,7 +197,8 @@ public class SeaSlug extends BasicQuestHelper
 		onIsland = new ZoneCondition(island);
 	}
 
-	public void setupSteps() {
+	public void setupSteps()
+	{
 		talkToCaroline = new NpcStep(this, NpcID.CAROLINE, new WorldPoint(2717, 3303, 0), "Talk to Caroline just north of Witchaven, east of East Ardougne.");
 		talkToCaroline.addDialogStep("I suppose so, how do I get there?");
 		talkToHolgart = new NpcStep(this, NpcID.HOLGART_7324, new WorldPoint(2717, 3303, 0), "Talk to Holgart nearby and give him some swamp paste.", swampPaste);
@@ -204,7 +208,7 @@ public class SeaSlug extends BasicQuestHelper
 		travelWithHolgart.addDialogStep("Will you take me there?");
 		climbLadder = new ObjectStep(this, ObjectID.LADDER_18324, new WorldPoint(2784, 3286, 0), "Climb the ladder in the north east corner of the platform.");
 		talkToKennith = new NpcStep(this, NpcID.KENNITH_5063, new WorldPoint(2765, 3289, 1), "Talk to Kennith from inside the cabin on the west side of the first floor.");
-		goDownLadder = new ObjectStep(this,  ObjectID.LADDER_18325, new WorldPoint(2784, 3286, 1), "Go back down the ladder.");
+		goDownLadder = new ObjectStep(this, ObjectID.LADDER_18325, new WorldPoint(2784, 3286, 1), "Go back down the ladder.");
 		goToIsland = new NpcStep(this, NpcID.HOLGART_5070, new WorldPoint(2781, 3274, 0), "Travel with Holgart to a nearby island.");
 		goToIslandFromMainland = new NpcStep(this, NpcID.HOLGART_7789, new WorldPoint(2717, 3303, 0), "Travel with Holgart north of Witchaven to find Kent.");
 		goToIsland.addSubSteps(goToIsland);
@@ -219,7 +223,7 @@ public class SeaSlug extends BasicQuestHelper
 		pickupDampSticks = new DetailedQuestStep(this, new WorldPoint(2784, 3289, 0), "Pick up the damp sticks in the north east corner of the platform.", dampSticks);
 		useGlassOnDampSticks = new DetailedQuestStep(this, "Use the broken glass on damp sticks to dry them.", glass, dampSticks);
 		rubSticks = new DetailedQuestStep(this, "Rub the dry sticks to light the unlit torch.");
-		goBackUpLadder = new ObjectStep(this,  ObjectID.LADDER_18324, new WorldPoint(2784, 3286, 0), "Go up the ladder in the north east corner of the platform.");
+		goBackUpLadder = new ObjectStep(this, ObjectID.LADDER_18324, new WorldPoint(2784, 3286, 0), "Go up the ladder in the north east corner of the platform.");
 		talkToKennithAgain = new NpcStep(this, NpcID.KENNITH_5063, new WorldPoint(2765, 3289, 1), "Talk to Kennith to the west.");
 		kickWall = new ObjectStep(this, NullObjectID.NULL_18251, new WorldPoint(2768, 3289, 1), "Kick in the badly repaired wall east of Kennith.");
 		talkToKennithAfterKicking = new NpcStep(this, NpcID.KENNITH_5063, new WorldPoint(2765, 3289, 1), "Talk to Kennith again.");
@@ -238,6 +242,12 @@ public class SeaSlug extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.FIREMAKING, 30, true)));
+	}
+	
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -249,11 +259,5 @@ public class SeaSlug extends BasicQuestHelper
 				talkToKennithAfterKicking, activateCrane, goDownLadderAgain, returnWithHolgart, finishQuest))));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.FIREMAKING, 30, true)));
 	}
 }

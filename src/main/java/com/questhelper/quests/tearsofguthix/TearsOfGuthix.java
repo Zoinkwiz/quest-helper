@@ -177,17 +177,6 @@ public class TearsOfGuthix extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
-	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-
-		allSteps.add(new PanelDetails("Making a bowl", new ArrayList<>(Arrays.asList(enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock, talkToJunaToFinish)),
-			rope, litSapphireLantern, tinderbox, chisel, pickaxe));
-
-		return allSteps;
-	}
-
-	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
@@ -196,5 +185,16 @@ public class TearsOfGuthix extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 20));
 		req.add(new SkillRequirement(Skill.MINING, 20));
 		return req;
+	}
+
+	@Override
+	public ArrayList<PanelDetails> getPanels()
+	{
+		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+
+		allSteps.add(new PanelDetails("Making a bowl", new ArrayList<>(Arrays.asList(enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock, talkToJunaToFinish)),
+			rope, litSapphireLantern, tinderbox, chisel, pickaxe));
+
+		return allSteps;
 	}
 }

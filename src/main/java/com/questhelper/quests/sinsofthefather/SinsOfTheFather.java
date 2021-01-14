@@ -83,11 +83,11 @@ public class SinsOfTheFather extends BasicQuestHelper
 	DetailedQuestStep searchForKnife, cutVines, combineVines, useVineOnBranch, swingOnVine, leaveSwingArea, killNailBeasts, leaveNailBeastArea, killZombieForAxe,
 		get3LogsForBridge, repairBridge1, repairBridge2, repairBridge3, crossBridge, leaveBridgeArea;
 
-	DetailedQuestStep convinceKael,convinceVertida, convincePolmafi, convinceRadigad, convinceIvan, convinceVeliaf;
+	DetailedQuestStep convinceKael, convinceVertida, convincePolmafi, convinceRadigad, convinceIvan, convinceVeliaf;
 
 	DetailedQuestStep goDownToMakeFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle;
 
-	ItemRequirement haemBook, unscentedTop, unscentedLegs, 	unscentedShoes, vyreTop, vyreLegs, vyreShoes, ivandisFlailEquipped, blisterwoodFlail, scentedTop, scentedLegs,
+	ItemRequirement haemBook, unscentedTop, unscentedLegs, unscentedShoes, vyreTop, vyreLegs, vyreShoes, ivandisFlailEquipped, blisterwoodFlail, scentedTop, scentedLegs,
 		scentedShoes, blisterwood8, axe, knife, vine3, longVine, log1, log2, log3, axeEquipped, oldNote, ruby, sickle, enchantedSickle, enchantRubyRunesOrTablet, fireRune5,
 		fireStaff, cosmicRune, enchantRunes, enchantTablet, rubySickle, blisterwoodLog, blisterwoodSickle, ivandisFlailHighlighted, chisel, rubyHighlighted, ivandisFlail,
 		combatGear, antipoison, pickaxe, vyrewatchOutfitOrCoins, drakanMedallion, moryLegs3;
@@ -99,54 +99,54 @@ public class SinsOfTheFather extends BasicQuestHelper
 		inJuvinateArea, juvinateNearby, inPuzzleInterface, talkedToKael, talkedToVertida, talkedToPolmafi, talkedToRadigad, talkedToIvan, inLab, inDeepLab, inNewBase,
 		inDamienRoom, hasNote, hasSickle, hasRubySickle, hasEnchantedRubySickle, hasBlisterwoodSickle, inFinalFightArea;
 
-    @Override
-    public Map<Integer, QuestStep> loadSteps()
-    {
-        Map<Integer, QuestStep> steps = new HashMap<>();
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
 		setupItemRequirements();
 		setupConditions();
 		setupSteps();
 
-        steps.put(0, startQuest);
-        steps.put(2, startQuest);
-        steps.put(4, talkToHameln);
-        steps.put(6, talkToCarl);
+		steps.put(0, startQuest);
+		steps.put(2, startQuest);
+		steps.put(4, talkToHameln);
+		steps.put(6, talkToCarl);
 
-        steps.put(8, inspectBarrel);
-        steps.put(10, inspectBarrel);
+		steps.put(8, inspectBarrel);
+		steps.put(10, inspectBarrel);
 
-        ConditionalStep followCarlSteps = new ConditionalStep(this, inspectBarrel);
+		ConditionalStep followCarlSteps = new ConditionalStep(this, inspectBarrel);
 		followCarlSteps.addStep(inFollowingCarlArea, followCarl);
-        steps.put(12, followCarlSteps);
+		steps.put(12, followCarlSteps);
 
-        ConditionalStep goKillCarl = new ConditionalStep(this, goDownToKroy);
-        goKillCarl.addStep(inKroyArea, killKroy);
+		ConditionalStep goKillCarl = new ConditionalStep(this, goDownToKroy);
+		goKillCarl.addStep(inKroyArea, killKroy);
 
-        steps.put(14, goKillCarl);
-        steps.put(16, goKillCarl);
+		steps.put(14, goKillCarl);
+		steps.put(16, goKillCarl);
 
-        ConditionalStep goDestroyTables = new ConditionalStep(this, goDownToKroy);
+		ConditionalStep goDestroyTables = new ConditionalStep(this, goDownToKroy);
 		goDestroyTables.addStep(new Conditions(inKroyArea, destroyedLabTable1), destroyLab2);
-        goDestroyTables.addStep(inKroyArea, destroyLab);
+		goDestroyTables.addStep(inKroyArea, destroyLab);
 
-        steps.put(18, goDestroyTables);
+		steps.put(18, goDestroyTables);
 
-        steps.put(20, talkToVeliafAfterKroy);
+		steps.put(20, talkToVeliafAfterKroy);
 
 
-        ConditionalStep goToVeliafInPater = new ConditionalStep(this, enterPater);
-        goToVeliafInPater.addStep(inPater, talkToVeliafInPater);
-        steps.put(22, goToVeliafInPater);
-        steps.put(24, goToVeliafInPater);
-        steps.put(26, goToVeliafInPater);
+		ConditionalStep goToVeliafInPater = new ConditionalStep(this, enterPater);
+		goToVeliafInPater.addStep(inPater, talkToVeliafInPater);
+		steps.put(22, goToVeliafInPater);
+		steps.put(24, goToVeliafInPater);
+		steps.put(26, goToVeliafInPater);
 
-        steps.put(28, talkToIvan);
+		steps.put(28, talkToIvan);
 
-        steps.put(30, listenToMeeting);
-        steps.put(32, listenToMeeting);
+		steps.put(30, listenToMeeting);
+		steps.put(32, listenToMeeting);
 
-        steps.put(34, talkToIvanAfterMeeting);
+		steps.put(34, talkToIvanAfterMeeting);
 
 		ConditionalStep goTempleTrekking = new ConditionalStep(this, talkToIvanAfterMeeting);
 		goTempleTrekking.addStep(new Conditions(inJuvinateArea, juvinateNearby), killJuvinates);
@@ -166,146 +166,146 @@ public class SinsOfTheFather extends BasicQuestHelper
 		goTempleTrekking.addStep(new Conditions(inSwingArea, has3Vines), combineVines);
 		goTempleTrekking.addStep(new Conditions(inSwingArea, hasKnife), cutVines);
 		goTempleTrekking.addStep(inSwingArea, searchForKnife);
-		steps.put(36,  goTempleTrekking);
+		steps.put(36, goTempleTrekking);
 
-        steps.put(38,  talkToIvanAfterTrek);
+		steps.put(38, talkToIvanAfterTrek);
 
-        steps.put(40,  talkToVeliafInBoatHouse);
+		steps.put(40, talkToVeliafInBoatHouse);
 
-        steps.put(42, travelToGraveyard);
+		steps.put(42, travelToGraveyard);
 
-        steps.put(44, talkToVeliafInGraveyard);
+		steps.put(44, talkToVeliafInGraveyard);
 
-        steps.put(46, talkToVeliafInGraveyard);
+		steps.put(46, talkToVeliafInGraveyard);
 
-        steps.put(48, talkToVanescula);
+		steps.put(48, talkToVanescula);
 
-        ConditionalStep goSolveDoor = new ConditionalStep(this, openPuzzleDoor);
-        goSolveDoor.addStep(inPuzzleInterface, doDoorPuzzle);
-        steps.put(50, goSolveDoor);
+		ConditionalStep goSolveDoor = new ConditionalStep(this, openPuzzleDoor);
+		goSolveDoor.addStep(inPuzzleInterface, doDoorPuzzle);
+		steps.put(50, goSolveDoor);
 
-        steps.put(52, talkToVanesculaAfterPuzzle);
+		steps.put(52, talkToVanesculaAfterPuzzle);
 
 
-        ConditionalStep convinceTheTeam = new ConditionalStep(this, convinceVertida);
+		ConditionalStep convinceTheTeam = new ConditionalStep(this, convinceVertida);
 		convinceTheTeam.addStep(talkedToIvan, convinceVeliaf);
 		convinceTheTeam.addStep(talkedToPolmafi, convinceIvan);
-        convinceTheTeam.addStep(talkedToRadigad, convincePolmafi);
+		convinceTheTeam.addStep(talkedToRadigad, convincePolmafi);
 		convinceTheTeam.addStep(talkedToKael, convinceRadigad);
-        convinceTheTeam.addStep(talkedToVertida, convinceKael);
-        steps.put(54, convinceTheTeam);
+		convinceTheTeam.addStep(talkedToVertida, convinceKael);
+		steps.put(54, convinceTheTeam);
 
-        steps.put(56, talkToVanesculaAfterTeam);
+		steps.put(56, talkToVanesculaAfterTeam);
 
-        ConditionalStep goToLabSteps = new ConditionalStep(this, goToLab);
-        goToLabSteps.addStep(inLab, talkToSafalaanInLab);
-        steps.put(58, goToLabSteps);
-        steps.put(60, goToLabSteps);
+		ConditionalStep goToLabSteps = new ConditionalStep(this, goToLab);
+		goToLabSteps.addStep(inLab, talkToSafalaanInLab);
+		steps.put(58, goToLabSteps);
+		steps.put(60, goToLabSteps);
 
 		ConditionalStep defeatBloodveld = new ConditionalStep(this, goToLab);
 		defeatBloodveld.addStep(inDeepLab, killBloodveld);
 		defeatBloodveld.addStep(inLab, enterDeepLab);
-        steps.put(62, defeatBloodveld);
+		steps.put(62, defeatBloodveld);
 
-        ConditionalStep talkInDeepLabs = new ConditionalStep(this, goToLab);
+		ConditionalStep talkInDeepLabs = new ConditionalStep(this, goToLab);
 		talkInDeepLabs.addStep(inLab, talkToSafalaanInDeepLab);
-        steps.put(64, talkInDeepLabs);
+		steps.put(64, talkInDeepLabs);
 
 		ConditionalStep getBookSteps = new ConditionalStep(this, goToLab);
 		getBookSteps.addStep(inLab, searchLabBookcase);
-        steps.put(66, getBookSteps);
+		steps.put(66, getBookSteps);
 
 		ConditionalStep bringBookToSafalaanSteps = new ConditionalStep(this, goToLab);
 		bringBookToSafalaanSteps.addStep(inLab, takeBookToSafalaan);
-        steps.put(68, bringBookToSafalaanSteps);
+		steps.put(68, bringBookToSafalaanSteps);
 
-        steps.put(70, talkToVanesculaAfterLab);
+		steps.put(70, talkToVanesculaAfterLab);
 
-        ConditionalStep bringPolmafiItems = new ConditionalStep(this, goDownToPolmafi);
-        bringPolmafiItems.addStep(inNewBase, talkToPolmafi);
-        steps.put(72, bringPolmafiItems);
-        steps.put(74, bringPolmafiItems);
+		ConditionalStep bringPolmafiItems = new ConditionalStep(this, goDownToPolmafi);
+		bringPolmafiItems.addStep(inNewBase, talkToPolmafi);
+		steps.put(72, bringPolmafiItems);
+		steps.put(74, bringPolmafiItems);
 
-        steps.put(76, talkToPolmafiMore);
+		steps.put(76, talkToPolmafiMore);
 
-        steps.put(78, bringUnscentedToVanescula);
+		steps.put(78, bringUnscentedToVanescula);
 
-        steps.put(80, talkToVeliafForFight);
-        steps.put(82, talkToVeliafForFight);
+		steps.put(80, talkToVeliafForFight);
+		steps.put(82, talkToVeliafForFight);
 
-        ConditionalStep goKillDamien = new ConditionalStep(this, talkToVeliafForFight);
-        goKillDamien.addStep(inDamienRoom, killDamien);
-        steps.put(84, goKillDamien);
+		ConditionalStep goKillDamien = new ConditionalStep(this, talkToVeliafForFight);
+		goKillDamien.addStep(inDamienRoom, killDamien);
+		steps.put(84, goKillDamien);
 
-        steps.put(86, talkToVeliafAfterDamien);
+		steps.put(86, talkToVeliafAfterDamien);
 
-        steps.put(88, talkToVanesculaAfterDamien);
+		steps.put(88, talkToVanesculaAfterDamien);
 
-        steps.put(90, enterDarkmeyer);
+		steps.put(90, enterDarkmeyer);
 
-        steps.put(92, talkToDesmodus);
+		steps.put(92, talkToDesmodus);
 
-        steps.put(94, talkToMordan);
+		steps.put(94, talkToMordan);
 
-        steps.put(96, talkToMaria);
+		steps.put(96, talkToMaria);
 
-        steps.put(98, talkToMaria);
+		steps.put(98, talkToMaria);
 
-        steps.put(100, talkToDesmodusAgain);
+		steps.put(100, talkToDesmodusAgain);
 
-        steps.put(102, getNote);
+		steps.put(102, getNote);
 
-        ConditionalStep goReadNote = new ConditionalStep(this, getNote);
-        goReadNote.addStep(hasNote, readNote);
-        steps.put(104, getNote);
+		ConditionalStep goReadNote = new ConditionalStep(this, getNote);
+		goReadNote.addStep(hasNote, readNote);
+		steps.put(104, getNote);
 
-        steps.put(106, valveStep);
-        steps.put(108, valveStep);
-        steps.put(110, valveStep);
+		steps.put(106, valveStep);
+		steps.put(108, valveStep);
+		steps.put(110, valveStep);
 
-        ConditionalStep getLogs = new ConditionalStep(this, cutLogs);
-        getLogs.addStep(has8Logs, bringVanesculaLogs);
+		ConditionalStep getLogs = new ConditionalStep(this, cutLogs);
+		getLogs.addStep(has8Logs, bringVanesculaLogs);
 
-        steps.put(112, getLogs);
+		steps.put(112, getLogs);
 
 		ConditionalStep bringItemsToVertida = new ConditionalStep(this, cutLogs);
 		bringItemsToVertida.addStep(new Conditions(inNewBase, has8Logs), bringVertidaLogs);
 		bringItemsToVertida.addStep(has8Logs, goDownToVerditaWithLogs);
-        steps.put(114, bringItemsToVertida);
+		steps.put(114, bringItemsToVertida);
 
-        steps.put(116, talkToVertidaForFlail);
+		steps.put(116, talkToVertidaForFlail);
 
-        ConditionalStep createFlail = new ConditionalStep(this, goDownToMakeFlail);
+		ConditionalStep createFlail = new ConditionalStep(this, goDownToMakeFlail);
 		createFlail.addStep(hasBlisterwoodSickle, useFlailOnSickle);
 		createFlail.addStep(hasEnchantedRubySickle, useLogOnSickle);
 		createFlail.addStep(hasRubySickle, enchantRubySickle);
-        createFlail.addStep(hasSickle, addRubyToSickle);
-        createFlail.addStep(inNewBase, getSickle);
-        steps.put(118, createFlail);
+		createFlail.addStep(hasSickle, addRubyToSickle);
+		createFlail.addStep(inNewBase, getSickle);
+		steps.put(118, createFlail);
 
-        steps.put(120, talkToVanesculaWithFlail);
+		steps.put(120, talkToVanesculaWithFlail);
 
-        steps.put(122, talkToSafalaanWithFlail);
+		steps.put(122, talkToSafalaanWithFlail);
 
-        steps.put(124, talkToVanesculaBeforeFight);
+		steps.put(124, talkToVanesculaBeforeFight);
 
-        steps.put(126, talkToVanesculaForFight);
+		steps.put(126, talkToVanesculaForFight);
 
-        steps.put(128, talkToVeliafForFinalFight);
+		steps.put(128, talkToVeliafForFinalFight);
 
-        ConditionalStep goFightVanstrom = new ConditionalStep(this, talkToVeliafForFinalFight);
-        goFightVanstrom.addStep(inFinalFightArea, fightVanstrom);
-        steps.put(130, goFightVanstrom);
+		ConditionalStep goFightVanstrom = new ConditionalStep(this, talkToVeliafForFinalFight);
+		goFightVanstrom.addStep(inFinalFightArea, fightVanstrom);
+		steps.put(130, goFightVanstrom);
 
-        steps.put(132, talkToVeliafAfterFight);
+		steps.put(132, talkToVeliafAfterFight);
 
-        ConditionalStep goFinishQuest = new ConditionalStep(this, enterBaseToFinish);
-        goFinishQuest.addStep(inNewBase, finishQuest);
-        steps.put(134, goFinishQuest);
-        steps.put(136, goFinishQuest);
+		ConditionalStep goFinishQuest = new ConditionalStep(this, enterBaseToFinish);
+		goFinishQuest.addStep(inNewBase, finishQuest);
+		steps.put(134, goFinishQuest);
+		steps.put(136, goFinishQuest);
 
-        return steps;
-    }
+		return steps;
+	}
 
 	private void setupZones()
 	{
@@ -387,7 +387,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		vyreShoes = new ItemRequirement("Vyrewatch shoes", ItemID.VYREWATCH_SHOES);
 		vyreShoes.setTip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
 
-		unscentedTop =  new ItemRequirement("Vyre noble top unscented", ItemID.VYRE_NOBLE_TOP_UNSCENTED);
+		unscentedTop = new ItemRequirement("Vyre noble top unscented", ItemID.VYRE_NOBLE_TOP_UNSCENTED);
 		unscentedTop.setTip("You can get a replacement from a chest in Old Man Ral's basement");
 		unscentedLegs = new ItemRequirement("Vyre noble legs unscented", ItemID.VYRE_NOBLE_LEGS_UNSCENTED);
 		unscentedLegs.setTip("You can get a replacement from a chest in Old Man Ral's basement");
@@ -404,7 +404,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		ivandisFlailHighlighted.setHighlightInInventory(true);
 		ivandisFlailHighlighted.setTip("You can buy another from Vertida in the Myreque base for 20k");
 
-		scentedTop =  new ItemRequirement("Vyre noble top", ItemID.VYRE_NOBLE_TOP, 1, true);
+		scentedTop = new ItemRequirement("Vyre noble top", ItemID.VYRE_NOBLE_TOP, 1, true);
 		scentedTop.setTip("You can get a replacement from a chest in Old Man Ral's basement");
 		scentedLegs = new ItemRequirement("Vyre noble legs", ItemID.VYRE_NOBLE_LEGS, 1, true);
 		scentedLegs.setTip("You can get a replacement from a chest in Old Man Ral's basement");
@@ -416,8 +416,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
 		blisterwoodFlail.setTip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old Man Ral's basement");
 
-		axe	= new ItemRequirement("Any axe", ItemCollections.getAxes());
-		axeEquipped	= new ItemRequirement("Any axe", ItemCollections.getAxes(), 1, true);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axeEquipped = new ItemRequirement("Any axe", ItemCollections.getAxes(), 1, true);
 
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		vine3 = new ItemRequirement("Short vine", ItemID.SHORT_VINE, 3);
@@ -489,8 +489,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		followCarl = new NpcStep(this, NpcID.CARL_9558, new WorldPoint(3714, 3328, 0),
 			"Follow Carl, hiding behind objects when he turns around.");
-		((NpcStep)(followCarl)).setMaxRoamRange(200);
-		((NpcStep)(followCarl)).setLinePoints(new ArrayList<>(Arrays.asList(
+		((NpcStep) (followCarl)).setMaxRoamRange(200);
+		((NpcStep) (followCarl)).setLinePoints(new ArrayList<>(Arrays.asList(
 			new WorldPoint(3750, 3308, 0),
 			new WorldPoint(3751, 3315, 0),
 			new WorldPoint(0, 0, 2),
@@ -533,7 +533,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkToVeliafAfterKroy.addDialogStep("Fair enough, so what now?");
 
 		enterPater = new ObjectStep(this, ObjectID.TRAPDOOR_3433, new WorldPoint(3422, 3485, 0), "Talk to Veliaf in Paterdomus.");
-		((ObjectStep)(enterPater)).addAlternateObjects(ObjectID.TRAPDOOR_3432);
+		((ObjectStep) (enterPater)).addAlternateObjects(ObjectID.TRAPDOOR_3432);
 
 		talkToVeliafInPater = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3438, 9897, 0),
 			"Talk to Veliaf in Paterdomus.");
@@ -562,7 +562,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		/* Nail beast section */
 		killNailBeasts = new NpcStep(this, NpcID.NAIL_BEAST_9612, new WorldPoint(2332, 5012, 0), "Kill the nail beasts.", true);
-		((NpcStep)(killNailBeasts)).addAlternateNpcs(NpcID.NAIL_BEAST_9613);
+		((NpcStep) (killNailBeasts)).addAlternateNpcs(NpcID.NAIL_BEAST_9613);
 		leaveNailBeastArea = new ObjectStep(this, ObjectID.PATH_38009, new WorldPoint(2334, 5021, 0), "Continue the trek.");
 		leaveNailBeastArea.addDialogStep("Yes.");
 
@@ -582,7 +582,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		/* Vampyre Juvinate section */
 		killJuvinates = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_9615, new WorldPoint(2396, 5011, 0), "Kill the juvinates with the Ivandis Flail. Try to attack the one near Ivan before it can attack him.", true, ivandisFlailEquipped);
-		((NpcStep)(killJuvinates)).addAlternateNpcs(NpcID.VAMPYRE_JUVINATE_9614);
+		((NpcStep) (killJuvinates)).addAlternateNpcs(NpcID.VAMPYRE_JUVINATE_9614);
 		leaveJuvinateArea = new ObjectStep(this, ObjectID.PATH_38011, new WorldPoint(2397, 5023, 0), "Continue the trek.");
 		leaveJuvinateArea.addDialogStep("Yes.");
 
@@ -619,11 +619,11 @@ public class SinsOfTheFather extends BasicQuestHelper
 		convincePolmafi = new NpcStep(this, NpcID.POLMAFI_FERDYGRIS_9554, new WorldPoint(3704, 3182, 0),
 			"Speak to Polmafi Ferdygris in the Icyene Graveyard.");
 		convinceRadigad = new NpcStep(this, NpcID.RADIGAD_PONFIT_9551, new WorldPoint(3689, 3188, 0),
-		"Speak to Radigad Ponfit in the Icyene Graveyard.");
+			"Speak to Radigad Ponfit in the Icyene Graveyard.");
 		convinceIvan = new NpcStep(this, NpcID.IVAN_STROM_9530, new WorldPoint(3696, 3182, 0),
 			"Speak to Ivan Strom in the Icyene Graveyard.");
 		convinceVeliaf = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3690, 3183, 0),
-		"Speak to Veliaf Hurtz in the Icyene Graveyard.");
+			"Speak to Veliaf Hurtz in the Icyene Graveyard.");
 
 		talkToVanesculaAfterTeam = new NpcStep(this, NpcID.VANESCULA_DRAKAN_9574, new WorldPoint(3708, 3187, 0),
 			"Speak to Vanescula in the Icyene Graveyard.");
@@ -654,16 +654,16 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		goDownToPolmafi = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
 			vyreTop, vyreLegs, vyreShoes);
-		((ObjectStep)(goDownToPolmafi)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (goDownToPolmafi)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 		goDownToPolmafi.addDialogStep("Meiyerditch.");
 		goDownToPolmafiNoItems = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
 			vyreTop, vyreLegs, vyreShoes);
-		((ObjectStep)(goDownToPolmafiNoItems)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (goDownToPolmafiNoItems)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 		goDownToPolmafiNoItems.addDialogStep("Meiyerditch.");
 		talkToPolmafi = new NpcStep(this, NpcID.POLMAFI_FERDYGRIS_9554, new WorldPoint(3599, 9612, 0),
 			"Bring a Vyrewatch disguise to Polmafi in the Meiyerditch hideout in Old Man Ral's basement.", vyreTop, vyreLegs, vyreShoes);
 		talkToPolmafi.addDialogStep("Here you go.");
-		talkToPolmafiMore =  new NpcStep(this, 9554, new WorldPoint(3599, 9612, 0),
+		talkToPolmafiMore = new NpcStep(this, 9554, new WorldPoint(3599, 9612, 0),
 			"Finish speaking to Polmafi in the Meiyerditch hideout.");
 		talkToPolmafiMore.addDialogStep("Here you go.");
 		talkToPolmafi.addSubSteps(talkToPolmafiMore, goDownToPolmafi, goDownToPolmafiNoItems);
@@ -724,7 +724,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		goDownToVerditaWithLogs = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0),
 			"Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.", blisterwood8);
-		((ObjectStep)(goDownToVerditaWithLogs)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (goDownToVerditaWithLogs)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 		goDownToVerditaWithLogs.addDialogStep("Meiyerditch.");
 
 		bringVertidaLogs = new NpcStep(this, NpcID.VERTIDA_SEFALATIS, new WorldPoint(3598, 9612, 0),
@@ -738,7 +738,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		goDownToMakeFlail = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0),
 			"Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.", blisterwoodLog, ruby, chisel, knife, ivandisFlail, enchantRubyRunesOrTablet);
-		((ObjectStep)(goDownToMakeFlail)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (goDownToMakeFlail)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 		goDownToMakeFlail.addDialogStep("Meiyerditch.");
 
 		getSickle = new ObjectStep(this, ObjectID.CRATE_32575, new WorldPoint(3597, 9615, 0), "Search the nearby crate for a silver sickle.");
@@ -768,12 +768,12 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		talkToVeliafForFinalFight = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3707, 3188, 0),
 			"Prepare for a challenging fight. Speak to Veliaf to enter the fight.", blisterwoodFlail);
-		((NpcStep)(talkToVeliafForFinalFight)).addAlternateNpcs(NpcID.VELIAF_HURTZ_9521);
+		((NpcStep) (talkToVeliafForFinalFight)).addAlternateNpcs(NpcID.VELIAF_HURTZ_9521);
 		talkToVeliafForFinalFight.addDialogSteps("Icyene Graveyard.", "Let's go.");
 
 		fightVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_9569, new WorldPoint(3567, 3358, 0), "Fight Vanstrom Klause. Protect from Magic. He has various special attacks indicated by what he says:",
 			blisterwoodFlail);
-		((NpcStep)(fightVanstrom)).addAlternateNpcs(NpcID.VANSTROM_KLAUSE_9570, NpcID.VANSTROM_KLAUSE_9571);
+		((NpcStep) (fightVanstrom)).addAlternateNpcs(NpcID.VANSTROM_KLAUSE_9570, NpcID.VANSTROM_KLAUSE_9571);
 		fightVanstrom.addText("My pets will feast on your corpse: A bloodveld will appear which you need to kill from a distance.");
 		fightVanstrom.addText("Blood will be my strength: An orb appears that heals Vanstrom. Lure Vanstrom onto it.");
 		fightVanstrom.addText("Stare into the darkness: Face away from Vanstrom.");
@@ -786,7 +786,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkToVanesculaBeforeFight.addSubSteps(talkToVanesculaForFight, talkToVeliafForFinalFight);
 
 		enterBaseToFinish = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.");
-		((ObjectStep)(enterBaseToFinish)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (enterBaseToFinish)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
 
 		finishQuest = new NpcStep(this, NpcID.VELIAF_HURTZ_9522, new WorldPoint(3598, 9613, 0),
 			"Speak to Veliaf in the Myreque Hideout to complete the quest.");
@@ -822,6 +822,22 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.VAMPYRE_SLAYER, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.A_TASTE_OF_HOPE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 62));
+		req.add(new SkillRequirement(Skill.FLETCHING, 60));
+		req.add(new SkillRequirement(Skill.CRAFTING, 56));
+		req.add(new SkillRequirement(Skill.AGILITY, 52));
+		req.add(new SkillRequirement(Skill.ATTACK, 50));
+		req.add(new SkillRequirement(Skill.SLAYER, 50));
+		req.add(new SkillRequirement(Skill.MAGIC, 49));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -837,7 +853,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 				convinceVertida, convinceKael, convinceRadigad, convincePolmafi, convinceIvan, convinceVeliaf, talkToVanesculaAfterTeam))));
 		allSteps.add(new PanelDetails("Investigating the lab",
 			new ArrayList<>(Arrays.asList(goToLab, talkToSafalaanInLab, killBloodveld,
-			talkToSafalaanInDeepLab, searchLabBookcase, takeBookToSafalaan)), combatGear, pickaxe));
+				talkToSafalaanInDeepLab, searchLabBookcase, takeBookToSafalaan)), combatGear, pickaxe));
 		allSteps.add(new PanelDetails("Making a disguise",
 			new ArrayList<>(Arrays.asList(talkToVanesculaAfterLab, talkToPolmafi, bringUnscentedToVanescula, talkToVeliafForFight, killDamien, talkToVeliafAfterDamien,
 				talkToVanesculaAfterDamien)), combatGear, vyrewatchOutfitOrCoins, ivandisFlail, antipoison));
@@ -849,21 +865,5 @@ public class SinsOfTheFather extends BasicQuestHelper
 			new ArrayList<>(Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight, fightVanstrom, finishQuest)), combatGear, blisterwoodFlail));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.VAMPYRE_SLAYER, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.A_TASTE_OF_HOPE, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 62));
-		req.add(new SkillRequirement(Skill.FLETCHING, 60));
-		req.add(new SkillRequirement(Skill.CRAFTING, 56));
-		req.add(new SkillRequirement(Skill.AGILITY, 52));
-		req.add(new SkillRequirement(Skill.ATTACK, 50));
-		req.add(new SkillRequirement(Skill.SLAYER, 50));
-		req.add(new SkillRequirement(Skill.MAGIC, 49));
-		return req;
 	}
 }

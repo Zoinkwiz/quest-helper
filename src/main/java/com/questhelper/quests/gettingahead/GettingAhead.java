@@ -36,6 +36,7 @@ import com.questhelper.steps.conditional.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -307,7 +308,7 @@ public class GettingAhead extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Headless Beast (level 82, safespottable)"));
+		return new ArrayList<>(Collections.singletonList("Headless Beast (level 82, safespottable)"));
 	}
 
 	@Override

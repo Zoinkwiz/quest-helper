@@ -32,7 +32,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -43,6 +42,7 @@ import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -104,7 +104,7 @@ public class GertrudesCat extends BasicQuestHelper
 		((NpcStep)(searchNearbyCrates)).setHideWorldArrow(true);
 		ObjectStep climbDownLadderStep = goDownLadderStep();
 		ObjectStep climbUpLadderStep = getClimbLadder();
-		ArrayList<ItemRequirement> fluffsKittenRequirement = new ArrayList();
+		ArrayList<ItemRequirement> fluffsKittenRequirement = new ArrayList<>();
 		fluffsKittenRequirement.add(new ItemRequirement("Fluffs' Kitten", ItemID.FLUFFS_KITTEN));
 		climbUpLadderStep.addItemRequirements(fluffsKittenRequirement);
 		Conditions hasFluffsKittenUpstairs = new Conditions(hasFluffsKitten, isUpstairsLumberyard);
@@ -253,7 +253,7 @@ public class GertrudesCat extends BasicQuestHelper
 		steps.add(lumberYardPanel);
 
 		PanelDetails finishQuestPanel = new PanelDetails("Finish the quest",
-			new ArrayList<>(Arrays.asList(finishQuest)));
+			new ArrayList<>(Collections.singletonList(finishQuest)));
 		steps.add(finishQuestPanel);
 		return steps;
 	}

@@ -91,23 +91,27 @@ public class MonksFriend extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements() {
+	public void setupItemRequirements()
+	{
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		jugOfWater = new ItemRequirement("Jug of Water", ItemID.JUG_OF_WATER);
 		blanket = new ItemRequirement("Child's blanket", ItemID.CHILDS_BLANKET);
 		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemID.ARDOUGNE_CLOAK);
 	}
 
-	public void loadZones() {
+	public void loadZones()
+	{
 		dungeon = new Zone(new WorldPoint(2559, 9597, 0), new WorldPoint(2582, 9623, 0));
 	}
 
-	public void setupConditions() {
+	public void setupConditions()
+	{
 		inDungeon = new ZoneCondition(dungeon);
 		hasBlanket = new ItemRequirementCondition(blanket);
 	}
 
-	public void setupSteps() {
+	public void setupSteps()
+	{
 		talkToOmad = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Talk to Brother Omad in the monastery south of West Ardougne.");
 		talkToOmad.addDialogStep("Why can't you sleep, what's wrong?");
 		talkToOmad.addDialogStep("Can I help at all?");

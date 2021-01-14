@@ -65,17 +65,20 @@ import net.runelite.api.widgets.WidgetInfo;
 public class TheGiantDwarf extends BasicQuestHelper
 {
 	ItemRequirement coins2500, logs, tinderbox, coal, ironBar, lawRune, airRune, sapphires3, oresBars, redberryPie, redberryPieNoInfo,
-		houseTeleport, rellekkaTeleport, fairyRings, staminaPotions, varrockTeleport, clay10, copperOre10, tinOre10, ironOre10, coal10, silverOre10, goldOre10, mithrilOre10, bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10,
-		weightBelow30, inventorySpace, coins200,
-		bookOnCostumes, exquisiteClothes, exquisiteBoots, dwarvenBattleaxe,
+		houseTeleport, rellekkaTeleport, fairyRings, staminaPotions, varrockTeleport, clay10, copperOre10, tinOre10, ironOre10, coal10,
+		silverOre10, goldOre10, mithrilOre10, bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10,
+		weightBelow30, inventorySpace, coins200, bookOnCostumes, exquisiteClothes, exquisiteBoots, dwarvenBattleaxe,
 		leftBoot, dwarvenBattleaxeBroken, dwarvenBattleaxeSapphires;
+
 	Zone keldagrim, keldagrim2, trollRoom, dwarfEntrance, consortium;
+
 	ConditionForStep inTrollRoom, inKeldagrim, inDwarfEntrance,
 		talkedToVermundi, talkedToLibrarian, hasBookOnCostumes, talkedToVermundiWithBook, usedCoalOnMachine, startedMachine, hasExquisiteClothes,
 		talkedToSaro, talkedToDromund, hasLeftBoot, hasExquisiteBoots, givenThurgoPie,
 		talkedToSantiri, usedSapphires, hasDwarvenBattleaxe,
 		givenExquisiteClothes, givenExquisiteBoots, givenDwarvenBattleaxe,
 		inConsortium, completedSecretaryTasks, completedDirectorTasks, joinedCompany;
+
 	QuestStep enterDwarfCave, enterDwarfCave2, talkToBoatman, talkToVeldaban, talkToBlasidar,
 		talkToVermundi, talkToLibrarian, climbBookcase, talkToVermundiWithBook, useCoalOnMachine, startMachine, talkToVermundiWithMachine,
 		talkToSaro, talkToDromund, takeLeftBoot, takeRightBoot,
@@ -386,6 +389,18 @@ public class TheGiantDwarf extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SpellbookRequirement(Spellbook.NORMAL));
+		req.add(new SkillRequirement(Skill.CRAFTING, 12));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 16));
+		req.add(new SkillRequirement(Skill.MAGIC, 33, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 14, true));
+		return req;
+	}
+
+	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		// Varbit 571
@@ -448,17 +463,5 @@ public class TheGiantDwarf extends BasicQuestHelper
 		steps.put(40, finishQuest);
 
 		return steps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SpellbookRequirement(Spellbook.NORMAL));
-		req.add(new SkillRequirement(Skill.CRAFTING, 12));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 16));
-		req.add(new SkillRequirement(Skill.MAGIC, 33, true));
-		req.add(new SkillRequirement(Skill.THIEVING, 14, true));
-		return req;
 	}
 }

@@ -74,7 +74,7 @@ public class BetweenARock extends BasicQuestHelper
 	QuestStep enterDwarfCave, enterDwarfCave2, talkToFerryman, talkToDondakan, travelBackWithFerryman, talkToBoatman, talkToEngineer, talkToRolad, enterDwarvenMine, killScorpion,
 		searchCart, mineRock, goBackUpToRolad, returnToRolad, readEntireBook, travelToKeldagrim, enterDwarfCaveWithBook, enterDwarfCave2WithBook, talkToFerrymanWithBook, talkToDondakanWithBook,
 		useGoldBarOnDondakan, makeGoldCannonball, enterDwarfCaveWithCannonball, enterDwarfCave2WithCannonball, talkToFerrymanWithCannonball, useGoldCannonballOnDondakan, talkToDondakanAfterShot,
-		readBookAgain, talkToEngineerAgain, travelBackWithFerrymanAgain, travelToKeldagrimAgain, talkToBoatmanAgain, useGoldBarOnAnvil, enterKhorvakRoom, talkToKhorvak, assembleSchematic,  enterDwarfCaveWithHelmet,
+		readBookAgain, talkToEngineerAgain, travelBackWithFerrymanAgain, travelToKeldagrimAgain, talkToBoatmanAgain, useGoldBarOnAnvil, enterKhorvakRoom, talkToKhorvak, assembleSchematic, enterDwarfCaveWithHelmet,
 		enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanWithHelmet, mine6GoldOre, talkToDondakanForEnd, talkToSecondFlame, finishQuest;
 
 	NpcStep killAvatar;
@@ -283,7 +283,7 @@ public class BetweenARock extends BasicQuestHelper
 			"Talk to Rolad at the Ice Mountain entrance to the Dwarven Mine. If you don't have an ammo mould, buy one from Nulodion whilst you're here.", pickaxe);
 		talkToRolad.addDialogStep("I'll be back later.");
 
-		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450,0), "Enter the Dwarven Mine.", pickaxe);
+		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0), "Enter the Dwarven Mine.", pickaxe);
 
 		searchCart = new DetailedQuestStep(this, "Search the mine carts for a page.");
 
@@ -407,9 +407,9 @@ public class BetweenARock extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(Quest.DWARF_CANNON, QuestState.FINISHED));
 		req.add(new QuestRequirement(Quest.FISHING_CONTEST, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.DEFENCE,30));
-		req.add(new SkillRequirement(Skill.MINING,40, true));
-		req.add(new SkillRequirement(Skill.SMITHING,50, true));
+		req.add(new SkillRequirement(Skill.DEFENCE, 30));
+		req.add(new SkillRequirement(Skill.MINING, 40, true));
+		req.add(new SkillRequirement(Skill.SMITHING, 50, true));
 		return req;
 	}
 }

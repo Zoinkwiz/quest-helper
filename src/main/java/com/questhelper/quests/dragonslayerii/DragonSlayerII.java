@@ -416,7 +416,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		saw = new ItemRequirement("Saw", ItemID.SAW);
 		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakAmulet.setTip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
-		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET,1,true);
+		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeakOrMory2.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
 		goutweed.setHighlightInInventory(true);
@@ -767,7 +767,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		// Sphinx allows you to always talk to cats: 6144 0->1, 6145 1->0
 
 		talkToOneiromancer = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Talk to the Oneiromancer in the south east of Lunar Isle.", sealOfPassage);
-		talkToOneiromancer.addDialogSteps("Bob's memories","No thanks.");
+		talkToOneiromancer.addDialogSteps("Bob's memories", "No thanks.");
 		fillDreamVial = new ObjectStep(this, ObjectID.SINK_16705, new WorldPoint(2091, 3922, 0), "Fill the vial with water.", dreamVial);
 		fillDreamVial.addIcon(ItemID.DREAM_VIAL_EMPTY);
 
@@ -944,10 +944,10 @@ public class DragonSlayerII extends BasicQuestHelper
 		takeBoatToUngael = new NpcStep(this, NpcID.TORFINN_10405, new WorldPoint(2640, 3696, 0), "Talk to Torfinn on the Rellekka docks to go to Ungael. Be prepared for a lot of fighting.", combatGear, antifireShield);
 		takeBoatToUngael.addDialogSteps("Yes please.", "Yes.");
 		keepShipAfloat = new ObjectStep(this, ObjectID.FIRE_32297, "Keep the boat afloat by filling leaks, putting out fires, healing warriors and repairing the masts.");
-		((ObjectStep)(keepShipAfloat)).addAlternateObjects(ObjectID.LEAK, ObjectID.FREMENNIK_WARRIOR_32302, ObjectID.FREMENNIK_WARRIOR_32300, ObjectID.DAMAGED_MAST);
+		((ObjectStep) (keepShipAfloat)).addAlternateObjects(ObjectID.LEAK, ObjectID.FREMENNIK_WARRIOR_32302, ObjectID.FREMENNIK_WARRIOR_32300, ObjectID.DAMAGED_MAST);
 
 		getToMainShip = new NpcStep(this, NpcID.RED_DRAGON_8079, "Travel to the main ship, killing dragons along the way.", true);
-		((NpcStep)(getToMainShip)).addAlternateNpcs(NpcID.IRON_DRAGON_8080, NpcID.BRUTAL_GREEN_DRAGON_8081);
+		((NpcStep) (getToMainShip)).addAlternateNpcs(NpcID.IRON_DRAGON_8080, NpcID.BRUTAL_GREEN_DRAGON_8081);
 		getToMainShip.setLinePoints(new ArrayList<>(Arrays.asList(
 			new WorldPoint(1695, 5665, 2),
 			new WorldPoint(1688, 5665, 1),
@@ -1032,17 +1032,17 @@ public class DragonSlayerII extends BasicQuestHelper
 		)));
 
 		kill2Blue2Green = new NpcStep(this, NpcID.BLUE_DRAGON_8083, "Kill the blue and green dragons.", true);
-		((NpcStep)(kill2Blue2Green)).addAlternateNpcs(NpcID.GREEN_DRAGON_8082);
+		((NpcStep) (kill2Blue2Green)).addAlternateNpcs(NpcID.GREEN_DRAGON_8082);
 
 		killBlackSteelBrutalRedDragon = new NpcStep(this, NpcID.BLACK_DRAGON_8084, "Kill the black, steel, and brutal red dragon. Occasionally Gorvek will shoot a fireball in the air, move to avoid it.", true);
-		((NpcStep)(killBlackSteelBrutalRedDragon)).addAlternateNpcs(NpcID.BLACK_DRAGON_8085, NpcID.BRUTAL_RED_DRAGON_8087, NpcID.STEEL_DRAGON_8086);
+		((NpcStep) (killBlackSteelBrutalRedDragon)).addAlternateNpcs(NpcID.BLACK_DRAGON_8085, NpcID.BRUTAL_RED_DRAGON_8087, NpcID.STEEL_DRAGON_8086);
 
 		killMithAddyAndRuneDragons = new NpcStep(this, NpcID.MITHRIL_DRAGON_8088, "Kill the metal dragons.", true);
 		killMithAddyAndRuneDragons.addText("Occasionally Gorvek will shoot a fireball in the air, move to avoid it.");
 		killMithAddyAndRuneDragons.addText("");
-		((NpcStep)(killMithAddyAndRuneDragons)).addAlternateNpcs(NpcID.MITHRIL_DRAGON_8089, NpcID.ADAMANT_DRAGON, NpcID.ADAMANT_DRAGON_8090, NpcID.RUNE_DRAGON, NpcID.RUNE_DRAGON_8091);
+		((NpcStep) (killMithAddyAndRuneDragons)).addAlternateNpcs(NpcID.MITHRIL_DRAGON_8089, NpcID.ADAMANT_DRAGON, NpcID.ADAMANT_DRAGON_8090, NpcID.RUNE_DRAGON, NpcID.RUNE_DRAGON_8091);
 		killGalvek = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. This is a hard fight, so it's recommended you check a video to see what you'll have to do.", true);
-		((NpcStep)(killGalvek)).addAlternateNpcs(NpcID.GALVEK_8096, NpcID.GALVEK_8097, NpcID.GALVEK_8098);
+		((NpcStep) (killGalvek)).addAlternateNpcs(NpcID.GALVEK_8096, NpcID.GALVEK_8097, NpcID.GALVEK_8098);
 		killGalvek.addText("Avoid the ground-targeted fireballs.");
 		killGalvek.addText("The pink attack turns off prayer.");
 		killGalvek.addText("Use Protect from Magic in phase 1, use Protect from Missiles otherwise.");
@@ -1121,7 +1121,7 @@ public class DragonSlayerII extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToAlec, talkToDallas, talkToDallasOnCrandor, usePickaxeOnBlockage, enterBlockage, investigateMural, killSpawn,
-			investigateMuralAgain,talkToDallasAfterMural)), pickaxe, combatGear));
+			investigateMuralAgain, talkToDallasAfterMural)), pickaxe, combatGear));
 		allSteps.add(new PanelDetails("Investigating Fossil Island", new ArrayList<>(Arrays.asList(enterHouseOnTheHill, talkToDallasInHouse, searchNorthChest,
 			goUpstairsForMap, searchStoneChestNorth, leaveHouseForMap, searchFungi, searchBriar, searchMushtree, enterHouseWithMapPieces, startMapPuzzle,
 			talkToDallasAfterSolvingMap))));
@@ -1183,7 +1183,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 60));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
 		req.add(new SkillRequirement(Skill.HITPOINTS, 50));
-		req.add(new ItemRequirement("Started the Firemaking part of Barbarian Training", -1, -1));
+		req.add(new ItemRequirement("Unlocked the Ancient Caverns during Barbarian Training", -1, -1));
 		return req;
 	}
 }

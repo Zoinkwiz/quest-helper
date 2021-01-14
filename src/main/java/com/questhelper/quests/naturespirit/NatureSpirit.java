@@ -244,7 +244,7 @@ public class NatureSpirit extends BasicQuestHelper
 		offerToHelp = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock and offer to help.", ghostspeak);
 		offerToHelp.addDialogStep("How can I help?");
 		goBackDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_3432, new WorldPoint(3422, 3485, 0), "Talk to Drezel to get blessed.");
-		((ObjectStep)(goBackDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
+		((ObjectStep) (goBackDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
 		talkToDrezelForBlessing = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
@@ -304,7 +304,7 @@ public class NatureSpirit extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Start the quest",
 			new ArrayList<>(Arrays.asList(talkToDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
-			takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman)), ghostspeak, silverSickle));
+				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman)), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Helping Filliman",
 			new ArrayList<>(Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
 				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto)), ghostspeak, silverSickle));

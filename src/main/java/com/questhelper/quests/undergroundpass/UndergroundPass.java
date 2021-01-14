@@ -781,6 +781,15 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.BIOHAZARD, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.RANGED, 25));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -793,14 +802,5 @@ public class UndergroundPass extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Entering the Temple", new ArrayList<>(Arrays.asList(killDisciple, enterTemple, useDollOnWell))));
 		allSteps.add(new PanelDetails("Foggy Memories", new ArrayList<>(Arrays.asList(talkToKoftikAfterTemple, talkToKingLathasAfterTemple))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.BIOHAZARD, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.RANGED, 25));
-		return req;
 	}
 }

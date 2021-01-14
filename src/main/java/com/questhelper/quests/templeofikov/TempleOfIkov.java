@@ -371,6 +371,15 @@ public class TempleOfIkov extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
+		req.add(new SkillRequirement(Skill.RANGED, 40));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -380,14 +389,5 @@ public class TempleOfIkov extends BasicQuestHelper
 				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever, tryToEnterWitchRoom, fightLes)), yewOrBetterBow, knife, lightSource, limpwurt20));
 		allSteps.add(new PanelDetails("Explore deeper", new ArrayList<>(Arrays.asList(enterLesDoor, giveWineldaLimps, pickUpKey, pushWall, makeChoice, returnToLucien))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
-		req.add(new SkillRequirement(Skill.RANGED, 40));
-		return req;
 	}
 }

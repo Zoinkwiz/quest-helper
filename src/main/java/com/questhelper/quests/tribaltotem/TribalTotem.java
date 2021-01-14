@@ -39,6 +39,7 @@ import com.questhelper.steps.conditional.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -158,6 +159,12 @@ public class TribalTotem extends BasicQuestHelper
         talkToKangaiMauAgain = new NpcStep(this, NpcID.KANGAI_MAU, new WorldPoint(2794, 3182, 0), "Return to Kangai Mau in Brimhaven.", totem);
     }
 
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.THIEVING, 21, true)));
+	}
+
     @Override
     public ArrayList<PanelDetails> getPanels()
     {
@@ -166,10 +173,4 @@ public class TribalTotem extends BasicQuestHelper
                 new ArrayList<>(Arrays.asList(talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, talkToKangaiMauAgain))));
         return allSteps;
     }
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.THIEVING, 21, true)));
-	}
 }

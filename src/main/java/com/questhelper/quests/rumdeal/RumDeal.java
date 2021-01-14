@@ -406,7 +406,7 @@ public class RumDeal extends BasicQuestHelper
 		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflcit you with disease.", slayerGloves);
 		pickUpCarcass = new ItemStep(this, "Pick up the fever spider body.", spiderCarcass);
 		goUpFromSpidersWithCorpse = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Add the spider body to the hopper on the top floor.", spiderCarcass);
-		goUpToDropSpider =  new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);
+		goUpToDropSpider = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);
 		dropSpider = new ObjectStep(this, ObjectID.HOPPER_10170, new WorldPoint(2142, 5102, 2), "Add the spider body to the hopper on the top floor.", spiderCarcassHighlight);
 		dropSpider.addIcon(ItemID.FEVER_SPIDER_BODY);
 		dropSpider.addSubSteps(goUpFromSpidersWithCorpse, goUpToDropSpider);
@@ -460,6 +460,14 @@ public class RumDeal extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 6));
+		return req;
+	}
+
+	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
@@ -470,7 +478,6 @@ public class RumDeal extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.FARMING, 40, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 47, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 42));
-		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 6));
 		return req;
 	}
 }

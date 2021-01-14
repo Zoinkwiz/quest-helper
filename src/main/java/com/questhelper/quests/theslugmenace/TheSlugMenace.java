@@ -25,6 +25,9 @@
 package com.questhelper.quests.theslugmenace;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -44,6 +47,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -292,7 +298,7 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		solvePuzzle = new PuzzleStep(this);
 
-		useEmptyRunes = new DetailedQuestStep(this, "Right-click each page to turn rune/pure essence into empty runes. Take each empty rune and use it on its respective Runecrafting Altar.", page1, page2, page3 ,essence, chisel);
+		useEmptyRunes = new DetailedQuestStep(this, "Right-click each page to turn rune/pure essence into empty runes. Take each empty rune and use it on its respective Runecrafting Altar.", page1, page2, page3, essence, chisel);
 
 		enterDungeonAgain = new ObjectStep(this, ObjectID.OLD_RUIN_ENTRANCE, new WorldPoint(2696, 3283, 0), "Prepare to fight the Slug Prince (level 62). Only melee can hurt it. Then, enter the old ruin entrance west of Witchaven.", meleeGear, airRune, waterRune, earthRune, fireRune, mindRune);
 		enterDungeonAgainUsedRunes = new ObjectStep(this, ObjectID.OLD_RUIN_ENTRANCE, new WorldPoint(2696, 3283, 0), "Prepare to fight the Slug Prince (level 62). Only melee can hurt it. Then, enter the old ruin entrance west of Witchaven.", meleeGear);
@@ -332,6 +338,19 @@ public class TheSlugMenace extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Slug Prince (level 62) (can only be hurt by melee)");
 		return reqs;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.WANTED, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.SEA_SLUG, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.CRAFTING, 30));
+		req.add(new SkillRequirement(Skill.RUNECRAFT, 30));
+		req.add(new SkillRequirement(Skill.SLAYER, 30));
+		req.add(new SkillRequirement(Skill.THIEVING, 30));
+		return req;
 	}
 
 	@Override

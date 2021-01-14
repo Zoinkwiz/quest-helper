@@ -280,6 +280,16 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_GRAND_TREE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 5));
+		req.add(new SkillRequirement(Skill.MAGIC, 46));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -290,15 +300,5 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_GRAND_TREE, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 5));
-		req.add(new SkillRequirement(Skill.MAGIC, 46));
-		return req;
 	}
 }

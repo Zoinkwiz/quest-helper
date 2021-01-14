@@ -437,7 +437,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		repairWall.addDialogStep("Of course I'll help you out.");
 		repairWall.addIcon(ItemID.SANDSTONE_5KG);
 
-		useChiselOnWall =  new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Use a chisel on the wall.", chiselHighlighted);
+		useChiselOnWall = new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Use a chisel on the wall.", chiselHighlighted);
 		useChiselOnWall.addDialogStep("Of course I'll help you out.");
 		useChiselOnWall.addIcon(ItemID.CHISEL);
 
@@ -475,6 +475,25 @@ public class EnakhrasLament extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(onNormals);
+		return req;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.CRAFTING, 50));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 45, true));
+		req.add(new SkillRequirement(Skill.PRAYER, 43));
+		req.add(new SkillRequirement(Skill.MAGIC, 39));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -487,18 +506,6 @@ public class EnakhrasLament extends BasicQuestHelper
 			useLog, useOakLog, useWillowLog, useMapleLog, useCandle, useCoal))));
 		allSteps.add(new PanelDetails("Free Akthankos", new ArrayList<>(Arrays.asList(passBarrier, goUpFromPuzzleRoom, castCrumbleUndead, goDownToFinalRoom, protectThenTalk, repairWall))));
 
-
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.CRAFTING, 50));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 45, true));
-		req.add(new SkillRequirement(Skill.PRAYER, 43));
-		req.add(new SkillRequirement(Skill.MAGIC, 39));
-		return req;
 	}
 }

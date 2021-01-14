@@ -12,18 +12,21 @@ public class SkillRequirement extends Requirement
 	private boolean canBeBoosted;
 	private String displayText;
 
-	public SkillRequirement(Skill skill, int requiredLevel) {
+	public SkillRequirement(Skill skill, int requiredLevel)
+	{
 		this.skill = skill;
 		this.requiredLevel = requiredLevel;
 		this.displayText = getDisplayText();
 	}
 
-	public SkillRequirement(Skill skill, int requiredLevel, boolean canBeBoosted) {
+	public SkillRequirement(Skill skill, int requiredLevel, boolean canBeBoosted)
+	{
 		this(skill, requiredLevel);
 		this.canBeBoosted = canBeBoosted;
 	}
 
-	public SkillRequirement(Skill skill, int requiredLevel, boolean canBeBoosted, String displayText) {
+	public SkillRequirement(Skill skill, int requiredLevel, boolean canBeBoosted, String displayText)
+	{
 		this(skill, requiredLevel, canBeBoosted);
 		this.displayText = displayText;
 	}
@@ -38,9 +41,21 @@ public class SkillRequirement extends Requirement
 	@Override
 	public String getDisplayText()
 	{
-		if (displayText != null) {
-			return displayText;
+		String returnText;
+		if (displayText != null)
+		{
+			returnText = displayText;
 		}
-		return requiredLevel + " " + skill.getName();
+		else
+		{
+			returnText = requiredLevel + " " + skill.getName();
+		}
+
+		if (canBeBoosted)
+		{
+			returnText += " (boostable)";
+		}
+
+		return returnText;
 	}
 }

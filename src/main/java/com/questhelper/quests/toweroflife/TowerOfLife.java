@@ -29,11 +29,13 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.conditional.*;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -430,9 +432,15 @@ public class TowerOfLife extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public ArrayList<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("You will need at least 11 free inventory slots (15 if not wearing the builders costume)"));
+		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.CONSTRUCTION, 10)));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		return new ArrayList<>(Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11)));
 	}
 
 	@Override
@@ -462,11 +470,5 @@ public class TowerOfLife extends BasicQuestHelper
 		allSteps.add(new PanelDetails("The Alchemists' Secret", talkToEffigyAgain, followTheAlchemists, confrontEffigy, confrontTheHomunculus, scareTheAlchemists, talkToHomunculusInDungeon));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.CONSTRUCTION, 10)));
 	}
 }

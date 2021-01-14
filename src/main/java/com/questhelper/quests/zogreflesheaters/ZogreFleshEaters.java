@@ -354,6 +354,26 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.JUNGLE_POTION, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.SMITHING, 4));
+		req.add(new SkillRequirement(Skill.HERBLORE, 8));
+		req.add(new SkillRequirement(Skill.RANGED, 30));
+		return req;
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 5));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -363,18 +383,5 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Help the ogres", new ArrayList<>(Arrays.asList(talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors, goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish)), combatGear));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.JUNGLE_POTION, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.SMITHING, 4));
-		req.add(new SkillRequirement(Skill.HERBLORE, 8));
-		req.add(new SkillRequirement(Skill.RANGED, 30));
-		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY,5));
-		return req;
 	}
 }

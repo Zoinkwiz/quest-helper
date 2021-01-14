@@ -25,18 +25,23 @@
 package com.questhelper.quests.architecturalalliance;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.Requirements;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.conditional.Conditions;
+import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.NpcID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.QuestDescriptor;
@@ -117,8 +122,9 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));
 		req.add(new SkillRequirement(Skill.MINING, 42));
-		req.add(new SkillRequirement(Skill.SLAYER, 10, false, "10 Slayer, or started Plague City for Gas mask"));
+		req.add(new Requirements(LogicType.OR, "10 Slayer, or started Plague City for" +
+			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
+			new QuestRequirement(Quest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;
 	}
 }
-

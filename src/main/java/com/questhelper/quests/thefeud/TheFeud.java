@@ -558,6 +558,12 @@ public class TheFeud extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.THIEVING, 30)));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> steps = new ArrayList<>();
@@ -602,11 +608,5 @@ public class TheFeud extends BasicQuestHelper
 		steps.add(finishingUpPanel);
 
 		return steps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.THIEVING, 30)));
 	}
 }

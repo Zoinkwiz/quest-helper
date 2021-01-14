@@ -31,7 +31,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.NoItemRequirement;
-import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
@@ -47,6 +46,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -367,13 +367,22 @@ public class RecruitmentDrive extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coinsRequirement));
+		return new ArrayList<>(Collections.singletonList(coinsRequirement));
 	}
 
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Defeat a level 20 monsters with no gear"));
+		return new ArrayList<>(Collections.singletonList("Defeat a level 20 monsters with no gear"));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> reqs = new ArrayList<>();
+		reqs.add(new QuestRequirement(Quest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
+		reqs.add(new QuestRequirement(Quest.DRUIDIC_RITUAL, QuestState.FINISHED));
+		return reqs;
 	}
 
 	@Override
@@ -382,10 +391,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 		ArrayList<PanelDetails> steps = new ArrayList<>();
 
 		PanelDetails startingPanel = new PanelDetails("Starting out",
-			new ArrayList<>(Arrays.asList(conditionalTalkToSirAmikVarze)));
+			new ArrayList<>(Collections.singletonList(conditionalTalkToSirAmikVarze)));
 
 		PanelDetails testing = new PanelDetails("Start the testing",
-			new ArrayList<>(Arrays.asList(talkToSirTiffy)), noItemRequirement);
+			new ArrayList<>(Collections.singletonList(talkToSirTiffy)), noItemRequirement);
 
 		PanelDetails sirTinleysRoom = new PanelDetails("Sir Tinley",
 			new ArrayList<>(Arrays.asList(talkToSirTinley, doNothingStep, leaveSirTinleyRoom)));
@@ -418,14 +427,5 @@ public class RecruitmentDrive extends BasicQuestHelper
 		steps.add(missCheeversRoom);
 		steps.add(ladyTable);
 		return steps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> reqs = new ArrayList<>();
-		reqs.add(new QuestRequirement(Quest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
-		reqs.add(new QuestRequirement(Quest.DRUIDIC_RITUAL, QuestState.FINISHED));
-		return reqs;
 	}
 }

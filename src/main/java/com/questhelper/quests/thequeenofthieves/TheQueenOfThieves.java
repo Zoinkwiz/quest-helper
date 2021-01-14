@@ -40,6 +40,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.Favour;
@@ -202,7 +203,14 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(stew));
+		return new ArrayList<>(Collections.singletonList(stew));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.PISCARILIUS, 20),
+			new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
 	}
 
 	@Override
@@ -213,11 +221,5 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Gaining Trust", new ArrayList<>(Arrays.asList(enterWarrens, talkToDevan, exitWarrens, killConrad, enterWarrens2, tellDevanAboutConrad))));
 		allSteps.add(new PanelDetails("Exposing Hughes", new ArrayList<>(Arrays.asList(enterWarrens3, talkToQueenOfThieves, exitWarrens2, goToKingstown, openChest, leaveKingstown, talkToLawry2, enterWarrens4, talkToShauna))));
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.PISCARILIUS, 20), new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
 	}
 }

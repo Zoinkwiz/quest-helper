@@ -276,7 +276,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 		digSand.addDialogStep("Search for the possessed doll and face the consequences.");
 		digSand.addSubSteps(goUpFromTess);
 
-		goUpToIthoi2 =  new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Go look through Ithoi's telescope.");
+		goUpToIthoi2 = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Go look through Ithoi's telescope.");
 		lookThroughTelescope = new ObjectStep(this, ObjectID.TELESCOPE_31632, new WorldPoint(2528, 2835, 1), "Go look through Ithoi's telescope.");
 		lookThroughTelescope.addSubSteps(goUpToIthoi2);
 
@@ -331,7 +331,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 		talkToTockShip3.addDialogStep("I've seen Ithoi running around. He's not sick at all.");
 		talkToTockShip3.addSubSteps(goOntoShip3);
 
-		goUpToIthoiToKill =  new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Go kill Ithoi (level 35) in his hut.");
+		goUpToIthoiToKill = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Go kill Ithoi (level 35) in his hut.");
 		goUpToIthoiToKill.addDialogStep("I'll be back.");
 		killIthoi = new NpcStep(this, NpcID.ITHOI_THE_NAVIGATOR_7964, new WorldPoint(2529, 2840, 1), "Kill Ithoi (level 35).");
 		killIthoi.addSubSteps(goUpToIthoiToKill);

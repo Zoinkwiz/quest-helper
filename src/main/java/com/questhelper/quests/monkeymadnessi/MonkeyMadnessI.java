@@ -87,7 +87,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	NpcStep talkToDaero, talkToDaeroInHangar, talkToDaeroAfterPuzzle, talkToWaydarAfterPuzzle, talkToWaydarOnCrash, talkToDaeroTravel,
 		talkToDaeroForAmuletRun, talkToWaydarForAmuletRun, talkToLumdoForAmuletRun, talkToLumdo, talkToLumdoToReturn, talkToDaeroForAmuletMake,
 		talkToWaydarForAmuletMake, talkToLumdoForAmuletMake, talkToZooknockForTalisman, talkToLumdoForTalismanRun, talkToWaydarForTalismanRun,
-		talkToDaeroForTalismanRun,  talkToLumdoForTalkingToAwow, talkToWaydarForTalkingToAwow, talkToDaeroForTalkingToAwow;
+		talkToDaeroForTalismanRun, talkToLumdoForTalkingToAwow, talkToWaydarForTalkingToAwow, talkToDaeroForTalkingToAwow;
 
 	ObjectStep enterTemple;
 
@@ -416,7 +416,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkedToKruk = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "As you wish.", "I see. Very well, you look genuine enough. Follow me."));
 
 		givenMonkey = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."),
-			new WidgetTextCondition(119, 3, true,"appear to have earnt Awowogei's favour."));
+			new WidgetTextCondition(119, 3, true, "appear to have earnt Awowogei's favour."));
 
 		gotSigil = new VarbitCondition(126, 6, Operation.GREATER_EQUAL);
 	}
@@ -716,6 +716,15 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(Quest.THE_GRAND_TREE, QuestState.FINISHED));
+		req.add(new QuestRequirement(Quest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
+		return req;
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -747,15 +756,6 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeat the demon", new ArrayList<>(Arrays.asList(prepareForBattle, killDemon, talkToNarnodeToFinish)), combatGear));
 
 		return allSteps;
-	}
-
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_GRAND_TREE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
-		return req;
 	}
 }
 

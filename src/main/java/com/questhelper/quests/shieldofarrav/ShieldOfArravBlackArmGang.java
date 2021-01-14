@@ -37,6 +37,7 @@ import com.questhelper.steps.conditional.ObjectCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -186,7 +187,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Weaponsmaster (level 23), or a friend to kill him for you"));
+		return new ArrayList<>(Collections.singletonList("Weaponsmaster (level 23), or a friend to kill him for you"));
 	}
 
 	@Override

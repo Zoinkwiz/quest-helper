@@ -7,8 +7,8 @@ import net.runelite.api.Skill;
 @Getter
 public class SkillRequirement extends Requirement
 {
-	private Skill skill;
-	private int requiredLevel;
+	private final Skill skill;
+	private final int requiredLevel;
 	private boolean canBeBoosted;
 	private String displayText;
 

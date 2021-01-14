@@ -121,7 +121,10 @@ public class QuestHelperPanel extends PluginPanel
 
 		JLabel questPromptLabel = new JLabel();
 		questPromptLabel.setForeground(Color.GRAY);
-		questPromptLabel.setText("<html><body style = 'text-align:left'>Select a quest to begin. You'll need to be logged in to see the quest list. Note that not all quests are currently supported.</body></html>");
+		questPromptLabel.setText("<html><body style ='text-align:left'><p>Select a quest to begin. You'll need to be " +
+			"logged in to see the quest list. Note that not all quests are currently supported" +
+			".</p><br><p>You can change filtering and ordering of the quest list from the plugin settings." +
+			"</p></body></html>");
 
 		questPromptPanel.setLayout(new BorderLayout());
 		questPromptPanel.setBorder(new EmptyBorder(10, 10, 10, 10));

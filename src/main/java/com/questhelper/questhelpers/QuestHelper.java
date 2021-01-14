@@ -132,6 +132,23 @@ public abstract class QuestHelper implements Module
 		return (quest.getState(client) == QuestState.FINISHED);
 	}
 
+	public boolean hasRequirements()
+	{
+		if (getGeneralRequirements() == null)
+		{
+			return true;
+		}
+
+		for (Requirement generalRequirement : getGeneralRequirements())
+		{
+			if (generalRequirement != null && !generalRequirement.check(client))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public int getVar()
 	{
 		return quest.getVar(client);
@@ -148,6 +165,11 @@ public abstract class QuestHelper implements Module
 	}
 
 	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return null;
+	}
+
+	public ArrayList<Requirement> getGeneralRecommended()
 	{
 		return null;
 	}

@@ -68,6 +68,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -252,12 +253,10 @@ public class QuestHelperPlugin extends Plugin
 			bankItems.setItems(null);
 			bankItems.setItems(event.getItemContainer().getItems());
 		}
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			return;
+			clientThread.invokeLater(() -> panel.updateItemRequirements(client, bankItems));
 		}
-
-		panel.updateItemRequirements(client, bankItems);
 	}
 
 	@Subscribe
@@ -267,7 +266,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
-			panel.refresh(new ArrayList<>(), true);
+			panel.refresh(new ArrayList<>(), true, config.orderListBy());
 			bankItems.setItems(null);
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
@@ -297,12 +296,36 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("questhelper") &&
+			(event.getKey().equals("orderListBy") || event.getKey().equals("filterListBy")))
+		{
+			clientThread.invokeLater(this::updateQuestList);
+		}
+	}
+
 	public void updateQuestList()
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			List<QuestHelper> questHelpers = quests.values().stream().filter(quest -> !quest.isCompleted()).collect(Collectors.toList());
-			SwingUtilities.invokeLater(() -> panel.refresh(questHelpers, false));
+			List<QuestHelper> questHelpers = new ArrayList<>(quests.values());
+
+			if (config.filterListBy() == QuestHelperConfig.QuestFilter.HIDE_DONE)
+			{
+				questHelpers = quests.values().stream().filter(quest -> !quest.isCompleted()).collect(Collectors.toList());
+			}
+			else if (config.filterListBy() == QuestHelperConfig.QuestFilter.HIDE_LACKING_REQ)
+			{
+				questHelpers =
+					quests.values().stream().filter(quest -> quest.hasRequirements() && !quest.isCompleted()).collect(Collectors.toList());
+			}
+
+			List<QuestHelper> finalQuestHelpers = questHelpers;
+			SwingUtilities.invokeLater(() -> {
+				panel.refresh(finalQuestHelpers, false, config.orderListBy());
+			});
 		}
 	}
 
@@ -545,7 +568,7 @@ public class QuestHelperPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
-				panel.updateItemRequirements(client, bankItems);
+				clientThread.invokeLater(() -> panel.updateItemRequirements(client, bankItems));
 			});
 		}
 		else

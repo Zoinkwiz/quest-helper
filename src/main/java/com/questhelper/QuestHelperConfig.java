@@ -24,7 +24,11 @@
  */
 package com.questhelper;
 
+import com.questhelper.panel.QuestSelectPanel;
+import com.questhelper.panel.questorders.QuestOrders;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Comparator;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -32,6 +36,18 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("questhelper")
 public interface QuestHelperConfig extends Config
 {
+	enum QuestOrdering
+	{
+		A_TO_Z,
+		OPTIMAL;
+	}
+
+	enum QuestFilter
+	{
+		HIDE_DONE,
+		HIDE_LACKING_REQ;
+	}
+
 	@ConfigItem(
 		keyName = "autostartQuests",
 		name = "Auto start helper",
@@ -80,5 +96,27 @@ public interface QuestHelperConfig extends Config
 	default Color targetOverlayColor()
 	{
 		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		keyName = "orderListBy",
+		name = "Quest order",
+		description = "Configures which way to order the quest list",
+		position = 1
+	)
+	default QuestOrdering orderListBy()
+	{
+		return QuestOrdering.A_TO_Z;
+	}
+
+	@ConfigItem(
+		keyName = "filterListBy",
+		name = "Filter",
+		description = "Configures what to filter out in the quest list",
+		position = 1
+	)
+	default QuestFilter filterListBy()
+	{
+		return QuestFilter.HIDE_DONE;
 	}
 }

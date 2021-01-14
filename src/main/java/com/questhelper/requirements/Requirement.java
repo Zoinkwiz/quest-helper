@@ -26,11 +26,17 @@ package com.questhelper.requirements;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 abstract public class Requirement
 {
+	@Setter
+	@Getter
+	private String tip;
+
 	public Color getColor(Client client) {
 		return check(client) ? Color.GREEN : Color.RED;
 	}

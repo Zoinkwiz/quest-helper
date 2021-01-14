@@ -52,10 +52,6 @@ public class ItemRequirement extends Requirement
 	@Getter
 	private boolean equip;
 
-	@Setter
-	@Getter
-	private String tip;
-
 	@Getter
 	@Setter
 	private boolean highlightInInventory;

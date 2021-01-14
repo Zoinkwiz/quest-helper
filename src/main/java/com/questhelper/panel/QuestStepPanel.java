@@ -30,9 +30,7 @@ import java.util.HashMap;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -336,23 +334,8 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	public void updateRequirements(Client client, BankItems bankItems)
+	public void updateRequirements(Client client, BankItems bankItems, QuestOverviewPanel questOverviewPanel)
 	{
-		for (QuestRequirementPanel requirementPanel : requirementPanels)
-		{
-			Color newColor = requirementPanel.getItemRequirement().getColorConsideringBank(client, false,
-				bankItems.getItems());
-
-			if (newColor == Color.WHITE)
-			{
-				requirementPanel.getLabel().setToolTipText("In bank");
-			}
-			else
-			{
-				requirementPanel.getLabel().setToolTipText("");
-			}
-
-			requirementPanel.getLabel().setForeground(newColor);
-		}
+		questOverviewPanel.updateRequirementPanels(client, requirementPanels, bankItems);
 	}
 }

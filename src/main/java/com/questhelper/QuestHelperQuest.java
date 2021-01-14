@@ -34,18 +34,18 @@ public enum QuestHelperQuest
 	//Free Quests
 	BLACK_KNIGHTS_FORTRESS(299, "Black Knights' Fortress", QuestVarPlayer.QUEST_BLACK_KNIGHTS_FORTRESS),
 	COOKS_ASSISTANT(300, "Cook's Assistant", QuestVarPlayer.QUEST_COOKS_ASSISTANT),
-	THE_CORSAIR_CURSE(301, "The Corsair Curse", QuestVarbits.QUEST_THE_CORSAIR_CURSE),
+	THE_CORSAIR_CURSE(301, "The Corsair Curse", "Corsair Curse", QuestVarbits.QUEST_THE_CORSAIR_CURSE),
 	DEMON_SLAYER(302, "Demon Slayer", QuestVarbits.QUEST_DEMON_SLAYER),
 	DORICS_QUEST(303, "Doric's Quest", QuestVarPlayer.QUEST_DORICS_QUEST),
 	DRAGON_SLAYER(304, "Dragon Slayer I", QuestVarPlayer.QUEST_DRAGON_SLAYER),
 	ERNEST_THE_CHICKEN(305, "Ernest the Chicken", QuestVarPlayer.QUEST_ERNEST_THE_CHICKEN),
 	GOBLIN_DIPLOMACY(306, "Goblin Diplomacy", QuestVarbits.QUEST_GOBLIN_DIPLOMACY),
 	IMP_CATCHER(307, "Imp Catcher", QuestVarPlayer.QUEST_IMP_CATCHER),
-	THE_KNIGHTS_SWORD(308, "The Knight's Sword", QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD),
+	THE_KNIGHTS_SWORD(308, "The Knight's Sword", "Knight's Sword", QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD),
 	MISTHALIN_MYSTERY(309, "Misthalin Mystery", QuestVarbits.QUEST_MISTHALIN_MYSTERY),
 	PIRATES_TREASURE(310, "Pirate's Treasure", QuestVarPlayer.QUEST_PIRATES_TREASURE),
 	PRINCE_ALI_RESCUE(311, "Prince Ali Rescue", QuestVarPlayer.QUEST_PRINCE_ALI_RESCUE),
-	THE_RESTLESS_GHOST(312, "The Restless Ghost", QuestVarPlayer.QUEST_THE_RESTLESS_GHOST),
+	THE_RESTLESS_GHOST(312, "The Restless Ghost", "Restless Ghost", QuestVarPlayer.QUEST_THE_RESTLESS_GHOST),
 	ROMEO__JULIET(313, "Romeo & Juliet", QuestVarPlayer.QUEST_ROMEO_AND_JULIET),
 	RUNE_MYSTERIES(314, "Rune Mysteries", QuestVarPlayer.QUEST_RUNE_MYSTERIES),
 	SHEEP_SHEARER(315, "Sheep Shearer", QuestVarPlayer.QUEST_SHEEP_SHEARER),
@@ -72,7 +72,7 @@ public enum QuestHelperQuest
 	THE_DEPTHS_OF_DESPAIR(344, "The Depths of Despair", QuestVarbits.QUEST_THE_DEPTHS_OF_DESPAIR),
 	DESERT_TREASURE(345, "Desert Treasure", QuestVarbits.QUEST_DESERT_TREASURE),
 	DEVIOUS_MINDS(346, "Devious Minds", QuestVarbits.QUEST_DEVIOUS_MINDS),
-	THE_DIG_SITE(347, "The Dig Site", QuestVarPlayer.QUEST_THE_DIG_SITE),
+	THE_DIG_SITE(347, "The Dig Site", "Dig Site", QuestVarPlayer.QUEST_THE_DIG_SITE),
 	DRAGON_SLAYER_II(348, "Dragon Slayer II", QuestVarbits.QUEST_DRAGON_SLAYER_II),
 	DREAM_MENTOR(349, "Dream Mentor", QuestVarbits.QUEST_DREAM_MENTOR),
 	DRUIDIC_RITUAL(350, "Druidic Ritual", QuestVarPlayer.QUEST_DRUIDIC_RITUAL),
@@ -87,22 +87,23 @@ public enum QuestHelperQuest
 	FAIRYTALE_I__GROWING_PAINS(359, "Fairytale I - Growing Pains", QuestVarbits.QUEST_FAIRYTALE_I_GROWING_PAINS),
 	FAIRYTALE_II__CURE_A_QUEEN(360, "Fairytale II - Cure a Queen", QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN),
 	FAMILY_CREST(361, "Family Crest", QuestVarPlayer.QUEST_FAMILY_CREST),
-	THE_FEUD(362, "The Feud", QuestVarbits.QUEST_THE_FEUD),
+	THE_FEUD(362, "The Feud", "Feud", QuestVarbits.QUEST_THE_FEUD),
 	FIGHT_ARENA(363, "Fight Arena", QuestVarPlayer.QUEST_FIGHT_ARENA),
 	FISHING_CONTEST(364, "Fishing Contest", QuestVarPlayer.QUEST_FISHING_CONTEST),
 	FORGETTABLE_TALE(365, "Forgettable Tale...", QuestVarbits.QUEST_FORGETTABLE_TALE),
 	BONE_VOYAGE(366, "Bone Voyage", QuestVarbits.QUEST_BONE_VOYAGE),
-	THE_FREMENNIK_ISLES(367, "The Fremennik Isles", QuestVarbits.QUEST_THE_FREMENNIK_ISLES),
-	THE_FREMENNIK_TRIALS(368, "The Fremennik Trials", QuestVarPlayer.QUEST_THE_FREMENNIK_TRIALS),
+	THE_FREMENNIK_ISLES(367, "The Fremennik Isles", "Fremennik Isles", QuestVarbits.QUEST_THE_FREMENNIK_ISLES),
+	THE_FREMENNIK_TRIALS(368, "The Fremennik Trials", "Fremennik Trials", QuestVarPlayer.QUEST_THE_FREMENNIK_TRIALS),
 	GARDEN_OF_TRANQUILLITY(369, "Garden of Tranquillity", QuestVarbits.QUEST_GARDEN_OF_TRANQUILLITY),
 	GERTRUDES_CAT(370, "Gertrude's Cat", QuestVarPlayer.QUEST_GERTRUDES_CAT),
 	GHOSTS_AHOY(371, "Ghosts Ahoy", QuestVarbits.QUEST_GHOSTS_AHOY),
-	THE_GIANT_DWARF(372, "The Giant Dwarf", QuestVarbits.QUEST_THE_GIANT_DWARF),
-	THE_GOLEM(373, "The Golem", QuestVarbits.QUEST_THE_GOLEM),
-	THE_GRAND_TREE(374, "The Grand Tree", QuestVarPlayer.QUEST_THE_GRAND_TREE),
-	THE_GREAT_BRAIN_ROBBERY(375, "The Great Brain Robbery", QuestVarPlayer.QUEST_THE_GREAT_BRAIN_ROBBERY),
+	THE_GIANT_DWARF(372, "The Giant Dwarf", "Giant Dwarf", QuestVarbits.QUEST_THE_GIANT_DWARF),
+	THE_GOLEM(373, "The Golem", "Golem", QuestVarbits.QUEST_THE_GOLEM),
+	THE_GRAND_TREE(374, "The Grand Tree", "Grand Tree", QuestVarPlayer.QUEST_THE_GRAND_TREE),
+	THE_GREAT_BRAIN_ROBBERY(375, "The Great Brain Robbery", "Great Brain Robbery",
+		QuestVarPlayer.QUEST_THE_GREAT_BRAIN_ROBBERY),
 	GRIM_TALES(376, "Grim Tales", QuestVarbits.QUEST_GRIM_TALES),
-	THE_HAND_IN_THE_SAND(377, "The Hand in the Sand", QuestVarbits.QUEST_THE_HAND_IN_THE_SAND),
+	THE_HAND_IN_THE_SAND(377, "The Hand in the Sand", "Hand in the Sand", QuestVarbits.QUEST_THE_HAND_IN_THE_SAND),
 	HAUNTED_MINE(378, "Haunted Mine", QuestVarPlayer.QUEST_HAUNTED_MINE),
 	HAZEEL_CULT(379, "Hazeel Cult", QuestVarPlayer.QUEST_HAZEEL_CULT),
 	HEROES_QUEST(380, "Heroes' Quest", QuestVarPlayer.QUEST_HEROES_QUEST),
@@ -115,7 +116,7 @@ public enum QuestHelperQuest
 	KINGS_RANSOM(387, "King's Ransom", QuestVarbits.QUEST_KINGS_RANSOM),
 	LEGENDS_QUEST(388, "Legends' Quest", QuestVarPlayer.QUEST_LEGENDS_QUEST),
 	LOST_CITY(389, "Lost City", QuestVarPlayer.QUEST_LOST_CITY),
-	THE_LOST_TRIBE(390, "The Lost Tribe", QuestVarbits.QUEST_THE_LOST_TRIBE),
+	THE_LOST_TRIBE(390, "The Lost Tribe", "Lost Tribe", QuestVarbits.QUEST_THE_LOST_TRIBE),
 	LUNAR_DIPLOMACY(391, "Lunar Diplomacy", QuestVarbits.QUEST_LUNAR_DIPLOMACY),
 	MAKING_FRIENDS_WITH_MY_ARM(392, "Making Friends with My Arm", QuestVarbits.QUEST_MAKING_FRIENDS_WITH_MY_ARM),
 	MAKING_HISTORY(393, "Making History", QuestVarbits.QUEST_MAKING_HISTORY),
@@ -134,21 +135,29 @@ public enum QuestHelperQuest
 	ONE_SMALL_FAVOUR(406, "One Small Favour", QuestVarPlayer.QUEST_ONE_SMALL_FAVOUR),
 	PLAGUE_CITY(407, "Plague City", QuestVarPlayer.QUEST_PLAGUE_CITY),
 	PRIEST_IN_PERIL(408, "Priest in Peril", QuestVarPlayer.QUEST_PRIEST_IN_PERIL),
-	THE_QUEEN_OF_THIEVES(409, "The Queen of Thieves", QuestVarbits.QUEST_THE_QUEEN_OF_THIEVES),
-	RAG_AND_BONE_MAN(410, "Rag and Bone Man", QuestVarPlayer.QUEST_RAG_AND_BONE_MAN),
+	THE_QUEEN_OF_THIEVES(409, "The Queen of Thieves", "Queen of Thieves", QuestVarbits.QUEST_THE_QUEEN_OF_THIEVES),
+	RAG_AND_BONE_MAN(410, "Rag and Bone Man I", QuestVarPlayer.QUEST_RAG_AND_BONE_MAN),
 	RAG_AND_BONE_MAN_II(411, "Rag and Bone Man II", QuestVarPlayer.QUEST_RAG_AND_BONE_MAN_II),
 	RATCATCHERS(412, "Ratcatchers", QuestVarbits.QUEST_RATCATCHERS),
 	RECIPE_FOR_DISASTER(413, "Recipe for Disaster", QuestVarbits.QUEST_RECIPE_FOR_DISASTER),
-	RECIPE_FOR_DISASTER_START(413, "RFD - Start", QuestVarbits.QUEST_RECIPE_FOR_DISASTER),
-	RECIPE_FOR_DISASTER_DWARF(413, "RFD - Dwarf", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF),
-//	RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE(413, "RFD - Wartface & Bentnoze", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE),
-	RECIPE_FOR_DISASTER_PIRATE_PETE(413, "RFD - Pirate Pete", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE),
-	RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE(413, "RFD - Lumbridge Guide", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE),
-//	RECIPE_FOR_DISASTER_EVIL_DAVE(413, "RFD - Evil Dave", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_EVIL_DAVE),
-	RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR(413, "RFD - Monkey Ambassador", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR),
-	RECIPE_FOR_DISASTER_SIR_AMIK_VARZE(413, "RFD - Sir Amik Varze", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE),
-	RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE(413, "RFD - Skrach Uglogwee", QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE),
-	RECIPE_FOR_DISASTER_FINALE(413, "RFD - Finale", QuestVarbits.QUEST_RECIPE_FOR_DISASTER),
+	RECIPE_FOR_DISASTER_START(413, "RFD - Start", "Recipe for Disaster - 1", QuestVarbits.QUEST_RECIPE_FOR_DISASTER),
+	RECIPE_FOR_DISASTER_DWARF(413, "RFD - Dwarf", "Recipe for Disaster - 2",
+		QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF),
+	RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE(413, "RFD - Wartface & Bentnoze", "Recipe for Disaster - 3",
+	QuestVarbits.QUEST_RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE),
+	RECIPE_FOR_DISASTER_PIRATE_PETE(413, "RFD - Pirate Pete", "Recipe for Disaster - 4",
+	QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE),
+	RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE(413, "RFD - Lumbridge Guide", "Recipe for Disaster - 5",
+		QuestVarbits.QUEST_RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE),
+	RECIPE_FOR_DISASTER_EVIL_DAVE(413, "RFD - Evil Dave", "Recipe for Disaster - 6",
+		QuestVarbits.QUEST_RECIPE_FOR_DISASTER_EVIL_DAVE),
+	RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR(413, "RFD - Monkey Ambassador", "Recipe for Disaster - 7",
+	QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR),
+	RECIPE_FOR_DISASTER_SIR_AMIK_VARZE(413, "RFD - Sir Amik Varze", "Recipe for Disaster - 9",
+		QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE),
+	RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE(413, "RFD - Skrach Uglogwee", "Recipe for Disaster - 9",
+		QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE),
+	RECIPE_FOR_DISASTER_FINALE(413, "RFD - Finale", "Recipe for Disaster - 10", QuestVarbits.QUEST_RECIPE_FOR_DISASTER),
 	RECRUITMENT_DRIVE(414, "Recruitment Drive", QuestVarbits.QUEST_RECRUITMENT_DRIVE),
 	REGICIDE(415, "Regicide", QuestVarPlayer.QUEST_REGICIDE),
 	ROVING_ELVES(416, "Roving Elves", QuestVarPlayer.QUEST_ROVING_ELVES),
@@ -160,18 +169,18 @@ public enum QuestHelperQuest
 	SHADOW_OF_THE_STORM(422, "Shadow of the Storm", QuestVarbits.QUEST_SHADOW_OF_THE_STORM),
 	SHEEP_HERDER(423, "Sheep Herder", QuestVarPlayer.QUEST_SHEEP_HERDER),
 	SHILO_VILLAGE(424, "Shilo Village", QuestVarPlayer.QUEST_SHILO_VILLAGE),
-	THE_SLUG_MENACE(425, "The Slug Menace", QuestVarbits.QUEST_THE_SLUG_MENACE),
-	A_SOULS_BANE(426, "A Soul's Bane", QuestVarbits.QUEST_A_SOULS_BANE),
+	THE_SLUG_MENACE(425, "The Slug Menace", "Slug Menace", QuestVarbits.QUEST_THE_SLUG_MENACE),
+	A_SOULS_BANE(426, "A Soul's Bane", "Soul's Bane", QuestVarbits.QUEST_A_SOULS_BANE),
 	SPIRITS_OF_THE_ELID(427, "Spirits of the Elid", QuestVarbits.QUEST_SPIRITS_OF_THE_ELID),
 	SWAN_SONG(428, "Swan Song", QuestVarbits.QUEST_SWAN_SONG),
 	TAI_BWO_WANNAI_TRIO(429, "Tai Bwo Wannai Trio", QuestVarPlayer.QUEST_TAI_BWO_WANNAI_TRIO),
-	A_TAIL_OF_TWO_CATS(430, "A Tail of Two Cats", QuestVarbits.QUEST_A_TAIL_OF_TWO_CATS),
+	A_TAIL_OF_TWO_CATS(430, "A Tail of Two Cats", "Tail of Two Cats", QuestVarbits.QUEST_A_TAIL_OF_TWO_CATS),
 	TALE_OF_THE_RIGHTEOUS(431, "Tale of the Righteous", QuestVarbits.QUEST_TALE_OF_THE_RIGHTEOUS),
-	A_TASTE_OF_HOPE(432, "A Taste of Hope", QuestVarbits.QUEST_A_TASTE_OF_HOPE),
+	A_TASTE_OF_HOPE(432, "A Taste of Hope", "Taste of Hope", QuestVarbits.QUEST_A_TASTE_OF_HOPE),
 	TEARS_OF_GUTHIX(433, "Tears of Guthix", QuestVarbits.QUEST_TEARS_OF_GUTHIX),
 	TEMPLE_OF_IKOV(434, "Temple of Ikov", QuestVarPlayer.QUEST_TEMPLE_OF_IKOV),
 	THRONE_OF_MISCELLANIA(435, "Throne of Miscellania", QuestVarPlayer.QUEST_THRONE_OF_MISCELLANIA),
-	THE_TOURIST_TRAP(436, "The Tourist Trap", QuestVarPlayer.QUEST_THE_TOURIST_TRAP),
+	THE_TOURIST_TRAP(436, "The Tourist Trap", "Tourist Trap", QuestVarPlayer.QUEST_THE_TOURIST_TRAP),
 	TOWER_OF_LIFE(437, "Tower of Life", QuestVarbits.QUEST_TOWER_OF_LIFE),
 	TREE_GNOME_VILLAGE(438, "Tree Gnome Village", QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE),
 	TRIBAL_TOTEM(439, "Tribal Totem", QuestVarPlayer.QUEST_TRIBAL_TOTEM),
@@ -185,13 +194,14 @@ public enum QuestHelperQuest
 	WHAT_LIES_BELOW(447, "What Lies Below", QuestVarbits.QUEST_WHAT_LIES_BELOW),
 	WITCHS_HOUSE(448, "Witch's House", QuestVarPlayer.QUEST_WITCHS_HOUSE),
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters", QuestVarbits.QUEST_ZOGRE_FLESH_EATERS),
-	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS),
-	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", QuestVarbits.QUEST_THE_FORSAKEN_TOWER),
+	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", "Ascent of Arceuus", QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS),
+	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", "Forsaken Tower", QuestVarbits.QUEST_THE_FORSAKEN_TOWER),
 	SONG_OF_THE_ELVES(603, "Song of the Elves", QuestVarbits.QUEST_SONG_OF_THE_ELVES),
-	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles", QuestVarbits.QUEST_THE_FREMENNIK_EXILES),
+	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles", "Fremennik Exiles", QuestVarbits.QUEST_THE_FREMENNIK_EXILES),
 	SINS_OF_THE_FATHER(1276, "Sins of the Father", QuestVarbits.QUEST_SINS_OF_THE_FATHER),
 	GETTING_AHEAD(752, "Getting Ahead", QuestVarbits.QUEST_GETTING_AHEAD),
-	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest", QuestVarbits.QUEST_A_PORCINE_OF_INTEREST),
+	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest", "Porcine of Interest",
+		QuestVarbits.QUEST_A_PORCINE_OF_INTEREST),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss", QuestVarPlayer.QUEST_ENTER_THE_ABYSS),
@@ -215,6 +225,9 @@ public enum QuestHelperQuest
 	@Getter
 	private final String name;
 
+	@Getter
+	private final String searchName;
+
 	private final QuestVarbits varbit;
 
 	private final QuestVarPlayer varPlayer;
@@ -223,6 +236,7 @@ public enum QuestHelperQuest
 	{
 		this.id = id;
 		this.name = name;
+		this.searchName = name;
 		this.varbit = varbit;
 		this.varPlayer = null;
 	}
@@ -231,6 +245,25 @@ public enum QuestHelperQuest
 	{
 		this.id = id;
 		this.name = name;
+		this.searchName = name;
+		this.varbit = null;
+		this.varPlayer = varPlayer;
+	}
+
+	QuestHelperQuest(int id, String name, String searchName, QuestVarbits varbit)
+	{
+		this.id = id;
+		this.name = name;
+		this.searchName = searchName;
+		this.varbit = varbit;
+		this.varPlayer = null;
+	}
+
+	QuestHelperQuest(int id, String name, String searchName, QuestVarPlayer varPlayer)
+	{
+		this.id = id;
+		this.name = name;
+		this.searchName = searchName;
 		this.varbit = null;
 		this.varPlayer = varPlayer;
 	}

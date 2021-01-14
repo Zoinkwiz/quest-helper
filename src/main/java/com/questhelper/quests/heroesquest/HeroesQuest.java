@@ -508,7 +508,7 @@ public class HeroesQuest extends BasicQuestHelper
 		PanelDetails fifthPanel = new PanelDetails("Get fire feather", new ArrayList<>(Arrays.asList(goToEntrana, killFireBird)));
 		fifthPanel.setLockingStep(getFireFeather);
 
-		PanelDetails sixthPanel = new PanelDetails("Finish off", new ArrayList<>(Arrays.asList(finishQuest)), fireFeather, thievesArmband, lavaEel);
+		PanelDetails sixthPanel = new PanelDetails("Finish off", new ArrayList<>(Collections.singletonList(finishQuest)), fireFeather, thievesArmband, lavaEel);
 
 		allSteps.add(firstPanel);
 		allSteps.add(secondPanel);
@@ -520,10 +520,15 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<Requirement> getGeneralRecommended()
+	{
+		return new ArrayList<>(Collections.singletonList(new ItemRequirement("Another player", -1, -1)));
+	}
+
+	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new ItemRequirement("A partner", -1, -1));
 		req.add(new QuestPointRequirement(55));
 		req.add(new SkillRequirement(Skill.COOKING, 53, true));
 		req.add(new SkillRequirement(Skill.FISHING, 53, true));

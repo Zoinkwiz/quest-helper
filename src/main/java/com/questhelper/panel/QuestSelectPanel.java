@@ -61,7 +61,7 @@ public class QuestSelectPanel extends JPanel
 	{
 		this.questHelper = questHelper;
 
-		Collections.addAll(keywords, questHelper.getQuest().getName().toLowerCase().split(" "));
+		Collections.addAll(keywords, questHelper.getQuest().getSearchName().toLowerCase().split(" "));
 
 		setLayout(new BorderLayout(3, 0));
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));

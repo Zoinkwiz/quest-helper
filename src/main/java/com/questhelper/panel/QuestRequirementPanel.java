@@ -25,28 +25,21 @@
 package com.questhelper.panel;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
-import org.apache.commons.text.WordUtils;
 
 public class QuestRequirementPanel extends JPanel
 {
@@ -58,7 +51,7 @@ public class QuestRequirementPanel extends JPanel
 
 
 	@Getter
-	private final ItemRequirement itemRequirement;
+	private final Requirement itemRequirement;
 
 	static
 	{
@@ -66,19 +59,23 @@ public class QuestRequirementPanel extends JPanel
 		INFO_ICON = new ImageIcon(infoImg);
 	}
 
-	public QuestRequirementPanel(ItemRequirement itemRequirement)
+	public QuestRequirementPanel(Requirement requirement)
 	{
-		this.itemRequirement = itemRequirement;
+		this.itemRequirement = requirement;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		StringBuilder text = new StringBuilder();
-		if (itemRequirement.showQuantity())
+		if (requirement instanceof ItemRequirement)
 		{
-			text.append(itemRequirement.getQuantity()).append(" x ");
+			ItemRequirement itemRequirement = (ItemRequirement) requirement;
+			if (itemRequirement.showQuantity())
+			{
+				text.append(itemRequirement.getQuantity()).append(" x ");
+			}
 		}
-		text.append(itemRequirement.getDisplayText());
+		text.append(requirement.getDisplayText());
 
 		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
 		String html2 = "</body></html>";
@@ -89,9 +86,9 @@ public class QuestRequirementPanel extends JPanel
 		setPreferredSize(label.getSize());
 		add(label, BorderLayout.WEST);
 
-		if (itemRequirement.getTip() != null)
+		if (requirement.getTip() != null)
 		{
-			addButtonToPanel(itemRequirement.getTip());
+			addButtonToPanel(requirement.getTip());
 		}
 	}
 

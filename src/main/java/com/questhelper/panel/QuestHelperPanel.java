@@ -25,6 +25,8 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
+import com.questhelper.QuestHelperConfig;
+import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -50,14 +52,14 @@ import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
-public
-class QuestHelperPanel extends PluginPanel
+public class QuestHelperPanel extends PluginPanel
 {
 	private final QuestOverviewPanel questOverviewPanel;
 	private final FixedWidthPanel questOverviewWrapper = new FixedWidthPanel();
 
 	private final JPanel questPromptPanel = new JPanel();
 	private final JPanel allQuestsCompletedPanel = new JPanel();
+	private final JPanel filterAndSearchPanel = new JPanel();
 
 	private final IconTextField searchBar = new IconTextField();
 	private final FixedWidthPanel questListPanel = new FixedWidthPanel();
@@ -166,6 +168,8 @@ class QuestHelperPanel extends PluginPanel
 		searchQuestsPanel.add(searchBar, BorderLayout.CENTER);
 		searchQuestsPanel.add(allQuestsCompletedPanel, BorderLayout.SOUTH);
 
+		searchQuestsPanel.add(filterAndSearchPanel, BorderLayout.NORTH);
+
 		questListPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
 		questListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
 		questListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -219,6 +223,7 @@ class QuestHelperPanel extends PluginPanel
 		}
 
 		final String[] searchTerms = text.toLowerCase().split(" ");
+
 		questSelectPanels.forEach(listItem ->
 		{
 			if (Text.matchesSearchTerms(Arrays.asList(searchTerms), listItem.getKeywords()))
@@ -228,15 +233,26 @@ class QuestHelperPanel extends PluginPanel
 		});
 	}
 
-	public void refresh(List<QuestHelper> helpers, boolean loggedOut)
+	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, QuestHelperConfig.QuestOrdering order)
 	{
+		// TODO: Filter here depends on filter chosen
+
 		questSelectPanels.forEach(questListPanel::remove);
 		questSelectPanels.clear();
-		for (QuestHelper questHelper : helpers)
+		for (QuestHelper questHelper : questHelpers)
 		{
 			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper));
 		}
-		questSelectPanels.sort(Comparator.comparing(p -> p.getQuestHelper().getQuest().getName()));
+
+		// TODO: Sort by chosen sort method
+		if (order == QuestHelperConfig.QuestOrdering.OPTIMAL)
+		{
+			questSelectPanels.sort(Comparator.comparing(p -> QuestOrders.getOptimalOrder().indexOf(p.getQuestHelper().getQuest())));
+		}
+		else if (order == QuestHelperConfig.QuestOrdering.A_TO_Z)
+		{
+			questSelectPanels.sort(Comparator.comparing(p -> p.getQuestHelper().getQuest().getSearchName()));
+		}
 
 		if (loggedOut)
 		{

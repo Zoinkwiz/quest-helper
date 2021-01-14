@@ -9,16 +9,18 @@ import net.runelite.api.QuestState;
 @Getter
 public class QuestRequirement extends Requirement
 {
-	private Quest quest;
-	private QuestState requiredState;
+	private final Quest quest;
+	private final QuestState requiredState;
 	private String displayText = null;
 
-	public QuestRequirement(Quest quest, QuestState requiredState) {
+	public QuestRequirement(Quest quest, QuestState requiredState)
+	{
 		this.quest = quest;
 		this.requiredState = requiredState;
 	}
 
-	public QuestRequirement(Quest quest, QuestState requiredState, String displayText) {
+	public QuestRequirement(Quest quest, QuestState requiredState, String displayText)
+	{
 		this(quest, requiredState);
 		this.displayText = displayText;
 	}
@@ -27,7 +29,8 @@ public class QuestRequirement extends Requirement
 	public boolean check(Client client)
 	{
 		QuestState state = quest.getState(client);
-		if (requiredState == QuestState.IN_PROGRESS && state == QuestState.FINISHED) {
+		if (requiredState == QuestState.IN_PROGRESS && state == QuestState.FINISHED)
+		{
 			return true;
 		}
 		return state == requiredState;

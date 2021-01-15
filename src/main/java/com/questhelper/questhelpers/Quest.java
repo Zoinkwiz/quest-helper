@@ -26,14 +26,13 @@
 
 package com.questhelper.questhelpers;
 
-import com.questhelper.QuestHelperConfig;
 import java.util.function.Predicate;
 
 public interface Quest
 {
-	public static boolean showCompletedQuests(QuestHelper quest, QuestHelperConfig config)
+	public static boolean showCompletedQuests(QuestHelper quest)
 	{
-		return config.showCompletedQuests() && quest.isCompleted() || !quest.isCompleted();
+		return quest.getConfig().showCompletedQuests() && quest.isCompleted() || !quest.isCompleted();
 	}
 
 	/**

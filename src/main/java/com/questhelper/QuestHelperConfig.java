@@ -68,33 +68,34 @@ public interface QuestHelperConfig extends Config
 		}
 	}
 
-	enum QuestFilter
+	enum QuestFilter implements Predicate<QuestHelper>
 	{
 		/** Show all quests */
-		SHOW_ALL((q,c) -> true),
+		SHOW_ALL(q -> true),
 		/** Show quests where the client meets the quest requirements */
-		SHOW_MEETS_REQS((q,c) -> q.clientMeetsRequirements()),
+		SHOW_MEETS_REQS(QuestHelper::clientMeetsRequirements),
 		/** Show all free-to-play quests */
-		FREE_TO_PLAY((q,c) -> q.getQuest().getQuestType() == Quest.Type.F2P),
+		FREE_TO_PLAY(Quest.Type.F2P),
 		/** Show all members' quests */
-		MEMBERS((q,c) -> q.getQuest().getQuestType() == Quest.Type.P2P),
-		/** Show all miniquets (all miniquests are members' only) */
-		MINIQUEST((q,c) -> q.getQuest().getQuestType() == Quest.Type.MINIQUEST),
+		MEMBERS(Quest.Type.P2P),
+		/** Show all miniquests (all miniquests are members' only) */
+		MINIQUEST(Quest.Type.MINIQUEST),
 		;
 
-		private BiPredicate<QuestHelper, QuestHelperConfig> biPredicate;
+		private final Predicate<QuestHelper> predicate;
 
-		QuestFilter(BiPredicate<QuestHelper, QuestHelperConfig> biPredicate) {
-			this.biPredicate = biPredicate;
+		QuestFilter(Predicate<QuestHelper> predicate) {
+			this.predicate = predicate;
 		}
 
-		public boolean test(QuestHelper quest, QuestHelperConfig config) {
-			return biPredicate.test(quest, config);
+		@Override
+		public boolean test(QuestHelper quest) {
+			return predicate.test(quest);
 		}
 
-		public List<QuestHelper> test(Collection<QuestHelper> helpers, QuestHelperConfig config) {
+		public List<QuestHelper> test(Collection<QuestHelper> helpers) {
 
-			return helpers.stream().filter(q -> biPredicate.test(q, config)).collect(Collectors.toList());
+			return helpers.stream().filter(this).collect(Collectors.toList());
 		}
 	}
 

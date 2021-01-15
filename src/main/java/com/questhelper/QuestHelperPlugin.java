@@ -317,9 +317,9 @@ public class QuestHelperPlugin extends Plugin
 
 			List<QuestHelper> filteredQuests = allQuests
 				.stream()
-				.filter(q -> config.filterListBy().test(q, config))
+				.filter(config.filterListBy())
 				.filter(config.difficulty())
-				.filter(q -> Quest.showCompletedQuests(q, config))
+				.filter(Quest::showCompletedQuests)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()

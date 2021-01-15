@@ -26,34 +26,51 @@
 
 package com.questhelper.questhelpers;
 
+import com.questhelper.QuestHelperConfig;
+import java.util.function.Predicate;
+
 public interface Quest
 {
+	public static boolean showCompletedQuests(QuestHelper quest, QuestHelperConfig config)
+	{
+		return config.showCompletedQuests() && quest.isCompleted() || !quest.isCompleted();
+	}
+
 	/**
 	 * Describes the difficulty of a {@link com.questhelper.QuestHelperQuest}
-	 * <br>
-	 * {@link #RFD} is used for {@link com.questhelper.QuestHelperQuest#RECIPE_FOR_DISASTER} and it's sub-quests.
 	 */
-	public enum Difficulty
+	public enum Difficulty implements Predicate<QuestHelper>
 	{
+		ALL,
 		NOVICE,
 		INTERMEDIATE,
 		EXPERIENCED,
 		MASTER,
 		GRANDMASTER,
-		RFD,
 		MINIQUEST,
 		;
+
+		@Override
+		public boolean test(QuestHelper quest) {
+			return quest.getQuest().getDifficulty() == this || this == ALL;
+		}
 	}
 
 	/**
 	 * Describes if the quest is free-to-play (F2P), pay-to-play(P2P),
 	 * or a miniquest.
 	 */
-	public enum Type
+	public enum Type implements Predicate<QuestHelper>
 	{
 		F2P,
 		P2P,
 		MINIQUEST,
 		;
+
+		@Override
+		public boolean test(QuestHelper quest)
+		{
+			return quest.getQuest().getQuestType() == this;
+		}
 	}
 }

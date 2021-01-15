@@ -42,7 +42,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("questhelper")
 public interface QuestHelperConfig extends Config
 {
-	enum QuestOrdering
+	enum QuestOrdering implements Comparator<QuestHelper>
 	{
 		/** Sort quests in alphabetical order */
 		A_TO_Z(QuestOrders.sortAToZ()),
@@ -58,11 +58,13 @@ public interface QuestHelperConfig extends Config
 		}
 
 		public List<QuestHelper> sort(Collection<QuestHelper> list) {
-			return list.stream().sorted(getComparator()).collect(Collectors.toList());
+			return list.stream().sorted(this).collect(Collectors.toList());
 		}
 
-		public Comparator<QuestHelper> getComparator() {
-			return comparator;
+		@Override
+		public int compare(QuestHelper o1, QuestHelper o2)
+		{
+			return comparator.compare(o1, o2);
 		}
 	}
 
@@ -78,10 +80,6 @@ public interface QuestHelperConfig extends Config
 		MEMBERS((q,c) -> q.getQuest().getQuestType() == Quest.Type.P2P),
 		/** Show all miniquets (all miniquests are members' only) */
 		MINIQUEST((q,c) -> q.getQuest().getQuestType() == Quest.Type.MINIQUEST),
-		/** Sort by difficulty */
-		BY_DIFFICULTY((q,c) -> q.getQuest().getDifficulty() == c.difficulty()),
-		/** RFD cause it ruins everything */
-		RFD((q,c) -> q.getQuest().getDifficulty() == Quest.Difficulty.RFD),
 		;
 
 		private BiPredicate<QuestHelper, QuestHelperConfig> biPredicate;

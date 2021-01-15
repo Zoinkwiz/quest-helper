@@ -33,6 +33,7 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.questhelper.questhelpers.Quest;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,9 +43,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -319,8 +318,9 @@ public class QuestHelperPlugin extends Plugin
 			List<QuestHelper> filteredQuests = allQuests
 				.stream()
 				.filter(q -> config.filterListBy().test(q, config))
-				.filter(q -> (config.showCompletedQuests() && q.isCompleted()) || !q.isCompleted())
-				.sorted(config.orderListBy().getComparator())
+				.filter(config.difficulty())
+				.filter(q -> Quest.showCompletedQuests(q, config))
+				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()
 				.stream()

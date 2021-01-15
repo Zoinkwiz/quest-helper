@@ -254,12 +254,21 @@ public class QuestHelperPanel extends PluginPanel
 		}
 		else
 		{
+			Set<QuestHelperQuest> quests = completedQuests.keySet();
+			boolean hasMoreQuests = quests.stream().anyMatch(q -> completedQuests.get(q) != QuestState.FINISHED);
+			if (questSelectPanels.isEmpty() && hasMoreQuests) {
+				allQuestsCompletedPanel.removeAll();
+				JLabel noMatch = new JLabel();
+				noMatch.setForeground(Color.GRAY);
+				noMatch.setText("<html><body style = 'text-align:left'>No quests are available that match your current filters</body></html>");
+				allQuestsCompletedPanel.add(noMatch);
+			}
 			allQuestsCompletedPanel.setVisible(questSelectPanels.isEmpty());
 		}
 
 		repaint();
 		revalidate();
-		showMatchingQuests("");
+		showMatchingQuests(searchBar.getText() != null ? searchBar.getText() : "");
 	}
 
 	public void addQuest(QuestHelper quest, boolean isActive)

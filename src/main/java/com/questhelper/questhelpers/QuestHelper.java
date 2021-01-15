@@ -132,7 +132,7 @@ public abstract class QuestHelper implements Module
 		return (quest.getState(client) == QuestState.FINISHED);
 	}
 
-	public boolean hasRequirements()
+	public boolean clientMeetsRequirements()
 	{
 		if (getGeneralRequirements() == null)
 		{

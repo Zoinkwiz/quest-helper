@@ -57,7 +57,7 @@ public class QuestSelectPanel extends JPanel
 
 		START_ICON = new ImageIcon(startImg);
 	}
-	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestHelperPanel questHelperPanel, QuestHelper questHelper)
+	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestHelperPanel questHelperPanel, QuestHelper questHelper, boolean isCompleted)
 	{
 		this.questHelper = questHelper;
 
@@ -67,16 +67,19 @@ public class QuestSelectPanel extends JPanel
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
 		JLabel nameLabel = new JLabel(questHelper.getQuest().getName());
-		nameLabel.setForeground(Color.WHITE);
+		nameLabel.setForeground(isCompleted ? Color.GREEN : Color.WHITE);
 		add(nameLabel, BorderLayout.CENTER);
 
-		JButton startButton = new JButton();
-		startButton.setIcon(START_ICON);
-		startButton.addActionListener(e ->
+		if (!isCompleted)
 		{
-			questHelperPlugin.setSidebarSelectedQuest(questHelper);
-			questHelperPanel.emptyBar();
-		});
-		add(startButton, BorderLayout.LINE_END);
+			JButton startButton = new JButton();
+			startButton.setIcon(START_ICON);
+			startButton.addActionListener(e ->
+			{
+				questHelperPlugin.setSidebarSelectedQuest(questHelper);
+				questHelperPanel.emptyBar();
+			});
+			add(startButton, BorderLayout.LINE_END);
+		}
 	}
 }

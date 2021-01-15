@@ -26,9 +26,15 @@ package com.questhelper;
 
 import com.questhelper.panel.QuestSelectPanel;
 import com.questhelper.panel.questorders.QuestOrders;
+import com.questhelper.questhelpers.Quest;
+import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -38,14 +44,60 @@ public interface QuestHelperConfig extends Config
 {
 	enum QuestOrdering
 	{
-		A_TO_Z,
-		OPTIMAL;
+		/** Sort quests in alphabetical order */
+		A_TO_Z(QuestOrders.sortAToZ()),
+		/** Sort quests in reverse alphabetical order */
+		Z_TO_A(QuestOrders.sortZToA()),
+		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
+		OPTIMAL(QuestOrders.sortOptimalOrder()),
+		;
+
+		private final Comparator<QuestHelper> comparator;
+		QuestOrdering(Comparator<QuestHelper> comparator) {
+			this.comparator = comparator;
+		}
+
+		public List<QuestHelper> sort(Collection<QuestHelper> list) {
+			return list.stream().sorted(getComparator()).collect(Collectors.toList());
+		}
+
+		public Comparator<QuestHelper> getComparator() {
+			return comparator;
+		}
 	}
 
 	enum QuestFilter
 	{
-		HIDE_DONE,
-		HIDE_LACKING_REQ;
+		/** Hide completed quests */
+		HIDE_COMPLETED((q,c) -> !q.isCompleted()),
+		/** Show completed quests */
+		SHOW_COMPLETED((q,c) -> q.isCompleted()),
+		/** Show quests where the client meets the quest requirements */
+		SHOW_MEETS_REQS((q,c) -> q.clientMeetsRequirements() && !q.isCompleted()),
+		/** Show all free-to-play quests */
+		FREE_TO_PLAY((q,c) -> q.getQuest().getQuestType() == Quest.Type.F2P),
+		/** Show all members' quests */
+		MEMBERS((q,c) -> q.getQuest().getQuestType() == Quest.Type.P2P),
+		/** Show all miniquets (all miniquests are members' only) */
+		MINIQUEST((q,c) -> q.getQuest().getQuestType() == Quest.Type.MINIQUEST),
+		/** Sort by difficulty */
+		BY_DIFFICULTY((q,c) -> q.getQuest().getDifficulty() == c.difficulty()), // not the best solution but it works
+		/** RFD cause it ruins everything */
+		RFD((q,c) -> q.getQuest().getDifficulty() == Quest.Difficulty.RFD),
+		/** Show all quests */
+		SHOW_ALL((q,c) -> true),
+		;
+
+		private BiPredicate<QuestHelper, QuestHelperConfig> biPredicate;
+
+		QuestFilter(BiPredicate<QuestHelper, QuestHelperConfig> biPredicate) {
+			this.biPredicate = biPredicate;
+		}
+
+		public List<QuestHelper> test(Collection<QuestHelper> helpers, QuestHelperConfig config) {
+
+			return helpers.stream().filter(q -> biPredicate.test(q, config)).collect(Collectors.toList());
+		}
 	}
 
 	@ConfigItem(
@@ -112,11 +164,22 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "filterListBy",
 		name = "Filter",
-		description = "Configures what to filter out in the quest list",
+		description = "Configures what to filter in the quest list",
 		position = 1
 	)
 	default QuestFilter filterListBy()
 	{
-		return QuestFilter.HIDE_DONE;
+		return QuestFilter.HIDE_COMPLETED;
+	}
+
+	@ConfigItem(
+		keyName = "questDifficulty",
+		name = "Difficulty",
+		description = "Configures what quest difficulty to sort by if the Filter is set to Difficulty",
+		position = 2
+	)
+	default Quest.Difficulty difficulty()
+	{
+		return Quest.Difficulty.NOVICE;
 	}
 }

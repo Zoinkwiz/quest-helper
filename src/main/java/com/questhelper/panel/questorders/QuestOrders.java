@@ -25,14 +25,20 @@
 package com.questhelper.panel.questorders;
 
 import com.questhelper.QuestHelperQuest;
-import java.util.ArrayList;
+import com.questhelper.questhelpers.QuestHelper;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Pattern;
 import lombok.Getter;
 
 public class QuestOrders
 {
+	// Test for 'The', 'A', 'An' at the start of a string followed by a word boundary (space/tab); this ignores case sensitivity
+	private static final Pattern QUEST_NAME_PATTERN = Pattern.compile("(?i)(a\\b)|(the\\b)|(an\\b)", Pattern.CASE_INSENSITIVE);
 	@Getter
-	private static final ArrayList<QuestHelperQuest> optimalOrder = new ArrayList<>(Arrays.asList(
+	private static final List<QuestHelperQuest> optimalOrder = new LinkedList<>(Arrays.asList(
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.X_MARKS_THE_SPOT,
 		QuestHelperQuest.THE_RESTLESS_GHOST,
@@ -202,4 +208,23 @@ public class QuestOrders
 		QuestHelperQuest.ENCHANTED_KEY,
 		QuestHelperQuest.FAMILY_PEST
 	));
+
+	public static String normalizeQuestName(String questName) {
+		return QUEST_NAME_PATTERN.matcher(questName).replaceAll("").trim();
+	}
+
+	public static Comparator<QuestHelper> sortOptimalOrder()
+	{
+		return Comparator.comparing(q -> getOptimalOrder().indexOf(q.getQuest()));
+	}
+
+	public static Comparator<QuestHelper> sortAToZ()
+	{
+		return Comparator.comparing(q -> normalizeQuestName(q.getQuest().getName()));
+	}
+
+	public static Comparator<QuestHelper> sortZToA()
+	{
+		return Comparator.comparing(q -> normalizeQuestName(q.getQuest().getName()), Comparator.reverseOrder());
+	}
 }

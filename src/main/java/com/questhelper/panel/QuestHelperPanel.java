@@ -26,7 +26,7 @@ package com.questhelper.panel;
 
 import com.questhelper.BankItems;
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.panel.questorders.QuestOrders;
+import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -236,25 +236,14 @@ public class QuestHelperPanel extends PluginPanel
 		});
 	}
 
-	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, QuestHelperConfig.QuestOrdering order)
+	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, QuestHelperConfig config, List<QuestHelperQuest> completedQuests)
 	{
-		// TODO: Filter here depends on filter chosen
-
 		questSelectPanels.forEach(questListPanel::remove);
 		questSelectPanels.clear();
+
 		for (QuestHelper questHelper : questHelpers)
 		{
-			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper));
-		}
-
-		// TODO: Sort by chosen sort method
-		if (order == QuestHelperConfig.QuestOrdering.OPTIMAL)
-		{
-			questSelectPanels.sort(Comparator.comparing(p -> QuestOrders.getOptimalOrder().indexOf(p.getQuestHelper().getQuest())));
-		}
-		else if (order == QuestHelperConfig.QuestOrdering.A_TO_Z)
-		{
-			questSelectPanels.sort(Comparator.comparing(p -> p.getQuestHelper().getQuest().getSearchName()));
+			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, completedQuests.contains(questHelper.getQuest())));
 		}
 
 		if (loggedOut)

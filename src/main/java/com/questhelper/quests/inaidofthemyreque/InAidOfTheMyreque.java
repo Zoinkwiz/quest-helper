@@ -572,7 +572,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Relocating", new ArrayList<>(Arrays.asList(returnToHideout, goTalkToPolmafi, travelWithIvan)), efaritaysAidOrSilverWeapon));
 
 		allSteps.add(new PanelDetails("Ivandis' legacy", new ArrayList<>(Arrays.asList(talkToDrezel, useKeyOnHole, enterLibrary, searchBookcase, readBook, goIntoCavesAgain, useHammerOnBoards, enterCoffinRoom,
-			useClayOnCoffin, makeRod, enchantRod, goBlessRod, finishQuest)), hammer, softClay, mithrilBar, silverBar, cosmicRune, waterRune, rope));
+			useClayOnCoffin, makeRod, enchantRod, goBlessRod, finishQuest)), hammer, softClay, mithrilBar, silverBar, cosmicRune, waterRune, rope, sapphire));
 
 		return allSteps;
 	}

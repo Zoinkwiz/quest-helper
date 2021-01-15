@@ -35,12 +35,16 @@ import com.google.inject.Module;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -53,6 +57,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -265,7 +270,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
-			panel.refresh(Collections.emptyList(), true, config, Collections.emptyList());
+			panel.refresh(Collections.emptyList(), true, config, new HashMap<>());
 			bankItems.setItems(null);
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
@@ -295,11 +300,11 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
+	private final Collection<String> configEvents = new ArrayList<>(Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests"));
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("questhelper") &&
-			(event.getKey().equals("orderListBy") || event.getKey().equals("filterListBy") || event.getKey().equals("questDifficulty")))
+		if (event.getGroup().equals("questhelper") && configEvents.contains(event.getKey()))
 		{
 			clientThread.invokeLater(this::updateQuestList);
 		}
@@ -309,15 +314,17 @@ public class QuestHelperPlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			List<QuestHelper> filteredQuests = config.filterListBy()
-				.test(quests.values(), config)
-					.stream()
-					.sorted(config.orderListBy().getComparator())
+			List<QuestHelper> allQuests = new ArrayList<>(quests.values());
+
+			List<QuestHelper> filteredQuests = allQuests
+				.stream()
+				.filter(q -> config.filterListBy().test(q, config))
+				.filter(q -> (config.showCompletedQuests() && q.isCompleted()) || !q.isCompleted())
+				.sorted(config.orderListBy().getComparator())
 				.collect(Collectors.toList());
-			List<QuestHelperQuest> completedQuests = quests.values().stream()
-				.filter(QuestHelper::isCompleted)
-				.map(QuestHelper::getQuest)
-				.collect(Collectors.toList());
+			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()
+				.stream()
+				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getQuest().getState(client)));
 			SwingUtilities.invokeLater(() -> {
 				panel.refresh(filteredQuests, false, config, completedQuests);
 			});

@@ -42,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
+import net.runelite.api.QuestState;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -236,14 +237,15 @@ public class QuestHelperPanel extends PluginPanel
 		});
 	}
 
-	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, QuestHelperConfig config, List<QuestHelperQuest> completedQuests)
+	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, QuestHelperConfig config, Map<QuestHelperQuest, QuestState> completedQuests)
 	{
 		questSelectPanels.forEach(questListPanel::remove);
 		questSelectPanels.clear();
 
 		for (QuestHelper questHelper : questHelpers)
 		{
-			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, completedQuests.contains(questHelper.getQuest())));
+			QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
+			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
 		}
 
 		if (loggedOut)

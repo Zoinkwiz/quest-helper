@@ -38,6 +38,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Getter;
+import net.runelite.api.QuestState;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 
@@ -57,7 +58,7 @@ public class QuestSelectPanel extends JPanel
 
 		START_ICON = new ImageIcon(startImg);
 	}
-	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestHelperPanel questHelperPanel, QuestHelper questHelper, boolean isCompleted)
+	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestHelperPanel questHelperPanel, QuestHelper questHelper, QuestState questState)
 	{
 		this.questHelper = questHelper;
 
@@ -67,10 +68,11 @@ public class QuestSelectPanel extends JPanel
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
 		JLabel nameLabel = new JLabel(questHelper.getQuest().getName());
-		nameLabel.setForeground(isCompleted ? Color.GREEN : Color.WHITE);
+		Color color = questState == QuestState.FINISHED ? Color.GREEN : (questState == QuestState.IN_PROGRESS ? new Color(240, 207, 123) : Color.WHITE);
+		nameLabel.setForeground(color);
 		add(nameLabel, BorderLayout.CENTER);
 
-		if (!isCompleted)
+		if (questState != QuestState.FINISHED)
 		{
 			JButton startButton = new JButton();
 			startButton.setIcon(START_ICON);

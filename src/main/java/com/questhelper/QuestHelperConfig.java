@@ -68,12 +68,10 @@ public interface QuestHelperConfig extends Config
 
 	enum QuestFilter
 	{
-		/** Hide completed quests */
-		HIDE_COMPLETED((q,c) -> !q.isCompleted()),
-		/** Show completed quests */
-		SHOW_COMPLETED((q,c) -> q.isCompleted()),
+		/** Show all quests */
+		SHOW_ALL((q,c) -> true),
 		/** Show quests where the client meets the quest requirements */
-		SHOW_MEETS_REQS((q,c) -> q.clientMeetsRequirements() && !q.isCompleted()),
+		SHOW_MEETS_REQS((q,c) -> q.clientMeetsRequirements()),
 		/** Show all free-to-play quests */
 		FREE_TO_PLAY((q,c) -> q.getQuest().getQuestType() == Quest.Type.F2P),
 		/** Show all members' quests */
@@ -84,14 +82,16 @@ public interface QuestHelperConfig extends Config
 		BY_DIFFICULTY((q,c) -> q.getQuest().getDifficulty() == c.difficulty()), // not the best solution but it works
 		/** RFD cause it ruins everything */
 		RFD((q,c) -> q.getQuest().getDifficulty() == Quest.Difficulty.RFD),
-		/** Show all quests */
-		SHOW_ALL((q,c) -> true),
 		;
 
 		private BiPredicate<QuestHelper, QuestHelperConfig> biPredicate;
 
 		QuestFilter(BiPredicate<QuestHelper, QuestHelperConfig> biPredicate) {
 			this.biPredicate = biPredicate;
+		}
+
+		public boolean test(QuestHelper quest, QuestHelperConfig config) {
+			return biPredicate.test(quest, config);
 		}
 
 		public List<QuestHelper> test(Collection<QuestHelper> helpers, QuestHelperConfig config) {
@@ -169,7 +169,7 @@ public interface QuestHelperConfig extends Config
 	)
 	default QuestFilter filterListBy()
 	{
-		return QuestFilter.HIDE_COMPLETED;
+		return QuestFilter.SHOW_ALL;
 	}
 
 	@ConfigItem(
@@ -181,5 +181,16 @@ public interface QuestHelperConfig extends Config
 	default Quest.Difficulty difficulty()
 	{
 		return Quest.Difficulty.NOVICE;
+	}
+
+	@ConfigItem(
+		keyName = "showCompletedQuests",
+		name = "Show Completed Quests",
+		description = "Will show completed quests with whatever filters you choose",
+		position = 3
+	)
+	default boolean showCompletedQuests()
+	{
+		return false;
 	}
 }

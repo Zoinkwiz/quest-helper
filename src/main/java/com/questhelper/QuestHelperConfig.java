@@ -174,7 +174,7 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "questDifficulty",
 		name = "Difficulty",
-		description = "Configures what quest difficulty to sort by if the Filter is set to Difficulty",
+		description = "Configures what quest difficulty to show",
 		position = 2
 	)
 	default Quest.Difficulty difficulty()
@@ -185,7 +185,7 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "showCompletedQuests",
 		name = "Show Completed Quests",
-		description = "Will show completed quests with whatever filters you choose",
+		description = "Will include completed quests in the other filter(s) that are chosen",
 		position = 3
 	)
 	default boolean showCompletedQuests()

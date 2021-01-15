@@ -352,7 +352,7 @@ public class ObjectStep extends DetailedQuestStep
 
 		if (impostorIds != null)
 		{
-			if (comp.getImpostor().getId() == objectID || alternateObjectIDs.contains(comp.getImpostor().getId()))
+			if (comp.getImpostor() != null && comp.getImpostor().getId() == objectID || alternateObjectIDs.contains(comp.getImpostor().getId()))
 			{
 				setObjects(object, localWorldPoints);
 			}

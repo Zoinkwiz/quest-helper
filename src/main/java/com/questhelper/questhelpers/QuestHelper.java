@@ -50,6 +50,7 @@ public abstract class QuestHelper implements Module
 	protected Client client;
 
 	@Getter
+	@Setter
 	protected QuestHelperConfig config;
 
 	@Inject

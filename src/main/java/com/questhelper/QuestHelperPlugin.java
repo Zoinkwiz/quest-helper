@@ -313,9 +313,7 @@ public class QuestHelperPlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			List<QuestHelper> allQuests = new ArrayList<>(quests.values());
-
-			List<QuestHelper> filteredQuests = allQuests
+			List<QuestHelper> filteredQuests = quests.values()
 				.stream()
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
@@ -672,6 +670,7 @@ public class QuestHelperPlugin extends Plugin
 			questInjector.injectMembers(questHelper);
 			questHelper.setInjector(questInjector);
 			questHelper.setQuest(quest);
+			questHelper.setConfig(config);
 		}
 		catch (InstantiationException | IllegalAccessException | CreationException ex)
 		{

@@ -79,7 +79,7 @@ public interface QuestHelperConfig extends Config
 		/** Show all miniquets (all miniquests are members' only) */
 		MINIQUEST((q,c) -> q.getQuest().getQuestType() == Quest.Type.MINIQUEST),
 		/** Sort by difficulty */
-		BY_DIFFICULTY((q,c) -> q.getQuest().getDifficulty() == c.difficulty()), // not the best solution but it works
+		BY_DIFFICULTY((q,c) -> q.getQuest().getDifficulty() == c.difficulty()),
 		/** RFD cause it ruins everything */
 		RFD((q,c) -> q.getQuest().getDifficulty() == Quest.Difficulty.RFD),
 		;

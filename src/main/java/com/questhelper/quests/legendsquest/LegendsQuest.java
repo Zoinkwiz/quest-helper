@@ -944,32 +944,32 @@ public class LegendsQuest extends BasicQuestHelper
 
 		PanelDetails gemPuzzlePanel = new PanelDetails("Getting a binding book", new ArrayList<>(
 			Arrays.asList(useSapphire, useDiamond, useRuby, useTopaz, useJade, useEmerald, useOpal, pickUpBook)),
-			radimusNotes, bullRoarer, axe, machete, lockpick, pickaxe, opal, jade, topaz, sapphire, emerald, ruby, diamond);
+			completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, opal, jade, topaz, sapphire, emerald, ruby, diamond);
 		gemPuzzlePanel.setLockingStep(gemPuzzle);
 		allSteps.add(gemPuzzlePanel);
 
 		allSteps.add(new PanelDetails("Freeing Ungadulu", new ArrayList<>(
 			Arrays.asList(makeBowl, enterJungleWithBowl, spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall, useBindingBookOnUngadulu,
-				fightNezikchenedInFire, talkToUngadulu)), radimusNotes, bullRoarer, goldBar2, hammer, axe, machete, combatGear));
+				fightNezikchenedInFire, talkToUngadulu)), completeNotes, bullRoarer, goldBar2, hammer, axe, machete, combatGear));
 
 		allSteps.add(new PanelDetails("Attempted planting", new ArrayList<>(Arrays.asList(
 		useBowlOnSeeds, leaveCaveWithSeed, useMacheteOnReedsAgain, useReedOnPoolAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds)), machete, axe, goldBowlFull, yommiSeeds, bullRoarer));
 
 		allSteps.add(new PanelDetails("To the source", new ArrayList<>(Arrays.asList(
 			addArdrigal, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource, enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, climbDownWinch)),
-			radimusNotes, ardrigal, snakeWeed, vialOfWater, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, germinatedSeeds, combatGear));
+				completeNotes, ardrigal, snakeWeed, vialOfWater, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, germinatedSeeds, combatGear));
 
 		allSteps.add(new PanelDetails("Unlocking the source", new ArrayList<>(Arrays.asList(
 			useCrystalsOnFurnace, useHeartOnRock, useHeartOnRecess, pushBoulder, pickUpHat, giveDaggerToEchned, fightNezikchenedAtSource, pushBoulderAfterFight, useBowlOnSacredWater, returnToSurface)),
-			radimusNotes, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, germinatedSeeds, combatGear));
+				completeNotes, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, germinatedSeeds, combatGear));
 
 		allSteps.add(new PanelDetails("Making a totem", new ArrayList<>(Arrays.asList(
 			plantSeed, useWaterOnTree, useAxe, useAxeAgain, craftTree, pickUpTotem)),
-		 	radimusNotes, machete, runeOrDragonAxe, goldBowlBlessed, germinatedSeeds, combatGear));
+				completeNotes, machete, runeOrDragonAxe, goldBowlBlessed, germinatedSeeds, combatGear));
 
 		allSteps.add(new PanelDetails("Placing the totem", new ArrayList<>(Arrays.asList(
 			useTotemOnTotem, killSan, killIrvig, killRanalph, defeatDemon, useTotemOnTotemAgain)),
-			radimusNotes, machete, runeOrDragonAxe, yommiTotem, combatGear));
+				completeNotes, machete, runeOrDragonAxe, yommiTotem, combatGear));
 
 		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(
 			returnToRadimus, talkToRadimusInGuild, talkToRadimusInGuildAgain)),

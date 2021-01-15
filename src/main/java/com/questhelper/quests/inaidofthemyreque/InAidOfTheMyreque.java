@@ -560,7 +560,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Finding a new base", new ArrayList<>(Arrays.asList(startQuest, travelToBurgh, putFoodInChest, talkToRazvan, clearTrapdoorRubble,
-			enterBurghPubBasement, clearBasementRubble))));
+			enterBurghPubBasement, clearBasementRubble)), pickaxe, bucketTo5, spade));
 
 		allSteps.add(new PanelDetails("Repairing the shop", new ArrayList<>(Arrays.asList(talkToAurel, climbShopLadder, fixRoof, climbDownShopLadder, fixShopWall, talkToAurelForCrate)), hammer, planks6, nails24));
 		allSteps.add(new PanelDetails("Stocking the shop", new ArrayList<>(Collections.singletonList(fillCrate)), tinderbox3, bronzeAxes10, rawMackerelOrSnail10));

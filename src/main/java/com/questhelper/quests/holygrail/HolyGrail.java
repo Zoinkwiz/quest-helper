@@ -126,11 +126,11 @@ public class HolyGrail extends BasicQuestHelper
 		findFisherKing.setLockingCondition(hasTwoWhistles);
 
 		steps.put(4, findFisherKing);
+		steps.put(7, findFisherKing);
 
 		ConditionalStep findPercival = new ConditionalStep(this, talkToKingArthur2);
 		findPercival.addStep(hasFeather, openSack);
 
-		steps.put(7, findPercival);
 		steps.put(8, findPercival);
 
 		ConditionalStep finishQuest = new ConditionalStep(this, goToTeleportLocation2);

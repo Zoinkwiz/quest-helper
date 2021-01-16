@@ -231,7 +231,8 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		talkToBrimstailAgain.addDialogStep("I've had a look in the other room now.");
 		talkToBrimstailAgain.addDialogStep("Of course, I'd love to!");
 
-		goUpToHazelmere = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2677, 3087, 0), "Go talk to Hazelmere in his hut east of Yanille.");
+		goUpToHazelmere = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2677, 3087, 0),
+			"Go talk to Hazelmere in his hut east of Yanille. Fairy Ring CLS is very close to him.");
 		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, new WorldPoint(2677, 3087, 1), "Go talk to Hazelmere in his hut east of Yanille.");
 		talkToHazelmere.addSubSteps(goUpToHazelmere);
 

@@ -157,6 +157,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		killThemAll.addStep(inCave, killCreature1);
 
 		steps.put(40, killThemAll);
+		steps.put(45, killThemAll);
 
 		steps.put(50, talkToNarnode);
 

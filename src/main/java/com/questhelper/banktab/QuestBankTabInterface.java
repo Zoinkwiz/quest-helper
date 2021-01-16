@@ -61,7 +61,6 @@ public class QuestBankTabInterface
 	@Getter
 	private Widget questBackgroundWidget;
 
-
 	private final Client client;
 	private final BankSearch bankSearch;
 
@@ -128,10 +127,12 @@ public class QuestBankTabInterface
 		String menuOption = event.getMenuOption();
 
 		// If click a base tab, close
-		if (questTabActive
-			&& (menuOption.startsWith("View tab") && !event.getMenuTarget().equals("quest-helper"))
-			|| menuOption.equals("View all items")
-			|| menuOption.startsWith("View tag tab"))
+		if (questTabActive &&
+			((menuOption.startsWith("View tab") && !event.getMenuTarget().equals("quest-helper"))
+				|| menuOption.equals("View all items")
+				|| menuOption.startsWith("View tag tab")
+			)
+		)
 		{
 			closeTab();
 		}
@@ -179,8 +180,11 @@ public class QuestBankTabInterface
 	public void closeTab()
 	{
 		questTabActive = false;
-		questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL);
-		questBackgroundWidget.revalidate();
+		if (questBackgroundWidget != null)
+		{
+			questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL);
+			questBackgroundWidget.revalidate();
+		}
 	}
 
 	private void activateTab()

@@ -26,7 +26,7 @@ package com.questhelper.panel;
 
 import com.questhelper.BankItems;
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.panel.questorders.QuestOrders;
+import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -42,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
+import net.runelite.api.QuestState;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -236,25 +237,15 @@ public class QuestHelperPanel extends PluginPanel
 		});
 	}
 
-	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, QuestHelperConfig.QuestOrdering order)
+	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, QuestHelperConfig config, Map<QuestHelperQuest, QuestState> completedQuests)
 	{
-		// TODO: Filter here depends on filter chosen
-
 		questSelectPanels.forEach(questListPanel::remove);
 		questSelectPanels.clear();
+
 		for (QuestHelper questHelper : questHelpers)
 		{
-			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper));
-		}
-
-		// TODO: Sort by chosen sort method
-		if (order == QuestHelperConfig.QuestOrdering.OPTIMAL)
-		{
-			questSelectPanels.sort(Comparator.comparing(p -> QuestOrders.getOptimalOrder().indexOf(p.getQuestHelper().getQuest())));
-		}
-		else if (order == QuestHelperConfig.QuestOrdering.A_TO_Z)
-		{
-			questSelectPanels.sort(Comparator.comparing(p -> p.getQuestHelper().getQuest().getSearchName()));
+			QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
+			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
 		}
 
 		if (loggedOut)
@@ -263,12 +254,21 @@ public class QuestHelperPanel extends PluginPanel
 		}
 		else
 		{
+			Set<QuestHelperQuest> quests = completedQuests.keySet();
+			boolean hasMoreQuests = quests.stream().anyMatch(q -> completedQuests.get(q) != QuestState.FINISHED);
+			if (questSelectPanels.isEmpty() && hasMoreQuests) {
+				allQuestsCompletedPanel.removeAll();
+				JLabel noMatch = new JLabel();
+				noMatch.setForeground(Color.GRAY);
+				noMatch.setText("<html><body style = 'text-align:left'>No quests are available that match your current filters</body></html>");
+				allQuestsCompletedPanel.add(noMatch);
+			}
 			allQuestsCompletedPanel.setVisible(questSelectPanels.isEmpty());
 		}
 
 		repaint();
 		revalidate();
-		showMatchingQuests("");
+		showMatchingQuests(searchBar.getText() != null ? searchBar.getText() : "");
 	}
 
 	public void addQuest(QuestHelper quest, boolean isActive)

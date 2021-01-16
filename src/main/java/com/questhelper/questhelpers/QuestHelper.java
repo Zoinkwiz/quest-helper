@@ -50,6 +50,7 @@ public abstract class QuestHelper implements Module
 	protected Client client;
 
 	@Getter
+	@Setter
 	protected QuestHelperConfig config;
 
 	@Inject
@@ -129,10 +130,15 @@ public abstract class QuestHelper implements Module
 
 	public boolean isCompleted()
 	{
-		return (quest.getState(client) == QuestState.FINISHED);
+		return getState(client) == QuestState.FINISHED;
 	}
 
-	public boolean hasRequirements()
+	public QuestState getState(Client client)
+	{
+		return quest.getState(client);
+	}
+
+	public boolean clientMeetsRequirements()
 	{
 		if (getGeneralRequirements() == null)
 		{

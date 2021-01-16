@@ -26,9 +26,15 @@ package com.questhelper;
 
 import com.questhelper.panel.QuestSelectPanel;
 import com.questhelper.panel.questorders.QuestOrders;
+import com.questhelper.questhelpers.Quest;
+import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -36,16 +42,61 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("questhelper")
 public interface QuestHelperConfig extends Config
 {
-	enum QuestOrdering
+	enum QuestOrdering implements Comparator<QuestHelper>
 	{
-		A_TO_Z,
-		OPTIMAL;
+		/** Sort quests in alphabetical order */
+		A_TO_Z(QuestOrders.sortAToZ()),
+		/** Sort quests in reverse alphabetical order */
+		Z_TO_A(QuestOrders.sortZToA()),
+		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
+		OPTIMAL(QuestOrders.sortOptimalOrder()),
+		;
+
+		private final Comparator<QuestHelper> comparator;
+		QuestOrdering(Comparator<QuestHelper> comparator) {
+			this.comparator = comparator;
+		}
+
+		public List<QuestHelper> sort(Collection<QuestHelper> list) {
+			return list.stream().sorted(this).collect(Collectors.toList());
+		}
+
+		@Override
+		public int compare(QuestHelper o1, QuestHelper o2)
+		{
+			return comparator.compare(o1, o2);
+		}
 	}
 
-	enum QuestFilter
+	enum QuestFilter implements Predicate<QuestHelper>
 	{
-		HIDE_DONE,
-		HIDE_LACKING_REQ;
+		/** Show all quests */
+		SHOW_ALL(q -> true),
+		/** Show quests where the client meets the quest requirements */
+		SHOW_MEETS_REQS(QuestHelper::clientMeetsRequirements),
+		/** Show all free-to-play quests */
+		FREE_TO_PLAY(Quest.Type.F2P),
+		/** Show all members' quests */
+		MEMBERS(Quest.Type.P2P),
+		/** Show all miniquests (all miniquests are members' only) */
+		MINIQUEST(Quest.Type.MINIQUEST),
+		;
+
+		private final Predicate<QuestHelper> predicate;
+
+		QuestFilter(Predicate<QuestHelper> predicate) {
+			this.predicate = predicate;
+		}
+
+		@Override
+		public boolean test(QuestHelper quest) {
+			return predicate.test(quest);
+		}
+
+		public List<QuestHelper> test(Collection<QuestHelper> helpers) {
+
+			return helpers.stream().filter(this).collect(Collectors.toList());
+		}
 	}
 
 	@ConfigItem(
@@ -112,11 +163,33 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "filterListBy",
 		name = "Filter",
-		description = "Configures what to filter out in the quest list",
+		description = "Configures what to filter in the quest list",
 		position = 1
 	)
 	default QuestFilter filterListBy()
 	{
-		return QuestFilter.HIDE_DONE;
+		return QuestFilter.SHOW_ALL;
+	}
+
+	@ConfigItem(
+		keyName = "questDifficulty",
+		name = "Difficulty",
+		description = "Configures what quest difficulty to show",
+		position = 2
+	)
+	default Quest.Difficulty difficulty()
+	{
+		return Quest.Difficulty.NOVICE;
+	}
+
+	@ConfigItem(
+		keyName = "showCompletedQuests",
+		name = "Show Completed Quests",
+		description = "Will include completed quests in the other filter(s) that are chosen",
+		position = 3
+	)
+	default boolean showCompletedQuests()
+	{
+		return false;
 	}
 }

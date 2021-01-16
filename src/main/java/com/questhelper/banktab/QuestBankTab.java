@@ -372,10 +372,10 @@ public class QuestBankTab
 						widgetItems.put(widget, bankTabItem);
 
 						String quantityString = formatQuantity(bankTabItem.getQuantity());
-						int extraLength = formatQuantity(widget.getItemQuantity()).length() * 4;
-						int requirementLength = quantityString.length() * 4;
+						int extraLength = formatQuantity(widget.getItemQuantity()).length() * 5;
+						int requirementLength = quantityString.length() * 5;
 
-						int xPos = point.x + 4 + extraLength;
+						int xPos = point.x + 3 + extraLength;
 						int yPos = point.y - 1;
 						if (extraLength + requirementLength > 20)
 						{
@@ -415,7 +415,7 @@ public class QuestBankTab
 				addedWidgets.add(fakeItemWidget);
 
 
-				int requirementLength = quantityString.length() * 4;
+				int requirementLength = quantityString.length() * 5;
 				int xPos = adjXOffset + 8;
 				int yPos = adjYOffset - 1;
 				if (requirementLength > 20)

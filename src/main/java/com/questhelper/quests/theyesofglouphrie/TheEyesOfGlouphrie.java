@@ -39,6 +39,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
@@ -291,6 +292,12 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 5));
 		req.add(new SkillRequirement(Skill.MAGIC, 46));
 		return req;
+	}
+
+	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList("Evil creature (x6)"));
 	}
 
 	@Override

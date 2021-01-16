@@ -239,9 +239,12 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		enterCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2404, 3419, 0), "Go back to Brimstail's cave in west Tree Gnome Stronghold.", pestleAndMortar, mudRune, bucketOfSap, oakLog, mapleLog, saw, hammer);
 		talkToBrimstailAfterHazelmere = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstailAfterHazelmere.addDialogStep("I've visited Hazelmere, he told me all sorts of interesting things.");
+		talkToBrimstailAfterHazelmere.addSubSteps(enterCaveAgain);
 
-		grindMudRunes = new DetailedQuestStep(this, "Use the pestle and mortar on some mud runes", pestleHighlight, mudRuneHighlight);
-		useMudOnSap = new DetailedQuestStep(this, "Use the ground mud runes on the bucket of sap", groundMud, bucketOfSapHiglight);
+		grindMudRunes = new DetailedQuestStep(this, "Use the pestle and mortar on some mud runes.", pestleHighlight,
+			mudRuneHighlight);
+		useMudOnSap = new DetailedQuestStep(this, "Use the ground mud runes on the bucket of sap.", groundMud,
+			bucketOfSapHiglight);
 
 		repairMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Use the magic glue on oaknock's machine in the north of the cave.", magicGlue, oakLog, mapleLog, saw, hammer);
 
@@ -296,9 +299,12 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Learning", new ArrayList<>(Arrays.asList(enterCave, inspectBowl, inspectMachine,
-			talkToBrimstailAgain, talkToHazelmere, talkToBrimstailAfterHazelmere, repairMachine, talkToBrimstailForMoreDisks, unlockMachine))));
+			talkToBrimstailAgain, talkToHazelmere, talkToBrimstailAfterHazelmere, grindMudRunes, useMudOnSap, repairMachine,
+			talkToBrimstailAfterRepairing, talkToBrimstailForMoreDisks, unlockMachine))));
 
-		allSteps.add(new PanelDetails("Kill the spies", new ArrayList<>(Arrays.asList(talkToBrimstailAfterIllusion, killCreature1, killCreature5, killCreature6, killCreature4, killCreature3, killCreature2, talkToNarnode))));
+		allSteps.add(new PanelDetails("Kill the spies",
+			new ArrayList<>(Arrays.asList(talkToBrimstailAfterIllusion, killCreature1, killCreature5, killCreature6, killCreature4,
+				killCreature3, killCreature2, talkToNarnode))));
 
 
 		return allSteps;

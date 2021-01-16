@@ -42,9 +42,6 @@ public class QuestHelperBankTagService
 {
 	private final QuestHelperPlugin plugin;
 
-	private final HashMap<QuestHelper, ArrayList<Integer>> itemsForHelper = new HashMap<>();
-	private final HashMap<QuestHelper, ArrayList<BankTabItems>> bankItemsForHelper = new HashMap<>();
-
 	@Inject
 	public QuestHelperBankTagService(QuestHelperPlugin plugin)
 	{
@@ -53,13 +50,7 @@ public class QuestHelperBankTagService
 
 	public boolean shouldTag(int itemID)
 	{
-		QuestHelper currentQuest = plugin.getSelectedQuest();
-		if (!itemsForHelper.containsKey(currentQuest))
-		{
-			System.out.println("HMMMMM");
-			itemsForHelper.put(currentQuest, itemsToTag());
-		}
-		return itemsForHelper.get(currentQuest).contains(itemID);
+		return itemsToTag().contains(itemID);
 	}
 	
 	public ArrayList<Integer> itemsToTag()
@@ -95,23 +86,12 @@ public class QuestHelperBankTagService
 	
 	public ArrayList<BankTabItems> getPluginBankTagItemsForSections()
 	{
-		if (bankItemsForHelper.containsKey(plugin.getSelectedQuest()))
-		{
-			return bankItemsForHelper.get(plugin.getSelectedQuest());
-		}
-
 		ArrayList<BankTabItems> newList = new ArrayList<>();
-		if (plugin.getSelectedQuest() == null)
-		{
-			bankItemsForHelper.put(plugin.getSelectedQuest(), newList);
-			return newList;
-		}
 
 		ArrayList<PanelDetails> questSections = plugin.getSelectedQuest().getPanels();
 
 		if (questSections == null || questSections.isEmpty())
 		{
-			bankItemsForHelper.put(plugin.getSelectedQuest(), newList);
 			return newList;
 		}
 
@@ -138,8 +118,6 @@ public class QuestHelperBankTagService
 			}
 			newList.add(pluginItems);
 		}
-
-		bankItemsForHelper.put(plugin.getSelectedQuest(), newList);
 
 		return newList;
 	}

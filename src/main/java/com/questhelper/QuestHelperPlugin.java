@@ -212,8 +212,8 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.remove(questHelperWorldOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
 		clientToolbar.removeNavigation(navButton);
-		quests = null;
 		shutDownQuest();
+		quests = null;
 	}
 
 	@Subscribe

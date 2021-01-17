@@ -378,26 +378,29 @@ public class QuestBankTab
 						widget.setItemQuantityMode(1);
 						widgetItems.put(widget, bankTabItem);
 
-						String quantityString = formatQuantity(bankTabItem.getQuantity());
-						int extraLength = formatQuantity(widget.getItemQuantity()).length() * 5;
-						int requirementLength = quantityString.length() * 5;
 
-						int xPos = point.x + 3 + extraLength;
-						int yPos = point.y - 1;
-						if (extraLength + requirementLength > 20)
+						if (bankTabItem.getQuantity() > 0)
 						{
-							xPos = point.x;
-							yPos = point.y + 9;
+							String quantityString = formatQuantity(bankTabItem.getQuantity());
+							int extraLength = formatQuantity(widget.getItemQuantity()).length() * 5;
+							int requirementLength = quantityString.length() * 5;
+
+							int xPos = point.x + 3 + extraLength;
+							int yPos = point.y - 1;
+							if (extraLength + requirementLength > 20)
+							{
+								xPos = point.x;
+								yPos = point.y + 9;
+							}
+
+							addedWidgets.add(createText(itemContainer,
+								"/ " + quantityString,
+								Color.WHITE.getRGB(),
+								ITEM_HORIZONTAL_SPACING,
+								TEXT_HEIGHT - 3,
+								xPos,
+								yPos));
 						}
-
-						addedWidgets.add(createText(itemContainer,
-							"/ " + quantityString,
-							Color.WHITE.getRGB(),
-							ITEM_HORIZONTAL_SPACING,
-							TEXT_HEIGHT - 3,
-							xPos,
-							yPos));
-
 						totalItemsAdded++;
 						itemIds.removeAll(Collections.singletonList(widget.getItemId()));
 						break;
@@ -421,23 +424,25 @@ public class QuestBankTab
 				widgetItems.put(fakeItemWidget, bankTabItem);
 				addedWidgets.add(fakeItemWidget);
 
-
-				int requirementLength = quantityString.length() * 5;
-				int xPos = adjXOffset + 8;
-				int yPos = adjYOffset - 1;
-				if (requirementLength > 20)
+				if (bankTabItem.getQuantity() > 0)
 				{
-					xPos = adjXOffset;
-					yPos = adjYOffset + 9;
-				}
+					int requirementLength = quantityString.length() * 5;
+					int xPos = adjXOffset + 8;
+					int yPos = adjYOffset - 1;
+					if (requirementLength > 20)
+					{
+						xPos = adjXOffset;
+						yPos = adjYOffset + 9;
+					}
 
-				addedWidgets.add(createText(itemContainer,
-					"/ " + quantityString,
-					Color.WHITE.getRGB(),
-					ITEM_HORIZONTAL_SPACING,
-					TEXT_HEIGHT - 3,
-					xPos,
-					yPos));
+					addedWidgets.add(createText(itemContainer,
+						"/ " + quantityString,
+						Color.WHITE.getRGB(),
+						ITEM_HORIZONTAL_SPACING,
+						TEXT_HEIGHT - 3,
+						xPos,
+						yPos));
+				}
 				itemIds.removeAll(bankTabItem.getItemIDs());
 				totalItemsAdded++;
 			}
@@ -571,11 +576,16 @@ public class QuestBankTab
 			String name = widget.getName();
 			BankTabItem item = widgetItems.get(widget);
 
+			String quantity = QuantityFormatter.formatNumber(item.getQuantity()) + " x ";
+			if (item.getQuantity() == -1)
+			{
+				quantity = "some ";
+			}
 			final ChatMessageBuilder message = new ChatMessageBuilder()
 				.append("You need ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(QuantityFormatter.formatNumber(item.getQuantity()))
-				.append(" x ").append(Text.removeTags(name))
+				.append(quantity)
+				.append(Text.removeTags(name))
 				.append(".");
 
 			if (!widget.getText().isEmpty())

@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
@@ -159,6 +160,11 @@ public class QuestHelperPlugin extends Plugin
 
 	@Getter
 	private QuestHelper selectedQuest = null;
+
+	@Getter
+	@Inject
+	@Named("developerMode")
+	private boolean developerMode;
 
 	@Setter
 	private QuestHelper sidebarSelectedQuest = null;

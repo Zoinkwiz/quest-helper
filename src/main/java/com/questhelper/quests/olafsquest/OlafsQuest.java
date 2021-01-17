@@ -212,7 +212,7 @@ public class OlafsQuest extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToOlaf = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Talk to Olaf Hradson north east of Rellekka.");
-		talkToOlaf.addDialogStep("Okay, I'll help you out.");
+		talkToOlaf.addDialogStep("Yes.");
 		chopTree = new ObjectStep(this, ObjectID.WINDSWEPT_TREE_18137, new WorldPoint(2749, 3735, 0), "Chop a log from the Swaying Tree east of Olaf.", axe);
 		giveLogToOlaf = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Bring the logs to to Olaf Hradson north east of Rellekka.", windsweptLogs);
 		talkToIngrid = new NpcStep(this, NpcID.INGRID_HRADSON, new WorldPoint(2670, 3670, 0), "Talk to Ingrid Hradson in Rellekka.", crudeCarving);

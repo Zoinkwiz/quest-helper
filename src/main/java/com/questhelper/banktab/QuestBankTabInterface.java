@@ -128,7 +128,7 @@ public class QuestBankTabInterface
 
 		// If click a base tab, close
 		boolean clickedTabTag = menuOption.startsWith("View tab") && !event.getMenuTarget().equals("quest-helper");
-		boolean clickedOtherTab =  menuOption.equals("View all items") || menuOption.startsWith("View tag tab");
+		boolean clickedOtherTab = menuOption.equals("View all items") || menuOption.startsWith("View tag tab");
 		if (questTabActive && (clickedTabTag || clickedOtherTab))
 		{
 			closeTab();

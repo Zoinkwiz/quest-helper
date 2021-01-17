@@ -175,7 +175,14 @@ public class QuestBankTab
 				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 				if (bankTitle != null)
 				{
-					bankTitle.setText("Tab <col=ff0000>Quest Helper</col>");
+					if (questHelper.getSelectedQuest() != null)
+					{
+						bankTitle.setText("Tab <col=ff0000>" + questHelper.getSelectedQuest().getQuest().getName() + "</col>");
+					}
+					else
+					{
+						bankTitle.setText("Tab <col=ff0000>Quest Helper</col>");
+					}
 				}
 			}
 		}

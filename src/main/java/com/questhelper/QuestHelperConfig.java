@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("questhelper")
 public interface QuestHelperConfig extends Config
@@ -67,6 +68,13 @@ public interface QuestHelperConfig extends Config
 			return comparator.compare(o1, o2);
 		}
 	}
+
+	@ConfigSection(
+		position = 1,
+		name = "Quest Filters",
+		description = "Determines which quests should be shown via the selected filter(s)"
+	)
+	String filterSection = "filterSection";
 
 	enum QuestFilter implements Predicate<QuestHelper>
 	{
@@ -153,7 +161,8 @@ public interface QuestHelperConfig extends Config
 		keyName = "orderListBy",
 		name = "Quest order",
 		description = "Configures which way to order the quest list",
-		position = 1
+		position = 3,
+		section = filterSection
 	)
 	default QuestOrdering orderListBy()
 	{
@@ -164,7 +173,8 @@ public interface QuestHelperConfig extends Config
 		keyName = "filterListBy",
 		name = "Filter",
 		description = "Configures what to filter in the quest list",
-		position = 1
+		position = 1,
+		section = filterSection
 	)
 	default QuestFilter filterListBy()
 	{
@@ -175,7 +185,8 @@ public interface QuestHelperConfig extends Config
 		keyName = "questDifficulty",
 		name = "Difficulty",
 		description = "Configures what quest difficulty to show",
-		position = 2
+		position = 2,
+		section = filterSection
 	)
 	default Quest.Difficulty difficulty()
 	{
@@ -186,7 +197,8 @@ public interface QuestHelperConfig extends Config
 		keyName = "showCompletedQuests",
 		name = "Show Completed Quests",
 		description = "Will include completed quests in the other filter(s) that are chosen",
-		position = 3
+		position = 4,
+		section = filterSection
 	)
 	default boolean showCompletedQuests()
 	{

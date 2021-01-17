@@ -204,4 +204,15 @@ public interface QuestHelperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "debugColor",
+		name = "Debug Color",
+		description = "debug",
+		hidden = true
+	)
+	default Color debugColor()
+	{
+		return Color.MAGENTA;
+	}
 }

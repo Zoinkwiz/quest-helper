@@ -200,38 +200,15 @@ public class QuestBankTab
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		switch (eventName)
+		if ("getSearchingTagTab".equals(eventName))
 		{
-			case "bankSearchFilter":
-				final int itemId = intStack[intStackSize - 1];
-
-				if (!questBankTabInterface.isQuestTabActive())
-				{
-					return;
-				}
-				if (client.getVar(Varbits.CURRENT_BANK_TAB) != 0)
-				{
-					client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
-				}
-
-				if (questHelper.getBankTagService().shouldTag(itemId))
-				{
-					intStack[intStackSize - 2] = 1;
-				}
-				else
-				{
-					intStack[intStackSize - 2] = 0;
-				}
-				break;
-			case "getSearchingTagTab":
-				intStack[intStackSize - 1] = questBankTabInterface.isQuestTabActive() ? 1 : 0;
-				if (questBankTabInterface.isQuestTabActive())
-				{
-					// As we're on the quest helper tab, we don't need to check again for tab tags
-					// Change the name of the event so as to not proc another check
-					event.setEventName("getSearchingQuestHelperTab");
-				}
-				break;
+			intStack[intStackSize - 1] = questBankTabInterface.isQuestTabActive() ? 1 : 0;
+			if (questBankTabInterface.isQuestTabActive())
+			{
+				// As we're on the quest helper tab, we don't need to check again for tab tags
+				// Change the name of the event so as to not proc another check
+				event.setEventName("getSearchingQuestHelperTab");
+			}
 		}
 	}
 
@@ -272,7 +249,7 @@ public class QuestBankTab
 			return;
 		}
 
-		if (event.getScriptId() != ScriptID.BANKMAIN_FINISHBUILDING)
+		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
 		{
 			return;
 		}

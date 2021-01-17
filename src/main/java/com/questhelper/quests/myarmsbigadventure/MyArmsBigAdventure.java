@@ -434,8 +434,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(climbingBoots, ugthanki3, superCompost8, rake, dibber, spade, bucket,
-			cureOrCompost));
+		return new ArrayList<>(Arrays.asList(climbingBoots, ugthanki3, superCompost8, rake, dibber, spade, bucket));
 	}
 
 

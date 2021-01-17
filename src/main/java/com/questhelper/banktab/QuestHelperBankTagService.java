@@ -48,11 +48,6 @@ public class QuestHelperBankTagService
 		this.plugin = plugin;
 	}
 
-	public boolean shouldTag(int itemID)
-	{
-		return itemsToTag().contains(itemID);
-	}
-	
 	public ArrayList<Integer> itemsToTag()
 	{
 		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections();
@@ -138,8 +133,6 @@ public class QuestHelperBankTagService
 			}
 			if (logicType == LogicType.OR)
 			{
-				// If any of the requirements pass, use it
-				// Else, use first one?
 				boolean foundMatch = false;
 				for (ItemRequirement requirement : requirements)
 				{
@@ -158,7 +151,12 @@ public class QuestHelperBankTagService
 		}
 		else
 		{
-			if (!itemRequirement.getDisplayItemIds().contains(-1))
+			if (itemRequirement.getDisplayItemId() != null)
+			{
+				pluginItems.addItems(new BankTabItem(itemRequirement.getQuantity(), itemRequirement.getName(),
+					itemRequirement.getId(), itemRequirement.getTip(), itemRequirement.getDisplayItemId()));
+			}
+			else if (!itemRequirement.getDisplayItemIds().contains(-1))
 			{
 				pluginItems.addItems(makeBankTabItem(itemRequirement));
 			}
@@ -170,7 +168,6 @@ public class QuestHelperBankTagService
 		ArrayList<Integer> itemIds = item.getDisplayItemIds();
 
 		Integer displayId = itemIds.get(0);
-
 
 		for (Integer itemId : itemIds)
 		{
@@ -193,15 +190,5 @@ public class QuestHelperBankTagService
 		}
 
 		return bankContainer.contains(itemID);
-	}
-
-	public boolean shouldSortTabIntoSections()
-	{
-		return true;
-	}
-
-	public boolean shouldShowMissingItems()
-	{
-		return true;
 	}
 }

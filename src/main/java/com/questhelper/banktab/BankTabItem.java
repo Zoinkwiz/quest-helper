@@ -42,6 +42,9 @@ public class BankTabItem
 	private final ArrayList<Integer> itemIDs;
 
 	@Getter
+	private final Integer displayID;
+
+	@Getter
 	private final String details;
 
 	public BankTabItem(int quantity, String text, int itemID, String details)
@@ -50,5 +53,15 @@ public class BankTabItem
 		this.text = text;
 		this.itemIDs = new ArrayList<>(Collections.singleton(itemID));
 		this.details = details;
+		this.displayID = null;
+	}
+
+	public BankTabItem(int quantity, String text, int itemID, String details, int displayID)
+	{
+		this.quantity = quantity;
+		this.text = text;
+		this.itemIDs = new ArrayList<>(Collections.singleton(itemID));
+		this.details = details;
+		this.displayID = displayID;
 	}
 }

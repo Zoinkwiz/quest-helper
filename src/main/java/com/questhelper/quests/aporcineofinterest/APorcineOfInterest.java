@@ -25,6 +25,7 @@
 package com.questhelper.quests.aporcineofinterest;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -108,6 +109,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		reinforcedGoggles.setTip("You can get another pair from Spria");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		hoof = new ItemRequirement("Sourhog foot", ItemID.SOURHOG_FOOT);
 		hoof.setTip("You can get another from Sourhog's corpse in his cave");

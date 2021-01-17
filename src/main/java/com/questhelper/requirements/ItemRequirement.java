@@ -46,6 +46,7 @@ public class ItemRequirement extends Requirement
 	private final String name;
 
 	@Setter
+	@Getter
 	private Integer displayItemId;
 
 	@Setter

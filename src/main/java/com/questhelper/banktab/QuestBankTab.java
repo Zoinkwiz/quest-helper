@@ -32,6 +32,7 @@ import com.questhelper.QuestHelperPlugin;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -186,7 +187,7 @@ public class QuestBankTab
 				}
 			}
 		}
-	    else if (scriptId == ScriptID.BANKMAIN_SEARCH_TOGGLE)
+		else if (scriptId == ScriptID.BANKMAIN_SEARCH_TOGGLE)
 		{
 			questBankTabInterface.handleSearch();
 		}
@@ -343,7 +344,7 @@ public class QuestBankTab
 			{
 				for (Widget widget : itemContainer.getDynamicChildren())
 				{
-					if (!widget.isHidden() && (bankTabItem.getItemIDs().contains(widget.getItemId())))
+					if (!widget.isHidden() && widget.getOpacity() != 150 && (bankTabItem.getItemIDs().contains(widget.getItemId())))
 					{
 						foundItem = true;
 						if (totalItemsAdded == 0)
@@ -396,13 +397,13 @@ public class QuestBankTab
 				int adjXOffset = (totalItemsAdded % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
 				int adjYOffset = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
 
-				String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
 				Widget fakeItemWidget = createMissingItem(itemContainer, bankTabItem, adjXOffset, adjYOffset);
 				widgetItems.put(fakeItemWidget, bankTabItem);
 				addedWidgets.add(fakeItemWidget);
 
 				if (bankTabItem.getQuantity() > 0)
 				{
+					String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
 					int requirementLength = quantityString.length() * 5;
 					int xPos = adjXOffset + 8;
 					int yPos = adjYOffset - 1;
@@ -443,7 +444,7 @@ public class QuestBankTab
 		{
 			for (Widget widget : itemContainer.getDynamicChildren())
 			{
-				if (!widget.isHidden() && widget.getItemId() == itemID)
+				if (!widget.isHidden() && widget.getOpacity() != 150 && widget.getItemId() == itemID)
 				{
 					if (totalItemsAdded == 0)
 					{
@@ -515,12 +516,17 @@ public class QuestBankTab
 		widget.setOriginalY(y);
 
 		ArrayList<Integer> itemIDs = bankTabItem.getItemIDs();
+		if (bankTabItem.getDisplayID() != null)
+		{
+			itemIDs = new ArrayList<>(Collections.singletonList(bankTabItem.getDisplayID()));
+		}
+
 		if (itemIDs.size() == 0)
 		{
 			itemIDs.add(ItemID.CAKE_OF_GUIDANCE);
 		}
 
-		widget.setItemId(bankTabItem.getItemIDs().get(0));
+		widget.setItemId(itemIDs.get(0));
 		widget.setName("<col=ff9040>" + bankTabItem.getText() + "</col>");
 		if (bankTabItem.getDetails() != null)
 		{
@@ -568,7 +574,7 @@ public class QuestBankTab
 			if (!widget.getText().isEmpty())
 			{
 				message.append(ChatColorType.NORMAL)
-				.append(" " + widget.getText() + ".");
+					.append(" " + widget.getText() + ".");
 			}
 
 			chatMessageManager.queue(QueuedMessage.builder()

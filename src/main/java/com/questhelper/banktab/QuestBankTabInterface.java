@@ -93,7 +93,11 @@ public class QuestBankTabInterface
 			QUEST_BUTTON_SIZE - 6,
 			QUEST_BUTTON_X + 3, QUEST_BUTTON_Y + 3);
 
-		questTabActive = false;
+		if (questTabActive)
+		{
+			questTabActive = false;
+			activateTab();
+		}
 	}
 
 	public void destroy()

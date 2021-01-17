@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -139,6 +140,17 @@ public class RFDStart extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Help the Cook", new ArrayList<>(Arrays.asList(talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom)), eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast));
 		return allSteps;
+	}
+
+	@Override
+	public QuestState getState(Client client)
+	{
+		int questState = client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId());
+		if (questState >= 3)
+		{
+			return QuestState.FINISHED;
+		}
+		return getQuest().getState(client);
 	}
 
 	@Override

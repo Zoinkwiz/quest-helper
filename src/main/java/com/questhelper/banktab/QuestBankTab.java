@@ -381,13 +381,14 @@ public class QuestBankTab
 
 						if (bankTabItem.getQuantity() > 0)
 						{
-							String quantityString = formatQuantity(bankTabItem.getQuantity());
-							int extraLength = formatQuantity(widget.getItemQuantity()).length() * 5;
-							int requirementLength = quantityString.length() * 5;
+							String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
+							int extraLength =
+								QuantityFormatter.quantityToStackSize(widget.getItemQuantity()).length() * 6;
+							int requirementLength = quantityString.length() * 6;
 
-							int xPos = point.x + 3 + extraLength;
+							int xPos = point.x + 2 + extraLength;
 							int yPos = point.y - 1;
-							if (extraLength + requirementLength > 20)
+							if (extraLength + requirementLength > 24)
 							{
 								xPos = point.x;
 								yPos = point.y + 9;
@@ -418,8 +419,7 @@ public class QuestBankTab
 				int adjXOffset = (totalItemsAdded % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
 				int adjYOffset = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
 
-				String quantityString = formatQuantity(bankTabItem.getQuantity());
-
+				String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
 				Widget fakeItemWidget = createMissingItem(itemContainer, bankTabItem, adjXOffset, adjYOffset);
 				widgetItems.put(fakeItemWidget, bankTabItem);
 				addedWidgets.add(fakeItemWidget);
@@ -612,23 +612,10 @@ public class QuestBankTab
 		widget.setText(text);
 		widget.setFontId(FontID.PLAIN_11);
 		widget.setTextColor(color);
+		widget.setTextShadowed(true);
 
 		widget.revalidate();
 
 		return widget;
-	}
-
-	private static String formatQuantity(int quantity)
-	{
-		if (quantity < 100000)
-		{
-			return String.valueOf(quantity);
-		}
-		if (quantity < 10000000)
-		{
-			return quantity / 1000 + "K";
-		}
-
-		return quantity / 1000000 + "M";
 	}
 }

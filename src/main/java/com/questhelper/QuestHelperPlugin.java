@@ -34,6 +34,8 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.questhelper.questhelpers.Quest;
+import com.questhelper.banktab.QuestBankTab;
+import com.questhelper.banktab.QuestHelperBankTagService;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,16 +71,23 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+import net.runelite.client.plugins.bank.BankSearch;
+import net.runelite.client.plugins.banktags.BankTagsPlugin;
+import net.runelite.client.plugins.banktags.TagManager;
+import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -90,6 +99,7 @@ import net.runelite.client.util.Text;
 	description = "Helps you with questing",
 	tags = { "quest", "helper", "overlay" }
 )
+@PluginDependency(value = BankTagsPlugin.class)
 @Slf4j
 public class QuestHelperPlugin extends Plugin
 {
@@ -131,12 +141,19 @@ public class QuestHelperPlugin extends Plugin
 
 	private final BankItems bankItems = new BankItems();
 
+	@Getter
+	private QuestHelperBankTagService bankTagService;
+
+	private QuestBankTab bankTagsMain;
+
+	@Getter
 	@Inject
 	private Client client;
 
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Getter
 	@Inject
 	private ClientThread clientThread;
 
@@ -154,6 +171,26 @@ public class QuestHelperPlugin extends Plugin
 
 	@Inject
 	private QuestHelperWorldOverlay questHelperWorldOverlay;
+
+	@Getter
+	@Inject
+	private BankSearch bankSearch;
+
+	@Getter
+	@Inject
+	private TagManager tagManager;
+
+	@Getter
+	@Inject
+	private TabInterface tabInterface;
+
+	@Getter
+	@Inject
+	private ItemManager itemManager;
+
+	@Getter
+	@Inject
+	ChatMessageManager chatMessageManager;
 
 	@Inject
 	private QuestHelperConfig config;
@@ -191,6 +228,12 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
+		bankTagService = new QuestHelperBankTagService(this);
+		bankTagsMain = new QuestBankTab(this);
+		bankTagsMain.startUp();
+		injector.injectMembers(bankTagsMain);
+		eventBus.register(bankTagsMain);
+
 		quests = scanAndInstantiate(getClass().getClassLoader());
 		overlayManager.add(questHelperOverlay);
 		overlayManager.add(questHelperWorldOverlay);
@@ -217,11 +260,14 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(bankTagsMain);
 		overlayManager.remove(questHelperOverlay);
 		overlayManager.remove(questHelperWorldOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
 		clientToolbar.removeNavigation(navButton);
-		shutDownQuest();
+		shutDownQuest(false);
+		bankTagService = null;
+		bankTagsMain = null;
 		quests = null;
 	}
 
@@ -279,7 +325,7 @@ public class QuestHelperPlugin extends Plugin
 			bankItems.setItems(null);
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
-				shutDownQuest();
+				shutDownQuest(true);
 			}
 		}
 
@@ -301,7 +347,7 @@ public class QuestHelperPlugin extends Plugin
 			&& selectedQuest.updateQuest()
 			&& selectedQuest.getCurrentStep() == null)
 		{
-			shutDownQuest();
+			shutDownQuest(true);
 		}
 	}
 
@@ -349,7 +395,7 @@ public class QuestHelperPlugin extends Plugin
 					break;
 				case MENUOP_STOPHELPER:
 					event.consume();
-					shutDownQuest();
+					shutDownQuest(true);
 					break;
 				case MENUOP_PHOENIXGANG:
 					event.consume();
@@ -559,7 +605,7 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		shutDownQuest();
+		shutDownQuest(true);
 
 		if (!questHelper.isCompleted())
 		{
@@ -568,9 +614,10 @@ public class QuestHelperPlugin extends Plugin
 			selectedQuest.startUp(config);
 			if (selectedQuest.getCurrentStep() == null)
 			{
-				shutDownQuest();
+				shutDownQuest(false);
 				return;
 			}
+			bankTagsMain.startUp();
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
@@ -589,18 +636,26 @@ public class QuestHelperPlugin extends Plugin
 		if (selectedQuest != null)
 		{
 			selectedQuest.shutDown();
+			bankTagsMain.shutDown();
 			SwingUtilities.invokeLater(() -> panel.removeQuest());
 			eventBus.unregister(selectedQuest);
 			selectedQuest = null;
 		}
 	}
 
-	private void shutDownQuest()
+	private void shutDownQuest(boolean shouldUpdateList)
 	{
 		if (selectedQuest != null)
 		{
 			selectedQuest.shutDown();
-			updateQuestList();
+			if (shouldUpdateList)
+			{
+				updateQuestList();
+			}
+			if (bankTagsMain != null)
+			{
+				bankTagsMain.shutDown();
+			}
 			SwingUtilities.invokeLater(() -> panel.removeQuest());
 			eventBus.unregister(selectedQuest);
 			selectedQuest = null;

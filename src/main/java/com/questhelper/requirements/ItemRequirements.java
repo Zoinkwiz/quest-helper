@@ -38,6 +38,7 @@ public class ItemRequirements extends ItemRequirement
 	@Getter
 	ArrayList<ItemRequirement> itemRequirements = new ArrayList<>();
 
+	@Getter
 	LogicType logicType;
 
 	public ItemRequirements(String name, ItemRequirement... itemRequirements)

@@ -46,6 +46,9 @@ public class ItemRequirement extends Requirement
 	private final String name;
 
 	@Setter
+	private Integer displayItemId;
+
+	@Setter
 	@Getter
 	private int quantity;
 
@@ -318,5 +321,34 @@ public class ItemRequirement extends Requirement
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
 		return check(client, checkConsideringSlotRestrictions, null);
+	}
+
+	public boolean checkBank(Client client)
+	{
+		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+		if (bankContainer == null)
+		{
+			return false;
+		}
+
+		for (Integer itemId : getDisplayItemIds())
+		{
+			if (bankContainer.contains(itemId))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public ArrayList<Integer> getDisplayItemIds()
+	{
+		if (displayItemId == null)
+		{
+			return getAllIds();
+		}
+
+		return new ArrayList<>(Collections.singletonList(displayItemId));
 	}
 }

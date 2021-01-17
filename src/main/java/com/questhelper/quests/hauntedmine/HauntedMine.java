@@ -25,6 +25,7 @@
 package com.questhelper.quests.hauntedmine;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -64,7 +65,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class HauntedMine extends BasicQuestHelper
 {
-	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear, zealotsKeyHighlighted;
+	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear,
+	zealotsKeyHighlighted, food;
 
 	ConditionForStep askedAboutKey, hasKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve, hasGlowingFungus, hasChisel,
 		inLiftRoom, inLevel2North, inLevel3North, inLevel2South, inLevel3South, inCartRoom, inCollectRoom, leverAWrong, leverBWrong,
@@ -174,7 +176,11 @@ public class HauntedMine extends BasicQuestHelper
 
 		crystalMineKey = new ItemRequirement("Crystal-mine key", ItemID.CRYSTALMINE_KEY);
 
-		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
 
 	public void loadZones()
@@ -386,12 +392,15 @@ public class HauntedMine extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToZealot, pickpocketZealot)), combatGear));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToZealot, pickpocketZealot)),
+			combatGear, food));
 		allSteps.add(new PanelDetails("Getting a light source",
-			new ArrayList<>(Arrays.asList(enterMine, goDownFromLevel1South, goDownFromLevel2South, goDownToFungusRoom, pickFungus, putFungusInCart, solvePuzzle, readPanel, goUpFromFungusRoom))));
+			new ArrayList<>(Arrays.asList(enterMine, goDownFromLevel1South, goDownFromLevel2South, goDownToFungusRoom,
+				pickFungus, putFungusInCart, solvePuzzle, readPanel, goUpFromFungusRoom))));
 		allSteps.add(new PanelDetails("Getting the salve crystals",
 			new ArrayList<>(Arrays.asList(enterMineNorth, goDownLevel1North, goDownLevel2North, goDownToCollectFungus,
-				collectFungus, goUpFromCollectRoom, goDownFromLevel3NorthEast, pickUpChisel, useKeyOnValve, goDownLift, goDownToDayth, tryToPickUpKey, pickUpKey, goUpFromDayth, goDownToCrystals, cutCrystal))));
+				collectFungus, goUpFromCollectRoom, goDownFromLevel3NorthEast, pickUpChisel, useKeyOnValve, goDownLift,
+				goDownToDayth, tryToPickUpKey, pickUpKey, goUpFromDayth, goDownToCrystals, cutCrystal))));
 		return allSteps;
 	}
 

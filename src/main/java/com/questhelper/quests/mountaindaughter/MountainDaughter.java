@@ -25,6 +25,7 @@
 package com.questhelper.quests.mountaindaughter;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.conditional.NpcHintArrowCondition;
@@ -190,6 +191,7 @@ public class MountainDaughter extends BasicQuestHelper
 		muddyRocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
 		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.getSlayerRings());
 		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	private void loadConditions()

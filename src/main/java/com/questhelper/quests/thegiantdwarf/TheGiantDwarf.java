@@ -24,16 +24,19 @@
  */
 package com.questhelper.quests.thegiantdwarf;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.Spellbook;
 import com.questhelper.requirements.SpellbookRequirement;
+import com.questhelper.requirements.WeightRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -44,6 +47,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.Operation;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.WidgetTextCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
@@ -51,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -69,6 +74,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 		silverOre10, goldOre10, mithrilOre10, bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10,
 		weightBelow30, inventorySpace, coins200, bookOnCostumes, exquisiteClothes, exquisiteBoots, dwarvenBattleaxe,
 		leftBoot, dwarvenBattleaxeBroken, dwarvenBattleaxeSapphires;
+
+	Requirement weightBelow30Check, inventorySpaceCheck;
 
 	Zone keldagrim, keldagrim2, trollRoom, dwarfEntrance, consortium;
 
@@ -118,10 +125,13 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		// Recommended
 		houseTeleport = new ItemRequirement("A house teleport if your house is in Rimmington and if you have no faster way to Mudskipper Point", -1, -1);
-		rellekkaTeleport = new ItemRequirement("A Camelot/Rellekka teleport (for starting the quest)", -1, -1);
+		rellekkaTeleport = new ItemRequirement("A Camelot/Rellekka teleport (for starting the quest)", ItemID.ENCHANTED_LYRE5);
+		rellekkaTeleport.addAlternates(ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2,
+			ItemID.ENCHANTED_LYRE1, ItemID.RELLEKKA_TELEPORT, ItemID.CAMELOT_TELEPORT);
 		fairyRings = new ItemRequirement("Access to fairy rings", -1, -1);
-		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", -1, -1);
-		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", -1, -1);
+		fairyRings.setDisplayItemId(ItemID.FAIRY_RING);
+		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", ItemCollections.getStaminaPotions());
+		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", ItemID.VARROCK_TELEPORT);
 		clay10 = new ItemRequirement("Clay", ItemID.CLAY, 10);
 		copperOre10 = new ItemRequirement("Copper ore", ItemID.COPPER_ORE, 10);
 		tinOre10 = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 10);
@@ -140,6 +150,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 		// Extra
 		weightBelow30 = new ItemRequirement("Weight below 30 kg", -1, -1);
 		inventorySpace = new ItemRequirement("Free inventory slot", -1);
+
+		weightBelow30Check = new WeightRequirement("Weight below 30 kg", 30, Operation.LESS_EQUAL);
+		inventorySpaceCheck = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 1);
 
 		// Quest
 		bookOnCostumes = new ItemRequirement("Book on costumes", ItemID.BOOK_ON_COSTUMES);
@@ -284,7 +297,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToLibrarian = new NpcStep(this, NpcID.LIBRARIAN, new WorldPoint(2861, 10226, 0), "Talk to the Librarian.");
 		talkToLibrarian.addDialogStep("Do you know anything about King Alvis' clothes?");
 
-		climbBookcase = new ObjectStep(this, ObjectID.BOOKCASE_6092, new WorldPoint(2859, 10228, 0), "Climb any bookcase to find a book on costumes.", weightBelow30);
+		climbBookcase = new ObjectStep(this, ObjectID.BOOKCASE_6092, new WorldPoint(2859, 10228, 0),
+			"Climb any bookcase to find a book on costumes.", weightBelow30Check);
 
 		talkToVermundiWithBook = new NpcStep(this, NpcID.VERMUNDI, new WorldPoint(2887, 10188, 0), "Talk to Vermundi with the book on costumes.", bookOnCostumes);
 		talkToVermundiWithBook.addDialogStep("Yes, about those special clothes again...");
@@ -307,7 +321,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		takeLeftBoot = new DetailedQuestStep(this, new WorldPoint(2838, 10220, 0), "Take the Left boot when Dromund isn't looking.");
 
-		takeRightBoot = new DetailedQuestStep(this, new WorldPoint(2836, 10226, 0), "Take the Right boot from outside his window when he isn't looking using Telekinetic Grab.", lawRune, airRune);
+		takeRightBoot = new DetailedQuestStep(this, new WorldPoint(2836, 10226, 0), "Take the Right boot from outside" +
+			" his window when he isn't looking using Telekinetic Grab.", lawRune, airRune, inventorySpaceCheck);
 
 		// An axe fit for a king
 		talkToSantiri = new NpcStep(this, NpcID.SANTIRI, new WorldPoint(2828, 10231, 0), "Talk to Santiri.");

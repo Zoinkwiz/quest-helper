@@ -26,6 +26,7 @@ package com.questhelper.quests.grimtales;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -68,7 +69,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 public class GrimTales extends BasicQuestHelper
 {
 	ItemRequirement tarrominUnf2, tarrominUnf, dibber, can, axe, combatGear, griffinFeather, rupertsHelmet, miazrqasPendant, goldenGoblin, houseKey, ogleroot, shrinkPotion,
-		shrinkPotionHighlight, tarrominUnfHighlight, oglerootHighlight, magicBeans, canHighlight;
+		shrinkPotionHighlight, tarrominUnfHighlight, oglerootHighlight, magicBeans, canHighlight, food;
 
 	ConditionForStep inHouse, inBasement, grimgnashAsleep, hasFeather, givenFeather, inTowerBase, inTowerUpstairs, talkedToDrainOnce, beardDropped, talkedToRupert, talkedToMiazrqa,
 		inPianoWidget, pressed1, pressed2, pressed3, pressed4, pressed5, pressed6, pressed7, pressed8, unlockedPiano, searchedPiano, hasShrinkPotion, inMouseRoom1, inMouseRoom2, inMouseRoom3,
@@ -182,6 +183,10 @@ public class GrimTales extends BasicQuestHelper
 		can.addAlternates(ItemID.WATERING_CAN2, ItemID.WATERING_CAN3, ItemID.WATERING_CAN4, ItemID.WATERING_CAN5, ItemID.WATERING_CAN6, ItemID.WATERING_CAN7, ItemID.WATERING_CAN8, ItemID.GRICOLLERS_CAN);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+
 		griffinFeather = new ItemRequirement("Griffin feather", ItemID.GRIFFIN_FEATHER);
 		rupertsHelmet = new ItemRequirement("Rupert's helmet", ItemID.RUPERTS_HELMET);
 		miazrqasPendant = new ItemRequirement("Miazrqa's pendant", ItemID.MIAZRQAS_PENDANT);
@@ -383,10 +388,17 @@ public class GrimTales extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToSylas))));
-		allSteps.add(new PanelDetails("Griffin feather", new ArrayList<>(Arrays.asList(talkToGrimgnash, stealFeather, returnFeatherToSylas))));
-		allSteps.add(new PanelDetails("Rupert's helmet", new ArrayList<>(Arrays.asList(climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard, talkToMiazrqa,
-			enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion, climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet)), tarrominUnf2));
-		allSteps.add(new PanelDetails("Golden goblin", new ArrayList<>(Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin, giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish)), combatGear, dibber, can, axe, shrinkPotion));
+		allSteps.add(new PanelDetails("Griffin feather",
+			new ArrayList<>(Arrays.asList(talkToGrimgnash, stealFeather, returnFeatherToSylas))));
+		allSteps.add(new PanelDetails("Rupert's helmet",
+			new ArrayList<>(Arrays.asList(climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard,
+				talkToMiazrqa, enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion,
+				climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet)),
+			tarrominUnf2, food));
+		allSteps.add(new PanelDetails("Golden goblin",
+			new ArrayList<>(Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin,
+				giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish)), combatGear, food, dibber, can,
+			axe, shrinkPotion));
 		return allSteps;
 	}
 

@@ -24,7 +24,9 @@
  */
 package com.questhelper.quests.mourningsendpartii;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -420,8 +422,10 @@ public class MourningsEndPartII extends BasicQuestHelper
 		ropeHighlight.setHighlightInInventory(true);
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
-		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee", -1, -1);
+		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee",
+			ItemCollections.getPrayerPotions(), -1);
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY);
 		newKey.setTip("You can get another from Essyllt's desk");
@@ -435,7 +439,6 @@ public class MourningsEndPartII extends BasicQuestHelper
 		newlyMadeCrystalHighlight = new ItemRequirement("Newly made crystal", ItemID.NEWLY_MADE_CRYSTAL);
 		newlyMadeCrystalHighlight.setTip("You can get another from Arianwyn in Llyeta");
 		newlyMadeCrystalHighlight.setHighlightInInventory(true);
-
 
 		newlyIfOneTrip = new ItemRequirement("Newly made crystal (if already have death talisman)", ItemID.NEWLY_MADE_CRYSTAL);
 

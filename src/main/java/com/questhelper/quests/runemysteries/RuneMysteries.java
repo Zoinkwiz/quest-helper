@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.runemysteries;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.steps.ConditionalStep;
@@ -99,7 +100,7 @@ public class RuneMysteries extends BasicQuestHelper
 		notes = new ItemRequirement("Notes", ItemID.NOTES);
 		notes.setTip("You can get another from Aubury if you lost them");
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		wizardTeleport = new ItemRequirement("A teleport to the Wizard's Tower", -1, -1);
+		wizardTeleport = new ItemRequirement("A teleport to the Wizard's Tower", ItemCollections.getNecklaceOfPassages());
 	}
 
 	public void setupConditions()

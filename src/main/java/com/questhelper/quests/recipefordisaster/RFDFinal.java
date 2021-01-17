@@ -28,6 +28,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -109,6 +110,7 @@ public class RFDFinal extends BasicQuestHelper
 		restorePotions = new ItemRequirement("Restore potions for Karamel", ItemID.SUPER_RESTORE1);
 		restorePotions.addAlternates(ItemID.SUPER_RESTORE2, ItemID.SUPER_RESTORE3, ItemID.SUPER_RESTORE4, ItemID.RESTORE_POTION1, ItemID.RESTORE_POTION2, ItemID.RESTORE_POTION3, ItemID.RESTORE_POTION4);
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 	}
 

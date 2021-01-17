@@ -26,6 +26,7 @@ package com.questhelper.quests.demonslayer;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -131,13 +132,15 @@ public class DemonSlayer extends BasicQuestHelper
 		bones = new ItemRequirement("Bones (UNNOTED)", ItemID.BONES, 25);
 		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
 		silverlightEquipped = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true);
-		combatGear = new ItemRequirement("Armour + food", -1, -1);
+		combatGear = new ItemRequirement("Armour", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getArmour());
 
 		bucketOfWaterOptional = new ItemRequirement("Bucket of water (obtainable during quest)", ItemID.BUCKET_OF_WATER);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardsTowerTeleport = new ItemRequirement("Teleport to the Wizards' Tower", ItemID.NECKLACE_OF_PASSAGE5);
 		coin = new ItemRequirement("Coin", ItemID.COINS_995);
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
 
 	public void setupConditions()

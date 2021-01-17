@@ -25,6 +25,8 @@
 package com.questhelper.quests.dragonslayer;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
@@ -61,9 +63,10 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class DragonSlayer extends BasicQuestHelper
 {
-	ItemRequirement unfiredBowl, mindBomb, lobsterPot, silk, telegrabOrTenK, hammer, antidragonShield, planks3, planks2, planks1, nails90, nails60, nails30, twoThousandCoins,
-		mapPart1, mapPart2, mapPart3, fullMap, melzarsKey, ratKey, ghostKey, skeletonKey, zombieKey, melzarKey, demonKey, combatGear, antidragonShieldEquipped, antifirePotion,
-		ringsOfRecoil, chronicle, edgevilleTeleport, rimmingtonTeleport;
+	ItemRequirement unfiredBowl, mindBomb, lobsterPot, silk, telegrabOrTenK, hammer, antidragonShield, planks3, planks2, planks1,
+		nails90, nails60, nails30, twoThousandCoins, mapPart1, mapPart2, mapPart3, fullMap, melzarsKey, ratKey, ghostKey,
+		skeletonKey, zombieKey, melzarKey, demonKey, combatGear, antidragonShieldEquipped, antifirePotion, ringsOfRecoil,
+		chronicle, edgevilleTeleport, rimmingtonTeleport, food;
 
 	ConditionForStep askedAboutShip, askedAboutShield, askedAboutMelzar, askedAboutThalzar, askedAboutLozar, askedAllQuestions, askedOracleAboutMap,
 		inDwarvenMines, silkUsed, lobsterPotUsed, mindBombUsed, unfiredBowlUsed, thalzarDoorOpened, thalzarChest2Nearby, hasMapPart1, hasMapPart2,
@@ -196,7 +199,9 @@ public class DragonSlayer extends BasicQuestHelper
 		mindBomb.setTip("You can buy one from the Rising Sun Inn in Falador.");
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
-		telegrabOrTenK = new ItemRequirement("Either 1. 33 Magic for Telegrab and a ranged/mage weapon, or 2. 10,000 coins", -1, -1);
+		ItemRequirement telegrab = new ItemRequirement("Telekinetic grab", ItemID.TELEKINETIC_GRAB, 1);
+		telegrabOrTenK = new ItemRequirements(LogicType.OR, "Either 1. 33 Magic for Telegrab and a ranged/mage weapon, or 2. 10,000 coins",
+			new ItemRequirement("Coins", ItemID.COINS_995, 10000), telegrab);
 		ringsOfRecoil = new ItemRequirement("Rings of Recoil for Elvarg", ItemID.RING_OF_RECOIL, -1);
 		chronicle = new ItemRequirement("The Chronicle for teleports to Champions' Guild", ItemID.CHRONICLE);
 		antifirePotion = new ItemRequirement("Antifire potion for Elvarg", ItemID.ANTIFIRE_POTION4, -1);
@@ -214,7 +219,10 @@ public class DragonSlayer extends BasicQuestHelper
 		zombieKey = new ItemRequirement("Key", ItemID.KEY_1546);
 		melzarKey = new ItemRequirement("Key", ItemID.KEY_1547);
 		demonKey = 	new ItemRequirement("Key", ItemID.KEY_1548);
-		combatGear = new ItemRequirement("Combat equipment and food", -1, -1);
+		combatGear = new ItemRequirement("Combat equipment", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
 		antidragonShieldEquipped = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD, 1, true);
 		planks3 = new ItemRequirement("Planks", ItemID.PLANK, 3);
@@ -524,8 +532,10 @@ public class DragonSlayer extends BasicQuestHelper
 		allSteps.add(lozarPanel);
 
 		PanelDetails melzarPanel = new PanelDetails("Melzar's map piece",
-			new ArrayList<>(Arrays.asList(enterMelzarsMaze, killRat, openRedDoor, goUpRatLadder, killGhost, openOrangeDoor, goUpGhostLadder, killSkeleton, openYellowDoor, goDownSkeletonLadder,
-				goDownLadderRoomLadder, goDownBasementEntryLadder, killZombie, openBlueDoor, killMelzar, openMagntaDoor, killLesserDemon, openGreenDoor, openMelzarChest)), melzarsKey, combatGear);
+			new ArrayList<>(Arrays.asList(enterMelzarsMaze, killRat, openRedDoor, goUpRatLadder, killGhost, openOrangeDoor, goUpGhostLadder,
+				killSkeleton, openYellowDoor, goDownSkeletonLadder, goDownLadderRoomLadder, goDownBasementEntryLadder, killZombie,
+				openBlueDoor, killMelzar, openMagntaDoor, killLesserDemon, openGreenDoor, openMelzarChest)),
+			melzarsKey, combatGear, food);
 		melzarPanel.setLockingStep(getMelzarPiece);
 
 		allSteps.add(melzarPanel);
@@ -544,7 +554,8 @@ public class DragonSlayer extends BasicQuestHelper
 
 		allSteps.add(captainPanel);
 
-		allSteps.add(new PanelDetails("Slaying Elvarg", new ArrayList<>(Arrays.asList(boardShipToGo, enterCrandorHole, unlockShortcut, returnThroughShortcut, enterElvargArea, killElvarg)), combatGear, antidragonShield));
+		allSteps.add(new PanelDetails("Slaying Elvarg", new ArrayList<>(Arrays.asList(boardShipToGo, enterCrandorHole, unlockShortcut,
+			returnThroughShortcut, enterElvargArea, killElvarg)), combatGear, antidragonShield, food));
 
 		allSteps.add(new PanelDetails("Finish the quest", new ArrayList<>(Collections.singletonList(finishQuest))));
 

@@ -27,6 +27,7 @@ package com.questhelper.quests.icthlarinslittlehelper;
 import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.FollowerRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -66,14 +67,14 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class IcthlarinsLittleHelper extends BasicQuestHelper
 {
-	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar, coinsOrLinen, coins30, linen, holySymbol,
-		unholySymbol;
+	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar,
+		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions;
 
 	Requirement catFollower;
 
-	ConditionForStep inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar, killedGuardian,
-		hasJar, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter, givenCarpenterLogs, inEastRoom,
-		posessedPriestNearby;
+	ConditionForStep inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar,
+		killedGuardian, hasJar, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
+		givenCarpenterLogs, inEastRoom, posessedPriestNearby;
 
 	QuestStep talkToWanderer, talkToWandererAgain, enterRock, touchPyramidDoor, jumpPit, openWestDoor, solveDoorPuzzle, talkToSphinx, talkToHighPriest,
 		talkToHighPriestWithoutToken, openPyramidDoor, jumpPitAgain, pickUpScarabasJar, pickUpCrondisJar, pickUpHetJar, pickUpApmekenJar,
@@ -222,7 +223,12 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		bucketOfSap.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 
-		food = new ItemRequirement("Combat gear, food + prayer potions", -1, -1);
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		combatGear = new ItemRequirement("Combat equipment", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		sphinxsToken = new ItemRequirement("Sphinx's token", ItemID.SPHINXS_TOKEN);
 		sphinxsToken.setTip("You can get another from the Sphinx");
@@ -407,7 +413,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(food));
+		return new ArrayList<>(Arrays.asList(combatGear, food, prayerPotions));
 	}
 
 	@Override
@@ -421,18 +427,23 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToWanderer, talkToWandererAgain)), cat, waterskin4, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap));
+			new ArrayList<>(Arrays.asList(talkToWanderer, talkToWandererAgain)), cat, waterskin4, tinderbox,
+			coins600, bagOfSaltOrBucket, willowLog, bucketOfSap));
 		allSteps.add(new PanelDetails("Remembering",
 			new ArrayList<>(Arrays.asList(touchPyramidDoor, jumpPit, openWestDoor))));
 
 		allSteps.add(new PanelDetails("Returning the jar",
-			new ArrayList<>(Arrays.asList(talkToSphinx, talkToHighPriest, openPyramidDoor, jumpPitAgain, pickUpAnyJar, pickUpAnyJarAgain, returnOverPit, jumpOverPitAgain, solvePuzzleAgain, dropJar, leavePyramid)), cat));
+			new ArrayList<>(Arrays.asList(talkToSphinx, talkToHighPriest, openPyramidDoor, jumpPitAgain, pickUpAnyJar,
+				pickUpAnyJarAgain, returnOverPit, jumpOverPitAgain, solvePuzzleAgain, dropJar, leavePyramid)), cat));
 
 		allSteps.add(new PanelDetails("Prepare the ritual",
-			new ArrayList<>(Arrays.asList(buyLinen, talkToEmbalmer, talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain, talkToCarpenterOnceMore)), bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog));
+			new ArrayList<>(Arrays.asList(buyLinen, talkToEmbalmer, talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain,
+				talkToCarpenterOnceMore)), bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog));
 
 		allSteps.add(new PanelDetails("Save the ritual",
-			new ArrayList<>(Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus, leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest, talkToHighPriestInPyramid, leavePyramidToFinish)), cat));
+			new ArrayList<>(Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus,
+				leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest, talkToHighPriestInPyramid,
+				leavePyramidToFinish)), cat));
 
 		return allSteps;
 	}

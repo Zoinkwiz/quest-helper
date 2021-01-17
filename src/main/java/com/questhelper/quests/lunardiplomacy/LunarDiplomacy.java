@@ -26,6 +26,7 @@ package com.questhelper.quests.lunardiplomacy;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -404,9 +405,11 @@ public class LunarDiplomacy extends BasicQuestHelper
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		coins400 = new ItemRequirement("Coins", ItemID.COINS_995, 400);
 
 		combatRunes = new ItemRequirement("Combat runes", -1, -1);
+		combatRunes.setDisplayItemId(ItemID.DEATH_RUNE);
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 

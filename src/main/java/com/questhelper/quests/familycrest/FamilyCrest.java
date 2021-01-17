@@ -153,7 +153,8 @@ public class FamilyCrest extends BasicQuestHelper
 		antipoison.addAlternates(ItemID.ANTIPOISON2, ItemID.ANTIPOISON3, ItemID.ANTIPOISON4, ItemID.SUPERANTIPOISON1,
 			ItemID.SUPERANTIPOISON2, ItemID.SUPERANTIPOISON3, ItemID.SUPERANTIPOISON4);
 
-		runesForBlasts = new ItemRequirement("Runes for casting each of the blast spells", -1, -1);
+		runesForBlasts = new ItemRequirement("Runes for casting each of the 4 blast spells", -1, -1);
+		runesForBlasts.setDisplayItemId(ItemID.DEATH_RUNE);
 
 		gold = new ItemRequirement("'perfect' gold ore", ItemID.PERFECT_GOLD_ORE);
 		gold2 = new ItemRequirement("'perfect' gold ore", ItemID.PERFECT_GOLD_ORE, 2);

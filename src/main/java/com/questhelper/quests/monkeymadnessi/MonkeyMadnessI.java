@@ -26,6 +26,7 @@ package com.questhelper.quests.monkeymadnessi;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
@@ -289,6 +290,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		sigilEquipped.setTip("You can get another from Garkor");
 
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
 	}

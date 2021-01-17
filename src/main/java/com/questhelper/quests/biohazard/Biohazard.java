@@ -24,7 +24,6 @@
  */
 package com.questhelper.quests.biohazard;
 
-import com.questhelper.requirements.FavourRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -33,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -50,14 +48,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -66,8 +62,8 @@ import net.runelite.api.coords.WorldPoint;
 public class Biohazard extends BasicQuestHelper
 {
 	ItemRequirement gasMask, birdFeed, birdCage, rottenApple, medicalGown, key, distillator, plagueSample, ethenea, liquidHoney, sulphuricBroline,
-		touchPaper, priestGownTop, priestGownBottom, teleports, priestGownBottomEquipped, priestGownTopEquipped, medicalGownEquipped,
-		birdCageHighlighted;
+		touchPaper, priestGownTop, priestGownBottom, priestGownBottomEquipped, priestGownTopEquipped, medicalGownEquipped,
+		birdCageHighlighted, teleportVarrock, teleportArdougne, teleportRimmington;
 
 	ConditionForStep hasBirdFeed, hasPigeonCage, inMournerBackyard, inWestArdougne, hasRottenApple, hasDistillator,
 		inMournerBuilding, upstairsInMournerBuilding, hasMedicalGown, hasKey, hasLiquidHoney, hasEthenea, hasBroline, hasChemicals, inVarrockSouthEast,
@@ -189,7 +185,9 @@ public class Biohazard extends BasicQuestHelper
 		priestGownTop = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN);
 		priestGownBottomEquipped = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428, 1, true);
 		priestGownTopEquipped = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN, 1, true);
-		teleports = new ItemRequirement("Teleports to Varrock, Ardougne, and Rimmington.", -1, -1);
+		teleportVarrock = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
+		teleportArdougne = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
+		teleportRimmington = new ItemRequirement("Teleport to Rimmington", ItemID.RIMMINGTON_TELEPORT);
 	}
 
 	public void loadZones()
@@ -321,7 +319,9 @@ public class Biohazard extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(teleports);
+		reqs.add(teleportArdougne);
+		reqs.add(teleportRimmington);
+		reqs.add(teleportVarrock);
 		return reqs;
 	}
 

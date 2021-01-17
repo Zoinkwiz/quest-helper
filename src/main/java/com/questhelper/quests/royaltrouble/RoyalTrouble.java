@@ -26,6 +26,8 @@ package com.questhelper.quests.royaltrouble;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -65,7 +67,8 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class RoyalTrouble extends BasicQuestHelper
 {
-	ItemRequirement coal5, coal4, coal3, coal2, coal1, antipoison, combatGear, pickaxe, coalOrPickaxe, scroll, prop, liftManual, engine, pulleyBeam, longPulleyBeam, longerPulleyBeam, rope, beam, plank, diary5, box, letter;
+	ItemRequirement coal5, coal4, coal3, coal2, coal1, antipoison, combatGear, pickaxe, coalOrPickaxe, scroll, prop, liftManual,
+		engine, pulleyBeam, longPulleyBeam, longerPulleyBeam, rope, beam, plank, diary5, box, letter, food, prayerPotions;
 
 	ConditionForStep inMiscFloor1, inEtcFloor1, onIslands, hasPickaxe, hasCoal5, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject, talkedToSigrid, talkedToEtcSubject, reportedToVargas,
 		reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas, enteredDungeon, inDungeon, inLiftRoom, inPath1, inPath2, inPath3, inPath4, hasLiftManual, talkedToDonal, usedProp, hasEngine,
@@ -223,17 +226,26 @@ public class RoyalTrouble extends BasicQuestHelper
 
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
+			coalOrPickaxe = new ItemRequirements(LogicType.OR, "Either 5 coal or a pickaxe", coal5, pickaxe);
 			coal5.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal4.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal3.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal2.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 			coal1.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 		}
+		else
+		{
+			coalOrPickaxe = coal5;
+		}
 
 		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.getPickaxes());
-		coalOrPickaxe = new ItemRequirement("Either 5 coal or a pickaxe", -1, -1);
-		combatGear = new ItemRequirement("Combat gear, food, and prayer potions", -1, -1);
-		antipoison = new ItemRequirement("Antipoisons", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
+
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL_7968);
 		scroll.setTip("You can get another from King Vargas");
 		prop = new ItemRequirement("Mining prop", ItemID.MINING_PROP);
@@ -581,6 +593,8 @@ public class RoyalTrouble extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(antipoison);
+		reqs.add(food);
+		reqs.add(prayerPotions);
 		return reqs;
 	}
 

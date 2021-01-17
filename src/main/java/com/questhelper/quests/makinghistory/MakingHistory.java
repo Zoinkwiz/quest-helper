@@ -123,7 +123,7 @@ public class MakingHistory extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		saphAmulet = new ItemRequirement("Sapphire amulet", ItemID.SAPPHIRE_AMULET);
 		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ardougneTeleport = new ItemRequirement("A teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT, -1);
+		ardougneTeleport = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
 		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL);
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemID.RING_OF_DUELING8);
 		enchantedKey = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);

@@ -25,6 +25,7 @@
 package com.questhelper.quests.merlinscrystal;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
@@ -152,6 +153,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 		camelotTeleport = new ItemRequirement("Teleport to Camelot", ItemID.CAMELOT_TELEPORT);
 		twoFaladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 2);
 		combatGear = new ItemRequirement("Combat gear + food for Sir Mordred (level 39)", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		repellent = new ItemRequirement("Insect repellent", ItemID.INSECT_REPELLENT);
 		blackCandle = new ItemRequirement("Black candle", ItemID.BLACK_CANDLE);

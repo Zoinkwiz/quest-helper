@@ -25,6 +25,7 @@
 package com.questhelper.quests.shadowofthestorm;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -205,7 +206,8 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		silverlightDyedEquipped = new ItemRequirement("Silverlight (dyed)", ItemID.SILVERLIGHT_6745, 1, true);
 		sigilMould = new ItemRequirement("Demonic sigil mould", ItemID.DEMONIC_SIGIL_MOULD);
 		combatGear = new ItemRequirement("Combat gear + potions", -1, -1);
-		coinsForCarpet = new ItemRequirement("400+ coins for carpet rides", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemID.COINS_995, 400);
 		sigil = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
 		sigil.setTip("You can make another if needed with the demonic sigil mould");
 		sigil2 = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL, 2);

@@ -27,6 +27,7 @@ package com.questhelper.quests.fightarena;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -126,6 +127,7 @@ public class FightArena extends BasicQuestHelper
 		cellKeys = new ItemRequirement("Khazard cell keys", ItemID.KHAZARD_CELL_KEYS);
 		cellKeys.setHighlightInInventory(true);
 		combatGear = new ItemRequirement("Combat equipment and food (magic/ranged if you want to safe spot)", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void setupZones()

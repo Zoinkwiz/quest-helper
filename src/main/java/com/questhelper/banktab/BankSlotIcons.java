@@ -40,4 +40,7 @@ public class BankSlotIcons
 
 	@Getter
 	private static final Integer food = ItemID.SHARK;
+
+	@Getter
+	private static final Integer armour = ItemID.RUNE_PLATEBODY;
 }

@@ -26,6 +26,7 @@ package com.questhelper.quests.taleoftherighteous;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.FavourRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -165,12 +166,16 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	{
 		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.getPickaxes());
 		rangedWeapon = new ItemRequirement("Any ranged weapon + ammo", -1, -1);
+		rangedWeapon.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		runesForCombat = new ItemRequirement("Runes for a few casts of a combat spell", -1, -1);
+		runesForCombat.setDisplayItemId(ItemID.DEATH_RUNE);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		combatGear = new ItemRequirement("Combat gear for a level 46 corrupt lizardman", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		xericTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
 		meleeWeapon = new ItemRequirement("A melee weapon, or your bare hands", -1, -1);
-		antiPoison = new ItemRequirement("Anti poison for lizardmen", ItemID.ANTIPOISON4, -1);
+		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
+		antiPoison = new ItemRequirement("Anti poison for lizardmen", ItemCollections.getAntipoisons());
 	}
 
 	public void loadZones()

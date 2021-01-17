@@ -26,6 +26,7 @@ package com.questhelper.quests.templeofikov;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -46,6 +47,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -66,7 +68,9 @@ import com.questhelper.steps.conditional.ConditionForStep;
 public class TempleOfIkov extends BasicQuestHelper
 {
 	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
-		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, emptyInventorySpot, iceArrowsEquipped;
+		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, iceArrowsEquipped;
+
+	Requirement emptyInventorySpot;
 
 	ConditionForStep hasPendantOfLucien, hasBootsOfLightness, belowMinus1Weight, below4Weight, hasYewBow, hasLimpwurts,
 		inEntryRoom, inNorthRoom, inBootsRoom, dontHaveBoots, inMainOrNorthRoom, hasLever, leverNearby, pulledLever, inArrowRoom,
@@ -183,7 +187,8 @@ public class TempleOfIkov extends BasicQuestHelper
 		bootsOfLightnessEquipped = new ItemRequirement("Boots of lightness", ItemID.BOOTS_OF_LIGHTNESS, 1, true);
 		limpwurt20 = new ItemRequirement("Limpwurt (unnoted)", ItemID.LIMPWURT_ROOT, 20);
 		yewOrBetterBow = new ItemRequirement("Yew, magic, or dark bow", ItemID.YEW_SHORTBOW);
-		yewOrBetterBow.addAlternates(ItemID.YEW_LONGBOW, ItemID.YEW_COMP_BOW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I, ItemID.MAGIC_LONGBOW, ItemID.DARK_BOW);
+		yewOrBetterBow.addAlternates(ItemID.YEW_LONGBOW, ItemID.YEW_COMP_BOW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I,
+			ItemID.MAGIC_LONGBOW, ItemID.DARK_BOW);
 		knife = new ItemRequirement("Knife to get the boots of lightness", ItemID.KNIFE);
 		lightSource = new ItemRequirement("A light source to get the boots of lightness", ItemCollections.getLightSources());
 
@@ -201,7 +206,7 @@ public class TempleOfIkov extends BasicQuestHelper
 
 		staffOfArmadyl = new ItemRequirement("Staff of Armadyl", ItemID.STAFF_OF_ARMADYL);
 
-		emptyInventorySpot = new ItemRequirement("An empty inventory slot", -1, -1);
+		emptyInventorySpot = new FreeInventorySlotRequirement(InventoryID.INVENTORY,  1);
 	}
 
 	public void loadZones()

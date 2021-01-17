@@ -25,6 +25,7 @@
 package com.questhelper.quests.thecorsaircurse;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -179,6 +180,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear + food to defeat Ithoi (level 34), who uses magic", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		ogreArtfact = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT_21837);

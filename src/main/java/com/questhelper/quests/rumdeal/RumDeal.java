@@ -25,6 +25,7 @@
 package com.questhelper.quests.rumdeal;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -242,6 +243,7 @@ public class RumDeal extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES);
 		blindweedSeed = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);
 		blindweedSeedHighlight = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);

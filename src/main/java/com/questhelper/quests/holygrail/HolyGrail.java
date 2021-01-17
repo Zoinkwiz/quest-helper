@@ -25,6 +25,7 @@
 package com.questhelper.quests.holygrail;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -157,7 +158,9 @@ public class HolyGrail extends BasicQuestHelper
 		sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
 		antipoison = new ItemRequirement("Antipoison", ItemID.ANTIPOISON4);
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		combatGear = new ItemRequirement("A weapon and armour", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		emptyInvSpot = new ItemRequirement("Empty Inventory Spot", -1, 1);
 		goldFeather = new ItemRequirement("Magic gold feather", ItemID.MAGIC_GOLD_FEATHER);
 		grailBell = new ItemRequirement("Grail Bell", ItemID.GRAIL_BELL);

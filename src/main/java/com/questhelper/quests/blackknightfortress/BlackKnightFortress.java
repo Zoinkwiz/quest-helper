@@ -1,6 +1,8 @@
 package com.questhelper.quests.blackknightfortress;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class BlackKnightFortress extends BasicQuestHelper
 {
-	ItemRequirement ironChainbody, cabbage, bronzeMed;
+	ItemRequirement ironChainbody, cabbage, bronzeMed, teleportFalador, armour, food;
 
 	ConditionForStep onTopOfFortress, inBasement, inSecretRoomGroundFloor, inSecretRoomFirstFloor, inSecretRoomSecondFloor, inCentralAreaFloor1, inMainEntrance, inWestRoomFloor1,
 		inEastRoomFloor0, inEastRoomFloor1, inEastRoomFloor2, inListeningRoom, inCabbageHoleRoom, inPathToCabbageRoom, inEastTurret;
@@ -143,6 +145,12 @@ public class BlackKnightFortress extends BasicQuestHelper
 		cabbage.setTip("You can get one from the Edgeville Monastery east of the Black Knights' Fortress.");
 		bronzeMed = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM, 1, true);
 		bronzeMed.setTip("You can get one from the helmet shop in Barbarian Village.");
+
+		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
+		armour = new ItemRequirement("Armour", -1, -1);
+		armour.setDisplayItemId(BankSlotIcons.getArmour());
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
 
 	private void setupConditions()
@@ -236,9 +244,9 @@ public class BlackKnightFortress extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT));
-		reqs.add(new ItemRequirement("Food", -1, -1));
-		reqs.add(new ItemRequirement("Armour", -1, -1));
+		reqs.add(teleportFalador);
+		reqs.add(food);
+		reqs.add(armour);
 
 		return reqs;
 	}

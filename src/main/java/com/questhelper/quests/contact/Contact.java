@@ -27,6 +27,7 @@ package com.questhelper.quests.contact;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
@@ -61,7 +62,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class Contact extends BasicQuestHelper
 {
-	ItemRequirement lightSource, combatGear, parchment, keris;
+	ItemRequirement lightSource, combatGear, parchment, keris, food, prayerPotions;
 
 	ConditionForStep inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
 
@@ -123,7 +124,13 @@ public class Contact extends BasicQuestHelper
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear, food, prayer potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 	}
@@ -184,6 +191,9 @@ public class Contact extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(lightSource);
+		reqs.add(combatGear);
+		reqs.add(food);
+		reqs.add(prayerPotions);
 		return reqs;
 	}
 
@@ -202,9 +212,13 @@ public class Contact extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToHighPriest, talkToJex)), lightSource));
 
-		allSteps.add(new PanelDetails("Explore the dungeon", new ArrayList<>(Arrays.asList(goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman)), lightSource));
+		allSteps.add(new PanelDetails("Explore the dungeon",
+			new ArrayList<>(Arrays.asList(goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment,
+				talkToMaisa, talkToOsman)), lightSource));
 
-		allSteps.add(new PanelDetails("Help Osman", new ArrayList<>(Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain, killGiantScarab, returnToHighPriest)), combatGear, lightSource));
+		allSteps.add(new PanelDetails("Help Osman",
+			new ArrayList<>(Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
+				goDownToChasmAgain, killGiantScarab, returnToHighPriest)), combatGear, food, prayerPotions, lightSource));
 
 		return allSteps;
 	}

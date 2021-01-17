@@ -24,7 +24,9 @@
  */
 package com.questhelper.quests.myarmsbigadventure;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -66,9 +68,9 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class MyArmsBigAdventure extends BasicQuestHelper
 {
-	ItemRequirement goutLump, bucket, bucketHighlight, farmingManual, ugthanki3, rake, dibber, spade, hardyGout, superCompost, combatGear, rakeHighlight,
-		dibberHighlight, hardyGoutHighlight, superCompostHighlight, spadeHighlight, plantCureHighlight, supercompost7
-	, cureOrCompost, rakeHead, rakeHandle, climbingBoots, superCompost8;
+	ItemRequirement goutLump, bucket, bucketHighlight, farmingManual, ugthanki3, rake, dibber, spade, hardyGout, superCompost,
+		combatGear, rakeHighlight, dibberHighlight, hardyGoutHighlight, superCompostHighlight, spadeHighlight, plantCureHighlight,
+		supercompost7, cureOrCompost, rakeHead, rakeHandle, climbingBoots, superCompost8, food, prayerPotions;
 
 	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inPrison, hasLump, onRoof, added3Dung, added7Comp, usedRake, givenCompost, givenHardy, givenDibber,
 		givenCure, hasRakeHeadAndHandle, rakeHeadNearby, babyNearby, giantNearby;
@@ -237,7 +239,11 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		superCompost.addAlternates(ItemID.ULTRACOMPOST);
 		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGout.setTip("You can get more from Murcaily");
-		combatGear = new ItemRequirement("Combat gear, food + potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 
 		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE);
 		rakeHighlight.setHighlightInInventory(true);
@@ -437,6 +443,11 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		return new ArrayList<>(Arrays.asList(climbingBoots, ugthanki3, superCompost8, rake, dibber, spade, bucket));
 	}
 
+	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return new ArrayList<>(Arrays.asList(combatGear, food, prayerPotions));
+	}
 
 	@Override
 	public ArrayList<String> getCombatRequirements()

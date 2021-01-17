@@ -55,12 +55,14 @@ public class SheepShearer extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		WorldPoint farmerFredPoint = new WorldPoint(3190, 3273, 0);
-		String dialoguePrompt = "Bring Fred the Farmer north of Lumbridge 20 balls of wool (UNNOTED) to finish the quest. You don't have to bring them all at once.";
+		String dialoguePrompt = "Bring Fred the Farmer north of Lumbridge 20 balls of wool (UNNOTED) to finish the " +
+			"quest. You don't have to bring them all at once.";
 
 		twentyBallsOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL, 20);
 		shears = new ItemRequirement("Shears if you plan on collecting wool yourself", ItemID.SHEARS);
 
-		startStep = new NpcStep(this, NpcID.FRED_THE_FARMER, farmerFredPoint, dialoguePrompt, new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL, 20));
+		startStep = new NpcStep(this, NpcID.FRED_THE_FARMER, farmerFredPoint, dialoguePrompt,
+			new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL, 20));
 
 		steps.put(0, startStep);
 
@@ -143,7 +145,7 @@ public class SheepShearer extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Bring Fred some wool", new ArrayList<>(Collections.singletonList(startStep))));
+		allSteps.add(new PanelDetails("Bring Fred some wool", new ArrayList<>(Collections.singletonList(startStep)), twentyBallsOfWool));
 		return allSteps;
 	}
 }

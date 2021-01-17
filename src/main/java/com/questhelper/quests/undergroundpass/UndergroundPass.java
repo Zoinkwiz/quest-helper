@@ -30,9 +30,11 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -132,11 +134,14 @@ public class UndergroundPass extends BasicQuestHelper
 		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderboxHighlight.setHighlightInInventory(true);
 		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1);
+		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
-		staminaPotions = new ItemRequirement("Stamina Potions", -1, -1);
-		coins = new ItemRequirement("Coins (to buy food, 75 ea)", -1, -1);
-		agilityPotions = new ItemRequirement("Agility Potions", -1, -1);
-		telegrabRunes = new ItemRequirement("Telegrab Runes", -1, -1);
+		food.setDisplayItemId(ItemID.SHARK);
+		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
+		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemID.COINS_995, 750);
+		agilityPotions = new ItemRequirement("Agility Potions", ItemCollections.getAgilityPotions());
+		telegrabRunes = new ItemRequirements("Telegrab Runes", new ItemRequirement("Air rune", ItemID.AIR_RUNE),
+			new ItemRequirement("Law rune", ItemID.LAW_RUNE));
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
 		oilyCloth.setTip("You can get another by searching the equipment by the fireplace beside Koftik.");
 		oilyClothHighlight = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
@@ -794,7 +799,9 @@ public class UndergroundPass extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", new ArrayList<>(Arrays.asList(talkToKingLathas, talkToKoftik))));
-		allSteps.add(new PanelDetails("The Underground Pass", new ArrayList<>(Arrays.asList(talkToKoftikAtBridge, shootBridgeRope, crossThePit, crossTheGrid, passTrap1, collectOrb1, collectOrb2, collectOrb3, collectOrb4, orbsToFurnace, climbDownWell))));
+		allSteps.add(new PanelDetails("The Underground Pass", new ArrayList<>(Arrays.asList(talkToKoftikAtBridge, shootBridgeRope, crossThePit,
+			crossTheGrid, passTrap1, collectOrb1, collectOrb2, collectOrb3, collectOrb4, orbsToFurnace,
+			climbDownWell)), rope2, bow, arrows, spade, plank, bucket, tinderbox, combatEquipment));
 		allSteps.add(new PanelDetails("Descending Deeper", new ArrayList<>(Arrays.asList(navigateMaze, searchUnicornCage, useRailingOnBoulder))));
 		allSteps.add(new PanelDetails("Cold-blooded Killing", new ArrayList<>(Arrays.asList(searchUnicornCageAgain, walkToKnights, killJerro, killHarry, killCarl, useBadgeJerroOnWell, openIbansDoor))));
 		allSteps.add(new PanelDetails("The Witch Kardia", new ArrayList<>(Arrays.asList(talkToNiloof, pickUpWitchsCat, useCatOnDoor, searchWitchsChest))));

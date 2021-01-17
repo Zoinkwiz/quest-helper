@@ -27,6 +27,7 @@ package com.questhelper.quests.dragonslayerii;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
@@ -69,14 +70,19 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class DragonSlayerII extends BasicQuestHelper
 {
-	ItemRequirement pickaxe, axe, oakPlank8, swampPaste10, nails12OrMore, hammer, machete, saw, catspeakAmulet, ghostspeakOrMory2, goutweed, dragonstone,
-		moltenGlass2, glassblowingPipe, chisel, spade, astralRune, sealOfPassage, tinderbox, pestleAndMortarHighlighted, runesForFireWaveOrSurge3, fireRune7, fireRune21, bloodRune1,
-		bloodRune3, airRune5, airRune15, wrathRune1, wrathRune3, fireRune10, fireRune30, airRune7, airRune21, fireWaveRunes, fireWave3Runes, fireSurgeRunes, fireSurge3Runes,
-		runesForFireWaveOrSurge, combatGear, pickaxeHighlighted, aivasDiary, dreamVial, dreamVialWater, dreamVialWithGoutweed, dreamPotion, astralRuneHighlighted, astralRuneShards,
-		groundAstralRune, hammerHighlighted, dreamPotionHighlighted, food, lightSource, rangedCombatGear, dragonfireProtection, venomProtection, salveE, kourendKeyPiece, varrocKeyPiece,
-		karamjaKeyPiece, fremennikKeyPiece, varrockCensusRecords, inertLocator, glassblowingPipeHighlighted, dragonstoneHighlighted, locator, ancientKey, dragonKey, antifireShield, teleports;
+	ItemRequirement pickaxe, axe, oakPlank8, swampPaste10, nails12OrMore, hammer, machete, saw, catspeakAmulet, ghostspeakOrMory2,
+		goutweed, dragonstone, moltenGlass2, glassblowingPipe, chisel, spade, astralRune, sealOfPassage, tinderbox,
+		pestleAndMortarHighlighted, runesForFireWaveOrSurge3, fireRune7, fireRune21, bloodRune1, bloodRune3,
+		airRune5, airRune15, wrathRune1, wrathRune3, fireRune10, fireRune30, airRune7, airRune21, fireWaveRunes,
+		fireWave3Runes, fireSurgeRunes, fireSurge3Runes, runesForFireWaveOrSurge, combatGear, pickaxeHighlighted,
+		aivasDiary, dreamVial, dreamVialWater, dreamVialWithGoutweed, dreamPotion, astralRuneHighlighted, astralRuneShards,
+		groundAstralRune, hammerHighlighted, dreamPotionHighlighted, food, lightSource, rangedCombatGear, dragonfireProtection,
+		venomProtection, salveE, kourendKeyPiece, varrocKeyPiece, karamjaKeyPiece, fremennikKeyPiece, varrockCensusRecords,
+		inertLocator, glassblowingPipeHighlighted, dragonstoneHighlighted, locator, ancientKey, dragonKey, antifireShield,
+		ardougneTeleport, varrockTeleport, faladorTeleport, morytaniaTeleport, karamjaTeleport, rellekkaTeleport;
 
-	ItemRequirement map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12, map13, map14, map15, map16, map17, map18, map19, map20, map21, map22, map23, map24;
+	ItemRequirement map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12, map13, map14, map15, map16, map17,
+		map18, map19, map20, map21, map22, map23, map24;
 
 	ConditionForStep inCrandorUnderground, inElvargArea, inKaramjaVolcano, inMuralRoom, inHouseGroundFloor, inHouseFirstFloor, inLithkrenGroundFloor, inLithkrenFirstFloor, inLithkrenUnderground,
 		inLithkrenGroundFloorRoom, inDream, hasAivasDiary, hasVialWater, hasVialGout, hasAstralShard, hasAstralPowder, hasDreamPotion, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
@@ -453,11 +459,16 @@ public class DragonSlayerII extends BasicQuestHelper
 		runesForFireWaveOrSurge3 = new ItemRequirements(LogicType.OR, "3 casts of Fire Wave or Fire Surge", fireWave3Runes, fireSurge3Runes);
 
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 
 		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
-		dragonfireProtection = new ItemRequirement("Protection from dragonfire", -1, -1);
+		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
+
+		dragonfireProtection = new ItemRequirement("Protection from dragonfire", ItemCollections.getAntifireShields());
 		venomProtection = new ItemRequirement("Anti venom", ItemCollections.getAntivenoms());
 		salveE = new ItemRequirement("Salve amulet", ItemID.SALVE_AMULET);
 		salveE.addAlternates(ItemID.SALVE_AMULET_E, ItemID.SALVE_AMULETEI, ItemID.SALVE_AMULETI);
@@ -544,7 +555,12 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.getAntifireShields(), 1, true);
 
-		teleports = new ItemRequirement("Teleports to Ardougne, Varrock, Falador, Morytania, Karamja, and Rellekka", -1, -1);
+		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
+		morytaniaTeleport = new ItemRequirement("Port Phasmatys teleport", ItemID.ECTOPHIAL_4252);
+		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemID.TAI_BWO_WANNAI_TELEPORT);
+		rellekkaTeleport = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
 	}
 
 	public void setupZones()
@@ -1107,7 +1123,8 @@ public class DragonSlayerII extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(teleports));
+		return new ArrayList<>(Arrays.asList(ardougneTeleport, varrockTeleport, faladorTeleport, morytaniaTeleport,
+			karamjaTeleport, rellekkaTeleport));
 	}
 
 	@Override

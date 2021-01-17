@@ -25,6 +25,7 @@
 package com.questhelper.quests.swansong;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -186,7 +187,9 @@ public class SwanSong extends BasicQuestHelper
 		monkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH_7943, 5);
 		rawMonkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH, 5);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		combatGearRanged = new ItemRequirement("Ranged or melee combat gear", -1, -1);
+		combatGearRanged.setDisplayItemId(BankSlotIcons.getCombatGear());
 		ironSheet5 = new ItemRequirement("Iron sheet", ItemID.IRON_SHEET, 5);
 
 		boneSeeds = new ItemRequirement("Bone seed", ItemID.BONE_SEEDS);

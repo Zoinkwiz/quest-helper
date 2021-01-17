@@ -25,6 +25,7 @@
 package com.questhelper.quests.asoulsbane;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -135,6 +136,7 @@ public class ASoulsBane extends BasicQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		angerBattleaxe = new ItemRequirement("Anger battleaxe", ItemID.ANGER_BATTLEAXE);
 		angerMace = new ItemRequirement("Anger mace", ItemID.ANGER_MACE);

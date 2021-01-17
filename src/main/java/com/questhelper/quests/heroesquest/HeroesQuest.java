@@ -26,6 +26,7 @@ package com.questhelper.quests.heroesquest;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -206,6 +207,7 @@ public class HeroesQuest extends BasicQuestHelper
 		thievesArmband = new ItemRequirement("Thieves' armband", ItemID.THIEVES_ARMBAND);
 
 		rangedMage = new ItemRequirement("A ranged or magic attack method", -1, -1);
+		rangedMage.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		miscKey = new ItemRequirement("Miscellaneous key", ItemID.MISCELLANEOUS_KEY);
 		blackFullHelm = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true);
 		blackPlatebody = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY, 1, true);
@@ -217,6 +219,7 @@ public class HeroesQuest extends BasicQuestHelper
 		fireFeather = new ItemRequirement("Fire feather", ItemID.FIRE_FEATHER);
 
 		combatGear = new ItemRequirement("Weapons, armour and food for the Ice Queen", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		antifireShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
 	}

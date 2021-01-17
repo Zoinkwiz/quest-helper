@@ -32,8 +32,9 @@ public class ColdWar extends BasicQuestHelper
 
 	ItemRequirement oakPlanks, oakPlankHighlight, steelNails, hammer, spade, spadeHighlight, clockworkOrSteelBar,
 		clockwork, steelBar, plank, silk, rawCodOrCharos, swampTar, feathers, mahoganyPlank, leather, cowbell,
-		teleports, clockworkBookHighlight, clockworkSuit, clockworkSuitHighlight, missionReportHighlight,
-		lumbridgeMissionReport, mahoganyPlankHighlight, leatherHighlight, bongos, kgpId, combatGear;
+	    clockworkBookHighlight, clockworkSuit, clockworkSuitHighlight, missionReportHighlight, teleportArdougne,
+		teleportLumbridge2, teleportHouse, lumbridgeMissionReport, mahoganyPlankHighlight, leatherHighlight,
+		bongos, kgpId, combatGear;
 
 	ConditionForStep isOnIceberg, birdHideBuilt, tableNearby, hasClockwork, hasSteelBar, hasClockworkSuit, isPenguin,
 		isInPenguinPen, isAtZoo, isAtLumbridgeSheepFarm, hasCowbell, isInAgilityStart, isInAgilityWater,
@@ -182,7 +183,11 @@ public class ColdWar extends BasicQuestHelper
 		mahoganyPlank = new ItemRequirement("Mahogany Plank", ItemID.MAHOGANY_PLANK, 1);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER, 1);
 		cowbell = new ItemRequirement("Cowbell", ItemID.COWBELLS, 1);
-		teleports = new ItemRequirement("Teleports to Lumbridge, POH and Ardougne", -1);
+		teleportLumbridge2 = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT, 2);
+		teleportHouse = new ItemRequirement("Teleport to PoH with a clockwork table", ItemID.TELEPORT_TO_HOUSE,
+			1);
+		teleportArdougne = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT, 4);
+
 		clockworkBookHighlight = new ItemRequirement("Clockwork book", ItemID.CLOCKWORK_BOOK);
 		clockworkBookHighlight.setHighlightInInventory(true);
 		clockworkSuit = new ItemRequirement("Clockwork suit", ItemID.CLOCKWORK_SUIT);
@@ -404,7 +409,9 @@ public class ColdWar extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(teleports);
+		reqs.add(teleportArdougne);
+		reqs.add(teleportHouse);
+		reqs.add(teleportLumbridge2);
 		reqs.add(combatGear);
 		return reqs;
 	}

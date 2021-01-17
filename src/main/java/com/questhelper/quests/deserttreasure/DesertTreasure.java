@@ -26,6 +26,7 @@ package com.questhelper.quests.deserttreasure;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.Requirements;
@@ -258,6 +259,7 @@ public class DesertTreasure extends BasicQuestHelper
 		iceGloves.setTip("You can kill the Ice Queen under White Wolf Mountain for these");
 
 		waterSpellOrMelee = new ItemRequirement("Water spells or melee gear", -1, -1);
+		waterSpellOrMelee.setDisplayItemId(ItemID.WATER_RUNE);
 
 		cross = new ItemRequirement("Gilded cross", ItemID.GILDED_CROSS);
 		cross.setTip("You can get another from the chest in the south of the Bandit Camp");
@@ -280,12 +282,15 @@ public class DesertTreasure extends BasicQuestHelper
 		potComplete.setHighlightInInventory(true);
 
 		fireSpells = new ItemRequirement("Fire spells", -1, -1);
+		fireSpells.setDisplayItemId(ItemID.FIRE_RUNE);
 
 		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
-		prayerPotions = new ItemRequirement("Prayer potions", -1, -1);
-		restorePotions = new ItemRequirement("Restore potions", -1, -1);
-		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
+		restorePotions = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.getStaminaPotions());
 	}
 
 	public void loadZones()

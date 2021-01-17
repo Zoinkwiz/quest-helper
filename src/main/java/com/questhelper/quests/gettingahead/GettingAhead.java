@@ -27,6 +27,7 @@ package com.questhelper.quests.gettingahead;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -155,9 +156,11 @@ public class GettingAhead extends BasicQuestHelper
 
 		//Recommended
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
-		staminaPotions = new ItemRequirement("Stamina Potion", -1, -1);
-		skillsNeck = new ItemRequirement("Skills Necklace", -1, 1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		staminaPotions = new ItemRequirement("Stamina Potion", ItemCollections.getStaminaPotions());
+		skillsNeck = new ItemRequirement("Skills Necklace", ItemCollections.getSkillsNecklaces());
 
 		//Required
 		bearFur = new ItemRequirement("Bear Fur", ItemID.BEAR_FUR);

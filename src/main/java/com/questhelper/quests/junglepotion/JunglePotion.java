@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -236,9 +237,12 @@ public class JunglePotion extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(new ItemRequirement("Food", -1));
+		ItemRequirement food = new ItemRequirement("Food", -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+
+		reqs.add(food);
 		reqs.add(new ItemRequirement("Antipoison", ItemCollections.getAntipoisons()));
-		reqs.add(new ItemRequirement("Teleport to Karamja (Glory/house teleport)", -1));
+		reqs.add(new ItemRequirement("Teleport to Karamja (Glory/house teleport)", ItemID.BRIMHAVEN_TELEPORT));
 		return reqs;
 	}
 

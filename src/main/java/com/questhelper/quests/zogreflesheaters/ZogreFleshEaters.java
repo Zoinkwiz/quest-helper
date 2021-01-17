@@ -25,6 +25,7 @@
 package com.questhelper.quests.zogreflesheaters;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -189,6 +190,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		ogreRelic.setTip("You can get another by searching the stand where you fought Slash Bash");
 
 		combatGear = new ItemRequirement("Either brutal arrows or Crumble Undead for fighting Slash Bash", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()

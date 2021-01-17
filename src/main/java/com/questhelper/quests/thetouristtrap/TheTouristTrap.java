@@ -26,6 +26,7 @@ package com.questhelper.quests.thetouristtrap;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -189,6 +190,7 @@ public class TheTouristTrap extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
 		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
 		desertBoot = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);

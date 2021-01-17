@@ -192,7 +192,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		treaty.setTip("You can get another from Duke Horacio");
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, -1);
+		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
 		faladorTeleport = new ItemRequirement("Falador teleports", ItemID.FALADOR_TELEPORT);
 
 		hamShirt = new ItemRequirement("Ham shirt", ItemID.HAM_SHIRT, 1, true);

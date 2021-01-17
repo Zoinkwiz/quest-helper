@@ -168,14 +168,17 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 		beerOr2Coins = new ItemRequirement("Beer or 2 gp", ItemID.BEER);
 		earthRunes5 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 5);
-		coins = new ItemRequirement("Around 150 coins for boat travel", -1, -1);
+		coins = new ItemRequirement("Coins or more for boat travel", ItemID.COINS_995, 150);
+
 		bucketOfSand = new ItemRequirement("Bucket of sand", ItemID.BUCKET_OF_SAND);
 
 		wizardsHead = new ItemRequirement("Wizard's head", ItemID.WIZARDS_HEAD);
 		wizardsHead.setTip("You can get another from Mazion on Entrana");
 
-		teleportsToBrimhaven = new ItemRequirement("Teleports to Brimhaven, or to near a boat to Brimhaven", ItemID.BRIMHAVEN_TELEPORT, -1);
-		teleportsToYanille = new ItemRequirement("Teleports to Yanille, such as dueling ring or minigame teleport", ItemID.YANILLE_TELEPORT, -1);
+		teleportsToBrimhaven = new ItemRequirement("Teleports to Brimhaven, or to near a boat to Brimhaven",
+			ItemID.BRIMHAVEN_TELEPORT, 2);
+		teleportsToYanille = new ItemRequirement("Teleports to Yanille, such as dueling ring or minigame teleport",
+			ItemID.YANILLE_TELEPORT, 3);
 	}
 
 	public void loadZones()

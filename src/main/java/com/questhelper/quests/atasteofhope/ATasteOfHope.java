@@ -26,6 +26,7 @@ package com.questhelper.quests.atasteofhope;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -66,7 +67,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	ItemRequirement coins1000, knife, emerald, chisel, enchantEmeraldRunesOrTablet, rodOfIvandis, pestleAndMortarHighlighted, vialOfWater,
 		combatGear, airRune3, airStaff, cosmicRune, enchantTablet, enchantRunes, vial, herb, meatHighlighted, crushedMeat, unfinishedPotion,
 		unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes, flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB,
-		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip;
+		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food;
 
 	ConditionForStep inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6, inSerafinaHouse, hasHerb, hasMeat, hasPestle, hasVialOrVialOfWater,
 		hasVialOfWater, hasCrushedMeat, hasUnfinishedPotion, hasUnfinishedBloodPotion, hasBloodVial, hasBloodPotion, hasPotion, hasVial, hasOldNotes, hasSickle, hasEmeraldSickle,
@@ -254,7 +255,10 @@ public class ATasteOfHope extends BasicQuestHelper
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
 		vialOfWater.setHighlightInInventory(true);
 		vialOfWater.setTip("You can fill the vial upstairs on the broken fountain");
-		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 		herb = new ItemRequirement("Mysterious herb", ItemID.MYSTERIOUS_HERB);
 		herb.setHighlightInInventory(true);
@@ -493,7 +497,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		killRanisSidebar.addText("In his last phase he will only attack with melee, so make sure to use protect from melee!");
 
 
-		killRanis = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His various mechanics are listed in the helper's sidebar.", ivandisFlailEquipped);
+		killRanis = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His " +
+			"various mechanics are listed in the helper's sidebar.", ivandisFlailEquipped, food);
 		((NpcStep) (killRanis)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
 		killRanisSidebar.addSubSteps(killRanis);
 
@@ -521,14 +526,22 @@ public class ATasteOfHope extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGarth, enterBase, talkToSafalaan))));
-		allSteps.add(new PanelDetails("Spying", new ArrayList<>(Arrays.asList(climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof, climbSecondVent, climbUpToRoof, climbDownFromRoof, lookThroughWindow))));
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(returnToBase, talkToSafalaanAfterSpying, talkToFlaygian, enterSerafinaHouse, talkToSafalaanInSerafinaHouse, searchForHerb, searchForMeat,
-			searchForPestle, useHerbOnVial, usePestleOnMeat, useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain, useMeatOnBlood, useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes,
-			enterBaseAfterSerafina, talkToSafalaanForAbominationFight, killAbomination,
-			talkToSafalaanAfterAbominationFight)), combatGear, vialOfWaterNoTip));
-		allSteps.add(new PanelDetails("Plotting revenge", new ArrayList<>(Arrays.asList(enterOldManRalBasement, talkToSafalaanInRalBasement, talkToVertidaInRalBasement, readFlaygianNotes, getSickle, getChain, useEmeraldOnSickle,
-			enchantSickle, addSickleToRod, talkToSafalaanAfterFlail)), emerald, chisel, enchantEmeraldRunesOrTablet));
-		allSteps.add(new PanelDetails("Rising up", new ArrayList<>(Arrays.asList(talkToKaelSidebar, killRanisSidebar, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd)), combatGear, ivandisFlail));
+		allSteps.add(new PanelDetails("Spying",
+			new ArrayList<>(Arrays.asList(climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof,
+				climbSecondVent, climbUpToRoof, climbDownFromRoof, lookThroughWindow))));
+		allSteps.add(new PanelDetails("Investigating",
+			new ArrayList<>(Arrays.asList(returnToBase, talkToSafalaanAfterSpying, talkToFlaygian, enterSerafinaHouse,
+				talkToSafalaanInSerafinaHouse, searchForHerb, searchForMeat, searchForPestle, useHerbOnVial, usePestleOnMeat,
+				useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain, useMeatOnBlood,
+				useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes, enterBaseAfterSerafina, talkToSafalaanForAbominationFight, killAbomination,
+				talkToSafalaanAfterAbominationFight)), combatGear, food, vialOfWaterNoTip));
+		allSteps.add(new PanelDetails("Plotting revenge",
+			new ArrayList<>(Arrays.asList(enterOldManRalBasement, talkToSafalaanInRalBasement,
+				talkToVertidaInRalBasement, readFlaygianNotes, getSickle, getChain, useEmeraldOnSickle,
+				enchantSickle, addSickleToRod, talkToSafalaanAfterFlail)), emerald, chisel, enchantEmeraldRunesOrTablet));
+		allSteps.add(new PanelDetails("Rising up",
+			new ArrayList<>(Arrays.asList(talkToKaelSidebar, killRanisSidebar, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd)),
+			combatGear, food, ivandisFlail));
 		return allSteps;
 	}
 

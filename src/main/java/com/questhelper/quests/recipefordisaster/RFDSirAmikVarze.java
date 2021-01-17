@@ -29,6 +29,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
@@ -181,6 +182,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
 		antifirePotion = new ItemRequirement("Antifire potion", ItemID.ANTIFIRE_POTION4);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		milkyMixture = new ItemRequirement("Milky mixture", ItemID.MILKY_MIXTURE);
 		milkyMixture.setHighlightInInventory(true);

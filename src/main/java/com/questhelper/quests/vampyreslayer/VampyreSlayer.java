@@ -26,6 +26,7 @@ package com.questhelper.quests.vampyreslayer;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -100,6 +101,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		garlicObtainable = new ItemRequirement("Garlic (Obtainable during quest)", ItemID.GARLIC);
 	}
 

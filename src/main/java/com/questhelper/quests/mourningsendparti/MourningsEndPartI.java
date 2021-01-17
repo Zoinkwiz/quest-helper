@@ -25,6 +25,7 @@
 package com.questhelper.quests.mourningsendparti;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -198,8 +199,9 @@ public class MourningsEndPartI extends BasicQuestHelper
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS);
 		ogreBellows.addAlternates(ItemID.OGRE_BELLOWS_1, ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
 		coal20 = new ItemRequirement("10-20 coal", ItemID.COAL, 10);
-		coal20OrNaphtha = new ItemRequirement("10-20 coal, or a barrel of naphtha", ItemID.BARREL_OF_NAPHTHA, -1);
-		coal20OrNaphtha.addAlternates(ItemID.COAL);
+		naphtha = new ItemRequirement("Barrel of naphtha", ItemID.BARREL_OF_NAPHTHA);
+		naphtha.setHighlightInInventory(true);
+		coal20OrNaphtha = new ItemRequirements(LogicType.OR, "10-20 coal, or a barrel of naphtha", coal20, naphtha);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER);
 		greenBellow = new ItemRequirement("Green dye bellows", ItemID.GREEN_DYE_BELLOWS);
 		yellowBellow = new ItemRequirement("Yellow dye bellows", ItemID.YELLOW_DYE_BELLOWS);
@@ -220,7 +222,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		sieve.setHighlightInInventory(true);
 		sieve.setTip("You can get another from Elena");
 		tarnishedKey = new ItemRequirement("Tarnished key", ItemID.TARNISHED_KEY);
-		fullMourners = new ItemRequirement("Full mourners outfit", -1, -1);
+		fullMourners = new ItemRequirements("Full mourners' outfit", mournerMask, mournerBody, mournerLegs, mournerCloak, mournerBoots, mournerGloves);
 
 		equippedMournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);
 		equippedMournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true);
@@ -247,9 +249,6 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 		appleBarrel = new ItemRequirement("Apple barrel", ItemID.APPLE_BARREL);
 		appleBarrel.setHighlightInInventory(true);
-
-		naphtha = new ItemRequirement("Barrel of naphtha", ItemID.BARREL_OF_NAPHTHA);
-		naphtha.setHighlightInInventory(true);
 
 		naphthaAppleMix = new ItemRequirement("Naphtha apple mix", ItemID.NAPHTHA_APPLE_MIX);
 		naphthaAppleMix.setHighlightInInventory(true);

@@ -27,6 +27,7 @@ package com.questhelper.quests.thefeud;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -81,7 +82,7 @@ public class TheFeud extends BasicQuestHelper
 	private ItemRequirementCondition desertDisguiseCondition, hasShantyPass, hasOakBlackjack, oakBlackjackEquipped,
 		snakeCharm, hasSnakeBasket, hasSnakeBasketFull, hasRedHotSauce, hasBucket, doesNotHaveBucket,
 		hasDungInInventory;
-	private ConditionForStep thoughShantyGate;
+	private ConditionForStep throughShantyGate;
 	private ZoneCondition shantyPassZoneCondition, pollniveachZoneCondition, secondFloorMansion;
 	private DetailedQuestStep getBucket;
 	private VarbitCondition talkedToThug, talkedToBandit, talkedToBanditReturn, doorOpen, traitorFound,
@@ -403,7 +404,7 @@ public class TheFeud extends BasicQuestHelper
 		hasDisguise = new Conditions(desertDisguiseCondition);
 		hasBucket = new ItemRequirementCondition(new ItemRequirement("Bucket", ItemID.BUCKET));
 		doesNotHaveBucket = new ItemRequirementCondition(Operation.LESS_EQUAL, 0, new ItemRequirement("Bucket", ItemID.BUCKET));
-		thoughShantyGate = new ConditionForStep()
+		throughShantyGate = new ConditionForStep()
 		{
 			@Override
 			public boolean checkCondition(Client client)
@@ -411,9 +412,10 @@ public class TheFeud extends BasicQuestHelper
 				return client.getLocalPlayer().getWorldLocation().getY() < 3116;
 			}
 		};
-		notThroughShantyGate = new Conditions(LogicType.NAND, thoughShantyGate);
+		notThroughShantyGate = new Conditions(LogicType.NAND, throughShantyGate);
 		hasDungInInventory = new ItemRequirementCondition(dung);
-		combatGear = new ItemRequirement("Combat gear to beat NPC's", -1, -1);
+		combatGear = new ItemRequirement("Combat gear for fighting", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	private void setupItemRequirements()
@@ -495,7 +497,7 @@ public class TheFeud extends BasicQuestHelper
 
 		ConditionalStep conditionalStep = new ConditionalStep(this, buyShantypass);
 		conditionalStep.addStep(pollniveachZoneCondition, drunkenAli);
-		conditionalStep.addStep(thoughShantyGate, talkToRugMerchant);
+		conditionalStep.addStep(throughShantyGate, talkToRugMerchant);
 		conditionalStep.addStep(new Conditions(notThroughShantyGate, hasShantyPass), goToShanty);
 		conditionalStep.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
 		conditionalStep.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);

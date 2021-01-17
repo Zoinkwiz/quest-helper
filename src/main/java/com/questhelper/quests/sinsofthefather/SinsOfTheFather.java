@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -460,9 +461,16 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwoodSickle.setHighlightInInventory(true);
 
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		vyrewatchOutfitOrCoins = new ItemRequirements("Vyrewatch outfit or 1950 coins", vyreShoes, vyreLegs, vyreTop);
+		ItemRequirements vyrewatchOutfit = new ItemRequirements("Vyrewatch outfit",
+			new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP),
+			new ItemRequirement("Vyrewatch legs", ItemID.VYREWATCH_LEGS),
+			new ItemRequirement("Vyrewatch shoes", ItemID.VYREWATCH_SHOES));
+
+		vyrewatchOutfitOrCoins = new ItemRequirements(LogicType.OR, "Vyrewatch outfit or 1950 coins", vyrewatchOutfit,
+			new ItemRequirement("Coins", ItemID.COINS_995, 1950));
 
 		drakanMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION);
 		moryLegs3 = new ItemRequirement("Morytania legs 3/4", ItemID.MORYTANIA_LEGS_3);

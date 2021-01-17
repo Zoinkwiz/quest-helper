@@ -106,7 +106,8 @@ public class TheKnightsSword extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 4);
-		homeTele = new ItemRequirement("A teleport near Mudskipper Point, such as POH teleport or Fairy Ring to AIQ", -1, -1);
+		homeTele = new ItemRequirement("A teleport near Mudskipper Point, such as POH teleport or Fairy Ring to AIQ",
+			ItemID.RIMMINGTON_TELEPORT, 2);
 		portrait = new ItemRequirement("Portrait", ItemID.PORTRAIT);
 	}
 

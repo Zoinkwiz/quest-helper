@@ -27,6 +27,7 @@ package com.questhelper.quests.treegnomevillage;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -132,9 +133,15 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		ItemStep pickupOrb = new ItemStep(this,
 			"Pick up the nearby \"Orbs of Protection\".", orbsOfProtection);
 
+		ItemRequirement food = new ItemRequirement("Food", -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+
+		ItemRequirement combatGear = new ItemRequirement("Armor & Weapons", -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
 		ConditionalStep defeatTheWarlord = new ConditionalStep(this, talkToTheWarlord,
-			new ItemRequirement("Food", -1),
-			new ItemRequirement("Armor & Weapons", -1));
+			food,
+			combatGear);
 
 		pickupOrbsOfProtection = new ItemCondition(ItemID.ORBS_OF_PROTECTION);
 		defeatTheWarlord.addStep(fightingWarlord, fightTheWarlord);
@@ -304,8 +311,14 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		steps.add(new PanelDetails("The three trackers", new ArrayList<>(Arrays.asList(
 			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 			firstTracker, secondTracker, thirdTracker, fireBalistaConditional)), logRequirement));
+
+		ItemRequirement food = new ItemRequirement("Food", -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		ItemRequirement combatGear = new ItemRequirement("Armor & Weapons", -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
 		steps.add(new PanelDetails("Retrieving the orbs", new ArrayList<>(Arrays.asList(retrieveOrb, talkToKingBolrenFirstOrb,
-			talkToTheWarlord, fightTheWarlord, returnOrbs))));
+			talkToTheWarlord, fightTheWarlord, returnOrbs)), combatGear, food));
 		return steps;
 	}
 }

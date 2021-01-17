@@ -26,6 +26,7 @@ package com.questhelper.quests.shadesofmortton;
 
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -137,6 +138,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF, 2);
 		tarrominUnfHighlighted = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
 		tarrominUnfHighlighted.setHighlightInInventory(true);
@@ -152,6 +154,8 @@ public class ShadesOfMortton extends BasicQuestHelper
 		morttonTele = new ItemRequirement("A Mort'ton teleport or Barrows teleport tablet", ItemID.MORTTON_TELEPORT);
 		morttonTele.addAlternates(ItemID.BARROWS_TELEPORT);
 		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+
 		flamtaerBracelet = new ItemRequirement("Flamtaer bracelet", ItemID.FLAMTAER_BRACELET);
 		flamtaerBracelet.setTip("This speeds up the repair section of the quest considerably");
 		log = new ItemRequirement("A log who's pyre version you can burn", ItemID.LOGS);

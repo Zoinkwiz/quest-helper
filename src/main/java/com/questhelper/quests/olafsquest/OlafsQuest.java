@@ -26,6 +26,7 @@ package com.questhelper.quests.olafsquest;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -45,7 +46,6 @@ import com.questhelper.steps.conditional.WidgetModelCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -71,7 +71,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 public class OlafsQuest extends BasicQuestHelper
 {
 	ItemRequirement combatGear, axe, tinderbox, spade, dampPlanks, windsweptLogs, crudeCarving, cruderCarving, food, key, rottenBarrels2, rottenBarrel, ropes6, ropes3, crossKey, squareKey,
-		triangleKey, circleKey, starKey;
+		triangleKey, circleKey, starKey, prayerPotions;
 
 	ConditionForStep hasWindsweptLogs, givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, hasKey, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
 		keyInterfaceOpen, hasCrossKey, hasSquareKey, hasTriangleKey, hasCircleKey, hasStarKey, ulfricNearby, killedUlfric;
@@ -140,6 +140,11 @@ public class OlafsQuest extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear, food + prayer potions", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
@@ -151,8 +156,6 @@ public class OlafsQuest extends BasicQuestHelper
 		crudeCarving.setTip("You can get another from Olaf");
 		cruderCarving = new ItemRequirement("Cruder carving", ItemID.CRUDER_CARVING);
 		cruderCarving.setTip("You can get another from Olaf");
-
-		food = new ItemRequirement("Food", -1, -1);
 
 		key = new ItemRequirement("Key", ItemID.KEY_11039);
 		key.addAlternates(ItemID.KEY_11040, ItemID.KEY_11041, ItemID.KEY_11042, ItemID.KEY_11043);
@@ -270,7 +273,7 @@ public class OlafsQuest extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(combatGear));
+		return new ArrayList<>(Arrays.asList(combatGear, food, prayerPotions));
 	}
 
 	@Override
@@ -294,10 +297,12 @@ public class OlafsQuest extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid, talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks)), axe, tinderbox, spade));
+			new ArrayList<>(Arrays.asList(talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid,
+				talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks)), axe, tinderbox, spade));
 
 		allSteps.add(new PanelDetails("Finding treasure",
-			new ArrayList<>(Arrays.asList(digHole, killSkeleton, searchPainting, doPuzzle, pickUpItems, useBarrel, useBarrel2, openGate, searchChest, killUlfric, searchChestAgain))));
+			new ArrayList<>(Arrays.asList(digHole, killSkeleton, searchPainting, doPuzzle, pickUpItems,
+				useBarrel, useBarrel2, openGate, searchChest, killUlfric, searchChestAgain))));
 		return allSteps;
 	}
 }

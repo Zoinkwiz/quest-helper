@@ -190,6 +190,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		chiselHighlighted.setHighlightInInventory(true);
 
 		sandstone52 = new ItemRequirement("52 kg of sandstone", -1, -1);
+		sandstone52.setDisplayItemId(ItemID.SANDSTONE_5KG);
 
 		sandstone32 = new ItemRequirement("Sandstone 32kg", ItemID.SANDSTONE_32KG);
 		sandstone32.setHighlightInInventory(true);
@@ -233,8 +234,11 @@ public class EnakhrasLament extends BasicQuestHelper
 		breadOrCake.setHighlightInInventory(true);
 
 		airSpellRunes = new ItemRequirement("Runes for an air spell", -1, -1);
+		airSpellRunes.setDisplayItemId(ItemID.AIR_RUNE);
 		fireSpellRunes = new ItemRequirement("Runes for a fire spell", -1, -1);
+		fireSpellRunes.setDisplayItemId(ItemID.FIRE_RUNE);
 		crumbleUndeadRunes = new ItemRequirement("Runes for crumble undead spell", -1, -1);
+		crumbleUndeadRunes.setDisplayItemId(ItemID.SKULL);
 
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		log.setHighlightInInventory(true);

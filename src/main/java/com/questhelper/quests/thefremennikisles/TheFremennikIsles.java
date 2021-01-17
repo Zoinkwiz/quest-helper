@@ -26,6 +26,7 @@ package com.questhelper.quests.thefremennikisles;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -293,7 +294,9 @@ public class TheFremennikIsles extends BasicQuestHelper
 		yakBottomWorn = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824, 1, true);
 		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true);
 		meleeWeapon = new ItemRequirement("Melee gear", -1, -1);
+		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food + potions", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		tuna = new ItemRequirement("Raw tuna", ItemID.RAW_TUNA);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 

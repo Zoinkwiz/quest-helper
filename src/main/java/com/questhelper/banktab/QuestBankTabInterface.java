@@ -80,18 +80,18 @@ public class QuestBankTabInterface
 
 		parent = client.getWidget(WidgetInfo.BANK_CONTAINER);
 
-		int QUEST_BUTTON_SIZE = 22;
+		int QUEST_BUTTON_SIZE = 25;
 		int QUEST_BUTTON_X = 408;
-		int QUEST_BUTTON_Y = 6;
+		int QUEST_BUTTON_Y = 5;
 		questBackgroundWidget = createGraphic("quest-helper", SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL, QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_X, QUEST_BUTTON_Y);
 		questBackgroundWidget.setAction(1, VIEW_TAB);
 		questBackgroundWidget.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 
-		questIconWidget = createGraphic("", SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS, QUEST_BUTTON_SIZE - 4,
-			QUEST_BUTTON_SIZE - 4,
-			QUEST_BUTTON_X + 2, QUEST_BUTTON_Y + 2);
+		questIconWidget = createGraphic("", SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
+			QUEST_BUTTON_SIZE - 6,
+			QUEST_BUTTON_X + 3, QUEST_BUTTON_Y + 3);
 
 		questTabActive = false;
 	}

@@ -558,7 +558,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
-		morytaniaTeleport = new ItemRequirement("Port Phasmatys teleport", ItemID.ECTOPHIAL_4252);
+		morytaniaTeleport = new ItemRequirement("Port Phasmatys teleport", ItemID.ECTOPHIAL);
 		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemID.TAI_BWO_WANNAI_TELEPORT);
 		rellekkaTeleport = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
 	}

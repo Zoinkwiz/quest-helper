@@ -79,15 +79,11 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.client.plugins.bank.BankSearch;
-import net.runelite.client.plugins.banktags.BankTagsPlugin;
-import net.runelite.client.plugins.banktags.TagManager;
-import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -99,7 +95,6 @@ import net.runelite.client.util.Text;
 	description = "Helps you with questing",
 	tags = { "quest", "helper", "overlay" }
 )
-@PluginDependency(value = BankTagsPlugin.class)
 @Slf4j
 public class QuestHelperPlugin extends Plugin
 {
@@ -175,14 +170,6 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	@Inject
 	private BankSearch bankSearch;
-
-	@Getter
-	@Inject
-	private TagManager tagManager;
-
-	@Getter
-	@Inject
-	private TabInterface tabInterface;
 
 	@Getter
 	@Inject

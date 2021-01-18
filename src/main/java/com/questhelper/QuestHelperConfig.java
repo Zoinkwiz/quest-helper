@@ -190,7 +190,7 @@ public interface QuestHelperConfig extends Config
 	)
 	default Quest.Difficulty difficulty()
 	{
-		return Quest.Difficulty.NOVICE;
+		return Quest.Difficulty.ALL;
 	}
 
 	@ConfigItem(

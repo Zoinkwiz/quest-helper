@@ -473,7 +473,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		enterValley = new DetailedQuestStep(this, new WorldPoint(2721, 2750, 0), "Head west and enter the valley going north WITH PROTECT FROM RANGED ON. Be wary of poison and taking damage.");
 		enterValley.addSubSteps(talkToLumdoToReturn, talkToDaeroTravel);
-		leavePrison = new DetailedQuestStep(this, new WorldPoint(2779, 2802, 0), "Wait for the gorrila guard to start going away from the prison cell, then sneak out and go to the north side of the prison.");
+		leavePrison = new DetailedQuestStep(this, new WorldPoint(2779, 2802, 0), "Wait for the gorilla guard to start" +
+			" going away from the prison cell, then sneak out and go to the north side of the prison.");
 
 		talkToGarkor = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Stick to the east edge of the town, and make your way to Garkor to the south east.");
 		talkToGarkor.setLinePoints(new ArrayList<>(Arrays.asList(
@@ -587,7 +588,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		enterValleyForAmuletMake = new DetailedQuestStep(this, new WorldPoint(2721, 2750, 0), "Head west and enter the valley going north WITH PROTECT FROM RANGED ON. Be wary of poison and taking damage.", enchantedBar, mould, ballOfWool);
 		enterValleyForAmuletMake.addSubSteps(talkToLumdoToReturn, talkToDaeroTravel);
 
-		enterTemple = new ObjectStep(this, ObjectID.TRAPDOOR_4879, new WorldPoint(2807, 2785, 0), "Wait for the gorrila guard to start going away from the prison cell, then sneak out and go to the north side of the prison. Afterwards, head into the temple's basement.", enchantedBar, mould, ballOfWool);
+		enterTemple = new ObjectStep(this, ObjectID.TRAPDOOR_4879, new WorldPoint(2807, 2785, 0), "Wait for the " +
+			"gorilla guard to start going away from the prison cell, then sneak out and go to the north side of the prison. Afterwards, head into the temple's basement.", enchantedBar, mould, ballOfWool);
 		enterTemple.addAlternateObjects(ObjectID.TRAPDOOR_4880);
 		enterTemple.setLinePoints(new ArrayList<>(Arrays.asList(
 			new WorldPoint(2764, 2806, 0),

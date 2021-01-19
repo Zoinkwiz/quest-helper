@@ -69,13 +69,6 @@ public interface QuestHelperConfig extends Config
 		}
 	}
 
-	@ConfigSection(
-		position = 1,
-		name = "Quest Filters",
-		description = "Determines which quests should be shown via the selected filter(s)"
-	)
-	String filterSection = "filterSection";
-
 	enum QuestFilter implements Predicate<QuestHelper>
 	{
 		/** Show all quests */
@@ -118,16 +111,6 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "textHighlightColor",
-		name = "Text highlight color",
-		description = "Change the color of dialog choices highlighted by the helper"
-	)
-	default Color textHighlightColor()
-	{
-		return Color.CYAN.darker();
-	}
-
-	@ConfigItem(
 		keyName = "showTextHighlight",
 		name = "Highlight correct dialog",
 		description = "Highlight correct dialog choices"
@@ -147,15 +130,53 @@ public interface QuestHelperConfig extends Config
 		return true;
 	}
 
+	@ConfigSection(
+		position = 1,
+		name = "Colors",
+		description = "What color each option can be"
+	)
+	String colorSection = "colorSection";
+
+	@ConfigItem(
+		keyName = "textHighlightColor",
+		name = "Text highlight color",
+		description = "Change the color of dialog choices highlighted by the helper",
+		section = colorSection
+	)
+	default Color textHighlightColor()
+	{
+		return Color.CYAN.darker();
+	}
+
 	@ConfigItem(
 		keyName = "targetOverlayColor",
 		name = "Color of target overlay",
-		description = "Change the color which target NPCs/Objects will be highlighted with"
+		description = "Change the color which target NPCs/Objects will be highlighted with",
+		section = colorSection
 	)
 	default Color targetOverlayColor()
 	{
 		return Color.CYAN;
 	}
+
+	@ConfigItem(
+		keyName = "debugColor",
+		name = "Debug Color",
+		description = "debug",
+		hidden = true,
+		section = colorSection
+	)
+	default Color debugColor()
+	{
+		return Color.MAGENTA;
+	}
+
+	@ConfigSection(
+		position = 2,
+		name = "Quest Filters",
+		description = "Determines which quests should be shown via the selected filter(s)"
+	)
+	String filterSection = "filterSection";
 
 	@ConfigItem(
 		keyName = "orderListBy",
@@ -203,16 +224,5 @@ public interface QuestHelperConfig extends Config
 	default boolean showCompletedQuests()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "debugColor",
-		name = "Debug Color",
-		description = "debug",
-		hidden = true
-	)
-	default Color debugColor()
-	{
-		return Color.MAGENTA;
 	}
 }

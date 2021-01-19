@@ -350,9 +350,11 @@ public class ObjectStep extends DetailedQuestStep
 		final ObjectComposition comp = client.getObjectDefinition(object.getId());
 		final int[] impostorIds = comp.getImpostorIds();
 
-		if (impostorIds != null)
+		if (impostorIds != null && comp.getImpostor() != null)
 		{
-			if (comp.getImpostor() != null && comp.getImpostor().getId() == objectID || alternateObjectIDs.contains(comp.getImpostor().getId()))
+			boolean imposterIsMainObject = comp.getImpostor().getId() == objectID;
+			boolean imposterIsAlternateObject = alternateObjectIDs.contains(comp.getImpostor().getId());
+			if (imposterIsMainObject || imposterIsAlternateObject)
 			{
 				setObjects(object, localWorldPoints);
 			}

@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.ChatMessageType;
@@ -190,13 +191,9 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		if (event.getGameState() == GameState.LOADING || event.getGameState() == GameState.HOPPING)
 		{
-			for (Conditions conditions : steps.keySet())
-			{
-				if (conditions != null)
-				{
-					conditions.loadingHandler();
-				}
-			}
+			steps.keySet().stream()
+				.filter(Objects::nonNull)
+				.forEach(Conditions::loadingHandler);
 		}
 	}
 

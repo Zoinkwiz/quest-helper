@@ -277,10 +277,9 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			if (tileObject.getPlane() == client.getPlane())
 			{
-				OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition,
-					new Color(getQuestHelper().getConfig().targetOverlayColor().getRed(),
-						getQuestHelper().getConfig().targetOverlayColor().getGreen(),
-						getQuestHelper().getConfig().targetOverlayColor().getBlue(), 20),
+				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
+				Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
+				OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition, fillColor,
 					getQuestHelper().getConfig().targetOverlayColor().darker(),
 					getQuestHelper().getConfig().targetOverlayColor());
 			}

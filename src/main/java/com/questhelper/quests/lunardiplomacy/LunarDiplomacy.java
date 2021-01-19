@@ -78,7 +78,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		lunarStaffP3, lunarStaffP3Highlighted, lunarStaff, pickaxe, hammer, needle, thread, combatGear, coins400, spade, lunarOre,
 		lunarBar, tiara, helm, amulet, ring, cape, torso, gloves, boots, legs, suqahHide4, kindling, helmEquipped, bodyEquipped,
 		legsEquipped, bootsEquipped, glovesEquipped, cloakEquipped, amuletEquipped, ringEquipped, lunarStaffEquipped, soakedKindling,
-		sleepPotionHighlighted, soakedKindlingHighlighted, combatRunes;
+		sleepPotionHighlighted, soakedKindlingHighlighted, combatRunes, sealOfPassageEquipped;
 
 	ConditionForStep atBaseOfStairs, onCoveF1, onBoatF0, onBoatF1, onBoatF2, onBoatF3, hasLitBullseye, hasBullseye,
 		hasEmeraldLantern, revealedCannon, revealedChart, revealedChest, revealedPillar, revealedCrate, hasEmeraldLanternLit,
@@ -303,6 +303,9 @@ public class LunarDiplomacy extends BasicQuestHelper
 	{
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
 		sealOfPassage.setTip("You can get another from Brundt");
+
+		sealOfPassageEquipped = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE, 1, true);
+		sealOfPassageEquipped.setTip("You can get another from Brundt");
 
 		bullseyeLantern = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN);
 		bullseyeLantern.addAlternates(ItemID.SAPPHIRE_LANTERN_4701);
@@ -592,7 +595,8 @@ public class LunarDiplomacy extends BasicQuestHelper
 		boardShip = new ObjectStep(this, ObjectID.LADDER_16959, new WorldPoint(2214, 3801, 1), "Climb up to the ship.");
 		climbLadder.addSubSteps(travelWithLokar, boardShip);
 
-		talkToBentley = new NpcStep(this, NpcID.CAPTAIN_BENTLEY, new WorldPoint(2222, 3796, 2), "Talk to Captain Bentley.");
+		talkToBentley = new NpcStep(this, NpcID.CAPTAIN_BENTLEY, new WorldPoint(2222, 3796, 2), "Talk to Captain " +
+			"Bentley.", sealOfPassageEquipped);
 		talkToBentley.addDialogStep("Can we sail to Lunar Isle now?");
 
 		climbDownSouthStairs = new ObjectStep(this, ObjectID.STAIRS_16947, new WorldPoint(2222, 3792, 2), "Go down to talk to 'Birds-Eye' Jack.");

@@ -27,16 +27,14 @@ package com.questhelper.quests.atailoftwocats;
 import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.FollowerRequirement;
+import com.questhelper.requirements.FollowerItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.Requirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.NpcCondition;
 import com.questhelper.steps.conditional.Operation;
 import com.questhelper.steps.conditional.VarbitCondition;
@@ -63,9 +61,8 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ATailOfTwoCats extends BasicQuestHelper
 {
-	ItemRequirement catspeak, catspeakE, deathRune5, catItem, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom, hat, catspeakEWorn;
-
-	Requirement catFollower, cat;
+	ItemRequirement catspeak, catspeakE, deathRune5, chocolateCake, logs, tinderbox, milk, shears,
+		potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom, hat, catspeakEWorn, cat;
 
 	ConditionForStep bobNearby, rakedPatch, madeBed, plantedSeed, placedLogs, litLogs, placedCake, placedMilk, usedShears, grownPotatoes;
 
@@ -137,9 +134,9 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		catspeakEWorn = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakE.setHighlightInInventory(true);
 		deathRune5 = new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 5);
-		catItem = new ItemRequirement("Any cat", ItemCollections.getCats());
-		catFollower = new FollowerRequirement("Any cat following you", NpcCollections.getCats());
-		cat = new Requirements(LogicType.OR, "Any cat", catItem, catFollower);
+		cat = new FollowerItemRequirement("A cat",
+			ItemCollections.getCats(),
+			NpcCollections.getCats());
 
 		chocolateCake = new ItemRequirement("Chocolate cake", ItemID.CHOCOLATE_CAKE);
 		chocolateCake.setHighlightInInventory(true);
@@ -228,7 +225,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(catItem, catspeak, deathRune5, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom));
+		return new ArrayList<>(Arrays.asList(cat, catspeak, deathRune5, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom));
 	}
 
 	@Override
@@ -236,14 +233,14 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToUnferth, talkToHild, findBob, talkToBob)), catItem, catspeak, deathRune5));
+		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToUnferth, talkToHild, findBob, talkToBob)), cat, catspeak, deathRune5));
 
-		allSteps.add(new PanelDetails("Bob's past", new ArrayList<>(Arrays.asList(talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx)), catItem));
+		allSteps.add(new PanelDetails("Bob's past", new ArrayList<>(Arrays.asList(talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx)), cat));
 
 		allSteps.add(new PanelDetails("Helping Unferth", new ArrayList<>(Arrays.asList(useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs, useChocolateCakeOnTable, useMilkOnTable, useShearsOnUnferth, reportToUnferth)),
-			catItem, catspeakE, rake, dibber, potatoSeed4, logs, tinderbox, chocolateCake, milk, shears));
+			cat, catspeakE, rake, dibber, potatoSeed4, logs, tinderbox, chocolateCake, milk, shears));
 
-		allSteps.add(new PanelDetails("'Curing' Unferth", new ArrayList<>(Arrays.asList(talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish, talkToUnferthToFinish)), catItem, catspeakE, vialOfWater));
+		allSteps.add(new PanelDetails("'Curing' Unferth", new ArrayList<>(Arrays.asList(talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish, talkToUnferthToFinish)), cat, catspeakE, vialOfWater));
 
 		return allSteps;
 	}

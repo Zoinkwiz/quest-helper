@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2021, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.quests.recipefordisaster;
 
-import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.steps.NpcStep;
 import java.util.ArrayList;
-import java.util.Arrays;
-import lombok.Getter;
-import net.runelite.api.Client;
+import java.util.Collections;
+import net.runelite.api.NpcID;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
-public class Requirements extends Requirement
+public class GetRohakDrunk extends NpcStep
 {
-	@Getter
-	ArrayList<Requirement> requirements = new ArrayList<>();
-	LogicType logicType;
-	String name;
+	ItemRequirement asgoldianAle;
 
-	public Requirements(String name, Requirement... requirements)
+	public GetRohakDrunk(QuestHelper questHelper, ItemRequirement asgoldianAle4)
 	{
-		this.name = name;
-		this.requirements.addAll(Arrays.asList(requirements));
-		this.logicType = LogicType.AND;
+		super(questHelper, NpcID.AN_OLD_DWARF, new WorldPoint(2865, 9877, 0), "Keep giving the dwarf drinks until " +
+			"he's drunk.", asgoldianAle4);
+		addAlternateNpcs(NpcID.ROHAK, NpcID.ROHAK_4812);
+		asgoldianAle = asgoldianAle4;
 	}
 
-	public Requirements(LogicType logicType, String name, Requirement... requirements)
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
-		this.name = name;
-		this.requirements.addAll(Arrays.asList(requirements));
-		this.logicType = logicType;
+		updateSteps();
 	}
 
-	@Override
-	public boolean check(Client client)
+	protected void updateSteps()
 	{
-		int successes = (int) requirements.stream().filter(r -> r.check(client)).count();
-
-		return (successes == requirements.size() && logicType == LogicType.AND)
-			|| (successes > 0 && logicType == LogicType.OR)
-			|| (successes < requirements.size() && logicType == LogicType.NAND)
-			|| (successes == 0 && logicType == LogicType.NOR);
-	}
-
-	@Override
-	public String getDisplayText()
-	{
-		return name;
+		int numAle = 4 - client.getVarbitValue(1893);
+		asgoldianAle.setQuantity(numAle);
+		if (numAle == 0)
+		{
+			this.requirements = new ArrayList<>();
+		}
+		else
+		{
+			this.setRequirements(new ArrayList<>(Collections.singletonList(asgoldianAle)));
+		}
+		this.setText("Keep talking to the dwarf until he's drunk and agrees to make the rock cake.");
 	}
 }

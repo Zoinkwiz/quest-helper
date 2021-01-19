@@ -51,19 +51,19 @@ public class ItemRequirement extends Requirement
 
 	@Setter
 	@Getter
-	private int quantity;
+	protected int quantity;
 
 	@Getter
 	private boolean equip;
 
 	@Getter
 	@Setter
-	private boolean highlightInInventory;
+	protected boolean highlightInInventory;
 
-	private final List<Integer> alternates = new ArrayList<>();
+	protected final List<Integer> alternates = new ArrayList<>();
 
 	@Setter
-	private boolean exclusiveToOneItemType;
+	protected boolean exclusiveToOneItemType;
 
 	public ItemRequirement(String name, int id)
 	{

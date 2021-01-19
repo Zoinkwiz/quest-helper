@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2021, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,47 +24,55 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.LogicType;
 import java.util.ArrayList;
-import java.util.Arrays;
-import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.NPC;
 
-public class Requirements extends Requirement
+public class FollowerItemRequirement extends ItemRequirement
 {
-	@Getter
-	ArrayList<Requirement> requirements = new ArrayList<>();
-	LogicType logicType;
-	String name;
+	private ArrayList<Integer> followerIDs;
 
-	public Requirements(String name, Requirement... requirements)
+	public FollowerItemRequirement(String name, ArrayList<Integer> itemIDs, ArrayList<Integer> followerIDs)
 	{
-		this.name = name;
-		this.requirements.addAll(Arrays.asList(requirements));
-		this.logicType = LogicType.AND;
-	}
-
-	public Requirements(LogicType logicType, String name, Requirement... requirements)
-	{
-		this.name = name;
-		this.requirements.addAll(Arrays.asList(requirements));
-		this.logicType = logicType;
+		super(name, itemIDs);
+		this.followerIDs = followerIDs;
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
-		int successes = (int) requirements.stream().filter(r -> r.check(client)).count();
+		for (NPC npc : client.getNpcs())
+		{
+			Actor ta = npc.getInteracting();
+			if (ta != null && client.getLocalPlayer() == ta)
+			{
+				if (followerIDs.contains(npc.getId()))
+				{
+					return true;
+				}
+			}
+		}
 
-		return (successes == requirements.size() && logicType == LogicType.AND)
-			|| (successes > 0 && logicType == LogicType.OR)
-			|| (successes < requirements.size() && logicType == LogicType.NAND)
-			|| (successes == 0 && logicType == LogicType.NOR);
-	}
+		int remainder = checkSpecificItem(client, getId(), checkConsideringSlotRestrictions, items);
+		if (remainder <= 0)
+		{
+			return true;
+		}
 
-	@Override
-	public String getDisplayText()
-	{
-		return name;
+		for (int alternate : alternates)
+		{
+			if (exclusiveToOneItemType)
+			{
+				remainder = quantity;
+			}
+			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkConsideringSlotRestrictions, items));
+			if (remainder <= 0)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

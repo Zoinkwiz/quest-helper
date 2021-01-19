@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.FollowerItemRequirement;
 import com.questhelper.requirements.FollowerRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -204,8 +205,9 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		cat = new ItemRequirement("Any cat", ItemID.PET_CAT);
-		cat.addAlternates(ItemCollections.getCats());
+		cat = new FollowerItemRequirement("A cat",
+			ItemCollections.getCats(),
+			NpcCollections.getCats());
 
 		catFollower = new FollowerRequirement("Any cat following you", NpcCollections.getCats());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);

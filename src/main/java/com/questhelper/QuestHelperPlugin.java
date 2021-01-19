@@ -126,6 +126,9 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final String MENUOP_RFD_START = "Start Quest Helper (Starting off)";
 	private static final String MENUOP_RFD_SKRACH_UGLOGWEE = "Start Quest Helper (Skrach Uglogwee)";
+	private static final String MENUOP_RFD_GOBLINS = "Start Quest Helper (Wartface & Bentnoze)";
+	private static final String MENUOP_RFD_EVIL_DAVE = "Start Quest Helper (Evil Dave)";
+	private static final String MENUOP_RFD_DWARF = "Start Quest Helper (Dwarf)";
 	private static final String MENUOP_RFD_PIRATE_PETE = "Start Quest Helper (Pirate Pete)";
 	private static final String MENUOP_RFD_LUMBRIDGE_GUIDE = "Start Quest Helper (Lumbridge Guide)";
 	private static final String MENUOP_RFD_SIR_AMIK_VARZE = "Start Quest Helper (Sir Amik Varze)";
@@ -407,6 +410,19 @@ public class QuestHelperPlugin extends Plugin
 					event.consume();
 					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
 					break;
+
+				case MENUOP_RFD_DWARF:
+					event.consume();
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF.getName()));
+					break;
+				case MENUOP_RFD_EVIL_DAVE:
+					event.consume();
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_EVIL_DAVE.getName()));
+					break;
+				case MENUOP_RFD_GOBLINS:
+					event.consume();
+					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE.getName()));
+					break;
 				case MENUOP_RFD_PIRATE_PETE:
 					event.consume();
 					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName()));
@@ -497,6 +513,21 @@ public class QuestHelperPlugin extends Plugin
 						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE.getName()).isCompleted())
 						{
 							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_SKRACH_UGLOGWEE, event.getTarget(), widgetIndex, widgetID);
+						}
+						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE.getName()).isCompleted())
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_GOBLINS, event.getTarget(), widgetIndex,
+								widgetID);
+						}
+						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_EVIL_DAVE.getName()).isCompleted())
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_EVIL_DAVE, event.getTarget(), widgetIndex,
+								widgetID);
+						}
+						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF.getName()).isCompleted())
+						{
+							menuEntries = addNewEntry(menuEntries, MENUOP_RFD_DWARF, event.getTarget(), widgetIndex,
+								widgetID);
 						}
 						if (!quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getName()).isCompleted())
 						{

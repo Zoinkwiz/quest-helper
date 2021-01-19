@@ -26,7 +26,6 @@ package com.questhelper.quests.darknessofhallowvale;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -49,7 +48,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;

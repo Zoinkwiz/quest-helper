@@ -1,0 +1,281 @@
+/*
+ * Copyright (c) 2021, Zoinkwiz
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package com.questhelper.quests.recipefordisaster;
+
+import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarbits;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.VarbitRequirement;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.steps.conditional.Conditions;
+import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.Operation;
+import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.steps.conditional.ZoneCondition;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.api.Client;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
+import net.runelite.api.coords.WorldPoint;
+
+@QuestDescriptor(
+	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF
+)
+public class RFDDwarf extends BasicQuestHelper
+{
+	ItemRequirement coins320, milk, flour, egg, bowlOfWater, asgarniaAle4, iceGloves, rockCake, rockCakeHot,
+		teleportFalador2, teleportLumbridge, coin, asgarnianAle, asgoldianAle, asgoldianAle4, coins100,
+		rockCakeHighlighted;
+
+	ConditionForStep inDiningRoom, inTunnel, hasRockCake, hasRockCakeHot, learnedHowToMakeAle, hasAsgoldian4,
+		givenAle, has4AleOrGivenAle;
+
+	QuestStep enterDiningRoom, inspectDwarf, talkToKaylee, makeAle, enterTunnels, talkToOldDwarf, talkToOldDwarfMore,
+		talkToOldDwarfWithIngredients, pickUpRockCake, coolRockCake, coolRockCakeSidebar, enterDiningRoomAgain,
+		useRockCakeOnDwarf;
+
+	Zone diningRoom, tunnel;
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		loadZones();
+		setupRequirements();
+		setupConditions();
+		setupSteps();
+		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		ConditionalStep goInspectDwarf = new ConditionalStep(this, enterDiningRoom);
+		goInspectDwarf.addStep(inDiningRoom, inspectDwarf);
+		steps.put(0, goInspectDwarf);
+
+		ConditionalStep goGiveAle = new ConditionalStep(this, talkToKaylee);
+		goGiveAle.addStep(new Conditions(has4AleOrGivenAle, inTunnel), talkToOldDwarf);
+		goGiveAle.addStep(new Conditions(has4AleOrGivenAle), enterTunnels);
+		goGiveAle.addStep(learnedHowToMakeAle, makeAle);
+		steps.put(10, goGiveAle);
+		steps.put(20, goGiveAle);
+
+		ConditionalStep haveCakeMade = new ConditionalStep(this, enterTunnels);
+		haveCakeMade.addStep(inTunnel, talkToOldDwarfMore);
+		steps.put(30, haveCakeMade);
+
+		ConditionalStep haveCakeMadeP2 = new ConditionalStep(this, enterTunnels);
+		haveCakeMadeP2.addStep(inTunnel, talkToOldDwarfWithIngredients);
+		steps.put(40, haveCakeMadeP2);
+
+		ConditionalStep giveCakeToDwarf = new ConditionalStep(this, pickUpRockCake);
+		giveCakeToDwarf.addStep(new Conditions(hasRockCake, inDiningRoom), useRockCakeOnDwarf);
+		giveCakeToDwarf.addStep(hasRockCake, enterDiningRoomAgain);
+		giveCakeToDwarf.addStep(hasRockCakeHot, coolRockCake);
+		steps.put(50, giveCakeToDwarf);
+
+		return steps;
+	}
+
+	public void setupRequirements()
+	{
+		coins320 = new ItemRequirement("Coins", ItemID.COINS_995, 320);
+		coins320.setTip("You only need 120 if you wear a Ring of Charos(a)");
+		coins100 = new ItemRequirement("Coins", ItemID.COINS_995, 100);
+		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
+		milk.setTip("You can by this from the  Culinaromancer's Chest");
+		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
+		flour.setTip("You can by this from the  Culinaromancer's Chest");
+		egg = new ItemRequirement("Egg", ItemID.EGG);
+		egg.setTip("You can by this from the  Culinaromancer's Chest");
+		bowlOfWater = new ItemRequirement("Bowl of water", ItemID.BOWL_OF_WATER);
+		bowlOfWater.setTip("You can find a bowl in Lumbridge Castle's Basement and fill it in the nearby sink");
+		asgarniaAle4 = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE, 4);
+		asgarniaAle4.setTip("You can buy them for 3 coins each from Kaylee during the quest");
+		iceGloves = new ItemRequirement("Ice gloves/normal gloves/telekinetic grab", ItemID.ICE_GLOVES);
+		iceGloves.addAlternates(ItemID.LEATHER_GLOVES);
+		iceGloves.setTip("You can use normal gloves/telekenetic grab instead, but you'll then need to kill an Ice " +
+			"Fiend");
+		rockCake = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE_7510);
+		rockCakeHighlighted = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE_7510);
+		rockCakeHighlighted.setHighlightInInventory(true);
+		rockCakeHot = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE);
+		teleportFalador2 = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT, 2);
+		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
+
+		coin = new ItemRequirement("Coin", ItemID.COINS_995);
+		coin.setHighlightInInventory(true);
+
+		asgarnianAle = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE);
+		asgarnianAle.setHighlightInInventory(true);
+
+		asgoldianAle = new ItemRequirement("Asgoldian ale", ItemID.ASGOLDIAN_ALE);
+		asgoldianAle.setHighlightInInventory(true);
+
+		asgoldianAle4 = new ItemRequirement("Asgoldian ale", ItemID.ASGOLDIAN_ALE, 4);
+	}
+
+	public void loadZones()
+	{
+		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
+		tunnel = new Zone(new WorldPoint(2815, 9859, 0), new WorldPoint(2879, 9885, 0));
+	}
+
+	public void setupConditions()
+	{
+		inDiningRoom = new ZoneCondition(diningRoom);
+		inTunnel = new ZoneCondition(tunnel);
+
+		hasRockCake = new ItemRequirementCondition(rockCake);
+		hasRockCakeHot = new ItemRequirementCondition(rockCakeHot);
+		learnedHowToMakeAle = new VarbitCondition(1891, 1);
+		hasAsgoldian4 = new ItemRequirementCondition(asgoldianAle4);
+		givenAle = new VarbitCondition(1893, 1);
+		has4AleOrGivenAle = new Conditions(LogicType.OR, hasAsgoldian4, givenAle);
+	}
+
+	public void setupSteps()
+	{
+		enterDiningRoom = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0), "Go inspect " +
+			"the dwarf.");
+		inspectDwarf = new ObjectStep(this, ObjectID.DWARF_12330, new WorldPoint(1862, 5321, 0), "Inspect the dwarf.");
+		inspectDwarf.addSubSteps(enterDiningRoom);
+
+		talkToKaylee = new NpcStep(this, NpcID.KAYLEE, new WorldPoint(2957, 3371, 0), "Talk to Kaylee in the pub in " +
+			"Falador.", coins320);
+		talkToKaylee.addDialogSteps("What can you tell me about dwarves and ale?", "I could offer you some in return," +
+			" how about 200 gold?");
+
+		makeAle = new DetailedQuestStep(this, "Add coins to asgarnian ale to make 4 asgoldian ale. You can buy ale " +
+			"from Kaylee for 3gp " +
+			"each."
+			, coin, asgarnianAle);
+		enterTunnels = new ObjectStep(this, ObjectID.STAIRS_57, new WorldPoint(2877, 3481, 0), "Enter the tunnel " +
+			"under White Wolf Mountain.", asgoldianAle4, milk, flour, egg, bowlOfWater, iceGloves);
+		talkToOldDwarf = new GetRohakDrunk(this, asgoldianAle4);
+		talkToOldDwarfMore = new NpcStep(this, NpcID.ROHAK_4812, new WorldPoint(2865, 9876, 0),
+			"Talk to Rohak more.", coins100, milk, flour, egg, bowlOfWater);
+
+		talkToOldDwarfWithIngredients = new NpcStep(this, NpcID.ROHAK_4812, new WorldPoint(2865, 9876, 0),
+			"Talk to Rohak more.", milk, flour, egg, bowlOfWater);
+		talkToOldDwarfMore.addSubSteps(talkToOldDwarfWithIngredients);
+
+		pickUpRockCake = new ItemStep(this, "Pick up the dwarven rock cake. If you have ice gloves, wear them to pick" +
+			" it up. Otherwise, wear other gloves or telegrab it. If it despawns you'll need to bring Rohak more " +
+			"ingredients.",	rockCakeHot);
+		coolRockCake = new NpcStep(this, NpcID.ICEFIEND, new WorldPoint(3008, 3471, 0),
+			"Kill an icefiend to cool the rock cake.", rockCakeHot);
+		coolRockCakeSidebar = new NpcStep(this, NpcID.ICEFIEND, new WorldPoint(3008, 3471, 0),
+			"If you didn't pick up the rock cake with ice gloves, kill an icefiend to cool the rock cake.",
+			rockCakeHot);
+		coolRockCakeSidebar.addSubSteps(coolRockCakeSidebar);
+		enterDiningRoomAgain = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
+			"Go use the dwarven rock cake on the dwarf.");
+		useRockCakeOnDwarf = new ObjectStep(this, ObjectID.DWARF_12330, new WorldPoint(1862, 5321, 0),
+			"Use the dwarven rock cake on the dwarf.", rockCakeHighlighted);
+		useRockCakeOnDwarf.addIcon(ItemID.DWARVEN_ROCK_CAKE_7510);
+		useRockCakeOnDwarf.addSubSteps(enterDiningRoomAgain);
+	}
+
+	@Override
+	public ArrayList<ItemRequirement> getItemRequirements()
+	{
+		return new ArrayList<>(Arrays.asList(coins320, milk, flour, egg, bowlOfWater, asgarniaAle4,
+			iceGloves));
+	}
+
+	@Override
+	public ArrayList<ItemRequirement> getItemRecommended()
+	{
+		return new ArrayList<>(Arrays.asList(teleportFalador2, teleportLumbridge));
+	}
+
+	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList("Icefiend if you don't have Ice Gloves"));
+	}
+
+	@Override
+	public ArrayList<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> reqs = new ArrayList<>();
+		reqs.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId(), Operation.GREATER_EQUAL, 3,
+			"Started Recipe for Disaster"));
+		reqs.add(new QuestRequirement(Quest.FISHING_CONTEST, QuestState.FINISHED));
+
+		return reqs;
+	}
+
+	@Override
+	public ArrayList<PanelDetails> getPanels()
+	{
+		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Saving the Dwarf", new ArrayList<>(Arrays.asList(inspectDwarf, talkToKaylee,
+			makeAle, enterTunnels, talkToOldDwarf, talkToOldDwarfMore, pickUpRockCake, coolRockCakeSidebar,
+			useRockCakeOnDwarf)),
+			coins320, milk, flour, egg, bowlOfWater, asgarniaAle4, iceGloves));
+		return allSteps;
+	}
+
+	@Override
+	public QuestState getState(Client client)
+	{
+		int questState = client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF.getId());
+		if (questState == 0)
+		{
+			return QuestState.NOT_STARTED;
+		}
+
+		if (questState < 60)
+		{
+			return QuestState.IN_PROGRESS;
+		}
+
+		return QuestState.FINISHED;
+	}
+
+	@Override
+	public boolean isCompleted()
+	{
+		return (getQuest().getVar(client) >= 60 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
+	}
+}

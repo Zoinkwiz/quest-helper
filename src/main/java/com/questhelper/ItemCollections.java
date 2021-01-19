@@ -529,41 +529,80 @@ public class ItemCollections
 	));
 
 	@Getter
-	private static final List<Integer> cats = new ArrayList<>(Arrays.asList(
-		ItemID.PET_KITTEN,
-		ItemID.PET_KITTEN_1556,
-		ItemID.PET_KITTEN_1557,
-		ItemID.PET_KITTEN_1558,
-		ItemID.PET_KITTEN_1559,
-		ItemID.PET_KITTEN_1560,
-		ItemID.PET_CAT,
-		ItemID.PET_CAT_1562,
-		ItemID.PET_CAT_1563,
-		ItemID.PET_CAT_1564,
-		ItemID.PET_CAT_1565,
-		ItemID.PET_CAT_1566,
-		ItemID.PET_CAT_1567,
-		ItemID.PET_CAT_1568,
-		ItemID.PET_CAT_1569,
-		ItemID.PET_CAT_1570,
-		ItemID.PET_CAT_1571,
-		ItemID.PET_CAT_1572,
-		ItemID.LAZY_CAT,
-		ItemID.LAZY_CAT_6550,
-		ItemID.LAZY_CAT_6551,
-		ItemID.LAZY_CAT_6552,
-		ItemID.LAZY_CAT_6553,
-		ItemID.LAZY_CAT_6554,
+	private static final ArrayList<Integer> cats = new ArrayList<>(Arrays.asList(
+		ItemID.WILY_HELLCAT,
 		ItemID.WILY_CAT,
 		ItemID.WILY_CAT_6556,
 		ItemID.WILY_CAT_6557,
 		ItemID.WILY_CAT_6558,
 		ItemID.WILY_CAT_6559,
 		ItemID.WILY_CAT_6560,
-		ItemID.HELLKITTEN,
-		ItemID.HELL_CAT,
-		ItemID.OVERGROWN_HELLCAT,
+
 		ItemID.LAZY_HELL_CAT,
-		ItemID.WILY_HELLCAT)
+		ItemID.LAZY_CAT,
+		ItemID.LAZY_CAT_6550,
+		ItemID.LAZY_CAT_6551,
+		ItemID.LAZY_CAT_6552,
+		ItemID.LAZY_CAT_6553,
+		ItemID.LAZY_CAT_6554,
+
+		ItemID.HELL_CAT,
+		ItemID.PET_CAT,
+		ItemID.PET_CAT_1562,
+		ItemID.PET_CAT_1563,
+		ItemID.PET_CAT_1564,
+		ItemID.PET_CAT_1565,
+		ItemID.PET_CAT_1566,
+
+		ItemID.HELLKITTEN,
+		ItemID.PET_KITTEN,
+		ItemID.PET_KITTEN_1556,
+		ItemID.PET_KITTEN_1557,
+		ItemID.PET_KITTEN_1558,
+		ItemID.PET_KITTEN_1559,
+		ItemID.PET_KITTEN_1560,
+		// Overgrown cats
+		ItemID.OVERGROWN_HELLCAT,
+		ItemID.PET_CAT_1567,
+		ItemID.PET_CAT_1568,
+		ItemID.PET_CAT_1569,
+		ItemID.PET_CAT_1570,
+		ItemID.PET_CAT_1571,
+		ItemID.PET_CAT_1572)
+	);
+
+	@Getter
+	private static final ArrayList<Integer> huntingCats = new ArrayList<>(Arrays.asList(
+		ItemID.WILY_HELLCAT,
+		ItemID.WILY_CAT,
+		ItemID.WILY_CAT_6556,
+		ItemID.WILY_CAT_6557,
+		ItemID.WILY_CAT_6558,
+		ItemID.WILY_CAT_6559,
+		ItemID.WILY_CAT_6560,
+
+		ItemID.LAZY_HELL_CAT,
+		ItemID.LAZY_CAT,
+		ItemID.LAZY_CAT_6550,
+		ItemID.LAZY_CAT_6551,
+		ItemID.LAZY_CAT_6552,
+		ItemID.LAZY_CAT_6553,
+		ItemID.LAZY_CAT_6554,
+
+		ItemID.HELL_CAT,
+		ItemID.PET_CAT,
+		ItemID.PET_CAT_1562,
+		ItemID.PET_CAT_1563,
+		ItemID.PET_CAT_1564,
+		ItemID.PET_CAT_1565,
+		ItemID.PET_CAT_1566,
+
+		ItemID.HELLKITTEN,
+		ItemID.PET_KITTEN,
+		ItemID.PET_KITTEN_1556,
+		ItemID.PET_KITTEN_1557,
+		ItemID.PET_KITTEN_1558,
+		ItemID.PET_KITTEN_1559,
+		ItemID.PET_KITTEN_1560)
 	);
 }

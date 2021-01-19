@@ -40,12 +40,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -184,7 +187,7 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == 219)
+		if (event.getGroupId() == WidgetID.DIALOG_OPTION_GROUP_ID) // 219
 		{
 			clientThread.invokeLater(this::highlightChoice);
 		}
@@ -282,13 +285,10 @@ public abstract class QuestStep implements Module
 
 		if (additionalText != null)
 		{
-			for (String line : additionalText)
-			{
-				if (!line.isEmpty())
-				{
-					addTextToPanel(panelComponent, line);
-				}
-			}
+			additionalText.stream()
+				.filter(s -> !s.isEmpty())
+				.forEach(line -> addTextToPanel(panelComponent, line));
+
 			if (text != null && (text.size() > 0 && !text.get(0).isEmpty()))
 			{
 				addTextToPanel(panelComponent, "");
@@ -297,13 +297,9 @@ public abstract class QuestStep implements Module
 
 		if (text != null)
 		{
-			for (String line : text)
-			{
-				if (!line.isEmpty())
-				{
-					addTextToPanel(panelComponent, line);
-				}
-			}
+			text.stream()
+				.filter(s -> !s.isEmpty())
+				.forEach(line -> addTextToPanel(panelComponent, line));
 		}
 	}
 

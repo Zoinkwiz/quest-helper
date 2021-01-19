@@ -77,15 +77,7 @@ public class Conditions extends ConditionForStep
 			return true;
 		}
 
-		int conditionsPassed = 0;
-
-		for (ConditionForStep condition : conditions)
-		{
-			if (condition.checkCondition(client))
-			{
-				conditionsPassed++;
-			}
-		}
+		int conditionsPassed = (int) conditions.stream().filter(c -> c.checkCondition(client)).count();
 
 		if ((conditionsPassed > 0 && logicType == LogicType.OR)
 			|| (conditionsPassed == 0 && logicType == LogicType.NOR)
@@ -102,9 +94,6 @@ public class Conditions extends ConditionForStep
 	@Override
 	public void loadingHandler()
 	{
-		for (ConditionForStep condition : conditions)
-		{
-			condition.loadingHandler();
-		}
+		conditions.forEach(ConditionForStep::loadingHandler);
 	}
 }

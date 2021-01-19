@@ -39,6 +39,10 @@ public class QuestRequirement extends Requirement
 	@Override
 	public String getDisplayText()
 	{
+		if (displayText != null && !displayText.isEmpty())
+		{
+			return displayText;
+		}
 		String text = Character.toUpperCase(requiredState.name().charAt(0)) + requiredState.name().toLowerCase(Locale.ROOT).substring(1);
 		return text.replaceAll("_", " ") + " " + quest.getName();
 	}

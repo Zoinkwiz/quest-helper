@@ -233,14 +233,20 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToUnferth, talkToHild, findBob, talkToBob)), cat, catspeak, deathRune5));
+		allSteps.add(new PanelDetails("Starting off",
+			new ArrayList<>(Arrays.asList(talkToUnferth, talkToHild, findBob, talkToBob)), cat, catspeak, deathRune5));
 
-		allSteps.add(new PanelDetails("Bob's past", new ArrayList<>(Arrays.asList(talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx)), cat));
+		allSteps.add(new PanelDetails("Bob's past",
+			new ArrayList<>(Arrays.asList(talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx)), cat));
 
-		allSteps.add(new PanelDetails("Helping Unferth", new ArrayList<>(Arrays.asList(useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs, useChocolateCakeOnTable, useMilkOnTable, useShearsOnUnferth, reportToUnferth)),
+		allSteps.add(new PanelDetails("Helping Unferth",
+			new ArrayList<>(Arrays.asList(useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs,
+				useChocolateCakeOnTable, useMilkOnTable, useShearsOnUnferth, reportToUnferth)),
 			cat, catspeakE, rake, dibber, potatoSeed4, logs, tinderbox, chocolateCake, milk, shears));
 
-		allSteps.add(new PanelDetails("'Curing' Unferth", new ArrayList<>(Arrays.asList(talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish, talkToUnferthToFinish)), cat, catspeakE, vialOfWater));
+		allSteps.add(new PanelDetails("'Curing' Unferth",
+			new ArrayList<>(Arrays.asList(talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish,
+				talkToUnferthToFinish)), cat, catspeakE, vialOfWater, desertTop, desertBottom));
 
 		return allSteps;
 	}

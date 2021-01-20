@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperPlugin;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.NoItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
@@ -506,9 +507,15 @@ public class QuestOverviewPanel extends JPanel
 
 			if (requirementPanel.getItemRequirement() instanceof ItemRequirement)
 			{
-				newColor = ((ItemRequirement) requirementPanel.getItemRequirement()).getColorConsideringBank(client,
-					false,
-					bankItems.getItems());
+				ItemRequirement itemRequirement = (ItemRequirement) requirementPanel.getItemRequirement();
+				if (itemRequirement instanceof NoItemRequirement)
+				{
+					newColor = itemRequirement.getColor(client); // explicitly call this because NoItemRequirement overrides it
+				}
+				else
+				{
+					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems.getItems());
+				}
 			}
 			else
 			{

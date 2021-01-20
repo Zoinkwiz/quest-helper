@@ -25,7 +25,7 @@
  *
  */
 
-package com.questhelper;
+package com.questhelper.requirements;
 
 import com.questhelper.requirements.NoItemRequirement;
 import java.util.Arrays;

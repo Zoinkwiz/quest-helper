@@ -30,17 +30,19 @@ import net.runelite.api.Client;
 public class NoItemRequirement extends ItemRequirement
 {
 	private final ItemSlots slot;
+	private final int matchingItemID;
 
 	public NoItemRequirement(String text, @Nonnull ItemSlots slot)
 	{
 		super(text, -1);
 		this.slot = slot;
+		matchingItemID = -1;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		return slot.checkInventory(client);
+		return slot.checkInventory(client, item -> item.getId() == matchingItemID);
 	}
 
 	@Override

@@ -603,7 +603,7 @@ public class DesertTreasure extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.IN_PROGRESS));
-		req.add(new SkillRequirement(Skill.THIEVING, 52));
+		req.add(new SkillRequirement(Skill.THIEVING, 53));
 		req.add(new SkillRequirement(Skill.MAGIC, 50));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
 		req.add(new Requirements(LogicType.OR, "10 Slayer for face mask, or started Plague City for" +

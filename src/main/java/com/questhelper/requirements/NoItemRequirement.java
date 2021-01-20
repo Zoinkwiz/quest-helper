@@ -24,19 +24,14 @@
  */
 package com.questhelper.requirements;
 
+import javax.annotation.Nonnull;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 
 public class NoItemRequirement extends ItemRequirement
 {
-	public static final int ALL_EQUIPMENT_SLOTS = -1;
-	public static final int ALL_INVENTORY_SLOTS = -2;
-	public static final int ALL_EQUIPMENT_AND_INVENTORY_SLOTS = -3;
-	int slot;
+	private final ItemSlots slot;
 
-	public NoItemRequirement(String text, int slot)
+	public NoItemRequirement(String text, @Nonnull ItemSlots slot)
 	{
 		super(text, -1);
 		this.slot = slot;
@@ -45,85 +40,12 @@ public class NoItemRequirement extends ItemRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		if (slot == ALL_EQUIPMENT_SLOTS)
-		{
-			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-			if (equipment == null)
-			{
-				return true;
-			}
-			for (Item item : equipment.getItems())
-			{
-				if (item.getId() != -1)
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		if (slot == ALL_INVENTORY_SLOTS)
-		{
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			if (inventory == null)
-			{
-				return true;
-			}
-			for (Item item : inventory.getItems())
-			{
-				if (item.getId() != -1)
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		if (slot == ALL_EQUIPMENT_AND_INVENTORY_SLOTS)
-		{
-			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-
-			if (inventory != null)
-			{
-				for (Item item : inventory.getItems())
-				{
-					if (item.getId() != -1)
-					{
-						return false;
-					}
-				}
-			}
-
-			if (equipment != null)
-			{
-				for (Item item : equipment.getItems())
-				{
-					if (item.getId() != -1)
-					{
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-
-		if (client.getLocalPlayer() == null || client.getLocalPlayer().getPlayerComposition() == null)
-		{
-			return true;
-		}
-
-		int[] equipment = client.getLocalPlayer().getPlayerComposition().getEquipmentIds();
-
-		if (equipment == null)
-		{
-			return true;
-		}
-
-		return equipment[slot] <= 512;
+		return slot.checkInventory(client);
 	}
 
 	@Override
 	public String getDisplayText()
 	{
-		return "Nothing in your " + ItemSlots.getById(slot);
+		return "Nothing in your " + slot.getName();
 	}
 }

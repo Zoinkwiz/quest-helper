@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.songoftheelves;
 
+import com.questhelper.InventorySlots;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -32,6 +33,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.ItemSlots;
 import com.questhelper.requirements.NoItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -641,7 +643,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		inversionPotion = new ItemRequirement("Inversion potion", ItemID.INVERSION_POTION);
 
-		nothingEquipped = new NoItemRequirement("Nothing equipped", NoItemRequirement.ALL_EQUIPMENT_SLOTS);
+		nothingEquipped = new NoItemRequirement("Nothing equipped", ItemSlots.ANY_EQUIPPED);
 
 		explosivePotion = new ItemRequirement("Explosive potion", ItemID.EXPLOSIVE_POTION_23818);
 		explosivePotion.setTip("You can get more from Elena");

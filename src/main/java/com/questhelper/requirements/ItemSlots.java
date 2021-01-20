@@ -24,11 +24,16 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.InventorySlots;
+import lombok.Getter;
+import net.runelite.api.Client;
+
+@Getter
 public enum ItemSlots
 {
-	ANY_EQUIPPED_AND_INVENTORY(-3, "inventory or equipped"),
-	ANY_INVENTORY(-2, "inventory slots"),
-	ANY_EQUIPPED(-1, "equipped slots"),
+	ANY_EQUIPPED_AND_INVENTORY(-3, "inventory or equipped", InventorySlots.EQUIPMENT_AND_INVENTORY_SLOTS),
+	ANY_INVENTORY(-2, "inventory slots", InventorySlots.INVENTORY_SLOTS),
+	ANY_EQUIPPED(-1, "equipped slots", InventorySlots.EQUIPMENT_SLOTS),
 	HEAD(0, "head slot"),
 	CAPE(1, "cape slot"),
 	AMULET(2, "amulet slot"),
@@ -43,21 +48,42 @@ public enum ItemSlots
 
 	private final int slotIdx;
 	private final String name;
+	private final InventorySlots inventorySlots;
 
 	ItemSlots(int slotIdx, String name)
 	{
 		this.slotIdx = slotIdx;
 		this.name = name;
+		this.inventorySlots = null;
+	}
+	ItemSlots(int slotIdx, String name, InventorySlots slots)
+	{
+		this.slotIdx = slotIdx;
+		this.name = name;
+		this.inventorySlots = slots;
 	}
 
-	public int getSlotIdx()
+	public boolean checkInventory(Client client)
 	{
-		return slotIdx;
-	}
+		// if we're checking all the equipment slots, inventory slots, or both
+		if (getInventorySlots() != null && getInventorySlots().checkInventory(client, item -> item.getId() == -1))
+		{
+			return true;
+		}
+		// otherwise check a specific slot
+		if (client.getLocalPlayer() == null || client.getLocalPlayer().getPlayerComposition() == null)
+		{
+			return true;
+		}
 
-	public String getName()
-	{
-		return name;
+		int[] equipment = client.getLocalPlayer().getPlayerComposition().getEquipmentIds();
+
+		if (equipment == null)
+		{
+			return true;
+		}
+
+		return equipment[getSlotIdx()] <= 512;
 	}
 
 	public static String getById(int id) {

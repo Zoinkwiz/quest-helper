@@ -76,9 +76,9 @@ public enum ItemSlots
 	public boolean checkInventory(Client client, Predicate<Item> predicate)
 	{
 		// if we're checking all the equipment slots, inventory slots, or both
-		if (getInventorySlots() != null && getInventorySlots().checkInventory(client, predicate))
+		if (getInventorySlots() != null)
 		{
-			return true;
+			return getInventorySlots().checkInventory(client, predicate);
 		}
 		// otherwise check a specific slot
 		if (client.getLocalPlayer() == null || client.getLocalPlayer().getPlayerComposition() == null)
@@ -93,7 +93,7 @@ public enum ItemSlots
 			return true;
 		}
 
-		return equipment[getSlotIdx()] <= 512;
+		return getSlotIdx() >= 0 && equipment[getSlotIdx()] <= 512;
 	}
 
 	public static String getById(int id) {

@@ -29,12 +29,12 @@ import com.questhelper.QuestHelperPlugin;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.NoItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -48,10 +48,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -509,9 +507,15 @@ public class QuestOverviewPanel extends JPanel
 
 			if (requirementPanel.getItemRequirement() instanceof ItemRequirement)
 			{
-				newColor = ((ItemRequirement) requirementPanel.getItemRequirement()).getColorConsideringBank(client,
-					false,
-					bankItems.getItems());
+				ItemRequirement itemRequirement = (ItemRequirement) requirementPanel.getItemRequirement();
+				if (itemRequirement instanceof NoItemRequirement)
+				{
+					newColor = itemRequirement.getColor(client); // explicitly call this because NoItemRequirement overrides it
+				}
+				else
+				{
+					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems.getItems());
+				}
 			}
 			else
 			{

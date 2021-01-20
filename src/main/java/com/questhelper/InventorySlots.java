@@ -42,23 +42,19 @@ import net.runelite.api.ItemContainer;
  * Represent the inventories that a client can have.
  * This is not for actual slots in those inventories.
  */
-//TODO: Get rid of the -1, -2, -3 in NoItemRequirement and move to using this enum
-@Getter
 public enum InventorySlots
 {
 	/** Represents the equipment slots of a player */
-	EQUIPMENT_SLOTS(NoItemRequirement.ALL_EQUIPMENT_SLOTS, InventoryID.EQUIPMENT),
+	EQUIPMENT_SLOTS(InventoryID.EQUIPMENT),
 	/** Represents the inventory slots of a player */
-	INVENTORY_SLOTS(NoItemRequirement.ALL_INVENTORY_SLOTS, InventoryID.INVENTORY),
+	INVENTORY_SLOTS(InventoryID.INVENTORY),
 	/** Represents both equipment and inventory slots of a player */
-	EQUIPMENT_AND_INVENTORY_SLOTS(NoItemRequirement.ALL_EQUIPMENT_AND_INVENTORY_SLOTS, InventoryID.INVENTORY, InventoryID.EQUIPMENT),
+	EQUIPMENT_AND_INVENTORY_SLOTS(InventoryID.INVENTORY, InventoryID.EQUIPMENT),
 	;
 
-	private final int slotID;
 	private final InventoryID[] inventoryID;
-	InventorySlots(int slotID, InventoryID... inventoryID)
+	InventorySlots(InventoryID... inventoryID)
 	{
-		this.slotID = slotID;
 		this.inventoryID = inventoryID;
 	}
 
@@ -77,18 +73,5 @@ public enum InventorySlots
 			.map(ItemContainer::getItems)
 			.flatMap(Arrays::stream)
 			.allMatch(predicate);
-	}
-
-	public static InventorySlots getBySlot(int slotID)
-	{
-		switch(slotID)
-		{
-			case NoItemRequirement.ALL_EQUIPMENT_SLOTS:
-				return InventorySlots.EQUIPMENT_SLOTS;
-			case NoItemRequirement.ALL_INVENTORY_SLOTS:
-				return InventorySlots.INVENTORY_SLOTS;
-			default:
-				return InventorySlots.EQUIPMENT_AND_INVENTORY_SLOTS;
-		}
 	}
 }

@@ -30,6 +30,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ItemSlots;
 import com.questhelper.requirements.NoItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -124,7 +125,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemID.COINS, 3000);
-		noItemRequirement = new NoItemRequirement("No items or equipment carried", NoItemRequirement.ALL_EQUIPMENT_AND_INVENTORY_SLOTS);
+		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
 	}
 
 	public void SetupZones()

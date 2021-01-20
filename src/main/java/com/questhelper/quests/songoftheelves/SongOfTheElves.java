@@ -24,7 +24,6 @@
  */
 package com.questhelper.quests.songoftheelves;
 
-import com.questhelper.InventorySlots;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -56,7 +55,6 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;

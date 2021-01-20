@@ -24,9 +24,11 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.InventorySlots;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 
 @Getter
 public enum ItemSlots
@@ -63,10 +65,18 @@ public enum ItemSlots
 		this.inventorySlots = slots;
 	}
 
-	public boolean checkInventory(Client client)
+	/**
+	 * Checks that a given item slot is empty.
+	 * If checking all equipment, inventory, or both, the predicate will be used to
+	 *
+	 * @param client the {@link Client} to check
+	 * @param predicate the predicate to use
+	 * @return true if ALL the items match the predicate via {@link Stream#allMatch(Predicate)}
+	 */
+	public boolean checkInventory(Client client, Predicate<Item> predicate)
 	{
 		// if we're checking all the equipment slots, inventory slots, or both
-		if (getInventorySlots() != null && getInventorySlots().checkInventory(client, item -> item.getId() == -1))
+		if (getInventorySlots() != null && getInventorySlots().checkInventory(client, predicate))
 		{
 			return true;
 		}

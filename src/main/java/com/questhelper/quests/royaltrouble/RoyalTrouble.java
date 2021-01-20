@@ -616,11 +616,11 @@ public class RoyalTrouble extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToPartner, talkToVargas, talkToGunnhild, talkToVargasAgain, talkToSigrid, talkToMatilda))));
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
-			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon)), coalOrPickaxe, combatGear, antipoison));
+			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon)), coalOrPickaxe, combatGear, antipoison));
 		}
 		else
 		{
-			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon)), coal5, combatGear, antipoison));
+			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon)), coal5, combatGear, antipoison));
 		}
 		allSteps.add(new PanelDetails("Repair the lift", new ArrayList<>(Arrays.asList(talkToDonal, usePropOnCrevice, enterCrevice, takePulley, usePulleyOnScaffold, takePulley2, takeBeam, useBeamOnPulley, takeBeam2, useBeamOnLongPulley, useLongerPulleyOnScaffold, takePulley3, usePulleyOnScaffold2, takeRope, useRopeOnScaffold, takeBeam3, useBeamOnPlatform, pickUpEngine, useEngineOnPlatform, putCoalIntoEngine))));
 		allSteps.add(new PanelDetails("Investigate the caves", new ArrayList<>(Arrays.asList(useLift, takePlank, enterTunnelFromPlankRoom, attachRope, swingOverRope, searchFire1, plankRock1, searchFire2, searchFire3, searchFire4, searchFire5, readDiary, enterSnakesRoom))));

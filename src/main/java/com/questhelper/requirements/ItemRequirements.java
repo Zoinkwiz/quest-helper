@@ -63,14 +63,8 @@ public class ItemRequirements extends ItemRequirement
 
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
-		int successes = 0;
-		for (ItemRequirement itemRequirement : itemRequirements)
-		{
-			if (itemRequirement.check(client, checkConsideringSlotRestrictions))
-			{
-				successes++;
-			}
-		}
+		int successes = (int) itemRequirements.stream().filter(req -> req.check(client, checkConsideringSlotRestrictions)).count();
+
 		return (successes == itemRequirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)
 			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)
@@ -80,14 +74,8 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
-		int successes = 0;
-		for (ItemRequirement itemRequirement : itemRequirements)
-		{
-			if (itemRequirement.check(client, checkConsideringSlotRestrictions, items))
-			{
-				successes++;
-			}
-		}
+		int successes = (int) itemRequirements.stream().filter(req -> req.check(client, checkConsideringSlotRestrictions, items)).count();
+
 		return (successes == itemRequirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)
 			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)

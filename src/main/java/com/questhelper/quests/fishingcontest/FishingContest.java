@@ -133,7 +133,8 @@ public class FishingContest extends BasicQuestHelper
 		combatBracelet.setHighlightInInventory(true);
 		combatBracelet.setTip("Highly recommended!");
 		camelotTeleport = new ItemRequirement("Camelot Teleport", ItemID.CAMELOT_TELEPORT);
-		fairyRingAccess = new QuestRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS, "Fairy ring access");
+		fairyRingAccess = new QuestRequirement(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS,
+			"Fairy ring access");
 		fairyRingAccess.setTip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
 	}
 

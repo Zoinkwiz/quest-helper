@@ -81,6 +81,14 @@ public enum InventorySlots
 
 	public static InventorySlots getBySlot(int slotID)
 	{
-		return Stream.of(values()).filter(e -> e.slotID == slotID).findFirst().orElseThrow(() -> new IllegalArgumentException("Invalid InventorySlot " + slotID));
+		switch(slotID)
+		{
+			case NoItemRequirement.ALL_EQUIPMENT_SLOTS:
+				return InventorySlots.EQUIPMENT_SLOTS;
+			case NoItemRequirement.ALL_INVENTORY_SLOTS:
+				return InventorySlots.INVENTORY_SLOTS;
+			default:
+				return InventorySlots.EQUIPMENT_AND_INVENTORY_SLOTS;
+		}
 	}
 }

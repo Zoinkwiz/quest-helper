@@ -14,7 +14,8 @@ public class FreeInventorySlotRequirement extends Requirement
 	private InventoryID inventoryID;
 	private int numSlotsFree;
 
-	public FreeInventorySlotRequirement(InventoryID inventoryID, int numSlotsFree) {
+	public FreeInventorySlotRequirement(InventoryID inventoryID, int numSlotsFree)
+	{
 		this.inventoryID = inventoryID;
 		this.numSlotsFree = numSlotsFree;
 	}
@@ -23,13 +24,15 @@ public class FreeInventorySlotRequirement extends Requirement
 	public boolean check(Client client)
 	{
 		ItemContainer container = client.getItemContainer(getInventoryID());
-		if (container != null) {
+		if (container != null)
+		{
 			return Stream.of(container.getItems()).filter(this::isOpenSlot).count() >= getNumSlotsFree();
 		}
 		return false;
 	}
 
-	private boolean isOpenSlot(Item item) {
+	private boolean isOpenSlot(Item item)
+	{
 		return item == null || item.getId() == -1;
 	}
 

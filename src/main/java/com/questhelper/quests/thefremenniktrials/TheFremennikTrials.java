@@ -498,8 +498,10 @@ public class TheFremennikTrials extends BasicQuestHelper
 			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "That's all."),
 			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."));
 		talkedToThoraForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, true, "cash. You should go ask him"),
-			new WidgetTextCondition(119, 3, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is <col=800000>some money<col=000080>!"));
+			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "cash. You should go ask him"),
+			new WidgetTextCondition(119, 3, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is " +
+				"<col=800000>some money<col=000080>!"),
+			new WidgetTextCondition(119, 3, true, "<col=800000>Thora"));
 
 		// TODO: No gz message
 		finishedSigmundTask = new Conditions(true, LogicType.OR,

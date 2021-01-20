@@ -73,7 +73,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	ConditionForStep inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, hasEdernsJournal, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
 		hasBlackenedCrystal, knowToUseCrystal, inBlueRoom, inCyanRoom, solvedPuzzle1, solvedPuzzle2, solvedPuzzle3, solvedPuzzle4, solvedPuzzle5, dispenserEmpty, inYellowRoom, usedRope,
 		placedBlueCrystalInJumpRoom, blueCrystalNotPlaced, inCentralArea, inDeathAltarArea, inBehindBarrierCentralArea, enteredDeathArea, hasDeathTalisman, inIbanRoom, inPassF1, inPassF0,
-		inWellEntrance, receivedList, inDeathAltar, hasChargedCrystal;
+		inWellEntrance, receivedList, inDeathAltar, hasChargedCrystal, hasMirror;
 
 	ConditionForStep f0r4c0SB,
 		f0r1c2SG, f0r1c2U,
@@ -175,8 +175,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle1.addStep(new Conditions(inTempleF1, f1r1c3SY), puzzle1Pillar5);
 		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, f1r3c3S), puzzle1Pillar4);
 		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, f1r3c4W), puzzle1Pillar3);
-		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, startColumnN), puzzle1Pillar2);
-		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty), puzzle1Pillar1);
+		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, hasMirror, startColumnN), puzzle1Pillar2);
+		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, hasMirror), puzzle1Pillar1);
 		puzzle1.addStep(inTempleF1, pullDispenser1);
 		puzzle1.addStep(inTempleF2, genericGoDownToFloor1);
 		puzzle1.addStep(inTempleF0, goUpStairsTempleC1);
@@ -442,7 +442,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		newlyIfOneTrip = new ItemRequirement("Newly made crystal (if already have death talisman)", ItemID.NEWLY_MADE_CRYSTAL);
 
 		mirror = new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR);
-		mirror.setTip("If you've misplaced a mirror, you can pull the crystal dispenser to reset the puzzle");
+		mirror.setTip("If you've misplaced a mirror, you can pull the crystal dispenser in the east of the middle " +
+			"floor to reset the puzzle");
 		mirror.setHighlightInInventory(true);
 
 		yellowCrystal = new ItemRequirement("Yellow crystal", ItemID.YELLOW_CRYSTAL);
@@ -505,6 +506,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		inDeathAltar = new ZoneCondition(deathAltar);
 
 		dispenserEmpty = new VarbitCondition(1106, 0);
+
+		hasMirror = new ItemRequirementCondition(mirror);
 
 		usedRope = new VarbitCondition(1328, 1);
 

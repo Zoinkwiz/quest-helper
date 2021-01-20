@@ -185,6 +185,7 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private QuestHelperDebugOverlay questHelperDebugOverlay;
 
+	@Getter
 	@Inject
 	private QuestHelperConfig config;
 
@@ -205,6 +206,10 @@ public class QuestHelperPlugin extends Plugin
 
 	@Inject
 	SpriteManager spriteManager;
+
+	@Getter
+	@Inject
+	ConfigManager configManager;
 
 	private QuestHelperPanel panel;
 
@@ -322,7 +327,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
-			panel.refresh(Collections.emptyList(), true, config, new HashMap<>());
+			panel.refresh(Collections.emptyList(), true, new HashMap<>());
 			bankItems.setItems(null);
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
@@ -377,7 +382,7 @@ public class QuestHelperPlugin extends Plugin
 				.stream()
 				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
 			SwingUtilities.invokeLater(() -> {
-				panel.refresh(filteredQuests, false, config, completedQuests);
+				panel.refresh(filteredQuests, false, completedQuests);
 			});
 		}
 	}

@@ -29,6 +29,7 @@ import com.questhelper.steps.conditional.LogicType;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Predicate;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -63,7 +64,8 @@ public class ItemRequirements extends ItemRequirement
 
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
-		int successes = (int) itemRequirements.stream().filter(req -> req.check(client, checkConsideringSlotRestrictions)).count();
+		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
+		int successes = (int) itemRequirements.stream().filter(predicate).count();
 
 		return (successes == itemRequirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)
@@ -74,7 +76,8 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
-		int successes = (int) itemRequirements.stream().filter(req -> req.check(client, checkConsideringSlotRestrictions, items)).count();
+		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
+		int successes = (int) itemRequirements.stream().filter(predicate).count();
 
 		return (successes == itemRequirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)

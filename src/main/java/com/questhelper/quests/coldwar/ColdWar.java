@@ -49,7 +49,8 @@ public class ColdWar extends BasicQuestHelper
 		emoteAtPenguinOutpost, noodle1, noodle2, kgpAgent2, enterAvalanche, kgpAgentInAvalanche, enterAgilityCourse, agilityCourse,
 		agilityEnterWater, agilityExitWater, agilityJumpStones, agilityTreadSoftly, agilityCrossIce, agilityDone,
 		tellLarryAboutArmy, kgpBeforePingPong, pingPong1, removePenguinSuitForBongos, makeBongos, pingPong2,
-		pingPong3, openControlDoor, enterWarRoom, exitIcelordPen, killIcelords, useChasm, tellLarryPlans;
+		pingPong3, openControlDoor, enterWarRoom, exitIcelordPen, killIcelords, useChasm, tellLarryPlans,
+		enterAvalanche2, enterAvalanche3;
 
 	Zone onIceberg, inPenguinPen, inPenguinPen2, atZoo, atLumbridgeSheepFarm, inAgilityStart, inAgilityWater, inAgilityStones,
 		inAgilityTreadSoftly, inAgilityCrossIce, inAgilityDone, inPingPongRoom, preWarRoom, inIcelordPit, inIcelordRoom, inPenguinRooms;
@@ -137,17 +138,21 @@ public class ColdWar extends BasicQuestHelper
 
 		steps.put(105, tellLarryAboutArmy);
 
-		steps.put(110, pingPong1);
+		ConditionalStep goTalkToPingPong = new ConditionalStep(this, enterAvalanche2);
+		goTalkToPingPong.addStep(isInPenguinRooms, pingPong1);
+		steps.put(110, goTalkToPingPong);
 
 		ConditionalStep gatherInstruments = new ConditionalStep(this, makeBongos);
-		gatherInstruments.addStep(new Conditions(hasBongos, hasCowbell), pingPong2);
+		gatherInstruments.addStep(new Conditions(hasBongos, hasCowbell, isInPenguinRooms), pingPong2);
+		gatherInstruments.addStep(new Conditions(hasBongos, hasCowbell), enterAvalanche3);
 		gatherInstruments.addStep(hasBongos, stealCowbell);
 		gatherInstruments.addStep(isPenguin, removePenguinSuitForBongos);
 		steps.put(115, gatherInstruments);
 
-		ConditionalStep enterControlRoom = new ConditionalStep(this, pingPong3);
+		ConditionalStep enterControlRoom = new ConditionalStep(this, enterAvalanche3);
 		enterControlRoom.addStep(isPreWarRoom, enterWarRoom);
 		enterControlRoom.addStep(guardMoved, openControlDoor);
+		enterControlRoom.addStep(isInPenguinRooms, pingPong3);
 		steps.put(120, enterControlRoom);
 
 		steps.put(125, killIcelords);
@@ -350,6 +355,10 @@ public class ColdWar extends BasicQuestHelper
 
 		kgpAgent2 = new NpcStep(this, NpcID.KGP_AGENT, new WorldPoint(2639, 4008, 1), "Talk to the KGP Agent again.", kgpId);
 		enterAvalanche = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche.");
+		enterAvalanche2 = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche " +
+			"as a penguin" +
+			"as a penguin.");
+		enterAvalanche3 = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche.");
 
 		kgpAgentInAvalanche = new NpcStep(this, NpcID.KGP_AGENT, new WorldPoint(2647, 10384, 0), "Talk to the KGP Agent in the first room to the west of the entrance.");
 		((NpcStep) kgpAgentInAvalanche).setMaxRoamRange(12);

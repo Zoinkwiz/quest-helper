@@ -170,10 +170,13 @@ public class SeaSlug extends BasicQuestHelper
 	{
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
 		dampSticks = new ItemRequirement("Damp sticks", ItemID.DAMP_STICKS);
+		dampSticks.setHighlightInInventory(true);
 		drySticks = new ItemRequirement("Dry sticks", ItemID.DRY_STICKS);
+		drySticks.setHighlightInInventory(true);
 		torch = new ItemRequirement("Unlit torch", ItemID.UNLIT_TORCH);
 		litTorch = new ItemRequirement("Lit torch", ItemID.LIT_TORCH);
 		glass = new ItemRequirement("Broken glass", ItemID.BROKEN_GLASS_1469);
+		glass.setHighlightInInventory(true);
 
 	}
 

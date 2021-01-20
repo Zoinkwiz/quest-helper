@@ -146,11 +146,7 @@ public class ObjectStep extends DetailedQuestStep
 			Tile tile = tiles[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
 			if (tile != null)
 			{
-				for (GameObject object : tile.getGameObjects())
-				{
-					handleObjects(object);
-				}
-
+				Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
 				handleObjects(tile.getDecorativeObject());
 				handleObjects(tile.getGroundObject());
 				handleObjects(tile.getWallObject());

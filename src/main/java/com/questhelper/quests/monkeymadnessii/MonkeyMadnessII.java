@@ -66,7 +66,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -718,12 +717,12 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId(),
 			Operation.GREATER_EQUAL,  50, "Finished the 'Freeing King Awowogei' subquest of RFD"));
-		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.WATCHTOWER, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.WATCHTOWER, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.SLAYER, 69));
 		req.add(new SkillRequirement(Skill.CRAFTING, 70));
 		req.add(new SkillRequirement(Skill.HUNTER, 60));

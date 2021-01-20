@@ -40,7 +40,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
@@ -275,8 +274,8 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.DESERT_TREASURE, QuestState.IN_PROGRESS));
-		req.add(new QuestRequirement(Quest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS));
+		req.add(new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.IN_PROGRESS));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS));
 		return req;
 	}
 }

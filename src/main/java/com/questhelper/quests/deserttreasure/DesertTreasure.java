@@ -50,7 +50,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullItemID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -597,19 +596,19 @@ public class DesertTreasure extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_DIG_SITE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.TEMPLE_OF_IKOV, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.THE_TOURIST_TRAP, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.NATURE_SPIRIT, QuestState.IN_PROGRESS));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_DIG_SITE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.TEMPLE_OF_IKOV, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_TOURIST_TRAP, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.IN_PROGRESS));
 		req.add(new SkillRequirement(Skill.THIEVING, 52));
 		req.add(new SkillRequirement(Skill.MAGIC, 50));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
 		req.add(new Requirements(LogicType.OR, "10 Slayer for face mask, or started Plague City for" +
 			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
-			new QuestRequirement(Quest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
+			new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;
 	}
 }

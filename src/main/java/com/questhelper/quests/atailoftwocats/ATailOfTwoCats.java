@@ -52,7 +52,6 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
@@ -254,6 +253,6 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new QuestRequirement(Quest.ICTHLARINS_LITTLE_HELPER, QuestState.FINISHED)));
+		return new ArrayList<>(Collections.singletonList(new QuestRequirement(QuestHelperQuest.ICTHLARINS_LITTLE_HELPER, QuestState.FINISHED)));
 	}
 }

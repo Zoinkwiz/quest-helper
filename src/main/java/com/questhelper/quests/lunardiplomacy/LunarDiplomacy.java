@@ -51,7 +51,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -899,10 +898,10 @@ public class LunarDiplomacy extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.LOST_CITY, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.SHILO_VILLAGE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.LOST_CITY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.HERBLORE, 5));
 		req.add(new SkillRequirement(Skill.CRAFTING, 61));
 		req.add(new SkillRequirement(Skill.DEFENCE, 40));

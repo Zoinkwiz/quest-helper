@@ -157,7 +157,7 @@ public class FamilyPest extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.FAMILY_CREST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));
 		return req;
 	}
 }

@@ -58,7 +58,6 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -237,7 +236,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		{
 			generalReqs.add(new Requirements(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
 				new SkillRequirement(Skill.CRAFTING, 42, true),
-				new QuestRequirement(Quest.RUM_DEAL, QuestState.IN_PROGRESS)));
+				new QuestRequirement(QuestHelperQuest.RUM_DEAL, QuestState.IN_PROGRESS)));
 		}
 
 		// 1852 = number of people saved

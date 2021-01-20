@@ -51,7 +51,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -519,7 +518,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.THE_LOST_TRIBE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_LOST_TRIBE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 23, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 23));
 		return req;

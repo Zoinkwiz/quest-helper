@@ -53,7 +53,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
@@ -219,7 +218,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.LOVAKENGJ, 20),
-			new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
+			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
 	}
 
 	@Override

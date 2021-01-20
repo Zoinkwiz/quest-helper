@@ -46,7 +46,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -214,8 +213,8 @@ public class RovingElves extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.REGICIDE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.REGICIDE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 56, true));
 		return req;
 	}

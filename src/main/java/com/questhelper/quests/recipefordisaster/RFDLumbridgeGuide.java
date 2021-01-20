@@ -50,7 +50,6 @@ import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -167,12 +166,12 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.COOKING, 40, true));
-		req.add(new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.BIOHAZARD, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.DEMON_SLAYER, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.MURDER_MYSTERY, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.NATURE_SPIRIT, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.WITCHS_HOUSE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.BIOHAZARD, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DEMON_SLAYER, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.MURDER_MYSTERY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.WITCHS_HOUSE, QuestState.FINISHED));
 		return req;
 	}
 

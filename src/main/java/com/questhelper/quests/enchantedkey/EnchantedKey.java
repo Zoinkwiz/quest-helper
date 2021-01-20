@@ -38,7 +38,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.QuestDescriptor;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 
 @QuestDescriptor(
@@ -107,7 +106,7 @@ public class EnchantedKey extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.MAKING_HISTORY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.MAKING_HISTORY, QuestState.FINISHED));
 		return req;
 	}
 }

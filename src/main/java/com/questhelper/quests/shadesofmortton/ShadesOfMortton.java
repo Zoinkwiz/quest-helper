@@ -52,7 +52,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -315,7 +314,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.CRAFTING, 20));
 		req.add(new SkillRequirement(Skill.HERBLORE, 15, true));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 5));

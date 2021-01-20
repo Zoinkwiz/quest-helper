@@ -54,7 +54,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -1185,13 +1184,13 @@ public class DragonSlayerII extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(200));
-		req.add(new QuestRequirement(Quest.LEGENDS_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.DREAM_MENTOR, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.A_TAIL_OF_TWO_CATS, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.ANIMAL_MAGNETISM, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.GHOSTS_AHOY, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.BONE_VOYAGE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.LEGENDS_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.A_TAIL_OF_TWO_CATS, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.ANIMAL_MAGNETISM, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.BONE_VOYAGE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.MAGIC, 75));
 		req.add(new SkillRequirement(Skill.SMITHING, 70));
 		req.add(new SkillRequirement(Skill.MINING, 68));

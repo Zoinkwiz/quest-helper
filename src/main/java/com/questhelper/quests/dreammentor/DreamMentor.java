@@ -48,7 +48,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
@@ -397,8 +396,8 @@ public class DreamMentor extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new CombatLevelRequirement(85));
-		req.add(new QuestRequirement(Quest.LUNAR_DIPLOMACY, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.EADGARS_RUSE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.EADGARS_RUSE, QuestState.FINISHED));
 		return req;
 	}
 }

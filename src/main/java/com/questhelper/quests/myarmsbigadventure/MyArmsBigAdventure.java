@@ -51,7 +51,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -462,9 +461,9 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.EADGARS_RUSE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.THE_FEUD, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.JUNGLE_POTION, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.EADGARS_RUSE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_FEUD, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.JUNGLE_POTION, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 10));
 		req.add(new SkillRequirement(Skill.FARMING, 29, true));
 		// 907 is the Varbit for tai bwo wannai cleanup favour

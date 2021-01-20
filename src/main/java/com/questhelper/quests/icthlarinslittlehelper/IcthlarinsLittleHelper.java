@@ -51,7 +51,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
@@ -421,7 +420,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new QuestRequirement(Quest.GERTRUDES_CAT, QuestState.FINISHED)));
+		return new ArrayList<>(Collections.singletonList(new QuestRequirement(QuestHelperQuest.GERTRUDES_CAT, QuestState.FINISHED)));
 	}
 
 	@Override

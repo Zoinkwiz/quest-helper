@@ -24,7 +24,6 @@
  */
 package com.questhelper;
 
-import com.questhelper.panel.QuestSelectPanel;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
@@ -32,7 +31,6 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.runelite.client.config.Config;

@@ -51,7 +51,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -985,11 +984,11 @@ public class LegendsQuest extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(107));
-		req.add(new QuestRequirement(Quest.FAMILY_CREST, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.HEROES_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.SHILO_VILLAGE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.UNDERGROUND_PASS, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.UNDERGROUND_PASS, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 50, true));
 		req.add(new SkillRequirement(Skill.CRAFTING, 50, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 45, true));

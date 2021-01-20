@@ -61,7 +61,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Prayer;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -283,7 +282,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId(), Operation.GREATER_EQUAL, 3,
 			"Started Recipe for Disaster"));
-		req.add(new QuestRequirement(Quest.MONKEY_MADNESS_I, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.MONKEY_MADNESS_I, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 48));
 		req.add(new SkillRequirement(Skill.COOKING, 70, true));
 		return req;

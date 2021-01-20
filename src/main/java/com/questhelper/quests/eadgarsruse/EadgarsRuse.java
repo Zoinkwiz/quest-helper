@@ -55,7 +55,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -607,8 +606,8 @@ public class EadgarsRuse extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.DRUIDIC_RITUAL, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.HERBLORE, 31, true));
 		return req;
 	}

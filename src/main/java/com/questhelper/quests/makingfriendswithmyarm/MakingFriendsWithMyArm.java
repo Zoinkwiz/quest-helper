@@ -52,7 +52,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -617,10 +616,10 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.SWAN_SONG, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.COLD_WAR, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.ROMEO__JULIET, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.SWAN_SONG, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.COLD_WAR, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.ROMEO__JULIET, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 66));
 		req.add(new SkillRequirement(Skill.MINING, 72, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 35, true));

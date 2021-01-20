@@ -47,7 +47,6 @@ import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
@@ -210,7 +209,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.PISCARILIUS, 20),
-			new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
+			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
 	}
 
 	@Override

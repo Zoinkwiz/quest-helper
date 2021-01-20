@@ -60,7 +60,6 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -537,10 +536,10 @@ public class HeroesQuest extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.FISHING, 53, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 25, true));
 		req.add(new SkillRequirement(Skill.MINING, 50, true));
-		req.add(new QuestRequirement(Quest.SHIELD_OF_ARRAV, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.LOST_CITY, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.MERLINS_CRYSTAL, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.DRAGON_SLAYER, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.LOST_CITY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.MERLINS_CRYSTAL, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED));
 		return req;
 	}
 }

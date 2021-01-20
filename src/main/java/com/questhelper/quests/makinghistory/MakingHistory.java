@@ -43,7 +43,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
@@ -259,7 +258,7 @@ public class MakingHistory extends BasicQuestHelper
 	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new QuestRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED),
-			new QuestRequirement(Quest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS)));
+		return new ArrayList<>(Arrays.asList(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS)));
 	}
 }

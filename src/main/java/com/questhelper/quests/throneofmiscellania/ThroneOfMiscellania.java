@@ -55,7 +55,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -493,8 +492,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.HEROES_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 45, false, "45 Woodcutting (or any of the other skill requirements)"));
 		req.add(new SkillRequirement(Skill.FARMING, 10, false, "10 Farming (or any of the other skill requirements)"));
 		req.add(new SkillRequirement(Skill.MINING, 30, false, "30 Mining (or any of the other skill requirements)"));

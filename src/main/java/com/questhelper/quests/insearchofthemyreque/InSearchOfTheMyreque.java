@@ -56,7 +56,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -360,7 +359,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(
-			new QuestRequirement(Quest.NATURE_SPIRIT, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED),
 			new SkillRequirement(Skill.AGILITY, 25, true)
 		));
 	}

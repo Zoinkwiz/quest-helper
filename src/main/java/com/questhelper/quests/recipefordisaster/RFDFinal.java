@@ -54,7 +54,6 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -174,8 +173,8 @@ public class RFDFinal extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(175));
-		req.add(new QuestRequirement(Quest.DESERT_TREASURE, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.HORROR_FROM_THE_DEEP, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.HORROR_FROM_THE_DEEP, QuestState.FINISHED));
 		return req;
 	}
 

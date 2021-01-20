@@ -1,25 +1,25 @@
 package com.questhelper.requirements;
 
+import com.questhelper.QuestHelperQuest;
 import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 
 @Getter
 public class QuestRequirement extends Requirement
 {
-	private final Quest quest;
+	private final QuestHelperQuest quest;
 	private final QuestState requiredState;
 	private String displayText = null;
 
-	public QuestRequirement(Quest quest, QuestState requiredState)
+	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState)
 	{
 		this.quest = quest;
 		this.requiredState = requiredState;
 	}
 
-	public QuestRequirement(Quest quest, QuestState requiredState, String displayText)
+	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, String displayText)
 	{
 		this(quest, requiredState);
 		this.displayText = displayText;

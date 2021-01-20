@@ -59,7 +59,6 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -547,7 +546,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.IN_SEARCH_OF_THE_MYREQUE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.IN_SEARCH_OF_THE_MYREQUE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.CRAFTING, 25));
 		req.add(new SkillRequirement(Skill.MINING, 15));
 		req.add(new SkillRequirement(Skill.MAGIC, 7));

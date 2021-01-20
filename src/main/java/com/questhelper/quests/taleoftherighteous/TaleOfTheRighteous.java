@@ -45,7 +45,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -304,7 +303,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.CLIENT_OF_KOUREND, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
 		req.add(new FavourRequirement(Favour.SHAYZIEN, 20));
 		req.add(new SkillRequirement(Skill.STRENGTH, 16));
 		req.add(new SkillRequirement(Skill.MINING, 10));

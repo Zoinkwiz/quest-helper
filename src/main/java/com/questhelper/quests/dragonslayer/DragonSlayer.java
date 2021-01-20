@@ -59,7 +59,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.ZoneCondition;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.DRAGON_SLAYER
+	quest = QuestHelperQuest.DRAGON_SLAYER_I
 )
 public class DragonSlayer extends BasicQuestHelper
 {

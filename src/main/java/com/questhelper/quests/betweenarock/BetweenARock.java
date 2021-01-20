@@ -47,7 +47,6 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -430,8 +429,8 @@ public class BetweenARock extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.DWARF_CANNON, QuestState.FINISHED));
-		req.add(new QuestRequirement(Quest.FISHING_CONTEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DWARF_CANNON, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.FISHING_CONTEST, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.DEFENCE, 30));
 		req.add(new SkillRequirement(Skill.MINING, 40, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 50, true));

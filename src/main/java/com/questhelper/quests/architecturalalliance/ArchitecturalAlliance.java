@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.NpcID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -124,7 +123,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 42));
 		req.add(new Requirements(LogicType.OR, "10 Slayer, or started Plague City for" +
 			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
-			new QuestRequirement(Quest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
+			new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;
 	}
 }

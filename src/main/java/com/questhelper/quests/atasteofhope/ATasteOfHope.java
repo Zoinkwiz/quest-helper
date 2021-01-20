@@ -46,7 +46,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -549,7 +548,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(Quest.DARKNESS_OF_HALLOWVALE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DARKNESS_OF_HALLOWVALE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.CRAFTING, 48));
 		req.add(new SkillRequirement(Skill.AGILITY, 45));
 		req.add(new SkillRequirement(Skill.ATTACK, 40));

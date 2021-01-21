@@ -291,6 +291,22 @@ public class ItemCollections
 	));
 
 	@Getter
+	private static final List<Integer> superRestorePotions = new ArrayList<>(Arrays.asList(
+		ItemID.SUPER_RESTORE4,
+		ItemID.SUPER_RESTORE3,
+		ItemID.SUPER_RESTORE2,
+		ItemID.SUPER_RESTORE1
+	));
+
+	@Getter
+	private static final List<Integer> saradominBrews = new ArrayList<>(Arrays.asList(
+		ItemID.SARADOMIN_BREW4,
+		ItemID.SARADOMIN_BREW3,
+		ItemID.SARADOMIN_BREW2,
+		ItemID.SARADOMIN_BREW1
+	));
+
+	@Getter
 	private static final List<Integer> staminaPotions = new ArrayList<>(Arrays.asList(
 		ItemID.STAMINA_POTION4,
 		ItemID.STAMINA_POTION1,

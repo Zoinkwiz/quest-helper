@@ -557,6 +557,13 @@ public class TheFremennikIsles extends BasicQuestHelper
 	}
 
 	@Override
+	public ArrayList<String> getCombatRequirements()
+	{
+		return new ArrayList<>(Arrays.asList("10 Ice Trolls (level 74-82)", "Ice Troll King (level 122)"));
+	}
+
+
+	@Override
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();

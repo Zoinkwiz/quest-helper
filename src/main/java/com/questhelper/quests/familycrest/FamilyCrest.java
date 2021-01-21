@@ -310,12 +310,20 @@ public class FamilyCrest extends BasicQuestHelper
 		return reqs;
 	}
 
+	@Override
+	public ArrayList<String> getNotes()
+	{
+		ArrayList<String> reqs = new ArrayList<>();
+		reqs.add("The final boss of this quest is in the Edgeville WILDERNESS dungeon, where other players can kill " +
+			"you. Make sure when you go there you aren't risking anything you'd not be willing to lose.");
+		return reqs;
+	}
 
 	@Override
 	public ArrayList<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Chronozon (level 170)");
+		reqs.add("Chronozon (level 170, in the Wilderness)");
 		return reqs;
 	}
 

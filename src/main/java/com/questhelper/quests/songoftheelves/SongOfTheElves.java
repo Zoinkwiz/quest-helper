@@ -1071,7 +1071,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToArianwynAfterGivingPotion = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn.");
 		talkToArianwynAfterPotion.addSubSteps(talkToArianwynAfterGivingPotion);
 
-		talkToAmlodd = new NpcStep(this, NpcID.LORD_IEUAN_AMLODD, new WorldPoint(2353, 3179, 0), "Talk to Lord Amlodd in Lletya.");
+		talkToAmlodd = new NpcStep(this, NpcID.LORD_IEUAN_AMLODD, new WorldPoint(2352, 3182, 0), "Talk to Lord Amlodd" +
+			" in Lletya.");
+		((NpcStep) talkToAmlodd).setMaxRoamRange(9);
 		talkToAmlodd.addDialogStep("Yes.");
 		touchSeal = new ObjectStep(this, ObjectID.SEAL_OF_THE_FORGOTTEN, new WorldPoint(2623, 6135, 1), "");
 

@@ -60,7 +60,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	ConditionForStep hasThreeGoblinMail, isUpstairs, hasUpstairsArmour, hasWestArmour, hasNorthArmour, hasOrangeArmour, hasBlueArmour, hasThreeMail, hasTwoMail, hasMail;
 
 	QuestStep talkToGeneral1, talkToGeneral2, talkToGeneral3, goUpLadder, searchUpLadder, goDownLadder, searchWestHut, searchBehindGenerals,
-		dyeOrange, dyeBlue, getCrate1, getCrate2, getCrate3;
+		dyeOrange, dyeBlue, getCrate2, getCrate3;
 
 	Zone upstairs;
 
@@ -80,7 +80,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		lootArmour.addStep(isUpstairs, searchUpLadder);
 
 		ConditionalStep prepareForQuest = new ConditionalStep(this, lootArmour);
-		prepareForQuest.addStep(new Conditions(hasUpstairsArmour, hasWestArmour, hasNorthArmour, hasBlueArmour), dyeOrange);
+		prepareForQuest.addStep(new Conditions(hasMail, hasBlueArmour), dyeOrange);
 		prepareForQuest.addStep(new Conditions(LogicType.OR, hasThreeMail, new Conditions(hasUpstairsArmour, hasWestArmour, hasNorthArmour)), dyeBlue);
 
 		ConditionalStep step1 = new ConditionalStep(this, prepareForQuest);
@@ -146,11 +146,10 @@ public class GoblinDiplomacy extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		getCrate1 = new DetailedQuestStep(this, "You need three goblin mails, which you can find around the goblin village. The first is up the ladder in a crate in the south of the village.");
-		goUpLadder = new ObjectStep(this, ObjectID.LADDER_16450, new WorldPoint(2954, 3497, 0), "Go up the ladder in the south of Goblin Village.");
+		goUpLadder = new ObjectStep(this, ObjectID.LADDER_16450, new WorldPoint(2954, 3497, 0), "You need three goblin mails, which you can find around the Goblin " +
+			"Village. The first is up the ladder in a crate in the south of the village.");
 		searchUpLadder = new ObjectStep(this, ObjectID.CRATE_16561, new WorldPoint(2955, 3498, 2), "Search the crate up the ladder.");
-		getCrate1.addSubSteps(goUpLadder, searchUpLadder);
-
+		goUpLadder.addSubSteps(searchUpLadder);
 		goDownLadder = new ObjectStep(this, ObjectID.LADDER_16556, new WorldPoint(2954, 3497, 2), "Go back down the ladder.");
 		searchWestHut = new ObjectStep(this, ObjectID.CRATE_16560, new WorldPoint(2951, 3508, 0), "Search the crate in the west of Goblin Village for Goblin Mail.");
 		getCrate2 = new DetailedQuestStep(this, "The second goblin mail can be found in the west hut in a crate.");
@@ -194,7 +193,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails getArmours = new PanelDetails("Prepare goblin mail",
-			new ArrayList<>(Arrays.asList(getCrate1, getCrate2, getCrate3, dyeBlue, dyeOrange)), blueDye, orangeDye);
+			new ArrayList<>(Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange)), blueDye, orangeDye);
 		allSteps.add(getArmours);
 
 		allSteps.add(new PanelDetails("Present the armours", new ArrayList<>(Arrays.asList(talkToGeneral1, talkToGeneral2, talkToGeneral3))));

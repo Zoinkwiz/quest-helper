@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.google.errorprone.annotations.Var;
 import com.questhelper.BankItems;
 import com.questhelper.IconUtil;
 import com.questhelper.QuestHelperConfig;
@@ -39,8 +40,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import lombok.extern.slf4j.Slf4j;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.QuestStep;
@@ -315,7 +314,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateHighlight(QuestStep newStep)
 	{
 		questOverviewPanel.updateHighlight(newStep);
-
 		repaint();
 		revalidate();
 	}
@@ -323,7 +321,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateLocks()
 	{
 		questOverviewPanel.updateLocks();
-
 		repaint();
 		revalidate();
 	}

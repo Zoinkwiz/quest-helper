@@ -27,6 +27,8 @@
 
 package com.questhelper.panel.components;
 
+import com.questhelper.BankItems;
+import com.questhelper.StreamUtil;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
@@ -40,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 
@@ -50,7 +53,7 @@ import net.runelite.client.ui.DynamicGridLayout;
  * This will display all the {@link Requirement}s for a particular step
  * as determined by the provided {@link PanelDetails}.
  */
-public class QuestStepRequirementsPanel extends JPanel
+public class QuestStepRequirementsPanel extends JPanel implements RequirementContainer
 {
 	private final JPanel headerPanel;
 	private final JPanel listOfRequiredItems;
@@ -111,5 +114,17 @@ public class QuestStepRequirementsPanel extends JPanel
 		title.setText(text);
 		title.setMinimumSize(new Dimension(1, headerPanel.getPreferredSize().height));
 		return title;
+	}
+
+	@Override
+	public void updateRequirements(Client client, BankItems bankItems)
+	{
+		requirementPanels.forEach( panel -> panel.updateRequirements(client, bankItems));
+	}
+
+	@Override
+	public List<Requirement> getRequirements()
+	{
+		return StreamUtil.getRequirements(requirementPanels);
 	}
 }

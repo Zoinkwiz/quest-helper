@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -777,5 +778,22 @@ public class QuestHelperPlugin extends Plugin
 
 		log.debug("Loaded quest helper {}", clazz.getSimpleName());
 		return questHelper;
+	}
+
+	/**
+	 * Get the var of a quest while off the client thread.
+	 * @param quest
+	 * @return
+	 */
+	public synchronized int getQuestVar(QuestHelperQuest quest)
+	{
+		AtomicInteger var = new AtomicInteger(Integer.MIN_VALUE);
+		if (selectedQuest != null)
+		{
+			clientThread.invoke(() -> {
+				var.set(quest.getVar(client));
+			});
+		}
+		return var.get();
 	}
 }

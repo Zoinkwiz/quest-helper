@@ -26,13 +26,18 @@
  */
 package com.questhelper.panel.components;
 
+import com.questhelper.BankItems;
 import com.questhelper.IconUtil;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.NoItemRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -40,18 +45,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.Client;
 
 /**
  * Represents a single Quest {@link Requirement}.
  * These are displayed both in the general quest requirements section
  * as well as in the individual quest step sections.
  */
-
-//TODO: Add panel to consolidate quest requirements (item,skill,recommended,etc)
-//TODO: Add panel to show the quest requirements (item, skill, etc)
-//TODO: Make QuestOverviewPanel *only* show the quest steps and whatever is necessary for the quest
-//TODO: Rename panels to be more accurate. Names TBD
-public class QuestRequirementPanel extends JPanel
+public class QuestRequirementPanel extends JPanel implements RequirementContainer
 {
 	private static final ImageIcon INFO_ICON = IconUtil.INFO_ICON.getIcon();
 
@@ -60,11 +61,11 @@ public class QuestRequirementPanel extends JPanel
 	private JLabel label;
 
 	@Getter
-	private final Requirement itemRequirement;
+	private final Requirement requirement;
 
 	public QuestRequirementPanel(Requirement requirement)
 	{
-		this.itemRequirement = requirement;
+		this.requirement = requirement;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -106,6 +107,46 @@ public class QuestRequirementPanel extends JPanel
 		b.setContentAreaFilled(false);
 		b.setMargin(new Insets(0, 0, 0, 0));
 		add(b);
+	}
+
+	@Override
+	public void updateRequirements(Client client, BankItems bankItems)
+	{
+		Color newColor;
+
+		if (getRequirement() instanceof ItemRequirement)
+		{
+			ItemRequirement itemRequirement = (ItemRequirement) getRequirement();
+			if (itemRequirement instanceof NoItemRequirement)
+			{
+				newColor = itemRequirement.getColor(client); // explicitly call this because NoItemRequirement overrides it
+			}
+			else
+			{
+				newColor = itemRequirement.getColorConsideringBank(client, false, bankItems.getItems());
+			}
+		}
+		else
+		{
+			newColor = getRequirement().getColor(client);
+		}
+
+		if (newColor == Color.WHITE)
+		{
+			getLabel().setToolTipText("In bank");
+		}
+		else
+		{
+			getLabel().setToolTipText("");
+		}
+
+		getLabel().setForeground(newColor);
+	}
+
+	@Override
+	public List<Requirement> getRequirements()
+	{
+		return new ArrayList<>(Collections.singletonList(requirement));
 	}
 }
 

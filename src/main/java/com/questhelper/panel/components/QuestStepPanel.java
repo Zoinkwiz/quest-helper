@@ -27,15 +27,16 @@
 package com.questhelper.panel.components;
 
 import com.questhelper.BankItems;
+import com.questhelper.StreamUtil;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.panel.QuestOverviewPanel;
+import com.questhelper.requirements.Requirement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.questhelper.steps.QuestStep;
+import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.config.FontType;
@@ -51,7 +52,7 @@ import net.runelite.client.util.SwingUtil;
  * A section is considered active if the current quest step is contained within the
  * given {@link PanelDetails}
  */
-public class QuestStepPanel extends JPanel
+public class QuestStepPanel extends JPanel implements RequirementContainer
 {
 	private static final int TITLE_PADDING = 5;
 
@@ -325,11 +326,6 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	public void updateRequirements(Client client, BankItems bankItems, QuestOverviewPanel questOverviewPanel)
-	{
-		questOverviewPanel.updateRequirementPanels(client, requirementPanels, bankItems);
-	}
-
 	public void addMouseListener(BiConsumer<QuestStepPanel, MouseEvent> consumer)
 	{
 		addMouseListener(new MouseAdapter()
@@ -343,5 +339,17 @@ public class QuestStepPanel extends JPanel
 				}
 			}
 		});
+	}
+
+	@Override
+	public void updateRequirements(Client client, BankItems bankItems)
+	{
+		requirementPanels.forEach(panel -> panel.updateRequirements(client, bankItems));
+	}
+
+	@Override
+	public List<Requirement> getRequirements()
+	{
+		return StreamUtil.getRequirements(requirementPanels);
 	}
 }

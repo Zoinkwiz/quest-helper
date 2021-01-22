@@ -28,8 +28,7 @@
 package com.questhelper.panel.components;
 
 import com.questhelper.IconUtil;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -68,10 +67,6 @@ public class HeaderPanel extends JPanel implements MouseListener
 		this.clickConsumer = onClickConsumer;
 		addMouseListener(this);
 		this.headerLabel = headerLabel;
-		setFont(headerLabel.getFont());
-		setPreferredSize(headerLabel.getPreferredSize());
-		setBackground(headerLabel.getBackground());
-		setForeground(headerLabel.getForeground());
 	}
 
 	@Override
@@ -88,9 +83,10 @@ public class HeaderPanel extends JPanel implements MouseListener
 		{
 			g2.drawImage(EXPANDED, PAD, 0, h, h, this);
 		}
-		g2.setFont(getFont());
+		Font font = headerLabel.getFont();
+		g2.setFont(font);
 		FontRenderContext frc = g2.getFontRenderContext();
-		LineMetrics lm = getFont().getLineMetrics(headerLabel.getText(), frc);
+		LineMetrics lm = font.getLineMetrics(headerLabel.getText(), frc);
 		float height = lm.getAscent() + lm.getDescent();
 		float y = (h + height) / 2 - lm.getDescent();
 		g2.drawString(headerLabel.getText(), OFFSET, y);
@@ -99,7 +95,7 @@ public class HeaderPanel extends JPanel implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		if (e.getClickCount() % 2 == 0) // only collapse on double click
+		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() % 2 == 0) // only collapse on double click
 		{
 			setCollapsed(!isCollapsed());
 			clickConsumer.accept(isCollapsed());

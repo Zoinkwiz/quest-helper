@@ -143,7 +143,7 @@ public class FamilyCrest extends BasicQuestHelper
 		bass = new ItemRequirement("Bass", ItemID.BASS);
 		swordfish = new ItemRequirement("Swordfish", ItemID.SWORDFISH);
 
-		pickaxe = new ItemRequirement("Any pickace", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		ruby = new ItemRequirement("Ruby", ItemID.RUBY);
 		ruby2 = new ItemRequirement("Ruby", ItemID.RUBY, 2);
 		ringMould = new ItemRequirement("Ring mould", ItemID.RING_MOULD);

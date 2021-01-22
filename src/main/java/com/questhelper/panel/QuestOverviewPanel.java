@@ -98,7 +98,7 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 
 		/* Panel for all overview details*/
 		overviewPanel = new QuestRequirementOverviewPanel(introPanel);
-		overviewPanel.setLayout(new BoxLayout(overviewPanel,BoxLayout.Y_AXIS));
+		overviewPanel.setLayout(new BoxLayout(overviewPanel, BoxLayout.Y_AXIS));
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
 		/* Container for quest steps */
@@ -129,6 +129,7 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 			actionsContainer.setVisible(true);
 
 			setupQuestRequirements(quest);
+			introPanel.setVisible(true);
 			overviewPanel.setVisible(true);
 			questStepsContainer.initQuestSteps(quest, currentStep, (panel, ev) -> updateCollapseText());
 		}
@@ -157,6 +158,7 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 	{
 		actionsContainer.setVisible(false);
 		introPanel.setVisible(false);
+		overviewPanel.setVisible(false);
 		questStepsContainer.removeAll();
 		overviewPanel.removeAll();
 		currentQuest = null;

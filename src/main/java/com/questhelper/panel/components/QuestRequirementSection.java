@@ -96,7 +96,6 @@ public class QuestRequirementSection extends JPanel implements RequirementContai
 		super.setVisible(visible);
 		headerPanel.setVisible(visible);
 		requirementsPanel.setVisible(visible);
-		questRequirementPanels.forEach(p -> p.setVisible(visible));
 	}
 
 	public void addOrUpdateRequirements(Collection<? extends Requirement> requirements)
@@ -111,14 +110,7 @@ public class QuestRequirementSection extends JPanel implements RequirementContai
 				.map(QuestRequirementPanel::new)
 				.forEach(this::addQuestRequirement);
 
-			headerPanel.setVisible(true);
-			requirementsPanel.setVisible(true);
 			log.debug("Found " + requirements.size() + " Requirement(s) for '" + getTitleLabel().getText() + "' Visible (" + isVisible() + ")");
-		}
-		else
-		{
-			setVisible(false);
-			log.debug("No Requirements for " + getTitleLabel().getText());
 		}
 	}
 
@@ -139,8 +131,10 @@ public class QuestRequirementSection extends JPanel implements RequirementContai
 
 	private void addQuestRequirement(QuestRequirementPanel panel)
 	{
-		add(panel);
+		requirementsPanel.add(panel);
 		questRequirementPanels.add(panel);
+		requirementsPanel.setVisible(true);
+		panel.setVisible(true);
 	}
 
 	@Override

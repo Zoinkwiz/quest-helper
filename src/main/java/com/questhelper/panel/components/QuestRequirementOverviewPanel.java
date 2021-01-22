@@ -32,7 +32,6 @@ import com.questhelper.StreamUtil;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -41,15 +40,18 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
 /**
  * The panel which holds all Quest Requirements, not just ItemRequirements.
  */
 @Getter
+@Slf4j
 public class QuestRequirementOverviewPanel extends JPanel implements RequirementContainer
 {
 	private final QuestRequirementSection generalRequirements = new QuestRequirementSection("General Requirements:");
@@ -64,20 +66,24 @@ public class QuestRequirementOverviewPanel extends JPanel implements Requirement
 	private final JPanel wrapper;
 	public QuestRequirementOverviewPanel(JPanel wrapper)
 	{
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.wrapper = wrapper;
-		add(generalRequirements);
-		add(generalRecommended);
-		add(itemRequirements);
-		add(recommendedItems);
-		add(enemiesToDefeat);
-		add(notes);
+		addSection(generalRequirements);
+		addSection(generalRecommended);
+		addSection(itemRequirements);
+		addSection(recommendedItems);
+		addSection(enemiesToDefeat);
+		addSection(notes);
 	}
 
 	public void initRequirements(QuestHelper quest)
 	{
 		/* Non-item requirements */
 		generalRequirements.addOrUpdateRequirements(quest.getGeneralRequirements());
+		generalRequirements.setVisible(quest.getGeneralRequirements() != null);
+
 		generalRecommended.addOrUpdateRequirements(quest.getGeneralRecommended());
+		generalRecommended.setVisible(quest.getGeneralRecommended() != null);
 
 		/* Required items */
 		ArrayList<ItemRequirement> itemReq = quest.getItemRequirements();
@@ -159,14 +165,12 @@ public class QuestRequirementOverviewPanel extends JPanel implements Requirement
 		questRequirements.forEach(s -> s.setVisible(visible));
 	}
 
-	@Override
-	public Component add(Component comp)
+	public void addSection(QuestRequirementSection section)
 	{
-		if (comp instanceof QuestRequirementSection)
-		{
-			questRequirements.add((QuestRequirementSection) comp);
-		}
-		return super.add(comp);
+		questRequirements.add(section);
+		Component comp = add(section);
+		log.debug("Added QuestReqSection " + section.getTitleLabel().getText() + " with " + section.getRequirements().size() + " Requirement(s)");
+		log.debug("QuestReqSection was added: " + (comp == section));
 	}
 
 	@Override
@@ -180,6 +184,7 @@ public class QuestRequirementOverviewPanel extends JPanel implements Requirement
 	public void updateRequirements(Client client, BankItems bankItems)
 	{
 		questRequirements.forEach(req -> req.updateRequirements(client, bankItems));
+		revalidate();
 	}
 
 	@Override

@@ -87,7 +87,6 @@ import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -241,7 +240,7 @@ public class QuestHelperPlugin extends Plugin
 			overlayManager.add(questHelperDebugOverlay);
 		}
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/quest_icon.png");
+		final BufferedImage icon = IconUtil.QUEST_ICON.getImage();
 
 		panel = new QuestHelperPanel(this);
 		navButton = NavigationButton.builder()
@@ -634,7 +633,7 @@ public class QuestHelperPlugin extends Plugin
 
 	public void startUpQuest(QuestHelper questHelper)
 	{
-		if (!(client.getGameState() == GameState.LOGGED_IN))
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

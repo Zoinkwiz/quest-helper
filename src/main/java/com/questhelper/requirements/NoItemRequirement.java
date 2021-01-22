@@ -27,6 +27,7 @@ package com.questhelper.requirements;
 import java.awt.Color;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 
 public class NoItemRequirement extends ItemRequirement
 {
@@ -47,9 +48,21 @@ public class NoItemRequirement extends ItemRequirement
 	}
 
 	@Override
+	public boolean showQuantity()
+	{
+		return false;
+	}
+
+	@Override
 	public Color getColor(Client client)
 	{
 		return check(client) ? Color.GREEN : Color.RED;
+	}
+
+	@Override
+	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
+	{
+		return getColor(client);
 	}
 
 	@Override

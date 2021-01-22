@@ -32,6 +32,7 @@ import com.questhelper.StreamUtil;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -130,9 +131,15 @@ public class QuestRequirementSection extends JPanel implements RequirementContai
 		questRequirementPanels.clear();
 	}
 
+	@Override
+	public Component add(Component comp)
+	{
+		return requirementsPanel.add(comp);
+	}
+
 	private void addQuestRequirement(QuestRequirementPanel panel)
 	{
-		requirementsPanel.add(panel);
+		add(panel);
 		questRequirementPanels.add(panel);
 	}
 

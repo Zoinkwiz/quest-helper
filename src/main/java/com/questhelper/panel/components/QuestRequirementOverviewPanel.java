@@ -29,14 +29,19 @@ package com.questhelper.panel.components;
 
 import com.questhelper.BankItems;
 import com.questhelper.StreamUtil;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -44,21 +49,113 @@ import net.runelite.api.Client;
 /**
  * The panel which holds all Quest Requirements, not just ItemRequirements.
  */
+@Getter
 public class QuestRequirementOverviewPanel extends JPanel implements RequirementContainer
 {
-	@Getter
+	private final QuestRequirementSection generalRequirements = new QuestRequirementSection("General Requirements:");
+	private final QuestRequirementSection generalRecommended = new QuestRequirementSection("Recommended:");
+	private final QuestRequirementSection itemRequirements = new QuestRequirementSection("Item Requirements:");
+	private final QuestRequirementSection recommendedItems = new QuestRequirementSection("Recommended Items:");
+	private final QuestRequirementSection enemiesToDefeat = new QuestRequirementSection("Enemies to defeat:");
+	private final QuestRequirementSection notes = new QuestRequirementSection("Notes:");
+
 	private final List<QuestRequirementSection> questRequirements = new LinkedList<>();
 
-	public QuestRequirementOverviewPanel()
+	private final JPanel wrapper;
+	public QuestRequirementOverviewPanel(JPanel wrapper)
 	{
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setVisible(true);
+		this.wrapper = wrapper;
+		add(generalRequirements);
+		add(generalRecommended);
+		add(itemRequirements);
+		add(recommendedItems);
+		add(enemiesToDefeat);
+		add(notes);
+	}
+
+	public void initRequirements(QuestHelper quest)
+	{
+		/* Non-item requirements */
+		generalRequirements.addOrUpdateRequirements(quest.getGeneralRequirements());
+		generalRecommended.addOrUpdateRequirements(quest.getGeneralRecommended());
+
+		/* Required items */
+		ArrayList<ItemRequirement> itemReq = quest.getItemRequirements();
+		if (itemReq != null)
+		{
+			this.itemRequirements.addOrUpdateRequirements(quest.getItemRequirements());
+		}
+		else
+		{
+			JLabel itemRequiredLabel = new JLabel();
+			itemRequiredLabel.setForeground(Color.GRAY);
+			itemRequiredLabel.setText("None");
+			this.itemRequirements.add(itemRequiredLabel);
+		}
+
+		/* Recommended items */
+		ArrayList<ItemRequirement> itemRecommended = quest.getItemRecommended();
+		if (itemRecommended != null)
+		{
+			this.recommendedItems.addOrUpdateRequirements(quest.getItemRecommended());
+		}
+		else
+		{
+			JLabel itemRecommendedLabel = new JLabel();
+			itemRecommendedLabel.setForeground(Color.GRAY);
+			itemRecommendedLabel.setText("None");
+			this.recommendedItems.add(itemRecommendedLabel);
+		}
+
+		/* Combat requirements */
+		JLabel combatLabel = new JLabel();
+		combatLabel.setForeground(Color.GRAY);
+		ArrayList<String> combatRequirementList = quest.getCombatRequirements();
+		StringBuilder textCombat = new StringBuilder();
+		if (combatRequirementList == null)
+		{
+			textCombat.append("None");
+		}
+		else
+		{
+			for (String combatRequirement : combatRequirementList)
+			{
+				textCombat.append(combatRequirement);
+				textCombat.append("<br>");
+			}
+		}
+		combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
+
+		this.enemiesToDefeat.add(combatLabel);
+
+		/* Quest overview */
+		JLabel overviewLabel = new JLabel();
+		overviewLabel.setForeground(Color.GRAY);
+		ArrayList<String> notes = quest.getNotes();
+		StringBuilder textNote = new StringBuilder();
+		if (notes != null)
+		{
+			for (String note : notes)
+			{
+				textNote.append(note);
+				textNote.append("<br><br>");
+			}
+			overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
+
+			this.notes.add(overviewLabel);
+			this.notes.setVisible(true);
+		}
+		else
+		{
+			this.notes.setVisible(false);
+		}
 	}
 
 	@Override
 	public void setVisible(boolean visible)
 	{
 		super.setVisible(visible);
+		getWrapper().setVisible(visible);
 		questRequirements.forEach(s -> s.setVisible(visible));
 	}
 

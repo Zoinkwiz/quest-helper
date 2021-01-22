@@ -25,36 +25,28 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
-import com.questhelper.IconUtil;
 import com.questhelper.QuestHelperPlugin;
 
 import com.questhelper.StreamUtil;
 import com.questhelper.panel.components.ActionsContainer;
 import com.questhelper.panel.components.QuestRequirementOverviewPanel;
 import com.questhelper.panel.components.QuestRequirementPanel;
-import com.questhelper.panel.components.QuestRequirementSection;
 import com.questhelper.panel.components.QuestStepContainer;
 import com.questhelper.panel.components.QuestStepPanel;
 import com.questhelper.panel.components.RequirementContainer;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
@@ -74,17 +66,7 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 	private final ActionsContainer actionsContainer;
 
 	private final JPanel introPanel = new JPanel();
-
-	/** Holder for all quest requirements so we can pass on all Container calls easily
-	 *  We still need the individual sections because each gets a unique list of requirements
-	 */
-	private final QuestRequirementOverviewPanel questRequirementOverviewPanel = new QuestRequirementOverviewPanel();
-	private final QuestRequirementSection generalRequirements = new QuestRequirementSection("General Requirements:");
-	private final QuestRequirementSection generalRecommended = new QuestRequirementSection("Recommended:");
-	private final QuestRequirementSection itemRequirements = new QuestRequirementSection("Item Requirements:");
-	private final QuestRequirementSection recommendedItems = new QuestRequirementSection("Recommended Items:");
-	private final QuestRequirementSection enemiesToDefeat = new QuestRequirementSection("Enemies to defeat:");
-	private final QuestRequirementSection notes = new QuestRequirementSection("Notes:");
+	private final QuestRequirementOverviewPanel overviewPanel;
 
 	private final JButton collapseBtn = new JButton();
 
@@ -115,14 +97,9 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 		introPanel.setVisible(false);
 
 		/* Panel for all overview details*/
-		questRequirementOverviewPanel.add(generalRequirements);
-		questRequirementOverviewPanel.add(generalRecommended);
-		questRequirementOverviewPanel.add(itemRequirements);
-		questRequirementOverviewPanel.add(recommendedItems);
-		questRequirementOverviewPanel.add(enemiesToDefeat);
-		questRequirementOverviewPanel.add(notes);
-
-		introPanel.add(questRequirementOverviewPanel, BorderLayout.NORTH);
+		overviewPanel = new QuestRequirementOverviewPanel(introPanel);
+		overviewPanel.setLayout(new BoxLayout(overviewPanel,BoxLayout.Y_AXIS));
+		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
 		/* Container for quest steps */
 		questStepsContainer.setLayout(new BoxLayout(questStepsContainer, BoxLayout.Y_AXIS));
@@ -152,12 +129,8 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 			actionsContainer.setVisible(true);
 
 			setupQuestRequirements(quest);
+			overviewPanel.setVisible(true);
 			questStepsContainer.initQuestSteps(quest, currentStep, (panel, ev) -> updateCollapseText());
-			introPanel.setVisible(true);
-			questRequirementOverviewPanel.setVisible(true);
-
-			repaint();
-			revalidate();
 		}
 	}
 
@@ -185,7 +158,7 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 		actionsContainer.setVisible(false);
 		introPanel.setVisible(false);
 		questStepsContainer.removeAll();
-		questRequirementOverviewPanel.removeAll();
+		overviewPanel.removeAll();
 		currentQuest = null;
 		repaint();
 		revalidate();
@@ -203,82 +176,8 @@ public class QuestOverviewPanel extends JPanel implements RequirementContainer
 
 	public void setupQuestRequirements(QuestHelper quest)
 	{
-		/* Non-item requirements */
-		generalRequirements.addOrUpdateRequirements(quest.getGeneralRequirements());
-		generalRecommended.addOrUpdateRequirements(quest.getGeneralRecommended());
-
-		/* Required items */
-		ArrayList<ItemRequirement> itemReq = quest.getItemRequirements();
-		if (itemReq != null)
-		{
-			this.itemRequirements.addOrUpdateRequirements(quest.getItemRequirements());
-		}
-		else
-		{
-			JLabel itemRequiredLabel = new JLabel();
-			itemRequiredLabel.setForeground(Color.GRAY);
-			itemRequiredLabel.setText("None");
-			this.itemRequirements.add(itemRequiredLabel);
-		}
-
-		/* Recommended items */
-		ArrayList<ItemRequirement> itemRecommended = quest.getItemRecommended();
-		if (itemRecommended != null)
-		{
-			this.recommendedItems.addOrUpdateRequirements(quest.getItemRecommended());
-		}
-		else
-		{
-			JLabel itemRecommendedLabel = new JLabel();
-			itemRecommendedLabel.setForeground(Color.GRAY);
-			itemRecommendedLabel.setText("None");
-			this.recommendedItems.add(itemRecommendedLabel);
-		}
-
-		/* Combat requirements */
-		JLabel combatLabel = new JLabel();
-		combatLabel.setForeground(Color.GRAY);
-		ArrayList<String> combatRequirementList = quest.getCombatRequirements();
-		StringBuilder textCombat = new StringBuilder();
-		if (combatRequirementList == null)
-		{
-			textCombat.append("None");
-		}
-		else
-		{
-			for (String combatRequirement : combatRequirementList)
-			{
-				textCombat.append(combatRequirement);
-				textCombat.append("<br>");
-			}
-		}
-		combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
-
-		this.enemiesToDefeat.add(combatLabel);
-
-		/* Quest overview */
-		JLabel overviewLabel = new JLabel();
-		overviewLabel.setForeground(Color.GRAY);
-		ArrayList<String> notes = quest.getNotes();
-		StringBuilder textNote = new StringBuilder();
-		if (notes != null)
-		{
-			for (String note : notes)
-			{
-				textNote.append(note);
-				textNote.append("<br><br>");
-			}
-			overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
-
-			this.notes.add(overviewLabel);
-			this.notes.setVisible(true);
-		}
-		else
-		{
-			this.notes.setVisible(false);
-		}
-
-		this.requirementPanels.addAll(questRequirementOverviewPanel.getRequirementPanels());
+		overviewPanel.initRequirements(quest);
+		this.requirementPanels.addAll(overviewPanel.getRequirementPanels());
 	}
 
 	@Override

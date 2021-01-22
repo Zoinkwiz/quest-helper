@@ -78,11 +78,9 @@ public class QuestStepContainer extends JPanel implements RequirementContainer
 			questStepPanels.add(newStep);
 			add(newStep);
 			newStep.addMouseListener(mouseListener);
-			newStep.setVisible(true);
 			repaint();
 			revalidate();
 		}
-		setVisible(true);
 	}
 
 	@Override
@@ -115,13 +113,14 @@ public class QuestStepContainer extends JPanel implements RequirementContainer
 				panel.removeHighlight();
 			}
 		});
-
-		repaint();
-		revalidate();
 	}
 
 	public void updateSteps()
 	{
+		if (questStepPanels.isEmpty())
+		{
+			return;
+		}
 		questStepPanels.forEach(panel -> {
 			for (QuestStep step : panel.getSteps())
 			{
@@ -132,16 +131,11 @@ public class QuestStepContainer extends JPanel implements RequirementContainer
 				}
 			}
 		});
-
-		repaint();
-		revalidate();
 	}
 
 	public void updateLocks()
 	{
 		questStepPanels.forEach(QuestStepPanel::updateLock);
-		repaint();
-		revalidate();
 	}
 
 	@Override

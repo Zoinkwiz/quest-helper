@@ -10,7 +10,7 @@ repositories {
 	mavenCentral()
 }
 
-def runeLiteVersion = '1.6.37'
+def runeLiteVersion = '1.6.38-SNAPSHOT'
 
 dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
@@ -20,6 +20,11 @@ dependencies {
 
 	testImplementation 'junit:junit:4.12'
 	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
+}
+
+configurations.all {
+    exclude group: 'net.runelite.jogl', module: 'jogl-all'
+    exclude group: 'net.runelite.gluegen', module: 'gluegen-rt'
 }
 
 group = 'com.questhelper'

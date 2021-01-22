@@ -1,48 +1,62 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
- * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  * Copyright (c) 2021, Senmori
+ *  * All rights reserved.
+ *  *
+ *  * Redistribution and use in source and binary forms, with or without
+ *  * modification, are permitted provided that the following conditions are met:
+ *  *
+ *  * 1. Redistributions of source code must retain the above copyright notice, this
+ *  *    list of conditions and the following disclaimer.
+ *  * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *  *    this list of conditions and the following disclaimer in the documentation
+ *  *    and/or other materials provided with the distribution.
+ *  *
+ *  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel;
+package com.questhelper.panel.components;
 
 import com.questhelper.BankItems;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.panel.QuestOverviewPanel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.config.FontType;
 import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import net.runelite.client.ui.DynamicGridLayout;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.SwingUtil;
 
+/**
+ * The panel that holds all the information for the current quest section that is active.
+ *
+ * A section is considered active if the current quest step is contained within the
+ * given {@link PanelDetails}
+ */
 public class QuestStepPanel extends JPanel
 {
 	private static final int TITLE_PADDING = 5;
 
-	PanelDetails panelDetails;
+	@Getter
+	private PanelDetails panelDetails;
 
 	private final JPanel headerPanel = new JPanel();
 	private final JLabel headerLabel = new JLabel();
@@ -68,7 +82,7 @@ public class QuestStepPanel extends JPanel
 		leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 
 		headerLabel.setText(panelDetails.getHeader());
-		headerLabel.setFont(FontManager.getRunescapeBoldFont());
+		headerLabel.setFont(FontType.BOLD.getFont());
 
 		headerLabel.setMinimumSize(new Dimension(1, headerLabel.getPreferredSize().height));
 
@@ -113,42 +127,9 @@ public class QuestStepPanel extends JPanel
 
 		if (!panelDetails.getItemRequirements().isEmpty())
 		{
-			JPanel questItemRequirementsPanel = new JPanel();
-			questItemRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			questItemRequirementsPanel.setLayout(new BorderLayout());
-			questItemRequirementsPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
-
-			JPanel questItemRequirementsHeader = new JPanel();
-			questItemRequirementsHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			questItemRequirementsHeader.setLayout(new BorderLayout());
-			questItemRequirementsHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
-
-			JLabel questItemReqsTitle = new JLabel();
-			questItemReqsTitle.setForeground(Color.WHITE);
-			questItemReqsTitle.setText("Bring the following items:");
-			questItemReqsTitle.setMinimumSize(new Dimension(1, questItemRequirementsHeader.getPreferredSize().height));
-			questItemRequirementsHeader.add(questItemReqsTitle, BorderLayout.NORTH);
-
-			JPanel questItemRequirementsListPanel = new JPanel();
-			questItemRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
-			questItemRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-			ArrayList<ItemRequirement> itemRequirements = panelDetails.getItemRequirements();
-
-			if (itemRequirements != null)
-			{
-				for (ItemRequirement itemRequirement : itemRequirements)
-				{
-					QuestRequirementPanel reqPanel = new QuestRequirementPanel(itemRequirement);
-					requirementPanels.add(reqPanel);
-					questItemRequirementsListPanel.add(reqPanel);
-				}
-			}
-
-			questItemRequirementsPanel.add(questItemRequirementsHeader, BorderLayout.NORTH);
-			questItemRequirementsPanel.add(questItemRequirementsListPanel, BorderLayout.CENTER);
-
-			bodyPanel.add(questItemRequirementsPanel, BorderLayout.NORTH);
+			QuestStepRequirementsPanel questStepRequirementsPanel = new QuestStepRequirementsPanel(panelDetails);
+			requirementPanels.addAll(questStepRequirementsPanel.getRequirementPanels());
+			bodyPanel.add(questStepRequirementsPanel, BorderLayout.NORTH);
 		}
 
 		JPanel questStepsPanel = new JPanel();
@@ -183,16 +164,25 @@ public class QuestStepPanel extends JPanel
 		{
 			collapse();
 		}
+
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					update();
+				}
+			}
+		});
 	}
 
 	public String generateText(QuestStep step)
 	{
 		StringBuilder text = new StringBuilder();
 
-		for (String line : step.getText())
-		{
-			text.append(line).append(" ");
-		}
+		step.getText().forEach(s -> text.append(s).append(" "));
 
 		return "<html><body style = 'text-align:left'>" + text + "</body></html>";
 	}
@@ -283,21 +273,22 @@ public class QuestStepPanel extends JPanel
 
 	private void lockSection(boolean locked)
 	{
-		if (locked)
+		panelDetails.getLockingQuestSteps().setLockedManually(locked);
+		update();
+	}
+
+	/**
+	 * Update this step's collapsed state
+	 */
+	public void update()
+	{
+		if (isCollapsed())
 		{
-			panelDetails.getLockingQuestSteps().setLockedManually(true);
-			if (!isCollapsed())
-			{
-				collapse();
-			}
+			expand();
 		}
 		else
 		{
-			panelDetails.getLockingQuestSteps().setLockedManually(false);
-			if (isCollapsed())
-			{
-				expand();
-			}
+			collapse();
 		}
 	}
 
@@ -319,7 +310,7 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	boolean isCollapsed()
+	public boolean isCollapsed()
 	{
 		return !bodyPanel.isVisible();
 	}
@@ -337,5 +328,20 @@ public class QuestStepPanel extends JPanel
 	public void updateRequirements(Client client, BankItems bankItems, QuestOverviewPanel questOverviewPanel)
 	{
 		questOverviewPanel.updateRequirementPanels(client, requirementPanels, bankItems);
+	}
+
+	public void addMouseListener(BiConsumer<QuestStepPanel, MouseEvent> consumer)
+	{
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					consumer.accept(QuestStepPanel.this, e);
+				}
+			}
+		});
 	}
 }

@@ -24,9 +24,13 @@
  */
 package com.questhelper.panel;
 
+import com.google.common.base.Predicates;
 import com.questhelper.BankItems;
+import com.questhelper.IconUtil;
 import com.questhelper.QuestHelperPlugin;
 
+import com.questhelper.panel.components.QuestRequirementPanel;
+import com.questhelper.panel.components.QuestStepPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.NoItemRequirement;
@@ -37,11 +41,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -54,9 +58,12 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
+/**
+ * The actual quest panel that displays all the required items/skills/etc.
+ * As well as the quest steps.
+ */
 public class QuestOverviewPanel extends JPanel
 {
 	private final QuestHelperPlugin questHelperPlugin;
@@ -85,22 +92,14 @@ public class QuestOverviewPanel extends JPanel
 
 	private final JLabel questNameLabel = new JLabel();
 
-	private static final ImageIcon CLOSE_ICON;
-	private static final ImageIcon INFO_ICON;
+	private static final ImageIcon CLOSE_ICON = IconUtil.CLOSE.getIcon();
+	private static final ImageIcon INFO_ICON = IconUtil.INFO_ICON.getIcon();
 
 	private final JButton collapseBtn = new JButton();
 
 	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
 
 	private final List<QuestRequirementPanel> requirementPanels = new ArrayList<>();
-
-	static
-	{
-		final BufferedImage closeImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/close.png");
-		final BufferedImage infoImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/info_icon.png");
-		CLOSE_ICON = new ImageIcon(closeImg);
-		INFO_ICON = new ImageIcon(infoImg);
-	}
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin)
 	{
@@ -228,33 +227,15 @@ public class QuestOverviewPanel extends JPanel
 			for (PanelDetails panelDetail : steps)
 			{
 				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep);
-				if (panelDetail.getLockingQuestSteps() != null &&
-					(panelDetail.getVars() == null
-						|| panelDetail.getVars().contains(currentQuest.getVar())))
+				boolean hasLockingSteps = panelDetail.getLockingQuestSteps() != null;
+				boolean hasVars = panelDetail.getVars() == null || panelDetail.getVars().contains(currentQuest.getVar());
+				if (hasLockingSteps && hasVars)
 				{
 					newStep.setLockable(true);
 				}
 				questStepPanelList.add(newStep);
 				questStepsContainer.add(newStep);
-				newStep.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mouseClicked(MouseEvent e)
-					{
-						if (e.getButton() == MouseEvent.BUTTON1)
-						{
-							if (newStep.isCollapsed())
-							{
-								newStep.expand();
-							}
-							else
-							{
-								newStep.collapse();
-							}
-							updateCollapseText();
-						}
-					}
-				});
+				newStep.addMouseListener((panel, ev) -> updateCollapseText());
 				repaint();
 				revalidate();
 			}
@@ -281,20 +262,22 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateHighlight(QuestStep newStep)
 	{
+		AtomicBoolean highlighted = new AtomicBoolean(false);
 		questStepPanelList.forEach(panel -> {
-			boolean highlighted = false;
-			panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
-				(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
-			for (QuestStep step : panel.getSteps())
-			{
-				if (step == newStep || step.getSubsteps().contains(newStep))
-				{
-					highlighted = true;
+			highlighted.set(false);
+			boolean hasLockingSteps = panel.getPanelDetails().getLockingQuestSteps() != null;
+			boolean containsQuestVars = panel.getPanelDetails().getVars() == null || panel.getPanelDetails().getVars().contains(currentQuest.getVar());
+			panel.setLockable(hasLockingSteps && containsQuestVars);
+
+			panel.getSteps()
+				.stream()
+				.filter(p -> p == newStep || p.getSubsteps().contains(newStep))
+				.findFirst()
+				.ifPresent(step -> {
 					panel.updateHighlight(step);
-					break;
-				}
-			}
-			if (!highlighted)
+					highlighted.set(true);
+				});
+			if (!highlighted.get())
 			{
 				panel.removeHighlight();
 			}
@@ -492,10 +475,7 @@ public class QuestOverviewPanel extends JPanel
 	{
 		updateRequirementPanels(client, requirementPanels, bankItems);
 
-		for (QuestStepPanel questStepPanel : questStepPanelList)
-		{
-			questStepPanel.updateRequirements(client, bankItems, this);
-		}
+		questStepPanelList.forEach(panel -> panel.updateRequirements(client, bankItems, this));
 		revalidate();
 	}
 

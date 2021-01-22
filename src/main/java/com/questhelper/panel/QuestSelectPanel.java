@@ -24,12 +24,12 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.IconUtil;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,8 +40,10 @@ import javax.swing.JPanel;
 import lombok.Getter;
 import net.runelite.api.QuestState;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.ImageUtil;
 
+/**
+ * The panel that is displayed in order to select a quest to start.
+ */
 public class QuestSelectPanel extends JPanel
 {
 	@Getter
@@ -50,14 +52,8 @@ public class QuestSelectPanel extends JPanel
 	@Getter
 	private final QuestHelper questHelper;
 
-	private static final ImageIcon START_ICON;
+	private static final ImageIcon START_ICON = IconUtil.START.getIcon();
 
-	static
-	{
-		final BufferedImage startImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/start.png");
-
-		START_ICON = new ImageIcon(startImg);
-	}
 	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestHelperPanel questHelperPanel, QuestHelper questHelper, QuestState questState)
 	{
 		this.questHelper = questHelper;

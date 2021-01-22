@@ -38,6 +38,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -188,31 +189,37 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return quest.getVar(client);
 	}
 
+	@Nullable
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		return null;
 	}
 
+	@Nullable
 	public ArrayList<Requirement> getGeneralRequirements()
 	{
 		return null;
 	}
 
+	@Nullable
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		return null;
 	}
 
+	@Nullable
 	public ArrayList<Requirement> getGeneralRecommended()
 	{
 		return null;
 	}
 
+	@Nullable
 	public ArrayList<String> getCombatRequirements()
 	{
 		return null;
 	}
 
+	@Nullable
 	public ArrayList<String> getNotes()
 	{
 		return null;

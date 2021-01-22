@@ -33,7 +33,6 @@ public class BankTabItems
 {
 	@Getter
 	@Setter
-
 	private String name;
 
 	@Getter

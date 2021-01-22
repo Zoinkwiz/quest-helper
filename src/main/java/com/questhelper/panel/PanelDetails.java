@@ -35,16 +35,16 @@ public class PanelDetails {
 	String header;
 
 	@Getter
-	private ArrayList<QuestStep> steps;
+	private ArrayList<QuestStep> steps = new ArrayList<>();
 
 	@Getter
 	private QuestStep lockingQuestSteps;
 
 	@Getter
-	private ArrayList<ItemRequirement> itemRequirements;
+	private ArrayList<ItemRequirement> itemRequirements = new ArrayList<>();
 
 	@Getter
-	private ArrayList<Integer> vars;
+	private ArrayList<Integer> vars = new ArrayList<>();
 
 	public PanelDetails(String header) {
 		this.header = header;

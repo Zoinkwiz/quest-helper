@@ -24,38 +24,38 @@
  */
 package com.questhelper.panel;
 
+import com.google.errorprone.annotations.Var;
 import com.questhelper.BankItems;
+import com.questhelper.IconUtil;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.panel.components.DiscordButton;
+import com.questhelper.panel.components.SearchBar;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicButtonUI;
 import lombok.extern.slf4j.Slf4j;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
+/**
+ * The root panel on which everything sits.
+ */
 @Slf4j
 public class QuestHelperPanel extends PluginPanel
 {
@@ -67,14 +67,14 @@ public class QuestHelperPanel extends PluginPanel
 	private final JPanel allDropdownSections = new JPanel();
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
 
-	private final IconTextField searchBar = new IconTextField();
+	private final IconTextField searchBar;
 	private final FixedWidthPanel questListPanel = new FixedWidthPanel();
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
 	private final JScrollPane scrollableContainer;
 	private final int DROPDOWN_HEIGHT = 20;
 
 
-	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
+	private final List<QuestSelectPanel> questSelectPanels = new ArrayList<>();
 
 	QuestHelperPlugin questHelperPlugin;
 
@@ -82,9 +82,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage discordImage = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/discord.png");
-		final BufferedImage scaledImage = ImageUtil.resizeImage(discordImage, 16, 16);
-		DISCORD_ICON = new ImageIcon(scaledImage);
+		DISCORD_ICON = IconUtil.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)
@@ -106,25 +104,9 @@ public class QuestHelperPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 		titlePanel.add(title, BorderLayout.WEST);
 
-		JButton discordBtn = new JButton();
+		DiscordButton discordBtn = new DiscordButton(DISCORD_ICON);
+		// don't include this in constructor so everything is ready for it when it's called
 		SwingUtil.removeButtonDecorations(discordBtn);
-		discordBtn.setIcon(DISCORD_ICON);
-		discordBtn.setToolTipText("Get help with the Quest Helper or make suggestions on Discord");
-		discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		discordBtn.setUI(new BasicButtonUI());
-		discordBtn.addActionListener((ev) -> LinkBrowser.browse("https://discord.gg/XCfwNnz6RB"));
-		discordBtn.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			public void mouseEntered(java.awt.event.MouseEvent evt)
-			{
-				discordBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent evt)
-			{
-				discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-			}
-		});
 		titlePanel.add(discordBtn, BorderLayout.EAST);
 
 		JLabel questsCompletedLabel = new JLabel();
@@ -138,30 +120,7 @@ public class QuestHelperPanel extends PluginPanel
 		allQuestsCompletedPanel.setVisible(false);
 
 		/* Search bar */
-		searchBar.setIcon(IconTextField.Icon.SEARCH);
-		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
-		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		searchBar.getDocument().addDocumentListener(new DocumentListener()
-		{
-			@Override
-			public void insertUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-		});
+		searchBar = SearchBar.createSearchBar(IconTextField.Icon.SEARCH, s -> onSearchBarChanged());
 
 		JPanel searchQuestsPanel = new JPanel();
 		searchQuestsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -244,9 +203,18 @@ public class QuestHelperPanel extends PluginPanel
 		{
 			if (e.getStateChange() == ItemEvent.SELECTED)
 			{
-				Enum source = (Enum) e.getItem();
-				questHelperPlugin.getConfigManager().setConfiguration("questhelper", key,
-					source);
+				if (e.getItem() instanceof Enum)
+				{
+					Enum source = (Enum) e.getItem();
+					questHelperPlugin.getConfigManager().setConfiguration("questhelper", key,
+						source);
+				}
+				else
+				{
+					// shouldn't ever be thrown but who knows what happens in the future
+					throw new IllegalArgumentException("Unknown dropdown value. Found " + e.getItem().getClass().getCanonicalName());
+				}
+
 			}
 		});
 
@@ -346,7 +314,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateHighlight(QuestStep newStep)
 	{
 		questOverviewPanel.updateHighlight(newStep);
-
 		repaint();
 		revalidate();
 	}
@@ -354,7 +321,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateLocks()
 	{
 		questOverviewPanel.updateLocks();
-
 		repaint();
 		revalidate();
 	}

@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -87,7 +88,6 @@ import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -241,7 +241,7 @@ public class QuestHelperPlugin extends Plugin
 			overlayManager.add(questHelperDebugOverlay);
 		}
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/quest_icon.png");
+		final BufferedImage icon = IconUtil.QUEST_ICON.getImage();
 
 		panel = new QuestHelperPanel(this);
 		navButton = NavigationButton.builder()
@@ -634,7 +634,7 @@ public class QuestHelperPlugin extends Plugin
 
 	public void startUpQuest(QuestHelper questHelper)
 	{
-		if (!(client.getGameState() == GameState.LOGGED_IN))
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -778,5 +778,22 @@ public class QuestHelperPlugin extends Plugin
 
 		log.debug("Loaded quest helper {}", clazz.getSimpleName());
 		return questHelper;
+	}
+
+	/**
+	 * Get the var of a quest while off the client thread.
+	 * @param quest
+	 * @return
+	 */
+	public synchronized int getQuestVar(QuestHelperQuest quest)
+	{
+		AtomicInteger var = new AtomicInteger(Integer.MIN_VALUE);
+		if (selectedQuest != null)
+		{
+			clientThread.invoke(() -> {
+				var.set(quest.getVar(client));
+			});
+		}
+		return var.get();
 	}
 }

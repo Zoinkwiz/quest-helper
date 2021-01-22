@@ -37,6 +37,8 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.Operation;
+import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,17 +70,25 @@ public class ATasteOfHope extends BasicQuestHelper
 		unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes, flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB,
 		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food;
 
-	ConditionForStep inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6, inSerafinaHouse, hasHerb, hasMeat, hasPestle, hasVialOrVialOfWater,
-		hasVialOfWater, hasCrushedMeat, hasUnfinishedPotion, hasUnfinishedBloodPotion, hasBloodVial, hasBloodPotion, hasPotion, hasVial, hasOldNotes, hasSickle, hasEmeraldSickle,
-		hasEnchantedEmeraldSickle, hasChain, hasFlail, inNewBase, hasFlaygianNotes, inRanisFight;
+	ConditionForStep inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6,
+		inSerafinaHouse, hasHerb, hasMeat, hasPestle, hasVialOrVialOfWater, hasVialOfWater, hasCrushedMeat,
+		hasUnfinishedPotion, hasUnfinishedBloodPotion, hasBloodVial, hasBloodPotion, hasPotion, hasVial,
+		hasOldNotes, hasSickle, hasEmeraldSickle, hasEnchantedEmeraldSickle, hasChain, hasFlail, inNewBase,
+		hasFlaygianNotes, inRanisFight, wallPressed;
 
-	DetailedQuestStep talkToGarth, enterBase, talkToSafalaan, climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof,
-		climbSecondVent, climbUpToRoof, climbDownFromRoof, lookThroughWindow, returnToBase, talkToSafalaanAfterSpying, talkToFlaygian, talkToSafalaanAfterFlaygian,
-		goUpToSerafinaHouse, enterSerafinaHouse, talkToSafalaanInSerafinaHouse, searchForMeat, searchForHerb, searchForVial, searchForPestle, useHerbOnVial, usePestleOnMeat,
-		useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain, useMeatOnBlood, useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes,
-		enterBaseAfterSerafina, killAbomination, enterOldManRalBasement, talkToSafalaanInRalBasement, talkToVertidaInRalBasement, readFlaygianNotes, getSickle, getChain,
-		useEmeraldOnSickle, enchantSickle, addSickleToRod, talkToSafalaanAfterFlail, talkToKael, killRanis, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd,
-		talkToSafalaanForAbominationFight, talkToSafalaanAfterAbominationFight, enterRalWithFlail, talkToKaelSidebar, killRanisSidebar;
+	DetailedQuestStep talkToGarth, enterBase, talkToSafalaan, climbRubbleAtBank, talkToHarpert,
+		climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof, climbSecondVent, climbUpToRoof,
+		climbDownFromRoof, lookThroughWindow, returnToBase, talkToSafalaanAfterSpying,
+		pressDecoratedWallReturn, pressDecoratedWallAfterSerafina, talkToFlaygian,
+		talkToSafalaanAfterFlaygian, goUpToSerafinaHouse, enterSerafinaHouse, talkToSafalaanInSerafinaHouse,
+		searchForMeat, searchForHerb, searchForVial, searchForPestle, useHerbOnVial, usePestleOnMeat,
+		useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain,
+		useMeatOnBlood, useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes, enterBaseAfterSerafina,
+		killAbomination, enterOldManRalBasement, talkToSafalaanInRalBasement, talkToVertidaInRalBasement,
+		readFlaygianNotes, getSickle, getChain, useEmeraldOnSickle, enchantSickle, addSickleToRod,
+		talkToSafalaanAfterFlail, talkToKael, killRanis, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd,
+		talkToSafalaanForAbominationFight, talkToSafalaanAfterAbominationFight, enterRalWithFlail, talkToKaelSidebar,
+		killRanisSidebar, pressDecoratedWall;
 
 	Zone myrequeBase, theatreP1, theatreP2, theatreP3, theatreP4, theatreP5, theatreP6, serafinaHouse, newBase, ranisFight;
 
@@ -95,8 +105,9 @@ public class ATasteOfHope extends BasicQuestHelper
 		steps.put(5, talkToGarth);
 		steps.put(10, talkToGarth);
 
-		ConditionalStep goTalkToSafalaan = new ConditionalStep(this, enterBase);
+		ConditionalStep goTalkToSafalaan = new ConditionalStep(this, pressDecoratedWall);
 		goTalkToSafalaan.addStep(inMyrequeBase, talkToSafalaan);
+		goTalkToSafalaan.addStep(wallPressed, enterBase);
 		steps.put(15, goTalkToSafalaan);
 
 		steps.put(20, climbRubbleAtBank);
@@ -114,18 +125,21 @@ public class ATasteOfHope extends BasicQuestHelper
 
 		steps.put(40, spy);
 
-		ConditionalStep goReturnToSafalaan = new ConditionalStep(this, returnToBase);
+		ConditionalStep goReturnToSafalaan = new ConditionalStep(this, pressDecoratedWallReturn);
 		goReturnToSafalaan.addStep(inMyrequeBase, talkToSafalaanAfterSpying);
+		goReturnToSafalaan.addStep(wallPressed, returnToBase);
 		steps.put(45, goReturnToSafalaan);
 		steps.put(50, goReturnToSafalaan);
 
-		ConditionalStep goTalkToFlaygian = new ConditionalStep(this, returnToBase);
+		ConditionalStep goTalkToFlaygian = new ConditionalStep(this, pressDecoratedWallReturn);
 		goTalkToFlaygian.addStep(inMyrequeBase, talkToFlaygian);
+		goTalkToFlaygian.addStep(wallPressed, returnToBase);
 		steps.put(55, goTalkToFlaygian);
 		steps.put(60, goTalkToFlaygian);
 
-		ConditionalStep goTalkToSaflaanAfterFlaygian = new ConditionalStep(this, returnToBase);
+		ConditionalStep goTalkToSaflaanAfterFlaygian = new ConditionalStep(this, pressDecoratedWallReturn);
 		goTalkToSaflaanAfterFlaygian.addStep(inMyrequeBase, talkToSafalaanAfterFlaygian);
+		goTalkToSaflaanAfterFlaygian.addStep(wallPressed, returnToBase);
 		steps.put(65, goTalkToSaflaanAfterFlaygian);
 		steps.put(70, goTalkToSaflaanAfterFlaygian);
 
@@ -168,17 +182,20 @@ public class ATasteOfHope extends BasicQuestHelper
 		steps.put(85, goGetNotes);
 		steps.put(86, goGetNotes);
 
-		ConditionalStep goStartAbominationFight = new ConditionalStep(this, enterBaseAfterSerafina);
+		ConditionalStep goStartAbominationFight = new ConditionalStep(this, pressDecoratedWallAfterSerafina);
 		goStartAbominationFight.addStep(inMyrequeBase, talkToSafalaanForAbominationFight);
+		goStartAbominationFight.addStep(wallPressed, enterBaseAfterSerafina);
 		steps.put(90, goStartAbominationFight);
 
-		ConditionalStep goKillAbomination = new ConditionalStep(this, enterBaseAfterSerafina);
+		ConditionalStep goKillAbomination = new ConditionalStep(this, pressDecoratedWallAfterSerafina);
 		goKillAbomination.addStep(inMyrequeBase, killAbomination);
+		goKillAbomination.addStep(wallPressed, enterBaseAfterSerafina);
 		steps.put(95, goKillAbomination);
 		steps.put(100, goKillAbomination);
 
-		ConditionalStep goTalkToSafalaanAfterAbomination = new ConditionalStep(this, enterBaseAfterSerafina);
+		ConditionalStep goTalkToSafalaanAfterAbomination = new ConditionalStep(this, pressDecoratedWallAfterSerafina);
 		goTalkToSafalaanAfterAbomination.addStep(inMyrequeBase, talkToSafalaanAfterAbominationFight);
+		goTalkToSafalaanAfterAbomination.addStep(wallPressed, enterBaseAfterSerafina);
 		steps.put(105, goTalkToSafalaanAfterAbomination);
 
 		ConditionalStep goToNewBase = new ConditionalStep(this, enterOldManRalBasement);
@@ -343,6 +360,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		hasFlail = new ItemRequirementCondition(ivandisFlail);
 		hasFlaygianNotes = new ItemRequirementCondition(flaygianNotes);
 		inRanisFight = new ZoneCondition(ranisFight);
+
+		wallPressed = new VarbitCondition(2590, 1, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
@@ -393,8 +412,10 @@ public class ATasteOfHope extends BasicQuestHelper
 		talkToGarth = new NpcStep(this, NpcID.GARTH_8206, new WorldPoint(3668, 3217, 0), "Talk to Garth outside the Theatre of Blood.");
 		talkToGarth.addDialogStep("Yes.");
 
+		pressDecoratedWall = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
 		enterBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
 		enterBase.setLinePoints(pathToBase);
+		enterBase.addSubSteps(pressDecoratedWall);
 
 		talkToSafalaan = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan in the north room.");
 
@@ -409,8 +430,11 @@ public class ATasteOfHope extends BasicQuestHelper
 		climbDownFromRoof = new ObjectStep(this, ObjectID.ROOF_32555, new WorldPoint(3665, 3237, 3), "Climb down to the east.");
 		lookThroughWindow = new ObjectStep(this, ObjectID.WINDOW_32548, new WorldPoint(3687, 3221, 2), "Look through the window at the end of the path.");
 
+
+		pressDecoratedWallReturn = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0), "Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
 		returnToBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
 		returnToBase.setLinePoints(pathToBase);
+		returnToBase.addSubSteps(pressDecoratedWallReturn);
 
 		talkToSafalaanAfterSpying = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan in the north room.");
 		talkToSafalaanAfterSpying.addDialogStep("I do.");
@@ -451,8 +475,13 @@ public class ATasteOfHope extends BasicQuestHelper
 		((ObjectStep) (getOldNotes)).addAlternateObjects(ObjectID.CHEST_32573);
 		talkToSafalaanWithNotes = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan with the notes.", oldNotes);
 		talkToSafalaanWithNotes.addDialogStep("Here you go.");
+
+		pressDecoratedWallAfterSerafina = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0)
+			, "Prepare for a fight, then return to the Meiyerditch Myreque base.");
+
 		enterBaseAfterSerafina = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Prepare for a fight, then return to the Meiyerditch Myreque base.");
 		enterBaseAfterSerafina.setLinePoints(pathToBase);
+		enterBaseAfterSerafina.addSubSteps(pressDecoratedWallAfterSerafina);
 
 		talkToSafalaanForAbominationFight = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan, ready for a fight.");
 		killAbomination = new NpcStep(this, NpcID.ABOMINATION, new WorldPoint(3627, 9644, 0), "Kill the abomination. It can be safe spotted with a long-ranged weapon.");

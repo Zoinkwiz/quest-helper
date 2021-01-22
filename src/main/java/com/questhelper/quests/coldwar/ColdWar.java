@@ -73,10 +73,12 @@ public class ColdWar extends BasicQuestHelper
 
 		steps.put(10, learnPenguinEmotes);
 
+		ConditionalStep larryInAfterEmotes = new ConditionalStep(this, talkToLarryInRelleka);
+		larryInAfterEmotes.addStep(isOnIceberg, talkToLarryAfterEmotes);
+		steps.put(15, larryInAfterEmotes);
+
 		ConditionalStep larryInRelleka = new ConditionalStep(this, talkToLarryInRelleka);
 		larryInRelleka.addStep(isOnIceberg, returnToRelleka);
-		larryInRelleka.addStep(isOnIceberg,talkToLarryAfterEmotes);
-		steps.put(15, larryInRelleka);
 		steps.put(20, larryInRelleka);
 
 		ConditionalStep clockworkPenguin = new ConditionalStep(this, enterPoh);

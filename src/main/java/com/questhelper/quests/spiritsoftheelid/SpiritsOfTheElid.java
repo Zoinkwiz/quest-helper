@@ -81,9 +81,9 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupItemRequirements();
+		setupZones();
 		setupConditions();
 		setupSteps();
-		setupZones();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, speakToAwusah);
@@ -100,15 +100,15 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		steps.put(25, goUseKey);
 
 		ConditionalStep clearChannels = new ConditionalStep(this, enterCave);
-		clearChannels.addStep(crushChannel, openFarNorthDoor);
-		clearChannels.addStep(inBlackGolemRoom, clearChannel3);
-		clearChannels.addStep(blackGolem, openCrushDoorAfterGolem);
-		clearChannels.addStep(slashChannel, openCrushDoor);
-		clearChannels.addStep(inGreyGolemRoom, clearChannel2);
-		clearChannels.addStep(greyGolem, openSlashDoorAfterGolem);
-		clearChannels.addStep(stabChannel, openSlashDoor);
-		clearChannels.addStep(inWhiteGolemRoom, clearChannel);
-		clearChannels.addStep(whiteGolem, openStabDoorAfterGolem);
+		clearChannels.addStep(new Conditions(inSourceCave, crushChannel), openFarNorthDoor);
+		clearChannels.addStep(new Conditions(inSourceCave, inBlackGolemRoom), clearChannel3);
+		clearChannels.addStep(new Conditions(inSourceCave, blackGolem), openCrushDoorAfterGolem);
+		clearChannels.addStep(new Conditions(inSourceCave, slashChannel), openCrushDoor);
+		clearChannels.addStep(new Conditions(inSourceCave, inGreyGolemRoom), clearChannel2);
+		clearChannels.addStep(new Conditions(inSourceCave, greyGolem), openSlashDoorAfterGolem);
+		clearChannels.addStep(new Conditions(inSourceCave, stabChannel), openSlashDoor);
+		clearChannels.addStep(new Conditions(inSourceCave, inWhiteGolemRoom), clearChannel);
+		clearChannels.addStep(new Conditions(inSourceCave, whiteGolem), openStabDoorAfterGolem);
 		clearChannels.addStep(inSourceCave, openStabDoor);
 		steps.put(27, clearChannels);
 
@@ -138,8 +138,11 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		needle.setHighlightInInventory(true);
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 2);
 		crushWep = new ItemRequirement("Crush Weapon Style", -1, 1);
+		crushWep.setDisplayItemId(ItemID.RUNE_MACE);
 		stabWep = new ItemRequirement("Stab Weapon Style", -1, 1);
+		stabWep.setDisplayItemId(ItemID.RUNE_SWORD);
 		slashWep = new ItemRequirement("Slash Weapon Style", -1, 1);
+		slashWep.setDisplayItemId(ItemID.RUNE_SCIMITAR);
 		lightSource = new ItemRequirement("Lightsource", ItemCollections.getLightSources(), 1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
 		knife.setHighlightInInventory(true);
@@ -179,6 +182,17 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.getNecklaceOfPassages(), 1);
+	}
+
+	public void setupZones()
+	{
+		sourceCave = new Zone(new WorldPoint(3336, 9532, 0), new WorldPoint(3384, 9600, 0));
+		riverElidCaveEntrance = new Zone(new WorldPoint(3343, 9532, 0), new WorldPoint(3356, 9544, 0));
+		whiteGolemRoom = new Zone(new WorldPoint(3360, 9535, 0), new WorldPoint(3369, 9542, 0));
+		greyGolemRoom = new Zone(new WorldPoint(3374, 9543, 0), new WorldPoint(3381, 9550, 0));
+		blackGolemRoom = new Zone(new WorldPoint(3372, 9553, 0), new WorldPoint(3380, 9561, 0));
+		outsideAwusahHouse = new Zone(new WorldPoint(3435, 2885, 0), new WorldPoint(3387, 2949, 0));
+		creviceOutsideNardah = new Zone(new WorldPoint(3362, 9298, 0), new WorldPoint(3380, 9329, 0));
 	}
 
 	public void setupConditions()
@@ -273,17 +287,6 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		talkToGenieAgain = new NpcStep(this, NpcID.GENIE_4738, new WorldPoint(3371, 9320, 0), "Talk to the Genie again with the sole.", soles);
 		useStatuette = new ObjectStep(this, NullObjectID.NULL_10389, new WorldPoint(3427, 2930, 0), "Return to Nardah and use the statuette on the statuette plinth in the northern house.", statuette);
 		useStatuette.addIcon(ItemID.STATUETTE_6785);
-	}
-
-	public void setupZones()
-	{
-		sourceCave = new Zone(new WorldPoint(3336, 9532, 0), new WorldPoint(3384, 9600, 0));
-		riverElidCaveEntrance = new Zone(new WorldPoint(3343, 9532, 0), new WorldPoint(3356, 9544, 0));
-		whiteGolemRoom = new Zone(new WorldPoint(3360, 9535, 0), new WorldPoint(3369, 9542, 0));
-		greyGolemRoom = new Zone(new WorldPoint(3374, 9543, 0), new WorldPoint(3381, 9550, 0));
-		blackGolemRoom = new Zone(new WorldPoint(3372, 9553, 0), new WorldPoint(3380, 9561, 0));
-		outsideAwusahHouse = new Zone(new WorldPoint(3435, 2885, 0), new WorldPoint(3387, 2949, 0));
-		creviceOutsideNardah = new Zone(new WorldPoint(3362, 9298, 0), new WorldPoint(3380, 9329, 0));
 	}
 
 	@Override

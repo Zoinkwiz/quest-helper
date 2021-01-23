@@ -61,6 +61,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class Contact extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement lightSource, combatGear, parchment, keris, food, prayerPotions;
 
 	ConditionForStep inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
@@ -68,6 +69,7 @@ public class Contact extends BasicQuestHelper
 	QuestStep talkToHighPriest, talkToJex, goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman, talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain,
 		killGiantScarab, pickUpKeris, returnToHighPriest;
 
+	//Zones
 	Zone bank, dungeon, chasm;
 
 	@Override
@@ -129,7 +131,7 @@ public class Contact extends BasicQuestHelper
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 	}

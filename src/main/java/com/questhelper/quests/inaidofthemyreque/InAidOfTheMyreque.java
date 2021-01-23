@@ -68,15 +68,17 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class InAidOfTheMyreque extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement food, spade, bucketTo5, pickaxe, hammer, planks11, nails44, swampPaste, rawMackerelOrSnail10, bronzeAxes10, tinderboxes4, steelBars2,
 		coal, softClay, rope, silverBar, mithrilBar, sapphire, cosmicRune, waterRune, efaritaysAidOrSilverWeapon, bucketOrSemiFilledBucket, tinderbox,
 		steelBars2Highlighted, coalHiglighted, tinderboxHighlighted, planks3, planks2, planks6, nails12, nails8, crate, tinderbox3, snails10, mackerel10,
 		nails24, planks5, nails20, templeLibraryKey, sleepingSeven, hammerHighlighted, mould, silvRod, softClayHighlighted, enchantedRod, rodOfIvandis,
 		enchantedRodHighlighted;
 
-	Requirement normalSpellbook;
-
+	//Items Recommended
 	ItemRequirement steelmedChainLegsSickle, morttonTeleport, canifisTeleport;
+
+	Requirement normalSpellbook;
 
 	ConditionForStep onEntranceIsland, inCaves, inMyrequeCave, inBoatArea, inNewBase, onRoof, filledCrate, addedCoal, litFurnace, talkedToGadderanks, talkedToJuvinates,
 		talkedToWiskit, inGadderanksFight, defeatedGadderanks, veliafReturnedToBase, inTempleTrekArea, inTempleTrekArea2, inTemple, libraryOpen, hasBook, inTempleLibrary,
@@ -101,6 +103,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 	ConditionalStep startQuest, travelToBurgh, returnToHideout, goTalkToPolmafi, travelWithIvan, goIntoCavesAgain, goBlessRod, finishQuest;
 
+	//Zones
 	Zone entranceIsland, caves, myrequeCave, boatArea, newBase, roof, gadderanksFightArea, templeTrekArea, templeTrekArea2, temple, templeLibrary, coffinRoom;
 
 	@Override

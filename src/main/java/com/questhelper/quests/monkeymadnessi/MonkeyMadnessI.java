@@ -64,9 +64,13 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class MonkeyMadnessI extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement monkeyBonesOrCorpse, ballOfWool, goldBar, royalSeal, narnodesOrders, monkeyDentures, mould, monkeyDenturesHighlight, mouldHighlight, barHighlight, enchantedBar,
 		enchantedBarHighlight, ballOfWoolHighlight, unstrungAmuletHighlight, amulet, banana5, amuletWorn, talisman, talismanHighlight, karamjanGreegree, monkeyBonesOrCorpseHighlight,
-		monkey, karamjanGreegreeEquipped, sigilEquipped, combatGear, antipoison;
+		monkey, karamjanGreegreeEquipped, sigilEquipped;
+
+	//Items Recommendded
+	ItemRequirement combatGear, antipoison;
 
 	ConditionForStep inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,
 		talkedToDaeroAfterPuzzle, onCrashIsland, talkedToLumdo, talkedToWaydar, onApeAtollSouth, inPrison, onApeAtollNorth, talkedToGarkor, inDentureBuilding,
@@ -91,6 +95,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 	ObjectStep enterTemple;
 
+	//Zones
 	Zone stronghold, floor1, floor2, floor3, karamja, hangar, hangar2, crashIsland, apeAtollSouth1, apeAtollSouth2, apeAtollSouth3, prison, apeAtollNorth1,
 		apeAtollNorth2, apeAtollNorth3, apeAtollNorth4, apeAtollNorthBridge, apeAtollOverBridge, dentureBuilding, mouldRoom, zooknockDungeon, templeDungeon,
 		monkeyPen1, monkeyPen2, monkeyPen3, throne1, throne2, throne3, throne4, jungleDemonRoom;

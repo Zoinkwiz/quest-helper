@@ -62,9 +62,11 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class MountainDaughter extends BasicQuestHelper
 {
-	private Zone CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3, LAKE_ISLAND_1, LAKE_ISLAND_2, LAKE_ISLAND_3, KENDAL_CAVE;
+	//Items Required
+	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope;
 
-	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope, slayerRing, combatGear;
+	//Items Recommended
+	private ItemRequirement slayerRing, combatGear;
 
 	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock, hasCorpse,
 		gottenGuarantee, givenGuaranteeToSvidi, gottenFruit, gottenSeed, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, fightableKendalNearby, hasRocks,
@@ -74,6 +76,9 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToJokul, talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi, getFruit, eatFruit, returnToSpirit, returnToHamalAboutFood,
 		returnToHamalAboutDiplomacy, talkToKendal, killKendal, noPlankRocksReturn, enterCave, grabCorpse, bringCorpseToHamal, collectRocks, createCairn,
 		buryCorpseOnIsland, speakRagnar;
+
+	//Zones
+	private Zone CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3, LAKE_ISLAND_1, LAKE_ISLAND_2, LAKE_ISLAND_3, KENDAL_CAVE;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

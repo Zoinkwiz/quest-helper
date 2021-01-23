@@ -57,12 +57,17 @@ import com.questhelper.steps.QuestStep;
 )
 public class TribalTotem extends BasicQuestHelper
 {
-    ItemRequirement coins, amuletOfGlory, ardougneTeleports, addressLabel, totem;
+    //Items Required
+    ItemRequirement addressLabel, totem;
+
+    //Items Recommended
+    ItemRequirement coins, amuletOfGlory, ardougneTeleports;
 
     QuestStep talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, leaveHouse, talkToKangaiMauAgain;
 
     ConditionForStep hasLabel, inEntrance, inMiddleRoom, openedLockWidget, inStairway, investigatedStairs, isUpstairs, chestOpened, hasTotem;
 
+    //Zones
     Zone houseGroundFloorEntrance, houseGroundFloorMiddleRoom, houseGroundFloor, houseFirstFloor;
 
     @Override

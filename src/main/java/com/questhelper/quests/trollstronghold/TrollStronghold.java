@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.trollstronghold;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
@@ -66,7 +67,11 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TrollStronghold extends BasicQuestHelper
 {
-	ItemRequirement climbingBoots, climbingBootsOr12Coins, climbingBootsEquipped, foodAndPotions, gamesNecklace, coins12, prisonKey, cellKey1, cellKey2, mageRangedGear;
+	//Items Required
+	ItemRequirement climbingBoots, climbingBootsOr12Coins, climbingBootsEquipped, coins12, prisonKey, cellKey1, cellKey2, mageRangedGear;
+
+	//Items Recommended
+	ItemRequirement gamesNecklace, foodAndPotions;
 
 	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inArena, inNorthArena,
 		beatenDad, inArenaCave, inTrollheimArea, hasPrisonKey, prisonKeyNearby, prisonDoorUnlocked, inPrisonStairsRoom, inPrison, hasCellKey1, hasCellKey2,
@@ -76,6 +81,7 @@ public class TrollStronghold extends BasicQuestHelper
 		leaveArena, enterArenaCavern, leaveArenaCavern, enterStronghold, killGeneral, pickupPrisonKey, goDownInStronghold, goThroughPrisonDoor,
 		goUpTo2ndFloor, goDownToPrison, getTwigKey, getBerryKey, freeEadgar, freeGodric, goToDunstan;
 
+	//Zones
 	Zone strongholdFloor1, strongholdFloor2, tenzingHut, mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5, trollArea1, arena, northArena,
 		arenaCave, trollheimArea, prisonStairsRoom, prison;
 
@@ -125,7 +131,7 @@ public class TrollStronghold extends BasicQuestHelper
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
 		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", ItemID.CLIMBING_BOOTS);
-		gamesNecklace = new ItemRequirement("Games necklace", ItemID.GAMES_NECKLACE8);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
 		mageRangedGear = new ItemRequirement("Mage or ranged gear for safe spotting", -1, -1);
 		mageRangedGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());

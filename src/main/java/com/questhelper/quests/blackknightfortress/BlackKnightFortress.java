@@ -33,7 +33,11 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class BlackKnightFortress extends BasicQuestHelper
 {
-	ItemRequirement ironChainbody, cabbage, bronzeMed, teleportFalador, armour, food;
+	//Items Required
+	ItemRequirement ironChainbody, cabbage, bronzeMed;
+
+	//Items Recommended
+	ItemRequirement teleportFalador, armour, food;
 
 	ConditionForStep onTopOfFortress, inBasement, inSecretRoomGroundFloor, inSecretRoomFirstFloor, inSecretRoomSecondFloor, inCentralAreaFloor1, inMainEntrance, inWestRoomFloor1,
 		inEastRoomFloor0, inEastRoomFloor1, inEastRoomFloor2, inListeningRoom, inCabbageHoleRoom, inPathToCabbageRoom, inEastTurret;

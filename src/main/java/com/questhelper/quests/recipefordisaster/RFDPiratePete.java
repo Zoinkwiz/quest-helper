@@ -82,6 +82,7 @@ public class RFDPiratePete extends BasicQuestHelper
 
 	AskAboutFishCake talkToCook;
 
+	//Zones
 	Zone diningRoom, underwater;
 
 	ArrayList<Requirement> generalReqs;

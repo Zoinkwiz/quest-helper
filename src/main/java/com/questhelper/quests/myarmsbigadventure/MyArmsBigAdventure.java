@@ -67,9 +67,13 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class MyArmsBigAdventure extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement goutLump, bucket, bucketHighlight, farmingManual, ugthanki3, rake, dibber, spade, hardyGout, superCompost,
-		combatGear, rakeHighlight, dibberHighlight, hardyGoutHighlight, superCompostHighlight, spadeHighlight, plantCureHighlight,
-		supercompost7, cureOrCompost, rakeHead, rakeHandle, climbingBoots, superCompost8, food, prayerPotions;
+		rakeHighlight, dibberHighlight, hardyGoutHighlight, superCompostHighlight, spadeHighlight, plantCureHighlight,
+		supercompost7, cureOrCompost, rakeHead, rakeHandle, climbingBoots, superCompost8;
+
+	//Items Recommended
+	ItemRequirement food, prayerPotions, combatGear;
 
 	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inPrison, hasLump, onRoof, added3Dung, added7Comp, usedRake, givenCompost, givenHardy, givenDibber,
 		givenCure, hasRakeHeadAndHandle, rakeHeadNearby, babyNearby, giantNearby;
@@ -81,6 +85,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		talkToMyArmAfterGrow, killBabyRoc, killGiantRoc, giveSpade, goDownFromMyArmToBurntmeat, goDownToBurntmeat, talkToBurntmeatAgain, goUpToMyArmFinish, talkToMyArmAfterHarvest,
 		goUpFromBurntmeatFinish, talkToMyArmFinish, enterStrongholdFinish;
 
+	//Zones
 	Zone strongholdFloor1, strongholdFloor2, prison, roof;
 
 	@Override

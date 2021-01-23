@@ -47,12 +47,17 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 )
 public class PiratesTreasure extends BasicQuestHelper
 {
-	private ItemRequirement sixtyCoins, spade;
+	//ItemRequirements
+	ItemRequirement sixtyCoins, spade;
 
 	private NpcStep speakToRedbeard;
+
 	private RumSmugglingStep smuggleRum;
+
 	private QuestStep readPirateMessage;
+
 	private ObjectStep openChest;
+
 	private QuestStep digUpTreasure;
 
 	@Override

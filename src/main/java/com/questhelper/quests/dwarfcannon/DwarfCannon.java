@@ -18,10 +18,17 @@ import net.runelite.api.coords.WorldPoint;
 
 public class DwarfCannon extends BasicQuestHelper
 {
+	//Items Recommended
+	ItemRequirement staminas, teleToAsg, teleToKand;
 
-	ItemRequirement staminas, teleToAsg, teleToKand, hammer, railing, dwarfRemains, toolkit, cannonballMould, nulodionsNotes;
+	//Items Required
+	ItemRequirement hammer, railing, dwarfRemains, toolkit, cannonballMould, nulodionsNotes;
+
 	ConditionForStep upTower1, upTower2, inCave, bar1, bar2, bar3, bar4, bar5, bar6, hasRailings, hasHammer, hasRemains, nearLawgof, hasToolkit, springFixed, safetyFixed, cannonFixed, hasCannonballMould, hasNulodionsNotes;
+
 	QuestStep talkToCaptainLawgof, talkToCaptainLawgof2, gotoTower, goToTower2, talkToCaptainLawgof3, gotoCave, inspectRailings1, inspectRailings2, inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6, getRemainsStep, downTower, downTower2, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5, talkToNulodion, talkToCaptainLawgof6;
+
+	//Zones
 	Zone cave, tower1, tower2, lawgofArea;
 
 	@Override

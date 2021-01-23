@@ -52,12 +52,14 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class RomeoAndJuliet extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement cadavaBerry, letter, potion;
 
 	ConditionForStep inJulietRoom, hasPotion;
 
 	QuestStep talkToRomeo, goUpToJuliet, talkToJuliet, giveLetterToRomeo, talkToLawrence, talkToApothecary, goUpToJuliet2, givePotionToJuliet, finishQuest;
 
+	//Zones
 	Zone julietRoom;
 
 	@Override

@@ -58,6 +58,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class SeaSlug extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement swampPaste, glass, dampSticks, torch, litTorch, drySticks;
 
 	ConditionForStep onPlatformGroundFloor, onPlatformFirstFloor, onPlatform, onIsland, hasGlass, hasDampSticks, hasTorch, hasLitTorch, hasDrySticks;
@@ -67,6 +68,7 @@ public class SeaSlug extends BasicQuestHelper
 		rubSticks, goBackUpLadder, talkToKennithAgain, kickWall, talkToKennithAfterKicking, activateCrane, goDownLadderAgain,
 		returnWithHolgart, finishQuest, travelWithHolgartFreeingKennith;
 
+	//Zones
 	Zone platformFirstFloor, platformGroundFloor, island;
 
 	@Override

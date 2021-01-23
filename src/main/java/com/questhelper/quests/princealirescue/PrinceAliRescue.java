@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.princealirescue;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.steps.ConditionalStep;
@@ -57,8 +58,12 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class PrinceAliRescue extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement softClay, ballsOfWool3, yellowDye, redberries, ashes, bucketOfWater, potOfFlour, bronzeBar, pinkSkirt, beers3, rope, coins100, wig, dyedWig, paste, keyMould, key,
-		ropeReqs, yellowDyeReqs, glory, ropeHighlighted;
+		ropeReqs, yellowDyeReqs, ropeHighlighted;
+
+	//Items Recommended
+	ItemRequirement glory;
 
 	ConditionForStep hasWig, hasDyedWig, hasKey, hasPaste, hasOrGivenKeyMould, inCell, givenKeyMould;
 
@@ -66,6 +71,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 
 	ConditionalStep makeDyedWig, makePaste, makeKeyMould, getKey;
 
+	//Zones
 	Zone cell;
 
 	@Override
@@ -153,7 +159,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		key = new ItemRequirement("Bronze key", ItemID.BRONZE_KEY);
 		key.setTip("You can get another from Leela for 15 coins");
 		yellowDyeReqs = new ItemRequirement("Yellow dye, or 2 onions + 5 coins to obtain during quest", ItemID.YELLOW_DYE);
-		glory = new ItemRequirement("Amulet of Glory for Al Kharid and Draynor Village teleports", ItemID.AMULET_OF_GLORY6);
+		glory = new ItemRequirement("Amulet of Glory for Al Kharid and Draynor Village teleports", ItemCollections.getAmuletOfGlories());
 	}
 
 	public void setupConditions()

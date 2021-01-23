@@ -54,12 +54,12 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 )
 public class SpiritsOfTheElid extends BasicQuestHelper
 {
-	//Items Requirements
+	//Items Required
 	ItemRequirement airRune, lawRune, needle, thread, crushWep, stabWep, slashWep, lightSource, knife, rope,
 		pickaxe, bow, arrows, tornRobeTop, tornRobeBottom, robeOfElidinisTop, robeOfElidinisBottom,
 		ancestralKey, shoes, soles, statuette, robeOfElidinisTopEquipped, robeOfElidinisBottomEquipped;
 
-	//Items recommended
+	//Items Recommended
 	ItemRequirement combatGear, waterskins, shantaypass, coins, spear, food, necklaceOfPassage;
 
 	//Quest Steps -- Broken down for part

@@ -64,6 +64,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class BigChompyBirdHunting extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement axe, feathers, knife, hammer, chisel, wolfBones4, acheyLogs, chompy, bloatedToad, knifeHighlighted, feathersHighlighted,
 		shaftsHighlighted, wolfBonesHighlighted, tipsHighlighted, flightedArrowsHighlighted, emptyBellow, fullBellow, ogreArrows6Highlighted,
 		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted, seasonedChompy;
@@ -77,6 +78,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		talkToRantzForBow, placeAnotherToad, killChompy, pluckCarcass, talkToRantzWithChompy, enterCaveAgain, talkToFycie, talkToBugs,
 		leaveCaveAgain, getPotato, getOnion, getTomato, getEqua, getDoogle, getCabbage, getIngredients, cookChompy, giveRantzSeasonedChompy;
 
+	//Zones
 	Zone cave;
 
 	@Override

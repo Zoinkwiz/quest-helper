@@ -55,12 +55,19 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class FightArena extends BasicQuestHelper
 {
-	ItemRequirement coins, khazardHelmet, khazardPlatebody, khazardHelmetEquipped, khazardPlatebodyEquipped, khaliBrew,
-		cellKeys, combatGear;
-	Zone arena1;
+	//Items Required
+	ItemRequirement coins, khazardHelmet, khazardPlatebody, khazardHelmetEquipped, khazardPlatebodyEquipped, khaliBrew, cellKeys;
+
+	//Items Recommended
+	ItemRequirement combatGear;
+
 	ConditionForStep hasKhazardArmour, hasKhaliBrew, hasCellKeys, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
+
 	QuestStep startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew, getCellKeys, openCell, talkToSammy, killOgre,
 		talkToKhazard, talkToHengrad, talkToSammyForScorpion, killScorpion, talkToSammyForBouncer, killBouncer, leaveArena, endQuest;
+
+	//Zones
+	Zone arena1;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

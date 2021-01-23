@@ -61,8 +61,11 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class MakingHistory extends BasicQuestHelper
 {
-	ItemRequirement spade, saphAmulet, ghostSpeakAmulet, ardougneTeleport, ectophial, ringOfDueling, enchantedKey, chest, journal, scroll, letter,
-		passage, enchantedKeyHighlighted;
+	//Items Required
+	ItemRequirement spade, saphAmulet, ghostSpeakAmulet, enchantedKey, chest, journal, scroll, letter, enchantedKeyHighlighted;
+
+	//Items Recommended
+	ItemRequirement ardougneTeleport, ectophial, ringOfDueling, passage;
 
 	ConditionForStep hasEnchantedKey, hasChest, hasJournal, hasScroll, talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak,
 		inCastle, gotKey, gotChest, gotScroll, handedInJournal, handedInScroll, finishedFrem, finishedKey, finishedGhost, handedInEverything;
@@ -72,6 +75,7 @@ public class MakingHistory extends BasicQuestHelper
 
 	ConditionalStep dronSteps, ghostSteps, keySteps;
 
+	//Zones
 	Zone castle;
 
 	@Override

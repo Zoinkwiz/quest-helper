@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.rovingelves;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
@@ -63,13 +64,20 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class RovingElves extends BasicQuestHelper
 {
-	ItemRequirement glarialsPebble, pebbleHint, keyHint, key, spade, rope, prayerPotions, food, seed, blessedSeed, highlightRope, blessedSeedHighlight;
+	//Items Required
+	ItemRequirement glarialsPebble, pebbleHint, keyHint, key, spade, rope, seed, blessedSeed, highlightRope, blessedSeedHighlight;
+
+	//Items Recommended
+	//I don't know amounts of teleports, hopefully someone can fix that later
+	ItemRequirement prayerPotions, food, ardougneTeleports, camelotTeleports, iowerthCampTeleports, skillsNecklace;
+
 
 	ConditionForStep inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, hasSeed, hadBlessedSeed, hasKey, inThroneRoom;
 
 	QuestStep talkToIslwyn, talkToEluned, enterGlarialsTombstone, killGuardian, pickUpSeed, returnSeedToEluned, boardRaft, useRopeOnRock, useRopeOnTree, enterFalls,
 		searchFallsCrate, useKeyOnFallsDoor, plantSeed, returnToIslwyn;
 
+	//Zones
 	Zone glarialTomb, deadTreeIsland, ledge, hudonIsland, falls, throneRoom;
 
 	@Override
@@ -129,7 +137,11 @@ public class RovingElves extends BasicQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		highlightRope = new ItemRequirement("Rope", ItemID.ROPE);
 		highlightRope.setHighlightInInventory(true);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemID.PRAYER_POTION4);
+		prayerPotions = new ItemRequirement("A few prayer potions", ItemID.PRAYER_POTION4);
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces(), 1);
+		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT, -1);
+		camelotTeleports = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, -1);
+		iowerthCampTeleports = new ItemRequirement("Iowerth camp teleports", ItemID.IORWERTH_CAMP_TELEPORT, -1);
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
@@ -200,7 +212,7 @@ public class RovingElves extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(prayerPotions, food));
+		return new ArrayList<>(Arrays.asList(prayerPotions, food, skillsNecklace, ardougneTeleports, camelotTeleports, iowerthCampTeleports));
 	}
 
 	@Override

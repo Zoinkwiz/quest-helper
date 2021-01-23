@@ -64,6 +64,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class EnakhrasLament extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement pickaxe, chiselHighlighted, sandstone32, sandstone20, base, body, head, granite2, granite, leftArm, rightArm, leftLeg,
 		rightLeg, kSigil, rSigil, mSigil, zSigil, softClay, camelMould, camelHead, breadOrCake, fireSpellRunes, airSpellRunes,
 		mapleLog, log, oakLog, willowLog, coal, candle, air2, chaos, earth2, sandstone5, tinderbox, crumbleUndeadRunes, sandstone52,
@@ -86,6 +87,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		castFireSpell, useMapleLog, useOakLog, useLog, useWillowLog, useCoal, useCandle, passBarrier, goUpFromPuzzleRoom, castCrumbleUndead,
 		goDownToFinalRoom, protectThenTalk, repairWall, useChiselOnWall, talkToAkthankos;
 
+	//Zones
 	Zone templeEntranceRoom, templeGroundFloor, centreRoom, puzzleFloor, northPuzzleRoom, topRoom, lastRoom;
 
 	@Override

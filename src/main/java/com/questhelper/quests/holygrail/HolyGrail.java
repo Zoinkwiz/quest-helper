@@ -65,8 +65,11 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class HolyGrail extends BasicQuestHelper
 {
-	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, threeCamelotTele, ardyTele, faladorTele, sixtyCoins,
-		antipoison, combatGear, food, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
+	//Items Recommended
+	ItemRequirement antipoison, combatGear, food, threeCamelotTele, ardyTele, faladorTele, sixtyCoins;
+
+	//Items Required
+	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
 
 	ConditionForStep inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inGalahadHouse, hasNapkin, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
 		inDraynorManorTopFloor, inMagicWhistleRoom, hasTwoWhistles, inTeleportLocation, hasExcalibur, inFisherKingRealmEntrance, titanNearby, inFisherKingRealmAfterTitan, talkedToFisherman,
@@ -79,6 +82,7 @@ public class HolyGrail extends BasicQuestHelper
 
 	ConditionalStep findFisherKing;
 
+	//Zones
 	Zone camelotGround, camelotUpstairsZone1, camelotUpstairsZone2, merlinRoom, entranaBoat, entranaIsland, galahadHouse, draynorManorFront, draynorManorBottomFloor, draynorManorSecondFloor,
 		draynorManorTopFloor, magicWhistleRoom, teleportLocation, fisherKingRealmEntrance, fisherKingRealmAfterTitan1, fisherKingRealmAfterTitan2, fisherKingRealmAfterTitan3, grailBellRingLocation,
 		fisherKingRealmCastle1BottomFloor, fisherKingRealmCastle1SecondFloor, fisherKingRealm, fisherKingRealmCastle2BottomFloor, fisherKingRealmCastle2SecondFloor, fisherKingRealmCastle2ThirdFloor;

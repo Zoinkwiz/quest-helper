@@ -55,6 +55,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class APorcineOfInterest extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement rope, slashItem, reinforcedGoggles, combatGear, hoof;
 
 	ConditionForStep inCave, hasFoot;
@@ -62,6 +63,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	DetailedQuestStep readNotice, talkToSarah, useRopeOnHole, enterHole, investigateSkeleton, talkToSpria, enterHoleAgain, killSourhog,
 		enterHoleForFoot, cutOffFoot, returnToSarah, returnToSpria;
 
+	//Zones
 	Zone cave;
 
 	@Override

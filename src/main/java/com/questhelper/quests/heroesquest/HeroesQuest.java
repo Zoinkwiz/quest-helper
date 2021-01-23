@@ -69,9 +69,13 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class HeroesQuest extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement iceGloves, equippedIceGloves, fishingRod, fishingBait, dustyKey, dustyKeyHint, harralanderUnf, pickaxe, blamishSlime, blamishOil,
 		oilRod, jailKey, rawLavaEel, lavaEel, thievesArmband, rangedMage, miscKey, blackFullHelm, blackPlatebody, blackPlatelegs, idPapers, candlestick,
-		gripsKey, fireFeather, combatGear, antifireShield, varrockTeleport;
+		gripsKey, fireFeather;
+
+	//Items Recommended
+	ItemRequirement combatGear, antifireShield, varrockTeleport;
 
 	ConditionForStep inTaverleyDungeon, hasOil, hasSlime, hasDustyKey, has70Agility, inDeepTaverleyDungeon, hasOilRod, hasRawLavaEel, hasLavaEel, hasThievesArmband,
 		talkedToKatrine, talkedToStraven, hasJailKey, inJailCell, inBlackArmGang, inPhoenixBase, talkedToAlfonse, hasMiscKey, blackArmGangDoorUnlocked, gottenPapers,
@@ -87,6 +91,7 @@ public class HeroesQuest extends BasicQuestHelper
 
 	ConditionalStep getThievesArmband, getIceGloves, getLavaEel, getFireFeather;
 
+	//Zones
 	Zone taverleyDungeon, deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4, jailCell, phoenixBase, phoenixEntry,
 		garden1, garden2, secretRoom, treasureRoom, iceEntrance, iceRoom1P1, iceRoom1P2, iceRoom1P3, iceRoom2P1, iceRoom2P2, iceRoom2P3, iceRoom2P4,
 		iceUp1P1, iceUp1P2, iceUp1P3, iceUp1P4, iceUp2, iceThrone1, iceThrone2, iceThrone3, entrana;

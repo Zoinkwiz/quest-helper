@@ -68,8 +68,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class MakingFriendsWithMyArm extends BasicQuestHelper
 {
-	ItemRequirement saw, boltOfCloth, mahogPlanks5, cadavaBerries, combatRangeMelee, trollTele, draynorTele, varrockTele, pickaxe, rope, ropeHighlight, hammer,
+	//Items Required
+	ItemRequirement saw, boltOfCloth, mahogPlanks5, cadavaBerries, combatRangeMelee, pickaxe, rope, ropeHighlight, hammer,
 		potion, coffin, bucketHighlight, bucketOfWaterHighlight, fireNotes, goatDung;
+
+	//Items Recommended
+	ItemRequirement trollTele, draynorTele, varrockTele;
 
 	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, inWeissArrivalArea, hasPickaxe, hasRope, onCliff1, onCliff2, onCliff3,
 		onCliff4, onCliff5, isOutsideWeiss, inWeiss, inInstance, inSneakArea1, inSneakArea2, inSneakArea3, inSneakArea4, inSneakArea5, inCave1, inCave2,
@@ -88,6 +92,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 	NpcStep killMother;
 
+	//Zones
 	Zone strongholdFloor1, strongholdFloor2, prison, roof, weissArrivalArea, cliff1, cliff2, cliff3, cliff4, cliff5, outsideWeiss1, outsideWeiss2, outsideWeiss3,
 		outsideWeiss4, outsideWeiss5, weiss, sneakArea1, sneakArea2, sneakArea3, sneakArea4, sneakArea5, cave1, cave2, cave3, cave4, water1, water2, water3, water4,
 		weissPrison;

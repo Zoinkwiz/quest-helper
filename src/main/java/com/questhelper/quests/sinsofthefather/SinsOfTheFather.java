@@ -70,6 +70,15 @@ import java.util.HashMap;
 )
 public class SinsOfTheFather extends BasicQuestHelper
 {
+	//Items Required
+	ItemRequirement haemBook, unscentedTop, unscentedLegs, unscentedShoes, vyreTop, vyreLegs, vyreShoes, ivandisFlailEquipped, blisterwoodFlail, scentedTop, scentedLegs,
+			scentedShoes, blisterwood8, axe, knife, vine3, longVine, log1, log2, log3, axeEquipped, oldNote, ruby, sickle, enchantedSickle, enchantRubyRunesOrTablet, fireRune5,
+			fireStaff, cosmicRune, enchantRunes, enchantTablet, rubySickle, blisterwoodLog, blisterwoodSickle, ivandisFlailHighlighted, chisel, rubyHighlighted, ivandisFlail,
+			combatGear, vyrewatchOutfitOrCoins;
+
+	//Items Recommended
+	ItemRequirement antipoison, pickaxe, drakanMedallion, moryLegs3;
+
 	QuestStep startQuest, talkToHameln, talkToCarl, inspectBarrel, followCarl, killKroy, destroyLab, talkToVeliafAfterKroy, talkToVeliafInPater,
 		talkToIvan, listenToMeeting, talkToIvanAfterMeeting, talkToIvanAfterTrek, talkToVeliafInBoatHouse, travelToGraveyard, talkToVeliafInGraveyard, talkToVanescula,
 		talkToVanesculaAfterPuzzle, talkToVanesculaAfterTeam, talkToSafalaanInLab, killBloodveld, talkToSafalaanInDeepLab, searchLabBookcase,
@@ -87,17 +96,13 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 	DetailedQuestStep goDownToMakeFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle;
 
-	ItemRequirement haemBook, unscentedTop, unscentedLegs, unscentedShoes, vyreTop, vyreLegs, vyreShoes, ivandisFlailEquipped, blisterwoodFlail, scentedTop, scentedLegs,
-		scentedShoes, blisterwood8, axe, knife, vine3, longVine, log1, log2, log3, axeEquipped, oldNote, ruby, sickle, enchantedSickle, enchantRubyRunesOrTablet, fireRune5,
-		fireStaff, cosmicRune, enchantRunes, enchantTablet, rubySickle, blisterwoodLog, blisterwoodSickle, ivandisFlailHighlighted, chisel, rubyHighlighted, ivandisFlail,
-		combatGear, antipoison, pickaxe, vyrewatchOutfitOrCoins, drakanMedallion, moryLegs3;
-
-	Zone followingCarlArea, kroyArea, pater, swingArea, swingExitArea, nailBeastArea, bridgeArea, bridgeExitArea, juvinateArea, lab, newBase, damienRoom, finalFightArea;
-
 	ConditionForStep has8Logs, inFollowingCarlArea, inKroyArea, destroyedLabTable1, inPater, inSwingArea, inSwingExitArea, vineAdded, has3Vines, hasKnife, hasLongVine,
 		inNailBeastArea, inBridgeArea, nailBeastNearby, hasAxe, hasLog, has2Logs, has3Logs, hasRepairedBridge1, hasRepairedBridge2, hasRepairedBridge3, inBridgeExitArea,
 		inJuvinateArea, juvinateNearby, inPuzzleInterface, talkedToKael, talkedToVertida, talkedToPolmafi, talkedToRadigad, talkedToIvan, inLab, inDeepLab, inNewBase,
 		inDamienRoom, hasNote, hasSickle, hasRubySickle, hasEnchantedRubySickle, hasBlisterwoodSickle, inFinalFightArea;
+
+	//Zones
+	Zone followingCarlArea, kroyArea, pater, swingArea, swingExitArea, nailBeastArea, bridgeArea, bridgeExitArea, juvinateArea, lab, newBase, damienRoom, finalFightArea;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

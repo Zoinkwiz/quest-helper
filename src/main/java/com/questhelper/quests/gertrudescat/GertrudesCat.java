@@ -55,17 +55,18 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class GertrudesCat extends BasicQuestHelper
 {
-	private ItemRequirement bucketOfMilk, coins, seasonedSardine, sardine, doogleLeaves, milkHighlighted,
+	//Items Required
+	ItemRequirement bucketOfMilk, coins, seasonedSardine, sardine, doogleLeaves, milkHighlighted,
 		seasonedSardineHighlighted, kittenHighlighted;
 
-	private QuestStep talkToGertrude, talkToChildren, gertrudesCat, gertrudesCat2, searchNearbyCrates,
+	QuestStep talkToGertrude, talkToChildren, gertrudesCat, gertrudesCat2, searchNearbyCrates,
 		giveKittenToFluffy, finishQuest;
 
-	private ConditionalStep giveMilkToCatSteps, giveSardineToCat;
-
-	private ConditionForStep isUpstairsLumberyard, hasFluffsKitten;
-
 	QuestStep pickupDoogle, makeSeasonedSardine;
+
+	ConditionalStep giveMilkToCatSteps, giveSardineToCat;
+
+	ConditionForStep isUpstairsLumberyard, hasFluffsKitten;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

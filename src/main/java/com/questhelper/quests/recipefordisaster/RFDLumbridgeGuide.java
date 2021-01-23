@@ -67,6 +67,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	QuestStep enterDiningRoom, inspectLumbridgeGuide, goUpToTraiborn, talkToTraiborn, cookCake, enterDiningRoomAgain,
 		useCakeOnLumbridgeGuide, mixIngredients;
 
+	//Zones
 	Zone diningRoom, upstairsTrailborn, quizSpot;
 
 	@Override

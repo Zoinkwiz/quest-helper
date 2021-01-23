@@ -62,15 +62,23 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheFeud extends BasicQuestHelper
 {
+	//Item Requirements
 	private ItemRequirement coins, unspecifiedCoins, gloves, headPiece, fakeBeard, desertDisguise,
 		shantyPass, beer, oakBlackjack, glovesEquipped, disguiseEquipped, doorKeys,
 		highlightedCoins, snakeCharmHighlighted, snakeBasket, snakeBasketFull,
-		redHotSauce, dung, poisonHighlighted, combatGear;
+		redHotSauce, dung, poisonHighlighted;
+
+	//Items Recommended
+	private ItemRequirement combatGear;
+
 	private Conditions hasDisguise, hasDisguiseComponents, doesNotHaveDisguise, doesNotHaveDisguiseComponents,
 		notThroughShantyGate;
+
 	private QuestStep startQuest, buyDisguiseGear, createDisguise, goToPollniveachStep;
+
 	private ObjectStep hideBehindCactus, openTheDoor, goUpStairs, crackTheSafe,
 		giveCoinToSnakeCharmer, getDung, poisonTheDrink;
+
 	private NpcStep drunkenAli, talkToThug, talkToBandit, talkToCamelman,
 		talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel, talkToAliTheOperator,
 		pickpocketVillager, pickPocketVillagerWithUrchin, getBlackjackFromAli, blackJackVillager,
@@ -79,15 +87,21 @@ public class TheFeud extends BasicQuestHelper
 		talkToAliTheKebabSalesman, givenDungToHag, tellAliOperatorPoisoned,
 		talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader, talkToAVillagerToSpawnMayor,
 		talkToMayor, finishQuest;
+
 	private ItemRequirementCondition desertDisguiseCondition, hasShantyPass, hasOakBlackjack, oakBlackjackEquipped,
 		snakeCharm, hasSnakeBasket, hasSnakeBasketFull, hasRedHotSauce, hasBucket, doesNotHaveBucket,
 		hasDungInInventory;
+
 	private ConditionForStep throughShantyGate;
-	private ZoneCondition shantyPassZoneCondition, pollniveachZoneCondition, secondFloorMansion;
+
 	private DetailedQuestStep getBucket;
+
 	private VarbitCondition talkedToThug, talkedToBandit, talkedToBanditReturn, doorOpen, traitorFound,
 		talkedToBarman, talkedToAliTheHag, givenPoisonToHag, menaphiteThugAlive, talkedToVillagerAboutMenaphite,
 		banditChampionSpawned, mayorSpawned;
+
+	//Zones
+	private ZoneCondition shantyPassZoneCondition, pollniveachZoneCondition, secondFloorMansion;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

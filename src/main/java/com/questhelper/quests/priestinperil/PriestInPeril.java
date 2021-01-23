@@ -57,8 +57,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class PriestInPeril extends BasicQuestHelper
 {
-	ItemRequirement runeEssence, lotsOfRuneEssence, bucket, runePouches, varrockTeleport, weaponAndArmour, goldenKey, rangedMagedGear,
+	//Items Required
+	ItemRequirement runeEssence, lotsOfRuneEssence, bucket, weaponAndArmour, goldenKey, rangedMagedGear,
 		murkyWater, ironKey, blessedWaterHighlighted, bucketHighlighted, goldenKeyHighlighted;
+
+	//Items Recommended
+	ItemRequirement runePouches, varrockTeleport;
 
 	ConditionForStep inUnderground, hasGoldenOrIronKey, inTempleGroundFloor, inTemple, inTempleFirstFloor, inTempleSecondFloor, hasBlessedOrMurkyWater, hasIronKey,
 		hasBlessedWater;
@@ -68,6 +72,7 @@ public class PriestInPeril extends BasicQuestHelper
 		openDoor, useBlessedWater, blessWater, goUpWithWaterToSurface, goUpWithWaterToFirstFloor, goUpWithWaterToSecondFloor, talkToDrezelAfterFreeing,
 		goDownToFloorOneAfterFreeing, goDownToGroundFloorAfterFreeing, enterUndergroundAfterFreeing, talkToDrezelUnderground, bringDrezelEssence;
 
+	//Zones
 	Zone underground, temple1, temple2, temple3, temple4, temple5, temple6, templeFloorOne, templeFloorTwo;
 
 	@Override

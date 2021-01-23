@@ -59,8 +59,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TheHandInTheSand extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement truthSerum, beer, redberries, whiteberries, pinkDye, roseLens, lanternLens, magicalOrb, redberryJuice, bottledWater, hand, beerHand, bertsRota, sandysRota, magicScroll, vial, vial2, sand, wizardsHead,
-		beerOr2Coins, earthRunes5, coins, bucketOfSand, truthSerumHighlight, activatedOrb, teleportsToYanille, teleportsToBrimhaven;
+		beerOr2Coins, earthRunes5, coins, bucketOfSand, truthSerumHighlight, activatedOrb;
+
+	//Items Recommended
+	ItemRequirement teleportsToYanille, teleportsToBrimhaven;
 
 	ConditionForStep hasSand, notTeleportedToSarim, inYanille, inLightSpot, receivedBottledWater, hasRedberryJuice, hasPinkDye, hasRoseLens, vialPlaced, madeTruthSerum;
 
@@ -68,6 +72,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		useDyeOnLanternLens, useSerumOnCoffee, searchSandysDesk, standInDoorway, ringBell, ringBellAgain, pickpocketSandy, addWhiteberries, addRedberries, activateMagicalOrb, interrogateSandy, ringBellAfterInterrogation,
 		ringBellWithItems, talkToMazion, ringBellEnd;
 
+	//Zones
 	Zone yanille, lightSpot;
 
 	@Override

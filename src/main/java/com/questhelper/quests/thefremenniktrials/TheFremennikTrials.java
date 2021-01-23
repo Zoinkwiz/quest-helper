@@ -64,13 +64,16 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class TheFremennikTrials extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement coins, coins250, coins5000, beer, rawShark, tinderbox, axe, knife, potato, onion, cabbage, branch, lyre, lyreUnstrung,
-		petRock, goldenFleece, goldenWool, enchantedLyre, strangeObject, litStrangeObject, alcoholFreeBeer, kegOfBeer, combatGear,
+		petRock, goldenFleece, goldenWool, enchantedLyre, strangeObject, litStrangeObject, alcoholFreeBeer, kegOfBeer, dramenBranch,
 		huntersTalisman, chargedHuntersTalisman, promissoryNote, legendaryCocktail, championsToken, warriorsContract, weatherForecast,
 		seaFishingMap, unusualFish, customBowString, trackingMap, fiscalStatement, sturdyBoots, ballad, exoticFlower, koscheiGear,
 		optionalKoscheiGear, redHerring, woodenDisk, redDiskOld, emptyJug, redDiskNew, stickyRedGoop, emptyBucket, vase, fullBucket, fullJug, vaseLid,
-		jug23, jug13, bucket45, bucket35, bucket25, bucket15, filledVase, filledVaseWithLid, vaseWithLidWrong, frozenKey, seersKey, frozenVase,
-		ringsOfRecoil, camelotTeleport, rellekkaTeleports, dramenBranch;
+		jug23, jug13, bucket45, bucket35, bucket25, bucket15, filledVase, filledVaseWithLid, vaseWithLidWrong, frozenKey, seersKey, frozenVase;
+
+	//Items Recommended
+	ItemRequirement camelotTeleport, rellekkaTeleports, ringsOfRecoil, combatGear;
 
 	ConditionForStep synced, syncedAll, syncedOlaf, syncedManni, syncedSigmund, inQuestJournal, hasStartedOlaf, hasBranch, hasLyreUnstrung,
 		talkedToLalli, gottenRock, hasPetRock, hasLyre, finishedOlafTask, hasOnion, hasCabbage, hasPotato, petRockInCauldron,
@@ -106,6 +109,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 	ConditionalStep olafTask, sigliTask, manniTask, sigmundTask, thorvaldTask, swensenTask, peerTask;
 
+	//Zones
 	Zone nearPipe, koscheiRoom, swensenRoom1, swensenRoom2, swensenRoom3, swensenRoom4, swensenRoom5, swensenRoom6, swensenRoom7, swensenFinalRoom, swensenArea, peerEntrance, peerUpstairs, peerExit;
 
 	@Override

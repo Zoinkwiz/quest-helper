@@ -69,6 +69,10 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class DragonSlayerII extends BasicQuestHelper
 {
+	//Items Recommended
+	ItemRequirement ardougneTeleport, varrockTeleport, faladorTeleport, morytaniaTeleport, karamjaTeleport, rellekkaTeleport;
+
+	//Items Required
 	ItemRequirement pickaxe, axe, oakPlank8, swampPaste10, nails12OrMore, hammer, machete, saw, catspeakAmulet, ghostspeakOrMory2,
 		goutweed, dragonstone, moltenGlass2, glassblowingPipe, chisel, spade, astralRune, sealOfPassage, tinderbox,
 		pestleAndMortarHighlighted, runesForFireWaveOrSurge3, fireRune7, fireRune21, bloodRune1, bloodRune3,
@@ -77,8 +81,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		aivasDiary, dreamVial, dreamVialWater, dreamVialWithGoutweed, dreamPotion, astralRuneHighlighted, astralRuneShards,
 		groundAstralRune, hammerHighlighted, dreamPotionHighlighted, food, lightSource, rangedCombatGear, dragonfireProtection,
 		venomProtection, salveE, kourendKeyPiece, varrocKeyPiece, karamjaKeyPiece, fremennikKeyPiece, varrockCensusRecords,
-		inertLocator, glassblowingPipeHighlighted, dragonstoneHighlighted, locator, ancientKey, dragonKey, antifireShield,
-		ardougneTeleport, varrockTeleport, faladorTeleport, morytaniaTeleport, karamjaTeleport, rellekkaTeleport;
+		inertLocator, glassblowingPipeHighlighted, dragonstoneHighlighted, locator, ancientKey, dragonKey, antifireShield;
 
 	ItemRequirement map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12, map13, map14, map15, map16, map17,
 		map18, map19, map20, map21, map22, map23, map24;

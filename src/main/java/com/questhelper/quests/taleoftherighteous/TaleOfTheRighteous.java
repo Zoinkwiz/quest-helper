@@ -65,7 +65,11 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class TaleOfTheRighteous extends BasicQuestHelper
 {
-	ItemRequirement pickaxe, rangedWeapon, runesForCombat, rope, combatGear, xericTalisman, meleeWeapon, antiPoison;
+	//Items Required
+	ItemRequirement pickaxe, rangedWeapon, runesForCombat, rope, combatGear, meleeWeapon;
+
+	//Items Recommended
+	ItemRequirement antiPoison, xericTalisman;
 
 	ConditionForStep inArchive, inPuzzleRoom, strangeObjectEast, strangeObjectWest, isSouthWestWhite, isSouthEastWhite,
 		isNorthWestWhite, isNorthEastWhite, inShiroRoom, inCavern, rockfallNearby, boulderBlockingPath, corruptLizardmanNearby;
@@ -76,6 +80,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		inspectUnstableAltar, leaveCave, returnToDuffy, enterCreviceAgain, talkToDuffyInCrevice, talkToGnosi,
 		returnUpToShiro, returnToShiro, returnToPhileasTent, goUpToShrioToFinish, finishQuest;
 
+	//Zones
 	Zone archive, puzzleRoom, shiroRoom, cavern;
 
 	@Override
@@ -174,7 +179,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		xericTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
 		meleeWeapon = new ItemRequirement("A melee weapon, or your bare hands", -1, -1);
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
-		antiPoison = new ItemRequirement("Anti poison for lizardmen", ItemCollections.getAntipoisons());
+		antiPoison = new ItemRequirement("Antipoison for lizardmen", ItemCollections.getAntipoisons());
 	}
 
 	public void loadZones()

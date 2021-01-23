@@ -59,6 +59,7 @@ import com.questhelper.steps.QuestStep;
 )
 public class ErnestTheChicken extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement spade, fishFood, poison, poisonedFishFood, pressureGauge, oilCan, rubberTube, key;
 
 	ConditionForStep hasSpade, hasFishFood, hasPoison, hasPoisonedFishFood, hasPressureGauge, hasOilCan, hasRubberTube, inFirstFloor, inGroundFloor,
@@ -72,6 +73,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 
 	ConditionalStep getGaugeAndTube, getCan;
 
+	//Zones
 	Zone manorGround1, secretRoom, manorGround3, firstFloor, secondFloor, basement, roomCD, emptyRoom;
 
 	@Override

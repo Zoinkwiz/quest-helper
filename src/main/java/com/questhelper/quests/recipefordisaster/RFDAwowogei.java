@@ -70,6 +70,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class RFDAwowogei extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement cookedSnake, cookedSnakeHighlighted, mAmulet, gorillaGreegree, ninjaGreegree, zombieGreegree, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted,
 		knife, pestleAndMortar, tchikiNuts, tchikiNutsHighlighted, redBanana, redBananaHighlighted, snakeCorpse, snakeCorpseHighlighted,
 		rawStuffedSnake, rawStuffedSnakeHighlighted, slicedBanana, greegreeEquipped, paste, combatGear;
@@ -83,6 +84,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		enterCrashHole, killSnake, leaveSnakeHole, returnToApeAtoll, useRopeOnTree, enterNutHole, takeNuts, grindNuts, sliceBanana, stuffSnake,
 		enterZombieDungeon, enterCookingHole, cookSnake, enterDiningRoomAgain, useSnakeOnAwowogei;
 
+	//Zones
 	Zone diningRoom, crashIsland, snakeHole, nutHole, templeDungeon, cookRoom;
 
 	@Override

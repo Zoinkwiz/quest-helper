@@ -45,6 +45,7 @@ import com.questhelper.QuestDescriptor;
 )
 public class ImpCatcher extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement blackBead, whiteBead, redBead, yellowBead;
 
 	QuestStep doQuest;

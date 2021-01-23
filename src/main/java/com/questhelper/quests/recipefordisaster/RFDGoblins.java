@@ -75,6 +75,7 @@ public class RFDGoblins extends BasicQuestHelper
 
 	ConditionalStep goTalkCook1, goTalkCook2, goTalkCook3, goTalkCook4;
 
+	//Zones
 	Zone diningRoom, cookRoom, cookRoomDestroyed;
 
 	@Override

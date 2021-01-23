@@ -77,6 +77,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		useSpitOnChompy, lightFire, talkToRantzAfterReturn, getToad, getRock, useBellowOnToadInInv, dropBalloonToad, killJubbly, lootJubbly,
 		fillUpBellows, cookJubbly, enterDiningRoomAgain, useJubblyOnSkrach, pickUpRawJubbly;
 
+	//Zones
 	Zone diningRoom;
 
 	@Override

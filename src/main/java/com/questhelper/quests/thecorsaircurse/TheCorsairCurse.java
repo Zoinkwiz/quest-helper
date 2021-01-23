@@ -58,6 +58,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheCorsairCurse extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement spade, tinderbox, ogreArtfact, combatGear;
 
 	ConditionForStep inCove, inCavern, inIthoiHut, inGnocciHut, inArsenHut, inShip, talkedToIthoi, talkedToGnocci, talkedToArsen, talkedToColin,
@@ -70,6 +71,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 		goUpToGnocci3, talkToGnocci3, goDownFromGnocci3, goUpToArsen3, talkToArsen3, goDownFromArsen3, goUpToIthoi3, talkToIthoi2, goDownFromIthoi3,
 		goOntoShip3, talkToTockShip3, useTinderboxOnWood, goUpToIthoiToKill, killIthoi, goOntoShip4, talkToTockShip4;
 
+	//Zones
 	Zone cove, cavern, ithoiHut, gnocciHut, arsenHut, ship;
 
 	@Override

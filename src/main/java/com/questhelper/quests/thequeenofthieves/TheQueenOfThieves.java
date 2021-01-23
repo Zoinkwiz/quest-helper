@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheQueenOfThieves extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement stew, hughesLetter;
 
 	QuestStep talkToLawry, talkToPoorLookingPerson, talkToOReilly, talkToDevan, exitWarrens, killConrad,
@@ -62,8 +63,10 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	talkToShauna;
 
 	ObjectStep enterWarrens, enterWarrens2, enterWarrens3, enterWarrens4;
+
 	NpcStep talkToQueenOfThieves;
 
+	//Zones
 	ZoneCondition inWarrens, inUpstairsHughesHouse;
 	Zone warrens, kingstown, upstairsHughesHouse;
 

@@ -65,6 +65,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class MourningsEndPartI extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement bearFur, silk2, redDye, yellowDye, greenDye, blueDye, waterBucket, feather, rottenApple, toadCrunchies, magicLogs, leather, ogreBellows, coal20,
 		coal20OrNaphtha, blueBellow, redBellow, yellowBellow, greenBellow, mournerMask, bloodyMournerBody, mournerLegsBroken, mournerBoots, mournerGloves, mournerCloak,
 		mournerLetter, tegidsSoap, mournerBody, mournerLegs, sieve, tarnishedKey, fullMourners, equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerCloak,
@@ -83,6 +84,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 	ConditionalStep getItems, cleanTopSteps, repairTrousersSteps;
 
+	//Zones
 	Zone mournerHQ, mournerHQ2, mournerBasement;
 
 	@Override

@@ -67,6 +67,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class IcthlarinsLittleHelper extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar,
 		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions;
 
@@ -87,6 +88,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	ObjectStep pickUpAnyJar, pickUpAnyJarAgain;
 
+	//Zones
 	Zone soph, pyramid, northPyramid, northPyramid2, eastRoom;
 
 	@Override

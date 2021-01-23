@@ -60,9 +60,13 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class Biohazard extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement gasMask, birdFeed, birdCage, rottenApple, medicalGown, key, distillator, plagueSample, ethenea, liquidHoney, sulphuricBroline,
 		touchPaper, priestGownTop, priestGownBottom, priestGownBottomEquipped, priestGownTopEquipped, medicalGownEquipped,
-		birdCageHighlighted, teleportVarrock, teleportArdougne, teleportRimmington;
+		birdCageHighlighted;
+
+	//Items Recommended
+	ItemRequirement teleportVarrock, teleportArdougne, teleportRimmington;
 
 	ConditionForStep hasBirdFeed, hasPigeonCage, inMournerBackyard, inWestArdougne, hasRottenApple, hasDistillator,
 		inMournerBuilding, upstairsInMournerBuilding, hasMedicalGown, hasKey, hasLiquidHoney, hasEthenea, hasBroline, hasChemicals, inVarrockSouthEast,
@@ -76,6 +80,7 @@ public class Biohazard extends BasicQuestHelper
 
 	GiveIngredientsToHelpersStep giveChemicals;
 
+	//Zones
 	Zone westArdougne1, westArdougne2, westArdougne3, mournerBackyard, mournerBuilding1, mournerBuilding2, mournersBuildingUpstairs, varrockSouthEast, upstairsArdougneCastle;
 
 	@Override

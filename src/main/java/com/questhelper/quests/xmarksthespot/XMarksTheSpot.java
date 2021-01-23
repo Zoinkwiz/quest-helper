@@ -45,6 +45,7 @@ import com.questhelper.QuestDescriptor;
 )
 public class XMarksTheSpot extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement spade;
 
 	QuestStep speakVeosLumbridge, digOutsideBob, digCastle, digDraynor, digMartin, speakVeosSarim, speakVeosSarimWithoutCasket;

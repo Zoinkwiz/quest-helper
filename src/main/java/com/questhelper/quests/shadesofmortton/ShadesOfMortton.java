@@ -61,9 +61,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ShadesOfMortton extends BasicQuestHelper
 {
-	ItemRequirement combatGear, tarrominUnf2, tarrominUnfHighlighted, tinderbox, ashes2, ashesHighlighted, coins5000, hammerOrFlam, flamHammer,
-		morttonTele, food, flamtaerBracelet, log, pyreLog, serum207Highlighted, serum208, sacredOilHighlighted, oliveOil, timber5, swampPaste25, lime5, diary, loar5,
-		loar, serum207, oliveOilHighlighted, logHighlighted;
+	//Items Required
+	ItemRequirement combatGear, tarrominUnf2, tarrominUnfHighlighted, tinderbox, ashes2, ashesHighlighted, coins5000, hammerOrFlam, log, pyreLog,
+		serum207Highlighted, serum208, sacredOilHighlighted, oliveOil, timber5, swampPaste25, lime5, diary, loar5, loar, serum207, oliveOilHighlighted, logHighlighted;
+
+	//Items Recommended
+	ItemRequirement morttonTele, food, flamHammer, flamtaerBracelet;
 
 	ConditionForStep hasDiary, hadSerum208, razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, hasSacredOil, has20Sanctity, hasPyreLog, curedRazmire, curedUlsquire;
 

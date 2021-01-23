@@ -69,15 +69,17 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class TheGiantDwarf extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement coins2500, logs, tinderbox, coal, ironBar, lawRune, airRune, sapphires3, oresBars, redberryPie, redberryPieNoInfo,
-		houseTeleport, rellekkaTeleport, fairyRings, staminaPotions, varrockTeleport, clay10, copperOre10, tinOre10, ironOre10, coal10,
-		silverOre10, goldOre10, mithrilOre10, bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10,
-		weightBelow30, inventorySpace, coins200, bookOnCostumes, exquisiteClothes, exquisiteBoots, dwarvenBattleaxe,
-		leftBoot, dwarvenBattleaxeBroken, dwarvenBattleaxeSapphires;
+		weightBelow30, inventorySpace, coins200, bookOnCostumes, exquisiteClothes, exquisiteBoots, dwarvenBattleaxe, leftBoot,
+			dwarvenBattleaxeBroken, dwarvenBattleaxeSapphires;
 
 	Requirement weightBelow30Check, inventorySpaceCheck;
 
-	Zone keldagrim, keldagrim2, trollRoom, dwarfEntrance, consortium;
+	//Items Recommended
+	ItemRequirement rellekkaTeleport, fairyRings, staminaPotions, varrockTeleport, houseTeleport, clay10,
+		copperOre10, tinOre10, ironOre10, coal10, silverOre10, goldOre10, mithrilOre10,
+		bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10;
 
 	ConditionForStep inTrollRoom, inKeldagrim, inDwarfEntrance,
 		talkedToVermundi, talkedToLibrarian, hasBookOnCostumes, talkedToVermundiWithBook, usedCoalOnMachine, startedMachine, hasExquisiteClothes,
@@ -92,6 +94,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToSantiri, useSapphires, talkToThurgo, talkToThurgoAfterPie,
 		giveItemsToRiki, talkToBlasidarAfterItems,
 		enterConsortium, talkToSecretary, talkToDirector, joinCompany, talkToDirectorAfterJoining, leaveConsortium, talkToVeldabanAfterJoining;
+
+	//Zones
+	Zone keldagrim, keldagrim2, trollRoom, dwarfEntrance, consortium;
 
 	public void setupItemRequirements()
 	{
@@ -120,7 +125,6 @@ public class TheGiantDwarf extends BasicQuestHelper
 		oresBars.setTip("Obtainable during the quest.");
 		redberryPie = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 		redberryPie.setTip("Unless you have previously given Thurgo an extra pie with nothing in return.");
-
 		redberryPieNoInfo = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 
 		// Recommended
@@ -128,10 +132,13 @@ public class TheGiantDwarf extends BasicQuestHelper
 		rellekkaTeleport = new ItemRequirement("A Camelot/Rellekka teleport (for starting the quest)", ItemID.ENCHANTED_LYRE5);
 		rellekkaTeleport.addAlternates(ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2,
 			ItemID.ENCHANTED_LYRE1, ItemID.RELLEKKA_TELEPORT, ItemID.CAMELOT_TELEPORT);
+		rellekkaTeleport.addAlternates(ItemCollections.getSlayerRings());
 		fairyRings = new ItemRequirement("Access to fairy rings", -1, -1);
 		fairyRings.setDisplayItemId(ItemID.FAIRY_RING);
 		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", ItemCollections.getStaminaPotions());
 		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", ItemID.VARROCK_TELEPORT);
+		varrockTeleport.addAlternates(ItemCollections.getRingOfWealths());
+		varrockTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
 		clay10 = new ItemRequirement("Clay", ItemID.CLAY, 10);
 		copperOre10 = new ItemRequirement("Copper ore", ItemID.COPPER_ORE, 10);
 		tinOre10 = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 10);

@@ -75,6 +75,7 @@ public class RFDDwarf extends BasicQuestHelper
 		talkToOldDwarfWithIngredients, pickUpRockCake, coolRockCake, coolRockCakeSidebar, enterDiningRoomAgain,
 		useRockCakeOnDwarf;
 
+	//Zones
 	Zone diningRoom, tunnel;
 
 	@Override

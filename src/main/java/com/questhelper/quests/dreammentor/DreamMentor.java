@@ -65,6 +65,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class DreamMentor extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement sealOfPassage, dreamVial, astralRune, astralRuneShards, groundAstralRune, dreamVialWater, dreamVialWithGoutweed,
 		pestleAndMortar, dreamPotion, foodAll, food4, food6, goutweed, tinderbox, hammer, combatGear, food14, chest;
 
@@ -77,6 +78,7 @@ public class DreamMentor extends BasicQuestHelper
 		talkAfterHelping, supportCyrisusToRecovery, talkToOneiromancer, fillVialWithWater, addGoutweed, useHammerOnAstralRune, usePestleOnShards,
 		useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy, killEverlasting, killUntouchable, killIllusive, returnToOneiromancer;
 
+	//Zones
 	Zone lunarMine, cyrisusRoom, arena;
 
 	@Override

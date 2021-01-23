@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ElementalWorkshopI extends ComplexStateQuestHelper
 {
+	//Items Required
 	ItemRequirement knife, pickaxe, needle, thread, leather, hammer, coal4, combatGear, batteredBook, elementalOre,
 		elementalBar, batteredKey, stoneBowlHighlighted, lavaBowlHighlighted, slashedBook;
 
@@ -59,11 +60,12 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		pullBellowsLever, getStoneBowl, useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre,
 		forgeBar, smithShield;
 
-	Zone workshop, stairwell;
-
 	ConditionForStep inWorkshop, inStairwell, hasBook, hasKey, hasSlashedBook, hasReadBook, enteredWall, foundLeather,
 		turnedValve1, turnedValve2, solvedWater, hasLeatherOrSearched, hasNeedle, hasBowl, hasLavaBowl,
 		hasElementalBar, hasElementalOre, elementalOreNearby, earthNearby, solvedAir, solvedFire, fixedBellow;
+
+	//Zones
+	Zone workshop, stairwell;
 
 	@Override
 	public QuestStep loadStep()

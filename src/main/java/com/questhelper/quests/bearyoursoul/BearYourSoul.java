@@ -54,12 +54,14 @@ quest = QuestHelperQuest.BEAR_YOUR_SOUL
 )
 public class BearYourSoul extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement spade, dustyKeyOr70AgilOrKeyMasterTeleport, damagedSoulBearer;
 
 	ConditionForStep hasSoulBearer, inTaverleyDungeon, inKeyMaster;
 
 	QuestStep findSoulJourneyAndRead, talkToAretha, arceuusChurchDig, goToTaverleyDungeon, enterCaveToKeyMaster, speakKeyMaster;
 
+	//Zones
 	Zone inTaverleyDungeonZone, inKeyMasterZone;
 
 	@Override

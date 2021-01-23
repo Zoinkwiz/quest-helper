@@ -56,6 +56,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement book, intelReport, twentyCoins, shieldHalf, certificateHalf, blackArmCertificateHalf, certificate;
 
 	ConditionForStep hasBook, inPhoenixEntry, hasIntelReport, intelReportNearby, inPhoenixBase, hasShieldHalf, hasCertificateHalf, hasBlackArmCertificateHalf,
@@ -64,6 +65,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	QuestStep startQuest, searchBookcase, talkToReldoAgain, talkToBaraek, goDownToPhoenixGang, talkToStraven, goUpFromPhoenixGang, killJonny, pickupIntelReport,
 		returnDownLadder, talkToStravenAgain, getShieldHalf, getShieldHalf1, tradeCertificateHalf, combineCertificate, talkToHaig, talkToRoald, leaveAfterGettingShieldHalf;
 
+	//Zones
 	Zone phoenixEntry, phoenixBase;
 
 	@Override

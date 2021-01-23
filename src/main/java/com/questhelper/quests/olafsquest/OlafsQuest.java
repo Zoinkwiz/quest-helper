@@ -69,8 +69,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class OlafsQuest extends BasicQuestHelper
 {
-	ItemRequirement combatGear, axe, tinderbox, spade, dampPlanks, windsweptLogs, crudeCarving, cruderCarving, food, key, rottenBarrels2, rottenBarrel, ropes6, ropes3, crossKey, squareKey,
-		triangleKey, circleKey, starKey, prayerPotions;
+	//Items Required
+	ItemRequirement axe, tinderbox, spade, dampPlanks, windsweptLogs, crudeCarving, cruderCarving, key, rottenBarrels2, rottenBarrel, ropes6, ropes3, crossKey, squareKey,
+		triangleKey, circleKey, starKey;
+
+	//Items Recommended
+	ItemRequirement  prayerPotions, food, combatGear;
 
 	ConditionForStep hasWindsweptLogs, givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, hasKey, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
 		keyInterfaceOpen, hasCrossKey, hasSquareKey, hasTriangleKey, hasCircleKey, hasStarKey, ulfricNearby, killedUlfric;
@@ -82,6 +86,7 @@ public class OlafsQuest extends BasicQuestHelper
 
 	ObjectStep searchChest, searchChestAgain;
 
+	//Zones
 	Zone firstArea, firstArea2, secondArea, secondArea2, thirdArea;
 
 	@Override

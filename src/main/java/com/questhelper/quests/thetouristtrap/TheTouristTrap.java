@@ -65,10 +65,13 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class TheTouristTrap extends BasicQuestHelper
 {
-	ItemRequirement combatGear, desertTop, desertBottom, desertBoot, desertTopWorn, desertBottomWorn, desertBootWorn, bronzeBar3, hammer, feather50,
+	//Items Required
+	ItemRequirement desertTop, desertBottom, desertBoot, desertTopWorn, desertBottomWorn, desertBootWorn, bronzeBar3, hammer, feather50,
 		metalKey, slaveTop, slaveRobe, slaveBoot, slaveTopWorn, slaveRobeWorn, slaveBootWorn, bedabinKey, technicalPlans, prototypeDart, prototypeDartTip,
-		feather10, bronzeBar, tentiPineapple, bronzeBarHighlighted, barrel, anaInABarrel, anaInABarrelHighlighted, waterskins, knife, pickaxe, coins100,
-		barrelHighlighted;
+		feather10, bronzeBar, tentiPineapple, bronzeBarHighlighted, barrel, anaInABarrel, anaInABarrelHighlighted, barrelHighlighted;
+
+		//Items Required
+	ItemRequirement waterskins, knife, pickaxe, coins100, combatGear;
 
 	ConditionForStep inJail, onSlope, inCamp, hasSlaveClothes, inUpstairs, onCliff, onSecondCliff, inJailEscape, inMine1, hasPlans, distractedSiad, searchedBookcase,
 		hasTip, hasDart, hasBarrel, inDeepMine, inDeepMineP1, inDeepMineP2, hasAnaInBarrel, anaOnCart, anaOnSurfaceInBarrel, anaOnSurface, anaPlacedOnCartOfLift,
@@ -82,6 +85,7 @@ public class TheTouristTrap extends BasicQuestHelper
 
 	DetailedQuestStep escapeJail, climbSlope, climbCliff, climbDownCliff;
 
+	//Zones
 	Zone jail, slope, camp, upstairs, cliff, secondCliff, mine1, deepMine, deepMineP1, deepMineP2P1, deepMineP2P2, miningRoom;
 
 	@Override

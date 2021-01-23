@@ -45,7 +45,11 @@ import net.runelite.api.QuestState;
 )
 public class EnchantedKey extends BasicQuestHelper
 {
-	ItemRequirement spade, key, varrockTeleports, ardougneTeleports, rellekkaTeleports, lumbridgeTeleports, passage;
+	//Items Required
+	ItemRequirement spade, key;
+
+	//Items Recommended
+	ItemRequirement rellekkaTeleports, varrockTeleports, ardougneTeleports, lumbridgeTeleports, passage;
 
 	QuestStep solvePuzzle;
 

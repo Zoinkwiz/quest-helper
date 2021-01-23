@@ -56,6 +56,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class MurderMystery extends BasicQuestHelper
 {
+	//Items Required
 	private ItemRequirement pot, pot3, pungentPot, criminalsDaggerAny, criminalsDagger, criminalsDaggerFlour, criminalsThread, criminalsThread1, criminalsThread2, criminalsThread3,
 		threeFlypaper, potOfFlourHighlighted, flypaper, unknownPrint, silverNecklace, silverBook, silverBookFlour, silverNecklaceFlour, annasPrint, davidsPrint, killersPrint, silverNeedle,
 		silverPot, silverNeedleFlour, silverPotFlour, elizabethPrint, frankPrint, criminalsDaggerHighlighted, criminalsDaggerFlourHighlighted, silverCup, silverCupFlour, silverBottle,

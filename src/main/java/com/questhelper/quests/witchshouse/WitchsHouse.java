@@ -63,7 +63,11 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class WitchsHouse extends BasicQuestHelper
 {
-	ItemRequirement cheese, leatherGloves, houseKey, magnet, shedKey, ball, armourAndWeapon;
+	//Items Required
+	ItemRequirement cheese, leatherGloves, houseKey, magnet, shedKey, ball;
+
+	//Items Recommended
+	ItemRequirement armourAndWeapon;
 
 	ConditionForStep hasKey, hasMagnet, inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
 		ratHasMagnet, hasShedKey, inShed, hasBall, experimentNearby;
@@ -71,6 +75,7 @@ public class WitchsHouse extends BasicQuestHelper
 	QuestStep talkToBoy, getKey, goDownstairs, enterGate, goDownstairsFromTop, openCupboardAndLoot, openCupboardAndLoot2, goBackUpstairs, useCheeseOnHole,
 		enterHouse, searchFountain, enterShed, enterShedWithoutKey, killWitchsExperiment, returnToBoy, pickupBall, grabBall;
 
+	//Zones
 	Zone house, upstairsHouse, downstairsHouseEast, downstairsHouseWest, garden1, garden2, garden3, shed;
 
 	@Override

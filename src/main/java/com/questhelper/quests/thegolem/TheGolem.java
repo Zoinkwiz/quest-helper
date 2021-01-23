@@ -61,19 +61,24 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class TheGolem extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement strangeImplement, strangeImplementHighlight, programHighlight, pestleAndMortarHighlight, mushroomHighlight, vial, inkHighlight, pestleAndMortar,
 		papyrus, letter, clay4Highlight, notesHighlight, phoenixFeather, quill, clay3Highlight, clay2Highlight, clay1Highlight, key, statuette, statuetteHighlight,
-		papyrusHighlight, varrockTeleport, digsiteTeleport, waterskins;
+		papyrusHighlight;
+
+	//Items Recommended
+	ItemRequirement varrockTeleport, digsiteTeleport, waterskins;
 
 	ConditionForStep inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4, hasLetter, hasReadLetter, added1Clay, added2Clay, added3Clay,
 		talkedToElissa, hasVarmenNotes, hasReadNotes, talkedToCurator, hasKey, inUpstairsMuseum, stolenStatuette, inThroneRoom, hasImplement, openedHead,
 		hasMushroom, hasInk, hasFeather, hasQuill, hasProgram, enteredRuins;
 
-	Zone ruin, upstairsMuseum, throneRoom;
-
 	QuestStep pickUpLetter, readLetter, talkToGolem, useClay, useClay2, useClay3, useClay4, talkToElissa, searchBookcase, readBook, talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet,
 		stealFeather, enterRuin, useStatuette, turnStatue1, turnStatue2, turnStatue3, turnStatue4, enterThroneRoom, leaveThroneRoom, leaveRuin, pickBlackMushroom, grindMushroom,
 		useFeatherOnInk, talkToGolemAfterPortal, useQuillOnPapyrus, useImplementOnGolem, useProgramOnGolem, pickUpImplement, enterRuinWithoutStatuette, enterRuinForFirstTime;
+
+	//Zones
+	Zone ruin, upstairsMuseum, throneRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

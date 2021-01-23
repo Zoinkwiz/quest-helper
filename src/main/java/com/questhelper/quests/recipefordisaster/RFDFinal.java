@@ -70,6 +70,7 @@ public class RFDFinal extends BasicQuestHelper
 	QuestStep enterPortal, killAgrith, enterPortalFlambeed, killFlambeed, enterPortalKaramel, killKaramel, enterPortalDessourt, killDessourt,
 		enterPortalMother, killMother, enterPortalCulinaromancer, killCulinaromancer;
 
+	//Zones
 	Zone fightArena;
 
 	@Override

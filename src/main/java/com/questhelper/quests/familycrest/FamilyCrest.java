@@ -62,6 +62,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class FamilyCrest extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement shrimp, salmon, tuna, bass, swordfish, pickaxe, ruby, ruby2, ringMould, necklaceMould, antipoison, runesForBlasts, gold2, gold,
 		perfectRing, perfectNecklace, goldBar, goldBar2, crestPiece1, crestPiece2, crestPiece3, crest;
 

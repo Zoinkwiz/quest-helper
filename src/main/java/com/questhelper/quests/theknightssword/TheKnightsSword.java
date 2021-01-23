@@ -56,13 +56,18 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheKnightsSword extends BasicQuestHelper
 {
-	ItemRequirement pickaxe, redberryPie, ironBars, bluriteOre, varrockTeleport, faladorTeleports, bluriteSword, portrait, homeTele;
+	//Items Required
+	ItemRequirement pickaxe, redberryPie, ironBars, bluriteOre, bluriteSword, portrait;
+
+	//Items Recommended
+	ItemRequirement varrockTeleport, faladorTeleports, homeTele;
 
 	ConditionForStep hasPortrait, hasBluriteOre, hasBluriteSword, inDungeon, inFaladorCastle1, inFaladorCastle2;
 
 	QuestStep talkToSquire, talkToReldo, talkToThurgo, talkToThurgoAgain, talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, enterDungeon,
 		mineBlurite, givePortraitToThurgo, bringThurgoOre, finishQuest;
 
+	//Zones
 	Zone dungeon, faladorCastle1, faladorCastle2;
 
 	@Override

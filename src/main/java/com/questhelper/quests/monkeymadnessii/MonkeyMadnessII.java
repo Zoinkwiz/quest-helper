@@ -28,12 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.FollowerRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.VarbitRequirement;
+import com.questhelper.requirements.*;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -59,7 +54,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -75,11 +69,16 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class MonkeyMadnessII extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement lemon, grape, pestle, pickaxe, logs, lightSource, hammerSidebar, hammer, chisel, chiselSidebar, mspeakAmulet, talisman, ninjaGreegree, translationBook,
 		pestleHighlighted, lemonHighlighted, grapesHighlighted, handkerchief, mysteriousNote, mysteriousNoteLemon, mysteriousNoteLemonCandle, brush, scrawledNote, grapeBrush,
 		translatedNote, noCombatItems, talismanOr1000Coins, ninjaGreegreeEquipped, mspeakAmuletEquipped, greegree, kruksPaw, greegreeEquipped, krukGreegree, coins20,
-		chiselHighlighted, deconstructedOnyx, chargedOnyx, combatGear2, magicLog, food, staminaPotions, prayerPotions, antidote, combatGear;
+		chiselHighlighted, deconstructedOnyx, chargedOnyx;
 
+	//Items Recommended
+	ItemRequirement combatGear, combatGear2, magicLog, food, staminaPotions, prayerPotions, antidote;
+
+	//Other Requirements
 	Requirement nieveFollower;
 
 	QuestStep talkToNarnode;
@@ -103,8 +102,6 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	QuestStep talkToNarnodeAfterLab, talkToNieve, killGorillasInStronghold, enterNorthOfTree, enterStrongholdCave, killTorturedAndDemonic, enterNorthOfTreeNoNieve, fightGlough, talkToZooknockToFinish,
 		talkToNarnodeToFinish;
 
-	Zone gloughHouseF1, gloughHouseF2, gloughHouseF3, anitaHouse, caves, subCaves, zooknockDungeon, strongholdFloor2, lab, pastMonkeyBars, northOfTree, crashSiteCavern;
-
 	ConditionForStep inGloughHouse, inGloughHouseF1, inGloughHouseF2, inGloughHouseF3, inAnitaHouse, inCaves, inZooknockDungeon, inStrongholdFloor2, inLab,
 		isPastMonkeyBars, isNorthOfTree, inCrashSiteCavern, gorillaNotOnHoldingArea, hasChiselAndHammer;
 
@@ -114,6 +111,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 	ConditionalStep goToGlough2ndFloor, goInvestigateGloughHouse, leaveGloughHouse, goTalkToAnita, goToGlough3rdFloor, goInvestigateUpstairs, goShowNoteToNarnode, goTalkToAnitaWithNote,
 		bringTranslationToNarnode;
+
+	//Zones
+	Zone gloughHouseF1, gloughHouseF2, gloughHouseF3, anitaHouse, caves, subCaves, zooknockDungeon, strongholdFloor2, lab, pastMonkeyBars, northOfTree, crashSiteCavern;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -555,8 +555,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		fightKeef = new NpcStep(this, NpcID.KEEF_7105, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.");
 		talkToGarkorAfterKeef = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", krukGreegree);
-		findSmith = new DetailedQuestStep(this, "Search around the various rooftops in Ape Atoll for Assistant le Smith.", krukGreegree);
-		talkToSmith = new NpcStep(this, NpcID.ASSISTANT_LE_SMITH_6806, "Talk to Assistant le Smith.", krukGreegree);
+		findSmith = new DetailedQuestStep(this, "Search around the various rooftops in Ape Atoll for Assistant Le Smith.", krukGreegree);
+		talkToSmith = new NpcStep(this, NpcID.ASSISTANT_LE_SMITH_6806, "Talk to Assistant Le Smith.", krukGreegree);
 		talkToSmith.addDialogSteps("I was going to ask you the same question.", "Why is that?", "Awowogei has already informed me about the battleships.", "Where is the fleet, currently?");
 		talkToGarkorAfterSmith = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor.", krukGreegree);
 		talkToMonkeyGuard = new NpcStep(this, NpcID.MONKEY_GUARD_6811, new WorldPoint(2694, 2784, 0), "Talk to the monkey guard on the north west of Ape Atoll.", krukGreegree, mspeakAmuletEquipped);

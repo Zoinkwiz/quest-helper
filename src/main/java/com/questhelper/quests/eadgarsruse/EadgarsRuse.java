@@ -65,9 +65,13 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class EadgarsRuse extends BasicQuestHelper
 {
-	ItemRequirement climbingBoots, climbingBootsOr12Coins, vodka, vodkaHighlight, pineappleChunks, pineappleChunksHighlight, logs2, grain10, rawChicken5, tinderbox, pestleAndMortar, ranarrPotionUnf, ardougneTeleport,
+	//Items Required
+	ItemRequirement climbingBoots, climbingBootsOr12Coins, vodka, vodkaHighlight, pineappleChunks, pineappleChunksHighlight, logs2, grain10, rawChicken5, tinderbox, pestleAndMortar, ranarrPotionUnf,
 		coins12, cellKey2, alcoChunks, parrot, parrotHighlighted, robe, logs1, thistle, logHighlight, tinderboxHighlight, driedThistle, pestleAndMortarHighlight, groundThistle, ranarrUnfHighlight, trollPotion, trainedParrot,
 		fakeMan, storeroomKey, goutweed, climbingBootsEquipped;
+
+	//Items Recommended
+	ItemRequirement ardougneTeleport;
 
 	ConditionForStep inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, hasAlcoChunks, hasParrot, hasRobe, hasLog, hasTinderbox, hasThistle, fireNearby, hasGroundThistle, hasDriedThistle,
@@ -86,6 +90,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	PanelDetails travelToEadgarPanel;
 
+	//Zones
 	Zone sanfewRoom, tenzingHut, mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5, trollArea1, prison, strongholdFloor1, strongholdFloor2, eadgarsCave,
 		trollheimArea, storeroom;
 

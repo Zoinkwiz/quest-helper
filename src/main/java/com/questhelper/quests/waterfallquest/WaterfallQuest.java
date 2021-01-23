@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.waterfallquest;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.DetailedQuestStep;
@@ -56,8 +57,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class WaterfallQuest extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement rope, highlightRope, glarialsPebble, glarialsUrn, glarialsAmulet, unequippedAmulet, book, key, baxKey, airRunes, waterRunes, earthRunes, airRune, waterRune,
-		earthRune, gamesNecklace, food;
+		earthRune;
+
+	//Items Recommended
+	ItemRequirement gamesNecklace, food;
 
 	ConditionForStep inGnomeBasement, inGlarialTomb, inFalls, onHudonIsland, onDeadTreeIsland, onLedge, hasGlarialsPebble, hasGlarialsUrn, hasGlarialsAmulet,
 		hasBook, inUpstairsInHouse, hasKey, hasBaxKey, inGolrieRoom, gotPebble, hasAirRunes, hasEarthRunes, hasWaterRunes, hasRope, inEndRoom, inEnd2;
@@ -69,6 +74,7 @@ public class WaterfallQuest extends BasicQuestHelper
 
 	ConditionalStep goGetPebble, getGlarialStuff;
 
+	//Zones
 	Zone gnomeBasement, glarialTomb, falls, endRoom, end2, hudonIsland, deadTreeIsland, ledge, upstairsInHouse, golrieRoom;
 
 	@Override
@@ -158,7 +164,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		waterRunes = new ItemRequirement("Water runes", ItemID.WATER_RUNE, 6);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
 
-		gamesNecklace = new ItemRequirement("Games necklace", ItemID.GAMES_NECKLACE8);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 	}

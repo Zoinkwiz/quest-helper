@@ -67,6 +67,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TempleOfIkov extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
 		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, iceArrowsEquipped;
 
@@ -83,6 +84,7 @@ public class TempleOfIkov extends BasicQuestHelper
 
 	ObjectStep collectArrows;
 
+	//Zones
 	Zone entryRoom1, entryRoom2, northRoom1, northRoom2, bootsRoom, arrowRoom1, arrowRoom2, arrowRoom3, lesRoom, witchRoom, demonArea1, demonArea2, demonArea3,
 		demonArea4, armaRoom1, armaRoom2;
 

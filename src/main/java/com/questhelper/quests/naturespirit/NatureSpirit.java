@@ -60,9 +60,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class NatureSpirit extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement ghostspeak, silverSickle, washingBowl, mirror, journal, druidicSpell, druidPouch, blessedSickle,
-		spellCard, mirrorHighlighted, journalHighlighted, mushroom, mushroomHighlighted, druidPouchFull, salveTele,
-		combatGear;
+		spellCard, mirrorHighlighted, journalHighlighted, mushroom, mushroomHighlighted, druidPouchFull;
+
+	//Items Recommended
+	ItemRequirement combatGear, salveTele;
 
 	ConditionForStep inUnderground, fillimanNearby, hasMirror, mirrorNearby, hasJournal, hasMushroom, usedMushroom, onOrange,
 		usedCard, inGrotto, hasPouch, hasFullPouch, natureSpiritNearby, ghastNearby;
@@ -73,6 +76,7 @@ public class NatureSpirit extends BasicQuestHelper
 		blessSickle, fillPouches, killGhasts, killGhast, enterGrottoAgain, touchAltarAgain, talkToNatureSpiritToFinish, offerToHelp,
 		spawnFillimanForRitual, talkToFillimanInGrotto;
 
+	//Zones
 	Zone underground, orangeStone, grotto;
 
 	@Override

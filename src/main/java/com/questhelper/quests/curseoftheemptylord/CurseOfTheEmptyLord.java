@@ -61,6 +61,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	private final int PATH_VARBIT = 815;
 	private int currentPath = 0;
 
+	//Items Required
 	ItemRequirement ringOfVis, ghostspeak;
 
 	ConditionForStep talkedToValdez, talkedToRennard, talkedToKharrim, talkedToLennissa, talkedToDhalak, talkedToViggora, inRoguesCastle, inEdgevilleDungeon, inSlayerTower,
@@ -71,6 +72,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 	ObjectStep goDownIntoEdgevilleDungeon;
 
+	//Zones
 	Zone roguesCastleFirstFloor, edgevilleDungeon, slayerTowerFirstFloor, edgevilleMonastery, partyRoom;
 
 	@Override

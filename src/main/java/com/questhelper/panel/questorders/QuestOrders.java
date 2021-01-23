@@ -206,7 +206,10 @@ public class QuestOrders
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ARCHITECTURAL_ALLIANCE,
 		QuestHelperQuest.ENCHANTED_KEY,
-		QuestHelperQuest.FAMILY_PEST
+		QuestHelperQuest.FAMILY_PEST,
+		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
+		QuestHelperQuest.THE_MAGE_ARENA,
+		QuestHelperQuest.THE_MAGE_ARENA_II
 	));
 
 	public static String normalizeQuestName(String questName) {

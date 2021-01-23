@@ -71,7 +71,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		engine, pulleyBeam, longPulleyBeam, longerPulleyBeam, rope, beam, plank, diary5, box, letter;
 
 	//Items Recommended
-	ItemRequirement antipoison, food, prayerPotion;
+	ItemRequirement antipoison, food, prayerPotions;
 
 	ConditionForStep inMiscFloor1, inEtcFloor1, onIslands, hasPickaxe, hasCoal5, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject, talkedToSigrid, talkedToEtcSubject, reportedToVargas,
 		reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas, enteredDungeon, inDungeon, inLiftRoom, inPath1, inPath2, inPath3, inPath4, hasLiftManual, talkedToDonal, usedProp, hasEngine,
@@ -245,7 +245,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.getPickaxes());
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		prayerPotion = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 		antipoison = new ItemRequirement("Any antipoison", ItemCollections.getAntipoisons(), 1);
@@ -597,7 +597,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(antipoison);
 		reqs.add(food);
-		reqs.add(prayerPotion);
+		reqs.add(prayerPotions);
 		return reqs;
 	}
 

@@ -76,7 +76,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		chiselHighlighted, deconstructedOnyx, chargedOnyx;
 
 	//Items Recommended
-	ItemRequirement combatGear, combatGear2, magicLog, food, staminaPotions, prayerPotions, antidote;;
+	ItemRequirement combatGear, combatGear2, magicLog, food, staminaPotions, prayerPotions, antidote;
 
 	//Other Requirements
 	Requirement nieveFollower;

@@ -131,7 +131,7 @@ public class Contact extends BasicQuestHelper
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 	}

@@ -1051,11 +1051,12 @@ public class DragonSlayerII extends BasicQuestHelper
 		kill2Blue2Green = new NpcStep(this, NpcID.BLUE_DRAGON_8083, "Kill the blue and green dragons.", true);
 		((NpcStep) (kill2Blue2Green)).addAlternateNpcs(NpcID.GREEN_DRAGON_8082);
 
-		killBlackSteelBrutalRedDragon = new NpcStep(this, NpcID.BLACK_DRAGON_8084, "Kill the black, steel, and brutal red dragon. Occasionally Gorvek will shoot a fireball in the air, move to avoid it.", true);
+		killBlackSteelBrutalRedDragon = new NpcStep(this, NpcID.BLACK_DRAGON_8084, "Kill the black, steel, and brutal" +
+			" red dragon. Occasionally Galvek will shoot a fireball in the air, move to avoid it.", true);
 		((NpcStep) (killBlackSteelBrutalRedDragon)).addAlternateNpcs(NpcID.BLACK_DRAGON_8085, NpcID.BRUTAL_RED_DRAGON_8087, NpcID.STEEL_DRAGON_8086);
 
 		killMithAddyAndRuneDragons = new NpcStep(this, NpcID.MITHRIL_DRAGON_8088, "Kill the metal dragons.", true);
-		killMithAddyAndRuneDragons.addText("Occasionally Gorvek will shoot a fireball in the air, move to avoid it.");
+		killMithAddyAndRuneDragons.addText("Occasionally Galvek will shoot a fireball in the air, move to avoid it.");
 		killMithAddyAndRuneDragons.addText("");
 		((NpcStep) (killMithAddyAndRuneDragons)).addAlternateNpcs(NpcID.MITHRIL_DRAGON_8089, NpcID.ADAMANT_DRAGON, NpcID.ADAMANT_DRAGON_8090, NpcID.RUNE_DRAGON, NpcID.RUNE_DRAGON_8091);
 		killGalvek = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. This is a hard fight, so it's recommended you check a video to see what you'll have to do.", true);

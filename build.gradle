@@ -22,7 +22,6 @@ dependencies {
 	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
 }
 
-
 group = 'com.questhelper'
 version = '1.4.4'
 sourceCompatibility = '1.8'

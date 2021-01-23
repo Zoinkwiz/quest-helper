@@ -544,7 +544,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		talkToVeliafInPater = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3438, 9897, 0),
 			"Talk to Veliaf in Paterdomus.");
-		talkToVeliafInPater.addDialogStep("I see. So that's why you wanted to keep him safe, Veliaf?");
+		talkToVeliafInPater.addDialogStep("I see. So that's why you want to keep him safe, Veliaf?");
 		talkToVeliafInPater.addSubSteps(enterPater);
 
 		talkToIvan = new NpcStep(this, NpcID.IVAN_STROM_9530, new WorldPoint(3548, 3516, 0),

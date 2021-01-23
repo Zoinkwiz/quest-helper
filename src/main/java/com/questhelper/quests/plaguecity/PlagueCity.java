@@ -57,8 +57,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class PlagueCity extends BasicQuestHelper
 {
-	ItemRequirement spade, dwellberries, rope, fourBucketsOfWater, threeBucketsOfWater, twoBucketsOfWater, bucketOfWater, bucketOfMilk,
-		chocolateDust, snapeGrass, pictureOfElena, gasMask, book, bucketOfChocolateMilk, hangoverCure, warrant, key;
+	//Items Required
+	ItemRequirement spade, dwellberries, rope, bucketOfMilk, chocolateDust, snapeGrass,
+		pictureOfElena, gasMask, book, bucketOfChocolateMilk, hangoverCure, warrant, key;
+
+	//Items Recommended
+	ItemRequirement fourBucketsOfWater, threeBucketsOfWater, twoBucketsOfWater, bucketOfWater;
 
 	ConditionForStep inUnderground, hasPictureOfElena, hasTriedToPullGrill, inWestArdougne, hasBook, inUpstairsMathasHouse, hasBucketOfChocolateMilk, hasHangoverCure,
 	hasWarrant, inPlagueHouse, inDownstairsOfPlagueHouse, hasKey, manholeClosed;
@@ -69,6 +73,7 @@ public class PlagueCity extends BasicQuestHelper
 		useSnapeGrassOnChocolateMilk, giveHangoverCureToBravek, talkToBravekAgain, tryToEnterPlagueHouseAgain, searchBarrel, goDownstairsInPlagueHouse,
 		goUpstairsInPlagueHouse, talkToElena, goUpstairsInPlagueHouseToFinish, goDownManhole, goDownManhole2, climbMudPileToFinish, talkToEdmondToFinish;
 
+	//Zones
 	Zone underground, westArdougne1, westArdougne2, westArdougne3, upstairsMathasHouse, plagueHouse1, plagueHouse2, downstairsOfPlagueHouse;
 
 	@Override

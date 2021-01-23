@@ -81,6 +81,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 
 	ConditionalStep tokenAndEggSteps;
 
+	//Zones
 	Zone diningRoom, zanaris, evilChickenLair;
 
 	int evilChickenLevel = 19;

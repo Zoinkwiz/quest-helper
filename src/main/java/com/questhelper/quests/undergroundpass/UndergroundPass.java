@@ -66,22 +66,18 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class UndergroundPass extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement rope1, rope2, ropeHighlight, bow, arrows, arrowsHighlight, spade, spadeHighlight, plank,
-		plankHighlight, bucket, tinderbox, tinderboxHighlight, combatEquipment, food, staminaPotions, coins,
-		agilityPotions, telegrabRunes, oilyCloth, oilyClothHighlight, fireArrow, litArrow, litArrowEquipped,
+		plankHighlight, bucket, tinderbox, tinderboxHighlight, combatEquipment, robeTopEquipped, robeBottomEquipped,
+		agilityPotions, oilyCloth, oilyClothHighlight, fireArrow, litArrow, litArrowEquipped, dollOfIbanHighlighted,
 		orb1, orb2, orb3, orb4, railing, railingHighlight, unicornHorn, badgeJerro, badgeCarl, badgeHarry,
 		badgeJerroHighlight, badgeCarlHighlight, badgeHarryHighlight, unicornHornHighlight, klanksGauntlets,
 		witchsCat, amuletHolthion, amuletHolthionHighlight, amuletDoomion, amuletDoomionHighlight, amuletOthanian,
 		amuletOthanianHighlight, dollOfIban, bucketHighlight, brew, klanksGauntletsEquipped, robeTop, robeBottom,
-		ibansAshes, ibansDove, ibansShadow, dollOfIbanHighlighted, robeTopEquipped, robeBottomEquipped;
+		ibansAshes, ibansDove, ibansShadow;
 
-	Zone castleFloor2, westArdougne, beforeRockslide1, beforeRockslide2, beforeRockslide3, beforeBridge,
-		northEastOfBridge, westOfBridge, beforeThePit, afterThePit, beforeTheGrid, atTheGrid, afterTheGrid,
-		beforeTrap1, beforeTrap2, beforeTrap3, beforeTrap4, beforeTrap5, wellArea, beforePlank2, beforePlank3,
-		atOrb1, insideCell, beforeLedge, afterMaze, afterMazeShortcut, inUnicornArea, inUnicornArea2, inKnightsArea1,
-		inKnightsArea2, inKnightsArea3, beforeIbansDoor, inDwarfCavern, inFinalArea, inTemple, inFallArea,
-		inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4,
-		inUndergroundSection3, inMaze1, inMaze2, inPostIbanArea;
+	//Items Recommended
+	ItemRequirement food, staminaPotions, coins, telegrabRunes;
 
 	ConditionForStep inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
 		isBeforeBridge, isNorthEastOfBridge, haveOilyCloth, haveFireArrow, haveLitArrow, haveLitArrowEquipped,
@@ -108,6 +104,15 @@ public class UndergroundPass extends BasicQuestHelper
 		searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag,
 		ascendToHalfSouless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
 		talkToKingLathasAfterTemple, leaveFallArea, useAshOnDoll, useShadowOnDoll, useDoveOnDoll, goUpToLathasToFinish;
+
+	//Zones
+	Zone castleFloor2, westArdougne, beforeRockslide1, beforeRockslide2, beforeRockslide3, beforeBridge,
+		northEastOfBridge, westOfBridge, beforeThePit, afterThePit, beforeTheGrid, atTheGrid, afterTheGrid,
+		beforeTrap1, beforeTrap2, beforeTrap3, beforeTrap4, beforeTrap5, wellArea, beforePlank2, beforePlank3,
+		atOrb1, insideCell, beforeLedge, afterMaze, afterMazeShortcut, inUnicornArea, inUnicornArea2, inKnightsArea1,
+		inKnightsArea2, inKnightsArea3, beforeIbansDoor, inDwarfCavern, inFinalArea, inTemple, inFallArea,
+		inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4,
+		inUndergroundSection3, inMaze1, inMaze2, inPostIbanArea;
 
 	private void setupItemReqs()
 	{

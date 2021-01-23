@@ -62,6 +62,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheFremennikIsles extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement tuna, ores, jesterHat, jesterTights, jesterTop, jesterBoots, arcticLogs8, splitLogs8,
 		knife, rope8, rope4, splitLogs4, yakTop, yakBottom, royalDecree, roundShield, yakTopWorn, yakBottomWorn,
 		shieldWorn, meleeWeapon, food, head, needle, thread, coins15, bronzeNail, hammer, rope, axe, rope9;
@@ -81,6 +82,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		returnToRellekkaFromJatizsoWithDecree, travelToNeitiznotWithDecree, talkToMawnisWithDecree, getYakArmour, returnToRellekkaFromJatizsoAfterDecree,
 		travelToNeitiznotAfterDecree, talkToMawnisAfterDecree, makeShield, enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest, finishQuestGivenHead;
 
+	//Zones
 	Zone islands, jatizso1, jatizso2, neitiznot1, neitiznot2, trollLands, trollCave, kingCave;
 
 	PanelDetails prepareForRepairPanel, prepareForCombatPanel;

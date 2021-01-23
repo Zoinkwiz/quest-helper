@@ -51,6 +51,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class SkippyAndTheMogres extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement bucketOfWater, nettleTea, chocolateDust, bucketOfMilk, snapeGrass, chocolateMilk, hangoverCure;
 
 	ConditionForStep hasChocolateMilk, hasHangoverCure;

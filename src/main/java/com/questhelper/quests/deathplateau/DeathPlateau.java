@@ -60,19 +60,27 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class DeathPlateau extends BasicQuestHelper
 {
+	//Items Recommended
+	ItemRequirement gamesNecklace;
+
+	//Items Required
 	ItemRequirement asgarnianAle, premadeBlurb, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
-		yellowStone, pinkStone, greenStone, certificate, climbingBoots, spikedBoots, secretMap, combination, gamesNecklace;
-	Zone castleDownstairs, castleUpstairs, barDownstairs, barUpstairs, haroldsRoom1, haroldsRoom2, sabaCave;
+		yellowStone, pinkStone, greenStone, certificate, climbingBoots, spikedBoots, secretMap, combination;
+
 	ConditionForStep hasAsgarnianAle, inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs,
 		inHaroldsRoom, givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
 		isGreenStoneDone, inSabaCave, hasCertificate, hasClimbingBoots, hasSpikedBoots, hasSecretMap, hasCombination,
 		isFarEnough, talkedToSaba, talkedToDunstan;
+
 	QuestStep talkToDenulth1, goToEohric1, talkToEohric1, goToHaroldStairs1, goToHaroldDoor1, talkToHarold1,
 		goToEohric2, talkToEohric2, takeAsgarnianAle, goToHaroldStairs2, goToHaroldDoor2, talkToHarold2,
 		giveHaroldBlurberry, gambleWithHarold, readIou, placeRedStone, placeBlueStone, placeYellowStone,
 		placePinkStone, placeGreenStone, placeStones, enterSabaCave, talkToSaba, leaveSabaCave,
 		talkToTenzing1, talkToDunstan1, talkToDenulthForDunstan, talkToDunstan2, talkToTenzing2,
 		goNorth, talkToDenulth3, goToHaroldStairs3, goToHaroldDoor3, talkToHarold3;
+
+	//Zones
+	Zone castleDownstairs, castleUpstairs, barDownstairs, barUpstairs, haroldsRoom1, haroldsRoom2, sabaCave;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

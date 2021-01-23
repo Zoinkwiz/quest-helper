@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.theyesofglouphrie;
+package com.questhelper.quests.theeyesofglouphrie;
 
 import com.google.inject.Inject;
 import com.questhelper.requirements.ItemRequirement;

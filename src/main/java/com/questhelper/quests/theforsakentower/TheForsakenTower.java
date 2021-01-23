@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.theforsakentower;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.requirements.FavourRequirement;
@@ -61,7 +62,11 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheForsakenTower extends BasicQuestHelper
 {
-	ItemRequirement tinderbox, gamesNecklace, fiveGallon, eightGallon, crank, oldNotes, dinhsHammer;
+	//Items Required
+	ItemRequirement tinderbox, fiveGallon, eightGallon, crank, oldNotes, dinhsHammer;
+
+	//Items Recommended
+	ItemRequirement gamesNecklace;
 
 	ConditionForStep has5Gallon, has8Gallon, hasTinderbox, inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, hasCrank, generatorStarted,
 		powerPuzzleVisible, finishedPowerPuzzle, hasOldNotes, finishedPotionPuzzle, finishedAltarPuzzle, hasDinhsHammer;
@@ -75,6 +80,7 @@ public class TheForsakenTower extends BasicQuestHelper
 
 	ConditionalStep powerPuzzle;
 
+	//Zones
 	Zone firstFloor, secondFloor, basement;
 
 	@Override
@@ -129,7 +135,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		crank = new ItemRequirement("Generator crank", ItemID.GENERATOR_CRANK);
 		oldNotes = new ItemRequirement("Old notes", ItemID.OLD_NOTES_22774);
 		dinhsHammer = new ItemRequirement("Dinh's hammer", ItemID.DINHS_HAMMER);
-		gamesNecklace = new ItemRequirement("Games necklace for accessing Wintertodt", ItemID.GAMES_NECKLACE8);
+		gamesNecklace = new ItemRequirement("Games necklace for accessing Wintertodt", ItemCollections.getGamesNecklaces());
 	}
 
 	public void setupConditions()

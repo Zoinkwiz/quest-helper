@@ -60,15 +60,17 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class TearsOfGuthix extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement litSapphireLantern, chisel, tinderbox, pickaxe, rope, litSapphireLanternHighlighted,
 		ropeHighlighted, tinderboxHighlighted, pickaxeHighlighted, chiselHighlighted, rockHighlighted, stoneBowl;
 
 	ConditionForStep inSwamp, inJunaRoom, atRocks, addedRope, hasRock, hasStoneBowl;
 
-	Zone swamp, junaRoom, rocks;
-
 	QuestStep addRope, enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock,
 		talkToJunaToFinish;
+
+	//Zones
+	Zone swamp, junaRoom, rocks;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

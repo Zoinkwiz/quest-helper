@@ -63,7 +63,11 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TheLostTribe extends BasicQuestHelper
 {
-	ItemRequirement pickaxe, lightSource, brooch, book, key, silverware, treaty, varrockTeleport, faladorTeleport, lumbridgeTeleports;
+	//Items Required
+	ItemRequirement pickaxe, lightSource, brooch, book, key, silverware, treaty;
+
+	//Items Recommended
+	ItemRequirement varrockTeleport, faladorTeleport, lumbridgeTeleports;
 
 	ConditionForStep inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, hasBrooch, hasBook, inMines,
 		hasKey, foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
@@ -77,6 +81,7 @@ public class TheLostTribe extends BasicQuestHelper
 		goMineRubble, enterTunnels, goShowBroochToDuke, goTalkToDukeAfterEmote, goTravelToMistag, goGetKey, goOpenRobeChest,
 		goIntoHamLair, goToDukeWithSilverware, travelToMakePeace;
 
+	//Zones
 	Zone basement, lumbridgeF0, lumbridgeF1, lumbridgeF2, tunnels, mines, hamBase;
 
 	@Override

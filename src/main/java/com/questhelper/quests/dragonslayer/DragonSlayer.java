@@ -63,10 +63,13 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class DragonSlayer extends BasicQuestHelper
 {
+	//Items Recommended
+	ItemRequirement chronicle, edgevilleTeleport, rimmingtonTeleport, antidragonShieldEquipped, antifirePotion, ringsOfRecoil;
+
+	//Items Required
 	ItemRequirement unfiredBowl, mindBomb, lobsterPot, silk, telegrabOrTenK, hammer, antidragonShield, planks3, planks2, planks1,
 		nails90, nails60, nails30, twoThousandCoins, mapPart1, mapPart2, mapPart3, fullMap, melzarsKey, ratKey, ghostKey,
-		skeletonKey, zombieKey, melzarKey, demonKey, combatGear, antidragonShieldEquipped, antifirePotion, ringsOfRecoil,
-		chronicle, edgevilleTeleport, rimmingtonTeleport, food;
+		skeletonKey, zombieKey, melzarKey, demonKey, combatGear, food;
 
 	ConditionForStep askedAboutShip, askedAboutShield, askedAboutMelzar, askedAboutThalzar, askedAboutLozar, askedAllQuestions, askedOracleAboutMap,
 		inDwarvenMines, silkUsed, lobsterPotUsed, mindBombUsed, unfiredBowlUsed, thalzarDoorOpened, thalzarChest2Nearby, hasMapPart1, hasMapPart2,
@@ -85,6 +88,7 @@ public class DragonSlayer extends BasicQuestHelper
 		goDownShipLadder, repairShip, repairShip2, repairShip3, repairMap, talkToNed, boardShipToGo, talkToNedOnShip, enterCrandorHole, unlockShortcut,
 		returnThroughShortcut, enterElvargArea, goDownIntoKaramjaVolcano, repairShipAgainAndSail, killElvarg, finishQuest;
 
+	//Zones
 	Zone dwarvenMines, melzarsMaze, melzarsBasement, ratRoom1, ratRoom2, ratRoom3, postRatRoom1, postRatRoom2, ghostRoom1, ghostRoom2,
 		postGhostRoom1, postGhostRoom2, skeletonRoom1, skeletonRoom2, postSkeletonRoom1, postSkeletonRoom2, postSkeletonRoom3, ladderRoom,
 		roomToBasement1, roomToBasement2, zombieRoom, melzarRoom1, melzarRoom2, demonRoom1, demonRoom2, lastMelzarRoom1, lastMelzarRoom2,

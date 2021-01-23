@@ -59,8 +59,11 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class DemonSlayer extends BasicQuestHelper
 {
-	ItemRequirement bucket, bucketOfWater, key1, key2, key3, bones, silverlight, combatGear, silverlightEquipped, bucketOfWaterOptional, varrockTeleport,
-		wizardsTowerTeleport, coin, food;
+	//Items Required
+	ItemRequirement bucket, bucketOfWater, key1, key2, key3, bones, silverlight, combatGear, silverlightEquipped, coin, food, bucketOfWaterOptional;
+
+	//Items Recommended
+	ItemRequirement varrockTeleport, wizardsTowerTeleport;
 
 	ConditionForStep inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1, hasBucket, hasFilledBucket, hasFirstKey, hasSecondKey, hasThirdKey,
 		hasPouredWaterIntoDrain, inTowerFloor1, obtainedSilverlight, hasSilverlight, delrithNearby, delrithWeakenedNearby, inInstance;
@@ -71,6 +74,7 @@ public class DemonSlayer extends BasicQuestHelper
 
 	ConditionalStep getFirstKey, getSecondKey, getThirdKey, goAndKillDelrith;
 
+	//Zones
 	Zone varrockSewer, castleNWFloor1, castleNWFloor2, castleNEFloor1, towerFloor1;
 
 	@Override

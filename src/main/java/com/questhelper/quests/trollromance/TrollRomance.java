@@ -60,6 +60,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TrollRomance extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, wax, sled, waxedSled, trollweissFlowers, combatGear, sledEquipped;
 
 	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation, hasWax, hasWaxedSled, hasFlower, inTrollCave,
@@ -71,6 +72,7 @@ public class TrollRomance extends BasicQuestHelper
 
 	ObjectStep pickFlowers;
 
+	//Zones
 	Zone strongholdFloor1, strongholdFloor2, prison, trollweiss, flowerLocation, trollCave;
 
 	@Override

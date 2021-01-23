@@ -54,14 +54,19 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class TheRestlessGhost extends BasicQuestHelper
 {
-	private ItemRequirement lumbridgeTeleports, ghostspeakAmulet, skull, passage;
+	//Items Required
+	private ItemRequirement ghostspeakAmulet, skull;
 
-	private Zone basement;
+	//Items Recommended
+	private ItemRequirement lumbridgeTeleports, passage;
 
 	private ConditionForStep ghostSpawned, coffinOpened, inBasement, hasSkull;
 
 	private QuestStep talkToAereck, talkToUrhney, speakToGhost, openCoffin, searchCoffin, enterWizardsTowerBasement, searchAltarAndRun, exitWizardsTowerBasement,
 		openCoffinToPutSkullIn, putSkullInCoffin;
+
+	//Zones
+	private Zone basement;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

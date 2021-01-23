@@ -57,6 +57,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class ASoulsBane extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement rope, combatGear, angerSword, angerSpear, angerMace, angerBattleaxe;
 
 	ConditionForStep ropeUsed, inAngerRoom, hasWeapon, hasSword, hasSpear, hasMace, hasBattleaxe, watchedTolnaLeavingCutscene, inHole0, inHole1,
@@ -68,6 +69,7 @@ public class ASoulsBane extends BasicQuestHelper
 
 	NpcStep killHopelessCreatures, killHeads;
 
+	//Zones
 	Zone rageRoom, fearRoom, confusionRoom, hopelessRoom, hopeRoom, tolnaRoom;
 
 	@Override

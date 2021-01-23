@@ -54,12 +54,17 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class VampyreSlayer extends BasicQuestHelper
 {
-	ItemRequirement hammer, beer, garlic, garlicObtainable, stake, varrockTeleport, draynorManorTeleport, combatGear;
+	//Items Required
+	ItemRequirement hammer, beer, garlic, garlicObtainable, stake, combatGear;
+
+	//Items Recommended
+	ItemRequirement varrockTeleport, draynorManorTeleport;
 
 	ConditionForStep inManor, inBasement, hasGarlic, isUpstairsInMorgans, draynorNearby, hasStake;
 
 	QuestStep talkToMorgan, goUpstairsMorgan, getGarlic, ifNeedGarlic, talkToHarlow, talkToHarlowAgain, enterDraynorManor, goDownToBasement, openCoffin, killDraynor;
 
+	//Zones
 	Zone manor, basement, upstairsInMorgans;
 
 	@Override
@@ -93,7 +98,7 @@ public class VampyreSlayer extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT);
+		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		draynorManorTeleport = new ItemRequirement("Draynor manor teleport", ItemID.DRAYNOR_MANOR_TELEPORT);
 		stake = new ItemRequirement("Stake", ItemID.STAKE);
 		stake.setTip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");

@@ -67,6 +67,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class GrimTales extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement tarrominUnf2, tarrominUnf, dibber, can, axe, combatGear, griffinFeather, rupertsHelmet, miazrqasPendant, goldenGoblin, houseKey, ogleroot, shrinkPotion,
 		shrinkPotionHighlight, tarrominUnfHighlight, oglerootHighlight, magicBeans, canHighlight, food;
 
@@ -80,6 +81,7 @@ public class GrimTales extends BasicQuestHelper
 		enterWitchsHouseWithPotion, climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkMizAfterPendant, talkToRupertAfterAmulet, leaveWrong1, leaveWrong2,
 		giveHelmetToSylas, talkToSylasAfterGivingItems, plantBean, waterBean, climbBean, climbBeanForStatue, killGlod, pickUpGoldenGoblin, giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish;
 
+	//Zones
 	Zone house, basement, towerBase, towerUpstairs, mouseRoom1, mouseRoom2, mouseRoom3, mouseRoom4, mouseRoom5, mouseRoom6, wrongMouse1, wrongMouse2, cloud;
 
 	@Override

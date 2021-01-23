@@ -59,8 +59,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class WhatLiesBelow extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement intel5, bowl, chaosRunes15, emptyFolder, usedFolder, fullFolder, chaosTalismanOrAbyss, folder, wand,
-		wandHighlight, beaconRing, letterToSurok, infusedWand, suroksLetter, chronicle;
+		wandHighlight, beaconRing, letterToSurok, infusedWand, suroksLetter;
+
+	//Items Recommended
+	ItemRequirement chronicle;
 
 	ConditionForStep inChaosAltar, hasFullFolder, inBattle;
 
@@ -69,6 +73,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 	NpcStep killOutlaws;
 
+	//Zones
 	Zone chaosAltar;
 
 	@Override

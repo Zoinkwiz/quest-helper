@@ -64,6 +64,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class Watchtower extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement coins20, goldBar, deathRune, pickaxe, dragonBones, rope2, guamUnf, fingernails, rope, tobansKey, goradsTooth, relic3, relic1, relic2, tobansGold,
 		crystal, ogreRelic, rockCake, skavidMap, lightSource, nightshade, nightshade2, crystal2, jangerberries, batBones, groundBatBones, pestleAndMortar, partialPotion, potion,
 		magicPotion, magicPotionHighlight, crystal3, crystal4, crystalHighlight, crystal2Highlight, crystal3Highlight, crystal4Highlight;
@@ -84,6 +85,7 @@ public class Watchtower extends BasicQuestHelper
 		goUpToWizardWithPotion, talkToWizardWithPotion, useNightshadeOnGuardAgain, usePotionOnOgre1, usePotionOnOgre2, usePotionOnOgre3, usePotionOnOgre4, usePotionOnOgre5, usePotionOnOgre6,
 		mineRock, leaveEnclaveWithCrystals, goUpToFirstFloorWithCrystals, goUpToWizardWithCrystals, talkToWizardWithCrystals, useCrystal1, useCrystal2, useCrystal3, useCrystal4, pullLever;
 
+	//Zones
 	Zone watchtowerFloor1, watchtowerFloor2, grewIsland, tobanIsland, endOfJumpingPath, scaredSkavidRoom, skavidRoom1, skavidRoom2, skavidRoom3, skavidRoom4, insaneSkavidPath1,
 		insaneSkavidPath2, insaneSkavidRoom, enclave;
 

@@ -54,15 +54,18 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class JunglePotion extends BasicQuestHelper
 {
-	private QuestStep startQuest, finishQuest;
-	private ObjectStep getSnakeWeed, getArdrigal, getSitoFoil, getVolenciaMoss, enterCave, getRoguePurseHerb;
-	private ConditionalStep cleanAndReturnSnakeWeed, cleanAndReturnArdrigal, cleanAndReturnSitoFoil, cleanAndReturnVolenciaMoss,
-		getRoguesPurse, cleanAndReturnRoguesPurse;
-	private ItemRequirement grimySnakeWeed, snakeWeed, grimyArdrigal, ardrigal, grimySitoFoil, sitoFoil, grimyVolenciaMoss, volenciaMoss,
+	//Items Required
+	ItemRequirement grimySnakeWeed, snakeWeed, grimyArdrigal, ardrigal, grimySitoFoil, sitoFoil, grimyVolenciaMoss, volenciaMoss,
 		roguesPurse, grimyRoguesPurse;
 
-	private ZoneCondition isUnderground;
+	QuestStep startQuest, finishQuest;
 
+	ObjectStep getSnakeWeed, getArdrigal, getSitoFoil, getVolenciaMoss, enterCave, getRoguePurseHerb;
+
+	ConditionalStep cleanAndReturnSnakeWeed, cleanAndReturnArdrigal, cleanAndReturnSitoFoil, cleanAndReturnVolenciaMoss,
+		getRoguesPurse, cleanAndReturnRoguesPurse;
+
+	ZoneCondition isUnderground;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -233,11 +236,12 @@ public class JunglePotion extends BasicQuestHelper
 		return reqs;
 	}
 
+	//Recommended
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		ItemRequirement food = new ItemRequirement("Food", -1);
+		ItemRequirement food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 
 		reqs.add(food);

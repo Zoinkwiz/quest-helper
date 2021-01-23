@@ -45,6 +45,7 @@ import java.util.Map;
 )
 public class SheepShearer extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement twentyBallsOfWool, shears;
 
 	QuestStep startStep;

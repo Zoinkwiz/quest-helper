@@ -64,6 +64,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class HauntedMine extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear,
 	zealotsKeyHighlighted, food;
 
@@ -80,6 +81,7 @@ public class HauntedMine extends BasicQuestHelper
 		enterMineNorth, goDownLevel1North, goDownLevel2North, goDownToDayth, goDownToCrystals, tryToPickUpKey, killDayth, pickUpKey, goUpFromDayth,
 		cutCrystal, leaveCrystalRoom, goBackUpLift, leaveDarkCrystalRoom, leaveDarkDaythRoom, solvePuzzle;
 
+	//Zones
 	Zone entryRoom1, level1South, liftRoom1, liftRoom2, level2South, level2North, level2North2, level3North1, level3North2, level3North3, level3North4,
 		level3South1, level3South2, level3South3, cartRoom, collectRoom, level1North, floodedRoom, daythRoom1, daythRoom2, crystalRoom1,
 		crystalRoom2, crystalRoom3, crystalEntrance, crystalEntranceDark, daythRoomDark;

@@ -46,6 +46,7 @@ import com.questhelper.steps.QuestStep;
 )
 public class CooksAssistant extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement egg, milk, flour;
 
 	QuestStep doQuest;

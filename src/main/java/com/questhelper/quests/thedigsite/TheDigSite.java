@@ -65,6 +65,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class TheDigSite extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, rope, opal, charcoal, leatherBoots, leatherGloves, specimenBrush, specimenJar, panningTray,
 		trowel, varrock2, digsiteTeleports, sealedLetter, specialCup, teddybear, skull, nitro, nitrate, chemicalCompound, groundCharcoal, invitation, talisman,
 		mixedChemicals, mixedChemicals2, arcenia, powder, liquid, tablet, key, unstampedLetter, pick, trowelHighlighted, tinderboxHighlighted, chemicalCompoundHighlighted;
@@ -82,6 +83,7 @@ public class TheDigSite extends BasicQuestHelper
 		useLiquidOnExpert, mixNitroWithNitrate, addCharcoal, addRoot, goDownToExplode, useCompound, useTinderbox, takeTablet, useTabletOnExpert, syncStep, talkToFemaleStudent5,
 		talkToOrangeStudent4, talkToGreenStudent4, useRopeOnWinch2, goDownToExplode2, goDownForTablet, goUpWithTablet;
 
+	//Zones
 	Zone undergroundTemple1, dougRoom, undergroundTemple2;
 
 	@Override
@@ -499,12 +501,6 @@ public class TheDigSite extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal, leatherBoots, leatherGloves));
-	}
-
-	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
-	{
-		return new ArrayList<>();
 	}
 
 	@Override

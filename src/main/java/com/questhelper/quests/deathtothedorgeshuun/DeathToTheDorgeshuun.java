@@ -67,6 +67,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class DeathToTheDorgeshuun extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement pickaxe, lightSource, brooch, book, key, silverware, treaty, varrockTeleport, faladorTeleport, lumbridgeTeleports,
 		hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2, hamSet2, hamShirt, hamRobe, hamHood, hamBoot, hamGloves,
 		hamLogo, hamCloak, hamSet, zanik, pickaxeHighlighted, tinderbox, crate, combatGear, gamesNecklace;
@@ -90,6 +91,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		goTalkToAereck, goTalkToGuide, goNearGoblins, goTalkToShopkeeper, goOutsideSteps, goIntoHamLair, goClearRocks, goToJunaSteps,
 		learnZanikStory, goGetZanikForMill;
 
+	//Zones
 	Zone basement, lumbridgeF0, lumbridgeF1, lumbridgeF2, tunnels, mines, hamBase, behindGuard1, nearGuard4, nearGuard5, storeRoom, swamp, junaRoom,
 		mill1, mill2;
 

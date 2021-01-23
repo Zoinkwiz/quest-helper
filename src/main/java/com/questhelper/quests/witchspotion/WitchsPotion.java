@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class WitchsPotion extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement ratTail, onion, burntMeat, eyeOfNewt;
 
 	ConditionForStep hasRatTail;

@@ -67,6 +67,7 @@ public class RFDEvilDave extends BasicQuestHelper
 	QuestStep enterDiningRoom, inspectEvilDave, talkToDoris, enterBasement, talkToEvilDave, goUpToDorris,
 		enterBasementAgain, enterDiningRoomAgain, useStewOnEvilDave, makeStew;
 
+	//Zones
 	Zone diningRoom, evilDaveRoom;
 
 	@Override

@@ -67,6 +67,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class RumDeal extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement combatGear, dibber, rake, slayerGloves, blindweedSeed, rakeHighlight, blindweedSeedHighlight, blindweed, blindweedHighlight, bucket, bucketHighlight,
 		stagnantWater, stagnantWaterHighlight, netBowl, sluglings5, holyWrench, wrench, spiderCarcass, spiderCarcassHighlight, swill;
 
@@ -83,6 +84,7 @@ public class RumDeal extends BasicQuestHelper
 
 	SlugSteps getSlugs;
 
+	//Zones
 	Zone island, islandF0, islandF1, islandF2, northIsland, spiderRoom;
 
 	@Override

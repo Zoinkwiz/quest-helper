@@ -54,9 +54,8 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class MisthalinMystery extends BasicQuestHelper
 {
+	//Requirements
 	private ItemRequirement bucket, manorKey, knife, notes1, rubyKey, tinderbox, notes2, emeraldKey, notes3, sapphireKey, killersKnife, killersKnifeEquipped;
-
-	private Zone island, outside1, outside2, outside3, bossRoom;
 
 	private ConditionForStep onIsland, hasBucket, hasManorKey, hasKnife, hasNotes1, hasRubyKey, hasTinderbox, litCandle1, litCandle2, litCandle3, inOutsideArea, hasNotes2,
 		inPianoWidget, playedD, playedE, playedA, playedAnyKey, hasEmeraldKey, hasNotes3, inGemWidget, selectedSaphire, selectedDiamond, selectedZenyte, selectedEmerald, selectedOnyx,
@@ -68,6 +67,9 @@ public class MisthalinMystery extends BasicQuestHelper
 		searchThePiano, returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep, takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond,
 		clickZenyte, clickEmerald, clickOnyx, clickRuby, restartGems, searchFireplaceForSapphireKey, goThroughSapphireDoor, reflectKnives, continueThroughSapphireDoor, pickUpKillersKnife,
 		fightAbigale, leaveSapphireRoom, talkToMandy;
+
+	//Zones
+	private Zone island, outside1, outside2, outside3, bossRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

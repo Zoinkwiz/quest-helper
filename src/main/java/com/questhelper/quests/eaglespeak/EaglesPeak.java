@@ -63,6 +63,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class EaglesPeak extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement yellowDye, coins, tar, birdBook, metalFeather, tenEagleFeathers, fakeBeak, eagleCape, bronzeFeather, silverFeather, goldFeather,
 		birdFeed6, ferret, metalFeatherHighlighted, birdFeed, bronzeFeatherHighlighted, silverFeatherHighlighted, goldFeatherHighlighted;
 
@@ -80,6 +81,7 @@ public class EaglesPeak extends BasicQuestHelper
 		useSilverFeathersOnStoneDoor, useBronzeFeathersOnStoneDoor, useGoldFeathersOnStoneDoor, useGoldBronzeFeathersOnStoneDoor, useGoldSilverFeathersOnStoneDoor,
 		useBronzeSilverFeathersOnStoneDoor, sneakPastEagle, speakToNickolaus, speakToNickolausInTheCamp, speakToCharlieAgain, pickUpActualSilverFeather, leavePeak;
 
+	//Zones
 	Zone inMainCave, inSilverRoomZone, inGoldRoomZone1, inGoldRoomZone2, inNest;
 
 	@Override

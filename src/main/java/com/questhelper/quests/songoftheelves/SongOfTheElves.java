@@ -70,6 +70,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class SongOfTheElves extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, ardyFullHelm,
 		ardyPlatebody, ardyPlatelegs, ardyTabard, ardyPlatelegsEquipped, ardyFullHelmEquipped, ardyPlatebodyEquipped, ropeHighlighted,
 		tinderboxHighlighted, steelPlatelegsEquipped, clearLiquid, combatGear, baxKey, odeToEternityHighlighted, crystalSeed, pickaxeHighlighted;
@@ -150,6 +151,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	ConditionalStep finalBattle;
 
+	//Zones
 	Zone ardougneCastleF1, passF1, passF0, wellEntrance, ibanRoom, ardyPrison, hideout, westArdyInstance, mournerBasement, eastArdy, llyetaF1,
 		hudonIsland, deadTreeIsland, ledge, falls, baxThroneRoom, valley, traRoom, lightPuzzleRoom, libraryF0, libraryF1, libraryF2, iorwerthCave,
 		llyetaF0Battle, llyetaF1Battle, llyetaF1Damaged, bossArea;

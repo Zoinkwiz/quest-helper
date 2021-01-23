@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class DruidicRitual extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement rawRat, rawBear, rawBeef, rawChicken, rawRatHighlighted, rawBearHighlighted, rawBeefHighlighted,
 		rawChickenHighlighted, enchantedBear, enchantedBeef, enchantedChicken, enchantedRat;
 
@@ -60,6 +61,7 @@ public class DruidicRitual extends BasicQuestHelper
 	QuestStep talkToKaqemeex, goUpToSanfew, talkToSanfew, enterDungeon, enchantMeats, useRatOnCauldron, useBeefOnCauldron,
 		useBearOnCauldron, useChickenOnCauldron, goUpToSanfewWithMeat, talkToSanfewWithMeat, talkToKaqemeexToFinish;
 
+	//Zones
 	Zone dungeon, sanfewRoom;
 
 	@Override

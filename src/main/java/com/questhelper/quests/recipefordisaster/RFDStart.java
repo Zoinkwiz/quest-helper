@@ -57,6 +57,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class RFDStart extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement eyeOfNewt, greenmansAle, rottenTomato, fruitBlast, ashes, ashesHighlighted, fruitBlastHighlighted, dirtyBlast;
 
 	ConditionForStep hasDirtyBlast;

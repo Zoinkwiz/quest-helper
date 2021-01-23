@@ -64,6 +64,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class BetweenARock extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement coins5, pickaxe, page1, page2, page3, pages, dwarvenLore, dwarvenLoreHighlight, goldBar, goldBarHighlight, goldCannonball, cannonMould, goldCannonballHighlight, schematic,
 		baseSchematic, schematicEngineer, khorvakSchematic, goldHelmet, hammer, goldBars3, schematicHighlight, solvedSchematic, combatGear,
 		goldOre6, goldBars4, coins1000, goldHelmetEquipped, food;
@@ -79,6 +80,7 @@ public class BetweenARock extends BasicQuestHelper
 
 	NpcStep killAvatar;
 
+	//Zones
 	Zone trollRoom, dwarfEntrance, dwarfMine, keldagrim, keldagrim2, dwarvenMine, khorvakRoom, realm;
 
 	@Override

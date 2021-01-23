@@ -67,10 +67,14 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class DesertTreasure extends BasicQuestHelper
 {
+	//Items Recommended
+	ItemRequirement combatGear, food, prayerPotions, restorePotions, energyOrStaminas;
+
+	//Items Required
 	ItemRequirement coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal, bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots,
 		climbingBoots, faceMask, tinderbox, manyLockpicks, etchings, translation, warmKey, smokeDiamond, shadowDiamond, iceDiamond, bloodDiamond, iceGloves,
 		waterSpellOrMelee, cross, ringOfVisibility, antipoison, silverPot, silverPot2, potOfBlood, potWithGarlic, potWithSpice, potComplete, fireSpells,
-		spikedBootsEquipped, combatGear, food, prayerPotions, restorePotions, energyOrStaminas, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted,
+		spikedBootsEquipped, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted,
 		shadowDiamondHighlighted;
 
 	ConditionForStep hasWarmKey, gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3,
@@ -93,6 +97,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 	ConditionalStep getSmokeDiamond, getBloodDiamond, getIceDiamond, getShadowDiamond, getDiamonds;
 
+	//Zones
 	Zone smokeDungeon, fareedRoom, shadowDungeon, draynorSewer, trollArea, path1, path2, icePath, iceBridge, floor1, floor2, floor3, floor4, azzRoom;
 
 	@Override

@@ -65,9 +65,13 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class KingsRansom extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement scrapPaper, addressForm, blackHelm, criminalsThread, hairclip, lawRune, airRune, bronzeMed, ironChain, bronzeMedWorn, ironChainWorn,
 		blackKnightLeg, blackKnightLegWorn, blackKnightBody, blackKnightBodyWorn, blackKnightHelm, blackKnightHelmWorn, animateRock, lockpick, grabOrLockpick,
-		hairclipOrLockpick, holyGrail, granite, ardougneTeleport, camelotTeleport, edgevilleTeleport, telegrab;
+		hairclipOrLockpick, holyGrail, granite, telegrab;
+
+	//Items Recommended
+	ItemRequirement ardougneTeleport, camelotTeleport, edgevilleTeleport;
 
 	ConditionForStep hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, hasCriminalsThread, inTrialRoom, handlerInRoom, butlerInRoom,
 		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasLockpickOrHairpin, hasTelegrabItems,
@@ -82,6 +86,7 @@ public class KingsRansom extends BasicQuestHelper
 
 	NpcStep callAboutThread, talkToCromperty;
 
+	//Zones
 	Zone upstairsManor, downstairsManor, downstairsManor2, trialRoom, prison, basement, keepF0, keepF1, keepF2, secretRoomFloor0, mainEntrance1, mainEntrance2,
 		mainEntrance3, mainEntrance4, secretBasement;
 

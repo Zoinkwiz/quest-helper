@@ -66,7 +66,9 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class LairOfTarnRazorlor extends BasicQuestHelper
 {
+	//Requirements
 	ItemRequirement combatGear, diary;
+
 	PrayerRequirement protectFromMagic;
 
 	ConditionForStep inHauntedMine, inRoom1, inRoom1PastTrap1, inRoom1PastTrap2, inRoom2, inRoom3, inRoom4, inRoom5, inRoom6P1, inRoom6P2,
@@ -78,6 +80,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		jumpToSwitch, pressSwitch, jumpBackToPillar4, jumpBackToPillar3, jumpToNorthLedge, searchWallRoom6, searchWall2Room6, goThroughRoom6,
 		leaveExtraRoom1, leaveExtraRoom2, goThroughRoom7, enterBossRoom, killTarn1, killTarn2, enterFinalRoom, pickUpDiary;
 
+	//Zones
 	Zone hauntedMine, room1, room1PastTrap1, room1PastTrap2, room2, room3, room4, room5P1, room5P2, room6P1, room6P2, room6P3, pillar1, pillar2, pillar3,
 		pillar4, switch1, pillar5, pillar6, room6PastTrap1, room6PastTrap2P1, room6PastTrap2P2, extraRoom1, extraRoom2, room7, room8, bossRoom, finalRoom;
 

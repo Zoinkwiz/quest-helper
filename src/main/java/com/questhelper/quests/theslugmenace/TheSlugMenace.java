@@ -66,9 +66,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class TheSlugMenace extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement commorb, commorb2, deadSeaSlug, swampPaste, page1, page2, page3, glue, doorTranscript, pageFragment1, pageFragment2, pageFragment3,
-		essence, blankAir, blankEarth, blankWater, blankFire, blankMind, chisel, airRune, waterRune, earthRune, fireRune, mindRune, meleeGear, ardougneTeleports,
-		essence5, accessToAltars;
+		essence, blankAir, blankEarth, blankWater, blankFire, blankMind, chisel, airRune, waterRune, earthRune, fireRune, mindRune, meleeGear, essence5, accessToAltars;
+
+	//Items Recommended
+	ItemRequirement ardougneTeleports;
 
 	ConditionForStep talkedToMaledict, talkedToHobb, talkedToHolgart, talkedToAllImportantPeople, inHobgoblinDungeon, inSeaSlugDungeon, openedWall, hasDeadSlug, hasPage1, hasPage2, hasPage3, receivedFragments,
 		onPlatform, puzzleUp, repairedPage, pickedUpSlug, hasAirRune, hasWaterRune, hasEarthRune, hasFireRune, hasMindRune, hasOrUsedAirRune, hasOrUsedWaterRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune,
@@ -78,6 +81,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		talkToNiall3, talkToMaledict2, talkToMaledict3, searchMayorsDesk, talkToLovecraft, talkToNiall4, useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle, useEmptyRunes,
 		enterDungeonAgain, enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy, enterDungeonAgainUsedRunes;
 
+	//Zones
 	Zone hobgoblinDungeon, seaSlugDungeon, platform;
 
 	@Override

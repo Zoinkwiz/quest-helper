@@ -66,8 +66,12 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class RoyalTrouble extends BasicQuestHelper
 {
-	ItemRequirement coal5, coal4, coal3, coal2, coal1, antipoison, combatGear, pickaxe, coalOrPickaxe, scroll, prop, liftManual,
-		engine, pulleyBeam, longPulleyBeam, longerPulleyBeam, rope, beam, plank, diary5, box, letter, food, prayerPotions;
+	//Items Required
+	ItemRequirement coal5, coal4, coal3, coal2, coal1, combatGear, pickaxe, coalOrPickaxe, scroll, prop, liftManual,
+		engine, pulleyBeam, longPulleyBeam, longerPulleyBeam, rope, beam, plank, diary5, box, letter;
+
+	//Items Recommended
+	ItemRequirement antipoison, food, prayerPotion;
 
 	ConditionForStep inMiscFloor1, inEtcFloor1, onIslands, hasPickaxe, hasCoal5, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject, talkedToSigrid, talkedToEtcSubject, reportedToVargas,
 		reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas, enteredDungeon, inDungeon, inLiftRoom, inPath1, inPath2, inPath3, inPath4, hasLiftManual, talkedToDonal, usedProp, hasEngine,
@@ -84,6 +88,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		plankRock4, searchFire1, searchFire2, searchFire3, searchFire4, searchFire5, enterSnakesRoom, enterBossRoom, readDiary, talkToArmod, killBoss, pickUpBox, leaveBossRoom, goUpRope, goUpToSigridToFinish, talkToSigridToFinish,
 		goDownFromSigridToFinish, goUpToVargasToFinish, talkToVargasToFinish;
 
+	//Zones
 	Zone miscFloor1, etcFloor1, islands, dungeon, liftRoom, plankRoom, path1, path2p1, path2p2, path3p1, path3p2, path3p3, path4p1, path4p2, jumpIsland1, jumpIsland2, jumpIsland3, bossRoom;
 
 	@Override
@@ -240,11 +245,10 @@ public class RoyalTrouble extends BasicQuestHelper
 		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.getPickaxes());
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		prayerPotion = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
-
-		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
+		antipoison = new ItemRequirement("Any antipoison", ItemCollections.getAntipoisons(), 1);
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL_7968);
 		scroll.setTip("You can get another from King Vargas");
 		prop = new ItemRequirement("Mining prop", ItemID.MINING_PROP);
@@ -593,7 +597,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(antipoison);
 		reqs.add(food);
-		reqs.add(prayerPotions);
+		reqs.add(prayerPotion);
 		return reqs;
 	}
 

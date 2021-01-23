@@ -50,6 +50,9 @@ import java.util.*;
 )
 public class TreeGnomeVillage extends BasicQuestHelper
 {
+	//Items Required
+	ItemRequirement logRequirement, orbsOfProtection;
+
 	private QuestStep talkToKingBolren, talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 		firstTracker, secondTracker, thirdTracker, fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder,
 		talkToKingBolrenFirstOrb, talkToTheWarlord, fightTheWarlord, returnOrbs, finishQuestDialog;
@@ -62,9 +65,9 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private ConditionalStep retrieveOrb, talkToBolrenAtCentreOfMaze, fireBalistaConditional;
 
+	//Zones
 	Zone upstairsTower, zoneVillage;
 	ZoneCondition isUpstairsTower, insideGnomeVillage;
-	ItemRequirement logRequirement, orbsOfProtection;
 
 	private final int TRACKER_1_VARBITID = 599;
 	private final int TRACKER_2_VARBITID = 600;

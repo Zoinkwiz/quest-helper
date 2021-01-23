@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.theyesofglouphrie;
+package com.questhelper.quests.theeyesofglouphrie;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -61,6 +61,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class TheEyesOfGlouphrie extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar, groundMud, magicGlue, mudRuneHighlight, pestleHighlight, bucketOfSapHiglight;
 
 	ConditionForStep inCave, inspectedMachine, inspectedBowl, inHazelmereHut, hasGroundMud, hasMagicGlue, killedCreature1, killedCreature2, killedCreature3, killedCreature4, killedCreature5,
@@ -72,6 +73,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 
 	PuzzleStep unlockMachine;
 
+	//Zones
 	Zone cave, hazelmereHut, floor1, floor2, floor3;
 
 	@Override

@@ -66,10 +66,14 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class OneSmallFavour extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement steelBars4, steelBars3, steelBar, bronzeBar, ironBar, chisel, guam2, guam, marrentill, harralander, hammer, hammerHighlight, emptyCup, pigeonCages5, pot, hotWater, softClay,
-		varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports, opal, jade, sapphire, redTopaz, bluntAxe, herbalTincture, guthixRest, uncutSapphire,
+		opal, jade, sapphire, redTopaz, bluntAxe, herbalTincture, guthixRest, uncutSapphire,
 		uncutOpal, uncutJade, uncutRedTopaz, stodgyMattress, mattress, animateRockScroll, animateRockScrollHighlight, ironOxide, brokenVane1, brokenVane2, brokenVane3, ornament,
 		weathervanePillar, directionals, weatherReport, unfiredPotLid, potLid, potWithLid, breathingSalts, chickenCages5, sharpenedAxe, redMahog;
+
+	//Items Recommended
+	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports;
 
 	ConditionForStep inSanfewRoom, inHamBase, inDwarvenMine, hasGuthixRest, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
 		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full, lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, hasSapphire, hasOpal,
@@ -87,6 +91,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnDownToJohnahus, returnToJohnahus, returnToAggie, returnToBrian, returnToForester, returnToYanni, returnUpToSanfew, returnToPhantuwti2, useVane12OnAnvil, useVane13OnAnvil,
 		useVane23OnAnvil, useVane1OnAnvil, fixAllLamps, searchVaneAgain;
 
+	//Zones
 	Zone sanfewRoom, hamBase, dwarvenMine, goblinCave, scrollSpot, seersVillageUpstairs, roof;
 
 	@Override

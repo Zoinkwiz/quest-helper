@@ -68,7 +68,11 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class DarknessOfHallowvale extends BasicQuestHelper
 {
-	ItemRequirement nails8, nails4, planks2, planks1, hammer, pickaxe, knife, airRune, lawRune, doorKey, ladderPiece, message, charcoal, papyrus, sketch1, sketch2, sketch3,
+	//Items Recommended
+	ItemRequirement airRune, lawRune;
+
+	//Items Required
+	ItemRequirement nails8, nails4, planks2, planks1, hammer, pickaxe, knife, doorKey, ladderPiece, message, charcoal, papyrus, sketch1, sketch2, sketch3,
 		largeOrnateKey, messageFromFireplace, haemBook, sealedMessage;
 
 	Requirement normalSpellbook;
@@ -98,6 +102,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToVeliafAfterDrezel, returnToMeiyerditch, goToSafalaan, goSketchNorth, goSketchWest, goSketchSouth, goTalkToSarius, goFinishSouthSketch,
 		goOpenFireplace, returnToSafalaanInBase, returnToSafalaanInBaseNoSketches, goUnlockLab, getHaemBook, bringSafalaanBook, bringMessageToVeliafToFinish;
 
+	//Zones
 	Zone newBase, temple, entryWall, entryWall2, meiyerditch, myrequeBase, mine, northMeiy, randomRoom, barricade1, barricade2, barricade3, secondWall, secondWall2, thirdWall,
 		fourthWall, fourthWall2, drakanWalls, drakanWalls2, lab;
 

@@ -60,6 +60,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class LostCity extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement knife, axe, combatGear, teleport, bronzeAxe, dramenBranch, dramenStaff, dramenStaffEquipped;
 
 	ConditionForStep onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, hasBronzeAxe, dramenSpiritNearby, hasBranch, hasStaff;
@@ -67,6 +68,7 @@ public class LostCity extends BasicQuestHelper
 	QuestStep talkToWarrior, chopTree, talkToShamus, goToEntrana, goDownHole, getAxe, pickupAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch,
 		teleportAway, craftBranch, enterZanaris, getAnotherBranch;
 
+	//Zones
 	Zone entrana, entranaDungeon;
 
 	@Override

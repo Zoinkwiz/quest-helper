@@ -69,15 +69,19 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class LunarDiplomacy extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement sealOfPassage, bullseyeLantern, bullseyeLanternLit, emeraldLantern, emeraldLanternLit, emeraldLens,
 		bullseyeLanternHighlighted, tinderboxHighlighted, emeraldLensHighlighted, emeraldLanternLitHighlighted, suqahTooth,
 		groundTooth, marrentilPotion, guamPotion, guamMarrentilPotion, guamMarrentilPotionHighlighted, sleepPotion, specialVial,
 		specialVialHighlighted, waterVial, guam, marrentill, pestle, airTalisman, waterTalisman, earthTalisman, fireTalisman,
 		dramenStaff, dramenStaffHighlighted, lunarStaffP1, lunarStaffP1Highlighted, lunarStaffP2, lunarStaffP2Highlighted,
-		lunarStaffP3, lunarStaffP3Highlighted, lunarStaff, pickaxe, hammer, needle, thread, combatGear, coins400, spade, lunarOre,
+		lunarStaffP3, lunarStaffP3Highlighted, lunarStaff, pickaxe, hammer, needle, thread, coins400, spade, lunarOre,
 		lunarBar, tiara, helm, amulet, ring, cape, torso, gloves, boots, legs, suqahHide4, kindling, helmEquipped, bodyEquipped,
 		legsEquipped, bootsEquipped, glovesEquipped, cloakEquipped, amuletEquipped, ringEquipped, lunarStaffEquipped, soakedKindling,
-		sleepPotionHighlighted, soakedKindlingHighlighted, combatRunes, sealOfPassageEquipped;
+		sleepPotionHighlighted, soakedKindlingHighlighted, sealOfPassageEquipped;
+
+	//Items Recommended
+	ItemRequirement combatRunes, combatGear;
 
 	ConditionForStep atBaseOfStairs, onCoveF1, onBoatF0, onBoatF1, onBoatF2, onBoatF3, hasLitBullseye, hasBullseye,
 		hasEmeraldLantern, revealedCannon, revealedChart, revealedChest, revealedPillar, revealedCrate, hasEmeraldLanternLit,
@@ -113,6 +117,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 	ConditionalStep returnToMakePotion, returnToTalkToYaga, enteringTheIsland, boardingTheBoat, setSail, returnToOneWithPotion, returnWithStaff, makingHelm,
 		gettingRing, gettingCape, gettingAmulet, gettingClothes;
 
+	//Zones
 	Zone baseOfStairs, coveF1, boatF0, boatF1, boatF2, boatF3, boatLunar1, boatLunar2, lunarDock, lunarIsle, yagaHouse, airAltar,
 		waterAltar, earthAltar, fireAltar, lunarMine, centreOfDream, chanceDream, numbersDream, treeDream, memoryDream, raceDream,
 		mimicDream, fightArena;

@@ -58,6 +58,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement storeRoomKey, twoPhoenixCrossbow, shieldHalf, certificateHalf, phoenixCertificateHalf, certificate;
 
 	ConditionForStep inStoreRoom, hasTwoPhoenixCrossbow, hasStoreRoomKey, weaponMasterAlive, isUpstairsInBase, cupboardOpen, hasCertificateHalf,
@@ -66,6 +67,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	QuestStep talkToCharlie, getWeaponStoreKey, talkToKatrine, goUpToWeaponStore, killWeaponsMaster, pickupTwoCrossbows, goDownFromWeaponStore, returnToKatrine,
 	goUpstairsInBase, getShieldFromCupboard, getShieldFromCupboard1, goDownstairsInBase, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald;
 
+	//Zones
 	Zone storeRoom, upstairsInBase;
 
 	@Override

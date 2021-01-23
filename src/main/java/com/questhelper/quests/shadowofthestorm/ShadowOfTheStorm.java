@@ -66,15 +66,17 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class ShadowOfTheStorm extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement darkItems, silverlight, strangeImplement, blackMushroomInk, pestle, vial, silverBar, silverlightHighlighted, blackMushroomHighlighted,
-		silverlightDyedEquipped, sigilMould, silverlightDyed, strangeImplementHighlighted, combatGear, coinsForCarpet, sigil, book, bookHighlighted,
+		silverlightDyedEquipped, sigilMould, silverlightDyed, strangeImplementHighlighted, sigil, book, bookHighlighted,
 		sigilHighlighted, sigil2;
+
+	//Items Recommended
+	ItemRequirement combatGear, coinsForCarpet;
 
 	ConditionForStep inRuin, inThroneRoom, hasMushroom, hasDyedSilverlight, hasImplement, hasSigil, hasBook, hasSigilMould, talkedToGolem,
 		talkedToMatthew, inCircleSpot, sigilNearby, evilDaveMoved, baddenMoved, reenMoved, golemMoved, golemRejected, golemReprogrammed,
 		inSecondCircleSpot;
-
-	Zone ruin, throneRoom, circleSpot, secondCircleSpot;
 
 	DetailedQuestStep talkToReen, talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, enterPortal,
 		talkToDenath, talkToJennifer, talkToMatthew, smeltSigil, talkToGolem, readBook, enterRuinAfterBook, enterPortalAfterBook,
@@ -87,6 +89,9 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	DetailedOwnerStep searchKiln;
 
 	IncantationStep readIncantation, incantRitual;
+
+	//Zones
+	Zone ruin, throneRoom, circleSpot, secondCircleSpot;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

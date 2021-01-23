@@ -47,8 +47,10 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class DoricsQuest extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement clay, copper, iron;
 
+	//NPC Steps
 	QuestStep talkToDoric;
 
 	@Override

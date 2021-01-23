@@ -63,6 +63,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class ATasteOfHope extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement coins1000, knife, emerald, chisel, enchantEmeraldRunesOrTablet, rodOfIvandis, pestleAndMortarHighlighted, vialOfWater,
 		combatGear, airRune3, airStaff, cosmicRune, enchantTablet, enchantRunes, vial, herb, meatHighlighted, crushedMeat, unfinishedPotion,
 		unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes, flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB,
@@ -80,6 +81,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		useEmeraldOnSickle, enchantSickle, addSickleToRod, talkToSafalaanAfterFlail, talkToKael, killRanis, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd,
 		talkToSafalaanForAbominationFight, talkToSafalaanAfterAbominationFight, enterRalWithFlail, talkToKaelSidebar, killRanisSidebar;
 
+	//Zones
 	Zone myrequeBase, theatreP1, theatreP2, theatreP3, theatreP4, theatreP5, theatreP6, serafinaHouse, newBase, ranisFight;
 
 	@Override

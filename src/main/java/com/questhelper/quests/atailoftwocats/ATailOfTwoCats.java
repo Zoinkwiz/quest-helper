@@ -60,6 +60,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ATailOfTwoCats extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement catspeak, catspeakE, deathRune5, chocolateCake, logs, tinderbox, milk, shears,
 		potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom, hat, catspeakEWorn, cat;
 

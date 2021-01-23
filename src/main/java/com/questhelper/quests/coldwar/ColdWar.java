@@ -29,12 +29,14 @@ import java.util.Map;
 )
 public class ColdWar extends BasicQuestHelper
 {
-
+	//Items Required
 	ItemRequirement oakPlanks, oakPlankHighlight, steelNails, hammer, spade, spadeHighlight, clockworkOrSteelBar,
 		clockwork, steelBar, plank, silk, rawCodOrCharos, swampTar, feathers, mahoganyPlank, leather, cowbell,
-	    clockworkBookHighlight, clockworkSuit, clockworkSuitHighlight, missionReportHighlight, teleportArdougne,
-		teleportLumbridge2, teleportHouse, lumbridgeMissionReport, mahoganyPlankHighlight, leatherHighlight,
-		bongos, kgpId, combatGear;
+	    clockworkBookHighlight, clockworkSuit, clockworkSuitHighlight, missionReportHighlight, lumbridgeMissionReport, mahoganyPlankHighlight, leatherHighlight,
+		bongos, kgpId;
+
+	//Items Recommended
+	ItemRequirement combatGear, teleportArdougne, teleportLumbridge2, teleportHouse;
 
 	ConditionForStep isOnIceberg, birdHideBuilt, tableNearby, hasClockwork, hasSteelBar, hasClockworkSuit, isPenguin,
 		isInPenguinPen, isAtZoo, isAtLumbridgeSheepFarm, hasCowbell, isInAgilityStart, isInAgilityWater,
@@ -52,6 +54,7 @@ public class ColdWar extends BasicQuestHelper
 		pingPong3, openControlDoor, enterWarRoom, exitIcelordPen, killIcelords, useChasm, tellLarryPlans,
 		enterAvalanche2, enterAvalanche3;
 
+	//Zones
 	Zone onIceberg, inPenguinPen, inPenguinPen2, atZoo, atLumbridgeSheepFarm, inAgilityStart, inAgilityWater, inAgilityStones,
 		inAgilityTreadSoftly, inAgilityCrossIce, inAgilityDone, inPingPongRoom, preWarRoom, inIcelordPit, inIcelordRoom, inPenguinRooms;
 

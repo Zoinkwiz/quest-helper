@@ -67,6 +67,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class MourningsEndPartII extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement deathTalisman, deathTalismanHeader, mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, chisel, rope, ropeHighlight, prayerPotions, food, newKey, edernsJournal,
 		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, deathTalismanNote, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight;
 
@@ -133,6 +134,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 	QuestStep useRope, goDownToEnd, goUpFromMiddleToSouth;
 
+	//Zones
 	Zone mournerHQ, mournerHQ2, mournerBasement, cave, templeF0, templeF1, northTempleF2, southTempleF2, northRoomF2, templeStairSquare, blueRoom, yellowRoom1, yellowRoom2, cyanRoom1,
 		cyanRoom2, deathAltarArea, centralArea, centralAreaBehindBarrier, ibanRoom, wellEntrance, passF1, passF0, deathAltar;
 

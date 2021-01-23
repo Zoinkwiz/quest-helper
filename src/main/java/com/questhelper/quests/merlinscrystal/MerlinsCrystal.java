@@ -59,8 +59,12 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class MerlinsCrystal extends BasicQuestHelper
 {
-	ItemRequirement bread, tinderbox, bucketOfWax, batBones, varrockTeleport, camelotTeleport, twoFaladorTeleports, combatGear, bucket, repellent, blackCandle,
+	//Items Required
+	ItemRequirement bread, tinderbox, bucketOfWax, batBones, combatGear, bucket, repellent, blackCandle,
 		litBlackCandle, excalabur, batBonesOptional, bucketOfWaxOptional, equippedExcalabur;
+
+	//Items Recommended
+	ItemRequirement varrockTeleport, camelotTeleport, twoFaladorTeleports;
 
 	ConditionForStep inFaye, inFayeGround, inFaye1, inFaye2, inCamelot1, inCamelot2, morganNearby, hasBucket, hasRepellent, clearedHive, hasWax, hasBlackCandle,
 		hasAnyBlackCandle, hasLitBlackCandle, beggarNearby, talkedToLady, hasExcalabur, hasReadSpell, inCamelot, inStar, thrantaxNearby, inCamelotTower1, inCamelotTower2;
@@ -72,6 +76,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 	ConditionalStep getBlackCandle, getExcalabur;
 
+	//Zones
 	Zone fayeGround, faye1, faye2, camelotGround1, camelotGround2, camelotGround3, camelot1, camelot2, star, camelotTower1, camelotTower2;
 
 	@Override

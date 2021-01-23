@@ -51,12 +51,17 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class RuneMysteries extends BasicQuestHelper
 {
-	ItemRequirement airTalisman, researchPackage, notes, varrockTeleport, wizardTeleport;
+	//Items Required
+	ItemRequirement airTalisman, researchPackage, notes;
+
+	//Items Recommended
+	ItemRequirement varrockTeleport, wizardTeleport;
 
 	ConditionForStep inUpstairsLumbridge, inWizardBasement;
 
 	QuestStep goUpToHoracio, talkToHoracio, goDownToSedridor, talkToSedridor, finishTalkingToSedridor, talkToAubury, talkToAudburyAgain, goDownToSedridor2, talkToSedridor2;
 
+	//Zones
 	Zone wizardBasement, upstairsLumbridge;
 
 	@Override

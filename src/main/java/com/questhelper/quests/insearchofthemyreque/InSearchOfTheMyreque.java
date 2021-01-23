@@ -65,8 +65,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class InSearchOfTheMyreque extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement combatGear, steelLong, steelSword2, steelMace, steelWarhammer, steeldagger, steelNails225, druidPouch5, hammer, plank6,
-		coins10OrCharos, plank3, plank2, plank1, steelNails75, steelNails150, morttonTeleport;
+		coins10OrCharos, plank3, plank2, plank1, steelNails75, steelNails150;
+
+	//Items Recommended
+	ItemRequirement morttonTeleport;
 
 	ConditionForStep hasEnoughPouch, repairedBridge1, repairedBridge2, repairedBridge3, onBridge, onEntranceIsland, onQuestion1, onQuestion2,
 		onQuestion3, onQuestion4, onQuestion5, onQuestion6, inCaves, inMyrequeCave, talkedToHarold, talkedToRadigad, talkedToSani, talkedToPolmafi,
@@ -77,6 +81,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		talkToVeliaf, talkToHarold, talkToRadigad, talkToSani, talkToPolmafi, talkToIvan, talkToVeliafAgain, talkToVeliafForCutscene, killHellhound, talkToVeliafToLeave, leaveCave, goUpToCanifis,
 		talkToStranger, climbTreeHellhound, enterCaveHellhound, enterDoorsHellhound, climbTreeLeave, enterCaveLeave, enterDoorsLeave;
 
+	//Zones
 	Zone entranceIsland, bridge, caves, myrequeCave;
 
 	@Override

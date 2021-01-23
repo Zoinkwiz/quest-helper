@@ -64,8 +64,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ThroneOfMiscellania extends BasicQuestHelper
 {
-	ItemRequirement ironBar, logs, pickaxe, rake, axe, harpoon, lobsterPot, reputationItems, ring, flowers, cake, bow, dramenStaff,
+	//Items Required
+	ItemRequirement ironBar, logs, pickaxe, rake, axe, harpoon, lobsterPot, reputationItems, ring, flowers, cake, bow,
 		giantNib, giantPen, goodAnthem, awfulAnthem, treaty;
+
+	//Items Recommended
+	ItemRequirement dramenStaff;
 
 	ConditionForStep inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom, hasFlowers,
 		talked1P1, talked1P2, talked1P3, givenFlowers, doneEmote, talked1P4, talked2P1, talked2P2, talked2P3, givenBowOrCake,
@@ -82,6 +86,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 	ConditionalStep courtBrand, courtAstrid;
 
+	//Zones
 	Zone islands, miscCastleFirstFloor, etcCastleFirstFloor, brandRoom1, brandRoom2, astridRoom1, astridRoom2;
 
 	@Override

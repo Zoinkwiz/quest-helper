@@ -65,6 +65,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class SwanSong extends BasicQuestHelper
 {
+	//Item Requirements
 	ItemRequirement mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammer, brownApron, monkfish5, rawMonkfish5, combatGear, potHiglight,
 		potLidHiglight, tinderboxHiglight, ironBar5Higlight, logHiglight, ironSheet5, smallNet, airtightPot, combatGearRanged, boneSeeds, hammerPanel;
 
@@ -79,6 +80,7 @@ public class SwanSong extends BasicQuestHelper
 
 	FishMonkfish fishAndCookMonkfish;
 
+	//Zones
 	Zone colonyEntrance, basement;
 
 	@Override

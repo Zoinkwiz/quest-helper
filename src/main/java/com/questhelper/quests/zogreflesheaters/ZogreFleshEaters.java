@@ -70,6 +70,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class ZogreFleshEaters extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portrait, goodPort, strangePotionHighlighted,
 		badPort, charcoal, papyrus, signedPort, cupOfTea, strangePotion, grishKey, ogreRelic, combatGear, knifeHighlighted, tankardHighlighted;
 
@@ -84,6 +85,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		askAboutRemovingUndead, askAboutRemovingDisease, talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors,
 		goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish;
 
+	//Zones
 	Zone surface, tombF2, sith, tombF0, tombF2ToBoss;
 
 	@Override

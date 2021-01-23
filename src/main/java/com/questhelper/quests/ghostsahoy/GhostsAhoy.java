@@ -68,6 +68,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class GhostsAhoy extends BasicQuestHelper
 {
+	//Required Items
 	ItemRequirement ghostspeak, coins400, milk, silk, dyes, spade, oakLongbow, knife, needle, thread, bucketOfSlime, nettleTea, ectoToken2, ectoToken4, chestKey,
 		nettleTeaHighlighted, milkHighlighted, milkyTea, cup, cupWithMilkyTea, cupWithTea, modelShip, repairedShip, ectoToken12, ectoToken27, charos, map, signedOakBow,
 		ectoToken10, ectoToken25, ectoSheets, bedsheet, petition, boneKey, boneKeyHighlighted, robes, book, manual, mapPiece1, mapPiece2, mapPiece3, silkHighlighted,
@@ -87,6 +88,7 @@ public class GhostsAhoy extends BasicQuestHelper
 
 	DyeShipSteps dyeFlags;
 
+	//Zones
 	Zone phas1, phas2, phas3, phas4, phas5, phas6, phas7, phas8, dragontooth, deck, topOfShip, rocks, upstairsEcto;
 
 	boolean canUseCharos;

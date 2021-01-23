@@ -55,11 +55,11 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class GettingAhead extends BasicQuestHelper
 {
-	//Items Recommended
-	ItemRequirement food, staminaPotions, combatGear, skillsNeck, clayHead, clayHeadHighlighted, furHead, furHeadHighlighted, bloodyHead;
-
 	//Items Required
 	ItemRequirement bearFur, softClay, hammer, saw, planks, nails, knife, redDye, potOfFlour, needle, thread;
+
+	//Items Recommended
+	ItemRequirement food, staminaPotions, combatGear, skillsNeck, clayHead, clayHeadHighlighted, furHead, furHeadHighlighted, bloodyHead;
 
 	//Other items used
 	ItemRequirement clay, pickaxe, bucket, bucketOfWater, itemsTip;

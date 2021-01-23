@@ -50,8 +50,8 @@ import java.util.*;
 )
 public class TowerOfLife extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement
-		rawSwordfish, rawChicken,
 		beer, gloves, hammer, saw, //Pre-requirements
 		buildersHat, buildersShirt, buildersTrousers, buildersBoots,
 		buildersHatEquipped, buildersShirtEquipped, buildersTrousersEquipped, buildersBootsEquipped,
@@ -59,22 +59,15 @@ public class TowerOfLife extends BasicQuestHelper
 		pipeMachinePipes, pipeMachineRings, pipeMachineRivets,
 		cageMetalBar, cageBindingFluid;
 
+	//Items Recommended
+	ItemRequirement rawSwordfish, rawChicken;
+
 	ConditionForStep
 		hasBeer, hasGloves,
 		hasBuildersHat, hasSpokenToNoFingers, hasBuildersShirt, hasBuildersTrousers, hasBuildersBoots,
 		hasPressureMachineSheets, hasPressureMachineBalls, hasPressureMachineWheels, isPressureMachineBuilt, isPressureMachineFixed,
 		hasPipeMachinePipes, hasPipeMachineRings, hasPipeMachineRivets, isPipeMachineBuilt, isPipeMachineFixed,
 		hasCageMetalBars, hasCageBindingFluid, isCageBuilt, isCageFixed, isTowerFixed;
-
-	Zone
-		towerBasement,
-		tower1, tower2, tower3, tower4,
-		tower11, tower12, tower13, tower14,
-		tower21, tower22, tower23, tower24,
-		tower31, tower32, tower33, tower34,
-		tower41, tower42, tower43, tower44;
-	ZoneCondition
-		inTower, inTowerBasement, inTowerGround, inTowerFloor1, inTowerFloor2, inTowerFloor3;
 
 	QuestStep
 		talkToEffigy, talkToBonafido,
@@ -90,7 +83,18 @@ public class TowerOfLife extends BasicQuestHelper
 	ConditionalStep
 		getBuildersOutfit, fixTheTower, fixPressureMachine, fixPipeMachine, fixCage, followTheAlchemists, confrontEffigy, confrontTheHomunculus, scareTheAlchemists, talkToHomunculusInDungeon;
 
+	//Zones
+	Zone
+			towerBasement,
+			tower1, tower2, tower3, tower4,
+			tower11, tower12, tower13, tower14,
+			tower21, tower22, tower23, tower24,
+			tower31, tower32, tower33, tower34,
+			tower41, tower42, tower43, tower44;
 
+	ZoneCondition
+			inTower, inTowerBasement, inTowerGround, inTowerFloor1, inTowerFloor2, inTowerFloor3;
+	
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{

@@ -50,7 +50,11 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ClientOfKourend extends BasicQuestHelper
 {
-	ItemRequirement feather, enchantedScroll, enchantedQuill, mysteriousOrb;
+	//Items Required
+	ItemRequirement feather;
+
+	//Other items used
+	ItemRequirement enchantedScroll, enchantedQuill, mysteriousOrb;
 
 	ConditionForStep hasEnchantedScroll, hasEnchantedQuill, hasMysteriousOrb, hasFeather, talkedToLeenz, talkedToHorace, talkedToJennifer, talkedToMunty, talkedToRegath;
 

@@ -54,13 +54,18 @@ import com.questhelper.steps.conditional.ZoneCondition;
 )
 public class MonksFriend extends BasicQuestHelper
 {
-	ItemRequirement jugOfWater, log, blanket, ardougneCloak;
+	//Items Required
+	ItemRequirement jugOfWater, log, blanket;
+
+	//Items Recommended
+	ItemRequirement ardougneCloak;
 
 	ConditionForStep inDungeon, hasBlanket;
 
 	QuestStep talkToOmad, goDownLadder, grabBlanket, goUpLadder, returnToOmadWithBlanket, talkToOmadAgain, talkToCedric, talkToCedricWithJug,
 		continueTalkingToCedric, talkToCedricWithLog, finishQuest;
 
+	//Zones
 	Zone dungeon;
 
 	@Override

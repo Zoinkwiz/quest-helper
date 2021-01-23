@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class GoblinDiplomacy extends BasicQuestHelper
 {
+	//Required items
 	ItemRequirement goblinMailThree, orangeDye, blueDye, goblinMail, goblinMailTwo, blueArmour, orangeArmour, mailReq;
 
 	ConditionForStep hasThreeGoblinMail, isUpstairs, hasUpstairsArmour, hasWestArmour, hasNorthArmour, hasOrangeArmour, hasBlueArmour, hasThreeMail, hasTwoMail, hasMail;
@@ -62,6 +63,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	QuestStep talkToGeneral1, talkToGeneral2, talkToGeneral3, goUpLadder, searchUpLadder, goDownLadder, searchWestHut, searchBehindGenerals,
 		dyeOrange, dyeBlue, getCrate2, getCrate3;
 
+	//Zones
 	Zone upstairs;
 
 	@Override

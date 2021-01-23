@@ -53,16 +53,24 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class DaddysHome extends BasicQuestHelper
 {
-	ItemRequirement plank10, nails20, bolt5, hammer, saw, waxwoodLog3, waxwoodPlank3, bolt2, bolt3, nails2, nails4, plank, plank3, plank2, lumberyardTeleport, varrockTeleport3;
+	//Items Required
+	ItemRequirement plank10, nails20, bolt5, hammer, saw, waxwoodLog3, waxwoodPlank3, bolt2,
+		bolt3, nails2, nails4, plank, plank3, plank2;
+
+	//Items Recommended
+	ItemRequirement lumberyardTeleport, varrockTeleport3;
 
 	ConditionForStep removedChair, removedTable, removedTable2, removedStool, removedStool2, removedCampbed,
 		removedCarpet, hasLogs, hasPlanks, repairedCampbed, repairedCarpet, repairedStool, repairedTable,
 		repairedChair, repairedStool2, repairedTable2;
 
-	DetailedQuestStep talkToMarlo, talkToYarlo, removeChair, removeCarpet, removeStool,
-		removeStool2, removeTable, removeTable2, removeCampbed, talkToYarloAgain, searchCrate,
-		talkToOperator, buildChair, buildCarpet, buildStool, buildStool2, buildTable, buildTable2, buildCampbed,
-		talkToYarloOnceMore, talkToMarloToFinish;
+	//NPC Steps
+	DetailedQuestStep talkToMarlo, talkToYarlo, talkToYarloAgain, talkToOperator, talkToYarloOnceMore, talkToMarloToFinish;
+
+	//Object/items Steps
+	DetailedQuestStep removeChair, removeCarpet, removeStool, removeStool2, removeTable,
+		removeTable2, removeCampbed, searchCrate, buildChair, buildCarpet, buildStool,
+		buildStool2, buildTable, buildTable2, buildCampbed;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

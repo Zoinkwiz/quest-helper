@@ -72,6 +72,7 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class LegendsQuest extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement axe, machete, radimusNotes, papyrus3, charcoal3, papyrus, charcoal, radimusNotesHighlight, completeNotesHighlighted, bullRoarer,  lockpick,
 		soulRune, mindRune, earthRune, lawRune2, opal, jade, sapphire, ruby, diamond, pickaxe, bullRoarerHighlight, sketch, lawRuneHighlight,
 		soulRuneHighlight, mindRuneHighlight, earthRuneHighlight, opalHighlighted, jadeHighlighted, topazHighlighted, sapphireHighlighted,
@@ -94,10 +95,6 @@ public class LegendsQuest extends BasicQuestHelper
 		hasGlowingDagger, hasForce, sacredWaterNearby, saplingNearby, adultNearby, felledNearby, trimmedNearby, totemNearby, ranalphNearby,
 		irvigNearby, sanNearby;
 
-	Zone guild1, guild2, guild3, khazari1, khazari2, khazari3, khazari4, eastKhazari, westKhazari, middleKhazari, caveRoom1P1, caveRoom1P2,
-		caves, caveRoom2P1, caveRoom2P2, caveRoom3, caveRoom4P1, caveRoom4P2, caveRoom4P3, caveRoom5P1, caveRoom5P2, caveRoom5P3, fire1,
-		fire2, fire3, caveRoom6P1, caveRoom6P2, challengeCave;
-
 	QuestStep talkToGuard, talkToRadimus, enterJungle, sketchWest, sketchMiddle, sketchEast, enterJungleWithRoarer, spinBull,
 		talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain, enterMossyRockAgain,
 		enterBookcase, enterGate1, enterGate2, searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2, useSapphire,
@@ -117,6 +114,11 @@ public class LegendsQuest extends BasicQuestHelper
 	NpcStep useNotes, useBindingBookOnUngadulu, returnToRadimus, talkToRadimusInGuild, talkToRadimusInGuildAgain;
 
 	ObjectStep useReedOnPoolAgain, climbDownWinch, drinkBraveryPotionAndClimbDown, useTotemOnTotem, useTotemOnTotemAgain;
+
+	//Zones
+	Zone guild1, guild2, guild3, khazari1, khazari2, khazari3, khazari4, eastKhazari, westKhazari, middleKhazari, caveRoom1P1, caveRoom1P2,
+			caves, caveRoom2P1, caveRoom2P2, caveRoom3, caveRoom4P1, caveRoom4P2, caveRoom4P3, caveRoom5P1, caveRoom5P2, caveRoom5P3, fire1,
+			fire2, fire3, caveRoom6P1, caveRoom6P2, challengeCave;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

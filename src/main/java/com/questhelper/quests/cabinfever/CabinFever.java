@@ -65,6 +65,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 )
 public class CabinFever extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement food, fuse1, tinderbox, ropes4, ropeHighlight, fuseHighlight, floorTinderbox, rope3, floorRope, tinderboxHighlight, planks2, planks4,
 		planks6, hammer, tacks10, tacks20, tacks30, paste1, paste2, paste3, ropes2, loot10, plunderHighlight, barrel, gunpowder, ramrod, canister,
 		powderHighlight, ramrodHighlight, canisterHighlight, fuses, cannonball, cannonballHighlight;
@@ -89,6 +90,7 @@ public class CabinFever extends BasicQuestHelper
 	ObjectStep take4Ropes, take1Fuse, takeHoleItems1, takeHoleItems2, takeHoleItems3, takePasteHole1, takePasteHole2, takePasteHole3, take2Ropes, lootEnemyShip, takeBarrel, getRamrod,
 		getBalls;
 
+	//Zones
 	Zone boatAtDock, boatF0, boatF1, boatF2, enemyBoatF0, enemyBoatF1, enemyBoatF2, sail, enemySail;
 
 	@Override

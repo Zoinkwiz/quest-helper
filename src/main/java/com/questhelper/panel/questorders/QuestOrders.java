@@ -212,7 +212,8 @@ public class QuestOrders
 		QuestHelperQuest.THE_MAGE_ARENA_II
 	));
 
-	public static String normalizeQuestName(String questName) {
+	public static String normalizeQuestName(String questName)
+	{
 		return QUEST_NAME_PATTERN.matcher(questName).replaceAll("").trim();
 	}
 

@@ -26,7 +26,6 @@ package com.questhelper.quests.inaidofthemyreque;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -73,7 +72,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		coal, softClay, rope, silverBar, mithrilBar, sapphire, cosmicRune, waterRune, efaritaysAidOrSilverWeapon, bucketOrSemiFilledBucket, tinderbox,
 		steelBars2Highlighted, coalHiglighted, tinderboxHighlighted, planks3, planks2, planks6, nails12, nails8, crate, tinderbox3, snails10, mackerel10,
 		nails24, planks5, nails20, templeLibraryKey, sleepingSeven, hammerHighlighted, mould, silvRod, softClayHighlighted, enchantedRod, rodOfIvandis,
-		enchantedRodHighlighted;
+		enchantedRodHighlighted, foodForChest;
 
 	//Items Recommended
 	ItemRequirement steelmedChainLegsSickle, morttonTeleport, canifisTeleport;
@@ -225,6 +224,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		food = new ItemRequirement("Any food", ItemCollections.getGoodEatingFood(), -1);
+		foodForChest = new ItemRequirement("Food, multiple pieces in case a Ghast eats some",
+			ItemCollections.getGoodEatingFood(),-1);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET, 5);
 		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET);
@@ -572,7 +573,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Finding a new base", new ArrayList<>(Arrays.asList(startQuest, travelToBurgh, putFoodInChest, talkToRazvan, clearTrapdoorRubble,
-			enterBurghPubBasement, clearBasementRubble)), pickaxe, bucketTo5, spade));
+			enterBurghPubBasement, clearBasementRubble)), foodForChest, pickaxe, bucketTo5, spade));
 
 		allSteps.add(new PanelDetails("Repairing the shop", new ArrayList<>(Arrays.asList(talkToAurel, climbShopLadder, fixRoof, climbDownShopLadder, fixShopWall, talkToAurelForCrate)), hammer, planks6, nails24));
 		allSteps.add(new PanelDetails("Stocking the shop", new ArrayList<>(Collections.singletonList(fillCrate)), tinderbox3, bronzeAxes10, rawMackerelOrSnail10));

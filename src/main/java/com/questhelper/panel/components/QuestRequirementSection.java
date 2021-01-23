@@ -33,6 +33,7 @@ import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -54,13 +55,13 @@ import net.runelite.client.ui.DynamicGridLayout;
 public class QuestRequirementSection extends JPanel implements RequirementContainer
 {
 	@Getter
-	private JPanel headerPanel;
+	private final JPanel headerPanel;
 	@Getter
-	private JPanel requirementsPanel;
+	private final JPanel listPanel;
 	@Getter
-	private JLabel titleLabel;
+	private final JLabel titleLabel;
 	@Getter
-	private Collection<QuestRequirementPanel> questRequirementPanels = new LinkedList<>();
+	private final Collection<QuestRequirementPanel> questRequirementPanels = new LinkedList<>();
 
 	public QuestRequirementSection(String title)
 	{
@@ -77,25 +78,21 @@ public class QuestRequirementSection extends JPanel implements RequirementContai
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setText(title);
 		titleLabel.setMinimumSize(new Dimension(1, headerPanel.getPreferredSize().height));
-
 		headerPanel.add(titleLabel, BorderLayout.NORTH);
 
-		requirementsPanel = new JPanel();
-		requirementsPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
-		requirementsPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
+		listPanel = new JPanel();
+		listPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
+		listPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		add(headerPanel, BorderLayout.NORTH);
-		add(requirementsPanel, BorderLayout.CENTER);
-
-		setVisible(true);
+		add(listPanel, BorderLayout.CENTER);
 	}
 
 	@Override
 	public void setVisible(boolean visible)
 	{
-		super.setVisible(visible);
 		headerPanel.setVisible(visible);
-		requirementsPanel.setVisible(visible);
+		listPanel.setVisible(visible);
 	}
 
 	public void addOrUpdateRequirements(Collection<? extends Requirement> requirements)
@@ -104,13 +101,18 @@ public class QuestRequirementSection extends JPanel implements RequirementContai
 		{
 			if (!requirements.isEmpty())
 			{
-				removeAll();
+				listPanel.removeAll();
 			}
 			requirements.stream()
 				.map(QuestRequirementPanel::new)
-				.forEach(this::addQuestRequirement);
+				.forEach(this::add);
 
-			log.debug("Found " + requirements.size() + " Requirement(s) for '" + getTitleLabel().getText() + "' Visible (" + isVisible() + ")");
+			listPanel.revalidate();
+			listPanel.repaint();
+
+			log.debug("Found " + requirements.size() + " Requirement(s) for '" + getTitleLabel().getText() + "' Visible (" + isVisible() + ") Root (" + isVisible() + ")");
+			long count = questRequirementPanels.stream().filter(Container::isVisible).count();
+			log.debug("Panels: " + questRequirementPanels.size() + " - Visible: " + count + "/" + questRequirementPanels.size());
 		}
 	}
 
@@ -118,23 +120,19 @@ public class QuestRequirementSection extends JPanel implements RequirementContai
 	public void removeAll()
 	{
 		super.removeAll();
-		headerPanel.removeAll();
-		requirementsPanel.removeAll();
 		questRequirementPanels.clear();
 	}
 
 	@Override
 	public Component add(Component comp)
 	{
-		return requirementsPanel.add(comp);
-	}
-
-	private void addQuestRequirement(QuestRequirementPanel panel)
-	{
-		requirementsPanel.add(panel);
-		questRequirementPanels.add(panel);
-		requirementsPanel.setVisible(true);
-		panel.setVisible(true);
+		if (comp instanceof QuestRequirementPanel)
+		{
+			listPanel.add(comp);
+			questRequirementPanels.add((QuestRequirementPanel)comp);
+			return comp;
+		}
+		return super.add(comp);
 	}
 
 	@Override

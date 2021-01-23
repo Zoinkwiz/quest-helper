@@ -34,6 +34,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.QuestStep;
+import java.awt.Container;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class QuestStepContainer extends JPanel implements RequirementContainer
 		this.plugin = plugin;
 	}
 
-	public void initQuestSteps(QuestHelper currentQuest, QuestStep currentStep, BiConsumer<QuestStepPanel, MouseEvent> mouseListener)
+	public void initQuestSteps(QuestHelper currentQuest, QuestStep currentStep, Container parent, BiConsumer<QuestStepPanel, MouseEvent> mouseListener)
 	{
 		List<PanelDetails> panelDetails = currentQuest.getPanels();
 		for (PanelDetails panel : panelDetails)
@@ -77,8 +78,8 @@ public class QuestStepContainer extends JPanel implements RequirementContainer
 			questStepPanels.add(newStep);
 			add(newStep);
 			newStep.addMouseListener(mouseListener);
-			repaint();
-			revalidate();
+			parent.repaint();
+			parent.revalidate();
 		}
 	}
 

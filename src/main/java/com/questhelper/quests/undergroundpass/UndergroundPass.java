@@ -84,7 +84,7 @@ public class UndergroundPass extends BasicQuestHelper
 		havePlank, isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
 		isBeforeTrap2, isBeforeTrap3, isBeforeTrap4, isBeforeTrap5, isInWellArea, isBeforePlank2, isBeforePlank3,
 		isAtOrb1, haveOrb1, haveOrb2, haveOrb3, haveOrb4, isInsideCell, isBeforeLedge, isAfterMaze, hasRailing,
-		isInUnicornArea, isInUnicornArea2, haveUnicornHorn, isInKnightsArea, isNextToKnights, haveBadgeJerro,
+		isInUnicornArea, isInUnicornArea2, haveUnicornHorn, isInKnightsArea, haveBadgeJerro,
 		haveBadgeCarl, haveBadgeHarry, isBeforeIbansDoor, isInDwarfCavern, haveKlanksGauntlets, isInFinalArea,
 		haveWitchsCat, haveAmuletHolthion, haveAmuletDoomion, haveAmuletOthanian, dollImbued, haveBrew, pouredBrew,
 		dollAshed, kalragKilled, doveSmeared, haveRobeTop, haveRobeBottom, clothInBag, isInFallArea, isInUndergroundSection2,
@@ -319,7 +319,6 @@ public class UndergroundPass extends BasicQuestHelper
 		usedHorn = new VarbitCondition(9136, 1);
 		haveUnicornHorn = new Conditions(LogicType.OR, new ItemRequirementCondition(unicornHorn), usedHorn);
 		isInKnightsArea = new ZoneCondition(inKnightsArea1, inKnightsArea2, inKnightsArea3);
-		isNextToKnights = new ZoneCondition(inKnightsArea3);
 
 		usedBadgeJerro = new VarbitCondition(9128, 1);
 		usedBadgeCarl = new VarbitCondition(9129, 1);
@@ -328,7 +327,7 @@ public class UndergroundPass extends BasicQuestHelper
 		haveBadgeCarl = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeCarl), usedBadgeCarl);
 		haveBadgeHarry = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeHarry), usedBadgeHarry);
 		haveBadgeJerro = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeJerro), usedBadgeJerro);
-		isBeforeIbansDoor = new ZoneCondition(beforeIbansDoor);
+		isBeforeIbansDoor = new ZoneCondition(inKnightsArea3, beforeIbansDoor);
 		isInFinalArea = new ZoneCondition(inFinalArea);
 		isInDwarfCavern = new ZoneCondition(inDwarfCavern);
 		haveKlanksGauntlets = new ItemRequirementCondition(klanksGauntlets);
@@ -676,9 +675,9 @@ public class UndergroundPass extends BasicQuestHelper
 		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, usedHorn, usedBadgeCarl, haveBadgeHarry, haveBadgeJerro), useBadgeHarryOnWell);
 		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, usedHorn, haveBadgeCarl, haveBadgeHarry, haveBadgeJerro), useBadgeCarlOnWell);
 		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, haveBadgeCarl, haveBadgeHarry, haveBadgeJerro), useUnicornHornOnWell);
-		killedAUnicorn.addStep(new Conditions(isNextToKnights, new Conditions(LogicType.NOR, haveBadgeJerro)), killJerro);
-		killedAUnicorn.addStep(new Conditions(isNextToKnights, new Conditions(LogicType.NOR, haveBadgeCarl)), killCarl);
-		killedAUnicorn.addStep(new Conditions(isNextToKnights, new Conditions(LogicType.NOR, haveBadgeHarry)), killHarry);
+		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, new Conditions(LogicType.NOR, haveBadgeJerro)), killJerro);
+		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, new Conditions(LogicType.NOR, haveBadgeCarl)), killCarl);
+		killedAUnicorn.addStep(new Conditions(isBeforeIbansDoor, new Conditions(LogicType.NOR, haveBadgeHarry)), killHarry);
 		killedAUnicorn.addStep(isInKnightsArea, walkToKnights);
 		killedAUnicorn.addStep(new Conditions(haveUnicornHorn, isInUnicornArea2), leaveUnicornArea);
 		killedAUnicorn.addStep(isInUnicornArea2, searchUnicornCageAgain);

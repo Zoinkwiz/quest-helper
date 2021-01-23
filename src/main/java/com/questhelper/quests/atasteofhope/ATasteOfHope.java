@@ -275,8 +275,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		vialOfWater.setTip("You can fill the vial upstairs on the broken fountain");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 		herb = new ItemRequirement("Mysterious herb", ItemID.MYSTERIOUS_HERB);
 		herb.setHighlightInInventory(true);

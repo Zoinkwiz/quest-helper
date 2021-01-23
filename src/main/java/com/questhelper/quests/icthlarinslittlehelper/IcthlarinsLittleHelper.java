@@ -226,8 +226,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		bucketOfSap.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1);

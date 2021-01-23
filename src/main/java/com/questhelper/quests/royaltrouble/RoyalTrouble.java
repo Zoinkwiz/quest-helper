@@ -246,8 +246,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		antipoison = new ItemRequirement("Any antipoison", ItemCollections.getAntipoisons(), 1);
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL_7968);
 		scroll.setTip("You can get another from King Vargas");

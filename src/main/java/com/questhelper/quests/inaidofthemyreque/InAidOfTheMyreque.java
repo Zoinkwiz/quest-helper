@@ -224,8 +224,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		food = new ItemRequirement("Any food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Any food", ItemCollections.getGoodEatingFood(), -1);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET, 5);
 		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET);

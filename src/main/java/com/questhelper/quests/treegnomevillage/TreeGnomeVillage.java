@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.treegnomevillage;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -136,8 +137,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		ItemStep pickupOrb = new ItemStep(this,
 			"Pick up the nearby \"Orbs of Protection\".", orbsOfProtection);
 
-		ItemRequirement food = new ItemRequirement("Food", -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		ItemRequirement combatGear = new ItemRequirement("Armor & Weapons", -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -315,8 +315,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 			firstTracker, secondTracker, thirdTracker, fireBalistaConditional)), logRequirement));
 
-		ItemRequirement food = new ItemRequirement("Food", -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		ItemRequirement combatGear = new ItemRequirement("Armor & Weapons", -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 

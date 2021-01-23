@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.cabinfever;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
@@ -342,8 +343,7 @@ public class CabinFever extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		fuse1 = new ItemRequirement("Fuse", ItemID.FUSE);
 		ropes4 = new ItemRequirement("Rope", ItemID.ROPE, 4);
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);

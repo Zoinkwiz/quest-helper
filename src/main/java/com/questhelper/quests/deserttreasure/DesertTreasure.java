@@ -290,8 +290,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
 		restorePotions = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
 		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.getStaminaPotions());

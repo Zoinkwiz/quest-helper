@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.holygrail;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
@@ -160,8 +161,7 @@ public class HolyGrail extends BasicQuestHelper
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
 		sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
 		antipoison = new ItemRequirement("Antipoison", ItemID.ANTIPOISON4);
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		combatGear = new ItemRequirement("A weapon and armour", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		emptyInvSpot = new ItemRequirement("Empty Inventory Spot", -1, 1);

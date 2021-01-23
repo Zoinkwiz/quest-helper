@@ -324,17 +324,97 @@ public class ItemCollections
 		ItemID.AGILITY_POTION1
 	));
 
+	// Food
+
 	@Getter
-	private static final List<Integer> flowers = new ArrayList<>(Arrays.asList(
-		ItemID.RED_FLOWERS,
-		ItemID.YELLOW_FLOWERS,
-		ItemID.PURPLE_FLOWERS,
-		ItemID.ORANGE_FLOWERS,
-		ItemID.MIXED_FLOWERS,
-		ItemID.ASSORTED_FLOWERS,
-		ItemID.BLACK_FLOWERS,
-		ItemID.WHITE_FLOWERS
+	private static final List<Integer> goodEatingFood = new ArrayList<>(Arrays.asList(
+		ItemID.DARK_CRAB,
+		ItemID.TUNA_POTATO,
+		ItemID.MANTA_RAY,
+		ItemID.SEA_TURTLE,
+		ItemID.PINEAPPLE_PIZZA,
+		ItemID.SHARK,
+		ItemID.MUSHROOM_POTATO,
+		ItemID.UGTHANKI_KEBAB_1885,
+		ItemID.CURRY,
+		ItemID.COOKED_KARAMBWAN,
+		ItemID.ANCHOVY_PIZZA,
+		ItemID.ANGLERFISH,
+		ItemID.MONKFISH,
+		ItemID.POTATO_WITH_CHEESE,
+		ItemID.MEAT_PIZZA,
+		ItemID.POTATO_WITH_BUTTER,
+		ItemID.SWORDFISH,
+		ItemID.PLAIN_PIZZA,
+		ItemID.BASS,
+		ItemID.LOBSTER,
+		ItemID.CHOCOLATE_CAKE,
+		ItemID.CAKE,
+		ItemID.STEW,
+		ItemID.TUNA,
+		ItemID.SALMON,
+		ItemID.PIKE,
+		ItemID.COD,
+		ItemID.TROUT,
+		ItemID.MACKEREL,
+		ItemID.HERRING,
+		ItemID.BREAD,
+		ItemID.SARDINE,
+		ItemID.COOKED_MEAT,
+		ItemID.COOKED_CHICKEN,
+		ItemID.SHRIMPS
 	));
+
+
+	@Getter
+	private static final List<Integer> fishFood = new ArrayList<>(Arrays.asList(
+		ItemID.DARK_CRAB,
+		ItemID.MANTA_RAY,
+		ItemID.SEA_TURTLE,
+		ItemID.SHARK,
+		ItemID.COOKED_KARAMBWAN,
+		ItemID.ANGLERFISH,
+		ItemID.MONKFISH,
+		ItemID.SWORDFISH,
+		ItemID.BASS,
+		ItemID.LOBSTER,
+		ItemID.TUNA,
+		ItemID.SALMON,
+		ItemID.PIKE,
+		ItemID.COD,
+		ItemID.TROUT,
+		ItemID.MACKEREL,
+		ItemID.HERRING,
+		ItemID.SARDINE,
+		ItemID.SHRIMPS
+	));
+
+	@Getter
+	private static final List<Integer> pizzas = new ArrayList<>(Arrays.asList(
+		ItemID.PINEAPPLE_PIZZA,
+		ItemID.ANCHOVY_PIZZA,
+		ItemID.MEAT_PIZZA,
+		ItemID.PLAIN_PIZZA
+	));
+
+
+	@Getter
+	private static final List<Integer> potatoFood = new ArrayList<>(Arrays.asList(
+		ItemID.TUNA_POTATO,
+		ItemID.MUSHROOM_POTATO,
+		ItemID.POTATO_WITH_CHEESE,
+		ItemID.POTATO_WITH_BUTTER
+	));
+
+	@Getter
+	private static final List<Integer> pies = new ArrayList<>(Arrays.asList(
+		ItemID.WILD_PIE,
+		ItemID.SUMMER_PIE,
+		ItemID.DRAGONFRUIT_PIE,
+		ItemID.ADMIRAL_PIE
+	));
+
+
 
 	// Teleport items
 
@@ -622,4 +702,17 @@ public class ItemCollections
 		ItemID.PET_KITTEN_1559,
 		ItemID.PET_KITTEN_1560)
 	);
+
+
+	@Getter
+	private static final List<Integer> flowers = new ArrayList<>(Arrays.asList(
+		ItemID.RED_FLOWERS,
+		ItemID.YELLOW_FLOWERS,
+		ItemID.PURPLE_FLOWERS,
+		ItemID.ORANGE_FLOWERS,
+		ItemID.MIXED_FLOWERS,
+		ItemID.ASSORTED_FLOWERS,
+		ItemID.BLACK_FLOWERS,
+		ItemID.WHITE_FLOWERS
+	));
 }

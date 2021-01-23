@@ -142,8 +142,7 @@ public class RovingElves extends BasicQuestHelper
 		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT, -1);
 		camelotTeleports = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, -1);
 		iowerthCampTeleports = new ItemRequirement("Iowerth camp teleports", ItemID.IORWERTH_CAMP_TELEPORT, -1);
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 	}
 
 	public void setupConditions()

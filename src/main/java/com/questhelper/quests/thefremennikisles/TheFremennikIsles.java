@@ -296,8 +296,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true);
 		meleeWeapon = new ItemRequirement("Melee gear", -1, -1);
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food + potions", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food + potions", ItemCollections.getGoodEatingFood(), -1);
 		tuna = new ItemRequirement("Raw tuna", ItemID.RAW_TUNA);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 

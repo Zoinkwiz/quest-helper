@@ -185,8 +185,7 @@ public class GrimTales extends BasicQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		griffinFeather = new ItemRequirement("Griffin feather", ItemID.GRIFFIN_FEATHER);
 		rupertsHelmet = new ItemRequirement("Rupert's helmet", ItemID.RUPERTS_HELMET);

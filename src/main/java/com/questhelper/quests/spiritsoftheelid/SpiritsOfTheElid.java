@@ -179,8 +179,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		coins = new ItemRequirement("Coins for magic carpet", ItemID.COINS_995, -1);
 		spear = new ItemRequirement("Spear or Hasta for the 3 weapon styles", -1, 1);
 		spear.setDisplayItemId(ItemID.DRAGON_SPEAR);
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.getNecklaceOfPassages(), 1);
 	}
 

@@ -425,8 +425,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee",
 			ItemCollections.getPrayerPotions(), -1);
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY);
 		newKey.setTip("You can get another from Essyllt's desk");

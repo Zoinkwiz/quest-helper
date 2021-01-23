@@ -1,5 +1,6 @@
 package com.questhelper.quests.blackknightfortress;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
@@ -153,8 +154,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
 		armour = new ItemRequirement("Armour", -1, -1);
 		armour.setDisplayItemId(BankSlotIcons.getArmour());
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 	}
 
 	private void setupConditions()

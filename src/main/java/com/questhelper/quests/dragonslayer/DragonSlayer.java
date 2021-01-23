@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.dragonslayer;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
@@ -225,8 +226,7 @@ public class DragonSlayer extends BasicQuestHelper
 		demonKey = 	new ItemRequirement("Key", ItemID.KEY_1548);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
 		antidragonShieldEquipped = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD, 1, true);
 		planks3 = new ItemRequirement("Planks", ItemID.PLANK, 3);

@@ -145,8 +145,7 @@ public class OlafsQuest extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear, food + prayer potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());

@@ -241,8 +241,7 @@ public class JunglePotion extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		ItemRequirement food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		reqs.add(food);
 		reqs.add(new ItemRequirement("Antipoison", ItemCollections.getAntipoisons()));

@@ -463,8 +463,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 
 		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);

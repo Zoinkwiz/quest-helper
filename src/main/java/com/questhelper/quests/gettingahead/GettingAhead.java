@@ -157,8 +157,7 @@ public class GettingAhead extends BasicQuestHelper
 		//Recommended
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", -1, -1);
-		food.setDisplayItemId(BankSlotIcons.getFood());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		staminaPotions = new ItemRequirement("Stamina Potion", ItemCollections.getStaminaPotions());
 		skillsNeck = new ItemRequirement("Skills Necklace", ItemCollections.getSkillsNecklaces());
 

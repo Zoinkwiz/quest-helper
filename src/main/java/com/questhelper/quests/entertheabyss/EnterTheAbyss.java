@@ -137,16 +137,6 @@ public class EnterTheAbyss extends BasicQuestHelper
 		talkToAubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0),
 			"Teleport to the essence mine with Aubury in south east Varrock.", scryingOrb);
 		talkToAubury.addDialogStep("Can you teleport me to the Rune Essence?");
-		// tele, 6319 3->4
-		// 2315 0->1
-		// 2513 0->5 (5->7 if do again, 7->2)
-
-		// Wizard tower tele: 2314 0->1, 2313 0->5
-
-		// Tele'd from cromperty, 1196 2->3
-		// 6291 1->2
-		// 2316 0->1
-		// 2313 0->1
 
 		goDownInWizardsTower = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
 			"Teleport to the essence mine with Sedridor in the Wizard Tower's basement.", scryingOrb);

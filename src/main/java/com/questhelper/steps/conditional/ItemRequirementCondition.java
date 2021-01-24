@@ -64,34 +64,12 @@ public class ItemRequirementCondition extends ConditionForStep
 	@Override
 	public boolean checkCondition(Client client)
 	{
-		int successes = 0;
-		for (ItemRequirement itemRequirement : itemRequirements)
-		{
-			if (itemRequirement.check(client, true))
-			{
-				successes++;
-			}
-		}
+		int successes = (int) itemRequirements.stream().filter(ir -> ir.check(client, true)).count();
 		if (comparisonType != null)
 		{
-			if (comparisonType == Operation.EQUAL)
-			{
-				return successes == compareValue;
-			}
-			if (comparisonType == Operation.NOT_EQUAL)
-			{
-				return successes != compareValue;
-			}
-			else if (comparisonType == Operation.GREATER_EQUAL)
-			{
-				return successes >= compareValue;
-			}
-			else if (comparisonType == Operation.LESS_EQUAL)
-			{
-				return successes <= compareValue;
-			}
+			return comparisonType.check(successes, compareValue);
 		}
-
+		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
 		return (successes == itemRequirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)
 			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)

@@ -78,7 +78,7 @@ public class Conditions extends ConditionForStep
 		}
 
 		int conditionsPassed = (int) conditions.stream().filter(c -> c.checkCondition(client)).count();
-
+		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
 		if ((conditionsPassed > 0 && logicType == LogicType.OR)
 			|| (conditionsPassed == 0 && logicType == LogicType.NOR)
 			|| (conditionsPassed == conditions.size() && logicType == LogicType.AND)

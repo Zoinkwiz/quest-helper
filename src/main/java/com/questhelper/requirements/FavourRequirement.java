@@ -5,6 +5,10 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Favour;
 
+/**
+ * Requirement that checks if the player has a certain percentage of favour
+ * with a specified Kourend house.
+ */
 @AllArgsConstructor
 @Getter
 public class FavourRequirement extends Requirement

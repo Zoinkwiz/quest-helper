@@ -24,10 +24,10 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import lombok.Getter;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 
 public class PanelDetails {
@@ -41,7 +41,7 @@ public class PanelDetails {
 	private QuestStep lockingQuestSteps;
 
 	@Getter
-	private ArrayList<ItemRequirement> itemRequirements;
+	private ArrayList<Requirement> requirements;
 
 	@Getter
 	private ArrayList<Integer> vars;
@@ -54,13 +54,13 @@ public class PanelDetails {
 	public PanelDetails(String header, QuestStep... steps) {
 		this.header = header;
 		this.steps = new ArrayList<>(Arrays.asList(steps));
-		this.itemRequirements = new ArrayList<>();
+		this.requirements = new ArrayList<>();
 	}
 
-	public PanelDetails(String header, ArrayList<QuestStep> steps, ItemRequirement... itemRequirements) {
+	public PanelDetails(String header, ArrayList<QuestStep> steps, Requirement... requirements) {
 		this.header = header;
 		this.steps = steps;
-		this.itemRequirements = new ArrayList<>(Arrays.asList(itemRequirements));
+		this.requirements = new ArrayList<>(Arrays.asList(requirements));
 	}
 
 	public void setVars(Integer... vars)

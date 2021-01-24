@@ -51,19 +51,11 @@ public class FollowerRequirement extends Requirement
 	@Override
 	public boolean check(Client client)
 	{
-		for (NPC npc : client.getNpcs())
-		{
-			Actor ta = npc.getInteracting();
-			if (ta != null && client.getLocalPlayer() == ta)
-			{
-				if (followers.contains(npc.getId()))
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
+		return client.getNpcs()
+			.stream()
+			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
+			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
+			.anyMatch(npc -> followers.contains(npc.getId()));
 	}
 
 	@Override

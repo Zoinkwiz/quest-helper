@@ -6,6 +6,10 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 
+/**
+ * Requirement that checks if a {@link net.runelite.api.Quest} has a certain state.
+ * Usually {@link QuestState#FINISHED}.
+ */
 @Getter
 public class QuestRequirement extends Requirement
 {
@@ -13,12 +17,25 @@ public class QuestRequirement extends Requirement
 	private final QuestState requiredState;
 	private String displayText = null;
 
+	/**
+	 * Check if a {@link net.runelite.api.Quest} meets the required {@link QuestState}
+	 *
+	 * @param quest the quest to check
+	 * @param requiredState the required quest state
+	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState)
 	{
 		this.quest = quest;
 		this.requiredState = requiredState;
 	}
 
+	/**
+	 * Check if a {@link net.runelite.api.Quest} meets the required {@link QuestState}.
+	 *
+	 * @param quest the quest to check
+	 * @param requiredState the required quest state
+	 * @param displayText display text
+	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, String displayText)
 	{
 		this(quest, requiredState);

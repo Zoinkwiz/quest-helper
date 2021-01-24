@@ -27,11 +27,20 @@ package com.questhelper.requirements;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 
+/**
+ * Requirement that checks if a specified {@link Prayer} is active
+ */
 public class PrayerRequirement extends Requirement
 {
-	Prayer prayer;
-	String text;
+	private final Prayer prayer;
+	private final String text;
 
+	/**
+	 * Checks if the {@link Prayer} is currently active.
+	 *
+	 * @param text the display text
+	 * @param prayer the {@link Prayer} to check
+	 */
 	public PrayerRequirement(String text, Prayer prayer)
 	{
 		this.prayer = prayer;

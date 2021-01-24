@@ -26,6 +26,7 @@ package com.questhelper.requirements;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Client;
 
 @AllArgsConstructor
 @Getter
@@ -37,7 +38,10 @@ public enum Spellbook
 	ARCEUUS(3, "Arceuus");
 
 	private final int id;
-
-	@Getter
 	private final String name;
+
+	public boolean check(Client client, int varbit)
+	{
+		return client.getVarbitValue(varbit) == this.getId();
+	}
 }

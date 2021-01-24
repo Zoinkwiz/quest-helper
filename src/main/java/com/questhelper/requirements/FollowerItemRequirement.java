@@ -43,16 +43,14 @@ public class FollowerItemRequirement extends ItemRequirement
 	@Override
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
-		for (NPC npc : client.getNpcs())
+		boolean match = client.getNpcs().stream()
+			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
+			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
+			.anyMatch(npc -> followerIDs.contains(npc.getId()));
+
+		if (match)
 		{
-			Actor ta = npc.getInteracting();
-			if (ta != null && client.getLocalPlayer() == ta)
-			{
-				if (followerIDs.contains(npc.getId()))
-				{
-					return true;
-				}
-			}
+			return true;
 		}
 
 		int remainder = checkSpecificItem(client, getId(), checkConsideringSlotRestrictions, items);

@@ -67,11 +67,13 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	//Items Required
 	ItemRequirement axe, feathers, knife, hammer, chisel, wolfBones4, acheyLogs, chompy, bloatedToad, knifeHighlighted, feathersHighlighted,
 		shaftsHighlighted, wolfBonesHighlighted, tipsHighlighted, flightedArrowsHighlighted, emptyBellow, fullBellow, ogreArrows6Highlighted,
-		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted, seasonedChompy;
+		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted,
+		seasonedChompy, bellow;
 
-	ConditionForStep inCave, hasLogs, hasShafts, hasFlightedShafts, hasTips, hasArrows, hasFullBellow, hasBloatedToad, hasOgreBow, chompyNearby,
-		deadChompyNearby, rantzWantsOnion, rantzWantsPotato, knowWhatRantzWants, bugsWantsEqua, bugsWantsCabbage, knowWhatBugsWants, fycieWantsDoogle,
-		fycieWantsTomato, knowWhatFycieWants, hasOnion, hasTomato, hasPotato, hasDoogle, hasEqua, hasCabbage, hasRantzItem, hasFycieItem, hasBugsItem;
+	ConditionForStep inCave, hasLogs, hasShafts, hasFlightedShafts, hasTips, hasArrows, hasFullBellow, hasBloatedToad,
+		hasOgreBow, chompyNearby, deadChompyNearby, rantzWantsOnion, rantzWantsPotato, knowWhatRantzWants, bugsWantsEqua,
+		bugsWantsCabbage, knowWhatBugsWants, fycieWantsDoogle, fycieWantsTomato, knowWhatFycieWants, hasOnion, hasTomato,
+		hasPotato, hasDoogle, hasEqua, hasCabbage, hasRantzItem, hasFycieItem, hasBugsItem, hasBellows;
 
 	DetailedQuestStep talkToRantz, getLogs, makeShafts, useFeathersOnShafts, useChiselOnBones, useTipsOnShafts, useArrowsOnRantz,
 		askRantzQuestions, enterCave, getBellow, leaveCave, fillBellows, inflateToad, talkToRantzWithToad, dropToad, waitForChompy,
@@ -107,7 +109,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		steps.put(15, goGetBellows);
 
 		ConditionalStep goInflateToad = new ConditionalStep(this, fillBellows);
-		goInflateToad.addStep(inCave, leaveCave);
+		goInflateToad.addStep(new Conditions(inCave, hasBellows), leaveCave);
+		goInflateToad.addStep(inCave, getBellow);
 		goInflateToad.addStep(hasBloatedToad, talkToRantzWithToad);
 		goInflateToad.addStep(hasFullBellow, inflateToad);
 		steps.put(20, goInflateToad);
@@ -195,6 +198,9 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		fullBellow = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS_1);
 		fullBellow.addAlternates(ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
 
+		bellow = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS);
+		bellow.addAlternates(ItemID.OGRE_BELLOWS_1, ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
+
 		onion = new ItemRequirement("Onion", ItemID.ONION);
 		tomato = new ItemRequirement("Tomato", ItemID.TOMATO);
 		potato = new ItemRequirement("Potato", ItemID.POTATO);
@@ -220,6 +226,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		hasTips = new ItemRequirementCondition(tipsHighlighted);
 		hasArrows = new ItemRequirementCondition(ogreArrows6Highlighted);
 		hasFullBellow = new ItemRequirementCondition(fullBellow);
+		hasBellows = new ItemRequirementCondition(bellow);
 		hasBloatedToad = new ItemRequirementCondition(bloatedToad);
 		hasOgreBow = new ItemRequirementCondition(ogreBow);
 

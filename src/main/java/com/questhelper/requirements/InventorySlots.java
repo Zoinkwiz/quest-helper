@@ -27,12 +27,10 @@
 
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.NoItemRequirement;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;

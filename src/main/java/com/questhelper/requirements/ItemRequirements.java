@@ -29,7 +29,9 @@ import com.questhelper.steps.conditional.LogicType;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -66,7 +68,7 @@ public class ItemRequirements extends ItemRequirement
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
 		int successes = (int) itemRequirements.stream().filter(predicate).count();
-
+		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
 		return (successes == itemRequirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)
 			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)
@@ -78,7 +80,7 @@ public class ItemRequirements extends ItemRequirement
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
 		int successes = (int) itemRequirements.stream().filter(predicate).count();
-
+		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
 		return (successes == itemRequirements.size() && logicType == LogicType.AND)
 			|| (successes > 0 && logicType == LogicType.OR)
 			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)
@@ -117,12 +119,9 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public ArrayList<Integer> getAllIds()
 	{
-		ArrayList<Integer> ids = new ArrayList<>();
-		for (ItemRequirement itemRequirement : itemRequirements)
-		{
-			ids.addAll(itemRequirement.getAllIds());
-		}
-
-		return ids;
+		return itemRequirements.stream()
+			.map(ItemRequirement::getAllIds)
+			.flatMap(Collection::stream)
+			.collect(Collectors.toCollection(ArrayList::new));
 	}
 }

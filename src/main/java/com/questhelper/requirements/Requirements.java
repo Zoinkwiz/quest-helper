@@ -25,41 +25,49 @@
 package com.questhelper.requirements;
 
 import com.questhelper.steps.conditional.LogicType;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;
 
+/**
+ * Requirement that combines multiple other {@link Requirement}s using
+ * {@link LogicType} to determine if the requirement(s) is/are met.
+ */
+@Getter
 public class Requirements extends Requirement
 {
-	@Getter
-	ArrayList<Requirement> requirements = new ArrayList<>();
-	LogicType logicType;
-	String name;
+	private final Requirement[] requirements;
+	private final LogicType logicType;
+	private final String name;
 
+	/**
+	 * Requirement that combines multiple other {@link Requirement}s using
+	 * {@link LogicType} to determine if the requirement(s) is/are met.
+	 * <br>
+	 * The default {@link LogicType} is {@link LogicType#AND}.
+	 */
 	public Requirements(String name, Requirement... requirements)
 	{
 		this.name = name;
-		this.requirements.addAll(Arrays.asList(requirements));
+		this.requirements = requirements;
 		this.logicType = LogicType.AND;
 	}
 
+	/**
+	 * Requirement that combines multiple other {@link Requirement}s using
+	 * {@link LogicType} to determine if the requirement(s) is/are met.
+	 */
 	public Requirements(LogicType logicType, String name, Requirement... requirements)
 	{
 		this.name = name;
-		this.requirements.addAll(Arrays.asList(requirements));
+		this.requirements = requirements;
 		this.logicType = logicType;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		int successes = (int) requirements.stream().filter(r -> r.check(client)).count();
-
-		return (successes == requirements.size() && logicType == LogicType.AND)
-			|| (successes > 0 && logicType == LogicType.OR)
-			|| (successes < requirements.size() && logicType == LogicType.NAND)
-			|| (successes == 0 && logicType == LogicType.NOR);
+		return logicType.test(Stream.of(requirements), r -> r.check(client));
 	}
 
 	@Override

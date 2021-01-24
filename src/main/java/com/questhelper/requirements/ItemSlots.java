@@ -28,7 +28,9 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 
 @Getter
 public enum ItemSlots
@@ -81,25 +83,21 @@ public enum ItemSlots
 			return getInventorySlots().checkInventory(client, predicate);
 		}
 		// otherwise check a specific slot
-		if (client.getLocalPlayer() == null || client.getLocalPlayer().getPlayerComposition() == null)
+		if (client.getLocalPlayer() == null)
 		{
-			return true;
+			return false;
 		}
-
-		int[] equipment = client.getLocalPlayer().getPlayerComposition().getEquipmentIds();
-
-		if (equipment == null)
+		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (equipment == null || getSlotIdx() < 0) // unknown slot
 		{
-			return true;
+			return false;
+		}
+		Item item = equipment.getItem(getSlotIdx());
+		if (item == null)
+		{
+			return false;
 		}
 
-		return getSlotIdx() >= 0 && equipment[getSlotIdx()] <= 512;
-	}
-
-	public static String getById(int id) {
-		for(ItemSlots itemSlot : values()) {
-			if(itemSlot.slotIdx == id) return itemSlot.getName();
-		}
-		return ANY_EQUIPPED_AND_INVENTORY.getName();
+		return predicate.test(item);
 	}
 }

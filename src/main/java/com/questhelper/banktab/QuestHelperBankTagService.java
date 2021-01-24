@@ -144,7 +144,7 @@ public class QuestHelperBankTagService
 	{
 		ArrayList<Integer> itemIds = item.getDisplayItemIds();
 
-		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(0);
+		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
 
 		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTip());
 	}

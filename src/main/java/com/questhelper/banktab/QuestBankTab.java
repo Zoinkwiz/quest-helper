@@ -286,8 +286,7 @@ public class QuestBankTab
 		}
 	}
 
-	private void sortBankTabItems(Widget itemContainer, Widget[] containerChildren,
-								  ArrayList<BankTabItems> newLayout)
+	private void sortBankTabItems(Widget itemContainer, Widget[] containerChildren, ArrayList<BankTabItems> newLayout)
 	{
 		int totalSectionsHeight = 0;
 
@@ -305,10 +304,10 @@ public class QuestBankTab
 			}
 		}
 
-		for (BankTabItems BankTabItems : newLayout)
+		for (BankTabItems bankTabItems : newLayout)
 		{
-			totalSectionsHeight = addPluginTabSection(itemContainer, BankTabItems.getItems(), itemList,
-				BankTabItems.getName(), totalSectionsHeight);
+			totalSectionsHeight = addPluginTabSection(itemContainer, bankTabItems.getItems(), itemList,
+				bankTabItems.getName(), totalSectionsHeight);
 		}
 
 		totalSectionsHeight = addGeneralSection(itemContainer, itemList, totalSectionsHeight);
@@ -326,9 +325,8 @@ public class QuestBankTab
 				itemContainerScroll));
 	}
 
-	private int addPluginTabSection(Widget itemContainer, ArrayList<BankTabItem> items,
-									ArrayList<Integer> itemIds, String title,
-									int totalSectionsHeight)
+	private int addPluginTabSection(Widget itemContainer, ArrayList<BankTabItem> items, ArrayList<Integer> itemIds,
+									String title, int totalSectionsHeight)
 	{
 		int totalItemsAdded = 0;
 

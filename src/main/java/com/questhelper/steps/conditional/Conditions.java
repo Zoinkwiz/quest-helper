@@ -101,7 +101,6 @@ public class Conditions extends ConditionForStep
 
 		int conditionsPassed = (int) conditions.stream().filter(c -> c.checkCondition(client)).count();
 
-		System.out.println(conditionsPassed);
 		if (operation != null)
 		{
 			return operation.check(conditionsPassed, quantity);

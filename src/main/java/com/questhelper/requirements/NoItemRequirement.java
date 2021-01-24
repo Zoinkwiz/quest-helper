@@ -28,11 +28,20 @@ import java.awt.Color;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 
+/**
+ * Requirement that checks if a player has no item in a specified {@link ItemSlots}.
+ */
 public class NoItemRequirement extends ItemRequirement
 {
 	private final ItemSlots slot;
 	private final int matchingItemID;
 
+	/**
+	 * Checks if a player has no items in a given {@link ItemSlots}
+	 *
+	 * @param text display text
+	 * @param slot the slot to check
+	 */
 	public NoItemRequirement(String text, @Nonnull ItemSlots slot)
 	{
 		super(text, -1, -1);

@@ -4,6 +4,9 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
+/**
+ * Requirement that checks if a player meets a certain skill level.
+ */
 @Getter
 public class SkillRequirement extends Requirement
 {
@@ -12,6 +15,12 @@ public class SkillRequirement extends Requirement
 	private boolean canBeBoosted;
 	private String displayText;
 
+	/**
+	 * Check if a player has a certain skill level
+	 *
+	 * @param skill the {@link Skill} to check
+	 * @param requiredLevel the required level for this Requirement to pass
+	 */
 	public SkillRequirement(Skill skill, int requiredLevel)
 	{
 		this.skill = skill;
@@ -19,12 +28,27 @@ public class SkillRequirement extends Requirement
 		this.displayText = getDisplayText();
 	}
 
+	/**
+	 * Check if a player has a certain skill level
+	 *
+	 * @param skill the {@link Skill} to check
+	 * @param requiredLevel the required level for this Requirement to pass
+	 * @param canBeBoosted if the skill can be boosted to meet this requirement
+	 */
 	public SkillRequirement(Skill skill, int requiredLevel, boolean canBeBoosted)
 	{
 		this(skill, requiredLevel);
 		this.canBeBoosted = canBeBoosted;
 	}
 
+	/**
+	 * Check if a player has a certain skill level
+	 *
+	 * @param skill the {@link Skill} to check
+	 * @param requiredLevel the required level for this Requirement to pass
+	 * @param canBeBoosted if this skill check can be boosted to meet this requirement
+	 * @param displayText the display text
+	 */
 	public SkillRequirement(Skill skill, int requiredLevel, boolean canBeBoosted, String displayText)
 	{
 		this(skill, requiredLevel, canBeBoosted);

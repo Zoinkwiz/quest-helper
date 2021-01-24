@@ -25,17 +25,24 @@
 package com.questhelper.requirements;
 
 import com.questhelper.steps.conditional.Operation;
-import java.awt.Color;
-import java.util.ArrayList;
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
+/**
+ * Checks if the player meets a weight check
+ */
 public class WeightRequirement extends Requirement
 {
-	int weight;
-	String text;
-	Operation operation;
+	private final int weight;
+	private final String text;
+	private final Operation operation;
 
+	/**
+	 * Checks if the player meets the weight requirement.
+	 *
+	 * @param text the display text
+	 * @param weight the weight required
+	 * @param operation the {@link Operation} to use
+	 */
 	public WeightRequirement(String text, int weight, Operation operation)
 	{
 		this.weight = weight;

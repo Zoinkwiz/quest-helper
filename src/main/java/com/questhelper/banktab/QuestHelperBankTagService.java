@@ -25,15 +25,15 @@
 package com.questhelper.banktab;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.banktab.BankTabItem;
-import com.questhelper.banktab.BankTabItems;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.conditional.LogicType;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
@@ -59,23 +59,14 @@ public class QuestHelperBankTagService
 
 		ArrayList<Integer> flattenedList = new ArrayList<>();
 
-		for (BankTabItems sortedItem : sortedItems)
-		{
-			for (BankTabItem pluginBankTabItem : sortedItem.getItems())
-			{
-				ArrayList<Integer> itemIds = pluginBankTabItem.getItemIDs();
-				if (itemIds != null)
-				{
-					for (Integer itemId : itemIds)
-					{
-						if (!flattenedList.contains(itemId))
-						{
-							flattenedList.add(itemId);
-						}
-					}
-				}
-			}
-		}
+		 sortedItems.stream()
+					.map(BankTabItems::getItems)
+					.flatMap(Collection::stream)
+					.map(BankTabItem::getItemIDs)
+					.flatMap(Collection::stream)
+					.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
+					.filter(id -> !flattenedList.contains(id))
+					.forEach(flattenedList::add);
 		return flattenedList;
 	}
 	
@@ -95,22 +86,20 @@ public class QuestHelperBankTagService
 		if (recommendedItems != null && !recommendedItems.isEmpty())
 		{
 			BankTabItems pluginItems = new BankTabItems("Recommended items");
-			for (ItemRequirement item : recommendedItems)
-			{
-				getItemsFromRequirement(pluginItems, item);
-			}
+			recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems, item));
 			newList.add(pluginItems);
 		}
 
 		for (PanelDetails questSection : questSections)
 		{
-			ArrayList<ItemRequirement> items = questSection.getItemRequirements();
-			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());
+			List<ItemRequirement> items = questSection.getRequirements()
+				.stream()
+				.filter(ItemRequirement.class::isInstance)
+				.map(ItemRequirement.class::cast)
+				.collect(Collectors.toList());
 
-			for (ItemRequirement item : items)
-			{
-				getItemsFromRequirement(pluginItems, item);
-			}
+			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());
+			items.forEach(item -> getItemsFromRequirement(pluginItems, item));
 			newList.add(pluginItems);
 		}
 
@@ -126,35 +115,23 @@ public class QuestHelperBankTagService
 			ArrayList<ItemRequirement> requirements = itemRequirements.getItemRequirements();
 			if (logicType == LogicType.AND)
 			{
-				for (ItemRequirement requirement : requirements)
-				{
-					getItemsFromRequirement(pluginItems, requirement);
-				}
+				requirements.forEach(req -> getItemsFromRequirement(pluginItems, req));
 			}
 			if (logicType == LogicType.OR)
 			{
-				boolean foundMatch = false;
-				for (ItemRequirement requirement : requirements)
-				{
-					if (requirement.checkBank(plugin.getClient()))
-					{
-						foundMatch = true;
-						getItemsFromRequirement(pluginItems, requirement);
-						break;
-					}
-				}
-				if (!foundMatch)
-				{
-					getItemsFromRequirement(pluginItems, requirements.get(0));
-				}
+				ItemRequirement match = requirements.stream()
+					.filter(r -> r.checkBank(plugin.getClient()))
+					.findFirst()
+					.orElse(requirements.get(0));
+
+				getItemsFromRequirement(pluginItems, match);
 			}
 		}
 		else
 		{
 			if (itemRequirement.getDisplayItemId() != null)
 			{
-				pluginItems.addItems(new BankTabItem(itemRequirement.getQuantity(), itemRequirement.getName(),
-					itemRequirement.getId(), itemRequirement.getTip(), itemRequirement.getDisplayItemId()));
+				pluginItems.addItems(new BankTabItem(itemRequirement));
 			}
 			else if (!itemRequirement.getDisplayItemIds().contains(-1))
 			{
@@ -167,16 +144,7 @@ public class QuestHelperBankTagService
 	{
 		ArrayList<Integer> itemIds = item.getDisplayItemIds();
 
-		Integer displayId = itemIds.get(0);
-
-		for (Integer itemId : itemIds)
-		{
-			if (hasItemInBank(itemId))
-			{
-				displayId = itemId;
-				break;
-			}
-		}
+		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(0);
 
 		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTip());
 	}

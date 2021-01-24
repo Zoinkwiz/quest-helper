@@ -25,9 +25,9 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
+import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
@@ -111,44 +111,44 @@ public class QuestStepPanel extends JPanel
 		bodyPanel.setLayout(new BorderLayout());
 		bodyPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
-		if (!panelDetails.getItemRequirements().isEmpty())
+		if (!panelDetails.getRequirements().isEmpty())
 		{
-			JPanel questItemRequirementsPanel = new JPanel();
-			questItemRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			questItemRequirementsPanel.setLayout(new BorderLayout());
-			questItemRequirementsPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
+			JPanel questRequirementsPanel = new JPanel();
+			questRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			questRequirementsPanel.setLayout(new BorderLayout());
+			questRequirementsPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-			JPanel questItemRequirementsHeader = new JPanel();
-			questItemRequirementsHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			questItemRequirementsHeader.setLayout(new BorderLayout());
-			questItemRequirementsHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
+			JPanel questRequirementsHeader = new JPanel();
+			questRequirementsHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			questRequirementsHeader.setLayout(new BorderLayout());
+			questRequirementsHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
 
-			JLabel questItemReqsTitle = new JLabel();
-			questItemReqsTitle.setForeground(Color.WHITE);
-			questItemReqsTitle.setText("Bring the following items:");
-			questItemReqsTitle.setMinimumSize(new Dimension(1, questItemRequirementsHeader.getPreferredSize().height));
-			questItemRequirementsHeader.add(questItemReqsTitle, BorderLayout.NORTH);
+			JLabel questReqsTitle = new JLabel();
+			questReqsTitle.setForeground(Color.WHITE);
+			questReqsTitle.setText("Bring the following items:");
+			questReqsTitle.setMinimumSize(new Dimension(1, questRequirementsHeader.getPreferredSize().height));
+			questRequirementsHeader.add(questReqsTitle, BorderLayout.NORTH);
 
-			JPanel questItemRequirementsListPanel = new JPanel();
-			questItemRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
-			questItemRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+			JPanel questRequirementsListPanel = new JPanel();
+			questRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
+			questRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-			ArrayList<ItemRequirement> itemRequirements = panelDetails.getItemRequirements();
+			ArrayList<Requirement> requirements = panelDetails.getRequirements();
 
-			if (itemRequirements != null)
+			if (requirements != null)
 			{
-				for (ItemRequirement itemRequirement : itemRequirements)
+				for (Requirement req : requirements)
 				{
-					QuestRequirementPanel reqPanel = new QuestRequirementPanel(itemRequirement);
+					QuestRequirementPanel reqPanel = new QuestRequirementPanel(req);
 					requirementPanels.add(reqPanel);
-					questItemRequirementsListPanel.add(reqPanel);
+					questRequirementsListPanel.add(reqPanel);
 				}
 			}
 
-			questItemRequirementsPanel.add(questItemRequirementsHeader, BorderLayout.NORTH);
-			questItemRequirementsPanel.add(questItemRequirementsListPanel, BorderLayout.CENTER);
+			questRequirementsPanel.add(questRequirementsHeader, BorderLayout.NORTH);
+			questRequirementsPanel.add(questRequirementsListPanel, BorderLayout.CENTER);
 
-			bodyPanel.add(questItemRequirementsPanel, BorderLayout.NORTH);
+			bodyPanel.add(questRequirementsPanel, BorderLayout.NORTH);
 		}
 
 		JPanel questStepsPanel = new JPanel();
@@ -189,10 +189,7 @@ public class QuestStepPanel extends JPanel
 	{
 		StringBuilder text = new StringBuilder();
 
-		for (String line : step.getText())
-		{
-			text.append(line).append(" ");
-		}
+		step.getText().forEach(line -> text.append(line).append(" "));
 
 		return "<html><body style = 'text-align:left'>" + text + "</body></html>";
 	}

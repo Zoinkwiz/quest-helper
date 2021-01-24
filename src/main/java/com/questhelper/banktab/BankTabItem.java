@@ -24,6 +24,7 @@
  */
 package com.questhelper.banktab;
 
+import com.questhelper.requirements.ItemRequirement;
 import java.util.ArrayList;
 import java.util.Collections;
 import lombok.Getter;
@@ -63,5 +64,10 @@ public class BankTabItem
 		this.itemIDs = new ArrayList<>(Collections.singleton(itemID));
 		this.details = details;
 		this.displayID = displayID;
+	}
+
+	public BankTabItem(ItemRequirement item)
+	{
+		this(item.getQuantity(), item.getName(), item.getId(), item.getTip(), item.getDisplayItemId());
 	}
 }

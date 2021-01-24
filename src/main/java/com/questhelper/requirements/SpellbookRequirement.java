@@ -28,7 +28,8 @@ import net.runelite.api.Client;
 
 public class SpellbookRequirement extends Requirement
 {
-	Spellbook spellBook;
+	private static final int SPELLBOOK_VARBIT = 4070;
+	private final Spellbook spellBook;
 
 	public SpellbookRequirement(Spellbook spellBook)
 	{
@@ -38,8 +39,7 @@ public class SpellbookRequirement extends Requirement
 	@Override
 	public boolean check(Client client)
 	{
-		int currentSpellbook = client.getVarbitValue(4070);
-		return currentSpellbook == spellBook.getId();
+		return spellBook.check(client, SPELLBOOK_VARBIT);
 	}
 
 	@Override

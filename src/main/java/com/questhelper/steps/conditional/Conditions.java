@@ -30,6 +30,9 @@ import net.runelite.api.Client;
 
 public class Conditions extends ConditionForStep
 {
+	protected Operation operation;
+	protected int quantity;
+
 	public Conditions(ConditionForStep... conditions)
 	{
 		this.conditions = new ArrayList<>();
@@ -42,6 +45,25 @@ public class Conditions extends ConditionForStep
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.logicType = logicType;
+	}
+
+	public Conditions(Operation operation, int quantity, ConditionForStep... conditions)
+	{
+		this.conditions = new ArrayList<>();
+		Collections.addAll(this.conditions, conditions);
+		this.logicType = LogicType.AND;
+		this.operation = operation;
+		this.quantity = quantity;
+	}
+
+	public Conditions(boolean onlyNeedToPassOnce, Operation operation, int quantity, ConditionForStep... conditions)
+	{
+		this.conditions = new ArrayList<>();
+		Collections.addAll(this.conditions, conditions);
+		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
+		this.logicType = LogicType.AND;
+		this.operation = operation;
+		this.quantity = quantity;
 	}
 
 	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, ConditionForStep... conditions)
@@ -78,6 +100,12 @@ public class Conditions extends ConditionForStep
 		}
 
 		int conditionsPassed = (int) conditions.stream().filter(c -> c.checkCondition(client)).count();
+
+		System.out.println(conditionsPassed);
+		if (operation != null)
+		{
+			return operation.check(conditionsPassed, quantity);
+		}
 
 		if ((conditionsPassed > 0 && logicType == LogicType.OR)
 			|| (conditionsPassed == 0 && logicType == LogicType.NOR)

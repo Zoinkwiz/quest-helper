@@ -25,6 +25,7 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
+import com.questhelper.IconUtil;
 import com.questhelper.QuestHelperPlugin;
 
 import com.questhelper.questhelpers.QuestHelper;
@@ -39,7 +40,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -54,7 +54,6 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
 public class QuestOverviewPanel extends JPanel
@@ -85,22 +84,14 @@ public class QuestOverviewPanel extends JPanel
 
 	private final JLabel questNameLabel = new JLabel();
 
-	private static final ImageIcon CLOSE_ICON;
-	private static final ImageIcon INFO_ICON;
+	private static final ImageIcon CLOSE_ICON = IconUtil.CLOSE.getIcon();
+	private static final ImageIcon INFO_ICON = IconUtil.INFO_ICON.getIcon();
 
 	private final JButton collapseBtn = new JButton();
 
 	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
 
 	private final List<QuestRequirementPanel> requirementPanels = new ArrayList<>();
-
-	static
-	{
-		final BufferedImage closeImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/close.png");
-		final BufferedImage infoImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/info_icon.png");
-		CLOSE_ICON = new ImageIcon(closeImg);
-		INFO_ICON = new ImageIcon(infoImg);
-	}
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin)
 	{

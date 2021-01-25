@@ -24,14 +24,13 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.QuestHelperPlugin;
+import com.questhelper.IconUtil;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -39,11 +38,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.util.ImageUtil;
 
 public class QuestRequirementPanel extends JPanel
 {
-	private static final ImageIcon INFO_ICON;
+	private static final ImageIcon INFO_ICON = IconUtil.INFO_ICON.getIcon();
 
 	@Getter
 	@Setter
@@ -52,12 +50,6 @@ public class QuestRequirementPanel extends JPanel
 
 	@Getter
 	private final Requirement itemRequirement;
-
-	static
-	{
-		final BufferedImage infoImg = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/info_icon.png");
-		INFO_ICON = new ImageIcon(infoImg);
-	}
 
 	public QuestRequirementPanel(Requirement requirement)
 	{

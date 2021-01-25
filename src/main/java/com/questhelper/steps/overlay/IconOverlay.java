@@ -24,17 +24,15 @@
  */
 package com.questhelper.steps.overlay;
 
-import com.questhelper.QuestHelperPlugin;
+import com.questhelper.IconUtil;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import net.runelite.client.util.ImageUtil;
 
 public class IconOverlay
 {
 	public static BufferedImage createIconImage(BufferedImage newImage)
 	{
-		BufferedImage iconBackground = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class,
-			"/icon_background.png");
+		BufferedImage iconBackground = IconUtil.ICON_BACKGROUND.getImage();
 		BufferedImage icon = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(),
 			BufferedImage.TYPE_INT_ARGB);
 		Graphics tmpGraphics = icon.getGraphics();

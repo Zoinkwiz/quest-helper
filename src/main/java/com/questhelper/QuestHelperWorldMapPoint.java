@@ -26,10 +26,6 @@
 package com.questhelper;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import net.runelite.api.Point;
@@ -47,7 +43,7 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 	{
 		super(worldPoint, null);
 
-		BufferedImage iconBackground = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+		BufferedImage iconBackground = ImageUtil.loadImageResource(getClass(), "/util/clue_arrow.png");
 		questWorldImage = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 		Graphics graphics = questWorldImage.getGraphics();
@@ -59,14 +55,14 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 
 		questWorldImagePoint = new Point(questWorldImage.getWidth() / 2, questWorldImage.getHeight());
 
-		arrows.put(0, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow.png"));
-		arrows.put(45, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow_45.png"));
-		arrows.put(90, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow_90.png"));
-		arrows.put(135, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow_135.png"));
-		arrows.put(180, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow_180.png"));
-		arrows.put(225, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow_225.png"));
-		arrows.put(270, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow_270.png"));
-		arrows.put(315, ImageUtil.getResourceStreamFromClass(getClass(), "/quest_step_arrow_315.png"));
+		arrows.put(0, IconUtil.QUEST_STEP_ARROW.getImage());
+		arrows.put(45, IconUtil.QUEST_STEP_ARROW_45.getImage());
+		arrows.put(90, IconUtil.QUEST_STEP_ARROW_90.getImage());
+		arrows.put(135, IconUtil.QUEST_STEP_ARROW_135.getImage());
+		arrows.put(180, IconUtil.QUEST_STEP_ARROW_180.getImage());
+		arrows.put(225, IconUtil.QUEST_STEP_ARROW_225.getImage());
+		arrows.put(270, IconUtil.QUEST_STEP_ARROW_270.getImage());
+		arrows.put(315, IconUtil.QUEST_STEP_ARROW_315.getImage());
 
 		activeQuestArrow = arrows.get(0);
 

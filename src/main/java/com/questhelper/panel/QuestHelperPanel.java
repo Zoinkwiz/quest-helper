@@ -25,13 +25,13 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
+import com.questhelper.IconUtil;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -45,11 +45,9 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
@@ -82,9 +80,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage discordImage = ImageUtil.getResourceStreamFromClass(QuestHelperPlugin.class, "/discord.png");
-		final BufferedImage scaledImage = ImageUtil.resizeImage(discordImage, 16, 16);
-		DISCORD_ICON = new ImageIcon(scaledImage);
+		DISCORD_ICON = IconUtil.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)

@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2018, Eadgars Ruse <https://github.com/Eadgars-Ruse>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *

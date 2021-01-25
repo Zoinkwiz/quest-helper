@@ -27,13 +27,18 @@ package com.questhelper.quests.theknightssword;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.requirements.NpcRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.Requirements;
 import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.steps.conditional.NpcCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,14 +66,15 @@ public class TheKnightsSword extends BasicQuestHelper
 
 	//Items Recommended
 	ItemRequirement varrockTeleport, faladorTeleports, homeTele;
+	Requirements searchCupboardReq;
 
-	ConditionForStep hasPortrait, hasBluriteOre, hasBluriteSword, inDungeon, inFaladorCastle1, inFaladorCastle2;
+	ConditionForStep hasPortrait, hasBluriteOre, hasBluriteSword, inDungeon, inFaladorCastle1, inFaladorCastle2, inFaladorCastle2Bedroom, sirVyinNotInRoom;
 
 	QuestStep talkToSquire, talkToReldo, talkToThurgo, talkToThurgoAgain, talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, enterDungeon,
 		mineBlurite, givePortraitToThurgo, bringThurgoOre, finishQuest;
 
 	//Zones
-	Zone dungeon, faladorCastle1, faladorCastle2;
+	Zone dungeon, faladorCastle1, faladorCastle2, faladorCastle2Bedroom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -124,6 +130,12 @@ public class TheKnightsSword extends BasicQuestHelper
 		inDungeon = new ZoneCondition(dungeon);
 		inFaladorCastle1 = new ZoneCondition(faladorCastle1);
 		inFaladorCastle2 = new ZoneCondition(faladorCastle2);
+		inFaladorCastle2Bedroom = new ZoneCondition(faladorCastle2Bedroom);
+		sirVyinNotInRoom = new NpcCondition(NpcID.SIR_VYVIN, faladorCastle2Bedroom);
+
+		NpcRequirement sirVyinNotInRoom = new NpcRequirement("Sir Vyin not in the bedroom.", NpcID.SIR_VYVIN, true, faladorCastle2Bedroom);
+		ZoneRequirement playerIsUpstairs = new ZoneRequirement("Upstairs", faladorCastle2);
+		searchCupboardReq = new Requirements(LogicType.AND, "Sir Vyin not in the bedroom.", playerIsUpstairs, sirVyinNotInRoom);
 	}
 
 	public void setupZones()
@@ -131,6 +143,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		dungeon = new Zone(new WorldPoint(2979, 9538, 0), new WorldPoint(3069, 9602, 0));
 		faladorCastle1 = new Zone(new WorldPoint(2954, 3328, 1), new WorldPoint(2997, 3353, 1));
 		faladorCastle2 = new Zone(new WorldPoint(2980, 3331, 2), new WorldPoint(2986, 3346, 2));
+		faladorCastle2Bedroom = new Zone(new WorldPoint(2981, 3336, 2), new WorldPoint(2986, 3331, 2));
 	}
 
 	public void setupSteps()
@@ -149,7 +162,8 @@ public class TheKnightsSword extends BasicQuestHelper
 		talkToSquire2 = new NpcStep(this, NpcID.SQUIRE_4737, new WorldPoint(2978, 3341, 0), "Talk to the Squire in Falador Castle's courtyard.");
 		goUpCastle1 = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0), "Climb up the east ladder in Falador Castle.");
 		goUpCastle2 = new ObjectStep(this, ObjectID.STAIRCASE_24077, new WorldPoint(2985, 3338, 1), "Go up the staircase west of the ladder on the 1st floor.");
-		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_2272, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.");
+		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_2272, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", searchCupboardReq);
+		((ObjectStep)searchCupboard).addAlternateObjects(ObjectID.CUPBOARD_2271); // 2271 is the closed cupboard
 		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", bluriteOre, ironBars, portrait);
 		givePortraitToThurgo.addDialogStep("About that sword...");
 		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars, portrait);

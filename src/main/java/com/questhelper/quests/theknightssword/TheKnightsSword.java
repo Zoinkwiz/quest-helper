@@ -166,9 +166,9 @@ public class TheKnightsSword extends BasicQuestHelper
 		((ObjectStep)searchCupboard).addAlternateObjects(ObjectID.CUPBOARD_2271); // 2271 is the closed cupboard
 		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", bluriteOre, ironBars, portrait);
 		givePortraitToThurgo.addDialogStep("About that sword...");
-		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars, portrait);
+		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars);
 		mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0), "Mine a blurite ore in the eastern cavern.", pickaxe);
-		bringThurgoOre = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Return to Thurgo with a blurite ore, two iron bars and the portrait.", bluriteOre, ironBars, portrait);
+		bringThurgoOre = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Return to Thurgo with a blurite ore and two iron bars.", bluriteOre, ironBars);
 		bringThurgoOre.addDialogStep("Can you make that replacement sword now?");
 		finishQuest = new NpcStep(this, NpcID.SQUIRE_4737, new WorldPoint(2978, 3341, 0), "Return to the Squire with the sword to finish the quest.", bluriteSword);
 	}

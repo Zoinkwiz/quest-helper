@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -66,8 +67,8 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 	HashMap<Integer, ItemRequirement> shapeValues = new HashMap<>();
 
-	HashMap<Integer, ArrayList<ArrayList<ItemRequirement>>> shapeValues3 = new HashMap<>();
-	HashMap<Integer, ArrayList<ArrayList<ItemRequirement>>> shapeValues4 = new HashMap<>();
+	HashMap<Integer, List<List<ItemRequirement>>> shapeValues3 = new HashMap<>();
+	HashMap<Integer, List<List<ItemRequirement>>> shapeValues4 = new HashMap<>();
 
 	ItemRequirement slot1Item, slot2Item, slot3Item, yellowCircleRedTri, greenCircleRedSquare, blueCircleRedPentagon, blueSquareGreenPentagon, indigoCircleOrangeTriangle, yellowSquareGreenTriangle, yellowPentagonBlueTriangle;
 
@@ -81,9 +82,9 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 	int items1;
 
-	ArrayList<ItemRequirement> items2 = new ArrayList<>();
-	ArrayList<ItemRequirement> items3 = new ArrayList<>();
-	ArrayList<ItemRequirement> items4 = new ArrayList<>();
+	List<ItemRequirement> items2 = new ArrayList<>();
+	List<ItemRequirement> items3 = new ArrayList<>();
+	List<ItemRequirement> items4 = new ArrayList<>();
 
 	Item[] lastInv;
 
@@ -165,7 +166,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		Item[] inventoryItemsArr = itemContainer.getItems();
 
 		items1 = -1;
-		ArrayList<Item> inventoryItems = new ArrayList<>(Arrays.asList(inventoryItemsArr));
+		List<Item> inventoryItems = Arrays.asList(inventoryItemsArr);
 
 		for (Integer id : shapeValues.get(answer1).getAllIds())
 		{
@@ -179,7 +180,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		if (items1 == -1)
 		{
-			getPieces.setRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
+			getPieces.setRequirements(Collections.singletonList(shapes.get(items1)));
 			startUpStep(getPieces);
 			return;
 		}
@@ -196,19 +197,19 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			// Not holding a disk to insert, should click a disk to put into hand
 			if (currentInv != null)
 			{
-				ArrayList<WidgetDetails> ids = new ArrayList<>();
+				List<WidgetDetails> ids = new ArrayList<>();
 
 				ids = getClickableItems(ids, new ArrayList<>(items1));
 
 				insertDisc.setWidgetDetails(ids);
-				insertDisc.setRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
+				insertDisc.setRequirements(Collections.singletonList(shapes.get(items1)));
 
 				startUpStep(insertDisc);
 			}
 			return;
 		}
 
-		solvePuzzle.setRequirements(new ArrayList<>(Collections.singletonList(shapes.get(items1))));
+		solvePuzzle.setRequirements(Collections.singletonList(shapes.get(items1)));
 		startUpStep(solvePuzzle);
 	}
 
@@ -230,7 +231,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		Item[] inventoryItemsArr = itemContainer.getItems();
 
-		ArrayList<Item> inventoryItems = new ArrayList<>(Arrays.asList(inventoryItemsArr));
+		List<Item> inventoryItems = Arrays.asList(inventoryItemsArr);
 
 		Widget insertWidget = client.getWidget(447, 0);
 
@@ -256,7 +257,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			if (match != -1)
 			{
 				mostMatch2++;
-				items2 = new ArrayList<>(Collections.singletonList(shapes.get(inventoryItems.get(match).getId())));
+				items2 = Collections.singletonList(shapes.get(inventoryItems.get(match).getId()));
 
 				inventoryItems.remove(match);
 				if (inventoryItems.get(match).getQuantity() > 1)
@@ -278,15 +279,15 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		}
 
 		// Puzzle 3
-		ArrayList<ItemRequirement> newReq3 = new ArrayList<>();
-		ArrayList<Item> newInventory3 = new ArrayList<>(inventoryItems);
-		ArrayList<Item> tmpInventory3;
-		for (ArrayList<ItemRequirement> reqs : shapeValues3.get(answer3))
+		List<ItemRequirement> newReq3 = new ArrayList<>();
+		List<Item> newInventory3 = new ArrayList<>(inventoryItems);
+		List<Item> tmpInventory3;
+		for (List<ItemRequirement> reqs : shapeValues3.get(answer3))
 		{
 			// Each duo
-			ArrayList<Integer> currentSlotIDs3 = new ArrayList<>(Arrays.asList(slot2, slot3));
-			tmpInventory3 = new ArrayList<>(inventoryItems);
-			ArrayList<ItemRequirement> tmpReqs = new ArrayList<>(reqs);
+			List<Integer> currentSlotIDs3 = Arrays.asList(slot2, slot3);
+			tmpInventory3 = inventoryItems;
+			List<ItemRequirement> tmpReqs = new ArrayList<>(reqs);
 			int currentMatches = 0;
 			for (ItemRequirement req : reqs)
 			{
@@ -323,18 +324,18 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			}
 		}
 
-		inventoryItems = new ArrayList<>(newInventory3);
+		inventoryItems = newInventory3;
 		items3 = newReq3;
 
 		// Puzzle 4
-		ArrayList<ItemRequirement> newReq4 = new ArrayList<>();
-		ArrayList<Item> tmpInventory4;
-		for (ArrayList<ItemRequirement> reqs : shapeValues4.get(answer4))
+		List<ItemRequirement> newReq4 = new ArrayList<>();
+		List<Item> tmpInventory4;
+		for (List<ItemRequirement> reqs : shapeValues4.get(answer4))
 		{
-			ArrayList<Integer> currentSlotIDs4 = new ArrayList<>(Arrays.asList(slot4, slot5, slot6));
+			List<Integer> currentSlotIDs4 = Arrays.asList(slot4, slot5, slot6);
 			// Each duo
-			tmpInventory4 = new ArrayList<>(inventoryItems);
-			ArrayList<ItemRequirement> tmpReqs = new ArrayList<>(reqs);
+			tmpInventory4 = inventoryItems;
+			List<ItemRequirement> tmpReqs = new ArrayList<>(reqs);
 			int currentMatches = 0;
 			for (ItemRequirement req : reqs)
 			{
@@ -376,7 +377,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		// TODO: Group up multiple of the same item into a single req, so they don't all highlight as had despite only having 1
 		if (mostMatch2 != 1 || newMostMatch3 != 2 || mostMatch4 != 3)
 		{
-			getPieces.setRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
+			getPieces.setRequirements(Collections.singletonList(slot1Item));
 			getPieces.addItemRequirements(items2);
 			getPieces.addRequirement(slot2Item);
 			getPieces.addItemRequirements(items3);
@@ -416,7 +417,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			// Not holding a disk to insert, should click a disk to put into hand
 			if (currentInv != null)
 			{
-				ArrayList<WidgetDetails> ids = new ArrayList<>();
+				List<WidgetDetails> ids = new ArrayList<>();
 				if (!items2.isEmpty())
 				{
 					ids = getClickableItems(ids, items2.iterator().next().getAllIds());
@@ -430,7 +431,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 					ids = getClickableItems(ids, items4.iterator().next().getAllIds());
 				}
 				insertDisc.setWidgetDetails(ids);
-				insertDisc.setRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
+				insertDisc.setRequirements(Collections.singletonList(slot1Item));
 				insertDisc.addItemRequirements(items2);
 				insertDisc.addRequirement(slot2Item);
 				insertDisc.addItemRequirements(items3);
@@ -440,7 +441,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			}
 			return;
 		}
-		solvePuzzle.setRequirements(new ArrayList<>(Collections.singletonList(slot1Item)));
+		solvePuzzle.setRequirements(Collections.singletonList(slot1Item));
 		solvePuzzle.addItemRequirements(items2);
 		solvePuzzle.addRequirement(slot2Item);
 		solvePuzzle.addItemRequirements(items3);
@@ -449,7 +450,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		startUpStep(solvePuzzle);
 	}
 
-	public ArrayList<WidgetDetails> getClickableItems(ArrayList<WidgetDetails> ids, ArrayList<Integer> items)
+	public List<WidgetDetails> getClickableItems(List<WidgetDetails> ids, List<Integer> items)
 	{
 		for (int j = 0; j < currentInv.length; j++)
 		{
@@ -462,7 +463,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 	}
 
 
-	public int checkForItems(ArrayList<Item> items, int potentialMatch)
+	public int checkForItems(List<Item> items, int potentialMatch)
 	{
 		for (int i = 0; i < items.size(); i++)
 		{
@@ -575,7 +576,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 					}
 
 					shapeValues4.computeIfAbsent(i + j + k, sv3 -> new ArrayList<>());
-					shapeValues4.get(i + j + k).add(new ArrayList<>(Arrays.asList(shape1, shape2, shape3)));
+					shapeValues4.get(i + j + k).add(Arrays.asList(shape1, shape2, shape3));
 				}
 
 				if (shape1 == null || shape2 == null)
@@ -583,7 +584,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 					continue;
 				}
 				shapeValues3.computeIfAbsent(i + j, sv2 -> new ArrayList<>());
-				shapeValues3.get(i + j).add(new ArrayList<>(Arrays.asList(shape1, shape2)));
+				shapeValues3.get(i + j).add(Arrays.asList(shape1, shape2));
 			}
 		}
 	}

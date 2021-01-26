@@ -2,7 +2,6 @@ package com.questhelper.quests.lunardiplomacy;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.VarbitCondition;

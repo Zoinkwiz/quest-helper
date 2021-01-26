@@ -39,6 +39,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -261,14 +262,14 @@ public class TrollRomance extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, combatGear));
+		return Arrays.asList(ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, combatGear);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Arrg (level 113)");
@@ -276,7 +277,7 @@ public class TrollRomance extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
@@ -285,13 +286,13 @@ public class TrollRomance extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToUg, talkToAga))));
-		allSteps.add(new PanelDetails("Make a sled", new ArrayList<>(Arrays.asList(talkToTenzing, talkToDunstan, talkToDunstanAgain, useTarOnWax, useWaxOnSled)), mapleLog, ironBar, rope, swampTar, bucketOfWax, cakeTin));
-		allSteps.add(new PanelDetails("Get flowers", new ArrayList<>(Arrays.asList(enterTrollCave, leaveTrollCave, equipSled, sledSouth, pickFlowers)), waxedSled));
-		allSteps.add(new PanelDetails("Fighting for Aga", new ArrayList<>(Arrays.asList(talkToUgWithFlowers, challengeArrg, killArrg, returnToUg)), trollweissFlowers, combatGear));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToUg, talkToAga)));
+		allSteps.add(new PanelDetails("Make a sled", Arrays.asList(talkToTenzing, talkToDunstan, talkToDunstanAgain, useTarOnWax, useWaxOnSled), mapleLog, ironBar, rope, swampTar, bucketOfWax, cakeTin));
+		allSteps.add(new PanelDetails("Get flowers", Arrays.asList(enterTrollCave, leaveTrollCave, equipSled, sledSouth, pickFlowers), waxedSled));
+		allSteps.add(new PanelDetails("Fighting for Aga", Arrays.asList(talkToUgWithFlowers, challengeArrg, killArrg, returnToUg), trollweissFlowers, combatGear));
 
 
 		return allSteps;

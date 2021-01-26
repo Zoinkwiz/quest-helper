@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -381,50 +382,51 @@ public class TheTouristTrap extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("Almost any deviation from the steps listed here will often result in you being thrown into jail, or to an inconvenient location. If you'd wish to avoid this, try to follow the helper to the letter."));
+		return Collections.singletonList("Almost any deviation from the steps listed here will often result in you being thrown into jail, or to an inconvenient location. If you'd wish to avoid this, try to follow the helper to the letter.");
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(desertTop, desertBottom, desertBoot, bronzeBar3, hammer, feather50));
+		return Arrays.asList(desertTop, desertBottom, desertBoot, bronzeBar3, hammer, feather50);
 	}
 
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, waterskins, knife, pickaxe, coins100));
+		return Arrays.asList(combatGear, waterskins, knife, pickaxe, coins100);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Mercenary Captain (level 47)"));
+		return Collections.singletonList("Mercenary Captain (level 47)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.FLETCHING, 10, true),
-			new SkillRequirement(Skill.SMITHING, 20, true)));
+		return Arrays.asList(new SkillRequirement(Skill.FLETCHING, 10, true),
+			new SkillRequirement(Skill.SMITHING, 20, true));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigating the trap",
-			new ArrayList<>(Arrays.asList(talkToIrena, talkToCaptain, enterCamp, talkToSlave, enterMine, talkToGuard)),
+			Arrays.asList(talkToIrena, talkToCaptain, enterCamp, talkToSlave, enterMine, talkToGuard),
 			desertTop, desertBottom, desertBoot, bronzeBar3, hammer, feather50));
 		allSteps.add(new PanelDetails("Helping out",
-			new ArrayList<>(Arrays.asList(talkToShabim, enterCampForTask, goUpToSiad, searchBookcase, talkToSiad, searchChest, returnToShabim, useAnvil, useFeatherOnTip, bringPrototypeToShabim)),
+			Arrays.asList(talkToShabim, enterCampForTask, goUpToSiad, searchBookcase, talkToSiad, searchChest, returnToShabim,
+				useAnvil, useFeatherOnTip, bringPrototypeToShabim),
 			bronzeBar3, hammer, feather50));
-		allSteps.add(new PanelDetails("Freeing Ana", new ArrayList<>(
+		allSteps.add(new PanelDetails("Freeing Ana", 
 			Arrays.asList(enterCampWithPineapple, enterMineWithPineapple, talkToGuardWithPineapple, enterDeepMine, getBarrel, enterMineCart, useBarrelOnAna, useBarrelOnMineCart,
-				returnInMineCart, searchBarrelsForAna, sendAnaUp, leaveDeepMine, operateWinch, searchWinchBarrel, useBarrelOnCart, talkToDriver, returnToIrena, talkToAna, talkToIrenaToFinish)),
+				returnInMineCart, searchBarrelsForAna, sendAnaUp, leaveDeepMine, operateWinch, searchWinchBarrel, useBarrelOnCart, talkToDriver, returnToIrena, talkToAna, talkToIrenaToFinish),
 			slaveTop, slaveRobe, slaveBoot));
 
 		return allSteps;

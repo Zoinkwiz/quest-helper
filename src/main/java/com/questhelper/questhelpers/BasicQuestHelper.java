@@ -27,6 +27,7 @@ package com.questhelper.questhelpers;
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperConfig;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import net.runelite.client.game.ItemManager;
 import com.questhelper.requirements.ItemRequirement;
@@ -74,8 +75,8 @@ public abstract class BasicQuestHelper extends QuestHelper
 		return false;
 	}
 
-	public ArrayList<PanelDetails> getPanels() {
-		ArrayList<PanelDetails> panelSteps = new ArrayList<>();
+	public List<PanelDetails> getPanels() {
+		List<PanelDetails> panelSteps = new ArrayList<>();
 		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));
 		return panelSteps;
 	}

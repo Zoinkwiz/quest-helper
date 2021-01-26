@@ -33,6 +33,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -75,9 +76,9 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 		AddDialogQuizStep();
 	}
 
-	public ArrayList<QuestStep> getPanelSteps()
+	public List<QuestStep> getPanelSteps()
 	{
-		ArrayList<QuestStep> steps = new ArrayList<>();
+		List<QuestStep> steps = new ArrayList<>();
 		if (dialogEntry)
 		{
 			steps.add(dialogQuizStep);
@@ -110,7 +111,7 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 		int groupId = event.getGroupId();
 		if (groupId == DIALOG_NPC_GROUP_ID)
 		{
-			clientThread.invokeLater(() -> readWidget());
+			clientThread.invokeLater(this::readWidget);
 		}
 
 		super.onWidgetLoaded(event);

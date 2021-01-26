@@ -39,7 +39,7 @@ import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -384,7 +384,7 @@ public class MeilyrLightPuzzle extends ConditionalStep
 		r18 = new VarbitCondition(8738, YELLOW);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, goToF0Middle, p1Pillar3, p1Pillar4, p1Pillar5,
 			p1Pillar6, p1Pillar7, p1Pillar8, goToF0SW, p1Pillar9, p1Pillar10, goToF1SW, p1Pillar11, goToF2SW, p1Pillar12,

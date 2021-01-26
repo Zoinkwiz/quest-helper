@@ -32,21 +32,19 @@ import com.questhelper.requirements.ItemRequirement;
 
 public class ItemRequirementCondition extends ConditionForStep
 {
-	private final List<ItemRequirement> itemRequirements;
+	private final List<ItemRequirement> itemRequirements = new ArrayList<>();
 
 	private Operation comparisonType;
 	private int compareValue;
 
 	public ItemRequirementCondition(ItemRequirement... itemRequirements)
 	{
-		this.itemRequirements = new ArrayList<>();
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = LogicType.AND;
 	}
 
 	public ItemRequirementCondition(LogicType logicType,  ItemRequirement... itemRequirements)
 	{
-		this.itemRequirements = new ArrayList<>();
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = logicType;
 	}
@@ -54,7 +52,6 @@ public class ItemRequirementCondition extends ConditionForStep
 
 	public ItemRequirementCondition(Operation operation, int compareValue, ItemRequirement... itemRequirements)
 	{
-		this.itemRequirements = new ArrayList<>();
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = LogicType.AND;
 		this.compareValue = compareValue;

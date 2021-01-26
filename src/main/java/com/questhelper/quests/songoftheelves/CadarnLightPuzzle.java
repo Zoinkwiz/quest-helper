@@ -37,7 +37,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -161,7 +161,7 @@ public class CadarnLightPuzzle extends ConditionalStep
 		r7 = new VarbitCondition(8845, MAGENTA);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(collectMirrors, p1Pillar1, p1Pillar2, goDownstairs, p1Pillar3, p1Pillar4, p1Pillar5, p1Pillar6, p1Pillar7, p1Pillar8);
 	}

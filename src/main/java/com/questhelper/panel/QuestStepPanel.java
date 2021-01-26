@@ -26,14 +26,19 @@ package com.questhelper.panel;
 
 import com.questhelper.BankItems;
 import com.questhelper.requirements.Requirement;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.questhelper.steps.QuestStep;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.SwingUtil;
@@ -133,7 +138,7 @@ public class QuestStepPanel extends JPanel
 			questRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
 			questRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-			ArrayList<Requirement> requirements = panelDetails.getRequirements();
+			List<Requirement> requirements = panelDetails.getRequirements();
 
 			if (requirements != null)
 			{
@@ -194,7 +199,7 @@ public class QuestStepPanel extends JPanel
 		return "<html><body style = 'text-align:left'>" + text + "</body></html>";
 	}
 
-	public ArrayList<QuestStep> getSteps()
+	public List<QuestStep> getSteps()
 	{
 		return new ArrayList<>(steps.keySet());
 	}

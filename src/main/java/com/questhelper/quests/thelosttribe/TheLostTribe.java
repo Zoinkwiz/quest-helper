@@ -42,6 +42,7 @@ import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -224,7 +225,7 @@ public class TheLostTribe extends BasicQuestHelper
 		talkToGenerals.addDialogSteps("Have you ever heard of the Dorgeshuun?", "It doesn't really matter",
 			"Well either way they refused to fight", "Well I found a brooch underground...", "Well why not show me both greetings?");
 
-		ArrayList<WorldPoint> travelLine = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> travelLine = Arrays.asList(
 			new WorldPoint(3222, 9618, 0),
 			new WorldPoint(3224, 9618, 0),
 			new WorldPoint(3229, 9610, 0),
@@ -261,7 +262,7 @@ public class TheLostTribe extends BasicQuestHelper
 			new WorldPoint(3303, 9606, 0),
 			new WorldPoint(3309, 9612, 0),
 			new WorldPoint(3317, 9612, 0)
-		));
+		);
 
 		walkToMistag = new NpcEmoteStep(this, NpcID.MISTAG_7297, QuestEmote.GOBLIN_BOW, new WorldPoint(3319, 9615, 0), "Travel through the tunnels. Make sure you follow the marked path, or you'll be dropped into a hole and your light source extinguished!", lightSource);
 		walkToMistag.setLinePoints(travelLine);
@@ -344,19 +345,19 @@ public class TheLostTribe extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(pickaxe, lightSource));
+		return Arrays.asList(pickaxe, lightSource);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(lumbridgeTeleports, varrockTeleport, faladorTeleport));
+		return Arrays.asList(lumbridgeTeleports, varrockTeleport, faladorTeleport);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.GOBLIN_DIPLOMACY, QuestState.FINISHED));
@@ -367,14 +368,14 @@ public class TheLostTribe extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(goTalkToSigmundToStart, talkToAllAboutCellar, goTalkToDukeAfterHans))));
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(goMineRubble, enterTunnels, grabBrooch, goShowBroochToDuke)), pickaxe, lightSource));
-		allSteps.add(new PanelDetails("Learning about goblins", new ArrayList<>(Arrays.asList(searchBookcase, readBook, talkToGenerals))));
-		allSteps.add(new PanelDetails("Making contact", new ArrayList<>(Arrays.asList(goTravelToMistag, emoteAtMistag, goTalkToDukeAfterEmote)), lightSource));
-		allSteps.add(new PanelDetails("Resolving tensions", new ArrayList<>(Arrays.asList(goGetKey, goOpenRobeChest, goIntoHamLair, goToDukeWithSilverware, travelToMakePeace)), lightSource));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(goTalkToSigmundToStart, talkToAllAboutCellar, goTalkToDukeAfterHans)));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(goMineRubble, enterTunnels, grabBrooch, goShowBroochToDuke), pickaxe, lightSource));
+		allSteps.add(new PanelDetails("Learning about goblins", Arrays.asList(searchBookcase, readBook, talkToGenerals)));
+		allSteps.add(new PanelDetails("Making contact", Arrays.asList(goTravelToMistag, emoteAtMistag, goTalkToDukeAfterEmote), lightSource));
+		allSteps.add(new PanelDetails("Resolving tensions", Arrays.asList(goGetKey, goOpenRobeChest, goIntoHamLair, goToDukeWithSilverware, travelToMakePeace), lightSource));
 
 		return allSteps;
 	}

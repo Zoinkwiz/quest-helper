@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.Setter;
 import net.runelite.api.widgets.Widget;
 import com.questhelper.QuestHelperPlugin;
@@ -37,7 +38,7 @@ import net.runelite.api.widgets.WidgetItem;
 public class WidgetStep extends DetailedQuestStep
 {
 	@Setter
-	protected ArrayList<WidgetDetails> widgetDetails = new ArrayList<>();
+	protected List<WidgetDetails> widgetDetails = new ArrayList<>();
 
 	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID)
 	{

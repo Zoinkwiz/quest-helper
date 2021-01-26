@@ -36,6 +36,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -136,7 +137,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(cadavaBerry);
@@ -144,13 +145,13 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Helping Romeo", new ArrayList<>(Arrays.asList(talkToRomeo, talkToJuliet, giveLetterToRomeo))));
-		allSteps.add(new PanelDetails("Hatching a plan", new ArrayList<>(Arrays.asList(talkToLawrence, talkToApothecary)), cadavaBerry));
-		allSteps.add(new PanelDetails("Enact the plan", new ArrayList<>(Arrays.asList(givePotionToJuliet, finishQuest))));
+		allSteps.add(new PanelDetails("Helping Romeo", Arrays.asList(talkToRomeo, talkToJuliet, giveLetterToRomeo)));
+		allSteps.add(new PanelDetails("Hatching a plan", Arrays.asList(talkToLawrence, talkToApothecary), cadavaBerry));
+		allSteps.add(new PanelDetails("Enact the plan", Arrays.asList(givePotionToJuliet, finishQuest)));
 		return allSteps;
 	}
 }

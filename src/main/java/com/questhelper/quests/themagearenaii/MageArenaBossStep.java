@@ -95,7 +95,7 @@ public class MageArenaBossStep extends DetailedQuestStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText);
 		if (mageArenaSolver == null)
@@ -158,7 +158,7 @@ public class MageArenaBossStep extends DetailedQuestStep
 		{
 			foundLocation = false;
 			setText("The bosses have changed locations. " + originalTextStart + bossName + originalTextEnd);
-			setRequirements(new ArrayList<>(Arrays.asList(baseRequirements)));
+			setRequirements(Arrays.asList(baseRequirements));
 			resetState();
 		}
 		currentVar = newState;

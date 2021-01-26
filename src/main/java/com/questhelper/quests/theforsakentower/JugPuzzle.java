@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.Client;
@@ -380,12 +381,12 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 
 	}
 
-	public ArrayList<PanelDetails> panelDetails()
+	public List<PanelDetails> panelDetails()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails furnacePanel = new PanelDetails("Furnace puzzle",
-			new ArrayList<>(Arrays.asList(searchCupboardTinderbox, searchCupboardJug, fill5Gallon, use5GallonOn8, fill5Gallon2, use5GallonOn82, empty8Gallon, use5GallonOn83,
-				fill5Gallon3, use5GallonOn84, fill5Gallon4, use5GallonOn85, use5GallonOnFurnace, lightFurnace)));
+			Arrays.asList(searchCupboardTinderbox, searchCupboardJug, fill5Gallon, use5GallonOn8, fill5Gallon2, use5GallonOn82, empty8Gallon, use5GallonOn83,
+				fill5Gallon3, use5GallonOn84, fill5Gallon4, use5GallonOn85, use5GallonOnFurnace, lightFurnace));
 		furnacePanel.setLockingStep(this);
 		allSteps.add(furnacePanel);
 		return allSteps;

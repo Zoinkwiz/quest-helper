@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -306,7 +307,7 @@ public class HolyGrail extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Black Knight Titan (level 120)");
@@ -314,7 +315,7 @@ public class HolyGrail extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(excalibur);
@@ -322,7 +323,7 @@ public class HolyGrail extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(threeCamelotTele);
@@ -336,22 +337,22 @@ public class HolyGrail extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting Off", new ArrayList<>(Arrays.asList(talkToKingArthur1, goUpStairsCamelot, openMerlinDoor, talkToMerlin))));
-		allSteps.add(new PanelDetails("Getting the Napkin", new ArrayList<>(Arrays.asList(goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad))));
-		allSteps.add(new PanelDetails("Getting the Magic Whistles", new ArrayList<>(Arrays.asList(goToDraynorManor, enterDraynorManor, goUpStairsDraynor1, goUpStairsDraynor2, openWhistleDoor, takeWhistles)), holyTableNapkin));
-		allSteps.add(new PanelDetails("Fisher King Realm Pt.1", new ArrayList<>(Arrays.asList(goToTeleportLocation1, blowWhistle1, attackTitan, talkToFisherman, pickupBell, ringBell, goUpStairsBrokenCastle, talkToFisherKing)), twoMagicWhistles, excalibur));
-		allSteps.add(new PanelDetails("Finding Percival", new ArrayList<>(Arrays.asList(talkToKingArthur2, openSack)), emptyInvSpot, twoMagicWhistles));
-		allSteps.add(new PanelDetails("Fisher King Realm Pt.2", new ArrayList<>(Arrays.asList(goToTeleportLocation2, blowWhistle2, openFisherKingCastleDoor, goUpNewCastleStairs, goUpNewCastleLadder, takeGrail)), oneMagicWhistle, goldFeather));
-		allSteps.add(new PanelDetails("Finishing Up", new ArrayList<>(Collections.singletonList(talkToKingArthur3)), grail));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting Off", Arrays.asList(talkToKingArthur1, goUpStairsCamelot, openMerlinDoor, talkToMerlin)));
+		allSteps.add(new PanelDetails("Getting the Napkin", Arrays.asList(goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad)));
+		allSteps.add(new PanelDetails("Getting the Magic Whistles", Arrays.asList(goToDraynorManor, enterDraynorManor, goUpStairsDraynor1, goUpStairsDraynor2, openWhistleDoor, takeWhistles), holyTableNapkin));
+		allSteps.add(new PanelDetails("Fisher King Realm Pt.1", Arrays.asList(goToTeleportLocation1, blowWhistle1, attackTitan, talkToFisherman, pickupBell, ringBell, goUpStairsBrokenCastle, talkToFisherKing), twoMagicWhistles, excalibur));
+		allSteps.add(new PanelDetails("Finding Percival", Arrays.asList(talkToKingArthur2, openSack), emptyInvSpot, twoMagicWhistles));
+		allSteps.add(new PanelDetails("Fisher King Realm Pt.2", Arrays.asList(goToTeleportLocation2, blowWhistle2, openFisherKingCastleDoor, goUpNewCastleStairs, goUpNewCastleLadder, takeGrail), oneMagicWhistle, goldFeather));
+		allSteps.add(new PanelDetails("Finishing Up", Collections.singletonList(talkToKingArthur3), grail));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.MERLINS_CRYSTAL, QuestState.FINISHED));

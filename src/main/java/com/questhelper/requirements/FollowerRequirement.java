@@ -26,13 +26,12 @@ package com.questhelper.requirements;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import net.runelite.api.Actor;
+import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
 
 public class FollowerRequirement extends Requirement
 {
-	ArrayList<Integer> followers;
+	List<Integer> followers;
 	String text;
 
 	public FollowerRequirement(String text, Integer... followers)
@@ -42,7 +41,7 @@ public class FollowerRequirement extends Requirement
 		Collections.addAll(this.followers, followers);
 	}
 
-	public FollowerRequirement(String text, ArrayList<Integer> followers)
+	public FollowerRequirement(String text, List<Integer> followers)
 	{
 		this.text = text;
 		this.followers = followers;

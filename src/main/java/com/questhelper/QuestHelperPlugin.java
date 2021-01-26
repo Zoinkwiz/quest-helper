@@ -356,7 +356,7 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	private final Collection<String> configEvents = new ArrayList<>(Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests"));
+	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{

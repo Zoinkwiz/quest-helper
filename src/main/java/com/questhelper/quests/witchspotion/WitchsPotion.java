@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -109,7 +110,7 @@ public class WitchsPotion extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(onion);
@@ -119,12 +120,12 @@ public class WitchsPotion extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToWitch))));
-		allSteps.add(new PanelDetails("Make the potion", new ArrayList<>(Arrays.asList(killRat, returnToWitch))));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToWitch)));
+		allSteps.add(new PanelDetails("Make the potion", Arrays.asList(killRat, returnToWitch)));
 		return allSteps;
 	}
 }

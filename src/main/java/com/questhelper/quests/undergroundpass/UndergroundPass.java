@@ -52,6 +52,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -380,7 +381,7 @@ public class UndergroundPass extends BasicQuestHelper
 		shootBridgeRope.addSubSteps(searchBagForCloth, useClothOnArrow, lightArrow, walkNorthEastOfBridge);
 
 		leaveFallArea = new ObjectStep(this, ObjectID.PILE_OF_ROCKS, new WorldPoint(2443, 9652, 0), "Follow the path west to leave.");
-		leaveFallArea.setLinePoints(new ArrayList<>(Arrays.asList(
+		leaveFallArea.setLinePoints(Arrays.asList(
 			new WorldPoint(2485, 9648, 0),
 			new WorldPoint(2485, 9645, 0),
 			new WorldPoint(2483, 9642, 0),
@@ -405,7 +406,7 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2454, 9647, 0),
 			new WorldPoint(2449, 9650, 0),
 			new WorldPoint(2444, 9651, 0)
-		)));
+		));
 
 		collectPlank = new DetailedQuestStep(this, new WorldPoint(2435, 9726, 0), "Pick up the plank in the north room.", plank);
 		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, "Swing across the pit with a rope.", ropeHighlight);
@@ -487,7 +488,7 @@ public class UndergroundPass extends BasicQuestHelper
 
 		pickUpWitchsCat = new NpcStep(this, NpcID.WITCHS_CAT, new WorldPoint(2131, 4602, 1), "Start from the south east corner of the bridges, and go northwest along them and retrieve the witch's cat.");
 		pickUpWitchsCat.addSubSteps(goBackUpToIbansCavern);
-		pickUpWitchsCat.setLinePoints(new ArrayList<>(Arrays.asList(
+		pickUpWitchsCat.setLinePoints(Arrays.asList(
 			new WorldPoint(2149, 4547, 1),
 			new WorldPoint(2172, 4547, 1),
 			new WorldPoint(2172, 4582, 1),
@@ -501,21 +502,21 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2136, 4592, 1),
 			new WorldPoint(2132, 4592, 1),
 			new WorldPoint(2132, 4600, 1)
-		)));
+		));
 
 		useCatOnDoor = new ObjectStep(this, ObjectID.DOOR_3270, new WorldPoint(2158, 4566, 1), "Use the cat on the witch's door in the south east corner of the area to distract her.", witchsCat);
 		useCatOnDoor.addIcon(ItemID.WITCHS_CAT);
 		searchWitchsChest = new ObjectStep(this, ObjectID.CHEST_3272, new WorldPoint(2157, 4564, 1), "Search the chest in the witch's house. You'll need 4 empty inventory slots.");
 
 		killHolthion = new NpcStep(this, NpcID.HOLTHION, new WorldPoint(2133, 4555, 1), "From the south east corner of the area, head west then south along the pathways. Kill Holthion and pick up his amulet.", amuletHolthion);
-		killHolthion.setLinePoints(new ArrayList<>(Arrays.asList(
+		killHolthion.setLinePoints(Arrays.asList(
 			new WorldPoint(2169, 4582, 1),
 			new WorldPoint(2152, 4582, 1),
 			new WorldPoint(2151, 4583, 1),
 			new WorldPoint(2142, 4582, 1),
 			new WorldPoint(2142, 4556, 1),
 			new WorldPoint(2137, 4556, 1)
-		)));
+		));
 
 		killDoomion = new NpcStep(this, NpcID.DOOMION, new WorldPoint(2135, 4566, 1), "Kill Doomion and pick up his amulet.", amuletDoomion);
 		killOthanian = new NpcStep(this, NpcID.OTHAINIAN, new WorldPoint(2123, 4563, 1), "Kill Othanian and pick up his amulet.", amuletOthanian);
@@ -535,7 +536,7 @@ public class UndergroundPass extends BasicQuestHelper
 		killKalrag = new NpcStep(this, NpcID.KALRAG, new WorldPoint(2356, 9913, 0), "Kill Kalrag the spider. Protect From Melee can keep you safe in this fight.", dollOfIban);
 		ascendToHalfSouless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again via the north west exit.");
 		searchCage = new ObjectStep(this, ObjectID.CAGE_3351, new WorldPoint(2135, 4703, 1), "Search the marked cage in the north west of the area while wearing Klank's gauntlets.", klanksGauntletsEquipped);
-		searchCage.setLinePoints(new ArrayList<>(Arrays.asList(
+		searchCage.setLinePoints(Arrays.asList(
 			new WorldPoint(2116, 4729, 1),
 			new WorldPoint(2116, 4686, 1),
 			new WorldPoint(2128, 4686, 1),
@@ -547,11 +548,11 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2140, 4700, 1),
 			new WorldPoint(2140, 4702, 1),
 			new WorldPoint(2136, 4702, 1)
-		)));
+		));
 		searchCage.addSubSteps(ascendToHalfSouless, useDoveOnDoll);
 
 		killDisciple = new NpcStep(this, NpcID.DISCIPLE_OF_IBAN, new WorldPoint(2163, 4648, 1), "Travel along the pathways from the north west corner of the area to the middle. Kill a disciple of Iban and take their robes.", true, dollOfIban);
-		killDisciple.setLinePoints(new ArrayList<>(Arrays.asList(
+		killDisciple.setLinePoints(Arrays.asList(
 			new WorldPoint(2117, 4686, 1),
 			new WorldPoint(2128, 4686, 1),
 			new WorldPoint(2130, 4685, 1),
@@ -571,9 +572,9 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2162, 4660, 1),
 			new WorldPoint(2161, 4659, 1),
 			new WorldPoint(2161, 4654, 1)
-		)));
+		));
 		enterTemple = new ObjectStep(this, ObjectID.DOOR_3333, new WorldPoint(2144, 4648, 1), "Enter the Temple of Iban wearing monk robes. Prepare to use Iban's doll on the well, as Iban can deal lots of damage quickly.", robeTopEquipped, robeBottomEquipped);
-		enterTemple.setLinePoints(new ArrayList<>(Arrays.asList(
+		enterTemple.setLinePoints(Arrays.asList(
 			new WorldPoint(2117, 4686, 1),
 			new WorldPoint(2128, 4686, 1),
 			new WorldPoint(2130, 4685, 1),
@@ -593,7 +594,7 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2162, 4660, 1),
 			new WorldPoint(2161, 4659, 1),
 			new WorldPoint(2161, 4654, 1)
-		)));
+		));
 		useDollOnWell = new ObjectStep(this, ObjectID.WELL_3359, new WorldPoint(2137, 4648, 1), "Right-click USE the doll on the well. Standing north of the well can prevent Iban from hitting.", dollOfIbanHighlighted);
 		useDollOnWell.addIcon(ItemID.DOLL_OF_IBAN);
 
@@ -741,7 +742,7 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(rope2);
@@ -756,7 +757,7 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(food);
@@ -768,7 +769,7 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("3 Demons (level 91, safespottable)");
@@ -779,7 +780,7 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
 		ArrayList<String> notes = new ArrayList<>();
 		notes.add("Kalrag attacks with melee only, so Protect From Melee can keep you safe in that fight.");
@@ -789,7 +790,7 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.BIOHAZARD, QuestState.FINISHED));
@@ -798,19 +799,19 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting out", new ArrayList<>(Arrays.asList(talkToKingLathas, talkToKoftik))));
-		allSteps.add(new PanelDetails("The Underground Pass", new ArrayList<>(Arrays.asList(talkToKoftikAtBridge, shootBridgeRope, crossThePit,
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting out", Arrays.asList(talkToKingLathas, talkToKoftik)));
+		allSteps.add(new PanelDetails("The Underground Pass", Arrays.asList(talkToKoftikAtBridge, shootBridgeRope, crossThePit,
 			crossTheGrid, passTrap1, collectOrb1, collectOrb2, collectOrb3, collectOrb4, orbsToFurnace,
-			climbDownWell)), rope2, bow, arrows, spade, plank, bucket, tinderbox, combatEquipment));
-		allSteps.add(new PanelDetails("Descending Deeper", new ArrayList<>(Arrays.asList(navigateMaze, searchUnicornCage, useRailingOnBoulder))));
-		allSteps.add(new PanelDetails("Cold-blooded Killing", new ArrayList<>(Arrays.asList(searchUnicornCageAgain, walkToKnights, killJerro, killHarry, killCarl, useBadgeJerroOnWell, openIbansDoor))));
-		allSteps.add(new PanelDetails("The Witch Kardia", new ArrayList<>(Arrays.asList(talkToNiloof, pickUpWitchsCat, useCatOnDoor, searchWitchsChest))));
-		allSteps.add(new PanelDetails("Imbuing the Doll", new ArrayList<>(Arrays.asList(killHolthion, killDoomion, killOthanian, searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag, searchCage))));
-		allSteps.add(new PanelDetails("Entering the Temple", new ArrayList<>(Arrays.asList(killDisciple, enterTemple, useDollOnWell))));
-		allSteps.add(new PanelDetails("Foggy Memories", new ArrayList<>(Arrays.asList(talkToKoftikAfterTemple, talkToKingLathasAfterTemple))));
+			climbDownWell), rope2, bow, arrows, spade, plank, bucket, tinderbox, combatEquipment));
+		allSteps.add(new PanelDetails("Descending Deeper", Arrays.asList(navigateMaze, searchUnicornCage, useRailingOnBoulder)));
+		allSteps.add(new PanelDetails("Cold-blooded Killing", Arrays.asList(searchUnicornCageAgain, walkToKnights, killJerro, killHarry, killCarl, useBadgeJerroOnWell, openIbansDoor)));
+		allSteps.add(new PanelDetails("The Witch Kardia", Arrays.asList(talkToNiloof, pickUpWitchsCat, useCatOnDoor, searchWitchsChest)));
+		allSteps.add(new PanelDetails("Imbuing the Doll", Arrays.asList(killHolthion, killDoomion, killOthanian, searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag, searchCage)));
+		allSteps.add(new PanelDetails("Entering the Temple", Arrays.asList(killDisciple, enterTemple, useDollOnWell)));
+		allSteps.add(new PanelDetails("Foggy Memories", Arrays.asList(talkToKoftikAfterTemple, talkToKingLathasAfterTemple)));
 		return allSteps;
 	}
 }

@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -108,7 +109,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(spade);
@@ -116,12 +117,12 @@ public class XMarksTheSpot extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Speak to Veos", new ArrayList<>(Arrays.asList(speakVeosLumbridge)), spade));
-		allSteps.add(new PanelDetails("Solve the clue scroll", new ArrayList<>(Arrays.asList(digOutsideBob, digCastle, digDraynor, digMartin))));
-		allSteps.add(new PanelDetails("Bring the casket to Veos", new ArrayList<>(Arrays.asList(speakVeosSarim))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Speak to Veos", Arrays.asList(speakVeosLumbridge), spade));
+		allSteps.add(new PanelDetails("Solve the clue scroll", Arrays.asList(digOutsideBob, digCastle, digDraynor, digMartin)));
+		allSteps.add(new PanelDetails("Bring the casket to Veos", Arrays.asList(speakVeosSarim)));
 		return allSteps;
 	}
 }

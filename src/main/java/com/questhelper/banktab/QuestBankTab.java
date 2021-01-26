@@ -32,7 +32,6 @@ import com.questhelper.QuestHelperPlugin;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,7 +48,6 @@ import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -286,11 +284,11 @@ public class QuestBankTab
 		}
 	}
 
-	private void sortBankTabItems(Widget itemContainer, Widget[] containerChildren, ArrayList<BankTabItems> newLayout)
+	private void sortBankTabItems(Widget itemContainer, Widget[] containerChildren, List<BankTabItems> newLayout)
 	{
 		int totalSectionsHeight = 0;
 
-		ArrayList<Integer> itemList = new ArrayList<>();
+		List<Integer> itemList = new ArrayList<>();
 		for (Widget itemWidget : containerChildren)
 		{
 			if (itemWidget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
@@ -325,7 +323,7 @@ public class QuestBankTab
 				itemContainerScroll));
 	}
 
-	private int addPluginTabSection(Widget itemContainer, ArrayList<BankTabItem> items, ArrayList<Integer> itemIds,
+	private int addPluginTabSection(Widget itemContainer, List<BankTabItem> items, List<Integer> itemIds,
 									String title, int totalSectionsHeight)
 	{
 		int totalItemsAdded = 0;
@@ -429,7 +427,7 @@ public class QuestBankTab
 		return newHeight;
 	}
 
-	private int addGeneralSection(Widget itemContainer, ArrayList<Integer> items, int totalSectionsHeight)
+	private int addGeneralSection(Widget itemContainer, List<Integer> items, int totalSectionsHeight)
 	{
 		int totalItemsAdded = 0;
 
@@ -513,10 +511,10 @@ public class QuestBankTab
 		widget.setOriginalX(x);
 		widget.setOriginalY(y);
 
-		ArrayList<Integer> itemIDs = bankTabItem.getItemIDs();
+		List<Integer> itemIDs = bankTabItem.getItemIDs();
 		if (bankTabItem.getDisplayID() != null)
 		{
-			itemIDs = new ArrayList<>(Collections.singletonList(bankTabItem.getDisplayID()));
+			itemIDs = Collections.singletonList(bankTabItem.getDisplayID());
 		}
 
 		if (itemIDs.size() == 0)

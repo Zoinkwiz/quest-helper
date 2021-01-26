@@ -44,6 +44,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -574,7 +575,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(coalOrPickaxe);
@@ -583,7 +584,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Giant Sea Snake (level 149)");
@@ -591,7 +592,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(antipoison);
@@ -601,7 +602,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THRONE_OF_MISCELLANIA, QuestState.FINISHED));
@@ -611,22 +612,22 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(travelToMisc, talkToGhrim))));
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToPartner, talkToVargas, talkToGunnhild, talkToVargasAgain, talkToSigrid, talkToMatilda))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(travelToMisc, talkToGhrim)));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToPartner, talkToVargas, talkToGunnhild, talkToVargasAgain, talkToSigrid, talkToMatilda)));
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
-			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon)), coalOrPickaxe, combatGear, antipoison));
+			allSteps.add(new PanelDetails("Digging deeper", Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon), coalOrPickaxe, combatGear, antipoison));
 		}
 		else
 		{
-			allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon)), coal5, combatGear, antipoison));
+			allSteps.add(new PanelDetails("Digging deeper", Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon), coal5, combatGear, antipoison));
 		}
-		allSteps.add(new PanelDetails("Repair the lift", new ArrayList<>(Arrays.asList(talkToDonal, usePropOnCrevice, enterCrevice, takePulley, usePulleyOnScaffold, takePulley2, takeBeam, useBeamOnPulley, takeBeam2, useBeamOnLongPulley, useLongerPulleyOnScaffold, takePulley3, usePulleyOnScaffold2, takeRope, useRopeOnScaffold, takeBeam3, useBeamOnPlatform, pickUpEngine, useEngineOnPlatform, putCoalIntoEngine))));
-		allSteps.add(new PanelDetails("Investigate the caves", new ArrayList<>(Arrays.asList(useLift, takePlank, enterTunnelFromPlankRoom, attachRope, swingOverRope, searchFire1, plankRock1, searchFire2, searchFire3, searchFire4, searchFire5, readDiary, enterSnakesRoom))));
-		allSteps.add(new PanelDetails("Investigate the caves", new ArrayList<>(Arrays.asList(talkToArmod, enterBossRoom, killBoss, pickUpBox, leaveBossRoom, goUpRope, talkToSigridToFinish, talkToVargasToFinish))));
+		allSteps.add(new PanelDetails("Repair the lift", Arrays.asList(talkToDonal, usePropOnCrevice, enterCrevice, takePulley, usePulleyOnScaffold, takePulley2, takeBeam, useBeamOnPulley, takeBeam2, useBeamOnLongPulley, useLongerPulleyOnScaffold, takePulley3, usePulleyOnScaffold2, takeRope, useRopeOnScaffold, takeBeam3, useBeamOnPlatform, pickUpEngine, useEngineOnPlatform, putCoalIntoEngine)));
+		allSteps.add(new PanelDetails("Investigate the caves", Arrays.asList(useLift, takePlank, enterTunnelFromPlankRoom, attachRope, swingOverRope, searchFire1, plankRock1, searchFire2, searchFire3, searchFire4, searchFire5, readDiary, enterSnakesRoom)));
+		allSteps.add(new PanelDetails("Investigate the caves", Arrays.asList(talkToArmod, enterBossRoom, killBoss, pickUpBox, leaveBossRoom, goUpRope, talkToSigridToFinish, talkToVargasToFinish)));
 
 		return allSteps;
 	}

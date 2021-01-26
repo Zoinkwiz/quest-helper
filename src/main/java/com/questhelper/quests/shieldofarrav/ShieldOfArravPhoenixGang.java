@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -172,7 +173,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(twentyCoins);
@@ -180,27 +181,28 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Locating the Phoenix Gang", new ArrayList<>(Arrays.asList(startQuest, searchBookcase, talkToReldoAgain, talkToBaraek, goDownToPhoenixGang, talkToStraven))));
-		allSteps.add(new PanelDetails("Joining the gang", new ArrayList<>(Arrays.asList(goUpFromPhoenixGang, killJonny, pickupIntelReport, returnDownLadder, talkToStravenAgain))));
-		allSteps.add(new PanelDetails("Returning the shield", new ArrayList<>(Arrays.asList(getShieldHalf, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Locating the Phoenix Gang", Arrays.asList(startQuest,
+			searchBookcase, talkToReldoAgain, talkToBaraek, goDownToPhoenixGang, talkToStraven)));
+		allSteps.add(new PanelDetails("Joining the gang", Arrays.asList(goUpFromPhoenixGang, killJonny, pickupIntelReport, returnDownLadder, talkToStravenAgain)));
+		allSteps.add(new PanelDetails("Returning the shield", Arrays.asList(getShieldHalf, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Jonny the beard (level 2)"));
+		return Collections.singletonList("Jonny the beard (level 2)");
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Arrays.asList("You can also do this quest by joining the Black Arm Gang, which instead requires you to kill the weaponsmaster (level 23), or have another player kill them for you.",
+		return Arrays.asList("You can also do this quest by joining the Black Arm Gang, which instead requires you to kill the weaponsmaster (level 23), or have another player kill them for you.",
 			"Once you're accepted into one of the gangs, you CANNOT change gang.",
-			"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there."));
+			"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there.");
 
 	}
 

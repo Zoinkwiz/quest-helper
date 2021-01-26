@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -362,7 +363,7 @@ public class GhostsAhoy extends BasicQuestHelper
 
 		openThirdChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3606, 3564, 0), "Jump across the rocks to the chest and search it for a map piece.");
 		((ObjectStep) (openThirdChest)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
-		((ObjectStep) (openThirdChest)).setLinePoints(new ArrayList<>(Arrays.asList(
+		((ObjectStep) (openThirdChest)).setLinePoints(Arrays.asList(
 			new WorldPoint(3604, 3550, 0),
 			new WorldPoint(3601, 3550, 0),
 			new WorldPoint(3601, 3552, 0),
@@ -371,7 +372,7 @@ public class GhostsAhoy extends BasicQuestHelper
 			new WorldPoint(3597, 3557, 0),
 			new WorldPoint(3597, 3564, 0),
 			new WorldPoint(3605, 3564, 0)
-		)));
+		));
 
 		useMapsTogether = new DetailedQuestStep(this, "Use the map pieces together.", mapPiece1, mapPiece2, mapPiece3);
 
@@ -426,34 +427,34 @@ public class GhostsAhoy extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		if (canUseCharos)
 		{
-			return new ArrayList<>(Arrays.asList(ghostspeak, charos, ectoTokensCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime));
+			return Arrays.asList(ghostspeak, charos, ectoTokensCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime);
 		}
 		else
 		{
-			return new ArrayList<>(Arrays.asList(ghostspeak, ectoTokensNoCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime));
+			return Arrays.asList(ghostspeak, ectoTokensNoCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime);
 		}
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Giant lobster (level 32) (safespottable)"));
+		return Collections.singletonList("Giant lobster (level 32) (safespottable)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Arrays.asList(enterPhas, talkToVelorina, talkToNecrovarus, talkToVelorinaAfterNecro)), ghostspeak, ectoToken4));
-		allSteps.add(new PanelDetails("Getting help", new ArrayList<>(Arrays.asList(talkToCrone, useTeaOnCup, useMilkOnTea, talkToCroneAgain, talkToCroneAgainForShip)), ghostspeak, nettleTea, milk));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start the quest", Arrays.asList(enterPhas, talkToVelorina, talkToNecrovarus, talkToVelorinaAfterNecro), ghostspeak, ectoToken4));
+		allSteps.add(new PanelDetails("Getting help", Arrays.asList(talkToCrone, useTeaOnCup, useMilkOnTea, talkToCroneAgain, talkToCroneAgainForShip), ghostspeak, nettleTea, milk));
 
-		ArrayList<QuestStep> mapSteps = new ArrayList<>(Arrays.asList(repairShip, searchChestForLobster, killLobster, searchChestAfterLobster));
+		List<QuestStep> mapSteps = Arrays.asList(repairShip, searchChestForLobster, killLobster, searchChestAfterLobster);
 		mapSteps.addAll(dyeFlags.getDisplaySteps());
-		mapSteps.addAll(new ArrayList<>(Arrays.asList(useKeyOnChest, goAcrossPlank, openThirdChest, useMapsTogether, enterPhasForDigging, takeRowingBoat, digForBook, returnToPhas)));
+		mapSteps.addAll(Arrays.asList(useKeyOnChest, goAcrossPlank, openThirdChest, useMapsTogether, enterPhasForDigging, takeRowingBoat, digForBook, returnToPhas));
 		PanelDetails bookPanel;
 		if (canUseCharos)
 		{
@@ -466,22 +467,22 @@ public class GhostsAhoy extends BasicQuestHelper
 		bookPanel.setLockingStep(getBookSteps);
 		allSteps.add(bookPanel);
 
-		PanelDetails manualPanel = new PanelDetails("Finding the manual", new ArrayList<>(Arrays.asList(talkToAkHaranu, talkToRobin, bringBowToAkHaranu)), coins400, oakLongbow);
+		PanelDetails manualPanel = new PanelDetails("Finding the manual", Arrays.asList(talkToAkHaranu, talkToRobin, bringBowToAkHaranu), coins400, oakLongbow);
 		manualPanel.setLockingStep(getManualSteps);
 		allSteps.add(manualPanel);
 
 		PanelDetails robePanel = new PanelDetails("Finding the robes",
-			new ArrayList<>(Arrays.asList(talkToInnkeeper, useSlimeOnSheet, talkToGravingas, talkToVillagers, showPetitionToNecro, goUpFromNecro, useKeyOnDoor, takeRobes)), ghostspeak, bucketOfSlime);
+			Arrays.asList(talkToInnkeeper, useSlimeOnSheet, talkToGravingas, talkToVillagers, showPetitionToNecro, goUpFromNecro, useKeyOnDoor, takeRobes), ghostspeak, bucketOfSlime);
 		robePanel.setLockingStep(getRobesSteps);
 		allSteps.add(robePanel);
 
-		allSteps.add(new PanelDetails("Undoing the curse", new ArrayList<>(Arrays.asList(returnToCrone, talkToNecroAfterCurse, talkToVelorinaFinal)), ghostspeak, book, manual, robes));
+		allSteps.add(new PanelDetails("Undoing the curse", Arrays.asList(returnToCrone, talkToNecroAfterCurse, talkToVelorinaFinal), ghostspeak, book, manual, robes));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));

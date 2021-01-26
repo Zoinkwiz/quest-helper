@@ -36,6 +36,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -173,13 +174,13 @@ public class TearsOfGuthix extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(rope, litSapphireLantern, tinderbox, chisel, pickaxe));
+		return Arrays.asList(rope, litSapphireLantern, tinderbox, chisel, pickaxe);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(43));
@@ -190,11 +191,11 @@ public class TearsOfGuthix extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Making a bowl", new ArrayList<>(Arrays.asList(enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock, talkToJunaToFinish)),
+		allSteps.add(new PanelDetails("Making a bowl", Arrays.asList(enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock, talkToJunaToFinish),
 			rope, litSapphireLantern, tinderbox, chisel, pickaxe));
 
 		return allSteps;

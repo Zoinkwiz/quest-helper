@@ -38,7 +38,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -308,7 +308,7 @@ public class AmloddLightPuzzle extends ConditionalStep
 		r19 = new Conditions(new VarbitCondition(8866, RED), r1);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, p1Pillar5, p1Pillar6, p1Pillar7, goToF0NW,
 			goToF0NW, p1Pillar8, goToF1NW, p1Pillar9, p1Pillar10, goToF0Middle, p1Pillar11, p1Pillar12, p1Pillar13, p1Pillar14, p1Pillar15,

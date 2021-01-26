@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -298,7 +299,7 @@ public class MurderMystery extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> required = new ArrayList<>();
 		required.add(pot3);
@@ -306,14 +307,14 @@ public class MurderMystery extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Go to the Sinclair Manor", new ArrayList<>(Collections.singletonList(talkToGuard)), pot3));
-		allSteps.add(new PanelDetails("Collect evidence", new ArrayList<>(Arrays.asList(pickUpPungentPot, pickUpDagger, searchWindowForThread))));
-		allSteps.add(new PanelDetails("Collect fingerprints", new ArrayList<>(Arrays.asList(collectThreeFlypaper, getSilverItems, fillPotWithFlour, useFlourOnDagger, useFlypaperOnDagger, compareSilverToMurdererPrint))));
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(remainingSteps, talkToGossip, talkToPoisonSalesman, talkToTheSuspect, disproveSuspectStory, finishQuest))));
+		allSteps.add(new PanelDetails("Go to the Sinclair Manor", Collections.singletonList(talkToGuard), pot3));
+		allSteps.add(new PanelDetails("Collect evidence", Arrays.asList(pickUpPungentPot, pickUpDagger, searchWindowForThread)));
+		allSteps.add(new PanelDetails("Collect fingerprints", Arrays.asList(collectThreeFlypaper, getSilverItems, fillPotWithFlour, useFlourOnDagger, useFlypaperOnDagger, compareSilverToMurdererPrint)));
+		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(remainingSteps, talkToGossip, talkToPoisonSalesman, talkToTheSuspect, disproveSuspectStory, finishQuest)));
 		return allSteps;
 	}
 }

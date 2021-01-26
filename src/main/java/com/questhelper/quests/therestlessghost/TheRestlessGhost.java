@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -159,7 +160,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> recommended = new ArrayList<>();
 		recommended.add(lumbridgeTeleports);
@@ -168,20 +169,20 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Talk to Father Aereck", new ArrayList<>(Collections.singletonList(talkToAereck))));
-		allSteps.add(new PanelDetails("Get a ghostspeak amulet", new ArrayList<>(Collections.singletonList(talkToUrhney))));
-		allSteps.add(new PanelDetails("Talk to the ghost", new ArrayList<>(Arrays.asList(openCoffin, speakToGhost))));
-		allSteps.add(new PanelDetails("Return the ghost's skull", new ArrayList<>(Arrays.asList(enterWizardsTowerBasement, searchAltarAndRun, exitWizardsTowerBasement, openCoffinToPutSkullIn, putSkullInCoffin))));
+		allSteps.add(new PanelDetails("Talk to Father Aereck", Collections.singletonList(talkToAereck)));
+		allSteps.add(new PanelDetails("Get a ghostspeak amulet", Collections.singletonList(talkToUrhney)));
+		allSteps.add(new PanelDetails("Talk to the ghost", Arrays.asList(openCoffin, speakToGhost)));
+		allSteps.add(new PanelDetails("Return the ghost's skull", Arrays.asList(enterWizardsTowerBasement, searchAltarAndRun, exitWizardsTowerBasement, openCoffinToPutSkullIn, putSkullInCoffin)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("A skeleton (level 13) you can run away from"));
+		return Collections.singletonList("A skeleton (level 13) you can run away from");
 	}
 }

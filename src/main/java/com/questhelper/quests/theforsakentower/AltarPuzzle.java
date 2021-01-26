@@ -41,6 +41,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -407,11 +408,11 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 		restartStep = new DetailedQuestStep(getQuestHelper(), "Unknown state. Restart the puzzle to start again.");
 	}
 
-	public ArrayList<PanelDetails> panelDetails()
+	public List<PanelDetails> panelDetails()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails potionPanel = new PanelDetails("Altar puzzle",
-			new ArrayList<>(Arrays.asList(goUpToSecondFloor, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15)));
+			Arrays.asList(goUpToSecondFloor, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15));
 		potionPanel.setLockingStep(this);
 		allSteps.add(potionPanel);
 		return allSteps;
@@ -421,7 +422,7 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		ArrayList<QuestStep> steps = new ArrayList<>();
+		List<QuestStep> steps = new ArrayList<>();
 		steps.addAll(rebalanceC);
 		steps.addAll(rebalanceW);
 		steps.addAll(rebalanceE);

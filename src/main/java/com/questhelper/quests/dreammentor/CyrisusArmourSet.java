@@ -26,23 +26,27 @@ package com.questhelper.quests.dreammentor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
 enum CyrisusArmourSet
 {
-	MELEE(0,  new ArrayList<>(Arrays.asList(CyrisusBankItem.DRAGON_MED_HELM, CyrisusBankItem.AHRIM_ROBETOP, CyrisusBankItem.AHRIM_SKIRT, CyrisusBankItem.RANGER_BOOTS, CyrisusBankItem.ABYSSAL_WHIP))),
-	RANGED(1, new ArrayList<>(Arrays.asList(CyrisusBankItem.SPLITBARK_HELM, CyrisusBankItem.KARILS_TOP, CyrisusBankItem.TORAG_LEG, CyrisusBankItem.ADAMANT_BOOTS, CyrisusBankItem.MAGIC_SHORTBOW))),
-	MAGIC(2, new ArrayList<>(Arrays.asList(CyrisusBankItem.ROBIN_HOOD, CyrisusBankItem.DRAGON_CHAINBODY, CyrisusBankItem.BLACK_CHAPS, CyrisusBankItem.INFINITY_BOOTS, CyrisusBankItem.ANCIENT_STAFF)));
+	MELEE(0,  Arrays.asList(CyrisusBankItem.DRAGON_MED_HELM, CyrisusBankItem.AHRIM_ROBETOP,
+		CyrisusBankItem.AHRIM_SKIRT, CyrisusBankItem.RANGER_BOOTS, CyrisusBankItem.ABYSSAL_WHIP)),
+	RANGED(1, Arrays.asList(CyrisusBankItem.SPLITBARK_HELM, CyrisusBankItem.KARILS_TOP,
+		CyrisusBankItem.TORAG_LEG, CyrisusBankItem.ADAMANT_BOOTS, CyrisusBankItem.MAGIC_SHORTBOW)),
+	MAGIC(2, Arrays.asList(CyrisusBankItem.ROBIN_HOOD, CyrisusBankItem.DRAGON_CHAINBODY,
+		CyrisusBankItem.BLACK_CHAPS, CyrisusBankItem.INFINITY_BOOTS, CyrisusBankItem.ANCIENT_STAFF));
 
 	@Getter
 	private final int combatType;
 
 	@Getter
-	private final ArrayList<CyrisusBankItem> items;
+	private final List<CyrisusBankItem> items;
 
-	CyrisusArmourSet(int combatType, ArrayList<CyrisusBankItem> items)
+	CyrisusArmourSet(int combatType, List<CyrisusBankItem> items)
 	{
 		this.combatType = combatType;
 		this.items = items;
@@ -83,8 +87,8 @@ enum CyrisusArmourSet
 		int currentLegs = client.getVarbitValue(3629);
 		int currentBoots = client.getVarbitValue(3630);
 		int currentWeapon = client.getVarbitValue(3631);
-		ArrayList<Integer> currentEquipment = new ArrayList<>(Arrays.asList(currentHelmet, currentBody, currentLegs, currentBoots, currentWeapon));
-		ArrayList<Integer> neededEquipment = new ArrayList<>();
+		List<Integer> currentEquipment = Arrays.asList(currentHelmet, currentBody, currentLegs, currentBoots, currentWeapon);
+		List<Integer> neededEquipment = new ArrayList<>();
 		for (CyrisusBankItem item : armourSet.getItems())
 		{
 			neededEquipment.add(item.getVarbitID());

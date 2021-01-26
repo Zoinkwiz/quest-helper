@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -335,7 +336,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(commorb);
@@ -347,7 +348,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneTeleports);
@@ -355,7 +356,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Slug Prince (level 62) (can only be hurt by melee)");
@@ -363,7 +364,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.WANTED, QuestState.FINISHED));
@@ -376,14 +377,14 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToTiffy)), commorb));
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToNiall, talkToMaledict, talkToHobb, talkToHolgart, talkToNiall2, enterDungeon, pushFalseWall, tryToOpenImposingDoor,
-			scanWithComm, pickUpDeadSlug)), commorb2));
-		allSteps.add(new PanelDetails("Uncovering the truth", new ArrayList<>(Arrays.asList(talkToJorral, talkToNiall3, talkToMaledict2, searchMayorsDesk, talkToLovecraft, talkToNiall4, useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle, useEmptyRunes)), commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
-		allSteps.add(new PanelDetails("Facing the prince", new ArrayList<>(Arrays.asList(enterDungeonAgain, enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy)), meleeGear, airRune, waterRune, earthRune, fireRune, mindRune));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToTiffy), commorb));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToNiall, talkToMaledict, talkToHobb, talkToHolgart, talkToNiall2, enterDungeon, pushFalseWall, tryToOpenImposingDoor,
+			scanWithComm, pickUpDeadSlug), commorb2));
+		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(talkToJorral, talkToNiall3, talkToMaledict2, searchMayorsDesk, talkToLovecraft, talkToNiall4, useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle, useEmptyRunes), commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
+		allSteps.add(new PanelDetails("Facing the prince", Arrays.asList(enterDungeonAgain, enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy), meleeGear, airRune, waterRune, earthRune, fireRune, mindRune));
 		return allSteps;
 	}
 }

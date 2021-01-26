@@ -424,42 +424,42 @@ public class TowerOfLife extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(beer, gloves, hammer, saw));
+		return Arrays.asList(beer, gloves, hammer, saw);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(rawSwordfish, rawChicken));
+		return Arrays.asList(rawSwordfish, rawChicken);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.CONSTRUCTION, 10)));
+		return Collections.singletonList(new SkillRequirement(Skill.CONSTRUCTION, 10));
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11)));
+		return Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToEffigy, talkToBonafido))));
-		PanelDetails getBuildersOutfitPanel = new PanelDetails("Get the Builders' outfit", new ArrayList<>(Arrays.asList(
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEffigy, talkToBonafido)));
+		PanelDetails getBuildersOutfitPanel = new PanelDetails("Get the Builders' outfit", Arrays.asList(
 			talkToBlackeye, //Get hat
 			talkToNoFingers, pickpocketNoFingers, //Get Boots
 			getBeerForGuns, talkToGuns, //Get shirt
 			getTrousers,
 			talkToBonafidoWithOutfit
-		)), beer, gloves);
+		), beer, gloves);
 		getBuildersOutfitPanel.setLockingStep(getBuildersOutfit);
 		allSteps.add(getBuildersOutfitPanel);
 

@@ -28,23 +28,20 @@ import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.Zone;
 import com.questhelper.requirements.FollowerItemRequirement;
-import com.questhelper.requirements.FollowerRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.Requirements;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.ZoneCondition;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -120,7 +117,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 			return;
 		}
 
-		catchRats.setRequirements(new ArrayList<>(Collections.singletonList(cat)));
+		catchRats.setRequirements(Collections.singletonList(cat));
 		catchRats.setText("Have your cat catch Hell-Rats for spices, and add them " +
 			"to your stew. You still need to add:");
 
@@ -237,7 +234,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 		return Arrays.asList(catchRats, enterBasement, useStewOnEvilDave, restart);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(catchRats, useStewOnEvilDave);
 	}

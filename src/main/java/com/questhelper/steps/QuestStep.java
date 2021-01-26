@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Stream;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -48,7 +48,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -75,7 +74,7 @@ public abstract class QuestStep implements Module
 	SpriteManager spriteManager;
 
 	@Getter
-	protected ArrayList<String> text;
+	protected List<String> text;
 
 	protected int ARROW_SHIFT_Y = 15;
 
@@ -116,7 +115,7 @@ public abstract class QuestStep implements Module
 	protected WidgetChoiceSteps widgetChoices = new WidgetChoiceSteps();
 
 	@Getter
-	private final ArrayList<QuestStep> substeps = new ArrayList<>();
+	private final List<QuestStep> substeps = new ArrayList<>();
 
 	@Getter
 	@Setter
@@ -129,7 +128,7 @@ public abstract class QuestStep implements Module
 
 	public QuestStep(QuestHelper questHelper, String text)
 	{
-		this.text = new ArrayList<>(Collections.singletonList(text));
+		this.text = Collections.singletonList(text);
 		this.questHelper = questHelper;
 	}
 
@@ -228,10 +227,10 @@ public abstract class QuestStep implements Module
 
 	public void setText(String text)
 	{
-		this.text = new ArrayList<>(Collections.singletonList(text));
+		this.text = Collections.singletonList(text);
 	}
 
-	public void setText(ArrayList<String> text)
+	public void setText(List<String> text)
 	{
 		this.text = text;
 	}
@@ -279,7 +278,7 @@ public abstract class QuestStep implements Module
 		makeOverlayHint(panelComponent, plugin, null, additionalRequirements);
 	}
 
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
 	{
 		addTitleToPanel(panelComponent);
 

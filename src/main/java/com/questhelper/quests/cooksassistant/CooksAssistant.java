@@ -26,9 +26,9 @@ package com.questhelper.quests.cooksassistant;
 
 import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -37,7 +37,6 @@ import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 
@@ -78,7 +77,7 @@ public class CooksAssistant extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(egg);
@@ -88,10 +87,10 @@ public class CooksAssistant extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(doQuest)), flour, egg, milk));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(doQuest), flour, egg, milk));
 
 		return allSteps;
 	}

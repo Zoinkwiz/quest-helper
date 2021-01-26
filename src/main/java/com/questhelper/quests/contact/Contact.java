@@ -43,6 +43,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -187,7 +188,7 @@ public class Contact extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(lightSource);
@@ -198,7 +199,7 @@ public class Contact extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Giant Scarab (level 191)");
@@ -206,25 +207,25 @@ public class Contact extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToHighPriest, talkToJex)), lightSource));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHighPriest, talkToJex), lightSource));
 
 		allSteps.add(new PanelDetails("Explore the dungeon",
-			new ArrayList<>(Arrays.asList(goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment,
-				talkToMaisa, talkToOsman)), lightSource));
+			Arrays.asList(goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment,
+				talkToMaisa, talkToOsman), lightSource));
 
 		allSteps.add(new PanelDetails("Help Osman",
-			new ArrayList<>(Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
-				goDownToChasmAgain, killGiantScarab, returnToHighPriest)), combatGear, food, prayerPotions, lightSource));
+			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
+				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions, lightSource));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.PRINCE_ALI_RESCUE, QuestState.FINISHED));

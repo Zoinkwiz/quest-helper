@@ -47,6 +47,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -163,19 +164,19 @@ public class RFDEvilDave extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(cat, stews));
+		return Arrays.asList(cat, stews);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(teleportEdgeville, teleportLumbridge));
+		return Arrays.asList(teleportEdgeville, teleportLumbridge);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId(), Operation.GREATER_EQUAL, 3,
@@ -187,12 +188,12 @@ public class RFDEvilDave extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		ArrayList<QuestStep> steps = new ArrayList<>(Arrays.asList(inspectEvilDave, enterBasement,
-			talkToEvilDave, goUpToDorris, talkToDoris, enterBasementAgain));
+		List<QuestStep> steps = Arrays.asList(inspectEvilDave, enterBasement,
+			talkToEvilDave, goUpToDorris, talkToDoris, enterBasementAgain);
 		steps.addAll(makeStew.getSubsteps());
 		steps.add(useStewOnEvilDave);
 

@@ -29,7 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -43,7 +43,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class WorldLines
 {
-	public static void createWorldMapLines(Graphics2D graphics, Client client, ArrayList<WorldPoint> linePoints,
+	public static void createWorldMapLines(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
 										   Color color)
 	{
 		Rectangle mapViewArea = QuestPerspective.getWorldMapClipArea(client);
@@ -58,7 +58,7 @@ public class WorldLines
 		}
 	}
 
-	public static void createMinimapLines(Graphics2D graphics, Client client, ArrayList<WorldPoint> linePoints,
+	public static void createMinimapLines(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
 									  Color color)
 	{
 		if (linePoints == null || linePoints.size() < 2)
@@ -152,7 +152,7 @@ public class WorldLines
 		return new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
-	public static void drawLinesOnWorld(Graphics2D graphics, Client client, ArrayList<WorldPoint> linePoints,
+	public static void drawLinesOnWorld(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
 									   Color color)
 	{
 		for (int i = 0; i < linePoints.size() - 1; i++)

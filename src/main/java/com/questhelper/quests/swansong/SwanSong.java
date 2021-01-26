@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -281,14 +282,14 @@ public class SwanSong extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammerPanel));
+		return Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammerPanel);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("11 Sea trolls (levels 65/79/87/101)");
@@ -297,7 +298,7 @@ public class SwanSong extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(100));
@@ -313,22 +314,22 @@ public class SwanSong extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToHerman, talkToWom)), blood5, mist10, lava10));
-		allSteps.add(new PanelDetails("Entering the colony", new ArrayList<>(Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding)), combatGear, log, tinderbox, ironBar5, hammerPanel));
-		ArrayList<QuestStep> helpingSteps = new ArrayList<>(Arrays.asList(talkToFranklin, useLog, useTinderbox));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHerman, talkToWom), blood5, mist10, lava10));
+		allSteps.add(new PanelDetails("Entering the colony", Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding), combatGear, log, tinderbox, ironBar5, hammerPanel));
+		List<QuestStep> helpingSteps = Arrays.asList(talkToFranklin, useLog, useTinderbox);
 		helpingSteps.addAll(repairWall.getDisplaySteps());
 		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, combatGear, log, tinderbox, ironBar5, hammerPanel));
 
-		ArrayList<QuestStep> helpingArnoldSteps = new ArrayList<>(Collections.singletonList(talkToArnold));
+		List<QuestStep> helpingArnoldSteps = Collections.singletonList(talkToArnold);
 		helpingArnoldSteps.addAll(fishAndCookMonkfish.getSteps());
 		helpingArnoldSteps.add(talkToHermanAfterTasks);
 
 		allSteps.add(new PanelDetails("Helping Arnold", helpingArnoldSteps, combatGear));
-		allSteps.add(new PanelDetails("Making an army", new ArrayList<>(Arrays.asList(talkToFruscone, talkToMalignius, talkToCrafter, makeAirtightPot, talkToMaligniusWithPot)), bones7, pot, potLid, combatGearRanged));
-		allSteps.add(new PanelDetails("Defeating the trolls", new ArrayList<>(Arrays.asList(talkToHermanForFinalFight, killQueen, talkToHermanToFinish)), combatGearRanged));
+		allSteps.add(new PanelDetails("Making an army", Arrays.asList(talkToFruscone, talkToMalignius, talkToCrafter, makeAirtightPot, talkToMaligniusWithPot), bones7, pot, potLid, combatGearRanged));
+		allSteps.add(new PanelDetails("Defeating the trolls", Arrays.asList(talkToHermanForFinalFight, killQueen, talkToHermanToFinish), combatGearRanged));
 		return allSteps;
 	}
 }

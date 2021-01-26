@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -343,12 +344,12 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		standBehindGuard1.addSubSteps(talkToGuard1);
 
 		talkToGuard2 = new NpcStep(this, NpcID.GUARD_4517, new WorldPoint(2566, 5192, 0), "Go through the nearby crack, then out the other side. Talk to the second guard to turn them around so Zanik can kill them.");
-		talkToGuard2.setLinePoints(new ArrayList<>(Arrays.asList(
+		talkToGuard2.setLinePoints(Arrays.asList(
 			new WorldPoint(2569, 5189, 0),
 			new WorldPoint(2569, 5195, 0),
 			new WorldPoint(2566, 5195, 0),
 			new WorldPoint(2566, 5193, 0)
-		)));
+		));
 
 		tellZanikToKillGuard3 = new NpcStep(this, NpcID.ZANIK_4509, "Wait for the third guard to be walking away, then tell Zanik to kill them.");
 		tellZanikToKillGuard3.addDialogStep("Now!");
@@ -360,12 +361,12 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		tellZanikToWaitForGuard5 = new NpcStep(this, NpcID.ZANIK_4509, "Tell Zanik to wait.");
 		tellZanikToWaitForGuard5.addDialogStep("Wait here.");
 		lureGuard5 = new DetailedQuestStep(this, new WorldPoint(2566, 5201, 0), "Approach the final guard from the west so Zanik can kill them.");
-		lureGuard5.setLinePoints(new ArrayList<>(Arrays.asList(
+		lureGuard5.setLinePoints(Arrays.asList(
 			new WorldPoint(2577, 5199, 0),
 			new WorldPoint(2577, 5195, 0),
 			new WorldPoint(2566, 5195, 0),
 			new WorldPoint(2566, 5201, 0)
-		)));
+		));
 
 		checkZanikCorpse = new ObjectStep(this, NullObjectID.NULL_15712, new WorldPoint(3161, 3246, 0), "Inspect Zanik outside the H.A.M base.");
 		listenToDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_15757, new WorldPoint(2571, 5204, 0), "Listen to the large door.");
@@ -484,40 +485,40 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(lightSource, hamSet2, tinderbox, pickaxe, combatGear));
+		return Arrays.asList(lightSource, hamSet2, tinderbox, pickaxe, combatGear);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(lumbridgeTeleports, gamesNecklace));
+		return Arrays.asList(lumbridgeTeleports, gamesNecklace);
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("If you plan on getting the H.A.M. robes yourself rather than buying them, make sure to do so after starting the quest. The drop rate for robes is considerably increased during the quest."));
+		return Collections.singletonList("If you plan on getting the H.A.M. robes yourself rather than buying them, make sure to do so after starting the quest. The drop rate for robes is considerably increased during the quest.");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(goTalkToMistag, goTalkToZanik)), lightSource, hamSet2));
-		allSteps.add(new PanelDetails("Exploring Lumbridge", new ArrayList<>(Arrays.asList(goTalkToCook, goTalkToDuke, goOutsideSteps, goTalkToWoman, goTalkToGuide, goTalkToBob, goTalkToAereck, goNearGoblins,
-			goTalkToShopkeeper, talkToZanikAboutOrigin)), lightSource, hamSet2));
-		allSteps.add(new PanelDetails("Infiltrate the H.A.M", new ArrayList<>(Arrays.asList(goIntoHamLair, talkToJohanhus, listenToSpeaker, standNearTrapdoor, goDownTrapdoor)), lightSource, hamSet));
-		allSteps.add(new PanelDetails("Reaching the meeting", new ArrayList<>(Arrays.asList(standBehindGuard1, talkToGuard2, tellZanikToKillGuard3, standNearGuard4,
-			tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor))));
-		allSteps.add(new PanelDetails("Saving Zanik", new ArrayList<>(Arrays.asList(checkZanikCorpse, goToJunaSteps, learnZanikStory)), lightSource, tinderbox));
-		allSteps.add(new PanelDetails("Foiling H.A.M", new ArrayList<>(Arrays.asList(goGetZanikForMill, searchCrate, enterMill, killGuards, killSigmund, smashDrill, enterExit)), hamSet, combatGear));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(goTalkToMistag, goTalkToZanik), lightSource, hamSet2));
+		allSteps.add(new PanelDetails("Exploring Lumbridge", Arrays.asList(goTalkToCook, goTalkToDuke, goOutsideSteps, goTalkToWoman, goTalkToGuide, goTalkToBob, goTalkToAereck, goNearGoblins,
+			goTalkToShopkeeper, talkToZanikAboutOrigin), lightSource, hamSet2));
+		allSteps.add(new PanelDetails("Infiltrate the H.A.M", Arrays.asList(goIntoHamLair, talkToJohanhus, listenToSpeaker, standNearTrapdoor, goDownTrapdoor), lightSource, hamSet));
+		allSteps.add(new PanelDetails("Reaching the meeting", Arrays.asList(standBehindGuard1, talkToGuard2, tellZanikToKillGuard3, standNearGuard4,
+			tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor)));
+		allSteps.add(new PanelDetails("Saving Zanik", Arrays.asList(checkZanikCorpse, goToJunaSteps, learnZanikStory), lightSource, tinderbox));
+		allSteps.add(new PanelDetails("Foiling H.A.M", Arrays.asList(goGetZanikForMill, searchCrate, enterMill, killGuards, killSigmund, smashDrill, enterExit), hamSet, combatGear));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_LOST_TRIBE, QuestState.FINISHED));

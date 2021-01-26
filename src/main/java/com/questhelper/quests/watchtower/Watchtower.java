@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -590,7 +591,7 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(coins20);
@@ -609,7 +610,7 @@ public class Watchtower extends BasicQuestHelper
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Gorad (level 59)");
@@ -618,7 +619,7 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.MAGIC, 15));
@@ -630,16 +631,16 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToWizard))));
-		allSteps.add(new PanelDetails("Investigate", new ArrayList<>(Arrays.asList(searchBush, talkToWizardAgain, talkToOg, useRopeOnBranch, talkToGrew, leaveGrewIsland, enterHoleSouthOfGuTanoth, killGorad, talkToToban,
-			giveTobanDragonBones, searchChestForTobansGold, talkToOgAgain, useRopeOnBranchAgain, talkToGrewAgain, talkToWizardWithRelic)), dragonBones, rope2));
-		allSteps.add(new PanelDetails("Enter Gu'Tanoth", new ArrayList<>(Arrays.asList(enterGuTanoth, stealRockCake, talkToGuardBattlement, talkToGuardWithRockCake, jumpGap, talkToCityGuard, talkToCityGuardAgain)), ogreRelic, coins20, deathRune, goldBar, lightSource));
-		allSteps.add(new PanelDetails("Learn the Skavid language", new ArrayList<>(Arrays.asList(enterScaredSkavidCave, talkToScaredSkavid, enterSkavid1Cave, tryToGoThroughToInsaneSkavid, enterInsaneSkavidCave, talkToInsaneSkavid,
-			pickUp2Nightshade, useNightshadeOnGuard)), goldBar, lightSource, skavidMap));
-		allSteps.add(new PanelDetails("Getting the other crystals", new ArrayList<>(Arrays.asList(talkToWizardAgainEnclave, useJangerberriesOnGuam, grindBatBones, useBonesOnPotion, talkToWizardWithPotion, useNightshadeOnGuardAgain, usePotionOnOgre1, mineRock, talkToWizardWithCrystals, useCrystal1, pullLever)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToWizard)));
+		allSteps.add(new PanelDetails("Investigate", Arrays.asList(searchBush, talkToWizardAgain, talkToOg, useRopeOnBranch, talkToGrew, leaveGrewIsland, enterHoleSouthOfGuTanoth, killGorad, talkToToban,
+			giveTobanDragonBones, searchChestForTobansGold, talkToOgAgain, useRopeOnBranchAgain, talkToGrewAgain, talkToWizardWithRelic), dragonBones, rope2));
+		allSteps.add(new PanelDetails("Enter Gu'Tanoth", Arrays.asList(enterGuTanoth, stealRockCake, talkToGuardBattlement, talkToGuardWithRockCake, jumpGap, talkToCityGuard, talkToCityGuardAgain), ogreRelic, coins20, deathRune, goldBar, lightSource));
+		allSteps.add(new PanelDetails("Learn the Skavid language", Arrays.asList(enterScaredSkavidCave, talkToScaredSkavid, enterSkavid1Cave, tryToGoThroughToInsaneSkavid, enterInsaneSkavidCave, talkToInsaneSkavid,
+			pickUp2Nightshade, useNightshadeOnGuard), goldBar, lightSource, skavidMap));
+		allSteps.add(new PanelDetails("Getting the other crystals", Arrays.asList(talkToWizardAgainEnclave, useJangerberriesOnGuam, grindBatBones, useBonesOnPotion, talkToWizardWithPotion, useNightshadeOnGuardAgain, usePotionOnOgre1, mineRock, talkToWizardWithCrystals, useCrystal1, pullLever),
 			guamUnf, jangerberries, pestleAndMortar, batBones, nightshade, pickaxe));
 		return allSteps;
 	}

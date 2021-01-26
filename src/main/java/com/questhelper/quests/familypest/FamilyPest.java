@@ -133,28 +133,28 @@ public class FamilyPest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins));
+		return Arrays.asList(coins);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(dueling, camelotTele, varrockTele, lumberTele));
+		return Arrays.asList(dueling, camelotTele, varrockTele, lumberTele);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Talk to the Brothers", new ArrayList<>(Arrays.asList(talkToDimintheis,
-			talkToAvan, talkToCaleb, goUpstairs, talkToDimintheis2)), coins));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Talk to the Brothers", Arrays.asList(talkToDimintheis,
+			talkToAvan, talkToCaleb, goUpstairs, talkToDimintheis2), coins));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));

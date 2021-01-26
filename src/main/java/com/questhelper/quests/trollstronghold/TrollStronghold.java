@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -241,7 +242,7 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(climbingBootsOr12Coins);
@@ -249,7 +250,7 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Dad (level 101) (safespottable)");
@@ -258,7 +259,7 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(gamesNecklace);
@@ -268,7 +269,7 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.FINISHED));
@@ -277,13 +278,13 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToDenulth))));
-		allSteps.add(new PanelDetails("Reach the Stronghold", new ArrayList<>(Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterArena, fightDad, leaveArena, enterArenaCavern, leaveArenaCavern, enterStronghold)), climbingBootsOr12Coins, mageRangedGear, foodAndPotions));
-		allSteps.add(new PanelDetails("Free the prisoners", new ArrayList<>(Arrays.asList(killGeneral, goDownInStronghold, goThroughPrisonDoor, goDownToPrison, getBerryKey, freeEadgar, getTwigKey, freeGodric))));
-		allSteps.add(new PanelDetails("Finish off", new ArrayList<>(Collections.singletonList(goToDunstan))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToDenulth)));
+		allSteps.add(new PanelDetails("Reach the Stronghold", Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterArena, fightDad, leaveArena, enterArenaCavern, leaveArenaCavern, enterStronghold), climbingBootsOr12Coins, mageRangedGear, foodAndPotions));
+		allSteps.add(new PanelDetails("Free the prisoners", Arrays.asList(killGeneral, goDownInStronghold, goThroughPrisonDoor, goDownToPrison, getBerryKey, freeEadgar, getTwigKey, freeGodric)));
+		allSteps.add(new PanelDetails("Finish off", Collections.singletonList(goToDunstan)));
 		return allSteps;
 	}
 }

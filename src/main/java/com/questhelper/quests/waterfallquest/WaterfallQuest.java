@@ -26,7 +26,6 @@ package com.questhelper.quests.waterfallquest;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -254,7 +254,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(highlightRope);
@@ -265,7 +265,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Able to survive enemies up to level 86 attacking you");
@@ -273,7 +273,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(gamesNecklace);
@@ -282,22 +282,22 @@ public class WaterfallQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToAlmera))));
-		allSteps.add(new PanelDetails("Investigate", new ArrayList<>(Arrays.asList(boardRaft, talkToHudon, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase, readBook)), rope));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToAlmera)));
+		allSteps.add(new PanelDetails("Investigate", Arrays.asList(boardRaft, talkToHudon, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase, readBook), rope));
 
-		PanelDetails getPebblePanel = new PanelDetails("Get Glarial's Pebble", new ArrayList<>(Arrays.asList(enterGnomeDungeon, searchGnomeCrate, enterGnomeDoor, talkToGolrie)));
+		PanelDetails getPebblePanel = new PanelDetails("Get Glarial's Pebble", Arrays.asList(enterGnomeDungeon, searchGnomeCrate, enterGnomeDoor, talkToGolrie));
 		getPebblePanel.setLockingStep(goGetPebble);
 		allSteps.add(getPebblePanel);
 
-		PanelDetails getGlarialStuffPanel = new PanelDetails("Loot Glarial's tomb", new ArrayList<>(Arrays.asList(usePebble, searchGlarialChest, searchGlarialCoffin)));
+		PanelDetails getGlarialStuffPanel = new PanelDetails("Loot Glarial's tomb", Arrays.asList(usePebble, searchGlarialChest, searchGlarialCoffin));
 		getGlarialStuffPanel.setLockingStep(getGlarialStuff);
 
 		allSteps.add(getGlarialStuffPanel);
 
-		PanelDetails finishOffPanel = new PanelDetails("Put Glarial to rest", new ArrayList<>(Arrays.asList(getFinalItems, boardRaftFinal, useRopeOnRockFinal, useRopeOnTreeFinal, enterFalls, searchFallsCrate, useKeyOnFallsDoor, useRunes, useUrnOnChalice)), rope, airRunes, earthRunes, waterRunes, glarialsUrn, glarialsAmulet);
+		PanelDetails finishOffPanel = new PanelDetails("Put Glarial to rest", Arrays.asList(getFinalItems, boardRaftFinal, useRopeOnRockFinal, useRopeOnTreeFinal, enterFalls, searchFallsCrate, useKeyOnFallsDoor, useRunes, useUrnOnChalice), rope, airRunes, earthRunes, waterRunes, glarialsUrn, glarialsAmulet);
 		allSteps.add(finishOffPanel);
 		return allSteps;
 	}

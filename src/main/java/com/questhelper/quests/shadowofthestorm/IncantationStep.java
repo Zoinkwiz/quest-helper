@@ -60,7 +60,7 @@ public class IncantationStep extends DetailedQuestStep
 		super(questHelper, "Click the demonic sigil and read the incantation.");
 		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
 		sigilHighlighted.setHighlightInInventory(true);
-		this.addItemRequirements(new ArrayList<>(Collections.singletonList(sigilHighlighted)));
+		this.addItemRequirements(Collections.singletonList(sigilHighlighted));
 		this.reverse = reverse;
 	}
 

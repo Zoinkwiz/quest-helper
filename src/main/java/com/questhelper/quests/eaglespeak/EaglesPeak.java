@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -440,7 +441,7 @@ public class EaglesPeak extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(yellowDye);
@@ -450,26 +451,26 @@ public class EaglesPeak extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(speakToCharlie))));
-		allSteps.add(new PanelDetails("Go to Eagles' Peak", new ArrayList<>(Arrays.asList(inspectBooks, clickBook, useFeatherOnDoor))));
-		allSteps.add(new PanelDetails("In Eagles' Peak", new ArrayList<>(Arrays.asList(enterPeak, shoutAtNickolaus, pickupFeathers))));
-		allSteps.add(new PanelDetails("Make a disguise", new ArrayList<>(Arrays.asList(goToFancyStore, speakAsyffAgain)), yellowDye, coins, tar, tenEagleFeathers));
-		allSteps.add(new PanelDetails("Return to Eagles' Peak", new ArrayList<>(Collections.singletonList(returnToEaglesPeak)), fakeBeak, eagleCape));
-		allSteps.add(new PanelDetails("Get the bronze feather", new ArrayList<>(Arrays.asList(enterBronzeRoom, attemptToTakeBronzeFeather, winch1, grabBronzeFeather))));
-		allSteps.add(new PanelDetails("Get the silver feather", new ArrayList<>(Arrays.asList(enterSilverRoom, inspectSilverPedestal, inspectRocks1, inspectRocks2, inspectOpening, threatenKebbit, pickupSilverFeather))));
-		allSteps.add(new PanelDetails("Get the golden feather", new ArrayList<>(Arrays.asList(enterGoldRoom, collectFeed, pullLever1Down, fillFeeder1, fillFeeder2, pullLever2Down, pushLever1Up, fillFeeder4, pullLever3Down, fillFeeder5,
-			pullLever4Down, fillFeeder6, fillFeeder4Again, grabGoldFeather))));
-		allSteps.add(new PanelDetails("Free Nickolaus", new ArrayList<>(Arrays.asList(useFeathersOnStoneDoor, sneakPastEagle, speakToNickolaus))));
-		allSteps.add(new PanelDetails("Learn how to catch ferrets", new ArrayList<>(Arrays.asList(speakToNickolausInTheCamp, speakToCharlieAgain))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(speakToCharlie)));
+		allSteps.add(new PanelDetails("Go to Eagles' Peak", Arrays.asList(inspectBooks, clickBook, useFeatherOnDoor)));
+		allSteps.add(new PanelDetails("In Eagles' Peak", Arrays.asList(enterPeak, shoutAtNickolaus, pickupFeathers)));
+		allSteps.add(new PanelDetails("Make a disguise", Arrays.asList(goToFancyStore, speakAsyffAgain), yellowDye, coins, tar, tenEagleFeathers));
+		allSteps.add(new PanelDetails("Return to Eagles' Peak", Collections.singletonList(returnToEaglesPeak), fakeBeak, eagleCape));
+		allSteps.add(new PanelDetails("Get the bronze feather", Arrays.asList(enterBronzeRoom, attemptToTakeBronzeFeather, winch1, grabBronzeFeather)));
+		allSteps.add(new PanelDetails("Get the silver feather", Arrays.asList(enterSilverRoom, inspectSilverPedestal, inspectRocks1, inspectRocks2, inspectOpening, threatenKebbit, pickupSilverFeather)));
+		allSteps.add(new PanelDetails("Get the golden feather", Arrays.asList(enterGoldRoom, collectFeed, pullLever1Down, fillFeeder1, fillFeeder2, pullLever2Down, pushLever1Up, fillFeeder4, pullLever3Down, fillFeeder5,
+			pullLever4Down, fillFeeder6, fillFeeder4Again, grabGoldFeather)));
+		allSteps.add(new PanelDetails("Free Nickolaus", Arrays.asList(useFeathersOnStoneDoor, sneakPastEagle, speakToNickolaus)));
+		allSteps.add(new PanelDetails("Learn how to catch ferrets", Arrays.asList(speakToNickolausInTheCamp, speakToCharlieAgain)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.HUNTER, 27, true)));
+		return Collections.singletonList(new SkillRequirement(Skill.HUNTER, 27, true));
 	}
 }

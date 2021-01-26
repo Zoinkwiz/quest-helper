@@ -24,8 +24,8 @@
  */
 package com.questhelper.steps.conditional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.Setter;
 import net.runelite.api.Client;
 
@@ -36,17 +36,17 @@ public class ChatMessageCondition extends ConditionForStep
 
 	private ConditionForStep condition;
 
-	private ArrayList<String> messages;
+	private final List<String> messages;
 
 	public ChatMessageCondition(String... message)
 	{
-		this.messages = new ArrayList<>(Arrays.asList(message));
+		this.messages = Arrays.asList(message);
 	}
 
 	public ChatMessageCondition(ConditionForStep condition, String... message)
 	{
 		this.condition = condition;
-		this.messages = new ArrayList<>(Arrays.asList(message));
+		this.messages = Arrays.asList(message);
 	}
 
 	@Override

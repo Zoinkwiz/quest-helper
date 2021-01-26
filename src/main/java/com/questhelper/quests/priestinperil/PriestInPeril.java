@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -317,7 +318,7 @@ public class PriestInPeril extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
@@ -327,7 +328,7 @@ public class PriestInPeril extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(runeEssence);
@@ -336,20 +337,20 @@ public class PriestInPeril extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Temple guardian (level 30). Can only be hurt by ranged or melee."));
+		return Collections.singletonList("Temple guardian (level 30). Can only be hurt by ranged or melee.");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToRoald))));
-		allSteps.add(new PanelDetails("Go to the temple", new ArrayList<>(Arrays.asList(goToTemple, killTheDog, returnToKingRoald)), weaponAndArmour));
-		allSteps.add(new PanelDetails("Return to the temple", new ArrayList<>(Arrays.asList(returnToTemple, killMonk, talkToDrezel)), weaponAndArmour, bucket, lotsOfRuneEssence));
-		allSteps.add(new PanelDetails("Freeing Drezel", new ArrayList<>(Arrays.asList(enterUnderground, useKeyForKey, fillBucket, goUpWithWaterToSecondFloor, openDoor, blessWater, useBlessedWater, talkToDrezelAfterFreeing)), weaponAndArmour, bucket, lotsOfRuneEssence));
-		allSteps.add(new PanelDetails("Curing the Salve", new ArrayList<>(Arrays.asList(talkToDrezelUnderground, bringDrezelEssence)), runeEssence));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(talkToRoald)));
+		allSteps.add(new PanelDetails("Go to the temple", Arrays.asList(goToTemple, killTheDog, returnToKingRoald), weaponAndArmour));
+		allSteps.add(new PanelDetails("Return to the temple", Arrays.asList(returnToTemple, killMonk, talkToDrezel), weaponAndArmour, bucket, lotsOfRuneEssence));
+		allSteps.add(new PanelDetails("Freeing Drezel", Arrays.asList(enterUnderground, useKeyForKey, fillBucket, goUpWithWaterToSecondFloor, openDoor, blessWater, useBlessedWater, talkToDrezelAfterFreeing), weaponAndArmour, bucket, lotsOfRuneEssence));
+		allSteps.add(new PanelDetails("Curing the Salve", Arrays.asList(talkToDrezelUnderground, bringDrezelEssence), runeEssence));
 
 		return allSteps;
 	}

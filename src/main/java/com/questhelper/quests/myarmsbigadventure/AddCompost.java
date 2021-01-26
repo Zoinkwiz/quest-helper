@@ -57,7 +57,7 @@ public class AddCompost extends ObjectStep
 	{
 		int numCompToAdd = 7- client.getVarbitValue(2792);
 		compost.setQuantity(numCompToAdd);
-		this.setRequirements(new ArrayList<>(Collections.singletonList(compost)));
+		this.setRequirements(Collections.singletonList(compost));
 		this.setText("Add " + numCompToAdd + " supercompost on My Arm's soil patch.");
 	}
 }

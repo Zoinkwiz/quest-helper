@@ -7,6 +7,8 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
@@ -129,8 +131,8 @@ public class NumberChallenge extends DetailedOwnerStep
 		return Arrays.asList(press0, press1, press2, press3, press4, press5, press6, press7, press8, press9, catchStep);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

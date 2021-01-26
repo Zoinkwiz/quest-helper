@@ -42,6 +42,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -87,7 +88,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	PanelDetails prepareForRepairPanel, prepareForCombatPanel;
 
-	ArrayList<ItemRequirement> items;
+	List<ItemRequirement> items;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -539,33 +540,33 @@ public class TheFremennikIsles extends BasicQuestHelper
 	{
 		if (client.getAccountType().isIronman())
 		{
-			prepareForRepairPanel = new PanelDetails("Helping Mawnis", new ArrayList<>(Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair)), rope8, axe, knife);
-			prepareForCombatPanel = new PanelDetails("Preparing to fight", new ArrayList<>(Arrays.asList(getYakArmour, makeShield)), needle, thread, coins15, bronzeNail, hammer, rope);
-			items = new ArrayList<>(Arrays.asList(tuna, ores, rope9, knife, axe, hammer, bronzeNail, needle, thread, meleeWeapon, food));
+			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, axe, knife);
+			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), needle, thread, coins15, bronzeNail, hammer, rope);
+			items = Arrays.asList(tuna, ores, rope9, knife, axe, hammer, bronzeNail, needle, thread, meleeWeapon, food);
 		}
 		else
 		{
-			prepareForCombatPanel = new PanelDetails("Preparing to fight", new ArrayList<>(Arrays.asList(getYakArmour, makeShield)), yakBottom, yakTop, roundShield);
-			prepareForRepairPanel = new PanelDetails("Helping Mawnis", new ArrayList<>(Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair)), rope8, splitLogs8);
-			items = new ArrayList<>(Arrays.asList(tuna, ores, rope9, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food));
+			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), yakBottom, yakTop, roundShield);
+			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, splitLogs8);
+			items = Arrays.asList(tuna, ores, rope9, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food);
 		}
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		return items;
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("10 Ice Trolls (level 74-82)", "Ice Troll King (level 122)"));
+		return Arrays.asList("10 Ice Trolls (level 74-82)", "Ice Troll King (level 122)");
 	}
 
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
@@ -575,18 +576,18 @@ public class TheFremennikIsles extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Travel to Jatizso", new ArrayList<>(Arrays.asList(talkToMord, travelToJatizso)), tuna));
-		allSteps.add(new PanelDetails("Helping Gjuki", new ArrayList<>(Arrays.asList(talkToGjuki, bringOreToGjuki, getJesterOutfit))));
-		allSteps.add(new PanelDetails("Spy on Mawnis", new ArrayList<>(Arrays.asList(talkToSlug, goSpyOnMawnis, tellSlugReport1))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Travel to Jatizso", Arrays.asList(talkToMord, travelToJatizso), tuna));
+		allSteps.add(new PanelDetails("Helping Gjuki", Arrays.asList(talkToGjuki, bringOreToGjuki, getJesterOutfit)));
+		allSteps.add(new PanelDetails("Spy on Mawnis", Arrays.asList(talkToSlug, goSpyOnMawnis, tellSlugReport1)));
 		allSteps.add(prepareForRepairPanel);
-		allSteps.add(new PanelDetails("Collecting window tax", new ArrayList<>(Arrays.asList(talkToGjukiToReport, collectFromKeepa, collectFromVanligga, collectFromSkuli, collectFromHring, talkToGjukiAfterCollection1))));
-		allSteps.add(new PanelDetails("Collecting beard tax", new ArrayList<>(Arrays.asList(collectFromHringAgain, collectFromRaum, collectFromSkuliAgain, collectFromKeepaAgain, collectFromFlosi, talkToGjukiAfterCollection2))));
-		allSteps.add(new PanelDetails("Spy on Mawnis again", new ArrayList<>(Arrays.asList(talkToSlugToSpyAgain, goSpyOnMawnisAgain, reportBackToSlugAgain, talkToGjukiAfterSpy2, talkToMawnisWithDecree))));
+		allSteps.add(new PanelDetails("Collecting window tax", Arrays.asList(talkToGjukiToReport, collectFromKeepa, collectFromVanligga, collectFromSkuli, collectFromHring, talkToGjukiAfterCollection1)));
+		allSteps.add(new PanelDetails("Collecting beard tax", Arrays.asList(collectFromHringAgain, collectFromRaum, collectFromSkuliAgain, collectFromKeepaAgain, collectFromFlosi, talkToGjukiAfterCollection2)));
+		allSteps.add(new PanelDetails("Spy on Mawnis again", Arrays.asList(talkToSlugToSpyAgain, goSpyOnMawnisAgain, reportBackToSlugAgain, talkToGjukiAfterSpy2, talkToMawnisWithDecree)));
 		allSteps.add(prepareForCombatPanel);
-		allSteps.add(new PanelDetails("Killing the king", new ArrayList<>(Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest)), yakBottom, yakTop, roundShield, meleeWeapon, food));
+		allSteps.add(new PanelDetails("Killing the king", Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest), yakBottom, yakTop, roundShield, meleeWeapon, food));
 
 		return allSteps;
 	}

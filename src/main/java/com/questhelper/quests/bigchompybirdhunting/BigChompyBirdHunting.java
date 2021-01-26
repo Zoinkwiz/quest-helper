@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -316,31 +317,37 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(axe, feathers, knife, hammer, chisel, wolfBones4));
+		return Arrays.asList(axe, feathers, knife, hammer, chisel, wolfBones4);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Chompy"));
+		return Collections.singletonList("Chompy");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Getting Rantz Arrows", new ArrayList<>(Arrays.asList(talkToRantz, getLogs, makeShafts, useFeathersOnShafts, useChiselOnBones, useTipsOnShafts, useArrowsOnRantz)), axe, knife, feathers, chisel, wolfBones4));
-		allSteps.add(new PanelDetails("Making Bloated Toads", new ArrayList<>(Arrays.asList(askRantzQuestions, enterCave, getBellow, leaveCave, fillBellows, inflateToad, talkToRantzWithToad))));
-		allSteps.add(new PanelDetails("Hunting Chompy", new ArrayList<>(Arrays.asList(dropToad, waitForChompy, talkToRantzForBow, placeAnotherToad, killChompy, talkToRantzWithChompy))));
-		allSteps.add(new PanelDetails("Cooking Chompy", new ArrayList<>(Arrays.asList(enterCaveAgain, talkToBugs, talkToFycie, leaveCaveAgain, getIngredients, cookChompy, giveRantzSeasonedChompy))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Getting Rantz Arrows",
+			Arrays.asList(talkToRantz, getLogs, makeShafts, useFeathersOnShafts, useChiselOnBones,
+				useTipsOnShafts, useArrowsOnRantz), axe, knife, feathers, chisel, wolfBones4));
+		allSteps.add(new PanelDetails("Making Bloated Toads",
+			Arrays.asList(askRantzQuestions, enterCave, getBellow, leaveCave, fillBellows, inflateToad, talkToRantzWithToad)));
+		allSteps.add(new PanelDetails("Hunting Chompy",
+			Arrays.asList(dropToad, waitForChompy, talkToRantzForBow, placeAnotherToad, killChompy, talkToRantzWithChompy)));
+		allSteps.add(new PanelDetails("Cooking Chompy",
+			Arrays.asList(enterCaveAgain, talkToBugs, talkToFycie, leaveCaveAgain, getIngredients, cookChompy,
+				giveRantzSeasonedChompy)));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.RANGED, 30));

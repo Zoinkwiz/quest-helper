@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -105,7 +106,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(sixtyCoins);
@@ -115,7 +116,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT));
@@ -126,19 +127,19 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Gardener (level 4)"));
+		return Collections.singletonList("Gardener (level 4)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Talk to Redbeard Frank", new ArrayList<>(Collections.singletonList(speakToRedbeard)), sixtyCoins));
+		allSteps.add(new PanelDetails("Talk to Redbeard Frank", Collections.singletonList(speakToRedbeard), sixtyCoins));
 		allSteps.addAll(smuggleRum.panelDetails());
-		allSteps.add(new PanelDetails("Discover the treasure", new ArrayList<>(Arrays.asList(openChest, readPirateMessage, digUpTreasure)), spade));
+		allSteps.add(new PanelDetails("Discover the treasure", Arrays.asList(openChest, readPirateMessage, digUpTreasure), spade));
 
 		return allSteps;
 	}

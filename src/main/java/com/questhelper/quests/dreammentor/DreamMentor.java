@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -364,37 +365,37 @@ public class DreamMentor extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(sealOfPassage, foodAll, goutweed, astralRune, hammer, pestleAndMortar, tinderbox, combatGear));
+		return Arrays.asList(sealOfPassage, foodAll, goutweed, astralRune, hammer, pestleAndMortar, tinderbox, combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("The Inadequacy (level 343)", "The Everlasting (level 223, safespottable)", "The Untouchable (level 274, safespottable)", "The Illusive (level 108, won't attack you)"));
+		return Arrays.asList("The Inadequacy (level 343)", "The Everlasting (level 223, safespottable)", "The Untouchable (level 274, safespottable)", "The Illusive (level 108, won't attack you)");
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("You will need to fight all 4 bosses in a row without prayers. It's recommended that you use magic as they all have very low magic defence."));
+		return Collections.singletonList("You will need to fight all 4 bosses in a row without prayers. It's recommended that you use magic as they all have very low magic defence.");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Helping Cyrisus", new ArrayList<>(Arrays.asList(goDownToCyrisus, enterCyrisusCave,
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Helping Cyrisus", Arrays.asList(goDownToCyrisus, enterCyrisusCave,
 			talkToCyrisus, feed4Food, talkToCyrisus2, feed4Food2, talkToCyrisus3, feed6Food, talkToCyrisus4, talkToJack, giveCyrisusGear,
-			useFood3, supportCyrisusToRecovery)), foodAll));
-		allSteps.add(new PanelDetails("Defeating his fear", new ArrayList<>(Arrays.asList(talkToOneiromancer, fillVialWithWater, addGoutweed,
-			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy, killEverlasting, killUntouchable, killIllusive, returnToOneiromancer)), goutweed, astralRune, hammer, pestleAndMortar, tinderbox, combatGear));
+			useFood3, supportCyrisusToRecovery), foodAll));
+		allSteps.add(new PanelDetails("Defeating his fear", Arrays.asList(talkToOneiromancer, fillVialWithWater, addGoutweed,
+			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy, killEverlasting, killUntouchable, killIllusive, returnToOneiromancer), goutweed, astralRune, hammer, pestleAndMortar, tinderbox, combatGear));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new CombatLevelRequirement(85));

@@ -25,7 +25,6 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.BankItems;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -134,16 +133,16 @@ public class ItemRequirement extends Requirement
 		return name;
 	}
 
-	public ArrayList<Integer> getAllIds()
+	public List<Integer> getAllIds()
 	{
-		ArrayList<Integer> ids = new ArrayList<>(alternates);
+		List<Integer> ids = alternates;
 		ids.add(id);
 		return ids;
 	}
 
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client)
+	public List<LineComponent> getDisplayTextWithChecks(Client client)
 	{
-		ArrayList<LineComponent> lines = new ArrayList<>();
+		List<LineComponent> lines = new ArrayList<>();
 
 		String text = "";
 		if (this.showQuantity())
@@ -343,13 +342,13 @@ public class ItemRequirement extends Requirement
 		return false;
 	}
 
-	public ArrayList<Integer> getDisplayItemIds()
+	public List<Integer> getDisplayItemIds()
 	{
 		if (displayItemId == null)
 		{
 			return getAllIds();
 		}
 
-		return new ArrayList<>(Collections.singletonList(displayItemId));
+		return Collections.singletonList(displayItemId);
 	}
 }

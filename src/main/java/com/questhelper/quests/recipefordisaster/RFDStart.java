@@ -43,6 +43,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -120,13 +121,13 @@ public class RFDStart extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast));
+		return Arrays.asList(eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED));
@@ -135,10 +136,10 @@ public class RFDStart extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Help the Cook", new ArrayList<>(Arrays.asList(talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom)), eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Help the Cook", Arrays.asList(talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom), eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast));
 		return allSteps;
 	}
 

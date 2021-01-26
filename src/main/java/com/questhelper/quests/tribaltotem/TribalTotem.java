@@ -40,6 +40,7 @@ import com.questhelper.steps.conditional.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -109,7 +110,7 @@ public class TribalTotem extends BasicQuestHelper
     }
 
     @Override
-    public ArrayList<ItemRequirement> getItemRecommended()
+    public List<ItemRequirement> getItemRecommended()
     {
         ArrayList<ItemRequirement> reqs = new ArrayList<>();
         reqs.add(coins);
@@ -165,17 +166,17 @@ public class TribalTotem extends BasicQuestHelper
     }
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.THIEVING, 21, true)));
+		return Collections.singletonList(new SkillRequirement(Skill.THIEVING, 21, true));
 	}
 
     @Override
-    public ArrayList<PanelDetails> getPanels()
+    public List<PanelDetails> getPanels()
     {
-        ArrayList<PanelDetails> allSteps = new ArrayList<>();
+        List<PanelDetails> allSteps = new ArrayList<>();
         allSteps.add(new PanelDetails("Retrieving the totem",
-                new ArrayList<>(Arrays.asList(talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, talkToKangaiMauAgain))));
+                Arrays.asList(talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, talkToKangaiMauAgain)));
         return allSteps;
     }
 }

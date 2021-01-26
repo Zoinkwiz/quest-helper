@@ -208,7 +208,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToKingBolren.addDialogStep("I would be glad to help.");
 
 		DetailedQuestStep goThroughMaze = new DetailedQuestStep(this, new WorldPoint(2541, 3170, 0), "Follow the marked path to walk through the maze.");
-		ArrayList<WorldPoint> pathThroughMaze = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathThroughMaze = Arrays.asList(
 			new WorldPoint(2505, 3190, 0),
 			new WorldPoint(2512, 3190, 0),
 			new WorldPoint(2512, 3188, 0),
@@ -248,7 +248,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 			new WorldPoint(2545, 3156, 0),
 			new WorldPoint(2520, 3156, 0),
 			new WorldPoint(2520, 3159, 0),
-			new WorldPoint(2515, 3159, 0)));
+			new WorldPoint(2515, 3159, 0));
 		goThroughMaze.setLinePoints(pathThroughMaze);
 
 		talkToBolrenAtCentreOfMaze = new ConditionalStep(this, goThroughMaze,
@@ -294,33 +294,33 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(logRequirement));
+		return Collections.singletonList(logRequirement);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Khazard Warlord (level 112)"));
+		return Collections.singletonList("Khazard Warlord (level 112)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> steps = new ArrayList<>();
+		List<PanelDetails> steps = new ArrayList<>();
 
-		steps.add(new PanelDetails("Getting started", new ArrayList<>(Collections.singletonList(talkToKingBolren))));
-		steps.add(new PanelDetails("The three trackers", new ArrayList<>(Arrays.asList(
+		steps.add(new PanelDetails("Getting started", Collections.singletonList(talkToKingBolren)));
+		steps.add(new PanelDetails("The three trackers", Arrays.asList(
 			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
-			firstTracker, secondTracker, thirdTracker, fireBalistaConditional)), logRequirement));
+			firstTracker, secondTracker, thirdTracker, fireBalistaConditional), logRequirement));
 
 		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		ItemRequirement combatGear = new ItemRequirement("Armor & Weapons", -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		steps.add(new PanelDetails("Retrieving the orbs", new ArrayList<>(Arrays.asList(retrieveOrb, talkToKingBolrenFirstOrb,
-			talkToTheWarlord, fightTheWarlord, returnOrbs)), combatGear, food));
+		steps.add(new PanelDetails("Retrieving the orbs", Arrays.asList(retrieveOrb, talkToKingBolrenFirstOrb,
+			talkToTheWarlord, fightTheWarlord, returnOrbs), combatGear, food));
 		return steps;
 	}
 }

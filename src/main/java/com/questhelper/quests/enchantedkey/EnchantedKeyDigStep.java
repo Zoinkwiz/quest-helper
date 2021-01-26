@@ -33,9 +33,9 @@ import com.questhelper.steps.DetailedQuestStep;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -67,7 +67,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText);
 		if (enchantedKeySolver == null)

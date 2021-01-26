@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -217,7 +218,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(softClay);
@@ -236,7 +237,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(glory);
@@ -244,7 +245,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Able to survive jail guards (level 26) attacking you");
@@ -252,33 +253,33 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToHassan, talkToOsman))));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHassan, talkToOsman)));
 
-		PanelDetails makeWigPanel = new PanelDetails("Make a blonde wig", new ArrayList<>(Arrays.asList(talkToNed, dyeWig)), yellowDye, ballsOfWool3);
+		PanelDetails makeWigPanel = new PanelDetails("Make a blonde wig", Arrays.asList(talkToNed, dyeWig), yellowDye, ballsOfWool3);
 		makeWigPanel.setLockingStep(makeDyedWig);
 		allSteps.add(makeWigPanel);
 
-		PanelDetails makePastePanel = new PanelDetails("Make paste", new ArrayList<>(Collections.singletonList(talkToAggie)), redberries, ashes, potOfFlour, bucketOfWater);
+		PanelDetails makePastePanel = new PanelDetails("Make paste", Collections.singletonList(talkToAggie), redberries, ashes, potOfFlour, bucketOfWater);
 		makePastePanel.setLockingStep(makePaste);
 		allSteps.add(makePastePanel);
 
-		PanelDetails makeKeyMouldPanel = new PanelDetails("Make a key mould", new ArrayList<>(Collections.singletonList(talkToKeli)), softClay);
+		PanelDetails makeKeyMouldPanel = new PanelDetails("Make a key mould", Collections.singletonList(talkToKeli), softClay);
 		makeKeyMouldPanel.setLockingStep(makeKeyMould);
 		allSteps.add(makeKeyMouldPanel);
 
-		PanelDetails getKeyPanel = new PanelDetails("Make the key", new ArrayList<>(Collections.singletonList(bringImprintToOsman)), bronzeBar, keyMould);
+		PanelDetails getKeyPanel = new PanelDetails("Make the key", Collections.singletonList(bringImprintToOsman), bronzeBar, keyMould);
 		getKeyPanel.setLockingStep(getKey);
 		allSteps.add(getKeyPanel);
 
-		allSteps.add(new PanelDetails("Return with the items", new ArrayList<>(Collections.singletonList(talkToLeela)), dyedWig, paste, rope, beers3, pinkSkirt));
+		allSteps.add(new PanelDetails("Return with the items", Collections.singletonList(talkToLeela), dyedWig, paste, rope, beers3, pinkSkirt));
 
-		allSteps.add(new PanelDetails("Free Ali", new ArrayList<>(Arrays.asList(talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli)), key, dyedWig, paste, rope, beers3, pinkSkirt));
+		allSteps.add(new PanelDetails("Free Ali", Arrays.asList(talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli), key, dyedWig, paste, rope, beers3, pinkSkirt));
 
-		allSteps.add(new PanelDetails("Return to Al Kharid", new ArrayList<>(Collections.singletonList(returnToHassan))));
+		allSteps.add(new PanelDetails("Return to Al Kharid", Collections.singletonList(returnToHassan)));
 		return allSteps;
 	}
 }

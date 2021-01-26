@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
@@ -285,7 +286,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(pickaxe);
@@ -296,7 +297,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(xericTalisman);
@@ -305,7 +306,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
@@ -316,17 +317,17 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToPhileas))));
-		allSteps.add(new PanelDetails("Discovery", new ArrayList<>(Arrays.asList(teleportToArchive, talkToPagida, pushStrangeDeviceWest,
-			attackWithMagic, attackWithMelee, pushStrangeDeviceEast, attackWithRanged, investigateSkeleton, talkToPhileasAgain, talkToShiro)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToPhileas)));
+		allSteps.add(new PanelDetails("Discovery", Arrays.asList(teleportToArchive, talkToPagida, pushStrangeDeviceWest,
+			attackWithMagic, attackWithMelee, pushStrangeDeviceEast, attackWithRanged, investigateSkeleton, talkToPhileasAgain, talkToShiro),
 			rangedWeapon, runesForCombat));
-		allSteps.add(new PanelDetails("Investigate Quidamortem", new ArrayList<>(Arrays.asList(talkToDuffy, useRopeOnCrevice, enterCrevice,
-			mineRockfall, pushBoulder, tryToEnterBarrier, inspectUnstableAltar, returnToDuffy, enterCreviceAgain, talkToDuffyInCrevice, talkToGnosi)),
+		allSteps.add(new PanelDetails("Investigate Quidamortem", Arrays.asList(talkToDuffy, useRopeOnCrevice, enterCrevice,
+			mineRockfall, pushBoulder, tryToEnterBarrier, inspectUnstableAltar, returnToDuffy, enterCreviceAgain, talkToDuffyInCrevice, talkToGnosi),
 			rope, combatGear));
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(returnToShiro, returnToPhileasTent, finishQuest))));
+		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(returnToShiro, returnToPhileasTent, finishQuest)));
 		return allSteps;
 	}
 }

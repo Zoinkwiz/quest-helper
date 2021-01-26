@@ -35,6 +35,7 @@ import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.WidgetTextCondition;
 import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -90,9 +91,9 @@ public class SirRenItchoodStep extends ConditionalStep
 		addStep(hasAnswer, openAnswerWidget);
 	}
 
-	public ArrayList<QuestStep> getPanelSteps()
+	public List<QuestStep> getPanelSteps()
 	{
-		ArrayList<QuestStep> steps = new ArrayList<>();
+		List<QuestStep> steps = new ArrayList<>();
 		steps.add(talkToRen);
 		steps.add(openAnswerWidget);
 		steps.add(enterDoorcode);

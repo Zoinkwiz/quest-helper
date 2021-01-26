@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -325,47 +326,47 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(steelLong, steelSword2, steelMace, steelWarhammer, steeldagger, steelNails225, coins10OrCharos, druidPouch5, hammer, plank6));
+		return Arrays.asList(steelLong, steelSword2, steelMace, steelWarhammer, steeldagger, steelNails225, coins10OrCharos, druidPouch5, hammer, plank6);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, morttonTeleport));
+		return Arrays.asList(combatGear, morttonTeleport);
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory and steal charges from your Druid Pouch."));
+		return Collections.singletonList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory and steal charges from your Druid Pouch.");
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Skeleton hellhound (level 97)"));
+		return Collections.singletonList("Skeleton hellhound (level 97)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping the Myreque",
-			new ArrayList<>(Arrays.asList(talkToVanstrom, fillDruidPouch, talkToCyreg, boardBoat, climbTree, repairBridge1, talkToCurpile, enterDoors,
-				enterCave, talkToVeliaf, talkToMembers, talkToVeliafAgain, killHellhound, talkToVeliafToLeave, leaveCave, goUpToCanifis, talkToStranger)),
+			Arrays.asList(talkToVanstrom, fillDruidPouch, talkToCyreg, boardBoat, climbTree, repairBridge1, talkToCurpile, enterDoors,
+				enterCave, talkToVeliaf, talkToMembers, talkToVeliafAgain, killHellhound, talkToVeliafToLeave, leaveCave, goUpToCanifis, talkToStranger),
 			steelLong, steelSword2, steelMace, steelWarhammer, steeldagger, steelNails225, coins10OrCharos, druidPouch5, hammer, plank6));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(
+		return Arrays.asList(
 			new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED),
 			new SkillRequirement(Skill.AGILITY, 25, true)
-		));
+		);
 	}
 }

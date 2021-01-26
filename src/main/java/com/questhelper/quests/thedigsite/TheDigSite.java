@@ -24,7 +24,6 @@
  */
 package com.questhelper.quests.thedigsite;
 
-import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -41,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -492,19 +492,19 @@ public class TheDigSite extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("This quest helper is susceptible to getting out of sync with the actual quest. If this happens to you, opening up the quest's journal should fix it."));
+		return Collections.singletonList("This quest helper is susceptible to getting out of sync with the actual quest. If this happens to you, opening up the quest's journal should fix it.");
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal, leatherBoots, leatherGloves));
+		return Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal, leatherBoots, leatherGloves);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.AGILITY, 10, true));
@@ -514,19 +514,19 @@ public class TheDigSite extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToExaminer, talkToHaig, talkToExaminer2, searchBush, takeTray, talkToGuide, panWater, pickpocketWorkmen, talkToFemaleStudent, talkToFemaleStudent2,
-			talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToExaminer, talkToHaig, talkToExaminer2, searchBush, takeTray, talkToGuide, panWater, pickpocketWorkmen, talkToFemaleStudent, talkToFemaleStudent2,
+			talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1)));
 
-		allSteps.add(new PanelDetails("Exam 2", new ArrayList<>(Arrays.asList(talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3, takeTest2))));
-		allSteps.add(new PanelDetails("Exam 3", new ArrayList<>(Arrays.asList(talkToFemaleStudent4, talkToFemaleStudent5, talkToOrangeStudent4,
-			talkToGreenStudent4, takeTest3)), opal));
-		allSteps.add(new PanelDetails("Discovery", new ArrayList<>(Arrays.asList(getJar, getPick, digForTalisman, talkToExpert, useInvitationOnWorkman)), trowel, specimenBrush, leatherBoots, leatherGloves));
-		allSteps.add(new PanelDetails("Digging deeper", new ArrayList<>(Arrays.asList(useRopeOnWinch, goDownWinch, pickUpRoot, searchBricks, goUpRope, useRopeOnWinch2, goDownToDoug,
+		allSteps.add(new PanelDetails("Exam 2", Arrays.asList(talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3, takeTest2)));
+		allSteps.add(new PanelDetails("Exam 3", Arrays.asList(talkToFemaleStudent4, talkToFemaleStudent5, talkToOrangeStudent4,
+			talkToGreenStudent4, takeTest3), opal));
+		allSteps.add(new PanelDetails("Discovery", Arrays.asList(getJar, getPick, digForTalisman, talkToExpert, useInvitationOnWorkman), trowel, specimenBrush, leatherBoots, leatherGloves));
+		allSteps.add(new PanelDetails("Digging deeper", Arrays.asList(useRopeOnWinch, goDownWinch, pickUpRoot, searchBricks, goUpRope, useRopeOnWinch2, goDownToDoug,
 			talkToDoug, goUpFromDoug, unlockChest, searchChest, useTrowelOnBarrel, useVialOnBarrel, useLiquidOnExpert, usePowderOnExpert, mixNitroWithNitrate, grindCharcoal, addCharcoal, addRoot, goDownToExplode,
-			useCompound, useTinderbox, takeTablet, useTabletOnExpert)), ropes2, pestleAndMortar, vialHighlighted, tinderboxHighlighted, charcoal));
+			useCompound, useTinderbox, takeTablet, useTabletOnExpert), ropes2, pestleAndMortar, vialHighlighted, tinderboxHighlighted, charcoal));
 
 		return allSteps;
 	}

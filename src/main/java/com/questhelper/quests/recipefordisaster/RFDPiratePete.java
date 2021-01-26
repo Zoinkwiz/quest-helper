@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -296,36 +297,36 @@ public class RFDPiratePete extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(fishBowl, needle, bronzeWire3, pestleHighlighted, rawCodHighlighted, breadHighlighted, knifeHighlighted));
+		return Arrays.asList(fishBowl, needle, bronzeWire3, pestleHighlighted, rawCodHighlighted, breadHighlighted, knifeHighlighted);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(combatGear));
+		return Collections.singletonList(combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("5 Mudskippers (level 30/31)", "Crab (level 21/23)"));
+		return Arrays.asList("5 Mudskippers (level 30/31)", "Crab (level 21/23)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		return generalReqs;
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(inspectPete, talkToCook, talkToMurphy, talkToMurphyAgain)), fishBowl));
-		allSteps.add(new PanelDetails("Get Crab and Kelp", new ArrayList<>(Arrays.asList(goDiving, pickKelp, talkToNung, pickUpRocks, enterCave, killMudksippers5, returnToNung, giveNungWire, killCrab, climbAnchor)), divingHelmet, divingAparatus, bronzeWire3, needle));
-		allSteps.add(new PanelDetails("Saving Pete", new ArrayList<>(Arrays.asList(grindCrab, grindKelp, usePestleOnCod, useKnifeOnBread, talkToCookAgain, useCrabOnKelp, cookCake, useCakeOnPete)), pestleHighlighted, knifeHighlighted, rawCodHighlighted, breadHighlighted, crabMeat, kelp));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectPete, talkToCook, talkToMurphy, talkToMurphyAgain), fishBowl));
+		allSteps.add(new PanelDetails("Get Crab and Kelp", Arrays.asList(goDiving, pickKelp, talkToNung, pickUpRocks, enterCave, killMudksippers5, returnToNung, giveNungWire, killCrab, climbAnchor), divingHelmet, divingAparatus, bronzeWire3, needle));
+		allSteps.add(new PanelDetails("Saving Pete", Arrays.asList(grindCrab, grindKelp, usePestleOnCod, useKnifeOnBread, talkToCookAgain, useCrabOnKelp, cookCake, useCakeOnPete), pestleHighlighted, knifeHighlighted, rawCodHighlighted, breadHighlighted, crabMeat, kelp));
 		return allSteps;
 	}
 

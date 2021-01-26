@@ -24,8 +24,8 @@
  */
 package com.questhelper.steps.conditional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
@@ -37,7 +37,7 @@ public class WidgetTextCondition extends ConditionForStep
 	private final int groupId;
 
 	private final int childId;
-	private final ArrayList<String> text;
+	private final List<String> text;
 	private int childChildId = -1;
 	private boolean checkChildren;
 
@@ -50,7 +50,7 @@ public class WidgetTextCondition extends ConditionForStep
 
 		this.groupId = widgetInfo.getGroupId();
 		this.childId = widgetInfo.getChildId();
-		this.text = new ArrayList<>(Arrays.asList(text));
+		this.text = Arrays.asList(text);
 	}
 
 	public WidgetTextCondition(int groupId, int childId, boolean checkChildren, String... text)
@@ -58,14 +58,14 @@ public class WidgetTextCondition extends ConditionForStep
 		this.groupId = groupId;
 		this.childId = childId;
 		this.checkChildren = checkChildren;
-		this.text = new ArrayList<>(Arrays.asList(text));
+		this.text = Arrays.asList(text);
 	}
 
 	public WidgetTextCondition(int groupId, int childId, String... text)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
-		this.text = new ArrayList<>(Arrays.asList(text));
+		this.text = Arrays.asList(text);
 	}
 
 	public WidgetTextCondition(int groupId, int childId, int childChildId, String... text)
@@ -73,7 +73,7 @@ public class WidgetTextCondition extends ConditionForStep
 		this.groupId = groupId;
 		this.childId = childId;
 		this.childChildId = childChildId;
-		this.text = new ArrayList<>(Arrays.asList(text));
+		this.text = Arrays.asList(text);
 	}
 
 	public void addRange(int min, int max)

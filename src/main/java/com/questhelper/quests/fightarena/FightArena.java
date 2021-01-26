@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -195,19 +196,19 @@ public class FightArena extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(coins));
+		return Collections.singletonList(coins);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(combatGear));
+		return Collections.singletonList(combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Khazard Scorpion (level 44) (safespottable)");
@@ -218,12 +219,12 @@ public class FightArena extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start quest", new ArrayList<>(Arrays.asList(startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew)), coins));
-		allSteps.add(new PanelDetails("Fight!", new ArrayList<>(Arrays.asList(getCellKeys, openCell, killOgre, talkToHengrad, killScorpion, killBouncer)), combatGear));
-		allSteps.add(new PanelDetails("Finish quest", new ArrayList<>(Arrays.asList(leaveArena, endQuest))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start quest", Arrays.asList(startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew), coins));
+		allSteps.add(new PanelDetails("Fight!", Arrays.asList(getCellKeys, openCell, killOgre, talkToHengrad, killScorpion, killBouncer), combatGear));
+		allSteps.add(new PanelDetails("Finish quest", Arrays.asList(leaveArena, endQuest)));
 		return allSteps;
 	}
 }

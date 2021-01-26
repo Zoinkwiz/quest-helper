@@ -54,6 +54,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
@@ -386,32 +387,32 @@ public class TheGiantDwarf extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins2500, logs, tinderbox, coal, ironBar, lawRune, airRune, sapphires3, oresBars, redberryPie));
+		return Arrays.asList(coins2500, logs, tinderbox, coal, ironBar, lawRune, airRune, sapphires3, oresBars, redberryPie);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(houseTeleport, rellekkaTeleport, fairyRings, staminaPotions, varrockTeleport, clay10, copperOre10, tinOre10, ironOre10, coal10, silverOre10, goldOre10, mithrilOre10, bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10));
+		return Arrays.asList(houseTeleport, rellekkaTeleport, fairyRings, staminaPotions, varrockTeleport, clay10, copperOre10, tinOre10, ironOre10, coal10, silverOre10, goldOre10, mithrilOre10, bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting out", new ArrayList<>(Arrays.asList(talkToBoatman, talkToVeldaban, talkToBlasidar))));
-		allSteps.add(new PanelDetails("Clothes fit for a king", new ArrayList<>(Arrays.asList(talkToVermundi, talkToLibrarian, climbBookcase, talkToVermundiWithBook, useCoalOnMachine, startMachine, talkToVermundiWithMachine)), weightBelow30, logs, coal, tinderbox, coins2500, inventorySpace));
-		allSteps.add(new PanelDetails("Boots fit for a king", new ArrayList<>(Arrays.asList(talkToSaro, talkToDromund, takeLeftBoot, takeRightBoot)), lawRune, airRune));
-		allSteps.add(new PanelDetails("An axe fit for a king", new ArrayList<>(Arrays.asList(talkToSantiri, useSapphires, talkToThurgo)), sapphires3, ironBar, redberryPie));
-		allSteps.add(new PanelDetails("Halfway there", new ArrayList<>(Arrays.asList(giveItemsToRiki, talkToBlasidarAfterItems)), exquisiteClothes, exquisiteBoots, dwarvenBattleaxe));
-		allSteps.add(new PanelDetails("Joining the consortium", new ArrayList<>(Arrays.asList(enterConsortium, talkToSecretary, talkToDirector, joinCompany, talkToDirectorAfterJoining, talkToVeldabanAfterJoining)), oresBars, staminaPotions));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting out", Arrays.asList(talkToBoatman, talkToVeldaban, talkToBlasidar)));
+		allSteps.add(new PanelDetails("Clothes fit for a king", Arrays.asList(talkToVermundi, talkToLibrarian, climbBookcase, talkToVermundiWithBook, useCoalOnMachine, startMachine, talkToVermundiWithMachine), weightBelow30, logs, coal, tinderbox, coins2500, inventorySpace));
+		allSteps.add(new PanelDetails("Boots fit for a king", Arrays.asList(talkToSaro, talkToDromund, takeLeftBoot, takeRightBoot), lawRune, airRune));
+		allSteps.add(new PanelDetails("An axe fit for a king", Arrays.asList(talkToSantiri, useSapphires, talkToThurgo), sapphires3, ironBar, redberryPie));
+		allSteps.add(new PanelDetails("Halfway there", Arrays.asList(giveItemsToRiki, talkToBlasidarAfterItems), exquisiteClothes, exquisiteBoots, dwarvenBattleaxe));
+		allSteps.add(new PanelDetails("Joining the consortium", Arrays.asList(enterConsortium, talkToSecretary, talkToDirector, joinCompany, talkToDirectorAfterJoining, talkToVeldabanAfterJoining), oresBars, staminaPotions));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SpellbookRequirement(Spellbook.NORMAL));

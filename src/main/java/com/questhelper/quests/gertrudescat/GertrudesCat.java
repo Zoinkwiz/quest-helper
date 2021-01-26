@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -233,28 +234,28 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(bucketOfMilk, coins, sardine));
+		return Arrays.asList(bucketOfMilk, coins, sardine);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> steps = new ArrayList<>();
+		List<PanelDetails> steps = new ArrayList<>();
 
 		PanelDetails startingPanel = new PanelDetails("Starting out",
-			new ArrayList<>(Arrays.asList(talkToGertrude, talkToChildren)),
+			Arrays.asList(talkToGertrude, talkToChildren),
 			coins);
 		steps.add(startingPanel);
 
 		PanelDetails lumberYardPanel = new PanelDetails("The secret playground (Lumber Yard)",
-			new ArrayList<>(Arrays.asList(giveMilkToCatSteps, giveSardineToCat, searchNearbyCrates, giveKittenToFluffy)),
+			Arrays.asList(giveMilkToCatSteps, giveSardineToCat, searchNearbyCrates, giveKittenToFluffy),
 			seasonedSardine, bucketOfMilk);
 		steps.add(lumberYardPanel);
 
 		PanelDetails finishQuestPanel = new PanelDetails("Finish the quest",
-			new ArrayList<>(Collections.singletonList(finishQuest)));
+			Collections.singletonList(finishQuest));
 		steps.add(finishQuestPanel);
 		return steps;
 	}

@@ -191,7 +191,7 @@ public class DwarfCannon extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(staminas);
@@ -201,13 +201,13 @@ public class DwarfCannon extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToCaptainLawgof))));
-		allSteps.add(new PanelDetails("Repair and Retrieval", new ArrayList<>(Arrays.asList(inspectRailings1, talkToCaptainLawgof2, gotoTower, talkToCaptainLawgof3))));
-		allSteps.add(new PanelDetails("Find Lollk and Fix Cannon", new ArrayList<>(Arrays.asList(gotoCave, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5))));
-		allSteps.add(new PanelDetails("Get Ammo Mould", new ArrayList<>(Arrays.asList(talkToNulodion, talkToCaptainLawgof6))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToCaptainLawgof)));
+		allSteps.add(new PanelDetails("Repair and Retrieval", Arrays.asList(inspectRailings1, talkToCaptainLawgof2, gotoTower, talkToCaptainLawgof3)));
+		allSteps.add(new PanelDetails("Find Lollk and Fix Cannon", Arrays.asList(gotoCave, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5)));
+		allSteps.add(new PanelDetails("Get Ammo Mould", Arrays.asList(talkToNulodion, talkToCaptainLawgof6)));
 		return allSteps;
 	}
 }

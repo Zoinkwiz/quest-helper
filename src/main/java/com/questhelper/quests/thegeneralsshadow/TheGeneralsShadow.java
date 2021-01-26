@@ -36,7 +36,6 @@ import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -50,13 +49,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -220,27 +219,27 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyGloves, ghostlyBoots, ghostlyCloak,
-			ringOfVisibility, ghostspeak, combatGear));
+		return Arrays.asList(ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyGloves, ghostlyBoots, ghostlyCloak,
+			ringOfVisibility, ghostspeak, combatGear);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(rellekkaTeleport, gnomeTeleport, kharidTeleport, karamjaTeleport));
+		return Arrays.asList(rellekkaTeleport, gnomeTeleport, kharidTeleport, karamjaTeleport);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Bouncer (level 160, can't use prayer)"));
+		return Collections.singletonList("Bouncer (level 160, can't use prayer)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD, QuestState.FINISHED));
@@ -249,19 +248,19 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Proving your Sin",
-			new ArrayList<>(Arrays.asList(talkToKhazard, talkToSeer, talkToKhazardAfterSeer)), ghostlyRobes,
+			Arrays.asList(talkToKhazard, talkToSeer, talkToKhazardAfterSeer), ghostlyRobes,
 			ringOfVisibility, ghostspeak));
 
 		allSteps.add(new PanelDetails("Finding the Scouts",
-			new ArrayList<>(Arrays.asList(talkToGnomeScout, talkToFaladorScout, talkToShantyScout, talkToKaramjaScout,
-				talkToKhazardAfterScouts)), ghostlyRobes, ringOfVisibility, ghostspeak));
+			Arrays.asList(talkToGnomeScout, talkToFaladorScout, talkToShantyScout, talkToKaramjaScout,
+				talkToKhazardAfterScouts), ghostlyRobes, ringOfVisibility, ghostspeak));
 
 		allSteps.add(new PanelDetails("Defeat Bouncer",
-			new ArrayList<>(Arrays.asList(enterCave, enterCrack, killBouncer)), combatGear, serveredLeg));
+			Arrays.asList(enterCave, enterCrack, killBouncer), combatGear, serveredLeg));
 
 		return allSteps;
 	}

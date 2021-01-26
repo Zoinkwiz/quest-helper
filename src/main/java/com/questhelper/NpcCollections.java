@@ -33,7 +33,7 @@ import net.runelite.api.NpcID;
 public class NpcCollections
 {
 	@Getter
-	private static final ArrayList<Integer> cats = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> cats = Arrays.asList(
 		NpcID.KITTEN,
 		NpcID.KITTEN_5591,
 		NpcID.KITTEN_5592,
@@ -91,10 +91,10 @@ public class NpcCollections
 		NpcID.LAZY_HELLCAT_6689,
 		NpcID.WILY_HELLCAT,
 		NpcID.WILY_HELLCAT_6696
-	));
+	);
 
 	@Getter
-	private static final ArrayList<Integer> huntingCats = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> huntingCats = Arrays.asList(
 		NpcID.KITTEN,
 		NpcID.KITTEN_5591,
 		NpcID.KITTEN_5592,
@@ -141,5 +141,5 @@ public class NpcCollections
 		NpcID.LAZY_HELLCAT_6689,
 		NpcID.WILY_HELLCAT,
 		NpcID.WILY_HELLCAT_6696
-	));
+	);
 }

@@ -24,7 +24,6 @@
  */
 package com.questhelper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
@@ -35,7 +34,7 @@ public class ItemCollections
 	// Tools
 
 	@Getter
-	private static final List<Integer> axes = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> axes = Arrays.asList(
 		ItemID.BRONZE_AXE,
 		ItemID.IRON_AXE,
 		ItemID.STEEL_AXE,
@@ -48,11 +47,11 @@ public class ItemCollections
 		ItemID.INFERNAL_AXE,
 		ItemID.INFERNAL_AXE_OR,
 		ItemID._3RD_AGE_AXE,
-		ItemID.CRYSTAL_AXE)
+		ItemID.CRYSTAL_AXE
 	);
 
 	@Getter
-	private static final List<Integer> pickaxes = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> pickaxes = Arrays.asList(
 		ItemID.BRONZE_PICKAXE,
 		ItemID.IRON_PICKAXE,
 		ItemID.STEEL_PICKAXE,
@@ -68,29 +67,29 @@ public class ItemCollections
 		ItemID._3RD_AGE_PICKAXE,
 		ItemID.CRYSTAL_PICKAXE,
 		ItemID.TRAILBLAZER_PICKAXE,
-		ItemID.INFERNAL_PICKAXE_OR)
+		ItemID.INFERNAL_PICKAXE_OR
 	);
 
 	@Getter
-	private static final List<Integer> harpoons = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> harpoons = Arrays.asList(
 		ItemID.HARPOON,
 		ItemID.BARBTAIL_HARPOON,
 		ItemID.DRAGON_HARPOON,
 		ItemID.INFERNAL_HARPOON,
 		ItemID.TRAILBLAZER_HARPOON,
-		ItemID.INFERNAL_HARPOON_OR)
+		ItemID.INFERNAL_HARPOON_OR
 	);
 
 	@Getter
-	private static final List<Integer> machete = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> machete = Arrays.asList(
 		ItemID.RED_TOPAZ_MACHETE,
 		ItemID.JADE_MACHETE,
 		ItemID.OPAL_MACHETE,
 		ItemID.MACHETE
-	));
+	);
 
 	@Getter
-	private static final List<Integer> nails = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> nails = Arrays.asList(
 		ItemID.STEEL_NAILS,
 		ItemID.IRON_NAILS,
 		ItemID.BRONZE_NAILS,
@@ -98,10 +97,10 @@ public class ItemCollections
 		ItemID.MITHRIL_NAILS,
 		ItemID.ADAMANTITE_NAILS,
 		ItemID.RUNE_NAILS
-	));
+	);
 
 	@Getter
-	private static final List<Integer> bows = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> bows = Arrays.asList(
 		ItemID.SHORTBOW,
 		ItemID.LONGBOW,
 		ItemID.MAGIC_SHORTBOW,
@@ -115,30 +114,30 @@ public class ItemCollections
 		ItemID.WILLOW_LONGBOW,
 		ItemID.YEW_SHORTBOW,
 		ItemID.YEW_LONGBOW
-	));
+	);
 
 	// Teleports
 
 	@Getter
-	private static final List<Integer> metalArrows = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> metalArrows = Arrays.asList(
 		ItemID.BRONZE_ARROW,
 		ItemID.IRON_ARROW,
 		ItemID.STEEL_ARROW,
 		ItemID.MITHRIL_ARROW,
 		ItemID.ADAMANT_ARROW,
 		ItemID.RUNE_ARROW
-	));
+	);
 
 	@Getter
-	private static final List<Integer> airRune = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> airRune = Arrays.asList(
 		ItemID.AIR_RUNE,
 		ItemID.MIST_RUNE,
 		ItemID.SMOKE_RUNE,
 		ItemID.DUST_RUNE
-	));
+	);
 
 	@Getter
-	private static final List<Integer> airStaff = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> airStaff = Arrays.asList(
 		ItemID.AIR_BATTLESTAFF,
 		ItemID.MYSTIC_AIR_STAFF,
 		ItemID.STAFF_OF_AIR,
@@ -148,18 +147,18 @@ public class ItemCollections
 		ItemID.MYSTIC_DUST_STAFF,
 		ItemID.MIST_BATTLESTAFF,
 		ItemID.MYSTIC_MIST_STAFF
-	));
+	);
 
 	@Getter
-	private static final List<Integer> fireRune = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> fireRune = Arrays.asList(
 		ItemID.FIRE_RUNE,
 		ItemID.LAVA_RUNE,
 		ItemID.SMOKE_RUNE,
 		ItemID.STEAM_RUNE
-	));
+	);
 
 	@Getter
-	private static final List<Integer> fireStaff = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> fireStaff = Arrays.asList(
 		ItemID.FIRE_BATTLESTAFF,
 		ItemID.MYSTIC_FIRE_STAFF,
 		ItemID.STAFF_OF_FIRE,
@@ -169,18 +168,18 @@ public class ItemCollections
 		ItemID.MYSTIC_LAVA_STAFF,
 		ItemID.STEAM_BATTLESTAFF,
 		ItemID.MYSTIC_STEAM_STAFF
-	));
+	);
 
 	@Getter
-	private static final List<Integer> waterRune = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> waterRune = Arrays.asList(
 		ItemID.WATER_RUNE,
 		ItemID.MUD_RUNE,
 		ItemID.MIST_RUNE,
 		ItemID.STEAM_RUNE
-	));
+	);
 
 	@Getter
-	private static final List<Integer> waterStaff = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> waterStaff = Arrays.asList(
 		ItemID.FIRE_BATTLESTAFF,
 		ItemID.MYSTIC_FIRE_STAFF,
 		ItemID.STAFF_OF_FIRE,
@@ -190,18 +189,18 @@ public class ItemCollections
 		ItemID.MYSTIC_MIST_STAFF,
 		ItemID.STEAM_BATTLESTAFF,
 		ItemID.MYSTIC_STEAM_STAFF
-	));
+	);
 
 	@Getter
-	private static final List<Integer> earthRune = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> earthRune = Arrays.asList(
 		ItemID.EARTH_RUNE,
 		ItemID.MUD_RUNE,
 		ItemID.LAVA_RUNE,
 		ItemID.DUST_RUNE
-	));
+	);
 
 	@Getter
-	private static final List<Integer> earthStaff = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> earthStaff = Arrays.asList(
 		ItemID.EARTH_BATTLESTAFF,
 		ItemID.MYSTIC_EARTH_STAFF,
 		ItemID.STAFF_OF_EARTH,
@@ -211,12 +210,12 @@ public class ItemCollections
 		ItemID.MYSTIC_DUST_STAFF,
 		ItemID.LAVA_BATTLESTAFF,
 		ItemID.MYSTIC_LAVA_STAFF
-	));
+	);
 
 	// Potions
 
 	@Getter
-	private static final List<Integer> antipoisons = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> antipoisons = Arrays.asList(
 		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
 		ItemID.ANTIVENOM4_12913,
@@ -256,10 +255,10 @@ public class ItemCollections
 		ItemID.ANTIPOISON_MIX1,
 		ItemID.ANTIDOTE_MIX2,
 		ItemID.ANTIDOTE_MIX1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> antivenoms = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> antivenoms = Arrays.asList(
 		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
 		ItemID.ANTIVENOM2_12917,
@@ -268,18 +267,18 @@ public class ItemCollections
 		ItemID.ANTIVENOM3,
 		ItemID.ANTIVENOM2,
 		ItemID.ANTIVENOM1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> prayerPotions = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> prayerPotions = Arrays.asList(
 		ItemID.PRAYER_POTION4,
 		ItemID.PRAYER_POTION1,
 		ItemID.PRAYER_POTION2,
 		ItemID.PRAYER_POTION3
-	));
+	);
 
 	@Getter
-	private static final List<Integer> restorePotions = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> restorePotions = Arrays.asList(
 		ItemID.SUPER_RESTORE4,
 		ItemID.RESTORE_POTION4,
 		ItemID.RESTORE_POTION1,
@@ -288,46 +287,46 @@ public class ItemCollections
 		ItemID.SUPER_RESTORE1,
 		ItemID.SUPER_RESTORE2,
 		ItemID.SUPER_RESTORE3
-	));
+	);
 
 	@Getter
-	private static final List<Integer> superRestorePotions = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> superRestorePotions = Arrays.asList(
 		ItemID.SUPER_RESTORE4,
 		ItemID.SUPER_RESTORE3,
 		ItemID.SUPER_RESTORE2,
 		ItemID.SUPER_RESTORE1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> saradominBrews = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> saradominBrews = Arrays.asList(
 		ItemID.SARADOMIN_BREW4,
 		ItemID.SARADOMIN_BREW3,
 		ItemID.SARADOMIN_BREW2,
 		ItemID.SARADOMIN_BREW1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> staminaPotions = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> staminaPotions = Arrays.asList(
 		ItemID.STAMINA_POTION4,
 		ItemID.STAMINA_POTION1,
 		ItemID.STAMINA_POTION2,
 		ItemID.STAMINA_POTION3,
 		ItemID.STAMINA_MIX1,
 		ItemID.STAMINA_MIX2
-	));
+	);
 
 	@Getter
-	private static final List<Integer> agilityPotions = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> agilityPotions = Arrays.asList(
 		ItemID.AGILITY_POTION4,
 		ItemID.AGILITY_POTION3,
 		ItemID.AGILITY_POTION2,
 		ItemID.AGILITY_POTION1
-	));
+	);
 
 	// Food
 
 	@Getter
-	private static final List<Integer> goodEatingFood = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> goodEatingFood = Arrays.asList(
 		ItemID.DARK_CRAB,
 		ItemID.TUNA_POTATO,
 		ItemID.MANTA_RAY,
@@ -363,11 +362,11 @@ public class ItemCollections
 		ItemID.COOKED_MEAT,
 		ItemID.COOKED_CHICKEN,
 		ItemID.SHRIMPS
-	));
+	);
 
 
 	@Getter
-	private static final List<Integer> fishFood = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> fishFood = Arrays.asList(
 		ItemID.DARK_CRAB,
 		ItemID.MANTA_RAY,
 		ItemID.SEA_TURTLE,
@@ -387,39 +386,39 @@ public class ItemCollections
 		ItemID.HERRING,
 		ItemID.SARDINE,
 		ItemID.SHRIMPS
-	));
+	);
 
 	@Getter
-	private static final List<Integer> pizzas = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> pizzas = Arrays.asList(
 		ItemID.PINEAPPLE_PIZZA,
 		ItemID.ANCHOVY_PIZZA,
 		ItemID.MEAT_PIZZA,
 		ItemID.PLAIN_PIZZA
-	));
+	);
 
 
 	@Getter
-	private static final List<Integer> potatoFood = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> potatoFood = Arrays.asList(
 		ItemID.TUNA_POTATO,
 		ItemID.MUSHROOM_POTATO,
 		ItemID.POTATO_WITH_CHEESE,
 		ItemID.POTATO_WITH_BUTTER
-	));
+	);
 
 	@Getter
-	private static final List<Integer> pies = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> pies = Arrays.asList(
 		ItemID.WILD_PIE,
 		ItemID.SUMMER_PIE,
 		ItemID.DRAGONFRUIT_PIE,
 		ItemID.ADMIRAL_PIE
-	));
+	);
 
 
 
 	// Teleport items
 
 	@Getter
-	private static final List<Integer> gamesNecklaces = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> gamesNecklaces = Arrays.asList(
 		ItemID.GAMES_NECKLACE8,
 		ItemID.GAMES_NECKLACE7,
 		ItemID.GAMES_NECKLACE6,
@@ -428,10 +427,10 @@ public class ItemCollections
 		ItemID.GAMES_NECKLACE3,
 		ItemID.GAMES_NECKLACE2,
 		ItemID.GAMES_NECKLACE1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> ringOfDuelings = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> ringOfDuelings = Arrays.asList(
 		ItemID.RING_OF_DUELING8,
 		ItemID.RING_OF_DUELING7,
 		ItemID.RING_OF_DUELING6,
@@ -440,37 +439,37 @@ public class ItemCollections
 		ItemID.RING_OF_DUELING3,
 		ItemID.RING_OF_DUELING2,
 		ItemID.RING_OF_DUELING1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> burningAmulets = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> burningAmulets = Arrays.asList(
 		ItemID.BURNING_AMULET5,
 		ItemID.BURNING_AMULET4,
 		ItemID.BURNING_AMULET3,
 		ItemID.BURNING_AMULET2,
 		ItemID.BURNING_AMULET1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> necklaceOfPassages = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> necklaceOfPassages = Arrays.asList(
 		ItemID.NECKLACE_OF_PASSAGE5,
 		ItemID.NECKLACE_OF_PASSAGE4,
 		ItemID.NECKLACE_OF_PASSAGE3,
 		ItemID.NECKLACE_OF_PASSAGE2,
 		ItemID.NECKLACE_OF_PASSAGE1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> skillsNecklaces = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> skillsNecklaces = Arrays.asList(
 		ItemID.SKILLS_NECKLACE5,
 		ItemID.SKILLS_NECKLACE4,
 		ItemID.SKILLS_NECKLACE3,
 		ItemID.SKILLS_NECKLACE2,
 		ItemID.SKILLS_NECKLACE1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> ringOfWealths = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> ringOfWealths = Arrays.asList(
 		ItemID.RING_OF_WEALTH_5,
 		ItemID.RING_OF_WEALTH_I5,
 		ItemID.RING_OF_WEALTH_4,
@@ -481,20 +480,20 @@ public class ItemCollections
 		ItemID.RING_OF_WEALTH_I2,
 		ItemID.RING_OF_WEALTH_1,
 		ItemID.RING_OF_WEALTH_I1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> combatBracelets = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> combatBracelets = Arrays.asList(
 		ItemID.COMBAT_BRACELET6,
 		ItemID.COMBAT_BRACELET5,
 		ItemID.COMBAT_BRACELET4,
 		ItemID.COMBAT_BRACELET3,
 		ItemID.COMBAT_BRACELET2,
 		ItemID.COMBAT_BRACELET1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> amuletOfGlories = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> amuletOfGlories = Arrays.asList(
 		ItemID.AMULET_OF_ETERNAL_GLORY,
 		ItemID.AMULET_OF_GLORY6,
 		ItemID.AMULET_OF_GLORY_T6,
@@ -508,19 +507,19 @@ public class ItemCollections
 		ItemID.AMULET_OF_GLORY_T2,
 		ItemID.AMULET_OF_GLORY1,
 		ItemID.AMULET_OF_GLORY_T1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> digsitePendants = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> digsitePendants = Arrays.asList(
 		ItemID.DIGSITE_PENDANT_5,
 		ItemID.DIGSITE_PENDANT_4,
 		ItemID.DIGSITE_PENDANT_3,
 		ItemID.DIGSITE_PENDANT_2,
 		ItemID.DIGSITE_PENDANT_1
-	));
+	);
 
 	@Getter
-	private static final List<Integer> slayerRings = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> slayerRings = Arrays.asList(
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.SLAYER_RING_8,
 		ItemID.SLAYER_RING_7,
@@ -530,12 +529,12 @@ public class ItemCollections
 		ItemID.SLAYER_RING_3,
 		ItemID.SLAYER_RING_2,
 		ItemID.SLAYER_RING_1
-	));
+	);
 
 	// Logs
 
 	@Getter
-	private static final List<Integer> logsForFire = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> logsForFire = Arrays.asList(
 		ItemID.LOGS,
 		ItemID.OAK_LOGS,
 		ItemID.WILLOW_LOGS,
@@ -563,13 +562,13 @@ public class ItemCollections
 		ItemID.PURPLE_LOGS,
 		ItemID.WHITE_LOGS,
 		ItemID.BLUE_LOGS
-	));
+	);
 
 
 	// Other
 
 	@Getter
-	private static final List<Integer> greegrees = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> greegrees = Arrays.asList(
 		ItemID.KARAMJAN_MONKEY_GREEGREE,
 		ItemID.GORILLA_GREEGREE,
 		ItemID.ANCIENT_GORILLA_GREEGREE,
@@ -579,10 +578,10 @@ public class ItemCollections
 		ItemID.ZOMBIE_MONKEY_GREEGREE,
 		ItemID.ZOMBIE_MONKEY_GREEGREE_4030,
 		ItemID.NINJA_MONKEY_GREEGREE_4025
-	));
+	);
 
 	@Getter
-	private static final List<Integer> antifireShields = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> antifireShields = Arrays.asList(
 		ItemID.DRAGONFIRE_SHIELD,
 		ItemID.DRAGONFIRE_SHIELD_11284,
 		ItemID.DRAGONFIRE_WARD,
@@ -591,20 +590,20 @@ public class ItemCollections
 		ItemID.ANCIENT_WYVERN_SHIELD_21634,
 		ItemID.ANTIDRAGON_SHIELD,
 		ItemID.ANTIDRAGON_SHIELD_8282
-	));
+	);
 
 	@Getter
-	private static final List<Integer> ghostspeak = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> ghostspeak = Arrays.asList(
 		ItemID.GHOSTSPEAK_AMULET,
 		ItemID.GHOSTSPEAK_AMULET_4250,
 		ItemID.MORYTANIA_LEGS_1,
 		ItemID.MORYTANIA_LEGS_2,
 		ItemID.MORYTANIA_LEGS_3,
 		ItemID.MORYTANIA_LEGS_4
-	));
+	);
 
 	@Getter
-	private static final List<Integer> lightSources = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> lightSources = Arrays.asList(
 		ItemID.FIREMAKING_CAPET,
 		ItemID.FIREMAKING_CAPE,
 		ItemID.BRUMA_TORCH,
@@ -623,10 +622,10 @@ public class ItemCollections
 		ItemID.LIT_TORCH,
 		ItemID.LIT_CANDLE,
 		ItemID.LIT_BLACK_CANDLE
-	));
+	);
 
 	@Getter
-	private static final ArrayList<Integer> cats = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> cats = Arrays.asList(
 		ItemID.WILY_HELLCAT,
 		ItemID.WILY_CAT,
 		ItemID.WILY_CAT_6556,
@@ -665,11 +664,11 @@ public class ItemCollections
 		ItemID.PET_CAT_1569,
 		ItemID.PET_CAT_1570,
 		ItemID.PET_CAT_1571,
-		ItemID.PET_CAT_1572)
+		ItemID.PET_CAT_1572
 	);
 
 	@Getter
-	private static final ArrayList<Integer> huntingCats = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> huntingCats = Arrays.asList(
 		ItemID.WILY_HELLCAT,
 		ItemID.WILY_CAT,
 		ItemID.WILY_CAT_6556,
@@ -700,12 +699,12 @@ public class ItemCollections
 		ItemID.PET_KITTEN_1557,
 		ItemID.PET_KITTEN_1558,
 		ItemID.PET_KITTEN_1559,
-		ItemID.PET_KITTEN_1560)
+		ItemID.PET_KITTEN_1560
 	);
 
 
 	@Getter
-	private static final List<Integer> flowers = new ArrayList<>(Arrays.asList(
+	private static final List<Integer> flowers = Arrays.asList(
 		ItemID.RED_FLOWERS,
 		ItemID.YELLOW_FLOWERS,
 		ItemID.PURPLE_FLOWERS,
@@ -714,5 +713,5 @@ public class ItemCollections
 		ItemID.ASSORTED_FLOWERS,
 		ItemID.BLACK_FLOWERS,
 		ItemID.WHITE_FLOWERS
-	));
+	);
 }

@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -369,7 +370,7 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(rope);
@@ -381,39 +382,39 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(slayerRing, combatGear));
+		return Arrays.asList(slayerRing, combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("The Kendal (level 70)"));
+		return Collections.singletonList("The Kendal (level 70)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.AGILITY, 20, true)));
+		return Collections.singletonList(new SkillRequirement(Skill.AGILITY, 20, true));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Speak to Hamal", new ArrayList<>(Arrays.asList(enterCamp, talkToHamal)), rope, plank, pickaxe));
-		allSteps.add(new PanelDetails("Go to the centre of the lake", new ArrayList<>(Arrays.asList(rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit))));
-		allSteps.add(new PanelDetails("Find out how to help", new ArrayList<>(Arrays.asList(talkToHamalAfterSpirit, talkToJokul))));
-		allSteps.add(new PanelDetails("Making peace with Rellekka", new ArrayList<>(Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi))));
-		allSteps.add(new PanelDetails("Find a new food source", new ArrayList<>(Arrays.asList(getFruit, eatFruit)), axe, gloves));
-		allSteps.add(new PanelDetails("Prepare for a fight", new ArrayList<>(Collections.singletonList(new DetailedQuestStep(this, "Prepare to fight The Kendal (level 70)"))), pole, plank, axe, whitePearlSeed));
-		allSteps.add(new PanelDetails("Tell Hamal about your success", new ArrayList<>(Arrays.asList(returnToHamalAboutDiplomacy, returnToHamalAboutFood))));
-		allSteps.add(new PanelDetails("Tell Asleif about your success", new ArrayList<>(Collections.singletonList(returnToSpirit))));
-		allSteps.add(new PanelDetails("Find Asleif's corpse", new ArrayList<>(Arrays.asList(enterCave, talkToKendal, grabCorpse))));
-		allSteps.add(new PanelDetails("Bring Asleif's corpse to Hamal", new ArrayList<>(Collections.singletonList(bringCorpseToHamal))));
-		allSteps.add(new PanelDetails("Bury Asleif", new ArrayList<>(Arrays.asList(collectRocks, speakRagnar, buryCorpseOnIsland, createCairn))));
+		allSteps.add(new PanelDetails("Speak to Hamal", Arrays.asList(enterCamp, talkToHamal), rope, plank, pickaxe));
+		allSteps.add(new PanelDetails("Go to the centre of the lake", Arrays.asList(rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit)));
+		allSteps.add(new PanelDetails("Find out how to help", Arrays.asList(talkToHamalAfterSpirit, talkToJokul)));
+		allSteps.add(new PanelDetails("Making peace with Rellekka", Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi)));
+		allSteps.add(new PanelDetails("Find a new food source", Arrays.asList(getFruit, eatFruit), axe, gloves));
+		allSteps.add(new PanelDetails("Prepare for a fight", Collections.singletonList(new DetailedQuestStep(this, "Prepare to fight The Kendal (level 70)")), pole, plank, axe, whitePearlSeed));
+		allSteps.add(new PanelDetails("Tell Hamal about your success", Arrays.asList(returnToHamalAboutDiplomacy, returnToHamalAboutFood)));
+		allSteps.add(new PanelDetails("Tell Asleif about your success", Collections.singletonList(returnToSpirit)));
+		allSteps.add(new PanelDetails("Find Asleif's corpse", Arrays.asList(enterCave, talkToKendal, grabCorpse)));
+		allSteps.add(new PanelDetails("Bring Asleif's corpse to Hamal", Collections.singletonList(bringCorpseToHamal)));
+		allSteps.add(new PanelDetails("Bury Asleif", Arrays.asList(collectRocks, speakRagnar, buryCorpseOnIsland, createCairn)));
 
 		return allSteps;
 	}

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -126,23 +127,22 @@ public class BearYourSoul extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		List<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(spade);
 		reqs.add(dustyKeyOr70AgilOrKeyMasterTeleport);
 		return reqs;
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Find the Soul journey book", new ArrayList<>(Collections.singletonList(findSoulJourneyAndRead))));
-		allSteps.add(new PanelDetails("Talk to Aretha", new ArrayList<>(Collections.singletonList(talkToAretha))));
-		allSteps.add(new PanelDetails("Dig up the Soul Bearer", new ArrayList<>(Collections.singletonList(arceuusChurchDig)), spade));
-		allSteps.add(new PanelDetails("Have the Soul Bearer repaired", new ArrayList<>(Arrays.asList(goToTaverleyDungeon, enterCaveToKeyMaster, speakKeyMaster)), dustyKeyOr70AgilOrKeyMasterTeleport));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Find the Soul journey book", Collections.singletonList(findSoulJourneyAndRead)));
+		allSteps.add(new PanelDetails("Talk to Aretha", Collections.singletonList(talkToAretha)));
+		allSteps.add(new PanelDetails("Dig up the Soul Bearer", Collections.singletonList(arceuusChurchDig), spade));
+		allSteps.add(new PanelDetails("Have the Soul Bearer repaired", Arrays.asList(goToTaverleyDungeon, enterCaveToKeyMaster, speakKeyMaster), dustyKeyOr70AgilOrKeyMasterTeleport));
 		return allSteps;
 	}
 }
-

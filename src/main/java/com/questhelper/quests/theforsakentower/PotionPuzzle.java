@@ -43,6 +43,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.Client;
@@ -296,11 +297,11 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 		activateRefinery.addDialogStep("Yes.");
 	}
 
-	public ArrayList<PanelDetails> panelDetails()
+	public List<PanelDetails> panelDetails()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails potionPanel = new PanelDetails("Potion puzzle",
-			new ArrayList<>(Arrays.asList(goUpStairs, inspectRefinery, searchPotionCupboard, readNote, getFluid, useFluidOnRefinery, activateRefinery)));
+			Arrays.asList(goUpStairs, inspectRefinery, searchPotionCupboard, readNote, getFluid, useFluidOnRefinery, activateRefinery));
 		potionPanel.setLockingStep(this);
 		allSteps.add(potionPanel);
 		return allSteps;

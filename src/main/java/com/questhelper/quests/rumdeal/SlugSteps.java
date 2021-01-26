@@ -37,6 +37,7 @@ import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -174,7 +175,7 @@ public class SlugSteps extends DetailedOwnerStep
 			getSluglings, pressureSluglings, goUpF1ToPressure, goUpToF2ToPressure, pressure, pullPressureLever);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(fish5Slugs, addSluglings, pressure);
 	}

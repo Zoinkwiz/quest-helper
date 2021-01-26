@@ -26,7 +26,6 @@ package com.questhelper.quests.rovingelves;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -43,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -203,25 +203,25 @@ public class RovingElves extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(spade, rope, pebbleHint, keyHint));
+		return Arrays.asList(spade, rope, pebbleHint, keyHint);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(prayerPotions, food, skillsNecklace, ardougneTeleports, camelotTeleports, iowerthCampTeleports));
+		return Arrays.asList(prayerPotions, food, skillsNecklace, ardougneTeleports, camelotTeleports, iowerthCampTeleports);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Moss Guardian (level 84) without runes, weapons, or armour"));
+		return Collections.singletonList("Moss Guardian (level 84) without runes, weapons, or armour");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.REGICIDE, QuestState.FINISHED));
@@ -231,18 +231,18 @@ public class RovingElves extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToIslwyn, talkToEluned))));
+			Arrays.asList(talkToIslwyn, talkToEluned)));
 
 		allSteps.add(new PanelDetails("Get the seed",
-			new ArrayList<>(Arrays.asList(enterGlarialsTombstone, killGuardian, pickUpSeed, returnSeedToEluned)), glarialsPebble));
+			Arrays.asList(enterGlarialsTombstone, killGuardian, pickUpSeed, returnSeedToEluned), glarialsPebble));
 
 		allSteps.add(new PanelDetails("Plant the seed",
-			new ArrayList<>(Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchFallsCrate, useKeyOnFallsDoor,
-				plantSeed, returnToIslwyn)), spade, rope, blessedSeed));
+			Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchFallsCrate, useKeyOnFallsDoor,
+				plantSeed, returnToIslwyn), spade, rope, blessedSeed));
 		return allSteps;
 	}
 }

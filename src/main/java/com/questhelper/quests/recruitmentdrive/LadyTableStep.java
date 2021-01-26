@@ -99,9 +99,9 @@ public class LadyTableStep extends DetailedOwnerStep
 		}
 	}
 
-	public ArrayList<QuestStep> getPanelSteps()
+	public List<QuestStep> getPanelSteps()
 	{
-		ArrayList<QuestStep> steps = new ArrayList<>();
+		List<QuestStep> steps = new ArrayList<>();
 
 		steps.add(waitForStatueStep);
 		if (missingStatue != null)

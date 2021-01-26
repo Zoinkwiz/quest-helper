@@ -285,30 +285,30 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(knife, pickaxe, needle, thread, leather, hammer, coal4));
+		return Arrays.asList(knife, pickaxe, needle, thread, leather, hammer, coal4);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(combatGear));
+		return Collections.singletonList(combatGear);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Forging a Shield",
-			new ArrayList<>(Arrays.asList(searchBookcase, readBook, useKnifeOnBook, openOddWall, goDownStairs,
+			Arrays.asList(searchBookcase, readBook, useKnifeOnBook, openOddWall, goDownStairs,
 				turnEastControl, turnWestControl, pullLever, fixBellows, pullBellowsLever, getStoneBowl,
-				useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre, forgeBar, smithShield))));
+				useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre, forgeBar, smithShield)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.MINING, 20));

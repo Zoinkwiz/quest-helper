@@ -69,7 +69,7 @@ public class BaxtorianPillar
 	public void setSolution(ItemRequirement solution)
 	{
 		this.solution = solution;
-		useStep.setRequirements(new ArrayList<>(Collections.singletonList(solution)));
+		useStep.setRequirements(Collections.singletonList(solution));
 		useStep.addIcon(solution.getId());
 	}
 }

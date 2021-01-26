@@ -39,6 +39,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
@@ -59,7 +60,7 @@ public class MM2Sabotage extends ConditionalStep
 		onPlatformF3, onPlatformSatchelArea, onPlatformGunpowderArea, onPlatformAboveGunpowder, placedSatchel1, placedSatchel2, placedSatchel3, placedSatchel4, placedSatchel5,
 		placedSatchel6, placedAllSatchels;
 
-	ArrayList<WorldPoint> boatToEastLadder, ladderToSatchelLadder, satchelLadderToF0Ladder, f0ToF1ForGunpowderRoute, pathToGunpowder, pathToSatchel3, pathFrom3To4Ladder, pathToSatchel5,
+	List<WorldPoint> boatToEastLadder, ladderToSatchelLadder, satchelLadderToF0Ladder, f0ToF1ForGunpowderRoute, pathToGunpowder, pathToSatchel3, pathFrom3To4Ladder, pathToSatchel5,
 		pathBackFromSatchel5, ladderToSatchel6;
 
 	public MM2Sabotage(QuestHelper questHelper, QuestStep step)
@@ -252,7 +253,7 @@ public class MM2Sabotage extends ConditionalStep
 
 	private void setupPaths()
 	{
-		boatToEastLadder = new ArrayList<>(Arrays.asList(
+		boatToEastLadder = Arrays.asList(
 			new WorldPoint(2067, 5403, 1),
 			new WorldPoint(2067, 5402, 1),
 			new WorldPoint(2068, 5402, 1),
@@ -369,9 +370,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2096, 5409, 1),
 			new WorldPoint(2096, 5408, 1),
 			new WorldPoint(2098, 5408, 1)
-		));
+		);
 
-		ladderToSatchelLadder = new ArrayList<>(new ArrayList<>(Arrays.asList(
+		ladderToSatchelLadder = Arrays.asList(
 			new WorldPoint(2097, 5406, 2),
 			new WorldPoint(2097, 5404, 2),
 			new WorldPoint(0, 0, 0),
@@ -402,9 +403,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2089, 5385, 2),
 			new WorldPoint(2087, 5385, 2),
 			new WorldPoint(2087, 5387, 2)
-		)));
+		);
 
-		satchelLadderToF0Ladder = new ArrayList<>(Arrays.asList(
+		satchelLadderToF0Ladder = Arrays.asList(
 			new WorldPoint(2087, 5385, 2),
 			new WorldPoint(2089, 5385, 2),
 			new WorldPoint(2089, 5386, 2),
@@ -432,10 +433,10 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2098, 5404, 2),
 			new WorldPoint(2097, 5404, 2),
 			new WorldPoint(2097, 5408, 2)
-		));
+		);
 
 
-		f0ToF1ForGunpowderRoute = new ArrayList<>(Arrays.asList(
+		f0ToF1ForGunpowderRoute = Arrays.asList(
 			new WorldPoint(2067, 5403, 1),
 			new WorldPoint(2067, 5402, 1),
 			new WorldPoint(2068, 5402, 1),
@@ -545,9 +546,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2096, 5409, 1),
 			new WorldPoint(2096, 5408, 1),
 			new WorldPoint(2098, 5408, 1)
-		));
+		);
 
-		pathToGunpowder = new ArrayList<>(Arrays.asList(
+		pathToGunpowder = Arrays.asList(
 			new WorldPoint(2097, 5423, 1),
 			new WorldPoint(2098, 5423, 1),
 			new WorldPoint(2098, 5424, 1),
@@ -563,9 +564,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2091, 5429, 1),
 			new WorldPoint(2091, 5430, 1),
 			new WorldPoint(2090, 5430, 1)
-		));
+		);
 
-		pathToSatchel3 = new ArrayList<>(Arrays.asList(
+		pathToSatchel3 = Arrays.asList(
 			new WorldPoint(2096, 5409, 2),
 			new WorldPoint(2093, 5409, 2),
 			new WorldPoint(2093, 5408, 2),
@@ -618,9 +619,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2075, 5430, 2),
 			new WorldPoint(2078, 5430, 2),
 			new WorldPoint(2078, 5431, 2)
-		));
+		);
 
-		pathFrom3To4Ladder = new ArrayList<>(Arrays.asList(
+		pathFrom3To4Ladder = Arrays.asList(
 			new WorldPoint(2096, 5408, 2),
 			new WorldPoint(2096, 5409, 2),
 			new WorldPoint(2093, 5409, 2),
@@ -674,9 +675,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2075, 5430, 2),
 			new WorldPoint(2078, 5430, 2),
 			new WorldPoint(2078, 5431, 2)
-		));
+		);
 
-		pathToSatchel5 = new ArrayList<>(Arrays.asList(
+		pathToSatchel5 = Arrays.asList(
 			new WorldPoint(2096, 5409, 3),
 			new WorldPoint(2092, 5409, 3),
 			new WorldPoint(2092, 5408, 3),
@@ -709,9 +710,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2067, 5416, 3),
 			new WorldPoint(2067, 5421, 3),
 			new WorldPoint(2068, 5421, 3)
-		));
+		);
 
-		pathBackFromSatchel5 = new ArrayList<>(Arrays.asList(
+		pathBackFromSatchel5 = Arrays.asList(
 			new WorldPoint(2096, 5409, 3),
 			new WorldPoint(2092, 5409, 3),
 			new WorldPoint(2092, 5408, 3),
@@ -744,9 +745,9 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2067, 5416, 3),
 			new WorldPoint(2067, 5421, 3),
 			new WorldPoint(2068, 5421, 3)
-		));
+		);
 
-		ladderToSatchel6 = new ArrayList<>(Arrays.asList(
+		ladderToSatchel6 = Arrays.asList(
 			new WorldPoint(2076, 5396, 1),
 			new WorldPoint(2078, 5396, 1),
 			new WorldPoint(2078, 5398, 1),
@@ -835,10 +836,10 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2096, 5409, 1),
 			new WorldPoint(2096, 5408, 1),
 			new WorldPoint(2098, 5408, 1)
-		));
+		);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(climbF0ToF1ForSatchels, climbF1ToF0ForSatchels, pickUp6Satchels, goUpFromSatchelsToF1, goFromF1WithSatchelToF0, goFromF0WithSatchelToF1,
 			goDownToGunpowder, fillSatchels, goUpFromGunpowder, placeSatchel1, goDownFromSatchel1, placeSatchel2, goUpToSatchel3, placeSatchel3, goUpToSatchel4,

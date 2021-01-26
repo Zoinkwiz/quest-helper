@@ -33,7 +33,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -47,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -161,20 +161,20 @@ public class EnterTheAbyss extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(edgevilleTeleport, varrockTeleport, passageTeleport, ardougneTeleport));
+		return Arrays.asList(edgevilleTeleport, varrockTeleport, passageTeleport, ardougneTeleport);
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("The start of this miniquest is in the Wilderness. Other players can " +
-			"attack you there, so make sure to not bring anything there!"));
+		return Collections.singletonList("The start of this miniquest is in the Wilderness. Other players can " +
+			"attack you there, so make sure to not bring anything there!");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
@@ -182,12 +182,12 @@ public class EnterTheAbyss extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping the Zamorakians",
-			new ArrayList<>(Arrays.asList(talkToMageInWildy, talkToMageInVarrock, talkToAubury, talkToSedridor,
-				talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish))));
+			Arrays.asList(talkToMageInWildy, talkToMageInVarrock, talkToAubury, talkToSedridor,
+				talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish)));
 
 		return allSteps;
 	}

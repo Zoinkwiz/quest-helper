@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -225,37 +226,37 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(knife, food5, combatGear));
+		return Arrays.asList(knife, food5, combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Many monsters in the Forthos Dungeon"));
+		return Collections.singletonList("Many monsters in the Forthos Dungeon");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping Aimeri",
-			new ArrayList<>(Arrays.asList(enterDungeon, useFoodOnAimeri, talkToAimeriAgain)),
+			Arrays.asList(enterDungeon, useFoodOnAimeri, talkToAimeriAgain),
 			knife, food5, combatGear));
 
 		PanelDetails getBookPanel = new PanelDetails("Getting the books",
-			new ArrayList<>(Collections.singletonList(searchBookcasesForTemple)));
+			Collections.singletonList(searchBookcasesForTemple));
 		getBookPanel.setLockingStep(goTalkToAimeri);
 		allSteps.add(getBookPanel);
 
 		PanelDetails getPagesPanel = new PanelDetails("Repairing the books",
-			new ArrayList<>(Collections.singletonList(getPages)), combatGear);
+			Collections.singletonList(getPages), combatGear);
 		getPagesPanel.setLockingStep(repairTomes);
 		allSteps.add(getPagesPanel);
 
 		allSteps.add(new PanelDetails("Document the Tomes",
-			new ArrayList<>(Collections.singletonList(useMoonOnLogosia)), moonTome, sunTome,
+			Collections.singletonList(useMoonOnLogosia), moonTome, sunTome,
 				templeTome));
 
 		return allSteps;

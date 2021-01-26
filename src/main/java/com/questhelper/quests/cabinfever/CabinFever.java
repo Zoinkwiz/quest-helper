@@ -26,7 +26,6 @@ package com.questhelper.quests.cabinfever;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -44,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
@@ -645,36 +645,36 @@ public class CabinFever extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(food));
+		return Collections.singletonList(food);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Able to survive multiple pirates (level 57) attacking you"));
+		return Collections.singletonList("Able to survive multiple pirates (level 57) attacking you");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToBill, talkToBillOnBoat))));
-		allSteps.add(new PanelDetails("Sabotage", new ArrayList<>(Arrays.asList(take4Ropes, take1Fuse, takeTinderbox, leaveHullForSabo, climbUpNetForSabo,
-			useRopeOnSailForSabo, useFuseOnEnemyBarrel, lightEnemyFuse, climbEnemyNetAfterSabo, useRopeOnEnemySailAfterSabo, talkToBillAfterSabo))));
-		allSteps.add(new PanelDetails("Repair", new ArrayList<>(Arrays.asList(goDownToFixLeak, takeHoleItems1, repairHole1, pasteHole1, goUpAfterRepair, talkToBillAfterRepair))));
-		allSteps.add(new PanelDetails("Plunder the pirates", new ArrayList<>(Arrays.asList(goUpToSailToLoot, useRopeOnSailToLoot, enterEnemyHullForLoot, lootEnemyShip,
-			enterHullWithLoot, useLootOnChest, goUpAfterLoot, talkToBillAfterLoot))));
-		allSteps.add(new PanelDetails("Repair the cannon", new ArrayList<>(Arrays.asList(goDownForBarrel, takeBarrel, goUpWithBarrel, useBarrel, talkToBillAfterBarrel))));
-		allSteps.add(new PanelDetails("Fire canisters", new ArrayList<>(Arrays.asList(goDownForRamrod, getRamrod, goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon))));
-		allSteps.add(new PanelDetails("Fire cannon balls", new ArrayList<>(Arrays.asList(goDownForBalls, getBalls, goUpToCannonWithBalls, getPowderForBalls, usePowderForBalls, useRamrodForBalls, useBall, useFuseForBalls, fireCannonForBalls, repeatBallSteps))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToBill, talkToBillOnBoat)));
+		allSteps.add(new PanelDetails("Sabotage", Arrays.asList(take4Ropes, take1Fuse, takeTinderbox, leaveHullForSabo, climbUpNetForSabo,
+			useRopeOnSailForSabo, useFuseOnEnemyBarrel, lightEnemyFuse, climbEnemyNetAfterSabo, useRopeOnEnemySailAfterSabo, talkToBillAfterSabo)));
+		allSteps.add(new PanelDetails("Repair", Arrays.asList(goDownToFixLeak, takeHoleItems1, repairHole1, pasteHole1, goUpAfterRepair, talkToBillAfterRepair)));
+		allSteps.add(new PanelDetails("Plunder the pirates", Arrays.asList(goUpToSailToLoot, useRopeOnSailToLoot, enterEnemyHullForLoot, lootEnemyShip,
+			enterHullWithLoot, useLootOnChest, goUpAfterLoot, talkToBillAfterLoot)));
+		allSteps.add(new PanelDetails("Repair the cannon", Arrays.asList(goDownForBarrel, takeBarrel, goUpWithBarrel, useBarrel, talkToBillAfterBarrel)));
+		allSteps.add(new PanelDetails("Fire canisters", Arrays.asList(goDownForRamrod, getRamrod, goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon)));
+		allSteps.add(new PanelDetails("Fire cannon balls", Arrays.asList(goDownForBalls, getBalls, goUpToCannonWithBalls, getPowderForBalls, usePowderForBalls, useRamrodForBalls, useBall, useFuseForBalls, fireCannonForBalls, repeatBallSteps)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11));
@@ -682,7 +682,7 @@ public class CabinFever extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.PIRATES_TREASURE, QuestState.FINISHED));

@@ -74,14 +74,14 @@ public class QuestHelperBankTagService
 	{
 		ArrayList<BankTabItems> newList = new ArrayList<>();
 
-		ArrayList<PanelDetails> questSections = plugin.getSelectedQuest().getPanels();
+		List<PanelDetails> questSections = plugin.getSelectedQuest().getPanels();
 
 		if (questSections == null || questSections.isEmpty())
 		{
 			return newList;
 		}
 
-		ArrayList<ItemRequirement> recommendedItems = plugin.getSelectedQuest().getItemRecommended();
+		List<ItemRequirement> recommendedItems = plugin.getSelectedQuest().getItemRecommended();
 
 		if (recommendedItems != null && !recommendedItems.isEmpty())
 		{
@@ -142,7 +142,7 @@ public class QuestHelperBankTagService
 
 	private BankTabItem makeBankTabItem(ItemRequirement item)
 	{
-		ArrayList<Integer> itemIds = item.getDisplayItemIds();
+		List<Integer> itemIds = item.getDisplayItemIds();
 
 		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
 

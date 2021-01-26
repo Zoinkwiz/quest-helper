@@ -35,6 +35,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -207,22 +208,22 @@ public class DaddysHome extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(plank10, nails20, bolt5, saw, hammer));
+		return Arrays.asList(plank10, nails20, bolt5, saw, hammer);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(lumberyardTeleport, varrockTeleport3));
+		return Arrays.asList(lumberyardTeleport, varrockTeleport3);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Helping Yarlo & Marlo", new ArrayList<>(Arrays.asList(talkToMarlo, talkToYarlo, removeCampbed, talkToYarloAgain, buildCarpet, searchCrate, talkToOperator, buildCampbed, talkToYarloOnceMore, talkToMarloToFinish)), plank10, nails20, bolt5, hammer, saw));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Helping Yarlo & Marlo", Arrays.asList(talkToMarlo, talkToYarlo, removeCampbed, talkToYarloAgain, buildCarpet, searchCrate, talkToOperator, buildCampbed, talkToYarloOnceMore, talkToMarloToFinish), plank10, nails20, bolt5, hammer, saw));
 		return allSteps;
 	}
 }

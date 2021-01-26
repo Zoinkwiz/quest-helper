@@ -37,12 +37,12 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.NpcCondition;
 import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -59,7 +59,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
-import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ONE_SMALL_FAVOUR
@@ -739,7 +738,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(steelBars4);
@@ -758,7 +757,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleports);
@@ -770,13 +769,13 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Slagilith (level 92)"));
+		return Collections.singletonList("Slagilith (level 92)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
@@ -790,15 +789,15 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToYanni))));
-		allSteps.add(new PanelDetails("A few small favours", new ArrayList<>(Arrays.asList(talkToJungleForester, talkToBrian, talkToAggie, talkToJohanhus, talkToFred, talkToSeth, talkToHorvik, talkToApoth,
-			talkToTassie, talkToHammerspike, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave, searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, fixAllLamps)), chisel, steelBars3, emptyCup, hotWater, guam2, marrentill, harralander));
-		allSteps.add(new PanelDetails("Completing the favours", new ArrayList<>(Arrays.asList(talkToGnormadiumAgain, returnToRantz, returnToTindel, returnToCromperty, enterGoblinCaveAgain, standNextToSculpture, killSlagilith,
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToYanni)));
+		allSteps.add(new PanelDetails("A few small favours", Arrays.asList(talkToJungleForester, talkToBrian, talkToAggie, talkToJohanhus, talkToFred, talkToSeth, talkToHorvik, talkToApoth,
+			talkToTassie, talkToHammerspike, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave, searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, fixAllLamps), chisel, steelBars3, emptyCup, hotWater, guam2, marrentill, harralander));
+		allSteps.add(new PanelDetails("Completing the favours", Arrays.asList(talkToGnormadiumAgain, returnToRantz, returnToTindel, returnToCromperty, enterGoblinCaveAgain, standNextToSculpture, killSlagilith,
 			readScrollAgain, talkToPetra, returnToPhantuwti, searchVane, useHammerOnVane, searchVaneAgain, useVane123OnAnvil, goBackUpLadder, finishWithPhantuwti, returnToArhein, returnToBleemadge, returnToSanfew, returnToHammerspike,
-			killGangMembers, talkToHammerspikeFinal, returnToTassie, spinPotLid, firePotLid, pickUpPot, usePotLidOnPot, returnToApothecary, returnToHorvik, talkToHorvikFinal, returnToSeth, returnToJohnahus, returnToAggie, returnToBrian, returnToForester, returnToYanni)), bronzeBar, ironBar, steelBar, hammer));
+			killGangMembers, talkToHammerspikeFinal, returnToTassie, spinPotLid, firePotLid, pickUpPot, usePotLidOnPot, returnToApothecary, returnToHorvik, talkToHorvikFinal, returnToSeth, returnToJohnahus, returnToAggie, returnToBrian, returnToForester, returnToYanni), bronzeBar, ironBar, steelBar, hammer));
 
 		return allSteps;
 	}

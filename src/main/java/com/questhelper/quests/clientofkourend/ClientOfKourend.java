@@ -34,6 +34,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -156,7 +157,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(feather);
@@ -164,13 +165,13 @@ public class ClientOfKourend extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToVeos, useFeatherOnScroll)), feather));
-		allSteps.add(new PanelDetails("Learn about Kourend", new ArrayList<>(Arrays.asList(talkToLeenz, talkToRegath, talkToMunty, talkToJennifer, talkToHorace, returnToVeos))));
-		allSteps.add(new PanelDetails("The Dark Altar", new ArrayList<>(Arrays.asList(goToAltar, finishQuest))));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToVeos, useFeatherOnScroll), feather));
+		allSteps.add(new PanelDetails("Learn about Kourend", Arrays.asList(talkToLeenz, talkToRegath, talkToMunty, talkToJennifer, talkToHorace, returnToVeos)));
+		allSteps.add(new PanelDetails("The Dark Altar", Arrays.asList(goToAltar, finishQuest)));
 		return allSteps;
 	}
 }

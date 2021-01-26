@@ -39,7 +39,7 @@ import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -421,7 +421,7 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 		r22 = new VarbitCondition(8777, YELLOW);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, goToF0SW, p1Pillar5,
 			p1Pillar6, goToF2SW, p1Pillar7, goToF2SE, climbBooks, p1Pillar8, p1Pillar9, p1Pillar10, p1Pillar11, p1Pillar12,

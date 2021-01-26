@@ -56,6 +56,7 @@ import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -1036,7 +1037,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		enterCaveToWell = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_4006, new WorldPoint(2314, 3217, 0),
 			"Enter the cave to the Underground Pass from the Elven Lands entrance.", pickaxe, hammer, runiteBar);
-		enterCaveToWell.setLinePoints(new ArrayList<>(Arrays.asList(
+		enterCaveToWell.setLinePoints(Arrays.asList(
 			new WorldPoint(2322, 3171, 0),
 			new WorldPoint(2310, 3171, 0),
 			new WorldPoint(2306, 3195, 0),
@@ -1049,7 +1050,7 @@ public class SongOfTheElves extends BasicQuestHelper
 			new WorldPoint(2289, 3207, 0),
 			new WorldPoint(2297, 3207, 0),
 			new WorldPoint(2312, 3216, 0)
-		)));
+		));
 
 		usePickaxeOnWall = new ObjectStep(this, NullObjectID.NULL_37271, new WorldPoint(2341, 9616, 0),
 			"Use a pickaxe on the wall south of the Well of Voyage.", pickaxeHighlighted);
@@ -1079,7 +1080,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToAmlodd.addDialogStep("Yes.");
 		touchSeal = new ObjectStep(this, ObjectID.SEAL_OF_THE_FORGOTTEN, new WorldPoint(2623, 6135, 1), "");
 
-		ArrayList<WorldPoint> pathToIthell = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathToIthell = Arrays.asList(
 			new WorldPoint(2651, 6102, 1),
 			new WorldPoint(2651, 6098, 1),
 			new WorldPoint(2655, 6098, 1),
@@ -1095,13 +1096,14 @@ public class SongOfTheElves extends BasicQuestHelper
 			new WorldPoint(2671, 6098, 1),
 			new WorldPoint(2671, 6102, 1),
 			new WorldPoint(2675, 6102, 1)
-		));
+		);
 
 		int LIBRARY_F1_SHIFT = 190;
 		ArrayList<WorldPoint> mapPathToIthell = new ArrayList<>();
 		for (WorldPoint worldPoint : pathToIthell)
 		{
-			mapPathToIthell.add(new WorldPoint(worldPoint.getX() + LIBRARY_F1_SHIFT, worldPoint.getY(), worldPoint.getPlane()));
+			mapPathToIthell.add(new WorldPoint(worldPoint.getX() + LIBRARY_F1_SHIFT, worldPoint.getY(),
+				worldPoint.getPlane()));
 		}
 
 		goF0ToF1 = new ObjectStep(this, ObjectID.STAIRS_35387, new WorldPoint(2626, 6153, 0), "");
@@ -1168,7 +1170,7 @@ public class SongOfTheElves extends BasicQuestHelper
 			"Hop across the stepping stones in the swamp south of the magic trees near Lletya. Talk to the Elf Hermit" +
 				" on the island you reach.");
 		((NpcStep)crossSteppingStones).addAlternateNpcs(NpcID.LADY_CARYS_HEFIN);
-		((DetailedQuestStep) crossSteppingStones).setLinePoints(new ArrayList<>(Arrays.asList(
+		((DetailedQuestStep) crossSteppingStones).setLinePoints(Arrays.asList(
 			new WorldPoint(2299, 3114, 0),
 			new WorldPoint(2299, 3110, 0),
 			new WorldPoint(2302, 3110, 0),
@@ -1184,16 +1186,16 @@ public class SongOfTheElves extends BasicQuestHelper
 			new WorldPoint(2284, 3095, 0),
 			new WorldPoint(2284, 3092, 0),
 			new WorldPoint(2280, 3092, 0)
-		)));
+		));
 
 		chopTrees = new NpcStep(this, NpcID.TREE_8902, new WorldPoint(2176, 3211, 0),
 			"Make your way to the north west of Isafdar, and chop a tree there. Talk to Crwys when he appears.", axe);
-		((DetailedQuestStep) chopTrees).setLinePoints(new ArrayList<>(Arrays.asList(
+		((DetailedQuestStep) chopTrees).setLinePoints(Arrays.asList(
 			new WorldPoint(2191, 3222, 0),
 			new WorldPoint(2181, 3211, 0),
 			new WorldPoint(2181, 3208, 0),
 			new WorldPoint(2176, 3210, 0)
-		)));
+		));
 		talkToCrwys = new NpcStep(this, NpcID.LORD_PIQUAN_CRWYS, new WorldPoint(2177, 3210, 0), "Talk to Lord Crwys.");
 
 		talkToBaxAfterHefinAndCrwys = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Return to Baxtorian in Lletya.");
@@ -1380,30 +1382,30 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(steelFullHelm, steelPlatebody, steelPlatelegs, redDye,
+		return Arrays.asList(steelFullHelm, steelPlatebody, steelPlatelegs, redDye,
 			purpleDye, silk, mournersOutfit, runiteBar, limestoneBricks8, tinderbox, rope,
 			natureRune, iritLeafOrFlowers, adamantChainbody, wineOfZamorakOrZamorakBrew,
 			cabbage, blackKnifeOrBlackDagger, cadantineSeed, seedDibber,
-			vialOfWater, pestleAndMortar, hammer, saw, pickaxe, axe, spade));
+			vialOfWater, pestleAndMortar, hammer, saw, pickaxe, axe, spade);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(teleCrystal, iorwerthCampTeleport, gamesNecklace, combatGear, magicCombatGear, saradominBrews, superRestorePotions));
+		return Arrays.asList(teleCrystal, iorwerthCampTeleport, gamesNecklace, combatGear, magicCombatGear, saradominBrews, superRestorePotions);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Many Mourners, Paladins and Knights of Ardougne", "Arianwyn" +
-			" (level 182)", "Essyllt (level 236)", "Fragment of Seren (level 494)"));
+		return Arrays.asList("Many Mourners, Paladins and Knights of Ardougne", "Arianwyn" +
+			" (level 182)", "Essyllt (level 236)", "Fragment of Seren (level 494)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.MOURNINGS_END_PART_II, QuestState.FINISHED));
@@ -1420,7 +1422,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new ItemRequirement("Recommended: 75 Magic", -1, -1));
@@ -1429,91 +1431,91 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels() {
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, talkToAlrena,
+	public List<PanelDetails> getPanels() {
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, talkToAlrena,
 				useRedDyeOnSteelFullHelm, useTabardOnPlatebody, talkToEdmondWithOutfit, goDownstairsCastle, talkToElenaInCell, goUpFromCastleBasement,
-				searchElenaCabinet, talkToElenaInCellAgain, talkToEdmondAfterFreeingElena)), steelFullHelm, steelPlatebody, steelPlatelegs, redDye, purpleDye,
+				searchElenaCabinet, talkToElenaInCellAgain, talkToEdmondAfterFreeingElena), steelFullHelm, steelPlatebody, steelPlatelegs, redDye, purpleDye,
 				silk, mournersOutfit, tinderbox));
 
-		allSteps.add(new PanelDetails("Inciting the citizens", new ArrayList<>(Arrays.asList(searchBed, talkToElenaInHideout, leaveHideout, useTinderboxOnGrain,
+		allSteps.add(new PanelDetails("Inciting the citizens", Arrays.asList(searchBed, talkToElenaInHideout, leaveHideout, useTinderboxOnGrain,
 				talkToPriest, useTinderboxOnChurchGrain, talkToSarah, useTinderboxOnSWGrain, talkToChadwell, talkToSilverMerchant, talkToBaker1, talkToGemMerchant,
 				talkToFurTrader, talkToSpiceSeller, talkToSilkMerchant, talkToTownCrier, talkToZenesha, talkToEstateAgent, talkToProbita, talkToAemad, talkToPriest2,
-				talkToOrbon)), tinderbox, mournersOutfit, ardyFullHelm, ardyPlatebody, ardyPlatelegs));
+				talkToOrbon), tinderbox, mournersOutfit, ardyFullHelm, ardyPlatebody, ardyPlatelegs));
 
-		allSteps.add(new PanelDetails("Overthrowing the King", new ArrayList<>(Arrays.asList(talkToElenaForFight, defeat10Mourners, mournerBattleGoDownTrapdoor,
-				defeat11Mourners, talkToElenaForEastArdyFight, defeat15Knights, talkToLathasAfterFight, watchArdyFightCutscene)), combatGear));
+		allSteps.add(new PanelDetails("Overthrowing the King", Arrays.asList(talkToElenaForFight, defeat10Mourners, mournerBattleGoDownTrapdoor,
+				defeat11Mourners, talkToElenaForEastArdyFight, defeat15Knights, talkToLathasAfterFight, watchArdyFightCutscene), combatGear));
 
-		allSteps.add(new PanelDetails("Helping Arianwyn", new ArrayList<>(Arrays.asList(talkToArianwyn, talkToYsgawyn, talkToElenaInLletya, talkToArianwynAfterElena,
-				talkToArianwynAfterMeeting))));
+		allSteps.add(new PanelDetails("Helping Arianwyn", Arrays.asList(talkToArianwyn, talkToYsgawyn, talkToElenaInLletya, talkToArianwynAfterElena,
+				talkToArianwynAfterMeeting)));
 
-		allSteps.add(new PanelDetails("Freeing Baxtorian", new ArrayList<>(Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchCrateForKey,
-				enterBaxThroneRoom, talkToArianwynInBax, pillarPuzzle, talkToBax)),
+		allSteps.add(new PanelDetails("Freeing Baxtorian", Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchCrateForKey,
+				enterBaxThroneRoom, talkToArianwynInBax, pillarPuzzle, talkToBax),
 				rope, iritLeafOrFlowers, cabbage, wineOfZamorakOrZamorakBrew, natureRune, adamantChainbody, blackKnifeOrBlackDagger));
 
-		allSteps.add(new PanelDetails("Finding Amlodd", new ArrayList<>(Arrays.asList(talkToArianwynAfterBax, talkToElenaAfterBax, plantCadantine, talkToBaxInLletya,
-				talkToElunedWithSeed, rubCrystal, talkToFigure)), seedDibber, cadantineSeed));
+		allSteps.add(new PanelDetails("Finding Amlodd", Arrays.asList(talkToArianwynAfterBax, talkToElenaAfterBax, plantCadantine, talkToBaxInLletya,
+				talkToElunedWithSeed, rubCrystal, talkToFigure), seedDibber, cadantineSeed));
 
-		allSteps.add(new PanelDetails("Finding Trahaearn", new ArrayList<>(Arrays.asList(talkToBaxAfterValley, enterCaveToWell, usePickaxeOnWall, enterCrevice,
-				useHammerOnExoskeleton, talkToTrahaearn)), pickaxe, hammer, runiteBar));
+		allSteps.add(new PanelDetails("Finding Trahaearn", Arrays.asList(talkToBaxAfterValley, enterCaveToWell, usePickaxeOnWall, enterCrevice,
+				useHammerOnExoskeleton, talkToTrahaearn), pickaxe, hammer, runiteBar));
 
-		allSteps.add(new PanelDetails("Making the potion", new ArrayList<>(Arrays.asList(talkToElenaAfterTra, talkToArianwynAfterTra, usePestleOnCrystal,
-				useCadantineOnVial, useDustOnVial, talkToArianwynAfterPotion)), pestleAndMortar, vialOfWater));
+		allSteps.add(new PanelDetails("Making the potion", Arrays.asList(talkToElenaAfterTra, talkToArianwynAfterTra, usePestleOnCrystal,
+				useCadantineOnVial, useDustOnVial, talkToArianwynAfterPotion), pestleAndMortar, vialOfWater));
 
-		allSteps.add(new PanelDetails("Entering the Crystal", new ArrayList<>(Arrays.asList(talkToAmlodd, goTouchFirstSeal))));
+		allSteps.add(new PanelDetails("Entering the Crystal", Arrays.asList(talkToAmlodd, goTouchFirstSeal)));
 
-		allSteps.add(new PanelDetails("Ithell Seal", new ArrayList<>(Arrays.asList(openIthellSeal, goTouchIthellSeal))));
+		allSteps.add(new PanelDetails("Ithell Seal", Arrays.asList(openIthellSeal, goTouchIthellSeal)));
 
-		ArrayList<QuestStep> cadarnSteps = new ArrayList<>(cadarnPuzzle.getDisplaySteps());
+		List<QuestStep> cadarnSteps = cadarnPuzzle.getDisplaySteps();
 		cadarnSteps.add(goTouchCadarnSeal);
 		allSteps.add(new PanelDetails("Cadarn Seal", cadarnSteps));
 
-		ArrayList<QuestStep> crwysSteps = new ArrayList<>(crwysLightPuzzle.getDisplaySteps());
+		List<QuestStep> crwysSteps = crwysLightPuzzle.getDisplaySteps();
 		crwysSteps.add(goTouchCrwysSeal);
 		allSteps.add(new PanelDetails("Crwys Seal", crwysSteps));
 
-		ArrayList<QuestStep> amloddSteps = new ArrayList<>(amloddLightPuzzle.getDisplaySteps());
+		List<QuestStep> amloddSteps = amloddLightPuzzle.getDisplaySteps();
 		amloddSteps.add(goTouchAmloddSeal);
 		allSteps.add(new PanelDetails("Amlodd Seal", amloddSteps));
 
-		ArrayList<QuestStep> meilyrSteps = new ArrayList<>(meilyrLightPuzzle.getDisplaySteps());
+		List<QuestStep> meilyrSteps = meilyrLightPuzzle.getDisplaySteps();
 		meilyrSteps.add(goTouchMeilyrSeal);
 		allSteps.add(new PanelDetails("Meilyr Seal", meilyrSteps));
 
-		ArrayList<QuestStep> hefinSteps = new ArrayList<>(hefinLightPuzzle.getDisplaySteps());
+		List<QuestStep> hefinSteps = hefinLightPuzzle.getDisplaySteps();
 		hefinSteps.add(goTouchHefinSeal);
 		allSteps.add(new PanelDetails("Hefin Seal", hefinSteps));
 
-		ArrayList<QuestStep> trahaearnSteps = new ArrayList<>(trahaearnLightPuzzle.getDisplaySteps());
+		List<QuestStep> trahaearnSteps = trahaearnLightPuzzle.getDisplaySteps();
 		trahaearnSteps.add(goTouchTrahaearnSeal);
 		allSteps.add(new PanelDetails("Trahaearn Seal", trahaearnSteps));
 
-		ArrayList<QuestStep> iorwerthSteps = new ArrayList<>(iorwerthLightPuzzle.getDisplaySteps());
+		List<QuestStep> iorwerthSteps = iorwerthLightPuzzle.getDisplaySteps();
 		iorwerthSteps.add(goTouchIorwerthSeal);
 		allSteps.add(new PanelDetails("Iorwerth Seal", iorwerthSteps));
 
-		allSteps.add(new PanelDetails("Finding Crwys and Hefin", new ArrayList<>(Arrays.asList(leaveLibrary, talkToArianwynAfterLightPuzzle,
+		allSteps.add(new PanelDetails("Finding Crwys and Hefin", Arrays.asList(leaveLibrary, talkToArianwynAfterLightPuzzle,
 				askBaxtorianHowToFindCrwys,
-				crossSteppingStones, chopTrees, talkToCrwys)), axe));
+				crossSteppingStones, chopTrees, talkToCrwys), axe));
 
-		allSteps.add(new PanelDetails("Retrieving the orb", new ArrayList<>(Arrays.asList(talkToBaxAfterHefinAndCrwys, enterIorwerthCave, kill2IorwerthCaves,
+		allSteps.add(new PanelDetails("Retrieving the orb", Arrays.asList(talkToBaxAfterHefinAndCrwys, enterIorwerthCave, kill2IorwerthCaves,
 				searchChestForOrb,
-				talkToBaxWithOrb)), combatGear));
+				talkToBaxWithOrb), combatGear));
 
-		allSteps.add(new PanelDetails("Locating Ysgawyn", new ArrayList<>(Arrays.asList(talkToElenaAfterOrb, inspectMushrooms, track1, track2, track3, track4,
-				track5, track6, talkToYsgawynInClearing)), combatGear));
+		allSteps.add(new PanelDetails("Locating Ysgawyn", Arrays.asList(talkToElenaAfterOrb, inspectMushrooms, track1, track2, track3, track4,
+				track5, track6, talkToYsgawynInClearing), combatGear));
 
-		allSteps.add(new PanelDetails("Defending Lletya", new ArrayList<>(Arrays.asList(enterLletyaForFighting, searchTableForEoin, goUpLletyaLadder,
-				searchCookingPots, fightArianwyn)), combatGear));
+		allSteps.add(new PanelDetails("Defending Lletya", Arrays.asList(enterLletyaForFighting, searchTableForEoin, goUpLletyaLadder,
+				searchCookingPots, fightArianwyn), combatGear));
 
-		allSteps.add(new PanelDetails("Finding Ithell and Meilyr", new ArrayList<>(Arrays.asList(talkToBaxAfterLletyaFightForIthellClue, checkSymbol1,
+		allSteps.add(new PanelDetails("Finding Ithell and Meilyr", Arrays.asList(talkToBaxAfterLletyaFightForIthellClue, checkSymbol1,
 				checkSymbol2, checkSymbol3, goToSecondFloorSymbols, checkSymbol4, checkSymbol5, buildStatue, talkToIthell, digNearSwamp, digNearSTASH,
-				digOutsidePrif, spinOutsidePass, talkToMeilyr)), limestoneBricks8, saw, hammer, spade, combatGear));
+				digOutsidePrif, spinOutsidePass, talkToMeilyr), limestoneBricks8, saw, hammer, spade, combatGear));
 
-		allSteps.add(new PanelDetails("Defending the Temple", new ArrayList<>(Arrays.asList(enterWellCaveForFight, talkToBaxAtDwarves, talkToElenaAtDwarves,
-				fillHole1, talkToBaxAfterFillingHoles, defendDwarfCamp, defeatEssyllt)), combatGear));
+		allSteps.add(new PanelDetails("Defending the Temple", Arrays.asList(enterWellCaveForFight, talkToBaxAtDwarves, talkToElenaAtDwarves,
+				fillHole1, talkToBaxAfterFillingHoles, defendDwarfCamp, defeatEssyllt), combatGear));
 
-		allSteps.add(new PanelDetails("Defeat the Fragment", new ArrayList<>(Arrays.asList(defeatFragmentSidebar, talkToBaxToFinish)),
+		allSteps.add(new PanelDetails("Defeat the Fragment", Arrays.asList(defeatFragmentSidebar, talkToBaxToFinish),
 				magicCombatGear, saradominBrews, superRestorePotions));
 
 		return allSteps;

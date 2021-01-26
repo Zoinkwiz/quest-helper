@@ -25,8 +25,8 @@
 package com.questhelper.banktab;
 
 import com.questhelper.requirements.ItemRequirement;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,7 +40,7 @@ public class BankTabItem
 	private String text;
 
 	@Getter
-	private final ArrayList<Integer> itemIDs;
+	private final List<Integer> itemIDs;
 
 	@Getter
 	private final Integer displayID;
@@ -52,7 +52,7 @@ public class BankTabItem
 	{
 		this.quantity = quantity;
 		this.text = text;
-		this.itemIDs = new ArrayList<>(Collections.singleton(itemID));
+		this.itemIDs =  Collections.singletonList(itemID);
 		this.details = details;
 		this.displayID = null;
 	}
@@ -61,7 +61,7 @@ public class BankTabItem
 	{
 		this.quantity = quantity;
 		this.text = text;
-		this.itemIDs = new ArrayList<>(Collections.singleton(itemID));
+		this.itemIDs = Collections.singletonList(itemID);
 		this.details = details;
 		this.displayID = displayID;
 	}

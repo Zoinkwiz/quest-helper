@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -282,7 +283,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Sir Mordred (level 39)");
@@ -290,7 +291,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(bread);
@@ -301,7 +302,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
@@ -311,38 +312,38 @@ public class MerlinsCrystal extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(startQuest, talkToGawain, goUpstairsInCamelot, talkToLancelot))));
-		allSteps.add(new PanelDetails("Infiltrate the fortress", new ArrayList<>(Arrays.asList(hideInArheinCrate, goToFirstFloor, goToSecondFloor, attackMordred, talkToMorgan)), combatGear));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(startQuest, talkToGawain, goUpstairsInCamelot, talkToLancelot)));
+		allSteps.add(new PanelDetails("Infiltrate the fortress", Arrays.asList(hideInArheinCrate, goToFirstFloor, goToSecondFloor, attackMordred, talkToMorgan), combatGear));
 		PanelDetails getBlackCandlePanel = new PanelDetails("Get a Black Candle",
-			new ArrayList<>(Arrays.asList(goToCatherbyAfterFortress, optionalGetRepellent, optionalGetBucket, optionalUseRepellent, talkToCandleMaker)));
+			Arrays.asList(goToCatherbyAfterFortress, optionalGetRepellent, optionalGetBucket, optionalUseRepellent, talkToCandleMaker));
 		getBlackCandlePanel.setLockingStep(getBlackCandle);
 		getBlackCandlePanel.setVars(4);
 
 		allSteps.add(getBlackCandlePanel);
 
 		PanelDetails getExcalaburPanel = new PanelDetails("Get Excalabur",
-			new ArrayList<>(Arrays.asList(talkToLadyOfLake, enterSarimShopAndTalk, talkToBeggar)), bread);
+			Arrays.asList(talkToLadyOfLake, enterSarimShopAndTalk, talkToBeggar), bread);
 		getExcalaburPanel.setLockingStep(getExcalabur);
 		getExcalaburPanel.setVars(4);
 
 		allSteps.add(getExcalaburPanel);
 
 		PanelDetails readMagicWordsPanel = new PanelDetails("Learn magic words",
-			new ArrayList<>(Collections.singletonList(goReadMagicWords)));
+			Collections.singletonList(goReadMagicWords));
 		readMagicWordsPanel.setLockingStep(goReadMagicWords);
 		readMagicWordsPanel.setVars(4);
 
 		allSteps.add(readMagicWordsPanel);
 
 		PanelDetails performMagicPanel = new PanelDetails("Perform the spell",
-			new ArrayList<>(Arrays.asList(returnToCamelot, goStandInStar, lightCandle, dropBatBones, sayWords)), blackCandle, batBones, excalabur, tinderbox);
+			Arrays.asList(returnToCamelot, goStandInStar, lightCandle, dropBatBones, sayWords), blackCandle, batBones, excalabur, tinderbox);
 
 		allSteps.add(performMagicPanel);
 
-		allSteps.add(new PanelDetails("Free Merlin", new ArrayList<>(Arrays.asList(goUpLadder1Camelot, goUpLadder2Camelot, smashCrystal, finishQuest))));
+		allSteps.add(new PanelDetails("Free Merlin", Arrays.asList(goUpLadder1Camelot, goUpLadder2Camelot, smashCrystal, finishQuest)));
 
 		return allSteps;
 	}

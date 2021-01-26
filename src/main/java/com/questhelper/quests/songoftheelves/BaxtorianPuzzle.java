@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
@@ -285,7 +286,7 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		ArrayList<QuestStep> steps = new ArrayList<>();
+		List<QuestStep> steps = new ArrayList<>();
 		for (BaxtorianPillar pillar : pillars)
 		{
 			steps.add(pillar.getInspectStep());

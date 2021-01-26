@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -883,7 +884,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(coins);
@@ -895,7 +896,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("If the guide at any point appears to de-sync during this quest, please try opening the quest journal to fix it.");
@@ -903,7 +904,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(combatGear);
@@ -914,7 +915,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Koschei the deathless");
@@ -923,56 +924,56 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Talk to Brundt", new ArrayList<>(Collections.singletonList(talkToBrundt)), coins, rawShark, tinderbox, knife, axe, combatGear));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Talk to Brundt", Collections.singletonList(talkToBrundt), coins, rawShark, tinderbox, knife, axe, combatGear));
 
 		PanelDetails olafPanel = new PanelDetails("Olaf's task",
-			new ArrayList<>(Arrays.asList(talkToOlaf, talkToLalli, talkToAskeladdenForRock, useOnion, talkToLaliAfterStew, chopSwayingTree,
-				fletchLyre, spinWool, makeLyre, enchantLyre, performMusic)), axe, knife, rawShark);
+			Arrays.asList(talkToOlaf, talkToLalli, talkToAskeladdenForRock, useOnion, talkToLaliAfterStew, chopSwayingTree,
+				fletchLyre, spinWool, makeLyre, enchantLyre, performMusic), axe, knife, rawShark);
 		olafPanel.setLockingStep(olafTask);
 		olafPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 
 		PanelDetails manniPanel = new PanelDetails("Manni's task",
-			new ArrayList<>(Arrays.asList(talkToManni, pickUpBeer, getStrangeObject, getAlcoholFreeBeer, prepareToUseStrangeObject,
-				useStrangeObject, cheatInBeerDrinking)), tinderbox, coins250);
+			Arrays.asList(talkToManni, pickUpBeer, getStrangeObject, getAlcoholFreeBeer, prepareToUseStrangeObject,
+				useStrangeObject, cheatInBeerDrinking), tinderbox, coins250);
 		manniPanel.setLockingStep(manniTask);
 		manniPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 
 		PanelDetails sigliPanel = new PanelDetails("Sigli's task",
-			new ArrayList<>(Arrays.asList(talkToSigli, huntDraugen, returnToSigli)), combatGear);
+			Arrays.asList(talkToSigli, huntDraugen, returnToSigli), combatGear);
 		sigliPanel.setLockingStep(sigliTask);
 		sigliPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 
 		PanelDetails sigmundPanel = new PanelDetails("Sigmund's task",
-			new ArrayList<>(Arrays.asList(talkToSigmund, talkToSailor, talkToOlafForSigmund, talkToYsra, talkToBrundtForSigmund, talkToSigliForSigmund,
+			Arrays.asList(talkToSigmund, talkToSailor, talkToOlafForSigmund, talkToYsra, talkToBrundtForSigmund, talkToSigliForSigmund,
 				talkToSkulgrimenForSigmund, talkToFishermanForSigmund, talkToSwenesenForSigmund, talkToPeerForSigmund, talkToThorvaldForSigmund, talkToManniForSigmund,
 				talkToThoraForSigmund, talkToAskeladdenForSigmund, bringNoteToThora, bringCocktailToManni, bringChampionsTokenToThorvald, bringWarriorsContractToPeer, bringWeatherForecastToSwensen,
 				bringSeaFishingMapToFisherman, bringUnusualFishToSkulgrimen, bringCustomBowStringToSigli, bringTrackingMapToBrundt, bringFiscalStatementToYsra, bringSturdyBootsToOlaf, bringBalladToSailor,
-				bringExoticFlowerToSigmund)), coins5000);
+				bringExoticFlowerToSigmund), coins5000);
 		sigmundPanel.setLockingStep(sigmundTask);
 		sigmundPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 
 		PanelDetails thorvaldPanel = new PanelDetails("Thorvald's task",
-			new ArrayList<>(Arrays.asList(talkToThorvald, goDownLadderToKoschei, killKoschei1)), koscheiGear, optionalKoscheiGear);
+			Arrays.asList(talkToThorvald, goDownLadderToKoschei, killKoschei1), koscheiGear, optionalKoscheiGear);
 		thorvaldPanel.setLockingStep(thorvaldTask);
 		thorvaldPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 
 		PanelDetails swensenPanel = new PanelDetails("Swensen's task",
-			new ArrayList<>(Arrays.asList(talkToSwensen, goDownLadderSwensen, swensen1South, swensen2West, swensen3East, swensen4North, swensen5South, swensen6East, swensen7North, swensenUpLadder)));
+			Arrays.asList(talkToSwensen, goDownLadderSwensen, swensen1South, swensen2West, swensen3East, swensen4North, swensen5South, swensen6East, swensen7North, swensenUpLadder));
 		swensenPanel.setLockingStep(swensenTask);
 		swensenPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 
 		PanelDetails peerPanel = new PanelDetails("Peer's task",
-			new ArrayList<>(Arrays.asList(talkToPeer, enterPeerHouse, enterCode, goUpEntranceLadderPeer, searchBookcase, searchBull, searchUnicorn, cookHerring, useGoopOnDisk, openTrapDoorAndGoDown1,
+			Arrays.asList(talkToPeer, enterPeerHouse, enterCode, goUpEntranceLadderPeer, searchBookcase, searchBull, searchUnicorn, cookHerring, useGoopOnDisk, openTrapDoorAndGoDown1,
 				useDiskAnyOnMural, goUpstairsWithVaseLid, searchCupboard1, searchChest1, useBucketOnTap1, useBucketOnJug1, useJugOnDrain1, useBucketOnJug2, useBucketOnTap2, useBucketOnJug3, useBucketOnScale,
-				fillVase, useLidOnVase, useVaseOnTable, useFrozenKeyOnRange, goDownstairsWithKey, leaveSeersHouse)));
+				fillVase, useLidOnVase, useVaseOnTable, useFrozenKeyOnRange, goDownstairsWithKey, leaveSeersHouse));
 		peerPanel.setLockingStep(peerTask);
 		peerPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 
 		PanelDetails finalPanel = new PanelDetails("Finish off",
-			new ArrayList<>(Collections.singletonList(finishQuest)));
+			Collections.singletonList(finishQuest));
 
 		allSteps.add(olafPanel);
 		allSteps.add(manniPanel);

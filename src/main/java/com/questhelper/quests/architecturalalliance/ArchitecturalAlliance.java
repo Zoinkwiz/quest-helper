@@ -38,6 +38,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.NpcID;
 import net.runelite.api.QuestState;
@@ -94,29 +95,37 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToHosa = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0), "Talk to Hosa outside the Kourend Castle. You'll need 100% favour in all the Kourend houses to complete this miniquest.");
+		talkToHosa = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0),
+			"Talk to Hosa outside the Kourend Castle. You'll need 100% favour in all the Kourend houses to complete this miniquest.");
 		talkToHosa.addDialogStep("Can I help?");
-		talkToHosaAsArchitect = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0), "Talk to Hosa outside the Kourend Castle again.");
+		talkToHosaAsArchitect = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0),
+			"Talk to Hosa outside the Kourend Castle again.");
 		talkToHosa.addSubSteps(talkToHosaAsArchitect);
-		talkToHosaToFinish = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0), "Talk to Hosa outside the Kourend Castle to finish the miniquest.");
+		talkToHosaToFinish = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0),
+			"Talk to Hosa outside the Kourend Castle to finish the miniquest.");
 
-		talkToArcis = new NpcStep(this, NpcID.ARCIS, new WorldPoint(1652, 3754, 0), "Talk to Arcis in the house east of Arceuus's bank.");
-		talkToPiliar = new NpcStep(this, NpcID.PILIAR, new WorldPoint(1794, 3737, 0), "Talk to Piliar in the house north west of the Piscarilius general store.");
-		talkToLovada = new NpcStep(this, NpcID.LOVADA, new WorldPoint(1485, 3834, 0), "Talk to Lovada in their home just south of the Blast Mine in Lovajengj.");
-		talkToShayda = new NpcStep(this, NpcID.SHAYDA, new WorldPoint(1495, 3631, 0), "Talk to Shayda north of the Shayzien bank.");
+		talkToArcis = new NpcStep(this, NpcID.ARCIS, new WorldPoint(1652, 3754, 0),
+			"Talk to Arcis in the house east of Arceuus's bank.");
+		talkToPiliar = new NpcStep(this, NpcID.PILIAR, new WorldPoint(1794, 3737, 0),
+			"Talk to Piliar in the house north west of the Piscarilius general store.");
+		talkToLovada = new NpcStep(this, NpcID.LOVADA, new WorldPoint(1485, 3834, 0),
+			"Talk to Lovada in their home just south of the Blast Mine in Lovajengj.");
+		talkToShayda = new NpcStep(this, NpcID.SHAYDA, new WorldPoint(1495, 3631, 0),
+			"Talk to Shayda north of the Shayzien bank.");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Repairing the statue", new ArrayList<>(Arrays.asList(talkToHosa, talkToArcis, talkToPiliar, talkToShayda, talkToLovada, talkToHosaToFinish))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Repairing the statue",
+			Arrays.asList(talkToHosa, talkToArcis, talkToPiliar, talkToShayda, talkToLovada, talkToHosaToFinish)));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));

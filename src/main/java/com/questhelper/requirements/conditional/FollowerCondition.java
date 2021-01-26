@@ -1,8 +1,6 @@
 package com.questhelper.requirements.conditional;
 
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
 
 public class FollowerCondition extends ConditionForStep
 {
@@ -16,18 +14,9 @@ public class FollowerCondition extends ConditionForStep
 	@Override
 	public boolean check(Client client)
 	{
-		for (NPC npc : client.getNpcs())
-		{
-			Actor ta = npc.getInteracting();
-			if (ta != null && client.getLocalPlayer() == ta)
-			{
-				if (npcID == npc.getId())
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
+		return client.getNpcs().stream()
+			.filter(npc -> npc.getInteracting() != null)
+			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
+			.anyMatch(npc -> npc.getId() == npcID);
 	}
 }

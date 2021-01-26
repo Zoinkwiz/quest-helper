@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -384,9 +385,9 @@ public class BetweenARock extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		List<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(pickaxe);
 		reqs.add(goldBars4);
 		reqs.add(hammer);
@@ -397,7 +398,7 @@ public class BetweenARock extends BasicQuestHelper
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Scorpion (level 14)");
@@ -406,28 +407,28 @@ public class BetweenARock extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Collections.singletonList(talkToDondakan))));
+			Collections.singletonList(talkToDondakan)));
 		allSteps.add(new PanelDetails("Research",
-			new ArrayList<>(Arrays.asList(talkToEngineer, talkToRolad, enterDwarvenMine, searchCart, killScorpion, mineRock,
-				returnToRolad, readEntireBook)), coins5, pickaxe));
+			Arrays.asList(talkToEngineer, talkToRolad, enterDwarvenMine, searchCart, killScorpion, mineRock,
+				returnToRolad, readEntireBook), coins5, pickaxe));
 		allSteps.add(new PanelDetails("Experiment",
-			new ArrayList<>(Arrays.asList(talkToDondakanWithBook, useGoldBarOnDondakan, makeGoldCannonball, useGoldCannonballOnDondakan)),
+			Arrays.asList(talkToDondakanWithBook, useGoldBarOnDondakan, makeGoldCannonball, useGoldCannonballOnDondakan),
 			cannonMould, goldBar));
 		allSteps.add(new PanelDetails("Solving the schematic",
-			new ArrayList<>(Arrays.asList(readBookAgain, talkToEngineerAgain, useGoldBarOnAnvil, talkToKhorvak, assembleSchematic)),
+			Arrays.asList(readBookAgain, talkToEngineerAgain, useGoldBarOnAnvil, talkToKhorvak, assembleSchematic),
 			goldBars3, hammer));
 		allSteps.add(new PanelDetails("Into the hard place",
-			new ArrayList<>(Arrays.asList(talkToDondakanWithHelmet, mine6GoldOre, talkToSecondFlame, killAvatar, finishQuest)),
+			Arrays.asList(talkToDondakanWithHelmet, mine6GoldOre, talkToSecondFlame, killAvatar, finishQuest),
 			goldHelmet, solvedSchematic, coins5, pickaxe, combatGear, food));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.DWARF_CANNON, QuestState.FINISHED));

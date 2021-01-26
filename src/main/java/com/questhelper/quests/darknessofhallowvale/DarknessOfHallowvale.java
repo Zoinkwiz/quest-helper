@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import com.questhelper.requirements.ItemRequirement;
@@ -349,7 +350,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		travelToPots = new ObjectStep(this, ObjectID.POTS_18065, new WorldPoint(3608, 3222, 0), "Follow the path to the Meiyerditch Myreque base. When you reach some pots, search them for a key to open the door.");
 
-		ArrayList<WorldPoint> pathToPots = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathToPots = Arrays.asList(
 			new WorldPoint(3602, 3207, 0),
 			new WorldPoint(3597, 3207, 0),
 			new WorldPoint(3597, 3204, 0),
@@ -379,12 +380,12 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3603, 3223, 1),
 			new WorldPoint(3603, 3221, 0),
 			new WorldPoint(3608, 3221, 0)
-		));
+		);
 		travelToPots.setLinePoints(pathToPots);
 
-		ArrayList<WorldPoint> pathToLadderDivision = new ArrayList<>();
+		List<WorldPoint> pathToLadderDivision = new ArrayList<>();
 		pathToLadderDivision.addAll(pathToPots);
-		pathToLadderDivision.addAll(new ArrayList<>(Arrays.asList(
+		pathToLadderDivision.addAll(Arrays.asList(
 			new WorldPoint(3612, 3221, 0),
 			new WorldPoint(3615, 3223, 0),
 			new WorldPoint(3615, 3220, 0),
@@ -423,11 +424,11 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3621, 3238, 1),
 			new WorldPoint(3621, 3240, 1),
 			new WorldPoint(3626, 3240, 1)
-		)));
+		));
 
-		ArrayList<WorldPoint> pathToLadderPiece = new ArrayList<>();
+		List<WorldPoint> pathToLadderPiece = new ArrayList<>();
 		pathToLadderPiece.addAll(pathToLadderDivision);
-		pathToLadderPiece.addAll(new ArrayList<>(Arrays.asList(
+		pathToLadderPiece.addAll(Arrays.asList(
 			new WorldPoint(3626, 3238, 1),
 			new WorldPoint(3628, 3238, 1),
 			new WorldPoint(3629, 3238, 1),
@@ -437,12 +438,13 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3631, 3241, 2),
 			new WorldPoint(3627, 3241, 2),
 			new WorldPoint(3626, 3240, 2)
-		)));
+		));
 
-		travelToLadderPart = new ObjectStep(this, NullObjectID.NULL_18115, new WorldPoint(3625, 3240, 2), "Continue until you reach a wall with a ladder piece, and take it.");
+		travelToLadderPart = new ObjectStep(this, NullObjectID.NULL_18115, new WorldPoint(3625, 3240, 2),
+			"Continue until you reach a wall with a ladder piece, and take it.");
 		travelToLadderPart.setLinePoints(pathToLadderPiece);
 
-		ArrayList<WorldPoint> pathToPlaceLadder = new ArrayList<>(new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathToPlaceLadder = Arrays.asList(
 			new WorldPoint(3627, 3241, 2),
 			new WorldPoint(3631, 3241, 2),
 			new WorldPoint(3631, 3239, 2),
@@ -452,14 +454,15 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3626, 3238, 1),
 			new WorldPoint(3626, 3240, 1),
 			new WorldPoint(3629, 3240, 1)
-		)));
+		);
 
-		travelToFixLadder = new ObjectStep(this, NullObjectID.NULL_18116, new WorldPoint(3629, 3240, 1), "Repair the ladder downstairs.");
+		travelToFixLadder = new ObjectStep(this, NullObjectID.NULL_18116, new WorldPoint(3629, 3240, 1),
+			"Repair the ladder downstairs.");
 		travelToFixLadder.setLinePoints(pathToPlaceLadder);
 
-		ArrayList<WorldPoint> pathToBase = new ArrayList<>();
+		List<WorldPoint> pathToBase = new ArrayList<>();
 		pathToBase.addAll(pathToLadderDivision);
-		pathToBase.addAll(new ArrayList<>(Arrays.asList(
+		pathToBase.addAll(Arrays.asList(
 			new WorldPoint(3629, 3240, 1),
 			new WorldPoint(3630, 3240, 0),
 			new WorldPoint(3633, 3240, 0),
@@ -485,7 +488,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3639, 3258, 0),
 			new WorldPoint(3640, 3258, 0),
 			new WorldPoint(3640, 3253, 0)
-		)));
+		));
 
 		travelToMyrequeBase = new ObjectStep(this, ObjectID.WALL_17980, new WorldPoint(3640, 3253, 0), "Use a knife on the wall you eventually reach.");
 		travelToMyrequeBase.setLinePoints(pathToBase);
@@ -518,7 +521,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		mineDaeyaltThenLeave = new NpcStep(this, NpcID.VAMPYRE_JUVINATE, new WorldPoint(2389, 4624, 2), "Mine Daeyalt ore from the walls and put them into the mine carts. Once you've mined 15, talk to the vampyres to leave.", pickaxe);
 		mineDaeyaltThenLeave.addDialogStep("Do you have a spare pick?");
 
-		ArrayList<WorldPoint> pathFromMineToBase = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathFromMineToBase = Arrays.asList(
 			new WorldPoint(3623, 3324, 0),
 			new WorldPoint(3631, 3324, 0),
 			new WorldPoint(3631, 3303, 0),
@@ -540,7 +543,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3639, 3256, 0),
 			new WorldPoint(3640, 3256, 0),
 			new WorldPoint(3640, 3250, 0)
-		));
+		);
 
 		returnToMeiyBase = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0), "Press the decorated wall to unlock the base's entrance.");
 		returnToMeiyBase.setLinePoints(pathFromMineToBase);
@@ -564,7 +567,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToSarius = new NpcStep(this, NpcID.SARIUS_GUILE, new WorldPoint(3572, 3331, 0), "");
 		talkToSafalaanInBase = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan in the north room.");
 
-		ArrayList<WorldPoint> pathFromMineToFireplace = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathFromMineToFireplace = Arrays.asList(
 			new WorldPoint(3623, 3324, 0),
 			new WorldPoint(3631, 3324, 0),
 			new WorldPoint(3631, 3303, 0),
@@ -583,7 +586,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3624, 3261, 0),
 			new WorldPoint(3624, 3252, 0),
 			new WorldPoint(2627, 3252, 0)
-		));
+		);
 
 		useKnifeOnFireplace = new ObjectStep(this, ObjectID.FIREPLACE_18039, new WorldPoint(3627, 3253, 0), "");
 		useKnifeOnFireplace.setLinePoints(pathFromMineToFireplace);
@@ -595,7 +598,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		useKnifeOnPortrait.addSubSteps(inspectPortrait);
 		leaveMeiyerBase = new ObjectStep(this, ObjectID.LADDER_17986, new WorldPoint(3626, 9617, 0), "Go up to the surface.");
 
-		ArrayList<WorldPoint> pathFromBaseToTapestry = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathFromBaseToTapestry = Arrays.asList(
 			new WorldPoint(3640, 3253, 0),
 			new WorldPoint(2640, 3258, 0),
 			new WorldPoint(3639, 3258, 0),
@@ -617,7 +620,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3635, 3300, 0),
 			new WorldPoint(3640, 3300, 0),
 			new WorldPoint(3640, 3302, 0)
-		));
+		);
 
 		useKnifeOnTapestry = new ObjectStep(this, NullObjectID.NULL_18125, new WorldPoint(3638, 3304, 0), "Slash the tapestry in the building in north east Meiyerditch.");
 		useKnifeOnTapestry.setLinePoints(pathFromBaseToTapestry);
@@ -733,7 +736,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(normalSpellbook);
@@ -741,7 +744,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.IN_AID_OF_THE_MYREQUE, QuestState.FINISHED));
@@ -756,37 +759,37 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(hammer, planks2, nails8, knife));
+		return Arrays.asList(hammer, planks2, nails8, knife);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(lawRune, airRune));
+		return Arrays.asList(lawRune, airRune);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Able to survive 5 hits from Vanstrom Klause (level 169)"));
+		return Collections.singletonList("Able to survive 5 hits from Vanstrom Klause (level 169)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Infiltrating Meiyerditch", new ArrayList<>(Arrays.asList(startQuest, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat,
-			boardBoat, kickBoard, climbDownBoard, talkToCitizen, talkToRal, goTravelToMyrequeBase, pressDecoratedWall, enterRug, talkToVertida, talkToVeliafAfterContact)), hammer, planks2, nails8, knife));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Infiltrating Meiyerditch", Arrays.asList(startQuest, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat,
+			boardBoat, kickBoard, climbDownBoard, talkToCitizen, talkToRal, goTravelToMyrequeBase, pressDecoratedWall, enterRug, talkToVertida, talkToVeliafAfterContact), hammer, planks2, nails8, knife));
 
-		allSteps.add(new PanelDetails("Murder at Paterdomus", new ArrayList<>(Arrays.asList(talkToDrezelAfterVeliaf, searchBushes, talkToDrezelAfterBushes, talkToRoald,
-			talkToVeliafAfterDrezel))));
+		allSteps.add(new PanelDetails("Murder at Paterdomus", Arrays.asList(talkToDrezelAfterVeliaf, searchBushes, talkToDrezelAfterBushes, talkToRoald,
+			talkToVeliafAfterDrezel)));
 
-		allSteps.add(new PanelDetails("Mapping Castle Drakan", new ArrayList<>(Arrays.asList(returnToMeiyerditch, goToSafalaan, goSketchNorth, goSketchWest, goSketchSouth,
-			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage, returnToSafalaanInBaseNoSketches)), knife));
+		allSteps.add(new PanelDetails("Mapping Castle Drakan", Arrays.asList(returnToMeiyerditch, goToSafalaan, goSketchNorth, goSketchWest, goSketchSouth,
+			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage, returnToSafalaanInBaseNoSketches), knife));
 
-		allSteps.add(new PanelDetails("Investigate the lab", new ArrayList<>(Arrays.asList(useKnifeOnTapestry, useKeyOnStatue, goDownToLab, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish)), knife));
+		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(useKnifeOnTapestry, useKeyOnStatue, goDownToLab, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife));
 
 		return allSteps;
 	}

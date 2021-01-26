@@ -35,11 +35,11 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -256,7 +256,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 	{
 		if (!solutionFound && widgetLoaded.getGroupId() == 74)
 		{
-			ArrayList<Integer> potentialBusts = new ArrayList<>(Arrays.asList(AIVAS, CAMORRA, ROBERT, TRISTAN));
+			List<Integer> potentialBusts = Arrays.asList(AIVAS, CAMORRA, ROBERT, TRISTAN);
 
 			Widget northWidget = client.getWidget(74, 6);
 			Widget southAndWestWidget = client.getWidget(74, 7);
@@ -291,13 +291,13 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 				eastBust = potentialBusts.iterator().next();
 
-				placeBustNorth.addItemRequirements(new ArrayList<>(Collections.singletonList(items.get(northBust))));
+				placeBustNorth.addItemRequirements(Collections.singletonList(items.get(northBust)));
 				placeBustNorth.addIcon(items.get(northBust).getId());
-				placeBustEast.addItemRequirements(new ArrayList<>(Collections.singletonList(items.get(eastBust))));
+				placeBustEast.addItemRequirements(Collections.singletonList(items.get(eastBust)));
 				placeBustEast.addIcon(items.get(eastBust).getId());
-				placeBustSouth.addItemRequirements(new ArrayList<>(Collections.singletonList(items.get(southBust))));
+				placeBustSouth.addItemRequirements(Collections.singletonList(items.get(southBust)));
 				placeBustSouth.addIcon(items.get(southBust).getId());
-				placeBustWest.addItemRequirements(new ArrayList<>(Collections.singletonList(items.get(westBust))));
+				placeBustWest.addItemRequirements(Collections.singletonList(items.get(westBust)));
 				placeBustWest.addIcon(items.get(westBust).getId());
 				solutionFound = true;
 			}

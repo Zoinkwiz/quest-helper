@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -35,7 +36,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.QuestDescriptor;
@@ -76,7 +76,7 @@ public class ImpCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(blackBead);
@@ -88,17 +88,17 @@ public class ImpCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Bring Mizgog his beads", new ArrayList<>(Collections.singletonList(doQuest)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Bring Mizgog his beads", Collections.singletonList(doQuest),
 			blackBead, whiteBead, redBead, yellowBead));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Imps (level 8) if you plan on collecting the beads yourself"));
+		return Collections.singletonList("Imps (level 8) if you plan on collecting the beads yourself");
 	}
 }

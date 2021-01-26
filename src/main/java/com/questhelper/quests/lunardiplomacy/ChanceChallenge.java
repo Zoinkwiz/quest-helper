@@ -6,11 +6,11 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
@@ -23,7 +23,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 
 	int currentGoal;
 
-	HashMap<Integer, ArrayList<Integer>> solutions = new HashMap();
+	HashMap<Integer, List<Integer>> solutions = new HashMap();
 
 	public ChanceChallenge(QuestHelper questHelper)
 	{
@@ -33,25 +33,25 @@ public class ChanceChallenge extends DetailedOwnerStep
 
 	public void setupSolutions()
 	{
-		solutions.put(12, new ArrayList<>(Arrays.asList(1, 1, 2, 2, 3, 3)));
-		solutions.put(13, new ArrayList<>(Arrays.asList(1, 1, 2, 2, 3, 4)));
-		solutions.put(14, new ArrayList<>(Arrays.asList(1, 1, 2, 2, 4, 4)));
-		solutions.put(15, new ArrayList<>(Arrays.asList(1, 1, 2, 5, 3, 3)));
-		solutions.put(16, new ArrayList<>(Arrays.asList(1, 1, 2, 5, 3, 4)));
-		solutions.put(17, new ArrayList<>(Arrays.asList(1, 1, 2, 5, 4, 4)));
-		solutions.put(18, new ArrayList<>(Arrays.asList(1, 1, 5, 5, 3, 3)));
-		solutions.put(19, new ArrayList<>(Arrays.asList(1, 1, 5, 5, 3, 4)));
-		solutions.put(20, new ArrayList<>(Arrays.asList(1, 1, 5, 5, 4, 4)));
-		solutions.put(21, new ArrayList<>(Arrays.asList(1, 6, 2, 5, 3, 4)));
-		solutions.put(22, new ArrayList<>(Arrays.asList(1, 6, 2, 5, 4, 4)));
-		solutions.put(23, new ArrayList<>(Arrays.asList(1, 6, 5, 5, 3, 3)));
-		solutions.put(24, new ArrayList<>(Arrays.asList(1, 6, 5, 5, 3, 4)));
-		solutions.put(25, new ArrayList<>(Arrays.asList(1, 6, 5, 5, 4, 4)));
-		solutions.put(26, new ArrayList<>(Arrays.asList(6, 6, 2, 5, 3, 4)));
-		solutions.put(27, new ArrayList<>(Arrays.asList(6, 6, 2, 5, 4, 4)));
-		solutions.put(28, new ArrayList<>(Arrays.asList(6, 6, 5, 5, 3, 3)));
-		solutions.put(29, new ArrayList<>(Arrays.asList(6, 6, 5, 5, 3, 4)));
-		solutions.put(30, new ArrayList<>(Arrays.asList(6, 6, 5, 5, 4, 4)));
+		solutions.put(12, Arrays.asList(1, 1, 2, 2, 3, 3));
+		solutions.put(13, Arrays.asList(1, 1, 2, 2, 3, 4));
+		solutions.put(14, Arrays.asList(1, 1, 2, 2, 4, 4));
+		solutions.put(15, Arrays.asList(1, 1, 2, 5, 3, 3));
+		solutions.put(16, Arrays.asList(1, 1, 2, 5, 3, 4));
+		solutions.put(17, Arrays.asList(1, 1, 2, 5, 4, 4));
+		solutions.put(18, Arrays.asList(1, 1, 5, 5, 3, 3));
+		solutions.put(19, Arrays.asList(1, 1, 5, 5, 3, 4));
+		solutions.put(20, Arrays.asList(1, 1, 5, 5, 4, 4));
+		solutions.put(21, Arrays.asList(1, 6, 2, 5, 3, 4));
+		solutions.put(22, Arrays.asList(1, 6, 2, 5, 4, 4));
+		solutions.put(23, Arrays.asList(1, 6, 5, 5, 3, 3));
+		solutions.put(24, Arrays.asList(1, 6, 5, 5, 3, 4));
+		solutions.put(25, Arrays.asList(1, 6, 5, 5, 4, 4));
+		solutions.put(26, Arrays.asList(6, 6, 2, 5, 3, 4));
+		solutions.put(27, Arrays.asList(6, 6, 2, 5, 4, 4));
+		solutions.put(28, Arrays.asList(6, 6, 5, 5, 3, 3));
+		solutions.put(29, Arrays.asList(6, 6, 5, 5, 3, 4));
+		solutions.put(30, Arrays.asList(6, 6, 5, 5, 4, 4));
 	}
 
 	public void setupSteps()
@@ -146,7 +146,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 
 	public void checkSolutions(int d1, int d2, int d3, int d4, int d5, int d6)
 	{
-		ArrayList<Integer> solution = solutions.get(currentGoal);
+		List<Integer> solution = solutions.get(currentGoal);
 
 		if (solution == null)
 		{
@@ -184,7 +184,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 		return Arrays.asList(talk, spinD1, spinD2, spinD3, spinD4, spinD5, spinD6);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Collections.singletonList(talk);
 	}

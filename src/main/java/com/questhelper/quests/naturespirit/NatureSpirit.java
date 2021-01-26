@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -281,41 +282,41 @@ public class NatureSpirit extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(ghostspeak, silverSickle));
+		return Arrays.asList(ghostspeak, silverSickle);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(salveTele, combatGear));
+		return Arrays.asList(salveTele, combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory."));
+		return Collections.singletonList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory.");
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("3 Ghasts (level 30)"));
+		return Collections.singletonList("3 Ghasts (level 30)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Start the quest",
-			new ArrayList<>(Arrays.asList(talkToDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
-				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman)), ghostspeak, silverSickle));
+			Arrays.asList(talkToDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
+				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Helping Filliman",
-			new ArrayList<>(Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
-				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto)), ghostspeak, silverSickle));
+			Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
+				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Killing Ghasts",
-			new ArrayList<>(Arrays.asList(blessSickle, fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish)), ghostspeak, silverSickle));
+			Arrays.asList(blessSickle, fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, silverSickle));
 
 		return allSteps;
 	}

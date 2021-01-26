@@ -29,6 +29,7 @@ import com.questhelper.steps.conditional.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -372,18 +373,18 @@ public class MisthalinMystery extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Talk to Abigale", new ArrayList<>(Collections.singletonList(talkToAbigale))));
-		allSteps.add(new PanelDetails("Enter the manor", new ArrayList<>(Arrays.asList(takeTheBoat, takeTheBucket, searchTheBarrel, useBucketOnBarrel, searchTheBarrelForKey, openManorDoor))));
-		allSteps.add(new PanelDetails("Solve the first puzzle", new ArrayList<>(Arrays.asList(takeKnife, tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor))));
-		allSteps.add(new PanelDetails("Solve the second puzzle", new ArrayList<>(Arrays.asList(takeTinderbox, lightCandle1, lightBarrel, leaveExplosionRoom, climbWall))));
-		allSteps.add(new PanelDetails("Solve the third puzzle", new ArrayList<>(Arrays.asList(observeThroughTree, takeNote2, readNotes2, playPiano, playD, playE, playA, playDAgain, searchThePiano))));
-		allSteps.add(new PanelDetails("Witness another murder", new ArrayList<>(Arrays.asList(returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep))));
-		allSteps.add(new PanelDetails("Solve the fourth puzzle", new ArrayList<>(Arrays.asList(takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond, clickZenyte, clickEmerald, clickOnyx, clickRuby, searchFireplaceForSapphireKey))));
-		allSteps.add(new PanelDetails("Confront the killer", new ArrayList<>(Arrays.asList(goThroughSapphireDoor, reflectKnives, pickUpKillersKnife, fightAbigale, leaveSapphireRoom, talkToMandy))));
+		allSteps.add(new PanelDetails("Talk to Abigale", Collections.singletonList(talkToAbigale)));
+		allSteps.add(new PanelDetails("Enter the manor", Arrays.asList(takeTheBoat, takeTheBucket, searchTheBarrel, useBucketOnBarrel, searchTheBarrelForKey, openManorDoor)));
+		allSteps.add(new PanelDetails("Solve the first puzzle", Arrays.asList(takeKnife, tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor)));
+		allSteps.add(new PanelDetails("Solve the second puzzle", Arrays.asList(takeTinderbox, lightCandle1, lightBarrel, leaveExplosionRoom, climbWall)));
+		allSteps.add(new PanelDetails("Solve the third puzzle", Arrays.asList(observeThroughTree, takeNote2, readNotes2, playPiano, playD, playE, playA, playDAgain, searchThePiano)));
+		allSteps.add(new PanelDetails("Witness another murder", Arrays.asList(returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep)));
+		allSteps.add(new PanelDetails("Solve the fourth puzzle", Arrays.asList(takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond, clickZenyte, clickEmerald, clickOnyx, clickRuby, searchFireplaceForSapphireKey)));
+		allSteps.add(new PanelDetails("Confront the killer", Arrays.asList(goThroughSapphireDoor, reflectKnives, pickUpKillersKnife, fightAbigale, leaveSapphireRoom, talkToMandy)));
 		return allSteps;
 	}
 }

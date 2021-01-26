@@ -38,7 +38,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -533,7 +533,7 @@ public class IorwerthLightPuzzle extends ConditionalStep
 		r31 = new Conditions(r30, new VarbitCondition(8804, BLUE));
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, goToF0NE, p1Pillar5, p1Pillar6, p1Pillar7, p1Pillar8, p1Pillar9, p1Pillar10,
 			p1Pillar11, p1Pillar12, p1Pillar13, p1Pillar14, goToF1, p1Pillar15, p1Pillar16, p1Pillar17, p1Pillar18, p1Pillar19, p1Pillar20, p1Pillar21, p1Pillar22, p1Pillar23,

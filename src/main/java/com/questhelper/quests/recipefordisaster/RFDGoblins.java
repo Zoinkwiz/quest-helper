@@ -47,6 +47,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -234,19 +235,19 @@ public class RFDGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(bread, orange, knife, blueGreenPurpledye, spice, fishingBait, bucketOfWater, charcoal));
+		return Arrays.asList(bread, orange, knife, blueGreenPurpledye, spice, fishingBait, bucketOfWater, charcoal);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(teleportFalador, teleportLumbridge));
+		return Arrays.asList(teleportFalador, teleportLumbridge);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId(), Operation.GREATER_EQUAL, 3,
@@ -258,13 +259,13 @@ public class RFDGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Saving the Generals",
-			new ArrayList<>(Arrays.asList(inspectGoblin, goTalkCook1, goTalkCook2, goTalkCook3,
+			Arrays.asList(inspectGoblin, goTalkCook1, goTalkCook2, goTalkCook3,
 				useWaterOnBread, sliceOrange, dyeOrange, spiceBait, goTalkCook4,
-				useSlopOnGoblin)),
+				useSlopOnGoblin),
 			bread, orange, knife, blueGreenPurpledye, spice, fishingBait, bucketOfWater, charcoal));
 		return allSteps;
 	}

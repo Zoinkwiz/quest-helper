@@ -197,7 +197,7 @@ public class QuestOverviewPanel extends JPanel
 	{
 		currentQuest = quest;
 
-		ArrayList<PanelDetails> steps = quest.getPanels();
+		List<PanelDetails> steps = quest.getPanels();
 		QuestStep currentStep;
 		if (isActive)
 		{
@@ -338,7 +338,7 @@ public class QuestOverviewPanel extends JPanel
 
 	public void setupQuestRequirements(QuestHelper quest)
 	{
-		ArrayList<Requirement> generalRequirements = quest.getGeneralRequirements();
+		List<Requirement> generalRequirements = quest.getGeneralRequirements();
 		/* Non-item requirements */
 		JLabel generalReqLabel = new JLabel();
 		generalReqLabel.setForeground(Color.GRAY);
@@ -361,7 +361,7 @@ public class QuestOverviewPanel extends JPanel
 			questGeneralRequirementsHeader.setVisible(false);
 		}
 
-		ArrayList<Requirement> generalRecommended = quest.getGeneralRecommended();
+		List<Requirement> generalRecommended = quest.getGeneralRecommended();
 
 		/* Non-item recommended */
 		JLabel generalRecLabel = new JLabel();
@@ -386,7 +386,7 @@ public class QuestOverviewPanel extends JPanel
 		}
 
 		/* Required items */
-		ArrayList<ItemRequirement> itemRequirements = quest.getItemRequirements();
+		List<ItemRequirement> itemRequirements = quest.getItemRequirements();
 
 		if (itemRequirements != null)
 		{
@@ -406,7 +406,7 @@ public class QuestOverviewPanel extends JPanel
 		}
 
 		/* Recommended items */
-		ArrayList<ItemRequirement> itemRecommended = quest.getItemRecommended();
+		List<ItemRequirement> itemRecommended = quest.getItemRecommended();
 
 		if (itemRecommended != null)
 		{
@@ -428,7 +428,7 @@ public class QuestOverviewPanel extends JPanel
 		/* Combat requirements */
 		JLabel combatLabel = new JLabel();
 		combatLabel.setForeground(Color.GRAY);
-		ArrayList<String> combatRequirementList = quest.getCombatRequirements();
+		List<String> combatRequirementList = quest.getCombatRequirements();
 		StringBuilder textCombat = new StringBuilder();
 		if (combatRequirementList == null)
 		{
@@ -449,7 +449,7 @@ public class QuestOverviewPanel extends JPanel
 		/* Quest overview */
 		JLabel overviewLabel = new JLabel();
 		overviewLabel.setForeground(Color.GRAY);
-		ArrayList<String> notes = quest.getNotes();
+		List<String> notes = quest.getNotes();
 		StringBuilder textNote = new StringBuilder();
 		if (notes != null)
 		{

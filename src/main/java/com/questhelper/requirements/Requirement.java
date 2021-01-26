@@ -26,6 +26,7 @@ package com.questhelper.requirements;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -43,7 +44,7 @@ abstract public class Requirement
 
 	abstract public boolean check(Client client);
 
-	public ArrayList<LineComponent> getDisplayTextWithChecks(Client client) {
+	public List<LineComponent> getDisplayTextWithChecks(Client client) {
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
 		String text = getDisplayText();

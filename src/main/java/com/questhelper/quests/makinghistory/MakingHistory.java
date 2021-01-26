@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -218,7 +219,7 @@ public class MakingHistory extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(spade);
@@ -228,7 +229,7 @@ public class MakingHistory extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneTeleport);
@@ -239,18 +240,18 @@ public class MakingHistory extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToJorral))));
-		PanelDetails chestPanel = new PanelDetails("Find the book", new ArrayList<>(Arrays.asList(talkToSilverMerchant, dig, openChest)), spade);
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToJorral)));
+		PanelDetails chestPanel = new PanelDetails("Find the book", Arrays.asList(talkToSilverMerchant, dig, openChest), spade);
 		chestPanel.setLockingStep(keySteps);
-		PanelDetails fremPanel = new PanelDetails("Fremennik tale", new ArrayList<>(Arrays.asList(talkToBlanin, talkToDron)));
+		PanelDetails fremPanel = new PanelDetails("Fremennik tale", Arrays.asList(talkToBlanin, talkToDron));
 		fremPanel.setLockingStep(dronSteps);
-		PanelDetails ghostPanel = new PanelDetails("Find the scroll", new ArrayList<>(Arrays.asList(talkToDroalak, talkToMelina, returnToDroalak)), saphAmulet, ghostSpeakAmulet);
+		PanelDetails ghostPanel = new PanelDetails("Find the scroll", Arrays.asList(talkToDroalak, talkToMelina, returnToDroalak), saphAmulet, ghostSpeakAmulet);
 		ghostPanel.setLockingStep(ghostSteps);
 
-		PanelDetails finishingPanel = new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(returnToJorral, talkToLathas, finishQuest)));
+		PanelDetails finishingPanel = new PanelDetails("Finishing off", Arrays.asList(returnToJorral, talkToLathas, finishQuest));
 
 		allSteps.add(chestPanel);
 		allSteps.add(fremPanel);
@@ -260,9 +261,9 @@ public class MakingHistory extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED),
-			new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS)));
+		return Arrays.asList(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.IN_PROGRESS));
 	}
 }

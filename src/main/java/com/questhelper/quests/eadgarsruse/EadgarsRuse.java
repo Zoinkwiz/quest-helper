@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -103,11 +104,11 @@ public class EadgarsRuse extends BasicQuestHelper
 		setupSteps();
 		if (freedEadgar.checkCondition(client))
 		{
-			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", new ArrayList<>(Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar)));
+			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar));
 		}
 		else
 		{
-			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", new ArrayList<>(Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, getBerryKey, freeEadgar, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar)));
+			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, getBerryKey, freeEadgar, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar));
 		}
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -566,7 +567,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(climbingBootsOr12Coins);
@@ -582,7 +583,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneTeleport);
@@ -590,25 +591,25 @@ public class EadgarsRuse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToSanfew))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(talkToSanfew)));
 
 		allSteps.add(travelToEadgarPanel);
 
-		allSteps.add(new PanelDetails("Talk to Burntmeat", new ArrayList<>(Arrays.asList(leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, talkToEadgarFromCook)), climbingBoots));
+		allSteps.add(new PanelDetails("Talk to Burntmeat", Arrays.asList(leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, talkToEadgarFromCook), climbingBoots));
 
-		allSteps.add(new PanelDetails("Get a parrot", new ArrayList<>(Arrays.asList(talkToPete, useChunksOnParrot, talkToEadgarWithParrot, enterStrongholdWithParrot)), climbingBoots));
+		allSteps.add(new PanelDetails("Get a parrot", Arrays.asList(talkToPete, useChunksOnParrot, talkToEadgarWithParrot, enterStrongholdWithParrot), climbingBoots));
 
-		allSteps.add(new PanelDetails("Making a fake man", new ArrayList<>(Arrays.asList(talkToTegid, talkToEadgarWithItems, pickThistle, lightFire, useThistleOnFire, grindThistle, useGroundThistleOnRanarr, giveTrollPotionToEadgar, enterStrongholdForParrot, leaveStrongholdWithParrot)), climbingBoots, logs2, tinderbox, pestleAndMortar, grain10, rawChicken5, ranarrPotionUnf));
+		allSteps.add(new PanelDetails("Making a fake man", Arrays.asList(talkToTegid, talkToEadgarWithItems, pickThistle, lightFire, useThistleOnFire, grindThistle, useGroundThistleOnRanarr, giveTrollPotionToEadgar, enterStrongholdForParrot, leaveStrongholdWithParrot), climbingBoots, logs2, tinderbox, pestleAndMortar, grain10, rawChicken5, ranarrPotionUnf));
 
-		allSteps.add(new PanelDetails("Get the Goutweed", new ArrayList<>(Arrays.asList(enterStrongholdWithScarecrow, searchDrawers, goDownToStoreroom, enterStoreroomDoor, getGoutweed, returnToSanfew))));
+		allSteps.add(new PanelDetails("Get the Goutweed", Arrays.asList(enterStrongholdWithScarecrow, searchDrawers, goDownToStoreroom, enterStoreroomDoor, getGoutweed, returnToSanfew)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));

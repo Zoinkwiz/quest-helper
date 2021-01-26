@@ -27,45 +27,50 @@ package com.questhelper.panel;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import com.questhelper.steps.QuestStep;
 
-public class PanelDetails {
+public class PanelDetails
+{
 	@Getter
 	String header;
 
 	@Getter
-	private ArrayList<QuestStep> steps;
+	private final List<QuestStep> steps;
 
 	@Getter
 	private QuestStep lockingQuestSteps;
 
 	@Getter
-	private ArrayList<Requirement> requirements;
+	private List<Requirement> requirements;
 
 	@Getter
-	private ArrayList<Integer> vars;
+	private List<Integer> vars;
 
-	public PanelDetails(String header) {
+	public PanelDetails(String header)
+	{
 		this.header = header;
 		this.steps = new ArrayList<>();
 	}
 
-	public PanelDetails(String header, QuestStep... steps) {
+	public PanelDetails(String header, QuestStep... steps)
+	{
 		this.header = header;
-		this.steps = new ArrayList<>(Arrays.asList(steps));
+		this.steps = Arrays.asList(steps);
 		this.requirements = new ArrayList<>();
 	}
 
-	public PanelDetails(String header, ArrayList<QuestStep> steps, Requirement... requirements) {
+	public PanelDetails(String header, List<QuestStep> steps, Requirement... requirements)
+	{
 		this.header = header;
 		this.steps = steps;
-		this.requirements = new ArrayList<>(Arrays.asList(requirements));
+		this.requirements = Arrays.asList(requirements);
 	}
 
 	public void setVars(Integer... vars)
 	{
-		this.vars = new ArrayList<>(Arrays.asList(vars));
+		this.vars = Arrays.asList(vars);
 	}
 
 	public void setLockingStep(QuestStep lockingStep)
@@ -73,7 +78,8 @@ public class PanelDetails {
 		this.lockingQuestSteps = lockingStep;
 	}
 
-	public void addSteps(QuestStep... steps) {
+	public void addSteps(QuestStep... steps)
+	{
 		this.steps.addAll(Arrays.asList(steps));
 	}
 }

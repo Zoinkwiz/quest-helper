@@ -25,10 +25,10 @@
 package com.questhelper.quests.toweroflife;
 
 import com.questhelper.steps.WidgetDetails;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.function.Function;
@@ -196,7 +196,7 @@ public class PuzzleSolver
 	private static final int PIPE_PCE_3_ORIENTATION = 22555;
 	private static final int PIPE_PCE_4_ORIENTATION = 22562;
 	private static final int PIPE_PCE_5_ORIENTATION = 22539;
-	private ArrayList<PipeSolverSolution> pipeSolverSolutions;
+	private List<PipeSolverSolution> pipeSolverSolutions;
 
 	//endregion
 	public HashSet<WidgetDetails> pipeSolver()
@@ -206,13 +206,13 @@ public class PuzzleSolver
 			//Create if null
 			if (pipeSolverSolutions == null)
 			{
-				pipeSolverSolutions = new ArrayList<>(Arrays.asList(
+				pipeSolverSolutions = Arrays.asList(
 					new PipeSolverSolution(PIPE_PCE_1, 159, 69, PIPE_PCE_1_ORIENTATION, PIPE_VBIT_1_SELECT),
 					new PipeSolverSolution(PIPE_PCE_2, 83, 80, PIPE_PCE_2_ORIENTATION, PIPE_VBIT_2_SELECT),
 					new PipeSolverSolution(PIPE_PCE_3, 256, 60, PIPE_PCE_3_ORIENTATION, PIPE_VBIT_3_SELECT),
 					new PipeSolverSolution(PIPE_PCE_4, 237, 155, PIPE_PCE_4_ORIENTATION, PIPE_VBIT_4_SELECT),
 					new PipeSolverSolution(PIPE_PCE_5, 126, 64, PIPE_PCE_5_ORIENTATION, PIPE_VBIT_5_SELECT)
-				));
+				);
 			}
 
 			HashSet<WidgetDetails> highlights = new HashSet<>();

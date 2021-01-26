@@ -37,6 +37,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -195,18 +196,18 @@ public class ASoulsBane extends BasicQuestHelper
 		enterRift = new ObjectStep(this, NullObjectID.NULL_13968, new WorldPoint(3310, 3452, 0), "Enter the rift.", combatGear);
 
 		takeWeapon = new ObjectStep(this, NullObjectID.NULL_13993, new WorldPoint(3012, 5244, 0), "Take a weapon from the weapon rack. Kill the angry monsters with the appropriate weapon:");
-		takeWeapon.setText(new ArrayList<>(Arrays.asList("Take a weapon from the weapon rack. Kill the angry monsters with the appropriate weapon:",
-			"Sword - Unicorn",
-			"Spear - Bear",
-			"Mace - Rat",
-			"Battleaxe - Goblin")));
-
-
-		ArrayList<String> killText = new ArrayList<>(Arrays.asList("Kill animals with appropriate weapons until the Rage Metre fills.",
+		takeWeapon.setText(Arrays.asList("Take a weapon from the weapon rack. Kill the angry monsters with the appropriate weapon:",
 			"Sword - Unicorn",
 			"Spear - Bear",
 			"Mace - Rat",
 			"Battleaxe - Goblin"));
+
+
+		List<String> killText = Arrays.asList("Kill animals with appropriate weapons until the Rage Metre fills.",
+			"Sword - Unicorn",
+			"Spear - Bear",
+			"Mace - Rat",
+			"Battleaxe - Goblin");
 
 		killAnimals = new DetailedQuestStep(this, "");
 		killAnimals.setText(killText);
@@ -258,32 +259,32 @@ public class ASoulsBane extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(rope, combatGear));
+		return Arrays.asList(rope, combatGear);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToLauna, useRopeOnRift, enterRift)), rope, combatGear));
+			Arrays.asList(talkToLauna, useRopeOnRift, enterRift), rope, combatGear));
 
 		allSteps.add(new PanelDetails("Anger room",
-			new ArrayList<>(Arrays.asList(takeWeapon, killAnimals, leaveAngerRoom)), combatGear));
+			Arrays.asList(takeWeapon, killAnimals, leaveAngerRoom), combatGear));
 
 		allSteps.add(new PanelDetails("Fear room",
-			new ArrayList<>(Arrays.asList(lookInsideHole0, leaveFearRoom)), combatGear));
+			Arrays.asList(lookInsideHole0, leaveFearRoom), combatGear));
 
 		allSteps.add(new PanelDetails("Confusion room",
-			new ArrayList<>(Arrays.asList(killRealConfusionBeast, leaveConfusionRoom)), combatGear));
+			Arrays.asList(killRealConfusionBeast, leaveConfusionRoom), combatGear));
 
 		allSteps.add(new PanelDetails("Hopelessness room",
-			new ArrayList<>(Arrays.asList(killHopelessCreatures, leaveHopelessRoom)), combatGear));
+			Arrays.asList(killHopelessCreatures, leaveHopelessRoom), combatGear));
 
 		allSteps.add(new PanelDetails("Save Tolna",
-			new ArrayList<>(Arrays.asList(killHeads, talkToTolna, talkToTolnaAgain)), combatGear));
+			Arrays.asList(killHeads, talkToTolna, talkToTolnaAgain), combatGear));
 
 		return allSteps;
 	}

@@ -49,6 +49,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
@@ -255,19 +256,19 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, dramenStaff, battlefrontTeleports2, xericsTalisman, skillsNecklace));
+		return Arrays.asList(combatGear, dramenStaff, battlefrontTeleports2, xericsTalisman, skillsNecklace);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("5 Tormented Souls (level 16)", "Trapped Soul (level 30)"));
+		return Arrays.asList("5 Tormented Souls (level 16)", "Trapped Soul (level 30)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
@@ -277,17 +278,17 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToMori, talkToAndrews, returnToMori, enterTowerOfMagic,
-				killTormentedSouls, goUpstairsTowerOfMagic, talkToArceuus))));
+			Arrays.asList(talkToMori, talkToAndrews, returnToMori, enterTowerOfMagic,
+				killTormentedSouls, goUpstairsTowerOfMagic, talkToArceuus)));
 		allSteps.add(new PanelDetails("Freeing a Soul",
-			new ArrayList<>(Arrays.asList(talkToKaal, inspectGrave, inspectTrack1, inspectTrack6, talkToKaalAgain)),
+			Arrays.asList(talkToKaal, inspectGrave, inspectTrack1, inspectTrack6, talkToKaalAgain),
 			combatGear));
 		allSteps.add(new PanelDetails("Saving Arceuus",
-			new ArrayList<>(Arrays.asList(searchRocks, talkToArceuusToFinish))));
+			Arrays.asList(searchRocks, talkToArceuusToFinish)));
 		return allSteps;
 	}
 }

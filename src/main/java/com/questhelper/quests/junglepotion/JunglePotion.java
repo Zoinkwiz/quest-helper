@@ -28,7 +28,6 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -42,7 +41,9 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -229,7 +230,7 @@ public class JunglePotion extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Surive against level 53 Jogres and level 46 Harpie Bug Swarms.");
@@ -238,7 +239,7 @@ public class JunglePotion extends BasicQuestHelper
 
 	//Recommended
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -250,32 +251,32 @@ public class JunglePotion extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> steps = new ArrayList<>();
+		List<PanelDetails> steps = new ArrayList<>();
 
 		PanelDetails startingPanel = new PanelDetails("Starting quest",
-			new ArrayList<>(Arrays.asList(startQuest)));
+			Collections.singletonList(startQuest));
 		steps.add(startingPanel);
 
 		PanelDetails snakeWeedPanel = new PanelDetails("Snake Weed",
-			new ArrayList<>(Arrays.asList(getSnakeWeed, cleanAndReturnSnakeWeed)));
+			Arrays.asList(getSnakeWeed, cleanAndReturnSnakeWeed));
 		steps.add(snakeWeedPanel);
 
 		PanelDetails ardrigalPanel = new PanelDetails("Ardrigal",
-			new ArrayList<>(Arrays.asList(getArdrigal, cleanAndReturnArdrigal)));
+			Arrays.asList(getArdrigal, cleanAndReturnArdrigal));
 		steps.add(ardrigalPanel);
 
 		PanelDetails sitoFoilpanel = new PanelDetails("Sito Foil",
-			new ArrayList<>(Arrays.asList(getSitoFoil, cleanAndReturnSitoFoil)));
+			Arrays.asList(getSitoFoil, cleanAndReturnSitoFoil));
 		steps.add(sitoFoilpanel);
 
 		PanelDetails volcaniaMossPanel = new PanelDetails("Volcania Moss",
-			new ArrayList<>(Arrays.asList(getVolenciaMoss, cleanAndReturnVolenciaMoss)));
+			Arrays.asList(getVolenciaMoss, cleanAndReturnVolenciaMoss));
 		steps.add(volcaniaMossPanel);
 
 		PanelDetails roguesPursePanel = new PanelDetails("Rogues Purse",
-			new ArrayList<>(Arrays.asList(enterCave, getRoguePurseHerb, cleanAndReturnRoguesPurse)));
+			Arrays.asList(enterCave, getRoguePurseHerb, cleanAndReturnRoguesPurse));
 		steps.add(roguesPursePanel);
 
 		return steps;

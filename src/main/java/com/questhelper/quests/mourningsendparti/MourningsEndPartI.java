@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -447,19 +448,19 @@ public class MourningsEndPartI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(bearFur, silk2, redDye, yellowDye, blueDye, greenDye, waterBucket, feather, rottenApple, toadCrunchies, magicLogs, leather, ogreBellows, coal20OrNaphtha));
+		return Arrays.asList(bearFur, silk2, redDye, yellowDye, blueDye, greenDye, waterBucket, feather, rottenApple, toadCrunchies, magicLogs, leather, ogreBellows, coal20OrNaphtha);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Mourning (level 11)"));
+		return Collections.singletonList("Mourning (level 11)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.FINISHED));
@@ -471,41 +472,41 @@ public class MourningsEndPartI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToIslwyn, talkToArianwyn))));
+			Arrays.asList(talkToIslwyn, talkToArianwyn)));
 
 		PanelDetails pickItemsPanel = new PanelDetails("Get Mourner's outfit",
-			new ArrayList<>(Arrays.asList(killMourner, pickUpLoot)));
+			Arrays.asList(killMourner, pickUpLoot));
 		pickItemsPanel.setLockingStep(getItems);
 		allSteps.add(pickItemsPanel);
 
 		PanelDetails cleanPanel = new PanelDetails("Clean Mourner top",
-			new ArrayList<>(Arrays.asList(searchLaundry, useSoapOnTop)), waterBucket);
+			Arrays.asList(searchLaundry, useSoapOnTop), waterBucket);
 		cleanPanel.setLockingStep(cleanTopSteps);
 
 		PanelDetails repairPanel = new PanelDetails("Repair Mourner trousers",
-			new ArrayList<>(Collections.singletonList(talkToOronwen)), bearFur, silk2);
+			Collections.singletonList(talkToOronwen), bearFur, silk2);
 		repairPanel.setLockingStep(repairTrousersSteps);
 
 		allSteps.add(cleanPanel);
 		allSteps.add(repairPanel);
 
-		PanelDetails enterWestArdougnePanel = new PanelDetails("Infiltrate the Mourners", new ArrayList<>(Arrays.asList(enterMournerBase, enterBasement, talkToEssyllt, talkToGnome, useFeatherOnGnome, talkToGnomeWithItems, releaseGnome, giveGnomeItems)),
+		PanelDetails enterWestArdougnePanel = new PanelDetails("Infiltrate the Mourners", Arrays.asList(enterMournerBase, enterBasement, talkToEssyllt, talkToGnome, useFeatherOnGnome, talkToGnomeWithItems, releaseGnome, giveGnomeItems),
 			fullMourners, mournerLetter, feather, toadCrunchies, magicLogs, leather);
 
 		allSteps.add(enterWestArdougnePanel);
 
-		allSteps.add(new PanelDetails("Dye the sheep", new ArrayList<>(Arrays.asList(getToads, dyeSheep, enterBaseAfterSheep, enterBasementAfterSheep, talkToEssylltAfterSheep)), fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
+		allSteps.add(new PanelDetails("Dye the sheep", Arrays.asList(getToads, dyeSheep, enterBaseAfterSheep, enterBasementAfterSheep, talkToEssylltAfterSheep), fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
 
 
 		allSteps.add(new PanelDetails("Poison the citizens",
-			new ArrayList<>(Arrays.asList(pickUpRottenApple, talkToElena, pickUpBarrel, useBarrelOnPile, useApplesOnPress, getNaphtha, useNaphthaOnBarrel, useSieveOnBarrel, cookNaphtha, usePowderOnFood1, usePowderOnFood2, talkToEssylltAfterPoison)), coal20OrNaphtha));
+			Arrays.asList(pickUpRottenApple, talkToElena, pickUpBarrel, useBarrelOnPile, useApplesOnPress, getNaphtha, useNaphthaOnBarrel, useSieveOnBarrel, cookNaphtha, usePowderOnFood1, usePowderOnFood2, talkToEssylltAfterPoison), coal20OrNaphtha));
 
 		allSteps.add(new PanelDetails("Report back to Arianwyn",
-			new ArrayList<>(Collections.singletonList(returnToArianwyn))));
+			Collections.singletonList(returnToArianwyn)));
 
 
 		return allSteps;

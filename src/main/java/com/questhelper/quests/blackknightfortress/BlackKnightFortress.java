@@ -3,13 +3,13 @@ package com.questhelper.quests.blackknightfortress;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -234,7 +234,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(bronzeMed);
@@ -245,7 +245,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(teleportFalador);
@@ -256,31 +256,31 @@ public class BlackKnightFortress extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Able to survive being attacked by multiple level 33 Black Knights"));
+		return Collections.singletonList("Able to survive being attacked by multiple level 33 Black Knights");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Talk to Sir Amik Varze", new ArrayList<>(Collections.singletonList(speakToAmik))));
+		allSteps.add(new PanelDetails("Talk to Sir Amik Varze", Collections.singletonList(speakToAmik)));
 		allSteps.add(new PanelDetails("Infiltrate the fortress",
-			new ArrayList<>(Arrays.asList(enterFortress, pushWall, climbUpLadder1, climbUpLadder2, climbDownLadder3,
-				climbUpLadder4, climbDownLadder5, climbDownLadder6, listenAtGrill)),
+			Arrays.asList(enterFortress, pushWall, climbUpLadder1, climbUpLadder2, climbDownLadder3,
+				climbUpLadder4, climbDownLadder5, climbDownLadder6, listenAtGrill),
 			bronzeMed, ironChainbody, cabbage));
 		allSteps.add(new PanelDetails("Sabotage the potion",
-			new ArrayList<>(Arrays.asList(climbUpLadder6, climbUpLadder5, climbDownLadder4, climbUpLadder3, climbDownLadder2, climbDownLadder1,
-				goUpLadderToCabbageZone, pushWall2, useCabbageOnHole))));
-		allSteps.add(new PanelDetails("Return to Sir Amik Varze", new ArrayList<>(Collections.singletonList(returnToAmik))));
+			Arrays.asList(climbUpLadder6, climbUpLadder5, climbDownLadder4, climbUpLadder3, climbDownLadder2, climbDownLadder1,
+				goUpLadderToCabbageZone, pushWall2, useCabbageOnHole)));
+		allSteps.add(new PanelDetails("Return to Sir Amik Varze", Collections.singletonList(returnToAmik)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new QuestPointRequirement(12)));
+		return Collections.singletonList(new QuestPointRequirement(12));
 	}
 }

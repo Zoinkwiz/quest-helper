@@ -38,6 +38,7 @@ import com.questhelper.steps.conditional.WidgetModelCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -410,19 +411,19 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(grabOrLockpick, granite, blackKnightHelm, blackKnightBody, blackKnightLeg, bronzeMed, ironChain));
+		return Arrays.asList(grabOrLockpick, granite, blackKnightHelm, blackKnightBody, blackKnightLeg, bronzeMed, ironChain);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(ardougneTeleport, camelotTeleport, edgevilleTeleport));
+		return Arrays.asList(ardougneTeleport, camelotTeleport, edgevilleTeleport);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
@@ -435,13 +436,13 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain))));
-		allSteps.add(new PanelDetails("Freeing Anna", new ArrayList<>(Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison, callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial))));
-		allSteps.add(new PanelDetails("Saving Merlin and Knights", new ArrayList<>(Arrays.asList(enterStatue, talkToMerlin, reachForVent, useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable)), grabOrLockpick));
-		allSteps.add(new PanelDetails("Saving Arthur", new ArrayList<>(Arrays.asList(talkToCromperty, enterFortress, enterWallInFortress, goDownToArthur, freeArthur, talkToArthur, talkToArthurInCamelot)), bronzeMed, ironChain, blackKnightHelm, blackKnightBody, blackKnightLeg, granite));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain)));
+		allSteps.add(new PanelDetails("Freeing Anna", Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison, callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial)));
+		allSteps.add(new PanelDetails("Saving Merlin and Knights", Arrays.asList(enterStatue, talkToMerlin, reachForVent, useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable), grabOrLockpick));
+		allSteps.add(new PanelDetails("Saving Arthur", Arrays.asList(talkToCromperty, enterFortress, enterWallInFortress, goDownToArthur, freeArthur, talkToArthur, talkToArthurInCamelot), bronzeMed, ironChain, blackKnightHelm, blackKnightBody, blackKnightLeg, granite));
 
 		return allSteps;
 	}

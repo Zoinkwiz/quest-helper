@@ -53,6 +53,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -316,25 +317,25 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(axe, macheteAndRadimus, dramenStaffOrLunar, rawChicken, bucketOfMilk, potOfCream, cornflour, pestleAndMortar, iceGloves));
+		return Arrays.asList(axe, macheteAndRadimus, dramenStaffOrLunar, rawChicken, bucketOfMilk, potOfCream, cornflour, pestleAndMortar, iceGloves);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, antidragonShield, antifirePotion));
+		return Arrays.asList(combatGear, antidragonShield, antifirePotion);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Evil Chicken (level " + evilChickenLevel + ")", "Black dragon (level 227)"));
+		return Arrays.asList("Evil Chicken (level " + evilChickenLevel + ")", "Black dragon (level 227)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(107));
@@ -347,15 +348,15 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(inspectAmik, talkToCook, talkToWom))));
-		PanelDetails tokenAndEggPanel = new PanelDetails("Get token and egg", new ArrayList<>(Arrays.asList(enterZanaris, useChickenOnShrine, killEvilChicken, pickUpEgg, killBlackDragon, pickUpToken)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectAmik, talkToCook, talkToWom)));
+		PanelDetails tokenAndEggPanel = new PanelDetails("Get token and egg", Arrays.asList(enterZanaris, useChickenOnShrine, killEvilChicken, pickUpEgg, killBlackDragon, pickUpToken),
 			dramenStaffOrLunar, rawChicken, combatGear, antidragonShield, antifirePotion);
 		tokenAndEggPanel.setLockingStep(tokenAndEggSteps);
 		allSteps.add(tokenAndEggPanel);
-		allSteps.add(new PanelDetails("Making the brulee", new ArrayList<>(Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture, useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze)), bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token));
+		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture, useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze), bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token));
 
 		return allSteps;
 	}

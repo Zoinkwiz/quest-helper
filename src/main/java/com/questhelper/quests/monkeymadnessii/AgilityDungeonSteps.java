@@ -42,6 +42,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -65,7 +66,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 	ItemRequirement bronzeKey;
 
-	ArrayList<WorldPoint> path1V1, path1V2, pathConnectingPath1V2ToV1, pathConnectingPath1V1ToV2, path2V1, path2V2, pathMaze, path3V1, path3V2, pathToChest,
+	List<WorldPoint> path1V1, path1V2, pathConnectingPath1V2ToV1, pathConnectingPath1V1ToV2, path2V1, path2V2, pathMaze, path3V1, path3V2, pathToChest,
 		pathFromChest, pathToDoor, path4V1, path4V2, path5V1, path5V2, path5V3, firstHalfSection5Path, pathToShortcutV1, pathToShortcutV2, pathToKrukV1, pathToKrukV2;
 
 	Zone fallArea1, fallArea2, fallArea3, fallArea4, fallArea4P2, cavesSection2, cavesSection2P2, cavesSection3, cavesSection3P2, cavesSection4P1, cavesSection4P2,
@@ -546,7 +547,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 	private void setupPaths()
 	{
-		path1V1 = new ArrayList<>(Arrays.asList(
+		path1V1 = Arrays.asList(
 			new WorldPoint(2509, 9169, 1),
 			new WorldPoint(2509, 9167, 1),
 			new WorldPoint(2507, 9164, 1),
@@ -570,9 +571,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2538, 9143, 1),
 			new WorldPoint(2543, 9148, 1),
 			new WorldPoint(2549, 9148, 1)
-		));
+		);
 
-		path1V2 = new ArrayList<>(Arrays.asList(
+		path1V2 = Arrays.asList(
 			new WorldPoint(2509, 9169, 1),
 			new WorldPoint(2509, 9167, 1),
 			new WorldPoint(2507, 9164, 1),
@@ -590,24 +591,24 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2525, 9155, 1),
 			new WorldPoint(2525, 9158, 1),
 			new WorldPoint(2528, 9165, 1)
-		));
+		);
 
-		pathConnectingPath1V2ToV1 = new ArrayList<>(Arrays.asList(
+		pathConnectingPath1V2ToV1 = Arrays.asList(
 			new WorldPoint(2549, 9152, 1),
 			new WorldPoint(2549, 9162, 1),
 			new WorldPoint(2539, 9166, 1),
 			new WorldPoint(2528, 9165, 1)
-		));
+		);
 
-		pathConnectingPath1V1ToV2 = new ArrayList<>(Arrays.asList(
+		pathConnectingPath1V1ToV2 = Arrays.asList(
 			new WorldPoint(2528, 9165, 1),
 			new WorldPoint(2539, 9166, 1),
 			new WorldPoint(2549, 9162, 1),
 			new WorldPoint(2549, 9152, 1)
-		));
+		);
 
 		// This goes north from the first bonfire
-		path2V1 = new ArrayList<>(Arrays.asList(
+		path2V1 = Arrays.asList(
 			new WorldPoint(2528, 9173, 1),
 			new WorldPoint(2534, 9173, 1),
 			new WorldPoint(2538, 9180, 1),
@@ -615,26 +616,26 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2552, 9184, 1),
 			new WorldPoint(2567, 9184, 1),
 			new WorldPoint(2567, 9178, 1)
-		));
+		);
 
-		path2V2 = new ArrayList<>(Arrays.asList(
+		path2V2 = Arrays.asList(
 			new WorldPoint(2557, 9152, 1),
 			new WorldPoint(2560, 9156, 1),
 			new WorldPoint(2567, 9156, 1),
 			new WorldPoint(2574, 9164, 1)
-		));
+		);
 
 
-		pathMaze = new ArrayList<>(Arrays.asList(
+		pathMaze = Arrays.asList(
 			new WorldPoint(2575, 9170, 1),
 			new WorldPoint(2577, 9170, 1),
 			new WorldPoint(2577, 9172, 1),
 			new WorldPoint(2581, 9172, 1),
 			new WorldPoint(2581, 9169, 1),
 			new WorldPoint(2584, 9169, 1)
-		));
+		);
 
-		path3V1 = new ArrayList<>(Arrays.asList(
+		path3V1 = Arrays.asList(
 			new WorldPoint(2589, 9162, 1),
 			new WorldPoint(2597, 9162, 1),
 			new WorldPoint(2602, 9162, 1),
@@ -648,9 +649,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2617, 9160, 1),
 			new WorldPoint(2622, 9160, 1),
 			new WorldPoint(2629, 9167, 1)
-		));
+		);
 
-		path3V2 = new ArrayList<>(Arrays.asList(
+		path3V2 = Arrays.asList(
 			new WorldPoint(2588, 9177, 1),
 			new WorldPoint(2593, 9177, 1),
 			new WorldPoint(2597, 9176, 1),
@@ -662,9 +663,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2625, 9172, 1),
 			new WorldPoint(2629, 9172, 1),
 			new WorldPoint(2629, 9167, 1)
-		));
+		);
 
-		pathToChest = new ArrayList<>(Arrays.asList(
+		pathToChest = Arrays.asList(
 			new WorldPoint(2629, 9167, 1),
 			new WorldPoint(2639, 9167, 1),
 			new WorldPoint(2639, 9163, 1),
@@ -673,16 +674,16 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2645, 9165, 1),
 			new WorldPoint(2645, 9163, 1),
 			new WorldPoint(2652, 9163, 1)
-		));
+		);
 
-		pathFromChest = new ArrayList<>(Arrays.asList(
+		pathFromChest = Arrays.asList(
 			new WorldPoint(2652, 9163, 1),
 			new WorldPoint(2639, 9163, 1),
 			new WorldPoint(2639, 9167, 1),
 			new WorldPoint(2629, 9167, 1)
-		));
+		);
 
-		pathToDoor = new ArrayList<>(Arrays.asList(
+		pathToDoor = Arrays.asList(
 			new WorldPoint(2652, 9163, 1),
 			new WorldPoint(2645, 9163, 1),
 			new WorldPoint(2645, 9165, 1),
@@ -712,9 +713,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2615, 9188, 1),
 			new WorldPoint(2615, 9195, 1),
 			new WorldPoint(2611, 9195, 1)
-		));
+		);
 
-		path4V1 = new ArrayList<>(Arrays.asList(
+		path4V1 = Arrays.asList(
 			new WorldPoint(2607, 9195, 1),
 			new WorldPoint(2600, 9195, 1),
 			new WorldPoint(2600, 9205, 1),
@@ -728,9 +729,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2598, 9215, 1),
 			new WorldPoint(2599, 9216, 1),
 			new WorldPoint(2599, 9221, 1)
-		));
+		);
 
-		path4V2 = new ArrayList<>(Arrays.asList(
+		path4V2 = Arrays.asList(
 			new WorldPoint(2607, 9195, 1),
 			new WorldPoint(2600, 9195, 1),
 			new WorldPoint(2595, 9195, 1),
@@ -746,24 +747,24 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2571, 9211, 1),
 			new WorldPoint(2571, 9220, 1),
 			new WorldPoint(2576, 9222, 1)
-		));
+		);
 
-		path5V1 = new ArrayList<>(Arrays.asList(
+		path5V1 = Arrays.asList(
 			new WorldPoint(2599, 9221, 1),
 			new WorldPoint(2604, 9228, 1),
 			new WorldPoint(2604, 9230, 1),
 			new WorldPoint(2602, 9230, 1),
 			new WorldPoint(2602, 9232, 1)
-		));
+		);
 
-		path5V2 = new ArrayList<>(Arrays.asList(
+		path5V2 = Arrays.asList(
 			new WorldPoint(2587, 9223, 1),
 			new WorldPoint(2587, 9231, 1),
 			new WorldPoint(2591, 9235, 1),
 			new WorldPoint(2591, 9237, 1)
-		));
+		);
 
-		path5V3 = new ArrayList<>(Arrays.asList(
+		path5V3 = Arrays.asList(
 			new WorldPoint(2576, 9222, 1),
 			new WorldPoint(2576, 9225, 1),
 			new WorldPoint(2577, 9225, 1),
@@ -778,13 +779,13 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			new WorldPoint(2569, 9234, 1),
 			new WorldPoint(2571, 9234, 1),
 			new WorldPoint(2571, 9239, 1)
-		));
+		);
 
-		firstHalfSection5Path = new ArrayList<>(Arrays.asList(
+		firstHalfSection5Path = Arrays.asList(
 			new WorldPoint(2593, 9273, 1),
 			new WorldPoint(2570, 9273, 1),
 			new WorldPoint(2554, 9258, 1)
-		));
+		);
 
 		pathToShortcutV1 = new ArrayList<>();
 		pathToShortcutV1.addAll(firstHalfSection5Path);
@@ -876,7 +877,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			openShortcut, goToKruk, enterShortcut, fightKruk);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(traverseDungeonFirstSection, getKey, openBronzeDoor, traverseDungeonThirdSection, openShortcut, goToKruk, fightKruk);
 	}

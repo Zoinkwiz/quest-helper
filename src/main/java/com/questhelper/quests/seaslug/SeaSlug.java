@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -240,7 +241,7 @@ public class SeaSlug extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(swampPaste);
@@ -248,21 +249,24 @@ public class SeaSlug extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.FIREMAKING, 30, true)));
+		return Collections.singletonList(new SkillRequirement(Skill.FIREMAKING, 30, true));
 	}
 	
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToCaroline)), swampPaste));
-		allSteps.add(new PanelDetails("Investigation", new ArrayList<>(Arrays.asList(talkToHolgart, travelWithHolgart, climbLadder, talkToKennith, goDownLadder, goToIsland))));
-		allSteps.add(new PanelDetails("Talking with Kent", new ArrayList<>(Arrays.asList(talkToKent, returnFromIsland))));
-		allSteps.add(new PanelDetails("Saving Kennith", new ArrayList<>(
-			Arrays.asList(talkToBaileyForTorch, pickupGlass, pickupDampSticks, useGlassOnDampSticks, rubSticks, goBackUpLadder, talkToKennithAgain, kickWall,
-				talkToKennithAfterKicking, activateCrane, goDownLadderAgain, returnWithHolgart, finishQuest))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToCaroline),
+			swampPaste));
+		allSteps.add(new PanelDetails("Investigation", Arrays.asList(talkToHolgart, travelWithHolgart,
+			climbLadder, talkToKennith, goDownLadder, goToIsland)));
+		allSteps.add(new PanelDetails("Talking with Kent", Arrays.asList(talkToKent, returnFromIsland)));
+		allSteps.add(new PanelDetails("Saving Kennith",
+			Arrays.asList(talkToBaileyForTorch, pickupGlass, pickupDampSticks, useGlassOnDampSticks, rubSticks, goBackUpLadder,
+				talkToKennithAgain, kickWall, talkToKennithAfterKicking, activateCrane, goDownLadderAgain, returnWithHolgart,
+				finishQuest)));
 
 		return allSteps;
 	}

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
@@ -203,25 +204,25 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(stew));
+		return Collections.singletonList(stew);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.PISCARILIUS, 20),
-			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
+		return Arrays.asList(new FavourRequirement(Favour.PISCARILIUS, 20),
+			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigation", new ArrayList<>(Arrays.asList(talkToLawry, talkToPoorLookingPerson, talkToOReilly)), stew));
-		allSteps.add(new PanelDetails("Gaining Trust", new ArrayList<>(Arrays.asList(enterWarrens, talkToDevan, exitWarrens, killConrad, enterWarrens2, tellDevanAboutConrad))));
-		allSteps.add(new PanelDetails("Exposing Hughes", new ArrayList<>(Arrays.asList(enterWarrens3, talkToQueenOfThieves, exitWarrens2, goToKingstown, openChest, leaveKingstown, talkToLawry2, enterWarrens4, talkToShauna))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Investigation", Arrays.asList(talkToLawry, talkToPoorLookingPerson, talkToOReilly), stew));
+		allSteps.add(new PanelDetails("Gaining Trust", Arrays.asList(enterWarrens, talkToDevan, exitWarrens, killConrad, enterWarrens2, tellDevanAboutConrad)));
+		allSteps.add(new PanelDetails("Exposing Hughes", Arrays.asList(enterWarrens3, talkToQueenOfThieves, exitWarrens2, goToKingstown, openChest, leaveKingstown, talkToLawry2, enterWarrens4, talkToShauna)));
 		return allSteps;
 	}
 }

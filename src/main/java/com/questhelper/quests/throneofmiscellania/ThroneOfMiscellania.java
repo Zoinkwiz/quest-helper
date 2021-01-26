@@ -35,7 +35,6 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.Conditions;
 import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
 import com.questhelper.steps.conditional.Operation;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.VarplayerCondition;
@@ -43,6 +42,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -455,7 +455,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ironBar);
@@ -478,7 +478,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Whether you marry Brand or Astrid depends on whether you're female or male respectively. If you have a preference on who you'd like to marry, you can change to male or female prior to the quest.");
@@ -486,7 +486,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(dramenStaff);
@@ -494,7 +494,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
@@ -507,9 +507,9 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		ItemRequirement giftItem;
 		Player player = client.getLocalPlayer();
 		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
@@ -521,16 +521,16 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 			giftItem = cake;
 		}
 
-		allSteps.add(new PanelDetails("Talk to King Vargas", new ArrayList<>(Arrays.asList(travelToMisc, getFlowers,
-			talkToVargas)), flowers, giftItem, ring, ironBar, logs, reputationItems));
+		allSteps.add(new PanelDetails("Talk to King Vargas", Arrays.asList(travelToMisc, getFlowers,
+			talkToVargas), flowers, giftItem, ring, ironBar, logs, reputationItems));
 
 		PanelDetails astridPanel = new PanelDetails("Win over Astrid",
-			new ArrayList<>(Arrays.asList(goUpstairsToAstrid, talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,
-				giveBowToAstrid, talkAstrid3, blowKissToAstrid, useRingOnAstrid)));
+			Arrays.asList(goUpstairsToAstrid, talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,
+				giveBowToAstrid, talkAstrid3, blowKissToAstrid, useRingOnAstrid));
 
 		PanelDetails brandPanel = new PanelDetails("Win over Brand",
-			new ArrayList<>(Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
-				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand)));
+			Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
+				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand));
 
 		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
 		{
@@ -542,10 +542,10 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		}
 
 		allSteps.add(new PanelDetails("Establish peace",
-			new ArrayList<>(Arrays.asList(talkToSigridDip1, talkToVargasDip1, talkToSigridDip2, talkToBrandDip, talkToGhrimDip, talkToSigridDip3, talkToVargasDip2,
-				talkToDerrik, makePen, giveVargasPen))));
+			Arrays.asList(talkToSigridDip1, talkToVargasDip1, talkToSigridDip2, talkToBrandDip, talkToGhrimDip, talkToSigridDip3, talkToVargasDip2,
+				talkToDerrik, makePen, giveVargasPen)));
 
-		allSteps.add(new PanelDetails("Get support", new ArrayList<>(Arrays.asList(get75Support, finishQuest))));
+		allSteps.add(new PanelDetails("Get support", Arrays.asList(get75Support, finishQuest)));
 		return allSteps;
 	}
 }

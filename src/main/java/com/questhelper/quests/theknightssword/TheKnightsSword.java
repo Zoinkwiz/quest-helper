@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -174,7 +175,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(redberryPie);
@@ -184,7 +185,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
@@ -194,7 +195,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Able to survive attacks from Ice Warriors (level 57) and Ice Giants (level 53)");
@@ -202,21 +203,21 @@ public class TheKnightsSword extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.MINING, 10, true)));
+		return Collections.singletonList(new SkillRequirement(Skill.MINING, 10, true));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToSquire, talkToReldo))));
-		allSteps.add(new PanelDetails("Finding an Imcando", new ArrayList<>(Arrays.asList(talkToThurgo, talkToThurgoAgain)), redberryPie));
-		allSteps.add(new PanelDetails("Find the portrait", new ArrayList<>(Arrays.asList(talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, givePortraitToThurgo))));
-		allSteps.add(new PanelDetails("Making the sword", new ArrayList<>(Arrays.asList(enterDungeon, mineBlurite, bringThurgoOre)), pickaxe, portrait, ironBars));
-		allSteps.add(new PanelDetails("Return the sword", new ArrayList<>(Collections.singletonList(finishQuest))));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToSquire, talkToReldo)));
+		allSteps.add(new PanelDetails("Finding an Imcando", Arrays.asList(talkToThurgo, talkToThurgoAgain), redberryPie));
+		allSteps.add(new PanelDetails("Find the portrait", Arrays.asList(talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, givePortraitToThurgo)));
+		allSteps.add(new PanelDetails("Making the sword", Arrays.asList(enterDungeon, mineBlurite, bringThurgoOre), pickaxe, portrait, ironBars));
+		allSteps.add(new PanelDetails("Return the sword", Collections.singletonList(finishQuest)));
 		return allSteps;
 	}
 }

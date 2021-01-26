@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -291,24 +292,24 @@ public class DeathPlateau extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins, premadeBlurb, ironBar, bread, trout));
+		return Arrays.asList(coins, premadeBlurb, ironBar, bread, trout);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(gamesNecklace));
+		return Collections.singletonList(gamesNecklace);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("The equipment room", new ArrayList<>(Arrays.asList(talkToDenulth1, talkToEohric1, talkToHarold1, talkToEohric2, takeAsgarnianAle, talkToHarold2, giveHaroldBlurberry, gambleWithHarold, readIou, placeStones)), coins, premadeBlurb));
-		allSteps.add(new PanelDetails("Get spiked boots", new ArrayList<>(Arrays.asList(enterSabaCave, talkToSaba, talkToTenzing1, talkToDunstan1, talkToDunstan2)), ironBar));
-		allSteps.add(new PanelDetails("The secret path", new ArrayList<>(Arrays.asList(talkToTenzing2, goNorth, talkToDenulth3)), bread, trout));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("The equipment room", Arrays.asList(talkToDenulth1, talkToEohric1, talkToHarold1, talkToEohric2, takeAsgarnianAle, talkToHarold2, giveHaroldBlurberry, gambleWithHarold, readIou, placeStones), coins, premadeBlurb));
+		allSteps.add(new PanelDetails("Get spiked boots", Arrays.asList(enterSabaCave, talkToSaba, talkToTenzing1, talkToDunstan1, talkToDunstan2), ironBar));
+		allSteps.add(new PanelDetails("The secret path", Arrays.asList(talkToTenzing2, goNorth, talkToDenulth3), bread, trout));
 		return allSteps;
 	}
 }

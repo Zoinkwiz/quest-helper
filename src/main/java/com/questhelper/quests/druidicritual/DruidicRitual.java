@@ -41,6 +41,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -173,17 +174,18 @@ public class DruidicRitual extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(rawBear, rawBeef, rawChicken, rawRat));
+		return Arrays.asList(rawBear, rawBeef, rawChicken, rawRat);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping the druids",
-			new ArrayList<>(Arrays.asList(talkToKaqemeex, talkToSanfew, enterDungeon, enchantMeats, talkToSanfewWithMeat, talkToKaqemeexToFinish)), rawBear, rawBeef, rawChicken, rawRat));
+			Arrays.asList(talkToKaqemeex, talkToSanfew, enterDungeon, enchantMeats, talkToSanfewWithMeat, talkToKaqemeexToFinish),
+				rawBear, rawBeef, rawChicken, rawRat));
 
 		return allSteps;
 	}

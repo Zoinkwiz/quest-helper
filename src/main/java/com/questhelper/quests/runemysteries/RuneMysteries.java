@@ -35,6 +35,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -150,7 +151,7 @@ public class RuneMysteries extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
@@ -159,11 +160,11 @@ public class RuneMysteries extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Discover Runecrafting", new ArrayList<>(Arrays.asList(talkToHoracio, talkToSedridor, talkToAubury, talkToAudburyAgain, talkToSedridor2))));
+		allSteps.add(new PanelDetails("Discover Runecrafting", Arrays.asList(talkToHoracio, talkToSedridor, talkToAubury, talkToAudburyAgain, talkToSedridor2)));
 		return allSteps;
 	}
 }

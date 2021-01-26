@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -138,7 +139,7 @@ public class MonksFriend extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(jugOfWater);
@@ -147,7 +148,7 @@ public class MonksFriend extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneCloak);
@@ -155,12 +156,12 @@ public class MonksFriend extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToOmad)), jugOfWater, log));
-		allSteps.add(new PanelDetails("Finding the blanket", new ArrayList<>(Arrays.asList(goDownLadder, grabBlanket, goUpLadder, returnToOmadWithBlanket))));
-		allSteps.add(new PanelDetails("Help Cedric", new ArrayList<>(Arrays.asList(talkToOmadAgain, talkToCedric, talkToCedricWithJug, talkToCedricWithLog, finishQuest))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToOmad), jugOfWater, log));
+		allSteps.add(new PanelDetails("Finding the blanket", Arrays.asList(goDownLadder, grabBlanket, goUpLadder, returnToOmadWithBlanket)));
+		allSteps.add(new PanelDetails("Help Cedric", Arrays.asList(talkToOmadAgain, talkToCedric, talkToCedricWithJug, talkToCedricWithLog, finishQuest)));
 
 		return allSteps;
 	}

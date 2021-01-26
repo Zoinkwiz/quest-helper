@@ -25,8 +25,6 @@
 package com.questhelper.quests.shieldofarrav;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
-import com.questhelper.QuestVarbits;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -39,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -177,28 +176,28 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start quest", new ArrayList<>(Arrays.asList(talkToCharlie, talkToKatrine))));
-		allSteps.add(new PanelDetails("Get the phoenix crossbows", new ArrayList<>(Arrays.asList(getWeaponStoreKey, goUpToWeaponStore, killWeaponsMaster, pickupTwoCrossbows, returnToKatrine))));
-		allSteps.add(new PanelDetails("Return the shield", new ArrayList<>(Arrays.asList(goUpstairsInBase, getShieldFromCupboard, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start quest", Arrays.asList(talkToCharlie, talkToKatrine)));
+		allSteps.add(new PanelDetails("Get the phoenix crossbows", Arrays.asList(getWeaponStoreKey, goUpToWeaponStore, killWeaponsMaster, pickupTwoCrossbows, returnToKatrine)));
+		allSteps.add(new PanelDetails("Return the shield", Arrays.asList(goUpstairsInBase, getShieldFromCupboard, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Weaponsmaster (level 23), or a friend to kill him for you"));
+		return Collections.singletonList("Weaponsmaster (level 23), or a friend to kill him for you");
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(
+		return 
 			Arrays.asList("You can also do this quest by joining the Phoenix Gang, which instead requires you to kill Jonny the beard (level 2).",
 			"Once you're accepted into one of the gangs, you CANNOT change gang.",
-			"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there."));
+			"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there.");
 	}
 
 	@Override

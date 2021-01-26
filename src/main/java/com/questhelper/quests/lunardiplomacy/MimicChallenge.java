@@ -33,6 +33,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.emote.QuestEmote;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
@@ -116,7 +117,7 @@ public class MimicChallenge extends DetailedOwnerStep
 		return Arrays.asList(talk, cry, bow, dance, think, wave);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(talk, cry, bow, dance, think, wave);
 	}

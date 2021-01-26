@@ -70,7 +70,7 @@ public class PenguinEmote extends WidgetStep
 		{
 			currentEmoteID = 8 + client.getVarbitValue(3302);
 		}
-		this.setWidgetDetails(new ArrayList<>(Collections.singletonList(new WidgetDetails(223, currentEmoteID, -1))));
+		this.setWidgetDetails(Collections.singletonList(new WidgetDetails(223, currentEmoteID, -1)));
 	}
 }
 

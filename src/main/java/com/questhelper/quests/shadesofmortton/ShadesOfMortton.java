@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -290,31 +291,31 @@ public class ShadesOfMortton extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(tarrominUnf2, tinderbox, log, ashes2, coins5000, hammerOrFlam));
+		return Arrays.asList(tarrominUnf2, tinderbox, log, ashes2, coins5000, hammerOrFlam);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, morttonTele, food, flamHammer, flamtaerBracelet));
+		return Arrays.asList(combatGear, morttonTele, food, flamHammer, flamtaerBracelet);
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Arrays.asList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory and steal charges from your Druid Pouch.", "It's strongly recommended to bring a Flamtaer hammer and Flamtaer bracelets, as they speed up the temple repair section massively."));
+		return Arrays.asList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory and steal charges from your Druid Pouch.", "It's strongly recommended to bring a Flamtaer hammer and Flamtaer bracelets, as they speed up the temple repair section massively.");
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("5 Loar Shades (level 40)"));
+		return Collections.singletonList("5 Loar Shades (level 40)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));
@@ -325,14 +326,14 @@ public class ShadesOfMortton extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating the town", new ArrayList<>(Arrays.asList(searchShelf, readDiary, addAshes)), tarrominUnf2, ashes2, tinderbox, log, coins5000, hammerOrFlam));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Investigating the town", Arrays.asList(searchShelf, readDiary, addAshes), tarrominUnf2, ashes2, tinderbox, log, coins5000, hammerOrFlam));
 		allSteps.add(new PanelDetails("Helping Razmire",
-			new ArrayList<>(Arrays.asList(use207OnRazmire, talkToRazmire, kill5Shades, use207OnRazmireAgain, talkToRazmireAgain)), serum207Highlighted, tinderbox, log, coins5000, hammerOrFlam));
+			Arrays.asList(use207OnRazmire, talkToRazmire, kill5Shades, use207OnRazmireAgain, talkToRazmireAgain), serum207Highlighted, tinderbox, log, coins5000, hammerOrFlam));
 		allSteps.add(new PanelDetails("Helping Ulsquire",
-			new ArrayList<>(Arrays.asList(use207OnUlsquire, talkToUlsquire, talkToUlsquireAgain, repairTemple, lightAltar, repairTo20Sanctity, useOilOnFlame, use207OnFlame, useOilOnLog, burnCorpse, use208OnRazmire, use208OnUlsquire, talkToUlsquireToFinish)), serum207Highlighted, tinderbox, log, coins5000, hammerOrFlam));
+			Arrays.asList(use207OnUlsquire, talkToUlsquire, talkToUlsquireAgain, repairTemple, lightAltar, repairTo20Sanctity, useOilOnFlame, use207OnFlame, useOilOnLog, burnCorpse, use208OnRazmire, use208OnUlsquire, talkToUlsquireToFinish), serum207Highlighted, tinderbox, log, coins5000, hammerOrFlam));
 		return allSteps;
 	}
 }

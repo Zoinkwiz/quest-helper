@@ -24,17 +24,15 @@
  */
 package com.questhelper.requirements;
 
-import java.util.ArrayList;
-import net.runelite.api.Actor;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
-import net.runelite.api.NPC;
 
 public class FollowerItemRequirement extends ItemRequirement
 {
-	private ArrayList<Integer> followerIDs;
+	private final List<Integer> followerIDs;
 
-	public FollowerItemRequirement(String name, ArrayList<Integer> itemIDs, ArrayList<Integer> followerIDs)
+	public FollowerItemRequirement(String name, List<Integer> itemIDs, List<Integer> followerIDs)
 	{
 		super(name, itemIDs);
 		this.followerIDs = followerIDs;

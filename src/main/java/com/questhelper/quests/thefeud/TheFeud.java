@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -556,70 +557,70 @@ public class TheFeud extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins, gloves));
+		return Arrays.asList(coins, gloves);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(combatGear));
+		return Collections.singletonList(combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Bandit champion (level 70) - Safespottable", "Tough Guy (level 75) - Safespottable"));
+		return Arrays.asList("Bandit champion (level 70) - Safespottable", "Tough Guy (level 75) - Safespottable");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.THIEVING, 30)));
+		return Collections.singletonList(new SkillRequirement(Skill.THIEVING, 30));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> steps = new ArrayList<>();
+		List<PanelDetails> steps = new ArrayList<>();
 
 		PanelDetails startingPanel = new PanelDetails("Starting out",
-			new ArrayList<>(Collections.singletonList(startQuest)),
+			Collections.singletonList(startQuest),
 			unspecifiedCoins);
 		steps.add(startingPanel);
 
 		PanelDetails pollniveachPanel = new PanelDetails("Pollnivneach",
-			new ArrayList<>(Arrays.asList(buyDisguiseGear, createDisguise, goToPollniveachStep, drunkenAli)),
+			Arrays.asList(buyDisguiseGear, createDisguise, goToPollniveachStep, drunkenAli),
 			unspecifiedCoins);
 		steps.add(pollniveachPanel);
 
 		PanelDetails findTheBeefJobPanel = new PanelDetails("Find the beef",
-			new ArrayList<>(Arrays.asList(talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel)),
+			Arrays.asList(talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel),
 			unspecifiedCoins);
 		steps.add(findTheBeefJobPanel);
 
 		PanelDetails firstJobPanel = new PanelDetails("First job",
-			new ArrayList<>(Arrays.asList(talkToAliTheOperator, pickpocketVillager, pickPocketVillagerWithUrchin,
-				getBlackjackFromAli, blackJackVillager)),
+			Arrays.asList(talkToAliTheOperator, pickpocketVillager, pickPocketVillagerWithUrchin,
+				getBlackjackFromAli, blackJackVillager),
 			unspecifiedCoins);
 		steps.add(firstJobPanel);
 
 		PanelDetails secondJobPanel = new PanelDetails("Second job",
-			new ArrayList<>(Arrays.asList(talkToAliToGetSecondJob, hideBehindCactus, openTheDoor, goUpStairs,
-				crackTheSafe, giveTheJewelsToAli)),
+			Arrays.asList(talkToAliToGetSecondJob, hideBehindCactus, openTheDoor, goUpStairs,
+				crackTheSafe, giveTheJewelsToAli),
 			desertDisguise, gloves);
 		steps.add(secondJobPanel);
 
 		PanelDetails thirdJobPanel = new PanelDetails("Third job",
-			new ArrayList<>(Arrays.asList(talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman,
+			Arrays.asList(talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman,
 				talkToAliTheHag, giveCoinToSnakeCharmer, catchSnake, givePoisonToAliTheHag, talkToAliTheKebabSalesman, getDung,
-				givenDungToHag, tellAliOperatorPoisoned)), unspecifiedCoins);
+				givenDungToHag, tellAliOperatorPoisoned), unspecifiedCoins);
 		steps.add(thirdJobPanel);
 
 		PanelDetails finishingUpPanel = new PanelDetails("Finishing up",
-			new ArrayList<>(Arrays.asList(talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader,
-				talkToAVillagerToSpawnMayor, talkToMayor, finishQuest)), combatGear
+			Arrays.asList(talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader,
+				talkToAVillagerToSpawnMayor, talkToMayor, finishQuest), combatGear
 		);
 		steps.add(finishingUpPanel);
 

@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.NpcStep;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -133,7 +134,7 @@ public class SheepShearer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(twentyBallsOfWool);
@@ -142,11 +143,11 @@ public class SheepShearer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Bring Fred some wool", new ArrayList<>(Collections.singletonList(startStep)), twentyBallsOfWool));
+		allSteps.add(new PanelDetails("Bring Fred some wool", Collections.singletonList(startStep), twentyBallsOfWool));
 		return allSteps;
 	}
 }

@@ -31,7 +31,6 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
@@ -52,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -253,31 +253,31 @@ public class FishingContest extends BasicQuestHelper
 
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> panels = new ArrayList<>();
-		ArrayList<QuestStep> steps = new ArrayList<>(Arrays.asList(talkToVestriStep, goToHemensterStep, fishNearPipes, speaktoVestri));
+		List<PanelDetails> panels = new ArrayList<>();
+		List<QuestStep> steps = Arrays.asList(talkToVestriStep, goToHemensterStep, fishNearPipes, speaktoVestri);
 		PanelDetails fisingContest = new PanelDetails("Fishing Contest", steps, fishingRod, garlic, coins, redVineWorm, spade);
 		panels.add(fisingContest);
 		return panels;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new SkillRequirement(Skill.FISHING, 10)));
+		return Collections.singletonList(new SkillRequirement(Skill.FISHING, 10));
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins, redVineWorm, garlic, spade, fishingRod));
+		return Arrays.asList(coins, redVineWorm, garlic, spade, fishingRod);
 	}
 
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatBracelet, camelotTeleport));
+		return Arrays.asList(combatBracelet, camelotTeleport);
 	}
 }

@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -369,14 +370,14 @@ public class GrimTales extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(tarrominUnf2, dibber, can, axe, combatGear));
+		return Arrays.asList(tarrominUnf2, dibber, can, axe, combatGear);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Glod (level 138)");
@@ -384,26 +385,26 @@ public class GrimTales extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToSylas))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToSylas)));
 		allSteps.add(new PanelDetails("Griffin feather",
-			new ArrayList<>(Arrays.asList(talkToGrimgnash, stealFeather, returnFeatherToSylas))));
+			Arrays.asList(talkToGrimgnash, stealFeather, returnFeatherToSylas)));
 		allSteps.add(new PanelDetails("Rupert's helmet",
-			new ArrayList<>(Arrays.asList(climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard,
+			Arrays.asList(climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard,
 				talkToMiazrqa, enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion,
-				climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet)),
+				climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet),
 			tarrominUnf2, food));
 		allSteps.add(new PanelDetails("Golden goblin",
-			new ArrayList<>(Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin,
-				giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish)), combatGear, food, dibber, can,
+			Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin,
+				giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish), combatGear, food, dibber, can,
 			axe, shrinkPotion));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.WITCHS_HOUSE, QuestState.FINISHED));

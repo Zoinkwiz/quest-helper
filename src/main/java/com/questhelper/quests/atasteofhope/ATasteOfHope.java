@@ -43,6 +43,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -367,7 +368,7 @@ public class ATasteOfHope extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		ArrayList<WorldPoint> pathToBase = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathToBase = Arrays.asList(
 			new WorldPoint(3623, 3324, 0),
 			new WorldPoint(3631, 3324, 0),
 			new WorldPoint(3631, 3303, 0),
@@ -389,9 +390,9 @@ public class ATasteOfHope extends BasicQuestHelper
 			new WorldPoint(3639, 3256, 0),
 			new WorldPoint(3640, 3256, 0),
 			new WorldPoint(3640, 3250, 0)
-		));
+		);
 
-		ArrayList<WorldPoint> pathToSerafina = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> pathToSerafina = Arrays.asList(
 			new WorldPoint(3640, 3250, 0),
 			new WorldPoint(3640, 3256, 0),
 			new WorldPoint(3639, 3256, 0),
@@ -408,7 +409,7 @@ public class ATasteOfHope extends BasicQuestHelper
 			new WorldPoint(3623, 3283, 0),
 			new WorldPoint(3596, 3283, 0),
 			new WorldPoint(3596, 3277, 0)
-		));
+		);
 
 		talkToGarth = new NpcStep(this, NpcID.GARTH_8206, new WorldPoint(3668, 3217, 0), "Talk to Garth outside the Theatre of Blood.");
 		talkToGarth.addDialogStep("Yes.");
@@ -418,31 +419,47 @@ public class ATasteOfHope extends BasicQuestHelper
 		enterBase.setLinePoints(pathToBase);
 		enterBase.addSubSteps(pressDecoratedWall);
 
-		talkToSafalaan = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan in the north room.");
+		talkToSafalaan = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0),
+			"Talk to Safalaan in the north room.");
 
-		climbRubbleAtBank = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0), "Return to the Theatre of Blood and attempt to climb rubble in its south west corner.");
-		talkToHarpert = new NpcStep(this, NpcID.HARPERT, new WorldPoint(3644, 3211, 0), "Talk to Harpert near the rubble.", coins1000);
+		climbRubbleAtBank = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0),
+			"Return to the Theatre of Blood and attempt to climb rubble in its south west corner.");
+		talkToHarpert = new NpcStep(this, NpcID.HARPERT, new WorldPoint(3644, 3211, 0),
+			"Talk to Harpert near the rubble.", coins1000);
 		talkToHarpert.addDialogStep("Fine, here's the money.");
-		climbRubbleAfterHarpert = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0), "Attempt to climb the rubble again.");
-		climbSteamVent = new ObjectStep(this, ObjectID.VENT_32551, new WorldPoint(3644, 3214, 1), "Climb the vent to the north when the steam stops coming out.");
-		jumpOffRoof = new ObjectStep(this, ObjectID.ROOF_32553, new WorldPoint(3644, 3225, 2), "Jump off the roof to the north.");
-		climbSecondVent = new ObjectStep(this, ObjectID.VENT_32551, new WorldPoint(3641, 3235, 1), "Climb the vent to the north when steam stops coming out.");
-		climbUpToRoof = new ObjectStep(this, ObjectID.ROOF_32554, new WorldPoint(3660, 3237, 2), "Climb the roof to the east.");
-		climbDownFromRoof = new ObjectStep(this, ObjectID.ROOF_32555, new WorldPoint(3665, 3237, 3), "Climb down to the east.");
-		lookThroughWindow = new ObjectStep(this, ObjectID.WINDOW_32548, new WorldPoint(3687, 3221, 2), "Look through the window at the end of the path.");
+		climbRubbleAfterHarpert = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0),
+			"Attempt to climb the rubble again.");
+		climbSteamVent = new ObjectStep(this, ObjectID.VENT_32551, new WorldPoint(3644, 3214, 1),
+			"Climb the vent to the north when the steam stops coming out.");
+		jumpOffRoof = new ObjectStep(this, ObjectID.ROOF_32553, new WorldPoint(3644, 3225, 2),
+			"Jump off the roof to the north.");
+		climbSecondVent = new ObjectStep(this, ObjectID.VENT_32551, new WorldPoint(3641, 3235, 1),
+			"Climb the vent to the north when steam stops coming out.");
+		climbUpToRoof = new ObjectStep(this, ObjectID.ROOF_32554, new WorldPoint(3660, 3237, 2),
+			"Climb the roof to the east.");
+		climbDownFromRoof = new ObjectStep(this, ObjectID.ROOF_32555, new WorldPoint(3665, 3237, 3),
+			"Climb down to the east.");
+		lookThroughWindow = new ObjectStep(this, ObjectID.WINDOW_32548, new WorldPoint(3687, 3221, 2),
+			"Look through the window at the end of the path.");
 
 
-		pressDecoratedWallReturn = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0), "Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
-		returnToBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
+		pressDecoratedWallReturn = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0),
+			"Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines," +
+				" escape by mining 15 rocks, then head south from there.");
+		returnToBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0),
+			"Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, " +
+				"escape by mining 15 rocks, then head south from there.");
 		returnToBase.setLinePoints(pathToBase);
 		returnToBase.addSubSteps(pressDecoratedWallReturn);
 
-		talkToSafalaanAfterSpying = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan in the north room.");
+		talkToSafalaanAfterSpying = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0),
+			"Talk to Safalaan in the north room.");
 		talkToSafalaanAfterSpying.addDialogStep("I do.");
 
 		talkToFlaygian = new NpcStep(this, NpcID.FLAYGIAN_SCREWTE, new WorldPoint(3627, 9644, 0), "Talk to Flaygian.");
 		talkToFlaygian.addDialogSteps("Anything to report?", "Why?");
-		talkToSafalaanAfterFlaygian = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan again.");
+		talkToSafalaanAfterFlaygian = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0),
+			"Talk to Safalaan again.");
 
 		goUpToSerafinaHouse = new ObjectStep(this, ObjectID.LADDER_17986, new WorldPoint(3626, 9617, 0), "Return to the surface.");
 		enterSerafinaHouse = new ObjectStep(this, ObjectID.STAIRS_32560, new WorldPoint(3593, 3274, 0), "Enter Serafina's house in west Meiyerditch.");
@@ -538,44 +555,44 @@ public class ATasteOfHope extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins1000, vialOfWaterNoTip, knife, emerald, chisel,
-			enchantEmeraldRunesOrTablet, combatGear));
+		return Arrays.asList(coins1000, vialOfWaterNoTip, knife, emerald, chisel,
+			enchantEmeraldRunesOrTablet, combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Abomination (level 149, safespottable)", "Ranis Drakan (level 233, melee only)"));
+		return Arrays.asList("Abomination (level 149, safespottable)", "Ranis Drakan (level 233, melee only)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGarth, enterBase, talkToSafalaan))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGarth, enterBase, talkToSafalaan)));
 		allSteps.add(new PanelDetails("Spying",
-			new ArrayList<>(Arrays.asList(climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof,
-				climbSecondVent, climbUpToRoof, climbDownFromRoof, lookThroughWindow))));
+			Arrays.asList(climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof,
+				climbSecondVent, climbUpToRoof, climbDownFromRoof, lookThroughWindow)));
 		allSteps.add(new PanelDetails("Investigating",
-			new ArrayList<>(Arrays.asList(returnToBase, talkToSafalaanAfterSpying, talkToFlaygian, enterSerafinaHouse,
+			Arrays.asList(returnToBase, talkToSafalaanAfterSpying, talkToFlaygian, enterSerafinaHouse,
 				talkToSafalaanInSerafinaHouse, searchForHerb, searchForMeat, searchForPestle, useHerbOnVial, usePestleOnMeat,
 				useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain, useMeatOnBlood,
 				useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes, enterBaseAfterSerafina, talkToSafalaanForAbominationFight, killAbomination,
-				talkToSafalaanAfterAbominationFight)), combatGear, food, vialOfWaterNoTip));
+				talkToSafalaanAfterAbominationFight), combatGear, food, vialOfWaterNoTip));
 		allSteps.add(new PanelDetails("Plotting revenge",
-			new ArrayList<>(Arrays.asList(enterOldManRalBasement, talkToSafalaanInRalBasement,
+			Arrays.asList(enterOldManRalBasement, talkToSafalaanInRalBasement,
 				talkToVertidaInRalBasement, readFlaygianNotes, getSickle, getChain, useEmeraldOnSickle,
-				enchantSickle, addSickleToRod, talkToSafalaanAfterFlail)), emerald, chisel, enchantEmeraldRunesOrTablet));
+				enchantSickle, addSickleToRod, talkToSafalaanAfterFlail), emerald, chisel, enchantEmeraldRunesOrTablet));
 		allSteps.add(new PanelDetails("Rising up",
-			new ArrayList<>(Arrays.asList(talkToKaelSidebar, killRanisSidebar, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd)),
+			Arrays.asList(talkToKaelSidebar, killRanisSidebar, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd),
 			combatGear, food, ivandisFlail));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.DARKNESS_OF_HALLOWVALE, QuestState.FINISHED));

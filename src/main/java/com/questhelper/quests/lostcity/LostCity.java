@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -169,7 +170,7 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Multiple zombies (level 25) (can be safespotted)");
@@ -178,7 +179,7 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(axe);
@@ -187,7 +188,7 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(combatGear);
@@ -195,7 +196,7 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.CRAFTING, 31, true));
@@ -204,13 +205,13 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToWarrior)), axe));
-		allSteps.add(new PanelDetails("Finding Shamus", new ArrayList<>(Arrays.asList(chopTree, talkToShamus))));
-		allSteps.add(new PanelDetails("Getting a Dramen branch", new ArrayList<>(Arrays.asList(goToEntrana, goDownHole, getAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch, teleportAway))));
-		allSteps.add(new PanelDetails("Entering Zanaris", new ArrayList<>(Arrays.asList(craftBranch, enterZanaris)), knife));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToWarrior), axe));
+		allSteps.add(new PanelDetails("Finding Shamus", Arrays.asList(chopTree, talkToShamus)));
+		allSteps.add(new PanelDetails("Getting a Dramen branch", Arrays.asList(goToEntrana, goDownHole, getAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch, teleportAway)));
+		allSteps.add(new PanelDetails("Entering Zanaris", Arrays.asList(craftBranch, enterZanaris), knife));
 
 		return allSteps;
 	}

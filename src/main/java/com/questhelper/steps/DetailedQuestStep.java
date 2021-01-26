@@ -75,10 +75,10 @@ public class DetailedQuestStep extends QuestStep
 	protected WorldPoint worldMapPoint;
 
 	@Setter
-	protected ArrayList<WorldPoint> linePoints;
+	protected List<WorldPoint> linePoints;
 
 	@Setter
-	protected ArrayList<WorldPoint> worldLinePoints;
+	protected List<WorldPoint> worldLinePoints;
 
 	@Setter
 	protected List<Requirement> requirements = new ArrayList<>();
@@ -143,13 +143,13 @@ public class DetailedQuestStep extends QuestStep
 		requirements.add(requirement);
 	}
 
-	public void addItemRequirements(ArrayList<ItemRequirement> requirement)
+	public void addItemRequirements(List<ItemRequirement> requirement)
 	{
 		requirements.addAll(requirement);
 	}
 
 	public void setText(String text) {
-		this.text = new ArrayList<>(Collections.singletonList(text));
+		this.text = Collections.singletonList(text);
 	}
 
 	@Subscribe
@@ -279,7 +279,7 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		ArrayList<WorldPoint> worldMapLines = linePoints;
+		List<WorldPoint> worldMapLines = linePoints;
 		if (worldLinePoints != null && worldLinePoints.size() > 1)
 		{
 			worldMapLines = worldLinePoints;
@@ -293,7 +293,7 @@ public class DetailedQuestStep extends QuestStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText);
 
@@ -310,7 +310,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : requirements)
 			{
-				ArrayList<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
+				List<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
 
 				for (LineComponent line : lines)
 				{
@@ -323,7 +323,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : additionalRequirements)
 			{
-				ArrayList<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
+				List<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
 
 				for (LineComponent line : lines)
 				{

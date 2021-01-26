@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.runelite.api.*;
@@ -297,30 +298,30 @@ public class GettingAhead extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(itemsTip, bearFur, softClay, hammer, saw, planks, nails, knife, redDye, potOfFlour, needle, thread));
+		return Arrays.asList(itemsTip, bearFur, softClay, hammer, saw, planks, nails, knife, redDye, potOfFlour, needle, thread);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(food, staminaPotions, combatGear, skillsNeck));
+		return Arrays.asList(food, staminaPotions, combatGear, skillsNeck);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Headless Beast (level 82, safespottable)"));
+		return Collections.singletonList("Headless Beast (level 82, safespottable)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGordon1, talkToMary))));
-		allSteps.add(new PanelDetails("Killing the Beast", new ArrayList<>(Arrays.asList(goUseFlourOnGate, goToMine, returnToGordon))));
-		allSteps.add(new PanelDetails("Making the fake head", new ArrayList<>(Arrays.asList(talkToMary2, makeClayHead, addFurToHead, useDyeOnHead, putUpHead, talkToGordonFinal))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGordon1, talkToMary)));
+		allSteps.add(new PanelDetails("Killing the Beast", Arrays.asList(goUseFlourOnGate, goToMine, returnToGordon)));
+		allSteps.add(new PanelDetails("Making the fake head", Arrays.asList(talkToMary2, makeClayHead, addFurToHead, useDyeOnHead, putUpHead, talkToGordonFinal)));
 		return allSteps;
 	}
 }

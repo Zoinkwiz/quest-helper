@@ -47,6 +47,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -581,44 +582,44 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(draynorTele, trollTele, varrockTele));
+		return Arrays.asList(draynorTele, trollTele, varrockTele);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(hammer, saw, boltOfCloth, mahogPlanks5, cadavaBerries, combatRangeMelee));
+		return Arrays.asList(hammer, saw, boltOfCloth, mahogPlanks5, cadavaBerries, combatRangeMelee);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Don't Know What (level 163)", "Mother (level 198)"));
+		return Arrays.asList("Don't Know What (level 163)", "Mother (level 198)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToBurntmeat, talkToMyArmUpstairs))));
-		allSteps.add(new PanelDetails("Getting to Weiss", new ArrayList<>(Arrays.asList(talkToLarry, talkToLarryAgain, boardBoat, attemptToMine,
-			searchBoatForRopeAndPickaxe, climbRocks, useRope, climbRope, crossLedge, climbRocks3, passTree, talkToBoulder))));
-		allSteps.add(new PanelDetails("Infiltrating Weiss", new ArrayList<>(Arrays.asList(crossFence, goSouthSneak, enterHole, enterNarrowHole,
-			waterSpot1, placeRocks, mineCave, talkToMother, talkToMyArmAfterMeeting)), pickaxe));
-		allSteps.add(new PanelDetails("Faking death", new ArrayList<>(Arrays.asList(talkToWom, buildCoffin, talkToApoth, talkToWomAfterPrep, pickUpCoffin)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToBurntmeat, talkToMyArmUpstairs)));
+		allSteps.add(new PanelDetails("Getting to Weiss", Arrays.asList(talkToLarry, talkToLarryAgain, boardBoat, attemptToMine,
+			searchBoatForRopeAndPickaxe, climbRocks, useRope, climbRope, crossLedge, climbRocks3, passTree, talkToBoulder)));
+		allSteps.add(new PanelDetails("Infiltrating Weiss", Arrays.asList(crossFence, goSouthSneak, enterHole, enterNarrowHole,
+			waterSpot1, placeRocks, mineCave, talkToMother, talkToMyArmAfterMeeting), pickaxe));
+		allSteps.add(new PanelDetails("Faking death", Arrays.asList(talkToWom, buildCoffin, talkToApoth, talkToWomAfterPrep, pickUpCoffin),
 			saw, hammer, mahogPlanks5, boltOfCloth, cadavaBerries));
-		allSteps.add(new PanelDetails("Rising up", new ArrayList<>(Arrays.asList(talkToMyArmWithWom, talkToOddMushroom, talkToSnowflake, killDontKnowWhat,
-			pickUpBucket, useBucketOnWater, useBucketOnFire, killMother)), combatRangeMelee));
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(talkToMyArmAfterFight, talkToWomAfterFight, talkToSnowflakeAfterFight,
-			pickUpGoatDung, bringDungToSnowflake, readNotes, talkToSnowflakeToFinish))));
+		allSteps.add(new PanelDetails("Rising up", Arrays.asList(talkToMyArmWithWom, talkToOddMushroom, talkToSnowflake, killDontKnowWhat,
+			pickUpBucket, useBucketOnWater, useBucketOnFire, killMother), combatRangeMelee));
+		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(talkToMyArmAfterFight, talkToWomAfterFight, talkToSnowflakeAfterFight,
+			pickUpGoatDung, bringDungToSnowflake, readNotes, talkToSnowflakeToFinish)));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED));

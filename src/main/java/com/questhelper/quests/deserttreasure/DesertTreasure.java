@@ -44,6 +44,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -536,21 +537,21 @@ public class DesertTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal,
-			bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots, climbingBoots, faceMask, tinderbox, manyLockpicks));
+		return Arrays.asList(coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal,
+			bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots, climbingBoots, faceMask, tinderbox, manyLockpicks);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions));
+		return Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Dessous (level 139)");
@@ -562,31 +563,32 @@ public class DesertTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToArchaeologist, talkToExpert, talkToExpertAgain,
-				bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation, buyDrink, talkToBartender, talkToEblis, bringItemsToEblis)), coins650, ashes, bloodRune, bones, charcoal, moltenGlass6, magicLogs12, steelBars6));
+			Arrays.asList(talkToArchaeologist, talkToExpert, talkToExpertAgain,
+				bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation, buyDrink, talkToBartender, talkToEblis, bringItemsToEblis), coins650, ashes, bloodRune, bones, charcoal, moltenGlass6,
+				magicLogs12, steelBars6));
 
 		PanelDetails smokeDiamondPanel = new PanelDetails("Smoke diamond",
-			new ArrayList<>(Arrays.asList(enterSmokeDungeon, lightTorch1, openChest, useWarmKey, killFareed)), faceMask, tinderbox, iceGloves, waterSpellOrMelee, energyOrStaminas);
+			Arrays.asList(enterSmokeDungeon, lightTorch1, openChest, useWarmKey, killFareed), faceMask, tinderbox, iceGloves, waterSpellOrMelee, energyOrStaminas);
 		smokeDiamondPanel.setLockingStep(getSmokeDiamond);
 
 		PanelDetails shadowDiamondPanel = new PanelDetails("Shadow diamond",
-			new ArrayList<>(Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1)), manyLockpicks, antipoison, combatGear, food);
+			Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1), manyLockpicks, antipoison, combatGear, food);
 		shadowDiamondPanel.setLockingStep(getShadowDiamond);
 
 		PanelDetails bloodDiamondPanel = new PanelDetails("Blood diamond",
-			new ArrayList<>(Arrays.asList(talkToMalak, askAboutKillingDessous, talkToRuantun, blessPot, talkToMalakWithPot, addPowder, addSpice, usePotOnGrave, killDessous, talkToMalakForDiamond)), silverBar, spice, garlicPowder, combatGear, food);
+			Arrays.asList(talkToMalak, askAboutKillingDessous, talkToRuantun, blessPot, talkToMalakWithPot, addPowder, addSpice, usePotOnGrave, killDessous, talkToMalakForDiamond), silverBar, spice, garlicPowder, combatGear, food);
 		bloodDiamondPanel.setLockingStep(getBloodDiamond);
 
 		PanelDetails iceDiamondPanel = new PanelDetails("Ice diamond",
-			new ArrayList<>(Arrays.asList(giveCakeToTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1, breakIce2, talkToTrolls, talkToChildTrollAfterFreeing)), cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas);
+			Arrays.asList(giveCakeToTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1, breakIce2, talkToTrolls, talkToChildTrollAfterFreeing), cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas);
 		iceDiamondPanel.setLockingStep(getIceDiamond);
 
 		PanelDetails finishingPanel = new PanelDetails("Freeing Azzanadra",
-			new ArrayList<>(Arrays.asList(placeBlood, enterPyramid, goDownFromFirstFloor, enterMiddleOfPyramid, talkToAzz)), energyOrStaminas, food, prayerPotions);
+			Arrays.asList(placeBlood, enterPyramid, goDownFromFirstFloor, enterMiddleOfPyramid, talkToAzz), energyOrStaminas, food, prayerPotions);
 
 		allSteps.add(smokeDiamondPanel);
 		allSteps.add(shadowDiamondPanel);
@@ -597,7 +599,7 @@ public class DesertTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_DIG_SITE, QuestState.FINISHED));

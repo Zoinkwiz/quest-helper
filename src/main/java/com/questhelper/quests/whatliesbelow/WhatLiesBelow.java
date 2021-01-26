@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -213,7 +214,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(bowl);
@@ -223,7 +224,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(chronicle);
@@ -231,7 +232,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("5 outlaws (level 32)");
@@ -240,7 +241,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
@@ -249,7 +250,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.MINING, 42, false, "42 Mining to unlock a shortcut to the Chaos altar"));
@@ -257,13 +258,13 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToRat))));
-		allSteps.add(new PanelDetails("Help Rat", new ArrayList<>(Arrays.asList(killOutlaws, bringFolderToRat))));
-		allSteps.add(new PanelDetails("Help Surok", new ArrayList<>(Arrays.asList(talkToSurok, enterChaosAltar, useWandOnAltar, bringWandToSurok)), chaosRunes15, chaosTalismanOrAbyss, bowl));
-		allSteps.add(new PanelDetails("Defeat Surok", new ArrayList<>(Arrays.asList(talkToRatAfterSurok, talkToZaff, talkToSurokToFight, fightRoald, talkToRatToFinish))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToRat)));
+		allSteps.add(new PanelDetails("Help Rat", Arrays.asList(killOutlaws, bringFolderToRat)));
+		allSteps.add(new PanelDetails("Help Surok", Arrays.asList(talkToSurok, enterChaosAltar, useWandOnAltar, bringWandToSurok), chaosRunes15, chaosTalismanOrAbyss, bowl));
+		allSteps.add(new PanelDetails("Defeat Surok", Arrays.asList(talkToRatAfterSurok, talkToZaff, talkToSurokToFight, fightRoald, talkToRatToFinish)));
 		return allSteps;
 	}
 }

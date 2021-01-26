@@ -47,6 +47,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -268,25 +269,25 @@ public class OlafsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(axe, tinderbox, spade));
+		return Arrays.asList(axe, tinderbox, spade);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, food, prayerPotions));
+		return Arrays.asList(combatGear, food, prayerPotions);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Skeleton fremennik (level 40)", "Ulfric (level 100)"));
+		return Arrays.asList("Skeleton fremennik (level 40)", "Ulfric (level 100)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
@@ -296,16 +297,16 @@ public class OlafsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid,
-				talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks)), axe, tinderbox, spade));
+			Arrays.asList(talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid,
+				talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks), axe, tinderbox, spade));
 
 		allSteps.add(new PanelDetails("Finding treasure",
-			new ArrayList<>(Arrays.asList(digHole, killSkeleton, searchPainting, doPuzzle, pickUpItems,
-				useBarrel, useBarrel2, openGate, searchChest, killUlfric, searchChestAgain))));
+			Arrays.asList(digHole, killSkeleton, searchPainting, doPuzzle, pickUpItems,
+				useBarrel, useBarrel2, openGate, searchChest, killUlfric, searchChestAgain)));
 		return allSteps;
 	}
 }

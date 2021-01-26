@@ -5,13 +5,12 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.conditional.*;
-import net.runelite.api.InventoryID;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -413,13 +412,13 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(oakPlanks, steelNails, hammer, spade, clockworkOrSteelBar, plank, silk, rawCodOrCharos, swampTar, feathers, mahoganyPlank, leather));
+		return Arrays.asList(oakPlanks, steelNails, hammer, spade, clockworkOrSteelBar, plank, silk, rawCodOrCharos, swampTar, feathers, mahoganyPlank, leather);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(teleportArdougne);
@@ -430,7 +429,7 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("1-3 Icelords (level 51)");
@@ -438,25 +437,25 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Larry's Story", new ArrayList<>(Arrays.asList(talkToLarry, talkToLarryAgain)), oakPlanks, steelNails, hammer, spade));
-		allSteps.add(new PanelDetails("Penguin Stake-out", new ArrayList<>(Arrays.asList(usePlankOnFirmSnow, useSpadeOnBirdHide, learnPenguinEmotes, talkToLarryAfterEmotes, returnToRelleka)), oakPlanks, steelNails, hammer, spade));
-		allSteps.add(new PanelDetails("A Clockwork Penguin", new ArrayList<>(Arrays.asList(talkToLarryInRelleka, enterPoh, makeClockwork, makePenguin, bringSuitToLarry, talkToLarryOnIcebergWithSuit)), plank, clockworkOrSteelBar, silk));
-		allSteps.add(new PanelDetails("Ardougne Mission Report", new ArrayList<>(Arrays.asList(tuxedoTime, enterPenguinPen, talkToZooPenguin, talkToLarryMissionReport)), clockworkSuit));
-		allSteps.add(new PanelDetails("Lumbridge Mission Report", new ArrayList<>(Arrays.asList(tuxedoTimeLumbridge, talkToThing, returnToZooPenguin, returnToThing, fredTheFarmer, stealCowbell, askThingAboutOutpost)), clockworkSuit, rawCodOrCharos, feathers, swampTar, mahoganyPlank, leather, combatGear));
-		allSteps.add(new PanelDetails("Penguin Outpost", new ArrayList<>(Arrays.asList(tellLarryAboutOutpost, kgpAgent, noodle1, noodle2, kgpAgent2, enterAvalanche)), clockworkSuit, feathers, swampTar, mahoganyPlank, leather, combatGear));
-		allSteps.add(new PanelDetails("Briefing and Agility", new ArrayList<>(Arrays.asList(kgpAgentInAvalanche, agilityCourse, tellLarryAboutArmy)), clockworkSuit, mahoganyPlank, leather, combatGear));
-		allSteps.add(new PanelDetails("Musical Penguins", new ArrayList<>(Arrays.asList(pingPong1, makeBongos, pingPong2)), clockworkSuit, mahoganyPlank, leather, combatGear));
-		allSteps.add(new PanelDetails("The War Room", new ArrayList<>(Arrays.asList(openControlDoor, enterWarRoom, killIcelords, useChasm, tellLarryPlans)), clockworkSuit, combatGear));
+		allSteps.add(new PanelDetails("Larry's Story", Arrays.asList(talkToLarry, talkToLarryAgain), oakPlanks, steelNails, hammer, spade));
+		allSteps.add(new PanelDetails("Penguin Stake-out", Arrays.asList(usePlankOnFirmSnow, useSpadeOnBirdHide, learnPenguinEmotes, talkToLarryAfterEmotes, returnToRelleka), oakPlanks, steelNails, hammer, spade));
+		allSteps.add(new PanelDetails("A Clockwork Penguin", Arrays.asList(talkToLarryInRelleka, enterPoh, makeClockwork, makePenguin, bringSuitToLarry, talkToLarryOnIcebergWithSuit), plank, clockworkOrSteelBar, silk));
+		allSteps.add(new PanelDetails("Ardougne Mission Report", Arrays.asList(tuxedoTime, enterPenguinPen, talkToZooPenguin, talkToLarryMissionReport), clockworkSuit));
+		allSteps.add(new PanelDetails("Lumbridge Mission Report", Arrays.asList(tuxedoTimeLumbridge, talkToThing, returnToZooPenguin, returnToThing, fredTheFarmer, stealCowbell, askThingAboutOutpost), clockworkSuit, rawCodOrCharos, feathers, swampTar, mahoganyPlank, leather, combatGear));
+		allSteps.add(new PanelDetails("Penguin Outpost", Arrays.asList(tellLarryAboutOutpost, kgpAgent, noodle1, noodle2, kgpAgent2, enterAvalanche), clockworkSuit, feathers, swampTar, mahoganyPlank, leather, combatGear));
+		allSteps.add(new PanelDetails("Briefing and Agility", Arrays.asList(kgpAgentInAvalanche, agilityCourse, tellLarryAboutArmy), clockworkSuit, mahoganyPlank, leather, combatGear));
+		allSteps.add(new PanelDetails("Musical Penguins", Arrays.asList(pingPong1, makeBongos, pingPong2), clockworkSuit, mahoganyPlank, leather, combatGear));
+		allSteps.add(new PanelDetails("The War Room", Arrays.asList(openControlDoor, enterWarRoom, killIcelords, useChasm, tellLarryPlans), clockworkSuit, combatGear));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new ItemRequirement("Access to a Crafting Table 3", -1));
@@ -464,7 +463,7 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.HUNTER, 10, true));

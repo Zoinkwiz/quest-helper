@@ -37,6 +37,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
@@ -187,9 +188,9 @@ public class MsCheevesSetup
 		retrieveItemSteps();
 	}
 
-	public ArrayList<QuestStep> GetPanelSteps()
+	public List<QuestStep> GetPanelSteps()
 	{
-		ArrayList<QuestStep> steps = new ArrayList<>();
+		List<QuestStep> steps = new ArrayList<>();
 		steps.add(getMagnetStep);
 		steps.add(getTwoVials);
 		steps.add(getCupricSulfate);

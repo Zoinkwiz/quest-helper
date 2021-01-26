@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import com.questhelper.requirements.ItemRequirement;
@@ -531,14 +532,14 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(food, spade, bucketTo5, pickaxe, hammer, planks11, nails44, swampPaste, rawMackerelOrSnail10, bronzeAxes10, tinderboxes4, steelBars2,
-			coal, efaritaysAidOrSilverWeapon, softClay, rope, silverBar, mithrilBar, sapphire, cosmicRune, waterRune));
+		return Arrays.asList(food, spade, bucketTo5, pickaxe, hammer, planks11, nails44, swampPaste, rawMackerelOrSnail10, bronzeAxes10, tinderboxes4, steelBars2,
+			coal, efaritaysAidOrSilverWeapon, softClay, rope, silverBar, mithrilBar, sapphire, cosmicRune, waterRune);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(normalSpellbook);
@@ -546,7 +547,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.IN_SEARCH_OF_THE_MYREQUE, QuestState.FINISHED));
@@ -557,35 +558,35 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(steelmedChainLegsSickle, morttonTeleport, canifisTeleport));
+		return Arrays.asList(steelmedChainLegsSickle, morttonTeleport, canifisTeleport);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Gadderanks (level 35)", "Vampyre Juvenites (levels 50-75)"));
+		return Arrays.asList("Gadderanks (level 35)", "Vampyre Juvenites (levels 50-75)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Finding a new base", new ArrayList<>(Arrays.asList(startQuest, travelToBurgh, putFoodInChest, talkToRazvan, clearTrapdoorRubble,
-			enterBurghPubBasement, clearBasementRubble)), foodForChest, pickaxe, bucketTo5, spade));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Finding a new base", Arrays.asList(startQuest, travelToBurgh, putFoodInChest, talkToRazvan, clearTrapdoorRubble,
+			enterBurghPubBasement, clearBasementRubble), foodForChest, pickaxe, bucketTo5, spade));
 
-		allSteps.add(new PanelDetails("Repairing the shop", new ArrayList<>(Arrays.asList(talkToAurel, climbShopLadder, fixRoof, climbDownShopLadder, fixShopWall, talkToAurelForCrate)), hammer, planks6, nails24));
-		allSteps.add(new PanelDetails("Stocking the shop", new ArrayList<>(Collections.singletonList(fillCrate)), tinderbox3, bronzeAxes10, rawMackerelOrSnail10));
+		allSteps.add(new PanelDetails("Repairing the shop", Arrays.asList(talkToAurel, climbShopLadder, fixRoof, climbDownShopLadder, fixShopWall, talkToAurelForCrate), hammer, planks6, nails24));
+		allSteps.add(new PanelDetails("Stocking the shop", Collections.singletonList(fillCrate), tinderbox3, bronzeAxes10, rawMackerelOrSnail10));
 
-		allSteps.add(new PanelDetails("Repairing the bank", new ArrayList<>(Arrays.asList(talkToAurelWithCrate, repairBooth, repairBankWall, talkToCornelius)), hammer, planks5, nails20, swampPaste));
-		allSteps.add(new PanelDetails("Repairing the furnace", new ArrayList<>(Arrays.asList(talkToRazvanAfterRepairs, repairFurnace, addCoalToFurnace, lightFurnace)), hammer, steelBars2, coal, tinderbox));
-		allSteps.add(new PanelDetails("Defending Burgh de Rott", new ArrayList<>(Arrays.asList(talkToGadderanks, talkToJuvinate, talkToWiskit, killGadderanksAndJuvinates, talkToGadderanksAgain, talkToVeliafAfterFight)), efaritaysAidOrSilverWeapon));
+		allSteps.add(new PanelDetails("Repairing the bank", Arrays.asList(talkToAurelWithCrate, repairBooth, repairBankWall, talkToCornelius), hammer, planks5, nails20, swampPaste));
+		allSteps.add(new PanelDetails("Repairing the furnace", Arrays.asList(talkToRazvanAfterRepairs, repairFurnace, addCoalToFurnace, lightFurnace), hammer, steelBars2, coal, tinderbox));
+		allSteps.add(new PanelDetails("Defending Burgh de Rott", Arrays.asList(talkToGadderanks, talkToJuvinate, talkToWiskit, killGadderanksAndJuvinates, talkToGadderanksAgain, talkToVeliafAfterFight), efaritaysAidOrSilverWeapon));
 
-		allSteps.add(new PanelDetails("Relocating", new ArrayList<>(Arrays.asList(returnToHideout, goTalkToPolmafi, travelWithIvan)), efaritaysAidOrSilverWeapon));
+		allSteps.add(new PanelDetails("Relocating", Arrays.asList(returnToHideout, goTalkToPolmafi, travelWithIvan), efaritaysAidOrSilverWeapon));
 
-		allSteps.add(new PanelDetails("Ivandis' legacy", new ArrayList<>(Arrays.asList(talkToDrezel, useKeyOnHole, enterLibrary, searchBookcase, readBook, goIntoCavesAgain, useHammerOnBoards, enterCoffinRoom,
-			useClayOnCoffin, makeRod, enchantRod, goBlessRod, finishQuest)), hammer, softClay, mithrilBar, silverBar, cosmicRune, waterRune, rope, sapphire));
+		allSteps.add(new PanelDetails("Ivandis' legacy", Arrays.asList(talkToDrezel, useKeyOnHole, enterLibrary, searchBookcase, readBook, goIntoCavesAgain, useHammerOnBoards, enterCoffinRoom,
+			useClayOnCoffin, makeRod, enchantRod, goBlessRod, finishQuest), hammer, softClay, mithrilBar, silverBar, cosmicRune, waterRune, rope, sapphire));
 
 		return allSteps;
 	}

@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -324,33 +325,33 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Arrays.asList("You will need 3 black items for a part of the quest. Potential items would be:",
+		return Arrays.asList("You will need 3 black items for a part of the quest. Potential items would be:",
 			"- Desert shirt/robe dyed with black mushroom ink", "- Black armour", "- Priest gown top/bottom", "- Black wizard hat",
-			"- Dark mystic", "- Ghostly robes", "- Shade robes", "- Black dragonhide", "- Black cape", "- One of the various black holiday event items"));
+			"- Dark mystic", "- Ghostly robes", "- Shade robes", "- Black dragonhide", "- Black cape", "- One of the various black holiday event items");
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Agrith-Naar (level 100)"));
+		return Collections.singletonList("Agrith-Naar (level 100)");
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(silverlight, darkItems, silverBar));
+		return Arrays.asList(silverlight, darkItems, silverBar);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, coinsForCarpet));
+		return Arrays.asList(combatGear, coinsForCarpet);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_GOLEM, QuestState.FINISHED));
@@ -360,15 +361,15 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToReen))));
-		allSteps.add(new PanelDetails("Infiltrate the cult", new ArrayList<>(Arrays.asList(talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, talkToJennifer, talkToMatthew)), silverlight, darkItems));
-		allSteps.add(new PanelDetails("Uncovering the truth", new ArrayList<>(Arrays.asList(smeltSigil, talkToGolem, searchKiln, readBook, talkToMatthewAfterBook, standInCircle, readIncantation)), silverBar, silverlightDyed, combatGear));
-		allSteps.add(new PanelDetails("Defeating Agrith-Naar", new ArrayList<>(Arrays.asList(pickUpSigil, leavePortal, pickUpSigil2, tellDaveToReturn, talkToBaddenAfterRitual, talkToReenAfterRitual, talkToTheGolemAfterRitual, useImplementOnGolem, talkToGolemAfterReprogramming,
-			talkToMatthewToStartFight, standInCircleAgain, incantRitual, killDemon, unequipDarklight)), silverlightDyed, combatGear));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToReen)));
+		allSteps.add(new PanelDetails("Infiltrate the cult", Arrays.asList(talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, talkToJennifer, talkToMatthew), silverlight, darkItems));
+		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(smeltSigil, talkToGolem, searchKiln, readBook, talkToMatthewAfterBook, standInCircle, readIncantation), silverBar, silverlightDyed, combatGear));
+		allSteps.add(new PanelDetails("Defeating Agrith-Naar", Arrays.asList(pickUpSigil, leavePortal, pickUpSigil2, tellDaveToReturn, talkToBaddenAfterRitual, talkToReenAfterRitual, talkToTheGolemAfterRitual, useImplementOnGolem, talkToGolemAfterReprogramming,
+			talkToMatthewToStartFight, standInCircleAgain, incantRitual, killDemon, unequipDarklight), silverlightDyed, combatGear));
 		return allSteps;
 	}
 }

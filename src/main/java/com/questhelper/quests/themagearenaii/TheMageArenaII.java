@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -219,34 +220,34 @@ public class TheMageArenaII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(knife, zamorakStaff, guthixStaff, saradominStaff, runesForCasts));
+		return Arrays.asList(knife, zamorakStaff, guthixStaff, saradominStaff, runesForCasts);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(magicCombatGear, brews, restores, food, recoils));
+		return Arrays.asList(magicCombatGear, brews, restores, food, recoils);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Porazdir (level 235)", "Justiciar Zachariah (level 348)", "Derwen " +
-			"(level 235)"));
+		return Arrays.asList("Porazdir (level 235)", "Justiciar Zachariah (level 348)", "Derwen " +
+			"(level 235)");
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("This miniquest is in deep Wilderness. Don't bring anything you're not " +
+		return Collections.singletonList("This miniquest is in deep Wilderness. Don't bring anything you're not " +
 			"willing to risk! It's recommended to turn off player attack options to avoid potentially getting " +
-			"skulled."));
+			"skulled.");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.MAGIC, 75));
@@ -256,11 +257,11 @@ public class TheMageArenaII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Upgrading the God Cape", new ArrayList<>(Arrays.asList(enterCavern,
-			talkToKolodion, locateAndKillMinions)), knife, saradominStaff, guthixStaff, zamorakStaff, runesForCasts));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Upgrading the God Cape", Arrays.asList(enterCavern,
+			talkToKolodion, locateAndKillMinions), knife, saradominStaff, guthixStaff, zamorakStaff, runesForCasts));
 		return allSteps;
 	}
 }

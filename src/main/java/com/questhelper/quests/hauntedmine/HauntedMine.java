@@ -44,6 +44,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -373,7 +374,7 @@ public class HauntedMine extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(combatGear);
@@ -382,7 +383,7 @@ public class HauntedMine extends BasicQuestHelper
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Treus Dayth (level 95)");
@@ -390,23 +391,23 @@ public class HauntedMine extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToZealot, pickpocketZealot)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToZealot, pickpocketZealot),
 			combatGear, food));
 		allSteps.add(new PanelDetails("Getting a light source",
-			new ArrayList<>(Arrays.asList(enterMine, goDownFromLevel1South, goDownFromLevel2South, goDownToFungusRoom,
-				pickFungus, putFungusInCart, solvePuzzle, readPanel, goUpFromFungusRoom))));
+			Arrays.asList(enterMine, goDownFromLevel1South, goDownFromLevel2South, goDownToFungusRoom,
+				pickFungus, putFungusInCart, solvePuzzle, readPanel, goUpFromFungusRoom)));
 		allSteps.add(new PanelDetails("Getting the salve crystals",
-			new ArrayList<>(Arrays.asList(enterMineNorth, goDownLevel1North, goDownLevel2North, goDownToCollectFungus,
+			Arrays.asList(enterMineNorth, goDownLevel1North, goDownLevel2North, goDownToCollectFungus,
 				collectFungus, goUpFromCollectRoom, goDownFromLevel3NorthEast, pickUpChisel, useKeyOnValve, goDownLift,
-				goDownToDayth, tryToPickUpKey, pickUpKey, goUpFromDayth, goDownToCrystals, cutCrystal))));
+				goDownToDayth, tryToPickUpKey, pickUpKey, goUpFromDayth, goDownToCrystals, cutCrystal)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));

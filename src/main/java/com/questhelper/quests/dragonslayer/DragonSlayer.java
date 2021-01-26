@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -473,7 +474,7 @@ public class DragonSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Zombie rats (level 3)");
@@ -488,7 +489,7 @@ public class DragonSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(unfiredBowl);
@@ -505,7 +506,7 @@ public class DragonSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 
@@ -519,56 +520,56 @@ public class DragonSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(startQuest, talkToOziach, returnToGuildmaster))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(startQuest, talkToOziach, returnToGuildmaster)));
 
 		PanelDetails thalzarPanel = new PanelDetails("Thalzar's map piece",
-			new ArrayList<>(Arrays.asList(talkToOracle, goIntoDwarvenMine, useSilkOnDoor, usePotOnDoor, useUnfiredBowlOnDoor, useMindBombOnDoor, searchThalzarChest)), silk, lobsterPot, unfiredBowl, mindBomb);
+			Arrays.asList(talkToOracle, goIntoDwarvenMine, useSilkOnDoor, usePotOnDoor, useUnfiredBowlOnDoor, useMindBombOnDoor, searchThalzarChest), silk, lobsterPot, unfiredBowl, mindBomb);
 		thalzarPanel.setLockingStep(getThalzarPiece);
 		allSteps.add(thalzarPanel);
 
 		PanelDetails lozarPanel = new PanelDetails("Lozar's map piece",
-			new ArrayList<>(Collections.singletonList(optionsForLozarPiece)), telegrabOrTenK);
+			Collections.singletonList(optionsForLozarPiece), telegrabOrTenK);
 		lozarPanel.setLockingStep(getLozarPiece);
 
 		allSteps.add(lozarPanel);
 
 		PanelDetails melzarPanel = new PanelDetails("Melzar's map piece",
-			new ArrayList<>(Arrays.asList(enterMelzarsMaze, killRat, openRedDoor, goUpRatLadder, killGhost, openOrangeDoor, goUpGhostLadder,
+			Arrays.asList(enterMelzarsMaze, killRat, openRedDoor, goUpRatLadder, killGhost, openOrangeDoor, goUpGhostLadder,
 				killSkeleton, openYellowDoor, goDownSkeletonLadder, goDownLadderRoomLadder, goDownBasementEntryLadder, killZombie,
-				openBlueDoor, killMelzar, openMagntaDoor, killLesserDemon, openGreenDoor, openMelzarChest)),
+				openBlueDoor, killMelzar, openMagntaDoor, killLesserDemon, openGreenDoor, openMelzarChest),
 			melzarsKey, combatGear, food);
 		melzarPanel.setLockingStep(getMelzarPiece);
 
 		allSteps.add(melzarPanel);
 
-		PanelDetails antiDragonPanel = new PanelDetails("Get an anti-dragon shield", new ArrayList<>(Collections.singletonList(getShield)));
+		PanelDetails antiDragonPanel = new PanelDetails("Get an anti-dragon shield", Collections.singletonList(getShield));
 		antiDragonPanel.setLockingStep(getShieldSteps);
 
 		allSteps.add(antiDragonPanel);
 
 		PanelDetails boatPanel = new PanelDetails("Get a boat",
-			new ArrayList<>(Arrays.asList(talkToKlarense, boardShip1, goDownShipLadder, repairShip)), hammer, planks3, nails90, twoThousandCoins);
+			Arrays.asList(talkToKlarense, boardShip1, goDownShipLadder, repairShip), hammer, planks3, nails90, twoThousandCoins);
 
 		allSteps.add(boatPanel);
 
-		PanelDetails captainPanel = new PanelDetails("Get a captain ready", new ArrayList<>(Arrays.asList(repairMap, talkToNed)));
+		PanelDetails captainPanel = new PanelDetails("Get a captain ready", Arrays.asList(repairMap, talkToNed));
 
 		allSteps.add(captainPanel);
 
-		allSteps.add(new PanelDetails("Slaying Elvarg", new ArrayList<>(Arrays.asList(boardShipToGo, enterCrandorHole, unlockShortcut,
-			returnThroughShortcut, enterElvargArea, killElvarg)), combatGear, antidragonShield, food));
+		allSteps.add(new PanelDetails("Slaying Elvarg", Arrays.asList(boardShipToGo, enterCrandorHole, unlockShortcut,
+			returnThroughShortcut, enterElvargArea, killElvarg), combatGear, antidragonShield, food));
 
-		allSteps.add(new PanelDetails("Finish the quest", new ArrayList<>(Collections.singletonList(finishQuest))));
+		allSteps.add(new PanelDetails("Finish the quest", Collections.singletonList(finishQuest)));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new QuestPointRequirement(32)));
+		return Collections.singletonList(new QuestPointRequirement(32));
 	}
 }

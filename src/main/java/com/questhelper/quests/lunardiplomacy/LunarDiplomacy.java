@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -881,26 +882,26 @@ public class LunarDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(bullseyeLantern, tinderboxHighlighted, guam, marrentill, dramenStaff, airTalisman, earthTalisman,
-			fireTalisman, waterTalisman, pickaxe, pestle, hammer, thread, needle, spade));
+		return Arrays.asList(bullseyeLantern, tinderboxHighlighted, guam, marrentill, dramenStaff, airTalisman, earthTalisman,
+			fireTalisman, waterTalisman, pickaxe, pestle, hammer, thread, needle, spade);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, combatRunes));
+		return Arrays.asList(combatGear, combatRunes);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Multiple Suqah (level 111)", "Me (level 79)"));
+		return Arrays.asList("Multiple Suqah (level 111)", "Me (level 79)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
@@ -919,55 +920,55 @@ public class LunarDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToLokar, talkToBrundt, talkToLokarAgain, climbLadder, talkToBentley)), bullseyeLantern, tinderboxHighlighted));
-		allSteps.add(new PanelDetails("The curse", new ArrayList<>(Arrays.asList(climbDownSouthStairs, climbUpSouthStairs, goUpToShultz, goDownToBurns1, goUpToLee1,
-			goDownToDavey, goUpToCabinBoy, replaceLens, lightLantern, goUpToCannon1, goDownToChart, useLanternOnChest, useLanternOnPillar, useLanternOnCrate, talkToBentleyToSail)), bullseyeLantern, tinderboxHighlighted));
-		allSteps.add(new PanelDetails("Starting diplomacy", new ArrayList<>(Arrays.asList(
-			enterTown, talkToOneiromancer, returnToTalkToYaga, fillVial, addGuam, addMarrentil, returnToMakePotion, grindTooth, addToothToPotion, returnToOneWithPotion)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToLokar, talkToBrundt, talkToLokarAgain, climbLadder, talkToBentley), bullseyeLantern, tinderboxHighlighted));
+		allSteps.add(new PanelDetails("The curse", Arrays.asList(climbDownSouthStairs, climbUpSouthStairs, goUpToShultz, goDownToBurns1, goUpToLee1,
+			goDownToDavey, goUpToCabinBoy, replaceLens, lightLantern, goUpToCannon1, goDownToChart, useLanternOnChest, useLanternOnPillar, useLanternOnCrate, talkToBentleyToSail), bullseyeLantern, tinderboxHighlighted));
+		allSteps.add(new PanelDetails("Starting diplomacy", Arrays.asList(
+			enterTown, talkToOneiromancer, returnToTalkToYaga, fillVial, addGuam, addMarrentil, returnToMakePotion, grindTooth, addToothToPotion, returnToOneWithPotion),
 			guam, marrentill));
-		allSteps.add(new PanelDetails("Making the staff", new ArrayList<>(Arrays.asList(
-			enterAirAltar, enterFireAltar, enterWaterAltar, enterEarthAltar, returnWithStaff)),
+		allSteps.add(new PanelDetails("Making the staff", Arrays.asList(
+			enterAirAltar, enterFireAltar, enterWaterAltar, enterEarthAltar, returnWithStaff),
 			dramenStaff, airTalisman, fireTalisman, waterTalisman, earthTalisman));
 
-		PanelDetails makingHelmPanel = new PanelDetails("Making the helmet", new ArrayList<>(Arrays.asList(
-			enterMine, mineOre, smeltBar, makeHelmet)), pickaxe, hammer);
+		PanelDetails makingHelmPanel = new PanelDetails("Making the helmet", Arrays.asList(
+			enterMine, mineOre, smeltBar, makeHelmet), pickaxe, hammer);
 		makingHelmPanel.setLockingStep(makingHelm);
 		allSteps.add(makingHelmPanel);
 
-		PanelDetails gettingCapePanel = new PanelDetails("Getting the cape", new ArrayList<>(Collections.singletonList(talkToPauline)));
+		PanelDetails gettingCapePanel = new PanelDetails("Getting the cape", Collections.singletonList(talkToPauline));
 		gettingCapePanel.setLockingStep(gettingCape);
 		allSteps.add(gettingCapePanel);
 
-		PanelDetails gettingAmuletPanel = new PanelDetails("Getting the amulet", new ArrayList<>(Arrays.asList(
-			talkToMeteora, killSuqahForTiara, returnTiaraToMeteora)), combatGear);
+		PanelDetails gettingAmuletPanel = new PanelDetails("Getting the amulet", Arrays.asList(
+			talkToMeteora, killSuqahForTiara, returnTiaraToMeteora), combatGear);
 		gettingAmuletPanel.setLockingStep(gettingAmulet);
 		allSteps.add(gettingAmuletPanel);
 
-		PanelDetails gettingRingPanel = new PanelDetails("Getting the ring", new ArrayList<>(Arrays.asList(
-			talkToSelene, digForRing)), spade);
+		PanelDetails gettingRingPanel = new PanelDetails("Getting the ring", Arrays.asList(
+			talkToSelene, digForRing), spade);
 		gettingRingPanel.setLockingStep(gettingRing);
 		allSteps.add(gettingRingPanel);
 
-		PanelDetails gettingClothingPanel = new PanelDetails("Making the clothing", new ArrayList<>(Collections.singletonList(
-			makeClothes)), coins400, needle, thread);
+		PanelDetails gettingClothingPanel = new PanelDetails("Making the clothing", Collections.singletonList(
+			makeClothes), coins400, needle, thread);
 		gettingClothingPanel.setLockingStep(gettingClothes);
 		allSteps.add(gettingClothingPanel);
 
-		allSteps.add(new PanelDetails("Return to Oneiromancer", new ArrayList<>(Collections.singletonList(
-			bringItemsToOneiromancer))));
+		allSteps.add(new PanelDetails("Return to Oneiromancer", Collections.singletonList(
+			bringItemsToOneiromancer)));
 
-		allSteps.add(new PanelDetails("Entering the Dreamland", new ArrayList<>(Arrays.asList(
-			useVialOnKindling, lightBrazier, useKindlingOnBrazier, talkToEthereal))));
-		allSteps.add(new PanelDetails("Racing challenge", new ArrayList<>(Arrays.asList(goToRace, startRace, doRaceChallenge))));
-		allSteps.add(new PanelDetails("Number challenge", new ArrayList<>(Arrays.asList(goToNumbers, doNumberChallenge))));
-		allSteps.add(new PanelDetails("Mimic challenge", new ArrayList<>(Arrays.asList(goToMimic, doMimicChallenge))));
-		allSteps.add(new PanelDetails("Chance challenge", new ArrayList<>(Arrays.asList(goToChance, doChanceChallenge))));
-		allSteps.add(new PanelDetails("Memory challenge", new ArrayList<>(Arrays.asList(goToMemory, doMemoryChallenge))));
-		allSteps.add(new PanelDetails("Tree challenge", new ArrayList<>(Arrays.asList(goToTrees, doTreeChallenge))));
-		allSteps.add(new PanelDetails("Final challenge", new ArrayList<>(Arrays.asList(talkWithEtherealToFight, fightMe, leaveLecturn, finishQuest))));
+		allSteps.add(new PanelDetails("Entering the Dreamland", Arrays.asList(
+			useVialOnKindling, lightBrazier, useKindlingOnBrazier, talkToEthereal)));
+		allSteps.add(new PanelDetails("Racing challenge", Arrays.asList(goToRace, startRace, doRaceChallenge)));
+		allSteps.add(new PanelDetails("Number challenge", Arrays.asList(goToNumbers, doNumberChallenge)));
+		allSteps.add(new PanelDetails("Mimic challenge", Arrays.asList(goToMimic, doMimicChallenge)));
+		allSteps.add(new PanelDetails("Chance challenge", Arrays.asList(goToChance, doChanceChallenge)));
+		allSteps.add(new PanelDetails("Memory challenge", Arrays.asList(goToMemory, doMemoryChallenge)));
+		allSteps.add(new PanelDetails("Tree challenge", Arrays.asList(goToTrees, doTreeChallenge)));
+		allSteps.add(new PanelDetails("Final challenge", Arrays.asList(talkWithEtherealToFight, fightMe, leaveLecturn, finishQuest)));
 		return allSteps;
 	}
 }

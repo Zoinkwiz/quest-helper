@@ -34,10 +34,10 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.conditional.ConditionForStep;
 import com.questhelper.steps.conditional.ZoneCondition;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -147,13 +147,13 @@ public class DyeShipSteps extends DetailedOwnerStep
 			bottomColour != FlagColour.WHITE)
 		{
 			coloursKnown = true;
-			dyeTop.setRequirements(new ArrayList<>(Arrays.asList(topColour.getItem(), modelShip)));
+			dyeTop.setRequirements(Arrays.asList(topColour.getItem(), modelShip));
 			dyeTop.setText("Dye the top of the model ship's flag " + topColour.getColourText() + " If you already have, inspect the ship.");
 			dyeTop.addDialogStep("Top half");
-			dyeBottom.setRequirements(new ArrayList<>(Arrays.asList(bottomColour.getItem(), modelShip)));
+			dyeBottom.setRequirements(Arrays.asList(bottomColour.getItem(), modelShip));
 			dyeBottom.setText("Dye the bottom of the model ship's flag " + bottomColour.getColourText() + " If you already have, inspect the ship.");
 			dyeBottom.addDialogStep("Bottom half");
-			dyeSkull.setRequirements(new ArrayList<>(Arrays.asList(skullColour.getItem(), modelShip)));
+			dyeSkull.setRequirements(Arrays.asList(skullColour.getItem(), modelShip));
 			dyeSkull.addDialogStep("Skull emblem");
 			dyeSkull.setText("Dye the skull on the model ship's flag " + skullColour.getColourText() + " If you already have, inspect the ship.");
 		}
@@ -260,9 +260,10 @@ public class DyeShipSteps extends DetailedOwnerStep
 		return Arrays.asList(searchMast, dyeTop, dyeBottom, dyeSkull, talkToMan, goDownToMan, goUpToMan, goUpToDeckForMast, goUpToMast);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
-		return Arrays.asList(goUpToDeckForMast, goUpToMast, searchMast, dyeTop, dyeBottom, dyeSkull, goDownToMan, talkToMan);
+		return Arrays.asList(goUpToDeckForMast, goUpToMast, searchMast, dyeTop, dyeBottom, dyeSkull, goDownToMan,
+			talkToMan);
 	}
 
 	private enum FlagColour

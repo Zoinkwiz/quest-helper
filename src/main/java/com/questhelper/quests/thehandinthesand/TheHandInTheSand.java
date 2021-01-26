@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -254,7 +255,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(beerOr2Coins);
@@ -269,7 +270,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(teleportsToYanille);
@@ -279,21 +280,21 @@ public class TheHandInTheSand extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.THIEVING, 17), new SkillRequirement(Skill.CRAFTING, 49)));
+		return Arrays.asList(new SkillRequirement(Skill.THIEVING, 17), new SkillRequirement(Skill.CRAFTING, 49));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToBert))));
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(giveCaptainABeer, ringBell, talkToBertAboutRota, searchSandysDesk, pickpocketSandy)), beerOr2Coins));
-		allSteps.add(new PanelDetails("Making a truth serum", new ArrayList<>(Arrays.asList(talkToBertAboutScroll, ringBellAgain, talkToRarveAgain, talkToBetty, addRedberries, addWhiteberries, useDyeOnLanternLens,
-			talkToBettyAgain, useLensOnCounter, talkToBettyOnceMore)), vial2, lanternLens, redberries, whiteberries));
-		allSteps.add(new PanelDetails("Uncover the truth", new ArrayList<>(Arrays.asList(talkToSandyWithPotion, useSerumOnCoffee, activateMagicalOrb, interrogateSandy)), truthSerum, magicalOrb));
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(ringBellAfterInterrogation, talkToMazion, ringBellEnd)), earthRunes5, bucketOfSand));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToBert)));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(giveCaptainABeer, ringBell, talkToBertAboutRota, searchSandysDesk, pickpocketSandy), beerOr2Coins));
+		allSteps.add(new PanelDetails("Making a truth serum", Arrays.asList(talkToBertAboutScroll, ringBellAgain, talkToRarveAgain, talkToBetty, addRedberries, addWhiteberries, useDyeOnLanternLens,
+			talkToBettyAgain, useLensOnCounter, talkToBettyOnceMore), vial2, lanternLens, redberries, whiteberries));
+		allSteps.add(new PanelDetails("Uncover the truth", Arrays.asList(talkToSandyWithPotion, useSerumOnCoffee, activateMagicalOrb, interrogateSandy), truthSerum, magicalOrb));
+		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(ringBellAfterInterrogation, talkToMazion, ringBellEnd), earthRunes5, bucketOfSand));
 		return allSteps;
 	}
 }

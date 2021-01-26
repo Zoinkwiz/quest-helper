@@ -33,7 +33,7 @@ public class AddDung extends ObjectStep
 	{
 		int numCompToAdd = 3 - client.getVarbitValue(2791);
 		dung.setQuantity(numCompToAdd);
-		this.setRequirements(new ArrayList<>(Collections.singletonList(dung)));
+		this.setRequirements(Collections.singletonList(dung));
 		this.setText("Add " + numCompToAdd + " ugthanki dung on My Arm's soil patch.");
 	}
 }

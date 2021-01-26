@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -52,6 +51,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -234,19 +234,19 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(axeHighlighted, chompy, ironSpit, log, tinderbox, pickaxe, ogreBellows, ballOfWool, ogreBowAndArrows));
+		return Arrays.asList(axeHighlighted, chompy, ironSpit, log, tinderbox, pickaxe, ogreBellows, ballOfWool, ogreBowAndArrows);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Jubbly (level 9)"));
+		return Arrays.asList("Jubbly (level 9)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.COOKING, 41, true));
@@ -256,14 +256,14 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(inspectSkrach))));
-		allSteps.add(new PanelDetails("Help Rantz", new ArrayList<>(Arrays.asList(talkToRantz, talkToRantzOnCoast, useAxeOnTree, useAxeOnTreeAgain,
-			talkToRantzOnCoastAgain, useSpitOnChompy, lightFire, talkToRantzAfterReturn)), axeHighlighted, log, tinderbox, chompy, ironSpit, ogreBowAndArrows, pickaxe, ogreBellowsFilled, ballOfWool));
-		allSteps.add(new PanelDetails("Save Skrach", new ArrayList<>(Arrays.asList(getToad, getRock, useBellowOnToadInInv, dropBalloonToad, killJubbly, lootJubbly, pickUpRawJubbly, cookJubbly,
-			useJubblyOnSkrach)), ogreBowAndArrows, pickaxe, ogreBellowsFilled, ballOfWool));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectSkrach)));
+		allSteps.add(new PanelDetails("Help Rantz", Arrays.asList(talkToRantz, talkToRantzOnCoast, useAxeOnTree, useAxeOnTreeAgain,
+			talkToRantzOnCoastAgain, useSpitOnChompy, lightFire, talkToRantzAfterReturn), axeHighlighted, log, tinderbox, chompy, ironSpit, ogreBowAndArrows, pickaxe, ogreBellowsFilled, ballOfWool));
+		allSteps.add(new PanelDetails("Save Skrach", Arrays.asList(getToad, getRock, useBellowOnToadInInv, dropBalloonToad, killJubbly, lootJubbly, pickUpRawJubbly, cookJubbly,
+			useJubblyOnSkrach), ogreBowAndArrows, pickaxe, ogreBellowsFilled, ballOfWool));
 
 		return allSteps;
 	}

@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -421,7 +422,7 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Ice Queen (level 111) for ice gloves");
@@ -433,7 +434,7 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(fishingRod);
@@ -459,7 +460,7 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(combatGear);
@@ -470,7 +471,7 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		if (inBlackArmGang.checkCondition(client))
@@ -485,37 +486,37 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails firstPanel = new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToAchietties)));
+		PanelDetails firstPanel = new PanelDetails("Start the quest", Collections.singletonList(talkToAchietties));
 
-		PanelDetails secondPanel = new PanelDetails("Get the Lava Eel", new ArrayList<>(Arrays.asList(talkToGerrant, makeBlamishOil, useOilOnRod, enterTaverleyDungeon, fishLavaEel, cookLavaEel)), harralanderUnf, fishingRod, fishingBait, dustyKey);
+		PanelDetails secondPanel = new PanelDetails("Get the Lava Eel", Arrays.asList(talkToGerrant, makeBlamishOil, useOilOnRod, enterTaverleyDungeon, fishLavaEel, cookLavaEel), harralanderUnf, fishingRod, fishingBait, dustyKey);
 		secondPanel.setLockingStep(getLavaEel);
 		PanelDetails thirdPanel;
 
 		if (inBlackArmGang.checkCondition(client))
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband",
-				new ArrayList<>(Arrays.asList(talkToKatrine, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey, enterTreasureRoom, searchChest, returnToKatrine)),
+				Arrays.asList(talkToKatrine, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey, enterTreasureRoom, searchChest, returnToKatrine),
 				blackFullHelm, blackPlatebody, blackPlatelegs);
 		}
 		else
 		{
-			thirdPanel = new PanelDetails("Get thieves' armband", new ArrayList<>(
-				Arrays.asList(talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, pushWall, useKeyOnDoor, killGrip, bringCandlestickToStraven)));
+			thirdPanel = new PanelDetails("Get thieves' armband", 
+				Arrays.asList(talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, pushWall, useKeyOnDoor, killGrip, bringCandlestickToStraven));
 		}
 
 		thirdPanel.setLockingStep(getThievesArmband);
 
-		PanelDetails fourthPanel = new PanelDetails("Get ice gloves", new ArrayList<>(Arrays.asList(mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen)));
+		PanelDetails fourthPanel = new PanelDetails("Get ice gloves", Arrays.asList(mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen));
 		fourthPanel.setLockingStep(getIceGloves);
 
-		PanelDetails fifthPanel = new PanelDetails("Get fire feather", new ArrayList<>(Arrays.asList(goToEntrana, killFireBird)));
+		PanelDetails fifthPanel = new PanelDetails("Get fire feather", Arrays.asList(goToEntrana, killFireBird));
 		fifthPanel.setLockingStep(getFireFeather);
 
-		PanelDetails sixthPanel = new PanelDetails("Finish off", new ArrayList<>(Collections.singletonList(finishQuest)), fireFeather, thievesArmband, lavaEel);
+		PanelDetails sixthPanel = new PanelDetails("Finish off", Collections.singletonList(finishQuest), fireFeather, thievesArmband, lavaEel);
 
 		allSteps.add(firstPanel);
 		allSteps.add(secondPanel);
@@ -527,13 +528,13 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(new ItemRequirement("Another player", -1, -1)));
+		return Collections.singletonList(new ItemRequirement("Another player", -1, -1));
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(55));

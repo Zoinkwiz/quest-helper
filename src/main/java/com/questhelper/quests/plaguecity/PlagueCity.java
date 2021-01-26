@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -353,7 +354,7 @@ public class PlagueCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(dwellberries);
@@ -366,7 +367,7 @@ public class PlagueCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(fourBucketsOfWater);
@@ -374,17 +375,17 @@ public class PlagueCity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToEdmond)), dwellberries, spade, rope, bucketOfMilk, chocolateDust, snapeGrass));
-		allSteps.add(new PanelDetails("Infiltrate West Ardougne", new ArrayList<>(Arrays.asList(talkToAlrena, talkToEdmondAgain, useWaterOnMudPatch1,
-			grabPictureOfElena, digHole, goDownHole, attemptToPullGrill, useRopeOnGrill, talkToEdmondUnderground, climbThroughPipe))));
-		allSteps.add(new PanelDetails("Discover Elena's location", new ArrayList<>(Arrays.asList(talkToJethick, enterMarthasHouse, talkToMartha,
-			goUpstairsInMarthasHouse))));
-		allSteps.add(new PanelDetails("Freeing Elena", new ArrayList<>(Arrays.asList(tryToEnterPlagueHouse, talkToClerk, talkToBravek, useDustOnMilk, useSnapeGrassOnChocolateMilk,
-			giveHangoverCureToBravek, tryToEnterPlagueHouseAgain, searchBarrel, goDownstairsInPlagueHouse, talkToElena))));
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Collections.singletonList(talkToEdmondToFinish))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(talkToEdmond), dwellberries, spade, rope, bucketOfMilk, chocolateDust, snapeGrass));
+		allSteps.add(new PanelDetails("Infiltrate West Ardougne", Arrays.asList(talkToAlrena, talkToEdmondAgain, useWaterOnMudPatch1,
+			grabPictureOfElena, digHole, goDownHole, attemptToPullGrill, useRopeOnGrill, talkToEdmondUnderground, climbThroughPipe)));
+		allSteps.add(new PanelDetails("Discover Elena's location", Arrays.asList(talkToJethick, enterMarthasHouse, talkToMartha,
+			goUpstairsInMarthasHouse)));
+		allSteps.add(new PanelDetails("Freeing Elena", Arrays.asList(tryToEnterPlagueHouse, talkToClerk, talkToBravek, useDustOnMilk, useSnapeGrassOnChocolateMilk,
+			giveHangoverCureToBravek, tryToEnterPlagueHouseAgain, searchBarrel, goDownstairsInPlagueHouse, talkToElena)));
+		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(talkToEdmondToFinish)));
 		return allSteps;
 	}
 }

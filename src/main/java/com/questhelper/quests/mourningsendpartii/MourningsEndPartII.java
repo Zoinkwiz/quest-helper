@@ -26,7 +26,6 @@ package com.questhelper.quests.mourningsendpartii;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -44,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -979,25 +979,25 @@ public class MourningsEndPartII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(mournersOutfit, chisel, deathTalismanHeader, rope));
+		return Arrays.asList(mournersOutfit, chisel, deathTalismanHeader, rope);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(prayerPotions, food));
+		return Arrays.asList(prayerPotions, food);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Able to survive Shadows (level 73) continually attacking you"));
+		return Collections.singletonList("Able to survive Shadows (level 73) continually attacking you");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.MOURNINGS_END_PART_I, QuestState.FINISHED));
@@ -1005,37 +1005,37 @@ public class MourningsEndPartII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
 			new ArrayList<>(Collections.singletonList(talkToArianwyn))));
 
 		allSteps.add(new PanelDetails("Explore the caves",
-			new ArrayList<>(Arrays.asList(talkToEssyllt, enterCave, searchCorpse, goUpStairsTemple, goUpSouthLadder, goToMiddleFromSouth, goUpFromMiddleToNorth, useChisel, bringCrystalToArianwyn,
-				talkToElunedAfterGivingCrystal, talkToArianwynAfterGivingCrystal)), chisel));
+			Arrays.asList(talkToEssyllt, enterCave, searchCorpse, goUpStairsTemple, goUpSouthLadder, goToMiddleFromSouth, goUpFromMiddleToNorth, useChisel, bringCrystalToArianwyn,
+				talkToElunedAfterGivingCrystal, talkToArianwynAfterGivingCrystal), chisel));
 
-		allSteps.add(new PanelDetails("Return to the Temple", new ArrayList<>(Collections.singletonList(enterTempleOfLight)), rope, mournersOutfit, deathTalismanNote, newlyIfOneTrip));
+		allSteps.add(new PanelDetails("Return to the Temple", Collections.singletonList(enterTempleOfLight), rope, mournersOutfit, deathTalismanNote, newlyIfOneTrip));
 
-		allSteps.add(new PanelDetails("Puzzle 1", new ArrayList<>(Arrays.asList(goUpStairsTempleC1, pullDispenser1, puzzle1Pillar1, puzzle1Pillar2, puzzle1Pillar3, puzzle1Pillar4, puzzle1Pillar5, climbWallSupport, searchBlueChest))));
-		allSteps.add(new PanelDetails("Puzzle 2", new ArrayList<>(Arrays.asList(pullDispenser2, puzzle2Pillar1, puzzle2Pillar2, puzzle2Pillar3, puzzle2Pillar4, puzzle2Pillar5, puzzle2Pillar6, searchMagentaChest))));
-		allSteps.add(new PanelDetails("Puzzle 3", new ArrayList<>(Arrays.asList(puzzle3Pillar6RemoveYellow, goUpLadderNorthForPuzzle3, puzzle3Pillar7, goDownFromF2NorthRoomPuzzle3, goUpToFloor2Puzzle3,
-			puzzle3Pillar8, goDownFromF2Puzzle3, goDownFromF1Puzzle3, enterNorthWestRoomPuzzle3, puzzle3Pillar9, searchYellowChest))));
+		allSteps.add(new PanelDetails("Puzzle 1", Arrays.asList(goUpStairsTempleC1, pullDispenser1, puzzle1Pillar1, puzzle1Pillar2, puzzle1Pillar3, puzzle1Pillar4, puzzle1Pillar5, climbWallSupport, searchBlueChest)));
+		allSteps.add(new PanelDetails("Puzzle 2", Arrays.asList(pullDispenser2, puzzle2Pillar1, puzzle2Pillar2, puzzle2Pillar3, puzzle2Pillar4, puzzle2Pillar5, puzzle2Pillar6, searchMagentaChest)));
+		allSteps.add(new PanelDetails("Puzzle 3", Arrays.asList(puzzle3Pillar6RemoveYellow, goUpLadderNorthForPuzzle3, puzzle3Pillar7, goDownFromF2NorthRoomPuzzle3, goUpToFloor2Puzzle3,
+			puzzle3Pillar8, goDownFromF2Puzzle3, goDownFromF1Puzzle3, enterNorthWestRoomPuzzle3, puzzle3Pillar9, searchYellowChest)));
 
-		allSteps.add(new PanelDetails("Puzzle 4", new ArrayList<>(Arrays.asList(goUpToFirstFloorPuzzle4, puzzle4Pillar3RemoveCyan, goUpToFloor2Puzzle4, puzzle4Pillar8, puzzle4Pillar9, goDownFromF2Puzzle4, useRope, goDownRope, searchCyanChest)), rope));
+		allSteps.add(new PanelDetails("Puzzle 4", Arrays.asList(goUpToFirstFloorPuzzle4, puzzle4Pillar3RemoveCyan, goUpToFloor2Puzzle4, puzzle4Pillar8, puzzle4Pillar9, goDownFromF2Puzzle4, useRope, goDownRope, searchCyanChest), rope));
 
-		PanelDetails placeBlueCrystalPanel = new PanelDetails("Puzzle 5 P1", new ArrayList<>(Arrays.asList(climbUpRope, pullDispenser5, puzzle5Pillar1, puzzle5Pillar2, puzzle5Pillar3, puzzle5Pillar4, puzzle5Pillar5, climbWallSupportPuzzle5, puzzle5Pillar6)));
+		PanelDetails placeBlueCrystalPanel = new PanelDetails("Puzzle 5 P1", Arrays.asList(climbUpRope, pullDispenser5, puzzle5Pillar1, puzzle5Pillar2, puzzle5Pillar3, puzzle5Pillar4, puzzle5Pillar5, climbWallSupportPuzzle5, puzzle5Pillar6));
 		placeBlueCrystalPanel.setLockingStep(puzzle5PlaceBlue);
 		allSteps.add(placeBlueCrystalPanel);
-		allSteps.add(new PanelDetails("Puzzle 5 P2", new ArrayList<>(Arrays.asList(puzzle5Pillar5RemoveMirror, puzzle5Pillar3RotateUp, goUpToFloor2Puzzle5, goDownToMiddleFromSouthPuzzle5,
+		allSteps.add(new PanelDetails("Puzzle 5 P2", Arrays.asList(puzzle5Pillar5RemoveMirror, puzzle5Pillar3RotateUp, goUpToFloor2Puzzle5, goDownToMiddleFromSouthPuzzle5,
 			goUpFromMiddleToNorthPuzzle5, puzzle5Pillar7, goDownToMiddleFromNorthPuzzle5, puzzle5Pillar8, puzzle5Pillar9, puzzle5Pillar10, puzzle5Pillar11, goDownFromF2Puzzle5,
-			goDownFromF1Puzzle5, puzzle5Pillar12, puzzle5Pillar13, puzzle5Pillar14, searchMagentaYellowChest))));
+			goDownFromF1Puzzle5, puzzle5Pillar12, puzzle5Pillar13, puzzle5Pillar14, searchMagentaYellowChest)));
 
-		allSteps.add(new PanelDetails("Reach the Death Altar", new ArrayList<>(Arrays.asList(goUpToF1Puzzle6, puzzle6Pillar1, puzzle6Pillar2, goDownFromF1Puzzle6, puzzle6Pillar3, puzzle6Pillar4,
+		allSteps.add(new PanelDetails("Reach the Death Altar", Arrays.asList(goUpToF1Puzzle6, puzzle6Pillar1, puzzle6Pillar2, goDownFromF1Puzzle6, puzzle6Pillar3, puzzle6Pillar4,
 			puzzle6Pillar5, puzzle6Pillar6, puzzle6Pillar7, puzzle6Pillar8, goUpToF1Puzzle6, puzzle6Pillar9, goUpNorthLadderToF2Puzzle6, puzzle6Pillar10, goDownNorthLadderToF1Puzzle6, goUpToFloor2Puzzle6,
-			puzzle6Pillar11, puzzle6Pillar12, puzzle6Pillar13, goDownToMiddleFromSouthPuzzle6, goUpFromMiddleToNorthPuzzle6, puzzle6Pillar14, puzzle6Pillar15, puzzle6Pillar16, puzzle6Pillar17, goDownToCentre, turnKeyMirror))));
+			puzzle6Pillar11, puzzle6Pillar12, puzzle6Pillar13, goDownToMiddleFromSouthPuzzle6, goUpFromMiddleToNorthPuzzle6, puzzle6Pillar14, puzzle6Pillar15, puzzle6Pillar16, puzzle6Pillar17, goDownToCentre, turnKeyMirror)));
 
-		allSteps.add(new PanelDetails("Repair the defences", new ArrayList<>(Arrays.asList(enterDeathAltarBarrier, getDeathTalisman, enterDeathAltar, useCrystalOnAltar, leaveDeathAltar, returnToArianwyn)), deathTalisman, newlyMadeCrystal));
+		allSteps.add(new PanelDetails("Repair the defences", Arrays.asList(enterDeathAltarBarrier, getDeathTalisman, enterDeathAltar, useCrystalOnAltar, leaveDeathAltar, returnToArianwyn), deathTalisman, newlyMadeCrystal));
 
 		return allSteps;
 	}

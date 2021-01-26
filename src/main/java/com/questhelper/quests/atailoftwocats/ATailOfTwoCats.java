@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -223,37 +224,37 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(cat, catspeak, deathRune5, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom));
+		return Arrays.asList(cat, catspeak, deathRune5, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToUnferth, talkToHild, findBob, talkToBob)), cat, catspeak, deathRune5));
+			Arrays.asList(talkToUnferth, talkToHild, findBob, talkToBob), cat, catspeak, deathRune5));
 
 		allSteps.add(new PanelDetails("Bob's past",
-			new ArrayList<>(Arrays.asList(talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx)), cat));
+			Arrays.asList(talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx), cat));
 
 		allSteps.add(new PanelDetails("Helping Unferth",
-			new ArrayList<>(Arrays.asList(useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs,
-				useChocolateCakeOnTable, useMilkOnTable, useShearsOnUnferth, reportToUnferth)),
+			Arrays.asList(useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs,
+				useChocolateCakeOnTable, useMilkOnTable, useShearsOnUnferth, reportToUnferth),
 			cat, catspeakE, rake, dibber, potatoSeed4, logs, tinderbox, chocolateCake, milk, shears));
 
 		allSteps.add(new PanelDetails("'Curing' Unferth",
-			new ArrayList<>(Arrays.asList(talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish,
-				talkToUnferthToFinish)), cat, catspeakE, vialOfWater, desertTop, desertBottom));
+			Arrays.asList(talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish,
+				talkToUnferthToFinish), cat, catspeakE, vialOfWater, desertTop, desertBottom));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new QuestRequirement(QuestHelperQuest.ICTHLARINS_LITTLE_HELPER, QuestState.FINISHED)));
+		return Collections.singletonList(new QuestRequirement(QuestHelperQuest.ICTHLARINS_LITTLE_HELPER, QuestState.FINISHED));
 	}
 }

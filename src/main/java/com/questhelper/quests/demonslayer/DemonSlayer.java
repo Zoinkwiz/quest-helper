@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -230,42 +231,42 @@ public class DemonSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(coin, bones, bucketOfWaterOptional, combatGear, food));
+		return Arrays.asList(coin, bones, bucketOfWaterOptional, combatGear, food);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(varrockTeleport, wizardsTowerTeleport));
+		return Arrays.asList(varrockTeleport, wizardsTowerTeleport);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Delirth (level 27)"));
+		return Collections.singletonList("Delirth (level 27)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToAris, talkToPrysin)), coin, bucketOfWaterOptional));
-		PanelDetails rovinPanel = new PanelDetails("Get Rovin's key", new ArrayList<>(Collections.singletonList(talkToRovin)), bucketOfWaterOptional);
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToAris, talkToPrysin), coin, bucketOfWaterOptional));
+		PanelDetails rovinPanel = new PanelDetails("Get Rovin's key", Collections.singletonList(talkToRovin), bucketOfWaterOptional);
 		rovinPanel.setLockingStep(getFirstKey);
 		allSteps.add(rovinPanel);
 
-		PanelDetails prysinPanel = new PanelDetails("Get Prysin's key", new ArrayList<>(Arrays.asList(useFilledBucketOnDrain, goDownManhole, pickupSecondKey)));
+		PanelDetails prysinPanel = new PanelDetails("Get Prysin's key", Arrays.asList(useFilledBucketOnDrain, goDownManhole, pickupSecondKey));
 		prysinPanel.setLockingStep(getSecondKey);
 		allSteps.add(prysinPanel);
 
-		PanelDetails traibornPanel = new PanelDetails("Get Traiborn's key", new ArrayList<>(Collections.singletonList(talkToTraiborn)), bones);
+		PanelDetails traibornPanel = new PanelDetails("Get Traiborn's key", Collections.singletonList(talkToTraiborn), bones);
 		traibornPanel.setLockingStep(getThirdKey);
 		allSteps.add(traibornPanel);
 
-		PanelDetails killDelrithPanel = new PanelDetails("Kill Delrith", new ArrayList<>(Arrays.asList(returnToPrysin, killDelrithStep)), silverlight, combatGear, food);
+		PanelDetails killDelrithPanel = new PanelDetails("Kill Delrith", Arrays.asList(returnToPrysin, killDelrithStep), silverlight, combatGear, food);
 		allSteps.add(killDelrithPanel);
 		return allSteps;
 	}

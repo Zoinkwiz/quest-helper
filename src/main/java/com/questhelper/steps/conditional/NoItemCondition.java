@@ -27,11 +27,12 @@ package com.questhelper.steps.conditional;
 import com.questhelper.requirements.NoItemRequirement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import net.runelite.api.Client;
 
 public class NoItemCondition extends ConditionForStep
 {
-	ArrayList<NoItemRequirement> noItemRequirements;
+	List<NoItemRequirement> noItemRequirements;
 
 	public NoItemCondition(NoItemRequirement... noItemRequirements)
 	{

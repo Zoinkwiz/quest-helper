@@ -38,7 +38,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -275,7 +275,7 @@ public class CrwysLightPuzzle extends ConditionalStep
 		r12 = new Conditions(new VarbitCondition(8604, CYAN), r4);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, p1Pillar5, p1Pillar6, p1Pillar7, goToF0,
 			p1Pillar8, p1Pillar9, goToF1, p1Pillar10, goToF2, p1Pillar11, p1Pillar12, goToF1, p1Pillar13);

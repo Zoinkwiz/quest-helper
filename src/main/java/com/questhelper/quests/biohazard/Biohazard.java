@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -304,7 +305,7 @@ public class Biohazard extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Mourner (level 13)");
@@ -312,7 +313,7 @@ public class Biohazard extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(gasMask);
@@ -320,7 +321,7 @@ public class Biohazard extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(teleportArdougne);
@@ -330,17 +331,17 @@ public class Biohazard extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToElena)), gasMask));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(talkToElena), gasMask));
 		allSteps.add(new PanelDetails("Getting back into West Ardougne",
-			new ArrayList<>(Arrays.asList(talkToJerico, getBirdFeed, getPigeonCage, investigateWatchtower, clickPigeonCage, talkToOmartAgain))));
+			Arrays.asList(talkToJerico, getBirdFeed, getPigeonCage, investigateWatchtower, clickPigeonCage, talkToOmartAgain)));
 		allSteps.add(new PanelDetails("Getting the Distillator",
 			enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard, enterMournerHeadquaters,
 			goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
 
-		ArrayList<QuestStep> testingSteps = new ArrayList<>(Arrays.asList(talkToTheChemist, goToVarrock, talkToAsyff, talkToGuidor));
+		List<QuestStep> testingSteps = Arrays.asList(talkToTheChemist, goToVarrock, talkToAsyff, talkToGuidor);
 		testingSteps.addAll(giveChemicals.getDisplaySteps());
 		testingSteps.addAll(Arrays.asList(goToVarrock, talkToAsyff, talkToGuidor));
 		allSteps.add(new PanelDetails("Testing the plague sample", testingSteps, plagueSample, liquidHoney, ethenea, sulphuricBroline));
@@ -350,9 +351,9 @@ public class Biohazard extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> requirements = new ArrayList<>();
+		List<Requirement> requirements = new ArrayList<>();
 		requirements.add(new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.FINISHED));
 		return requirements;
 	}

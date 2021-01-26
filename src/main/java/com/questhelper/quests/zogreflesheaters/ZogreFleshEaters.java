@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
@@ -342,14 +343,14 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(combatGear));
+		return Collections.singletonList(combatGear);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Slash Bash (level 111)");
@@ -357,7 +358,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
@@ -369,7 +370,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 5));
@@ -377,13 +378,13 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGrish, talkToGuard, goDownStairs, searchSkeleton, killZombie, openBackpack, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin, searchCoffinProperly))));
-		allSteps.add(new PanelDetails("Investigating", new ArrayList<>(Arrays.asList(talkToZavistic, goUpToSith, searchWardrobe, searchCupboard, searchDrawers, usePapyrusOnSith, useTankardOnBartender, usePortraitOnBartender, bringSignedPortraitToZavistic))));
-		allSteps.add(new PanelDetails("Discover the truth", new ArrayList<>(Arrays.asList(goUpToSith, usePotionOnTea, goDownstairsFromSith, goUpToOgreSith, talkToSithForAnswers))));
-		allSteps.add(new PanelDetails("Help the ogres", new ArrayList<>(Arrays.asList(talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors, goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish)), combatGear));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGrish, talkToGuard, goDownStairs, searchSkeleton, killZombie, openBackpack, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin, searchCoffinProperly)));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToZavistic, goUpToSith, searchWardrobe, searchCupboard, searchDrawers, usePapyrusOnSith, useTankardOnBartender, usePortraitOnBartender, bringSignedPortraitToZavistic)));
+		allSteps.add(new PanelDetails("Discover the truth", Arrays.asList(goUpToSith, usePotionOnTea, goDownstairsFromSith, goUpToOgreSith, talkToSithForAnswers)));
+		allSteps.add(new PanelDetails("Help the ogres", Arrays.asList(talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors, goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish), combatGear));
 
 		return allSteps;
 	}

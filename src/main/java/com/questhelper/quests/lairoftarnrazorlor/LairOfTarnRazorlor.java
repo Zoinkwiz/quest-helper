@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -219,7 +220,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		enterLair = new ObjectStep(this, ObjectID.ENTRANCE_15833, new WorldPoint(3424, 9661, 0), "Enter the entrance to the north.");
 
 		searchWallRoom1 = new ObjectStep(this, ObjectID.WALL_20588, new WorldPoint(3196, 4557, 0), "Follow the path west then north, and go through the door you reach.");
-		searchWallRoom1.setLinePoints(new ArrayList<>(Arrays.asList(
+		searchWallRoom1.setLinePoints(Arrays.asList(
 			new WorldPoint(3166, 4547, 0),
 			new WorldPoint(3166, 4550, 0),
 			new WorldPoint(3175, 4550, 0),
@@ -233,7 +234,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 			new WorldPoint(3190, 4555, 0),
 			new WorldPoint(3196, 4555, 0),
 			new WorldPoint(3196, 4556, 0)
-		)));
+		));
 
 		searchWall2Room1 = new ObjectStep(this, ObjectID.WALL_20588, new WorldPoint(3197, 4562, 0), "Follow the path west then north, and go through the door you reach.");
 
@@ -241,7 +242,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		goThroughRoom1.addSubSteps(searchWallRoom1, searchWall2Room1);
 
 		goThroughRoom2 = new ObjectStep(this, ObjectID.PASSAGEWAY_20513, new WorldPoint(3174, 4577, 1), "Continue out the west of this room.");
-		goThroughRoom2.setLinePoints(new ArrayList<>(Arrays.asList(
+		goThroughRoom2.setLinePoints(Arrays.asList(
 			new WorldPoint(3195, 4575, 1),
 			new WorldPoint(3195, 4579, 1),
 			new WorldPoint(3196, 4580, 1),
@@ -253,7 +254,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 			new WorldPoint(3176, 4583, 1),
 			new WorldPoint(3175, 4582, 1),
 			new WorldPoint(3175, 4577, 1)
-		)));
+		));
 
 		goThroughRoom3 = new ObjectStep(this, ObjectID.PASSAGEWAY_20523, new WorldPoint(3168, 4580, 0), "Go through the north door.");
 		goThroughRoom4 = new ObjectStep(this, ObjectID.PASSAGEWAY_20525, new WorldPoint(3165, 4589, 0), "Go through the west door.");
@@ -300,19 +301,19 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(combatGear));
+		return Collections.singletonList(combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Tarn (level 69) twice"));
+		return Collections.singletonList("Tarn (level 69) twice");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.HAUNTED_MINE, QuestState.FINISHED));
@@ -321,11 +322,11 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Traversing the dungeon", new ArrayList<>(Arrays.asList(enterHauntedMine, enterLair, goThroughRoom1, goThroughRoom2, goThroughRoom3,
-			goThroughRoom4, goThroughRoom5, jumpToPillar1, pressSwitch, jumpToNorthLedge, goThroughRoom6, goThroughRoom7, enterBossRoom, killTarn1, killTarn2, enterFinalRoom, pickUpDiary)), combatGear));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Traversing the dungeon", Arrays.asList(enterHauntedMine, enterLair, goThroughRoom1, goThroughRoom2, goThroughRoom3,
+			goThroughRoom4, goThroughRoom5, jumpToPillar1, pressSwitch, jumpToNorthLedge, goThroughRoom6, goThroughRoom7, enterBossRoom, killTarn1, killTarn2, enterFinalRoom, pickUpDiary), combatGear));
 		return allSteps;
 	}
 }

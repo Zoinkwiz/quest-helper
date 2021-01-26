@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -294,7 +295,7 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(shrimp);
@@ -312,7 +313,7 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("The final boss of this quest is in the Edgeville WILDERNESS dungeon, where other players can kill " +
@@ -321,7 +322,7 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Chronozon (level 170, in the Wilderness)");
@@ -329,22 +330,22 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToDimintheis))));
-		allSteps.add(new PanelDetails("Caleb's piece", new ArrayList<>(Arrays.asList(talkToCaleb, talkToCalebWithFish)), shrimp, salmon, tuna, bass, swordfish));
-		allSteps.add(new PanelDetails("Avan's piece", new ArrayList<>(Arrays.asList(talkToGemTrader, talkToMan, talkToBoot, enterWitchavenDungeon, pullNorthLever,
-			pullSouthRoomLever, pullNorthLever, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2, mineGold, smeltGold, makeNecklace, makeRing, returnToMan)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToDimintheis)));
+		allSteps.add(new PanelDetails("Caleb's piece", Arrays.asList(talkToCaleb, talkToCalebWithFish), shrimp, salmon, tuna, bass, swordfish));
+		allSteps.add(new PanelDetails("Avan's piece", Arrays.asList(talkToGemTrader, talkToMan, talkToBoot, enterWitchavenDungeon, pullNorthLever,
+			pullSouthRoomLever, pullNorthLever, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2, mineGold, smeltGold, makeNecklace, makeRing, returnToMan),
 			pickaxe, ruby2, necklaceMould, ringMould));
-		allSteps.add(new PanelDetails("Johnathon's piece", new ArrayList<>(Arrays.asList(goUpToJohnathon, giveJohnathonAntipoison, killChronizon)),
+		allSteps.add(new PanelDetails("Johnathon's piece", Arrays.asList(goUpToJohnathon, giveJohnathonAntipoison, killChronizon),
 			runesForBlasts, antipoison));
-		allSteps.add(new PanelDetails("Return the crest", new ArrayList<>(Arrays.asList(repairCrest, returnCrest))));
+		allSteps.add(new PanelDetails("Return the crest", Arrays.asList(repairCrest, returnCrest)));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.MINING, 40, true));

@@ -62,7 +62,7 @@ public class GetRohakDrunk extends NpcStep
 		}
 		else
 		{
-			this.setRequirements(new ArrayList<>(Collections.singletonList(asgoldianAle)));
+			this.setRequirements(Collections.singletonList(asgoldianAle));
 		}
 		this.setText("Keep talking to the dwarf until he's drunk and agrees to make the rock cake.");
 	}

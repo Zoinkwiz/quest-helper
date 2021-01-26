@@ -38,6 +38,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -148,7 +149,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(hammer);
@@ -159,7 +160,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
@@ -168,7 +169,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Count Draynor (level 34)");
@@ -176,13 +177,13 @@ public class VampyreSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToMorgan, ifNeedGarlic))));
-		allSteps.add(new PanelDetails("Get a stake", new ArrayList<>(Arrays.asList(talkToHarlow, talkToHarlowAgain)), beer));
-		allSteps.add(new PanelDetails("Kill Count Draynor", new ArrayList<>(Arrays.asList(enterDraynorManor, goDownToBasement, openCoffin)), hammer, stake, garlic, combatGear));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToMorgan, ifNeedGarlic)));
+		allSteps.add(new PanelDetails("Get a stake", Arrays.asList(talkToHarlow, talkToHarlowAgain), beer));
+		allSteps.add(new PanelDetails("Kill Count Draynor", Arrays.asList(enterDraynorManor, goDownToBasement, openCoffin), hammer, stake, garlic, combatGear));
 		return allSteps;
 	}
 }

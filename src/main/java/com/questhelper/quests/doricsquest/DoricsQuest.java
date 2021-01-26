@@ -31,6 +31,7 @@ import com.questhelper.steps.NpcStep;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -81,7 +82,7 @@ public class DoricsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.MINING, 15, true, "15 Mining to get ores yourself"));
@@ -89,7 +90,7 @@ public class DoricsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(clay);
@@ -99,11 +100,11 @@ public class DoricsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Help Doric", new ArrayList<>(Collections.singletonList(talkToDoric)), clay, copper, iron));
+		allSteps.add(new PanelDetails("Help Doric", Collections.singletonList(talkToDoric), clay, copper, iron));
 		return allSteps;
 	}
 }

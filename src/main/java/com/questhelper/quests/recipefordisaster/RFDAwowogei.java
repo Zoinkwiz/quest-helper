@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -261,25 +262,25 @@ public class RFDAwowogei extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(mAmulet, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted, knife, pestleAndMortar, gorillaGreegree, ninjaGreegree, zombieGreegree));
+		return Arrays.asList(mAmulet, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted, knife, pestleAndMortar, gorillaGreegree, ninjaGreegree, zombieGreegree);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Big Snake (level 84)", "If you need the greegrees still, a zombie, ninja, and guard monkey"));
+		return Arrays.asList("Big Snake (level 84)", "If you need the greegrees still, a zombie, ninja, and guard monkey");
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("If you don't have the ninja/gorilla/zombie greegrees ready, it's recommended you get them all in a single run to Zooknock to save time."));
+		return Collections.singletonList("If you don't have the ninja/gorilla/zombie greegrees ready, it's recommended you get them all in a single run to Zooknock to save time.");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId(), Operation.GREATER_EQUAL, 3,
@@ -292,12 +293,12 @@ public class RFDAwowogei extends BasicQuestHelper
 
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(inspectAwowogei))));
-		allSteps.add(new PanelDetails("Saving Awowogei", new ArrayList<>(Arrays.asList(talkToAwowogei, talkToWiseMonkeys, useBananaOnWiseMonkeys, useNutsOnWiseMonkeys, goToCrashIsland, enterCrashHole, killSnake, leaveSnakeHole,
-			returnToApeAtoll, useRopeOnTree, enterNutHole, takeNuts, grindNuts, sliceBanana, stuffSnake, enterZombieDungeon, enterCookingHole, cookSnake, useSnakeOnAwowogei)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(inspectAwowogei)));
+		allSteps.add(new PanelDetails("Saving Awowogei", Arrays.asList(talkToAwowogei, talkToWiseMonkeys, useBananaOnWiseMonkeys, useNutsOnWiseMonkeys, goToCrashIsland, enterCrashHole, killSnake, leaveSnakeHole,
+			returnToApeAtoll, useRopeOnTree, enterNutHole, takeNuts, grindNuts, sliceBanana, stuffSnake, enterZombieDungeon, enterCookingHole, cookSnake, useSnakeOnAwowogei),
 			mAmulet, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted, knife, pestleAndMortar, zombieGreegree, ninjaGreegree, gorillaGreegree));
 		return allSteps;
 	}

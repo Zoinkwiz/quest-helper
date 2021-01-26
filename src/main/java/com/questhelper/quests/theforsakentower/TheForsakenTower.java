@@ -42,7 +42,9 @@ import com.questhelper.steps.conditional.WidgetModelCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -213,7 +215,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(gamesNecklace);
@@ -221,26 +223,27 @@ public class TheForsakenTower extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new FavourRequirement(Favour.LOVAKENGJ, 20),
-			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED)));
+		return Arrays.asList(new FavourRequirement(Favour.LOVAKENGJ, 20),
+			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Stating off", new ArrayList<>(Arrays.asList(talkToVulcana, talkToUndor))));
-		allSteps.add(new PanelDetails("To the Forsaken Tower", new ArrayList<>(Arrays.asList(enterTheForsakenTower, inspectDisplayCase))));
+		allSteps.add(new PanelDetails("Stating off", Arrays.asList(talkToVulcana, talkToUndor)));
+		allSteps.add(new PanelDetails("To the Forsaken Tower", Arrays.asList(enterTheForsakenTower, inspectDisplayCase)));
 		allSteps.addAll(furnacePuzzleSteps.panelDetails());
-		PanelDetails powerPuzzlePanel = new PanelDetails("Power puzzle", new ArrayList<>(Arrays.asList(goDownLadderToBasement, searchCrate, inspectGenerator, inspectPowerGrid, doPowerPuzzle)));
+		PanelDetails powerPuzzlePanel = new PanelDetails("Power puzzle",
+			Arrays.asList(goDownLadderToBasement, searchCrate, inspectGenerator, inspectPowerGrid, doPowerPuzzle));
 		powerPuzzlePanel.setLockingStep(powerPuzzle);
 		allSteps.add(powerPuzzlePanel);
 		allSteps.addAll(potionPuzzle.panelDetails());
 		allSteps.addAll(altarPuzzle.panelDetails());
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(getHammer, returnToUndor, returnToVulcana))));
+		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(getHammer, returnToUndor, returnToVulcana)));
 		return allSteps;
 	}
 }

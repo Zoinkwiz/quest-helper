@@ -37,6 +37,7 @@ import com.questhelper.steps.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -324,36 +325,36 @@ public class TheGolem extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(clay4Highlight, vial, pestleAndMortar, papyrus));
+		return Arrays.asList(clay4Highlight, vial, pestleAndMortar, papyrus);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(varrockTeleport, digsiteTeleport, waterskins));
+		return Arrays.asList(varrockTeleport, digsiteTeleport, waterskins);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20),
-			new SkillRequirement(Skill.THIEVING, 25, true)));
+		return Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20),
+			new SkillRequirement(Skill.THIEVING, 25, true));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGolem, useClay, pickUpLetter, enterRuinForFirstTime,
-			pickUpImplement)), clay4Highlight));
-		allSteps.add(new PanelDetails("Finding the statuette", new ArrayList<>(Arrays.asList(talkToElissa, searchBookcase, readBook,
-			talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet))));
-		allSteps.add(new PanelDetails("Opening the portal", new ArrayList<>(Arrays.asList(enterRuin, useStatuette, turnStatue1,
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGolem, useClay, pickUpLetter, enterRuinForFirstTime,
+			pickUpImplement), clay4Highlight));
+		allSteps.add(new PanelDetails("Finding the statuette", Arrays.asList(talkToElissa, searchBookcase, readBook,
+			talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet)));
+		allSteps.add(new PanelDetails("Opening the portal", Arrays.asList(enterRuin, useStatuette, turnStatue1,
 			enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
-			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useProgramOnGolem)), vial, pestleAndMortar, papyrus));
+			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useProgramOnGolem), vial, pestleAndMortar, papyrus));
 
 		return allSteps;
 	}

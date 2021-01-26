@@ -49,6 +49,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -491,7 +492,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		leaveKrukDungeon = new ObjectStep(this, ObjectID.ROPE_28775, new WorldPoint(2513, 9207, 1), "Leave the dungeon up the rope to the west.");
 		goDownToZooknock = new ObjectStep(this, ObjectID.BAMBOO_LADDER_4780, new WorldPoint(2763, 2703, 0), "Enter the dungeon in south Ape Atoll.", greegreeEquipped, kruksPaw, talisman);
 
-		ArrayList<WorldPoint> zooknockDungeonPath = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> zooknockDungeonPath = Arrays.asList(
 			new WorldPoint(2768, 9101, 0),
 			new WorldPoint(2788, 9102, 0),
 			new WorldPoint(2788, 9109, 0),
@@ -523,7 +524,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 			new WorldPoint(2750, 9142, 0),
 			new WorldPoint(2773, 9144, 0),
 			new WorldPoint(2799, 9138, 0)
-		));
+		);
 		talkToZooknock = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0), "Talk to Zooknock in the north east of the dungeon.", greegreeEquipped, kruksPaw, talisman);
 		talkToZooknock.addDialogStep("Talk about your mission.");
 		((NpcStep) (talkToZooknock)).setLinePoints(zooknockDungeonPath);
@@ -653,59 +654,59 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(lemon, grape, pestle, pickaxe, logs, lightSource, hammerSidebar, chiselSidebar, mspeakAmulet, talismanOr1000Coins, ninjaGreegree));
+		return Arrays.asList(lemon, grape, pestle, pickaxe, logs, lightSource, hammerSidebar, chiselSidebar, mspeakAmulet, talismanOr1000Coins, ninjaGreegree);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(magicLog, food, staminaPotions, prayerPotions, antidote, combatGear));
+		return Arrays.asList(magicLog, food, staminaPotions, prayerPotions, antidote, combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 378)"));
+		return Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 378)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToNarnode, goInvestigateGloughHouse, goTalkToAnita, goToGlough3rdFloor, investigateStatue, searchRemains, searchCrate,
+			Arrays.asList(talkToNarnode, goInvestigateGloughHouse, goTalkToAnita, goToGlough3rdFloor, investigateStatue, searchRemains, searchCrate,
 				usePestleOnLemon, useNotesOnCandles, usePestleOnGrapes, useBrushOnNote, readScrawledNote, useTranslationOnNote, goShowNoteToNarnode, goTalkToAnitaWithNote,
-				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana)), lemon, grapesHighlighted, translationBook, pestleHighlighted, logs, noCombatItems));
+				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana), lemon, grapesHighlighted, translationBook, pestleHighlighted, logs, noCombatItems));
 
-		ArrayList<QuestStep> chapter2Steps = new ArrayList<>(Arrays.asList(talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor));
+		List<QuestStep> chapter2Steps = Arrays.asList(talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor);
 		chapter2Steps.addAll(((AgilityDungeonSteps) (doAgilitySection)).getDisplaySteps());
 		chapter2Steps.addAll(Arrays.asList(pickUpKrukCorpse, leaveKrukDungeon, goDownToZooknock, talkToZooknock, talkToAwowAsKruk, talkToGarkorAfterKruk));
 		allSteps.add(new PanelDetails("Going undercover", chapter2Steps, ninjaGreegree, mspeakAmulet, talismanOr1000Coins, lightSource, combatGear, food, prayerPotions, staminaPotions));
 
 		allSteps.add(new PanelDetails("Defeating trolls and ogres",
-			new ArrayList<>(Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef)), combatGear));
+			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear));
 
-		ArrayList<QuestStep> sabotageSteps = new ArrayList<>(Arrays.asList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
-			talkToGarkorAfterSmith, talkToMonkeyGuard));
+		List<QuestStep> sabotageSteps = Arrays.asList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
+			talkToGarkorAfterSmith, talkToMonkeyGuard);
 		sabotageSteps.addAll(sabotageShips.getDisplaySteps());
 		allSteps.add(new PanelDetails("Sabotage",
 			sabotageSteps, krukGreegree, mspeakAmulet));
 
 		allSteps.add(new PanelDetails("Glough's experiments",
-			new ArrayList<>(Arrays.asList(talkToGarkorAfterSabotage, enterKrukDungeonAgain, climbMonkeyBarsAsKruk, enterLabratory, climbOnGorilla,
+			Arrays.asList(talkToGarkorAfterSabotage, enterKrukDungeonAgain, climbMonkeyBarsAsKruk, enterLabratory, climbOnGorilla,
 				fightGorillas, tamperWithDevice, useChiselOnOnyx, useOnyxOnDevice, investigateIncubationChamber, talkToGarkorAfterLab, talkToAwowAfterLab,
-				talkToGarkorAfterLabAgain)), krukGreegree, mspeakAmulet));
+				talkToGarkorAfterLabAgain), krukGreegree, mspeakAmulet));
 
 		allSteps.add(new PanelDetails("Defending the tree",
-			new ArrayList<>(Arrays.asList(talkToNarnodeAfterLab, talkToNieve, killGorillasInStronghold, enterNorthOfTree, enterStrongholdCave, killTorturedAndDemonic,
-				fightGlough, talkToZooknockToFinish, talkToNarnodeToFinish)), combatGear2));
+			Arrays.asList(talkToNarnodeAfterLab, talkToNieve, killGorillasInStronghold, enterNorthOfTree, enterStrongholdCave, killTorturedAndDemonic,
+				fightGlough, talkToZooknockToFinish, talkToNarnodeToFinish), combatGear2));
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new ItemRequirement("It is beneficial to have a high Combat and Agility level", -1, -1));
@@ -713,7 +714,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));

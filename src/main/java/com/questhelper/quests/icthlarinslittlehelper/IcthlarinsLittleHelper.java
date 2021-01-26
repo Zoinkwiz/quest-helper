@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -401,51 +402,51 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4));
+		return Arrays.asList(cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Level 75 or 81 guardian", "Possessed priest (level 91)"));
+		return Arrays.asList("Level 75 or 81 guardian", "Possessed priest (level 91)");
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, food, prayerPotions));
+		return Arrays.asList(combatGear, food, prayerPotions);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(new QuestRequirement(QuestHelperQuest.GERTRUDES_CAT, QuestState.FINISHED)));
+		return Collections.singletonList(new QuestRequirement(QuestHelperQuest.GERTRUDES_CAT, QuestState.FINISHED));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			new ArrayList<>(Arrays.asList(talkToWanderer, talkToWandererAgain)), cat, waterskin4, tinderbox,
+			Arrays.asList(talkToWanderer, talkToWandererAgain), cat, waterskin4, tinderbox,
 			coins600, bagOfSaltOrBucket, willowLog, bucketOfSap));
 		allSteps.add(new PanelDetails("Remembering",
-			new ArrayList<>(Arrays.asList(touchPyramidDoor, jumpPit, openWestDoor))));
+			Arrays.asList(touchPyramidDoor, jumpPit, openWestDoor)));
 
 		allSteps.add(new PanelDetails("Returning the jar",
-			new ArrayList<>(Arrays.asList(talkToSphinx, talkToHighPriest, openPyramidDoor, jumpPitAgain, pickUpAnyJar,
-				pickUpAnyJarAgain, returnOverPit, jumpOverPitAgain, solvePuzzleAgain, dropJar, leavePyramid)), cat));
+			Arrays.asList(talkToSphinx, talkToHighPriest, openPyramidDoor, jumpPitAgain, pickUpAnyJar,
+				pickUpAnyJarAgain, returnOverPit, jumpOverPitAgain, solvePuzzleAgain, dropJar, leavePyramid), cat));
 
 		allSteps.add(new PanelDetails("Prepare the ritual",
-			new ArrayList<>(Arrays.asList(buyLinen, talkToEmbalmer, talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain,
-				talkToCarpenterOnceMore)), bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog));
+			Arrays.asList(buyLinen, talkToEmbalmer, talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain,
+				talkToCarpenterOnceMore), bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog));
 
 		allSteps.add(new PanelDetails("Save the ritual",
-			new ArrayList<>(Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus,
+			Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus,
 				leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest, talkToHighPriestInPyramid,
-				leavePyramidToFinish)), cat));
+				leavePyramidToFinish), cat));
 
 		return allSteps;
 	}

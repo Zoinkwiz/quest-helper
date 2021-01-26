@@ -38,7 +38,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import com.questhelper.steps.conditional.VarbitCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -379,7 +379,7 @@ public class HefinLightPuzzle extends ConditionalStep
 		r19 = new VarbitCondition(8725, GREEN);
 	}
 
-	public Collection<QuestStep> getDisplaySteps()
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, goToF0Middle, p1Pillar3, p1Pillar4, p1Pillar5,
 			p1Pillar6, p1Pillar7, p1Pillar8, goToF1, p1Pillar9, p1Pillar10, p1Pillar11, p1Pillar12, goToF0SW, p1Pillar13,

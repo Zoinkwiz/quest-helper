@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
@@ -358,7 +359,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(yewOrBetterBow);
@@ -370,7 +371,7 @@ public class TempleOfIkov extends BasicQuestHelper
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Fire Warrior of Lesarkus (level 84)");
@@ -378,7 +379,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
@@ -387,14 +388,14 @@ public class TempleOfIkov extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToLucien))));
-		allSteps.add(new PanelDetails("Defeat Lesarkus", new ArrayList<>(
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToLucien)));
+		allSteps.add(new PanelDetails("Defeat Lesarkus", 
 			Arrays.asList(prepare, enterDungeon, goDownToBoots, getBoots, goUpFromBoots, pickUpLever, useLeverOnHole,
-				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever, tryToEnterWitchRoom, fightLes)), yewOrBetterBow, knife, lightSource, limpwurt20));
-		allSteps.add(new PanelDetails("Explore deeper", new ArrayList<>(Arrays.asList(enterLesDoor, giveWineldaLimps, pickUpKey, pushWall, makeChoice, returnToLucien))));
+				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever, tryToEnterWitchRoom, fightLes), yewOrBetterBow, knife, lightSource, limpwurt20));
+		allSteps.add(new PanelDetails("Explore deeper", Arrays.asList(enterLesDoor, giveWineldaLimps, pickUpKey, pushWall, makeChoice, returnToLucien)));
 		return allSteps;
 	}
 }

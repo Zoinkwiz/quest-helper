@@ -39,6 +39,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -347,7 +348,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(combatGear);
@@ -355,7 +356,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Ithoi the Navigator (level 34)");
@@ -363,14 +364,14 @@ public class TheCorsairCurse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Travel to the cove", new ArrayList<>(Arrays.asList(talkToTockFarm, talkToTockRimmington)), combatGear));
-		allSteps.add(new PanelDetails("Solve the curse", new ArrayList<>(Arrays.asList(talkToIthoi, talkToGnocci, talkToArsen, talkToColin, grabTinderbox, pickUpSpade, talkToTockShip, talkToTess, digSand, lookThroughTelescope, talkToGnocci2, talkToArsen2, talkToColin2))));
-		allSteps.add(new PanelDetails("Discover betrayal", new ArrayList<>(Arrays.asList(talkToTockShip2, talkToGnocci3, talkToArsen3, talkToIthoi2, useTinderboxOnWood, talkToTockShip3))));
-		allSteps.add(new PanelDetails("Deal with Ithoi", new ArrayList<>(Arrays.asList(killIthoi, talkToTockShip4))));
+		allSteps.add(new PanelDetails("Travel to the cove", Arrays.asList(talkToTockFarm, talkToTockRimmington), combatGear));
+		allSteps.add(new PanelDetails("Solve the curse", Arrays.asList(talkToIthoi, talkToGnocci, talkToArsen, talkToColin, grabTinderbox, pickUpSpade, talkToTockShip, talkToTess, digSand, lookThroughTelescope, talkToGnocci2, talkToArsen2, talkToColin2)));
+		allSteps.add(new PanelDetails("Discover betrayal", Arrays.asList(talkToTockShip2, talkToGnocci3, talkToArsen3, talkToIthoi2, useTinderboxOnWood, talkToTockShip3)));
+		allSteps.add(new PanelDetails("Deal with Ithoi", Arrays.asList(killIthoi, talkToTockShip4)));
 		return allSteps;
 	}
 }

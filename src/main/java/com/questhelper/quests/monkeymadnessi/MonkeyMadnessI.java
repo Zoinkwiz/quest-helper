@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -481,21 +482,21 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			" going away from the prison cell, then sneak out and go to the north side of the prison.");
 
 		talkToGarkor = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Stick to the east edge of the town, and make your way to Garkor to the south east.");
-		talkToGarkor.setLinePoints(new ArrayList<>(Arrays.asList(
+		talkToGarkor.setLinePoints(Arrays.asList(
 			new WorldPoint(2762, 2806, 0),
 			new WorldPoint(2784, 2806, 0),
 			new WorldPoint(2784, 2770, 0),
 			new WorldPoint(2807, 2770, 0),
-			new WorldPoint(2807, 2762, 0))));
+			new WorldPoint(2807, 2762, 0)));
 
 		enterDentureBuilding = new ObjectStep(this, ObjectID.DOORWAY_4710, new WorldPoint(2764, 2764, 0), "Head west and enter the large open building via the south door. DO NOT STAND ON THE LIGHT FLOOR IN THE BUILDING.");
-		enterDentureBuilding.setLinePoints(new ArrayList<>(Arrays.asList(
+		enterDentureBuilding.setLinePoints(Arrays.asList(
 			new WorldPoint(2807, 2764, 0),
 			new WorldPoint(2807, 2768, 0),
 			new WorldPoint(2786, 2768, 0),
 			new WorldPoint(2780, 2763, 0),
 			new WorldPoint(2764, 2763, 0)
-		)));
+		));
 
 		searchForDentures = new ObjectStep(this, ObjectID.CRATE_4715, new WorldPoint(2767, 2769, 0), "DO NOT WALK ON THE LIGHT FLOOR. Search the stacked crates for monkey dentures.");
 		searchForDentures.addDialogStep("Yes");
@@ -525,7 +526,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		enterDungeonForAmuletRun = new ObjectStep(this, ObjectID.BAMBOO_LADDER_4780, new WorldPoint(2763, 2703, 0), "Enter the dungeon in south Ape Atoll.", goldBar, monkeyDentures, mould);
 
-		ArrayList<WorldPoint> zooknockDungeonPath = new ArrayList<>(Arrays.asList(
+		List<WorldPoint> zooknockDungeonPath = Arrays.asList(
 			new WorldPoint(2768, 9101, 0),
 			new WorldPoint(2788, 9102, 0),
 			new WorldPoint(2788, 9109, 0),
@@ -557,7 +558,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			new WorldPoint(2750, 9142, 0),
 			new WorldPoint(2773, 9144, 0),
 			new WorldPoint(2799, 9138, 0)
-		));
+		);
 
 		talkToZooknock = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0), "Talk to Zooknock in the north east of the dungeon.", goldBar, monkeyDentures, mould);
 		talkToZooknock.addDialogSteps("What do we need for the monkey amulet?", "I'll be back later.");
@@ -595,12 +596,12 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		enterTemple = new ObjectStep(this, ObjectID.TRAPDOOR_4879, new WorldPoint(2807, 2785, 0), "Wait for the " +
 			"gorilla guard to start going away from the prison cell, then sneak out and go to the north side of the prison. Afterwards, head into the temple's basement.", enchantedBar, mould, ballOfWool);
 		enterTemple.addAlternateObjects(ObjectID.TRAPDOOR_4880);
-		enterTemple.setLinePoints(new ArrayList<>(Arrays.asList(
+		enterTemple.setLinePoints(Arrays.asList(
 			new WorldPoint(2764, 2806, 0),
 			new WorldPoint(2784, 2806, 0),
 			new WorldPoint(2784, 2787, 0),
 			new WorldPoint(2806, 2785, 0)
-		)));
+		));
 
 		useBarOnFlame = new ObjectStep(this, ObjectID.WALL_OF_FLAME_4766, new WorldPoint(2810, 9209, 0), "Use the enchanted bar on the wall of flame.", enchantedBarHighlight);
 		useBarOnFlame.addIcon(ItemID.ENCHANTED_BAR);
@@ -612,7 +613,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToMonkeyChild = new NpcStep(this, NpcID.MONKEY_CHILD, new WorldPoint(2743, 2794, 0), "Go to the north west of the island and talk to the monkey child there a few times. Eventually you'll give him 5 bananas, and he'll give you a monkey talisman.", amuletWorn, banana5);
 		talkToMonkeyChild.addText("Make sure to avoid the monkey's aunt near him otherwise she'll call the guards on you.");
 		talkToMonkeyChild.addDialogSteps("Well I'll be a monkey's uncle!", "How many bananas did Aunty want?", "Ok, I promise!", "I've lost that toy you gave me...", "Wow - can I borrow it?");
-		talkToMonkeyChild.setLinePoints(new ArrayList<>(Arrays.asList(
+		talkToMonkeyChild.setLinePoints(Arrays.asList(
 			new WorldPoint(2806, 2785, 0),
 			new WorldPoint(2784, 2787, 0),
 			new WorldPoint(2784, 2806, 0),
@@ -621,7 +622,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			new WorldPoint(2749, 2802, 0),
 			new WorldPoint(2746, 2802, 0),
 			new WorldPoint(2746, 2797, 0)
-		)));
+		));
 
 		talkToMonkeyChild2 = new NpcStep(this, NpcID.MONKEY_CHILD, new WorldPoint(2743, 2794, 0), "Talk to the monkey child again.", amuletWorn);
 		talkToMonkeyChild3 = new NpcStep(this, NpcID.MONKEY_CHILD, new WorldPoint(2743, 2794, 0), "Talk to the monkey child again.", amuletWorn);
@@ -704,19 +705,19 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(goldBar, ballOfWool, monkeyBonesOrCorpse));
+		return Arrays.asList(goldBar, ballOfWool, monkeyBonesOrCorpse);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, antipoison));
+		return Arrays.asList(combatGear, antipoison);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Jungle Demon (level 195)");
@@ -724,7 +725,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
@@ -733,35 +734,35 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToNarnode))));
-		allSteps.add(new PanelDetails("Investigate the shipyard", new ArrayList<>(Arrays.asList(flyGandius, talkToCaranock, talkToNarnodeAfterShipyard))));
-		allSteps.add(new PanelDetails("Traveling to Ape Atoll", new ArrayList<>(Arrays.asList(talkToDaero, talkToDaeroInHangar, clickPuzzle, talkToDaeroAfterPuzzle, talkToWaydarAfterPuzzle,
-			talkToLumdo, talkToWaydarOnCrash))));
-		allSteps.add(new PanelDetails("Finding Garkor", new ArrayList<>(Arrays.asList(enterValley, leavePrison, talkToGarkor))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToNarnode)));
+		allSteps.add(new PanelDetails("Investigate the shipyard", Arrays.asList(flyGandius, talkToCaranock, talkToNarnodeAfterShipyard)));
+		allSteps.add(new PanelDetails("Traveling to Ape Atoll", Arrays.asList(talkToDaero, talkToDaeroInHangar, clickPuzzle, talkToDaeroAfterPuzzle, talkToWaydarAfterPuzzle,
+			talkToLumdo, talkToWaydarOnCrash)));
+		allSteps.add(new PanelDetails("Finding Garkor", Arrays.asList(enterValley, leavePrison, talkToGarkor)));
 
-		PanelDetails getAmuletItemsPanel = new PanelDetails("Getting amulet parts", new ArrayList<>(Arrays.asList(enterDentureBuilding, searchForDentures, goDownFromDentures, searchForMould, leaveToPrepareForBar)));
+		PanelDetails getAmuletItemsPanel = new PanelDetails("Getting amulet parts", Arrays.asList(enterDentureBuilding, searchForDentures, goDownFromDentures, searchForMould, leaveToPrepareForBar));
 		getAmuletItemsPanel.setLockingStep(getAmuletParts);
 		allSteps.add(getAmuletItemsPanel);
 
-		PanelDetails makeBarPanel = new PanelDetails("Making an Enchanted Bar", new ArrayList<>(Arrays.asList(goUpToDaeroForAmuletRun, enterDungeonForAmuletRun, talkToZooknock, useDentures, useMould, useBar)), goldBar, monkeyDentures, mould);
+		PanelDetails makeBarPanel = new PanelDetails("Making an Enchanted Bar", Arrays.asList(goUpToDaeroForAmuletRun, enterDungeonForAmuletRun, talkToZooknock, useDentures, useMould, useBar), goldBar, monkeyDentures, mould);
 		makeBarPanel.setLockingStep(makeBar);
 		allSteps.add(makeBarPanel);
 
-		PanelDetails makeAmuletPanel = new PanelDetails("Making an amulet", new ArrayList<>(Arrays.asList(leaveToPrepareForAmulet, goUpToDaeroForAmuletMake, enterValleyForAmuletMake, enterTemple, useBarOnFlame)), enchantedBar, mould, ballOfWool);
+		PanelDetails makeAmuletPanel = new PanelDetails("Making an amulet", Arrays.asList(leaveToPrepareForAmulet, goUpToDaeroForAmuletMake, enterValleyForAmuletMake, enterTemple, useBarOnFlame), enchantedBar, mould, ballOfWool);
 		makeAmuletPanel.setLockingStep(makeAmulet);
 		allSteps.add(makeAmuletPanel);
 
-		PanelDetails getTalismanPanel = new PanelDetails("Getting the talisman", new ArrayList<>(Arrays.asList(leaveTempleDungeon, talkToMonkeyChild, talkToMonkeyChild2, talkToMonkeyChild3, giveChildBananas, talkToChildForTalisman)), amulet, banana5);
+		PanelDetails getTalismanPanel = new PanelDetails("Getting the talisman", Arrays.asList(leaveTempleDungeon, talkToMonkeyChild, talkToMonkeyChild2, talkToMonkeyChild3, giveChildBananas, talkToChildForTalisman), amulet, banana5);
 		getTalismanPanel.setLockingStep(getTalisman);
 		allSteps.add(getTalismanPanel);
 
-		allSteps.add(new PanelDetails("Making a greegree", new ArrayList<>(Arrays.asList(leaveToPrepareForTalismanRun, goUpToDaeroForTalismanRun, enterDungeonForTalismanRun, useTalisman, useBones)), talisman, monkeyBonesOrCorpse));
-		allSteps.add(new PanelDetails("Save a monkey", new ArrayList<>(Arrays.asList(talkToMinder, talkToMonkeyAtZoo, talkToMinderAgain, goUpToDaeroForTalkingToAwow,
-			talkToGarkorWithMonkey, talkToGuard, talkToKruk, talkToAwow, talkToGarkorForSigil)), karamjanGreegree, amulet));
-		allSteps.add(new PanelDetails("Defeat the demon", new ArrayList<>(Arrays.asList(prepareForBattle, killDemon, talkToNarnodeToFinish)), combatGear));
+		allSteps.add(new PanelDetails("Making a greegree", Arrays.asList(leaveToPrepareForTalismanRun, goUpToDaeroForTalismanRun, enterDungeonForTalismanRun, useTalisman, useBones), talisman, monkeyBonesOrCorpse));
+		allSteps.add(new PanelDetails("Save a monkey", Arrays.asList(talkToMinder, talkToMonkeyAtZoo, talkToMinderAgain, goUpToDaeroForTalkingToAwow,
+			talkToGarkorWithMonkey, talkToGuard, talkToKruk, talkToAwow, talkToGarkorForSigil), karamjanGreegree, amulet));
+		allSteps.add(new PanelDetails("Defeat the demon", Arrays.asList(prepareForBattle, killDemon, talkToNarnodeToFinish), combatGear));
 
 		return allSteps;
 	}

@@ -47,8 +47,8 @@ import com.questhelper.steps.conditional.WidgetModelCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -868,7 +868,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		// Karamja key piece
 		enterKhazariMaze = new ObjectStep(this, ObjectID.CAVE_32479, new WorldPoint(2944, 2895, 0), "Go down the staircase in the south east of the Khazari Jungle. MAKE SURE TO HAVE AUTO-RETALIATE OFF BEFORE ENTERING.");
 		getToCentreOfMaze = new ObjectStep(this, NullObjectID.NULL_30730, new WorldPoint(2848, 9248, 0), "Navigate to the middle of the maze, disarming any traps in the way.");
-		getToCentreOfMaze.setLinePoints(new ArrayList<>(Arrays.asList(
+		getToCentreOfMaze.setLinePoints(Arrays.asList(
 			new WorldPoint(2847, 9284, 0),
 			new WorldPoint(2847, 9276, 0),
 			new WorldPoint(2843, 9274, 0),
@@ -911,7 +911,7 @@ public class DragonSlayerII extends BasicQuestHelper
 			new WorldPoint(2856, 9256, 0),
 			new WorldPoint(2848, 9256, 0),
 			new WorldPoint(2848, 9249, 0)
-		)));
+		));
 
 		boardBoat = new ObjectStep(this, NullObjectID.NULL_29916, new WorldPoint(3659, 3849, 0), "Board the boat.");
 		talkToDallasAfterBoatRepair.addSubSteps(boardBoat);
@@ -965,7 +965,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		getToMainShip = new NpcStep(this, NpcID.RED_DRAGON_8079, "Travel to the main ship, killing dragons along the way.", true);
 		((NpcStep) (getToMainShip)).addAlternateNpcs(NpcID.IRON_DRAGON_8080, NpcID.BRUTAL_GREEN_DRAGON_8081);
-		getToMainShip.setLinePoints(new ArrayList<>(Arrays.asList(
+		getToMainShip.setLinePoints(Arrays.asList(
 			new WorldPoint(1695, 5665, 2),
 			new WorldPoint(1688, 5665, 1),
 			new WorldPoint(1679, 5665, 1),
@@ -1046,7 +1046,7 @@ public class DragonSlayerII extends BasicQuestHelper
 			new WorldPoint(1645, 5701, 0),
 			new WorldPoint(1640, 5706, 0),
 			new WorldPoint(1637, 5706, 0)
-		)));
+		));
 
 		kill2Blue2Green = new NpcStep(this, NpcID.BLUE_DRAGON_8083, "Kill the blue and green dragons.", true);
 		((NpcStep) (kill2Blue2Green)).addAlternateNpcs(NpcID.GREEN_DRAGON_8082);
@@ -1073,11 +1073,11 @@ public class DragonSlayerII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(pickaxe, axe, oakPlank8, swampPaste10, nails12OrMore, hammer, machete, saw, catspeakAmulet, lightSource, goutweed,
+		return Arrays.asList(pickaxe, axe, oakPlank8, swampPaste10, nails12OrMore, hammer, machete, saw, catspeakAmulet, lightSource, goutweed,
 			astralRune, sealOfPassage, tinderbox, pestleAndMortarHighlighted, dragonstone, moltenGlass2, glassblowingPipe, ghostspeakOrMory2, chisel, spade,
-			runesForFireWaveOrSurge3, antifireShield));
+			runesForFireWaveOrSurge3, antifireShield);
 	}
 
 	public void setupConditionalSteps()
@@ -1123,46 +1123,46 @@ public class DragonSlayerII extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(ardougneTeleport, varrockTeleport, faladorTeleport, morytaniaTeleport,
-			karamjaTeleport, rellekkaTeleport));
+		return Arrays.asList(ardougneTeleport, varrockTeleport, faladorTeleport, morytaniaTeleport,
+			karamjaTeleport, rellekkaTeleport);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Spawn (level 100)", "Robert the Strong (level 194)", "Vorkath (level 392)", "Numerous chromatic and metal dragons", "Galvek (level 608)"));
+		return Arrays.asList("Spawn (level 100)", "Robert the Strong (level 194)", "Vorkath (level 392)", "Numerous chromatic and metal dragons", "Galvek (level 608)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToAlec, talkToDallas, talkToDallasOnCrandor, usePickaxeOnBlockage, enterBlockage, investigateMural, killSpawn,
-			investigateMuralAgain, talkToDallasAfterMural)), pickaxe, combatGear));
-		allSteps.add(new PanelDetails("Investigating Fossil Island", new ArrayList<>(Arrays.asList(enterHouseOnTheHill, talkToDallasInHouse, searchNorthChest,
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToAlec, talkToDallas, talkToDallasOnCrandor, usePickaxeOnBlockage, enterBlockage, investigateMural, killSpawn,
+			investigateMuralAgain, talkToDallasAfterMural), pickaxe, combatGear));
+		allSteps.add(new PanelDetails("Investigating Fossil Island", Arrays.asList(enterHouseOnTheHill, talkToDallasInHouse, searchNorthChest,
 			goUpstairsForMap, searchStoneChestNorth, leaveHouseForMap, searchFungi, searchBriar, searchMushtree, enterHouseWithMapPieces, startMapPuzzle,
-			talkToDallasAfterSolvingMap))));
-		allSteps.add(new PanelDetails("Investigating Lithkren", new ArrayList<>(Arrays.asList(talkToJardricInMuseumCamp, buildRowBoat, talkToDallasAfterBoatRepair,
-			climbCourtyardStairs, climbDownLithkrenTrapdoor, climbDownLithkrenNorthStairs, talkToDallasInLithkren, searchSkeleton, readDiary, talkToDallasAfterDiary)), oakPlank8, swampPaste10, nails12OrMore, hammer, saw));
+			talkToDallasAfterSolvingMap)));
+		allSteps.add(new PanelDetails("Investigating Lithkren", Arrays.asList(talkToJardricInMuseumCamp, buildRowBoat, talkToDallasAfterBoatRepair,
+			climbCourtyardStairs, climbDownLithkrenTrapdoor, climbDownLithkrenNorthStairs, talkToDallasInLithkren, searchSkeleton, readDiary, talkToDallasAfterDiary), oakPlank8, swampPaste10, nails12OrMore, hammer, saw));
 
-		allSteps.add(new PanelDetails("Contacting Bob", new ArrayList<>(Arrays.asList(talkToBob, talkToSphinx)), catspeakAmulet));
+		allSteps.add(new PanelDetails("Contacting Bob", Arrays.asList(talkToBob, talkToSphinx), catspeakAmulet));
 
-		allSteps.add(new PanelDetails("Entering a dream", new ArrayList<>(Arrays.asList(talkToOneiromancer, fillDreamVial, addGoutweed, crushAstralRune, grindAstralShards, addGroundAstral,
-			lightBrazier, usePotionOnFlame, talkToBobInDream, killRobertTheStrong, talkToBobAfterRobertFight)), sealOfPassage, goutweed, astralRune, hammer, pestleAndMortarHighlighted, tinderbox, combatGear));
+		allSteps.add(new PanelDetails("Entering a dream", Arrays.asList(talkToOneiromancer, fillDreamVial, addGoutweed, crushAstralRune, grindAstralShards, addGroundAstral,
+			lightBrazier, usePotionOnFlame, talkToBobInDream, killRobertTheStrong, talkToBobAfterRobertFight), sealOfPassage, goutweed, astralRune, hammer, pestleAndMortarHighlighted, tinderbox, combatGear));
 
-		PanelDetails karamjaKeyPanel = new PanelDetails("Karamja key piece", new ArrayList<>(Arrays.asList(enterKhazariMaze, getToCentreOfMaze)), machete, axe, food);
+		PanelDetails karamjaKeyPanel = new PanelDetails("Karamja key piece", Arrays.asList(enterKhazariMaze, getToCentreOfMaze), machete, axe, food);
 		karamjaKeyPanel.setLockingStep(gettingTheKaramjaKey);
 
-		PanelDetails varrockKeyPanel = new PanelDetails("Varrock key piece", new ArrayList<>(Arrays.asList(talkToReldo, searchBookcase, talkToReldoAgain, talkToSarah,
-			talkToAva, usePipeOnDragonstone, talkToAvaAgain, useLocatorInSwamp)), ghostspeakOrMory2, dragonstone, moltenGlass2, glassblowingPipe, spade);
+		PanelDetails varrockKeyPanel = new PanelDetails("Varrock key piece", Arrays.asList(talkToReldo, searchBookcase, talkToReldoAgain, talkToSarah,
+			talkToAva, usePipeOnDragonstone, talkToAvaAgain, useLocatorInSwamp), ghostspeakOrMory2, dragonstone, moltenGlass2, glassblowingPipe, spade);
 		varrockKeyPanel.setLockingStep(gettingTheVarrockKey);
 
-		PanelDetails kourendKeyPanel = new PanelDetails("Kourend key piece", new ArrayList<>(Arrays.asList(talkToAmelia, enterCrypt, goDownInCryptF2ToF1, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey)), combatGear, lightSource);
+		PanelDetails kourendKeyPanel = new PanelDetails("Kourend key piece", Arrays.asList(talkToAmelia, enterCrypt, goDownInCryptF2ToF1, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey), combatGear, lightSource);
 		kourendKeyPanel.setLockingStep(gettingTheKourendKey);
 
-		PanelDetails fremennikKeyPanel = new PanelDetails("Fremennik key piece", new ArrayList<>(Arrays.asList(talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey)), combatGear);
+		PanelDetails fremennikKeyPanel = new PanelDetails("Fremennik key piece", Arrays.asList(talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey), combatGear);
 		fremennikKeyPanel.setLockingStep(gettingTheFremennikKey);
 
 		allSteps.add(kourendKeyPanel);
@@ -1170,20 +1170,20 @@ public class DragonSlayerII extends BasicQuestHelper
 		allSteps.add(fremennikKeyPanel);
 		allSteps.add(karamjaKeyPanel);
 
-		allSteps.add(new PanelDetails("Unlocking the door", new ArrayList<>(Arrays.asList(goEnterMithDoorFirstTime, castFireOnHead, goSmithKey,
-			goOpenDoorWithKey, openDoorWithoutKey, goTalkToBobAfterRelease)),
+		allSteps.add(new PanelDetails("Unlocking the door", Arrays.asList(goEnterMithDoorFirstTime, castFireOnHead, goSmithKey,
+			goOpenDoorWithKey, openDoorWithoutKey, goTalkToBobAfterRelease),
 			ancientKey, runesForFireWaveOrSurge3, fremennikKeyPiece, karamjaKeyPiece, varrocKeyPiece, kourendKeyPiece, hammer));
 
-		allSteps.add(new PanelDetails("Creating an army", new ArrayList<>(Arrays.asList(talkToRoald, talkToBrundtAboutThreat, talkToAmik, talkToLathasOrThoros, enterVarrockDiningRoom, talkToBobAfterDiningRoom))));
+		allSteps.add(new PanelDetails("Creating an army", Arrays.asList(talkToRoald, talkToBrundtAboutThreat, talkToAmik, talkToLathasOrThoros, enterVarrockDiningRoom, talkToBobAfterDiningRoom)));
 
-		allSteps.add(new PanelDetails("Final showdown", new ArrayList<>(Arrays.asList(takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon,
-			killMithAddyAndRuneDragons, killGalvek, talkToAlecToFinish)), combatGear, antifireShield));
+		allSteps.add(new PanelDetails("Final showdown", Arrays.asList(takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon,
+			killMithAddyAndRuneDragons, killGalvek, talkToAlecToFinish), combatGear, antifireShield));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(200));

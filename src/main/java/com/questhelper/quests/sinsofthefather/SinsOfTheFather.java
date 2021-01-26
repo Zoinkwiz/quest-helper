@@ -54,6 +54,7 @@ import com.questhelper.steps.conditional.WidgetTextCondition;
 import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -502,7 +503,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		followCarl = new NpcStep(this, NpcID.CARL_9558, new WorldPoint(3714, 3328, 0),
 			"Follow Carl, hiding behind objects when he turns around.");
 		((NpcStep) (followCarl)).setMaxRoamRange(200);
-		((NpcStep) (followCarl)).setLinePoints(new ArrayList<>(Arrays.asList(
+		((NpcStep) (followCarl)).setLinePoints(Arrays.asList(
 			new WorldPoint(3750, 3308, 0),
 			new WorldPoint(3751, 3315, 0),
 			new WorldPoint(0, 0, 2),
@@ -524,7 +525,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			new WorldPoint(3718, 3316, 0),
 			new WorldPoint(3731, 3318, 0),
 			new WorldPoint(3731, 3307, 0)
-		)));
+		));
 
 		goDownToKroy = new ObjectStep(this, ObjectID.STAIRS_32637, new WorldPoint(3728, 3301, 0), "Go down the stairs to fight Kroy.");
 		goDownToKroy.addDialogStep("Continue the Sins of the Father quest.");
@@ -816,25 +817,25 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, vyrewatchOutfitOrCoins, ivandisFlail, axe, ruby, enchantRubyRunesOrTablet, knife, chisel));
+		return Arrays.asList(combatGear, vyrewatchOutfitOrCoins, ivandisFlail, axe, ruby, enchantRubyRunesOrTablet, knife, chisel);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(pickaxe, antipoison, drakanMedallion, moryLegs3));
+		return Arrays.asList(pickaxe, antipoison, drakanMedallion, moryLegs3);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Kroy (level 133)", "Vampyre juveniles (level 122 and 119)", "Nail beasts (level 143 and 67)", "Mutated bloodveld (level 123)", "Damien Leucurte (level 204)", "Vanstrom Klause (level 413)"));
+		return Arrays.asList("Kroy (level 133)", "Vampyre juveniles (level 122 and 119)", "Nail beasts (level 143 and 67)", "Mutated bloodveld (level 123)", "Damien Leucurte (level 204)", "Vanstrom Klause (level 413)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.VAMPYRE_SLAYER, QuestState.FINISHED));
@@ -850,31 +851,31 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigating Slepe",
-			new ArrayList<>(Arrays.asList(startQuest, talkToHameln, talkToCarl, inspectBarrel, followCarl, killKroy, destroyLab, talkToVeliafAfterKroy)), combatGear));
+			Arrays.asList(startQuest, talkToHameln, talkToCarl, inspectBarrel, followCarl, killKroy, destroyLab, talkToVeliafAfterKroy), combatGear));
 		allSteps.add(new PanelDetails("Helping the Myreque",
-			new ArrayList<>(Arrays.asList(talkToVeliafInPater, talkToIvan, listenToMeeting))));
+			Arrays.asList(talkToVeliafInPater, talkToIvan, listenToMeeting)));
 		allSteps.add(new PanelDetails("Escorting Ivan",
-			new ArrayList<>(Arrays.asList(talkToIvanAfterMeeting, searchForKnife, cutVines, combineVines, useVineOnBranch, swingOnVine, leaveSwingArea, killNailBeasts,
-				leaveNailBeastArea, killZombieForAxe, get3LogsForBridge, repairBridge1, crossBridge, leaveBridgeArea, killJuvinates, leaveJuvinateArea)), combatGear, ivandisFlail));
+			Arrays.asList(talkToIvanAfterMeeting, searchForKnife, cutVines, combineVines, useVineOnBranch, swingOnVine, leaveSwingArea, killNailBeasts,
+				leaveNailBeastArea, killZombieForAxe, get3LogsForBridge, repairBridge1, crossBridge, leaveBridgeArea, killJuvinates, leaveJuvinateArea), combatGear, ivandisFlail));
 		allSteps.add(new PanelDetails("Learning of the Icyene",
-			new ArrayList<>(Arrays.asList(talkToIvanAfterTrek, talkToVeliafInBoatHouse, travelToGraveyard, talkToVeliafInGraveyard, talkToVanescula, doDoorPuzzle,
-				convinceVertida, convinceKael, convinceRadigad, convincePolmafi, convinceIvan, convinceVeliaf, talkToVanesculaAfterTeam))));
+			Arrays.asList(talkToIvanAfterTrek, talkToVeliafInBoatHouse, travelToGraveyard, talkToVeliafInGraveyard, talkToVanescula, doDoorPuzzle,
+				convinceVertida, convinceKael, convinceRadigad, convincePolmafi, convinceIvan, convinceVeliaf, talkToVanesculaAfterTeam)));
 		allSteps.add(new PanelDetails("Investigating the lab",
-			new ArrayList<>(Arrays.asList(goToLab, talkToSafalaanInLab, killBloodveld,
-				talkToSafalaanInDeepLab, searchLabBookcase, takeBookToSafalaan)), combatGear, pickaxe));
+			Arrays.asList(goToLab, talkToSafalaanInLab, killBloodveld,
+				talkToSafalaanInDeepLab, searchLabBookcase, takeBookToSafalaan), combatGear, pickaxe));
 		allSteps.add(new PanelDetails("Making a disguise",
-			new ArrayList<>(Arrays.asList(talkToVanesculaAfterLab, talkToPolmafi, bringUnscentedToVanescula, talkToVeliafForFight, killDamien, talkToVeliafAfterDamien,
-				talkToVanesculaAfterDamien)), combatGear, vyrewatchOutfitOrCoins, ivandisFlail, antipoison));
+			Arrays.asList(talkToVanesculaAfterLab, talkToPolmafi, bringUnscentedToVanescula, talkToVeliafForFight, killDamien, talkToVeliafAfterDamien,
+				talkToVanesculaAfterDamien), combatGear, vyrewatchOutfitOrCoins, ivandisFlail, antipoison));
 		allSteps.add(new PanelDetails("Infiltrating Darkmeyer",
-			new ArrayList<>(Arrays.asList(enterDarkmeyer, talkToDesmodus, talkToMordan, talkToMaria, talkToDesmodusAgain, getNote, valveStep, cutLogs, bringVanesculaLogs)), axe));
+			Arrays.asList(enterDarkmeyer, talkToDesmodus, talkToMordan, talkToMaria, talkToDesmodusAgain, getNote, valveStep, cutLogs, bringVanesculaLogs), axe));
 		allSteps.add(new PanelDetails("Creating a weapon",
-			new ArrayList<>(Arrays.asList(bringVertidaLogs, talkToVertidaForFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle)), blisterwood8, chisel, knife, ruby, ivandisFlail, enchantRubyRunesOrTablet));
+			Arrays.asList(bringVertidaLogs, talkToVertidaForFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle), blisterwood8, chisel, knife, ruby, ivandisFlail, enchantRubyRunesOrTablet));
 		allSteps.add(new PanelDetails("Taking on Drakan",
-			new ArrayList<>(Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight, fightVanstrom, finishQuest)), combatGear, blisterwoodFlail));
+			Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight, fightVanstrom, finishQuest), combatGear, blisterwoodFlail));
 
 		return allSteps;
 	}

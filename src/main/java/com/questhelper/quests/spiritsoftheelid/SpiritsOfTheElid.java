@@ -36,6 +36,7 @@ import com.questhelper.steps.conditional.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.runelite.api.ItemID;
@@ -289,19 +290,19 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(airRune, lawRune, needle, thread, crushWep, stabWep, slashWep, lightSource, knife, rope, pickaxe, bow, arrows));
+		return Arrays.asList(airRune, lawRune, needle, thread, crushWep, stabWep, slashWep, lightSource, knife, rope, pickaxe, bow, arrows);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, waterskins, necklaceOfPassage, spear, coins, food));
+		return Arrays.asList(combatGear, waterskins, necklaceOfPassage, spear, coins, food);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Black Golem, Grey Golem, White Golem (Level 75)");
@@ -309,7 +310,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.MAGIC, 33, true));
@@ -320,12 +321,12 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting Off", new ArrayList<>(Arrays.asList(speakToAwusah, speakToGhaslor, openCuboard, useNeedleTornRobes, telegrabKey)), airRune, lawRune, needle, thread));
-		allSteps.add(new PanelDetails("The Golems", new ArrayList<>(Arrays.asList(enterCave, useAncestralKey, openStabDoor, clearChannel, openSlashDoor, clearChannel2, openCrushDoor, clearChannel3, openFarNorthDoor, speakToSpirits)), ancestralKey, robeOfElidinisTop, robeOfElidinisBottom, rope, pickaxe, bow, arrows, crushWep, stabWep, slashWep));
-		allSteps.add(new PanelDetails("The Genie", new ArrayList<>(Arrays.asList(speakToAwusah2, takeShoes, cutShoes, enterCrevice, talkToGenie, talkToGenieAgain, useStatuette)), knife, rope, lightSource));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting Off", Arrays.asList(speakToAwusah, speakToGhaslor, openCuboard, useNeedleTornRobes, telegrabKey), airRune, lawRune, needle, thread));
+		allSteps.add(new PanelDetails("The Golems", Arrays.asList(enterCave, useAncestralKey, openStabDoor, clearChannel, openSlashDoor, clearChannel2, openCrushDoor, clearChannel3, openFarNorthDoor, speakToSpirits), ancestralKey, robeOfElidinisTop, robeOfElidinisBottom, rope, pickaxe, bow, arrows, crushWep, stabWep, slashWep));
+		allSteps.add(new PanelDetails("The Genie", Arrays.asList(speakToAwusah2, takeShoes, cutShoes, enterCrevice, talkToGenie, talkToGenieAgain, useStatuette), knife, rope, lightSource));
 		return allSteps;
 	}
 }

@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -281,13 +282,13 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar));
+		return Arrays.asList(bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
@@ -297,24 +298,24 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Evil creature (x6)"));
+		return Collections.singletonList("Evil creature (x6)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Learning", new ArrayList<>(Arrays.asList(enterCave, inspectBowl, inspectMachine,
+		allSteps.add(new PanelDetails("Learning", Arrays.asList(enterCave, inspectBowl, inspectMachine,
 			talkToBrimstailAgain, talkToHazelmere, talkToBrimstailAfterHazelmere, grindMudRunes, useMudOnSap, repairMachine,
-			talkToBrimstailAfterRepairing, talkToBrimstailForMoreDisks, unlockMachine)),
+			talkToBrimstailAfterRepairing, talkToBrimstailForMoreDisks, unlockMachine),
 			bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar));
 
 		allSteps.add(new PanelDetails("Kill the spies",
-			new ArrayList<>(Arrays.asList(talkToBrimstailAfterIllusion, killCreature1, killCreature5, killCreature6, killCreature4,
-				killCreature3, killCreature2, talkToNarnode))));
+			Arrays.asList(talkToBrimstailAfterIllusion, killCreature1, killCreature5, killCreature6, killCreature4,
+				killCreature3, killCreature2, talkToNarnode)));
 
 		return allSteps;
 	}

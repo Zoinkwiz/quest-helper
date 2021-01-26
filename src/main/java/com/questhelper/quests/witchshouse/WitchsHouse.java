@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
@@ -208,7 +209,7 @@ public class WitchsHouse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(cheese);
@@ -217,7 +218,7 @@ public class WitchsHouse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(armourAndWeapon);
@@ -225,25 +226,25 @@ public class WitchsHouse extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Witch's experiment (level 19, 30, 42 and 53)"));
+		return Collections.singletonList("Witch's experiment (level 19, 30, 42 and 53)");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
-		return new ArrayList<>(Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 2)));
+		return Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 2));
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", new ArrayList<>(Collections.singletonList(talkToBoy)), cheese, leatherGloves, armourAndWeapon));
-		allSteps.add(new PanelDetails("Accessing the garden", new ArrayList<>(Arrays.asList(getKey, enterHouse, goDownstairs, enterGate,
-			openCupboardAndLoot, goBackUpstairs, useCheeseOnHole))));
-		allSteps.add(new PanelDetails("Defeat the witch's experiment", new ArrayList<>(Arrays.asList(searchFountain, enterShed, killWitchsExperiment, pickupBall, returnToBoy))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(talkToBoy), cheese, leatherGloves, armourAndWeapon));
+		allSteps.add(new PanelDetails("Accessing the garden", Arrays.asList(getKey, enterHouse, goDownstairs, enterGate,
+			openCupboardAndLoot, goBackUpstairs, useCheeseOnHole)));
+		allSteps.add(new PanelDetails("Defeat the witch's experiment", Arrays.asList(searchFountain, enterShed, killWitchsExperiment, pickupBall, returnToBoy)));
 		return allSteps;
 	}
 }

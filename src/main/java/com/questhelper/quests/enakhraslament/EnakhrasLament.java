@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -451,7 +452,7 @@ public class EnakhrasLament extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(pickaxe);
@@ -481,7 +482,7 @@ public class EnakhrasLament extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(onNormals);
@@ -489,7 +490,7 @@ public class EnakhrasLament extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.CRAFTING, 50));
@@ -500,17 +501,17 @@ public class EnakhrasLament extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToLazim))));
-		allSteps.add(new PanelDetails("Craft a statue", new ArrayList<>(Arrays.asList(bringLazim32Sandstone, useChiselOn32Sandstone, placeBase, talkToLazimAboutBody,
-			bringLazim20Sandstone, useChiselOn20Sandstone, placeBody, chiselStatue, talkToLazimToChooseHead, getGranite, craftHead, giveLazimHead)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToLazim)));
+		allSteps.add(new PanelDetails("Craft a statue", Arrays.asList(bringLazim32Sandstone, useChiselOn32Sandstone, placeBase, talkToLazimAboutBody,
+			bringLazim20Sandstone, useChiselOn20Sandstone, placeBody, chiselStatue, talkToLazimToChooseHead, getGranite, craftHead, giveLazimHead),
 			pickaxe, chiselHighlighted, softClay, breadOrCake, tinderbox, log, oakLog, willowLog, mapleLog, candle, coal, fireSpellRunes, airSpellRunes, earth2, air2, chaos));
-		allSteps.add(new PanelDetails("Explore the ground floor", new ArrayList<>(Arrays.asList(talkToLazimInTemple, cutOffLimb, takeM, enterDoor1, enterDoor2, enterMDoor, goUpToPuzzles))));
-		allSteps.add(new PanelDetails("Solve the puzzles", new ArrayList<>(Arrays.asList(useSoftClayOnPedestal, useChiselOnGranite, useStoneHeadOnPedestal, useBread, castFireSpell, castAirSpell,
-			useLog, useOakLog, useWillowLog, useMapleLog, useCandle, useCoal))));
-		allSteps.add(new PanelDetails("Free Akthankos", new ArrayList<>(Arrays.asList(passBarrier, goUpFromPuzzleRoom, castCrumbleUndead, goDownToFinalRoom, protectThenTalk, repairWall))));
+		allSteps.add(new PanelDetails("Explore the ground floor", Arrays.asList(talkToLazimInTemple, cutOffLimb, takeM, enterDoor1, enterDoor2, enterMDoor, goUpToPuzzles)));
+		allSteps.add(new PanelDetails("Solve the puzzles", Arrays.asList(useSoftClayOnPedestal, useChiselOnGranite, useStoneHeadOnPedestal, useBread, castFireSpell, castAirSpell,
+			useLog, useOakLog, useWillowLog, useMapleLog, useCandle, useCoal)));
+		allSteps.add(new PanelDetails("Free Akthankos", Arrays.asList(passBarrier, goUpFromPuzzleRoom, castCrumbleUndead, goDownToFinalRoom, protectThenTalk, repairWall)));
 
 		return allSteps;
 	}

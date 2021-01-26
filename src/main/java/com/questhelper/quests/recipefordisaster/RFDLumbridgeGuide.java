@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -46,6 +45,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -157,13 +157,13 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(milk, egg, flour, tin));
+		return Arrays.asList(milk, egg, flour, tin);
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.COOKING, 40, true));
@@ -177,10 +177,10 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Saving the Guide", new ArrayList<>(Arrays.asList(inspectLumbridgeGuide, goUpToTraiborn, talkToTraiborn, mixIngredients, cookCake, useCakeOnLumbridgeGuide)), milk, egg, flour, tin));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Saving the Guide", Arrays.asList(inspectLumbridgeGuide, goUpToTraiborn, talkToTraiborn, mixIngredients, cookCake, useCakeOnLumbridgeGuide), milk, egg, flour, tin));
 		return allSteps;
 	}
 

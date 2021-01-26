@@ -26,6 +26,7 @@ package com.questhelper.banktab;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,12 +38,12 @@ public class BankTabItems
 	private String name;
 
 	@Getter
-	private final ArrayList<BankTabItem> items;
+	private final List<BankTabItem> items;
 
 	public BankTabItems(String name, BankTabItem... items)
 	{
 		this.name = name;
-		this.items = new ArrayList<>(Arrays.asList(items));
+		this.items = Arrays.asList(items);
 	}
 
 	public void addItems(BankTabItem... items)

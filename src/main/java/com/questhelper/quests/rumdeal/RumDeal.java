@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
@@ -431,39 +432,39 @@ public class RumDeal extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(combatGear, dibber, rake, slayerGloves));
+		return Arrays.asList(combatGear, dibber, rake, slayerGloves);
 	}
 
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Evil spirit (level 150)", "Fever spider (level 49)"));
+		return Arrays.asList("Evil spirit (level 150)", "Fever spider (level 49)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToPete, talkToBraindeath)), rake, dibber, slayerGloves, combatGear));
-		allSteps.add(new PanelDetails("Get blindweed", new ArrayList<>(Arrays.asList(goDownstairs, rakePatch, plantSeed, waitForGrowth, pickPlant, goUpStairsWithPlant, dropPlant)), rake, dibber));
-		allSteps.add(new PanelDetails("Get stagnant water", new ArrayList<>(Arrays.asList(talkToBraindeathAfterPlant, useBucketOnWater, dropWater))));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToPete, talkToBraindeath), rake, dibber, slayerGloves, combatGear));
+		allSteps.add(new PanelDetails("Get blindweed", Arrays.asList(goDownstairs, rakePatch, plantSeed, waitForGrowth, pickPlant, goUpStairsWithPlant, dropPlant), rake, dibber));
+		allSteps.add(new PanelDetails("Get stagnant water", Arrays.asList(talkToBraindeathAfterPlant, useBucketOnWater, dropWater)));
 
-		ArrayList<QuestStep> sluglingSteps = new ArrayList<>(Collections.singletonList(talkToBraindeathAfterWater));
+		List<QuestStep> sluglingSteps = Collections.singletonList(talkToBraindeathAfterWater);
 		sluglingSteps.addAll(getSlugs.getDisplaySteps());
 		allSteps.add(new PanelDetails("Get sluglings", sluglingSteps));
 
-		allSteps.add(new PanelDetails("Kill evil spirit", new ArrayList<>(Arrays.asList(talkToBraindeathAfterSlugs, talkToDavey, useWrenchOnControl, killSpirit)), combatGear));
-		allSteps.add(new PanelDetails("Get spider carcass", new ArrayList<>(Arrays.asList(talkToBraindeathAfterSpirit, killSpider, pickUpCarcass, dropSpider)), combatGear, slayerGloves));
-		allSteps.add(new PanelDetails("Giving swill to Donnie", new ArrayList<>(Arrays.asList(talkToBraindeathAfterSpider, useBucketOnTap, talkToDonnie, talkToBraindeathToFinish))));
+		allSteps.add(new PanelDetails("Kill evil spirit", Arrays.asList(talkToBraindeathAfterSlugs, talkToDavey, useWrenchOnControl, killSpirit), combatGear));
+		allSteps.add(new PanelDetails("Get spider carcass", Arrays.asList(talkToBraindeathAfterSpirit, killSpider, pickUpCarcass, dropSpider), combatGear, slayerGloves));
+		allSteps.add(new PanelDetails("Giving swill to Donnie", Arrays.asList(talkToBraindeathAfterSpider, useBucketOnTap, talkToDonnie, talkToBraindeathToFinish)));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRecommended()
+	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 6));
@@ -471,7 +472,7 @@ public class RumDeal extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.ZOGRE_FLESH_EATERS, QuestState.FINISHED));

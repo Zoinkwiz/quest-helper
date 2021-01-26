@@ -47,6 +47,7 @@ import com.questhelper.steps.conditional.WidgetTextCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -920,69 +921,69 @@ public class LegendsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(charcoal3, papyrus3, machete, runeOrDragonAxe, goldBar2, hammer, rope, lockpick, pickaxe, vialOfWater, ardrigal, snakeWeed, sapphire, emerald, ruby, diamond, opal, jade, topaz, soulRune, mindRune, earthRune, lawRune2, unpoweredOrb, chargeOrbRunes, combatGear));
+		return Arrays.asList(charcoal3, papyrus3, machete, runeOrDragonAxe, goldBar2, hammer, rope, lockpick, pickaxe, vialOfWater, ardrigal, snakeWeed, sapphire, emerald, ruby, diamond, opal, jade, topaz, soulRune, mindRune, earthRune, lawRune2, unpoweredOrb, chargeOrbRunes, combatGear);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Arrays.asList("Nezikchened (level 187) 3 times", "Ranalph Devere (level 92)", "Irvig Senay (level 100)", "San Tojalon (level 106)"));
+		return Arrays.asList("Nezikchened (level 187) 3 times", "Ranalph Devere (level 92)", "Irvig Senay (level 100)", "San Tojalon (level 106)");
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Arrays.asList(talkToGuard, talkToRadimus))));
-		allSteps.add(new PanelDetails("Mapping Khazari", new ArrayList<>(Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes)), axe, machete, papyrus3, charcoal3, radimusNotes));
-		allSteps.add(new PanelDetails("Contacting the locals", new ArrayList<>(Arrays.asList(enterJungleWithRoarer, spinBull, talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain)),
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGuard, talkToRadimus)));
+		allSteps.add(new PanelDetails("Mapping Khazari", Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes), axe, machete, papyrus3, charcoal3, radimusNotes));
+		allSteps.add(new PanelDetails("Contacting the locals", Arrays.asList(enterJungleWithRoarer, spinBull, talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain),
 			bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
-		PanelDetails runePuzzlePanel = new PanelDetails("Unlocking the caves", new ArrayList<>(Arrays.asList(enterMossyRockAgain, enterBookcase, enterGate1, enterGate2, searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2)),
+		PanelDetails runePuzzlePanel = new PanelDetails("Unlocking the caves", Arrays.asList(enterMossyRockAgain, enterBookcase, enterGate1, enterGate2, searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2),
 			bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond);
 		runePuzzlePanel.setLockingStep(runePuzzle);
 		allSteps.add(runePuzzlePanel);
 
-		PanelDetails gemPuzzlePanel = new PanelDetails("Getting a binding book", new ArrayList<>(
-			Arrays.asList(useSapphire, useDiamond, useRuby, useTopaz, useJade, useEmerald, useOpal, pickUpBook)),
+		PanelDetails gemPuzzlePanel = new PanelDetails("Getting a binding book", 
+			Arrays.asList(useSapphire, useDiamond, useRuby, useTopaz, useJade, useEmerald, useOpal, pickUpBook),
 			completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, opal, jade, topaz, sapphire, emerald, ruby, diamond);
 		gemPuzzlePanel.setLockingStep(gemPuzzle);
 		allSteps.add(gemPuzzlePanel);
 
-		allSteps.add(new PanelDetails("Freeing Ungadulu", new ArrayList<>(
+		allSteps.add(new PanelDetails("Freeing Ungadulu", 
 			Arrays.asList(makeBowl, enterJungleWithBowl, spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall, useBindingBookOnUngadulu,
-				fightNezikchenedInFire, talkToUngadulu)), completeNotes, bullRoarer, goldBar2, hammer, axe, machete, combatGear));
+				fightNezikchenedInFire, talkToUngadulu), completeNotes, bullRoarer, goldBar2, hammer, axe, machete, combatGear));
 
-		allSteps.add(new PanelDetails("Attempted planting", new ArrayList<>(Arrays.asList(
-		useBowlOnSeeds, leaveCaveWithSeed, useMacheteOnReedsAgain, useReedOnPoolAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds)), machete, axe, goldBowlFull, yommiSeeds, bullRoarer));
+		allSteps.add(new PanelDetails("Attempted planting", Arrays.asList(
+		useBowlOnSeeds, leaveCaveWithSeed, useMacheteOnReedsAgain, useReedOnPoolAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds), machete, axe, goldBowlFull, yommiSeeds, bullRoarer));
 
-		allSteps.add(new PanelDetails("To the source", new ArrayList<>(Arrays.asList(
-			addArdrigal, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource, enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, climbDownWinch)),
+		allSteps.add(new PanelDetails("To the source", Arrays.asList(
+			addArdrigal, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource, enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, climbDownWinch),
 				completeNotes, ardrigal, snakeWeed, vialOfWater, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, germinatedSeeds, combatGear));
 
-		allSteps.add(new PanelDetails("Unlocking the source", new ArrayList<>(Arrays.asList(
-			useCrystalsOnFurnace, useHeartOnRock, useHeartOnRecess, pushBoulder, pickUpHat, giveDaggerToEchned, fightNezikchenedAtSource, pushBoulderAfterFight, useBowlOnSacredWater, returnToSurface)),
+		allSteps.add(new PanelDetails("Unlocking the source", Arrays.asList(
+			useCrystalsOnFurnace, useHeartOnRock, useHeartOnRecess, pushBoulder, pickUpHat, giveDaggerToEchned, fightNezikchenedAtSource, pushBoulderAfterFight, useBowlOnSacredWater, returnToSurface),
 				completeNotes, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, germinatedSeeds, combatGear));
 
-		allSteps.add(new PanelDetails("Making a totem", new ArrayList<>(Arrays.asList(
-			plantSeed, useWaterOnTree, useAxe, useAxeAgain, craftTree, pickUpTotem)),
+		allSteps.add(new PanelDetails("Making a totem", Arrays.asList(
+			plantSeed, useWaterOnTree, useAxe, useAxeAgain, craftTree, pickUpTotem),
 				completeNotes, machete, runeOrDragonAxe, goldBowlBlessed, germinatedSeeds, combatGear));
 
-		allSteps.add(new PanelDetails("Placing the totem", new ArrayList<>(Arrays.asList(
-			useTotemOnTotem, killSan, killIrvig, killRanalph, defeatDemon, useTotemOnTotemAgain)),
+		allSteps.add(new PanelDetails("Placing the totem", Arrays.asList(
+			useTotemOnTotem, killSan, killIrvig, killRanalph, defeatDemon, useTotemOnTotemAgain),
 				completeNotes, machete, runeOrDragonAxe, yommiTotem, combatGear));
 
-		allSteps.add(new PanelDetails("Finishing off", new ArrayList<>(Arrays.asList(
-			returnToRadimus, talkToRadimusInGuild, talkToRadimusInGuildAgain)),
+		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(
+			returnToRadimus, talkToRadimusInGuild, talkToRadimusInGuildAgain),
 			gildedTotem, completeNotesHighlighted));
 
 		return allSteps;
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(107));

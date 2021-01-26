@@ -39,6 +39,7 @@ import com.questhelper.steps.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -181,7 +182,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(blueDye);
@@ -191,14 +192,14 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails getArmours = new PanelDetails("Prepare goblin mail",
-			new ArrayList<>(Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange)), blueDye, orangeDye);
+			Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange), blueDye, orangeDye);
 		allSteps.add(getArmours);
 
-		allSteps.add(new PanelDetails("Present the armours", new ArrayList<>(Arrays.asList(talkToGeneral1, talkToGeneral2, talkToGeneral3))));
+		allSteps.add(new PanelDetails("Present the armours", Arrays.asList(talkToGeneral1, talkToGeneral2, talkToGeneral3)));
 		return allSteps;
 	}
 }

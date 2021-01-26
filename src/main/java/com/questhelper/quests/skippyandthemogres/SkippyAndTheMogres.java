@@ -33,6 +33,7 @@ import com.questhelper.steps.conditional.ItemRequirementCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -115,7 +116,7 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(bucketOfWater);
@@ -127,7 +128,7 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.COOKING, 20));
@@ -135,10 +136,10 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Help Skippy", new ArrayList<>(Arrays.asList(soberSkippy, useTeaOnSkippy, useChocolateDustOnMilk, useSnapeGrassOnMilk, useHangoverCure)), bucketOfWater, nettleTea, bucketOfMilk, chocolateDust, snapeGrass));
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Help Skippy", Arrays.asList(soberSkippy, useTeaOnSkippy, useChocolateDustOnMilk, useSnapeGrassOnMilk, useHangoverCure), bucketOfWater, nettleTea, bucketOfMilk, chocolateDust, snapeGrass));
 		return allSteps;
 	}
 }

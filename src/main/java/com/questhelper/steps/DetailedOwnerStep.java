@@ -29,8 +29,8 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -130,7 +130,7 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 
 	// This should only have been called from a parent ConditionalStep, so default the additional text to the passed in text
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
 	{
 		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
 

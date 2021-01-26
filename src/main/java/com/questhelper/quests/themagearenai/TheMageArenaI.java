@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -151,27 +152,27 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(knife, runesForCasts));
+		return Arrays.asList(knife, runesForCasts);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Kolodion in 5 forms, up to level 112"));
+		return Collections.singletonList("Kolodion in 5 forms, up to level 112");
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
+	public List<String> getNotes()
 	{
-		return new ArrayList<>(Collections.singletonList("This miniquest is in deep Wilderness. Don't bring anything you're not " +
+		return Collections.singletonList("This miniquest is in deep Wilderness. Don't bring anything you're not " +
 			"willing to risk! It's recommended to turn off player attack options to avoid potentially getting " +
-			"skulled."));
+			"skulled.");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.MAGIC, 60));
@@ -179,15 +180,15 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Getting to the Mage Arena", new ArrayList<>(Collections.singletonList(enterCavern)), knife));
-		allSteps.add(new PanelDetails("Defeating Kolodion", new ArrayList<>(Arrays.asList(talkToKolodion, fightKolodion)),
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Getting to the Mage Arena", Collections.singletonList(enterCavern), knife));
+		allSteps.add(new PanelDetails("Defeating Kolodion", Arrays.asList(talkToKolodion, fightKolodion),
 			runesForCasts));
 
 		allSteps.add(new PanelDetails("Getting your rewards",
-			new ArrayList<>(Arrays.asList(enterPool, prayStatue, talkToGuardian))));
+			Arrays.asList(enterPool, prayStatue, talkToGuardian)));
 		return allSteps;
 	}
 }

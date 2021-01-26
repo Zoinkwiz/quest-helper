@@ -1,7 +1,6 @@
 package com.questhelper.steps.conditional;
 
 import com.questhelper.requirements.ItemRequirement;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -13,13 +12,12 @@ import net.runelite.api.coords.WorldPoint;
 
 public class ItemCondition extends ConditionForStep
 {
-	private ArrayList<Integer> itemID;
+	private final List<Integer> itemID;
 	private WorldPoint worldPoint;
-	private boolean npcInScene = false;
 
 	public ItemCondition(int itemID)
 	{
-		this.itemID = new ArrayList<>(Collections.singleton(itemID));
+		this.itemID = Collections.singletonList(itemID);
 	}
 
 	public ItemCondition(ItemRequirement item)
@@ -29,7 +27,7 @@ public class ItemCondition extends ConditionForStep
 
 	public ItemCondition(int itemID, WorldPoint worldPoint)
 	{
-		this.itemID = new ArrayList<>(Collections.singleton(itemID));
+		this.itemID = Collections.singletonList(itemID);
 		this.worldPoint = worldPoint;
 	}
 

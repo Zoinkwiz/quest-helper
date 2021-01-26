@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+import java.util.List;
 
 public abstract class ComplexStateQuestHelper extends QuestHelper
 {
@@ -65,7 +66,7 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 		return true;
 	}
 
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
 		return new ArrayList<>();
 	}

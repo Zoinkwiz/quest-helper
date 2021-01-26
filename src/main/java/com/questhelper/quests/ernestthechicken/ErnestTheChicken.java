@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -255,7 +256,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Able to survive a skeleton (level 22) attacking you");
@@ -263,24 +264,24 @@ public class ErnestTheChicken extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToVeronica))));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToVeronica)));
 
 		PanelDetails getGaugeAndTubePanel = new PanelDetails("Get the Gauge and Tube",
-			new ArrayList<>(Arrays.asList(enterManor, goToFirstFloor, pickupFishFood, goDownToGroundFloor, pickupPoison, usePoisonOnFishFood,
-				pickupSpade, searchCompost, useFishFoodOnFountain, searchFountain, enterManorWithKey, getTube)));
+			Arrays.asList(enterManor, goToFirstFloor, pickupFishFood, goDownToGroundFloor, pickupPoison, usePoisonOnFishFood,
+				pickupSpade, searchCompost, useFishFoodOnFountain, searchFountain, enterManorWithKey, getTube));
 		getGaugeAndTubePanel.setLockingStep(getGaugeAndTube);
 		allSteps.add(getGaugeAndTubePanel);
 
 		PanelDetails getCanPanel = new PanelDetails("Get the oil can",
-			new ArrayList<>(Arrays.asList(searchBookcase, goDownLadder, pullDownLeverA, pullDownLeverB, pullDownLeverD, pullUpLeverB, pullUpLeverA, pullDownLeverF, pullDownLeverE, pullDownLeverC, pullUpLeverE, pickupOilCan)));
+			Arrays.asList(searchBookcase, goDownLadder, pullDownLeverA, pullDownLeverB, pullDownLeverD, pullUpLeverB, pullUpLeverA, pullDownLeverF, pullDownLeverE, pullDownLeverC, pullUpLeverE, pickupOilCan));
 		getCanPanel.setLockingStep(getCan);
 		allSteps.add(getCanPanel);
 
-		allSteps.add(new PanelDetails("Bring items to Oddenstein", new ArrayList<>(Arrays.asList(talkToOddenstein, talkToOddenteinAgain))));
+		allSteps.add(new PanelDetails("Bring items to Oddenstein", Arrays.asList(talkToOddenstein, talkToOddenteinAgain)));
 		return allSteps;
 	}
 }

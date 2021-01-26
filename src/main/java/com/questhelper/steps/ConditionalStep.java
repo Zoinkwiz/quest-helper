@@ -30,9 +30,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Objects;
-import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
@@ -61,8 +60,8 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected boolean started = false;
 
 	protected final LinkedHashMap<Conditions, QuestStep> steps;
-	protected final ArrayList<ChatMessageCondition> chatConditions = new ArrayList<>();
-	protected final ArrayList<NpcCondition> npcConditions = new ArrayList<>();
+	protected final List<ChatMessageCondition> chatConditions = new ArrayList<>();
+	protected final List<NpcCondition> npcConditions = new ArrayList<>();
 
 	protected QuestStep currentStep;
 
@@ -318,7 +317,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	// This should only have been called from a parent ConditionalStep, so default the additional text to the passed in text
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, ArrayList<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
 	{
 		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
 

@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -365,19 +366,19 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList(coinsRequirement));
+		return Collections.singletonList(coinsRequirement);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Defeat a level 20 monsters with no gear"));
+		return Collections.singletonList("Defeat a level 20 monsters with no gear");
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
@@ -386,30 +387,30 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> steps = new ArrayList<>();
+		List<PanelDetails> steps = new ArrayList<>();
 
 		PanelDetails startingPanel = new PanelDetails("Starting out",
 			new ArrayList<>(Collections.singletonList(conditionalTalkToSirAmikVarze)));
 
 		PanelDetails testing = new PanelDetails("Start the testing",
-			new ArrayList<>(Collections.singletonList(talkToSirTiffy)), noItemRequirement);
+			Collections.singletonList(talkToSirTiffy), noItemRequirement);
 
 		PanelDetails sirTinleysRoom = new PanelDetails("Sir Tinley",
-			new ArrayList<>(Arrays.asList(talkToSirTinley, doNothingStep, leaveSirTinleyRoom)));
+			Arrays.asList(talkToSirTinley, doNothingStep, leaveSirTinleyRoom));
 
-		ArrayList<QuestStep> hynnSteps = new ArrayList<>();
+		List<QuestStep> hynnSteps = new ArrayList<>();
 		hynnSteps.add(talkToMsHynnTerprett);
 		hynnSteps.addAll(msHynnDialogQuiz.getPanelSteps());
 		PanelDetails msHynnsRoom = new PanelDetails("Ms HynnTerprett", hynnSteps);
 
 		PanelDetails sirKuamRoom = new PanelDetails("Sir Kuam",
-			new ArrayList<>(Arrays.asList(talkToSirKuam, killSirLeye, leaveSirKuamRoom)));
+			Arrays.asList(talkToSirKuam, killSirLeye, leaveSirKuamRoom));
 
 		PanelDetails sirSpishyusRoom = new PanelDetails("Sir Spishyus",
-			new ArrayList<>(Arrays.asList(moveChickenOnRightToLeft, moveFoxOnRightToLeft,
-				moveChickenOnLeftToRight, moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain)));
+			Arrays.asList(moveChickenOnRightToLeft, moveFoxOnRightToLeft,
+				moveChickenOnLeftToRight, moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain));
 
 		PanelDetails sirRensRoom = new PanelDetails("Sir Ren Itchood", sirRenStep.getPanelSteps());
 

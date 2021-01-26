@@ -49,11 +49,11 @@ public class QuestRequirementPanel extends JPanel
 
 
 	@Getter
-	private final Requirement itemRequirement;
+	private final Requirement requirement;
 
 	public QuestRequirementPanel(Requirement requirement)
 	{
-		this.itemRequirement = requirement;
+		this.requirement = requirement;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -78,9 +78,9 @@ public class QuestRequirementPanel extends JPanel
 		setPreferredSize(label.getSize());
 		add(label, BorderLayout.WEST);
 
-		if (requirement.getTip() != null)
+		if (requirement.getTooltip() != null)
 		{
-			addButtonToPanel(requirement.getTip());
+			addButtonToPanel(requirement.getTooltip());
 		}
 	}
 

@@ -36,8 +36,8 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -97,7 +97,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 			&& numBrownStillNeeded == 0
 			&& numYellowStillNeeded == 0)
 		{
-			if (inEvilDaveRoom.checkCondition(client))
+			if (inEvilDaveRoom.check(client))
 			{
 				startUpStep(useStewOnEvilDave);
 			}

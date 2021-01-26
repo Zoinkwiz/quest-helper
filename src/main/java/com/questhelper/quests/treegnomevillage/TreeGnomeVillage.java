@@ -32,13 +32,15 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -168,7 +170,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	{
 		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6);
 		orbsOfProtection = new ItemRequirement("Orbs of protection", ItemID.ORBS_OF_PROTECTION);
-		orbsOfProtection.setTip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
+		orbsOfProtection.setTooltip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
 	}
 
 	private void setupZones()
@@ -281,7 +283,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		climbTheLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2503, 3252, 0), "Climb the ladder");
 
 		ItemRequirement firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
-		firstOrb.setTip("If you have lost the orb you can get another from the chest");
+		firstOrb.setTooltip("If you have lost the orb you can get another from the chest");
 		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
 			"Speak to King Bolren in the centre of the Tree Gnome Maze. You can do can talk to Elkoy outside the maze to travel to the centre.",
 			firstOrb);

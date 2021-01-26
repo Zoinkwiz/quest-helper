@@ -31,20 +31,17 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
-import java.util.ArrayList;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
 
 public class MM2Sabotage extends ConditionalStep
 {
@@ -103,9 +100,9 @@ public class MM2Sabotage extends ConditionalStep
 		satchelCurrentQuantity.addAlternates(ItemID.SATCHEL_19528);
 
 		filledSatchel1 = new ItemRequirement("Satchel (filled)", ItemID.SATCHEL_19528);
-		filledSatchel1.setTip("You can fill another satchel from the gunpowder barrels in the north east of the platform");
+		filledSatchel1.setTooltip("You can fill another satchel from the gunpowder barrels in the north east of the platform");
 		filledSatchel1Highlighted = new ItemRequirement("Satchel (filled)", ItemID.SATCHEL_19528);
-		filledSatchel1Highlighted.setTip("You can fill another satchel from the gunpowder barrels in the north east of the platform");
+		filledSatchel1Highlighted.setTooltip("You can fill another satchel from the gunpowder barrels in the north east of the platform");
 		filledSatchel1Highlighted.setHighlightInInventory(true);
 		filledSatchelCurrentQuantity = new ItemRequirement("Satchel (filled)", ItemID.SATCHEL_19528, 6);
 	}
@@ -222,27 +219,27 @@ public class MM2Sabotage extends ConditionalStep
 	{
 		super.onGameTick(event);
 		int currentlyNeededExplosives = 6;
-		if (placedSatchel1.checkCondition(client))
+		if (placedSatchel1.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel2.checkCondition(client))
+		if (placedSatchel2.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel3.checkCondition(client))
+		if (placedSatchel3.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel4.checkCondition(client))
+		if (placedSatchel4.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel5.checkCondition(client))
+		if (placedSatchel5.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel6.checkCondition(client))
+		if (placedSatchel6.check(client))
 		{
 			currentlyNeededExplosives--;
 		}

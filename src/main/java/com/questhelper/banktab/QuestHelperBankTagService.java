@@ -28,7 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -146,7 +146,7 @@ public class QuestHelperBankTagService
 
 		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
 
-		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTip());
+		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTooltip());
 	}
 
 	public boolean hasItemInBank(int itemID)

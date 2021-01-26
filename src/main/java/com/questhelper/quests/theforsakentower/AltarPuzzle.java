@@ -25,18 +25,18 @@
 package com.questhelper.quests.theforsakentower;
 
 import com.google.inject.Inject;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,15 +105,15 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 
 	protected void updateSteps()
 	{
-		if (inBasement.checkCondition(client))
+		if (inBasement.check(client))
 		{
 			startUpStep(goUpLadder);
 		}
-		else if (inFloor1.checkCondition(client))
+		else if (inFloor1.check(client))
 		{
 			startUpStep(goUpToSecondFloor);
 		}
-		else if (inSecondFloor.checkCondition(client))
+		else if (inSecondFloor.check(client))
 		{
 			int currentW = client.getVarbitValue(7847);
 			int currentC = client.getVarbitValue(7848);

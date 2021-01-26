@@ -35,7 +35,7 @@ import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

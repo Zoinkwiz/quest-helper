@@ -26,19 +26,19 @@ package com.questhelper.quests.dreammentor;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.CombatLevelRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +59,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DREAM_MENTOR
@@ -187,7 +187,7 @@ public class DreamMentor extends BasicQuestHelper
 		hammer.setHighlightInInventory(true);
 
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
-		goutweed.setTip("You can get one from the Troll Kitchen's Storeroom in Trollheim");
+		goutweed.setTooltip("You can get one from the Troll Kitchen's Storeroom in Trollheim");
 		goutweed.setHighlightInInventory(true);
 
 		dreamPotion = new ItemRequirement("Dream potion", ItemID.DREAM_POTION);

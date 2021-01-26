@@ -33,12 +33,12 @@ import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +58,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.BETWEEN_A_ROCK
@@ -182,10 +182,10 @@ public class BetweenARock extends BasicQuestHelper
 		page3 = new ItemRequirement("Book page 3", ItemID.BOOK_PAGE_3);
 		pages = new ItemRequirement("Pages", ItemID.PAGES_4573);
 		dwarvenLore = new ItemRequirement("Dwarven lore", ItemID.DWARVEN_LORE);
-		dwarvenLore.setTip("You can get another from Rolad south of Ice Mountain");
+		dwarvenLore.setTooltip("You can get another from Rolad south of Ice Mountain");
 
 		dwarvenLoreHighlight = new ItemRequirement("Dwarven lore", ItemID.DWARVEN_LORE);
-		dwarvenLoreHighlight.setTip("You can get another from Rolad south of Ice Mountain");
+		dwarvenLoreHighlight.setTooltip("You can get another from Rolad south of Ice Mountain");
 		dwarvenLoreHighlight.setHighlightInInventory(true);
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
@@ -198,7 +198,7 @@ public class BetweenARock extends BasicQuestHelper
 		goldCannonballHighlight.setHighlightInInventory(true);
 
 		cannonMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD);
-		cannonMould.setTip("You can buy one from Nulodion above the Dwarven Mine for 5 coins");
+		cannonMould.setTooltip("You can buy one from Nulodion above the Dwarven Mine for 5 coins");
 
 		schematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC);
 

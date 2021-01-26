@@ -37,11 +37,11 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -105,10 +105,10 @@ public class EnterTheAbyss extends BasicQuestHelper
 		passageTeleport = new ItemRequirement("Teleport to Wizards' Tower", ItemCollections.getNecklaceOfPassages());
 
 		scryingOrb = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB_5519);
-		scryingOrb.setTip("You can get another from the Mage of Zamorak in south east Varrock");
+		scryingOrb.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
 
 		scryingOrbCharged = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB);
-		scryingOrbCharged.setTip("You can get another from the Mage of Zamorak in south east Varrock");
+		scryingOrbCharged.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
 	}
 
 	public void loadZones()

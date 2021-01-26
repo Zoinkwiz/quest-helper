@@ -44,10 +44,10 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.conditional.ChatMessageCondition;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ChatMessageCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -147,9 +147,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 		else
 		{
-			for (ConditionForStep subCondition : condition.getConditions())
+			if (condition != null)
 			{
-				checkForNpcConditions(subCondition);
+				for (ConditionForStep subCondition : condition.getConditions())
+				{
+					checkForNpcConditions(subCondition);
+				}
 			}
 		}
 	}
@@ -242,7 +245,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		for (Conditions conditions : steps.keySet())
 		{
 			boolean stepIsLocked = steps.get(conditions).isLocked();
-			if (conditions != null && conditions.checkCondition(client) && !stepIsLocked)
+			if (conditions != null && conditions.check(client) && !stepIsLocked)
 			{
 				startUpStep(steps.get(conditions));
 				return;

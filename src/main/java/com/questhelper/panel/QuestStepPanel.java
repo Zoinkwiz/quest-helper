@@ -25,6 +25,7 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;

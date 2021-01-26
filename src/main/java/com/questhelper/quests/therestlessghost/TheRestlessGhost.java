@@ -43,12 +43,12 @@ import com.questhelper.steps.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_RESTLESS_GHOST
@@ -117,9 +117,9 @@ public class TheRestlessGhost extends BasicQuestHelper
 	{
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 2);
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ghostspeakAmulet.setTip("If you've lost it you can get another from Father Urhney in his hut in the south east of Lumbridge Swamp");
+		ghostspeakAmulet.setTooltip("If you've lost it you can get another from Father Urhney in his hut in the south east of Lumbridge Swamp");
 		skull = new ItemRequirement("Ghost's skull", ItemID.GHOSTS_SKULL);
-		skull.setTip("Check your bank if you don't have this item on you.");
+		skull.setTooltip("Check your bank if you don't have this item on you.");
 		passage = new ItemRequirement("Necklace of passage", ItemID.NECKLACE_OF_PASSAGE5);
 		passage.addAlternates(ItemID.NECKLACE_OF_PASSAGE1, ItemID.NECKLACE_OF_PASSAGE2, ItemID.NECKLACE_OF_PASSAGE3, ItemID.NECKLACE_OF_PASSAGE4);
 	}

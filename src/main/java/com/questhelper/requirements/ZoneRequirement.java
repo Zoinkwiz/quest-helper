@@ -32,7 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 
-public class ZoneRequirement extends Requirement
+public class ZoneRequirement extends AbstractRequirement
 {
 	private final Zone zone;
 	private final boolean checkNotInZone;

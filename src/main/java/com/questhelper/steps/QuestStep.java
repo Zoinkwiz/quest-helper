@@ -32,7 +32,7 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -128,11 +128,12 @@ public abstract class QuestStep implements Module
 
 	public QuestStep(QuestHelper questHelper, String text)
 	{
-		this.text = Collections.singletonList(text);
+		// use explicit ArrayList because we need the 'text' list to be mutable
+		this.text = new ArrayList<>(Collections.singletonList(text));
 		this.questHelper = questHelper;
 	}
 
-	public QuestStep(QuestHelper questHelper, ArrayList<String> text)
+	public QuestStep(QuestHelper questHelper, List<String> text)
 	{
 		this.text = text;
 		this.questHelper = questHelper;
@@ -337,7 +338,7 @@ public abstract class QuestStep implements Module
 
 	public boolean isLocked()
 	{
-		boolean autoLocked = lockingCondition != null && lockingCondition.checkCondition(client);
+		boolean autoLocked = lockingCondition != null && lockingCondition.check(client);
 		unlockable = !autoLocked;
 		if (autoLocked)
 		{

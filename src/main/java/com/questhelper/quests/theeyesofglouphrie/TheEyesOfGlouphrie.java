@@ -33,10 +33,10 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +48,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -169,10 +169,10 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
-		bucketOfSap.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
+		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 		bucketOfSapHiglight = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
-		bucketOfSapHiglight.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
+		bucketOfSapHiglight.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 		bucketOfSapHiglight.setHighlightInInventory(true);
 

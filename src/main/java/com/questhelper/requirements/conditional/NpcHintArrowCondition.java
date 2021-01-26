@@ -22,73 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.questhelper.Zone;
+import com.questhelper.questhelpers.QuestUtil;
+import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.Player;
+import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.Zone;
 
-public class ZoneCondition extends ConditionForStep
+public class NpcHintArrowCondition extends ConditionForStep
 {
+	private final List<Integer> npcIDs;
 
-	private final List<Zone> zones;
-	private final boolean checkInZone;
+	private final Zone zone;
 
-	public ZoneCondition(Zone... zone)
-	{
-		this.zones = new ArrayList<>();
-		Collections.addAll(this.zones, zone);
-		this.checkInZone = true;
+	public NpcHintArrowCondition(int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
+		this.zone = null;
 	}
 
-	public ZoneCondition(WorldPoint... worldPoints)
+	public NpcHintArrowCondition(WorldPoint worldPoint, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
+		this.zone = new Zone(worldPoint, worldPoint);
+	}
+
+	public NpcHintArrowCondition(Zone zone, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
+		this.zone = zone;
+	}
+
+	public boolean check(Client client)
 	{
-		this.zones = new ArrayList<>();
-		for (WorldPoint worldPoint : worldPoints)
+		NPC currentNPC = client.getHintArrowNpc();
+		if (currentNPC == null)
 		{
-			this.zones.add(new Zone(worldPoint));
+			return false;
 		}
-		this.checkInZone = true;
-	}
+		WorldPoint wp = WorldPoint.fromLocalInstance(client, currentNPC.getLocalLocation());
 
-	public ZoneCondition(boolean checkInZone, Zone... zone)
-	{
-		this.zones = new ArrayList<>();
-		Collections.addAll(this.zones, zone);
-		this.checkInZone = checkInZone;
-	}
-
-	public ZoneCondition(boolean checkInZone, WorldPoint... worldPoints)
-	{
-		this.zones = new ArrayList<>();
-		for (WorldPoint worldPoint : worldPoints)
+		if (zone != null && !zone.contains(wp))
 		{
-			this.zones.add(new Zone(worldPoint));
+			return false;
 		}
-		this.checkInZone = checkInZone;
-	}
 
-	@Override
-	public boolean checkCondition(Client client)
-	{
-		Player player = client.getLocalPlayer();
-		if (player != null)
+		if (npcIDs.contains(currentNPC.getId()))
 		{
-			WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-
-			for (Zone zone : zones)
-			{
-				if (zone.contains(worldPoint))
-				{
-					// Check succeeded if check is to see if in zone, failed if not
-					return checkInZone;
-				}
-			}
+			return true;
 		}
-		return !checkInZone;
+
+		return false;
 	}
 }

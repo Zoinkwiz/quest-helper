@@ -34,10 +34,10 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,7 +49,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -130,7 +130,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		catspeak = new ItemRequirement("Catspeak amulet", ItemID.CATSPEAK_AMULET, 1, true);
-		catspeak.setTip("You can get another from the Sphinx in Sophanhem");
+		catspeak.setTooltip("You can get another from the Sphinx in Sophanhem");
 		catspeakE = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE);
 		catspeakEWorn = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakE.setHighlightInInventory(true);

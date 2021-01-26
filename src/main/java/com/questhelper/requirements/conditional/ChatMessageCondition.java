@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
+import lombok.Setter;
 import net.runelite.api.Client;
 
-public class VarbitCondition extends ConditionForStep
+public class ChatMessageCondition extends ConditionForStep
 {
+	@Setter
+	private boolean hasReceivedChatMessage = false;
 
-	private final int varbitId;
-	private final int value;
-	private final Operation operation;
+	private ConditionForStep condition;
 
-	private final boolean bitIsSet;
-	private final int bitPosition;
+	private final List<String> messages;
 
-	public VarbitCondition(int varbitId, int value)
+	public ChatMessageCondition(String... message)
 	{
-		this.varbitId = varbitId;
-		this.value = value;
-		this.operation = Operation.EQUAL;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
+		this.messages = Arrays.asList(message);
 	}
 
-	public VarbitCondition(int varbitId, int value, Operation operation)
+	public ChatMessageCondition(ConditionForStep condition, String... message)
 	{
-		this.varbitId = varbitId;
-		this.value = value;
-		this.operation = operation;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
-	}
-
-	public VarbitCondition(int varbitId, boolean bitIsSet, int bitPosition)
-	{
-		this.varbitId = varbitId;
-		this.value = -1;
-		this.operation = Operation.EQUAL;
-
-		this.bitPosition = bitPosition;
-		this.bitIsSet = bitIsSet;
+		this.condition = condition;
+		this.messages = Arrays.asList(message);
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
-		if (bitPosition >= 0)
-		{
-			return bitIsSet == BigInteger.valueOf(client.getVarbitValue(varbitId)).testBit(bitPosition);
-		}
+		return hasReceivedChatMessage;
+	}
 
-		return operation.check(client.getVarbitValue(varbitId), value);
+	public void validateCondition(Client client, String chatMessage) {
+		if (!hasReceivedChatMessage)
+		{
+			if (messages.contains(chatMessage))
+			{
+				if (condition == null || condition.check(client))
+				{
+					hasReceivedChatMessage = true;
+				}
+			}
+		}
 	}
 }

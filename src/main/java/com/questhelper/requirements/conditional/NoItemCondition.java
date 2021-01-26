@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.NoItemRequirement;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class NoItemCondition extends ConditionForStep
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
 		for (NoItemRequirement noItemRequirement : noItemRequirements)
 		{

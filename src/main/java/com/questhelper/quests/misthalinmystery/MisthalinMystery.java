@@ -25,7 +25,7 @@
 package com.questhelper.quests.misthalinmystery;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.steps.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,12 +43,12 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.*;
 import java.util.HashMap;
 import java.util.Map;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MISTHALIN_MYSTERY

@@ -57,7 +57,7 @@ public class FishMonkfish extends DetailedOwnerStep
 	public FishMonkfish(QuestHelper questHelper)
 	{
 		super(questHelper);
-		smallNet.setTip("You can get one from Arnold");
+		smallNet.setTooltip("You can get one from Arnold");
 	}
 
 	@Subscribe

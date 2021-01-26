@@ -25,19 +25,19 @@
 package com.questhelper.quests.onesmallfavour;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +58,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ONE_SMALL_FAVOUR
@@ -337,13 +337,13 @@ public class OneSmallFavour extends BasicQuestHelper
 		hammerHighlight = new ItemRequirement("Hammer", ItemID.HAMMER);
 		hammerHighlight.setHighlightInInventory(true);
 		emptyCup = new ItemRequirement("Empty cup", ItemID.EMPTY_CUP);
-		emptyCup.setTip("You can find a cup of tea in a house north of Sanfew. Drink it for an empty cup");
+		emptyCup.setTooltip("You can find a cup of tea in a house north of Sanfew. Drink it for an empty cup");
 		pigeonCages5 = new ItemRequirement("Pigeon cages", ItemID.PIGEON_CAGE, 5);
-		pigeonCages5.setTip("You can get more from outside a house in East Ardougne");
+		pigeonCages5.setTooltip("You can get more from outside a house in East Ardougne");
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		pot.setHighlightInInventory(true);
 		hotWater = new ItemRequirement("Bowl of hot water", ItemID.BOWL_OF_HOT_WATER);
-		hotWater.setTip("You can find a bowl in Lumbridge castle. Fill it up, then boil it on the range");
+		hotWater.setTooltip("You can find a bowl in Lumbridge castle. Fill it up, then boil it on the range");
 		varrockTeleports = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
 		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 2);
 		ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 2);
@@ -351,7 +351,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		lumbridgeTeleports = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT, 2);
 
 		bluntAxe = new ItemRequirement("Blunt axe", ItemID.BLUNT_AXE);
-		bluntAxe.setTip("You can get another from a Jungle Forester south of Shilo Village");
+		bluntAxe.setTooltip("You can get another from a Jungle Forester south of Shilo Village");
 		herbalTincture = new ItemRequirement("Herbal tincture", ItemID.HERBAL_TINCTURE);
 		guthixRest = new ItemRequirement("Guthix rest(3)", ItemID.GUTHIX_REST3);
 
@@ -368,48 +368,48 @@ public class OneSmallFavour extends BasicQuestHelper
 		uncutSapphire.setHighlightInInventory(true);
 		uncutOpal = new ItemRequirement("Uncut opal", ItemID.UNCUT_OPAL);
 		uncutOpal.setHighlightInInventory(true);
-		uncutOpal.setTip("If you crushed it, you can buy another from Gnormadium for 500 gp");
+		uncutOpal.setTooltip("If you crushed it, you can buy another from Gnormadium for 500 gp");
 		uncutJade = new ItemRequirement("Uncut jade", ItemID.UNCUT_JADE);
-		uncutJade.setTip("If you crushed it, you can buy another from Gnormadium for 500 gp");
+		uncutJade.setTooltip("If you crushed it, you can buy another from Gnormadium for 500 gp");
 		uncutJade.setHighlightInInventory(true);
 		uncutRedTopaz = new ItemRequirement("Uncut red topaz", ItemID.UNCUT_RED_TOPAZ);
-		uncutRedTopaz.setTip("If you crushed it, you can buy another from Gnormadium for 500 gp");
+		uncutRedTopaz.setTooltip("If you crushed it, you can buy another from Gnormadium for 500 gp");
 		uncutRedTopaz.setHighlightInInventory(true);
 
 		stodgyMattress = new ItemRequirement("Stodgy mattress", ItemID.STODGY_MATTRESS);
-		stodgyMattress.setTip("You can buy another from the Tindel Merchant in Port Khazard for 100 gp");
+		stodgyMattress.setTooltip("You can buy another from the Tindel Merchant in Port Khazard for 100 gp");
 
 		mattress = new ItemRequirement("Comfy mattress", ItemID.COMFY_MATTRESS);
-		mattress.setTip("You can get another stodgy mattress from Tindel Merchant for 100 gp, then get it filled by Rantz");
+		mattress.setTooltip("You can get another stodgy mattress from Tindel Merchant for 100 gp, then get it filled by Rantz");
 
 		animateRockScroll = new ItemRequirement("Animate rock scroll", ItemID.ANIMATE_ROCK_SCROLL);
-		animateRockScroll.setTip("You can get another from Wizard Cromperty for 100 gp");
+		animateRockScroll.setTooltip("You can get another from Wizard Cromperty for 100 gp");
 
 		animateRockScrollHighlight = new ItemRequirement("Animate rock scroll", ItemID.ANIMATE_ROCK_SCROLL);
 		animateRockScrollHighlight.setHighlightInInventory(true);
-		animateRockScrollHighlight.setTip("You can get another from Wizard Cromperty for 100 gp");
+		animateRockScrollHighlight.setTooltip("You can get another from Wizard Cromperty for 100 gp");
 
 		ironOxide = new ItemRequirement("Iron oxide", ItemID.IRON_OXIDE);
-		ironOxide.setTip("You can buy another from the Tindel Merchant for 200 gp");
+		ironOxide.setTooltip("You can buy another from the Tindel Merchant for 200 gp");
 
 		brokenVane1 = new ItemRequirement("Broken vane part", ItemID.BROKEN_VANE_PART);
 		brokenVane1.setHighlightInInventory(true);
-		brokenVane1.setTip("You can get another from Phantuwti for 335 gp");
+		brokenVane1.setTooltip("You can get another from Phantuwti for 335 gp");
 		directionals = new ItemRequirement("Directionals", ItemID.DIRECTIONALS);
 		directionals.setHighlightInInventory(true);
 		brokenVane2 = new ItemRequirement("Broken vane part", ItemID.BROKEN_VANE_PART_4431);
-		brokenVane2.setTip("You can get another from Phantuwti for 335 gp");
+		brokenVane2.setTooltip("You can get another from Phantuwti for 335 gp");
 		brokenVane2.setHighlightInInventory(true);
 		ornament = new ItemRequirement("Ornament", ItemID.ORNAMENT);
 		ornament.setHighlightInInventory(true);
 		brokenVane3 = new ItemRequirement("Broken vane part", ItemID.BROKEN_VANE_PART_4433);
-		brokenVane3.setTip("You can get another from Phantuwti for 335 gp");
+		brokenVane3.setTooltip("You can get another from Phantuwti for 335 gp");
 		brokenVane3.setHighlightInInventory(true);
 		weathervanePillar = new ItemRequirement("Weathervane pillar", ItemID.WEATHERVANE_PILLAR);
 		weathervanePillar.setHighlightInInventory(true);
 
 		weatherReport = new ItemRequirement("Weather report", ItemID.WEATHER_REPORT);
-		weatherReport.setTip("You can get another from Phantuwti in Seers' Village");
+		weatherReport.setTooltip("You can get another from Phantuwti in Seers' Village");
 
 		potLid = new ItemRequirement("Pot lid", ItemID.POT_LID);
 		potLid.setHighlightInInventory(true);
@@ -417,16 +417,16 @@ public class OneSmallFavour extends BasicQuestHelper
 		potWithLid = new ItemRequirement("Airtight pot", ItemID.AIRTIGHT_POT);
 
 		breathingSalts = new ItemRequirement("Breathing salts", ItemID.BREATHING_SALTS);
-		breathingSalts.setTip("You can get more by bringing the Apothecary another airtight pot and 200 gp");
+		breathingSalts.setTooltip("You can get more by bringing the Apothecary another airtight pot and 200 gp");
 
 		chickenCages5 = new ItemRequirement("Chicken cage", ItemID.CHICKEN_CAGE, 5);
-		chickenCages5.setTip("You can get more chicken cages by bringing Horvik a pidgeon cage and 100 coins per cage");
+		chickenCages5.setTooltip("You can get more chicken cages by bringing Horvik a pidgeon cage and 100 coins per cage");
 
 		sharpenedAxe = new ItemRequirement("Sharpened axe", ItemID.SHARPENED_AXE);
-		sharpenedAxe.setTip("You can get another from Brian in Port Sarim");
+		sharpenedAxe.setTooltip("You can get another from Brian in Port Sarim");
 
 		redMahog = new ItemRequirement("Red mahogany log", ItemID.RED_MAHOGANY_LOG);
-		redMahog.setTip("You can get another from a jungle forester for 200 gp");
+		redMahog.setTooltip("You can get another from a jungle forester for 200 gp");
 	}
 
 	public void loadZones()

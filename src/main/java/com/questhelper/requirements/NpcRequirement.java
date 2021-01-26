@@ -33,7 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 
-public class NpcRequirement extends Requirement
+public class NpcRequirement extends AbstractRequirement
 {
 	private final int npcID;
 	private final Zone zone;

@@ -1,13 +1,13 @@
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 
 /**
  * Checks if the player's combat level meets the required level
  */
-public class CombatLevelRequirement extends Requirement
+public class CombatLevelRequirement extends AbstractRequirement
 {
 	private final int requiredLevel;
 	private final Operation operation;

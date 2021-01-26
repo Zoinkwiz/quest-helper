@@ -1,51 +1,95 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
- * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  * Copyright (c) 2021, Senmori
+ *  * All rights reserved.
+ *  *
+ *  * Redistribution and use in source and binary forms, with or without
+ *  * modification, are permitted provided that the following conditions are met:
+ *  *
+ *  * 1. Redistributions of source code must retain the above copyright notice, this
+ *  *    list of conditions and the following disclaimer.
+ *  * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *  *    this list of conditions and the following disclaimer in the documentation
+ *  *    and/or other materials provided with the distribution.
+ *  *
+ *  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package com.questhelper.requirements;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-abstract public class Requirement
+/**
+ * A requirement that must be passed.
+ * This is used in both rendering overlays and quest logic.<br>
+ * All {@link Requirement}s are run on the {@link net.runelite.client.callback.ClientThread}.
+ */
+public interface Requirement
 {
-	@Setter
-	@Getter
-	private String tip;
+	/**
+	 * Check the {@link Client} that it meets this requirement.
+	 * @param client client to check
+	 * @return true if the client meets this requirement
+	 */
+	boolean check(Client client);
 
-	public Color getColor(Client client) {
+	/**
+	 * @return display text to be used for rendering either on overlays or panels. Cannot be null.
+	 */
+	@Nonnull
+	String getDisplayText();
+
+	/**
+	 * The {@link Color} used to render the {@link #getDisplayText()} depending on what {@link #check(Client)}
+	 * returns.<br>
+	 * By default, if {@link #check(Client)} returns true, {@link Color#GREEN} is used, otherwise {@link Color#RED}.
+	 *
+	 * @param client client to check
+	 * @return the {@link Color} to use
+	 */
+	default Color getColor(Client client)
+	{
 		return check(client) ? Color.GREEN : Color.RED;
 	}
 
-	abstract public boolean check(Client client);
+	/**
+	 * If this requirement will be displayed on a quest's side panels they can have tooltips to
+	 * give extra information.
+	 *
+	 * @return the tooltip text to display
+	 */
+	@Nullable
+	default String getTooltip()
+	{
+		return null;
+	}
 
-	public List<LineComponent> getDisplayTextWithChecks(Client client) {
-		ArrayList<LineComponent> lines = new ArrayList<>();
+	/**
+	 * Set the tooltip for this requirement
+	 *
+	 * @param tooltip the new tooltip
+	 */
+	default void setTooltip(@Nullable String tooltip) {}
+
+	default List<LineComponent> getDisplayTextWithChecks(Client client)
+	{
+		List<LineComponent> lines = new ArrayList<>();
 
 		String text = getDisplayText();
 		Color color = getColor(client);
@@ -57,6 +101,4 @@ abstract public class Requirement
 
 		return lines;
 	}
-
-	abstract public String getDisplayText();
 }

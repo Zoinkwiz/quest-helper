@@ -34,14 +34,14 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,7 +63,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -181,15 +181,15 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		cupOfTea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_4838);
 		strangePotion = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION);
-		strangePotion.setTip("You can get another from Zavistic Rarve");
+		strangePotion.setTooltip("You can get another from Zavistic Rarve");
 
 		strangePotionHighlighted = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION);
-		strangePotionHighlighted.setTip("You can get another from Zavistic Rarve");
+		strangePotionHighlighted.setTooltip("You can get another from Zavistic Rarve");
 		strangePotionHighlighted.setHighlightInInventory(true);
 
 		grishKey = new ItemRequirement("Ogre gate key", ItemID.OGRE_GATE_KEY);
 		ogreRelic = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT);
-		ogreRelic.setTip("You can get another by searching the stand where you fought Slash Bash");
+		ogreRelic.setTooltip("You can get another by searching the stand where you fought Slash Bash");
 
 		combatGear = new ItemRequirement("Either brutal arrows or Crumble Undead for fighting Slash Bash", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

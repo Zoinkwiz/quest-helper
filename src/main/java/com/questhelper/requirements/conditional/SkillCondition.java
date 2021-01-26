@@ -1,5 +1,6 @@
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
@@ -26,7 +27,7 @@ public class SkillCondition extends ConditionForStep
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
 		return operation.check(client.getRealSkillLevel(skill), value);
 	}

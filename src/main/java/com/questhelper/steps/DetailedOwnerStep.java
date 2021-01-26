@@ -27,6 +27,7 @@ package com.questhelper.steps;
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.Graphics2D;
 import java.util.Collection;

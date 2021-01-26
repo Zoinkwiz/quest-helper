@@ -34,7 +34,7 @@ import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.*;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;

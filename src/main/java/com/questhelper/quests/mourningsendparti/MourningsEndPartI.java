@@ -32,13 +32,13 @@ import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +59,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MOURNINGS_END_PART_I
@@ -222,7 +222,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		mournerLegs = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS);
 		sieve = new ItemRequirement("Sieve", ItemID.SIEVE);
 		sieve.setHighlightInInventory(true);
-		sieve.setTip("You can get another from Elena");
+		sieve.setTooltip("You can get another from Elena");
 		tarnishedKey = new ItemRequirement("Tarnished key", ItemID.TARNISHED_KEY);
 		fullMourners = new ItemRequirements("Full mourners' outfit", mournerMask, mournerBody, mournerLegs, mournerCloak, mournerBoots, mournerGloves);
 
@@ -259,7 +259,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		toxicNaphtha.setHighlightInInventory(true);
 
 		toxicPowder = new ItemRequirement("Toxic powder", ItemID.TOXIC_POWDER);
-		toxicPowder.setTip("You'll have to make more if you've lost it");
+		toxicPowder.setTooltip("You'll have to make more if you've lost it");
 		toxicPowder.setHighlightInInventory(true);
 	}
 

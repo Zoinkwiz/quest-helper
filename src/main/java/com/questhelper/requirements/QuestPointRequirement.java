@@ -1,6 +1,6 @@
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
@@ -8,7 +8,7 @@ import net.runelite.api.VarPlayer;
 /**
  * Requirement that checks if a player has a required number of quest points.
  */
-public class QuestPointRequirement extends Requirement
+public class QuestPointRequirement extends AbstractRequirement
 {
 	@Getter
 	private int requiredQuestPoints;

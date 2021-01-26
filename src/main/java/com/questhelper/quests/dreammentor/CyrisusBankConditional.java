@@ -24,13 +24,13 @@
  */
 package com.questhelper.quests.dreammentor;
 
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.Client;
 
 public class CyrisusBankConditional extends ConditionForStep
 {
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
 
 		return CyrisusArmourSet.isReady(client);

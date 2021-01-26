@@ -26,24 +26,24 @@ package com.questhelper.quests.rumdeal;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +61,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.RUM_DEAL
@@ -255,10 +255,10 @@ public class RumDeal extends BasicQuestHelper
 		rakeHighlight.setHighlightInInventory(true);
 		dibber = new ItemRequirement("Dibber", ItemID.SEED_DIBBER);
 		blindweed = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
-		blindweed.setTip("You can get another from Captain Braindeath");
+		blindweed.setTooltip("You can get another from Captain Braindeath");
 
 		blindweedHighlight = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
-		blindweedHighlight.setTip("You can get another from Captain Braindeath");
+		blindweedHighlight.setTooltip("You can get another from Captain Braindeath");
 
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 
@@ -266,14 +266,14 @@ public class RumDeal extends BasicQuestHelper
 		bucketHighlight.setHighlightInInventory(true);
 
 		stagnantWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER_6712);
-		stagnantWater.setTip("You can get more from Captain Braindeath");
+		stagnantWater.setTooltip("You can get more from Captain Braindeath");
 
 		stagnantWaterHighlight = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER_6712);
-		stagnantWaterHighlight.setTip("You can get more from Captain Braindeath");
+		stagnantWaterHighlight.setTooltip("You can get more from Captain Braindeath");
 		stagnantWaterHighlight.setHighlightInInventory(true);
 
 		netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_AND_NET);
-		netBowl.setTip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
+		netBowl.setTooltip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
 
 		sluglings5 = new ItemRequirement("Sluglings", ItemID.SLUGLINGS, 5);
 
@@ -281,7 +281,7 @@ public class RumDeal extends BasicQuestHelper
 		holyWrench.setHighlightInInventory(true);
 
 		wrench = new ItemRequirement("Wrench", ItemID.WRENCH);
-		wrench.setTip("You can get another from Captain Braindeath");
+		wrench.setTooltip("You can get another from Captain Braindeath");
 
 		spiderCarcass = new ItemRequirement("Fever spider body", ItemID.FEVER_SPIDER_BODY);
 
@@ -452,7 +452,7 @@ public class RumDeal extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Get blindweed", Arrays.asList(goDownstairs, rakePatch, plantSeed, waitForGrowth, pickPlant, goUpStairsWithPlant, dropPlant), rake, dibber));
 		allSteps.add(new PanelDetails("Get stagnant water", Arrays.asList(talkToBraindeathAfterPlant, useBucketOnWater, dropWater)));
 
-		List<QuestStep> sluglingSteps = Collections.singletonList(talkToBraindeathAfterWater);
+		List<QuestStep> sluglingSteps = QuestUtil.toArrayList(talkToBraindeathAfterWater);
 		sluglingSteps.addAll(getSlugs.getDisplaySteps());
 		allSteps.add(new PanelDetails("Get sluglings", sluglingSteps));
 

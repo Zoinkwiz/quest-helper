@@ -33,20 +33,20 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -108,32 +108,32 @@ public class FishingContest extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemID.COINS_995, 5);
-		coins.setTip("10 if you buy a fishing rod from Jack");
+		coins.setTooltip("10 if you buy a fishing rod from Jack");
 		fishingPass = new ItemRequirement("Fishing Pass", ItemID.FISHING_PASS);
-		fishingPass.setTip("<html>This can be obtained during the quest.<br>If you lose this you can get another from Vestri.</html>");
+		fishingPass.setTooltip("<html>This can be obtained during the quest.<br>If you lose this you can get another from Vestri.</html>");
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
-		garlic.setTip("This can be obtained during the quest.");
+		garlic.setTooltip("This can be obtained during the quest.");
 		garlic.setHighlightInInventory(true);
 		fishingRod = new ItemRequirement("Fishing Rod", ItemID.FISHING_ROD);
-		fishingRod.setTip("This can be obtained during the quest.");
+		fishingRod.setTooltip("This can be obtained during the quest.");
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		redVineWorm = new ItemRequirement("Red Vine Worm", ItemID.RED_VINE_WORM, 1);
-		redVineWorm.setTip("This can be obtained during the quest.");
+		redVineWorm.setTooltip("This can be obtained during the quest.");
 		food = new ItemRequirement("Food for low levels", ItemCollections.getGoodEatingFood(), -1);
 		winningFish = new ItemRequirement("Raw Giant Carp", ItemID.RAW_GIANT_CARP);
 		winningFish.setHighlightInInventory(true);
 		trophy = new ItemRequirement("Fishing Trophy", ItemID.FISHING_TROPHY);
 		trophy.setHighlightInInventory(true);
-		trophy.setTip("You can get another from Bonzo in Hemenster if you lost this.");
+		trophy.setTooltip("You can get another from Bonzo in Hemenster if you lost this.");
 
 		// Recommended
 		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.getCombatBracelets());
 		combatBracelet.setHighlightInInventory(true);
-		combatBracelet.setTip("Highly recommended!");
+		combatBracelet.setTooltip("Highly recommended!");
 		camelotTeleport = new ItemRequirement("Camelot Teleport", ItemID.CAMELOT_TELEPORT);
 		fairyRingAccess = new QuestRequirement(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS,
 			"Fairy ring access");
-		fairyRingAccess.setTip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
+		fairyRingAccess.setTooltip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
 	}
 
 	public void setupSteps()

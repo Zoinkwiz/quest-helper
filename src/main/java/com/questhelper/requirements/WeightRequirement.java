@@ -24,13 +24,13 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 
 /**
  * Checks if the player meets a weight check
  */
-public class WeightRequirement extends Requirement
+public class WeightRequirement extends AbstractRequirement
 {
 	private final int weight;
 	private final String text;

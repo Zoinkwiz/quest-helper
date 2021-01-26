@@ -27,19 +27,19 @@ package com.questhelper.quests.monkeymadnessi;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,7 +57,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -235,7 +235,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		royalSeal = new ItemRequirement("Gnome royal seal", ItemID.GNOME_ROYAL_SEAL);
-		royalSeal.setTip("You can get another from King Narnode");
+		royalSeal.setTooltip("You can get another from King Narnode");
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 
@@ -254,7 +254,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		monkeyBonesOrCorpseHighlight.addAlternates(ItemID.MONKEY_CORPSE);
 
 		narnodesOrders = new ItemRequirement("Narnode's orders", ItemID.NARNODES_ORDERS);
-		narnodesOrders.setTip("You can get another from King Narnode");
+		narnodesOrders.setTooltip("You can get another from King Narnode");
 
 		monkeyDentures = new ItemRequirement("Monkey dentures", ItemID.MONKEY_DENTURES);
 		monkeyDenturesHighlight = new ItemRequirement("Monkey dentures", ItemID.MONKEY_DENTURES);
@@ -265,11 +265,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		mouldHighlight.setHighlightInInventory(true);
 
 		enchantedBar = new ItemRequirement("Enchanted bar", ItemID.ENCHANTED_BAR);
-		enchantedBar.setTip("If you've lost this you'll need to make another by bringing Zooknock some monkey dentures, an m'amulet mould and a gold bar");
+		enchantedBar.setTooltip("If you've lost this you'll need to make another by bringing Zooknock some monkey dentures, an m'amulet mould and a gold bar");
 
 		enchantedBarHighlight = new ItemRequirement("Enchanted bar", ItemID.ENCHANTED_BAR);
 		enchantedBarHighlight.setHighlightInInventory(true);
-		enchantedBarHighlight.setTip("If you've lost this you'll need to make another by bringing Zooknock some monkey dentures, an m'amulet mould and a gold bar");
+		enchantedBarHighlight.setTooltip("If you've lost this you'll need to make another by bringing Zooknock some monkey dentures, an m'amulet mould and a gold bar");
 
 		unstrungAmuletHighlight = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET_4022);
 		unstrungAmuletHighlight.setHighlightInInventory(true);
@@ -278,13 +278,13 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		amuletWorn = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET, 1, true);
 
 		banana5 = new ItemRequirement("Banana", ItemID.BANANA, 5);
-		banana5.setTip("You can pick some from the trees near the monkey child");
+		banana5.setTooltip("You can pick some from the trees near the monkey child");
 
 		talisman = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
-		talisman.setTip("You can get another from the monkey child");
+		talisman.setTooltip("You can get another from the monkey child");
 		talismanHighlight = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
 		talismanHighlight.setHighlightInInventory(true);
-		talismanHighlight.setTip("You can get another from the monkey child");
+		talismanHighlight.setTooltip("You can get another from the monkey child");
 
 		karamjanGreegree = new ItemRequirement("Karamjan monkey greegree", ItemID.KARAMJAN_MONKEY_GREEGREE);
 		karamjanGreegreeEquipped = new ItemRequirement("Karamjan monkey greegree", ItemID.KARAMJAN_MONKEY_GREEGREE, 1, true);
@@ -292,7 +292,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		monkey = new ItemRequirement("Monkey", ItemID.MONKEY);
 
 		sigilEquipped = new ItemRequirement("10th squad sigil", ItemID._10TH_SQUAD_SIGIL, 1, true);
-		sigilEquipped.setTip("You can get another from Garkor");
+		sigilEquipped.setTooltip("You can get another from Garkor");
 
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

@@ -2,7 +2,7 @@ package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -15,12 +15,12 @@ public class PuzzleStep extends DetailedQuestStep
 	ButtonHighlighCalculator highlightCalculator;
 	private HashSet<WidgetDetails> highlightedButtons = new HashSet<>();
 
-	public PuzzleStep(QuestHelper questHelper, ButtonHighlighCalculator highlightCalculator, Requirement... requirements)
+	public PuzzleStep(QuestHelper questHelper, ButtonHighlighCalculator highlightCalculator, AbstractRequirement... requirements)
 	{
 		this(questHelper, "Click the highlighted buttons to complete the puzzle", highlightCalculator, requirements);
 	}
 
-	public PuzzleStep(QuestHelper questHelper, String text, ButtonHighlighCalculator highlightCalculator, Requirement... requirements)
+	public PuzzleStep(QuestHelper questHelper, String text, ButtonHighlighCalculator highlightCalculator, AbstractRequirement... requirements)
 	{
 		super(questHelper, text, requirements);
 		this.highlightCalculator = highlightCalculator;

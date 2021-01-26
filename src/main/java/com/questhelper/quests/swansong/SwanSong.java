@@ -26,6 +26,7 @@ package com.questhelper.quests.swansong;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -34,15 +35,14 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +59,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SWAN_SONG
@@ -168,7 +168,7 @@ public class SwanSong extends BasicQuestHelper
 		potHiglight = new ItemRequirement("Pot", ItemID.POT);
 		potHiglight.setHighlightInInventory(true);
 		potLidHiglight = new ItemRequirement("Pot lid", ItemID.POT_LID);
-		potLidHiglight.setTip("You can make one from wet clay on a potter's wheel");
+		potLidHiglight.setTooltip("You can make one from wet clay on a potter's wheel");
 		potLidHiglight.setHighlightInInventory(true);
 		ironBar5Higlight = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 5);
 		ironBar5Higlight.setHighlightInInventory(true);
@@ -179,13 +179,13 @@ public class SwanSong extends BasicQuestHelper
 		tinderboxHiglight.setHighlightInInventory(true);
 
 		smallNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET);
-		smallNet.setTip("You can get one from Arnold");
+		smallNet.setTooltip("You can get one from Arnold");
 
 		hammerPanel = new ItemRequirement("Hammer (obtainable in quest)", ItemID.HAMMER);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		hammer.setTip("Franklin will give you one");
+		hammer.setTooltip("Franklin will give you one");
 		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true);
-		brownApron.setTip("Malignius will give you one");
+		brownApron.setTooltip("Malignius will give you one");
 		monkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH_7943, 5);
 		rawMonkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH, 5);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -195,7 +195,7 @@ public class SwanSong extends BasicQuestHelper
 		ironSheet5 = new ItemRequirement("Iron sheet", ItemID.IRON_SHEET, 5);
 
 		boneSeeds = new ItemRequirement("Bone seed", ItemID.BONE_SEEDS);
-		boneSeeds.setTip("You can get more by bringing Malignius another airtight pot");
+		boneSeeds.setTooltip("You can get more by bringing Malignius another airtight pot");
 	}
 
 	public void loadZones()
@@ -319,11 +319,11 @@ public class SwanSong extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHerman, talkToWom), blood5, mist10, lava10));
 		allSteps.add(new PanelDetails("Entering the colony", Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding), combatGear, log, tinderbox, ironBar5, hammerPanel));
-		List<QuestStep> helpingSteps = Arrays.asList(talkToFranklin, useLog, useTinderbox);
+		List<QuestStep> helpingSteps = QuestUtil.toArrayList(talkToFranklin, useLog, useTinderbox);
 		helpingSteps.addAll(repairWall.getDisplaySteps());
 		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, combatGear, log, tinderbox, ironBar5, hammerPanel));
 
-		List<QuestStep> helpingArnoldSteps = Collections.singletonList(talkToArnold);
+		List<QuestStep> helpingArnoldSteps = QuestUtil.toArrayList(talkToArnold);
 		helpingArnoldSteps.addAll(fishAndCookMonkfish.getSteps());
 		helpingArnoldSteps.add(talkToHermanAfterTasks);
 

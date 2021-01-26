@@ -32,13 +32,13 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ChatMessageCondition;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ChatMessageCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -335,7 +335,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		for (int i = 0; i < currentNode.getPaths().length; i++)
 		{
-			if (currentNode.getPaths()[i] != null && !currentNode.getPaths()[i].getWrongWay().checkCondition(client) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
+			if (currentNode.getPaths()[i] != null && !currentNode.getPaths()[i].getWrongWay().check(client) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
 			{
 				nextNodeId = currentNode.getPaths()[i].getIdEnd();
 				newPoints.addAll(currentNode.getPaths()[i].getPath());
@@ -382,7 +382,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	{
 		if (!shouldUsePath1V2)
 		{
-			shouldUsePath1V2 = path1SouthIsWrong.checkCondition(client);
+			shouldUsePath1V2 = path1SouthIsWrong.check(client);
 			if (shouldUsePath1V2)
 			{
 				updateSection1Route();
@@ -390,7 +390,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		if (!shouldUsePath2V2)
 		{
-			shouldUsePath2V2 = path2NorthIsWrong.checkCondition(client);
+			shouldUsePath2V2 = path2NorthIsWrong.check(client);
 			if (shouldUsePath2V2)
 			{
 				updateSection1Route();
@@ -398,7 +398,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		if (!shouldUsePath3V2)
 		{
-			shouldUsePath3V2 = path3SouthIsWrong.checkCondition(client);
+			shouldUsePath3V2 = path3SouthIsWrong.check(client);
 			if (shouldUsePath3V2)
 			{
 				updateSection1Route();
@@ -407,7 +407,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		if (!shouldUsePath4V2)
 		{
-			shouldUsePath4V2 = path4NorthIsWrong.checkCondition(client);
+			shouldUsePath4V2 = path4NorthIsWrong.check(client);
 			if (shouldUsePath4V2)
 			{
 				updateSection2Route();
@@ -416,7 +416,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		if (!shouldntUsePath5V1)
 		{
-			shouldntUsePath5V1 = path5EastIsWrong.checkCondition(client);
+			shouldntUsePath5V1 = path5EastIsWrong.check(client);
 			if (shouldntUsePath5V1)
 			{
 				updateSection2Route();
@@ -425,7 +425,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		if (!shouldntUsePath5V2)
 		{
-			shouldntUsePath5V2 = path5MiddleIsWrong.checkCondition(client);
+			shouldntUsePath5V2 = path5MiddleIsWrong.check(client);
 			if (shouldntUsePath5V2)
 			{
 				updateSection2Route();
@@ -434,7 +434,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		if (!shouldntUsePath5V3)
 		{
-			shouldntUsePath5V3 = path5WestIsWrong.checkCondition(client);
+			shouldntUsePath5V3 = path5WestIsWrong.check(client);
 			if (shouldntUsePath5V1)
 			{
 				updateSection2Route();
@@ -443,7 +443,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		if (!shouldUsePath6V2)
 		{
-			shouldUsePath6V2 = path6WestIsWrong.checkCondition(client);
+			shouldUsePath6V2 = path6WestIsWrong.check(client);
 			if (shouldUsePath6V2)
 			{
 				updateSection3Route();
@@ -457,9 +457,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (inCavesSection4.checkCondition(client))
+		if (inCavesSection4.check(client))
 		{
-			if (openedShortcut.checkCondition(client))
+			if (openedShortcut.check(client))
 			{
 				startUpStep(goToKruk);
 			}
@@ -468,21 +468,21 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 				startUpStep(openShortcut);
 			}
 		}
-		else if (inKrukRoom.checkCondition(client))
+		else if (inKrukRoom.check(client))
 		{
 			startUpStep(fightKruk);
 		}
-		else if (openedShortcut.checkCondition(client))
+		else if (openedShortcut.check(client))
 		{
 			startUpStep(enterShortcut);
 		}
-		else if (inCavesSection3.checkCondition(client))
+		else if (inCavesSection3.check(client))
 		{
 			startUpStep(traverseDungeonThirdSection);
 		}
-		else if (inCavesSection2.checkCondition(client))
+		else if (inCavesSection2.check(client))
 		{
-			if (hasBronzeKey.checkCondition(client))
+			if (hasBronzeKey.check(client))
 			{
 				startUpStep(openBronzeDoor);
 			}
@@ -491,19 +491,19 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 				startUpStep(getKey);
 			}
 		}
-		else if (inFallArea1.checkCondition(client))
+		else if (inFallArea1.check(client))
 		{
 			startUpStep(leaveFallArea1);
 		}
-		else if (inFallArea2.checkCondition(client))
+		else if (inFallArea2.check(client))
 		{
 			startUpStep(leaveFallArea2);
 		}
-		else if (inFallArea3.checkCondition(client))
+		else if (inFallArea3.check(client))
 		{
 			startUpStep(leaveFallArea3);
 		}
-		else if (inFallArea4.checkCondition(client))
+		else if (inFallArea4.check(client))
 		{
 			startUpStep(leaveFallArea4);
 		}

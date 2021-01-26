@@ -24,7 +24,7 @@
  */
 package com.questhelper.steps;
 
-import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.AbstractRequirement;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ItemID;
@@ -37,7 +37,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class DigStep extends DetailedQuestStep
 {
-	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
+	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, AbstractRequirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
 		this.requirements.add(new ItemRequirement("Spade", ItemID.SPADE));

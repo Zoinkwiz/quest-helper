@@ -29,10 +29,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,7 +53,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_HAND_IN_THE_SAND
@@ -124,7 +124,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	{
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		bottledWater = new ItemRequirement("Bottled water", ItemID.BOTTLED_WATER);
-		bottledWater.setTip("You can get another from Betty");
+		bottledWater.setTooltip("You can get another from Betty");
 		bottledWater.setHighlightInInventory(true);
 
 		redberries = new ItemRequirement("Redberries", ItemID.REDBERRIES);
@@ -137,10 +137,10 @@ public class TheHandInTheSand extends BasicQuestHelper
 		pinkDye = new ItemRequirement("Pink dye", ItemID.PINK_DYE);
 		pinkDye.setHighlightInInventory(true);
 		truthSerum = new ItemRequirement("Truth serum", ItemID.TRUTH_SERUM);
-		truthSerum.setTip("You can get another from Betty in Port Sarim");
+		truthSerum.setTooltip("You can get another from Betty in Port Sarim");
 
 		truthSerumHighlight = new ItemRequirement("Truth serum", ItemID.TRUTH_SERUM);
-		truthSerumHighlight.setTip("You can get another from Betty in Port Sarim");
+		truthSerumHighlight.setTooltip("You can get another from Betty in Port Sarim");
 		truthSerumHighlight.setHighlightInInventory(true);
 
 		lanternLens = new ItemRequirement("Lantern lens", ItemID.LANTERN_LENS);
@@ -148,29 +148,29 @@ public class TheHandInTheSand extends BasicQuestHelper
 		roseLens = new ItemRequirement("Rose-tinted lens", ItemID.ROSE_TINTED_LENS);
 		roseLens.setHighlightInInventory(true);
 		hand = new ItemRequirement("Sandy hand", ItemID.SANDY_HAND);
-		hand.setTip("You can get another from Bert");
+		hand.setTooltip("You can get another from Bert");
 		beerHand = new ItemRequirement("Beer soaked hand", ItemID.BEER_SOAKED_HAND);
-		beerHand.setTip("You can get another from Bert");
+		beerHand.setTooltip("You can get another from Bert");
 		bertsRota = new ItemRequirement("Bert's rota", ItemID.BERTS_ROTA);
-		bertsRota.setTip("You can get another from Bert");
+		bertsRota.setTooltip("You can get another from Bert");
 		sandysRota = new ItemRequirement("Sandy's rota", ItemID.SANDYS_ROTA);
-		sandysRota.setTip("You can get another by searching Sandy's desk");
+		sandysRota.setTooltip("You can get another by searching Sandy's desk");
 
 		magicalOrb = new ItemRequirement("Magical orb", ItemID.MAGICAL_ORB);
-		magicalOrb.setTip("You can get another from Zavistic Rarve in Yanille");
+		magicalOrb.setTooltip("You can get another from Zavistic Rarve in Yanille");
 		magicalOrb.setHighlightInInventory(true);
 
 		activatedOrb = new ItemRequirement("Magical orb", ItemID.MAGICAL_ORB_A);
-		activatedOrb.setTip("You can get another from Zavistic Rarve in Yanille");
+		activatedOrb.setTooltip("You can get another from Zavistic Rarve in Yanille");
 
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 		vial2 = new ItemRequirement("Vial", ItemID.VIAL, 2);
 
 		magicScroll = new ItemRequirement("A magic scroll", ItemID.A_MAGIC_SCROLL);
-		magicScroll.setTip("You can get another from Bert");
+		magicScroll.setTooltip("You can get another from Bert");
 
 		sand = new ItemRequirement("Sand", ItemID.SAND);
-		sand.setTip("You can get more by pickpocketing Sandy in Brimhaven");
+		sand.setTooltip("You can get more by pickpocketing Sandy in Brimhaven");
 
 		beerOr2Coins = new ItemRequirement("Beer or 2 gp", ItemID.BEER);
 		earthRunes5 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 5);
@@ -179,7 +179,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		bucketOfSand = new ItemRequirement("Bucket of sand", ItemID.BUCKET_OF_SAND);
 
 		wizardsHead = new ItemRequirement("Wizard's head", ItemID.WIZARDS_HEAD);
-		wizardsHead.setTip("You can get another from Mazion on Entrana");
+		wizardsHead.setTooltip("You can get another from Mazion on Entrana");
 
 		teleportsToBrimhaven = new ItemRequirement("Teleports to Brimhaven, or to near a boat to Brimhaven",
 			ItemID.BRIMHAVEN_TELEPORT, 2);

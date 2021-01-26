@@ -24,24 +24,27 @@
  */
 package com.questhelper.requirements;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import javax.annotation.Nullable;
 import net.runelite.api.Client;
 
-@AllArgsConstructor
-@Getter
-public enum Spellbook
+public abstract class AbstractRequirement implements Requirement
 {
-	NORMAL(0, "Normal"),
-	ANCIENT(1, "Ancient"),
-	LUNAR(2, "Lunar"),
-	ARCEUUS(3, "Arceuus");
+	private String tooltip;
 
-	private final int id;
-	private final String name;
+	abstract public boolean check(Client client);
 
-	public boolean check(Client client, int varbit)
+	abstract public String getDisplayText();
+
+	@Nullable
+	@Override
+	public String getTooltip()
 	{
-		return client.getVarbitValue(varbit) == this.getId();
+		return tooltip;
+	}
+
+	@Override
+	public void setTooltip(String tooltip)
+	{
+		this.tooltip = tooltip;
 	}
 }

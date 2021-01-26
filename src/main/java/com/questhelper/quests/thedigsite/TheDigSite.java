@@ -29,13 +29,13 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,7 +57,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -201,7 +201,7 @@ public class TheDigSite extends BasicQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 		opal = new ItemRequirement("Opal", ItemID.OPAL);
-		opal.setTip("You can get one by panning at the Digsite");
+		opal.setTooltip("You can get one by panning at the Digsite");
 		opal.addAlternates(ItemID.UNCUT_OPAL);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		leatherBoots = new ItemRequirement("Leather boots", ItemID.LEATHER_BOOTS, 1, true);
@@ -211,15 +211,15 @@ public class TheDigSite extends BasicQuestHelper
 		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY);
 		panningTray.addAlternates(ItemID.PANNING_TRAY_678, ItemID.PANNING_TRAY_679);
 		trowel = new ItemRequirement("Trowel", ItemID.TROWEL);
-		trowel.setTip("You can get another from one of the Examiners");
+		trowel.setTooltip("You can get another from one of the Examiners");
 		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL);
 		trowelHighlighted.setHighlightInInventory(true);
-		trowelHighlighted.setTip("You can get another from one of the Examiners");
+		trowelHighlighted.setTooltip("You can get another from one of the Examiners");
 		pick = new ItemRequirement("Rock pick", ItemID.ROCK_PICK);
 		varrock2 = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
 		digsiteTeleports = new ItemRequirement("Digsite teleports", ItemID.DIGSITE_TELEPORT, 2);
 		sealedLetter = new ItemRequirement("Sealed letter", ItemID.SEALED_LETTER);
-		sealedLetter.setTip("You can get another from Curator Haig in the Varrock Museum");
+		sealedLetter.setTooltip("You can get another from Curator Haig in the Varrock Museum");
 		specialCup = new ItemRequirement("Special cup", ItemID.SPECIAL_CUP);
 		teddybear = new ItemRequirement("Teddy", ItemID.TEDDY);
 		skull = new ItemRequirement("Animal skull", ItemID.ANIMAL_SKULL);
@@ -231,10 +231,10 @@ public class TheDigSite extends BasicQuestHelper
 		chemicalCompoundHighlighted = new ItemRequirement("Chemical compound", ItemID.CHEMICAL_COMPOUND);
 		chemicalCompoundHighlighted.setHighlightInInventory(true);
 		groundCharcoal = new ItemRequirement("Ground charcoal", ItemID.GROUND_CHARCOAL);
-		groundCharcoal.setTip("You can make this by use a pestle and mortar on some charcoal. You can get charcoal from one of the specimen trays in the Digsite");
+		groundCharcoal.setTooltip("You can make this by use a pestle and mortar on some charcoal. You can get charcoal from one of the specimen trays in the Digsite");
 		groundCharcoal.setHighlightInInventory(true);
 		invitation = new ItemRequirement("Invitation letter", ItemID.INVITATION_LETTER);
-		invitation.setTip("You can get another from the Archaeological expert");
+		invitation.setTooltip("You can get another from the Archaeological expert");
 		invitation.setHighlightInInventory(true);
 		talisman = new ItemRequirement("Ancient talisman", ItemID.ANCIENT_TALISMAN);
 		mixedChemicals = new ItemRequirement("Mixed chemicals", ItemID.MIXED_CHEMICALS);
@@ -253,7 +253,7 @@ public class TheDigSite extends BasicQuestHelper
 		key = new ItemRequirement("Chest key", ItemID.CHEST_KEY_709);
 		key.setHighlightInInventory(true);
 		unstampedLetter = new ItemRequirement("Unstamped letter", ItemID.UNSTAMPED_LETTER);
-		unstampedLetter.setTip("You can get another from the Exam Centre's examiners");
+		unstampedLetter.setTooltip("You can get another from the Exam Centre's examiners");
 	}
 
 	public void loadZones()

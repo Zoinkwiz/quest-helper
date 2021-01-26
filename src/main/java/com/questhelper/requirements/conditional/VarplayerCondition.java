@@ -22,23 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.util.function.BiFunction;
+import com.questhelper.requirements.util.Operation;
+import java.math.BigInteger;
+import net.runelite.api.Client;
 
-public enum Operation
+public class VarplayerCondition extends ConditionForStep
 {
-	LESS_EQUAL((x,y) -> x <= y),
-	EQUAL(Integer::equals),
-	GREATER_EQUAL((x,y) -> x >= y),
-	NOT_EQUAL((x,y) -> !x.equals(y));
 
-	private final BiFunction<Integer, Integer, Boolean> operation;
-	Operation(BiFunction<Integer, Integer, Boolean> operation) {
-		this.operation = operation;
+	private final int varplayerId;
+	private final int value;
+	private final Operation operation;
+
+	private final int bitPosition;
+	private final boolean bitIsSet;
+
+	public VarplayerCondition(int varplayerId, int value)
+	{
+		this.varplayerId = varplayerId;
+		this.value = value;
+		this.operation = Operation.EQUAL;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
 	}
 
-	public boolean check(int numberToCheck, int numberToCheckAgainst) {
-		return operation.apply(numberToCheck, numberToCheckAgainst);
+	public VarplayerCondition(int varplayerId, int value, Operation operation)
+	{
+		this.varplayerId = varplayerId;
+		this.value = value;
+		this.operation = operation;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+	}
+
+	public VarplayerCondition(int varplayerId, boolean bitIsSet, int bitPosition)
+	{
+		this.varplayerId = varplayerId;
+		this.value = -1;
+		this.operation = Operation.EQUAL;
+
+		this.bitPosition = bitPosition;
+		this.bitIsSet = bitIsSet;
+	}
+
+	@Override
+	public boolean check(Client client)
+	{
+		if (bitPosition >= 0)
+		{
+			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
+		}
+		return operation.check(client.getVarpValue(varplayerId), value);
 	}
 }

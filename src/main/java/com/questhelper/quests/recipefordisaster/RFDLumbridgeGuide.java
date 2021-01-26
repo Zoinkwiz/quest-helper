@@ -30,18 +30,18 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -106,13 +106,13 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		tinHighlighted = new ItemRequirement("Cake tin", ItemID.CAKE_TIN);
 		tinHighlighted.setHighlightInInventory(true);
 		enchantedEgg = new ItemRequirement("Enchanted egg", ItemID.ENCHANTED_EGG);
-		enchantedEgg.setTip("You can get another from Traiborn if you've lost it");
+		enchantedEgg.setTooltip("You can get another from Traiborn if you've lost it");
 
 		enchantedFlour = new ItemRequirement("Enchanted flour", ItemID.ENCHANTED_FLOUR);
-		enchantedFlour.setTip("You can get another from Traiborn if you've lost it");
+		enchantedFlour.setTooltip("You can get another from Traiborn if you've lost it");
 
 		enchantedMilk = new ItemRequirement("Enchanted milk", ItemID.ENCHANTED_MILK);
-		enchantedMilk.setTip("You can get another from Traiborn if you've lost it");
+		enchantedMilk.setTooltip("You can get another from Traiborn if you've lost it");
 		enchantedMilk.setHighlightInInventory(true);
 
 		rawGuidanceCake = new ItemRequirement("Raw guide cake", ItemID.RAW_GUIDE_CAKE);

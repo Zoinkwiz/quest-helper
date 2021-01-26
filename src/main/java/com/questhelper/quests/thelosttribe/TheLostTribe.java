@@ -26,18 +26,18 @@ package com.questhelper.quests.thelosttribe;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcEmoteStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +57,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_LOST_TRIBE
@@ -138,10 +138,10 @@ public class TheLostTribe extends BasicQuestHelper
 		book.setHighlightInInventory(true);
 		key = new ItemRequirement("Key", ItemID.KEY_5010);
 		silverware = new ItemRequirement("Silverware", ItemID.SILVERWARE);
-		silverware.setTip("You can get another from the crate in the entrance of the H.A.M. hideout");
+		silverware.setTooltip("You can get another from the crate in the entrance of the H.A.M. hideout");
 
 		treaty = new ItemRequirement("Peace treaty", ItemID.PEACE_TREATY);
-		treaty.setTip("You can get another from Duke Horacio");
+		treaty.setTooltip("You can get another from Duke Horacio");
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);

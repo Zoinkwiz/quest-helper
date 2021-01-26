@@ -32,10 +32,10 @@ import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TROLL_ROMANCE
@@ -149,15 +149,15 @@ public class TrollRomance extends BasicQuestHelper
 		wax = new ItemRequirement("Wax", ItemID.WAX);
 		wax.setHighlightInInventory(true);
 		sled = new ItemRequirement("Sled", ItemID.SLED);
-		sled.setTip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar");
+		sled.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar");
 		sled.setHighlightInInventory(true);
 		waxedSled = new ItemRequirement("Sled", ItemID.SLED_4084);
-		waxedSled.setTip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
+		waxedSled.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
 		sledEquipped = new ItemRequirement("Sled", ItemID.SLED_4084, 1, true);
 		sledEquipped.setHighlightInInventory(true);
-		sledEquipped.setTip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
+		sledEquipped.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
 		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLWEISS);
-		trollweissFlowers.setTip("You can get another from the Trollweiss mountain");
+		trollweissFlowers.setTooltip("You can get another from the Trollweiss mountain");
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}

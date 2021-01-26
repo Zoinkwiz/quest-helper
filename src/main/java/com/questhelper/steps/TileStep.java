@@ -1,6 +1,6 @@
 package com.questhelper.steps;
 
-import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.AbstractRequirement;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import net.runelite.api.Perspective;
@@ -15,7 +15,7 @@ public class TileStep extends DetailedQuestStep
 {
 	private final WorldPoint worldPoint;
 
-	public TileStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
+	public TileStep(QuestHelper questHelper, WorldPoint worldPoint, String text, AbstractRequirement... requirements)
 	{
 		super(questHelper, text, requirements);
 		this.worldPoint = worldPoint;

@@ -26,22 +26,22 @@ package com.questhelper.quests.inaidofthemyreque;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.Spellbook;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.InInstanceCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.InInstanceCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,7 +55,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -287,11 +287,11 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		nails24 = new ItemRequirement("Nails", ItemCollections.getNails(), 24);
 
 		crate = new ItemRequirement("Crate", ItemID.CRATE);
-		crate.setTip("You can get another by asking Aurel what you should do now");
+		crate.setTooltip("You can get another by asking Aurel what you should do now");
 
 		templeLibraryKey = new ItemRequirement("Temple library key", ItemID.TEMPLE_LIBRARY_KEY);
 		templeLibraryKey.setHighlightInInventory(true);
-		templeLibraryKey.setTip("You can get another from Drezel");
+		templeLibraryKey.setTooltip("You can get another from Drezel");
 
 		sleepingSeven = new ItemRequirement("The sleeping seven", ItemID.THE_SLEEPING_SEVEN);
 		sleepingSeven.setHighlightInInventory(true);

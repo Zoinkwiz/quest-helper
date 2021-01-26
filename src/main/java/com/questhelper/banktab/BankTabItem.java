@@ -68,6 +68,6 @@ public class BankTabItem
 
 	public BankTabItem(ItemRequirement item)
 	{
-		this(item.getQuantity(), item.getName(), item.getId(), item.getTip(), item.getDisplayItemId());
+		this(item.getQuantity(), item.getName(), item.getId(), item.getTooltip(), item.getDisplayItemId());
 	}
 }

@@ -29,15 +29,15 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.FavourRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -132,7 +132,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public void setupItemRequirements() {
 		stew = new ItemRequirement("Stew", ItemID.STEW);
 		hughesLetter = new ItemRequirement("Letter", ItemID.LETTER_21774);
-		hughesLetter.setTip("You can get another letter by searching the chest upstairs in Hughes' house in Kingstown.");
+		hughesLetter.setTooltip("You can get another letter by searching the chest upstairs in Hughes' house in Kingstown.");
 	}
 
 	public void loadZones() {

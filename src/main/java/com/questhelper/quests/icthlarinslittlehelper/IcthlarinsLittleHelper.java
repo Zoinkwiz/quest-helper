@@ -35,13 +35,13 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetModelCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetModelCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,7 +61,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ICTHLARINS_LITTLE_HELPER
@@ -224,7 +224,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS);
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
-		bucketOfSap.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
+		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -234,7 +234,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		sphinxsToken = new ItemRequirement("Sphinx's token", ItemID.SPHINXS_TOKEN);
-		sphinxsToken.setTip("You can get another from the Sphinx");
+		sphinxsToken.setTooltip("You can get another from the Sphinx");
 		jar = new ItemRequirement("Canopic jar", ItemID.CANOPIC_JAR);
 		jar.addAlternates(ItemID.CANOPIC_JAR_4679, ItemID.CANOPIC_JAR_4680, ItemID.CANOPIC_JAR_4681);
 		jar.setHighlightInInventory(true);
@@ -242,7 +242,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		linen = new ItemRequirement("Linen", ItemID.LINEN);
 
 		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL_4682);
-		holySymbol.setTip("You can get another from the Carpenter in Sophenham");
+		holySymbol.setTooltip("You can get another from the Carpenter in Sophenham");
 
 		unholySymbol = new ItemRequirement("Unholy symbol", ItemID.UNHOLY_SYMBOL_4683);
 		unholySymbol.setHighlightInInventory(true);

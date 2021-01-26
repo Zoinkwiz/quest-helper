@@ -28,12 +28,13 @@ package com.questhelper.quests.gettingahead;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,7 +165,7 @@ public class GettingAhead extends BasicQuestHelper
 
 		//Required
 		bearFur = new ItemRequirement("Bear Fur", ItemID.BEAR_FUR);
-		bearFur.setTip("You can kill a bear west of the farm for some fur");
+		bearFur.setTooltip("You can kill a bear west of the farm for some fur");
 		bearFur.setHighlightInInventory(true);
 		softClay = new ItemRequirement("Soft Clay", ItemID.SOFT_CLAY, 1);
 		softClay.setHighlightInInventory(true);
@@ -191,15 +192,15 @@ public class GettingAhead extends BasicQuestHelper
 
 		//Making the fake head
 		clayHead = new ItemRequirement("Clay Head", ItemID.CLAY_HEAD);
-		clayHead.setTip("You can make another by using a knife on some soft clay");
+		clayHead.setTooltip("You can make another by using a knife on some soft clay");
 
 		clayHeadHighlighted = new ItemRequirement("Clay Head", ItemID.CLAY_HEAD);
-		clayHeadHighlighted.setTip("You can make another by using a knife on some soft clay");
+		clayHeadHighlighted.setTooltip("You can make another by using a knife on some soft clay");
 		clayHeadHighlighted.setHighlightInInventory(true);
 		furHead = new ItemRequirement("Fur Head", ItemID.FUR_HEAD);
-		furHead.setTip("You can make another by using a knife on soft clay, then adding bear fur");
+		furHead.setTooltip("You can make another by using a knife on soft clay, then adding bear fur");
 		furHeadHighlighted = new ItemRequirement("Fur Head", ItemID.FUR_HEAD);
-		furHeadHighlighted.setTip("You can make another by using a knife on soft clay, then adding bear fur");
+		furHeadHighlighted.setTooltip("You can make another by using a knife on soft clay, then adding bear fur");
 		furHeadHighlighted.setHighlightInInventory(true);
 		bloodyHead = new ItemRequirement("Bloody Head", ItemID.BLOODY_HEAD);
 	}

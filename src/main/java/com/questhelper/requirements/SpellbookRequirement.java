@@ -24,9 +24,10 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.requirements.util.Spellbook;
 import net.runelite.api.Client;
 
-public class SpellbookRequirement extends Requirement
+public class SpellbookRequirement extends AbstractRequirement
 {
 	private static final int SPELLBOOK_VARBIT = 4070;
 	private final Spellbook spellBook;

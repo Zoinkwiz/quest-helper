@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
 
-public enum LogicType
+public class WidgetModelCondition extends ConditionForStep
 {
-	/** Returns true only if all inputs match the supplied predicate. */
-	AND(Stream::allMatch),
-	/** Returns true if any inputs match the supplied predicate. */
-	OR(Stream::anyMatch),
-	/** The output is false is all inputs match the supplied predicate. Otherwise returns true. */
-	NAND((s,p) -> !s.allMatch(p)),
-	/** Returns true if all elements do not match the supplied predicate. */
-	NOR(Stream::noneMatch),
-	/** Returns true if either, but not both, inputs match the given predicate.
-	 * This only tests the first two elements of the stream.
-	 */
-	XOR((s,p) -> s.filter(e -> p.test(e)).limit(2).count() == 1),
-	;
+	@Getter
+	private final int groupId;
 
-	private final BiFunction<Stream, Predicate, Boolean> function;
-	LogicType(BiFunction<Stream, Predicate, Boolean> func)
+	private final int childId;
+	private final int id;
+	private int childChildId = -1;
+
+	public WidgetModelCondition(int groupId, int childId, int childChildId, int id)
 	{
-		this.function = func;
+		this.groupId = groupId;
+		this.childId = childId;
+		this.childChildId = childChildId;
+		this.id = id;
 	}
 
-	public <T> boolean test(Stream<T> stream, Predicate<T> predicate)
+	public WidgetModelCondition(int groupId, int childId, int id)
 	{
-		return function.apply(stream, predicate);
+		this.groupId = groupId;
+		this.childId = childId;
+		this.id = id;
+	}
+
+	@Override
+	public boolean check(Client client)
+	{
+		if (onlyNeedToPassOnce && hasPassed)
+		{
+			return true;
+		}
+		return checkWidget(client);
+	}
+
+	public boolean checkWidget(Client client)
+	{
+		Widget widget = client.getWidget(groupId, childId);
+		if (widget == null)
+		{
+			return false;
+		}
+		if (childChildId != -1)
+		{
+			widget = widget.getChild(childChildId);
+		}
+		if (widget != null)
+		{
+			return widget.getModelId() == id;
+		}
+		return false;
+	}
+
+	public void checkWidgetText(Client client)
+	{
+		hasPassed = hasPassed || checkWidget(client);
 	}
 }
+

@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +58,7 @@ public class PanelDetails
 	public PanelDetails(String header, QuestStep... steps)
 	{
 		this.header = header;
-		this.steps = Arrays.asList(steps);
+		this.steps = QuestUtil.toArrayList(steps);
 		this.requirements = new ArrayList<>();
 	}
 

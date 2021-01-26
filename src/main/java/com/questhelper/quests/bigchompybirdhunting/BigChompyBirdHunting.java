@@ -32,13 +32,13 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.NpcHintArrowCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.NpcHintArrowCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,7 +57,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -165,7 +165,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.setHighlightInInventory(true);
 		wolfBones4 = new ItemRequirement("Wolf bones", ItemID.WOLF_BONES, 4);
-		wolfBones4.setTip("You can kill wolves (level 64) around Feldip for bones");
+		wolfBones4.setTooltip("You can kill wolves (level 64) around Feldip for bones");
 		acheyLogs = new ItemRequirement("Achey tree logs", ItemID.ACHEY_TREE_LOGS);
 		acheyLogs.setHighlightInInventory(true);
 
@@ -194,7 +194,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		ogreBowInventory = new ItemRequirement("Ogre bow", ItemID.OGRE_BOW);
 
 		emptyBellow = new ItemRequirement("Ogre bellows (empty)", ItemID.OGRE_BELLOWS);
-		emptyBellow.setTip("You can get more from the chest in Rantz's cave");
+		emptyBellow.setTooltip("You can get more from the chest in Rantz's cave");
 		emptyBellow.setHighlightInInventory(true);
 		fullBellow = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS_1);
 		fullBellow.addAlternates(ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);

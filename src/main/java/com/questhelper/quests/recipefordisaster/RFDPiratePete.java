@@ -31,10 +31,10 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.Requirements;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.WeightRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -42,13 +42,13 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -167,7 +167,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE);
 		knifeHighlighted.setHighlightInInventory(true);
 		breadHighlighted = new ItemRequirement("Bread", ItemID.BREAD);
-		breadHighlighted.setTip("You can make this by using a knife on bread");
+		breadHighlighted.setTooltip("You can make this by using a knife on bread");
 		breadHighlighted.setHighlightInInventory(true);
 		divingAparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS, 1, true);
 		divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET, 1, true);
@@ -188,14 +188,14 @@ public class RFDPiratePete extends BasicQuestHelper
 		crabMeatHighlighted.addAlternates(ItemID.CRAB_MEAT_7519);
 		crabMeatHighlighted.setHighlightInInventory(true);
 		groundCrabMeatHighlighted = new ItemRequirement("Ground kelp", ItemID.GROUND_CRAB_MEAT);
-		groundCrabMeatHighlighted.setTip("You will need to kill another underwater crab and grind its meat");
+		groundCrabMeatHighlighted.setTooltip("You will need to kill another underwater crab and grind its meat");
 		groundCrabMeatHighlighted.setHighlightInInventory(true);
 		groundKelpHighlighted = new ItemRequirement("Ground kelp", ItemID.GROUND_KELP);
-		groundKelpHighlighted.setTip("You will need to go underwater with Murphy and pick more kelp to grind");
+		groundKelpHighlighted.setTooltip("You will need to go underwater with Murphy and pick more kelp to grind");
 		groundKelpHighlighted.setHighlightInInventory(true);
 		rawFishCake = new ItemRequirement("Raw fishcake", ItemID.RAW_FISHCAKE);
 		groundCod = new ItemRequirement("Ground cod", ItemID.GROUND_COD);
-		groundCod.setTip("You can make this by use a pestle and mortar on a raw cod");
+		groundCod.setTooltip("You can make this by use a pestle and mortar on a raw cod");
 		breadcrumbs = new ItemRequirement("Breadcrumbs", ItemID.BREADCRUMBS);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -236,7 +236,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
 		if (client.getAccountType().isIronman())
 		{
-			generalReqs.add(new Requirements(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
+			generalReqs.add(new ComplexRequirement(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
 				new SkillRequirement(Skill.CRAFTING, 42, true),
 				new QuestRequirement(QuestHelperQuest.RUM_DEAL, QuestState.IN_PROGRESS)));
 		}

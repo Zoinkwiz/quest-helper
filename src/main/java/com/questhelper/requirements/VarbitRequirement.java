@@ -1,6 +1,6 @@
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -11,7 +11,7 @@ import net.runelite.api.Varbits;
  * {@link Operation}
  */
 @Getter
-public class VarbitRequirement extends Requirement
+public class VarbitRequirement extends AbstractRequirement
 {
 	private final int varbitID;
 	private final int requiredValue;

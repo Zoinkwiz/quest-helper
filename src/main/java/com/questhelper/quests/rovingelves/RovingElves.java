@@ -26,18 +26,18 @@ package com.questhelper.quests.rovingelves;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,7 +57,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ROVING_ELVES
@@ -119,16 +119,16 @@ public class RovingElves extends BasicQuestHelper
 	{
 		seed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED);
 		blessedSeed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED_4206);
-		blessedSeed.setTip("You can get another from Eluned");
+		blessedSeed.setTooltip("You can get another from Eluned");
 
 		blessedSeedHighlight = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED_4206);
-		blessedSeedHighlight.setTip("You can get another from Eluned");
+		blessedSeedHighlight.setTooltip("You can get another from Eluned");
 		blessedSeedHighlight.setHighlightInInventory(true);
 
 		glarialsPebble = new ItemRequirement("Glarial's pebble", ItemID.GLARIALS_PEBBLE);
-		glarialsPebble.setTip("You can get another from Golrie under Tree Gnome Village");
+		glarialsPebble.setTooltip("You can get another from Golrie under Tree Gnome Village");
 		key = new ItemRequirement("Key", ItemID.KEY_298);
-		key.setTip("You can get another from inside Baxtorian Falls");
+		key.setTooltip("You can get another from inside Baxtorian Falls");
 
 		keyHint = new ItemRequirement("Key (obtainable in quest)", ItemID.KEY_293);
 

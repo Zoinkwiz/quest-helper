@@ -26,15 +26,15 @@ package com.questhelper.quests.architecturalalliance;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.Requirements;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,7 +48,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ARCHITECTURAL_ALLIANCE
@@ -130,7 +130,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));
 		req.add(new SkillRequirement(Skill.MINING, 42));
-		req.add(new Requirements(LogicType.OR, "10 Slayer, or started Plague City for" +
+		req.add(new ComplexRequirement(LogicType.OR, "10 Slayer, or started Plague City for" +
 			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
 			new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;

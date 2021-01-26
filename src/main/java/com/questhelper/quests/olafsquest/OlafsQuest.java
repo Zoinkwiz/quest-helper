@@ -27,8 +27,8 @@ package com.questhelper.quests.olafsquest;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -36,14 +36,14 @@ import com.questhelper.steps.DigStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.WidgetStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetModelCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetModelCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -63,7 +63,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.OLAFS_QUEST
@@ -157,9 +157,9 @@ public class OlafsQuest extends BasicQuestHelper
 		windsweptLogs = new ItemRequirement("Windswept logs", ItemID.WINDSWEPT_LOGS);
 
 		crudeCarving = new ItemRequirement("Crude carving", ItemID.CRUDE_CARVING);
-		crudeCarving.setTip("You can get another from Olaf");
+		crudeCarving.setTooltip("You can get another from Olaf");
 		cruderCarving = new ItemRequirement("Cruder carving", ItemID.CRUDER_CARVING);
-		cruderCarving.setTip("You can get another from Olaf");
+		cruderCarving.setTooltip("You can get another from Olaf");
 
 		key = new ItemRequirement("Key", ItemID.KEY_11039);
 		key.addAlternates(ItemID.KEY_11040, ItemID.KEY_11041, ItemID.KEY_11042, ItemID.KEY_11043);

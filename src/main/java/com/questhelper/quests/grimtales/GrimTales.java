@@ -35,12 +35,12 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.WidgetStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetModelCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetModelCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,7 +61,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.GRIM_TALES
@@ -194,17 +194,17 @@ public class GrimTales extends BasicQuestHelper
 		goldenGoblin = new ItemRequirement("Golden goblin", ItemID.GOLDEN_GOBLIN);
 		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
 		ogleroot = new ItemRequirement("Shrunk ogleroot", ItemID.SHRUNK_OGLEROOT);
-		ogleroot.setTip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
+		ogleroot.setTooltip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
 
 		oglerootHighlight = new ItemRequirement("Shrunk ogleroot", ItemID.SHRUNK_OGLEROOT);
-		oglerootHighlight.setTip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
+		oglerootHighlight.setTooltip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
 		oglerootHighlight.setHighlightInInventory(true);
 		shrinkPotion = new ItemRequirement("Shrink-me-quick", ItemID.SHRINKMEQUICK);
 		shrinkPotionHighlight = new ItemRequirement("Shrink-me-quick", ItemID.SHRINKMEQUICK);
 		shrinkPotionHighlight.setHighlightInInventory(true);
 
 		magicBeans = new ItemRequirement("Magic beans", ItemID.MAGIC_BEANS);
-		magicBeans.setTip("You can get more from Sylas in Taverley");
+		magicBeans.setTooltip("You can get more from Sylas in Taverley");
 		magicBeans.setHighlightInInventory(true);
 		canHighlight = new ItemRequirement("Watering can with at least 1 use", ItemID.WATERING_CAN1);
 		canHighlight.addAlternates(ItemID.WATERING_CAN2, ItemID.WATERING_CAN3, ItemID.WATERING_CAN4, ItemID.WATERING_CAN5, ItemID.WATERING_CAN6, ItemID.WATERING_CAN7, ItemID.WATERING_CAN8, ItemID.GRICOLLERS_CAN);

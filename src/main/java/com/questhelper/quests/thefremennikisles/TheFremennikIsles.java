@@ -27,18 +27,18 @@ package com.questhelper.quests.thefremennikisles;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -301,7 +301,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		tuna = new ItemRequirement("Raw tuna", ItemID.RAW_TUNA);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 
-		tuna.setTip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
+		tuna.setTooltip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
 		if (client.getRealSkillLevel(Skill.MINING) >= 55)
 		{
 			ores = new ItemRequirement("Mithril ore", ItemID.MITHRIL_ORE, 6);
@@ -314,7 +314,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		{
 			ores = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 8);
 		}
-		ores.setTip("You can mine some in the underground mine north west of Jatizso.");
+		ores.setTooltip("You can mine some in the underground mine north west of Jatizso.");
 
 		jesterHat = new ItemRequirement("Silly jester hat", ItemID.SILLY_JESTER_HAT, 1, true);
 		jesterTop = new ItemRequirement("Silly jester body", ItemID.SILLY_JESTER_TOP, 1, true);
@@ -329,36 +329,36 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 		if (client.getAccountType().isIronman())
 		{
-			splitLogs8.setTip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-			splitLogs4.setTip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-			yakTop.setTip("Kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			yakBottom.setTip("Kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			roundShield.setTip("Get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
+			splitLogs8.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+			splitLogs4.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+			yakTop.setTooltip("Kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+			yakBottom.setTooltip("Kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+			roundShield.setTooltip("Get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 		}
 		else
 		{
 			if (client.getRealSkillLevel(Skill.WOODCUTTING) >= 56)
 			{
-				splitLogs8.setTip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-				splitLogs4.setTip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				splitLogs8.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				splitLogs4.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
-				splitLogs8.setTip("Buy some from the GE, or get level 56 Woodcutting");
-				splitLogs4.setTip("Buy some from the GE, or get level 56 Woodcutting");
+				splitLogs8.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
+				splitLogs4.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
 			}
 
 			if (client.getRealSkillLevel(Skill.CRAFTING) >= 46)
 			{
-				yakTop.setTip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-				yakBottom.setTip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-				roundShield.setTip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
+				yakTop.setTooltip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				yakBottom.setTooltip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
-				yakBottom.setTip("Buy from the GE, or get 46 crafting");
-				yakTop.setTip("Buy from the GE, or get 46 crafting");
-				roundShield.setTip("Buy from the GE, or get 46 crafting");
+				yakBottom.setTooltip("Buy from the GE, or get 46 crafting");
+				yakTop.setTooltip("Buy from the GE, or get 46 crafting");
+				roundShield.setTooltip("Buy from the GE, or get 46 crafting");
 			}
 		}
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
@@ -366,10 +366,10 @@ public class TheFremennikIsles extends BasicQuestHelper
 		rope4 = new ItemRequirement("Rope", ItemID.ROPE, 4);
 
 		royalDecree = new ItemRequirement("Royal decree", ItemID.ROYAL_DECREE);
-		royalDecree.setTip("You can get another from Gjuki on Jatizso");
+		royalDecree.setTooltip("You can get another from Gjuki on Jatizso");
 
 		head = new ItemRequirement("Decapitated head", ItemID.DECAPITATED_HEAD_10842);
-		head.setTip("You can get another from the corpse of the Ice Troll King");
+		head.setTooltip("You can get another from the corpse of the Ice Troll King");
 	}
 
 	public void loadZones()

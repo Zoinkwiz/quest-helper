@@ -27,20 +27,20 @@ package com.questhelper.quests.deserttreasure;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.Requirements;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DESERT_TREASURE
@@ -214,7 +214,7 @@ public class DesertTreasure extends BasicQuestHelper
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		garlicPowder = new ItemRequirement("Garlic powder", ItemID.GARLIC_POWDER);
 		garlicPowder.setHighlightInInventory(true);
-		garlicPowder.setTip("Use a pestle and mortar on a garlic to make powder");
+		garlicPowder.setTooltip("Use a pestle and mortar on a garlic to make powder");
 		spice = new ItemRequirement("Spice", ItemID.SPICE);
 		spice.setHighlightInInventory(true);
 
@@ -222,10 +222,10 @@ public class DesertTreasure extends BasicQuestHelper
 		cake.setHighlightInInventory(true);
 		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS);
-		spikedBoots.setTip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
+		spikedBoots.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
 
 		spikedBootsEquipped = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS, 1, true);
-		spikedBootsEquipped.setTip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
+		spikedBootsEquipped.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
 
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		faceMask = new ItemRequirement("Facemask, slayer helmet or gas mask", ItemID.FACEMASK, 1, true);
@@ -233,44 +233,44 @@ public class DesertTreasure extends BasicQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		manyLockpicks = new ItemRequirement("Many lockpicks", ItemID.LOCKPICK, -1);
 		etchings = new ItemRequirement("Etchings", ItemID.ETCHINGS);
-		etchings.setTip("You can get another from the Archaeologist in the Bedabin Camp");
+		etchings.setTooltip("You can get another from the Archaeologist in the Bedabin Camp");
 		translation = new ItemRequirement("Translation", ItemID.TRANSLATION);
-		translation.setTip("You can get another from the Archaeological expert in the Exam Centre");
+		translation.setTooltip("You can get another from the Archaeological expert in the Exam Centre");
 
 		warmKey = new ItemRequirement("Warm key", ItemID.WARM_KEY);
 		warmKey.setHighlightInInventory(true);
 
 		smokeDiamond = new ItemRequirement("Smoke diamond", ItemID.SMOKE_DIAMOND);
-		smokeDiamond.setTip("You can get another from the room you killed Fareed in inside the Smoke Dungeon");
+		smokeDiamond.setTooltip("You can get another from the room you killed Fareed in inside the Smoke Dungeon");
 		shadowDiamond = new ItemRequirement("Shadow diamond", ItemID.SHADOW_DIAMOND);
-		shadowDiamond.setTip("You can get another from the east room of the Shadow Dungeon");
+		shadowDiamond.setTooltip("You can get another from the east room of the Shadow Dungeon");
 
 		iceDiamond = new ItemRequirement("Ice diamond", ItemID.ICE_DIAMOND);
-		iceDiamond.setTip("You can get another from the Troll Child north of Trollheim");
+		iceDiamond.setTooltip("You can get another from the Troll Child north of Trollheim");
 		bloodDiamond = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
-		bloodDiamond.setTip("You can get another from Malak in Canifis");
+		bloodDiamond.setTooltip("You can get another from Malak in Canifis");
 
 		smokeDiamondHighlighted = new ItemRequirement("Smoke diamond", ItemID.SMOKE_DIAMOND);
-		smokeDiamondHighlighted.setTip("You can get another from the room you killed Fareed in inside the Smoke Dungeon");
+		smokeDiamondHighlighted.setTooltip("You can get another from the room you killed Fareed in inside the Smoke Dungeon");
 		shadowDiamondHighlighted = new ItemRequirement("Shadow diamond", ItemID.SHADOW_DIAMOND);
-		shadowDiamondHighlighted.setTip("You can get another from the east room of the Shadow Dungeon");
+		shadowDiamondHighlighted.setTooltip("You can get another from the east room of the Shadow Dungeon");
 
 		iceDiamondHighlighted = new ItemRequirement("Ice diamond", ItemID.ICE_DIAMOND);
-		iceDiamondHighlighted.setTip("You can get another from the Troll Child north of Trollheim");
+		iceDiamondHighlighted.setTooltip("You can get another from the Troll Child north of Trollheim");
 		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
-		bloodDiamondHighlighted.setTip("You can get another from Malak in Canifis");
+		bloodDiamondHighlighted.setTooltip("You can get another from Malak in Canifis");
 
 		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true);
-		iceGloves.setTip("You can kill the Ice Queen under White Wolf Mountain for these");
+		iceGloves.setTooltip("You can kill the Ice Queen under White Wolf Mountain for these");
 
 		waterSpellOrMelee = new ItemRequirement("Water spells or melee gear", -1, -1);
 		waterSpellOrMelee.setDisplayItemId(ItemID.WATER_RUNE);
 
 		cross = new ItemRequirement("Gilded cross", ItemID.GILDED_CROSS);
-		cross.setTip("You can get another from the chest in the south of the Bandit Camp");
+		cross.setTooltip("You can get another from the chest in the south of the Bandit Camp");
 
 		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
-		ringOfVisibility.setTip("You can get another from Rasolo south of Baxtorian Falls");
+		ringOfVisibility.setTooltip("You can get another from Rasolo south of Baxtorian Falls");
 
 		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
 
@@ -612,7 +612,7 @@ public class DesertTreasure extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 53));
 		req.add(new SkillRequirement(Skill.MAGIC, 50));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
-		req.add(new Requirements(LogicType.OR, "10 Slayer for face mask, or started Plague City for" +
+		req.add(new ComplexRequirement(LogicType.OR, "10 Slayer for face mask, or started Plague City for" +
 			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
 			new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;

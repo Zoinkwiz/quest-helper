@@ -30,20 +30,20 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -119,7 +119,7 @@ public class RFDGoblins extends BasicQuestHelper
 		blueGreenPurpledye = new ItemRequirement("A blue, green, or purple dye", ItemID.BLUE_DYE);
 		blueGreenPurpledye.addAlternates(ItemID.GREEN_DYE, ItemID.PURPLE_DYE);
 		spice = new ItemRequirement("Spice or gnome spice", ItemID.SPICE);
-		spice.setTip("You can get some from the Culinaromancer's chest, or a Gnome Spice from the Tree Gnome " +
+		spice.setTooltip("You can get some from the Culinaromancer's chest, or a Gnome Spice from the Tree Gnome " +
 			"Stronghold");
 		spice.addAlternates(ItemID.GNOME_SPICE);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
@@ -136,7 +136,7 @@ public class RFDGoblins extends BasicQuestHelper
 		blueGreenPurpledyeHighlighted.addAlternates(ItemID.GREEN_DYE, ItemID.PURPLE_DYE);
 		spiceHighlighted = new ItemRequirement("Spice or gnome spice", ItemID.SPICE);
 		spiceHighlighted.setHighlightInInventory(true);
-		spiceHighlighted.setTip("You can get some from the Culinaromancer's chest, or a Gnome Spice from the Tree Gnome " +
+		spiceHighlighted.setTooltip("You can get some from the Culinaromancer's chest, or a Gnome Spice from the Tree Gnome " +
 			"Stronghold");
 		spiceHighlighted.addAlternates(ItemID.GNOME_SPICE);
 		fishingBaitHighlighted = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
@@ -148,7 +148,7 @@ public class RFDGoblins extends BasicQuestHelper
 		orangeSliceHighlighted.setHighlightInInventory(true);
 
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
-		charcoal.setTip("You can buy one from the general store north of Shilo Village");
+		charcoal.setTooltip("You can buy one from the general store north of Shilo Village");
 		charcoal.addAlternates(ItemID.GROUND_CHARCOAL);
 
 		dyedOrange = new ItemRequirement("Dyed orange", ItemID.DYED_ORANGE);

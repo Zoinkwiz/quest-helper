@@ -31,27 +31,27 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.InInstanceCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.InInstanceCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -382,45 +382,45 @@ public class SinsOfTheFather extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		haemBook = new ItemRequirement("Haemalchemy volume 2", ItemID.HAEMALCHEMY_VOLUME_2);
-		haemBook.setTip("If you lost the book, search the bookshelf in the room west of Safalaan to get it back");
+		haemBook.setTooltip("If you lost the book, search the bookshelf in the room west of Safalaan to get it back");
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 
 		vyreTop = new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP);
-		vyreTop.setTip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
+		vyreTop.setTooltip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
 		vyreLegs = new ItemRequirement("Vyrewatch legs", ItemID.VYREWATCH_LEGS);
-		vyreLegs.setTip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
+		vyreLegs.setTooltip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
 		vyreShoes = new ItemRequirement("Vyrewatch shoes", ItemID.VYREWATCH_SHOES);
-		vyreShoes.setTip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
+		vyreShoes.setTooltip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
 
 		unscentedTop = new ItemRequirement("Vyre noble top unscented", ItemID.VYRE_NOBLE_TOP_UNSCENTED);
-		unscentedTop.setTip("You can get a replacement from a chest in Old Man Ral's basement");
+		unscentedTop.setTooltip("You can get a replacement from a chest in Old Man Ral's basement");
 		unscentedLegs = new ItemRequirement("Vyre noble legs unscented", ItemID.VYRE_NOBLE_LEGS_UNSCENTED);
-		unscentedLegs.setTip("You can get a replacement from a chest in Old Man Ral's basement");
+		unscentedLegs.setTooltip("You can get a replacement from a chest in Old Man Ral's basement");
 		unscentedShoes = new ItemRequirement("Vyre noble shoes unscented", ItemID.VYRE_NOBLE_SHOES_UNSCENTED);
-		unscentedShoes.setTip("You can get a replacement from a chest in Old Man Ral's basement");
+		unscentedShoes.setTooltip("You can get a replacement from a chest in Old Man Ral's basement");
 
 		ivandisFlail = new ItemRequirement("Ivandis flail", ItemID.IVANDIS_FLAIL);
-		ivandisFlail.setTip("You can buy another from Vertida in the Myreque base for 20k");
+		ivandisFlail.setTooltip("You can buy another from Vertida in the Myreque base for 20k");
 
 		ivandisFlailEquipped = new ItemRequirement("Ivandis flail", ItemID.IVANDIS_FLAIL, 1, true);
-		ivandisFlailEquipped.setTip("You can buy another from Vertida in the Myreque base for 20k");
+		ivandisFlailEquipped.setTooltip("You can buy another from Vertida in the Myreque base for 20k");
 
 		ivandisFlailHighlighted = new ItemRequirement("Ivandis flail", ItemID.IVANDIS_FLAIL);
 		ivandisFlailHighlighted.setHighlightInInventory(true);
-		ivandisFlailHighlighted.setTip("You can buy another from Vertida in the Myreque base for 20k");
+		ivandisFlailHighlighted.setTooltip("You can buy another from Vertida in the Myreque base for 20k");
 
 		scentedTop = new ItemRequirement("Vyre noble top", ItemID.VYRE_NOBLE_TOP, 1, true);
-		scentedTop.setTip("You can get a replacement from a chest in Old Man Ral's basement");
+		scentedTop.setTooltip("You can get a replacement from a chest in Old Man Ral's basement");
 		scentedLegs = new ItemRequirement("Vyre noble legs", ItemID.VYRE_NOBLE_LEGS, 1, true);
-		scentedLegs.setTip("You can get a replacement from a chest in Old Man Ral's basement");
+		scentedLegs.setTooltip("You can get a replacement from a chest in Old Man Ral's basement");
 		scentedShoes = new ItemRequirement("Vyre noble shoes", ItemID.VYRE_NOBLE_SHOES, 1, true);
-		scentedShoes.setTip("You can get a replacement from a chest in Old Man Ral's basement");
+		scentedShoes.setTooltip("You can get a replacement from a chest in Old Man Ral's basement");
 
 		blisterwood8 = new ItemRequirement("Blisterwood logs", ItemID.BLISTERWOOD_LOGS, 8);
 
 		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
-		blisterwoodFlail.setTip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old Man Ral's basement");
+		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old Man Ral's basement");
 
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		axeEquipped = new ItemRequirement("Any axe", ItemCollections.getAxes(), 1, true);

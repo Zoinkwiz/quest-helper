@@ -32,6 +32,7 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.FollowerItemRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
@@ -41,9 +42,9 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -192,7 +193,7 @@ public class RFDEvilDave extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		List<QuestStep> steps = Arrays.asList(inspectEvilDave, enterBasement,
+		List<QuestStep> steps = QuestUtil.toArrayList(inspectEvilDave, enterBasement,
 			talkToEvilDave, goUpToDorris, talkToDoris, enterBasementAgain);
 		steps.addAll(makeStew.getSubsteps());
 		steps.add(useStewOnEvilDave);

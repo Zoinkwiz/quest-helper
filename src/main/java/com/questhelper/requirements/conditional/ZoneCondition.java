@@ -22,58 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.math.BigInteger;
+import com.questhelper.Zone;
+import com.questhelper.questhelpers.QuestUtil;
+import java.util.List;
+import java.util.stream.Stream;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 
-public class VarplayerCondition extends ConditionForStep
+public class ZoneCondition extends ConditionForStep
 {
 
-	private final int varplayerId;
-	private final int value;
-	private final Operation operation;
+	private final List<Zone> zones;
+	private final boolean checkInZone;
 
-	private final int bitPosition;
-	private final boolean bitIsSet;
-
-	public VarplayerCondition(int varplayerId, int value)
+	public ZoneCondition(Zone... zone)
 	{
-		this.varplayerId = varplayerId;
-		this.value = value;
-		this.operation = Operation.EQUAL;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
+		this.zones = QuestUtil.toArrayList(zone);
+		this.checkInZone = true;
 	}
 
-	public VarplayerCondition(int varplayerId, int value, Operation operation)
+	public ZoneCondition(WorldPoint... worldPoints)
 	{
-		this.varplayerId = varplayerId;
-		this.value = value;
-		this.operation = operation;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
+		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
+		this.checkInZone = true;
 	}
 
-	public VarplayerCondition(int varplayerId, boolean bitIsSet, int bitPosition)
+	public ZoneCondition(boolean checkInZone, Zone... zone)
 	{
-		this.varplayerId = varplayerId;
-		this.value = -1;
-		this.operation = Operation.EQUAL;
+		this.zones = QuestUtil.toArrayList(zone);
+		this.checkInZone = checkInZone;
+	}
 
-		this.bitPosition = bitPosition;
-		this.bitIsSet = bitIsSet;
+	public ZoneCondition(boolean checkInZone, WorldPoint... worldPoints)
+	{
+		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
+		this.checkInZone = checkInZone;
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
-		if (bitPosition >= 0)
+		Player player = client.getLocalPlayer();
+		if (player != null)
 		{
-			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
+			WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+
+			boolean inZone = zones.stream().anyMatch(z -> z.contains(worldPoint));
+			return inZone && checkInZone;
 		}
-		return operation.check(client.getVarpValue(varplayerId), value);
+		return !checkInZone;
 	}
 }

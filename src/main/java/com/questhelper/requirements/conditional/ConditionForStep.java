@@ -22,32 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.util.LogicType;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 
-public class WeightCondition extends ConditionForStep
+public abstract class ConditionForStep implements Requirement
 {
+	@Setter
+	@Getter
+	protected boolean hasPassed;
+	protected boolean onlyNeedToPassOnce;
+	protected LogicType logicType;
 
-	private final int weight;
-	private final Operation operation;
+	@Getter
+	protected List<ConditionForStep> conditions = new ArrayList<>();
 
+	@Override
+	abstract public boolean check(Client client);
 
-	public WeightCondition(int weight)
+	public void initialize(Client client)
 	{
-		this.weight = weight;
-		this.operation = Operation.EQUAL;
 	}
 
-	public WeightCondition(int weight,  Operation operation)
+	public void loadingHandler()
 	{
-		this.weight = weight;
-		this.operation = operation;
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public String getDisplayText() // conditions don't need display text (yet?)
 	{
-		return operation.check(client.getWeight(), weight);
+		return null;
 	}
 }

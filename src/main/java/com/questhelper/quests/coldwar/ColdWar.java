@@ -8,8 +8,10 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.*;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -211,7 +213,7 @@ public class ColdWar extends BasicQuestHelper
 		leatherHighlight.setHighlightInInventory(true);
 		bongos = new ItemRequirement("Penguin bongos", ItemID.PENGUIN_BONGOS);
 		kgpId = new ItemRequirement("Kgp id card", ItemID.KGP_ID_CARD);
-		kgpId.setTip("You can get another from Noodle");
+		kgpId.setTooltip("You can get another from Noodle");
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
 	}
 

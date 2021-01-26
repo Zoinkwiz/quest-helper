@@ -39,12 +39,12 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -131,13 +131,13 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 		templePage = new ItemRequirement("Tattered temple page", ItemID.TATTERED_TEMPLE_PAGE);
 
 		sunTome = new ItemRequirement("Tome of the sun", ItemID.TOME_OF_THE_SUN);
-		sunTome.setTip("You can get another from the bookshelves in the Forthos Dungeon");
+		sunTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		sunTome.setHighlightInInventory(true);
 		moonTome = new ItemRequirement("Tome of the moon", ItemID.TOME_OF_THE_MOON);
-		moonTome.setTip("You can get another from the bookshelves in the Forthos Dungeon");
+		moonTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		moonTome.setHighlightInInventory(true);
 		templeTome = new ItemRequirement("Tome of the temple", ItemID.TOME_OF_THE_TEMPLE);
-		templeTome.setTip("You can get another from the bookshelves in the Forthos Dungeon");
+		templeTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		templeTome.setHighlightInInventory(true);
 	}
 

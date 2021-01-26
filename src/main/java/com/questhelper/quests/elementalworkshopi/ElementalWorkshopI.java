@@ -31,12 +31,13 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 import java.util.*;
 import net.runelite.api.*;
 import com.questhelper.requirements.ItemRequirement;
@@ -126,10 +127,10 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		knife.setHighlightInInventory(true);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
-		needle.setTip("You can obtain this during the quest");
+		needle.setTooltip("You can obtain this during the quest");
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
-		leather.setTip("You can obtain this during the quest");
+		leather.setTooltip("You can obtain this during the quest");
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		coal4 = new ItemRequirement("Coal", ItemID.COAL, 4);
@@ -139,10 +140,10 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		batteredBook = new ItemRequirement("Battered book", ItemID.BATTERED_BOOK);
 		batteredBook.setHighlightInInventory(true);
 		slashedBook = new ItemRequirement("Slashed book", ItemID.SLASHED_BOOK);
-		slashedBook.setTip("If you've lost it you can get another by searching the bookcase in the building south of " +
+		slashedBook.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
 		batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY);
-		batteredKey.setTip("If you've lost it you can get another by searching the bookcase in the building south of " +
+		batteredKey.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
 		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_ORE);
 		elementalOre.setHighlightInInventory(true);

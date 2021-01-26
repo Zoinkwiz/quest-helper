@@ -30,7 +30,7 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,7 +85,7 @@ public class LadyTableStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (finishedRoom.checkCondition(client))
+		if (finishedRoom.check(client))
 		{
 			startUpStep(leaveRoom);
 		}
@@ -118,7 +118,7 @@ public class LadyTableStep extends DetailedOwnerStep
 		updateSteps();
 	}
 
-	class Statue
+	static class Statue
 	{
 		private final String weapon;
 		private final String color;
@@ -189,7 +189,7 @@ public class LadyTableStep extends DetailedOwnerStep
 		{
 			HashMap<Integer, Integer> weaponMap = new HashMap<>();
 			List<Integer> colorsList = new ArrayList<>();
-			Integer numberOfStatues = 0;
+			int numberOfStatues = 0;
 
 			for (int i = 0; i < statueModels.size(); i++)
 			{
@@ -213,14 +213,14 @@ public class LadyTableStep extends DetailedOwnerStep
 				}
 
 				int firstFaceColor = faceColors[0];
-				int triangleAmountCount = weaponMap.containsKey(triangleCount) ? weaponMap.get(triangleCount) : 0;
+				int triangleAmountCount = weaponMap.getOrDefault(triangleCount, 0);
 				colorsList.add(firstFaceColor);
 				weaponMap.put(triangleCount, triangleAmountCount + 1);
 				numberOfStatues = numberOfStatues + 1;
 			}
 
 			// Sort them so we add highest first.
-			Collections.sort(colorsList, Collections.reverseOrder());
+			colorsList.sort(Collections.reverseOrder());
 
 			HashMap<Integer, Integer> colorsMap = new HashMap<>();
 
@@ -233,9 +233,8 @@ public class LadyTableStep extends DetailedOwnerStep
 			Integer[] colorHeaders = colorsMap.keySet().toArray(new Integer[colorsMap.keySet().size()]);
 			for (Integer color : colorsList)
 			{
-				for (int i = 0; i < colorHeaders.length; i++)
+				for (Integer colorHeader : colorHeaders)
 				{
-					Integer colorHeader = colorHeaders[i];
 					// Give some leeway for the header colors, generally they are 1000~ difference between gold silver bronze etc.
 					if (color >= colorHeader - 500 && color <= colorHeader + 500)
 					{
@@ -263,16 +262,16 @@ public class LadyTableStep extends DetailedOwnerStep
 		 */
 		private void getMissingStatue(HashMap<Integer, Integer> colorsMap, HashMap<Integer, Integer> weaponMap)
 		{
-			List<Integer> weaponList = new ArrayList(weaponMap.keySet());
-			List<Integer> colorsList = new ArrayList(colorsMap.keySet());
+			List<Integer> weaponList = new ArrayList<>(weaponMap.keySet());
+			List<Integer> colorsList = new ArrayList<>(colorsMap.keySet());
 
 			// Minimum key for each value will correlate to the missing statue
-			Integer lowestWeapon = getMinKey(weaponMap, weaponMap.keySet().toArray(new Integer[weaponMap.keySet().size()]));
-			Integer lowestColor = getMinKey(colorsMap, colorsMap.keySet().toArray(new Integer[colorsMap.keySet().size()]));
+			Integer lowestWeapon = getMinKey(weaponMap, weaponMap.keySet().toArray(new Integer[0]));
+			Integer lowestColor = getMinKey(colorsMap, colorsMap.keySet().toArray(new Integer[0]));
 
 			// Sort them from highest to lowest to check against the expected highest values
-			Collections.sort(weaponList, Collections.reverseOrder());
-			Collections.sort(colorsList, Collections.reverseOrder());
+			weaponList.sort(Collections.reverseOrder());
+			colorsList.sort(Collections.reverseOrder());
 			int weaponPosition = weaponList.indexOf(lowestWeapon);
 			int colorsPosition = colorsList.indexOf(lowestColor);
 
@@ -375,7 +374,7 @@ public class LadyTableStep extends DetailedOwnerStep
 			int groupId = event.getGroupId();
 			if (groupId == DIALOG_NPC_GROUP_ID)
 			{
-				clientThread.invokeLater(() -> readWidget());
+				clientThread.invokeLater(this::readWidget);
 			}
 
 			super.onWidgetLoaded(event);

@@ -26,23 +26,23 @@ package com.questhelper.quests.darknessofhallowvale;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.Spellbook;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.InInstanceCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.InInstanceCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,7 +56,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -203,7 +203,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		nails8 = new ItemRequirement("Nails", ItemCollections.getNails(), 8);
 		nails4 = new ItemRequirement("Nails", ItemCollections.getNails(), 4);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		pickaxe.setTip("You can get one from one of the miners in the mine");
+		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
@@ -212,7 +212,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		ladderPiece = new ItemRequirement("Ladder top", ItemID.LADDER_TOP);
 
 		message = new ItemRequirement("Message", ItemID.MESSAGE_9633);
-		message.setTip("You can get another from Vertida in the Meiyditch Myreque base");
+		message.setTooltip("You can get another from Vertida in the Meiyditch Myreque base");
 
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		charcoal.setHighlightInInventory(true);
@@ -227,7 +227,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		messageFromFireplace.setHighlightInInventory(true);
 		haemBook = new ItemRequirement("Haemalchemy volume 1", ItemID.HAEMALCHEMY_VOLUME_1);
 		sealedMessage = new ItemRequirement("Sealed message", ItemID.SEALED_MESSAGE);
-		sealedMessage.setTip("You can get another from Safalaan");
+		sealedMessage.setTooltip("You can get another from Safalaan");
 
 		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}

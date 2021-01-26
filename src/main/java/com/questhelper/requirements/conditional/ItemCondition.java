@@ -1,4 +1,4 @@
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.ItemRequirement;
 import java.util.Collection;
@@ -38,7 +38,7 @@ public class ItemCondition extends ConditionForStep
 	}
 
 
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
 		return checkAllTiles(client);
 	}

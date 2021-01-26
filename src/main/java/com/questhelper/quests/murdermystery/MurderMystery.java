@@ -25,7 +25,7 @@
 package com.questhelper.quests.murdermystery;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.steps.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,10 +46,10 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -195,7 +195,7 @@ public class MurderMystery extends BasicQuestHelper
 		threeFlypaper = new ItemRequirement("Flypaper", ItemID.FLYPAPER, 3);
 		flypaper = new ItemRequirement("Flypaper", ItemID.FLYPAPER);
 		flypaper.setHighlightInInventory(true);
-		flypaper.setTip("You can get more from the sack in the shed on the west of the Sinclair Mansion");
+		flypaper.setTooltip("You can get more from the sack in the shed on the west of the Sinclair Mansion");
 		potOfFlourHighlighted = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
 		potOfFlourHighlighted.setHighlightInInventory(true);
 		unknownPrint = new ItemRequirement("Unknown print", ItemID.UNKNOWN_PRINT);

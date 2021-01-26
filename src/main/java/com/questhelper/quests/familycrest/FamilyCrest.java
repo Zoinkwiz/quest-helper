@@ -32,12 +32,12 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,7 +56,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.FAMILY_CREST
@@ -168,9 +168,9 @@ public class FamilyCrest extends BasicQuestHelper
 
 		crest = new ItemRequirement("Family crest", ItemID.FAMILY_CREST);
 		crestPiece1 = new ItemRequirement("Crest part", ItemID.CREST_PART);
-		crestPiece1.setTip("You can get another from Caleb in Catherby");
+		crestPiece1.setTooltip("You can get another from Caleb in Catherby");
 		crestPiece2 = new ItemRequirement("Crest part", ItemID.CREST_PART_780);
-		crestPiece2.setTip("You can get another from Avan north of Al Kharid");
+		crestPiece2.setTooltip("You can get another from Avan north of Al Kharid");
 		crestPiece3 = new ItemRequirement("Crest part", ItemID.CREST_PART_781);
 	}
 

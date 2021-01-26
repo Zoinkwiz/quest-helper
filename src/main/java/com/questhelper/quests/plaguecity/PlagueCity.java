@@ -27,11 +27,11 @@ package com.questhelper.quests.plaguecity;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,7 +51,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.PLAGUE_CITY
@@ -196,20 +196,20 @@ public class PlagueCity extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		dwellberries = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES);
-		dwellberries.setTip("You can get these from McGrubor's Wood west of Seers' Village");
+		dwellberries.setTooltip("You can get these from McGrubor's Wood west of Seers' Village");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		spade.setHighlightInInventory(true);
 		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);
 		fourBucketsOfWater.setHighlightInInventory(true);
-		fourBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
+		fourBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
 		threeBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 3);
 		threeBucketsOfWater.setHighlightInInventory(true);
-		threeBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
+		threeBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
 		twoBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 2);
 		twoBucketsOfWater.setHighlightInInventory(true);
-		twoBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
+		twoBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.setHighlightInInventory(true);
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
@@ -220,7 +220,7 @@ public class PlagueCity extends BasicQuestHelper
 		snapeGrass.setHighlightInInventory(true);
 		pictureOfElena = new ItemRequirement("Picture", ItemID.PICTURE);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
-		gasMask.setTip("You can get another from the cupboard in Edmond's house.");
+		gasMask.setTooltip("You can get another from the cupboard in Edmond's house.");
 		book = new ItemRequirement("Book", ItemID.BOOK_1509);
 		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
 		hangoverCure = new ItemRequirement("Hangover cure", ItemID.HANGOVER_CURE);

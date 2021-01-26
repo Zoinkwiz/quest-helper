@@ -35,11 +35,11 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -203,10 +203,10 @@ public class GertrudesCat extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemID.COINS_995, 100);
 
 		seasonedSardine = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE);
-		seasonedSardine.setTip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
+		seasonedSardine.setTooltip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
 
 		seasonedSardineHighlighted = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE);
-		seasonedSardineHighlighted.setTip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
+		seasonedSardineHighlighted.setTooltip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
 		seasonedSardineHighlighted.setHighlightInInventory(true);
 
 		sardine = new ItemRequirement("Raw Sardine", ItemID.RAW_SARDINE);

@@ -29,16 +29,16 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.Spellbook;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +58,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ENAKHRAS_LAMENT
@@ -218,13 +218,13 @@ public class EnakhrasLament extends BasicQuestHelper
 		rSigil = new ItemRequirement("R sigil", ItemID.R_SIGIL);
 
 		leftLeg = new ItemRequirement("Stone left leg", ItemID.STONE_LEFT_LEG);
-		leftLeg.setTip("You can get another from Lazim");
+		leftLeg.setTooltip("You can get another from Lazim");
 		leftArm = new ItemRequirement("Stone left arm", ItemID.STONE_LEFT_ARM);
-		leftArm.setTip("You can get another from Lazim");
+		leftArm.setTooltip("You can get another from Lazim");
 		rightLeg = new ItemRequirement("Stone right leg", ItemID.STONE_RIGHT_LEG);
-		rightLeg.setTip("You can get another from Lazim");
+		rightLeg.setTooltip("You can get another from Lazim");
 		rightArm = new ItemRequirement("Stone right arm", ItemID.STONE_RIGHT_ARM);
-		rightArm.setTip("You can get another from Lazim");
+		rightArm.setTooltip("You can get another from Lazim");
 
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
 

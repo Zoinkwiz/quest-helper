@@ -33,13 +33,13 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.VarplayerCondition;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.VarplayerCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +58,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -207,24 +207,24 @@ public class TheTouristTrap extends BasicQuestHelper
 		feather50 = new ItemRequirement("Feather", ItemID.FEATHER, 50);
 
 		metalKey = new ItemRequirement("Metal key", ItemID.METAL_KEY);
-		metalKey.setTip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
+		metalKey.setTooltip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
 		slaveTop = new ItemRequirement("Slave shirt", ItemID.SLAVE_SHIRT);
-		slaveTop.setTip("You can trade in a desert robe set for slave clothes with the Male Slave");
+		slaveTop.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
 		slaveTopWorn = new ItemRequirement("Slave shirt", ItemID.SLAVE_SHIRT, 1, true);
-		slaveTopWorn.setTip("You can trade in a desert robe set for slave clothes with the Male Slave");
+		slaveTopWorn.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
 		slaveRobe = new ItemRequirement("Slave robe", ItemID.SLAVE_ROBE);
-		slaveRobe.setTip("You can trade in a desert robe set for slave clothes with the Male Slave");
+		slaveRobe.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
 		slaveRobeWorn = new ItemRequirement("Slave robe", ItemID.SLAVE_ROBE, 1, true);
-		slaveRobeWorn.setTip("You can trade in a desert robe set for slave clothes with the Male Slave");
+		slaveRobeWorn.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
 		slaveBoot = new ItemRequirement("Slave boots", ItemID.SLAVE_BOOTS);
-		slaveBoot.setTip("You can trade in a desert robe set for slave clothes with the Male Slave");
+		slaveBoot.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
 		slaveBootWorn = new ItemRequirement("Slave boots", ItemID.SLAVE_BOOTS, 1, true);
-		slaveBootWorn.setTip("You can trade in a desert robe set for slave clothes with the Male Slave");
+		slaveBootWorn.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
 
 		bedabinKey = new ItemRequirement("Bedabin key", ItemID.BEDABIN_KEY);
-		bedabinKey.setTip("You can get another from Al Shabim in the Bedabin Camp");
+		bedabinKey.setTooltip("You can get another from Al Shabim in the Bedabin Camp");
 		technicalPlans = new ItemRequirement("Technical plans", ItemID.TECHNICAL_PLANS);
-		technicalPlans.setTip("You'll need to get another plan from Siad's chest");
+		technicalPlans.setTooltip("You'll need to get another plan from Siad's chest");
 		prototypeDart = new ItemRequirement("Prototype dart", ItemID.PROTOTYPE_DART);
 		prototypeDartTip = new ItemRequirement("Prototype dart tip", ItemID.PROTOTYPE_DART_TIP);
 		prototypeDartTip.setHighlightInInventory(true);
@@ -236,7 +236,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		bronzeBarHighlighted.setHighlightInInventory(true);
 
 		tentiPineapple = new ItemRequirement("Tenti pineapple", ItemID.TENTI_PINEAPPLE);
-		tentiPineapple.setTip("You can get another from Al Shabim in the Bedabin Camp");
+		tentiPineapple.setTooltip("You can get another from Al Shabim in the Bedabin Camp");
 
 		barrel = new ItemRequirement("Barrel", ItemID.BARREL);
 		barrelHighlighted = new ItemRequirement("Barrel", ItemID.BARREL);

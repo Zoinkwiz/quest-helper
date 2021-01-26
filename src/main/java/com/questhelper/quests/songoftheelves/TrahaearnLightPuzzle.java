@@ -26,19 +26,19 @@ package com.questhelper.quests.songoftheelves;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
-import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -423,7 +423,7 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 
 	public List<QuestStep> getDisplaySteps()
 	{
-		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, goToF0SW, p1Pillar5,
+		return QuestUtil.toArrayList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, goToF0SW, p1Pillar5,
 			p1Pillar6, goToF2SW, p1Pillar7, goToF2SE, climbBooks, p1Pillar8, p1Pillar9, p1Pillar10, p1Pillar11, p1Pillar12,
 			p1Pillar13, p1Pillar14, p1Pillar15, p1Pillar16, goToF1, p1Pillar17, p1Pillar18, p1Pillar19, goToF2E, p1Pillar20,
 			p1Pillar21, p1Pillar22, p1Pillar23);

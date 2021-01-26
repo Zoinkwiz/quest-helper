@@ -24,8 +24,7 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-package com.questhelper.requirements;
+package com.questhelper.requirements.util;
 
 import java.util.Arrays;
 import java.util.Objects;

@@ -26,22 +26,22 @@ package com.questhelper.quests.deathtothedorgeshuun;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.FollowerRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.FollowerCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.NpcCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.FollowerCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,7 +61,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DEATH_TO_THE_DORGESHUUN
@@ -188,10 +188,10 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		book.setHighlightInInventory(true);
 		key = new ItemRequirement("Key", ItemID.KEY_5010);
 		silverware = new ItemRequirement("Silverware", ItemID.SILVERWARE);
-		silverware.setTip("You can get another from the crate in the entrance of the H.A.M. hideout");
+		silverware.setTooltip("You can get another from the crate in the entrance of the H.A.M. hideout");
 
 		treaty = new ItemRequirement("Peace treaty", ItemID.PEACE_TREATY);
-		treaty.setTip("You can get another from Duke Horacio");
+		treaty.setTooltip("You can get another from Duke Horacio");
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
@@ -215,7 +215,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		hamSet = new ItemRequirements("Full ham robe sets (7 pieces)(equipped)", hamShirt, hamRobe, hamHood, hamBoot, hamGloves, hamLogo, hamCloak);
 		hamSet2 = new ItemRequirements("2 full ham robe sets (7 pieces/set)", hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2);
-		hamSet2.setTip("The chance of thieving a ham clothing piece increases massively AFTER starting the quest");
+		hamSet2.setTooltip("The chance of thieving a ham clothing piece increases massively AFTER starting the quest");
 
 		zanik = new ItemRequirement("Zanik", ItemID.ZANIK);
 		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from Lumbridge Basement", NpcID.ZANIK_4508);
@@ -410,7 +410,10 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		goTalkToZanik.addStep(inMines, talkToMistagToTravel);
 		goTalkToZanik.addStep(inTunnels, climbThroughHole);
 		goTalkToZanik.addStep(inBasement, talkToZanik);
-		goTalkToZanik.addDialogStep("Yes, I'm " + client.getLocalPlayer().getName() + "!");
+		if (client.getLocalPlayer() != null)
+		{
+			goTalkToZanik.addDialogStep("Yes, I'm " + client.getLocalPlayer().getName() + "!");
+		}
 
 		goHaveZanikFollow = new ConditionalStep(this, goDownToBasement, "Talk to Zanik in Lumbridge Castle's basement.");
 		goHaveZanikFollow.addStep(inBasement, talkToZanik);

@@ -29,10 +29,10 @@ import com.questhelper.Zone;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -95,9 +95,9 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		cadavaBerry = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
-		cadavaBerry.setTip("You can pick some from bushes south east of Varrock");
+		cadavaBerry.setTooltip("You can pick some from bushes south east of Varrock");
 		letter = new ItemRequirement("Message", ItemID.MESSAGE);
-		letter.setTip("You can get another from Juliet");
+		letter.setTooltip("You can get another from Juliet");
 		potion = new ItemRequirement("Cadava potion", ItemID.CADAVA_POTION);
 	}
 

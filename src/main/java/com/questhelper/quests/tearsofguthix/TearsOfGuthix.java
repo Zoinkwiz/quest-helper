@@ -26,13 +26,13 @@ package com.questhelper.quests.tearsofguthix;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,8 +53,8 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TEARS_OF_GUTHIX
@@ -110,7 +110,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	private void setupItemRequirements()
 	{
 		litSapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702);
-		litSapphireLantern.setTip("You can make this by using a cut sapphire on a bullseye lantern");
+		litSapphireLantern.setTooltip("You can make this by using a cut sapphire on a bullseye lantern");
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
@@ -118,7 +118,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 
 
 		litSapphireLanternHighlighted = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702);
-		litSapphireLanternHighlighted.setTip("You can make this by using a cut sapphire on a bullseye lantern");
+		litSapphireLanternHighlighted.setTooltip("You can make this by using a cut sapphire on a bullseye lantern");
 		litSapphireLanternHighlighted.setHighlightInInventory(true);
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselHighlighted.setHighlightInInventory(true);

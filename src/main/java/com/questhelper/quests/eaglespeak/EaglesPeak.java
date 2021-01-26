@@ -28,7 +28,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,13 +51,13 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.EAGLES_PEAK
@@ -187,14 +187,14 @@ public class EaglesPeak extends BasicQuestHelper
 		birdBook.setHighlightInInventory(true);
 		metalFeatherHighlighted = new ItemRequirement("Metal feather", ItemID.METAL_FEATHER);
 		metalFeatherHighlighted.setHighlightInInventory(true);
-		metalFeatherHighlighted.setTip("You can get another Metal Feather by searching the books in the camp north of Eagles' Peak");
+		metalFeatherHighlighted.setTooltip("You can get another Metal Feather by searching the books in the camp north of Eagles' Peak");
 		metalFeather = new ItemRequirement("Metal feather", ItemID.METAL_FEATHER);
-		metalFeather.setTip("You can get another Metal Feather by searching the books in the camp north of Eagles' Peak");
+		metalFeather.setTooltip("You can get another Metal Feather by searching the books in the camp north of Eagles' Peak");
 		tenEagleFeathers = new ItemRequirement("Eagle feather", ItemID.EAGLE_FEATHER, 10);
 		fakeBeak = new ItemRequirement("Fake beak", ItemID.FAKE_BEAK, 2);
-		fakeBeak.setTip("If you lose one of your beaks you'll need to have Azyff make you a new one.");
+		fakeBeak.setTooltip("If you lose one of your beaks you'll need to have Azyff make you a new one.");
 		eagleCape = new ItemRequirement("Eagle cape", ItemID.EAGLE_CAPE, 2);
-		eagleCape.setTip("If you lose one of your capes you'll need to have Azyff make you a new one.");
+		eagleCape.setTooltip("If you lose one of your capes you'll need to have Azyff make you a new one.");
 		bronzeFeather = new ItemRequirement("Bronze feather", ItemID.BRONZE_FEATHER);
 		silverFeather = new ItemRequirement("Silver feather", ItemID.SILVER_FEATHER);
 		goldFeather = new ItemRequirement("Golden feather", ItemID.GOLDEN_FEATHER_10175);
@@ -210,7 +210,7 @@ public class EaglesPeak extends BasicQuestHelper
 		birdFeed = new ItemRequirement("Odd bird seed", ItemID.ODD_BIRD_SEED);
 		birdFeed.setHighlightInInventory(true);
 		ferret = new ItemRequirement("Ferret", ItemID.FERRET);
-		ferret.setTip("If you lose your ferret you'll need to catch a new one with a box trap north of Eagles' Peak.");
+		ferret.setTooltip("If you lose your ferret you'll need to catch a new one with a box trap north of Eagles' Peak.");
 	}
 
 	public void loadZones()

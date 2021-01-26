@@ -8,7 +8,7 @@ import net.runelite.api.Skill;
  * Requirement that checks if a player meets a certain skill level.
  */
 @Getter
-public class SkillRequirement extends Requirement
+public class SkillRequirement extends AbstractRequirement
 {
 	private final Skill skill;
 	private final int requiredLevel;

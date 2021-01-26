@@ -22,56 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import com.questhelper.Zone;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.coords.WorldPoint;
 
-public class NpcHintArrowCondition extends ConditionForStep
+public class WeightCondition extends ConditionForStep
 {
-	private final ArrayList<Integer> npcIDs;
 
-	private final Zone zone;
+	private final int weight;
+	private final Operation operation;
 
-	public NpcHintArrowCondition(int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
-		this.zone = null;
-	}
 
-	public NpcHintArrowCondition(WorldPoint worldPoint, int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
-		this.zone = new Zone(worldPoint, worldPoint);
-	}
-
-	public NpcHintArrowCondition(Zone zone, int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
-		this.zone = zone;
-	}
-
-	public boolean checkCondition(Client client)
+	public WeightCondition(int weight)
 	{
-		NPC currentNPC = client.getHintArrowNpc();
-		if (currentNPC == null)
-		{
-			return false;
-		}
-		WorldPoint wp = WorldPoint.fromLocalInstance(client, currentNPC.getLocalLocation());
+		this.weight = weight;
+		this.operation = Operation.EQUAL;
+	}
 
-		if (zone != null && !zone.contains(wp))
-		{
-			return false;
-		}
+	public WeightCondition(int weight,  Operation operation)
+	{
+		this.weight = weight;
+		this.operation = operation;
+	}
 
-		if (npcIDs.contains(currentNPC.getId()))
-		{
-			return true;
-		}
-
-		return false;
+	@Override
+	public boolean check(Client client)
+	{
+		return operation.check(client.getWeight(), weight);
 	}
 }

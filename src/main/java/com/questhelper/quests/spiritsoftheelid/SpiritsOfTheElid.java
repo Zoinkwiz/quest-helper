@@ -30,8 +30,9 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.*;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

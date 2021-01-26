@@ -2,7 +2,7 @@ package com.questhelper.quests.dwarfcannon;
 
 import com.questhelper.*;
 import com.questhelper.steps.*;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 
 import java.util.*;
 
@@ -98,7 +98,7 @@ public class DwarfCannon extends BasicQuestHelper
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		railing = new ItemRequirement("Railing", ItemID.RAILING);
-		railing.setTip("You can get more from Captain Lawgof");
+		railing.setTooltip("You can get more from Captain Lawgof");
 		toolkit = new ItemRequirement("Toolkit", ItemID.TOOLKIT);
 		toolkit.setHighlightInInventory(true);
 		dwarfRemains = new ItemRequirement("Dwarf Remains", ItemID.DWARF_REMAINS);

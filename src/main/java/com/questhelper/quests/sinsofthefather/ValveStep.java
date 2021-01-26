@@ -31,8 +31,8 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -86,7 +86,7 @@ public class ValveStep extends DetailedOwnerStep
 		{
 			if (!southDone)
 			{
-				if (atSouthValve.checkCondition(client))
+				if (atSouthValve.check(client))
 				{
 					startUpStep(setSouthValve);
 				}
@@ -97,7 +97,7 @@ public class ValveStep extends DetailedOwnerStep
 			}
 			else if (!northDone)
 			{
-				if (atNorthValve.checkCondition(client))
+				if (atNorthValve.check(client))
 				{
 					startUpStep(setNorthValve);
 				}
@@ -135,7 +135,7 @@ public class ValveStep extends DetailedOwnerStep
 			Widget widgetNumberOptions = client.getWidget(187, 3);
 			Widget widgetValveChoice = client.getWidget(229, 1);
 
-			if (atSouthValve.checkCondition(client))
+			if (atSouthValve.check(client))
 			{
 				if (widgetNumberOptions != null)
 				{
@@ -153,7 +153,7 @@ public class ValveStep extends DetailedOwnerStep
 					}
 				}
 			}
-			else if (atNorthValve.checkCondition(client))
+			else if (atNorthValve.check(client))
 			{
 				if (widgetNumberOptions != null)
 				{
@@ -229,11 +229,11 @@ public class ValveStep extends DetailedOwnerStep
 	protected  void setupRequirements()
 	{
 		scentedTop = new ItemRequirement("Vyre noble top", ItemID.VYRE_NOBLE_TOP, 1, true);
-		scentedTop.setTip("You can get a replacement from a chest in Old Man Ral's basement.");
+		scentedTop.setTooltip("You can get a replacement from a chest in Old Man Ral's basement.");
 		scentedLegs = new ItemRequirement("Vyre noble legs", ItemID.VYRE_NOBLE_LEGS, 1, true);
-		scentedLegs.setTip("You can get a replacement from a chest in Old Man Ral's basement.");
+		scentedLegs.setTooltip("You can get a replacement from a chest in Old Man Ral's basement.");
 		scentedShoes = new ItemRequirement("Vyre noble shoes", ItemID.VYRE_NOBLE_SHOES, 1, true);
-		scentedShoes.setTip("You can get a replacement from a chest in Old Man Ral's basement.");
+		scentedShoes.setTooltip("You can get a replacement from a chest in Old Man Ral's basement.");
 		oldNote = new ItemRequirement("Old note", ItemID.OLD_NOTE);
 		oldNote.setHighlightInInventory(true);
 	}

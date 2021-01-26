@@ -128,11 +128,12 @@ public abstract class QuestStep implements Module
 
 	public QuestStep(QuestHelper questHelper, String text)
 	{
-		this.text = Collections.singletonList(text);
+		// use explicit ArrayList because we need the 'text' list to be mutable
+		this.text = new ArrayList<>(Collections.singletonList(text));
 		this.questHelper = questHelper;
 	}
 
-	public QuestStep(QuestHelper questHelper, ArrayList<String> text)
+	public QuestStep(QuestHelper questHelper, List<String> text)
 	{
 		this.text = text;
 		this.questHelper = questHelper;

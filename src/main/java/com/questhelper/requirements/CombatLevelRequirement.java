@@ -7,7 +7,7 @@ import net.runelite.api.Player;
 /**
  * Checks if the player's combat level meets the required level
  */
-public class CombatLevelRequirement extends Requirement
+public class CombatLevelRequirement extends AbstractRequirement
 {
 	private final int requiredLevel;
 	private final Operation operation;

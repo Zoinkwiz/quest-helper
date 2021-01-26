@@ -111,11 +111,11 @@ public class GiveIngredientsToHelpersStep extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		ethenea = new ItemRequirement("Ethenea", ItemID.ETHENEA);
-		ethenea.setTip("You can get another from Elena in East Ardougne.");
+		ethenea.setTooltip("You can get another from Elena in East Ardougne.");
 		liquidHoney = new ItemRequirement("Liquid honey", ItemID.LIQUID_HONEY);
-		liquidHoney.setTip("You can get another from Elena in East Ardougne.");
+		liquidHoney.setTooltip("You can get another from Elena in East Ardougne.");
 		sulphuricBroline = new ItemRequirement("Sulphuric broline", ItemID.SULPHURIC_BROLINE);
-		sulphuricBroline.setTip("You can get another from Elena in East Ardougne.");
+		sulphuricBroline.setTooltip("You can get another from Elena in East Ardougne.");
 
 		giveHopsBroline = new NpcStep(getQuestHelper(), NpcID.HOPS, new WorldPoint(2930, 3220, 0), "Give Hops the Sulphuric Broline.", sulphuricBroline);
 		giveHopsBroline.addDialogStep("You give him the vial of sulphuric broline...");

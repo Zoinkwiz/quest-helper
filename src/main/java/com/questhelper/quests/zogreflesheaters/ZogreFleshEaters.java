@@ -181,15 +181,15 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		cupOfTea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_4838);
 		strangePotion = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION);
-		strangePotion.setTip("You can get another from Zavistic Rarve");
+		strangePotion.setTooltip("You can get another from Zavistic Rarve");
 
 		strangePotionHighlighted = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION);
-		strangePotionHighlighted.setTip("You can get another from Zavistic Rarve");
+		strangePotionHighlighted.setTooltip("You can get another from Zavistic Rarve");
 		strangePotionHighlighted.setHighlightInInventory(true);
 
 		grishKey = new ItemRequirement("Ogre gate key", ItemID.OGRE_GATE_KEY);
 		ogreRelic = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT);
-		ogreRelic.setTip("You can get another by searching the stand where you fought Slash Bash");
+		ogreRelic.setTooltip("You can get another by searching the stand where you fought Slash Bash");
 
 		combatGear = new ItemRequirement("Either brutal arrows or Crumble Undead for fighting Slash Bash", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

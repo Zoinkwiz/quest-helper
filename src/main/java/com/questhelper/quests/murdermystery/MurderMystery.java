@@ -195,7 +195,7 @@ public class MurderMystery extends BasicQuestHelper
 		threeFlypaper = new ItemRequirement("Flypaper", ItemID.FLYPAPER, 3);
 		flypaper = new ItemRequirement("Flypaper", ItemID.FLYPAPER);
 		flypaper.setHighlightInInventory(true);
-		flypaper.setTip("You can get more from the sack in the shed on the west of the Sinclair Mansion");
+		flypaper.setTooltip("You can get more from the sack in the shed on the west of the Sinclair Mansion");
 		potOfFlourHighlighted = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
 		potOfFlourHighlighted.setHighlightInInventory(true);
 		unknownPrint = new ItemRequirement("Unknown print", ItemID.UNKNOWN_PRINT);

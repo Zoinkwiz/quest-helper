@@ -428,40 +428,40 @@ public class MourningsEndPartII extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY);
-		newKey.setTip("You can get another from Essyllt's desk");
+		newKey.setTooltip("You can get another from Essyllt's desk");
 
 		edernsJournal = new ItemRequirement("Edern's journal", ItemID.EDERNS_JOURNAL);
 		blackenedCrystal = new ItemRequirement("Blackened crystal", ItemID.BLACKENED_CRYSTAL);
 
 		newlyMadeCrystal = new ItemRequirement("Newly made crystal", ItemID.NEWLY_MADE_CRYSTAL);
-		newlyMadeCrystal.setTip("You can get another from Arianwyn in Llyeta");
+		newlyMadeCrystal.setTooltip("You can get another from Arianwyn in Llyeta");
 
 		newlyMadeCrystalHighlight = new ItemRequirement("Newly made crystal", ItemID.NEWLY_MADE_CRYSTAL);
-		newlyMadeCrystalHighlight.setTip("You can get another from Arianwyn in Llyeta");
+		newlyMadeCrystalHighlight.setTooltip("You can get another from Arianwyn in Llyeta");
 		newlyMadeCrystalHighlight.setHighlightInInventory(true);
 
 		newlyIfOneTrip = new ItemRequirement("Newly made crystal (if already have death talisman)", ItemID.NEWLY_MADE_CRYSTAL);
 
 		mirror = new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR);
-		mirror.setTip("If you've misplaced a mirror, you can pull the crystal dispenser in the east of the middle " +
+		mirror.setTooltip("If you've misplaced a mirror, you can pull the crystal dispenser in the east of the middle " +
 			"floor to reset the puzzle");
 		mirror.setHighlightInInventory(true);
 
 		yellowCrystal = new ItemRequirement("Yellow crystal", ItemID.YELLOW_CRYSTAL);
-		yellowCrystal.setTip("Check the crystal dispenser if you've lost this");
+		yellowCrystal.setTooltip("Check the crystal dispenser if you've lost this");
 		yellowCrystal.setHighlightInInventory(true);
 		cyanCrystal = new ItemRequirement("Cyan crystal", ItemID.CYAN_CRYSTAL);
-		cyanCrystal.setTip("Check the crystal dispenser if you've lost this");
+		cyanCrystal.setTooltip("Check the crystal dispenser if you've lost this");
 		cyanCrystal.setHighlightInInventory(true);
 		blueCrystal = new ItemRequirement("Blue crystal", ItemID.BLUE_CRYSTAL);
-		blueCrystal.setTip("Check the crystal dispenser if you've lost this");
+		blueCrystal.setTooltip("Check the crystal dispenser if you've lost this");
 		blueCrystal.setHighlightInInventory(true);
 		fracturedCrystal = new ItemRequirement("Fractured crystal", ItemID.FRACTURED_CRYSTAL);
 		fracturedCrystal.setHighlightInInventory(true);
-		fracturedCrystal.setTip("Check the crystal dispenser if you've lost this");
+		fracturedCrystal.setTooltip("Check the crystal dispenser if you've lost this");
 		fracturedCrystal2 = new ItemRequirement("Fractured crystal", ItemID.FRACTURED_CRYSTAL_6647);
 		fracturedCrystal2.setHighlightInInventory(true);
-		fracturedCrystal2.setTip("Check the crystal dispenser if you've lost this");
+		fracturedCrystal2.setTooltip("Check the crystal dispenser if you've lost this");
 		chargedCrystal = new ItemRequirement("Newly made crystal", ItemID.NEWLY_MADE_CRYSTAL_6652);
 		chargedCrystalHighlight = new ItemRequirement("Newly made crystal", ItemID.NEWLY_MADE_CRYSTAL_6652);
 		chargedCrystalHighlight.setHighlightInInventory(true);

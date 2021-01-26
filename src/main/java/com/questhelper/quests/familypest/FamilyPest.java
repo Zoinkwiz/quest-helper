@@ -26,8 +26,8 @@
 package com.questhelper.quests.familypest;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -135,7 +135,7 @@ public class FamilyPest extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins);
+		return Collections.singletonList(coins);
 	}
 
 	@Override

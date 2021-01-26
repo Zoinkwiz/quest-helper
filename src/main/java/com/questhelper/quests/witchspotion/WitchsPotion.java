@@ -82,11 +82,11 @@ public class WitchsPotion extends BasicQuestHelper
 	{
 		ratTail = new ItemRequirement("Rat's tail", ItemID.RATS_TAIL);
 		onion = new ItemRequirement("Onion", ItemID.ONION);
-		onion.setTip("You can pick one from the field north of Rimmington");
+		onion.setTooltip("You can pick one from the field north of Rimmington");
 		burntMeat = new ItemRequirement("Burnt meat", ItemID.BURNT_MEAT);
-		burntMeat.setTip("You can use cooked meat on a fire/range to burn it");
+		burntMeat.setTooltip("You can use cooked meat on a fire/range to burn it");
 		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
-		eyeOfNewt.setTip("You can buy one from Betty in Port Sarim for 3gp");
+		eyeOfNewt.setTooltip("You can buy one from Betty in Port Sarim for 3gp");
 	}
 
 	public void setupConditions()

@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;

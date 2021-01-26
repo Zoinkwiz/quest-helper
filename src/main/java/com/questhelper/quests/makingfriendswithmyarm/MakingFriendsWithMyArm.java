@@ -27,8 +27,8 @@ package com.questhelper.quests.makingfriendswithmyarm;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -280,7 +280,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		potion = new ItemRequirement("Reduced cadava potion", ItemID.REDUCED_CADAVA_POTION);
-		potion.setTip("You can get another by bringing the Apothecary a cadava berry");
+		potion.setTooltip("You can get another by bringing the Apothecary a cadava berry");
 
 		coffin = new ItemRequirement("Old man's coffin", ItemID.OLD_MANS_COFFIN);
 

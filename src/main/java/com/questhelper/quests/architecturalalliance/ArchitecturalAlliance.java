@@ -25,9 +25,10 @@
 package com.questhelper.quests.architecturalalliance;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.Requirements;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -130,7 +131,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));
 		req.add(new SkillRequirement(Skill.MINING, 42));
-		req.add(new Requirements(LogicType.OR, "10 Slayer, or started Plague City for" +
+		req.add(new ComplexRequirement(LogicType.OR, "10 Slayer, or started Plague City for" +
 			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
 			new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;

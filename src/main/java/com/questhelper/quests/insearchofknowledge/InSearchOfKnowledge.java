@@ -131,13 +131,13 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 		templePage = new ItemRequirement("Tattered temple page", ItemID.TATTERED_TEMPLE_PAGE);
 
 		sunTome = new ItemRequirement("Tome of the sun", ItemID.TOME_OF_THE_SUN);
-		sunTome.setTip("You can get another from the bookshelves in the Forthos Dungeon");
+		sunTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		sunTome.setHighlightInInventory(true);
 		moonTome = new ItemRequirement("Tome of the moon", ItemID.TOME_OF_THE_MOON);
-		moonTome.setTip("You can get another from the bookshelves in the Forthos Dungeon");
+		moonTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		moonTome.setHighlightInInventory(true);
 		templeTome = new ItemRequirement("Tome of the temple", ItemID.TOME_OF_THE_TEMPLE);
-		templeTome.setTip("You can get another from the bookshelves in the Forthos Dungeon");
+		templeTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		templeTome.setHighlightInInventory(true);
 	}
 

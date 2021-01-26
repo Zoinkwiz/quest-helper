@@ -131,20 +131,20 @@ public class MakingHistory extends BasicQuestHelper
 		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL);
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemID.RING_OF_DUELING8);
 		enchantedKey = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
-		enchantedKey.setTip("You can get another from the silver merchant in East Ardougne's market");
+		enchantedKey.setTooltip("You can get another from the silver merchant in East Ardougne's market");
 
 		enchantedKeyHighlighted = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
-		enchantedKeyHighlighted.setTip("You can get another from the silver merchant in East Ardougne's market");
+		enchantedKeyHighlighted.setTooltip("You can get another from the silver merchant in East Ardougne's market");
 		enchantedKeyHighlighted.setHighlightInInventory(true);
 
 		journal = new ItemRequirement("Journal", ItemID.JOURNAL_6755);
 		chest = new ItemRequirement("Chest", ItemID.CHEST);
-		chest.setTip("You can dig up another from north of Castle Wars");
+		chest.setTooltip("You can dig up another from north of Castle Wars");
 		chest.setHighlightInInventory(true);
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL);
-		scroll.setTip("You can get another from Droalak in Port Phasmatys");
+		scroll.setTooltip("You can get another from Droalak in Port Phasmatys");
 		letter = new ItemRequirement("Letter", ItemID.LETTER_6757);
-		letter.setTip("You can get another from King Lathas in East Ardougne castle");
+		letter.setTooltip("You can get another from King Lathas in East Ardougne castle");
 		passage = new ItemRequirement("Necklace of passage", ItemID.NECKLACE_OF_PASSAGE1);
 		passage.addAlternates(ItemID.NECKLACE_OF_PASSAGE2, ItemID.NECKLACE_OF_PASSAGE3, ItemID.NECKLACE_OF_PASSAGE5, ItemID.NECKLACE_OF_PASSAGE5);
 	}

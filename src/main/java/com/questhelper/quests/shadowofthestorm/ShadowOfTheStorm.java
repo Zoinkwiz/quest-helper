@@ -26,8 +26,8 @@ package com.questhelper.quests.shadowofthestorm;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
@@ -193,12 +193,12 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 			ItemID.ANTISANTA_GLOVES, ItemID.ANTISANTA_JACKET, ItemID.ANTISANTA_MASK, ItemID.ANTISANTA_PANTALOONS, ItemID.WIZARD_HAT, ItemID.BLACK_CAPE, ItemID.BLACK_PARTYHAT, ItemID.BLACK_HWEEN_MASK, ItemID.BLACK_DRAGON_MASK, ItemID.BLACK_UNICORN_MASK, ItemID.BLACK_DEMON_MASK,
 			ItemID.BLACK_DHIDE_BODY, ItemID.BLACK_DHIDE_CHAPS, ItemID.BLACK_DHIDE_VAMBRACES, ItemID.BLACK_ROBE);
 		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
-		silverlight.setTip("You can get another from Father Reen in Al Kharid if you've lost it");
+		silverlight.setTooltip("You can get another from Father Reen in Al Kharid if you've lost it");
 		strangeImplement = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
-		strangeImplement.setTip("You can find another in the underground of Uzer");
+		strangeImplement.setTooltip("You can find another in the underground of Uzer");
 		strangeImplementHighlighted = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
 		strangeImplementHighlighted.setHighlightInInventory(true);
-		strangeImplementHighlighted.setTip("You can find another in the underground of Uzer");
+		strangeImplementHighlighted.setTooltip("You can find another in the underground of Uzer");
 		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.BLACK_MUSHROOM_INK);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
@@ -214,9 +214,9 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemID.COINS_995, 400);
 		sigil = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
-		sigil.setTip("You can make another if needed with the demonic sigil mould");
+		sigil.setTooltip("You can make another if needed with the demonic sigil mould");
 		sigil2 = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL, 2);
-		sigil2.setTip("You can make another if needed with the demonic sigil mould (which you can get from Jennifer)");
+		sigil2.setTooltip("You can make another if needed with the demonic sigil mould (which you can get from Jennifer)");
 		sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
 		sigilHighlighted.setHighlightInInventory(true);
 		book = new ItemRequirement("Demonic tome", ItemID.DEMONIC_TOME);

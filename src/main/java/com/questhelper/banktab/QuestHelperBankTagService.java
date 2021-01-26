@@ -146,7 +146,7 @@ public class QuestHelperBankTagService
 
 		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
 
-		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTip());
+		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTooltip());
 	}
 
 	public boolean hasItemInBank(int itemID)

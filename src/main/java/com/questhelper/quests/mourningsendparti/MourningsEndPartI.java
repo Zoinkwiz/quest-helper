@@ -222,7 +222,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		mournerLegs = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS);
 		sieve = new ItemRequirement("Sieve", ItemID.SIEVE);
 		sieve.setHighlightInInventory(true);
-		sieve.setTip("You can get another from Elena");
+		sieve.setTooltip("You can get another from Elena");
 		tarnishedKey = new ItemRequirement("Tarnished key", ItemID.TARNISHED_KEY);
 		fullMourners = new ItemRequirements("Full mourners' outfit", mournerMask, mournerBody, mournerLegs, mournerCloak, mournerBoots, mournerGloves);
 
@@ -259,7 +259,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		toxicNaphtha.setHighlightInInventory(true);
 
 		toxicPowder = new ItemRequirement("Toxic powder", ItemID.TOXIC_POWDER);
-		toxicPowder.setTip("You'll have to make more if you've lost it");
+		toxicPowder.setTooltip("You'll have to make more if you've lost it");
 		toxicPowder.setHighlightInInventory(true);
 	}
 

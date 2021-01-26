@@ -25,12 +25,12 @@
 package com.questhelper.quests.theforsakentower;
 
 import com.google.inject.Inject;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;

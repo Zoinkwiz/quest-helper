@@ -27,8 +27,8 @@ package com.questhelper.quests.myarmsbigadventure;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -231,7 +231,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlight.setHighlightInInventory(true);
 		farmingManual = new ItemRequirement("Farming manual", ItemID.FARMING_MANUAL);
-		farmingManual.setTip("You can get another from My Arm on the Troll Stronghold roof");
+		farmingManual.setTooltip("You can get another from My Arm on the Troll Stronghold roof");
 		farmingManual.setHighlightInInventory(true);
 		ugthanki3 = new ItemRequirement("Ugthanki dung", ItemID.UGTHANKI_DUNG, 3);
 		ugthanki3.setHighlightInInventory(true);
@@ -242,7 +242,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		superCompost = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
 		superCompost.addAlternates(ItemID.ULTRACOMPOST);
 		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
-		hardyGout.setTip("You can get more from Murcaily");
+		hardyGout.setTooltip("You can get more from Murcaily");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -258,7 +258,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		superCompostHighlight.addAlternates(ItemID.ULTRACOMPOST);
 		superCompostHighlight.setHighlightInInventory(true);
 		hardyGoutHighlight = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
-		hardyGoutHighlight.setTip("You can get more from Murcaily");
+		hardyGoutHighlight.setTooltip("You can get more from Murcaily");
 		hardyGoutHighlight.setHighlightInInventory(true);
 		plantCureHighlight = new ItemRequirement("Plant cure", ItemID.PLANT_CURE);
 		plantCureHighlight.setHighlightInInventory(true);

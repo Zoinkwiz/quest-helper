@@ -647,7 +647,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		nothingEquipped = new NoItemRequirement("Nothing equipped", ItemSlots.ANY_EQUIPPED);
 
 		explosivePotion = new ItemRequirement("Explosive potion", ItemID.EXPLOSIVE_POTION_23818);
-		explosivePotion.setTip("You can get more from Elena");
+		explosivePotion.setTooltip("You can get more from Elena");
 
 		magicCombatGear = new ItemRequirement("Magic combat gear, food and potions", -1, -1);
 		saradominBrews = new ItemRequirement("Saradomin brews", ItemID.SARADOMIN_BREW4);

@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestVarbits;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;

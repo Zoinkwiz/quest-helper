@@ -32,11 +32,11 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -140,7 +140,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		potOfCream = new ItemRequirement("Pot of cream", ItemID.POT_OF_CREAM);
 		potOfCream.setHighlightInInventory(true);
 		cornflour = new ItemRequirement("Pot of cornflour", ItemID.POT_OF_CORNFLOUR);
-		cornflour.setTip("You can make this by grinding a sweetcorn in a windmill and collecting it with a pot");
+		cornflour.setTooltip("You can make this by grinding a sweetcorn in a windmill and collecting it with a pot");
 		cornflour.setHighlightInInventory(true);
 
 		pot = new ItemRequirement("Pot", ItemID.POT);
@@ -162,7 +162,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 			macheteAndRadimus.addAlternates(ItemID.RED_TOPAZ_MACHETE, ItemID.OPAL_MACHETE, ItemID.JADE_MACHETE);
 		}
 		vanillaPod = new ItemRequirement("Vanilla pod", ItemID.VANILLA_POD);
-		vanillaPod.setTip("You can get a pod from the Khazari Jungle. Bring an axe and machete to get in");
+		vanillaPod.setTooltip("You can get a pod from the Khazari Jungle. Bring an axe and machete to get in");
 		vanillaPod.setHighlightInInventory(true);
 
 		dramenStaffOrLunar = new ItemRequirement("Dramen/lunar staff", ItemID.DRAMEN_STAFF, 1, true);
@@ -170,13 +170,13 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
 		dramenBranch.setHighlightInInventory(true);
-		dramenBranch.setTip("You can get one from the dramen tree under Entrana");
+		dramenBranch.setTooltip("You can get one from the dramen tree under Entrana");
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted.setHighlightInInventory(true);
 
 		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true);
-		iceGloves.setTip("Although optional, you'll take a lot of damage if you're not wearing them");
+		iceGloves.setTooltip("Although optional, you'll take a lot of damage if you're not wearing them");
 		rawChicken = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
 		rawChicken.setHighlightInInventory(true);
 		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);

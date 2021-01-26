@@ -30,7 +30,7 @@ import net.runelite.api.Prayer;
 /**
  * Requirement that checks if a specified {@link Prayer} is active
  */
-public class PrayerRequirement extends Requirement
+public class PrayerRequirement extends AbstractRequirement
 {
 	private final Prayer prayer;
 	private final String text;

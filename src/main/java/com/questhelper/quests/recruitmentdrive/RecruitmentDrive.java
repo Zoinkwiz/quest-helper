@@ -29,11 +29,11 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemSlots;
 import com.questhelper.requirements.NoItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -195,8 +195,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private LadyTableStep getLadyTableStep()
 	{
-		LadyTableStep ladyTableStep = new LadyTableStep(this);
-		this.ladyTableStep = ladyTableStep;
+		this.ladyTableStep = new LadyTableStep(this);
 		return this.ladyTableStep;
 	}
 

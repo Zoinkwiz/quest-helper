@@ -31,10 +31,10 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -115,11 +115,11 @@ public class TheMageArenaII extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		zamorakStaff = new ItemRequirement("Zamorak staff", ItemID.ZAMORAK_STAFF);
-		zamorakStaff.setTip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
+		zamorakStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
 		guthixStaff = new ItemRequirement("Guthix staff", ItemID.GUTHIX_STAFF);
-		guthixStaff.setTip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
+		guthixStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
 		saradominStaff = new ItemRequirement("Saradomin staff", ItemID.SARADOMIN_STAFF);
-		saradominStaff.setTip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
+		saradominStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
 		runesForCasts = new ItemRequirements("Runes for 50+ casts of god spells",
 			new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, -1),
 			new ItemRequirement("Air runes", ItemID.AIR_RUNE, -1),
@@ -133,7 +133,7 @@ public class TheMageArenaII extends BasicQuestHelper
 		recoils = new ItemRequirement("Rings of recoil", ItemID.RING_OF_RECOIL);
 
 		enchantedSymbol = new ItemRequirement("Enchanted symbol", ItemID.ENCHANTED_SYMBOL);
-		enchantedSymbol.setTip("You can get another from Kolodion in the Mage Arena Cavern.");
+		enchantedSymbol.setTooltip("You can get another from Kolodion in the Mage Arena Cavern.");
 		justicarsHand = new ItemRequirement("Justicar's hand", ItemID.JUSTICIARS_HAND);
 		demonsHeart = new ItemRequirement("Demon's heart", ItemID.DEMONS_HEART);
 		entRoots = new ItemRequirement("Ent's roots", ItemID.ENTS_ROOTS);

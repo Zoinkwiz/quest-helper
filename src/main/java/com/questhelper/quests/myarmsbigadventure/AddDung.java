@@ -3,7 +3,6 @@ package com.questhelper.quests.myarmsbigadventure;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
 import java.util.Collections;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -19,7 +18,7 @@ public class AddDung extends ObjectStep
 	{
 		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0), "Add 3 ugthanki dung on My Arm's soil patch.");
 		this.addIcon(ItemID.UGTHANKI_DUNG);
-		dung.setTip("You can get some by feeding the camels in Pollvineach hot sauce, then using a bucket on their dung");
+		dung.setTooltip("You can get some by feeding the camels in Pollvineach hot sauce, then using a bucket on their dung");
 		dung.setHighlightInInventory(true);
 	}
 

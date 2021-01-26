@@ -13,7 +13,7 @@ import net.runelite.api.ItemContainer;
  * inventory as determined by the {@link InventoryID}.
  */
 @Getter
-public class FreeInventorySlotRequirement extends Requirement
+public class FreeInventorySlotRequirement extends AbstractRequirement
 {
 	private InventoryID inventoryID;
 	private int numSlotsFree;

@@ -5,6 +5,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
@@ -211,7 +212,7 @@ public class ColdWar extends BasicQuestHelper
 		leatherHighlight.setHighlightInInventory(true);
 		bongos = new ItemRequirement("Penguin bongos", ItemID.PENGUIN_BONGOS);
 		kgpId = new ItemRequirement("Kgp id card", ItemID.KGP_ID_CARD);
-		kgpId.setTip("You can get another from Noodle");
+		kgpId.setTooltip("You can get another from Noodle");
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
 	}
 

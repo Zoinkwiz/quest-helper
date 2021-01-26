@@ -30,10 +30,10 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -193,14 +193,14 @@ public class GhostsAhoy extends BasicQuestHelper
 		ectoToken10 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 10);
 		ectoToken25 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 25);
 		chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY_4273);
-		chestKey.setTip("You can get another from the Old man on the abandoned ship");
+		chestKey.setTooltip("You can get another from the Old man on the abandoned ship");
 		chestKey.setHighlightInInventory(true);
 
 		nettleTea = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
-		nettleTea.setTip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
+		nettleTea.setTooltip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
 			"then using them on a bowl of water. Cook this to have nettle tea");
 		nettleTeaHighlighted = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
-		nettleTeaHighlighted.setTip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
+		nettleTeaHighlighted.setTooltip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
 			"then using them on a bowl of water. Cook this to have nettle tea");
 		nettleTeaHighlighted.setHighlightInInventory(true);
 
@@ -238,7 +238,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_OF_SLIME);
-		bucketOfSlime.setTip("You can buy one from the Charter Ship crew");
+		bucketOfSlime.setTooltip("You can buy one from the Charter Ship crew");
 		bucketOfSlime.setHighlightInInventory(true);
 
 		modelShip = new ItemRequirement("Model ship", ItemID.MODEL_SHIP);
@@ -261,7 +261,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		robes = new ItemRequirement("Mystical robes", ItemID.MYSTICAL_ROBES);
 		book = new ItemRequirement("Book of haricanto", ItemID.BOOK_OF_HARICANTO);
 		manual = new ItemRequirement("Translation manual", ItemID.TRANSLATION_MANUAL);
-		manual.setTip("You can get another from Ak-Haranu");
+		manual.setTooltip("You can get another from Ak-Haranu");
 		signedOakBow = new ItemRequirement("Signed oak bow", ItemID.SIGNED_OAK_BOW);
 	}
 

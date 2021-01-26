@@ -168,9 +168,9 @@ public class FamilyCrest extends BasicQuestHelper
 
 		crest = new ItemRequirement("Family crest", ItemID.FAMILY_CREST);
 		crestPiece1 = new ItemRequirement("Crest part", ItemID.CREST_PART);
-		crestPiece1.setTip("You can get another from Caleb in Catherby");
+		crestPiece1.setTooltip("You can get another from Caleb in Catherby");
 		crestPiece2 = new ItemRequirement("Crest part", ItemID.CREST_PART_780);
-		crestPiece2.setTip("You can get another from Avan north of Al Kharid");
+		crestPiece2.setTooltip("You can get another from Avan north of Al Kharid");
 		crestPiece3 = new ItemRequirement("Crest part", ItemID.CREST_PART_781);
 	}
 

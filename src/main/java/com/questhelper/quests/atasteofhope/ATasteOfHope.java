@@ -27,6 +27,7 @@ package com.questhelper.quests.atasteofhope;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -259,12 +260,12 @@ public class ATasteOfHope extends BasicQuestHelper
 		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
 		rodOfIvandis.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
 			ItemID.ROD_OF_IVANDIS_6, ItemID.ROD_OF_IVANDIS_7, ItemID.ROD_OF_IVANDIS_8, ItemID.ROD_OF_IVANDIS_9);
-		rodOfIvandis.setTip("You can get another from Veliaf Hurtz in Burgh de Rott AFTER talking to Verdita in Old Man Ral's basement");
+		rodOfIvandis.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott AFTER talking to Verdita in Old Man Ral's basement");
 
 		rodOfIvandisHighlighted = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
 		rodOfIvandisHighlighted.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
 			ItemID.ROD_OF_IVANDIS_6, ItemID.ROD_OF_IVANDIS_7, ItemID.ROD_OF_IVANDIS_8, ItemID.ROD_OF_IVANDIS_9);
-		rodOfIvandisHighlighted.setTip("You can get another from Veliaf Hurtz in Burgh de Rott");
+		rodOfIvandisHighlighted.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott");
 		rodOfIvandisHighlighted.setHighlightInInventory(true);
 
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
@@ -273,7 +274,7 @@ public class ATasteOfHope extends BasicQuestHelper
 
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
 		vialOfWater.setHighlightInInventory(true);
-		vialOfWater.setTip("You can fill the vial upstairs on the broken fountain");
+		vialOfWater.setTooltip("You can fill the vial upstairs on the broken fountain");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);

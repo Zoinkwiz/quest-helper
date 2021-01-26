@@ -30,9 +30,9 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -154,13 +154,13 @@ public class ShadesOfMortton extends BasicQuestHelper
 		hammerOrFlam = new ItemRequirement("A hammer or Flamtaer Hammer", ItemID.HAMMER);
 		hammerOrFlam.addAlternates(ItemID.FLAMTAER_HAMMER);
 		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER);
-		flamHammer.setTip("This speeds up the repair section of the quest considerably");
+		flamHammer.setTooltip("This speeds up the repair section of the quest considerably");
 		morttonTele = new ItemRequirement("A Mort'ton teleport or Barrows teleport tablet", ItemID.MORTTON_TELEPORT);
 		morttonTele.addAlternates(ItemID.BARROWS_TELEPORT);
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		flamtaerBracelet = new ItemRequirement("Flamtaer bracelet", ItemID.FLAMTAER_BRACELET);
-		flamtaerBracelet.setTip("This speeds up the repair section of the quest considerably");
+		flamtaerBracelet.setTooltip("This speeds up the repair section of the quest considerably");
 		log = new ItemRequirement("A log who's pyre version you can burn", ItemID.LOGS);
 		log.addAlternates(ItemID.OAK_LOGS, ItemID.MAPLE_LOGS, ItemID.WILLOW_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
 		logHighlighted = new ItemRequirement("A log who's pyre version you can burn", ItemID.LOGS);
@@ -172,12 +172,12 @@ public class ShadesOfMortton extends BasicQuestHelper
 			ItemID.REDWOOD_PYRE_LOGS);
 		pyreLog.setHighlightInInventory(true);
 		serum207Highlighted = new ItemRequirement("Serum 207", ItemID.SERUM_207_1);
-		serum207Highlighted.setTip("You can make more with a tarromin potion (unf) and some ashes");
+		serum207Highlighted.setTooltip("You can make more with a tarromin potion (unf) and some ashes");
 		serum207Highlighted.setHighlightInInventory(true);
 		serum207Highlighted.addAlternates(ItemID.SERUM_207_2, ItemID.SERUM_207_3, ItemID.SERUM_207_4);
 
 		serum207 = new ItemRequirement("Serum 207", ItemID.SERUM_207_1);
-		serum207.setTip("You can make more with a tarromin potion (unf) and some ashes");
+		serum207.setTooltip("You can make more with a tarromin potion (unf) and some ashes");
 		serum207.addAlternates(ItemID.SERUM_207_2, ItemID.SERUM_207_3, ItemID.SERUM_207_4);
 
 		serum208 = new ItemRequirement("Serum 208", ItemID.SERUM_208_1);

@@ -268,7 +268,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		mspeakAmuletEquipped = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET, 1, true);
 
 		talisman = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
-		talisman.setTip("You can buy one from the Ape Atoll magic shop for 1000 coins");
+		talisman.setTooltip("You can buy one from the Ape Atoll magic shop for 1000 coins");
 		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemID.COINS_995, 1000));
 		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE);
 		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
@@ -277,7 +277,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		ninjaGreegreeEquipped.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
 		translationBook = new ItemRequirement("Translation book", ItemID.TRANSLATION_BOOK);
 		translationBook.setHighlightInInventory(true);
-		translationBook.setTip("If it's not in your bank you can get another from Narnode during the quest");
+		translationBook.setTooltip("If it's not in your bank you can get another from Narnode during the quest");
 
 		magicLog = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -303,11 +303,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		grapeBrush.setHighlightInInventory(true);
 
 		scrawledNote = new ItemRequirement("Scrawled note", ItemID.SCRAWLED_NOTE_19511);
-		scrawledNote.setTip("If you've lost it you'll need to go through the process of revealing the text again");
+		scrawledNote.setTooltip("If you've lost it you'll need to go through the process of revealing the text again");
 		scrawledNote.setHighlightInInventory(true);
 
 		translatedNote = new ItemRequirement("Translated note", ItemID.TRANSLATED_NOTE);
-		translatedNote.setTip("You can get another from Anita");
+		translatedNote.setTooltip("You can get another from Anita");
 		translatedNote.setHighlightInInventory(true);
 
 		noCombatItems = new ItemRequirement("No combat items to travel to Entrana", -1, -1);
@@ -316,10 +316,10 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		greegreeEquipped = new ItemRequirement("Any greegree", ItemCollections.getGreegrees(), 1, true);
 
 		kruksPaw = new ItemRequirement("Kruk's paw", ItemID.KRUKS_PAW);
-		kruksPaw.setTip("You can get another from where you fought Kruk");
+		kruksPaw.setTooltip("You can get another from where you fought Kruk");
 
 		krukGreegree = new ItemRequirement("Kruk monkey greegree", ItemID.KRUK_MONKEY_GREEGREE, 1, true);
-		krukGreegree.setTip("If you've lost this you can get another from Zooknock");
+		krukGreegree.setTooltip("If you've lost this you can get another from Zooknock");
 
 		coins20 = new ItemRequirement("Coins", ItemID.COINS_995, 20);
 

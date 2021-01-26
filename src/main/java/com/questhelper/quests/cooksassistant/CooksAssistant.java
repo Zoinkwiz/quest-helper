@@ -69,11 +69,11 @@ public class CooksAssistant extends BasicQuestHelper
 
 	public void setupItemRequirements() {
 		egg = new ItemRequirement("Egg", ItemID.EGG);
-		egg.setTip("You can find an egg in the farm north of Lumbridge.");
+		egg.setTooltip("You can find an egg in the farm north of Lumbridge.");
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
-		milk.setTip("You can get a bucket from the Lumbridge General Store, then milk a Dairy Cow north-east of Lumbridge.");
+		milk.setTooltip("You can get a bucket from the Lumbridge General Store, then milk a Dairy Cow north-east of Lumbridge.");
 		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
-		flour.setTip("You can buy a pot from the Lumbridge General Store, collect some wheat from a field north of Lumbridge, then grind it in the Lumbridge Mill north of Lumbridge");
+		flour.setTooltip("You can buy a pot from the Lumbridge General Store, collect some wheat from a field north of Lumbridge, then grind it in the Lumbridge Mill north of Lumbridge");
 	}
 
 	@Override

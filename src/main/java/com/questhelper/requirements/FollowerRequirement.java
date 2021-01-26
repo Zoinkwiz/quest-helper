@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.Client;
 
-public class FollowerRequirement extends Requirement
+public class FollowerRequirement extends AbstractRequirement
 {
 	List<Integer> followers;
 	String text;

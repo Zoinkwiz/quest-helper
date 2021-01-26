@@ -26,11 +26,11 @@ package com.questhelper.quests.legendsquest;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.requirements.Spellbook;
@@ -397,30 +397,30 @@ public class LegendsQuest extends BasicQuestHelper
 		macheteHighlighted.setHighlightInInventory(true);
 
 		radimusNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
-		radimusNotes.setTip("You can get another from Radimus in the Legends' Guild");
+		radimusNotes.setTooltip("You can get another from Radimus in the Legends' Guild");
 		papyrus3 = new ItemRequirement("3-5 papyrus", ItemID.PAPYRUS, 3);
 		charcoal3 = new ItemRequirement("1-3 charcoal", ItemID.CHARCOAL);
 		radimusNotesHighlight = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
-		radimusNotesHighlight.setTip("You can get another from Radimus in the Legends' Guild");
+		radimusNotesHighlight.setTooltip("You can get another from Radimus in the Legends' Guild");
 		radimusNotesHighlight.setHighlightInInventory(true);
 
 		completeNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
-		completeNotes.setTip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
+		completeNotes.setTooltip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
 
 		completeNotesHighlighted = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
-		completeNotesHighlighted.setTip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
+		completeNotesHighlighted.setTooltip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
 		completeNotesHighlighted.setHighlightInInventory(true);
 
 		sketch = new ItemRequirement("Sketch", ItemID.SKETCH);
-		sketch.setTip("You can get another by summoning Gujuo with the bull roarer again");
+		sketch.setTooltip("You can get another by summoning Gujuo with the bull roarer again");
 
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 
 		bullRoarer = new ItemRequirement("Bull roarer", ItemID.BULL_ROARER);
-		bullRoarer.setTip("You can get another by using a complete Radimus notes on a Jungle Forester");
+		bullRoarer.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
 		bullRoarerHighlight = new ItemRequirement("Bull roarer", ItemID.BULL_ROARER);
-		bullRoarerHighlight.setTip("You can get another by using a complete Radimus notes on a Jungle Forester");
+		bullRoarerHighlight.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
 		bullRoarerHighlight.setHighlightInInventory(true);
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
@@ -482,7 +482,7 @@ public class LegendsQuest extends BasicQuestHelper
 		goldBowlFull = new ItemRequirement("Golden bowl", ItemID.GOLDEN_BOWL_726);
 		goldBowlFullHighlighted = new ItemRequirement("Golden bowl", ItemID.GOLDEN_BOWL_726);
 		goldBowlFullHighlighted.setHighlightInInventory(true);
-		goldBowlFullHighlighted.setTip("You can fill another gold bowl from the water pool using a reed");
+		goldBowlFullHighlighted.setTooltip("You can fill another gold bowl from the water pool using a reed");
 
 		reed = new ItemRequirement("Hollow reed", ItemID.HOLLOW_REED);
 		reed.setHighlightInInventory(true);
@@ -491,18 +491,18 @@ public class LegendsQuest extends BasicQuestHelper
 		yommiSeeds.setHighlightInInventory(true);
 
 		germinatedSeeds = new ItemRequirement("Yommi tree seeds", ItemID.YOMMI_TREE_SEEDS_736);
-		germinatedSeeds.setTip("You can get more seeds from Ungadulu, and use sacred water on them");
+		germinatedSeeds.setTooltip("You can get more seeds from Ungadulu, and use sacred water on them");
 		germinatedSeedsHighlighted = new ItemRequirement("Yommi tree seeds", ItemID.YOMMI_TREE_SEEDS_736);
-		germinatedSeedsHighlighted.setTip("You can get more seeds from Ungadulu, and use sacred water on them");
+		germinatedSeedsHighlighted.setTooltip("You can get more seeds from Ungadulu, and use sacred water on them");
 		germinatedSeedsHighlighted.setHighlightInInventory(true);
 
 		runeOrDragonAxe = new ItemRequirement("Rune or Dragon axe", ItemID.RUNE_AXE);
 		runeOrDragonAxe.addAlternates(ItemID.DRAGON_AXE);
 		ardrigal = new ItemRequirement("Ardrigal", ItemID.ARDRIGAL);
-		ardrigal.setTip("You can find some in the palm trees north east of Tai Bwo Wannai");
+		ardrigal.setTooltip("You can find some in the palm trees north east of Tai Bwo Wannai");
 		ardrigal.setHighlightInInventory(true);
 		snakeWeed = new ItemRequirement("Snake weed", ItemID.SNAKE_WEED);
-		snakeWeed.setTip("You can find some in the marshy jungle vines south west of Tai Bwo Wannai");
+		snakeWeed.setTooltip("You can find some in the marshy jungle vines south west of Tai Bwo Wannai");
 		snakeWeed.setHighlightInInventory(true);
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
 		vialOfWater.setHighlightInInventory(true);
@@ -538,7 +538,7 @@ public class LegendsQuest extends BasicQuestHelper
 		hunkCrystal.setHighlightInInventory(true);
 
 		heartCrystal = new ItemRequirement("Heart crystal", ItemID.HEART_CRYSTAL);
-		heartCrystal.setTip("You'll have to kill the 3 skeletons for the pieces and forge them in the furnace");
+		heartCrystal.setTooltip("You'll have to kill the 3 skeletons for the pieces and forge them in the furnace");
 		heartCrystal.setHighlightInInventory(true);
 
 		heartCrystal2 = new ItemRequirement("Heart crystal", ItemID.HEART_CRYSTAL_745);
@@ -548,7 +548,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		darkDagger = new ItemRequirement("Dark dagger", ItemID.DARK_DAGGER);
 		darkDagger.setHighlightInInventory(true);
-		darkDagger.setTip("You can get another from Echned at the source");
+		darkDagger.setTooltip("You can get another from Echned at the source");
 
 		glowingDagger = new ItemRequirement("Glowing dagger", ItemID.GLOWING_DAGGER);
 		glowingDagger.setHighlightInInventory(true);
@@ -559,14 +559,14 @@ public class LegendsQuest extends BasicQuestHelper
 		forceHighlighted.setHighlightInInventory(true);
 
 		yommiTotem = new ItemRequirement("Yommi totem", ItemID.YOMMI_TOTEM);
-		yommiTotem.setTip("You'll need to grow another if you've lost it");
+		yommiTotem.setTooltip("You'll need to grow another if you've lost it");
 
 		yommiTotemHighlighted = new ItemRequirement("Yommi totem", ItemID.YOMMI_TOTEM);
-		yommiTotemHighlighted.setTip("You'll need to grow another if you've lost it");
+		yommiTotemHighlighted.setTooltip("You'll need to grow another if you've lost it");
 		yommiTotemHighlighted.setHighlightInInventory(true);
 
 		gildedTotem = new ItemRequirement("Gilded totem", ItemID.GILDED_TOTEM);
-		gildedTotem.setTip("You can get another from Gujuo");
+		gildedTotem.setTooltip("You can get another from Gujuo");
 	}
 
 	private void setupConditions()

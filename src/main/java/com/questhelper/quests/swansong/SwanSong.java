@@ -168,7 +168,7 @@ public class SwanSong extends BasicQuestHelper
 		potHiglight = new ItemRequirement("Pot", ItemID.POT);
 		potHiglight.setHighlightInInventory(true);
 		potLidHiglight = new ItemRequirement("Pot lid", ItemID.POT_LID);
-		potLidHiglight.setTip("You can make one from wet clay on a potter's wheel");
+		potLidHiglight.setTooltip("You can make one from wet clay on a potter's wheel");
 		potLidHiglight.setHighlightInInventory(true);
 		ironBar5Higlight = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 5);
 		ironBar5Higlight.setHighlightInInventory(true);
@@ -179,13 +179,13 @@ public class SwanSong extends BasicQuestHelper
 		tinderboxHiglight.setHighlightInInventory(true);
 
 		smallNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET);
-		smallNet.setTip("You can get one from Arnold");
+		smallNet.setTooltip("You can get one from Arnold");
 
 		hammerPanel = new ItemRequirement("Hammer (obtainable in quest)", ItemID.HAMMER);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		hammer.setTip("Franklin will give you one");
+		hammer.setTooltip("Franklin will give you one");
 		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true);
-		brownApron.setTip("Malignius will give you one");
+		brownApron.setTooltip("Malignius will give you one");
 		monkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH_7943, 5);
 		rawMonkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH, 5);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -195,7 +195,7 @@ public class SwanSong extends BasicQuestHelper
 		ironSheet5 = new ItemRequirement("Iron sheet", ItemID.IRON_SHEET, 5);
 
 		boneSeeds = new ItemRequirement("Bone seed", ItemID.BONE_SEEDS);
-		boneSeeds.setTip("You can get more by bringing Malignius another airtight pot");
+		boneSeeds.setTooltip("You can get more by bringing Malignius another airtight pot");
 	}
 
 	public void loadZones()
@@ -323,7 +323,7 @@ public class SwanSong extends BasicQuestHelper
 		helpingSteps.addAll(repairWall.getDisplaySteps());
 		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, combatGear, log, tinderbox, ironBar5, hammerPanel));
 
-		List<QuestStep> helpingArnoldSteps = Collections.singletonList(talkToArnold);
+		List<QuestStep> helpingArnoldSteps = Arrays.asList(talkToArnold);
 		helpingArnoldSteps.addAll(fishAndCookMonkfish.getSteps());
 		helpingArnoldSteps.add(talkToHermanAfterTasks);
 

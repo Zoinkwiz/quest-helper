@@ -303,7 +303,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		lyreUnstrung = new ItemRequirement("Unstrung lyre", ItemID.UNSTRUNG_LYRE);
 		lyre = new ItemRequirement("Lyre", ItemID.LYRE);
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);
-		petRock.setTip("You can get another from Askeladden");
+		petRock.setTooltip("You can get another from Askeladden");
 
 		goldenWool = new ItemRequirement("Golden wool", ItemID.GOLDEN_WOOL);
 		goldenFleece = new ItemRequirement("Golden fleece", ItemID.GOLDEN_FLEECE);

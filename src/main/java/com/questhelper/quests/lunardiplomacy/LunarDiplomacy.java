@@ -307,10 +307,10 @@ public class LunarDiplomacy extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
-		sealOfPassage.setTip("You can get another from Brundt");
+		sealOfPassage.setTooltip("You can get another from Brundt");
 
 		sealOfPassageEquipped = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE, 1, true);
-		sealOfPassageEquipped.setTip("You can get another from Brundt");
+		sealOfPassageEquipped.setTooltip("You can get another from Brundt");
 
 		bullseyeLantern = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN);
 		bullseyeLantern.addAlternates(ItemID.SAPPHIRE_LANTERN_4701);
@@ -330,10 +330,10 @@ public class LunarDiplomacy extends BasicQuestHelper
 		emeraldLanternLitHighlighted.setHighlightInInventory(true);
 
 		emeraldLens = new ItemRequirement("Emerald lens", ItemID.EMERALD_LENS);
-		emeraldLens.setTip("You can get another from the Cabin boy");
+		emeraldLens.setTooltip("You can get another from the Cabin boy");
 
 		emeraldLensHighlighted = new ItemRequirement("Emerald lens", ItemID.EMERALD_LENS);
-		emeraldLensHighlighted.setTip("You can get another from the Cabin boy");
+		emeraldLensHighlighted.setTooltip("You can get another from the Cabin boy");
 		emeraldLensHighlighted.setHighlightInInventory(true);
 
 		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
@@ -350,15 +350,15 @@ public class LunarDiplomacy extends BasicQuestHelper
 		groundTooth.setHighlightInInventory(true);
 
 		specialVial = new ItemRequirement("Empty vial", ItemID.EMPTY_VIAL);
-		specialVial.setTip("You can get another from Baba Yaga");
+		specialVial.setTooltip("You can get another from Baba Yaga");
 
 		specialVialHighlighted = new ItemRequirement("Empty vial", ItemID.EMPTY_VIAL);
 		specialVialHighlighted.setHighlightInInventory(true);
-		specialVialHighlighted.setTip("You can get another from Baba Yaga");
+		specialVialHighlighted.setTooltip("You can get another from Baba Yaga");
 
 		waterVial = new ItemRequirement("Empty vial", ItemID.VIAL_OF_WATER_9086);
 		waterVial.setHighlightInInventory(true);
-		waterVial.setTip("You can get another from Baba Yaga");
+		waterVial.setTooltip("You can get another from Baba Yaga");
 
 		guamPotion = new ItemRequirement("Guam vial", ItemID.GUAM_VIAL);
 		guamPotion.setHighlightInInventory(true);
@@ -389,9 +389,9 @@ public class LunarDiplomacy extends BasicQuestHelper
 		waterTalisman.addAlternates(ItemID.WATER_TIARA, ItemID.ELEMENTAL_TALISMAN);
 
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
-		dramenStaff.setTip("You can get another from under Entrana");
+		dramenStaff.setTooltip("You can get another from under Entrana");
 		dramenStaffHighlighted = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
-		dramenStaffHighlighted.setTip("You can get another from under Entrana");
+		dramenStaffHighlighted.setTooltip("You can get another from under Entrana");
 		dramenStaffHighlighted.setHighlightInInventory(true);
 
 		lunarStaffP1 = new ItemRequirement("Lunar staff - pt1", ItemID.LUNAR_STAFF__PT1);
@@ -435,7 +435,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		boots = new ItemRequirement("Lunar boots", ItemID.LUNAR_BOOTS);
 		legs = new ItemRequirement("Lunar legs", ItemID.LUNAR_LEGS);
 		kindling = new ItemRequirement("Kindling", ItemID.KINDLING);
-		kindling.setTip("You can get any of these items from the Oneiromancer");
+		kindling.setTooltip("You can get any of these items from the Oneiromancer");
 		kindling.setHighlightInInventory(true);
 		soakedKindling = new ItemRequirement("Soaked kindling", ItemID.SOAKED_KINDLING);
 		soakedKindlingHighlighted = new ItemRequirement("Soaked kindling", ItemID.SOAKED_KINDLING);

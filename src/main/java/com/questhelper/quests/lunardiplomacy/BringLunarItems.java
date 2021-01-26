@@ -41,7 +41,7 @@ public class BringLunarItems extends NpcStep
 	public void setupConditions()
 	{
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
-		sealOfPassage.setTip("You can get another from Brundt");
+		sealOfPassage.setTooltip("You can get another from Brundt");
 
 		handedInHelm = new VarbitCondition(2436, 1);
 		handedInCape = new VarbitCondition(2437, 1);

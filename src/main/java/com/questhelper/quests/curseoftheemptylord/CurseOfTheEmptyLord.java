@@ -25,8 +25,8 @@
 package com.questhelper.quests.curseoftheemptylord;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;

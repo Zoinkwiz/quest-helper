@@ -82,7 +82,7 @@ public class PiratesTreasure extends BasicQuestHelper
 
 		ItemRequirement pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATE_MESSAGE);
 		ItemRequirement chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
-		chestKey.setTip("You can get another one from Redbeard Frank");
+		chestKey.setTooltip("You can get another one from Redbeard Frank");
 
 		ItemRequirementCondition hasPirateMessage = new ItemRequirementCondition(pirateMessage);
 

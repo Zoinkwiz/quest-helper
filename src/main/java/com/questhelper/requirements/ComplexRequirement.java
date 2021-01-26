@@ -24,27 +24,55 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.steps.conditional.LogicType;
+import java.util.stream.Stream;
+import lombok.Getter;
 import net.runelite.api.Client;
 
-public class SpellbookRequirement extends AbstractRequirement
+/**
+ * Requirement that combines multiple other {@link AbstractRequirement}s using
+ * {@link LogicType} to determine if the requirement(s) is/are met.
+ */
+@Getter
+public class ComplexRequirement extends AbstractRequirement
 {
-	private static final int SPELLBOOK_VARBIT = 4070;
-	private final Spellbook spellBook;
+	private final AbstractRequirement[] requirements;
+	private final LogicType logicType;
+	private final String name;
 
-	public SpellbookRequirement(Spellbook spellBook)
+	/**
+	 * Requirement that combines multiple other {@link AbstractRequirement}s using
+	 * {@link LogicType} to determine if the requirement(s) is/are met.
+	 * <br>
+	 * The default {@link LogicType} is {@link LogicType#AND}.
+	 */
+	public ComplexRequirement(String name, AbstractRequirement... requirements)
 	{
-		this.spellBook = spellBook;
+		this.name = name;
+		this.requirements = requirements;
+		this.logicType = LogicType.AND;
+	}
+
+	/**
+	 * Requirement that combines multiple other {@link AbstractRequirement}s using
+	 * {@link LogicType} to determine if the requirement(s) is/are met.
+	 */
+	public ComplexRequirement(LogicType logicType, String name, AbstractRequirement... requirements)
+	{
+		this.name = name;
+		this.requirements = requirements;
+		this.logicType = logicType;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		return spellBook.check(client, SPELLBOOK_VARBIT);
+		return logicType.test(Stream.of(requirements), r -> r.check(client));
 	}
 
 	@Override
 	public String getDisplayText()
 	{
-		return "You must be on the " + spellBook.getName() + " spellbook.";
+		return name;
 	}
 }

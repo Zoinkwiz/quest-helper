@@ -4,6 +4,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,11 +146,11 @@ public class BlackKnightFortress extends BasicQuestHelper
 	private void setupItemRequirements()
 	{
 		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY, 1, true);
-		ironChainbody.setTip("You can buy one from the Chainmail Shop in south Falador");
+		ironChainbody.setTooltip("You can buy one from the Chainmail Shop in south Falador");
 		cabbage = new ItemRequirement("Cabbage (NOT from Draynor Manor)", ItemID.CABBAGE);
-		cabbage.setTip("You can get one from the Edgeville Monastery east of the Black Knights' Fortress.");
+		cabbage.setTooltip("You can get one from the Edgeville Monastery east of the Black Knights' Fortress.");
 		bronzeMed = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM, 1, true);
-		bronzeMed.setTip("You can get one from the helmet shop in Barbarian Village.");
+		bronzeMed.setTooltip("You can get one from the helmet shop in Barbarian Village.");
 
 		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
 		armour = new ItemRequirement("Armour", -1, -1);

@@ -214,11 +214,11 @@ public class TheGolem extends BasicQuestHelper
 		key = new ItemRequirement("Display cabinet key", ItemID.DISPLAY_CABINET_KEY);
 
 		statuette = new ItemRequirement("Statuette", ItemID.STATUETTE);
-		statuette.setTip("If you've lost it, talk to the Curator in the Varrock museum again");
+		statuette.setTooltip("If you've lost it, talk to the Curator in the Varrock museum again");
 
 		statuetteHighlight = new ItemRequirement("Statuette", ItemID.STATUETTE);
 		statuetteHighlight.setHighlightInInventory(true);
-		statuetteHighlight.setTip("If you've lost it, talk to the Curator in the Varrock museum again");
+		statuetteHighlight.setTooltip("If you've lost it, talk to the Curator in the Varrock museum again");
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemCollections.getDigsitePendants());

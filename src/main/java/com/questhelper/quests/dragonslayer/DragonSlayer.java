@@ -200,9 +200,9 @@ public class DragonSlayer extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
-		unfiredBowl.setTip("You can make one with soft clay at a Potter's Wheel with 8 Crafting.");
+		unfiredBowl.setTooltip("You can make one with soft clay at a Potter's Wheel with 8 Crafting.");
 		mindBomb = new ItemRequirement("Wizard's mind bomb", ItemID.WIZARDS_MIND_BOMB);
-		mindBomb.setTip("You can buy one from the Rising Sun Inn in Falador.");
+		mindBomb.setTooltip("You can buy one from the Rising Sun Inn in Falador.");
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		ItemRequirement telegrab = new ItemRequirement("Telekinetic grab", ItemID.TELEKINETIC_GRAB, 1);
@@ -218,7 +218,7 @@ public class DragonSlayer extends BasicQuestHelper
 		mapPart2 = new ItemRequirement("Map part", ItemID.MAP_PART_1536);
 		mapPart3 = new ItemRequirement("Map part", ItemID.MAP_PART);
 		melzarsKey = new ItemRequirement("Maze key", ItemID.MAZE_KEY);
-		melzarsKey.setTip("You can get another maze key from the Guildmaster in the Champions' Guild.");
+		melzarsKey.setTooltip("You can get another maze key from the Guildmaster in the Champions' Guild.");
 		ratKey = new ItemRequirement("Key", ItemID.KEY_1543);
 		ghostKey = new ItemRequirement("Key", ItemID.KEY_1544);
 		skeletonKey = new ItemRequirement("Key", ItemID.KEY_1545);

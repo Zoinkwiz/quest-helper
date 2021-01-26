@@ -144,7 +144,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		serveredLeg = new ItemRequirement("Severed leg", ItemID.SEVERED_LEG);
-		serveredLeg.setTip("You can get another from General Khazard");
+		serveredLeg.setTooltip("You can get another from General Khazard");
 		sinSeersNote = new ItemRequirement("Sin seer's note", ItemID.SIN_SEERS_NOTE);
 	}
 

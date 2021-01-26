@@ -33,10 +33,10 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -134,7 +134,7 @@ public class UndergroundPass extends BasicQuestHelper
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlight.setHighlightInInventory(true);
-		bucketHighlight.setTip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
+		bucketHighlight.setTooltip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderboxHighlight.setHighlightInInventory(true);
@@ -148,7 +148,7 @@ public class UndergroundPass extends BasicQuestHelper
 		telegrabRunes = new ItemRequirements("Telegrab Runes", new ItemRequirement("Air rune", ItemID.AIR_RUNE),
 			new ItemRequirement("Law rune", ItemID.LAW_RUNE));
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
-		oilyCloth.setTip("You can get another by searching the equipment by the fireplace beside Koftik.");
+		oilyCloth.setTooltip("You can get another by searching the equipment by the fireplace beside Koftik.");
 		oilyClothHighlight = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
 		oilyClothHighlight.setHighlightInInventory(true);
 		fireArrow = new ItemRequirement("Fire Arrow", ItemID.BRONZE_FIRE_ARROW);
@@ -167,9 +167,9 @@ public class UndergroundPass extends BasicQuestHelper
 		railingHighlight = new ItemRequirement("Railing", ItemID.PIECE_OF_RAILING);
 		railingHighlight.setHighlightInInventory(true);
 		unicornHorn = new ItemRequirement("Unicorn Horn", ItemID.UNICORN_HORN_1487);
-		unicornHorn.setTip("You can get this from the cage in the previous room");
+		unicornHorn.setTooltip("You can get this from the cage in the previous room");
 		unicornHornHighlight = new ItemRequirement("Unicorn Horn", ItemID.UNICORN_HORN_1487);
-		unicornHornHighlight.setTip("You can get this from the cage in the previous room");
+		unicornHornHighlight.setTooltip("You can get this from the cage in the previous room");
 		unicornHornHighlight.setHighlightInInventory(true);
 		badgeJerro = new ItemRequirement("Badge (Sir Jerro)", ItemID.PALADINS_BADGE);
 		badgeJerroHighlight = new ItemRequirement("Badge (Sir Jerro)", ItemID.PALADINS_BADGE);
@@ -182,7 +182,7 @@ public class UndergroundPass extends BasicQuestHelper
 		badgeHarryHighlight.setHighlightInInventory(true);
 		klanksGauntlets = new ItemRequirement("Klank's gauntlets", ItemID.KLANKS_GAUNTLETS);
 		klanksGauntletsEquipped = new ItemRequirement("Klank's gauntlets", ItemID.KLANKS_GAUNTLETS, 1, true);
-		klanksGauntletsEquipped.setTip("You can get a pair from Klank in the Dwarf camp");
+		klanksGauntletsEquipped.setTooltip("You can get a pair from Klank in the Dwarf camp");
 		witchsCat = new ItemRequirement("Witch's Cat", ItemID.WITCHS_CAT);
 		witchsCat.setHighlightInInventory(true);
 		amuletHolthion = new ItemRequirement("Holthion's Amulet", ItemID.AMULET_OF_HOLTHION);

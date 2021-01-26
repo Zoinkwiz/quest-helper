@@ -196,20 +196,20 @@ public class PlagueCity extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		dwellberries = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES);
-		dwellberries.setTip("You can get these from McGrubor's Wood west of Seers' Village");
+		dwellberries.setTooltip("You can get these from McGrubor's Wood west of Seers' Village");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		spade.setHighlightInInventory(true);
 		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);
 		fourBucketsOfWater.setHighlightInInventory(true);
-		fourBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
+		fourBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
 		threeBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 3);
 		threeBucketsOfWater.setHighlightInInventory(true);
-		threeBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
+		threeBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
 		twoBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 2);
 		twoBucketsOfWater.setHighlightInInventory(true);
-		twoBucketsOfWater.setTip("You can use the bucket near the start of the quest on the sink nearby");
+		twoBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.setHighlightInInventory(true);
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
@@ -220,7 +220,7 @@ public class PlagueCity extends BasicQuestHelper
 		snapeGrass.setHighlightInInventory(true);
 		pictureOfElena = new ItemRequirement("Picture", ItemID.PICTURE);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
-		gasMask.setTip("You can get another from the cupboard in Edmond's house.");
+		gasMask.setTooltip("You can get another from the cupboard in Edmond's house.");
 		book = new ItemRequirement("Book", ItemID.BOOK_1509);
 		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
 		hangoverCure = new ItemRequirement("Hangover cure", ItemID.HANGOVER_CURE);

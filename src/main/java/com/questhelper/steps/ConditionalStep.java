@@ -25,6 +25,7 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -147,9 +148,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 		else
 		{
-			for (ConditionForStep subCondition : condition.getConditions())
+			if (condition != null)
 			{
-				checkForNpcConditions(subCondition);
+				for (ConditionForStep subCondition : condition.getConditions())
+				{
+					checkForNpcConditions(subCondition);
+				}
 			}
 		}
 	}

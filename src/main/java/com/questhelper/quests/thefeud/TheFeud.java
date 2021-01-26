@@ -30,8 +30,8 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -55,6 +55,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -424,7 +425,8 @@ public class TheFeud extends BasicQuestHelper
 			@Override
 			public boolean checkCondition(Client client)
 			{
-				return client.getLocalPlayer().getWorldLocation().getY() < 3116;
+				Player player = client.getLocalPlayer();
+				return player != null && player.getWorldLocation().getY() < 3116;
 			}
 		};
 		notThroughShantyGate = new Conditions(LogicType.NAND, throughShantyGate);

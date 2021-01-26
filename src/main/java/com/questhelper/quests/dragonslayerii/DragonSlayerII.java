@@ -28,10 +28,10 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -423,12 +423,12 @@ public class DragonSlayerII extends BasicQuestHelper
 		machete = new ItemRequirement("Any machete", ItemCollections.getMachete());
 		saw = new ItemRequirement("Saw", ItemID.SAW);
 		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
-		catspeakAmulet.setTip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
+		catspeakAmulet.setTooltip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
 		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeakOrMory2.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
 		goutweed.setHighlightInInventory(true);
-		goutweed.setTip("You can get this from the Troll Stronghold Kitchen Storeroom");
+		goutweed.setTooltip("You can get this from the Troll Stronghold Kitchen Storeroom");
 		dragonstone = new ItemRequirement("Dragonstone", ItemID.DRAGONSTONE);
 		moltenGlass2 = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 2);
 		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
@@ -531,13 +531,13 @@ public class DragonSlayerII extends BasicQuestHelper
 		varrockCensusRecords = new ItemRequirement("Varrock census records", ItemID.VARROCK_CENSUS_RECORDS);
 
 		kourendKeyPiece = new ItemRequirement("Dragon key piece (Kourend)", ItemID.DRAGON_KEY_PIECE_22089);
-		kourendKeyPiece.setTip("You can get another from the tomb in the Shayzien Crypt");
+		kourendKeyPiece.setTooltip("You can get another from the tomb in the Shayzien Crypt");
 		varrocKeyPiece = new ItemRequirement("Dragon key piece (Varrock)", ItemID.DRAGON_KEY_PIECE_22090);
-		varrocKeyPiece.setTip("You can get another by digging in Mort Myre");
+		varrocKeyPiece.setTooltip("You can get another by digging in Mort Myre");
 		fremennikKeyPiece = new ItemRequirement("Dragon key piece (Fremmennik)", ItemID.DRAGON_KEY_PIECE);
-		fremennikKeyPiece.setTip("You can get another from Ungael");
+		fremennikKeyPiece.setTooltip("You can get another from Ungael");
 		karamjaKeyPiece = new ItemRequirement("Dragon key piece (Khazari)", ItemID.DRAGON_KEY_PIECE_22091);
-		karamjaKeyPiece.setTip("You can get another from the middle of the Khazari dungeon");
+		karamjaKeyPiece.setTooltip("You can get another from the middle of the Khazari dungeon");
 
 		inertLocator = new ItemRequirement("Inert locator orb", ItemID.INERT_LOCATOR_ORB);
 		glassblowingPipeHighlighted = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
@@ -546,13 +546,13 @@ public class DragonSlayerII extends BasicQuestHelper
 		dragonstoneHighlighted.setHighlightInInventory(true);
 
 		locator = new ItemRequirement("Locator orb", ItemID.LOCATOR_ORB);
-		locator.setTip("You can get another from Ava");
+		locator.setTooltip("You can get another from Ava");
 
 		ancientKey = new ItemRequirement("Ancient key", ItemID.ANCIENT_KEY);
-		ancientKey.setTip("You can get another from under Ungael");
+		ancientKey.setTooltip("You can get another from under Ungael");
 
 		dragonKey = new ItemRequirement("Dragon key", ItemID.DRAGON_KEY);
-		dragonKey.setTip("If you've lost it you'll need to recover the 4 pieces and reforge it");
+		dragonKey.setTooltip("If you've lost it you'll need to recover the 4 pieces and reforge it");
 
 		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.getAntifireShields(), 1, true);
 

@@ -111,17 +111,17 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE);
-		blueDye.setTip("You can have Aggie in Draynor Village make you some for 2 woad leaves (bought from Wyson in Falador Park for 20 coins) and 5 coins.");
+		blueDye.setTooltip("You can have Aggie in Draynor Village make you some for 2 woad leaves (bought from Wyson in Falador Park for 20 coins) and 5 coins.");
 		blueDye.setHighlightInInventory(true);
 		orangeDye = new ItemRequirement("Orange dye", ItemID.ORANGE_DYE);
-		orangeDye.setTip("This is made from red dye and yellow dye. Bring Aggie in Draynor Village 3 redberries and 5 coins for red dye, then 2 onions and 5 coins for yellow dye.");
+		orangeDye.setTooltip("This is made from red dye and yellow dye. Bring Aggie in Draynor Village 3 redberries and 5 coins for red dye, then 2 onions and 5 coins for yellow dye.");
 		orangeDye.setHighlightInInventory(true);
 		goblinMailThree = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 3);
 		mailReq = new ItemRequirement("Goblin mail (obtainable during quest)", ItemID.GOBLIN_MAIL, 3);
 		goblinMailTwo = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 2);
 
 		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);
-		goblinMail.setTip("You can get goblin mail by killing goblins around goblin village.");
+		goblinMail.setTooltip("You can get goblin mail by killing goblins around goblin village.");
 		goblinMail.setHighlightInInventory(true);
 
 		blueArmour = new ItemRequirement("Blue goblin mail", ItemID.BLUE_GOBLIN_MAIL);

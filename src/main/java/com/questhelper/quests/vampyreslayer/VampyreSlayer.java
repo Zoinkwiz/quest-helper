@@ -102,7 +102,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		draynorManorTeleport = new ItemRequirement("Draynor manor teleport", ItemID.DRAYNOR_MANOR_TELEPORT);
 		stake = new ItemRequirement("Stake", ItemID.STAKE);
-		stake.setTip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");
+		stake.setTooltip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);

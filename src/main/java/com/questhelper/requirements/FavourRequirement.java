@@ -11,7 +11,7 @@ import net.runelite.api.Favour;
  */
 @AllArgsConstructor
 @Getter
-public class FavourRequirement extends Requirement
+public class FavourRequirement extends AbstractRequirement
 {
 	private Favour houseFavour;
 	private int percentage;

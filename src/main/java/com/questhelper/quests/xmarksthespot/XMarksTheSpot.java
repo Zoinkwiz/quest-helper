@@ -27,6 +27,7 @@ package com.questhelper.quests.xmarksthespot;
 import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +97,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 			new ItemRequirement("Treasure scroll", ItemID.TREASURE_SCROLL_23070));
 
 		ItemRequirement ancientCasket = new ItemRequirement("Ancient casket", ItemID.ANCIENT_CASKET);
-		ancientCasket.setTip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
+		ancientCasket.setTooltip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
 
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",
@@ -120,9 +121,9 @@ public class XMarksTheSpot extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Speak to Veos", Arrays.asList(speakVeosLumbridge), spade));
+		allSteps.add(new PanelDetails("Speak to Veos", Collections.singletonList(speakVeosLumbridge), spade));
 		allSteps.add(new PanelDetails("Solve the clue scroll", Arrays.asList(digOutsideBob, digCastle, digDraynor, digMartin)));
-		allSteps.add(new PanelDetails("Bring the casket to Veos", Arrays.asList(speakVeosSarim)));
+		allSteps.add(new PanelDetails("Bring the casket to Veos", Collections.singletonList(speakVeosSarim)));
 		return allSteps;
 	}
 }

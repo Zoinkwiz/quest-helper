@@ -26,8 +26,8 @@ package com.questhelper.quests.throneofmiscellania;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -230,7 +230,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);
 
 		flowers = new ItemRequirement("Flowers", ItemCollections.getFlowers());
-		flowers.setTip("You can buy some from the Flower Girl on Miscellania for 15 coins");
+		flowers.setTooltip("You can buy some from the Flower Girl on Miscellania for 15 coins");
 		flowers.setHighlightInInventory(true);
 		cake = new ItemRequirement("Cake", ItemID.CAKE);
 		cake.addAlternates(ItemID.CHOCOLATE_CAKE);

@@ -496,9 +496,9 @@ public class QuestOverviewPanel extends JPanel
 		{
 			Color newColor;
 
-			if (requirementPanel.getItemRequirement() instanceof ItemRequirement)
+			if (requirementPanel.getRequirement() instanceof ItemRequirement)
 			{
-				ItemRequirement itemRequirement = (ItemRequirement) requirementPanel.getItemRequirement();
+				ItemRequirement itemRequirement = (ItemRequirement) requirementPanel.getRequirement();
 				if (itemRequirement instanceof NoItemRequirement)
 				{
 					newColor = itemRequirement.getColor(client); // explicitly call this because NoItemRequirement overrides it
@@ -510,7 +510,7 @@ public class QuestOverviewPanel extends JPanel
 			}
 			else
 			{
-				newColor = requirementPanel.getItemRequirement().getColor(client);
+				newColor = requirementPanel.getRequirement().getColor(client);
 			}
 
 			if (newColor == Color.WHITE)

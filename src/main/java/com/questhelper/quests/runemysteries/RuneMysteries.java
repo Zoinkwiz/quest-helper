@@ -100,11 +100,11 @@ public class RuneMysteries extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN);
-		airTalisman.setTip("You can get another from Duke Horacio if you lost it");
+		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
 		researchPackage = new ItemRequirement("Research package", ItemID.RESEARCH_PACKAGE);
-		researchPackage.setTip("You can get another from Sedridor if you lost it");
+		researchPackage.setTooltip("You can get another from Sedridor if you lost it");
 		notes = new ItemRequirement("Notes", ItemID.NOTES);
-		notes.setTip("You can get another from Aubury if you lost them");
+		notes.setTooltip("You can get another from Aubury if you lost them");
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardTeleport = new ItemRequirement("A teleport to the Wizard's Tower", ItemCollections.getNecklaceOfPassages());
 	}

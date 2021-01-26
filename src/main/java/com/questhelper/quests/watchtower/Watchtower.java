@@ -252,7 +252,7 @@ public class Watchtower extends BasicQuestHelper
 		coins20 = new ItemRequirement("Coins", ItemID.COINS_995, 20);
 
 		skavidMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP);
-		skavidMap.setTip("You can get another from the city guard in south east Gu'Tanoth.");
+		skavidMap.setTooltip("You can get another from the city guard in south east Gu'Tanoth.");
 
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 
@@ -263,24 +263,24 @@ public class Watchtower extends BasicQuestHelper
 		nightshade2 = new ItemRequirement("Cave nightshade", ItemID.CAVE_NIGHTSHADE, 2);
 
 		crystal2 = new ItemRequirement("Crystal", ItemID.CRYSTAL_2381);
-		crystal2.setTip("You can get another from the mad skavid");
+		crystal2.setTooltip("You can get another from the mad skavid");
 
 		crystal2Highlight = new ItemRequirement("Crystal", ItemID.CRYSTAL_2381);
-		crystal2Highlight.setTip("You can get another from the mad skavid");
+		crystal2Highlight.setTooltip("You can get another from the mad skavid");
 		crystal2Highlight.setHighlightInInventory(true);
 
 		crystal3 = new ItemRequirement("Crystal", ItemID.CRYSTAL_2382);
-		crystal3.setTip("You can get another from the shaman robes on the east side of the Ogre Enclave");
+		crystal3.setTooltip("You can get another from the shaman robes on the east side of the Ogre Enclave");
 
 		crystal3Highlight = new ItemRequirement("Crystal", ItemID.CRYSTAL_2382);
-		crystal3Highlight.setTip("You can get another from the shaman robes on the east side of the Ogre Enclave");
+		crystal3Highlight.setTooltip("You can get another from the shaman robes on the east side of the Ogre Enclave");
 		crystal3Highlight.setHighlightInInventory(true);
 
 		crystal4 = new ItemRequirement("Crystal", ItemID.CRYSTAL_2383);
-		crystal4.setTip("You can get another from the Rock of Dalgroth in the Ogre Enclave");
+		crystal4.setTooltip("You can get another from the Rock of Dalgroth in the Ogre Enclave");
 
 		crystal4Highlight = new ItemRequirement("Crystal", ItemID.CRYSTAL_2383);
-		crystal4Highlight.setTip("You can get another from the Rock of Dalgroth in the Ogre Enclave");
+		crystal4Highlight.setTooltip("You can get another from the Rock of Dalgroth in the Ogre Enclave");
 		crystal4Highlight.setHighlightInInventory(true);
 
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
@@ -301,10 +301,10 @@ public class Watchtower extends BasicQuestHelper
 		potion = new ItemRequirement("Potion", ItemID.POTION_2394);
 
 		magicPotion = new ItemRequirement("Magic ogre potion", ItemID.MAGIC_OGRE_POTION);
-		magicPotion.setTip("You can make another with a guam unf potion, adding jangerberries then ground bat bones, and having the Watchtower Wizard enchant it");
+		magicPotion.setTooltip("You can make another with a guam unf potion, adding jangerberries then ground bat bones, and having the Watchtower Wizard enchant it");
 
 		magicPotionHighlight = new ItemRequirement("Magic ogre potion", ItemID.MAGIC_OGRE_POTION);
-		magicPotionHighlight.setTip("You can make another with a guam unf potion, adding jangerberries then ground bat bones, and having the Watchtower Wizard enchant it");
+		magicPotionHighlight.setTooltip("You can make another with a guam unf potion, adding jangerberries then ground bat bones, and having the Watchtower Wizard enchant it");
 		magicPotionHighlight.setHighlightInInventory(true);
 	}
 

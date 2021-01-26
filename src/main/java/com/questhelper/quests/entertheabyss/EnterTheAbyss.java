@@ -105,10 +105,10 @@ public class EnterTheAbyss extends BasicQuestHelper
 		passageTeleport = new ItemRequirement("Teleport to Wizards' Tower", ItemCollections.getNecklaceOfPassages());
 
 		scryingOrb = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB_5519);
-		scryingOrb.setTip("You can get another from the Mage of Zamorak in south east Varrock");
+		scryingOrb.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
 
 		scryingOrbCharged = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB);
-		scryingOrbCharged.setTip("You can get another from the Mage of Zamorak in south east Varrock");
+		scryingOrbCharged.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
 	}
 
 	public void loadZones()

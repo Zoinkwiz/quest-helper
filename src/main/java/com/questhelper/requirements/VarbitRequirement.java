@@ -11,7 +11,7 @@ import net.runelite.api.Varbits;
  * {@link Operation}
  */
 @Getter
-public class VarbitRequirement extends Requirement
+public class VarbitRequirement extends AbstractRequirement
 {
 	private final int varbitID;
 	private final int requiredValue;

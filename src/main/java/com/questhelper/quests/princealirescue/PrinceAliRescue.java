@@ -158,7 +158,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		paste = new ItemRequirement("Paste", ItemID.PASTE);
 		keyMould = new ItemRequirement("Key print", ItemID.KEY_PRINT);
 		key = new ItemRequirement("Bronze key", ItemID.BRONZE_KEY);
-		key.setTip("You can get another from Leela for 15 coins");
+		key.setTooltip("You can get another from Leela for 15 coins");
 		yellowDyeReqs = new ItemRequirement("Yellow dye, or 2 onions + 5 coins to obtain during quest", ItemID.YELLOW_DYE);
 		glory = new ItemRequirement("Amulet of Glory for Al Kharid and Draynor Village teleports", ItemCollections.getAmuletOfGlories());
 	}

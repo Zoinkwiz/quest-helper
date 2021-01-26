@@ -25,9 +25,10 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
+import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.WorldLines;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Color;
@@ -138,7 +139,7 @@ public class DetailedQuestStep extends QuestStep
 		started = false;
 	}
 
-	public void addRequirement(Requirement requirement)
+	public void addRequirement(AbstractRequirement requirement)
 	{
 		requirements.add(requirement);
 	}

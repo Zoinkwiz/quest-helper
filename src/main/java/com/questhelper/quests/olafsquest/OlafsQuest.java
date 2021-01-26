@@ -27,8 +27,8 @@ package com.questhelper.quests.olafsquest;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -157,9 +157,9 @@ public class OlafsQuest extends BasicQuestHelper
 		windsweptLogs = new ItemRequirement("Windswept logs", ItemID.WINDSWEPT_LOGS);
 
 		crudeCarving = new ItemRequirement("Crude carving", ItemID.CRUDE_CARVING);
-		crudeCarving.setTip("You can get another from Olaf");
+		crudeCarving.setTooltip("You can get another from Olaf");
 		cruderCarving = new ItemRequirement("Cruder carving", ItemID.CRUDER_CARVING);
-		cruderCarving.setTip("You can get another from Olaf");
+		cruderCarving.setTooltip("You can get another from Olaf");
 
 		key = new ItemRequirement("Key", ItemID.KEY_11039);
 		key.addAlternates(ItemID.KEY_11040, ItemID.KEY_11041, ItemID.KEY_11042, ItemID.KEY_11043);

@@ -103,29 +103,29 @@ public class TheGiantDwarf extends BasicQuestHelper
 	{
 		// Required
 		coins2500 = new ItemRequirement("coins", ItemID.COINS_995, 2500);
-		coins2500.setTip("Bring more to be safe.");
+		coins2500.setTooltip("Bring more to be safe.");
 		coins200 = new ItemRequirement("Coins", ItemID.COINS_995, 200);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
-		logs.setTip("Most logs will work, however, arctic pine logs do not work.");
+		logs.setTooltip("Most logs will work, however, arctic pine logs do not work.");
 		logs.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.TEAK_LOGS, ItemID.MAPLE_LOGS, ItemID.MAHOGANY_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderbox.setHighlightInInventory(true);
 		coal = new ItemRequirement("Coal", ItemID.COAL);
-		coal.setTip("There are rocks in the city, but you need 30 Mining.");
+		coal.setTooltip("There are rocks in the city, but you need 30 Mining.");
 		coal.setHighlightInInventory(true);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
-		ironBar.setTip("Purchasable during the quest.");
+		ironBar.setTooltip("Purchasable during the quest.");
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
-		lawRune.setTip("For Telekinetic Grab.");
+		lawRune.setTooltip("For Telekinetic Grab.");
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
-		airRune.setTip("For Telekinetic Grab.");
+		airRune.setTooltip("For Telekinetic Grab.");
 		sapphires3 = new ItemRequirement("Cut sapphires", ItemID.SAPPHIRE, 3);
-		sapphires3.setTip("Purchasable during the quest.");
+		sapphires3.setTooltip("Purchasable during the quest.");
 		sapphires3.setHighlightInInventory(true);
 		oresBars = new ItemRequirement("Various ores and bars", -1, -1);
-		oresBars.setTip("Obtainable during the quest.");
+		oresBars.setTooltip("Obtainable during the quest.");
 		redberryPie = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
-		redberryPie.setTip("Unless you have previously given Thurgo an extra pie with nothing in return.");
+		redberryPie.setTooltip("Unless you have previously given Thurgo an extra pie with nothing in return.");
 		redberryPieNoInfo = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 
 		// Recommended

@@ -26,6 +26,7 @@ package com.questhelper.quests.bigchompybirdhunting;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -165,7 +166,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.setHighlightInInventory(true);
 		wolfBones4 = new ItemRequirement("Wolf bones", ItemID.WOLF_BONES, 4);
-		wolfBones4.setTip("You can kill wolves (level 64) around Feldip for bones");
+		wolfBones4.setTooltip("You can kill wolves (level 64) around Feldip for bones");
 		acheyLogs = new ItemRequirement("Achey tree logs", ItemID.ACHEY_TREE_LOGS);
 		acheyLogs.setHighlightInInventory(true);
 
@@ -194,7 +195,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		ogreBowInventory = new ItemRequirement("Ogre bow", ItemID.OGRE_BOW);
 
 		emptyBellow = new ItemRequirement("Ogre bellows (empty)", ItemID.OGRE_BELLOWS);
-		emptyBellow.setTip("You can get more from the chest in Rantz's cave");
+		emptyBellow.setTooltip("You can get more from the chest in Rantz's cave");
 		emptyBellow.setHighlightInInventory(true);
 		fullBellow = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS_1);
 		fullBellow.addAlternates(ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);

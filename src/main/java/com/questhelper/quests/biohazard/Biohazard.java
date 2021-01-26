@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.biohazard;
 
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -165,7 +166,7 @@ public class Biohazard extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
-		gasMask.setTip("You can get another from the cupboard in Edmond's house west of Elena's house.");
+		gasMask.setTooltip("You can get another from the cupboard in Edmond's house west of Elena's house.");
 		birdCage = new ItemRequirement("Pigeon cage", ItemID.PIGEON_CAGE);
 		birdCageHighlighted = new ItemRequirement("Pigeon cage", ItemID.PIGEON_CAGE);
 		birdCageHighlighted.setHighlightInInventory(true);
@@ -177,15 +178,15 @@ public class Biohazard extends BasicQuestHelper
 		key = new ItemRequirement("Key", ItemID.KEY_423);
 		distillator = new ItemRequirement("Distillator", ItemID.DISTILLATOR);
 		plagueSample = new ItemRequirement("Plague sample", ItemID.PLAGUE_SAMPLE);
-		plagueSample.setTip("You can get another from Elena in East Ardougne.");
+		plagueSample.setTooltip("You can get another from Elena in East Ardougne.");
 		ethenea = new ItemRequirement("Ethenea", ItemID.ETHENEA);
-		ethenea.setTip("You can get another from Elena in East Ardougne.");
+		ethenea.setTooltip("You can get another from Elena in East Ardougne.");
 		liquidHoney = new ItemRequirement("Liquid honey", ItemID.LIQUID_HONEY);
-		liquidHoney.setTip("You can get another from Elena in East Ardougne.");
+		liquidHoney.setTooltip("You can get another from Elena in East Ardougne.");
 		sulphuricBroline = new ItemRequirement("Sulphuric broline", ItemID.SULPHURIC_BROLINE);
-		sulphuricBroline.setTip("You can get another from Elena in East Ardougne.");
+		sulphuricBroline.setTooltip("You can get another from Elena in East Ardougne.");
 		touchPaper = new ItemRequirement("Touch paper", ItemID.TOUCH_PAPER);
-		touchPaper.setTip("You can get more from the Chemist in Rimmington.");
+		touchPaper.setTooltip("You can get more from the Chemist in Rimmington.");
 		priestGownBottom = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428);
 		priestGownTop = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN);
 		priestGownBottomEquipped = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428, 1, true);

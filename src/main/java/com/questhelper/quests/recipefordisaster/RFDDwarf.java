@@ -119,21 +119,21 @@ public class RFDDwarf extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		coins320 = new ItemRequirement("Coins", ItemID.COINS_995, 320);
-		coins320.setTip("You only need 120 if you wear a Ring of Charos(a)");
+		coins320.setTooltip("You only need 120 if you wear a Ring of Charos(a)");
 		coins100 = new ItemRequirement("Coins", ItemID.COINS_995, 100);
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
-		milk.setTip("You can by this from the  Culinaromancer's Chest");
+		milk.setTooltip("You can by this from the  Culinaromancer's Chest");
 		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
-		flour.setTip("You can by this from the  Culinaromancer's Chest");
+		flour.setTooltip("You can by this from the  Culinaromancer's Chest");
 		egg = new ItemRequirement("Egg", ItemID.EGG);
-		egg.setTip("You can by this from the  Culinaromancer's Chest");
+		egg.setTooltip("You can by this from the  Culinaromancer's Chest");
 		bowlOfWater = new ItemRequirement("Bowl of water", ItemID.BOWL_OF_WATER);
-		bowlOfWater.setTip("You can find a bowl in Lumbridge Castle's Basement and fill it in the nearby sink");
+		bowlOfWater.setTooltip("You can find a bowl in Lumbridge Castle's Basement and fill it in the nearby sink");
 		asgarniaAle4 = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE, 4);
-		asgarniaAle4.setTip("You can buy them for 3 coins each from Kaylee during the quest");
+		asgarniaAle4.setTooltip("You can buy them for 3 coins each from Kaylee during the quest");
 		iceGloves = new ItemRequirement("Ice gloves/normal gloves/telekinetic grab", ItemID.ICE_GLOVES);
 		iceGloves.addAlternates(ItemID.LEATHER_GLOVES);
-		iceGloves.setTip("You can use normal gloves/telekenetic grab instead, but you'll then need to kill an Ice " +
+		iceGloves.setTooltip("You can use normal gloves/telekenetic grab instead, but you'll then need to kill an Ice " +
 			"Fiend");
 		rockCake = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE_7510);
 		rockCakeHighlighted = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE_7510);

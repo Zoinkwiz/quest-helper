@@ -27,9 +27,9 @@ package com.questhelper.quests.royaltrouble;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -232,11 +232,11 @@ public class RoyalTrouble extends BasicQuestHelper
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
 			coalOrPickaxe = new ItemRequirements(LogicType.OR, "Either 5 coal or a pickaxe", coal5, pickaxe);
-			coal5.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
-			coal4.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
-			coal3.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
-			coal2.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
-			coal1.setTip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
+			coal5.setTooltip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
+			coal4.setTooltip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
+			coal3.setTooltip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
+			coal2.setTooltip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
+			coal1.setTooltip("You can mine some from the rocks in the room. There's a pickaxe you can find stuck in a rock just outside the lift room.");
 		}
 		else
 		{
@@ -250,10 +250,10 @@ public class RoyalTrouble extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		antipoison = new ItemRequirement("Any antipoison", ItemCollections.getAntipoisons(), 1);
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL_7968);
-		scroll.setTip("You can get another from King Vargas");
+		scroll.setTooltip("You can get another from King Vargas");
 		prop = new ItemRequirement("Mining prop", ItemID.MINING_PROP);
 		prop.setHighlightInInventory(true);
-		prop.setTip("You can get another from Donal");
+		prop.setTooltip("You can get another from Donal");
 		liftManual = new ItemRequirement("Lift manual", ItemID.LIFT_MANUAL);
 		liftManual.setHighlightInInventory(true);
 		engine = new ItemRequirement("Engine", ItemID.ENGINE);
@@ -276,10 +276,10 @@ public class RoyalTrouble extends BasicQuestHelper
 		diary5.setHighlightInInventory(true);
 
 		box = new ItemRequirement("Heavy box", ItemID.HEAVY_BOX);
-		box.setTip("You can get another from the Guard outside the hole in south east Etceteria");
+		box.setTooltip("You can get another from the Guard outside the hole in south east Etceteria");
 
 		letter = new ItemRequirement("Letter", ItemID.LETTER_7966);
-		letter.setTip("You can get another from Queen Sigrid");
+		letter.setTooltip("You can get another from Queen Sigrid");
 	}
 
 	public void loadZones()

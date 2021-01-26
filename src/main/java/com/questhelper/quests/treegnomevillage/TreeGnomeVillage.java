@@ -168,7 +168,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	{
 		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6);
 		orbsOfProtection = new ItemRequirement("Orbs of protection", ItemID.ORBS_OF_PROTECTION);
-		orbsOfProtection.setTip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
+		orbsOfProtection.setTooltip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
 	}
 
 	private void setupZones()
@@ -281,7 +281,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		climbTheLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2503, 3252, 0), "Climb the ladder");
 
 		ItemRequirement firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
-		firstOrb.setTip("If you have lost the orb you can get another from the chest");
+		firstOrb.setTooltip("If you have lost the orb you can get another from the chest");
 		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
 			"Speak to King Bolren in the centre of the Tree Gnome Maze. You can do can talk to Elkoy outside the maze to travel to the centre.",
 			firstOrb);

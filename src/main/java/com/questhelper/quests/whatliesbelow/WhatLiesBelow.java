@@ -25,8 +25,8 @@
 package com.questhelper.quests.whatliesbelow;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -139,7 +139,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 		folder = new ItemRequirement("Folder", ItemID.AN_EMPTY_FOLDER);
 		folder.addAlternates(ItemID.USED_FOLDER, ItemID.FULL_FOLDER);
-		folder.setTip("You can get another empty folder from Rat");
+		folder.setTooltip("You can get another empty folder from Rat");
 		folder.setHighlightInInventory(true);
 
 		bowl = new ItemRequirement("Bowl", ItemID.BOWL);
@@ -149,17 +149,17 @@ public class WhatLiesBelow extends BasicQuestHelper
 		wandHighlight.setHighlightInInventory(true);
 
 		infusedWand = new ItemRequirement("Infused wand", ItemID.INFUSED_WAND);
-		infusedWand.setTip("You can make another by getting a wand from Surok, and using it on the chaos altar with 15 chaos runes");
+		infusedWand.setTooltip("You can make another by getting a wand from Surok, and using it on the chaos altar with 15 chaos runes");
 		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN);
 
 		beaconRing = new ItemRequirement("Beacon ring", ItemID.BEACON_RING);
-		beaconRing.setTip("You can get another from Zaff");
+		beaconRing.setTooltip("You can get another from Zaff");
 
 		letterToSurok = new ItemRequirement("Letter to Surok", ItemID.LETTER_TO_SUROK);
-		letterToSurok.setTip("You can get another from Rat");
+		letterToSurok.setTooltip("You can get another from Rat");
 
 		suroksLetter = new ItemRequirement("Surok's letter", ItemID.SUROKS_LETTER);
-		suroksLetter.setTip("You can get another from Surok");
+		suroksLetter.setTooltip("You can get another from Surok");
 
 		chronicle = new ItemRequirement("Chronicle for teleports to south of Varrock", ItemID.CHRONICLE);
 	}

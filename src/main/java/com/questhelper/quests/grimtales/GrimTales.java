@@ -194,17 +194,17 @@ public class GrimTales extends BasicQuestHelper
 		goldenGoblin = new ItemRequirement("Golden goblin", ItemID.GOLDEN_GOBLIN);
 		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
 		ogleroot = new ItemRequirement("Shrunk ogleroot", ItemID.SHRUNK_OGLEROOT);
-		ogleroot.setTip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
+		ogleroot.setTooltip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
 
 		oglerootHighlight = new ItemRequirement("Shrunk ogleroot", ItemID.SHRUNK_OGLEROOT);
-		oglerootHighlight.setTip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
+		oglerootHighlight.setTooltip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
 		oglerootHighlight.setHighlightInInventory(true);
 		shrinkPotion = new ItemRequirement("Shrink-me-quick", ItemID.SHRINKMEQUICK);
 		shrinkPotionHighlight = new ItemRequirement("Shrink-me-quick", ItemID.SHRINKMEQUICK);
 		shrinkPotionHighlight.setHighlightInInventory(true);
 
 		magicBeans = new ItemRequirement("Magic beans", ItemID.MAGIC_BEANS);
-		magicBeans.setTip("You can get more from Sylas in Taverley");
+		magicBeans.setTooltip("You can get more from Sylas in Taverley");
 		magicBeans.setHighlightInInventory(true);
 		canHighlight = new ItemRequirement("Watering can with at least 1 use", ItemID.WATERING_CAN1);
 		canHighlight.addAlternates(ItemID.WATERING_CAN2, ItemID.WATERING_CAN3, ItemID.WATERING_CAN4, ItemID.WATERING_CAN5, ItemID.WATERING_CAN6, ItemID.WATERING_CAN7, ItemID.WATERING_CAN8, ItemID.GRICOLLERS_CAN);

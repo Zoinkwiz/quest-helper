@@ -26,9 +26,9 @@ package com.questhelper.quests.kingsransom;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -217,7 +217,7 @@ public class KingsRansom extends BasicQuestHelper
 		blackKnightHelmWorn = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true);
 
 		animateRock = new ItemRequirement("Animate rock scroll", ItemID.ANIMATE_ROCK_SCROLL);
-		animateRock.setTip("If you don't have one, you can get another from Wizard Cromperty in Ardougne");
+		animateRock.setTooltip("If you don't have one, you can get another from Wizard Cromperty in Ardougne");
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
 
@@ -230,7 +230,7 @@ public class KingsRansom extends BasicQuestHelper
 		hairclipOrLockpick.addAlternates(ItemID.HAIR_CLIP);
 
 		holyGrail = new ItemRequirement("Holy grail", ItemID.HOLY_GRAIL);
-		holyGrail.setTip("You can get another from the purple box on the table in Morgan la Faye's Keep");
+		holyGrail.setTooltip("You can get another from the purple box on the table in Morgan la Faye's Keep");
 
 		granite = new ItemRequirement("Any granite", ItemID.GRANITE_2KG);
 		granite.addAlternates(ItemID.GRANITE_5KG, ItemID.GRANITE_500G);

@@ -26,9 +26,9 @@ package com.questhelper.quests.theslugmenace;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;

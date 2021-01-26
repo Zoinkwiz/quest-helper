@@ -203,10 +203,10 @@ public class GertrudesCat extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemID.COINS_995, 100);
 
 		seasonedSardine = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE);
-		seasonedSardine.setTip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
+		seasonedSardine.setTooltip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
 
 		seasonedSardineHighlighted = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE);
-		seasonedSardineHighlighted.setTip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
+		seasonedSardineHighlighted.setTooltip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");
 		seasonedSardineHighlighted.setHighlightInInventory(true);
 
 		sardine = new ItemRequirement("Raw Sardine", ItemID.RAW_SARDINE);

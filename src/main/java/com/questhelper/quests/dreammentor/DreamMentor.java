@@ -26,9 +26,9 @@ package com.questhelper.quests.dreammentor;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.CombatLevelRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.conditional.Conditions;
@@ -187,7 +187,7 @@ public class DreamMentor extends BasicQuestHelper
 		hammer.setHighlightInInventory(true);
 
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
-		goutweed.setTip("You can get one from the Troll Kitchen's Storeroom in Trollheim");
+		goutweed.setTooltip("You can get one from the Troll Kitchen's Storeroom in Trollheim");
 		goutweed.setHighlightInInventory(true);
 
 		dreamPotion = new ItemRequirement("Dream potion", ItemID.DREAM_POTION);

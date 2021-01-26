@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -182,10 +183,10 @@ public class BetweenARock extends BasicQuestHelper
 		page3 = new ItemRequirement("Book page 3", ItemID.BOOK_PAGE_3);
 		pages = new ItemRequirement("Pages", ItemID.PAGES_4573);
 		dwarvenLore = new ItemRequirement("Dwarven lore", ItemID.DWARVEN_LORE);
-		dwarvenLore.setTip("You can get another from Rolad south of Ice Mountain");
+		dwarvenLore.setTooltip("You can get another from Rolad south of Ice Mountain");
 
 		dwarvenLoreHighlight = new ItemRequirement("Dwarven lore", ItemID.DWARVEN_LORE);
-		dwarvenLoreHighlight.setTip("You can get another from Rolad south of Ice Mountain");
+		dwarvenLoreHighlight.setTooltip("You can get another from Rolad south of Ice Mountain");
 		dwarvenLoreHighlight.setHighlightInInventory(true);
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
@@ -198,7 +199,7 @@ public class BetweenARock extends BasicQuestHelper
 		goldCannonballHighlight.setHighlightInInventory(true);
 
 		cannonMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD);
-		cannonMould.setTip("You can buy one from Nulodion above the Dwarven Mine for 5 coins");
+		cannonMould.setTooltip("You can buy one from Nulodion above the Dwarven Mine for 5 coins");
 
 		schematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC);
 

@@ -37,7 +37,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class ItemRequirement extends Requirement
+public class ItemRequirement extends AbstractRequirement
 {
 	@Getter
 	private final int id;
@@ -233,10 +233,10 @@ public class ItemRequirement extends Requirement
 				.build());
 		}
 
-		if (this.getTip() != null && !check(client))
+		if (this.getTooltip() != null && !check(client))
 		{
 			lines.add(LineComponent.builder()
-				.left("- " + this.getTip())
+				.left("- " + this.getTooltip())
 				.leftColor(Color.WHITE)
 				.build());
 		}

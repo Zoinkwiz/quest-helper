@@ -307,21 +307,21 @@ public class MsCheevesSetup
 	private void setupRequirements()
 	{
 		metalSpade = new ItemRequirement("Metal Spade", ItemID.METAL_SPADE);
-		metalSpade.setTip("If you are missing this item pick another up off the table.");
+		metalSpade.setTooltip("If you are missing this item pick another up off the table.");
 		metalSpade.setHighlightInInventory(true);
 		metalSpadeHead = new ItemRequirement("Metal Spade", ItemID.METAL_SPADE_5587);
 		metalSpadeHead.setHighlightInInventory(true);
-		metalSpadeHead.setTip("If you are missing this item pick up a metal spade off the table and use it on the bunsen burner.");
+		metalSpadeHead.setTooltip("If you are missing this item pick up a metal spade off the table and use it on the bunsen burner.");
 		ashes = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashes.setHighlightInInventory(true);
-		ashes.setTip("If you are missing this item pick up a metal spade off the table and use it on the bunsen burner.");
+		ashes.setTooltip("If you are missing this item pick up a metal spade off the table and use it on the bunsen burner.");
 		cupricSulfate = new ItemRequirement("Cupric Sulfate", ItemID.CUPRIC_SULFATE);
 		cupricSulfate.setHighlightInInventory(true);
-		cupricSulfate.setTip("Take from the shelves on the north side");
+		cupricSulfate.setTooltip("Take from the shelves on the north side");
 
 		vialOfLiquid = new ItemRequirement("Vial of Liquid", ItemID.VIAL_OF_LIQUID);
 		vialOfLiquid.setHighlightInInventory(true);
-		vialOfLiquid.setTip("Take from the shelf on the north side or the south side.");
+		vialOfLiquid.setTooltip("Take from the shelf on the north side or the south side.");
 
 		tin = new ItemRequirement("Tin", ItemID.TIN);
 		tin.setHighlightInInventory(true);

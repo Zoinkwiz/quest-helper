@@ -122,7 +122,7 @@ public class HeroesQuest extends BasicQuestHelper
 
 		if (inBlackArmGang.checkCondition(client))
 		{
-			thievesArmband.setTip("You can get another from Katrine in the Black Arm Gang base.");
+			thievesArmband.setTooltip("You can get another from Katrine in the Black Arm Gang base.");
 			getThievesArmband = new ConditionalStep(this, talkToKatrine);
 			getThievesArmband.addStep(hasCandlestick, returnToKatrine);
 			getThievesArmband.addStep(new Conditions(inTreasureRoom, chestOpen), searchChest);
@@ -138,7 +138,7 @@ public class HeroesQuest extends BasicQuestHelper
 		}
 		else
 		{
-			thievesArmband.setTip("You can get another from Straven in the Phoenix Gang base.");
+			thievesArmband.setTooltip("You can get another from Straven in the Phoenix Gang base.");
 			getThievesArmband = new ConditionalStep(this, enterPhoenixBase);
 			getThievesArmband.addStep(new Conditions(hasCandlestick, inPhoenixBase), bringCandlestickToStraven);
 			getThievesArmband.addStep(hasCandlestick, enterPhoenixBaseAgain);
@@ -218,7 +218,7 @@ public class HeroesQuest extends BasicQuestHelper
 		blackPlatebody = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY, 1, true);
 		blackPlatelegs = new ItemRequirement("Black platelegs", ItemID.BLACK_PLATELEGS, 1, true);
 		idPapers = new ItemRequirement("Id papers", ItemID.ID_PAPERS);
-		idPapers.setTip("You can get another from Trobert in the building in east Brimhaven.");
+		idPapers.setTooltip("You can get another from Trobert in the building in east Brimhaven.");
 		candlestick = new ItemRequirement("Pete's candlestick", ItemID.PETES_CANDLESTICK);
 		gripsKey = new ItemRequirement("Grip's keyring", ItemID.GRIPS_KEYRING);
 		fireFeather = new ItemRequirement("Fire feather", ItemID.FIRE_FEATHER);

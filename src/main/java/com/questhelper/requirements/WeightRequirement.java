@@ -30,7 +30,7 @@ import net.runelite.api.Client;
 /**
  * Checks if the player meets a weight check
  */
-public class WeightRequirement extends Requirement
+public class WeightRequirement extends AbstractRequirement
 {
 	private final int weight;
 	private final String text;

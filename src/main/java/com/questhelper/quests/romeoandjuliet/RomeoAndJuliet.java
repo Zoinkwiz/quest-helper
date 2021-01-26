@@ -95,9 +95,9 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		cadavaBerry = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
-		cadavaBerry.setTip("You can pick some from bushes south east of Varrock");
+		cadavaBerry.setTooltip("You can pick some from bushes south east of Varrock");
 		letter = new ItemRequirement("Message", ItemID.MESSAGE);
-		letter.setTip("You can get another from Juliet");
+		letter.setTooltip("You can get another from Juliet");
 		potion = new ItemRequirement("Cadava potion", ItemID.CADAVA_POTION);
 	}
 

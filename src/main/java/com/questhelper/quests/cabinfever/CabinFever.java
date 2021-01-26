@@ -26,6 +26,7 @@ package com.questhelper.quests.cabinfever;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -350,7 +351,7 @@ public class CabinFever extends BasicQuestHelper
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderbox.setTip("You can get another from the ship's hull");
+		tinderbox.setTooltip("You can get another from the ship's hull");
 		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderboxHighlight.setHighlightInInventory(true);
 		floorTinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX_7156);
@@ -684,7 +685,7 @@ public class CabinFever extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
+		List<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.PIRATES_TREASURE, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.RUM_DEAL, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));

@@ -109,13 +109,13 @@ public class APorcineOfInterest extends BasicQuestHelper
 		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE);
 
 		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.REINFORCED_GOGGLES, 1, true);
-		reinforcedGoggles.setTip("You can get another pair from Spria");
+		reinforcedGoggles.setTooltip("You can get another pair from Spria");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		hoof = new ItemRequirement("Sourhog foot", ItemID.SOURHOG_FOOT);
-		hoof.setTip("You can get another from Sourhog's corpse in his cave");
+		hoof.setTooltip("You can get another from Sourhog's corpse in his cave");
 	}
 
 	public void loadZones()

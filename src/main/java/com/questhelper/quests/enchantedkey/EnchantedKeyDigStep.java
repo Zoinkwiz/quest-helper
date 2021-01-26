@@ -27,8 +27,8 @@ package com.questhelper.quests.enchantedkey;
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -179,7 +180,13 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 			return false;
 		}
 
-		final WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return false;
+		}
+
+		final WorldPoint localWorld = player.getWorldLocation();
 
 		if (localWorld == null)
 		{

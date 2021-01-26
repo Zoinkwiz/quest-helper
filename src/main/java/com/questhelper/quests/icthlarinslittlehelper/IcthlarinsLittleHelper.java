@@ -224,7 +224,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS);
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
-		bucketOfSap.setTip("You can get this by using a knife on an evergreen tree with a bucket in your " +
+		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -234,7 +234,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		sphinxsToken = new ItemRequirement("Sphinx's token", ItemID.SPHINXS_TOKEN);
-		sphinxsToken.setTip("You can get another from the Sphinx");
+		sphinxsToken.setTooltip("You can get another from the Sphinx");
 		jar = new ItemRequirement("Canopic jar", ItemID.CANOPIC_JAR);
 		jar.addAlternates(ItemID.CANOPIC_JAR_4679, ItemID.CANOPIC_JAR_4680, ItemID.CANOPIC_JAR_4681);
 		jar.setHighlightInInventory(true);
@@ -242,7 +242,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		linen = new ItemRequirement("Linen", ItemID.LINEN);
 
 		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL_4682);
-		holySymbol.setTip("You can get another from the Carpenter in Sophenham");
+		holySymbol.setTooltip("You can get another from the Carpenter in Sophenham");
 
 		unholySymbol = new ItemRequirement("Unholy symbol", ItemID.UNHOLY_SYMBOL_4683);
 		unholySymbol.setHighlightInInventory(true);

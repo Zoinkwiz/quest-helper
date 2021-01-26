@@ -251,7 +251,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", ItemID.CLIMBING_BOOTS);
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
-		pineappleChunks.setTip("You can make these by using a knife on a pineapple");
+		pineappleChunks.setTooltip("You can make these by using a knife on a pineapple");
 		logs2 = new ItemRequirement("Logs", ItemID.LOGS, 2);
 		logs1 = new ItemRequirement("Logs", ItemCollections.getLogsForFire());
 		grain10 = new ItemRequirement("Grain", ItemID.GRAIN, 10);
@@ -263,22 +263,22 @@ public class EadgarsRuse extends BasicQuestHelper
 		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
 		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
-		vodkaHighlight.setTip("You can buy some from the Gnome Stronghold drinks shop");
+		vodkaHighlight.setTooltip("You can buy some from the Gnome Stronghold drinks shop");
 		vodkaHighlight.setHighlightInInventory(true);
 
 		pineappleChunksHighlight = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
-		pineappleChunksHighlight.setTip("You can cut a pineapple into chunks with a knife");
+		pineappleChunksHighlight.setTooltip("You can cut a pineapple into chunks with a knife");
 		pineappleChunksHighlight.setHighlightInInventory(true);
 
 		alcoChunks = new ItemRequirement("Alco-chunks", ItemID.ALCOCHUNKS);
 		alcoChunks.setHighlightInInventory(true);
 
 		parrot = new ItemRequirement("Drunk parrot", ItemID.DRUNK_PARROT);
-		parrot.setTip("You can get another by using alco-chunks on the aviary hatch of the parrot cage in Ardougne Zoo");
+		parrot.setTooltip("You can get another by using alco-chunks on the aviary hatch of the parrot cage in Ardougne Zoo");
 
 		parrotHighlighted = new ItemRequirement("Parrot", ItemID.DRUNK_PARROT);
 		parrotHighlighted.setHighlightInInventory(true);
-		parrotHighlighted.setTip("You can get another by using alco-chunks on the aviary hatch of the parrot cage in Ardougne Zoo");
+		parrotHighlighted.setTooltip("You can get another by using alco-chunks on the aviary hatch of the parrot cage in Ardougne Zoo");
 
 		robe = new ItemRequirement("Robe", ItemID.DIRTY_ROBE);
 
@@ -306,10 +306,10 @@ public class EadgarsRuse extends BasicQuestHelper
 		trollPotion = new ItemRequirement("Troll potion", ItemID.TROLL_POTION);
 
 		trainedParrot = new ItemRequirement("Drunk parrot", ItemID.DRUNK_PARROT);
-		trainedParrot.setTip("If you lost the parrot Eadgar will have it");
+		trainedParrot.setTooltip("If you lost the parrot Eadgar will have it");
 
 		fakeMan = new ItemRequirement("Fake man", ItemID.FAKE_MAN);
-		fakeMan.setTip("You can get another from Eadgar if you lose it");
+		fakeMan.setTooltip("You can get another from Eadgar if you lose it");
 
 		storeroomKey = new ItemRequirement("Storeroom key", ItemID.STOREROOM_KEY);
 

@@ -25,6 +25,7 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;

@@ -26,9 +26,9 @@ package com.questhelper.quests.rumdeal;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -255,10 +255,10 @@ public class RumDeal extends BasicQuestHelper
 		rakeHighlight.setHighlightInInventory(true);
 		dibber = new ItemRequirement("Dibber", ItemID.SEED_DIBBER);
 		blindweed = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
-		blindweed.setTip("You can get another from Captain Braindeath");
+		blindweed.setTooltip("You can get another from Captain Braindeath");
 
 		blindweedHighlight = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
-		blindweedHighlight.setTip("You can get another from Captain Braindeath");
+		blindweedHighlight.setTooltip("You can get another from Captain Braindeath");
 
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 
@@ -266,14 +266,14 @@ public class RumDeal extends BasicQuestHelper
 		bucketHighlight.setHighlightInInventory(true);
 
 		stagnantWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER_6712);
-		stagnantWater.setTip("You can get more from Captain Braindeath");
+		stagnantWater.setTooltip("You can get more from Captain Braindeath");
 
 		stagnantWaterHighlight = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER_6712);
-		stagnantWaterHighlight.setTip("You can get more from Captain Braindeath");
+		stagnantWaterHighlight.setTooltip("You can get more from Captain Braindeath");
 		stagnantWaterHighlight.setHighlightInInventory(true);
 
 		netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_AND_NET);
-		netBowl.setTip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
+		netBowl.setTooltip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
 
 		sluglings5 = new ItemRequirement("Sluglings", ItemID.SLUGLINGS, 5);
 
@@ -281,7 +281,7 @@ public class RumDeal extends BasicQuestHelper
 		holyWrench.setHighlightInInventory(true);
 
 		wrench = new ItemRequirement("Wrench", ItemID.WRENCH);
-		wrench.setTip("You can get another from Captain Braindeath");
+		wrench.setTooltip("You can get another from Captain Braindeath");
 
 		spiderCarcass = new ItemRequirement("Fever spider body", ItemID.FEVER_SPIDER_BODY);
 
@@ -452,7 +452,7 @@ public class RumDeal extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Get blindweed", Arrays.asList(goDownstairs, rakePatch, plantSeed, waitForGrowth, pickPlant, goUpStairsWithPlant, dropPlant), rake, dibber));
 		allSteps.add(new PanelDetails("Get stagnant water", Arrays.asList(talkToBraindeathAfterPlant, useBucketOnWater, dropWater)));
 
-		List<QuestStep> sluglingSteps = Collections.singletonList(talkToBraindeathAfterWater);
+		List<QuestStep> sluglingSteps = Arrays.asList(talkToBraindeathAfterWater);
 		sluglingSteps.addAll(getSlugs.getDisplaySteps());
 		allSteps.add(new PanelDetails("Get sluglings", sluglingSteps));
 

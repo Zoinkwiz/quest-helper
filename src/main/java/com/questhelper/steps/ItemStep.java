@@ -1,6 +1,6 @@
 package com.questhelper.steps;
 
-import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.overlay.DirectionArrow;
 import java.awt.Graphics2D;
@@ -11,12 +11,12 @@ import net.runelite.api.coords.WorldPoint;
 
 public class ItemStep extends DetailedQuestStep
 {
-	public ItemStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
+	public ItemStep(QuestHelper questHelper, WorldPoint worldPoint, String text, AbstractRequirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
 	}
 
-	public ItemStep(QuestHelper questHelper, String text, Requirement... requirements)
+	public ItemStep(QuestHelper questHelper, String text, AbstractRequirement... requirements)
 	{
 		super(questHelper, text, requirements);
 	}

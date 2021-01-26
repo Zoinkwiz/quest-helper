@@ -27,9 +27,9 @@ package com.questhelper.quests.theknightssword;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
-import com.questhelper.requirements.NpcRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.Requirements;
+import com.questhelper.requirements.NpcRequirement;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -67,7 +67,7 @@ public class TheKnightsSword extends BasicQuestHelper
 
 	//Items Recommended
 	ItemRequirement varrockTeleport, faladorTeleports, homeTele;
-	Requirements searchCupboardReq;
+	ComplexRequirement searchCupboardReq;
 
 	ConditionForStep hasPortrait, hasBluriteOre, hasBluriteSword, inDungeon, inFaladorCastle1, inFaladorCastle2, inFaladorCastle2Bedroom, sirVyinNotInRoom;
 
@@ -136,7 +136,7 @@ public class TheKnightsSword extends BasicQuestHelper
 
 		NpcRequirement sirVyinNotInRoom = new NpcRequirement("Sir Vyin not in the bedroom.", NpcID.SIR_VYVIN, true, faladorCastle2Bedroom);
 		ZoneRequirement playerIsUpstairs = new ZoneRequirement("Upstairs", faladorCastle2);
-		searchCupboardReq = new Requirements(LogicType.AND, "Sir Vyin not in the bedroom.", playerIsUpstairs, sirVyinNotInRoom);
+		searchCupboardReq = new ComplexRequirement(LogicType.AND, "Sir Vyin not in the bedroom.", playerIsUpstairs, sirVyinNotInRoom);
 	}
 
 	public void setupZones()

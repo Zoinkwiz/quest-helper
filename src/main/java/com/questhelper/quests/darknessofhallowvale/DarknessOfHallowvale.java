@@ -26,8 +26,8 @@ package com.questhelper.quests.darknessofhallowvale;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.Spellbook;
 import com.questhelper.requirements.SpellbookRequirement;
@@ -203,7 +203,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		nails8 = new ItemRequirement("Nails", ItemCollections.getNails(), 8);
 		nails4 = new ItemRequirement("Nails", ItemCollections.getNails(), 4);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		pickaxe.setTip("You can get one from one of the miners in the mine");
+		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
@@ -212,7 +212,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		ladderPiece = new ItemRequirement("Ladder top", ItemID.LADDER_TOP);
 
 		message = new ItemRequirement("Message", ItemID.MESSAGE_9633);
-		message.setTip("You can get another from Vertida in the Meiyditch Myreque base");
+		message.setTooltip("You can get another from Vertida in the Meiyditch Myreque base");
 
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		charcoal.setHighlightInInventory(true);
@@ -227,7 +227,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		messageFromFireplace.setHighlightInInventory(true);
 		haemBook = new ItemRequirement("Haemalchemy volume 1", ItemID.HAEMALCHEMY_VOLUME_1);
 		sealedMessage = new ItemRequirement("Sealed message", ItemID.SEALED_MESSAGE);
-		sealedMessage.setTip("You can get another from Safalaan");
+		sealedMessage.setTooltip("You can get another from Safalaan");
 
 		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}

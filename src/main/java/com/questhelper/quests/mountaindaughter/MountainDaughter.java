@@ -174,26 +174,26 @@ public class MountainDaughter extends BasicQuestHelper
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		pole = new ItemRequirement("A staff or a Pole", ItemID.POLE);
 		pole.addAlternates(ItemID.LUNAR_STAFF);
-		pole.setTip("You can find one in the north part of the Mountain Camp.");
+		pole.setTooltip("You can find one in the north part of the Mountain Camp.");
 		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES);
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
 			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
-		gloves.setTip("You can use most other gloves, with a few exceptions (Slayer, Mystic, Ranger, Moonclan, Lunar, Infinity, vambraces).");
+		gloves.setTooltip("You can use most other gloves, with a few exceptions (Slayer, Mystic, Ranger, Moonclan, Lunar, Infinity, vambraces).");
 
 		mud = new ItemRequirement("Mud", ItemID.MUD);
-		mud.setTip("You can get some mud from the mud pool south of Hamal's tent.");
+		mud.setTooltip("You can get some mud from the mud pool south of Hamal's tent.");
 
 		halfRock = new ItemRequirement("Half a rock", ItemID.HALF_A_ROCK);
-		halfRock.setTip("You can get another piece by using a pickaxe on the Ancient Rock in the Mountain Camp.");
+		halfRock.setTooltip("You can get another piece by using a pickaxe on the Ancient Rock in the Mountain Camp.");
 
 		safetyGuarantee = new ItemRequirement("Safety Guarantee", ItemID.SAFETY_GUARANTEE);
-		safetyGuarantee.setTip("You can get another guarantee from Brundt in Rellekka's longhall.");
+		safetyGuarantee.setTooltip("You can get another guarantee from Brundt in Rellekka's longhall.");
 
 		whitePearl = new ItemRequirement("White pearl", ItemID.WHITE_PEARL);
 		whitePearlSeed = new ItemRequirement("White pearl seed", ItemID.WHITE_PEARL_SEED);
 		corpse = new ItemRequirement("Corpse of woman", ItemID.CORPSE_OF_WOMAN);
-		corpse.setTip("You can find this corpse again in the Kendal's cave.");
+		corpse.setTooltip("You can find this corpse again in the Kendal's cave.");
 		muddyRocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
 		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.getSlayerRings());
 		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1);

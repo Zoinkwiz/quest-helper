@@ -24,55 +24,27 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.LogicType;
-import java.util.stream.Stream;
-import lombok.Getter;
+import javax.annotation.Nullable;
 import net.runelite.api.Client;
 
-/**
- * Requirement that combines multiple other {@link Requirement}s using
- * {@link LogicType} to determine if the requirement(s) is/are met.
- */
-@Getter
-public class Requirements extends Requirement
+public abstract class AbstractRequirement implements Requirement
 {
-	private final Requirement[] requirements;
-	private final LogicType logicType;
-	private final String name;
+	private String tooltip;
 
-	/**
-	 * Requirement that combines multiple other {@link Requirement}s using
-	 * {@link LogicType} to determine if the requirement(s) is/are met.
-	 * <br>
-	 * The default {@link LogicType} is {@link LogicType#AND}.
-	 */
-	public Requirements(String name, Requirement... requirements)
-	{
-		this.name = name;
-		this.requirements = requirements;
-		this.logicType = LogicType.AND;
-	}
+	abstract public boolean check(Client client);
 
-	/**
-	 * Requirement that combines multiple other {@link Requirement}s using
-	 * {@link LogicType} to determine if the requirement(s) is/are met.
-	 */
-	public Requirements(LogicType logicType, String name, Requirement... requirements)
+	abstract public String getDisplayText();
+
+	@Nullable
+	@Override
+	public String getTooltip()
 	{
-		this.name = name;
-		this.requirements = requirements;
-		this.logicType = logicType;
+		return tooltip;
 	}
 
 	@Override
-	public boolean check(Client client)
+	public void setTooltip(String tooltip)
 	{
-		return logicType.test(Stream.of(requirements), r -> r.check(client));
-	}
-
-	@Override
-	public String getDisplayText()
-	{
-		return name;
+		this.tooltip = tooltip;
 	}
 }

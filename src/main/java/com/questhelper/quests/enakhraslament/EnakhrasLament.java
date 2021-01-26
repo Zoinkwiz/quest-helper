@@ -218,13 +218,13 @@ public class EnakhrasLament extends BasicQuestHelper
 		rSigil = new ItemRequirement("R sigil", ItemID.R_SIGIL);
 
 		leftLeg = new ItemRequirement("Stone left leg", ItemID.STONE_LEFT_LEG);
-		leftLeg.setTip("You can get another from Lazim");
+		leftLeg.setTooltip("You can get another from Lazim");
 		leftArm = new ItemRequirement("Stone left arm", ItemID.STONE_LEFT_ARM);
-		leftArm.setTip("You can get another from Lazim");
+		leftArm.setTooltip("You can get another from Lazim");
 		rightLeg = new ItemRequirement("Stone right leg", ItemID.STONE_RIGHT_LEG);
-		rightLeg.setTip("You can get another from Lazim");
+		rightLeg.setTooltip("You can get another from Lazim");
 		rightArm = new ItemRequirement("Stone right arm", ItemID.STONE_RIGHT_ARM);
-		rightArm.setTip("You can get another from Lazim");
+		rightArm.setTooltip("You can get another from Lazim");
 
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
 

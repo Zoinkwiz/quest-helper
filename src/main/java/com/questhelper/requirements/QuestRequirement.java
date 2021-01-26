@@ -11,7 +11,7 @@ import net.runelite.api.QuestState;
  * Usually {@link QuestState#FINISHED}.
  */
 @Getter
-public class QuestRequirement extends Requirement
+public class QuestRequirement extends AbstractRequirement
 {
 	private final QuestHelperQuest quest;
 	private final QuestState requiredState;

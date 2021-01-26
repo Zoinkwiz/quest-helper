@@ -149,15 +149,15 @@ public class TrollRomance extends BasicQuestHelper
 		wax = new ItemRequirement("Wax", ItemID.WAX);
 		wax.setHighlightInInventory(true);
 		sled = new ItemRequirement("Sled", ItemID.SLED);
-		sled.setTip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar");
+		sled.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar");
 		sled.setHighlightInInventory(true);
 		waxedSled = new ItemRequirement("Sled", ItemID.SLED_4084);
-		waxedSled.setTip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
+		waxedSled.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
 		sledEquipped = new ItemRequirement("Sled", ItemID.SLED_4084, 1, true);
 		sledEquipped.setHighlightInInventory(true);
-		sledEquipped.setTip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
+		sledEquipped.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
 		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLWEISS);
-		trollweissFlowers.setTip("You can get another from the Trollweiss mountain");
+		trollweissFlowers.setTooltip("You can get another from the Trollweiss mountain");
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}

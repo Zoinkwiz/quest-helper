@@ -90,7 +90,7 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
 		chocolateDust.setHighlightInInventory(true);
 		nettleTea = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
-		nettleTea.setTip("You can make this by using nettles on a bowl of water, then cooking it");
+		nettleTea.setTooltip("You can make this by using nettles on a bowl of water, then cooking it");
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
 		snapeGrass.setHighlightInInventory(true);
 		chocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);

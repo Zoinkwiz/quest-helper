@@ -148,11 +148,11 @@ public class WaterfallQuest extends BasicQuestHelper
 		book.setHighlightInInventory(true);
 		glarialsPebble = new ItemRequirement("Glarial's pebble", ItemID.GLARIALS_PEBBLE);
 		glarialsPebble.setHighlightInInventory(true);
-		glarialsPebble.setTip("You can get another from Golrie under the Tree Gnome Village");
+		glarialsPebble.setTooltip("You can get another from Golrie under the Tree Gnome Village");
 		glarialsUrn = new ItemRequirement("Glarial's urn", ItemID.GLARIALS_URN);
-		glarialsUrn.setTip("You can get another from the chest in Glarial's tomb");
+		glarialsUrn.setTooltip("You can get another from the chest in Glarial's tomb");
 		glarialsAmulet = new ItemRequirement("Glarial's amulet", ItemID.GLARIALS_AMULET, 1, true);
-		glarialsAmulet.setTip("You can get another from the chest in Glarial's tomb");
+		glarialsAmulet.setTooltip("You can get another from the chest in Glarial's tomb");
 		unequippedAmulet = new ItemRequirement("Glarial's amulet", ItemID.GLARIALS_AMULET);
 		key = new ItemRequirement("Key", ItemID.KEY_293);
 		baxKey = new ItemRequirement("Key", ItemID.KEY_298);

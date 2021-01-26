@@ -25,7 +25,7 @@
 package com.questhelper.quests.misthalinmystery;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

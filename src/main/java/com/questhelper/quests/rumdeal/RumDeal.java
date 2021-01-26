@@ -26,6 +26,7 @@ package com.questhelper.quests.rumdeal;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
 import com.questhelper.requirements.QuestRequirement;
@@ -451,7 +452,7 @@ public class RumDeal extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Get blindweed", Arrays.asList(goDownstairs, rakePatch, plantSeed, waitForGrowth, pickPlant, goUpStairsWithPlant, dropPlant), rake, dibber));
 		allSteps.add(new PanelDetails("Get stagnant water", Arrays.asList(talkToBraindeathAfterPlant, useBucketOnWater, dropWater)));
 
-		List<QuestStep> sluglingSteps = Arrays.asList(talkToBraindeathAfterWater);
+		List<QuestStep> sluglingSteps = QuestUtil.toArrayList(talkToBraindeathAfterWater);
 		sluglingSteps.addAll(getSlugs.getDisplaySteps());
 		allSteps.add(new PanelDetails("Get sluglings", sluglingSteps));
 

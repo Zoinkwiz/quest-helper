@@ -43,7 +43,7 @@ import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.conditional.VarplayerCondition;
 import java.util.ArrayList;
 import java.util.Arrays;

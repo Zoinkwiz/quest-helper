@@ -29,7 +29,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.conditional.NpcHintArrowCondition;
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

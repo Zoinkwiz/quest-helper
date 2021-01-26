@@ -24,6 +24,7 @@
  */
 package com.questhelper.banktab;
 
+import com.questhelper.questhelpers.QuestUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +44,7 @@ public class BankTabItems
 	public BankTabItems(String name, BankTabItem... items)
 	{
 		this.name = name;
-		this.items = Arrays.asList(items);
+		this.items = QuestUtil.toArrayList(items);
 	}
 
 	public void addItems(BankTabItem... items)

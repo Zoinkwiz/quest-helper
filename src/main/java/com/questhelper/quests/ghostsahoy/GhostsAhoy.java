@@ -30,6 +30,7 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
@@ -46,9 +47,9 @@ import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
@@ -452,7 +453,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Start the quest", Arrays.asList(enterPhas, talkToVelorina, talkToNecrovarus, talkToVelorinaAfterNecro), ghostspeak, ectoToken4));
 		allSteps.add(new PanelDetails("Getting help", Arrays.asList(talkToCrone, useTeaOnCup, useMilkOnTea, talkToCroneAgain, talkToCroneAgainForShip), ghostspeak, nettleTea, milk));
 
-		List<QuestStep> mapSteps = Arrays.asList(repairShip, searchChestForLobster, killLobster, searchChestAfterLobster);
+		List<QuestStep> mapSteps = QuestUtil.toArrayList(repairShip, searchChestForLobster, killLobster, searchChestAfterLobster);
 		mapSteps.addAll(dyeFlags.getDisplaySteps());
 		mapSteps.addAll(Arrays.asList(useKeyOnChest, goAcrossPlank, openThirdChest, useMapsTogether, enterPhasForDigging, takeRowingBoat, digForBook, returnToPhas));
 		PanelDetails bookPanel;

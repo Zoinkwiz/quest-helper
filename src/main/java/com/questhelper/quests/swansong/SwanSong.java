@@ -26,6 +26,7 @@ package com.questhelper.quests.swansong;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -37,7 +38,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
@@ -318,11 +319,11 @@ public class SwanSong extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHerman, talkToWom), blood5, mist10, lava10));
 		allSteps.add(new PanelDetails("Entering the colony", Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding), combatGear, log, tinderbox, ironBar5, hammerPanel));
-		List<QuestStep> helpingSteps = Arrays.asList(talkToFranklin, useLog, useTinderbox);
+		List<QuestStep> helpingSteps = QuestUtil.toArrayList(talkToFranklin, useLog, useTinderbox);
 		helpingSteps.addAll(repairWall.getDisplaySteps());
 		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, combatGear, log, tinderbox, ironBar5, hammerPanel));
 
-		List<QuestStep> helpingArnoldSteps = Arrays.asList(talkToArnold);
+		List<QuestStep> helpingArnoldSteps = QuestUtil.toArrayList(talkToArnold);
 		helpingArnoldSteps.addAll(fishAndCookMonkfish.getSteps());
 		helpingArnoldSteps.add(talkToHermanAfterTasks);
 

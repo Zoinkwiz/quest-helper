@@ -40,7 +40,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;

@@ -47,7 +47,7 @@ import com.questhelper.steps.TileStep;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;

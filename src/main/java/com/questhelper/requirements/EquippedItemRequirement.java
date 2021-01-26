@@ -27,6 +27,7 @@
 
 package com.questhelper.requirements;
 
+import com.questhelper.requirements.util.ItemSlots;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

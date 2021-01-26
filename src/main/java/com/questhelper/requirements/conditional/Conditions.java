@@ -24,6 +24,8 @@
  */
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Collections;
 import net.runelite.api.Client;

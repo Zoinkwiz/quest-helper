@@ -26,6 +26,7 @@ package com.questhelper.quests.songoftheelves;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -37,8 +38,11 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -535,8 +539,9 @@ public class IorwerthLightPuzzle extends ConditionalStep
 
 	public List<QuestStep> getDisplaySteps()
 	{
-		return Arrays.asList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, goToF0NE, p1Pillar5, p1Pillar6, p1Pillar7, p1Pillar8, p1Pillar9, p1Pillar10,
+		return Stream.of(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, goToF0NE, p1Pillar5, p1Pillar6, p1Pillar7, p1Pillar8, p1Pillar9, p1Pillar10,
 			p1Pillar11, p1Pillar12, p1Pillar13, p1Pillar14, goToF1, p1Pillar15, p1Pillar16, p1Pillar17, p1Pillar18, p1Pillar19, p1Pillar20, p1Pillar21, p1Pillar22, p1Pillar23,
-			p1Pillar24, p1Pillar25, goToF2NE, p1Pillar26, p1Pillar27, p1Pillar28, p1Pillar29, p1Pillar30, p1Pillar31, p1Pillar32);
+			p1Pillar24, p1Pillar25, goToF2NE, p1Pillar26, p1Pillar27, p1Pillar28, p1Pillar29, p1Pillar30, p1Pillar31, p1Pillar32)
+			.collect(QuestUtil.collectToArrayList());
 	}
 }

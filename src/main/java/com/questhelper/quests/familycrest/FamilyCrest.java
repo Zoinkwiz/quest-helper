@@ -35,7 +35,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;

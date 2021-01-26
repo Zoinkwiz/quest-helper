@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.biohazard;
 
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -40,7 +41,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
@@ -341,7 +342,7 @@ public class Biohazard extends BasicQuestHelper
 			enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard, enterMournerHeadquaters,
 			goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
 
-		List<QuestStep> testingSteps = Arrays.asList(talkToTheChemist, goToVarrock, talkToAsyff, talkToGuidor);
+		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist, goToVarrock, talkToAsyff, talkToGuidor);
 		testingSteps.addAll(giveChemicals.getDisplaySteps());
 		testingSteps.addAll(Arrays.asList(goToVarrock, talkToAsyff, talkToGuidor));
 		allSteps.add(new PanelDetails("Testing the plague sample", testingSteps, plagueSample, liquidHoney, ethenea, sulphuricBroline));

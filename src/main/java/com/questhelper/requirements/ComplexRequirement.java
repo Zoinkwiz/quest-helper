@@ -24,7 +24,7 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -36,7 +36,7 @@ import net.runelite.api.Client;
 @Getter
 public class ComplexRequirement extends AbstractRequirement
 {
-	private final AbstractRequirement[] requirements;
+	private final Requirement[] requirements;
 	private final LogicType logicType;
 	private final String name;
 
@@ -46,7 +46,7 @@ public class ComplexRequirement extends AbstractRequirement
 	 * <br>
 	 * The default {@link LogicType} is {@link LogicType#AND}.
 	 */
-	public ComplexRequirement(String name, AbstractRequirement... requirements)
+	public ComplexRequirement(String name, Requirement... requirements)
 	{
 		this.name = name;
 		this.requirements = requirements;
@@ -57,7 +57,7 @@ public class ComplexRequirement extends AbstractRequirement
 	 * Requirement that combines multiple other {@link AbstractRequirement}s using
 	 * {@link LogicType} to determine if the requirement(s) is/are met.
 	 */
-	public ComplexRequirement(LogicType logicType, String name, AbstractRequirement... requirements)
+	public ComplexRequirement(LogicType logicType, String name, Requirement... requirements)
 	{
 		this.name = name;
 		this.requirements = requirements;

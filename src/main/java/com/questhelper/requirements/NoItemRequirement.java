@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.requirements.util.ItemSlots;
 import java.awt.Color;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;

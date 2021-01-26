@@ -1,5 +1,6 @@
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 

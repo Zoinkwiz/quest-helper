@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
 import net.runelite.api.Client;
 

@@ -26,6 +26,7 @@ package com.questhelper.quests.songoftheelves;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -36,8 +37,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -163,6 +164,7 @@ public class CadarnLightPuzzle extends ConditionalStep
 
 	public List<QuestStep> getDisplaySteps()
 	{
-		return Arrays.asList(collectMirrors, p1Pillar1, p1Pillar2, goDownstairs, p1Pillar3, p1Pillar4, p1Pillar5, p1Pillar6, p1Pillar7, p1Pillar8);
+		return Stream.of(collectMirrors, p1Pillar1, p1Pillar2, goDownstairs, p1Pillar3, p1Pillar4, p1Pillar5, p1Pillar6, p1Pillar7, p1Pillar8)
+			.collect(QuestUtil.collectToArrayList());
 	}
 }

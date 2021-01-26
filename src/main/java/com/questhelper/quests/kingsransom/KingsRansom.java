@@ -32,7 +32,7 @@ import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.WidgetModelCondition;
 import java.util.ArrayList;

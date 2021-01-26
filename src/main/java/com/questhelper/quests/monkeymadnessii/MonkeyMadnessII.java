@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.*;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -39,10 +40,10 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.FollowerCondition;
 import com.questhelper.requirements.conditional.ItemCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.WidgetTextCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
@@ -680,7 +681,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 				usePestleOnLemon, useNotesOnCandles, usePestleOnGrapes, useBrushOnNote, readScrawledNote, useTranslationOnNote, goShowNoteToNarnode, goTalkToAnitaWithNote,
 				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana), lemon, grapesHighlighted, translationBook, pestleHighlighted, logs, noCombatItems));
 
-		List<QuestStep> chapter2Steps = Arrays.asList(talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor);
+		List<QuestStep> chapter2Steps = QuestUtil.toArrayList(talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor);
 		chapter2Steps.addAll(((AgilityDungeonSteps) (doAgilitySection)).getDisplaySteps());
 		chapter2Steps.addAll(Arrays.asList(pickUpKrukCorpse, leaveKrukDungeon, goDownToZooknock, talkToZooknock, talkToAwowAsKruk, talkToGarkorAfterKruk));
 		allSteps.add(new PanelDetails("Going undercover", chapter2Steps, ninjaGreegree, mspeakAmulet, talismanOr1000Coins, lightSource, combatGear, food, prayerPotions, staminaPotions));
@@ -688,7 +689,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeating trolls and ogres",
 			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear));
 
-		List<QuestStep> sabotageSteps = Arrays.asList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
+		List<QuestStep> sabotageSteps = QuestUtil.toArrayList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
 			talkToGarkorAfterSmith, talkToMonkeyGuard);
 		sabotageSteps.addAll(sabotageShips.getDisplaySteps());
 		allSteps.add(new PanelDetails("Sabotage",

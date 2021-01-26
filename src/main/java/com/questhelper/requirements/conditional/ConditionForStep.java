@@ -25,6 +25,7 @@
 package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;

@@ -24,7 +24,7 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 
 /**

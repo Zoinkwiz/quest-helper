@@ -38,6 +38,7 @@ import com.questhelper.requirements.Requirement;
 import java.awt.Graphics;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -153,14 +154,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			return true;
 		}
 
-		for (Requirement generalRequirement : getGeneralRequirements())
-		{
-			if (generalRequirement != null && !generalRequirement.check(client))
-			{
-				return false;
-			}
-		}
-		return true;
+		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r -> r.check(client));
 	}
 
 	@Override

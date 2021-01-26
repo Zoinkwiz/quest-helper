@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.requirements.util.Spellbook;
 import net.runelite.api.Client;
 
 public class SpellbookRequirement extends AbstractRequirement

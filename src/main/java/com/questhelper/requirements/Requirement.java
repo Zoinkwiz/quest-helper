@@ -30,28 +30,62 @@ package com.questhelper.requirements;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
+/**
+ * A requirement that must be passed.
+ * This is used in both rendering overlays and quest logic.<br>
+ * All {@link Requirement}s are run on the {@link net.runelite.client.callback.ClientThread}.
+ */
 public interface Requirement
 {
+	/**
+	 * Check the {@link Client} that it meets this requirement.
+	 * @param client client to check
+	 * @return true if the client meets this requirement
+	 */
 	boolean check(Client client);
 
+	/**
+	 * @return display text to be used for rendering either on overlays or panels. Cannot be null.
+	 */
+	@Nonnull
 	String getDisplayText();
 
+	/**
+	 * The {@link Color} used to render the {@link #getDisplayText()} depending on what {@link #check(Client)}
+	 * returns.<br>
+	 * By default, if {@link #check(Client)} returns true, {@link Color#GREEN} is used, otherwise {@link Color#RED}.
+	 *
+	 * @param client client to check
+	 * @return the {@link Color} to use
+	 */
 	default Color getColor(Client client)
 	{
 		return check(client) ? Color.GREEN : Color.RED;
 	}
 
+	/**
+	 * If this requirement will be displayed on a quest's side panels they can have tooltips to
+	 * give extra information.
+	 *
+	 * @return the tooltip text to display
+	 */
 	@Nullable
 	default String getTooltip()
 	{
 		return null;
 	}
 
-	default void setTooltip(String tooltip) {}
+	/**
+	 * Set the tooltip for this requirement
+	 *
+	 * @param tooltip the new tooltip
+	 */
+	default void setTooltip(@Nullable String tooltip) {}
 
 	default List<LineComponent> getDisplayTextWithChecks(Client client)
 	{

@@ -25,6 +25,7 @@
 package com.questhelper.steps.conditional;
 
 import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -38,7 +39,7 @@ public abstract class ConditionForStep
 	protected LogicType logicType;
 
 	@Getter
-	protected ArrayList<ConditionForStep> conditions;
+	protected List<ConditionForStep> conditions = new ArrayList<>();
 
 	abstract public boolean checkCondition(Client client);
 

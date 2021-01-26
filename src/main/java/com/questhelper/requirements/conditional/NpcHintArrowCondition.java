@@ -25,31 +25,31 @@
 package com.questhelper.requirements.conditional;
 
 import com.questhelper.Zone;
-import java.util.ArrayList;
+import com.questhelper.questhelpers.QuestUtil;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 
 public class NpcHintArrowCondition extends ConditionForStep
 {
-	private final ArrayList<Integer> npcIDs;
+	private final List<Integer> npcIDs;
 
 	private final Zone zone;
 
 	public NpcHintArrowCondition(int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
 		this.zone = null;
 	}
 
 	public NpcHintArrowCondition(WorldPoint worldPoint, int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
 	public NpcHintArrowCondition(Zone zone, int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
 		this.zone = zone;
 	}
 

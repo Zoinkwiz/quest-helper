@@ -25,13 +25,14 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -117,11 +118,11 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public ArrayList<Integer> getAllIds()
+	public List<Integer> getAllIds()
 	{
 		return itemRequirements.stream()
 			.map(ItemRequirement::getAllIds)
 			.flatMap(Collection::stream)
-			.collect(Collectors.toCollection(ArrayList::new));
+			.collect(QuestUtil.collectToArrayList());
 	}
 }

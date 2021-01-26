@@ -26,9 +26,8 @@ package com.questhelper.panel.questorders;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
-import java.util.Arrays;
+import com.questhelper.questhelpers.QuestUtil;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 import lombok.Getter;
@@ -38,7 +37,7 @@ public class QuestOrders
 	// Test for 'The', 'A', 'An' at the start of a string followed by a word boundary (space/tab); this ignores case sensitivity
 	private static final Pattern QUEST_NAME_PATTERN = Pattern.compile("(?i)(a\\b)|(the\\b)|(an\\b)", Pattern.CASE_INSENSITIVE);
 	@Getter
-	private static final List<QuestHelperQuest> optimalOrder = new LinkedList<>(Arrays.asList(
+	private static final List<QuestHelperQuest> optimalOrder = QuestUtil.toLinkedList(
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.X_MARKS_THE_SPOT,
 		QuestHelperQuest.THE_RESTLESS_GHOST,
@@ -210,7 +209,7 @@ public class QuestOrders
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.THE_MAGE_ARENA,
 		QuestHelperQuest.THE_MAGE_ARENA_II
-	));
+	);
 
 	public static String normalizeQuestName(String questName)
 	{

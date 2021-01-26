@@ -28,22 +28,18 @@ import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -390,10 +386,9 @@ public class MeilyrLightPuzzle extends ConditionalStep
 
 	public List<QuestStep> getDisplaySteps()
 	{
-		return Stream.of(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, goToF0Middle, p1Pillar3, p1Pillar4, p1Pillar5,
+		return QuestUtil.toArrayList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, goToF0Middle, p1Pillar3, p1Pillar4, p1Pillar5,
 			p1Pillar6, p1Pillar7, p1Pillar8, goToF0SW, p1Pillar9, p1Pillar10, goToF1SW, p1Pillar11, goToF2SW, p1Pillar12,
 			goDownToF1SW, p1Pillar13, goToF2E, p1Pillar14, p1Pillar15, goToF2NW, climbAcrossBooks, p1Pillar16, p1Pillar17, p1Pillar18,
-			p1Pillar19)
-			.collect(QuestUtil.collectToArrayList());
+			p1Pillar19);
 	}
 }

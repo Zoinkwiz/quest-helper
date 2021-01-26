@@ -28,18 +28,17 @@ import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.List;
-import java.util.stream.Stream;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -311,9 +310,8 @@ public class AmloddLightPuzzle extends ConditionalStep
 
 	public List<QuestStep> getDisplaySteps()
 	{
-		return Stream.of(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, p1Pillar5, p1Pillar6, p1Pillar7, goToF0NW,
+		return QuestUtil.toArrayList(resetPuzzle, collectMirrors, p1Pillar1, p1Pillar2, p1Pillar3, p1Pillar4, p1Pillar5, p1Pillar6, p1Pillar7, goToF0NW,
 			goToF0NW, p1Pillar8, goToF1NW, p1Pillar9, p1Pillar10, goToF0Middle, p1Pillar11, p1Pillar12, p1Pillar13, p1Pillar14, p1Pillar15,
-			p1Pillar16, p1Pillar17, p1Pillar18, p1Pillar19, p1Pillar20)
-			.collect(QuestUtil.collectToArrayList());
+			p1Pillar16, p1Pillar17, p1Pillar18, p1Pillar19, p1Pillar20);
 	}
 }

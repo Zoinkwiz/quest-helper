@@ -30,7 +30,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.requirements.conditional.LogicType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

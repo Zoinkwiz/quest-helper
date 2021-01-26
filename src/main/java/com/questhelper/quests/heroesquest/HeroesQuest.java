@@ -36,15 +36,15 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemCondition;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.ObjectCondition;
-import com.questhelper.steps.conditional.Operation;
-import com.questhelper.steps.conditional.SkillCondition;
-import com.questhelper.steps.conditional.VarplayerCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.conditional.Operation;
+import com.questhelper.requirements.conditional.SkillCondition;
+import com.questhelper.requirements.conditional.VarplayerCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,7 +57,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -120,7 +120,7 @@ public class HeroesQuest extends BasicQuestHelper
 		getLavaEel.addStep(hasSlime, makeBlamishOil);
 		getLavaEel.setLockingCondition(hasLavaEel);
 
-		if (inBlackArmGang.checkCondition(client))
+		if (inBlackArmGang.check(client))
 		{
 			thievesArmband.setTooltip("You can get another from Katrine in the Black Arm Gang base.");
 			getThievesArmband = new ConditionalStep(this, talkToKatrine);
@@ -426,7 +426,7 @@ public class HeroesQuest extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Ice Queen (level 111) for ice gloves");
-		if (!inBlackArmGang.checkCondition(client))
+		if (!inBlackArmGang.check(client))
 		{
 			reqs.add("Grip (level 26)");
 		}
@@ -442,7 +442,7 @@ public class HeroesQuest extends BasicQuestHelper
 		reqs.add(harralanderUnf);
 		reqs.add(pickaxe);
 		reqs.add(iceGloves);
-		if (inBlackArmGang.checkCondition(client))
+		if (inBlackArmGang.check(client))
 		{
 			reqs.add(blackFullHelm);
 			reqs.add(blackPlatebody);
@@ -474,7 +474,7 @@ public class HeroesQuest extends BasicQuestHelper
 	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		if (inBlackArmGang.checkCondition(client))
+		if (inBlackArmGang.check(client))
 		{
 			reqs.add("You will need to find another player who joined the Phoenix Gang during the Shield of Arrav quest to assist you. If one of you is an Ironman, you can use the necessary items on one another to trade them.");
 		}
@@ -496,7 +496,7 @@ public class HeroesQuest extends BasicQuestHelper
 		secondPanel.setLockingStep(getLavaEel);
 		PanelDetails thirdPanel;
 
-		if (inBlackArmGang.checkCondition(client))
+		if (inBlackArmGang.check(client))
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband",
 				Arrays.asList(talkToKatrine, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey, enterTreasureRoom, searchChest, returnToKatrine),

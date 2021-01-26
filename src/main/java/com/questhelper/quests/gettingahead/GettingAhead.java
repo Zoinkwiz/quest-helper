@@ -33,7 +33,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

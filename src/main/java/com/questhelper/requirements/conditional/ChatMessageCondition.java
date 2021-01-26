@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 
-public abstract class ConditionForStep
+public class ChatMessageCondition extends ConditionForStep
 {
 	@Setter
-	@Getter
-	protected boolean hasPassed;
-	protected boolean onlyNeedToPassOnce;
-	protected LogicType logicType;
+	private boolean hasReceivedChatMessage = false;
 
-	@Getter
-	protected List<ConditionForStep> conditions = new ArrayList<>();
+	private ConditionForStep condition;
 
-	abstract public boolean checkCondition(Client client);
+	private final List<String> messages;
 
-	public void initialize(Client client)
+	public ChatMessageCondition(String... message)
 	{
+		this.messages = Arrays.asList(message);
 	}
 
-	public void loadingHandler()
+	public ChatMessageCondition(ConditionForStep condition, String... message)
 	{
+		this.condition = condition;
+		this.messages = Arrays.asList(message);
+	}
+
+	@Override
+	public boolean check(Client client)
+	{
+		return hasReceivedChatMessage;
+	}
+
+	public void validateCondition(Client client, String chatMessage) {
+		if (!hasReceivedChatMessage)
+		{
+			if (messages.contains(chatMessage))
+			{
+				if (condition == null || condition.check(client))
+				{
+					hasReceivedChatMessage = true;
+				}
+			}
+		}
 	}
 }

@@ -22,59 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.math.BigInteger;
+import com.questhelper.requirements.Requirement;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 
-public class VarbitCondition extends ConditionForStep
+public abstract class ConditionForStep implements Requirement
 {
+	@Setter
+	@Getter
+	protected boolean hasPassed;
+	protected boolean onlyNeedToPassOnce;
+	protected LogicType logicType;
 
-	private final int varbitId;
-	private final int value;
-	private final Operation operation;
+	@Getter
+	protected List<ConditionForStep> conditions = new ArrayList<>();
 
-	private final boolean bitIsSet;
-	private final int bitPosition;
+	@Override
+	abstract public boolean check(Client client);
 
-	public VarbitCondition(int varbitId, int value)
+	public void initialize(Client client)
 	{
-		this.varbitId = varbitId;
-		this.value = value;
-		this.operation = Operation.EQUAL;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
 	}
 
-	public VarbitCondition(int varbitId, int value, Operation operation)
+	public void loadingHandler()
 	{
-		this.varbitId = varbitId;
-		this.value = value;
-		this.operation = operation;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
-	}
-
-	public VarbitCondition(int varbitId, boolean bitIsSet, int bitPosition)
-	{
-		this.varbitId = varbitId;
-		this.value = -1;
-		this.operation = Operation.EQUAL;
-
-		this.bitPosition = bitPosition;
-		this.bitIsSet = bitIsSet;
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public String getDisplayText() // conditions don't need display text (yet?)
 	{
-		if (bitPosition >= 0)
-		{
-			return bitIsSet == BigInteger.valueOf(client.getVarbitValue(varbitId)).testBit(bitPosition);
-		}
-
-		return operation.check(client.getVarbitValue(varbitId), value);
+		return null;
 	}
 }

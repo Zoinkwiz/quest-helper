@@ -29,11 +29,10 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestVarbits;
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
-import com.questhelper.steps.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -338,7 +337,7 @@ public abstract class QuestStep implements Module
 
 	public boolean isLocked()
 	{
-		boolean autoLocked = lockingCondition != null && lockingCondition.checkCondition(client);
+		boolean autoLocked = lockingCondition != null && lockingCondition.check(client);
 		unlockable = !autoLocked;
 		if (autoLocked)
 		{

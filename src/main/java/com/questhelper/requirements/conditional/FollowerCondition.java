@@ -1,4 +1,4 @@
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -14,7 +14,7 @@ public class FollowerCondition extends ConditionForStep
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
 		for (NPC npc : client.getNpcs())
 		{

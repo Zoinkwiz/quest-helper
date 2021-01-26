@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,14 +92,14 @@ public class Conditions extends ConditionForStep
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
 		if (onlyNeedToPassOnce && hasPassed)
 		{
 			return true;
 		}
 
-		int conditionsPassed = (int) conditions.stream().filter(c -> c.checkCondition(client)).count();
+		int conditionsPassed = (int) conditions.stream().filter(c -> c.check(client)).count();
 
 		if (operation != null)
 		{

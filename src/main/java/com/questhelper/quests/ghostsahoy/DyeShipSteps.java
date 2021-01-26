@@ -32,8 +32,8 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -159,11 +159,11 @@ public class DyeShipSteps extends DetailedOwnerStep
 		}
 		if (!coloursKnown)
 		{
-			if (onDeck.checkCondition(client))
+			if (onDeck.check(client))
 			{
 				startUpStep(goUpToMast);
 			}
-			else if (onTopOfShip.checkCondition(client))
+			else if (onTopOfShip.check(client))
 			{
 				startUpStep(searchMast);
 			}
@@ -186,11 +186,11 @@ public class DyeShipSteps extends DetailedOwnerStep
 		{
 			startUpStep(dyeSkull);
 		}
-		else if (onTopOfShip.checkCondition(client))
+		else if (onTopOfShip.check(client))
 		{
 			startUpStep(goDownToMan);
 		}
-		else if (onDeck.checkCondition(client))
+		else if (onDeck.check(client))
 		{
 			startUpStep(talkToMan);
 		}

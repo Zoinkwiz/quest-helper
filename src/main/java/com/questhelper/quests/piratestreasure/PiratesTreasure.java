@@ -41,7 +41,7 @@ import com.questhelper.steps.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.PIRATES_TREASURE

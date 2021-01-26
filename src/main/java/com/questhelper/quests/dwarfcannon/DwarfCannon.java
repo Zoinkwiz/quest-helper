@@ -2,7 +2,7 @@ package com.questhelper.quests.dwarfcannon;
 
 import com.questhelper.*;
 import com.questhelper.steps.*;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 
 import java.util.*;
 

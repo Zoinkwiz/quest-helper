@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import java.math.BigInteger;
+import net.runelite.api.Client;
 
-public enum LogicType
+public class VarplayerCondition extends ConditionForStep
 {
-	/** Returns true only if all inputs match the supplied predicate. */
-	AND(Stream::allMatch),
-	/** Returns true if any inputs match the supplied predicate. */
-	OR(Stream::anyMatch),
-	/** The output is false is all inputs match the supplied predicate. Otherwise returns true. */
-	NAND((s,p) -> !s.allMatch(p)),
-	/** Returns true if all elements do not match the supplied predicate. */
-	NOR(Stream::noneMatch),
-	/** Returns true if either, but not both, inputs match the given predicate.
-	 * This only tests the first two elements of the stream.
-	 */
-	XOR((s,p) -> s.filter(e -> p.test(e)).limit(2).count() == 1),
-	;
 
-	private final BiFunction<Stream, Predicate, Boolean> function;
-	LogicType(BiFunction<Stream, Predicate, Boolean> func)
+	private final int varplayerId;
+	private final int value;
+	private final Operation operation;
+
+	private final int bitPosition;
+	private final boolean bitIsSet;
+
+	public VarplayerCondition(int varplayerId, int value)
 	{
-		this.function = func;
+		this.varplayerId = varplayerId;
+		this.value = value;
+		this.operation = Operation.EQUAL;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
 	}
 
-	public <T> boolean test(Stream<T> stream, Predicate<T> predicate)
+	public VarplayerCondition(int varplayerId, int value, Operation operation)
 	{
-		return function.apply(stream, predicate);
+		this.varplayerId = varplayerId;
+		this.value = value;
+		this.operation = operation;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+	}
+
+	public VarplayerCondition(int varplayerId, boolean bitIsSet, int bitPosition)
+	{
+		this.varplayerId = varplayerId;
+		this.value = -1;
+		this.operation = Operation.EQUAL;
+
+		this.bitPosition = bitPosition;
+		this.bitIsSet = bitIsSet;
+	}
+
+	@Override
+	public boolean check(Client client)
+	{
+		if (bitPosition >= 0)
+		{
+			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
+		}
+		return operation.check(client.getVarpValue(varplayerId), value);
 	}
 }

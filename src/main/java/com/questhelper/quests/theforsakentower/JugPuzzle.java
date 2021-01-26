@@ -34,12 +34,12 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.LogicType;
 import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -173,38 +173,38 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 			}
 		}
 
-		if (!has5Gallon.checkCondition(client))
+		if (!has5Gallon.check(client))
 		{
 			jugs.put("5", 0);
 		}
 
-		if (!has8Gallon.checkCondition(client))
+		if (!has8Gallon.check(client))
 		{
 			jugs.put("8", 0);
 		}
 
 
-		if (inBasement.checkCondition(client))
+		if (inBasement.check(client))
 		{
 			startUpStep(goUpToGroundFloor);
 		}
-		else if (inFirstFloor.checkCondition(client))
+		else if (inFirstFloor.check(client))
 		{
 			startUpStep(goDownToGroundFloor);
 		}
-		else if (inSecondFloor.checkCondition(client))
+		else if (inSecondFloor.check(client))
 		{
 			startUpStep(goDownToFirstFloor);
 		}
-		else if (missingTinderbox.checkCondition(client))
+		else if (missingTinderbox.check(client))
 		{
 			startUpStep(searchCupboardTinderbox);
 		}
-		else if (hasFilledWithFuel.checkCondition(client))
+		else if (hasFilledWithFuel.check(client))
 		{
 			startUpStep(lightFurnace);
 		}
-		else if (!has5Gallon.checkCondition(client) || !has8Gallon.checkCondition(client))
+		else if (!has5Gallon.check(client) || !has8Gallon.check(client))
 		{
 			startUpStep(searchCupboardJug);
 		}

@@ -31,11 +31,11 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;
@@ -219,27 +219,27 @@ public class MM2Sabotage extends ConditionalStep
 	{
 		super.onGameTick(event);
 		int currentlyNeededExplosives = 6;
-		if (placedSatchel1.checkCondition(client))
+		if (placedSatchel1.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel2.checkCondition(client))
+		if (placedSatchel2.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel3.checkCondition(client))
+		if (placedSatchel3.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel4.checkCondition(client))
+		if (placedSatchel4.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel5.checkCondition(client))
+		if (placedSatchel5.check(client))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel6.checkCondition(client))
+		if (placedSatchel6.check(client))
 		{
 			currentlyNeededExplosives--;
 		}

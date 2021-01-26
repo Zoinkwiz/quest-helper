@@ -22,115 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
 import com.questhelper.Zone;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.NpcChanged;
 
-public class NpcCondition extends ConditionForStep
+public class NpcHintArrowCondition extends ConditionForStep
 {
-	private final int npcID;
-	private final ArrayList<NPC> npcs = new ArrayList<>();
-	private boolean npcInScene = false;
+	private final ArrayList<Integer> npcIDs;
+
 	private final Zone zone;
 
-	public NpcCondition(int npcID)
-	{
-		this.npcID = npcID;
+	public NpcHintArrowCondition(int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
 		this.zone = null;
 	}
 
-	public NpcCondition(int npcID, WorldPoint worldPoint)
-	{
-		this.npcID = npcID;
+	public NpcHintArrowCondition(WorldPoint worldPoint, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
-	public NpcCondition(int npcID, Zone zone)
-	{
-		this.npcID = npcID;
+	public NpcHintArrowCondition(Zone zone, int... npcIDs) {
+		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(Collectors.toCollection(ArrayList::new));
 		this.zone = zone;
 	}
 
-	@Override
-	public void initialize(Client client)
+	public boolean check(Client client)
 	{
-		for (NPC npc : client.getNpcs())
+		NPC currentNPC = client.getHintArrowNpc();
+		if (currentNPC == null)
 		{
-			if (npcID == npc.getId())
-			{
-				this.npcs.add(npc);
-				npcInScene = true;
-			}
-		}
-	}
-
-	public boolean checkCondition(Client client)
-	{
-		if (zone != null)
-		{
-			for (NPC npc : npcs)
-			{
-				if (npc != null)
-				{
-					WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-					if (wp != null)
-					{
-						if (zone.contains(wp))
-						{
-							return true;
-						}
-					}
-				}
-			}
 			return false;
 		}
-		else
-		{
-			return npcInScene;
-		}
-	}
+		WorldPoint wp = WorldPoint.fromLocalInstance(client, currentNPC.getLocalLocation());
 
-	public void checkNpcSpawned(NPC npc)
-	{
-		if (npc.getId() == this.npcID)
+		if (zone != null && !zone.contains(wp))
 		{
-			npcs.add(npc);
-			npcInScene = true;
-		}
-	}
-
-	public void checkNpcDespawned(NPC npc)
-	{
-		if (npcs.contains(npc))
-		{
-			npcs.remove(npc);
-			npcInScene = false;
-		}
-	}
-
-	public void checkNpcChanged(NpcChanged npcChanged)
-	{
-		if (npcs.contains(npcChanged.getNpc()) && npcChanged.getNpc().getId() != this.npcID)
-		{
-			this.npcs.remove(npcChanged.getNpc());
-			npcInScene = false;
+			return false;
 		}
 
-		if (npcChanged.getNpc().getId() == this.npcID)
+		if (npcIDs.contains(currentNPC.getId()))
 		{
-			this.npcs.add(npcChanged.getNpc());
-			npcInScene = true;
+			return true;
 		}
-	}
 
-	@Override
-	public void loadingHandler()
-	{
-		npcInScene = false;
+		return false;
 	}
 }

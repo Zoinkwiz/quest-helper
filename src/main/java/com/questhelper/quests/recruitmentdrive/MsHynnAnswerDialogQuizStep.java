@@ -30,8 +30,8 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
@@ -92,7 +92,7 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 		ConditionForStep step = new ConditionForStep()
 		{
 			@Override
-			public boolean checkCondition(Client client)
+			public boolean check(Client client)
 			{
 				return dialogEntry;
 			}

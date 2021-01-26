@@ -3,8 +3,8 @@ package com.questhelper.quests.lunardiplomacy;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -73,35 +73,35 @@ public class BringLunarItems extends NpcStep
 		this.requirements = new ArrayList<>();
 		this.requirements.add(sealOfPassage);
 
-		if (!handedInAmulet.checkCondition(client))
+		if (!handedInAmulet.check(client))
 		{
 			this.requirements.add(amulet);
 		}
-		if (!handedInBoots.checkCondition(client))
+		if (!handedInBoots.check(client))
 		{
 			this.requirements.add(boots);
 		}
-		if (!handedInCape.checkCondition(client))
+		if (!handedInCape.check(client))
 		{
 			this.requirements.add(cape);
 		}
-		if (!handedInGloves.checkCondition(client))
+		if (!handedInGloves.check(client))
 		{
 			this.requirements.add(gloves);
 		}
-		if (!handedInHelm.checkCondition(client))
+		if (!handedInHelm.check(client))
 		{
 			this.requirements.add(helm);
 		}
-		if (!handedInLegs.checkCondition(client))
+		if (!handedInLegs.check(client))
 		{
 			this.requirements.add(legs);
 		}
-		if (!handedInRing.checkCondition(client))
+		if (!handedInRing.check(client))
 		{
 			this.requirements.add(ring);
 		}
-		if (!handedInTorso.checkCondition(client))
+		if (!handedInTorso.check(client))
 		{
 			this.requirements.add(torso);
 		}

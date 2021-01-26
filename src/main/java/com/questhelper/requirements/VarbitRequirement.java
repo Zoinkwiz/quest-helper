@@ -1,6 +1,6 @@
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.Operation;
+import com.questhelper.requirements.conditional.Operation;
 import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;

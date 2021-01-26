@@ -25,8 +25,8 @@
 package com.questhelper.quests.monkeymadnessii;
 
 import com.questhelper.Zone;
-import com.questhelper.steps.conditional.ChatMessageCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ChatMessageCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;

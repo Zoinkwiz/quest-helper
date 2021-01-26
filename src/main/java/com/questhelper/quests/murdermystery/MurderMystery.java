@@ -25,7 +25,7 @@
 package com.questhelper.quests.murdermystery;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.steps.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,10 +46,10 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.LogicType;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(

@@ -22,17 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import com.google.common.primitives.Ints;
 import java.util.Collection;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectComposition;
-import net.runelite.api.ObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
-import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
@@ -55,7 +50,7 @@ public class ObjectCondition extends ConditionForStep
 		this.worldPoint = worldPoint;
 	}
 
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
 		if (worldPoint != null)
 		{

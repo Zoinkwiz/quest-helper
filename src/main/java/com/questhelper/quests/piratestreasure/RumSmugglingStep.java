@@ -41,13 +41,13 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ChatMessageCondition;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.WidgetTextCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ChatMessageCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.LogicType;
+import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 
 public class RumSmugglingStep extends ConditionalStep
 {
@@ -100,8 +100,8 @@ public class RumSmugglingStep extends ConditionalStep
 	@Override
 	protected void updateSteps()
 	{
-		if ((hadRumOffKaramja.checkCondition(client) && !hasRumOffKaramja.checkCondition(client))
-			|| lostRum.checkCondition(client))
+		if ((hadRumOffKaramja.check(client) && !hasRumOffKaramja.check(client))
+			|| lostRum.check(client))
 		{
 			haveShippedRum.setHasPassed(false);
 			stashedRum.setHasPassed(false);
@@ -110,9 +110,9 @@ public class RumSmugglingStep extends ConditionalStep
 			lostRum.setHasPassed(false);
 		}
 
-		if (crateSent.checkCondition(client))
+		if (crateSent.check(client))
 		{
-			haveShippedRum.checkCondition(client);
+			haveShippedRum.check(client);
 			employed.setHasPassed(false);
 			fillCrateWithBananasChat.setHasReceivedChatMessage(false);
 			filledCrateWithBananasAndRum.setHasPassed(false);

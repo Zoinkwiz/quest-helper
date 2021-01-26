@@ -30,7 +30,7 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,7 +85,7 @@ public class LadyTableStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (finishedRoom.checkCondition(client))
+		if (finishedRoom.check(client))
 		{
 			startUpStep(leaveRoom);
 		}

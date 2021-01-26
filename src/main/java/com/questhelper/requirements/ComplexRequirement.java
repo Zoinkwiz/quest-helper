@@ -24,7 +24,7 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.steps.conditional.LogicType;
+import com.questhelper.requirements.conditional.LogicType;
 import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;

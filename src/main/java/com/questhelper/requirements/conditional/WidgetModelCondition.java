@@ -22,58 +22,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.conditional;
+package com.questhelper.requirements.conditional;
 
-import java.math.BigInteger;
+import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
 
-public class VarplayerCondition extends ConditionForStep
+public class WidgetModelCondition extends ConditionForStep
 {
+	@Getter
+	private final int groupId;
 
-	private final int varplayerId;
-	private final int value;
-	private final Operation operation;
+	private final int childId;
+	private final int id;
+	private int childChildId = -1;
 
-	private final int bitPosition;
-	private final boolean bitIsSet;
-
-	public VarplayerCondition(int varplayerId, int value)
+	public WidgetModelCondition(int groupId, int childId, int childChildId, int id)
 	{
-		this.varplayerId = varplayerId;
-		this.value = value;
-		this.operation = Operation.EQUAL;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
+		this.groupId = groupId;
+		this.childId = childId;
+		this.childChildId = childChildId;
+		this.id = id;
 	}
 
-	public VarplayerCondition(int varplayerId, int value, Operation operation)
+	public WidgetModelCondition(int groupId, int childId, int id)
 	{
-		this.varplayerId = varplayerId;
-		this.value = value;
-		this.operation = operation;
-
-		this.bitPosition = -1;
-		this.bitIsSet = false;
-	}
-
-	public VarplayerCondition(int varplayerId, boolean bitIsSet, int bitPosition)
-	{
-		this.varplayerId = varplayerId;
-		this.value = -1;
-		this.operation = Operation.EQUAL;
-
-		this.bitPosition = bitPosition;
-		this.bitIsSet = bitIsSet;
+		this.groupId = groupId;
+		this.childId = childId;
+		this.id = id;
 	}
 
 	@Override
-	public boolean checkCondition(Client client)
+	public boolean check(Client client)
 	{
-		if (bitPosition >= 0)
+		if (onlyNeedToPassOnce && hasPassed)
 		{
-			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
+			return true;
 		}
-		return operation.check(client.getVarpValue(varplayerId), value);
+		return checkWidget(client);
+	}
+
+	public boolean checkWidget(Client client)
+	{
+		Widget widget = client.getWidget(groupId, childId);
+		if (widget == null)
+		{
+			return false;
+		}
+		if (childChildId != -1)
+		{
+			widget = widget.getChild(childChildId);
+		}
+		if (widget != null)
+		{
+			return widget.getModelId() == id;
+		}
+		return false;
+	}
+
+	public void checkWidgetText(Client client)
+	{
+		hasPassed = hasPassed || checkWidget(client);
 	}
 }
+

@@ -32,9 +32,9 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -154,7 +154,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 		if (currentNorthBust != northBust)
 		{
-			if (!bustsConditions.get(northBust).checkCondition(client))
+			if (!bustsConditions.get(northBust).check(client))
 			{
 				startUpStep(getBustSteps.get(northBust));
 			}
@@ -165,7 +165,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 		}
 		else if (currentEastBust != eastBust)
 		{
-			if (!bustsConditions.get(eastBust).checkCondition(client))
+			if (!bustsConditions.get(eastBust).check(client))
 			{
 				startUpStep(getBustSteps.get(eastBust));
 			}
@@ -176,7 +176,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 		}
 		else if (currentSouthBust != southBust)
 		{
-			if (!bustsConditions.get(southBust).checkCondition(client))
+			if (!bustsConditions.get(southBust).check(client))
 			{
 				startUpStep(getBustSteps.get(southBust));
 			}
@@ -187,7 +187,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 		}
 		else if (currentWestBust != westBust)
 		{
-			if (!bustsConditions.get(westBust).checkCondition(client))
+			if (!bustsConditions.get(westBust).check(client))
 			{
 				startUpStep(getBustSteps.get(westBust));
 			}

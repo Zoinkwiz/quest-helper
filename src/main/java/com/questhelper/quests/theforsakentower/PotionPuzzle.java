@@ -34,11 +34,11 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.ZoneCondition;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,21 +122,21 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 
 	protected void updateSteps()
 	{
-		if (inBasement.checkCondition(client))
+		if (inBasement.check(client))
 		{
 			startUpStep(goUpLadder);
 		}
-		else if (inSecondFloor.checkCondition(client))
+		else if (inSecondFloor.check(client))
 		{
 			startUpStep(goDownToFirstFloor);
 		}
-		else if (inFirstFloor.checkCondition(client))
+		else if (inFirstFloor.check(client))
 		{
-			if (cleanedRefinery.checkCondition(client))
+			if (cleanedRefinery.check(client))
 			{
 				startUpStep(activateRefinery);
 			}
-			else if (!triedToActivate.checkCondition(client))
+			else if (!triedToActivate.check(client))
 			{
 				startUpStep(inspectRefinery);
 			}
@@ -153,7 +153,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					fluidFound = true;
 				}
 
-				if (hasFluids[correctFluid].checkCondition(client))
+				if (hasFluids[correctFluid].check(client))
 				{
 					startUpStep(useFluidOnRefinery);
 				}
@@ -162,7 +162,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					startUpStep(getFluid);
 				}
 			}
-			else if (hasOldNotes.checkCondition(client))
+			else if (hasOldNotes.check(client))
 			{
 				startUpStep(readNote);
 			}

@@ -24,13 +24,13 @@
  */
 package com.questhelper.requirements.conditional;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.questhelper.Zone;
+import com.questhelper.questhelpers.QuestUtil;
 import java.util.List;
+import java.util.stream.Stream;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.Zone;
 
 public class ZoneCondition extends ConditionForStep
 {
@@ -40,35 +40,25 @@ public class ZoneCondition extends ConditionForStep
 
 	public ZoneCondition(Zone... zone)
 	{
-		this.zones = new ArrayList<>();
-		Collections.addAll(this.zones, zone);
+		this.zones = QuestUtil.toArrayList(zone);
 		this.checkInZone = true;
 	}
 
 	public ZoneCondition(WorldPoint... worldPoints)
 	{
-		this.zones = new ArrayList<>();
-		for (WorldPoint worldPoint : worldPoints)
-		{
-			this.zones.add(new Zone(worldPoint));
-		}
+		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
 		this.checkInZone = true;
 	}
 
 	public ZoneCondition(boolean checkInZone, Zone... zone)
 	{
-		this.zones = new ArrayList<>();
-		Collections.addAll(this.zones, zone);
+		this.zones = QuestUtil.toArrayList(zone);
 		this.checkInZone = checkInZone;
 	}
 
 	public ZoneCondition(boolean checkInZone, WorldPoint... worldPoints)
 	{
-		this.zones = new ArrayList<>();
-		for (WorldPoint worldPoint : worldPoints)
-		{
-			this.zones.add(new Zone(worldPoint));
-		}
+		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
 		this.checkInZone = checkInZone;
 	}
 
@@ -80,14 +70,8 @@ public class ZoneCondition extends ConditionForStep
 		{
 			WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 
-			for (Zone zone : zones)
-			{
-				if (zone.contains(worldPoint))
-				{
-					// Check succeeded if check is to see if in zone, failed if not
-					return checkInZone;
-				}
-			}
+			boolean inZone = zones.stream().anyMatch(z -> z.contains(worldPoint));
+			return inZone && checkInZone;
 		}
 		return !checkInZone;
 	}

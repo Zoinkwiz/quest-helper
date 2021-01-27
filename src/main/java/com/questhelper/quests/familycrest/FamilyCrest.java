@@ -25,19 +25,27 @@
 package com.questhelper.quests.familycrest;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,14 +57,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.FAMILY_CREST
@@ -277,11 +277,11 @@ public class FamilyCrest extends BasicQuestHelper
 		goUpToJohnathon.addSubSteps(talkToJohnathon);
 
 		goDownToChronizon = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
-			"Enter the Edgeville Wilderness Dungeon, ready to kill Chronizon. Other players will be able to attack you.", runesForBlasts);
+			"Enter the Edgeville Wilderness Dungeon, ready to kill Chronozon. Other players will be able to attack you.", runesForBlasts);
 		goDownToChronizon.addAlternateObjects(ObjectID.TRAPDOOR_1579);
 
 		killChronizon = new NpcStep(this, NpcID.CHRONOZON, new WorldPoint(3087, 9936, 0),
-			"Kill Chronizon in the south west corner of the Edgeville Wilderness Dungeon. You need to hit him at least once with all 4 elemental blast spell.",
+			"Kill Chronozon in the south west corner of the Edgeville Wilderness Dungeon. You need to hit him at least once with all 4 elemental blast spell.",
 			runesForBlasts);
 		killChronizon.addSubSteps(goDownToChronizon);
 

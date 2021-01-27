@@ -24,24 +24,31 @@
  */
 package com.questhelper.quests.rumdeal;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.FreeInventorySlotRequirement;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,13 +62,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.RUM_DEAL
@@ -405,9 +405,9 @@ public class RumDeal extends BasicQuestHelper
 		goUpFromSpiders = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Go up the ladder.");
 
 		talkToBraindeathAfterSpirit = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
-		goDownToSpiders = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1), "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflcit you with disease.", slayerGloves);
+		goDownToSpiders = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1), "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
 
-		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflcit you with disease.", slayerGloves);
+		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
 		pickUpCarcass = new ItemStep(this, "Pick up the fever spider body.", spiderCarcass);
 		goUpFromSpidersWithCorpse = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Add the spider body to the hopper on the top floor.", spiderCarcass);
 		goUpToDropSpider = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);

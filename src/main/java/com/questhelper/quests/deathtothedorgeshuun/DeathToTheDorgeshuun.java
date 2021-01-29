@@ -376,7 +376,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		climbIntoSwamp = new ObjectStep(this, ObjectID.HOLE_6912, new WorldPoint(3224, 9602, 0), "Climb into the Lumbridge Swamp.");
 
-		enterJunaArea = new ObjectStep(this, ObjectID.TUNNEL_6659, new WorldPoint(3226, 9540, 0), "Enter the cave in thr south east corner of the swamp.", lightSource, zanik);
+		enterJunaArea = new ObjectStep(this, ObjectID.TUNNEL_6659, new WorldPoint(3226, 9540, 0), "Enter the cave in the south east corner of the swamp.", lightSource, zanik);
 		talkToJuna = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2), "Talk to Juna.", lightSource, zanik);
 		talkToJunaMore = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2), "Talk to Juna with both hands free. Collect 20 tears of Guthix.", lightSource);
 		talkToJunaMore.addDialogStep("Yes.");

@@ -77,6 +77,7 @@ public class FamilyCrest extends BasicQuestHelper
 
 	ObjectStep goDownToChronizon;
 
+	//Zones
 	Zone dwarvenMines, hobgoblinDungeon, jollyBoar, edgevilleDungeon;
 
 	@Override

@@ -224,7 +224,8 @@ public class FamilyCrest extends BasicQuestHelper
 		talkToCalebWithFish = new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0),
 			"Talk to Caleb again with the required fish.", shrimp, salmon, tuna, bass, swordfish);
 
-		talkToCalebOnceMore = new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0), "Talk to Caleb in Catherby.");
+		talkToCalebOnceMore = new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0), "Talk to Caleb in " +
+			"Catherby once more.");
 		talkToCalebOnceMore.addDialogStep("Uh.. what happened to the rest of the crest?");
 		talkToCalebWithFish.addSubSteps(talkToCalebOnceMore);
 

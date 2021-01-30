@@ -350,11 +350,11 @@ public class MourningsEndPartI extends BasicQuestHelper
 		talkToOronwen.addDialogStep("I have all I need to mend my trousers.");
 
 		enterMournerBase = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
-			"Equip the full mourners outfit and enter the Mourners' Headquaters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots,
+			"Equip the full mourners outfit and enter the Mourners' Headquarters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots,
 			equippedMournerGloves, equippedMournerCloak, mournerLetter);
 
 		enterMournerBaseNoPass = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
-			"Equip the full mourners outfit and enter the Mourners' Headquaters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots,
+			"Equip the full mourners outfit and enter the Mourners' Headquarters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots,
 			equippedMournerGloves, equippedMournerCloak);
 
 		enterBasement = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Go down the trapdoor in the north west corner of the HQ.");
@@ -365,7 +365,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		talkToGnome.addDialogStep("You talked about toad crunchies and being tickled.");
 
 		enterMournerBaseForGnome = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
-			"Equip the full mourners outfit and enter the Mourners' Headquaters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody,
+			"Equip the full mourners outfit and enter the Mourners' Headquarters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody,
 			equippedMournerLegs, equippedMournerBoots, equippedMournerGloves, equippedMournerCloak);
 		enterBasementForGnome = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Go down the trapdoor in the north west corner of the HQ.", feather, toadCrunchies, magicLogs, leather);
 		talkToGnome.addSubSteps(enterMournerBaseForGnome, enterBasementForGnome);
@@ -374,7 +374,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		useFeatherOnGnome.addIcon(ItemID.FEATHER);
 
 		enterMournerBaseAfterTorture = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
-			"Equip the full mourners outfit and enter the Mourners' Headquaters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots,
+			"Equip the full mourners outfit and enter the Mourners' Headquarters in West Ardougne.", toadCrunchies, feather, magicLogs, leather, equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots,
 			equippedMournerGloves, equippedMournerCloak);
 		enterBasementAfterTorture = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Go down the trapdoor in the north west corner of the HQ.", toadCrunchies, magicLogs, leather);
 
@@ -404,7 +404,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		dyeSheep.addSubSteps(loadGreenToad, loadYellowToad, loadBlueToad, loadRedToad, shootBlueToad, shootGreenToad, shootRedToad, shootYellowToad);
 
 		enterBaseAfterSheep = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
-			"Equip the full mourners outfit and enter the Mourners' Headquaters in West Ardougne.", equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots, equippedMournerGloves, equippedMournerCloak);
+			"Equip the full mourners outfit and enter the Mourners' Headquarters in West Ardougne.", equippedMournerMask, equippedMournerBody, equippedMournerLegs, equippedMournerBoots, equippedMournerGloves, equippedMournerCloak);
 
 		enterBasementAfterSheep = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Go down the trapdoor in the north west corner of the HQ.");
 

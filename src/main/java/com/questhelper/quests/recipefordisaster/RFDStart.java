@@ -33,13 +33,13 @@ import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -111,6 +111,10 @@ public class RFDStart extends BasicQuestHelper
 	{
 		talkToCook = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook.", eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
+		talkToCook.addDialogStep("Do you have any other quests for me?");
+		talkToCook.addDialogSteps("Angry! It makes me angry!", "I don't really care to be honest.");
+		talkToCook.addDialogStep("What seems to be the problem?");
+		talkToCook.addDialogStep("YES");
 
 		useAshesOnFruitBlast = new DetailedQuestStep(this, "Use ashes on the fruit blast.", ashesHighlighted, fruitBlastHighlighted);
 

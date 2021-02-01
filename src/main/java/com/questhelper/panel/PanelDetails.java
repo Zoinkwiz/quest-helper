@@ -30,6 +30,7 @@ import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collection;
 import lombok.Getter;
 
 public class PanelDetails
@@ -89,5 +90,29 @@ public class PanelDetails
 	public void addSteps(QuestStep... steps)
 	{
 		this.steps.addAll(Arrays.asList(steps));
+	}
+
+	public boolean contains(QuestStep currentStep)
+	{
+		if (getSteps().contains(currentStep))
+		{
+			return true;
+		}
+		else
+		{
+			return getSteps().stream()
+					.map(QuestStep::getSubsteps)
+					.flatMap(Collection::stream)
+					.anyMatch(step -> containsSubStep(currentStep, step));
+		}
+	}
+
+	private boolean containsSubStep(QuestStep currentStep, QuestStep check)
+	{
+		if (currentStep.getSubsteps().contains(check) || currentStep == check)
+		{
+			return true;
+		}
+		return currentStep.getSubsteps().stream().anyMatch(step -> containsSubStep(step, check));
 	}
 }

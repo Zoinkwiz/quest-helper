@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2021, Lesteenman <https://github.com/lesteenman>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

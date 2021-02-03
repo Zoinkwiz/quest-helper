@@ -77,7 +77,7 @@ public abstract class QuestStep implements Module
 	protected List<String> text;
 
 	@Getter
-	protected List<String> panelText = new ArrayList<>();
+	protected List<String> overlayText = new ArrayList<>();
 
 	protected int ARROW_SHIFT_Y = 15;
 
@@ -144,12 +144,12 @@ public abstract class QuestStep implements Module
 
 	public void setOverlayText(String text)
 	{
-		this.panelText.add(text);
+		this.overlayText.add(text);
 	}
 
 	public void setOverlayText(String... text)
 	{
-		this.panelText.addAll(Arrays.asList(text));
+		this.overlayText.addAll(Arrays.asList(text));
 	}
 
 	@Override
@@ -308,9 +308,9 @@ public abstract class QuestStep implements Module
 			}
 		}
 
-		if (!panelText.isEmpty())
+		if (!overlayText.isEmpty())
 		{
-			panelText.stream()
+			overlayText.stream()
 				.filter(s -> !s.isEmpty())
 				.forEach(line -> addTextToPanel(panelComponent, line));
 		}

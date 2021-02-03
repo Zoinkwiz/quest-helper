@@ -54,9 +54,9 @@ public abstract class AbstractRequirement implements Requirement
 	@Override
 	public List<LineComponent> getDisplayTextWithChecks(Client client)
 	{
-		if (getPanelReplacement() != null && !this.check(client))
+		if (getOverlayReplacement() != null && !this.check(client))
 		{
-			return getPanelReplacement().getDisplayTextWithChecks(client);
+			return getOverlayReplacement().getDisplayTextWithChecks(client);
 		}
 		return getOverlayDisplayText(client);
 	}
@@ -83,13 +83,13 @@ public abstract class AbstractRequirement implements Requirement
 	}
 
 	@Override
-	public Requirement getPanelReplacement()
+	public Requirement getOverlayReplacement()
 	{
 		return panelReplacement;
 	}
 
 	@Override
-	public void setPanelReplacement(Requirement panelReplacement)
+	public void setOverlayReplacement(Requirement panelReplacement)
 	{
 		this.panelReplacement = panelReplacement;
 	}

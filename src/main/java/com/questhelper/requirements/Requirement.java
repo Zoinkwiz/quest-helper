@@ -105,7 +105,7 @@ public interface Requirement
 	/**
 	 * @return If not null, this requirement will be displayed if this requirement fails during checks
 	 */
-	default Requirement getPanelReplacement()
+	default Requirement getOverlayReplacement()
 	{
 		return null;
 	}
@@ -115,5 +115,5 @@ public interface Requirement
 	 *
 	 * @param requirement the new requirement
 	 */
-	default void setPanelReplacement(Requirement requirement) {}
+	default void setOverlayReplacement(Requirement requirement) {}
 }

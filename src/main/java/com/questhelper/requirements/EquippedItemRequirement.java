@@ -102,9 +102,9 @@ public class EquippedItemRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public void setPanelReplacement(Requirement panelReplacement)
+	public void setOverlayReplacement(Requirement panelReplacement)
 	{
-		super.setPanelReplacement(panelReplacement);
+		super.setOverlayReplacement(panelReplacement);
 		if (panelReplacement instanceof ItemRequirement)
 		{
 			ItemRequirement req = (ItemRequirement) panelReplacement;
@@ -116,7 +116,7 @@ public class EquippedItemRequirement extends AbstractRequirement
 	{
 		itemIDs.add(itemID);
 		items.put(itemID, text);
-		super.setPanelReplacement(new ItemRequirement(name, itemID));
+		super.setOverlayReplacement(new ItemRequirement(name, itemID));
 	}
 
 	@Override

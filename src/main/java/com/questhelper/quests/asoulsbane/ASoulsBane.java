@@ -24,16 +24,25 @@
  */
 package com.questhelper.quests.asoulsbane;
 
+import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,14 +53,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.A_SOULS_BANE
@@ -60,6 +61,9 @@ public class ASoulsBane extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement rope, combatGear, angerSword, angerSpear, angerMace, angerBattleaxe;
+
+	//Items Recommended
+	ItemRequirement food, digsiteTeleport, antipoison;
 
 	ConditionForStep ropeUsed, inAngerRoom, hasWeapon, hasSword, hasSpear, hasMace, hasBattleaxe, watchedTolnaLeavingCutscene, inHole0, inHole1,
 		inHole2, inHole3, inHole4, inHole5, inFearRoom, reaperNearby, inConfusionRoom, inHopelessRoom, inHopeRoom, inTolnaRoom;
@@ -145,6 +149,12 @@ public class ASoulsBane extends BasicQuestHelper
 		angerMace = new ItemRequirement("Anger mace", ItemID.ANGER_MACE);
 		angerSpear = new ItemRequirement("Anger spear", ItemID.ANGER_SPEAR);
 		angerSword = new ItemRequirement("Anger sword", ItemID.ANGER_SWORD);
+
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
+		digsiteTeleport = new ItemRequirement("Digsite Teleport", ItemID.DIGSITE_TELEPORT);
+		digsiteTeleport.addAlternates(ItemCollections.getDigsitePendants());
+		antipoison = new ItemRequirement("Antipoison (or equivalent)", ItemCollections.getAntipoisons());
 	}
 
 	public void setupConditions()
@@ -262,6 +272,18 @@ public class ASoulsBane extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(rope, combatGear);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(digsiteTeleport, antipoison);
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("Multiple level 40-46 enemies");
 	}
 
 	@Override

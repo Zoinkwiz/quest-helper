@@ -25,12 +25,12 @@
 package com.questhelper.quests.songoftheelves;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -218,11 +218,11 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE);
 		natureRune.setHighlightInInventory(true);
 
-		flowers = new ItemRequirement("lowers", ItemID.RED_FLOWERS_8938);
+		flowers = new ItemRequirement("Flowers", ItemID.RED_FLOWERS_8938);
 		flowers.addAlternates(ItemID.RED_FLOWERS, ItemID.YELLOW_FLOWERS, ItemID.PURPLE_FLOWERS, ItemID.ORANGE_FLOWERS,
 			ItemID.MIXED_FLOWERS, ItemID.ASSORTED_FLOWERS, ItemID.BLACK_FLOWERS, ItemID.WHITE_FLOWERS, ItemID.BLUE_FLOWERS_8936);
 
-		iritLeaf = new ItemRequirement("rit leaf", ItemID.IRIT_LEAF);
+		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
 		iritLeaf.addAlternates(ItemID.GRIMY_IRIT_LEAF);
 
 		flowersOrIrit = new ItemRequirements(LogicType.OR, "Irit leaf or a flower", iritLeaf, flowers);

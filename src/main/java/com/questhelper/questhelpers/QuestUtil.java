@@ -48,7 +48,7 @@ public class QuestUtil
 		return new LinkedList<>(Arrays.asList(elements));
 	}
 
-	public static <T> List<T> toLinkedList(boolean reverse, @Nonnull T... elements)
+	public static <T> List<T> toReversedLinkedList(boolean reverse, @Nonnull T... elements)
 	{
 		List<T> list = toLinkedList(elements);
 		Collections.reverse(list);

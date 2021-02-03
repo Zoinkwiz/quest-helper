@@ -41,7 +41,7 @@ public class ItemCollections
 	// Tools
 
 	@Getter
-	private static final List<Integer> axes = QuestUtil.toLinkedList(true,
+	private static final List<Integer> axes = QuestUtil.toReversedLinkedList(true,
 		ItemID.BRONZE_AXE,
 		ItemID.IRON_AXE,
 		ItemID.STEEL_AXE,
@@ -58,7 +58,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> pickaxes = QuestUtil.toLinkedList(true,
+	private static final List<Integer> pickaxes = QuestUtil.toReversedLinkedList(true,
 		ItemID.BRONZE_PICKAXE,
 		ItemID.IRON_PICKAXE,
 		ItemID.STEEL_PICKAXE,
@@ -78,7 +78,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> harpoons = QuestUtil.toLinkedList(true,
+	private static final List<Integer> harpoons = QuestUtil.toReversedLinkedList(true,
 		ItemID.HARPOON,
 		ItemID.BARBTAIL_HARPOON,
 		ItemID.DRAGON_HARPOON,
@@ -96,7 +96,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> nails = QuestUtil.toLinkedList(true,
+	private static final List<Integer> nails = QuestUtil.toReversedLinkedList(true,
 		ItemID.BRONZE_NAILS,
 		ItemID.IRON_NAILS,
 		ItemID.STEEL_NAILS,
@@ -107,7 +107,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> bows = QuestUtil.toLinkedList(true,
+	private static final List<Integer> bows = QuestUtil.toReversedLinkedList(true,
 		ItemID.CURSED_GOBLIN_BOW,
 		ItemID.RAIN_BOW,
 		ItemID.TRAINING_BOW,
@@ -142,13 +142,76 @@ public class ItemCollections
 	// Teleports
 
 	@Getter
-	private static final List<Integer> metalArrows = QuestUtil.toLinkedList(true,
+	private static final List<Integer> metalArrows = QuestUtil.toReversedLinkedList(true,
 		ItemID.BRONZE_ARROW,
 		ItemID.IRON_ARROW,
 		ItemID.STEEL_ARROW,
 		ItemID.MITHRIL_ARROW,
 		ItemID.ADAMANT_ARROW,
 		ItemID.RUNE_ARROW
+	);
+
+	@Getter
+	private static final List<Integer> arrows = QuestUtil.toLinkedList(
+		ItemID.DRAGON_ARROW,
+		ItemID.AMETHYST_ARROW,
+		ItemID.RUNE_ARROW,
+		ItemID.ADAMANT_ARROW,
+		ItemID.MITHRIL_ARROW,
+		ItemID.STEEL_ARROW,
+		ItemID.IRON_ARROW,
+		ItemID.BRONZE_ARROW
+	);
+
+	@Getter
+	private static final List<Integer> brutalArrows = QuestUtil.toLinkedList(
+		ItemID.RUNE_BRUTAL,
+		ItemID.ADAMANT_BRUTAL,
+		ItemID.MITHRIL_BRUTAL,
+		ItemID.BLACK_BRUTAL,
+		ItemID.STEEL_BRUTAL,
+		ItemID.IRON_BRUTAL,
+		ItemID.BRONZE_BRUTAL
+	);
+
+	@Getter
+	private static final List<Integer> fireArrows = QuestUtil.toLinkedList(
+		ItemID.DRAGON_FIRE_ARROW,
+		ItemID.DRAGON_FIRE_ARROW_LIT,
+		ItemID.AMETHYST_FIRE_ARROW,
+		ItemID.AMETHYST_FIRE_ARROW_LIT,
+		ItemID.RUNE_FIRE_ARROW,
+		ItemID.RUNE_FIRE_ARROW_LIT,
+		ItemID.ADAMANT_FIRE_ARROW,
+		ItemID.ADAMANT_FIRE_ARROW_LIT,
+		ItemID.MITHRIL_FIRE_ARROW,
+		ItemID.MITHRIL_FIRE_ARROW_LIT,
+		ItemID.STEEL_FIRE_ARROW,
+		ItemID.STEEL_FIRE_ARROW_LIT,
+		ItemID.IRON_FIRE_ARROW,
+		ItemID.IRON_FIRE_ARROW_LIT,
+		ItemID.BRONZE_FIRE_ARROW,
+		ItemID.BRONZE_FIRE_ARROW_LIT
+	);
+
+	@Getter
+	private static final List<Integer> specialArrows = QuestUtil.toLinkedList(
+		ItemID.BROAD_ARROWS,
+		ItemID.OGRE_ARROW,
+		ItemID.TRAINING_ARROWS,
+		ItemID.ICE_ARROWS
+	);
+
+	@Getter
+	private static final List<Integer> arrowtips = QuestUtil.toLinkedList(
+		ItemID.DRAGON_ARROWTIPS,
+		ItemID.AMETHYST_ARROWTIPS,
+		ItemID.RUNE_ARROWTIPS,
+		ItemID.ADAMANT_ARROWTIPS,
+		ItemID.MITHRIL_ARROWTIPS,
+		ItemID.STEEL_ARROWTIPS,
+		ItemID.IRON_ARROWTIPS,
+		ItemID.BRONZE_ARROWTIPS
 	);
 
 	@Getter
@@ -624,7 +687,7 @@ public class ItemCollections
 	// Logs
 
 	@Getter
-	private static final List<Integer> logsForFire = QuestUtil.toLinkedList(true,
+	private static final List<Integer> logsForFire = QuestUtil.toReversedLinkedList(true,
 		ItemID.LOGS,
 		ItemID.OAK_LOGS,
 		ItemID.WILLOW_LOGS,

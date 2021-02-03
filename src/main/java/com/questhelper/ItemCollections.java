@@ -306,6 +306,14 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> energyPotions = Arrays.asList(
+		ItemID.ENERGY_POTION1,
+		ItemID.ENERGY_POTION2,
+		ItemID.ENERGY_POTION3,
+		ItemID.ENERGY_POTION4
+	);
+
+	@Getter
 	private static final List<Integer> staminaPotions = Arrays.asList(
 		ItemID.STAMINA_POTION4,
 		ItemID.STAMINA_POTION1,
@@ -313,6 +321,21 @@ public class ItemCollections
 		ItemID.STAMINA_POTION3,
 		ItemID.STAMINA_MIX1,
 		ItemID.STAMINA_MIX2
+	);
+
+	@Getter
+	private static final List<Integer> energyRestoration = Arrays.asList(
+		ItemID.STAMINA_POTION4,
+		ItemID.STAMINA_POTION1,
+		ItemID.STAMINA_POTION2,
+		ItemID.STAMINA_POTION3,
+		ItemID.STAMINA_MIX1,
+		ItemID.STAMINA_MIX2,
+		ItemID.ENERGY_POTION1,
+		ItemID.ENERGY_POTION2,
+		ItemID.ENERGY_POTION3,
+		ItemID.ENERGY_POTION4,
+		ItemID.STRANGE_FRUIT
 	);
 
 	@Getter

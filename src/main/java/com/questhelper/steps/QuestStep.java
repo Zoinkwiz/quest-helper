@@ -251,6 +251,11 @@ public abstract class QuestStep implements Module
 		choices.addDialogChoiceWithExclusion(new DialogChoiceStep(questHelper.getConfig(), choice), exclusionString);
 	}
 
+	public void addDialogStepWithExclusions(String choice, String... exclusionString)
+	{
+		choices.addDialogChoiceWithExclusions(new DialogChoiceStep(questHelper.getConfig(), choice), exclusionString);
+	}
+
 	public void addDialogStep(int id, String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, choice));

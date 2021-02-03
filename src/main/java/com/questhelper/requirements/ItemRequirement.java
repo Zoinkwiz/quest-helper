@@ -28,7 +28,10 @@ package com.questhelper.requirements;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -60,6 +63,7 @@ public class ItemRequirement extends AbstractRequirement
 	protected boolean highlightInInventory;
 
 	protected final List<Integer> alternates = new ArrayList<>();
+	protected final Map<Integer, String> itemNameMap = new HashMap<>();
 
 	@Setter
 	protected boolean exclusiveToOneItemType;
@@ -75,6 +79,7 @@ public class ItemRequirement extends AbstractRequirement
 		this.quantity = quantity;
 		this.name = name;
 		equip = false;
+		this.addAlternateItem(id, name);
 	}
 
 	public ItemRequirement(String name, int id, int quantity, boolean equip)
@@ -118,6 +123,15 @@ public class ItemRequirement extends AbstractRequirement
 		Collections.addAll(this.alternates, alternates);
 	}
 
+	public void addAlternateItem(int itemID, String text)
+	{
+		this.itemNameMap.put(itemID, text);
+		if (!alternates.contains(itemID))
+		{
+			alternates.add(itemID);
+		}
+	}
+
 	public boolean showQuantity()
 	{
 		return quantity != -1;
@@ -126,6 +140,11 @@ public class ItemRequirement extends AbstractRequirement
 	public boolean isActualItem()
 	{
 		return id != -1 && quantity != -1;
+	}
+
+	public void canBeObtainedDuringQuest()
+	{
+		appendToTooltip("Can be obtained during the quest.");
 	}
 
 	public String getName()
@@ -140,7 +159,8 @@ public class ItemRequirement extends AbstractRequirement
 		return ids;
 	}
 
-	public List<LineComponent> getDisplayTextWithChecks(Client client)
+	@Override
+	protected List<LineComponent> getOverlayDisplayText(Client client)
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
@@ -149,17 +169,23 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			text = this.getQuantity() + " x ";
 		}
-		text = text + this.getName();
+
+		int itemID = findItemID(client, false);
+		if (itemNameMap.containsKey(itemID))
+		{
+			text += itemNameMap.get(itemID);
+		}
+		else
+		{
+			text += this.getName();
+		}
 
 		Color color = getColor(client);
-
 		lines.add(LineComponent.builder()
 			.left(text)
 			.leftColor(color)
 			.build());
-
-		lines.addAll(getAdditionalText(client));
-
+		lines.addAll(getAdditionalText(client, false));
 		return lines;
 	}
 
@@ -188,6 +214,30 @@ public class ItemRequirement extends AbstractRequirement
 		return color;
 	}
 
+	private int findItemID(Client client, boolean checkConsideringSlotRestrictions)
+	{
+		int remainder = checkSpecificItem(client, id, checkConsideringSlotRestrictions, null);
+		if (remainder <= 0)
+		{
+			return id;
+		}
+
+		for (int alternate : alternates)
+		{
+			if (exclusiveToOneItemType)
+			{
+				remainder = quantity;
+			}
+			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkConsideringSlotRestrictions, null));
+			if (remainder <= 0)
+			{
+				return alternate;
+			}
+		}
+		return -1;
+	}
+
+
 	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
 	{
 		Color color;
@@ -214,7 +264,7 @@ public class ItemRequirement extends AbstractRequirement
 		return color;
 	}
 
-	private ArrayList<LineComponent> getAdditionalText(Client client)
+	private ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip)
 	{
 		Color equipColor = Color.GREEN;
 
@@ -233,7 +283,7 @@ public class ItemRequirement extends AbstractRequirement
 				.build());
 		}
 
-		if (this.getTooltip() != null && !check(client))
+		if (includeTooltip && this.getTooltip() != null && !check(client))
 		{
 			lines.add(LineComponent.builder()
 				.left("- " + this.getTooltip())
@@ -301,16 +351,10 @@ public class ItemRequirement extends AbstractRequirement
 
 	public int getNumMatches(Item[] items, int itemID)
 	{
-		int tempQuantity = 0;
-
-		for (Item item : items)
-		{
-			if (item.getId() == itemID)
-			{
-				tempQuantity += item.getQuantity();
-			}
-		}
-		return tempQuantity;
+		return Stream.of(items)
+			.filter(i -> i.getId() == itemID)
+			.mapToInt(Item::getQuantity)
+			.sum();
 	}
 
 	public boolean check(Client client)

@@ -24,22 +24,34 @@
  */
 package com.questhelper.steps;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.google.inject.Inject;
-import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.QuestHelperWorldMapPoint;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
-import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.overlay.WorldLines;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
@@ -56,10 +68,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestHelperWorldMapPoint;
-import com.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -82,9 +90,10 @@ public class DetailedQuestStep extends QuestStep
 	protected List<WorldPoint> worldLinePoints;
 
 	@Setter
+	@Getter
 	protected List<Requirement> requirements = new ArrayList<>();
 
-	protected HashMap<Tile, List<Integer>> tileHighlights = new HashMap<>();
+	protected Multimap<Tile, Integer> tileHighlights = ArrayListMultimap.create();
 
 	protected QuestHelperWorldMapPoint mapPoint;
 
@@ -127,7 +136,7 @@ public class DetailedQuestStep extends QuestStep
 			mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
 			worldMapPointManager.add(mapPoint);
 		}
-		addItemTiles();
+		addItemTiles(requirements);
 		started = true;
 	}
 
@@ -139,9 +148,14 @@ public class DetailedQuestStep extends QuestStep
 		started = false;
 	}
 
-	public void addRequirement(AbstractRequirement requirement)
+	public void addRequirement(Requirement requirement)
 	{
 		requirements.add(requirement);
+	}
+
+	public void addRequirement(Requirement... requirements)
+	{
+		this.requirements.addAll(Arrays.asList(requirements));
 	}
 
 	public void addItemRequirements(List<ItemRequirement> requirement)
@@ -211,7 +225,7 @@ public class DetailedQuestStep extends QuestStep
 			WorldLines.drawLinesOnWorld(graphics, client, linePoints, getQuestHelper().getConfig().targetOverlayColor());
 		}
 
-		tileHighlights.forEach((tile, ids) -> checkAllTilesForHighlighting(tile, ids, graphics));
+		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
 	}
 
 	public void renderArrow(Graphics2D graphics)
@@ -307,31 +321,17 @@ public class DetailedQuestStep extends QuestStep
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Requirements:").build());
 		}
-		if (!requirements.isEmpty())
+		Stream<Requirement> stream = requirements.stream(); // empty stream in case there are no requirements
+		if (additionalRequirements != null && additionalRequirements.length > 0)
 		{
-			for (Requirement requirement : requirements)
-			{
-				List<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
-
-				for (LineComponent line : lines)
-				{
-					panelComponent.getChildren().add(line);
-				}
-			}
+			stream = Stream.concat(stream, Stream.of(additionalRequirements));
 		}
+		stream
+			.distinct()
+			.map(req -> req.getDisplayTextWithChecks(client))
+			.flatMap(Collection::stream)
+			.forEach(line -> panelComponent.getChildren().add(line));
 
-		if (additionalRequirements != null)
-		{
-			for (Requirement requirement : additionalRequirements)
-			{
-				List<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
-
-				for (LineComponent line : lines)
-				{
-					panelComponent.getChildren().add(line);
-				}
-			}
-		}
 	}
 
 	private void renderInventory(Graphics2D graphics)
@@ -359,10 +359,10 @@ public class DetailedQuestStep extends QuestStep
 					&& ((ItemRequirements)requirement).getAllIds().contains(item.getId())))
 				{
 					Rectangle slotBounds = item.getCanvasBounds();
-					graphics.setColor(new Color(getQuestHelper().getConfig().targetOverlayColor().getRed(),
-						getQuestHelper().getConfig().targetOverlayColor().getGreen(),
-						getQuestHelper().getConfig().targetOverlayColor().getBlue(),
-						65));
+					int red = getQuestHelper().getConfig().targetOverlayColor().getRed();
+					int green = getQuestHelper().getConfig().targetOverlayColor().getGreen();
+					int blue = getQuestHelper().getConfig().targetOverlayColor().getBlue();
+					graphics.setColor(new Color(red, green, blue, 65));
 					graphics.fill(slotBounds);
 				}
 
@@ -379,8 +379,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			if (requirement.getClass() == ItemRequirement.class && ((ItemRequirement) requirement).getAllIds().contains(item.getId()))
 			{
-				tileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
-				tileHighlights.get(tile).add((itemSpawned.getItem().getId()));
+				tileHighlights.get(tile).add(itemSpawned.getItem().getId());
 			}
 		}
 	}
@@ -392,11 +391,11 @@ public class DetailedQuestStep extends QuestStep
 
 		if (tileHighlights.containsKey(tile))
 		{
-			tileHighlights.get(tile).remove(Integer.valueOf(itemDespawned.getItem().getId()));
+			tileHighlights.get(tile).remove(itemDespawned.getItem().getId());
 		}
 	}
 
-	private void addItemTiles()
+	protected void addItemTiles(Collection<Requirement> requirements)
 	{
 		if (requirements == null)
 		{
@@ -404,37 +403,29 @@ public class DetailedQuestStep extends QuestStep
 		}
 		Tile[][] squareOfTiles = client.getScene().getTiles()[client.getPlane()];
 
-		for (Tile[] lineOfTiles : squareOfTiles)
-		{
-			for (Tile tile : lineOfTiles)
-			{
-				if (tile == null)
-				{
-					continue;
-				}
-				List<TileItem> items = tile.getGroundItems();
-				if (items != null)
-				{
-					for (TileItem item : items)
-					{
-						for (Requirement requirement : requirements)
-						{
-							if (requirement != null && requirement.getClass() == ItemRequirement.class
-								&& ((ItemRequirement) requirement).isActualItem()
-								&& ((ItemRequirement) requirement).getAllIds().contains(item.getId()))
-							{
-								tileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
-								tileHighlights.get(tile).add(item.getId());
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
+		Stream.of(squareOfTiles)
+			.flatMap(Arrays::stream) // lineOfTiles
+			.filter(Objects::nonNull)
+			// map to multimap
+			.map(tile -> Multimaps.index(tile.getGroundItems() == null ? new ArrayList<>() : tile.getGroundItems(), k -> tile))
+			// map to stream of map entries
+			.flatMap(it -> it.entries().stream().map(e -> new AbstractMap.SimpleEntry<>(e.getKey(),e.getValue())))
+			// collect to a map of <Tile, List<TileItem>>
+			.collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.mapping(Map.Entry::getValue, Collectors.toList())))
+			.forEach((tile, itemList) -> {
+				itemList.forEach(i -> {
+					requirements.stream()
+						.filter(Objects::nonNull)
+						.filter(req -> req.getClass() == ItemRequirement.class)
+						.map(ItemRequirement.class::cast)
+						.filter(ItemRequirement::isActualItem)
+						.filter(req -> req.getAllIds().contains(i.getId()))
+						.forEach(req -> tileHighlights.get(tile).add(i.getId()));
+				});
+			});
 	}
 
-	private void checkAllTilesForHighlighting(Tile tile, List<Integer> ids, Graphics2D graphics)
+	private void checkAllTilesForHighlighting(Tile tile, Collection<Integer> ids, Graphics2D graphics)
 	{
 		if (inCutscene)
 		{

@@ -71,4 +71,22 @@ public enum InventorySlots
 			.flatMap(Arrays::stream)
 			.allMatch(predicate);
 	}
+
+	/**
+	 * Check if any of the {@link Item} in a client's {@link ItemContainer} match
+	 * the given predicate.
+	 *
+	 * @param client the {@link Client} to check
+	 * @param predicate the predicate to use
+	 * @return true if ANY of the items match the predicate
+	 */
+	public boolean contains(Client client, Predicate<Item> predicate)
+	{
+		return Arrays.stream(inventoryID)
+			.map(client::getItemContainer)
+			.filter(Objects::nonNull)
+			.map(ItemContainer::getItems)
+			.flatMap(Arrays::stream)
+			.anyMatch(predicate);
+	}
 }

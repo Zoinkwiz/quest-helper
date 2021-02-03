@@ -101,4 +101,19 @@ public interface Requirement
 
 		return lines;
 	}
+
+	/**
+	 * @return If not null, this requirement will be displayed if this requirement fails during checks
+	 */
+	default Requirement getPanelReplacement()
+	{
+		return null;
+	}
+
+	/**
+	 * Set the new {@link Requirement} to display if this one fails
+	 *
+	 * @param requirement the new requirement
+	 */
+	default void setPanelReplacement(Requirement requirement) {}
 }

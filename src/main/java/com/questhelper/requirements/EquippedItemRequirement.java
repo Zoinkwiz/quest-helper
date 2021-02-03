@@ -28,11 +28,15 @@
 package com.questhelper.requirements;
 
 import com.questhelper.requirements.util.ItemSlots;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
 /**
  * Checks if the player has supplied item(s) in the given slot.
@@ -44,6 +48,7 @@ public class EquippedItemRequirement extends AbstractRequirement
 	private final ItemSlots slot;
 	private final String name;
 	private final List<Integer> itemIDs = new ArrayList<>();
+	private final Map<Integer, String> items = new HashMap<>();
 
 	/**
 	 * Check if the player has a certain item in a certain {@link ItemSlots}.
@@ -57,6 +62,7 @@ public class EquippedItemRequirement extends AbstractRequirement
 		this.slot = slot;
 		this.name = name;
 		this.itemIDs.add(id);
+		addNewItem(name, id);
 	}
 
 	/**
@@ -71,6 +77,10 @@ public class EquippedItemRequirement extends AbstractRequirement
 		this.slot = slot;
 		this.name = name;
 		this.itemIDs.addAll(items);
+		if (items.size() > 0)
+		{
+			addNewItem(name, items.get(0));
+		}
 	}
 
 	/**
@@ -85,12 +95,67 @@ public class EquippedItemRequirement extends AbstractRequirement
 		this.slot = slot;
 		this.name = name;
 		this.itemIDs.addAll(Arrays.asList(items));
+		if (items.length >0)
+		{
+			addNewItem(name, items[0]);
+		}
+	}
+
+	@Override
+	public void setPanelReplacement(Requirement panelReplacement)
+	{
+		super.setPanelReplacement(panelReplacement);
+		if (panelReplacement instanceof ItemRequirement)
+		{
+			ItemRequirement req = (ItemRequirement) panelReplacement;
+			addNewItem(req.getName(), req.getId());
+		}
+	}
+
+	public void addNewItem(String text, int itemID)
+	{
+		itemIDs.add(itemID);
+		items.put(itemID, text);
+		super.setPanelReplacement(new ItemRequirement(name, itemID));
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
 		return slot.checkInventory(client, i -> getItemIDs().contains(i.getId()));
+	}
+
+	@Override
+	protected List<LineComponent> getOverlayDisplayText(Client client)
+	{
+		List<LineComponent> lines = new ArrayList<>();
+		Color equipColor = Color.RED;
+
+		String text = name;
+		for (Map.Entry<Integer, String> entry : items.entrySet())
+		{
+			int itemID = entry.getKey();
+			if (slot.contains(client, i -> i != null && i.getId() == itemID))
+			{
+				equipColor = Color.GREEN;
+				text = entry.getValue();
+				break;
+			}
+		}
+
+		lines.add(LineComponent.builder()
+			.left(text)
+			.leftColor(equipColor)
+			.build());
+		if (slot.getSlotIdx() >= ItemSlots.ANY_EQUIPPED.getSlotIdx())
+		{
+			// >= -1 means it's an equipment slot, not an inventory slot
+			lines.add(LineComponent.builder()
+				.left("(equipped)")
+				.leftColor(equipColor)
+				.build());
+		}
+		return lines;
 	}
 
 	@Override

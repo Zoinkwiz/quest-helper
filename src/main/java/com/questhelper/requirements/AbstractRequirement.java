@@ -24,12 +24,15 @@
  */
 package com.questhelper.requirements;
 
+import java.util.List;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
 public abstract class AbstractRequirement implements Requirement
 {
 	private String tooltip;
+	private Requirement panelReplacement = null;
 
 	abstract public boolean check(Client client);
 
@@ -45,6 +48,49 @@ public abstract class AbstractRequirement implements Requirement
 	@Override
 	public void setTooltip(String tooltip)
 	{
-		this.tooltip = tooltip;
+		appendToTooltip(tooltip);
+	}
+
+	@Override
+	public List<LineComponent> getDisplayTextWithChecks(Client client)
+	{
+		if (getPanelReplacement() != null && !this.check(client))
+		{
+			return getPanelReplacement().getDisplayTextWithChecks(client);
+		}
+		return getOverlayDisplayText(client);
+	}
+
+	protected List<LineComponent> getOverlayDisplayText(Client client)
+	{
+		return Requirement.super.getDisplayTextWithChecks(client);
+	}
+
+	public void appendToTooltip(String text)
+	{
+		StringBuilder builder = new StringBuilder();
+		String currentTooltip = getTooltip();
+		if (currentTooltip != null)
+		{
+			builder.append(currentTooltip);
+			builder.append(currentTooltip.isEmpty() ? "" : "\n");
+		}
+		if (text != null)
+		{
+			builder.append(text);
+		}
+		this.tooltip = builder.toString();
+	}
+
+	@Override
+	public Requirement getPanelReplacement()
+	{
+		return panelReplacement;
+	}
+
+	@Override
+	public void setPanelReplacement(Requirement panelReplacement)
+	{
+		this.panelReplacement = panelReplacement;
 	}
 }

@@ -86,9 +86,12 @@ public class QuestRequirementPanel extends JPanel
 
 	private void addButtonToPanel(String tooltipText)
 	{
+		String html1 = "<html><body>";
+		String html2 = "</body></html>";
+		tooltipText = tooltipText.replaceAll("\\n", "<br>");
 		JButton b = new JButton(INFO_ICON);
 		b.setPreferredSize(new Dimension(10, 10));
-		b.setToolTipText(tooltipText);
+		b.setToolTipText(html1 + tooltipText + html2);
 		b.setBorderPainted(false);
 		b.setFocusPainted(false);
 		b.setBorderPainted(false);

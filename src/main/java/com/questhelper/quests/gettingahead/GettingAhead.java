@@ -293,6 +293,7 @@ public class GettingAhead extends BasicQuestHelper
 		takeSaw = new DetailedQuestStep(this, new WorldPoint(1239, 3696, 0), "Take the saw in the building north of the farmhouse.", saw);
 		takeHammer = new DetailedQuestStep(this, new WorldPoint(1259, 3686, 0), "Take the hammer east of the farmhouse.", hammer);
 		takeNails = new ObjectStep(this, ObjectID.WORKBENCH_40364, new WorldPoint(1239, 3699, 0), "Take some nails from the farm's workbench.");
+		takeNails.addDialogStep("Take the nails.");
 		buildBearHead = new ObjectStep(this, NullObjectID.NULL_20858, new WorldPoint(1240, 3683, 0), "", bloodyHead, nails, planks, saw, hammer);
 		buildBearHead.addDialogStep("Yes.");
 		talkToGordonFinal = new NpcStep(this, NpcID.GORDON, new WorldPoint(1248, 3686, 0), "Return to Gordon to finish the quest.");

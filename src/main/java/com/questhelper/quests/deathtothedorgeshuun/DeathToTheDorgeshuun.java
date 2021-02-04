@@ -36,7 +36,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.FollowerCondition;
+import com.questhelper.requirements.conditional.NpcInteractingCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -281,7 +281,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		killedGuard4 = new VarbitCondition(2280, 1);
 		killedGuard5 = new VarbitCondition(2282, 1);
 
-		isDisguisedZanikFollowing = new FollowerCondition(NpcID.ZANIK_4509);
+		isDisguisedZanikFollowing = new NpcInteractingCondition(NpcID.ZANIK_4509);
 
 		zanikWaitingFor4 = new Conditions(new Conditions(LogicType.NOR, isDisguisedZanikFollowing), new NpcCondition(NpcID.ZANIK_4509, new Zone(new WorldPoint(2575, 5195, 0), new WorldPoint(2576, 5195, 0))));
 		zanikWaitingFor5 = new Conditions(new Conditions(LogicType.NOR, isDisguisedZanikFollowing), new NpcCondition(NpcID.ZANIK_4509, new Zone(new WorldPoint(2577, 5199, 0), new WorldPoint(2577, 5200, 0))));

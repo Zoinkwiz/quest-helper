@@ -2,11 +2,11 @@ package com.questhelper.requirements.conditional;
 
 import net.runelite.api.Client;
 
-public class FollowerCondition extends ConditionForStep
+public class NpcInteractingCondition extends ConditionForStep
 {
 	final int npcID;
 
-	public FollowerCondition(int npcID)
+	public NpcInteractingCondition(int npcID)
 	{
 		this.npcID = npcID;
 	}

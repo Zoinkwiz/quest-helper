@@ -33,6 +33,7 @@ import com.questhelper.requirements.QuestPointRequirement;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.SpellbookRequirement;
+import com.questhelper.requirements.conditional.NpcInteractingCondition;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -651,7 +652,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		hasHeartCrystal2 = new ItemRequirementCondition(heartCrystal2);
 
-		nezNearby = new NpcCondition(NpcID.NEZIKCHENED);
+		nezNearby = new NpcInteractingCondition(NpcID.NEZIKCHENED);
 
 		addedRope = new Conditions(true, new ObjectCondition(ObjectID.WINCH_2935, new WorldPoint(2761, 9331, 0)));
 		echnedNearby = new NpcCondition(NpcID.ECHNED_ZEKIN);
@@ -804,7 +805,8 @@ public class LegendsQuest extends BasicQuestHelper
 		useMacheteOnReedsAgain.addSubSteps(enterJungleAfterSeeds);
 
 		enterJungleToGoToSource = new DetailedQuestStep(this, "Return to the Khazari Jungle and be prepared for some fights.",
-			runeOrDragonAxe, machete, braveryPotion, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, combatGear, normalSpellbook);
+			runeOrDragonAxe, machete, pickaxe, lockpick, braveryPotion, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed,
+			combatGear, normalSpellbook);
 
 		addArdrigal = new DetailedQuestStep(this, "Add ardrigal and snake weed to a vial of water to make a bravery potion.", ardrigal, vialOfWater);
 		addSnake = new DetailedQuestStep(this, "Add snake weed to the ardigal mixture.", ardrigalMixture, snakeWeed);
@@ -838,33 +840,43 @@ public class LegendsQuest extends BasicQuestHelper
 		climbDownWinch.addDialogStep("Yes, I'll shimmy down the rope into possible doom.");
 
 		enterMossyRockForViyeldi = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0), "Search and then enter the Mossy Rocks in the north west of the Khazari.",
-			runeOrDragonAxe, machete, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, combatGear, normalSpellbook);
+			runeOrDragonAxe, machete, pickaxe, lockpick, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, combatGear, normalSpellbook);
 		enterMossyRockForViyeldi.addDialogStep("Yes, I'll crawl through, I'm very athletic.");
 
-		useCrystalsOnFurnace = new ObjectStep(this, ObjectID.FURNACE_2966, new WorldPoint(2427, 4727, 0), "Follow the path down, and kill each of the 3 skeletons for crystal pieces. Use them on the furnance in the north east of the area.", lumpCrystal, chunkCrystal, hunkCrystal);
+		useCrystalsOnFurnace = new ObjectStep(this, ObjectID.FURNACE_2966, new WorldPoint(2427, 4727, 0),
+			"Follow the path down, and kill each of the 3 skeletons for crystal pieces. Use them on the furnance in the north east of the area.",
+			lumpCrystal, chunkCrystal, hunkCrystal);
 
-		useHeartOnRock = new ObjectStep(this, ObjectID.MOSSY_ROCK_2965, new WorldPoint(2411, 4716, 0), "Use the crystal heart on the mossy rock in the centre of the area.", heartCrystal);
+		useHeartOnRock = new ObjectStep(this, ObjectID.MOSSY_ROCK_2965, new WorldPoint(2411, 4716, 0),
+			"Use the crystal heart on the mossy rock in the centre of the area.", heartCrystal);
 		useHeartOnRock.addIcon(ItemID.HEART_CRYSTAL);
 
-		useHeartOnRecess = new ObjectStep(this, ObjectID.RECESS, new WorldPoint(2422, 4691, 0), "Use the heart on the recess next to the barrier to the south.", heartCrystal2);
+		useHeartOnRecess = new ObjectStep(this, ObjectID.RECESS, new WorldPoint(2422, 4691, 0),
+			"Use the heart on the recess next to the barrier to the south.", heartCrystal2);
 		useHeartOnRecess.addIcon(ItemID.HEART_CRYSTAL_745);
 
-	    pushBoulder = new NpcStep(this, NpcID.BOULDER_3967, new WorldPoint(2393, 4679, 0), "Enter the south room and attempt to push one of the boulders to the west.", true);
+	    pushBoulder = new NpcStep(this, NpcID.BOULDER_3967, new WorldPoint(2393, 4679, 0),
+			"Enter the south room and attempt to push one of the boulders to the west.", true);
 
 	    talkToEchned = new NpcStep(this, NpcID.ECHNED_ZEKIN, new WorldPoint(2385, 4681, 0), "Talk to Echned Zekin.");
-	    talkToEchned.addDialogSteps("Who's asking?", "Yes, I need it for my quest.", "What can I do about that?", "I'll do what I must to get the water.", "Ok, I'll do it.");
+	    talkToEchned.addDialogSteps("Who's asking?", "Yes, I need it for my quest.", "What can I do about that?",
+			"I'll do what I must to get the water.", "Ok, I'll do it.");
 
-	    pickUpHat = new DetailedQuestStep(this, new WorldPoint(2379, 4712, 0), "Attempt to pick up the wizard hat near the rope down and kill Viyeldi with the dark dagger. If he doesn't appear, you'll need to talk to Ungadulu for a holy force spell.", darkDagger);
+	    pickUpHat = new DetailedQuestStep(this, new WorldPoint(2379, 4712, 0),
+			"Attempt to pick up the wizard hat near the rope down and kill Viyeldi with the dark dagger. If he doesn't appear," +
+				" you'll need to talk to Ungadulu for a holy force spell.", darkDagger);
 	    killViyeldi = new NpcStep(this, NpcID.VIYELDI, new WorldPoint(2379, 4712, 0), "Kill Viyeldi.", darkDagger);
 	    killViyeldi.addIcon(ItemID.DARK_DAGGER);
-
 	    pickUpHat.addSubSteps(killViyeldi);
 
-		pushBoulderAgain =  new NpcStep(this, NpcID.BOULDER_3967, new WorldPoint(2393, 4679, 0), "Return to Echned in the south room with the dagger. Be prepared for a fight with Nezikchened again.", true, glowingDagger);
-		pushBoulderWithForce = new NpcStep(this, NpcID.BOULDER_3967, new WorldPoint(2393, 4679, 0), "Return to Echned in the south room with holy force. Be prepared for a fight with Nezikchened again.", true, force);
+		pushBoulderAgain =  new NpcStep(this, NpcID.BOULDER_3967, new WorldPoint(2393, 4679, 0),
+			"Return to Echned in the south room with the dagger. Be prepared for a fight with Nezikchened again.", true, glowingDagger);
+		pushBoulderWithForce = new NpcStep(this, NpcID.BOULDER_3967, new WorldPoint(2393, 4679, 0),
+			"Return to Echned in the south room with holy force. Be prepared for a fight with Nezikchened again.", true, force);
 		pushBoulderAgain.addSubSteps(pushBoulderWithForce);
 
-		giveDaggerToEchned = new NpcStep(this, NpcID.ECHNED_ZEKIN, new WorldPoint(2385, 4681, 0), "Use the glowing dagger on Echned Zekin.");
+		giveDaggerToEchned = new NpcStep(this, NpcID.ECHNED_ZEKIN, new WorldPoint(2385, 4681, 0),
+			"Use the glowing dagger on Echned Zekin.");
 		giveDaggerToEchned.addIcon(ItemID.GLOWING_DAGGER);
 
 		castForce = new DetailedQuestStep(this, "Cast holy force.", forceHighlighted);

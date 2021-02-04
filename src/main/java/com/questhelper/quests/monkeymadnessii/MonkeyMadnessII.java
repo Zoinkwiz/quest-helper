@@ -37,7 +37,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.ChatMessageCondition;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.FollowerCondition;
+import com.questhelper.requirements.conditional.NpcInteractingCondition;
 import com.questhelper.requirements.conditional.ItemCondition;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
@@ -411,7 +411,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		killedGorillas = new VarbitCondition(5068, 3);
 
-		nieveFollowing = new FollowerCondition(NpcID.NIEVE_7109);
+		nieveFollowing = new NpcInteractingCondition(NpcID.NIEVE_7109);
 	}
 
 	public void loadZones()

@@ -95,7 +95,7 @@ public class EquippedItemRequirement extends AbstractRequirement
 		this.slot = slot;
 		this.name = name;
 		this.itemIDs.addAll(Arrays.asList(items));
-		if (items.length >0)
+		if (items.length > 0)
 		{
 			addNewItem(name, items[0]);
 		}

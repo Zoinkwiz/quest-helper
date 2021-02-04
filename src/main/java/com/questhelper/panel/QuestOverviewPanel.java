@@ -25,9 +25,8 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
-import com.questhelper.IconUtil;
+import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
-
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.NoItemRequirement;
@@ -84,8 +83,8 @@ public class QuestOverviewPanel extends JPanel
 
 	private final JLabel questNameLabel = new JLabel();
 
-	private static final ImageIcon CLOSE_ICON = IconUtil.CLOSE.getIcon();
-	private static final ImageIcon INFO_ICON = IconUtil.INFO_ICON.getIcon();
+	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
+	private static final ImageIcon INFO_ICON = Icon.INFO_ICON.getIcon();
 
 	private final JButton collapseBtn = new JButton();
 

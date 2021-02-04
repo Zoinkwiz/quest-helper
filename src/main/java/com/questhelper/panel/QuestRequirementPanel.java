@@ -24,7 +24,7 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.IconUtil;
+import com.questhelper.Icon;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
@@ -41,7 +41,7 @@ import lombok.Setter;
 
 public class QuestRequirementPanel extends JPanel
 {
-	private static final ImageIcon INFO_ICON = IconUtil.INFO_ICON.getIcon();
+	private static final ImageIcon INFO_ICON = Icon.INFO_ICON.getIcon();
 
 	@Getter
 	@Setter

@@ -24,7 +24,7 @@
  */
 package com.questhelper.steps.overlay;
 
-import com.questhelper.IconUtil;
+import com.questhelper.Icon;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -32,7 +32,7 @@ public class IconOverlay
 {
 	public static BufferedImage createIconImage(BufferedImage newImage)
 	{
-		BufferedImage iconBackground = IconUtil.ICON_BACKGROUND.getImage();
+		BufferedImage iconBackground = Icon.ICON_BACKGROUND.getImage();
 		BufferedImage icon = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(),
 			BufferedImage.TYPE_INT_ARGB);
 		Graphics tmpGraphics = icon.getGraphics();

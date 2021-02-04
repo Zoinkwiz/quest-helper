@@ -24,7 +24,7 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.IconUtil;
+import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.BorderLayout;
@@ -49,7 +49,7 @@ public class QuestSelectPanel extends JPanel
 	@Getter
 	private final QuestHelper questHelper;
 
-	private static final ImageIcon START_ICON = IconUtil.START.getIcon();
+	private static final ImageIcon START_ICON = Icon.START.getIcon();
 
 	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestHelperPanel questHelperPanel, QuestHelper questHelper, QuestState questState)
 	{

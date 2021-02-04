@@ -135,7 +135,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	public List<Integer> getAllIds()
 	{
-		List<Integer> ids = alternates;
+		List<Integer> ids = new ArrayList<>(alternates);
 		ids.add(id);
 		return ids;
 	}

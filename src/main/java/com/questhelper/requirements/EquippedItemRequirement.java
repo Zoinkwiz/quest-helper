@@ -27,13 +27,18 @@
 
 package com.questhelper.requirements;
 
+import com.questhelper.ItemDefinitions;
+import com.questhelper.questhelpers.QuestItem;
 import com.questhelper.requirements.util.ItemSlots;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -47,8 +52,7 @@ public class EquippedItemRequirement extends AbstractRequirement
 {
 	private final ItemSlots slot;
 	private final String name;
-	private final List<Integer> itemIDs = new ArrayList<>();
-	private final Map<Integer, String> items = new HashMap<>();
+	private final Map<Integer, QuestItem> items = new LinkedHashMap<>();
 
 	/**
 	 * Check if the player has a certain item in a certain {@link ItemSlots}.
@@ -61,8 +65,7 @@ public class EquippedItemRequirement extends AbstractRequirement
 	{
 		this.slot = slot;
 		this.name = name;
-		this.itemIDs.add(id);
-		addNewItem(name, id);
+		addNewItem(new QuestItem(id, name));
 	}
 
 	/**
@@ -76,11 +79,8 @@ public class EquippedItemRequirement extends AbstractRequirement
 	{
 		this.slot = slot;
 		this.name = name;
-		this.itemIDs.addAll(items);
-		if (items.size() > 0)
-		{
-			addNewItem(name, items.get(0));
-		}
+		addNewItem(name, items.get(0));
+		items.forEach(item -> addNewItem(name, item));
 	}
 
 	/**
@@ -90,15 +90,12 @@ public class EquippedItemRequirement extends AbstractRequirement
 	 * @param slot the slot to check
 	 * @param items list of valid item ids
 	 */
-	public EquippedItemRequirement(String name, ItemSlots slot, Integer... items)
+	public EquippedItemRequirement(String name, ItemSlots slot, @Nonnull Integer... items)
 	{
 		this.slot = slot;
 		this.name = name;
-		this.itemIDs.addAll(Arrays.asList(items));
-		if (items.length > 0)
-		{
-			addNewItem(name, items[0]);
-		}
+		addNewItem(name, items[0]);
+		Stream.of(items).forEach(item -> addNewItem(name, item));
 	}
 
 	@Override
@@ -108,21 +105,25 @@ public class EquippedItemRequirement extends AbstractRequirement
 		if (panelReplacement instanceof ItemRequirement)
 		{
 			ItemRequirement req = (ItemRequirement) panelReplacement;
-			addNewItem(req.getName(), req.getId());
+			addNewItem(req.getDisplayText(), req.getId());
 		}
 	}
 
 	public void addNewItem(String text, int itemID)
 	{
-		itemIDs.add(itemID);
-		items.put(itemID, text);
-		super.setOverlayReplacement(new ItemRequirement(name, itemID));
+		addNewItem(new QuestItem(itemID, text));
+	}
+
+	public void addNewItem(QuestItem item)
+	{
+		items.put(item.getItemID(), item);
+		ItemDefinitions.addQuestItem(item);
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		return slot.checkInventory(client, i -> getItemIDs().contains(i.getId()));
+		return slot.contains(client, i -> items.containsKey(i.getId()));
 	}
 
 	@Override
@@ -132,13 +133,13 @@ public class EquippedItemRequirement extends AbstractRequirement
 		Color equipColor = Color.RED;
 
 		String text = name;
-		for (Map.Entry<Integer, String> entry : items.entrySet())
+		for (Map.Entry<Integer, QuestItem> entry : items.entrySet())
 		{
 			int itemID = entry.getKey();
 			if (slot.contains(client, i -> i != null && i.getId() == itemID))
 			{
 				equipColor = Color.GREEN;
-				text = entry.getValue();
+				text = entry.getValue().getDisplayText();
 				break;
 			}
 		}

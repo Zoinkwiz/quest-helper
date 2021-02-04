@@ -85,9 +85,8 @@ public class DetailedQuestStep extends QuestStep
 	@Setter
 	protected List<WorldPoint> worldLinePoints;
 
-	@Setter
 	@Getter
-	protected List<Requirement> requirements = new ArrayList<>();
+	protected final List<Requirement> requirements = new ArrayList<>();
 
 	protected Multimap<Tile, Integer> tileHighlights = ArrayListMultimap.create();
 
@@ -157,6 +156,17 @@ public class DetailedQuestStep extends QuestStep
 	public void addItemRequirements(List<ItemRequirement> requirement)
 	{
 		requirements.addAll(requirement);
+	}
+
+	public void emptyRequirements()
+	{
+		requirements.clear();
+	}
+
+	public void setRequirements(List<Requirement> newRequirements)
+	{
+		requirements.clear();
+		requirements.addAll(newRequirements);
 	}
 
 	public void setText(String text) {

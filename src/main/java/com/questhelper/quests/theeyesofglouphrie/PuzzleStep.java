@@ -180,7 +180,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		if (items1 == -1)
 		{
-			getPieces.setRequirements(Collections.singletonList(shapes.get(items1)));
+			getPieces.emptyRequirements();
 			startUpStep(getPieces);
 			return;
 		}
@@ -539,6 +539,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		blueSquareGreenPentagon = new ItemRequirement("Blue square/green pentagon", ItemID.A_BLUE_SQUARE);
 		blueSquareGreenPentagon.addAlternates(ItemID.A_GREEN_PENTAGON);
 
+		shapeValues.put(0, new ItemRequirement("Null object", ItemID.NO_EGGS));
 		shapeValues.put(1, shapes.get(ItemID.A_RED_CIRCLE));
 		shapeValues.put(2, shapes.get(ItemID.AN_ORANGE_CIRCLE));
 		shapeValues.put(3, yellowCircleRedTri);

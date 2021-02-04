@@ -49,7 +49,7 @@ public class DigStep extends DetailedQuestStep
 	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
-		this.requirements.add(SPADE);
+		this.getRequirements().add(SPADE);
 	}
 
 	public void setExpectedItem(int itemID)

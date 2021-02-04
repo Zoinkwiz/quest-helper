@@ -55,39 +55,39 @@ public class GiveItems extends NpcStep
 
 	private void itemQuantitiesLeft()
 	{
-		requirements = new ArrayList<>();
+		emptyRequirements();
 		if (client.getVarbitValue(bonesId) != 1)
 		{
-			requirements.add(bones);
+			addRequirement(bones);
 		}
 		if (client.getVarbitValue(bloodRuneId) != 1)
 		{
-			requirements.add(bloodRune);
+			addRequirement(bloodRune);
 		}
 		if (client.getVarbitValue(ashesId) != 1)
 		{
-			requirements.add(ashes);
+			addRequirement(ashes);
 		}
 		if (client.getVarbitValue(charcoalId) != 1)
 		{
-			requirements.add(charcoal);
+			addRequirement(charcoal);
 		}
 		if (client.getVarbitValue(magicLogId) != 12)
 		{
 			magicLogs.setQuantity(12 - client.getVarbitValue(magicLogId));
-			requirements.add(magicLogs);
+			addRequirement(magicLogs);
 		}
 		if (client.getVarbitValue(steelBarsId) != 6)
 		{
 			steelBars.setQuantity(6 - client.getVarbitValue(steelBarsId));
-			requirements.add(steelBars);
+			addRequirement(steelBars);
 		}
 		if (client.getVarbitValue(moltenGlassId) != 6)
 		{
 			moltenGlass.setQuantity(6 - client.getVarbitValue(moltenGlassId));
-			requirements.add(moltenGlass);
+			addRequirement(moltenGlass);
 		}
-		if (requirements.isEmpty())
+		if (getRequirements().isEmpty())
 		{
 			setText("Talk to Eblis in the east of the Bandit Camp.");
 		}

@@ -134,7 +134,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		ConditionalStep getMoreTokens = new ConditionalStep(this, enterCave);
 		getMoreTokens.addStep(inCave, unlockMachine);
 
-		steps.put(27, getMoreTokens);
+		steps.put(0, unlockMachine);
 		steps.put(30, getMoreTokens);
 
 		ConditionalStep goOperateMachine = new ConditionalStep(this, enterCave);

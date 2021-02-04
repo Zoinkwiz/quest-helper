@@ -58,7 +58,7 @@ public class GetRohakDrunk extends NpcStep
 		asgoldianAle.setQuantity(numAle);
 		if (numAle == 0)
 		{
-			this.requirements = new ArrayList<>();
+			emptyRequirements();
 		}
 		else
 		{

@@ -25,6 +25,7 @@
 package com.questhelper.quests.atailoftwocats;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.ItemDefinitions;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.FollowerItemRequirement;
@@ -159,7 +160,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true);
 		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT, 1, true);
 		hat = new ItemRequirement("Doctor's or Nurse hat", ItemID.DOCTORS_HAT, 1, true);
-		hat.addAlternates(ItemID.NURSE_HAT);
+		hat.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.NURSE_HAT, "Nurse hat"));
 	}
 
 	public void setupConditions()

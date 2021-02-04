@@ -25,6 +25,7 @@
 package com.questhelper.quests.enakhraslament;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.ItemDefinitions;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.Requirement;
@@ -233,7 +234,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		camelHead.setHighlightInInventory(true);
 
 		breadOrCake = new ItemRequirement("Bread or cake", ItemID.BREAD);
-		breadOrCake.addAlternates(ItemID.CAKE);
+		breadOrCake.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.CAKE, "Cake"));
 		breadOrCake.setHighlightInInventory(true);
 
 		airSpellRunes = new ItemRequirement("Runes for an air spell", -1, -1);

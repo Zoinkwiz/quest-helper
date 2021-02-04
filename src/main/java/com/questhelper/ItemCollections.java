@@ -41,7 +41,7 @@ public class ItemCollections
 	// Tools
 
 	@Getter
-	private static final List<Integer> axes = QuestUtil.toReversedLinkedList(true,
+	private static final List<Integer> axes = QuestUtil.toReversedLinkedList(
 		ItemID.BRONZE_AXE,
 		ItemID.IRON_AXE,
 		ItemID.STEEL_AXE,
@@ -58,7 +58,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> pickaxes = QuestUtil.toReversedLinkedList(true,
+	private static final List<Integer> pickaxes = QuestUtil.toReversedLinkedList(
 		ItemID.BRONZE_PICKAXE,
 		ItemID.IRON_PICKAXE,
 		ItemID.STEEL_PICKAXE,
@@ -78,7 +78,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> harpoons = QuestUtil.toReversedLinkedList(true,
+	private static final List<Integer> harpoons = QuestUtil.toReversedLinkedList(
 		ItemID.HARPOON,
 		ItemID.BARBTAIL_HARPOON,
 		ItemID.DRAGON_HARPOON,
@@ -96,7 +96,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> nails = QuestUtil.toReversedLinkedList(true,
+	private static final List<Integer> nails = QuestUtil.toReversedLinkedList(
 		ItemID.BRONZE_NAILS,
 		ItemID.IRON_NAILS,
 		ItemID.STEEL_NAILS,
@@ -107,7 +107,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> bows = QuestUtil.toReversedLinkedList(true,
+	private static final List<Integer> bows = QuestUtil.toReversedLinkedList(
 		ItemID.CURSED_GOBLIN_BOW,
 		ItemID.RAIN_BOW,
 		ItemID.TRAINING_BOW,
@@ -142,7 +142,7 @@ public class ItemCollections
 	// Teleports
 
 	@Getter
-	private static final List<Integer> metalArrows = QuestUtil.toReversedLinkedList(true,
+	private static final List<Integer> metalArrows = QuestUtil.toReversedLinkedList(
 		ItemID.BRONZE_ARROW,
 		ItemID.IRON_ARROW,
 		ItemID.STEEL_ARROW,
@@ -726,7 +726,7 @@ public class ItemCollections
 	// Logs
 
 	@Getter
-	private static final List<Integer> logsForFire = QuestUtil.toReversedLinkedList(true,
+	private static final List<Integer> logsForFire = QuestUtil.toReversedLinkedList(
 		ItemID.LOGS,
 		ItemID.OAK_LOGS,
 		ItemID.WILLOW_LOGS,
@@ -788,7 +788,6 @@ public class ItemCollections
 	private static final List<Integer> ghostspeak = QuestUtil.toLinkedList(
 		ItemID.GHOSTSPEAK_AMULET,
 		ItemID.GHOSTSPEAK_AMULET_4250,
-		ItemID.MORYTANIA_LEGS_1,
 		ItemID.MORYTANIA_LEGS_2,
 		ItemID.MORYTANIA_LEGS_3,
 		ItemID.MORYTANIA_LEGS_4
@@ -904,6 +903,45 @@ public class ItemCollections
 		ItemID.MIXED_FLOWERS,
 		ItemID.ASSORTED_FLOWERS,
 		ItemID.BLACK_FLOWERS,
-		ItemID.WHITE_FLOWERS
+		ItemID.WHITE_FLOWERS,
+		ItemID.RED_FLOWERS_8938,
+		ItemID.BLUE_FLOWERS_8936
+	);
+
+	@Getter
+	private static final List<Integer> rodOfIvandis = QuestUtil.toReversedLinkedList(
+		ItemID.ROD_OF_IVANDIS_1,
+		ItemID.ROD_OF_IVANDIS_2,
+		ItemID.ROD_OF_IVANDIS_3,
+		ItemID.ROD_OF_IVANDIS_4,
+		ItemID.ROD_OF_IVANDIS_5,
+		ItemID.ROD_OF_IVANDIS_6,
+		ItemID.ROD_OF_IVANDIS_7,
+		ItemID.ROD_OF_IVANDIS_8,
+		ItemID.ROD_OF_IVANDIS_9,
+		ItemID.ROD_OF_IVANDIS_10
+	);
+
+	@Getter
+	private static final List<Integer> salveAmulet = QuestUtil.toLinkedList(
+		ItemID.SALVE_AMULETEI,
+		ItemID.SALVE_AMULET_E,
+		ItemID.SALVE_AMULETI,
+		ItemID.SALVE_AMULET,
+		ItemID.SALVE_AMULETEI_25278,
+		ItemID.SALVE_AMULETI_25250
+	);
+
+	@Getter
+	private static final List<Integer> wateringCans = QuestUtil.toLinkedList(
+		ItemID.GRICOLLERS_CAN,
+		ItemID.WATERING_CAN8,
+		ItemID.WATERING_CAN7,
+		ItemID.WATERING_CAN6,
+		ItemID.WATERING_CAN5,
+		ItemID.WATERING_CAN4,
+		ItemID.WATERING_CAN3,
+		ItemID.WATERING_CAN2,
+		ItemID.WATERING_CAN1
 	);
 }

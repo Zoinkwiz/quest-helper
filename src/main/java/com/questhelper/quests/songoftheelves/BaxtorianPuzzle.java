@@ -25,6 +25,8 @@
 package com.questhelper.quests.songoftheelves;
 
 import com.google.inject.Inject;
+import com.questhelper.ItemCollections;
+import com.questhelper.ItemDefinitions;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
@@ -218,12 +220,11 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE);
 		natureRune.setHighlightInInventory(true);
 
-		flowers = new ItemRequirement("Flowers", ItemID.RED_FLOWERS_8938);
-		flowers.addAlternates(ItemID.RED_FLOWERS, ItemID.YELLOW_FLOWERS, ItemID.PURPLE_FLOWERS, ItemID.ORANGE_FLOWERS,
-			ItemID.MIXED_FLOWERS, ItemID.ASSORTED_FLOWERS, ItemID.BLACK_FLOWERS, ItemID.WHITE_FLOWERS, ItemID.BLUE_FLOWERS_8936);
+		flowers = new ItemRequirement("Flowers", ItemCollections.getFlowers());
 
 		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
-		iritLeaf.addAlternates(ItemID.GRIMY_IRIT_LEAF);
+		iritLeaf.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.GRIMY_IRIT_LEAF, "Grimy Irit Leaf"));
+		iritLeaf.setTooltip("Grimy Irit Leaf is also valid.");
 
 		flowersOrIrit = new ItemRequirements(LogicType.OR, "Irit leaf or a flower", iritLeaf, flowers);
 		flowersOrIrit.setHighlightInInventory(true);

@@ -309,9 +309,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		enchantedRodHighlighted = new ItemRequirement("Silvthrill rod", ItemID.SILVTHRILL_ROD_7638);
 		enchantedRodHighlighted.setHighlightInInventory(true);
 
-		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
-		rodOfIvandis.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
-			ItemID.ROD_OF_IVANDIS_6, ItemID.ROD_OF_IVANDIS_7, ItemID.ROD_OF_IVANDIS_8, ItemID.ROD_OF_IVANDIS_9);
+		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemCollections.getRodOfIvandis());
 
 		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}

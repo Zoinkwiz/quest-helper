@@ -25,6 +25,7 @@
 package com.questhelper.quests.deathplateau;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.ItemDefinitions;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -152,7 +153,8 @@ public class DeathPlateau extends BasicQuestHelper
 	{
 		asgarnianAle = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE);
 		premadeBlurb = new ItemRequirement("Premade blurb' sp. (or a Blurberry special, or 500 coins to gamble with)", ItemID.PREMADE_BLURB_SP);
-		premadeBlurb.addAlternates(ItemID.BLURBERRY_SPECIAL);
+		premadeBlurb.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.BLURBERRY_SPECIAL, "Blurberry special"));
+		premadeBlurb.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.COINS_995).withQuantity(500));
 		coins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
 		bread = new ItemRequirement("Bread (UNNOTED)", ItemID.BREAD, 10);
 		trout = new ItemRequirement("Trout (UNNOTED)", ItemID.TROUT, 10);

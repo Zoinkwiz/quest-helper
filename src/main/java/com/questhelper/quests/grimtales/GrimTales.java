@@ -181,8 +181,8 @@ public class GrimTales extends BasicQuestHelper
 		tarrominUnfHighlight.setHighlightInInventory(true);
 
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		can = new ItemRequirement("Watering can with at least 1 use", ItemID.WATERING_CAN1);
-		can.addAlternates(ItemID.WATERING_CAN2, ItemID.WATERING_CAN3, ItemID.WATERING_CAN4, ItemID.WATERING_CAN5, ItemID.WATERING_CAN6, ItemID.WATERING_CAN7, ItemID.WATERING_CAN8, ItemID.GRICOLLERS_CAN);
+		can = new ItemRequirement("Watering can with at least 1 use", ItemCollections.getWateringCans());
+		can.setTooltip("Gricollers' can is also valid. ");
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -206,8 +206,7 @@ public class GrimTales extends BasicQuestHelper
 		magicBeans = new ItemRequirement("Magic beans", ItemID.MAGIC_BEANS);
 		magicBeans.setTooltip("You can get more from Sylas in Taverley");
 		magicBeans.setHighlightInInventory(true);
-		canHighlight = new ItemRequirement("Watering can with at least 1 use", ItemID.WATERING_CAN1);
-		canHighlight.addAlternates(ItemID.WATERING_CAN2, ItemID.WATERING_CAN3, ItemID.WATERING_CAN4, ItemID.WATERING_CAN5, ItemID.WATERING_CAN6, ItemID.WATERING_CAN7, ItemID.WATERING_CAN8, ItemID.GRICOLLERS_CAN);
+		canHighlight = new ItemRequirement("Watering can with at least 1 use", ItemCollections.getWateringCans());
 	}
 
 	public void loadZones()

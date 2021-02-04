@@ -25,6 +25,7 @@
 package com.questhelper.quests.recipefordisaster;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.ItemDefinitions;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
@@ -147,8 +148,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		sweetcorn = new ItemRequirement("Sweetcorn", ItemID.SWEETCORN);
 
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		machete = new ItemRequirement("Any machete", ItemID.MACHETE);
-		machete.addAlternates(ItemID.RED_TOPAZ_MACHETE, ItemID.OPAL_MACHETE, ItemID.JADE_MACHETE);
+		machete = new ItemRequirement("Any machete", ItemCollections.getMachete());
 		radimusNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
 		radimusNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
 		if (QuestHelperQuest.LEGENDS_QUEST.getState(client) == QuestState.FINISHED)
@@ -166,7 +166,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		vanillaPod.setHighlightInInventory(true);
 
 		dramenStaffOrLunar = new ItemRequirement("Dramen/lunar staff", ItemID.DRAMEN_STAFF, 1, true);
-		dramenStaffOrLunar.addAlternates(ItemID.LUNAR_STAFF);
+		dramenStaffOrLunar.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.LUNAR_STAFF, "Lunar Staff"));
 
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
 		dramenBranch.setHighlightInInventory(true);

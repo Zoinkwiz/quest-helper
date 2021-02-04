@@ -256,14 +256,10 @@ public class ATasteOfHope extends BasicQuestHelper
 		enchantRunes = new ItemRequirements("Emerald enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", airRune3, airStaff), cosmicRune);
 		enchantTablet = new ItemRequirement("Emerald enchant tablet", ItemID.ENCHANT_EMERALD_OR_JADE);
 		enchantEmeraldRunesOrTablet = new ItemRequirements(LogicType.OR, "Runes or tablet for Enchant Emerald", enchantRunes, enchantTablet);
-		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
-		rodOfIvandis.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
-			ItemID.ROD_OF_IVANDIS_6, ItemID.ROD_OF_IVANDIS_7, ItemID.ROD_OF_IVANDIS_8, ItemID.ROD_OF_IVANDIS_9);
+		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemCollections.getRodOfIvandis());
 		rodOfIvandis.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott AFTER talking to Verdita in Old Man Ral's basement");
 
-		rodOfIvandisHighlighted = new ItemRequirement("Rod of Ivandis", ItemID.ROD_OF_IVANDIS_10);
-		rodOfIvandisHighlighted.addAlternates(ItemID.ROD_OF_IVANDIS_1, ItemID.ROD_OF_IVANDIS_2, ItemID.ROD_OF_IVANDIS_3, ItemID.ROD_OF_IVANDIS_4, ItemID.ROD_OF_IVANDIS_5,
-			ItemID.ROD_OF_IVANDIS_6, ItemID.ROD_OF_IVANDIS_7, ItemID.ROD_OF_IVANDIS_8, ItemID.ROD_OF_IVANDIS_9);
+		rodOfIvandisHighlighted = new ItemRequirement("Rod of Ivandis", ItemCollections.getRodOfIvandis());
 		rodOfIvandisHighlighted.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott");
 		rodOfIvandisHighlighted.setHighlightInInventory(true);
 

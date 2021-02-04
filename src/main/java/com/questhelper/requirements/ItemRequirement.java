@@ -25,12 +25,17 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.ItemDefinitions;
+import com.questhelper.questhelpers.QuestItem;
+import com.questhelper.requirements.util.InventorySlots;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,8 +67,7 @@ public class ItemRequirement extends AbstractRequirement
 	@Setter
 	protected boolean highlightInInventory;
 
-	protected final List<Integer> alternates = new ArrayList<>();
-	protected final Map<Integer, String> itemNameMap = new HashMap<>();
+	protected final Map<Integer, QuestItem> alternateItems = new HashMap<>();
 
 	@Setter
 	protected boolean exclusiveToOneItemType;
@@ -73,13 +77,18 @@ public class ItemRequirement extends AbstractRequirement
 		this(name, id, 1);
 	}
 
+	public ItemRequirement(String name, QuestItem item)
+	{
+		this(name, item.getItemID(), item.getQuantity());
+		this.addAlternateItem(item);
+	}
+
 	public ItemRequirement(String name, int id, int quantity)
 	{
 		this.id = id;
 		this.quantity = quantity;
 		this.name = name;
 		equip = false;
-		this.addAlternateItem(id, name);
 	}
 
 	public ItemRequirement(String name, int id, int quantity, boolean equip)
@@ -115,21 +124,39 @@ public class ItemRequirement extends AbstractRequirement
 
 	public void addAlternates(List<Integer> alternates)
 	{
-		this.alternates.addAll(alternates);
+		alternates.forEach(this::addAlternate);
 	}
 
 	public void addAlternates(Integer... alternates)
 	{
-		Collections.addAll(this.alternates, alternates);
+		if (alternates != null && alternates.length > 0)
+		{
+			Stream.of(alternates).forEach(this::addAlternate);
+		}
 	}
 
-	public void addAlternateItem(int itemID, String text)
+	private void addAlternate(int itemID)
 	{
-		this.itemNameMap.put(itemID, text);
-		if (!alternates.contains(itemID))
-		{
-			alternates.add(itemID);
-		}
+		QuestItem item = ItemDefinitions.addQuestItem(new QuestItem(itemID, name, quantity));
+		this.alternateItems.put(itemID, item);
+	}
+
+	/**
+	 * Add an alternate {@link QuestItem}. If this Requirement fails it's check,
+	 * the first alternate {@link QuestItem} to pass the check will be displayed instead.
+	 * <br>
+	 * {@link QuestItem}s should be created via {@link com.questhelper.ItemDefinitions#getQuestItem(int, String)}
+	 * or {@link com.questhelper.ItemDefinitions#getQuestItem(int, String, int)}
+	 * so they can be re-used.
+	 * @param item the alternate {@link QuestItem}
+	 *
+	 * @see com.questhelper.ItemDefinitions#getQuestItem(int)
+	 * @see com.questhelper.ItemDefinitions#getQuestItem(int, String)
+	 * @see com.questhelper.ItemDefinitions#getQuestItem(int, String, int)
+	 */
+	public void addAlternateItem(QuestItem item)
+	{
+		alternateItems.put(item.getItemID(), item);
 	}
 
 	public boolean showQuantity()
@@ -154,9 +181,9 @@ public class ItemRequirement extends AbstractRequirement
 
 	public List<Integer> getAllIds()
 	{
-		List<Integer> ids = alternates;
-		ids.add(id);
-		return ids;
+		List<Integer> ids = new ArrayList<>(alternateItems.keySet());
+		ids.add(0, id);
+		return ids.stream().distinct().collect(Collectors.toList()); // remove duplicates
 	}
 
 	@Override
@@ -164,25 +191,25 @@ public class ItemRequirement extends AbstractRequirement
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
-		String text = "";
+		StringBuilder text = new StringBuilder();
 		if (this.showQuantity())
 		{
-			text = this.getQuantity() + " x ";
+			text.append(this.getQuantity()).append(" x ");
 		}
 
 		int itemID = findItemID(client, false);
-		if (itemNameMap.containsKey(itemID))
+		if (alternateItems.containsKey(itemID))
 		{
-			text += itemNameMap.get(itemID);
+			text.append(alternateItems.get(itemID).getDisplayText());
 		}
 		else
 		{
-			text += this.getName();
+			text.append(this.getName());
 		}
 
 		Color color = getColor(client);
 		lines.add(LineComponent.builder()
-			.left(text)
+			.left(text.toString())
 			.leftColor(color)
 			.build());
 		lines.addAll(getAdditionalText(client, false));
@@ -198,7 +225,7 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public Color getColor(Client client)
 	{
-		Color color;
+		Color color = Color.RED;
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
@@ -207,28 +234,25 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GREEN;
 		}
-		else
-		{
-			color = Color.RED;
-		}
 		return color;
 	}
 
+	/** Find the first item that this requirement allows that the player has, or -1 if they don't have any item(s) */
 	private int findItemID(Client client, boolean checkConsideringSlotRestrictions)
 	{
-		int remainder = checkSpecificItem(client, id, checkConsideringSlotRestrictions, null);
+		int remainder = getRequiredItemDifference(client, id, checkConsideringSlotRestrictions, null);
 		if (remainder <= 0)
 		{
 			return id;
 		}
-
-		for (int alternate : alternates)
+		List<Integer> ids = getAllIds();
+		for (int alternate : ids)
 		{
 			if (exclusiveToOneItemType)
 			{
 				remainder = quantity;
 			}
-			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkConsideringSlotRestrictions, null));
+			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, null));
 			if (remainder <= 0)
 			{
 				return alternate;
@@ -240,7 +264,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
 	{
-		Color color;
+		Color color = Color.RED;
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
@@ -249,10 +273,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GREEN;
 		}
-		else
-		{
-			color = Color.RED;
-		}
+
 		if (color == Color.RED && bankItems != null)
 		{
 			if (check(client, false, bankItems))
@@ -264,7 +285,7 @@ public class ItemRequirement extends AbstractRequirement
 		return color;
 	}
 
-	private ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip)
+	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip)
 	{
 		Color equipColor = Color.GREEN;
 
@@ -296,19 +317,20 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
-		int remainder = checkSpecificItem(client, id, checkConsideringSlotRestrictions, items);
+		int remainder = getRequiredItemDifference(client, id, checkConsideringSlotRestrictions, items);
 		if (remainder <= 0)
 		{
 			return true;
 		}
 
-		for (int alternate : alternates)
+		List<Integer> ids = getAllIds();
+		for (int alternate : ids)
 		{
 			if (exclusiveToOneItemType)
 			{
 				remainder = quantity;
 			}
-			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkConsideringSlotRestrictions, items));
+			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, items));
 			if (remainder <= 0)
 			{
 				return true;
@@ -317,7 +339,11 @@ public class ItemRequirement extends AbstractRequirement
 		return false;
 	}
 
-	public int checkSpecificItem(Client client, int itemID, boolean checkConsideringSlotRestrictions, Item[] items)
+	/**
+	 * Get the difference between the required quantity for this requirement and the amount the client has.
+	 * Any value <= 0 indicates they have the required amount
+	 */
+	public int getRequiredItemDifference(Client client, int itemID, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
 		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
 		int tempQuantity = quantity;
@@ -352,6 +378,7 @@ public class ItemRequirement extends AbstractRequirement
 	public int getNumMatches(Item[] items, int itemID)
 	{
 		return Stream.of(items)
+			.filter(Objects::nonNull) // Runelite loves to sneak in null objects
 			.filter(i -> i.getId() == itemID)
 			.mapToInt(Item::getQuantity)
 			.sum();
@@ -369,21 +396,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean checkBank(Client client)
 	{
-		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-		if (bankContainer == null)
-		{
-			return false;
-		}
-
-		for (Integer itemId : getDisplayItemIds())
-		{
-			if (bankContainer.contains(itemId))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return InventorySlots.BANK.contains(client, item -> getDisplayItemIds().contains(item.getId()));
 	}
 
 	public List<Integer> getDisplayItemIds()

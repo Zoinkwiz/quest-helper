@@ -30,8 +30,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import net.runelite.api.ItemID;
 
+@UtilityClass
 public class ItemDefinitions
 {
 	/** Represents an item with an id of -1 and some non-null display text. */
@@ -39,7 +41,7 @@ public class ItemDefinitions
 	private final QuestItem nullItem = new QuestItem(-1, "I'm null. Fix me!");
 	private final Map<Integer, QuestItem> questItems = new ConcurrentHashMap<>();
 
-	protected ItemDefinitions()
+	protected void init()
 	{
 		//TODO: Add more commonly used items so they devs can save time creating those
 		// These items should be used in almost every quest
@@ -51,6 +53,9 @@ public class ItemDefinitions
 		addAlternate(ItemID.COINS, ItemID.COINS_995);
 		addAlternate(ItemID.COINS_6964, ItemID.COINS_995);
 		addAlternate(ItemID.COINS_8890, ItemID.COINS_995);
+		addAlternate(ItemID.ROPE_11046, ItemID.ROPE);
+		addAlternate(ItemID.ROPE_7155, ItemID.ROPE);
+		addAlternate(ItemID.ROPE_20587, ItemID.ROPE);
 
 		add(new QuestItem(ItemID.KNIFE, "Knife"));
 		add(new QuestItem(ItemID.HAMMER, "Hammer"));
@@ -66,6 +71,22 @@ public class ItemDefinitions
 	private void addAlternate(int alternateID, int originalID)
 	{
 		questItems.computeIfAbsent(alternateID, i -> getQuestItem(originalID));
+	}
+
+
+	/**
+	 * Add the {@link QuestItem} to the list of registered Quest Items.
+	 * If this item already exists, then nothing happens.
+	 * <br>
+	 * The provided QuestItem is always returned
+	 *
+	 * @param item the item to add
+	 * @return the provided QuestItem
+	 */
+	public QuestItem addQuestItem(QuestItem item)
+	{
+		questItems.putIfAbsent(item.getItemID(), item);
+		return item;
 	}
 
 	/**

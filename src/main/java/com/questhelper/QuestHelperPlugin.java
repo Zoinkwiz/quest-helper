@@ -217,9 +217,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean loadQuestList;
 
-	@Getter
-	private ItemDefinitions itemDefinitions;
-
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -229,7 +226,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
-		itemDefinitions = new ItemDefinitions();
+		ItemDefinitions.init();
 		bankTagService = new QuestHelperBankTagService(this);
 		bankTagsMain = new QuestBankTab(this);
 		bankTagsMain.startUp();
@@ -794,7 +791,7 @@ public class QuestHelperPlugin extends Plugin
 	 */
 	public QuestItem getQuestItem(int itemID)
 	{
-		return itemDefinitions.getQuestItem(itemID);
+		return ItemDefinitions.getQuestItem(itemID);
 	}
 
 	/**
@@ -806,7 +803,7 @@ public class QuestHelperPlugin extends Plugin
 	 */
 	public QuestItem getQuestItem(int itemID, @Nonnull String displayText)
 	{
-		return itemDefinitions.getQuestItem(itemID, displayText);
+		return ItemDefinitions.getQuestItem(itemID, displayText);
 	}
 
 	/**
@@ -819,6 +816,6 @@ public class QuestHelperPlugin extends Plugin
 	 */
 	public QuestItem getQuestItem(int itemID, @Nonnull String displayText, int quantity)
 	{
-		return itemDefinitions.getQuestItem(itemID, displayText, quantity);
+		return ItemDefinitions.getQuestItem(itemID, displayText, quantity);
 	}
 }

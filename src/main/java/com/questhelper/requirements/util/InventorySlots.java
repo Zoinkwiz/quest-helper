@@ -47,6 +47,7 @@ public enum InventorySlots
 	INVENTORY_SLOTS(InventoryID.INVENTORY),
 	/** Represents both equipment and inventory slots of a player */
 	EQUIPMENT_AND_INVENTORY_SLOTS(InventoryID.INVENTORY, InventoryID.EQUIPMENT),
+	BANK(InventoryID.BANK),
 	;
 
 	private final InventoryID[] inventoryID;

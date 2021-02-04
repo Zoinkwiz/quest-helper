@@ -48,7 +48,7 @@ public abstract class AbstractRequirement implements Requirement
 	@Override
 	public void setTooltip(String tooltip)
 	{
-		appendToTooltip(tooltip);
+		this.tooltip = tooltip;
 	}
 
 	@Override

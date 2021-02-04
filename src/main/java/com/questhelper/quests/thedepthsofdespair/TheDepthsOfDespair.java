@@ -101,11 +101,9 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		ConditionalStep findAndReadTheVarlamoreEnvoy = new ConditionalStep(this, findTheVarlamoreEnvoy);
 		findAndReadTheVarlamoreEnvoy.addStep(hasTheVarlamoreEnvoy, readTheVarlamoreEnvoy);
-		findAndReadTheVarlamoreEnvoy.addStep(inArceuusLibrary, talkToGalana);
 		steps.put(3, findAndReadTheVarlamoreEnvoy);
 
-		ConditionalStep stepEnterCrabclawCaves = new ConditionalStep(this, enterCrabclawCaves);
-		steps.put(4, stepEnterCrabclawCaves);
+		steps.put(4, enterCrabclawCaves);
 
 		ConditionalStep stepEnterLowerCaves = new ConditionalStep(this, enterCrabclawCaves);
 		stepEnterLowerCaves.addStep(inFirstAreaOfCaves, goThroughCrevice);
@@ -114,32 +112,19 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		stepEnterLowerCaves.addStep(inCaves, enterTunnelEntrance);
 		steps.put(6, stepEnterLowerCaves);
 
-		ConditionalStep stepTalkToArturHosidius = new ConditionalStep(this, enterCrabclawCaves);
-		stepTalkToArturHosidius.addStep(inFirstAreaOfCaves, goThroughCrevice);
-		stepTalkToArturHosidius.addStep(inSecondAreaOfCaves, stepOverSteppingStones);
-		stepTalkToArturHosidius.addStep(inThirdAreaOfCaves, climbPastRocks);
-		stepTalkToArturHosidius.addStep(inCaves, enterTunnelEntrance);
+		ConditionalStep stepTalkToArturHosidius = new ConditionalStep(this, stepEnterLowerCaves);
 		stepTalkToArturHosidius.addStep(downstairsInCaves, talkToArturHosidius);
 		steps.put(7, stepTalkToArturHosidius);
 
-		ConditionalStep stepKillSandSnake = new ConditionalStep(this, enterCrabclawCaves);
-		stepKillSandSnake.addStep(inFirstAreaOfCaves, goThroughCrevice);
-		stepKillSandSnake.addStep(inSecondAreaOfCaves, stepOverSteppingStones);
-		stepKillSandSnake.addStep(inThirdAreaOfCaves, climbPastRocks);
-		stepKillSandSnake.addStep(inCaves, enterTunnelEntrance);
+		ConditionalStep stepKillSandSnake = new ConditionalStep(this, stepEnterLowerCaves);
 		stepKillSandSnake.addStep(downstairsInCaves, killSandSnake);
 		steps.put(8, stepKillSandSnake);
 
-		ConditionalStep stepSearchChest = new ConditionalStep(this, enterCrabclawCaves);
-		stepSearchChest.addStep(inFirstAreaOfCaves, goThroughCrevice);
-		stepSearchChest.addStep(inSecondAreaOfCaves, stepOverSteppingStones);
-		stepSearchChest.addStep(inThirdAreaOfCaves, climbPastRocks);
-		stepSearchChest.addStep(inCaves, enterTunnelEntrance);
+		ConditionalStep stepSearchChest = new ConditionalStep(this, stepEnterLowerCaves);
 		stepSearchChest.addStep(downstairsInCaves, searchChest);
 		steps.put(9, stepSearchChest);
 
-		ConditionalStep stepReturnToLordKandurHosidius = new ConditionalStep(this, talkToLordKandurAgain);
-		steps.put(10, stepReturnToLordKandurHosidius);
+		steps.put(10, talkToLordKandurAgain);
 
 		return steps;
 	}
@@ -204,7 +189,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 			"Speak to Chef Olivia in Lord Kandur's kitchen.");
 
 		talkToGalana = new NpcStep(this, NpcID.GALANA, new WorldPoint(1649, 3824, 0),
-			"Speak to Galana.");
+			"Speak to Galana in the Arceuus Library.");
 
 		findTheVarlamoreEnvoy = new ItemStep(this,
 			"Find and read the Varlamore Envoy. Ask Galana for the approximate location if you can't find it.",

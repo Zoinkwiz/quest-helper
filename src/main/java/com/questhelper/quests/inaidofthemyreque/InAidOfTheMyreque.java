@@ -258,7 +258,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		coalHiglighted.setHighlightInInventory(true);
 
 		efaritaysAidOrSilverWeapon = new ItemRequirement("Silver weapon, blessed axe or Efaritay's Aid to damage vampyres", ItemID.SILVER_SICKLE);
-		efaritaysAidOrSilverWeapon.addAlternates(ItemID.SILVER_SICKLE_B, ItemID.EFARITAYS_AID);
+		efaritaysAidOrSilverWeapon.addAlternates(ItemID.SILVER_SICKLE_B, ItemID.EFARITAYS_AID, ItemID.WOLFBANE);
 
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);

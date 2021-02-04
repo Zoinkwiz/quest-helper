@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
@@ -81,8 +82,8 @@ public class DetailedQuestStep extends QuestStep
 	@Setter
 	protected List<WorldPoint> worldLinePoints;
 
-	@Setter
-	protected List<Requirement> requirements = new ArrayList<>();
+	@Getter
+	private final List<Requirement> requirements = new ArrayList<>();
 
 	protected HashMap<Tile, List<Integer>> tileHighlights = new HashMap<>();
 
@@ -147,6 +148,17 @@ public class DetailedQuestStep extends QuestStep
 	public void addItemRequirements(List<ItemRequirement> requirement)
 	{
 		requirements.addAll(requirement);
+	}
+
+	public void emptyRequirements()
+	{
+		requirements.clear();
+	}
+
+	public void setRequirements(List<Requirement> newRequirements)
+	{
+		requirements.clear();
+		requirements.addAll(newRequirements);
 	}
 
 	public void setText(String text) {
@@ -311,6 +323,10 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : requirements)
 			{
+				if (requirement == null)
+				{
+					continue;
+				}
 				List<LineComponent> lines = requirement.getDisplayTextWithChecks(client);
 
 				for (LineComponent line : lines)
@@ -377,7 +393,8 @@ public class DetailedQuestStep extends QuestStep
 		Tile tile = itemSpawned.getTile();
 		for (Requirement requirement : requirements)
 		{
-			if (requirement.getClass() == ItemRequirement.class && ((ItemRequirement) requirement).getAllIds().contains(item.getId()))
+			if (requirement.getClass() == ItemRequirement.class
+				&& ((ItemRequirement) requirement).getAllIds().contains(item.getId()))
 			{
 				tileHighlights.computeIfAbsent(tile, k -> new ArrayList<>());
 				tileHighlights.get(tile).add((itemSpawned.getItem().getId()));

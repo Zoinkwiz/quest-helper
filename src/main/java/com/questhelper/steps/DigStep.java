@@ -73,10 +73,6 @@ public class DigStep extends DetailedQuestStep
 				return;
 			}
 			WorldPoint targetLocation = worldPoint;
-			/*
-			 * Technically, since the grave is by the fence it would trigger if they came up to it from behind but
-			 * eh, not worth the effort to determine direction
-			 */
 			boolean shouldHighlightSpade = targetLocation.isInScene(client);
 			SPADE.setHighlightInInventory(shouldHighlightSpade);
 		}

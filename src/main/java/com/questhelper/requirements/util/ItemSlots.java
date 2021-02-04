@@ -103,6 +103,14 @@ public enum ItemSlots
 		return predicate.test(item);
 	}
 
+	/**
+	 * Check if any of the {@link Item} in a client's {@link ItemContainer} match
+	 * the given predicate.
+	 *
+	 * @param client the {@link Client} to check
+	 * @param predicate the predicate to use
+	 * @return true if ANY of the items match the predicate
+	 */
 	public boolean contains(Client client, Predicate<Item> predicate)
 	{
 		// if we're checking all the equipment slots, inventory slots, or both

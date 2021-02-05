@@ -26,59 +26,19 @@
  */
 package com.questhelper.spells;
 
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.util.LogicType;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import com.questhelper.requirements.util.Spellbook;
 
-public class StandardSpellBuilder
+public interface MagicSpell
 {
-	private final MagicSpell spell;
-	private final List<ItemRequirement> requirementList = new LinkedList<>();
+	String getName();
 
-	private StandardSpellBuilder(MagicSpell spell)
-	{
-		this.spell = spell;
-	}
+	int getWidgetID();
 
-	public static StandardSpellBuilder builder(MagicSpell spell)
-	{
-		return new StandardSpellBuilder(spell);
-	}
+	int getGroupID();
 
-	public StandardSpellBuilder rune(int quantity, Rune rune)
-	{
-		requirementList.add(rune.getRunes(quantity));
-		return this;
-	}
+	int getSpriteID();
 
-	public StandardSpellBuilder rune(Rune rune)
-	{
-		return rune(1, rune);
-	}
+	int getRequiredMagicLevel();
 
-	public StandardSpellBuilder item(int quantity, int itemID)
-	{
-		requirementList.add(new ItemRequirement("", itemID, quantity));
-		return this;
-	}
-
-	public StandardSpellBuilder item(int itemID)
-	{
-		return item(1, itemID);
-	}
-
-	public StandardSpellBuilder item(boolean equipped, Integer... itemIDs)
-	{
-		requirementList.add(new ItemRequirement("", Arrays.asList(itemIDs), 1, equipped));
-		return this;
-	}
-
-	public ItemRequirements build()
-	{
-		return new ItemRequirements(LogicType.AND, spell.getName(), requirementList);
-	}
-
+	Spellbook getSpellbook();
 }

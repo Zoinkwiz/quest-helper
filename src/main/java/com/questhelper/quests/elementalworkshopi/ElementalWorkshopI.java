@@ -304,7 +304,8 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Forging a Shield",
 			Arrays.asList(searchBookcase, readBook, useKnifeOnBook, openOddWall, goDownStairs,
 				turnEastControl, turnWestControl, pullLever, fixBellows, pullBellowsLever, getStoneBowl,
-				useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre, forgeBar, smithShield)));
+				useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre, forgeBar, smithShield),
+			knife, pickaxe, needle, thread, leather, hammer, coal4));
 		return allSteps;
 	}
 

@@ -183,12 +183,15 @@ public class ColdWar extends BasicQuestHelper
 		spadeHighlight.setHighlightInInventory(true);
 		clockworkOrSteelBar = new ItemRequirement("Clockwork or Steel Bar", ItemID.STEEL_BAR);
 		clockworkOrSteelBar.addAlternates(ItemID.CLOCKWORK);
+		clockworkOrSteelBar.setDisplayMatchedItemName(true);
 		steelBar = new ItemRequirement("Steel Bar", ItemID.CLOCKWORK, 1);
 		clockwork = new ItemRequirement("Clockwork", ItemID.CLOCKWORK, 1);
 		plank = new ItemRequirement("Normal Plank", ItemID.PLANK, 1);
 		silk = new ItemRequirement("Silk", ItemID.SILK, 1);
-		rawCodOrCharos = new ItemRequirement("A Raw Cod or the Ring of Charos (a)", ItemID.RAW_COD);
+		rawCodOrCharos = new ItemRequirement("Raw Cod", ItemID.RAW_COD);
 		rawCodOrCharos.addAlternates(ItemID.RING_OF_CHAROSA);
+		rawCodOrCharos.setDisplayMatchedItemName(true);
+		rawCodOrCharos.setTooltip("Ring of Charos (a) can also be used.");
 		swampTar = new ItemRequirement("Swamp Tar", ItemID.SWAMP_TAR, 1);
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 5);
 		mahoganyPlank = new ItemRequirement("Mahogany Plank", ItemID.MAHOGANY_PLANK, 1);

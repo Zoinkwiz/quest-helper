@@ -24,23 +24,58 @@
  */
 package com.questhelper.steps;
 
-import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.util.InventorySlots;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.function.Predicate;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.QuestHelperPlugin;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class DigStep extends DetailedQuestStep
 {
-	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, AbstractRequirement... requirements)
+	private final ItemRequirement SPADE = new ItemRequirement("Spade", ItemID.SPADE);
+	private Predicate<Item> expectedItemPredicate = i -> i.getId() == -1;
+	private boolean hasExpectedItem = false;
+	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
-		addRequirement(new ItemRequirement("Spade", ItemID.SPADE));
+		this.getRequirements().add(SPADE);
+	}
+
+	public void setExpectedItem(int itemID)
+	{
+		setExpectedItem(i -> i.getId() == itemID);
+	}
+
+	public void setExpectedItem(Predicate<Item> predicate)
+	{
+		this.expectedItemPredicate = predicate == null ? i -> true : predicate;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		hasExpectedItem = InventorySlots.INVENTORY_SLOTS.contains(client, expectedItemPredicate);
+		if (!hasExpectedItem)
+		{
+			Player player = client.getLocalPlayer();
+			if (player == null) {
+				return;
+			}
+			WorldPoint targetLocation = worldPoint;
+			boolean shouldHighlightSpade = targetLocation.isInScene(client);
+			SPADE.setHighlightInInventory(shouldHighlightSpade);
+		}
 	}
 
 	@Override

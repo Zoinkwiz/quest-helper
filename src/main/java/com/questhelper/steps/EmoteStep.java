@@ -27,7 +27,7 @@ package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
 import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Color;
@@ -43,7 +43,7 @@ public class EmoteStep extends DetailedQuestStep
 	private boolean hasScrolled;
 	private final QuestEmote emote;
 
-	public EmoteStep(QuestHelper questHelper, QuestEmote emote, WorldPoint worldPoint, String text, AbstractRequirement... requirements)
+	public EmoteStep(QuestHelper questHelper, QuestEmote emote, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
 		this.emote = emote;

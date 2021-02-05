@@ -424,8 +424,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		saw = new ItemRequirement("Saw", ItemID.SAW);
 		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakAmulet.setTooltip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
-		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ghostspeakOrMory2.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
+		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
+		ghostspeakOrMory2.setTooltip("Morytania Legs 2 and above are also valid.");
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
 		goutweed.setHighlightInInventory(true);
 		goutweed.setTooltip("You can get this from the Troll Stronghold Kitchen Storeroom");
@@ -471,8 +471,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		dragonfireProtection = new ItemRequirement("Protection from dragonfire", ItemCollections.getAntifireShields());
 		venomProtection = new ItemRequirement("Anti venom", ItemCollections.getAntivenoms());
-		salveE = new ItemRequirement("Salve amulet", ItemID.SALVE_AMULET);
-		salveE.addAlternates(ItemID.SALVE_AMULET_E, ItemID.SALVE_AMULETEI, ItemID.SALVE_AMULETI);
+		salveE = new ItemRequirement("Salve amulet", ItemCollections.getSalveAmulet());
 
 		// Chest 1 map pieces
 		map1 = new ItemRequirement("Map piece", ItemID.MAP_PIECE);

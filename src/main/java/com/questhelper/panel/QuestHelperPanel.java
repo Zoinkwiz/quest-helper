@@ -25,24 +25,35 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
-import com.questhelper.IconUtil;
+import com.questhelper.Icon;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
-import java.awt.*;
+import com.questhelper.steps.QuestStep;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ItemEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import javax.swing.*;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import lombok.extern.slf4j.Slf4j;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.client.ui.ColorScheme;
@@ -80,7 +91,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	static
 	{
-		DISCORD_ICON = IconUtil.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)

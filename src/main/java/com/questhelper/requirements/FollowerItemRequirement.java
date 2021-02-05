@@ -51,24 +51,6 @@ public class FollowerItemRequirement extends ItemRequirement
 			return true;
 		}
 
-		int remainder = checkSpecificItem(client, getId(), checkConsideringSlotRestrictions, items);
-		if (remainder <= 0)
-		{
-			return true;
-		}
-
-		for (int alternate : alternates)
-		{
-			if (exclusiveToOneItemType)
-			{
-				remainder = quantity;
-			}
-			remainder = remainder - (quantity - checkSpecificItem(client, alternate, checkConsideringSlotRestrictions, items));
-			if (remainder <= 0)
-			{
-				return true;
-			}
-		}
-		return false;
+		return super.check(client, checkConsideringSlotRestrictions, items);
 	}
 }

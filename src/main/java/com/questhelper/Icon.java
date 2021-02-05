@@ -33,7 +33,7 @@ import javax.annotation.Nonnull;
 import javax.swing.ImageIcon;
 import net.runelite.client.util.ImageUtil;
 
-public enum IconUtil
+public enum Icon
 {
 	CLOSE("/close.png"),
 	COLLAPSED("/collapsed.png"),
@@ -54,7 +54,7 @@ public enum IconUtil
 	;
 
 	private final String file;
-	IconUtil(String file)
+	Icon(String file)
 	{
 		this.file = file;
 	}

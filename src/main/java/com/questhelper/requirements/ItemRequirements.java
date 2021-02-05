@@ -59,6 +59,13 @@ public class ItemRequirements extends ItemRequirement
 		this.logicType = logicType;
 	}
 
+	public ItemRequirements(LogicType logicType, String name, List<ItemRequirement> itemRequirements)
+	{
+		super(name, itemRequirements.get(0).getId(), -1);
+		this.itemRequirements.addAll(itemRequirements);
+		this.logicType = logicType;
+	}
+
 	@Override
 	public boolean check(Client client)
 	{

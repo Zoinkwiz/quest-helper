@@ -24,6 +24,7 @@
  */
 package com.questhelper;
 
+import com.questhelper.questhelpers.QuestUtil;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
@@ -180,9 +181,9 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> waterStaff = Arrays.asList(
-		ItemID.FIRE_BATTLESTAFF,
-		ItemID.MYSTIC_FIRE_STAFF,
-		ItemID.STAFF_OF_FIRE,
+		ItemID.WATER_BATTLESTAFF,
+		ItemID.MYSTIC_WATER_STAFF,
+		ItemID.STAFF_OF_WATER,
 		ItemID.MUD_BATTLESTAFF,
 		ItemID.MYSTIC_MUD_STAFF,
 		ItemID.MIST_BATTLESTAFF,
@@ -210,6 +211,42 @@ public class ItemCollections
 		ItemID.MYSTIC_DUST_STAFF,
 		ItemID.LAVA_BATTLESTAFF,
 		ItemID.MYSTIC_LAVA_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> lavaStaff = QuestUtil.toLinkedList(
+		ItemID.LAVA_BATTLESTAFF,
+		ItemID.MYSTIC_LAVA_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> mudStaff = QuestUtil.toLinkedList(
+		ItemID.MUD_BATTLESTAFF,
+		ItemID.MYSTIC_MUD_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> steamStaff = QuestUtil.toLinkedList(
+		ItemID.STEAM_BATTLESTAFF,
+		ItemID.MYSTIC_STEAM_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> smokeStaff = QuestUtil.toLinkedList(
+		ItemID.SMOKE_BATTLESTAFF,
+		ItemID.MYSTIC_SMOKE_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> mistStaff = QuestUtil.toLinkedList(
+		ItemID.MIST_BATTLESTAFF,
+		ItemID.MYSTIC_MIST_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> dustStaff = QuestUtil.toLinkedList(
+		ItemID.DUST_BATTLESTAFF,
+		ItemID.MYSTIC_DUST_STAFF
 	);
 
 	// Potions

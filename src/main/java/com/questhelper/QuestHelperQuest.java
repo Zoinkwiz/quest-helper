@@ -195,7 +195,7 @@ public enum QuestHelperQuest
 	WHAT_LIES_BELOW(447, "What Lies Below", QuestVarbits.QUEST_WHAT_LIES_BELOW, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	WITCHS_HOUSE(448, "Witch's House", QuestVarPlayer.QUEST_WITCHS_HOUSE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters", QuestVarbits.QUEST_ZOGRE_FLESH_EATERS, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", "Ascent of Arceuus", QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS, Quest.Type.F2P, Quest.Difficulty.NOVICE),
+	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", "Ascent of Arceuus", QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS, Quest.Type.P2P, Quest.Difficulty.NOVICE),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", "Forsaken Tower", QuestVarbits.QUEST_THE_FORSAKEN_TOWER, Quest.Type.P2P, Quest.Difficulty.NOVICE),
 	SONG_OF_THE_ELVES(603, "Song of the Elves", QuestVarbits.QUEST_SONG_OF_THE_ELVES, Quest.Type.P2P, Quest.Difficulty.GRANDMASTER),
 	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles", "Fremennik Exiles", QuestVarbits.QUEST_THE_FREMENNIK_EXILES, Quest.Type.P2P, Quest.Difficulty.MASTER),

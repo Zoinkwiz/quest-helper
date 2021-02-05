@@ -595,7 +595,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		faladorF1 = new Zone(new WorldPoint(2952, 3326, 1), new WorldPoint(3000, 3356, 1));
 		faladorF2 = new Zone(new WorldPoint(2952, 3326, 2), new WorldPoint(3000, 3356, 2));
 		boat = new Zone(new WorldPoint(1694, 5528, 1), new WorldPoint(1710, 5558, 1));
-		battle = new Zone(new WorldPoint(1600, 5600, 0), new WorldPoint(1700, 5750, 2));
+		battle = new Zone(new WorldPoint(1600, 5600, 0), new WorldPoint(1726, 5758, 3));
 	}
 
 	public void setupConditions()

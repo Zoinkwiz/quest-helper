@@ -25,6 +25,7 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -120,25 +121,34 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	public void checkForChatConditions(ConditionForStep condition)
 	{
-		if (condition != null && condition.getConditions() == null)
+		if (condition == null)
+		{
+			return;
+		}
+
+		if (condition.getConditions() == null)
 		{
 			if (condition.getClass() == ChatMessageCondition.class && !chatConditions.contains(condition))
 			{
 				chatConditions.add((ChatMessageCondition) condition);
 			}
+
+			return;
 		}
-		else
+
+		for (ConditionForStep subCondition : condition.getConditions())
 		{
-			for (ConditionForStep subCondition : condition.getConditions())
-			{
-				checkForChatConditions(subCondition);
-			}
+			checkForChatConditions(subCondition);
 		}
 	}
 
 	public void checkForNpcConditions(ConditionForStep condition)
 	{
-		if (condition != null && condition.getConditions() == null)
+		if (condition == null)
+		{
+			return;
+		}
+		if (condition.getConditions().isEmpty())
 		{
 			if (condition.getClass() == NpcCondition.class && !npcConditions.contains(condition))
 			{
@@ -147,12 +157,9 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 		else
 		{
-			if (condition != null)
+			for (ConditionForStep subCondition : condition.getConditions())
 			{
-				for (ConditionForStep subCondition : condition.getConditions())
-				{
-					checkForNpcConditions(subCondition);
-				}
+				checkForNpcConditions(subCondition);
 			}
 		}
 	}
@@ -197,6 +204,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 				.filter(Objects::nonNull)
 				.forEach(Conditions::loadingHandler);
 		}
+	}
+
+	public void addRequirement(AbstractRequirement requirement)
+	{
+		ArrayUtils.add(requirements, requirement);
 	}
 
 	@Subscribe

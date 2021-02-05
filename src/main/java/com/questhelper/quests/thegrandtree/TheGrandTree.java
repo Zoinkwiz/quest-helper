@@ -39,6 +39,7 @@ import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.NpcInteractingCondition;
 import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -51,7 +52,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Condition;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -67,22 +67,30 @@ public class TheGrandTree extends BasicQuestHelper
 	ItemRequirement accessToFairyRings, energyOrStaminaPotions, transportToGrandTree, oneThousandCoins, combatGear,
 		food, prayerPotions, translationBook, barkSample, lumberOrder, gloughsKey, highlightedGloughsKey, invasionPlans,
 		twigsT, twigsU, twigsZ, twigsO, highlightedTwigsT, highlightedTwigsU, highlightedTwigsZ, highlightedTwigsO,
-		hazelmereScroll, daconiaStone;
+		daconiaStone;
 
 	FreeInventorySlotRequirement fourFreeInventorySlots;
 
-	Zone topOfGrandTree, hazelmereHouseFirstFloor, gloughHouse, shipyard, anitaHouse, watchtower, grandTreeTunnels;
+	Zone grandTreeF1, grandTreeF2, topOfGrandTree, hazelmereHouseFirstFloor, gloughHouse, shipyard, anitaHouse,
+		watchtower, grandTreeTunnels, cell;
 
-	ConditionForStep isInGrandTreeTop, isNearHazelmere, isInGloughsHouse, isInShipyard, isInAnitasHouse, hasGloughsKey,
-		isInWatchtower, hasTwigsT, hasTwigsU, hasTwigsZ, hasTwigsO, blackDemonVisible, isInGrandTreeTunnels, hasDaconiaStone;
+	ConditionForStep isInGrandTreeF1, isInGrandTreeF2, isInGrandTreeTop, isInGrandTree, isNearHazelmere,
+		isInCell, isInGloughsHouse, isInShipyard, isInAnitasHouse, hasGloughsKey, isInWatchtower,
+		hasTwigsT, hasTwigsU, hasTwigsZ, hasTwigsO, blackDemonVisible, isInGrandTreeTunnels,
+		hasDaconiaStone, narnodeNearby;
 
-	QuestStep talkToKingNarnode, climbUpToHazelmere, talkToHazelmere, bringScrollToKingNarnode, climbUpToGlough,
-		talkToGlough, talkToKingNarnodeAfterGlough, climbUpToCharlie, talkToCharlie, returnToGlough, findGloughJournal,
-		talkToGloughAgain, talkToCharlieAgain, talkToKingNarnodeBeforeEscape, escapeByGlider, enterTheShipyard,
-		talkToForeman, climbUpToCharlieAgain, talkToCharlieThirdTime, climbUpToAnita, talkToAnita, climbUpToGloughAgain,
-		findInvasionPlans, takeInvasionPlansToKing, climbUpToGloughForWatchtower, climbUpToWatchtower, placeTwigsT,
-		placeTwigsU, placeTwigsZ, placeTwigsO, placeTwigs, climbDownTrapDoor, talkToGloughBeforeFight, killBlackDemon,
-		climbDownTrapDoorAfterFight, talkToKingAfterFight, findDaconiaStone, giveDaconiaStoneToKingNarnode, returnToGrandTreeTop;
+	QuestStep talkToKingNarnode, talkToKingNarnodeCaves, climbUpToHazelmere, talkToHazelmere, bringScrollToKingNarnode, climbUpToGlough,
+		talkToGlough, talkToKingNarnodeAfterGlough, talkToCharlie, returnToGlough, findGloughJournal, talkToGloughAgain, goToStronghold,
+		talkToCharlieFromCell, talkToKingNarnodeBeforeEscape, escapeByGlider, enterTheShipyard, talkToForeman, climbUpToAnita,
+		talkToAnita, climbUpToGloughAgain, findInvasionPlans, takeInvasionPlansToKing, climbUpToGloughForWatchtower, climbUpToWatchtower,
+		placeTwigsT, placeTwigsU, placeTwigsZ, placeTwigsO, placeTwigs, climbDownTrapDoor, talkToGloughBeforeFight, killBlackDemon,
+		climbDownTrapDoorAfterFight, talkToKingAfterFight, findDaconiaStone, giveDaconiaStoneToKingNarnode;
+
+	QuestStep climbGrandTreeF0ToF1, climbGrandTreeF1ToF2, climbGrandTreeF2ToF3, climbGrandTreeF3ToF2,
+		climbGrandTreeF2ToF1, climbGrandTreeF1ToF0;
+
+	ConditionalStep climbToTopOfGrandTree, climbToBottomOfGrandTree, goTalkToCharlie, goFindGloughJournal,
+		goConfrontGlough, goTalkToCharlie3, goGetAnitaKey;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -95,7 +103,9 @@ public class TheGrandTree extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		// Getting started
-		steps.put(0, talkToKingNarnode);
+		ConditionalStep startQuest = new ConditionalStep(this, talkToKingNarnode);
+		startQuest.addStep(isInGrandTreeTunnels, talkToKingNarnodeCaves);
+		steps.put(0, startQuest);
 
 		ConditionalStep goTalkToHazelmere = new ConditionalStep(this, climbUpToHazelmere);
 		goTalkToHazelmere.addStep(isNearHazelmere, talkToHazelmere);
@@ -110,17 +120,28 @@ public class TheGrandTree extends BasicQuestHelper
 		// Investigation
 		steps.put(40, talkToKingNarnodeAfterGlough);
 
-		ConditionalStep goTalkToCharlie = new ConditionalStep(this, climbUpToCharlie);
+		goTalkToCharlie = new ConditionalStep(this, climbToTopOfGrandTree,
+			"Talk to Charlie on the top floor of the Grand Tree.");
 		goTalkToCharlie.addStep(isInGrandTreeTop, talkToCharlie);
 		steps.put(50, goTalkToCharlie);
 
-		ConditionalStep goFindGloughJournal = new ConditionalStep(this, returnToGlough);
+		goFindGloughJournal = new ConditionalStep(this, returnToGlough, "Return to Glough's house and search the " +
+			"cupboard for Glough's Journal.");
+		goFindGloughJournal.addStep(isInGrandTree, climbToBottomOfGrandTree);
 		goFindGloughJournal.addStep(isInGloughsHouse, findGloughJournal);
 		steps.put(60, goFindGloughJournal);
 
-		ConditionalStep goTalkToGloughAgain = new ConditionalStep(this, returnToGlough);
-		goTalkToGloughAgain.addStep(isInGloughsHouse, talkToGloughAgain);
-		steps.put(70, goTalkToGloughAgain);
+		goConfrontGlough = new ConditionalStep(this, returnToGlough, "Confront Glough about his journal.");
+		goConfrontGlough.addStep(isInGrandTree, climbToBottomOfGrandTree);
+		goConfrontGlough.addStep(isInGloughsHouse, talkToGloughAgain);
+
+		// In order for Narnode to appear, you need to finish talking to Charlie from within the cell.
+		// Talking from outside won't cause Narnode to spawn. Narnode can only then be interacted with from
+		// Outside the cell. Should verify if talking to Narnode downstairs at this stage works for progression.
+		ConditionalStep goLearnOfDock = new ConditionalStep(this, goConfrontGlough);
+		goLearnOfDock.addStep(isInCell, talkToCharlieFromCell);
+		goLearnOfDock.addStep(new Conditions(isInGrandTreeTop, narnodeNearby), talkToKingNarnodeBeforeEscape);
+		steps.put(70, goLearnOfDock);
 
 		// Karamja
 		ConditionalStep goTalkToForeman = new ConditionalStep(this, enterTheShipyard);
@@ -129,14 +150,19 @@ public class TheGrandTree extends BasicQuestHelper
 		steps.put(80, goTalkToForeman);
 
 		// Tuzo
-		ConditionalStep goTalkToCharlieAfterShipyard = new ConditionalStep(this, climbUpToCharlieAgain);
-		goTalkToCharlieAfterShipyard.addStep(isInGrandTreeTop, talkToCharlieThirdTime);
-		steps.put(90, goTalkToCharlieAfterShipyard);
+		goTalkToCharlie3 = goTalkToCharlie.copy();
+		goTalkToCharlie3.setText("Return to Charlie. If entering the Stronghold through the south entrance you'll " +
+			"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
+		goTalkToCharlie3.addRequirement(lumberOrder);
+		steps.put(90, goTalkToCharlie3);
 
-		ConditionalStep goFindInvasionPlans = new ConditionalStep(this, climbUpToAnita);
+		goGetAnitaKey = new ConditionalStep(this, climbUpToAnita, "Talk to Anita in her house west of the Grand Tree.");
+		goGetAnitaKey.addStep(isInAnitasHouse, talkToAnita);
+		goGetAnitaKey.addStep(isInGrandTree, climbToBottomOfGrandTree);
+
+		ConditionalStep goFindInvasionPlans = new ConditionalStep(this, goGetAnitaKey);
 		goFindInvasionPlans.addStep(new Conditions(hasGloughsKey, isInGloughsHouse), findInvasionPlans);
 		goFindInvasionPlans.addStep(hasGloughsKey, climbUpToGloughAgain);
-		goFindInvasionPlans.addStep(isInAnitasHouse, talkToAnita);
 		steps.put(100, goFindInvasionPlans);
 
 		steps.put(110, takeInvasionPlansToKing);
@@ -180,21 +206,23 @@ public class TheGrandTree extends BasicQuestHelper
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
 
-		energyOrStaminaPotions = new ItemRequirement("Energy restoration", ItemCollections.getEnergyRestoration());
+		energyOrStaminaPotions = new ItemRequirement("Energy restoration", ItemCollections.getEnergyRestoration(), -1);
 		combatGear = new ItemRequirement("Combat gear. Safespotting is possible.", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 		transportToGrandTree = new ItemRequirement("Transport to the Grand Tree", -1);
 
 		translationBook = new ItemRequirement("Translation Book", ItemID.TRANSLATION_BOOK);
+		translationBook.setTooltip("You can get another from Narnode");
 		barkSample = new ItemRequirement("Bark Sample", ItemID.BARK_SAMPLE);
-		hazelmereScroll = new ItemRequirement("Hazelmere's Scroll", ItemID.HAZELMERES_SCROLL);
+		barkSample.setTooltip("You can get another from Narnode");
 		lumberOrder = new ItemRequirement("Lumber order", ItemID.LUMBER_ORDER);
 		gloughsKey = new ItemRequirement("Glough's key", ItemID.GLOUGHS_KEY);
 		highlightedGloughsKey = new ItemRequirement("Glough's key", ItemID.GLOUGHS_KEY);
 		highlightedGloughsKey.setHighlightInInventory(true);
 		invasionPlans = new ItemRequirement("Invasion plans", ItemID.INVASION_PLANS);
+		invasionPlans.setTooltip("You can get another from Glough's house in a chest");
 		fourFreeInventorySlots = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 4);
 		daconiaStone = new ItemRequirement("Daconia stone", ItemID.DACONIA_ROCK);
 
@@ -215,7 +243,10 @@ public class TheGrandTree extends BasicQuestHelper
 
 	public void setupZones()
 	{
+		grandTreeF1 = new Zone(new WorldPoint(2437, 3474, 1), new WorldPoint(2493, 3511, 1));
+		grandTreeF2 = new Zone(new WorldPoint(2437, 3474, 2), new WorldPoint(2493, 3511, 2));
 		topOfGrandTree = new Zone(new WorldPoint(2438, 3511, 3), new WorldPoint(2493, 3478, 3));
+		cell = new Zone(new WorldPoint(2464, 3496, 3));
 		hazelmereHouseFirstFloor = new Zone(new WorldPoint(2674, 3089, 1), new WorldPoint(2680, 3085, 1));
 		gloughHouse = new Zone(new WorldPoint(2474, 3466, 1), new WorldPoint(2488, 3461, 1));
 		shipyard = new Zone(new WorldPoint(2945, 3070, 0), new WorldPoint(3007, 3015, 0));
@@ -226,7 +257,11 @@ public class TheGrandTree extends BasicQuestHelper
 
 	public void setupConditions()
 	{
+		isInGrandTreeF1 = new ZoneCondition(grandTreeF1);
+		isInGrandTreeF2 = new ZoneCondition(grandTreeF2);
 		isInGrandTreeTop = new ZoneCondition(topOfGrandTree);
+		isInCell = new ZoneCondition(cell);
+		isInGrandTree = new ZoneCondition(grandTreeF1, grandTreeF2, topOfGrandTree);
 		isNearHazelmere = new ZoneCondition(hazelmereHouseFirstFloor);
 		isInGloughsHouse = new ZoneCondition(gloughHouse);
 		isInShipyard = new ZoneCondition(shipyard);
@@ -241,7 +276,8 @@ public class TheGrandTree extends BasicQuestHelper
 		hasTwigsO = new ItemRequirementCondition(twigsO);
 		hasDaconiaStone = new ItemRequirementCondition(daconiaStone);
 
-		blackDemonVisible = new NpcCondition(NpcID.BLACK_DEMON_1432);
+		narnodeNearby = new NpcCondition(NpcID.KING_NARNODE_SHAREEN);
+		blackDemonVisible = new NpcInteractingCondition(NpcID.BLACK_DEMON_1432);
 	}
 
 	public void setupSteps()
@@ -249,15 +285,21 @@ public class TheGrandTree extends BasicQuestHelper
 		WorldPoint locationBottomOfGrandTree = new WorldPoint(2466, 3495, 0);
 		WorldPoint locationTopOfGrandTree = new WorldPoint(2466, 3495, 3);
 
+		goToStronghold = new DetailedQuestStep(this, locationBottomOfGrandTree, "Travel to the Tree Gnome Stronghold.");
+
 		// Getting Started
 		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree.");
 		talkToKingNarnode.addDialogSteps("You seem worried, what's up?", "I'd be happy to help!");
+		talkToKingNarnodeCaves = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
+			"Talk to King Narnode.");
+		talkToKingNarnode.addSubSteps(talkToKingNarnodeCaves);
 
 		// Hazelmere
-		climbUpToHazelmere = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2677, 3087, 0), "Go up to Hazelmere, on the island west of Yanille. Fairy ring CLS or minigame teleport near Yanille.");
+		climbUpToHazelmere = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2677, 3087, 0),
+			"Go up to Hazelmere, on the island east of Yanille. Fairy ring CLS or minigame teleport near Yanille.", translationBook, barkSample);
 		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, "Talk to Hazelmere.", translationBook, barkSample);
 
-		bringScrollToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Return to King Narnode in the Grand Tree.", hazelmereScroll);
+		bringScrollToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Return to King Narnode in the Grand Tree.");
 		bringScrollToKingNarnode.addDialogStep("I think so!");
 		bringScrollToKingNarnode.addDialogStepWithExclusions("None of the above.", "A man came to me with the King's seal.", "I gave the man Daconia rocks.");
 		bringScrollToKingNarnode.addDialogStep("A man came to me with the King's seal.");
@@ -265,49 +307,68 @@ public class TheGrandTree extends BasicQuestHelper
 		bringScrollToKingNarnode.addDialogStep("And Daconia rocks will kill the tree!");
 
 		// Investigation
-		climbUpToGlough = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "Go up to Glough in the Tree Gnome Stronghold.");
+		climbUpToGlough = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0),
+			"Go up to Glough in the Tree Gnome Stronghold.");
 		talkToGlough = new NpcStep(this, NpcID.GLOUGH_2061, "Talk to Glough.");
 		talkToGlough.addSubSteps(climbUpToGlough);
 
-		talkToKingNarnodeAfterGlough = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode again in the Grand Tree.");
+		talkToKingNarnodeAfterGlough = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree,
+			"Talk to King Narnode again in the Grand Tree.");
+		talkToCharlie = new NpcStep(this, NpcID.CHARLIE, new WorldPoint(2464, 3495, 3), "");
 
-		climbUpToCharlie = new DetailedQuestStep(this, locationTopOfGrandTree, "Climb to the top of the Grand Tree.");
-		talkToCharlie = new NpcStep(this, NpcID.CHARLIE, "Talk to the prisoner Charlie.");
-		talkToCharlie.addSubSteps(climbUpToCharlie);
+		returnToGlough = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "");
+		findGloughJournal = new ObjectStep(this, ObjectID.CUPBOARD_2434, "");
 
-		returnToGlough = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "Return to Glough.");
-		findGloughJournal = new ObjectStep(this, ObjectID.CUPBOARD_2434, "Search the cupboard for Glough's Journal.");
-		findGloughJournal.addSubSteps(returnToGlough);
-		talkToGloughAgain = new NpcStep(this, NpcID.GLOUGH_2061, "Talk to Glough again.");
-		returnToGrandTreeTop = new DetailedQuestStep(this, locationTopOfGrandTree, "Return to the top of the Grand Tree.");
-		talkToCharlieAgain = new NpcStep(this, NpcID.CHARLIE, "Talk to Charlie again.");
-		talkToCharlieAgain.addSubSteps(returnToGrandTreeTop);
-		talkToKingNarnodeBeforeEscape = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN_8020, "Talk to King Narnode.");
+		talkToGloughAgain = new NpcStep(this, NpcID.GLOUGH_2061, "");
+
+		climbGrandTreeF0ToF1 = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
+		climbGrandTreeF1ToF2 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1), "");
+		climbGrandTreeF1ToF2.addDialogStep("Climb Up.");
+		climbGrandTreeF2ToF3 = new ObjectStep(this, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "");
+		climbGrandTreeF2ToF3.addDialogStep("Climb Up.");
+
+		climbToTopOfGrandTree = new ConditionalStep(this, climbGrandTreeF0ToF1);
+		climbToTopOfGrandTree.addStep(isInGrandTreeF2, climbGrandTreeF2ToF3);
+		climbToTopOfGrandTree.addStep(isInGrandTreeF1, climbGrandTreeF1ToF2);
+
+		climbGrandTreeF3ToF2 = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2466, 3495, 3), "");
+		climbGrandTreeF2ToF1 = new ObjectStep(this, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "");
+		climbGrandTreeF2ToF1.addDialogStep("Climb Down.");
+		climbGrandTreeF1ToF0 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1), "");
+		climbGrandTreeF1ToF0.addDialogStep("Climb Down.");
+
+		climbToBottomOfGrandTree = new ConditionalStep(this, goToStronghold);
+		climbToBottomOfGrandTree.addStep(isInGrandTreeTop, climbGrandTreeF3ToF2);
+		climbToBottomOfGrandTree.addStep(isInGrandTreeF2, climbGrandTreeF2ToF1);
+		climbToBottomOfGrandTree.addStep(isInGrandTreeF1, climbGrandTreeF1ToF0);
+
+		talkToCharlieFromCell = new NpcStep(this, NpcID.CHARLIE, new WorldPoint(2464, 3495, 3), "Talk to Charlie.");
+		talkToKingNarnodeBeforeEscape = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN_8020,
+			"Talk to King Narnode outside Charlie's cell.");
 		escapeByGlider = new NpcStep(this, NpcID.CAPTAIN_ERRDO_10467, locationTopOfGrandTree, "Travel with the glider to escape.");
 		escapeByGlider.addDialogStep("Take me to Karamja please!");
 
 		// Karamja
 		enterTheShipyard = new ObjectStep(this, ObjectID.GATE_2438, new WorldPoint(2945, 3041, 0), "Enter the shipyard on Karamja.");
 		enterTheShipyard.addDialogSteps("Glough sent me.", "Ka.", "Lu.", "Min.");
-		talkToForeman = new NpcStep(this, NpcID.FOREMAN, new WorldPoint(3000, 3044, 0), "Get the Lumber order from the Foreman on the southern docks. You can either kill him or talk to him.");
+		talkToForeman = new NpcStep(this, NpcID.FOREMAN, new WorldPoint(3000, 3044, 0),
+			"Get the Lumber order from the Foreman on the southern docks. You can either kill him or talk to him.");
 		talkToForeman.addDialogSteps("Sadly his wife is no longer with us!", "He loves worm holes.", "Anita.");
 
-		// Tuzo
-		climbUpToCharlieAgain = new DetailedQuestStep(this, locationTopOfGrandTree, "Climb to the top of the Grand Tree again.");
-		talkToCharlieThirdTime = new NpcStep(this, NpcID.CHARLIE, "Speak to Charlie at the top of the grand tree.", lumberOrder);
-		talkToCharlieThirdTime.addSubSteps(climbUpToCharlieAgain);
-
-		climbUpToAnita = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2390, 3513, 0), "Go up to Anita.");
-		talkToAnita = new NpcStep(this, NpcID.ANITA, "Speak to Anita.");
-		talkToAnita.addSubSteps(climbUpToAnita);
+		climbUpToAnita = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2390, 3513, 0), "");
+		talkToAnita = new NpcStep(this, NpcID.ANITA, "");
 		talkToAnita.addDialogStep("I suppose so.");
 
 		climbUpToGloughAgain = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "Go up to Glough's house again.");
-		findInvasionPlans = new ObjectStep(this, ObjectID.CLOSED_CHEST_2436, "Search the chest in Glough's house.", highlightedGloughsKey);
+		findInvasionPlans = new ObjectStep(this, ObjectID.CLOSED_CHEST_2436, "Search the chest in Glough's " +
+			"house.",
+			highlightedGloughsKey);
 		findInvasionPlans.addSubSteps(climbUpToGloughAgain);
 		findInvasionPlans.addIcon(ItemID.GLOUGHS_KEY);
 
-		takeInvasionPlansToKing = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, "Take the invasion plans to King Narnode in the Grand Tree.", invasionPlans, fourFreeInventorySlots);
+		takeInvasionPlansToKing = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0),
+			"Take the invasion plans to King Narnode in the Grand Tree.",
+			invasionPlans, fourFreeInventorySlots);
 
 		climbUpToGloughForWatchtower = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "Go up to Glough's house again.");
 		climbUpToWatchtower = new ObjectStep(this, ObjectID.TREE_2447, "Climb up the tree to the watchtower in Glough's house.");
@@ -336,9 +397,11 @@ public class TheGrandTree extends BasicQuestHelper
 		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door again.");
 		talkToKingAfterFight = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
 		talkToKingAfterFight.addSubSteps(climbDownTrapDoorAfterFight);
-		giveDaconiaStoneToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Give the Daconia stone to King Narnode under the Grand Tree.", daconiaStone);
+		giveDaconiaStoneToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
+			"Give the Daconia stone to King Narnode under the Grand Tree.", daconiaStone);
 
-		findDaconiaStone = new ObjectStep(this, ObjectID.ROOT, "Search the roots under the Grand Tree until you find the Daconia stone. If you lose the rock, it will be in the same root again.");
+		findDaconiaStone = new ObjectStep(this, ObjectID.ROOT,
+			"Search the roots under the Grand Tree until you find the Daconia stone. If you lose the rock, it will be in the same root again.");
 		((ObjectStep) findDaconiaStone).addAlternateObjects(ObjectID.ROOT_1986);
 	}
 
@@ -376,15 +439,16 @@ public class TheGrandTree extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Hazelmere", Arrays.asList(climbUpToHazelmere, talkToHazelmere), barkSample, translationBook));
 
 		allSteps.add(new PanelDetails("Investigation",
-			Arrays.asList(bringScrollToKingNarnode, climbUpToGlough, talkToGlough, talkToKingNarnodeAfterGlough, talkToCharlie,
-				findGloughJournal, talkToGloughAgain, talkToCharlieAgain, talkToKingNarnodeBeforeEscape, escapeByGlider)));
+			Arrays.asList(bringScrollToKingNarnode, climbUpToGlough, talkToGlough, talkToKingNarnodeAfterGlough, goTalkToCharlie,
+				goFindGloughJournal, goConfrontGlough, talkToCharlieFromCell, talkToKingNarnodeBeforeEscape,
+				escapeByGlider)));
 
 		allSteps.add(new PanelDetails("Karamja", Arrays.asList(enterTheShipyard, talkToForeman), oneThousandCoins));
 
-		allSteps.add(new PanelDetails("Tuzo", Arrays.asList(talkToCharlieThirdTime, talkToAnita, findInvasionPlans,
-			takeInvasionPlansToKing, placeTwigs), lumberOrder));
+		allSteps.add(new PanelDetails("Tuzo", Arrays.asList(goTalkToCharlie3, goGetAnitaKey, findInvasionPlans,
+			takeInvasionPlansToKing, placeTwigs)));
 
-		allSteps.add(new PanelDetails("Encountering the Black Demon", Arrays.asList(climbDownTrapDoor, killBlackDemon,
+		allSteps.add(new PanelDetails("Defeat the Black Demon", Arrays.asList(climbDownTrapDoor, killBlackDemon,
 			talkToKingAfterFight, findDaconiaStone, giveDaconiaStoneToKingNarnode), combatGear, food, prayerPotions));
 
 		return allSteps;

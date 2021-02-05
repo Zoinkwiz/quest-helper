@@ -24,7 +24,7 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.IconUtil;
+import com.questhelper.Icon;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
@@ -41,7 +41,7 @@ import lombok.Setter;
 
 public class QuestRequirementPanel extends JPanel
 {
-	private static final ImageIcon INFO_ICON = IconUtil.INFO_ICON.getIcon();
+	private static final ImageIcon INFO_ICON = Icon.INFO_ICON.getIcon();
 
 	@Getter
 	@Setter
@@ -86,9 +86,12 @@ public class QuestRequirementPanel extends JPanel
 
 	private void addButtonToPanel(String tooltipText)
 	{
+		String html1 = "<html><body>";
+		String html2 = "</body></html>";
+		tooltipText = tooltipText.replaceAll("\\n", "<br>");
 		JButton b = new JButton(INFO_ICON);
 		b.setPreferredSize(new Dimension(10, 10));
-		b.setToolTipText(tooltipText);
+		b.setToolTipText(html1 + tooltipText + html2);
 		b.setBorderPainted(false);
 		b.setFocusPainted(false);
 		b.setBorderPainted(false);

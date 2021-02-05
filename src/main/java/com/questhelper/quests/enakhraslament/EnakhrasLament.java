@@ -235,6 +235,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		breadOrCake = new ItemRequirement("Bread or cake", ItemID.BREAD);
 		breadOrCake.addAlternates(ItemID.CAKE);
 		breadOrCake.setHighlightInInventory(true);
+		breadOrCake.setDisplayMatchedItemName(true);
 
 		airSpellRunes = new ItemRequirement("Runes for an air spell", -1, -1);
 		airSpellRunes.setDisplayItemId(ItemID.AIR_RUNE);

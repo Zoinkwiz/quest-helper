@@ -152,9 +152,7 @@ public class FamilyCrest extends BasicQuestHelper
 		ringMould = new ItemRequirement("Ring mould", ItemID.RING_MOULD);
 		necklaceMould = new ItemRequirement("Necklace mould", ItemID.NECKLACE_MOULD);
 
-		antipoison = new ItemRequirement("At least one dose of antipoison or superantipoison", ItemID.ANTIPOISON1);
-		antipoison.addAlternates(ItemID.ANTIPOISON2, ItemID.ANTIPOISON3, ItemID.ANTIPOISON4, ItemID.SUPERANTIPOISON1,
-			ItemID.SUPERANTIPOISON2, ItemID.SUPERANTIPOISON3, ItemID.SUPERANTIPOISON4);
+		antipoison = new ItemRequirement("At least one dose of antipoison or superantipoison", ItemCollections.getAntipoisons());
 
 		runesForBlasts = new ItemRequirement("Runes for casting each of the 4 blast spells", -1, -1);
 		runesForBlasts.setDisplayItemId(ItemID.DEATH_RUNE);

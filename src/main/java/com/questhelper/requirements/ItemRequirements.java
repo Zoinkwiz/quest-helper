@@ -65,15 +65,12 @@ public class ItemRequirements extends ItemRequirement
 		return check(client, false);
 	}
 
+	@Override
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
 		int successes = (int) itemRequirements.stream().filter(predicate).count();
-		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
-		return (successes == itemRequirements.size() && logicType == LogicType.AND)
-			|| (successes > 0 && logicType == LogicType.OR)
-			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)
-			|| (successes == 0 && logicType == LogicType.NOR);
+		return logicType.compare(successes, itemRequirements.size());
 	}
 
 	@Override
@@ -81,11 +78,7 @@ public class ItemRequirements extends ItemRequirement
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
 		int successes = (int) itemRequirements.stream().filter(predicate).count();
-		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
-		return (successes == itemRequirements.size() && logicType == LogicType.AND)
-			|| (successes > 0 && logicType == LogicType.OR)
-			|| (successes < itemRequirements.size() && logicType == LogicType.NAND)
-			|| (successes == 0 && logicType == LogicType.NOR);
+		return logicType.compare(successes, itemRequirements.size());
 	}
 
 	@Override
@@ -94,6 +87,7 @@ public class ItemRequirements extends ItemRequirement
 		return this.check(client, true) ? Color.GREEN : Color.RED;
 	}
 
+	@Override
 	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
 	{
 		Color color = Color.RED;

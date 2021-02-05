@@ -29,6 +29,7 @@ package com.questhelper.questhelpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collector;
@@ -45,6 +46,13 @@ public class QuestUtil
 	public static <T> List<T> toLinkedList(@Nonnull T... elements)
 	{
 		return new LinkedList<>(Arrays.asList(elements));
+	}
+
+	public static <T> List<T> toReversedLinkedList(@Nonnull T... elements)
+	{
+		List<T> list = toLinkedList(elements);
+		Collections.reverse(list);
+		return list;
 	}
 
 	public static <T> Collector<T, ?, List<T>> collectToArrayList()

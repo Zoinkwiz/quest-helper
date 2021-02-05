@@ -233,6 +233,7 @@ public class KingsRansom extends BasicQuestHelper
 		holyGrail.setTooltip("You can get another from the purple box on the table in Morgan la Faye's Keep");
 
 		granite = new ItemRequirement("Any granite", ItemID.GRANITE_2KG);
+		granite.setDisplayMatchedItemName(true);
 		granite.addAlternates(ItemID.GRANITE_5KG, ItemID.GRANITE_500G);
 
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);

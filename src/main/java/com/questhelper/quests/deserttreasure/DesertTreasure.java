@@ -25,7 +25,6 @@
 package com.questhelper.quests.deserttreasure;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.ItemDefinitions;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
@@ -220,8 +219,10 @@ public class DesertTreasure extends BasicQuestHelper
 		spice.setHighlightInInventory(true);
 
 		cake = new ItemRequirement("Cake", ItemID.CAKE);
+		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
+		cake.setDisplayMatchedItemName(true);
 		cake.setHighlightInInventory(true);
-		cake.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.CHOCOLATE_CAKE, "Chocolate Cake"));
+
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS);
 		spikedBoots.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
 
@@ -231,11 +232,8 @@ public class DesertTreasure extends BasicQuestHelper
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		faceMask = new ItemRequirement("Facemask (or other face covering)", ItemID.FACEMASK, 1, true);
 		faceMask.setTooltip("Slayer mask and gas mask can also be used.");
-		faceMask.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.FACEMASK, "Facemask"));
-		faceMask.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.SLAYER_HELMET, "Slayer Helmet"));
-		faceMask.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.SLAYER_HELMET_I, "Slayer Helmet"));
-		faceMask.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.SLAYER_HELMET_I_25177, "Slayer Helmet"));
-		faceMask.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.GAS_MASK, "Gas Mask"));
+		faceMask.addAlternates(ItemID.FACEMASK, ItemID.SLAYER_HELMET, ItemID.SLAYER_HELMET_I, ItemID.SLAYER_HELMET_I_25177, ItemID.GAS_MASK);
+		faceMask.setDisplayMatchedItemName(true);
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		manyLockpicks = new ItemRequirement("Many lockpicks", ItemID.LOCKPICK, -1);

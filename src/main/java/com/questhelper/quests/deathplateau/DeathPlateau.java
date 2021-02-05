@@ -25,13 +25,13 @@
 package com.questhelper.quests.deathplateau;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.ItemDefinitions;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -66,7 +66,7 @@ public class DeathPlateau extends BasicQuestHelper
 	ItemRequirement gamesNecklace;
 
 	//Items Required
-	ItemRequirement asgarnianAle, premadeBlurb, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
+	ItemRequirement asgarnianAle, premadeBlurbOrCoins, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
 		yellowStone, pinkStone, greenStone, certificate, climbingBoots, spikedBoots, secretMap, combination;
 
 	ConditionForStep hasAsgarnianAle, inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs,
@@ -152,9 +152,14 @@ public class DeathPlateau extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		asgarnianAle = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE);
-		premadeBlurb = new ItemRequirement("Premade blurb' sp. (or a Blurberry special, or 500 coins to gamble with)", ItemID.PREMADE_BLURB_SP);
-		premadeBlurb.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.BLURBERRY_SPECIAL, "Blurberry special"));
-		premadeBlurb.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.COINS_995).withQuantity(500));
+
+		ItemRequirement premadeBlurb = new ItemRequirement("Premade blurb' sp.", ItemID.PREMADE_BLURB_SP);
+		premadeBlurb.addAlternates(ItemID.BLURBERRY_SPECIAL);
+		ItemRequirement coins500 = new ItemRequirement("Coins", ItemID.COINS_995, 500);
+
+		premadeBlurbOrCoins = new ItemRequirements(LogicType.OR,
+			"Premade blurb' sp. (or a Blurberry special, or 500 coins to gamble with)",
+			premadeBlurb, coins500);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
 		bread = new ItemRequirement("Bread (UNNOTED)", ItemID.BREAD, 10);
 		trout = new ItemRequirement("Trout (UNNOTED)", ItemID.TROUT, 10);
@@ -243,14 +248,14 @@ public class DeathPlateau extends BasicQuestHelper
 		talkToEohric2 = new NpcStep(this, NpcID.EOHRIC, new WorldPoint(2900, 3566, 1), "Talk to Eohric.");
 		talkToEohric2.addSubSteps(goToEohric2);
 
-		takeAsgarnianAle = new DetailedQuestStep(this, new WorldPoint(2906, 3538, 0), "Take an Asgarnian ale from the bar.", coins, asgarnianAle, premadeBlurb);
+		takeAsgarnianAle = new DetailedQuestStep(this, new WorldPoint(2906, 3538, 0), "Take an Asgarnian ale from the bar.", coins, asgarnianAle, premadeBlurbOrCoins);
 
-		goToHaroldStairs2 = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2915, 3540, 0), "Talk to Harold.", coins, asgarnianAle, premadeBlurb);
-		goToHaroldDoor2 = new ObjectStep(this, ObjectID.DOOR_3747, new WorldPoint(2906, 3543, 1), "Talk to Harold.", coins, asgarnianAle, premadeBlurb);
-		talkToHarold2 = new NpcStep(this, NpcID.HAROLD, new WorldPoint(2906, 3540, 1), "Talk to Harold.", coins, asgarnianAle, premadeBlurb);
+		goToHaroldStairs2 = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2915, 3540, 0), "Talk to Harold.", coins, asgarnianAle, premadeBlurbOrCoins);
+		goToHaroldDoor2 = new ObjectStep(this, ObjectID.DOOR_3747, new WorldPoint(2906, 3543, 1), "Talk to Harold.", coins, asgarnianAle, premadeBlurbOrCoins);
+		talkToHarold2 = new NpcStep(this, NpcID.HAROLD, new WorldPoint(2906, 3540, 1), "Talk to Harold.", coins, asgarnianAle, premadeBlurbOrCoins);
 		talkToHarold2.addSubSteps(goToHaroldStairs2, goToHaroldDoor2);
 
-		giveHaroldBlurberry = new NpcStep(this, NpcID.HAROLD, new WorldPoint(2906, 3540, 1), "Talk to Harold to give him a Blurberry Special.", coins, premadeBlurb);
+		giveHaroldBlurberry = new NpcStep(this, NpcID.HAROLD, new WorldPoint(2906, 3540, 1), "Talk to Harold to give him a Blurberry Special.", coins, premadeBlurbOrCoins);
 		giveHaroldBlurberry.addDialogStep(3, "Can I buy you a drink?");
 
 		gambleWithHarold = new NpcStep(this, NpcID.HAROLD, new WorldPoint(2906, 3540, 1), "Gamble with Harold (101 coins to immediately bankrupt him).", coins);
@@ -296,7 +301,7 @@ public class DeathPlateau extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins, premadeBlurb, ironBar, bread, trout);
+		return Arrays.asList(coins, premadeBlurbOrCoins, ironBar, bread, trout);
 	}
 
 	@Override
@@ -309,7 +314,7 @@ public class DeathPlateau extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("The equipment room", Arrays.asList(talkToDenulth1, talkToEohric1, talkToHarold1, talkToEohric2, takeAsgarnianAle, talkToHarold2, giveHaroldBlurberry, gambleWithHarold, readIou, placeStones), coins, premadeBlurb));
+		allSteps.add(new PanelDetails("The equipment room", Arrays.asList(talkToDenulth1, talkToEohric1, talkToHarold1, talkToEohric2, takeAsgarnianAle, talkToHarold2, giveHaroldBlurberry, gambleWithHarold, readIou, placeStones), coins, premadeBlurbOrCoins));
 		allSteps.add(new PanelDetails("Get spiked boots", Arrays.asList(enterSabaCave, talkToSaba, talkToTenzing1, talkToDunstan1, talkToDunstan2), ironBar));
 		allSteps.add(new PanelDetails("The secret path", Arrays.asList(talkToTenzing2, goNorth, talkToDenulth3), bread, trout));
 		return allSteps;

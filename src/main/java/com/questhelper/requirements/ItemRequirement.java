@@ -25,15 +25,12 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.ItemDefinitions;
-import com.questhelper.questhelpers.QuestItem;
 import com.questhelper.requirements.util.InventorySlots;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -67,20 +64,17 @@ public class ItemRequirement extends AbstractRequirement
 	@Setter
 	protected boolean highlightInInventory;
 
-	protected final Map<Integer, QuestItem> alternateItems = new HashMap<>();
+	protected final List<Integer> alternateItems = new ArrayList<>();
 
 	@Setter
 	protected boolean exclusiveToOneItemType;
 
+	@Setter
+	private boolean displayMatchedItemName;
+
 	public ItemRequirement(String name, int id)
 	{
 		this(name, id, 1);
-	}
-
-	public ItemRequirement(String name, QuestItem item)
-	{
-		this(name, item.getItemID(), item.getQuantity());
-		this.addAlternateItem(item);
 	}
 
 	public ItemRequirement(String name, int id, int quantity)
@@ -124,39 +118,12 @@ public class ItemRequirement extends AbstractRequirement
 
 	public void addAlternates(List<Integer> alternates)
 	{
-		alternates.forEach(this::addAlternate);
+		this.alternateItems.addAll(alternates);
 	}
 
 	public void addAlternates(Integer... alternates)
 	{
-		if (alternates != null && alternates.length > 0)
-		{
-			Stream.of(alternates).forEach(this::addAlternate);
-		}
-	}
-
-	private void addAlternate(int itemID)
-	{
-		QuestItem item = ItemDefinitions.addQuestItem(new QuestItem(itemID, name, quantity));
-		this.alternateItems.put(itemID, item);
-	}
-
-	/**
-	 * Add an alternate {@link QuestItem}. If this Requirement fails it's check,
-	 * the first alternate {@link QuestItem} to pass the check will be displayed instead.
-	 * <br>
-	 * {@link QuestItem}s should be created via {@link com.questhelper.ItemDefinitions#getQuestItem(int, String)}
-	 * or {@link com.questhelper.ItemDefinitions#getQuestItem(int, String, int)}
-	 * so they can be re-used.
-	 * @param item the alternate {@link QuestItem}
-	 *
-	 * @see com.questhelper.ItemDefinitions#getQuestItem(int)
-	 * @see com.questhelper.ItemDefinitions#getQuestItem(int, String)
-	 * @see com.questhelper.ItemDefinitions#getQuestItem(int, String, int)
-	 */
-	public void addAlternateItem(QuestItem item)
-	{
-		alternateItems.put(item.getItemID(), item);
+		this.alternateItems.addAll(Arrays.asList(alternates));
 	}
 
 	public boolean showQuantity()
@@ -181,9 +148,10 @@ public class ItemRequirement extends AbstractRequirement
 
 	public List<Integer> getAllIds()
 	{
-		List<Integer> ids = new ArrayList<>(alternateItems.keySet());
-		ids.add(0, id);
-		return ids.stream().distinct().collect(Collectors.toList()); // remove duplicates
+		List<Integer> items = new ArrayList<>(Collections.singletonList(id));
+		items.addAll(alternateItems);
+
+		return items.stream().distinct().collect(Collectors.toList());
 	}
 
 	@Override
@@ -198,9 +166,9 @@ public class ItemRequirement extends AbstractRequirement
 		}
 
 		int itemID = findItemID(client, false);
-		if (alternateItems.containsKey(itemID))
+		if (displayMatchedItemName && (alternateItems.contains(itemID)) || id == itemID)
 		{
-			text.append(alternateItems.get(itemID).getDisplayText());
+			text.append(client.getItemDefinition(itemID).getName());
 		}
 		else
 		{
@@ -260,7 +228,6 @@ public class ItemRequirement extends AbstractRequirement
 		}
 		return -1;
 	}
-
 
 	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
 	{

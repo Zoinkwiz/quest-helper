@@ -94,7 +94,7 @@ public class DwarfCannon extends BasicQuestHelper
 		teleToKand = new ItemRequirement("Teleport to Ardougne, Skills Necklace, or Games Necklace",
 			ItemCollections.getGamesNecklaces());
 		teleToKand.addAlternates(ItemCollections.getSkillsNecklaces());
-		teleToKand.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.ARDOUGNE_TELEPORT, "Ardougne Teleport"));
+		teleToKand.addAlternates(ItemID.ARDOUGNE_TELEPORT);
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		railing = new ItemRequirement("Railing", ItemID.RAILING);

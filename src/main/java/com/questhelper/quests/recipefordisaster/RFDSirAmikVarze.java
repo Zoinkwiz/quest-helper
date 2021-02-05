@@ -25,7 +25,6 @@
 package com.questhelper.quests.recipefordisaster;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.ItemDefinitions;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
@@ -166,7 +165,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		vanillaPod.setHighlightInInventory(true);
 
 		dramenStaffOrLunar = new ItemRequirement("Dramen/lunar staff", ItemID.DRAMEN_STAFF, 1, true);
-		dramenStaffOrLunar.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.LUNAR_STAFF, "Lunar Staff"));
+		dramenStaffOrLunar.addAlternates(ItemID.LUNAR_STAFF);
+		dramenStaffOrLunar.setDisplayMatchedItemName(true);
 
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
 		dramenBranch.setHighlightInInventory(true);

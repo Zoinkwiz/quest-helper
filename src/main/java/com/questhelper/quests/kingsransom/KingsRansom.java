@@ -25,7 +25,6 @@
 package com.questhelper.quests.kingsransom;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.ItemDefinitions;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ItemRequirements;
@@ -228,14 +227,14 @@ public class KingsRansom extends BasicQuestHelper
 		grabOrLockpick = new ItemRequirements(LogicType.OR, "Runes for telekinetic grab or a lockpick", new ItemRequirement("Lockpick", ItemID.LOCKPICK), telegrab);
 
 		hairclipOrLockpick = new ItemRequirement("Hair clip or Lockpick", ItemID.LOCKPICK);
-		hairclipOrLockpick.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.HAIR_CLIP, "Hair Clip"));
+		hairclipOrLockpick.addAlternates(ItemID.HAIR_CLIP);
 
 		holyGrail = new ItemRequirement("Holy grail", ItemID.HOLY_GRAIL);
 		holyGrail.setTooltip("You can get another from the purple box on the table in Morgan la Faye's Keep");
 
-		granite = new ItemRequirement("Any granite", ItemDefinitions.getQuestItem(ItemID.GRANITE_2KG, "Granite (2kg)"));
-		granite.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.GRANITE_5KG, "Granite (5kg)"));
-		granite.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.GRANITE_500G, "Granite (500g)"));
+		granite = new ItemRequirement("Any granite", ItemID.GRANITE_2KG);
+		granite.setDisplayMatchedItemName(true);
+		granite.addAlternates(ItemID.GRANITE_5KG, ItemID.GRANITE_500G);
 
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);

@@ -26,7 +26,6 @@ package com.questhelper.quests.songoftheelves;
 
 import com.google.inject.Inject;
 import com.questhelper.ItemCollections;
-import com.questhelper.ItemDefinitions;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
@@ -223,7 +222,8 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		flowers = new ItemRequirement("Flowers", ItemCollections.getFlowers());
 
 		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
-		iritLeaf.addAlternateItem(ItemDefinitions.getQuestItem(ItemID.GRIMY_IRIT_LEAF, "Grimy Irit Leaf"));
+		iritLeaf.addAlternates(ItemID.GRIMY_IRIT_LEAF);
+		iritLeaf.setDisplayMatchedItemName(true);
 		iritLeaf.setTooltip("Grimy Irit Leaf is also valid.");
 
 		flowersOrIrit = new ItemRequirements(LogicType.OR, "Irit leaf or a flower", iritLeaf, flowers);

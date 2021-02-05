@@ -27,18 +27,11 @@
 
 package com.questhelper.requirements;
 
-import com.questhelper.ItemDefinitions;
-import com.questhelper.questhelpers.QuestItem;
 import com.questhelper.requirements.util.ItemSlots;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -52,78 +45,40 @@ public class EquippedItemRequirement extends AbstractRequirement
 {
 	private final ItemSlots slot;
 	private final String name;
-	private final Map<Integer, QuestItem> items = new LinkedHashMap<>();
+	private final List<Integer> itemIDs = new ArrayList<>();
 
 	/**
-	 * Check if the player has a certain item in a certain {@link ItemSlots}.
+	 * Check if the player has any of the given items in a certain {@link ItemSlots}
 	 *
-	 * @param name the display text
-	 * @param slot the slot to check
-	 * @param id the item id
+	 * @param name  the display text
+	 * @param slot  the slot to check
+	 * @param items list of valid item ids
 	 */
-	public EquippedItemRequirement(String name, ItemSlots slot, int id)
+	public EquippedItemRequirement(String name, ItemSlots slot, Integer... items)
 	{
 		this.slot = slot;
 		this.name = name;
-		addNewItem(new QuestItem(id, name));
+		this.itemIDs.addAll(Arrays.asList(items));
 	}
 
 	/**
 	 * Check if the player has any of the given items in a certain {@link ItemSlots}
 	 *
-	 * @param name the display text
-	 * @param slot the slot to check
+	 * @param name  the display text
+	 * @param slot  the slot to check
 	 * @param items list of valid item ids
 	 */
 	public EquippedItemRequirement(String name, ItemSlots slot, List<Integer> items)
 	{
 		this.slot = slot;
 		this.name = name;
-		addNewItem(name, items.get(0));
-		items.forEach(item -> addNewItem(name, item));
-	}
-
-	/**
-	 * Check if the player has any of the given items in a certain {@link ItemSlots}
-	 *
-	 * @param name the display text
-	 * @param slot the slot to check
-	 * @param items list of valid item ids
-	 */
-	public EquippedItemRequirement(String name, ItemSlots slot, @Nonnull Integer... items)
-	{
-		this.slot = slot;
-		this.name = name;
-		addNewItem(name, items[0]);
-		Stream.of(items).forEach(item -> addNewItem(name, item));
-	}
-
-	@Override
-	public void setOverlayReplacement(Requirement panelReplacement)
-	{
-		super.setOverlayReplacement(panelReplacement);
-		if (panelReplacement instanceof ItemRequirement)
-		{
-			ItemRequirement req = (ItemRequirement) panelReplacement;
-			addNewItem(req.getDisplayText(), req.getId());
-		}
-	}
-
-	public void addNewItem(String text, int itemID)
-	{
-		addNewItem(new QuestItem(itemID, text));
-	}
-
-	public void addNewItem(QuestItem item)
-	{
-		items.put(item.getItemID(), item);
-		ItemDefinitions.addQuestItem(item);
+		this.itemIDs.addAll(items);
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		return slot.contains(client, i -> items.containsKey(i.getId()));
+		return slot.checkInventory(client, i -> getItemIDs().contains(i.getId()));
 	}
 
 	@Override
@@ -133,13 +88,13 @@ public class EquippedItemRequirement extends AbstractRequirement
 		Color equipColor = Color.RED;
 
 		String text = name;
-		for (Map.Entry<Integer, QuestItem> entry : items.entrySet())
+
+		for (Integer itemID : itemIDs)
 		{
-			int itemID = entry.getKey();
 			if (slot.contains(client, i -> i != null && i.getId() == itemID))
 			{
 				equipColor = Color.GREEN;
-				text = entry.getValue().getDisplayText();
+				text = client.getItemDefinition(itemID).getName();
 				break;
 			}
 		}

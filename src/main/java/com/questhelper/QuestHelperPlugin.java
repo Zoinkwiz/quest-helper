@@ -38,7 +38,6 @@ import com.questhelper.banktab.QuestHelperBankTagService;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.questhelpers.QuestItem;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -49,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
@@ -226,7 +224,6 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
-		ItemDefinitions.init();
 		bankTagService = new QuestHelperBankTagService(this);
 		bankTagsMain = new QuestBankTab(this);
 		bankTagsMain.startUp();
@@ -779,43 +776,5 @@ public class QuestHelperPlugin extends Plugin
 
 		log.debug("Loaded quest helper {}", clazz.getSimpleName());
 		return questHelper;
-	}
-
-	/**
-	 * Get, or create, a {@link QuestItem} with the given item id.
-	 * <br>
-	 * By default, there will be no display text. To set the display text use {@link #getQuestItem(int, String)}
-	 *
-	 * @param itemID the item id
-	 * @return the {@link QuestItem}
-	 */
-	public QuestItem getQuestItem(int itemID)
-	{
-		return ItemDefinitions.getQuestItem(itemID);
-	}
-
-	/**
-	 * Get, or create, a {@link QuestItem} with the given item id and display text.
-	 *
-	 * @param itemID the item id.
-	 * @param displayText the display text
-	 * @return the {@link QuestItem}
-	 */
-	public QuestItem getQuestItem(int itemID, @Nonnull String displayText)
-	{
-		return ItemDefinitions.getQuestItem(itemID, displayText);
-	}
-
-	/**
-	 * Get, or create, a {@link QuestItem} for the given parameters.
-	 *
-	 * @param itemID the item id
-	 * @param displayText the display text
-	 * @param quantity the quantity of the item
-	 * @return the {@link QuestItem}
-	 */
-	public QuestItem getQuestItem(int itemID, @Nonnull String displayText, int quantity)
-	{
-		return ItemDefinitions.getQuestItem(itemID, displayText, quantity);
 	}
 }

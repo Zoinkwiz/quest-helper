@@ -54,7 +54,7 @@ public enum Rune
 	SOUL("Soul Rune", ItemID.SOUL_RUNE),
 	WRATH("Wrath Rune", ItemID.WRATH_RUNE),
 	LAVA("Lava Rune", ItemID.LAVA_RUNE, ItemCollections.getLavaStaff()),
-	MUD("Mud Rune", ItemID.DUST_RUNE, ItemCollections.getDustStaff()),
+	MUD("Mud Rune", ItemID.DUST_RUNE, ItemCollections.getMudStaff()),
 	STEAM("Steam Rune", ItemID.STEAM_RUNE, ItemCollections.getSteamStaff()),
 	SMOKE("Smoke Rune", ItemID.SMOKE_RUNE, ItemCollections.getSmokeStaff()),
 	MIST("Mist Rune", ItemID.MIST_RUNE, ItemCollections.getMistStaff()),

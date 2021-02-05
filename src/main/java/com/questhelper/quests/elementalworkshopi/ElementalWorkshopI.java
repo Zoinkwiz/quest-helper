@@ -91,7 +91,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		goSolveWater.addStep(inStairwell, goDownStairs);
 
 		ConditionalStep goSolveAir = new ConditionalStep(this, openOddWall);
-		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, fixedBellow, inWorkshop), fixBellows);
+		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, fixedBellow, inWorkshop), pullBellowsLever);
 		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, inWorkshop), fixBellows);
 		goSolveAir.addStep(new Conditions(hasNeedle, inWorkshop), searchLeatherCrate);
 		goSolveAir.addStep(inWorkshop, searchNeedleCrate);

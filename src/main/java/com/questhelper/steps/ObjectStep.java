@@ -24,7 +24,6 @@
  */
 package com.questhelper.steps;
 
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
@@ -362,13 +361,19 @@ public class ObjectStep extends DetailedQuestStep
 		if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
 		{
 			this.object = object;
-			this.objects.add(object);
+			if (!this.objects.contains(object))
+			{
+				this.objects.add(object);
+			}
 			return;
 		}
 		if (worldPoint == null)
 		{
 			this.object = object;
-			this.objects.add(object);
+			if (!this.objects.contains(object))
+			{
+				this.objects.add(object);
+			}
 		}
 	}
 }

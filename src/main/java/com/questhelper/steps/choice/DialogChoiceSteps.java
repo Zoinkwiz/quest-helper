@@ -45,7 +45,13 @@ public class DialogChoiceSteps
 
     public void addDialogChoiceWithExclusion(DialogChoiceStep choice, String exclusionString)
 	{
-		choice.addExclusion(exclusionString, 219, 1);
+		choice.addExclusion(219, 1, exclusionString);
+		addChoice(choice);
+	}
+
+	public void addDialogChoiceWithExclusions(DialogChoiceStep choice, String... exclusionStrings)
+	{
+		choice.addExclusions(219, 1, exclusionStrings);
 		addChoice(choice);
 	}
 

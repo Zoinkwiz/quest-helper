@@ -206,7 +206,7 @@ public class TheGrandTree extends BasicQuestHelper
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
 
-		energyOrStaminaPotions = new ItemRequirement("Energy restoration", ItemCollections.getEnergyRestoration(), -1);
+		energyOrStaminaPotions = new ItemRequirement("Energy restoration", ItemCollections.getRunRestoreItems(), -1);
 		combatGear = new ItemRequirement("Combat gear. Safespotting is possible.", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);

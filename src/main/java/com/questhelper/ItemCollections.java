@@ -181,6 +181,7 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> waterStaff = Arrays.asList(
+		ItemID.KODAI_WAND,
 		ItemID.WATER_BATTLESTAFF,
 		ItemID.MYSTIC_WATER_STAFF,
 		ItemID.STAFF_OF_WATER,

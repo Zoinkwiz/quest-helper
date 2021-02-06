@@ -28,12 +28,16 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.Requirements;
 import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
@@ -92,11 +96,18 @@ public class QuestHelperBankTagService
 
 		for (PanelDetails questSection : questSections)
 		{
-			List<ItemRequirement> items = questSection.getRequirements()
-				.stream()
-				.filter(ItemRequirement.class::isInstance)
-				.map(ItemRequirement.class::cast)
-				.collect(Collectors.toList());
+			List<ItemRequirement> items = new ArrayList<>();
+			for (Requirement requirement : questSection.getRequirements())
+			{
+				if (requirement instanceof ItemRequirement)
+				{
+					items.add((ItemRequirement) requirement);
+				}
+				else if (requirement instanceof Requirements)
+				{
+					items.addAll(getItemRequirementsFromRequirements((Requirements) requirement));
+				}
+			}
 
 			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());
 			items.forEach(item -> getItemsFromRequirement(pluginItems, item));
@@ -104,6 +115,60 @@ public class QuestHelperBankTagService
 		}
 
 		return newList;
+	}
+
+	@Nonnull
+	private List<ItemRequirement> getItemRequirementsFromRequirements(Requirements requirements)
+	{
+		if (!requirements.check(plugin.getClient()))
+		{
+			return new ArrayList<>();
+		}
+
+		if (requirements.getLogicType() == LogicType.OR)
+		{
+			for (Requirement requirement : requirements.getRequirements())
+			{
+				if (requirement.check(plugin.getClient()))
+				{
+					if (requirement instanceof  Requirements)
+					{
+						List<ItemRequirement> newItems = getItemRequirementsFromRequirements(requirements);
+						if (!newItems.isEmpty())
+						{
+							return newItems;
+						}
+					}
+					else if (requirement instanceof ItemRequirement)
+					{
+						return Collections.singletonList((ItemRequirement) requirement);
+					}
+				}
+			}
+		}
+		else if (requirements.getLogicType() == LogicType.AND)
+		{
+			if (requirements.check(plugin.getClient()))
+			{
+				List<ItemRequirement> newReqs = new ArrayList<>();
+				for (Requirement requirement : requirements.getRequirements())
+				{
+					if (requirement instanceof ItemRequirement)
+					{
+						newReqs.add((ItemRequirement) requirement);
+					}
+					else if (requirement instanceof Requirements)
+					{
+						newReqs.addAll(getItemRequirementsFromRequirements((Requirements) requirement));
+					}
+				}
+				return newReqs;
+			}
+		}
+
+		return new ArrayList<>();
+
+		// NOT HANDLED: NAND or NOR
 	}
 
 	private void getItemsFromRequirement(BankTabItems pluginItems, ItemRequirement itemRequirement)

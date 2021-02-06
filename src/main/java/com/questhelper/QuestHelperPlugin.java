@@ -342,18 +342,18 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (!(client.getGameState() == GameState.LOGGED_IN))
-		{
-			return;
-		}
-
-		if (selectedQuest == null)
-		{
-			return;
-		}
-
-		boolean newStepIsNull = selectedQuest.updateQuest() && selectedQuest.getCurrentStep() == null;
 		clientThread.invokeLater(() -> {
+			if (!(client.getGameState() == GameState.LOGGED_IN))
+			{
+				return;
+			}
+
+			if (selectedQuest == null)
+			{
+				return;
+			}
+
+			boolean newStepIsNull = selectedQuest.updateQuest() && selectedQuest.getCurrentStep() == null;
 			if (newStepIsNull || selectedQuest.isCompleted())
 			{
 				shutDownQuest(true);

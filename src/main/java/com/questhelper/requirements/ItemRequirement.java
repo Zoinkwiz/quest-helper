@@ -207,7 +207,7 @@ public class ItemRequirement extends AbstractRequirement
 			.left(text.toString())
 			.leftColor(color)
 			.build());
-		lines.addAll(getAdditionalText(client, false));
+		lines.addAll(getAdditionalText(client, true));
 		return lines;
 	}
 

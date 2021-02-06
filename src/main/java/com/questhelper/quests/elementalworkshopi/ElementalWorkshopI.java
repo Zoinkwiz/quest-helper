@@ -298,6 +298,12 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Collections.singletonList("Earth elemental (level 35)");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

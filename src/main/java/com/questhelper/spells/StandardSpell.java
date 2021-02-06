@@ -37,7 +37,7 @@ import net.runelite.api.ItemID;
 import org.apache.commons.text.WordUtils;
 
 @Getter
-public enum Spell implements MagicSpell
+public enum StandardSpell implements MagicSpell
 {
 	LUMBRIDGE_HOME_TELEPORT(356, 5, 0),
 	WIND_STRIKE(15, 6, 1, b -> b.rune(AIR).rune(MIND)),
@@ -125,12 +125,12 @@ public enum Spell implements MagicSpell
 	private final int widgetID;
 	private final int requiredMagicLevel;
 	private final UnaryOperator<StandardSpellBuilder> operator;
-	Spell(int spriteID, int widgetID, int requiredMagicLevel)
+	StandardSpell(int spriteID, int widgetID, int requiredMagicLevel)
 	{
 		this(spriteID, widgetID, requiredMagicLevel, UnaryOperator.identity());
 	}
 
-	Spell(int spriteID, int widgetID, int requiredMagicLevel, UnaryOperator<StandardSpellBuilder> operator)
+	StandardSpell(int spriteID, int widgetID, int requiredMagicLevel, UnaryOperator<StandardSpellBuilder> operator)
 	{
 		this.spriteID = spriteID;
 		this.groupID = 218;

@@ -3,8 +3,10 @@ package com.questhelper.quests.scorpioncatcher;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.*;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.*;
-import com.questhelper.steps.conditional.*;
+import com.questhelper.requirements.conditional.*;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -97,7 +99,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	private void setupItemRequirements()
 	{
 		dustyKey = new ItemRequirement("Dusty Key", ItemID.DUSTY_KEY);
-		dustyKey.setTip("Not needed if you have level 70 Agility, can be obtained during the quest");
+		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");
 		jailKey = new ItemRequirement("Jail Key", ItemID.JAIL_KEY);
 
 		scorpionCageEmpty = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE);
@@ -116,7 +118,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		gloryOrCombatBracelet = new ItemRequirement("A charged glory or a combat bracelet", ItemCollections.getAmuletOfGlories());
 		gloryOrCombatBracelet.addAlternates(ItemCollections.getCombatBracelets());
 		fairyRingAccess = new QuestRequirement(QuestHelperQuest. FAIRYTALE_II__CURE_A_QUEEN, QuestState. IN_PROGRESS, "Fairy ring access");
-		fairyRingAccess.setTip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
+		fairyRingAccess.setTooltip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
 
 	}
 

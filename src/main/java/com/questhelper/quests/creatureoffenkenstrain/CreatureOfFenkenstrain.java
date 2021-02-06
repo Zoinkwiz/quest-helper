@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.QuestRequirement;
@@ -62,19 +61,19 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 {
 	ItemRequirement armor, hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, pickledBrain,
 		obsidianAmulet, marbleAmulet, starAmulet, decapitatedHead, decapitatedHeadWithBrain, cavernKey, torso, legs, arms,
-		shedKey, brush, canes, extendedBrush1, extendedBrush2, extendedBrush3, conductorMold, lightningRod, towerKey,
+		shedKey, brush, canes, extendedBrush3, conductorMould, lightningRod, towerKey,
 		fenkenstrainTeleports, teleportToFurnance, staminaPotion;
-	Zone barZone, castleZoneFloor1, castleZoneFloor2, experimentCave, graveIsland, castleTower, monsterTower;
-	ConditionForStep hasPickledBrain, inCanifisBar, inCastleFloor1, inCastleFloor2, hasObsidianAmulet, hasMarbleAmulet, hasStarAmulet,
+	Zone barZone, castleZoneFloor0, castleZoneFloor1, experimentCave, graveIsland, castleTower, monsterTower;
+	ConditionForStep hasPickledBrain, inCanifisBar, inCastleFloor0, inCastleFloor1, hasObsidianAmulet, hasMarbleAmulet, hasStarAmulet,
 		hasGhostSpeakAmulet, followingGardenerForHead, hasDecapitatedHead, hasDecapitatedHeadWithBrain, putStarOnGrave, inExperiementCave,
-		hasCavernKey, hasTorso, hasLegs, hasArm, inGraveIsland, hasShedKey, usedShedKey, hasBrush, hasBrush1, hasBrush2, hasBrush3,
-		hasCanes, hasLightningRod, hasMould, inCastleTower, usedTowerKey, hasTowerKey, inMonsterTower;
-	QuestStep getPickledBrain, talkToFrenkenstrain, getBodyParts, goUpstairsForStar, getBook1, getBook2, combineAmulet,
+		hasCavernKey, hasTorso, hasLegs, hasArm, inGraveIsland, hasShedKey, usedShedKey, hasBrush, hasBrush3,
+		hasCanes, hasLightningRod, hasMould, inCastleTower, usedTowerKey, hasTowerKey, inMonsterTower, keyNearby;
+	QuestStep getPickledBrain, talkToFrenkenstrain, goUpstairsForStar, getBook1, getBook2, combineAmulet, pickupKey,
 		goDownstairsForStar, talkToGardenerForHead, goToHeadGrave, combinedHead, useStarOnGrave, killExperiment, leaveExperimentCave,
-		getTorso, getArm, getLeg, deliverBodyParts, gatherNeedleAndThread, fixConductorRod, talkToGardenerForKey, searchForBrush,
+		getTorso, getArm, getLeg, deliverBodyParts, gatherNeedleAndThread, talkToGardenerForKey, searchForBrush,
 		grabCanes, extendBrush, goUpWestStairs, searchFirePlace, makeLightningRod, goUpWestStairsWithRod, goUpTowerLadder,
 		repairConductor, goBackToFirstFloor, talkToFenkenstrainAfterFixingRod, goToMonsterFloor1, openLockedDoor, goToMonsterFloor2,
-		talkToMonster, pickPocketFenkenstrain;
+		talkToMonster, pickPocketFenkenstrain, enterExperimentCave;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -90,44 +89,45 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		grabTheBrain.addStep(hasPickledBrain, talkToFrenkenstrain);
 		steps.put(0, grabTheBrain);
 
-		ConditionalStep gatherBodyParts = new ConditionalStep(this, getBodyParts, ghostSpeakAmulet.equipped(), spade);
-		gatherBodyParts.addStep(new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet, hasDecapitatedHeadWithBrain), goUpstairsForStar);
-		gatherBodyParts.addStep(new Conditions(inCastleFloor2, new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet)), getBook1);
-		gatherBodyParts.addStep(new Conditions(inCastleFloor2, hasObsidianAmulet, new Conditions(LogicType.NOR, hasMarbleAmulet)), getBook2);
-		gatherBodyParts.addStep(new Conditions(hasObsidianAmulet, hasMarbleAmulet), combineAmulet);
-		gatherBodyParts.addStep(new Conditions(inCastleFloor2, hasStarAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead, hasDecapitatedHeadWithBrain)), goDownstairsForStar);
-		gatherBodyParts.addStep(new Conditions(hasStarAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead,
-			hasDecapitatedHeadWithBrain)), talkToGardenerForHead);
-		gatherBodyParts.addStep(followingGardenerForHead, goToHeadGrave);
-		gatherBodyParts.addStep(new Conditions(hasDecapitatedHead, hasPickledBrain), combinedHead);
-		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, hasStarAmulet), useStarOnGrave);
-		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, inExperiementCave, new Conditions(LogicType.NOR, hasCavernKey, hasArm, hasLegs, hasTorso)), killExperiment);
-		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, inExperiementCave, hasCavernKey, new Conditions(LogicType.NOR, hasArm, hasLegs, hasTorso)), leaveExperimentCave);
-		gatherBodyParts.addStep(new Conditions(inGraveIsland, new Conditions(LogicType.NOR, hasArm, hasLegs, hasTorso)), getTorso);
-		gatherBodyParts.addStep(new Conditions(inGraveIsland, hasTorso, new Conditions(LogicType.NOR, hasArm, hasLegs)), getArm);
-		gatherBodyParts.addStep(new Conditions(inGraveIsland, hasTorso, hasArm, new Conditions(LogicType.NOR, hasLegs)), getLeg);
-		gatherBodyParts.addStep(new Conditions(hasArm, hasLegs, hasTorso), deliverBodyParts);
+		ConditionalStep gatherBodyParts = new ConditionalStep(this, goUpstairsForStar);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, hasArm, hasLegs, hasTorso), deliverBodyParts);
+		gatherBodyParts.addStep(new Conditions(inGraveIsland, hasTorso, hasArm, hasDecapitatedHeadWithBrain), getLeg);
+		gatherBodyParts.addStep(new Conditions(inGraveIsland, hasTorso, hasDecapitatedHeadWithBrain), getArm);
+		gatherBodyParts.addStep(new Conditions(inGraveIsland, hasDecapitatedHeadWithBrain), getTorso);
+		gatherBodyParts.addStep(new Conditions(inExperiementCave, hasDecapitatedHeadWithBrain, hasCavernKey), leaveExperimentCave);
+		gatherBodyParts.addStep(new Conditions(inExperiementCave, hasDecapitatedHeadWithBrain, keyNearby), pickupKey);
+		gatherBodyParts.addStep(new Conditions(inExperiementCave, hasDecapitatedHeadWithBrain), killExperiment);
 
-		ConditionalStep fixLightningRod = new ConditionalStep(this, fixConductorRod);
-		fixLightningRod.addStep(new Conditions(LogicType.NOR, usedShedKey, hasShedKey), talkToGardenerForKey);
-		fixLightningRod.addStep(new Conditions(LogicType.NOR, hasBrush, hasBrush1, hasBrush2, hasBrush3), searchForBrush);
-		fixLightningRod.addStep(new Conditions(hasBrush, new Conditions(LogicType.NOR, hasCanes, hasBrush1, hasBrush2, hasBrush3)), grabCanes);
-		fixLightningRod.addStep(new Conditions(LogicType.OR, new Conditions(LogicType.AND, hasBrush, hasCanes), hasBrush1, hasBrush2), extendBrush);
-		fixLightningRod.addStep(new Conditions(new Conditions(LogicType.NOR, inCastleFloor2), hasBrush3), goUpWestStairs);
-		fixLightningRod.addStep(new Conditions(inCastleFloor2, hasBrush3, new Conditions(LogicType.NOR, hasLightningRod, hasMould)), searchFirePlace);
-		fixLightningRod.addStep(new Conditions(hasMould, new Conditions(LogicType.NOR, hasLightningRod)), makeLightningRod);
-		fixLightningRod.addStep(new Conditions(new Conditions(LogicType.NOR, inCastleFloor2), hasLightningRod), goUpWestStairs);
-		fixLightningRod.addStep(new Conditions(hasLightningRod, inCastleFloor2), goUpTowerLadder);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, putStarOnGrave), enterExperimentCave);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, hasStarAmulet), useStarOnGrave);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHead, hasPickledBrain), combinedHead);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHead), getPickledBrain);
+		gatherBodyParts.addStep(followingGardenerForHead, goToHeadGrave);
+		gatherBodyParts.addStep(new Conditions(inCastleFloor1, hasStarAmulet), goDownstairsForStar);
+		gatherBodyParts.addStep(new Conditions(hasStarAmulet), talkToGardenerForHead);
+
+		gatherBodyParts.addStep(new Conditions(hasObsidianAmulet, hasMarbleAmulet), combineAmulet);
+		gatherBodyParts.addStep(new Conditions(inCastleFloor1, hasObsidianAmulet), getBook2);
+		gatherBodyParts.addStep(new Conditions(inCastleFloor1), getBook1);
+
+		ConditionalStep fixLightningRod = new ConditionalStep(this, talkToGardenerForKey);
 		fixLightningRod.addStep(new Conditions(inCastleTower, hasLightningRod), repairConductor);
+		fixLightningRod.addStep(new Conditions(hasLightningRod, inCastleFloor1), goUpTowerLadder);
+		fixLightningRod.addStep(new Conditions(hasLightningRod), goUpWestStairs);
+		fixLightningRod.addStep(new Conditions(hasMould), makeLightningRod);
+		fixLightningRod.addStep(new Conditions(inCastleFloor1, hasBrush3), searchFirePlace);
+		fixLightningRod.addStep(new Conditions(hasBrush3), goUpWestStairs);
+		fixLightningRod.addStep(new Conditions(LogicType.AND, hasBrush, hasCanes), extendBrush);
+		fixLightningRod.addStep(new Conditions(hasBrush), grabCanes);
+		fixLightningRod.addStep(new Conditions(LogicType.OR, usedShedKey, hasShedKey), searchForBrush);
 
 		ConditionalStep talkToFenkentrain = new ConditionalStep(this, goBackToFirstFloor);
-		talkToFenkentrain.addStep(inCastleFloor1, talkToFenkenstrainAfterFixingRod);
+		talkToFenkentrain.addStep(inCastleFloor0, talkToFenkenstrainAfterFixingRod);
 
 		ConditionalStep goToMonster = new ConditionalStep(this, goToMonsterFloor1);
-		goToMonster.addStep(new Conditions(hasTowerKey, new Conditions(LogicType.NOR, inCastleFloor2)), openLockedDoor);
-		goToMonster.addStep(new Conditions(hasTowerKey, inCastleFloor2), openLockedDoor);
-		goToMonster.addStep(new Conditions(usedTowerKey, inCastleFloor2), goToMonsterFloor2);
 		goToMonster.addStep(inMonsterTower, talkToMonster);
+		goToMonster.addStep(new Conditions(usedTowerKey, inCastleFloor1), goToMonsterFloor2);
+		goToMonster.addStep(new Conditions(hasTowerKey, inCastleFloor1), openLockedDoor);
 
 		steps.put(1, gatherBodyParts);
 		steps.put(2, gatherNeedleAndThread);
@@ -171,11 +171,10 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		arms = new ItemRequirement("Arms", ItemID.ARMS);
 		shedKey = new ItemRequirement("Shed key", ItemID.SHED_KEY);
 		brush = new ItemRequirement("Brush", ItemID.GARDEN_BRUSH);
+		brush.addAlternates(ItemID.EXTENDED_BRUSH, ItemID.EXTENDED_BRUSH_4192);
 		canes = new ItemRequirement("Garden Canes (3)", ItemID.GARDEN_CANE);
-		extendedBrush1 = new ItemRequirement("Extended Brush", ItemID.EXTENDED_BRUSH);
-		extendedBrush2 = new ItemRequirement("Extended Brush", ItemID.EXTENDED_BRUSH_4192);
 		extendedBrush3 = new ItemRequirement("Extended Brush", ItemID.EXTENDED_BRUSH_4193);
-		conductorMold = new ItemRequirement("Conductor Mold", ItemID.CONDUCTOR_MOULD);
+		conductorMould = new ItemRequirement("Conductor Mold", ItemID.CONDUCTOR_MOULD);
 		lightningRod = new ItemRequirement("Lightning Rod", ItemID.CONDUCTOR);
 		towerKey = new ItemRequirement("Tower Key", ItemID.TOWER_KEY);
 
@@ -189,9 +188,9 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	public void setupZones()
 	{
 		barZone = new Zone(new WorldPoint(3488, 3477, 0), new WorldPoint(3504, 3471, 0));
-		castleZoneFloor1 = new Zone(new WorldPoint(3526, 3574, 0), new WorldPoint(3566, 3531, 0));
-		castleZoneFloor2 = new Zone(new WorldPoint(3526, 3574, 1), new WorldPoint(3566, 3531, 1));
-		experimentCave = new Zone(new WorldPoint(3490, 9977, 0), new WorldPoint(3583, 9922, 0));
+		castleZoneFloor0 = new Zone(new WorldPoint(3526, 3574, 0), new WorldPoint(3566, 3531, 0));
+		castleZoneFloor1 = new Zone(new WorldPoint(3526, 3574, 1), new WorldPoint(3566, 3531, 1));
+		experimentCave = new Zone(new WorldPoint(3466, 9921, 0), new WorldPoint(3582, 9982, 0));
 		graveIsland = new Zone(new WorldPoint(3484, 3585, 0), new WorldPoint(3517, 3561, 0));
 		castleTower = new Zone(new WorldPoint(3544, 3543, 2), new WorldPoint(3552, 3536, 2));
 		monsterTower = new Zone(new WorldPoint(3544, 3558, 2), new WorldPoint(3553, 3551, 2));
@@ -200,33 +199,44 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCanifisBar = new ZoneCondition(barZone);
+		inCastleFloor0 = new ZoneCondition(castleZoneFloor0);
 		inCastleFloor1 = new ZoneCondition(castleZoneFloor1);
-		inCastleFloor2 = new ZoneCondition(castleZoneFloor2);
 		hasPickledBrain = new ItemRequirementCondition(pickledBrain);
-		hasMarbleAmulet = new ItemRequirementCondition(marbleAmulet);
-		hasObsidianAmulet = new ItemRequirementCondition(obsidianAmulet);
+		putStarOnGrave = new VarbitCondition(192, 1);
+		hasMarbleAmulet = new Conditions(LogicType.OR, new ItemRequirementCondition(marbleAmulet), putStarOnGrave);
+		hasObsidianAmulet = new Conditions(LogicType.OR, new ItemRequirementCondition(obsidianAmulet), putStarOnGrave);
 		hasGhostSpeakAmulet = new ItemRequirementCondition(ghostSpeakAmulet);
-		hasStarAmulet = new ItemRequirementCondition(starAmulet);
+		hasStarAmulet = new Conditions(LogicType.OR, new ItemRequirementCondition(starAmulet), putStarOnGrave);
 		followingGardenerForHead = new VarbitCondition(185, 1);
 		hasDecapitatedHead = new ItemRequirementCondition(decapitatedHead);
-		hasDecapitatedHeadWithBrain = new ItemRequirementCondition(decapitatedHeadWithBrain);
-		putStarOnGrave = new VarbitCondition(192, 1);
+		hasDecapitatedHeadWithBrain = new Conditions(LogicType.OR,
+			new ItemRequirementCondition(decapitatedHeadWithBrain),
+			new VarbitCondition(189, 1));
 		inExperiementCave = new ZoneCondition(experimentCave);
 		inGraveIsland = new ZoneCondition(graveIsland);
-		hasCavernKey = new ItemRequirementCondition(cavernKey);
-		hasTorso = new ItemRequirementCondition(torso);
-		hasLegs = new ItemRequirementCondition(legs);
-		hasArm = new ItemRequirementCondition(arms);
+		hasCavernKey = new Conditions(LogicType.OR, new ItemRequirementCondition(cavernKey),
+			new VarbitCondition(199, 1));
+		keyNearby = new ItemCondition(cavernKey);
+		hasTorso = new Conditions(LogicType.OR,
+			new ItemRequirementCondition(torso),
+			new VarbitCondition(188, 1));
+		hasLegs = new Conditions(LogicType.OR,
+			new ItemRequirementCondition(legs),
+			new VarbitCondition(187, 1));
+		hasArm = new Conditions(LogicType.OR,
+			new ItemRequirementCondition(arms),
+			new VarbitCondition(186, 1));
+
+		// Needle given, 190 = 1
+		// Thread given, 191 0->5
 
 		hasShedKey = new ItemRequirementCondition(shedKey);
 		usedShedKey = new VarbitCondition(200, 1);
 		hasBrush = new ItemRequirementCondition(brush);
-		hasBrush1 = new ItemRequirementCondition(extendedBrush1);
-		hasBrush2 = new ItemRequirementCondition(extendedBrush2);
 		hasBrush3 = new ItemRequirementCondition(extendedBrush3);
 		hasCanes = new ItemRequirementCondition(canes);
 		hasLightningRod = new ItemRequirementCondition(lightningRod);
-		hasMould = new ItemRequirementCondition(conductorMold);
+		hasMould = new ItemRequirementCondition(conductorMould);
 		inCastleTower = new ZoneCondition(castleTower);
 
 		usedTowerKey = new VarbitCondition(198, 1);
@@ -244,8 +254,6 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		talkToFrenkenstrain.addDialogStep("Yes.");
 		talkToFrenkenstrain.addDialogStep("Braindead");
 		talkToFrenkenstrain.addDialogStep("Grave-digging");
-
-		getBodyParts = new DetailedQuestStep(this, "You will now need to gather the 4 body parts");
 
 		goUpstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3560, 3552, 0),
 			"Go up the staircase to grab the items you will need.");
@@ -266,75 +274,86 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			"Go back to the ground floor");
 
 		talkToGardenerForHead = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0),
-			"Talk to the Gardener Ghost, have your Ghostspeak amulet equipped", ghostSpeakAmulet);
+			"Talk to the Gardener Ghost.", ghostSpeakAmulet.equipped());
 		talkToGardenerForHead.addDialogStep("What happened to your head?");
 
-		goToHeadGrave = new DigStep(this, new WorldPoint(3608, 3490, 0), "Go to the grave of the gardener and dig for his head");
+		goToHeadGrave = new DigStep(this, new WorldPoint(3608, 3490, 0),
+			"Go to the grave of the gardener and dig for his head.");
 
-		combinedHead = new ItemStep(this,
-			"Use the decapitated head on the pickled brain to create a decapitated head", decapitatedHead, pickledBrain);
+		combinedHead = new ItemStep(this, "Use the decapitated head on the pickled brain to create a decapitated head.",
+			decapitatedHead.highlighted(), pickledBrain.highlighted());
 
-		useStarOnGrave = new ObjectStep(this, ObjectID.MEMORIAL, new WorldPoint(3578, 3527, 0),
-			"Use the Star Amulet on the memorial and push it to go in the caves", starAmulet);
+		useStarOnGrave = new ObjectStep(this, ObjectID.MEMORIAL, new WorldPoint(3578, 3528, 0),
+			"Use the Star Amulet on the memorial and push it to go in the caves.", starAmulet.highlighted());
+		useStarOnGrave.addIcon(ItemID.STAR_AMULET);
+
+		enterExperimentCave = new ObjectStep(this, ObjectID.MEMORIAL, new WorldPoint(3578, 3528, 0),
+			"Push the memorial south east of the castle.");
 
 		killExperiment = new NpcStep(this, NpcID.EXPERIMENT, new WorldPoint(3557, 9946, 0),
-			"Kill the level 51 Experiment north-west of the ladder to get a key");
+			"Kill the level 51 Experiment north-west of the ladder to get a key.", true);
+
+		pickupKey = new ItemStep(this, "Pick up the key.", cavernKey);
+		killExperiment.addSubSteps(pickupKey);
 
 		leaveExperimentCave = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3504, 9970, 0),
-			"Leave the caves by going north-west, be sure to pick up the key from the level 51 experiment");
+			"Leave the caves by going north-west, be sure to pick up the key from the level 51 experiment.");
 
-		getTorso = new DigStep(this, new WorldPoint(3503, 3576, 0), "Use your spade on this tile to get torsos");
+		getTorso = new DigStep(this, new WorldPoint(3503, 3576, 0), "Use your spade on this tile to get torsos.");
 
-		getArm = new DigStep(this, new WorldPoint(3504, 3576, 0), "Use your spade on this tile to get arms");
+		getArm = new DigStep(this, new WorldPoint(3504, 3576, 0), "Use your spade on this tile to get arms.");
 
-		getLeg = new DigStep(this, new WorldPoint(3505, 3576, 0), "Use your spade on this tile to get legs");
+		getLeg = new DigStep(this, new WorldPoint(3505, 3576, 0), "Use your spade on this tile to get legs.");
 
 		deliverBodyParts = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Deliver the body parts to Dr.Fenkenstrain, use a teleport to Fenkenstrain's castle or run back through the caves");
+			"Deliver the body parts to Dr.Fenkenstrain, use a teleport to Fenkenstrain's castle or run back through " +
+				"the caves.");
 		deliverBodyParts.addDialogStep("I have some body parts for you.");
 
 		gatherNeedleAndThread = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Get a needle and 5 threads and deliver them to Dr.Fenkenstrain", needle, thread);
+			"Get a needle and 5 threads and deliver them to Dr.Fenkenstrain.", needle, thread);
 
-		fixConductorRod = new DetailedQuestStep(this, "You will now need to fix the lightning rod for Dr.Frenkenstrain");
 		talkToGardenerForKey = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0),
-			"Talk to the Gardener Ghost and ask for the shed key", bronzeWire, silverBar);
+			"Talk to the Gardener Ghost and ask for the shed key.", ghostSpeakAmulet.equipped(), bronzeWire, silverBar);
 		talkToGardenerForKey.addDialogStep("Do you know where the key to the shed is?");
 
-		searchForBrush = new ObjectStep(this, ObjectID.CUPBOARD_5156, new WorldPoint(3546, 3563, 0),
-			"Open the cupboard and search it for a brush", bronzeWire, silverBar);
+		searchForBrush = new ObjectStep(this, ObjectID.CUPBOARD_5156, new WorldPoint(3546, 3564, 0),
+			"Open the cupboard and search it for a brush.", bronzeWire, silverBar);
 		grabCanes = new ObjectStep(this, ObjectID.PILE_OF_CANES, new WorldPoint(3551, 3564, 0),
-			"Grab 3 canes from the pile", bronzeWire, silverBar);
-		extendBrush = new DetailedQuestStep(this, "Use all 3 canes on the brush one at a time", canes, brush, bronzeWire, silverBar);
+			"Grab 3 canes from the pile.", bronzeWire, silverBar);
+		extendBrush = new DetailedQuestStep(this, "Use all 3 canes on the brush one at a time.", canes.highlighted(),
+			brush.highlighted(),
+			bronzeWire, silverBar);
 
-		goUpWestStairs = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0),
-			"Go up to the second floor of the castle");
+		goUpWestStairs = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
+			"Go up to the second floor of the castle.");
 		searchFirePlace = new ObjectStep(this, ObjectID.FIREPLACE_5165, new WorldPoint(3544, 3555, 1),
-			"Use the extended brush on the fireplace to get the conductor mould", silverBar);
-		makeLightningRod = new DetailedQuestStep(this,
-			"Go to any furnace and use the silver bar on the furnace with the conductor mould in your inventory", silverBar);
+			"Use the extended brush on the fireplace to get the conductor mould.", extendedBrush3.highlighted());
+		searchFirePlace.addIcon(ItemID.EXTENDED_BRUSH_4193);
+		makeLightningRod = new DetailedQuestStep(this, "Go to any furnace make a lightning rod.", silverBar, conductorMould);
 		goUpWestStairsWithRod = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0),
-			"Return to the castle and go upstairs");
+			"Return to the castle and go upstairs.");
 		goUpTowerLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3539, 1),
-			"Go up to the third floor using the ladder in the middle of the castle");
-		repairConductor = new ObjectStep(this, ObjectID.LIGHTNING_CONDUCTOR, new WorldPoint(3548, 3537, 2),
-			"Repair the lightning Conductor");
+			"Go up to the third floor using the ladder in the middle of the castle.");
+		repairConductor = new ObjectStep(this, ObjectID.LIGHTNING_CONDUCTOR, new WorldPoint(3549, 3537, 2),
+			"Repair the lightning Conductor.");
 
-		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the the first floor of the castle and talk to Dr.Fenkenstrain");
+		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the the first floor of the castle and talk to Dr" +
+			".Fenkenstrain.");
 		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Go back to the the first floor of the castle and talk to Dr.Fenkenstrain");
+			"Go back to the the first floor of the castle and talk to Dr.Fenkenstrain.");
 
-		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0),
-			"You will now confront Fenkenstrain's monster, go up to the second floor");
-		openLockedDoor = new ObjectStep(this, ObjectID.DOOR_5172, new WorldPoint(3548, 3552, 1),
-			"Use the Tower Key on the door");
+		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
+			"Go up to the second floor to confront Fenkenstrain's monster.");
+		openLockedDoor = new ObjectStep(this, ObjectID.DOOR_5172, new WorldPoint(3548, 3551, 1),
+			"Use the Tower Key on the door.");
 		goToMonsterFloor2 = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
 			"Go up the ladder");
 		talkToMonster = new NpcStep(this, NpcID.FENKENSTRAINS_MONSTER, new WorldPoint(3548, 3555, 2),
-			"Talk to Fenkenstrain's monster");
+			"Talk to Fenkenstrain's monster.");
 
 		pickPocketFenkenstrain = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Go back to Dr.Fenkenstrain, instead of talking to him right click and pickpocket him");
+			"Go back to Dr.Fenkenstrain, instead of talking to him right click and pickpocket him.");
 	}
 
 	@Override
@@ -379,7 +398,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			telegrabOrCoins));
 		allSteps.add(new PanelDetails("Graverobbing", Arrays.asList(goUpstairsForStar,
 			getBook1, getBook2, combineAmulet, goDownstairsForStar, talkToGardenerForHead, goToHeadGrave, combinedHead,
-			useStarOnGrave, killExperiment, leaveExperimentCave, getTorso, getArm, getLeg, deliverBodyParts)));
+			useStarOnGrave, enterExperimentCave, killExperiment, leaveExperimentCave, getTorso, getArm, getLeg, deliverBodyParts)));
 		allSteps.add(new PanelDetails("Getting tools",
 			Collections.singletonList(gatherNeedleAndThread)));
 		allSteps.add(new PanelDetails("Attracting lightning",

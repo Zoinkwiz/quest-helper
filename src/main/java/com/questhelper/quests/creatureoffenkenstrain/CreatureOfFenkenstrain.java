@@ -398,13 +398,15 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			telegrabOrCoins));
 		allSteps.add(new PanelDetails("Graverobbing", Arrays.asList(goUpstairsForStar,
 			getBook1, getBook2, combineAmulet, goDownstairsForStar, talkToGardenerForHead, goToHeadGrave, combinedHead,
-			useStarOnGrave, enterExperimentCave, killExperiment, leaveExperimentCave, getTorso, getArm, getLeg, deliverBodyParts)));
+			useStarOnGrave, enterExperimentCave, killExperiment, leaveExperimentCave, getTorso, getArm, getLeg,
+			deliverBodyParts), ghostSpeakAmulet, spade, armor, needle, thread));
 		allSteps.add(new PanelDetails("Getting tools",
-			Collections.singletonList(gatherNeedleAndThread)));
+			Collections.singletonList(gatherNeedleAndThread), ghostSpeakAmulet, needle, thread));
 		allSteps.add(new PanelDetails("Attracting lightning",
 			Arrays.asList(talkToGardenerForKey, searchForBrush, grabCanes, extendBrush, goUpWestStairs,
 				searchFirePlace, makeLightningRod, goUpWestStairsWithRod, goUpTowerLadder,
-			repairConductor, goBackToFirstFloor, talkToFenkenstrainAfterFixingRod)));
+			repairConductor, goBackToFirstFloor, talkToFenkenstrainAfterFixingRod), ghostSpeakAmulet, bronzeWire,
+			silverBar, hammer));
 		allSteps.add(new PanelDetails("Facing the monster", Arrays.asList(goToMonsterFloor1,
 			openLockedDoor, goToMonsterFloor2, talkToMonster)));
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(pickPocketFenkenstrain)));

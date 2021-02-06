@@ -39,8 +39,9 @@ import java.util.Map;
 public class StandardSpellBuilder
 {
 	private final MagicSpell spell;
-	private final List<Requirement> requirementList = new LinkedList<>();
+	private final List<Requirement> requirements = new LinkedList<>();
 	private final Map<Rune, Integer> runeList = new HashMap<>();
+	private int tabletItemID = -1;
 
 	private StandardSpellBuilder(MagicSpell spell)
 	{
@@ -91,7 +92,7 @@ public class StandardSpellBuilder
 	 */
 	public StandardSpellBuilder item(int quantity, int itemID)
 	{
-		requirementList.add(new ItemRequirement("", itemID, quantity));
+		requirements.add(new ItemRequirement("", itemID, quantity));
 		return this;
 	}
 
@@ -115,7 +116,19 @@ public class StandardSpellBuilder
 	 */
 	public StandardSpellBuilder item(boolean equipped, Integer... itemIDs)
 	{
-		requirementList.add(new ItemRequirement("", Arrays.asList(itemIDs), 1, equipped));
+		requirements.add(new ItemRequirement("", Arrays.asList(itemIDs), 1, equipped));
+		return this;
+	}
+
+	/**
+	 * Set the tablet that can be used to cast this spell.
+	 *
+	 * @param itemID the tablet item id
+	 * @return this
+	 */
+	public StandardSpellBuilder tablet(int itemID)
+	{
+		this.tabletItemID = itemID;
 		return this;
 	}
 
@@ -124,7 +137,12 @@ public class StandardSpellBuilder
 	 */
 	public SpellRequirement build()
 	{
-		return new SpellRequirement(spell, runeList, requirementList);
+		SpellRequirement requirement = new SpellRequirement(spell, runeList, requirements);
+		if (tabletItemID != -1)
+		{
+			requirement.setTablet(tabletItemID);
+		}
+		return requirement;
 	}
 
 }

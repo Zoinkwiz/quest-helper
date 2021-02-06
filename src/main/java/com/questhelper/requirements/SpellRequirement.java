@@ -46,7 +46,9 @@ public class SpellRequirement extends ItemRequirement
 	@Getter
 	private final MagicSpell spell;
 
+	private boolean hasTabletItem = false;
 	private int numberOfCasts = 1;
+	private ItemRequirement tabletRequirement;
 
 	private final List<Requirement> requirements;
 	private final List<Requirement> runeRequirements = new ArrayList<>();
@@ -65,6 +67,11 @@ public class SpellRequirement extends ItemRequirement
 	{
 		this.numberOfCasts = numberOfCasts;
 		setupRuneRequirements(this.numberOfCasts);
+	}
+
+	public void setTablet(int itemID)
+	{
+		this.tabletRequirement = new ItemRequirement("", itemID);
 	}
 
 	@Override
@@ -113,19 +120,19 @@ public class SpellRequirement extends ItemRequirement
 	@Override
 	public String getDisplayText()
 	{
-		return spell.getName();
+		return hasTabletItem ? tabletRequirement.getDisplayText() : spell.getName();
 	}
 
 	@Override
 	public boolean isActualItem()
 	{
-		return false;
+		return hasTabletItem;
 	}
 
 	@Override
 	public boolean showQuantity()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -151,6 +158,28 @@ public class SpellRequirement extends ItemRequirement
 	@Override
 	public boolean check(Client client)
 	{
+		updateInternalRequirements(client);
 		return super.check(client);
+	}
+
+	@Override
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
+	{
+		updateInternalRequirements(client);
+		return super.check(client, checkConsideringSlotRestrictions);
+	}
+
+	/** This is not for deciding if the player meets this SpellRequirement. This is only for the internal state of this requirement. */
+	private void updateInternalRequirements(Client client)
+	{
+		if (this.tabletRequirement.getName() == null || this.tabletRequirement.getName().isEmpty())
+		{
+			int tabletID = tabletRequirement.getId();
+			this.tabletRequirement = new ItemRequirement(client.getItemDefinition(tabletID).getName(), tabletID);
+		}
+		if (tabletRequirement != null)
+		{
+			hasTabletItem = tabletRequirement.check(client);
+		}
 	}
 }

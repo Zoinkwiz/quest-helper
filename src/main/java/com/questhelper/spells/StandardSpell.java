@@ -57,33 +57,33 @@ public enum StandardSpell implements MagicSpell
 	LOW_LVL_ALCHEMY(25, 18, 21, b -> b.rune(NATURE).rune(3, FIRE)),
 	WATER_BOLT(26, 19, 23, b -> b.rune(CHAOS).rune(2, WATER).rune(2, AIR)),
 	ENCHANT_PEARL_BOLT(358, 8, 24, b -> b.rune(COSMIC).rune(2, WATER)),
-	VARROCK_TELEPORT(27, 20, 25, b -> b.rune(LAW).rune(FIRE).rune(3, AIR)),
+	VARROCK_TELEPORT(27, 20, 25, b -> b.rune(LAW).rune(FIRE).rune(3, AIR).tablet(ItemID.VARROCK_TELEPORT)),
 	ENCHANT_LVL_2(28, 21, 27, b -> b.rune(COSMIC).rune(3, AIR)),
 	ENCHANT_EMERALD_BOLT(358, 8, 27, b -> b.rune(NATURE).rune(COSMIC).rune(3, AIR)),
 	EARTH_BOLT(29, 22, 9, b -> b.rune(CHAOS).rune(EARTH).rune(3, AIR)),
 	ENCHANT_RED_TOPAZ_BOLT(358, 8, 29, b -> b.rune(CHAOS).rune(2, FIRE)),
-	LUMBRIDGE_TELEPORT(30, 23, 31, b -> b.rune(LAW).rune(EARTH).rune(3, AIR)),
+	LUMBRIDGE_TELEPORT(30, 23, 31, b -> b.rune(LAW).rune(EARTH).rune(3, AIR).tablet(ItemID.LUMBRIDGE_TELEPORT)),
 	TELEKINETIC_GRAB(31, 24, 33, b -> b.rune(LAW).rune(AIR)),
 	FIRE_BOLT(32, 25, 35, b -> b.rune(CHAOS).rune(3, AIR).rune(4, FIRE)),
-	FALADOR_TELEPORT(33, 26, 37, b -> b.rune(LAW).rune(WATER).rune(3, AIR)),
+	FALADOR_TELEPORT(33, 26, 37, b -> b.rune(LAW).rune(WATER).rune(3, AIR).tablet(ItemID.FALADOR_TELEPORT)),
 	CRUMBLE_UNDEAD(34, 27, 39, b -> b.rune(CHAOS).rune(2, EARTH).rune(2, AIR)),
-	TELEPORT_TO_HOUSE(355, 28, 40, b -> b.rune(LAW).rune(EARTH).rune(AIR)),
+	TELEPORT_TO_HOUSE(355, 28, 40, b -> b.rune(LAW).rune(EARTH).rune(AIR).tablet(ItemID.TELEPORT_TO_HOUSE)),
 	WIND_BLAST(35, 29, 41, b -> b.rune(DEATH).rune(3, AIR)),
 	SUPERHEAT_ITEM(36, 30, 43, b -> b.rune(NATURE).rune(4, FIRE)),
-	CAMELOT_TELEPORT(37, 31, 45, b -> b.rune(LAW).rune(5, AIR)),
+	CAMELOT_TELEPORT(37, 31, 45, b -> b.rune(LAW).rune(5, AIR).tablet(ItemID.CAMELOT_TELEPORT)),
 	WATER_BLAST(38, 32, 47, b -> b.rune(DEATH).rune(3, AIR).rune(3, WATER)),
 	ENCHANT_LVL_3(39, 33, 49, b -> b.rune(COSMIC).rune(5, FIRE)),
 	ENCHANT_RUBY_BOLT(358, 8, 49, b -> b.rune(COSMIC).rune(BLOOD).rune(5, FIRE)),
 	IBAN_BLAST(53, 34, 50, b -> b.rune(DEATH).rune(5, FIRE).item(true, ItemID.IBANS_STAFF, ItemID.IBANS_STAFF_U)),
 	SNARE(320, 35, 50, b -> b.rune(3, NATURE).rune(4, WATER).rune(4, EARTH)),
 	MAGIC_DART(324, 36, 50, b -> b.rune(DEATH).rune(4, MIND)),
-	ARDOUGNE_TELEPORT(54, 37, 51, b -> b.rune(2, LAW).rune(2, WATER)), //TODO: QUEST REQ -> PLAGUE CITY
+	ARDOUGNE_TELEPORT(54, 37, 51, b -> b.rune(2, LAW).rune(2, WATER).tablet(ItemID.ARDOUGNE_TELEPORT)), //TODO: QUEST REQ -> PLAGUE CITY
 	EARTH_BLAST(40, 38, 43, b -> b.rune(DEATH).rune(3, AIR).rune(4, EARTH)),
 	HIGH_LVL_ALCHEMY(41, 39, 55, b -> b.rune(NATURE).rune(5, FIRE)),
 	CHARGE_WATER_ORB(42, 40, 56, b -> b.rune(3, COSMIC).rune(30, WATER).item(ItemID.UNPOWERED_ORB)),
 	ENCHANT_LVL_4(43, 41, 57, b -> b.rune(COSMIC).rune(10, EARTH)),
 	ENCHANT_DIAMOND_BOLT(358, 8, 57, b -> b.rune(COSMIC).rune(2, LAW).rune(10, EARTH)),
-	WATCHTOWER_TELEPORT(55, 42, 58, b -> b.rune(2, LAW).rune(2, EARTH)),
+	WATCHTOWER_TELEPORT(55, 42, 58, b -> b.rune(2, LAW).rune(2, EARTH).tablet(ItemID.WATCHTOWER_TELEPORT)),
 	FIRE_BLAST(44, 43, 59, b -> b.rune(DEATH).rune(4, AIR).rune(5, FIRE)),
 	CHARGE_EARTH_ORB(45, 44, 60, b -> b.rune(3, COSMIC).rune(30, EARTH).item(ItemID.UNPOWERED_ORB)),
 	BONES_TO_PEACHES(354, 45, 60, b -> b.rune(2, NATURE).rune(2, EARTH).rune(4, WATER)), //TODO: MAGE TRAINING ARENA
@@ -143,6 +143,14 @@ public enum StandardSpell implements MagicSpell
 	public SpellRequirement getSpellRequirement()
 	{
 		return operator.apply(StandardSpellBuilder.builder(this)).build();
+	}
+
+	@Override
+	public SpellRequirement getSpellRequirement(int numberOfCasts)
+	{
+		SpellRequirement requirement = getSpellRequirement();
+		requirement.setNumberOfCasts(numberOfCasts);
+		return requirement;
 	}
 
 	@Override

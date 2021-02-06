@@ -120,8 +120,8 @@ public enum StandardSpell implements MagicSpell
 	FIRE_SURGE(365, 74, 95, b -> b.rune(WRATH).rune(7, AIR).rune(10, FIRE)),
 	;
 
+	private final int groupID = 218;
 	private final int spriteID;
-	private final int groupID;
 	private final int widgetID;
 	private final int requiredMagicLevel;
 	private final UnaryOperator<StandardSpellBuilder> operator;
@@ -133,7 +133,6 @@ public enum StandardSpell implements MagicSpell
 	StandardSpell(int spriteID, int widgetID, int requiredMagicLevel, UnaryOperator<StandardSpellBuilder> operator)
 	{
 		this.spriteID = spriteID;
-		this.groupID = 218;
 		this.widgetID = widgetID;
 		this.requiredMagicLevel = requiredMagicLevel;
 		this.operator = operator;

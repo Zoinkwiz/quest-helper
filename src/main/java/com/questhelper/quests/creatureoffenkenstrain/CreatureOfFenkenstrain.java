@@ -28,10 +28,15 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -44,6 +49,8 @@ import com.questhelper.requirements.conditional.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.*;
@@ -142,7 +149,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			"33 Magic and runes to cast telegrab, or 50 coins",
 			coins50, telegrab);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET);
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		bronzeWire = new ItemRequirement("Bronze wires", ItemID.BRONZE_WIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
@@ -155,8 +162,8 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		starAmulet = new ItemRequirement("Star Amulet", ItemID.STAR_AMULET);
 		decapitatedHead = new ItemRequirement("Decapitated Head", ItemID.DECAPITATED_HEAD);
 		decapitatedHeadWithBrain = new ItemRequirement("Decapitated Head (with brain)", ItemID.DECAPITATED_HEAD_4198);
-		// TODO: Specify armour icon upon rebase
-		armor = new ItemRequirement("Armor and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1);
+		armor = new ItemRequirement("Armour and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1);
+		armor.setDisplayItemId(BankSlotIcons.getCombatGear());
 		cavernKey = new ItemRequirement("Tavern Key", ItemID.CAVERN_KEY);
 		torso = new ItemRequirement("Torso", ItemID.TORSO);
 		legs = new ItemRequirement("Legs", ItemID.LEGS);
@@ -175,8 +182,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		teleportToFurnance = new ItemRequirement("Teleport to any furnance such as glory for edgeville teleport, ectophial to Port Phasmatys or a Falador teleport",
 			ItemCollections.getAmuletOfGlories());
 		teleportToFurnance.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
-		// TODO: Specify staminas upon rebase
-		staminaPotion = new ItemRequirement("Stamina potions", -1, -1);
+		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);
 	}
 
 	public void setupZones()
@@ -240,18 +246,20 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 		getBodyParts = new DetailedQuestStep(this, "You will now need to gather the 4 body parts");
 
-		goUpstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3559, 3553, 0),
-			"Go up the staircase and grab the items you will need");
+		goUpstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3560, 3552, 0),
+			"Go up the staircase to grab the items you will need.");
 
 		getBook1 = new ObjectStep(this, ObjectID.BOOKCASE_5166, new WorldPoint(3555, 3558, 1),
-			"Search the bookcase for Handy Maggot Avoidance Techniques");
+			"Search the nearby bookcase for Handy Maggot Avoidance Techniques.");
 		getBook1.addDialogSteps("Handy Maggot Avoidance Techniques");
 
 		getBook2 = new ObjectStep(this, ObjectID.BOOKCASE_5166, new WorldPoint(3542, 3558, 1),
-			"Search the bookcase for The Joy of Grave Digging");
+			"Search the west bookcase for The Joy of Grave Digging.");
 		getBook2.addDialogSteps("The Joy of Gravedigging");
 
-		combineAmulet = new ItemStep(this, "Combine the two amulet by using one on the other", marbleAmulet, obsidianAmulet);
+		combineAmulet = new ItemStep(this, "Combine the two amulet by using one on the other.",
+			marbleAmulet.highlighted(),
+			obsidianAmulet.highlighted());
 
 		goDownstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5207, new WorldPoint(3573, 3553, 1),
 			"Go back to the ground floor");
@@ -349,6 +357,17 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Collections.singletonList("Able to defeat an experiment (level 51)"));
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.CRAFTING, 20, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 25, true));
+		return req;
 	}
 
 	@Override

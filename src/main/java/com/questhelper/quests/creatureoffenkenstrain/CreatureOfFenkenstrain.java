@@ -90,13 +90,14 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		grabTheBrain.addStep(hasPickledBrain, talkToFrenkenstrain);
 		steps.put(0, grabTheBrain);
 
-		ConditionalStep gatherBodyParts = new ConditionalStep(this, getBodyParts, ghostSpeakAmulet, spade);
-		gatherBodyParts.addStep(new Conditions(inCastleFloor1, new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet, hasDecapitatedHeadWithBrain)), goUpstairsForStar);
+		ConditionalStep gatherBodyParts = new ConditionalStep(this, getBodyParts, ghostSpeakAmulet.equipped(), spade);
+		gatherBodyParts.addStep(new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet, hasDecapitatedHeadWithBrain), goUpstairsForStar);
 		gatherBodyParts.addStep(new Conditions(inCastleFloor2, new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet)), getBook1);
 		gatherBodyParts.addStep(new Conditions(inCastleFloor2, hasObsidianAmulet, new Conditions(LogicType.NOR, hasMarbleAmulet)), getBook2);
 		gatherBodyParts.addStep(new Conditions(hasObsidianAmulet, hasMarbleAmulet), combineAmulet);
 		gatherBodyParts.addStep(new Conditions(inCastleFloor2, hasStarAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead, hasDecapitatedHeadWithBrain)), goDownstairsForStar);
-		gatherBodyParts.addStep(new Conditions(hasMarbleAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead, hasDecapitatedHeadWithBrain)), talkToGardenerForHead);
+		gatherBodyParts.addStep(new Conditions(hasStarAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead,
+			hasDecapitatedHeadWithBrain)), talkToGardenerForHead);
 		gatherBodyParts.addStep(followingGardenerForHead, goToHeadGrave);
 		gatherBodyParts.addStep(new Conditions(hasDecapitatedHead, hasPickledBrain), combinedHead);
 		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, hasStarAmulet), useStarOnGrave);
@@ -149,13 +150,13 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			"33 Magic and runes to cast telegrab, or 50 coins",
 			coins50, telegrab);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak());
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		bronzeWire = new ItemRequirement("Bronze wires", ItemID.BRONZE_WIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Threads", ItemID.THREAD, 5);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		coins = new ItemRequirement("Coins at least", ItemID.COINS, 100);
+		coins = new ItemRequirement("Coins at least", ItemID.COINS_995, 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.PICKLED_BRAIN);
 		obsidianAmulet = new ItemRequirement("Obsidian Amulet", ItemID.OBSIDIAN_AMULET);
 		marbleAmulet = new ItemRequirement("Marble Amulet", ItemID.MARBLE_AMULET);
@@ -374,20 +375,20 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Gather the items needed during the quest and start the quest", Arrays.asList(getPickledBrain, talkToFrenkenstrain),
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(getPickledBrain, talkToFrenkenstrain),
 			telegrabOrCoins));
-		allSteps.add(new PanelDetails("Gather the different body parts for Dr.Fenkenstrain", Arrays.asList(goUpstairsForStar,
+		allSteps.add(new PanelDetails("Graverobbing", Arrays.asList(goUpstairsForStar,
 			getBook1, getBook2, combineAmulet, goDownstairsForStar, talkToGardenerForHead, goToHeadGrave, combinedHead,
 			useStarOnGrave, killExperiment, leaveExperimentCave, getTorso, getArm, getLeg, deliverBodyParts)));
-		allSteps.add(new PanelDetails("Give Dr.Fenkenstrain materials",
+		allSteps.add(new PanelDetails("Getting tools",
 			Collections.singletonList(gatherNeedleAndThread)));
-		allSteps.add(new PanelDetails("Make a new lightning rod and fix the broken conductor",
+		allSteps.add(new PanelDetails("Attracting lightning",
 			Arrays.asList(talkToGardenerForKey, searchForBrush, grabCanes, extendBrush, goUpWestStairs,
 				searchFirePlace, makeLightningRod, goUpWestStairsWithRod, goUpTowerLadder,
 			repairConductor, goBackToFirstFloor, talkToFenkenstrainAfterFixingRod)));
-		allSteps.add(new PanelDetails("Talk to Fenkenstrain's monster", Arrays.asList(goToMonsterFloor1,
+		allSteps.add(new PanelDetails("Facing the monster", Arrays.asList(goToMonsterFloor1,
 			openLockedDoor, goToMonsterFloor2, talkToMonster)));
-		allSteps.add(new PanelDetails("Pickpocket Dr.Fenkenstrain to complete the quest", Collections.singletonList(pickPocketFenkenstrain)));
+		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(pickPocketFenkenstrain)));
 		return allSteps;
 	}
 }

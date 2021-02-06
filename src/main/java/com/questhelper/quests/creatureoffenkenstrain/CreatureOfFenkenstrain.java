@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.creatureoffenkenstrain;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -31,6 +32,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -38,12 +40,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.conditional.ConditionForStep;
-import com.questhelper.steps.conditional.Conditions;
-import com.questhelper.steps.conditional.ItemRequirementCondition;
-import com.questhelper.steps.conditional.LogicType;
-import com.questhelper.steps.conditional.VarbitCondition;
-import com.questhelper.steps.conditional.ZoneCondition;
+import com.questhelper.requirements.conditional.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -56,7 +53,7 @@ import java.util.*;
 )
 public class CreatureOfFenkenstrain extends BasicQuestHelper
 {
-	ItemRequirement armor, hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrab, pickledBrain,
+	ItemRequirement armor, hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, pickledBrain,
 		obsidianAmulet, marbleAmulet, starAmulet, decapitatedHead, decapitatedHeadWithBrain, cavernKey, torso, legs, arms,
 		shedKey, brush, canes, extendedBrush1, extendedBrush2, extendedBrush3, conductorMold, lightningRod, towerKey,
 		fenkenstrainTeleports, teleportToFurnance, staminaPotion;
@@ -65,7 +62,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		hasGhostSpeakAmulet, followingGardenerForHead, hasDecapitatedHead, hasDecapitatedHeadWithBrain, putStarOnGrave, inExperiementCave,
 		hasCavernKey, hasTorso, hasLegs, hasArm, inGraveIsland, hasShedKey, usedShedKey, hasBrush, hasBrush1, hasBrush2, hasBrush3,
 		hasCanes, hasLightningRod, hasMould, inCastleTower, usedTowerKey, hasTowerKey, inMonsterTower;
-	QuestStep getPickledBrain, telegrabBrain, talkToFrenkenstrain, getBodyParts, goUpstairsForStar, getBook1, getBook2, combineAmulet,
+	QuestStep getPickledBrain, talkToFrenkenstrain, getBodyParts, goUpstairsForStar, getBook1, getBook2, combineAmulet,
 		goDownstairsForStar, talkToGardenerForHead, goToHeadGrave, combinedHead, useStarOnGrave, killExperiment, leaveExperimentCave,
 		getTorso, getArm, getLeg, deliverBodyParts, gatherNeedleAndThread, fixConductorRod, talkToGardenerForKey, searchForBrush,
 		grabCanes, extendBrush, goUpWestStairs, searchFirePlace, makeLightningRod, goUpWestStairsWithRod, goUpTowerLadder,
@@ -83,7 +80,6 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep grabTheBrain = new ConditionalStep(this, getPickledBrain);
-		grabTheBrain.addStep(new Conditions(LogicType.AND, inCanifisBar, new Conditions(LogicType.NOR, hasPickledBrain)), telegrabBrain);
 		grabTheBrain.addStep(hasPickledBrain, talkToFrenkenstrain);
 		steps.put(0, grabTheBrain);
 
@@ -137,22 +133,29 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
+		ItemRequirement telegrab = new ItemRequirements("Telegrab runes", new ItemRequirement("Law rune",
+			ItemID.LAW_RUNE), new ItemRequirement("Air rune", ItemID.AIR_RUNE));
+		ItemRequirement coins50 = new ItemRequirement("Coins", ItemID.COINS_995, 50);
 
-		telegrab = new ItemRequirement("Either 1. 33 Magic and runes to cast telegrab, or 2. 50 coins", -1, -1);
+		// TODO: Add magic req once rebased
+		telegrabOrCoins = new ItemRequirements(LogicType.OR,
+			"33 Magic and runes to cast telegrab, or 50 coins",
+			coins50, telegrab);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		ghostSpeakAmulet = new ItemRequirement("Ghost speak amulet", ItemID.GHOSTSPEAK_AMULET);
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
-		bronzeWire = new ItemRequirement("3 Bronze wires", ItemID.BRONZE_WIRE, 3);
+		bronzeWire = new ItemRequirement("Bronze wires", ItemID.BRONZE_WIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
-		thread = new ItemRequirement("5 Threads", ItemID.THREAD, 5);
+		thread = new ItemRequirement("Threads", ItemID.THREAD, 5);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		coins = new ItemRequirement("~100 coins", ItemID.COINS, 100);
+		coins = new ItemRequirement("Coins at least", ItemID.COINS, 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.PICKLED_BRAIN);
 		obsidianAmulet = new ItemRequirement("Obsidian Amulet", ItemID.OBSIDIAN_AMULET);
 		marbleAmulet = new ItemRequirement("Marble Amulet", ItemID.MARBLE_AMULET);
 		starAmulet = new ItemRequirement("Star Amulet", ItemID.STAR_AMULET);
 		decapitatedHead = new ItemRequirement("Decapitated Head", ItemID.DECAPITATED_HEAD);
 		decapitatedHeadWithBrain = new ItemRequirement("Decapitated Head (with brain)", ItemID.DECAPITATED_HEAD_4198);
+		// TODO: Specify armour icon upon rebase
 		armor = new ItemRequirement("Armor and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1);
 		cavernKey = new ItemRequirement("Tavern Key", ItemID.CAVERN_KEY);
 		torso = new ItemRequirement("Torso", ItemID.TORSO);
@@ -168,8 +171,11 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		lightningRod = new ItemRequirement("Lightning Rod", ItemID.CONDUCTOR);
 		towerKey = new ItemRequirement("Tower Key", ItemID.TOWER_KEY);
 
-		fenkenstrainTeleports = new ItemRequirement("2 Fenkenstrain's Castle Teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, 2);
-		teleportToFurnance = new ItemRequirement("Teleport to any furnance such as glory for edgeville teleport, ectophial to Port Phasmatys or a Falador teleport", -1, -1);
+		fenkenstrainTeleports = new ItemRequirement("Fenkenstrain's Castle Teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, 2);
+		teleportToFurnance = new ItemRequirement("Teleport to any furnance such as glory for edgeville teleport, ectophial to Port Phasmatys or a Falador teleport",
+			ItemCollections.getAmuletOfGlories());
+		teleportToFurnance.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
+		// TODO: Specify staminas upon rebase
 		staminaPotion = new ItemRequirement("Stamina potions", -1, -1);
 	}
 
@@ -223,40 +229,50 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		getPickledBrain = new DetailedQuestStep(this, "Head to the Canifis bar to pick up the pickled brain", telegrab);
-		telegrabBrain = new ItemStep(this, "Take the brain to pay 50 coins or telegrab it now", telegrab);
-
-		talkToFrenkenstrain = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0), "Talk to Dr.Fenkenstrain to start the quest");
+		getPickledBrain = new DetailedQuestStep(this, new WorldPoint(3492, 3474, 0),
+			"Head to the Canifis bar and either buy the pickled brain for 50 coins, or telegrab it.", telegrabOrCoins);
+		getPickledBrain.addDialogStep("I'll buy one.");
+		talkToFrenkenstrain = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
+			"Talk to Dr.Fenkenstrain to start the quest");
 		talkToFrenkenstrain.addDialogStep("Yes.");
 		talkToFrenkenstrain.addDialogStep("Braindead");
 		talkToFrenkenstrain.addDialogStep("Grave-digging");
 
 		getBodyParts = new DetailedQuestStep(this, "You will now need to gather the 4 body parts");
 
-		goUpstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3559, 3553, 0), "Go up the staircase and grab the items you will need");
+		goUpstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3559, 3553, 0),
+			"Go up the staircase and grab the items you will need");
 
-		getBook1 = new ObjectStep(this, ObjectID.BOOKCASE_5166, new WorldPoint(3555, 3558, 1), "Search the bookcase for Handy Maggot Avoidance Techniques");
+		getBook1 = new ObjectStep(this, ObjectID.BOOKCASE_5166, new WorldPoint(3555, 3558, 1),
+			"Search the bookcase for Handy Maggot Avoidance Techniques");
 		getBook1.addDialogSteps("Handy Maggot Avoidance Techniques");
 
-		getBook2 = new ObjectStep(this, ObjectID.BOOKCASE_5166, new WorldPoint(3542, 3558, 1), "Search the bookcase for The Joy of Grave Digging");
+		getBook2 = new ObjectStep(this, ObjectID.BOOKCASE_5166, new WorldPoint(3542, 3558, 1),
+			"Search the bookcase for The Joy of Grave Digging");
 		getBook2.addDialogSteps("The Joy of Gravedigging");
 
 		combineAmulet = new ItemStep(this, "Combine the two amulet by using one on the other", marbleAmulet, obsidianAmulet);
 
-		goDownstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5207, new WorldPoint(3573, 3553, 1), "Go back to the ground floor");
+		goDownstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5207, new WorldPoint(3573, 3553, 1),
+			"Go back to the ground floor");
 
-		talkToGardenerForHead = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0), "Talk to the Gardener Ghost, have your Ghostspeak amulet equipped", ghostSpeakAmulet);
+		talkToGardenerForHead = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0),
+			"Talk to the Gardener Ghost, have your Ghostspeak amulet equipped", ghostSpeakAmulet);
 		talkToGardenerForHead.addDialogStep("What happened to your head?");
 
 		goToHeadGrave = new DigStep(this, new WorldPoint(3608, 3490, 0), "Go to the grave of the gardener and dig for his head");
 
-		combinedHead = new ItemStep(this, "Use the decapitated head on the pickled brain to create a decapitated head", decapitatedHead, pickledBrain);
+		combinedHead = new ItemStep(this,
+			"Use the decapitated head on the pickled brain to create a decapitated head", decapitatedHead, pickledBrain);
 
-		useStarOnGrave = new ObjectStep(this, ObjectID.MEMORIAL, new WorldPoint(3578, 3527, 0), "Use the Star Amulet on the memorial and push it to go in the caves", starAmulet);
+		useStarOnGrave = new ObjectStep(this, ObjectID.MEMORIAL, new WorldPoint(3578, 3527, 0),
+			"Use the Star Amulet on the memorial and push it to go in the caves", starAmulet);
 
-		killExperiment = new NpcStep(this, NpcID.EXPERIMENT, new WorldPoint(3557, 9946, 0), "Kill the level 51 Experiment north-west of the ladder to get a key");
+		killExperiment = new NpcStep(this, NpcID.EXPERIMENT, new WorldPoint(3557, 9946, 0),
+			"Kill the level 51 Experiment north-west of the ladder to get a key");
 
-		leaveExperimentCave = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3504, 9970, 0), "Leave the caves by going north-west, be sure to pick up the key from the level 51 experiment");
+		leaveExperimentCave = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3504, 9970, 0),
+			"Leave the caves by going north-west, be sure to pick up the key from the level 51 experiment");
 
 		getTorso = new DigStep(this, new WorldPoint(3503, 3576, 0), "Use your spade on this tile to get torsos");
 
@@ -264,41 +280,58 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 		getLeg = new DigStep(this, new WorldPoint(3505, 3576, 0), "Use your spade on this tile to get legs");
 
-		deliverBodyParts = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0), "Deliver the body parts to Dr.Fenkenstrain, use a teleport to Fenkenstrain's castle or run back through the caves");
+		deliverBodyParts = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
+			"Deliver the body parts to Dr.Fenkenstrain, use a teleport to Fenkenstrain's castle or run back through the caves");
 		deliverBodyParts.addDialogStep("I have some body parts for you.");
 
-		gatherNeedleAndThread = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0), "Get a needle and 5 threads and deliver them to Dr.Fenkenstrain", needle, thread);
+		gatherNeedleAndThread = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
+			"Get a needle and 5 threads and deliver them to Dr.Fenkenstrain", needle, thread);
 
 		fixConductorRod = new DetailedQuestStep(this, "You will now need to fix the lightning rod for Dr.Frenkenstrain");
-		talkToGardenerForKey = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0), "Talk to the Gardener Ghost and ask for the shed key", bronzeWire, silverBar);
+		talkToGardenerForKey = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0),
+			"Talk to the Gardener Ghost and ask for the shed key", bronzeWire, silverBar);
 		talkToGardenerForKey.addDialogStep("Do you know where the key to the shed is?");
 
-		searchForBrush = new ObjectStep(this, ObjectID.CUPBOARD_5156, new WorldPoint(3546, 3563, 0), "Open the cupboard and search it for a brush", bronzeWire, silverBar);
-		grabCanes = new ObjectStep(this, ObjectID.PILE_OF_CANES, new WorldPoint(3551, 3564, 0), "Grab 3 canes from the pile", bronzeWire, silverBar);
+		searchForBrush = new ObjectStep(this, ObjectID.CUPBOARD_5156, new WorldPoint(3546, 3563, 0),
+			"Open the cupboard and search it for a brush", bronzeWire, silverBar);
+		grabCanes = new ObjectStep(this, ObjectID.PILE_OF_CANES, new WorldPoint(3551, 3564, 0),
+			"Grab 3 canes from the pile", bronzeWire, silverBar);
 		extendBrush = new DetailedQuestStep(this, "Use all 3 canes on the brush one at a time", canes, brush, bronzeWire, silverBar);
 
-		goUpWestStairs = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0), "Go up to the second floor of the castle");
-		searchFirePlace = new ObjectStep(this, ObjectID.FIREPLACE_5165, new WorldPoint(3544, 3555, 1), "Use the extended brush on the fireplace to get the conductor mould", silverBar);
-		makeLightningRod = new DetailedQuestStep(this, "Go to any furnace and use the silver bar on the furnace with the conductor mould in your inventory", silverBar);
-		goUpWestStairsWithRod = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0), "Return to the castle and go upstairs");
-		goUpTowerLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3539, 1), "Go up to the third floor using the ladder in the middle of the castle");
-		repairConductor = new ObjectStep(this, ObjectID.LIGHTNING_CONDUCTOR, new WorldPoint(3548, 3537, 2), "Repair the lightning Conductor");
+		goUpWestStairs = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0),
+			"Go up to the second floor of the castle");
+		searchFirePlace = new ObjectStep(this, ObjectID.FIREPLACE_5165, new WorldPoint(3544, 3555, 1),
+			"Use the extended brush on the fireplace to get the conductor mould", silverBar);
+		makeLightningRod = new DetailedQuestStep(this,
+			"Go to any furnace and use the silver bar on the furnace with the conductor mould in your inventory", silverBar);
+		goUpWestStairsWithRod = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0),
+			"Return to the castle and go upstairs");
+		goUpTowerLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3539, 1),
+			"Go up to the third floor using the ladder in the middle of the castle");
+		repairConductor = new ObjectStep(this, ObjectID.LIGHTNING_CONDUCTOR, new WorldPoint(3548, 3537, 2),
+			"Repair the lightning Conductor");
 
 		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the the first floor of the castle and talk to Dr.Fenkenstrain");
-		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0), "Go back to the the first floor of the castle and talk to Dr.Fenkenstrain");
+		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
+			"Go back to the the first floor of the castle and talk to Dr.Fenkenstrain");
 
-		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0), "You will now confront Fenkenstrain's monster, go up to the second floor");
-		openLockedDoor = new ObjectStep(this, ObjectID.DOOR_5172, new WorldPoint(3548, 3552, 1), "Use the Tower Key on the door");
-		goToMonsterFloor2 = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1), "Go up the ladder");
-		talkToMonster = new NpcStep(this, NpcID.FENKENSTRAINS_MONSTER, new WorldPoint(3548, 3555, 2), "Talk to Fenkenstrain's monster");
+		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3537, 3553, 0),
+			"You will now confront Fenkenstrain's monster, go up to the second floor");
+		openLockedDoor = new ObjectStep(this, ObjectID.DOOR_5172, new WorldPoint(3548, 3552, 1),
+			"Use the Tower Key on the door");
+		goToMonsterFloor2 = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
+			"Go up the ladder");
+		talkToMonster = new NpcStep(this, NpcID.FENKENSTRAINS_MONSTER, new WorldPoint(3548, 3555, 2),
+			"Talk to Fenkenstrain's monster");
 
-		pickPocketFenkenstrain = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0), "Go back to Dr.Fenkenstrain, instead of talking to him right click and pickpocket him");
+		pickPocketFenkenstrain = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
+			"Go back to Dr.Fenkenstrain, instead of talking to him right click and pickpocket him");
 	}
 
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrab, armor));
+		return new ArrayList<>(Arrays.asList(hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, armor));
 	}
 
 	@Override
@@ -322,17 +355,20 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Gather the items needed during the quest and start the quest", new ArrayList<>(Arrays.asList(getPickledBrain, telegrabBrain, talkToFrenkenstrain)), telegrab));
-		allSteps.add(new PanelDetails("Gather the different body parts for Dr.Fenkenstrain", new ArrayList<>(Arrays.asList(goUpstairsForStar,
+		allSteps.add(new PanelDetails("Gather the items needed during the quest and start the quest", Arrays.asList(getPickledBrain, talkToFrenkenstrain),
+			telegrabOrCoins));
+		allSteps.add(new PanelDetails("Gather the different body parts for Dr.Fenkenstrain", Arrays.asList(goUpstairsForStar,
 			getBook1, getBook2, combineAmulet, goDownstairsForStar, talkToGardenerForHead, goToHeadGrave, combinedHead,
-			useStarOnGrave, killExperiment, leaveExperimentCave, getTorso, getArm, getLeg, deliverBodyParts))));
-		allSteps.add(new PanelDetails("Give Dr.Fenkenstrain the needles and threads", new ArrayList<>(Arrays.asList(gatherNeedleAndThread))));
-		allSteps.add(new PanelDetails("Make a new lightning rod and fix the broken conductor", new ArrayList<>(Arrays.asList(talkToGardenerForKey, searchForBrush,
-			grabCanes, extendBrush, goUpWestStairs, searchFirePlace, makeLightningRod, goUpWestStairsWithRod, goUpTowerLadder,
-			repairConductor, goBackToFirstFloor, talkToFenkenstrainAfterFixingRod))));
-		allSteps.add(new PanelDetails("Talk to Fenkenstrain's monster", new ArrayList<>(Arrays.asList(goToMonsterFloor1,
-			openLockedDoor, goToMonsterFloor2, talkToMonster))));
-		allSteps.add(new PanelDetails("Pickpocket Dr.Fenkenstrain to complete the quest", new ArrayList<>(Arrays.asList(pickPocketFenkenstrain))));
+			useStarOnGrave, killExperiment, leaveExperimentCave, getTorso, getArm, getLeg, deliverBodyParts)));
+		allSteps.add(new PanelDetails("Give Dr.Fenkenstrain materials",
+			Collections.singletonList(gatherNeedleAndThread)));
+		allSteps.add(new PanelDetails("Make a new lightning rod and fix the broken conductor",
+			Arrays.asList(talkToGardenerForKey, searchForBrush, grabCanes, extendBrush, goUpWestStairs,
+				searchFirePlace, makeLightningRod, goUpWestStairsWithRod, goUpTowerLadder,
+			repairConductor, goBackToFirstFloor, talkToFenkenstrainAfterFixingRod)));
+		allSteps.add(new PanelDetails("Talk to Fenkenstrain's monster", Arrays.asList(goToMonsterFloor1,
+			openLockedDoor, goToMonsterFloor2, talkToMonster)));
+		allSteps.add(new PanelDetails("Pickpocket Dr.Fenkenstrain to complete the quest", Collections.singletonList(pickPocketFenkenstrain)));
 		return allSteps;
 	}
 }

@@ -131,6 +131,25 @@ public class ItemRequirement extends AbstractRequirement
 		return quantity != -1;
 	}
 
+	public ItemRequirement highlighted()
+	{
+		ItemRequirement newItem = copy();
+		newItem.setHighlightInInventory(true);
+		return newItem;
+	}
+
+	public ItemRequirement copy()
+	{
+		ItemRequirement newItem = new ItemRequirement(name, id, quantity, equip);
+		newItem.addAlternates(alternateItems);
+		newItem.setDisplayItemId(displayItemId);
+		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
+		newItem.setHighlightInInventory(highlightInInventory);
+		newItem.setDisplayMatchedItemName(displayMatchedItemName);
+
+		return newItem;
+	}
+
 	public boolean isActualItem()
 	{
 		return id != -1 && quantity != -1;

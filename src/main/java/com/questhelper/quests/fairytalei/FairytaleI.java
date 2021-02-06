@@ -145,7 +145,7 @@ public class FairytaleI extends BasicQuestHelper
 		draynorSkull.canBeObtainedDuringQuest();
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
-		ghostspeak.setTooltip("You can get another from Further Urhney in the Lumbridge Swamp");
+		ghostspeak.setTooltip("You can get another from Father Urhney in the Lumbridge Swamp");
 		dramenOrLunarStaff = new ItemRequirement("Dramen or lunar staff", ItemID.DRAMEN_STAFF, 1, true);
 		dramenOrLunarStaff.addAlternates(ItemID.LUNAR_STAFF);
 		dramenOrLunarStaff.setDisplayMatchedItemName(true);

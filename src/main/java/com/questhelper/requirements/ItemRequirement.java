@@ -166,7 +166,7 @@ public class ItemRequirement extends AbstractRequirement
 		}
 
 		int itemID = findItemID(client, false);
-		if (displayMatchedItemName && (alternateItems.contains(itemID)) || id == itemID)
+		if (displayMatchedItemName && ((alternateItems.contains(itemID)) || id == itemID))
 		{
 			text.append(client.getItemDefinition(itemID).getName());
 		}

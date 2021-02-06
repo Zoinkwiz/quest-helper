@@ -44,7 +44,7 @@ public enum StandardSpell implements MagicSpell
 	CONFUSE(16, 7, 3, b -> b.rune(BODY).rune(2, EARTH).rune(3, WATER)),
 	ENCHANT_OPAL_BOLT(358, 8, 4, b -> b.rune(COSMIC).rune(2, AIR)),
 	WATER_STRIKE(17, 9, 5, b -> b.rune(AIR).rune(WATER).rune(MIND)),
-	ENCHANT_LVL_1(18, 10, 7, b -> b.rune(WATER).rune(COSMIC)),
+	LVL_1_ENCHANT(18, 10, 7, b -> b.rune(WATER).rune(COSMIC)),
 	ENCHANT_SAPPHIRE_BOLT(358, 8, 9, b -> b.rune(WATER).rune(COSMIC)),
 	EARTH_STRIKE(19, 11, 9, b -> b.rune(AIR).rune(MIND).rune(2, EARTH)),
 	WEAKEN(20, 12, 11, b -> b.rune(BODY).rune(2, EARTH).rune(3, WATER)),
@@ -58,7 +58,7 @@ public enum StandardSpell implements MagicSpell
 	WATER_BOLT(26, 19, 23, b -> b.rune(CHAOS).rune(2, WATER).rune(2, AIR)),
 	ENCHANT_PEARL_BOLT(358, 8, 24, b -> b.rune(COSMIC).rune(2, WATER)),
 	VARROCK_TELEPORT(27, 20, 25, b -> b.rune(LAW).rune(FIRE).rune(3, AIR).tablet(ItemID.VARROCK_TELEPORT)),
-	ENCHANT_LVL_2(28, 21, 27, b -> b.rune(COSMIC).rune(3, AIR)),
+	LVL_2_ENCHANT(28, 21, 27, b -> b.rune(COSMIC).rune(3, AIR)),
 	ENCHANT_EMERALD_BOLT(358, 8, 27, b -> b.rune(NATURE).rune(COSMIC).rune(3, AIR)),
 	EARTH_BOLT(29, 22, 9, b -> b.rune(CHAOS).rune(EARTH).rune(3, AIR)),
 	ENCHANT_RED_TOPAZ_BOLT(358, 8, 29, b -> b.rune(CHAOS).rune(2, FIRE)),
@@ -72,7 +72,7 @@ public enum StandardSpell implements MagicSpell
 	SUPERHEAT_ITEM(36, 30, 43, b -> b.rune(NATURE).rune(4, FIRE)),
 	CAMELOT_TELEPORT(37, 31, 45, b -> b.rune(LAW).rune(5, AIR).tablet(ItemID.CAMELOT_TELEPORT)),
 	WATER_BLAST(38, 32, 47, b -> b.rune(DEATH).rune(3, AIR).rune(3, WATER)),
-	ENCHANT_LVL_3(39, 33, 49, b -> b.rune(COSMIC).rune(5, FIRE)),
+	LVL_3_ENCHANT(39, 33, 49, b -> b.rune(COSMIC).rune(5, FIRE)),
 	ENCHANT_RUBY_BOLT(358, 8, 49, b -> b.rune(COSMIC).rune(BLOOD).rune(5, FIRE)),
 	IBAN_BLAST(53, 34, 50, b -> b.rune(DEATH).rune(5, FIRE).item(true, ItemID.IBANS_STAFF, ItemID.IBANS_STAFF_U)),
 	SNARE(320, 35, 50, b -> b.rune(3, NATURE).rune(4, WATER).rune(4, EARTH)),
@@ -81,7 +81,7 @@ public enum StandardSpell implements MagicSpell
 	EARTH_BLAST(40, 38, 43, b -> b.rune(DEATH).rune(3, AIR).rune(4, EARTH)),
 	HIGH_LVL_ALCHEMY(41, 39, 55, b -> b.rune(NATURE).rune(5, FIRE)),
 	CHARGE_WATER_ORB(42, 40, 56, b -> b.rune(3, COSMIC).rune(30, WATER).item(ItemID.UNPOWERED_ORB)),
-	ENCHANT_LVL_4(43, 41, 57, b -> b.rune(COSMIC).rune(10, EARTH)),
+	LVL_4_ENCHANT(43, 41, 57, b -> b.rune(COSMIC).rune(10, EARTH)),
 	ENCHANT_DIAMOND_BOLT(358, 8, 57, b -> b.rune(COSMIC).rune(2, LAW).rune(10, EARTH)),
 	WATCHTOWER_TELEPORT(55, 42, 58, b -> b.rune(2, LAW).rune(2, EARTH).tablet(ItemID.WATCHTOWER_TELEPORT)),
 	FIRE_BLAST(44, 43, 59, b -> b.rune(DEATH).rune(4, AIR).rune(5, FIRE)),
@@ -97,7 +97,7 @@ public enum StandardSpell implements MagicSpell
 	WATER_WAVE(48, 53, 54, b -> b.rune(BLOOD).rune(5, AIR).rune(7, WATER)),
 	CHARGE_AIR_ORB(49, 54, 66, b -> b.rune(3, COSMIC).rune(30, AIR).item(ItemID.UNPOWERED_ORB)),
 	VULNERABILITY(56, 55, 66, b -> b.rune(SOUL).rune(5, WATER).rune(5, EARTH)),
-	ENCHANT_LVL_5(50, 56, 68, b -> b.rune(COSMIC).rune(15, WATER).rune(15, EARTH)),
+	LVL_5_ENCHANT(50, 56, 68, b -> b.rune(COSMIC).rune(15, WATER).rune(15, EARTH)),
 	ENCHANT_DRAGONSTONE_BOLT(358, 8, 68, b -> b.rune(SOUL).rune(COSMIC).rune(12, EARTH)),
 	KOUREND_CASTLE_TELEPORT(360, 57, 69, b -> b.rune(2, SOUL).rune(2, LAW).rune(4,WATER).rune(5, FIRE)), //TODO: UNLOCKED VIA BOOK
 	EARTH_WAVE(51, 58, 70, b -> b.rune(BLOOD).rune(5, AIR).rune(7, EARTH)),
@@ -112,11 +112,11 @@ public enum StandardSpell implements MagicSpell
 	WATER_SURGE(363, 67, 85, b -> b.rune(WRATH).rune(7, AIR).rune(10, WATER)),
 	TELE_BLOCK(352, 68, 85, b -> b.rune(LAW).rune(DEATH).rune(CHAOS)), //TODO: IN WILDERNESS
 	TELEPORT_TO_TARGET(359, 69, 85, b -> b.rune(LAW).rune(DEATH).rune(CHAOS)), //TODO: HAVE READ TARGET TELEPORT SCROLL
-	ENCHANT_LVL_6(353, 70, 87, b -> b.rune(COSMIC).rune(20, FIRE).rune(20, EARTH)),
+	LVL_6_ENCHANT(353, 70, 87, b -> b.rune(COSMIC).rune(20, FIRE).rune(20, EARTH)),
 	ENCHANT_ONYX_BOLT(358, 8, 87, b -> b.rune(DEATH).rune(COSMIC).rune(20, FIRE)),
 	TELEOTHER_CAMELOT(351, 71, 90, b -> b.rune(LAW).rune(2, SOUL)),
 	EARTH_SURGE(364, 72, 90, b -> b.rune(WRATH).rune(7, AIR).rune(10, EARTH)),
-	ENCHANT_LVL_7(361, 73, 93, b -> b.rune(COSMIC).rune(20, SOUL).rune(20, BLOOD)),
+	LVL_7_ENCHANT(361, 73, 93, b -> b.rune(COSMIC).rune(20, SOUL).rune(20, BLOOD)),
 	FIRE_SURGE(365, 74, 95, b -> b.rune(WRATH).rune(7, AIR).rune(10, FIRE)),
 	;
 

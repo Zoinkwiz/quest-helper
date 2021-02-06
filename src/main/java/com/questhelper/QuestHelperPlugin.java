@@ -347,12 +347,18 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		if (selectedQuest != null
-			&& selectedQuest.updateQuest()
-			&& selectedQuest.getCurrentStep() == null)
+		if (selectedQuest == null)
 		{
-			shutDownQuest(true);
+			return;
 		}
+
+		boolean newStepIsNull = selectedQuest.updateQuest() && selectedQuest.getCurrentStep() == null;
+		clientThread.invokeLater(() -> {
+			if (newStepIsNull || selectedQuest.isCompleted())
+			{
+				shutDownQuest(true);
+			}
+		});
 	}
 
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");

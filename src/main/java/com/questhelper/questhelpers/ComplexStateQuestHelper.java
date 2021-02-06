@@ -59,10 +59,6 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 	@Override
 	public boolean updateQuest()
 	{
-		if (isCompleted())
-		{
-			startUpStep(null);
-		}
 		return true;
 	}
 

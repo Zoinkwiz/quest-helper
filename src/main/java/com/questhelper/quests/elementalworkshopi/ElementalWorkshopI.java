@@ -91,7 +91,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		goSolveWater.addStep(inStairwell, goDownStairs);
 
 		ConditionalStep goSolveAir = new ConditionalStep(this, openOddWall);
-		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, fixedBellow, inWorkshop), fixBellows);
+		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, fixedBellow, inWorkshop), pullBellowsLever);
 		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, inWorkshop), fixBellows);
 		goSolveAir.addStep(new Conditions(hasNeedle, inWorkshop), searchLeatherCrate);
 		goSolveAir.addStep(inWorkshop, searchNeedleCrate);
@@ -304,7 +304,8 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Forging a Shield",
 			Arrays.asList(searchBookcase, readBook, useKnifeOnBook, openOddWall, goDownStairs,
 				turnEastControl, turnWestControl, pullLever, fixBellows, pullBellowsLever, getStoneBowl,
-				useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre, forgeBar, smithShield)));
+				useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre, forgeBar, smithShield),
+			knife, pickaxe, needle, thread, leather, hammer, coal4));
 		return allSteps;
 	}
 

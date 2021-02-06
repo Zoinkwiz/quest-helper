@@ -30,7 +30,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 
 /**
- * Requirement that combines multiple other {@link AbstractRequirement}s using
+ * Requirement that combines multiple other {@link Requirement}s using
  * {@link LogicType} to determine if the requirement(s) is/are met.
  */
 @Getter
@@ -41,7 +41,7 @@ public class ComplexRequirement extends AbstractRequirement
 	private final String name;
 
 	/**
-	 * Requirement that combines multiple other {@link AbstractRequirement}s using
+	 * Requirement that combines multiple other {@link Requirement}s using
 	 * {@link LogicType} to determine if the requirement(s) is/are met.
 	 * <br>
 	 * The default {@link LogicType} is {@link LogicType#AND}.
@@ -54,7 +54,7 @@ public class ComplexRequirement extends AbstractRequirement
 	}
 
 	/**
-	 * Requirement that combines multiple other {@link AbstractRequirement}s using
+	 * Requirement that combines multiple other {@link Requirement}s using
 	 * {@link LogicType} to determine if the requirement(s) is/are met.
 	 */
 	public ComplexRequirement(LogicType logicType, String name, Requirement... requirements)

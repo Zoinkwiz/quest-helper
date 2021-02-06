@@ -26,11 +26,11 @@ package com.questhelper.panel;
 
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
-import com.questhelper.steps.QuestStep;
 
 public class PanelDetails
 {
@@ -67,6 +67,13 @@ public class PanelDetails
 		this.header = header;
 		this.steps = steps;
 		this.requirements = Arrays.asList(requirements);
+	}
+
+	public PanelDetails(String header, List<QuestStep> steps, List<Requirement> requirements)
+	{
+		this.header = header;
+		this.steps = steps;
+		this.requirements = requirements;
 	}
 
 	public void setVars(Integer... vars)

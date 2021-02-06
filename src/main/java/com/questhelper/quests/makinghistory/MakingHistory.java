@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.makinghistory;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -145,8 +146,7 @@ public class MakingHistory extends BasicQuestHelper
 		scroll.setTooltip("You can get another from Droalak in Port Phasmatys");
 		letter = new ItemRequirement("Letter", ItemID.LETTER_6757);
 		letter.setTooltip("You can get another from King Lathas in East Ardougne castle");
-		passage = new ItemRequirement("Necklace of passage", ItemID.NECKLACE_OF_PASSAGE1);
-		passage.addAlternates(ItemID.NECKLACE_OF_PASSAGE2, ItemID.NECKLACE_OF_PASSAGE3, ItemID.NECKLACE_OF_PASSAGE5, ItemID.NECKLACE_OF_PASSAGE5);
+		passage = new ItemRequirement("Necklace of passage", ItemCollections.getNecklaceOfPassages());
 	}
 
 	public void loadZones()

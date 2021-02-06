@@ -25,7 +25,9 @@
 package com.questhelper.steps.choice;
 
 import com.questhelper.QuestHelperConfig;
-import java.awt.Color;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -39,7 +41,7 @@ public class WidgetChoiceStep
 	@Getter
 	private final String choice;
 
-	private String excludedString;
+	private List<String> excludedStrings;
 	private int excludedGroupId;
 	private int excludedChildId;
 
@@ -76,9 +78,16 @@ public class WidgetChoiceStep
 		this.childId = childId;
 	}
 
-	public void addExclusion(String excludedString, int excludedGroupId, int excludedChildId)
+	public void addExclusion(int excludedGroupId, int excludedChildId, String excludedString)
 	{
-		this.excludedString = excludedString;
+		this.excludedStrings = Collections.singletonList(excludedString);
+		this.excludedGroupId = excludedGroupId;
+		this.excludedChildId = excludedChildId;
+	}
+
+	public void addExclusions(int excludedGroupId, int excludedChildId, String... excludedStrings)
+	{
+		this.excludedStrings = Arrays.asList(excludedStrings);
 		this.excludedGroupId = excludedGroupId;
 		this.excludedChildId = excludedChildId;
 	}
@@ -93,7 +102,7 @@ public class WidgetChoiceStep
 			{
 				for (Widget currentExclusionChoice : exclusionChoices)
 				{
-					if (currentExclusionChoice.getText().equals(excludedString))
+					if (excludedStrings.contains(currentExclusionChoice.getText()))
 					{
 						return;
 					}

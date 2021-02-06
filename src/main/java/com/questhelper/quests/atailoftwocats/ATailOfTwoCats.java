@@ -160,6 +160,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT, 1, true);
 		hat = new ItemRequirement("Doctor's or Nurse hat", ItemID.DOCTORS_HAT, 1, true);
 		hat.addAlternates(ItemID.NURSE_HAT);
+		hat.setDisplayMatchedItemName(true);
 	}
 
 	public void setupConditions()

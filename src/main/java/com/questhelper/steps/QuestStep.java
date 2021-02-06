@@ -28,11 +28,15 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestVarbits;
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.steps.choice.DialogChoiceStep;
+import com.questhelper.steps.choice.DialogChoiceSteps;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -52,10 +56,6 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.steps.choice.DialogChoiceStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -75,6 +75,9 @@ public abstract class QuestStep implements Module
 
 	@Getter
 	protected List<String> text;
+
+	@Getter
+	protected List<String> overlayText = new ArrayList<>();
 
 	protected int ARROW_SHIFT_Y = 15;
 
@@ -137,6 +140,16 @@ public abstract class QuestStep implements Module
 	{
 		this.text = text;
 		this.questHelper = questHelper;
+	}
+
+	public void setOverlayText(String text)
+	{
+		this.overlayText.add(text);
+	}
+
+	public void setOverlayText(String... text)
+	{
+		this.overlayText.addAll(Arrays.asList(text));
 	}
 
 	@Override
@@ -251,6 +264,11 @@ public abstract class QuestStep implements Module
 		choices.addDialogChoiceWithExclusion(new DialogChoiceStep(questHelper.getConfig(), choice), exclusionString);
 	}
 
+	public void addDialogStepWithExclusions(String choice, String... exclusionString)
+	{
+		choices.addDialogChoiceWithExclusions(new DialogChoiceStep(questHelper.getConfig(), choice), exclusionString);
+	}
+
 	public void addDialogStep(int id, String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, choice));
@@ -295,7 +313,13 @@ public abstract class QuestStep implements Module
 			}
 		}
 
-		if (text != null)
+		if (!overlayText.isEmpty())
+		{
+			overlayText.stream()
+				.filter(s -> !s.isEmpty())
+				.forEach(line -> addTextToPanel(panelComponent, line));
+		}
+		else if (text != null)
 		{
 			text.stream()
 				.filter(s -> !s.isEmpty())

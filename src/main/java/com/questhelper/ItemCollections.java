@@ -123,6 +123,28 @@ public class ItemCollections
 		ItemID.YEW_LONGBOW
 	);
 
+	@Getter
+	private static final List<Integer> swords = QuestUtil.toLinkedList(
+		ItemID.BRONZE_SWORD,
+		ItemID.BRONZE_LONGSWORD,
+		ItemID.IRON_SWORD,
+		ItemID.IRON_LONGSWORD,
+		ItemID.STEEL_SWORD,
+		ItemID.STEEL_LONGSWORD,
+		ItemID.BLACK_SWORD,
+		ItemID.BLACK_LONGSWORD,
+		ItemID.WHITE_SWORD,
+		ItemID.WHITE_LONGSWORD,
+		ItemID.MITHRIL_SWORD,
+		ItemID.MITHRIL_LONGSWORD,
+		ItemID.ADAMANT_SWORD,
+		ItemID.ADAMANT_LONGSWORD,
+		ItemID.WILDERNESS_SWORD_1,
+		ItemID.WILDERNESS_SWORD_2,
+		ItemID.WILDERNESS_SWORD_3,
+		ItemID.WILDERNESS_SWORD_4
+	);
+
 	// Teleports
 
 	@Getter

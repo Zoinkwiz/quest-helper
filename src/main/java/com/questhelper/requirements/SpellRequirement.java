@@ -58,6 +58,7 @@ public class SpellRequirement extends ItemRequirement
 		super(spell.getName(), -1);
 		this.spell = spell;
 		this.requirements = new LinkedList<>(requirements); // make it mutable for now
+		this.requirements.add(new SpellbookRequirement(spell.getSpellbook()));
 		this.runesPerCastMap = runesPerCastMap;
 		registerItemRequirements(this.requirements);
 		setupRuneRequirements(1);

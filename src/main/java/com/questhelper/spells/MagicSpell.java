@@ -28,17 +28,40 @@ package com.questhelper.spells;
 
 import com.questhelper.requirements.util.Spellbook;
 
+/**
+ * Represents a magic spell that can be cast by a player.
+ */
 public interface MagicSpell
 {
+	/**
+	 * @return the formatted display name
+	 */
 	String getName();
 
+	/**
+	 * @return the widget ID
+	 */
 	int getWidgetID();
 
+	/**
+	 * @return the group ID
+	 */
 	int getGroupID();
 
+	/**
+	 * @return the sprite ID
+	 *
+	 * @see net.runelite.api.SpriteID
+	 */
 	int getSpriteID();
 
+	/**
+	 * @return the required {@link net.runelite.api.Skill#MAGIC)} level to cast this spell.
+	 */
 	int getRequiredMagicLevel();
 
+	/**
+	 * @return the {@link Spellbook} this spell is contained within.
+	 */
 	Spellbook getSpellbook();
 }

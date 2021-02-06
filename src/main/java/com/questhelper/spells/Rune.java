@@ -36,6 +36,9 @@ import java.util.List;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
+/**
+ * Represents a rune that can be used to cast spells.
+ */
 public enum Rune
 {
 	AIR("Air Rune", ItemCollections.getAirRune(), ItemCollections.getAirStaff()),
@@ -54,7 +57,7 @@ public enum Rune
 	SOUL("Soul Rune", ItemID.SOUL_RUNE),
 	WRATH("Wrath Rune", ItemID.WRATH_RUNE),
 	LAVA("Lava Rune", ItemID.LAVA_RUNE, ItemCollections.getLavaStaff()),
-	MUD("Mud Rune", ItemID.DUST_RUNE, ItemCollections.getMudStaff()),
+	MUD("Mud Rune", ItemID.MUD_RUNE, ItemCollections.getMudStaff()),
 	STEAM("Steam Rune", ItemID.STEAM_RUNE, ItemCollections.getSteamStaff()),
 	SMOKE("Smoke Rune", ItemID.SMOKE_RUNE, ItemCollections.getSmokeStaff()),
 	MIST("Mist Rune", ItemID.MIST_RUNE, ItemCollections.getMistStaff()),
@@ -86,6 +89,13 @@ public enum Rune
 		this.staves = staves;
 	}
 
+	/**
+	 * Get a new {@link ItemRequirements} containing the specified number of rune(s)
+	 * as well as their equivalent items (combination runes, staves, etc).
+	 *
+	 * @param quantity the number of runes required
+	 * @return a new instance of {@link ItemRequirements}
+	 */
 	public ItemRequirements getRunes(int quantity)
 	{
 		if (runes != null && staves != null)

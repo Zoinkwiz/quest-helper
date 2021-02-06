@@ -43,39 +43,81 @@ public class StandardSpellBuilder
 		this.spell = spell;
 	}
 
+	/**
+	 * Get a new instance of this StandardSpellBuilder
+	 *
+	 * @param spell the spell to build
+	 * @return this
+	 */
 	public static StandardSpellBuilder builder(MagicSpell spell)
 	{
 		return new StandardSpellBuilder(spell);
 	}
 
+	/**
+	 * Add a specified quantity of a given {@link Rune}
+	 *
+	 * @param quantity the number of Rune(s) required
+	 * @param rune the Rune
+	 * @return this
+	 */
 	public StandardSpellBuilder rune(int quantity, Rune rune)
 	{
 		requirementList.add(rune.getRunes(quantity));
 		return this;
 	}
 
+	/**
+	 * Add a single Rune to this spell
+	 *
+	 * @param rune the Rune
+	 * @return this
+	 */
 	public StandardSpellBuilder rune(Rune rune)
 	{
 		return rune(1, rune);
 	}
 
+	/**
+	 * Add an item this spell needs in order to be cast.
+	 *
+	 * @param quantity the number of items required
+	 * @param itemID the item required
+	 * @return this
+	 */
 	public StandardSpellBuilder item(int quantity, int itemID)
 	{
 		requirementList.add(new ItemRequirement("", itemID, quantity));
 		return this;
 	}
 
+	/**
+	 * Add a single item required for this spell to be cast
+	 *
+	 * @param itemID the item required
+	 * @return this
+	 */
 	public StandardSpellBuilder item(int itemID)
 	{
 		return item(1, itemID);
 	}
 
+	/**
+	 * Add an item (and it's suitable equivalents) that should be equipped in order to cast this spell
+	 *
+	 * @param equipped if this item should be equipped
+	 * @param itemIDs the items that should be equipped (only one is required to be equipped)
+	 * @return this
+	 */
 	public StandardSpellBuilder item(boolean equipped, Integer... itemIDs)
 	{
 		requirementList.add(new ItemRequirement("", Arrays.asList(itemIDs), 1, equipped));
 		return this;
 	}
 
+	/**
+	 * @return a new {@link ItemRequirements} containing all this spell information
+	 */
 	public ItemRequirements build()
 	{
 		return new ItemRequirements(LogicType.AND, spell.getName(), requirementList);

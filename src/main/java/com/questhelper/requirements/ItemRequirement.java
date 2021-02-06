@@ -58,6 +58,7 @@ public class ItemRequirement extends AbstractRequirement
 	protected int quantity;
 
 	@Getter
+	@Setter
 	private boolean equip;
 
 	@Getter
@@ -135,6 +136,13 @@ public class ItemRequirement extends AbstractRequirement
 	{
 		ItemRequirement newItem = copy();
 		newItem.setHighlightInInventory(true);
+		return newItem;
+	}
+
+	public ItemRequirement equipped()
+	{
+		ItemRequirement newItem = copy();
+		newItem.setEquip(true);
 		return newItem;
 	}
 

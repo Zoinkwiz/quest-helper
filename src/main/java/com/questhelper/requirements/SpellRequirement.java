@@ -181,5 +181,13 @@ public class SpellRequirement extends ItemRequirement
 		{
 			hasTabletItem = tabletRequirement.check(client);
 		}
+		List<ItemRequirement> itemRequirements = getItemRequirements(requirements);
+		for (ItemRequirement item : itemRequirements)
+		{
+			if (item.getName() == null || item.getName().isEmpty())
+			{
+				item.name = client.getItemDefinition(item.getId()).getName();
+			}
+		}
 	}
 }

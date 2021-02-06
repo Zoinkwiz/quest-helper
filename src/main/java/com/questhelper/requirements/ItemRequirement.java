@@ -42,7 +42,7 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	private final int id;
 
-	private final String name;
+	protected String name;
 
 	@Setter
 	@Getter

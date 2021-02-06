@@ -36,6 +36,8 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -117,6 +119,14 @@ public class NpcStep extends DetailedQuestStep
 		this.alternateNpcIDs.addAll(Arrays.asList(alternateNpcIDs));
 	}
 
+	public List<Integer> allIds()
+	{
+		List<Integer> ids = new ArrayList<>();
+		ids.add(npcID);
+		ids.addAll(alternateNpcIDs);
+		return ids;
+	}
+
 	@Override
 	public void shutDown()
 	{
@@ -171,12 +181,10 @@ public class NpcStep extends DetailedQuestStep
 	@Subscribe
 	public void onNpcChanged(NpcChanged npcChanged)
 	{
-		if (npcs.contains(npcChanged.getNpc()) && npcChanged.getNpc().getId() != this.npcID)
-		{
-			npcs.remove(npcChanged.getNpc());
-		}
+		int newNpcId = npcChanged.getNpc().getId();
+		npcs.remove(npcChanged.getNpc());
 
-		if (npcChanged.getNpc().getId() == this.npcID)
+		if (allIds().contains(newNpcId))
 		{
 			if (npcs.size() == 0 || allowMultipleHighlights)
 			{
@@ -248,6 +256,11 @@ public class NpcStep extends DetailedQuestStep
 	@Override
 	public void renderMinimapArrow(Graphics2D graphics)
 	{
+		if (npcs.contains(client.getHintArrowNpc()))
+		{
+			return;
+		}
+
 		if (!npcs.isEmpty() && npcs.get(0).getMinimapLocation() != null)
 		{
 			int x = npcs.get(0).getMinimapLocation().getX();

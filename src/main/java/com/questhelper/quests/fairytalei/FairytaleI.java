@@ -85,7 +85,7 @@ public class FairytaleI extends BasicQuestHelper
 
 	QuestStep talkToMortifer, getSkull, giveMortiferItems, enterGrotto, talkToSpirit;
 
-	QuestStep enterZanarisForFight, enterTanglerootRoom, killTangleroot, pickUpSecateurs, enterZanarisForEnd,
+	QuestStep enterZanarisForFight, enterTanglerootRoom, killTanglefoot, pickUpSecateurs, enterZanarisForEnd,
 		talkToGodfatherToFinish;
 
 	@Override
@@ -125,11 +125,11 @@ public class FairytaleI extends BasicQuestHelper
 		goEnchantSecateurs.addStep(inGrotto, talkToSpirit);
 		steps.put(60, goEnchantSecateurs);
 
-		ConditionalStep goKillTangleroot = new ConditionalStep(this, enterZanarisForFight);
-		goKillTangleroot.addStep(secateursNearby, pickUpSecateurs);
-		goKillTangleroot.addStep(inTanglerootRoom, killTangleroot);
-		goKillTangleroot.addStep(inZanaris, enterTanglerootRoom);
-		steps.put(70, goKillTangleroot);
+		ConditionalStep goKillTanglefoot = new ConditionalStep(this, enterZanarisForFight);
+		goKillTanglefoot.addStep(secateursNearby, pickUpSecateurs);
+		goKillTanglefoot.addStep(inTanglerootRoom, killTanglefoot);
+		goKillTanglefoot.addStep(inZanaris, enterTanglerootRoom);
+		steps.put(70, goKillTanglefoot);
 
 		ConditionalStep finishQuest = new ConditionalStep(this, enterZanarisForEnd);
 		finishQuest.addStep(inZanaris, talkToGodfatherToFinish);
@@ -190,13 +190,21 @@ public class FairytaleI extends BasicQuestHelper
 		// 1808 0->1
 		// 1807 0->1
 
-
 		// Given skull
+		// Try 1:
 		// 1804 0->8
 		// 1805 0->9
 		// 1806 0->10
 		// 2543 0->8->296->10536
 		// Mosquito, jangerberries, potato cactus
+
+		// Try 2
+		// 1804: 15
+		// 1805: 16
+		// 1807: 17
+		// 2543 stays 0
+		// Baby dragon bones, uncut diamond, raw cave eel
+
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
 			new WidgetTextCondition(119, 3, true, "back and talk to <col=800000>Martin"),
@@ -263,9 +271,9 @@ public class FairytaleI extends BasicQuestHelper
 		enterZanarisForFight = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
 			"Travel to Zanaris, ready to fight the Tanglefoot.",
 					dramenOrLunarStaff, magicSecateurs);
-		enterTanglerootRoom = new ObjectStep(this, NullObjectID.NULL_12000, new WorldPoint(2399, 4380, 0),
+		enterTanglerootRoom = new ObjectStep(this, NullObjectID.NULL_11999, new WorldPoint(2399, 4379, 0),
 			"Enter the tangleroot lair in the south of Zanaris, near the cosmic altar.", magicSecateursEquipped, food);
-		killTangleroot = new NpcStep(this, NpcID.TANGLEFOOT, new WorldPoint(2375, 4385, 0), "Kill the large " +
+		killTanglefoot = new NpcStep(this, NpcID.TANGLEFOOT, new WorldPoint(2375, 4385, 0), "Kill the large " +
 			"Tangleroot with the Magic Secateurs. You can flinch it on a corner.", magicSecateursEquipped);
 		pickUpSecateurs = new ItemStep(this, "Pick up the queen's secateurs.", queensSecateurs);
 
@@ -316,9 +324,8 @@ public class FairytaleI extends BasicQuestHelper
 			spade));
 		allSteps.add(new PanelDetails("Enchanting secateurs", Arrays.asList(enterGrotto, talkToSpirit), secateurs,
 			items3));
-		allSteps.add(new PanelDetails("Defeat the Tangleroot", Arrays.asList(enterZanarisForFight, killTangleroot,
-			enterTanglerootRoom, talkToGodfatherToFinish),
-			dramenOrLunarStaff, magicSecateurs, food));
+		allSteps.add(new PanelDetails("Defeat the Tanglefoot", Arrays.asList(enterZanarisForFight,
+			enterTanglerootRoom, killTanglefoot, talkToGodfatherToFinish), dramenOrLunarStaff, magicSecateurs, food));
 
 		return allSteps;
 	}

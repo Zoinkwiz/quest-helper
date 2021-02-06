@@ -97,6 +97,8 @@ public class HeroesQuest extends BasicQuestHelper
 		garden1, garden2, secretRoom, treasureRoom, iceEntrance, iceRoom1P1, iceRoom1P2, iceRoom1P3, iceRoom2P1, iceRoom2P2, iceRoom2P3, iceRoom2P4,
 		iceUp1P1, iceUp1P2, iceUp1P3, iceUp1P4, iceUp2, iceThrone1, iceThrone2, iceThrone3, entrana;
 
+	boolean isInBlackArmGang;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -105,6 +107,11 @@ public class HeroesQuest extends BasicQuestHelper
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		if (inBlackArmGang.check(client))
+		{
+			isInBlackArmGang = true;
+		}
 
 		steps.put(0, talkToAchietties);
 
@@ -542,7 +549,14 @@ public class HeroesQuest extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.FISHING, 53, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 25, true));
 		req.add(new SkillRequirement(Skill.MINING, 50, true));
-		req.add(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED));
+		if (isInBlackArmGang)
+		{
+			req.add(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED));
+		}
+		else
+		{
+			req.add(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG, QuestState.FINISHED));
+		}
 		req.add(new QuestRequirement(QuestHelperQuest.LOST_CITY, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.MERLINS_CRYSTAL, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED));

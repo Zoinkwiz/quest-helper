@@ -284,11 +284,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
 	{
-		int remainder = getRequiredItemDifference(client, id, checkConsideringSlotRestrictions, items);
-		if (remainder <= 0)
-		{
-			return true;
-		}
+		int remainder = quantity;
 
 		List<Integer> ids = getAllIds();
 		for (int alternate : ids)

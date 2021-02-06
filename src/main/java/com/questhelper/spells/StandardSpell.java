@@ -26,7 +26,7 @@
  */
 package com.questhelper.spells;
 
-import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SpellRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import java.util.Locale;
 import java.util.function.UnaryOperator;
@@ -139,7 +139,8 @@ public enum StandardSpell implements MagicSpell
 		this.operator = operator;
 	}
 
-	public Requirement getRequirements()
+	@Override
+	public SpellRequirement getSpellRequirement()
 	{
 		return operator.apply(StandardSpellBuilder.builder(this)).build();
 	}

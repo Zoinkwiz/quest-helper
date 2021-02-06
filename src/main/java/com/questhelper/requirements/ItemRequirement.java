@@ -140,6 +140,7 @@ public class ItemRequirement extends AbstractRequirement
 		return ids;
 	}
 
+	@Override
 	public List<LineComponent> getDisplayTextWithChecks(Client client)
 	{
 		List<LineComponent> lines = new ArrayList<>();

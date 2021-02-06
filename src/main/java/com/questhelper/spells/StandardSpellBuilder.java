@@ -28,15 +28,19 @@ package com.questhelper.spells;
 
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SpellRequirement;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class StandardSpellBuilder
 {
 	private final MagicSpell spell;
-	private final List<ItemRequirement> requirementList = new LinkedList<>();
+	private final List<Requirement> requirementList = new LinkedList<>();
+	private final Map<Rune, Integer> runeList = new HashMap<>();
 
 	private StandardSpellBuilder(MagicSpell spell)
 	{
@@ -63,7 +67,7 @@ public class StandardSpellBuilder
 	 */
 	public StandardSpellBuilder rune(int quantity, Rune rune)
 	{
-		requirementList.add(rune.getRunes(quantity));
+		runeList.put(rune, quantity);
 		return this;
 	}
 
@@ -118,9 +122,9 @@ public class StandardSpellBuilder
 	/**
 	 * @return a new {@link ItemRequirements} containing all this spell information
 	 */
-	public ItemRequirements build()
+	public SpellRequirement build()
 	{
-		return new ItemRequirements(LogicType.AND, spell.getName(), requirementList);
+		return new SpellRequirement(spell, runeList, requirementList);
 	}
 
 }

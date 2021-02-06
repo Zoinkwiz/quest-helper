@@ -26,7 +26,10 @@
  */
 package com.questhelper.spells;
 
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SpellRequirement;
 import com.questhelper.requirements.util.Spellbook;
+import java.util.List;
 
 /**
  * Represents a magic spell that can be cast by a player.
@@ -64,4 +67,9 @@ public interface MagicSpell
 	 * @return the {@link Spellbook} this spell is contained within.
 	 */
 	Spellbook getSpellbook();
+
+	/**
+	 * @return a new {@link SpellRequirement} for a single cast of this spell.
+	 */
+	SpellRequirement getSpellRequirement();
 }

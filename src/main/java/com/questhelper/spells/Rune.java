@@ -118,4 +118,21 @@ public enum Rune
 		}
 		return null;
 	}
+
+
+	public static Rune getByItemID(int itemID)
+	{
+		for (Rune rune : Rune.values())
+		{
+			if (rune.runes != null && rune.runes.contains(itemID))
+			{
+				return rune;
+			}
+			if (rune.staves != null && rune.staves.contains(itemID))
+			{
+				return rune;
+			}
+		}
+		return null;
+	}
 }

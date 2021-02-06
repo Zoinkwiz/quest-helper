@@ -84,41 +84,41 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		steps.put(0, grabTheBrain);
 
 		ConditionalStep gatherBodyParts = new ConditionalStep(this, getBodyParts, ghostSpeakAmulet, spade);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, inCastleFloor1, new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet, hasDecapitatedHeadWithBrain)), goUpstairsForStar);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, inCastleFloor2, new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet)), getBook1);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, inCastleFloor2, hasObsidianAmulet, new Conditions(LogicType.NOR, hasMarbleAmulet)), getBook2);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, hasObsidianAmulet, hasMarbleAmulet), combineAmulet);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, inCastleFloor2, hasStarAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead, hasDecapitatedHeadWithBrain)), goDownstairsForStar);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, hasMarbleAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead, hasDecapitatedHeadWithBrain)), talkToGardenerForHead);
+		gatherBodyParts.addStep(new Conditions(inCastleFloor1, new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet, hasDecapitatedHeadWithBrain)), goUpstairsForStar);
+		gatherBodyParts.addStep(new Conditions(inCastleFloor2, new Conditions(LogicType.NOR, hasMarbleAmulet, hasObsidianAmulet)), getBook1);
+		gatherBodyParts.addStep(new Conditions(inCastleFloor2, hasObsidianAmulet, new Conditions(LogicType.NOR, hasMarbleAmulet)), getBook2);
+		gatherBodyParts.addStep(new Conditions(hasObsidianAmulet, hasMarbleAmulet), combineAmulet);
+		gatherBodyParts.addStep(new Conditions(inCastleFloor2, hasStarAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead, hasDecapitatedHeadWithBrain)), goDownstairsForStar);
+		gatherBodyParts.addStep(new Conditions(hasMarbleAmulet, new Conditions(LogicType.NOR, hasDecapitatedHead, hasDecapitatedHeadWithBrain)), talkToGardenerForHead);
 		gatherBodyParts.addStep(followingGardenerForHead, goToHeadGrave);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, hasDecapitatedHead, hasPickledBrain), combinedHead);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, hasDecapitatedHeadWithBrain, hasStarAmulet), useStarOnGrave);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, hasDecapitatedHeadWithBrain, inExperiementCave, new Conditions(LogicType.NOR, hasCavernKey, hasArm, hasLegs, hasTorso)), killExperiment);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, hasDecapitatedHeadWithBrain, inExperiementCave, hasCavernKey, new Conditions(LogicType.NOR, hasArm, hasLegs, hasTorso)), leaveExperimentCave);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, inGraveIsland, new Conditions(LogicType.NOR, hasArm, hasLegs, hasTorso)), getTorso);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, inGraveIsland, hasTorso, new Conditions(LogicType.NOR, hasArm, hasLegs)), getArm);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, inGraveIsland, hasTorso, hasArm, new Conditions(LogicType.NOR, hasLegs)), getLeg);
-		gatherBodyParts.addStep(new Conditions(LogicType.AND, hasArm, hasLegs, hasTorso), deliverBodyParts);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHead, hasPickledBrain), combinedHead);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, hasStarAmulet), useStarOnGrave);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, inExperiementCave, new Conditions(LogicType.NOR, hasCavernKey, hasArm, hasLegs, hasTorso)), killExperiment);
+		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, inExperiementCave, hasCavernKey, new Conditions(LogicType.NOR, hasArm, hasLegs, hasTorso)), leaveExperimentCave);
+		gatherBodyParts.addStep(new Conditions(inGraveIsland, new Conditions(LogicType.NOR, hasArm, hasLegs, hasTorso)), getTorso);
+		gatherBodyParts.addStep(new Conditions(inGraveIsland, hasTorso, new Conditions(LogicType.NOR, hasArm, hasLegs)), getArm);
+		gatherBodyParts.addStep(new Conditions(inGraveIsland, hasTorso, hasArm, new Conditions(LogicType.NOR, hasLegs)), getLeg);
+		gatherBodyParts.addStep(new Conditions(hasArm, hasLegs, hasTorso), deliverBodyParts);
 
 		ConditionalStep fixLightningRod = new ConditionalStep(this, fixConductorRod);
 		fixLightningRod.addStep(new Conditions(LogicType.NOR, usedShedKey, hasShedKey), talkToGardenerForKey);
 		fixLightningRod.addStep(new Conditions(LogicType.NOR, hasBrush, hasBrush1, hasBrush2, hasBrush3), searchForBrush);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, hasBrush, new Conditions(LogicType.NOR, hasCanes, hasBrush1, hasBrush2, hasBrush3)), grabCanes);
+		fixLightningRod.addStep(new Conditions(hasBrush, new Conditions(LogicType.NOR, hasCanes, hasBrush1, hasBrush2, hasBrush3)), grabCanes);
 		fixLightningRod.addStep(new Conditions(LogicType.OR, new Conditions(LogicType.AND, hasBrush, hasCanes), hasBrush1, hasBrush2), extendBrush);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, new Conditions(LogicType.NOR, inCastleFloor2), hasBrush3), goUpWestStairs);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, inCastleFloor2, hasBrush3, new Conditions(LogicType.NOR, hasLightningRod, hasMould)), searchFirePlace);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, hasMould, new Conditions(LogicType.NOR, hasLightningRod)), makeLightningRod);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, new Conditions(LogicType.NOR, inCastleFloor2), hasLightningRod), goUpWestStairs);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, hasLightningRod, inCastleFloor2), goUpTowerLadder);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, inCastleTower, hasLightningRod), repairConductor);
+		fixLightningRod.addStep(new Conditions(new Conditions(LogicType.NOR, inCastleFloor2), hasBrush3), goUpWestStairs);
+		fixLightningRod.addStep(new Conditions(inCastleFloor2, hasBrush3, new Conditions(LogicType.NOR, hasLightningRod, hasMould)), searchFirePlace);
+		fixLightningRod.addStep(new Conditions(hasMould, new Conditions(LogicType.NOR, hasLightningRod)), makeLightningRod);
+		fixLightningRod.addStep(new Conditions(new Conditions(LogicType.NOR, inCastleFloor2), hasLightningRod), goUpWestStairs);
+		fixLightningRod.addStep(new Conditions(hasLightningRod, inCastleFloor2), goUpTowerLadder);
+		fixLightningRod.addStep(new Conditions(inCastleTower, hasLightningRod), repairConductor);
 
 		ConditionalStep talkToFenkentrain = new ConditionalStep(this, goBackToFirstFloor);
 		talkToFenkentrain.addStep(inCastleFloor1, talkToFenkenstrainAfterFixingRod);
 
 		ConditionalStep goToMonster = new ConditionalStep(this, goToMonsterFloor1);
-		goToMonster.addStep(new Conditions(LogicType.AND, hasTowerKey, new Conditions(LogicType.NOR, inCastleFloor2)), openLockedDoor);
-		goToMonster.addStep(new Conditions(LogicType.AND, hasTowerKey, inCastleFloor2), openLockedDoor);
-		goToMonster.addStep(new Conditions(LogicType.AND, usedTowerKey, inCastleFloor2), goToMonsterFloor2);
+		goToMonster.addStep(new Conditions(hasTowerKey, new Conditions(LogicType.NOR, inCastleFloor2)), openLockedDoor);
+		goToMonster.addStep(new Conditions(hasTowerKey, inCastleFloor2), openLockedDoor);
+		goToMonster.addStep(new Conditions(usedTowerKey, inCastleFloor2), goToMonsterFloor2);
 		goToMonster.addStep(inMonsterTower, talkToMonster);
 
 		steps.put(1, gatherBodyParts);

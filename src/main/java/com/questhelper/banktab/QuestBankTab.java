@@ -340,10 +340,11 @@ public class QuestBankTab
 		}
 
 		// Get FontMetrics so we can accurately get font height/width
-		int fontID = FontID.PLAIN_11; // 494
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		Graphics graphics = img.getGraphics();
 		FontMetrics fm = graphics.getFontMetrics(FontType.SMALL.getFont());
+		img = null;
+		graphics = null;
 		for (BankTabItem bankTabItem : items)
 		{
 			boolean foundItem = false;

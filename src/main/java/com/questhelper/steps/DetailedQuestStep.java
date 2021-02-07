@@ -259,6 +259,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
+		super.makeWidgetOverlayHint(graphics, plugin);
 		renderInventory(graphics);
 		if (!hideMinimapLines)
 		{

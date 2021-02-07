@@ -121,12 +121,12 @@ public class NpcStep extends DetailedQuestStep
 
 	public void requireSpellCast(SpellRequirement spellRequirement)
 	{
-		addSpellIcon(spellRequirement.getSpell().getSpriteID());
+		addSpell(spellRequirement.getSpell());
 	}
 
 	public void requireSpellCast(MagicSpell spell)
 	{
-		addSpellIcon(spell.getSpriteID());
+		addSpell(spell);
 	}
 
 	public List<Integer> allIds()

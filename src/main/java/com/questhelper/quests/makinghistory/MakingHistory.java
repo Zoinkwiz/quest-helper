@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SpellRequirement;
 import com.questhelper.spells.StandardSpell;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -129,7 +130,7 @@ public class MakingHistory extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		saphAmulet = new ItemRequirement("Sapphire amulet", ItemID.SAPPHIRE_AMULET);
 		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ardougneTeleport = StandardSpell.ARDOUGNE_TELEPORT.getSpellRequirement(3);
+		ardougneTeleport = StandardSpell.SNARE.getSpellRequirement(3);
 		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL);
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemID.RING_OF_DUELING8);
 		enchantedKey = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
@@ -184,6 +185,7 @@ public class MakingHistory extends BasicQuestHelper
 		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3346, 0), "Talk to Jorral at the outpost north of West Ardougne.");
 		talkToJorral.addDialogStep("Tell me more.");
 		talkToJorral.addDialogStep("Ok, I'll make a stand for history!");
+		talkToJorral.addSpell(((SpellRequirement)ardougneTeleport).getSpell());
 		talkToSilverMerchant = new NpcStep(this, NpcID.SILVER_MERCHANT_8722, new WorldPoint(2658, 3316, 0), "Talk to the Silver Merchant in the East Ardougne Market.");
 		talkToSilverMerchant.addDialogStep("Ask about the outpost.");
 		dig = new DigStep(this, new WorldPoint(2442, 3140, 0), "Dig at the marked spot north of Castle Wars.", enchantedKey);

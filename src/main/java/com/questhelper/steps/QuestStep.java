@@ -34,12 +34,15 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.spells.MagicSpell;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
 import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,10 +52,13 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -107,7 +113,7 @@ public abstract class QuestStep implements Module
 	protected boolean allowInCutscene = false;
 
 	protected int iconItemID = -1;
-	protected int spellIconItemID = -1;
+	protected MagicSpell spell;
 	protected BufferedImage icon;
 
 	@Getter
@@ -349,9 +355,9 @@ public abstract class QuestStep implements Module
 		this.iconItemID = iconItemID;
 	}
 
-	public void addSpellIcon(int spriteID)
+	public void addSpell(MagicSpell spell)
 	{
-		this.spellIconItemID = spriteID;
+		this.spell = spell;
 	}
 
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
@@ -360,6 +366,28 @@ public abstract class QuestStep implements Module
 
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
+		if (!plugin.getConfig().showSymbolOverlay())
+		{
+			return;
+		}
+		if (spell != null)
+		{
+			Widget widget = client.getWidget(spell.getGroupID(), spell.getWidgetID());
+
+			if (widget != null)
+			{
+				if (widget.isHidden())
+				{
+					return;
+				}
+				graphics.setColor(plugin.getConfig().targetOverlayColor());
+
+				Rectangle rect = widget.getBounds();
+				int x = (int) rect.getX();
+				int y = (int) rect.getY();
+				graphics.drawRect(x, y, widget.getWidth(), widget.getHeight());
+			}
+		}
 	}
 
 	public void setLockedManually(boolean isLocked)
@@ -394,16 +422,16 @@ public abstract class QuestStep implements Module
 		{
 			icon = IconOverlay.createIconImage(itemManager.getImage(iconItemID));
 		}
-		else if (spellIconItemID != -1 && icon == null)
+		else if (spell.getSpriteID() != -1 && icon == null)
 		{
-			BufferedImage sprite = spriteManager.getSprite(spellIconItemID, 0);
+			BufferedImage sprite = spriteManager.getSprite(spell.getSpriteID(), 0);
 			if (sprite != null)
 			{
 				icon = IconOverlay.createIconImage(sprite);
 			}
 			else
 			{
-				throw new UnsupportedOperationException("Unknown spell sprite ID: " + spellIconItemID);
+				throw new UnsupportedOperationException("Unknown spell sprite ID \"" + spell.getSpriteID() + "\" for spell " + spell.getName());
 			}
 		}
 		else if (icon == null)

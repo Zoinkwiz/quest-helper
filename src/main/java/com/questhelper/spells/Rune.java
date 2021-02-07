@@ -32,6 +32,7 @@ import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -39,6 +40,7 @@ import net.runelite.api.ItemID;
 /**
  * Represents a rune that can be used to cast spells.
  */
+@Getter
 public enum Rune
 {
 	AIR("Air Rune", ItemCollections.getAirRune(), ItemCollections.getAirStaff()),
@@ -62,9 +64,9 @@ public enum Rune
 	SMOKE("Smoke Rune", ItemID.SMOKE_RUNE, ItemCollections.getSmokeStaff()),
 	MIST("Mist Rune", ItemID.MIST_RUNE, ItemCollections.getMistStaff()),
 	DUST("Dust Rune", ItemID.DUST_RUNE, ItemCollections.getDustStaff()),
+	UNKNOWN("Null Rune", -1),
 	;
 
-	@Getter
 	private final String runeName;
 	private final List<Integer> runes;
 	private final List<Integer> staves;
@@ -78,15 +80,20 @@ public enum Rune
 	Rune(String runeName, int itemID)
 	{
 		this.runeName = runeName;
-		this.runes = new ArrayList<>(itemID);
+		this.runes = Collections.singletonList(itemID);
 		this.staves = null;
 	}
 
 	Rune(String runeName, int itemID, List<Integer> staves)
 	{
 		this.runeName = runeName;
-		this.runes = new ArrayList<>(itemID);
+		this.runes = Collections.singletonList(itemID);
 		this.staves = staves;
+	}
+
+	public int getItemID()
+	{
+		return runes.get(0);
 	}
 
 	/**
@@ -102,7 +109,7 @@ public enum Rune
 		{
 			return new ItemRequirements(
 				LogicType.OR,
-				getRuneName(),
+				runeName,
 				new ItemRequirement("Runes", runes, quantity),
 				new ItemRequirement("Staff", staves, 1, true)
 			);
@@ -112,11 +119,11 @@ public enum Rune
 		{
 			return new ItemRequirements(
 				LogicType.OR,
-				getRuneName(),
+				runeName,
 				new ItemRequirement("Runes", runes, quantity)
 			);
 		}
-		return null;
+		return new ItemRequirements(LogicType.OR, "Empty Condition");
 	}
 
 
@@ -133,6 +140,6 @@ public enum Rune
 				return rune;
 			}
 		}
-		return null;
+		return Rune.UNKNOWN;
 	}
 }

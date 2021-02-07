@@ -270,6 +270,7 @@ public class ItemCollections
 		ItemID.STEAM_RUNE
 	);
 
+	@Getter
 	private static final List<Integer> waterStaff = QuestUtil.toLinkedList(
 		ItemID.KODAI_WAND,
 		ItemID.WATER_BATTLESTAFF,

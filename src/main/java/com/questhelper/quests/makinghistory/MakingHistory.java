@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.spells.StandardSpell;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.requirements.conditional.Conditions;
@@ -128,7 +129,7 @@ public class MakingHistory extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		saphAmulet = new ItemRequirement("Sapphire amulet", ItemID.SAPPHIRE_AMULET);
 		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ardougneTeleport = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
+		ardougneTeleport = StandardSpell.ARDOUGNE_TELEPORT.getSpellRequirement(3);
 		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL);
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemID.RING_OF_DUELING8);
 		enchantedKey = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);

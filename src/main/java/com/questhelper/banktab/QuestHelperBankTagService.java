@@ -26,9 +26,9 @@ package com.questhelper.banktab;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BankItemHolder;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,8 +36,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
+import lombok.val;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 
@@ -130,15 +130,31 @@ public class QuestHelperBankTagService
 				getItemsFromRequirement(pluginItems, match);
 			}
 		}
+		else if (itemRequirement instanceof BankItemHolder)
+		{
+			BankItemHolder holder = (BankItemHolder) itemRequirement;
+			plugin.getClientThread().invoke(() -> {
+				val reqs = holder.getRequirements(plugin.getClient(), false, null);
+				makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread
+			});
+		}
 		else
 		{
-			if (itemRequirement.getDisplayItemId() != null)
+			makeBankHolderItems(Collections.singletonList(itemRequirement), pluginItems);
+		}
+	}
+
+	private void makeBankHolderItems(List<ItemRequirement> requirements, BankTabItems pluginItems)
+	{
+		for (ItemRequirement req : requirements)
+		{
+			if (req.getDisplayItemId() != null)
 			{
-				pluginItems.addItems(new BankTabItem(itemRequirement));
+				pluginItems.addItems(new BankTabItem(req));
 			}
-			else if (!itemRequirement.getDisplayItemIds().contains(-1))
+			else if (!req.getDisplayItemIds().contains(-1))
 			{
-				pluginItems.addItems(makeBankTabItem(itemRequirement));
+				pluginItems.addItems(makeBankTabItem(req));
 			}
 		}
 	}

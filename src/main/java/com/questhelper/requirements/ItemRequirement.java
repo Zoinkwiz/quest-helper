@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -47,7 +48,8 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	private final int id;
 
-	protected String name;
+	@Setter(AccessLevel.PROTECTED)
+	private String name;
 
 	@Setter
 	@Getter

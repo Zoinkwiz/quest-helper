@@ -26,32 +26,42 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.questhelpers.BankItemHolder;
+import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.util.InventorySlots;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.spells.MagicSpell;
 import com.questhelper.spells.Rune;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.Skill;
 
-public class SpellRequirement extends ItemRequirement
+public class SpellRequirement extends ItemRequirement implements BankItemHolder
 {
 	@Getter
 	private final MagicSpell spell;
 
 	private boolean hasTabletItem = false;
 	private int numberOfCasts = 1;
-	private ItemRequirement tabletRequirement;
+	private ItemRequirement tabletRequirement = null;
 
 	private final List<Requirement> requirements;
-	private final List<Requirement> runeRequirements = new ArrayList<>();
+	private final List<RuneRequirement> runeRequirements = new ArrayList<>();
 	private final Map<Rune, Integer> runesPerCastMap;
 	public SpellRequirement(MagicSpell spell, Map<Rune, Integer> runesPerCastMap, List<Requirement> requirements)
 	{
@@ -59,9 +69,11 @@ public class SpellRequirement extends ItemRequirement
 		this.spell = spell;
 		this.requirements = new LinkedList<>(requirements); // make it mutable for now
 		this.requirements.add(new SpellbookRequirement(spell.getSpellbook()));
+		this.requirements.add(new SkillRequirement(Skill.MAGIC, spell.getRequiredMagicLevel()));
 		this.runesPerCastMap = runesPerCastMap;
-		registerItemRequirements(this.requirements);
-		setupRuneRequirements(1);
+		registerAlternateItems(this.requirements);
+		setNumberOfCasts(1);
+		super.setDisplayItemId(-1);
 	}
 
 	public void setNumberOfCasts(int numberOfCasts)
@@ -81,11 +93,6 @@ public class SpellRequirement extends ItemRequirement
 		// Don't set so we always use the requirement ids for bank filters
 	}
 
-	private void registerItemRequirements(List<Requirement> requirements)
-	{
-		getItemRequirements(requirements).forEach(item -> addAlternates(item.getAllIds()));
-	}
-
 	private void setupRuneRequirements(int numberOfCasts)
 	{
 		runeRequirements.clear();
@@ -93,7 +100,11 @@ public class SpellRequirement extends ItemRequirement
 		{
 			Rune rune = entry.getKey();
 			int runesPerCast = entry.getValue();
-			runeRequirements.add(rune.getRunes(runesPerCast * numberOfCasts));
+			RuneRequirement runeReq = new RuneRequirement(rune, runesPerCast);
+			runeReq.setNumberOfCasts(numberOfCasts);
+			runeRequirements.add(runeReq);
+			List<Integer> allIds = runeReq.getAllIds();
+			alternateItems.addAll(allIds);
 		}
 	}
 
@@ -105,6 +116,12 @@ public class SpellRequirement extends ItemRequirement
 			.collect(Collectors.toList());
 	}
 
+	private void registerAlternateItems(List<Requirement> requirements)
+	{
+		alternateItems.clear();
+		alternateItems.addAll(buildAllIds(requirements));
+	}
+
 	private List<Integer> buildAllIds(List<Requirement> requirements)
 	{
 		List<ItemRequirement> itemRequirements = getItemRequirements(requirements);
@@ -114,20 +131,20 @@ public class SpellRequirement extends ItemRequirement
 			.map(ItemRequirement::getAllIds)
 			.flatMap(Collection::stream)
 			.distinct()
-			.collect(Collectors.toList());
+			.collect(QuestUtil.collectToArrayList());
 	}
 
 	@Nonnull
 	@Override
 	public String getDisplayText()
 	{
-		return hasTabletItem ? tabletRequirement.getDisplayText() : spell.getName();
+		return spell.getName(); //TODO: Re-evaluate when we show the spell name versus the tablet
 	}
 
 	@Override
 	public boolean isActualItem()
 	{
-		return hasTabletItem;
+		return false; // TODO: Redo when/if we determine when to show the tablet
 	}
 
 	@Override
@@ -139,16 +156,16 @@ public class SpellRequirement extends ItemRequirement
 	@Override
 	public Color getColor(Client client)
 	{
-		return check(client) ? Color.GREEN : Color.RED;
+		return meetsRequirements(client, false, null) ? Color.GREEN : Color.RED;
 	}
 
 	@Override
 	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
 	{
-		Color color = this.check(client, checkConsideringSlotRestrictions) ? Color.GREEN : Color.RED;
+		Color color = meetsRequirements(client, checkConsideringSlotRestrictions, null) ? Color.GREEN : Color.RED;
 		if (color == Color.RED && bankItems != null)
 		{
-			if (check(client, false, bankItems))
+			if (meetsRequirements(client, false, bankItems))
 			{
 				color = Color.WHITE;
 			}
@@ -157,29 +174,91 @@ public class SpellRequirement extends ItemRequirement
 	}
 
 	@Override
+	public List<Integer> getDisplayItemIds()
+	{
+		// LinkedList so we can maintain what should get priority for displaying
+		List<Integer> ids = new LinkedList<>(buildAllIds(requirements));
+		runeRequirements.forEach(req -> alternateItems.addAll(req.getAllIds()));
+		if (tabletRequirement != null)
+		{
+			ids.add(tabletRequirement.getDisplayItemId());
+		}
+		return ids;
+	}
+
+	@Override
 	public boolean check(Client client)
 	{
-		updateInternalRequirements(client);
-		return super.check(client);
+		return meetsRequirements(client, false, null);
 	}
 
 	@Override
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
+		return meetsRequirements(client, checkConsideringSlotRestrictions, null);
+	}
+
+	@Override
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
+	{
+		return meetsRequirements(client, checkConsideringSlotRestrictions, items);
+	}
+
+	private boolean checkInventorySlot(InventorySlots slot, Client client, ItemRequirement requirement)
+	{
+		return slot.contains(client, i -> requirement.getAllIds().contains(i.getId()) && i.getQuantity() >= requirement.getQuantity());
+	}
+
+	private boolean meetsRequirements(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
+	{
 		updateInternalRequirements(client);
-		return super.check(client, checkConsideringSlotRestrictions);
+		boolean itemRequirementsMet = itemRequirementsMet(requirements, client, checkConsideringSlotRestrictions, items);
+		boolean nonItemRequirementsMet = nonItemRequirementsMet(requirements, client);
+		boolean runeRequirementsMet = hasRunes(runeRequirements, client, checkConsideringSlotRestrictions, items);
+		boolean hasTabletItem = hasTabletItem(client);
+		return (nonItemRequirementsMet && itemRequirementsMet && runeRequirementsMet) || hasTabletItem;
+	}
+
+	private boolean hasRunes(List<RuneRequirement> runes, Client client, boolean checkWithSlotRestrictions, Item[] items)
+	{
+		return runes.stream().allMatch(req -> req.check(client, checkWithSlotRestrictions, items));
+	}
+
+	private boolean itemRequirementsMet(List<Requirement> requirements, Client client, boolean checkConsideringSlotRestrictions, Item[] items)
+	{
+		return getItemRequirements(requirements).stream().allMatch(req -> req.check(client, checkConsideringSlotRestrictions, items));
+	}
+
+	private boolean nonItemRequirementsMet(List<Requirement> requirements, Client client)
+	{
+		return requirements.stream()
+			.filter(((Predicate<Requirement>) ItemRequirement.class::isInstance).negate())
+			.allMatch(req -> req.check(client));
+	}
+
+	private boolean hasTabletItem(Client client)
+	{
+		return tabletRequirement != null && tabletRequirement.check(client);
 	}
 
 	/** This is not for deciding if the player meets this SpellRequirement. This is only for the internal state of this requirement. */
 	private void updateInternalRequirements(Client client)
 	{
-		if (this.tabletRequirement.getName() == null || this.tabletRequirement.getName().isEmpty())
-		{
-			int tabletID = tabletRequirement.getId();
-			this.tabletRequirement = new ItemRequirement(client.getItemDefinition(tabletID).getName(), tabletID);
-		}
 		if (tabletRequirement != null)
 		{
+			if (this.tabletRequirement.getName() == null || this.tabletRequirement.getName().isEmpty())
+			{
+				if (tabletRequirement.getId() > -1)
+				{
+					ItemComposition tablet = client.getItemDefinition(tabletRequirement.getId());
+					this.tabletRequirement = new ItemRequirement(client.getItemDefinition(tablet.getId()).getName(), tablet.getId());
+					tabletRequirement.setDisplayItemId(tablet.getId());
+				}
+				else
+				{
+					//TODO: throw error?
+				}
+			}
 			hasTabletItem = tabletRequirement.check(client);
 		}
 		List<ItemRequirement> itemRequirements = getItemRequirements(requirements);
@@ -187,8 +266,32 @@ public class SpellRequirement extends ItemRequirement
 		{
 			if (item.getName() == null || item.getName().isEmpty())
 			{
-				item.name = client.getItemDefinition(item.getId()).getName();
+				String name = client.getItemDefinition(item.getId()).getName();
+				item.setName(name);
 			}
 		}
+	}
+
+	@Override
+	public List<ItemRequirement> getRequirements(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
+	{
+		List<ItemRequirement> bankTabItemRequirements = new LinkedList<>();
+		if (tabletRequirement != null && tabletRequirement.check(client, checkConsideringSlotRestrictions, bankItems))
+		{
+			bankTabItemRequirements.add(tabletRequirement);
+		}
+		else
+		{
+			List<ItemRequirement> runeItemRequirements = runeRequirements.stream()
+				.map(req -> req.getRequirements(client, checkConsideringSlotRestrictions, bankItems))
+				.flatMap(Collection::stream)
+				.collect(Collectors.toList());
+			bankTabItemRequirements.addAll(runeItemRequirements);
+		}
+		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements).stream()
+			.filter(req -> req.check(client, checkConsideringSlotRestrictions, bankItems))
+			.collect(Collectors.toList());
+		bankTabItemRequirements.addAll(itemRequirements);
+		return bankTabItemRequirements;
 	}
 }

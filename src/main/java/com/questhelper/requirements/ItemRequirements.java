@@ -66,6 +66,11 @@ public class ItemRequirements extends ItemRequirement
 		this.logicType = logicType;
 	}
 
+	protected ItemRequirements(LogicType logicType, String name)
+	{
+		super(name, -1);
+	}
+
 	@Override
 	public boolean check(Client client)
 	{

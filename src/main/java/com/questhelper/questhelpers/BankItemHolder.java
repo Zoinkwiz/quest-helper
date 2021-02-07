@@ -24,31 +24,14 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.requirements;
+package com.questhelper.questhelpers;
 
-import com.questhelper.requirements.AbstractRequirement;
-import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.requirements.ItemRequirement;
+import java.util.List;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 
-public class SpellbookRequirement extends AbstractRequirement
+public interface BankItemHolder
 {
-	private static final int SPELLBOOK_VARBIT = 4070;
-	private final Spellbook spellBook;
-
-	public SpellbookRequirement(Spellbook spellBook)
-	{
-		this.spellBook = spellBook;
-	}
-
-	@Override
-	public boolean check(Client client)
-	{
-		return spellBook.check(client, SPELLBOOK_VARBIT);
-	}
-
-	@Override
-	public String getDisplayText()
-	{
-		return "You must be on the " + spellBook.getName() + " spellbook.";
-	}
+	List<ItemRequirement> getRequirements(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems);
 }

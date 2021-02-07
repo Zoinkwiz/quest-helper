@@ -26,7 +26,6 @@ package com.questhelper.banktab;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BankItemHolder;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;

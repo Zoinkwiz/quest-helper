@@ -71,5 +71,11 @@ public interface MagicSpell
 	 */
 	SpellRequirement getSpellRequirement();
 
+	/**
+	 * Create a new {@link SpellRequirement} with the given number of casts.
+	 *
+	 * @param numberOfCasts the number of casts
+	 * @return a new {@link SpellRequirement}
+	 */
 	SpellRequirement getSpellRequirement(int numberOfCasts);
 }

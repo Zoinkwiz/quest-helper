@@ -26,7 +26,7 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.questhelpers.BankItemHolder;
+import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.spells.Rune;
@@ -44,6 +44,10 @@ import net.runelite.api.Item;
  *
  * Prioritize runes over staves because most quests require some sort of combat gear and that would,
  * most likely, eliminate stave as an option for most quests.
+ */
+
+/**
+ * Represents a single rune requirement that is used in {@link SpellRequirement}.
  */
 @Getter
 public class RuneRequirement extends ItemRequirement implements BankItemHolder
@@ -73,6 +77,11 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	/**
+	 * Set the new number of times the spell will be cast.
+	 *
+	 * @param numberOfCasts the new number of casts
+	 */
 	public void setNumberOfCasts(int numberOfCasts)
 	{
 		this.requiredAmount = costPerCast * numberOfCasts;

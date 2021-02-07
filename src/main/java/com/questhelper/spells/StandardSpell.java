@@ -26,6 +26,9 @@
  */
 package com.questhelper.spells;
 
+import static com.questhelper.QuestHelperQuest.PLAGUE_CITY;
+import static com.questhelper.QuestHelperQuest.THE_MAGE_ARENA;
+import static com.questhelper.QuestHelperQuest.EADGARS_RUSE;
 import com.questhelper.requirements.SpellRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import java.util.Locale;
@@ -34,6 +37,7 @@ import lombok.Getter;
 
 import static com.questhelper.spells.Rune.*;
 import net.runelite.api.ItemID;
+import net.runelite.api.Varbits;
 import org.apache.commons.text.WordUtils;
 
 @Getter
@@ -77,7 +81,7 @@ public enum StandardSpell implements MagicSpell
 	IBAN_BLAST(53, 34, 50, b -> b.rune(DEATH).rune(5, FIRE).item(true, ItemID.IBANS_STAFF, ItemID.IBANS_STAFF_U)),
 	SNARE(320, 35, 50, b -> b.rune(3, NATURE).rune(4, WATER).rune(4, EARTH)),
 	MAGIC_DART(324, 36, 50, b -> b.rune(DEATH).rune(4, MIND)),
-	ARDOUGNE_TELEPORT(54, 37, 51, b -> b.rune(2, LAW).rune(2, WATER).tablet(ItemID.ARDOUGNE_TELEPORT)), //TODO: QUEST REQ -> PLAGUE CITY
+	ARDOUGNE_TELEPORT(54, 37, 51, b -> b.rune(2, LAW).rune(2, WATER).tablet(ItemID.ARDOUGNE_TELEPORT).quest(PLAGUE_CITY)),
 	EARTH_BLAST(40, 38, 43, b -> b.rune(DEATH).rune(3, AIR).rune(4, EARTH)),
 	HIGH_LVL_ALCHEMY(41, 39, 55, b -> b.rune(NATURE).rune(5, FIRE)),
 	CHARGE_WATER_ORB(42, 40, 56, b -> b.rune(3, COSMIC).rune(30, WATER).item(ItemID.UNPOWERED_ORB)),
@@ -87,10 +91,10 @@ public enum StandardSpell implements MagicSpell
 	FIRE_BLAST(44, 43, 59, b -> b.rune(DEATH).rune(4, AIR).rune(5, FIRE)),
 	CHARGE_EARTH_ORB(45, 44, 60, b -> b.rune(3, COSMIC).rune(30, EARTH).item(ItemID.UNPOWERED_ORB)),
 	BONES_TO_PEACHES(354, 45, 60, b -> b.rune(2, NATURE).rune(2, EARTH).rune(4, WATER)), //TODO: MAGE TRAINING ARENA
-	SARADOMIN_STRIKE(61, 46, 60, b -> b.rune(2, BLOOD).rune(2, FIRE).rune(4, AIR)), // TODO: MAGE ARENA
-	CLAWS_OF_GUTHIX(60, 47, 60, b -> b.rune(FIRE).rune(2, BLOOD).rune(4, AIR)), // TODO: MAGE ARENA
-	FLAMES_OF_ZAMORAK(59, 48, 60, b -> b.rune(AIR).rune(2, BLOOD).rune(4, FIRE)), // TODO: MAGE ARENA
-	TROLLHEIM_TELEPORT(323, 49, 61, b -> b.rune(2, LAW).rune(2, FIRE)), // TODO: QUEST REQ -> EADGARS RUSE QUEST
+	SARADOMIN_STRIKE(61, 46, 60, b -> b.rune(2, BLOOD).rune(2, FIRE).rune(4, AIR).quest(THE_MAGE_ARENA)),
+	CLAWS_OF_GUTHIX(60, 47, 60, b -> b.rune(FIRE).rune(2, BLOOD).rune(4, AIR).quest(THE_MAGE_ARENA)),
+	FLAMES_OF_ZAMORAK(59, 48, 60, b -> b.rune(AIR).rune(2, BLOOD).rune(4, FIRE).quest(THE_MAGE_ARENA)),
+	TROLLHEIM_TELEPORT(323, 49, 61, b -> b.rune(2, LAW).rune(2, FIRE).quest(EADGARS_RUSE)),
 	WIND_WAVE(46, 50, 62, b -> b.rune(BLOOD).rune(5, AIR)),
 	CHARGE_FIRE_ORB(47, 51, 63, b -> b.rune(3, COSMIC).rune(30, FIRE).item(ItemID.UNPOWERED_ORB)),
 	APE_ATOLL_TELEPORT(357, 52, 64, b -> b.rune(2, LAW).rune(2, WATER).rune(2, FIRE).item(ItemID.BANANA)),
@@ -110,7 +114,7 @@ public enum StandardSpell implements MagicSpell
 	WIND_SURGE(362, 65, 81, b -> b.rune(WRATH).rune(7, AIR)),
 	TELEOTHER_FALADOR(350, 66, 82, b -> b.rune(SOUL).rune(LAW).rune(WATER)),
 	WATER_SURGE(363, 67, 85, b -> b.rune(WRATH).rune(7, AIR).rune(10, WATER)),
-	TELE_BLOCK(352, 68, 85, b -> b.rune(LAW).rune(DEATH).rune(CHAOS)), //TODO: IN WILDERNESS
+	TELE_BLOCK(352, 68, 85, b -> b.rune(LAW).rune(DEATH).rune(CHAOS).var(Varbits.IN_WILDERNESS, 1)),
 	TELEPORT_TO_TARGET(359, 69, 85, b -> b.rune(LAW).rune(DEATH).rune(CHAOS)), //TODO: HAVE READ TARGET TELEPORT SCROLL
 	LVL_6_ENCHANT(353, 70, 87, b -> b.rune(COSMIC).rune(20, FIRE).rune(20, EARTH)),
 	ENCHANT_ONYX_BOLT(358, 8, 87, b -> b.rune(DEATH).rune(COSMIC).rune(20, FIRE)),

@@ -26,15 +26,22 @@
  */
 package com.questhelper.spells;
 
+import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SpellRequirement;
+import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.conditional.VarplayerCondition;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import net.runelite.api.QuestState;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 
 public class StandardSpellBuilder
 {
@@ -129,6 +136,62 @@ public class StandardSpellBuilder
 	public StandardSpellBuilder tablet(int itemID)
 	{
 		this.tabletItemID = itemID;
+		return this;
+	}
+
+	/**
+	 * Add a {@link QuestHelperQuest} requirement to this spell.
+	 * By default, this requires the quest to be finished.<br>
+	 * See {@link #quest(QuestHelperQuest, boolean)} for specifying if the quest should only
+	 * be started.
+	 *
+	 * @param quest the quest that should be completed in order to cast this spell
+	 * @return this
+	 */
+	public StandardSpellBuilder quest(QuestHelperQuest quest)
+	{
+		return quest(quest, true);
+	}
+
+	/**
+	 * Add a {@link QuestHelperQuest} requirement to this spell.
+	 * If {@param started} is true, this will mean the {@link QuestHelperQuest} is only required to be
+	 * {@link QuestState#IN_PROGRESS}, not {@link QuestState#FINISHED}.
+	 *
+	 * @param quest the quest requirement to add
+	 * @param started if the quest should be started, or finished
+	 * @return this
+	 */
+	public StandardSpellBuilder quest(QuestHelperQuest quest, boolean started)
+	{
+		QuestState state = started ? QuestState.IN_PROGRESS : QuestState.FINISHED;
+		requirements.add(new QuestRequirement(quest, state));
+		return this;
+	}
+
+	/**
+	 * Add a {@link Varbits} requirement to this spell.
+	 *
+	 * @param varbit the {@link Varbits} that is required
+	 * @param value the varbit value that is required
+	 * @return this
+	 */
+	public StandardSpellBuilder var(Varbits varbit, int value)
+	{
+		requirements.add(new VarbitCondition(varbit.getId(), value));
+		return this;
+	}
+
+	/**
+	 * Add a {@link VarPlayer} requirement to this spell
+	 *
+	 * @param varPlayer the {@link VarPlayer} that is needed
+	 * @param value the value that is required
+	 * @return
+	 */
+	public StandardSpellBuilder var(VarPlayer varPlayer, int value)
+	{
+		requirements.add(new VarplayerCondition(varPlayer.getId(), value));
 		return this;
 	}
 

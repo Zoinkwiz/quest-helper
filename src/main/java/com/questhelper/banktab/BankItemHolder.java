@@ -24,14 +24,31 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.questhelpers;
+package com.questhelper.banktab;
 
 import com.questhelper.requirements.ItemRequirement;
 import java.util.List;
+import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
+/**
+ * Represents anything that holds {@link ItemRequirement}s that are to be used
+ * for displaying via the {@link QuestBankTab}.
+ * <br>
+ * Most requirements will not need this interface, however this interface does allow
+ * that requirement to specify which {@link ItemRequirement} should be displayed
+ * via the quest bank tab.
+ */
 public interface BankItemHolder
 {
-	List<ItemRequirement> getRequirements(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems);
+	/**
+	 * Get a list of {@link ItemRequirement} to be displayed.
+	 *
+	 * @param client the {@link Client|}
+	 * @param checkConsideringSlotRestrictions if the client item container checks should respect slot restrictions
+	 * @param bankItems the player's {@link com.questhelper.BankItems}, this can be null
+	 * @return a list of {@link ItemRequirement} that should be displayed
+	 */
+	List<ItemRequirement> getRequirements(Client client, boolean checkConsideringSlotRestrictions, @Nullable Item[] bankItems);
 }

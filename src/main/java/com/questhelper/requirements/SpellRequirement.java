@@ -28,7 +28,7 @@ package com.questhelper.requirements;
 
 import com.google.common.base.Predicates;
 import com.questhelper.BankItems;
-import com.questhelper.questhelpers.BankItemHolder;
+import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.spells.MagicSpell;
@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -60,6 +61,20 @@ import net.runelite.client.ui.overlay.components.LineComponent;
  *
  * We can ignore the requirements if the player has the tablet because those
  * have no requirements in order to be used.
+ */
+
+/**
+ * Represents a spell that can be cast.
+ * This will check if the user has the required magic level, quest requirements,
+ * any extra items (i.e. unpowered orb for charge orb spells) and any extra requirements
+ * that are added.
+ * <br>
+ * If the player has this spell's tablet, then the only requirement that is checked is the
+ * quest requirement. This is because player's still cannot use a tablet whose
+ * spell counterpart is locked behind quest progression.
+ * <br>
+ * This spell requirements prioritizes using tablets over runes/staves since
+ * it is more compact and has less requirements.
  */
 public class SpellRequirement extends ItemRequirement implements BankItemHolder
 {
@@ -97,7 +112,12 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		updateTooltip();
 	}
 
-	public void addRequirement(Requirement requirement)
+	/**
+	 * Add an additional {@link Requirement}.
+	 *
+	 * @param requirement requirement to add
+	 */
+	public void addRequirement(@Nonnull Requirement requirement)
 	{
 		if (requirement instanceof RuneRequirement)
 		{
@@ -109,11 +129,20 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	/**
+	 * @return a copy of all {@link Requirement} on this requirement
+	 */
 	public List<Requirement> getRequirements()
 	{
 		return new ArrayList<>(requirements);
 	}
 
+	/**
+	 * Set the tablet's item id. If the item id is less than 0, the tablet will be removed
+	 * and this requirement will no longer check for it.
+	 *
+	 * @param itemID the tablet's item id
+	 */
 	public void setTablet(int itemID)
 	{
 		if (itemID < 0)
@@ -126,11 +155,19 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	/**
+	 * A convenience method to better indicate to not use a tablet for this spell requirement
+	 */
 	public void requireRunes()
 	{
 		setTablet(-1);
 	}
 
+	/**
+	 * Set the number of casts this requirement should account for.
+	 *
+	 * @param numberOfCasts the number of casts
+	 */
 	public void setNumberOfCasts(int numberOfCasts)
 	{
 		this.numberOfCasts = numberOfCasts;

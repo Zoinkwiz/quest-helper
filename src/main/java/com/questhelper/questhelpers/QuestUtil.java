@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 public class QuestUtil
@@ -58,5 +59,28 @@ public class QuestUtil
 	public static <T> Collector<T, ?, List<T>> collectToArrayList()
 	{
 		return Collectors.toCollection(ArrayList::new);
+	}
+
+	/**
+	 * Removes all the duplicate elements from a stream and collects them into a
+	 * mutable ArrayList
+	 *
+	 * @param stream stream to remove duplicates from
+	 * @return a mutable list containing all the remaining elements of the stream
+	 */
+	public static <T> List<T> collectAndRemoveDuplicates(Stream<T> stream)
+	{
+		return stream.distinct().collect(collectToArrayList());
+	}
+
+	/**
+	 * Remove duplicates in the given list.
+	 *
+	 * @param list the list
+	 * @return a mutable list without duplicates.
+	 */
+	public static <T> List<T> removeDuplicates(List<T> list)
+	{
+		return collectAndRemoveDuplicates(list.stream());
 	}
 }

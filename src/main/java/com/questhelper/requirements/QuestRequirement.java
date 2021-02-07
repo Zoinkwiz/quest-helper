@@ -2,6 +2,7 @@ package com.questhelper.requirements;
 
 import com.questhelper.QuestHelperQuest;
 import java.util.Locale;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
@@ -25,8 +26,7 @@ public class QuestRequirement extends AbstractRequirement
 	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState)
 	{
-		this.quest = quest;
-		this.requiredState = requiredState;
+		this(quest, requiredState, null);
 	}
 
 	/**
@@ -36,10 +36,16 @@ public class QuestRequirement extends AbstractRequirement
 	 * @param requiredState the required quest state
 	 * @param displayText display text
 	 */
-	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, String displayText)
+	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, @Nullable String displayText)
 	{
-		this(quest, requiredState);
+		this.quest = quest;
+		this.requiredState = requiredState;
 		this.displayText = displayText;
+	}
+
+	public QuestRequirement(QuestHelperQuest quest)
+	{
+		this(quest, QuestState.FINISHED, null);
 	}
 
 	@Override

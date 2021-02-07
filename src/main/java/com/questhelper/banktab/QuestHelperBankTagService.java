@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import lombok.val;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 
 public class QuestHelperBankTagService
@@ -133,8 +133,11 @@ public class QuestHelperBankTagService
 		else if (itemRequirement instanceof BankItemHolder)
 		{
 			BankItemHolder holder = (BankItemHolder) itemRequirement;
+			final Item[] items = plugin.getBankItems().getItems();
+			// Force run on client thread even though it's not as responsive as not doing that, however it
+			// ensures we run on the client thread and never run into threading issues.
 			plugin.getClientThread().invoke(() -> {
-				val reqs = holder.getRequirements(plugin.getClient(), false, null);
+				List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), false, items);
 				makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread
 			});
 		}

@@ -135,6 +135,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
+	@Getter
 	private final BankItems bankItems = new BankItems();
 
 	@Getter

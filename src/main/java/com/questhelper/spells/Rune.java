@@ -28,12 +28,9 @@
 package com.questhelper.spells;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.util.LogicType;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -67,24 +64,26 @@ public enum Rune
 	UNKNOWN("Null Rune", -1),
 	;
 
+	@Nonnull
 	private final String runeName;
+	@Nonnull
 	private final List<Integer> runes;
 	private final List<Integer> staves;
-	Rune(String runeName, List<Integer> runes, List<Integer> staves)
+	Rune(@Nonnull String runeName, @Nonnull List<Integer> runes, List<Integer> staves)
 	{
 		this.runeName = runeName;
 		this.runes = runes;
 		this.staves = staves;
 	}
 
-	Rune(String runeName, int itemID)
+	Rune(@Nonnull String runeName, int itemID)
 	{
 		this.runeName = runeName;
 		this.runes = Collections.singletonList(itemID);
 		this.staves = null;
 	}
 
-	Rune(String runeName, int itemID, List<Integer> staves)
+	Rune(@Nonnull String runeName, int itemID, List<Integer> staves)
 	{
 		this.runeName = runeName;
 		this.runes = Collections.singletonList(itemID);
@@ -96,46 +95,15 @@ public enum Rune
 		return runes.get(0);
 	}
 
-	/**
-	 * Get a new {@link ItemRequirements} containing the specified number of rune(s)
-	 * as well as their equivalent items (combination runes, staves, etc).
-	 *
-	 * @param quantity the number of runes required
-	 * @return a new instance of {@link ItemRequirements}
-	 */
-	public ItemRequirements getRunes(int quantity)
-	{
-		if (runes != null && staves != null)
-		{
-			return new ItemRequirements(
-				LogicType.OR,
-				runeName,
-				new ItemRequirement("Runes", runes, quantity),
-				new ItemRequirement("Staff", staves, 1, true)
-			);
-		}
-
-		if (runes != null)
-		{
-			return new ItemRequirements(
-				LogicType.OR,
-				runeName,
-				new ItemRequirement("Runes", runes, quantity)
-			);
-		}
-		return new ItemRequirements(LogicType.OR, "Empty Condition");
-	}
-
-
 	public static Rune getByItemID(int itemID)
 	{
 		for (Rune rune : Rune.values())
 		{
-			if (rune.runes != null && rune.runes.contains(itemID))
+			if (rune.getRunes().contains(itemID))
 			{
 				return rune;
 			}
-			if (rune.staves != null && rune.staves.contains(itemID))
+			if (rune.getStaves() != null && rune.getStaves().contains(itemID))
 			{
 				return rune;
 			}

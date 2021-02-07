@@ -193,11 +193,11 @@ public class FamilyCrest extends BasicQuestHelper
 		southRoomDown = new ObjectCondition(ObjectID.LEVER_2423, new WorldPoint(2724, 9669, 0));
 		northRoomDown = new ObjectCondition(ObjectID.LEVER_2425, new WorldPoint(2722, 9718, 0));
 
-		hasGold2 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(gold2));
-		hasGoldBar2 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(goldBar2));
+		hasGold2 = new Conditions(true, new ItemRequirementCondition(gold2));
+		hasGoldBar2 = new Conditions(true, new ItemRequirementCondition(goldBar2));
 
-		hasPerfectNecklace = new Conditions(true, LogicType.OR, new ItemRequirementCondition(perfectNecklace));
-		hasPerfectRing = new Conditions(true, LogicType.OR, new ItemRequirementCondition(perfectRing));
+		hasPerfectNecklace = new Conditions(true, new ItemRequirementCondition(perfectNecklace));
+		hasPerfectRing = new Conditions(true, new ItemRequirementCondition(perfectRing));
 
 		inJollyBoar = new ZoneCondition(jollyBoar);
 

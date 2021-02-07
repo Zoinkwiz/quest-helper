@@ -326,8 +326,8 @@ public class DesertTreasure extends BasicQuestHelper
 		// Given all items, 392 = 1;
 		hasWarmKey = new ItemRequirementCondition(warmKey);
 		killedDamis = new VarbitCondition(383, 5);
-		hadSmokeDiamond = new Conditions(true, LogicType.OR, new ItemRequirementCondition(smokeDiamond));
-		gotIceDiamond = new Conditions(true, LogicType.OR, new ItemRequirementCondition(iceDiamond));
+		hadSmokeDiamond = new Conditions(true, new ItemRequirementCondition(smokeDiamond));
+		gotIceDiamond = new Conditions(true, new ItemRequirementCondition(iceDiamond));
 		gotBloodDiamond = new VarbitCondition(373, 4);
 		inSmokeDungeon = new ZoneCondition(smokeDungeon);
 		inFareedRoom = new ZoneCondition(fareedRoom);

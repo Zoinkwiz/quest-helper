@@ -148,7 +148,7 @@ public class RumSmugglingStep extends ConditionalStep
 		hasRum = new ItemRequirementCondition(new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM));
 		hasWhiteApron = new ItemRequirementCondition(whiteApron);
 		hasRumOffKaramja = new Conditions(LogicType.AND, hasRum, offKaramja);
-		hadRumOffKaramja = new Conditions(true, LogicType.AND, hasRum, offKaramja);
+		hadRumOffKaramja = new Conditions(true, hasRum, offKaramja);
 		lostRum = new Conditions(LogicType.AND, inPirateTreasureMenu, new WidgetTextCondition(119, 8, "I seem to have lost it."));
 
 		ConditionForStep haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextCondition(119, 8, "I should take it to"));

@@ -81,7 +81,7 @@ public class Conditions extends ConditionForStep
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
-		this.logicType = LogicType.OR;
+		this.logicType = LogicType.AND;
 	}
 
 	@Override

@@ -95,10 +95,6 @@ public enum ItemSlots
 			return false;
 		}
 		Item item = equipment.getItem(getSlotIdx());
-		if (item == null)
-		{
-			return false;
-		}
 
 		return predicate.test(item);
 	}

@@ -169,10 +169,6 @@ public class DetailedQuestStep extends QuestStep
 		requirements.addAll(newRequirements);
 	}
 
-	public void setText(String text) {
-		this.text = Collections.singletonList(text);
-	}
-
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{

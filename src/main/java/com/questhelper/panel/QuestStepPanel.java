@@ -97,7 +97,7 @@ public class QuestStepPanel extends JPanel
 
 		headerPanel.add(viewControls, BorderLayout.EAST);
 
-		if (panelDetails.getSteps().contains(currentStep))
+		if (panelDetails.contains(currentStep))
 		{
 			headerLabel.setForeground(Color.BLACK);
 			headerPanel.setBackground(ColorScheme.BRAND_ORANGE);

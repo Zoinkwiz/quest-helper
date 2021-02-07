@@ -60,6 +60,7 @@ public class ItemRequirement extends AbstractRequirement
 	protected int quantity;
 
 	@Getter
+	@Setter
 	private boolean equip;
 
 	@Getter
@@ -140,6 +141,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement equipped()
+	{
+		ItemRequirement newItem = copy();
+		newItem.setEquip(true);
+		return newItem;
+	}
+
 	public ItemRequirement copy()
 	{
 		ItemRequirement newItem = new ItemRequirement(name, id, quantity, equip);
@@ -201,7 +209,7 @@ public class ItemRequirement extends AbstractRequirement
 			.left(text.toString())
 			.leftColor(color)
 			.build());
-		lines.addAll(getAdditionalText(client, false));
+		lines.addAll(getAdditionalText(client, true));
 		return lines;
 	}
 

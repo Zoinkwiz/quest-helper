@@ -31,6 +31,7 @@ import static com.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestVarbits;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.choice.DialogChoiceStep;
@@ -241,7 +242,7 @@ public abstract class QuestStep implements Module
 
 	public void setText(String text)
 	{
-		this.text = Collections.singletonList(text);
+		this.text = QuestUtil.toArrayList(text);
 	}
 
 	public void setText(List<String> text)

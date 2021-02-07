@@ -25,6 +25,7 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.BankItems;
 import com.questhelper.requirements.util.InventorySlots;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -399,5 +401,11 @@ public class ItemRequirement extends AbstractRequirement
 		}
 
 		return Collections.singletonList(displayItemId);
+	}
+
+	@Nullable
+	public String getUpdatedTooltip(Client client, BankItems bankItems)
+	{
+		return null;
 	}
 }

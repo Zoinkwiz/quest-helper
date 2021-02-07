@@ -27,6 +27,7 @@
 package com.questhelper.requirements;
 
 import com.google.common.base.Predicates;
+import com.questhelper.BankItems;
 import com.questhelper.questhelpers.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.InventorySlots;
@@ -39,7 +40,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -60,6 +63,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
  */
 public class SpellRequirement extends ItemRequirement implements BankItemHolder
 {
+	@Getter
 	private final MagicSpell spell;
 
 	private ItemRequirement tabletRequirement = null;
@@ -103,7 +107,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			requirements.add(requirement);
 		}
-		updateTooltip();
 	}
 
 	public List<Requirement> getRequirements()
@@ -169,6 +172,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	@Override
 	public List<LineComponent> getOverlayDisplayText(Client client)
 	{
+		updateInternalState(client, getItemRequirements(this.requirements));
 		List<LineComponent> lines = new ArrayList<>();
 
 		StringBuilder text = new StringBuilder();
@@ -223,6 +227,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	@Override
 	public boolean checkBank(Client client)
 	{
+		updateInternalState(client, getItemRequirements(this.requirements));
 		if (tabletRequirement != null)
 		{
 			int tabletID = tabletRequirement.getId();
@@ -235,15 +240,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		boolean hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client));
 		boolean hasItems = requirements.stream().allMatch(req -> req.check(client));
 		return hasRunes && hasItems;
-	}
-
-	private void updateTabletRequirement(Client client)
-	{
-		if (tabletRequirement != null && (tabletRequirement.getName() == null || tabletRequirement.getName().isEmpty()))
-		{
-			ItemComposition tablet = client.getItemDefinition(tabletRequirement.getId());
-			tabletRequirement = new ItemRequirement(tablet.getName(), tablet.getId(), this.numberOfCasts);
-		}
 	}
 
 	@Override
@@ -272,7 +268,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		boolean hasRunes = false;
 		boolean hasItems = false;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
-		updateItemRequirements(client, itemRequirements);
+		updateInternalState(client, itemRequirements);
 		hasRunes = runeRequirements.stream().allMatch(req -> hasItemAmount(client, req.getAllIds(), req.getRequiredAmount()));
 		hasItems = itemRequirements.stream().allMatch(req -> hasItemAmount(client, req.getAllIds(), req.getQuantity()));
 		if (hasRunes && hasItems)
@@ -313,7 +309,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 		boolean hasItems, hasOther, hasRunes = false;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
-		updateItemRequirements(client, itemRequirements);
+		updateInternalState(client, itemRequirements);
 		if (!itemRequirements.isEmpty())
 		{
 			hasItems = itemRequirements.stream().allMatch(req -> req.check(client, checkWithSlotRestrictions, items));
@@ -343,8 +339,31 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			.flatMap(Collection::stream)
 			.collect(Collectors.toCollection(LinkedList::new));
 		requirements.addAll(getItemRequirements(this.requirements));
-		updateItemRequirements(client, requirements);
+		updateInternalState(client, requirements);
 		return requirements;
+	}
+
+	@Nullable
+	@Override
+	public String getUpdatedTooltip(Client client, BankItems bankItems)
+	{
+		StringBuilder text = new StringBuilder();
+		setTooltip("This spell requires: ");
+		if (tabletRequirement != null)
+		{
+			AtomicInteger count = new AtomicInteger();
+			getNonItemRequirements(this.requirements).stream()
+				.filter(r -> r instanceof QuestRequirement)
+				.map(QuestRequirement.class::cast)
+				.filter(r -> r.check(client))
+				.peek(q -> count.incrementAndGet())
+				.forEach(q -> text.append(q.getDisplayText()));
+			return count.get() > 0 ? text.toString() : null; // no requirements to use a tablet
+		}
+		getNonItemRequirements(this.requirements).stream()
+			.filter(req -> !req.check(client))
+			.forEach(req -> text.append(req.getDisplayText()).append("\n"));
+		return text.toString();
 	}
 
 	private List<ItemRequirement> getItemRequirements(List<Requirement> requirements)
@@ -381,10 +400,16 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		return findFirstItemID(client, ids, amount, checkWithSlotRestrictions, items) >= 0;
 	}
 
+	private void updateInternalState(Client client, List<ItemRequirement> requirements)
+	{
+		updateItemRequirements(client, requirements);
+	}
+
 	private void updateTooltip()
 	{
 		setTooltip("This spell requires: ");
-		getNonItemRequirements(this.requirements).forEach(req -> appendToTooltip(req.getDisplayText()));
+		getNonItemRequirements(this.requirements).stream()
+			.forEach(req -> appendToTooltip(req.getDisplayText()));
 	}
 
 	private void updateItemRequirements(Client client, List<ItemRequirement> requirements)
@@ -395,6 +420,15 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			{
 				requirement.setName(client.getItemDefinition(requirement.getId()).getName());
 			}
+		}
+	}
+
+	private void updateTabletRequirement(Client client)
+	{
+		if (tabletRequirement != null && (tabletRequirement.getName() == null || tabletRequirement.getName().isEmpty()))
+		{
+			ItemComposition tablet = client.getItemDefinition(tabletRequirement.getId());
+			tabletRequirement = new ItemRequirement(tablet.getName(), tablet.getId(), this.numberOfCasts);
 		}
 	}
 }

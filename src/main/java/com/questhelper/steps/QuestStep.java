@@ -107,6 +107,7 @@ public abstract class QuestStep implements Module
 	protected boolean allowInCutscene = false;
 
 	protected int iconItemID = -1;
+	protected int spellIconItemID = -1;
 	protected BufferedImage icon;
 
 	@Getter
@@ -348,6 +349,11 @@ public abstract class QuestStep implements Module
 		this.iconItemID = iconItemID;
 	}
 
+	public void addSpellIcon(int spriteID)
+	{
+		this.spellIconItemID = spriteID;
+	}
+
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 	}
@@ -387,6 +393,18 @@ public abstract class QuestStep implements Module
 		if (iconItemID != -1 && icon == null)
 		{
 			icon = IconOverlay.createIconImage(itemManager.getImage(iconItemID));
+		}
+		else if (spellIconItemID != -1 && icon == null)
+		{
+			BufferedImage sprite = spriteManager.getSprite(spellIconItemID, 0);
+			if (sprite != null)
+			{
+				icon = IconOverlay.createIconImage(sprite);
+			}
+			else
+			{
+				throw new UnsupportedOperationException("Unknown spell sprite ID: " + spellIconItemID);
+			}
 		}
 		else if (icon == null)
 		{

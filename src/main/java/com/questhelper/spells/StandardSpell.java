@@ -166,6 +166,12 @@ public enum StandardSpell implements MagicSpell
 	}
 
 	@Override
+	public int getSpriteID()
+	{
+		return spriteID;
+	}
+
+	@Override
 	public Spellbook getSpellbook()
 	{
 		return Spellbook.NORMAL;

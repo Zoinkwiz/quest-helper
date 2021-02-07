@@ -25,8 +25,9 @@
  */
 package com.questhelper.steps;
 
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SpellRequirement;
+import com.questhelper.spells.MagicSpell;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Graphics2D;
@@ -36,7 +37,6 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Setter;
@@ -117,6 +117,16 @@ public class NpcStep extends DetailedQuestStep
 	public void addAlternateNpcs(Integer... alternateNpcIDs)
 	{
 		this.alternateNpcIDs.addAll(Arrays.asList(alternateNpcIDs));
+	}
+
+	public void requireSpellCast(SpellRequirement spellRequirement)
+	{
+		addSpellIcon(spellRequirement.getSpell().getSpriteID());
+	}
+
+	public void requireSpellCast(MagicSpell spell)
+	{
+		addSpellIcon(spell.getSpriteID());
 	}
 
 	public List<Integer> allIds()

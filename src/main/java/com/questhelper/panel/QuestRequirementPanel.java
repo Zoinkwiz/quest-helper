@@ -31,6 +31,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -50,6 +51,10 @@ public class QuestRequirementPanel extends JPanel
 
 	@Getter
 	private final Requirement requirement;
+
+	@Nullable
+	@Getter
+	private JButton infoButton;
 
 	public QuestRequirementPanel(Requirement requirement)
 	{
@@ -84,20 +89,37 @@ public class QuestRequirementPanel extends JPanel
 		}
 	}
 
+	public void setInfoButtonTooltip(String text)
+	{
+		if (infoButton != null)
+		{
+			if (text == null || text.isEmpty())
+			{
+				infoButton.setToolTipText("");
+				infoButton.setVisible(false);
+			}
+			else
+			{
+				String html1 = "<html><body>";
+				String html2 = "</body></html>";
+				text = text.replaceAll("\\n", "<br>");
+				infoButton.setToolTipText(html1 + text + html2);
+			}
+		}
+	}
+
 	private void addButtonToPanel(String tooltipText)
 	{
-		String html1 = "<html><body>";
-		String html2 = "</body></html>";
-		tooltipText = tooltipText.replaceAll("\\n", "<br>");
-		JButton b = new JButton(INFO_ICON);
-		b.setPreferredSize(new Dimension(10, 10));
-		b.setToolTipText(html1 + tooltipText + html2);
-		b.setBorderPainted(false);
-		b.setFocusPainted(false);
-		b.setBorderPainted(false);
-		b.setContentAreaFilled(false);
-		b.setMargin(new Insets(0, 0, 0, 0));
-		add(b);
+
+		infoButton = new JButton(INFO_ICON);
+		infoButton.setPreferredSize(new Dimension(10, 10));
+		setInfoButtonTooltip(tooltipText);
+		infoButton.setBorderPainted(false);
+		infoButton.setFocusPainted(false);
+		infoButton.setBorderPainted(false);
+		infoButton.setContentAreaFilled(false);
+		infoButton.setMargin(new Insets(0, 0, 0, 0));
+		add(infoButton);
 	}
 }
 

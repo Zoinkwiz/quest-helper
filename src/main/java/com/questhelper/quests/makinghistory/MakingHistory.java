@@ -28,8 +28,6 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SpellRequirement;
-import com.questhelper.spells.StandardSpell;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.requirements.conditional.Conditions;

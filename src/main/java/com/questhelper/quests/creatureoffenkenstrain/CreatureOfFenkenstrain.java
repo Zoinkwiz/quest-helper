@@ -319,6 +319,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 		searchForBrush = new ObjectStep(this, ObjectID.CUPBOARD_5156, new WorldPoint(3546, 3564, 0),
 			"Open the cupboard and search it for a brush.", bronzeWire, silverBar);
+		((ObjectStep) searchForBrush).addAlternateObjects(ObjectID.OPEN_CUPBOARD_5157);
 		grabCanes = new ObjectStep(this, ObjectID.PILE_OF_CANES, new WorldPoint(3551, 3564, 0),
 			"Grab 3 canes from the pile.", bronzeWire, silverBar);
 		extendBrush = new DetailedQuestStep(this, "Use all 3 canes on the brush one at a time.", canes.highlighted(),

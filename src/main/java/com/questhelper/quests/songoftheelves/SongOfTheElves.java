@@ -995,7 +995,7 @@ public class SongOfTheElves extends BasicQuestHelper
 			"Board the log raft west of Almera.", rope, iritLeafOrFlowers, cabbage, wineOfZamorakOrZamorakBrew,
 			natureRune, adamantChainbody, blackKnifeOrBlackDagger);
 		useRopeOnRock = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0),
-			"Use a rope on the rock to the south", ropeHighlighted);
+			"Use a rope on the rock to the south.", ropeHighlighted);
 		useRopeOnRock.addIcon(ItemID.ROPE);
 		useRopeOnTree = new ObjectStep(this, ObjectID.DEAD_TREE_2020, new WorldPoint(2512, 3465, 0),
 			"Use a rope on the dead tree.", ropeHighlighted);

@@ -213,7 +213,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		talkToAlmera.addDialogStep("How can I help?");
 		boardRaft = new ObjectStep(this, ObjectID.LOG_RAFT, new WorldPoint(2509, 3494, 0), "Board the log raft west of Almera.");
 		talkToHudon = new NpcStep(this, NpcID.HUDON, new WorldPoint(2511, 3484, 0), "Talk to Hudon.");
-		useRopeOnRock = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the rock to the south", highlightRope);
+		useRopeOnRock = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the rock to" +
+			" the south.", highlightRope);
 		useRopeOnRock.addIcon(ItemID.ROPE);
 		useRopeOnTree = new ObjectStep(this, ObjectID.DEAD_TREE_2020, new WorldPoint(2512, 3465, 0), "Use a rope on the dead tree.", highlightRope);
 		useRopeOnTree.addIcon(ItemID.ROPE);
@@ -235,7 +236,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		getFinalItems = new DetailedQuestStep(this, "Leave Glarial's Tomb and get 6 air, water and earth runes, a rope, glarial's amulet, glarial's urn, a rope, and some food.", airRunes, earthRunes, waterRunes, glarialsAmulet, glarialsUrn, rope);
 
 		boardRaftFinal = new ObjectStep(this, ObjectID.LOG_RAFT, new WorldPoint(2509, 3494, 0), "Board the log raft west of Almera.");
-		useRopeOnRockFinal = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the rock to the south", highlightRope);
+		useRopeOnRockFinal = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the " +
+			"rock to the south.", highlightRope);
 		useRopeOnRockFinal.addIcon(ItemID.ROPE);
 		useRopeOnTreeFinal = new ObjectStep(this, ObjectID.DEAD_TREE_2020, new WorldPoint(2512, 3465, 0), "Use a rope on the dead tree.", highlightRope);
 		useRopeOnTreeFinal.addIcon(ItemID.ROPE);

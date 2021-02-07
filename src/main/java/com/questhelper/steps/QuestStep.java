@@ -208,7 +208,7 @@ public abstract class QuestStep implements Module
 
 		for (WidgetChoiceStep choice : widgetChoices.getChoices())
 		{
-			if (event.getGroupId() == choice.getGroupId())
+			if (event.getGroupId() == choice.getGroupIdForChecking())
 			{
 				clientThread.invokeLater(this::highlightWidgetChoice);
 			}
@@ -286,6 +286,14 @@ public abstract class QuestStep implements Module
 	public void addWidgetChoice(String text, int groupID, int childID)
 	{
 		widgetChoices.addChoice(new WidgetChoiceStep(questHelper.getConfig(), text, groupID, childID));
+	}
+
+	public void addWidgetChoice(String text, int groupID, int childID, int groupIDForChecking)
+	{
+		WidgetChoiceStep newChoice = new WidgetChoiceStep(questHelper.getConfig(), text, groupID, childID);
+		newChoice.setGroupIdForChecking(groupIDForChecking);
+		widgetChoices.addChoice(newChoice);
+
 	}
 
 	public void addWidgetChoice(int id, int groupID, int childID)

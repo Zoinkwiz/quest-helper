@@ -30,7 +30,11 @@ package com.questhelper.banktab;
 import com.google.common.primitives.Shorts;
 import com.questhelper.QuestHelperPlugin;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +47,7 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.FontID;
+import net.runelite.api.FontTypeFace;
 import net.runelite.api.ItemID;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
@@ -64,6 +69,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.FontType;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
@@ -333,6 +339,11 @@ public class QuestBankTab
 			return 0;
 		}
 
+		// Get FontMetrics so we can accurately get font height/width
+		int fontID = FontID.PLAIN_11; // 494
+		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = img.getGraphics();
+		FontMetrics fm = graphics.getFontMetrics(FontType.SMALL.getFont());
 		for (BankTabItem bankTabItem : items)
 		{
 			boolean foundItem = false;
@@ -356,21 +367,22 @@ public class QuestBankTab
 						if (bankTabItem.getQuantity() > 0)
 						{
 							String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
-							int extraLength =
-								QuantityFormatter.quantityToStackSize(widget.getItemQuantity()).length() * 6;
-							int requirementLength = quantityString.length() * 6;
+							int itemStackSizeLength = fm.stringWidth(QuantityFormatter.quantityToStackSize(widget.getItemQuantity()));
+							int requirementLength = fm.stringWidth(quantityString);
 
-							int xPos = point.x + 2 + extraLength;
+							int xPos = point.x + 2 + itemStackSizeLength;
 							int yPos = point.y - 1;
-							if (extraLength + requirementLength > 24)
-							{
+							if (itemStackSizeLength + requirementLength > 24)
+							{ // put text on next line
 								xPos = point.x;
-								yPos = point.y + 9;
+								yPos = point.y + fm.getHeight();
 							}
+
+							Color color = questHelper.getConfig().textHighlightColor();
 
 							addedWidgets.add(createText(itemContainer,
 								"/ " + quantityString,
-								Color.WHITE.getRGB(),
+								color.getRGB(),
 								ITEM_HORIZONTAL_SPACING,
 								TEXT_HEIGHT - 3,
 								xPos,
@@ -400,18 +412,19 @@ public class QuestBankTab
 				if (bankTabItem.getQuantity() > 0)
 				{
 					String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
-					int requirementLength = quantityString.length() * 5;
+					int requirementLength = fm.stringWidth(quantityString);
 					int xPos = adjXOffset + 8;
 					int yPos = adjYOffset - 1;
 					if (requirementLength > 20)
-					{
+					{ // put text on next line
 						xPos = adjXOffset;
-						yPos = adjYOffset + 9;
+						yPos = adjYOffset + fm.getHeight();
 					}
+					Color color = questHelper.getConfig().textHighlightColor();
 
 					addedWidgets.add(createText(itemContainer,
 						"/ " + quantityString,
-						Color.WHITE.getRGB(),
+						color.getRGB(),
 						ITEM_HORIZONTAL_SPACING,
 						TEXT_HEIGHT - 3,
 						xPos,

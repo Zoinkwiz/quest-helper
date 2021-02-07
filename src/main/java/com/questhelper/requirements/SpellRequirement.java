@@ -123,6 +123,11 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	public void requireRunes()
+	{
+		setTablet(-1);
+	}
+
 	public void setNumberOfCasts(int numberOfCasts)
 	{
 		this.numberOfCasts = numberOfCasts;

@@ -196,6 +196,19 @@ public class StandardSpellBuilder
 	}
 
 	/**
+	 * Set a varbit that is not defined via the {@link Varbits} or {@link VarPlayer} enum(s).
+	 *
+	 * @param varbit the varbit to test for
+	 * @param value the value it should be
+	 * @return this
+	 */
+	public StandardSpellBuilder varbit(int varbit, int value)
+	{
+		requirements.add(new VarbitCondition(varbit, value));
+		return this;
+	}
+
+	/**
 	 * @return a new {@link ItemRequirements} containing all this spell information
 	 */
 	public SpellRequirement build()

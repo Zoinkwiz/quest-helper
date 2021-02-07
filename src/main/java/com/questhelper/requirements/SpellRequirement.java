@@ -30,6 +30,7 @@ import com.google.common.base.Predicates;
 import com.questhelper.BankItems;
 import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.conditional.VarplayerCondition;
 import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.spells.MagicSpell;
 import com.questhelper.spells.Rune;
@@ -385,7 +386,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	public String getUpdatedTooltip(Client client, BankItems bankItems)
 	{
 		StringBuilder text = new StringBuilder();
-		setTooltip("This spell requires: ");
 		if (tabletRequirement != null)
 		{
 			AtomicInteger count = new AtomicInteger();
@@ -398,9 +398,10 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			return count.get() > 0 ? text.toString() : null; // no requirements to use a tablet
 		}
 		getNonItemRequirements(this.requirements).stream()
+			.filter(req -> !req.getDisplayText().isEmpty())
 			.filter(req -> !req.check(client))
 			.forEach(req -> text.append(req.getDisplayText()).append("\n"));
-		return text.toString();
+		return text.insert(0, "This spell requires: \n").toString();
 	}
 
 	private List<ItemRequirement> getItemRequirements(List<Requirement> requirements)

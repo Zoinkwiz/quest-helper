@@ -422,7 +422,7 @@ public abstract class QuestStep implements Module
 		{
 			icon = IconOverlay.createIconImage(itemManager.getImage(iconItemID));
 		}
-		else if (spell.getSpriteID() != -1 && icon == null)
+		else if (spell != null && spell.getSpriteID() != -1 && icon == null)
 		{
 			BufferedImage sprite = spriteManager.getSprite(spell.getSpriteID(), 0);
 			if (sprite != null)

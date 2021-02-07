@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class DigStep extends DetailedQuestStep
 {
 	private final ItemRequirement SPADE = new ItemRequirement("Spade", ItemID.SPADE);
-	private Predicate<Item> expectedItemPredicate = i -> i.getId() == -1;
+	private Predicate<Item> expectedItemPredicate = i -> true;
 	private boolean hasExpectedItem = false;
 	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
 	{

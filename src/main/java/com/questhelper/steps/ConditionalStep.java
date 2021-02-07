@@ -25,8 +25,8 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.InitializableRequirement;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +46,6 @@ import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -60,7 +59,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected boolean started = false;
 
-	protected final LinkedHashMap<Conditions, QuestStep> steps;
+	protected final LinkedHashMap<Requirement, QuestStep> steps;
 	protected final List<ChatMessageCondition> chatConditions = new ArrayList<>();
 	protected final List<NpcCondition> npcConditions = new ArrayList<>();
 
@@ -84,47 +83,49 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		this.steps.put(null, step);
 	}
 
-	public void addStep(Conditions conditions, QuestStep step)
+	public void addStep(Requirement requirement, QuestStep step)
 	{
-		this.steps.put(conditions, step);
+		this.steps.put(requirement, step);
 
-		checkForChatConditions(conditions);
-		checkForNpcConditions(conditions);
+		checkForChatConditions(requirement);
+		checkForNpcConditions(requirement);
 	}
 
-	public void addStep(Conditions conditions, QuestStep step, boolean isLockable)
+	public void addStep(Requirement requirement, QuestStep step, boolean isLockable)
 	{
+		step.setLockable(isLockable);
+		this.steps.put(requirement, step);
+
+		checkForChatConditions(requirement);
+		checkForNpcConditions(requirement);
+	}
+
+	public void addConditionalStep(Requirement requirement, QuestStep step)
+	{
+		this.steps.put(new Conditions(requirement), step);
+
+		checkForChatConditions(requirement);
+		checkForNpcConditions(requirement);
+	}
+
+	public void addConditionalStep(Requirement requirement, QuestStep step, boolean isLockable)
+	{
+		Conditions conditions = new Conditions(requirement);
 		step.setLockable(isLockable);
 		this.steps.put(conditions, step);
 
-		checkForChatConditions(conditions);
-		checkForNpcConditions(conditions);
+		checkForChatConditions(requirement);
+		checkForNpcConditions(requirement);
 	}
 
-	public void addStep(ConditionForStep condition, QuestStep step)
+	public void checkForChatConditions(Requirement requirement)
 	{
-		this.steps.put(new Conditions(condition), step);
-
-		checkForChatConditions(condition);
-		checkForNpcConditions(condition);
-	}
-
-	public void addStep(ConditionForStep condition, QuestStep step, boolean isLockable)
-	{
-		Conditions conditions = new Conditions(condition);
-		step.setLockable(isLockable);
-		this.steps.put(conditions, step);
-
-		checkForChatConditions(condition);
-		checkForNpcConditions(condition);
-	}
-
-	public void checkForChatConditions(ConditionForStep condition)
-	{
-		if (condition == null)
+		if (!(requirement instanceof InitializableRequirement))
 		{
 			return;
 		}
+
+		InitializableRequirement condition = (InitializableRequirement) requirement;
 
 		if (condition.getConditions() == null)
 		{
@@ -135,45 +136,38 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 			return;
 		}
-
-		for (ConditionForStep subCondition : condition.getConditions())
-		{
-			checkForChatConditions(subCondition);
-		}
+		condition.getConditions().forEach(this::checkForChatConditions);
 	}
 
-	public void checkForNpcConditions(ConditionForStep condition)
+	public void checkForNpcConditions(Requirement requirement)
 	{
-		if (condition == null)
+		if (!(requirement instanceof InitializableRequirement))
 		{
 			return;
 		}
+
+		InitializableRequirement condition = (InitializableRequirement) requirement;
+
 		if (condition.getConditions().isEmpty())
 		{
-			if (condition.getClass() == NpcCondition.class && !npcConditions.contains(condition))
+			if (condition instanceof NpcCondition && !npcConditions.contains(condition))
 			{
 				npcConditions.add((NpcCondition) condition);
 			}
 		}
 		else
 		{
-			for (ConditionForStep subCondition : condition.getConditions())
-			{
-				checkForNpcConditions(subCondition);
-			}
+			condition.getConditions().forEach(this::checkForNpcConditions);
 		}
 	}
 
 	@Override
 	public void startUp()
 	{
-		for (Conditions conditions : steps.keySet())
-		{
-			if (conditions != null)
-			{
-				conditions.initialize(client);
-			}
-		}
+
+		steps.keySet().stream()
+			.filter(InitializableRequirement.class::isInstance)
+			.forEach(req -> ((InitializableRequirement) req).initialize(client));
 		updateSteps();
 		started = true;
 	}
@@ -202,11 +196,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			steps.keySet().stream()
 				.filter(Objects::nonNull)
-				.forEach(Conditions::loadingHandler);
+				.filter(InitializableRequirement.class::isInstance)
+				.forEach(req -> ((InitializableRequirement) req).updateHandler());
 		}
 	}
 
-	public void addRequirement(AbstractRequirement requirement)
+	public void addRequirement(Requirement requirement)
 	{
 		ArrayUtils.add(requirements, requirement);
 	}
@@ -216,45 +211,33 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			for (ChatMessageCondition step : chatConditions)
-			{
-				step.validateCondition(client, chatMessage.getMessage());
-			}
+			chatConditions.forEach(step -> step.validateCondition(client, chatMessage.getMessage()));
 		}
 	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		for (NpcCondition condition : npcConditions)
-		{
-			condition.checkNpcSpawned(event.getNpc());
-		}
+		npcConditions.forEach(npc -> npc.checkNpcSpawned(event.getNpc()));
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		for (NpcCondition condition : npcConditions)
-		{
-			condition.checkNpcDespawned(event.getNpc());
-		}
+		npcConditions.forEach(npc -> npc.checkNpcDespawned(event.getNpc()));
 	}
 
 	@Subscribe
 	public void onNpcChanged(NpcChanged npcCompositionChanged)
 	{
-		for (NpcCondition condition : npcConditions)
-		{
-			condition.checkNpcChanged(npcCompositionChanged);
-		}
+		npcConditions.forEach(npc -> npc.checkNpcChanged(npcCompositionChanged));
 	}
 
 	protected void updateSteps()
 	{
-		Conditions lastPossibleCondition = null;
+		Requirement lastPossibleCondition = null;
 
-		for (Conditions conditions : steps.keySet())
+		for (Requirement conditions : steps.keySet())
 		{
 			boolean stepIsLocked = steps.get(conditions).isLocked();
 			if (conditions != null && conditions.check(client) && !stepIsLocked)
@@ -377,7 +360,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		return this;
 	}
 
-	public Collection<Conditions> getConditions()
+	public Collection<Requirement> getConditions()
 	{
 		return steps.keySet();
 	}
@@ -395,16 +378,9 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			newStep.setText(text);
 		}
-		for (Conditions conditions : getConditions())
-		{
-			if (conditions == null)
-			{
-				continue;
-			}
-
-			newStep.addStep(conditions, steps.get(conditions));
-		}
-
+		getConditions().stream()
+			.filter(Objects::nonNull)
+			.forEach(conditions -> newStep.addStep(conditions, steps.get(conditions)));
 		return newStep;
 	}
 }

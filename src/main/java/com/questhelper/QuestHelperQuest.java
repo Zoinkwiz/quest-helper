@@ -257,8 +257,6 @@ public enum QuestHelperQuest
 
 	QuestHelperQuest(int id, String name, List<String> keywords, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
 	{
-		System.out.println("BEEP");
-		System.out.println(Stream.concat(titleToKeywords(name).stream(), keywords.stream()).collect(Collectors.toList()));
 		this.id = id;
 		this.name = name;
 		this.keywords = Stream.concat(titleToKeywords(name).stream(), keywords.stream()).collect(Collectors.toList());

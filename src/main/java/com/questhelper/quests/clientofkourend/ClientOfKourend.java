@@ -25,23 +25,23 @@
 package com.questhelper.quests.clientofkourend;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -57,7 +57,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	//Other items used
 	ItemRequirement enchantedScroll, enchantedQuill, mysteriousOrb;
 
-	ConditionForStep hasEnchantedScroll, hasEnchantedQuill, hasMysteriousOrb, hasFeather, talkedToLeenz, talkedToHorace, talkedToJennifer, talkedToMunty, talkedToRegath;
+	Requirement hasEnchantedScroll, hasEnchantedQuill, hasMysteriousOrb, hasFeather, talkedToLeenz, talkedToHorace, talkedToJennifer, talkedToMunty, talkedToRegath;
 
 	QuestStep talkToVeos, useFeatherOnScroll, talkToLeenz, talkToHorace, talkToJennifer, talkToMunty, talkToRegath, returnToVeos, goToAltar, finishQuest;
 
@@ -109,15 +109,15 @@ public class ClientOfKourend extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnchantedQuill = new ItemRequirementCondition(enchantedQuill);
-		hasEnchantedScroll = new ItemRequirementCondition(enchantedScroll);
-		hasFeather = new ItemRequirementCondition(feather);
-		hasMysteriousOrb = new ItemRequirementCondition(mysteriousOrb);
-		talkedToLeenz = new VarbitCondition(5620, 1);
-		talkedToRegath = new VarbitCondition(5621, 1);
-		talkedToMunty = new VarbitCondition(5622, 1);
-		talkedToJennifer = new VarbitCondition(5623, 1);
-		talkedToHorace = new VarbitCondition(5624, 1);
+		hasEnchantedQuill = new ItemRequirements(enchantedQuill);
+		hasEnchantedScroll = new ItemRequirements(enchantedScroll);
+		hasFeather = new ItemRequirements(feather);
+		hasMysteriousOrb = new ItemRequirements(mysteriousOrb);
+		talkedToLeenz = new VarbitRequirement(5620, 1);
+		talkedToRegath = new VarbitRequirement(5621, 1);
+		talkedToMunty = new VarbitRequirement(5622, 1);
+		talkedToJennifer = new VarbitRequirement(5623, 1);
+		talkedToHorace = new VarbitRequirement(5624, 1);
 	}
 
 	public void setupSteps()

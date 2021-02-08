@@ -25,20 +25,26 @@
 package com.questhelper.quests.mourningsendpartii;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,14 +58,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -71,12 +69,12 @@ public class MourningsEndPartII extends BasicQuestHelper
 	ItemRequirement deathTalisman, deathTalismanHeader, mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, chisel, rope, ropeHighlight, prayerPotions, food, newKey, edernsJournal,
 		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, deathTalismanNote, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight;
 
-	ConditionForStep inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, hasEdernsJournal, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
+	Requirement inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, hasEdernsJournal, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
 		hasBlackenedCrystal, knowToUseCrystal, inBlueRoom, inCyanRoom, solvedPuzzle1, solvedPuzzle2, solvedPuzzle3, solvedPuzzle4, solvedPuzzle5, dispenserEmpty, inYellowRoom, usedRope,
 		placedBlueCrystalInJumpRoom, blueCrystalNotPlaced, inCentralArea, inDeathAltarArea, inBehindBarrierCentralArea, enteredDeathArea, hasDeathTalisman, inIbanRoom, inPassF1, inPassF0,
 		inWellEntrance, receivedList, inDeathAltar, hasChargedCrystal, hasMirror;
 
-	ConditionForStep f0r4c0SB,
+	Requirement f0r4c0SB,
 		f0r1c2SG, f0r1c2U,
 		f0r0c2EG,
 		f0r0c4NB,
@@ -88,7 +86,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		f0r1c4U,
 		redAtAltar, redAtDoor;
 
-	ConditionForStep f1r0c3EY,
+	Requirement f1r0c3EY,
 		f1r1c3SY,
 		startColumnN,
 		f1r3c2NC, f1r3c2NY,
@@ -97,7 +95,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		f1r4c2EC, f1r4c2EY,
 		f1r4c3EG, f1r4c3UC, f1r4c3UY;
 
-	ConditionForStep f2r4c0DB, f2r4c0SR,
+	Requirement f2r4c0DB, f2r4c0SR,
 		f2r4c3WY, f2r4c3WC,
 		f2r0c0DR,
 		f2r2c0ER, f2r2c0SNotRed,
@@ -469,60 +467,60 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inMournerBasement = new ZoneCondition(mournerBasement);
-		inMournerHQ = new ZoneCondition(mournerHQ, mournerHQ2);
-		inCave = new ZoneCondition(cave);
+		inMournerBasement = new ZoneRequirement(mournerBasement);
+		inMournerHQ = new ZoneRequirement(mournerHQ, mournerHQ2);
+		inCave = new ZoneRequirement(cave);
 
-		inTempleF0 = new ZoneCondition(templeF0);
-		inTempleF1 = new ZoneCondition(templeF1);
-		inTempleF2 = new ZoneCondition(northTempleF2, southTempleF2);
-		inTempleF2NorthRoom = new ZoneCondition(northRoomF2);
+		inTempleF0 = new ZoneRequirement(templeF0);
+		inTempleF1 = new ZoneRequirement(templeF1);
+		inTempleF2 = new ZoneRequirement(northTempleF2, southTempleF2);
+		inTempleF2NorthRoom = new ZoneRequirement(northRoomF2);
 
-		inCaveOrF0 = new ZoneCondition(cave, templeF0);
-		inTempleStairSquare = new ZoneCondition(templeStairSquare);
+		inCaveOrF0 = new ZoneRequirement(cave, templeF0);
+		inTempleStairSquare = new ZoneRequirement(templeStairSquare);
 
-		inBlueRoom = new ZoneCondition(blueRoom);
-		inYellowRoom = new ZoneCondition(yellowRoom1, yellowRoom2);
-		inCyanRoom = new ZoneCondition(cyanRoom1, cyanRoom2);
+		inBlueRoom = new ZoneRequirement(blueRoom);
+		inYellowRoom = new ZoneRequirement(yellowRoom1, yellowRoom2);
+		inCyanRoom = new ZoneRequirement(cyanRoom1, cyanRoom2);
 
-		inNorthF2 = new ZoneCondition(northTempleF2);
-		inSouthF2 = new ZoneCondition(southTempleF2);
+		inNorthF2 = new ZoneRequirement(northTempleF2);
+		inSouthF2 = new ZoneRequirement(southTempleF2);
 
-		inCentralArea = new ZoneCondition(centralArea);
-		inDeathAltarArea = new ZoneCondition(deathAltarArea);
+		inCentralArea = new ZoneRequirement(centralArea);
+		inDeathAltarArea = new ZoneRequirement(deathAltarArea);
 
-		inPassF0 = new ZoneCondition(passF0);
-		inPassF1 = new ZoneCondition(passF1);
+		inPassF0 = new ZoneRequirement(passF0);
+		inPassF1 = new ZoneRequirement(passF1);
 
-		inIbanRoom = new ZoneCondition(ibanRoom);
-		inWellEntrance = new ZoneCondition(wellEntrance);
+		inIbanRoom = new ZoneRequirement(ibanRoom);
+		inWellEntrance = new ZoneRequirement(wellEntrance);
 
-		hasEdernsJournal = new ItemRequirementCondition(edernsJournal);
-		hasBlackenedCrystal = new ItemRequirementCondition(blackenedCrystal);
-		hasDeathTalisman = new ItemRequirementCondition(deathTalisman);
-		hasChargedCrystal = new ItemRequirementCondition(chargedCrystal);
+		hasEdernsJournal = new ItemRequirements(edernsJournal);
+		hasBlackenedCrystal = new ItemRequirements(blackenedCrystal);
+		hasDeathTalisman = new ItemRequirements(deathTalisman);
+		hasChargedCrystal = new ItemRequirements(chargedCrystal);
 
-		inBehindBarrierCentralArea = new ZoneCondition(centralAreaBehindBarrier);
+		inBehindBarrierCentralArea = new ZoneRequirement(centralAreaBehindBarrier);
 
-		inDeathAltar = new ZoneCondition(deathAltar);
+		inDeathAltar = new ZoneRequirement(deathAltar);
 
-		dispenserEmpty = new VarbitCondition(1106, 0);
+		dispenserEmpty = new VarbitRequirement(1106, 0);
 
-		hasMirror = new ItemRequirementCondition(mirror);
+		hasMirror = new ItemRequirements(mirror);
 
-		usedRope = new VarbitCondition(1328, 1);
+		usedRope = new VarbitRequirement(1328, 1);
 
-		knowToUseCrystal = new VarbitCondition(1104, 1);
+		knowToUseCrystal = new VarbitRequirement(1104, 1);
 
-		solvedPuzzle1 = new VarbitCondition(1113, 1);
-		solvedPuzzle2 = new VarbitCondition(1114, 1);
-		solvedPuzzle3 = new VarbitCondition(1116, 1);
-		solvedPuzzle4 = new VarbitCondition(1115, 1);
-		solvedPuzzle5 = new VarbitCondition(1117, 1);
+		solvedPuzzle1 = new VarbitRequirement(1113, 1);
+		solvedPuzzle2 = new VarbitRequirement(1114, 1);
+		solvedPuzzle3 = new VarbitRequirement(1116, 1);
+		solvedPuzzle4 = new VarbitRequirement(1115, 1);
+		solvedPuzzle5 = new VarbitRequirement(1117, 1);
 
-		enteredDeathArea = new VarbitCondition(1330, 1);
+		enteredDeathArea = new VarbitRequirement(1330, 1);
 
-		receivedList = new VarbitCondition(1327, 1);
+		receivedList = new VarbitRequirement(1327, 1);
 
 		final int RED = 1;
 		final int YELLOW = 2;
@@ -532,58 +530,58 @@ public class MourningsEndPartII extends BasicQuestHelper
 		final int WHITE = 7;
 
 		// Floor 0
-		f0r3c4W = new VarbitCondition(1169, WHITE);
-		f0r3c3F = new Conditions(new VarbitCondition(1170, WHITE), new VarbitCondition(1167, WHITE));
-		f0r4c3U = new VarbitCondition(1183, WHITE);
-		f0r1c3F = new Conditions(new VarbitCondition(1173, WHITE), new VarbitCondition(1171, WHITE));
-		f0r1c2U = new VarbitCondition(1221, GREEN);
-		f0r1c4U = new VarbitCondition(1189, WHITE);
-		f0r4c0SB = new VarbitCondition(1164, BLUE);
-		f0r1c2SG = new VarbitCondition(1172, GREEN);
-		f0r0c2EG = new VarbitCondition(1177, GREEN);
-		f0r0c4NB = new VarbitCondition(1179, BLUE);
+		f0r3c4W = new VarbitRequirement(1169, WHITE);
+		f0r3c3F = new Conditions(new VarbitRequirement(1170, WHITE), new VarbitRequirement(1167, WHITE));
+		f0r4c3U = new VarbitRequirement(1183, WHITE);
+		f0r1c3F = new Conditions(new VarbitRequirement(1173, WHITE), new VarbitRequirement(1171, WHITE));
+		f0r1c2U = new VarbitRequirement(1221, GREEN);
+		f0r1c4U = new VarbitRequirement(1189, WHITE);
+		f0r4c0SB = new VarbitRequirement(1164, BLUE);
+		f0r1c2SG = new VarbitRequirement(1172, GREEN);
+		f0r0c2EG = new VarbitRequirement(1177, GREEN);
+		f0r0c4NB = new VarbitRequirement(1179, BLUE);
 
 		// Floor 1
-		f1r0c3EY = new VarbitCondition(1209, YELLOW);
-		f1r1c3SY = new VarbitCondition(1207, YELLOW);
-		f1r3c2NC = new VarbitCondition(1196, CYAN);
-		f1r3c2NY = new VarbitCondition(1196, YELLOW);
-		f1r3c3WC = new VarbitCondition(1199, CYAN);
-		f1r3c3WY = new VarbitCondition(1199, YELLOW);
-		f1r3c3S = new VarbitCondition(1202, WHITE);
-		f1r3c3U = new VarbitCondition(1217, WHITE);
-		f1r3c4W = new VarbitCondition(1201, WHITE);
-		f1r3c4D = new VarbitCondition(1186, WHITE);
-		f1r4c2EC = new VarbitCondition(1195, CYAN);
-		f1r4c2EY = new VarbitCondition(1195, YELLOW);
-		f1r4c3EG = new VarbitCondition(1197, GREEN);
-		f1r4c3UC = new VarbitCondition(1215, CYAN);
-		f1r4c3UY = new VarbitCondition(1215, YELLOW);
-		startColumnN = new VarbitCondition(1203, WHITE);
-		redAtDoor = new VarbitCondition(1249, RED);
-		redAtAltar = new VarbitCondition(1250, RED);
+		f1r0c3EY = new VarbitRequirement(1209, YELLOW);
+		f1r1c3SY = new VarbitRequirement(1207, YELLOW);
+		f1r3c2NC = new VarbitRequirement(1196, CYAN);
+		f1r3c2NY = new VarbitRequirement(1196, YELLOW);
+		f1r3c3WC = new VarbitRequirement(1199, CYAN);
+		f1r3c3WY = new VarbitRequirement(1199, YELLOW);
+		f1r3c3S = new VarbitRequirement(1202, WHITE);
+		f1r3c3U = new VarbitRequirement(1217, WHITE);
+		f1r3c4W = new VarbitRequirement(1201, WHITE);
+		f1r3c4D = new VarbitRequirement(1186, WHITE);
+		f1r4c2EC = new VarbitRequirement(1195, CYAN);
+		f1r4c2EY = new VarbitRequirement(1195, YELLOW);
+		f1r4c3EG = new VarbitRequirement(1197, GREEN);
+		f1r4c3UC = new VarbitRequirement(1215, CYAN);
+		f1r4c3UY = new VarbitRequirement(1215, YELLOW);
+		startColumnN = new VarbitRequirement(1203, WHITE);
+		redAtDoor = new VarbitRequirement(1249, RED);
+		redAtAltar = new VarbitRequirement(1250, RED);
 
 		// Floor 2
-		f2r0c0DR = new VarbitCondition(1190, RED);
-		f2r2c0SNotRed = new VarbitCondition(1240, RED, Operation.NOT_EQUAL);
-		f2r3c3S = new VarbitCondition(1238, WHITE);
-		f2r4c3WC = new VarbitCondition(1230, CYAN);
-		f2r4c3WY = new VarbitCondition(1230, YELLOW);
-		f2r4c0DB = new VarbitCondition(1181, BLUE);
-		f2r4c0SR = new VarbitCondition(1229, RED);
-		f2r1c3F = new Conditions(new VarbitCondition(1244, WHITE), new VarbitCondition(1241, 7), new VarbitCondition(1245, WHITE));
-		f2r1c2D = new VarbitCondition(1221, WHITE);
-		f2r0c3E = new VarbitCondition(1247, WHITE);
-		f2r1c2LG = new VarbitCondition(1243, GREEN);
-		f2r1c4L = new VarbitCondition(1244, WHITE);
-		f2r1c3N = new VarbitCondition(1238, WHITE);
-		f2r3c3W = new VarbitCondition(1234, WHITE);
-		f2r3c2WB = new VarbitCondition(1235, BLUE);
-		f2r2c0ER = new VarbitCondition(1239, RED);
-		f2r0c4D = new VarbitCondition(1193, BLUE);
-		blueCrystalNotPlaced = new VarbitCondition(1193, WHITE);
-		placedBlueCrystalInJumpRoom = new Conditions(true, LogicType.OR, f2r0c4D, new Conditions(LogicType.AND, inBlueRoom, new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You place the blue crystal in the pillar.")));
-		cyanDoorOpen = new VarbitCondition(1176, RED);
+		f2r0c0DR = new VarbitRequirement(1190, RED);
+		f2r2c0SNotRed = new VarbitRequirement(1240, RED, Operation.NOT_EQUAL);
+		f2r3c3S = new VarbitRequirement(1238, WHITE);
+		f2r4c3WC = new VarbitRequirement(1230, CYAN);
+		f2r4c3WY = new VarbitRequirement(1230, YELLOW);
+		f2r4c0DB = new VarbitRequirement(1181, BLUE);
+		f2r4c0SR = new VarbitRequirement(1229, RED);
+		f2r1c3F = new Conditions(new VarbitRequirement(1244, WHITE), new VarbitRequirement(1241, 7), new VarbitRequirement(1245, WHITE));
+		f2r1c2D = new VarbitRequirement(1221, WHITE);
+		f2r0c3E = new VarbitRequirement(1247, WHITE);
+		f2r1c2LG = new VarbitRequirement(1243, GREEN);
+		f2r1c4L = new VarbitRequirement(1244, WHITE);
+		f2r1c3N = new VarbitRequirement(1238, WHITE);
+		f2r3c3W = new VarbitRequirement(1234, WHITE);
+		f2r3c2WB = new VarbitRequirement(1235, BLUE);
+		f2r2c0ER = new VarbitRequirement(1239, RED);
+		f2r0c4D = new VarbitRequirement(1193, BLUE);
+		blueCrystalNotPlaced = new VarbitRequirement(1193, WHITE);
+		placedBlueCrystalInJumpRoom = new Conditions(true, LogicType.OR, f2r0c4D, new Conditions(LogicType.AND, inBlueRoom, new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You place the blue crystal in the pillar.")));
+		cyanDoorOpen = new VarbitRequirement(1176, RED);
 	}
 
 	public void loadZones()

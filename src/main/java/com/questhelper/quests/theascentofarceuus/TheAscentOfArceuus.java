@@ -32,20 +32,19 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.FavourRequirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.FavourRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.NpcHintArrowCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.player.InInstanceRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -68,7 +67,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	// Recommended
 	ItemRequirement combatGear, dramenStaff, battlefrontTeleports2, xericsTalisman, skillsNecklace;
 
-	ConditionForStep inTowerInstance, inTowerF1, inKaruulm, inCastle, foundTrack1, foundTrack2, foundTrack3,
+	Requirement inTowerInstance, inTowerF1, inKaruulm, inCastle, foundTrack1, foundTrack2, foundTrack3,
 		foundTrack4, foundTrack5, trappedSoulNearby;
 
 	QuestStep talkToMori, goUpToAndrews, talkToAndrews, returnToMori, enterTowerOfMagic, killTormentedSouls,
@@ -160,18 +159,18 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inTowerInstance = new Conditions(new InInstanceCondition(), new ZoneCondition(towerF0));
-		inTowerF1 = new ZoneCondition(towerF1);
-		inCastle = new ZoneCondition(castle);
-		inKaruulm = new ZoneCondition(karuulm);
+		inTowerInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(towerF0));
+		inTowerF1 = new ZoneRequirement(towerF1);
+		inCastle = new ZoneRequirement(castle);
+		inKaruulm = new ZoneRequirement(karuulm);
 
-		foundTrack1 = new VarbitCondition(7860, 1);
-		foundTrack2 = new VarbitCondition(7861, 1);
-		foundTrack3 = new VarbitCondition(7862, 1);
-		foundTrack4 = new VarbitCondition(7863, 1);
-		foundTrack5 = new VarbitCondition(7864, 1);
+		foundTrack1 = new VarbitRequirement(7860, 1);
+		foundTrack2 = new VarbitRequirement(7861, 1);
+		foundTrack3 = new VarbitRequirement(7862, 1);
+		foundTrack4 = new VarbitRequirement(7863, 1);
+		foundTrack5 = new VarbitRequirement(7864, 1);
 
-		trappedSoulNearby = new NpcHintArrowCondition(NpcID.TRAPPED_SOUL);
+		trappedSoulNearby = new NpcHintArrowRequirement(NpcID.TRAPPED_SOUL);
 		// Inspected grave:
 		// 7859 0->1
 		// 7856 8->9

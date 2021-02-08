@@ -25,20 +25,26 @@
 package com.questhelper.quests.bigchompybirdhunting;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.NpcHintArrowCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,13 +57,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -71,7 +70,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted,
 		seasonedChompy, bellow;
 
-	ConditionForStep inCave, hasLogs, hasShafts, hasFlightedShafts, hasTips, hasArrows, hasFullBellow, hasBloatedToad,
+	Requirement inCave, hasLogs, hasShafts, hasFlightedShafts, hasTips, hasArrows, hasFullBellow, hasBloatedToad,
 		hasOgreBow, chompyNearby, deadChompyNearby, rantzWantsOnion, rantzWantsPotato, knowWhatRantzWants, bugsWantsEqua,
 		bugsWantsCabbage, knowWhatBugsWants, fycieWantsDoogle, fycieWantsTomato, knowWhatFycieWants, hasOnion, hasTomato,
 		hasPotato, hasDoogle, hasEqua, hasCabbage, hasRantzItem, hasFycieItem, hasBugsItem, hasBellows;
@@ -219,39 +218,39 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCave = new ZoneCondition(cave);
+		inCave = new ZoneRequirement(cave);
 
-		hasLogs = new ItemRequirementCondition(acheyLogs);
-		hasShafts = new ItemRequirementCondition(shaftsHighlighted);
-		hasFlightedShafts = new ItemRequirementCondition(flightedArrowsHighlighted);
-		hasTips = new ItemRequirementCondition(tipsHighlighted);
-		hasArrows = new ItemRequirementCondition(ogreArrows6Highlighted);
-		hasFullBellow = new ItemRequirementCondition(fullBellow);
-		hasBellows = new ItemRequirementCondition(bellow);
-		hasBloatedToad = new ItemRequirementCondition(bloatedToad);
-		hasOgreBow = new ItemRequirementCondition(ogreBow);
+		hasLogs = new ItemRequirements(acheyLogs);
+		hasShafts = new ItemRequirements(shaftsHighlighted);
+		hasFlightedShafts = new ItemRequirements(flightedArrowsHighlighted);
+		hasTips = new ItemRequirements(tipsHighlighted);
+		hasArrows = new ItemRequirements(ogreArrows6Highlighted);
+		hasFullBellow = new ItemRequirements(fullBellow);
+		hasBellows = new ItemRequirements(bellow);
+		hasBloatedToad = new ItemRequirements(bloatedToad);
+		hasOgreBow = new ItemRequirements(ogreBow);
 
-		chompyNearby = new NpcHintArrowCondition(NpcID.CHOMPY_BIRD);
+		chompyNearby = new NpcHintArrowRequirement(NpcID.CHOMPY_BIRD);
 		deadChompyNearby = new NpcCondition(NpcID.CHOMPY_BIRD_1476);
 
-		rantzWantsOnion = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "wants Onion wiv mine"));
-		rantzWantsPotato = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "wants Potato wiv mine"));
+		rantzWantsOnion = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "wants Onion wiv mine"));
+		rantzWantsPotato = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "wants Potato wiv mine"));
 		knowWhatRantzWants = new Conditions(LogicType.OR, rantzWantsOnion, rantzWantsPotato);
 
-		bugsWantsCabbage = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "has to have cabbage wiv mine"));
-		bugsWantsEqua = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "has to have equa leaves wiv mine"));
+		bugsWantsCabbage = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "has to have cabbage wiv mine"));
+		bugsWantsEqua = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "has to have equa leaves wiv mine"));
 		knowWhatBugsWants = new Conditions(LogicType.OR, bugsWantsCabbage, bugsWantsEqua);
 
-		fycieWantsTomato = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Me's wants tomato wiv mine!"));
-		fycieWantsDoogle = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Me's wants doogle leaves wiv mine!"));
+		fycieWantsTomato = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Me's wants tomato wiv mine!"));
+		fycieWantsDoogle = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Me's wants doogle leaves wiv mine!"));
 		knowWhatFycieWants = new Conditions(LogicType.OR, fycieWantsTomato, fycieWantsDoogle);
 
-		hasOnion = new ItemRequirementCondition(onion);
-		hasTomato = new ItemRequirementCondition(tomato);
-		hasPotato = new ItemRequirementCondition(potato);
-		hasDoogle = new ItemRequirementCondition(doogle);
-		hasEqua = new ItemRequirementCondition(equa);
-		hasCabbage = new ItemRequirementCondition(cabbage);
+		hasOnion = new ItemRequirements(onion);
+		hasTomato = new ItemRequirements(tomato);
+		hasPotato = new ItemRequirements(potato);
+		hasDoogle = new ItemRequirements(doogle);
+		hasEqua = new ItemRequirements(equa);
+		hasCabbage = new ItemRequirements(cabbage);
 
 		hasRantzItem = new Conditions(LogicType.OR,
 			new Conditions(rantzWantsOnion, hasOnion),

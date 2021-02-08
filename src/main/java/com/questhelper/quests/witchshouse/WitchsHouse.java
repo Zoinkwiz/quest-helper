@@ -24,28 +24,27 @@
  */
 package com.questhelper.quests.witchshouse;
 
-import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.VarplayerCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,7 +69,7 @@ public class WitchsHouse extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement armourAndWeapon;
 
-	ConditionForStep hasKey, hasMagnet, inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
+	Requirement hasKey, hasMagnet, inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
 		ratHasMagnet, hasShedKey, inShed, hasBall, experimentNearby;
 
 	QuestStep talkToBoy, getKey, goDownstairs, enterGate, goDownstairsFromTop, openCupboardAndLoot, openCupboardAndLoot2, goBackUpstairs, useCheeseOnHole,
@@ -159,23 +158,23 @@ public class WitchsHouse extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasMagnet = new ItemRequirementCondition(magnet);
-		hasKey = new ItemRequirementCondition(houseKey);
-		inHouse = new ZoneCondition(house);
-		inUpstairsHouse = new ZoneCondition(upstairsHouse);
-		inDownstairsHouseWest = new ZoneCondition(downstairsHouseWest);
-		inDownstairsHouseEast = new ZoneCondition(downstairsHouseEast);
-		inDownstairsHouse = new ZoneCondition(downstairsHouseEast, downstairsHouseWest);
-		inHouseOrGarden = new ZoneCondition(house, garden1, garden2, garden3);
-		ratHasMagnet = new VarplayerCondition(226, 3);
-		hasShedKey = new ItemRequirementCondition(shedKey);
-		inShed = new ZoneCondition(shed);
+		hasMagnet = new ItemRequirements(magnet);
+		hasKey = new ItemRequirements(houseKey);
+		inHouse = new ZoneRequirement(house);
+		inUpstairsHouse = new ZoneRequirement(upstairsHouse);
+		inDownstairsHouseWest = new ZoneRequirement(downstairsHouseWest);
+		inDownstairsHouseEast = new ZoneRequirement(downstairsHouseEast);
+		inDownstairsHouse = new ZoneRequirement(downstairsHouseEast, downstairsHouseWest);
+		inHouseOrGarden = new ZoneRequirement(house, garden1, garden2, garden3);
+		ratHasMagnet = new VarplayerRequirement(226, 3);
+		hasShedKey = new ItemRequirements(shedKey);
+		inShed = new ZoneRequirement(shed);
 		experimentNearby = new Conditions(LogicType.OR,
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT),
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT_SECOND_FORM),
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT_THIRD_FORM),
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT_FOURTH_FORM));
-		hasBall = new ItemRequirementCondition(ball);
+		hasBall = new ItemRequirements(ball);
 	}
 
 	public void setupSteps()

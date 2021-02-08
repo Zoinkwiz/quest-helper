@@ -27,16 +27,20 @@
 package com.questhelper.requirements.util;
 
 import java.util.function.BiFunction;
+import lombok.Getter;
 
 public enum Operation
 {
-	LESS_EQUAL((x,y) -> x <= y),
-	EQUAL(Integer::equals),
-	GREATER_EQUAL((x,y) -> x >= y),
-	NOT_EQUAL((x,y) -> !x.equals(y));
+	LESS_EQUAL("<=", (x,y) -> x <= y),
+	EQUAL("==", Integer::equals),
+	GREATER_EQUAL(">=", (x,y) -> x >= y),
+	NOT_EQUAL("=/=", (x,y) -> !x.equals(y));
 
 	private final BiFunction<Integer, Integer, Boolean> operation;
-	Operation(BiFunction<Integer, Integer, Boolean> operation) {
+	@Getter
+	private String displayText;
+	Operation(String displayText, BiFunction<Integer, Integer, Boolean> operation) {
+		this.displayText = displayText;
 		this.operation = operation;
 	}
 

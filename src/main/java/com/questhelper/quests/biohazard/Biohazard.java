@@ -24,26 +24,25 @@
  */
 package com.questhelper.quests.biohazard;
 
-import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,7 +69,7 @@ public class Biohazard extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement teleportVarrock, teleportArdougne, teleportRimmington;
 
-	ConditionForStep hasBirdFeed, hasPigeonCage, inMournerBackyard, inWestArdougne, hasRottenApple, hasDistillator,
+	Requirement hasBirdFeed, hasPigeonCage, inMournerBackyard, inWestArdougne, hasRottenApple, hasDistillator,
 		inMournerBuilding, upstairsInMournerBuilding, hasMedicalGown, hasKey, hasLiquidHoney, hasEthenea, hasBroline, hasChemicals, inVarrockSouthEast,
 		hasPriestSet, isUpstairsArdougneCastle;
 
@@ -211,23 +210,23 @@ public class Biohazard extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasPigeonCage = new ItemRequirementCondition(birdCage);
-		hasBirdFeed = new ItemRequirementCondition(birdFeed);
-		hasRottenApple = new ItemRequirementCondition(rottenApple);
-		inWestArdougne = new ZoneCondition(westArdougne1, westArdougne2, westArdougne3);
-		inMournerBackyard = new ZoneCondition(mournerBackyard);
-		hasMedicalGown = new ItemRequirementCondition(medicalGown);
-		inMournerBuilding = new ZoneCondition(mournerBuilding1, mournerBuilding2);
-		upstairsInMournerBuilding = new ZoneCondition(mournersBuildingUpstairs);
-		hasKey = new ItemRequirementCondition(key);
-		hasDistillator = new ItemRequirementCondition(distillator);
-		hasLiquidHoney = new ItemRequirementCondition(liquidHoney);
-		hasEthenea = new ItemRequirementCondition(ethenea);
-		hasBroline = new ItemRequirementCondition(sulphuricBroline);
-		hasChemicals = new ItemRequirementCondition(LogicType.OR, ethenea, liquidHoney, sulphuricBroline);
-		inVarrockSouthEast = new ZoneCondition(varrockSouthEast);
-		hasPriestSet = new ItemRequirementCondition(priestGownBottom, priestGownTop);
-		isUpstairsArdougneCastle = new ZoneCondition(upstairsArdougneCastle);
+		hasPigeonCage = new ItemRequirements(birdCage);
+		hasBirdFeed = new ItemRequirements(birdFeed);
+		hasRottenApple = new ItemRequirements(rottenApple);
+		inWestArdougne = new ZoneRequirement(westArdougne1, westArdougne2, westArdougne3);
+		inMournerBackyard = new ZoneRequirement(mournerBackyard);
+		hasMedicalGown = new ItemRequirements(medicalGown);
+		inMournerBuilding = new ZoneRequirement(mournerBuilding1, mournerBuilding2);
+		upstairsInMournerBuilding = new ZoneRequirement(mournersBuildingUpstairs);
+		hasKey = new ItemRequirements(key);
+		hasDistillator = new ItemRequirements(distillator);
+		hasLiquidHoney = new ItemRequirements(liquidHoney);
+		hasEthenea = new ItemRequirements(ethenea);
+		hasBroline = new ItemRequirements(sulphuricBroline);
+		hasChemicals = new ItemRequirements(LogicType.OR, "", ethenea, liquidHoney, sulphuricBroline);
+		inVarrockSouthEast = new ZoneRequirement(varrockSouthEast);
+		hasPriestSet = new ItemRequirements(priestGownBottom, priestGownTop);
+		isUpstairsArdougneCastle = new ZoneRequirement(upstairsArdougneCastle);
 	}
 
 	public void setupSteps()

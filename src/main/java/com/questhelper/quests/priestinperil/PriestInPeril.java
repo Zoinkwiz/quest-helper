@@ -30,18 +30,17 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +64,7 @@ public class PriestInPeril extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement runePouches, varrockTeleport;
 
-	ConditionForStep inUnderground, hasGoldenOrIronKey, inTempleGroundFloor, inTemple, inTempleFirstFloor, inTempleSecondFloor, hasBlessedOrMurkyWater, hasIronKey,
+	Requirement inUnderground, hasGoldenOrIronKey, inTempleGroundFloor, inTemple, inTempleFirstFloor, inTempleSecondFloor, hasBlessedOrMurkyWater, hasIronKey,
 		hasBlessedWater;
 
 	QuestStep talkToRoald, goToTemple, goDownToDog, killTheDog, climbUpAfterKillingDog, returnToKingRoald, returnToTemple, killMonk, talkToDrezel,
@@ -239,16 +238,16 @@ public class PriestInPeril extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inUnderground = new ZoneCondition(underground);
-		inTempleGroundFloor = new ZoneCondition(temple1, temple2, temple3, temple4, temple5, temple6);
-		inTempleFirstFloor = new ZoneCondition(templeFloorOne);
-		inTempleSecondFloor = new ZoneCondition(templeFloorTwo);
-		inTemple = new ZoneCondition(temple1, temple2, temple3, temple4, temple5, temple6, templeFloorOne, templeFloorTwo);
+		inUnderground = new ZoneRequirement(underground);
+		inTempleGroundFloor = new ZoneRequirement(temple1, temple2, temple3, temple4, temple5, temple6);
+		inTempleFirstFloor = new ZoneRequirement(templeFloorOne);
+		inTempleSecondFloor = new ZoneRequirement(templeFloorTwo);
+		inTemple = new ZoneRequirement(temple1, temple2, temple3, temple4, temple5, temple6, templeFloorOne, templeFloorTwo);
 
-		hasIronKey = new ItemRequirementCondition(ironKey);
-		hasGoldenOrIronKey = new Conditions(LogicType.OR, new ItemRequirementCondition(goldenKey), hasIronKey);
-		hasBlessedOrMurkyWater = new ItemRequirementCondition(murkyWater);
-		hasBlessedWater = new ItemRequirementCondition(blessedWaterHighlighted);
+		hasIronKey = new ItemRequirements(ironKey);
+		hasGoldenOrIronKey = new Conditions(LogicType.OR, new ItemRequirements(goldenKey), hasIronKey);
+		hasBlessedOrMurkyWater = new ItemRequirements(murkyWater);
+		hasBlessedWater = new ItemRequirements(blessedWaterHighlighted);
 	}
 
 	public void setupSteps()

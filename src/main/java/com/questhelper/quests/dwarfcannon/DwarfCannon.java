@@ -1,15 +1,31 @@
 package com.questhelper.quests.dwarfcannon;
 
-import com.questhelper.*;
-import com.questhelper.steps.*;
-import com.questhelper.requirements.conditional.*;
-
-import java.util.*;
-
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import net.runelite.api.*;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -24,7 +40,7 @@ public class DwarfCannon extends BasicQuestHelper
 	//Items Required
 	ItemRequirement hammer, railing, dwarfRemains, toolkit, cannonballMould, nulodionsNotes;
 
-	ConditionForStep upTower1, upTower2, inCave, bar1, bar2, bar3, bar4, bar5, bar6, hasRailings, hasHammer, hasRemains, nearLawgof, hasToolkit, springFixed, safetyFixed, cannonFixed, hasCannonballMould, hasNulodionsNotes;
+	Requirement upTower1, upTower2, inCave, bar1, bar2, bar3, bar4, bar5, bar6, hasRailings, hasHammer, hasRemains, nearLawgof, hasToolkit, springFixed, safetyFixed, cannonFixed, hasCannonballMould, hasNulodionsNotes;
 
 	QuestStep talkToCaptainLawgof, talkToCaptainLawgof2, gotoTower, goToTower2, talkToCaptainLawgof3, gotoCave, inspectRailings1, inspectRailings2, inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6, getRemainsStep, downTower, downTower2, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5, talkToNulodion, talkToCaptainLawgof6;
 
@@ -109,31 +125,31 @@ public class DwarfCannon extends BasicQuestHelper
 	public void setupConditions()
 	{
 		//Items
-		hasRailings = new ItemRequirementCondition(railing);
-		hasHammer = new ItemRequirementCondition(hammer);
-		hasRemains = new ItemRequirementCondition(dwarfRemains);
-		hasToolkit = new ItemRequirementCondition(toolkit);
-		hasCannonballMould = new ItemRequirementCondition(cannonballMould);
-		hasNulodionsNotes = new ItemRequirementCondition(nulodionsNotes);
+		hasRailings = new ItemRequirements(railing);
+		hasHammer = new ItemRequirements(hammer);
+		hasRemains = new ItemRequirements(dwarfRemains);
+		hasToolkit = new ItemRequirements(toolkit);
+		hasCannonballMould = new ItemRequirements(cannonballMould);
+		hasNulodionsNotes = new ItemRequirements(nulodionsNotes);
 
 		//Varbits
-		bar1 = new VarbitCondition(2240, 1);
-		bar2 = new VarbitCondition(2241, 1);
-		bar3 = new VarbitCondition(2242, 1);
-		bar4 = new VarbitCondition(2243, 1);
-		bar5 = new VarbitCondition(2244, 1);
-		bar6 = new VarbitCondition(2245, 1);
+		bar1 = new VarbitRequirement(2240, 1);
+		bar2 = new VarbitRequirement(2241, 1);
+		bar3 = new VarbitRequirement(2242, 1);
+		bar4 = new VarbitRequirement(2243, 1);
+		bar5 = new VarbitRequirement(2244, 1);
+		bar6 = new VarbitRequirement(2245, 1);
 		//All Complete varbit 2246
 
-		springFixed = new VarbitCondition(2239, 1);
-		safetyFixed = new VarbitCondition(2238, 1);
-		cannonFixed = new VarbitCondition(2235, 1);
+		springFixed = new VarbitRequirement(2239, 1);
+		safetyFixed = new VarbitRequirement(2238, 1);
+		cannonFixed = new VarbitRequirement(2235, 1);
 
 		//Zones
-		upTower1 = new ZoneCondition(tower1);
-		upTower2 = new ZoneCondition(tower2);
-		inCave = new ZoneCondition(cave);
-		nearLawgof = new ZoneCondition(lawgofArea);
+		upTower1 = new ZoneRequirement(tower1);
+		upTower2 = new ZoneRequirement(tower2);
+		inCave = new ZoneRequirement(cave);
+		nearLawgof = new ZoneRequirement(lawgofArea);
 
 	}
 

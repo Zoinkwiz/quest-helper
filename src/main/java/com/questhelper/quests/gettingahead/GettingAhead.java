@@ -26,30 +26,34 @@
 package com.questhelper.quests.gettingahead;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.*;
-
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.runelite.api.*;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -79,7 +83,7 @@ public class GettingAhead extends BasicQuestHelper
 	ConditionalStep goUseFlourOnGate, returnToGordon, makeClayHead, addFurToHead, dyeHead, putUpHead;
 
 	//Conditions
-	ConditionForStep inMine, inUpstairsHouse, hasClayHead, hasFurHead, hasBloodyHead, hasPotOfFlour, hasClay, hasPickaxe, hasSoftClay, hasKnife, hasBucket,
+	Requirement inMine, inUpstairsHouse, hasClayHead, hasFurHead, hasBloodyHead, hasPotOfFlour, hasClay, hasPickaxe, hasSoftClay, hasKnife, hasBucket,
 		hasBucketOfWater, hasNeedle, hasThread, hasRedDye, hasPlanks2, hasNails6, hasHammer, hasSaw;
 
 	//Zones
@@ -207,27 +211,27 @@ public class GettingAhead extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inMine = new ZoneCondition(kebosMine);
-		inUpstairsHouse = new ZoneCondition(upstairsHouse);
+		inMine = new ZoneRequirement(kebosMine);
+		inUpstairsHouse = new ZoneRequirement(upstairsHouse);
 
-		hasPotOfFlour = new ItemRequirementCondition(potOfFlour);
-		hasPickaxe = new ItemRequirementCondition(pickaxe);
-		hasClay = new ItemRequirementCondition(clay);
-		hasSoftClay = new ItemRequirementCondition(softClay);
-		hasKnife = new ItemRequirementCondition(knife);
-		hasBucket = new ItemRequirementCondition(bucket);
-		hasBucketOfWater = new ItemRequirementCondition(bucketOfWater);
-		hasNeedle = new ItemRequirementCondition(needle);
-		hasThread = new ItemRequirementCondition(thread);
-		hasPlanks2 = new ItemRequirementCondition(planks);
-		hasSaw = new ItemRequirementCondition(saw);
-		hasHammer = new ItemRequirementCondition(hammer);
-		hasNails6 = new ItemRequirementCondition(nails);
-		hasRedDye = new ItemRequirementCondition(redDye);
+		hasPotOfFlour = new ItemRequirements(potOfFlour);
+		hasPickaxe = new ItemRequirements(pickaxe);
+		hasClay = new ItemRequirements(clay);
+		hasSoftClay = new ItemRequirements(softClay);
+		hasKnife = new ItemRequirements(knife);
+		hasBucket = new ItemRequirements(bucket);
+		hasBucketOfWater = new ItemRequirements(bucketOfWater);
+		hasNeedle = new ItemRequirements(needle);
+		hasThread = new ItemRequirements(thread);
+		hasPlanks2 = new ItemRequirements(planks);
+		hasSaw = new ItemRequirements(saw);
+		hasHammer = new ItemRequirements(hammer);
+		hasNails6 = new ItemRequirements(nails);
+		hasRedDye = new ItemRequirements(redDye);
 
-		hasClayHead = new ItemRequirementCondition(clayHeadHighlighted);
-		hasFurHead = new ItemRequirementCondition(furHeadHighlighted);
-		hasBloodyHead = new ItemRequirementCondition(bloodyHead);
+		hasClayHead = new ItemRequirements(clayHeadHighlighted);
+		hasFurHead = new ItemRequirements(furHeadHighlighted);
+		hasBloodyHead = new ItemRequirements(bloodyHead);
 	}
 
 	public void loadZones()

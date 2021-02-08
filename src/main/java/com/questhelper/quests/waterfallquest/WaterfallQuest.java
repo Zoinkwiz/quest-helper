@@ -25,12 +25,22 @@
 package com.questhelper.quests.waterfallquest;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,16 +51,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WATERFALL_QUEST
@@ -64,7 +64,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement gamesNecklace, food;
 
-	ConditionForStep inGnomeBasement, inGlarialTomb, inFalls, onHudonIsland, onDeadTreeIsland, onLedge, hasGlarialsPebble, hasGlarialsUrn, hasGlarialsAmulet,
+	Requirement inGnomeBasement, inGlarialTomb, inFalls, onHudonIsland, onDeadTreeIsland, onLedge, hasGlarialsPebble, hasGlarialsUrn, hasGlarialsAmulet,
 		hasBook, inUpstairsInHouse, hasKey, hasBaxKey, inGolrieRoom, gotPebble, hasAirRunes, hasEarthRunes, hasWaterRunes, hasRope, inEndRoom, inEnd2;
 
 	QuestStep talkToAlmera, boardRaft, talkToHudon, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase,
@@ -184,27 +184,27 @@ public class WaterfallQuest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		onDeadTreeIsland = new ZoneCondition(deadTreeIsland);
-		onHudonIsland = new ZoneCondition(hudonIsland);
-		onLedge = new ZoneCondition(ledge);
-		inUpstairsInHouse = new ZoneCondition(upstairsInHouse);
-		hasBook = new ItemRequirementCondition(book);
-		inGnomeBasement = new ZoneCondition(gnomeBasement);
-		inGolrieRoom = new ZoneCondition(golrieRoom);
-		inGlarialTomb = new ZoneCondition(glarialTomb);
-		inFalls = new ZoneCondition(falls);
-		inEndRoom = new ZoneCondition(endRoom);
-		inEnd2 = new ZoneCondition(end2);
-		hasGlarialsAmulet = new ItemRequirementCondition(unequippedAmulet);
-		hasGlarialsPebble = new ItemRequirementCondition(glarialsPebble);
-		hasGlarialsUrn = new ItemRequirementCondition(glarialsUrn);
-		hasKey = new ItemRequirementCondition(key);
-		hasBaxKey = new ItemRequirementCondition(baxKey);
-		gotPebble = new VarbitCondition(9110, 1);
-		hasEarthRunes = new ItemRequirementCondition(earthRunes);
-		hasWaterRunes = new ItemRequirementCondition(waterRunes);
-		hasAirRunes = new ItemRequirementCondition(airRunes);
-		hasRope = new ItemRequirementCondition(highlightRope);
+		onDeadTreeIsland = new ZoneRequirement(deadTreeIsland);
+		onHudonIsland = new ZoneRequirement(hudonIsland);
+		onLedge = new ZoneRequirement(ledge);
+		inUpstairsInHouse = new ZoneRequirement(upstairsInHouse);
+		hasBook = new ItemRequirements(book);
+		inGnomeBasement = new ZoneRequirement(gnomeBasement);
+		inGolrieRoom = new ZoneRequirement(golrieRoom);
+		inGlarialTomb = new ZoneRequirement(glarialTomb);
+		inFalls = new ZoneRequirement(falls);
+		inEndRoom = new ZoneRequirement(endRoom);
+		inEnd2 = new ZoneRequirement(end2);
+		hasGlarialsAmulet = new ItemRequirements(unequippedAmulet);
+		hasGlarialsPebble = new ItemRequirements(glarialsPebble);
+		hasGlarialsUrn = new ItemRequirements(glarialsUrn);
+		hasKey = new ItemRequirements(key);
+		hasBaxKey = new ItemRequirements(baxKey);
+		gotPebble = new VarbitRequirement(9110, 1);
+		hasEarthRunes = new ItemRequirements(earthRunes);
+		hasWaterRunes = new ItemRequirements(waterRunes);
+		hasAirRunes = new ItemRequirements(airRunes);
+		hasRope = new ItemRequirements(highlightRope);
 	}
 
 	public void setupSteps()

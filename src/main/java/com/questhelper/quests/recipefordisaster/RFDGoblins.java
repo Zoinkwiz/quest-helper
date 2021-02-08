@@ -30,20 +30,19 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.VarbitRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,7 +66,7 @@ public class RFDGoblins extends BasicQuestHelper
 		spicedBait, wetBread, teleportLumbridge, teleportFalador, slop, slopHighlighted,
 		orangeSliceHighlighted;
 
-	ConditionForStep inDiningRoom, inCookRoom, hasSlop, hasSpicedBait, hasWetBread, hasDyedOrange,
+	Requirement inDiningRoom, inCookRoom, hasSlop, hasSpicedBait, hasWetBread, hasDyedOrange,
 		hasOrangeSlices;
 
 	QuestStep enterDiningRoom, inspectGoblin, goDownToKitchen, talkToCook, talkToCookAfterChar,
@@ -171,14 +170,14 @@ public class RFDGoblins extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneCondition(diningRoom);
-		inCookRoom = new ZoneCondition(cookRoom, cookRoomDestroyed);
+		inDiningRoom = new ZoneRequirement(diningRoom);
+		inCookRoom = new ZoneRequirement(cookRoom, cookRoomDestroyed);
 
-		hasDyedOrange = new ItemRequirementCondition(dyedOrange);
-		hasOrangeSlices = new ItemRequirementCondition(orangeSliceHighlighted);
-		hasSpicedBait = new ItemRequirementCondition(spicedBait);
-		hasWetBread = new ItemRequirementCondition(wetBread);
-		hasSlop = new ItemRequirementCondition(slop);
+		hasDyedOrange = new ItemRequirements(dyedOrange);
+		hasOrangeSlices = new ItemRequirements(orangeSliceHighlighted);
+		hasSpicedBait = new ItemRequirements(spicedBait);
+		hasWetBread = new ItemRequirements(wetBread);
+		hasSlop = new ItemRequirements(slop);
 	}
 
 	public void setupSteps()

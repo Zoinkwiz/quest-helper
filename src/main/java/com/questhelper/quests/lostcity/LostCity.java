@@ -25,14 +25,24 @@
 package com.questhelper.quests.lostcity;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,17 +54,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.LOST_CITY
@@ -64,7 +63,7 @@ public class LostCity extends BasicQuestHelper
 	//Items Required
 	ItemRequirement knife, axe, combatGear, teleport, bronzeAxe, dramenBranch, dramenStaff, dramenStaffEquipped;
 
-	ConditionForStep onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, hasBronzeAxe, dramenSpiritNearby, hasBranch, hasStaff;
+	Requirement onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, hasBronzeAxe, dramenSpiritNearby, hasBranch, hasStaff;
 
 	QuestStep talkToWarrior, chopTree, talkToShamus, goToEntrana, goDownHole, getAxe, pickupAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch,
 		teleportAway, craftBranch, enterZanaris, getAnotherBranch;
@@ -135,14 +134,14 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	public void setupConditions() {
-		onEntrana = new ZoneCondition(entrana);
-		inDungeon = new ZoneCondition(entranaDungeon);
+		onEntrana = new ZoneRequirement(entrana);
+		inDungeon = new ZoneRequirement(entranaDungeon);
 		shamusNearby = new NpcCondition(NpcID.SHAMUS);
-		bronzeAxeNearby = new ItemCondition(ItemID.BRONZE_AXE);
-		hasBronzeAxe = new ItemRequirementCondition(bronzeAxe);
+		bronzeAxeNearby = new ItemOnTileRequirement(ItemID.BRONZE_AXE);
+		hasBronzeAxe = new ItemRequirements(bronzeAxe);
 		dramenSpiritNearby = new NpcCondition(NpcID.TREE_SPIRIT);
-		hasBranch = new ItemRequirementCondition(dramenBranch);
-		hasStaff = new ItemRequirementCondition(dramenStaff);
+		hasBranch = new ItemRequirements(dramenBranch);
+		hasStaff = new ItemRequirements(dramenStaff);
 	}
 
 	public void setupSteps() {

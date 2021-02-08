@@ -30,18 +30,17 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +64,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 	// Items during quest
 	ItemRequirement scryingOrb, scryingOrbCharged;
 
-	ConditionForStep inWizardBasement, teleportedFromVarrock, teleportedFromArdougne, teleportedFromWizardsTower,
+	Requirement inWizardBasement, teleportedFromVarrock, teleportedFromArdougne, teleportedFromWizardsTower,
 		teleportedFromGnome, teleportedFromDistentor, chargedScryingOrb;
 
 	QuestStep talkToMageInWildy, talkToMageInVarrock, talkToAubury, goDownInWizardsTower, talkToSedridor,
@@ -118,15 +117,15 @@ public class EnterTheAbyss extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inWizardBasement = new ZoneCondition(wizardBasement);
+		inWizardBasement = new ZoneRequirement(wizardBasement);
 
-		teleportedFromWizardsTower = new VarbitCondition(2314, 1);
-		teleportedFromVarrock = new VarbitCondition(2315, 1);
-		teleportedFromArdougne = new VarbitCondition(2316, 1);
-		teleportedFromDistentor = new VarbitCondition(2317, 1);
-		teleportedFromGnome = new VarbitCondition(2318, 1);
+		teleportedFromWizardsTower = new VarbitRequirement(2314, 1);
+		teleportedFromVarrock = new VarbitRequirement(2315, 1);
+		teleportedFromArdougne = new VarbitRequirement(2316, 1);
+		teleportedFromDistentor = new VarbitRequirement(2317, 1);
+		teleportedFromGnome = new VarbitRequirement(2318, 1);
 
-		chargedScryingOrb = new ItemRequirementCondition(scryingOrbCharged);
+		chargedScryingOrb = new ItemRequirements(scryingOrbCharged);
 	}
 
 	public void setupSteps()

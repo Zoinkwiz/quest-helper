@@ -24,27 +24,27 @@
  */
 package com.questhelper.quests.vampyreslayer;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -61,7 +61,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, draynorManorTeleport;
 
-	ConditionForStep inManor, inBasement, hasGarlic, isUpstairsInMorgans, draynorNearby, hasStake;
+	Requirement inManor, inBasement, hasGarlic, isUpstairsInMorgans, draynorNearby, hasStake;
 
 	QuestStep talkToMorgan, goUpstairsMorgan, getGarlic, ifNeedGarlic, talkToHarlow, talkToHarlowAgain, enterDraynorManor, goDownToBasement, openCoffin, killDraynor;
 
@@ -113,12 +113,12 @@ public class VampyreSlayer extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inBasement = new ZoneCondition(basement);
-		inManor = new ZoneCondition(manor);
-		isUpstairsInMorgans = new ZoneCondition(upstairsInMorgans);
+		inBasement = new ZoneRequirement(basement);
+		inManor = new ZoneRequirement(manor);
+		isUpstairsInMorgans = new ZoneRequirement(upstairsInMorgans);
 		draynorNearby = new NpcCondition(NpcID.COUNT_DRAYNOR);
-		hasGarlic = new ItemRequirementCondition(garlic);
-		hasStake = new ItemRequirementCondition(stake);
+		hasGarlic = new ItemRequirements(garlic);
+		hasStake = new ItemRequirements(stake);
 	}
 
 	public void setupZones()

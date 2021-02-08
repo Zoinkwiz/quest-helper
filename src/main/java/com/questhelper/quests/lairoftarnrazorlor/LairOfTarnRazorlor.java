@@ -24,23 +24,29 @@
  */
 package com.questhelper.quests.lairoftarnrazorlor;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.PrayerRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.PrayerRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,13 +60,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.LAIR_OF_TARN_RAZORLOR
@@ -72,7 +71,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 
 	PrayerRequirement protectFromMagic;
 
-	ConditionForStep inHauntedMine, inRoom1, inRoom1PastTrap1, inRoom1PastTrap2, inRoom2, inRoom3, inRoom4, inRoom5, inRoom6P1, inRoom6P2,
+	Requirement inHauntedMine, inRoom1, inRoom1PastTrap1, inRoom1PastTrap2, inRoom2, inRoom3, inRoom4, inRoom5, inRoom6P1, inRoom6P2,
 		onPillar1, onPillar2, onPillar3, onPillar4, onPillar5, onPillar6, atSwitch1, switchPressed, inRoom6PastTrap1, inRoom6PastTrap2,
 		inExtraRoom1, inExtraRoom2, inRoom7, inRoom8, inBossRoom, tarnInSecondForm, killedTarn, inFinalRoom;
 
@@ -183,35 +182,35 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inHauntedMine = new ZoneCondition(hauntedMine);
-		inRoom1 = new ZoneCondition(room1);
-		inRoom1PastTrap1 = new ZoneCondition(room1PastTrap1);
-		inRoom1PastTrap2 = new ZoneCondition(room1PastTrap2);
-		inRoom2 = new ZoneCondition(room2);
-		inRoom3 = new ZoneCondition(room3);
-		inRoom4 = new ZoneCondition(room4);
-		inRoom5 = new ZoneCondition(room5P1, room5P2);
-		inRoom6P1 = new ZoneCondition(room6P1);
-		inRoom6P2 = new ZoneCondition(room6P2, room6P3);
-		inRoom7 = new ZoneCondition(room7);
-		onPillar1 = new ZoneCondition(pillar1);
-		onPillar2 = new ZoneCondition(pillar2);
-		onPillar3 = new ZoneCondition(pillar3);
-		onPillar4 = new ZoneCondition(pillar4);
-		onPillar5 = new ZoneCondition(pillar5);
-		onPillar6 = new ZoneCondition(pillar6);
-		atSwitch1 = new ZoneCondition(switch1);
+		inHauntedMine = new ZoneRequirement(hauntedMine);
+		inRoom1 = new ZoneRequirement(room1);
+		inRoom1PastTrap1 = new ZoneRequirement(room1PastTrap1);
+		inRoom1PastTrap2 = new ZoneRequirement(room1PastTrap2);
+		inRoom2 = new ZoneRequirement(room2);
+		inRoom3 = new ZoneRequirement(room3);
+		inRoom4 = new ZoneRequirement(room4);
+		inRoom5 = new ZoneRequirement(room5P1, room5P2);
+		inRoom6P1 = new ZoneRequirement(room6P1);
+		inRoom6P2 = new ZoneRequirement(room6P2, room6P3);
+		inRoom7 = new ZoneRequirement(room7);
+		onPillar1 = new ZoneRequirement(pillar1);
+		onPillar2 = new ZoneRequirement(pillar2);
+		onPillar3 = new ZoneRequirement(pillar3);
+		onPillar4 = new ZoneRequirement(pillar4);
+		onPillar5 = new ZoneRequirement(pillar5);
+		onPillar6 = new ZoneRequirement(pillar6);
+		atSwitch1 = new ZoneRequirement(switch1);
 		switchPressed = new ObjectCondition(ObjectID.FLOOR_20635, new WorldPoint(3138, 4595, 1));
-		inRoom6PastTrap1 = new ZoneCondition(room6PastTrap1);
-		inRoom6PastTrap2 = new ZoneCondition(room6PastTrap2P1, room6PastTrap2P2);
-		inExtraRoom1 = new ZoneCondition(extraRoom1);
-		inExtraRoom2 = new ZoneCondition(extraRoom2);
-		inRoom8 = new ZoneCondition(room8);
-		inBossRoom = new ZoneCondition(bossRoom);
-		inFinalRoom = new ZoneCondition(finalRoom);
+		inRoom6PastTrap1 = new ZoneRequirement(room6PastTrap1);
+		inRoom6PastTrap2 = new ZoneRequirement(room6PastTrap2P1, room6PastTrap2P2);
+		inExtraRoom1 = new ZoneRequirement(extraRoom1);
+		inExtraRoom2 = new ZoneRequirement(extraRoom2);
+		inRoom8 = new ZoneRequirement(room8);
+		inBossRoom = new ZoneRequirement(bossRoom);
+		inFinalRoom = new ZoneRequirement(finalRoom);
 
 		tarnInSecondForm = new NpcCondition(NpcID.TARN);
-		killedTarn = new VarbitCondition(3290, 2, Operation.GREATER_EQUAL);
+		killedTarn = new VarbitRequirement(3290, 2, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()

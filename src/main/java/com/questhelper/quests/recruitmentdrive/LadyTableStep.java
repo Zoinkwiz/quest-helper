@@ -26,11 +26,11 @@ package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,7 +59,7 @@ public class LadyTableStep extends DetailedOwnerStep
 	private WaitForStatueStep waitForStatueStep;
 	private ObjectStep clickMissingStatue, leaveRoom;
 
-	VarbitCondition finishedRoom = new VarbitCondition(VARBIT_FINISHED_ROOM, 1);
+	VarbitRequirement finishedRoom = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
 
 	public LadyTableStep(QuestHelper questHelper, Requirement... requirements)
 	{

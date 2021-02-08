@@ -25,24 +25,29 @@
 package com.questhelper.quests.myarmsbigadventure;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.VarbitRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,13 +59,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MY_ARMS_BIG_ADVENTURE
@@ -75,7 +73,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement food, prayerPotions, combatGear;
 
-	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inPrison, hasLump, onRoof, added3Dung, added7Comp, usedRake, givenCompost, givenHardy, givenDibber,
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, hasLump, onRoof, added3Dung, added7Comp, usedRake, givenCompost, givenHardy, givenDibber,
 		givenCure, hasRakeHeadAndHandle, rakeHeadNearby, babyNearby, giantNearby;
 
 	DetailedQuestStep enterStronghold, goDownToChef, goUpToChef, talkToBurntmeat, talkToMyArm, useBucketOnPot, enterStrongholdWithLump, goDownToArmWithLump, goUpToArmWithLump, talkToArmWithLump,
@@ -288,24 +286,24 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inStrongholdFloor1 = new ZoneCondition(strongholdFloor1);
-		inStrongholdFloor2 = new ZoneCondition(strongholdFloor2);
-		inPrison = new ZoneCondition(prison);
-		hasLump = new ItemRequirementCondition(goutLump);
-		onRoof = new ZoneCondition(roof);
+		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
+		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
+		inPrison = new ZoneRequirement(prison);
+		hasLump = new ItemRequirements(goutLump);
+		onRoof = new ZoneRequirement(roof);
 
-		added3Dung = new VarbitCondition(2791, 3);
-		added7Comp = new VarbitCondition(2792, 7);
+		added3Dung = new VarbitRequirement(2791, 3);
+		added7Comp = new VarbitRequirement(2792, 7);
 
-		givenHardy = new VarbitCondition(2794, 1);
-		usedRake = new VarbitCondition(2799, 6);
-		givenCompost = new VarbitCondition(2799, 7);
+		givenHardy = new VarbitRequirement(2794, 1);
+		usedRake = new VarbitRequirement(2799, 6);
+		givenCompost = new VarbitRequirement(2799, 7);
 
-		givenDibber = new VarbitCondition(2799, 9, Operation.GREATER_EQUAL);
-		givenCure = new VarbitCondition(2798, 1);
+		givenDibber = new VarbitRequirement(2799, 9, Operation.GREATER_EQUAL);
+		givenCure = new VarbitRequirement(2798, 1);
 
-		hasRakeHeadAndHandle = new Conditions(new ItemRequirementCondition(rakeHead), new ItemRequirementCondition(rakeHandle));
-		rakeHeadNearby = new ItemCondition(rakeHead);
+		hasRakeHeadAndHandle = new Conditions(new ItemRequirements(rakeHead), new ItemRequirements(rakeHandle));
+		rakeHeadNearby = new ItemOnTileRequirement(rakeHead);
 
 		babyNearby = new NpcCondition(NpcID.BABY_ROC);
 		giantNearby = new NpcCondition(NpcID.GIANT_ROC);

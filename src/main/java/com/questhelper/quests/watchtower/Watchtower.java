@@ -25,19 +25,26 @@
 package com.questhelper.quests.watchtower;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,14 +57,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -70,7 +69,7 @@ public class Watchtower extends BasicQuestHelper
 		crystal, ogreRelic, rockCake, skavidMap, lightSource, nightshade, nightshade2, crystal2, jangerberries, batBones, groundBatBones, pestleAndMortar, partialPotion, potion,
 		magicPotion, magicPotionHighlight, crystal3, crystal4, crystalHighlight, crystal2Highlight, crystal3Highlight, crystal4Highlight;
 
-	ConditionForStep inWatchtowerFloor1, inWatchtowerFloor2, hasFingernails, hasTobansKey, onGrewIsland, talkedToGrew, talkedToOg, knownOgreStep, onTobanIsland, hasGoradsTooth,
+	Requirement inWatchtowerFloor1, inWatchtowerFloor2, hasFingernails, hasTobansKey, onGrewIsland, talkedToGrew, talkedToOg, knownOgreStep, onTobanIsland, hasGoradsTooth,
 		talkedToToban, hasTobansGold, hasRelic1, hasRelic2, hasRelic3, hasRockCake, gettingOgreRockCake, gaveCake, inEndOfJumpingPath, hasBeenAtEndOfPath, knowsRiddle, inScaredSkavidRoom,
 		talkedToScaredSkavid, inSkavidRoom1, inSkavidRoom2, inSkavidRoom3, inSkavidRoom4, talkedToSkavid1, talkedToSkavid2, talkedToSkavid3, talkedToSkavid4, inInsaneSkavidPath,
 		inInsaneSkavidRoom, has2Nightshade, inEnclave, seenShamans, hasGroundBatBones, hasPartialPotion, hasPotion, hasMagicPotion, killedOgre1, killedOgre2, killedOgre3, killedOgre4, killedOgre5,
@@ -329,89 +328,89 @@ public class Watchtower extends BasicQuestHelper
 	public void setupConditions()
 	{
 		// 3138, 0->1 after killing gonrad
-		inWatchtowerFloor1 = new ZoneCondition(watchtowerFloor1);
-		inWatchtowerFloor2 = new ZoneCondition(watchtowerFloor2);
-		inEndOfJumpingPath = new ZoneCondition(endOfJumpingPath);
-		hasBeenAtEndOfPath = new Conditions(true, LogicType.OR, new ZoneCondition(endOfJumpingPath));
-		inScaredSkavidRoom = new ZoneCondition(scaredSkavidRoom);
-		inSkavidRoom1 = new ZoneCondition(skavidRoom1);
-		inSkavidRoom2 = new ZoneCondition(skavidRoom2);
-		inSkavidRoom3 = new ZoneCondition(skavidRoom3);
-		inSkavidRoom4 = new ZoneCondition(skavidRoom4);
-		inInsaneSkavidPath = new ZoneCondition(insaneSkavidPath1, insaneSkavidPath2);
-		inInsaneSkavidRoom = new ZoneCondition(insaneSkavidRoom);
-		inEnclave = new ZoneCondition(enclave);
+		inWatchtowerFloor1 = new ZoneRequirement(watchtowerFloor1);
+		inWatchtowerFloor2 = new ZoneRequirement(watchtowerFloor2);
+		inEndOfJumpingPath = new ZoneRequirement(endOfJumpingPath);
+		hasBeenAtEndOfPath = new Conditions(true, LogicType.OR, new ZoneRequirement(endOfJumpingPath));
+		inScaredSkavidRoom = new ZoneRequirement(scaredSkavidRoom);
+		inSkavidRoom1 = new ZoneRequirement(skavidRoom1);
+		inSkavidRoom2 = new ZoneRequirement(skavidRoom2);
+		inSkavidRoom3 = new ZoneRequirement(skavidRoom3);
+		inSkavidRoom4 = new ZoneRequirement(skavidRoom4);
+		inInsaneSkavidPath = new ZoneRequirement(insaneSkavidPath1, insaneSkavidPath2);
+		inInsaneSkavidRoom = new ZoneRequirement(insaneSkavidRoom);
+		inEnclave = new ZoneRequirement(enclave);
 
-		hasFingernails = new ItemRequirementCondition(fingernails);
-		hasTobansKey = new Conditions(true, new ItemRequirementCondition(tobansKey));
-		hasGoradsTooth = new Conditions(true, new ItemRequirementCondition(goradsTooth));
-		hasTobansGold = new Conditions(true, new ItemRequirementCondition(tobansGold));
-		hasRockCake = new ItemRequirementCondition(rockCake);
-		has2Nightshade = new ItemRequirementCondition(nightshade2);
-		hasPartialPotion = new ItemRequirementCondition(partialPotion);
-		hasPotion = new ItemRequirementCondition(potion);
-		hasMagicPotion = new ItemRequirementCondition(magicPotion);
+		hasFingernails = new ItemRequirements(fingernails);
+		hasTobansKey = new Conditions(true, new ItemRequirements(tobansKey));
+		hasGoradsTooth = new Conditions(true, new ItemRequirements(goradsTooth));
+		hasTobansGold = new Conditions(true, new ItemRequirements(tobansGold));
+		hasRockCake = new ItemRequirements(rockCake);
+		has2Nightshade = new ItemRequirements(nightshade2);
+		hasPartialPotion = new ItemRequirements(partialPotion);
+		hasPotion = new ItemRequirements(potion);
+		hasMagicPotion = new ItemRequirements(magicPotion);
 
-		onGrewIsland = new ZoneCondition(grewIsland);
-		onTobanIsland = new ZoneCondition(tobanIsland);
+		onGrewIsland = new ZoneRequirement(grewIsland);
+		onTobanIsland = new ZoneRequirement(tobanIsland);
 
 		knownOgreStep = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "In the meantime, I'll throw those fingernails out for you."),
-			new WidgetTextCondition(119, 3, true, "deal with the tribal ogres."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "In the meantime, I'll throw those fingernails out for you."),
+			new WidgetTextRequirement(119, 3, true, "deal with the tribal ogres."));
 
-		talkedToGrew = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "The morsel is back.", "Heheheheh!"),
-			new WidgetTextCondition(119, 3, true, "Grew wants me to give him", "I have <col=800000>one of Gorad's teeth"));
+		talkedToGrew = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The morsel is back.", "Heheheheh!"),
+			new WidgetTextRequirement(119, 3, true, "Grew wants me to give him", "I have <col=800000>one of Gorad's teeth"));
 
-		talkedToOg = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Here is a key to the chest it's in.", "Where my gold from dat dirty Toban?"),
-			new WidgetTextCondition(119, 3, true, "Og wants me to", "I have Og's <col=800000>stolen gold"), hasTobansKey);
+		talkedToOg = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Here is a key to the chest it's in.", "Where my gold from dat dirty Toban?"),
+			new WidgetTextRequirement(119, 3, true, "Og wants me to", "I have Og's <col=800000>stolen gold"), hasTobansKey);
 
-		talkedToToban = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Prove to me your might", "Hahaha! Small t'ing returns."),
-			new WidgetTextCondition(119, 3, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
+		talkedToToban = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Prove to me your might", "Hahaha! Small t'ing returns."),
+			new WidgetTextRequirement(119, 3, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
 
-		hasRelic1 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(relic1),
-			new WidgetTextCondition(119, 3, true, "I returned Og's stolen gold."));
+		hasRelic1 = new Conditions(true, LogicType.OR, new ItemRequirements(relic1),
+			new WidgetTextRequirement(119, 3, true, "I returned Og's stolen gold."));
 
-		hasRelic2 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(relic2),
-			new WidgetTextCondition(119, 3, true, "I knocked out one of Gorad's teeth and gave it to Grew."));
+		hasRelic2 = new Conditions(true, LogicType.OR, new ItemRequirements(relic2),
+			new WidgetTextRequirement(119, 3, true, "I knocked out one of Gorad's teeth and gave it to Grew."));
 
-		hasRelic3 = new Conditions(true, LogicType.OR, new ItemRequirementCondition(relic3),
-			new WidgetTextCondition(119, 3, true, "I gave the dragon bones to Toban."));
+		hasRelic3 = new Conditions(true, LogicType.OR, new ItemRequirements(relic3),
+			new WidgetTextRequirement(119, 3, true, "I gave the dragon bones to Toban."));
 
-		gettingOgreRockCake = new VarbitCondition(3120, 1);
-		gaveCake = new VarbitCondition(3118, 1);
+		gettingOgreRockCake = new VarbitRequirement(3120, 1);
+		gaveCake = new VarbitRequirement(3118, 1);
 
-		knowsRiddle = new VarbitCondition(3121, 1);
+		knowsRiddle = new VarbitRequirement(3121, 1);
 
-		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Master, how are you doing", "Those will gets you started."),
-			new WidgetTextCondition(119, 3, true, "ar, nod, gor, ig, cur"));
+		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Master, how are you doing", "Those will gets you started."),
+			new WidgetTextRequirement(119, 3, true, "ar, nod, gor, ig, cur"));
 
-		talkedToSkavid1 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom1, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, "'Bidith tanath'"));
-		talkedToSkavid2 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom2, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, "'Gor cur'"));
-		talkedToSkavid3 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom3, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, "'Cur bidith'"));
-		talkedToSkavid4 = new Conditions(true, LogicType.OR, new ChatMessageCondition(inSkavidRoom4, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextCondition(119, 3, true, "'Gor nod'"));
+		talkedToSkavid1 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom1, "It seems the skavid understood you.", "You have already talked to this skavid."),
+			new WidgetTextRequirement(119, 3, true, "'Bidith tanath'"));
+		talkedToSkavid2 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom2, "It seems the skavid understood you.", "You have already talked to this skavid."),
+			new WidgetTextRequirement(119, 3, true, "'Gor cur'"));
+		talkedToSkavid3 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom3, "It seems the skavid understood you.", "You have already talked to this skavid."),
+			new WidgetTextRequirement(119, 3, true, "'Cur bidith'"));
+		talkedToSkavid4 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom4, "It seems the skavid understood you.", "You have already talked to this skavid."),
+			new WidgetTextRequirement(119, 3, true, "'Gor nod'"));
 
-		seenShamans = new VarbitCondition(3125, 1);
-		hasGroundBatBones = new ItemRequirementCondition(groundBatBones);
+		seenShamans = new VarbitRequirement(3125, 1);
+		hasGroundBatBones = new ItemRequirements(groundBatBones);
 
-		killedOgre1 = new VarbitCondition(3131, 1);
-		killedOgre2 = new VarbitCondition(3132, 1);
-		killedOgre3 = new VarbitCondition(3133, 1);
-		killedOgre4 = new VarbitCondition(3134, 1);
-		killedOgre5 = new VarbitCondition(3135, 1);
-		killedOgre6 = new VarbitCondition(3136, 1);
+		killedOgre1 = new VarbitRequirement(3131, 1);
+		killedOgre2 = new VarbitRequirement(3132, 1);
+		killedOgre3 = new VarbitRequirement(3133, 1);
+		killedOgre4 = new VarbitRequirement(3134, 1);
+		killedOgre5 = new VarbitRequirement(3135, 1);
+		killedOgre6 = new VarbitRequirement(3136, 1);
 
 		killedAllOgres = new Conditions(killedOgre1, killedOgre2, killedOgre3, killedOgre4, killedOgre5, killedOgre6);
 
-		gotCrystal4 = new VarbitCondition(3124, 1);
+		gotCrystal4 = new VarbitRequirement(3124, 1);
 
-		placedCrystal1 = new VarbitCondition(3128, 1);
-		placedCrystal2 = new VarbitCondition(3129, 1);
-		placedCrystal3 = new VarbitCondition(3127, 1);
-		placedCrystal4 = new VarbitCondition(3130, 1);
+		placedCrystal1 = new VarbitRequirement(3128, 1);
+		placedCrystal2 = new VarbitRequirement(3129, 1);
+		placedCrystal3 = new VarbitRequirement(3127, 1);
+		placedCrystal4 = new VarbitRequirement(3130, 1);
 
 	}
 

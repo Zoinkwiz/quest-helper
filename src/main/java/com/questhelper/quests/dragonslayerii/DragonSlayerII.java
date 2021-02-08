@@ -25,26 +25,30 @@
 package com.questhelper.quests.dragonslayerii;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestPointRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestPointRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -57,12 +61,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DRAGON_SLAYER_II
@@ -86,11 +84,11 @@ public class DragonSlayerII extends BasicQuestHelper
 	ItemRequirement map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12, map13, map14, map15, map16, map17,
 		map18, map19, map20, map21, map22, map23, map24;
 
-	ConditionForStep inCrandorUnderground, inElvargArea, inKaramjaVolcano, inMuralRoom, inHouseGroundFloor, inHouseFirstFloor, inLithkrenGroundFloor, inLithkrenFirstFloor, inLithkrenUnderground,
+	Requirement inCrandorUnderground, inElvargArea, inKaramjaVolcano, inMuralRoom, inHouseGroundFloor, inHouseFirstFloor, inLithkrenGroundFloor, inLithkrenFirstFloor, inLithkrenUnderground,
 		inLithkrenGroundFloorRoom, inDream, hasAivasDiary, hasVialWater, hasVialGout, hasAstralShard, hasAstralPowder, hasDreamPotion, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
 		hasTheKaramjaKeyPiece, inDeepLithkren, recruitedBrundt, recruitedLathas, recruitedAmik, inArdougneCastle, inFaladorF1, inFaladorF2, onBoat, inBattle;
 
-	ConditionForStep hadChest1MapPieces, hadChest2MapPieces, hadFungiMapPieces, hadBriarMapPieces, hadMushtreeMapPieces, hadMap1, hadMap2, hadMap3, hadMap4, hadMap5, hadMap6, hadMap7, hadMap8, hadMap9, hadMap10, hadMap11, hadMap12, hadMap13, hadMap14,
+	Requirement hadChest1MapPieces, hadChest2MapPieces, hadFungiMapPieces, hadBriarMapPieces, hadMushtreeMapPieces, hadMap1, hadMap2, hadMap3, hadMap4, hadMap5, hadMap6, hadMap7, hadMap8, hadMap9, hadMap10, hadMap11, hadMap12, hadMap13, hadMap14,
 		hadMap15, hadMap16, hadMap17, hadMap18, hadMap19, hadMap20, hadMap21, hadMap22, hadMap23, hadMap24, inMapPuzzle, onUngael, inUngaelUnderground, inUngaelKeyRoom,
 		inKhazariMaze, openedMithrilDoor, inMithDragonEntranceArea, inMithDragonGroundArea, inMithDragonUpperArea, inMithDragonOrbRoom, inMithDragonFurnaceArea, litFurnace;
 
@@ -117,13 +115,13 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	DetailedQuestStep talkToReldo, searchBookcase, talkToReldoAgain, talkToReldoAgainNoBook, talkToSarah, talkToAva, usePipeOnDragonstone, talkToAvaAgain,
 		talkToAvaAgainNoOrb, useLocatorInSwamp;
-	ConditionForStep talkedToReldo, foundCensus, talkedToReldoAgain, givenReldoBook, talkedToSarah, talkedToAva, haveInertLocator, givenAvaOrb, talkedToAvaAgain;
+	Requirement talkedToReldo, foundCensus, talkedToReldoAgain, givenReldoBook, talkedToSarah, talkedToAva, haveInertLocator, givenAvaOrb, talkedToAvaAgain;
 
 	DetailedQuestStep talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey;
-	ConditionForStep talkedToBrundt, defeatedVorkath, pulledLever;
+	Requirement talkedToBrundt, defeatedVorkath, pulledLever;
 
 	QuestStep talkToAmelia, enterCrypt, goDownInCryptF2ToF1, goDownInCryptF1ToF0, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey;
-	ConditionForStep talkedToAmelia, inCryptF0, inCryptF1, inCryptF2, inspectedTomb, openedTomb;
+	Requirement talkedToAmelia, inCryptF0, inCryptF1, inCryptF2, inspectedTomb, openedTomb;
 
 	DetailedQuestStep enterAncientCavern, goDownToBrutalGreenDragons, goUpToMithrilDragons, openMithrilDoor, castFireOnHead, leaveMithrilRoom,
 		goDownFromMithDragons, climbUpSouthWestStairsAncientCavern, forgeDragonKey, useKeyOnGrandioseDoors, talkToDallasAfterDoors, talkToBobAfterRelease;
@@ -599,122 +597,122 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCrandorUnderground = new ZoneCondition(crandorUnderground);
-		inElvargArea = new ZoneCondition(elvargArea);
-		inKaramjaVolcano = new ZoneCondition(karamjaVolcano);
-		inMuralRoom = new ZoneCondition(muralRoom);
-		inHouseGroundFloor = new ZoneCondition(houseGroundFloor);
-		inHouseFirstFloor = new ZoneCondition(houseFirstFloor);
-		inLithkrenGroundFloor = new ZoneCondition(lithkrenGroundFloor);
-		inLithkrenFirstFloor = new ZoneCondition(lithkrenFirstFloor);
-		inLithkrenGroundFloorRoom = new ZoneCondition(lithkrenGroundFloorRoom);
-		inLithkrenUnderground = new ZoneCondition(lithkrenUnderground);
-		inDream = new ZoneCondition(dream);
-		inCryptF0 = new ZoneCondition(cryptF0);
-		inCryptF1 = new ZoneCondition(cryptF1);
-		inCryptF2 = new ZoneCondition(cryptF2);
-		onUngael = new ZoneCondition(ungael);
-		inUngaelUnderground = new ZoneCondition(ungaelUnderground);
-		inUngaelKeyRoom = new ZoneCondition(ungaelKeyRoom);
-		inKhazariMaze = new ZoneCondition(khazariMaze);
-		inMithDragonEntranceArea = new ZoneCondition(mithDragonEntranceArea);
-		inMithDragonGroundArea = new ZoneCondition(mithDragonGroundArea);
-		inMithDragonOrbRoom = new ZoneCondition(mithDragonOrbRoom);
-		inMithDragonUpperArea = new ZoneCondition(mithDragonUpperArea);
-		inMithDragonFurnaceArea = new ZoneCondition(mithDragonFurnaceArea);
-		inDeepLithkren = new ZoneCondition(deepLithkren);
-		inArdougneCastle = new ZoneCondition(ardougneCastle);
-		inFaladorF1 = new ZoneCondition(faladorF1);
-		inFaladorF2 = new ZoneCondition(faladorF2);
-		onBoat = new ZoneCondition(boat);
-		inBattle = new ZoneCondition(battle);
+		inCrandorUnderground = new ZoneRequirement(crandorUnderground);
+		inElvargArea = new ZoneRequirement(elvargArea);
+		inKaramjaVolcano = new ZoneRequirement(karamjaVolcano);
+		inMuralRoom = new ZoneRequirement(muralRoom);
+		inHouseGroundFloor = new ZoneRequirement(houseGroundFloor);
+		inHouseFirstFloor = new ZoneRequirement(houseFirstFloor);
+		inLithkrenGroundFloor = new ZoneRequirement(lithkrenGroundFloor);
+		inLithkrenFirstFloor = new ZoneRequirement(lithkrenFirstFloor);
+		inLithkrenGroundFloorRoom = new ZoneRequirement(lithkrenGroundFloorRoom);
+		inLithkrenUnderground = new ZoneRequirement(lithkrenUnderground);
+		inDream = new ZoneRequirement(dream);
+		inCryptF0 = new ZoneRequirement(cryptF0);
+		inCryptF1 = new ZoneRequirement(cryptF1);
+		inCryptF2 = new ZoneRequirement(cryptF2);
+		onUngael = new ZoneRequirement(ungael);
+		inUngaelUnderground = new ZoneRequirement(ungaelUnderground);
+		inUngaelKeyRoom = new ZoneRequirement(ungaelKeyRoom);
+		inKhazariMaze = new ZoneRequirement(khazariMaze);
+		inMithDragonEntranceArea = new ZoneRequirement(mithDragonEntranceArea);
+		inMithDragonGroundArea = new ZoneRequirement(mithDragonGroundArea);
+		inMithDragonOrbRoom = new ZoneRequirement(mithDragonOrbRoom);
+		inMithDragonUpperArea = new ZoneRequirement(mithDragonUpperArea);
+		inMithDragonFurnaceArea = new ZoneRequirement(mithDragonFurnaceArea);
+		inDeepLithkren = new ZoneRequirement(deepLithkren);
+		inArdougneCastle = new ZoneRequirement(ardougneCastle);
+		inFaladorF1 = new ZoneRequirement(faladorF1);
+		inFaladorF2 = new ZoneRequirement(faladorF2);
+		onBoat = new ZoneRequirement(boat);
+		inBattle = new ZoneRequirement(battle);
 
-		hadMap1 = new Conditions(LogicType.OR, new ItemRequirementCondition(map1), new VarbitCondition(6116, 1));
-		hadMap2 = new Conditions(LogicType.OR, new ItemRequirementCondition(map2), new VarbitCondition(6117, 1));
-		hadMap3 = new Conditions(LogicType.OR, new ItemRequirementCondition(map3), new VarbitCondition(6118, 1));
-		hadMap4 = new Conditions(LogicType.OR, new ItemRequirementCondition(map4), new VarbitCondition(6119, 1));
-		hadMap5 = new Conditions(LogicType.OR, new ItemRequirementCondition(map5), new VarbitCondition(6120, 1));
+		hadMap1 = new Conditions(LogicType.OR, new ItemRequirements(map1), new VarbitRequirement(6116, 1));
+		hadMap2 = new Conditions(LogicType.OR, new ItemRequirements(map2), new VarbitRequirement(6117, 1));
+		hadMap3 = new Conditions(LogicType.OR, new ItemRequirements(map3), new VarbitRequirement(6118, 1));
+		hadMap4 = new Conditions(LogicType.OR, new ItemRequirements(map4), new VarbitRequirement(6119, 1));
+		hadMap5 = new Conditions(LogicType.OR, new ItemRequirements(map5), new VarbitRequirement(6120, 1));
 		hadChest1MapPieces = new Conditions(hadMap1, hadMap2, hadMap3, hadMap4, hadMap5);
 
-		hadMap6 = new Conditions(LogicType.OR, new ItemRequirementCondition(map6), new VarbitCondition(6121, 1));
-		hadMap7 = new Conditions(LogicType.OR, new ItemRequirementCondition(map7), new VarbitCondition(6122, 1));
-		hadMap8 = new Conditions(LogicType.OR, new ItemRequirementCondition(map8), new VarbitCondition(6123, 1));
+		hadMap6 = new Conditions(LogicType.OR, new ItemRequirements(map6), new VarbitRequirement(6121, 1));
+		hadMap7 = new Conditions(LogicType.OR, new ItemRequirements(map7), new VarbitRequirement(6122, 1));
+		hadMap8 = new Conditions(LogicType.OR, new ItemRequirements(map8), new VarbitRequirement(6123, 1));
 		hadChest2MapPieces = new Conditions(hadMap6, hadMap7, hadMap8);
 
-		hadMap9 = new Conditions(LogicType.OR, new ItemRequirementCondition(map9), new VarbitCondition(6124, 1));
-		hadMap10 = new Conditions(LogicType.OR, new ItemRequirementCondition(map10), new VarbitCondition(6125, 1));
-		hadMap11 = new Conditions(LogicType.OR, new ItemRequirementCondition(map11), new VarbitCondition(6126, 1));
-		hadMap12 = new Conditions(LogicType.OR, new ItemRequirementCondition(map12), new VarbitCondition(6127, 1));
+		hadMap9 = new Conditions(LogicType.OR, new ItemRequirements(map9), new VarbitRequirement(6124, 1));
+		hadMap10 = new Conditions(LogicType.OR, new ItemRequirements(map10), new VarbitRequirement(6125, 1));
+		hadMap11 = new Conditions(LogicType.OR, new ItemRequirements(map11), new VarbitRequirement(6126, 1));
+		hadMap12 = new Conditions(LogicType.OR, new ItemRequirements(map12), new VarbitRequirement(6127, 1));
 		hadFungiMapPieces = new Conditions(hadMap9, hadMap10, hadMap11, hadMap12);
 
-		hadMap13 = new Conditions(LogicType.OR, new ItemRequirementCondition(map13), new VarbitCondition(6128, 1));
-		hadMap14 = new Conditions(LogicType.OR, new ItemRequirementCondition(map14), new VarbitCondition(6129, 1));
-		hadMap15 = new Conditions(LogicType.OR, new ItemRequirementCondition(map15), new VarbitCondition(6130, 1));
-		hadMap16 = new Conditions(LogicType.OR, new ItemRequirementCondition(map16), new VarbitCondition(6131, 1));
-		hadMap17 = new Conditions(LogicType.OR, new ItemRequirementCondition(map17), new VarbitCondition(6132, 1));
-		hadMap18 = new Conditions(LogicType.OR, new ItemRequirementCondition(map18), new VarbitCondition(6133, 1));
-		hadMap19 = new Conditions(LogicType.OR, new ItemRequirementCondition(map19), new VarbitCondition(6134, 1));
+		hadMap13 = new Conditions(LogicType.OR, new ItemRequirements(map13), new VarbitRequirement(6128, 1));
+		hadMap14 = new Conditions(LogicType.OR, new ItemRequirements(map14), new VarbitRequirement(6129, 1));
+		hadMap15 = new Conditions(LogicType.OR, new ItemRequirements(map15), new VarbitRequirement(6130, 1));
+		hadMap16 = new Conditions(LogicType.OR, new ItemRequirements(map16), new VarbitRequirement(6131, 1));
+		hadMap17 = new Conditions(LogicType.OR, new ItemRequirements(map17), new VarbitRequirement(6132, 1));
+		hadMap18 = new Conditions(LogicType.OR, new ItemRequirements(map18), new VarbitRequirement(6133, 1));
+		hadMap19 = new Conditions(LogicType.OR, new ItemRequirements(map19), new VarbitRequirement(6134, 1));
 		hadBriarMapPieces = new Conditions(hadMap13, hadMap14, hadMap15, hadMap16, hadMap17, hadMap18, hadMap19);
 
-		hadMap20 = new Conditions(LogicType.OR, new ItemRequirementCondition(map20), new VarbitCondition(6135, 1));
-		hadMap21 = new Conditions(LogicType.OR, new ItemRequirementCondition(map21), new VarbitCondition(6136, 1));
-		hadMap22 = new Conditions(LogicType.OR, new ItemRequirementCondition(map22), new VarbitCondition(6137, 1));
-		hadMap23 = new Conditions(LogicType.OR, new ItemRequirementCondition(map23), new VarbitCondition(6138, 1));
-		hadMap24 = new Conditions(LogicType.OR, new ItemRequirementCondition(map23), new VarbitCondition(6138, 1));
+		hadMap20 = new Conditions(LogicType.OR, new ItemRequirements(map20), new VarbitRequirement(6135, 1));
+		hadMap21 = new Conditions(LogicType.OR, new ItemRequirements(map21), new VarbitRequirement(6136, 1));
+		hadMap22 = new Conditions(LogicType.OR, new ItemRequirements(map22), new VarbitRequirement(6137, 1));
+		hadMap23 = new Conditions(LogicType.OR, new ItemRequirements(map23), new VarbitRequirement(6138, 1));
+		hadMap24 = new Conditions(LogicType.OR, new ItemRequirements(map23), new VarbitRequirement(6138, 1));
 		hadMushtreeMapPieces = new Conditions(hadMap20, hadMap21, hadMap22, hadMap23, hadMap24);
 
-		inMapPuzzle = new WidgetModelCondition(305, 1, 35060);
+		inMapPuzzle = new WidgetModelRequirement(305, 1, 35060);
 
-		hasAivasDiary = new ItemRequirementCondition(aivasDiary);
+		hasAivasDiary = new ItemRequirements(aivasDiary);
 
-		hasVialWater = new ItemRequirementCondition(dreamVialWater);
-		hasVialGout = new ItemRequirementCondition(dreamVialWithGoutweed);
-		hasAstralShard = new ItemRequirementCondition(astralRuneShards);
-		hasAstralPowder = new ItemRequirementCondition(groundAstralRune);
-		hasDreamPotion = new ItemRequirementCondition(dreamPotion);
+		hasVialWater = new ItemRequirements(dreamVialWater);
+		hasVialGout = new ItemRequirements(dreamVialWithGoutweed);
+		hasAstralShard = new ItemRequirements(astralRuneShards);
+		hasAstralPowder = new ItemRequirements(groundAstralRune);
+		hasDreamPotion = new ItemRequirements(dreamPotion);
 
-		litBrazier = new VarbitCondition(2430, 1);
+		litBrazier = new VarbitRequirement(2430, 1);
 
-		hasTheKourendKeyPiece = new VarbitCondition(6105, 35, Operation.GREATER_EQUAL);
-		hasTheKaramjaKeyPiece = new VarbitCondition(6106, 20, Operation.GREATER_EQUAL);
-		hasTheVarrockKeyPiece = new VarbitCondition(6107, 55, Operation.GREATER_EQUAL);
-		hasTheFremennikKeyPiece = new VarbitCondition(6108, 35, Operation.GREATER_EQUAL);
+		hasTheKourendKeyPiece = new VarbitRequirement(6105, 35, Operation.GREATER_EQUAL);
+		hasTheKaramjaKeyPiece = new VarbitRequirement(6106, 20, Operation.GREATER_EQUAL);
+		hasTheVarrockKeyPiece = new VarbitRequirement(6107, 55, Operation.GREATER_EQUAL);
+		hasTheFremennikKeyPiece = new VarbitRequirement(6108, 35, Operation.GREATER_EQUAL);
 
 
 		// Kourend key piece
-		talkedToAmelia = new VarbitCondition(6105, 20, Operation.GREATER_EQUAL);
-		inspectedTomb = new VarbitCondition(6105, 25, Operation.GREATER_EQUAL);
-		openedTomb = new VarbitCondition(6105, 30, Operation.GREATER_EQUAL);
+		talkedToAmelia = new VarbitRequirement(6105, 20, Operation.GREATER_EQUAL);
+		inspectedTomb = new VarbitRequirement(6105, 25, Operation.GREATER_EQUAL);
+		openedTomb = new VarbitRequirement(6105, 30, Operation.GREATER_EQUAL);
 		// 6105 35->36 placed key on door
 
 		// Varrock key piece
-		talkedToReldo = new VarbitCondition(6107, 10, Operation.GREATER_EQUAL);
-		foundCensus = new VarbitCondition(6107, 15, Operation.GREATER_EQUAL);
-		givenReldoBook = new VarbitCondition(6107, 20, Operation.GREATER_EQUAL);
-		talkedToReldoAgain = new VarbitCondition(6107, 25, Operation.GREATER_EQUAL);
-		talkedToSarah = new VarbitCondition(6107, 35, Operation.GREATER_EQUAL);
-		talkedToAva = new VarbitCondition(6107, 40, Operation.GREATER_EQUAL);
-		givenAvaOrb = new VarbitCondition(6107, 46, Operation.GREATER_EQUAL);
-		talkedToAvaAgain = new VarbitCondition(6107, 50, Operation.GREATER_EQUAL);
-		haveInertLocator = new ItemRequirementCondition(inertLocator);
+		talkedToReldo = new VarbitRequirement(6107, 10, Operation.GREATER_EQUAL);
+		foundCensus = new VarbitRequirement(6107, 15, Operation.GREATER_EQUAL);
+		givenReldoBook = new VarbitRequirement(6107, 20, Operation.GREATER_EQUAL);
+		talkedToReldoAgain = new VarbitRequirement(6107, 25, Operation.GREATER_EQUAL);
+		talkedToSarah = new VarbitRequirement(6107, 35, Operation.GREATER_EQUAL);
+		talkedToAva = new VarbitRequirement(6107, 40, Operation.GREATER_EQUAL);
+		givenAvaOrb = new VarbitRequirement(6107, 46, Operation.GREATER_EQUAL);
+		talkedToAvaAgain = new VarbitRequirement(6107, 50, Operation.GREATER_EQUAL);
+		haveInertLocator = new ItemRequirements(inertLocator);
 		// 6141, presumbly represents location of treasure
 		// 11: 3442, 3421, 0
 
 		// Fremennik key piece
-		talkedToBrundt = new VarbitCondition(6108, 10, Operation.GREATER_EQUAL);
-		defeatedVorkath = new VarbitCondition(6108, 30, Operation.GREATER_EQUAL);
+		talkedToBrundt = new VarbitRequirement(6108, 10, Operation.GREATER_EQUAL);
+		defeatedVorkath = new VarbitRequirement(6108, 30, Operation.GREATER_EQUAL);
 		pulledLever = new ObjectCondition(ObjectID.LEVER_32055, new WorldPoint(2260, 10464, 0));
 
-		openedMithrilDoor = new VarbitCondition(6108, 40, Operation.GREATER_EQUAL);
+		openedMithrilDoor = new VarbitRequirement(6108, 40, Operation.GREATER_EQUAL);
 
 		// West dragon lit, 6109 = 1
 		// North dragon lit, 6110 = 1
 		// East dragon lit, 6111 = 1
-		litFurnace = new Conditions(new VarbitCondition(6109, 1), new VarbitCondition(6110, 1), new VarbitCondition(6111, 1));
+		litFurnace = new Conditions(new VarbitRequirement(6109, 1), new VarbitRequirement(6110, 1), new VarbitRequirement(6111, 1));
 
-		recruitedBrundt = new VarbitCondition(6114, 1);
-		recruitedAmik = new VarbitCondition(6115, 1);
-		recruitedLathas = new VarbitCondition(6113, 1);
+		recruitedBrundt = new VarbitRequirement(6114, 1);
+		recruitedAmik = new VarbitRequirement(6115, 1);
+		recruitedLathas = new VarbitRequirement(6113, 1);
 	}
 
 	public void setupSteps()

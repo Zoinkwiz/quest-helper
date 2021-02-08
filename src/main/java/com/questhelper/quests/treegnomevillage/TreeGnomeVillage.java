@@ -31,7 +31,13 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
@@ -40,13 +46,16 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.*;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TREE_GNOME_VILLAGE
@@ -60,7 +69,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		firstTracker, secondTracker, thirdTracker, fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder,
 		talkToKingBolrenFirstOrb, talkToTheWarlord, fightTheWarlord, returnOrbs, finishQuestDialog;
 
-	ConditionForStep completeFirstTracker, completeSecondTracker, completeThirdTracker, handedInOrbs,
+	Requirement completeFirstTracker, completeSecondTracker, completeThirdTracker, handedInOrbs,
 		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker, orbsOfProtectionNearby;
 
 	private Conditions talkToSecondTracker, talkToThirdTracker, completedTrackers,
@@ -70,7 +79,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	//Zones
 	Zone upstairsTower, zoneVillage;
-	ZoneCondition isUpstairsTower, insideGnomeVillage;
+	ZoneRequirement isUpstairsTower, insideGnomeVillage;
 
 	private final int TRACKER_1_VARBITID = 599;
 	private final int TRACKER_2_VARBITID = 600;
@@ -131,7 +140,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep defeatWarlordStep()
 	{
-		NpcHintArrowCondition fightingWarlord = new NpcHintArrowCondition(NpcID.KHAZARD_WARLORD_7622);
+		NpcHintArrowRequirement fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_7622);
 
 		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7622, new WorldPoint(2456, 3301, 0),
 			"Defeat the warlord and retrieve orbs.");
@@ -155,9 +164,9 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep returnOrbsStep()
 	{
-		handedInOrbs = new VarbitCondition(598, 1, Operation.GREATER_EQUAL);
+		handedInOrbs = new VarbitRequirement(598, 1, Operation.GREATER_EQUAL);
 
-		orbsOfProtectionNearby = new ItemCondition(ItemID.ORBS_OF_PROTECTION);
+		orbsOfProtectionNearby = new ItemOnTileRequirement(ItemID.ORBS_OF_PROTECTION);
 
 		ItemStep pickupOrb = new ItemStep(this,
 			"Pick up the nearby Orbs of Protection.", orbsOfProtection);
@@ -185,26 +194,26 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		notCompleteFirstTracker = new VarbitCondition(TRACKER_1_VARBITID, 0);
-		notCompleteSecondTracker = new VarbitCondition(TRACKER_2_VARBITID, 0);
-		notCompleteThirdTracker = new VarbitCondition(TRACKER_3_VARBITID, 0);
+		notCompleteFirstTracker = new VarbitRequirement(TRACKER_1_VARBITID, 0);
+		notCompleteSecondTracker = new VarbitRequirement(TRACKER_2_VARBITID, 0);
+		notCompleteThirdTracker = new VarbitRequirement(TRACKER_3_VARBITID, 0);
 
-		completeFirstTracker = new VarbitCondition(TRACKER_1_VARBITID, 1);
-		completeSecondTracker = new VarbitCondition(TRACKER_2_VARBITID, 1);
-		completeThirdTracker = new VarbitCondition(TRACKER_3_VARBITID, 1);
+		completeFirstTracker = new VarbitRequirement(TRACKER_1_VARBITID, 1);
+		completeSecondTracker = new VarbitRequirement(TRACKER_2_VARBITID, 1);
+		completeThirdTracker = new VarbitRequirement(TRACKER_3_VARBITID, 1);
 
-		insideGnomeVillage = new ZoneCondition(zoneVillage);
-		isUpstairsTower = new ZoneCondition(upstairsTower);
+		insideGnomeVillage = new ZoneRequirement(zoneVillage);
+		isUpstairsTower = new ZoneRequirement(upstairsTower);
 
 		talkToSecondTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteSecondTracker);
 		talkToThirdTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteThirdTracker);
 
 		completedTrackers = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker, completeThirdTracker);
 
-		shouldFireBallista1 = new Conditions(LogicType.AND, completedTrackers, new VarbitCondition(602, 0));
-		shouldFireBallista2 = new Conditions(LogicType.AND, completedTrackers, new VarbitCondition(602, 1));
-		shouldFireBallista3 = new Conditions(LogicType.AND, completedTrackers, new VarbitCondition(602, 2));
-		shouldFireBallista4 = new Conditions(LogicType.AND, completedTrackers, new VarbitCondition(602, 3));
+		shouldFireBallista1 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 0));
+		shouldFireBallista2 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 1));
+		shouldFireBallista3 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 2));
+		shouldFireBallista4 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 3));
 	}
 
 	private void setupSteps()

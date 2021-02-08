@@ -25,22 +25,29 @@
 package com.questhelper.quests.hauntedmine;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcHintArrowCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.VarplayerCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,14 +59,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.HAUNTED_MINE
@@ -70,7 +69,7 @@ public class HauntedMine extends BasicQuestHelper
 	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear,
 	zealotsKeyHighlighted, food;
 
-	ConditionForStep askedAboutKey, hasKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve, hasGlowingFungus, hasChisel,
+	Requirement askedAboutKey, hasKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve, hasGlowingFungus, hasChisel,
 		inLiftRoom, inLevel2North, inLevel3North, inLevel2South, inLevel3South, inCartRoom, inCollectRoom, leverAWrong, leverBWrong,
 		leverCWrong, leverDWrong, leverEWrong, leverFWrong, leverGWrong, leverHWrong, fungusInCart, fungusOnOtherSide, inLevel1North,
 		inFloodedRoom, daythNearby, inDaythRoom, inCrystalRoom, inCrystalEntrance, killedDayth, hasCrystalMineKey, inCrystalOrCrystalEntranceRoom,
@@ -227,51 +226,51 @@ public class HauntedMine extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		askedAboutKey = new VarbitCondition(2397, 1);
-		hasKey = new ItemRequirementCondition(zealotsKey);
-		inLevel1North = new ZoneCondition(level1North);
-		inLevel1South = new ZoneCondition(level1South);
-		inLevel2South = new ZoneCondition(level2South);
-		inLevel2North = new ZoneCondition(level2North, level2North2);
+		askedAboutKey = new VarbitRequirement(2397, 1);
+		hasKey = new ItemRequirements(zealotsKey);
+		inLevel1North = new ZoneRequirement(level1North);
+		inLevel1South = new ZoneRequirement(level1South);
+		inLevel2South = new ZoneRequirement(level2South);
+		inLevel2North = new ZoneRequirement(level2North, level2North2);
 
-		inLevel3South = new ZoneCondition(level3South1, level3South2, level3South3);
-		inLevel3North = new ZoneCondition(level3North1, level3North2, level3North3, level3North4);
-		inLiftRoom = new ZoneCondition(liftRoom1, liftRoom2);
-		inCartRoom = new ZoneCondition(cartRoom);
-		inCollectRoom = new ZoneCondition(collectRoom);
-		inFloodedRoom = new ZoneCondition(floodedRoom);
-		inDaythRoom = new ZoneCondition(daythRoom1, daythRoom2);
-		inCrystalRoom = new ZoneCondition(crystalRoom1, crystalRoom2, crystalRoom3);
-		inCrystalEntrance = new ZoneCondition(crystalEntrance);
-		inCrystalOrCrystalEntranceRoom = new ZoneCondition(crystalRoom1, crystalRoom2, crystalRoom3, crystalEntrance);
+		inLevel3South = new ZoneRequirement(level3South1, level3South2, level3South3);
+		inLevel3North = new ZoneRequirement(level3North1, level3North2, level3North3, level3North4);
+		inLiftRoom = new ZoneRequirement(liftRoom1, liftRoom2);
+		inCartRoom = new ZoneRequirement(cartRoom);
+		inCollectRoom = new ZoneRequirement(collectRoom);
+		inFloodedRoom = new ZoneRequirement(floodedRoom);
+		inDaythRoom = new ZoneRequirement(daythRoom1, daythRoom2);
+		inCrystalRoom = new ZoneRequirement(crystalRoom1, crystalRoom2, crystalRoom3);
+		inCrystalEntrance = new ZoneRequirement(crystalEntrance);
+		inCrystalOrCrystalEntranceRoom = new ZoneRequirement(crystalRoom1, crystalRoom2, crystalRoom3, crystalEntrance);
 
-		valveOpened = new VarbitCondition(2393, 1);
-		valveOpen = new VarbitCondition(2394, 1);
-		hasGlowingFungus = new ItemRequirementCondition(glowingFungus);
-		hasChisel = new ItemRequirementCondition(chisel);
+		valveOpened = new VarbitRequirement(2393, 1);
+		valveOpen = new VarbitRequirement(2394, 1);
+		hasGlowingFungus = new ItemRequirements(glowingFungus);
+		hasChisel = new ItemRequirements(chisel);
 
 		hasKeyOrOpenedValve = new Conditions(LogicType.OR, hasKey, valveOpened);
 
-		leverAWrong = new VarbitCondition(2385, 0);
-		leverBWrong = new VarbitCondition(2386, 0);
-		leverCWrong = new VarbitCondition(2387, 1);
-		leverDWrong = new VarbitCondition(2388, 1);
-		leverEWrong = new VarbitCondition(2389, 0);
-		leverFWrong = new VarbitCondition(2390, 0);
-		leverGWrong = new VarbitCondition(2391, 1);
-		leverHWrong = new VarbitCondition(2392, 1);
+		leverAWrong = new VarbitRequirement(2385, 0);
+		leverBWrong = new VarbitRequirement(2386, 0);
+		leverCWrong = new VarbitRequirement(2387, 1);
+		leverDWrong = new VarbitRequirement(2388, 1);
+		leverEWrong = new VarbitRequirement(2389, 0);
+		leverFWrong = new VarbitRequirement(2390, 0);
+		leverGWrong = new VarbitRequirement(2391, 1);
+		leverHWrong = new VarbitRequirement(2392, 1);
 
-		fungusInCart = new VarbitCondition(2395, 1);
-		fungusOnOtherSide = new VarbitCondition(2396, 1);
+		fungusInCart = new VarbitRequirement(2395, 1);
+		fungusOnOtherSide = new VarbitRequirement(2396, 1);
 
-		daythNearby = new NpcHintArrowCondition(NpcID.TREUS_DAYTH, NpcID.GHOST_3617);
+		daythNearby = new NpcHintArrowRequirement(NpcID.TREUS_DAYTH, NpcID.GHOST_3617);
 
-		killedDayth = new VarplayerCondition(382, 9, Operation.GREATER_EQUAL);
+		killedDayth = new VarplayerRequirement(382, 9, Operation.GREATER_EQUAL);
 
-		hasCrystalMineKey = new ItemRequirementCondition(crystalMineKey);
+		hasCrystalMineKey = new ItemRequirements(crystalMineKey);
 
-		inDarkCrystalRoom = new ZoneCondition(crystalEntranceDark);
-		inDarkDaythRoom = new ZoneCondition(daythRoomDark);
+		inDarkCrystalRoom = new ZoneRequirement(crystalEntranceDark);
+		inDarkDaythRoom = new ZoneRequirement(daythRoomDark);
 	}
 
 	public void setupSteps()

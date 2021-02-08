@@ -24,11 +24,27 @@
  */
 package com.questhelper.quests.eaglespeak;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
-import com.questhelper.requirements.conditional.ItemCondition;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,23 +57,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.EAGLES_PEAK
@@ -68,7 +67,7 @@ public class EaglesPeak extends BasicQuestHelper
 	ItemRequirement yellowDye, coins, tar, birdBook, metalFeather, tenEagleFeathers, fakeBeak, eagleCape, bronzeFeather, silverFeather, goldFeather,
 		birdFeed6, ferret, metalFeatherHighlighted, birdFeed, bronzeFeatherHighlighted, silverFeatherHighlighted, goldFeatherHighlighted;
 
-	ConditionForStep hasBirdBook, hasMetalFeather, inMainCavern, spokenToNickolaus, hasTenFeathers, spokenOnceToAsyff, spokenTwiceToAsyff, inBronzeRoom,
+	Requirement hasBirdBook, hasMetalFeather, inMainCavern, spokenToNickolaus, hasTenFeathers, spokenOnceToAsyff, spokenTwiceToAsyff, inBronzeRoom,
 		bronzeRoomPedestalUp, bronzeRoomPedestalLowered, winch1NotDone, winch2NotDone, winch3NotDone, winch4NotDone, hasSolvedBronze, hasBronzeFeather, hasSilverFeather,
 		hasGoldFeather, hasInspectedSilverPedestal, inSilverRoom, hasInspectedRocks1, hasInspectedRocks2, hasInspectedOpening, threatenedKebbit, inGoldRoom, hasBirdFeed,
 		lever1OriginalPosition, lever1Pulled, lever2Pulled, lever3Pulled, lever4Pulled, bird1Moved, bird2Moved, bird3Moved, bird4Moved, bird5Moved, hasInsertedBronzeFeather,
@@ -153,7 +152,7 @@ public class EaglesPeak extends BasicQuestHelper
 		createDisguises.addStep(new Conditions(bronzeRoomPedestalUp, winch2NotDone), winch2);
 		createDisguises.addStep(new Conditions(bronzeRoomPedestalUp, winch1NotDone), winch1);
 		createDisguises.addStep(new Conditions(inBronzeRoom, spokenTwiceToAsyff), attemptToTakeBronzeFeather);
-		createDisguises.addStep(new Conditions(new ZoneCondition(inMainCave), spokenTwiceToAsyff), enterBronzeRoom);
+		createDisguises.addStep(new Conditions(new ZoneRequirement(inMainCave), spokenTwiceToAsyff), enterBronzeRoom);
 		createDisguises.addStep(new Conditions(spokenTwiceToAsyff), returnToEaglesPeak);
 		createDisguises.addStep(new Conditions(spokenOnceToAsyff, hasTenFeathers), speakAsyffAgain);
 		createDisguises.addStep(new Conditions(spokenToNickolaus, hasTenFeathers), goToFancyStore);
@@ -162,7 +161,7 @@ public class EaglesPeak extends BasicQuestHelper
 		steps.put(15, createDisguises);
 
 		ConditionalStep freeNickolaus = new ConditionalStep(this, enterPeak);
-		freeNickolaus.addStep(new Conditions(new ZoneCondition(inNest)), speakToNickolaus);
+		freeNickolaus.addStep(new Conditions(new ZoneRequirement(inNest)), speakToNickolaus);
 		freeNickolaus.addStep(new Conditions(inMainCavern), sneakPastEagle);
 		steps.put(20, freeNickolaus);
 
@@ -224,47 +223,47 @@ public class EaglesPeak extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBirdBook = new ItemRequirementCondition(birdBook);
-		hasMetalFeather = new ItemRequirementCondition(metalFeather);
+		hasBirdBook = new ItemRequirements(birdBook);
+		hasMetalFeather = new ItemRequirements(metalFeather);
 		inBronzeRoom = new ObjectCondition(ObjectID.PEDESTAL_19980);
 		bronzeRoomPedestalUp = new ObjectCondition(ObjectID.PEDESTAL_19981);
 		bronzeRoomPedestalLowered = new ObjectCondition(ObjectID.STONE_PEDESTAL_19984);
-		inMainCavern = new ZoneCondition(inMainCave);
-		spokenToNickolaus = new VarbitCondition(3110, 3);
-		hasTenFeathers = new ItemRequirementCondition(tenEagleFeathers);
-		spokenOnceToAsyff = new VarbitCondition(3110, 4);
-		spokenTwiceToAsyff = new VarbitCondition(3110, 5);
-		winch1NotDone = new VarbitCondition(3101, 0);
-		winch2NotDone = new VarbitCondition(3102, 0);
-		winch3NotDone = new VarbitCondition(3103, 0);
-		winch4NotDone = new VarbitCondition(3104, 0);
-		hasSolvedBronze = new VarbitCondition(3105, 0);
-		hasBronzeFeather = new ItemRequirementCondition(bronzeFeather);
-		hasSilverFeather = new ItemRequirementCondition(silverFeather);
-		hasGoldFeather = new ItemRequirementCondition(goldFeather);
-		hasInspectedSilverPedestal = new VarbitCondition(3099, 1);
-		hasInspectedRocks1 = new VarbitCondition(3099, 2);
-		hasInspectedRocks2 = new VarbitCondition(3099, 3);
-		hasInspectedOpening = new VarbitCondition(3099, 4);
-		threatenedKebbit = new VarbitCondition(3099, 5);
-		inSilverRoom = new ZoneCondition(inSilverRoomZone);
-		inGoldRoom = new ZoneCondition(inGoldRoomZone1, inGoldRoomZone2);
-		lever1OriginalPosition = new VarbitCondition(3092, 0);
-		lever1Pulled = new VarbitCondition(3092, 1);
-		lever2Pulled = new VarbitCondition(3093, 1);
-		lever3Pulled = new VarbitCondition(3090, 1);
-		lever4Pulled = new VarbitCondition(3091, 1);
-		bird1Moved = new VarbitCondition(3098, 1);
-		bird2Moved = new VarbitCondition(3097, 1);
-		bird3Moved = new VarbitCondition(3095, 1);
-		bird4Moved = new VarbitCondition(3094, 1);
-		bird5Moved = new VarbitCondition(3096, 1);
-		hasBirdFeed = new ItemRequirementCondition(birdFeed6);
-		hasInsertedBronzeFeather = new VarbitCondition(3108, 1);
-		hasInsertedSilverFeather = new VarbitCondition(3099, 6);
-		hasInsertedGoldFeather = new VarbitCondition(3107, 1);
+		inMainCavern = new ZoneRequirement(inMainCave);
+		spokenToNickolaus = new VarbitRequirement(3110, 3);
+		hasTenFeathers = new ItemRequirements(tenEagleFeathers);
+		spokenOnceToAsyff = new VarbitRequirement(3110, 4);
+		spokenTwiceToAsyff = new VarbitRequirement(3110, 5);
+		winch1NotDone = new VarbitRequirement(3101, 0);
+		winch2NotDone = new VarbitRequirement(3102, 0);
+		winch3NotDone = new VarbitRequirement(3103, 0);
+		winch4NotDone = new VarbitRequirement(3104, 0);
+		hasSolvedBronze = new VarbitRequirement(3105, 0);
+		hasBronzeFeather = new ItemRequirements(bronzeFeather);
+		hasSilverFeather = new ItemRequirements(silverFeather);
+		hasGoldFeather = new ItemRequirements(goldFeather);
+		hasInspectedSilverPedestal = new VarbitRequirement(3099, 1);
+		hasInspectedRocks1 = new VarbitRequirement(3099, 2);
+		hasInspectedRocks2 = new VarbitRequirement(3099, 3);
+		hasInspectedOpening = new VarbitRequirement(3099, 4);
+		threatenedKebbit = new VarbitRequirement(3099, 5);
+		inSilverRoom = new ZoneRequirement(inSilverRoomZone);
+		inGoldRoom = new ZoneRequirement(inGoldRoomZone1, inGoldRoomZone2);
+		lever1OriginalPosition = new VarbitRequirement(3092, 0);
+		lever1Pulled = new VarbitRequirement(3092, 1);
+		lever2Pulled = new VarbitRequirement(3093, 1);
+		lever3Pulled = new VarbitRequirement(3090, 1);
+		lever4Pulled = new VarbitRequirement(3091, 1);
+		bird1Moved = new VarbitRequirement(3098, 1);
+		bird2Moved = new VarbitRequirement(3097, 1);
+		bird3Moved = new VarbitRequirement(3095, 1);
+		bird4Moved = new VarbitRequirement(3094, 1);
+		bird5Moved = new VarbitRequirement(3096, 1);
+		hasBirdFeed = new ItemRequirements(birdFeed6);
+		hasInsertedBronzeFeather = new VarbitRequirement(3108, 1);
+		hasInsertedSilverFeather = new VarbitRequirement(3099, 6);
+		hasInsertedGoldFeather = new VarbitRequirement(3107, 1);
 
-		silverFeatherNearby = new ItemCondition(silverFeather);
+		silverFeatherNearby = new ItemOnTileRequirement(silverFeather);
 	}
 
 	public void setupSteps()

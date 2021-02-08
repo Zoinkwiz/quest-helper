@@ -25,19 +25,30 @@
 package com.questhelper.quests.makinghistory;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.ComplexRequirement;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.util.ComplexRequirementBuilder;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.DigStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,16 +60,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MAKING_HISTORY
@@ -72,7 +73,7 @@ public class MakingHistory extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleport, ectophial, ringOfDueling, passage, rellekaTeleport, runRestoreItems;
 
-	ConditionForStep hasEnchantedKey, hasChest, hasJournal, hasScroll, talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak,
+	Requirement hasEnchantedKey, hasChest, hasJournal, hasScroll, talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak,
 		inCastle, gotKey, gotChest, gotScroll, handedInJournal, handedInScroll, finishedFrem, finishedKey, finishedGhost, handedInEverything;
 
 	QuestStep talkToJorral, talkToSilverMerchant, dig, openChest, talkToBlanin, talkToDron, talkToDroalak,
@@ -188,22 +189,22 @@ public class MakingHistory extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnchantedKey = new ItemRequirementCondition(enchantedKey);
-		hasJournal = new ItemRequirementCondition(journal);
-		hasScroll = new ItemRequirementCondition(scroll);
-		hasChest = new ItemRequirementCondition(chest);
-		talkedtoBlanin = new Conditions(LogicType.OR, new VarbitCondition(1385, 1), new VarbitCondition(1385, 2));
-		talkedToDron = new VarbitCondition(1385, 3, Operation.GREATER_EQUAL);
+		hasEnchantedKey = new ItemRequirements(enchantedKey);
+		hasJournal = new ItemRequirements(journal);
+		hasScroll = new ItemRequirements(scroll);
+		hasChest = new ItemRequirements(chest);
+		talkedtoBlanin = new Conditions(LogicType.OR, new VarbitRequirement(1385, 1), new VarbitRequirement(1385, 2));
+		talkedToDron = new VarbitRequirement(1385, 3, Operation.GREATER_EQUAL);
 
-		talkedToDroalak = new Conditions(LogicType.OR, new VarbitCondition(1386, 2), new VarbitCondition(1386, 1));
-		talkedToMelina = new Conditions(LogicType.OR, new VarbitCondition(1386, 4), new VarbitCondition(1386, 3));
-		gotScroll = new VarbitCondition(1386, 5);
-		handedInScroll = new VarbitCondition(1386, 6);
+		talkedToDroalak = new Conditions(LogicType.OR, new VarbitRequirement(1386, 2), new VarbitRequirement(1386, 1));
+		talkedToMelina = new Conditions(LogicType.OR, new VarbitRequirement(1386, 4), new VarbitRequirement(1386, 3));
+		gotScroll = new VarbitRequirement(1386, 5);
+		handedInScroll = new VarbitRequirement(1386, 6);
 
-		inCastle = new ZoneCondition(castle);
-		gotKey = new VarbitCondition(1384, 1, Operation.GREATER_EQUAL);
-		gotChest = new VarbitCondition(1384, 2, Operation.GREATER_EQUAL);
-		handedInJournal = new VarbitCondition(1384, 4);
+		inCastle = new ZoneRequirement(castle);
+		gotKey = new VarbitRequirement(1384, 1, Operation.GREATER_EQUAL);
+		gotChest = new VarbitRequirement(1384, 2, Operation.GREATER_EQUAL);
+		handedInJournal = new VarbitRequirement(1384, 4);
 		handedInEverything = new Conditions(handedInJournal, handedInScroll, talkedToDron);
 		finishedFrem = talkedToDron;
 		finishedGhost = new Conditions(LogicType.OR, handedInScroll, gotScroll);

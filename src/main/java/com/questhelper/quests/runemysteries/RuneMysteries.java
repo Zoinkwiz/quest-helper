@@ -25,23 +25,23 @@
 package com.questhelper.quests.runemysteries;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -58,7 +58,7 @@ public class RuneMysteries extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, wizardTeleport;
 
-	ConditionForStep inUpstairsLumbridge, inWizardBasement;
+	Requirement inUpstairsLumbridge, inWizardBasement;
 
 	QuestStep goUpToHoracio, talkToHoracio, goDownToSedridor, talkToSedridor, finishTalkingToSedridor, talkToAubury, talkToAudburyAgain, goDownToSedridor2, talkToSedridor2;
 
@@ -111,8 +111,8 @@ public class RuneMysteries extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inUpstairsLumbridge = new ZoneCondition(upstairsLumbridge);
-		inWizardBasement = new ZoneCondition(wizardBasement);
+		inUpstairsLumbridge = new ZoneRequirement(upstairsLumbridge);
+		inWizardBasement = new ZoneRequirement(wizardBasement);
 	}
 
 	public void setupZones()

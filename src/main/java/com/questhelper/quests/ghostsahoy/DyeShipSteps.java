@@ -25,15 +25,15 @@
 package com.questhelper.quests.ghostsahoy;
 
 import com.questhelper.Zone;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,7 +56,7 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	DetailedQuestStep searchMast, dyeTop, dyeSkull, dyeBottom, goDownToMan, talkToMan, goUpToMan, goUpToDeckForMast, goUpToMast;
 
-	ConditionForStep onTopOfShip, onDeck;
+	Requirement onTopOfShip, onDeck;
 
 	Zone topOfShip, deck;
 
@@ -68,8 +68,8 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 		topOfShip = new Zone(new WorldPoint(3616, 3541, 2), new WorldPoint(3622, 3545, 2));
 		deck = new Zone(new WorldPoint(3600, 3541, 1), new WorldPoint(3623, 3545, 1));
-		onTopOfShip = new ZoneCondition(topOfShip);
-		onDeck = new ZoneCondition(deck);
+		onTopOfShip = new ZoneRequirement(topOfShip);
+		onDeck = new ZoneRequirement(deck);
 
 		shapeColours.put("skull", FlagColour.WHITE);
 		shapeColours.put("top", FlagColour.WHITE);

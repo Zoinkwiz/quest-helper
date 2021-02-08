@@ -1,25 +1,36 @@
 package com.questhelper.quests.scorpioncatcher;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.*;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.steps.*;
-import com.questhelper.requirements.conditional.*;
 import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
 		quest = QuestHelperQuest.SCORPION_CATCHER
@@ -31,7 +42,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	QuestRequirement fairyRingAccess;
 	Zone sorcerersTower3, sorcerersTower2, sorcerersTower1, taverleyDungeon, deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4,
 		jailCell, taverleyScorpionRoom, upstairsMonastery, barbarianOutpost;
-	ConditionForStep has70Agility, hasScorpionCageEmpty, hasScorpionCageTaverley, hasScorpionCageEmptyOrTaverley, hasScorpionCageTaverleyAndMonastery,
+	Requirement has70Agility, hasScorpionCageEmpty, hasScorpionCageTaverley, hasScorpionCageEmptyOrTaverley, hasScorpionCageTaverleyAndMonastery,
 		hasScorpionCageFull, hasDustyKey, inTaverleyDungeon, inDeepTaverleyDungeon, inJailCell, hasJailKey, inSorcerersTower1, inSorcerersTower2,
 		inSorcerersTower3, inTaverleyScorpionRoom, inUpstairsMonastery, inBarbarianOutpost, jailKeyNearby;
 	QuestStep speakToThormac, speakToSeer1, enterTaverleyDungeon, goThroughPipe, killJailerForKey,
@@ -137,28 +148,28 @@ public class ScorpionCatcher extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		has70Agility = new SkillCondition(Skill.AGILITY, 70, Operation.GREATER_EQUAL);
-		hasDustyKey = new ItemRequirementCondition(dustyKey);
+		has70Agility = new SkillRequirement(Skill.AGILITY, 70);
+		hasDustyKey = new ItemRequirements(dustyKey);
 
-		inSorcerersTower1 = new ZoneCondition(sorcerersTower1);
-		inSorcerersTower2 = new ZoneCondition(sorcerersTower2);
-		inSorcerersTower3 = new ZoneCondition(sorcerersTower3);
+		inSorcerersTower1 = new ZoneRequirement(sorcerersTower1);
+		inSorcerersTower2 = new ZoneRequirement(sorcerersTower2);
+		inSorcerersTower3 = new ZoneRequirement(sorcerersTower3);
 
-		hasScorpionCageEmpty = new ItemRequirementCondition(scorpionCageEmpty);
-		hasScorpionCageTaverley = new ItemRequirementCondition(scorpionCageTaverley);
-		hasScorpionCageEmptyOrTaverley = new ItemRequirementCondition(scorpionCageEmptyOrTaverley);
-		hasScorpionCageTaverleyAndMonastery = new ItemRequirementCondition(scorpionCageTaverleyAndMonastery);
-		hasScorpionCageFull = new ItemRequirementCondition(scorpionCageFull);
+		hasScorpionCageEmpty = new ItemRequirements(scorpionCageEmpty);
+		hasScorpionCageTaverley = new ItemRequirements(scorpionCageTaverley);
+		hasScorpionCageEmptyOrTaverley = new ItemRequirements(scorpionCageEmptyOrTaverley);
+		hasScorpionCageTaverleyAndMonastery = new ItemRequirements(scorpionCageTaverleyAndMonastery);
+		hasScorpionCageFull = new ItemRequirements(scorpionCageFull);
 
-		inTaverleyDungeon = new ZoneCondition(taverleyDungeon);
-		inDeepTaverleyDungeon = new ZoneCondition(deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4);
-		inJailCell = new ZoneCondition(jailCell);
-		hasJailKey = new ItemRequirementCondition(jailKey);
-		jailKeyNearby = new ItemCondition(jailKey);
+		inTaverleyDungeon = new ZoneRequirement(taverleyDungeon);
+		inDeepTaverleyDungeon = new ZoneRequirement(deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4);
+		inJailCell = new ZoneRequirement(jailCell);
+		hasJailKey = new ItemRequirements(jailKey);
+		jailKeyNearby = new ItemOnTileRequirement(jailKey);
 
-		inTaverleyScorpionRoom = new ZoneCondition(taverleyScorpionRoom);
-		inUpstairsMonastery = new ZoneCondition(upstairsMonastery);
-		inBarbarianOutpost = new ZoneCondition(barbarianOutpost);
+		inTaverleyScorpionRoom = new ZoneRequirement(taverleyScorpionRoom);
+		inUpstairsMonastery = new ZoneRequirement(upstairsMonastery);
+		inBarbarianOutpost = new ZoneRequirement(barbarianOutpost);
 	}
 
 	private void setupSteps()

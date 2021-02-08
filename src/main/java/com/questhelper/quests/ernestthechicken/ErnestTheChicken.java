@@ -25,19 +25,24 @@
  */
 package com.questhelper.quests.ernestthechicken;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,11 +54,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ERNEST_THE_CHICKEN
@@ -63,7 +63,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 	//Items Required
 	ItemRequirement spade, fishFood, poison, poisonedFishFood, pressureGauge, oilCan, rubberTube, key;
 
-	ConditionForStep hasSpade, hasFishFood, hasPoison, hasPoisonedFishFood, hasPressureGauge, hasOilCan, hasRubberTube, inFirstFloor, inGroundFloor,
+	Requirement hasSpade, hasFishFood, hasPoison, hasPoisonedFishFood, hasPressureGauge, hasOilCan, hasRubberTube, inFirstFloor, inGroundFloor,
 		inSecondFloor, hasKey, killedFish, inSecretRoom, isLeverADown, isLeverBDown, isLeverCDown, isLeverDDown, isLeverEDown, isLeverFDown,
 		isLeverAUp, isLeverBUp, isLeverCUp, isLeverDUp, isLeverEUp, isLeverFUp, inBasement, inRoomCD, inEmptyRoom;
 
@@ -166,34 +166,34 @@ public class ErnestTheChicken extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasSpade = new ItemRequirementCondition(spade);
-		hasFishFood = new ItemRequirementCondition(fishFood);
-		hasPoison = new ItemRequirementCondition(poison);
-		hasPoisonedFishFood = new ItemRequirementCondition(poisonedFishFood);
-		hasOilCan = new ItemRequirementCondition(oilCan);
-		hasPressureGauge = new ItemRequirementCondition(pressureGauge);
-		hasRubberTube = new ItemRequirementCondition(rubberTube);
-		hasKey = new ItemRequirementCondition(key);
-		inFirstFloor = new ZoneCondition(firstFloor);
-		inSecondFloor = new ZoneCondition(secondFloor);
-		inGroundFloor = new ZoneCondition(manorGround1, secretRoom, manorGround3);
-		inSecretRoom = new ZoneCondition(secretRoom);
-		killedFish = new ChatMessageCondition("... then die and float to the surface.");
-		isLeverADown = new VarbitCondition(1788, 1);
-		isLeverBDown = new VarbitCondition(1789, 1);
-		isLeverCDown = new VarbitCondition(1790, 1);
-		isLeverDDown = new VarbitCondition(1791, 1);
-		isLeverEDown = new VarbitCondition(1792, 1);
-		isLeverFDown = new VarbitCondition(1793, 1);
-		isLeverAUp = new VarbitCondition(1788, 0);
-		isLeverBUp = new VarbitCondition(1789, 0);
-		isLeverCUp = new VarbitCondition(1790, 0);
-		isLeverDUp = new VarbitCondition(1791, 0);
-		isLeverEUp = new VarbitCondition(1792, 0);
-		isLeverFUp = new VarbitCondition(1793, 0);
-		inBasement = new ZoneCondition(basement);
-		inRoomCD = new ZoneCondition(roomCD);
-		inEmptyRoom = new ZoneCondition(emptyRoom);
+		hasSpade = new ItemRequirements(spade);
+		hasFishFood = new ItemRequirements(fishFood);
+		hasPoison = new ItemRequirements(poison);
+		hasPoisonedFishFood = new ItemRequirements(poisonedFishFood);
+		hasOilCan = new ItemRequirements(oilCan);
+		hasPressureGauge = new ItemRequirements(pressureGauge);
+		hasRubberTube = new ItemRequirements(rubberTube);
+		hasKey = new ItemRequirements(key);
+		inFirstFloor = new ZoneRequirement(firstFloor);
+		inSecondFloor = new ZoneRequirement(secondFloor);
+		inGroundFloor = new ZoneRequirement(manorGround1, secretRoom, manorGround3);
+		inSecretRoom = new ZoneRequirement(secretRoom);
+		killedFish = new ChatMessageRequirement("... then die and float to the surface.");
+		isLeverADown = new VarbitRequirement(1788, 1);
+		isLeverBDown = new VarbitRequirement(1789, 1);
+		isLeverCDown = new VarbitRequirement(1790, 1);
+		isLeverDDown = new VarbitRequirement(1791, 1);
+		isLeverEDown = new VarbitRequirement(1792, 1);
+		isLeverFDown = new VarbitRequirement(1793, 1);
+		isLeverAUp = new VarbitRequirement(1788, 0);
+		isLeverBUp = new VarbitRequirement(1789, 0);
+		isLeverCUp = new VarbitRequirement(1790, 0);
+		isLeverDUp = new VarbitRequirement(1791, 0);
+		isLeverEUp = new VarbitRequirement(1792, 0);
+		isLeverFUp = new VarbitRequirement(1793, 0);
+		inBasement = new ZoneRequirement(basement);
+		inRoomCD = new ZoneRequirement(roomCD);
+		inEmptyRoom = new ZoneRequirement(emptyRoom);
 	}
 
 	public void setupZones()

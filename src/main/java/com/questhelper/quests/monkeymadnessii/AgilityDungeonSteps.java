@@ -26,19 +26,19 @@ package com.questhelper.quests.monkeymadnessii;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -72,11 +72,11 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	Zone fallArea1, fallArea2, fallArea3, fallArea4, fallArea4P2, cavesSection2, cavesSection2P2, cavesSection3, cavesSection3P2, cavesSection4P1, cavesSection4P2,
 		cavesSection4P3, krukRoom;
 
-	ConditionForStep inCavesSection2, inCavesSection3, inCavesSection4, hasBronzeKey, inFallArea1, inFallArea2, inFallArea3, inFallArea4, inKrukRoom, openedShortcut;
+	Requirement inCavesSection2, inCavesSection3, inCavesSection4, hasBronzeKey, inFallArea1, inFallArea2, inFallArea3, inFallArea4, inKrukRoom, openedShortcut;
 
 	boolean shouldUsePath1V2, shouldUsePath2V2, shouldUsePath3V2, shouldUsePath4V2, shouldntUsePath5V1, shouldntUsePath5V2, shouldntUsePath5V3, shouldUsePath6V2;
 
-	ChatMessageCondition path1SouthIsWrongChat, path2NorthIsWrongChat, path2NorthIsWrongChat2, path3SouthIsWrongChat, path4NorthIsWrongChat, path5WestIsWrongChat,
+	ChatMessageRequirement path1SouthIsWrongChat, path2NorthIsWrongChat, path2NorthIsWrongChat2, path3SouthIsWrongChat, path4NorthIsWrongChat, path5WestIsWrongChat,
 		path5MiddleIsWrongChat, path5EastIsWrongChat, path5WestToMiddleWrongChat, path5MiddleToWestWrongChat, path5MiddleToEastWrongChat, path5EastToMiddleWrongChat,
 		path6WestIsWrongChat;
 	Conditions path1SouthIsWrong, path2NorthIsWrong, path3SouthIsWrong, path4NorthIsWrong, path5WestIsWrong, path5MiddleIsWrong, path5EastIsWrong, path6WestIsWrong;
@@ -117,80 +117,80 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 	public void setupConditions()
 	{
-		inFallArea1 = new ZoneCondition(fallArea1);
-		inFallArea2 = new ZoneCondition(fallArea2);
-		inFallArea3 = new ZoneCondition(fallArea3);
-		inFallArea4 = new ZoneCondition(fallArea4, fallArea4P2);
-		inCavesSection2 = new ZoneCondition(cavesSection2, cavesSection2P2);
-		inCavesSection3 = new ZoneCondition(cavesSection3, cavesSection3P2);
-		inCavesSection4 = new ZoneCondition(cavesSection4P1, cavesSection4P2, cavesSection4P3);
-		inKrukRoom = new ZoneCondition(krukRoom);
+		inFallArea1 = new ZoneRequirement(fallArea1);
+		inFallArea2 = new ZoneRequirement(fallArea2);
+		inFallArea3 = new ZoneRequirement(fallArea3);
+		inFallArea4 = new ZoneRequirement(fallArea4, fallArea4P2);
+		inCavesSection2 = new ZoneRequirement(cavesSection2, cavesSection2P2);
+		inCavesSection3 = new ZoneRequirement(cavesSection3, cavesSection3P2);
+		inCavesSection4 = new ZoneRequirement(cavesSection4P1, cavesSection4P2, cavesSection4P3);
+		inKrukRoom = new ZoneRequirement(krukRoom);
 
-		hasBronzeKey = new ItemRequirementCondition(bronzeKey);
-		openedShortcut = new VarbitCondition(5029, 1);
+		hasBronzeKey = new ItemRequirements(bronzeKey);
+		openedShortcut = new VarbitRequirement(5029, 1);
 
-		path1SouthIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2512, 9141, 1), new WorldPoint(2515, 9135, 1))),
+		path1SouthIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2512, 9141, 1), new WorldPoint(2515, 9135, 1))),
 			"Something about this route feels wrong.");
 		path1SouthIsWrong = new Conditions(true, LogicType.OR, path1SouthIsWrongChat,
-			new ZoneCondition(new Zone(new WorldPoint(2511, 9147, 1), new WorldPoint(2527, 9159, 1))));
+			new ZoneRequirement(new Zone(new WorldPoint(2511, 9147, 1), new WorldPoint(2527, 9159, 1))));
 
-		path2NorthIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2527, 9169, 1), new WorldPoint(2529, 9171, 1))),
+		path2NorthIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2527, 9169, 1), new WorldPoint(2529, 9171, 1))),
 			"Something about this tunnel feels wrong.");
-		path2NorthIsWrongChat2 = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2548, 9154, 1), new WorldPoint(2550, 9156, 1))),
+		path2NorthIsWrongChat2 = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2548, 9154, 1), new WorldPoint(2550, 9156, 1))),
 			"Something about this route feels wrong.");
 		path2NorthIsWrong = new Conditions(true, LogicType.OR, path2NorthIsWrongChat, path2NorthIsWrongChat2,
-			new ZoneCondition(new Zone(new WorldPoint(2566, 9151, 1), new WorldPoint(2574, 9164, 1))));
+			new ZoneRequirement(new Zone(new WorldPoint(2566, 9151, 1), new WorldPoint(2574, 9164, 1))));
 
-		path3SouthIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2589, 9160, 1), new WorldPoint(2592, 9164, 1))),
+		path3SouthIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2589, 9160, 1), new WorldPoint(2592, 9164, 1))),
 			"Something about this route feels wrong.");
 		path3SouthIsWrong = new Conditions(true, LogicType.OR, path3SouthIsWrongChat,
-			new ZoneCondition(new Zone(new WorldPoint(2590, 9173, 1), new WorldPoint(2617, 9180, 1))));
+			new ZoneRequirement(new Zone(new WorldPoint(2590, 9173, 1), new WorldPoint(2617, 9180, 1))));
 
-		path4NorthIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2600, 9196, 1), new WorldPoint(2600, 9201, 1))),
-			"Something about this route feels wrong.");
-
-		path5WestIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2575, 9223, 1), new WorldPoint(2577, 9225, 1))),
+		path4NorthIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2600, 9196, 1), new WorldPoint(2600, 9201, 1))),
 			"Something about this route feels wrong.");
 
-		path5MiddleIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2586, 9226, 1), new WorldPoint(2588, 9228, 1))),
+		path5WestIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2575, 9223, 1), new WorldPoint(2577, 9225, 1))),
 			"Something about this route feels wrong.");
 
-		path5EastIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2601, 9228, 1), new WorldPoint(2603, 9230, 1))),
+		path5MiddleIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2586, 9226, 1), new WorldPoint(2588, 9228, 1))),
 			"Something about this route feels wrong.");
 
-		path5WestToMiddleWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2581, 9224, 1), new WorldPoint(2583, 9226, 1))),
+		path5EastIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2601, 9228, 1), new WorldPoint(2603, 9230, 1))),
 			"Something about this route feels wrong.");
-		path5MiddleToWestWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2584, 9223, 1), new WorldPoint(2586, 9224, 1))),
+
+		path5WestToMiddleWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2581, 9224, 1), new WorldPoint(2583, 9226, 1))),
 			"Something about this route feels wrong.");
-		path5MiddleToEastWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2588, 9221, 1), new WorldPoint(2592, 9222, 1))),
+		path5MiddleToWestWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2584, 9223, 1), new WorldPoint(2586, 9224, 1))),
 			"Something about this route feels wrong.");
-		path5EastToMiddleWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2595, 9221, 1), new WorldPoint(2598, 9221, 1))),
+		path5MiddleToEastWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2588, 9221, 1), new WorldPoint(2592, 9222, 1))),
+			"Something about this route feels wrong.");
+		path5EastToMiddleWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2595, 9221, 1), new WorldPoint(2598, 9221, 1))),
 			"Something about this route feels wrong.");
 
 		path4NorthIsWrong = new Conditions(true, LogicType.OR, path4NorthIsWrongChat, path5WestToMiddleWrongChat,
 			path5MiddleToEastWrongChat,
-			new ZoneCondition(new Zone(new WorldPoint(2565, 9189, 1), new WorldPoint(2596, 9213, 1))));
+			new ZoneRequirement(new Zone(new WorldPoint(2565, 9189, 1), new WorldPoint(2596, 9213, 1))));
 		path5WestIsWrong = new Conditions(LogicType.OR, path5WestIsWrongChat, path5MiddleToWestWrongChat, path5EastToMiddleWrongChat);
 		path5MiddleIsWrong = new Conditions(LogicType.OR, path5MiddleIsWrongChat, path5WestToMiddleWrongChat, path5EastToMiddleWrongChat);
 		path5EastIsWrong = new Conditions(LogicType.OR, path5EastIsWrongChat, path5MiddleToEastWrongChat, path5WestToMiddleWrongChat);
 
-		path6WestIsWrongChat = new ChatMessageCondition(
-			new ZoneCondition(new Zone(new WorldPoint(2550, 9258, 1), new WorldPoint(2552, 9258, 1))),
+		path6WestIsWrongChat = new ChatMessageRequirement(
+			new ZoneRequirement(new Zone(new WorldPoint(2550, 9258, 1), new WorldPoint(2552, 9258, 1))),
 			"Something about this route feels wrong.");
 		path6WestIsWrong = new Conditions(true, LogicType.OR, path6WestIsWrongChat,
-			new ZoneCondition(new Zone(new WorldPoint(2546, 9226, 1), new WorldPoint(2554, 9255, 1))));
+			new ZoneRequirement(new Zone(new WorldPoint(2546, 9226, 1), new WorldPoint(2554, 9255, 1))));
 	}
 
 	@Override

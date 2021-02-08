@@ -25,14 +25,20 @@
 package com.questhelper.quests.daddyshome;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,12 +49,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DADDYS_HOME
@@ -62,7 +62,7 @@ public class DaddysHome extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement lumberyardTeleport, varrockTeleport3;
 
-	ConditionForStep removedChair, removedTable, removedTable2, removedStool, removedStool2, removedCampbed,
+	Requirement removedChair, removedTable, removedTable2, removedStool, removedStool2, removedCampbed,
 		removedCarpet, hasLogs, hasPlanks, repairedCampbed, repairedCarpet, repairedStool, repairedTable,
 		repairedChair, repairedStool2, repairedTable2;
 
@@ -146,26 +146,26 @@ public class DaddysHome extends BasicQuestHelper
 	public void setupConditions()
 	{
 
-		removedCampbed = new VarbitCondition(10568, 2);
-		removedCarpet = new VarbitCondition(10569, 2);
-		removedStool = new VarbitCondition(10564, 2);
+		removedCampbed = new VarbitRequirement(10568, 2);
+		removedCarpet = new VarbitRequirement(10569, 2);
+		removedStool = new VarbitRequirement(10564, 2);
 
-		removedTable = new VarbitCondition(10567, 2);
-		removedChair = new VarbitCondition(10565, 2);
-		removedStool2 = new VarbitCondition(10563, 2);
-		removedTable2 = new VarbitCondition(10566, 2);
+		removedTable = new VarbitRequirement(10567, 2);
+		removedChair = new VarbitRequirement(10565, 2);
+		removedStool2 = new VarbitRequirement(10563, 2);
+		removedTable2 = new VarbitRequirement(10566, 2);
 
-		repairedCampbed = new VarbitCondition(10568, 3);
-		repairedCarpet = new VarbitCondition(10569, 3);
-		repairedStool = new VarbitCondition(10564, 3);
+		repairedCampbed = new VarbitRequirement(10568, 3);
+		repairedCarpet = new VarbitRequirement(10569, 3);
+		repairedStool = new VarbitRequirement(10564, 3);
 
-		repairedTable = new VarbitCondition(10567, 3);
-		repairedChair = new VarbitCondition(10565, 3);
-		repairedStool2 = new VarbitCondition(10563, 3);
-		repairedTable2 = new VarbitCondition(10566, 3);
+		repairedTable = new VarbitRequirement(10567, 3);
+		repairedChair = new VarbitRequirement(10565, 3);
+		repairedStool2 = new VarbitRequirement(10563, 3);
+		repairedTable2 = new VarbitRequirement(10566, 3);
 
-		hasPlanks = new ItemRequirementCondition(waxwoodPlank3);
-		hasLogs = new ItemRequirementCondition(waxwoodLog3);
+		hasPlanks = new ItemRequirements(waxwoodPlank3);
+		hasLogs = new ItemRequirements(waxwoodLog3);
 	}
 
 	public void setupSteps()

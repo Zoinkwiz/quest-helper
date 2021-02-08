@@ -27,30 +27,29 @@ package com.questhelper.quests.thefremennikisles;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -68,7 +67,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		knife, rope8, rope4, splitLogs4, yakTop, yakBottom, royalDecree, roundShield, yakTopWorn, yakBottomWorn,
 		shieldWorn, meleeWeapon, food, head, needle, thread, coins15, bronzeNail, hammer, rope, axe, rope9;
 
-	ConditionForStep inIslands, inJatizso, inNeitiznot, inTrollLands, hasJesterOutfit, jestering1, repairedBridge1,
+	Requirement inIslands, inJatizso, inNeitiznot, inTrollLands, hasJesterOutfit, jestering1, repairedBridge1,
 		repairedBridge2, inNeitiznotOrTrollLands, collectedFlosi, collectedHring, collectedSkuli,
 		collectedValigga, collectedKeepa, collectedRaum, inTrollCave, inKingCave, killedTrolls, haveHead;
 
@@ -386,27 +385,27 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inIslands = new ZoneCondition(islands);
-		inNeitiznot = new ZoneCondition(neitiznot1, neitiznot2);
-		inNeitiznotOrTrollLands = new ZoneCondition(neitiznot1, neitiznot1, trollLands);
-		inJatizso = new ZoneCondition(jatizso1, jatizso2);
-		inTrollLands = new ZoneCondition(trollLands);
-		inTrollCave = new ZoneCondition(trollCave);
-		inKingCave = new ZoneCondition(kingCave);
-		hasJesterOutfit = new ItemRequirementCondition(jesterBoots, jesterHat, jesterTights, jesterTop);
-		jestering1 = new VarbitCondition(6719, 2);
-		repairedBridge1 = new VarbitCondition(3313, 1);
-		repairedBridge2 = new VarbitCondition(3314, 1);
+		inIslands = new ZoneRequirement(islands);
+		inNeitiznot = new ZoneRequirement(neitiznot1, neitiznot2);
+		inNeitiznotOrTrollLands = new ZoneRequirement(neitiznot1, neitiznot1, trollLands);
+		inJatizso = new ZoneRequirement(jatizso1, jatizso2);
+		inTrollLands = new ZoneRequirement(trollLands);
+		inTrollCave = new ZoneRequirement(trollCave);
+		inKingCave = new ZoneRequirement(kingCave);
+		hasJesterOutfit = new ItemRequirements(jesterBoots, jesterHat, jesterTights, jesterTop);
+		jestering1 = new VarbitRequirement(6719, 2);
+		repairedBridge1 = new VarbitRequirement(3313, 1);
+		repairedBridge2 = new VarbitRequirement(3314, 1);
 
-		collectedHring = new VarbitCondition(3321, 1);
-		collectedSkuli = new VarbitCondition(3320, 1);
-		collectedValigga = new VarbitCondition(3324, 1);
-		collectedKeepa = new VarbitCondition(3325, 1);
-		collectedRaum = new VarbitCondition(3323, 1);
-		collectedFlosi = new VarbitCondition(3322, 1);
+		collectedHring = new VarbitRequirement(3321, 1);
+		collectedSkuli = new VarbitRequirement(3320, 1);
+		collectedValigga = new VarbitRequirement(3324, 1);
+		collectedKeepa = new VarbitRequirement(3325, 1);
+		collectedRaum = new VarbitRequirement(3323, 1);
+		collectedFlosi = new VarbitRequirement(3322, 1);
 
-		killedTrolls = new VarbitCondition(3312, 0);
-		haveHead = new ItemRequirementCondition(head);
+		killedTrolls = new VarbitRequirement(3312, 0);
+		haveHead = new ItemRequirements(head);
 	}
 
 	public void setupSteps()

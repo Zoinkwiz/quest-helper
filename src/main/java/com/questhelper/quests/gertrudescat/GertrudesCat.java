@@ -29,17 +29,17 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +67,7 @@ public class GertrudesCat extends BasicQuestHelper
 
 	ConditionalStep giveMilkToCatSteps, giveSardineToCat;
 
-	ConditionForStep isUpstairsLumberyard, hasFluffsKitten;
+	Requirement isUpstairsLumberyard, hasFluffsKitten;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -180,8 +180,8 @@ public class GertrudesCat extends BasicQuestHelper
 		talkToChildren.addDialogSteps("What will make you tell me?", "Okay then, I'll pay.");
 
 		ConditionalStep conditionalTalkToChildren = new ConditionalStep(this, pickupDoogle, "Talk to Shilop or Wilough.");
-		conditionalTalkToChildren.addStep(new ItemRequirementCondition(LogicType.AND, sardine, doogleLeaves), makeSeasonedSardine);
-		conditionalTalkToChildren.addStep(new ItemRequirementCondition(seasonedSardine), talkToChildren);
+		conditionalTalkToChildren.addStep(new ItemRequirements(LogicType.AND, "", sardine, doogleLeaves), makeSeasonedSardine);
+		conditionalTalkToChildren.addStep(new ItemRequirements(seasonedSardine), talkToChildren);
 
 		return conditionalTalkToChildren;
 	}
@@ -219,12 +219,12 @@ public class GertrudesCat extends BasicQuestHelper
 	{
 		Zone zone = new Zone(new WorldPoint(3306, 3507, 12), new WorldPoint(3312, 3513, 1));
 
-		isUpstairsLumberyard = new ZoneCondition(zone);
+		isUpstairsLumberyard = new ZoneRequirement(zone);
 	}
 
 	private void setupConditions()
 	{
-		hasFluffsKitten = new ItemRequirementCondition(new ItemRequirement("Fluffs' kitten", ItemID.FLUFFS_KITTEN));
+		hasFluffsKitten = new ItemRequirements(new ItemRequirement("Fluffs' kitten", ItemID.FLUFFS_KITTEN));
 	}
 
 	private ObjectStep getClimbLadder(ItemRequirement... itemRequirements)

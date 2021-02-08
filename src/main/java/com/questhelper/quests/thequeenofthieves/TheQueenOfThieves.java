@@ -29,15 +29,15 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.FavourRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.FavourRequirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,7 +68,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	NpcStep talkToQueenOfThieves;
 
 	//Zones
-	ZoneCondition inWarrens, inUpstairsHughesHouse;
+	ZoneRequirement inWarrens, inUpstairsHughesHouse;
 	Zone warrens, kingstown, upstairsHughesHouse;
 
 	@Override
@@ -143,8 +143,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inWarrens = new ZoneCondition(warrens);
-		inUpstairsHughesHouse = new ZoneCondition(upstairsHughesHouse);
+		inWarrens = new ZoneRequirement(warrens);
+		inUpstairsHughesHouse = new ZoneRequirement(upstairsHughesHouse);
 	}
 
 	public void setupSteps() {

@@ -25,35 +25,34 @@
 package com.questhelper.quests.thefremenniktrials;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -76,7 +75,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement camelotTeleport, rellekkaTeleports, ringsOfRecoil, combatGear;
 
-	ConditionForStep synced, syncedAll, syncedOlaf, syncedManni, syncedSigmund, inQuestJournal, hasStartedOlaf, hasBranch, hasLyreUnstrung,
+	Requirement synced, syncedAll, syncedOlaf, syncedManni, syncedSigmund, inQuestJournal, hasStartedOlaf, hasBranch, hasLyreUnstrung,
 		talkedToLalli, gottenRock, hasPetRock, hasLyre, finishedOlafTask, hasOnion, hasCabbage, hasPotato, petRockInCauldron,
 		cabbageInCauldron, potatoInCauldron, onionInCauldron, cauldronFilledDialog, stewReady, hasGoldenWool, hasGoldenFleece,
 		hasEnchantedLyre, finishedOlafMessage, finishedOlafWidget, hasBeer, talkedToManni, hasStrangeObject, hasAlcoholFreeBeer,
@@ -382,161 +381,161 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inQuestJournal = new WidgetTextCondition(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, "The Fremennik Trials");
+		inQuestJournal = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, "The Fremennik Trials");
 
 		synced = new Conditions(true, LogicType.OR, inQuestJournal,
-			new WidgetTextCondition(217, 4, true, "I think I would enjoy the challenge"));
+			new WidgetTextRequirement(217, 4, true, "I think I would enjoy the challenge"));
 
 		hasStartedOlaf = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "That is great news outerlander! We always need more music lovers here!"),
-			new WidgetTextCondition(119, 3, true, "Bard<col=000080> will vote for me if"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is great news outerlander! We always need more music lovers here!"),
+			new WidgetTextRequirement(119, 3, true, "Bard<col=000080> will vote for me if"));
 
 		syncedOlaf = new Conditions(true, LogicType.AND, synced, hasStartedOlaf);
 
-		hasBranch = new ItemRequirementCondition(branch);
-		hasLyreUnstrung = new ItemRequirementCondition(lyreUnstrung);
-		hasLyre = new ItemRequirementCondition(lyre);
+		hasBranch = new ItemRequirements(branch);
+		hasLyreUnstrung = new ItemRequirements(lyreUnstrung);
+		hasLyre = new ItemRequirements(lyre);
 
-		talkedToLalli = new Conditions(true, new WidgetTextCondition(217, 4, "I see... okay, well, bye!"));
-		gottenRock = new VarbitCondition(6486, 1);
-		hasPetRock = new ItemRequirementCondition(petRock);
-		hasOnion = new ItemRequirementCondition(onion);
-		hasCabbage = new ItemRequirementCondition(cabbage);
-		hasPotato = new ItemRequirementCondition(potato);
+		talkedToLalli = new Conditions(true, new WidgetTextRequirement(217, 4, "I see... okay, well, bye!"));
+		gottenRock = new VarbitRequirement(6486, 1);
+		hasPetRock = new ItemRequirements(petRock);
+		hasOnion = new ItemRequirements(onion);
+		hasCabbage = new ItemRequirements(cabbage);
+		hasPotato = new ItemRequirements(potato);
 
-		petRockInCauldron = new ChatMessageCondition("You put your pet rock into the cauldron.");
-		cabbageInCauldron = new ChatMessageCondition("You put a cabbage into the cauldron.");
-		potatoInCauldron = new ChatMessageCondition("You put a potato into the cauldron.");
-		onionInCauldron = new ChatMessageCondition("You put an onion into the cauldron.");
-		cauldronFilledDialog = new WidgetTextCondition(217, 4, "Indeed it is. Try it and see.");
+		petRockInCauldron = new ChatMessageRequirement("You put your pet rock into the cauldron.");
+		cabbageInCauldron = new ChatMessageRequirement("You put a cabbage into the cauldron.");
+		potatoInCauldron = new ChatMessageRequirement("You put a potato into the cauldron.");
+		onionInCauldron = new ChatMessageRequirement("You put an onion into the cauldron.");
+		cauldronFilledDialog = new WidgetTextRequirement(217, 4, "Indeed it is. Try it and see.");
 
 		stewReady = new Conditions(new Conditions(petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron), cauldronFilledDialog);
 
-		hasGoldenFleece = new ItemRequirementCondition(goldenFleece);
-		hasGoldenWool = new ItemRequirementCondition(goldenWool);
-		hasEnchantedLyre = new ItemRequirementCondition(enchantedLyre);
+		hasGoldenFleece = new ItemRequirements(goldenFleece);
+		hasGoldenWool = new ItemRequirements(goldenWool);
+		hasEnchantedLyre = new ItemRequirements(enchantedLyre);
 
-		finishedOlafMessage = new ChatMessageCondition("Congratulations! You have completed the Bard's Trial!");
-		finishedOlafWidget = new Conditions(true, new WidgetTextCondition(119, 3, true, "I now have the Bard's vote"));
+		finishedOlafMessage = new ChatMessageRequirement("Congratulations! You have completed the Bard's Trial!");
+		finishedOlafWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "I now have the Bard's vote"));
 		finishedOlafTask = new Conditions(true, LogicType.OR, finishedOlafMessage, finishedOlafWidget);
 
-		hasBeer = new ItemRequirementCondition(beer);
+		hasBeer = new ItemRequirements(beer);
 
-		talkedToManniWidget = new Conditions(true, new WidgetTextCondition(119, 3, true, "Reveller<col=000080> will vote for me"));
-		talkedToManniChat = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"));
+		talkedToManniWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "Reveller<col=000080> will vote for me"));
+		talkedToManniChat = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"));
 		talkedToManni = new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat);
 
 		syncedManni = new Conditions(true, LogicType.OR, talkedToManni);
 
-		hasStrangeObject = new ItemRequirementCondition(strangeObject);
-		hasLitStrangeObject = new ItemRequirementCondition(litStrangeObject);
-		hasAlcoholFreeBeer = new ItemRequirementCondition(alcoholFreeBeer);
-		isNearPipe = new ZoneCondition(nearPipe);
+		hasStrangeObject = new ItemRequirements(strangeObject);
+		hasLitStrangeObject = new ItemRequirements(litStrangeObject);
+		hasAlcoholFreeBeer = new ItemRequirements(alcoholFreeBeer);
+		isNearPipe = new ZoneRequirement(nearPipe);
 
 		hasPlacedStrangeObject = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, "That is going to make a really loud bang"));
+			new WidgetTextRequirement(217, 4, "That is going to make a really loud bang"));
 
-		hasReplacedBeer = new Conditions(true, LogicType.AND, new ChatMessageCondition("You empty the keg and refill it with low alcohol beer."));
+		hasReplacedBeer = new Conditions(true, LogicType.AND, new ChatMessageRequirement("You empty the keg and refill it with low alcohol beer."));
 		finishedManniTask = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("Congratulations! You have completed the Revellers' Trial!"),
-			new WidgetTextCondition(119, 3, true, "I now have the Reveller's vote"));
+			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial!"),
+			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"));
 
-		hasKegOfBeer = new ItemRequirementCondition(kegOfBeer);
+		hasKegOfBeer = new ItemRequirements(kegOfBeer);
 
-		hasHuntersTalisman = new ItemRequirementCondition(huntersTalisman);
+		hasHuntersTalisman = new ItemRequirements(huntersTalisman);
 
-		hasChargedHuntersTalisman = new ItemRequirementCondition(chargedHuntersTalisman);
+		hasChargedHuntersTalisman = new ItemRequirements(chargedHuntersTalisman);
 
 		// No gz message
 		finishedSigliTask = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("Congratulations! You have completed the Hunter's Trial!"),
-			new WidgetTextCondition(119, 3, true, "I now have the Hunter's vote"));
+			new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),
+			new WidgetTextRequirement(119, 3, true, "I now have the Hunter's vote"));
 
 		getFlower = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "We are a very insular clan"),
-			new WidgetTextCondition(119, 3, true, "has a <col=800000>rare flower<col=000080> that he wants."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are a very insular clan"),
+			new WidgetTextRequirement(119, 3, true, "has a <col=800000>rare flower<col=000080> that he wants."));
 
 		talkedToSailor = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "That sounds like a fair deal to me, outerlander."),
-			new WidgetTextCondition(217, 4, "find a<br>love ballad, do you?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That sounds like a fair deal to me, outerlander."),
+			new WidgetTextRequirement(217, 4, "find a<br>love ballad, do you?"));
 
 		talkedToOlafForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "composing you a romantic ballad"),
-			new WidgetTextCondition(217, 4, "where I could find<br>some custom sturdy boots, do you?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "composing you a romantic ballad"),
+			new WidgetTextRequirement(217, 4, "where I could find<br>some custom sturdy boots, do you?"));
 
-		Conditions ysraAsked = new Conditions(true, LogicType.AND, new WidgetTextCondition(217, 4, true, "Okay, I will see what I can do."),
-			new ZoneCondition(new Zone(new WorldPoint(2622, 3672, 0), new WorldPoint(2629, 3679, 0))));
+		Conditions ysraAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(217, 4, true, "Okay, I will see what I can do."),
+			new ZoneRequirement(new Zone(new WorldPoint(2622, 3672, 0), new WorldPoint(2629, 3679, 0))));
 
 		talkedToYsra = new Conditions(true, LogicType.OR,
 			ysraAsked,
-			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>shopkeeper<col=000080> is looking for a <col=800000>tax reduction<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>shopkeeper<col=000080> is looking for a <col=800000>tax reduction<col=000080>..."));
 
 		talkedToBrundtForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Speak to Sigli then, and you may have my promise to<br>reduce our sales taxes. And best of luck with the rest<br>of your trials."),
-			new WidgetTextCondition(119, 3, true, "The <col=800000>chieftain<col=000080> wants a <col=800000>map of new hunting grounds<col=000080>..."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Speak to Sigli then, and you may have my promise to<br>reduce our sales taxes. And best of luck with the rest<br>of your trials."),
+			new WidgetTextRequirement(119, 3, true, "The <col=800000>chieftain<col=000080> wants a <col=800000>map of new hunting grounds<col=000080>..."));
 
 		talkedToSigliForSigmund = new Conditions(true, LogicType.OR,
 			// TODO: Fix this check, missing a br
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "who knows where<br>my hunting ground is."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>The hunter<col=000080> is looking for a <col=800000>custom bow string<col=000080>..."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "who knows where<br>my hunting ground is."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The hunter<col=000080> is looking for a <col=800000>custom bow string<col=000080>..."));
 
 		talkedToSkulgrimenForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, "Sounds good to me."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>armourer<col=000080> is looking for a <col=800000>rare inedible fish<col=000080>..."));
+			new WidgetTextRequirement(217, 4, "Sounds good to me."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>armourer<col=000080> is looking for a <col=800000>rare inedible fish<col=000080>..."));
 
 		talkedToFishermanForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, true, "I'll see what I can do."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>fisherman<col=000080> is looking for a <col=800000>map of fishing spots<col=000080>..."));
+			new WidgetTextRequirement(217, 4, true, "I'll see what I can do."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>fisherman<col=000080> is looking for a <col=800000>map of fishing spots<col=000080>..."));
 
 		talkedToSwensenForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, " take the time to make a forecast<br>somehow."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>navigator<col=000080> is looking for a <col=800000>weather forecast<col=000080>..."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, " take the time to make a forecast<br>somehow."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>navigator<col=000080> is looking for a <col=800000>weather forecast<col=000080>..."));
 		talkedToPeerForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "That is all."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>seer<col=000080> is looking for a <col=800000>warrior to be his bodyguard<col=000080>..."));
-		Conditions thorvaldAsked = new Conditions(true, LogicType.AND, new WidgetTextCondition(217, 4, "Okay, I'll see what I can do."),
-			new ZoneCondition(new Zone(new WorldPoint(2661, 3690, 0), new WorldPoint(2669, 3696, 0))));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is all."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>seer<col=000080> is looking for a <col=800000>warrior to be his bodyguard<col=000080>..."));
+		Conditions thorvaldAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(217, 4, "Okay, I'll see what I can do."),
+			new ZoneRequirement(new Zone(new WorldPoint(2661, 3690, 0), new WorldPoint(2669, 3696, 0))));
 		talkedToThorvaldForSigmund = new Conditions(true, LogicType.OR,
 			thorvaldAsked,
-			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>warrior<col=000080> is looking for a <col=800000>champions token<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>warrior<col=000080> is looking for a <col=800000>champions token<col=000080>..."));
 		talkedToManniForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "That's all."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That's all."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."));
 		talkedToThoraForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "cash. You should go ask him"),
-			new WidgetTextCondition(119, 3, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is " +
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "cash. You should go ask him"),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is " +
 				"<col=800000>some money<col=000080>!"),
-			new WidgetTextCondition(119, 3, true, "<col=800000>Thora"));
+			new WidgetTextRequirement(119, 3, true, "<col=800000>Thora"));
 
 		// TODO: No gz message
 		finishedSigmundTask = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("Congratulations! You have completed the Merchant's Trial!"),
-			new WidgetTextCondition(119, 3, true, "I now have the Merchant's vote"));
+			new ChatMessageRequirement("Congratulations! You have completed the Merchant's Trial!"),
+			new WidgetTextRequirement(119, 3, true, "I now have the Merchant's vote"));
 
 		syncedSigmund = new Conditions(LogicType.OR, getFlower, talkedToSailor, talkedToOlafForSigmund, talkedToYsra, talkedToBrundtForSigmund, talkedToSigliForSigmund, talkedToSkulgrimenForSigmund,
 			talkedToFishermanForSigmund, talkedToSwensenForSigmund, talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund);
 
-		talkedToAskeladdenForSigmund = new ItemRequirementCondition(promissoryNote);
+		talkedToAskeladdenForSigmund = new ItemRequirements(promissoryNote);
 		noRockAskeladdenNearby = new NpcCondition(NpcID.ASKELADDEN);
 
-		hasPromissoryNote = new ItemRequirementCondition(promissoryNote);
-		hasLegendaryCocktail = new ItemRequirementCondition(legendaryCocktail);
-		hasChampionsToken = new ItemRequirementCondition(championsToken);
-		hasWarriorsContract = new ItemRequirementCondition(warriorsContract);
-		hasWeatherForecast = new ItemRequirementCondition(weatherForecast);
-		hasSeaFishingMap = new ItemRequirementCondition(seaFishingMap);
-		hasUnusualFish = new ItemRequirementCondition(unusualFish);
-		hasCustomBowString = new ItemRequirementCondition(customBowString);
-		hasTrackingMap = new ItemRequirementCondition(trackingMap);
-		hasFiscalStatement = new ItemRequirementCondition(fiscalStatement);
-		hasSturdyBoots = new ItemRequirementCondition(sturdyBoots);
-		hasBallad = new ItemRequirementCondition(ballad);
-		hasExoticFlower = new ItemRequirementCondition(exoticFlower);
+		hasPromissoryNote = new ItemRequirements(promissoryNote);
+		hasLegendaryCocktail = new ItemRequirements(legendaryCocktail);
+		hasChampionsToken = new ItemRequirements(championsToken);
+		hasWarriorsContract = new ItemRequirements(warriorsContract);
+		hasWeatherForecast = new ItemRequirements(weatherForecast);
+		hasSeaFishingMap = new ItemRequirements(seaFishingMap);
+		hasUnusualFish = new ItemRequirements(unusualFish);
+		hasCustomBowString = new ItemRequirements(customBowString);
+		hasTrackingMap = new ItemRequirements(trackingMap);
+		hasFiscalStatement = new ItemRequirements(fiscalStatement);
+		hasSturdyBoots = new ItemRequirements(sturdyBoots);
+		hasBallad = new ItemRequirements(ballad);
+		hasExoticFlower = new ItemRequirements(exoticFlower);
 
-		inKoscheiRoom = new ZoneCondition(koscheiRoom);
+		inKoscheiRoom = new ZoneRequirement(koscheiRoom);
 		talkedToThorvald = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Hahahahaha! I'm beginning"),
-			new WidgetTextCondition(119, 3, true, "Warrior<col=000080> will vote for me if"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hahahahaha! I'm beginning"),
+			new WidgetTextRequirement(119, 3, true, "Warrior<col=000080> will vote for me if"));
 
 		koschei1Near = new NpcCondition(NpcID.KOSCHEI_THE_DEATHLESS);
 		koschei2Near = new NpcCondition(NpcID.KOSCHEI_THE_DEATHLESS_3898);
@@ -546,84 +545,84 @@ public class TheFremennikTrials extends BasicQuestHelper
 		syncedThorvald = new Conditions(talkedToThorvald);
 
 		finishedThorvaldTask = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("Congratulations! You have completed the warrior's trial!"),
-			new WidgetTextCondition(119, 3, true, "I now have the Warrior's vote"));
+			new ChatMessageRequirement("Congratulations! You have completed the warrior's trial!"),
+			new WidgetTextRequirement(119, 3, true, "I now have the Warrior's vote"));
 
 		talkedToSwensen = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, true, "A maze? Is that all?"),
-			new WidgetTextCondition(119, 3, true, "Navigator<col=000080> will vote for me if"));
+			new WidgetTextRequirement(217, 4, true, "A maze? Is that all?"),
+			new WidgetTextRequirement(119, 3, true, "Navigator<col=000080> will vote for me if"));
 
-		inSwensenRoom1 = new ZoneCondition(swensenRoom1);
-		inSwensenRoom2 = new ZoneCondition(swensenRoom2);
-		inSwensenRoom3 = new ZoneCondition(swensenRoom3);
-		inSwensenRoom4 = new ZoneCondition(swensenRoom4);
-		inSwensenRoom5 = new ZoneCondition(swensenRoom5);
-		inSwensenRoom6 = new ZoneCondition(swensenRoom6);
-		inSwensenRoom7 = new ZoneCondition(swensenRoom7);
-		inSwensenFinalRoom = new ZoneCondition(swensenFinalRoom);
-		inSwensenArea = new ZoneCondition(swensenArea);
+		inSwensenRoom1 = new ZoneRequirement(swensenRoom1);
+		inSwensenRoom2 = new ZoneRequirement(swensenRoom2);
+		inSwensenRoom3 = new ZoneRequirement(swensenRoom3);
+		inSwensenRoom4 = new ZoneRequirement(swensenRoom4);
+		inSwensenRoom5 = new ZoneRequirement(swensenRoom5);
+		inSwensenRoom6 = new ZoneRequirement(swensenRoom6);
+		inSwensenRoom7 = new ZoneRequirement(swensenRoom7);
+		inSwensenFinalRoom = new ZoneRequirement(swensenFinalRoom);
+		inSwensenArea = new ZoneRequirement(swensenArea);
 
 		syncedSwensen = new Conditions(talkedToSwensen);
 		finishedSwensenTask = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Outerlander! You have finished my maze!"),
-			new WidgetTextCondition(119, 3, true, "I now have the Navigator's vote"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Outerlander! You have finished my maze!"),
+			new WidgetTextRequirement(119, 3, true, "I now have the Navigator's vote"));
 
 		/* Peer Task */
 
 		talkedToPeer = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, true, "I have one small question"),
-			new WidgetTextCondition(119, 3, true, "Seer<col=000080> will vote for me if"));
+			new WidgetTextRequirement(217, 4, true, "I have one small question"),
+			new WidgetTextRequirement(119, 3, true, "Seer<col=000080> will vote for me if"));
 
-		isMind = new WidgetTextCondition(229, 1, "My first is in mage");
-		isTree = new WidgetTextCondition(229, 1, "My first is in tar");
-		isLife = new WidgetTextCondition(229, 1, "My first is in well");
-		isFire = new WidgetTextCondition(229, 1, "My first is in fish");
-		isTime = new WidgetTextCondition(229, 1, "My first is in water");
-		isWind = new WidgetTextCondition(229, 1, "My first is in wizard");
+		isMind = new WidgetTextRequirement(229, 1, "My first is in mage");
+		isTree = new WidgetTextRequirement(229, 1, "My first is in tar");
+		isLife = new WidgetTextRequirement(229, 1, "My first is in well");
+		isFire = new WidgetTextRequirement(229, 1, "My first is in fish");
+		isTime = new WidgetTextRequirement(229, 1, "My first is in water");
+		isWind = new WidgetTextRequirement(229, 1, "My first is in wizard");
 
-		inPeerEntrance = new ZoneCondition(peerEntrance);
-		inPeerUpstairs = new ZoneCondition(peerUpstairs);
-		inPeerExit = new ZoneCondition(peerExit);
-		hasSolvedDoor = new ChatMessageCondition("You have solved the riddle!");
+		inPeerEntrance = new ZoneRequirement(peerEntrance);
+		inPeerUpstairs = new ZoneRequirement(peerUpstairs);
+		inPeerExit = new ZoneRequirement(peerExit);
+		hasSolvedDoor = new ChatMessageRequirement("You have solved the riddle!");
 
-		hasRedHerring = new ItemRequirementCondition(redHerring);
-		hasWoodenDisk = new ItemRequirementCondition(woodenDisk);
-		hasRedDiskOld = new ItemRequirementCondition(redDiskOld);
-		hasRedDiskNew = new ItemRequirementCondition(redDiskNew);
-		hasStickyRedGoop = new ItemRequirementCondition(stickyRedGoop);
+		hasRedHerring = new ItemRequirements(redHerring);
+		hasWoodenDisk = new ItemRequirements(woodenDisk);
+		hasRedDiskOld = new ItemRequirements(redDiskOld);
+		hasRedDiskNew = new ItemRequirements(redDiskNew);
+		hasStickyRedGoop = new ItemRequirements(stickyRedGoop);
 
 		cupboardOpen = new ObjectCondition(ObjectID.CUPBOARD_4178);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_4168, new WorldPoint(2635, 3660, 2));
 		trapDoorOpen = new ObjectCondition(ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2));
 
 		/* Currently does not capture the case a user uses a disk, then logs out */
-		hasUsedDisk = new ChatMessageCondition("You put the red disk into the empty hole on the mural.", "You've already put the red disk into the empty hole on the mural.");
+		hasUsedDisk = new ChatMessageRequirement("You put the red disk into the empty hole on the mural.", "You've already put the red disk into the empty hole on the mural.");
 		muralHasDisks = new ObjectCondition(ObjectID.ABSTRACT_MURAL_4180);
-		hasEmptyBucket = new ItemRequirementCondition(emptyBucket);
-		hasFullBucket = new ItemRequirementCondition(fullBucket);
-		hasBucket45 = new ItemRequirementCondition(bucket45);
-		hasBucket35 = new ItemRequirementCondition(bucket35);
-		hasBucket25 = new ItemRequirementCondition(bucket25);
-		hasBucket15 = new ItemRequirementCondition(bucket15);
+		hasEmptyBucket = new ItemRequirements(emptyBucket);
+		hasFullBucket = new ItemRequirements(fullBucket);
+		hasBucket45 = new ItemRequirements(bucket45);
+		hasBucket35 = new ItemRequirements(bucket35);
+		hasBucket25 = new ItemRequirements(bucket25);
+		hasBucket15 = new ItemRequirements(bucket15);
 		hasAnyBucket = new Conditions(LogicType.OR, hasBucket15, hasBucket25, hasBucket35, hasBucket45, hasFullBucket, hasEmptyBucket);
-		hasEmptyJug = new ItemRequirementCondition(emptyJug);
-		hasFullJug = new ItemRequirementCondition(fullJug);
-		hasJug23 = new ItemRequirementCondition(jug23);
-		hasJug13 = new ItemRequirementCondition(jug13);
+		hasEmptyJug = new ItemRequirements(emptyJug);
+		hasFullJug = new ItemRequirements(fullJug);
+		hasJug23 = new ItemRequirements(jug23);
+		hasJug13 = new ItemRequirements(jug13);
 		hasAnyJug = new Conditions(LogicType.OR, hasJug13, hasJug23, hasEmptyJug, hasFullJug);
-		hasVase = new ItemRequirementCondition(vase);
-		hasVaseLid = new ItemRequirementCondition(vaseLid);
-		hasFilledVase = new ItemRequirementCondition(filledVase);
-		hasFilledVaseWithLid = new ItemRequirementCondition(filledVaseWithLid);
-		hasVaseWithLidWrong = new ItemRequirementCondition(vaseWithLidWrong);
-		hasFrozenVase = new ItemRequirementCondition(frozenVase);
+		hasVase = new ItemRequirements(vase);
+		hasVaseLid = new ItemRequirements(vaseLid);
+		hasFilledVase = new ItemRequirements(filledVase);
+		hasFilledVaseWithLid = new ItemRequirements(filledVaseWithLid);
+		hasVaseWithLidWrong = new ItemRequirements(vaseWithLidWrong);
+		hasFrozenVase = new ItemRequirements(frozenVase);
 
-		hasFrozenKey = new ItemRequirementCondition(frozenKey);
-		hasSeersKey = new ItemRequirementCondition(seersKey);
+		hasFrozenKey = new ItemRequirements(frozenKey);
+		hasSeersKey = new ItemRequirements(seersKey);
 
 		finishedPeerTask = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "To have solved my puzzle"),
-			new WidgetTextCondition(119, 3, true, "I now have the Seer's vote"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "To have solved my puzzle"),
+			new WidgetTextRequirement(119, 3, true, "I now have the Seer's vote"));
 
 		syncedPeer = new Conditions(talkedToPeer);
 

@@ -103,7 +103,7 @@ public enum StandardSpell implements MagicSpell
 	VULNERABILITY(56, 55, 66, b -> b.rune(SOUL).rune(5, WATER).rune(5, EARTH)),
 	LVL_5_ENCHANT(50, 56, 68, b -> b.rune(COSMIC).rune(15, WATER).rune(15, EARTH)),
 	ENCHANT_DRAGONSTONE_BOLT(358, 8, 68, b -> b.rune(SOUL).rune(COSMIC).rune(12, EARTH)),
-	KOUREND_CASTLE_TELEPORT(360, 57, 69, b -> b.rune(2, SOUL).rune(2, LAW).rune(4,WATER).rune(5, FIRE).varbit(10019, 1)), //TODO: UNLOCKED VIA BOOK
+	KOUREND_CASTLE_TELEPORT(360, 57, 69, b -> b.rune(2, SOUL).rune(2, LAW).rune(4,WATER).rune(5, FIRE).varbit(10019, 1)),
 	EARTH_WAVE(51, 58, 70, b -> b.rune(BLOOD).rune(5, AIR).rune(7, EARTH)),
 	ENFEEBLE(57, 59, 73, b -> b.rune(SOUL).rune(8, WATER).rune(8, EARTH)),
 	TELEOTHER_LUMBRIDGE(349, 60, 74, b -> b.rune(SOUL).rune(LAW).rune(EARTH)),

@@ -24,28 +24,28 @@
  */
 package com.questhelper.quests.goblindiplomacy;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -59,7 +59,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	//Required items
 	ItemRequirement goblinMailThree, orangeDye, blueDye, goblinMail, goblinMailTwo, blueArmour, orangeArmour, mailReq;
 
-	ConditionForStep hasThreeGoblinMail, isUpstairs, hasUpstairsArmour, hasWestArmour, hasNorthArmour, hasOrangeArmour, hasBlueArmour, hasThreeMail, hasTwoMail, hasMail;
+	Requirement hasThreeGoblinMail, isUpstairs, hasUpstairsArmour, hasWestArmour, hasNorthArmour, hasOrangeArmour, hasBlueArmour, hasThreeMail, hasTwoMail, hasMail;
 
 	QuestStep talkToGeneral1, talkToGeneral2, talkToGeneral3, goUpLadder, searchUpLadder, goDownLadder, searchWestHut, searchBehindGenerals,
 		dyeOrange, dyeBlue, getCrate2, getCrate3;
@@ -130,16 +130,16 @@ public class GoblinDiplomacy extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		isUpstairs = new ZoneCondition(upstairs);
-		hasThreeGoblinMail = new ItemRequirementCondition(goblinMailThree);
-		hasUpstairsArmour = new VarbitCondition(2381, 1);
-		hasWestArmour = new VarbitCondition(2380, 1);
-		hasNorthArmour = new VarbitCondition(2379, 1);
-		hasOrangeArmour = new ItemRequirementCondition(orangeArmour);
-		hasBlueArmour = new ItemRequirementCondition(blueArmour);
-		hasThreeMail = new ItemRequirementCondition(goblinMailThree);
-		hasTwoMail = new ItemRequirementCondition(goblinMailTwo);
-		hasMail = new ItemRequirementCondition(goblinMail);
+		isUpstairs = new ZoneRequirement(upstairs);
+		hasThreeGoblinMail = new ItemRequirements(goblinMailThree);
+		hasUpstairsArmour = new VarbitRequirement(2381, 1);
+		hasWestArmour = new VarbitRequirement(2380, 1);
+		hasNorthArmour = new VarbitRequirement(2379, 1);
+		hasOrangeArmour = new ItemRequirements(orangeArmour);
+		hasBlueArmour = new ItemRequirements(blueArmour);
+		hasThreeMail = new ItemRequirements(goblinMailThree);
+		hasTwoMail = new ItemRequirements(goblinMailTwo);
+		hasMail = new ItemRequirements(goblinMail);
 	}
 
 	public void setupZones()

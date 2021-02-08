@@ -45,7 +45,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -60,7 +60,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected boolean started = false;
 
 	protected final LinkedHashMap<Requirement, QuestStep> steps;
-	protected final List<ChatMessageCondition> chatConditions = new ArrayList<>();
+	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
 	protected final List<NpcCondition> npcConditions = new ArrayList<>();
 
 	protected QuestStep currentStep;
@@ -127,14 +127,9 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 		InitializableRequirement condition = (InitializableRequirement) requirement;
 
-		if (condition.getConditions() == null)
+		if (condition instanceof ChatMessageRequirement && !chatConditions.contains(condition))
 		{
-			if (condition.getClass() == ChatMessageCondition.class && !chatConditions.contains(condition))
-			{
-				chatConditions.add((ChatMessageCondition) condition);
-			}
-
-			return;
+			chatConditions.add((ChatMessageRequirement) condition);
 		}
 		condition.getConditions().forEach(this::checkForChatConditions);
 	}

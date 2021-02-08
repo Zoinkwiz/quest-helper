@@ -24,17 +24,21 @@
  */
 package com.questhelper.quests.architecturalalliance;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,18 +48,13 @@ import net.runelite.api.NpcID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ARCHITECTURAL_ALLIANCE
 )
 public class ArchitecturalAlliance extends BasicQuestHelper
 {
-	ConditionForStep talkedToHosaStart, talkedToHosa, talkedToArcis, talkedToLovada, talkedToPiliar, talkedToShayda;
+	Requirement talkedToHosaStart, talkedToHosa, talkedToArcis, talkedToLovada, talkedToPiliar, talkedToShayda;
 
 	DetailedQuestStep talkToHosa, talkToHosaAsArchitect, talkToArcis, talkToLovada, talkToPiliar, talkToShayda, talkToHosaToFinish;
 
@@ -85,12 +84,12 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		talkedToArcis = new VarbitCondition(4971, 1);
-		talkedToHosa = new VarbitCondition(4972, 1);
-		talkedToLovada = new VarbitCondition(4973, 1);
-		talkedToPiliar = new VarbitCondition(4974, 1);
-		talkedToShayda = new VarbitCondition(4975, 1);
-		talkedToHosaStart = new VarbitCondition(4976, 1);
+		talkedToArcis = new VarbitRequirement(4971, 1);
+		talkedToHosa = new VarbitRequirement(4972, 1);
+		talkedToLovada = new VarbitRequirement(4973, 1);
+		talkedToPiliar = new VarbitRequirement(4974, 1);
+		talkedToShayda = new VarbitRequirement(4975, 1);
+		talkedToHosaStart = new VarbitRequirement(4976, 1);
 	}
 
 	public void setupSteps()

@@ -31,23 +31,21 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,7 +68,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	ItemRequirement rawJubbly, cookedJubbly, axeHighlighted, ironSpit, log, tinderbox, pickaxe, ogreBellows, ballOfWool, ogreBowAndArrows,
 		ogreBow, ogreArrows, chompy, chompySpitted, ogreBellowsFilled, toad, toadReady, rock, cookedJubblyHighlighted;
 
-	ConditionForStep inDiningRoom, hasSpitChompy, hasToad, hasRock, hasBalloonToad, hasRawJubbly, hasCookedJubbly, jubblyNearby,
+	Requirement inDiningRoom, hasSpitChompy, hasToad, hasRock, hasBalloonToad, hasRawJubbly, hasCookedJubbly, jubblyNearby,
 		jubblyCarcassNearby, hasFilledBellows, rawJubblyOnFloor;
 
 	QuestStep enterDiningRoom, inspectSkrach, talkToRantz, talkToRantzOnCoast, useAxeOnTree, useAxeOnTreeAgain, talkToRantzOnCoastAgain,
@@ -181,17 +179,17 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneCondition(diningRoom);
-		hasSpitChompy = new ItemRequirementCondition(chompySpitted);
-		hasToad = new ItemRequirementCondition(toad);
-		hasBalloonToad = new Conditions(true, new ItemRequirementCondition(toadReady));
-		hasRawJubbly = new ItemRequirementCondition(rawJubbly);
-		hasCookedJubbly = new ItemRequirementCondition(cookedJubbly);
-		hasRock = new ItemRequirementCondition(rock);
+		inDiningRoom = new ZoneRequirement(diningRoom);
+		hasSpitChompy = new ItemRequirements(chompySpitted);
+		hasToad = new ItemRequirements(toad);
+		hasBalloonToad = new Conditions(true, new ItemRequirements(toadReady));
+		hasRawJubbly = new ItemRequirements(rawJubbly);
+		hasCookedJubbly = new ItemRequirements(cookedJubbly);
+		hasRock = new ItemRequirements(rock);
 		jubblyNearby = new NpcCondition(NpcID.JUBBLY_BIRD);
 		jubblyCarcassNearby = new NpcCondition(NpcID.JUBBLY_BIRD_4864);
-		hasFilledBellows = new ItemRequirementCondition(ogreBellowsFilled);
-		rawJubblyOnFloor = new ItemCondition(rawJubbly);
+		hasFilledBellows = new ItemRequirements(ogreBellowsFilled);
+		rawJubblyOnFloor = new ItemOnTileRequirement(rawJubbly);
 	}
 
 	public void setupSteps()

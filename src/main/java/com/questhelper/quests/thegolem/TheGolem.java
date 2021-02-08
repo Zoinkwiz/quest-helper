@@ -26,14 +26,15 @@ package com.questhelper.quests.thegolem;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -54,8 +55,6 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_GOLEM
@@ -70,7 +69,7 @@ public class TheGolem extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, digsiteTeleport, waterskins;
 
-	ConditionForStep inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4, hasLetter, hasReadLetter, added1Clay, added2Clay, added3Clay,
+	Requirement inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4, hasLetter, hasReadLetter, added1Clay, added2Clay, added3Clay,
 		talkedToElissa, hasVarmenNotes, hasReadNotes, talkedToCurator, hasKey, inUpstairsMuseum, stolenStatuette, inThroneRoom, hasImplement, openedHead,
 		hasMushroom, hasInk, hasFeather, hasQuill, hasProgram, enteredRuins;
 
@@ -228,39 +227,39 @@ public class TheGolem extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		inRuin = new ZoneCondition(ruin);
-		inUpstairsMuseum = new ZoneCondition(upstairsMuseum);
-		inThroneRoom = new ZoneCondition(throneRoom);
+		inRuin = new ZoneRequirement(ruin);
+		inUpstairsMuseum = new ZoneRequirement(upstairsMuseum);
+		inThroneRoom = new ZoneRequirement(throneRoom);
 
-		hasReadLetter = new VarbitCondition(347, 1, Operation.GREATER_EQUAL);
-		talkedToElissa = new VarbitCondition(347, 2, Operation.GREATER_EQUAL);
-		hasReadNotes = new VarbitCondition(347, 3, Operation.GREATER_EQUAL);
-		talkedToCurator = new VarbitCondition(347, 4, Operation.GREATER_EQUAL);
+		hasReadLetter = new VarbitRequirement(347, 1, Operation.GREATER_EQUAL);
+		talkedToElissa = new VarbitRequirement(347, 2, Operation.GREATER_EQUAL);
+		hasReadNotes = new VarbitRequirement(347, 3, Operation.GREATER_EQUAL);
+		talkedToCurator = new VarbitRequirement(347, 4, Operation.GREATER_EQUAL);
 
-		added1Clay = new VarbitCondition(348, 1);
-		added2Clay = new VarbitCondition(348, 2);
-		added3Clay = new VarbitCondition(348, 3);
+		added1Clay = new VarbitRequirement(348, 1);
+		added2Clay = new VarbitRequirement(348, 2);
+		added3Clay = new VarbitRequirement(348, 3);
 
-		turnedStatue1 = new VarbitCondition(349, 1);
-		turnedStatue2 = new VarbitCondition(350, 1);
-		turnedStatue3 = new VarbitCondition(351, 0);
-		turnedStatue4 = new VarbitCondition(352, 2);
+		turnedStatue1 = new VarbitRequirement(349, 1);
+		turnedStatue2 = new VarbitRequirement(350, 1);
+		turnedStatue3 = new VarbitRequirement(351, 0);
+		turnedStatue4 = new VarbitRequirement(352, 2);
 
-		openedHead = new VarbitCondition(353, 1);
+		openedHead = new VarbitRequirement(353, 1);
 
-		stolenStatuette = new Conditions(LogicType.OR, new VarbitCondition(355, 1), new ItemRequirementCondition(statuette));
+		stolenStatuette = new Conditions(LogicType.OR, new VarbitRequirement(355, 1), new ItemRequirements(statuette));
 
-		enteredRuins = new VarbitCondition(356, 1);
+		enteredRuins = new VarbitRequirement(356, 1);
 
-		hasLetter = new ItemRequirementCondition(letter);
-		hasVarmenNotes = new ItemRequirementCondition(notesHighlight);
-		hasKey = new ItemRequirementCondition(key);
-		hasImplement = new ItemRequirementCondition(strangeImplement);
-		hasMushroom = new ItemRequirementCondition(mushroomHighlight);
-		hasInk = new ItemRequirementCondition(inkHighlight);
-		hasFeather = new ItemRequirementCondition(phoenixFeather);
-		hasQuill = new ItemRequirementCondition(quill);
-		hasProgram = new ItemRequirementCondition(programHighlight);
+		hasLetter = new ItemRequirements(letter);
+		hasVarmenNotes = new ItemRequirements(notesHighlight);
+		hasKey = new ItemRequirements(key);
+		hasImplement = new ItemRequirements(strangeImplement);
+		hasMushroom = new ItemRequirements(mushroomHighlight);
+		hasInk = new ItemRequirements(inkHighlight);
+		hasFeather = new ItemRequirements(phoenixFeather);
+		hasQuill = new ItemRequirements(quill);
+		hasProgram = new ItemRequirements(programHighlight);
 	}
 
 	private void setupSteps()

@@ -1,9 +1,8 @@
 package com.questhelper.quests.deserttreasure;
 
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.NpcStep;
-import java.util.ArrayList;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullItemID;
 import net.runelite.api.coords.WorldPoint;

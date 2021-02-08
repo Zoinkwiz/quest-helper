@@ -25,15 +25,16 @@
 package com.questhelper.quests.shieldofarrav;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,13 +45,12 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG
@@ -60,7 +60,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	//Items Required
 	ItemRequirement book, intelReport, twentyCoins, shieldHalf, certificateHalf, blackArmCertificateHalf, certificate;
 
-	ConditionForStep hasBook, inPhoenixEntry, hasIntelReport, intelReportNearby, inPhoenixBase, hasShieldHalf, hasCertificateHalf, hasBlackArmCertificateHalf,
+	Requirement hasBook, inPhoenixEntry, hasIntelReport, intelReportNearby, inPhoenixBase, hasShieldHalf, hasCertificateHalf, hasBlackArmCertificateHalf,
 		hasCertificate, chestOpen;
 
 	QuestStep startQuest, searchBookcase, talkToReldoAgain, talkToBaraek, goDownToPhoenixGang, talkToStraven, goUpFromPhoenixGang, killJonny, pickupIntelReport,
@@ -115,7 +115,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		intelReport = new ItemRequirement("Intel report", ItemID.INTEL_REPORT);
 		twentyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 20);
 		shieldHalf = new ItemRequirement("Broken shield", ItemID.BROKEN_SHIELD);
-		inPhoenixBase = new ZoneCondition(phoenixBase);
+		inPhoenixBase = new ZoneRequirement(phoenixBase);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_2404);
 		certificateHalf = new ItemRequirement("Half certificate", ItemID.HALF_CERTIFICATE);
 		blackArmCertificateHalf = new ItemRequirement("Half certificate", ItemID.HALF_CERTIFICATE_11174);
@@ -130,14 +130,14 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBook = new ItemRequirementCondition(book);
-		inPhoenixEntry = new ZoneCondition(phoenixEntry);
-		hasIntelReport = new ItemRequirementCondition(intelReport);
-		intelReportNearby = new ItemCondition(intelReport);
-		hasShieldHalf = new ItemRequirementCondition(shieldHalf);
-		hasCertificateHalf = new ItemRequirementCondition(certificateHalf);
-		hasBlackArmCertificateHalf = new ItemRequirementCondition(blackArmCertificateHalf);
-		hasCertificate = new ItemRequirementCondition(certificate);
+		hasBook = new ItemRequirements(book);
+		inPhoenixEntry = new ZoneRequirement(phoenixEntry);
+		hasIntelReport = new ItemRequirements(intelReport);
+		intelReportNearby = new ItemOnTileRequirement(intelReport);
+		hasShieldHalf = new ItemRequirements(shieldHalf);
+		hasCertificateHalf = new ItemRequirements(certificateHalf);
+		hasBlackArmCertificateHalf = new ItemRequirements(blackArmCertificateHalf);
+		hasCertificate = new ItemRequirements(certificate);
 	}
 
 	public void setupSteps()

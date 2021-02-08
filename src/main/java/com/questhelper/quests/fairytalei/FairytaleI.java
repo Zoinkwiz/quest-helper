@@ -31,16 +31,15 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DigStep;
@@ -75,9 +74,9 @@ public class FairytaleI extends BasicQuestHelper
 
 	Zone zanaris, towerF1, towerF2, grotto, tanglerootRoom;
 
-	ConditionForStep inZanaris, inTowerF1, inTowerF2, inGrotto, inTanglerootRoom;
+	Requirement inZanaris, inTowerF1, inTowerF2, inGrotto, inTanglerootRoom;
 
-	ConditionForStep talkedToFarmers, hasSkull, secateursNearby, hasQueensSecateurs;
+	Requirement talkedToFarmers, hasSkull, secateursNearby, hasQueensSecateurs;
 
 	QuestStep talkToMartin, talkToFarmers, talkToMartinAgain;
 
@@ -180,11 +179,11 @@ public class FairytaleI extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inZanaris = new ZoneCondition(zanaris);
-		inTowerF1 = new ZoneCondition(towerF1);
-		inTowerF2 = new ZoneCondition(towerF2);
-		inGrotto = new ZoneCondition(grotto);
-		inTanglerootRoom = new Conditions(new InInstanceCondition(), new ZoneCondition(tanglerootRoom));
+		inZanaris = new ZoneRequirement(zanaris);
+		inTowerF1 = new ZoneRequirement(towerF1);
+		inTowerF2 = new ZoneRequirement(towerF2);
+		inGrotto = new ZoneRequirement(grotto);
+		inTanglerootRoom = new Conditions(new InInstanceRequirement(), new ZoneRequirement(tanglerootRoom));
 
 		// Enter Zanaris,
 		// 1808 0->1
@@ -207,13 +206,13 @@ public class FairytaleI extends BasicQuestHelper
 
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(119, 3, true, "back and talk to <col=800000>Martin"),
-			new WidgetTextCondition(217, 4, "Right, well thanks for your input."),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "I don't think the crops ARE failing"));
+			new WidgetTextRequirement(119, 3, true, "back and talk to <col=800000>Martin"),
+			new WidgetTextRequirement(217, 4, "Right, well thanks for your input."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I don't think the crops ARE failing"));
 
-		hasSkull = new ItemRequirementCondition(draynorSkull);
-		secateursNearby = new ItemCondition(queensSecateurs);
-		hasQueensSecateurs = new ItemRequirementCondition(queensSecateurs);
+		hasSkull = new ItemRequirements(draynorSkull);
+		secateursNearby = new ItemOnTileRequirement(queensSecateurs);
+		hasQueensSecateurs = new ItemRequirements(queensSecateurs);
 	}
 
 	public void setupSteps()

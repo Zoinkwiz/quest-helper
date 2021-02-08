@@ -25,39 +25,37 @@
 package com.questhelper.quests.heroesquest;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestPointRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestPointRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.SkillCondition;
-import com.questhelper.requirements.conditional.VarplayerCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -78,7 +76,7 @@ public class HeroesQuest extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear, antifireShield, varrockTeleport;
 
-	ConditionForStep inTaverleyDungeon, hasOil, hasSlime, hasDustyKey, has70Agility, inDeepTaverleyDungeon, hasOilRod, hasRawLavaEel, hasLavaEel, hasThievesArmband,
+	Requirement inTaverleyDungeon, hasOil, hasSlime, hasDustyKey, has70Agility, inDeepTaverleyDungeon, hasOilRod, hasRawLavaEel, hasLavaEel, hasThievesArmband,
 		talkedToKatrine, talkedToStraven, hasJailKey, inJailCell, inBlackArmGang, inPhoenixBase, talkedToAlfonse, hasMiscKey, blackArmGangDoorUnlocked, gottenPapers,
 		enteredMansion, talkedToGrip, inGarden, inSecretRoom, chestOpen, hasCandlestick, hasGripsKey, gripsKeyOnFloor, inTreasureRoom, talkedToCharlie,
 		unlockedCandlestickBlackArm, unlockedCandlestickPhoenix, finishedBlackArm, finishedPhoenix, inIceEntrance, inIceUndergroundRoom1, inIceUndergroundRoom2,
@@ -278,59 +276,59 @@ public class HeroesQuest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inTaverleyDungeon = new ZoneCondition(taverleyDungeon);
-		hasSlime = new ItemRequirementCondition(blamishSlime);
-		hasOil = new ItemRequirementCondition(blamishOil);
-		hasOilRod = new ItemRequirementCondition(oilRod);
-		hasLavaEel = new ItemRequirementCondition(lavaEel);
-		hasRawLavaEel = new ItemRequirementCondition(rawLavaEel);
-		hasJailKey = new ItemRequirementCondition(jailKey);
-		hasDustyKey = new ItemRequirementCondition(dustyKey);
-		inDeepTaverleyDungeon = new ZoneCondition(deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4);
-		inJailCell = new ZoneCondition(jailCell);
-		has70Agility = new SkillCondition(Skill.AGILITY, 70, Operation.GREATER_EQUAL);
+		inTaverleyDungeon = new ZoneRequirement(taverleyDungeon);
+		hasSlime = new ItemRequirements(blamishSlime);
+		hasOil = new ItemRequirements(blamishOil);
+		hasOilRod = new ItemRequirements(oilRod);
+		hasLavaEel = new ItemRequirements(lavaEel);
+		hasRawLavaEel = new ItemRequirements(rawLavaEel);
+		hasJailKey = new ItemRequirements(jailKey);
+		hasDustyKey = new ItemRequirements(dustyKey);
+		inDeepTaverleyDungeon = new ZoneRequirement(deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4);
+		inJailCell = new ZoneRequirement(jailCell);
+		has70Agility = new SkillRequirement(Skill.AGILITY, 70);
 
-		hasThievesArmband = new ItemRequirementCondition(thievesArmband);
-		talkedToKatrine = new VarplayerCondition(188, 7, Operation.GREATER_EQUAL);
-		blackArmGangDoorUnlocked = new VarplayerCondition(188, 8, Operation.GREATER_EQUAL);
-		gottenPapers = new VarplayerCondition(188, 9, Operation.GREATER_EQUAL);
-		enteredMansion = new VarplayerCondition(188, 10, Operation.GREATER_EQUAL);
-		talkedToGrip = new VarplayerCondition(188, 11, Operation.GREATER_EQUAL);
-		unlockedCandlestickBlackArm = new VarplayerCondition(188, 12);
-		finishedBlackArm = new VarplayerCondition(188, 13, Operation.GREATER_EQUAL);
-		talkedToStraven = new VarplayerCondition(188, 2, Operation.GREATER_EQUAL);
-		talkedToAlfonse = new VarplayerCondition(188, 3, Operation.GREATER_EQUAL);
-		talkedToCharlie = new VarplayerCondition(188, 4, Operation.GREATER_EQUAL);
-		unlockedCandlestickPhoenix = new VarplayerCondition(188, 5, Operation.GREATER_EQUAL);
-		finishedPhoenix = new VarplayerCondition(188, 6, Operation.GREATER_EQUAL);
-		hasMiscKey = new ItemRequirementCondition(miscKey);
-		inSecretRoom = new ZoneCondition(secretRoom);
-		inGarden = new ZoneCondition(garden1, garden2);
-		hasCandlestick = new ItemRequirementCondition(candlestick);
-		gripsKeyOnFloor = new ItemCondition(gripsKey);
-		hasGripsKey = new ItemRequirementCondition(gripsKey);
-		inTreasureRoom = new ZoneCondition(treasureRoom);
+		hasThievesArmband = new ItemRequirements(thievesArmband);
+		talkedToKatrine = new VarplayerRequirement(188, 7, Operation.GREATER_EQUAL);
+		blackArmGangDoorUnlocked = new VarplayerRequirement(188, 8, Operation.GREATER_EQUAL);
+		gottenPapers = new VarplayerRequirement(188, 9, Operation.GREATER_EQUAL);
+		enteredMansion = new VarplayerRequirement(188, 10, Operation.GREATER_EQUAL);
+		talkedToGrip = new VarplayerRequirement(188, 11, Operation.GREATER_EQUAL);
+		unlockedCandlestickBlackArm = new VarplayerRequirement(188, 12);
+		finishedBlackArm = new VarplayerRequirement(188, 13, Operation.GREATER_EQUAL);
+		talkedToStraven = new VarplayerRequirement(188, 2, Operation.GREATER_EQUAL);
+		talkedToAlfonse = new VarplayerRequirement(188, 3, Operation.GREATER_EQUAL);
+		talkedToCharlie = new VarplayerRequirement(188, 4, Operation.GREATER_EQUAL);
+		unlockedCandlestickPhoenix = new VarplayerRequirement(188, 5, Operation.GREATER_EQUAL);
+		finishedPhoenix = new VarplayerRequirement(188, 6, Operation.GREATER_EQUAL);
+		hasMiscKey = new ItemRequirements(miscKey);
+		inSecretRoom = new ZoneRequirement(secretRoom);
+		inGarden = new ZoneRequirement(garden1, garden2);
+		hasCandlestick = new ItemRequirements(candlestick);
+		gripsKeyOnFloor = new ItemOnTileRequirement(gripsKey);
+		hasGripsKey = new ItemRequirements(gripsKey);
+		inTreasureRoom = new ZoneRequirement(treasureRoom);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_2633);
 
-		inBlackArmGang = new VarplayerCondition(146, 4, Operation.GREATER_EQUAL);
-		inPhoenixBase = new ZoneCondition(phoenixBase, phoenixEntry);
+		inBlackArmGang = new VarplayerRequirement(146, 4, Operation.GREATER_EQUAL);
+		inPhoenixBase = new ZoneRequirement(phoenixBase, phoenixEntry);
 
-		inIceEntrance = new ZoneCondition(iceEntrance);
-		inIceUndergroundRoom1 = new ZoneCondition(iceRoom1P1, iceRoom1P2, iceRoom1P3);
-		inIceUndergroundRoom2 = new ZoneCondition(iceRoom2P1, iceRoom2P2, iceRoom2P3, iceRoom2P4);
-		inIceAboveGround1 = new ZoneCondition(iceUp1P1, iceUp1P2, iceUp1P3, iceUp1P4);
-		inIceAboveGround2 = new ZoneCondition(iceUp2);
+		inIceEntrance = new ZoneRequirement(iceEntrance);
+		inIceUndergroundRoom1 = new ZoneRequirement(iceRoom1P1, iceRoom1P2, iceRoom1P3);
+		inIceUndergroundRoom2 = new ZoneRequirement(iceRoom2P1, iceRoom2P2, iceRoom2P3, iceRoom2P4);
+		inIceAboveGround1 = new ZoneRequirement(iceUp1P1, iceUp1P2, iceUp1P3, iceUp1P4);
+		inIceAboveGround2 = new ZoneRequirement(iceUp2);
 
-		inThroneRoom = new ZoneCondition(iceThrone1, iceThrone2, iceThrone3);
+		inThroneRoom = new ZoneRequirement(iceThrone1, iceThrone2, iceThrone3);
 
-		iceGlovesNearby = new ItemCondition(ItemID.ICE_GLOVES);
-		hasIceGloves = new ItemRequirementCondition(iceGloves);
+		iceGlovesNearby = new ItemOnTileRequirement(ItemID.ICE_GLOVES);
+		hasIceGloves = new ItemRequirements(iceGloves);
 
-		fireFeatherNearby = new ItemCondition(ItemID.FIRE_FEATHER);
+		fireFeatherNearby = new ItemOnTileRequirement(ItemID.FIRE_FEATHER);
 
-		hasFireFeather = new ItemRequirementCondition(fireFeather);
+		hasFireFeather = new ItemRequirements(fireFeather);
 
-		onEntrana = new ZoneCondition(entrana);
+		onEntrana = new ZoneRequirement(entrana);
 	}
 
 	public void setupSteps()

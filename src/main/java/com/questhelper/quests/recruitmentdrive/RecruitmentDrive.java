@@ -29,22 +29,22 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.ItemSlots;
-import com.questhelper.requirements.NoItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,7 +64,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 {
 	private ItemRequirement coinsRequirement;
 	private NoItemRequirement noItemRequirement;
-	private ZoneCondition isFirstFloorCastle, isSecondFloorCastle,
+	private ZoneRequirement isFirstFloorCastle, isSecondFloorCastle,
 		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
 		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom;
 
@@ -148,14 +148,14 @@ public class RecruitmentDrive extends BasicQuestHelper
 		Zone ladyTableZone = new Zone(new WorldPoint(2445, 4974, 0),
 			new WorldPoint(2461, 4987, 0));
 
-		isFirstFloorCastle = new ZoneCondition(firstFloorZone);
-		isSecondFloorCastle = new ZoneCondition(secondFloorZone);
-		isInSirTinleysRoom = new ZoneCondition(sirTinleyRoomZone);
-		isInMsHynnRoom = new ZoneCondition(msHynnRoomZone);
-		isInSirKuamsRoom = new ZoneCondition(sirKuamRoomZone);
-		isInSirSpishyusRoom = new ZoneCondition(sirSphishyusZone);
-		isInSirRenItchood = new ZoneCondition(sirRenItchoodZone);
-		isInladyTableRoom = new ZoneCondition(ladyTableZone);
+		isFirstFloorCastle = new ZoneRequirement(firstFloorZone);
+		isSecondFloorCastle = new ZoneRequirement(secondFloorZone);
+		isInSirTinleysRoom = new ZoneRequirement(sirTinleyRoomZone);
+		isInMsHynnRoom = new ZoneRequirement(msHynnRoomZone);
+		isInSirKuamsRoom = new ZoneRequirement(sirKuamRoomZone);
+		isInSirSpishyusRoom = new ZoneRequirement(sirSphishyusZone);
+		isInSirRenItchood = new ZoneRequirement(sirRenItchoodZone);
+		isInladyTableRoom = new ZoneRequirement(ladyTableZone);
 	}
 
 	private QuestStep TalkToSirTiffyInFaladorPark()
@@ -201,7 +201,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private QuestStep getSirKuam()
 	{
-		VarbitCondition finishedRoom = new VarbitCondition(661, 1);
+		VarbitRequirement finishedRoom = new VarbitRequirement(661, 1);
 
 		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
 		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
@@ -230,19 +230,19 @@ public class RecruitmentDrive extends BasicQuestHelper
 		WorldPoint foxOnRightPoint = new WorldPoint(2485, 4974, 0);
 		WorldPoint grainOnRightPoint = new WorldPoint(2486, 4974, 0);
 
-		VarbitCondition foxOnRightSide = new VarbitCondition(680, 0);
-		VarbitCondition foxOnLeftSide = new VarbitCondition(681, 1);
-		VarbitCondition foxNotOnRightSide = new VarbitCondition(680, 1);
-		VarbitCondition foxNotOnLeftSide = new VarbitCondition(681, 0);
-		VarbitCondition chickenOnRightSide = new VarbitCondition(682, 0);
-		VarbitCondition chickenOnLeftSide = new VarbitCondition(683, 1);
-		VarbitCondition chickenNotOnRightSide = new VarbitCondition(682, 1);
-		VarbitCondition chickenNotOnLeftSide = new VarbitCondition(683, 0);
-		VarbitCondition grainOnRightSide = new VarbitCondition(684, 0);
-		VarbitCondition grainOnLeftSide = new VarbitCondition(685, 1);
-		VarbitCondition grainNotOnRightSide = new VarbitCondition(684, 1);
-		VarbitCondition grainNotOnLeftSide = new VarbitCondition(685, 0);
-		VarbitCondition finishedSpishyus = new VarbitCondition(659, 1);
+		VarbitRequirement foxOnRightSide = new VarbitRequirement(680, 0);
+		VarbitRequirement foxOnLeftSide = new VarbitRequirement(681, 1);
+		VarbitRequirement foxNotOnRightSide = new VarbitRequirement(680, 1);
+		VarbitRequirement foxNotOnLeftSide = new VarbitRequirement(681, 0);
+		VarbitRequirement chickenOnRightSide = new VarbitRequirement(682, 0);
+		VarbitRequirement chickenOnLeftSide = new VarbitRequirement(683, 1);
+		VarbitRequirement chickenNotOnRightSide = new VarbitRequirement(682, 1);
+		VarbitRequirement chickenNotOnLeftSide = new VarbitRequirement(683, 0);
+		VarbitRequirement grainOnRightSide = new VarbitRequirement(684, 0);
+		VarbitRequirement grainOnLeftSide = new VarbitRequirement(685, 1);
+		VarbitRequirement grainNotOnRightSide = new VarbitRequirement(684, 1);
+		VarbitRequirement grainNotOnLeftSide = new VarbitRequirement(685, 0);
+		VarbitRequirement finishedSpishyus = new VarbitRequirement(659, 1);
 
 		Conditions foxPickedUp = new Conditions(LogicType.AND, foxNotOnLeftSide, foxNotOnRightSide);
 		Conditions chickenPickedUp = new Conditions(LogicType.AND, chickenNotOnRightSide, chickenNotOnLeftSide);
@@ -325,8 +325,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 			"Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.");
 		leaveSirTinleyRoom = new ObjectStep(this, 7320, "Leaves through the portal to continue.");
 
-		VarbitCondition waitForCondition = new VarbitCondition(667, 1, Operation.GREATER_EQUAL);
-		VarbitCondition finishedRoom = new VarbitCondition(662, 1);
+		VarbitRequirement waitForCondition = new VarbitRequirement(667, 1, Operation.GREATER_EQUAL);
+		VarbitRequirement finishedRoom = new VarbitRequirement(662, 1);
 
 		ConditionalStep sirTinleyStep = new ConditionalStep(this, talkToSirTinley);
 		sirTinleyStep.addStep(finishedRoom, leaveSirTinleyRoom);

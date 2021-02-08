@@ -28,9 +28,10 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.FavourRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.FavourRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -49,7 +50,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -58,8 +59,6 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TALE_OF_THE_RIGHTEOUS
@@ -72,7 +71,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement antiPoison, xericTalisman;
 
-	ConditionForStep inArchive, inPuzzleRoom, strangeObjectEast, strangeObjectWest, isSouthWestWhite, isSouthEastWhite,
+	Requirement inArchive, inPuzzleRoom, strangeObjectEast, strangeObjectWest, isSouthWestWhite, isSouthEastWhite,
 		isNorthWestWhite, isNorthEastWhite, inShiroRoom, inCavern, rockfallNearby, boulderBlockingPath, corruptLizardmanNearby;
 
 	QuestStep talkToPhileas, teleportToArchive, talkToPagida, pushStrangeDeviceWest, attackWithMagic, attackWithMelee,
@@ -193,10 +192,10 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inArchive = new ZoneCondition(archive);
-		inPuzzleRoom = new ZoneCondition(puzzleRoom);
-		inShiroRoom = new ZoneCondition(shiroRoom);
-		inCavern = new ZoneCondition(cavern);
+		inArchive = new ZoneRequirement(archive);
+		inPuzzleRoom = new ZoneRequirement(puzzleRoom);
+		inShiroRoom = new ZoneRequirement(shiroRoom);
+		inCavern = new ZoneRequirement(cavern);
 		strangeObjectEast = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0));
 		strangeObjectWest = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1574, 10199, 0));
 		isSouthWestWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1574, 10196, 0));

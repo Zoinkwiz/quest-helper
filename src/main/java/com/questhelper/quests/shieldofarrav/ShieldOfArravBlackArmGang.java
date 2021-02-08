@@ -24,15 +24,23 @@
  */
 package com.questhelper.quests.shieldofarrav;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,14 +51,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG
@@ -60,7 +60,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	//Items Required
 	ItemRequirement storeRoomKey, twoPhoenixCrossbow, shieldHalf, certificateHalf, phoenixCertificateHalf, certificate;
 
-	ConditionForStep inStoreRoom, hasTwoPhoenixCrossbow, hasStoreRoomKey, weaponMasterAlive, isUpstairsInBase, cupboardOpen, hasCertificateHalf,
+	Requirement inStoreRoom, hasTwoPhoenixCrossbow, hasStoreRoomKey, weaponMasterAlive, isUpstairsInBase, cupboardOpen, hasCertificateHalf,
 		hasPhoenixCertificateHalf, hasCertificate, hasShieldHalf;
 
 	QuestStep talkToCharlie, getWeaponStoreKey, talkToKatrine, goUpToWeaponStore, killWeaponsMaster, pickupTwoCrossbows, goDownFromWeaponStore, returnToKatrine,
@@ -118,16 +118,16 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	}
 
 	public void setupConditions() {
-		hasStoreRoomKey = new ItemRequirementCondition(storeRoomKey);
-		inStoreRoom = new ZoneCondition(storeRoom);
-		hasTwoPhoenixCrossbow = new ItemRequirementCondition(twoPhoenixCrossbow);
+		hasStoreRoomKey = new ItemRequirements(storeRoomKey);
+		inStoreRoom = new ZoneRequirement(storeRoom);
+		hasTwoPhoenixCrossbow = new ItemRequirements(twoPhoenixCrossbow);
 		weaponMasterAlive = new NpcCondition(NpcID.WEAPONSMASTER);
-		isUpstairsInBase = new ZoneCondition(upstairsInBase);
+		isUpstairsInBase = new ZoneRequirement(upstairsInBase);
 		cupboardOpen = new ObjectCondition(ObjectID.CUPBOARD_2401);
-		hasShieldHalf = new ItemRequirementCondition(shieldHalf);
-		hasCertificateHalf = new ItemRequirementCondition(certificateHalf);
-		hasPhoenixCertificateHalf = new ItemRequirementCondition(phoenixCertificateHalf);
-		hasCertificate = new ItemRequirementCondition(certificate);
+		hasShieldHalf = new ItemRequirements(shieldHalf);
+		hasCertificateHalf = new ItemRequirements(certificateHalf);
+		hasPhoenixCertificateHalf = new ItemRequirements(phoenixCertificateHalf);
+		hasCertificate = new ItemRequirements(certificate);
 	}
 
 	public void setupSteps() {

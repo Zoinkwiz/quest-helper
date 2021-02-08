@@ -26,22 +26,22 @@ package com.questhelper.quests.zogreflesheaters;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,14 +56,13 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -75,7 +74,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portrait, goodPort, strangePotionHighlighted,
 		badPort, charcoal, papyrus, signedPort, cupOfTea, strangePotion, grishKey, ogreRelic, combatGear, knifeHighlighted, tankardHighlighted;
 
-	ConditionForStep askedAboutSickies, inSurface, inTombF2, killedZombie, hasBackpack, hasTankard, hasTornPage, hasBlackPrism, searchedCoffin, usedKnife, openedCoffin,
+	Requirement askedAboutSickies, inSurface, inTombF2, killedZombie, hasBackpack, hasTankard, hasTornPage, hasBlackPrism, searchedCoffin, usedKnife, openedCoffin,
 		talkedToZavistic, hasBackpackOrTankard, atSith, askedSithToLookAround, hasOrShownNecroBook, hasOrShownHamBook, hasPortait, hasNecroBook, hasHamBook,
 		hasGoodPortrait, hasBadPortrait, hasPapyrus, shownNecroBook, shownHamBook, shownTankard, usedTankardOnBartender, usedPortraitOnBartender, hasOrShownSignedPortrait,
 		shownSignedPortrait, sithTransformed, askedAboutDisease, askedAboutGettingRidOfUndead, askedAboutBow, inTombF0, inTombF2ToBoss, ogreRelicNearby;
@@ -206,50 +205,50 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		askedAboutSickies = new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Da sickies is when yous creature goes like orange");
-		inSurface = new ZoneCondition(surface);
-		inTombF2 = new ZoneCondition(tombF2);
-		inTombF0 = new ZoneCondition(tombF0);
-		inTombF2ToBoss = new ZoneCondition(tombF2ToBoss);
-		killedZombie = new VarbitCondition(503, 2);
-		hasBackpack = new ItemRequirementCondition(backpack);
-		hasTankard = new ItemRequirementCondition(tankard);
+		askedAboutSickies = new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Da sickies is when yous creature goes like orange");
+		inSurface = new ZoneRequirement(surface);
+		inTombF2 = new ZoneRequirement(tombF2);
+		inTombF0 = new ZoneRequirement(tombF0);
+		inTombF2ToBoss = new ZoneRequirement(tombF2ToBoss);
+		killedZombie = new VarbitRequirement(503, 2);
+		hasBackpack = new ItemRequirements(backpack);
+		hasTankard = new ItemRequirements(tankard);
 		hasBackpackOrTankard = new Conditions(LogicType.OR, hasBackpack, hasTankard);
-		hasBlackPrism = new ItemRequirementCondition(blackPrism);
-		hasTornPage = new ItemRequirementCondition(tornPage);
-		searchedCoffin = new VarbitCondition(488, 1);
-		usedKnife = new VarbitCondition(488, 2);
-		openedCoffin = new VarbitCondition(488, 3);
-		talkedToZavistic = new VarbitCondition(488, 4, Operation.GREATER_EQUAL);
-		askedSithToLookAround = new VarbitCondition(488, 5);
+		hasBlackPrism = new ItemRequirements(blackPrism);
+		hasTornPage = new ItemRequirements(tornPage);
+		searchedCoffin = new VarbitRequirement(488, 1);
+		usedKnife = new VarbitRequirement(488, 2);
+		openedCoffin = new VarbitRequirement(488, 3);
+		talkedToZavistic = new VarbitRequirement(488, 4, Operation.GREATER_EQUAL);
+		askedSithToLookAround = new VarbitRequirement(488, 5);
 
-		atSith = new ZoneCondition(sith);
+		atSith = new ZoneRequirement(sith);
 
-		hasPortait = new ItemRequirementCondition(portrait);
-		hasNecroBook = new ItemRequirementCondition(necroBook);
-		hasHamBook = new ItemRequirementCondition(hamBook);
-		usedTankardOnBartender = new VarbitCondition(489, 1);
-		usedPortraitOnBartender = new VarbitCondition(490, 1);
-		shownNecroBook = new VarbitCondition(491, 1);
-		shownHamBook = new VarbitCondition(492, 1);
-		shownTankard = new VarbitCondition(493, 1);
-		shownSignedPortrait = new VarbitCondition(494, 1);
+		hasPortait = new ItemRequirements(portrait);
+		hasNecroBook = new ItemRequirements(necroBook);
+		hasHamBook = new ItemRequirements(hamBook);
+		usedTankardOnBartender = new VarbitRequirement(489, 1);
+		usedPortraitOnBartender = new VarbitRequirement(490, 1);
+		shownNecroBook = new VarbitRequirement(491, 1);
+		shownHamBook = new VarbitRequirement(492, 1);
+		shownTankard = new VarbitRequirement(493, 1);
+		shownSignedPortrait = new VarbitRequirement(494, 1);
 
 		hasOrShownHamBook = new Conditions(LogicType.OR, shownHamBook, hasHamBook);
 		hasOrShownNecroBook = new Conditions(LogicType.OR, shownNecroBook, hasNecroBook);
-		hasOrShownSignedPortrait = new Conditions(LogicType.OR, shownSignedPortrait, new ItemRequirementCondition(signedPort));
+		hasOrShownSignedPortrait = new Conditions(LogicType.OR, shownSignedPortrait, new ItemRequirements(signedPort));
 
-		hasGoodPortrait = new ItemRequirementCondition(goodPort);
-		hasBadPortrait = new ItemRequirementCondition(badPort);
-		hasPapyrus = new ItemRequirementCondition(papyrus);
+		hasGoodPortrait = new ItemRequirements(goodPort);
+		hasBadPortrait = new ItemRequirements(badPort);
+		hasPapyrus = new ItemRequirements(papyrus);
 
-		sithTransformed = new VarbitCondition(495, 1);
+		sithTransformed = new VarbitRequirement(495, 1);
 
-		askedAboutDisease = new VarbitCondition(498, 1);
-		askedAboutGettingRidOfUndead = new VarbitCondition(499, 1);
-		askedAboutBow = new VarbitCondition(500, 1);
+		askedAboutDisease = new VarbitRequirement(498, 1);
+		askedAboutGettingRidOfUndead = new VarbitRequirement(499, 1);
+		askedAboutBow = new VarbitRequirement(500, 1);
 
-		ogreRelicNearby = new ItemCondition(ogreRelic);
+		ogreRelicNearby = new ItemOnTileRequirement(ogreRelic);
 		// 507 1 when are ya sure?
 	}
 

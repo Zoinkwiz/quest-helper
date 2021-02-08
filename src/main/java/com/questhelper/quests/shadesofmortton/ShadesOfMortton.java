@@ -30,21 +30,20 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarplayerCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,7 +69,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement morttonTele, food, flamHammer, flamtaerBracelet;
 
-	ConditionForStep hasDiary, hadSerum208, razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, hasSacredOil, has20Sanctity, hasPyreLog, curedRazmire, curedUlsquire;
+	Requirement hasDiary, hadSerum208, razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, hasSacredOil, has20Sanctity, hasPyreLog, curedRazmire, curedUlsquire;
 
 	QuestStep searchShelf, readDiary, addAshes, use207OnRazmire, talkToRazmire, kill5Shades, kill4Shades, kill3Shades, kill2Shades, kill1Shades, use207OnRazmireAgain, talkToRazmireAgain, buyTimberLimeAndSwamp,
 		use207OnUlsquire, talkToUlsquire, talkToUlsquireAgain, repairTemple, lightAltar, useOilOnFlame, use207OnFlame, useOilOnLog, burnCorpse, repairTo20Sanctity, use208OnRazmire, use208OnUlsquire, talkToUlsquireToFinish;
@@ -207,19 +206,19 @@ public class ShadesOfMortton extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDiary = new ItemRequirementCondition(diary);
-		hadSerum208 = new Conditions(true, new ItemRequirementCondition(serum208));
-		hasSacredOil = new ItemRequirementCondition(sacredOilHighlighted);
-		hasPyreLog = new ItemRequirementCondition(pyreLog);
-		has20Sanctity = new VarplayerCondition(341, 20);
+		hasDiary = new ItemRequirements(diary);
+		hadSerum208 = new Conditions(true, new ItemRequirements(serum208));
+		hasSacredOil = new ItemRequirements(sacredOilHighlighted);
+		hasPyreLog = new ItemRequirements(pyreLog);
+		has20Sanctity = new VarplayerRequirement(341, 20);
 
-		razmirePartlyCured = new VarplayerCondition(340, true, 3);
-		curedRazmire = new VarplayerCondition(340, true, 6); //64
-		ulsquirePartlyCured = new VarplayerCondition(340, true, 1);
-		curedUlsquire = new VarplayerCondition(340, true, 5);
+		razmirePartlyCured = new VarplayerRequirement(340, true, 3);
+		curedRazmire = new VarplayerRequirement(340, true, 6); //64
+		ulsquirePartlyCured = new VarplayerRequirement(340, true, 1);
+		curedUlsquire = new VarplayerRequirement(340, true, 5);
 
-		repairedTemple = new VarplayerCondition(343, 100);
-		has20Sanctity = new VarplayerCondition(345, 20, Operation.GREATER_EQUAL);
+		repairedTemple = new VarplayerRequirement(343, 100);
+		has20Sanctity = new VarplayerRequirement(345, 20, Operation.GREATER_EQUAL);
 		litFire = new ObjectCondition(ObjectID.FLAMING_FIRE_ALTAR, new WorldPoint(3506, 3316, 0));
 	}
 

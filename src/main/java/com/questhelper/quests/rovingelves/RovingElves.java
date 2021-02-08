@@ -25,19 +25,26 @@
 package com.questhelper.quests.rovingelves;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,14 +57,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ROVING_ELVES
@@ -72,7 +71,7 @@ public class RovingElves extends BasicQuestHelper
 	ItemRequirement prayerPotions, food, ardougneTeleports, camelotTeleports, iowerthCampTeleports, skillsNecklace;
 
 
-	ConditionForStep inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, hasSeed, hadBlessedSeed, hasKey, inThroneRoom;
+	Requirement inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, hasSeed, hadBlessedSeed, hasKey, inThroneRoom;
 
 	QuestStep talkToIslwyn, talkToEluned, enterGlarialsTombstone, killGuardian, pickUpSeed, returnSeedToEluned, boardRaft, useRopeOnRock, useRopeOnTree, enterFalls,
 		searchFallsCrate, useKeyOnFallsDoor, plantSeed, returnToIslwyn;
@@ -147,16 +146,16 @@ public class RovingElves extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		onDeadTreeIsland = new ZoneCondition(deadTreeIsland);
-		onHudonIsland = new ZoneCondition(hudonIsland);
-		onLedge = new ZoneCondition(ledge);
-		inFalls = new ZoneCondition(falls);
-		inGlarialsTomb = new ZoneCondition(glarialTomb);
-		inThroneRoom = new ZoneCondition(throneRoom);
-		hasSeed = new ItemRequirementCondition(seed);
-		hadBlessedSeed = new Conditions(true, LogicType.OR, new ItemRequirementCondition(blessedSeed));
-		seedNearby = new ItemCondition(seed);
-		hasKey = new ItemRequirementCondition(key);
+		onDeadTreeIsland = new ZoneRequirement(deadTreeIsland);
+		onHudonIsland = new ZoneRequirement(hudonIsland);
+		onLedge = new ZoneRequirement(ledge);
+		inFalls = new ZoneRequirement(falls);
+		inGlarialsTomb = new ZoneRequirement(glarialTomb);
+		inThroneRoom = new ZoneRequirement(throneRoom);
+		hasSeed = new ItemRequirements(seed);
+		hadBlessedSeed = new Conditions(true, LogicType.OR, new ItemRequirements(blessedSeed));
+		seedNearby = new ItemOnTileRequirement(seed);
+		hasKey = new ItemRequirements(key);
 
 		// 8374 0->1 when leaving?
 	}

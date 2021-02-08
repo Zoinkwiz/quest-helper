@@ -24,21 +24,29 @@
  */
 package com.questhelper.quests.dreammentor;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.CombatLevelRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.CombatLevelRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,15 +59,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DREAM_MENTOR
@@ -70,7 +69,7 @@ public class DreamMentor extends BasicQuestHelper
 	ItemRequirement sealOfPassage, dreamVial, astralRune, astralRuneShards, groundAstralRune, dreamVialWater, dreamVialWithGoutweed,
 		pestleAndMortar, dreamPotion, foodAll, food4, food6, goutweed, tinderbox, hammer, combatGear, food14, chest;
 
-	ConditionForStep inLunarMine, inCyrisusRoom, at40Health, at70Health, lookingAtBank, gotItems, cyrisusDressed, at100Health, hasVialWater, hasVialGout,
+	Requirement inLunarMine, inCyrisusRoom, at40Health, at70Health, lookingAtBank, gotItems, cyrisusDressed, at100Health, hasVialWater, hasVialGout,
 		hasAstralShard, hasAstralPowder, hasDreamPotion, litBrazier, inArena, unlockedDream, inadaquacyNearby, everlastingNearby,
 		untouchableNearby, illusiveNearby;
 
@@ -217,27 +216,27 @@ public class DreamMentor extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inLunarMine = new ZoneCondition(lunarMine);
-		inCyrisusRoom = new ZoneCondition(cyrisusRoom);
-		inArena = new ZoneCondition(arena);
+		inLunarMine = new ZoneRequirement(lunarMine);
+		inCyrisusRoom = new ZoneRequirement(cyrisusRoom);
+		inArena = new ZoneRequirement(arena);
 
-		at40Health = new VarbitCondition(3621, 40, Operation.GREATER_EQUAL);
-		at70Health = new VarbitCondition(3621, 70, Operation.GREATER_EQUAL);
-		at100Health = new VarbitCondition(3621, 100, Operation.GREATER_EQUAL);
+		at40Health = new VarbitRequirement(3621, 40, Operation.GREATER_EQUAL);
+		at70Health = new VarbitRequirement(3621, 70, Operation.GREATER_EQUAL);
+		at100Health = new VarbitRequirement(3621, 100, Operation.GREATER_EQUAL);
 
-		lookingAtBank = new WidgetTextCondition(260, 41, "Cyrisus's Bank");
+		lookingAtBank = new WidgetTextRequirement(260, 41, "Cyrisus's Bank");
 		gotItems = new CyrisusBankConditional();
-		cyrisusDressed = new VarbitCondition(3623, 100);
+		cyrisusDressed = new VarbitRequirement(3623, 100);
 
-		hasVialWater = new ItemRequirementCondition(dreamVialWater);
-		hasVialGout = new ItemRequirementCondition(dreamVialWithGoutweed);
-		hasAstralShard = new ItemRequirementCondition(astralRuneShards);
-		hasAstralPowder = new ItemRequirementCondition(groundAstralRune);
-		hasDreamPotion = new ItemRequirementCondition(dreamPotion);
+		hasVialWater = new ItemRequirements(dreamVialWater);
+		hasVialGout = new ItemRequirements(dreamVialWithGoutweed);
+		hasAstralShard = new ItemRequirements(astralRuneShards);
+		hasAstralPowder = new ItemRequirements(groundAstralRune);
+		hasDreamPotion = new ItemRequirements(dreamPotion);
 
-		litBrazier = new VarbitCondition(2430, 1);
+		litBrazier = new VarbitRequirement(2430, 1);
 
-		unlockedDream = new VarbitCondition(3625, 1);
+		unlockedDream = new VarbitRequirement(3625, 1);
 		inadaquacyNearby = new NpcCondition(NpcID.THE_INADEQUACY);
 		everlastingNearby = new NpcCondition(NpcID.THE_EVERLASTING);
 		untouchableNearby = new NpcCondition(NpcID.THE_UNTOUCHABLE);

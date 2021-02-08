@@ -24,18 +24,27 @@
  */
 package com.questhelper.quests.thedigsite;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,16 +57,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -70,7 +69,7 @@ public class TheDigSite extends BasicQuestHelper
 		trowel, varrock2, digsiteTeleports, sealedLetter, specialCup, teddybear, skull, nitro, nitrate, chemicalCompound, groundCharcoal, invitation, talisman,
 		mixedChemicals, mixedChemicals2, arcenia, powder, liquid, tablet, key, unstampedLetter, pick, trowelHighlighted, tinderboxHighlighted, chemicalCompoundHighlighted;
 
-	ConditionForStep hasTeddy, hasTray, hasSkull, hasBrush, hasSpecialCup, talkedToFemaleStudent, talkedToOrangeStudent, talkedToGreenStudent, talkedToGuide, letterStamped,
+	Requirement hasTeddy, hasTray, hasSkull, hasBrush, hasSpecialCup, talkedToFemaleStudent, talkedToOrangeStudent, talkedToGreenStudent, talkedToGuide, letterStamped,
 		femaleStudentQ1Learnt, orangeStudentQ1Learnt, greenStudentQ1Learnt, femaleStudentQ2Learnt, orangeStudentQ2Learnt, greenStudentQ2Learnt, femaleStudentQ3Learnt,
 		femaleExtorting, orangeStudentQ3Learnt, greenStudentQ3Learnt, syncedUp, syncedUp2, syncedUp3, hasJar, hasPick, hasTalisman, givenTalismanIn, rope1Added, rope2Added,
 		inUndergroundTemple1, inDougRoom, hasArcenia, hasChemicalCompound, hasMixedChemicals2, hasMixedChemicals, hasNitrate, hasNitro, hasPowder, hasLiquid, openedBarrel,
@@ -265,121 +264,121 @@ public class TheDigSite extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inUndergroundTemple1 = new ZoneCondition(undergroundTemple1);
-		inUndergroundTemple2 = new ZoneCondition(undergroundTemple2);
-		inDougRoom = new ZoneCondition(dougRoom);
+		inUndergroundTemple1 = new ZoneRequirement(undergroundTemple1);
+		inUndergroundTemple2 = new ZoneRequirement(undergroundTemple2);
+		inDougRoom = new ZoneRequirement(dougRoom);
 
-		syncedUp = new Conditions(true, new WidgetTextCondition(119, 2, "The Dig Site"));
-		syncedUp2 = new Conditions(true, LogicType.OR, new WidgetTextCondition(119, 2, "The Dig Site"),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct. Well done!"),
-			new WidgetTextCondition(217, 4, "Hey! Excellent!"));
-		syncedUp3 = new Conditions(true, LogicType.OR, new WidgetTextCondition(119, 2, "The Dig Site"),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct, well done!"),
-			new WidgetTextCondition(217, 4, "Great, I'm getting good at this."));
+		syncedUp = new Conditions(true, new WidgetTextRequirement(119, 2, "The Dig Site"));
+		syncedUp2 = new Conditions(true, LogicType.OR, new WidgetTextRequirement(119, 2, "The Dig Site"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct. Well done!"),
+			new WidgetTextRequirement(217, 4, "Hey! Excellent!"));
+		syncedUp3 = new Conditions(true, LogicType.OR, new WidgetTextRequirement(119, 2, "The Dig Site"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct, well done!"),
+			new WidgetTextRequirement(217, 4, "Great, I'm getting good at this."));
 
-		talkedToGuide = new VarbitCondition(2544, 1);
+		talkedToGuide = new VarbitRequirement(2544, 1);
 
 		// Exam questions 1
 		talkedToFemaleStudent = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Hey! My lucky mascot!"),
-			new WidgetTextCondition(119, 3, true, "I should talk to her to see if she can help"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hey! My lucky mascot!"),
+			new WidgetTextRequirement(119, 3, true, "I should talk to her to see if she can help"));
 		femaleStudentQ1Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "The proper health and safety points are"),
-			new WidgetTextCondition(119, 3, true, "She gave me an answer"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The proper health and safety points are"),
+			new WidgetTextRequirement(119, 3, true, "She gave me an answer"));
 
-		WidgetTextCondition orangeGivenAnswer1Diary = new WidgetTextCondition(119, 3, true, "He gave me an answer to one of the questions");
+		WidgetTextRequirement orangeGivenAnswer1Diary = new WidgetTextRequirement(119, 3, true, "He gave me an answer to one of the questions");
 		orangeGivenAnswer1Diary.addRange(20, 35);
 		talkedToOrangeStudent = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, "Look what I found!"),
-			new WidgetTextCondition(119, 3, true, "<str>to find it and return it to him."));
+			new WidgetTextRequirement(217, 4, "Look what I found!"),
+			new WidgetTextRequirement(119, 3, true, "<str>to find it and return it to him."));
 		orangeStudentQ1Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "The people eligible to use the digsite are:"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The people eligible to use the digsite are:"),
 			orangeGivenAnswer1Diary);
 
-		WidgetTextCondition greenGivenAnswer1Diary = new WidgetTextCondition(119, 3, true, "He gave me an answer to one of the questions");
+		WidgetTextRequirement greenGivenAnswer1Diary = new WidgetTextRequirement(119, 3, true, "He gave me an answer to one of the questions");
 		greenGivenAnswer1Diary.addRange(0, 19);
 
 		talkedToGreenStudent = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Oh wow! You've found it!"),
-			new WidgetTextCondition(119, 3, true, "<str>to him; maybe someone has picked it up?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Oh wow! You've found it!"),
+			new WidgetTextRequirement(119, 3, true, "<str>to him; maybe someone has picked it up?"));
 		greenStudentQ1Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "The study of Earth Sciences is:"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The study of Earth Sciences is:"),
 			greenGivenAnswer1Diary);
 
 		// Exam questions 2
-		WidgetTextCondition femaleGivenAnswer2Diary = new WidgetTextCondition(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
+		WidgetTextRequirement femaleGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer2Diary.addRange(43, 52);
 		femaleStudentQ2Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Finds handling: Finds must"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Finds handling: Finds must"),
 			femaleGivenAnswer2Diary);
 
-		WidgetTextCondition orangeGivenAnswer2Diary = new WidgetTextCondition(119, 3, true, "<str>I need to speak to the student in the orange top about the");
+		WidgetTextRequirement orangeGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer2Diary.addRange(43, 52);
 		orangeStudentQ2Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Correct sample transportation: "),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Correct sample transportation: "),
 			orangeGivenAnswer2Diary);
 
-		WidgetTextCondition greenGivenAnswer2Diary = new WidgetTextCondition(119, 3, true, "<str>I need to speak to the student in the green top about the");
+		WidgetTextRequirement greenGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer2Diary.addRange(43, 52);
 		greenStudentQ2Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Correct rock pick usage: Always handle"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Correct rock pick usage: Always handle"),
 			greenGivenAnswer2Diary);
 
 		// Exam questions 3
 		femaleExtorting = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(217, 4, "OK, I'll see what I can turn up for you."),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Well, I have seen people get them from panning"),
-			new WidgetTextCondition(119, 3, true, "I need to bring her an opal"));
-		WidgetTextCondition femaleGivenAnswer3Diary = new WidgetTextCondition(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
+			new WidgetTextRequirement(217, 4, "OK, I'll see what I can turn up for you."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, I have seen people get them from panning"),
+			new WidgetTextRequirement(119, 3, true, "I need to bring her an opal"));
+		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer3Diary.addRange(56, 63);
 		femaleStudentQ3Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Sample preparation: Samples cleaned"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Sample preparation: Samples cleaned"),
 			femaleGivenAnswer3Diary);
 
-		WidgetTextCondition orangeGivenAnswer3Diary = new WidgetTextCondition(119, 3, true, "<str>I need to speak to the student in the orange top about the");
+		WidgetTextRequirement orangeGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer3Diary.addRange(56, 63);
 		orangeStudentQ3Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "The proper technique for handling bones is: Handle"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The proper technique for handling bones is: Handle"),
 			orangeGivenAnswer3Diary);
 
-		WidgetTextCondition greenGivenAnswer3Diary = new WidgetTextCondition(119, 3, true, "<str>I need to speak to the student in the green top about the");
+		WidgetTextRequirement greenGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer3Diary.addRange(56, 63);
 		greenStudentQ3Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Specimen brush use: Brush carefully"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Specimen brush use: Brush carefully"),
 			greenGivenAnswer3Diary);
 
 		// 2550 = 1, gotten invite
 		// 3644 = 1, gotten invite
-		givenTalismanIn = new VarbitCondition(2550, 1);
-		rope1Added = new VarbitCondition(2545, 1);
-		rope2Added = new VarbitCondition(2546, 1);
+		givenTalismanIn = new VarbitRequirement(2550, 1);
+		rope1Added = new VarbitRequirement(2545, 1);
+		rope2Added = new VarbitRequirement(2546, 1);
 
 		// 45 - 54
-		hasTray = new ItemRequirementCondition(panningTray);
-		hasTeddy = new Conditions(LogicType.OR, new ItemRequirementCondition(teddybear), talkedToFemaleStudent);
-		hasSkull = new Conditions(LogicType.OR, new ItemRequirementCondition(skull), talkedToGreenStudent);
-		hasSpecialCup = new Conditions(LogicType.OR, new ItemRequirementCondition(specialCup), talkedToOrangeStudent);
-		hasBrush = new ItemRequirementCondition(specimenBrush);
-		letterStamped = new VarbitCondition(2552, 1);
-		hasJar = new ItemRequirementCondition(specimenJar);
-		hasPick = new ItemRequirementCondition(pick);
-		hasTalisman = new ItemRequirementCondition(talisman);
-		hasArcenia = new ItemRequirementCondition(arcenia);
-		hasChemicalCompound = new ItemRequirementCondition(chemicalCompound);
-		hasMixedChemicals2 = new ItemRequirementCondition(mixedChemicals2);
-		hasMixedChemicals = new ItemRequirementCondition(mixedChemicals);
-		hasNitrate = new ItemRequirementCondition(nitrate);
-		hasNitro = new ItemRequirementCondition(nitro);
-		hasPowder = new ItemRequirementCondition(powder);
-		hasLiquid = new ItemRequirementCondition(liquid);
-		hasTablet = new ItemRequirementCondition(tablet);
+		hasTray = new ItemRequirements(panningTray);
+		hasTeddy = new Conditions(LogicType.OR, new ItemRequirements(teddybear), talkedToFemaleStudent);
+		hasSkull = new Conditions(LogicType.OR, new ItemRequirements(skull), talkedToGreenStudent);
+		hasSpecialCup = new Conditions(LogicType.OR, new ItemRequirements(specialCup), talkedToOrangeStudent);
+		hasBrush = new ItemRequirements(specimenBrush);
+		letterStamped = new VarbitRequirement(2552, 1);
+		hasJar = new ItemRequirements(specimenJar);
+		hasPick = new ItemRequirements(pick);
+		hasTalisman = new ItemRequirements(talisman);
+		hasArcenia = new ItemRequirements(arcenia);
+		hasChemicalCompound = new ItemRequirements(chemicalCompound);
+		hasMixedChemicals2 = new ItemRequirements(mixedChemicals2);
+		hasMixedChemicals = new ItemRequirements(mixedChemicals);
+		hasNitrate = new ItemRequirements(nitrate);
+		hasNitro = new ItemRequirements(nitro);
+		hasPowder = new ItemRequirements(powder);
+		hasLiquid = new ItemRequirements(liquid);
+		hasTablet = new ItemRequirements(tablet);
 
-		searchedBricks = new VarbitCondition(2549, 1);
+		searchedBricks = new VarbitRequirement(2549, 1);
 		openPowderChestNearby = new ObjectCondition(ObjectID.CHEST_2360);
-		openedBarrel = new VarbitCondition(2547, 1);
+		openedBarrel = new VarbitRequirement(2547, 1);
 
 		hasKeyOrPowderOrMixtures = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(key),
+			new ItemRequirements(key),
 			hasPowder, hasNitrate, hasMixedChemicals, hasMixedChemicals2, hasChemicalCompound, openPowderChestNearby);
 	}
 

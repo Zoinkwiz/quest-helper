@@ -27,16 +27,17 @@ package com.questhelper.quests.holygrail;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,7 +50,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -58,8 +59,6 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -73,7 +72,7 @@ public class HolyGrail extends BasicQuestHelper
 	//Items Required
 	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
 
-	ConditionForStep inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inGalahadHouse, hasNapkin, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
+	Requirement inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inGalahadHouse, hasNapkin, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
 		inDraynorManorTopFloor, inMagicWhistleRoom, hasTwoWhistles, inTeleportLocation, hasExcalibur, inFisherKingRealmEntrance, titanNearby, inFisherKingRealmAfterTitan, talkedToFisherman,
 		hasGrailBell, inGrailBellRingLocation, inFisherKingCastle1BottomFloor, inFisherKingCastle1SecondFloor, hasFeather, inFisherKingRealm, inFisherKingCastle2BottomFloor, inFisherKingCastle2SecondFloor, inFisherKingCastle2ThirdFloor,
 		hasGrail;
@@ -210,42 +209,42 @@ public class HolyGrail extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCamelot = new ZoneCondition(camelotGround);
+		inCamelot = new ZoneRequirement(camelotGround);
 		inCamelotUpstairs = new Conditions(LogicType.OR,
-			new ZoneCondition(camelotUpstairsZone1),
-			new ZoneCondition(camelotUpstairsZone2));
-		inMerlinRoom = new ZoneCondition(merlinRoom);
+			new ZoneRequirement(camelotUpstairsZone1),
+			new ZoneRequirement(camelotUpstairsZone2));
+		inMerlinRoom = new ZoneRequirement(merlinRoom);
 		merlinNearby = new NpcCondition(NpcID.MERLIN_4059);
 		onEntrana = new Conditions(LogicType.OR,
-			new ZoneCondition(entranaBoat),
-			new ZoneCondition(entranaIsland));
-		inGalahadHouse = new ZoneCondition(galahadHouse);
-		hasNapkin = new ItemRequirementCondition(holyTableNapkin);
-		inDraynorFrontManor = new ZoneCondition(draynorManorFront);
-		inDraynorManorBottomFloor = new ZoneCondition(draynorManorBottomFloor);
-		inDraynorManorSecondFloor = new ZoneCondition(draynorManorSecondFloor);
-		inDraynorManorTopFloor = new ZoneCondition(draynorManorTopFloor);
-		inMagicWhistleRoom = new ZoneCondition(magicWhistleRoom);
-		hasTwoWhistles = new ItemRequirementCondition(twoMagicWhistles);
-		inTeleportLocation = new ZoneCondition(teleportLocation);
-		hasExcalibur = new ItemRequirementCondition(excalibur);
-		inFisherKingRealmEntrance = new ZoneCondition(fisherKingRealmEntrance);
+			new ZoneRequirement(entranaBoat),
+			new ZoneRequirement(entranaIsland));
+		inGalahadHouse = new ZoneRequirement(galahadHouse);
+		hasNapkin = new ItemRequirements(holyTableNapkin);
+		inDraynorFrontManor = new ZoneRequirement(draynorManorFront);
+		inDraynorManorBottomFloor = new ZoneRequirement(draynorManorBottomFloor);
+		inDraynorManorSecondFloor = new ZoneRequirement(draynorManorSecondFloor);
+		inDraynorManorTopFloor = new ZoneRequirement(draynorManorTopFloor);
+		inMagicWhistleRoom = new ZoneRequirement(magicWhistleRoom);
+		hasTwoWhistles = new ItemRequirements(twoMagicWhistles);
+		inTeleportLocation = new ZoneRequirement(teleportLocation);
+		hasExcalibur = new ItemRequirements(excalibur);
+		inFisherKingRealmEntrance = new ZoneRequirement(fisherKingRealmEntrance);
 		titanNearby = new NpcCondition(NpcID.BLACK_KNIGHT_TITAN);
 		inFisherKingRealmAfterTitan = new Conditions(LogicType.OR,
-			new ZoneCondition(fisherKingRealmAfterTitan1),
-			new ZoneCondition(fisherKingRealmAfterTitan2),
-			new ZoneCondition(fisherKingRealmAfterTitan3));
-		talkedToFisherman = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "You must be blind then. There's ALWAYS bells there<br>when I go to the castle."));
-		hasGrailBell = new ItemRequirementCondition(grailBell);
-		inGrailBellRingLocation = new ZoneCondition(grailBellRingLocation);
-		inFisherKingCastle1BottomFloor = new ZoneCondition(fisherKingRealmCastle1BottomFloor);
-		inFisherKingCastle1SecondFloor = new ZoneCondition(fisherKingRealmCastle1SecondFloor);
-		hasFeather = new ItemRequirementCondition(goldFeather);
-		inFisherKingRealm = new ZoneCondition(fisherKingRealm);
-		inFisherKingCastle2BottomFloor = new ZoneCondition(fisherKingRealmCastle2BottomFloor);
-		inFisherKingCastle2SecondFloor = new ZoneCondition(fisherKingRealmCastle2SecondFloor);
-		inFisherKingCastle2ThirdFloor = new ZoneCondition(fisherKingRealmCastle2ThirdFloor);
-		hasGrail = new ItemRequirementCondition(grail);
+			new ZoneRequirement(fisherKingRealmAfterTitan1),
+			new ZoneRequirement(fisherKingRealmAfterTitan2),
+			new ZoneRequirement(fisherKingRealmAfterTitan3));
+		talkedToFisherman = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You must be blind then. There's ALWAYS bells there<br>when I go to the castle."));
+		hasGrailBell = new ItemRequirements(grailBell);
+		inGrailBellRingLocation = new ZoneRequirement(grailBellRingLocation);
+		inFisherKingCastle1BottomFloor = new ZoneRequirement(fisherKingRealmCastle1BottomFloor);
+		inFisherKingCastle1SecondFloor = new ZoneRequirement(fisherKingRealmCastle1SecondFloor);
+		hasFeather = new ItemRequirements(goldFeather);
+		inFisherKingRealm = new ZoneRequirement(fisherKingRealm);
+		inFisherKingCastle2BottomFloor = new ZoneRequirement(fisherKingRealmCastle2BottomFloor);
+		inFisherKingCastle2SecondFloor = new ZoneRequirement(fisherKingRealmCastle2SecondFloor);
+		inFisherKingCastle2ThirdFloor = new ZoneRequirement(fisherKingRealmCastle2ThirdFloor);
+		hasGrail = new ItemRequirements(grail);
 	}
 
 	public void setupSteps()

@@ -25,19 +25,25 @@
 package com.questhelper.quests.thelosttribe;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcEmoteStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,13 +57,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_LOST_TRIBE
@@ -70,7 +69,7 @@ public class TheLostTribe extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, faladorTeleport, lumbridgeTeleports;
 
-	ConditionForStep inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, hasBrooch, hasBook, inMines,
+	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, hasBrooch, hasBook, inMines,
 		hasKey, foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
 
 	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
@@ -161,23 +160,23 @@ public class TheLostTribe extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inBasement = new ZoneCondition(basement);
-		inLumbridgeF0 = new ZoneCondition(lumbridgeF0);
-		inLumbridgeF1 = new ZoneCondition(lumbridgeF1);
-		inLumbridgeF2 = new ZoneCondition(lumbridgeF2);
-		inTunnels = new ZoneCondition(tunnels);
-		inMines = new ZoneCondition(mines);
-		inHamBase = new ZoneCondition(hamBase);
+		inBasement = new ZoneRequirement(basement);
+		inLumbridgeF0 = new ZoneRequirement(lumbridgeF0);
+		inLumbridgeF1 = new ZoneRequirement(lumbridgeF1);
+		inLumbridgeF2 = new ZoneRequirement(lumbridgeF2);
+		inTunnels = new ZoneRequirement(tunnels);
+		inMines = new ZoneRequirement(mines);
+		inHamBase = new ZoneRequirement(hamBase);
 
-		hasBrooch = new ItemRequirementCondition(brooch);
-		hasBook = new ItemRequirementCondition(book);
-		hasKey = new ItemRequirementCondition(key);
+		hasBrooch = new ItemRequirements(brooch);
+		hasBook = new ItemRequirements(book);
+		hasKey = new ItemRequirements(key);
 
-		foundRobes = new VarbitCondition(534, 1, Operation.GREATER_EQUAL);
-		foundSilverware = new VarbitCondition(534, 3, Operation.GREATER_EQUAL);
+		foundRobes = new VarbitRequirement(534, 1, Operation.GREATER_EQUAL);
+		foundSilverware = new VarbitRequirement(534, 3, Operation.GREATER_EQUAL);
 
-		hansKnows = new VarbitCondition(537, 0);
-		bobKnows = new VarbitCondition(537, 1);
+		hansKnows = new VarbitRequirement(537, 0);
+		bobKnows = new VarbitRequirement(537, 1);
 
 		// 537 0->2->0, Hans
 		// 537 0->1, Bob

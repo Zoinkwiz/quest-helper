@@ -25,9 +25,9 @@
 package com.questhelper.quests.enlightenedjourney;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.NpcStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -43,22 +43,22 @@ public class GiveAugusteItems extends NpcStep
 	private static final ItemRequirement silk10 = new ItemRequirement("Silk", ItemID.SILK, 10);
 	private static final ItemRequirement bowl = new ItemRequirement("Bowl", ItemID.BOWL);
 
-	private final ConditionForStep givenRedDye;
-	private final ConditionForStep givenYellowDye;
-	private final ConditionForStep givenSandbags;
-	private final ConditionForStep givenSilk;
-	private final ConditionForStep givenBowl;
+	private final Requirement givenRedDye;
+	private final Requirement givenYellowDye;
+	private final Requirement givenSandbags;
+	private final Requirement givenSilk;
+	private final Requirement givenBowl;
 
 	public GiveAugusteItems(QuestHelper questHelper)
 	{
 
 		super(questHelper, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
 			"Give Auguste the sandbags, silk, dyes, and bowl.", sandbag8, silk10, redDye, yellowDye, bowl);
-		givenRedDye = new VarbitCondition(2873, 1);
-		givenYellowDye = new VarbitCondition(2874, 1); // 2879 = 1 as well, maybe both dyes done
-		givenSandbags = new VarbitCondition(2875, 1);
-		givenSilk = new VarbitCondition(2876, 1);
-		givenBowl = new VarbitCondition(2877, 1);
+		givenRedDye = new VarbitRequirement(2873, 1);
+		givenYellowDye = new VarbitRequirement(2874, 1); // 2879 = 1 as well, maybe both dyes done
+		givenSandbags = new VarbitRequirement(2875, 1);
+		givenSilk = new VarbitRequirement(2876, 1);
+		givenBowl = new VarbitRequirement(2877, 1);
 	}
 
 	@Subscribe

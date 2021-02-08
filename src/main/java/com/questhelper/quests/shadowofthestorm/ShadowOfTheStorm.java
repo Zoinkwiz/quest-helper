@@ -30,16 +30,15 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
@@ -75,7 +74,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear, coinsForCarpet;
 
-	ConditionForStep inRuin, inThroneRoom, hasMushroom, hasDyedSilverlight, hasImplement, hasSigil, hasBook, hasSigilMould, talkedToGolem,
+	Requirement inRuin, inThroneRoom, hasMushroom, hasDyedSilverlight, hasImplement, hasSigil, hasBook, hasSigilMould, talkedToGolem,
 		talkedToMatthew, inCircleSpot, sigilNearby, evilDaveMoved, baddenMoved, reenMoved, golemMoved, golemRejected, golemReprogrammed,
 		inSecondCircleSpot;
 
@@ -227,27 +226,27 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		inRuin = new ZoneCondition(ruin);
-		inThroneRoom = new ZoneCondition(throneRoom);
-		inCircleSpot = new ZoneCondition(circleSpot);
-		inSecondCircleSpot = new ZoneCondition(secondCircleSpot);
+		inRuin = new ZoneRequirement(ruin);
+		inThroneRoom = new ZoneRequirement(throneRoom);
+		inCircleSpot = new ZoneRequirement(circleSpot);
+		inSecondCircleSpot = new ZoneRequirement(secondCircleSpot);
 
-		hasDyedSilverlight = new ItemRequirementCondition(silverlightDyed);
-		hasMushroom = new ItemRequirementCondition(blackMushroomHighlighted);
-		hasImplement = new ItemRequirementCondition(strangeImplement);
-		hasSigil = new ItemRequirementCondition(sigil);
-		hasBook = new ItemRequirementCondition(book);
-		hasSigilMould = new ItemRequirementCondition(sigilMould);
+		hasDyedSilverlight = new ItemRequirements(silverlightDyed);
+		hasMushroom = new ItemRequirements(blackMushroomHighlighted);
+		hasImplement = new ItemRequirements(strangeImplement);
+		hasSigil = new ItemRequirements(sigil);
+		hasBook = new ItemRequirements(book);
+		hasSigilMould = new ItemRequirements(sigilMould);
 
-		talkedToMatthew = new VarbitCondition(1372, 50, Operation.GREATER_EQUAL);
-		talkedToGolem = new VarbitCondition(1372, 60, Operation.GREATER_EQUAL);
-		sigilNearby = new ItemCondition(sigil);
-		evilDaveMoved = new VarbitCondition(1380, 2, Operation.GREATER_EQUAL);
-		baddenMoved = new VarbitCondition(1381, 2, Operation.GREATER_EQUAL);
-		reenMoved = new VarbitCondition(1382, 2, Operation.GREATER_EQUAL);
-		golemRejected = new VarbitCondition(1379, 1, Operation.GREATER_EQUAL);
-		golemReprogrammed = new VarbitCondition(1379, 2, Operation.GREATER_EQUAL);
-		golemMoved = new VarbitCondition(1379, 3, Operation.GREATER_EQUAL);
+		talkedToMatthew = new VarbitRequirement(1372, 50, Operation.GREATER_EQUAL);
+		talkedToGolem = new VarbitRequirement(1372, 60, Operation.GREATER_EQUAL);
+		sigilNearby = new ItemOnTileRequirement(sigil);
+		evilDaveMoved = new VarbitRequirement(1380, 2, Operation.GREATER_EQUAL);
+		baddenMoved = new VarbitRequirement(1381, 2, Operation.GREATER_EQUAL);
+		reenMoved = new VarbitRequirement(1382, 2, Operation.GREATER_EQUAL);
+		golemRejected = new VarbitRequirement(1379, 1, Operation.GREATER_EQUAL);
+		golemReprogrammed = new VarbitRequirement(1379, 2, Operation.GREATER_EQUAL);
+		golemMoved = new VarbitRequirement(1379, 3, Operation.GREATER_EQUAL);
 	}
 
 	private void setupSteps()

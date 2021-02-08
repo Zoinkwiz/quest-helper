@@ -30,18 +30,17 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -62,7 +61,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	ItemRequirement milk, egg, flour, tin, rawGuidanceCake, guidanceCake, guidanceCakeHighlighted, enchantedEgg, enchantedMilk,
 		enchantedFlour, tinHighlighted;
 
-	ConditionForStep inDiningRoom, inUpstairsTrailborn, hasCake, hasRawCake;
+	Requirement inDiningRoom, inUpstairsTrailborn, hasCake, hasRawCake;
 
 	QuestStep enterDiningRoom, inspectLumbridgeGuide, goUpToTraiborn, talkToTraiborn, cookCake, enterDiningRoomAgain,
 		useCakeOnLumbridgeGuide, mixIngredients;
@@ -130,11 +129,11 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneCondition(diningRoom);
-		inUpstairsTrailborn = new ZoneCondition(upstairsTrailborn, quizSpot);
+		inDiningRoom = new ZoneRequirement(diningRoom);
+		inUpstairsTrailborn = new ZoneRequirement(upstairsTrailborn, quizSpot);
 
-		hasCake = new ItemRequirementCondition(guidanceCake);
-		hasRawCake = new ItemRequirementCondition(rawGuidanceCake);
+		hasCake = new ItemRequirements(guidanceCake);
+		hasRawCake = new ItemRequirements(rawGuidanceCake);
 	}
 
 	public void setupSteps()

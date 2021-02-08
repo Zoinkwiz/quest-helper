@@ -26,25 +26,38 @@
 package com.questhelper.quests.elementalworkshopi;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.*;
-import java.util.*;
-import net.runelite.api.*;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -61,7 +74,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		pullBellowsLever, getStoneBowl, useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre,
 		forgeBar, smithShield;
 
-	ConditionForStep inWorkshop, inStairwell, hasBook, hasKey, hasSlashedBook, hasReadBook, enteredWall, foundLeather,
+	Requirement inWorkshop, inStairwell, hasBook, hasKey, hasSlashedBook, hasReadBook, enteredWall, foundLeather,
 		turnedValve1, turnedValve2, solvedWater, hasLeatherOrSearched, hasNeedle, hasBowl, hasLavaBowl,
 		hasElementalBar, hasElementalOre, elementalOreNearby, earthNearby, solvedAir, solvedFire, fixedBellow;
 
@@ -206,31 +219,31 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 
 	public void setupConditions()
 	{
-		inStairwell = new ZoneCondition(stairwell);
-		inWorkshop = new ZoneCondition(workshop);
+		inStairwell = new ZoneRequirement(stairwell);
+		inWorkshop = new ZoneRequirement(workshop);
 
-		hasBook = new ItemRequirementCondition(batteredBook);
-		hasKey = new ItemRequirementCondition(batteredKey);
-		hasSlashedBook = new VarbitCondition(2057, 1);
-		hasReadBook = new VarplayerCondition(299, true, 1);
-		enteredWall = new VarplayerCondition(299, true, 15);
-		foundLeather = new VarbitCondition(2066, 1);
-		hasNeedle = new ItemRequirementCondition(needle);
-		turnedValve1 = new VarbitCondition(2059, 1);
-		turnedValve2 = new VarbitCondition(2058, 1);
-		solvedWater = new VarbitCondition(2060, 1);
+		hasBook = new ItemRequirements(batteredBook);
+		hasKey = new ItemRequirements(batteredKey);
+		hasSlashedBook = new VarbitRequirement(2057, 1);
+		hasReadBook = new VarplayerRequirement(299, true, 1);
+		enteredWall = new VarplayerRequirement(299, true, 15);
+		foundLeather = new VarbitRequirement(2066, 1);
+		hasNeedle = new ItemRequirements(needle);
+		turnedValve1 = new VarbitRequirement(2059, 1);
+		turnedValve2 = new VarbitRequirement(2058, 1);
+		solvedWater = new VarbitRequirement(2060, 1);
 
-		hasLeatherOrSearched = new Conditions(LogicType.OR, foundLeather, new ItemRequirementCondition(leather));
-		solvedAir = new VarbitCondition(2063, 1);
-		fixedBellow = new VarbitCondition(2061, 1);
+		hasLeatherOrSearched = new Conditions(LogicType.OR, foundLeather, new ItemRequirements(leather));
+		solvedAir = new VarbitRequirement(2063, 1);
+		fixedBellow = new VarbitRequirement(2061, 1);
 
-		hasBowl = new ItemRequirementCondition(stoneBowlHighlighted);
-		hasLavaBowl = new ItemRequirementCondition(lavaBowlHighlighted);
-		solvedFire = new VarbitCondition(2062, 1);
+		hasBowl = new ItemRequirements(stoneBowlHighlighted);
+		hasLavaBowl = new ItemRequirements(lavaBowlHighlighted);
+		solvedFire = new VarbitRequirement(2062, 1);
 
-		hasElementalBar = new ItemRequirementCondition(elementalBar);
-		hasElementalOre = new ItemRequirementCondition(elementalOre);
-		elementalOreNearby = new ItemCondition(elementalOre);
+		hasElementalBar = new ItemRequirements(elementalBar);
+		hasElementalOre = new ItemRequirements(elementalOre);
+		elementalOreNearby = new ItemOnTileRequirement(elementalOre);
 		earthNearby = new NpcCondition(NpcID.EARTH_ELEMENTAL_1367);
 
 

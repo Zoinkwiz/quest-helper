@@ -24,12 +24,22 @@
  */
 package com.questhelper.quests.seaslug;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,17 +52,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SEA_SLUG
@@ -62,7 +61,7 @@ public class SeaSlug extends BasicQuestHelper
 	//Items Required
 	ItemRequirement swampPaste, glass, dampSticks, torch, litTorch, drySticks;
 
-	ConditionForStep onPlatformGroundFloor, onPlatformFirstFloor, onPlatform, onIsland, hasGlass, hasDampSticks, hasTorch, hasLitTorch, hasDrySticks;
+	Requirement onPlatformGroundFloor, onPlatformFirstFloor, onPlatform, onIsland, hasGlass, hasDampSticks, hasTorch, hasLitTorch, hasDrySticks;
 
 	QuestStep talkToCaroline, talkToHolgart, talkToHolgartWithSwampPaste, travelWithHolgart, pickupGlass, pickupDampSticks,
 		climbLadder, talkToKennith, goDownLadder, goToIsland, goToIslandFromMainland, talkToKent, returnFromIsland, talkToBaileyForTorch, useGlassOnDampSticks,
@@ -192,15 +191,15 @@ public class SeaSlug extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDampSticks = new ItemRequirementCondition(dampSticks);
-		hasDrySticks = new ItemRequirementCondition(drySticks);
-		hasTorch = new ItemRequirementCondition(torch);
-		hasLitTorch = new ItemRequirementCondition(litTorch);
-		hasGlass = new ItemRequirementCondition(glass);
-		onPlatformFirstFloor = new ZoneCondition(platformFirstFloor);
-		onPlatformGroundFloor = new ZoneCondition(platformGroundFloor);
-		onPlatform = new ZoneCondition(platformFirstFloor, platformGroundFloor);
-		onIsland = new ZoneCondition(island);
+		hasDampSticks = new ItemRequirements(dampSticks);
+		hasDrySticks = new ItemRequirements(drySticks);
+		hasTorch = new ItemRequirements(torch);
+		hasLitTorch = new ItemRequirements(litTorch);
+		hasGlass = new ItemRequirements(glass);
+		onPlatformFirstFloor = new ZoneRequirement(platformFirstFloor);
+		onPlatformGroundFloor = new ZoneRequirement(platformGroundFloor);
+		onPlatform = new ZoneRequirement(platformFirstFloor, platformGroundFloor);
+		onIsland = new ZoneRequirement(island);
 	}
 
 	public void setupSteps()

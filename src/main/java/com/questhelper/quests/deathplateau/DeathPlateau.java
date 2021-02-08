@@ -30,21 +30,20 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +68,7 @@ public class DeathPlateau extends BasicQuestHelper
 	ItemRequirement asgarnianAle, premadeBlurbOrCoins, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
 		yellowStone, pinkStone, greenStone, certificate, climbingBoots, spikedBoots, secretMap, combination;
 
-	ConditionForStep hasAsgarnianAle, inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs,
+	Requirement hasAsgarnianAle, inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs,
 		inHaroldsRoom, givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
 		isGreenStoneDone, inSabaCave, hasCertificate, hasClimbingBoots, hasSpikedBoots, hasSecretMap, hasCombination,
 		isFarEnough, talkedToSaba, talkedToDunstan;
@@ -198,32 +197,32 @@ public class DeathPlateau extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasAsgarnianAle = new ItemRequirementCondition(asgarnianAle);
-		inCastleDownstairs = new ZoneCondition(castleDownstairs);
-		inCastleUpstairs = new ZoneCondition(castleUpstairs);
-		inBarDownstairs = new ZoneCondition(barDownstairs);
-		inBarUpstairs = new ZoneCondition(barUpstairs);
-		inHaroldsRoom = new ZoneCondition(haroldsRoom1, haroldsRoom2);
-		givenHaroldBlurberry = new ChatMessageCondition("You give Harold a Blurberry Special.");
-		isRedStoneDone = new ItemCondition(redStone, new WorldPoint(2894, 3563, 0));
-		isBlueStoneDone = new ItemCondition(blueStone, new WorldPoint(2894, 3562, 0));
-		isYellowStoneDone = new ItemCondition(yellowStone, new WorldPoint(2895, 3562, 0));
-		isPinkStoneDone = new ItemCondition(pinkStone, new WorldPoint(2895, 3563, 0));
-		isGreenStoneDone = new ItemCondition(greenStone, new WorldPoint(2895, 3564, 0));
-		inSabaCave = new ZoneCondition(sabaCave);
-		hasCertificate = new Conditions(true, new ItemRequirementCondition(certificate));
-		hasClimbingBoots = new ItemRequirementCondition(climbingBoots);
-		hasSpikedBoots = new Conditions(true, new ItemRequirementCondition(spikedBoots));
-		hasSecretMap = new ItemRequirementCondition(secretMap);
-		hasCombination = new ItemRequirementCondition(combination);
-		isFarEnough = new ChatMessageCondition("You should go and speak to Denulth.");
+		hasAsgarnianAle = new ItemRequirements(asgarnianAle);
+		inCastleDownstairs = new ZoneRequirement(castleDownstairs);
+		inCastleUpstairs = new ZoneRequirement(castleUpstairs);
+		inBarDownstairs = new ZoneRequirement(barDownstairs);
+		inBarUpstairs = new ZoneRequirement(barUpstairs);
+		inHaroldsRoom = new ZoneRequirement(haroldsRoom1, haroldsRoom2);
+		givenHaroldBlurberry = new ChatMessageRequirement("You give Harold a Blurberry Special.");
+		isRedStoneDone = new ItemOnTileRequirement(redStone, new WorldPoint(2894, 3563, 0));
+		isBlueStoneDone = new ItemOnTileRequirement(blueStone, new WorldPoint(2894, 3562, 0));
+		isYellowStoneDone = new ItemOnTileRequirement(yellowStone, new WorldPoint(2895, 3562, 0));
+		isPinkStoneDone = new ItemOnTileRequirement(pinkStone, new WorldPoint(2895, 3563, 0));
+		isGreenStoneDone = new ItemOnTileRequirement(greenStone, new WorldPoint(2895, 3564, 0));
+		inSabaCave = new ZoneRequirement(sabaCave);
+		hasCertificate = new Conditions(true, new ItemRequirements(certificate));
+		hasClimbingBoots = new ItemRequirements(climbingBoots);
+		hasSpikedBoots = new Conditions(true, new ItemRequirements(spikedBoots));
+		hasSecretMap = new ItemRequirements(secretMap);
+		hasCombination = new ItemRequirements(combination);
+		isFarEnough = new ChatMessageRequirement("You should go and speak to Denulth.");
 		talkedToSaba = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Before the trolls came there used to be a nettlesome"),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Have you got rid of those pesky trolls yet?")
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Before the trolls came there used to be a nettlesome"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Have you got rid of those pesky trolls yet?")
 		);
 		talkedToDunstan = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "My son has just turned 16"),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Have you managed to get my son")
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "My son has just turned 16"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Have you managed to get my son")
 		);
 	}
 

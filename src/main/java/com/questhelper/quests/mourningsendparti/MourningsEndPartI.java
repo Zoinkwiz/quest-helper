@@ -25,20 +25,19 @@
 package com.questhelper.quests.mourningsendparti;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,14 +51,13 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MOURNINGS_END_PART_I
@@ -73,7 +71,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		equippedMournerGloves, equippedMournerBoots, brokenDevice, featherHighlight, fixedDevice, redToad, yellowToad, greenToad, blueToad, fixedDeviceEquipped, emptyBarrel, barrelOfRottenApples,
 		appleBarrel, naphtha, naphthaAppleMix, toxicNaphtha, toxicPowder;
 
-	ConditionForStep hasAllMournerItems, mournerItemsNearby, hasSoap, cleanedTop, repairedTrousers, inMournerHQ, inMournerBasement, knowWeaknesses, torturedGnome, talkedWithItem, releasedGnome, repairedDevice,
+	Requirement hasAllMournerItems, mournerItemsNearby, hasSoap, cleanedTop, repairedTrousers, inMournerHQ, inMournerBasement, knowWeaknesses, torturedGnome, talkedWithItem, releasedGnome, repairedDevice,
 		learntAboutToads, hasAllToads, blueToadLoaded, redToadLoaded, yellowToadLoaded, greenToadLoaded, redToadGot, yellowToadGot, greenToadGot, blueToadGot, greenDyed, yellowDyed, redDyed, blueDyed, hasRottenApple,
 		givenRottenApple, receivedSieve, hasBarrel, hasRottenApples, hasAppleBarrel, hasNaphtha, hasNaphthaAppleMix, hasToxicNaphtha, hadToxicPowder, poisoned1, poisoned2, poisoned3, twoPoisoned;
 
@@ -265,58 +263,58 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		mournerItemsNearby = new Conditions(LogicType.OR, new ItemCondition(bloodyMournerBody), new ItemCondition(mournerBoots), new ItemCondition(mournerGloves), new ItemCondition(mournerCloak),
-			new ItemCondition(mournerLegsBroken), new ItemCondition(mournerMask), new ItemCondition(mournerLetter));
-		hasAllMournerItems = new Conditions(LogicType.AND, new ItemRequirementCondition(mournerMask, mournerLetter, mournerMask, mournerGloves, mournerCloak, mournerBoots),
-			new ItemRequirementCondition(LogicType.OR, mournerBody, bloodyMournerBody), new ItemRequirementCondition(LogicType.OR, mournerLegsBroken, mournerLegs));
+		mournerItemsNearby = new Conditions(LogicType.OR, new ItemOnTileRequirement(bloodyMournerBody), new ItemOnTileRequirement(mournerBoots), new ItemOnTileRequirement(mournerGloves), new ItemOnTileRequirement(mournerCloak),
+			new ItemOnTileRequirement(mournerLegsBroken), new ItemOnTileRequirement(mournerMask), new ItemOnTileRequirement(mournerLetter));
+		hasAllMournerItems = new Conditions(LogicType.AND, new ItemRequirements(mournerMask, mournerLetter, mournerMask, mournerGloves, mournerCloak, mournerBoots),
+			new ItemRequirements(LogicType.OR, mournerBody, bloodyMournerBody), new ItemRequirements(LogicType.OR, mournerLegsBroken, mournerLegs));
 
-		hasSoap = new ItemRequirementCondition(tegidsSoap);
+		hasSoap = new ItemRequirements(tegidsSoap);
 
-		cleanedTop = new Conditions(new ItemRequirementCondition(mournerBody));
-		repairedTrousers = new Conditions(new ItemRequirementCondition(mournerLegs));
-		inMournerHQ = new ZoneCondition(mournerHQ, mournerHQ2);
+		cleanedTop = new Conditions(new ItemRequirements(mournerBody));
+		repairedTrousers = new Conditions(new ItemRequirements(mournerLegs));
+		inMournerHQ = new ZoneRequirement(mournerHQ, mournerHQ2);
 
-		inMournerBasement = new ZoneCondition(mournerBasement);
-		knowWeaknesses = new VarbitCondition(799, 3, Operation.GREATER_EQUAL);
-		torturedGnome = new VarbitCondition(799, 5, Operation.GREATER_EQUAL);
-		talkedWithItem = new VarbitCondition(799, 6, Operation.GREATER_EQUAL);
-		releasedGnome = new VarbitCondition(799, 7, Operation.GREATER_EQUAL);
-		repairedDevice = new VarbitCondition(799, 9, Operation.GREATER_EQUAL);
+		inMournerBasement = new ZoneRequirement(mournerBasement);
+		knowWeaknesses = new VarbitRequirement(799, 3, Operation.GREATER_EQUAL);
+		torturedGnome = new VarbitRequirement(799, 5, Operation.GREATER_EQUAL);
+		talkedWithItem = new VarbitRequirement(799, 6, Operation.GREATER_EQUAL);
+		releasedGnome = new VarbitRequirement(799, 7, Operation.GREATER_EQUAL);
+		repairedDevice = new VarbitRequirement(799, 9, Operation.GREATER_EQUAL);
 
-		learntAboutToads = new VarbitCondition(9155, 1);
-		redToadLoaded = new VarbitCondition(804, 1);
-		greenToadLoaded = new VarbitCondition(804, 2);
-		blueToadLoaded = new VarbitCondition(804, 3);
-		yellowToadLoaded = new VarbitCondition(804, 4);
+		learntAboutToads = new VarbitRequirement(9155, 1);
+		redToadLoaded = new VarbitRequirement(804, 1);
+		greenToadLoaded = new VarbitRequirement(804, 2);
+		blueToadLoaded = new VarbitRequirement(804, 3);
+		yellowToadLoaded = new VarbitRequirement(804, 4);
 
-		greenDyed = new VarbitCondition(803, 1);
-		redDyed = new VarbitCondition(801, 1);
-		yellowDyed = new VarbitCondition(802, 1);
-		blueDyed = new VarbitCondition(800, 1);
+		greenDyed = new VarbitRequirement(803, 1);
+		redDyed = new VarbitRequirement(801, 1);
+		yellowDyed = new VarbitRequirement(802, 1);
+		blueDyed = new VarbitRequirement(800, 1);
 
-		greenToadGot = new Conditions(LogicType.OR, greenToadLoaded, new ItemRequirementCondition(greenToad), greenDyed);
-		redToadGot = new Conditions(LogicType.OR, redToadLoaded, new ItemRequirementCondition(redToad), redDyed);
-		yellowToadGot = new Conditions(LogicType.OR, yellowToadLoaded, new ItemRequirementCondition(yellowToad), yellowDyed);
-		blueToadGot = new Conditions(LogicType.OR, blueToadLoaded, new ItemRequirementCondition(blueToad), blueDyed);
+		greenToadGot = new Conditions(LogicType.OR, greenToadLoaded, new ItemRequirements(greenToad), greenDyed);
+		redToadGot = new Conditions(LogicType.OR, redToadLoaded, new ItemRequirements(redToad), redDyed);
+		yellowToadGot = new Conditions(LogicType.OR, yellowToadLoaded, new ItemRequirements(yellowToad), yellowDyed);
+		blueToadGot = new Conditions(LogicType.OR, blueToadLoaded, new ItemRequirements(blueToad), blueDyed);
 
 		hasAllToads = new Conditions(true, LogicType.AND, greenToadGot, yellowToadGot, redToadGot, blueToadGot);
 
-		hasRottenApple = new ItemRequirementCondition(rottenApple);
+		hasRottenApple = new ItemRequirements(rottenApple);
 
-		givenRottenApple = new VarbitCondition(805, 2, Operation.GREATER_EQUAL);
-		receivedSieve = new VarbitCondition(805, 4, Operation.GREATER_EQUAL);
+		givenRottenApple = new VarbitRequirement(805, 2, Operation.GREATER_EQUAL);
+		receivedSieve = new VarbitRequirement(805, 4, Operation.GREATER_EQUAL);
 
-		hasRottenApples = new ItemRequirementCondition(barrelOfRottenApples);
-		hasBarrel = new ItemRequirementCondition(emptyBarrel);
-		hasAppleBarrel = new Conditions(true, LogicType.OR, new ItemRequirementCondition(appleBarrel));
-		hasNaphtha = new ItemRequirementCondition(naphtha);
-		hasNaphthaAppleMix = new ItemRequirementCondition(naphthaAppleMix);
-		hasToxicNaphtha = new ItemRequirementCondition(toxicNaphtha);
+		hasRottenApples = new ItemRequirements(barrelOfRottenApples);
+		hasBarrel = new ItemRequirements(emptyBarrel);
+		hasAppleBarrel = new Conditions(true, LogicType.OR, new ItemRequirements(appleBarrel));
+		hasNaphtha = new ItemRequirements(naphtha);
+		hasNaphthaAppleMix = new ItemRequirements(naphthaAppleMix);
+		hasToxicNaphtha = new ItemRequirements(toxicNaphtha);
 
-		hadToxicPowder = new Conditions(true, LogicType.OR, new ItemRequirementCondition(toxicPowder));
-		poisoned1 = new VarbitCondition(806, 1);
-		poisoned2 = new VarbitCondition(807, 1);
-		poisoned3 = new VarbitCondition(808, 1);
+		hadToxicPowder = new Conditions(true, LogicType.OR, new ItemRequirements(toxicPowder));
+		poisoned1 = new VarbitRequirement(806, 1);
+		poisoned2 = new VarbitRequirement(807, 1);
+		poisoned3 = new VarbitRequirement(808, 1);
 
 		twoPoisoned = new Conditions(LogicType.OR, new Conditions(poisoned1, poisoned2), new Conditions(poisoned1, poisoned3), new Conditions(poisoned2, poisoned3));
 	}

@@ -25,22 +25,29 @@
 package com.questhelper.quests.grimtales;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,14 +61,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.GRIM_TALES
@@ -72,7 +71,7 @@ public class GrimTales extends BasicQuestHelper
 	ItemRequirement tarrominUnf2, tarrominUnf, dibber, can, axe, combatGear, griffinFeather, rupertsHelmet, miazrqasPendant, goldenGoblin, houseKey, ogleroot, shrinkPotion,
 		shrinkPotionHighlight, tarrominUnfHighlight, oglerootHighlight, magicBeans, canHighlight, food;
 
-	ConditionForStep inHouse, inBasement, grimgnashAsleep, hasFeather, givenFeather, inTowerBase, inTowerUpstairs, talkedToDrainOnce, beardDropped, talkedToRupert, talkedToMiazrqa,
+	Requirement inHouse, inBasement, grimgnashAsleep, hasFeather, givenFeather, inTowerBase, inTowerUpstairs, talkedToDrainOnce, beardDropped, talkedToRupert, talkedToMiazrqa,
 		inPianoWidget, pressed1, pressed2, pressed3, pressed4, pressed5, pressed6, pressed7, pressed8, unlockedPiano, searchedPiano, hasShrinkPotion, inMouseRoom1, inMouseRoom2, inMouseRoom3,
 		inMouseRoom4, inMouseRoom5, inMouseRoom6, inWrongMouse1, inWrongMouse2, hasMiazrqasPendant, givenPendant, releasedRupert, hasHelmet, plantedSeed, wateredSeed, onCloud, killedGlod, hasGoblin,
 		usedPotion;
@@ -232,60 +231,60 @@ public class GrimTales extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inHouse = new ZoneCondition(house);
-		inBasement = new ZoneCondition(basement);
-		inTowerBase = new ZoneCondition(towerBase);
-		inTowerUpstairs = new ZoneCondition(towerUpstairs);
+		inHouse = new ZoneRequirement(house);
+		inBasement = new ZoneRequirement(basement);
+		inTowerBase = new ZoneRequirement(towerBase);
+		inTowerUpstairs = new ZoneRequirement(towerUpstairs);
 
-		grimgnashAsleep = new VarbitCondition(3717, 1);
-		hasFeather = new ItemRequirementCondition(griffinFeather);
-		givenFeather = new VarbitCondition(3719, 1);
+		grimgnashAsleep = new VarbitRequirement(3717, 1);
+		hasFeather = new ItemRequirements(griffinFeather);
+		givenFeather = new VarbitRequirement(3719, 1);
 
-		talkedToDrainOnce = new VarbitCondition(3694, 5, Operation.GREATER_EQUAL);
-		beardDropped = new VarbitCondition(3694, 10, Operation.GREATER_EQUAL);
-		talkedToRupert = new VarbitCondition(3694, 15, Operation.GREATER_EQUAL);
-		talkedToMiazrqa = new VarbitCondition(3694, 20, Operation.GREATER_EQUAL);
-		inPianoWidget = new WidgetModelCondition(535, 1, 25890);
+		talkedToDrainOnce = new VarbitRequirement(3694, 5, Operation.GREATER_EQUAL);
+		beardDropped = new VarbitRequirement(3694, 10, Operation.GREATER_EQUAL);
+		talkedToRupert = new VarbitRequirement(3694, 15, Operation.GREATER_EQUAL);
+		talkedToMiazrqa = new VarbitRequirement(3694, 20, Operation.GREATER_EQUAL);
+		inPianoWidget = new WidgetModelRequirement(535, 1, 25890);
 
-		pressed1 = new VarbitCondition(3697, 1);
-		pressed2 = new VarbitCondition(3697, 2);
-		pressed3 = new VarbitCondition(3697, 3);
-		pressed4 = new VarbitCondition(3697, 4);
-		pressed5 = new VarbitCondition(3697, 5);
-		pressed6 = new VarbitCondition(3697, 6);
-		pressed7 = new VarbitCondition(3697, 7);
-		pressed8 = new VarbitCondition(3697, 8);
+		pressed1 = new VarbitRequirement(3697, 1);
+		pressed2 = new VarbitRequirement(3697, 2);
+		pressed3 = new VarbitRequirement(3697, 3);
+		pressed4 = new VarbitRequirement(3697, 4);
+		pressed5 = new VarbitRequirement(3697, 5);
+		pressed6 = new VarbitRequirement(3697, 6);
+		pressed7 = new VarbitRequirement(3697, 7);
+		pressed8 = new VarbitRequirement(3697, 8);
 
-		unlockedPiano = new VarbitCondition(3698, 1);
-		searchedPiano = new VarbitCondition(3716, 1);
+		unlockedPiano = new VarbitRequirement(3698, 1);
+		searchedPiano = new VarbitRequirement(3716, 1);
 
-		hasShrinkPotion = new ItemRequirementCondition(shrinkPotion);
+		hasShrinkPotion = new ItemRequirements(shrinkPotion);
 
-		inMouseRoom1 = new ZoneCondition(mouseRoom1);
-		inMouseRoom2 = new ZoneCondition(mouseRoom2);
-		inMouseRoom3 = new ZoneCondition(mouseRoom3);
-		inMouseRoom4 = new ZoneCondition(mouseRoom4);
-		inMouseRoom5 = new ZoneCondition(mouseRoom5);
-		inMouseRoom6 = new ZoneCondition(mouseRoom6);
+		inMouseRoom1 = new ZoneRequirement(mouseRoom1);
+		inMouseRoom2 = new ZoneRequirement(mouseRoom2);
+		inMouseRoom3 = new ZoneRequirement(mouseRoom3);
+		inMouseRoom4 = new ZoneRequirement(mouseRoom4);
+		inMouseRoom5 = new ZoneRequirement(mouseRoom5);
+		inMouseRoom6 = new ZoneRequirement(mouseRoom6);
 
-		inWrongMouse1 = new ZoneCondition(wrongMouse1);
-		inWrongMouse2 = new ZoneCondition(wrongMouse2);
+		inWrongMouse1 = new ZoneRequirement(wrongMouse1);
+		inWrongMouse2 = new ZoneRequirement(wrongMouse2);
 
-		hasMiazrqasPendant = new VarbitCondition(3721, 1);
+		hasMiazrqasPendant = new VarbitRequirement(3721, 1);
 
-		givenPendant = new VarbitCondition(3694, 25);
+		givenPendant = new VarbitRequirement(3694, 25);
 
-		releasedRupert = new VarbitCondition(3701, 1);
-		hasHelmet = new ItemRequirementCondition(rupertsHelmet);
+		releasedRupert = new VarbitRequirement(3701, 1);
+		hasHelmet = new ItemRequirements(rupertsHelmet);
 
-		plantedSeed = new VarbitCondition(3714, 1);
-		wateredSeed = new VarbitCondition(3714, 2);
-		onCloud = new ZoneCondition(cloud);
+		plantedSeed = new VarbitRequirement(3714, 1);
+		wateredSeed = new VarbitRequirement(3714, 2);
+		onCloud = new ZoneRequirement(cloud);
 
-		killedGlod = new VarbitCondition(3715, 1);
+		killedGlod = new VarbitRequirement(3715, 1);
 
-		hasGoblin = new ItemRequirementCondition(goldenGoblin);
-		usedPotion = new VarbitCondition(3714, 3);
+		hasGoblin = new ItemRequirements(goldenGoblin);
+		usedPotion = new VarbitRequirement(3714, 3);
 	}
 
 	public void setupSteps()

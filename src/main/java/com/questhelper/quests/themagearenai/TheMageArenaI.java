@@ -29,18 +29,17 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,7 +59,7 @@ public class TheMageArenaI extends BasicQuestHelper
 {
 	ItemRequirement runesForCasts, knife, godCape;
 
-	ConditionForStep inCavern, inStatuesRoom, hasCape;
+	Requirement inCavern, inStatuesRoom, hasCape;
 
 	QuestStep enterCavern, talkToKolodion, fightKolodion, enterCavernForPool, enterPool, prayStatue, talkToGuardian;
 
@@ -116,10 +115,10 @@ public class TheMageArenaI extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCavern = new ZoneCondition(cavern);
-		inStatuesRoom = new ZoneCondition(statuesRoom);
+		inCavern = new ZoneRequirement(cavern);
+		inStatuesRoom = new ZoneRequirement(statuesRoom);
 
-		hasCape = new ItemCondition(godCape);
+		hasCape = new ItemOnTileRequirement(godCape);
 	}
 
 	public void setupSteps()

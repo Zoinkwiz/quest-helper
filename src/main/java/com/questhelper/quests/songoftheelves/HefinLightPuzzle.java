@@ -27,12 +27,12 @@ package com.questhelper.quests.songoftheelves;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -61,7 +61,7 @@ public class HefinLightPuzzle extends ConditionalStep
 
 	ConditionalStep goToF0NW, goToF1NW, goToF0Middle, goToF0SW, goToF1SW, goToF2SW, goDownToF1SW, goToF2E, goToF2NW, goToF1;
 
-	ConditionForStep hasMirrorsAndCrystal, onF1, onF2, onF0, onF0SW, onF2E, onF2SW, onF2NW, onF2M, notResetMeilyr, r1, r2, r3, r4, r5, r6, r7,
+	Requirement hasMirrorsAndCrystal, onF1, onF2, onF0, onF0SW, onF2E, onF2SW, onF2NW, onF2M, notResetMeilyr, r1, r2, r3, r4, r5, r6, r7,
 		r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19;
 
 	public HefinLightPuzzle(QuestHelper questHelper, ConditionalStep goToF1Steps, ConditionalStep goToF0Steps)
@@ -334,20 +334,20 @@ public class HefinLightPuzzle extends ConditionalStep
 	protected void setupConditions()
 	{
 		hasMirrorsAndCrystal = new Conditions(
-			new ItemRequirementCondition(handMirrorHighlighted),
-			new ItemRequirementCondition(redCrystalHighlighted),
-			new ItemRequirementCondition(fracturedCrystalHighlighted),
-			new ItemRequirementCondition(yellowCrystalHighlighted)
+			new ItemRequirements(handMirrorHighlighted),
+			new ItemRequirements(redCrystalHighlighted),
+			new ItemRequirements(fracturedCrystalHighlighted),
+			new ItemRequirements(yellowCrystalHighlighted)
 		);
 
-		onF0 = new ZoneCondition(f0);
-		onF0SW = new ZoneCondition(f0SW);
-		onF1 = new ZoneCondition(f1);
-		onF2 = new ZoneCondition(f2);
-		onF2SW = new ZoneCondition(f2SW);
-		onF2E = new ZoneCondition(f2E);
-		onF2NW = new ZoneCondition(f2NW);
-		onF2M = new ZoneCondition(f2M);
+		onF0 = new ZoneRequirement(f0);
+		onF0SW = new ZoneRequirement(f0SW);
+		onF1 = new ZoneRequirement(f1);
+		onF2 = new ZoneRequirement(f2);
+		onF2SW = new ZoneRequirement(f2SW);
+		onF2E = new ZoneRequirement(f2E);
+		onF2NW = new ZoneRequirement(f2NW);
+		onF2M = new ZoneRequirement(f2M);
 
 		int WHITE = 1;
 		int BLUE = 3;
@@ -355,28 +355,28 @@ public class HefinLightPuzzle extends ConditionalStep
 		int YELLOW = 6;
 		int GREEN = 7;
 
-		notResetMeilyr = new VarbitCondition(8741, YELLOW);
+		notResetMeilyr = new VarbitRequirement(8741, YELLOW);
 
-		r1 = new VarbitCondition(8971, MAGENTA);
-		r2 = new VarbitCondition(8586, MAGENTA);
-		r3 = new VarbitCondition(8858, MAGENTA);
-		r4 = new VarbitCondition(8854, BLUE);
-		r5 = new VarbitCondition(8853, BLUE);
-		r6 = new VarbitCondition(8843, BLUE);
-		r7 = new VarbitCondition(8842, BLUE);
-		r8 = new VarbitCondition(8838, BLUE);
-		r9 = new VarbitCondition(8932, WHITE);
-		r10 = new VarbitCondition(8931, WHITE);
-		r11 = new VarbitCondition(8927, WHITE);
-		r12 = new VarbitCondition(8577, GREEN);
-		r13 = new VarbitCondition(8834, GREEN);
-		r14 = new VarbitCondition(8580, GREEN);
+		r1 = new VarbitRequirement(8971, MAGENTA);
+		r2 = new VarbitRequirement(8586, MAGENTA);
+		r3 = new VarbitRequirement(8858, MAGENTA);
+		r4 = new VarbitRequirement(8854, BLUE);
+		r5 = new VarbitRequirement(8853, BLUE);
+		r6 = new VarbitRequirement(8843, BLUE);
+		r7 = new VarbitRequirement(8842, BLUE);
+		r8 = new VarbitRequirement(8838, BLUE);
+		r9 = new VarbitRequirement(8932, WHITE);
+		r10 = new VarbitRequirement(8931, WHITE);
+		r11 = new VarbitRequirement(8927, WHITE);
+		r12 = new VarbitRequirement(8577, GREEN);
+		r13 = new VarbitRequirement(8834, GREEN);
+		r14 = new VarbitRequirement(8580, GREEN);
 
-		r15 = new VarbitCondition(8837, BLUE);
-		r16 = new VarbitCondition(8836, BLUE);
-		r17 = new VarbitCondition(8578, BLUE);
-		r18 = new VarbitCondition(8723, GREEN);
-		r19 = new VarbitCondition(8725, GREEN);
+		r15 = new VarbitRequirement(8837, BLUE);
+		r16 = new VarbitRequirement(8836, BLUE);
+		r17 = new VarbitRequirement(8578, BLUE);
+		r18 = new VarbitRequirement(8723, GREEN);
+		r19 = new VarbitRequirement(8725, GREEN);
 	}
 
 	public List<QuestStep> getDisplaySteps()

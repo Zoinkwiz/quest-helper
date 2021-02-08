@@ -31,20 +31,18 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,7 +70,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 
 	Requirement inventorySlot;
 
-	ConditionForStep inGoblinCave, inBouncerCave, inSinRoom, hasNote, givenNote, talkedToGnomeScout,
+	Requirement inGoblinCave, inBouncerCave, inSinRoom, hasNote, givenNote, talkedToGnomeScout,
 		talkedToKaramjaScout, talkedToShantyScout, talkedToFaladorScout;
 
 	QuestStep talkToKhazard, goUpToSeer, talkToSeer, talkToKhazardAfterSeer, talkToKhazardAfterNote,
@@ -157,16 +155,16 @@ public class TheGeneralsShadow extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inSinRoom = new ZoneCondition(sinRoom);
-		inGoblinCave = new ZoneCondition(goblinCave);
-		inBouncerCave = new ZoneCondition(bouncerCave);
+		inSinRoom = new ZoneRequirement(sinRoom);
+		inGoblinCave = new ZoneRequirement(goblinCave);
+		inBouncerCave = new ZoneRequirement(bouncerCave);
 
-		hasNote = new ItemRequirementCondition(sinSeersNote);
-		givenNote = new VarbitCondition(3335, 2);
-		talkedToGnomeScout = new VarbitCondition(3332, 1);
-		talkedToFaladorScout = new VarbitCondition(3333, 1);
-		talkedToShantyScout = new VarbitCondition(3334, 1);
-		talkedToKaramjaScout = new VarbitCondition(3331, 1);
+		hasNote = new ItemRequirements(sinSeersNote);
+		givenNote = new VarbitRequirement(3335, 2);
+		talkedToGnomeScout = new VarbitRequirement(3332, 1);
+		talkedToFaladorScout = new VarbitRequirement(3333, 1);
+		talkedToShantyScout = new VarbitRequirement(3334, 1);
+		talkedToKaramjaScout = new VarbitRequirement(3331, 1);
 
 		// 3336 0->2 attempted to bribe Seer
 		// 3335 0->1 given money to Seer

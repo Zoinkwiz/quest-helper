@@ -24,17 +24,17 @@
  */
 package com.questhelper.quests.rumdeal;
 
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -57,7 +57,7 @@ public class SlugSteps extends DetailedOwnerStep
 
 	Zone islandF0, islandF1, islandF2;
 
-	ConditionForStep onIslandF0, onIslandF1, onIslandF2;
+	Requirement onIslandF0, onIslandF1, onIslandF2;
 
 	ItemRequirement sluglings;
 	ItemRequirement sluglingsHighlight;
@@ -121,9 +121,9 @@ public class SlugSteps extends DetailedOwnerStep
 		islandF0 = new Zone(new WorldPoint(2110, 5054, 0), new WorldPoint(2178, 5185, 0));
 		islandF1 = new Zone(new WorldPoint(2110, 5054, 1), new WorldPoint(2178, 5185, 1));
 		islandF2 = new Zone(new WorldPoint(2110, 5054, 2), new WorldPoint(2178, 5185, 2));
-		onIslandF0 = new ZoneCondition(islandF0);
-		onIslandF1 = new ZoneCondition(islandF1);
-		onIslandF2 = new ZoneCondition(islandF2);
+		onIslandF0 = new ZoneRequirement(islandF0);
+		onIslandF1 = new ZoneRequirement(islandF1);
+		onIslandF2 = new ZoneRequirement(islandF2);
 
 		talkToPete = new NpcStep(getQuestHelper(), NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.");
 		talkToPete.addDialogSteps("Okay!");

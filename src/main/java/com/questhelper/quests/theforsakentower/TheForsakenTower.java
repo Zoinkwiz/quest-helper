@@ -25,31 +25,30 @@
 package com.questhelper.quests.theforsakentower;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
-import com.questhelper.requirements.FavourRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.FavourRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -69,7 +68,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement gamesNecklace;
 
-	ConditionForStep has5Gallon, has8Gallon, hasTinderbox, inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, hasCrank, generatorStarted,
+	Requirement has5Gallon, has8Gallon, hasTinderbox, inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, hasCrank, generatorStarted,
 		powerPuzzleVisible, finishedPowerPuzzle, hasOldNotes, finishedPotionPuzzle, finishedAltarPuzzle, hasDinhsHammer;
 
 	QuestStep talkToVulcana, talkToUndor, enterTheForsakenTower, inspectDisplayCase, goDownLadderToBasement, searchCrate, inspectGenerator, inspectPowerGrid, doPowerPuzzle,
@@ -141,23 +140,23 @@ public class TheForsakenTower extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inFirstFloor = new ZoneCondition(firstFloor);
-		inSecondFloor = new ZoneCondition(secondFloor);
-		inBasement = new ZoneCondition(basement);
+		inFirstFloor = new ZoneRequirement(firstFloor);
+		inSecondFloor = new ZoneRequirement(secondFloor);
+		inBasement = new ZoneRequirement(basement);
 
-		has5Gallon = new ItemRequirementCondition(fiveGallon);
-		has8Gallon = new ItemRequirementCondition(eightGallon);
-		hasTinderbox = new ItemRequirementCondition(tinderbox);
-		inspectedDisplayCase = new VarbitCondition(7804, 1);
-		finishedPowerPuzzle = new VarbitCondition(7797, 4);
-		finishedFurnacePuzzle = new VarbitCondition(7798, 4);
-		finishedPotionPuzzle = new VarbitCondition(7799, 4);
-		finishedAltarPuzzle = new VarbitCondition(7800, 2);
-		hasCrank = new ItemRequirementCondition(crank);
-		generatorStarted = new VarbitCondition(7797, 2, Operation.GREATER_EQUAL);
-		powerPuzzleVisible = new WidgetModelCondition(624, 2, 0, 36246);
-		hasOldNotes = new ItemRequirementCondition(oldNotes);
-		hasDinhsHammer = new ItemRequirementCondition(dinhsHammer);
+		has5Gallon = new ItemRequirements(fiveGallon);
+		has8Gallon = new ItemRequirements(eightGallon);
+		hasTinderbox = new ItemRequirements(tinderbox);
+		inspectedDisplayCase = new VarbitRequirement(7804, 1);
+		finishedPowerPuzzle = new VarbitRequirement(7797, 4);
+		finishedFurnacePuzzle = new VarbitRequirement(7798, 4);
+		finishedPotionPuzzle = new VarbitRequirement(7799, 4);
+		finishedAltarPuzzle = new VarbitRequirement(7800, 2);
+		hasCrank = new ItemRequirements(crank);
+		generatorStarted = new VarbitRequirement(7797, 2, Operation.GREATER_EQUAL);
+		powerPuzzleVisible = new WidgetModelRequirement(624, 2, 0, 36246);
+		hasOldNotes = new ItemRequirements(oldNotes);
+		hasDinhsHammer = new ItemRequirements(dinhsHammer);
 	}
 
 	public void setupZones()

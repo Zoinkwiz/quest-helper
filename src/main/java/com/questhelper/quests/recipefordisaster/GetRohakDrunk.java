@@ -25,9 +25,8 @@
 package com.questhelper.quests.recipefordisaster;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;
-import java.util.ArrayList;
 import java.util.Collections;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;

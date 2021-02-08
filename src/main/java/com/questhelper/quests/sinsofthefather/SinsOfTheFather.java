@@ -31,27 +31,25 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -97,7 +95,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 	DetailedQuestStep goDownToMakeFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle;
 
-	ConditionForStep has8Logs, inFollowingCarlArea, inKroyArea, destroyedLabTable1, inPater, inSwingArea, inSwingExitArea, vineAdded, has3Vines, hasKnife, hasLongVine,
+	Requirement has8Logs, inFollowingCarlArea, inKroyArea, destroyedLabTable1, inPater, inSwingArea, inSwingExitArea, vineAdded, has3Vines, hasKnife, hasLongVine,
 		inNailBeastArea, inBridgeArea, nailBeastNearby, hasAxe, hasLog, has2Logs, has3Logs, hasRepairedBridge1, hasRepairedBridge2, hasRepairedBridge3, inBridgeExitArea,
 		inJuvinateArea, juvinateNearby, inPuzzleInterface, talkedToKael, talkedToVertida, talkedToPolmafi, talkedToRadigad, talkedToIvan, inLab, inDeepLab, inNewBase,
 		inDamienRoom, hasNote, hasSickle, hasRubySickle, hasEnchantedRubySickle, hasBlisterwoodSickle, inFinalFightArea;
@@ -332,51 +330,51 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		has8Logs = new ItemRequirementCondition(blisterwood8);
-		hasKnife = new ItemRequirementCondition(knife);
-		has3Vines = new ItemRequirementCondition(vine3);
-		hasLongVine = new ItemRequirementCondition(longVine);
-		hasAxe = new ItemRequirementCondition(axe);
-		hasNote = new ItemRequirementCondition(oldNote);
-		hasSickle = new ItemRequirementCondition(sickle);
-		hasRubySickle = new ItemRequirementCondition(rubySickle);
-		hasEnchantedRubySickle = new ItemRequirementCondition(enchantedSickle);
-		hasBlisterwoodSickle = new ItemRequirementCondition(blisterwoodSickle);
+		has8Logs = new ItemRequirements(blisterwood8);
+		hasKnife = new ItemRequirements(knife);
+		has3Vines = new ItemRequirements(vine3);
+		hasLongVine = new ItemRequirements(longVine);
+		hasAxe = new ItemRequirements(axe);
+		hasNote = new ItemRequirements(oldNote);
+		hasSickle = new ItemRequirements(sickle);
+		hasRubySickle = new ItemRequirements(rubySickle);
+		hasEnchantedRubySickle = new ItemRequirements(enchantedSickle);
+		hasBlisterwoodSickle = new ItemRequirements(blisterwoodSickle);
 
-		destroyedLabTable1 = new VarbitCondition(10353, 2, Operation.GREATER_EQUAL);
+		destroyedLabTable1 = new VarbitRequirement(10353, 2, Operation.GREATER_EQUAL);
 		vineAdded = new ObjectCondition(ObjectID.SWAMP_TREE_BRANCH_38005, new WorldPoint(2093, 5015, 0));
 		nailBeastNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.NAIL_BEAST_9612), new NpcCondition(NpcID.NAIL_BEAST_9613));
 		juvinateNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.VAMPYRE_JUVINATE_9615), new NpcCondition(NpcID.VAMPYRE_JUVINATE_9614));
 
-		inFollowingCarlArea = new Conditions(new InInstanceCondition(), new ZoneCondition(followingCarlArea));
-		inKroyArea = new ZoneCondition(kroyArea);
-		inPater = new ZoneCondition(pater);
-		inSwingArea = new ZoneCondition(swingArea);
-		inSwingExitArea = new ZoneCondition(swingExitArea);
-		inNailBeastArea = new ZoneCondition(nailBeastArea);
-		inBridgeArea = new ZoneCondition(bridgeArea);
-		inBridgeExitArea = new ZoneCondition(bridgeExitArea);
-		inJuvinateArea = new ZoneCondition(juvinateArea);
-		inLab = new ZoneCondition(lab);
-		inDeepLab = new Conditions(inLab, new InInstanceCondition());
-		inNewBase = new ZoneCondition(newBase);
-		inDamienRoom = new ZoneCondition(damienRoom);
-		inFinalFightArea = new ZoneCondition(finalFightArea);
+		inFollowingCarlArea = new Conditions(new InInstanceRequirement(), new ZoneRequirement(followingCarlArea));
+		inKroyArea = new ZoneRequirement(kroyArea);
+		inPater = new ZoneRequirement(pater);
+		inSwingArea = new ZoneRequirement(swingArea);
+		inSwingExitArea = new ZoneRequirement(swingExitArea);
+		inNailBeastArea = new ZoneRequirement(nailBeastArea);
+		inBridgeArea = new ZoneRequirement(bridgeArea);
+		inBridgeExitArea = new ZoneRequirement(bridgeExitArea);
+		inJuvinateArea = new ZoneRequirement(juvinateArea);
+		inLab = new ZoneRequirement(lab);
+		inDeepLab = new Conditions(inLab, new InInstanceRequirement());
+		inNewBase = new ZoneRequirement(newBase);
+		inDamienRoom = new ZoneRequirement(damienRoom);
+		inFinalFightArea = new ZoneRequirement(finalFightArea);
 
-		hasLog = new ItemRequirementCondition(log1);
-		has2Logs = new ItemRequirementCondition(log2);
-		has3Logs = new ItemRequirementCondition(log3);
+		hasLog = new ItemRequirements(log1);
+		has2Logs = new ItemRequirements(log2);
+		has3Logs = new ItemRequirements(log3);
 		hasRepairedBridge1 = new ObjectCondition(ObjectID.PARTIALLY_BROKEN_BRIDGE, new WorldPoint(2090, 5039, 0));
 		hasRepairedBridge2 = new ObjectCondition(ObjectID.SLIGHTLY_BROKEN_BRIDGE, new WorldPoint(2090, 5039, 0));
 		hasRepairedBridge3 = new ObjectCondition(ObjectID.FIXED_BRIDGE, new WorldPoint(2090, 5039, 0));
 
-		inPuzzleInterface = new WidgetTextCondition(665, 7, "1");
+		inPuzzleInterface = new WidgetTextRequirement(665, 7, "1");
 
-		talkedToKael = new VarbitCondition(10347, 1);
-		talkedToVertida = new VarbitCondition(10348, 1);
-		talkedToPolmafi = new VarbitCondition(10350, 2);
-		talkedToRadigad = new VarbitCondition(10351, 1);
-		talkedToIvan = new VarbitCondition(10349, 1);
+		talkedToKael = new VarbitRequirement(10347, 1);
+		talkedToVertida = new VarbitRequirement(10348, 1);
+		talkedToPolmafi = new VarbitRequirement(10350, 2);
+		talkedToRadigad = new VarbitRequirement(10351, 1);
+		talkedToIvan = new VarbitRequirement(10349, 1);
 	}
 
 	public void setupItemRequirements()

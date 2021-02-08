@@ -25,14 +25,14 @@
 package com.questhelper.quests.thehandinthesand;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,7 +45,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -53,7 +53,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_HAND_IN_THE_SAND
@@ -67,7 +66,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement teleportsToYanille, teleportsToBrimhaven;
 
-	ConditionForStep hasSand, notTeleportedToSarim, inYanille, inLightSpot, receivedBottledWater, hasRedberryJuice, hasPinkDye, hasRoseLens, vialPlaced, madeTruthSerum;
+	Requirement hasSand, notTeleportedToSarim, inYanille, inLightSpot, receivedBottledWater, hasRedberryJuice, hasPinkDye, hasRoseLens, vialPlaced, madeTruthSerum;
 
 	DetailedQuestStep talkToBert, talkToBertAboutRota, talkToBertAboutScroll, talkToBetty, talkToBettyOnceMore, talkToBettyAgain, talkToRarveAgain, talkToSandyWithPotion, giveCaptainABeer, useLensOnCounter,
 		useDyeOnLanternLens, useSerumOnCoffee, searchSandysDesk, standInDoorway, ringBell, ringBellAgain, pickpocketSandy, addWhiteberries, addRedberries, activateMagicalOrb, interrogateSandy, ringBellAfterInterrogation,
@@ -195,16 +194,16 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasSand = new ItemRequirementCondition(sand);
-		notTeleportedToSarim = new VarbitCondition(1531, 0);
-		inYanille = new ZoneCondition(yanille);
-		inLightSpot = new ZoneCondition(lightSpot);
-		receivedBottledWater = new VarbitCondition(1532, 1);
-		hasRedberryJuice = new ItemRequirementCondition(redberryJuice);
-		hasPinkDye = new ItemRequirementCondition(pinkDye);
-		hasRoseLens = new ItemRequirementCondition(roseLens);
-		vialPlaced = new VarbitCondition(1537, 1);
-		madeTruthSerum = new VarbitCondition(1532, 5);
+		hasSand = new ItemRequirements(sand);
+		notTeleportedToSarim = new VarbitRequirement(1531, 0);
+		inYanille = new ZoneRequirement(yanille);
+		inLightSpot = new ZoneRequirement(lightSpot);
+		receivedBottledWater = new VarbitRequirement(1532, 1);
+		hasRedberryJuice = new ItemRequirements(redberryJuice);
+		hasPinkDye = new ItemRequirements(pinkDye);
+		hasRoseLens = new ItemRequirements(roseLens);
+		vialPlaced = new VarbitRequirement(1537, 1);
+		madeTruthSerum = new VarbitRequirement(1532, 5);
 	}
 
 	public void setupSteps()

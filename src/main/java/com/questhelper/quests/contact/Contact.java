@@ -29,28 +29,27 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -65,7 +64,7 @@ public class Contact extends BasicQuestHelper
 	//Items Required
 	ItemRequirement lightSource, combatGear, parchment, keris, food, prayerPotions;
 
-	ConditionForStep inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
+	Requirement inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
 
 	QuestStep talkToHighPriest, talkToJex, goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman, talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain,
 		killGiantScarab, pickUpKeris, returnToHighPriest;
@@ -145,12 +144,12 @@ public class Contact extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inBank = new ZoneCondition(bank);
-		inDungeon = new ZoneCondition(dungeon);
-		inChasm = new ZoneCondition(chasm);
-		hasParchment = new ItemRequirementCondition(parchment);
-		hasReadParchment = new VarbitCondition(3274, 50);
-		kerisNearby = new ItemCondition(keris);
+		inBank = new ZoneRequirement(bank);
+		inDungeon = new ZoneRequirement(dungeon);
+		inChasm = new ZoneRequirement(chasm);
+		hasParchment = new ItemRequirements(parchment);
+		hasReadParchment = new VarbitRequirement(3274, 50);
+		kerisNearby = new ItemOnTileRequirement(keris);
 	}
 
 	public void setupSteps()

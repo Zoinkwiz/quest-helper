@@ -31,16 +31,15 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.NpcInteractingCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -74,7 +73,7 @@ public class TheGrandTree extends BasicQuestHelper
 	Zone grandTreeF1, grandTreeF2, topOfGrandTree, hazelmereHouseFirstFloor, gloughHouse, shipyard, anitaHouse,
 		watchtower, grandTreeTunnels, cell;
 
-	ConditionForStep isInGrandTreeF1, isInGrandTreeF2, isInGrandTreeTop, isInGrandTree, isNearHazelmere,
+	Requirement isInGrandTreeF1, isInGrandTreeF2, isInGrandTreeTop, isInGrandTree, isNearHazelmere,
 		isInCell, isInGloughsHouse, isInShipyard, isInAnitasHouse, hasGloughsKey, isInWatchtower,
 		hasTwigsT, hasTwigsU, hasTwigsZ, hasTwigsO, blackDemonVisible, isInGrandTreeTunnels,
 		hasDaconiaStone, narnodeNearby;
@@ -257,27 +256,27 @@ public class TheGrandTree extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		isInGrandTreeF1 = new ZoneCondition(grandTreeF1);
-		isInGrandTreeF2 = new ZoneCondition(grandTreeF2);
-		isInGrandTreeTop = new ZoneCondition(topOfGrandTree);
-		isInCell = new ZoneCondition(cell);
-		isInGrandTree = new ZoneCondition(grandTreeF1, grandTreeF2, topOfGrandTree);
-		isNearHazelmere = new ZoneCondition(hazelmereHouseFirstFloor);
-		isInGloughsHouse = new ZoneCondition(gloughHouse);
-		isInShipyard = new ZoneCondition(shipyard);
-		isInAnitasHouse = new ZoneCondition(anitaHouse);
-		isInWatchtower = new ZoneCondition(watchtower);
-		isInGrandTreeTunnels = new ZoneCondition(grandTreeTunnels);
+		isInGrandTreeF1 = new ZoneRequirement(grandTreeF1);
+		isInGrandTreeF2 = new ZoneRequirement(grandTreeF2);
+		isInGrandTreeTop = new ZoneRequirement(topOfGrandTree);
+		isInCell = new ZoneRequirement(cell);
+		isInGrandTree = new ZoneRequirement(grandTreeF1, grandTreeF2, topOfGrandTree);
+		isNearHazelmere = new ZoneRequirement(hazelmereHouseFirstFloor);
+		isInGloughsHouse = new ZoneRequirement(gloughHouse);
+		isInShipyard = new ZoneRequirement(shipyard);
+		isInAnitasHouse = new ZoneRequirement(anitaHouse);
+		isInWatchtower = new ZoneRequirement(watchtower);
+		isInGrandTreeTunnels = new ZoneRequirement(grandTreeTunnels);
 
-		hasGloughsKey = new ItemRequirementCondition(gloughsKey);
-		hasTwigsT = new ItemRequirementCondition(twigsT);
-		hasTwigsU = new ItemRequirementCondition(twigsU);
-		hasTwigsZ = new ItemRequirementCondition(twigsZ);
-		hasTwigsO = new ItemRequirementCondition(twigsO);
-		hasDaconiaStone = new ItemRequirementCondition(daconiaStone);
+		hasGloughsKey = new ItemRequirements(gloughsKey);
+		hasTwigsT = new ItemRequirements(twigsT);
+		hasTwigsU = new ItemRequirements(twigsU);
+		hasTwigsZ = new ItemRequirements(twigsZ);
+		hasTwigsO = new ItemRequirements(twigsO);
+		hasDaconiaStone = new ItemRequirements(daconiaStone);
 
 		narnodeNearby = new NpcCondition(NpcID.KING_NARNODE_SHAREEN);
-		blackDemonVisible = new NpcInteractingCondition(NpcID.BLACK_DEMON_1432);
+		blackDemonVisible = new NpcInteractingRequirement(NpcID.BLACK_DEMON_1432);
 	}
 
 	public void setupSteps()

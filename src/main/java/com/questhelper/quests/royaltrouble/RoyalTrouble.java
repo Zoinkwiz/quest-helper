@@ -25,22 +25,28 @@
 package com.questhelper.quests.royaltrouble;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,14 +59,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ROYAL_TROUBLE
@@ -74,7 +72,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement antipoison, food, prayerPotions;
 
-	ConditionForStep inMiscFloor1, inEtcFloor1, onIslands, hasPickaxe, hasCoal5, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject, talkedToSigrid, talkedToEtcSubject, reportedToVargas,
+	Requirement inMiscFloor1, inEtcFloor1, onIslands, hasPickaxe, hasCoal5, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject, talkedToSigrid, talkedToEtcSubject, reportedToVargas,
 		reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas, enteredDungeon, inDungeon, inLiftRoom, inPath1, inPath2, inPath3, inPath4, hasLiftManual, talkedToDonal, usedProp, hasEngine,
 		hasUsedPulley, hasUsedLongerPulley, hasUsedPulley2, hasUsedRope, hasUsedBeam, hasUsedEngine, hasPulley, hasLongPulley, hasLongerPulley, hasRope, hasBeam, has1CoalInEngine, has2CoalInEngine, has3CoalInEngine,
 		has4CoalInEngine, hasFullEngine, hasRepairedScaffold, inPlankRoom, hasPlank, inLiftOrPlankOrTunnel1Room, attachedRope, onJumpIsland1, onJumpIsland2, onJumpIsland3, inPaths, seenFire, searchedFire1, searchedFire2,
@@ -306,24 +304,24 @@ public class RoyalTrouble extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		onIslands = new ZoneCondition(islands);
-		inMiscFloor1 = new ZoneCondition(miscFloor1);
-		inEtcFloor1 = new ZoneCondition(etcFloor1);
-		inDungeon = new ZoneCondition(dungeon);
-		inLiftRoom = new ZoneCondition(liftRoom);
-		inLiftOrPlankOrTunnel1Room = new ZoneCondition(liftRoom, plankRoom, path1);
-		inPath1 = new ZoneCondition(path1);
-		inPath2 = new ZoneCondition(path2p1, path2p2);
-		inPath3 = new ZoneCondition(path3p1, path3p2, path3p3);
-		inPath4 = new ZoneCondition(path4p1, path4p2);
-		inPaths = new ZoneCondition(path1, path2p1, path2p2, path3p1, path3p2, path3p3, path4p1, path4p2);
-		onJumpIsland1 = new ZoneCondition(jumpIsland1);
-		onJumpIsland2 = new ZoneCondition(jumpIsland2);
-		onJumpIsland3 = new ZoneCondition(jumpIsland3);
-		inBossRoom = new ZoneCondition(bossRoom);
+		onIslands = new ZoneRequirement(islands);
+		inMiscFloor1 = new ZoneRequirement(miscFloor1);
+		inEtcFloor1 = new ZoneRequirement(etcFloor1);
+		inDungeon = new ZoneRequirement(dungeon);
+		inLiftRoom = new ZoneRequirement(liftRoom);
+		inLiftOrPlankOrTunnel1Room = new ZoneRequirement(liftRoom, plankRoom, path1);
+		inPath1 = new ZoneRequirement(path1);
+		inPath2 = new ZoneRequirement(path2p1, path2p2);
+		inPath3 = new ZoneRequirement(path3p1, path3p2, path3p3);
+		inPath4 = new ZoneRequirement(path4p1, path4p2);
+		inPaths = new ZoneRequirement(path1, path2p1, path2p2, path3p1, path3p2, path3p3, path4p1, path4p2);
+		onJumpIsland1 = new ZoneRequirement(jumpIsland1);
+		onJumpIsland2 = new ZoneRequirement(jumpIsland2);
+		onJumpIsland3 = new ZoneRequirement(jumpIsland3);
+		inBossRoom = new ZoneRequirement(bossRoom);
 
-		hasPickaxe = new ItemRequirementCondition(pickaxe);
-		hasCoal5 = new ItemRequirementCondition(coal5);
+		hasPickaxe = new ItemRequirements(pickaxe);
+		hasCoal5 = new ItemRequirements(coal5);
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
 			hasCoalOrPickaxe = new Conditions(LogicType.OR, hasPickaxe, hasCoal5);
@@ -332,67 +330,67 @@ public class RoyalTrouble extends BasicQuestHelper
 		{
 			hasCoalOrPickaxe = hasCoal5;
 		}
-		partnerIsAstrid = new VarbitCondition(98, 0);
+		partnerIsAstrid = new VarbitRequirement(98, 0);
 
-		startedInvestigation = new VarbitCondition(2141, 10);
-		reportedToVargas = new VarbitCondition(2141, 20, Operation.GREATER_EQUAL);
-		talkedToGhrimInInvestigation = new VarbitCondition(2141, 30);
-		talkedToSailor = new VarbitCondition(2141, 40);
-		gottenScrollFromVargas = new VarbitCondition(2141, 50);
-		enteredDungeon = new VarbitCondition(2141, 60, Operation.GREATER_EQUAL);
+		startedInvestigation = new VarbitRequirement(2141, 10);
+		reportedToVargas = new VarbitRequirement(2141, 20, Operation.GREATER_EQUAL);
+		talkedToGhrimInInvestigation = new VarbitRequirement(2141, 30);
+		talkedToSailor = new VarbitRequirement(2141, 40);
+		gottenScrollFromVargas = new VarbitRequirement(2141, 50);
+		enteredDungeon = new VarbitRequirement(2141, 60, Operation.GREATER_EQUAL);
 		// Missing 70
-		talkedToDonal = new VarbitCondition(2141, 80, Operation.GREATER_EQUAL);
+		talkedToDonal = new VarbitRequirement(2141, 80, Operation.GREATER_EQUAL);
 
-		talkedToKids = new VarbitCondition(2141, 110, Operation.GREATER_EQUAL);
-		killedBoss = new VarbitCondition(2141, 120, Operation.GREATER_EQUAL);
+		talkedToKids = new VarbitRequirement(2141, 110, Operation.GREATER_EQUAL);
+		killedBoss = new VarbitRequirement(2141, 120, Operation.GREATER_EQUAL);
 
-		talkedToSigrid = new VarbitCondition(2142, 10);
-		reportedToSigrid = new VarbitCondition(2142, 20, Operation.GREATER_EQUAL);
-		finishedFinalConvoWithSigrid = new VarbitCondition(2142, 40);
+		talkedToSigrid = new VarbitRequirement(2142, 10);
+		reportedToSigrid = new VarbitRequirement(2142, 20, Operation.GREATER_EQUAL);
+		finishedFinalConvoWithSigrid = new VarbitRequirement(2142, 40);
 
-		talkedToMiscSubject = new VarbitCondition(2143, 1);
-		talkedToEtcSubject = new VarbitCondition(2144, 1, Operation.GREATER_EQUAL);
-		usedProp = new VarbitCondition(2145, 1);
-		hasUsedPulley = new VarbitCondition(2146, 1);
-		hasUsedLongerPulley = new VarbitCondition(2146, 2);
-		hasUsedPulley2 = new VarbitCondition(2146, 3);
-		hasUsedRope = new VarbitCondition(2146, 4);
-		hasUsedBeam = new VarbitCondition(2146, 5);
-		hasUsedEngine = new VarbitCondition(2146, 6);
-		hasRepairedScaffold = new VarbitCondition(2146, 7, Operation.GREATER_EQUAL);
+		talkedToMiscSubject = new VarbitRequirement(2143, 1);
+		talkedToEtcSubject = new VarbitRequirement(2144, 1, Operation.GREATER_EQUAL);
+		usedProp = new VarbitRequirement(2145, 1);
+		hasUsedPulley = new VarbitRequirement(2146, 1);
+		hasUsedLongerPulley = new VarbitRequirement(2146, 2);
+		hasUsedPulley2 = new VarbitRequirement(2146, 3);
+		hasUsedRope = new VarbitRequirement(2146, 4);
+		hasUsedBeam = new VarbitRequirement(2146, 5);
+		hasUsedEngine = new VarbitRequirement(2146, 6);
+		hasRepairedScaffold = new VarbitRequirement(2146, 7, Operation.GREATER_EQUAL);
 
-		has1CoalInEngine = new VarbitCondition(2156, 1);
-		has2CoalInEngine = new VarbitCondition(2156, 2);
-		has3CoalInEngine = new VarbitCondition(2156, 3);
-		has4CoalInEngine = new VarbitCondition(2156, 4);
-		hasFullEngine = new VarbitCondition(2156, 5);
+		has1CoalInEngine = new VarbitRequirement(2156, 1);
+		has2CoalInEngine = new VarbitRequirement(2156, 2);
+		has3CoalInEngine = new VarbitRequirement(2156, 3);
+		has4CoalInEngine = new VarbitRequirement(2156, 4);
+		hasFullEngine = new VarbitRequirement(2156, 5);
 
-		attachedRope = new VarbitCondition(2147, 1);
+		attachedRope = new VarbitRequirement(2147, 1);
 
-		hasLiftManual = new ItemRequirementCondition(liftManual);
-		hasEngine = new ItemRequirementCondition(engine);
-		hasPulley = new ItemRequirementCondition(pulleyBeam);
-		hasLongPulley = new ItemRequirementCondition(longPulleyBeam);
-		hasLongerPulley = new ItemRequirementCondition(longerPulleyBeam);
-		hasRope = new ItemRequirementCondition(rope);
-		hasBeam = new ItemRequirementCondition(beam);
-		hasPlank = new ItemRequirementCondition(plank);
-		hasDiary5 = new ItemRequirementCondition(diary5);
+		hasLiftManual = new ItemRequirements(liftManual);
+		hasEngine = new ItemRequirements(engine);
+		hasPulley = new ItemRequirements(pulleyBeam);
+		hasLongPulley = new ItemRequirements(longPulleyBeam);
+		hasLongerPulley = new ItemRequirements(longerPulleyBeam);
+		hasRope = new ItemRequirements(rope);
+		hasBeam = new ItemRequirements(beam);
+		hasPlank = new ItemRequirements(plank);
+		hasDiary5 = new ItemRequirements(diary5);
 
-		hasBox = new ItemRequirementCondition(box);
+		hasBox = new ItemRequirements(box);
 
-		inPlankRoom = new ZoneCondition(plankRoom);
+		inPlankRoom = new ZoneRequirement(plankRoom);
 
-		seenFire = new VarbitCondition(2154, 1);
-		searchedFire1 = new VarbitCondition(2148, 1, Operation.GREATER_EQUAL);
-		searchedFire2 = new VarbitCondition(2148, 2);
-		searchedFire3 = new VarbitCondition(2148, 3);
-		searchedFire4 = new VarbitCondition(2148, 4, Operation.GREATER_EQUAL);
-		searchedFire5 = new VarbitCondition(2148, 5, Operation.GREATER_EQUAL);
+		seenFire = new VarbitRequirement(2154, 1);
+		searchedFire1 = new VarbitRequirement(2148, 1, Operation.GREATER_EQUAL);
+		searchedFire2 = new VarbitRequirement(2148, 2);
+		searchedFire3 = new VarbitRequirement(2148, 3);
+		searchedFire4 = new VarbitRequirement(2148, 4, Operation.GREATER_EQUAL);
+		searchedFire5 = new VarbitRequirement(2148, 5, Operation.GREATER_EQUAL);
 
 		// TODO: hasReadyDiary probably wrong varbit, need to verify
-		hasReadDiary = new VarbitCondition(2149, 1);
-		enteredSnakeRoom = new VarbitCondition(2157, 1);
+		hasReadDiary = new VarbitRequirement(2149, 1);
+		enteredSnakeRoom = new VarbitRequirement(2157, 1);
 	}
 
 	public void setupSteps()

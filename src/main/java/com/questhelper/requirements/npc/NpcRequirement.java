@@ -24,9 +24,10 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.requirements;
+package com.questhelper.requirements.npc;
 
 import com.questhelper.Zone;
+import com.questhelper.requirements.AbstractRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.api.Client;

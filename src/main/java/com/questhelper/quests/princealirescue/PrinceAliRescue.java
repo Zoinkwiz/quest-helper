@@ -25,29 +25,29 @@
 package com.questhelper.quests.princealirescue;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -66,7 +66,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement glory;
 
-	ConditionForStep hasWig, hasDyedWig, hasKey, hasPaste, hasOrGivenKeyMould, inCell, givenKeyMould;
+	Requirement hasWig, hasDyedWig, hasKey, hasPaste, hasOrGivenKeyMould, inCell, givenKeyMould;
 
 	QuestStep talkToHassan, talkToOsman, talkToNed, talkToAggie, dyeWig, talkToKeli, bringImprintToOsman, talkToLeela, talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli, returnToHassan;
 
@@ -165,17 +165,17 @@ public class PrinceAliRescue extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCell = new ZoneCondition(cell);
-		hasDyedWig = new ItemRequirementCondition(dyedWig);
-		hasWig = new ItemRequirementCondition(wig);
-		hasKey = new ItemRequirementCondition(key);
-		hasPaste = new ItemRequirementCondition(paste);
+		inCell = new ZoneRequirement(cell);
+		hasDyedWig = new ItemRequirements(dyedWig);
+		hasWig = new ItemRequirements(wig);
+		hasKey = new ItemRequirements(key);
+		hasPaste = new ItemRequirements(paste);
 		givenKeyMould = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(119, 3, true, "I have duplicated a key, I need to get it from"),
-			new WidgetTextCondition(119, 3, true, "I got a duplicated cell door key"),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Pick the key up from Leela."),
+			new WidgetTextRequirement(119, 3, true, "I have duplicated a key, I need to get it from"),
+			new WidgetTextRequirement(119, 3, true, "I got a duplicated cell door key"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Pick the key up from Leela."),
 			hasKey);
-		hasOrGivenKeyMould = new Conditions(LogicType.OR, new ItemRequirementCondition(keyMould), givenKeyMould, hasKey);
+		hasOrGivenKeyMould = new Conditions(LogicType.OR, new ItemRequirements(keyMould), givenKeyMould, hasKey);
 	}
 
 	public void setupZones()

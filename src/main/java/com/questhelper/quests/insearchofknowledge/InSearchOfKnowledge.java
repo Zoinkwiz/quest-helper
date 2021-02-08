@@ -31,20 +31,19 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.PrayerRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,7 +67,7 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 
 	Requirement protectFromMagic;
 
-	ConditionForStep inDungeon, fedAimeri, hadTempleTome, hadSunTome, hadMoonTome, hasTemplePage, hasMoonPage,
+	Requirement inDungeon, fedAimeri, hadTempleTome, hadSunTome, hadMoonTome, hasTemplePage, hasMoonPage,
 		hasSunPage, repairedMoon, repairedSun, repairedTemple, repairedTomes, givenSunTome, givenMoonTome, givenTempleTome;
 
 	QuestStep enterDungeon, useFoodOnAimeri, talkToAimeriAgain, searchBookcasesForTemple, searchBookcasesForMoon,
@@ -148,30 +147,30 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDungeon = new ZoneCondition(dungeon);
-		fedAimeri = new VarbitCondition(8393, 5);
+		inDungeon = new ZoneRequirement(dungeon);
+		fedAimeri = new VarbitRequirement(8393, 5);
 
-		givenSunTome = new VarbitCondition(8405, 1);
-		givenMoonTome = new VarbitCondition(8404, 1);
-		givenTempleTome = new VarbitCondition(8406, 1);
+		givenSunTome = new VarbitRequirement(8405, 1);
+		givenMoonTome = new VarbitRequirement(8404, 1);
+		givenTempleTome = new VarbitRequirement(8406, 1);
 
 		hadTempleTome = new Conditions(true, LogicType.OR,
-			new ItemRequirementCondition(templeTome),
+			new ItemRequirements(templeTome),
 			givenTempleTome);
 		hadMoonTome = new Conditions(true, LogicType.OR,
-			new ItemRequirementCondition(moonTome),
+			new ItemRequirements(moonTome),
 			givenMoonTome);
 		hadSunTome = new Conditions(true, LogicType.OR,
-			new ItemRequirementCondition(sunTome),
+			new ItemRequirements(sunTome),
 			givenSunTome);
 
-		hasMoonPage = new ItemRequirementCondition(moonPage);
-		hasTemplePage = new ItemRequirementCondition(templePage);
-		hasSunPage = new ItemRequirementCondition(sunPage);
+		hasMoonPage = new ItemRequirements(moonPage);
+		hasTemplePage = new ItemRequirements(templePage);
+		hasSunPage = new ItemRequirements(sunPage);
 
-		repairedSun = new VarbitCondition(8399, 4);
-		repairedMoon = new VarbitCondition(8400, 4);
-		repairedTemple = new VarbitCondition(8401, 4);
+		repairedSun = new VarbitRequirement(8399, 4);
+		repairedMoon = new VarbitRequirement(8400, 4);
+		repairedTemple = new VarbitRequirement(8401, 4);
 
 		repairedTomes = new Conditions(repairedSun, repairedMoon, repairedTemple);
 	}

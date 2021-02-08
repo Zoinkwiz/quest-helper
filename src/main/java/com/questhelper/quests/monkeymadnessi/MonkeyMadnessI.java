@@ -25,21 +25,27 @@
 package com.questhelper.quests.monkeymadnessi;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,13 +57,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -73,7 +72,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	//Items Recommendded
 	ItemRequirement combatGear, antipoison;
 
-	ConditionForStep inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,
+	Requirement inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,
 		talkedToDaeroAfterPuzzle, onCrashIsland, talkedToLumdo, talkedToWaydar, onApeAtollSouth, inPrison, onApeAtollNorth, talkedToGarkor, inDentureBuilding,
 		hasMonkeyDentures, hasMould, inMouldRoom, hadDenturesAndMould, inZooknockDungeon, talkedToZooknock, givenDentures, givenBar, givenMould, hadEnchantedBar,
 		inTempleDungeon, hasUnstrungAmulet, hasAmulet, hasTalisman, hasMonkeyTalismanMade, givenTalisman, givenBones, hasMonkey, inMonkeyPen, talkedToGarkorWithGreeGree,
@@ -346,86 +345,86 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inKaramja = new ZoneCondition(karamja);
-		inFloor1 = new ZoneCondition(floor1);
-		inFloor2 = new ZoneCondition(floor2);
-		inFloor3 = new ZoneCondition(floor3);
-		inStronghold = new ZoneCondition(stronghold);
-		inHangar = new ZoneCondition(hangar, hangar2);
-		onCrashIsland = new ZoneCondition(crashIsland);
-		inPrison = new ZoneCondition(prison);
-		onApeAtollNorth = new ZoneCondition(apeAtollNorth1, apeAtollNorth2, apeAtollNorth3, apeAtollNorth4, apeAtollNorthBridge, apeAtollOverBridge);
-		inDentureBuilding = new ZoneCondition(dentureBuilding);
-		inMouldRoom = new ZoneCondition(mouldRoom);
-		inZooknockDungeon = new ZoneCondition(zooknockDungeon);
-		inTempleDungeon = new ZoneCondition(templeDungeon);
-		inMonkeyPen = new ZoneCondition(monkeyPen1, monkeyPen2, monkeyPen3);
-		onApeAtollNorthBridge = new ZoneCondition(apeAtollNorthBridge);
-		onApeAtollOverBridge = new ZoneCondition(apeAtollOverBridge);
-		inThroneRoom = new ZoneCondition(throne1, throne2, throne3, throne4);
-		inJungleDemonRoom = new ZoneCondition(jungleDemonRoom);
+		inKaramja = new ZoneRequirement(karamja);
+		inFloor1 = new ZoneRequirement(floor1);
+		inFloor2 = new ZoneRequirement(floor2);
+		inFloor3 = new ZoneRequirement(floor3);
+		inStronghold = new ZoneRequirement(stronghold);
+		inHangar = new ZoneRequirement(hangar, hangar2);
+		onCrashIsland = new ZoneRequirement(crashIsland);
+		inPrison = new ZoneRequirement(prison);
+		onApeAtollNorth = new ZoneRequirement(apeAtollNorth1, apeAtollNorth2, apeAtollNorth3, apeAtollNorth4, apeAtollNorthBridge, apeAtollOverBridge);
+		inDentureBuilding = new ZoneRequirement(dentureBuilding);
+		inMouldRoom = new ZoneRequirement(mouldRoom);
+		inZooknockDungeon = new ZoneRequirement(zooknockDungeon);
+		inTempleDungeon = new ZoneRequirement(templeDungeon);
+		inMonkeyPen = new ZoneRequirement(monkeyPen1, monkeyPen2, monkeyPen3);
+		onApeAtollNorthBridge = new ZoneRequirement(apeAtollNorthBridge);
+		onApeAtollOverBridge = new ZoneRequirement(apeAtollOverBridge);
+		inThroneRoom = new ZoneRequirement(throne1, throne2, throne3, throne4);
+		inJungleDemonRoom = new ZoneRequirement(jungleDemonRoom);
 
-		talkedToCaranock = new VarbitCondition(122, 3);
+		talkedToCaranock = new VarbitRequirement(122, 3);
 
-		reportedBackToNarnode = new VarbitCondition(121, 7);
+		reportedBackToNarnode = new VarbitRequirement(121, 7);
 
-		startedPuzzle = new VarbitCondition(123, 5, Operation.GREATER_EQUAL);
+		startedPuzzle = new VarbitRequirement(123, 5, Operation.GREATER_EQUAL);
 
-		solvedPuzzle = new VarbitCondition(123, 6, Operation.GREATER_EQUAL);
-		talkedToDaeroAfterPuzzle = new VarbitCondition(123, 7, Operation.GREATER_EQUAL);
+		solvedPuzzle = new VarbitRequirement(123, 6, Operation.GREATER_EQUAL);
+		talkedToDaeroAfterPuzzle = new VarbitRequirement(123, 7, Operation.GREATER_EQUAL);
 
-		talkedToLumdo = new VarbitCondition(125, 2, Operation.GREATER_EQUAL);
-		talkedToWaydar = new VarbitCondition(125, 3, Operation.GREATER_EQUAL);
+		talkedToLumdo = new VarbitRequirement(125, 2, Operation.GREATER_EQUAL);
+		talkedToWaydar = new VarbitRequirement(125, 3, Operation.GREATER_EQUAL);
 
 		// 128 0->1 talked to Karam
 
-		onApeAtollSouth = new ZoneCondition(apeAtollSouth1, apeAtollSouth2, apeAtollSouth3);
+		onApeAtollSouth = new ZoneRequirement(apeAtollSouth1, apeAtollSouth2, apeAtollSouth3);
 
-		talkedToGarkor = new VarbitCondition(126, 2, Operation.GREATER_EQUAL);
+		talkedToGarkor = new VarbitRequirement(126, 2, Operation.GREATER_EQUAL);
 
-		hasMonkeyDentures = new ItemRequirementCondition(monkeyDentures);
+		hasMonkeyDentures = new ItemRequirements(monkeyDentures);
 
-		hasMould = new ItemRequirementCondition(mould);
+		hasMould = new ItemRequirements(mould);
 
-		talkedToZooknock = new VarbitCondition(127, 5, Operation.GREATER_EQUAL);
+		talkedToZooknock = new VarbitRequirement(127, 5, Operation.GREATER_EQUAL);
 
 		givenDentures = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the magical monkey dentures."),
-			new WidgetTextCondition(119, 3, true, "<str> - Something to do with monkey speech."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the magical monkey dentures."),
+			new WidgetTextRequirement(119, 3, true, "<str> - Something to do with monkey speech."));
 		givenBar = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the gold bar."),
-			new WidgetTextCondition(119, 3, true, "<str> - A gold bar."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the gold bar."),
+			new WidgetTextRequirement(119, 3, true, "<str> - A gold bar."));
 		givenMould = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey amulet mould."),
-			new WidgetTextCondition(119, 3, true, "<str> - A monkey amulet mould."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey amulet mould."),
+			new WidgetTextRequirement(119, 3, true, "<str> - A monkey amulet mould."));
 
-		hasUnstrungAmulet = new ItemRequirementCondition(unstrungAmuletHighlight);
-		hasAmulet = new ItemRequirementCondition(amulet);
+		hasUnstrungAmulet = new ItemRequirements(unstrungAmuletHighlight);
+		hasAmulet = new ItemRequirements(amulet);
 
-		hasMonkeyTalismanMade = new ItemRequirementCondition(karamjanGreegree);
+		hasMonkeyTalismanMade = new ItemRequirements(karamjanGreegree);
 
-		hasTalisman = new Conditions(LogicType.OR, hasMonkeyTalismanMade, new ItemRequirementCondition(talisman));
+		hasTalisman = new Conditions(LogicType.OR, hasMonkeyTalismanMade, new ItemRequirements(talisman));
 
-		hadEnchantedBar = new Conditions(LogicType.OR, hasTalisman, hasUnstrungAmulet, hasAmulet, new ItemRequirementCondition(enchantedBar));
+		hadEnchantedBar = new Conditions(LogicType.OR, hasTalisman, hasUnstrungAmulet, hasAmulet, new ItemRequirements(enchantedBar));
 		hadDenturesAndMould = new Conditions(LogicType.OR, hadEnchantedBar, new Conditions(hasMonkeyDentures, hasMould));
 
 		givenTalisman = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey talisman."),
-			new WidgetTextCondition(119, 3, true, "<str> - An authentic magical monkey talisman."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey talisman."),
+			new WidgetTextRequirement(119, 3, true, "<str> - An authentic magical monkey talisman."));
 		givenBones = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
-			new WidgetTextCondition(119, 3, true, "<str> - Some kind of monkey remains."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
+			new WidgetTextRequirement(119, 3, true, "<str> - Some kind of monkey remains."));
 
-		hasMonkey = new Conditions(true, new ItemRequirementCondition(monkey));
+		hasMonkey = new Conditions(true, new ItemRequirements(monkey));
 
-		talkedToGarkorWithGreeGree = new VarbitCondition(126, 3, Operation.GREATER_EQUAL);
-		talkedToGuard = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "He goes by the name of Kruk."));
-		talkedToKruk = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "As you wish.", "I see. Very well, you look genuine enough. Follow me."));
+		talkedToGarkorWithGreeGree = new VarbitRequirement(126, 3, Operation.GREATER_EQUAL);
+		talkedToGuard = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "He goes by the name of Kruk."));
+		talkedToKruk = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "As you wish.", "I see. Very well, you look genuine enough. Follow me."));
 
-		givenMonkey = new Conditions(true, LogicType.OR, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."),
-			new WidgetTextCondition(119, 3, true, "appear to have earnt Awowogei's favour."));
+		givenMonkey = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."),
+			new WidgetTextRequirement(119, 3, true, "appear to have earnt Awowogei's favour."));
 
-		gotSigil = new VarbitCondition(126, 6, Operation.GREATER_EQUAL);
+		gotSigil = new VarbitRequirement(126, 6, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()

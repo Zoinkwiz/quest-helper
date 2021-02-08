@@ -24,10 +24,9 @@
  */
 package com.questhelper.quests.myarmsbigadventure;
 
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
 import java.util.Collections;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;

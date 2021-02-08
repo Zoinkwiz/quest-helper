@@ -24,24 +24,28 @@
  */
 package com.questhelper.quests.piratestreasure;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.DigStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.PIRATES_TREASURE
@@ -84,7 +88,7 @@ public class PiratesTreasure extends BasicQuestHelper
 		ItemRequirement chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
 		chestKey.setTooltip("You can get another one from Redbeard Frank");
 
-		ItemRequirementCondition hasPirateMessage = new ItemRequirementCondition(pirateMessage);
+		ItemRequirements hasPirateMessage = new ItemRequirements(pirateMessage);
 
 		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage);
 		openChest = new ObjectStep(this, ObjectID.CHEST_2079, new WorldPoint(3219, 3396, 1),

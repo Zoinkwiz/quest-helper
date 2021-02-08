@@ -26,7 +26,7 @@
  */
 package com.questhelper.banktab;
 
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
@@ -45,10 +45,10 @@ public interface BankItemHolder
 	/**
 	 * Get a list of {@link ItemRequirement} to be displayed.
 	 *
-	 * @param client the {@link Client|}
+	 * @param client the {@link Client}
 	 * @param checkConsideringSlotRestrictions if the client item container checks should respect slot restrictions
 	 * @param bankItems the player's {@link com.questhelper.BankItems}, this can be null
-	 * @return a list of {@link ItemRequirement} that should be displayed
+	 * @return a list of {@link ItemRequirement} that should be displayed, or an empty list if none are found
 	 */
 	List<ItemRequirement> getRequirements(Client client, boolean checkConsideringSlotRestrictions, @Nullable Item[] bankItems);
 }

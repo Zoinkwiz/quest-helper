@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import org.apache.commons.text.WordUtils;
 
 /**
  * Requirement that checks if a {@link net.runelite.api.Quest} has a certain state.
@@ -94,7 +95,7 @@ public class QuestRequirement extends AbstractRequirement
 		{
 			return displayText;
 		}
-		String text = Character.toUpperCase(requiredState.name().charAt(0)) + requiredState.name().toLowerCase(Locale.ROOT).substring(1);
-		return text.replaceAll("_", " ") + " " + quest.getName();
+		String text = WordUtils.capitalizeFully(requiredState.name().toLowerCase(Locale.ROOT).replaceAll("_", " "));
+		return text + " " + quest.getName();
 	}
 }

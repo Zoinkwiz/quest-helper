@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright (c) 2021, Senmori
+ *  * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,6 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import net.runelite.api.Client;
 

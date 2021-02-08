@@ -26,22 +26,29 @@ package com.questhelper.quests.icthlarinslittlehelper;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.FollowerItemRequirement;
-import com.questhelper.requirements.FollowerRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.FollowerItemRequirement;
+import com.questhelper.requirements.npc.FollowerRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,14 +61,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ICTHLARINS_LITTLE_HELPER
@@ -74,7 +73,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	Requirement catFollower;
 
-	ConditionForStep inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar,
+	Requirement inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar,
 		killedGuardian, hasJar, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
 		givenCarpenterLogs, inEastRoom, posessedPriestNearby;
 
@@ -250,36 +249,36 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inSoph = new ZoneCondition(soph);
-		inPyramid = new ZoneCondition(pyramid);
-		inNorthPyramid = new ZoneCondition(northPyramid, northPyramid2, eastRoom);
-		inEastRoom = new ZoneCondition(eastRoom);
+		inSoph = new ZoneRequirement(soph);
+		inPyramid = new ZoneRequirement(pyramid);
+		inNorthPyramid = new ZoneRequirement(northPyramid, northPyramid2, eastRoom);
+		inEastRoom = new ZoneRequirement(eastRoom);
 
-		puzzleOpen = new WidgetModelCondition(147, 3, 6474);
-		givenToken = new VarbitCondition(450, 1);
+		puzzleOpen = new WidgetModelRequirement(147, 3, 6474);
+		givenToken = new VarbitRequirement(450, 1);
 
 
-		hasCrondisJar = new VarbitCondition(397, 4);
+		hasCrondisJar = new VarbitRequirement(397, 4);
 
 		// TODO: Verify varbit values for apmeken/het/scarabas
-		hasApmekenJar = new VarbitCondition(397, 3);
-		hasHetJar = new VarbitCondition(397, 2);
-		hasScarabasJar = new VarbitCondition(397, 1);
+		hasApmekenJar = new VarbitRequirement(397, 3);
+		hasHetJar = new VarbitRequirement(397, 2);
+		hasScarabasJar = new VarbitRequirement(397, 1);
 
-		killedGuardian = new VarbitCondition(418, 11, Operation.GREATER_EQUAL);
+		killedGuardian = new VarbitRequirement(418, 11, Operation.GREATER_EQUAL);
 
-		hasJar = new VarbitCondition(405, 1);
-		talkedToEmbalmer = new VarbitCondition(399, 1);
+		hasJar = new VarbitRequirement(405, 1);
+		talkedToEmbalmer = new VarbitRequirement(399, 1);
 
-		hasLinen = new ItemRequirementCondition(linen);
+		hasLinen = new ItemRequirements(linen);
 
-		givenSalt = new VarbitCondition(401, 1);
-		givenSap = new VarbitCondition(402, 1);
-		givenLinen = new VarbitCondition(403, 1);
-		givenEmbalmerAllItems = new VarbitCondition(400, 7);
+		givenSalt = new VarbitRequirement(401, 1);
+		givenSap = new VarbitRequirement(402, 1);
+		givenLinen = new VarbitRequirement(403, 1);
+		givenEmbalmerAllItems = new VarbitRequirement(400, 7);
 
-		talkedToCarpenter = new VarbitCondition(412, 1);
-		givenCarpenterLogs = new VarbitCondition(398, 1);
+		talkedToCarpenter = new VarbitRequirement(412, 1);
+		givenCarpenterLogs = new VarbitRequirement(398, 1);
 
 		posessedPriestNearby = new NpcCondition(NpcID.POSSESSED_PRIEST);
 	}

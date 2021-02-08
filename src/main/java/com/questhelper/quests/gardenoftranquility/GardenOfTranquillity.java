@@ -29,16 +29,15 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.NoItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -78,18 +77,18 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 	Requirement noRing;
 
-	ConditionForStep talkedToElstan, plantedMarigold, harvestedMarigold, givenMarigold;
-	ConditionForStep talkedToLyra, plantedOnions, onionsGrown, talkedToLyraAgain;
-	ConditionForStep talkedToKragen, plantedCabbages, cabbagesGrown, talkedToKragenAgain;
-	ConditionForStep talkedToDantaera, cutShoot, hasPlantedShoot, hasWateredShoot;
-	ConditionForStep talkedToAlthric, ringInWell, canPickRoses, hasRedRoseSeed, hasWhiteRoseSeed, hasPinkRoseSeed,
+	Requirement talkedToElstan, plantedMarigold, harvestedMarigold, givenMarigold;
+	Requirement talkedToLyra, plantedOnions, onionsGrown, talkedToLyraAgain;
+	Requirement talkedToKragen, plantedCabbages, cabbagesGrown, talkedToKragenAgain;
+	Requirement talkedToDantaera, cutShoot, hasPlantedShoot, hasWateredShoot;
+	Requirement talkedToAlthric, ringInWell, canPickRoses, hasRedRoseSeed, hasWhiteRoseSeed, hasPinkRoseSeed,
 		hasRoseSeeds;
-	ConditionForStep ringNotInWell;
-	ConditionForStep talkedToBernald, usedCureOnVines, talkedToAlain, hasShards, hasDust,
+	Requirement ringNotInWell;
+	Requirement talkedToBernald, usedCureOnVines, talkedToAlain, hasShards, hasDust,
 		hasEnhancedCure, curedVine, gotVineSeeds;
-	ConditionForStep notAddedCompost1, notAddedCompost2, notPlantedDelphinium, notPlantedYellowOrchid, notPlantedPinkOrchid,
+	Requirement notAddedCompost1, notAddedCompost2, notPlantedDelphinium, notPlantedYellowOrchid, notPlantedPinkOrchid,
 		notPlantedSnowdrop, notPlantedWhiteTree, notPlantedRedRose, notPlantedPinkRose, notPlantedWhiteRose, notPlantedVine;
-	ConditionForStep hasTrolley, plantedEverything, lumbridgeStatueOnTrolley, faladorStatueOnTrolley,
+	Requirement hasTrolley, plantedEverything, lumbridgeStatueOnTrolley, faladorStatueOnTrolley,
 		placedLumbridgeStatue, placedFaladorStatue;
 
 	QuestStep talkToEllamaria, talkToEllamariaForTrolley, talkToWom;
@@ -290,88 +289,88 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		talkedToElstan = new VarbitCondition(967, 1);
-		plantedMarigold = new VarbitCondition(967, 2, Operation.GREATER_EQUAL);
-		harvestedMarigold = new VarbitCondition(967, 3);
-		givenMarigold = new VarbitCondition(967, 4);
+		talkedToElstan = new VarbitRequirement(967, 1);
+		plantedMarigold = new VarbitRequirement(967, 2, Operation.GREATER_EQUAL);
+		harvestedMarigold = new VarbitRequirement(967, 3);
+		givenMarigold = new VarbitRequirement(967, 4);
 
-		talkedToLyra = new VarbitCondition(968, 1);
+		talkedToLyra = new VarbitRequirement(968, 1);
 		plantedOnions = new Conditions(LogicType.OR,
-			new VarbitCondition(969, 1), // West patch
-			new VarbitCondition(970, 1)); // East patch
+			new VarbitRequirement(969, 1), // West patch
+			new VarbitRequirement(970, 1)); // East patch
 		// Planted onion, 4771 3->13
-		onionsGrown = new VarbitCondition(968, 2, Operation.GREATER_EQUAL);
-		talkedToLyraAgain = new VarbitCondition(968, 3);
-		talkedToKragen = new VarbitCondition(971, 1);
+		onionsGrown = new VarbitRequirement(968, 2, Operation.GREATER_EQUAL);
+		talkedToLyraAgain = new VarbitRequirement(968, 3);
+		talkedToKragen = new VarbitRequirement(971, 1);
 		plantedCabbages = new Conditions(LogicType.OR,
-			new VarbitCondition(974, 1), // North patch
-			new VarbitCondition(975, 1)); // South patch
-		cabbagesGrown = new VarbitCondition(971, 2, Operation.GREATER_EQUAL);
-		talkedToKragenAgain = new VarbitCondition(971, 3);
+			new VarbitRequirement(974, 1), // North patch
+			new VarbitRequirement(975, 1)); // South patch
+		cabbagesGrown = new VarbitRequirement(971, 2, Operation.GREATER_EQUAL);
+		talkedToKragenAgain = new VarbitRequirement(971, 3);
 
-		talkedToDantaera = new VarbitCondition(976, 1);
-		cutShoot = new VarbitCondition(976, 2);
-		hasPlantedShoot = new Conditions(new ItemRequirementCondition(whiteTreePot));
+		talkedToDantaera = new VarbitRequirement(976, 1);
+		cutShoot = new VarbitRequirement(976, 2);
+		hasPlantedShoot = new Conditions(new ItemRequirements(whiteTreePot));
 		hasWateredShoot = new Conditions(LogicType.OR,
-			new VarbitCondition(985, 4, Operation.GREATER_EQUAL),
-			new ItemRequirementCondition(whiteTreeWatered),
-			new ItemRequirementCondition(whitetreeSapling));
+			new VarbitRequirement(985, 4, Operation.GREATER_EQUAL),
+			new ItemRequirements(whiteTreeWatered),
+			new ItemRequirements(whitetreeSapling));
 
-		talkedToAlthric = new VarbitCondition(977, 1, Operation.GREATER_EQUAL);
-		ringInWell = new VarbitCondition(966, 1);
+		talkedToAlthric = new VarbitRequirement(977, 1, Operation.GREATER_EQUAL);
+		ringInWell = new VarbitRequirement(966, 1);
 		canPickRoses = new Conditions(LogicType.OR,
-			new VarbitCondition(977, 2, Operation.GREATER_EQUAL),
+			new VarbitRequirement(977, 2, Operation.GREATER_EQUAL),
 			ringInWell
 			);
-		ringNotInWell = new VarbitCondition(966, 0);
+		ringNotInWell = new VarbitRequirement(966, 0);
 
 		hasRedRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(redRoseSeed),
-			new VarbitCondition(979, 4, Operation.GREATER_EQUAL)
+			new ItemRequirements(redRoseSeed),
+			new VarbitRequirement(979, 4, Operation.GREATER_EQUAL)
 		);
 		hasWhiteRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(whiteRoseSeed),
-			new VarbitCondition(980, 4, Operation.GREATER_EQUAL)
+			new ItemRequirements(whiteRoseSeed),
+			new VarbitRequirement(980, 4, Operation.GREATER_EQUAL)
 		);
 		hasPinkRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(pinkRoseSeed),
-			new VarbitCondition(981, 4, Operation.GREATER_EQUAL)
+			new ItemRequirements(pinkRoseSeed),
+			new VarbitRequirement(981, 4, Operation.GREATER_EQUAL)
 		);
 		hasRoseSeeds = new Conditions(hasRedRoseSeed, hasWhiteRoseSeed, hasPinkRoseSeed);
 
-		talkedToBernald = new VarbitCondition(988, 1);
-		usedCureOnVines = new VarbitCondition(988, 2);
-		talkedToAlain = new VarbitCondition(988, 3);
-		curedVine = new VarbitCondition(988, 4);
-		hasShards = new ItemRequirementCondition(runeShards);
-		hasDust = new ItemRequirementCondition(runeDust);
-		hasEnhancedCure = new ItemRequirementCondition(magicPlantCure);
-		gotVineSeeds = new VarbitCondition(988, 5);
+		talkedToBernald = new VarbitRequirement(988, 1);
+		usedCureOnVines = new VarbitRequirement(988, 2);
+		talkedToAlain = new VarbitRequirement(988, 3);
+		curedVine = new VarbitRequirement(988, 4);
+		hasShards = new ItemRequirements(runeShards);
+		hasDust = new ItemRequirements(runeDust);
+		hasEnhancedCure = new ItemRequirements(magicPlantCure);
+		gotVineSeeds = new VarbitRequirement(988, 5);
 
-		notAddedCompost1 = new VarbitCondition(984, 0);
-		notAddedCompost2 = new VarbitCondition(986, 0);
-		notPlantedDelphinium =  new VarbitCondition(982, 3, Operation.LESS_EQUAL);
-		notPlantedYellowOrchid = new VarbitCondition(986, 1, Operation.LESS_EQUAL);
-		notPlantedPinkOrchid = new VarbitCondition(984, 1, Operation.LESS_EQUAL);
-		notPlantedSnowdrop = new VarbitCondition(983, 3, Operation.LESS_EQUAL);
-		notPlantedWhiteTree = new VarbitCondition(985, 3, Operation.LESS_EQUAL);
-		notPlantedRedRose = new VarbitCondition(979, 3, Operation.LESS_EQUAL);
-		notPlantedPinkRose = new VarbitCondition(981, 3, Operation.LESS_EQUAL);
-		notPlantedWhiteRose = new VarbitCondition(980, 3, Operation.LESS_EQUAL);
-		notPlantedVine = new VarbitCondition(987, 3, Operation.LESS_EQUAL);
+		notAddedCompost1 = new VarbitRequirement(984, 0);
+		notAddedCompost2 = new VarbitRequirement(986, 0);
+		notPlantedDelphinium =  new VarbitRequirement(982, 3, Operation.LESS_EQUAL);
+		notPlantedYellowOrchid = new VarbitRequirement(986, 1, Operation.LESS_EQUAL);
+		notPlantedPinkOrchid = new VarbitRequirement(984, 1, Operation.LESS_EQUAL);
+		notPlantedSnowdrop = new VarbitRequirement(983, 3, Operation.LESS_EQUAL);
+		notPlantedWhiteTree = new VarbitRequirement(985, 3, Operation.LESS_EQUAL);
+		notPlantedRedRose = new VarbitRequirement(979, 3, Operation.LESS_EQUAL);
+		notPlantedPinkRose = new VarbitRequirement(981, 3, Operation.LESS_EQUAL);
+		notPlantedWhiteRose = new VarbitRequirement(980, 3, Operation.LESS_EQUAL);
+		notPlantedVine = new VarbitRequirement(987, 3, Operation.LESS_EQUAL);
 		plantedEverything = new Conditions(LogicType.NOR, notPlantedDelphinium, notPlantedYellowOrchid,
 			notPlantedPinkRose, notPlantedSnowdrop, notPlantedWhiteTree, notPlantedRedRose, notPlantedPinkOrchid,
 			notPlantedWhiteRose, notPlantedVine);
 
 		hasTrolley = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(trolley),
+			new ItemRequirements(trolley),
 			new NpcCondition(NpcID.TROLLEY));
 
-		lumbridgeStatueOnTrolley = new VarbitCondition(965, 2);
-		faladorStatueOnTrolley = new VarbitCondition(965, 1);
+		lumbridgeStatueOnTrolley = new VarbitRequirement(965, 2);
+		faladorStatueOnTrolley = new VarbitRequirement(965, 1);
 
-		placedLumbridgeStatue = new VarbitCondition(964, 2);
-		placedFaladorStatue = new VarbitCondition(963, 2);
+		placedLumbridgeStatue = new VarbitRequirement(964, 2);
+		placedFaladorStatue = new VarbitRequirement(963, 2);
 	}
 
 	public void setupSteps()

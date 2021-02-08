@@ -26,14 +26,14 @@ package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
@@ -52,10 +52,10 @@ public class SirRenItchoodStep extends ConditionalStep
 
 	private final int VARBIT_FINISHED_ROOM = 663;
 
-	private ConditionForStep hasAnswer, answerWidgetOpen;
+	private Requirement hasAnswer, answerWidgetOpen;
 	private DetailedQuestStep enterDoorcode;
 	private QuestStep talkToRen, openAnswerWidget, leaveRoom;
-	private VarbitCondition finishedRoomCondition;
+	private VarbitRequirement finishedRoomCondition;
 
 	public SirRenItchoodStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
@@ -80,9 +80,9 @@ public class SirRenItchoodStep extends ConditionalStep
 
 	private void addRenSteps()
 	{
-		finishedRoomCondition = new VarbitCondition(VARBIT_FINISHED_ROOM, 1);
+		finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
 		openAnswerWidget = new ObjectStep(questHelper, 7323, "Open the door to be prompted to enter a code.");
-		answerWidgetOpen = new WidgetTextCondition(285, 55, "Combination Lock Door");
+		answerWidgetOpen = new WidgetTextRequirement(285, 55, "Combination Lock Door");
 		enterDoorcode = new DetailedQuestStep(questHelper, "");
 		leaveRoom = new ObjectStep(questHelper, 7323, "Leaves through the door to enter the portal and continue.");
 

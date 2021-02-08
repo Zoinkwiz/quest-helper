@@ -33,20 +33,20 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,22 +79,22 @@ public class FishingContest extends BasicQuestHelper
 
 	ConditionalStep goToHemensterStep, getWorms, fishNearPipes;
 
-	ItemRequirementCondition hasCombatBracelet, noCombatBracelet, noFishingRod, hasFishingRod, noGarlic, hasGarlic, hasWorms, noWorms, hasFishingPass;
+	ItemRequirements hasCombatBracelet, noCombatBracelet, noFishingRod, hasFishingRod, noGarlic, hasGarlic, hasWorms, noWorms, hasFishingPass;
 	Conditions hasEverything, notNearWorms, inWoods, notInWoods, enteredContest, hasPutGarlicInPipe;
-	VarbitCondition garlicInPipeVarbit;
-	WidgetTextCondition garlicInPipeScreen, confirmGarlicInPipe;
+	VarbitRequirement garlicInPipeVarbit;
+	WidgetTextRequirement garlicInPipeScreen, confirmGarlicInPipe;
 
 	// Zones
 	Zone mcGruborWoodEntrance, cmbBraceletTeleportZone, nearRedVineWorms, contestGroundsEntrance;
-	ZoneCondition passedThroughMcGruborEntrance, atCmbBraceletTeleportZone, onContestGrounds;
+	ZoneRequirement passedThroughMcGruborEntrance, atCmbBraceletTeleportZone, onContestGrounds;
 
 	public void setupZones()
 	{
 		mcGruborWoodEntrance = new Zone(new WorldPoint(2662, 3500, 0));
-		passedThroughMcGruborEntrance = new ZoneCondition(mcGruborWoodEntrance);
+		passedThroughMcGruborEntrance = new ZoneRequirement(mcGruborWoodEntrance);
 
 		cmbBraceletTeleportZone = new Zone(new WorldPoint(2651, 3444, 0), new WorldPoint(2657, 3439, 0));
-		atCmbBraceletTeleportZone = new ZoneCondition(cmbBraceletTeleportZone);
+		atCmbBraceletTeleportZone = new ZoneRequirement(cmbBraceletTeleportZone);
 
 		nearRedVineWorms = new Zone(new WorldPoint(2634, 3491, 0), new WorldPoint(2626, 3500, 0));
 
@@ -102,7 +102,7 @@ public class FishingContest extends BasicQuestHelper
 		contestGroundsEntrance = new Zone(new WorldPoint(2642, 3445, 0), new WorldPoint(2631, 3434, 0));
 		// the 3 tiles east of the pipe, to ensure we have the whole area
 		Zone tilesEastOfPipe = new Zone(new WorldPoint(2641, 3446, 0), new WorldPoint(2638, 3446, 0));
-		onContestGrounds = new ZoneCondition(contestGroundsEntrance, tilesEastOfPipe);
+		onContestGrounds = new ZoneRequirement(contestGroundsEntrance, tilesEastOfPipe);
 	}
 
 	public void setupItemRequirements()
@@ -176,7 +176,7 @@ public class FishingContest extends BasicQuestHelper
 		NpcStep fishingSpot = new NpcStep(this, NpcID.FISHING_SPOT_4080, new WorldPoint(2637, 3444, 0), "");
 		fishingSpot.setText("Fish near the pipes after the Sinister Stranger leaves.");
 		fishNearPipes = new ConditionalStep(this, fishingSpot, "Catch the winning fish at the fishing spot near the pipes.", fishingRod, redVineWorm);
-		fishNearPipes.addStep(new ItemRequirementCondition(winningFish), speakToBonzoWithFish);
+		fishNearPipes.addStep(new ItemRequirements(winningFish), speakToBonzoWithFish);
 
 		teleToHemenster = new NpcStep(this, NpcID.GRANDPA_JACK, "", coins);
 		teleToHemenster.addText("\nTeleport to Hemenster via the combat bracelet.\n\nSpeak to Grandpa Jack to buy a fishing rod.");
@@ -201,26 +201,26 @@ public class FishingContest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasCombatBracelet = new ItemRequirementCondition(combatBracelet);
-		noCombatBracelet = new ItemRequirementCondition(LogicType.NOR, combatBracelet);
-		noFishingRod = new ItemRequirementCondition(LogicType.NOR, fishingRod);
-		hasFishingRod = new ItemRequirementCondition(fishingRod);
-		hasGarlic = new ItemRequirementCondition(garlic);
-		noGarlic = new ItemRequirementCondition(LogicType.NOR, garlic);
-		hasWorms = new ItemRequirementCondition(redVineWorm);
-		noWorms = new ItemRequirementCondition(LogicType.NOR, redVineWorm);
-		hasFishingPass = new ItemRequirementCondition(fishingPass);
+		hasCombatBracelet = new ItemRequirements(combatBracelet);
+		noCombatBracelet = new ItemRequirements(LogicType.NOR, "", combatBracelet);
+		noFishingRod = new ItemRequirements(LogicType.NOR, "", fishingRod);
+		hasFishingRod = new ItemRequirements(fishingRod);
+		hasGarlic = new ItemRequirements(garlic);
+		noGarlic = new ItemRequirements(LogicType.NOR, "", garlic);
+		hasWorms = new ItemRequirements(redVineWorm);
+		noWorms = new ItemRequirements(LogicType.NOR, "", redVineWorm);
+		hasFishingPass = new ItemRequirements(fishingPass);
 
 		// Conditions
 		hasEverything = new Conditions(hasGarlic, hasWorms, hasFishingRod, hasFishingPass);
-		notNearWorms = new Conditions(LogicType.NOR, new ZoneCondition(nearRedVineWorms));
+		notNearWorms = new Conditions(LogicType.NOR, new ZoneRequirement(nearRedVineWorms));
 		inWoods = new Conditions(true, passedThroughMcGruborEntrance); // passed through northern entrance
 		notInWoods = new Conditions(LogicType.NOR, inWoods);
 
-		garlicInPipeVarbit = new VarbitCondition(2054, 1);
+		garlicInPipeVarbit = new VarbitRequirement(2054, 1);
 		enteredContest = new Conditions(true, LogicType.AND, hasEverything, onContestGrounds);
-		garlicInPipeScreen = new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
-		confirmGarlicInPipe = new WidgetTextCondition(217, 4, "I shoved some garlic up here.");
+		garlicInPipeScreen = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
+		confirmGarlicInPipe = new WidgetTextRequirement(217, 4, "I shoved some garlic up here.");
 		hasPutGarlicInPipe = new Conditions(true, LogicType.OR, garlicInPipeVarbit, garlicInPipeScreen, confirmGarlicInPipe);
 	}
 

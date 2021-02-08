@@ -5,25 +5,33 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.steps.*;
-import com.questhelper.requirements.conditional.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.COLD_WAR
@@ -39,7 +47,7 @@ public class ColdWar extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear, teleportArdougne, teleportLumbridge2, teleportHouse;
 
-	ConditionForStep isOnIceberg, birdHideBuilt, tableNearby, hasClockwork, hasSteelBar, hasClockworkSuit, isPenguin,
+	Requirement isOnIceberg, birdHideBuilt, tableNearby, hasClockwork, hasSteelBar, hasClockworkSuit, isPenguin,
 		isInPenguinPen, isAtZoo, isAtLumbridgeSheepFarm, hasCowbell, isInAgilityStart, isInAgilityWater,
 		isInAgilityStones, isInAgilityTreadSoftly, isInAgilityCrossIce, isInAgilityDone, isInPingPongRoom,
 		hasBongos, isPreWarRoom, isInIcelordPit, isInIcelordRoom, isEmoting, isInPenguinRooms, guardMoved;
@@ -242,33 +250,33 @@ public class ColdWar extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		isOnIceberg = new ZoneCondition(onIceberg);
-		birdHideBuilt = new VarbitCondition(3294, 1);
+		isOnIceberg = new ZoneRequirement(onIceberg);
+		birdHideBuilt = new VarbitRequirement(3294, 1);
 		tableNearby = new Conditions(LogicType.OR,
 			new ObjectCondition(ObjectID.CLOCKMAKERS_BENCH_6798),
 			new ObjectCondition(ObjectID.CLOCKMAKERS_BENCH_6799));
-		hasClockwork = new ItemRequirementCondition(clockwork);
-		hasSteelBar = new ItemRequirementCondition(steelBar);
-		hasClockworkSuit = new ItemRequirementCondition(clockworkSuit);
-		isPenguin = new VarbitCondition(3306, 1);
-		isInPenguinPen = new ZoneCondition(inPenguinPen, inPenguinPen2);
-		isEmoting = new VarbitCondition(3308, 1);
-		isAtZoo = new ZoneCondition(atZoo);
-		isAtLumbridgeSheepFarm = new ZoneCondition(atLumbridgeSheepFarm);
-		hasCowbell = new ItemRequirementCondition(cowbell);
-		isInAgilityStart = new ZoneCondition(inAgilityStart);
-		isInAgilityWater = new ZoneCondition(inAgilityWater);
-		isInAgilityStones = new ZoneCondition(inAgilityStones);
-		isInAgilityTreadSoftly = new ZoneCondition(inAgilityTreadSoftly);
-		isInAgilityCrossIce = new ZoneCondition(inAgilityCrossIce);
-		isInAgilityDone = new ZoneCondition(inAgilityDone);
-		isInPingPongRoom = new ZoneCondition(inPingPongRoom);
-		hasBongos = new ItemRequirementCondition(bongos);
-		isPreWarRoom = new ZoneCondition(preWarRoom);
-		isInIcelordPit = new ZoneCondition(inIcelordPit);
-		isInIcelordRoom = new ZoneCondition(inIcelordRoom);
-		isInPenguinRooms = new ZoneCondition(inPenguinRooms);
-		guardMoved = new VarbitCondition(3299, 2, Operation.GREATER_EQUAL);
+		hasClockwork = new ItemRequirements(clockwork);
+		hasSteelBar = new ItemRequirements(steelBar);
+		hasClockworkSuit = new ItemRequirements(clockworkSuit);
+		isPenguin = new VarbitRequirement(3306, 1);
+		isInPenguinPen = new ZoneRequirement(inPenguinPen, inPenguinPen2);
+		isEmoting = new VarbitRequirement(3308, 1);
+		isAtZoo = new ZoneRequirement(atZoo);
+		isAtLumbridgeSheepFarm = new ZoneRequirement(atLumbridgeSheepFarm);
+		hasCowbell = new ItemRequirements(cowbell);
+		isInAgilityStart = new ZoneRequirement(inAgilityStart);
+		isInAgilityWater = new ZoneRequirement(inAgilityWater);
+		isInAgilityStones = new ZoneRequirement(inAgilityStones);
+		isInAgilityTreadSoftly = new ZoneRequirement(inAgilityTreadSoftly);
+		isInAgilityCrossIce = new ZoneRequirement(inAgilityCrossIce);
+		isInAgilityDone = new ZoneRequirement(inAgilityDone);
+		isInPingPongRoom = new ZoneRequirement(inPingPongRoom);
+		hasBongos = new ItemRequirements(bongos);
+		isPreWarRoom = new ZoneRequirement(preWarRoom);
+		isInIcelordPit = new ZoneRequirement(inIcelordPit);
+		isInIcelordRoom = new ZoneRequirement(inIcelordRoom);
+		isInPenguinRooms = new ZoneRequirement(inPenguinRooms);
+		guardMoved = new VarbitRequirement(3299, 2, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()

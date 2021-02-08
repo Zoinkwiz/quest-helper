@@ -31,20 +31,19 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcInteractingCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -79,18 +78,18 @@ public class ElementalWorkshopII extends BasicQuestHelper
 
 	Requirement magic20;
 
-	ConditionForStep inWorkshop, inMindWorkshop, onCatwalk, hasCraneSchematic, hasClaw, earthNearby, elementalOreNearby,
+	Requirement inWorkshop, inMindWorkshop, onCatwalk, hasCraneSchematic, hasClaw, earthNearby, elementalOreNearby,
 		has2Ores, has2Bars, hasBar, hasSmallCog, hasMediumCog, hasLargeCog, hasPipe, hasCogsAndPipe, smallCogPlaced,
 		mediumCogPlaced, largeCogPlaced, inBasement;
 
-	ConditionForStep craneLowered, repairedClaw, inPipePuzzle, sortedPipes, repairedPipe;
-	ConditionForStep placedBar, craneRaised, craneAboveLava, craneInLava, barHotOnJig, craneHoldingBar, barUnderPress,
+	Requirement craneLowered, repairedClaw, inPipePuzzle, sortedPipes, repairedPipe;
+	Requirement placedBar, craneRaised, craneAboveLava, craneInLava, barHotOnJig, craneHoldingBar, barUnderPress,
 		barOutsideTank, barInTunnel, craneHoldingHotBar, flatHotBarOnJig, barOutsideLava, airCoolFlatBarOnJig;
-	ConditionForStep tankOpen, tankClosed, grabberOut, grabberInWithHotFlatBarDoorOpen, waterInOpen, waterInClosed, waterOutClosed,
+	Requirement tankOpen, tankClosed, grabberOut, grabberInWithHotFlatBarDoorOpen, waterInOpen, waterInClosed, waterOutClosed,
 		waterOutOpen, waterInTank, grabberOutWithCoolFlatBar, grabberInWithCoolFlatBarDoorClosed, coolFlatBarOnJig,
 		grabberInWithHotFlatBarDoorClosed, grabberInWithCoolFlatBarDoorOpened, grabberOutWithHotFlatBarDoorOpen;
-	ConditionForStep fanOff, fanOn;
-	ConditionForStep hasPrimedBar, primedBarPlaced, mindBarPlaced, hasMindBar;
+	Requirement fanOff, fanOn;
+	Requirement hasPrimedBar, primedBarPlaced, mindBarPlaced, hasMindBar;
 
 	Zone workshop, mindWorkshop, catwalk, basement;
 
@@ -262,7 +261,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		coal = new ItemRequirement("Coal", ItemID.COAL);
+		coal = new ItemRequirement("Coal", ItemID.COAL, 8);
 		batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY);
 		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the elemental " +
 			"workshop's entrance");
@@ -306,10 +305,10 @@ public class ElementalWorkshopII extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inWorkshop = new ZoneCondition(workshop);
-		inMindWorkshop = new ZoneCondition(mindWorkshop);
-		onCatwalk = new ZoneCondition(catwalk);
-		inBasement = new ZoneCondition(basement);
+		inWorkshop = new ZoneRequirement(workshop);
+		inMindWorkshop = new ZoneRequirement(mindWorkshop);
+		onCatwalk = new ZoneRequirement(catwalk);
+		inBasement = new ZoneRequirement(basement);
 
 		// Taken book:
 		// 2639 0->1
@@ -321,65 +320,65 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		// Opened hatch:
 		// 2641 0->1
 
-		hasCraneSchematic = new ItemRequirementCondition(craneSchematic);
-		hasClaw = new ItemRequirementCondition(claw);
-		earthNearby = new NpcInteractingCondition(NpcID.EARTH_ELEMENTAL_1367);
-		elementalOreNearby = new ItemCondition(elementalOre);
-		has2Ores = new ItemRequirementCondition(elementalOre.quantity(2));
-		hasBar = new ItemRequirementCondition(elementalBar);
-		has2Bars = new ItemRequirementCondition(elementalBar.quantity(2));
-		hasPrimedBar = new ItemRequirementCondition(primedBar);
+		hasCraneSchematic = new ItemRequirements(craneSchematic);
+		hasClaw = new ItemRequirements(claw);
+		earthNearby = new NpcInteractingRequirement(NpcID.EARTH_ELEMENTAL_1367);
+		elementalOreNearby = new ItemRequirements(elementalOre);
+		has2Ores = new ItemRequirements(elementalOre.quantity(2));
+		hasBar = new ItemRequirements(elementalBar);
+		has2Bars = new ItemRequirements(elementalBar.quantity(2));
+		hasPrimedBar = new ItemRequirements(primedBar);
 
-		repairedClaw = new VarbitCondition(2644, 1, Operation.GREATER_EQUAL);
-		inPipePuzzle = new WidgetModelCondition(262, 37, 18794);
+		repairedClaw = new VarbitRequirement(2644, 1, Operation.GREATER_EQUAL);
+		inPipePuzzle = new WidgetModelRequirement(262, 37, 18794);
 		sortedPipes = new Conditions(
 			new Conditions(LogicType.OR,
-				new VarbitCondition(2646, 5),
-				new VarbitCondition(2647, 5),
-				new VarbitCondition(2648, 5)
+				new VarbitRequirement(2646, 5),
+				new VarbitRequirement(2647, 5),
+				new VarbitRequirement(2648, 5)
 			),
 			new Conditions(LogicType.OR,
-				new VarbitCondition(2646, 6),
-				new VarbitCondition(2647, 6),
-				new VarbitCondition(2648, 6)
+				new VarbitRequirement(2646, 6),
+				new VarbitRequirement(2647, 6),
+				new VarbitRequirement(2648, 6)
 			),
 			new Conditions(LogicType.OR,
-				new VarbitCondition(2646, 13),
-				new VarbitCondition(2647, 13),
-				new VarbitCondition(2648, 13)
+				new VarbitRequirement(2646, 13),
+				new VarbitRequirement(2647, 13),
+				new VarbitRequirement(2648, 13)
 			)
 		);
 
-		repairedPipe = new VarbitCondition(2650, 1);
+		repairedPipe = new VarbitRequirement(2650, 1);
 
 		hasSmallCog = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(smallCog),
-			new VarbitCondition(2655, 1),
-			new VarbitCondition(2656, 1),
-			new VarbitCondition(2657, 1)
+			new ItemRequirements(smallCog),
+			new VarbitRequirement(2655, 1),
+			new VarbitRequirement(2656, 1),
+			new VarbitRequirement(2657, 1)
 		);
 		hasMediumCog = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(mediumCog),
-			new VarbitCondition(2655, 2),
-			new VarbitCondition(2656, 2),
-			new VarbitCondition(2657, 2)
+			new ItemRequirements(mediumCog),
+			new VarbitRequirement(2655, 2),
+			new VarbitRequirement(2656, 2),
+			new VarbitRequirement(2657, 2)
 		);
 		hasLargeCog = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(largeCog),
-			new VarbitCondition(2655, 3),
-			new VarbitCondition(2656, 3),
-			new VarbitCondition(2657, 3)
+			new ItemRequirements(largeCog),
+			new VarbitRequirement(2655, 3),
+			new VarbitRequirement(2656, 3),
+			new VarbitRequirement(2657, 3)
 		);
 		hasPipe = new Conditions(LogicType.OR,
 			repairedPipe,
-			new ItemRequirementCondition(pipe)
+			new ItemRequirements(pipe)
 		);
 
 		hasCogsAndPipe = new Conditions(hasSmallCog, hasMediumCog, hasLargeCog, hasPipe);
 
-		smallCogPlaced = new VarbitCondition(2655, 1);
-		mediumCogPlaced = new VarbitCondition(2656, 2);
-		largeCogPlaced = new VarbitCondition(2657, 3);
+		smallCogPlaced = new VarbitRequirement(2655, 1);
+		mediumCogPlaced = new VarbitRequirement(2656, 2);
+		largeCogPlaced = new VarbitRequirement(2657, 3);
 
 		// This potentially relates to varbit 2664
 		// Small cog in crate 18614
@@ -387,42 +386,42 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		// Medium cog in crate 18616
 		// Pipe in crate 18617
 
-		placedBar = new VarbitCondition(2643, 1);
-		barHotOnJig = new VarbitCondition(2643, 2);
-		flatHotBarOnJig = new VarbitCondition(2643, 3);
-		coolFlatBarOnJig = new VarbitCondition(2643, 4);
-		airCoolFlatBarOnJig = new VarbitCondition(2643, 5);
-		craneLowered = new VarbitCondition(2645, 1);
-		craneRaised = new VarbitCondition(2645, 0);
-		craneHoldingBar = new VarbitCondition(2644, 2);
-		craneAboveLava = new VarbitCondition(2645, 2);
-		craneInLava = new VarbitCondition(2645, 3);
-		barOutsideLava = new VarbitCondition(2642, 0);
-		barUnderPress = new VarbitCondition(2642, 1);
-		barOutsideTank = new VarbitCondition(2642, 2);
-		barInTunnel = new VarbitCondition(2642, 3);
-		craneHoldingHotBar = new VarbitCondition(2644, 3);
+		placedBar = new VarbitRequirement(2643, 1);
+		barHotOnJig = new VarbitRequirement(2643, 2);
+		flatHotBarOnJig = new VarbitRequirement(2643, 3);
+		coolFlatBarOnJig = new VarbitRequirement(2643, 4);
+		airCoolFlatBarOnJig = new VarbitRequirement(2643, 5);
+		craneLowered = new VarbitRequirement(2645, 1);
+		craneRaised = new VarbitRequirement(2645, 0);
+		craneHoldingBar = new VarbitRequirement(2644, 2);
+		craneAboveLava = new VarbitRequirement(2645, 2);
+		craneInLava = new VarbitRequirement(2645, 3);
+		barOutsideLava = new VarbitRequirement(2642, 0);
+		barUnderPress = new VarbitRequirement(2642, 1);
+		barOutsideTank = new VarbitRequirement(2642, 2);
+		barInTunnel = new VarbitRequirement(2642, 3);
+		craneHoldingHotBar = new VarbitRequirement(2644, 3);
 
-		tankClosed = new VarbitCondition(2653, 0);
-		tankOpen = new VarbitCondition(2653, 1);
-		grabberOut = new VarbitCondition(2653, 2);
-		grabberInWithHotFlatBarDoorOpen = new VarbitCondition(2653, 4);
-		grabberInWithHotFlatBarDoorClosed = new VarbitCondition(2653, 3);
-		grabberOutWithHotFlatBarDoorOpen = new VarbitCondition(2653, 5);
-		grabberInWithCoolFlatBarDoorClosed = new VarbitCondition(2653, 6);
-		grabberInWithCoolFlatBarDoorOpened = new VarbitCondition(2653, 7);
-		grabberOutWithCoolFlatBar = new VarbitCondition(2653, 8);
-		waterInOpen = new VarbitCondition(2651, 1);
-		waterInClosed = new VarbitCondition(2651, 0);
-		waterOutClosed = new VarbitCondition(2652, 0);
-		waterOutOpen = new VarbitCondition(2652, 1);
-		waterInTank = new VarbitCondition(2654, 1);
-		fanOff = new VarbitCondition(2660, 0);
-		fanOn = new VarbitCondition(2660, 1);
+		tankClosed = new VarbitRequirement(2653, 0);
+		tankOpen = new VarbitRequirement(2653, 1);
+		grabberOut = new VarbitRequirement(2653, 2);
+		grabberInWithHotFlatBarDoorOpen = new VarbitRequirement(2653, 4);
+		grabberInWithHotFlatBarDoorClosed = new VarbitRequirement(2653, 3);
+		grabberOutWithHotFlatBarDoorOpen = new VarbitRequirement(2653, 5);
+		grabberInWithCoolFlatBarDoorClosed = new VarbitRequirement(2653, 6);
+		grabberInWithCoolFlatBarDoorOpened = new VarbitRequirement(2653, 7);
+		grabberOutWithCoolFlatBar = new VarbitRequirement(2653, 8);
+		waterInOpen = new VarbitRequirement(2651, 1);
+		waterInClosed = new VarbitRequirement(2651, 0);
+		waterOutClosed = new VarbitRequirement(2652, 0);
+		waterOutOpen = new VarbitRequirement(2652, 1);
+		waterInTank = new VarbitRequirement(2654, 1);
+		fanOff = new VarbitRequirement(2660, 0);
+		fanOn = new VarbitRequirement(2660, 1);
 
-		primedBarPlaced = new VarbitCondition(2662, 1);
-		mindBarPlaced = new VarbitCondition(2662, 2);
-		hasMindBar = new ItemRequirementCondition(mindBar);
+		primedBarPlaced = new VarbitRequirement(2662, 1);
+		mindBarPlaced = new VarbitRequirement(2662, 2);
+		hasMindBar = new ItemRequirements(mindBar);
 	}
 
 	public void setupSteps()
@@ -463,6 +462,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		makeClaw = new ObjectStep(this, ObjectID.WORKBENCH_3402, new WorldPoint(2717, 9888, 0),
 			"Use the bar on one of the workbenches in the central room to make a claw.", elementalBar.highlighted(),
 			hammer, batteredKey, craneSchematic);
+		makeClaw.addDialogStep("An elemental claw.");
 		makeClaw.addIcon(ItemID.ELEMENTAL_METAL);
 
 		lowerClaw = new ObjectStep(this, ObjectID.AN_OLD_LEVER_18622, new WorldPoint(1953, 5148, 2),
@@ -496,6 +496,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		((ObjectStep) getCogsAndPipe).addAlternateObjects(ObjectID.CRATE_18613, ObjectID.CRATES_18614,
 			ObjectID.CRATES_18615, ObjectID.CRATE_18616, ObjectID.CRATES_18617, ObjectID.CRATE_18618,
 			ObjectID.CRATE_18619);
+		((ObjectStep)getCogsAndPipe).setRevalidateObjects(true);
 
 		repairPipe = new ObjectStep(this, NullObjectID.NULL_3414, new WorldPoint(1953, 5168, 3),
 			"", pipe.highlighted());

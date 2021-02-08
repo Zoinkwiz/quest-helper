@@ -30,13 +30,19 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.util.ItemSlots;
-import com.questhelper.requirements.NoItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.ItemSlots;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -44,14 +50,6 @@ import com.questhelper.steps.EmoteStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,7 +82,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	NoItemRequirement nothingEquipped;
 
-	ConditionForStep inArdougneCastleF1, inPassF0, inPassF1, inWellEntrance, inIbanRoom, inArdyPrison, inHideout, inWestArdyInstance, inMournerBaseHQInstance,
+	Requirement inArdougneCastleF1, inPassF0, inPassF1, inWellEntrance, inIbanRoom, inArdyPrison, inHideout, inWestArdyInstance, inMournerBaseHQInstance,
 		inEastArdyInstance, inArdougneCastleF1Instance, inLletyaF1, onHudonIsland, onDeadTreeIsland, onLedge, inFalls, inBaxThroneRoom, inIorwerthCave,
 		inLletyaF0Battle, inLletyaF1Battle, inLletyaF1Damaged, inBossArea, hasArdyHelm, hasArdyLegs, hasArdyBody, hasTabard, hasBaxKey, hasOdeBook, hasCrystal,
 		hasCrystalDust, hasCadantineVial, hasInversionPotion, askedAboutCrwys, askedAboutHefin, learnedHowToMakeStatue, dugNearTyras, dugNearStash, dugNearPrif,
@@ -98,7 +96,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToChadwell, talkToSilverMerchant, talkToBaker1, talkToBaker2, talkToGemMerchant, talkToFurTrader, talkToSpiceSeller, talkToSilkMerchant,
 		talkToTownCrier, talkToZenesha, talkToEstateAgent, talkToProbita, talkToAemad, talkToPriest2, talkToOrbon;
 
-	ConditionForStep burnedGrain1, burnedGrain2, burnedGrain3, talkedToPriest1, talkedToSarah, talkedToChadwell, talkedToWestArdougne, talkedToSilverMerchant,
+	Requirement burnedGrain1, burnedGrain2, burnedGrain3, talkedToPriest1, talkedToSarah, talkedToChadwell, talkedToWestArdougne, talkedToSilverMerchant,
 		talkedToBaker1, talkedToBaker2, talkedToGemMerchant, talkedToFurTrader, talkedToSpiceSeller, talkedToSilkMerchant, talkedToMarketStalls, talkedToTownCrier,
 		talkedToZenesha, talkedToEstateAgent, talkedToProbita, talkedToAemad, talkedToPriest2, talkedToOrbon, askedAboutAmlodd, askedAboutTrahaearn,
 		gottenTeleportCrystal, inValley, clearedTraBlockage, inTraRoom, repairedExo, hasElderCadantine, inLightPuzzle, inLibraryF0, inLibraryF1, inLibraryF2,
@@ -268,7 +266,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(48, goFightInEastArdougne);
 
 		ConditionalStep goConfrontKing = new ConditionalStep(this, searchBedAgain);
-		goConfrontKing.addStep(new InInstanceCondition(), watchArdyFightCutscene);
+		goConfrontKing.addStep(new InInstanceRequirement(), watchArdyFightCutscene);
 		goConfrontKing.addStep(inHideout, talkToLathasAfterFight);
 		steps.put(50, goConfrontKing);
 		steps.put(52, goConfrontKing);
@@ -661,69 +659,69 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inArdougneCastleF1 = new ZoneCondition(ardougneCastleF1);
-		inArdyPrison = new ZoneCondition(ardyPrison);
-		inHideout = new ZoneCondition(hideout);
-		inWestArdyInstance = new Conditions(new InInstanceCondition(), new ZoneCondition(westArdyInstance));
-		inMournerBaseHQInstance = new Conditions(new InInstanceCondition(), new ZoneCondition(mournerBasement));
-		inEastArdyInstance = new Conditions(new InInstanceCondition(), new ZoneCondition(eastArdy));
-		inArdougneCastleF1Instance = new Conditions(new InInstanceCondition(), new ZoneCondition(ardougneCastleF1));
-		inLletyaF1 = new ZoneCondition(llyetaF1);
-		inValley = new ZoneCondition(valley);
-		inTraRoom = new ZoneCondition(traRoom);
-		inLightPuzzle = new ZoneCondition(lightPuzzleRoom);
-		inLibraryF0 = new ZoneCondition(libraryF0);
-		inLibraryF1 = new ZoneCondition(libraryF1);
-		inLibraryF2 = new ZoneCondition(libraryF2);
+		inArdougneCastleF1 = new ZoneRequirement(ardougneCastleF1);
+		inArdyPrison = new ZoneRequirement(ardyPrison);
+		inHideout = new ZoneRequirement(hideout);
+		inWestArdyInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(westArdyInstance));
+		inMournerBaseHQInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(mournerBasement));
+		inEastArdyInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(eastArdy));
+		inArdougneCastleF1Instance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(ardougneCastleF1));
+		inLletyaF1 = new ZoneRequirement(llyetaF1);
+		inValley = new ZoneRequirement(valley);
+		inTraRoom = new ZoneRequirement(traRoom);
+		inLightPuzzle = new ZoneRequirement(lightPuzzleRoom);
+		inLibraryF0 = new ZoneRequirement(libraryF0);
+		inLibraryF1 = new ZoneRequirement(libraryF1);
+		inLibraryF2 = new ZoneRequirement(libraryF2);
 
-		onDeadTreeIsland = new ZoneCondition(deadTreeIsland);
-		onHudonIsland = new ZoneCondition(hudonIsland);
-		onLedge = new ZoneCondition(ledge);
-		inFalls = new ZoneCondition(falls);
-		inBaxThroneRoom = new ZoneCondition(baxThroneRoom);
+		onDeadTreeIsland = new ZoneRequirement(deadTreeIsland);
+		onHudonIsland = new ZoneRequirement(hudonIsland);
+		onLedge = new ZoneRequirement(ledge);
+		inFalls = new ZoneRequirement(falls);
+		inBaxThroneRoom = new ZoneRequirement(baxThroneRoom);
 
-		inIorwerthCave = new ZoneCondition(iorwerthCave);
-		inLletyaF0Battle = new Conditions(new ZoneCondition(llyetaF0Battle));
-		inLletyaF1Battle = new Conditions(new ZoneCondition(llyetaF1Battle));
-		inLletyaF1Damaged = new ZoneCondition(llyetaF1Damaged);
+		inIorwerthCave = new ZoneRequirement(iorwerthCave);
+		inLletyaF0Battle = new Conditions(new ZoneRequirement(llyetaF0Battle));
+		inLletyaF1Battle = new Conditions(new ZoneRequirement(llyetaF1Battle));
+		inLletyaF1Damaged = new ZoneRequirement(llyetaF1Damaged);
 
-		inPassF0 = new ZoneCondition(passF0);
-		inPassF1 = new ZoneCondition(passF1);
-		inWellEntrance = new ZoneCondition(wellEntrance);
-		inIbanRoom = new ZoneCondition(ibanRoom);
-		inBossArea = new ZoneCondition(bossArea);
+		inPassF0 = new ZoneRequirement(passF0);
+		inPassF1 = new ZoneRequirement(passF1);
+		inWellEntrance = new ZoneRequirement(wellEntrance);
+		inIbanRoom = new ZoneRequirement(ibanRoom);
+		inBossArea = new ZoneRequirement(bossArea);
 
-		hasArdyHelm = new ItemRequirementCondition(ardyFullHelm);
-		hasArdyBody = new ItemRequirementCondition(ardyPlatebody);
-		hasArdyLegs = new ItemRequirementCondition(ardyPlatelegs);
-		hasTabard = new ItemRequirementCondition(ardyTabard);
-		hasBaxKey = new ItemRequirementCondition(baxKey);
-		hasOdeBook = new ItemRequirementCondition(odeToEternityHighlighted);
+		hasArdyHelm = new ItemRequirements(ardyFullHelm);
+		hasArdyBody = new ItemRequirements(ardyPlatebody);
+		hasArdyLegs = new ItemRequirements(ardyPlatelegs);
+		hasTabard = new ItemRequirements(ardyTabard);
+		hasBaxKey = new ItemRequirements(baxKey);
+		hasOdeBook = new ItemRequirements(odeToEternityHighlighted);
 
 
-		burnedGrain1 = new VarbitCondition(9058, 1);
-		burnedGrain2 = new VarbitCondition(9059, 1);
-		burnedGrain3 = new VarbitCondition(9060, 1);
-		talkedToPriest1 = new VarbitCondition(9079, 1);
-		talkedToSarah = new VarbitCondition(9063, 1);
-		talkedToChadwell = new VarbitCondition(9065, 1);
+		burnedGrain1 = new VarbitRequirement(9058, 1);
+		burnedGrain2 = new VarbitRequirement(9059, 1);
+		burnedGrain3 = new VarbitRequirement(9060, 1);
+		talkedToPriest1 = new VarbitRequirement(9079, 1);
+		talkedToSarah = new VarbitRequirement(9063, 1);
+		talkedToChadwell = new VarbitRequirement(9065, 1);
 		talkedToWestArdougne = new Conditions(burnedGrain1, burnedGrain2, burnedGrain3, talkedToPriest1, talkedToSarah, talkedToChadwell);
-		talkedToSilverMerchant = new VarbitCondition(9074, 1);
-		talkedToBaker1 = new VarbitCondition(9081, 1); // East baker
-		talkedToBaker2 = new VarbitCondition(9073, 1); // West baker
-		talkedToGemMerchant = new VarbitCondition(9072, 1);
-		talkedToFurTrader = new VarbitCondition(9071, 1);
-		talkedToSpiceSeller = new VarbitCondition(9070, 1);
-		talkedToSilkMerchant = new VarbitCondition(9069, 1);
+		talkedToSilverMerchant = new VarbitRequirement(9074, 1);
+		talkedToBaker1 = new VarbitRequirement(9081, 1); // East baker
+		talkedToBaker2 = new VarbitRequirement(9073, 1); // West baker
+		talkedToGemMerchant = new VarbitRequirement(9072, 1);
+		talkedToFurTrader = new VarbitRequirement(9071, 1);
+		talkedToSpiceSeller = new VarbitRequirement(9070, 1);
+		talkedToSilkMerchant = new VarbitRequirement(9069, 1);
 		talkedToMarketStalls = new Conditions(talkedToSilverMerchant, talkedToBaker1, talkedToBaker2, talkedToGemMerchant, talkedToFurTrader,
 			talkedToSpiceSeller, talkedToSilkMerchant);
-		talkedToTownCrier = new VarbitCondition(9075, 1);
-		talkedToZenesha = new VarbitCondition(9068, 1);
-		talkedToEstateAgent = new VarbitCondition(9080, 1);
-		talkedToProbita = new VarbitCondition(9067, 1);
-		talkedToAemad = new VarbitCondition(9066, 1);
-		talkedToPriest2 = new VarbitCondition(9078, 1);
-		talkedToOrbon = new VarbitCondition(9064, 1);
+		talkedToTownCrier = new VarbitRequirement(9075, 1);
+		talkedToZenesha = new VarbitRequirement(9068, 1);
+		talkedToEstateAgent = new VarbitRequirement(9080, 1);
+		talkedToProbita = new VarbitRequirement(9067, 1);
+		talkedToAemad = new VarbitRequirement(9066, 1);
+		talkedToPriest2 = new VarbitRequirement(9078, 1);
+		talkedToOrbon = new VarbitRequirement(9064, 1);
 
 		// 9017 0->1 talked to guard in prison
 
@@ -736,66 +734,66 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		// Finished battle cutscenes, 9026 = 1
 
-		askedAboutAmlodd = new VarbitCondition(9020, 1, Operation.GREATER_EQUAL);
-		gottenTeleportCrystal = new VarbitCondition(9020, 2, Operation.GREATER_EQUAL);
+		askedAboutAmlodd = new VarbitRequirement(9020, 1, Operation.GREATER_EQUAL);
+		gottenTeleportCrystal = new VarbitRequirement(9020, 2, Operation.GREATER_EQUAL);
 
 		// Amlodd has come:
 		// 9016 80->82, 9020 3->4, 9021 0->1
 
-		askedAboutTrahaearn = new VarbitCondition(9018, 1, Operation.GREATER_EQUAL);
-		clearedTraBlockage = new VarbitCondition(9018, 3, Operation.GREATER_EQUAL);
-		repairedExo = new VarbitCondition(9018, 5, Operation.GREATER_EQUAL);
+		askedAboutTrahaearn = new VarbitRequirement(9018, 1, Operation.GREATER_EQUAL);
+		clearedTraBlockage = new VarbitRequirement(9018, 3, Operation.GREATER_EQUAL);
+		repairedExo = new VarbitRequirement(9018, 5, Operation.GREATER_EQUAL);
 
 		// Tra has come:
 		// 9016: 82 ->84, 9018, 5->6, 9019 0->1
 
-		hasElderCadantine = new ItemRequirementCondition(elderCadantine);
-		hasCrystal = new ItemRequirementCondition(crystal);
-		hasCadantineVial = new ItemRequirementCondition(elderCadantineVial);
-		hasCrystalDust = new ItemRequirementCondition(crystalDust);
-		hasInversionPotion = new ItemRequirementCondition(inversionPotion);
+		hasElderCadantine = new ItemRequirements(elderCadantine);
+		hasCrystal = new ItemRequirements(crystal);
+		hasCadantineVial = new ItemRequirements(elderCadantineVial);
+		hasCrystalDust = new ItemRequirements(crystalDust);
+		hasInversionPotion = new ItemRequirements(inversionPotion);
 
-		askedAboutCrwys = new VarbitCondition(9022, 1, Operation.GREATER_EQUAL);
-		revealedCrwys = new VarbitCondition(9022, 2, Operation.GREATER_EQUAL);
-		askedAboutHefin = new VarbitCondition(9024, 1, Operation.GREATER_EQUAL);
-		foundHefin = new VarbitCondition(9024, 3, Operation.GREATER_EQUAL);
+		askedAboutCrwys = new VarbitRequirement(9022, 1, Operation.GREATER_EQUAL);
+		revealedCrwys = new VarbitRequirement(9022, 2, Operation.GREATER_EQUAL);
+		askedAboutHefin = new VarbitRequirement(9024, 1, Operation.GREATER_EQUAL);
+		foundHefin = new VarbitRequirement(9024, 3, Operation.GREATER_EQUAL);
 
-		tracked1 = new VarbitCondition(9028, 1);
-		tracked2 = new VarbitCondition(9029, 1);
-		tracked3 = new VarbitCondition(9030, 1);
-		tracked4 = new VarbitCondition(9031, 1);
-		tracked5 = new VarbitCondition(9032, 1);
+		tracked1 = new VarbitRequirement(9028, 1);
+		tracked2 = new VarbitRequirement(9029, 1);
+		tracked3 = new VarbitRequirement(9030, 1);
+		tracked4 = new VarbitRequirement(9031, 1);
+		tracked5 = new VarbitRequirement(9032, 1);
 
-		foundEoin = new VarbitCondition(9033, 1);
+		foundEoin = new VarbitRequirement(9033, 1);
 		// foundIona, 9034 = 1
 
-		askedAboutIthell = new VarbitCondition(9035, 1, Operation.GREATER_EQUAL);
-		askedAboutMeilyr = new VarbitCondition(9036, 1, Operation.GREATER_EQUAL);
+		askedAboutIthell = new VarbitRequirement(9035, 1, Operation.GREATER_EQUAL);
+		askedAboutMeilyr = new VarbitRequirement(9036, 1, Operation.GREATER_EQUAL);
 
-		checkedSymbol1 = new VarbitCondition(9041, 2);
-		checkedSymbol2 = new VarbitCondition(9039, 2);
-		checkedSymbol3 = new VarbitCondition(9040, 2);
-		checkedSymbol4 = new VarbitCondition(9038, 2);
-		checkedSymbol5 = new VarbitCondition(9037, 2);
+		checkedSymbol1 = new VarbitRequirement(9041, 2);
+		checkedSymbol2 = new VarbitRequirement(9039, 2);
+		checkedSymbol3 = new VarbitRequirement(9040, 2);
+		checkedSymbol4 = new VarbitRequirement(9038, 2);
+		checkedSymbol5 = new VarbitRequirement(9037, 2);
 
-		learnedHowToMakeStatue = new VarbitCondition(9035, 2, Operation.GREATER_EQUAL);
-		builtStatue = new VarbitCondition(9035, 3, Operation.GREATER_EQUAL);
-		finishedIthell = new VarbitCondition(9035, 4, Operation.GREATER_EQUAL);
+		learnedHowToMakeStatue = new VarbitRequirement(9035, 2, Operation.GREATER_EQUAL);
+		builtStatue = new VarbitRequirement(9035, 3, Operation.GREATER_EQUAL);
+		finishedIthell = new VarbitRequirement(9035, 4, Operation.GREATER_EQUAL);
 
-		dugNearTyras = new VarbitCondition(9036, 2, Operation.GREATER_EQUAL);
-		dugNearStash = new VarbitCondition(9036, 3, Operation.GREATER_EQUAL);
-		dugNearPrif = new VarbitCondition(9036, 4, Operation.GREATER_EQUAL);
-		spunOutsideUndergroundPass = new VarbitCondition(9036, 5, Operation.GREATER_EQUAL);
+		dugNearTyras = new VarbitRequirement(9036, 2, Operation.GREATER_EQUAL);
+		dugNearStash = new VarbitRequirement(9036, 3, Operation.GREATER_EQUAL);
+		dugNearPrif = new VarbitRequirement(9036, 4, Operation.GREATER_EQUAL);
+		spunOutsideUndergroundPass = new VarbitRequirement(9036, 5, Operation.GREATER_EQUAL);
 		// 9037->9041 marks
 
 		// 9042->49 0->1 for holes
-		filledHole1 = new VarbitCondition(9042, 2);
-		filledHole2 = new VarbitCondition(9043, 2);
-		filledHole3 = new VarbitCondition(9044, 2);
-		filledHole4 = new VarbitCondition(9045, 2);
-		filledHole5 = new VarbitCondition(9047, 2);
-		filledHole6 = new VarbitCondition(9048, 2);
-		filledHole7 = new VarbitCondition(9049, 2);
+		filledHole1 = new VarbitRequirement(9042, 2);
+		filledHole2 = new VarbitRequirement(9043, 2);
+		filledHole3 = new VarbitRequirement(9044, 2);
+		filledHole4 = new VarbitRequirement(9045, 2);
+		filledHole5 = new VarbitRequirement(9047, 2);
+		filledHole6 = new VarbitRequirement(9048, 2);
+		filledHole7 = new VarbitRequirement(9049, 2);
 
 	}
 

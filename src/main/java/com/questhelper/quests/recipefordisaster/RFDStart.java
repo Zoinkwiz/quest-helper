@@ -29,12 +29,11 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -61,7 +60,7 @@ public class RFDStart extends BasicQuestHelper
 	//Items Required
 	ItemRequirement eyeOfNewt, greenmansAle, rottenTomato, fruitBlast, ashes, ashesHighlighted, fruitBlastHighlighted, dirtyBlast;
 
-	ConditionForStep hasDirtyBlast;
+	Requirement hasDirtyBlast;
 
 	QuestStep talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom;
 
@@ -100,7 +99,7 @@ public class RFDStart extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDirtyBlast = new ItemRequirementCondition(dirtyBlast);
+		hasDirtyBlast = new ItemRequirements(dirtyBlast);
 		// 4606 0->1
 
 		// 1850 = 2->3

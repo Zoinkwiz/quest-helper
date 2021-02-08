@@ -25,23 +25,28 @@
 package com.questhelper.quests.inaidofthemyreque;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,13 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -80,7 +78,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 	Requirement normalSpellbook;
 
-	ConditionForStep onEntranceIsland, inCaves, inMyrequeCave, inBoatArea, inNewBase, onRoof, filledCrate, addedCoal, litFurnace, talkedToGadderanks, talkedToJuvinates,
+	Requirement onEntranceIsland, inCaves, inMyrequeCave, inBoatArea, inNewBase, onRoof, filledCrate, addedCoal, litFurnace, talkedToGadderanks, talkedToJuvinates,
 		talkedToWiskit, inGadderanksFight, defeatedGadderanks, veliafReturnedToBase, inTempleTrekArea, inTempleTrekArea2, inTemple, libraryOpen, hasBook, inTempleLibrary,
 		inCoffinRoom, hasEnchatedRod, hasRod, hasMould, boardsRemoved;
 
@@ -332,18 +330,18 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		onEntranceIsland = new ZoneCondition(entranceIsland);
-		inCaves = new ZoneCondition(caves);
-		inMyrequeCave = new ZoneCondition(myrequeCave);
-		inBoatArea = new ZoneCondition(boatArea);
-		inNewBase = new ZoneCondition(newBase);
-		onRoof = new ZoneCondition(roof);
-		inGadderanksFight = new Conditions(new ZoneCondition(gadderanksFightArea), new InInstanceCondition());
-		inTempleTrekArea = new ZoneCondition(templeTrekArea);
-		inTempleTrekArea2 = new ZoneCondition(templeTrekArea2);
-		inTemple = new ZoneCondition(temple);
-		inTempleLibrary = new ZoneCondition(templeLibrary);
-		inCoffinRoom = new ZoneCondition(coffinRoom);
+		onEntranceIsland = new ZoneRequirement(entranceIsland);
+		inCaves = new ZoneRequirement(caves);
+		inMyrequeCave = new ZoneRequirement(myrequeCave);
+		inBoatArea = new ZoneRequirement(boatArea);
+		inNewBase = new ZoneRequirement(newBase);
+		onRoof = new ZoneRequirement(roof);
+		inGadderanksFight = new Conditions(new ZoneRequirement(gadderanksFightArea), new InInstanceRequirement());
+		inTempleTrekArea = new ZoneRequirement(templeTrekArea);
+		inTempleTrekArea2 = new ZoneRequirement(templeTrekArea2);
+		inTemple = new ZoneRequirement(temple);
+		inTempleLibrary = new ZoneRequirement(templeLibrary);
+		inCoffinRoom = new ZoneRequirement(coffinRoom);
 
 		// 1969 0>1>2>3 Florin throwing food
 
@@ -365,28 +363,28 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 		// 1979, Cornelius is banker
 
-		filledCrate = new VarbitCondition(1994, 938);
-		addedCoal = new VarbitCondition(1980, 2);
-		litFurnace = new VarbitCondition(1980, 3);
+		filledCrate = new VarbitRequirement(1994, 938);
+		addedCoal = new VarbitRequirement(1980, 2);
+		litFurnace = new VarbitRequirement(1980, 3);
 
-		talkedToGadderanks = new VarbitCondition(1995, 1);
-		talkedToJuvinates = new VarbitCondition(1997, 1);
-		talkedToWiskit = new VarbitCondition(1996, 1);
+		talkedToGadderanks = new VarbitRequirement(1995, 1);
+		talkedToJuvinates = new VarbitRequirement(1997, 1);
+		talkedToWiskit = new VarbitRequirement(1996, 1);
 
-		defeatedGadderanks = new VarbitCondition(1999, 3);
-		veliafReturnedToBase = new VarbitCondition(1981, 3, Operation.GREATER_EQUAL);
+		defeatedGadderanks = new VarbitRequirement(1999, 3);
+		veliafReturnedToBase = new VarbitRequirement(1981, 3, Operation.GREATER_EQUAL);
 
 		// 2001 = 1, travelling with ivan
 		// 2003 = 1, Ivan has silver sickle
 		// 2005 0-10 for food
 
-		libraryOpen = new VarbitCondition(1982, 1);
+		libraryOpen = new VarbitRequirement(1982, 1);
 
-		hasBook = new ItemRequirementCondition(sleepingSeven);
-		hasEnchatedRod = new ItemRequirementCondition(enchantedRod);
-		hasRod = new ItemRequirementCondition(silvRod);
-		hasMould = new ItemRequirementCondition(mould);
-		boardsRemoved = new VarbitCondition(1983, 1);
+		hasBook = new ItemRequirements(sleepingSeven);
+		hasEnchatedRod = new ItemRequirements(enchantedRod);
+		hasRod = new ItemRequirements(silvRod);
+		hasMould = new ItemRequirements(mould);
+		boardsRemoved = new VarbitRequirement(1983, 1);
 
 		// 1981 1->2 when talked to Gadderanks
 

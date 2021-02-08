@@ -25,22 +25,30 @@
 package com.questhelper.quests.trollstronghold;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.VarplayerCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,15 +61,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TROLL_STRONGHOLD
@@ -74,7 +73,7 @@ public class TrollStronghold extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement gamesNecklace, foodAndPotions;
 
-	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inArena, inNorthArena,
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inArena, inNorthArena,
 		beatenDad, inArenaCave, inTrollheimArea, hasPrisonKey, prisonKeyNearby, prisonDoorUnlocked, inPrisonStairsRoom, inPrison, hasCellKey1, hasCellKey2,
 		freedEadgar, freedGodric;
 
@@ -163,27 +162,27 @@ public class TrollStronghold extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasClimbingBoots = new ItemRequirementCondition(climbingBoots);
-		hasCoins = new ItemRequirementCondition(coins12);
-		inTenzingHut = new ZoneCondition(tenzingHut);
-		onMountainPath = new ZoneCondition(mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5);
-		inTrollArea1 = new ZoneCondition(trollArea1);
-		inArena = new ZoneCondition(arena);
-		inNorthArena = new ZoneCondition(northArena);
-		beatenDad = new VarplayerCondition(317, 20, Operation.GREATER_EQUAL);
-		prisonDoorUnlocked = new VarplayerCondition(317, 30, Operation.GREATER_EQUAL);
-		inArenaCave = new ZoneCondition(arenaCave);
-		inTrollheimArea = new ZoneCondition(trollheimArea);
-		inStrongholdFloor1 = new ZoneCondition(strongholdFloor1);
-		inStrongholdFloor2 = new ZoneCondition(strongholdFloor2);
-		inPrisonStairsRoom = new ZoneCondition(prisonStairsRoom);
-		inPrison = new ZoneCondition(prison);
-		hasPrisonKey = new ItemRequirementCondition(prisonKey);
-		prisonKeyNearby = new ItemCondition(ItemID.PRISON_KEY);
-		hasCellKey1 = new ItemRequirementCondition(cellKey1);
-		hasCellKey2 = new ItemRequirementCondition(cellKey2);
-		freedEadgar = new VarbitCondition(0, 1);
-		freedGodric = new VarplayerCondition(317, 40);
+		hasClimbingBoots = new ItemRequirements(climbingBoots);
+		hasCoins = new ItemRequirements(coins12);
+		inTenzingHut = new ZoneRequirement(tenzingHut);
+		onMountainPath = new ZoneRequirement(mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5);
+		inTrollArea1 = new ZoneRequirement(trollArea1);
+		inArena = new ZoneRequirement(arena);
+		inNorthArena = new ZoneRequirement(northArena);
+		beatenDad = new VarplayerRequirement(317, 20, Operation.GREATER_EQUAL);
+		prisonDoorUnlocked = new VarplayerRequirement(317, 30, Operation.GREATER_EQUAL);
+		inArenaCave = new ZoneRequirement(arenaCave);
+		inTrollheimArea = new ZoneRequirement(trollheimArea);
+		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
+		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
+		inPrisonStairsRoom = new ZoneRequirement(prisonStairsRoom);
+		inPrison = new ZoneRequirement(prison);
+		hasPrisonKey = new ItemRequirements(prisonKey);
+		prisonKeyNearby = new ItemOnTileRequirement(ItemID.PRISON_KEY);
+		hasCellKey1 = new ItemRequirements(cellKey1);
+		hasCellKey2 = new ItemRequirements(cellKey2);
+		freedEadgar = new VarbitRequirement(0, 1);
+		freedGodric = new VarplayerRequirement(317, 40);
 	}
 
 	public void setupSteps()

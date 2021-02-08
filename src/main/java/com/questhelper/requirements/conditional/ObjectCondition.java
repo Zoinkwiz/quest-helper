@@ -118,7 +118,7 @@ public class ObjectCondition extends ConditionForStep
 	}
 
 	@Override
-	public void loadingHandler()
+	public void updateHandler()
 	{
 		// Once this has checks done in ConditionalStep, this will need to set the boolean condition to false
 	}

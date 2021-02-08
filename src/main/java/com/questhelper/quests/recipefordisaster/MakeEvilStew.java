@@ -27,17 +27,16 @@ package com.questhelper.quests.recipefordisaster;
 import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.Zone;
-import com.questhelper.requirements.FollowerItemRequirement;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.FollowerItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -55,7 +54,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 
 	DetailedQuestStep catchRats, enterBasement, useStewOnEvilDave, restart;
 
-	ConditionForStep inEvilDaveRoom;
+	Requirement inEvilDaveRoom;
 
 	Zone evilDaveRoom;
 
@@ -225,7 +224,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 
 	public void setupConditions()
 	{
-		inEvilDaveRoom = new ZoneCondition(evilDaveRoom);
+		inEvilDaveRoom = new ZoneRequirement(evilDaveRoom);
 	}
 
 	@Override

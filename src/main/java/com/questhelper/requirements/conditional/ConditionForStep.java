@@ -33,7 +33,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 
-public abstract class ConditionForStep implements Requirement
+public abstract class ConditionForStep implements InitializableRequirement
 {
 	@Setter
 	@Getter
@@ -42,17 +42,25 @@ public abstract class ConditionForStep implements Requirement
 	protected LogicType logicType;
 
 	@Getter
-	protected List<ConditionForStep> conditions = new ArrayList<>();
+	protected List<Requirement> conditions = new ArrayList<>();
 
 	@Override
 	abstract public boolean check(Client client);
 
+	@Override
 	public void initialize(Client client)
 	{
+		conditions.stream()
+			.filter(InitializableRequirement.class::isInstance)
+			.forEach(req -> ((InitializableRequirement) req).initialize(client));
 	}
 
-	public void loadingHandler()
+	@Override
+	public void updateHandler()
 	{
+		conditions.stream()
+			.filter(InitializableRequirement.class::isInstance)
+			.forEach(req -> ((InitializableRequirement) req).updateHandler());
 	}
 
 	@Nonnull

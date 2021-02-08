@@ -31,11 +31,11 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.VarplayerCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -61,7 +61,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 	Zone grandTreeF1;
 
-	ConditionForStep notTalkedToGuard, notTalkedToBlueMoon, notTalkedToJollyBoar, notTalkedToRisingSun,
+	Requirement notTalkedToGuard, notTalkedToBlueMoon, notTalkedToJollyBoar, notTalkedToRisingSun,
 		notTalkedToRustyAnchor,
 		notTalkedToZambo, notTalkedToDeadMansChest, notTalkedToFlyingHorseInn, notTalkedToForestersArms, notTalkedToBlurberry,
 		notTalkedToDragonInn, inGrandTreeF1;
@@ -126,19 +126,19 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 	public void setupConditions()
 	{
-		inGrandTreeF1 = new ZoneCondition(grandTreeF1);
+		inGrandTreeF1 = new ZoneRequirement(grandTreeF1);
 
-		notTalkedToGuard = new VarplayerCondition(77, false, 0);
-		notTalkedToBlueMoon = new VarplayerCondition(77, false,3);
-		notTalkedToJollyBoar = new VarplayerCondition(77, false,9);
-		notTalkedToRisingSun = new VarplayerCondition(77, false, 11);
-		notTalkedToRustyAnchor = new VarplayerCondition(77, false,12);
-		notTalkedToZambo = new VarplayerCondition(77, false,10);
-		notTalkedToDeadMansChest = new VarplayerCondition(77, false,5);
-		notTalkedToFlyingHorseInn = new VarplayerCondition(77, false,7);
-		notTalkedToForestersArms = new VarplayerCondition(77, false,8);
-		notTalkedToBlurberry = new VarplayerCondition(77, false,4);
-		notTalkedToDragonInn = new VarplayerCondition(77, false,6);
+		notTalkedToGuard = new VarplayerRequirement(77, false, 0);
+		notTalkedToBlueMoon = new VarplayerRequirement(77, false,3);
+		notTalkedToJollyBoar = new VarplayerRequirement(77, false,9);
+		notTalkedToRisingSun = new VarplayerRequirement(77, false, 11);
+		notTalkedToRustyAnchor = new VarplayerRequirement(77, false,12);
+		notTalkedToZambo = new VarplayerRequirement(77, false,10);
+		notTalkedToDeadMansChest = new VarplayerRequirement(77, false,5);
+		notTalkedToFlyingHorseInn = new VarplayerRequirement(77, false,7);
+		notTalkedToForestersArms = new VarplayerRequirement(77, false,8);
+		notTalkedToBlurberry = new VarplayerRequirement(77, false,4);
+		notTalkedToDragonInn = new VarplayerRequirement(77, false,6);
 	}
 
 	public void setupSteps()

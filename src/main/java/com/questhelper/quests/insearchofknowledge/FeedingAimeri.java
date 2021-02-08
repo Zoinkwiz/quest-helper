@@ -26,7 +26,7 @@ package com.questhelper.quests.insearchofknowledge;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;

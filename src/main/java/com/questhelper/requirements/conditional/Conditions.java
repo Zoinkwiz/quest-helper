@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
@@ -35,21 +36,21 @@ public class Conditions extends ConditionForStep
 	protected Operation operation;
 	protected int quantity;
 
-	public Conditions(ConditionForStep... conditions)
+	public Conditions(Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		logicType = LogicType.AND;
 	}
 
-	public Conditions(LogicType logicType, ConditionForStep... conditions)
+	public Conditions(LogicType logicType, Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.logicType = logicType;
 	}
 
-	public Conditions(Operation operation, int quantity, ConditionForStep... conditions)
+	public Conditions(Operation operation, int quantity, Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
@@ -58,7 +59,7 @@ public class Conditions extends ConditionForStep
 		this.quantity = quantity;
 	}
 
-	public Conditions(boolean onlyNeedToPassOnce, Operation operation, int quantity, ConditionForStep... conditions)
+	public Conditions(boolean onlyNeedToPassOnce, Operation operation, int quantity, Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
@@ -68,7 +69,7 @@ public class Conditions extends ConditionForStep
 		this.quantity = quantity;
 	}
 
-	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, ConditionForStep... conditions)
+	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
@@ -76,21 +77,12 @@ public class Conditions extends ConditionForStep
 		this.logicType = logicType;
 	}
 
-	public Conditions(boolean onlyNeedToPassOnce, ConditionForStep... conditions)
+	public Conditions(boolean onlyNeedToPassOnce, Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
 		this.logicType = LogicType.AND;
-	}
-
-	@Override
-	public void initialize(Client client)
-	{
-		for (ConditionForStep condition : conditions)
-		{
-			condition.initialize(client);
-		}
 	}
 
 	@Override
@@ -119,11 +111,5 @@ public class Conditions extends ConditionForStep
 		}
 
 		return false;
-	}
-
-	@Override
-	public void loadingHandler()
-	{
-		conditions.forEach(ConditionForStep::loadingHandler);
 	}
 }

@@ -71,6 +71,8 @@ public class ObjectStep extends DetailedQuestStep
 	private TileObject object;
 
 	private final List<TileObject> objects = new ArrayList<>();
+	private int lastPlane;
+	private boolean revalidateObjects;
 
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
@@ -84,41 +86,60 @@ public class ObjectStep extends DetailedQuestStep
 		this.objectID = objectID;
 	}
 
+	public void setRevalidateObjects(boolean value)
+	{
+		this.revalidateObjects = value;
+	}
+
 	@Override
 	public void startUp()
 	{
 		super.startUp();
-
 		if (worldPoint != null)
 		{
 			checkTileForObject(worldPoint);
 		}
 		else
 		{
-			Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
-			for (Tile[] lineOfTiles : tiles)
-			{
-				for (Tile tile : lineOfTiles)
-				{
-					if (tile != null)
-					{
-						for (GameObject object : tile.getGameObjects())
-						{
-							handleObjects(object);
-						}
+			loadObjects();
+		}
+	}
 
-						handleObjects(tile.getDecorativeObject());
-						handleObjects(tile.getGroundObject());
-						handleObjects(tile.getWallObject());
+	private void loadObjects()
+	{
+		objects.clear();
+		Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
+		for (Tile[] lineOfTiles : tiles)
+		{
+			for (Tile tile : lineOfTiles)
+			{
+				if (tile != null)
+				{
+					for (GameObject object : tile.getGameObjects())
+					{
+						handleObjects(object);
 					}
+
+					handleObjects(tile.getDecorativeObject());
+					handleObjects(tile.getGroundObject());
+					handleObjects(tile.getWallObject());
 				}
 			}
 		}
 	}
 
+
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
+		if (revalidateObjects)
+		{
+			if (lastPlane != client.getPlane())
+			{
+				lastPlane = client.getPlane();
+				loadObjects();
+			}
+		}
 		if (worldPoint == null)
 		{
 			return;

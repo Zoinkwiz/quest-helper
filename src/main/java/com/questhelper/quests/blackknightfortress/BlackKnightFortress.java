@@ -1,10 +1,22 @@
 package com.questhelper.quests.blackknightfortress;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,19 +27,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.BLACK_KNIGHTS_FORTRESS
@@ -40,7 +39,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement teleportFalador, armour, food;
 
-	ConditionForStep onTopOfFortress, inBasement, inSecretRoomGroundFloor, inSecretRoomFirstFloor, inSecretRoomSecondFloor, inCentralAreaFloor1, inMainEntrance, inWestRoomFloor1,
+	Requirement onTopOfFortress, inBasement, inSecretRoomGroundFloor, inSecretRoomFirstFloor, inSecretRoomSecondFloor, inCentralAreaFloor1, inMainEntrance, inWestRoomFloor1,
 		inEastRoomFloor0, inEastRoomFloor1, inEastRoomFloor2, inListeningRoom, inCabbageHoleRoom, inPathToCabbageRoom, inEastTurret;
 
 	Zone secretRoomFloor0, secretRoomFloor1, secretRoomFloor2, secretRoomFloor3, secretBasement, mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4, westFloor1,
@@ -159,21 +158,21 @@ public class BlackKnightFortress extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		onTopOfFortress = new ZoneCondition(secretRoomFloor3);
-		inBasement = new ZoneCondition(secretBasement);
-		inEastTurret = new ZoneCondition(eastTurret);
-		inSecretRoomGroundFloor = new ZoneCondition(secretRoomFloor0);
-		inSecretRoomFirstFloor = new ZoneCondition(secretRoomFloor1);
-		inSecretRoomSecondFloor = new ZoneCondition(secretRoomFloor2);
-		inMainEntrance = new ZoneCondition(mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4);
-		inCentralAreaFloor1 = new ZoneCondition(centralArea1Floor1, centralArea2Floor1, centralArea3Floor1);
-		inWestRoomFloor1 = new ZoneCondition(westFloor1);
-		inEastRoomFloor0 = new ZoneCondition(eastRoom1Floor0, eastRoom2Floor0);
-		inEastRoomFloor1 = new ZoneCondition(eastRoom1Floor1, eastRoom2Floor1, eastRoom3Floor1, eastRoom4Floor1);
-		inEastRoomFloor2 = new ZoneCondition(eastRoomFloor2);
-		inListeningRoom = new ZoneCondition(listeningRoom1, listeningRoom2);
-		inPathToCabbageRoom = new ZoneCondition(northPathToCabbageHole1, northPathToCabbageHole2, northPathToCabbageHole3);
-		inCabbageHoleRoom = new ZoneCondition(cabbageHoleRoom);
+		onTopOfFortress = new ZoneRequirement(secretRoomFloor3);
+		inBasement = new ZoneRequirement(secretBasement);
+		inEastTurret = new ZoneRequirement(eastTurret);
+		inSecretRoomGroundFloor = new ZoneRequirement(secretRoomFloor0);
+		inSecretRoomFirstFloor = new ZoneRequirement(secretRoomFloor1);
+		inSecretRoomSecondFloor = new ZoneRequirement(secretRoomFloor2);
+		inMainEntrance = new ZoneRequirement(mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4);
+		inCentralAreaFloor1 = new ZoneRequirement(centralArea1Floor1, centralArea2Floor1, centralArea3Floor1);
+		inWestRoomFloor1 = new ZoneRequirement(westFloor1);
+		inEastRoomFloor0 = new ZoneRequirement(eastRoom1Floor0, eastRoom2Floor0);
+		inEastRoomFloor1 = new ZoneRequirement(eastRoom1Floor1, eastRoom2Floor1, eastRoom3Floor1, eastRoom4Floor1);
+		inEastRoomFloor2 = new ZoneRequirement(eastRoomFloor2);
+		inListeningRoom = new ZoneRequirement(listeningRoom1, listeningRoom2);
+		inPathToCabbageRoom = new ZoneRequirement(northPathToCabbageHole1, northPathToCabbageHole2, northPathToCabbageHole3);
+		inCabbageHoleRoom = new ZoneRequirement(cabbageHoleRoom);
 	}
 
 	private void setupSteps()

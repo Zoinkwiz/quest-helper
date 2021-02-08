@@ -30,21 +30,21 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,7 +68,7 @@ public class NatureSpirit extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear, salveTele;
 
-	ConditionForStep inUnderground, fillimanNearby, hasMirror, mirrorNearby, hasJournal, hasMushroom, usedMushroom, onOrange,
+	Requirement inUnderground, fillimanNearby, hasMirror, mirrorNearby, hasJournal, hasMushroom, usedMushroom, onOrange,
 		usedCard, inGrotto, hasPouch, hasFullPouch, natureSpiritNearby, ghastNearby;
 
 	QuestStep goDownToDrezel, talkToDrezel, leaveDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
@@ -205,25 +205,25 @@ public class NatureSpirit extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inUnderground = new ZoneCondition(underground);
-		onOrange = new ZoneCondition(orangeStone);
-		inGrotto = new ZoneCondition(grotto);
+		inUnderground = new ZoneRequirement(underground);
+		onOrange = new ZoneRequirement(orangeStone);
+		inGrotto = new ZoneRequirement(grotto);
 		fillimanNearby = new NpcCondition(NpcID.FILLIMAN_TARLOCK);
 		natureSpiritNearby = new NpcCondition(NpcID.NATURE_SPIRIT);
-		hasMirror = new ItemRequirementCondition(mirror);
-		mirrorNearby = new ItemCondition(mirror);
-		hasJournal = new ItemRequirementCondition(journal);
-		hasMushroom = new ItemRequirementCondition(mushroom);
-		usedMushroom = new Conditions(true, LogicType.OR, new ChatMessageCondition("The stone seems to absorb the fungus."),
-			new WidgetTextCondition(229, 1, "nature symbol<br>scratched into it. This stone seems complete in some way."),
-			new WidgetTextCondition(119, 3, true, "Mort Myre Fungi was absorbed"));
-		usedCard = new Conditions(true, LogicType.OR, new ChatMessageCondition("The stone seems to absorb the used spell scroll."),
-			new ChatMessageCondition("The stone seems to absorb the spell scroll."),
-			new WidgetTextCondition(229, 1, "spirit symbol<br>scratched into it. This stone seems to be complete"),
-			new WidgetTextCondition(119, 3, true, "spell scroll was absorbed"));
+		hasMirror = new ItemRequirements(mirror);
+		mirrorNearby = new ItemOnTileRequirement(mirror);
+		hasJournal = new ItemRequirements(journal);
+		hasMushroom = new ItemRequirements(mushroom);
+		usedMushroom = new Conditions(true, LogicType.OR, new ChatMessageRequirement("The stone seems to absorb the fungus."),
+			new WidgetTextRequirement(229, 1, "nature symbol<br>scratched into it. This stone seems complete in some way."),
+			new WidgetTextRequirement(119, 3, true, "Mort Myre Fungi was absorbed"));
+		usedCard = new Conditions(true, LogicType.OR, new ChatMessageRequirement("The stone seems to absorb the used spell scroll."),
+			new ChatMessageRequirement("The stone seems to absorb the spell scroll."),
+			new WidgetTextRequirement(229, 1, "spirit symbol<br>scratched into it. This stone seems to be complete"),
+			new WidgetTextRequirement(119, 3, true, "spell scroll was absorbed"));
 
-		hasFullPouch = new ItemRequirementCondition(druidPouchFull);
-		hasPouch = new Conditions(LogicType.OR, new ItemRequirementCondition(druidPouch), hasFullPouch);
+		hasFullPouch = new ItemRequirements(druidPouchFull);
+		hasPouch = new Conditions(LogicType.OR, new ItemRequirements(druidPouch), hasFullPouch);
 		ghastNearby = new NpcCondition(NpcID.GHAST_946);
 	}
 

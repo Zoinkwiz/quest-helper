@@ -24,23 +24,29 @@
  */
 package com.questhelper.quests.swansong;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.QuestPointRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestPointRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,13 +59,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SWAN_SONG
@@ -70,7 +69,7 @@ public class SwanSong extends BasicQuestHelper
 	ItemRequirement mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammer, brownApron, monkfish5, rawMonkfish5, combatGear, potHiglight,
 		potLidHiglight, tinderboxHiglight, ironBar5Higlight, logHiglight, ironSheet5, smallNet, airtightPot, combatGearRanged, boneSeeds, hammerPanel;
 
-	ConditionForStep inColonyEntrance, talkedToFranklin, addedLog, litLog, has5Sheets, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed, has5RawMonk,
+	Requirement inColonyEntrance, talkedToFranklin, addedLog, litLog, has5Sheets, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed, has5RawMonk,
 		has5CookedMonk, talkedToArnold, finishedFranklin, inBasement, queenNearby, hasAirtightPot;
 
 	DetailedQuestStep talkToHerman, talkToWom, talkToWomAtColony, kill79Trolls, talkToHermanInBuilding, talkToFranklin, enterColony, useLog, useTinderbox, talkToArnold,
@@ -206,26 +205,26 @@ public class SwanSong extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inColonyEntrance = new ZoneCondition(colonyEntrance);
-		inBasement = new ZoneCondition(basement);
+		inColonyEntrance = new ZoneRequirement(colonyEntrance);
+		inBasement = new ZoneRequirement(basement);
 		// 2111 is number of trolls killed
 
-		talkedToFranklin = new VarbitCondition(2099, 1);
-		addedLog = new VarbitCondition(2099, 2);
-		litLog = new VarbitCondition(2099, 3);
-		has5Sheets = new ItemRequirementCondition(ironSheet5);
-		hasAirtightPot = new ItemRequirementCondition(airtightPot);
-		wall1Fixed = new VarbitCondition(2100, 1);
-		wall2Fixed = new VarbitCondition(2101, 1);
-		wall3Fixed = new VarbitCondition(2102, 1);
-		wall4Fixed = new VarbitCondition(2103, 1);
-		wall5Fixed = new VarbitCondition(2104, 1);
+		talkedToFranklin = new VarbitRequirement(2099, 1);
+		addedLog = new VarbitRequirement(2099, 2);
+		litLog = new VarbitRequirement(2099, 3);
+		has5Sheets = new ItemRequirements(ironSheet5);
+		hasAirtightPot = new ItemRequirements(airtightPot);
+		wall1Fixed = new VarbitRequirement(2100, 1);
+		wall2Fixed = new VarbitRequirement(2101, 1);
+		wall3Fixed = new VarbitRequirement(2102, 1);
+		wall4Fixed = new VarbitRequirement(2103, 1);
+		wall5Fixed = new VarbitRequirement(2104, 1);
 		wallsFixed = new Conditions(wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed);
 
-		has5RawMonk = new ItemRequirementCondition(rawMonkfish5);
-		has5CookedMonk = new ItemRequirementCondition(monkfish5);
-		talkedToArnold = new VarbitCondition(2105, 1, Operation.GREATER_EQUAL);
-		finishedFranklin = new VarbitCondition(2099, 4);
+		has5RawMonk = new ItemRequirements(rawMonkfish5);
+		has5CookedMonk = new ItemRequirements(monkfish5);
+		talkedToArnold = new VarbitRequirement(2105, 1, Operation.GREATER_EQUAL);
+		finishedFranklin = new VarbitRequirement(2099, 4);
 		queenNearby = new NpcCondition(NpcID.SEA_TROLL_QUEEN);
 
 		// 2108 = number of bones given to Mort

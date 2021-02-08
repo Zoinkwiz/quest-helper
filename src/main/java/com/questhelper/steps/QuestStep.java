@@ -104,7 +104,7 @@ public abstract class QuestStep implements Module
 
 	@Getter
 	@Setter
-	private ConditionForStep lockingCondition;
+	private Requirement lockingCondition;
 
 	private int currentCutsceneStatus = 0;
 	protected boolean inCutscene;

@@ -24,6 +24,11 @@
  */
 package com.questhelper.quests.piratestreasure;
 
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.WidgetTextRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +37,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -41,13 +46,8 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 public class RumSmugglingStep extends ConditionalStep
 {
@@ -55,20 +55,20 @@ public class RumSmugglingStep extends ConditionalStep
 
 	private ItemRequirement karamjanRum, tenBananas, whiteApron, whiteApronEquipped, whiteApronHanging;
 
-	private ConditionForStep onKaramja;
-	private ConditionForStep atStart;
-	private ConditionForStep employed;
-	private ConditionForStep stashedRum;
-	private ConditionForStep haveShippedRum;
-	private ConditionForStep verifiedAState;
-	private ConditionForStep hasWhiteApron;
-	private ConditionForStep hasRum;
-	private ConditionForStep hasRumOffKaramja;
-	private ConditionForStep hadRumOffKaramja;
-	private ConditionForStep lostRum;
-	private ConditionForStep filledCrateWithBananasAndRum;
-	private ChatMessageCondition crateSent;
-	private ChatMessageCondition fillCrateWithBananasChat;
+	private Requirement onKaramja;
+	private Conditions atStart;
+	private Conditions employed;
+	private Conditions stashedRum;
+	private Conditions haveShippedRum;
+	private Requirement verifiedAState;
+	private Requirement hasWhiteApron;
+	private Requirement hasRum;
+	private Requirement hasRumOffKaramja;
+	private Conditions hadRumOffKaramja;
+	private Conditions lostRum;
+	private Conditions filledCrateWithBananasAndRum;
+	private ChatMessageRequirement crateSent;
+	private ChatMessageRequirement fillCrateWithBananasChat;
 
 	private QuestStep talkToCustomsOfficer, getRumFromCrate, getWhiteApron, addBananasToCrate, addRumToCrate, talkToZambo, talkToLuthas, talkToLuthasAgain, goToKaramja, bringRumToRedbeard;
 
@@ -141,46 +141,46 @@ public class RumSmugglingStep extends ConditionalStep
 
 	private void setupConditions()
 	{
-		onKaramja = new ZoneCondition(karamjaZone1, karamjaZone2, karamjaBoat);
-		ConditionForStep offKaramja = new ZoneCondition(false, karamjaZone1, karamjaZone2, karamjaBoat);
-		ConditionForStep inPirateTreasureMenu = new WidgetTextCondition(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, getQuestHelper().getQuest().getName());
+		onKaramja = new ZoneRequirement(karamjaZone1, karamjaZone2, karamjaBoat);
+		Requirement offKaramja = new ZoneRequirement(false, karamjaZone1, karamjaZone2, karamjaBoat);
+		Requirement inPirateTreasureMenu = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, getQuestHelper().getQuest().getName());
 
-		hasRum = new ItemRequirementCondition(new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM));
-		hasWhiteApron = new ItemRequirementCondition(whiteApron);
+		hasRum = new ItemRequirements(new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM));
+		hasWhiteApron = new ItemRequirements(whiteApron);
 		hasRumOffKaramja = new Conditions(LogicType.AND, hasRum, offKaramja);
 		hadRumOffKaramja = new Conditions(true, hasRum, offKaramja);
-		lostRum = new Conditions(LogicType.AND, inPirateTreasureMenu, new WidgetTextCondition(119, 8, "I seem to have lost it."));
+		lostRum = new Conditions(LogicType.AND, inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I seem to have lost it."));
 
-		ConditionForStep haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextCondition(119, 8, "I should take it to"));
+		Requirement haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I should take it to"));
 
-		ConditionForStep agreedToGetRum = new WidgetTextCondition(217, 4, "Ok, I will bring you some rum.");
-		ConditionForStep atStartFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextCondition(119, 8, "I need to go to"));
+		Requirement agreedToGetRum = new WidgetTextRequirement(217, 4, "Ok, I will bring you some rum.");
+		Requirement atStartFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I need to go to"));
 		atStart = new Conditions(true, LogicType.OR, agreedToGetRum, atStartFromWidget, lostRum, hadRumOffKaramja, haveRumFromWidget);
 
-		crateSent = new ChatMessageCondition("Luthas hands you 30 coins.");
+		crateSent = new ChatMessageRequirement("Luthas hands you 30 coins.");
 
-		ConditionForStep employedFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextCondition(119, 8, "I have taken employment"));
+		Requirement employedFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I have taken employment"));
 
 		/* Filled crate but not sent it and employed */
-		ConditionForStep employedByWydinFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextCondition(119, 8, "I have taken a job at"));
+		Requirement employedByWydinFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I have taken a job at"));
 
-		ConditionForStep employedFromDialog = new Conditions(new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "If you could fill it up with bananas, I'll pay you 30<br>gold.", "Have you completed your task yet?", "you should see the old crate"));
+		Requirement employedFromDialog = new Conditions(new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "If you could fill it up with bananas, I'll pay you 30<br>gold.", "Have you completed your task yet?", "you should see the old crate"));
 		employed = new Conditions(true, LogicType.OR, employedFromDialog, employedFromWidget, employedByWydinFromWidget);
 
-		ConditionForStep stashedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextCondition(119, 12, "I have hidden my"));
-		ConditionForStep stashedRumFromDialog = new Conditions(new WidgetTextCondition(229, 1, "You stash the rum in the crate."));
-		ConditionForStep stashedRumFromChat = new Conditions(new ChatMessageCondition("There is also some rum stashed in here too.", "There's already some rum in here...",
+		Requirement stashedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 12, "I have hidden my"));
+		Requirement stashedRumFromDialog = new Conditions(new WidgetTextRequirement(229, 1, "You stash the rum in the crate."));
+		Requirement stashedRumFromChat = new Conditions(new ChatMessageRequirement("There is also some rum stashed in here too.", "There's already some rum in here...",
 			"There is some rum in here, although with no bananas to cover it. It is a little obvious."));
 		stashedRum = new Conditions(true, LogicType.OR, stashedRumFromDialog, stashedRumFromWidget, stashedRumFromChat, employedByWydinFromWidget);
 
-		ConditionForStep fillCrateBananas = new Conditions(new WidgetTextCondition(229, 1, "You fill the crate with bananas."));
-		fillCrateWithBananasChat = new ChatMessageCondition("The crate is full of bananas.", "The crate is already full.");
-		ConditionForStep filledCrateWithBananas = new Conditions(false, LogicType.OR, fillCrateWithBananasChat, fillCrateBananas);
+		Requirement fillCrateBananas = new Conditions(new WidgetTextRequirement(229, 1, "You fill the crate with bananas."));
+		fillCrateWithBananasChat = new ChatMessageRequirement("The crate is full of bananas.", "The crate is already full.");
+		Requirement filledCrateWithBananas = new Conditions(false, LogicType.OR, fillCrateWithBananasChat, fillCrateBananas);
 		filledCrateWithBananasAndRum = new Conditions(true, LogicType.AND, filledCrateWithBananas, stashedRum);
 
-		ConditionForStep shippedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextCondition(119, 15, "the crate has been shipped"));
-		ConditionForStep shippedRumFromDialog = new Conditions(stashedRum, crateSent);
-		ConditionForStep shippedRumFromChat = new ChatMessageCondition("There is already some rum in Wydin's store, I should go and get that first.");
+		Requirement shippedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 15, "the crate has been shipped"));
+		Requirement shippedRumFromDialog = new Conditions(stashedRum, crateSent);
+		Requirement shippedRumFromChat = new ChatMessageRequirement("There is already some rum in Wydin's store, I should go and get that first.");
 		haveShippedRum = new Conditions(true, LogicType.OR, shippedRumFromWidget, shippedRumFromDialog, shippedRumFromChat);
 
 		verifiedAState = new Conditions(true, LogicType.OR, atStart, employedFromWidget, employedByWydinFromWidget, stashedRumFromWidget, shippedRumFromWidget, lostRum, hadRumOffKaramja, haveRumFromWidget);

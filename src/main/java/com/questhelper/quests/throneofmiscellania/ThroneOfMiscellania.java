@@ -25,32 +25,31 @@
 package com.questhelper.quests.throneofmiscellania;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.VarplayerCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -71,7 +70,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement dramenStaff;
 
-	ConditionForStep inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom, hasFlowers,
+	Requirement inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom, hasFlowers,
 		talked1P1, talked1P2, talked1P3, givenFlowers, doneEmote, talked1P4, talked2P1, talked2P2, talked2P3, givenBowOrCake,
 		talked2P4, talked3P1, talked3P2, talked3P3, blownKiss, hasAwfulAnthem, hasGoodAnthem, hasGiantNib, hasGiantPen,
 		diplomacyStep1, diplomacyStep2, diplomacyStep3, diplomacyStep4, diplomacyStep5, diplomacyStep6, hasCourted, hasTreaty, has75Support;
@@ -274,46 +273,46 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inIslands = new ZoneCondition(islands);
-		inMiscCastleFirstFloor = new ZoneCondition(miscCastleFirstFloor);
-		inEtcCastleFirstFloor = new ZoneCondition(etcCastleFirstFloor);
-		inBrandRoom = new ZoneCondition(brandRoom1, brandRoom2);
-		inAstridRoom = new ZoneCondition(astridRoom1, astridRoom2);
-		hasFlowers = new ItemRequirementCondition(flowers);
+		inIslands = new ZoneRequirement(islands);
+		inMiscCastleFirstFloor = new ZoneRequirement(miscCastleFirstFloor);
+		inEtcCastleFirstFloor = new ZoneRequirement(etcCastleFirstFloor);
+		inBrandRoom = new ZoneRequirement(brandRoom1, brandRoom2);
+		inAstridRoom = new ZoneRequirement(astridRoom1, astridRoom2);
+		hasFlowers = new ItemRequirements(flowers);
 
-		talked1P1 = new VarbitCondition(85, 1);
-		talked1P2 = new VarbitCondition(86, 1);
-		talked1P3 = new VarbitCondition(87, 1);
-		givenFlowers = new VarbitCondition(94, 1);
-		doneEmote = new VarbitCondition(96, 1);
-		talked1P4 = new VarbitCondition(73, 15, Operation.GREATER_EQUAL);
+		talked1P1 = new VarbitRequirement(85, 1);
+		talked1P2 = new VarbitRequirement(86, 1);
+		talked1P3 = new VarbitRequirement(87, 1);
+		givenFlowers = new VarbitRequirement(94, 1);
+		doneEmote = new VarbitRequirement(96, 1);
+		talked1P4 = new VarbitRequirement(73, 15, Operation.GREATER_EQUAL);
 
-		talked2P1 = new VarbitCondition(88, 1);
-		talked2P2 = new VarbitCondition(89, 1);
-		talked2P3 = new VarbitCondition(90, 1);
-		givenBowOrCake = new VarbitCondition(95, 1);
-		talked2P4 = new VarbitCondition(73, 24, Operation.GREATER_EQUAL);
+		talked2P1 = new VarbitRequirement(88, 1);
+		talked2P2 = new VarbitRequirement(89, 1);
+		talked2P3 = new VarbitRequirement(90, 1);
+		givenBowOrCake = new VarbitRequirement(95, 1);
+		talked2P4 = new VarbitRequirement(73, 24, Operation.GREATER_EQUAL);
 
-		talked3P1 = new VarbitCondition(91, 1);
-		talked3P2 = new VarbitCondition(92, 1);
-		talked3P3 = new VarbitCondition(93, 1);
-		blownKiss = new VarbitCondition(97, 1);
+		talked3P1 = new VarbitRequirement(91, 1);
+		talked3P2 = new VarbitRequirement(92, 1);
+		talked3P3 = new VarbitRequirement(93, 1);
+		blownKiss = new VarbitRequirement(97, 1);
 
-		hasCourted = new VarbitCondition(75, 1);
+		hasCourted = new VarbitRequirement(75, 1);
 
-		diplomacyStep1 = new VarplayerCondition(359, 20);
-		diplomacyStep2 = new VarplayerCondition(359, 30);
-		diplomacyStep3 = new VarplayerCondition(359, 40);
-		diplomacyStep4 = new VarplayerCondition(359, 50);
-		diplomacyStep5 = new VarplayerCondition(359, 60);
-		diplomacyStep6 = new VarplayerCondition(359, 70);
+		diplomacyStep1 = new VarplayerRequirement(359, 20);
+		diplomacyStep2 = new VarplayerRequirement(359, 30);
+		diplomacyStep3 = new VarplayerRequirement(359, 40);
+		diplomacyStep4 = new VarplayerRequirement(359, 50);
+		diplomacyStep5 = new VarplayerRequirement(359, 60);
+		diplomacyStep6 = new VarplayerRequirement(359, 70);
 
-		hasAwfulAnthem = new ItemRequirementCondition(awfulAnthem);
-		hasGoodAnthem = new ItemRequirementCondition(goodAnthem);
-		hasGiantNib = new ItemRequirementCondition(giantNib);
-		hasGiantPen = new ItemRequirementCondition(giantPen);
-		hasTreaty = new ItemRequirementCondition(treaty);
-		has75Support = new VarbitCondition(72, 96, Operation.GREATER_EQUAL);
+		hasAwfulAnthem = new ItemRequirements(awfulAnthem);
+		hasGoodAnthem = new ItemRequirements(goodAnthem);
+		hasGiantNib = new ItemRequirements(giantNib);
+		hasGiantPen = new ItemRequirements(giantPen);
+		hasTreaty = new ItemRequirements(treaty);
+		has75Support = new VarbitRequirement(72, 96, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()

@@ -25,10 +25,9 @@
 package com.questhelper.quests.songoftheelves;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
 import java.util.Collections;
 import lombok.Getter;
 import lombok.Setter;

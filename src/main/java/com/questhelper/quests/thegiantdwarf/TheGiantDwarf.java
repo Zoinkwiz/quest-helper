@@ -30,27 +30,26 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.player.WeightRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.SpellbookRequirement;
-import com.questhelper.requirements.WeightRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -82,7 +81,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		copperOre10, tinOre10, ironOre10, coal10, silverOre10, goldOre10, mithrilOre10,
 		bronzeBar10, ironbar10, silverBar10, goldBar10, steelBar10, mithrilBar10;
 
-	ConditionForStep inTrollRoom, inKeldagrim, inDwarfEntrance,
+	Requirement inTrollRoom, inKeldagrim, inDwarfEntrance,
 		talkedToVermundi, talkedToLibrarian, hasBookOnCostumes, talkedToVermundiWithBook, usedCoalOnMachine, startedMachine, hasExquisiteClothes,
 		talkedToSaro, talkedToDromund, hasLeftBoot, hasExquisiteBoots, givenThurgoPie,
 		talkedToSantiri, usedSapphires, hasDwarvenBattleaxe,
@@ -188,98 +187,98 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inTrollRoom = new ZoneCondition(trollRoom);
-		inDwarfEntrance = new ZoneCondition(dwarfEntrance);
-		inKeldagrim = new ZoneCondition(keldagrim, keldagrim2);
+		inTrollRoom = new ZoneRequirement(trollRoom);
+		inDwarfEntrance = new ZoneRequirement(dwarfEntrance);
+		inKeldagrim = new ZoneRequirement(keldagrim, keldagrim2);
 
 		talkedToVermundi = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Great, thanks a lot, I'll check out the library!"),
-			new WidgetTextCondition(219, 1, 2, "Yes, about those special clothes again..."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Great, thanks a lot, I'll check out the library!"),
+			new WidgetTextRequirement(219, 1, 2, "Yes, about those special clothes again..."));
 		// TODO: Find widget text
-		//new WidgetTextCondition(119, 3, true, true, "N/A"));
+		//new WidgetTextRequirement(119, 3, true, true, "N/A"));
 
 		talkedToLibrarian = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Well, thanks, I'll have a look."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I must find the <col=800000>original axe<col=000080> of <col=800000>King Alvis<col=000080>."));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, thanks, I'll have a look."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I must find the <col=800000>original axe<col=000080> of <col=800000>King Alvis<col=000080>."));
 
-		hasBookOnCostumes = new Conditions(true, new ItemRequirementCondition(bookOnCostumes));
+		hasBookOnCostumes = new Conditions(true, new ItemRequirements(bookOnCostumes));
 
-		talkedToVermundiWithBook = new VarbitCondition(584, 1);
+		talkedToVermundiWithBook = new VarbitRequirement(584, 1);
 
 		usedCoalOnMachine = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("You load the spinning machine with coal and logs."),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
+			new ChatMessageRequirement("You load the spinning machine with coal and logs."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
 
 		startedMachine = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("...and successfully start the engine!"),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
+			new ChatMessageRequirement("...and successfully start the engine!"),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
 
 		givenExquisiteClothes = new Conditions(true, LogicType.OR,
-			new VarbitCondition(576, 2),
-			new VarbitCondition(576, 3),
-			new VarbitCondition(576, 6),
-			new VarbitCondition(576, 7));
+			new VarbitRequirement(576, 2),
+			new VarbitRequirement(576, 3),
+			new VarbitRequirement(576, 6),
+			new VarbitRequirement(576, 7));
 		hasExquisiteClothes = new Conditions(true, LogicType.OR,
 			givenExquisiteClothes,
-			new ItemRequirementCondition(exquisiteClothes),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
+			new ItemRequirements(exquisiteClothes),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
 
 		talkedToSaro = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "And if you're going to try to get the boots off him,"),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "I thought I already told you where to get them?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "And if you're going to try to get the boots off him,"),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I thought I already told you where to get them?"));
 
 		talkedToDromund = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Get out you pesky human! The boots are mine and"),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Are you sure you don't want to give me those boots?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Get out you pesky human! The boots are mine and"),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Are you sure you don't want to give me those boots?"));
 
-		hasLeftBoot = new Conditions(true, new ItemRequirementCondition(leftBoot));
+		hasLeftBoot = new Conditions(true, new ItemRequirements(leftBoot));
 
 		givenExquisiteBoots = new Conditions(true, LogicType.OR,
-			new VarbitCondition(576, 1),
-			new VarbitCondition(576, 3),
-			new VarbitCondition(576, 5),
-			new VarbitCondition(576, 7));
+			new VarbitRequirement(576, 1),
+			new VarbitRequirement(576, 3),
+			new VarbitRequirement(576, 5),
+			new VarbitRequirement(576, 7));
 		hasExquisiteBoots = new Conditions(true, LogicType.OR,
 			givenExquisiteBoots,
-			new ItemRequirementCondition(exquisiteBoots),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs."));
+			new ItemRequirements(exquisiteBoots),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs."));
 
-		talkedToSantiri = new Conditions(true, new ItemRequirementCondition(dwarvenBattleaxeBroken));
+		talkedToSantiri = new Conditions(true, new ItemRequirements(dwarvenBattleaxeBroken));
 
 		usedSapphires = new Conditions(true, LogicType.OR,
-			new ChatMessageCondition("Great, all it needs now is a little sharpening!"),
-			new ItemRequirementCondition(dwarvenBattleaxeSapphires));
+			new ChatMessageRequirement("Great, all it needs now is a little sharpening!"),
+			new ItemRequirements(dwarvenBattleaxeSapphires));
 
-		givenThurgoPie = new VarbitCondition(580, 1);
+		givenThurgoPie = new VarbitRequirement(580, 1);
 
 		givenDwarvenBattleaxe = new Conditions(true, LogicType.OR,
-			new VarbitCondition(576, 4),
-			new VarbitCondition(576, 5),
-			new VarbitCondition(576, 6),
-			new VarbitCondition(576, 7));
+			new VarbitRequirement(576, 4),
+			new VarbitRequirement(576, 5),
+			new VarbitRequirement(576, 6),
+			new VarbitRequirement(576, 7));
 		hasDwarvenBattleaxe = new Conditions(true, LogicType.OR,
 			givenDwarvenBattleaxe,
-			new ItemRequirementCondition(dwarvenBattleaxe),
-			new WidgetTextCondition(119, 3, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
+			new ItemRequirements(dwarvenBattleaxe),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
 
-		inConsortium = new ZoneCondition(consortium);
+		inConsortium = new ZoneRequirement(consortium);
 
-		completedSecretaryTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "I'm afraid I have no more work to offer you", "You should speak directly to the director."));
-		completedDirectorTasks = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Have you ever considered joining"));
+		completedSecretaryTasks = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I'm afraid I have no more work to offer you", "You should speak directly to the director."));
+		completedDirectorTasks = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Have you ever considered joining"));
 		joinedCompany = new Conditions(true, LogicType.OR,
-			new VarbitCondition(578, 1),
-			new VarbitCondition(578, 2),
+			new VarbitRequirement(578, 1),
+			new VarbitRequirement(578, 2),
 			// Opal is 3
-			new VarbitCondition(578, 3),
-			new VarbitCondition(578, 4),
-			new VarbitCondition(578, 5),
-			new VarbitCondition(578, 6),
-			new VarbitCondition(578, 7),
-			new VarbitCondition(578, 8),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "I will not disappoint you."),
-			new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Come in, come in my friend!"));
+			new VarbitRequirement(578, 3),
+			new VarbitRequirement(578, 4),
+			new VarbitRequirement(578, 5),
+			new VarbitRequirement(578, 6),
+			new VarbitRequirement(578, 7),
+			new VarbitRequirement(578, 8),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I will not disappoint you."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Come in, come in my friend!"));
 	}
 
 	public void setupSteps()

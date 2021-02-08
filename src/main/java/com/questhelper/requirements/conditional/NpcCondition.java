@@ -129,7 +129,7 @@ public class NpcCondition extends ConditionForStep
 	}
 
 	@Override
-	public void loadingHandler()
+	public void updateHandler()
 	{
 		npcInScene = false;
 	}

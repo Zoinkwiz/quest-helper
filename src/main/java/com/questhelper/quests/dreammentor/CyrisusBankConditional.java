@@ -24,10 +24,10 @@
  */
 package com.questhelper.quests.dreammentor;
 
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.SimpleRequirement;
 import net.runelite.api.Client;
 
-public class CyrisusBankConditional extends ConditionForStep
+public class CyrisusBankConditional extends SimpleRequirement
 {
 	@Override
 	public boolean check(Client client)

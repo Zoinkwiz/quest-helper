@@ -24,31 +24,33 @@
  */
 package com.questhelper.quests.therestlessghost;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_RESTLESS_GHOST
@@ -61,7 +63,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 	//Items Recommended
 	private ItemRequirement lumbridgeTeleports, passage;
 
-	private ConditionForStep ghostSpawned, coffinOpened, inBasement, hasSkull;
+	private Requirement ghostSpawned, coffinOpened, inBasement, hasSkull;
 
 	private QuestStep talkToAereck, talkToUrhney, speakToGhost, openCoffin, searchCoffin, enterWizardsTowerBasement, searchAltarAndRun, exitWizardsTowerBasement,
 		openCoffinToPutSkullIn, putSkullInCoffin;
@@ -109,8 +111,8 @@ public class TheRestlessGhost extends BasicQuestHelper
 	{
 		ghostSpawned = new NpcCondition(NpcID.RESTLESS_GHOST);
 		coffinOpened = new ObjectCondition(NullObjectID.NULL_15061);
-		inBasement = new ZoneCondition(basement);
-		hasSkull = new VarbitCondition(2130, 1);
+		inBasement = new ZoneRequirement(basement);
+		hasSkull = new VarbitRequirement(2130, 1);
 	}
 
 	public void setupItemRequirements()

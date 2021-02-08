@@ -25,23 +25,30 @@
 package com.questhelper.quests.templeofikov;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.WeightRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.WeightCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,14 +61,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TEMPLE_OF_IKOV
@@ -74,7 +73,7 @@ public class TempleOfIkov extends BasicQuestHelper
 
 	Requirement emptyInventorySpot;
 
-	ConditionForStep hasPendantOfLucien, hasBootsOfLightness, belowMinus1Weight, below4Weight, hasYewBow, hasLimpwurts,
+	Requirement hasPendantOfLucien, hasBootsOfLightness, belowMinus1Weight, below4Weight, hasYewBow, hasLimpwurts,
 		inEntryRoom, inNorthRoom, inBootsRoom, dontHaveBoots, inMainOrNorthRoom, hasLever, leverNearby, pulledLever, inArrowRoom,
 		hasEnoughArrows, lesNearby, inLesRoom, inWitchRoom, hasShinyKey, inDemonArea, inArmaRoom, hasStaffOfArmadyl, hasArrows;
 
@@ -236,34 +235,34 @@ public class TempleOfIkov extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBootsOfLightness = new ItemRequirementCondition(bootsOfLightness);
-		dontHaveBoots = new ItemRequirementCondition(LogicType.NOR, bootsOfLightness);
-		hasPendantOfLucien = new ItemRequirementCondition(pendantOfLucien);
-		hasYewBow = new ItemRequirementCondition(yewOrBetterBow);
-		hasLimpwurts = new ItemRequirementCondition(limpwurt20);
-		hasLever = new ItemRequirementCondition(lever);
+		hasBootsOfLightness = new ItemRequirements(bootsOfLightness);
+		dontHaveBoots = new ItemRequirements(LogicType.NOR, bootsOfLightness);
+		hasPendantOfLucien = new ItemRequirements(pendantOfLucien);
+		hasYewBow = new ItemRequirements(yewOrBetterBow);
+		hasLimpwurts = new ItemRequirements(limpwurt20);
+		hasLever = new ItemRequirements(lever);
 
-		below4Weight = new WeightCondition(4, Operation.LESS_EQUAL);
-		belowMinus1Weight = new WeightCondition(-1, Operation.LESS_EQUAL);
-		inEntryRoom = new ZoneCondition(entryRoom1, entryRoom2);
-		inNorthRoom = new ZoneCondition(northRoom1, northRoom2);
-		inLesRoom = new ZoneCondition(lesRoom);
-		inBootsRoom = new ZoneCondition(bootsRoom);
+		below4Weight = new WeightRequirement(4, Operation.LESS_EQUAL);
+		belowMinus1Weight = new WeightRequirement(-1, Operation.LESS_EQUAL);
+		inEntryRoom = new ZoneRequirement(entryRoom1, entryRoom2);
+		inNorthRoom = new ZoneRequirement(northRoom1, northRoom2);
+		inLesRoom = new ZoneRequirement(lesRoom);
+		inBootsRoom = new ZoneRequirement(bootsRoom);
 		inMainOrNorthRoom = new Conditions(LogicType.OR, inEntryRoom, inNorthRoom, inLesRoom);
 
-		pulledLever = new Conditions(true, LogicType.OR, new WidgetTextCondition(229, 1, "You hear the clunking of some hidden machinery."));
+		pulledLever = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 1, "You hear the clunking of some hidden machinery."));
 		leverNearby = new ObjectCondition(ObjectID.LEVER_87, new WorldPoint(2671, 9804, 0));
-		inArrowRoom = new ZoneCondition(arrowRoom1, arrowRoom2, arrowRoom3);
-		hasEnoughArrows = new Conditions(true, LogicType.OR, new ItemRequirementCondition(iceArrows20));
-		hasArrows = new ItemRequirementCondition(iceArrows);
+		inArrowRoom = new ZoneRequirement(arrowRoom1, arrowRoom2, arrowRoom3);
+		hasEnoughArrows = new Conditions(true, LogicType.OR, new ItemRequirements(iceArrows20));
+		hasArrows = new ItemRequirements(iceArrows);
 		lesNearby = new NpcCondition(NpcID.FIRE_WARRIOR_OF_LESARKUS);
-		inWitchRoom = new ZoneCondition(witchRoom);
-		hasShinyKey = new ItemRequirementCondition(shinyKey);
+		inWitchRoom = new ZoneRequirement(witchRoom);
+		hasShinyKey = new ItemRequirements(shinyKey);
 
-		inDemonArea = new ZoneCondition(demonArea1, demonArea2, demonArea3, demonArea4);
-		inArmaRoom = new ZoneCondition(armaRoom1, armaRoom2);
+		inDemonArea = new ZoneRequirement(demonArea1, demonArea2, demonArea3, demonArea4);
+		inArmaRoom = new ZoneRequirement(armaRoom1, armaRoom2);
 
-		hasStaffOfArmadyl = new ItemRequirementCondition(staffOfArmadyl);
+		hasStaffOfArmadyl = new ItemRequirements(staffOfArmadyl);
 	}
 
 	public void setupSteps()

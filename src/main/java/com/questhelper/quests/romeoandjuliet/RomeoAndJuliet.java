@@ -26,19 +26,19 @@ package com.questhelper.quests.romeoandjuliet;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -56,7 +56,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	//Items Required
 	ItemRequirement cadavaBerry, letter, potion;
 
-	ConditionForStep inJulietRoom, hasPotion;
+	Requirement inJulietRoom, hasPotion;
 
 	QuestStep talkToRomeo, goUpToJuliet, talkToJuliet, giveLetterToRomeo, talkToLawrence, talkToApothecary, goUpToJuliet2, givePotionToJuliet, finishQuest;
 
@@ -103,8 +103,8 @@ public class RomeoAndJuliet extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inJulietRoom = new ZoneCondition(julietRoom);
-		hasPotion = new ItemRequirementCondition(potion);
+		inJulietRoom = new ZoneRequirement(julietRoom);
+		hasPotion = new ItemRequirements(potion);
 	}
 
 	public void setupZones()

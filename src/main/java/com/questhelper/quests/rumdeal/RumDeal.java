@@ -31,18 +31,17 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.FreeInventorySlotRequirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -74,7 +73,7 @@ public class RumDeal extends BasicQuestHelper
 
 	Requirement prayerPoints47;
 
-	ConditionForStep onIsland, onIslandF1, onIslandF2, onIslandF0, rakedPatch, plantedPatch, grownPatch, hasBlindweed, onNorthIsland, hasStagnantWater, added5Sluglings,
+	Requirement onIsland, onIslandF1, onIslandF2, onIslandF0, rakedPatch, plantedPatch, grownPatch, hasBlindweed, onNorthIsland, hasStagnantWater, added5Sluglings,
 		inSpiderRoom, hasHolyWrench, evilSpiritNearby, hasSpiderCarcass, hasSwill, carcassNearby;
 
 	DetailedQuestStep talkToPete, talkToBraindeath, goDownstairs, rakePatch, plantSeed, waitForGrowth, pickPlant, goUpStairsWithPlant, talkToBraindeathWithPlant, talkToPeteWithPlant,
@@ -305,28 +304,28 @@ public class RumDeal extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		onIsland = new ZoneCondition(island);
-		onIslandF0 = new ZoneCondition(islandF0);
-		onIslandF1 = new ZoneCondition(islandF1);
-		onIslandF2 = new ZoneCondition(islandF2);
-		onNorthIsland = new ZoneCondition(northIsland);
-		inSpiderRoom = new ZoneCondition(spiderRoom);
+		onIsland = new ZoneRequirement(island);
+		onIslandF0 = new ZoneRequirement(islandF0);
+		onIslandF1 = new ZoneRequirement(islandF1);
+		onIslandF2 = new ZoneRequirement(islandF2);
+		onNorthIsland = new ZoneRequirement(northIsland);
+		inSpiderRoom = new ZoneRequirement(spiderRoom);
 
-		rakedPatch = new VarbitCondition(1366, 3);
-		plantedPatch = new VarbitCondition(1366, 4);
-		grownPatch = new VarbitCondition(1366, 5);
-		hasBlindweed = new ItemRequirementCondition(blindweed);
-		hasStagnantWater = new ItemRequirementCondition(stagnantWater);
+		rakedPatch = new VarbitRequirement(1366, 3);
+		plantedPatch = new VarbitRequirement(1366, 4);
+		grownPatch = new VarbitRequirement(1366, 5);
+		hasBlindweed = new ItemRequirements(blindweed);
+		hasStagnantWater = new ItemRequirements(stagnantWater);
 
-		added5Sluglings = new VarbitCondition(1354, 5);
-		hasHolyWrench = new ItemRequirementCondition(holyWrench);
+		added5Sluglings = new VarbitRequirement(1354, 5);
+		hasHolyWrench = new ItemRequirements(holyWrench);
 
 		evilSpiritNearby = new NpcCondition(NpcID.EVIL_SPIRIT);
 
-		hasSpiderCarcass = new ItemRequirementCondition(spiderCarcass);
-		hasSwill = new ItemRequirementCondition(swill);
+		hasSpiderCarcass = new ItemRequirements(spiderCarcass);
+		hasSwill = new ItemRequirements(swill);
 
-		carcassNearby = new ItemCondition(spiderCarcass);
+		carcassNearby = new ItemOnTileRequirement(spiderCarcass);
 		// 1359-64 0->1 given swill
 	}
 

@@ -25,28 +25,26 @@
 package com.questhelper.quests.eadgarsruse;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,7 +72,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleport;
 
-	ConditionForStep inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
+	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, hasAlcoChunks, hasParrot, hasRobe, hasLog, hasTinderbox, hasThistle, fireNearby, hasGroundThistle, hasDriedThistle,
 		hasTrollPotion, foundOutAboutKey, hasStoreroomKey, hasGoutweed, inStoreroom;
 
@@ -336,39 +334,39 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inSanfewRoom = new ZoneCondition(sanfewRoom);
-		hasClimbingBoots = new ItemRequirementCondition(climbingBoots);
-		hasCoins = new ItemRequirementCondition(coins12);
-		inTenzingHut = new ZoneCondition(tenzingHut);
-		onMountainPath = new ZoneCondition(mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5);
-		inTrollArea1 = new ZoneCondition(trollArea1);
-		inPrison = new ZoneCondition(prison);
-		freedEadgar = new VarbitCondition(0, 1);
-		hasCellKey2 = new ItemRequirementCondition(cellKey2);
-		inStrongholdFloor1 = new ZoneCondition(strongholdFloor1);
-		inStrongholdFloor2 = new ZoneCondition(strongholdFloor2);
-		inEadgarsCave = new ZoneCondition(eadgarsCave);
-		inTrollheimArea = new ZoneCondition(trollheimArea);
+		inSanfewRoom = new ZoneRequirement(sanfewRoom);
+		hasClimbingBoots = new ItemRequirements(climbingBoots);
+		hasCoins = new ItemRequirements(coins12);
+		inTenzingHut = new ZoneRequirement(tenzingHut);
+		onMountainPath = new ZoneRequirement(mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5);
+		inTrollArea1 = new ZoneRequirement(trollArea1);
+		inPrison = new ZoneRequirement(prison);
+		freedEadgar = new VarbitRequirement(0, 1);
+		hasCellKey2 = new ItemRequirements(cellKey2);
+		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
+		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
+		inEadgarsCave = new ZoneRequirement(eadgarsCave);
+		inTrollheimArea = new ZoneRequirement(trollheimArea);
 
-		askedAboutAlcohol = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Just recently."));
-		askedAboutPineapple = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
-		hasAlcoChunks = new ItemRequirementCondition(alcoChunks);
-		hasParrot = new ItemRequirementCondition(parrot);
-		hasRobe = new ItemRequirementCondition(robe);
-		hasLog = new ItemRequirementCondition(logs1);
-		hasTinderbox = new ItemRequirementCondition(tinderbox);
-		hasThistle = new ItemRequirementCondition(thistle);
+		askedAboutAlcohol = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Just recently."));
+		askedAboutPineapple = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
+		hasAlcoChunks = new ItemRequirements(alcoChunks);
+		hasParrot = new ItemRequirements(parrot);
+		hasRobe = new ItemRequirements(robe);
+		hasLog = new ItemRequirements(logs1);
+		hasTinderbox = new ItemRequirements(tinderbox);
+		hasThistle = new ItemRequirements(thistle);
 
 		fireNearby = new ObjectCondition(ObjectID.FIRE_26185);
 
-		hasDriedThistle = new ItemRequirementCondition(driedThistle);
-		hasGroundThistle = new ItemRequirementCondition(groundThistle);
-		hasTrollPotion = new ItemRequirementCondition(trollPotion);
+		hasDriedThistle = new ItemRequirements(driedThistle);
+		hasGroundThistle = new ItemRequirements(groundThistle);
+		hasTrollPotion = new ItemRequirements(trollPotion);
 
-		foundOutAboutKey = new Conditions(true, new WidgetTextCondition(217, 4, "That's some well-guarded secret alright"));
-		hasStoreroomKey = new ItemRequirementCondition(storeroomKey);
-		hasGoutweed = new ItemRequirementCondition(goutweed);
-		inStoreroom = new ZoneCondition(storeroom);
+		foundOutAboutKey = new Conditions(true, new WidgetTextRequirement(217, 4, "That's some well-guarded secret alright"));
+		hasStoreroomKey = new ItemRequirements(storeroomKey);
+		hasGoutweed = new ItemRequirements(goutweed);
+		inStoreroom = new ZoneRequirement(storeroom);
 	}
 
 	public void setupSteps()

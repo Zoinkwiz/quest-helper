@@ -25,26 +25,35 @@
 package com.questhelper.quests.legendsquest;
 
 import com.questhelper.ItemCollections;
-import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.QuestPointRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.SpellbookRequirement;
-import com.questhelper.requirements.conditional.NpcInteractingCondition;
-import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
+import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.requirements.quest.QuestPointRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,17 +65,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -88,7 +86,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 	SpellbookRequirement normalSpellbook;
 
-	ConditionForStep inGuild, inKhazari, completeEast, completeMiddle, completeWest, completeTextAppeared, inWest, inMiddle,
+	Requirement inGuild, inKhazari, completeEast, completeMiddle, completeWest, completeTextAppeared, inWest, inMiddle,
 		inEast, finishedMap, gujuoNearby, inCaveRoom1, inCaves, talkedToUngadulu, hadSketch, inCaveRoom2, inCaveRoom3, inCaveRoom4,
 		addedSoulRune, addedMindRune, addedEarthRune, addedLawRune, addedLawRune2, searchedMarkedWall, inCaveRoom5, sapphirePlaced,
 		opalPlaced, jadePlaced, topazPlaced, emeraldPlaced, rubyPlaced, diamondPlaced, bookAppearing, bookNearby, hadBindingBook,
@@ -572,94 +570,94 @@ public class LegendsQuest extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		inGuild = new ZoneCondition(guild1, guild2, guild3);
-		inKhazari = new ZoneCondition(khazari1, khazari2, khazari3, khazari4);
-		inWest = new ZoneCondition(westKhazari);
-		inMiddle = new ZoneCondition(middleKhazari);
-		inEast = new ZoneCondition(eastKhazari);
-		inCaveRoom1 = new ZoneCondition(caveRoom1P1, caveRoom1P2);
-		inCaves = new ZoneCondition(caves, challengeCave);
-		inCaveRoom2 = new ZoneCondition(caveRoom2P1, caveRoom2P2);
-		inCaveRoom3 = new ZoneCondition(caveRoom3);
-		inCaveRoom4 = new ZoneCondition(caveRoom4P1, caveRoom4P2, caveRoom4P3);
-		inCaveRoom5 = new ZoneCondition(caveRoom5P1, caveRoom5P2, caveRoom5P3);
-		inCaveRoom6 = new ZoneCondition(caveRoom6P1, caveRoom6P2);
-		inFire = new ZoneCondition(fire1, fire2, fire3);
-		inChallengeCave = new ZoneCondition(challengeCave);
+		inGuild = new ZoneRequirement(guild1, guild2, guild3);
+		inKhazari = new ZoneRequirement(khazari1, khazari2, khazari3, khazari4);
+		inWest = new ZoneRequirement(westKhazari);
+		inMiddle = new ZoneRequirement(middleKhazari);
+		inEast = new ZoneRequirement(eastKhazari);
+		inCaveRoom1 = new ZoneRequirement(caveRoom1P1, caveRoom1P2);
+		inCaves = new ZoneRequirement(caves, challengeCave);
+		inCaveRoom2 = new ZoneRequirement(caveRoom2P1, caveRoom2P2);
+		inCaveRoom3 = new ZoneRequirement(caveRoom3);
+		inCaveRoom4 = new ZoneRequirement(caveRoom4P1, caveRoom4P2, caveRoom4P3);
+		inCaveRoom5 = new ZoneRequirement(caveRoom5P1, caveRoom5P2, caveRoom5P3);
+		inCaveRoom6 = new ZoneRequirement(caveRoom6P1, caveRoom6P2);
+		inFire = new ZoneRequirement(fire1, fire2, fire3);
+		inChallengeCave = new ZoneRequirement(challengeCave);
 
-		completeTextAppeared = new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You have already completed this part of the map.");
+		completeTextAppeared = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You have already completed this part of the map.");
 
 		completeEast = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "Eastern Kharazi Jungle- *** Completed"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "Eastern Kharazi Jungle- *** Completed"),
 			new Conditions(inEast, completeTextAppeared));
 		completeMiddle = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT,  "Middle Kharazi Jungle- *** Completed"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT,  "Middle Kharazi Jungle- *** Completed"),
 			new Conditions(inMiddle, completeTextAppeared));
 		completeWest = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT,  "Western Kharazi Jungle- *** Completed"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT,  "Western Kharazi Jungle- *** Completed"),
 			new Conditions(inWest, completeTextAppeared));
 
-		finishedMap = new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You have completed mapping the Khazari");
+		finishedMap = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You have completed mapping the Khazari");
 
 		gujuoNearby = new NpcCondition(NpcID.GUJUO);
 
 		talkedToUngadulu = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(229, 1, "The Shaman throws himself down on the floor and starts convulsing."),
-			new WidgetTextCondition(119, 3, true, "is acting weird and talking a lot of nonsense"));
+			new WidgetTextRequirement(229, 1, "The Shaman throws himself down on the floor and starts convulsing."),
+			new WidgetTextRequirement(119, 3, true, "is acting weird and talking a lot of nonsense"));
 
-		hadSketch = new Conditions(true, LogicType.OR, new ItemRequirementCondition(sketch));
+		hadSketch = new Conditions(true, LogicType.OR, new ItemRequirements(sketch));
 
-		searchedMarkedWall = new WidgetTextCondition(229, 1, "You can see a message on the wall");
+		searchedMarkedWall = new WidgetTextRequirement(229, 1, "You can see a message on the wall");
 
 		addedSoulRune = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(229, 1,  "You slide the Soul Rune into the first"),
-			new WidgetTextCondition(229, 1, "You find the letter 'S'"));
+			new WidgetTextRequirement(229, 1,  "You slide the Soul Rune into the first"),
+			new WidgetTextRequirement(229, 1, "You find the letter 'S'"));
 		addedMindRune = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(229, 1, "You slide the Mind Rune into the second"),
-			new WidgetTextCondition(229, 1, "You find the letters 'SM'"));
+			new WidgetTextRequirement(229, 1, "You slide the Mind Rune into the second"),
+			new WidgetTextRequirement(229, 1, "You find the letters 'SM'"));
 		addedEarthRune = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(229, 1, "You slide the Earth Rune into the third"),
-			new WidgetTextCondition(229, 1, "You find the letters 'SME'"));
+			new WidgetTextRequirement(229, 1, "You slide the Earth Rune into the third"),
+			new WidgetTextRequirement(229, 1, "You find the letters 'SME'"));
 
 		addedLawRune = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(229, 1, "You slide the Law Rune into the fourth"),
-			new WidgetTextCondition(229, 1, "You find the letters 'SMEL'"));
+			new WidgetTextRequirement(229, 1, "You slide the Law Rune into the fourth"),
+			new WidgetTextRequirement(229, 1, "You find the letters 'SMEL'"));
 
 		addedLawRune2 = new Conditions(true, LogicType.OR,
-			new WidgetTextCondition(229, 1, "You slide the Law Rune into the fifth"),
-			new WidgetTextCondition(229, 1, "You find the letters 'SMELL'"));
+			new WidgetTextRequirement(229, 1, "You slide the Law Rune into the fifth"),
+			new WidgetTextRequirement(229, 1, "You find the letters 'SMELL'"));
 
-		sapphirePlaced = new Conditions(true, new ItemCondition(sapphire, new WorldPoint(2781, 9291, 0)));
-		emeraldPlaced = new Conditions(true, new ItemCondition(emerald, new WorldPoint(2757, 9297, 0)));
-		rubyPlaced = new Conditions(true, new ItemCondition(ruby, new WorldPoint(2767, 9289, 0)));
-		diamondPlaced = new Conditions(true, new ItemCondition(diamond, new WorldPoint(2774, 9287, 0)));
-		opalPlaced = new Conditions(true, new ItemCondition(opal, new WorldPoint(2764, 9309, 0)));
-		jadePlaced = new Conditions(true, new ItemCondition(jade, new WorldPoint(2771, 9303, 0)));
-		topazPlaced = new Conditions(true, new ItemCondition(topaz, new WorldPoint(2772, 9295, 0)));
+		sapphirePlaced = new Conditions(true, new ItemOnTileRequirement(sapphire, new WorldPoint(2781, 9291, 0)));
+		emeraldPlaced = new Conditions(true, new ItemOnTileRequirement(emerald, new WorldPoint(2757, 9297, 0)));
+		rubyPlaced = new Conditions(true, new ItemOnTileRequirement(ruby, new WorldPoint(2767, 9289, 0)));
+		diamondPlaced = new Conditions(true, new ItemOnTileRequirement(diamond, new WorldPoint(2774, 9287, 0)));
+		opalPlaced = new Conditions(true, new ItemOnTileRequirement(opal, new WorldPoint(2764, 9309, 0)));
+		jadePlaced = new Conditions(true, new ItemOnTileRequirement(jade, new WorldPoint(2771, 9303, 0)));
+		topazPlaced = new Conditions(true, new ItemOnTileRequirement(topaz, new WorldPoint(2772, 9295, 0)));
 
-		bookAppearing = new ChatMessageCondition("You feel a powerful force picking you up....");
-		bookNearby = new ItemCondition(ItemID.BINDING_BOOK);
-		hadBindingBook = new ItemRequirementCondition(bindingBook);
-		hasGoldBowl = new Conditions(true, new ItemRequirementCondition(goldBowl));
-		hasBlessedBowl = new ItemRequirementCondition(goldBowlBlessed);
-		hasReed = new ItemRequirementCondition(reed);
-		hasFullBowl = new ItemRequirementCondition(goldBowlFull);
-		hasSeed = new ItemRequirementCondition(yommiSeeds);
-		hasGerminatedSeeds = new ItemRequirementCondition(germinatedSeeds);
-		hasBraveryPotion = new ItemRequirementCondition(braveryPotion);
-		hasArdrigalMixture = new ItemRequirementCondition(ardrigalMixture);
-		hasSnakeMixture = new ItemRequirementCondition(snakeMixture);
+		bookAppearing = new ChatMessageRequirement("You feel a powerful force picking you up....");
+		bookNearby = new ItemOnTileRequirement(ItemID.BINDING_BOOK);
+		hadBindingBook = new ItemRequirements(bindingBook);
+		hasGoldBowl = new Conditions(true, new ItemRequirements(goldBowl));
+		hasBlessedBowl = new ItemRequirements(goldBowlBlessed);
+		hasReed = new ItemRequirements(reed);
+		hasFullBowl = new ItemRequirements(goldBowlFull);
+		hasSeed = new ItemRequirements(yommiSeeds);
+		hasGerminatedSeeds = new ItemRequirements(germinatedSeeds);
+		hasBraveryPotion = new ItemRequirements(braveryPotion);
+		hasArdrigalMixture = new ItemRequirements(ardrigalMixture);
+		hasSnakeMixture = new ItemRequirements(snakeMixture);
 
-		hasHeartCrystal2 = new ItemRequirementCondition(heartCrystal2);
+		hasHeartCrystal2 = new ItemRequirements(heartCrystal2);
 
-		nezNearby = new NpcInteractingCondition(NpcID.NEZIKCHENED);
+		nezNearby = new NpcInteractingRequirement(NpcID.NEZIKCHENED);
 
 		addedRope = new Conditions(true, new ObjectCondition(ObjectID.WINCH_2935, new WorldPoint(2761, 9331, 0)));
 		echnedNearby = new NpcCondition(NpcID.ECHNED_ZEKIN);
 		viyeldiNearby = new NpcCondition(NpcID.VIYELDI);
 
-		hasGlowingDagger = new ItemRequirementCondition(glowingDagger);
-		hasForce = new ItemRequirementCondition(force);
+		hasGlowingDagger = new ItemRequirements(glowingDagger);
+		hasForce = new ItemRequirements(force);
 
 		sacredWaterNearby = new ObjectCondition(ObjectID.SACRED_WATER);
 

@@ -26,15 +26,14 @@ package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.util.RequirementBuilder;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.VarbitCondition;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.Client;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -43,7 +42,7 @@ import static net.runelite.api.widgets.WidgetID.DIALOG_NPC_GROUP_ID;
 public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 {
 	private QuestStep dialogQuizStep, leaveRoom, talkToMsHynnTerprett;
-	private VarbitCondition finishedRoomCondition;
+	private VarbitRequirement finishedRoomCondition;
 
 	private boolean dialogEntry = false;
 
@@ -69,7 +68,7 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 
 	private void AddSteps()
 	{
-		finishedRoomCondition = new VarbitCondition(VARBIT_FINISHED_ROOM, 1);
+		finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
 		leaveRoom = new ObjectStep(questHelper, 7354, "Leaves through the door to enter the portal and continue.");
 
 		addStep(finishedRoomCondition, leaveRoom);
@@ -89,14 +88,7 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 
 	private void AddDialogQuizStep()
 	{
-		ConditionForStep step = new ConditionForStep()
-		{
-			@Override
-			public boolean check(Client client)
-			{
-				return dialogEntry;
-			}
-		};
+		Requirement step = RequirementBuilder.builder().check(client -> dialogEntry).build();
 		dialogQuizStep = new DetailedQuestStep(questHelper, "Enter the answer 10 to the dialog when prompted.");
 		talkToMsHynnTerprett.addSubSteps(dialogQuizStep);
 		addStep(step, dialogQuizStep);

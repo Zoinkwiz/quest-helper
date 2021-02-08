@@ -25,9 +25,8 @@
 package com.questhelper.quests.shadowofthestorm;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
-import java.util.ArrayList;
 import java.util.Collections;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.MenuOptionClicked;

@@ -24,10 +24,21 @@
  */
 package com.questhelper.quests.monksfriend;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,17 +49,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MONKS_FRIEND
@@ -61,7 +61,7 @@ public class MonksFriend extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneCloak;
 
-	ConditionForStep inDungeon, hasBlanket;
+	Requirement inDungeon, hasBlanket;
 
 	QuestStep talkToOmad, goDownLadder, grabBlanket, goUpLadder, returnToOmadWithBlanket, talkToOmadAgain, talkToCedric, talkToCedricWithJug,
 		continueTalkingToCedric, talkToCedricWithLog, finishQuest;
@@ -112,8 +112,8 @@ public class MonksFriend extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDungeon = new ZoneCondition(dungeon);
-		hasBlanket = new ItemRequirementCondition(blanket);
+		inDungeon = new ZoneRequirement(dungeon);
+		hasBlanket = new ItemRequirements(blanket);
 	}
 
 	public void setupSteps()

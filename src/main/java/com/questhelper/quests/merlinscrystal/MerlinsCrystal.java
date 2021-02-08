@@ -24,15 +24,26 @@
  */
 package com.questhelper.quests.merlinscrystal;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,17 +54,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MERLINS_CRYSTAL
@@ -67,7 +67,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, camelotTeleport, twoFaladorTeleports;
 
-	ConditionForStep inFaye, inFayeGround, inFaye1, inFaye2, inCamelot1, inCamelot2, morganNearby, hasBucket, hasRepellent, clearedHive, hasWax, hasBlackCandle,
+	Requirement inFaye, inFayeGround, inFaye1, inFaye2, inCamelot1, inCamelot2, morganNearby, hasBucket, hasRepellent, clearedHive, hasWax, hasBlackCandle,
 		hasAnyBlackCandle, hasLitBlackCandle, beggarNearby, talkedToLady, hasExcalabur, hasReadSpell, inCamelot, inStar, thrantaxNearby, inCamelotTower1, inCamelotTower2;
 
 	QuestStep startQuest, talkToGawain, goUpstairsInCamelot, talkToLancelot, goBackDownStairsCamelot, hideInArheinCrate, goToFirstFloor, goToSecondFloor,
@@ -185,29 +185,29 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inFaye = new ZoneCondition(faye1, fayeGround, faye2);
-		inFayeGround = new ZoneCondition(fayeGround);
-		inFaye1 = new ZoneCondition(faye1);
-		inFaye2 = new ZoneCondition(faye2);
-		inCamelot = new ZoneCondition(camelotGround1, camelotGround2, camelotGround3);
-		inCamelot1 = new ZoneCondition(camelot1);
-		inCamelot2 = new ZoneCondition(camelot2);
+		inFaye = new ZoneRequirement(faye1, fayeGround, faye2);
+		inFayeGround = new ZoneRequirement(fayeGround);
+		inFaye1 = new ZoneRequirement(faye1);
+		inFaye2 = new ZoneRequirement(faye2);
+		inCamelot = new ZoneRequirement(camelotGround1, camelotGround2, camelotGround3);
+		inCamelot1 = new ZoneRequirement(camelot1);
+		inCamelot2 = new ZoneRequirement(camelot2);
 		morganNearby = new NpcCondition(NpcID.MORGAN_LE_FAYE);
-		hasBucket = new ItemRequirementCondition(bucket);
-		hasRepellent = new ItemRequirementCondition(repellent);
+		hasBucket = new ItemRequirements(bucket);
+		hasRepellent = new ItemRequirements(repellent);
 		clearedHive = new ObjectCondition(ObjectID.BEEHIVE_305);
-		hasWax = new ItemRequirementCondition(bucketOfWax);
-		hasBlackCandle = new ItemRequirementCondition(blackCandle);
-		hasLitBlackCandle = new ItemRequirementCondition(litBlackCandle);
-		hasAnyBlackCandle = new ItemRequirementCondition(LogicType.OR, blackCandle, litBlackCandle);
+		hasWax = new ItemRequirements(bucketOfWax);
+		hasBlackCandle = new ItemRequirements(blackCandle);
+		hasLitBlackCandle = new ItemRequirements(litBlackCandle);
+		hasAnyBlackCandle = new ItemRequirements(LogicType.OR, "", blackCandle, litBlackCandle);
 		beggarNearby = new NpcCondition(NpcID.BEGGAR);
-		talkedToLady = new WidgetTextCondition(217, 4, "Ok. That seems easy enough.");
-		hasExcalabur = new ItemRequirementCondition(excalabur);
-		hasReadSpell = new Conditions(true, LogicType.AND, new WidgetTextCondition(229, 1, "You find a small inscription"));
-		inStar = new ZoneCondition(star);
+		talkedToLady = new WidgetTextRequirement(217, 4, "Ok. That seems easy enough.");
+		hasExcalabur = new ItemRequirements(excalabur);
+		hasReadSpell = new Conditions(true, LogicType.AND, new WidgetTextRequirement(229, 1, "You find a small inscription"));
+		inStar = new ZoneRequirement(star);
 		thrantaxNearby = new NpcCondition(NpcID.THRANTAX_THE_MIGHTY);
-		inCamelotTower1 = new ZoneCondition(camelotTower1);
-		inCamelotTower2 = new ZoneCondition(camelotTower2);
+		inCamelotTower1 = new ZoneRequirement(camelotTower1);
+		inCamelotTower2 = new ZoneRequirement(camelotTower2);
 	}
 
 	public void setupSteps()

@@ -26,16 +26,16 @@ package com.questhelper.quests.monkeymadnessii;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;
@@ -53,7 +53,7 @@ public class MM2Sabotage extends ConditionalStep
 
 	Zone platformF1, platformF2, platformF3, platformSatchelArea, platformGunpowderArea, platformAboveGunpowder;
 
-	ConditionForStep hasSatchelNeededQuantity, hasFilledSatchelNeededQuantity, hasFilledSatchel1, onPlatformF1, onPlatformF2,
+	Requirement hasSatchelNeededQuantity, hasFilledSatchelNeededQuantity, hasFilledSatchel1, onPlatformF1, onPlatformF2,
 		onPlatformF3, onPlatformSatchelArea, onPlatformGunpowderArea, onPlatformAboveGunpowder, placedSatchel1, placedSatchel2, placedSatchel3, placedSatchel4, placedSatchel5,
 		placedSatchel6, placedAllSatchels;
 
@@ -119,30 +119,30 @@ public class MM2Sabotage extends ConditionalStep
 
 	public void setupConditions()
 	{
-		onPlatformF1 = new ZoneCondition(platformF1);
-		onPlatformF2 = new ZoneCondition(platformF2);
-		onPlatformF3 = new ZoneCondition(platformF3);
-		onPlatformSatchelArea = new ZoneCondition(platformSatchelArea);
-		onPlatformGunpowderArea = new ZoneCondition(platformGunpowderArea);
-		onPlatformAboveGunpowder = new ZoneCondition(platformAboveGunpowder);
+		onPlatformF1 = new ZoneRequirement(platformF1);
+		onPlatformF2 = new ZoneRequirement(platformF2);
+		onPlatformF3 = new ZoneRequirement(platformF3);
+		onPlatformSatchelArea = new ZoneRequirement(platformSatchelArea);
+		onPlatformGunpowderArea = new ZoneRequirement(platformGunpowderArea);
+		onPlatformAboveGunpowder = new ZoneRequirement(platformAboveGunpowder);
 
-		hasSatchelNeededQuantity = new ItemRequirementCondition(satchelCurrentQuantity);
-		hasFilledSatchel1 = new ItemRequirementCondition(filledSatchel1Highlighted);
-		hasFilledSatchelNeededQuantity = new ItemRequirementCondition(filledSatchelCurrentQuantity);
+		hasSatchelNeededQuantity = new ItemRequirements(satchelCurrentQuantity);
+		hasFilledSatchel1 = new ItemRequirements(filledSatchel1Highlighted);
+		hasFilledSatchelNeededQuantity = new ItemRequirements(filledSatchelCurrentQuantity);
 
 		// 5047 0->8 when first placed
 		// 8->10
 		// 10->14
 		// 14->46
 		// 46->62
-		placedSatchel1 = new VarbitCondition(5044, 1);
-		placedSatchel2 = new VarbitCondition(5042, 1);
-		placedSatchel3 = new VarbitCondition(5043, 1);
-		placedSatchel4 = new VarbitCondition(5046, 1);
-		placedSatchel5 = new VarbitCondition(5045, 1);
-		placedSatchel6 = new VarbitCondition(5041, 1);
+		placedSatchel1 = new VarbitRequirement(5044, 1);
+		placedSatchel2 = new VarbitRequirement(5042, 1);
+		placedSatchel3 = new VarbitRequirement(5043, 1);
+		placedSatchel4 = new VarbitRequirement(5046, 1);
+		placedSatchel5 = new VarbitRequirement(5045, 1);
+		placedSatchel6 = new VarbitRequirement(5041, 1);
 
-		placedAllSatchels = new VarbitCondition(5047, 63);
+		placedAllSatchels = new VarbitRequirement(5047, 63);
 	}
 
 	public void setupSteps()

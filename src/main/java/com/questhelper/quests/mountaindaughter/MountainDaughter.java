@@ -24,12 +24,28 @@
  */
 package com.questhelper.quests.mountaindaughter;
 
+import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.NpcHintArrowCondition;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,22 +57,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.ItemCollections;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MOUNTAIN_DAUGHTER
@@ -202,31 +202,31 @@ public class MountainDaughter extends BasicQuestHelper
 
 	private void loadConditions()
 	{
-		onIsland1 = new Conditions(new ZoneCondition(LAKE_ISLAND_1));
-		onIsland2 = new Conditions(new ZoneCondition(LAKE_ISLAND_2));
-		onIsland3 = new Conditions(new ZoneCondition(LAKE_ISLAND_3));
+		onIsland1 = new Conditions(new ZoneRequirement(LAKE_ISLAND_1));
+		onIsland2 = new Conditions(new ZoneRequirement(LAKE_ISLAND_2));
+		onIsland3 = new Conditions(new ZoneRequirement(LAKE_ISLAND_3));
 
-		inTheCamp = new Conditions(new ZoneCondition(CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3));
-		askedAboutDiplomacy = new Conditions(new VarbitCondition(262, 10));
+		inTheCamp = new Conditions(new ZoneRequirement(CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3));
+		askedAboutDiplomacy = new Conditions(new VarbitRequirement(262, 10));
 
-		VarbitCondition askedAboutFood = new VarbitCondition(263, 10, Operation.GREATER_EQUAL);
-		askedAboutFoodAndDiplomacy = new Conditions(new VarbitCondition(262, 10), askedAboutFood);
-		spokenToSvidi = new Conditions(new VarbitCondition(262, 20), askedAboutFood);
-		spokenToBrundt = new Conditions(new VarbitCondition(262, 30), askedAboutFood);
-		minedRock = new Conditions(new VarbitCondition(262, 40), askedAboutFood);
-		gottenGuarantee = new Conditions(new VarbitCondition(262, 50), askedAboutFood);
-		givenGuaranteeToSvidi = new Conditions(new VarbitCondition(262, 60), askedAboutFood);
-		gottenFruit = new Conditions(new ItemRequirementCondition(whitePearl));
-		gottenSeed = new Conditions(new ItemRequirementCondition(whitePearlSeed));
-		finishedDiplomacy = new Conditions(new VarbitCondition(266, 1));
-		finishedFoodAndDiplomacy = new Conditions(new VarbitCondition(266, 1), new VarbitCondition(263, 20));
-		inKendalCave = new Conditions(new ZoneCondition(KENDAL_CAVE));
-		fightableKendalNearby = new Conditions(new NpcHintArrowCondition(NpcID.THE_KENDAL_1378));
+		VarbitRequirement askedAboutFood = new VarbitRequirement(263, 10, Operation.GREATER_EQUAL);
+		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(262, 10), askedAboutFood);
+		spokenToSvidi = new Conditions(new VarbitRequirement(262, 20), askedAboutFood);
+		spokenToBrundt = new Conditions(new VarbitRequirement(262, 30), askedAboutFood);
+		minedRock = new Conditions(new VarbitRequirement(262, 40), askedAboutFood);
+		gottenGuarantee = new Conditions(new VarbitRequirement(262, 50), askedAboutFood);
+		givenGuaranteeToSvidi = new Conditions(new VarbitRequirement(262, 60), askedAboutFood);
+		gottenFruit = new Conditions(new ItemRequirements(whitePearl));
+		gottenSeed = new Conditions(new ItemRequirements(whitePearlSeed));
+		finishedDiplomacy = new Conditions(new VarbitRequirement(266, 1));
+		finishedFoodAndDiplomacy = new Conditions(new VarbitRequirement(266, 1), new VarbitRequirement(263, 20));
+		inKendalCave = new Conditions(new ZoneRequirement(KENDAL_CAVE));
+		fightableKendalNearby = new Conditions(new NpcHintArrowRequirement(NpcID.THE_KENDAL_1378));
 
-		hasCorpse = new Conditions(new ItemRequirementCondition(corpse));
-		hasRocks = new Conditions(new ItemRequirementCondition(new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5)));
-		hasNecklace = new Conditions(new ItemRequirementCondition(new ItemRequirement("Asleif's necklace", ItemID.ASLEIFS_NECKLACE)));
-		hasBuried = new Conditions(new VarbitCondition(273, 1));
+		hasCorpse = new Conditions(new ItemRequirements(corpse));
+		hasRocks = new Conditions(new ItemRequirements(new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5)));
+		hasNecklace = new Conditions(new ItemRequirements(new ItemRequirement("Asleif's necklace", ItemID.ASLEIFS_NECKLACE)));
+		hasBuried = new Conditions(new VarbitRequirement(273, 1));
 	}
 
 	private void loadQuestSteps()

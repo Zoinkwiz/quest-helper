@@ -25,20 +25,19 @@
 package com.questhelper.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.steps.OwnerStep;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,9 +83,9 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 
 	ItemRequirement[] fluids;
 
-	ConditionForStep hasOldNotes, inFirstFloor, inBasement, triedToActivate, cleanedRefinery, hasFluid1, hasFluid2, hasFluid3, hasFluid4, hasFluid5, inSecondFloor;
+	Requirement hasOldNotes, inFirstFloor, inBasement, triedToActivate, cleanedRefinery, hasFluid1, hasFluid2, hasFluid3, hasFluid4, hasFluid5, inSecondFloor;
 
-	ConditionForStep[] hasFluids;
+	Requirement[] hasFluids;
 
 	DetailedQuestStep goUpLadder, goUpStairs, goDownToFirstFloor, searchPotionCupboard, inspectRefinery, readNote, getFluid, useFluidOnRefinery, activateRefinery;
 
@@ -257,19 +256,19 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 
 	private void setupConditions()
 	{
-		inFirstFloor = new ZoneCondition(firstFloor);
-		inSecondFloor = new ZoneCondition(secondFloor);
-		inBasement = new ZoneCondition(basement);
+		inFirstFloor = new ZoneRequirement(firstFloor);
+		inSecondFloor = new ZoneRequirement(secondFloor);
+		inBasement = new ZoneRequirement(basement);
 
-		triedToActivate = new VarbitCondition(7799, 2);
-		cleanedRefinery = new VarbitCondition(7799, 3);
-		hasOldNotes = new ItemRequirementCondition(oldNotes);
-		hasFluid1 = new ItemRequirementCondition(fluid1);
-		hasFluid2 = new ItemRequirementCondition(fluid2);
-		hasFluid3 = new ItemRequirementCondition(fluid3);
-		hasFluid4 = new ItemRequirementCondition(fluid4);
-		hasFluid5 = new ItemRequirementCondition(fluid5);
-		hasFluids = new ConditionForStep[]{null, hasFluid1, hasFluid2, hasFluid3, hasFluid4, hasFluid5 };
+		triedToActivate = new VarbitRequirement(7799, 2);
+		cleanedRefinery = new VarbitRequirement(7799, 3);
+		hasOldNotes = new ItemRequirements(oldNotes);
+		hasFluid1 = new ItemRequirements(fluid1);
+		hasFluid2 = new ItemRequirements(fluid2);
+		hasFluid3 = new ItemRequirements(fluid3);
+		hasFluid4 = new ItemRequirements(fluid4);
+		hasFluid5 = new ItemRequirements(fluid5);
+		hasFluids = new Requirement[]{null, hasFluid1, hasFluid2, hasFluid3, hasFluid4, hasFluid5 };
 	}
 
 	private void setupZones()

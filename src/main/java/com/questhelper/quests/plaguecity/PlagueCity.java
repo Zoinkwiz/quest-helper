@@ -24,14 +24,23 @@
  */
 package com.questhelper.quests.plaguecity;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,15 +52,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.PLAGUE_CITY
@@ -65,7 +65,7 @@ public class PlagueCity extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement fourBucketsOfWater, threeBucketsOfWater, twoBucketsOfWater, bucketOfWater;
 
-	ConditionForStep inUnderground, hasPictureOfElena, hasTriedToPullGrill, inWestArdougne, hasBook, inUpstairsMathasHouse, hasBucketOfChocolateMilk, hasHangoverCure,
+	Requirement inUnderground, hasPictureOfElena, hasTriedToPullGrill, inWestArdougne, hasBook, inUpstairsMathasHouse, hasBucketOfChocolateMilk, hasHangoverCure,
 	hasWarrant, inPlagueHouse, inDownstairsOfPlagueHouse, hasKey, manholeClosed;
 
 	QuestStep talkToEdmond, talkToAlrena, talkToEdmondAgain, useWaterOnMudPatch1, useWaterOnMudPatch2, useWaterOnMudPatch3, useWaterOnMudPatch4,
@@ -225,8 +225,8 @@ public class PlagueCity extends BasicQuestHelper
 		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
 		hangoverCure = new ItemRequirement("Hangover cure", ItemID.HANGOVER_CURE);
 		warrant = new ItemRequirement("Warrant", ItemID.WARRANT);
-		inPlagueHouse = new ZoneCondition(plagueHouse1, plagueHouse2);
-		inDownstairsOfPlagueHouse = new ZoneCondition(downstairsOfPlagueHouse);
+		inPlagueHouse = new ZoneRequirement(plagueHouse1, plagueHouse2);
+		inDownstairsOfPlagueHouse = new ZoneRequirement(downstairsOfPlagueHouse);
 		key = new ItemRequirement("A small key", ItemID.A_SMALL_KEY);
 	}
 
@@ -242,16 +242,16 @@ public class PlagueCity extends BasicQuestHelper
 	}
 
 	public void setupConditions() {
-		inUnderground = new ZoneCondition(underground);
-		hasPictureOfElena = new ItemRequirementCondition(pictureOfElena);
-		hasTriedToPullGrill = new VarbitCondition(1786, 1);
-		inWestArdougne = new ZoneCondition(westArdougne1, westArdougne2, westArdougne3);
-		hasBook = new ItemRequirementCondition(book);
-		inUpstairsMathasHouse = new ZoneCondition(upstairsMathasHouse);
-		hasBucketOfChocolateMilk = new ItemRequirementCondition(bucketOfChocolateMilk);
-		hasHangoverCure = new ItemRequirementCondition(hangoverCure);
-		hasWarrant = new ItemRequirementCondition(warrant);
-		hasKey = new ItemRequirementCondition(key);
+		inUnderground = new ZoneRequirement(underground);
+		hasPictureOfElena = new ItemRequirements(pictureOfElena);
+		hasTriedToPullGrill = new VarbitRequirement(1786, 1);
+		inWestArdougne = new ZoneRequirement(westArdougne1, westArdougne2, westArdougne3);
+		hasBook = new ItemRequirements(book);
+		inUpstairsMathasHouse = new ZoneRequirement(upstairsMathasHouse);
+		hasBucketOfChocolateMilk = new ItemRequirements(bucketOfChocolateMilk);
+		hasHangoverCure = new ItemRequirements(hangoverCure);
+		hasWarrant = new ItemRequirements(warrant);
+		hasKey = new ItemRequirements(key);
 		manholeClosed = new ObjectCondition(ObjectID.MANHOLE_2543);
 	}
 

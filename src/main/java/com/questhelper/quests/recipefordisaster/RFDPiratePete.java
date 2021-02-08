@@ -31,24 +31,23 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ComplexRequirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.WeightRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.player.WeightRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,7 +73,7 @@ public class RFDPiratePete extends BasicQuestHelper
 
 	WeightRequirement canSwim;
 
-	ConditionForStep inDiningRoom, askedCookOptions, inUnderWater, hasEnoughRocks, has5Hide, hasCrabMeat, hasKelp, hasGroundKelp, hasGroundCrabMeat,
+	Requirement inDiningRoom, askedCookOptions, inUnderWater, hasEnoughRocks, has5Hide, hasCrabMeat, hasKelp, hasGroundKelp, hasGroundCrabMeat,
 		walkingUnderwater, hasCake, hasRawCake, hasGroundCod, hasBreadcrumbs;
 
 	QuestStep enterDiningRoom, inspectPete, enterKitchen, usePestleOnCod, useKnifeOnBread, talkToMurphy, talkToMurphyAgain, goDiving,
@@ -210,27 +209,27 @@ public class RFDPiratePete extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneCondition(diningRoom);
-		walkingUnderwater = new VarbitCondition(1871, 1);
+		inDiningRoom = new ZoneRequirement(diningRoom);
+		walkingUnderwater = new VarbitRequirement(1871, 1);
 
 		askedCookOptions = new Conditions(
-			new VarbitCondition(1873, 1),
-			new VarbitCondition(1876, 1),
-			new VarbitCondition(1877, 1));
+			new VarbitRequirement(1873, 1),
+			new VarbitRequirement(1876, 1),
+			new VarbitRequirement(1877, 1));
 
-		inUnderWater = new ZoneCondition(underwater);
+		inUnderWater = new ZoneRequirement(underwater);
 
-		hasEnoughRocks = new VarbitCondition(1869, 5);
+		hasEnoughRocks = new VarbitRequirement(1869, 5);
 
-		has5Hide = new ItemRequirementCondition(mudskipperHide5);
-		hasGroundCrabMeat = new ItemRequirementCondition(groundCrabMeatHighlighted);
-		hasCrabMeat = new Conditions(LogicType.OR, new ItemRequirementCondition(crabMeat), hasGroundCrabMeat);
-		hasGroundKelp = new ItemRequirementCondition(groundKelpHighlighted);
-		hasKelp = new Conditions(LogicType.OR, new ItemRequirementCondition(kelp), hasGroundKelp);
-		hasCake = new ItemRequirementCondition(fishCake);
-		hasRawCake = new ItemRequirementCondition(rawFishCake);
-		hasGroundCod = new ItemRequirementCondition(groundCod);
-		hasBreadcrumbs = new ItemRequirementCondition(breadcrumbs);
+		has5Hide = new ItemRequirements(mudskipperHide5);
+		hasGroundCrabMeat = new ItemRequirements(groundCrabMeatHighlighted);
+		hasCrabMeat = new Conditions(LogicType.OR, new ItemRequirements(crabMeat), hasGroundCrabMeat);
+		hasGroundKelp = new ItemRequirements(groundKelpHighlighted);
+		hasKelp = new Conditions(LogicType.OR, new ItemRequirements(kelp), hasGroundKelp);
+		hasCake = new ItemRequirements(fishCake);
+		hasRawCake = new ItemRequirements(rawFishCake);
+		hasGroundCod = new ItemRequirements(groundCod);
+		hasBreadcrumbs = new ItemRequirements(breadcrumbs);
 
 		generalReqs = new ArrayList<>();
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));

@@ -31,12 +31,12 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -65,7 +65,7 @@ public class ASoulsBane extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement food, digsiteTeleport, antipoison;
 
-	ConditionForStep ropeUsed, inAngerRoom, hasWeapon, hasSword, hasSpear, hasMace, hasBattleaxe, watchedTolnaLeavingCutscene, inHole0, inHole1,
+	Requirement ropeUsed, inAngerRoom, hasWeapon, hasSword, hasSpear, hasMace, hasBattleaxe, watchedTolnaLeavingCutscene, inHole0, inHole1,
 		inHole2, inHole3, inHole4, inHole5, inFearRoom, reaperNearby, inConfusionRoom, inHopelessRoom, inHopeRoom, inTolnaRoom;
 
 	DetailedQuestStep talkToLauna, useRopeOnRift, enterRift, takeWeapon, killAnimals, killBears, killRats, killUnicorn, killGoblins, leaveAngerRoom,
@@ -159,30 +159,30 @@ public class ASoulsBane extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		ropeUsed = new VarbitCondition(2032, 1);
-		hasWeapon = new ItemRequirementCondition(LogicType.OR, angerBattleaxe, angerMace, angerSpear, angerSword);
-		hasSword = new VarbitCondition(2029, 1);
-		hasSpear = new VarbitCondition(2029, 2);
-		hasMace = new VarbitCondition(2029, 3);
-		hasBattleaxe = new VarbitCondition(2029, 4);
+		ropeUsed = new VarbitRequirement(2032, 1);
+		hasWeapon = new ItemRequirements(LogicType.OR, "", angerBattleaxe, angerMace, angerSpear, angerSword);
+		hasSword = new VarbitRequirement(2029, 1);
+		hasSpear = new VarbitRequirement(2029, 2);
+		hasMace = new VarbitRequirement(2029, 3);
+		hasBattleaxe = new VarbitRequirement(2029, 4);
 
-		inAngerRoom = new ZoneCondition(rageRoom);
-		inFearRoom = new ZoneCondition(fearRoom);
-		inConfusionRoom = new ZoneCondition(confusionRoom);
-		inHopelessRoom = new ZoneCondition(hopelessRoom);
-		inHopeRoom = new ZoneCondition(hopeRoom);
-		inTolnaRoom = new ZoneCondition(tolnaRoom);
+		inAngerRoom = new ZoneRequirement(rageRoom);
+		inFearRoom = new ZoneRequirement(fearRoom);
+		inConfusionRoom = new ZoneRequirement(confusionRoom);
+		inHopelessRoom = new ZoneRequirement(hopelessRoom);
+		inHopeRoom = new ZoneRequirement(hopeRoom);
+		inTolnaRoom = new ZoneRequirement(tolnaRoom);
 
-		watchedTolnaLeavingCutscene = new VarbitCondition(2560, 1);
+		watchedTolnaLeavingCutscene = new VarbitRequirement(2560, 1);
 
-		inHole0 = new VarbitCondition(2012, 0);
-		inHole1 = new VarbitCondition(2012, 1);
-		inHole2 = new VarbitCondition(2012, 2);
-		inHole3 = new VarbitCondition(2012, 3);
-		inHole4 = new VarbitCondition(2012, 4);
-		inHole5 = new VarbitCondition(2012, 5);
+		inHole0 = new VarbitRequirement(2012, 0);
+		inHole1 = new VarbitRequirement(2012, 1);
+		inHole2 = new VarbitRequirement(2012, 2);
+		inHole3 = new VarbitRequirement(2012, 3);
+		inHole4 = new VarbitRequirement(2012, 4);
+		inHole5 = new VarbitRequirement(2012, 5);
 
-		reaperNearby = new VarbitCondition(2035, 1);
+		reaperNearby = new VarbitRequirement(2035, 1);
 	}
 
 	public void loadZones()

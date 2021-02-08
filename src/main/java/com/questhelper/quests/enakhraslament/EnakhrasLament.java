@@ -25,20 +25,26 @@
 package com.questhelper.quests.enakhraslament;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.ItemRequirements;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,14 +57,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ENAKHRAS_LAMENT
@@ -73,7 +71,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	SpellbookRequirement onNormals;
 
-	ConditionForStep hasBase, hasBody, has32, has20, hasPlacedBase, hasTalkedToLazimAfterBase, hasPlacedBody, chiseledStatue,
+	Requirement hasBase, hasBody, has32, has20, hasPlacedBase, hasTalkedToLazimAfterBase, hasPlacedBody, chiseledStatue,
 		canChooseHead, has2Granite, hasGranite, hasHead, inTempleEntranceRoom, inTempleGroundFloor, startedTemple, hasMSigil,
 		gottenLimbs, hasKSigil, hasRSigil, hasZSigil, openedDoor1, openedDoor2, openedDoor3, openedDoor4, mPlaced, kPlaced,
 		rPlaced, zPlaced, goneUpstairs, hasCamelMould, hasCamelHead, hasGottenRightArm, hasGottenRightLeg, inCentreRoom, inPuzzleFloor,
@@ -286,66 +284,66 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBase = new ItemRequirementCondition(base);
-		has32 = new ItemRequirementCondition(sandstone32);
-		hasBody = new ItemRequirementCondition(body);
-		has20 = new ItemRequirementCondition(sandstone20);
-		hasPlacedBase = new VarbitCondition(1593, 1);
-		hasPlacedBody = new VarbitCondition(1593, 2);
-		chiseledStatue = new VarbitCondition(1593, 3);
-		canChooseHead = new VarbitCondition(1563, 1);
-		hasTalkedToLazimAfterBase = new VarbitCondition(1562, 1);
-		has2Granite = new ItemRequirementCondition(granite2);
-		hasGranite = new ItemRequirementCondition(granite);
+		hasBase = new ItemRequirements(base);
+		has32 = new ItemRequirements(sandstone32);
+		hasBody = new ItemRequirements(body);
+		has20 = new ItemRequirements(sandstone20);
+		hasPlacedBase = new VarbitRequirement(1593, 1);
+		hasPlacedBody = new VarbitRequirement(1593, 2);
+		chiseledStatue = new VarbitRequirement(1593, 3);
+		canChooseHead = new VarbitRequirement(1563, 1);
+		hasTalkedToLazimAfterBase = new VarbitRequirement(1562, 1);
+		has2Granite = new ItemRequirements(granite2);
+		hasGranite = new ItemRequirements(granite);
 
-		hasHead = new ItemRequirementCondition(head);
-		hasCamelMould = new ItemRequirementCondition(camelMould);
-		hasCamelHead = new ItemRequirementCondition(camelHead);
-		hasGottenRightArm = new VarbitCondition(1590, 1);
-		hasGottenRightLeg = new VarbitCondition(1592, 1);
+		hasHead = new ItemRequirements(head);
+		hasCamelMould = new ItemRequirements(camelMould);
+		hasCamelHead = new ItemRequirements(camelHead);
+		hasGottenRightArm = new VarbitRequirement(1590, 1);
+		hasGottenRightLeg = new VarbitRequirement(1592, 1);
 
-		inTempleEntranceRoom = new ZoneCondition(templeEntranceRoom);
-		inTempleGroundFloor = new ZoneCondition(templeGroundFloor);
-		inCentreRoom = new ZoneCondition(centreRoom);
-		inPuzzleFloor = new ZoneCondition(puzzleFloor);
-		inNorthPuzzleRoom = new ZoneCondition(northPuzzleRoom);
-		inTopRoom = new ZoneCondition(topRoom);
-		inLastRoom = new ZoneCondition(lastRoom);
+		inTempleEntranceRoom = new ZoneRequirement(templeEntranceRoom);
+		inTempleGroundFloor = new ZoneRequirement(templeGroundFloor);
+		inCentreRoom = new ZoneRequirement(centreRoom);
+		inPuzzleFloor = new ZoneRequirement(puzzleFloor);
+		inNorthPuzzleRoom = new ZoneRequirement(northPuzzleRoom);
+		inTopRoom = new ZoneRequirement(topRoom);
+		inLastRoom = new ZoneRequirement(lastRoom);
 
-		startedTemple = new VarbitCondition(1566, 1);
+		startedTemple = new VarbitRequirement(1566, 1);
 
-		gottenLimbs = new VarbitCondition(1587, 63);
-		hasMSigil = new ItemRequirementCondition(mSigil);
-		hasZSigil = new ItemRequirementCondition(zSigil);
-		hasKSigil = new ItemRequirementCondition(kSigil);
-		hasRSigil = new ItemRequirementCondition(rSigil);
+		gottenLimbs = new VarbitRequirement(1587, 63);
+		hasMSigil = new ItemRequirements(mSigil);
+		hasZSigil = new ItemRequirements(zSigil);
+		hasKSigil = new ItemRequirements(kSigil);
+		hasRSigil = new ItemRequirements(rSigil);
 
-		openedDoor1 = new VarbitCondition(1608, 1);
-		openedDoor2 = new VarbitCondition(1609, 1);
-		openedDoor3 = new VarbitCondition(1610, 1);
-		openedDoor4 = new VarbitCondition(1611, 1);
+		openedDoor1 = new VarbitRequirement(1608, 1);
+		openedDoor2 = new VarbitRequirement(1609, 1);
+		openedDoor3 = new VarbitRequirement(1610, 1);
+		openedDoor4 = new VarbitRequirement(1611, 1);
 
-		zPlaced = new VarbitCondition(1611, 1);
-		mPlaced = new VarbitCondition(1612, 1);
-		rPlaced = new VarbitCondition(1613, 1);
-		kPlaced = new VarbitCondition(1614, 1);
+		zPlaced = new VarbitRequirement(1611, 1);
+		mPlaced = new VarbitRequirement(1612, 1);
+		rPlaced = new VarbitRequirement(1613, 1);
+		kPlaced = new VarbitRequirement(1614, 1);
 
-		goneUpstairs = new VarbitCondition(1618, 1);
+		goneUpstairs = new VarbitRequirement(1618, 1);
 
-		fedBread = new VarbitCondition(1576, 1);
-		meltedFountain = new VarbitCondition(1577, 1);
-		cleanedFurnace = new VarbitCondition(1578, 1);
-		litBraziers = new VarbitCondition(1579, 1);
+		fedBread = new VarbitRequirement(1576, 1);
+		meltedFountain = new VarbitRequirement(1577, 1);
+		cleanedFurnace = new VarbitRequirement(1578, 1);
+		litBraziers = new VarbitRequirement(1579, 1);
 
-		litLog = new VarbitCondition(1581, 1);
-		litOak = new VarbitCondition(1582, 1);
-		litWillow = new VarbitCondition(1583, 1);
-		litMaple = new VarbitCondition(1584, 1);
-		litCandle = new VarbitCondition(1585, 1);
-		litCoal = new VarbitCondition(1586, 1);
+		litLog = new VarbitRequirement(1581, 1);
+		litOak = new VarbitRequirement(1582, 1);
+		litWillow = new VarbitRequirement(1583, 1);
+		litMaple = new VarbitRequirement(1584, 1);
+		litCandle = new VarbitRequirement(1585, 1);
+		litCoal = new VarbitRequirement(1586, 1);
 
-		wallNeedsChisel = new VarbitCondition(1620, 1);
-		finishedWall = new VarbitCondition(1602, 3);
+		wallNeedsChisel = new VarbitRequirement(1620, 1);
+		finishedWall = new VarbitRequirement(1602, 3);
 	}
 
 	public void setupSteps()

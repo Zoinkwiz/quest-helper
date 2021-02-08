@@ -30,16 +30,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -67,7 +65,7 @@ public class FamilyCrest extends BasicQuestHelper
 	ItemRequirement shrimp, salmon, tuna, bass, swordfish, pickaxe, ruby, ruby2, ringMould, necklaceMould, antipoison, runesForBlasts, gold2, gold,
 		perfectRing, perfectNecklace, goldBar, goldBar2, crestPiece1, crestPiece2, crestPiece3, crest;
 
-	ConditionForStep inDwarvenMines, inHobgoblinDungeon, northWallUp, southRoomUp, northRoomUp, northWallDown, southRoomDown, northRoomDown, hasGold2,
+	Requirement inDwarvenMines, inHobgoblinDungeon, northWallUp, southRoomUp, northRoomUp, northWallDown, southRoomDown, northRoomDown, hasGold2,
 		hasPerfectRing, hasPerfectNecklace, hasGoldBar2, inJollyBoar, inEdgevilleDungeon, hasCrestPiece3, hasCrest, crest3Nearby;
 
 	QuestStep talkToDimintheis, talkToCaleb, talkToCalebWithFish, talkToCalebOnceMore, talkToGemTrader, talkToMan, enterDwarvenMine, talkToBoot,
@@ -183,8 +181,8 @@ public class FamilyCrest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDwarvenMines = new ZoneCondition(dwarvenMines);
-		inHobgoblinDungeon = new ZoneCondition(hobgoblinDungeon);
+		inDwarvenMines = new ZoneRequirement(dwarvenMines);
+		inHobgoblinDungeon = new ZoneRequirement(hobgoblinDungeon);
 		northWallUp = new ObjectCondition(ObjectID.LEVER_2422, new WorldPoint(2722, 9710, 0));
 		southRoomUp = new ObjectCondition(ObjectID.LEVER_2424, new WorldPoint(2724, 9669, 0));
 		northRoomUp = new ObjectCondition(ObjectID.LEVER_2426, new WorldPoint(2722, 9718, 0));
@@ -193,20 +191,20 @@ public class FamilyCrest extends BasicQuestHelper
 		southRoomDown = new ObjectCondition(ObjectID.LEVER_2423, new WorldPoint(2724, 9669, 0));
 		northRoomDown = new ObjectCondition(ObjectID.LEVER_2425, new WorldPoint(2722, 9718, 0));
 
-		hasGold2 = new Conditions(true, new ItemRequirementCondition(gold2));
-		hasGoldBar2 = new Conditions(true, new ItemRequirementCondition(goldBar2));
+		hasGold2 = new Conditions(true, new ItemRequirements(gold2));
+		hasGoldBar2 = new Conditions(true, new ItemRequirements(goldBar2));
 
-		hasPerfectNecklace = new Conditions(true, new ItemRequirementCondition(perfectNecklace));
-		hasPerfectRing = new Conditions(true, new ItemRequirementCondition(perfectRing));
+		hasPerfectNecklace = new Conditions(true, new ItemRequirements(perfectNecklace));
+		hasPerfectRing = new Conditions(true, new ItemRequirements(perfectRing));
 
-		inJollyBoar = new ZoneCondition(jollyBoar);
+		inJollyBoar = new ZoneRequirement(jollyBoar);
 
-		inEdgevilleDungeon = new ZoneCondition(edgevilleDungeon);
+		inEdgevilleDungeon = new ZoneRequirement(edgevilleDungeon);
 
-		hasCrestPiece3 = new ItemRequirementCondition(crestPiece3);
-		crest3Nearby = new ItemCondition(crestPiece3);
+		hasCrestPiece3 = new ItemRequirements(crestPiece3);
+		crest3Nearby = new ItemOnTileRequirement(crestPiece3);
 
-		hasCrest = new ItemRequirementCondition(crest);
+		hasCrest = new ItemRequirements(crest);
 	}
 
 	public void setupSteps()

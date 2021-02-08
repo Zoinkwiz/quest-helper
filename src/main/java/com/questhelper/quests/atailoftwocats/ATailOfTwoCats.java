@@ -26,30 +26,29 @@ package com.questhelper.quests.atailoftwocats;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.FollowerItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.FollowerItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -65,7 +64,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	ItemRequirement catspeak, catspeakE, deathRune5, chocolateCake, logs, tinderbox, milk, shears,
 		potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom, hat, catspeakEWorn, cat;
 
-	ConditionForStep bobNearby, rakedPatch, madeBed, plantedSeed, placedLogs, litLogs, placedCake, placedMilk, usedShears, grownPotatoes;
+	Requirement bobNearby, rakedPatch, madeBed, plantedSeed, placedLogs, litLogs, placedCake, placedMilk, usedShears, grownPotatoes;
 
 	QuestStep talkToUnferth, talkToHild, findBob, talkToBob, talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx, useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs,
 		useChocolateCakeOnTable, useMilkOnTable, useShearsOnUnferth, reportToUnferth, talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish, talkToUnferthToFinish, waitForPotatoesToGrow;
@@ -167,15 +166,15 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	{
 		bobNearby = new NpcCondition(NpcID.BOB_8034);
 
-		rakedPatch = new VarbitCondition(1033, 3);
-		plantedSeed = new VarbitCondition(1033, 4, Operation.GREATER_EQUAL);
-		grownPotatoes = new VarbitCondition(1033, 8);
-		madeBed = new VarbitCondition(1029, 1);
-		placedLogs = new VarbitCondition(1030, 1);
-		litLogs = new VarbitCondition(1030, 2);
-		placedCake = new VarbitCondition(1031, 3);
-		placedMilk = new VarbitCondition(1031, 4);
-		usedShears = new VarbitCondition(1032, 8);
+		rakedPatch = new VarbitRequirement(1033, 3);
+		plantedSeed = new VarbitRequirement(1033, 4, Operation.GREATER_EQUAL);
+		grownPotatoes = new VarbitRequirement(1033, 8);
+		madeBed = new VarbitRequirement(1029, 1);
+		placedLogs = new VarbitRequirement(1030, 1);
+		litLogs = new VarbitRequirement(1030, 2);
+		placedCake = new VarbitRequirement(1031, 3);
+		placedMilk = new VarbitRequirement(1031, 4);
+		usedShears = new VarbitRequirement(1032, 8);
 	}
 
 	public void setupSteps()

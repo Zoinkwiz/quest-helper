@@ -25,23 +25,31 @@
 package com.questhelper.quests.lunardiplomacy;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedOwnerStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.DigStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,15 +63,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.LUNAR_DIPLOMACY
@@ -84,7 +83,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatRunes, combatGear;
 
-	ConditionForStep atBaseOfStairs, onCoveF1, onBoatF0, onBoatF1, onBoatF2, onBoatF3, hasLitBullseye, hasBullseye,
+	Requirement atBaseOfStairs, onCoveF1, onBoatF0, onBoatF1, onBoatF2, onBoatF3, hasLitBullseye, hasBullseye,
 		hasEmeraldLantern, revealedCannon, revealedChart, revealedChest, revealedPillar, revealedCrate, hasEmeraldLanternLit,
 		onBoatLunar, onLunarDock, onLunarIsle, inYagaHouse, toothNearby, hasTooth, hasGuamPotion, hasMarrentillPotion,
 		hasGuamAndMarrentilPotion, hasGroundTooth, hasSleepPotion, hasSpecialVial, hasWaterVial, hasStaffP1, hasStaffP2, hasStaffP3,
@@ -488,98 +487,98 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		atBaseOfStairs = new ZoneCondition(baseOfStairs);
-		onCoveF1 = new ZoneCondition(coveF1);
+		atBaseOfStairs = new ZoneRequirement(baseOfStairs);
+		onCoveF1 = new ZoneRequirement(coveF1);
 
-		onBoatF0 = new ZoneCondition(boatF0);
-		onBoatF1 = new ZoneCondition(boatF1);
-		onBoatF2 = new ZoneCondition(boatF2);
-		onBoatF3 = new ZoneCondition(boatF3);
+		onBoatF0 = new ZoneRequirement(boatF0);
+		onBoatF1 = new ZoneRequirement(boatF1);
+		onBoatF2 = new ZoneRequirement(boatF2);
+		onBoatF3 = new ZoneRequirement(boatF3);
 
-		onBoatLunar = new ZoneCondition(boatLunar1, boatLunar2);
-		onLunarDock = new ZoneCondition(lunarDock);
-		onLunarIsle = new ZoneCondition(lunarIsle);
-		inLunarMine = new ZoneCondition(lunarMine);
-		inYagaHouse = new ZoneCondition(yagaHouse);
+		onBoatLunar = new ZoneRequirement(boatLunar1, boatLunar2);
+		onLunarDock = new ZoneRequirement(lunarDock);
+		onLunarIsle = new ZoneRequirement(lunarIsle);
+		inLunarMine = new ZoneRequirement(lunarMine);
+		inYagaHouse = new ZoneRequirement(yagaHouse);
 
-		inAirAltar = new ZoneCondition(airAltar);
-		inEarthAltar = new ZoneCondition(earthAltar);
-		inFireAltar = new ZoneCondition(fireAltar);
-		inWaterAltar = new ZoneCondition(waterAltar);
+		inAirAltar = new ZoneRequirement(airAltar);
+		inEarthAltar = new ZoneRequirement(earthAltar);
+		inFireAltar = new ZoneRequirement(fireAltar);
+		inWaterAltar = new ZoneRequirement(waterAltar);
 
-		inFightArena = new ZoneCondition(fightArena);
+		inFightArena = new ZoneRequirement(fightArena);
 
-		hasLitBullseye = new ItemRequirementCondition(bullseyeLanternLit);
-		hasBullseye = new ItemRequirementCondition(bullseyeLantern);
-		hasEmeraldLantern = new ItemRequirementCondition(emeraldLantern);
-		hasEmeraldLanternLit = new ItemRequirementCondition(emeraldLanternLit);
+		hasLitBullseye = new ItemRequirements(bullseyeLanternLit);
+		hasBullseye = new ItemRequirements(bullseyeLantern);
+		hasEmeraldLantern = new ItemRequirements(emeraldLantern);
+		hasEmeraldLanternLit = new ItemRequirements(emeraldLanternLit);
 
-		revealedPillar = new VarbitCondition(2431, 2);
-		revealedCannon = new VarbitCondition(2432, 2);
-		revealedCrate = new VarbitCondition(2433, 2);
-		revealedChart = new VarbitCondition(2434, 2);
-		revealedChest = new VarbitCondition(2435, 2);
+		revealedPillar = new VarbitRequirement(2431, 2);
+		revealedCannon = new VarbitRequirement(2432, 2);
+		revealedCrate = new VarbitRequirement(2433, 2);
+		revealedChart = new VarbitRequirement(2434, 2);
+		revealedChest = new VarbitRequirement(2435, 2);
 
-		hasSpecialVial = new ItemRequirementCondition(specialVial);
-		hasWaterVial = new ItemRequirementCondition(waterVial);
-		hasGuamPotion = new ItemRequirementCondition(guamPotion);
-		hasMarrentillPotion = new ItemRequirementCondition(marrentilPotion);
-		hasGuamAndMarrentilPotion = new ItemRequirementCondition(guamMarrentilPotion);
-		hasTooth = new ItemRequirementCondition(suqahTooth);
-		hasGroundTooth = new ItemRequirementCondition(groundTooth);
-		hasSleepPotion = new ItemRequirementCondition(sleepPotion);
-		hasTiara = new ItemRequirementCondition(tiara);
+		hasSpecialVial = new ItemRequirements(specialVial);
+		hasWaterVial = new ItemRequirements(waterVial);
+		hasGuamPotion = new ItemRequirements(guamPotion);
+		hasMarrentillPotion = new ItemRequirements(marrentilPotion);
+		hasGuamAndMarrentilPotion = new ItemRequirements(guamMarrentilPotion);
+		hasTooth = new ItemRequirements(suqahTooth);
+		hasGroundTooth = new ItemRequirements(groundTooth);
+		hasSleepPotion = new ItemRequirements(sleepPotion);
+		hasTiara = new ItemRequirements(tiara);
 
-		toothNearby = new ItemCondition(suqahTooth);
+		toothNearby = new ItemOnTileRequirement(suqahTooth);
 
-		hasStaffP1 = new ItemRequirementCondition(lunarStaffP1);
-		hasStaffP2 = new ItemRequirementCondition(lunarStaffP2);
-		hasStaffP3 = new ItemRequirementCondition(lunarStaffP3);
-		hasLunarStaff = new ItemRequirementCondition(lunarStaff);
+		hasStaffP1 = new ItemRequirements(lunarStaffP1);
+		hasStaffP2 = new ItemRequirements(lunarStaffP2);
+		hasStaffP3 = new ItemRequirements(lunarStaffP3);
+		hasLunarStaff = new ItemRequirements(lunarStaff);
 
-		hasOre = new ItemRequirementCondition(lunarOre);
-		hasBar = new ItemRequirementCondition(lunarBar);
+		hasOre = new ItemRequirements(lunarOre);
+		hasBar = new ItemRequirements(lunarBar);
 
-		talkedToSelene = new VarbitCondition(2445, 1);
-		talkedToMeteora = new VarbitCondition(2446, 1);
-		talkedToRimae = new VarbitCondition(2447, 1);
+		talkedToSelene = new VarbitRequirement(2445, 1);
+		talkedToMeteora = new VarbitRequirement(2446, 1);
+		talkedToRimae = new VarbitRequirement(2447, 1);
 
-		tiaraNearby = new ItemCondition(tiara);
+		tiaraNearby = new ItemOnTileRequirement(tiara);
 
-		hadHelm = new Conditions(LogicType.OR, new ItemRequirementCondition(helm), new VarbitCondition(2436, 1));
-		hadCape = new Conditions(LogicType.OR, new ItemRequirementCondition(cape), new VarbitCondition(2437, 1));
-		hadAmulet = new Conditions(LogicType.OR, new ItemRequirementCondition(amulet), new VarbitCondition(2438, 1));
-		hadTorso = new Conditions(LogicType.OR, new ItemRequirementCondition(torso), new VarbitCondition(2439, 1));
-		hadGloves = new Conditions(LogicType.OR, new ItemRequirementCondition(gloves), new VarbitCondition(2441, 1));
-		hadBoots = new Conditions(LogicType.OR, new ItemRequirementCondition(boots), new VarbitCondition(2440, 1));
-		hadLegs = new Conditions(LogicType.OR, new ItemRequirementCondition(legs), new VarbitCondition(2442, 1));
-		hadRing = new Conditions(LogicType.OR, new ItemRequirementCondition(ring), new VarbitCondition(2443, 1));
+		hadHelm = new Conditions(LogicType.OR, new ItemRequirements(helm), new VarbitRequirement(2436, 1));
+		hadCape = new Conditions(LogicType.OR, new ItemRequirements(cape), new VarbitRequirement(2437, 1));
+		hadAmulet = new Conditions(LogicType.OR, new ItemRequirements(amulet), new VarbitRequirement(2438, 1));
+		hadTorso = new Conditions(LogicType.OR, new ItemRequirements(torso), new VarbitRequirement(2439, 1));
+		hadGloves = new Conditions(LogicType.OR, new ItemRequirements(gloves), new VarbitRequirement(2441, 1));
+		hadBoots = new Conditions(LogicType.OR, new ItemRequirements(boots), new VarbitRequirement(2440, 1));
+		hadLegs = new Conditions(LogicType.OR, new ItemRequirements(legs), new VarbitRequirement(2442, 1));
+		hadRing = new Conditions(LogicType.OR, new ItemRequirements(ring), new VarbitRequirement(2443, 1));
 		hadClothes = new Conditions(hadBoots, hadTorso, hadGloves, hadLegs);
-		hasSoakedKindling = new ItemRequirementCondition(soakedKindling);
+		hasSoakedKindling = new ItemRequirements(soakedKindling);
 
-		litBrazier = new VarbitCondition(2430, 1);
+		litBrazier = new VarbitRequirement(2430, 1);
 
-		inCentreOfDream = new ZoneCondition(centreOfDream);
-		inChanceDream = new ZoneCondition(chanceDream);
-		inNumbersDream = new ZoneCondition(numbersDream);
-		inTreeDream = new ZoneCondition(treeDream);
-		inMemoryDream = new ZoneCondition(memoryDream);
-		inRaceDream = new ZoneCondition(raceDream);
-		inMimicDream = new ZoneCondition(mimicDream);
+		inCentreOfDream = new ZoneRequirement(centreOfDream);
+		inChanceDream = new ZoneRequirement(chanceDream);
+		inNumbersDream = new ZoneRequirement(numbersDream);
+		inTreeDream = new ZoneRequirement(treeDream);
+		inMemoryDream = new ZoneRequirement(memoryDream);
+		inRaceDream = new ZoneRequirement(raceDream);
+		inMimicDream = new ZoneRequirement(mimicDream);
 
-		doingTreeChallenge = new VarbitCondition(3184, 1);
-		startedRaceChallenge = new VarbitCondition(2424, 1);
+		doingTreeChallenge = new VarbitRequirement(3184, 1);
+		startedRaceChallenge = new VarbitRequirement(2424, 1);
 
-		startedNumberChallenge = new VarbitCondition(2416, 1);
+		startedNumberChallenge = new VarbitRequirement(2416, 1);
 
-		needToTalkAtMiddle = new VarbitCondition(2429, 1);
+		needToTalkAtMiddle = new VarbitRequirement(2429, 1);
 
-		finishedMimic = new VarbitCondition(2405, 5, Operation.GREATER_EQUAL);
-		finishedNumbers = new VarbitCondition(2406, 6, Operation.GREATER_EQUAL);
-		finishedTree = new VarbitCondition(2407, 1, Operation.GREATER_EQUAL);
-		finishedMemory = new VarbitCondition(2408, 1, Operation.GREATER_EQUAL);
-		finishedRace = new VarbitCondition(2409, 1, Operation.GREATER_EQUAL);
-		finishedChance = new VarbitCondition(2410, 5, Operation.GREATER_EQUAL);
+		finishedMimic = new VarbitRequirement(2405, 5, Operation.GREATER_EQUAL);
+		finishedNumbers = new VarbitRequirement(2406, 6, Operation.GREATER_EQUAL);
+		finishedTree = new VarbitRequirement(2407, 1, Operation.GREATER_EQUAL);
+		finishedMemory = new VarbitRequirement(2408, 1, Operation.GREATER_EQUAL);
+		finishedRace = new VarbitRequirement(2409, 1, Operation.GREATER_EQUAL);
+		finishedChance = new VarbitRequirement(2410, 5, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()

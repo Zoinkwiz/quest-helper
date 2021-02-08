@@ -27,19 +27,19 @@ package com.questhelper.quests.thetouristtrap;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.VarplayerCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,13 +52,12 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -74,7 +73,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		//Items Required
 	ItemRequirement waterskins, knife, pickaxe, coins100, combatGear;
 
-	ConditionForStep inJail, onSlope, inCamp, hasSlaveClothes, inUpstairs, onCliff, onSecondCliff, inJailEscape, inMine1, hasPlans, distractedSiad, searchedBookcase,
+	Requirement inJail, onSlope, inCamp, hasSlaveClothes, inUpstairs, onCliff, onSecondCliff, inJailEscape, inMine1, hasPlans, distractedSiad, searchedBookcase,
 		hasTip, hasDart, hasBarrel, inDeepMine, inDeepMineP1, inDeepMineP2, hasAnaInBarrel, anaOnCart, anaOnSurfaceInBarrel, anaOnSurface, anaPlacedOnCartOfLift,
 		inMiningRoom, anaFree;
 
@@ -269,37 +268,37 @@ public class TheTouristTrap extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inJail = new ZoneCondition(jail);
-		inCamp = new ZoneCondition(camp);
-		inMine1 = new ZoneCondition(mine1);
-		inUpstairs = new ZoneCondition(upstairs);
-		inDeepMine = new ZoneCondition(deepMine);
-		inDeepMineP1 = new ZoneCondition(deepMineP1);
-		inDeepMineP2 = new ZoneCondition(deepMineP2P1, deepMineP2P2);
-		inMiningRoom = new ZoneCondition(miningRoom);
+		inJail = new ZoneRequirement(jail);
+		inCamp = new ZoneRequirement(camp);
+		inMine1 = new ZoneRequirement(mine1);
+		inUpstairs = new ZoneRequirement(upstairs);
+		inDeepMine = new ZoneRequirement(deepMine);
+		inDeepMineP1 = new ZoneRequirement(deepMineP1);
+		inDeepMineP2 = new ZoneRequirement(deepMineP2P1, deepMineP2P2);
+		inMiningRoom = new ZoneRequirement(miningRoom);
 
-		onSlope = new ZoneCondition(slope);
-		onCliff = new ZoneCondition(cliff);
-		onSecondCliff = new ZoneCondition(secondCliff);
-		inJailEscape = new ZoneCondition(jail, slope, cliff, secondCliff);
+		onSlope = new ZoneRequirement(slope);
+		onCliff = new ZoneRequirement(cliff);
+		onSecondCliff = new ZoneRequirement(secondCliff);
+		inJailEscape = new ZoneRequirement(jail, slope, cliff, secondCliff);
 
-		hasSlaveClothes = new ItemRequirementCondition(slaveTop, slaveBoot, slaveRobe);
-		hasPlans = new ItemRequirementCondition(technicalPlans);
-		hasTip = new ItemRequirementCondition(prototypeDartTip);
-		hasDart = new ItemRequirementCondition(prototypeDart);
-		hasBarrel = new ItemRequirementCondition(barrel);
-		hasAnaInBarrel = new ItemRequirementCondition(anaInABarrel);
+		hasSlaveClothes = new ItemRequirements(slaveTop, slaveBoot, slaveRobe);
+		hasPlans = new ItemRequirements(technicalPlans);
+		hasTip = new ItemRequirements(prototypeDartTip);
+		hasDart = new ItemRequirements(prototypeDart);
+		hasBarrel = new ItemRequirements(barrel);
+		hasAnaInBarrel = new ItemRequirements(anaInABarrel);
 
-		searchedBookcase = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_SPRITE_TEXT, "You notice several books on the subject of sailing."));
-		distractedSiad = new Conditions(true, new WidgetTextCondition(229, 1, "The captain starts rambling on about his days as a salty sea dog. He<br>looks quite distracted..."));
+		searchedBookcase = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You notice several books on the subject of sailing."));
+		distractedSiad = new Conditions(true, new WidgetTextRequirement(229, 1, "The captain starts rambling on about his days as a salty sea dog. He<br>looks quite distracted..."));
 
-		anaPlacedOnCartOfLift = new VarbitCondition(2805, 1);
+		anaPlacedOnCartOfLift = new VarbitRequirement(2805, 1);
 		// TODO: Better detection of if Ana is on the surface or in the underground barrel
-		anaOnSurface = new VarplayerCondition(197, 22, Operation.GREATER_EQUAL);
+		anaOnSurface = new VarplayerRequirement(197, 22, Operation.GREATER_EQUAL);
 		// TODO: This only gets set the first time. If you somehow lose Ana between here and the cart it remains set. Need to add more logic around this
-		anaOnSurfaceInBarrel = new VarbitCondition(2808, 1);
-		anaOnCart = new VarbitCondition(2809, 1);
-		anaFree = new VarbitCondition(3733, 1);
+		anaOnSurfaceInBarrel = new VarbitRequirement(2808, 1);
+		anaOnCart = new VarbitRequirement(2809, 1);
+		anaFree = new VarbitRequirement(3733, 1);
 	}
 
 	public void setupSteps()

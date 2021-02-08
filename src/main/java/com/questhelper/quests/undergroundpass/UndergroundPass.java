@@ -33,23 +33,21 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +78,7 @@ public class UndergroundPass extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement food, staminaPotions, coins, telegrabRunes;
 
-	ConditionForStep inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
+	Requirement inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
 		isBeforeBridge, isNorthEastOfBridge, haveOilyCloth, haveFireArrow, haveLitArrow, haveLitArrowEquipped,
 		havePlank, isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
 		isBeforeTrap2, isBeforeTrap3, isBeforeTrap4, isBeforeTrap5, isInWellArea, isBeforePlank2, isBeforePlank3,
@@ -268,89 +266,89 @@ public class UndergroundPass extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		clothInBag = new VarbitCondition(9138, 1);
+		clothInBag = new VarbitRequirement(9138, 1);
 
 
-		inCastleFloor2 = new ZoneCondition(castleFloor2);
-		inWestArdougne = new ZoneCondition(westArdougne);
-		isBeforeRockslide1 = new ZoneCondition(beforeRockslide1);
-		isBeforeRockslide2 = new ZoneCondition(beforeRockslide2);
-		isBeforeRockslide3 = new ZoneCondition(beforeRockslide3);
-		isInFallArea = new ZoneCondition(inFallArea);
-		isBeforeBridge = new ZoneCondition(beforeBridge);
-		isNorthEastOfBridge = new ZoneCondition(northEastOfBridge);
-		haveOilyCloth = new ItemRequirementCondition(oilyCloth);
-		haveFireArrow = new ItemRequirementCondition(fireArrow);
-		haveLitArrow = new ItemRequirementCondition(litArrow);
-		haveLitArrowEquipped = new ItemRequirementCondition(litArrowEquipped);
-		havePlank = new ItemRequirementCondition(plank);
-		isBeforeThePit = new ZoneCondition(westOfBridge, beforeThePit);
-		isAfterThePit = new ZoneCondition(afterThePit);
-		isBeforeTheGrid = new ZoneCondition(beforeTheGrid);
-		isAtTheGrid = new ZoneCondition(atTheGrid);
-		isAfterTheGrid = new ZoneCondition(afterTheGrid);
-		isBeforeTrap1 = new ZoneCondition(beforeTrap1);
-		isBeforeTrap2 = new ZoneCondition(beforeTrap2);
-		isBeforeTrap3 = new ZoneCondition(beforeTrap3);
-		isBeforeTrap4 = new ZoneCondition(beforeTrap4);
-		isBeforeTrap5 = new ZoneCondition(beforeTrap5);
-		usedOrb1 = new VarbitCondition(9122, 1);
-		usedOrb2 = new VarbitCondition(9121, 1);
-		usedOrb3 = new VarbitCondition(9120, 1);
-		usedOrb4 = new VarbitCondition(9119, 1);
+		inCastleFloor2 = new ZoneRequirement(castleFloor2);
+		inWestArdougne = new ZoneRequirement(westArdougne);
+		isBeforeRockslide1 = new ZoneRequirement(beforeRockslide1);
+		isBeforeRockslide2 = new ZoneRequirement(beforeRockslide2);
+		isBeforeRockslide3 = new ZoneRequirement(beforeRockslide3);
+		isInFallArea = new ZoneRequirement(inFallArea);
+		isBeforeBridge = new ZoneRequirement(beforeBridge);
+		isNorthEastOfBridge = new ZoneRequirement(northEastOfBridge);
+		haveOilyCloth = new ItemRequirements(oilyCloth);
+		haveFireArrow = new ItemRequirements(fireArrow);
+		haveLitArrow = new ItemRequirements(litArrow);
+		haveLitArrowEquipped = new ItemRequirements(litArrowEquipped);
+		havePlank = new ItemRequirements(plank);
+		isBeforeThePit = new ZoneRequirement(westOfBridge, beforeThePit);
+		isAfterThePit = new ZoneRequirement(afterThePit);
+		isBeforeTheGrid = new ZoneRequirement(beforeTheGrid);
+		isAtTheGrid = new ZoneRequirement(atTheGrid);
+		isAfterTheGrid = new ZoneRequirement(afterTheGrid);
+		isBeforeTrap1 = new ZoneRequirement(beforeTrap1);
+		isBeforeTrap2 = new ZoneRequirement(beforeTrap2);
+		isBeforeTrap3 = new ZoneRequirement(beforeTrap3);
+		isBeforeTrap4 = new ZoneRequirement(beforeTrap4);
+		isBeforeTrap5 = new ZoneRequirement(beforeTrap5);
+		usedOrb1 = new VarbitRequirement(9122, 1);
+		usedOrb2 = new VarbitRequirement(9121, 1);
+		usedOrb3 = new VarbitRequirement(9120, 1);
+		usedOrb4 = new VarbitRequirement(9119, 1);
 		destroyedAllOrbs = new Conditions(usedOrb1, usedOrb2, usedOrb3, usedOrb4);
 
-		haveOrb1 = new Conditions(LogicType.OR, usedOrb1, new ItemRequirementCondition(orb1));
-		haveOrb2 = new Conditions(LogicType.OR, usedOrb2, new ItemRequirementCondition(orb2));
-		haveOrb3 = new Conditions(LogicType.OR, usedOrb3, new ItemRequirementCondition(orb3));
-		haveOrb4 = new Conditions(LogicType.OR, usedOrb4, new ItemRequirementCondition(orb4));
-		isInWellArea = new ZoneCondition(wellArea);
-		isInUndergroundSection2 = new ZoneCondition(inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4);
-		isInUndergroundSection3 = new ZoneCondition(inUndergroundSection3);
-		isBeforePlank2 = new ZoneCondition(beforePlank2);
-		isBeforePlank3 = new ZoneCondition(beforePlank3);
-		isAtOrb1 = new ZoneCondition(atOrb1);
-		isInsideCell = new ZoneCondition(insideCell);
-		isBeforeLedge = new ZoneCondition(beforeLedge);
-		isInMaze = new ZoneCondition(inMaze1, inMaze2);
-		isAfterMaze = new ZoneCondition(afterMaze, afterMazeShortcut);
-		hasRailing = new ItemRequirementCondition(railing);
-		isInUnicornArea = new ZoneCondition(inUnicornArea);
-		isInUnicornArea2 = new ZoneCondition(inUnicornArea2);
-		usedHorn = new VarbitCondition(9136, 1);
-		haveUnicornHorn = new Conditions(LogicType.OR, new ItemRequirementCondition(unicornHorn), usedHorn);
-		isInKnightsArea = new ZoneCondition(inKnightsArea1, inKnightsArea2, inKnightsArea3);
+		haveOrb1 = new Conditions(LogicType.OR, usedOrb1, new ItemRequirements(orb1));
+		haveOrb2 = new Conditions(LogicType.OR, usedOrb2, new ItemRequirements(orb2));
+		haveOrb3 = new Conditions(LogicType.OR, usedOrb3, new ItemRequirements(orb3));
+		haveOrb4 = new Conditions(LogicType.OR, usedOrb4, new ItemRequirements(orb4));
+		isInWellArea = new ZoneRequirement(wellArea);
+		isInUndergroundSection2 = new ZoneRequirement(inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4);
+		isInUndergroundSection3 = new ZoneRequirement(inUndergroundSection3);
+		isBeforePlank2 = new ZoneRequirement(beforePlank2);
+		isBeforePlank3 = new ZoneRequirement(beforePlank3);
+		isAtOrb1 = new ZoneRequirement(atOrb1);
+		isInsideCell = new ZoneRequirement(insideCell);
+		isBeforeLedge = new ZoneRequirement(beforeLedge);
+		isInMaze = new ZoneRequirement(inMaze1, inMaze2);
+		isAfterMaze = new ZoneRequirement(afterMaze, afterMazeShortcut);
+		hasRailing = new ItemRequirements(railing);
+		isInUnicornArea = new ZoneRequirement(inUnicornArea);
+		isInUnicornArea2 = new ZoneRequirement(inUnicornArea2);
+		usedHorn = new VarbitRequirement(9136, 1);
+		haveUnicornHorn = new Conditions(LogicType.OR, new ItemRequirements(unicornHorn), usedHorn);
+		isInKnightsArea = new ZoneRequirement(inKnightsArea1, inKnightsArea2, inKnightsArea3);
 
-		usedBadgeJerro = new VarbitCondition(9128, 1);
-		usedBadgeCarl = new VarbitCondition(9129, 1);
-		usedBadgeHarry = new VarbitCondition(9130, 1);
+		usedBadgeJerro = new VarbitRequirement(9128, 1);
+		usedBadgeCarl = new VarbitRequirement(9129, 1);
+		usedBadgeHarry = new VarbitRequirement(9130, 1);
 
-		haveBadgeCarl = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeCarl), usedBadgeCarl);
-		haveBadgeHarry = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeHarry), usedBadgeHarry);
-		haveBadgeJerro = new Conditions(LogicType.OR, new ItemRequirementCondition(badgeJerro), usedBadgeJerro);
-		isBeforeIbansDoor = new ZoneCondition(inKnightsArea3, beforeIbansDoor);
-		isInFinalArea = new ZoneCondition(inFinalArea);
-		isInDwarfCavern = new ZoneCondition(inDwarfCavern);
-		haveKlanksGauntlets = new ItemRequirementCondition(klanksGauntlets);
-		haveWitchsCat = new ItemRequirementCondition(witchsCat);
-		givenWitchCat = new VarbitCondition(9123, 1);
-		haveAmuletHolthion = new ItemRequirementCondition(amuletHolthion);
-		haveAmuletDoomion = new ItemRequirementCondition(amuletDoomion);
-		haveAmuletOthanian = new ItemRequirementCondition(amuletOthanian);
-		dollImbued = new VarbitCondition(9118, 1);
-		haveBrew = new ItemRequirementCondition(brew);
-		pouredBrew = new VarbitCondition(9134, 1);
-		dollAshed = new VarbitCondition(9117, 1);
-		kalragKilled = new VarbitCondition(9115, 1);
-		doveSmeared = new VarbitCondition(9116, 1);
-		haveRobeTop = new ItemRequirementCondition(robeTop);
-		haveRobeBottom = new ItemRequirementCondition(robeBottom);
-		isInTemple = new ZoneCondition(inTemple);
-		isInPostIbanArea = new ZoneCondition(inPostIbanArea);
+		haveBadgeCarl = new Conditions(LogicType.OR, new ItemRequirements(badgeCarl), usedBadgeCarl);
+		haveBadgeHarry = new Conditions(LogicType.OR, new ItemRequirements(badgeHarry), usedBadgeHarry);
+		haveBadgeJerro = new Conditions(LogicType.OR, new ItemRequirements(badgeJerro), usedBadgeJerro);
+		isBeforeIbansDoor = new ZoneRequirement(inKnightsArea3, beforeIbansDoor);
+		isInFinalArea = new ZoneRequirement(inFinalArea);
+		isInDwarfCavern = new ZoneRequirement(inDwarfCavern);
+		haveKlanksGauntlets = new ItemRequirements(klanksGauntlets);
+		haveWitchsCat = new ItemRequirements(witchsCat);
+		givenWitchCat = new VarbitRequirement(9123, 1);
+		haveAmuletHolthion = new ItemRequirements(amuletHolthion);
+		haveAmuletDoomion = new ItemRequirements(amuletDoomion);
+		haveAmuletOthanian = new ItemRequirements(amuletOthanian);
+		dollImbued = new VarbitRequirement(9118, 1);
+		haveBrew = new ItemRequirements(brew);
+		pouredBrew = new VarbitRequirement(9134, 1);
+		dollAshed = new VarbitRequirement(9117, 1);
+		kalragKilled = new VarbitRequirement(9115, 1);
+		doveSmeared = new VarbitRequirement(9116, 1);
+		haveRobeTop = new ItemRequirements(robeTop);
+		haveRobeBottom = new ItemRequirements(robeBottom);
+		isInTemple = new ZoneRequirement(inTemple);
+		isInPostIbanArea = new ZoneRequirement(inPostIbanArea);
 
-		hasIbansAshes = new ItemRequirementCondition(ibansAshes);
-		hasIbansShadow = new ItemRequirementCondition(ibansShadow);
-		hasIbansDove = new ItemRequirementCondition(ibansDove);
+		hasIbansAshes = new ItemRequirements(ibansAshes);
+		hasIbansShadow = new ItemRequirements(ibansShadow);
+		hasIbansDove = new ItemRequirements(ibansDove);
 	}
 
 	public void setupSteps()

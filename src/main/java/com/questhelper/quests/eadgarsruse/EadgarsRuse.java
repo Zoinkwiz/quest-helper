@@ -350,8 +350,8 @@ public class EadgarsRuse extends BasicQuestHelper
 		inEadgarsCave = new ZoneCondition(eadgarsCave);
 		inTrollheimArea = new ZoneCondition(trollheimArea);
 
-		askedAboutAlcohol = new Conditions(true, LogicType.AND, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Just recently."));
-		askedAboutPineapple = new Conditions(true, LogicType.AND, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
+		askedAboutAlcohol = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "Just recently."));
+		askedAboutPineapple = new Conditions(true, new WidgetTextCondition(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
 		hasAlcoChunks = new ItemRequirementCondition(alcoChunks);
 		hasParrot = new ItemRequirementCondition(parrot);
 		hasRobe = new ItemRequirementCondition(robe);
@@ -365,7 +365,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		hasGroundThistle = new ItemRequirementCondition(groundThistle);
 		hasTrollPotion = new ItemRequirementCondition(trollPotion);
 
-		foundOutAboutKey = new Conditions(true, LogicType.AND, new WidgetTextCondition(217, 4, "That's some well-guarded secret alright"));
+		foundOutAboutKey = new Conditions(true, new WidgetTextCondition(217, 4, "That's some well-guarded secret alright"));
 		hasStoreroomKey = new ItemRequirementCondition(storeroomKey);
 		hasGoutweed = new ItemRequirementCondition(goutweed);
 		inStoreroom = new ZoneCondition(storeroom);

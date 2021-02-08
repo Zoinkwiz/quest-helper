@@ -26,6 +26,7 @@ package com.questhelper.requirements;
 
 import com.questhelper.requirements.util.ItemSlots;
 import java.awt.Color;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 
@@ -53,7 +54,7 @@ public class NoItemRequirement extends ItemRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return slot.checkInventory(client, item -> item.getId() == matchingItemID);
+		return slot.checkInventory(client, Objects::isNull);
 	}
 
 	@Override

@@ -153,6 +153,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 
 		enterHoleForFoot = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.", slashItem);
 		cutOffFoot = new ObjectStep(this, NullObjectID.NULL_40348, "Cut off Sourhog's foot.", slashItem);
+		((ObjectStep) cutOffFoot).addAlternateObjects(NullObjectID.NULL_40349);
 		cutOffFoot.addSubSteps(enterHoleForFoot);
 
 		returnToSarah = new NpcStep(this, NpcID.SARAH, new WorldPoint(3033, 3293, 0), "Return to Sarah in the South Falador Farm.", hoof);

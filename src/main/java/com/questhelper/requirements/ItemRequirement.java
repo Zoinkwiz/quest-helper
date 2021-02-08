@@ -150,6 +150,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement quantity(int newQuantity)
+	{
+		ItemRequirement newItem = copy();
+		newItem.setQuantity(newQuantity);
+		return newItem;
+	}
+
 	public ItemRequirement copy()
 	{
 		ItemRequirement newItem = new ItemRequirement(name, id, quantity, equip);

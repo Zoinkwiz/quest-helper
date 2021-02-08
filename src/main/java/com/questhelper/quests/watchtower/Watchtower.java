@@ -343,9 +343,9 @@ public class Watchtower extends BasicQuestHelper
 		inEnclave = new ZoneCondition(enclave);
 
 		hasFingernails = new ItemRequirementCondition(fingernails);
-		hasTobansKey = new Conditions(true, LogicType.OR, new ItemRequirementCondition(tobansKey));
-		hasGoradsTooth = new Conditions(true, LogicType.OR, new ItemRequirementCondition(goradsTooth));
-		hasTobansGold = new Conditions(true, LogicType.OR, new ItemRequirementCondition(tobansGold));
+		hasTobansKey = new Conditions(true, new ItemRequirementCondition(tobansKey));
+		hasGoradsTooth = new Conditions(true, new ItemRequirementCondition(goradsTooth));
+		hasTobansGold = new Conditions(true, new ItemRequirementCondition(tobansGold));
 		hasRockCake = new ItemRequirementCondition(rockCake);
 		has2Nightshade = new ItemRequirementCondition(nightshade2);
 		hasPartialPotion = new ItemRequirementCondition(partialPotion);

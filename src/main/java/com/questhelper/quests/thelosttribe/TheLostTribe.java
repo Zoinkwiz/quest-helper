@@ -74,9 +74,9 @@ public class TheLostTribe extends BasicQuestHelper
 		hasKey, foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
 
 	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
-		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, goUpFromBasement, showBroochToDuke,
-		searchBookcase, readBook, talkToGenerals, walkToMistag, emoteAtMistag, pickpocketSigmund, unlockChest,
-		enterHamLair, searchHamCrates, talkToKazgar, talkToMistagForEnd, talkToBob, talkToAllAboutCellar;
+		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, climbOutThroughHole, goUpFromBasement,
+		showBroochToDuke, searchBookcase, readBook, talkToGenerals, walkToMistag, emoteAtMistag, pickpocketSigmund,
+		unlockChest, enterHamLair, searchHamCrates, talkToKazgar, talkToMistagForEnd, talkToBob, talkToAllAboutCellar;
 
 	ConditionalStep goToF1Steps, goDownToBasement, goTalkToSigmundToStart, findGoblinWitnessSteps, goTalkToDukeAfterHans,
 		goMineRubble, enterTunnels, goShowBroochToDuke, goTalkToDukeAfterEmote, goTravelToMistag, goGetKey, goOpenRobeChest,
@@ -215,6 +215,8 @@ public class TheLostTribe extends BasicQuestHelper
 
 		grabBrooch = new DetailedQuestStep(this, new WorldPoint(3230, 9610, 0), "Pick up the brooch on the floor.", brooch);
 
+		climbOutThroughHole = new ObjectStep(this, ObjectID.HOLE_6905, new WorldPoint(3221, 9618, 0), "");
+
 		showBroochToDuke = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3222, 1), "");
 		showBroochToDuke.addDialogStep("I dug through the rubble...");
 
@@ -285,6 +287,7 @@ public class TheLostTribe extends BasicQuestHelper
 		goToF1Steps = new ConditionalStep(this, goUpToF1);
 		goToF1Steps.addStep(inLumbridgeF2, goDownFromF2);
 		goToF1Steps.addStep(inBasement, goUpFromBasement);
+		goToF1Steps.addStep(inTunnels, climbOutThroughHole);
 
 		goDownToBasement = new ConditionalStep(this, goDownIntoBasement);
 		goDownToBasement.addStep(inLumbridgeF2, goDownFromF2);

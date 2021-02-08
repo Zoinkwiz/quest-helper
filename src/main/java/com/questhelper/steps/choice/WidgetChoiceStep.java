@@ -25,10 +25,12 @@
 package com.questhelper.steps.choice;
 
 import com.questhelper.QuestHelperConfig;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.*;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -51,12 +53,17 @@ public class WidgetChoiceStep
 	private final int groupId;
 	private final int childId;
 
+	@Setter
+	@Getter
+	private int groupIdForChecking;
+
 	public WidgetChoiceStep(QuestHelperConfig config, String choice, int groupId, int childId)
 	{
 		this.config = config;
 		this.choice = choice;
 		this.choiceById = -1;
 		this.groupId = groupId;
+		this.groupIdForChecking = groupId;
 		this.childId = childId;
 	}
 
@@ -66,6 +73,7 @@ public class WidgetChoiceStep
 		this.choice = null;
 		this.choiceById = choiceId;
 		this.groupId = groupId;
+		this.groupIdForChecking = groupId;
 		this.childId = childId;
 	}
 
@@ -75,6 +83,7 @@ public class WidgetChoiceStep
 		this.choice = choice;
 		this.choiceById = choiceId;
 		this.groupId = groupId;
+		this.groupIdForChecking = groupId;
 		this.childId = childId;
 	}
 
@@ -109,29 +118,35 @@ public class WidgetChoiceStep
 				}
 			}
 		}
-
 		Widget dialogChoice = client.getWidget(groupId, childId);
 		if (dialogChoice != null)
 		{
 			Widget[] choices = dialogChoice.getChildren();
-			if (choices != null)
+			checkWidgets(choices);
+			Widget[] nestedChildren = dialogChoice.getNestedChildren();
+			checkWidgets(nestedChildren);
+		}
+	}
+
+	private void checkWidgets(Widget[] choices)
+	{
+		if (choices != null && choices.length > 0)
+		{
+			if (choiceById != -1 && choices[choiceById] != null)
 			{
-				if (choiceById != -1 && choices[choiceById] != null)
+				if (choice == null || choice.equals(choices[choiceById].getText()))
 				{
-					if (choice == null || choice.equals(choices[choiceById].getText()))
-					{
-						highlightText(choices[choiceById]);
-					}
+					highlightText(choices[choiceById]);
 				}
-				else
+			}
+			else
+			{
+				for (Widget currentChoice : choices)
 				{
-					for (Widget currentChoice : choices)
+					if (currentChoice.getText().equals(choice))
 					{
-						if (currentChoice.getText().equals(choice))
-						{
-							highlightText(currentChoice);
-							return;
-						}
+						highlightText(currentChoice);
+						return;
 					}
 				}
 			}

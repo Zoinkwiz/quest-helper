@@ -1,6 +1,6 @@
 /*
- *
- *  * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ *  * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ *  * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without

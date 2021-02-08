@@ -51,6 +51,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import org.apache.commons.lang3.StringUtils;
 
 /*
  * LOGIC:
@@ -180,6 +181,10 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			int costPerCast = entry.getValue();
 			RuneRequirement runeRequirement = new RuneRequirement(rune, costPerCast, numberOfCasts);
 			runeRequirements.add(runeRequirement);
+		}
+		if (tabletRequirement != null)
+		{
+			tabletRequirement.setQuantity(this.numberOfCasts);
 		}
 	}
 
@@ -372,7 +377,8 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 				return Collections.singletonList(tabletRequirement);
 			}
 		}
-		List<ItemRequirement> requirements = runeRequirements.stream()
+		List<ItemRequirement> requirements = runeRequirements
+			.stream()
 			.map(req -> req.getRequirements(client, checkWithSlotRestrictions, bankItems))
 			.flatMap(Collection::stream)
 			.collect(Collectors.toCollection(LinkedList::new));
@@ -386,8 +392,8 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	public String getUpdatedTooltip(Client client, BankItems bankItems)
 	{
 		StringBuilder text = new StringBuilder();
-		if (tabletRequirement != null)
-		{
+		if (tabletRequirement != null && tabletRequirement.check(client, false, bankItems.getItems()))
+		{ // only show tooltip for tablet if they actually have it
 			AtomicInteger count = new AtomicInteger();
 			getNonItemRequirements(this.requirements).stream()
 				.filter(r -> r instanceof QuestRequirement)
@@ -446,24 +452,19 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	private void updateTooltip()
 	{
 		setTooltip("This spell requires: ");
-		getNonItemRequirements(this.requirements).stream()
-			.forEach(req -> appendToTooltip(req.getDisplayText()));
+		getNonItemRequirements(this.requirements).forEach(req -> appendToTooltip(req.getDisplayText()));
 	}
 
 	private void updateItemRequirements(Client client, List<ItemRequirement> requirements)
 	{
-		for (ItemRequirement requirement : requirements)
-		{
-			if (requirement.getName() == null || requirement.getName().isEmpty())
-			{
-				requirement.setName(client.getItemDefinition(requirement.getId()).getName());
-			}
-		}
+		requirements.stream()
+					.filter(req -> StringUtils.isBlank(req.getName()))
+					.forEach(req -> req.setName(client.getItemDefinition(req.getId()).getName()));
 	}
 
 	private void updateTabletRequirement(Client client)
 	{
-		if (tabletRequirement != null && (tabletRequirement.getName() == null || tabletRequirement.getName().isEmpty()))
+		if (tabletRequirement != null && StringUtils.isBlank(tabletRequirement.getName()))
 		{
 			ItemComposition tablet = client.getItemDefinition(tabletRequirement.getId());
 			tabletRequirement = new ItemRequirement(tablet.getName(), tablet.getId(), this.numberOfCasts);

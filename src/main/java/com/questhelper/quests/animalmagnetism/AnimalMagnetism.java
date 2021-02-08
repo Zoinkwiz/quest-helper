@@ -1,5 +1,6 @@
 package com.questhelper.quests.animalmagnetism;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -22,16 +23,19 @@ public class AnimalMagnetism extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement mithrilAxe, ironBar5, ghostspeak, ghostspeakEquip, ectoToken20, hammer, hardLeather, holySymbol,
-			polishedButtons, croneMadeAmulet, undeadChicken2, selectedIron, barMagnet, blessedAxe, twigs, researchNotes,
-			translatedNotes, pattern, container;
+		polishedButtons, croneMadeAmulet, undeadChicken2, selectedIron, barMagnet, blessedAxe, twigs, researchNotes,
+		translatedNotes, pattern, container;
+
+	// Items recommended
+	ItemRequirement draynorTeleport, burthorpeTeleport, portPhasmatysTeleport;
 
 	QuestStep talkToAva, giveChickensToAva,
-			talkToAlice, talkToAlice2,
-			talkToAlicesHusband, talkToAlicesHusband2, talkToAlicesHusband3,
-			talkToOldCrone, giveAmuletToHusband, buyUndeadChickens,
-			talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva,
-			attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva,
-			getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva;
+		talkToAlice, talkToAlice2,
+		talkToAlicesHusband, talkToAlicesHusband2, talkToAlicesHusband3,
+		talkToOldCrone, giveAmuletToHusband, buyUndeadChickens,
+		talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva,
+		attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva,
+		getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva;
 
 	ConditionForStep hasChickens, hasBarMagnet, hasTwigs, inIronMine;
 
@@ -57,6 +61,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		steps.put(73, talkToOldCrone);
 		steps.put(76, giveAmuletToHusband);
 		steps.put(80, talkToAlicesHusband3);
+		steps.put(90, talkToAlicesHusband3);
 		//Step 90 is a cutscene
 
 		ConditionalStep undeadChickens = new ConditionalStep(this, buyUndeadChickens);
@@ -90,23 +95,24 @@ public class AnimalMagnetism extends BasicQuestHelper
 		return steps;
 	}
 
-	private void loadZones() {
+	private void loadZones()
+	{
 		ironMine = new Zone(new WorldPoint(2971, 3248, 0), new WorldPoint(2987, 3234, 0));
 	}
 
-	public void setupItemRequirements() {
+	public void setupItemRequirements()
+	{
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET);
 		ghostspeakEquip = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		croneMadeAmulet = new ItemRequirement("Crone-made amulet", ItemID.CRONEMADE_AMULET);
 		ectoToken20 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 20);
 		undeadChicken2 = new ItemRequirement("Undead chicken", ItemID.UNDEAD_CHICKEN, 2);
+		undeadChicken2.canBeObtainedDuringQuest();
 
 		//Magnet
 		ironBar5 = new ItemRequirement("Iron Bar", ItemID.IRON_BAR, 5);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		hammer.setHighlightInInventory(true);
 		selectedIron = new ItemRequirement("Selected Iron", ItemID.SELECTED_IRON);
-		selectedIron.setHighlightInInventory(true);
 		barMagnet = new ItemRequirement("Bar magnet", ItemID.BAR_MAGNET);
 
 		//Undead twigs
@@ -121,94 +127,116 @@ public class AnimalMagnetism extends BasicQuestHelper
 		hardLeather.setHighlightInInventory(true);
 		polishedButtons = new ItemRequirement("Polished Buttons", ItemID.POLISHED_BUTTONS);
 		polishedButtons.setHighlightInInventory(true);
+
+		draynorTeleport = new ItemRequirement("Teleport to Draynor", ItemID.DRAYNOR_MANOR_TELEPORT, 5);
+		draynorTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		burthorpeTeleport = new ItemRequirement("Teleport to Draynor", ItemCollections.getGamesNecklaces());
+		portPhasmatysTeleport = new ItemRequirement("Teleport to Port Phasmatys", ItemID.ECTOPHIAL);
+		portPhasmatysTeleport.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
+
 		pattern = new ItemRequirement("A pattern", ItemID.A_PATTERN);
 		pattern.setHighlightInInventory(true);
 		container = new ItemRequirement("A container", ItemID.A_CONTAINER);
 	}
 
-	private void setupConditions() {
+	private void setupConditions()
+	{
 		hasChickens = new ItemRequirementCondition(undeadChicken2);
 		hasBarMagnet = new ItemRequirementCondition(barMagnet);
 		hasTwigs = new ItemRequirementCondition(twigs);
 		inIronMine = new ZoneCondition(ironMine);
 	}
 
-	private void setupSteps() {
+	private void setupSteps()
+	{
 		talkToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-				"Talk to Ava to begin the quest.");
+			"Talk to Ava to begin the quest.");
 		talkToAva.addDialogStep("I would be happy to make your home a better place.");
 		talkToAlicesHusband = new NpcStep(this, NpcID.ALICES_HUSBAND, new WorldPoint(3618, 3526, 0),
-				"Talk to Alice's husband at the farm west of the Ectofuntus.",
-				ghostspeakEquip);
+			"Talk to Alice's husband at the farm west of the Ectofuntus.",
+			ghostspeakEquip);
 		talkToAlice = new NpcStep(this, NpcID.ALICE, new WorldPoint(3627, 3526, 0),
-				"Talk to Alice.");
+			"Talk to Alice.");
 		talkToAlice.addDialogStep("I'm here about a quest.");
 		talkToAlicesHusband2 = new NpcStep(this, NpcID.ALICES_HUSBAND, new WorldPoint(3618, 3526, 0),
-				"Talk to Alice's husband again.",
-				ghostspeakEquip);
+			"Talk to Alice's husband again.",
+			ghostspeakEquip);
 		talkToAlice2 = new NpcStep(this, NpcID.ALICE, new WorldPoint(3627, 3526, 0),
-				"Talk to Alice again.");
+			"Talk to Alice again.");
 		talkToAlice2.addDialogStep("I'm here about a quest.");
 		talkToOldCrone = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3461, 3558, 0),
-				"Talk to the Old crone just east of the Slayer Tower twice.",
-				ghostspeakEquip);
+			"Talk to the Old crone just east of the Slayer Tower twice.",
+			ghostspeakEquip);
 		talkToOldCrone.addDialogStep("I'm here about the farmers east of here.");
 		giveAmuletToHusband = new NpcStep(this, NpcID.ALICES_HUSBAND, new WorldPoint(3618, 3526, 0),
-				"Give the Crone-made amulet to Alice's Husband.",
-				ghostspeakEquip, croneMadeAmulet);
+			"Give the Crone-made amulet to Alice's Husband.",
+			ghostspeakEquip, croneMadeAmulet);
 		giveAmuletToHusband.addDialogStep("Okay, you need it more than I do, I suppose.");
 		talkToAlicesHusband3 = new NpcStep(this, NpcID.ALICES_HUSBAND_4412, new WorldPoint(3618, 3526, 0),
-				"Talk to Alice's husband again to watch a cutscene.",
-				ghostspeakEquip);
+			"Talk to Alice's husband again to watch a cutscene.",
+			ghostspeakEquip);
 		buyUndeadChickens = new NpcStep(this, NpcID.ALICES_HUSBAND_4412, new WorldPoint(3618, 3526, 0),
-				"Buy two undead chickens from Alice's husband. You can acquire ecto-tokens using the Ectofuntus to the east.",
-				ghostspeakEquip, ectoToken20);
+			"Buy two undead chickens from Alice's husband. You can acquire ecto-tokens using the Ectofuntus to the east.",
+			ghostspeakEquip, ectoToken20);
 		buyUndeadChickens.addDialogSteps("Could I buy those chickens now, then?", "Could I buy 2 chickens?");
 		giveChickensToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-				"Give the two Undead chickens to Ava.",
-				undeadChicken2);
+			"Give the two Undead chickens to Ava.",
+			undeadChicken2);
 
 		talkToWitch = new NpcStep(this, NpcID.WITCH_4409, new WorldPoint(3099, 3370, 0),
-				"Talk to the witch in the manor twice.",
-				ironBar5);
+			"Talk to the witch in the manor twice.",
+			ironBar5);
 		goToIronMine = new DetailedQuestStep(this, new WorldPoint(2978, 3240, 0),
-				"Go to the iron mine in Rimmington northeast of the house portal.",
-				hammer, selectedIron);
-		useHammerOnMagnet = new ItemStep(this, "While looking north, use the hammer on the Selected iron",
-				hammer, selectedIron);
+			"Go to the iron mine in Rimmington northeast of the house portal.",
+			hammer, selectedIron);
+		useHammerOnMagnet = new ItemStep(this, "While looking north, use the hammer on the Selected iron.",
+			hammer.highlighted(), selectedIron.highlighted());
 		giveMagnetToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-				"Give the Bar magnet to Ava.",
-				barMagnet);
+			"Give the Bar magnet to Ava.",
+			barMagnet);
 
 		attemptToCutTree = new NpcStep(this, NpcID.UNDEAD_TREE, "Try to chop an undead tree outside Draynor manor.", true,
-				mithrilAxe);
+			mithrilAxe);
 		talkToTurael = new NpcStep(this, NpcID.TURAEL, new WorldPoint(2931, 3536, 0),
-				"Talk to Turael in Burthrope twice, giving him the Mithril axe and Holy symbol.",
-				mithrilAxe, holySymbol);
+			"Talk to Turael in Burthrope twice, giving him the Mithril axe and Holy symbol.",
+			mithrilAxe, holySymbol);
 		talkToTurael.addDialogSteps("I'm here about a quest.", "Hello, I'm here about those trees again.",
-				"I'd love one, thanks.");
+			"I'd love one, thanks.");
 		cutTree = new NpcStep(this, NpcID.UNDEAD_TREE,
-				"Try to chop an undead tree outside Draynor manor with the Blessed axe until you receive undead twigs.",
-				true,
-				blessedAxe);
+			"Try to chop an undead tree outside Draynor manor with the Blessed axe until you receive undead twigs.",
+			true,
+			blessedAxe);
 		giveTwigsToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-				"Give the Undead twigs to Ava.",
-				twigs);
+			"Give the Undead twigs to Ava.",
+			twigs);
 
 		getNotesFromAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-				"Talk to Ava to receive the research notes.");
+			"Talk to Ava to receive the research notes.");
 		translateNotes = new PuzzleStep(this, "Translate research notes by clicking on all the highlighted switches.",
-				new PuzzleSolver()::solver,
-				researchNotes);
+			new PuzzleSolver()::solver,
+			researchNotes);
 		giveNotesToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-				"Give Ava the translating research notes.",
-				translatedNotes);
+			"Give Ava the translating research notes.",
+			translatedNotes);
 		buildPattern = new ItemStep(this, "Combine Hard leather and Polished buttons with the pattern.",
-				pattern, hardLeather, polishedButtons);
+			pattern, hardLeather, polishedButtons);
 		giveContainerToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-				"Give Ava the container.",
-				container);
+			"Give Ava the container.",
+			container);
 	}
+
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return Arrays.asList(mithrilAxe, ironBar5, ghostspeak, ectoToken20, hammer, hardLeather, holySymbol, polishedButtons);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(draynorTeleport, burthorpeTeleport, portPhasmatysTeleport);
+	}
+
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
@@ -235,12 +263,14 @@ public class AnimalMagnetism extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToAva)));
 		allSteps.add(new PanelDetails("Undead Chickens",
-				Arrays.asList(talkToAlice, talkToAlice2, talkToAlicesHusband, talkToAlicesHusband2, talkToOldCrone,
-						giveAmuletToHusband, talkToAlicesHusband3, buyUndeadChickens, giveChickensToAva)));
+			Arrays.asList(talkToAlicesHusband, talkToAlice, talkToAlicesHusband2, talkToAlice2, talkToOldCrone,
+				giveAmuletToHusband, talkToAlicesHusband3, buyUndeadChickens, giveChickensToAva),
+			ghostspeak, ectoToken20));
 		allSteps.add(new PanelDetails("Magnet",
-				Arrays.asList(talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva)));
+			Arrays.asList(talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva), ironBar5, hammer, undeadChicken2));
 		allSteps.add(new PanelDetails("Undead twigs",
-				Arrays.asList(getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva)));
+			Arrays.asList(getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva),
+			mithrilAxe, polishedButtons, hardLeather, holySymbol));
 
 		return allSteps;
 	}

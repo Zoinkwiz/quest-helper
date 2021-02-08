@@ -71,6 +71,12 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
+	public boolean isActualItem()
+	{
+		return LogicType.OR.test(getItemRequirements().stream(), item -> !item.getAllIds().contains(-1) && item.getQuantity() >= 0);
+	}
+
+	@Override
 	public boolean check(Client client)
 	{
 		return check(client, false);
@@ -129,5 +135,11 @@ public class ItemRequirements extends ItemRequirement
 			.map(ItemRequirement::getAllIds)
 			.flatMap(Collection::stream)
 			.collect(QuestUtil.collectToArrayList());
+	}
+
+	@Override
+	public boolean checkBank(Client client)
+	{
+		return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client) || item.check(client, false));
 	}
 }

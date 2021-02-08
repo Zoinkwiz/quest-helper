@@ -204,7 +204,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 			"Use the lava-filled bowl on the furnace.", lavaBowlHighlighted);
 		useLavaOnFurnace.addIcon(ItemID.A_STONE_BOWL_2889);
 		mineRock = new NpcStep(this, NpcID.ELEMENTAL_ROCK, new WorldPoint(2703, 9894, 0),
-			"Mine one of the elemental rocks in the west room, ready to fight a level 35.", pickaxe);
+			"Mine one of the elemental rocks in the west room, ready to fight a level 35.", true, pickaxe);
 		killRock = new NpcStep(this, NpcID.EARTH_ELEMENTAL_1367, new WorldPoint(2703, 9897, 0),
 			"Kill the rock elemental that appeared.");
 		pickUpOre = new ItemStep(this, "Pick up the elemental ore.", elementalOre);

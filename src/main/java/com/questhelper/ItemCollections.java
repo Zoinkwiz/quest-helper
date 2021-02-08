@@ -945,4 +945,14 @@ public class ItemCollections
 		ItemID.WATERING_CAN2,
 		ItemID.WATERING_CAN1
 	);
+
+	@Getter
+	private static final List<Integer> enchantedLyre = QuestUtil.toLinkedList(
+		ItemID.ENCHANTED_LYREI,
+		ItemID.ENCHANTED_LYRE5,
+		ItemID.ENCHANTED_LYRE4,
+		ItemID.ENCHANTED_LYRE3,
+		ItemID.ENCHANTED_LYRE2,
+		ItemID.ENCHANTED_LYRE1
+	);
 }

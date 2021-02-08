@@ -27,13 +27,13 @@
 package com.questhelper.spells;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.SpellRequirement;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.VarplayerCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -178,7 +178,7 @@ public class StandardSpellBuilder
 	 */
 	public StandardSpellBuilder var(Varbits varbit, int value)
 	{
-		requirements.add(new VarbitCondition(varbit.getId(), value));
+		requirements.add(new VarbitRequirement(varbit.getId(), value));
 		return this;
 	}
 
@@ -191,7 +191,7 @@ public class StandardSpellBuilder
 	 */
 	public StandardSpellBuilder var(VarPlayer varPlayer, int value)
 	{
-		requirements.add(new VarplayerCondition(varPlayer.getId(), value));
+		requirements.add(new VarplayerRequirement(varPlayer.getId(), value));
 		return this;
 	}
 
@@ -204,7 +204,7 @@ public class StandardSpellBuilder
 	 */
 	public StandardSpellBuilder varbit(int varbit, int value)
 	{
-		requirements.add(new VarbitCondition(varbit, value));
+		requirements.add(new VarbitRequirement(varbit, value));
 		return this;
 	}
 

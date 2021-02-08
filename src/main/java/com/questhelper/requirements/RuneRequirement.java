@@ -28,6 +28,7 @@ package com.questhelper.requirements;
 
 import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.spells.Rune;
 import java.util.Collections;

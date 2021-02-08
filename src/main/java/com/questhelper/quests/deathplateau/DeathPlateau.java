@@ -182,6 +182,7 @@ public class DeathPlateau extends BasicQuestHelper
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS);
 		secretMap = new ItemRequirement("Secret way map", ItemID.SECRET_WAY_MAP);
 		combination = new ItemRequirement("Combination", ItemID.COMBINATION);
+		combination.setTooltip("You can get another by talking to Harold upstairs in Burthorpe's Pub");
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 	}
 

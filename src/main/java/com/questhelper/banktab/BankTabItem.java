@@ -24,7 +24,7 @@
  */
 package com.questhelper.banktab;
 
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;

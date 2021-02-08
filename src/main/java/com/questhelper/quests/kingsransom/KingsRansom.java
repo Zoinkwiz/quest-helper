@@ -25,16 +25,27 @@
 package com.questhelper.quests.kingsransom;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.WidgetStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -47,19 +58,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.KINGS_RANSOM
@@ -74,7 +72,7 @@ public class KingsRansom extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleport, camelotTeleport, edgevilleTeleport;
 
-	ConditionForStep hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, hasCriminalsThread, inTrialRoom, handlerInRoom, butlerInRoom,
+	Requirement hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, hasCriminalsThread, inTrialRoom, handlerInRoom, butlerInRoom,
 		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasLockpickOrHairpin, hasTelegrabItems,
 		inBoxWidget, inKeepF0, inKeepF1, inKeepF2, inFortressEntrance, inSecretRoom;
 
@@ -262,37 +260,37 @@ public class KingsRansom extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasForm = new Conditions(LogicType.OR, new ItemRequirementCondition(addressForm), new VarbitCondition(3890, 1));
-		hasScrapPaper = new Conditions(LogicType.OR, new ItemRequirementCondition(scrapPaper), new VarbitCondition(3891, 1));
-		hasBlackHelm = new Conditions(LogicType.OR, new ItemRequirementCondition(blackHelm), new VarbitCondition(3892, 1));
-		hasCriminalsThread = new ItemRequirementCondition(criminalsThread);
-		inUpstairsManor = new ZoneCondition(upstairsManor);
-		inDownstairsManor = new ZoneCondition(downstairsManor, downstairsManor2);
-		inTrialRoom = new ZoneCondition(trialRoom);
-		inPrison = new ZoneCondition(prison);
-		inKeepF0 = new ZoneCondition(keepF0);
-		inKeepF1 = new ZoneCondition(keepF1);
-		inKeepF2 = new ZoneCondition(keepF2);
-		inBasement = new ZoneCondition(basement);
-		inSecretRoom = new ZoneCondition(secretRoomFloor0);
-		inFortressEntrance = new ZoneCondition(mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4);
+		hasForm = new Conditions(LogicType.OR, new ItemRequirements(addressForm), new VarbitRequirement(3890, 1));
+		hasScrapPaper = new Conditions(LogicType.OR, new ItemRequirements(scrapPaper), new VarbitRequirement(3891, 1));
+		hasBlackHelm = new Conditions(LogicType.OR, new ItemRequirements(blackHelm), new VarbitRequirement(3892, 1));
+		hasCriminalsThread = new ItemRequirements(criminalsThread);
+		inUpstairsManor = new ZoneRequirement(upstairsManor);
+		inDownstairsManor = new ZoneRequirement(downstairsManor, downstairsManor2);
+		inTrialRoom = new ZoneRequirement(trialRoom);
+		inPrison = new ZoneRequirement(prison);
+		inKeepF0 = new ZoneRequirement(keepF0);
+		inKeepF1 = new ZoneRequirement(keepF1);
+		inKeepF2 = new ZoneRequirement(keepF2);
+		inBasement = new ZoneRequirement(basement);
+		inSecretRoom = new ZoneRequirement(secretRoomFloor0);
+		inFortressEntrance = new ZoneRequirement(mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4);
 
-		handlerInRoom = new VarbitCondition(3907, 2);
-		butlerInRoom = new VarbitCondition(3907, 3);
-		maidInRoom = new VarbitCondition(3907, 5);
+		handlerInRoom = new VarbitRequirement(3907, 2);
+		butlerInRoom = new VarbitRequirement(3907, 3);
+		maidInRoom = new VarbitRequirement(3907, 5);
 
-		askedAboutThread = new VarbitCondition(3900, 1);
-		askedAboutPoison = new VarbitCondition(3912, 1);
-		askedAboutDagger = new VarbitCondition(3913, 1);
-		askedAboutNight = new VarbitCondition(3915, 1);
+		askedAboutThread = new VarbitRequirement(3900, 1);
+		askedAboutPoison = new VarbitRequirement(3912, 1);
+		askedAboutDagger = new VarbitRequirement(3913, 1);
+		askedAboutNight = new VarbitRequirement(3915, 1);
 
-		inPuzzle = new WidgetModelCondition(588, 1, 27214);
+		inPuzzle = new WidgetModelRequirement(588, 1, 27214);
 
-		hasLockpickOrHairpin = new ItemRequirementCondition(hairclipOrLockpick);
+		hasLockpickOrHairpin = new ItemRequirements(hairclipOrLockpick);
 
-		hasTelegrabItems = new Conditions(new ItemRequirementCondition(airRune), new ItemRequirementCondition(lawRune));
+		hasTelegrabItems = new Conditions(new ItemRequirements(airRune), new ItemRequirements(lawRune));
 
-		inBoxWidget = new WidgetModelCondition(390, 0, 27488);
+		inBoxWidget = new WidgetModelRequirement(390, 0, 27488);
 	}
 
 	public void setupSteps()

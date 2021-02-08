@@ -30,28 +30,27 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.RequirementBuilder;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -90,20 +89,20 @@ public class TheFeud extends BasicQuestHelper
 		talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader, talkToAVillagerToSpawnMayor,
 		talkToMayor, finishQuest;
 
-	private ItemRequirementCondition desertDisguiseCondition, hasShantyPass, hasOakBlackjack, oakBlackjackEquipped,
+	private Requirement desertDisguiseCondition, hasShantyPass, hasOakBlackjack, oakBlackjackEquipped,
 		snakeCharm, hasSnakeBasket, hasSnakeBasketFull, hasRedHotSauce, hasBucket, doesNotHaveBucket,
 		hasDungInInventory;
 
-	private ConditionForStep throughShantyGate;
+	private Requirement throughShantyGate;
 
 	private DetailedQuestStep getBucket;
 
-	private VarbitCondition talkedToThug, talkedToBandit, talkedToBanditReturn, doorOpen, traitorFound,
+	private VarbitRequirement talkedToThug, talkedToBandit, talkedToBanditReturn, doorOpen, traitorFound,
 		talkedToBarman, talkedToAliTheHag, givenPoisonToHag, menaphiteThugAlive, talkedToVillagerAboutMenaphite,
 		banditChampionSpawned, mayorSpawned;
 
 	//Zones
-	private ZoneCondition shantyPassZoneCondition, pollniveachZoneCondition, secondFloorMansion;
+	private ZoneRequirement shantyPassZoneRequirement, pollniveachZoneRequirement, secondFloorMansion;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -155,35 +154,35 @@ public class TheFeud extends BasicQuestHelper
 		//318 drunk ali beer count
 
 		// 315 -> 2 Talked to thug -> 3 Talked to bandit
-		talkedToThug = new VarbitCondition(315, 2);
-		talkedToBandit = new VarbitCondition(315, 3);
+		talkedToThug = new VarbitRequirement(315, 2);
+		talkedToBandit = new VarbitRequirement(315, 3);
 
-		talkedToBanditReturn = new VarbitCondition(316, true, 0); // Might have missed?
+		talkedToBanditReturn = new VarbitRequirement(316, true, 0); // Might have missed?
 		// 340 -> 1 when pickpocket villager
-		doorOpen = new VarbitCondition(320, 1);
+		doorOpen = new VarbitRequirement(320, 1);
 
 		//Varbit 325 keeps track of correctly entered safe values
 
 		// Varbit 342 when found Traitor
-		traitorFound = new VarbitCondition(342, 1);
+		traitorFound = new VarbitRequirement(342, 1);
 
 		// Varbit 321 when talked to bar man
-		talkedToBarman = new VarbitCondition(321, 1);
+		talkedToBarman = new VarbitRequirement(321, 1);
 
 		// 345 and 328 when talking to hag
-		talkedToAliTheHag = new VarbitCondition(328, 1);
-		givenPoisonToHag = new VarbitCondition(328, 2);
+		talkedToAliTheHag = new VarbitRequirement(328, 1);
+		givenPoisonToHag = new VarbitRequirement(328, 2);
 		// 335 = POisoned drink
 
 		//322 Menaphite
-		menaphiteThugAlive = new VarbitCondition(322, 1);
+		menaphiteThugAlive = new VarbitRequirement(322, 1);
 
 		// Talked to villager about Menaphite 343, 338
-		talkedToVillagerAboutMenaphite = new VarbitCondition(343, 1);
-		banditChampionSpawned = new VarbitCondition(323, 1);
+		talkedToVillagerAboutMenaphite = new VarbitRequirement(343, 1);
+		banditChampionSpawned = new VarbitRequirement(323, 1);
 
 		// 343 -> Mayor spawned
-		mayorSpawned = new VarbitCondition(343, 2);
+		mayorSpawned = new VarbitRequirement(343, 2);
 	}
 
 	private void setupZones()
@@ -192,9 +191,9 @@ public class TheFeud extends BasicQuestHelper
 		Zone pollniveachZone = new Zone(new WorldPoint(3320, 2926, 0), new WorldPoint(3381, 3006, 0));
 		Zone secondFloor = new Zone(new WorldPoint(3366, 2965, 1), new WorldPoint(3375, 2979, 1));
 
-		shantyPassZoneCondition = new ZoneCondition(shantyPassZone);
-		pollniveachZoneCondition = new ZoneCondition(pollniveachZone);
-		secondFloorMansion = new ZoneCondition(secondFloor);
+		shantyPassZoneRequirement = new ZoneRequirement(shantyPassZone);
+		pollniveachZoneRequirement = new ZoneRequirement(pollniveachZone);
+		secondFloorMansion = new ZoneRequirement(secondFloor);
 	}
 
 	private QuestStep finishQuest()
@@ -403,34 +402,30 @@ public class TheFeud extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		ItemRequirementCondition fakeBeardCondition = new ItemRequirementCondition(fakeBeard);
-		ItemRequirementCondition headPieceCondition = new ItemRequirementCondition(headPiece);
-		desertDisguiseCondition = new ItemRequirementCondition(desertDisguise);
+		ItemRequirements fakeBeardCondition = new ItemRequirements(fakeBeard);
+		ItemRequirements headPieceCondition = new ItemRequirements(headPiece);
+		desertDisguiseCondition = new ItemRequirements(desertDisguise);
 		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguiseCondition);
-		hasSnakeBasketFull = new ItemRequirementCondition(snakeBasketFull);
-		hasSnakeBasket = new ItemRequirementCondition(snakeBasket);
-		snakeCharm = new ItemRequirementCondition(snakeCharmHighlighted);
-		hasShantyPass = new ItemRequirementCondition(shantyPass);
-		hasOakBlackjack = new ItemRequirementCondition(oakBlackjack);
-		oakBlackjackEquipped = new ItemRequirementCondition(new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK, 1, true));
-		hasRedHotSauce = new ItemRequirementCondition(redHotSauce);
+		hasSnakeBasketFull = new ItemRequirements(snakeBasketFull);
+		hasSnakeBasket = new ItemRequirements(snakeBasket);
+		snakeCharm = new ItemRequirements(snakeCharmHighlighted);
+		hasShantyPass = new ItemRequirements(shantyPass);
+		hasOakBlackjack = new ItemRequirements(oakBlackjack);
+		oakBlackjackEquipped = new ItemRequirements(new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK, 1, true));
+		hasRedHotSauce = new ItemRequirements(redHotSauce);
 		hasDisguiseComponents = new Conditions(fakeBeardCondition, headPieceCondition);
 		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, fakeBeardCondition,
 			headPieceCondition);
 		hasDisguise = new Conditions(desertDisguiseCondition);
-		hasBucket = new ItemRequirementCondition(new ItemRequirement("Bucket", ItemID.BUCKET));
-		doesNotHaveBucket = new ItemRequirementCondition(Operation.LESS_EQUAL, 0, new ItemRequirement("Bucket", ItemID.BUCKET));
-		throughShantyGate = new ConditionForStep()
-		{
-			@Override
-			public boolean check(Client client)
-			{
+		hasBucket = new ItemRequirements(new ItemRequirement("Bucket", ItemID.BUCKET));
+		doesNotHaveBucket = new ComplexRequirement(LogicType.NOR, "", new ItemRequirement("Bucket", ItemID.BUCKET));
+		throughShantyGate = RequirementBuilder.builder()
+			.check(client -> {
 				Player player = client.getLocalPlayer();
 				return player != null && player.getWorldLocation().getY() < 3116;
-			}
-		};
+		}).build();
 		notThroughShantyGate = new Conditions(LogicType.NAND, throughShantyGate);
-		hasDungInInventory = new ItemRequirementCondition(dung);
+		hasDungInInventory = new ItemRequirements(dung);
 		combatGear = new ItemRequirement("Combat gear for fighting", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
@@ -513,7 +508,7 @@ public class TheFeud extends BasicQuestHelper
 		goToPollniveachStep.addSubSteps(talkToRugMerchant);
 
 		ConditionalStep conditionalStep = new ConditionalStep(this, buyShantypass);
-		conditionalStep.addStep(pollniveachZoneCondition, drunkenAli);
+		conditionalStep.addStep(pollniveachZoneRequirement, drunkenAli);
 		conditionalStep.addStep(throughShantyGate, talkToRugMerchant);
 		conditionalStep.addStep(new Conditions(notThroughShantyGate, hasShantyPass), goToShanty);
 		conditionalStep.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);

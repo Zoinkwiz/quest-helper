@@ -25,24 +25,30 @@
 package com.questhelper.quests.darknessofhallowvale;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.SpellbookRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,13 +56,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -78,7 +77,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	Requirement normalSpellbook;
 
-	ConditionForStep inNewBase, inTemple, inMeiyditch, inMyrequeBase, inMine, inNorthMeiy, inRandomRoom, atBarricade, pushedBoat, onEntryWall, onSecondWall, onThirdWall,
+	Requirement inNewBase, inTemple, inMeiyditch, inMyrequeBase, inMine, inNorthMeiy, inRandomRoom, atBarricade, pushedBoat, onEntryWall, onSecondWall, onThirdWall,
 		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, hasDoorKey, pathDoorOpen, hasLadderPiece, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
 		hasLargeOrnateKey, hasMessage, cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab, hasHaemBook;
 
@@ -258,47 +257,47 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inNewBase = new ZoneCondition(newBase);
-		inTemple = new ZoneCondition(temple);
-		onEntryWall = new ZoneCondition(entryWall, entryWall2);
-		inMeiyditch = new ZoneCondition(meiyerditch, drakanWalls, drakanWalls2);
-		inMyrequeBase = new ZoneCondition(myrequeBase);
-		inMine = new ZoneCondition(mine);
-		inNorthMeiy = new ZoneCondition(northMeiy);
-		inRandomRoom = new ZoneCondition(randomRoom);
-		atBarricade = new ZoneCondition(barricade1, barricade2, barricade3);
-		onSecondWall = new ZoneCondition(secondWall, secondWall2);
-		onThirdWall = new ZoneCondition(thirdWall);
-		onFourthWall = new ZoneCondition(fourthWall, fourthWall2);
-		onDrakanWalls = new ZoneCondition(drakanWalls, drakanWalls2);
-		inVanstromFight = new Conditions(onDrakanWalls, new InInstanceCondition());
-		inLab = new ZoneCondition(lab);
+		inNewBase = new ZoneRequirement(newBase);
+		inTemple = new ZoneRequirement(temple);
+		onEntryWall = new ZoneRequirement(entryWall, entryWall2);
+		inMeiyditch = new ZoneRequirement(meiyerditch, drakanWalls, drakanWalls2);
+		inMyrequeBase = new ZoneRequirement(myrequeBase);
+		inMine = new ZoneRequirement(mine);
+		inNorthMeiy = new ZoneRequirement(northMeiy);
+		inRandomRoom = new ZoneRequirement(randomRoom);
+		atBarricade = new ZoneRequirement(barricade1, barricade2, barricade3);
+		onSecondWall = new ZoneRequirement(secondWall, secondWall2);
+		onThirdWall = new ZoneRequirement(thirdWall);
+		onFourthWall = new ZoneRequirement(fourthWall, fourthWall2);
+		onDrakanWalls = new ZoneRequirement(drakanWalls, drakanWalls2);
+		inVanstromFight = new Conditions(onDrakanWalls, new InInstanceRequirement());
+		inLab = new ZoneRequirement(lab);
 
-		pushedBoat = new VarbitCondition(2587, 1);
-		knockedDownBoard = new VarbitCondition(2589, 1);
+		pushedBoat = new VarbitRequirement(2587, 1);
+		knockedDownBoard = new VarbitRequirement(2589, 1);
 
-		hasDoorKey = new ItemRequirementCondition(doorKey);
-		pathDoorOpen = new VarbitCondition(2578, 1);
-		hasLadderPiece = new ItemRequirementCondition(ladderPiece);
+		hasDoorKey = new ItemRequirements(doorKey);
+		pathDoorOpen = new VarbitRequirement(2578, 1);
+		hasLadderPiece = new ItemRequirements(ladderPiece);
 
-		fixedLadder = new VarbitCondition(2598, 2);
-		wallPressed = new VarbitCondition(2590, 1, Operation.GREATER_EQUAL);
+		fixedLadder = new VarbitRequirement(2598, 2);
+		wallPressed = new VarbitRequirement(2590, 1, Operation.GREATER_EQUAL);
 
-		searchedRockySurface = new Conditions(true, new WidgetTextCondition(229, 1, "a mechanical click."));
+		searchedRockySurface = new Conditions(true, new WidgetTextRequirement(229, 1, "a mechanical click."));
 
-		hasSketches = new ItemRequirementCondition(sketch1, sketch2, sketch3);
-		hasMessage = new ItemRequirementCondition(messageFromFireplace);
-		hasLargeOrnateKey = new ItemRequirementCondition(largeOrnateKey);
+		hasSketches = new ItemRequirements(sketch1, sketch2, sketch3);
+		hasMessage = new ItemRequirements(messageFromFireplace);
+		hasLargeOrnateKey = new ItemRequirements(largeOrnateKey);
 
-		cutPortrait = new VarbitCondition(2595, 1, Operation.GREATER_EQUAL);
+		cutPortrait = new VarbitRequirement(2595, 1, Operation.GREATER_EQUAL);
 
-		handedInSketches = new VarbitCondition(2575, 1);
-		tapestryCut = new VarbitCondition(2594, 1);
-		keyPlaced = new VarbitCondition(2596, 1);
+		handedInSketches = new VarbitRequirement(2575, 1);
+		tapestryCut = new VarbitRequirement(2594, 1);
+		keyPlaced = new VarbitRequirement(2596, 1);
 
-		searchedRuneCase = new VarbitCondition(2584, 1);
-		hasTeleGrabRunesOrSearchedCase = new Conditions(LogicType.OR, searchedRuneCase, new ItemRequirementCondition(lawRune, airRune));
-		hasHaemBook = new ItemRequirementCondition(haemBook);
+		searchedRuneCase = new VarbitRequirement(2584, 1);
+		hasTeleGrabRunesOrSearchedCase = new Conditions(LogicType.OR, searchedRuneCase, new ItemRequirements(lawRune, airRune));
+		hasHaemBook = new ItemRequirements(haemBook);
 
 		// Repaired boat, 2585 = 1
 		// Repaired chute 2586 = 1

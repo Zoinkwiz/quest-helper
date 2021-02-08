@@ -32,24 +32,22 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestPointRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestPointRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,7 +71,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		antifirePotion, radimusNotes, bruleeWithEgg, baseBrulee, uncookedBrulee, finishedBrulee, finishedBruleeHighlighted,
 		milkyMixture, cornflourMixture, evilEgg, token, cinnamon, pestleAndMortarHighlighted, tokenHighlighted;
 
-	ConditionForStep inDiningRoom, talkedToWom, inEvilChickenLair, inZanaris, hasEgg, hasEggAndToken, tokenNearby, eggNearby, hasToken,
+	Requirement inDiningRoom, talkedToWom, inEvilChickenLair, inZanaris, hasEgg, hasEggAndToken, tokenNearby, eggNearby, hasToken,
 		hasMilkyMixture, hasCornflourMixture, hasBruleeWithEgg, hasBaseBrulee, hasUncookedBrulee, hasCompleteBrulee, hasCinnamon;
 
 	QuestStep enterDiningRoom, inspectAmik, enterKitchen, talkToCook, enterDiningRoomAgain, useBruleeOnVarze, talkToWom, useMilkOnCream,
@@ -220,27 +218,27 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneCondition(diningRoom);
+		inDiningRoom = new ZoneRequirement(diningRoom);
 		// 1911 0->1->2->3->4->5->6 status of brulee
 		// 1912 0->1 picked up token
 		// 1913 0->1 evil chicken killed
-		talkedToWom = new VarbitCondition(1919, 1, Operation.GREATER_EQUAL);
+		talkedToWom = new VarbitRequirement(1919, 1, Operation.GREATER_EQUAL);
 		// 1919 = 2 when entered black dragon lair once
 
-		inEvilChickenLair = new ZoneCondition(evilChickenLair);
-		inZanaris = new ZoneCondition(zanaris);
-		hasEgg = new ItemRequirementCondition(evilEgg);
-		hasToken = new ItemRequirementCondition(token);
+		inEvilChickenLair = new ZoneRequirement(evilChickenLair);
+		inZanaris = new ZoneRequirement(zanaris);
+		hasEgg = new ItemRequirements(evilEgg);
+		hasToken = new ItemRequirements(token);
 		hasEggAndToken = new Conditions(hasEgg, hasToken);
-		hasCornflourMixture = new ItemRequirementCondition(cornflourMixture);
-		hasMilkyMixture = new ItemRequirementCondition(milkyMixture);
-		tokenNearby = new ItemCondition(token);
-		eggNearby = new ItemCondition(evilEgg);
-		hasBruleeWithEgg = new ItemRequirementCondition(bruleeWithEgg);
-		hasBaseBrulee = new ItemRequirementCondition(baseBrulee);
-		hasUncookedBrulee = new ItemRequirementCondition(uncookedBrulee);
-		hasCompleteBrulee = new ItemRequirementCondition(finishedBrulee);
-		hasCinnamon = new ItemRequirementCondition(cinnamon);
+		hasCornflourMixture = new ItemRequirements(cornflourMixture);
+		hasMilkyMixture = new ItemRequirements(milkyMixture);
+		tokenNearby = new ItemOnTileRequirement(token);
+		eggNearby = new ItemOnTileRequirement(evilEgg);
+		hasBruleeWithEgg = new ItemRequirements(bruleeWithEgg);
+		hasBaseBrulee = new ItemRequirements(baseBrulee);
+		hasUncookedBrulee = new ItemRequirements(uncookedBrulee);
+		hasCompleteBrulee = new ItemRequirements(finishedBrulee);
+		hasCinnamon = new ItemRequirements(cinnamon);
 	}
 
 	public void setupSteps()

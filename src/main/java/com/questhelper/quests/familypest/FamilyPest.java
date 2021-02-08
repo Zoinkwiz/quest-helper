@@ -25,23 +25,31 @@
 
 package com.questhelper.quests.familypest;
 
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.*;
-
-import java.util.*;
-
-import net.runelite.api.*;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -62,7 +70,7 @@ public class FamilyPest extends BasicQuestHelper
 	Zone upstairsJollyBoar;
 
 	//Conditions
-	ConditionForStep upJollyBoar, talkedToAvan, talkedToCaleb, talkedToJohnathon;
+	Requirement upJollyBoar, talkedToAvan, talkedToCaleb, talkedToJohnathon;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -120,11 +128,11 @@ public class FamilyPest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		upJollyBoar = new ZoneCondition(upstairsJollyBoar);
+		upJollyBoar = new ZoneRequirement(upstairsJollyBoar);
 
-		talkedToCaleb = new VarbitCondition(5348, 1);
-		talkedToAvan = new VarbitCondition(5349, 1);
-		talkedToJohnathon = new VarbitCondition(5350, 1);
+		talkedToCaleb = new VarbitRequirement(5348, 1);
+		talkedToAvan = new VarbitRequirement(5349, 1);
+		talkedToJohnathon = new VarbitRequirement(5350, 1);
 	}
 
 	public void loadZones()

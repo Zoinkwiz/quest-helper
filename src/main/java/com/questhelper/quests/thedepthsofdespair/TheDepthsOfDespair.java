@@ -31,16 +31,15 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.FavourRequirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.player.FavourRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -70,7 +69,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	ItemRequirement weapon, dramenStaff, foodIfLowLevel, superEnergyOrStamina, xericsTalisman, skillsNecklace,
 		varlamoreEnvoy, royalAccordOfTwill;
 
-	ConditionForStep inVineryHouse, inArceuusLibrary, hasTheVarlamoreEnvoy, inCaves, inFirstAreaOfCaves,
+	Requirement inVineryHouse, inArceuusLibrary, hasTheVarlamoreEnvoy, inCaves, inFirstAreaOfCaves,
 		inSecondAreaOfCaves, inThirdAreaOfCaves, downstairsInCaves;
 
 	QuestStep talkToLordKandur, talkToChefOlivia, talkToGalana, findTheVarlamoreEnvoy, readTheVarlamoreEnvoy,
@@ -166,17 +165,17 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inVineryHouse = new ZoneCondition(houseWestOfVinery);
-		inArceuusLibrary = new ZoneCondition(arceuusLibraryF1, arceuusLibraryF2, arceuusLibraryF3);
-		inCaves = new ZoneCondition(crabclawCaves);
-		inFirstAreaOfCaves = new ZoneCondition(crabclawCavesPart1A, crabclawCavesPart1B);
-		inSecondAreaOfCaves = new ZoneCondition(crabclawCavesPart2);
-		inThirdAreaOfCaves = new ZoneCondition(crabclawCavesPart3);
+		inVineryHouse = new ZoneRequirement(houseWestOfVinery);
+		inArceuusLibrary = new ZoneRequirement(arceuusLibraryF1, arceuusLibraryF2, arceuusLibraryF3);
+		inCaves = new ZoneRequirement(crabclawCaves);
+		inFirstAreaOfCaves = new ZoneRequirement(crabclawCavesPart1A, crabclawCavesPart1B);
+		inSecondAreaOfCaves = new ZoneRequirement(crabclawCavesPart2);
+		inThirdAreaOfCaves = new ZoneRequirement(crabclawCavesPart3);
 
-		ZoneCondition cavesDownstairs = new ZoneCondition(crabclawCavesDownstairs);
-		downstairsInCaves = new Conditions(cavesDownstairs, new InInstanceCondition());
+		ZoneRequirement cavesDownstairs = new ZoneRequirement(crabclawCavesDownstairs);
+		downstairsInCaves = new Conditions(cavesDownstairs, new InInstanceRequirement());
 
-		hasTheVarlamoreEnvoy = new ItemRequirementCondition(varlamoreEnvoy);
+		hasTheVarlamoreEnvoy = new ItemRequirements(varlamoreEnvoy);
 	}
 
 	public void setupSteps()

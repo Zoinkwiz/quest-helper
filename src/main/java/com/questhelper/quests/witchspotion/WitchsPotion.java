@@ -24,23 +24,23 @@
  */
 package com.questhelper.quests.witchspotion;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -54,7 +54,7 @@ public class WitchsPotion extends BasicQuestHelper
 	//Items Required
 	ItemRequirement ratTail, onion, burntMeat, eyeOfNewt;
 
-	ConditionForStep hasRatTail;
+	Requirement hasRatTail;
 
 	QuestStep talkToWitch, killRat, returnToWitch, drinkPotion;
 
@@ -91,7 +91,7 @@ public class WitchsPotion extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasRatTail = new ItemRequirementCondition(ratTail);
+		hasRatTail = new ItemRequirements(ratTail);
 	}
 
 	public void setupSteps()

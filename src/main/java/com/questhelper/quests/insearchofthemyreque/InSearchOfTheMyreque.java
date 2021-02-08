@@ -30,23 +30,21 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,7 +71,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement morttonTeleport;
 
-	ConditionForStep hasEnoughPouch, repairedBridge1, repairedBridge2, repairedBridge3, onBridge, onEntranceIsland, onQuestion1, onQuestion2,
+	Requirement hasEnoughPouch, repairedBridge1, repairedBridge2, repairedBridge3, onBridge, onEntranceIsland, onQuestion1, onQuestion2,
 		onQuestion3, onQuestion4, onQuestion5, onQuestion6, inCaves, inMyrequeCave, talkedToHarold, talkedToRadigad, talkedToSani, talkedToPolmafi,
 		talkedToIvan;
 
@@ -218,28 +216,28 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnoughPouch = new ItemRequirementCondition(druidPouch5);
-		repairedBridge1 = new VarbitCondition(176, 1);
-		repairedBridge2 = new VarbitCondition(177, 1);
-		repairedBridge3 = new VarbitCondition(178, 1);
+		hasEnoughPouch = new ItemRequirements(druidPouch5);
+		repairedBridge1 = new VarbitRequirement(176, 1);
+		repairedBridge2 = new VarbitRequirement(177, 1);
+		repairedBridge3 = new VarbitRequirement(178, 1);
 
-		onBridge = new ZoneCondition(bridge);
-		onEntranceIsland = new ZoneCondition(entranceIsland);
-		inCaves = new ZoneCondition(caves);
-		inMyrequeCave = new ZoneCondition(myrequeCave);
+		onBridge = new ZoneRequirement(bridge);
+		onEntranceIsland = new ZoneRequirement(entranceIsland);
+		inCaves = new ZoneRequirement(caves);
+		inMyrequeCave = new ZoneRequirement(myrequeCave);
 
-		onQuestion1 = new WidgetTextCondition(219, 1, 0, "female");
-		onQuestion2 = new WidgetTextCondition(219, 1, 0, "youngest");
-		onQuestion3 = new WidgetTextCondition(219, 1, 0, "leader");
-		onQuestion4 = new WidgetTextCondition(219, 1, 0, "boatman");
-		onQuestion5 = new WidgetTextCondition(219, 1, 0, "vampyre");
-		onQuestion6 = new WidgetTextCondition(219, 1, 0, "scholar");
+		onQuestion1 = new WidgetTextRequirement(219, 1, 0, "female");
+		onQuestion2 = new WidgetTextRequirement(219, 1, 0, "youngest");
+		onQuestion3 = new WidgetTextRequirement(219, 1, 0, "leader");
+		onQuestion4 = new WidgetTextRequirement(219, 1, 0, "boatman");
+		onQuestion5 = new WidgetTextRequirement(219, 1, 0, "vampyre");
+		onQuestion6 = new WidgetTextRequirement(219, 1, 0, "scholar");
 
-		talkedToSani = new VarbitCondition(2496, true, 0);
-		talkedToHarold = new VarbitCondition(2496, true, 1);
-		talkedToRadigad = new VarbitCondition(2496, true, 2);
-		talkedToPolmafi = new VarbitCondition(2496, true, 3);
-		talkedToIvan = new VarbitCondition(2496, true, 4);
+		talkedToSani = new VarbitRequirement(2496, true, 0);
+		talkedToHarold = new VarbitRequirement(2496, true, 1);
+		talkedToRadigad = new VarbitRequirement(2496, true, 2);
+		talkedToPolmafi = new VarbitRequirement(2496, true, 3);
+		talkedToIvan = new VarbitRequirement(2496, true, 4);
 	}
 
 	public void setupSteps()

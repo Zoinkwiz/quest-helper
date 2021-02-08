@@ -31,21 +31,19 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +65,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, runesForCasts, magicCombatGear, knife, brews, restores
 		, food, recoils, enchantedSymbol, justicarsHand, demonsHeart, entRoots, godCape;
 
-	ConditionForStep inCavern, hasHand, hasHeart, hasRoots, givenHand, givenHeart, givenRoots;
+	Requirement inCavern, hasHand, hasHeart, hasRoots, givenHand, givenHeart, givenRoots;
 
 	QuestStep enterCavern, talkToKolodion, locateFollowerSara, locateFollowerGuthix, locateFollowerZammy,
 		enterCavernWithHand, enterCavernWithHeart, enterCavernWithRoots, giveKolodionHeart, giveKolodionHand,
@@ -150,16 +148,16 @@ public class TheMageArenaII extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCavern = new ZoneCondition(cavern);
+		inCavern = new ZoneRequirement(cavern);
 
-		hasRoots = new ItemRequirementCondition(entRoots);
-		hasHand = new ItemRequirementCondition(justicarsHand);
-		hasHeart = new ItemRequirementCondition(demonsHeart);
+		hasRoots = new ItemRequirements(entRoots);
+		hasHand = new ItemRequirements(justicarsHand);
+		hasHeart = new ItemRequirements(demonsHeart);
 
 
-		givenHand = new VarbitCondition(6063, 1);
-		givenRoots = new VarbitCondition(6064, 1);
-		givenHeart = new VarbitCondition(6065, 1);
+		givenHand = new VarbitRequirement(6063, 1);
+		givenRoots = new VarbitRequirement(6064, 1);
+		givenHeart = new VarbitRequirement(6065, 1);
 		// Handed in hand:
 		// 6066, 6063 0->1
 		// 6066 varies 0->7 (3 bits)

@@ -31,16 +31,15 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.PrayerRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.PrayerRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcHintArrowCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
@@ -75,11 +74,11 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 
 	Zone lighthouseF0, lighthouseF1, lighthouseF2, lighthouseF2V2, basement, dagCave;
 
-	ConditionForStep inLighthouseF0, inLighthouseF1, inLighthouseF2, inBasement, inDagCave;
+	Requirement inLighthouseF0, inLighthouseF1, inLighthouseF2, inBasement, inDagCave;
 
-	ConditionForStep repairedBridge1, repairedBridge2, gotKey, usedTar, usedTinderbox, usedGlass;
+	Requirement repairedBridge1, repairedBridge2, gotKey, usedTar, usedTinderbox, usedGlass;
 
-	ConditionForStep notUsedAirRune, notUsedWaterRune, notUsedEarthRune, notUsedFireRune, notUsedArrow, notUsedSword,
+	Requirement notUsedAirRune, notUsedWaterRune, notUsedEarthRune, notUsedFireRune, notUsedArrow, notUsedSword,
 		doorUnlocked, dagannothNearby, motherNearby;
 
 	QuestStep talkToLarrissa, usePlankOnBridge, useSecondPlank, talkToGunnjorn, openLighthouse,
@@ -186,30 +185,30 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inLighthouseF0 = new ZoneCondition(lighthouseF0);
-		inLighthouseF1 = new ZoneCondition(lighthouseF1);
-		inLighthouseF2 = new ZoneCondition(lighthouseF2, lighthouseF2V2);
-		inBasement = new ZoneCondition(basement);
-		inDagCave = new ZoneCondition(dagCave);
+		inLighthouseF0 = new ZoneRequirement(lighthouseF0);
+		inLighthouseF1 = new ZoneRequirement(lighthouseF1);
+		inLighthouseF2 = new ZoneRequirement(lighthouseF2, lighthouseF2V2);
+		inBasement = new ZoneRequirement(basement);
+		inDagCave = new ZoneRequirement(dagCave);
 
-		repairedBridge1 = new VarbitCondition(36, 1);
-		repairedBridge2 = new VarbitCondition(37, 1);
-		gotKey = new VarbitCondition(38, 1);
+		repairedBridge1 = new VarbitRequirement(36, 1);
+		repairedBridge2 = new VarbitRequirement(37, 1);
+		gotKey = new VarbitRequirement(38, 1);
 
-		usedTar = new VarbitCondition(46, 1);
-		usedTinderbox = new VarbitCondition(48, 1);
-		usedGlass = new VarbitCondition(47, 1);
+		usedTar = new VarbitRequirement(46, 1);
+		usedTinderbox = new VarbitRequirement(48, 1);
+		usedGlass = new VarbitRequirement(47, 1);
 
-		notUsedAirRune = new Conditions(LogicType.NOR, new VarbitCondition(43, 1));
-		notUsedWaterRune = new Conditions(LogicType.NOR, new VarbitCondition(41, 1));
-		notUsedEarthRune = new Conditions(LogicType.NOR, new VarbitCondition(42, 1));
-		notUsedFireRune = new Conditions(LogicType.NOR, new VarbitCondition(40, 1));
-		notUsedSword = new Conditions(LogicType.NOR, new VarbitCondition(44, 1));
-		notUsedArrow = new Conditions(LogicType.NOR, new VarbitCondition(45, 1));
+		notUsedAirRune = new Conditions(LogicType.NOR, new VarbitRequirement(43, 1));
+		notUsedWaterRune = new Conditions(LogicType.NOR, new VarbitRequirement(41, 1));
+		notUsedEarthRune = new Conditions(LogicType.NOR, new VarbitRequirement(42, 1));
+		notUsedFireRune = new Conditions(LogicType.NOR, new VarbitRequirement(40, 1));
+		notUsedSword = new Conditions(LogicType.NOR, new VarbitRequirement(44, 1));
+		notUsedArrow = new Conditions(LogicType.NOR, new VarbitRequirement(45, 1));
 
-		doorUnlocked = new VarbitCondition(35, 1);
-		dagannothNearby = new NpcHintArrowCondition(NpcID.DAGANNOTH_979);
-		motherNearby = new NpcHintArrowCondition(NpcID.DAGANNOTH_MOTHER, NpcID.DAGANNOTH_MOTHER_981,
+		doorUnlocked = new VarbitRequirement(35, 1);
+		dagannothNearby = new NpcHintArrowRequirement(NpcID.DAGANNOTH_979);
+		motherNearby = new NpcHintArrowRequirement(NpcID.DAGANNOTH_MOTHER, NpcID.DAGANNOTH_MOTHER_981,
 			NpcID.DAGANNOTH_MOTHER_982, NpcID.DAGANNOTH_MOTHER_983, NpcID.DAGANNOTH_MOTHER_984,
 			NpcID.DAGANNOTH_MOTHER_985, NpcID.DAGANNOTH_MOTHER_986, NpcID.DAGANNOTH_MOTHER_987,
 			NpcID.DAGANNOTH_MOTHER_988);

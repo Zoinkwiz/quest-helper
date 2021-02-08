@@ -27,19 +27,18 @@ package com.questhelper.quests.atasteofhope;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,14 +51,13 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.A_TASTE_OF_HOPE
@@ -72,7 +70,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes, flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB,
 		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food;
 
-	ConditionForStep inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6,
+	Requirement inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6,
 		inSerafinaHouse, hasHerb, hasMeat, hasPestle, hasVialOrVialOfWater, hasVialOfWater, hasCrushedMeat,
 		hasUnfinishedPotion, hasUnfinishedBloodPotion, hasBloodVial, hasBloodPotion, hasPotion, hasVial,
 		hasOldNotes, hasSickle, hasEmeraldSickle, hasEnchantedEmeraldSickle, hasChain, hasFlail, inNewBase,
@@ -327,39 +325,39 @@ public class ATasteOfHope extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inMyrequeBase = new ZoneCondition(myrequeBase);
-		inTheatreP1 = new ZoneCondition(theatreP1);
-		inTheatreP2 = new ZoneCondition(theatreP2);
-		inTheatreP3 = new ZoneCondition(theatreP3);
-		inTheatreP4 = new ZoneCondition(theatreP4);
-		inTheatreP5 = new ZoneCondition(theatreP5);
-		inTheatreP6 = new ZoneCondition(theatreP6);
-		inSerafinaHouse = new ZoneCondition(serafinaHouse);
-		inNewBase = new ZoneCondition(newBase);
+		inMyrequeBase = new ZoneRequirement(myrequeBase);
+		inTheatreP1 = new ZoneRequirement(theatreP1);
+		inTheatreP2 = new ZoneRequirement(theatreP2);
+		inTheatreP3 = new ZoneRequirement(theatreP3);
+		inTheatreP4 = new ZoneRequirement(theatreP4);
+		inTheatreP5 = new ZoneRequirement(theatreP5);
+		inTheatreP6 = new ZoneRequirement(theatreP6);
+		inSerafinaHouse = new ZoneRequirement(serafinaHouse);
+		inNewBase = new ZoneRequirement(newBase);
 
-		hasCrushedMeat = new ItemRequirementCondition(crushedMeat);
-		hasMeat = new ItemRequirementCondition(meatHighlighted);
-		hasHerb = new ItemRequirementCondition(herb);
-		hasVialOfWater = new ItemRequirementCondition(vialOfWater);
-		hasVial = new ItemRequirementCondition(vial);
+		hasCrushedMeat = new ItemRequirements(crushedMeat);
+		hasMeat = new ItemRequirements(meatHighlighted);
+		hasHerb = new ItemRequirements(herb);
+		hasVialOfWater = new ItemRequirements(vialOfWater);
+		hasVial = new ItemRequirements(vial);
 		hasVialOrVialOfWater = new Conditions(LogicType.OR, hasVialOfWater, hasVial);
-		hasBloodVial = new ItemRequirementCondition(bloodVial);
-		hasPestle = new ItemRequirementCondition(pestleAndMortarHighlighted);
-		hasUnfinishedPotion = new ItemRequirementCondition(unfinishedPotion);
-		hasUnfinishedBloodPotion = new ItemRequirementCondition(unfinishedBloodPotion);
-		hasBloodPotion = new ItemRequirementCondition(bloodPotion);
-		hasPotion = new ItemRequirementCondition(potion);
-		hasOldNotes = new ItemRequirementCondition(oldNotes);
-		hasSickle = new ItemRequirementCondition(sickleB);
-		hasEmeraldSickle = new ItemRequirementCondition(emeraldSickleB);
+		hasBloodVial = new ItemRequirements(bloodVial);
+		hasPestle = new ItemRequirements(pestleAndMortarHighlighted);
+		hasUnfinishedPotion = new ItemRequirements(unfinishedPotion);
+		hasUnfinishedBloodPotion = new ItemRequirements(unfinishedBloodPotion);
+		hasBloodPotion = new ItemRequirements(bloodPotion);
+		hasPotion = new ItemRequirements(potion);
+		hasOldNotes = new ItemRequirements(oldNotes);
+		hasSickle = new ItemRequirements(sickleB);
+		hasEmeraldSickle = new ItemRequirements(emeraldSickleB);
 
-		hasEnchantedEmeraldSickle = new ItemRequirementCondition(enchantedEmeraldSickleB);
-		hasChain = new ItemRequirementCondition(chain);
-		hasFlail = new ItemRequirementCondition(ivandisFlail);
-		hasFlaygianNotes = new ItemRequirementCondition(flaygianNotes);
-		inRanisFight = new ZoneCondition(ranisFight);
+		hasEnchantedEmeraldSickle = new ItemRequirements(enchantedEmeraldSickleB);
+		hasChain = new ItemRequirements(chain);
+		hasFlail = new ItemRequirements(ivandisFlail);
+		hasFlaygianNotes = new ItemRequirements(flaygianNotes);
+		inRanisFight = new ZoneRequirement(ranisFight);
 
-		wallPressed = new VarbitCondition(2590, 1, Operation.GREATER_EQUAL);
+		wallPressed = new VarbitRequirement(2590, 1, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()

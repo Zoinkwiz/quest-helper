@@ -25,16 +25,16 @@
 package com.questhelper.quests.dragonslayerii;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.ItemRequirement;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -72,14 +72,14 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 	private final HashMap<Integer, QuestStep> getBustSteps = new HashMap<>();
 	private final HashMap<Integer, ItemRequirement> items = new HashMap<>();
-	private final HashMap<Integer, ItemRequirementCondition> bustsConditions = new HashMap<>();
+	private final HashMap<Integer, ItemRequirements> bustsConditions = new HashMap<>();
 
 
 	private boolean solutionFound;
 
 	ItemRequirement aivasBust, camorraBust, robertBust, tristanBust;
 
-	ConditionForStep inFirstFloor, inBasement, inSecondFloor, hasAivasBust, hasRobertBust, hasCamorraBust, hasTristanBust;
+	Requirement inFirstFloor, inBasement, inSecondFloor, hasAivasBust, hasRobertBust, hasCamorraBust, hasTristanBust;
 
 	DetailedQuestStep takeCamorraBust, takeAivasBust, takeRobertBust, takeTristanBust, placeBustNorth, placeBustSouth, placeBustEast, placeBustWest, inspectTomb;
 
@@ -110,10 +110,10 @@ public class CryptPuzzle extends DetailedOwnerStep
 		getBustSteps.put(ROBERT, takeRobertBust);
 		getBustSteps.put(TRISTAN, takeTristanBust);
 
-		bustsConditions.put(AIVAS, new ItemRequirementCondition(aivasBust));
-		bustsConditions.put(CAMORRA, new ItemRequirementCondition(camorraBust));
-		bustsConditions.put(ROBERT, new ItemRequirementCondition(robertBust));
-		bustsConditions.put(TRISTAN, new ItemRequirementCondition(tristanBust));
+		bustsConditions.put(AIVAS, new ItemRequirements(aivasBust));
+		bustsConditions.put(CAMORRA, new ItemRequirements(camorraBust));
+		bustsConditions.put(ROBERT, new ItemRequirements(robertBust));
+		bustsConditions.put(TRISTAN, new ItemRequirements(tristanBust));
 
 		items.put(AIVAS, aivasBust);
 		items.put(CAMORRA, camorraBust);
@@ -216,14 +216,14 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 	private void setupConditions()
 	{
-		inFirstFloor = new ZoneCondition(firstFloor);
-		inSecondFloor = new ZoneCondition(secondFloor);
-		inBasement = new ZoneCondition(basement);
+		inFirstFloor = new ZoneRequirement(firstFloor);
+		inSecondFloor = new ZoneRequirement(secondFloor);
+		inBasement = new ZoneRequirement(basement);
 
-		hasAivasBust = new ItemRequirementCondition(aivasBust);
-		hasRobertBust = new ItemRequirementCondition(robertBust);
-		hasCamorraBust = new ItemRequirementCondition(camorraBust);
-		hasTristanBust = new ItemRequirementCondition(tristanBust);
+		hasAivasBust = new ItemRequirements(aivasBust);
+		hasRobertBust = new ItemRequirements(robertBust);
+		hasCamorraBust = new ItemRequirements(camorraBust);
+		hasTristanBust = new ItemRequirements(tristanBust);
 	}
 
 	@Override

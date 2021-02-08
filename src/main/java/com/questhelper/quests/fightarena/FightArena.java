@@ -30,16 +30,16 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,7 +62,7 @@ public class FightArena extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear;
 
-	ConditionForStep hasKhazardArmour, hasKhaliBrew, hasCellKeys, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
+	Requirement hasKhazardArmour, hasKhaliBrew, hasCellKeys, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
 
 	QuestStep startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew, getCellKeys, openCell, talkToSammy, killOgre,
 		talkToKhazard, talkToHengrad, talkToSammyForScorpion, killScorpion, talkToSammyForBouncer, killBouncer, leaveArena, endQuest;
@@ -145,10 +145,10 @@ public class FightArena extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasKhazardArmour = new ItemRequirementCondition(khazardHelmet, khazardPlatebody);
-		hasKhaliBrew = new ItemRequirementCondition(khaliBrew);
-		hasCellKeys = new ItemRequirementCondition(cellKeys);
-		inArena = new ZoneCondition(arena1);
+		hasKhazardArmour = new ItemRequirements(khazardHelmet, khazardPlatebody);
+		hasKhaliBrew = new ItemRequirements(khaliBrew);
+		hasCellKeys = new ItemRequirements(cellKeys);
+		inArena = new ZoneRequirement(arena1);
 		inArenaWithOgre = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_OGRE, arena1));
 		inArenaWithScorpion = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_SCORPION, arena1));
 		inArenaWithBouncer = new Conditions(inArena, new NpcCondition(NpcID.BOUNCER, arena1));

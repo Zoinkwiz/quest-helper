@@ -28,24 +28,24 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -67,7 +67,7 @@ public class DemonSlayer extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, wizardsTowerTeleport;
 
-	ConditionForStep inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1, hasBucket, hasFilledBucket, hasFirstKey, hasSecondKey, hasThirdKey,
+	Requirement inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1, hasBucket, hasFilledBucket, hasFirstKey, hasSecondKey, hasThirdKey,
 		hasPouredWaterIntoDrain, inTowerFloor1, obtainedSilverlight, hasSilverlight, delrithNearby, delrithWeakenedNearby, inInstance;
 
 	QuestStep talkToAris, talkToPrysin, goUpToRovin, goUpToRovin2, talkToRovin, goDownstairsFromRovin, goDownstairsFromRovin2, goUpToBucket, pickupBucket,
@@ -150,22 +150,22 @@ public class DemonSlayer extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCastleNEFloor1 = new ZoneCondition(castleNEFloor1);
-		inCastleNWFloor1 = new ZoneCondition(castleNWFloor1);
-		inCastleNWFloor2 = new ZoneCondition(castleNWFloor2);
-		inVarrockSewer = new ZoneCondition(varrockSewer);
-		inTowerFloor1 = new ZoneCondition(towerFloor1);
-		hasBucket = new ItemRequirementCondition(bucket);
-		hasFilledBucket = new ItemRequirementCondition(bucketOfWater);
-		hasFirstKey = new ItemRequirementCondition(key1);
-		hasSecondKey = new ItemRequirementCondition(key2);
-		hasThirdKey = new ItemRequirementCondition(key3);
-		hasPouredWaterIntoDrain = new VarbitCondition(2568, 1);
-		obtainedSilverlight = new VarbitCondition(2567, 1);
-		hasSilverlight = new ItemRequirementCondition(silverlight);
+		inCastleNEFloor1 = new ZoneRequirement(castleNEFloor1);
+		inCastleNWFloor1 = new ZoneRequirement(castleNWFloor1);
+		inCastleNWFloor2 = new ZoneRequirement(castleNWFloor2);
+		inVarrockSewer = new ZoneRequirement(varrockSewer);
+		inTowerFloor1 = new ZoneRequirement(towerFloor1);
+		hasBucket = new ItemRequirements(bucket);
+		hasFilledBucket = new ItemRequirements(bucketOfWater);
+		hasFirstKey = new ItemRequirements(key1);
+		hasSecondKey = new ItemRequirements(key2);
+		hasThirdKey = new ItemRequirements(key3);
+		hasPouredWaterIntoDrain = new VarbitRequirement(2568, 1);
+		obtainedSilverlight = new VarbitRequirement(2567, 1);
+		hasSilverlight = new ItemRequirements(silverlight);
 		delrithNearby = new NpcCondition(NpcID.DELRITH);
 		delrithWeakenedNearby = new NpcCondition(NpcID.WEAKENED_DELRITH);
-		inInstance = new VarbitCondition(2569, 1);
+		inInstance = new VarbitRequirement(2569, 1);
 	}
 
 	public void setupZones()

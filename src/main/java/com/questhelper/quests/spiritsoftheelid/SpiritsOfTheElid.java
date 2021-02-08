@@ -25,31 +25,36 @@
 package com.questhelper.quests.spiritsoftheelid;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.steps.*;
-import com.questhelper.requirements.conditional.*;
-
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.SPIRITS_OF_THE_ELID
@@ -70,9 +75,9 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	QuestStep speakToAwusah2, takeShoes, leaveAwusah, cutShoes, enterCrevice, talkToGenie, talkToGenieAgain, useStatuette;
 
 	//Conditions
-	ConditionForStep hasAncenstralKey, hasTornRobeTop, hasTornRobeBottom, hasRobeOfElidinisTop, hasRobeOfElidinisBottom, whiteGolem,
+	Requirement hasAncenstralKey, hasTornRobeTop, hasTornRobeBottom, hasRobeOfElidinisTop, hasRobeOfElidinisBottom, whiteGolem,
 		greyGolem, blackGolem, stabChannel, slashChannel, crushChannel, hasShoes, hasSole;
-	ConditionForStep inCaveEntrance, inWhiteGolemRoom, inGreyGolemRoom, inBlackGolemRoom, notAwusahHouse, insideCrevice,
+	Requirement inCaveEntrance, inWhiteGolemRoom, inGreyGolemRoom, inBlackGolemRoom, notAwusahHouse, insideCrevice,
 		inSourceCave;
 
 	//Zones
@@ -198,29 +203,29 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasTornRobeTop = new Conditions(LogicType.OR, new ItemRequirementCondition(tornRobeTop),
-			new ItemRequirementCondition(robeOfElidinisTop));
-		hasTornRobeBottom = new ItemRequirementCondition(tornRobeBottom);
-		hasRobeOfElidinisTop = new ItemRequirementCondition(robeOfElidinisTop);
-		hasRobeOfElidinisBottom = new ItemRequirementCondition(robeOfElidinisBottom);
-		hasAncenstralKey = new ItemRequirementCondition(ancestralKey);
-		hasShoes = new ItemRequirementCondition(shoes);
-		hasSole = new ItemRequirementCondition(soles);
+		hasTornRobeTop = new Conditions(LogicType.OR, new ItemRequirements(tornRobeTop),
+			new ItemRequirements(robeOfElidinisTop));
+		hasTornRobeBottom = new ItemRequirements(tornRobeBottom);
+		hasRobeOfElidinisTop = new ItemRequirements(robeOfElidinisTop);
+		hasRobeOfElidinisBottom = new ItemRequirements(robeOfElidinisBottom);
+		hasAncenstralKey = new ItemRequirements(ancestralKey);
+		hasShoes = new ItemRequirements(shoes);
+		hasSole = new ItemRequirements(soles);
 
-		inSourceCave = new ZoneCondition(sourceCave);
-		inCaveEntrance = new ZoneCondition(riverElidCaveEntrance);
-		inWhiteGolemRoom = new ZoneCondition(whiteGolemRoom);
-		inGreyGolemRoom = new ZoneCondition(greyGolemRoom);
-		inBlackGolemRoom = new ZoneCondition(blackGolemRoom);
-		notAwusahHouse = new ZoneCondition(outsideAwusahHouse);
-		insideCrevice = new ZoneCondition(creviceOutsideNardah);
+		inSourceCave = new ZoneRequirement(sourceCave);
+		inCaveEntrance = new ZoneRequirement(riverElidCaveEntrance);
+		inWhiteGolemRoom = new ZoneRequirement(whiteGolemRoom);
+		inGreyGolemRoom = new ZoneRequirement(greyGolemRoom);
+		inBlackGolemRoom = new ZoneRequirement(blackGolemRoom);
+		notAwusahHouse = new ZoneRequirement(outsideAwusahHouse);
+		insideCrevice = new ZoneRequirement(creviceOutsideNardah);
 
-		whiteGolem = new VarbitCondition(1447, 1);
-		greyGolem = new VarbitCondition(1448, 1);
-		blackGolem = new VarbitCondition(1446, 1);
-		stabChannel = new VarbitCondition(1450, 1);
-		slashChannel = new VarbitCondition(1449, 1);
-		crushChannel = new VarbitCondition(1451, 1);
+		whiteGolem = new VarbitRequirement(1447, 1);
+		greyGolem = new VarbitRequirement(1448, 1);
+		blackGolem = new VarbitRequirement(1446, 1);
+		stabChannel = new VarbitRequirement(1450, 1);
+		slashChannel = new VarbitRequirement(1449, 1);
+		crushChannel = new VarbitRequirement(1451, 1);
 	}
 
 	public void setupSteps()

@@ -24,20 +24,27 @@
  */
 package com.questhelper.quests.onesmallfavour;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,14 +58,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ONE_SMALL_FAVOUR
@@ -74,7 +73,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports;
 
-	ConditionForStep inSanfewRoom, inHamBase, inDwarvenMine, hasGuthixRest, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
+	Requirement inSanfewRoom, inHamBase, inDwarvenMine, hasGuthixRest, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
 		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full, lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, hasSapphire, hasOpal,
 		hasJade, hasRedTopaz, hasPigeonCages, inScrollSpot, slagilithNearby, petraNearby, inSeersVillageUpstairs, onRoof, hasOrnament, hasWeathervanePillar, hasDirectionals, hasPot,
 		addedOrnaments, addedDirectionals, addedWeathervanePillar, hasOrUsedOrnament, hasOrUsedDirectionals, hasOrUsedWeathervanePillar, hasPotWithLid, hasPotLid, hasUnfiredPotLid;
@@ -442,63 +441,63 @@ public class OneSmallFavour extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inSanfewRoom = new ZoneCondition(sanfewRoom);
-		inHamBase = new ZoneCondition(hamBase);
-		inDwarvenMine = new ZoneCondition(dwarvenMine);
-		inGoblinCave = new ZoneCondition(goblinCave);
-		hasGuthixRest = new ItemRequirementCondition(guthixRest);
+		inSanfewRoom = new ZoneRequirement(sanfewRoom);
+		inHamBase = new ZoneRequirement(hamBase);
+		inDwarvenMine = new ZoneRequirement(dwarvenMine);
+		inGoblinCave = new ZoneRequirement(goblinCave);
+		hasGuthixRest = new ItemRequirements(guthixRest);
 
-		lamp1Empty = new VarbitCondition(6225, 1);
-		lamp2Empty = new VarbitCondition(6226, 1);
-		lamp3Empty = new VarbitCondition(6227, 1);
-		lamp4Empty = new VarbitCondition(6228, 1);
-		lamp5Empty = new VarbitCondition(6229, 1);
-		lamp6Empty = new VarbitCondition(6230, 1);
-		lamp7Empty = new VarbitCondition(6231, 1);
-		lamp8Empty = new VarbitCondition(6232, 1);
+		lamp1Empty = new VarbitRequirement(6225, 1);
+		lamp2Empty = new VarbitRequirement(6226, 1);
+		lamp3Empty = new VarbitRequirement(6227, 1);
+		lamp4Empty = new VarbitRequirement(6228, 1);
+		lamp5Empty = new VarbitRequirement(6229, 1);
+		lamp6Empty = new VarbitRequirement(6230, 1);
+		lamp7Empty = new VarbitRequirement(6231, 1);
+		lamp8Empty = new VarbitRequirement(6232, 1);
 
-		allEmpty = new VarbitCondition(244, 255);
+		allEmpty = new VarbitRequirement(244, 255);
 
-		lamp1Full = new VarbitCondition(6233, 1);
-		lamp2Full = new VarbitCondition(6234, 1);
-		lamp3Full = new VarbitCondition(6235, 1);
-		lamp4Full = new VarbitCondition(6236, 1);
-		lamp5Full = new VarbitCondition(6237, 1);
-		lamp6Full = new VarbitCondition(6238, 1);
-		lamp7Full = new VarbitCondition(6239, 1);
-		lamp8Full = new VarbitCondition(6240, 1);
+		lamp1Full = new VarbitRequirement(6233, 1);
+		lamp2Full = new VarbitRequirement(6234, 1);
+		lamp3Full = new VarbitRequirement(6235, 1);
+		lamp4Full = new VarbitRequirement(6236, 1);
+		lamp5Full = new VarbitRequirement(6237, 1);
+		lamp6Full = new VarbitRequirement(6238, 1);
+		lamp7Full = new VarbitRequirement(6239, 1);
+		lamp8Full = new VarbitRequirement(6240, 1);
 
-		allFull = new VarbitCondition(6241, 255);
+		allFull = new VarbitRequirement(6241, 255);
 
-		hasSapphire = new ItemRequirementCondition(sapphire);
-		hasOpal = new ItemRequirementCondition(opal);
-		hasJade = new ItemRequirementCondition(jade);
-		hasRedTopaz = new ItemRequirementCondition(redTopaz);
+		hasSapphire = new ItemRequirements(sapphire);
+		hasOpal = new ItemRequirements(opal);
+		hasJade = new ItemRequirements(jade);
+		hasRedTopaz = new ItemRequirements(redTopaz);
 
-		hasPigeonCages = new ItemRequirementCondition(pigeonCages5);
+		hasPigeonCages = new ItemRequirements(pigeonCages5);
 		slagilithNearby = new NpcCondition(NpcID.SLAGILITH);
-		inScrollSpot = new ZoneCondition(scrollSpot);
-		inSeersVillageUpstairs = new ZoneCondition(seersVillageUpstairs);
-		onRoof = new ZoneCondition(roof);
+		inScrollSpot = new ZoneRequirement(scrollSpot);
+		inSeersVillageUpstairs = new ZoneRequirement(seersVillageUpstairs);
+		onRoof = new ZoneRequirement(roof);
 
 		petraNearby = new NpcCondition(NpcID.PETRA_FIYED);
 
-		hasOrnament = new ItemRequirementCondition(ornament);
-		hasWeathervanePillar = new ItemRequirementCondition(weathervanePillar);
-		hasDirectionals = new ItemRequirementCondition(directionals);
+		hasOrnament = new ItemRequirements(ornament);
+		hasWeathervanePillar = new ItemRequirements(weathervanePillar);
+		hasDirectionals = new ItemRequirements(directionals);
 
-		addedOrnaments = new VarbitCondition(255, 1);
-		addedDirectionals = new VarbitCondition(254, 1);
-		addedWeathervanePillar = new VarbitCondition(253, 1);
+		addedOrnaments = new VarbitRequirement(255, 1);
+		addedDirectionals = new VarbitRequirement(254, 1);
+		addedWeathervanePillar = new VarbitRequirement(253, 1);
 
 		hasOrUsedDirectionals = new Conditions(LogicType.OR, addedDirectionals, hasDirectionals);
 		hasOrUsedOrnament = new Conditions(LogicType.OR, addedOrnaments, hasOrnament);
 		hasOrUsedWeathervanePillar = new Conditions(LogicType.OR, addedWeathervanePillar, hasWeathervanePillar);
 
-		hasPotLid = new ItemRequirementCondition(potLid);
-		hasUnfiredPotLid = new ItemRequirementCondition(unfiredPotLid);
-		hasPotWithLid = new ItemRequirementCondition(potWithLid);
-		hasPot = new ItemRequirementCondition(pot);
+		hasPotLid = new ItemRequirements(potLid);
+		hasUnfiredPotLid = new ItemRequirements(unfiredPotLid);
+		hasPotWithLid = new ItemRequirements(potWithLid);
+		hasPot = new ItemRequirements(pot);
 	}
 
 	public void setupSteps()

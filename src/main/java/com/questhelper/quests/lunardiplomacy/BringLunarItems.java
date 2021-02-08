@@ -1,10 +1,10 @@
 package com.questhelper.quests.lunardiplomacy;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.NpcStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.VarbitCondition;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -13,7 +13,7 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class BringLunarItems extends NpcStep
 {
-	ConditionForStep handedInHelm, handedInCape, handedInAmulet, handedInTorso, handedInGloves, handedInBoots, handedInLegs, handedInRing;
+	Requirement handedInHelm, handedInCape, handedInAmulet, handedInTorso, handedInGloves, handedInBoots, handedInLegs, handedInRing;
 
 	ItemRequirement helm, cape, amulet, torso, gloves, boots, legs, ring, sealOfPassage;
 
@@ -42,14 +42,14 @@ public class BringLunarItems extends NpcStep
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
 		sealOfPassage.setTooltip("You can get another from Brundt");
 
-		handedInHelm = new VarbitCondition(2436, 1);
-		handedInCape = new VarbitCondition(2437, 1);
-		handedInAmulet = new VarbitCondition(2438, 1);
-		handedInTorso = new VarbitCondition(2439, 1);
-		handedInGloves = new VarbitCondition(2441, 1);
-		handedInBoots = new VarbitCondition(2440, 1);
-		handedInLegs = new VarbitCondition(2442, 1);
-		handedInRing = new VarbitCondition(2443, 1);
+		handedInHelm = new VarbitRequirement(2436, 1);
+		handedInCape = new VarbitRequirement(2437, 1);
+		handedInAmulet = new VarbitRequirement(2438, 1);
+		handedInTorso = new VarbitRequirement(2439, 1);
+		handedInGloves = new VarbitRequirement(2441, 1);
+		handedInBoots = new VarbitRequirement(2440, 1);
+		handedInLegs = new VarbitRequirement(2442, 1);
+		handedInRing = new VarbitRequirement(2443, 1);
 	}
 
 	@Override

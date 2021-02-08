@@ -24,22 +24,28 @@
  */
 package com.questhelper.quests.theslugmenace;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,14 +59,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_SLUG_MENACE
@@ -74,7 +72,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleports;
 
-	ConditionForStep talkedToMaledict, talkedToHobb, talkedToHolgart, talkedToAllImportantPeople, inHobgoblinDungeon, inSeaSlugDungeon, openedWall, hasDeadSlug, hasPage1, hasPage2, hasPage3, receivedFragments,
+	Requirement talkedToMaledict, talkedToHobb, talkedToHolgart, talkedToAllImportantPeople, inHobgoblinDungeon, inSeaSlugDungeon, openedWall, hasDeadSlug, hasPage1, hasPage2, hasPage3, receivedFragments,
 		onPlatform, puzzleUp, repairedPage, pickedUpSlug, hasAirRune, hasWaterRune, hasEarthRune, hasFireRune, hasMindRune, hasOrUsedAirRune, hasOrUsedWaterRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune,
 		hasAllRunes, usedAirRune, usedWaterRune, usedEarthRune, usedFireRune, usedMindRune, usedAllRunes;
 
@@ -178,7 +176,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		pageFragment3 = new ItemRequirement("Fragment 3", ItemID.FRAGMENT_3);
 		pageFragment3.setHighlightInInventory(true);
 
-		receivedFragments = new VarbitCondition(2619, 1);
+		receivedFragments = new VarbitRequirement(2619, 1);
 		glue = new ItemRequirement("Sea slug glue", ItemID.SEA_SLUG_GLUE);
 		glue.setHighlightInInventory(true);
 
@@ -233,38 +231,38 @@ public class TheSlugMenace extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		talkedToHolgart = new VarbitCondition(2614, 1);
-		talkedToHobb = new VarbitCondition(2615, 1);
-		talkedToMaledict = new VarbitCondition(2616, 1);
-		talkedToAllImportantPeople = new VarbitCondition(2617, 7);
-		inHobgoblinDungeon = new ZoneCondition(hobgoblinDungeon);
-		inSeaSlugDungeon = new ZoneCondition(seaSlugDungeon);
-		openedWall = new VarbitCondition(2618, 1);
+		talkedToHolgart = new VarbitRequirement(2614, 1);
+		talkedToHobb = new VarbitRequirement(2615, 1);
+		talkedToMaledict = new VarbitRequirement(2616, 1);
+		talkedToAllImportantPeople = new VarbitRequirement(2617, 7);
+		inHobgoblinDungeon = new ZoneRequirement(hobgoblinDungeon);
+		inSeaSlugDungeon = new ZoneRequirement(seaSlugDungeon);
+		openedWall = new VarbitRequirement(2618, 1);
 
-		hasDeadSlug = new ItemRequirementCondition(deadSeaSlug);
-		hasPage1 = new ItemRequirementCondition(page1);
-		hasPage2 = new ItemRequirementCondition(page2);
-		hasPage3 = new ItemRequirementCondition(page3);
+		hasDeadSlug = new ItemRequirements(deadSeaSlug);
+		hasPage1 = new ItemRequirements(page1);
+		hasPage2 = new ItemRequirements(page2);
+		hasPage3 = new ItemRequirements(page3);
 
-		onPlatform = new ZoneCondition(platform);
+		onPlatform = new ZoneRequirement(platform);
 
-		puzzleUp = new WidgetModelCondition(460, 4, 18393);
+		puzzleUp = new WidgetModelRequirement(460, 4, 18393);
 
-		repairedPage = new VarbitCondition(2611, 1);
+		repairedPage = new VarbitRequirement(2611, 1);
 
-		pickedUpSlug = new VarbitCondition(2631, 1);
+		pickedUpSlug = new VarbitRequirement(2631, 1);
 
-		hasAirRune = new ItemRequirementCondition(airRune);
-		hasEarthRune = new ItemRequirementCondition(earthRune);
-		hasWaterRune = new ItemRequirementCondition(waterRune);
-		hasFireRune = new ItemRequirementCondition(fireRune);
-		hasMindRune = new ItemRequirementCondition(mindRune);
+		hasAirRune = new ItemRequirements(airRune);
+		hasEarthRune = new ItemRequirements(earthRune);
+		hasWaterRune = new ItemRequirements(waterRune);
+		hasFireRune = new ItemRequirements(fireRune);
+		hasMindRune = new ItemRequirements(mindRune);
 
-		usedAirRune = new VarbitCondition(2623, 1);
-		usedEarthRune = new VarbitCondition(2622, 1);
-		usedWaterRune = new VarbitCondition(2625, 1);
-		usedFireRune = new VarbitCondition(2624, 1);
-		usedMindRune = new VarbitCondition(2626, 1);
+		usedAirRune = new VarbitRequirement(2623, 1);
+		usedEarthRune = new VarbitRequirement(2622, 1);
+		usedWaterRune = new VarbitRequirement(2625, 1);
+		usedFireRune = new VarbitRequirement(2624, 1);
+		usedMindRune = new VarbitRequirement(2626, 1);
 
 		hasOrUsedAirRune = new Conditions(LogicType.OR, hasAirRune, usedAirRune);
 		hasOrUsedWaterRune = new Conditions(LogicType.OR, hasWaterRune, usedWaterRune);
@@ -274,7 +272,7 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		hasAllRunes = new Conditions(hasOrUsedAirRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune, hasOrUsedWaterRune);
 
-		usedAllRunes = new VarbitCondition(2627, 31);
+		usedAllRunes = new VarbitRequirement(2627, 31);
 	}
 
 	public void setupSteps()

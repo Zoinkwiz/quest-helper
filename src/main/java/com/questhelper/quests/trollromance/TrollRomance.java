@@ -24,18 +24,25 @@
  */
 package com.questhelper.quests.trollromance;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -47,14 +54,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TROLL_ROMANCE
@@ -64,7 +63,7 @@ public class TrollRomance extends BasicQuestHelper
 	//Items Required
 	ItemRequirement ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, wax, sled, waxedSled, trollweissFlowers, combatGear, sledEquipped;
 
-	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation, hasWax, hasWaxedSled, hasFlower, inTrollCave,
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation, hasWax, hasWaxedSled, hasFlower, inTrollCave,
 		isSledEquipped, fightableArrgNearby;
 
 	DetailedQuestStep enterStronghold, goDownToUg, goUpToUg, talkToUg, talkToAga, talkToTenzing, talkToDunstan, talkToDunstanAgain, useTarOnWax,
@@ -174,16 +173,16 @@ public class TrollRomance extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inStrongholdFloor1 = new ZoneCondition(strongholdFloor1);
-		inStrongholdFloor2 = new ZoneCondition(strongholdFloor2);
-		inPrison = new ZoneCondition(prison);
-		inTrollweiss = new ZoneCondition(trollweiss);
-		inTrollCave = new ZoneCondition(trollCave);
-		atFlowerLocation = new ZoneCondition(flowerLocation);
-		hasWax = new ItemRequirementCondition(wax);
-		hasWaxedSled = new ItemRequirementCondition(waxedSled);
-		hasFlower = new ItemRequirementCondition(trollweissFlowers);
-		isSledEquipped = new ItemRequirementCondition(sledEquipped);
+		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
+		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
+		inPrison = new ZoneRequirement(prison);
+		inTrollweiss = new ZoneRequirement(trollweiss);
+		inTrollCave = new ZoneRequirement(trollCave);
+		atFlowerLocation = new ZoneRequirement(flowerLocation);
+		hasWax = new ItemRequirements(wax);
+		hasWaxedSled = new ItemRequirements(waxedSled);
+		hasFlower = new ItemRequirements(trollweissFlowers);
+		isSledEquipped = new ItemRequirements(sledEquipped);
 		fightableArrgNearby = new NpcCondition(NpcID.ARRG_643);
 	}
 

@@ -25,14 +25,24 @@
 package com.questhelper.quests.tearsofguthix;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestPointRequirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,17 +54,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TEARS_OF_GUTHIX
@@ -65,7 +64,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	ItemRequirement litSapphireLantern, chisel, tinderbox, pickaxe, rope, litSapphireLanternHighlighted,
 		ropeHighlighted, tinderboxHighlighted, pickaxeHighlighted, chiselHighlighted, rockHighlighted, stoneBowl;
 
-	ConditionForStep inSwamp, inJunaRoom, atRocks, addedRope, hasRock, hasStoneBowl;
+	Requirement inSwamp, inJunaRoom, atRocks, addedRope, hasRock, hasStoneBowl;
 
 	QuestStep addRope, enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock,
 		talkToJunaToFinish;
@@ -136,14 +135,14 @@ public class TearsOfGuthix extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		inSwamp = new ZoneCondition(swamp);
-		inJunaRoom = new ZoneCondition(junaRoom);
-		atRocks = new ZoneCondition(rocks);
+		inSwamp = new ZoneRequirement(swamp);
+		inJunaRoom = new ZoneRequirement(junaRoom);
+		atRocks = new ZoneRequirement(rocks);
 
-		addedRope = new VarbitCondition(279, 1);
+		addedRope = new VarbitRequirement(279, 1);
 
-		hasRock = new ItemRequirementCondition(rockHighlighted);
-		hasStoneBowl = new ItemRequirementCondition(stoneBowl);
+		hasRock = new ItemRequirements(rockHighlighted);
+		hasStoneBowl = new ItemRequirements(stoneBowl);
 
 		// 452 = 1, gone through Juna's first dialog
 	}

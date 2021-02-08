@@ -31,16 +31,15 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestPointRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
@@ -73,7 +72,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 	ItemRequirement balloonStructure, origamiBalloon, sandbag8;
 
-	ConditionForStep onEntrana, hasBalloonStructure, hasOrigamiBalloon, hasSandbags, flying;
+	Requirement onEntrana, hasBalloonStructure, hasOrigamiBalloon, hasSandbags, flying;
 
 	Zone entrana;
 
@@ -163,15 +162,15 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		onEntrana = new ZoneCondition(entrana);
+		onEntrana = new ZoneRequirement(entrana);
 
-		hasBalloonStructure = new ItemRequirementCondition(balloonStructure);
-		hasOrigamiBalloon = new ItemRequirementCondition(origamiBalloon);
+		hasBalloonStructure = new ItemRequirements(balloonStructure);
+		hasOrigamiBalloon = new ItemRequirements(origamiBalloon);
 		hasSandbags = new Conditions(LogicType.OR,
-			new VarbitCondition(2875, 1),
-			new ItemRequirementCondition(sandbag8));
+			new VarbitRequirement(2875, 1),
+			new ItemRequirements(sandbag8));
 
-		flying = new WidgetTextCondition(471, 1, "Balloon Controls");
+		flying = new WidgetTextRequirement(471, 1, "Balloon Controls");
 		// Finished flight, 2868 = 1
 	}
 

@@ -24,30 +24,30 @@
  */
 package com.questhelper.quests.thecorsaircurse;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -62,7 +62,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 	//Items Required
 	ItemRequirement spade, tinderbox, ogreArtfact, combatGear;
 
-	ConditionForStep inCove, inCavern, inIthoiHut, inGnocciHut, inArsenHut, inShip, talkedToIthoi, talkedToGnocci, talkedToArsen, talkedToColin,
+	Requirement inCove, inCavern, inIthoiHut, inGnocciHut, inArsenHut, inShip, talkedToIthoi, talkedToGnocci, talkedToArsen, talkedToColin,
 		hasTinderbox, hasSpade, hasOgreArtefact, foundDoll, returnedToothPick, lookedThroughTelescope, finishedGnocci, finishedArsen, finishedColin;
 
 	QuestStep talkToTockFarm, talkToTockRimmington, returnToCove, goUpToIthoi, talkToIthoi, goDownFromIthoi, goUpToArsen, talkToArsen,
@@ -201,29 +201,29 @@ public class TheCorsairCurse extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCove = new ZoneCondition(cove);
-		inIthoiHut = new ZoneCondition(ithoiHut);
-		inGnocciHut = new ZoneCondition(gnocciHut);
-		inArsenHut = new ZoneCondition(arsenHut);
-		inShip = new ZoneCondition(ship);
-		inCavern = new ZoneCondition(cavern);
-		talkedToIthoi = new VarbitCondition(6075, 1);
+		inCove = new ZoneRequirement(cove);
+		inIthoiHut = new ZoneRequirement(ithoiHut);
+		inGnocciHut = new ZoneRequirement(gnocciHut);
+		inArsenHut = new ZoneRequirement(arsenHut);
+		inShip = new ZoneRequirement(ship);
+		inCavern = new ZoneRequirement(cavern);
+		talkedToIthoi = new VarbitRequirement(6075, 1);
 
-		talkedToArsen = new VarbitCondition(6074, 2, Operation.GREATER_EQUAL);
-		returnedToothPick = new VarbitCondition(6074, 4);
-		finishedArsen = new VarbitCondition(6074, 5, Operation.GREATER_EQUAL);
+		talkedToArsen = new VarbitRequirement(6074, 2, Operation.GREATER_EQUAL);
+		returnedToothPick = new VarbitRequirement(6074, 4);
+		finishedArsen = new VarbitRequirement(6074, 5, Operation.GREATER_EQUAL);
 
-		talkedToColin = new VarbitCondition(6072, 1, Operation.GREATER_EQUAL);
-		lookedThroughTelescope = new VarbitCondition(6072, 2);
-		finishedColin = new VarbitCondition(6072, 3);
+		talkedToColin = new VarbitRequirement(6072, 1, Operation.GREATER_EQUAL);
+		lookedThroughTelescope = new VarbitRequirement(6072, 2);
+		finishedColin = new VarbitRequirement(6072, 3);
 
-		talkedToGnocci = new VarbitCondition(6073, 1);
-		foundDoll = new VarbitCondition(6073, 2);
-		finishedGnocci = new VarbitCondition(6073, 3);
+		talkedToGnocci = new VarbitRequirement(6073, 1);
+		foundDoll = new VarbitRequirement(6073, 2);
+		finishedGnocci = new VarbitRequirement(6073, 3);
 
-		hasTinderbox = new ItemRequirementCondition(tinderbox);
-		hasSpade = new ItemRequirementCondition(spade);
-		hasOgreArtefact = new ItemRequirementCondition(ogreArtfact);
+		hasTinderbox = new ItemRequirements(tinderbox);
+		hasSpade = new ItemRequirements(spade);
+		hasOgreArtefact = new ItemRequirements(ogreArtfact);
 	}
 
 	public void setupSteps()

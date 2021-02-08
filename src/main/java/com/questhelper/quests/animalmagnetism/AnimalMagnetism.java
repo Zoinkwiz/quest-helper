@@ -31,12 +31,22 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.*;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
-import com.questhelper.steps.*;
-import net.runelite.api.*;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.PuzzleStep;
+import com.questhelper.steps.QuestStep;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.*;
@@ -62,7 +72,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva,
 		getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva;
 
-	ConditionForStep hasChickens, hasBarMagnet, hasTwigs, inIronMine;
+	Requirement hasChickens, hasBarMagnet, hasTwigs, inIronMine;
 
 	Zone ironMine;
 
@@ -166,10 +176,10 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		hasChickens = new ItemRequirementCondition(undeadChicken2);
-		hasBarMagnet = new ItemRequirementCondition(barMagnet);
-		hasTwigs = new ItemRequirementCondition(twigs);
-		inIronMine = new ZoneCondition(ironMine);
+		hasChickens = new ItemRequirements(undeadChicken2);
+		hasBarMagnet = new ItemRequirements(barMagnet);
+		hasTwigs = new ItemRequirements(twigs);
+		inIronMine = new ZoneRequirement(ironMine);
 	}
 
 	private void setupSteps()

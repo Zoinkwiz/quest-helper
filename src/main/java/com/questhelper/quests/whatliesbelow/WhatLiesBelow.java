@@ -24,16 +24,23 @@
  */
 package com.questhelper.quests.whatliesbelow;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,14 +53,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WHAT_LIES_BELOW
@@ -67,7 +66,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement chronicle;
 
-	ConditionForStep inChaosAltar, hasFullFolder, inBattle;
+	Requirement inChaosAltar, hasFullFolder, inBattle;
 
 	QuestStep talkToRat, bringFolderToRat, talkToRatAfterFolder, talkToSurok, talkToSurokNoLetter, enterChaosAltar, useWandOnAltar, bringWandToSurok,
 		talkToRatAfterSurok, talkToZaff, talkToSurokToFight, fightRoald, talkToRatToFinish, talkToRatAfterSurokNoLetter;
@@ -171,9 +170,9 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasFullFolder = new ItemRequirementCondition(fullFolder);
-		inChaosAltar = new ZoneCondition(chaosAltar);
-		inBattle = new VarbitCondition(6719, 2);
+		hasFullFolder = new ItemRequirements(fullFolder);
+		inChaosAltar = new ZoneRequirement(chaosAltar);
+		inBattle = new VarbitRequirement(6719, 2);
 	}
 
 	public void setupSteps()

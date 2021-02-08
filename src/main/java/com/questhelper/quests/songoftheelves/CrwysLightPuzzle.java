@@ -27,12 +27,12 @@ package com.questhelper.quests.songoftheelves;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -59,7 +59,7 @@ public class CrwysLightPuzzle extends ConditionalStep
 
 	ConditionalStep goToF0, goToF1, goToF2;
 
-	ConditionForStep hasMirrorsAndCrystal, onF1, onF2, onF0, notResetCadarn, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12;
+	Requirement hasMirrorsAndCrystal, onF1, onF2, onF0, notResetCadarn, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12;
 
 	public CrwysLightPuzzle(QuestHelper questHelper,ConditionalStep goToF1Steps)
 	{
@@ -240,39 +240,39 @@ public class CrwysLightPuzzle extends ConditionalStep
 	protected void setupConditions()
 	{
 		hasMirrorsAndCrystal = new Conditions(
-			new ItemRequirementCondition(handMirrorHighlighted),
-			new ItemRequirementCondition(redCrystalHighlighted),
-			new ItemRequirementCondition(fracturedCrystalHighlighted)
+			new ItemRequirements(handMirrorHighlighted),
+			new ItemRequirements(redCrystalHighlighted),
+			new ItemRequirements(fracturedCrystalHighlighted)
 		);
 
-		onF0 = new ZoneCondition(f0);
-		onF1 = new ZoneCondition(f1);
-		onF2 = new ZoneCondition(f2);
+		onF0 = new ZoneRequirement(f0);
+		onF1 = new ZoneRequirement(f1);
+		onF2 = new ZoneRequirement(f2);
 
 		int WHITE = 1;
 		int CYAN = 2;
 		int MAGENTA = 4;
 
-		notResetCadarn = new VarbitCondition(8971, MAGENTA);
-		r1 = new VarbitCondition(8947, MAGENTA);
-		r2 = new VarbitCondition(8948, MAGENTA);
-		r3 = new VarbitCondition(8957, MAGENTA);
+		notResetCadarn = new VarbitRequirement(8971, MAGENTA);
+		r1 = new VarbitRequirement(8947, MAGENTA);
+		r2 = new VarbitRequirement(8948, MAGENTA);
+		r3 = new VarbitRequirement(8957, MAGENTA);
 
 		r4 = new Conditions(
-			new VarbitCondition(8958, MAGENTA),
-			new VarbitCondition(8959, MAGENTA)
+			new VarbitRequirement(8958, MAGENTA),
+			new VarbitRequirement(8959, MAGENTA)
 		);
-		r5 = new Conditions(new VarbitCondition(8961, MAGENTA), r4);
-		r6 = new Conditions(new VarbitCondition(9011, WHITE), r4);
-		r7 = new Conditions(new VarbitCondition(8579, WHITE), r4);
+		r5 = new Conditions(new VarbitRequirement(8961, MAGENTA), r4);
+		r6 = new Conditions(new VarbitRequirement(9011, WHITE), r4);
+		r7 = new Conditions(new VarbitRequirement(8579, WHITE), r4);
 
-		r8 = new Conditions(new VarbitCondition(8873, WHITE), r4);
-		r9 = new Conditions(new VarbitCondition(8583, WHITE), r4);
+		r8 = new Conditions(new VarbitRequirement(8873, WHITE), r4);
+		r9 = new Conditions(new VarbitRequirement(8583, WHITE), r4);
 
-		r10 = new Conditions(new VarbitCondition(8605, CYAN), r4);
+		r10 = new Conditions(new VarbitRequirement(8605, CYAN), r4);
 
-		r11 = new Conditions(new VarbitCondition(8787, CYAN), r4);
-		r12 = new Conditions(new VarbitCondition(8604, CYAN), r4);
+		r11 = new Conditions(new VarbitRequirement(8787, CYAN), r4);
+		r12 = new Conditions(new VarbitRequirement(8604, CYAN), r4);
 	}
 
 	public List<QuestStep> getDisplaySteps()

@@ -30,23 +30,21 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.VarbitRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +67,7 @@ public class RFDDwarf extends BasicQuestHelper
 		teleportFalador2, teleportLumbridge, coin, asgarnianAle, asgoldianAle, asgoldianAle4, coins100,
 		rockCakeHighlighted;
 
-	ConditionForStep inDiningRoom, inTunnel, hasRockCake, hasRockCakeHot, learnedHowToMakeAle, hasAsgoldian4,
+	Requirement inDiningRoom, inTunnel, hasRockCake, hasRockCakeHot, learnedHowToMakeAle, hasAsgoldian4,
 		givenAle, has4AleOrGivenAle;
 
 	QuestStep enterDiningRoom, inspectDwarf, talkToKaylee, makeAle, enterTunnels, talkToOldDwarf, talkToOldDwarfMore,
@@ -162,14 +160,14 @@ public class RFDDwarf extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneCondition(diningRoom);
-		inTunnel = new ZoneCondition(tunnel);
+		inDiningRoom = new ZoneRequirement(diningRoom);
+		inTunnel = new ZoneRequirement(tunnel);
 
-		hasRockCake = new ItemRequirementCondition(rockCake);
-		hasRockCakeHot = new ItemRequirementCondition(rockCakeHot);
-		learnedHowToMakeAle = new VarbitCondition(1891, 1);
-		hasAsgoldian4 = new ItemRequirementCondition(asgoldianAle4);
-		givenAle = new VarbitCondition(1893, 1);
+		hasRockCake = new ItemRequirements(rockCake);
+		hasRockCakeHot = new ItemRequirements(rockCakeHot);
+		learnedHowToMakeAle = new VarbitRequirement(1891, 1);
+		hasAsgoldian4 = new ItemRequirements(asgoldianAle4);
+		givenAle = new VarbitRequirement(1893, 1);
 		has4AleOrGivenAle = new Conditions(LogicType.OR, hasAsgoldian4, givenAle);
 	}
 

@@ -31,11 +31,13 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -43,15 +45,11 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -76,7 +74,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		ectoToken10, ectoToken25, ectoSheets, bedsheet, petition, boneKey, boneKeyHighlighted, robes, book, manual, mapPiece1, mapPiece2, mapPiece3, silkHighlighted,
 		ectoTokensCharos, ectoTokensNoCharos, ectoSheetsEquipped, enchantedGhostspeakEquipped;
 
-	ConditionForStep inPhas, onDragontooth, hasCupOfMilkyTea, hasCupOfTea, hasModelShip, hasRepairedShip, hasPiece1, hasPiece2, hasPiece3, hasMap, lobsterNearby,
+	Requirement inPhas, onDragontooth, hasCupOfMilkyTea, hasCupOfTea, hasModelShip, hasRepairedShip, hasPiece1, hasPiece2, hasPiece3, hasMap, lobsterNearby,
 		hasCup, killedLobster, hadChestKey, onDeck, onTopOfShip, onRocks, unlockedChest2, hasBook, hasSheet, hasEctoSheet, hasMysticalRobes, hasManual, boneKeyNearby,
 		hasBoneKey, talkedToAkHaranu, hasSignedOakBow, hasPetition, hasSignatures, givenPetitionToNecro, inUpstairsEcto, doorUnlocked;
 
@@ -287,42 +285,42 @@ public class GhostsAhoy extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inPhas = new ZoneCondition(phas1, phas2, phas3, phas4, phas5, phas6, phas7, phas8);
-		inUpstairsEcto = new ZoneCondition(upstairsEcto);
-		onTopOfShip = new ZoneCondition(topOfShip);
-		onDeck = new ZoneCondition(deck);
-		onRocks = new ZoneCondition(rocks);
-		onDragontooth = new ZoneCondition(dragontooth);
+		inPhas = new ZoneRequirement(phas1, phas2, phas3, phas4, phas5, phas6, phas7, phas8);
+		inUpstairsEcto = new ZoneRequirement(upstairsEcto);
+		onTopOfShip = new ZoneRequirement(topOfShip);
+		onDeck = new ZoneRequirement(deck);
+		onRocks = new ZoneRequirement(rocks);
+		onDragontooth = new ZoneRequirement(dragontooth);
 
-		hasCupOfMilkyTea = new ItemRequirementCondition(cupWithMilkyTea);
-		hasCupOfTea = new ItemRequirementCondition(cupWithTea);
-		hasMap = new ItemRequirementCondition(map);
-		hasPiece1 = new ItemRequirementCondition(mapPiece1);
-		hasPiece2 = new ItemRequirementCondition(mapPiece2);
-		hasPiece3 = new ItemRequirementCondition(mapPiece3);
-		hasModelShip = new ItemRequirementCondition(modelShip);
-		hasRepairedShip = new ItemRequirementCondition(repairedShip);
-		hasCup = new ItemRequirementCondition(cup);
-		hasBook = new Conditions(LogicType.OR, new VarbitCondition(208, 1), new ItemRequirementCondition(book));
-		hasManual = new Conditions(LogicType.OR, new VarbitCondition(206, 1), new VarbitCondition(212, 8));
-		hasSheet = new ItemRequirementCondition(bedsheet);
-		hasEctoSheet = new ItemRequirementCondition(ectoSheets);
-		hasMysticalRobes = new Conditions(LogicType.OR, new VarbitCondition(207, 1), new ItemRequirementCondition(robes));
-		hasSignedOakBow = new ItemRequirementCondition(signedOakBow);
-		hasPetition = new ItemRequirementCondition(petition);
-		hasSignatures = new VarbitCondition(209, 11, Operation.GREATER_EQUAL);
-		givenPetitionToNecro = new VarbitCondition(209, 31, Operation.GREATER_EQUAL);
-		hadChestKey = new Conditions(LogicType.OR, new ItemRequirementCondition(chestKey), new VarbitCondition(214, 2, Operation.GREATER_EQUAL));
-		unlockedChest2 = new VarbitCondition(214, 3, Operation.GREATER_EQUAL);
-		doorUnlocked = new VarbitCondition(213, 1);
+		hasCupOfMilkyTea = new ItemRequirements(cupWithMilkyTea);
+		hasCupOfTea = new ItemRequirements(cupWithTea);
+		hasMap = new ItemRequirements(map);
+		hasPiece1 = new ItemRequirements(mapPiece1);
+		hasPiece2 = new ItemRequirements(mapPiece2);
+		hasPiece3 = new ItemRequirements(mapPiece3);
+		hasModelShip = new ItemRequirements(modelShip);
+		hasRepairedShip = new ItemRequirements(repairedShip);
+		hasCup = new ItemRequirements(cup);
+		hasBook = new Conditions(LogicType.OR, new VarbitRequirement(208, 1), new ItemRequirements(book));
+		hasManual = new Conditions(LogicType.OR, new VarbitRequirement(206, 1), new VarbitRequirement(212, 8));
+		hasSheet = new ItemRequirements(bedsheet);
+		hasEctoSheet = new ItemRequirements(ectoSheets);
+		hasMysticalRobes = new Conditions(LogicType.OR, new VarbitRequirement(207, 1), new ItemRequirements(robes));
+		hasSignedOakBow = new ItemRequirements(signedOakBow);
+		hasPetition = new ItemRequirements(petition);
+		hasSignatures = new VarbitRequirement(209, 11, Operation.GREATER_EQUAL);
+		givenPetitionToNecro = new VarbitRequirement(209, 31, Operation.GREATER_EQUAL);
+		hadChestKey = new Conditions(LogicType.OR, new ItemRequirements(chestKey), new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
+		unlockedChest2 = new VarbitRequirement(214, 3, Operation.GREATER_EQUAL);
+		doorUnlocked = new VarbitRequirement(213, 1);
 
 		lobsterNearby = new NpcCondition(NpcID.GIANT_LOBSTER);
-		killedLobster = new VarbitCondition(215, 1);
+		killedLobster = new VarbitRequirement(215, 1);
 
-		boneKeyNearby = new ItemCondition(boneKey);
-		hasBoneKey = new Conditions(LogicType.OR, new ItemRequirementCondition(boneKey), doorUnlocked);
+		boneKeyNearby = new ItemOnTileRequirement(boneKey);
+		hasBoneKey = new Conditions(LogicType.OR, new ItemRequirements(boneKey), doorUnlocked);
 
-		talkedToAkHaranu = new VarbitCondition(212, 1, Operation.GREATER_EQUAL);
+		talkedToAkHaranu = new VarbitRequirement(212, 1, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()

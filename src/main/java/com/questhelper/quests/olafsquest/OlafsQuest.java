@@ -25,25 +25,32 @@
 package com.questhelper.quests.olafsquest;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.WidgetModelRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetModelCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,14 +63,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.OLAFS_QUEST
@@ -77,7 +76,7 @@ public class OlafsQuest extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement  prayerPotions, food, combatGear;
 
-	ConditionForStep hasWindsweptLogs, givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, hasKey, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
+	Requirement hasWindsweptLogs, givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, hasKey, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
 		keyInterfaceOpen, hasCrossKey, hasSquareKey, hasTriangleKey, hasCircleKey, hasStarKey, ulfricNearby, killedUlfric;
 
 	QuestStep talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid, talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks, digHole, pickUpKey, searchPainting, doPuzzle, pickUpItems,
@@ -183,28 +182,28 @@ public class OlafsQuest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasWindsweptLogs = new ItemRequirementCondition(windsweptLogs);
-		givenIngridCarving = new VarbitCondition(3536, 1, Operation.GREATER_EQUAL);
-		inFirstArea = new ZoneCondition(firstArea, firstArea2);
-		inSecondArea = new ZoneCondition(secondArea, secondArea2);
-		inThirdArea = new ZoneCondition(thirdArea);
-		keyNearby = new ItemCondition(key);
-		puzzleOpen = new WidgetModelCondition(253, 0, 24126);
-		hasKey = new ItemRequirementCondition(key);
-		hasBarrel3Ropes = new ItemRequirementCondition(rottenBarrel, ropes3);
-		has2Barrels6Ropes = new ItemRequirementCondition(rottenBarrels2, ropes6);
-		placedBarrel1 = new VarbitCondition(3547, 1);
-		placedBarrel2 = new VarbitCondition(3548, 1);
-		keyInterfaceOpen = new WidgetModelCondition(252, 0, 24124);
-		hasSquareKey = new ItemRequirementCondition(squareKey);
-		hasCrossKey = new ItemRequirementCondition(crossKey);
-		hasTriangleKey = new ItemRequirementCondition(triangleKey);
-		hasCircleKey = new ItemRequirementCondition(circleKey);
-		hasStarKey = new ItemRequirementCondition(starKey);
+		hasWindsweptLogs = new ItemRequirements(windsweptLogs);
+		givenIngridCarving = new VarbitRequirement(3536, 1, Operation.GREATER_EQUAL);
+		inFirstArea = new ZoneRequirement(firstArea, firstArea2);
+		inSecondArea = new ZoneRequirement(secondArea, secondArea2);
+		inThirdArea = new ZoneRequirement(thirdArea);
+		keyNearby = new ItemOnTileRequirement(key);
+		puzzleOpen = new WidgetModelRequirement(253, 0, 24126);
+		hasKey = new ItemRequirements(key);
+		hasBarrel3Ropes = new ItemRequirements(rottenBarrel, ropes3);
+		has2Barrels6Ropes = new ItemRequirements(rottenBarrels2, ropes6);
+		placedBarrel1 = new VarbitRequirement(3547, 1);
+		placedBarrel2 = new VarbitRequirement(3548, 1);
+		keyInterfaceOpen = new WidgetModelRequirement(252, 0, 24124);
+		hasSquareKey = new ItemRequirements(squareKey);
+		hasCrossKey = new ItemRequirements(crossKey);
+		hasTriangleKey = new ItemRequirements(triangleKey);
+		hasCircleKey = new ItemRequirements(circleKey);
+		hasStarKey = new ItemRequirements(starKey);
 
 		ulfricNearby = new NpcCondition(NpcID.ULFRIC);
 
-		killedUlfric = new VarbitCondition(3539, 1);
+		killedUlfric = new VarbitRequirement(3539, 1);
 	}
 
 	public void loadZones()

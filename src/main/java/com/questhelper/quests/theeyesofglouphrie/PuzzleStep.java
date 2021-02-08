@@ -25,7 +25,7 @@
 package com.questhelper.quests.theeyesofglouphrie;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;

@@ -25,20 +25,27 @@
 package com.questhelper.quests.betweenarock;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,14 +58,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.BETWEEN_A_ROCK
@@ -70,7 +69,7 @@ public class BetweenARock extends BasicQuestHelper
 		baseSchematic, schematicEngineer, khorvakSchematic, goldHelmet, hammer, goldBars3, schematicHighlight, solvedSchematic, combatGear,
 		goldOre6, goldBars4, coins1000, goldHelmetEquipped, food;
 
-	ConditionForStep inTrollRoom, inDwarfEntrance, inDwarfMine, inKeldagrim, inDwarvenMine, hasPage1, hasPage2, hasPage3, hasPages, hasUsedGoldBar, hasCannonball, shotGoldCannonball, hasBaseSchematic,
+	Requirement inTrollRoom, inDwarfEntrance, inDwarfMine, inKeldagrim, inDwarvenMine, hasPage1, hasPage2, hasPage3, hasPages, hasUsedGoldBar, hasCannonball, shotGoldCannonball, hasBaseSchematic,
 		hasSchematicEngineer, inKhorvakRoom, hasGoldHelmet, hasKhorvakSchematic, hasSolvedSchematic, has6Ore, inRealm, avatarNearby;
 
 	QuestStep enterDwarfCave, enterDwarfCave2, talkToFerryman, talkToDondakan, travelBackWithFerryman, talkToBoatman, talkToEngineer, talkToRolad, enterDwarvenMine, killScorpion,
@@ -240,26 +239,26 @@ public class BetweenARock extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inTrollRoom = new ZoneCondition(trollRoom);
-		inDwarfEntrance = new ZoneCondition(dwarfEntrance);
-		inDwarfMine = new ZoneCondition(dwarfMine);
-		inKeldagrim = new ZoneCondition(keldagrim, keldagrim2);
-		inDwarvenMine = new ZoneCondition(dwarvenMine);
-		inKhorvakRoom = new ZoneCondition(khorvakRoom);
-		hasPage1 = new ItemRequirementCondition(page1);
-		hasPage2 = new ItemRequirementCondition(page2);
-		hasPage3 = new ItemRequirementCondition(page3);
-		hasPages = new ItemRequirementCondition(pages);
-		hasKhorvakSchematic = new ItemRequirementCondition(khorvakSchematic);
-		hasUsedGoldBar = new VarbitCondition(301, 1);
-		shotGoldCannonball = new VarbitCondition(313, 1);
-		hasCannonball = new Conditions(LogicType.OR, new ItemRequirementCondition(goldCannonball), shotGoldCannonball);
-		hasBaseSchematic = new ItemRequirementCondition(baseSchematic);
-		hasGoldHelmet = new Conditions(true, new ItemRequirementCondition(goldHelmet));
-		hasSchematicEngineer = new ItemRequirementCondition(schematicEngineer);
-		hasSolvedSchematic = new VarbitCondition(305, 1);
-		has6Ore = new ItemRequirementCondition(goldOre6);
-		inRealm = new ZoneCondition(realm);
+		inTrollRoom = new ZoneRequirement(trollRoom);
+		inDwarfEntrance = new ZoneRequirement(dwarfEntrance);
+		inDwarfMine = new ZoneRequirement(dwarfMine);
+		inKeldagrim = new ZoneRequirement(keldagrim, keldagrim2);
+		inDwarvenMine = new ZoneRequirement(dwarvenMine);
+		inKhorvakRoom = new ZoneRequirement(khorvakRoom);
+		hasPage1 = new ItemRequirements(page1);
+		hasPage2 = new ItemRequirements(page2);
+		hasPage3 = new ItemRequirements(page3);
+		hasPages = new ItemRequirements(pages);
+		hasKhorvakSchematic = new ItemRequirements(khorvakSchematic);
+		hasUsedGoldBar = new VarbitRequirement(301, 1);
+		shotGoldCannonball = new VarbitRequirement(313, 1);
+		hasCannonball = new Conditions(LogicType.OR, new ItemRequirements(goldCannonball), shotGoldCannonball);
+		hasBaseSchematic = new ItemRequirements(baseSchematic);
+		hasGoldHelmet = new Conditions(true, new ItemRequirements(goldHelmet));
+		hasSchematicEngineer = new ItemRequirements(schematicEngineer);
+		hasSolvedSchematic = new VarbitRequirement(305, 1);
+		has6Ore = new ItemRequirements(goldOre6);
+		inRealm = new ZoneRequirement(realm);
 
 		avatarNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1234),
 			new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1235), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_RANGING), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_RANGING_1231),

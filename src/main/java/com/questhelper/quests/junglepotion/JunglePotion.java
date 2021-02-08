@@ -30,15 +30,15 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,7 +66,7 @@ public class JunglePotion extends BasicQuestHelper
 	ConditionalStep cleanAndReturnSnakeWeed, cleanAndReturnArdrigal, cleanAndReturnSitoFoil, cleanAndReturnVolenciaMoss,
 		getRoguesPurse, cleanAndReturnRoguesPurse;
 
-	ZoneCondition isUnderground;
+	ZoneRequirement isUnderground;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -104,7 +104,7 @@ public class JunglePotion extends BasicQuestHelper
 		//2824,9462,0
 		//2883, 9533, 0
 		Zone undergroundZone = new Zone(new WorldPoint(2824, 9462, 0), new WorldPoint(2883, 9533, 0));
-		isUnderground = new ZoneCondition(undergroundZone);
+		isUnderground = new ZoneRequirement(undergroundZone);
 	}
 
 	private Map<Integer, QuestStep> getSteps()
@@ -169,7 +169,7 @@ public class JunglePotion extends BasicQuestHelper
 		DetailedQuestStep cleanGrimyHerb = new DetailedQuestStep(this, "", grimyHerb);
 
 		ConditionalStep cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return the " + herbName + " to Trufitus.");
-		cleanAndReturnHerb.addStep(new ItemRequirementCondition(cleanHerb), returnHerb);
+		cleanAndReturnHerb.addStep(new ItemRequirements(cleanHerb), returnHerb);
 		return cleanAndReturnHerb;
 	}
 

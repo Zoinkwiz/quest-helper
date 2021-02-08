@@ -25,28 +25,37 @@
 package com.questhelper.quests.monkeymadnessii;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.*;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.npc.FollowerRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.ChatMessageCondition;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcInteractingCondition;
-import com.questhelper.requirements.conditional.ItemCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.WidgetTextCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,12 +65,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -104,10 +107,10 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	QuestStep talkToNarnodeAfterLab, talkToNieve, killGorillasInStronghold, enterNorthOfTree, enterStrongholdCave, killTorturedAndDemonic, enterNorthOfTreeNoNieve, fightGlough, talkToZooknockToFinish,
 		talkToNarnodeToFinish;
 
-	ConditionForStep inGloughHouse, inGloughHouseF1, inGloughHouseF2, inGloughHouseF3, inAnitaHouse, inCaves, inZooknockDungeon, inStrongholdFloor2, inLab,
+	Requirement inGloughHouse, inGloughHouseF1, inGloughHouseF2, inGloughHouseF3, inAnitaHouse, inCaves, inZooknockDungeon, inStrongholdFloor2, inLab,
 		isPastMonkeyBars, isNorthOfTree, inCrashSiteCavern, gorillaNotOnHoldingArea, hasChiselAndHammer;
 
-	ConditionForStep foundHandkerchief, talkedToAnita, openedCupboard, foundNote, hasBrush, hasNote, hasLemonNote, hasLemonCandleNote, hasScrawledNote, hasGrapeBrush, triedTranslating,
+	Requirement foundHandkerchief, talkedToAnita, openedCupboard, foundNote, hasBrush, hasNote, hasLemonNote, hasLemonCandleNote, hasScrawledNote, hasGrapeBrush, triedTranslating,
 		greegreeNearby, krukCorpseNearby, hasKruksPaw, kob2Nearby, keef2Nearby, defeatedKob, defeatedKeef, smithNearby, smithInLocation1, smithInLocation2, smithInLocation3, smithInLocation4,
 		hasChargedOnyx, hasDeconstructedOnyx, killedGorillas, nieveFollowing;
 
@@ -343,61 +346,61 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		// Started quest:
 		// 5039 0->1
 		// 5032 1->0
-		inGloughHouse = new ZoneCondition(gloughHouseF1, gloughHouseF2, gloughHouseF3);
-		inGloughHouseF1 = new ZoneCondition(gloughHouseF1);
-		inGloughHouseF2 = new ZoneCondition(gloughHouseF2);
-		inGloughHouseF3 = new ZoneCondition(gloughHouseF3);
-		inAnitaHouse = new ZoneCondition(anitaHouse);
-		inCaves = new ZoneCondition(caves, subCaves);
-		inZooknockDungeon = new ZoneCondition(zooknockDungeon);
-		inStrongholdFloor2 = new ZoneCondition(strongholdFloor2);
-		inLab = new ZoneCondition(lab);
-		isPastMonkeyBars = new ZoneCondition(pastMonkeyBars);
-		isNorthOfTree = new ZoneCondition(northOfTree);
-		inCrashSiteCavern = new ZoneCondition(crashSiteCavern);
+		inGloughHouse = new ZoneRequirement(gloughHouseF1, gloughHouseF2, gloughHouseF3);
+		inGloughHouseF1 = new ZoneRequirement(gloughHouseF1);
+		inGloughHouseF2 = new ZoneRequirement(gloughHouseF2);
+		inGloughHouseF3 = new ZoneRequirement(gloughHouseF3);
+		inAnitaHouse = new ZoneRequirement(anitaHouse);
+		inCaves = new ZoneRequirement(caves, subCaves);
+		inZooknockDungeon = new ZoneRequirement(zooknockDungeon);
+		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
+		inLab = new ZoneRequirement(lab);
+		isPastMonkeyBars = new ZoneRequirement(pastMonkeyBars);
+		isNorthOfTree = new ZoneRequirement(northOfTree);
+		inCrashSiteCavern = new ZoneRequirement(crashSiteCavern);
 
 		// 5039 1->2 when removing handkerchief search option
-		foundHandkerchief = new Conditions(LogicType.OR, new VarbitCondition(5039, 2, Operation.GREATER_EQUAL), new ItemRequirementCondition(handkerchief));
-		talkedToAnita = new VarbitCondition(5030, 1, Operation.GREATER_EQUAL);
-		openedCupboard = new Conditions(true, LogicType.OR, new WidgetTextCondition(229, 1, "You turn the statue and hear a clicking sound in the room."), new ChatMessageCondition("You have already activated the statue."));
-		foundNote = new VarbitCondition(5028, 1);
-		hasBrush = new Conditions(LogicType.OR, new ItemRequirementCondition(grapeBrush), new ItemRequirementCondition(brush));
-		hasGrapeBrush = new ItemRequirementCondition(grapeBrush);
-		hasNote = new ItemRequirementCondition(mysteriousNote);
-		hasLemonNote = new ItemRequirementCondition(mysteriousNoteLemon);
-		hasLemonCandleNote = new ItemRequirementCondition(mysteriousNoteLemonCandle);
-		hasScrawledNote = new ItemRequirementCondition(scrawledNote);
+		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(5039, 2, Operation.GREATER_EQUAL), new ItemRequirements(handkerchief));
+		talkedToAnita = new VarbitRequirement(5030, 1, Operation.GREATER_EQUAL);
+		openedCupboard = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 1, "You turn the statue and hear a clicking sound in the room."), new ChatMessageRequirement("You have already activated the statue."));
+		foundNote = new VarbitRequirement(5028, 1);
+		hasBrush = new Conditions(LogicType.OR, new ItemRequirements(grapeBrush), new ItemRequirements(brush));
+		hasGrapeBrush = new ItemRequirements(grapeBrush);
+		hasNote = new ItemRequirements(mysteriousNote);
+		hasLemonNote = new ItemRequirements(mysteriousNoteLemon);
+		hasLemonCandleNote = new ItemRequirements(mysteriousNoteLemonCandle);
+		hasScrawledNote = new ItemRequirements(scrawledNote);
 
 		// Read note:
 		// 5027 5->6
 		// 5031 0->1
 
 		triedTranslating = new Conditions(true,
-			new WidgetTextCondition(229, 1, "Some of the ancient Gnome phrases found on the note are missing<br>from the translation book. I should tell the King."));
+			new WidgetTextRequirement(229, 1, "Some of the ancient Gnome phrases found on the note are missing<br>from the translation book. I should tell the King."));
 
-		greegreeNearby = new ItemCondition(greegree);
+		greegreeNearby = new ItemOnTileRequirement(greegree);
 		krukCorpseNearby = new ObjectCondition(NullObjectID.NULL_28811);
-		hasKruksPaw = new ItemRequirementCondition(kruksPaw);
+		hasKruksPaw = new ItemRequirements(kruksPaw);
 
 		kob2Nearby = new NpcCondition(NpcID.KOB_7107);
 		keef2Nearby = new NpcCondition(NpcID.KEEF_7105);
-		defeatedKob = new VarbitCondition(5035, 1);
-		defeatedKeef = new VarbitCondition(5034, 1);
+		defeatedKob = new VarbitRequirement(5035, 1);
+		defeatedKeef = new VarbitRequirement(5034, 1);
 
 		// Killed Kruk, 5036 0->2
 
-		smithInLocation1 = new VarbitCondition(5040, 1); // TODO: Get location
-		smithInLocation2 = new VarbitCondition(5040, 2); // TODO: Get location
-		smithInLocation3 = new VarbitCondition(5040, 3); // TODO: Get location
-		smithInLocation4 = new VarbitCondition(5040, 4); // Smith near rune store
+		smithInLocation1 = new VarbitRequirement(5040, 1); // TODO: Get location
+		smithInLocation2 = new VarbitRequirement(5040, 2); // TODO: Get location
+		smithInLocation3 = new VarbitRequirement(5040, 3); // TODO: Get location
+		smithInLocation4 = new VarbitRequirement(5040, 4); // Smith near rune store
 
 		smithNearby = new NpcCondition(NpcID.ASSISTANT_LE_SMITH_6806);
 
 		gorillaNotOnHoldingArea = new Conditions(LogicType.NOR, new NpcCondition(NpcID.STUNTED_DEMONIC_GORILLA));
 
-		hasChiselAndHammer = new Conditions(new ItemRequirementCondition(hammer), new ItemRequirementCondition(chisel));
-		hasChargedOnyx = new ItemRequirementCondition(chargedOnyx);
-		hasDeconstructedOnyx = new ItemRequirementCondition(deconstructedOnyx);
+		hasChiselAndHammer = new Conditions(new ItemRequirements(hammer), new ItemRequirements(chisel));
+		hasChargedOnyx = new ItemRequirements(chargedOnyx);
+		hasDeconstructedOnyx = new ItemRequirements(deconstructedOnyx);
 
 		// Nieve leaves:
 		// 5037 0->1 (Steve appears)
@@ -409,9 +412,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		// 5068 0->1
 		// 5069 1->2
 
-		killedGorillas = new VarbitCondition(5068, 3);
+		killedGorillas = new VarbitRequirement(5068, 3);
 
-		nieveFollowing = new NpcInteractingCondition(NpcID.NIEVE_7109);
+		nieveFollowing = new NpcInteractingRequirement(NpcID.NIEVE_7109);
 	}
 
 	public void loadZones()

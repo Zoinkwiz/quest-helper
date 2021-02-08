@@ -26,16 +26,16 @@ package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -48,7 +48,7 @@ public class MsCheevesSetup
 	private QuestHelper questHelper;
 
 	@Getter
-	private ZoneCondition isInMsCheeversRoom;
+	private ZoneRequirement isInMsCheeversRoom;
 
 	@Getter
 	private ConditionalStep conditionalStep;
@@ -59,24 +59,24 @@ public class MsCheevesSetup
 		getKnife, leaveRoom;
 	private ItemStep getMetalSpade;
 
-	private ItemRequirementCondition hasMagnet, hasAceticAcid, hasOneVialOfLiquid,
+	private ItemRequirements hasMagnet, hasAceticAcid, hasOneVialOfLiquid,
 		hasCupricSulfate, hasGypsum, hasSodiumChloride, hasWire, hasTin,
 		hasShears, hasChisel, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 		hasKnife, hasMetalSpade, hasMetalSpadeHead, hasAshes, hasBronzeKey;
 
-	private VarbitCondition finishedRoom;
+	private VarbitRequirement finishedRoom;
 
 	// Destroying first door steps
 	private QuestStep useSpadeOnBunsenBurner, useSpadeHeadOnDoor, useCupricSulfateOnDoor, useVialOfLiquidOnDoor, openDoor;
-	private VarbitCondition hasRetrievedThreeVials, hasSpadeHeadOnDoor, hasCupricSulfateOnDoor, hasVialOfLiquidOnDoor, hasFirstDoorOpen;
+	private VarbitRequirement hasRetrievedThreeVials, hasSpadeHeadOnDoor, hasCupricSulfateOnDoor, hasVialOfLiquidOnDoor, hasFirstDoorOpen;
 	private ItemRequirement metalSpade, metalSpadeHead, ashes, cupricSulfate, vialOfLiquid;
 
 	// Creating second door key steps
 	private QuestStep useVialOfLiquidOnCakeTin, useGypsumOnTin, useTinOnKey, useCupricOrePowderOnTin, useTinOrePowderOnTin, useTinOnBunsenBurner, useEquipmentOnTin;
 	private ItemRequirement tin, gypsumTin, gypsum, tinKeyPrint, cupricOrePowder, tinOrePowder, tinWithCupricOre,
 		tinWithTinOre, tinWithAllOre, bronzeKey, knife, chisel, bronzeWire;
-	private VarbitCondition hasLiquidInTin;
-	ItemRequirementCondition hasGypsumTin, hasTinKeyPrint, hasTinCupricOre, hasTinWithTinOre, hasTinWithAllOre;
+	private VarbitRequirement hasLiquidInTin;
+	ItemRequirements hasGypsumTin, hasTinKeyPrint, hasTinCupricOre, hasTinWithTinOre, hasTinWithAllOre;
 
 	private final int VARBIT_NITROUS_OXIDE = 5581;
 	private final int VARBIT_VIAL_OF_LIQUID = 671;
@@ -301,7 +301,7 @@ public class MsCheevesSetup
 	{
 		Zone missCheevesZone = new Zone(new WorldPoint(2466, 4936, 0),
 			new WorldPoint(2480, 4947, 0));
-		isInMsCheeversRoom = new ZoneCondition(missCheevesZone);
+		isInMsCheeversRoom = new ZoneRequirement(missCheevesZone);
 	}
 
 	private void setupRequirements()
@@ -366,39 +366,39 @@ public class MsCheevesSetup
 
 	private void setupConditions()
 	{
-		hasMagnet = new ItemRequirementCondition(new ItemRequirement("Magnet", ItemID.MAGNET_5604));
-		hasAceticAcid = new ItemRequirementCondition(new ItemRequirement("Acetic Acid", ItemID.ACETIC_ACID));
-		hasOneVialOfLiquid = new ItemRequirementCondition(vialOfLiquid);
-		hasCupricSulfate = new ItemRequirementCondition(cupricSulfate);
-		hasGypsum = new ItemRequirementCondition(gypsum);
-		hasSodiumChloride = new ItemRequirementCondition(new ItemRequirement("Sodium Chloride", ItemID.SODIUM_CHLORIDE));
-		hasTin = new ItemRequirementCondition(tin);
-		hasWire = new ItemRequirementCondition(bronzeWire);
-		hasShears = new ItemRequirementCondition(new ItemRequirement("Shears", ItemID.SHEARS_5603));
-		hasChisel = new ItemRequirementCondition(chisel);
-		hasNitrousOxide = new ItemRequirementCondition(new ItemRequirement("Nitrous Oxide", ItemID.NITROUS_OXIDE));
-		hasTinOrePowder = new ItemRequirementCondition(tinOrePowder);
-		hasCupricOrePowder = new ItemRequirementCondition(cupricOrePowder);
-		hasKnife = new ItemRequirementCondition(knife);
-		hasMetalSpade = new ItemRequirementCondition(metalSpade);
-		hasMetalSpadeHead = new ItemRequirementCondition(metalSpadeHead);
-		hasAshes = new ItemRequirementCondition(ashes);
+		hasMagnet = new ItemRequirements(new ItemRequirement("Magnet", ItemID.MAGNET_5604));
+		hasAceticAcid = new ItemRequirements(new ItemRequirement("Acetic Acid", ItemID.ACETIC_ACID));
+		hasOneVialOfLiquid = new ItemRequirements(vialOfLiquid);
+		hasCupricSulfate = new ItemRequirements(cupricSulfate);
+		hasGypsum = new ItemRequirements(gypsum);
+		hasSodiumChloride = new ItemRequirements(new ItemRequirement("Sodium Chloride", ItemID.SODIUM_CHLORIDE));
+		hasTin = new ItemRequirements(tin);
+		hasWire = new ItemRequirements(bronzeWire);
+		hasShears = new ItemRequirements(new ItemRequirement("Shears", ItemID.SHEARS_5603));
+		hasChisel = new ItemRequirements(chisel);
+		hasNitrousOxide = new ItemRequirements(new ItemRequirement("Nitrous Oxide", ItemID.NITROUS_OXIDE));
+		hasTinOrePowder = new ItemRequirements(tinOrePowder);
+		hasCupricOrePowder = new ItemRequirements(cupricOrePowder);
+		hasKnife = new ItemRequirements(knife);
+		hasMetalSpade = new ItemRequirements(metalSpade);
+		hasMetalSpadeHead = new ItemRequirements(metalSpadeHead);
+		hasAshes = new ItemRequirements(ashes);
 
-		hasGypsumTin = new ItemRequirementCondition(gypsumTin);
-		hasTinKeyPrint = new ItemRequirementCondition(tinKeyPrint);
-		hasTinCupricOre = new ItemRequirementCondition(tinWithCupricOre);
-		hasTinWithTinOre = new ItemRequirementCondition(tinWithTinOre);
-		hasTinWithAllOre = new ItemRequirementCondition(tinWithAllOre);
+		hasGypsumTin = new ItemRequirements(gypsumTin);
+		hasTinKeyPrint = new ItemRequirements(tinKeyPrint);
+		hasTinCupricOre = new ItemRequirements(tinWithCupricOre);
+		hasTinWithTinOre = new ItemRequirements(tinWithTinOre);
+		hasTinWithAllOre = new ItemRequirements(tinWithAllOre);
 
-		hasBronzeKey = new ItemRequirementCondition(bronzeKey);
+		hasBronzeKey = new ItemRequirements(bronzeKey);
 
-		hasRetrievedThreeVials = new VarbitCondition(VARBIT_THREE_VIALS, 3);
-		hasSpadeHeadOnDoor = new VarbitCondition(VARBIT_SPADEHEAD_ON_DOOR, 1);
-		hasCupricSulfateOnDoor = new VarbitCondition(VARBIT_USE_CUPRIC_SULFATE_ON_DOOR, 1);
-		hasVialOfLiquidOnDoor = new VarbitCondition(VARBIT_VIAL_OF_LIQUID_ON_DOOR, 2);
-		hasFirstDoorOpen = new VarbitCondition(VARBIT_FIRST_DOOR_OPEN, 3);
-		finishedRoom = new VarbitCondition(VARBIT_COMPLETE_ROOM, 1);
+		hasRetrievedThreeVials = new VarbitRequirement(VARBIT_THREE_VIALS, 3);
+		hasSpadeHeadOnDoor = new VarbitRequirement(VARBIT_SPADEHEAD_ON_DOOR, 1);
+		hasCupricSulfateOnDoor = new VarbitRequirement(VARBIT_USE_CUPRIC_SULFATE_ON_DOOR, 1);
+		hasVialOfLiquidOnDoor = new VarbitRequirement(VARBIT_VIAL_OF_LIQUID_ON_DOOR, 2);
+		hasFirstDoorOpen = new VarbitRequirement(VARBIT_FIRST_DOOR_OPEN, 3);
+		finishedRoom = new VarbitRequirement(VARBIT_COMPLETE_ROOM, 1);
 
-		hasLiquidInTin = new VarbitCondition(VARBIT_LIQUID_IN_TIN, 1);
+		hasLiquidInTin = new VarbitRequirement(VARBIT_LIQUID_IN_TIN, 1);
 	}
 }

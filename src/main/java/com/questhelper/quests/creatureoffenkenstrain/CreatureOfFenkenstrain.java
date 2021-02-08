@@ -31,11 +31,15 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -44,15 +48,18 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.*;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.CREATURE_OF_FENKENSTRAIN
@@ -64,7 +71,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		shedKey, brush, canes, extendedBrush3, conductorMould, lightningRod, towerKey,
 		fenkenstrainTeleports, teleportToFurnance, staminaPotion;
 	Zone barZone, castleZoneFloor0, castleZoneFloor1, experimentCave, graveIsland, castleTower, monsterTower;
-	ConditionForStep hasPickledBrain, inCanifisBar, inCastleFloor0, inCastleFloor1, hasObsidianAmulet, hasMarbleAmulet, hasStarAmulet,
+	Requirement hasPickledBrain, inCanifisBar, inCastleFloor0, inCastleFloor1, hasObsidianAmulet, hasMarbleAmulet, hasStarAmulet,
 		hasGhostSpeakAmulet, followingGardenerForHead, hasDecapitatedHead, hasDecapitatedHeadWithBrain, putStarOnGrave, inExperiementCave,
 		hasCavernKey, hasTorso, hasLegs, hasArm, inGraveIsland, hasShedKey, usedShedKey, hasBrush, hasBrush3,
 		hasCanes, hasLightningRod, hasMould, inCastleTower, usedTowerKey, hasTowerKey, inMonsterTower, keyNearby;
@@ -198,50 +205,50 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCanifisBar = new ZoneCondition(barZone);
-		inCastleFloor0 = new ZoneCondition(castleZoneFloor0);
-		inCastleFloor1 = new ZoneCondition(castleZoneFloor1);
-		hasPickledBrain = new ItemRequirementCondition(pickledBrain);
-		putStarOnGrave = new VarbitCondition(192, 1);
-		hasMarbleAmulet = new Conditions(LogicType.OR, new ItemRequirementCondition(marbleAmulet), putStarOnGrave);
-		hasObsidianAmulet = new Conditions(LogicType.OR, new ItemRequirementCondition(obsidianAmulet), putStarOnGrave);
-		hasGhostSpeakAmulet = new ItemRequirementCondition(ghostSpeakAmulet);
-		hasStarAmulet = new Conditions(LogicType.OR, new ItemRequirementCondition(starAmulet), putStarOnGrave);
-		followingGardenerForHead = new VarbitCondition(185, 1);
-		hasDecapitatedHead = new ItemRequirementCondition(decapitatedHead);
+		inCanifisBar = new ZoneRequirement(barZone);
+		inCastleFloor0 = new ZoneRequirement(castleZoneFloor0);
+		inCastleFloor1 = new ZoneRequirement(castleZoneFloor1);
+		hasPickledBrain = new ItemRequirements(pickledBrain);
+		putStarOnGrave = new VarbitRequirement(192, 1);
+		hasMarbleAmulet = new Conditions(LogicType.OR, new ItemRequirements(marbleAmulet), putStarOnGrave);
+		hasObsidianAmulet = new Conditions(LogicType.OR, new ItemRequirements(obsidianAmulet), putStarOnGrave);
+		hasGhostSpeakAmulet = new ItemRequirements(ghostSpeakAmulet);
+		hasStarAmulet = new Conditions(LogicType.OR, new ItemRequirements(starAmulet), putStarOnGrave);
+		followingGardenerForHead = new VarbitRequirement(185, 1);
+		hasDecapitatedHead = new ItemRequirements(decapitatedHead);
 		hasDecapitatedHeadWithBrain = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(decapitatedHeadWithBrain),
-			new VarbitCondition(189, 1));
-		inExperiementCave = new ZoneCondition(experimentCave);
-		inGraveIsland = new ZoneCondition(graveIsland);
-		hasCavernKey = new Conditions(LogicType.OR, new ItemRequirementCondition(cavernKey),
-			new VarbitCondition(199, 1));
-		keyNearby = new ItemCondition(cavernKey);
+			new ItemRequirements(decapitatedHeadWithBrain),
+			new VarbitRequirement(189, 1));
+		inExperiementCave = new ZoneRequirement(experimentCave);
+		inGraveIsland = new ZoneRequirement(graveIsland);
+		hasCavernKey = new Conditions(LogicType.OR, new ItemRequirements(cavernKey),
+			new VarbitRequirement(199, 1));
+		keyNearby = new ItemOnTileRequirement(cavernKey);
 		hasTorso = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(torso),
-			new VarbitCondition(188, 1));
+			new ItemRequirements(torso),
+			new VarbitRequirement(188, 1));
 		hasLegs = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(legs),
-			new VarbitCondition(187, 1));
+			new ItemRequirements(legs),
+			new VarbitRequirement(187, 1));
 		hasArm = new Conditions(LogicType.OR,
-			new ItemRequirementCondition(arms),
-			new VarbitCondition(186, 1));
+			new ItemRequirements(arms),
+			new VarbitRequirement(186, 1));
 
 		// Needle given, 190 = 1
 		// Thread given, 191 0->5
 
-		hasShedKey = new ItemRequirementCondition(shedKey);
-		usedShedKey = new VarbitCondition(200, 1);
-		hasBrush = new ItemRequirementCondition(brush);
-		hasBrush3 = new ItemRequirementCondition(extendedBrush3);
-		hasCanes = new ItemRequirementCondition(canes);
-		hasLightningRod = new ItemRequirementCondition(lightningRod);
-		hasMould = new ItemRequirementCondition(conductorMould);
-		inCastleTower = new ZoneCondition(castleTower);
+		hasShedKey = new ItemRequirements(shedKey);
+		usedShedKey = new VarbitRequirement(200, 1);
+		hasBrush = new ItemRequirements(brush);
+		hasBrush3 = new ItemRequirements(extendedBrush3);
+		hasCanes = new ItemRequirements(canes);
+		hasLightningRod = new ItemRequirements(lightningRod);
+		hasMould = new ItemRequirements(conductorMould);
+		inCastleTower = new ZoneRequirement(castleTower);
 
-		usedTowerKey = new VarbitCondition(198, 1);
-		hasTowerKey = new ItemRequirementCondition(towerKey);
-		inMonsterTower = new ZoneCondition(monsterTower);
+		usedTowerKey = new VarbitRequirement(198, 1);
+		hasTowerKey = new ItemRequirements(towerKey);
+		inMonsterTower = new ZoneRequirement(monsterTower);
 	}
 
 	public void setupSteps()

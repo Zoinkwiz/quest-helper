@@ -24,31 +24,30 @@
  */
 package com.questhelper.quests.theeyesofglouphrie;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -65,7 +64,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	//Items Required
 	ItemRequirement bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar, groundMud, magicGlue, mudRuneHighlight, pestleHighlight, bucketOfSapHiglight;
 
-	ConditionForStep inCave, inspectedMachine, inspectedBowl, inHazelmereHut, hasGroundMud, hasMagicGlue, killedCreature1, killedCreature2, killedCreature3, killedCreature4, killedCreature5,
+	Requirement inCave, inspectedMachine, inspectedBowl, inHazelmereHut, hasGroundMud, hasMagicGlue, killedCreature1, killedCreature2, killedCreature3, killedCreature4, killedCreature5,
 		killedCreature6, inFloor1, inFloor2, inFloor3;
 
 	QuestStep enterCave, talkToBrimstail, inspectBowl, inspectMachine, talkToBrimstailAgain, goUpToHazelmere, talkToHazelmere, enterCaveAgain, talkToBrimstailAfterHazelmere, grindMudRunes,
@@ -203,22 +202,22 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inCave = new ZoneCondition(cave);
-		inspectedBowl = new VarbitCondition(2515, 1);
-		inspectedMachine = new VarbitCondition(2516, 1);
-		inHazelmereHut = new ZoneCondition(hazelmereHut);
-		hasGroundMud = new ItemRequirementCondition(groundMud);
-		hasMagicGlue = new ItemRequirementCondition(magicGlue);
-		killedCreature1 = new VarbitCondition(2504, 2);
-		killedCreature2 = new VarbitCondition(2505, 2);
-		killedCreature3 = new VarbitCondition(2506, 2);
-		killedCreature4 = new VarbitCondition(2507, 2);
-		killedCreature5 = new VarbitCondition(2508, 2);
-		killedCreature6 = new VarbitCondition(2509, 2);
+		inCave = new ZoneRequirement(cave);
+		inspectedBowl = new VarbitRequirement(2515, 1);
+		inspectedMachine = new VarbitRequirement(2516, 1);
+		inHazelmereHut = new ZoneRequirement(hazelmereHut);
+		hasGroundMud = new ItemRequirements(groundMud);
+		hasMagicGlue = new ItemRequirements(magicGlue);
+		killedCreature1 = new VarbitRequirement(2504, 2);
+		killedCreature2 = new VarbitRequirement(2505, 2);
+		killedCreature3 = new VarbitRequirement(2506, 2);
+		killedCreature4 = new VarbitRequirement(2507, 2);
+		killedCreature5 = new VarbitRequirement(2508, 2);
+		killedCreature6 = new VarbitRequirement(2509, 2);
 
-		inFloor1 = new ZoneCondition(floor1);
-		inFloor2 = new ZoneCondition(floor2);
-		inFloor3 = new ZoneCondition(floor3);
+		inFloor1 = new ZoneRequirement(floor1);
+		inFloor2 = new ZoneRequirement(floor2);
+		inFloor3 = new ZoneRequirement(floor3);
 	}
 
 	public void setupSteps()

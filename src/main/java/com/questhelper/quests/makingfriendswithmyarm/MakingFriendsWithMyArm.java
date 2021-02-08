@@ -25,25 +25,31 @@
 package com.questhelper.quests.makingfriendswithmyarm;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.InInstanceCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,13 +62,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM
@@ -76,7 +75,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement trollTele, draynorTele, varrockTele;
 
-	ConditionForStep inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, inWeissArrivalArea, hasPickaxe, hasRope, onCliff1, onCliff2, onCliff3,
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, inWeissArrivalArea, hasPickaxe, hasRope, onCliff1, onCliff2, onCliff3,
 		onCliff4, onCliff5, isOutsideWeiss, inWeiss, inInstance, inSneakArea1, inSneakArea2, inSneakArea3, inSneakArea4, inSneakArea5, inCave1, inCave2,
 		inWater1, inWater2, inWater3, inWater4, inCave3, inCave4, rockR0C0, rockR0C1, rockR0C2, rockR0C3, rockR0C4, rockR1C0, rockR1C1, rockR1C2, rockR1C3,
 		rockR1C4, rockR2C0, rockR2C1, rockR2C2, rockR2C3, rockR2C4, row0Made, row1Made, row2Made, rowMade, pickedUpWom, inWeissPrison, oddMushroomDied,
@@ -337,41 +336,41 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inStrongholdFloor1 = new ZoneCondition(strongholdFloor1);
-		inStrongholdFloor2 = new ZoneCondition(strongholdFloor2);
-		inPrison = new ZoneCondition(prison);
-		onRoof = new ZoneCondition(roof);
-		inWeissArrivalArea = new ZoneCondition(weissArrivalArea);
-		isOutsideWeiss = new ZoneCondition(outsideWeiss1, outsideWeiss2, outsideWeiss3, outsideWeiss4, outsideWeiss5);
-		inWeiss = new ZoneCondition(outsideWeiss1, outsideWeiss2, outsideWeiss3, outsideWeiss4, outsideWeiss5, weiss);
-		inInstance = new InInstanceCondition();
+		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
+		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
+		inPrison = new ZoneRequirement(prison);
+		onRoof = new ZoneRequirement(roof);
+		inWeissArrivalArea = new ZoneRequirement(weissArrivalArea);
+		isOutsideWeiss = new ZoneRequirement(outsideWeiss1, outsideWeiss2, outsideWeiss3, outsideWeiss4, outsideWeiss5);
+		inWeiss = new ZoneRequirement(outsideWeiss1, outsideWeiss2, outsideWeiss3, outsideWeiss4, outsideWeiss5, weiss);
+		inInstance = new InInstanceRequirement();
 
-		inSneakArea1 = new ZoneCondition(sneakArea1);
-		inSneakArea2 = new ZoneCondition(sneakArea2);
-		inSneakArea3 = new ZoneCondition(sneakArea3);
-		inSneakArea4 = new ZoneCondition(sneakArea4);
-		inSneakArea5 = new ZoneCondition(sneakArea5);
+		inSneakArea1 = new ZoneRequirement(sneakArea1);
+		inSneakArea2 = new ZoneRequirement(sneakArea2);
+		inSneakArea3 = new ZoneRequirement(sneakArea3);
+		inSneakArea4 = new ZoneRequirement(sneakArea4);
+		inSneakArea5 = new ZoneRequirement(sneakArea5);
 
-		onCliff1 = new ZoneCondition(cliff1);
-		onCliff2 = new ZoneCondition(cliff2);
-		onCliff3 = new ZoneCondition(cliff3);
-		onCliff4 = new ZoneCondition(cliff4);
-		onCliff5 = new ZoneCondition(cliff5);
+		onCliff1 = new ZoneRequirement(cliff1);
+		onCliff2 = new ZoneRequirement(cliff2);
+		onCliff3 = new ZoneRequirement(cliff3);
+		onCliff4 = new ZoneRequirement(cliff4);
+		onCliff5 = new ZoneRequirement(cliff5);
 
-		inCave1 = new ZoneCondition(cave1);
-		inCave2 = new ZoneCondition(cave2);
-		inCave3 = new ZoneCondition(cave3);
-		inCave4 = new ZoneCondition(cave4);
+		inCave1 = new ZoneRequirement(cave1);
+		inCave2 = new ZoneRequirement(cave2);
+		inCave3 = new ZoneRequirement(cave3);
+		inCave4 = new ZoneRequirement(cave4);
 
-		inWater1 = new ZoneCondition(water1);
-		inWater2 = new ZoneCondition(water2);
-		inWater3 = new ZoneCondition(water3);
-		inWater4 = new ZoneCondition(water4);
+		inWater1 = new ZoneRequirement(water1);
+		inWater2 = new ZoneRequirement(water2);
+		inWater3 = new ZoneRequirement(water3);
+		inWater4 = new ZoneRequirement(water4);
 
-		inWeissPrison = new ZoneCondition(weissPrison);
+		inWeissPrison = new ZoneRequirement(weissPrison);
 
-		hasPickaxe = new ItemRequirementCondition(pickaxe);
-		hasRope = new ItemRequirementCondition(rope);
+		hasPickaxe = new ItemRequirements(pickaxe);
+		hasRope = new ItemRequirements(rope);
 
 		// 33240, 33242, 33244, 33240, 33242
 		// 33241, 33243, 33245, 33241, 33243
@@ -412,17 +411,17 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		// 2098 200 -> 205 (SWAN SONG???) when WOM dies
 
-		pickedUpWom = new VarbitCondition(6536, 0);
+		pickedUpWom = new VarbitRequirement(6536, 0);
 
-		oddMushroomDied = new VarbitCondition(6528, 150, Operation.GREATER_EQUAL);
-		defeatedBoss1 = new VarbitCondition(6528, 160, Operation.GREATER_EQUAL);
-		hasPutOutFire = new VarbitCondition(6528, 170, Operation.GREATER_EQUAL);
+		oddMushroomDied = new VarbitRequirement(6528, 150, Operation.GREATER_EQUAL);
+		defeatedBoss1 = new VarbitRequirement(6528, 160, Operation.GREATER_EQUAL);
+		hasPutOutFire = new VarbitRequirement(6528, 170, Operation.GREATER_EQUAL);
 		firstBossNearby = new NpcCondition(NpcID.DONT_KNOW_WHAT_8439);
 		secondBossNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.MOTHER_8428), new NpcCondition(NpcID.MOTHER_8429), new NpcCondition(NpcID.MOTHER_8430));
 
-		hasBucket = new ItemRequirementCondition(bucketHighlight);
-		hasBucketOfWater = new ItemRequirementCondition(bucketOfWaterHighlight);
-		hasDung = new ItemRequirementCondition(goatDung);
+		hasBucket = new ItemRequirements(bucketHighlight);
+		hasBucketOfWater = new ItemRequirements(bucketOfWaterHighlight);
+		hasDung = new ItemRequirements(goatDung);
 	}
 
 	public void setupSteps()

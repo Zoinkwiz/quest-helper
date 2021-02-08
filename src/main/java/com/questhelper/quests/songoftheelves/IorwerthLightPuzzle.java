@@ -27,12 +27,12 @@ package com.questhelper.quests.songoftheelves;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -62,7 +62,7 @@ public class IorwerthLightPuzzle extends ConditionalStep
 
 	ConditionalStep goToF0NW, goToF0Middle, goToF0SW, goToF2SW, goToF2E, goToF2NW, goToF1, goToF2SE, goToF0NE, goToF2NE;
 
-	ConditionForStep hasMirrorsAndCrystal, onF1, onF2, onF0, onF0SW, onF2E, onF2SW, onF2NW, onF2M, onF2SE, onF2S, onF0NE, onF2NE,
+	Requirement hasMirrorsAndCrystal, onF1, onF2, onF0, onF0SW, onF2E, onF2SW, onF2NW, onF2M, onF2SE, onF2S, onF0NE, onF2NE,
 		notResetTra, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24,
 		r25, r26, r27, r28, r29, r30, r31;
 
@@ -460,26 +460,26 @@ public class IorwerthLightPuzzle extends ConditionalStep
 	protected void setupConditions()
 	{
 		hasMirrorsAndCrystal = new Conditions(
-			new ItemRequirementCondition(new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR_23775, 14)),
-			new ItemRequirementCondition(redCrystalHighlighted),
-			new ItemRequirementCondition(fracturedCrystalHighlighted),
-			new ItemRequirementCondition(yellowCrystalHighlighted)
+			new ItemRequirements(new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR_23775, 14)),
+			new ItemRequirements(redCrystalHighlighted),
+			new ItemRequirements(fracturedCrystalHighlighted),
+			new ItemRequirements(yellowCrystalHighlighted)
 		);
 
-		onF0 = new ZoneCondition(f0);
-		onF0SW = new ZoneCondition(f0SW);
-		onF0NE = new ZoneCondition(f0NE1, f0NE2);
+		onF0 = new ZoneRequirement(f0);
+		onF0SW = new ZoneRequirement(f0SW);
+		onF0NE = new ZoneRequirement(f0NE1, f0NE2);
 
-		onF1 = new ZoneCondition(f1);
+		onF1 = new ZoneRequirement(f1);
 
-		onF2 = new ZoneCondition(f2);
-		onF2SW = new ZoneCondition(f2SW);
-		onF2E = new ZoneCondition(f2E);
-		onF2NW = new ZoneCondition(f2NW);
-		onF2M = new ZoneCondition(f2M);
-		onF2SE = new ZoneCondition(f2SE);
-		onF2S = new ZoneCondition(f2S1, f2S2);
-		onF2NE = new ZoneCondition(f2NE);
+		onF2 = new ZoneRequirement(f2);
+		onF2SW = new ZoneRequirement(f2SW);
+		onF2E = new ZoneRequirement(f2E);
+		onF2NW = new ZoneRequirement(f2NW);
+		onF2M = new ZoneRequirement(f2M);
+		onF2SE = new ZoneRequirement(f2SE);
+		onF2S = new ZoneRequirement(f2S1, f2S2);
+		onF2NE = new ZoneRequirement(f2NE);
 
 		int CYAN = 2;
 		int BLUE = 3;
@@ -487,50 +487,50 @@ public class IorwerthLightPuzzle extends ConditionalStep
 		int YELLOW = 6;
 		int GREEN = 7;
 
-		notResetTra = new VarbitCondition(8773, YELLOW);
+		notResetTra = new VarbitRequirement(8773, YELLOW);
 
-		r1 = new VarbitCondition(8987, GREEN);
-		r2 = new VarbitCondition(8990, CYAN);
-		r3 = new VarbitCondition(9002, CYAN);
-		r4 = new VarbitCondition(8587, CYAN);
-		r5 = new VarbitCondition(8876, CYAN);
+		r1 = new VarbitRequirement(8987, GREEN);
+		r2 = new VarbitRequirement(8990, CYAN);
+		r3 = new VarbitRequirement(9002, CYAN);
+		r4 = new VarbitRequirement(8587, CYAN);
+		r5 = new VarbitRequirement(8876, CYAN);
 		r6 = new Conditions(
-			new VarbitCondition(8879, CYAN), // NORTH
-			new VarbitCondition(8878, CYAN)  // EAST
+			new VarbitRequirement(8879, CYAN), // NORTH
+			new VarbitRequirement(8878, CYAN)  // EAST
 		);
 
-		r7 = new Conditions(r6, new VarbitCondition(8881, CYAN));
-		r8 = new Conditions(r6, new VarbitCondition(8591, CYAN));
+		r7 = new Conditions(r6, new VarbitRequirement(8881, CYAN));
+		r8 = new Conditions(r6, new VarbitRequirement(8591, CYAN));
 
-		r9 = new Conditions(r8, new VarbitCondition(8882, CYAN));
-		r10 = new Conditions(r8, new VarbitCondition(8883, CYAN));
-		r11 = new Conditions(r8, new VarbitCondition(8885, GREEN));
-		r12 = new Conditions(r8, new VarbitCondition(8886, GREEN));
-		r13 = new Conditions(r8, new VarbitCondition(8887, GREEN));
-		r14 = new Conditions(r8, new VarbitCondition(8888, GREEN));
-		r15 = new Conditions(r8, new VarbitCondition(8592, GREEN));
-		r16 = new Conditions(r8, new VarbitCondition(8992, GREEN));
+		r9 = new Conditions(r8, new VarbitRequirement(8882, CYAN));
+		r10 = new Conditions(r8, new VarbitRequirement(8883, CYAN));
+		r11 = new Conditions(r8, new VarbitRequirement(8885, GREEN));
+		r12 = new Conditions(r8, new VarbitRequirement(8886, GREEN));
+		r13 = new Conditions(r8, new VarbitRequirement(8887, GREEN));
+		r14 = new Conditions(r8, new VarbitRequirement(8888, GREEN));
+		r15 = new Conditions(r8, new VarbitRequirement(8592, GREEN));
+		r16 = new Conditions(r8, new VarbitRequirement(8992, GREEN));
 
 		// Back to cyan beam
-		r17 = new Conditions(r16, new VarbitCondition(8614, BLUE));
+		r17 = new Conditions(r16, new VarbitRequirement(8614, BLUE));
 
 		// Start on yellow beam
-		r18 = new Conditions(r17, new VarbitCondition(8974, YELLOW));
-		r19 = new Conditions(r17, new VarbitCondition(8982, YELLOW));
-		r20 = new Conditions(r17, new VarbitCondition(8983, RED));
-		r21 = new Conditions(r17, new VarbitCondition(8984, RED));
-		r22 = new Conditions(r17, new VarbitCondition(8985, RED));
-		r23 = new Conditions(r17, new VarbitCondition(8986, RED));
-		r24 = new Conditions(r17, new VarbitCondition(8995, RED));
-		r25 = new Conditions(r17, new VarbitCondition(8996, RED));
-		r26 = new Conditions(r17, new VarbitCondition(8625, RED));
+		r18 = new Conditions(r17, new VarbitRequirement(8974, YELLOW));
+		r19 = new Conditions(r17, new VarbitRequirement(8982, YELLOW));
+		r20 = new Conditions(r17, new VarbitRequirement(8983, RED));
+		r21 = new Conditions(r17, new VarbitRequirement(8984, RED));
+		r22 = new Conditions(r17, new VarbitRequirement(8985, RED));
+		r23 = new Conditions(r17, new VarbitRequirement(8986, RED));
+		r24 = new Conditions(r17, new VarbitRequirement(8995, RED));
+		r25 = new Conditions(r17, new VarbitRequirement(8996, RED));
+		r26 = new Conditions(r17, new VarbitRequirement(8625, RED));
 
-		r27 = new Conditions(r17, new VarbitCondition(8825, RED));
-		r28 = new Conditions(r17, new VarbitCondition(8827, RED));
-		r29 = new Conditions(r17, new VarbitCondition(8823, RED));
-		r30 = new Conditions(r17, new VarbitCondition(8619, RED));
+		r27 = new Conditions(r17, new VarbitRequirement(8825, RED));
+		r28 = new Conditions(r17, new VarbitRequirement(8827, RED));
+		r29 = new Conditions(r17, new VarbitRequirement(8823, RED));
+		r30 = new Conditions(r17, new VarbitRequirement(8619, RED));
 
-		r31 = new Conditions(r30, new VarbitCondition(8804, BLUE));
+		r31 = new Conditions(r30, new VarbitRequirement(8804, BLUE));
 	}
 
 	public List<QuestStep> getDisplaySteps()

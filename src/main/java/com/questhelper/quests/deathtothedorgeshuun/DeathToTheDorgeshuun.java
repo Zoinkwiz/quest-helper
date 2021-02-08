@@ -25,23 +25,28 @@
 package com.questhelper.quests.deathtothedorgeshuun;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.npc.FollowerRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.FollowerRequirement;
-import com.questhelper.requirements.ItemRequirements;
-import com.questhelper.requirements.QuestRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcInteractingCondition;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,13 +60,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DEATH_TO_THE_DORGESHUUN
@@ -75,7 +73,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 	FollowerRequirement zanikFollower;
 
-	ConditionForStep inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines, inHamBase, zanikIsFollowing,
+	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines, inHamBase, zanikIsFollowing,
 		talkedToShopkeeper, talkedToWoman, talkedToDuke, talkedToAereck, talkedToGoblins, goneOutside, heardSpeaker, isBehindGuard1,
 		killedGuard1, isNearGuard4, isNearGuard5, inStoreroom, killedGuard2, killedGuard3, killedGuard4, killedGuard5, zanikWaitingFor4,
 		zanikWaitingFor5, isDisguisedZanikFollowing, zanikPickedUp, ropeAddedToHole, minedRocks, inSwamp, inJunaRoom, holdingCrate,
@@ -249,51 +247,51 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inBasement = new ZoneCondition(basement);
-		inLumbridgeF0 = new ZoneCondition(lumbridgeF0);
-		inLumbridgeF1 = new ZoneCondition(lumbridgeF1);
-		inLumbridgeF2 = new ZoneCondition(lumbridgeF2);
-		inTunnels = new ZoneCondition(tunnels);
-		inMines = new ZoneCondition(mines);
-		inHamBase = new ZoneCondition(hamBase);
-		isBehindGuard1 = new ZoneCondition(behindGuard1);
-		isNearGuard4 = new ZoneCondition(nearGuard4);
-		isNearGuard5 = new ZoneCondition(nearGuard5);
-		inStoreroom = new ZoneCondition(storeRoom);
-		inSwamp = new ZoneCondition(swamp);
-		inJunaRoom = new ZoneCondition(junaRoom);
-		inMill = new ZoneCondition(mill1, mill2);
+		inBasement = new ZoneRequirement(basement);
+		inLumbridgeF0 = new ZoneRequirement(lumbridgeF0);
+		inLumbridgeF1 = new ZoneRequirement(lumbridgeF1);
+		inLumbridgeF2 = new ZoneRequirement(lumbridgeF2);
+		inTunnels = new ZoneRequirement(tunnels);
+		inMines = new ZoneRequirement(mines);
+		inHamBase = new ZoneRequirement(hamBase);
+		isBehindGuard1 = new ZoneRequirement(behindGuard1);
+		isNearGuard4 = new ZoneRequirement(nearGuard4);
+		isNearGuard5 = new ZoneRequirement(nearGuard5);
+		inStoreroom = new ZoneRequirement(storeRoom);
+		inSwamp = new ZoneRequirement(swamp);
+		inJunaRoom = new ZoneRequirement(junaRoom);
+		inMill = new ZoneRequirement(mill1, mill2);
 
 
-		talkedToDuke = new VarbitCondition(2259, 1);
-		talkedToAereck = new VarbitCondition(2260, 1);
-		talkedToGoblins = new VarbitCondition(2261, 1);
-		talkedToWoman = new VarbitCondition(2262, 1);
-		goneOutside = new VarbitCondition(2263, 1);
-		zanikIsFollowing = new Conditions(LogicType.OR, new VarbitCondition(2264, 0));
-		talkedToShopkeeper = new VarbitCondition(2265, 1);
-		heardSpeaker = new VarbitCondition(2268, 1);
-		talkedToJohn = new VarbitCondition(2269, 1);
+		talkedToDuke = new VarbitRequirement(2259, 1);
+		talkedToAereck = new VarbitRequirement(2260, 1);
+		talkedToGoblins = new VarbitRequirement(2261, 1);
+		talkedToWoman = new VarbitRequirement(2262, 1);
+		goneOutside = new VarbitRequirement(2263, 1);
+		zanikIsFollowing = new Conditions(LogicType.OR, new VarbitRequirement(2264, 0));
+		talkedToShopkeeper = new VarbitRequirement(2265, 1);
+		heardSpeaker = new VarbitRequirement(2268, 1);
+		talkedToJohn = new VarbitRequirement(2269, 1);
 
-		killedGuard1 = new VarbitCondition(2275, 1);
-		killedGuard2 = new VarbitCondition(2277, 1);
-		killedGuard3 = new VarbitCondition(2278, 1);
-		killedGuard4 = new VarbitCondition(2280, 1);
-		killedGuard5 = new VarbitCondition(2282, 1);
+		killedGuard1 = new VarbitRequirement(2275, 1);
+		killedGuard2 = new VarbitRequirement(2277, 1);
+		killedGuard3 = new VarbitRequirement(2278, 1);
+		killedGuard4 = new VarbitRequirement(2280, 1);
+		killedGuard5 = new VarbitRequirement(2282, 1);
 
-		isDisguisedZanikFollowing = new NpcInteractingCondition(NpcID.ZANIK_4509);
+		isDisguisedZanikFollowing = new NpcInteractingRequirement(NpcID.ZANIK_4509);
 
 		zanikWaitingFor4 = new Conditions(new Conditions(LogicType.NOR, isDisguisedZanikFollowing), new NpcCondition(NpcID.ZANIK_4509, new Zone(new WorldPoint(2575, 5195, 0), new WorldPoint(2576, 5195, 0))));
 		zanikWaitingFor5 = new Conditions(new Conditions(LogicType.NOR, isDisguisedZanikFollowing), new NpcCondition(NpcID.ZANIK_4509, new Zone(new WorldPoint(2577, 5199, 0), new WorldPoint(2577, 5200, 0))));
 
-		zanikPickedUp = new VarbitCondition(2271, 0);
+		zanikPickedUp = new VarbitRequirement(2271, 0);
 
-		ropeAddedToHole = new VarbitCondition(279, 1);
-		minedRocks = new VarbitCondition(538, 1);
+		ropeAddedToHole = new VarbitRequirement(279, 1);
+		minedRocks = new VarbitRequirement(538, 1);
 
-		holdingCrate = new ItemRequirementCondition(crate);
+		holdingCrate = new ItemRequirements(crate);
 
-		killedGuards = new VarbitCondition(2283, 3);
+		killedGuards = new VarbitRequirement(2283, 3);
 	}
 
 	public void setupSteps()

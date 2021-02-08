@@ -25,22 +25,29 @@
 package com.questhelper.quests.deserttreasure;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
-import com.questhelper.requirements.SkillRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,14 +61,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DESERT_TREASURE
@@ -78,7 +77,7 @@ public class DesertTreasure extends BasicQuestHelper
 		spikedBootsEquipped, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted,
 		shadowDiamondHighlighted;
 
-	ConditionForStep hasWarmKey, gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3,
+	Requirement hasWarmKey, gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3,
 		litTorch4, unlockedFareedDoor, killedFareed, talkedToRasolo, unlockedCrossChest, gotRing, inShadowDungeon, damis1Nearby, damis2Nearby, talkedToMalak,
 		askedAboutKillingDessous, hasSilverPot, hasSilverPot2, inDraynorSewer, hasSilverPotBlood, hasSilverPotGarlic, hasSilverPotComplete, hasSilverPotSpice,
 		dessousNearby, killedDessous, gaveCake, talkedToTrollChild, killedTrolls, inTrollArea, inPath, killedKamil, onIcePath, onIceBridge, smashedIce1,
@@ -324,72 +323,72 @@ public class DesertTreasure extends BasicQuestHelper
 	public void setupConditions()
 	{
 		// Given all items, 392 = 1;
-		hasWarmKey = new ItemRequirementCondition(warmKey);
-		killedDamis = new VarbitCondition(383, 5);
-		hadSmokeDiamond = new Conditions(true, new ItemRequirementCondition(smokeDiamond));
-		gotIceDiamond = new Conditions(true, new ItemRequirementCondition(iceDiamond));
-		gotBloodDiamond = new VarbitCondition(373, 4);
-		inSmokeDungeon = new ZoneCondition(smokeDungeon);
-		inFareedRoom = new ZoneCondition(fareedRoom);
-		litTorch1 = new VarbitCondition(360, 1);
-		litTorch2 = new VarbitCondition(361, 1);
-		litTorch3 = new VarbitCondition(363, 1);
-		litTorch4 = new VarbitCondition(362, 1);
-		unlockedFareedDoor = new VarbitCondition(386, 1);
-		killedFareed = new VarbitCondition(376, 1);
-		talkedToRasolo = new VarbitCondition(383, 2);
-		gotRing = new VarbitCondition(383, 3, Operation.GREATER_EQUAL);
+		hasWarmKey = new ItemRequirements(warmKey);
+		killedDamis = new VarbitRequirement(383, 5);
+		hadSmokeDiamond = new Conditions(true, new ItemRequirements(smokeDiamond));
+		gotIceDiamond = new Conditions(true, new ItemRequirements(iceDiamond));
+		gotBloodDiamond = new VarbitRequirement(373, 4);
+		inSmokeDungeon = new ZoneRequirement(smokeDungeon);
+		inFareedRoom = new ZoneRequirement(fareedRoom);
+		litTorch1 = new VarbitRequirement(360, 1);
+		litTorch2 = new VarbitRequirement(361, 1);
+		litTorch3 = new VarbitRequirement(363, 1);
+		litTorch4 = new VarbitRequirement(362, 1);
+		unlockedFareedDoor = new VarbitRequirement(386, 1);
+		killedFareed = new VarbitRequirement(376, 1);
+		talkedToRasolo = new VarbitRequirement(383, 2);
+		gotRing = new VarbitRequirement(383, 3, Operation.GREATER_EQUAL);
 
-		unlockedCrossChest = new VarbitCondition(384, 1);
+		unlockedCrossChest = new VarbitRequirement(384, 1);
 
-		inShadowDungeon = new ZoneCondition(shadowDungeon);
+		inShadowDungeon = new ZoneRequirement(shadowDungeon);
 
 		damis1Nearby = new NpcCondition(NpcID.DAMIS);
 		damis2Nearby = new NpcCondition(NpcID.DAMIS_683);
 
-		talkedToMalak = new VarbitCondition(373, 1);
-		askedAboutKillingDessous = new VarbitCondition(373, 2);
+		talkedToMalak = new VarbitRequirement(373, 1);
+		askedAboutKillingDessous = new VarbitRequirement(373, 2);
 
-		hasSilverPot = new ItemRequirementCondition(silverPot);
-		hasSilverPot2 = new ItemRequirementCondition(silverPot2);
+		hasSilverPot = new ItemRequirements(silverPot);
+		hasSilverPot2 = new ItemRequirements(silverPot2);
 
-		hasSilverPotBlood = new ItemRequirementCondition(potOfBlood);
-		hasSilverPotGarlic = new ItemRequirementCondition(potWithGarlic);
-		hasSilverPotSpice = new ItemRequirementCondition(potWithSpice);
-		hasSilverPotComplete = new ItemRequirementCondition(potComplete);
+		hasSilverPotBlood = new ItemRequirements(potOfBlood);
+		hasSilverPotGarlic = new ItemRequirements(potWithGarlic);
+		hasSilverPotSpice = new ItemRequirements(potWithSpice);
+		hasSilverPotComplete = new ItemRequirements(potComplete);
 
-		inDraynorSewer = new ZoneCondition(draynorSewer);
+		inDraynorSewer = new ZoneRequirement(draynorSewer);
 
 		dessousNearby = new NpcCondition(NpcID.DESSOUS);
 
-		killedDessous = new VarbitCondition(373, 3);
+		killedDessous = new VarbitRequirement(373, 3);
 
-		gaveCake = new VarbitCondition(382, 1);
-		talkedToTrollChild = new VarbitCondition(382, 2, Operation.GREATER_EQUAL);
+		gaveCake = new VarbitRequirement(382, 1);
+		talkedToTrollChild = new VarbitRequirement(382, 2, Operation.GREATER_EQUAL);
 		// Killed kamil also results in 377 0->1
-		killedKamil = new VarbitCondition(382, 3, Operation.GREATER_EQUAL);
-		freedTrolls = new VarbitCondition(382, 4);
-		gotIceDiamond = new VarbitCondition(382, 5);
+		killedKamil = new VarbitRequirement(382, 3, Operation.GREATER_EQUAL);
+		freedTrolls = new VarbitRequirement(382, 4);
+		gotIceDiamond = new VarbitRequirement(382, 5);
 
-		killedTrolls = new VarbitCondition(378, 5);
+		killedTrolls = new VarbitRequirement(378, 5);
 
-		inTrollArea = new ZoneCondition(trollArea);
-		inPath = new ZoneCondition(path1, path2);
-		onIcePath = new ZoneCondition(icePath);
-		onIceBridge = new ZoneCondition(iceBridge);
+		inTrollArea = new ZoneRequirement(trollArea);
+		inPath = new ZoneRequirement(path1, path2);
+		onIcePath = new ZoneRequirement(icePath);
+		onIceBridge = new ZoneRequirement(iceBridge);
 
-		smashedIce1 = new VarbitCondition(380, 1);
+		smashedIce1 = new VarbitRequirement(380, 1);
 
-		placedSmoke = new VarbitCondition(387, 1);
-		placedShadow = new VarbitCondition(388, 1);
-		placedIce = new VarbitCondition(389, 1);
-		placedBlood = new VarbitCondition(390, 1);
+		placedSmoke = new VarbitRequirement(387, 1);
+		placedShadow = new VarbitRequirement(388, 1);
+		placedIce = new VarbitRequirement(389, 1);
+		placedBlood = new VarbitRequirement(390, 1);
 
-		inFloor1 = new ZoneCondition(floor1);
-		inFloor2 = new ZoneCondition(floor2);
-		inFloor3 = new ZoneCondition(floor3);
-		inFloor4 = new ZoneCondition(floor4);
-		inAzzRoom = new ZoneCondition(azzRoom);
+		inFloor1 = new ZoneRequirement(floor1);
+		inFloor2 = new ZoneRequirement(floor2);
+		inFloor3 = new ZoneRequirement(floor3);
+		inFloor4 = new ZoneRequirement(floor4);
+		inAzzRoom = new ZoneRequirement(azzRoom);
 	}
 
 	public void setupSteps()

@@ -24,7 +24,21 @@
  */
 package com.questhelper.quests.bearyoursoul;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.DigStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,20 +49,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 
 @QuestDescriptor(
 quest = QuestHelperQuest.BEAR_YOUR_SOUL
@@ -58,7 +58,7 @@ public class BearYourSoul extends BasicQuestHelper
 	//Items Required
 	ItemRequirement spade, dustyKeyOr70AgilOrKeyMasterTeleport, damagedSoulBearer;
 
-	ConditionForStep hasSoulBearer, inTaverleyDungeon, inKeyMaster;
+	Requirement hasSoulBearer, inTaverleyDungeon, inKeyMaster;
 
 	QuestStep findSoulJourneyAndRead, talkToAretha, arceuusChurchDig, goToTaverleyDungeon, enterCaveToKeyMaster, speakKeyMaster;
 
@@ -102,9 +102,9 @@ public class BearYourSoul extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inTaverleyDungeon = new ZoneCondition(inTaverleyDungeonZone);
-		inKeyMaster = new ZoneCondition(inKeyMasterZone);
-		hasSoulBearer = new ItemRequirementCondition(damagedSoulBearer);
+		inTaverleyDungeon = new ZoneRequirement(inTaverleyDungeonZone);
+		inKeyMaster = new ZoneRequirement(inKeyMasterZone);
+		hasSoulBearer = new ItemRequirements(damagedSoulBearer);
 	}
 
 	public void setupSteps()

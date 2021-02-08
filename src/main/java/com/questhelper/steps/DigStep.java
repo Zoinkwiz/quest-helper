@@ -26,7 +26,7 @@ package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.InventorySlots;
 import java.awt.Graphics2D;

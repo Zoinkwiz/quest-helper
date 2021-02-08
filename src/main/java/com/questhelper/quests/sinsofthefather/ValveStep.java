@@ -26,13 +26,13 @@ package com.questhelper.quests.sinsofthefather;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -59,7 +59,7 @@ public class ValveStep extends DetailedOwnerStep
 	private Zone northValveArea;
 	private Zone southValveArea;
 
-	ConditionForStep atNorthValve, atSouthValve;
+	Requirement atNorthValve, atSouthValve;
 
 	ItemRequirement scentedTop, scentedLegs, scentedShoes, oldNote;
 
@@ -246,8 +246,8 @@ public class ValveStep extends DetailedOwnerStep
 
 	protected void setupConditions()
 	{
-		atNorthValve = new ZoneCondition(northValveArea);
-		atSouthValve = new ZoneCondition(southValveArea);
+		atNorthValve = new ZoneRequirement(northValveArea);
+		atSouthValve = new ZoneRequirement(southValveArea);
 	}
 
 	@Override

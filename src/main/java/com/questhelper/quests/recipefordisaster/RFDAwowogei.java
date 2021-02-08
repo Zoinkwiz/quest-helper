@@ -32,24 +32,22 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ItemRequirement;
-import com.questhelper.requirements.PrayerRequirement;
-import com.questhelper.requirements.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.PrayerRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SkillRequirement;
-import com.questhelper.requirements.VarbitRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ItemRequirementCondition;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.conditional.VarbitCondition;
-import com.questhelper.requirements.conditional.ZoneCondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -78,7 +76,7 @@ public class RFDAwowogei extends BasicQuestHelper
 
 	Requirement protectMelee;
 
-	ConditionForStep inDiningRoom, askedAboutBanana, askedAboutNut, onCrashIsland, inSnakeHole, inNutHole, inTempleDungeon, hasRawStuffedSnake,
+	Requirement inDiningRoom, askedAboutBanana, askedAboutNut, onCrashIsland, inSnakeHole, inNutHole, inTempleDungeon, hasRawStuffedSnake,
 		hasPaste, hasSnakeCorpse, hasSlicedRedBanana, hasRedBanana, hasTchikiNut, inCookRoom, hasCookedsnake;
 
 	QuestStep enterDiningRoom, inspectAwowogei, talkToAwowogei, talkToWiseMonkeys, useBananaOnWiseMonkeys, useNutsOnWiseMonkeys, goToCrashIsland,
@@ -196,25 +194,25 @@ public class RFDAwowogei extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneCondition(diningRoom);
-		onCrashIsland = new ZoneCondition(crashIsland);
-		inSnakeHole = new ZoneCondition(snakeHole);
-		inNutHole = new ZoneCondition(nutHole);
-		inTempleDungeon = new ZoneCondition(templeDungeon);
-		inCookRoom = new ZoneCondition(cookRoom);
+		inDiningRoom = new ZoneRequirement(diningRoom);
+		onCrashIsland = new ZoneRequirement(crashIsland);
+		inSnakeHole = new ZoneRequirement(snakeHole);
+		inNutHole = new ZoneRequirement(nutHole);
+		inTempleDungeon = new ZoneRequirement(templeDungeon);
+		inCookRoom = new ZoneRequirement(cookRoom);
 
 
-		askedAboutBanana = new VarbitCondition(1915, 10, Operation.GREATER_EQUAL);
-		askedAboutNut = new VarbitCondition(1916, 10, Operation.GREATER_EQUAL);
+		askedAboutBanana = new VarbitRequirement(1915, 10, Operation.GREATER_EQUAL);
+		askedAboutNut = new VarbitRequirement(1916, 10, Operation.GREATER_EQUAL);
 
-		hasRawStuffedSnake = new ItemRequirementCondition(rawStuffedSnake);
+		hasRawStuffedSnake = new ItemRequirements(rawStuffedSnake);
 
-		hasPaste = new ItemRequirementCondition(paste);
-		hasSnakeCorpse = new Conditions(LogicType.OR, new ItemRequirementCondition(snakeCorpse), new ItemRequirementCondition(rawStuffedSnake));
-		hasSlicedRedBanana = new ItemRequirementCondition(slicedBanana);
-		hasRedBanana = new Conditions(LogicType.OR, new ItemRequirementCondition(redBanana), new ItemRequirementCondition(slicedBanana));
-		hasTchikiNut = new Conditions(LogicType.OR, new ItemRequirementCondition(tchikiNuts), new ItemRequirementCondition(paste));
-		hasCookedsnake = new ItemRequirementCondition(cookedSnake);
+		hasPaste = new ItemRequirements(paste);
+		hasSnakeCorpse = new Conditions(LogicType.OR, new ItemRequirements(snakeCorpse), new ItemRequirements(rawStuffedSnake));
+		hasSlicedRedBanana = new ItemRequirements(slicedBanana);
+		hasRedBanana = new Conditions(LogicType.OR, new ItemRequirements(redBanana), new ItemRequirements(slicedBanana));
+		hasTchikiNut = new Conditions(LogicType.OR, new ItemRequirements(tchikiNuts), new ItemRequirements(paste));
+		hasCookedsnake = new ItemRequirements(cookedSnake);
 	}
 
 	public void setupSteps()

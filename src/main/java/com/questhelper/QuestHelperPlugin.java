@@ -358,7 +358,7 @@ public class QuestHelperPlugin extends Plugin
 		}
 
 		clientThread.invokeLater(() -> {
-			if (selectedQuest.isCompleted())
+			if ((selectedQuest != null) && selectedQuest.isCompleted())
 			{
 				shutDownQuest(true);
 			}

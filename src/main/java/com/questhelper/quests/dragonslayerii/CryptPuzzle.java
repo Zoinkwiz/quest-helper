@@ -27,6 +27,7 @@ package com.questhelper.quests.dragonslayerii;
 import com.google.inject.Inject;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
@@ -256,7 +257,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 	{
 		if (!solutionFound && widgetLoaded.getGroupId() == 74)
 		{
-			List<Integer> potentialBusts = Arrays.asList(AIVAS, CAMORRA, ROBERT, TRISTAN);
+			List<Integer> potentialBusts = QuestUtil.toArrayList(AIVAS, CAMORRA, ROBERT, TRISTAN);
 
 			Widget northWidget = client.getWidget(74, 6);
 			Widget southAndWestWidget = client.getWidget(74, 7);

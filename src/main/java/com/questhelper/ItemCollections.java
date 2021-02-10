@@ -24,7 +24,7 @@
  */
 package com.questhelper;
 
-import com.questhelper.questhelpers.QuestUtil;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -41,54 +41,54 @@ public class ItemCollections
 	// Tools
 
 	@Getter
-	private static final List<Integer> axes = QuestUtil.toReversedLinkedList(
-		ItemID.BRONZE_AXE,
-		ItemID.IRON_AXE,
-		ItemID.STEEL_AXE,
-		ItemID.BLACK_AXE,
-		ItemID.MITHRIL_AXE,
-		ItemID.ADAMANT_AXE,
-		ItemID.GILDED_AXE,
-		ItemID.RUNE_AXE,
-		ItemID.DRAGON_AXE,
-		ItemID.INFERNAL_AXE,
-		ItemID.INFERNAL_AXE_OR,
+	private static final List<Integer> axes = ImmutableList.of(
+		ItemID.CRYSTAL_AXE,
 		ItemID._3RD_AGE_AXE,
-		ItemID.CRYSTAL_AXE
+		ItemID.INFERNAL_AXE_OR,
+		ItemID.INFERNAL_AXE,
+		ItemID.DRAGON_AXE,
+		ItemID.RUNE_AXE,
+		ItemID.GILDED_AXE,
+		ItemID.ADAMANT_AXE,
+		ItemID.MITHRIL_AXE,
+		ItemID.BLACK_AXE,
+		ItemID.STEEL_AXE,
+		ItemID.IRON_AXE,
+		ItemID.BRONZE_AXE
 	);
 
 	@Getter
-	private static final List<Integer> pickaxes = QuestUtil.toReversedLinkedList(
-		ItemID.BRONZE_PICKAXE,
-		ItemID.IRON_PICKAXE,
-		ItemID.STEEL_PICKAXE,
-		ItemID.BLACK_PICKAXE,
-		ItemID.MITHRIL_PICKAXE,
-		ItemID.ADAMANT_PICKAXE,
-		ItemID.GILDED_PICKAXE,
-		ItemID.RUNE_PICKAXE,
-		ItemID.DRAGON_PICKAXE,
-		ItemID.DRAGON_PICKAXE_OR,
-		ItemID.DRAGON_PICKAXE_12797,
-		ItemID.INFERNAL_PICKAXE,
-		ItemID._3RD_AGE_PICKAXE,
-		ItemID.CRYSTAL_PICKAXE,
+	private static final List<Integer> pickaxes = ImmutableList.of(
+		ItemID.INFERNAL_PICKAXE_OR,
 		ItemID.TRAILBLAZER_PICKAXE,
-		ItemID.INFERNAL_PICKAXE_OR
+		ItemID.CRYSTAL_PICKAXE,
+		ItemID._3RD_AGE_PICKAXE,
+		ItemID.INFERNAL_PICKAXE,
+		ItemID.DRAGON_PICKAXE_12797,
+		ItemID.DRAGON_PICKAXE_OR,
+		ItemID.DRAGON_PICKAXE,
+		ItemID.RUNE_PICKAXE,
+		ItemID.GILDED_PICKAXE,
+		ItemID.ADAMANT_PICKAXE,
+		ItemID.MITHRIL_PICKAXE,
+		ItemID.BLACK_PICKAXE,
+		ItemID.STEEL_PICKAXE,
+		ItemID.IRON_PICKAXE,
+		ItemID.BRONZE_PICKAXE
 	);
 
 	@Getter
-	private static final List<Integer> harpoons = QuestUtil.toReversedLinkedList(
-		ItemID.HARPOON,
-		ItemID.BARBTAIL_HARPOON,
-		ItemID.DRAGON_HARPOON,
-		ItemID.INFERNAL_HARPOON,
+	private static final List<Integer> harpoons = ImmutableList.of(
+		ItemID.INFERNAL_HARPOON_OR,
 		ItemID.TRAILBLAZER_HARPOON,
-		ItemID.INFERNAL_HARPOON_OR
+		ItemID.INFERNAL_HARPOON,
+		ItemID.DRAGON_HARPOON,
+		ItemID.BARBTAIL_HARPOON,
+		ItemID.HARPOON
 	);
 
 	@Getter
-	private static final List<Integer> machete = QuestUtil.toLinkedList(
+	private static final List<Integer> machete = ImmutableList.of(
 		ItemID.RED_TOPAZ_MACHETE,
 		ItemID.JADE_MACHETE,
 		ItemID.OPAL_MACHETE,
@@ -96,10 +96,10 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> nails = QuestUtil.toReversedLinkedList(
-		ItemID.BRONZE_NAILS,
-		ItemID.IRON_NAILS,
+	private static final List<Integer> nails = ImmutableList.of(
 		ItemID.STEEL_NAILS,
+		ItemID.IRON_NAILS,
+		ItemID.BRONZE_NAILS,
 		ItemID.BLACK_NAILS,
 		ItemID.MITHRIL_NAILS,
 		ItemID.ADAMANTITE_NAILS,
@@ -107,24 +107,24 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> bows = QuestUtil.toReversedLinkedList(
-		ItemID.SHORTBOW,
-		ItemID.LONGBOW,
+	private static final List<Integer> bows = ImmutableList.of(
 		ItemID.MAGIC_SHORTBOW,
 		ItemID.MAGIC_SHORTBOW_I,
 		ItemID.MAGIC_LONGBOW,
+		ItemID.YEW_SHORTBOW,
+		ItemID.YEW_LONGBOW,
 		ItemID.MAPLE_SHORTBOW,
 		ItemID.MAPLE_LONGBOW,
-		ItemID.OAK_SHORTBOW,
-		ItemID.OAK_LONGBOW,
 		ItemID.WILLOW_SHORTBOW,
 		ItemID.WILLOW_LONGBOW,
-		ItemID.YEW_SHORTBOW,
-		ItemID.YEW_LONGBOW
+		ItemID.OAK_SHORTBOW,
+		ItemID.OAK_LONGBOW,
+		ItemID.SHORTBOW,
+		ItemID.LONGBOW
 	);
 
 	@Getter
-	private static final List<Integer> swords = QuestUtil.toLinkedList(
+	private static final List<Integer> swords = ImmutableList.of(
 		ItemID.BRONZE_SWORD,
 		ItemID.BRONZE_LONGSWORD,
 		ItemID.IRON_SWORD,
@@ -148,17 +148,17 @@ public class ItemCollections
 	// Teleports
 
 	@Getter
-	private static final List<Integer> metalArrows = QuestUtil.toReversedLinkedList(
-		ItemID.BRONZE_ARROW,
-		ItemID.IRON_ARROW,
-		ItemID.STEEL_ARROW,
-		ItemID.MITHRIL_ARROW,
+	private static final List<Integer> metalArrows = ImmutableList.of(
+		ItemID.RUNE_ARROW,
 		ItemID.ADAMANT_ARROW,
-		ItemID.RUNE_ARROW
+		ItemID.MITHRIL_ARROW,
+		ItemID.STEEL_ARROW,
+		ItemID.IRON_ARROW,
+		ItemID.BRONZE_ARROW
 	);
 
 	@Getter
-	private static final List<Integer> arrows = QuestUtil.toLinkedList(
+	private static final List<Integer> arrows = ImmutableList.of(
 		ItemID.DRAGON_ARROW,
 		ItemID.AMETHYST_ARROW,
 		ItemID.RUNE_ARROW,
@@ -170,7 +170,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> brutalArrows = QuestUtil.toLinkedList(
+	private static final List<Integer> brutalArrows = ImmutableList.of(
 		ItemID.RUNE_BRUTAL,
 		ItemID.ADAMANT_BRUTAL,
 		ItemID.MITHRIL_BRUTAL,
@@ -181,7 +181,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> fireArrows = QuestUtil.toLinkedList(
+	private static final List<Integer> fireArrows = ImmutableList.of(
 		ItemID.DRAGON_FIRE_ARROW,
 		ItemID.DRAGON_FIRE_ARROW_LIT,
 		ItemID.AMETHYST_FIRE_ARROW,
@@ -201,7 +201,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> specialArrows = QuestUtil.toLinkedList(
+	private static final List<Integer> specialArrows = ImmutableList.of(
 		ItemID.BROAD_ARROWS,
 		ItemID.OGRE_ARROW,
 		ItemID.TRAINING_ARROWS,
@@ -209,7 +209,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> arrowtips = QuestUtil.toLinkedList(
+	private static final List<Integer> arrowtips = ImmutableList.of(
 		ItemID.DRAGON_ARROWTIPS,
 		ItemID.AMETHYST_ARROWTIPS,
 		ItemID.RUNE_ARROWTIPS,
@@ -221,7 +221,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> airRune = QuestUtil.toLinkedList(
+	private static final List<Integer> airRune = ImmutableList.of(
 		ItemID.AIR_RUNE,
 		ItemID.MIST_RUNE,
 		ItemID.SMOKE_RUNE,
@@ -229,7 +229,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> airStaff = QuestUtil.toLinkedList(
+	private static final List<Integer> airStaff = ImmutableList.of(
 		ItemID.AIR_BATTLESTAFF,
 		ItemID.MYSTIC_AIR_STAFF,
 		ItemID.STAFF_OF_AIR,
@@ -242,7 +242,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> fireRune = QuestUtil.toLinkedList(
+	private static final List<Integer> fireRune = ImmutableList.of(
 		ItemID.FIRE_RUNE,
 		ItemID.LAVA_RUNE,
 		ItemID.SMOKE_RUNE,
@@ -250,7 +250,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> fireStaff = QuestUtil.toLinkedList(
+	private static final List<Integer> fireStaff = ImmutableList.of(
 		ItemID.FIRE_BATTLESTAFF,
 		ItemID.MYSTIC_FIRE_STAFF,
 		ItemID.STAFF_OF_FIRE,
@@ -263,7 +263,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> waterRune = QuestUtil.toLinkedList(
+	private static final List<Integer> waterRune = ImmutableList.of(
 		ItemID.WATER_RUNE,
 		ItemID.MUD_RUNE,
 		ItemID.MIST_RUNE,
@@ -271,7 +271,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> waterStaff = QuestUtil.toLinkedList(
+	private static final List<Integer> waterStaff = ImmutableList.of(
 		ItemID.FIRE_BATTLESTAFF,
 		ItemID.MYSTIC_FIRE_STAFF,
 		ItemID.STAFF_OF_FIRE,
@@ -284,7 +284,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> earthRune = QuestUtil.toLinkedList(
+	private static final List<Integer> earthRune = ImmutableList.of(
 		ItemID.EARTH_RUNE,
 		ItemID.MUD_RUNE,
 		ItemID.LAVA_RUNE,
@@ -292,7 +292,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> earthStaff = QuestUtil.toLinkedList(
+	private static final List<Integer> earthStaff = ImmutableList.of(
 		ItemID.EARTH_BATTLESTAFF,
 		ItemID.MYSTIC_EARTH_STAFF,
 		ItemID.STAFF_OF_EARTH,
@@ -307,7 +307,7 @@ public class ItemCollections
 	// Potions
 
 	@Getter
-	private static final List<Integer> antipoisons = QuestUtil.toLinkedList(
+	private static final List<Integer> antipoisons = ImmutableList.of(
 		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
 		ItemID.ANTIVENOM4_12913,
@@ -350,7 +350,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> antivenoms = QuestUtil.toLinkedList(
+	private static final List<Integer> antivenoms = ImmutableList.of(
 		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
 		ItemID.ANTIVENOM2_12917,
@@ -362,7 +362,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> prayerPotions = QuestUtil.toLinkedList(
+	private static final List<Integer> prayerPotions = ImmutableList.of(
 		ItemID.PRAYER_POTION4,
 		ItemID.PRAYER_POTION3,
 		ItemID.PRAYER_POTION2,
@@ -370,7 +370,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> restorePotions = QuestUtil.toLinkedList(
+	private static final List<Integer> restorePotions = ImmutableList.of(
 		ItemID.SUPER_RESTORE4,
 		ItemID.SUPER_RESTORE3,
 		ItemID.SUPER_RESTORE2,
@@ -382,7 +382,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> superRestorePotions = QuestUtil.toLinkedList(
+	private static final List<Integer> superRestorePotions = ImmutableList.of(
 		ItemID.SUPER_RESTORE4,
 		ItemID.SUPER_RESTORE3,
 		ItemID.SUPER_RESTORE2,
@@ -390,7 +390,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> saradominBrews = QuestUtil.toLinkedList(
+	private static final List<Integer> saradominBrews = ImmutableList.of(
 		ItemID.SARADOMIN_BREW4,
 		ItemID.SARADOMIN_BREW3,
 		ItemID.SARADOMIN_BREW2,
@@ -398,7 +398,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> runRestoreItems = QuestUtil.toLinkedList(
+	private static final List<Integer> runRestoreItems = ImmutableList.of(
 		ItemID.AGILITY_CAPE,
 		ItemID.AGILITY_CAPET,
 		ItemID.EXPLORERS_RING_4,
@@ -432,7 +432,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> staminaPotions = QuestUtil.toLinkedList(
+	private static final List<Integer> staminaPotions = ImmutableList.of(
 		ItemID.STAMINA_POTION4,
 		ItemID.STAMINA_POTION3,
 		ItemID.STAMINA_POTION2,
@@ -442,7 +442,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> agilityPotions = QuestUtil.toLinkedList(
+	private static final List<Integer> agilityPotions = ImmutableList.of(
 		ItemID.AGILITY_POTION4,
 		ItemID.AGILITY_POTION3,
 		ItemID.AGILITY_POTION2,
@@ -452,7 +452,7 @@ public class ItemCollections
 	// Food
 
 	@Getter
-	private static final List<Integer> goodEatingFood = QuestUtil.toLinkedList(
+	private static final List<Integer> goodEatingFood = ImmutableList.of(
 		ItemID.DARK_CRAB,
 		ItemID.TUNA_POTATO,
 		ItemID.MANTA_RAY,
@@ -492,7 +492,7 @@ public class ItemCollections
 
 
 	@Getter
-	private static final List<Integer> fishFood = QuestUtil.toLinkedList(
+	private static final List<Integer> fishFood = ImmutableList.of(
 		ItemID.DARK_CRAB,
 		ItemID.MANTA_RAY,
 		ItemID.ANGLERFISH,
@@ -519,7 +519,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> gnomeFood = QuestUtil.toLinkedList(
+	private static final List<Integer> gnomeFood = ImmutableList.of(
 		ItemID.TANGLED_TOADS_LEGS,
 		ItemID.TANGLED_TOADS_LEGS_9551,
 		ItemID.CHOCOLATE_BOMB,
@@ -565,13 +565,13 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> stews = QuestUtil.toLinkedList(
+	private static final List<Integer> stews = ImmutableList.of(
 		ItemID.STEW,
 		ItemID.CURRY
 	);
 
 	@Getter
-	private static final List<Integer> pizzas = QuestUtil.toLinkedList(
+	private static final List<Integer> pizzas = ImmutableList.of(
 		ItemID.PINEAPPLE_PIZZA,
 		ItemID.ANCHOVY_PIZZA,
 		ItemID.MEAT_PIZZA,
@@ -580,7 +580,7 @@ public class ItemCollections
 
 
 	@Getter
-	private static final List<Integer> potatoFood = QuestUtil.toLinkedList(
+	private static final List<Integer> potatoFood = ImmutableList.of(
 		ItemID.TUNA_POTATO,
 		ItemID.MUSHROOM_POTATO,
 		ItemID.EGG_POTATO,
@@ -591,7 +591,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> pies = QuestUtil.toLinkedList(
+	private static final List<Integer> pies = ImmutableList.of(
 		ItemID.SUMMER_PIE,
 		ItemID.WILD_PIE,
 		ItemID.DRAGONFRUIT_PIE,
@@ -611,7 +611,7 @@ public class ItemCollections
 	// Teleport items
 
 	@Getter
-	private static final List<Integer> gamesNecklaces = QuestUtil.toLinkedList(
+	private static final List<Integer> gamesNecklaces = ImmutableList.of(
 		ItemID.GAMES_NECKLACE8,
 		ItemID.GAMES_NECKLACE7,
 		ItemID.GAMES_NECKLACE6,
@@ -623,7 +623,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> ringOfDuelings = QuestUtil.toLinkedList(
+	private static final List<Integer> ringOfDuelings = ImmutableList.of(
 		ItemID.RING_OF_DUELING8,
 		ItemID.RING_OF_DUELING7,
 		ItemID.RING_OF_DUELING6,
@@ -635,7 +635,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> burningAmulets = QuestUtil.toLinkedList(
+	private static final List<Integer> burningAmulets = ImmutableList.of(
 		ItemID.BURNING_AMULET5,
 		ItemID.BURNING_AMULET4,
 		ItemID.BURNING_AMULET3,
@@ -644,7 +644,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> necklaceOfPassages = QuestUtil.toLinkedList(
+	private static final List<Integer> necklaceOfPassages = ImmutableList.of(
 		ItemID.NECKLACE_OF_PASSAGE5,
 		ItemID.NECKLACE_OF_PASSAGE4,
 		ItemID.NECKLACE_OF_PASSAGE3,
@@ -653,7 +653,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> skillsNecklaces = QuestUtil.toLinkedList(
+	private static final List<Integer> skillsNecklaces = ImmutableList.of(
 		ItemID.SKILLS_NECKLACE5,
 		ItemID.SKILLS_NECKLACE4,
 		ItemID.SKILLS_NECKLACE3,
@@ -662,7 +662,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> ringOfWealths = QuestUtil.toLinkedList(
+	private static final List<Integer> ringOfWealths = ImmutableList.of(
 		ItemID.RING_OF_WEALTH_5,
 		ItemID.RING_OF_WEALTH_I5,
 		ItemID.RING_OF_WEALTH_4,
@@ -676,7 +676,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> combatBracelets = QuestUtil.toLinkedList(
+	private static final List<Integer> combatBracelets = ImmutableList.of(
 		ItemID.COMBAT_BRACELET6,
 		ItemID.COMBAT_BRACELET5,
 		ItemID.COMBAT_BRACELET4,
@@ -686,7 +686,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> amuletOfGlories = QuestUtil.toLinkedList(
+	private static final List<Integer> amuletOfGlories = ImmutableList.of(
 		ItemID.AMULET_OF_ETERNAL_GLORY,
 		ItemID.AMULET_OF_GLORY6,
 		ItemID.AMULET_OF_GLORY_T6,
@@ -703,7 +703,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> digsitePendants = QuestUtil.toLinkedList(
+	private static final List<Integer> digsitePendants = ImmutableList.of(
 		ItemID.DIGSITE_PENDANT_5,
 		ItemID.DIGSITE_PENDANT_4,
 		ItemID.DIGSITE_PENDANT_3,
@@ -712,7 +712,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> slayerRings = QuestUtil.toLinkedList(
+	private static final List<Integer> slayerRings = ImmutableList.of(
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.SLAYER_RING_8,
 		ItemID.SLAYER_RING_7,
@@ -727,7 +727,7 @@ public class ItemCollections
 	// Logs
 
 	@Getter
-	private static final List<Integer> logsForFire = QuestUtil.toReversedLinkedList(
+	private static final List<Integer> logsForFire = ImmutableList.of(
 		ItemID.LOGS,
 		ItemID.OAK_LOGS,
 		ItemID.WILLOW_LOGS,
@@ -761,7 +761,7 @@ public class ItemCollections
 	// Other
 
 	@Getter
-	private static final List<Integer> greegrees = QuestUtil.toLinkedList(
+	private static final List<Integer> greegrees = ImmutableList.of(
 		ItemID.KARAMJAN_MONKEY_GREEGREE,
 		ItemID.GORILLA_GREEGREE,
 		ItemID.ANCIENT_GORILLA_GREEGREE,
@@ -774,7 +774,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> antifireShields = QuestUtil.toLinkedList(
+	private static final List<Integer> antifireShields = ImmutableList.of(
 		ItemID.DRAGONFIRE_SHIELD,
 		ItemID.DRAGONFIRE_SHIELD_11284,
 		ItemID.DRAGONFIRE_WARD,
@@ -786,7 +786,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> ghostspeak = QuestUtil.toLinkedList(
+	private static final List<Integer> ghostspeak = ImmutableList.of(
 		ItemID.GHOSTSPEAK_AMULET,
 		ItemID.GHOSTSPEAK_AMULET_4250,
 		ItemID.MORYTANIA_LEGS_2,
@@ -795,7 +795,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> lightSources = QuestUtil.toLinkedList(
+	private static final List<Integer> lightSources = ImmutableList.of(
 		ItemID.FIREMAKING_CAPET,
 		ItemID.FIREMAKING_CAPE,
 		ItemID.BRUMA_TORCH,
@@ -817,7 +817,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> cats = QuestUtil.toLinkedList(
+	private static final List<Integer> cats = ImmutableList.of(
 		ItemID.WILY_HELLCAT,
 		ItemID.WILY_CAT,
 		ItemID.WILY_CAT_6556,
@@ -860,7 +860,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> huntingCats = QuestUtil.toLinkedList(
+	private static final List<Integer> huntingCats = ImmutableList.of(
 		ItemID.WILY_HELLCAT,
 		ItemID.WILY_CAT,
 		ItemID.WILY_CAT_6556,
@@ -896,7 +896,7 @@ public class ItemCollections
 
 
 	@Getter
-	private static final List<Integer> flowers = QuestUtil.toLinkedList(
+	private static final List<Integer> flowers = ImmutableList.of(
 		ItemID.RED_FLOWERS,
 		ItemID.YELLOW_FLOWERS,
 		ItemID.PURPLE_FLOWERS,
@@ -910,21 +910,21 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> rodOfIvandis = QuestUtil.toReversedLinkedList(
-		ItemID.ROD_OF_IVANDIS_1,
-		ItemID.ROD_OF_IVANDIS_2,
-		ItemID.ROD_OF_IVANDIS_3,
-		ItemID.ROD_OF_IVANDIS_4,
-		ItemID.ROD_OF_IVANDIS_5,
-		ItemID.ROD_OF_IVANDIS_6,
-		ItemID.ROD_OF_IVANDIS_7,
-		ItemID.ROD_OF_IVANDIS_8,
+	private static final List<Integer> rodOfIvandis = ImmutableList.of(
+		ItemID.ROD_OF_IVANDIS_10,
 		ItemID.ROD_OF_IVANDIS_9,
-		ItemID.ROD_OF_IVANDIS_10
+		ItemID.ROD_OF_IVANDIS_8,
+		ItemID.ROD_OF_IVANDIS_7,
+		ItemID.ROD_OF_IVANDIS_6,
+		ItemID.ROD_OF_IVANDIS_5,
+		ItemID.ROD_OF_IVANDIS_4,
+		ItemID.ROD_OF_IVANDIS_3,
+		ItemID.ROD_OF_IVANDIS_2,
+		ItemID.ROD_OF_IVANDIS_1
 	);
 
 	@Getter
-	private static final List<Integer> salveAmulet = QuestUtil.toLinkedList(
+	private static final List<Integer> salveAmulet = ImmutableList.of(
 		ItemID.SALVE_AMULETEI,
 		ItemID.SALVE_AMULET_E,
 		ItemID.SALVE_AMULETI,
@@ -934,7 +934,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> wateringCans = QuestUtil.toLinkedList(
+	private static final List<Integer> wateringCans = ImmutableList.of(
 		ItemID.GRICOLLERS_CAN,
 		ItemID.WATERING_CAN8,
 		ItemID.WATERING_CAN7,
@@ -947,7 +947,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> enchantedLyre = QuestUtil.toLinkedList(
+	private static final List<Integer> enchantedLyre = ImmutableList.of(
 		ItemID.ENCHANTED_LYREI,
 		ItemID.ENCHANTED_LYRE5,
 		ItemID.ENCHANTED_LYRE4,

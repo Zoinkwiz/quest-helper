@@ -24,9 +24,9 @@
  */
 package com.questhelper.panel.questorders;
 
+import com.google.common.collect.ImmutableList;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.questhelpers.QuestUtil;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -37,7 +37,7 @@ public class QuestOrders
 	// Test for 'The', 'A', 'An' at the start of a string followed by a word boundary (space/tab); this ignores case sensitivity
 	private static final Pattern QUEST_NAME_PATTERN = Pattern.compile("(?i)(a\\b)|(the\\b)|(an\\b)", Pattern.CASE_INSENSITIVE);
 	@Getter
-	private static final List<QuestHelperQuest> optimalOrder = QuestUtil.toLinkedList(
+	private static final List<QuestHelperQuest> optimalOrder = ImmutableList.of(
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.X_MARKS_THE_SPOT,
 		QuestHelperQuest.THE_RESTLESS_GHOST,

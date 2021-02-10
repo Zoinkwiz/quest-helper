@@ -116,7 +116,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		courtAstrid.addStep(inIslands, goUpstairsToAstrid);
 
 		courtBrand = new ConditionalStep(this, travelToMisc);
-		courtBrand.addStep(new Conditions(inMiscCastleFirstFloor, talked3P1, talked3P2, talked3P3, blownKiss), useRingOnAstrid);
+		courtBrand.addStep(new Conditions(inMiscCastleFirstFloor, talked3P1, talked3P2, talked3P3, blownKiss), useRingOnBrand);
 		courtBrand.addStep(new Conditions(inMiscCastleFirstFloor, talked3P1, talked3P2, talked3P3), blowKissToBrand);
 		courtBrand.addStep(new Conditions(inMiscCastleFirstFloor, talked2P4), talkBrand3);
 		courtBrand.addStep(new Conditions(inMiscCastleFirstFloor, talked2P1, talked2P2, talked2P3), giveCakeToBrand);

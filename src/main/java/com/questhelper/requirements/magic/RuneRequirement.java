@@ -60,7 +60,7 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 	private int requiredAmount;
 
 	private final ItemRequirement runeItemRequirement;
-	private StaffItemRequirement staffItemRequirement;
+	private ItemRequirement staffItemRequirement;
 
 	public RuneRequirement(Rune rune, int costPerCast)
 	{
@@ -76,7 +76,7 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 		this.runeItemRequirement = new ItemRequirement("", rune.getRunes(), this.requiredAmount);
 		if (rune.getStaff() != Staff.UNKNOWN)
 		{
-			this.staffItemRequirement = new StaffItemRequirement(rune.getStaff());
+			this.staffItemRequirement = new ItemRequirement(rune.getStaff().getName(), rune.getStaff().getStaves(), 1);
 		}
 	}
 

@@ -428,7 +428,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			}
 			log.debug("RUNE: " + rune.getRune().getRuneName() + " -> LOOKING FOR MATCH");
 			Rune currentRune = rune.getRune();
-			StaffItemRequirement staves = rune.getStaffItemRequirement();
+			ItemRequirement staves = rune.getStaffItemRequirement();
 			ItemRequirement runeItem = rune.getRuneItemRequirement();
 
 			boolean hasRunes = ItemSearch.hasItemsAnywhere(client, runeItem);

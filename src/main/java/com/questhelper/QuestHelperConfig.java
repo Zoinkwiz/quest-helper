@@ -131,11 +131,10 @@ public interface QuestHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankSearchPreference",
-		name = "Which spell components to prefer",
-		description = "Choose whether runes or staves should be preferred when filtering spell components.",
-		hidden = true
+		name = "Spell Component Preference",
+		description = "Choose whether runes or staves should be preferred when filtering spell components."
 	)
-	default SearchPreference bankFilterSearchPreference()
+	default SearchPreference bankFilterSpellPreference()
 	{
 		return SearchPreference.STAVES;
 	}

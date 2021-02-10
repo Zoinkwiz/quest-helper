@@ -145,7 +145,7 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 	{
 		boolean hasRunes = ItemSearch.hasItemsAnywhere(client, runeItemRequirement);
 		boolean hasStaves = staffItemRequirement != null && ItemSearch.hasItemsAnywhere(client, staffItemRequirement);
-		ItemRequirement requirement = config.bankFilterSearchPreference().getPreference(this, () -> hasRunes, () -> hasStaves);
+		ItemRequirement requirement = config.bankFilterSpellPreference().getPreference(this, () -> hasRunes, () -> hasStaves);
 		return Collections.singletonList(requirement);
 	}
 }

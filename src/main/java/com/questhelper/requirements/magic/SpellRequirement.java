@@ -40,7 +40,6 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.spells.MagicSpell;
 import com.questhelper.spells.Rune;
-import com.questhelper.spells.SearchPreference;
 import com.questhelper.spells.Staff;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -221,6 +220,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			tabletRequirement.setQuantity(this.numberOfCasts);
 		}
+		getItemRequirements(this.requirements).forEach(item -> item.setQuantity(this.numberOfCasts));
 	}
 
 	@Override
@@ -426,39 +426,29 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			{
 				continue;
 			}
-			log.debug("RUNE: " + rune.getRune().getRuneName() + " -> LOOKING FOR MATCH");
 			Rune currentRune = rune.getRune();
 			ItemRequirement staves = rune.getStaffItemRequirement();
 			ItemRequirement runeItem = rune.getRuneItemRequirement();
 
 			boolean hasRunes = ItemSearch.hasItemsAnywhere(client, runeItem);
 			boolean hasStaves = hasStaff(client, staves);
-			log.debug("HAS_RUNES: " + hasRunes + " <-> HAS_STAVES: " + hasStaves);
 
-			SearchPreference searchPreference = SearchPreference.STAVES;
-			ItemRequirement toAdd = searchPreference.getPreference(rune, () -> hasRunes, () -> hasStaves);
-			int toAddID = ItemSearch.findFirstItem(client, toAdd.getAllIds(), toAdd.getQuantity());
-			ItemComposition itemToAdd = client.getItemDefinition(toAddID);
-			log.debug("FOUND MATCH FOR: " + rune.getRune() + " -> " + itemToAdd.getName());
+			ItemRequirement toAdd = config.bankFilterSpellPreference().getPreference(rune, () -> hasRunes, () -> hasStaves);
+
 			boolean itemIsRune = toAdd.getAllIds().stream().allMatch(Rune::isRuneItem);
-			log.debug(itemToAdd.getName() + " IS RUNE -> " + itemIsRune);
 			if (staffRequirement != null && itemIsRune && currentRune.getStaff() != Staff.UNKNOWN)
 			{
 				// there is a staff present, can it replace the current rune?
 				int staffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), 1);
 				Staff requiredStaff = Staff.getByItemID(staffID);
-				log.debug("PRESENT STAFF: " + requiredStaff);
 				boolean isSourceOf = requiredStaff.isSourceOf(currentRune);
-				log.debug(requiredStaff + " can act as source for " + currentRune.getRuneName() + " -> " + isSourceOf);
 				if (!isSourceOf)
 				{
-					log.debug("ADDED RUNE: " + itemToAdd.getName());
 					runeItemRequirements.put(currentRune, toAdd);
 				}
 			}
 			else
 			{
-				log.debug("ADDED: " + itemToAdd.getName());
 				runeItemRequirements.put(currentRune, toAdd);
 			}
 		}
@@ -503,6 +493,10 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			.filter(req -> !req.getDisplayText().isEmpty())
 			.filter(req -> !req.check(client))
 			.forEach(req -> text.append(req.getDisplayText()).append("\n"));
+		if (text.length() <= 0)
+		{
+			return text.toString();
+		}
 		return text.insert(0, "This spell requires: \n").toString();
 	}
 

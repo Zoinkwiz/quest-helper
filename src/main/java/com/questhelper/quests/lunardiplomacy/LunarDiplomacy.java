@@ -922,12 +922,14 @@ public class LunarDiplomacy extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToLokar, talkToBrundt, talkToLokarAgain, climbLadder, talkToBentley), bullseyeLantern, tinderboxHighlighted));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToLokar, talkToBrundt, talkToLokarAgain, climbLadder, talkToBentley),
+			bullseyeLantern, tinderboxHighlighted));
 		allSteps.add(new PanelDetails("The curse", Arrays.asList(climbDownSouthStairs, climbUpSouthStairs, goUpToShultz, goDownToBurns1, goUpToLee1,
-			goDownToDavey, goUpToCabinBoy, replaceLens, lightLantern, goUpToCannon1, goDownToChart, useLanternOnChest, useLanternOnPillar, useLanternOnCrate, talkToBentleyToSail), bullseyeLantern, tinderboxHighlighted));
+			goDownToDavey, goUpToCabinBoy, replaceLens, lightLantern, goUpToCannon1, goDownToChart, useLanternOnChest, useLanternOnPillar, useLanternOnCrate,
+			talkToBentleyToSail), bullseyeLantern, tinderboxHighlighted));
 		allSteps.add(new PanelDetails("Starting diplomacy", Arrays.asList(
-			enterTown, talkToOneiromancer, returnToTalkToYaga, fillVial, addGuam, addMarrentil, returnToMakePotion, grindTooth, addToothToPotion, returnToOneWithPotion),
-			guam, marrentill));
+			enterTown, talkToOneiromancer, returnToTalkToYaga, fillVial, addGuam, addMarrentil, returnToMakePotion, grindTooth,
+			addToothToPotion, returnToOneWithPotion), guam, marrentill, pestle, sealOfPassage));
 		allSteps.add(new PanelDetails("Making the staff", Arrays.asList(
 			enterAirAltar, enterFireAltar, enterWaterAltar, enterEarthAltar, returnWithStaff),
 			dramenStaff, airTalisman, fireTalisman, waterTalisman, earthTalisman));

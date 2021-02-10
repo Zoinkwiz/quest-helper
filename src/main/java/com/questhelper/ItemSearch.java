@@ -140,4 +140,12 @@ public class ItemSearch
 			.mapToLong(Item::getQuantity)
 			.sum();
 	}
+
+	public int findFirstItem(Client client, List<Integer> itemIDs, int amount)
+	{
+		return itemIDs.stream()
+			.filter(id -> hasItemAmountAnywhere(client, id, amount))
+			.findFirst()
+			.orElse(-1);
+	}
 }

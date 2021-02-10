@@ -69,10 +69,7 @@ public enum Staff
 
 	public boolean isSourceOf(Rune rune)
 	{
-		List<Staff> values = Stream.of(values())
-			.sorted(Comparator.reverseOrder())
-			.collect(Collectors.toList());
-		return values.stream().anyMatch(staff -> staff.getSourceRunes().contains(rune));
+		return getSourceRunes().contains(rune);
 	}
 
 	public static Staff getByItemID(int itemID)

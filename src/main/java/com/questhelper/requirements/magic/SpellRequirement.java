@@ -437,24 +437,19 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 
 			SearchPreference searchPreference = SearchPreference.STAVES;
 			ItemRequirement toAdd = searchPreference.getPreference(rune, () -> hasRunes, () -> hasStaves);
-			ItemComposition itemToAdd = client.getItemDefinition(toAdd.getId());
+			int toAddID = ItemSearch.findFirstItem(client, toAdd.getAllIds(), toAdd.getQuantity());
+			ItemComposition itemToAdd = client.getItemDefinition(toAddID);
 			log.debug("FOUND MATCH FOR: " + rune.getRune() + " -> " + itemToAdd.getName());
-
 			boolean itemIsRune = toAdd.getAllIds().stream().allMatch(Rune::isRuneItem);
 			log.debug(itemToAdd.getName() + " IS RUNE -> " + itemIsRune);
-			if (staffRequirement != null && itemIsRune)
+			if (staffRequirement != null && itemIsRune && currentRune.getStaff() != Staff.UNKNOWN)
 			{
 				// there is a staff present, can it replace the current rune?
-				log.debug("FOUND STAFF");
-				Staff requiredStaff = staffRequirement.getAllIds()
-					.stream()
-					.filter(Staff::isStaff)
-					.map(Staff::getByItemID)
-					.findFirst()
-					.orElse(Staff.UNKNOWN);
+				int staffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), 1);
+				Staff requiredStaff = Staff.getByItemID(staffID);
 				log.debug("PRESENT STAFF: " + requiredStaff);
 				boolean isSourceOf = requiredStaff.isSourceOf(currentRune);
-				log.debug(requiredStaff + " == " + currentRune.getStaff() + " -> " + isSourceOf);
+				log.debug(requiredStaff + " can act as source for " + currentRune.getRuneName() + " -> " + isSourceOf);
 				if (!isSourceOf)
 				{
 					log.debug("ADDED RUNE: " + itemToAdd.getName());

@@ -40,6 +40,7 @@ import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -244,8 +245,8 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 			"Return to Kaal-Ket-Jor.");
 		talkToKaalAgain.addSubSteps(enterKaruulmAgain);
 
-		searchRocks = new ObjectStep(this, NullObjectID.NULL_34627, new WorldPoint(1714, 3876, 0),
-			"Inspect some rocks near the Arceuus Altar.");
+		searchRocks = new DetailedQuestStep(this, new WorldPoint(1714, 3880, 0),
+			"Inspect the rocks near the Arceuus Altar until you find a device.");
 
 		goUpstairsInTowerToFinish = new ObjectStep(this, ObjectID.STAIRS_33575, new WorldPoint(1585, 3821, 0),
 			"Return to Lord Trobin Arceuus to finish the quest.");

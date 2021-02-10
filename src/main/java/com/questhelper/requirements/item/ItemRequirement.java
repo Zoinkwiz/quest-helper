@@ -27,6 +27,7 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.InventorySlots;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -74,6 +75,9 @@ public class ItemRequirement extends AbstractRequirement
 
 	@Setter
 	private boolean displayMatchedItemName;
+
+	@Setter
+	private Requirement conditionToHide;
 
 	public ItemRequirement(String name, int id)
 	{
@@ -155,6 +159,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement conditioned(Requirement condition)
+	{
+		ItemRequirement newItem = copy();
+		newItem.setConditionToHide(condition);
+		return newItem;
+	}
+
 	public ItemRequirement copy()
 	{
 		ItemRequirement newItem = new ItemRequirement(name, id, quantity, equip);
@@ -195,6 +206,11 @@ public class ItemRequirement extends AbstractRequirement
 	protected List<LineComponent> getOverlayDisplayText(Client client)
 	{
 		List<LineComponent> lines = new ArrayList<>();
+
+		if (conditionToHide != null && conditionToHide.check(client))
+		{
+			return lines;
+		}
 
 		StringBuilder text = new StringBuilder();
 		if (this.showQuantity())

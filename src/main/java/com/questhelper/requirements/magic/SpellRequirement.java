@@ -71,7 +71,7 @@ import org.apache.commons.lang3.StringUtils;
  * 3. Player has staff
  *
  * We can ignore the requirements if the player has the tablet because those
- * have no requirements in order to be used.
+ * have no requirements in order to be used (other than quests).
  */
 
 /**
@@ -88,9 +88,9 @@ import org.apache.commons.lang3.StringUtils;
  * it is more compact and has less requirements.
  */
 @Slf4j
-@Getter
 public class SpellRequirement extends ItemRequirement implements BankItemHolder
 {
+	@Getter
 	private final MagicSpell spell;
 
 	private ItemRequirement tabletRequirement = null;
@@ -103,8 +103,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	/** @return all {@link Requirement}s on this SpellRequirement */
 	private final List<Requirement> requirements = new ArrayList<>();
 	private final List<RuneRequirement> runeRequirements = new LinkedList<>();
-	private final SkillRequirement skillRequirement;
-	private final SpellbookRequirement spellbookRequirement;
 
 	public SpellRequirement(MagicSpell spell, Map<Rune, Integer> runeCostMap, List<Requirement> requirements)
 	{
@@ -118,16 +116,16 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		this.numberOfCasts = numberOfCasts;
 		this.runeCostMap = runeCostMap;
 		this.requirements.addAll(requirements);
-		this.skillRequirement = new SkillRequirement(Skill.MAGIC, spell.getRequiredMagicLevel());
-		this.spellbookRequirement = new SpellbookRequirement(spell.getSpellbook());
-		this.requirements.add(this.skillRequirement);
-		this.requirements.add(this.spellbookRequirement);
+		this.requirements.add(new SkillRequirement(Skill.MAGIC, spell.getRequiredMagicLevel()));
+		this.requirements.add(new SpellbookRequirement(spell.getSpellbook()));
 		setNumberOfCasts(numberOfCasts);
 		updateTooltip();
 	}
 
 	/**
 	 * Add an additional {@link Requirement}.
+	 * If this is an {@link ItemRequirement}, it's assumed that it's directly needed to cast this spell.
+	 * Thus, it's quantity will be adjusted to match the number of casts this requirement has.
 	 *
 	 * @param requirement requirement to add
 	 */
@@ -161,6 +159,13 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	/**
+	 * Set the new staff item id this requirement should use.
+	 *
+	 * @param staffID the new staff item id.
+	 *
+	 * @throws UnsupportedOperationException if staff use is disabled.
+	 */
 	public void setStaff(int staffID)
 	{
 		if (!useStaff)
@@ -177,6 +182,9 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	/**
+	 * @return true if this requirement currently has a staff and if staves are enabled.
+	 */
 	public boolean hasStaff()
 	{
 		return staffRequirement != null && useStaff;
@@ -190,6 +198,13 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		setTablet(-1);
 	}
 
+	/**
+	 * Set if this requirement should use staffs.
+	 *
+	 * @param useStaff true to use staffs.
+	 *
+	 * @throws UnsupportedOperationException if staff use is disabled while there is still a staff required
+	 */
 	public void setStaffUse(boolean useStaff)
 	{
 		if (!useStaff && staffRequirement != null)
@@ -354,8 +369,8 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		boolean hasItems = false;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
 		updateInternalState(client, itemRequirements);
-		hasRunes = runeRequirements.stream().allMatch(req -> hasItemAmount(client, req.getAllIds(), req.getRequiredAmount()));
-		hasItems = itemRequirements.stream().allMatch(req -> hasItemAmount(client, req.getAllIds(), req.getQuantity()));
+		hasRunes = runeRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
+		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
 		if (hasRunes && hasItems)
 		{
 			return Color.GREEN;
@@ -475,10 +490,10 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 
 	@Nullable
 	@Override
-	public String getUpdatedTooltip(Client client, BankItems bankItems)
+	public String getUpdatedTooltip(Client client)
 	{
 		StringBuilder text = new StringBuilder();
-		if (tabletRequirement != null && tabletRequirement.check(client, false, bankItems.getItems()))
+		if (tabletRequirement != null && ItemSearch.hasItemAnywhere(client, tabletRequirement.getId()))
 		{ // only show tooltip for tablet if they actually have it
 			AtomicInteger count = new AtomicInteger();
 			getNonItemRequirements(this.requirements).stream()
@@ -535,6 +550,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		requirements.stream()
 					.filter(req -> StringUtils.isBlank(req.getName()))
 					.forEach(req -> req.setName(client.getItemDefinition(req.getId()).getName()));
+		requirements.forEach(item -> item.setQuantity(this.numberOfCasts));
 	}
 
 	private void updateTabletRequirement(Client client)

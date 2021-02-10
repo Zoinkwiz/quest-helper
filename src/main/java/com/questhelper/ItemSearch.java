@@ -29,7 +29,7 @@ package com.questhelper;
 
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.InventorySlots;
-import java.util.List;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
 import lombok.experimental.UtilityClass;
@@ -132,7 +132,7 @@ public class ItemSearch
 		ItemContainer container = client.getItemContainer(inventoryID);
 		if (container == null)
 		{
-			return 0;
+			return 0L;
 		}
 		return Stream.of(container.getItems())
 			.filter(Objects::nonNull)
@@ -141,7 +141,7 @@ public class ItemSearch
 			.sum();
 	}
 
-	public int findFirstItem(Client client, List<Integer> itemIDs, int amount)
+	public int findFirstItem(Client client, Collection<Integer> itemIDs, int amount)
 	{
 		return itemIDs.stream()
 			.filter(id -> hasItemAmountAnywhere(client, id, amount))

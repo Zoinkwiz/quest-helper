@@ -392,7 +392,7 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	@Nullable
-	public String getUpdatedTooltip(Client client, BankItems bankItems)
+	public String getUpdatedTooltip(Client client)
 	{
 		return null;
 	}

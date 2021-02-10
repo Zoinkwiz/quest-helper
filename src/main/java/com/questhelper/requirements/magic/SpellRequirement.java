@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright (c) 2021, Senmori
+ *  * Copyright (c) 2021
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without
@@ -24,12 +24,15 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.requirements;
+package com.questhelper.requirements.magic;
 
 import com.google.common.base.Predicates;
 import com.questhelper.BankItems;
+import com.questhelper.ItemSearch;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -37,10 +40,13 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.spells.MagicSpell;
 import com.questhelper.spells.Rune;
+import com.questhelper.spells.SearchPreference;
+import com.questhelper.spells.Staff;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +55,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -81,22 +88,25 @@ import org.apache.commons.lang3.StringUtils;
  * This spell requirements prioritizes using tablets over runes/staves since
  * it is more compact and has less requirements.
  */
+@Slf4j
+@Getter
 public class SpellRequirement extends ItemRequirement implements BankItemHolder
 {
-	@Getter
 	private final MagicSpell spell;
 
 	private ItemRequirement tabletRequirement = null;
-	@Getter
+	private ItemRequirement staffRequirement;
+	private boolean useStaff = true;
+
 	private int numberOfCasts;
 
 	private final Map<Rune, Integer> runeCostMap;
+	/** @return all {@link Requirement}s on this SpellRequirement */
 	private final List<Requirement> requirements = new ArrayList<>();
 	private final List<RuneRequirement> runeRequirements = new LinkedList<>();
-	@Getter
 	private final SkillRequirement skillRequirement;
-	@Getter
 	private final SpellbookRequirement spellbookRequirement;
+
 	public SpellRequirement(MagicSpell spell, Map<Rune, Integer> runeCostMap, List<Requirement> requirements)
 	{
 		this(spell, 1, runeCostMap, requirements);
@@ -113,7 +123,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		this.spellbookRequirement = new SpellbookRequirement(spell.getSpellbook());
 		this.requirements.add(this.skillRequirement);
 		this.requirements.add(this.spellbookRequirement);
-		setQuantity(numberOfCasts);
+		setNumberOfCasts(numberOfCasts);
 		updateTooltip();
 	}
 
@@ -135,14 +145,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	}
 
 	/**
-	 * @return a copy of all {@link Requirement} on this requirement
-	 */
-	public List<Requirement> getRequirements()
-	{
-		return new ArrayList<>(requirements);
-	}
-
-	/**
 	 * Set the tablet's item id. If the item id is less than 0, the tablet will be removed
 	 * and this requirement will no longer check for it.
 	 *
@@ -160,12 +162,42 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	public void setStaff(int staffID)
+	{
+		if (!useStaff)
+		{
+			return;
+		}
+		if (staffID < 0)
+		{
+			this.staffRequirement = null;
+		}
+		else
+		{
+			this.staffRequirement = new ItemRequirement("", staffID);
+		}
+	}
+
+	public boolean hasStaff()
+	{
+		return staffRequirement != null && useStaff;
+	}
+
 	/**
 	 * A convenience method to better indicate to not use a tablet for this spell requirement
 	 */
-	public void requireRunes()
+	public void doNotUseTablet()
 	{
 		setTablet(-1);
+	}
+
+	public void setStaffUse(boolean useStaff)
+	{
+		if (!useStaff && staffRequirement != null)
+		{
+			throw new UnsupportedOperationException("Cannot require a staff and then require no staff: " + this);
+		}
+		this.useStaff = useStaff;
 	}
 
 	/**
@@ -206,7 +238,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	@Override
 	public Integer getDisplayItemId()
 	{
-		return tabletRequirement != null ? tabletRequirement.getId() : null;
+		return tabletRequirement != null ? tabletRequirement.getId() : (staffRequirement != null ? staffRequirement.getId() : null);
 	}
 
 	@Override
@@ -261,6 +293,14 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			.flatMap(Collection::stream)
 			.collect(Collectors.toList());
 		ids.addAll(runeIDs);
+		if (tabletRequirement != null && tabletRequirement.getId() >= 0)
+		{
+			ids.add(tabletRequirement.getId());
+		}
+		if (staffRequirement != null && staffRequirement.getId() >= 0)
+		{
+			ids.add(staffRequirement.getId());
+		}
 		return ids;
 	}
 
@@ -274,14 +314,9 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	public boolean checkBank(Client client)
 	{
 		updateInternalState(client, getItemRequirements(this.requirements));
-		if (tabletRequirement != null)
+		if (tabletRequirement != null && ItemSearch.hasItemAmountInBank(client, tabletRequirement.getId(), this.numberOfCasts))
 		{
-			int tabletID = tabletRequirement.getId();
-			if (InventorySlots.BANK.contains(client, i -> i.getId() == tabletID && i.getQuantity() >= this.numberOfCasts))
-			{
-				updateTabletRequirement(client);
-				return true;
-			}
+			return true;
 		}
 		boolean hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client));
 		boolean hasItems = requirements.stream().allMatch(req -> req.check(client));
@@ -296,11 +331,11 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			updateTabletRequirement(client);
 			int tabletID = tabletRequirement.getId();
 			int required = tabletRequirement.getQuantity();
-			if (InventorySlots.INVENTORY_SLOTS.contains(client, i -> i.getId() == tabletID && i.getQuantity() >= required))
+			if (ItemSearch.hasItemAmountOnPlayer(client, tabletID, required))
 			{
 				return Color.GREEN;
 			}
-			if (InventorySlots.BANK.contains(client, i -> i.getId() == tabletID && i.getQuantity() >= required))
+			if (ItemSearch.hasItemAmountInBank(client, tabletID, required))
 			{
 				return Color.WHITE;
 			}
@@ -310,7 +345,11 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			return Color.RED;
 		}
-		// No tablet (either set or found), we need all runes and other requirements
+		boolean hasStaff = staffRequirement != null;
+		if (hasStaff && !staffRequirement.check(client, checkWithSlotRestrictions, bankItems))
+		{
+			return Color.RED; // required staff is not present
+		}
 		boolean hasRunes = false;
 		boolean hasItems = false;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
@@ -324,9 +363,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		if (bankItems != null)
 		{
 			hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client));
-			hasItems = itemRequirements.stream().allMatch(req -> {
-				return InventorySlots.BANK.contains(client, i -> req.getAllIds().contains(i.getId()) && i.getQuantity() >= req.getQuantity());
-			});
+			hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(client, req));
 			if (hasRunes && hasItems)
 			{
 				return Color.WHITE;
@@ -344,16 +381,16 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	@Override
 	public boolean check(Client client, boolean checkWithSlotRestrictions, Item[] items)
 	{
-		if (tabletRequirement != null)
+		if (tabletRequirement != null && ItemSearch.hasItemsAnywhere(client, tabletRequirement))
 		{
-			int id = findFirstItemID(client, Collections.singletonList(tabletRequirement.getId()), this.numberOfCasts, checkWithSlotRestrictions, items);
-			if (id >= 0)
-			{
-				updateTabletRequirement(client);
-				return true;
-			}
+			updateTabletRequirement(client);
+			return true;
 		}
-		boolean hasItems, hasOther, hasRunes = false;
+		if (staffRequirement != null && ItemSearch.hasItemsAnywhere(client, staffRequirement))
+		{
+			return true;
+		}
+		boolean hasItems, hasOther, hasRunes;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
 		updateInternalState(client, itemRequirements);
 		if (!itemRequirements.isEmpty())
@@ -370,24 +407,85 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	}
 
 	@Override
-	public List<ItemRequirement> getRequirements(Client client, boolean checkWithSlotRestrictions, Item[] bankItems)
+	public List<ItemRequirement> getRequirements(Client client, QuestHelperConfig config)
 	{
-		if (tabletRequirement != null)
+		updateInternalState(client, getItemRequirements(this.requirements));
+		if (tabletRequirement != null && ItemSearch.hasItemAmountAnywhere(client, tabletRequirement.getId(), this.numberOfCasts))
 		{
-			int tabletID = tabletRequirement.getId();
-			if (hasItem(client, Collections.singletonList(tabletID), this.numberOfCasts, checkWithSlotRestrictions, bankItems))
+			return Collections.singletonList(tabletRequirement);
+		}
+		List<ItemRequirement> bankRequirements = new LinkedList<>();
+		Map<Rune, ItemRequirement> runeItemRequirements = new HashMap<>();
+		if (staffRequirement != null)
+		{
+			bankRequirements.add(staffRequirement);
+		}
+		for (RuneRequirement rune : runeRequirements)
+		{
+			if (runeItemRequirements.containsKey(rune.getRune()))
 			{
-				return Collections.singletonList(tabletRequirement);
+				continue;
+			}
+			log.debug("RUNE: " + rune.getRune().getRuneName() + " -> LOOKING FOR MATCH");
+			Rune currentRune = rune.getRune();
+			StaffItemRequirement staves = rune.getStaffItemRequirement();
+			ItemRequirement runeItem = rune.getRuneItemRequirement();
+
+			boolean hasRunes = ItemSearch.hasItemsAnywhere(client, runeItem);
+			boolean hasStaves = hasStaff(client, staves);
+			log.debug("HAS_RUNES: " + hasRunes + " <-> HAS_STAVES: " + hasStaves);
+
+			SearchPreference searchPreference = SearchPreference.STAVES;
+			ItemRequirement toAdd = searchPreference.getPreference(rune, () -> hasRunes, () -> hasStaves);
+			ItemComposition itemToAdd = client.getItemDefinition(toAdd.getId());
+			log.debug("FOUND MATCH FOR: " + rune.getRune() + " -> " + itemToAdd.getName());
+
+			boolean itemIsRune = toAdd.getAllIds().stream().allMatch(Rune::isRuneItem);
+			log.debug(itemToAdd.getName() + " IS RUNE -> " + itemIsRune);
+			if (staffRequirement != null && itemIsRune)
+			{
+				// there is a staff present, can it replace the current rune?
+				log.debug("FOUND STAFF");
+				Staff requiredStaff = staffRequirement.getAllIds()
+					.stream()
+					.filter(Staff::isStaff)
+					.map(Staff::getByItemID)
+					.findFirst()
+					.orElse(Staff.UNKNOWN);
+				log.debug("PRESENT STAFF: " + requiredStaff);
+				boolean isSourceOf = requiredStaff.isSourceOf(currentRune);
+				log.debug(requiredStaff + " == " + currentRune.getStaff() + " -> " + isSourceOf);
+				if (!isSourceOf)
+				{
+					log.debug("ADDED RUNE: " + itemToAdd.getName());
+					runeItemRequirements.put(currentRune, toAdd);
+				}
+			}
+			else
+			{
+				log.debug("ADDED: " + itemToAdd.getName());
+				runeItemRequirements.put(currentRune, toAdd);
 			}
 		}
-		List<ItemRequirement> requirements = runeRequirements
-			.stream()
-			.map(req -> req.getRequirements(client, checkWithSlotRestrictions, bankItems))
-			.flatMap(Collection::stream)
-			.collect(Collectors.toCollection(LinkedList::new));
-		requirements.addAll(getItemRequirements(this.requirements));
-		updateInternalState(client, requirements);
-		return requirements;
+
+		bankRequirements.addAll(runeItemRequirements.values());
+		bankRequirements.addAll(getItemRequirements(this.requirements));
+		updateInternalState(client, bankRequirements);
+		return bankRequirements;
+	}
+
+	private boolean hasStaff(Client client, ItemRequirement staves)
+	{
+		if (staves == null || staffRequirement != null)
+		{
+			return false;
+		}
+		boolean hasStaff = ItemSearch.hasItemsAnywhere(client, staves);
+		if (useStaff && hasStaff)
+		{
+			staffRequirement = staves;
+		}
+		return hasStaff;
 	}
 
 	@Nullable
@@ -428,28 +526,13 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			.collect(Collectors.toList());
 	}
 
-	private int findFirstItemID(Client client, List<Integer> itemIDList, int requiredAmount, boolean checkWithSlotRestrictions, Item[] items)
-	{
-		int remainder = requiredAmount;
-		for (int id : itemIDList)
-		{
-			remainder -= (requiredAmount - getRequiredItemDifference(client, id, checkWithSlotRestrictions, items));
-			if (remainder <= 0)
-			{
-				return id;
-			}
-		}
-		return -1;
-	}
-
-	private boolean hasItem(Client client, List<Integer> ids, int amount, boolean checkWithSlotRestrictions, Item[] items)
-	{
-		return findFirstItemID(client, ids, amount, checkWithSlotRestrictions, items) >= 0;
-	}
-
 	private void updateInternalState(Client client, List<ItemRequirement> requirements)
 	{
 		updateItemRequirements(client, requirements);
+		if (staffRequirement != null && StringUtils.isBlank(staffRequirement.getName()))
+		{
+			staffRequirement.setName(client.getItemDefinition(staffRequirement.getId()).getName());
+		}
 	}
 
 	private void updateTooltip()

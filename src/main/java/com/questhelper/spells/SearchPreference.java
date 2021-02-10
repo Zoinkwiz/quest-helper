@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright (c) 2021, Senmori
+ *  * Copyright (c) 2021
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,28 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 package com.questhelper.spells;
 
-import com.questhelper.requirements.magic.SpellRequirement;
-import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.requirements.magic.RuneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.util.TriFunction;
+import java.util.function.BooleanSupplier;
 
-/**
- * Represents a magic spell that can be cast by a player.
- */
-public interface MagicSpell
+public enum SearchPreference
 {
-	/**
-	 * @return the formatted display name
-	 */
-	String getName();
+	RUNES((runes, staff, req) -> runes.getAsBoolean() ? req.getRuneItemRequirement() : req.getStaffItemRequirement()),
+	STAVES((runes, staff, req) -> staff.getAsBoolean() ? req.getStaffItemRequirement() : req.getRuneItemRequirement());
+	;
 
-	/**
-	 * @return the widget ID
-	 */
-	int getWidgetID();
+	private final TriFunction<BooleanSupplier, BooleanSupplier, RuneRequirement, ItemRequirement> function;
+	SearchPreference(TriFunction<BooleanSupplier, BooleanSupplier, RuneRequirement, ItemRequirement> function)
+	{
+		this.function = function;
+	}
 
-	/**
-	 * @return the group ID
-	 */
-	int getGroupID();
-
-	/**
-	 * @return the sprite ID
-	 *
-	 * @see net.runelite.api.SpriteID
-	 */
-	int getSpriteID();
-
-	/**
-	 * @return the required {@link net.runelite.api.Skill#MAGIC)} level to cast this spell.
-	 */
-	int getRequiredMagicLevel();
-
-	/**
-	 * @return the {@link Spellbook} this spell is contained within.
-	 */
-	Spellbook getSpellbook();
-
-	/**
-	 * @return a new {@link SpellRequirement} for a single cast of this spell.
-	 */
-	SpellRequirement getSpellRequirement();
-
-	/**
-	 * Create a new {@link SpellRequirement} with the given number of casts.
-	 *
-	 * @param numberOfCasts the number of casts
-	 * @return a new {@link SpellRequirement}
-	 */
-	SpellRequirement getSpellRequirement(int numberOfCasts);
+	public ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff)
+	{
+		return function.apply(runes, staff, requirement);
+	}
 }

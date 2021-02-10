@@ -28,7 +28,7 @@ package com.questhelper.spells;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SpellRequirement;
+import com.questhelper.requirements.magic.SpellRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -150,7 +150,7 @@ public class StandardSpellBuilder
 	 */
 	public StandardSpellBuilder quest(QuestHelperQuest quest)
 	{
-		return quest(quest, true);
+		return quest(quest, false);
 	}
 
 	/**

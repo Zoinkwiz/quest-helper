@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright (c) 2021, Senmori
+ *  * Copyright (c) 2021
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +24,15 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.requirements;
+package com.questhelper.requirements.magic;
 
+import com.questhelper.ItemSearch;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.spells.Rune;
+import com.questhelper.spells.Staff;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +60,7 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 	private int requiredAmount;
 
 	private final ItemRequirement runeItemRequirement;
-	private ItemRequirement staffItemRequirement;
+	private StaffItemRequirement staffItemRequirement;
 
 	public RuneRequirement(Rune rune, int costPerCast)
 	{
@@ -71,10 +73,10 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 		this.rune = rune;
 		this.costPerCast = costPerCast;
 		this.requiredAmount = costPerCast * numberOfCasts;
-		this.runeItemRequirement = new ItemRequirement(rune.getRuneName(), rune.getRunes(), this.requiredAmount);
-		if (rune.getStaves() != null)
+		this.runeItemRequirement = new ItemRequirement("", rune.getRunes(), this.requiredAmount);
+		if (rune.getStaff() != Staff.UNKNOWN)
 		{
-			this.staffItemRequirement = new ItemRequirement(rune.getRuneName(), rune.getStaves(), 1, true);
+			this.staffItemRequirement = new StaffItemRequirement(rune.getStaff());
 		}
 	}
 
@@ -127,65 +129,23 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 	@Override
 	public boolean checkBank(Client client)
 	{
-		List<Integer> ids = runeItemRequirement.getAllIds();
-		boolean hasRunes = InventorySlots.BANK.contains(client, i -> ids.contains(i.getId()) && i.getQuantity() >= this.requiredAmount);
-		if (hasRunes)
-		{
-			return true;
-		}
-		if (staffItemRequirement != null)
-		{
-			List<Integer> staffIDs = staffItemRequirement.getAllIds();
-			return InventorySlots.BANK.contains(client, i -> staffIDs.contains(i.getId()) && i.getQuantity() >= 1);
-		}
-		return false;
+		boolean hasStaves = (staffItemRequirement != null && ItemSearch.hasItemsInBank(client, staffItemRequirement));
+		return ItemSearch.hasItemsInBank(client, runeItemRequirement) || hasStaves;
 	}
 
 	@Override
 	public boolean check(Client client, boolean checkWithSlotRestrictions, Item[] items)
 	{
-		int id = findFirstItemID(client, runeItemRequirement.getAllIds(), this.requiredAmount, checkWithSlotRestrictions, items);
-		if (id >= 0)
-		{
-			return true;
-		}
-		if (staffItemRequirement != null)
-		{
-			return findFirstItemID(client, staffItemRequirement.getAllIds(), 1, checkWithSlotRestrictions, items) >= 0;
-		}
-		return false;
-	}
-
-	private int findFirstItemID(Client client, List<Integer> itemIDList, int requiredAmount, boolean checkWithSlotRestrictions, Item[] items)
-	{
-		int remainder = requiredAmount;
-		for (int id : itemIDList)
-		{
-			remainder -= (requiredAmount - getRequiredItemDifference(client, id, checkWithSlotRestrictions, items));
-			if (remainder <= 0)
-			{
-				return id;
-			}
-		}
-		return -1;
+		boolean hasStaves = (staffItemRequirement != null && ItemSearch.hasItemsAnywhere(client, staffItemRequirement));
+		return ItemSearch.hasItemsAnywhere(client, runeItemRequirement) || hasStaves;
 	}
 
 	@Override
-	public List<ItemRequirement> getRequirements(Client client, boolean checkWithSlotRestrictions, Item[] bankItems)
+	public List<ItemRequirement> getRequirements(Client client, QuestHelperConfig config)
 	{
-		if (hasItem(client, runeItemRequirement.getAllIds(), this.requiredAmount, checkWithSlotRestrictions, bankItems))
-		{
-			return Collections.singletonList(runeItemRequirement);
-		}
-		if (staffItemRequirement != null && hasItem(client, staffItemRequirement.getAllIds(), 1, checkWithSlotRestrictions, bankItems))
-		{
-			return Collections.singletonList(staffItemRequirement);
-		}
-		return Collections.emptyList();
-	}
-
-	private boolean hasItem(Client client, List<Integer> ids, int amount, boolean checkWithSlotRestrictions, Item[] items)
-	{
-		return findFirstItemID(client, ids, amount, checkWithSlotRestrictions, items) >= 0;
+		boolean hasRunes = ItemSearch.hasItemsAnywhere(client, runeItemRequirement);
+		boolean hasStaves = staffItemRequirement != null && ItemSearch.hasItemsAnywhere(client, staffItemRequirement);
+		ItemRequirement requirement = config.bankFilterSearchPreference().getPreference(this, () -> hasRunes, () -> hasStaves);
+		return Collections.singletonList(requirement);
 	}
 }

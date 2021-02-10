@@ -27,6 +27,7 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.BankItems;
+import com.questhelper.ItemSearch;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.InventorySlots;
 import java.awt.Color;
@@ -73,6 +74,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	protected final List<Integer> alternateItems = new ArrayList<>();
 
+	@Getter
 	@Setter
 	protected boolean exclusiveToOneItemType;
 
@@ -248,7 +250,7 @@ public class ItemRequirement extends AbstractRequirement
 	/** Find the first item that this requirement allows that the player has, or -1 if they don't have any item(s) */
 	private int findItemID(Client client, boolean checkConsideringSlotRestrictions)
 	{
-		int remainder = getRequiredItemDifference(client, id, checkConsideringSlotRestrictions, null);
+		int remainder = getRequiredItemDifference(client, id, checkConsideringSlotRestrictions, false);
 		if (remainder <= 0)
 		{
 			return id;
@@ -260,7 +262,7 @@ public class ItemRequirement extends AbstractRequirement
 			{
 				remainder = quantity;
 			}
-			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, null));
+			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, false));
 			if (remainder <= 0)
 			{
 				return alternate;
@@ -333,7 +335,7 @@ public class ItemRequirement extends AbstractRequirement
 			{
 				remainder = quantity;
 			}
-			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, items));
+			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, items != null));
 			if (remainder <= 0)
 			{
 				return true;
@@ -346,45 +348,21 @@ public class ItemRequirement extends AbstractRequirement
 	 * Get the difference between the required quantity for this requirement and the amount the client has.
 	 * Any value <= 0 indicates they have the required amount
 	 */
-	public int getRequiredItemDifference(Client client, int itemID, boolean checkConsideringSlotRestrictions, Item[] items)
+	public int getRequiredItemDifference(Client client, int itemID, boolean respectSlotRestrictions, boolean checkBank)
 	{
-		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
 		int tempQuantity = quantity;
+		tempQuantity -= ItemSearch.getItemAmountExact(client, InventoryID.EQUIPMENT, itemID);
 
-		if (equipped != null)
+		if (!respectSlotRestrictions || !equip)
 		{
-			tempQuantity -= getNumMatches(equipped, itemID);
+			tempQuantity -= ItemSearch.getItemAmountExact(client, InventoryID.INVENTORY, itemID);
 		}
 
-		if (!checkConsideringSlotRestrictions || !equip)
+		if (checkBank)
 		{
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			if (inventory != null)
-			{
-				tempQuantity -= getNumMatches(inventory, itemID);
-			}
+			tempQuantity -= ItemSearch.getItemAmountExact(client, InventoryID.BANK, itemID);
 		}
-
-		if (items != null)
-		{
-			tempQuantity -= getNumMatches(items, itemID);
-		}
-
 		return tempQuantity;
-	}
-
-	public int getNumMatches(ItemContainer items, int itemID)
-	{
-		return getNumMatches(items.getItems(), itemID);
-	}
-
-	public int getNumMatches(Item[] items, int itemID)
-	{
-		return Stream.of(items)
-			.filter(Objects::nonNull) // Runelite loves to sneak in null objects
-			.filter(i -> i.getId() == itemID)
-			.mapToInt(Item::getQuantity)
-			.sum();
 	}
 
 	public boolean check(Client client)
@@ -417,4 +395,6 @@ public class ItemRequirement extends AbstractRequirement
 	{
 		return null;
 	}
+
+
 }

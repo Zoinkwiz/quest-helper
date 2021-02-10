@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.spells.SearchPreference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -132,11 +133,10 @@ public class QuestHelperBankTagService
 		else if (itemRequirement instanceof BankItemHolder)
 		{
 			BankItemHolder holder = (BankItemHolder) itemRequirement;
-			final Item[] items = plugin.getBankItems().getItems();
 			// Force run on client thread even though it's not as responsive as not doing that, however it
 			// ensures we run on the client thread and never run into threading issues.
 			plugin.getClientThread().invoke(() -> {
-				List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), false, items);
+				List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), plugin.getConfig());
 				makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread
 			});
 		}

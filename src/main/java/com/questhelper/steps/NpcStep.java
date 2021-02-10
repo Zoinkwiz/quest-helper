@@ -26,7 +26,7 @@
 package com.questhelper.steps;
 
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.SpellRequirement;
+import com.questhelper.requirements.magic.SpellRequirement;
 import com.questhelper.spells.MagicSpell;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;

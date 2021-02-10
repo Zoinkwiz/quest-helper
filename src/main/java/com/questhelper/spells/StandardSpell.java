@@ -29,7 +29,7 @@ package com.questhelper.spells;
 import static com.questhelper.QuestHelperQuest.PLAGUE_CITY;
 import static com.questhelper.QuestHelperQuest.THE_MAGE_ARENA;
 import static com.questhelper.QuestHelperQuest.EADGARS_RUSE;
-import com.questhelper.requirements.SpellRequirement;
+import com.questhelper.requirements.magic.SpellRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import java.util.Locale;
 import java.util.function.UnaryOperator;

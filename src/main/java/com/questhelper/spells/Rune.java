@@ -30,6 +30,7 @@ package com.questhelper.spells;
 import com.questhelper.ItemCollections;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -40,10 +41,10 @@ import net.runelite.api.ItemID;
 @Getter
 public enum Rune
 {
-	AIR("Air Rune", ItemCollections.getAirRune(), ItemCollections.getAirStaff()),
-	WATER("Water Rune", ItemCollections.getWaterRune(), ItemCollections.getWaterStaff()),
-	EARTH("Earth Rune", ItemCollections.getEarthRune(), ItemCollections.getEarthStaff()),
-	FIRE("Fire Rune", ItemCollections.getFireRune(), ItemCollections.getFireStaff()),
+	AIR("Air Rune", ItemCollections.getAirRune(), Staff.AIR),
+	WATER("Water Rune", ItemCollections.getWaterRune(), Staff.WATER),
+	EARTH("Earth Rune", ItemCollections.getEarthRune(), Staff.EARTH),
+	FIRE("Fire Rune", ItemCollections.getFireRune(), Staff.FIRE),
 	MIND("Mind Rune", ItemID.MIND_RUNE),
 	BODY("Body Rune", ItemID.BODY_RUNE),
 	COSMIC("Cosmic Rune", ItemID.COSMIC_RUNE),
@@ -55,12 +56,13 @@ public enum Rune
 	BLOOD("Blood Rune", ItemID.BLOOD_RUNE),
 	SOUL("Soul Rune", ItemID.SOUL_RUNE),
 	WRATH("Wrath Rune", ItemID.WRATH_RUNE),
-	LAVA("Lava Rune", ItemID.LAVA_RUNE, ItemCollections.getLavaStaff()),
-	MUD("Mud Rune", ItemID.MUD_RUNE, ItemCollections.getMudStaff()),
-	STEAM("Steam Rune", ItemID.STEAM_RUNE, ItemCollections.getSteamStaff()),
-	SMOKE("Smoke Rune", ItemID.SMOKE_RUNE, ItemCollections.getSmokeStaff()),
-	MIST("Mist Rune", ItemID.MIST_RUNE, ItemCollections.getMistStaff()),
-	DUST("Dust Rune", ItemID.DUST_RUNE, ItemCollections.getDustStaff()),
+	// Keep combination runes after the non-combination runes
+	LAVA("Lava Rune", ItemID.LAVA_RUNE, Staff.LAVA),
+	MUD("Mud Rune", ItemID.MUD_RUNE, Staff.MUD),
+	STEAM("Steam Rune", ItemID.STEAM_RUNE, Staff.STEAM),
+	SMOKE("Smoke Rune", ItemID.SMOKE_RUNE, Staff.SMOKE),
+	MIST("Mist Rune", ItemID.MIST_RUNE, Staff.MIST),
+	DUST("Dust Rune", ItemID.DUST_RUNE, Staff.DUST),
 	UNKNOWN("Null Rune", -1),
 	;
 
@@ -68,26 +70,26 @@ public enum Rune
 	private final String runeName;
 	@Nonnull
 	private final List<Integer> runes;
-	private final List<Integer> staves;
-	Rune(@Nonnull String runeName, @Nonnull List<Integer> runes, List<Integer> staves)
+	private final Staff staff;
+	Rune(@Nonnull String runeName, @Nonnull List<Integer> runes, Staff staff)
 	{
 		this.runeName = runeName;
 		this.runes = runes;
-		this.staves = staves;
+		this.staff = staff;
 	}
 
 	Rune(@Nonnull String runeName, int itemID)
 	{
 		this.runeName = runeName;
 		this.runes = Collections.singletonList(itemID);
-		this.staves = null;
+		this.staff = Staff.UNKNOWN;
 	}
 
-	Rune(@Nonnull String runeName, int itemID, List<Integer> staves)
+	Rune(@Nonnull String runeName, int itemID, Staff staff)
 	{
 		this.runeName = runeName;
 		this.runes = Collections.singletonList(itemID);
-		this.staves = staves;
+		this.staff = staff;
 	}
 
 	public int getItemID()
@@ -95,19 +97,17 @@ public enum Rune
 		return runes.get(0);
 	}
 
+	public static boolean isRuneItem(int itemID)
+	{
+		return getByItemID(itemID) != Rune.UNKNOWN;
+	}
+
 	public static Rune getByItemID(int itemID)
 	{
-		for (Rune rune : Rune.values())
-		{
-			if (rune.getRunes().contains(itemID))
-			{
-				return rune;
-			}
-			if (rune.getStaves() != null && rune.getStaves().contains(itemID))
-			{
-				return rune;
-			}
-		}
-		return Rune.UNKNOWN;
+		return Stream.of(values())
+			.sorted(Collections.reverseOrder())
+			.filter(r -> r.getRunes().contains(itemID))
+			.findFirst()
+			.orElse(Rune.UNKNOWN);
 	}
 }

@@ -196,8 +196,8 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		inPuzzleRoom = new ZoneRequirement(puzzleRoom);
 		inShiroRoom = new ZoneRequirement(shiroRoom);
 		inCavern = new ZoneRequirement(cavern);
-		strangeObjectEast = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0));
-		strangeObjectWest = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1574, 10199, 0));
+		strangeObjectEast = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1581, 10200, 0));
+		strangeObjectWest = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1575, 10200, 0));
 		isSouthWestWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1574, 10196, 0));
 		isSouthEastWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1581, 10196, 0));
 		isNorthWestWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1574, 10203, 0));
@@ -225,10 +225,13 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 			"Push the Strange Device all the way to the east.");
 		attackWithMagic = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
 			"Attack the Strange Device with magic from the north side.", runesForCombat);
+		attackWithMagic.addIcon(ItemID.MIND_RUNE);
 		attackWithRanged = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
 			"Attack the Strange Device with ranged from the south side.", rangedWeapon);
+		attackWithRanged.addIcon(ItemID.BRONZE_ARROW);
 		attackWithMelee = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
 			"Attack the Strange Device with melee from the south side.", meleeWeapon);
+		attackWithMelee.addIcon(ItemID.BRONZE_SWORD);
 		investigateSkeleton = new ObjectStep(this, ObjectID.SKELETON_31962, new WorldPoint(1577, 10213, 0),
 			"Investigate the skeleton in the north cell.");
 
@@ -313,6 +316,14 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.STRENGTH, 16));
 		req.add(new SkillRequirement(Skill.MINING, 10));
 		return req;
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		ArrayList<String> reqs = new ArrayList<>();
+		reqs.add("Corrupt Lizardman (level 46)");
+		return reqs;
 	}
 
 	@Override

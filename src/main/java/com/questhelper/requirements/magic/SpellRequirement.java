@@ -165,7 +165,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	{
 		if (!useStaff)
 		{
-			return;
+			throw new UnsupportedOperationException("Cannot require a staff and then require no staff");
 		}
 		if (staffID < 0)
 		{
@@ -194,7 +194,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	{
 		if (!useStaff && staffRequirement != null)
 		{
-			throw new UnsupportedOperationException("Cannot require a staff and then require no staff: " + this);
+			throw new UnsupportedOperationException("Cannot require a staff and then require no staff");
 		}
 		this.useStaff = useStaff;
 	}
@@ -461,7 +461,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 
 	private boolean hasStaff(Client client, ItemRequirement staves)
 	{
-		if (staves == null || staffRequirement != null)
+		if (staves == null || staffRequirement != null || !useStaff)
 		{
 			return false;
 		}

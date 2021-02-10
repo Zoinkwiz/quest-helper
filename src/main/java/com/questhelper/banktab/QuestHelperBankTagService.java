@@ -29,7 +29,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.spells.SearchPreference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,7 +37,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 
 public class QuestHelperBankTagService

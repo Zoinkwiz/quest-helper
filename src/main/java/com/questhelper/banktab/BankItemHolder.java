@@ -28,11 +28,8 @@ package com.questhelper.banktab;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.spells.SearchPreference;
 import java.util.List;
-import javax.annotation.Nullable;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 
 /**
  * Represents anything that holds {@link ItemRequirement}s that are to be used

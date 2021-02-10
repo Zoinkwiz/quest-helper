@@ -27,7 +27,7 @@ package com.questhelper;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.spells.SearchPreference;
+import com.questhelper.spells.SpellComponentPreference;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.Comparator;
@@ -134,9 +134,9 @@ public interface QuestHelperConfig extends Config
 		name = "Spell Component Preference",
 		description = "Choose whether runes or staves should be preferred when filtering spell components."
 	)
-	default SearchPreference bankFilterSpellPreference()
+	default SpellComponentPreference bankFilterSpellPreference()
 	{
-		return SearchPreference.STAVES;
+		return SpellComponentPreference.RUNES;
 	}
 
 	@ConfigSection(

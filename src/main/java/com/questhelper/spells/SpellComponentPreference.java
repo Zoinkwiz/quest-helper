@@ -32,14 +32,14 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.util.TriFunction;
 import java.util.function.BooleanSupplier;
 
-public enum SearchPreference
+public enum SpellComponentPreference
 {
 	RUNES((runes, staff, req) -> runes.getAsBoolean() ? req.getRuneItemRequirement() : req.getStaffItemRequirement()),
 	STAVES((runes, staff, req) -> staff.getAsBoolean() ? req.getStaffItemRequirement() : req.getRuneItemRequirement());
 	;
 
 	private final TriFunction<BooleanSupplier, BooleanSupplier, RuneRequirement, ItemRequirement> function;
-	SearchPreference(TriFunction<BooleanSupplier, BooleanSupplier, RuneRequirement, ItemRequirement> function)
+	SpellComponentPreference(TriFunction<BooleanSupplier, BooleanSupplier, RuneRequirement, ItemRequirement> function)
 	{
 		this.function = function;
 	}

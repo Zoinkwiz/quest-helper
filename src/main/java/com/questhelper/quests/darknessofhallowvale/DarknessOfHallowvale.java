@@ -768,8 +768,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		SpellRequirement spell = StandardSpell.EARTH_SURGE.getSpellRequirement();
-		return Arrays.asList(lawRune, airRune, spell);
+		return Arrays.asList(lawRune, airRune);
 	}
 
 	@Override

@@ -84,7 +84,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	Requirement inArdougneCastleF1, inPassF0, inPassF1, inWellEntrance, inIbanRoom, inArdyPrison, inHideout, inWestArdyInstance, inMournerBaseHQInstance,
 		inEastArdyInstance, inArdougneCastleF1Instance, inLletyaF1, onHudonIsland, onDeadTreeIsland, onLedge, inFalls, inBaxThroneRoom, inIorwerthCave,
-		inLletyaF0Battle, inLletyaF1Battle, inLletyaF1Damaged, inBossArea, hasArdyHelm, hasArdyLegs, hasArdyBody, hasTabard, hasBaxKey, hasOdeBook, hasCrystal,
+		inLletyaF0Battle, inLletyaF1Battle, inLletyaF1Damaged, inBossArea, hasArdyHelm, hasArdyBody, hasTabard, hasBaxKey, hasOdeBook, hasCrystal,
 		hasCrystalDust, hasCadantineVial, hasInversionPotion, askedAboutCrwys, askedAboutHefin, learnedHowToMakeStatue, dugNearTyras, dugNearStash, dugNearPrif,
 		spunOutsideUndergroundPass;
 
@@ -693,7 +693,6 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		hasArdyHelm = new ItemRequirements(ardyFullHelm);
 		hasArdyBody = new ItemRequirements(ardyPlatebody);
-		hasArdyLegs = new ItemRequirements(ardyPlatelegs);
 		hasTabard = new ItemRequirements(ardyTabard);
 		hasBaxKey = new ItemRequirements(baxKey);
 		hasOdeBook = new ItemRequirements(odeToEternityHighlighted);
@@ -1439,7 +1438,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Inciting the citizens", Arrays.asList(searchBed, talkToElenaInHideout, leaveHideout, useTinderboxOnGrain,
 				talkToPriest, useTinderboxOnChurchGrain, talkToSarah, useTinderboxOnSWGrain, talkToChadwell, talkToSilverMerchant, talkToBaker1, talkToGemMerchant,
 				talkToFurTrader, talkToSpiceSeller, talkToSilkMerchant, talkToTownCrier, talkToZenesha, talkToEstateAgent, talkToProbita, talkToAemad, talkToPriest2,
-				talkToOrbon), tinderbox, mournersOutfit, ardyFullHelm, ardyPlatebody, ardyPlatelegs));
+				talkToOrbon), tinderbox, mournersOutfit, ardyFullHelm, ardyPlatebody, steelPlatelegs));
 
 		allSteps.add(new PanelDetails("Overthrowing the King", Arrays.asList(talkToElenaForFight, defeat10Mourners, mournerBattleGoDownTrapdoor,
 				defeat11Mourners, talkToElenaForEastArdyFight, defeat15Knights, talkToLathasAfterFight, watchArdyFightCutscene), combatGear));

@@ -44,6 +44,7 @@ public class ItemCollections
 	private static final List<Integer> axes = ImmutableList.of(
 		ItemID.CRYSTAL_AXE,
 		ItemID._3RD_AGE_AXE,
+		ItemID.TRAILBLAZER_AXE,
 		ItemID.INFERNAL_AXE_OR,
 		ItemID.INFERNAL_AXE,
 		ItemID.DRAGON_AXE,

@@ -63,12 +63,12 @@ import net.runelite.api.coords.WorldPoint;
 public class TheForsakenTower extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement tinderbox, fiveGallon, eightGallon, crank, oldNotes, dinhsHammer;
+	ItemRequirement crank, oldNotes, dinhsHammer;
 
 	//Items Recommended
 	ItemRequirement gamesNecklace;
 
-	Requirement has5Gallon, has8Gallon, hasTinderbox, inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, hasCrank, generatorStarted,
+	Requirement inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, hasCrank, generatorStarted,
 		powerPuzzleVisible, finishedPowerPuzzle, hasOldNotes, finishedPotionPuzzle, finishedAltarPuzzle, hasDinhsHammer;
 
 	QuestStep talkToVulcana, talkToUndor, enterTheForsakenTower, inspectDisplayCase, goDownLadderToBasement, searchCrate, inspectGenerator, inspectPowerGrid, doPowerPuzzle,
@@ -144,9 +144,6 @@ public class TheForsakenTower extends BasicQuestHelper
 		inSecondFloor = new ZoneRequirement(secondFloor);
 		inBasement = new ZoneRequirement(basement);
 
-		has5Gallon = new ItemRequirements(fiveGallon);
-		has8Gallon = new ItemRequirements(eightGallon);
-		hasTinderbox = new ItemRequirements(tinderbox);
 		inspectedDisplayCase = new VarbitRequirement(7804, 1);
 		finishedPowerPuzzle = new VarbitRequirement(7797, 4);
 		finishedFurnacePuzzle = new VarbitRequirement(7798, 4);

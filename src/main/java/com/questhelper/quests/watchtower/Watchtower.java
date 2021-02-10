@@ -73,7 +73,8 @@ public class Watchtower extends BasicQuestHelper
 		talkedToToban, hasTobansGold, hasRelic1, hasRelic2, hasRelic3, hasRockCake, gettingOgreRockCake, gaveCake, inEndOfJumpingPath, hasBeenAtEndOfPath, knowsRiddle, inScaredSkavidRoom,
 		talkedToScaredSkavid, inSkavidRoom1, inSkavidRoom2, inSkavidRoom3, inSkavidRoom4, talkedToSkavid1, talkedToSkavid2, talkedToSkavid3, talkedToSkavid4, inInsaneSkavidPath,
 		inInsaneSkavidRoom, has2Nightshade, inEnclave, seenShamans, hasGroundBatBones, hasPartialPotion, hasPotion, hasMagicPotion, killedOgre1, killedOgre2, killedOgre3, killedOgre4, killedOgre5,
-		killedOgre6, killedAllOgres, gotCrystal4, placedCrystal1, placedCrystal2, placedCrystal3, placedCrystal4;
+		killedOgre6, killedAllOgres, gotCrystal4, placedCrystal1, placedCrystal2, placedCrystal3, placedCrystal4,
+		inAreaBeforeBridgeJump;
 
 	QuestStep goUpTrellis, goUpLadderToWizard, talkToWizard, goDownFromWizard, goDownFromFirstFloor, searchBush, goBackUpToFirstFloor, goBackUpToWizard, talkToWizardAgain,
 		talkToOg, useRopeOnBranch, talkToGrew, leaveGrewIsland, syncStep, enterHoleSouthOfGuTanoth, killGorad, talkToToban, giveTobanDragonBones,
@@ -87,7 +88,7 @@ public class Watchtower extends BasicQuestHelper
 
 	//Zones
 	Zone watchtowerFloor1, watchtowerFloor2, grewIsland, tobanIsland, endOfJumpingPath, scaredSkavidRoom, skavidRoom1, skavidRoom2, skavidRoom3, skavidRoom4, insaneSkavidPath1,
-		insaneSkavidPath2, insaneSkavidRoom, enclave;
+		insaneSkavidPath2, insaneSkavidRoom, enclave, areaBeforeBridgeJump;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -245,6 +246,7 @@ public class Watchtower extends BasicQuestHelper
 		rockCake = new ItemRequirement("Rock cake", ItemID.ROCK_CAKE);
 
 		ogreRelic = new ItemRequirement("Ogre relic", ItemID.OGRE_RELIC);
+		ogreRelic.setTooltip("Obtained during the quest");
 
 		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE);
 
@@ -323,6 +325,7 @@ public class Watchtower extends BasicQuestHelper
 		insaneSkavidPath2 = new Zone(new WorldPoint(2529, 3011, 0), new WorldPoint(2545, 3015, 0));
 		insaneSkavidRoom = new Zone(new WorldPoint(2522, 9410, 0), new WorldPoint(2530, 9415, 0));
 		enclave = new Zone(new WorldPoint(2563, 9408, 0), new WorldPoint(2621, 9470, 0));
+		areaBeforeBridgeJump = new Zone(new WorldPoint(2507, 3004, 0), new WorldPoint(2532, 3026, 0));
 	}
 
 	public void setupConditions()
@@ -340,6 +343,7 @@ public class Watchtower extends BasicQuestHelper
 		inInsaneSkavidPath = new ZoneRequirement(insaneSkavidPath1, insaneSkavidPath2);
 		inInsaneSkavidRoom = new ZoneRequirement(insaneSkavidRoom);
 		inEnclave = new ZoneRequirement(enclave);
+		inAreaBeforeBridgeJump = new ZoneRequirement(areaBeforeBridgeJump);
 
 		hasFingernails = new ItemRequirements(fingernails);
 		hasTobansKey = new Conditions(true, new ItemRequirements(tobansKey));
@@ -377,8 +381,13 @@ public class Watchtower extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "I gave the dragon bones to Toban."));
 
 		gettingOgreRockCake = new VarbitRequirement(3120, 1);
-		gaveCake = new VarbitRequirement(3118, 1);
-
+		gaveCake = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "This time we will let it go."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, well, look at this."),
+			new WidgetTextRequirement(119, 3, true, "<str>I gave the north-east guard a rock cake."),
+			inAreaBeforeBridgeJump
+		);
+		// 3319, 1, tried to enter city
 		knowsRiddle = new VarbitRequirement(3121, 1);
 
 		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Master, how are you doing", "Those will gets you started."),
@@ -477,7 +486,8 @@ public class Watchtower extends BasicQuestHelper
 
 		talkToGuardBattlement = new NpcStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement.");
 		talkToGuardBattlement.addDialogStep("But I am a friend to ogres...");
-		talkToGuardWithRockCake = new NpcStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement again with a rock cake.", rockCake);
+		talkToGuardWithRockCake = new ObjectStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2507, 3012, 0),
+			"Attempt to cross the battelement again with a rock cake.", rockCake);
 		jumpGap = new ObjectStep(this, ObjectID.GAP, new WorldPoint(2530, 3026, 0), "Jump over the broken bridge.", coins20);
 		jumpGap.addDialogStep("Okay, I'll pay it.");
 

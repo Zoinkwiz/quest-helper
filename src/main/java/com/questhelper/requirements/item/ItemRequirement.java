@@ -163,6 +163,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
+		newItem.setTooltip(getTooltip());
 
 		return newItem;
 	}

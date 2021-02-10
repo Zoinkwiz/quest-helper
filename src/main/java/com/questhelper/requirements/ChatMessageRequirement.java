@@ -26,12 +26,13 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.requirements.conditional.ConditionForStep;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Setter;
 import net.runelite.api.Client;
 
-public class ChatMessageRequirement extends SimpleRequirement
+public class ChatMessageRequirement extends ConditionForStep
 {
 	@Setter
 	private boolean hasReceivedChatMessage = false;

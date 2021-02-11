@@ -128,16 +128,6 @@ public class NpcStep extends DetailedQuestStep
 		this.safespots.addAll(Arrays.asList(points));
 	}
 
-	public void requireSpellCast(SpellRequirement spellRequirement)
-	{
-		addSpell(spellRequirement.getSpell());
-	}
-
-	public void requireSpellCast(MagicSpell spell)
-	{
-		addSpell(spell);
-	}
-
 	public List<Integer> allIds()
 	{
 		List<Integer> ids = new ArrayList<>();

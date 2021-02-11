@@ -31,15 +31,18 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.magic.SpellRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 
@@ -48,6 +51,7 @@ public class StandardSpellBuilder
 	private final MagicSpell spell;
 	private final List<Requirement> requirements = new LinkedList<>();
 	private final Map<Rune, Integer> runeList = new HashMap<>();
+	private final List<Integer> staffIDList = new ArrayList<>();
 	private int tabletItemID = -1;
 
 	private StandardSpellBuilder(MagicSpell spell)
@@ -88,6 +92,18 @@ public class StandardSpellBuilder
 	public StandardSpellBuilder rune(Rune rune)
 	{
 		return rune(1, rune);
+	}
+
+	public StandardSpellBuilder staff(int staffID)
+	{
+		this.staffIDList.add(staffID);
+		return this;
+	}
+
+	public StandardSpellBuilder staff(Integer... staves)
+	{
+		this.staffIDList.addAll(Arrays.asList(staves));
+		return this;
 	}
 
 	/**
@@ -208,6 +224,12 @@ public class StandardSpellBuilder
 		return this;
 	}
 
+	public StandardSpellBuilder skill(Skill skill, int level)
+	{
+		requirements.add(new SkillRequirement(skill, level));
+		return this;
+	}
+
 	/**
 	 * @return a new {@link ItemRequirements} containing all this spell information
 	 */
@@ -217,6 +239,11 @@ public class StandardSpellBuilder
 		if (tabletItemID != -1)
 		{
 			requirement.setTablet(tabletItemID);
+		}
+		if (!staffIDList.isEmpty())
+		{
+			requirement.setStaffUse(true);
+			requirement.setStaff(new ItemRequirement("", staffIDList, 1, true));
 		}
 		return requirement;
 	}

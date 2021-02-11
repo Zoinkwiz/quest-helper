@@ -29,14 +29,30 @@ package com.questhelper.spells;
 import static com.questhelper.QuestHelperQuest.PLAGUE_CITY;
 import static com.questhelper.QuestHelperQuest.THE_MAGE_ARENA;
 import static com.questhelper.QuestHelperQuest.EADGARS_RUSE;
+import static com.questhelper.QuestHelperQuest.UNDERGROUND_PASS;
 import com.questhelper.requirements.magic.SpellRequirement;
 import com.questhelper.requirements.util.Spellbook;
+import static com.questhelper.spells.Rune.FIRE;
 import java.util.Locale;
 import java.util.function.UnaryOperator;
 import lombok.Getter;
 
 import static com.questhelper.spells.Rune.*;
 import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.GUTHIX_STAFF;
+import static net.runelite.api.ItemID.IBANS_STAFF;
+import static net.runelite.api.ItemID.IBANS_STAFF_U;
+import static net.runelite.api.ItemID.SARADOMIN_STAFF;
+import static net.runelite.api.ItemID.SLAYERS_STAFF;
+import static net.runelite.api.ItemID.SLAYERS_STAFF_E;
+import static net.runelite.api.ItemID.STAFF_OF_BALANCE;
+import static net.runelite.api.ItemID.STAFF_OF_LIGHT;
+import static net.runelite.api.ItemID.STAFF_OF_THE_DEAD;
+import static net.runelite.api.ItemID.STAFF_OF_THE_DEAD_23613;
+import static net.runelite.api.ItemID.TOXIC_STAFF_OF_THE_DEAD;
+import static net.runelite.api.ItemID.VOID_KNIGHT_MACE;
+import static net.runelite.api.ItemID.ZAMORAK_STAFF;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import org.apache.commons.text.WordUtils;
 
@@ -78,9 +94,9 @@ public enum StandardSpell implements MagicSpell
 	WATER_BLAST(38, 32, 47, b -> b.rune(DEATH).rune(3, AIR).rune(3, WATER)),
 	LVL_3_ENCHANT(39, 33, 49, b -> b.rune(COSMIC).rune(5, FIRE)),
 	ENCHANT_RUBY_BOLT(358, 8, 49, b -> b.rune(COSMIC).rune(BLOOD).rune(5, FIRE)),
-	IBAN_BLAST(53, 34, 50, b -> b.rune(DEATH).rune(5, FIRE).item(true, ItemID.IBANS_STAFF, ItemID.IBANS_STAFF_U)),
+	IBAN_BLAST(53, 34, 50, b -> b.rune(DEATH).rune(5, FIRE).skill(Skill.ATTACK, 50).quest(UNDERGROUND_PASS).staff(IBANS_STAFF, IBANS_STAFF_U)),
 	SNARE(320, 35, 50, b -> b.rune(3, NATURE).rune(4, WATER).rune(4, EARTH)),
-	MAGIC_DART(324, 36, 50, b -> b.rune(DEATH).rune(4, MIND)),
+	MAGIC_DART(324, 36, 50, b -> b.rune(DEATH).rune(4, MIND).staff(SLAYERS_STAFF, SLAYERS_STAFF_E, STAFF_OF_THE_DEAD, STAFF_OF_THE_DEAD_23613, TOXIC_STAFF_OF_THE_DEAD, STAFF_OF_LIGHT, STAFF_OF_BALANCE)),
 	ARDOUGNE_TELEPORT(54, 37, 51, b -> b.rune(2, LAW).rune(2, WATER).tablet(ItemID.ARDOUGNE_TELEPORT).quest(PLAGUE_CITY)),
 	EARTH_BLAST(40, 38, 43, b -> b.rune(DEATH).rune(3, AIR).rune(4, EARTH)),
 	HIGH_LVL_ALCHEMY(41, 39, 55, b -> b.rune(NATURE).rune(5, FIRE)),
@@ -91,9 +107,9 @@ public enum StandardSpell implements MagicSpell
 	FIRE_BLAST(44, 43, 59, b -> b.rune(DEATH).rune(4, AIR).rune(5, FIRE)),
 	CHARGE_EARTH_ORB(45, 44, 60, b -> b.rune(3, COSMIC).rune(30, EARTH).item(ItemID.UNPOWERED_ORB)),
 	BONES_TO_PEACHES(354, 45, 60, b -> b.rune(2, NATURE).rune(2, EARTH).rune(4, WATER)), //TODO: MAGE TRAINING ARENA
-	SARADOMIN_STRIKE(61, 46, 60, b -> b.rune(2, BLOOD).rune(2, FIRE).rune(4, AIR).quest(THE_MAGE_ARENA)),
-	CLAWS_OF_GUTHIX(60, 47, 60, b -> b.rune(FIRE).rune(2, BLOOD).rune(4, AIR).quest(THE_MAGE_ARENA)),
-	FLAMES_OF_ZAMORAK(59, 48, 60, b -> b.rune(AIR).rune(2, BLOOD).rune(4, FIRE).quest(THE_MAGE_ARENA)),
+	SARADOMIN_STRIKE(61, 46, 60, b -> b.rune(2, BLOOD).rune(2, FIRE).rune(4, AIR).quest(THE_MAGE_ARENA).staff(SARADOMIN_STAFF, STAFF_OF_LIGHT)),
+	CLAWS_OF_GUTHIX(60, 47, 60, b -> b.rune(FIRE).rune(2, BLOOD).rune(4, AIR).quest(THE_MAGE_ARENA).staff(GUTHIX_STAFF, VOID_KNIGHT_MACE, STAFF_OF_BALANCE)),
+	FLAMES_OF_ZAMORAK(59, 48, 60, b -> b.rune(AIR).rune(2, BLOOD).rune(4, FIRE).quest(THE_MAGE_ARENA).staff(ZAMORAK_STAFF, STAFF_OF_THE_DEAD, STAFF_OF_THE_DEAD_23613, TOXIC_STAFF_OF_THE_DEAD)),
 	TROLLHEIM_TELEPORT(323, 49, 61, b -> b.rune(2, LAW).rune(2, FIRE).quest(EADGARS_RUSE)),
 	WIND_WAVE(46, 50, 62, b -> b.rune(BLOOD).rune(5, AIR)),
 	CHARGE_FIRE_ORB(47, 51, 63, b -> b.rune(3, COSMIC).rune(30, FIRE).item(ItemID.UNPOWERED_ORB)),

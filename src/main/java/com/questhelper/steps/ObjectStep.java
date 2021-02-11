@@ -24,43 +24,25 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import net.runelite.api.Point;
+import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.*;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.overlay.OverlayUtil;
+
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
-import net.runelite.api.ObjectComposition;
-import net.runelite.api.Point;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.DecorativeObjectChanged;
-import net.runelite.api.events.DecorativeObjectDespawned;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameObjectChanged;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GroundObjectChanged;
-import net.runelite.api.events.GroundObjectDespawned;
-import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.WallObjectChanged;
-import net.runelite.api.events.WallObjectDespawned;
-import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.client.eventbus.Subscribe;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class ObjectStep extends DetailedQuestStep
 {
@@ -317,20 +299,19 @@ public class ObjectStep extends DetailedQuestStep
 
 
 	@Override
-	public void renderArrow(Graphics2D graphics)
-	{
-		if (object == null || hideWorldArrow)
-		{
-			return;
-		}
-		Shape clickbox = object.getClickbox();
-		if (clickbox != null)
-		{
-			Rectangle2D boundingBox = clickbox.getBounds2D();
-			int x = (int) boundingBox.getCenterX();
-			int y = (int) boundingBox.getMinY() - 20;
+	public void renderArrow(Graphics2D graphics) {
+		if (questHelper.getConfig().showMiniMapArrow()) {
+			if (object == null || hideWorldArrow) {
+				return;
+			}
+			Shape clickbox = object.getClickbox();
+			if (clickbox != null && questHelper.getConfig().showMiniMapArrow()) {
+				Rectangle2D boundingBox = clickbox.getBounds2D();
+				int x = (int) boundingBox.getCenterX();
+				int y = (int) boundingBox.getMinY() - 20;
 
-			DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+			}
 		}
 	}
 

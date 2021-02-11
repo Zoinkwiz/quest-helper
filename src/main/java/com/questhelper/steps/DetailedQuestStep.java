@@ -229,30 +229,28 @@ public class DetailedQuestStep extends QuestStep
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
 	}
 
-	public void renderArrow(Graphics2D graphics)
-	{
-		if (worldPoint == null || hideWorldArrow)
-		{
-			return;
+	public void renderArrow(Graphics2D graphics) {
+		if (questHelper.getConfig().showMiniMapArrow()) {
+			if (worldPoint == null || hideWorldArrow) {
+				return;
+			}
+
+			LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
+			if (lp == null) {
+				return;
+			}
+
+			Polygon poly = Perspective.getCanvasTilePoly(client, lp, 30);
+			if (poly == null || poly.getBounds() == null) {
+				return;
+			}
+
+			int startX = poly.getBounds().x + (poly.getBounds().width / 2);
+			int startY = poly.getBounds().y + (poly.getBounds().height / 2);
+
+			DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(),
+					startX, startY);
 		}
-
-		LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
-		if (lp == null)
-		{
-			return;
-		}
-
-		Polygon poly = Perspective.getCanvasTilePoly(client, lp, 30);
-		if (poly == null || poly.getBounds() == null)
-		{
-			return;
-		}
-
-		int startX = poly.getBounds().x + (poly.getBounds().width / 2);
-		int startY =  poly.getBounds().y + (poly.getBounds().height / 2);
-
-		DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(),
-			startX, startY);
 	}
 
 	@Override
@@ -268,24 +266,23 @@ public class DetailedQuestStep extends QuestStep
 		renderMapArrows(graphics);
 	}
 
-	public void renderMapArrows(Graphics2D graphics)
-	{
-		if (mapPoint == null)
-		{
-			return;
+	public void renderMapArrows(Graphics2D graphics) {
+		if (questHelper.getConfig().showMiniMapArrow()) {
+			if (mapPoint == null) {
+				return;
+			}
+
+			WorldPoint point = mapPoint.getWorldPoint();
+
+			if (currentRender < 24) {
+				renderMinimapArrow(graphics);
+			}
+
+			final Rectangle mapViewArea = QuestPerspective.getWorldMapClipArea(client);
+
+			Point drawPoint = QuestPerspective.mapWorldPointToGraphicsPoint(client, point);
+			DirectionArrow.renderWorldMapArrow(mapViewArea, drawPoint, mapPoint);
 		}
-
-		WorldPoint point = mapPoint.getWorldPoint();
-
-		if (currentRender < 24)
-		{
-			renderMinimapArrow(graphics);
-		}
-
-		final Rectangle mapViewArea = QuestPerspective.getWorldMapClipArea(client);
-
-		Point drawPoint = QuestPerspective.mapWorldPointToGraphicsPoint(client, point);
-		DirectionArrow.renderWorldMapArrow(mapViewArea, drawPoint, mapPoint);
 	}
 
 	public void renderMapLines(Graphics2D graphics)
@@ -305,7 +302,9 @@ public class DetailedQuestStep extends QuestStep
 
 	public void renderMinimapArrow(Graphics2D graphics)
 	{
-		DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
+		if (questHelper.getConfig().showMiniMapArrow()) {
+			DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
+		}
 	}
 
 	@Override

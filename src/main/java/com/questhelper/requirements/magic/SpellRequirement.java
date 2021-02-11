@@ -182,6 +182,15 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 	}
 
+	public void setStaff(ItemRequirement staff)
+	{
+		if (!useStaff)
+		{
+			throw new UnsupportedOperationException("Cannot require a staff and then require no staff");
+		}
+		this.staffRequirement = staff;
+	}
+
 	/**
 	 * @return true if this requirement currently has a staff and if staves are enabled.
 	 */
@@ -387,11 +396,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		return Color.RED;
 	}
 
-	private boolean hasItemAmount(Client client, List<Integer> idList, int amount)
-	{
-		return InventorySlots.INVENTORY_SLOTS.contains(client, i -> idList.contains(i.getId()) && i.getQuantity() >= amount);
-	}
-
 
 	@Override
 	public boolean check(Client client, boolean checkWithSlotRestrictions, Item[] items)
@@ -470,7 +474,13 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 
 		bankRequirements.addAll(runeItemRequirements.values());
 		bankRequirements.addAll(getItemRequirements(this.requirements));
-		updateInternalState(client, bankRequirements);
+		bankRequirements.stream()
+			.filter(req -> StringUtils.isBlank(req.getName()))
+			.forEach(req -> {
+				int firstID = ItemSearch.findFirstItem(client, req.getAllIds(), req.getQuantity());
+				if (firstID < 0) firstID = req.getId();
+				req.setName(client.getItemDefinition(firstID).getName());
+			});
 		return bankRequirements;
 	}
 
@@ -480,7 +490,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			return false;
 		}
-		boolean hasStaff = ItemSearch.hasItemsAnywhere(client, staves);
+		boolean hasStaff = staves.getAllIds().stream().anyMatch(staffID -> ItemSearch.hasItemAmountAnywhere(client, staffID, 1));
 		if (useStaff && hasStaff)
 		{
 			staffRequirement = staves;

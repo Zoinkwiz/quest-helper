@@ -223,7 +223,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		food = new ItemRequirement("Any food", ItemCollections.getGoodEatingFood(), -1);
-		foodForChest = new ItemRequirement("Food, multiple pieces in case a Ghast eats some",
+		foodForChest = new ItemRequirement("Food to put in a chest, multiple pieces in case a Ghast eats some",
 			ItemCollections.getGoodEatingFood(),-1);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET, 5);
@@ -530,8 +530,9 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(food, spade, bucketTo5, pickaxe, hammer, planks11, nails44, swampPaste, rawMackerelOrSnail10, bronzeAxes10, tinderboxes4, steelBars2,
-			coal, efaritaysAidOrSilverWeapon, softClay, rope, silverBar, mithrilBar, sapphire, cosmicRune, waterRune);
+		return Arrays.asList(foodForChest, spade, bucketTo5, pickaxe, hammer, planks11, nails44, swampPaste,
+			rawMackerelOrSnail10, bronzeAxes10, tinderboxes4, steelBars2, coal, efaritaysAidOrSilverWeapon,
+			softClay, rope, silverBar, mithrilBar, sapphire, cosmicRune, waterRune);
 	}
 
 	@Override

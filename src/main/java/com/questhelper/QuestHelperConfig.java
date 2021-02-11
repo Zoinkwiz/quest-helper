@@ -130,6 +130,16 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showMiniMapArrow",
+			name = "Display arrows on the mini-map and overworld",
+			description = "Choose whether flashing arrows point to the next objective"
+	)
+	default boolean showMiniMapArrow()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "bankSearchSpellPreference",
 		name = "Spell Component Preference",
 		description = "Choose whether runes or staves should be preferred when filtering spell components.",

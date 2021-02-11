@@ -24,6 +24,7 @@
  */
 package com.questhelper.banktab;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -133,10 +134,14 @@ public class QuestHelperBankTagService
 			BankItemHolder holder = (BankItemHolder) itemRequirement;
 			// Force run on client thread even though it's not as responsive as not doing that, however it
 			// ensures we run on the client thread and never run into threading issues.
-			plugin.getClientThread().invoke(() -> {
-				List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), plugin.getConfig());
-				makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread
-			});
+			QuestHelperConfig config = plugin.getConfig();
+			if (config != null)
+			{
+				plugin.getClientThread().invoke(() -> {
+					List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), config);
+					makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread
+				});
+			}
 		}
 		else
 		{

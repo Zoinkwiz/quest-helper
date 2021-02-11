@@ -30,10 +30,22 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.SpriteID;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
@@ -41,15 +53,6 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
-
-import javax.inject.Inject;
-import java.awt.*;
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import static com.questhelper.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
 
 public class NpcStep extends DetailedQuestStep
@@ -59,6 +62,7 @@ public class NpcStep extends DetailedQuestStep
 
 	private final int npcID;
 	private final ArrayList<Integer> alternateNpcIDs = new ArrayList<>();
+	private final List<WorldPoint> safespots = new ArrayList<>();
 
 	private boolean allowMultipleHighlights;
 
@@ -115,6 +119,11 @@ public class NpcStep extends DetailedQuestStep
 	public void addAlternateNpcs(Integer... alternateNpcIDs)
 	{
 		this.alternateNpcIDs.addAll(Arrays.asList(alternateNpcIDs));
+	}
+
+	public void addSafeSpots(WorldPoint... points)
+	{
+		this.safespots.addAll(Arrays.asList(points));
 	}
 
 	public List<Integer> allIds()
@@ -213,6 +222,19 @@ public class NpcStep extends DetailedQuestStep
 		if (!questHelper.getConfig().showSymbolOverlay())
 		{
 			return;
+		}
+
+		if (!safespots.isEmpty())
+		{
+			BufferedImage combatIcon = spriteManager.getSprite(SpriteID.TAB_COMBAT, 0);
+			for (WorldPoint location : safespots)
+			{
+				LocalPoint localPoint = LocalPoint.fromWorld(client, location);
+				if (localPoint != null)
+				{
+					OverlayUtil.renderTileOverlay(client, graphics, localPoint, combatIcon, questHelper.getConfig().targetOverlayColor());
+				}
+			}
 		}
 
 		for (NPC otherNpc : npcs)

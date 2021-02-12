@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Collection;
+import java.util.Objects;
 import lombok.Getter;
 
 public class PanelDetails
@@ -101,6 +102,7 @@ public class PanelDetails
 		else
 		{
 			return getSteps().stream()
+				    .filter(Objects::nonNull)
 					.map(QuestStep::getSubsteps)
 					.flatMap(Collection::stream)
 					.anyMatch(step -> containsSubStep(currentStep, step));

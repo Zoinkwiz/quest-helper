@@ -25,7 +25,6 @@
  */
 package com.questhelper;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;

@@ -205,6 +205,7 @@ public class TrollStronghold extends BasicQuestHelper
 		enterArena = new ObjectStep(this, ObjectID.ARENA_ENTRANCE_3783, new WorldPoint(2897, 3619, 0), "Follow the path from here east until you enter the arena.");
 		fightDad = new NpcStep(this, NpcID.DAD, new WorldPoint(2913, 3617, 0), "Fight Dad until he gives up. You can safe spot him from the gate you entered through.");
 		fightDad.addDialogStep("I accept your challenge!");
+		((NpcStep) fightDad).addSafeSpots(new WorldPoint(2897, 3619, 0));
 
 		leaveArena = new ObjectStep(this, ObjectID.ARENA_EXIT, new WorldPoint(2916, 3629, 0), "Leave the arena and continue through the cave to the north.");
 		leaveArena.addDialogStep("I'll be going now.");

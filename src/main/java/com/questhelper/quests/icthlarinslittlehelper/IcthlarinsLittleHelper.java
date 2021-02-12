@@ -74,7 +74,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	Requirement catFollower;
 
 	Requirement inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar,
-		killedGuardian, hasJar, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
+		killedGuardian, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
 		givenCarpenterLogs, inEastRoom, posessedPriestNearby;
 
 	QuestStep talkToWanderer, talkToWandererAgain, enterRock, touchPyramidDoor, jumpPit, openWestDoor, solveDoorPuzzle, talkToSphinx, talkToHighPriest,
@@ -125,9 +125,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		steps.put(6, talkToHighPriestSteps);
 
 		ConditionalStep takeTheJar = new ConditionalStep(this, enterRock);
-		takeTheJar.addStep(new Conditions(inNorthPyramid, hasJar), returnOverPit);
+		takeTheJar.addStep(new Conditions(inNorthPyramid, jar), returnOverPit);
+		takeTheJar.addStep(new Conditions(inNorthPyramid, hasHetJar, killedGuardian), pickUpHetJarAgain);
 		takeTheJar.addStep(new Conditions(inNorthPyramid, hasCrondisJar, killedGuardian), pickUpCrondisJarAgain);
 		takeTheJar.addStep(new Conditions(inNorthPyramid, killedGuardian), pickUpAnyJarAgain);
+		takeTheJar.addStep(new Conditions(inNorthPyramid, hasHetJar), pickUpHetJar);
 		takeTheJar.addStep(new Conditions(inNorthPyramid, hasCrondisJar), pickUpCrondisJar);
 		takeTheJar.addStep(inNorthPyramid, pickUpAnyJar);
 		takeTheJar.addStep(inPyramid, jumpPitAgain);
@@ -141,6 +143,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		ConditionalStep returnTheJar = new ConditionalStep(this, enterRock);
 		returnTheJar.addStep(puzzleOpen, solvePuzzleAgain);
+		returnTheJar.addStep(new Conditions(inNorthPyramid, hasHetJar), dropHetJar);
 		returnTheJar.addStep(new Conditions(inNorthPyramid, hasCrondisJar), dropCrondisJar);
 		returnTheJar.addStep(inNorthPyramid, dropJar);
 		returnTheJar.addStep(inPyramid, jumpOverPitAgain);
@@ -213,7 +216,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		catFollower = new FollowerRequirement("Any cat following you", NpcCollections.getCats());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		waterskin4 = new ItemRequirement("Waterskin(4), bring a few to avoid drinking it", ItemID.WATERSKIN4);
-		coins600 = new ItemRequirement("600 coins or more for various payments", ItemID.COINS_995, 600);
+		coins600 = new ItemRequirement("Coins or more for various payments", ItemID.COINS_995, 600);
 		bagOfSaltOrBucket = new ItemRequirement("Bag of Salt from a Slayer Master, or an empty bucket to get some", ItemID.BAG_OF_SALT);
 		bagOfSaltOrBucket.addAlternates(ItemID.PILE_OF_SALT);
 
@@ -257,17 +260,18 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		puzzleOpen = new WidgetModelRequirement(147, 3, 6474);
 		givenToken = new VarbitRequirement(450, 1);
 
-
+		hasHetJar = new VarbitRequirement(397, 1);
 		hasCrondisJar = new VarbitRequirement(397, 4);
 
-		// TODO: Verify varbit values for apmeken/het/scarabas
+		// TODO: Verify varbit values for apmeken/scarabas
 		hasApmekenJar = new VarbitRequirement(397, 3);
-		hasHetJar = new VarbitRequirement(397, 2);
-		hasScarabasJar = new VarbitRequirement(397, 1);
-
+		hasScarabasJar = new VarbitRequirement(397, 2);
+		System.out.println(client.getVarbitValue(397));
+		System.out.println("BEEP");
 		killedGuardian = new VarbitRequirement(418, 11, Operation.GREATER_EQUAL);
 
-		hasJar = new VarbitRequirement(405, 1);
+		// picked up het, 404 = 1
+		// picked up apmeken, 405 = 1
 		talkedToEmbalmer = new VarbitRequirement(399, 1);
 
 		hasLinen = new ItemRequirements(linen);
@@ -325,30 +329,35 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		jumpPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
-		pickUpAnyJar = new ObjectStep(this, NullObjectID.NULL_6634, "Try picking up the canopic jars in the north west room until a level 75-81 enemy spawns. Kill them.");
-		pickUpAnyJar.addAlternateObjects(NullObjectID.NULL_6636, NullObjectID.NULL_6638, NullObjectID.NULL_6640);
-
 		pickUpCrondisJar = new ObjectStep(this, NullObjectID.NULL_6636, new WorldPoint(3286, 9195, 0), "Attempt to pick up the Crondis Canopic Jar, and kill Crondis (level 75) when they appear.");
 		pickUpScarabasJar = new ObjectStep(this, NullObjectID.NULL_6638, new WorldPoint(3286, 9196, 0), "Attempt to pick up the Scarabas Canopic Jar, and kill Scarabas (level 75) when they appear.");
 		pickUpApmekenJar = new ObjectStep(this, NullObjectID.NULL_6640, new WorldPoint(3286, 9193, 0), "Attempt to pick up the Apmeken Canopic Jar, and kill Apmeken (level 75) when they appear.");
 		pickUpHetJar = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Attempt to pick up the Het Canopic Jar, and kill Het (level 75) when they appear.");
 
-		pickUpAnyJarAgain = new ObjectStep(this, NullObjectID.NULL_6634, "Try picking up the canopic jars in the north west room again.");
-		pickUpAnyJarAgain.addAlternateObjects(NullObjectID.NULL_6636, NullObjectID.NULL_6638, NullObjectID.NULL_6640);
+		pickUpAnyJar = new ObjectStep(this, NullObjectID.NULL_6634, "Try picking up the canopic jars in the north " +
+			"west room until a level 75-81 enemy spawns. Kill them. You can safespot them on the central table.");
+		pickUpAnyJar.addAlternateObjects(NullObjectID.NULL_6636, NullObjectID.NULL_6638, NullObjectID.NULL_6640);
+		pickUpAnyJar.addSubSteps(pickUpCrondisJar, pickUpScarabasJar, pickUpApmekenJar, pickUpHetJar);
+
 
 		pickUpCrondisJarAgain = new ObjectStep(this, NullObjectID.NULL_6636, new WorldPoint(3286, 9195, 0), "Pick up the Crondis Canopic Jar.");
 		pickUpScarabasJarAgain = new ObjectStep(this, NullObjectID.NULL_6638, new WorldPoint(3286, 9196, 0), "Pick up the Scarabas Canopic Jar.");
 		pickUpApmekenJarAgain = new ObjectStep(this, NullObjectID.NULL_6640, new WorldPoint(3286, 9193, 0), "Pick up the Apmeken Canopic Jar.");
 		pickUpHetJarAgain = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Pick up the Het Canopic Jar.");
 
+		pickUpAnyJarAgain = new ObjectStep(this, NullObjectID.NULL_6634, "Try picking up the canopic jars in the north west room again.");
+		pickUpAnyJarAgain.addAlternateObjects(NullObjectID.NULL_6636, NullObjectID.NULL_6638, NullObjectID.NULL_6640);
+		pickUpAnyJarAgain.addSubSteps(pickUpCrondisJarAgain, pickUpScarabasJarAgain, pickUpApmekenJarAgain, pickUpHetJarAgain);
+
 		returnOverPit = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9196, 0), "Jump back over the pit with the jar.");
 		jumpOverPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
-		dropJar = new DetailedQuestStep(this, "Drop the canopic jar in the spot you took it from.", jar);
 		dropCrondisJar = new DetailedQuestStep(this, new WorldPoint(3286, 9195, 0), "Drop the canopic jar in the spot you took it from.", jar);
 		dropApmekenJar = new DetailedQuestStep(this, new WorldPoint(3286, 9193, 0), "Drop the canopic jar in the spot you took it from.", jar);
 		dropHetJar = new DetailedQuestStep(this, new WorldPoint(3286, 9194, 0), "Drop the canopic jar in the spot you took it from.", jar);
 		dropScarabasJar = new DetailedQuestStep(this, new WorldPoint(3286, 9196, 0), "Drop the canopic jar in the spot you took it from.", jar);
+		dropJar = new DetailedQuestStep(this, "Drop the canopic jar in the spot you took it from.", jar);
+		dropJar.addSubSteps(dropCrondisJar, dropApmekenJar, dropHetJar, dropScarabasJar);
 
 		solvePuzzleAgain = new DoorPuzzleStep(this);
 

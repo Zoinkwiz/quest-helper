@@ -366,6 +366,7 @@ public class ShiloVillage extends BasicQuestHelper
 			"Defeat Nazastrool's 3 forms. You can safe spot them over the dolem, and the Crumble Undead spell is very" +
 				" strong against them.");
 		((NpcStep) killNazastarool).addAlternateNpcs(NpcID.NAZASTAROOL_5354, NpcID.NAZASTAROOL_5355);
+		((NpcStep)killNazastarool).addSafeSpots(new WorldPoint(2894, 9486, 0), new WorldPoint(2891, 9486, 0));
 		pickupCorpse = new ItemStep(this, "Pickup Rashiliyia's corpse.", rashCorpse);
 		enterCairnAgain = new ObjectStep(this, ObjectID.WELL_STACKED_ROCKS, new WorldPoint(2762, 2990, 0),
 			"Right-click search the rocks on Cairn Isle to enter the caverns again.", rashCorpse);

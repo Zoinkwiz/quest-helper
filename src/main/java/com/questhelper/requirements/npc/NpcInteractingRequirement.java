@@ -29,15 +29,17 @@ package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.SimpleRequirement;
 import com.questhelper.requirements.conditional.ConditionForStep;
+import java.util.Arrays;
+import java.util.List;
 import net.runelite.api.Client;
 
 public class NpcInteractingRequirement extends SimpleRequirement
 {
-	final int npcID;
+	final List<Integer> npcIDs;
 
-	public NpcInteractingRequirement(int npcID)
+	public NpcInteractingRequirement(Integer... npcID)
 	{
-		this.npcID = npcID;
+		this.npcIDs = Arrays.asList(npcID);
 	}
 
 	@Override
@@ -46,6 +48,6 @@ public class NpcInteractingRequirement extends SimpleRequirement
 		return client.getNpcs().stream()
 			.filter(npc -> npc.getInteracting() != null)
 			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
-			.anyMatch(npc -> npc.getId() == npcID);
+			.anyMatch(npc -> npcIDs.contains(npc.getId()));
 	}
 }

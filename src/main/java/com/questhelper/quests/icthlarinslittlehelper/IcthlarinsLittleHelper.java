@@ -244,7 +244,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		linen = new ItemRequirement("Linen", ItemID.LINEN);
 
 		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL_4682);
-		holySymbol.setTooltip("You can get another from the Carpenter in Sophenham");
+		holySymbol.setTooltip("You can get another from the Carpenter in Sophanem");
 
 		unholySymbol = new ItemRequirement("Unholy symbol", ItemID.UNHOLY_SYMBOL_4683);
 		unholySymbol.setHighlightInInventory(true);
@@ -305,7 +305,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		talkToWandererAgain = new NpcStep(this, NpcID.WANDERER_4194, new WorldPoint(3316, 2849, 0), "Talk to the Wanderer again with the required items.", waterskin4, tinderbox);
 		talkToWandererAgain.addDialogStep("Yes. I have them all here.");
 
-		enterRock = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0), "Enter the rock west of the Agility Pyramid to re-enter Sophanhem.");
+		enterRock = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0), "Enter the rock west of the Agility Pyramid to re-enter Sophanem.");
 
 		touchPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Touch the south pyramid door in Sophanem.");
 
@@ -385,7 +385,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		buyLinen = new NpcStep(this, NpcID.RAETUL, new WorldPoint(3311, 2787, 0), "Get some linen. You can buy some from Raetul in east Sophanem for 30 coins.", coinsOrLinen);
 
 		enterRockWithItems = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0),
-			"Enter the rock west of the Agility Pyramid to re-enter Sophanhem. Make sure to bring the items you need.", bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog, catFollower);
+			"Enter the rock west of the Agility Pyramid to re-enter Sophanem. Make sure to bring the items you need.", bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog, catFollower);
 
 		openPyramidDoorWithSymbol = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Right-click open the south pyramid's door in Sophanem.", catFollower, holySymbol);
 

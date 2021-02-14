@@ -70,7 +70,7 @@ public class FairytaleI extends BasicQuestHelper
 
 	ItemRequirement varrockTeleport, faladorTeleport, lumbridgeTeleport, moryTele, food;
 
-	ItemRequirement symptomsList, magicSecateurs, magicSecateursEquipped, queensSecateurs, items3;
+	ItemRequirement symptomsList, magicSecateurs, magicSecateursEquipped, queensSecateurs, items3, skullOrSpade;
 
 	Zone zanaris, towerF1, towerF2, grotto, tanglerootRoom;
 
@@ -142,6 +142,8 @@ public class FairytaleI extends BasicQuestHelper
 		secateurs = new ItemRequirement("Secateurs", ItemID.SECATEURS);
 		draynorSkull = new ItemRequirement("Draynor skull", ItemID.DRAYNOR_SKULL);
 		draynorSkull.canBeObtainedDuringQuest();
+		skullOrSpade = new ItemRequirement("Draynor skull or a spade to get it", ItemID.DRAYNOR_SKULL);
+		skullOrSpade.addAlternates(ItemID.SPADE);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
 		ghostspeak.setTooltip("You can get another from Father Urhney in the Lumbridge Swamp");
@@ -317,11 +319,10 @@ public class FairytaleI extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToMartin, talkToFarmers, talkToMartinAgain)));
 		allSteps.add(new PanelDetails("Unnatural events", Arrays.asList(enterZanaris, talkToGodfather, talkToNuff,
-			talkToZandar),
-			dramenOrLunarStaff));
+			talkToZandar), dramenOrLunarStaff));
 		allSteps.add(new PanelDetails("Finding a cure", Arrays.asList(getSkull, talkToMortifer),
-			spade));
-		allSteps.add(new PanelDetails("Enchanting secateurs", Arrays.asList(enterGrotto, talkToSpirit), secateurs,
+			skullOrSpade));
+		allSteps.add(new PanelDetails("Enchanting secateurs", Arrays.asList(enterGrotto, talkToSpirit), ghostspeak, secateurs,
 			items3));
 		allSteps.add(new PanelDetails("Defeat the Tanglefoot", Arrays.asList(enterZanarisForFight,
 			enterTanglerootRoom, killTanglefoot, talkToGodfatherToFinish), dramenOrLunarStaff, magicSecateurs, food));

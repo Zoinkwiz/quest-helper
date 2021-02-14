@@ -259,9 +259,11 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectSkrach)));
 		allSteps.add(new PanelDetails("Help Rantz", Arrays.asList(talkToRantz, talkToRantzOnCoast, useAxeOnTree, useAxeOnTreeAgain,
-			talkToRantzOnCoastAgain, useSpitOnChompy, lightFire, talkToRantzAfterReturn), axeHighlighted, log, tinderbox, chompy, ironSpit, ogreBowAndArrows, pickaxe, ogreBellowsFilled, ballOfWool));
-		allSteps.add(new PanelDetails("Save Skrach", Arrays.asList(getToad, getRock, useBellowOnToadInInv, dropBalloonToad, killJubbly, lootJubbly, pickUpRawJubbly, cookJubbly,
-			useJubblyOnSkrach), ogreBowAndArrows, pickaxe, ogreBellowsFilled, ballOfWool));
+			talkToRantzOnCoastAgain, useSpitOnChompy, lightFire, talkToRantzAfterReturn),
+			axeHighlighted, log, tinderbox, chompy, ironSpit, ogreBowAndArrows, pickaxe, ogreBellows, ballOfWool));
+		allSteps.add(new PanelDetails("Save Skrach", Arrays.asList(getToad, getRock, useBellowOnToadInInv,
+			dropBalloonToad, killJubbly, lootJubbly, pickUpRawJubbly, cookJubbly, useJubblyOnSkrach),
+			ogreBowAndArrows, pickaxe, ogreBellows, ballOfWool));
 
 		return allSteps;
 	}

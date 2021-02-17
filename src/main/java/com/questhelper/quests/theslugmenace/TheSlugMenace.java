@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.theslugmenace;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -70,7 +71,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		essence, blankAir, blankEarth, blankWater, blankFire, blankMind, chisel, airRune, waterRune, earthRune, fireRune, mindRune, meleeGear, essence5, accessToAltars;
 
 	//Items Recommended
-	ItemRequirement ardougneTeleports;
+	ItemRequirement ardougneTeleports, necklaceOfPassage, airAltarTeleport, earthAltarTeleport, fireAltarTeleport, waterAltarTeleport, mindAltarTeleport;
 
 	Requirement talkedToMaledict, talkedToHobb, talkedToHolgart, talkedToAllImportantPeople, inHobgoblinDungeon, inSeaSlugDungeon, openedWall, hasDeadSlug, hasPage1, hasPage2, hasPage3, receivedFragments,
 		onPlatform, puzzleUp, repairedPage, pickedUpSlug, hasAirRune, hasWaterRune, hasEarthRune, hasFireRune, hasMindRune, hasOrUsedAirRune, hasOrUsedWaterRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune,
@@ -218,8 +219,49 @@ public class TheSlugMenace extends BasicQuestHelper
 		ItemRequirement mindTalisman = new ItemRequirement("Mind talisman", ItemID.MIND_TALISMAN);
 		mindTalisman.addAlternates(ItemID.MIND_TIARA);
 
-		accessToAltars = new ItemRequirements(LogicType.OR, "Access to air, water, earth, fire, and mind runecrafting altars",
+		accessToAltars = new ItemRequirements("Access to air, water, earth, fire, and mind runecrafting altars",
 			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman);
+
+		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.getNecklaceOfPassages());
+
+		airAltarTeleport = new ItemRequirement("Teleport near Air Altar", ItemCollections.getSkillsNecklaces());
+		airAltarTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.RIMMINGTON_TELEPORT);
+		airAltarTeleport.setDisplayMatchedItemName(true);
+		airAltarTeleport.setTooltip("The best items for this are (in order):");
+		airAltarTeleport.appendToTooltip("Skill Necklace (to Crafting Guild)");
+		airAltarTeleport.appendToTooltip("Falador Teleport");
+		airAltarTeleport.appendToTooltip("Rimmington/House Teleport");
+
+		earthAltarTeleport = new ItemRequirement("Teleport near Earth Altar", ItemCollections.getDigsitePendants());
+		earthAltarTeleport.addAlternates(ItemID.VARROCK_TELEPORT, ItemID.LUMBERYARD_TELEPORT, ItemID.DIGSITE_TELEPORT);
+		earthAltarTeleport.setDisplayMatchedItemName(true);
+		earthAltarTeleport.setTooltip("The best items for this are (in order):");
+		earthAltarTeleport.appendToTooltip("Lumberyard Teleport");
+		earthAltarTeleport.appendToTooltip("Digsite Pendant(s)");
+		earthAltarTeleport.appendToTooltip("Digsite Teleport");
+		earthAltarTeleport.appendToTooltip("Varrock Teleports");
+
+		fireAltarTeleport = new ItemRequirement("Teleport near Fire Altar", ItemCollections.getRingOfDuelings());
+		fireAltarTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		fireAltarTeleport.setTooltip("The best items for this are (in order):");
+		fireAltarTeleport.appendToTooltip("Ring of Dueling");
+		fireAltarTeleport.appendToTooltip("Amulet of Glory (to Al Kharid)");
+
+		waterAltarTeleport = new ItemRequirement("Teleport near Water Altar", ItemID.LUMBRIDGE_GRAVEYARD_TELEPORT);
+		waterAltarTeleport.addAlternates(ItemID.LUMBRIDGE_TELEPORT);
+		waterAltarTeleport.setTooltip("The best items for this are (in order):");
+		waterAltarTeleport.appendToTooltip("Lumbridge Graveyard Teleport");
+		waterAltarTeleport.appendToTooltip("Lumbridge Teleport");
+
+		mindAltarTeleport = new ItemRequirement("Teleport near Mind Altar", ItemID.MIND_ALTAR_TELEPORT);
+		mindAltarTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.LASSAR_TELEPORT, ItemID.TAVERLEY_TELEPORT);
+		mindAltarTeleport.addAlternates(ItemCollections.getCombatBracelets());
+		mindAltarTeleport.setTooltip("The best items for this are (in order):");
+		mindAltarTeleport.appendToTooltip("Mind Altar Teleport (highly recommended)");
+		mindAltarTeleport.appendToTooltip("Lassar Teleport (Ice Mountain)");
+		mindAltarTeleport.appendToTooltip("Combat Bracelet to Monastery");
+		mindAltarTeleport.appendToTooltip("Falador Teleport");
+		mindAltarTeleport.appendToTooltip("Taverley Teleport");
 	}
 
 	public void loadZones()
@@ -304,7 +346,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		tryToOpenImposingDoor = new ObjectStep(this, ObjectID.IMPOSING_DOORS, new WorldPoint(2351, 5093, 0), "Follow the path until you reach an imposing door, and try opening it. After, try scanning with the commorb v2.", commorb2);
 		scanWithComm = new DetailedQuestStep(this, "Try scanning with the commorb.", commorb);
 		pickUpDeadSlug = new ItemStep(this, "Pick up the dead sea slug next to the imposing door.", deadSeaSlug);
-		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3347, 0), "Talk to Jorral north of West Ardougne.");
+		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3347, 0), "Talk to Jorral north of West Ardougne.", necklaceOfPassage);
 		talkToJorral.addDialogStep("Translations");
 		talkToNiall3 = new NpcStep(this, NpcID.COL_ONIALL, new WorldPoint(2739, 3311, 0), "Return to Col. O'Niall on the pier in Witchaven.");
 		talkToMaledict2 = new NpcStep(this, NpcID.BROTHER_MALEDICT, new WorldPoint(2724, 3283, 0), "Talk to Brother Maledict in the church.");
@@ -350,6 +392,8 @@ public class TheSlugMenace extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneTeleports);
+		reqs.add(necklaceOfPassage);
+		reqs.addAll(Arrays.asList(airAltarTeleport, earthAltarTeleport, fireAltarTeleport, waterAltarTeleport, mindAltarTeleport));
 		return reqs;
 	}
 

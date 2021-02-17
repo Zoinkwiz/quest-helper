@@ -200,7 +200,7 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		doorTranscript = new ItemRequirement("Door transcription", ItemID.DOOR_TRANSCRIPTION);
 
-		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
+		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT, 3);
 		essence5 = new ItemRequirement("Rune/pure essence, 15 to be safe", ItemID.PURE_ESSENCE, 5);
 		essence5.addAlternates(ItemID.RUNE_ESSENCE);
 

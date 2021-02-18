@@ -133,7 +133,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		ConditionalStep getMoreTokens = new ConditionalStep(this, enterCave);
 		getMoreTokens.addStep(inCave, unlockMachine);
 
-		steps.put(0, unlockMachine);
+		steps.put(27, unlockMachine);
 		steps.put(30, getMoreTokens);
 
 		ConditionalStep goOperateMachine = new ConditionalStep(this, enterCave);
@@ -227,9 +227,11 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		talkToBrimstail.addDialogStep("What's that cute creature wandering around?");
 		talkToBrimstail.addDialogStep("Yes, that sounds fascinating...");
 		talkToBrimstail.addDialogStep("Oh, yes I love a bit of History.");
+		talkToBrimstail.addDialogStep("Yes.");
 		enterCave.addSubSteps(talkToBrimstail);
 		inspectBowl = new ObjectStep(this, ObjectID.SINGING_BOWL, new WorldPoint(2388, 9813, 0), "Inspect the singing bowl in the west room.");
-		inspectMachine = new ObjectStep(this, ObjectID.OAKNOCKS_MACHINE_17241, new WorldPoint(2390, 9826, 0), "Attempt to unlock oaknock's machine in the north of the cave.");
+		inspectMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0),
+			"Attempt to unlock oaknock's machine in the north of the cave.");
 		talkToBrimstailAgain = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
 		talkToBrimstailAgain.addDialogStep("I've had a look in the other room now.");
 		talkToBrimstailAgain.addDialogStep("Of course, I'd love to!");
@@ -249,7 +251,8 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		useMudOnSap = new DetailedQuestStep(this, "Use the ground mud runes on the bucket of sap.", groundMud,
 			bucketOfSapHiglight);
 
-		repairMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Use the magic glue on oaknock's machine in the north of the cave.", magicGlue, oakLog, mapleLog, saw, hammer);
+		repairMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0),
+			"Use the magic glue on oaknock's machine in the north of the cave.", magicGlue, oakLog, mapleLog, saw, hammer);
 
 		talkToBrimstailAfterRepairing = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstailAfterRepairing.addDialogStep("I think I've fixed the machine now!");

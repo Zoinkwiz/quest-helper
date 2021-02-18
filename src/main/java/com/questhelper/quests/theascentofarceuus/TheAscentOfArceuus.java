@@ -234,7 +234,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		inspectTrack1.addSubSteps(inspectTrack2, inspectTrack3, inspectTrack4, inspectTrack5);
 
 		inspectTrack6 = new ObjectStep(this, NullObjectID.NULL_34625, new WorldPoint(1282, 3726, 0),
-			"Inspect the final plant and kill the Tormented Soul (level 30) which appears.", combatGear);
+			"Inspect the final plant and kill the Trapped Soul (level 30) which appears.", combatGear);
 		killTrappedSoul = new NpcStep(this, NpcID.TRAPPED_SOUL, new WorldPoint(1281, 3724, 0),
 			"Kill the Trapped Soul.");
 		inspectTrack6.addSubSteps(killTrappedSoul);

@@ -25,6 +25,7 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
+import com.questhelper.ExternalQuestResources;
 import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
@@ -73,6 +74,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questItemRecommendedListPanel = new JPanel();
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
 	private final JPanel questOverviewNotesPanel = new JPanel();
+	private final JPanel externalQuestResourcesPanel = new JPanel();
 
 	private final JPanel questGeneralRequirementsHeader = new JPanel();
 	private final JPanel questGeneralRecommendedHeader = new JPanel();
@@ -80,6 +82,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questCombatRequirementHeader = new JPanel();
 	private final JPanel questItemRecommendedHeader = new JPanel();
 	private final JPanel questNoteHeader = new JPanel();
+	private final JPanel externalQuestResourcesHeader = new JPanel();
 
 	private final JLabel questNameLabel = new JLabel();
 
@@ -155,6 +158,7 @@ public class QuestOverviewPanel extends JPanel
 		overviewPanel.add(generateRequirementPanel(questCombatRequirementsListPanel, questCombatRequirementHeader,
 			"Enemies to defeat:"));
 		overviewPanel.add(generateRequirementPanel(questOverviewNotesPanel, questNoteHeader, "Notes:"));
+		overviewPanel.add(generateRequirementPanel(externalQuestResourcesPanel, externalQuestResourcesHeader , "External Resources:"));
 
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
@@ -444,6 +448,12 @@ public class QuestOverviewPanel extends JPanel
 		combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
 
 		questCombatRequirementsListPanel.add(combatLabel);
+
+		/* External Resources */
+		JLabel externalResources = new JLabel();
+		externalResources.setForeground(Color.GRAY);
+		String externalResourcesList = quest.getExternalResources();
+
 
 		/* Quest overview */
 		JLabel overviewLabel = new JLabel();

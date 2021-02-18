@@ -189,6 +189,23 @@ public class QuestStepPanel extends JPanel
 		{
 			collapse();
 		}
+
+		//external resources
+//
+//		JLabel externalQuestResourcesTitle = new JLabel();
+//		externalQuestResourcesTitle.setForeground(Color.WHITE);
+//		externalQuestResourcesTitle.setText("External Resources:");
+//
+//		JPanel externalQuestResourcesPanel = new JPanel();
+//		externalQuestResourcesPanel.setForeground(Color.WHITE);
+//		externalQuestResourcesPanel.setLayout(new BoxLayout(questStepsPanel, BoxLayout.Y_AXIS));
+//		externalQuestResourcesPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+//
+//		bodyPanel.add(externalQuestResourcesPanel, BorderLayout.CENTER);
+//		add(headerPanel, BorderLayout.NORTH);
+//		add(bodyPanel, BorderLayout.CENTER);
+
+
 	}
 
 	public String generateText(QuestStep step)

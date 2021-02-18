@@ -233,6 +233,20 @@ public enum QuestHelperQuest
 
 	private final QuestVarPlayer varPlayer;
 
+	private ExternalQuestResources wiki;
+
+	QuestHelperQuest(int id, String name, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty, String wiki)
+	{
+		this.id = id;
+		this.name = name;
+		this.keywords = titleToKeywords(name);
+		this.varbit = varbit;
+		this.varPlayer = null;
+		this.questType = questType;
+		this.difficulty = difficulty;
+		this.wiki = ExternalQuestResources.valueOf(this.name());
+	}
+
 	QuestHelperQuest(int id, String name, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
 	{
 		this.id = id;
@@ -242,6 +256,7 @@ public enum QuestHelperQuest
 		this.varPlayer = null;
 		this.questType = questType;
 		this.difficulty = difficulty;
+		this.wiki = ExternalQuestResources.valueOf(this.name());
 	}
 
 	QuestHelperQuest(int id, String name, QuestVarPlayer varPlayer, Quest.Type questType, Quest.Difficulty difficulty)

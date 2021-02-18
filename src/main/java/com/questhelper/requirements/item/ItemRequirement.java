@@ -64,7 +64,6 @@ public class ItemRequirement extends AbstractRequirement
 	@Setter
 	private boolean equip;
 
-	@Getter
 	@Setter
 	protected boolean highlightInInventory;
 
@@ -159,7 +158,7 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
-	public ItemRequirement conditioned(Requirement condition)
+	public ItemRequirement hideConditioned(Requirement condition)
 	{
 		ItemRequirement newItem = copy();
 		newItem.setConditionToHide(condition);
@@ -174,6 +173,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
+		newItem.setConditionToHide(conditionToHide);
 		newItem.setTooltip(getTooltip());
 
 		return newItem;
@@ -423,5 +423,15 @@ public class ItemRequirement extends AbstractRequirement
 		}
 
 		return Collections.singletonList(displayItemId);
+	}
+
+	public boolean shouldRenderItemHighlights(Client client)
+	{
+		return conditionToHide == null || !conditionToHide.check(client);
+	}
+
+	public boolean shouldHighlightInInventory(Client client)
+	{
+		return highlightInInventory && shouldRenderItemHighlights(client);
 	}
 }

@@ -342,7 +342,7 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (requirements == null || requirements.isEmpty())
+		if (requirements.isEmpty())
 		{
 			return;
 		}
@@ -351,7 +351,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : requirements)
 			{
-				if (isValidRequirementForRender(requirement, item))
+				if (isValidRequirementForRenderInInventory(requirement, item))
 				{
 					Rectangle slotBounds = item.getCanvasBounds();
 					int red = getQuestHelper().getConfig().targetOverlayColor().getRed();
@@ -365,14 +365,14 @@ public class DetailedQuestStep extends QuestStep
 		}
 	}
 
-	private boolean isValidRequirementForRender(Requirement requirement, WidgetItem item)
+	private boolean isValidRequirementForRenderInInventory(Requirement requirement, WidgetItem item)
 	{
-		return requirement instanceof ItemRequirement && isValidRenderRequirement((ItemRequirement) requirement, item);
+		return requirement instanceof ItemRequirement && isValidRenderRequirementInInventory((ItemRequirement) requirement, item);
 	}
 
-	private boolean isValidRenderRequirement(ItemRequirement requirement, WidgetItem item)
+	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, WidgetItem item)
 	{
-		return requirement.isHighlightInInventory() && requirement.getAllIds().contains(item.getId());
+		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getId());
 	}
 
 	@Subscribe
@@ -382,7 +382,7 @@ public class DetailedQuestStep extends QuestStep
 		Tile tile = itemSpawned.getTile();
 		for (Requirement requirement : requirements)
 		{
-			if (isItemRequirementExact(requirement) && requirementContainsID((ItemRequirement) requirement, item.getId()))
+			if (isItemRequirement(requirement) && requirementContainsID((ItemRequirement) requirement, item.getId()))
 			{
 				tileHighlights.get(tile).add(itemSpawned.getItem().getId());
 			}
@@ -393,10 +393,15 @@ public class DetailedQuestStep extends QuestStep
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		Tile tile = itemDespawned.getTile();
-
 		if (tileHighlights.containsKey(tile))
 		{
-			tileHighlights.get(tile).remove(itemDespawned.getItem().getId());
+			for (Requirement requirement : requirements)
+			{
+				if (isItemRequirement(requirement) && requirementContainsID((ItemRequirement) requirement, itemDespawned.getItem().getId()))
+				{
+					tileHighlights.get(tile).remove(itemDespawned.getItem().getId());
+				}
+			}
 		}
 	}
 
@@ -439,10 +444,10 @@ public class DetailedQuestStep extends QuestStep
 
 	private boolean isValidRequirementForTileItem(Requirement requirement, TileItem item)
 	{
-		return isItemRequirementExact(requirement) && requirementMatchesTileItem((ItemRequirement) requirement, item);
+		return isItemRequirement(requirement) && requirementMatchesTileItem((ItemRequirement) requirement, item);
 	}
 
-	private boolean isItemRequirementExact(Requirement requirement)
+	private boolean isItemRequirement(Requirement requirement)
 	{
 		return requirement != null && requirement.getClass() == ItemRequirement.class;
 	}
@@ -514,9 +519,10 @@ public class DetailedQuestStep extends QuestStep
 
 	private boolean isReqValidForHighlighting(Requirement requirement, Collection<Integer> ids)
 	{
-		return isItemRequirementExact(requirement)
+		return isItemRequirement(requirement)
 			&& requirementIsItem((ItemRequirement) requirement)
 			&& requirementContainsID((ItemRequirement) requirement, ids)
+			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
 			&& !requirement.check(client);
 	}
 

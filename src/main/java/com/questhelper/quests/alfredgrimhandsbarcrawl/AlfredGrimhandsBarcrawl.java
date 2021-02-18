@@ -54,12 +54,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 {
+	//Items Required
 	ItemRequirement coins208, coins50, coins10, coins70, coins8, coins7, coins15, coins18, coins12, barcrawlCard;
 
+	//Items Recommended
 	ItemRequirement gamesNecklace, varrockTeleport, faladorTeleport, glory, ardougneTeleport, camelotTeleport,
 		duelingRing;
-
-	Zone grandTreeF1;
 
 	ConditionForStep notTalkedToGuard, notTalkedToBlueMoon, notTalkedToJollyBoar, notTalkedToRisingSun,
 		notTalkedToRustyAnchor,
@@ -69,6 +69,9 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	QuestStep talkToGuard, talkToBlueMoon, talkToJollyBoar, talkToRisingSun, talkToRustyAnchor, talkToZambo,
 		talkToDeadMansChest, talkToFlyingHorseInn, talkToForestersArms, goUpToBlurberry, talkToBlurberry,
 		talkToDragonInn, talkToGuardAgain;
+
+	//Zones
+	Zone grandTreeF1;
 
 	@Override
 	public QuestStep loadStep()
@@ -107,7 +110,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 		coins18 = new ItemRequirement("Coins", ItemID.COINS_995, 18);
 		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
 
-			gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		glory = new ItemRequirement("Amulet of Glory", ItemCollections.getAmuletOfGlories());

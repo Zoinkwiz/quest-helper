@@ -67,13 +67,13 @@ import net.runelite.api.widgets.WidgetInfo;
 )
 public class FairytaleI extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement secateurs, draynorSkull, spade, ghostspeak, dramenOrLunarStaff, randomItems;
 
+	//Items Recommended
 	ItemRequirement varrockTeleport, faladorTeleport, lumbridgeTeleport, moryTele, food;
 
 	ItemRequirement symptomsList, magicSecateurs, magicSecateursEquipped, queensSecateurs, items3;
-
-	Zone zanaris, towerF1, towerF2, grotto, tanglerootRoom;
 
 	ConditionForStep inZanaris, inTowerF1, inTowerF2, inGrotto, inTanglerootRoom;
 
@@ -87,6 +87,9 @@ public class FairytaleI extends BasicQuestHelper
 
 	QuestStep enterZanarisForFight, enterTanglerootRoom, killTanglefoot, pickUpSecateurs, enterZanarisForEnd,
 		talkToGodfatherToFinish;
+
+	//Zones
+	Zone zanaris, towerF1, towerF2, grotto, tanglerootRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

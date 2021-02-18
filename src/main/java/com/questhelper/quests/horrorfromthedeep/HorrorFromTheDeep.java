@@ -64,16 +64,16 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class HorrorFromTheDeep extends BasicQuestHelper
 {
+	//Items Required
 	ItemRequirement fireRune, airRune, waterRune, earthRune, sword, arrow, moltenGlass, tinderbox, hammer,
 	steelNails60, plank2, plank, swampTar1, combatRunes;
 
+	//Items Recommended
 	ItemRequirement magicCombat, food, prayerPotions, gamesNecklace;
 
 	Requirement protectFromMissiles;
 
 	ItemRequirement lighthouseKey;
-
-	Zone lighthouseF0, lighthouseF1, lighthouseF2, lighthouseF2V2, basement, dagCave;
 
 	ConditionForStep inLighthouseF0, inLighthouseF1, inLighthouseF2, inBasement, inDagCave;
 
@@ -89,6 +89,8 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	QuestStep useAirRune, useWaterRune, useEarthRune, useFireRune, useSword, useArrow, goThroughDoor, talkToJossik,
 		killDagannoth, killMother;
 
+	//Zones
+	Zone lighthouseF0, lighthouseF1, lighthouseF2, lighthouseF2V2, basement, dagCave;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()

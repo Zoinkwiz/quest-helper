@@ -130,7 +130,7 @@ public class MakingHistory extends BasicQuestHelper
 		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ardougneTeleport = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
 		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL);
-		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemID.RING_OF_DUELING8);
+		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.getRingOfDuelings());
 		enchantedKey = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
 		enchantedKey.setTooltip("You can get another from the silver merchant in East Ardougne's market");
 

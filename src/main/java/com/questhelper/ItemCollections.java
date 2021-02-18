@@ -654,6 +654,7 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> skillsNecklaces = QuestUtil.toLinkedList(
+		ItemID.SKILLS_NECKLACE6,
 		ItemID.SKILLS_NECKLACE5,
 		ItemID.SKILLS_NECKLACE4,
 		ItemID.SKILLS_NECKLACE3,

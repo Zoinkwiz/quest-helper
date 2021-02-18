@@ -194,7 +194,7 @@ public class DreamMentor extends BasicQuestHelper
 
 		foodAll = new ItemRequirement("3 different types of food, 7 of two and 6 of one", -1, 20);
 		foodAll.setDisplayItemId(BankSlotIcons.getFood());
-		food14 = new ItemRequirement("14 food, 5x of 2 different types of food, and 4x of another", -1, 14);
+		food14 = new ItemRequirement("food, 5x of 2 different types of food, and 4x of another", -1, 14);
 		food14.setDisplayItemId(BankSlotIcons.getFood());
 		food4 = new ItemRequirement("4 food, 1x of 2 different types of food, and 2x of another", -1, 4);
 		food4.setDisplayItemId(BankSlotIcons.getFood());

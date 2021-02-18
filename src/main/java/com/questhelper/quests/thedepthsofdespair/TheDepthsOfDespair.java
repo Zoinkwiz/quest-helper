@@ -77,6 +77,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		enterCrabclawCaves, goThroughCrevice, stepOverSteppingStones, climbPastRocks, enterTunnelEntrance,
 		talkToArturHosidius, killSandSnake, searchChest, talkToLordKandurAgain;
 
+	//Zones
 	Zone houseWestOfVinery, arceuusLibraryF1, arceuusLibraryF2, arceuusLibraryF3, crabclawCaves, crabclawCavesPart1A,
 		crabclawCavesPart1B, crabclawCavesPart2, crabclawCavesPart3, crabclawCavesDownstairs;
 
@@ -132,7 +133,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		skillsNecklace = new ItemRequirement("Skill's necklace", ItemCollections.getSkillsNecklaces());
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces());
 		superEnergyOrStamina = new ItemRequirement("Super Energy or Stamina potions", -1, -1);
 
 		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);

@@ -223,15 +223,16 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		talkToLarrissa.addDialogSteps("With what?", "But how can I help?", "Okay, I'll help!");
 
 		usePlankOnBridge = new ObjectStep(this, ObjectID.BROKEN_BRIDGE, new WorldPoint(2596, 3608, 0), "Use a plank " +
-			"on the bridge east of the Lighthouse.", plank.highlighted());
+			"on the bridge east of the Lighthouse.", plank.highlighted(), steelNails60, hammer);
 		usePlankOnBridge.addIcon(ItemID.PLANK);
 
 		useSecondPlank = new ObjectStep(this, ObjectID.BROKEN_BRIDGE_4616, new WorldPoint(2598, 3608, 0),
-			"Use a plank on the other side of the bridge east of the Lighthouse.", plank.highlighted());
+			"Use a plank on the other side of the bridge east of the Lighthouse.", plank.highlighted(), steelNails60,
+			hammer);
 		useSecondPlank.addIcon(ItemID.PLANK);
 
 		talkToGunnjorn = new NpcStep(this, NpcID.GUNNJORN, new WorldPoint(2547, 3553, 0),
-			"Talk to Gunnjorn in the Barbarian Agility Course south of the lighthouse.", steelNails60);
+			"Talk to Gunnjorn in the Barbarian Agility Course south of the lighthouse.");
 
 		openLighthouse = new ObjectStep(this, ObjectID.DOORWAY_4577, new WorldPoint(2509, 3636, 0), "Unlock the " +
 			"Lighthouse.", lighthouseKey);

@@ -120,7 +120,7 @@ public class DetailedQuestStep extends QuestStep
 	public void startUp()
 	{
 		super.startUp();
-		if(worldMapPoint != null)
+		if (worldMapPoint != null)
 		{
 			mapPoint = new QuestHelperWorldMapPoint(worldMapPoint, getQuestImage());
 			worldMapPointManager.add(mapPoint);
@@ -180,7 +180,7 @@ public class DetailedQuestStep extends QuestStep
 	public void setWorldPoint(WorldPoint worldPoint)
 	{
 		this.worldPoint = worldPoint;
-		if(worldMapPoint == null && started)
+		if (worldMapPoint == null && started)
 		{
 			if (mapPoint != null)
 			{
@@ -229,19 +229,24 @@ public class DetailedQuestStep extends QuestStep
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
 	}
 
-	public void renderArrow(Graphics2D graphics) {
-		if (questHelper.getConfig().showMiniMapArrow()) {
-			if (worldPoint == null || hideWorldArrow) {
+	public void renderArrow(Graphics2D graphics)
+	{
+		if (questHelper.getConfig().showMiniMapArrow())
+		{
+			if (worldPoint == null || hideWorldArrow)
+			{
 				return;
 			}
 
 			LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
-			if (lp == null) {
+			if (lp == null)
+			{
 				return;
 			}
 
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp, 30);
-			if (poly == null || poly.getBounds() == null) {
+			if (poly == null || poly.getBounds() == null)
+			{
 				return;
 			}
 
@@ -249,7 +254,7 @@ public class DetailedQuestStep extends QuestStep
 			int startY = poly.getBounds().y + (poly.getBounds().height / 2);
 
 			DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(),
-					startX, startY);
+				startX, startY);
 		}
 	}
 
@@ -267,15 +272,19 @@ public class DetailedQuestStep extends QuestStep
 		renderMapArrows(graphics);
 	}
 
-	public void renderMapArrows(Graphics2D graphics) {
-		if (questHelper.getConfig().showMiniMapArrow()) {
-			if (mapPoint == null) {
+	public void renderMapArrows(Graphics2D graphics)
+	{
+		if (questHelper.getConfig().showMiniMapArrow())
+		{
+			if (mapPoint == null)
+			{
 				return;
 			}
 
 			WorldPoint point = mapPoint.getWorldPoint();
 
-			if (currentRender < 24) {
+			if (currentRender < 24)
+			{
 				renderMinimapArrow(graphics);
 			}
 
@@ -303,7 +312,8 @@ public class DetailedQuestStep extends QuestStep
 
 	public void renderMinimapArrow(Graphics2D graphics)
 	{
-		if (questHelper.getConfig().showMiniMapArrow()) {
+		if (questHelper.getConfig().showMiniMapArrow())
+		{
 			DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
 		}
 	}
@@ -343,7 +353,7 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (requirements == null || requirements.isEmpty())
+		if (requirements.isEmpty())
 		{
 			return;
 		}
@@ -352,7 +362,7 @@ public class DetailedQuestStep extends QuestStep
 		{
 			for (Requirement requirement : requirements)
 			{
-				if (isValidRequirementForRender(requirement, item))
+				if (isValidRequirementForRenderInInventory(requirement, item))
 				{
 					Rectangle slotBounds = item.getCanvasBounds();
 					int red = getQuestHelper().getConfig().targetOverlayColor().getRed();
@@ -366,14 +376,14 @@ public class DetailedQuestStep extends QuestStep
 		}
 	}
 
-	private boolean isValidRequirementForRender(Requirement requirement, WidgetItem item)
+	private boolean isValidRequirementForRenderInInventory(Requirement requirement, WidgetItem item)
 	{
-		return requirement instanceof ItemRequirement && isValidRenderRequirement((ItemRequirement) requirement, item);
+		return requirement instanceof ItemRequirement && isValidRenderRequirementInInventory((ItemRequirement) requirement, item);
 	}
 
-	private boolean isValidRenderRequirement(ItemRequirement requirement, WidgetItem item)
+	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, WidgetItem item)
 	{
-		return requirement.isHighlightInInventory() && requirement.getAllIds().contains(item.getId());
+		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getId());
 	}
 
 	@Subscribe
@@ -383,7 +393,7 @@ public class DetailedQuestStep extends QuestStep
 		Tile tile = itemSpawned.getTile();
 		for (Requirement requirement : requirements)
 		{
-			if (isItemRequirementExact(requirement) && requirementContainsID((ItemRequirement) requirement, item.getId()))
+			if (isItemRequirement(requirement) && requirementContainsID((ItemRequirement) requirement, item.getId()))
 			{
 				tileHighlights.get(tile).add(itemSpawned.getItem().getId());
 			}
@@ -394,10 +404,15 @@ public class DetailedQuestStep extends QuestStep
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		Tile tile = itemDespawned.getTile();
-
 		if (tileHighlights.containsKey(tile))
 		{
-			tileHighlights.get(tile).remove(itemDespawned.getItem().getId());
+			for (Requirement requirement : requirements)
+			{
+				if (isItemRequirement(requirement) && requirementContainsID((ItemRequirement) requirement, itemDespawned.getItem().getId()))
+				{
+					tileHighlights.get(tile).remove(itemDespawned.getItem().getId());
+				}
+			}
 		}
 	}
 
@@ -440,10 +455,10 @@ public class DetailedQuestStep extends QuestStep
 
 	private boolean isValidRequirementForTileItem(Requirement requirement, TileItem item)
 	{
-		return isItemRequirementExact(requirement) && requirementMatchesTileItem((ItemRequirement) requirement, item);
+		return isItemRequirement(requirement) && requirementMatchesTileItem((ItemRequirement) requirement, item);
 	}
 
-	private boolean isItemRequirementExact(Requirement requirement)
+	private boolean isItemRequirement(Requirement requirement)
 	{
 		return requirement != null && requirement.getClass() == ItemRequirement.class;
 	}
@@ -515,10 +530,10 @@ public class DetailedQuestStep extends QuestStep
 
 	private boolean isReqValidForHighlighting(Requirement requirement, Collection<Integer> ids)
 	{
-		return isItemRequirementExact(requirement)
+		return isItemRequirement(requirement)
 			&& requirementIsItem((ItemRequirement) requirement)
 			&& requirementContainsID((ItemRequirement) requirement, ids)
+			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
 			&& !requirement.check(client);
 	}
-
 }

@@ -191,7 +191,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		getStatues.addStep(hasTrolley, useTrolleyOnLumbridgeStatue);
 
 		ConditionalStep makingAGarden = new ConditionalStep(this, helpingElstan);
-		makingAGarden.addStep(new Conditions(plantedEverything, placedLumbridgeStatue, placedLumbridgeStatue),
+		makingAGarden.addStep(new Conditions(plantedEverything, placedLumbridgeStatue, placedFaladorStatue),
 			talkToEllmariaAfterGrown);
 		makingAGarden.addStep(plantedEverything, getStatues);
 		makingAGarden.addStep(new Conditions(plantedMarigold, plantedOnions, plantedCabbages,

@@ -36,17 +36,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ItemRequirement extends AbstractRequirement
@@ -69,7 +65,6 @@ public class ItemRequirement extends AbstractRequirement
 	@Setter
 	private boolean equip;
 
-	@Getter
 	@Setter
 	protected boolean highlightInInventory;
 
@@ -165,7 +160,7 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
-	public ItemRequirement conditioned(Requirement condition)
+	public ItemRequirement hideConditioned(Requirement condition)
 	{
 		ItemRequirement newItem = copy();
 		newItem.setConditionToHide(condition);
@@ -180,6 +175,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
+		newItem.setConditionToHide(conditionToHide);
 		newItem.setTooltip(getTooltip());
 
 		return newItem;
@@ -414,4 +410,14 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 
+
+	public boolean shouldRenderItemHighlights(Client client)
+	{
+		return conditionToHide == null || !conditionToHide.check(client);
+	}
+
+	public boolean shouldHighlightInInventory(Client client)
+	{
+		return highlightInInventory && shouldRenderItemHighlights(client);
+	}
 }

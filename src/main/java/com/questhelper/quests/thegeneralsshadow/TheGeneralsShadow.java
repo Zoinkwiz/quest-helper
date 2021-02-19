@@ -219,7 +219,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyGloves, ghostlyBoots, ghostlyCloak,
+		return Arrays.asList(coins40, ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyGloves, ghostlyBoots, ghostlyCloak,
 			ringOfVisibility, ghostspeak, combatGear);
 	}
 
@@ -251,7 +251,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Proving your Sin",
 			Arrays.asList(talkToKhazard, talkToSeer, talkToKhazardAfterSeer), ghostlyRobes,
-			ringOfVisibility, ghostspeak));
+			ringOfVisibility, ghostspeak, coins40));
 
 		allSteps.add(new PanelDetails("Finding the Scouts",
 			Arrays.asList(talkToGnomeScout, talkToFaladorScout, talkToShantyScout, talkToKaramjaScout,

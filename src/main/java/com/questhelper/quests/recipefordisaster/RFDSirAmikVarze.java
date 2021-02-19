@@ -317,7 +317,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(axe, macheteAndRadimus, dramenStaffOrLunar, rawChicken, bucketOfMilk, potOfCream, cornflour, pestleAndMortar, iceGloves);
+		return Arrays.asList(axe, macheteAndRadimus, dramenStaffOrLunar, rawChicken, bucketOfMilk,
+			potOfCream, cornflour, dramenBranch, vanillaPod, pestleAndMortar, iceGloves);
 	}
 
 	@Override
@@ -350,11 +351,14 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectAmik, talkToCook, talkToWom)));
-		PanelDetails tokenAndEggPanel = new PanelDetails("Get token and egg", Arrays.asList(enterZanaris, useChickenOnShrine, killEvilChicken, pickUpEgg, killBlackDragon, pickUpToken),
+		PanelDetails tokenAndEggPanel = new PanelDetails("Get token and egg", Arrays.asList(enterZanaris, useChickenOnShrine,
+			killEvilChicken, pickUpEgg, killBlackDragon, pickUpToken),
 			dramenStaffOrLunar, rawChicken, combatGear, antidragonShield, antifirePotion);
 		tokenAndEggPanel.setLockingStep(tokenAndEggSteps);
 		allSteps.add(tokenAndEggPanel);
-		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture, useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze), bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token));
+		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture,
+			useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze),
+			bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token));
 
 		return allSteps;
 	}

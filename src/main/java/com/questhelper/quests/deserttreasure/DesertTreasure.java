@@ -506,23 +506,41 @@ public class DesertTreasure extends BasicQuestHelper
 
 		killKamil = new NpcStep(this, NpcID.KAMIL, new WorldPoint(2863, 3757, 0),
 			"Continue along the path until you find Kamil. Kill him, preferably with fire spells. Get into melee distance and protect from melee.", fireSpells);
-		climbOnToLedge = new ObjectStep(this, ObjectID.ICE_LEDGE, new WorldPoint(2837, 3804, 0), "Equip the spiked boots, then continue along the path until you reach an ice ledge. Climb up it.", spikedBootsEquipped);
-		goThroughPathGate = new ObjectStep(this, ObjectID.ICE_GATE_6462, new WorldPoint(2854, 3811, 1), "Follow the Ice Path up to the top and enter the gate there.");
-		breakIce1 = new NpcStep(this, NpcID.ICE_BLOCK, new WorldPoint(2826, 3808, 2), "Break the ice surrounding the trolls at the end of the path. Fire spells are effective for this.", fireSpells);
-		breakIce2 = new NpcStep(this, NpcID.ICE_BLOCK_707, new WorldPoint(2826, 3812, 2), "Break the ice surrounding the trolls at the end of the path. Fire spells are effective for this.", fireSpells);
-		talkToTrolls = new NpcStep(this, NpcID.TROLL_MOTHER, new WorldPoint(2826, 3812, 2), "Talk to the troll parents at the end of the Ice Path.");
-		talkToChildTrollAfterFreeing = new NpcStep(this, NpcID.TROLL_CHILD, new WorldPoint(2835, 3740, 0), "Talk to the Troll Child north of Trollheim to get the ice diamond.");
+		climbOnToLedge = new ObjectStep(this, ObjectID.ICE_LEDGE, new WorldPoint(2837, 3804, 0),
+			"Equip the spiked boots, then continue along the path until you reach an ice ledge. Climb up it.", spikedBootsEquipped);
+		goThroughPathGate = new ObjectStep(this, ObjectID.ICE_GATE_6462, new WorldPoint(2854, 3811, 1),
+			"Follow the Ice Path up to the top and enter the gate there.");
+		breakIce1 = new NpcStep(this, NpcID.ICE_BLOCK, new WorldPoint(2826, 3808, 2),
+			"Break the ice surrounding the trolls at the end of the path. Fire spells are effective for this.", fireSpells);
+		breakIce2 = new NpcStep(this, NpcID.ICE_BLOCK_707, new WorldPoint(2826, 3812, 2),
+			"Break the ice surrounding the trolls at the end of the path. Fire spells are effective for this.", fireSpells);
+		talkToTrolls = new NpcStep(this, NpcID.TROLL_MOTHER, new WorldPoint(2826, 3812, 2),
+			"Talk to the troll parents at the end of the Ice Path.");
+		talkToChildTrollAfterFreeing = new NpcStep(this, NpcID.TROLL_CHILD, new WorldPoint(2835, 3740, 0),
+			"Talk to the Troll Child north of Trollheim to get the ice diamond.");
 
-		placeBlood = new ObjectStep(this, NullObjectID.NULL_6482, new WorldPoint(3221, 2910, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", bloodDiamondHighlighted, smokeDiamond, iceDiamond, shadowDiamond);
+		placeBlood = new ObjectStep(this, NullObjectID.NULL_6482, new WorldPoint(3221, 2910, 0),
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
+			bloodDiamondHighlighted,	smokeDiamond,
+			iceDiamond,	shadowDiamond);
 		placeBlood.addIcon(ItemID.BLOOD_DIAMOND);
 
-		placeSmoke = new ObjectStep(this, NullObjectID.NULL_6485, new WorldPoint(3245, 2910, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", smokeDiamondHighlighted, iceDiamond, shadowDiamond);
+		placeSmoke = new ObjectStep(this, NullObjectID.NULL_6485, new WorldPoint(3245, 2910, 0),
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
+			smokeDiamondHighlighted, iceDiamond, shadowDiamond);
 		placeSmoke.addIcon(ItemID.SMOKE_DIAMOND);
 
-		placeIce = new ObjectStep(this, NullObjectID.NULL_6488, new WorldPoint(3245, 2886, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", iceDiamondHighlighted, shadowDiamond);
+		placeIce = new ObjectStep(this, NullObjectID.NULL_6488, new WorldPoint(3245, 2886, 0),
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.", iceDiamondHighlighted, shadowDiamond);
 		placeIce.addIcon(ItemID.ICE_DIAMOND);
 
-		placeShadow = new ObjectStep(this, NullObjectID.NULL_6491, new WorldPoint(3221, 2886, 0), "Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", shadowDiamondHighlighted);
+		placeShadow = new ObjectStep(this, NullObjectID.NULL_6491, new WorldPoint(3221, 2886, 0),
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
+			shadowDiamondHighlighted);
 		placeShadow.addIcon(ItemID.SHADOW_DIAMOND);
 
 		placeBlood.addSubSteps(placeSmoke, placeShadow, placeIce);
@@ -588,7 +606,9 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamondPanel.setLockingStep(getBloodDiamond);
 
 		PanelDetails iceDiamondPanel = new PanelDetails("Ice diamond",
-			Arrays.asList(giveCakeToTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1, breakIce2, talkToTrolls, talkToChildTrollAfterFreeing), cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas);
+			Arrays.asList(giveCakeToTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1,
+				breakIce2, talkToTrolls, talkToChildTrollAfterFreeing),
+			cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas, fireSpells);
 		iceDiamondPanel.setLockingStep(getIceDiamond);
 
 		PanelDetails finishingPanel = new PanelDetails("Freeing Azzanadra",

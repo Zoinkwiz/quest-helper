@@ -66,14 +66,18 @@ public class OneSmallFavour extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement steelBars4, steelBars3, steelBar, bronzeBar, ironBar, chisel, guam2, guam, marrentill, harralander, hammer, hammerHighlight, emptyCup, pigeonCages5, pot, hotWater, softClay,
-		opal, jade, sapphire, redTopaz, bluntAxe, herbalTincture, guthixRest, uncutSapphire,
+		opal, jade, sapphire, redTopaz, bluntAxe, herbalTincture, guthixRest, uncutSapphire, cupOfWater,
 		uncutOpal, uncutJade, uncutRedTopaz, stodgyMattress, mattress, animateRockScroll, animateRockScrollHighlight, ironOxide, brokenVane1, brokenVane2, brokenVane3, ornament,
 		weathervanePillar, directionals, weatherReport, unfiredPotLid, potLid, potWithLid, breathingSalts, chickenCages5, sharpenedAxe, redMahog;
 
-	//Items Recommended
-	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports;
+	ItemRequirement guamTea, guam2Tea, harrTea, marrTea, guamMarrTea, guamHarrTea, harrMarrTea, guam2MarrTea,
+		guam2HarrTea, guamHarrMarrTea, herbTeaMix;
 
-	Requirement inSanfewRoom, inHamBase, inDwarvenMine, hasGuthixRest, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
+	//Items Recommended
+	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports,
+		cutTopazExtra, cutOpalExtra, cutJadeExtra;
+
+	Requirement inSanfewRoom, inHamBase, inDwarvenMine, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
 		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full, lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, hasSapphire, hasOpal,
 		hasJade, hasRedTopaz, hasPigeonCages, inScrollSpot, slagilithNearby, petraNearby, inSeersVillageUpstairs, onRoof, hasOrnament, hasWeathervanePillar, hasDirectionals, hasPot,
 		addedOrnaments, addedDirectionals, addedWeathervanePillar, hasOrUsedOrnament, hasOrUsedDirectionals, hasOrUsedWeathervanePillar, hasPotWithLid, hasPotLid, hasUnfiredPotLid;
@@ -88,6 +92,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		killGangMembers, talkToHammerspikeFinal, returnToTassie, spinPotLid, pickUpPot, firePotLid, usePotLidOnPot, returnToApothecary, returnToHorvik, talkToHorvikFinal, returnToSeth,
 		returnDownToJohnahus, returnToJohnahus, returnToAggie, returnToBrian, returnToForester, returnToYanni, returnUpToSanfew, returnToPhantuwti2, useVane12OnAnvil, useVane13OnAnvil,
 		useVane23OnAnvil, useVane1OnAnvil, fixAllLamps, searchVaneAgain;
+
+	DetailedQuestStep useBowlOnCup, useHerbsOnCup;
 
 	//Zones
 	Zone sanfewRoom, hamBase, dwarvenMine, goblinCave, scrollSpot, seersVillageUpstairs, roof;
@@ -128,7 +134,6 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		ConditionalStep goTalkToHammerspike = new ConditionalStep(this, goDownToHammerspike);
 		goTalkToHammerspike.addStep(inDwarvenMine, talkToHammerspike);
-
 		steps.put(70, goTalkToHammerspike);
 
 		ConditionalStep goTalkToSanfew = new ConditionalStep(this, goUpToSanfew);
@@ -136,8 +141,9 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		steps.put(75, goTalkToSanfew);
 
-		ConditionalStep makeGuthixRestForGnome = new ConditionalStep(this, makeGuthixRest);
-		makeGuthixRestForGnome.addStep(hasGuthixRest, talkToBleemadge);
+		ConditionalStep makeGuthixRestForGnome = new ConditionalStep(this, useBowlOnCup);
+		makeGuthixRestForGnome.addStep(guthixRest, talkToBleemadge);
+		makeGuthixRestForGnome.addStep(herbTeaMix, useHerbsOnCup);
 
 		steps.put(80, makeGuthixRestForGnome);
 		steps.put(81, makeGuthixRestForGnome);
@@ -352,6 +358,23 @@ public class OneSmallFavour extends BasicQuestHelper
 		bluntAxe = new ItemRequirement("Blunt axe", ItemID.BLUNT_AXE);
 		bluntAxe.setTooltip("You can get another from a Jungle Forester south of Shilo Village");
 		herbalTincture = new ItemRequirement("Herbal tincture", ItemID.HERBAL_TINCTURE);
+		cupOfWater = new ItemRequirement("Cup of hot water", ItemID.CUP_OF_HOT_WATER);
+
+		harrTea = new ItemRequirement("Herb tea mix (harralander)", ItemID.HERB_TEA_MIX);
+		guamTea = new ItemRequirement("Herb tea mix (guam)", ItemID.HERB_TEA_MIX_4466);
+		marrTea =  new ItemRequirement("Herb tea mix (marrentill)", ItemID.HERB_TEA_MIX_4468);
+		harrMarrTea = new ItemRequirement("Herb tea mix (harr/marr)", ItemID.HERB_TEA_MIX_4470);
+		guamHarrTea =  new ItemRequirement("Herb tea mix (harr/guam)", ItemID.HERB_TEA_MIX_4472);
+		guam2Tea = new ItemRequirement("Herb tea mix (2 guam)", ItemID.HERB_TEA_MIX_4474);
+		guamMarrTea = new ItemRequirement("Herb tea mix (marr/guam)", ItemID.HERB_TEA_MIX_4476);
+		guamHarrMarrTea = new ItemRequirement("Herb tea mix (harr/marr/guam)", ItemID.HERB_TEA_MIX_4478);
+		guam2MarrTea = new ItemRequirement("Herb tea mix (2 guam/marr)", ItemID.HERB_TEA_MIX_4480);
+		guam2HarrTea = new ItemRequirement("Herb tea mix (2 guam/harr)", ItemID.HERB_TEA_MIX_4482);
+		herbTeaMix = new ItemRequirement("Herb tea mix", ItemID.HERB_TEA_MIX);
+		herbTeaMix.addAlternates(ItemID.HERB_TEA_MIX_4466, ItemID.HERB_TEA_MIX_4468, ItemID.HERB_TEA_MIX_4470,
+			ItemID.HERB_TEA_MIX_4472, ItemID.HERB_TEA_MIX_4474, ItemID.HERB_TEA_MIX_4476,
+			ItemID.HERB_TEA_MIX_4478, ItemID.HERB_TEA_MIX_4480, ItemID.HERB_TEA_MIX_4482);
+
 		guthixRest = new ItemRequirement("Guthix rest(3)", ItemID.GUTHIX_REST3);
 
 		sapphire = new ItemRequirement("Sapphire", ItemID.SAPPHIRE);
@@ -445,7 +468,6 @@ public class OneSmallFavour extends BasicQuestHelper
 		inHamBase = new ZoneRequirement(hamBase);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inGoblinCave = new ZoneRequirement(goblinCave);
-		hasGuthixRest = new ItemRequirements(guthixRest);
 
 		lamp1Empty = new VarbitRequirement(6225, 1);
 		lamp2Empty = new VarbitRequirement(6226, 1);
@@ -503,8 +525,9 @@ public class OneSmallFavour extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToYanni = new NpcStep(this, NpcID.YANNI_SALIKA, new WorldPoint(2836, 2983, 0), "Talk to Yanni Salika in Shilo Village.");
+		talkToYanni.addDialogSteps("Is there anything else interesting to do around here?", "Ok, see you in a tick!");
 		talkToJungleForester = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2861, 2942, 0), "Talk to a Jungle Forester south of Shilo Village.", bluntAxe);
-		talkToJungleForester.addDialogStep("I need to talk to you about red mahogany.");
+		talkToJungleForester.addDialogSteps("I'll get going then!", "I need to talk to you about red mahogany.");
 		talkToJungleForester.addDialogStep("Okay, I'll take your axe to get it sharpened.");
 		talkToBrian = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Talk to Brian in the Port Sarim axe shop.");
 		talkToBrian.addDialogStep("Do you sharpen axes?");
@@ -548,15 +571,38 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		goUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
-		talkToSanfew.addDialogStepWithExclusion("Are you taking any new initiates?", "Ask about the Diamonds of Azzanadra");
+		talkToSanfew.addDialogStep("Are you taking any new initiates?");
 		talkToSanfew.addDialogStepWithExclusion("Do you accept dwarves?", "A dwarf I know wants to become an initiate.");
-		talkToSanfew.addDialogStep("Yep, it's a deal.");
+		talkToSanfew.addDialogSteps("A dwarf I know wants to become an initiate.", "Yep, it's a deal.");
 
+		useBowlOnCup = new DetailedQuestStep(this, "Use a bowl of hot water on an empty cup.",
+			hotWater.highlighted(), emptyCup.highlighted());
+		useHerbsOnCup = new DetailedQuestStep(this,
+			"Use 2 guams, a marrentill and a harralander on the cup.",
+			guam2.hideConditioned(new Conditions(LogicType.OR, guamTea, guam2Tea, guamMarrTea, guamHarrTea,
+				guamHarrMarrTea)).highlighted(),
+			guam.hideConditioned(new Conditions(LogicType.OR, cupOfWater, marrTea, harrTea, guam2Tea, guam2MarrTea,
+				guam2HarrTea)).highlighted(),
+			marrentill.hideConditioned(new Conditions(LogicType.OR, marrTea, harrMarrTea, guamMarrTea, guam2MarrTea,
+				guamHarrMarrTea)).highlighted(),
+			harralander.hideConditioned(new Conditions(LogicType.OR, harrTea, harrMarrTea, guamHarrTea, guam2HarrTea,
+				guamHarrMarrTea)).highlighted(),
+			cupOfWater.hideConditioned(new Conditions(LogicType.OR, guamTea, harrTea, marrTea, harrMarrTea, guamHarrTea,
+				guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea)).highlighted(),
+		    herbTeaMix.hideConditioned(new Conditions(LogicType.NOR, guamTea, harrTea, marrTea, harrMarrTea,
+				guamHarrTea, guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea)).highlighted());
 		makeGuthixRest = new DetailedQuestStep(this, "Make Guthix Rest by using a bowl of hot water on an empty tea cup, then using 2 guams, a marrentill and a harralander on it.", emptyCup, hotWater, guam2, marrentill, harralander);
+		makeGuthixRest.addSubSteps(useBowlOnCup, useHerbsOnCup);
 		talkToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.", guthixRest);
+		((NpcStep) talkToBleemadge).addAlternateNpcs(NpcID.CAPTAIN_BLEEMADGE_10461, NpcID.CAPTAIN_BLEEMADGE_10462,
+			NpcID.CAPTAIN_BLEEMADGE_10463, NpcID.CAPTAIN_BLEEMADGE_10464, NpcID.CAPTAIN_BLEEMADGE_10465,
+			NpcID.CAPTAIN_BLEEMADGE_10466);
 		talkToBleemadge.addDialogStep("I have a special tea here for you from Sanfew!");
 
 		talkToBleemadgeNoTea = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.");
+		((NpcStep) talkToBleemadgeNoTea).addAlternateNpcs(NpcID.CAPTAIN_BLEEMADGE_10461, NpcID.CAPTAIN_BLEEMADGE_10462,
+			NpcID.CAPTAIN_BLEEMADGE_10463, NpcID.CAPTAIN_BLEEMADGE_10464, NpcID.CAPTAIN_BLEEMADGE_10465,
+			NpcID.CAPTAIN_BLEEMADGE_10466);
 		talkToBleemadgeNoTea.addDialogStep("How was that tea?");
 		talkToBleemadgeNoTea.addDialogStep("Ok, I'll go and get you some T.R.A.S.H.");
 
@@ -644,18 +690,18 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		standNextToSculpture.addSubSteps(readScroll);
 
-		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(1617, 9837, 0), "Kill the Slagilith.");
+		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith.");
 		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll", animateRockScrollHighlight);
-		talkToPetra = new NpcStep(this, NpcID.PETRA_FIYED, new WorldPoint(1617, 9837, 0), "Talk to Petra Fiyed.");
+		talkToPetra = new NpcStep(this, NpcID.PETRA_FIYED, new WorldPoint(2617, 9837, 0), "Talk to Petra Fiyed.");
 
 		returnToPhantuwti = new NpcStep(this, NpcID.PHANTUWTI_FANSTUWI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Return to Phantuwti in the south west house of Seers' Village.");
 		returnToPhantuwti.addDialogStep("I've released Petra, she should have returned.");
 		returnToPhantuwti.addDialogStep("I'll run you through if you don't give me that weather report.");
-		returnToPhantuwti.addDialogStep("Why can't you get a clear picture?");
+		returnToPhantuwti.addDialogStepWithExclusion("Why can't you get a clear picture?", "I'll run you through if you don't give me that weather report.");
 
 		returnToPhantuwti2 = new NpcStep(this, NpcID.PHANTUWTI_FANSTUWI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Return to Phantuwti in the south west house of Seers' Village.");
 		returnToPhantuwti2.addDialogStep("I'll run you through if you don't give me that weather report.");
-		returnToPhantuwti2.addDialogStep("Why can't you get a clear picture?");
+		returnToPhantuwti2.addDialogStepWithExclusion("Why can't you get a clear picture?", "I'll run you through if you don't give me that weather report.");
 		returnToPhantuwti2.addDialogStep("Which special Seers tools do you mean?");
 		returnToPhantuwti2.addDialogStep("What do you mean, 'special combination of items'?");
 
@@ -698,6 +744,9 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		returnToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.");
 		returnToBleemadge.addDialogStep("Hey there, did you get your T.R.A.S.H?");
+		((NpcStep) returnToBleemadge).addAlternateNpcs(NpcID.CAPTAIN_BLEEMADGE_10461, NpcID.CAPTAIN_BLEEMADGE_10462,
+			NpcID.CAPTAIN_BLEEMADGE_10463, NpcID.CAPTAIN_BLEEMADGE_10464, NpcID.CAPTAIN_BLEEMADGE_10465,
+			NpcID.CAPTAIN_BLEEMADGE_10466);
 
 		returnUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "Return to Sanfew upstairs in the Taverley herblore store.");
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Return to Sanfew upstairs in the Taverley herblore store.");
@@ -705,7 +754,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		goDownToHammerspikeAgain = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0), "Return to the Dwarven Mine and talk to Hammerspike Stoutbeard in the west side.");
 		returnToHammerspike = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
-		returnToHammerspike.addSubSteps(goDownToHammerspike);
+		returnToHammerspike.addSubSteps(goDownToHammerspikeAgain);
 
 		killGangMembers = new NpcStep(this, NpcID.DWARF_GANG_MEMBER, new WorldPoint(2968, 9811, 0), "Kill dwarf gang members until Hammerspike gives in.");
 		talkToHammerspikeFinal = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
@@ -721,7 +770,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToHorvik.addDialogStep("I have the tincture and the breathing salts.");
 		talkToHorvikFinal = new NpcStep(this, NpcID.HORVIK, new WorldPoint(3229, 3437, 0), "Talk to Horvik once more in the armour shop north east of the Varrock square.", pigeonCages5);
 		talkToHorvikFinal.addDialogStep("I have the five pigeon cages you asked for!");
-		returnToSeth = new NpcStep(this, NpcID.SETH_GROATS, new WorldPoint(3228, 3291, 0), "Return to Seth Groats in the farm north east of Lumbridge, accross the river.", chickenCages5);
+		returnToSeth = new NpcStep(this, NpcID.SETH_GROATS, new WorldPoint(3228, 3291, 0), "Return to Seth Groats in the farm north east of Lumbridge, across the river.", chickenCages5);
 		returnDownToJohnahus = new ObjectStep(this, NullObjectID.NULL_5492, new WorldPoint(3166, 3252, 0), "Enter the H.A.M hideout west of Lumbridge and talk to Johanhus Ulsbrecht in there.");
 		returnToJohnahus = new NpcStep(this, NpcID.JOHANHUS_ULSBRECHT, new WorldPoint(3171, 9619, 0), "Return to Johanhus Ulsbrecht in the south of the H.A.M hideout.");
 		returnToJohnahus.addDialogStep("You're in luck, I've managed to swing that chicken deal for you.");
@@ -764,6 +813,9 @@ public class OneSmallFavour extends BasicQuestHelper
 		reqs.add(faladorTeleports);
 		reqs.add(ardougneTeleports);
 		reqs.add(camelotTeleports);
+		reqs.add(opal.quantity(2));
+		reqs.add(jade.quantity(2));
+		reqs.add(redTopaz.quantity(2));
 		return reqs;
 	}
 
@@ -792,11 +844,16 @@ public class OneSmallFavour extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToYanni)));
-		allSteps.add(new PanelDetails("A few small favours", Arrays.asList(talkToJungleForester, talkToBrian, talkToAggie, talkToJohanhus, talkToFred, talkToSeth, talkToHorvik, talkToApoth,
-			talkToTassie, talkToHammerspike, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave, searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, fixAllLamps), chisel, steelBars3, emptyCup, hotWater, guam2, marrentill, harralander));
-		allSteps.add(new PanelDetails("Completing the favours", Arrays.asList(talkToGnormadiumAgain, returnToRantz, returnToTindel, returnToCromperty, enterGoblinCaveAgain, standNextToSculpture, killSlagilith,
-			readScrollAgain, talkToPetra, returnToPhantuwti, searchVane, useHammerOnVane, searchVaneAgain, useVane123OnAnvil, goBackUpLadder, finishWithPhantuwti, returnToArhein, returnToBleemadge, returnToSanfew, returnToHammerspike,
-			killGangMembers, talkToHammerspikeFinal, returnToTassie, spinPotLid, firePotLid, pickUpPot, usePotLidOnPot, returnToApothecary, returnToHorvik, talkToHorvikFinal, returnToSeth, returnToJohnahus, returnToAggie, returnToBrian, returnToForester, returnToYanni), bronzeBar, ironBar, steelBar, hammer));
+		allSteps.add(new PanelDetails("A few small favours", Arrays.asList(talkToJungleForester, talkToBrian, talkToAggie, talkToJohanhus, talkToFred, talkToSeth,
+			talkToHorvik, talkToApoth, talkToTassie, talkToHammerspike, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave,
+			searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, fixAllLamps),
+			chisel, steelBars3, emptyCup, hotWater, guam2, marrentill, harralander));
+		allSteps.add(new PanelDetails("Completing the favours", Arrays.asList(talkToGnormadiumAgain, returnToRantz, returnToTindel, returnToCromperty,
+			enterGoblinCaveAgain, standNextToSculpture, killSlagilith, readScrollAgain, talkToPetra, returnToPhantuwti, searchVane, useHammerOnVane, searchVaneAgain,
+			useVane123OnAnvil, goBackUpLadder, finishWithPhantuwti, returnToArhein, returnToBleemadge, returnToSanfew, returnToHammerspike, killGangMembers,
+			talkToHammerspikeFinal, returnToTassie, spinPotLid, firePotLid, pickUpPot, usePotLidOnPot, returnToApothecary, returnToHorvik, talkToHorvikFinal,
+			returnToSeth, returnToJohnahus, returnToAggie, returnToBrian, returnToForester, returnToYanni), bronzeBar
+			, ironBar, steelBar, hammer, pot));
 
 		return allSteps;
 	}

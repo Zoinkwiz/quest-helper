@@ -465,7 +465,8 @@ public class TowerOfLife extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEffigy, talkToBonafido)));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEffigy, talkToBonafido), saw, hammer, beer,
+			gloves));
 		PanelDetails getBuildersOutfitPanel = new PanelDetails("Get the Builders' outfit", Arrays.asList(
 			talkToBlackeye, //Get hat
 			talkToNoFingers, pickpocketNoFingers, //Get Boots
@@ -478,11 +479,10 @@ public class TowerOfLife extends BasicQuestHelper
 
 
 		allSteps.add(new PanelDetails("Fix the tower",
-			enterTower,
+			Arrays.asList(enterTower,
 			buildPressureMachine, solvePressureMachinePuzzle,
 			buildPipeMachine, solvePipeMachinePuzzle,
-			buildCage, solveCagePuzzle
-		));
+			buildCage, solveCagePuzzle), saw, hammer));
 
 		allSteps.add(new PanelDetails("The Alchemists' Secret", talkToEffigyAgain, followTheAlchemists, confrontEffigy, confrontTheHomunculus, scareTheAlchemists, talkToHomunculusInDungeon));
 

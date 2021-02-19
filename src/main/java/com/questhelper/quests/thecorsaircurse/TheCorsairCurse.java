@@ -268,7 +268,8 @@ public class TheCorsairCurse extends BasicQuestHelper
 		talkToTockShip = new NpcStep(this, NpcID.CAPTAIN_TOCK_7958, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship.");
 		talkToTockShip.addDialogStep("Arsen says he gave you a sacred ogre relic.");
 		talkToTockShip.addDialogStep("About that sacred ogre relic...");
-		goOntoShip = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2839, 0), "Talk to Captin Tock on the ship.");
+		goOntoShip = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2839, 0),
+			"Talk to Captain Tock on the ship.");
 
 		leaveShip = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2838, 1), "Enter the hole west of the Corsair Cove and talk to Chief Tess.");
 		goDownToTess = new ObjectStep(this, ObjectID.HOLE_31791, new WorldPoint(2523, 2861, 0), "Enter the hole west of the Corsair Cove and talk to Chief Tess.");

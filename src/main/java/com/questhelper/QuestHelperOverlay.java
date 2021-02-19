@@ -32,9 +32,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ComponentConstants;
 
 public class QuestHelperOverlay extends OverlayPanel
 {
@@ -46,6 +46,7 @@ public class QuestHelperOverlay extends OverlayPanel
 	public QuestHelperOverlay(QuestHelperPlugin plugin)
 	{
 		this.plugin = plugin;
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGHEST);
 	}
 

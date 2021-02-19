@@ -124,6 +124,10 @@ public class ItemSearch
 
 	public boolean hasItemsInCachedBank(ItemRequirement requirement, Item[] items)
 	{
+		if (items == null)
+		{
+			return false;
+		}
 		return Stream.of(items)
 			.filter(Objects::nonNull)
 			.filter(i -> i.getId() > -1 && i.getQuantity() > -1) // filter out invalid/empty items

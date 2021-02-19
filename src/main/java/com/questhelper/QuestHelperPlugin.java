@@ -312,6 +312,7 @@ public class QuestHelperPlugin extends Plugin
 		{
 			bankItems.setItems(null);
 			bankItems.setItems(event.getItemContainer().getItems());
+			clientThread.invokeLater(() -> panel.updateItemRequirements(client, bankItems));
 		}
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{

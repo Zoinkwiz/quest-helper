@@ -230,13 +230,18 @@ public class ItemRequirement extends AbstractRequirement
 			text.append(this.getName());
 		}
 
-		Color color = getColor(client);
+		Color color = getColorForOverlay(client);
 		lines.add(LineComponent.builder()
 			.left(text.toString())
 			.leftColor(color)
 			.build());
 		lines.addAll(getAdditionalText(client, true));
 		return lines;
+	}
+
+	public Color getColorForOverlay(Client client)
+	{
+		return ItemSearch.hasItemsOnPlayer(client, this) ? Color.GREEN : Color.RED;
 	}
 
 	@Override
@@ -298,7 +303,8 @@ public class ItemRequirement extends AbstractRequirement
 
 		if (color == Color.RED)
 		{
-			if (ItemSearch.hasItemsInBank(client, this) || (bankItems != null && ItemSearch.hasItemsInCachedBank(this, bankItems)))
+			boolean hasInCachedBank = (bankItems != null && ItemSearch.hasItemsInCachedBank(this, bankItems));
+			if (ItemSearch.hasItemsInBank(client, this) || hasInCachedBank)
 			{
 				color = Color.WHITE;
 			}

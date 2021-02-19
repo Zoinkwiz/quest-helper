@@ -520,19 +520,27 @@ public class DesertTreasure extends BasicQuestHelper
 			"Talk to the Troll Child north of Trollheim to get the ice diamond.");
 
 		placeBlood = new ObjectStep(this, NullObjectID.NULL_6482, new WorldPoint(3221, 2910, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", bloodDiamondHighlighted, smokeDiamond, iceDiamond, shadowDiamond);
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
+			bloodDiamondHighlighted,	smokeDiamond,
+			iceDiamond,	shadowDiamond);
 		placeBlood.addIcon(ItemID.BLOOD_DIAMOND);
 
 		placeSmoke = new ObjectStep(this, NullObjectID.NULL_6485, new WorldPoint(3245, 2910, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", smokeDiamondHighlighted, iceDiamond, shadowDiamond);
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
+			smokeDiamondHighlighted, iceDiamond, shadowDiamond);
 		placeSmoke.addIcon(ItemID.SMOKE_DIAMOND);
 
 		placeIce = new ObjectStep(this, NullObjectID.NULL_6488, new WorldPoint(3245, 2886, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", iceDiamondHighlighted, shadowDiamond);
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.", iceDiamondHighlighted, shadowDiamond);
 		placeIce.addIcon(ItemID.ICE_DIAMOND);
 
 		placeShadow = new ObjectStep(this, NullObjectID.NULL_6491, new WorldPoint(3221, 2886, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp.", shadowDiamondHighlighted);
+			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
+			shadowDiamondHighlighted);
 		placeShadow.addIcon(ItemID.SHADOW_DIAMOND);
 
 		placeBlood.addSubSteps(placeSmoke, placeShadow, placeIce);

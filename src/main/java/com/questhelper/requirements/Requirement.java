@@ -27,6 +27,7 @@
 
 package com.questhelper.requirements;
 
+import com.questhelper.QuestHelperPlugin;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public interface Requirement
 	 */
 	default void setTooltip(@Nullable String tooltip) {}
 
-	default List<LineComponent> getDisplayTextWithChecks(Client client)
+	default List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperPlugin plugin)
 	{
 		List<LineComponent> lines = new ArrayList<>();
 

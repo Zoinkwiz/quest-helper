@@ -122,7 +122,7 @@ public class ItemSearch
 		return requirement.getAllIds().stream().anyMatch(id -> hasItemAmountInBank(client, id, requirement.getQuantity()));
 	}
 
-	public boolean hasItemsInCachedBank(ItemRequirement requirement, Item[] items)
+	public boolean hasItemsInBank(ItemRequirement requirement, Item[] items)
 	{
 		if (items == null)
 		{

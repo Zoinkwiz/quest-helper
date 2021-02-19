@@ -135,8 +135,8 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 
 	public boolean checkCachedBank(Item[] items)
 	{
-		boolean hasStaves = (staffItemRequirement != null && ItemSearch.hasItemsInCachedBank(this, items));
-		return ItemSearch.hasItemsInCachedBank(this, items) || hasStaves;
+		boolean hasStaves = (staffItemRequirement != null && ItemSearch.hasItemsInBank(this, items));
+		return ItemSearch.hasItemsInBank(this, items) || hasStaves;
 	}
 
 	@Override

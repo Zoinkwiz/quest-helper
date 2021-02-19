@@ -28,6 +28,7 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.BankItems;
 import com.questhelper.ItemSearch;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.InventorySlots;
@@ -205,7 +206,7 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public List<LineComponent> getOverlayDisplayText(Client client)
+	public List<LineComponent> getOverlayDisplayText(Client client, QuestHelperPlugin plugin)
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
@@ -230,18 +231,39 @@ public class ItemRequirement extends AbstractRequirement
 			text.append(this.getName());
 		}
 
-		Color color = getColorForOverlay(client);
+		Color color = getColorForOverlay(client, plugin.getBankItems());
 		lines.add(LineComponent.builder()
 			.left(text.toString())
 			.leftColor(color)
 			.build());
+		if (color == Color.WHITE)
+		{
+			lines.add(getInBankLine());
+		}
+
 		lines.addAll(getAdditionalText(client, true));
 		return lines;
 	}
 
-	public Color getColorForOverlay(Client client)
+	protected LineComponent getInBankLine()
 	{
-		return ItemSearch.hasItemsOnPlayer(client, this) ? Color.GREEN : Color.RED;
+		return LineComponent.builder()
+			.left(" - In Bank")
+			.leftColor(Color.WHITE)
+			.build();
+	}
+
+	public Color getColorForOverlay(Client client, BankItems bankItems)
+	{
+		if (ItemSearch.hasItemsOnPlayer(client, this))
+		{
+			return Color.GREEN;
+		}
+		if (ItemSearch.hasItemsInBank(this, bankItems.getItems()))
+		{
+			return Color.WHITE;
+		}
+		return Color.RED;
 	}
 
 	@Override
@@ -303,7 +325,7 @@ public class ItemRequirement extends AbstractRequirement
 
 		if (color == Color.RED)
 		{
-			boolean hasInCachedBank = (bankItems != null && ItemSearch.hasItemsInCachedBank(this, bankItems));
+			boolean hasInCachedBank = (bankItems != null && ItemSearch.hasItemsInBank(this, bankItems));
 			if (ItemSearch.hasItemsInBank(client, this) || hasInCachedBank)
 			{
 				color = Color.WHITE;

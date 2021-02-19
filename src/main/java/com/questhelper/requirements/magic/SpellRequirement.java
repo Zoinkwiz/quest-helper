@@ -29,6 +29,7 @@ package com.questhelper.requirements.magic;
 import com.google.common.base.Predicates;
 import com.questhelper.ItemSearch;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
@@ -271,7 +272,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	}
 
 	@Override
-	public List<LineComponent> getOverlayDisplayText(Client client)
+	public List<LineComponent> getOverlayDisplayText(Client client, QuestHelperPlugin plugin)
 	{
 		updateInternalState(client, getItemRequirements(this.requirements));
 		List<LineComponent> lines = new ArrayList<>();
@@ -291,13 +292,17 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			text.append(name);
 		}
-		Color color = getItemOverlayColor(client);
-		// 3 x <Spell_Name>
+		Color color = getItemOverlayColor(client, plugin.getBankItems().getItems());
+		// N x <Spell_Name>
 		lines.add(LineComponent.builder()
 			.left(text.toString())
 			.leftColor(color)
 			.build()
 		);
+		if (color == Color.WHITE)
+		{
+			lines.add(getInBankLine());
+		}
 		if (hasStaff())
 		{
 			int firstStaffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), staffRequirement.getQuantity());
@@ -306,12 +311,16 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			{
 				staffName = client.getItemDefinition(firstStaffID).getName();
 			}
-			Color staffColor = getStaffColor(client);
+			Color staffColor = getStaffColor(client, plugin.getBankItems().getItems());
 			// <Staff Name>
 			lines.add(LineComponent.builder()
 				.left(staffName)
 				.leftColor(staffColor)
 				.build());
+			if (staffColor == Color.WHITE)
+			{
+				lines.add(getInBankLine());
+			}
 			// Add '(equipped)'
 			staffColor = ItemSearch.hasItemEquipped(client, firstStaffID) ? Color.GREEN : Color.RED;
 			lines.add(LineComponent.builder()
@@ -322,38 +331,36 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		return lines;
 	}
 
-	private Color getItemOverlayColor(Client client)
+	private Color getItemOverlayColor(Client client, Item[] bankItems)
 	{
 		//TODO: This is duplicated code from #getColorConsideringBank
 		//TODO: Remove the need for duplicated code.
-		boolean hasStaff = !hasStaff() || ItemSearch.hasItemsOnPlayer(client, staffRequirement);
 		boolean hasRunes, hasItems;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
 		hasRunes = runeRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
 		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
-		if (hasRunes && hasItems && hasStaff)
+		if (hasRunes && hasItems)
 		{
 			return Color.GREEN;
 		}
 		// Don't use ItemSearch for RuneRequirement because RuneRequirement overrides checkBank
-		hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client));
-		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(client, req));
-		hasStaff = !hasStaff() || ItemSearch.hasItemsInBank(client, staffRequirement);
-		if (hasRunes && hasItems && hasStaff)
+		hasRunes = runeRequirements.stream().allMatch(req -> req.checkCachedBank(bankItems));
+		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(req, bankItems));
+		if (hasRunes && hasItems)
 		{
 			return Color.WHITE;
 		}
 		return Color.RED;
 	}
 
-	private Color getStaffColor(Client client)
+	private Color getStaffColor(Client client, Item[] bankItems)
 	{
 		Color staffColor = Color.RED;
 		if (ItemSearch.hasItemsOnPlayer(client, staffRequirement))
 		{
 			staffColor = Color.GREEN;
 		}
-		else if (ItemSearch.hasItemsInBank(client, staffRequirement))
+		else if (ItemSearch.hasItemsInBank(client, staffRequirement) || ItemSearch.hasItemsInBank(staffRequirement, bankItems))
 		{
 			staffColor = Color.WHITE;
 		}
@@ -443,8 +450,8 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			return Color.GREEN;
 		}
 		hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client) || req.checkCachedBank(bankItems)); // Don't use ItemSearch here because RuneRequirement overrides checkBank
-		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(client, req) || ItemSearch.hasItemsInCachedBank(req, bankItems));
-		hasStaff = !hasStaff() || ItemSearch.hasItemsInBank(client, staffRequirement) || ItemSearch.hasItemsInCachedBank(staffRequirement, bankItems);
+		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(client, req) || ItemSearch.hasItemsInBank(req, bankItems));
+		hasStaff = !hasStaff() || ItemSearch.hasItemsInBank(client, staffRequirement) || ItemSearch.hasItemsInBank(staffRequirement, bankItems);
 		if (hasRunes && hasItems && hasStaff)
 		{
 			return Color.WHITE;

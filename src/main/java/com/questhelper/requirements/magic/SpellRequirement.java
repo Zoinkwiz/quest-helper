@@ -119,7 +119,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		this.requirements.add(new SkillRequirement(Skill.MAGIC, spell.getRequiredMagicLevel()));
 		this.requirements.add(new SpellbookRequirement(spell.getSpellbook()));
 		setNumberOfCasts(numberOfCasts);
-		updateTooltip();
 	}
 
 	/**
@@ -179,6 +178,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		else
 		{
 			this.staffRequirement = new ItemRequirement("", staffID);
+			doNotUseTablet();
 		}
 	}
 
@@ -189,6 +189,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			throw new UnsupportedOperationException("Cannot require a staff and then require no staff");
 		}
 		this.staffRequirement = staff;
+		doNotUseTablet();
 	}
 
 	/**
@@ -286,20 +287,48 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		String name = spell.getName();
 		if (tabletRequirement != null && tabletRequirement.check(client))
 		{
-			name = tabletRequirement.getName();
+			text.append(tabletRequirement.getName());
 		}
-		text.append(name);
-
-		Color color = getColorConsideringBank(client, false, null);
-		if (color == Color.RED && checkBank(client))
+		else
 		{
-			color = Color.WHITE;
+			text.append(name);
 		}
+		Color color = getColorConsideringBank(client, false, null);
+		// 3 x <Spell_Name>
 		lines.add(LineComponent.builder()
 			.left(text.toString())
 			.leftColor(color)
 			.build()
 		);
+		if (hasStaff())
+		{
+			int firstStaffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), staffRequirement.getQuantity());
+			String staffName = staffRequirement.getName();
+			if (staffName == null || staffName.isEmpty())
+			{
+				staffName = client.getItemDefinition(firstStaffID).getName();
+			}
+			Color staffColor = Color.RED;
+			if (ItemSearch.hasItemsOnPlayer(client, staffRequirement))
+			{
+				staffColor = Color.GREEN;
+			}
+			else if (ItemSearch.hasItemsInBank(client, staffRequirement))
+			{
+				staffColor = Color.WHITE;
+			}
+			// <Staff Name>
+			lines.add(LineComponent.builder()
+				.left(staffName)
+				.leftColor(staffColor)
+				.build());
+			// Add '(equipped)'
+			staffColor = ItemSearch.hasItemEquipped(client, firstStaffID) ? Color.GREEN : Color.RED;
+			lines.add(LineComponent.builder()
+				.left("(equipped)")
+				.leftColor(staffColor)
+				.build());
+		}
 		return lines;
 	}
 
@@ -344,7 +373,13 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 		boolean hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client));
 		boolean hasItems = requirements.stream().allMatch(req -> req.check(client));
-		return hasRunes && hasItems;
+		boolean hasStaff = !hasStaff();
+		if (hasStaff())
+		{
+			int firstStaffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), staffRequirement.getQuantity());
+			hasStaff = ItemSearch.hasItemAmountInBank(client, firstStaffID, staffRequirement.getQuantity());
+		}
+		return hasRunes && hasItems && (hasStaff() && hasStaff);
 	}
 
 	@Override
@@ -367,32 +402,26 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		boolean hasOtherReqs = getNonItemRequirements(this.requirements).stream().allMatch(req -> req.check(client));
 		if (!hasOtherReqs)
 		{
-			return Color.RED;
+			return Color.RED; // abort early if they can't even cast the spell
 		}
-		boolean hasStaff = staffRequirement != null;
-		if (hasStaff && !staffRequirement.check(client, checkWithSlotRestrictions, bankItems))
-		{
-			return Color.RED; // required staff is not present
-		}
+		boolean hasStaff = !hasStaff() || ItemSearch.hasItemsOnPlayer(client, staffRequirement);
 		boolean hasRunes = false;
 		boolean hasItems = false;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
-		updateInternalState(client, itemRequirements);
 		hasRunes = runeRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
 		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
-		if (hasRunes && hasItems)
+		if (hasRunes && hasItems && hasStaff)
 		{
 			return Color.GREEN;
 		}
-		if (bankItems != null)
+		hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client)); // Don't use ItemSearch here because RuneRequirement overrides checkBank
+		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(client, req));
+		hasStaff = !hasStaff() || ItemSearch.hasItemsInBank(client, staffRequirement);
+		if (hasRunes || hasItems || hasStaff)
 		{
-			hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client));
-			hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(client, req));
-			if (hasRunes && hasItems)
-			{
-				return Color.WHITE;
-			}
+			return Color.WHITE;
 		}
+		updateInternalState(client, itemRequirements);
 		return Color.RED;
 	}
 
@@ -405,9 +434,10 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			updateTabletRequirement(client);
 			return true;
 		}
-		if (staffRequirement != null && ItemSearch.hasItemsAnywhere(client, staffRequirement))
+		boolean hasStaff = true;
+		if (hasStaff())
 		{
-			return true;
+			hasStaff = ItemSearch.hasItemsAnywhere(client, staffRequirement);
 		}
 		boolean hasItems, hasOther, hasRunes;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
@@ -422,7 +452,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 		hasOther = getNonItemRequirements(this.requirements).stream().allMatch(req -> req.check(client));
 		hasRunes = runeRequirements.stream().allMatch(req -> req.check(client, checkWithSlotRestrictions, items));
-		return hasItems && hasOther && hasRunes;
+		return hasItems && hasOther && hasRunes && hasStaff;
 	}
 
 	@Override
@@ -547,12 +577,6 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			staffRequirement.setName(client.getItemDefinition(staffRequirement.getId()).getName());
 		}
-	}
-
-	private void updateTooltip()
-	{
-		setTooltip("This spell requires: ");
-		getNonItemRequirements(this.requirements).forEach(req -> appendToTooltip(req.getDisplayText()));
 	}
 
 	private void updateItemRequirements(Client client, List<ItemRequirement> requirements)

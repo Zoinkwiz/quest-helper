@@ -122,6 +122,14 @@ public class ItemSearch
 		return requirement.getAllIds().stream().anyMatch(id -> hasItemAmountInBank(client, id, requirement.getQuantity()));
 	}
 
+	public boolean hasItemsInCachedBank(ItemRequirement requirement, Item[] items)
+	{
+		return Stream.of(items)
+			.filter(Objects::nonNull)
+			.filter(i -> i.getId() > -1 && i.getQuantity() > -1) // filter out invalid/empty items
+			.anyMatch(i -> requirement.getAllIds().contains(i.getId()) && i.getQuantity() >= requirement.getQuantity());
+	}
+
 	public boolean checkItem(Client client, InventorySlots slot, int itemID)
 	{
 		return slot.contains(client, i -> i.getId() == itemID);

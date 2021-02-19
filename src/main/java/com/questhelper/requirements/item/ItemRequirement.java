@@ -291,14 +291,14 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
+		else if (ItemSearch.hasItemsOnPlayer(client, this))
 		{
 			color = Color.GREEN;
 		}
 
-		if (color == Color.RED && bankItems != null)
+		if (color == Color.RED)
 		{
-			if (check(client, false, bankItems))
+			if (ItemSearch.hasItemsInBank(client, this) || (bankItems != null && ItemSearch.hasItemsInCachedBank(this, bankItems)))
 			{
 				color = Color.WHITE;
 			}

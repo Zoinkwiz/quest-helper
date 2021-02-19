@@ -429,7 +429,7 @@ public class KingsRansom extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.HOLY_GRAIL, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.MURDER_MYSTERY, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.ONE_SMALL_FAVOUR, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.MAGIC, 46));
+		req.add(new SkillRequirement(Skill.MAGIC, 45));
 		req.add(new SkillRequirement(Skill.DEFENCE, 65));
 		return req;
 	}

@@ -591,9 +591,6 @@ public class OneSmallFavour extends BasicQuestHelper
 				guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea)).highlighted(),
 		    herbTeaMix.hideConditioned(new Conditions(LogicType.NOR, guamTea, harrTea, marrTea, harrMarrTea,
 				guamHarrTea, guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea)).highlighted());
-		    System.out.println("BAP");
-		    System.out.println(new Conditions(LogicType.NOR, guamTea, harrTea, marrTea, harrMarrTea,
-				guamHarrTea, guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea).check(client));
 		makeGuthixRest = new DetailedQuestStep(this, "Make Guthix Rest by using a bowl of hot water on an empty tea cup, then using 2 guams, a marrentill and a harralander on it.", emptyCup, hotWater, guam2, marrentill, harralander);
 		makeGuthixRest.addSubSteps(useBowlOnCup, useHerbsOnCup);
 		talkToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.", guthixRest);

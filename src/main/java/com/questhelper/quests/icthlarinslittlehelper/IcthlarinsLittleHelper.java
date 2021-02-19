@@ -266,8 +266,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		// TODO: Verify varbit values for apmeken/scarabas
 		hasApmekenJar = new VarbitRequirement(397, 3);
 		hasScarabasJar = new VarbitRequirement(397, 2);
-		System.out.println(client.getVarbitValue(397));
-		System.out.println("BEEP");
 		killedGuardian = new VarbitRequirement(418, 11, Operation.GREATER_EQUAL);
 
 		// picked up het, 404 = 1

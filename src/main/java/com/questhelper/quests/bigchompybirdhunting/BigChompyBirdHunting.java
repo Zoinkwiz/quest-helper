@@ -333,7 +333,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Getting Rantz Arrows",
 			Arrays.asList(talkToRantz, getLogs, makeShafts, useFeathersOnShafts, useChiselOnBones,
-				useTipsOnShafts, useArrowsOnRantz), axe, knife, feathers, chisel, wolfBones4));
+				useTipsOnShafts, useArrowsOnRantz), axe, knife, feathers, chisel, hammer, wolfBones4));
 		allSteps.add(new PanelDetails("Making Bloated Toads",
 			Arrays.asList(askRantzQuestions, enterCave, getBellow, leaveCave, fillBellows, inflateToad, talkToRantzWithToad)));
 		allSteps.add(new PanelDetails("Hunting Chompy",

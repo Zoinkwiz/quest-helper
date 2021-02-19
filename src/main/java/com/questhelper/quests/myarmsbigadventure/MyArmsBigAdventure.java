@@ -71,7 +71,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		supercompost7, cureOrCompost, rakeHead, rakeHandle, climbingBoots, superCompost8;
 
 	//Items Recommended
-	ItemRequirement food, prayerPotions, combatGear;
+	ItemRequirement food, prayerPotions, combatGear, gamesNecklace;
 
 	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, hasLump, onRoof, added3Dung, added7Comp, usedRake, givenCompost, givenHardy, givenDibber,
 		givenCure, hasRakeHeadAndHandle, rakeHeadNearby, babyNearby, giantNearby;
@@ -274,6 +274,9 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		rakeHead.setHighlightInInventory(true);
 		rakeHandle = new ItemRequirement("Rake handle", ItemID.RAKE_HANDLE);
 		rakeHandle.setHighlightInInventory(true);
+
+		gamesNecklace = new ItemRequirement("Games necklace for Burthorpe teleport",
+			ItemCollections.getGamesNecklaces());
 	}
 
 	public void loadZones()
@@ -447,7 +450,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions);
+		return Arrays.asList(combatGear, food, prayerPotions, gamesNecklace);
 	}
 
 	@Override

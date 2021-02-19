@@ -326,8 +326,10 @@ public class GettingAhead extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGordon1, talkToMary)));
-		allSteps.add(new PanelDetails("Killing the Beast", Arrays.asList(goUseFlourOnGate, goToMine, returnToGordon)));
-		allSteps.add(new PanelDetails("Making the fake head", Arrays.asList(talkToMary2, makeClayHead, addFurToHead, useDyeOnHead, putUpHead, talkToGordonFinal)));
+		allSteps.add(new PanelDetails("Killing the Beast", Arrays.asList(goUseFlourOnGate, goToMine, returnToGordon),
+			potOfFlour));
+		allSteps.add(new PanelDetails("Making the fake head", Arrays.asList(talkToMary2, makeClayHead, addFurToHead,
+			useDyeOnHead, putUpHead, talkToGordonFinal), bearFur, softClay, hammer, saw, planks, nails, knife, redDye, needle, thread));
 		return allSteps;
 	}
 }

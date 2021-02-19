@@ -246,13 +246,14 @@ public class RumDeal extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES);
+		slayerGloves.addAlternates(ItemID.SLAYER_GLOVES_6720);
 		blindweedSeed = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);
 		blindweedSeedHighlight = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);
 		blindweedSeedHighlight.setHighlightInInventory(true);
 		rake = new ItemRequirement("Rake", ItemID.RAKE);
 		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE);
 		rakeHighlight.setHighlightInInventory(true);
-		dibber = new ItemRequirement("Dibber", ItemID.SEED_DIBBER);
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
 		blindweed = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
 		blindweed.setTooltip("You can get another from Captain Braindeath");
 
@@ -345,7 +346,7 @@ public class RumDeal extends BasicQuestHelper
 		plantSeed = new ObjectStep(this, NullObjectID.NULL_10096, new WorldPoint(2163, 5070, 0), "Plant the seed in the blindweed patch.", blindweedSeedHighlight, dibber);
 		plantSeed.addIcon(ItemID.BLINDWEED_SEED);
 
-		waitForGrowth = new DetailedQuestStep(this, "Wait 5 minutes for the blindweed to grow.");
+		waitForGrowth = new DetailedQuestStep(this, "Wait 2 minutes for the blindweed to grow.");
 
 		pickPlant = new ObjectStep(this, NullObjectID.NULL_10096, new WorldPoint(2163, 5070, 0), "Pick the blindweed on Braindeath Island.");
 

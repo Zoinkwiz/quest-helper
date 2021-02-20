@@ -336,33 +336,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
 		if (hasStaff())
 		{
-			int staffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), 1);
-			Staff requiredStaff = Staff.getByItemID(staffID);
-			if (requiredStaff != Staff.UNKNOWN)
-			{
-				List<ItemRequirement> nonStaffRunes = new ArrayList<>();
-				for (RuneRequirement rune : runeRequirements)
-				{
-					Rune currentRune = rune.getRune();
-					ItemRequirement runeItem = rune.getRuneItemRequirement();
-					boolean source = requiredStaff.isSourceOf(currentRune);
-					if (!source)
-					{
-						nonStaffRunes.add(runeItem);
-					}
-				}
-				boolean hasRunes = hasItemsOnPlayer(client, nonStaffRunes);
-				boolean hasItems = hasItemsOnPlayer(client, itemRequirements);
-				boolean hasStaff = ItemSearch.hasItemOnPlayer(client, staffID);
-				if (hasRunes && hasItems && hasStaff)
-				{
-					return Color.GREEN;
-				}
-				hasRunes = hasItemsInBank(nonStaffRunes, bankItems);
-				hasItems = hasItemsInBank(itemRequirements, bankItems);
-				hasStaff = ItemSearch.hasItemInBank(staffID, bankItems) || ItemSearch.hasItemOnPlayer(client, staffID);
-				return hasRunes && hasItems && hasStaff ? Color.WHITE : Color.RED;
-			}
+			return getPanelColorWithStaff(client, bankItems);
 		}
 		boolean hasRunes, hasItems;
 		hasRunes = runeRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
@@ -375,6 +349,39 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		hasRunes = runeRequirements.stream().allMatch(req -> req.checkCachedBank(bankItems));
 		hasItems = hasItemsInBank(itemRequirements, bankItems);
 		return hasRunes && hasItems ? Color.WHITE : Color.RED;
+	}
+
+	private Color getPanelColorWithStaff(Client client, Item[] bankItems)
+	{
+		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
+		int staffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), 1);
+		Staff requiredStaff = Staff.getByItemID(staffID);
+		if (requiredStaff != Staff.UNKNOWN)
+		{
+			List<ItemRequirement> nonStaffRunes = new ArrayList<>();
+			for (RuneRequirement rune : runeRequirements)
+			{
+				Rune currentRune = rune.getRune();
+				ItemRequirement runeItem = rune.getRuneItemRequirement();
+				boolean source = requiredStaff.isSourceOf(currentRune);
+				if (!source)
+				{
+					nonStaffRunes.add(runeItem);
+				}
+			}
+			boolean hasRunes = hasItemsOnPlayer(client, nonStaffRunes);
+			boolean hasItems = hasItemsOnPlayer(client, itemRequirements);
+			boolean hasStaff = ItemSearch.hasItemOnPlayer(client, staffID);
+			if (hasRunes && hasItems && hasStaff)
+			{
+				return Color.GREEN;
+			}
+			hasRunes = hasItemsInBank(nonStaffRunes, bankItems);
+			hasItems = hasItemsInBank(itemRequirements, bankItems);
+			hasStaff = ItemSearch.hasItemInBank(staffID, bankItems) || ItemSearch.hasItemOnPlayer(client, staffID);
+			return hasRunes && hasItems && hasStaff ? Color.WHITE : Color.RED;
+		}
+		return Color.RED;
 	}
 
 	private boolean hasItemsOnPlayer(Client client, Collection<ItemRequirement> requirements)

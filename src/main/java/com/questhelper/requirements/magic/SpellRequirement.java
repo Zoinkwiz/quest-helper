@@ -196,7 +196,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	 */
 	public boolean hasStaff()
 	{
-		return staffRequirement != null && useStaff;
+		return staffRequirement != null && useStaff && staffRequirement.getId() > -1;
 	}
 
 	/**
@@ -292,7 +292,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			text.append(name);
 		}
-		Color color = getItemOverlayColor(client, plugin.getBankItems().getItems());
+		Color color = getPanelColor(client, plugin.getBankItems().getItems());
 		// N x <Spell_Name>
 		lines.add(LineComponent.builder()
 			.left(text.toString())
@@ -307,7 +307,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			int firstStaffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), staffRequirement.getQuantity());
 			String staffName = staffRequirement.getName();
-			if (staffName == null || staffName.isEmpty())
+			if (StringUtils.isBlank(staffName))
 			{
 				staffName = client.getItemDefinition(firstStaffID).getName();
 			}
@@ -331,26 +331,60 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		return lines;
 	}
 
-	private Color getItemOverlayColor(Client client, Item[] bankItems)
+	private Color getPanelColor(Client client, Item[] bankItems)
 	{
-		//TODO: This is duplicated code from #getColorConsideringBank
-		//TODO: Remove the need for duplicated code.
-		boolean hasRunes, hasItems;
 		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
+		if (hasStaff())
+		{
+			int staffID = ItemSearch.findFirstItem(client, staffRequirement.getAllIds(), 1);
+			Staff requiredStaff = Staff.getByItemID(staffID);
+			if (requiredStaff != Staff.UNKNOWN)
+			{
+				List<ItemRequirement> nonStaffRunes = new ArrayList<>();
+				for (RuneRequirement rune : runeRequirements)
+				{
+					Rune currentRune = rune.getRune();
+					ItemRequirement runeItem = rune.getRuneItemRequirement();
+					boolean source = requiredStaff.isSourceOf(currentRune);
+					if (!source)
+					{
+						nonStaffRunes.add(runeItem);
+					}
+				}
+				boolean hasRunes = hasItemsOnPlayer(client, nonStaffRunes);
+				boolean hasItems = hasItemsOnPlayer(client, itemRequirements);
+				boolean hasStaff = ItemSearch.hasItemOnPlayer(client, staffID);
+				if (hasRunes && hasItems && hasStaff)
+				{
+					return Color.GREEN;
+				}
+				hasRunes = hasItemsInBank(nonStaffRunes, bankItems);
+				hasItems = hasItemsInBank(itemRequirements, bankItems);
+				hasStaff = ItemSearch.hasItemInBank(staffID, bankItems) || ItemSearch.hasItemOnPlayer(client, staffID);
+				return hasRunes && hasItems && hasStaff ? Color.WHITE : Color.RED;
+			}
+		}
+		boolean hasRunes, hasItems;
 		hasRunes = runeRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
-		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
+		hasItems = hasItemsOnPlayer(client, itemRequirements);
 		if (hasRunes && hasItems)
 		{
 			return Color.GREEN;
 		}
 		// Don't use ItemSearch for RuneRequirement because RuneRequirement overrides checkBank
 		hasRunes = runeRequirements.stream().allMatch(req -> req.checkCachedBank(bankItems));
-		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(req, bankItems));
-		if (hasRunes && hasItems)
-		{
-			return Color.WHITE;
-		}
-		return Color.RED;
+		hasItems = hasItemsInBank(itemRequirements, bankItems);
+		return hasRunes && hasItems ? Color.WHITE : Color.RED;
+	}
+
+	private boolean hasItemsOnPlayer(Client client, Collection<ItemRequirement> requirements)
+	{
+		return requirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
+	}
+
+	private boolean hasItemsInBank(Collection<ItemRequirement> requirements, Item[] bankItems)
+	{
+		return requirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(req, bankItems));
 	}
 
 	private Color getStaffColor(Client client, Item[] bankItems)
@@ -439,25 +473,8 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		{
 			return Color.RED; // abort early if they can't even cast the spell
 		}
-		boolean hasStaff = !hasStaff() || ItemSearch.hasItemsOnPlayer(client, staffRequirement);
-		boolean hasRunes = false;
-		boolean hasItems = false;
-		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
-		hasRunes = runeRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
-		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
-		if (hasRunes && hasItems && hasStaff)
-		{
-			return Color.GREEN;
-		}
-		hasRunes = runeRequirements.stream().allMatch(req -> req.checkBank(client) || req.checkCachedBank(bankItems)); // Don't use ItemSearch here because RuneRequirement overrides checkBank
-		hasItems = itemRequirements.stream().allMatch(req -> ItemSearch.hasItemsInBank(client, req) || ItemSearch.hasItemsInBank(req, bankItems));
-		hasStaff = !hasStaff() || ItemSearch.hasItemsInBank(client, staffRequirement) || ItemSearch.hasItemsInBank(staffRequirement, bankItems);
-		if (hasRunes && hasItems && hasStaff)
-		{
-			return Color.WHITE;
-		}
-		updateInternalState(client, itemRequirements);
-		return Color.RED;
+		updateInternalState(client, getItemRequirements(this.requirements));
+		return getPanelColor(client, bankItems);
 	}
 
 

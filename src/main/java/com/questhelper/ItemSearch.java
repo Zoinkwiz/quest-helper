@@ -134,6 +134,11 @@ public class ItemSearch
 			.anyMatch(i -> requirement.getAllIds().contains(i.getId()) && i.getQuantity() >= requirement.getQuantity());
 	}
 
+	public boolean hasItemInBank(int itemID, Item[] items)
+	{
+		return hasItemsInBank(new ItemRequirement("", itemID), items);
+	}
+
 	public boolean checkItem(Client client, InventorySlots slot, int itemID)
 	{
 		return slot.contains(client, i -> i.getId() == itemID);

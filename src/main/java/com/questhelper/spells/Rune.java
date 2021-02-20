@@ -30,6 +30,7 @@ package com.questhelper.spells;
 import com.questhelper.ItemCollections;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Getter;
@@ -41,10 +42,10 @@ import net.runelite.api.ItemID;
 @Getter
 public enum Rune
 {
-	AIR("Air Rune", ItemCollections.getAirRune(), Staff.AIR),
-	WATER("Water Rune", ItemCollections.getWaterRune(), Staff.WATER),
-	EARTH("Earth Rune", ItemCollections.getEarthRune(), Staff.EARTH),
-	FIRE("Fire Rune", ItemCollections.getFireRune(), Staff.FIRE),
+	AIR("Air Rune", ItemCollections.getAirRune(), () -> Staff.AIR),
+	WATER("Water Rune", ItemCollections.getWaterRune(), () -> Staff.WATER),
+	EARTH("Earth Rune", ItemCollections.getEarthRune(), () -> Staff.EARTH),
+	FIRE("Fire Rune", ItemCollections.getFireRune(), () -> Staff.FIRE),
 	MIND("Mind Rune", ItemID.MIND_RUNE),
 	BODY("Body Rune", ItemID.BODY_RUNE),
 	COSMIC("Cosmic Rune", ItemID.COSMIC_RUNE),
@@ -57,12 +58,12 @@ public enum Rune
 	SOUL("Soul Rune", ItemID.SOUL_RUNE),
 	WRATH("Wrath Rune", ItemID.WRATH_RUNE),
 	// Keep combination runes after the non-combination runes
-	LAVA("Lava Rune", ItemID.LAVA_RUNE, Staff.LAVA),
-	MUD("Mud Rune", ItemID.MUD_RUNE, Staff.MUD),
-	STEAM("Steam Rune", ItemID.STEAM_RUNE, Staff.STEAM),
-	SMOKE("Smoke Rune", ItemID.SMOKE_RUNE, Staff.SMOKE),
-	MIST("Mist Rune", ItemID.MIST_RUNE, Staff.MIST),
-	DUST("Dust Rune", ItemID.DUST_RUNE, Staff.DUST),
+	LAVA("Lava Rune", ItemID.LAVA_RUNE, () -> Staff.LAVA),
+	MUD("Mud Rune", ItemID.MUD_RUNE, () -> Staff.MUD),
+	STEAM("Steam Rune", ItemID.STEAM_RUNE, () -> Staff.STEAM),
+	SMOKE("Smoke Rune", ItemID.SMOKE_RUNE, () -> Staff.SMOKE),
+	MIST("Mist Rune", ItemID.MIST_RUNE, () -> Staff.MIST),
+	DUST("Dust Rune", ItemID.DUST_RUNE, () -> Staff.DUST),
 	UNKNOWN("Null Rune", -1),
 	;
 
@@ -70,26 +71,31 @@ public enum Rune
 	private final String runeName;
 	@Nonnull
 	private final List<Integer> runes;
-	private final Staff staff;
-	Rune(@Nonnull String runeName, @Nonnull List<Integer> runes, Staff staff)
+	private final Supplier<Staff> staffSupplier;
+	Rune(@Nonnull String runeName, @Nonnull List<Integer> runes, Supplier<Staff> staffSupplier)
 	{
 		this.runeName = runeName;
 		this.runes = runes;
-		this.staff = staff;
+		this.staffSupplier = staffSupplier;
 	}
 
 	Rune(@Nonnull String runeName, int itemID)
 	{
 		this.runeName = runeName;
 		this.runes = Collections.singletonList(itemID);
-		this.staff = Staff.UNKNOWN;
+		this.staffSupplier = () -> Staff.UNKNOWN;
 	}
 
-	Rune(@Nonnull String runeName, int itemID, Staff staff)
+	Rune(@Nonnull String runeName, int itemID, Supplier<Staff> staffSupplier)
 	{
 		this.runeName = runeName;
 		this.runes = Collections.singletonList(itemID);
-		this.staff = staff;
+		this.staffSupplier = staffSupplier;
+	}
+
+	public Staff getStaff()
+	{
+		return staffSupplier.get();
 	}
 
 	public int getItemID()

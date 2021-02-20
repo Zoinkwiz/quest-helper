@@ -26,38 +26,41 @@
  */
 package com.questhelper.spells;
 
+import com.google.common.collect.ImmutableSet;
 import com.questhelper.ItemCollections;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import lombok.Getter;
 
 @Getter
 public enum Staff
 {
-	AIR("Air Staff", ItemCollections.getAirStaff(), Rune.AIR),
-	WATER("Water Staff", ItemCollections.getWaterStaff(), Rune.WATER),
-	EARTH("Earth Staff", ItemCollections.getEarthStaff(), Rune.EARTH),
-	FIRE("Fire Staff", ItemCollections.getFireStaff(), Rune.FIRE),
+	AIR("Air Staff", ItemCollections.getAirStaff(), () -> ImmutableSet.of(Rune.AIR)),
+	WATER("Water Staff", ItemCollections.getWaterStaff(), () -> ImmutableSet.of(Rune.WATER)),
+	EARTH("Earth Staff", ItemCollections.getEarthStaff(), () -> ImmutableSet.of(Rune.EARTH)),
+	FIRE("Fire Staff", ItemCollections.getFireStaff(), () -> ImmutableSet.of(Rune.FIRE)),
 	// Keep combination staves after the elemental staves
-	LAVA("Lava Staff", ItemCollections.getLavaStaff(), Rune.LAVA, Rune.FIRE, Rune.EARTH),
-	MUD("Mud Staff", ItemCollections.getMudStaff(), Rune.MUD, Rune.WATER, Rune.EARTH),
-	STEAM("Steam Staff", ItemCollections.getSteamStaff(), Rune.STEAM, Rune.WATER, Rune.FIRE),
-	SMOKE("Smoke Staff", ItemCollections.getSmokeStaff(), Rune.SMOKE, Rune.AIR, Rune.FIRE),
-	MIST("Mist Staff", ItemCollections.getMistStaff(), Rune.MIST, Rune.WATER, Rune.AIR),
-	DUST("Dust Staff", ItemCollections.getDustStaff(), Rune.DUST, Rune.EARTH, Rune.AIR),
-	UNKNOWN("Null Staff", Collections.emptyList(), Rune.UNKNOWN),
+	LAVA("Lava Staff", ItemCollections.getLavaStaff(), () -> ImmutableSet.of(Rune.LAVA, Rune.FIRE, Rune.EARTH)),
+	MUD("Mud Staff", ItemCollections.getMudStaff(), () -> ImmutableSet.of(Rune.MUD, Rune.WATER, Rune.EARTH)),
+	STEAM("Steam Staff", ItemCollections.getSteamStaff(), () -> ImmutableSet.of(Rune.STEAM, Rune.WATER, Rune.FIRE)),
+	SMOKE("Smoke Staff", ItemCollections.getSmokeStaff(), () -> ImmutableSet.of(Rune.SMOKE, Rune.AIR, Rune.FIRE)),
+	MIST("Mist Staff", ItemCollections.getMistStaff(), () -> ImmutableSet.of(Rune.MIST, Rune.WATER, Rune.AIR)),
+	DUST("Dust Staff", ItemCollections.getDustStaff(), () -> ImmutableSet.of(Rune.DUST, Rune.EARTH, Rune.AIR)),
+	UNKNOWN("Null Staff", Collections.emptyList(), () -> ImmutableSet.of(Rune.UNKNOWN)),
 	;
 
 	private final String name;
 	private final List<Integer> staves;
-	private final List<Rune> sourceRunes;
-	Staff(String name, List<Integer> staves, Rune... sourceOf)
+	private final Supplier<Set<Rune>> sourceRunesSupplier;
+	Staff(String name, List<Integer> staves, Supplier<Set<Rune>> sourceRunesSupplier)
 	{
 		this.name = name;
 		this.staves = staves;
-		this.sourceRunes = Arrays.asList(sourceOf);
+		this.sourceRunesSupplier = sourceRunesSupplier;
 	}
 
 	public int getItemID()
@@ -67,7 +70,7 @@ public enum Staff
 
 	public boolean isSourceOf(Rune rune)
 	{
-		return getSourceRunes().contains(rune);
+		return sourceRunesSupplier.get().contains(rune);
 	}
 
 	public static Staff getByItemID(int itemID)

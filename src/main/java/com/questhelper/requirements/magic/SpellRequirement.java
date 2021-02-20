@@ -321,14 +321,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			{
 				lines.add(getInBankLine());
 			}
-			if (firstStaffID < 0)
-			{
-				staffColor = Color.RED;
-			}
-			else
-			{
-				staffColor = ItemSearch.hasItemEquipped(client, firstStaffID) ? Color.GREEN : Color.RED;
-			}
+			staffColor = firstStaffID < 0 ? Color.RED : (ItemSearch.hasItemEquipped(client, firstStaffID) ? Color.GREEN : Color.RED);
 			// Add '(equipped)'
 			lines.add(LineComponent.builder()
 				.left("(equipped)")

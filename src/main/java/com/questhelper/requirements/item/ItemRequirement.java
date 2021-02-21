@@ -434,7 +434,7 @@ public class ItemRequirement extends AbstractRequirement
 	@Nullable
 	public String getUpdatedTooltip(Client client)
 	{
-		return null;
+		return getTooltip();
 	}
 
 

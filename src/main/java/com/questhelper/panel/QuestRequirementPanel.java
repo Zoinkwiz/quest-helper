@@ -39,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 public class QuestRequirementPanel extends JPanel
 {
@@ -93,7 +94,7 @@ public class QuestRequirementPanel extends JPanel
 	{
 		if (infoButton != null)
 		{
-			if (text == null || text.isEmpty())
+			if (StringUtils.isBlank(text))
 			{
 				infoButton.setToolTipText("");
 				infoButton.setVisible(false);

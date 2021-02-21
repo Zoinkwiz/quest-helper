@@ -493,7 +493,8 @@ public class Regicide extends BasicQuestHelper
 		useClothOnArrow = new DetailedQuestStep(this, "Use the oily cloth on an arrow.", oilyClothHighlight, arrowsHighlight);
 		lightArrow = new ObjectStep(this, ObjectID.FIRE_26185, new WorldPoint(2451, 9715, 0), "Light the fire arrow.",
 			fireArrow);
-		walkNorthEastOfBridge = new TileStep(this, new WorldPoint(2447, 9722, 0), "Walk to the room north of Koftik.", litArrowEquipped);
+		walkNorthEastOfBridge = new DetailedQuestStep(this, new WorldPoint(2447, 9722, 0), "Walk to the room north of Koftik.",
+			litArrowEquipped);
 		shootBridgeRope = new ObjectStep(this, ObjectID.GUIDE_ROPE, "Wield a lit arrow and shoot the guide-rope.", bow, litArrowEquipped);
 		shootBridgeRope.addSubSteps(searchBagForCloth, useClothOnArrow, lightArrow, walkNorthEastOfBridge);
 

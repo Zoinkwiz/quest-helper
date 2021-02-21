@@ -199,6 +199,11 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		return staffRequirement != null && useStaff && staffRequirement.getId() > -1;
 	}
 
+	public boolean hasTablet()
+	{
+		return tabletRequirement != null && tabletRequirement.getId() > -1;
+	}
+
 	/**
 	 * A convenience method to better indicate to not use a tablet for this spell requirement
 	 */
@@ -284,14 +289,11 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 
 		String name = spell.getName();
-		if (tabletRequirement != null && tabletRequirement.check(client))
+		if (hasTablet())
 		{
-			text.append(tabletRequirement.getName());
+			name = tabletRequirement.getName();
 		}
-		else
-		{
-			text.append(name);
-		}
+		text.append(name);
 		Color color = getPanelColor(client, plugin.getBankItems().getItems());
 		// N x <Spell_Name>
 		lines.add(LineComponent.builder()
@@ -299,9 +301,9 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			.leftColor(color)
 			.build()
 		);
-		if (color == Color.WHITE)
+		if (hasTablet())
 		{
-			lines.add(getInBankLine());
+			return lines;
 		}
 		if (hasStaff())
 		{
@@ -311,18 +313,18 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			{
 				staffName = client.getItemDefinition(firstStaffID).getName();
 			}
-			Color staffColor = getStaffColor(client, plugin.getBankItems().getItems());
+
 			// <Staff Name>
+			Color staffColor = getStaffColor(client, plugin.getBankItems().getItems());
 			lines.add(LineComponent.builder()
 				.left(staffName)
 				.leftColor(staffColor)
 				.build());
-			if (staffColor == Color.WHITE)
-			{
-				lines.add(getInBankLine());
-			}
-			staffColor = firstStaffID < 0 ? Color.RED : (ItemSearch.hasItemEquipped(client, firstStaffID) ? Color.GREEN : Color.RED);
+
 			// Add '(equipped)'
+			// We have to check for an ID of -1 because if someone submits an invalid staff id then the hasItemEquipped
+			// will check if the slot has an id of -1, which is empty, so it will return true for an empty slot.
+			staffColor = firstStaffID < 0 ? Color.RED : (ItemSearch.hasItemEquipped(client, firstStaffID) ? Color.GREEN : Color.RED);
 			lines.add(LineComponent.builder()
 				.left("(equipped)")
 				.leftColor(staffColor)
@@ -333,11 +335,15 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 
 	private Color getPanelColor(Client client, Item[] bankItems)
 	{
-		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
+		if (hasTablet())
+		{
+			return getPanelColorWithTablet(client, bankItems);
+		}
 		if (hasStaff())
 		{
 			return getPanelColorWithStaff(client, bankItems);
 		}
+		List<ItemRequirement> itemRequirements = getItemRequirements(this.requirements);
 		boolean hasRunes, hasItems;
 		hasRunes = runeRequirements.stream().allMatch(req -> ItemSearch.hasItemsOnPlayer(client, req));
 		hasItems = hasItemsOnPlayer(client, itemRequirements);
@@ -383,6 +389,23 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 		}
 		return Color.RED;
 	}
+
+	private Color getPanelColorWithTablet(Client client, Item[] bankItems)
+	{
+		updateTabletRequirement(client);
+		int tabletID = tabletRequirement.getId();
+		int required = tabletRequirement.getQuantity();
+		if (ItemSearch.hasItemAmountOnPlayer(client, tabletID, required))
+		{
+			return Color.GREEN;
+		}
+		if (ItemSearch.hasItemsInBank(tabletRequirement, bankItems))
+		{
+			return Color.WHITE;
+		}
+		return Color.RED;
+	}
+
 
 	private boolean hasItemsOnPlayer(Client client, Collection<ItemRequirement> requirements)
 	{
@@ -461,18 +484,12 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	@Override
 	public Color getColorConsideringBank(Client client, boolean checkWithSlotRestrictions, Item[] bankItems)
 	{
-		if (tabletRequirement != null)
+		if (hasTablet())
 		{
-			updateTabletRequirement(client);
-			int tabletID = tabletRequirement.getId();
-			int required = tabletRequirement.getQuantity();
-			if (ItemSearch.hasItemAmountOnPlayer(client, tabletID, required))
+			Color tabletColor = getPanelColorWithTablet(client, bankItems);
+			if (tabletColor != Color.RED)
 			{
-				return Color.GREEN;
-			}
-			if (ItemSearch.hasItemAmountInBank(client, tabletID, required))
-			{
-				return Color.WHITE;
+				return tabletColor;
 			}
 		}
 		boolean hasOtherReqs = getNonItemRequirements(this.requirements).stream().allMatch(req -> req.check(client));
@@ -632,6 +649,7 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	private void updateInternalState(Client client, List<ItemRequirement> requirements)
 	{
 		updateItemRequirements(client, requirements);
+		updateTabletRequirement(client);
 		if (staffRequirement != null && StringUtils.isBlank(staffRequirement.getName()))
 		{
 			staffRequirement.setName(client.getItemDefinition(staffRequirement.getId()).getName());

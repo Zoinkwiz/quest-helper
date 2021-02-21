@@ -236,11 +236,6 @@ public class ItemRequirement extends AbstractRequirement
 			.left(text.toString())
 			.leftColor(color)
 			.build());
-		if (color == Color.WHITE)
-		{
-			lines.add(getInBankLine());
-		}
-
 		lines.addAll(getAdditionalText(client, true));
 		return lines;
 	}

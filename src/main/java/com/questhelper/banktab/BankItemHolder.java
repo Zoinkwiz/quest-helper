@@ -26,7 +26,9 @@
  */
 package com.questhelper.banktab;
 
+import com.questhelper.BankItems;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.item.ItemRequirement;
 import java.util.List;
 import net.runelite.api.Client;
@@ -45,8 +47,8 @@ public interface BankItemHolder
 	 * Get a list of {@link ItemRequirement} to be displayed.
 	 *
 	 * @param client the {@link Client}
-	 * @param config the {@link QuestHelperConfig}
+	 * @param plugin
 	 * @return a list of {@link ItemRequirement} that should be displayed, or an empty list if none are found
 	 */
-	List<ItemRequirement> getRequirements(Client client, QuestHelperConfig config);
+	List<ItemRequirement> getRequirements(Client client, QuestHelperPlugin plugin);
 }

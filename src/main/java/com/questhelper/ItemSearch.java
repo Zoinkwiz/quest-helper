@@ -52,6 +52,11 @@ public class ItemSearch
 		return hasItemAmountOnPlayer(client, itemID, requiredAmount) || hasItemAmountInBank(client, itemID, requiredAmount);
 	}
 
+	public boolean hasItemAmountAnywhere(Client client, int itemID, int requiredAmount, Item[] bankItems)
+	{
+		return hasItemAmountOnPlayer(client, itemID, requiredAmount) || hasItemAmountInBank(itemID, requiredAmount, bankItems);
+	}
+
 	public boolean hasItemOnPlayer(Client client, int itemID)
 	{
 		return hasItemInInventory(client, itemID) || hasItemEquipped(client, itemID);
@@ -112,6 +117,11 @@ public class ItemSearch
 		return hasItemsOnPlayer(client, requirement) || hasItemsInBank(client, requirement);
 	}
 
+	public boolean hasItemsAnywhere(Client client, ItemRequirement requirement, Item[] bankItems)
+	{
+		return hasItemsOnPlayer(client, requirement) || hasItemsInBank(requirement, bankItems);
+	}
+
 	public boolean hasItemsOnPlayer(Client client, ItemRequirement requirement)
 	{
 		return requirement.getAllIds().stream().anyMatch(id -> hasItemAmountOnPlayer(client, id, requirement.getQuantity()));
@@ -137,6 +147,11 @@ public class ItemSearch
 	public boolean hasItemInBank(int itemID, Item[] items)
 	{
 		return hasItemsInBank(new ItemRequirement("", itemID), items);
+	}
+
+	public boolean hasItemAmountInBank(int itemID, int amount, Item[] bankItems)
+	{
+		return hasItemsInBank(new ItemRequirement("", itemID, amount), bankItems);
 	}
 
 	public boolean checkItem(Client client, InventorySlots slot, int itemID)

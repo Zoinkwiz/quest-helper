@@ -24,7 +24,7 @@
  */
 package com.questhelper.banktab;
 
-import com.questhelper.QuestHelperConfig;
+import com.questhelper.ItemSearch;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -37,8 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
+import javax.swing.SwingUtilities;
 
 public class QuestHelperBankTagService
 {
@@ -134,14 +133,10 @@ public class QuestHelperBankTagService
 			BankItemHolder holder = (BankItemHolder) itemRequirement;
 			// Force run on client thread even though it's not as responsive as not doing that, however it
 			// ensures we run on the client thread and never run into threading issues.
-			QuestHelperConfig config = plugin.getConfig();
-			if (config != null)
-			{
-				plugin.getClientThread().invoke(() -> {
-					List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), config);
-					makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread
-				});
-			}
+			plugin.getClientThread().invoke(() -> {
+				List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), plugin);
+				makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread);
+			});
 		}
 		else
 		{
@@ -175,12 +170,6 @@ public class QuestHelperBankTagService
 
 	public boolean hasItemInBank(int itemID)
 	{
-		ItemContainer bankContainer = plugin.getClient().getItemContainer(InventoryID.BANK);
-		if (bankContainer == null)
-		{
-			return false;
-		}
-
-		return bankContainer.contains(itemID);
+		return ItemSearch.hasItemInBank(itemID, plugin.getBankItems().getItems());
 	}
 }

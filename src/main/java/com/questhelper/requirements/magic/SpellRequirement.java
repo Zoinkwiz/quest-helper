@@ -28,7 +28,6 @@ package com.questhelper.requirements.magic;
 
 import com.google.common.base.Predicates;
 import com.questhelper.ItemSearch;
-import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
@@ -49,6 +48,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -532,10 +532,10 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 	}
 
 	@Override
-	public List<ItemRequirement> getRequirements(Client client, QuestHelperConfig config)
+	public List<ItemRequirement> getRequirements(Client client, QuestHelperPlugin plugin)
 	{
 		updateInternalState(client, getItemRequirements(this.requirements));
-		if (tabletRequirement != null && ItemSearch.hasItemAmountAnywhere(client, tabletRequirement.getId(), this.numberOfCasts))
+		if (tabletRequirement != null && ItemSearch.hasItemsAnywhere(client, tabletRequirement, plugin.getBankItems().getItems()))
 		{
 			return Collections.singletonList(tabletRequirement);
 		}
@@ -555,10 +555,10 @@ public class SpellRequirement extends ItemRequirement implements BankItemHolder
 			ItemRequirement staves = rune.getStaffItemRequirement();
 			ItemRequirement runeItem = rune.getRuneItemRequirement();
 
-			boolean hasRunes = ItemSearch.hasItemsAnywhere(client, runeItem);
-			boolean hasStaves = hasStaff(client, staves);
+			BooleanSupplier hasRunes = () -> ItemSearch.hasItemsAnywhere(client, runeItem, plugin.getBankItems().getItems());
+			BooleanSupplier hasStaves = () -> hasStaff(client, staves);
 
-			ItemRequirement toAdd = config.bankFilterSpellPreference().getPreference(rune, () -> hasRunes, () -> hasStaves);
+			ItemRequirement toAdd = plugin.getConfig().bankFilterSpellPreference().getPreference(rune, hasRunes, hasStaves);
 
 			boolean itemIsRune = toAdd.getAllIds().stream().allMatch(Rune::isRuneItem);
 			if (staffRequirement != null && itemIsRune && currentRune.getStaff() != Staff.UNKNOWN)

@@ -29,23 +29,25 @@ package com.questhelper.spells;
 
 import com.questhelper.requirements.magic.RuneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.util.TriFunction;
 import java.util.function.BooleanSupplier;
 
 public enum SpellComponentPreference
 {
-	RUNES((runes, staff, req) -> runes.getAsBoolean() ? req.getRuneItemRequirement() : req.getStaffItemRequirement()),
-	STAVES((runes, staff, req) -> staff.getAsBoolean() ? req.getStaffItemRequirement() : req.getRuneItemRequirement());
+	RUNES {
+		@Override
+		public ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff)
+		{
+			return runes.getAsBoolean() ? requirement.getRuneItemRequirement() : requirement.getStaffItemRequirement();
+		}
+	},
+	STAVES {
+		@Override
+		public ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff)
+		{
+			return staff.getAsBoolean() ? requirement.getStaffItemRequirement() : requirement.getRuneItemRequirement();
+		}
+	}
 	;
 
-	private final TriFunction<BooleanSupplier, BooleanSupplier, RuneRequirement, ItemRequirement> function;
-	SpellComponentPreference(TriFunction<BooleanSupplier, BooleanSupplier, RuneRequirement, ItemRequirement> function)
-	{
-		this.function = function;
-	}
-
-	public ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff)
-	{
-		return function.apply(runes, staff, requirement);
-	}
+	public abstract ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff);
 }

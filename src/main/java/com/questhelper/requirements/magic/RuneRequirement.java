@@ -27,7 +27,7 @@
 package com.questhelper.requirements.magic;
 
 import com.questhelper.ItemSearch;
-import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.banktab.BankItemHolder;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -147,11 +147,11 @@ public class RuneRequirement extends ItemRequirement implements BankItemHolder
 	}
 
 	@Override
-	public List<ItemRequirement> getRequirements(Client client, QuestHelperConfig config)
+	public List<ItemRequirement> getRequirements(Client client, QuestHelperPlugin plugin)
 	{
 		boolean hasRunes = ItemSearch.hasItemsAnywhere(client, runeItemRequirement);
 		boolean hasStaves = staffItemRequirement != null && ItemSearch.hasItemsAnywhere(client, staffItemRequirement);
-		ItemRequirement requirement = config.bankFilterSpellPreference().getPreference(this, () -> hasRunes, () -> hasStaves);
+		ItemRequirement requirement = plugin.getConfig().bankFilterSpellPreference().getPreference(this, () -> hasRunes, () -> hasStaves);
 		return Collections.singletonList(requirement);
 	}
 }

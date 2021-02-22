@@ -403,8 +403,7 @@ public class ShiloVillage extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Exploring",
 			Arrays.asList(talkToMosol, useBeltOnTrufitus, useSpadeOnGround, useTorchOnFissure, useRopeOnFissure,
 				searchFissure, useChiselOnStone, enterDeeperCave, searchForTatteredScroll, searchForCrumpledScroll,
-				searchForCorpse, useCorpseOnTrufitus, useStonePlaqueOnTrufitus, readTattered, readCrumpled),
-			spade, torchOrCandle, rope, chisel));
+				searchForCorpse, buryCorpse, readTattered, readCrumpled), spade, torchOrCandle, rope, chisel));
 
 		allSteps.add(new PanelDetails("Free Raiysha",
 			Arrays.asList(searchRocksOnCairn, searchDolmen, useChiselOnPommel, useWireOnBeads, searchPalms,

@@ -66,7 +66,7 @@ public class TheGrandTree extends BasicQuestHelper
 	ItemRequirement accessToFairyRings, energyOrStaminaPotions, transportToGrandTree, oneThousandCoins, combatGear,
 		food, prayerPotions, translationBook, barkSample, lumberOrder, gloughsKey, highlightedGloughsKey, invasionPlans,
 		twigsT, twigsU, twigsZ, twigsO, highlightedTwigsT, highlightedTwigsU, highlightedTwigsZ, highlightedTwigsO,
-		daconiaStone;
+		daconiaStone, passage;
 
 	FreeInventorySlotRequirement fourFreeInventorySlots;
 
@@ -210,7 +210,7 @@ public class TheGrandTree extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
-		transportToGrandTree = new ItemRequirement("Transport to the Grand Tree", -1);
+		transportToGrandTree = new ItemRequirement("Transport to the Grand Tree", ItemCollections.getNecklaceOfPassages());
 
 		translationBook = new ItemRequirement("Translation Book", ItemID.TRANSLATION_BOOK);
 		translationBook.setTooltip("You can get another from Narnode");
@@ -291,6 +291,7 @@ public class TheGrandTree extends BasicQuestHelper
 		talkToKingNarnode.addDialogSteps("You seem worried, what's up?", "I'd be happy to help!");
 		talkToKingNarnodeCaves = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
 			"Talk to King Narnode.");
+		talkToKingNarnodeCaves.addDialogStep("I'd be happy to help!");
 		talkToKingNarnode.addSubSteps(talkToKingNarnodeCaves);
 
 		// Hazelmere
@@ -317,6 +318,7 @@ public class TheGrandTree extends BasicQuestHelper
 
 		returnToGlough = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "");
 		findGloughJournal = new ObjectStep(this, ObjectID.CUPBOARD_2434, "");
+		((ObjectStep) findGloughJournal).addAlternateObjects(ObjectID.CUPBOARD_2435);
 
 		talkToGloughAgain = new NpcStep(this, NpcID.GLOUGH_2061, "");
 
@@ -342,7 +344,7 @@ public class TheGrandTree extends BasicQuestHelper
 		climbToBottomOfGrandTree.addStep(isInGrandTreeF1, climbGrandTreeF1ToF0);
 
 		talkToCharlieFromCell = new NpcStep(this, NpcID.CHARLIE, new WorldPoint(2464, 3495, 3), "Talk to Charlie.");
-		talkToKingNarnodeBeforeEscape = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN_8020,
+		talkToKingNarnodeBeforeEscape = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN,
 			"Talk to King Narnode outside Charlie's cell.");
 		escapeByGlider = new NpcStep(this, NpcID.CAPTAIN_ERRDO_10467, locationTopOfGrandTree, "Travel with the glider to escape.");
 		escapeByGlider.addDialogStep("Take me to Karamja please!");
@@ -392,7 +394,7 @@ public class TheGrandTree extends BasicQuestHelper
 		climbDownTrapDoor = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door. Be prepared for the fight against a Black Demon (level 172).");
 		talkToGloughBeforeFight = new NpcStep(this, NpcID.GLOUGH, "Talk to Glough. You can safespot the Demon from where he stands.");
 		killBlackDemon = new NpcStep(this, NpcID.BLACK_DEMON_1432, "Kill the black Demon. You can safespot from where Glough stands.");
-
+		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2487, 9858, 0));
 		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door again.");
 		talkToKingAfterFight = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
 		talkToKingAfterFight.addSubSteps(climbDownTrapDoorAfterFight);
@@ -402,6 +404,7 @@ public class TheGrandTree extends BasicQuestHelper
 		findDaconiaStone = new ObjectStep(this, ObjectID.ROOT,
 			"Search the roots under the Grand Tree until you find the Daconia stone. If you lose the rock, it will be in the same root again.");
 		((ObjectStep) findDaconiaStone).addAlternateObjects(ObjectID.ROOT_1986);
+		((ObjectStep) findDaconiaStone).setHideWorldArrow(true);
 	}
 
 	@Override

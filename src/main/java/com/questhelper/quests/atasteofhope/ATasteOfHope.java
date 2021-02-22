@@ -409,6 +409,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		talkToGarth.addDialogStep("Yes.");
 
 		pressDecoratedWall = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
+		pressDecoratedWall.setLinePoints(pathToBase);
 		enterBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
 		enterBase.setLinePoints(pathToBase);
 		enterBase.addSubSteps(pressDecoratedWall);
@@ -440,6 +441,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		pressDecoratedWallReturn = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0),
 			"Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines," +
 				" escape by mining 15 rocks, then head south from there.");
+		pressDecoratedWallReturn.setLinePoints(pathToBase);
 		returnToBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0),
 			"Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, " +
 				"escape by mining 15 rocks, then head south from there.");
@@ -490,6 +492,7 @@ public class ATasteOfHope extends BasicQuestHelper
 
 		pressDecoratedWallAfterSerafina = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0)
 			, "Prepare for a fight, then return to the Meiyerditch Myreque base.");
+		pressDecoratedWallAfterSerafina.setLinePoints(pathToBase);
 
 		enterBaseAfterSerafina = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Prepare for a fight, then return to the Meiyerditch Myreque base.");
 		enterBaseAfterSerafina.setLinePoints(pathToBase);

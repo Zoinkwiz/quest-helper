@@ -132,13 +132,14 @@ public class ShiloVillage extends BasicQuestHelper
 		goGetItems.addStep(new Conditions(beads), useWireOnBeads);
 		goGetItems.addStep(new Conditions(pommel), useChiselOnPommel);
 		goGetItems.addStep(new Conditions(inCavern3), searchDolmen);
-//		goGetItems.addStep(new Conditions(shownStone, hasReadTattered, hasReadCrumpled, boneShard), useBoneShardOnTrufitus);
-		goGetItems.addStep(new Conditions(shownStone, hasReadTattered, hasReadCrumpled, shownCorpse), buryCorpse);
-//		goGetItems.addStep(new Conditions(shownStone, tatteredScroll, crumpledScroll, shownCorpse), useCrumpledOnTrufitus);
-		goGetItems.addStep(new Conditions(shownStone, hasReadTattered, crumpledScroll, shownCorpse), readCrumpled);
-		goGetItems.addStep(new Conditions(shownStone, tatteredScroll, crumpledScroll, shownCorpse), readTattered);
-		goGetItems.addStep(new Conditions(stonePlaque, tatteredScroll, crumpledScroll, shownCorpse), useStonePlaqueOnTrufitus);
-		goGetItems.addStep(new Conditions(stonePlaque, tatteredScroll, crumpledScroll, zadimusCorpse), useCorpseOnTrufitus);
+		// Stone-plaque may be useless?
+		// Don't need to show Trufitus bone shard
+		// Reading tattered unlocks access to the island cavern
+		// Reading crumpled lets you use bronze wire on beads
+		goGetItems.addStep(new Conditions(stonePlaque, hasReadTattered, hasReadCrumpled, boneShard), searchRocksOnCairn);
+		goGetItems.addStep(new Conditions(stonePlaque, hasReadTattered, crumpledScroll, boneShard), readCrumpled);
+		goGetItems.addStep(new Conditions(stonePlaque, tatteredScroll, crumpledScroll, boneShard), readTattered);
+		goGetItems.addStep(new Conditions(stonePlaque, tatteredScroll, crumpledScroll, zadimusCorpse), buryCorpse);
 		goGetItems.addStep(new Conditions(inCavern2, stonePlaque, tatteredScroll, crumpledScroll), searchForCorpse);
 		goGetItems.addStep(new Conditions(inCavern2, stonePlaque, tatteredScroll), searchForCrumpledScroll);
 		goGetItems.addStep(new Conditions(inCavern2, stonePlaque), searchForTatteredScroll);
@@ -221,6 +222,7 @@ public class ShiloVillage extends BasicQuestHelper
 		inCavern1 = new ZoneRequirement(cavern1);
 		inCavern2 = new ZoneRequirement(cavern2);
 		inCavern3 = new ZoneRequirement(cavern3);
+		inCavern4 = new ZoneRequirement(cavern4);
 
 		shownCorpse = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The ground in the centre of the village"),
@@ -242,10 +244,6 @@ public class ShiloVillage extends BasicQuestHelper
 			new WidgetTextRequirement(222, 3, "Rashiliyia's rage went unchecked."),
 			beadsOfTheDead
 		);
-
-//		shownCrumpled = new Conditions(true, LogicType.OR,
-//			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "It may be possible to make a ward like that...")
-//		);
 
 		revealedDoor = new VarbitRequirement(8180, 1, Operation.GREATER_EQUAL);
 		doorOpened = new VarbitRequirement(8180, 2, Operation.GREATER_EQUAL);
@@ -318,18 +316,9 @@ public class ShiloVillage extends BasicQuestHelper
 		readCrumpled = new DetailedQuestStep(this, "Read the crumpled scroll.", crumpledScroll.highlighted());
 		readCrumpled.addDialogSteps("Yes please.");
 
-//		useCrumpledOnTrufitus = new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0),
-//			"Use the crumpled scroll on Trufitus.", crumpledScroll.highlighted());
-//		useCrumpledOnTrufitus.addDialogStep("Anything that can help?");
-//		useCrumpledOnTrufitus.addIcon(ItemID.CRUMPLED_SCROLL);
 		buryCorpse = new DetailedQuestStep(this, new WorldPoint(2795, 3089, 0),
 			"Bury Zadimus's corpse in the middle of Tai Bwo Wannai.", zadimusCorpse.highlighted());
 		buryCorpse.addIcon(ItemID.ZADIMUS_CORPSE);
-//		useBoneShardOnTrufitus = new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0),
-//			"Use the bone shard on Trufitus.", boneShard.highlighted());
-//		useBoneShardOnTrufitus.addDialogSteps("It appeared when I buried Zadimus' corpse.", "He said something after " +
-//			"he gave it to me.", "The spirit said something about keys and kin?");
-//		useBoneShardOnTrufitus.addIcon(ItemID.BONE_SHARD);
 
 		searchRocksOnCairn = new ObjectStep(this, ObjectID.WELL_STACKED_ROCKS, new WorldPoint(2762, 2990, 0),
 			"Right-click search the rocks on Cairn Isle.");
@@ -354,10 +343,11 @@ public class ShiloVillage extends BasicQuestHelper
 			"Use the bone key on the doors behind the palm trees.", boneKey.highlighted());
 		useKeyOnDoor.addIcon(ItemID.BONE_KEY);
 		enterDoor = new ObjectStep(this, NullObjectID.NULL_34673, new WorldPoint(2916, 3091, 0),
-			"Enter the doors behind the palm trees.", beadsOfTheDead.equipped(), bones3, combatGear);
+			"Enter the doors behind the palm trees.", beadsOfTheDead.equipped(), bones3,
+			combatGear);
 		useBonesOnDoor = new ObjectStep(this, ObjectID.TOMB_DOORS, new WorldPoint(2892, 9480, 0),
 			"Make your way through the gate, down the rocks, then to the north west corner. Use bones on the door there.",
-			bones3.highlighted());
+			beadsOfTheDead.equipped(), bones3.highlighted());
 		useBonesOnDoor.addIcon(ItemID.BONES);
 		searchDolmenForFight = new ObjectStep(this, ObjectID.TOMB_DOLMEN_2258, new WorldPoint(2893, 9488, 0),
 			"Search the dolmen, ready to fight.");

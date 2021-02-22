@@ -191,7 +191,9 @@ public class Contact extends BasicQuestHelper
 			new WorldPoint(3317, 9260, 2),
 			new WorldPoint(3321, 9260, 2),
 			new WorldPoint(3321, 9254, 2),
-			new WorldPoint(0, 0, 0),
+
+			new WorldPoint(3321, 9254, 3),
+
 			new WorldPoint(3321, 9251, 2),
 			new WorldPoint(3321, 9246, 2),
 			new WorldPoint(3312, 9246, 2),
@@ -203,7 +205,9 @@ public class Contact extends BasicQuestHelper
 			new WorldPoint(3301, 9251, 2),
 			new WorldPoint(3301, 9238, 2),
 			new WorldPoint(3304, 9238, 2),
-			new WorldPoint(0, 0, 0),
+
+			new WorldPoint(3304, 9238, 3),
+
 			new WorldPoint(3307, 9238, 2),
 			new WorldPoint(3309, 9238, 2),
 			new WorldPoint(3309, 9233, 2),

@@ -46,7 +46,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -110,7 +109,7 @@ public class Regicide extends BasicQuestHelper
 	DetailedQuestStep talkToChemist, useTarOnFractionalisingStill, operateStill, useQuicklimeOnNaphtha,
 		useGroundSulphurOnNaphtha, useClothOnBarrelBomb;
 
-	DetailedQuestStep useRabbitOnGuard, useBombOnCatapult, talkToArianwyn;
+	DetailedQuestStep useRabbitOnGuard, useBombOnCatapult, leaveFromCatapult, talkToArianwyn;
 
 	//Zones
 	Zone castleFloor2, westArdougne, beforeRockslide1, beforeRockslide2, beforeRockslide3, beforeBridge,
@@ -190,6 +189,7 @@ public class Regicide extends BasicQuestHelper
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, naphthaMix), useGroundSulphurOnNaphtha);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, naphtha), useQuicklimeOnNaphtha);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, coalInStill), operateStill);
+		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, hadGroundQuicklime, talkedToChemist), useTarOnFractionalisingStill);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, hadGroundQuicklime, hadGroundSulphur), talkToChemist);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, hadGroundQuicklime), usePestleOnSulphur);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb), goMakeQuicklime);
@@ -483,7 +483,8 @@ public class Regicide extends BasicQuestHelper
 		goDownCastleStairs = new ObjectStep(this, ObjectID.STAIRCASE_15648, new WorldPoint(2572, 3296, 1), "Talk to Koftik in West Ardougne.");
 		enterWestArdougne = new ObjectStep(this, ObjectID.ARDOUGNE_WALL_DOOR_8739, new WorldPoint(2558, 3300, 0), "Talk to Koftik in West Ardougne.");
 
-		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the dungeon.", rope1, bow, arrows, spade);
+		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the" +
+			" dungeon.", bow, arrows, rope1, spade);
 		climbOverRockslide1 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2480, 9713, 0), "Climb-over rockslide.");
 		climbOverRockslide2 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2471, 9706, 0), "Climb-over rockslide.");
 		climbOverRockslide3 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2458, 9712, 0), "Climb-over rockslide.");
@@ -688,6 +689,19 @@ public class Regicide extends BasicQuestHelper
 			"Use the barrel bomb on the catapult.", barrelBombFused.highlighted());
 		useBombOnCatapult.addIcon(ItemID.BARREL_BOMB_3219);
 
+		List<WorldPoint> pathFromCatapult = Arrays.asList(
+			new WorldPoint(2188, 3172, 0),
+			new WorldPoint(2188, 3180, 0),
+			new WorldPoint(2188, 3180, 0),
+			new WorldPoint(2203, 3180, 0),
+			new WorldPoint(2217, 3172, 0),
+			new WorldPoint(2217, 3158, 0)
+		);
+
+		leaveFromCatapult = new ObjectStep(this, ObjectID.TRIPWIRE_3921, new WorldPoint(2220, 3154, 0),
+			"Go to the east, then south to the traps and cross them.");
+		leaveFromCatapult.setLinePoints(pathFromCatapult);
+
 		talkToArianwyn = new NpcStep(this, NpcID.ARIANWYN, new WorldPoint(2582, 3298, 0),
 			"Talk to Arianwyn outside Ardougne Castle.", iorwerthsMessage);
 
@@ -842,6 +856,8 @@ public class Regicide extends BasicQuestHelper
 			"Use the barrel bomb on the catapult north of the Tyras Camp.");
 		goTalkToIorwerthAfterRegicide = new ConditionalStep(this, pathToIorwerth,
 			"Report back to Lord Iorwerth.");
+		goTalkToIorwerthAfterRegicide.addStep(inTyrasCamp, leaveFromCatapult);
+
 		goTalkToLathasToFinish = new ConditionalStep(this, goToArdougneCastleFloor2,
 			"Report back to King Lathas to finish the quest.", iorwerthsMessage);
 		goTalkToLathasToFinish.addStep(inCastleFloor2, talkToKingLathas);
@@ -885,8 +901,8 @@ public class Regicide extends BasicQuestHelper
 		allSteps.add(new PanelDetails("To the Elven Lands",
 			Arrays.asList(goThroughUndergroundPass, talkToIdris, goTalkToIorwerth, goTalkToTracker,
 				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
-				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb), bow, arrows,
-			rope2, tinderbox, spade, antipoisons, combatEquipment));
+				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+			bow, arrows, rope1, spade, antipoisons, combatEquipment));
 		allSteps.add(new PanelDetails("Making a bomb", Arrays.asList(useLimestoneOnFurnace, usePestleOnQuicklime,
 			usePestleOnSulphur, talkToChemist, useTarOnFractionalisingStill, operateStill, useQuicklimeOnNaphtha,
 			useGroundSulphurOnNaphtha, useClothOnBarrelBomb),
@@ -894,7 +910,7 @@ public class Regicide extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Regicide", Arrays.asList(goThroughUndergroundPassAgain, goGiveRabbitToGuard,
 			useBombOnCatapult, goTalkToIorwerthAfterRegicide, talkToArianwyn, goTalkToLathasToFinish),
-			bow, arrows, rope2, tinderbox, spade, antipoisons, barrelBombFused, cookedRabbit));
+			bow, arrows, rope1, tinderbox, spade, antipoisons, barrelBombFused, cookedRabbit));
 		return allSteps;
 	}
 }

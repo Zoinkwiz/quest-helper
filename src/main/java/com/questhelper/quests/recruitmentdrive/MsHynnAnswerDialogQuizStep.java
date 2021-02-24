@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz/>
  * Copyright (c) 2020, Patyfatycake <https://github.com/Patyfatycake/>
  * All rights reserved.
  *
@@ -34,102 +35,76 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import static net.runelite.api.widgets.WidgetID.DIALOG_NPC_GROUP_ID;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.Subscribe;
 
 public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 {
-	private QuestStep dialogQuizStep, leaveRoom, talkToMsHynnTerprett;
-	private VarbitRequirement finishedRoomCondition;
-
-	private boolean dialogEntry = false;
+	private QuestStep leaveRoom, talkToMsHynnTerprett;
 
 	private final int VARBIT_FINISHED_ROOM = 665;
+	private final int VARBIT_PUZZLE_SOLUTION = 667;
 
-	private final String DIALOG_QUIZ = "Here is my riddle:<br>I estimate there to be 1 million inhabitants in the world<br>of Gielinor, creatures and people both.";
-	private final String DIALOG_QUIZ2 = "What would be the number you would get if you<br>multiply the number of fingers on everythings left hand,<br>to the nearest million?";
-
-	private static final String DIALOG_QUIZ3 = "My husband is four times older than my daughter.<br>In twenty years time, he will be twice as old as my<br>daughter.";
+	String[] answers = {
+		"unknown",
+		"10",
+		"three false statements",
+		"the wolves",
+		"bucket A",
+		"zero"
+	};
 
 	public MsHynnAnswerDialogQuizStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
 		super(questHelper, step, requirements);
-//Talk to Ms Hynn Terprett and answer the riddle.
+
 		talkToMsHynnTerprett = step;
-		step.addDialogSteps(
+		talkToMsHynnTerprett.addDialogSteps(
 			"The wolves.",
 			"Bucket A (32 degrees)",
 			"The number of false statements here is three.",
 			"Zero.");
-		AddSteps();
+		addSteps();
 	}
 
-	private void AddSteps()
+	@Override
+	public void startUp()
 	{
-		finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
-		leaveRoom = new ObjectStep(questHelper, 7354, "Leaves through the door to enter the portal and continue.");
+		super.startUp();
+		int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
+		if (answerID == 0)
+		{
+			return;
+		}
+		String answer = "The answer is " + answers[answerID] + ".";
+		talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
+	}
+
+	@Subscribe
+	@Override
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
+		if (answerID == 0)
+		{
+			return;
+		}
+		String answer = "The answer is " + answers[answerID] + ".";
+		talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
+	}
+
+	private void addSteps()
+	{
+		VarbitRequirement finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
+		leaveRoom = new ObjectStep(questHelper, 7354, "Leave through the door to enter the portal and continue.");
 
 		addStep(finishedRoomCondition, leaveRoom);
-		AddDialogQuizStep();
 	}
 
 	public List<QuestStep> getPanelSteps()
 	{
 		List<QuestStep> steps = new ArrayList<>();
-		if (dialogEntry)
-		{
-			steps.add(dialogQuizStep);
-		}
 		steps.add(leaveRoom);
 		return steps;
-	}
-
-	private void AddDialogQuizStep()
-	{
-		Requirement step = RequirementBuilder.builder().check(client -> dialogEntry).build();
-		dialogQuizStep = new DetailedQuestStep(questHelper, "Enter the answer 10 to the dialog when prompted.");
-		talkToMsHynnTerprett.addSubSteps(dialogQuizStep);
-		addStep(step, dialogQuizStep);
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		int groupId = event.getGroupId();
-		if (groupId == DIALOG_NPC_GROUP_ID)
-		{
-			clientThread.invokeLater(this::readWidget);
-		}
-
-		super.onWidgetLoaded(event);
-	}
-
-	private void readWidget()
-	{
-		Widget widget = client.getWidget(WidgetID.DIALOG_NPC_GROUP_ID, 4);
-		if (widget == null)
-		{
-			return;
-		}
-		String characterText = widget.getText();
-
-		if (DIALOG_QUIZ.equals(characterText) ||
-			DIALOG_QUIZ2.equals(characterText))
-		{
-			dialogEntry = true;
-			talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle with the code 0");
-			dialogQuizStep.setText("Enter the answer \n \n 0.");
-		}
-		else if (DIALOG_QUIZ3.equals(characterText))
-		{
-			dialogEntry = true;
-			talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle with the code 10");
-			dialogQuizStep.setText("Enter the answer \n \n 10.");
-		}
 	}
 }

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * Copyright (c) 2020, Patyfatycake <https://github.com/Patyfatycake/>
  * All rights reserved.
  *
@@ -27,55 +28,65 @@ package com.questhelper.quests.recruitmentdrive;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import static net.runelite.api.widgets.WidgetID.DIALOG_NPC_GROUP_ID;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.Subscribe;
 
 public class SirRenItchoodStep extends ConditionalStep
 {
 	private String answer = null;
 
 	private String[] answers = {
-		"BITE", "FISH", "LAST", "MEAT", "RAIN", "TIME"
+		"NULL", "TIME", "FISH", "RAIN", "BITE", "MEAT", "LAST"
 	};
 
 	private final int VARBIT_FINISHED_ROOM = 663;
+	private final int VARBIT_ANSWER = 666;
 
-	private Requirement hasAnswer, answerWidgetOpen;
-	private DetailedQuestStep enterDoorcode;
+	private Requirement answerWidgetOpen;
+	private DoorPuzzle enterDoorcode;
 	private QuestStep talkToRen, openAnswerWidget, leaveRoom;
 	private VarbitRequirement finishedRoomCondition;
 
 	public SirRenItchoodStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
 		super(questHelper, step, requirements);
-		loadConditions();
 
 		talkToRen = step;
 		addRenSteps();
 	}
 
-	private void loadConditions()
+	@Override
+	public void startUp()
 	{
-		hasAnswer = new ConditionForStep()
+		super.startUp();
+		int answerID = client.getVarbitValue(VARBIT_ANSWER);
+		if (answerID == 0)
 		{
-			@Override
-			public boolean check(Client client)
-			{
-				return answer != null;
-			}
-		};
+			return;
+		}
+		String answer = answers[answerID];
+		enterDoorcode.updateWord(answer);
+	}
+
+	@Subscribe
+	@Override
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		super.onVarbitChanged(varbitChanged);
+		int answerID = client.getVarbitValue(VARBIT_ANSWER);
+		if (answerID == 0)
+		{
+			return;
+		}
+		String answer = answers[answerID];
+		enterDoorcode.updateWord(answer);
 	}
 
 	private void addRenSteps()
@@ -83,12 +94,12 @@ public class SirRenItchoodStep extends ConditionalStep
 		finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
 		openAnswerWidget = new ObjectStep(questHelper, 7323, "Open the door to be prompted to enter a code.");
 		answerWidgetOpen = new WidgetTextRequirement(285, 55, "Combination Lock Door");
-		enterDoorcode = new DetailedQuestStep(questHelper, "");
-		leaveRoom = new ObjectStep(questHelper, 7323, "Leaves through the door to enter the portal and continue.");
+		enterDoorcode = new DoorPuzzle(questHelper, "NONE");
+		leaveRoom = new ObjectStep(questHelper, 7323, "Leave through the door to enter the portal and continue.");
 
 		addStep(finishedRoomCondition, leaveRoom);
-		addStep(new Conditions(hasAnswer, answerWidgetOpen), enterDoorcode);
-		addStep(hasAnswer, openAnswerWidget);
+		addStep(new Conditions(answerWidgetOpen), enterDoorcode);
+		addStep(null, openAnswerWidget);
 	}
 
 	public List<QuestStep> getPanelSteps()
@@ -99,56 +110,5 @@ public class SirRenItchoodStep extends ConditionalStep
 		steps.add(enterDoorcode);
 		steps.add(leaveRoom);
 		return steps;
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		int groupId = event.getGroupId();
-		if (groupId == DIALOG_NPC_GROUP_ID)
-		{
-			clientThread.invokeLater(() -> readWidget());
-		}
-
-		super.onWidgetLoaded(event);
-	}
-
-	private void readWidget()
-	{
-		if (this.answer != null)
-		{
-			return;
-		}
-		Widget widget = client.getWidget(WidgetID.DIALOG_NPC_GROUP_ID, 4);
-		if (widget == null)
-		{
-			return;
-		}
-		String characterText = widget.getText();
-		String[] splitText = characterText.split("<br>");
-
-		if (splitText.length != 4)
-		{
-			return;
-		}
-
-		StringBuilder sb = new StringBuilder();
-		for (String line : splitText)
-		{
-			sb = sb.append(line.charAt(0));
-		}
-		String answer = sb.toString();
-		for (String value : answers)
-		{
-			if (value.equals(answer))
-			{
-				this.answer = answer;
-				enterDoorcode.setText("Enter the code: " + answer + " into the combination lock.");
-				return;
-			}
-		}
 	}
 }

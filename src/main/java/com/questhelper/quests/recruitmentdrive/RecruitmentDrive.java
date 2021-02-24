@@ -31,6 +31,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.player.PlayerModelRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -64,6 +65,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 {
 	private ItemRequirement coinsRequirement;
 	private NoItemRequirement noItemRequirement;
+	private Requirement femaleReq;
 	private ZoneRequirement isFirstFloorCastle, isSecondFloorCastle,
 		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
 		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom;
@@ -95,17 +97,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 	// Ms Cheeves
 	private MsCheevesSetup msCheevesSetup;
 
-	private int chickenOnRightId = 7279;
-	private int chickenOnLeftId = 7280;
-	private int grainOnRightId = 7282;
-	private int foxOnRightId = 7275;
-
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		// TODO: Properly restart puzzle states should you fail and re-enter
-		// TODO: Check if varbit 667 pertains to the statue answer
-		// If it does, 8 = Silver mace, 6 = Gold Sword
 		setupItemRequirements();
 		SetupZones();
 
@@ -126,6 +120,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemID.COINS, 3000);
 		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
+
+		femaleReq = new PlayerModelRequirement(true);
 	}
 
 	public void SetupZones()
@@ -168,8 +164,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 		ObjectStep climbDownfirstFloorStaircase = new ObjectStep(this, ObjectID.STAIRCASE_24074,
 			firstFloorStairsPosition, "Climb down the stairs from the first floor.");
 
-		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, "Talk to Sir Tiffy Cashien in Falador Park. Ensure you are a female character as one of the tests require you to be.",
-			noItemRequirement);
+		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN,
+			"Talk to Sir Tiffy Cashien in Falador Park.", noItemRequirement);
 
 		ConditionalStep conditionalTalkToSirTiffy = new ConditionalStep(this, talkToSirTiffy);
 		conditionalTalkToSirTiffy.addStep(isSecondFloorCastle, climbDownSecondFloorStaircase);
@@ -188,8 +184,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 		conditionalTalkToSirTiffy.addStep(isInSirKuamsRoom, getSirKuam());
 
 		conditionalTalkToSirTiffy.addStep(msCheevesSetup.getIsInMsCheeversRoom(), msCheevesSetup.getConditionalStep());
-
-		//	conditionalTalkToSirTiffy.addStep(isInSirKuamsRoom, getSirKuam());
 		return conditionalTalkToSirTiffy;
 	}
 
@@ -205,9 +199,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
 		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
-			"Kill Sir Leye to win this challenge. You must be a female character or you can't kill him.", true);
+			"Kill Sir Leye to win this challenge. You must be a female character or you can't kill him.", true,
+			femaleReq);
 
-		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leaves through the portal to continue.");
+		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);
 
 		ConditionalStep sirKuamConditional = new ConditionalStep(this, talkToSirKuam);
@@ -217,10 +212,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 		return sirKuamConditional;
 	}
 
-	private MsCheevesSetup getMsCheeves()
+	private void getMsCheeves()
 	{
 		msCheevesSetup = new MsCheevesSetup(this);
-		return msCheevesSetup;
 	}
 
 	private QuestStep getSirSpishyus()
@@ -248,10 +242,12 @@ public class RecruitmentDrive extends BasicQuestHelper
 		Conditions chickenPickedUp = new Conditions(LogicType.AND, chickenNotOnRightSide, chickenNotOnLeftSide);
 		Conditions grainPickedUp = new Conditions(LogicType.AND, grainNotOnLeftSide, grainNotOnRightSide);
 
+		int chickenOnRightId = 7279;
 		moveChickenOnRightToLeft = new ObjectStep(this, chickenOnRightId, chickenOnRightPoint,
 			getSpishyusPickupText("Chicken", true));
-		finishedSpishyusRoom = new ObjectStep(this, 7274, "Leaves through the portal to continue.");
+		finishedSpishyusRoom = new ObjectStep(this, 7274, "Leave through the portal to continue.");
 
+		int foxOnRightId = 7275;
 		moveFoxOnRightToLeft = new ObjectStep(this, foxOnRightId, foxOnRightPoint,
 			getSpishyusPickupText("Fox", true));
 
@@ -261,11 +257,13 @@ public class RecruitmentDrive extends BasicQuestHelper
 		DetailedQuestStep moveFoxToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Fox", false));
 		moveFoxOnRightToLeft.addSubSteps(moveFoxToLeft);
 
+		int chickenOnLeftId = 7280;
 		moveChickenOnLeftToRight = new ObjectStep(this, chickenOnLeftId, chickenOnLeftPoint,
 			getSpishyusPickupText("Chicken", false));
 		DetailedQuestStep moveChickenToRight = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", true));
 		moveChickenOnLeftToRight.addSubSteps(moveChickenToRight);
 
+		int grainOnRightId = 7282;
 		moveGrainOnRightToLeft = new ObjectStep(this, grainOnRightId, grainOnRightPoint,
 			getSpishyusPickupText("Grain", true));
 		DetailedQuestStep moveGrainToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Grain", false));
@@ -323,7 +321,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 			"Talk to Sir Tinley. \n Once you have pressed continue do not do anything or you will fail.");
 		doNothingStep = new DetailedQuestStep(this,
 			"Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.");
-		leaveSirTinleyRoom = new ObjectStep(this, 7320, "Leaves through the portal to continue.");
+		leaveSirTinleyRoom = new ObjectStep(this, 7320, "Leave through the portal to continue.");
 
 		VarbitRequirement waitForCondition = new VarbitRequirement(667, 1, Operation.GREATER_EQUAL);
 		VarbitRequirement finishedRoom = new VarbitRequirement(662, 1);
@@ -373,7 +371,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Defeat a level 20 monsters with no gear");
+		return Collections.singletonList("Sir Leye (level 20) with no items");
 	}
 
 	@Override
@@ -382,6 +380,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
+		reqs.add(new PlayerModelRequirement(true));
 		return reqs;
 	}
 
@@ -402,7 +401,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		List<QuestStep> hynnSteps = new ArrayList<>();
 		hynnSteps.add(talkToMsHynnTerprett);
 		hynnSteps.addAll(msHynnDialogQuiz.getPanelSteps());
-		PanelDetails msHynnsRoom = new PanelDetails("Ms HynnTerprett", hynnSteps);
+		PanelDetails msHynnsRoom = new PanelDetails("Ms Hynn Terprett", hynnSteps);
 
 		PanelDetails sirKuamRoom = new PanelDetails("Sir Kuam",
 			Arrays.asList(talkToSirKuam, killSirLeye, leaveSirKuamRoom));

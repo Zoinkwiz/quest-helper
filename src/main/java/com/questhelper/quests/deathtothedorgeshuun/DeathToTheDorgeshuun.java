@@ -314,7 +314,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkToWoman = new NpcStep(this, NpcID.WOMAN, new WorldPoint(3224, 3218, 0), "", true);
 		((NpcStep) (talkToWoman)).addAlternateNpcs(NpcID.MAN_3108, NpcID.MAN_3106, NpcID.WOMAN_3111);
 		talkToGuide = new NpcStep(this, NpcID.LUMBRIDGE_GUIDE, new WorldPoint(3238, 3220, 0), "");
-		talkToBob = new NpcStep(this, NpcID.BOB_2812, new WorldPoint(3231, 3208, 0), "");
+		talkToBob = new NpcStep(this, NpcID.BOB_10611, new WorldPoint(3231, 3208, 0), "");
 		talkToAereck = new NpcStep(this, NpcID.FATHER_AERECK, new WorldPoint(3244, 3210, 0), "");
 		approachGoblins = new DetailedQuestStep(this, new WorldPoint(3247, 3235, 0), "");
 		talkToShopkeeper = new NpcStep(this, NpcID.SHOP_KEEPER, new WorldPoint(3211, 3247, 0), "");

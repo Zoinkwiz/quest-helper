@@ -374,7 +374,8 @@ public class UndergroundPass extends BasicQuestHelper
 		searchBagForCloth = new ObjectStep(this, ObjectID.ABANDONED_EQUIPMENT, new WorldPoint(2452, 9715, 0), "Search the abandoned equipment for an oily cloth.");
 		useClothOnArrow = new DetailedQuestStep(this, "Use the oily cloth on an arrow.", oilyClothHighlight, arrowsHighlight);
 		lightArrow = new DetailedQuestStep(this, "Use the tinderbox on the fire arrow. If you don't have a tinderbox, use the arrow on the nearby fire instead.", fireArrow, tinderboxHighlight);
-		walkNorthEastOfBridge = new TileStep(this, new WorldPoint(2447, 9722, 0), "Walk to the room north of Koftik.", litArrowEquipped);
+		walkNorthEastOfBridge = new DetailedQuestStep(this, new WorldPoint(2447, 9722, 0), "Walk to the room north of Koftik.",
+			litArrowEquipped);
 		shootBridgeRope = new ObjectStep(this, ObjectID.GUIDE_ROPE, "Wield a lit arrow and shoot the guide-rope.", bow, litArrowEquipped);
 		shootBridgeRope.addSubSteps(searchBagForCloth, useClothOnArrow, lightArrow, walkNorthEastOfBridge);
 

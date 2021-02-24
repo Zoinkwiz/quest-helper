@@ -368,7 +368,9 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3601, 3214, 0),
 			new WorldPoint(3598, 3214, 0),
 			new WorldPoint(3598, 3216, 0),
-			new WorldPoint(0, 0, 0),
+
+			new WorldPoint(3598, 3216, 3),
+
 			new WorldPoint(3598, 3219, 0),
 			new WorldPoint(3594, 3223, 0),
 			new WorldPoint(3594, 3223, 1),
@@ -599,7 +601,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		List<WorldPoint> pathFromBaseToTapestry = Arrays.asList(
 			new WorldPoint(3640, 3253, 0),
-			new WorldPoint(2640, 3258, 0),
+			new WorldPoint(3640, 3258, 0),
 			new WorldPoint(3639, 3258, 0),
 			new WorldPoint(3639, 3255, 1),
 			new WorldPoint(3636, 3256, 1),

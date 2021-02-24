@@ -46,7 +46,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -110,7 +109,7 @@ public class Regicide extends BasicQuestHelper
 	DetailedQuestStep talkToChemist, useTarOnFractionalisingStill, operateStill, useQuicklimeOnNaphtha,
 		useGroundSulphurOnNaphtha, useClothOnBarrelBomb;
 
-	DetailedQuestStep useRabbitOnGuard, useBombOnCatapult, talkToArianwyn;
+	DetailedQuestStep useRabbitOnGuard, useBombOnCatapult, leaveFromCatapult, talkToArianwyn;
 
 	//Zones
 	Zone castleFloor2, westArdougne, beforeRockslide1, beforeRockslide2, beforeRockslide3, beforeBridge,
@@ -190,6 +189,7 @@ public class Regicide extends BasicQuestHelper
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, naphthaMix), useGroundSulphurOnNaphtha);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, naphtha), useQuicklimeOnNaphtha);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, coalInStill), operateStill);
+		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, hadGroundQuicklime, talkedToChemist), useTarOnFractionalisingStill);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, hadGroundQuicklime, hadGroundSulphur), talkToChemist);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb, hadGroundQuicklime), usePestleOnSulphur);
 		goMakeBomb.addStep(new Conditions(knowHowToMakeBomb), goMakeQuicklime);
@@ -210,26 +210,20 @@ public class Regicide extends BasicQuestHelper
 	private void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
-		rope2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
-		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
-		ropeHighlight.setHighlightInInventory(true);
+		rope2 = rope1.quantity(2);
+		ropeHighlight = rope1.highlighted();
 		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.getBows(), 1, true);
 		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.getMetalArrows());
-		arrowsHighlight = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.getMetalArrows());
-		arrowsHighlight.setHighlightInInventory(true);
+		arrowsHighlight = arrows.highlighted();
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE);
-		spadeHighlight.setHighlightInInventory(true);
+		spadeHighlight = spade.highlighted();
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
-		plankHighlight = new ItemRequirement("Plank", ItemID.PLANK);
-		plankHighlight.setHighlightInInventory(true);
+		plankHighlight = plank.highlighted();
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
-		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
-		bucketHighlight.setHighlightInInventory(true);
+		bucketHighlight = bucket.highlighted();
 		bucketHighlight.setTooltip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlight.setHighlightInInventory(true);
+		tinderboxHighlight = tinderbox.highlighted();
 		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1);
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
@@ -239,8 +233,7 @@ public class Regicide extends BasicQuestHelper
 		agilityPotions = new ItemRequirement("Agility Potions", ItemCollections.getAgilityPotions());
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
 		oilyCloth.setTooltip("You can get another by searching the equipment by the fireplace beside Koftik.");
-		oilyClothHighlight = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
-		oilyClothHighlight.setHighlightInInventory(true);
+		oilyClothHighlight = oilyCloth.highlighted();
 		fireArrow = new ItemRequirement("Fire Arrow", ItemID.BRONZE_FIRE_ARROW);
 		fireArrow.setHighlightInInventory(true);
 		fireArrow.addAlternates(ItemID.IRON_FIRE_ARROW, ItemID.STEEL_FIRE_ARROW, ItemID.MITHRIL_FIRE_ARROW, ItemID.ADAMANT_FIRE_ARROW, ItemID.RUNE_FIRE_ARROW);
@@ -260,14 +253,22 @@ public class Regicide extends BasicQuestHelper
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
 			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
+		gloves.setTooltip("The following gloves are valid:");
+		gloves.appendToTooltip("All RFD Gloves");
+		gloves.appendToTooltip("Hard Leather Gloves");
+		gloves.appendToTooltip("Ferocious Gloves");
+		gloves.appendToTooltip("Graceful Gloves");
+		gloves.appendToTooltip("Granite Gloves");
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		cookedRabbit =  new ItemRequirement("Cooked rabbit", ItemID.COOKED_RABBIT);
 
 		antipoisons = new ItemRequirement("Antidotes/antipoisons", ItemCollections.getAntipoisons(), -1);
+		antipoisons.setTooltip("No amount specified. Bring as many doses as you feel comfortable bringing.");
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		westArdougneTeleport = new ItemRequirement("West Ardougne teleport", ItemID.WEST_ARDOUGNE_TELEPORT, 4);
 		summerPie = new ItemRequirement("Summer pie as food + agility boost", ItemID.SUMMER_PIE, -1);
 		summerPie.addAlternates(ItemID.HALF_A_SUMMER_PIE);
+		summerPie.setTooltip("This is, most likely, not needed if you have 70+ Agility. Bring more if you have lower Agility.");
 
 		crystalPendant = new ItemRequirement("Crystal pendant", ItemID.CRYSTAL_PENDANT);
 		crystalPendant.setTooltip("You can get another from Lord Iorwerth");
@@ -482,7 +483,8 @@ public class Regicide extends BasicQuestHelper
 		goDownCastleStairs = new ObjectStep(this, ObjectID.STAIRCASE_15648, new WorldPoint(2572, 3296, 1), "Talk to Koftik in West Ardougne.");
 		enterWestArdougne = new ObjectStep(this, ObjectID.ARDOUGNE_WALL_DOOR_8739, new WorldPoint(2558, 3300, 0), "Talk to Koftik in West Ardougne.");
 
-		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the dungeon.", rope1, bow, arrows, spade);
+		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the" +
+			" dungeon.", bow, arrows, rope1, spade);
 		climbOverRockslide1 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2480, 9713, 0), "Climb-over rockslide.");
 		climbOverRockslide2 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2471, 9706, 0), "Climb-over rockslide.");
 		climbOverRockslide3 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2458, 9712, 0), "Climb-over rockslide.");
@@ -493,7 +495,8 @@ public class Regicide extends BasicQuestHelper
 		useClothOnArrow = new DetailedQuestStep(this, "Use the oily cloth on an arrow.", oilyClothHighlight, arrowsHighlight);
 		lightArrow = new ObjectStep(this, ObjectID.FIRE_26185, new WorldPoint(2451, 9715, 0), "Light the fire arrow.",
 			fireArrow);
-		walkNorthEastOfBridge = new TileStep(this, new WorldPoint(2447, 9722, 0), "Walk to the room north of Koftik.", litArrowEquipped);
+		walkNorthEastOfBridge = new DetailedQuestStep(this, new WorldPoint(2447, 9722, 0), "Walk to the room north of Koftik.",
+			litArrowEquipped);
 		shootBridgeRope = new ObjectStep(this, ObjectID.GUIDE_ROPE, "Wield a lit arrow and shoot the guide-rope.", bow, litArrowEquipped);
 		shootBridgeRope.addSubSteps(searchBagForCloth, useClothOnArrow, lightArrow, walkNorthEastOfBridge);
 
@@ -686,6 +689,19 @@ public class Regicide extends BasicQuestHelper
 			"Use the barrel bomb on the catapult.", barrelBombFused.highlighted());
 		useBombOnCatapult.addIcon(ItemID.BARREL_BOMB_3219);
 
+		List<WorldPoint> pathFromCatapult = Arrays.asList(
+			new WorldPoint(2188, 3172, 0),
+			new WorldPoint(2188, 3180, 0),
+			new WorldPoint(2188, 3180, 0),
+			new WorldPoint(2203, 3180, 0),
+			new WorldPoint(2217, 3172, 0),
+			new WorldPoint(2217, 3158, 0)
+		);
+
+		leaveFromCatapult = new ObjectStep(this, ObjectID.TRIPWIRE_3921, new WorldPoint(2220, 3154, 0),
+			"Go to the east, then south to the traps and cross them.");
+		leaveFromCatapult.setLinePoints(pathFromCatapult);
+
 		talkToArianwyn = new NpcStep(this, NpcID.ARIANWYN, new WorldPoint(2582, 3298, 0),
 			"Talk to Arianwyn outside Ardougne Castle.", iorwerthsMessage);
 
@@ -840,6 +856,8 @@ public class Regicide extends BasicQuestHelper
 			"Use the barrel bomb on the catapult north of the Tyras Camp.");
 		goTalkToIorwerthAfterRegicide = new ConditionalStep(this, pathToIorwerth,
 			"Report back to Lord Iorwerth.");
+		goTalkToIorwerthAfterRegicide.addStep(inTyrasCamp, leaveFromCatapult);
+
 		goTalkToLathasToFinish = new ConditionalStep(this, goToArdougneCastleFloor2,
 			"Report back to King Lathas to finish the quest.", iorwerthsMessage);
 		goTalkToLathasToFinish.addStep(inCastleFloor2, talkToKingLathas);
@@ -883,8 +901,8 @@ public class Regicide extends BasicQuestHelper
 		allSteps.add(new PanelDetails("To the Elven Lands",
 			Arrays.asList(goThroughUndergroundPass, talkToIdris, goTalkToIorwerth, goTalkToTracker,
 				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
-				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb), bow, arrows,
-			rope2, tinderbox, spade, antipoisons, combatEquipment));
+				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+			bow, arrows, rope1, spade, antipoisons, combatEquipment));
 		allSteps.add(new PanelDetails("Making a bomb", Arrays.asList(useLimestoneOnFurnace, usePestleOnQuicklime,
 			usePestleOnSulphur, talkToChemist, useTarOnFractionalisingStill, operateStill, useQuicklimeOnNaphtha,
 			useGroundSulphurOnNaphtha, useClothOnBarrelBomb),
@@ -892,7 +910,7 @@ public class Regicide extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Regicide", Arrays.asList(goThroughUndergroundPassAgain, goGiveRabbitToGuard,
 			useBombOnCatapult, goTalkToIorwerthAfterRegicide, talkToArianwyn, goTalkToLathasToFinish),
-			bow, arrows, rope2, tinderbox, spade, antipoisons, barrelBombFused, cookedRabbit));
+			bow, arrows, rope1, tinderbox, spade, antipoisons, barrelBombFused, cookedRabbit));
 		return allSteps;
 	}
 }

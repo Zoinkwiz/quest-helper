@@ -140,6 +140,17 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showOverlayPanel",
+		name = "Display overlay on screen",
+		description = "Chose whether the overlay should be displayed on screen"
+	)
+	default boolean showOverlay()
+	{
+		return true;
+	}
+
+
+	@ConfigItem(
 		keyName = "bankSearchSpellPreference",
 		name = "Spell Component Preference",
 		description = "Choose whether runes or staves should be preferred when filtering spell components.",

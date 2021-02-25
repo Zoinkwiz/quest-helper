@@ -35,6 +35,7 @@ import net.runelite.client.eventbus.Subscribe;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.client.ui.FontManager;
 
 public class PuzzleStep extends QuestStep {
 
@@ -60,6 +61,7 @@ public class PuzzleStep extends QuestStep {
     private final int COMPLETE = 55;
 
     private final HashMap<Integer, Integer> highlightButtons = new HashMap<>();
+	private final HashMap<Integer, Integer> distance = new HashMap<>();
 
     public PuzzleStep(QuestHelper questHelper) {
         super(questHelper, "Click the highlighted arrows to move the slots to the solution 'KURT'.");
@@ -67,6 +69,11 @@ public class PuzzleStep extends QuestStep {
         highlightButtons.put(2, ARROW_TWO_RIGHT);
         highlightButtons.put(3, ARROW_THREE_RIGHT);
         highlightButtons.put(4, ARROW_FOUR_RIGHT);
+
+		distance.put(1, 0);
+		distance.put(2, 0);
+		distance.put(3, 0);
+		distance.put(4, 0);
     }
 
     @Subscribe
@@ -81,7 +88,14 @@ public class PuzzleStep extends QuestStep {
         highlightButtons.replace(2, matchStateToSolution(SLOT_TWO, ENTRY_TWO, ARROW_TWO_RIGHT, ARROW_TWO_LEFT));
         highlightButtons.replace(3, matchStateToSolution(SLOT_THREE, ENTRY_THREE, ARROW_THREE_RIGHT, ARROW_THREE_LEFT));
         highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR,ARROW_FOUR_RIGHT, ARROW_FOUR_LEFT));
-        if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0)
+
+		distance.replace(1, matchStateToDistance(SLOT_ONE, ENTRY_ONE.charAt(0)));
+		distance.replace(2, matchStateToDistance(SLOT_TWO, ENTRY_TWO.charAt(0)));
+		distance.replace(3, matchStateToDistance(SLOT_THREE, ENTRY_THREE.charAt(0)));
+		distance.replace(4, matchStateToDistance(SLOT_FOUR, ENTRY_FOUR.charAt(0)));
+
+
+		if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0)
         {
             highlightButtons.put(5, COMPLETE);
         } else {
@@ -99,6 +113,14 @@ public class PuzzleStep extends QuestStep {
         if(current != target.charAt(0)) return id;
         return 0;
     }
+
+	private int matchStateToDistance(int slot, Character target)
+	{
+		Widget widget = client.getWidget(285, slot);
+		if (widget == null) return 0;
+		char current = widget.getText().charAt(0);
+		return Math.min(Math.floorMod(current - target, 26), Math.floorMod(target - current, 26));
+	}
 
     @Override
     public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
@@ -120,6 +142,15 @@ public class PuzzleStep extends QuestStep {
                 graphics.fill(widget.getBounds());
                 graphics.setColor(questHelper.getConfig().targetOverlayColor());
                 graphics.draw(widget.getBounds());
+
+				if (distance.get(entry.getKey()) != null)
+				{
+					int widgetX = widget.getCanvasLocation().getX() + (widget.getWidth() / 2) - 4;
+					int widgetY = widget.getCanvasLocation().getY() + (widget.getHeight() / 2) + 4;
+					Font font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
+					graphics.setFont(font);
+					graphics.drawString(Integer.toString(distance.get(entry.getKey())), widgetX, widgetY);
+				}
             }
         }
     }

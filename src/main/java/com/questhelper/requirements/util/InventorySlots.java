@@ -70,6 +70,7 @@ public enum InventorySlots
 			.filter(Objects::nonNull)
 			.map(ItemContainer::getItems)
 			.flatMap(Arrays::stream)
+			.filter((item -> item.getId() != -1))
 			.allMatch(predicate);
 	}
 

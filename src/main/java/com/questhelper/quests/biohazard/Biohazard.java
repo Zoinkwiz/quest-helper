@@ -67,7 +67,7 @@ public class Biohazard extends BasicQuestHelper
 		birdCageHighlighted;
 
 	//Items Recommended
-	ItemRequirement teleportVarrock, teleportArdougne, teleportRimmington;
+	ItemRequirement teleportVarrock, teleportArdougne, teleportRimmington, coins;
 
 	Requirement hasBirdFeed, hasPigeonCage, inMournerBackyard, inWestArdougne, hasRottenApple, hasDistillator,
 		inMournerBuilding, upstairsInMournerBuilding, hasMedicalGown, hasKey, hasLiquidHoney, hasEthenea, hasBroline, hasChemicals, inVarrockSouthEast,
@@ -193,6 +193,7 @@ public class Biohazard extends BasicQuestHelper
 		teleportVarrock = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		teleportArdougne = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
 		teleportRimmington = new ItemRequirement("Teleport to Rimmington", ItemID.RIMMINGTON_TELEPORT);
+		coins = new ItemRequirement("Coins", ItemID.COINS_995, 30);
 	}
 
 	public void loadZones()
@@ -327,6 +328,7 @@ public class Biohazard extends BasicQuestHelper
 		reqs.add(teleportArdougne);
 		reqs.add(teleportRimmington);
 		reqs.add(teleportVarrock);
+		reqs.add(coins);
 		return reqs;
 	}
 

@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
+import com.questhelper.QuestTile;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
@@ -39,6 +40,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,6 +54,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.SpriteID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
@@ -83,6 +86,8 @@ public class DetailedQuestStep extends QuestStep
 
 	@Setter
 	protected List<WorldPoint> worldLinePoints;
+
+	private final List<QuestTile> markedTiles = new ArrayList<>();
 
 	@Getter
 	protected final List<Requirement> requirements = new ArrayList<>();
@@ -226,6 +231,19 @@ public class DetailedQuestStep extends QuestStep
 			WorldLines.drawLinesOnWorld(graphics, client, linePoints, getQuestHelper().getConfig().targetOverlayColor());
 		}
 
+		if (!markedTiles.isEmpty())
+		{
+			for (QuestTile location : markedTiles)
+			{
+				BufferedImage combatIcon = spriteManager.getSprite(location.getIconID(), 0);
+				LocalPoint localPoint = LocalPoint.fromWorld(client, location.getWorldPoint());
+				if (localPoint != null)
+				{
+					OverlayUtil.renderTileOverlay(client, graphics, localPoint, combatIcon, questHelper.getConfig().targetOverlayColor());
+				}
+			}
+		}
+
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
 	}
 
@@ -257,6 +275,33 @@ public class DetailedQuestStep extends QuestStep
 				startX, startY);
 		}
 	}
+
+	public void addTileMarker(QuestTile questTile)
+	{
+		markedTiles.add(questTile);
+	}
+
+	public void addTileMarker(WorldPoint worldPoint, int spriteID)
+	{
+		markedTiles.add(new QuestTile(worldPoint, spriteID));
+	}
+
+	public void addTileMarkers(WorldPoint... worldPoints)
+	{
+		for (WorldPoint point : worldPoints)
+		{
+			markedTiles.add(new QuestTile(point));
+		}
+	}
+
+	public void addSafeSpots(WorldPoint... worldPoints)
+	{
+		for (WorldPoint worldPoint : worldPoints)
+		{
+			markedTiles.add(new QuestTile(worldPoint, SpriteID.TAB_COMBAT));
+		}
+	}
+
 
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)

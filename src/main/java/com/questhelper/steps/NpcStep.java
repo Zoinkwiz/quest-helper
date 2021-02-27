@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Setter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -62,7 +63,6 @@ public class NpcStep extends DetailedQuestStep
 
 	private final int npcID;
 	private final ArrayList<Integer> alternateNpcIDs = new ArrayList<>();
-	private final List<WorldPoint> safespots = new ArrayList<>();
 
 	private boolean allowMultipleHighlights;
 
@@ -119,11 +119,6 @@ public class NpcStep extends DetailedQuestStep
 	public void addAlternateNpcs(Integer... alternateNpcIDs)
 	{
 		this.alternateNpcIDs.addAll(Arrays.asList(alternateNpcIDs));
-	}
-
-	public void addSafeSpots(WorldPoint... points)
-	{
-		this.safespots.addAll(Arrays.asList(points));
 	}
 
 	public List<Integer> allIds()
@@ -191,7 +186,7 @@ public class NpcStep extends DetailedQuestStep
 		int newNpcId = npcChanged.getNpc().getId();
 		npcs.remove(npcChanged.getNpc());
 
-		if (allIds().contains(newNpcId))
+		if (allIds().contains(newNpcId) && npcChanged.getNpc().getComposition().isVisible())
 		{
 			if (npcs.size() == 0 || allowMultipleHighlights)
 			{
@@ -203,6 +198,8 @@ public class NpcStep extends DetailedQuestStep
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
+		npcs.removeIf(npc -> npc.getId() == -1);
+
 		super.makeWorldOverlayHint(graphics, plugin);
 
 		if (inCutscene)
@@ -224,65 +221,49 @@ public class NpcStep extends DetailedQuestStep
 			return;
 		}
 
-		if (!safespots.isEmpty())
+		for (NPC npc : npcs)
 		{
-			BufferedImage combatIcon = spriteManager.getSprite(SpriteID.TAB_COMBAT, 0);
-			for (WorldPoint location : safespots)
-			{
-				LocalPoint localPoint = LocalPoint.fromWorld(client, location);
-				if (localPoint != null)
-				{
-					OverlayUtil.renderTileOverlay(client, graphics, localPoint, combatIcon, questHelper.getConfig().targetOverlayColor());
-				}
-			}
-		}
-
-		for (NPC otherNpc : npcs)
-		{
-			OverlayUtil.renderActorOverlayImage(graphics, otherNpc, icon, questHelper.getConfig().targetOverlayColor(),
+			OverlayUtil.renderActorOverlayImage(graphics, npc, icon, questHelper.getConfig().targetOverlayColor(),
 				IMAGE_Z_OFFSET);
 		}
-
-		if (npcs.size() == 0)
-		{
-			return;
-		}
-
-		OverlayUtil.renderActorOverlayImage(graphics, npcs.get(0), icon, questHelper.getConfig().targetOverlayColor(),
-			IMAGE_Z_OFFSET);
 	}
 
 	@Override
 	public void renderArrow(Graphics2D graphics)
 	{
-		if (questHelper.getConfig().showMiniMapArrow()) {
-		if (npcs.size() == 0)
+		if (questHelper.getConfig().showMiniMapArrow())
 		{
-			super.renderArrow(graphics);
-		}
-		else if (!hideWorldArrow && !npcs.contains(client.getHintArrowNpc()))
-		{
-			Shape hull = npcs.get(0).getConvexHull();
-			if (hull != null)
+			if (npcs.size() == 0)
 			{
-				Rectangle rect = hull.getBounds();
-				int x = (int) rect.getCenterX();
-				int y = (int) rect.getMinY() - ARROW_SHIFT_Y;
+				super.renderArrow(graphics);
+			}
+			else if (!hideWorldArrow && !npcs.contains(client.getHintArrowNpc()))
+			{
+				Shape hull = npcs.get(0).getConvexHull();
+				if (hull != null)
+				{
+					Rectangle rect = hull.getBounds();
+					int x = (int) rect.getCenterX();
+					int y = (int) rect.getMinY() - ARROW_SHIFT_Y;
 
-				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+					DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+				}
 			}
 		}
-	}
 	}
 
 	@Override
-	public void renderMinimapArrow(Graphics2D graphics) {
-		if (questHelper.getConfig().showMiniMapArrow()) {
-			if (npcs.contains(client.getHintArrowNpc())) {
+	public void renderMinimapArrow(Graphics2D graphics)
+	{
+		if (questHelper.getConfig().showMiniMapArrow())
+		{
+			if (npcs.contains(client.getHintArrowNpc()))
+			{
 				return;
 			}
 
-			if (!npcs.isEmpty() && npcs.get(0).getMinimapLocation() != null) {
+			if (!npcs.isEmpty() && npcs.get(0).getMinimapLocation() != null)
+			{
 				int x = npcs.get(0).getMinimapLocation().getX();
 				int y = npcs.get(0).getMinimapLocation().getY();
 				Line2D.Double line = new Line2D.Double(x, y - 18, x, y - 8);

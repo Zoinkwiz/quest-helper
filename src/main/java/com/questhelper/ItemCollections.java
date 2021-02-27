@@ -985,4 +985,33 @@ public class ItemCollections
 		ItemID.TWISTED_SLAYER_HELMET_I,
 		ItemID.TWISTED_SLAYER_HELMET_I_25191
 	);
+
+	@Getter
+	private static final List<Integer> rawFish = ImmutableList.of(
+		ItemID.RAW_SHRIMPS,
+		ItemID.RAW_SARDINE,
+		ItemID.RAW_KARAMBWANJI,
+		ItemID.RAW_HERRING,
+		ItemID.RAW_ANCHOVIES,
+		ItemID.RAW_MACKEREL,
+		ItemID.RAW_TROUT,
+		ItemID.RAW_COD,
+		ItemID.RAW_PIKE,
+		ItemID.RAW_SLIMY_EEL,
+		ItemID.RAW_SALMON,
+		ItemID.RAW_TUNA,
+		ItemID.RAW_RAINBOW_FISH,
+		ItemID.RAW_CAVE_EEL,
+		ItemID.RAW_LOBSTER,
+		ItemID.RAW_BASS,
+		ItemID.RAW_SWORDFISH,
+		ItemID.RAW_LAVA_EEL,
+		ItemID.RAW_MONKFISH,
+		ItemID.RAW_KARAMBWAN,
+		ItemID.RAW_SHARK,
+		ItemID.RAW_SEA_TURTLE,
+		ItemID.RAW_MANTA_RAY,
+		ItemID.RAW_ANGLERFISH,
+		ItemID.RAW_DARK_CRAB
+	);
 }

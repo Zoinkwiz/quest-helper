@@ -75,11 +75,12 @@ public class TrollStronghold extends BasicQuestHelper
 
 	Requirement inStrongholdFloor1, inStrongholdFloor2, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inArena, inNorthArena,
 		beatenDad, inArenaCave, inTrollheimArea, hasPrisonKey, prisonKeyNearby, prisonDoorUnlocked, inPrisonStairsRoom, inPrison, hasCellKey1, hasCellKey2,
-		freedEadgar, freedGodric;
+		freedEadgar, freedGodric, cellKey1Nearby, cellKey2Nearby;
 
 	QuestStep talkToDenulth, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterArena, fightDad,
 		leaveArena, enterArenaCavern, leaveArenaCavern, enterStronghold, killGeneral, pickupPrisonKey, goDownInStronghold, goThroughPrisonDoor,
-		goUpTo2ndFloor, goDownToPrison, getTwigKey, getBerryKey, freeEadgar, freeGodric, goToDunstan;
+		goUpTo2ndFloor, goDownToPrison, getTwigKey, getBerryKey, pickupKey1, pickupKey2, freeEadgar, freeGodric,
+		goToDunstan;
 
 	//Zones
 	Zone strongholdFloor1, strongholdFloor2, tenzingHut, mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5, trollArea1, arena, northArena,
@@ -99,8 +100,10 @@ public class TrollStronghold extends BasicQuestHelper
 		ConditionalStep enterTheStronghold = new ConditionalStep(this, getCoinsOrBoots);
 		enterTheStronghold.addStep(new Conditions(freedEadgar, freedGodric), goToDunstan);
 		enterTheStronghold.addStep(new Conditions(inPrison, freedEadgar, hasCellKey1), freeGodric);
+		enterTheStronghold.addStep(new Conditions(inPrison, freedEadgar, cellKey1Nearby), pickupKey1);
 		enterTheStronghold.addStep(new Conditions(inPrison, freedEadgar), getTwigKey);
 		enterTheStronghold.addStep(new Conditions(inPrison, hasCellKey2), freeEadgar);
+		enterTheStronghold.addStep(new Conditions(inPrison, cellKey2Nearby), pickupKey2);
 		enterTheStronghold.addStep(inPrison, getBerryKey);
 		enterTheStronghold.addStep(inPrisonStairsRoom, goDownToPrison);
 		enterTheStronghold.addStep(new Conditions(new Conditions(LogicType.OR, prisonDoorUnlocked, hasPrisonKey), inStrongholdFloor1), goThroughPrisonDoor);
@@ -179,6 +182,8 @@ public class TrollStronghold extends BasicQuestHelper
 		inPrison = new ZoneRequirement(prison);
 		hasPrisonKey = new ItemRequirements(prisonKey);
 		prisonKeyNearby = new ItemOnTileRequirement(ItemID.PRISON_KEY);
+		cellKey1Nearby = new ItemOnTileRequirement(cellKey1);
+		cellKey2Nearby = new ItemOnTileRequirement(cellKey2);
 		hasCellKey1 = new ItemRequirements(cellKey1);
 		hasCellKey2 = new ItemRequirements(cellKey2);
 		freedEadgar = new VarbitRequirement(0, 1);
@@ -205,6 +210,7 @@ public class TrollStronghold extends BasicQuestHelper
 		enterArena = new ObjectStep(this, ObjectID.ARENA_ENTRANCE_3783, new WorldPoint(2897, 3619, 0), "Follow the path from here east until you enter the arena.");
 		fightDad = new NpcStep(this, NpcID.DAD, new WorldPoint(2913, 3617, 0), "Fight Dad until he gives up. You can safe spot him from the gate you entered through.");
 		fightDad.addDialogStep("I accept your challenge!");
+		((NpcStep) fightDad).addSafeSpots(new WorldPoint(2897, 3619, 0));
 
 		leaveArena = new ObjectStep(this, ObjectID.ARENA_EXIT, new WorldPoint(2916, 3629, 0), "Leave the arena and continue through the cave to the north.");
 		leaveArena.addDialogStep("I'll be going now.");
@@ -233,6 +239,13 @@ public class TrollStronghold extends BasicQuestHelper
 			getTwigKey = new NpcStep(this, NpcID.TWIG_4133, new WorldPoint(2833, 10079, 0), "Kill Twig for a cell key.");
 			getBerryKey = new NpcStep(this, NpcID.BERRY_4134, new WorldPoint(2833, 10083, 0), "Kill Berry for a cell key.");
 		}
+		((NpcStep) getTwigKey).addAlternateNpcs(NpcID.TWIG_4131);
+		((NpcStep) getBerryKey).addAlternateNpcs(NpcID.BERRY);
+
+		pickupKey1 = new ItemStep(this, "Pickup the key.", cellKey1);
+		pickupKey2 = new ItemStep(this, "Pickup the key.", cellKey2);
+		getTwigKey.addSubSteps(pickupKey1);
+		getBerryKey.addSubSteps(pickupKey2);
 
 		freeGodric = new ObjectStep(this, ObjectID.CELL_DOOR_3767, new WorldPoint(2832, 10078, 0), "Unlock Godric's cell.");
 		freeEadgar = new ObjectStep(this, ObjectID.CELL_DOOR_3765, new WorldPoint(2832, 10082, 0), "Unlock Eadgar's cell.");

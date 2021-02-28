@@ -788,6 +788,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		fightVanstrom.addText("My pets will feast on your corpse: A bloodveld will appear which you need to kill from a distance.");
 		fightVanstrom.addText("Blood will be my strength: An orb appears that heals Vanstrom. Lure Vanstrom onto it.");
 		fightVanstrom.addText("Stare into the darkness: Face away from Vanstrom.");
+		fightVanstrom.addText("Once he hits 0hp, he'll heal to 200 and start summoning lightning bolts. Move off " +
+			"tiles where they appear.");
 
 		talkToVeliafAfterFight = new NpcStep(this, NpcID.VELIAF_HURTZ_9521, new WorldPoint(3707, 3188, 0),
 			"Speak to Veliaf in the Icyene graveyard to re-enter the cutscene.");

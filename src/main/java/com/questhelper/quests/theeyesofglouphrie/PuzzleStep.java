@@ -98,16 +98,17 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 	{
 		super(questHelper, "Insert and swap discs to make the sum indicated on the machine");
 		solvePuzzle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Put in the correct pieces.");
-		getPieces = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17283, new WorldPoint(2391, 9826, 0), "Swap in your pieces for better pieces.");
+		getPieces = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17283, new WorldPoint(2391, 9826, 0), "Swap in" +
+			" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more " +
+			"tokens.");
 		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", 445, 36);
-		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 447, 105);
+		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 189, 39);
 		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", 449, 0);
 		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", 445, 31);
-		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 447, 82);
-		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 447, 84);
-		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 447, 86);
+		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 24);
+		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 25);
+		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 26);
 		setupShapes();
-
 	}
 
 	@Override
@@ -173,7 +174,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			int match = checkForItems(inventoryItems, id);
 			if (match != -1)
 			{
-				items1 = shapes.get(answer1).getId();
+				items1 = shapes.get(id).getId();
 				break;
 			}
 		}
@@ -181,6 +182,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		if (items1 == -1)
 		{
 			getPieces.emptyRequirements();
+			getPieces.addRequirement(shapeValues.get(answer1));
 			startUpStep(getPieces);
 			return;
 		}
@@ -231,9 +233,11 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		Item[] inventoryItemsArr = itemContainer.getItems();
 
-		List<Item> inventoryItems = Arrays.asList(inventoryItemsArr);
+		List<Item> inventoryItems = new ArrayList<>(Arrays.asList(inventoryItemsArr));
 
-		Widget insertWidget = client.getWidget(447, 0);
+		List<ItemRequirement> allRequirements = new ArrayList<>();
+
+		Widget insertWidget = client.getWidget(189, 0);
 
 		int slot1 = client.getVarpValue(850);
 
@@ -253,11 +257,11 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		// Puzzle 2
 		for (Integer id : shapeValues.get(answer2).getAllIds())
 		{
+			items2 = Collections.singletonList(shapeValues.get(answer2));
 			int match = checkForItems(inventoryItems, id);
 			if (match != -1)
 			{
 				mostMatch2++;
-				items2 = Collections.singletonList(shapes.get(inventoryItems.get(match).getId()));
 
 				inventoryItems.remove(match);
 				if (inventoryItems.get(match).getQuantity() > 1)
@@ -278,6 +282,8 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			}
 		}
 
+		allRequirements.addAll(items2);
+
 		// Puzzle 3
 		List<ItemRequirement> newReq3 = new ArrayList<>();
 		List<Item> newInventory3 = new ArrayList<>(inventoryItems);
@@ -285,8 +291,8 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		for (List<ItemRequirement> reqs : shapeValues3.get(answer3))
 		{
 			// Each duo
-			List<Integer> currentSlotIDs3 = Arrays.asList(slot2, slot3);
-			tmpInventory3 = inventoryItems;
+			List<Integer> currentSlotIDs3 = new ArrayList<>(Arrays.asList(slot2, slot3));
+			tmpInventory3 = new ArrayList<>(inventoryItems);
 			List<ItemRequirement> tmpReqs = new ArrayList<>(reqs);
 			int currentMatches = 0;
 			for (ItemRequirement req : reqs)
@@ -327,14 +333,33 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		inventoryItems = newInventory3;
 		items3 = newReq3;
 
+		for (ItemRequirement requirement : items3)
+		{
+			boolean foundPreviousItem = false;
+			for (int j = 0; j < allRequirements.size(); j++)
+			{
+				// If duplicate item, aggregate
+				if (requirement.getId() == allRequirements.get(j).getId())
+				{
+					allRequirements.set(j, requirement.quantity(requirement.getQuantity() + allRequirements.get(j).getQuantity()));
+					foundPreviousItem = true;
+					break;
+				}
+			}
+			if (!foundPreviousItem)
+			{
+				allRequirements.add(requirement);
+			}
+		}
+
 		// Puzzle 4
 		List<ItemRequirement> newReq4 = new ArrayList<>();
 		List<Item> tmpInventory4;
 		for (List<ItemRequirement> reqs : shapeValues4.get(answer4))
 		{
-			List<Integer> currentSlotIDs4 = Arrays.asList(slot4, slot5, slot6);
+			List<Integer> currentSlotIDs4 = new ArrayList<>(Arrays.asList(slot4, slot5, slot6));
 			// Each duo
-			tmpInventory4 = inventoryItems;
+			tmpInventory4 = new ArrayList<>(inventoryItems);
 			List<ItemRequirement> tmpReqs = new ArrayList<>(reqs);
 			int currentMatches = 0;
 			for (ItemRequirement req : reqs)
@@ -374,15 +399,38 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		items4 = newReq4;
 
-		// TODO: Group up multiple of the same item into a single req, so they don't all highlight as had despite only having 1
-		if (mostMatch2 != 1 || newMostMatch3 != 2 || mostMatch4 != 3)
+		for (ItemRequirement newRequirement : items4)
 		{
-			getPieces.setRequirements(Collections.singletonList(slot1Item));
-			getPieces.addItemRequirements(items2);
-			getPieces.addRequirement(slot2Item);
-			getPieces.addItemRequirements(items3);
-			getPieces.addRequirement(slot3Item);
-			getPieces.addItemRequirements(items4);
+			boolean foundPreviousItem = false;
+			for (int j = 0; j < allRequirements.size(); j++)
+			{
+				// If duplicate item, aggregate
+				if (newRequirement.getId() == allRequirements.get(j).getId())
+				{
+					allRequirements.set(j, newRequirement.quantity(newRequirement.getQuantity() + allRequirements.get(j).getQuantity()));
+					foundPreviousItem = true;
+					break;
+				}
+			}
+			if (!foundPreviousItem)
+			{
+				allRequirements.add(newRequirement);
+			}
+		}
+
+		boolean hasAllDiscs = true;
+		for (ItemRequirement requirement : allRequirements)
+		{
+			if (!requirement.check(client))
+			{
+				hasAllDiscs = false;
+				break;
+			}
+		}
+		if (!hasAllDiscs)
+		{
+			getPieces.emptyRequirements();
+			getPieces.addItemRequirements(allRequirements);
 			startUpStep(getPieces);
 			return;
 		}
@@ -431,22 +479,15 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 					ids = getClickableItems(ids, items4.iterator().next().getAllIds());
 				}
 				insertDisc.setWidgetDetails(ids);
-				insertDisc.setRequirements(Collections.singletonList(slot1Item));
-				insertDisc.addItemRequirements(items2);
-				insertDisc.addRequirement(slot2Item);
-				insertDisc.addItemRequirements(items3);
-				insertDisc.addRequirement(slot3Item);
-				insertDisc.addItemRequirements(items4);
+				insertDisc.emptyRequirements();
+				insertDisc.addItemRequirements(allRequirements);
 				startUpStep(insertDisc);
 			}
 			return;
 		}
 		solvePuzzle.setRequirements(Collections.singletonList(slot1Item));
-		solvePuzzle.addItemRequirements(items2);
-		solvePuzzle.addRequirement(slot2Item);
-		solvePuzzle.addItemRequirements(items3);
-		solvePuzzle.addRequirement(slot3Item);
-		solvePuzzle.addItemRequirements(items4);
+		solvePuzzle.emptyRequirements();
+		solvePuzzle.addItemRequirements(allRequirements);
 		startUpStep(solvePuzzle);
 	}
 
@@ -478,7 +519,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if(event.getContainerId() == 440)
+		if (event.getContainerId() == 440)
 		{
 			ItemContainer container = event.getItemContainer();
 			currentInv = container.getItems();
@@ -539,13 +580,12 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		blueSquareGreenPentagon = new ItemRequirement("Blue square/green pentagon", ItemID.A_BLUE_SQUARE);
 		blueSquareGreenPentagon.addAlternates(ItemID.A_GREEN_PENTAGON);
 
-		shapeValues.put(0, new ItemRequirement("Null object", ItemID.NO_EGGS));
 		shapeValues.put(1, shapes.get(ItemID.A_RED_CIRCLE));
 		shapeValues.put(2, shapes.get(ItemID.AN_ORANGE_CIRCLE));
 		shapeValues.put(3, yellowCircleRedTri);
 		shapeValues.put(4, greenCircleRedSquare);
 		shapeValues.put(5, blueCircleRedPentagon);
-		shapeValues.put(6,indigoCircleOrangeTriangle);
+		shapeValues.put(6, indigoCircleOrangeTriangle);
 		shapeValues.put(7, shapes.get(ItemID.A_VIOLET_CIRCLE));
 		shapeValues.put(8, shapes.get(ItemID.AN_ORANGE_SQUARE));
 		shapeValues.put(9, shapes.get(ItemID.A_YELLOW_TRIANGLE));

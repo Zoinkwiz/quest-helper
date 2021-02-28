@@ -137,6 +137,16 @@ public interface QuestHelperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOverlayPanel",
+		name = "Display overlay on screen",
+		description = "Chose whether the overlay should be displayed on screen"
+	)
+	default boolean showOverlay()
+	{
+		return true;
+	}
 	
 	@ConfigSection(
 		position = 1,

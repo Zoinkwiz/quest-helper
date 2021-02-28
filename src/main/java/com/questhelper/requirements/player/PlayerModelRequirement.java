@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -19,44 +18,41 @@
  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * ON ANY THEORY OF LIABI`LITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper;
+package com.questhelper.requirements.player;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import com.questhelper.requirements.AbstractRequirement;
+import net.runelite.api.Client;
 
-public class QuestHelperWorldOverlay extends Overlay
+public class PlayerModelRequirement extends AbstractRequirement
 {
-	public static final int IMAGE_Z_OFFSET = 30;
+	final boolean shouldBeFemale;
 
-	private final QuestHelperPlugin plugin;
-
-	@Inject
-	public QuestHelperWorldOverlay(QuestHelperPlugin plugin)
+	public PlayerModelRequirement(boolean shouldBeFemale)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.plugin = plugin;
+		this.shouldBeFemale = shouldBeFemale;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public boolean check(Client client)
 	{
-		QuestHelper quest = plugin.getSelectedQuest();
+		return client.getLocalPlayer() != null &&
+			client.getLocalPlayer().getPlayerComposition().isFemale() == shouldBeFemale;
+	}
 
-		if (quest != null && quest.getCurrentStep() != null)
+	@Override
+	public String getDisplayText()
+	{
+		if (shouldBeFemale)
 		{
-			quest.getCurrentStep().makeWorldOverlayHint(graphics, plugin);
+			return "You need to be female";
 		}
-
-		return null;
+		else
+		{
+			return "You need to be male";
+		}
 	}
 }

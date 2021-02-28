@@ -161,7 +161,71 @@ public class Contact extends BasicQuestHelper
 
 		goDownToBank = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0), "Go down the ladder east of Jex.", lightSource);
 		goDownToDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_20340, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
-		goDownToChasm = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(3268, 9229, 2), "Be careful of traps, and make your way to the south west corner of the dungeon, and go down the ladder there.");
+		goDownToChasm = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(3268, 9229, 2),
+			"Be careful of traps, and follow the path to the south west ladder. Disarm traps where the path breaks, " +
+				"and use protection prayers against the monsters.");
+
+		List<WorldPoint> path = Arrays.asList(
+			new WorldPoint(3318, 9271, 2),
+			new WorldPoint(3318, 9265, 2),
+			new WorldPoint(3314, 9265, 2),
+			new WorldPoint(3314, 9272, 2),
+			new WorldPoint(3306, 9272, 2),
+			new WorldPoint(3306, 9274, 2),
+			new WorldPoint(3296, 9274, 2),
+			new WorldPoint(3296, 9268, 2),
+			new WorldPoint(3299, 9268, 2),
+			new WorldPoint(0, 0, 0),
+			new WorldPoint(3302, 9268, 2),
+			new WorldPoint(3304, 9264, 2),
+			new WorldPoint(3304, 9264, 2),
+			new WorldPoint(3307, 9264, 2),
+			new WorldPoint(3307, 9260, 2),
+			new WorldPoint(3310, 9260, 2),
+			new WorldPoint(3311, 9259, 2),
+			new WorldPoint(3312, 9259, 2),
+			new WorldPoint(3313, 9260, 2),
+			new WorldPoint(3314, 9260, 2),
+			new WorldPoint(3315, 9259, 2),
+			new WorldPoint(3316, 9259, 2),
+			new WorldPoint(3317, 9260, 2),
+			new WorldPoint(3321, 9260, 2),
+			new WorldPoint(3321, 9254, 2),
+
+			new WorldPoint(3321, 9254, 3),
+
+			new WorldPoint(3321, 9251, 2),
+			new WorldPoint(3321, 9246, 2),
+			new WorldPoint(3312, 9246, 2),
+			new WorldPoint(3312, 9252, 2),
+			new WorldPoint(3305, 9252, 2),
+			new WorldPoint(3305, 9255, 2),
+			new WorldPoint(3297, 9255, 2),
+			new WorldPoint(3297, 9251, 2),
+			new WorldPoint(3301, 9251, 2),
+			new WorldPoint(3301, 9238, 2),
+			new WorldPoint(3304, 9238, 2),
+
+			new WorldPoint(3304, 9238, 3),
+
+			new WorldPoint(3307, 9238, 2),
+			new WorldPoint(3309, 9238, 2),
+			new WorldPoint(3309, 9233, 2),
+			new WorldPoint(3297, 9233, 2),
+			new WorldPoint(3297, 9229, 2),
+			new WorldPoint(3296, 9228, 2),
+			new WorldPoint(3296, 9225, 2),
+			new WorldPoint(3283, 9225, 2),
+			new WorldPoint(3283, 9227, 2),
+			new WorldPoint(3279, 9227, 2),
+			new WorldPoint(3279, 9226, 2),
+			new WorldPoint(3276, 9226, 2),
+			new WorldPoint(3276, 9229, 2),
+			new WorldPoint(3269, 9229, 2)
+		);
+
+		((DetailedQuestStep) goDownToChasm).setLinePoints(path);
+
 		searchKaleef = new ObjectStep(this, ObjectID.KALEEFS_BODY, new WorldPoint(3239, 9244, 0), "Follow the path along, and search Kaleef's corpse there.");
 
 		readParchment = new DetailedQuestStep(this, "Read the parchment", parchment);
@@ -178,6 +242,7 @@ public class Contact extends BasicQuestHelper
 		goDownToBankAgain = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0), "Prepare to fight a level 191 Giant Scarab. Go down the ladder east of Jex.", lightSource, combatGear);
 		goDownToDungeonAgain = new ObjectStep(this, ObjectID.TRAPDOOR_20340, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
 		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(3268, 9229, 2), "Be careful of traps, and make your way to the south west corner of the dungeon, and go down the ladder there.");
+		((DetailedQuestStep) goDownToChasmAgain).setLinePoints(path);
 
 		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(3231, 9251, 0), "Kill the Giant Scarab near the chasm.");
 

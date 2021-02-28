@@ -27,6 +27,7 @@ package com.questhelper.quests.recipefordisaster;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarPlayer;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
@@ -40,6 +41,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -317,7 +319,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(axe, macheteAndRadimus, dramenStaffOrLunar, rawChicken, bucketOfMilk, potOfCream, cornflour, pestleAndMortar, iceGloves);
+		return Arrays.asList(axe, macheteAndRadimus, dramenStaffOrLunar, rawChicken, bucketOfMilk,
+			potOfCream, cornflour, dramenBranch, vanillaPod, pestleAndMortar, iceGloves);
 	}
 
 	@Override
@@ -337,6 +340,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(107));
+		req.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1, Operation.GREATER_EQUAL));
 		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));
@@ -350,11 +354,14 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectAmik, talkToCook, talkToWom)));
-		PanelDetails tokenAndEggPanel = new PanelDetails("Get token and egg", Arrays.asList(enterZanaris, useChickenOnShrine, killEvilChicken, pickUpEgg, killBlackDragon, pickUpToken),
+		PanelDetails tokenAndEggPanel = new PanelDetails("Get token and egg", Arrays.asList(enterZanaris, useChickenOnShrine,
+			killEvilChicken, pickUpEgg, killBlackDragon, pickUpToken),
 			dramenStaffOrLunar, rawChicken, combatGear, antidragonShield, antifirePotion);
 		tokenAndEggPanel.setLockingStep(tokenAndEggSteps);
 		allSteps.add(tokenAndEggPanel);
-		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture, useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze), bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token));
+		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture,
+			useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze),
+			bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token));
 
 		return allSteps;
 	}

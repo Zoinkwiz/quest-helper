@@ -373,7 +373,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		islands = new Zone(new WorldPoint(2298, 3795, 0), new WorldPoint(2432, 3913, 3));
+		islands = new Zone(new WorldPoint(2298, 3771, 0), new WorldPoint(2432, 3913, 3));
 		neitiznot1 = new Zone(new WorldPoint(2304, 3775, 0), new WorldPoint(2368, 3842, 3));
 		neitiznot2 = new Zone(new WorldPoint(2368, 3823, 0), new WorldPoint(2383, 3842, 0));
 		jatizso1 = new Zone(new WorldPoint(2369, 3777, 0), new WorldPoint(2432, 3825, 3));
@@ -547,7 +547,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		{
 			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), yakBottom, yakTop, roundShield);
 			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, splitLogs8);
-			items = Arrays.asList(tuna, ores, rope9, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food);
+			items = Arrays.asList(tuna, ores, rope9, knife, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food);
 		}
 	}
 

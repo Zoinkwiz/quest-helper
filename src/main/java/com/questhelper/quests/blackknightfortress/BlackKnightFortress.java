@@ -40,15 +40,20 @@ public class BlackKnightFortress extends BasicQuestHelper
 	ItemRequirement teleportFalador, armour, food;
 
 	Requirement onTopOfFortress, inBasement, inSecretRoomGroundFloor, inSecretRoomFirstFloor, inSecretRoomSecondFloor, inCentralAreaFloor1, inMainEntrance, inWestRoomFloor1,
-		inEastRoomFloor0, inEastRoomFloor1, inEastRoomFloor2, inListeningRoom, inCabbageHoleRoom, inPathToCabbageRoom, inEastTurret;
+		inEastRoomFloor0, inEastRoomFloor1, inEastRoomFloor2, inListeningRoom, inCabbageHoleRoom, inPathToCabbageRoom
+	, inEastTurret, inFaladorF1, inFaladorF2;
 
 	Zone secretRoomFloor0, secretRoomFloor1, secretRoomFloor2, secretRoomFloor3, secretBasement, mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4, westFloor1,
 		eastRoom1Floor0, eastRoom2Floor0, listeningRoom1, listeningRoom2, eastRoomFloor2, centralArea1Floor1, centralArea2Floor1, centralArea3Floor1,
-		northPathToCabbageHole1, northPathToCabbageHole2, northPathToCabbageHole3, cabbageHoleRoom, eastRoom1Floor1, eastRoom2Floor1, eastRoom3Floor1, eastRoom4Floor1, eastTurret;
+		northPathToCabbageHole1, northPathToCabbageHole2, northPathToCabbageHole3, cabbageHoleRoom, eastRoom1Floor1, eastRoom2Floor1, eastRoom3Floor1, eastRoom4Floor1,
+		eastTurret, whiteKnightsCastleF1, whiteKnightsCastleF2;
 
 	QuestStep speakToAmik, enterFortress, pushWall, climbUpLadder1, climbUpLadder2, climbUpLadder3, climbUpLadder4, climbUpLadder5, climbUpLadder6,
 		climbDownLadder1, climbDownLadder2, climbDownLadder3, climbDownLadder4, climbDownLadder5, climbDownLadder6, listenAtGrill, pushWall2,
 		returnToAmik, exitBasement, exitTopOfFortress, exitEastTurret, exitWestRoomFirstFloor, goBackDownFromCabbageZone, goUpLadderToCabbageZone;
+	QuestStep climbToWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2, climbToWhiteKnightsCastleF1ToFinish,
+		climbToWhiteKnightsCastleF2ToFinish;
+
 	ObjectStep useCabbageOnHole;
 
 	@Override
@@ -60,7 +65,10 @@ public class BlackKnightFortress extends BasicQuestHelper
 		setupConditions();
 		setupSteps();
 
-		steps.put(0, speakToAmik);
+		ConditionalStep goStartQuest = new ConditionalStep(this, climbToWhiteKnightsCastleF1);
+		goStartQuest.addStep(inFaladorF2, speakToAmik);
+		goStartQuest.addStep(inFaladorF1, climbToWhiteKnightsCastleF2);
+		steps.put(0, goStartQuest);
 
 		ConditionalStep infiltrateTheFortress = new ConditionalStep(this, enterFortress);
 		infiltrateTheFortress.addStep(inListeningRoom, listenAtGrill);
@@ -96,13 +104,19 @@ public class BlackKnightFortress extends BasicQuestHelper
 
 		steps.put(2, sabotageThePotion);
 
-		steps.put(3, returnToAmik);
+		ConditionalStep goFinishQuest = new ConditionalStep(this, climbToWhiteKnightsCastleF1ToFinish);
+		goFinishQuest.addStep(inFaladorF2, returnToAmik);
+		goFinishQuest.addStep(inFaladorF1, climbToWhiteKnightsCastleF2ToFinish);
+		steps.put(3, goFinishQuest);
 
 		return steps;
 	}
 
 	private void setupZones()
 	{
+		whiteKnightsCastleF1 = new Zone(new WorldPoint(2954, 3353, 1), new WorldPoint(2998, 3327, 1));
+		whiteKnightsCastleF2 = new Zone(new WorldPoint(2954, 3353, 2), new WorldPoint(2998, 3327, 2));
+
 		secretRoomFloor0 = new Zone(new WorldPoint(3015, 3517, 0), new WorldPoint(3016, 3519, 0));
 		secretRoomFloor1 = new Zone(new WorldPoint(3015, 3517, 1), new WorldPoint(3016, 3519, 1));
 		secretRoomFloor2 = new Zone(new WorldPoint(3007, 3513, 2), new WorldPoint(3018, 3519, 2));
@@ -158,6 +172,8 @@ public class BlackKnightFortress extends BasicQuestHelper
 
 	private void setupConditions()
 	{
+		inFaladorF1 = new ZoneRequirement(whiteKnightsCastleF1);
+		inFaladorF2 = new ZoneRequirement(whiteKnightsCastleF2);
 		onTopOfFortress = new ZoneRequirement(secretRoomFloor3);
 		inBasement = new ZoneRequirement(secretBasement);
 		inEastTurret = new ZoneRequirement(eastTurret);
@@ -177,10 +193,17 @@ public class BlackKnightFortress extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		speakToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2), "Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
+		climbToWhiteKnightsCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2955, 3339, 0),
+			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
+		climbToWhiteKnightsCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2961, 3339, 1),
+			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
+
+		speakToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2),
+			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
 		speakToAmik.addDialogStep("I seek a quest!");
 		speakToAmik.addDialogStep("I laugh in the face of danger!");
 		speakToAmik.addDialogStep("Ok, I'll do my best.");
+		speakToAmik.addSubSteps(climbToWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2);
 
 		/* Path to grill */
 		enterFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Be prepared for multiple level 33 Black Knights to attack you.",
@@ -219,7 +242,8 @@ public class BlackKnightFortress extends BasicQuestHelper
 		goUpLadderToCabbageZone.addDialogStep("I don't care. I'm going in anyway.");
 		pushWall2 = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3030, 3510, 1),
 			"Push the wall to enter the storage room", cabbage);
-		useCabbageOnHole = new ObjectStep(this, ObjectID.HOLE_2336, new WorldPoint(3031, 3507, 1), "USE the cabbage on the hole here. Be careful not to eat it.", cabbage);
+		useCabbageOnHole = new ObjectStep(this, ObjectID.HOLE_2336, new WorldPoint(3031, 3507, 1),
+			"USE the cabbage on the hole here. Be careful not to eat it.", cabbage.highlighted());
 		useCabbageOnHole.addIcon(ItemID.CABBAGE);
 
 		goBackDownFromCabbageZone = new ObjectStep(this, ObjectID.LADDER_17160, new WorldPoint(3022, 3518, 1),
@@ -229,7 +253,16 @@ public class BlackKnightFortress extends BasicQuestHelper
 		exitTopOfFortress = new ObjectStep(this, ObjectID.STAIRCASE_17155, new WorldPoint(3010, 3516, 3), "Leave the basement to continue.");
 		exitWestRoomFirstFloor = new ObjectStep(this, ObjectID.STAIRCASE_17155, new WorldPoint(3011, 3515, 1), "Go back downstairs to continue");
 
-		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2), "Return to Sir Amik Varze in Falador Castle to complete the quest.");
+		climbToWhiteKnightsCastleF1ToFinish = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2955, 3339,
+			0),
+			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
+		climbToWhiteKnightsCastleF2ToFinish = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2961, 3339,
+			1),
+			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
+
+		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2),
+			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
+		returnToAmik.addSubSteps(climbToWhiteKnightsCastleF1ToFinish, climbToWhiteKnightsCastleF2ToFinish);
 	}
 
 	@Override

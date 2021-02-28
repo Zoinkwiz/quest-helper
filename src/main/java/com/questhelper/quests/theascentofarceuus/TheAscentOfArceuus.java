@@ -144,7 +144,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 		battlefrontTeleports2 = new ItemRequirement("Battlefront teleport", ItemID.BATTLEFRONT_TELEPORT, 2);
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		skillsNecklace = new ItemRequirement("Skill's necklace", ItemCollections.getSkillsNecklaces());
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces());
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -234,7 +234,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		inspectTrack1.addSubSteps(inspectTrack2, inspectTrack3, inspectTrack4, inspectTrack5);
 
 		inspectTrack6 = new ObjectStep(this, NullObjectID.NULL_34625, new WorldPoint(1282, 3726, 0),
-			"Inspect the final plant and kill the Tormented Soul (level 30) which appears.", combatGear);
+			"Inspect the final plant and kill the Trapped Soul (level 30) which appears.", combatGear);
 		killTrappedSoul = new NpcStep(this, NpcID.TRAPPED_SOUL, new WorldPoint(1281, 3724, 0),
 			"Kill the Trapped Soul.");
 		inspectTrack6.addSubSteps(killTrappedSoul);
@@ -245,8 +245,10 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 			"Return to Kaal-Ket-Jor.");
 		talkToKaalAgain.addSubSteps(enterKaruulmAgain);
 
-		searchRocks = new DetailedQuestStep(this, new WorldPoint(1714, 3880, 0),
-			"Inspect the rocks near the Arceuus Altar until you find a device.");
+		searchRocks = new ObjectStep(this, ObjectID.ROCKS_33595,"Inspect the rocks near the Arceuus Altar until you find a device.");
+		((ObjectStep) searchRocks).setHideWorldArrow(true);
+		((ObjectStep) searchRocks).addAlternateObjects(ObjectID.ROCKS_33593);
+		((ObjectStep) searchRocks).setWorldMapPoint(new WorldPoint(1714, 3880, 0));
 
 		goUpstairsInTowerToFinish = new ObjectStep(this, ObjectID.STAIRS_33575, new WorldPoint(1585, 3821, 0),
 			"Return to Lord Trobin Arceuus to finish the quest.");

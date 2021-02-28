@@ -233,7 +233,9 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		flowers.setHighlightInInventory(true);
 		cake = new ItemRequirement("Cake", ItemID.CAKE);
 		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
-		bow = new ItemRequirement("Any normal/willow/maple/yew shortbow or longbow", ItemCollections.getBows());
+		bow = new ItemRequirement("Any normal/oak/willow/maple/yew shortbow or longbow", ItemID.SHORTBOW);
+		bow.addAlternates(ItemID.LONGBOW, ItemID.OAK_SHORTBOW, ItemID.OAK_LONGBOW, ItemID.WILLOW_SHORTBOW, ItemID.WILLOW_LONGBOW, ItemID.MAPLE_SHORTBOW, ItemID.MAPLE_LONGBOW, ItemID.YEW_SHORTBOW, ItemID.YEW_LONGBOW);
+		bow.setTooltip("You will lose this bow");
 		bow.setHighlightInInventory(true);
 		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemID.DRAMEN_STAFF);
 		giantNib = new ItemRequirement("Giant nib", ItemID.GIANT_NIB);
@@ -242,7 +244,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		awfulAnthem = new ItemRequirement("Awful anthem", ItemID.AWFUL_ANTHEM);
 		goodAnthem = new ItemRequirement("Good anthem", ItemID.GOOD_ANTHEM);
 		treaty = new ItemRequirement("Treaty", ItemID.TREATY);
-
+		
 		String repItemsString = "One of: ";
 		if (client.getRealSkillLevel(Skill.FARMING) >= 10)
 		{
@@ -256,7 +258,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		{
 			repItemsString += "an axe, ";
 		}
-		repItemsString += "a harpoon or a lobster pot.";
+		repItemsString += "a harpoon or lobster pot.";
 		reputationItems = new ItemRequirement(repItemsString, -1, -1);
 	}
 

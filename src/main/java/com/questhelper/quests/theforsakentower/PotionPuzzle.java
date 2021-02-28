@@ -66,7 +66,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 	protected Client client;
 
 	// Potion 1
-	private static final Pattern LINE1 = Pattern.compile("^(.*) blend is directly");
+	private static final Pattern LINE1 = Pattern.compile("^(.*) is directly left of");
 	// Potion 2, potion 3
 	private static final Pattern LINE2 = Pattern.compile("^(.*) is next to (.*)[.]");
 	// Potion 5, potion 4

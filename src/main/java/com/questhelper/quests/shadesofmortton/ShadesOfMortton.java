@@ -149,8 +149,8 @@ public class ShadesOfMortton extends BasicQuestHelper
 		ashes2 = new ItemRequirement("Ashes", ItemID.ASHES, 2);
 		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashesHighlighted.setHighlightInInventory(true);
-		coins5000 = new ItemRequirement("coins, more if you want to buy a Flamtaer Hammer", ItemID.COINS_995, 5000);
-		hammerOrFlam = new ItemRequirement("A hammer or Flamtaer Hammer", ItemID.HAMMER);
+		coins5000 = new ItemRequirement("Coins, more if you want to buy a Flamtaer Hammer", ItemID.COINS_995, 5000);
+		hammerOrFlam = new ItemRequirement("Hammer or Flamtaer Hammer", ItemID.HAMMER);
 		hammerOrFlam.addAlternates(ItemID.FLAMTAER_HAMMER);
 		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER);
 		flamHammer.setTooltip("This speeds up the repair section of the quest considerably");
@@ -160,9 +160,9 @@ public class ShadesOfMortton extends BasicQuestHelper
 
 		flamtaerBracelet = new ItemRequirement("Flamtaer bracelet", ItemID.FLAMTAER_BRACELET);
 		flamtaerBracelet.setTooltip("This speeds up the repair section of the quest considerably");
-		log = new ItemRequirement("A log who's pyre version you can burn", ItemID.LOGS);
+		log = new ItemRequirement("A log whose pyre version you can burn", ItemID.LOGS);
 		log.addAlternates(ItemID.OAK_LOGS, ItemID.MAPLE_LOGS, ItemID.WILLOW_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
-		logHighlighted = new ItemRequirement("A log who's pyre version you can burn", ItemID.LOGS);
+		logHighlighted = new ItemRequirement("A log whose pyre version you can burn", ItemID.LOGS);
 		logHighlighted.addAlternates(ItemID.OAK_LOGS, ItemID.MAPLE_LOGS, ItemID.WILLOW_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
 		logHighlighted.setHighlightInInventory(true);
 

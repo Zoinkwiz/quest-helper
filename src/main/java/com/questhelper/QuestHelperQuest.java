@@ -284,7 +284,7 @@ public enum QuestHelperQuest
 
 	public QuestState getState(Client client)
 	{
-		client.runScript(ScriptID.QUESTLIST_PROGRESS, id);
+		client.runScript(ScriptID.QUEST_STATUS_GET, id);
 		switch (client.getIntStack()[0])
 		{
 			case 2:

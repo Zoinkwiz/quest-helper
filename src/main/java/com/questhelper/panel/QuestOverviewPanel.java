@@ -41,6 +41,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -450,10 +451,28 @@ public class QuestOverviewPanel extends JPanel
 		questCombatRequirementsListPanel.add(combatLabel);
 
 		/* External Resources */
+		List<ExternalQuestResources> externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().getName().toUpperCase()));
+
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
-		String externalResourcesList = quest.getExternalResources();
+		StringBuilder textExternalResources = new StringBuilder();
+		if (externalResourcesList == null){
+			textExternalResources.append("No Resources Available");
+		}
+		else
+		{
+			for (ExternalQuestResources externalResource : externalResourcesList)
+			{
+				//add additional external resources as if conditions here
+				if(externalResource.getWikiURL().length()>0) {
+					textExternalResources.append("Wiki: ");
+					textExternalResources.append("<a href= '" + externalResource.getWikiURL() + "'>" + externalResource.getWikiURL() + "</a>" );
+				}
+			}
+		}
+		externalResources.setText("<html><body style = 'text-align:left'>"+  textExternalResources + "</body></html>");
 
+		externalQuestResourcesPanel.add(externalResources);
 
 		/* Quest overview */
 		JLabel overviewLabel = new JLabel();

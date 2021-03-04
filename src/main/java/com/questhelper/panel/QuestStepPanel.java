@@ -191,7 +191,7 @@ public class QuestStepPanel extends JPanel
 		}
 
 		//external resources
-//
+
 //		JLabel externalQuestResourcesTitle = new JLabel();
 //		externalQuestResourcesTitle.setForeground(Color.WHITE);
 //		externalQuestResourcesTitle.setText("External Resources:");

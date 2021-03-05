@@ -24,7 +24,9 @@
  */
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.steps.tools.QuestPerspective;
 import java.util.Collection;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import static net.runelite.api.Perspective.SCENE_SIZE;
@@ -37,6 +39,9 @@ public class ObjectCondition extends ConditionForStep
 {
 	private final int objectID;
 	private final WorldPoint worldPoint;
+
+	@Setter
+	private int maxDistanceFromPlayer = -1;
 
 	public ObjectCondition(int objectID)
 	{
@@ -54,11 +59,7 @@ public class ObjectCondition extends ConditionForStep
 	{
 		if (worldPoint != null)
 		{
-			Collection<WorldPoint> wps = WorldPoint.toLocalInstance(client, worldPoint);
-			if (wps == null)
-			{
-				return false;
-			}
+			Collection<WorldPoint> wps = QuestPerspective.toLocalInstance(client, worldPoint);
 			for (WorldPoint wp : wps)
 			{
 				LocalPoint localPoint = LocalPoint.fromWorld(client, wp);
@@ -68,7 +69,10 @@ public class ObjectCondition extends ConditionForStep
 				}
 				Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
 				boolean inTile = checkTile(tile);
-				if (inTile)
+				WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+				boolean playerClose = maxDistanceFromPlayer == -1 ||
+					(playerLocation.distanceTo(wp) < maxDistanceFromPlayer);
+				if (inTile && playerClose)
 				{
 					return true;
 				}

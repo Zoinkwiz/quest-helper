@@ -292,15 +292,14 @@ public class TheGiantDwarf extends BasicQuestHelper
 		completedSecretaryTasks = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I'm afraid I have no more work to offer you", "You should speak directly to the director."));
 		completedDirectorTasks = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Have you ever considered joining"));
 		joinedCompany = new Conditions(true, LogicType.OR,
-			new VarbitRequirement(578, 1),
-			new VarbitRequirement(578, 2),
-			// Opal is 3
-			new VarbitRequirement(578, 3),
-			new VarbitRequirement(578, 4),
-			new VarbitRequirement(578, 5),
-			new VarbitRequirement(578, 6),
-			new VarbitRequirement(578, 7),
-			new VarbitRequirement(578, 8),
+			new VarbitRequirement(578, 1), // Purple Pewter
+			new VarbitRequirement(578, 2), // Yellow Fortune
+			new VarbitRequirement(578, 3), // Blue Opal
+			new VarbitRequirement(578, 4), // Green Gem
+			new VarbitRequirement(578, 5), // White Chisel
+			new VarbitRequirement(578, 6), // Silver Cog
+			new VarbitRequirement(578, 7), // Brown Engine
+			new VarbitRequirement(578, 8), // Would be Red Axe?
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I will not disappoint you."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Come in, come in my friend!"));
 	}

@@ -86,7 +86,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		f0r1c4U,
 		redAtAltar, redAtDoor;
 
-	Requirement f1r0c3EY,
+	Requirement f1r0c3EY, f1r0c3,
 		f1r1c3SY,
 		startColumnN,
 		f1r3c2NC, f1r3c2NY,
@@ -296,7 +296,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle5Part2.addStep(new Conditions(inTempleStairSquare, f1r3c3U), goUpFromMiddleToNorthPuzzle5);
 		puzzle5Part2.addStep(new Conditions(inSouthF2, f1r3c3U), goDownToMiddleFromSouthPuzzle5);
 		puzzle5Part2.addStep(new Conditions(inTempleF1, f1r3c3U), goUpToFloor2Puzzle5);
-		puzzle5Part2.addStep(new Conditions(inTempleF1, f1r0c3EY), puzzle5Pillar5RemoveMirror);
+		puzzle5Part2.addStep(new Conditions(inTempleF1, f1r0c3), puzzle5Pillar5RemoveMirror);
 		puzzle5Part2.addStep(new Conditions(inTempleF1, f1r1c3SY), puzzle5Pillar3RotateUp);
 		puzzle5Part2.addStep(new Conditions(inTempleF1, f1r3c3S), puzzle5Pillar4);
 		puzzle5Part2.addStep(new Conditions(inTempleF1, f1r3c4W), puzzle5Pillar3);
@@ -543,6 +543,11 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		// Floor 1
 		f1r0c3EY = new VarbitRequirement(1209, YELLOW);
+
+		// TODO: Add other directions from this pillar
+		f1r0c3 = new Conditions(LogicType.OR,
+			new VarbitRequirement(1209, 1, Operation.GREATER_EQUAL)
+		);
 		f1r1c3SY = new VarbitRequirement(1207, YELLOW);
 		f1r3c2NC = new VarbitRequirement(1196, CYAN);
 		f1r3c2NY = new VarbitRequirement(1196, YELLOW);

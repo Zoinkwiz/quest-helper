@@ -228,7 +228,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		airAltarTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.RIMMINGTON_TELEPORT);
 		airAltarTeleport.setDisplayMatchedItemName(true);
 		airAltarTeleport.setTooltip("The best items for this are (in order):");
-		airAltarTeleport.appendToTooltip("Skill Necklace (to Crafting Guild)");
+		airAltarTeleport.appendToTooltip("Skills Necklace (to Crafting Guild)");
 		airAltarTeleport.appendToTooltip("Falador Teleport");
 		airAltarTeleport.appendToTooltip("Rimmington/House Teleport");
 

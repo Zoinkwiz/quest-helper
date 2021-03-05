@@ -29,33 +29,28 @@ import com.questhelper.ExternalQuestResources;
 import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import net.runelite.api.Client;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.SwingUtil;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
-import net.runelite.api.Client;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.SwingUtil;
 
 public class QuestOverviewPanel extends JPanel
 {
@@ -456,22 +451,41 @@ public class QuestOverviewPanel extends JPanel
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
 		StringBuilder textExternalResources = new StringBuilder();
-		if (externalResourcesList == null){
+		JButton discordBtn = new JButton();
+
+		if (externalResourcesList == null) {
 			textExternalResources.append("No Resources Available");
-		}
-		else
-		{
-			for (ExternalQuestResources externalResource : externalResourcesList)
-			{
+		} else {
+			for (ExternalQuestResources externalResource : externalResourcesList) {
+
 				//add additional external resources as if conditions here
-				if(externalResource.getWikiURL().length()>0) {
+				if (externalResource.getWikiURL().length() > 0) {
 					textExternalResources.append("Wiki: ");
-					textExternalResources.append("<a href= '" + externalResource.getWikiURL() + "'>" + externalResource.getWikiURL() + "</a>" );
+					discordBtn.setText(externalResource.getWikiURL());
+					discordBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource.getWikiURL()));
+
 				}
+
 			}
 		}
-		externalResources.setText("<html><body style = 'text-align:left'>"+  textExternalResources + "</body></html>");
+		externalResources.setText("<html><body style = 'text-align:left'>" + textExternalResources + "</body></html>");
 
+		//SwingUtil.removeButtonDecorations(discordBtn);
+		discordBtn.setToolTipText("Open the official wiki in your browser");
+		discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		discordBtn.setUI(new BasicButtonUI());
+		discordBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				discordBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+			}
+		});
+
+		externalQuestResourcesPanel.removeAll();
+		externalQuestResourcesPanel.add(discordBtn, BorderLayout.EAST);
 		externalQuestResourcesPanel.add(externalResources);
 
 		/* Quest overview */
@@ -553,4 +567,11 @@ public class QuestOverviewPanel extends JPanel
 			requirementPanel.getLabel().setForeground(newColor);
 		}
 	}
+	private static final ImageIcon DISCORD_ICON;
+
+	static
+	{
+		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+	}
+
 }

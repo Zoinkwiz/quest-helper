@@ -451,7 +451,7 @@ public class QuestOverviewPanel extends JPanel
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
 		StringBuilder textExternalResources = new StringBuilder();
-		JButton discordBtn = new JButton();
+		JButton wikiBtn = new JButton();
 
 		if (externalResourcesList == null) {
 			textExternalResources.append("No Resources Available");
@@ -461,8 +461,8 @@ public class QuestOverviewPanel extends JPanel
 				//add additional external resources as if conditions here
 				if (externalResource.getWikiURL().length() > 0) {
 					textExternalResources.append("Wiki: ");
-					discordBtn.setText(externalResource.getWikiURL());
-					discordBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource.getWikiURL()));
+					//wikiBtn.setText(externalResource.getWikiURL());
+					wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource.getWikiURL()));
 
 				}
 
@@ -470,23 +470,25 @@ public class QuestOverviewPanel extends JPanel
 		}
 		externalResources.setText("<html><body style = 'text-align:left'>" + textExternalResources + "</body></html>");
 
-		//SwingUtil.removeButtonDecorations(discordBtn);
-		discordBtn.setToolTipText("Open the official wiki in your browser");
-		discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		discordBtn.setUI(new BasicButtonUI());
-		discordBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+		//SwingUtil.removeButtonDecorations(wikiBtn);
+		wikiBtn.setIcon(WIKI_ICON);
+		wikiBtn.setToolTipText("Open the official wiki in your browser");
+		wikiBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		wikiBtn.setUI(new BasicButtonUI());
+		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				discordBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+				wikiBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
-				discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				wikiBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 			}
 		});
 
 		externalQuestResourcesPanel.removeAll();
-		externalQuestResourcesPanel.add(discordBtn, BorderLayout.EAST);
 		externalQuestResourcesPanel.add(externalResources);
+		externalQuestResourcesPanel.add(wikiBtn, BorderLayout.EAST);
+
 
 		/* Quest overview */
 		JLabel overviewLabel = new JLabel();
@@ -567,11 +569,11 @@ public class QuestOverviewPanel extends JPanel
 			requirementPanel.getLabel().setForeground(newColor);
 		}
 	}
-	private static final ImageIcon DISCORD_ICON;
+	private static final ImageIcon WIKI_ICON;
 
 	static
 	{
-		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		WIKI_ICON = Icon.OSRS_WIKI.getIcon(img -> ImageUtil.resizeImage(img, 100, 50));
 	}
 
 }

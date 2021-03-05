@@ -451,7 +451,7 @@ public class QuestOverviewPanel extends JPanel
 		questCombatRequirementsListPanel.add(combatLabel);
 
 		/* External Resources */
-		List<ExternalQuestResources> externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().getName().toUpperCase()));
+		List<ExternalQuestResources> externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
 
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);

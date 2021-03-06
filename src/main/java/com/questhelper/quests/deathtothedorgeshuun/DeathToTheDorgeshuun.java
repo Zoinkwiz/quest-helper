@@ -498,6 +498,12 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("3 H.A.M. Guards (level 22)", "Sigmund (level 50, melee or magic only)");
+	}
+
+	@Override
 	public List<String> getNotes()
 	{
 		return Collections.singletonList("If you plan on getting the H.A.M. robes yourself rather than buying them, make sure to do so after starting the quest. The drop rate for robes is considerably increased during the quest.");

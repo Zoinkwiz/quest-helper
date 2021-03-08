@@ -41,7 +41,6 @@ public enum Icon
 	EXPANDED("/expanded.png"),
 	ICON_BACKGROUND("/icon_background.png"),
 	INFO_ICON("/info_icon.png"),
-	OSRS_WIKI("/osrs_wiki.png"),
 	QUEST_ICON("/quest_icon.png"),
 	QUEST_STEP_ARROW("/quest_step_arrow.png"),
 	QUEST_STEP_ARROW_45("/quest_step_arrow_45.png"),

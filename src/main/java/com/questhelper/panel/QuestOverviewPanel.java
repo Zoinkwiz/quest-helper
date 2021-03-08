@@ -447,43 +447,44 @@ public class QuestOverviewPanel extends JPanel
 
 		/* External Resources */
 		List<ExternalQuestResources> externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
-
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
 		StringBuilder textExternalResources = new StringBuilder();
 		JButton wikiBtn = new JButton();
 
+		//Button constant properties
+		wikiBtn.setUI(new BasicButtonUI());
+		SwingUtil.removeButtonDecorations(wikiBtn);
+		wikiBtn.setHorizontalAlignment(SwingConstants.LEFT);
+		wikiBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		wikiBtn.setToolTipText("Open the official wiki in your browser.");
+
+		//Button variable properties
+		wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+
+		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				wikiBtn.setForeground(Color.blue.brighter().brighter().brighter());
+				wikiBtn.setText("<html><body style = 'text-decoration:underline'>" + quest.getQuest().getName() + " Wiki </body></html>");
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				wikiBtn.setForeground(Color.white);
+				wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+
+			}
+		});
+
+		//Access URL values from ExternalQuestResources enum class
 		if (externalResourcesList == null) {
 			textExternalResources.append("No Resources Available");
 		} else {
 			for (ExternalQuestResources externalResource : externalResourcesList) {
-
-				//add additional external resources as if conditions here
 				if (externalResource.getWikiURL().length() > 0) {
-					textExternalResources.append("Wiki: ");
-					//wikiBtn.setText(externalResource.getWikiURL());
 					wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource.getWikiURL()));
-
 				}
-
 			}
 		}
-		externalResources.setText("<html><body style = 'text-align:left'>" + textExternalResources + "</body></html>");
-
-		//SwingUtil.removeButtonDecorations(wikiBtn);
-		wikiBtn.setIcon(WIKI_ICON);
-		wikiBtn.setToolTipText("Open the official wiki in your browser");
-		wikiBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		wikiBtn.setUI(new BasicButtonUI());
-		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				wikiBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				wikiBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-			}
-		});
 
 		externalQuestResourcesPanel.removeAll();
 		externalQuestResourcesPanel.add(externalResources);
@@ -569,11 +570,4 @@ public class QuestOverviewPanel extends JPanel
 			requirementPanel.getLabel().setForeground(newColor);
 		}
 	}
-	private static final ImageIcon WIKI_ICON;
-
-	static
-	{
-		WIKI_ICON = Icon.OSRS_WIKI.getIcon(img -> ImageUtil.resizeImage(img, 100, 50));
-	}
-
 }

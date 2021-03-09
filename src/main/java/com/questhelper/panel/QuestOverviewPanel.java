@@ -471,7 +471,6 @@ public class QuestOverviewPanel extends JPanel
 			public void mouseExited(java.awt.event.MouseEvent evt) {
 				wikiBtn.setForeground(Color.white);
 				wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
-
 			}
 		});
 

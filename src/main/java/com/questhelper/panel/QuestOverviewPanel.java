@@ -490,7 +490,6 @@ public class QuestOverviewPanel extends JPanel
 		externalQuestResourcesPanel.add(externalResources);
 		externalQuestResourcesPanel.add(wikiBtn, BorderLayout.EAST);
 
-
 		/* Quest overview */
 		JLabel overviewLabel = new JLabel();
 		overviewLabel.setForeground(Color.GRAY);

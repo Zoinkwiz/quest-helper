@@ -189,7 +189,6 @@ public class QuestStepPanel extends JPanel
 		{
 			collapse();
 		}
-
 	}
 
 	public String generateText(QuestStep step)

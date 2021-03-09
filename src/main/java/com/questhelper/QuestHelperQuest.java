@@ -233,7 +233,7 @@ public enum QuestHelperQuest
 
 	private final QuestVarPlayer varPlayer;
 
-		QuestHelperQuest(int id, String name, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(int id, String name, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
 	{
 		this.id = id;
 		this.name = name;

@@ -91,7 +91,7 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
 		int successes = (int) itemRequirements.stream().filter(predicate).count();
@@ -105,7 +105,7 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
+	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, List<Item> bankItems)
 	{
 		Color color = Color.RED;
 		if (!this.isActualItem())

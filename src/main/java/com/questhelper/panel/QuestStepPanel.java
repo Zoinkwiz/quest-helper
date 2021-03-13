@@ -24,8 +24,6 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.BankItems;
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,6 +35,7 @@ import java.util.HashMap;
 import com.questhelper.steps.QuestStep;
 import java.util.List;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -337,7 +336,7 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	public void updateRequirements(Client client, BankItems bankItems, QuestOverviewPanel questOverviewPanel)
+	public void updateRequirements(Client client, List<Item> bankItems, QuestOverviewPanel questOverviewPanel)
 	{
 		questOverviewPanel.updateRequirementPanels(client, requirementPanels, bankItems);
 	}

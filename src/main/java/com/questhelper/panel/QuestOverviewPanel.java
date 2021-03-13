@@ -24,7 +24,6 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.BankItems;
 import com.questhelper.ExternalQuestResources;
 import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
@@ -35,10 +34,10 @@ import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
 
@@ -522,7 +521,7 @@ public class QuestOverviewPanel extends JPanel
 		return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
 	}
 
-	public void updateRequirements(Client client, BankItems bankItems)
+	public void updateRequirements(Client client, List<Item> bankItems)
 	{
 		updateRequirementPanels(client, requirementPanels, bankItems);
 
@@ -533,7 +532,7 @@ public class QuestOverviewPanel extends JPanel
 		revalidate();
 	}
 
-	public void updateRequirementPanels(Client client, List<QuestRequirementPanel> reqPanels, BankItems bankItems)
+	public void updateRequirementPanels(Client client, List<QuestRequirementPanel> reqPanels, List<Item> bankItems)
 	{
 		for (QuestRequirementPanel requirementPanel : reqPanels)
 		{
@@ -548,7 +547,7 @@ public class QuestOverviewPanel extends JPanel
 				}
 				else
 				{
-					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems.getItems());
+					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems);
 				}
 			}
 			else

@@ -29,6 +29,7 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.ExternalQuestResources;
+import com.questhelper.QuestBank;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
@@ -56,6 +57,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Inject
 	protected Client client;
 
+	@Inject
+	protected QuestBank questBank;
+
 	@Getter
 	@Setter
 	protected QuestHelperConfig config;
@@ -72,6 +76,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	@Setter
 	private Injector injector;
+
 
 	@Override
 	public void configure(Binder binder)

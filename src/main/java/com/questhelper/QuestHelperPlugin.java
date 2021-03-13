@@ -28,6 +28,8 @@ package com.questhelper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Ints;
 import com.google.common.reflect.ClassPath;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
@@ -41,9 +43,12 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,10 +63,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.QuestState;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -86,6 +94,7 @@ import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -135,7 +144,8 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
-	private final BankItems bankItems = new BankItems();
+	@Inject
+	private QuestBank questBank;
 
 	@Getter
 	private QuestHelperBankTagService bankTagService;
@@ -227,6 +237,7 @@ public class QuestHelperPlugin extends Plugin
 		bankTagService = new QuestHelperBankTagService(this);
 		bankTagsMain = new QuestBankTab(this);
 		bankTagsMain.startUp();
+
 		injector.injectMembers(bankTagsMain);
 		eventBus.register(bankTagsMain);
 
@@ -309,12 +320,11 @@ public class QuestHelperPlugin extends Plugin
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
 		{
-			bankItems.setItems(null);
-			bankItems.setItems(event.getItemContainer().getItems());
+			questBank.updateBank(event.getItemContainer().getItems());
 		}
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			clientThread.invokeLater(() -> panel.updateItemRequirements(client, bankItems));
+			clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
 		}
 	}
 
@@ -326,7 +336,7 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGIN_SCREEN)
 		{
 			panel.refresh(Collections.emptyList(), true, new HashMap<>());
-			bankItems.setItems(null);
+			questBank.emptyState();
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
 				shutDownQuest(true);
@@ -336,6 +346,7 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGGED_IN)
 		{
 			loadQuestList = true;
+			clientThread.invokeLater(() -> questBank.loadState());
 		}
 	}
 
@@ -366,6 +377,7 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -479,7 +491,7 @@ public class QuestHelperPlugin extends Plugin
 				QuestHelper questHelperPhoenix = quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName());
 				QuestHelper questHelperBlackArm = quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName());
 				if (questHelperBlackArm != null && !questHelperBlackArm.isCompleted()
-				|| questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
+					|| questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 				{
 					if (selectedQuest != null &&
 						(selectedQuest.getQuest().getName().equals(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()) ||
@@ -635,7 +647,8 @@ public class QuestHelperPlugin extends Plugin
 		});
 	}
 
-	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID) {
+	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID)
+	{
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
@@ -661,7 +674,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (!questHelper.isCompleted())
 		{
-			if(config.autoOpenSidebar())
+			if (config.autoOpenSidebar())
 			{
 				displayPanel();
 			}
@@ -681,7 +694,7 @@ public class QuestHelperPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
-				clientThread.invokeLater(() -> panel.updateItemRequirements(client, bankItems));
+				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
 			});
 		}
 		else

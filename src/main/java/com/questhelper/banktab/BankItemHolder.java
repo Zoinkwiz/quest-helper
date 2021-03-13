@@ -24,49 +24,31 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package com.questhelper.banktab;
 
-package com.questhelper.questhelpers;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.questhelper.BankItems;
+import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.requirements.item.ItemRequirement;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
+import net.runelite.api.Client;
 
-public class QuestUtil
+/**
+ * Represents anything that holds {@link ItemRequirement}s that are to be used
+ * for displaying via the {@link QuestBankTab}.
+ * <br>
+ * Most requirements will not need this interface, however this interface does allow
+ * that requirement to specify which {@link ItemRequirement} should be displayed
+ * via the quest bank tab.
+ */
+public interface BankItemHolder
 {
-	public static <T> List<T> toArrayList(@Nonnull T... elements)
-	{
-		return new ArrayList<>(Arrays.asList(elements));
-	}
-
-	public static <T> Collector<T, ?, List<T>> collectToArrayList()
-	{
-		return Collectors.toCollection(ArrayList::new);
-	}
-
 	/**
-	 * Removes all the duplicate elements from a stream and collects them into a
-	 * mutable ArrayList
+	 * Get a list of {@link ItemRequirement} to be displayed.
 	 *
-	 * @param stream stream to remove duplicates from
-	 * @return a mutable list containing all the remaining elements of the stream
+	 * @param client the {@link Client}
+	 * @param plugin
+	 * @return a list of {@link ItemRequirement} that should be displayed, or an empty list if none are found
 	 */
-	public static <T> List<T> collectAndRemoveDuplicates(Stream<T> stream)
-	{
-		return stream.distinct().collect(collectToArrayList());
-	}
-
-	/**
-	 * Remove duplicates in the given list.
-	 *
-	 * @param list the list
-	 * @return a mutable list without duplicates.
-	 */
-	public static <T> List<T> removeDuplicates(List<T> list)
-	{
-		return collectAndRemoveDuplicates(list.stream());
-	}
+	List<ItemRequirement> getRequirements(Client client, QuestHelperPlugin plugin);
 }

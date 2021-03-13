@@ -550,6 +550,8 @@ public class QuestOverviewPanel extends JPanel
 				{
 					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems.getItems());
 				}
+				String updatedTooltip = itemRequirement.getUpdatedTooltip(client);
+				requirementPanel.setInfoButtonTooltip(updatedTooltip);
 			}
 			else
 			{

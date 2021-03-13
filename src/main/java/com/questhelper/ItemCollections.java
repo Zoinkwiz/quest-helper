@@ -273,9 +273,10 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> waterStaff = ImmutableList.of(
-		ItemID.FIRE_BATTLESTAFF,
-		ItemID.MYSTIC_FIRE_STAFF,
-		ItemID.STAFF_OF_FIRE,
+		ItemID.KODAI_WAND,
+		ItemID.WATER_BATTLESTAFF,
+		ItemID.MYSTIC_WATER_STAFF,
+		ItemID.STAFF_OF_WATER,
 		ItemID.MUD_BATTLESTAFF,
 		ItemID.MYSTIC_MUD_STAFF,
 		ItemID.MIST_BATTLESTAFF,
@@ -303,6 +304,42 @@ public class ItemCollections
 		ItemID.MYSTIC_DUST_STAFF,
 		ItemID.LAVA_BATTLESTAFF,
 		ItemID.MYSTIC_LAVA_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> lavaStaff = ImmutableList.of(
+		ItemID.LAVA_BATTLESTAFF,
+		ItemID.MYSTIC_LAVA_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> mudStaff = ImmutableList.of(
+		ItemID.MUD_BATTLESTAFF,
+		ItemID.MYSTIC_MUD_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> steamStaff = ImmutableList.of(
+		ItemID.STEAM_BATTLESTAFF,
+		ItemID.MYSTIC_STEAM_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> smokeStaff = ImmutableList.of(
+		ItemID.SMOKE_BATTLESTAFF,
+		ItemID.MYSTIC_SMOKE_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> mistStaff = ImmutableList.of(
+		ItemID.MIST_BATTLESTAFF,
+		ItemID.MYSTIC_MIST_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> dustStaff = ImmutableList.of(
+		ItemID.DUST_BATTLESTAFF,
+		ItemID.MYSTIC_DUST_STAFF
 	);
 
 	// Potions

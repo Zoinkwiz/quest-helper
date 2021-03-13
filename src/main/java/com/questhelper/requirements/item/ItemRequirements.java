@@ -65,6 +65,18 @@ public class ItemRequirements extends ItemRequirement
 		this.logicType = logicType;
 	}
 
+	public ItemRequirements(LogicType logicType, String name, List<ItemRequirement> itemRequirements)
+	{
+		super(name, itemRequirements.get(0).getId(), -1);
+		this.itemRequirements.addAll(itemRequirements);
+		this.logicType = logicType;
+	}
+
+	protected ItemRequirements(LogicType logicType, String name)
+	{
+		super(name, -1);
+	}
+
 	public ItemRequirements(LogicType logicType, ItemRequirement... requirements)
 	{
 		this(logicType, "", requirements);

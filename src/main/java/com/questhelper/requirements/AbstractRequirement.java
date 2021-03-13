@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.QuestHelperPlugin;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
@@ -52,18 +53,18 @@ public abstract class AbstractRequirement implements Requirement
 	}
 
 	@Override
-	public List<LineComponent> getDisplayTextWithChecks(Client client)
+	public List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperPlugin plugin)
 	{
 		if (getOverlayReplacement() != null && !this.check(client))
 		{
-			return getOverlayReplacement().getDisplayTextWithChecks(client);
+			return getOverlayReplacement().getDisplayTextWithChecks(client, plugin);
 		}
-		return getOverlayDisplayText(client);
+		return getOverlayDisplayText(client, plugin);
 	}
 
-	protected List<LineComponent> getOverlayDisplayText(Client client)
+	protected List<LineComponent> getOverlayDisplayText(Client client, QuestHelperPlugin plugin)
 	{
-		return Requirement.super.getDisplayTextWithChecks(client);
+		return Requirement.super.getDisplayTextWithChecks(client, plugin);
 	}
 
 	public void appendToTooltip(String text)

@@ -28,6 +28,8 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.magic.SpellRequirement;
+import com.questhelper.spells.MagicSpell;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Graphics2D;

@@ -28,6 +28,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -62,9 +63,10 @@ public abstract class ConditionForStep implements InitializableRequirement
 			.forEach(req -> ((InitializableRequirement) req).updateHandler());
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText() // conditions don't need display text (yet?)
 	{
-		return null;
+		return "";
 	}
 }

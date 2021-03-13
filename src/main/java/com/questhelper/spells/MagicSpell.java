@@ -24,49 +24,58 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package com.questhelper.spells;
 
-package com.questhelper.questhelpers;
+import com.questhelper.requirements.magic.SpellRequirement;
+import com.questhelper.requirements.util.Spellbook;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
-
-public class QuestUtil
+/**
+ * Represents a magic spell that can be cast by a player.
+ */
+public interface MagicSpell
 {
-	public static <T> List<T> toArrayList(@Nonnull T... elements)
-	{
-		return new ArrayList<>(Arrays.asList(elements));
-	}
-
-	public static <T> Collector<T, ?, List<T>> collectToArrayList()
-	{
-		return Collectors.toCollection(ArrayList::new);
-	}
+	/**
+	 * @return the formatted display name
+	 */
+	String getName();
 
 	/**
-	 * Removes all the duplicate elements from a stream and collects them into a
-	 * mutable ArrayList
-	 *
-	 * @param stream stream to remove duplicates from
-	 * @return a mutable list containing all the remaining elements of the stream
+	 * @return the widget ID
 	 */
-	public static <T> List<T> collectAndRemoveDuplicates(Stream<T> stream)
-	{
-		return stream.distinct().collect(collectToArrayList());
-	}
+	int getWidgetID();
 
 	/**
-	 * Remove duplicates in the given list.
-	 *
-	 * @param list the list
-	 * @return a mutable list without duplicates.
+	 * @return the group ID
 	 */
-	public static <T> List<T> removeDuplicates(List<T> list)
-	{
-		return collectAndRemoveDuplicates(list.stream());
-	}
+	int getGroupID();
+
+	/**
+	 * @return the sprite ID
+	 *
+	 * @see net.runelite.api.SpriteID
+	 */
+	int getSpriteID();
+
+	/**
+	 * @return the required {@link net.runelite.api.Skill#MAGIC)} level to cast this spell.
+	 */
+	int getRequiredMagicLevel();
+
+	/**
+	 * @return the {@link Spellbook} this spell is contained within.
+	 */
+	Spellbook getSpellbook();
+
+	/**
+	 * @return a new {@link SpellRequirement} for a single cast of this spell.
+	 */
+	SpellRequirement getSpellRequirement();
+
+	/**
+	 * Create a new {@link SpellRequirement} with the given number of casts.
+	 *
+	 * @param numberOfCasts the number of casts
+	 * @return a new {@link SpellRequirement}
+	 */
+	SpellRequirement getSpellRequirement(int numberOfCasts);
 }

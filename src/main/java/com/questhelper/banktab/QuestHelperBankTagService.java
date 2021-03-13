@@ -24,6 +24,7 @@
  */
 package com.questhelper.banktab;
 
+import com.questhelper.ItemSearch;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -31,12 +32,12 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
+import javax.swing.SwingUtilities;
 
 public class QuestHelperBankTagService
 {
@@ -127,15 +128,33 @@ public class QuestHelperBankTagService
 				getItemsFromRequirement(pluginItems, match);
 			}
 		}
+		else if (itemRequirement instanceof BankItemHolder)
+		{
+			BankItemHolder holder = (BankItemHolder) itemRequirement;
+			// Force run on client thread even though it's not as responsive as not doing that, however it
+			// ensures we run on the client thread and never run into threading issues.
+			plugin.getClientThread().invoke(() -> {
+				List<ItemRequirement> reqs = holder.getRequirements(plugin.getClient(), plugin);
+				makeBankHolderItems(reqs, pluginItems); // callback because we can't halt on the client thread);
+			});
+		}
 		else
 		{
-			if (itemRequirement.getDisplayItemId() != null)
+			makeBankHolderItems(Collections.singletonList(itemRequirement), pluginItems);
+		}
+	}
+
+	private void makeBankHolderItems(List<ItemRequirement> requirements, BankTabItems pluginItems)
+	{
+		for (ItemRequirement req : requirements)
+		{
+			if (req.getDisplayItemId() != null)
 			{
-				pluginItems.addItems(new BankTabItem(itemRequirement));
+				pluginItems.addItems(new BankTabItem(req));
 			}
-			else if (!itemRequirement.getDisplayItemIds().contains(-1))
+			else if (!req.getDisplayItemIds().contains(-1))
 			{
-				pluginItems.addItems(makeBankTabItem(itemRequirement));
+				pluginItems.addItems(makeBankTabItem(req));
 			}
 		}
 	}
@@ -151,12 +170,6 @@ public class QuestHelperBankTagService
 
 	public boolean hasItemInBank(int itemID)
 	{
-		ItemContainer bankContainer = plugin.getClient().getItemContainer(InventoryID.BANK);
-		if (bankContainer == null)
-		{
-			return false;
-		}
-
-		return bankContainer.contains(itemID);
+		return ItemSearch.hasItemInBank(itemID, plugin.getBankItems().getItems());
 	}
 }

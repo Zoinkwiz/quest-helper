@@ -30,9 +30,11 @@ package com.questhelper.requirements.quest;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.AbstractRequirement;
 import java.util.Locale;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import org.apache.commons.text.WordUtils;
 
 /**
  * Requirement that checks if a {@link net.runelite.api.Quest} has a certain state.
@@ -53,8 +55,7 @@ public class QuestRequirement extends AbstractRequirement
 	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState)
 	{
-		this.quest = quest;
-		this.requiredState = requiredState;
+		this(quest, requiredState, null);
 	}
 
 	/**
@@ -64,10 +65,16 @@ public class QuestRequirement extends AbstractRequirement
 	 * @param requiredState the required quest state
 	 * @param displayText display text
 	 */
-	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, String displayText)
+	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, @Nullable String displayText)
 	{
-		this(quest, requiredState);
+		this.quest = quest;
+		this.requiredState = requiredState;
 		this.displayText = displayText;
+	}
+
+	public QuestRequirement(QuestHelperQuest quest)
+	{
+		this(quest, QuestState.FINISHED, null);
 	}
 
 	@Override
@@ -88,7 +95,7 @@ public class QuestRequirement extends AbstractRequirement
 		{
 			return displayText;
 		}
-		String text = Character.toUpperCase(requiredState.name().charAt(0)) + requiredState.name().toLowerCase(Locale.ROOT).substring(1);
-		return text.replaceAll("_", " ") + " " + quest.getName();
+		String text = WordUtils.capitalizeFully(requiredState.name().toLowerCase(Locale.ROOT).replaceAll("_", " "));
+		return text + " " + quest.getName();
 	}
 }

@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright (c) 2021, Senmori
+ *  * Copyright (c) 2021
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without
@@ -25,48 +25,29 @@
  *
  */
 
-package com.questhelper.questhelpers;
+package com.questhelper.spells;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
+import com.questhelper.requirements.magic.RuneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import java.util.function.BooleanSupplier;
 
-public class QuestUtil
+public enum SpellComponentPreference
 {
-	public static <T> List<T> toArrayList(@Nonnull T... elements)
-	{
-		return new ArrayList<>(Arrays.asList(elements));
+	RUNES {
+		@Override
+		public ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff)
+		{
+			return runes.getAsBoolean() ? requirement.getRuneItemRequirement() : requirement.getStaffItemRequirement();
+		}
+	},
+	STAVES {
+		@Override
+		public ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff)
+		{
+			return staff.getAsBoolean() ? requirement.getStaffItemRequirement() : requirement.getRuneItemRequirement();
+		}
 	}
+	;
 
-	public static <T> Collector<T, ?, List<T>> collectToArrayList()
-	{
-		return Collectors.toCollection(ArrayList::new);
-	}
-
-	/**
-	 * Removes all the duplicate elements from a stream and collects them into a
-	 * mutable ArrayList
-	 *
-	 * @param stream stream to remove duplicates from
-	 * @return a mutable list containing all the remaining elements of the stream
-	 */
-	public static <T> List<T> collectAndRemoveDuplicates(Stream<T> stream)
-	{
-		return stream.distinct().collect(collectToArrayList());
-	}
-
-	/**
-	 * Remove duplicates in the given list.
-	 *
-	 * @param list the list
-	 * @return a mutable list without duplicates.
-	 */
-	public static <T> List<T> removeDuplicates(List<T> list)
-	{
-		return collectAndRemoveDuplicates(list.stream());
-	}
+	public abstract ItemRequirement getPreference(RuneRequirement requirement, BooleanSupplier runes, BooleanSupplier staff);
 }

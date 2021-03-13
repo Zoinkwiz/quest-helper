@@ -306,6 +306,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
+		super.makeWidgetOverlayHint(graphics, plugin);
 		renderInventory(graphics);
 		if (!hideMinimapLines)
 		{
@@ -383,7 +384,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 		stream
 			.distinct()
-			.map(req -> req.getDisplayTextWithChecks(client))
+			.map(req -> req.getDisplayTextWithChecks(client, plugin))
 			.flatMap(Collection::stream)
 			.forEach(line -> panelComponent.getChildren().add(line));
 

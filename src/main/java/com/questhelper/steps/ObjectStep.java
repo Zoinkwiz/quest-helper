@@ -27,6 +27,8 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.magic.SpellRequirement;
+import com.questhelper.spells.MagicSpell;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.Point;
@@ -181,6 +183,16 @@ public class ObjectStep extends DetailedQuestStep
 		this.alternateObjectIDs.addAll(Arrays.asList(alternateObjectIDs));
 	}
 
+	public void requireSpellCast(SpellRequirement spellRequirement)
+	{
+		addSpell(spellRequirement.getSpell());
+	}
+
+	public void requireSpellCast(MagicSpell spell)
+	{
+		addSpell(spell);
+	}
+
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
@@ -284,7 +296,7 @@ public class ObjectStep extends DetailedQuestStep
 			}
 		}
 
-		if (iconItemID != -1 && object != null && questHelper.getConfig().showSymbolOverlay())
+		if (icon != null && object != null && questHelper.getConfig().showSymbolOverlay())
 		{
 			Shape clickbox = object.getClickbox();
 			if (clickbox != null && !inCutscene)

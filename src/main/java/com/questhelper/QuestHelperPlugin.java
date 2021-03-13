@@ -625,6 +625,16 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
+	private void displayPanel()
+	{
+		SwingUtilities.invokeLater(() -> {
+			if (!navButton.isSelected())
+			{
+				navButton.getOnSelect().run();
+			}
+		});
+	}
+
 	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID) {
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
@@ -651,6 +661,10 @@ public class QuestHelperPlugin extends Plugin
 
 		if (!questHelper.isCompleted())
 		{
+			if(config.autoOpenSidebar())
+			{
+				displayPanel();
+			}
 			selectedQuest = questHelper;
 			eventBus.register(selectedQuest);
 			if (isDeveloperMode())

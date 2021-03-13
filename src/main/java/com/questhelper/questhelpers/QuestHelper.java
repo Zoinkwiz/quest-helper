@@ -28,6 +28,7 @@ import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.questhelper.ExternalQuestResources;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
@@ -210,6 +211,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	{
 		return null;
 	}
+
+	public List<ExternalQuestResources> getExternalResources(){ return null; }
 
 	public abstract List<PanelDetails> getPanels();
 }

@@ -25,35 +25,32 @@
 package com.questhelper.panel;
 
 import com.questhelper.BankItems;
+import com.questhelper.ExternalQuestResources;
 import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class QuestOverviewPanel extends JPanel
 {
@@ -73,6 +70,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questItemRecommendedListPanel = new JPanel();
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
 	private final JPanel questOverviewNotesPanel = new JPanel();
+	private final JPanel externalQuestResourcesPanel = new JPanel();
 
 	private final JPanel questGeneralRequirementsHeader = new JPanel();
 	private final JPanel questGeneralRecommendedHeader = new JPanel();
@@ -80,6 +78,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questCombatRequirementHeader = new JPanel();
 	private final JPanel questItemRecommendedHeader = new JPanel();
 	private final JPanel questNoteHeader = new JPanel();
+	private final JPanel externalQuestResourcesHeader = new JPanel();
 
 	private final JLabel questNameLabel = new JLabel();
 
@@ -155,6 +154,7 @@ public class QuestOverviewPanel extends JPanel
 		overviewPanel.add(generateRequirementPanel(questCombatRequirementsListPanel, questCombatRequirementHeader,
 			"Enemies to defeat:"));
 		overviewPanel.add(generateRequirementPanel(questOverviewNotesPanel, questNoteHeader, "Notes:"));
+		overviewPanel.add(generateRequirementPanel(externalQuestResourcesPanel, externalQuestResourcesHeader , "External Resources:"));
 
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
@@ -444,6 +444,50 @@ public class QuestOverviewPanel extends JPanel
 		combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
 
 		questCombatRequirementsListPanel.add(combatLabel);
+
+		/* External Resources */
+		List<ExternalQuestResources> externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
+		JLabel externalResources = new JLabel();
+		externalResources.setForeground(Color.GRAY);
+		StringBuilder textExternalResources = new StringBuilder();
+		JButton wikiBtn = new JButton();
+
+		//Button constant properties
+		wikiBtn.setUI(new BasicButtonUI());
+		SwingUtil.removeButtonDecorations(wikiBtn);
+		wikiBtn.setHorizontalAlignment(SwingConstants.LEFT);
+		wikiBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		wikiBtn.setToolTipText("Open the official wiki in your browser.");
+
+		//Button variable properties
+		wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+
+		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				wikiBtn.setForeground(Color.blue.brighter().brighter().brighter());
+				wikiBtn.setText("<html><body style = 'text-decoration:underline'>" + quest.getQuest().getName() + " Wiki </body></html>");
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				wikiBtn.setForeground(Color.white);
+				wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+			}
+		});
+
+		//Access URL values from ExternalQuestResources enum class
+		if (externalResourcesList == null) {
+			textExternalResources.append("No Resources Available");
+		} else {
+			for (ExternalQuestResources externalResource : externalResourcesList) {
+				if (externalResource.getWikiURL().length() > 0) {
+					wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource.getWikiURL()));
+				}
+			}
+		}
+
+		externalQuestResourcesPanel.removeAll();
+		externalQuestResourcesPanel.add(externalResources);
+		externalQuestResourcesPanel.add(wikiBtn, BorderLayout.EAST);
 
 		/* Quest overview */
 		JLabel overviewLabel = new JLabel();

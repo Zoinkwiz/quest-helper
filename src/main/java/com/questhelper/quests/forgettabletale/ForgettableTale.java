@@ -366,6 +366,7 @@ public class ForgettableTale extends BasicQuestHelper
 		beerGlass = new ItemRequirement("Beer glass", ItemID.BEER_GLASS);
 		randomItem = new ItemRequirement("A random item per player", -1, -1);
 		pot = new ItemRequirement("Pot", ItemID.POT);
+		pot.setTooltip("You can pick up the pot next to the vat");
 
 		grandExchangeTeleport = new ItemRequirement("Grand exchange teleport to access the Mine Cart from there",
 			ItemID.VARROCK_TELEPORT);

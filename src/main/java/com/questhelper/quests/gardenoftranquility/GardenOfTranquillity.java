@@ -110,8 +110,8 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 	QuestStep talkToEllmariaAfterGrown, talkToRoald;
 
-	ConditionalStep helpingElstan, helpingLyra, helpingKragen, helpingDantaera, helpingAlthric, helpingBernald,
-		gettingLastSeeds, plantGarden;
+	ConditionalStep helpingElstan, helpingLyra, helpingKragen, helpingDantaera, helpingAlthric, gettingRing,
+		helpingBernald, gettingLastSeeds, plantGarden;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -162,6 +162,9 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		helpingBernald.addStep(talkedToBernald, useCureOnVine);
 		helpingBernald.setLockingCondition(gotVineSeeds);
 
+		gettingRing = new ConditionalStep(this, fishForRing);
+		gettingRing.setLockingCondition(new Conditions(LogicType.OR, ringOfCharosA, ringNotInWell));
+
 		gettingLastSeeds = new ConditionalStep(this, collectMarigold);
 		gettingLastSeeds.addStep(new Conditions(cabbagesGrown, talkedToLyraAgain, givenMarigold), talkToKragenAgain);
 		gettingLastSeeds.addStep(new Conditions(talkedToLyraAgain, givenMarigold), waitForKragenToGrow);
@@ -201,7 +204,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		makingAGarden.addStep(new Conditions(plantedMarigold, plantedOnions, plantedCabbages,
 			hasRoseSeeds, ringNotInWell), helpingBernald);
 		makingAGarden.addStep(new Conditions(plantedMarigold, plantedOnions, plantedCabbages,
-			hasRoseSeeds), fishForRing);
+			hasRoseSeeds), gettingRing);
 		makingAGarden.addStep(new Conditions(plantedMarigold, plantedOnions, plantedCabbages, hasWateredShoot),
 			helpingAlthric);
 		makingAGarden.addStep(new Conditions(plantedMarigold, plantedOnions, plantedCabbages), helpingDantaera);
@@ -635,7 +638,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		althricPanel.setLockingStep(helpingAlthric);
 		allSteps.add(althricPanel);
 
-		allSteps.add(new PanelDetails("Getting your ring back", Collections.singletonList(fishForRing), fishingRod));
+		PanelDetails getRingPanel = new PanelDetails("Getting your ring back", Collections.singletonList(fishForRing),
+			fishingRod);
+		getRingPanel.setLockingStep(gettingRing);
+		allSteps.add(getRingPanel);
 
 		PanelDetails bernaldPanel = new PanelDetails("Vines", Arrays.asList(talkToBernald, useCureOnVine,
 			talkToAlain, useHammerOnEssence, usePestleOnShards, useEssenceOnCure,

@@ -82,9 +82,6 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	private Requirement conditionToHide;
 
-	@Setter
-	private boolean alsoCheckBank;
-
 	private QuestBank questBank;
 
 	public ItemRequirement(String name, int id)
@@ -157,7 +154,6 @@ public class ItemRequirement extends AbstractRequirement
 	{
 		ItemRequirement newItem = copy();
 		newItem.questBank = questBank;
-		newItem.setAlsoCheckBank(true);
 		return newItem;
 	}
 
@@ -191,7 +187,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
-		newItem.setAlsoCheckBank(alsoCheckBank);
+		newItem.questBank = questBank;
 		newItem.setTooltip(getTooltip());
 
 		return newItem;
@@ -353,10 +349,38 @@ public class ItemRequirement extends AbstractRequirement
 		return lines;
 	}
 
+	public int getMatches(Client client)
+	{
+		return getMatches(client, false, new ArrayList<>());
+	}
+
+	public int getMatches(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	{
+		List<Item> allItems = new ArrayList<>(items);
+		if (questBank != null && questBank.getBankItems() != null)
+		{
+			allItems.addAll(questBank.getBankItems());
+		}
+
+		int remainder = 0;
+
+		List<Integer> ids = getAllIds();
+		for (int alternate : ids)
+		{
+			if (exclusiveToOneItemType)
+			{
+				remainder = quantity;
+			}
+			remainder += (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions,
+				allItems));
+		}
+		return remainder;
+	}
+
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
 		List<Item> allItems = new ArrayList<>(items);
-		if (alsoCheckBank && questBank.getBankItems() != null)
+		if (questBank != null && questBank.getBankItems() != null)
 		{
 			allItems.addAll(questBank.getBankItems());
 		}

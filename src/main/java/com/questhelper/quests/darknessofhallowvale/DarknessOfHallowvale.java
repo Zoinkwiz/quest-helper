@@ -211,7 +211,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		ladderPiece = new ItemRequirement("Ladder top", ItemID.LADDER_TOP);
 
 		message = new ItemRequirement("Message", ItemID.MESSAGE_9633);
-		message.setTooltip("You can get another from Vertida in the Meiyditch Myreque base");
+		message.setTooltip("You can get another from Vertida in the Meiyerditch Myreque base");
 
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		charcoal.setHighlightInInventory(true);
@@ -665,7 +665,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		getToNorthMeiy.addStep(inMine, mineDaeyaltThenLeave);
 		getToNorthMeiy.addStep(inMeiyditch, goToMines);
 
-		returnToMeiyerditch = new ConditionalStep(this, getToNorthMeiy, "Return to the Meiyditch Myreque base.");
+		returnToMeiyerditch = new ConditionalStep(this, getToNorthMeiy, "Return to the Meiyerditch Myreque base.");
 		returnToMeiyerditch.addStep(inMyrequeBase, talkToVertida);
 		returnToMeiyerditch.addStep(wallPressed, enterRug);
 		returnToMeiyerditch.addStep(inNorthMeiy, returnToMeiyBase);

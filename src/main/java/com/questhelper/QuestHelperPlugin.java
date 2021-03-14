@@ -28,8 +28,6 @@ package com.questhelper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Ints;
 import com.google.common.reflect.ClassPath;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
@@ -43,12 +41,9 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,13 +58,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.QuestState;
-import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -94,7 +86,6 @@ import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -225,6 +216,8 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean loadQuestList;
 
+	private boolean displayNameKnown;
+
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -289,6 +282,14 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (!displayNameKnown)
+		{
+			Player localPlayer = client.getLocalPlayer();
+			if (localPlayer != null && localPlayer.getName() != null) {
+				displayNameKnown = true;
+				questBank.loadState();
+			}
+		}
 		if (sidebarSelectedQuest != null)
 		{
 			startUpQuest(sidebarSelectedQuest);
@@ -346,7 +347,7 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGGED_IN)
 		{
 			loadQuestList = true;
-			clientThread.invokeLater(() -> questBank.loadState());
+			displayNameKnown = false;
 		}
 	}
 

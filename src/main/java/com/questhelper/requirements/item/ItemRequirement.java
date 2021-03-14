@@ -79,6 +79,7 @@ public class ItemRequirement extends AbstractRequirement
 	private boolean displayMatchedItemName;
 
 	@Setter
+	@Getter
 	private Requirement conditionToHide;
 
 	@Setter

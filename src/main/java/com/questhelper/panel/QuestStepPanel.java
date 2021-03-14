@@ -146,7 +146,7 @@ public class QuestStepPanel extends JPanel
 				{
 					QuestRequirementPanel reqPanel = new QuestRequirementPanel(req);
 					requirementPanels.add(reqPanel);
-					questRequirementsListPanel.add(reqPanel);
+					questRequirementsListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 				}
 			}
 
@@ -216,7 +216,7 @@ public class QuestStepPanel extends JPanel
 
 	public void updateHighlight(QuestStep currentStep)
 	{
-		if (currentlyHighlighted != null)
+		if (currentlyHighlighted != null && steps.get(currentlyHighlighted) != null)
 		{
 			steps.get(currentlyHighlighted).setForeground(Color.LIGHT_GRAY);
 		}

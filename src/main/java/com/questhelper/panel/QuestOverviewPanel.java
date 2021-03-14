@@ -347,7 +347,7 @@ public class QuestOverviewPanel extends JPanel
 			{
 				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRequirement);
 				requirementPanels.add(reqPanel);
-				questGeneralRequirementsListPanel.add(reqPanel);
+				questGeneralRequirementsListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 
 				questGeneralRequirementsListPanel.setVisible(true);
 				questGeneralRequirementsHeader.setVisible(true);
@@ -371,7 +371,7 @@ public class QuestOverviewPanel extends JPanel
 			{
 				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
 				requirementPanels.add(reqPanel);
-				questGeneralRecommendedListPanel.add(reqPanel);
+				questGeneralRecommendedListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 
 				questGeneralRecommendedListPanel.setVisible(true);
 				questGeneralRecommendedHeader.setVisible(true);
@@ -392,7 +392,7 @@ public class QuestOverviewPanel extends JPanel
 			{
 				QuestRequirementPanel reqPanel = new QuestRequirementPanel(itemRequirement);
 				requirementPanels.add(reqPanel);
-				questItemRequirementsListPanel.add(reqPanel);
+				questItemRequirementsListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 			}
 		}
 		else
@@ -412,7 +412,7 @@ public class QuestOverviewPanel extends JPanel
 			{
 				QuestRequirementPanel reqPanel = new QuestRequirementPanel(itemRecommend);
 				requirementPanels.add(reqPanel);
-				questItemRecommendedListPanel.add(reqPanel);
+				questItemRecommendedListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 			}
 		}
 		else
@@ -541,6 +541,9 @@ public class QuestOverviewPanel extends JPanel
 			if (requirementPanel.getRequirement() instanceof ItemRequirement)
 			{
 				ItemRequirement itemRequirement = (ItemRequirement) requirementPanel.getRequirement();
+
+				requirementPanel.setVisible(itemRequirement.getConditionToHide() == null || !itemRequirement.getConditionToHide().check(client));
+
 				if (itemRequirement instanceof NoItemRequirement)
 				{
 					newColor = itemRequirement.getColor(client); // explicitly call this because NoItemRequirement overrides it

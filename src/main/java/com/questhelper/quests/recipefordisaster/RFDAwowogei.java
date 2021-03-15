@@ -222,7 +222,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		inspectAwowogei.addSubSteps(enterDiningRoom);
 
 		talkToAwowogei = new ObjectStep(this, ObjectID.AWOWOGEI, new WorldPoint(2803, 2765, 0), "Talk to Awowogei on Ape Atoll.", greegreeEquipped, mAmulet);
-		talkToWiseMonkeys = new NpcStep(this, NpcID.IWAZARU, new WorldPoint(2789, 2795, 0), "Talk to the three monkey sat in the temple.", greegreeEquipped, mAmulet);
+		talkToWiseMonkeys = new NpcStep(this, NpcID.IWAZARU, new WorldPoint(2789, 2795, 0), "Talk to the three monkeys sat in the temple.", greegreeEquipped, mAmulet);
 		talkToWiseMonkeys.addDialogStep("Do you know anything about the King's favourite dish?");
 		useBananaOnWiseMonkeys = new NpcStep(this, NpcID.IWAZARU, new WorldPoint(2789, 2795, 0), "Use a banana on the one of the three monkeys.", bananaHighlighted, greegreeEquipped, mAmulet);
 		useBananaOnWiseMonkeys.addIcon(ItemID.BANANA);

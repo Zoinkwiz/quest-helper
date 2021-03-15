@@ -249,7 +249,7 @@ public class RFDAwowogei extends BasicQuestHelper
 
 		enterZombieDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_4880, new WorldPoint(2807, 2785, 0), "Enter the trapdoor in the monkey temple.", zombieGreegree, rawStuffedSnake);
 		((ObjectStep) (enterZombieDungeon)).addAlternateObjects(ObjectID.TRAPDOOR_4879);
-		enterCookingHole = new ObjectStep(this, ObjectID.EXIT_16061, new WorldPoint(2805, 9199, 0), "Enter the hole just under where you entered,", zombieGreegree, rawStuffedSnake);
+		enterCookingHole = new ObjectStep(this, ObjectID.EXIT_16061, new WorldPoint(2805, 9199, 0), "Enter the hole just under where you entered.", zombieGreegree, rawStuffedSnake);
 		cookSnake = new ObjectStep(this, NullObjectID.NULL_26175, new WorldPoint(3056, 5485, 0), "Go across the hot rocks with the zombie greegree equipped. Cook the stuffed snake on the rock at the end of the room.", zombieGreegree, rawStuffedSnakeHighlighted);
 		cookSnake.addIcon(ItemID.RAW_STUFFED_SNAKE);
 

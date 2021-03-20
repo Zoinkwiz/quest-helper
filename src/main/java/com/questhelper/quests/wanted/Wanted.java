@@ -513,13 +513,14 @@ public class Wanted extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return QuestUtil.toArrayList(essence, lightSource, combatGear, commorbComponentsOrTenThousandGp);
+		return QuestUtil.toArrayList(essence, lightSource, rope.hideConditioned(placedRope), combatGear,
+			commorbComponentsOrTenThousandGp);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return QuestUtil.toArrayList(amuletOfGlory, faladorTeleport, varrockTeleport, canifisTeleport);
+		return QuestUtil.toArrayList(amuletOfGlory, faladorTeleport, varrockTeleport, canifisTeleport, spinyHelmet);
 	}
 
 	@Override
@@ -552,7 +553,8 @@ public class Wanted extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Mage of Zamorak", Arrays.asList(talkToMageOfZamorak, giveEssenceToMageOfZamorak), essence, commorb));
 
-		allSteps.add(new PanelDetails("The Hunt for Solus", Arrays.asList(enterCanifis, huntDownSolus), lightSource, rope, spinyHelmet, commorb));
+		allSteps.add(new PanelDetails("The Hunt for Solus", Arrays.asList(enterCanifis, huntDownSolus), lightSource,
+			rope.hideConditioned(placedRope), spinyHelmet, commorb));
 
 		allSteps.add(new PanelDetails("Final battle", Arrays.asList(goToEssenceMine, killSolus, goTalkToSirAmikAfterFinalBattle), combatGear, commorb));
 

@@ -440,7 +440,7 @@ public class Wanted extends BasicQuestHelper
 			"Kill a Black Knight near Daquarius.", true, combatGear);
 		talkToIntimidatedLordDaquarius = new NpcStep(this, NpcID.LORD_DAQUARIUS, new WorldPoint(2891, 9681, 0), "Talk to Lord Daquarius in Taverley Dungeon again.");
 
-		talkToMageOfZamorakInWilderness = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3106, 3358, 0), "Talk to the Mage of Zamorak in the wilderness just north of Edgeville.", commorb);
+		talkToMageOfZamorakInWilderness = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3106, 3558, 0), "Talk to the Mage of Zamorak in the wilderness just north of Edgeville.", commorb);
 		talkToMageOfZamorak = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3388, 0),
 			"Talk to the Mage of Zamorak in south east Varrock.", commorb);
 		talkToMageOfZamorak.addDialogStep("Solus Dellagar");

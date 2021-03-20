@@ -29,6 +29,9 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import javax.annotation.Nonnull;
+import lombok.Setter;
 import net.runelite.api.Client;
 
 public class Conditions extends ConditionForStep
@@ -36,10 +39,19 @@ public class Conditions extends ConditionForStep
 	protected Operation operation;
 	protected int quantity;
 
+	@Setter
+	protected String text;
+
 	public Conditions(Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
+		logicType = LogicType.AND;
+	}
+
+	public Conditions(List<Requirement> conditions)
+	{
+		this.conditions = new ArrayList<>(conditions);
 		logicType = LogicType.AND;
 	}
 
@@ -57,6 +69,12 @@ public class Conditions extends ConditionForStep
 		this.logicType = LogicType.AND;
 		this.operation = operation;
 		this.quantity = quantity;
+	}
+
+	public Conditions(LogicType logicType, List<Requirement> conditions)
+	{
+		this.conditions = new ArrayList<>(conditions);
+		this.logicType = logicType;
 	}
 
 	public Conditions(boolean onlyNeedToPassOnce, Operation operation, int quantity, Requirement... conditions)
@@ -83,6 +101,13 @@ public class Conditions extends ConditionForStep
 		Collections.addAll(this.conditions, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
 		this.logicType = LogicType.AND;
+	}
+
+	@Override
+	@Nonnull
+	public String getDisplayText()
+	{
+		return text;
 	}
 
 	@Override

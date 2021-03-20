@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.ragandbonemani;
+package com.questhelper.quests.ragandboneman;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
@@ -32,7 +32,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -49,8 +48,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -72,14 +73,6 @@ public class RagAndBoneManI extends BasicQuestHelper
 	ItemRequirement spinyHelmet, varrockTeleport, lumbridgeTeleport, digsitePendant,
 		draynorTeleport, karamjaTeleport, dramenStaff;
 
-	ItemRequirement giantRatBone, unicornBone, bearRibs, ramSkull, goblinSkull, bigFrogLegs, monkeyPaw, giantBatWing;
-
-	ItemRequirement giantRatBoneVinegar, unicornBoneVinegar, bearRibsVinegar, ramSkullVinegar,
-		goblinSkullVinegar, bigFrogLegsVinegar, monkeyPawVinegar, giantBatWingVinegar;
-
-	ItemRequirement giantRatBonePolished, unicornBonePolished, bearRibsPolished, ramSkullPolished,
-		goblinSkullPolished, bigFrogLegsPolished, monkeyPawPolished, giantBatWingPolished;
-
 	ItemRequirement jugOfVinegar, jugOfVinegarNeeded, potOfVinegar, potOfVinegarNeeded, potNeeded;
 
 	DetailedQuestStep talkToOddOldMan, killGiantRat, killUnicorn, killBear, killRam, killGoblin, killFrog, killMonkey
@@ -93,24 +86,17 @@ public class RagAndBoneManI extends BasicQuestHelper
 
 	DetailedQuestStep giveBones, talkToFinish;
 
-	Requirement inSwamp, inJunaRoom, inKaramjaDungeon, addedRope, boneNearby, hadRat, hadUnicorn, hadBear, hadRam,
-		hadFrog, hadGoblin, hadMonkey, hadBat, hadAllBones, talkedToFortunato;
+	Requirement inSwamp, inJunaRoom, inKaramjaDungeon, addedRope, boneNearby, hadAllBones, talkedToFortunato;
 
-	Requirement ratAddedToVinegar, unicornAddedToVinegar, bearAddedToVinegar, ramAddedToVinegar,
-		goblinAddedToVinegar, frogAddedToVinegar, monkeyAddedToVinegar, batAddedToVinegar;
+	Requirement hadVinegar, allBonesAtLeastAddedToVinegar, allBonesPolished;
 
-	Requirement hadVinegar, allBonesInVinegar;
-
-	Requirement ratProcessed, unicornProcessed, bearProcessed, ramProcessed, goblinProcessed,
-		frogProcessed, monkeyProcessed, batProcessed, allBonesReady;
 	Requirement logAdded, boneAddedToBoiler, logLit, boneReady;
-	Requirement ratAdded, unicornAdded, bearAdded, ramAdded, goblinAdded, frogAdded, monkeyAdded, batAdded;
-	Requirement ratReady, unicornReady, bearReady, ramReady, goblinReady, frogReady,
-		monkeyReady, batReady, allBonesPolished;
 
 	Zone swamp, junaRoom, karamjaDungeon;
 
 	ConditionalStep collectBonesSteps, preparingBonesSteps, cookingSteps;
+
+	LinkedHashMap<RagBoneState, QuestStep> stepsForRagAndBoneManI = new LinkedHashMap<>();
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -124,29 +110,15 @@ public class RagAndBoneManI extends BasicQuestHelper
 		steps.put(0, talkToOddOldMan);
 		steps.put(1, talkToOddOldMan);
 
-		collectBonesSteps = new ConditionalStep(this, killGiantRat);
+		collectBonesSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state."));
 		collectBonesSteps.addStep(boneNearby, pickupBone);
-		collectBonesSteps.addStep(nor(hadRat), killGiantRat);
-		collectBonesSteps.addStep(nor(hadUnicorn), killUnicorn);
-		collectBonesSteps.addStep(nor(hadBear), killBear);
-		collectBonesSteps.addStep(nor(hadRam), killRam);
-		collectBonesSteps.addStep(nor(hadGoblin), killGoblin);
-
-		collectBonesSteps.addStep(new Conditions(nor(hadFrog), inJunaRoom), leaveJunaRoom);
-		collectBonesSteps.addStep(new Conditions(nor(hadFrog), inSwamp), killFrog);
-		collectBonesSteps.addStep(nor(hadFrog, addedRope), addRope);
-		collectBonesSteps.addStep(nor(hadFrog), enterSwamp);
-
-		collectBonesSteps.addStep(nor(hadMonkey), killMonkey);
-
-		collectBonesSteps.addStep(nor(hadBat, inKaramjaDungeon), enterKaramjaDungeon);
-		collectBonesSteps.addStep(nor(hadBat), killBat);
+		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> collectBonesSteps.addStep(nor(state.hadBoneItem(questBank)), step));
 		collectBonesSteps.setLockingCondition(hadAllBones);
 
 		preparingBonesSteps = new ConditionalStep(this, talkToFortunato);
 		preparingBonesSteps.addStep(potOfVinegarNeeded, useBonesOnVinegar);
 		preparingBonesSteps.addStep(talkedToFortunato, makePotOfVinegar);
-		preparingBonesSteps.setLockingCondition(allBonesInVinegar);
+		preparingBonesSteps.setLockingCondition(allBonesAtLeastAddedToVinegar);
 
 		cookingSteps = new ConditionalStep(this, placeLogs);
 		cookingSteps.addStep(boneReady, removePot);
@@ -156,10 +128,9 @@ public class RagAndBoneManI extends BasicQuestHelper
 		cookingSteps.setLockingCondition(allBonesPolished);
 
 		ConditionalStep doQuest = new ConditionalStep(this, collectBonesSteps);
-		doQuest.addStep(allBonesReady, giveBones);
-		doQuest.addStep(allBonesInVinegar, cookingSteps);
+		doQuest.addStep(allBonesPolished, giveBones);
+		doQuest.addStep(allBonesAtLeastAddedToVinegar, cookingSteps);
 		doQuest.addStep(hadAllBones, preparingBonesSteps);
-
 
 		steps.put(2, doQuest);
 
@@ -202,76 +173,23 @@ public class RagAndBoneManI extends BasicQuestHelper
 			new ItemRequirement("Pot of vinegar", ItemID.POT_OF_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
 		jugOfVinegarNeeded =
 			new ItemRequirement("Jug of vinegar", ItemID.JUG_OF_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
-		goblinSkull = new ItemRequirement("Goblin skull", ItemID.GOBLIN_SKULL);
-		bearRibs = new ItemRequirement("Bear ribs", ItemID.BEAR_RIBS);
-		ramSkull = new ItemRequirement("Ram skull", ItemID.RAM_SKULL);
-		unicornBone = new ItemRequirement("Unicorn bone", ItemID.UNICORN_BONE);
-		giantRatBone = new ItemRequirement("Giant rat bone", ItemID.GIANT_RAT_BONE);
-		giantBatWing = new ItemRequirement("Giant bat wing", ItemID.GIANT_BAT_WING);
-		monkeyPaw = new ItemRequirement("Monkey paw", ItemID.MONKEY_PAW);
-		bigFrogLegs = new ItemRequirement("Big frog leg", ItemID.BIG_FROG_LEG);
-
-		goblinSkullVinegar = new ItemRequirement("Bone in vinegar (goblin)", ItemID.BONE_IN_VINEGAR);
-		bearRibsVinegar = new ItemRequirement("Bone in vinegar (bear)", ItemID.BONE_IN_VINEGAR_7816);
-		ramSkullVinegar = new ItemRequirement("Bone in vinegar (ram)", ItemID.BONE_IN_VINEGAR_7819);
-		unicornBoneVinegar = new ItemRequirement("Bone in vinegar (unicorn)", ItemID.BONE_IN_VINEGAR_7822);
-		giantRatBoneVinegar = new ItemRequirement("Bone in vinegar (rat)", ItemID.BONE_IN_VINEGAR_7825);
-		giantBatWingVinegar = new ItemRequirement("Bone in vinegar (bat)", ItemID.BONE_IN_VINEGAR_7828);
-		monkeyPawVinegar = new ItemRequirement("Bone in vinegar (monkey)", ItemID.BONE_IN_VINEGAR_7855);
-		bigFrogLegsVinegar = new ItemRequirement("Bone in vinegar (frog)", ItemID.BONE_IN_VINEGAR_7909);
-
-		goblinSkullPolished = new ItemRequirement("Goblin skull", ItemID.GOBLIN_SKULL_7814);
-		bearRibsPolished = new ItemRequirement("Bear ribs", ItemID.BEAR_RIBS_7817);
-		ramSkullPolished = new ItemRequirement("Ram skull", ItemID.RAM_SKULL_7820);
-		unicornBonePolished = new ItemRequirement("Unicorn bone", ItemID.UNICORN_BONE_7823);
-		giantRatBonePolished = new ItemRequirement("Giant rat bone", ItemID.GIANT_RAT_BONE_7826);
-		giantBatWingPolished = new ItemRequirement("Giant bat wing", ItemID.GIANT_BAT_WING_7829);
-		monkeyPawPolished = new ItemRequirement("Monkey paw", ItemID.MONKEY_PAW_7856);
-		bigFrogLegsPolished = new ItemRequirement("Big frog leg", ItemID.BIG_FROG_LEG_7910);
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		System.out.println(client.getVarpValue(716));
-		int winesNeededQuantity = 8;
+		AtomicInteger winesNeededQuantity = new AtomicInteger(8);
 
-		if (ratAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
-		if (unicornAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
-		if (bearAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
-		if (ramAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
-		if (goblinAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
-		if (frogAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
-		if (monkeyAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
-		if (batAddedToVinegar.check(client))
-		{
-			winesNeededQuantity--;
-		}
+		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> {
+			if (state.hadBoneInVinegarItem(questBank).check(client))
+			{
+				winesNeededQuantity.getAndDecrement();
+			}
+		});
 
-		potOfVinegarNeeded.setQuantity(winesNeededQuantity);
+		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
 
-		int jugsNeeded = winesNeededQuantity;
+		int jugsNeeded = winesNeededQuantity.get();
 		jugsNeeded -= potOfVinegar.alsoCheckBank(questBank).getMatches(client);
 		potNeeded.setQuantity(jugsNeeded);
 		jugOfVinegarNeeded.setQuantity(jugsNeeded);
@@ -295,16 +213,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 		// 2044 = 1, talked a bit to Odd Old Man
 
 		addedRope = new VarbitRequirement(279, 1);
-		boneNearby = new Conditions(LogicType.OR,
-			new ItemOnTileRequirement(giantRatBone),
-			new ItemOnTileRequirement(unicornBone),
-			new ItemOnTileRequirement(bearRibs),
-			new ItemOnTileRequirement(ramSkull),
-			new ItemOnTileRequirement(goblinSkull),
-			new ItemOnTileRequirement(bigFrogLegs),
-			new ItemOnTileRequirement(monkeyPaw),
-			new ItemOnTileRequirement(giantBatWing)
-		);
+
+		boneNearby = new Conditions(LogicType.OR, RagBoneGroups.getBonesOnFloor(RagBoneGroups.getBones(RagBoneGroups.getRagBoneIStates())));
 
 		logAdded = new VarbitRequirement(2046, 1, Operation.GREATER_EQUAL);
 		boneAddedToBoiler = new VarbitRequirement(2046, 2, Operation.GREATER_EQUAL);
@@ -314,175 +224,15 @@ public class RagAndBoneManI extends BasicQuestHelper
 		// Every time handing in a bone, 2045 iterates from 0->28 1 by 1. Next time you hand in a bone it goes back
 		// to 0 and repeats???
 
-		goblinAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 1));
-		bearAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 2));
-		ramAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 3));
-		unicornAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 4));
-		ratAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 5));
-		batAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 6));
-		monkeyAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 15));
-		frogAdded = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, 33));
+		allBonesPolished = new Conditions(RagBoneGroups.allBonesPolished(RagBoneGroups.getRagBoneIStates(), questBank));
 
-		ratReady = new Conditions(true, giantRatBonePolished.alsoCheckBank(questBank));
-		unicornReady  = new Conditions(true, unicornBonePolished.alsoCheckBank(questBank));
-		bearReady  = new Conditions(true, bearRibsPolished.alsoCheckBank(questBank));
-		ramReady = new Conditions(true, ramSkullPolished.alsoCheckBank(questBank));
-		goblinReady = new Conditions(true, goblinSkullPolished.alsoCheckBank(questBank));
-		frogReady = new Conditions(true, bigFrogLegsPolished.alsoCheckBank(questBank));
-		monkeyReady = new Conditions(true, monkeyPawPolished.alsoCheckBank(questBank));
-		batReady = new Conditions(true, giantBatWingPolished.alsoCheckBank(questBank));
+		allBonesAtLeastAddedToVinegar = new Conditions(RagBoneGroups.allBonesAddedToVinegar(RagBoneGroups.getRagBoneIStates(), questBank));
 
-		allBonesPolished = new Conditions(ratReady, unicornReady, bearReady, ramReady, goblinReady, frogReady,
-			monkeyReady, batReady);
-
-		ratProcessed = new Conditions(LogicType.OR,
-			ratReady,
-			ratAdded
-		);
-
-		unicornProcessed = new Conditions(LogicType.OR,
-			unicornReady,
-			unicornAdded
-		);
-
-		bearProcessed = new Conditions(LogicType.OR,
-			bearReady,
-			bearAdded
-		);
-
-		ramProcessed = new Conditions(LogicType.OR,
-			ramReady,
-			ramAdded
-		);
-
-		goblinProcessed = new Conditions(LogicType.OR,
-			goblinReady,
-			goblinAdded
-		);
-
-		frogProcessed = new Conditions(LogicType.OR,
-			frogReady,
-			frogAdded
-		);
-
-		monkeyProcessed = new Conditions(LogicType.OR,
-			monkeyReady,
-			monkeyAdded
-		);
-
-		batProcessed = new Conditions(LogicType.OR,
-			batReady,
-			batAdded
-		);
-
-		allBonesReady = new Conditions(
-			ratProcessed,
-			unicornProcessed,
-			bearProcessed,
-			ramProcessed,
-			goblinProcessed,
-			frogProcessed,
-			monkeyProcessed,
-			batProcessed
-		);
-
-		ratAddedToVinegar = new Conditions(LogicType.OR,
-			giantRatBoneVinegar.alsoCheckBank(questBank),
-			ratProcessed
-		);
-
-		unicornAddedToVinegar = new Conditions(LogicType.OR,
-			unicornBoneVinegar.alsoCheckBank(questBank),
-			unicornProcessed
-		);
-
-		bearAddedToVinegar = new Conditions(LogicType.OR,
-			bearRibsVinegar.alsoCheckBank(questBank),
-			bearProcessed
-		);
-
-		ramAddedToVinegar = new Conditions(LogicType.OR,
-			ramSkullVinegar.alsoCheckBank(questBank),
-			ramProcessed
-		);
-
-		goblinAddedToVinegar = new Conditions(LogicType.OR,
-			goblinSkullVinegar.alsoCheckBank(questBank),
-			goblinProcessed
-		);
-
-		frogAddedToVinegar = new Conditions(LogicType.OR,
-			bigFrogLegsVinegar.alsoCheckBank(questBank),
-			frogProcessed
-		);
-
-		monkeyAddedToVinegar = new Conditions(LogicType.OR,
-			monkeyPawVinegar.alsoCheckBank(questBank),
-			monkeyProcessed
-		);
-
-		batAddedToVinegar = new Conditions(LogicType.OR,
-			giantBatWingVinegar.alsoCheckBank(questBank),
-			batProcessed
-		);
-
-		allBonesInVinegar = new Conditions(
-			ratAddedToVinegar,
-			unicornAddedToVinegar,
-			bearAddedToVinegar,
-			ramAddedToVinegar,
-			goblinAddedToVinegar,
-			frogAddedToVinegar,
-			monkeyAddedToVinegar,
-			batAddedToVinegar
-		);
-
-		hadRat = new Conditions(LogicType.OR,
-			giantRatBone.alsoCheckBank(questBank),
-			ratAddedToVinegar
-		);
-
-		hadUnicorn = new Conditions(LogicType.OR,
-			unicornBone.alsoCheckBank(questBank),
-			unicornAddedToVinegar
-		);
-
-		hadBear = new Conditions(LogicType.OR,
-			bearRibs.alsoCheckBank(questBank),
-			bearAddedToVinegar
-		);
-
-		hadRam = new Conditions(LogicType.OR,
-			ramSkull.alsoCheckBank(questBank),
-			ramAddedToVinegar
-		);
-
-		hadGoblin = new Conditions(LogicType.OR,
-			goblinSkull.alsoCheckBank(questBank),
-			goblinAddedToVinegar
-		);
-
-		hadFrog = new Conditions(LogicType.OR,
-			bigFrogLegs.alsoCheckBank(questBank),
-			frogAddedToVinegar
-		);
-
-		hadMonkey = new Conditions(LogicType.OR,
-			monkeyPaw.alsoCheckBank(questBank),
-			monkeyAddedToVinegar
-		);
-
-		hadBat = new Conditions(LogicType.OR,
-			giantBatWing.alsoCheckBank(questBank),
-			batAddedToVinegar
-		);
-
-		hadAllBones = new Conditions(hadRat, hadUnicorn, hadBear, hadRam, hadGoblin, hadFrog, hadMonkey, hadBat);
+		hadAllBones = new Conditions(RagBoneGroups.allBonesObtained(RagBoneGroups.getRagBoneIStates(), questBank));
 
 		talkedToFortunato = new VarbitRequirement(2047, 1);
 
 		hadVinegar = new Conditions(jugOfVinegar.alsoCheckBank(questBank));
-		// Had if combo of vinegar
 	}
 
 	public void setupSteps()
@@ -527,6 +277,11 @@ public class RagAndBoneManI extends BasicQuestHelper
 		killFrog.addTileMarker(new QuestTile(new WorldPoint(3161, 9574, 0), SpriteID.OPTIONS_RUNNING));
 		killFrog.addTileMarker(new QuestTile(new WorldPoint(3163, 9574, 0), SpriteID.OPTIONS_RUNNING));
 
+		ConditionalStep killFrogSteps = new ConditionalStep(this, addRope);
+		killFrogSteps.addStep(inSwamp, killFrog);
+		killFrogSteps.addStep(inJunaRoom, leaveJunaRoom);
+		killFrogSteps.addStep(addedRope, enterSwamp);
+
 		killMonkey = new NpcStep(this, NpcID.MONKEY_2848, new WorldPoint(2886, 3167, 0),
 			"Kill a monkey on karamja.", true);
 
@@ -536,16 +291,21 @@ public class RagAndBoneManI extends BasicQuestHelper
 			"Kill a giant bat in the Karamja Volcano Dungeon.", true);
 		killBat.addSubSteps(enterKaramjaDungeon);
 
-		pickupBone = new ItemStep(this, "Pickup the bone.",
-			giantRatBone.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(giantRatBone))),
-			unicornBone.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(unicornBone))),
-			bearRibs.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(bearRibs))),
-			ramSkull.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(ramSkull))),
-			goblinSkull.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(goblinSkull))),
-			bigFrogLegs.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(bigFrogLegs))),
-			monkeyPaw.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(monkeyPaw))),
-			giantBatWing.hideConditioned(new Conditions(LogicType.NOR, new ItemOnTileRequirement(giantBatWing)))
-		);
+		ConditionalStep killBatSteps = new ConditionalStep(this, enterKaramjaDungeon);
+		killBatSteps.addStep(inKaramjaDungeon, killBat);
+
+		stepsForRagAndBoneManI.put(RagBoneState.GIANT_RAT_BONE, killGiantRat);
+		stepsForRagAndBoneManI.put(RagBoneState.UNICORN_BONE, killUnicorn);
+		stepsForRagAndBoneManI.put(RagBoneState.BEAR_RIBS, killBear);
+		stepsForRagAndBoneManI.put(RagBoneState.RAM_SKULL, killRam);
+
+		stepsForRagAndBoneManI.put(RagBoneState.GOBLIN_SKULL, killGoblin);
+		stepsForRagAndBoneManI.put(RagBoneState.BIG_FROG_LEGS, killFrogSteps);
+		stepsForRagAndBoneManI.put(RagBoneState.MONKEY_PAW, killMonkey);
+		stepsForRagAndBoneManI.put(RagBoneState.GIANT_BAT_WING, killBatSteps);
+
+		pickupBone = new ItemStep(this, "Pickup the bone.");
+		pickupBone.addItemRequirements(RagBoneGroups.pickupBones(RagBoneGroups.getRagBoneIStates()));
 		pickupBone.setShowInSidebar(false);
 
 		talkToFortunato = new NpcStep(this, NpcID.FORTUNATO, new WorldPoint(3085, 3251, 0),
@@ -554,18 +314,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 		makePotOfVinegar = new DetailedQuestStep(this, "Use the vinegar on pots for 8 pots of vinegar.",
 			jugOfVinegarNeeded, potNeeded);
 
-		useBonesOnVinegar = new DetailedQuestStep(this,
-			"Use the bones on the pots of vinegar.",
-			potOfVinegar.highlighted(),
-			giantRatBone.hideConditioned(ratAddedToVinegar).highlighted(),
-			unicornBone.hideConditioned(unicornAddedToVinegar).highlighted(),
-			bearRibs.hideConditioned(bearAddedToVinegar).highlighted(),
-			ramSkull.hideConditioned(ramAddedToVinegar).highlighted(),
-			goblinSkull.hideConditioned(goblinAddedToVinegar).highlighted(),
-			bigFrogLegs.hideConditioned(frogAddedToVinegar).highlighted(),
-			monkeyPaw.hideConditioned(monkeyAddedToVinegar).highlighted(),
-			giantBatWing.hideConditioned(batAddedToVinegar).highlighted()
-		);
+		useBonesOnVinegar = new DetailedQuestStep(this, "Use the bones on the pots of vinegar.", potOfVinegar.highlighted());
+		useBonesOnVinegar.addItemRequirements(RagBoneGroups.bonesToAddToVinegar(RagBoneGroups.getRagBoneIStates(), questBank));
 
 		placeLogs = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
 			"Place logs under the pot-boiler near the Odd Old Man. If you've already polished all the bones, hand " +
@@ -573,17 +323,9 @@ public class RagAndBoneManI extends BasicQuestHelper
 		placeLogs.addIcon(ItemID.LOGS);
 
 		useBoneOnBoiler = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
-			"Add a bone to the pot boiler.",
-			giantRatBoneVinegar.hideConditioned(ratProcessed).highlighted(),
-			unicornBoneVinegar.hideConditioned(unicornProcessed).highlighted(),
-			bearRibsVinegar.hideConditioned(bearProcessed).highlighted(),
-			ramSkullVinegar.hideConditioned(ramProcessed).highlighted(),
-			goblinSkullVinegar.hideConditioned(goblinProcessed).highlighted(),
-			bigFrogLegsVinegar.hideConditioned(frogProcessed).highlighted(),
-			monkeyPawVinegar.hideConditioned(monkeyProcessed).highlighted(),
-			giantBatWingVinegar.hideConditioned(batProcessed).highlighted()
-		);
+			"Add a bone to the pot boiler.");
 		useBoneOnBoiler.addIcon(ItemID.BONE_IN_VINEGAR);
+		useBoneOnBoiler.addItemRequirements(RagBoneGroups.bonesToAddToBoiler(RagBoneGroups.getRagBoneIStates(), questBank));
 
 		lightLogs = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
 			"Light the logs under the pot-boiler.", tinderbox.highlighted());
@@ -595,16 +337,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 			"Take the pot from the pot-boiler.");
 
 		giveBones = new NpcStep(this, NpcID.ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
-		"Give the Odd Old Man the bones.",
-			giantRatBonePolished,
-			unicornBonePolished,
-			bearRibsPolished,
-			ramSkullPolished,
-			goblinSkullPolished,
-			bigFrogLegsPolished,
-			monkeyPawPolished,
-			giantBatWingPolished
-		);
+		"Give the Odd Old Man the bones.");
+		giveBones.addItemRequirements(RagBoneGroups.cleanBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
 
 		talkToFinish = new NpcStep(this, NpcID.ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
 			"Talk to the Odd Old Man to finish.");
@@ -634,6 +368,13 @@ public class RagAndBoneManI extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("If you've handed in any bones to the Odd Old Man, open the quest journal to" +
+			" sync up the helper's state");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -645,22 +386,23 @@ public class RagAndBoneManI extends BasicQuestHelper
 		collectingPanel.setLockingStep(collectBonesSteps);
 		allSteps.add(collectingPanel);
 
+		List<Requirement> dirtyBones = new ArrayList<>(Arrays.asList(coins.quantity(8), pots.quantity(8)));
+		dirtyBones.addAll(RagBoneGroups.dirtyBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
 		PanelDetails preparingPanel = new PanelDetails("Preparing the bones", Arrays.asList(talkToFortunato, makePotOfVinegar, useBonesOnVinegar),
-			coins.quantity(8), pots.quantity(8), giantRatBone, unicornBone, bearRibs, ramSkull, goblinSkull,
-			bigFrogLegs, monkeyPaw, giantBatWing);
+			dirtyBones);
 		preparingPanel.setLockingStep(preparingBonesSteps);
 		allSteps.add(preparingPanel);
 
+		List<Requirement> cleaningBones = new ArrayList<>(Arrays.asList(logs.quantity(8), tinderbox));
+		cleaningBones.addAll(RagBoneGroups.vinegarBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
 		PanelDetails cookingPanel = new PanelDetails("Cleaning the bones", Arrays.asList(placeLogs, useBoneOnBoiler, lightLogs,
-			waitForCooking, removePot, repeatSteps), logs.quantity(8),
-			tinderbox, giantRatBoneVinegar, unicornBoneVinegar, bearRibsVinegar, ramSkullVinegar,
-			goblinSkullVinegar, bigFrogLegsVinegar, monkeyPawVinegar, giantBatWingVinegar);
+			waitForCooking, removePot, repeatSteps), cleaningBones);
 		cookingPanel.setLockingStep(cookingSteps);
 		allSteps.add(cookingPanel);
 
+		List<Requirement> cleanedBones = new ArrayList<>(RagBoneGroups.cleanBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
 		allSteps.add(new PanelDetails("Handing the bones in", Collections.singletonList(giveBones),
-			giantRatBonePolished, unicornBonePolished, bearRibsPolished, ramSkullPolished, goblinSkullPolished,
-			bigFrogLegsPolished, monkeyPawPolished, giantBatWingPolished));
+			cleanedBones));
 
 		return allSteps;
 	}

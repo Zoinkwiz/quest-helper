@@ -79,8 +79,8 @@ public class ScorpionCatcher extends BasicQuestHelper
 		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, has70Agility), goThroughPipe);
 		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, hasDustyKey), enterDeeperTaverley);
 		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, new Conditions(LogicType.OR, inJailCell, hasJailKey)), getDustyFromAdventurer);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, jailKeyNearby), killJailerForKey);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon), pickUpJailKey);
+		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, jailKeyNearby), pickUpJailKey);
+		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon), killJailerForKey);
 		scorpions.addStep(new Conditions(hasScorpionCageTaverley, inUpstairsMonastery), catchMonasteryScorpion);
 		scorpions.addStep(hasScorpionCageTaverley, enterMonastery);
 		scorpions.addStep(new Conditions(hasScorpionCageTaverleyAndMonastery, inBarbarianOutpost), catchOutpostScorpion);

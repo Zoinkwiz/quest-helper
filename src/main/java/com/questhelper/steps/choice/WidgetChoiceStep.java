@@ -38,7 +38,7 @@ import net.runelite.api.widgets.Widget;
 
 public class WidgetChoiceStep
 {
-	private final QuestHelperConfig config;
+	protected final QuestHelperConfig config;
 
 	@Getter
 	private final String choice;
@@ -153,7 +153,7 @@ public class WidgetChoiceStep
 		}
 	}
 
-	private void highlightText(Widget text)
+	protected void highlightText(Widget text)
 	{
 		if (!config.showTextHighlight())
 		{

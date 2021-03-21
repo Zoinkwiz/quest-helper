@@ -60,10 +60,10 @@ public class DeviousMinds extends BasicQuestHelper
 
 	//NPC Discussions
 	QuestStep talkToMonk, talkToMonk2, teleToAbyss, enterLawRift, leaveLawAltar, talkToHighPriest,
-		talkToHighPriest2, talkToSirTiffy, talkToEntranaMonk;
+		talkToSirTiffy, talkToEntranaMonk;
 
 	//Object steps
-	QuestStep makeBlade, makeBowSword, makeIllumPouch, gotoEntrana, usePouchOnAltar, gotoDeadMonk, useGangPlank;
+	QuestStep makeBlade, makeBowSword, makeIllumPouch, usePouchOnAltar, gotoDeadMonk, useGangPlank;
 
 	//Conditions
 	Requirement inAbyss, inLawAlter, onEntrana, onEntranaBoat;
@@ -101,7 +101,7 @@ public class DeviousMinds extends BasicQuestHelper
 
 		//Alternate routes such as the air balloon will automatically pick up on the onEntrana step
 		ConditionalStep backToEntrana = new ConditionalStep(this, talkToEntranaMonk);
-		backToEntrana.addStep(onEntrana, talkToHighPriest2);
+		backToEntrana.addStep(onEntrana, talkToHighPriest);
 		backToEntrana.addStep(onEntranaBoat, useGangPlank);
 		steps.put(60, backToEntrana);
 
@@ -168,10 +168,6 @@ public class DeviousMinds extends BasicQuestHelper
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
 		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large Pouch.", orb, largePouch);
 
-		gotoEntrana = new DetailedQuestStep(this,
-			"Make your way to Entrana via the Abyss. WARNING: This step is in the wilderness. Do not take anything you are " +
-			"not willing to lose. In the Abyss, monsters will attack you! You will be going directly to Entrana " +
-				"where no armour or weapons are allowed.");
 		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0),
 			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
 				"monsters upon entering, and your prayer drained to 0!", illumPouch);
@@ -180,15 +176,11 @@ public class DeviousMinds extends BasicQuestHelper
 		leaveLawAltar = new ObjectStep(this, ObjectID.PORTAL_34755, new WorldPoint(2464, 4817, 0),
 			"Enter the portal to leave the Law Altar.", illumPouch);
 
-		gotoEntrana.addSubSteps(teleToAbyss, enterLawRift, leaveLawAltar);
-
 		//Surprise!
 		usePouchOnAltar = new ObjectStep(this, NullObjectID.NULL_10638, new WorldPoint(2853, 3349, 0),
 			"Use the illuminated pouch on the Altar in the Entrana Church.", illumPouch.highlighted());
 		usePouchOnAltar.addIcon(ItemID.LARGE_POUCH_6819);
 
-		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),
-			"Talk to the High Priest in the Entrana Church.");
 		gotoDeadMonk = new NpcStep(this, NpcID.DEAD_MONK, new WorldPoint(3406, 3494, 0),
 			"Go back to the monk near Paterdomus template and search the dead monk's body.");
 
@@ -196,11 +188,11 @@ public class DeviousMinds extends BasicQuestHelper
 			"Talk to the Monk of Entrana to go to Entrana.  No weapons or armour is allowed.");
 		useGangPlank = new ObjectStep(this, ObjectID.GANGPLANK_2415, new WorldPoint(2834, 3333, 1),
 			"Use the gangplank to disembark the boat.");
-		talkToHighPriest2 = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),
+		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),
 			"Talk to the High Priest in the Entrana Church (Rat Pits Port Sarim Minigame teleport is the closest " +
 				"teleport).");
-		talkToHighPriest2.addSubSteps(useGangPlank);
-		talkToHighPriest2.addSubSteps(talkToEntranaMonk);
+		talkToHighPriest.addSubSteps(useGangPlank);
+		talkToHighPriest.addSubSteps(talkToEntranaMonk);
 
 		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0),
 			"Talk to Sir Tiffy Cashien in Falador park to complete the quest.");
@@ -259,7 +251,7 @@ public class DeviousMinds extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Making the Bow-sword", Arrays.asList(makeBlade, makeBowSword), mith2h, bowString));
 		allSteps.add(new PanelDetails("A Gift for Entrana", Arrays.asList(talkToMonk2, makeIllumPouch, teleToAbyss,
 			enterLawRift, leaveLawAltar, usePouchOnAltar), largePouch));
-		allSteps.add(new PanelDetails("Surprise!", Arrays.asList(gotoDeadMonk, talkToHighPriest2, talkToSirTiffy)));
+		allSteps.add(new PanelDetails("Surprise!", Arrays.asList(gotoDeadMonk, talkToHighPriest, talkToSirTiffy)));
 		return allSteps;
 	}
 }

@@ -89,12 +89,12 @@ public class DeviousMinds extends BasicQuestHelper
 		steps.put(10, makeEntireBowSword);
 		steps.put(20, makeEntireBowSword);   //Finished talking
 
-		ConditionalStep entranaAltarPouch = new ConditionalStep(this, teleToAbyss);
-		entranaAltarPouch.addStep(new Conditions(onEntrana), usePouchOnAltar);
-		entranaAltarPouch.addStep(new Conditions(inLawAlter), leaveLawAltar);
-		entranaAltarPouch.addStep(new Conditions(inAbyss), enterLawRift);
+		ConditionalStep entranaAltarPouch = new ConditionalStep(this, makeIllumPouch);
+		entranaAltarPouch.addStep(new Conditions(illumPouch, onEntrana), usePouchOnAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch, inLawAlter), leaveLawAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch, inAbyss), enterLawRift);
 		entranaAltarPouch.addStep(illumPouch, teleToAbyss);
-		steps.put(10, entranaAltarPouch);
+		steps.put(30, entranaAltarPouch);
 		steps.put(40, entranaAltarPouch);   //Cutscene finished
 
 		steps.put(50, gotoDeadMonk);

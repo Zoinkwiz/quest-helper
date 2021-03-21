@@ -39,7 +39,7 @@ public class NpcRequirement extends AbstractRequirement
 	private final int npcID;
 	private final Zone zone;
 	private final String displayText;
-	private boolean checkNotInZone = false;
+	private final boolean checkNotInZone;
 
 	/**
 	 * Check for the existence of an NPC within your canvas.
@@ -115,7 +115,7 @@ public class NpcRequirement extends AbstractRequirement
 					}
 				}
 			}
-			return true; // the NPC exists, and we aren't checking for it's location
+			return true; // the NPC exists, and we aren't checking for its location
 		}
 		return false; // npc not in scene
 	}

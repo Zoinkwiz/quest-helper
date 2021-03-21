@@ -30,6 +30,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -57,7 +59,8 @@ public class DeviousMinds extends BasicQuestHelper
 	ItemRequirement mith2h, bowString, largePouch, slenderBlade, bowSword, orb, illumPouch;
 
 	//NPC Discussions
-	QuestStep talkToMonk, talkToMonk2, teleToAbyss, enterLawRift, leaveLawAlter, talkToHighPriest, talkToHighPriest2, talkToSirTiffy, talkToEntranaMonk;
+	QuestStep talkToMonk, talkToMonk2, teleToAbyss, enterLawRift, leaveLawAltar, talkToHighPriest,
+		talkToHighPriest2, talkToSirTiffy, talkToEntranaMonk;
 
 	//Object steps
 	QuestStep makeBlade, makeBowSword, makeIllumPouch, gotoEntrana, usePouchOnAltar, gotoDeadMonk, useGangPlank;
@@ -86,12 +89,12 @@ public class DeviousMinds extends BasicQuestHelper
 		steps.put(10, makeEntireBowSword);
 		steps.put(20, makeEntireBowSword);   //Finished talking
 
-		ConditionalStep entranaAltarPouch = new ConditionalStep(this, makeIllumPouch);
-		entranaAltarPouch.addStep(new Conditions(illumPouch, onEntrana), usePouchOnAltar);
-		entranaAltarPouch.addStep(new Conditions(illumPouch, inLawAlter), leaveLawAlter);
-		entranaAltarPouch.addStep(new Conditions(illumPouch, inAbyss), enterLawRift);
+		ConditionalStep entranaAltarPouch = new ConditionalStep(this, teleToAbyss);
+		entranaAltarPouch.addStep(new Conditions(onEntrana), usePouchOnAltar);
+		entranaAltarPouch.addStep(new Conditions(inLawAlter), leaveLawAltar);
+		entranaAltarPouch.addStep(new Conditions(inAbyss), enterLawRift);
 		entranaAltarPouch.addStep(illumPouch, teleToAbyss);
-		steps.put(30, entranaAltarPouch);
+		steps.put(10, entranaAltarPouch);
 		steps.put(40, entranaAltarPouch);   //Cutscene finished
 
 		steps.put(50, gotoDeadMonk);
@@ -148,66 +151,92 @@ public class DeviousMinds extends BasicQuestHelper
 	public void setupSteps()
 	{
 		//Starting Off
-		talkToMonk = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3406, 3494, 0), "Start by talking to the Monk outside the Paterdomus temple, east of Varrock.");
+		talkToMonk = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3406, 3494, 0),
+			"Start by talking to the Monk outside the Paterdomus temple, east of Varrock.");
 		talkToMonk.addDialogStep("Sure thing, what do you need?");
 
 		//Making the bow sword
-		makeBlade = new ObjectStep(this, ObjectID.DORICS_WHETSTONE, new WorldPoint(2953, 3452, 0), "Use the Mithril 2H sword on Doric's Whetstone. (Doric is located north of Falador).", mith2h);
+		makeBlade = new ObjectStep(this, ObjectID.DORICS_WHETSTONE, new WorldPoint(2953, 3452, 0),
+			"Use the Mithril 2H sword on Doric's Whetstone. (Doric is located north of Falador).", mith2h);
 		makeBlade.addIcon(ItemID.MITHRIL_2H_SWORD);
-		makeBowSword = new DetailedQuestStep(this, "Use the bow-string on the Slender blade to make the Bow-sword.", bowString, slenderBlade);
+		makeBowSword = new DetailedQuestStep(this,
+			"Use the bow-string on the Slender blade to make the Bow-sword.", bowString, slenderBlade);
 
 		//A gift for Entrana
-		talkToMonk2 = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3606, 3494, 0), "Return to the monk near the Paterdomus temple with the bow-sword.", bowSword);
+		talkToMonk2 = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3606, 3494, 0),
+			"Return to the monk near the Paterdomus temple with the bow-sword.", bowSword);
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
 		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large Pouch.", orb, largePouch);
 
 		gotoEntrana = new DetailedQuestStep(this,
 			"Make your way to Entrana via the Abyss. WARNING: This step is in the wilderness. Do not take anything you are " +
-			"not willing to lose. You will be going directly to Entrana where no armour or weapons are allowed.");
-		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0), "Talk to the Mage of Zamorak to teleport to the Abyss.");
-		enterLawRift = new ObjectStep(this, ObjectID.LAW_RIFT, new WorldPoint(3049, 4839, 0), "Enter the Law Rift.");
-		leaveLawAlter = new ObjectStep(this, ObjectID.PORTAL_34755, new WorldPoint(2464, 4817, 0), "Enter the portal to leave the Law Alter.");
+			"not willing to lose. In the Abyss, monsters will attack you! You will be going directly to Entrana " +
+				"where no armour or weapons are allowed.");
+		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0),
+			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
+				"monsters upon entering, and your prayer drained to 0!", illumPouch);
+		enterLawRift = new ObjectStep(this, ObjectID.LAW_RIFT, new WorldPoint(3049, 4839, 0),
+			"Enter the central area through a gap/passage/eyes. Enter the Law Rift.", illumPouch);
+		leaveLawAltar = new ObjectStep(this, ObjectID.PORTAL_34755, new WorldPoint(2464, 4817, 0),
+			"Enter the portal to leave the Law Altar.", illumPouch);
 
-		gotoEntrana.addSubSteps(teleToAbyss, enterLawRift, leaveLawAlter);
+		gotoEntrana.addSubSteps(teleToAbyss, enterLawRift, leaveLawAltar);
 
 		//Surprise!
-		usePouchOnAltar = new ObjectStep(this, NullObjectID.NULL_10638, new WorldPoint(2853, 3349, 0), "Use the illuminated pouch on the Altar in the Entrana Church.", illumPouch);
+		usePouchOnAltar = new ObjectStep(this, NullObjectID.NULL_10638, new WorldPoint(2853, 3349, 0),
+			"Use the illuminated pouch on the Altar in the Entrana Church.", illumPouch.highlighted());
 		usePouchOnAltar.addIcon(ItemID.LARGE_POUCH_6819);
 
-		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0), "Talk to the High Priest in the Entrana Church.");
-		gotoDeadMonk = new NpcStep(this, NpcID.DEAD_MONK, new WorldPoint(3406, 3494, 0), "Go back to the monk near Paterdomus template and search the dead monk's body.");
+		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),
+			"Talk to the High Priest in the Entrana Church.");
+		gotoDeadMonk = new NpcStep(this, NpcID.DEAD_MONK, new WorldPoint(3406, 3494, 0),
+			"Go back to the monk near Paterdomus template and search the dead monk's body.");
 
-		talkToEntranaMonk = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3045, 3236, 0), "Talk to the Monk of Entrana to go to Entrana.  No weapons or armour is allowed.");
-		useGangPlank = new ObjectStep(this, ObjectID.GANGPLANK_2415, new WorldPoint(2834, 3333, 1), "Use the gangplank to disembark the boat.");
-		talkToHighPriest2 = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0), "Talk to the High Priest in the Entrana Church (Rat Pits Port Sarim Minigame teleport is the fastest).");
+		talkToEntranaMonk = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3045, 3236, 0),
+			"Talk to the Monk of Entrana to go to Entrana.  No weapons or armour is allowed.");
+		useGangPlank = new ObjectStep(this, ObjectID.GANGPLANK_2415, new WorldPoint(2834, 3333, 1),
+			"Use the gangplank to disembark the boat.");
+		talkToHighPriest2 = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),
+			"Talk to the High Priest in the Entrana Church (Rat Pits Port Sarim Minigame teleport is the closest " +
+				"teleport).");
 		talkToHighPriest2.addSubSteps(useGangPlank);
 		talkToHighPriest2.addSubSteps(talkToEntranaMonk);
 
-		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0), "Talk to Sir Tiffy Cashien in Falador park to complete the quest.");
+		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0),
+			"Talk to Sir Tiffy Cashien in Falador park to complete the quest.");
 		talkToSirTiffy.addDialogStep("Devious Minds.");
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(mith2h, bowString, largePouch));
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
 		return new ArrayList<>(Arrays.asList(fallyTele, lumberTele, glory));
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Collections.singletonList("Survive against Abyssal Creatures in multicombat in the " +
 			"Abyss"));
 	}
 
 	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
+	public List<String> getNotes()
+	{
+		return Arrays.asList("You will need to enter the Wilderness briefly during the " +
+			"quest. Other players can attack and kill you here, so don't bring anything you're not willing to lose!",
+			"You will enter the Abyss briefly during this quest. This is full of aggressive monsters in multi-combat," +
+				" and your prayer will be drained to 0 upon entering!");
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.SMITHING, 65, true));
@@ -217,17 +246,20 @@ public class DeviousMinds extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.DORICS_QUEST, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.ENTER_THE_ABYSS, QuestState.FINISHED));
+		reqs.add(new VarbitRequirement(626, Operation.GREATER_EQUAL, 1, "Talked to the " +
+			"Zamorak Mage in Varrock after Enter the Abyss"));
 		return reqs;
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToMonk)));
 		allSteps.add(new PanelDetails("Making the Bow-sword", Arrays.asList(makeBlade, makeBowSword), mith2h, bowString));
-		allSteps.add(new PanelDetails("A Gift for Entrana", Arrays.asList(talkToMonk2, makeIllumPouch, gotoEntrana), largePouch));
-		allSteps.add(new PanelDetails("Surprise!", Arrays.asList(usePouchOnAltar, gotoDeadMonk, talkToHighPriest2, talkToSirTiffy)));
+		allSteps.add(new PanelDetails("A Gift for Entrana", Arrays.asList(talkToMonk2, makeIllumPouch, teleToAbyss,
+			enterLawRift, leaveLawAltar, usePouchOnAltar), largePouch));
+		allSteps.add(new PanelDetails("Surprise!", Arrays.asList(gotoDeadMonk, talkToHighPriest2, talkToSirTiffy)));
 		return allSteps;
 	}
 }

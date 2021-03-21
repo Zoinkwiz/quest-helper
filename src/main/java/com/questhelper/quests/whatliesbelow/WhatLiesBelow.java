@@ -86,6 +86,8 @@ public class WhatLiesBelow extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToRat);
+		// Occurs if starting quest with a full inv
+		steps.put(5, talkToRat);
 
 		ConditionalStep getIntel = new ConditionalStep(this, killOutlaws);
 		getIntel.addStep(hasFullFolder, bringFolderToRat);

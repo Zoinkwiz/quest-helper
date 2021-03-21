@@ -79,6 +79,7 @@ public class DeviousMinds extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToMonk);
+
 		ConditionalStep makeEntireBowSword = new ConditionalStep(this, makeBlade);
 		makeEntireBowSword.addStep(bowSword.alsoCheckBank(questBank), talkToMonk2);
 		makeEntireBowSword.addStep(slenderBlade.alsoCheckBank(questBank), makeBowSword);
@@ -160,14 +161,14 @@ public class DeviousMinds extends BasicQuestHelper
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
 		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large Pouch.", orb, largePouch);
 
-		gotoEntrana = new ObjectStep(this, ObjectID.WILDERNESS_DITCH, new WorldPoint(3106, 3556, 0), "Make your way to Entrana via the Abyss.  WARNING: This step is in the wilderness.  Do not take anything you are willing to lose.  You will be going directly to Entrana where no armour or weapons are allowed.");
+		gotoEntrana = new DetailedQuestStep(this,
+			"Make your way to Entrana via the Abyss. WARNING: This step is in the wilderness. Do not take anything you are " +
+			"not willing to lose. You will be going directly to Entrana where no armour or weapons are allowed.");
 		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0), "Talk to the Mage of Zamorak to teleport to the Abyss.");
 		enterLawRift = new ObjectStep(this, ObjectID.LAW_RIFT, new WorldPoint(3049, 4839, 0), "Enter the Law Rift.");
 		leaveLawAlter = new ObjectStep(this, ObjectID.PORTAL_34755, new WorldPoint(2464, 4817, 0), "Enter the portal to leave the Law Alter.");
 
-		gotoEntrana.addSubSteps(teleToAbyss);
-		gotoEntrana.addSubSteps(enterLawRift);
-		gotoEntrana.addSubSteps(leaveLawAlter);
+		gotoEntrana.addSubSteps(teleToAbyss, enterLawRift, leaveLawAlter);
 
 		//Surprise!
 		usePouchOnAltar = new ObjectStep(this, NullObjectID.NULL_10638, new WorldPoint(2853, 3349, 0), "Use the illuminated pouch on the Altar in the Entrana Church.", illumPouch);
@@ -223,10 +224,10 @@ public class DeviousMinds extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", new ArrayList<>(Collections.singletonList(talkToMonk))));
-		allSteps.add(new PanelDetails("Making the Bow-sword", new ArrayList<>(Arrays.asList(makeBlade, makeBowSword))));
-		allSteps.add(new PanelDetails("A Gift for Entrana", new ArrayList<>(Arrays.asList(talkToMonk2, makeIllumPouch, gotoEntrana))));
-		allSteps.add(new PanelDetails("Surprise!", new ArrayList<>(Arrays.asList(usePouchOnAltar, gotoDeadMonk, talkToHighPriest2, talkToSirTiffy))));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToMonk)));
+		allSteps.add(new PanelDetails("Making the Bow-sword", Arrays.asList(makeBlade, makeBowSword), mith2h, bowString));
+		allSteps.add(new PanelDetails("A Gift for Entrana", Arrays.asList(talkToMonk2, makeIllumPouch, gotoEntrana), largePouch));
+		allSteps.add(new PanelDetails("Surprise!", Arrays.asList(usePouchOnAltar, gotoDeadMonk, talkToHighPriest2, talkToSirTiffy)));
 		return allSteps;
 	}
 }

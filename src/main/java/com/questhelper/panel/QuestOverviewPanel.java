@@ -31,6 +31,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
@@ -63,6 +64,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JLabel questOverviewNotes = new JLabel();
 
 	private final JPanel questGeneralRequirementsListPanel = new JPanel();
+	private final JPanel questPreReqQuestsListPanel = new JPanel();
 	private final JPanel questGeneralRecommendedListPanel = new JPanel();
 
 	private final JPanel questItemRequirementsListPanel = new JPanel();
@@ -72,6 +74,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel externalQuestResourcesPanel = new JPanel();
 
 	private final JPanel questGeneralRequirementsHeader = new JPanel();
+	private final JPanel questPreReqQuestsHeader = new JPanel();
 	private final JPanel questGeneralRecommendedHeader = new JPanel();
 	private final JPanel questItemRequirementsHeader = new JPanel();
 	private final JPanel questCombatRequirementHeader = new JPanel();
@@ -144,6 +147,8 @@ public class QuestOverviewPanel extends JPanel
 
 		overviewPanel.add(generateRequirementPanel(questGeneralRequirementsListPanel,
 			questGeneralRequirementsHeader, "General requirements:"));
+		overviewPanel.add(generateRequirementPanel(questPreReqQuestsListPanel,
+				questPreReqQuestsHeader, "PreRequisite Quests:"));
 		overviewPanel.add(generateRequirementPanel(questGeneralRecommendedListPanel,
 			questGeneralRecommendedHeader, "Recommended:"));
 		overviewPanel.add(generateRequirementPanel(questItemRequirementsListPanel,
@@ -336,6 +341,9 @@ public class QuestOverviewPanel extends JPanel
 
 	public void setupQuestRequirements(QuestHelper quest)
 	{
+		/* Quest requirements */
+		updatePreReqQuestPanels(questPreReqQuestsHeader, questPreReqQuestsListPanel, requirementPanels, quest.getGeneralRequirements());
+
 		/* Non-item requirements */
 		updateRequirementsPanels(questGeneralRequirementsHeader, questGeneralRequirementsListPanel, requirementPanels, quest.getGeneralRequirements());
 
@@ -364,14 +372,39 @@ public class QuestOverviewPanel extends JPanel
 		if (requirements != null)
 		{
 			for (Requirement generalRecommend : requirements)
-			{
+
+			{				if (!generalRecommend.getClass().equals(QuestRequirement.class)) {
+
 				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
 				panels.add(reqPanel);
 				listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 
 				listPanel.setVisible(true);
 				header.setVisible(true);
-			}
+			}}
+		}
+		else
+		{
+			listPanel.setVisible(false);
+			header.setVisible(false);
+		}
+	}
+	private void updatePreReqQuestPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
+										 List<Requirement> requirements)
+	{
+		if (requirements != null)
+		{
+			for (Requirement preReqQuestRequirement : requirements){
+				if (preReqQuestRequirement.getClass().equals(QuestRequirement.class)) {
+					{
+						QuestRequirementPanel questReqPanel = new QuestRequirementPanel(preReqQuestRequirement);
+						panels.add(questReqPanel);
+						listPanel.add(new QuestRequirementWrapperPanel(questReqPanel));
+
+						listPanel.setVisible(true);
+						header.setVisible(true);
+					}
+				}}
 		}
 		else
 		{

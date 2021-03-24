@@ -47,7 +47,6 @@ public class QuestRequirementPanel extends JPanel
 	@Setter
 	private JLabel label;
 
-
 	@Getter
 	private final Requirement requirement;
 

@@ -10,7 +10,7 @@ repositories {
 	mavenCentral()
 }
 
-def runeLiteVersion = '1.7.2'
+def runeLiteVersion = '1.7.3-SNAPSHOT'
 
 dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
@@ -20,10 +20,12 @@ dependencies {
 
 	testImplementation 'junit:junit:4.12'
 	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
+    testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+
 }
 
 group = 'com.questhelper'
-version = '1.6.5'
+version = '1.7.0'
 sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {

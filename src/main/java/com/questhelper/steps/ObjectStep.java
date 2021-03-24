@@ -360,7 +360,9 @@ public class ObjectStep extends DetailedQuestStep
 
 	private void setObjects(TileObject object, Collection<WorldPoint> localWorldPoints)
 	{
-		if (localWorldPoints != null && localWorldPoints.contains(object.getWorldLocation()))
+		if (localWorldPoints != null &&
+			(localWorldPoints.contains(object.getWorldLocation()) ||
+				localWorldPoints.contains(objLocation(object))))
 		{
 			this.object = object;
 			if (!this.objects.contains(object))
@@ -377,5 +379,12 @@ public class ObjectStep extends DetailedQuestStep
 				this.objects.add(object);
 			}
 		}
+	}
+
+	// This is required due to changes in how object.getWorldLocation() works
+	// See https://github.com/runelite/runelite/commit/4f34a0de6a0100adf79cac5b92198aa432debc4c
+	private WorldPoint objLocation(TileObject obj)
+	{
+		return WorldPoint.fromLocal(client, obj.getX(), obj.getY(), obj.getPlane());
 	}
 }

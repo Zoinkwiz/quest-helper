@@ -121,6 +121,11 @@ public class NpcStep extends DetailedQuestStep
 		this.alternateNpcIDs.addAll(Arrays.asList(alternateNpcIDs));
 	}
 
+	public void addAlternateNpcs(List<Integer> alternateNpcIDs)
+	{
+		this.alternateNpcIDs.addAll(alternateNpcIDs);
+	}
+
 	public List<Integer> allIds()
 	{
 		List<Integer> ids = new ArrayList<>();

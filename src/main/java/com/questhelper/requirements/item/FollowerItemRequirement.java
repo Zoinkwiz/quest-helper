@@ -42,7 +42,7 @@ public class FollowerItemRequirement extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
 		boolean match = client.getNpcs().stream()
 			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable

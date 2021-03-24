@@ -239,7 +239,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 
-		runeThrowingaxeOrFriend = new ItemRequirement("Rune thrownaxe, or a friend to help enter Waterbirth Isle",
+		runeThrowingaxeOrFriend = new ItemRequirement("Rune thrownaxe, or a friend to help enter Waterbirth Isle " +
+			"Dungeon",
 			ItemID.RUNE_THROWNAXE);
 
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
@@ -459,7 +460,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(combatGear, mirrorShield, kegs2Or700Coins, moltenGlass, astralRunes.quantity(100), petRock,
-			fishingOrFlyFishingRod, fremennikShield, iceGloves, hammer, glassblowingPipe, pickaxe, sealOfPassage);
+			runeThrowingaxeOrFriend, fishingOrFlyFishingRod, fremennikShield, iceGloves, hammer, glassblowingPipe, pickaxe, sealOfPassage);
 	}
 
 	@Override

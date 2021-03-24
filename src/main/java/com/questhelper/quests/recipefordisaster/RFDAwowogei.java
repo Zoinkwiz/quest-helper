@@ -222,7 +222,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		inspectAwowogei.addSubSteps(enterDiningRoom);
 
 		talkToAwowogei = new ObjectStep(this, ObjectID.AWOWOGEI, new WorldPoint(2803, 2765, 0), "Talk to Awowogei on Ape Atoll.", greegreeEquipped, mAmulet);
-		talkToWiseMonkeys = new NpcStep(this, NpcID.IWAZARU, new WorldPoint(2789, 2795, 0), "Talk to the three monkey sat in the temple.", greegreeEquipped, mAmulet);
+		talkToWiseMonkeys = new NpcStep(this, NpcID.IWAZARU, new WorldPoint(2789, 2795, 0), "Talk to the three monkeys sat in the temple.", greegreeEquipped, mAmulet);
 		talkToWiseMonkeys.addDialogStep("Do you know anything about the King's favourite dish?");
 		useBananaOnWiseMonkeys = new NpcStep(this, NpcID.IWAZARU, new WorldPoint(2789, 2795, 0), "Use a banana on the one of the three monkeys.", bananaHighlighted, greegreeEquipped, mAmulet);
 		useBananaOnWiseMonkeys.addIcon(ItemID.BANANA);
@@ -249,7 +249,7 @@ public class RFDAwowogei extends BasicQuestHelper
 
 		enterZombieDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_4880, new WorldPoint(2807, 2785, 0), "Enter the trapdoor in the monkey temple.", zombieGreegree, rawStuffedSnake);
 		((ObjectStep) (enterZombieDungeon)).addAlternateObjects(ObjectID.TRAPDOOR_4879);
-		enterCookingHole = new ObjectStep(this, ObjectID.EXIT_16061, new WorldPoint(2805, 9199, 0), "Enter the hole just under where you entered,", zombieGreegree, rawStuffedSnake);
+		enterCookingHole = new ObjectStep(this, ObjectID.EXIT_16061, new WorldPoint(2805, 9199, 0), "Enter the hole just under where you entered.", zombieGreegree, rawStuffedSnake);
 		cookSnake = new ObjectStep(this, NullObjectID.NULL_26175, new WorldPoint(3056, 5485, 0), "Go across the hot rocks with the zombie greegree equipped. Cook the stuffed snake on the rock at the end of the room.", zombieGreegree, rawStuffedSnakeHighlighted);
 		cookSnake.addIcon(ItemID.RAW_STUFFED_SNAKE);
 

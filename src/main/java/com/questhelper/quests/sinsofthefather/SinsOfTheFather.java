@@ -86,7 +86,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkToVertidaForFlail, talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight, talkToVanesculaForFight, talkToVeliafAfterFight,
 		finishQuest, templeTrek, talkToTeamSteps, valveStep, createFlailSteps, doDoorPuzzle, cutLogs, goDownToKroy, destroyLab2, enterPater, killJuvinates,
 		leaveJuvinateArea, openPuzzleDoor, goToLab, enterDeepLab, goDownToPolmafi, goDownToPolmafiNoItems, talkToVeliafForFinalFight, readNote,
-		goDownToVerditaWithLogs, fightVanstrom, enterBaseToFinish;
+		goDownToVerditaWithLogs, fightVanstrom, fightVanstromSidebar, enterBaseToFinish;
 
 	DetailedQuestStep searchForKnife, cutVines, combineVines, useVineOnBranch, swingOnVine, leaveSwingArea, killNailBeasts, leaveNailBeastArea, killZombieForAxe,
 		get3LogsForBridge, repairBridge1, repairBridge2, repairBridge3, crossBridge, leaveBridgeArea;
@@ -782,14 +782,20 @@ public class SinsOfTheFather extends BasicQuestHelper
 		((NpcStep) (talkToVeliafForFinalFight)).addAlternateNpcs(NpcID.VELIAF_HURTZ_9521);
 		talkToVeliafForFinalFight.addDialogSteps("Icyene Graveyard.", "Let's go.");
 
-		fightVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_9569, new WorldPoint(3567, 3358, 0), "Fight Vanstrom Klause. Protect from Magic. He has various special attacks indicated by what he says:",
-			blisterwoodFlail);
+		fightVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_9569, new WorldPoint(3567, 3358, 0),
+			"Fight Vanstrom Klause. Check the sidebar for more details.", blisterwoodFlail);
 		((NpcStep) (fightVanstrom)).addAlternateNpcs(NpcID.VANSTROM_KLAUSE_9570, NpcID.VANSTROM_KLAUSE_9571);
-		fightVanstrom.addText("My pets will feast on your corpse: A bloodveld will appear which you need to kill from a distance.");
-		fightVanstrom.addText("Blood will be my strength: An orb appears that heals Vanstrom. Lure Vanstrom onto it.");
-		fightVanstrom.addText("Stare into the darkness: Face away from Vanstrom.");
-		fightVanstrom.addText("Once he hits 0hp, he'll heal to 200 and start summoning lightning bolts. Move off " +
+
+
+		fightVanstromSidebar = new DetailedQuestStep(this,
+			"Fight Vanstrom Klause. Protect from Magic. He has various special attacks indicated by what he says:",
+			blisterwoodFlail);
+		fightVanstromSidebar.addText("My pets will feast on your corpse: A bloodveld will appear which you need to kill from a distance.");
+		fightVanstromSidebar.addText("Blood will be my strength: An orb appears that heals Vanstrom. Lure Vanstrom onto it.");
+		fightVanstromSidebar.addText("Stare into the darkness: Face away from Vanstrom.");
+		fightVanstromSidebar.addText("Once he hits 0hp, he'll heal to 200 and start summoning lightning bolts. Move off " +
 			"tiles where they appear.");
+		fightVanstromSidebar.addSubSteps(fightVanstrom);
 
 		talkToVeliafAfterFight = new NpcStep(this, NpcID.VELIAF_HURTZ_9521, new WorldPoint(3707, 3188, 0),
 			"Speak to Veliaf in the Icyene graveyard to re-enter the cutscene.");
@@ -875,7 +881,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Creating a weapon",
 			Arrays.asList(bringVertidaLogs, talkToVertidaForFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle), blisterwood8, chisel, knife, ruby, ivandisFlail, enchantRubyRunesOrTablet));
 		allSteps.add(new PanelDetails("Taking on Drakan",
-			Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight, fightVanstrom, finishQuest), combatGear, blisterwoodFlail));
+			Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight,
+				fightVanstromSidebar, finishQuest), combatGear, blisterwoodFlail));
 
 		return allSteps;
 	}

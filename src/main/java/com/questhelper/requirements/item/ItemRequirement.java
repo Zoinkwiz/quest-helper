@@ -26,6 +26,8 @@
  */
 package com.questhelper.requirements.item;
 
+import com.questhelper.QuestBank;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.InventorySlots;
@@ -44,6 +46,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class ItemRequirement extends AbstractRequirement
 {
@@ -76,7 +79,10 @@ public class ItemRequirement extends AbstractRequirement
 	private boolean displayMatchedItemName;
 
 	@Setter
+	@Getter
 	private Requirement conditionToHide;
+
+	private QuestBank questBank;
 
 	public ItemRequirement(String name, int id)
 	{
@@ -144,6 +150,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement alsoCheckBank(QuestBank questBank)
+	{
+		ItemRequirement newItem = copy();
+		newItem.questBank = questBank;
+		return newItem;
+	}
+
 	public ItemRequirement equipped()
 	{
 		ItemRequirement newItem = copy();
@@ -174,6 +187,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
+		newItem.questBank = questBank;
 		newItem.setTooltip(getTooltip());
 
 		return newItem;
@@ -282,7 +296,7 @@ public class ItemRequirement extends AbstractRequirement
 		return -1;
 	}
 
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, Item[] bankItems)
+	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, List<Item> bankItems)
 	{
 		Color color = Color.RED;
 		if (!this.isActualItem())
@@ -335,8 +349,42 @@ public class ItemRequirement extends AbstractRequirement
 		return lines;
 	}
 
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, Item[] items)
+	public int getMatches(Client client)
 	{
+		return getMatches(client, false, new ArrayList<>());
+	}
+
+	public int getMatches(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	{
+		List<Item> allItems = new ArrayList<>(items);
+		if (questBank != null && questBank.getBankItems() != null)
+		{
+			allItems.addAll(questBank.getBankItems());
+		}
+
+		int remainder = 0;
+
+		List<Integer> ids = getAllIds();
+		for (int alternate : ids)
+		{
+			if (exclusiveToOneItemType)
+			{
+				remainder = quantity;
+			}
+			remainder += (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions,
+				allItems));
+		}
+		return remainder;
+	}
+
+	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	{
+		List<Item> allItems = new ArrayList<>(items);
+		if (questBank != null && questBank.getBankItems() != null)
+		{
+			allItems.addAll(questBank.getBankItems());
+		}
+
 		int remainder = quantity;
 
 		List<Integer> ids = getAllIds();
@@ -346,7 +394,8 @@ public class ItemRequirement extends AbstractRequirement
 			{
 				remainder = quantity;
 			}
-			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, items));
+			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions,
+				allItems));
 			if (remainder <= 0)
 			{
 				return true;
@@ -359,7 +408,8 @@ public class ItemRequirement extends AbstractRequirement
 	 * Get the difference between the required quantity for this requirement and the amount the client has.
 	 * Any value <= 0 indicates they have the required amount
 	 */
-	public int getRequiredItemDifference(Client client, int itemID, boolean checkConsideringSlotRestrictions, Item[] items)
+	public int getRequiredItemDifference(Client client, int itemID, boolean checkConsideringSlotRestrictions,
+										 List<Item> items)
 	{
 		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
 		int tempQuantity = quantity;
@@ -388,13 +438,13 @@ public class ItemRequirement extends AbstractRequirement
 
 	public int getNumMatches(ItemContainer items, int itemID)
 	{
-		return getNumMatches(items.getItems(), itemID);
+		return getNumMatches(Arrays.asList(items.getItems().clone()), itemID);
 	}
 
-	public int getNumMatches(Item[] items, int itemID)
+	public int getNumMatches(List<Item> items, int itemID)
 	{
-		return Stream.of(items)
-			.filter(Objects::nonNull) // Runelite loves to sneak in null objects
+		return items.stream()
+			.filter(Objects::nonNull)
 			.filter(i -> i.getId() == itemID)
 			.mapToInt(Item::getQuantity)
 			.sum();
@@ -407,7 +457,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
-		return check(client, checkConsideringSlotRestrictions, null);
+		return check(client, checkConsideringSlotRestrictions, new ArrayList<>());
 	}
 
 	public boolean checkBank(Client client)

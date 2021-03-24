@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.steps.choice.DialogChoiceChange;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
 import com.questhelper.steps.choice.WidgetChoiceStep;
@@ -281,6 +282,11 @@ public abstract class QuestStep implements Module
 		{
 			choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
 		}
+	}
+
+	public void addDialogChange(String choice, String newText)
+	{
+		choices.addChoice(new DialogChoiceChange(questHelper.getConfig(), choice, newText));
 	}
 
 	public void addWidgetChoice(String text, int groupID, int childID)

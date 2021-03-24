@@ -363,6 +363,21 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> antidisease = ImmutableList.of(
+		ItemID.INOCULATION_BRACELET,
+		ItemID.RELICYMS_BALM4,
+		ItemID.RELICYMS_BALM3,
+		ItemID.RELICYMS_BALM2,
+		ItemID.RELICYMS_BALM1,
+		ItemID.SANFEW_SERUM4,
+		ItemID.SANFEW_SERUM3,
+		ItemID.SANFEW_SERUM2,
+		ItemID.SANFEW_SERUM1,
+		ItemID.RELICYMS_MIX2,
+		ItemID.RELICYMS_MIX1
+	);
+
+	@Getter
 	private static final List<Integer> prayerPotions = ImmutableList.of(
 		ItemID.PRAYER_POTION4,
 		ItemID.PRAYER_POTION3,
@@ -724,6 +739,18 @@ public class ItemCollections
 		ItemID.SLAYER_RING_3,
 		ItemID.SLAYER_RING_2,
 		ItemID.SLAYER_RING_1
+	);
+
+	@Getter
+	private static final List<Integer> pharoahSceptre = ImmutableList.of(
+		ItemID.PHARAOHS_SCEPTRE_8,
+		ItemID.PHARAOHS_SCEPTRE_7,
+		ItemID.PHARAOHS_SCEPTRE_6,
+		ItemID.PHARAOHS_SCEPTRE_5,
+		ItemID.PHARAOHS_SCEPTRE_4,
+		ItemID.PHARAOHS_SCEPTRE_3,
+		ItemID.PHARAOHS_SCEPTRE_2,
+		ItemID.PHARAOHS_SCEPTRE_1
 	);
 
 	// Logs

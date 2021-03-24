@@ -135,7 +135,8 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
-	private final BankItems bankItems = new BankItems();
+	@Inject
+	private QuestBank questBank;
 
 	@Getter
 	private QuestHelperBankTagService bankTagService;
@@ -215,6 +216,8 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean loadQuestList;
 
+	private boolean displayNameKnown;
+
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -227,6 +230,7 @@ public class QuestHelperPlugin extends Plugin
 		bankTagService = new QuestHelperBankTagService(this);
 		bankTagsMain = new QuestBankTab(this);
 		bankTagsMain.startUp();
+
 		injector.injectMembers(bankTagsMain);
 		eventBus.register(bankTagsMain);
 
@@ -278,6 +282,14 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (!displayNameKnown)
+		{
+			Player localPlayer = client.getLocalPlayer();
+			if (localPlayer != null && localPlayer.getName() != null) {
+				displayNameKnown = true;
+				questBank.loadState();
+			}
+		}
 		if (sidebarSelectedQuest != null)
 		{
 			startUpQuest(sidebarSelectedQuest);
@@ -309,12 +321,11 @@ public class QuestHelperPlugin extends Plugin
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
 		{
-			bankItems.setItems(null);
-			bankItems.setItems(event.getItemContainer().getItems());
+			questBank.updateBank(event.getItemContainer().getItems());
 		}
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			clientThread.invokeLater(() -> panel.updateItemRequirements(client, bankItems));
+			clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
 		}
 	}
 
@@ -326,7 +337,7 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGIN_SCREEN)
 		{
 			panel.refresh(Collections.emptyList(), true, new HashMap<>());
-			bankItems.setItems(null);
+			questBank.emptyState();
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
 				shutDownQuest(true);
@@ -336,6 +347,7 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGGED_IN)
 		{
 			loadQuestList = true;
+			displayNameKnown = false;
 		}
 	}
 
@@ -366,6 +378,7 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -479,7 +492,7 @@ public class QuestHelperPlugin extends Plugin
 				QuestHelper questHelperPhoenix = quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName());
 				QuestHelper questHelperBlackArm = quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName());
 				if (questHelperBlackArm != null && !questHelperBlackArm.isCompleted()
-				|| questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
+					|| questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 				{
 					if (selectedQuest != null &&
 						(selectedQuest.getQuest().getName().equals(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()) ||
@@ -625,7 +638,18 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID) {
+	private void displayPanel()
+	{
+		SwingUtilities.invokeLater(() -> {
+			if (!navButton.isSelected())
+			{
+				navButton.getOnSelect().run();
+			}
+		});
+	}
+
+	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID)
+	{
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
@@ -651,6 +675,10 @@ public class QuestHelperPlugin extends Plugin
 
 		if (!questHelper.isCompleted())
 		{
+			if (config.autoOpenSidebar())
+			{
+				displayPanel();
+			}
 			selectedQuest = questHelper;
 			eventBus.register(selectedQuest);
 			if (isDeveloperMode())
@@ -667,7 +695,7 @@ public class QuestHelperPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
-				clientThread.invokeLater(() -> panel.updateItemRequirements(client, bankItems));
+				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
 			});
 		}
 		else

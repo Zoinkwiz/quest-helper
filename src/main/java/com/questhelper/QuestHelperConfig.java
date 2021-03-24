@@ -109,6 +109,16 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "autoOpenSidebar",
+		name = "Auto open sidebar",
+		description = "Automatically opens the quest helper sidebar when you start a quest"
+	)
+	default boolean autoOpenSidebar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showTextHighlight",
 		name = "Highlight correct dialog",
 		description = "Highlight correct dialog choices"

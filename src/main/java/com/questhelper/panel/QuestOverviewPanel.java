@@ -27,13 +27,16 @@ package com.questhelper.panel;
 import com.questhelper.ExternalQuestResources;
 import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.quests.biohazard.Biohazard;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
@@ -54,6 +57,9 @@ import java.util.List;
 
 public class QuestOverviewPanel extends JPanel
 {
+
+
+
 	private final QuestHelperPlugin questHelperPlugin;
 	public QuestHelper currentQuest;
 
@@ -399,19 +405,20 @@ public class QuestOverviewPanel extends JPanel
 //					SwingUtil.removeButtonDecorations(questReqButton);
 					questReqButton.setHorizontalAlignment(SwingConstants.LEFT);
 					questReqButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
-					questReqButton.setToolTipText("Open the quest guide for ");
+					questReqButton.setToolTipText("Open the quest guide for " + ((QuestRequirement) preReqQuestRequirement).getQuest());
 					questReqButton.setText(preReqQuestRequirement.getDisplayText());
 
 					questPreReqQuestsListPanel.add(questReqButton);
 
-//					{
-//						QuestRequirementPanel questReqPanel = new QuestRequirementPanel(preReqQuestRequirement);
-//						panels.add(questReqPanel);
-//						listPanel.add(new QuestRequirementWrapperPanel(questReqPanel));
-//
-//						listPanel.setVisible(true);
-//						header.setVisible(true);
-//					}
+					if (questReqButton.getText().length() > 0) {
+
+						questReqButton.addActionListener((e -> {
+							currentQuest.setQuest(((QuestRequirement) preReqQuestRequirement).getQuest());
+							questHelperPlugin.setSidebarSelectedQuest(currentQuest);
+							questHelperPlugin.startUpQuest(currentQuest);
+						}));
+					}
+
 				}
 			}
 		} else {

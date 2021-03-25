@@ -910,7 +910,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 			{
 				getDeathTalisman = new DetailedQuestStep(this, "You need to get a Death Talisman. Either kill Dark Beasts for one, or bring 50 items requested by Thorgel at the Death Altar to him.");
 				getDeathTalismanInCentre = new ObjectStep(this, NullObjectID.NULL_9939, new WorldPoint(1881, 4639, 0),
-					"Get a Death Talisman by either getting the dwarf at the altar 50 items, or killing Dark Beasts. TURN THE MIDDLE PILLAR TO POINT BACK NORTH OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.");
+					"Get a Death Talisman by either getting the dwarf at the altar 50 items, or killing Dark Beasts. " +
+						"TURN THE MIDDLE PILLAR TO POINT BACK EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.");
 				getDeathTalismanInCentreDoorCorrect = new NpcStep(this, NpcID.THORGEL, new WorldPoint(1860, 4641, 0),
 					"Get a Death Talisman by either getting the dwarf at the altar 50 items, or killing Dark Beasts.");
 			}
@@ -918,7 +919,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 			{
 				getDeathTalisman = new DetailedQuestStep(this, "You need to get a Death Talisman. Talk to the dwarf at the Death Altar to help him collect 50 items for one.");
 				getDeathTalismanInCentre = new ObjectStep(this, NullObjectID.NULL_9939, new WorldPoint(1881, 4639, 0),
-					"Bring the Thorgel the items he needs for a Death Talisman. TURN THE MIDDLE PILLAR TO POINT BACK NORTH OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.");
+					"Bring the Thorgel the items he needs for a Death Talisman. TURN THE MIDDLE PILLAR TO POINT BACK " +
+						"EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.");
 				getDeathTalismanInCentreDoorCorrect = new NpcStep(this, NpcID.THORGEL, new WorldPoint(1860, 4641, 0),
 					"Bring the dwarf the items he needs for a Death Talisman.");
 			}
@@ -927,7 +929,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		{
 			getDeathTalisman = new DetailedQuestStep(this, "You need to get a Death Talisman. Buy one, or talk to the dwarf at the Death Altar to help him collect 50 items for one.");
 			getDeathTalismanInCentre = new ObjectStep(this, NullObjectID.NULL_9939, new WorldPoint(1881, 4639, 0),
-				"Get a Death Talisman and return. Buy one, or help Thorgel at the altar for one. TURN THE MIDDLE PILLAR TO POINT BACK NORTH OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.");
+				"Get a Death Talisman and return. Buy one, or help Thorgel at the altar for one. TURN THE MIDDLE " +
+					"PILLAR TO POINT BACK EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.");
 			getDeathTalismanInCentreDoorCorrect = new ObjectStep(this, NullObjectID.NULL_9939, new WorldPoint(1881, 4639, 0),
 				"Get a Death Talisman and return. Buy one, or help Thorgel at the altar for one.");
 		}

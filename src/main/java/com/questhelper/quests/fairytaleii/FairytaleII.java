@@ -83,7 +83,7 @@ public class FairytaleII extends BasicQuestHelper
 
 	QuestStep talkToMartin, waitForMartin, talkToMartinAgain;
 
-	QuestStep enterZanaris, takeCertificate, studyCertificate, talkToChef, readSign, talkToGodfather;
+	QuestStep enterZanaris, takeCertificate, studyCertificate, readSign, talkToGodfather;
 
 	QuestStep goToHideout, goToHideoutSurface, talkToNuff, returnToZanarisFromBase, goToZanarisToPickpocket,
 		pickpocketGodfather, goToHideoutWithSec, goToHideoutSurfaceWithSec, giveSecateursToNuff,
@@ -263,8 +263,6 @@ public class FairytaleII extends BasicQuestHelper
 		takeCertificate = new ObjectStep(this, NullObjectID.NULL_16315, new WorldPoint(2389, 4471, 0),
 			"Search the healing certificate in Fairy Nuff's room.");
 		studyCertificate = new DetailedQuestStep(this, "Right-click study the certificate.", fairyCertificate.highlighted());
-		talkToChef = new NpcStep(this, NpcID.FAIRY_CHEF, new WorldPoint(2386, 4439, 0),
-			"Talk to the Fairy Chef in the south west of Zanaris.");
 		readSign = new ObjectStep(this, ObjectID.RUNE_TEMPLE_SIGN, new WorldPoint(2409, 4369, 0),
 			"Read the sign near the Cosmic Temple in the south of Zanaris.");
 		talkToGodfather = new NpcStep(this, NpcID.FAIRY_GODFATHER_5837, new WorldPoint(2447, 4430, 0),

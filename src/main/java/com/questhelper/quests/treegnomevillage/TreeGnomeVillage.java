@@ -149,7 +149,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
-		ItemRequirement combatGear = new ItemRequirement("AWeapon & Armour (magic is best)", -1);
+		ItemRequirement combatGear = new ItemRequirement("A Weapon & Armour (magic is best)", -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 
 		ConditionalStep defeatTheWarlord = new ConditionalStep(this, talkToTheWarlord,

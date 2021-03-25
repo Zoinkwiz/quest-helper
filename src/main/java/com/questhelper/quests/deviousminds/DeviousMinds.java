@@ -163,7 +163,7 @@ public class DeviousMinds extends BasicQuestHelper
 			"Use the bow-string on the Slender blade to make the Bow-sword.", bowString, slenderBlade);
 
 		//A gift for Entrana
-		talkToMonk2 = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3606, 3494, 0),
+		talkToMonk2 = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3406, 3494, 0),
 			"Return to the monk near the Paterdomus temple with the bow-sword.", bowSword);
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
 		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large Pouch.", orb, largePouch);

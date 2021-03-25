@@ -191,7 +191,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 			"Speak to Galana in the Arceuus Library.");
 
 		findTheVarlamoreEnvoy = new ItemStep(this,
-			"Find and read the Varlamore Envoy. Ask Galana for the approximate location if you can't find it.",
+			"Find the Varlamore Envoy. Ask Galana for the approximate location if you can't find it.",
 			varlamoreEnvoy);
 
 		readTheVarlamoreEnvoy = new DetailedQuestStep(this, "Read the Varlamore Envoy.", varlamoreEnvoy);

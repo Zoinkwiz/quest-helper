@@ -367,47 +367,54 @@ public class QuestOverviewPanel extends JPanel
 	}
 
 	private void updateRequirementsPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
-										  List<Requirement> requirements)
-	{
-		if (requirements != null)
-		{
-			for (Requirement generalRecommend : requirements)
+										  List<Requirement> requirements) {
+		if (requirements != null) {
+			for (Requirement generalRecommend : requirements) {
+				if (!generalRecommend.getClass().equals(QuestRequirement.class)) {
 
-			{				if (!generalRecommend.getClass().equals(QuestRequirement.class)) {
+					QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
+					panels.add(reqPanel);
+					listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 
-				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
-				panels.add(reqPanel);
-				listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
-
-				listPanel.setVisible(true);
-				header.setVisible(true);
-			}}
-		}
-		else
-		{
+					listPanel.setVisible(true);
+					header.setVisible(true);
+				}
+			}
+		} else {
 			listPanel.setVisible(false);
 			header.setVisible(false);
 		}
 	}
-	private void updatePreReqQuestPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
-										 List<Requirement> requirements)
-	{
-		if (requirements != null)
-		{
-			for (Requirement preReqQuestRequirement : requirements){
-				if (preReqQuestRequirement.getClass().equals(QuestRequirement.class)) {
-					{
-						QuestRequirementPanel questReqPanel = new QuestRequirementPanel(preReqQuestRequirement);
-						panels.add(questReqPanel);
-						listPanel.add(new QuestRequirementWrapperPanel(questReqPanel));
 
-						listPanel.setVisible(true);
-						header.setVisible(true);
-					}
-				}}
-		}
-		else
-		{
+	private void updatePreReqQuestPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
+										 List<Requirement> requirements) {
+
+		if (requirements != null) {
+			for (Requirement preReqQuestRequirement : requirements) {
+				if (preReqQuestRequirement.getClass().equals(QuestRequirement.class)) {
+					JButton questReqButton = new JButton();
+
+					//Button constant properties
+					questReqButton.setUI(new BasicButtonUI());
+//					SwingUtil.removeButtonDecorations(questReqButton);
+					questReqButton.setHorizontalAlignment(SwingConstants.LEFT);
+					questReqButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
+					questReqButton.setToolTipText("Open the quest guide for ");
+					questReqButton.setText(preReqQuestRequirement.getDisplayText());
+
+					questPreReqQuestsListPanel.add(questReqButton);
+
+//					{
+//						QuestRequirementPanel questReqPanel = new QuestRequirementPanel(preReqQuestRequirement);
+//						panels.add(questReqPanel);
+//						listPanel.add(new QuestRequirementWrapperPanel(questReqPanel));
+//
+//						listPanel.setVisible(true);
+//						header.setVisible(true);
+//					}
+				}
+			}
+		} else {
 			listPanel.setVisible(false);
 			header.setVisible(false);
 		}

@@ -77,6 +77,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -321,7 +322,7 @@ public class QuestHelperPlugin extends Plugin
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
 		{
-			questBank.updateBank(event.getItemContainer().getItems());
+			questBank.updateLocalBank(event.getItemContainer().getItems());
 		}
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
@@ -336,6 +337,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
+			questBank.saveBankToConfig();
 			panel.refresh(Collections.emptyList(), true, new HashMap<>());
 			questBank.emptyState();
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
@@ -386,6 +388,12 @@ public class QuestHelperPlugin extends Plugin
 		{
 			clientThread.invokeLater(this::updateQuestList);
 		}
+	}
+
+	@Subscribe(priority = 100)
+	private void onClientShutdown(ClientShutdown e)
+	{
+		questBank.saveBankToConfig();
 	}
 
 	public void updateQuestList()

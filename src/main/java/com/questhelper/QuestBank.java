@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.WorldType;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneScapeProfileType;
 
 @Slf4j
 @Singleton
@@ -44,27 +45,30 @@ public class QuestBank
 {
 	private final ConfigManager configManager;
 	private final Client client;
+	private final Gson gson;
 
 	private static final String CONFIG_GROUP = "questhelper";
+	private static final String BANK_KEY = "bankitems";
 
 	private List<Item> bankItems;
+	private String rsProfileKey;
+	private RuneScapeProfileType worldType;
 
 	public List<WorldType> worldTypes = Arrays.asList(WorldType.LEAGUE, WorldType.TOURNAMENT,
 		WorldType.DEADMAN, WorldType.DEADMAN_TOURNAMENT);
 
 	@Inject
-	public QuestBank(Client client, ConfigManager configManager)
+	public QuestBank(Client client, ConfigManager configManager, Gson gson)
 	{
 		this.configManager = configManager;
 		this.client = client;
+		this.gson = gson;
 		this.bankItems = new ArrayList<>();
 	}
 
-	public void updateBank(Item[] items)
+	public void updateLocalBank(Item[] items)
 	{
 		bankItems = Arrays.asList(items);
-
-		saveBank(bankItems);
 	}
 
 	public List<Item> getBankItems()
@@ -74,30 +78,52 @@ public class QuestBank
 
 	public void emptyState()
 	{
+		rsProfileKey = null;
+		worldType = null;
 		bankItems = new ArrayList<>();
 	}
 
 	public void loadState()
 	{
-		loadBank();
+		// Only re-load from config if loading from a new profile
+		if (!RuneScapeProfileType.getCurrent(client).equals(worldType))
+		{
+			// If we've hopped between profiles
+			if (rsProfileKey != null)
+			{
+				saveBankToConfig();
+			}
+			loadBankFromConfig();
+		}
 	}
 
-	private void loadBank()
+	private void loadBankFromConfig()
 	{
-		Gson gson = new Gson();
-		List<Item> storedItems = gson.fromJson(configManager.getConfiguration(CONFIG_GROUP, getCurrentKey()),
+		// Remove deprecated config
+		configManager.unsetConfiguration(CONFIG_GROUP, getCurrentKey());
+
+		rsProfileKey = configManager.getRSProfileKey();
+		worldType = RuneScapeProfileType.getCurrent(client);
+		List<Item> storedItems = gson.fromJson(
+			configManager.getRSProfileConfiguration(CONFIG_GROUP, BANK_KEY),
 			new TypeToken<List<Item>>(){}.getType());
 		if (storedItems != null)
 		{
 			bankItems = storedItems;
 		}
+		else
+		{
+			bankItems = new ArrayList<>();
+		}
 	}
 
-	private void saveBank(List<Item> items)
+	public void saveBankToConfig()
 	{
-		Gson gson = new Gson();
-		bankItems = items;
-		configManager.setConfiguration(CONFIG_GROUP, getCurrentKey(), gson.toJson(items));
+		if (rsProfileKey == null)
+		{
+			return;
+		}
+		configManager.setConfiguration(CONFIG_GROUP, rsProfileKey, BANK_KEY, gson.toJson(bankItems));
 	}
 
 	private String getCurrentKey()

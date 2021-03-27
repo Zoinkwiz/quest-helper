@@ -505,7 +505,8 @@ public class DesertTreasure extends BasicQuestHelper
 		enterTrollCave = new ObjectStep(this, NullObjectID.NULL_6440, new WorldPoint(2869, 3719, 0), "Continue along the path through the cave to the east.");
 
 		killKamil = new NpcStep(this, NpcID.KAMIL, new WorldPoint(2863, 3757, 0),
-			"Continue along the path until you find Kamil. Kill him, preferably with fire spells. Get into melee distance and protect from melee.", fireSpells);
+			"Continue along the path until you find Kamil. Kill him with fire spells. Get into melee distance and " +
+				"protect from melee.", fireSpells);
 		climbOnToLedge = new ObjectStep(this, ObjectID.ICE_LEDGE, new WorldPoint(2837, 3804, 0),
 			"Equip the spiked boots, then continue along the path until you reach an ice ledge. Climb up it.", spikedBootsEquipped);
 		goThroughPathGate = new ObjectStep(this, ObjectID.ICE_GATE_6462, new WorldPoint(2854, 3811, 1),

@@ -192,6 +192,7 @@ public class GrimTales extends BasicQuestHelper
 		miazrqasPendant = new ItemRequirement("Miazrqa's pendant", ItemID.MIAZRQAS_PENDANT);
 		goldenGoblin = new ItemRequirement("Golden goblin", ItemID.GOLDEN_GOBLIN);
 		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
+		houseKey.setTooltip("You can get another from the pot outside the Witch's House");
 		ogleroot = new ItemRequirement("Shrunk ogleroot", ItemID.SHRUNK_OGLEROOT);
 		ogleroot.setTooltip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
 

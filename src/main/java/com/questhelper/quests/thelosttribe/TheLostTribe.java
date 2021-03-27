@@ -304,7 +304,7 @@ public class TheLostTribe extends BasicQuestHelper
 
 		goTalkToDukeAfterHans = new ConditionalStep(this, goToF1Steps, "Talk to Duke Horacio in Lumbridge Castle.");
 		goTalkToDukeAfterHans.addDialogSteps("Hans says he saw something in the cellar", "Bob says he saw something in the cellar",
-			"Father Aereck says he saw something in the cellar", "The Cook says he saw something in the cellar");
+			"Father Aereck says he saw something in the cellar", "The cook says he saw something in the cellar");
 		goTalkToDukeAfterHans.addStep(inLumbridgeF1, talkToDuke);
 
 		goMineRubble = new ConditionalStep(this, goDownToBasement, "Go use a pickaxe on the rubble in the Lumbridge Castle basement.", pickaxe, lightSource);

@@ -165,7 +165,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		draynorTeleport = new ItemRequirement("Teleport to Draynor", ItemID.DRAYNOR_MANOR_TELEPORT, 5);
 		draynorTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
-		burthorpeTeleport = new ItemRequirement("Teleport to Draynor", ItemCollections.getGamesNecklaces());
+		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.getGamesNecklaces());
 		portPhasmatysTeleport = new ItemRequirement("Teleport to Port Phasmatys", ItemID.ECTOPHIAL);
 		portPhasmatysTeleport.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 

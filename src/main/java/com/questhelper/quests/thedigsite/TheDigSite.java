@@ -433,7 +433,9 @@ public class TheDigSite extends BasicQuestHelper
 		getBrush = new NpcStep(this, NpcID.DIGSITE_WORKMAN, new WorldPoint(3372, 3390, 0), "Pickpocket workmen until you get a specimen brush.", true);
 		((NpcStep) (getBrush)).addAlternateNpcs(NpcID.DIGSITE_WORKMAN_3630, NpcID.DIGSITE_WORKMAN_3631);
 		((NpcStep) (getBrush)).setMaxRoamRange(100);
-		digForTalisman = new ObjectStep(this, ObjectID.SOIL_2377, new WorldPoint(3374, 3438, 0), "Dig in the north east dig spot in the Digsite until you get a talisman.", trowelHighlighted, leatherBoots, leatherGloves);
+		// NOTE: May not need pick
+		digForTalisman = new ObjectStep(this, ObjectID.SOIL_2377, new WorldPoint(3374, 3438, 0), "Dig in the north east dig spot in the Digsite until you get a talisman.",
+			trowelHighlighted, specimenJar);
 		digForTalisman.addIcon(ItemID.TROWEL);
 		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Talk Archaeological expert in the Exam Centre.", talisman);
 
@@ -458,7 +460,8 @@ public class TheDigSite extends BasicQuestHelper
 		unlockChest = new ObjectStep(this, ObjectID.CHEST_2361, new WorldPoint(3374, 3378, 0), "Use the key on the chest in the tent in the south of the Digsite.", key);
 		unlockChest.addIcon(ItemID.CHEST_KEY_709);
 		searchChest = new ObjectStep(this, ObjectID.CHEST_2360, new WorldPoint(3374, 3378, 0), "Search the chest.");
-		useTrowelOnBarrel = new ObjectStep(this, NullObjectID.NULL_2359, new WorldPoint(3364, 3378, 0), "Use a trowel on the barrel west of the chest's tent.", trowelHighlighted);
+		useTrowelOnBarrel = new ObjectStep(this, NullObjectID.NULL_2359, new WorldPoint(3364, 3378, 0),
+			"Use a trowel on the barrel west of the chest's tent.", trowelHighlighted);
 		useTrowelOnBarrel.addIcon(ItemID.TROWEL);
 		useVialOnBarrel = new ObjectStep(this, NullObjectID.NULL_2359, new WorldPoint(3364, 3378, 0), "Use a vial on the barrel west of the chest's tent.", vialHighlighted);
 		useVialOnBarrel.addIcon(ItemID.VIAL);

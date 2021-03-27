@@ -546,7 +546,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 		else
 		{
 			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), yakBottom, yakTop, roundShield);
-			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, splitLogs8);
+			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis,
+				talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, splitLogs8, knife);
 			items = Arrays.asList(tuna, ores, rope9, knife, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food);
 		}
 	}

@@ -291,7 +291,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		monkey = new ItemRequirement("Monkey", ItemID.MONKEY);
 
 		sigilEquipped = new ItemRequirement("10th squad sigil", ItemID._10TH_SQUAD_SIGIL, 1, true);
-		sigilEquipped.setTooltip("You can get another from Garkor");
+		sigilEquipped.setTooltip("You can get another from Waymottin next to Zooknock");
 
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

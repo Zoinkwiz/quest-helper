@@ -172,7 +172,7 @@ public class RovingElves extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToIslwyn = new NpcStep(this, NpcID.ISLWYN, new WorldPoint(2207, 3159, 0), "Talk to Islwyn in Isfadar. If he's not at the marked location, try hopping worlds to find him here.");
+		talkToIslwyn = new NpcStep(this, NpcID.ISLWYN, new WorldPoint(2207, 3159, 0), "Talk to Islwyn in Isafdar. If he's not at the marked location, try hopping worlds to find him here.");
 		talkToIslwyn.addDialogStep("Yes.");
 		talkToEluned = new NpcStep(this, NpcID.ELUNED_8766, new WorldPoint(2207, 3159, 0), "Talk to Eluned.");
 		enterGlarialsTombstone = new ObjectStep(this, ObjectID.GLARIALS_TOMBSTONE, new WorldPoint(2559, 3445, 0),
@@ -198,7 +198,7 @@ public class RovingElves extends BasicQuestHelper
 
 		plantSeed = new DetailedQuestStep(this, "Plant the consecrated seed anywhere in the room.", blessedSeedHighlight, spade);
 
-		returnToIslwyn = new NpcStep(this, NpcID.ISLWYN, new WorldPoint(2207, 3159, 0), "Return to Islwyn in Isfadar to finish the quest.");
+		returnToIslwyn = new NpcStep(this, NpcID.ISLWYN, new WorldPoint(2207, 3159, 0), "Return to Islwyn in Isafdar to finish the quest.");
 	}
 
 	@Override

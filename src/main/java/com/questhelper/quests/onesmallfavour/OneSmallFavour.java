@@ -574,6 +574,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToSanfew.addDialogStep("Are you taking any new initiates?");
 		talkToSanfew.addDialogStepWithExclusion("Do you accept dwarves?", "A dwarf I know wants to become an initiate.");
 		talkToSanfew.addDialogSteps("A dwarf I know wants to become an initiate.", "Yep, it's a deal.");
+		talkToSanfew.addSubSteps(goUpToSanfew);
 
 		useBowlOnCup = new DetailedQuestStep(this, "Use a bowl of hot water on an empty cup.",
 			hotWaterBowl.highlighted(), emptyCup.highlighted());

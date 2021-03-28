@@ -292,7 +292,9 @@ public class TempleOfIkov extends BasicQuestHelper
 		getBoots = new ItemStep(this, "Get the boots of lightness in the north east corner.", bootsOfLightnessEquipped);
 		goUpFromBoots = new ObjectStep(this, ObjectID.STAIRS_96, new WorldPoint(2639, 9764, 0), "Go back upstairs.");
 
-		pickUpLever = new DetailedQuestStep(this, new WorldPoint(2637, 9819, 0), "Cross the bridge in the north room and pick up the lever whilst weighing less than 0kg.", lever);
+		pickUpLever = new DetailedQuestStep(this, new WorldPoint(2637, 9819, 0),
+			"Cross the bridge in the north room and pick up the lever whilst weighing less than 0kg.",
+			pendantOfLucien.equipped(), lever);
 		useLeverOnHole = new ObjectStep(this, ObjectID.LEVER_BRACKET, new WorldPoint(2671, 9804, 0), "Use the lever on the lever bracket in the entrance room.", lever);
 
 		pullLever = new ObjectStep(this, ObjectID.LEVER_87, new WorldPoint(2671, 9804, 0), "Pull the lever.");
@@ -373,7 +375,9 @@ public class TempleOfIkov extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Fire Warrior of Lesarkus (level 84)");
+		reqs.add("Able to survive multiple aggressive spiders (level 61) and demons (level 82)");
+		reqs.add("Fire Warrior of Lesarkus (level 84) with ranged");
+		reqs.add("If siding with Lucien, Guardian of Armadyl (level 43)");
 		return reqs;
 	}
 

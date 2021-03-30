@@ -579,7 +579,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Travel to Jatizso", Arrays.asList(talkToMord, travelToJatizso), tuna));
+		allSteps.add(new PanelDetails("Travel to Jatizso", Arrays.asList(talkToMord, travelToJatizso), tuna, ores));
 		allSteps.add(new PanelDetails("Helping Gjuki", Arrays.asList(talkToGjuki, bringOreToGjuki, getJesterOutfit)));
 		allSteps.add(new PanelDetails("Spy on Mawnis", Arrays.asList(talkToSlug, goSpyOnMawnis, tellSlugReport1)));
 		allSteps.add(prepareForRepairPanel);

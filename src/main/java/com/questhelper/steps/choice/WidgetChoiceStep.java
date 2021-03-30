@@ -25,7 +25,6 @@
 package com.questhelper.steps.choice;
 
 import com.questhelper.QuestHelperConfig;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +51,8 @@ public class WidgetChoiceStep
 	@Getter
 	private final int groupId;
 	private final int childId;
+
+	protected boolean shouldNumber = false;
 
 	@Setter
 	@Getter
@@ -136,16 +137,16 @@ public class WidgetChoiceStep
 			{
 				if (choice == null || choice.equals(choices[choiceById].getText()))
 				{
-					highlightText(choices[choiceById]);
+					highlightText(choices[choiceById], choiceById);
 				}
 			}
 			else
 			{
-				for (Widget currentChoice : choices)
+				for (int i = 0; i < choices.length; i++)
 				{
-					if (currentChoice.getText().equals(choice))
+					if (choices[i].getText().equals(choice))
 					{
-						highlightText(currentChoice);
+						highlightText(choices[i], i);
 						return;
 					}
 				}
@@ -153,12 +154,18 @@ public class WidgetChoiceStep
 		}
 	}
 
-	protected void highlightText(Widget text)
+	protected void highlightText(Widget text, int option)
 	{
 		if (!config.showTextHighlight())
 		{
 			return;
 		}
+
+		if (shouldNumber)
+		{
+			text.setText("[" + option + "] " + text.getText());
+		}
+
 		text.setTextColor(config.textHighlightColor().getRGB());
 		text.setOnMouseLeaveListener((JavaScriptCallback) ev -> text.setTextColor(config.textHighlightColor().getRGB()));
 	}

@@ -38,12 +38,19 @@ public class DialogChoiceChange extends DialogChoiceStep
 	}
 
 	@Override
-	protected void highlightText(Widget text)
+	protected void highlightText(Widget text, int option)
 	{
 		if (!config.showTextHighlight())
 		{
 			return;
 		}
-		text.setText(textChange);
+		if (shouldNumber)
+		{
+			text.setText("[" + option + "]" + textChange);
+		}
+		else
+		{
+			text.setText(textChange);
+		}
 	}
 }

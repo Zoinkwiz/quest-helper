@@ -86,6 +86,8 @@ public class RagAndBoneManII extends BasicQuestHelper
 	ItemRequirement jugOfVinegar, jugOfVinegarNeeded, potOfVinegar, potOfVinegarNeeded, potNeeded, axe, jailKey,
 		boneInVinegar;
 
+	DetailedQuestStep finishP1;
+
 	DetailedQuestStep killBat, killUndeadCow, killExperiment, killWerewolf, killGhoul, enterSewer, killZombie,
 		killRat, killMossGiant, killCaveGoblin, killJackal, killLizard, killVulture, killSeagull,
 		enterAsgarniaDungeon, killIceGiant, killMogre, killSnake, killJogre, enterBrimhavenDungeon, killFireGiant,
@@ -197,6 +199,10 @@ public class RagAndBoneManII extends BasicQuestHelper
 		collectBonesSteps.addStep(nor(feldipReqs), feldipSteps);
 		collectBonesSteps.setLockingCondition(hadAllBones);
 
+		steps.put(0, finishP1);
+		steps.put(1, finishP1);
+		steps.put(2, finishP1);
+		steps.put(3, finishP1);
 		steps.put(4, collectBonesSteps);
 
 		steps.put(5, talkToFinish);
@@ -373,7 +379,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-
+		finishP1 = new DetailedQuestStep(this, "Finish Rag and Bone Man I.");
 		addRope = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
 			"Enter the hole to the Lumbridge Swamp caves.", rope.highlighted(), lightSource, tinderbox);
 		addRope.addIcon(ItemID.ROPE);

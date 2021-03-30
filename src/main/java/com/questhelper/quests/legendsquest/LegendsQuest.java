@@ -686,7 +686,7 @@ public class LegendsQuest extends BasicQuestHelper
 		sketchMiddle.addDialogStep("Start Mapping Khazari Jungle.");
 		sketchWest = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0), "Stand in the west of the Khazari Jungle and right-click complete the Radimus note.", radimusNotesHighlight, papyrus, charcoal);
 		sketchWest.addDialogStep("Start Mapping Khazari Jungle.");
-		useNotes = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2867, 2942, 0), "Use the Radimus notes on a Jungle Foreseter outside the Khazari Jungle.", true, completeNotesHighlighted);
+		useNotes = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2867, 2942, 0), "Use the Radimus notes on a Jungle Forester outside the Khazari Jungle.", true, completeNotesHighlighted);
 		useNotes.addAlternateNpcs(NpcID.JUNGLE_FORESTER_3955);
 		useNotes.addDialogStep("Yes, go ahead make a copy!");
 		enterJungleWithRoarer = new DetailedQuestStep(this, "Re-enter the Khazari Jungle. You'll need to cut through some trees and bushes to enter.", completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond);

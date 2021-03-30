@@ -563,7 +563,7 @@ public class Regicide extends BasicQuestHelper
 		leaveWellCave = new ObjectStep(this, ObjectID.CAVE_EXIT_4007, new WorldPoint(2313, 9624, 0),
 			"Leave the cave.");
 
-		talkToIdris = new NpcStep(this, NpcID.IDRIS, "Talk to Idris when she appears.");
+		talkToIdris = new NpcStep(this, NpcID.IDRIS, "Talk to Idris.");
 		talkToIorwerth = new NpcStep(this, NpcID.LORD_IORWERTH, new WorldPoint(2203, 3255, 0),
 			"");
 
@@ -763,8 +763,10 @@ public class Regicide extends BasicQuestHelper
 		pathToIorwerth.addStep(inForestSectionAfterCave, goFromLeavesToStickTrap);
 		pathToIorwerth.addStep(inForestNearCave, goFromCaveToLeaves);
 
-		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "Go talk to Lord Iorwerth in the north west of " +
-			"the elven forest.");
+		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "Wait around the cave exit for Idris to appear " +
+			"and talk to her. Afterwards, Go talk to Lord Iorwerth in the north west of the elven forest.");
+		goTalkToIorwerth.addSubSteps(talkToIdris);
+
 		goReturnToIorwerth = new ConditionalStep(this, pathToIorwerth, "Return to Lord Iorwerth in the north west of " +
 			"the elven forest.");
 
@@ -899,7 +901,7 @@ public class Regicide extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToKingLathas)));
 		allSteps.add(new PanelDetails("To the Elven Lands",
-			Arrays.asList(goThroughUndergroundPass, talkToIdris, goTalkToIorwerth, goTalkToTracker,
+			Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
 				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
 				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
 			bow, arrows, rope1, spade, antipoisons, combatEquipment));

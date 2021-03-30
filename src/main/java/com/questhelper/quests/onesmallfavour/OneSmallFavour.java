@@ -65,7 +65,7 @@ import net.runelite.api.coords.WorldPoint;
 public class OneSmallFavour extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement steelBars4, steelBars3, steelBar, bronzeBar, ironBar, chisel, guam2, guam, marrentill, harralander, hammer, hammerHighlight, emptyCup, pigeonCages5, pot, hotWater, softClay,
+	ItemRequirement steelBars4, steelBars3, steelBar, bronzeBar, ironBar, chisel, guam2, guam, marrentill, harralander, hammer, hammerHighlight, emptyCup, pigeonCages5, pot, hotWaterBowl, softClay,
 		opal, jade, sapphire, redTopaz, bluntAxe, herbalTincture, guthixRest, uncutSapphire, cupOfWater,
 		uncutOpal, uncutJade, uncutRedTopaz, stodgyMattress, mattress, animateRockScroll, animateRockScrollHighlight, ironOxide, brokenVane1, brokenVane2, brokenVane3, ornament,
 		weathervanePillar, directionals, weatherReport, unfiredPotLid, potLid, potWithLid, breathingSalts, chickenCages5, sharpenedAxe, redMahog;
@@ -143,7 +143,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		ConditionalStep makeGuthixRestForGnome = new ConditionalStep(this, useBowlOnCup);
 		makeGuthixRestForGnome.addStep(guthixRest, talkToBleemadge);
-		makeGuthixRestForGnome.addStep(herbTeaMix, useHerbsOnCup);
+		makeGuthixRestForGnome.addStep(new Conditions(LogicType.OR, herbTeaMix, cupOfWater), useHerbsOnCup);
 
 		steps.put(80, makeGuthixRestForGnome);
 		steps.put(81, makeGuthixRestForGnome);
@@ -347,8 +347,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		pigeonCages5.setTooltip("You can get more from outside a house in East Ardougne");
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		pot.setHighlightInInventory(true);
-		hotWater = new ItemRequirement("Bowl of hot water", ItemID.BOWL_OF_HOT_WATER);
-		hotWater.setTooltip("You can find a bowl in Lumbridge castle. Fill it up, then boil it on the range");
+		hotWaterBowl = new ItemRequirement("Bowl of hot water", ItemID.BOWL_OF_HOT_WATER);
+		hotWaterBowl.setTooltip("You can find a bowl in Lumbridge castle. Fill it up, then boil it on the range");
 		varrockTeleports = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
 		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 2);
 		ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 2);
@@ -574,9 +574,10 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToSanfew.addDialogStep("Are you taking any new initiates?");
 		talkToSanfew.addDialogStepWithExclusion("Do you accept dwarves?", "A dwarf I know wants to become an initiate.");
 		talkToSanfew.addDialogSteps("A dwarf I know wants to become an initiate.", "Yep, it's a deal.");
+		talkToSanfew.addSubSteps(goUpToSanfew);
 
 		useBowlOnCup = new DetailedQuestStep(this, "Use a bowl of hot water on an empty cup.",
-			hotWater.highlighted(), emptyCup.highlighted());
+			hotWaterBowl.highlighted(), emptyCup.highlighted());
 		useHerbsOnCup = new DetailedQuestStep(this,
 			"Use 2 guams, a marrentill and a harralander on the cup.",
 			guam2.hideConditioned(new Conditions(LogicType.OR, guamTea, guam2Tea, guamMarrTea, guamHarrTea,
@@ -591,7 +592,7 @@ public class OneSmallFavour extends BasicQuestHelper
 				guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea)).highlighted(),
 		    herbTeaMix.hideConditioned(new Conditions(LogicType.NOR, guamTea, harrTea, marrTea, harrMarrTea,
 				guamHarrTea, guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea)).highlighted());
-		makeGuthixRest = new DetailedQuestStep(this, "Make Guthix Rest by using a bowl of hot water on an empty tea cup, then using 2 guams, a marrentill and a harralander on it.", emptyCup, hotWater, guam2, marrentill, harralander);
+		makeGuthixRest = new DetailedQuestStep(this, "Make Guthix Rest by using a bowl of hot water on an empty tea cup, then using 2 guams, a marrentill and a harralander on it.", emptyCup, hotWaterBowl, guam2, marrentill, harralander);
 		makeGuthixRest.addSubSteps(useBowlOnCup, useHerbsOnCup);
 		talkToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.", guthixRest);
 		((NpcStep) talkToBleemadge).addAlternateNpcs(NpcID.CAPTAIN_BLEEMADGE_10461, NpcID.CAPTAIN_BLEEMADGE_10462,
@@ -799,7 +800,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		reqs.add(hammer);
 		reqs.add(emptyCup);
 		reqs.add(pot);
-		reqs.add(hotWater);
+		reqs.add(hotWaterBowl);
 
 		return reqs;
 	}
@@ -847,7 +848,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		allSteps.add(new PanelDetails("A few small favours", Arrays.asList(talkToJungleForester, talkToBrian, talkToAggie, talkToJohanhus, talkToFred, talkToSeth,
 			talkToHorvik, talkToApoth, talkToTassie, talkToHammerspike, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave,
 			searchWall, talkToCromperty, talkToTindel, talkToRantz, talkToGnormadium, fixAllLamps),
-			chisel, steelBars3, emptyCup, hotWater, guam2, marrentill, harralander));
+			chisel, steelBars3, emptyCup, hotWaterBowl, guam2, marrentill, harralander));
 		allSteps.add(new PanelDetails("Completing the favours", Arrays.asList(talkToGnormadiumAgain, returnToRantz, returnToTindel, returnToCromperty,
 			enterGoblinCaveAgain, standNextToSculpture, killSlagilith, readScrollAgain, talkToPetra, returnToPhantuwti, searchVane, useHammerOnVane, searchVaneAgain,
 			useVane123OnAnvil, goBackUpLadder, finishWithPhantuwti, returnToArhein, returnToBleemadge, returnToSanfew, returnToHammerspike, killGangMembers,

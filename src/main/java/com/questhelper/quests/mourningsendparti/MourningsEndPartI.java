@@ -328,7 +328,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToIslwyn = new NpcStep(this, NpcID.ISLWYN_8675, new WorldPoint(2207, 3159, 0), "Talk to Islwyn in Isfadar. If he's not at the marked location, try hopping worlds to find him here.");
+		talkToIslwyn = new NpcStep(this, NpcID.ISLWYN_8675, new WorldPoint(2207, 3159, 0), "Talk to Islwyn in Isafdar. If he's not at the marked location, try hopping worlds to find him here.");
 		talkToIslwyn.addDialogStep("I'm ready now.");
 		talkToIslwyn.addDialogStep("I'm ready.");
 		talkToIslwyn.addDialogStep("Yes.");

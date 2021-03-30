@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.google.inject.Inject;
 import com.questhelper.ExternalQuestResources;
 import com.questhelper.Icon;
 import com.questhelper.QuestHelperPlugin;
@@ -37,28 +38,38 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
+import net.runelite.api.*;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.api.vars.AccountType;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.api.Client;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 public class QuestOverviewPanel extends JPanel
 {
 
-
+	@Inject
+	protected Client client;
 
 	private final QuestHelperPlugin questHelperPlugin;
 	public QuestHelper currentQuest;
@@ -394,7 +405,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private void updatePreReqQuestPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
 										 List<Requirement> requirements) {
-
+		questPreReqQuestsListPanel.removeAll();
 		if (requirements != null) {
 			for (Requirement preReqQuestRequirement : requirements) {
 				if (preReqQuestRequirement.getClass().equals(QuestRequirement.class)) {
@@ -405,17 +416,18 @@ public class QuestOverviewPanel extends JPanel
 //					SwingUtil.removeButtonDecorations(questReqButton);
 					questReqButton.setHorizontalAlignment(SwingConstants.LEFT);
 					questReqButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
-					questReqButton.setToolTipText("Open the quest guide for " + ((QuestRequirement) preReqQuestRequirement).getQuest());
+					questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
 					questReqButton.setText(preReqQuestRequirement.getDisplayText());
-
 					questPreReqQuestsListPanel.add(questReqButton);
 
 					if (questReqButton.getText().length() > 0) {
 
 						questReqButton.addActionListener((e -> {
 							currentQuest.setQuest(((QuestRequirement) preReqQuestRequirement).getQuest());
+							closeHelper();
 							questHelperPlugin.setSidebarSelectedQuest(currentQuest);
 							questHelperPlugin.startUpQuest(currentQuest);
+
 						}));
 					}
 

@@ -23,8 +23,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper;
+package com.questhelper.overlays;
 
+import com.questhelper.QuestHelperPlugin;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -33,14 +34,12 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class QuestHelperWorldOverlay extends Overlay
+public class QuestHelperWorldArrowOverlay extends Overlay
 {
-	public static final int IMAGE_Z_OFFSET = 30;
-
 	private final QuestHelperPlugin plugin;
 
 	@Inject
-	public QuestHelperWorldOverlay(QuestHelperPlugin plugin)
+	public QuestHelperWorldArrowOverlay(QuestHelperPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -54,7 +53,7 @@ public class QuestHelperWorldOverlay extends Overlay
 
 		if (quest != null && quest.getCurrentStep() != null)
 		{
-			quest.getCurrentStep().makeWorldOverlayHint(graphics, plugin);
+			quest.getCurrentStep().makeWorldArrowOverlayHint(graphics, plugin);
 		}
 
 		return null;

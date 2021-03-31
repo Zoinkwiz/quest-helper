@@ -35,6 +35,12 @@ import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.questhelper.banktab.QuestBankTab;
 import com.questhelper.banktab.QuestHelperBankTagService;
+import com.questhelper.overlays.QuestHelperDebugOverlay;
+import com.questhelper.overlays.QuestHelperOverlay;
+import com.questhelper.overlays.QuestHelperWidgetOverlay;
+import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
+import com.questhelper.overlays.QuestHelperWorldLineOverlay;
+import com.questhelper.overlays.QuestHelperWorldOverlay;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
@@ -170,6 +176,12 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private QuestHelperWorldOverlay questHelperWorldOverlay;
 
+	@Inject
+	private QuestHelperWorldArrowOverlay questHelperWorldArrowOverlay;
+
+	@Inject
+	private QuestHelperWorldLineOverlay questHelperWorldLineOverlay;
+
 	@Getter
 	@Inject
 	private BankSearch bankSearch;
@@ -238,6 +250,8 @@ public class QuestHelperPlugin extends Plugin
 		quests = scanAndInstantiate(getClass().getClassLoader());
 		overlayManager.add(questHelperOverlay);
 		overlayManager.add(questHelperWorldOverlay);
+		overlayManager.add(questHelperWorldArrowOverlay);
+		overlayManager.add(questHelperWorldLineOverlay);
 		overlayManager.add(questHelperWidgetOverlay);
 		if (isDeveloperMode())
 		{
@@ -268,6 +282,8 @@ public class QuestHelperPlugin extends Plugin
 		eventBus.unregister(bankTagsMain);
 		overlayManager.remove(questHelperOverlay);
 		overlayManager.remove(questHelperWorldOverlay);
+		overlayManager.remove(questHelperWorldArrowOverlay);
+		overlayManager.remove(questHelperWorldLineOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
 		if (isDeveloperMode())
 		{

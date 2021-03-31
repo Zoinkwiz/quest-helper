@@ -211,7 +211,6 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		currentRender = (currentRender + 1) % 48;
 		if (client.getLocalPlayer() == null)
 		{
 			return;
@@ -220,15 +219,6 @@ public class DetailedQuestStep extends QuestStep
 		if (inCutscene)
 		{
 			return;
-		}
-		if (currentRender < 24)
-		{
-			renderArrow(graphics);
-		}
-
-		if (linePoints != null && linePoints.size() > 1)
-		{
-			WorldLines.drawLinesOnWorld(graphics, client, linePoints, getQuestHelper().getConfig().targetOverlayColor());
 		}
 
 		if (!markedTiles.isEmpty())
@@ -245,6 +235,45 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
+	}
+
+	@Override
+	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		currentRender = (currentRender + 1) % 48;
+		if (client.getLocalPlayer() == null)
+		{
+			return;
+		}
+
+		if (inCutscene)
+		{
+			return;
+		}
+
+		if (currentRender < 24)
+		{
+			renderArrow(graphics);
+		}
+	}
+
+	@Override
+	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (client.getLocalPlayer() == null)
+		{
+			return;
+		}
+
+		if (inCutscene)
+		{
+			return;
+		}
+
+		if (linePoints != null && linePoints.size() > 1)
+		{
+			WorldLines.drawLinesOnWorld(graphics, client, linePoints, getQuestHelper().getConfig().targetOverlayColor());
+		}
 	}
 
 	public void renderArrow(Graphics2D graphics)
@@ -302,7 +331,6 @@ public class DetailedQuestStep extends QuestStep
 		}
 	}
 
-
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
@@ -321,6 +349,11 @@ public class DetailedQuestStep extends QuestStep
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
 			if (mapPoint == null)
+			{
+				return;
+			}
+
+			if (inCutscene)
 			{
 				return;
 			}
@@ -415,7 +448,6 @@ public class DetailedQuestStep extends QuestStep
 					graphics.setColor(new Color(red, green, blue, 65));
 					graphics.fill(slotBounds);
 				}
-
 			}
 		}
 	}

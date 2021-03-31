@@ -185,10 +185,6 @@ public class MageArenaBossStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (inCutscene)
-		{
-			return;
-		}
 		if (worldPoint == null)
 		{
 			return;

@@ -272,6 +272,7 @@ public class ObjectStep extends DetailedQuestStep
 		}
 
 		Point mousePosition = client.getMouseCanvasPosition();
+
 		for (TileObject tileObject : objects)
 		{
 			if (tileObject.getPlane() == client.getPlane())
@@ -284,7 +285,7 @@ public class ObjectStep extends DetailedQuestStep
 			}
 		}
 
-		if (iconItemID != -1 && object != null && questHelper.getConfig().showSymbolOverlay())
+		if (iconItemID != -1 && object != null)
 		{
 			Shape clickbox = object.getClickbox();
 			if (clickbox != null && !inCutscene)

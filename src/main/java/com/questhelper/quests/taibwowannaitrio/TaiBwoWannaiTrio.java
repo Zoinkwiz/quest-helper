@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2021, Zoinkwiz
  * Copyright (c) 2021, itofu1
  * All rights reserved.
  *
@@ -31,6 +32,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
@@ -46,6 +48,8 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +59,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TAI_BWO_WANNAI_TRIO
@@ -64,17 +69,19 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	ItemRequirement hammer, slicedBanana, banana, knife, slicedBananaOrKnife, smallFishingNet, pestleAndMortar, spear,
 		agilityPotion4, rangedOrMagic, tinderbox, jogreBones, burntJogreBones, pastyJogreBones, marinatedJogreBones,
 		anyJogreBones, seaweed, karamjanRum, karambwanji, poisonedSpear, logsForFire, rawKarambwans, coins, karambwanVessel,
-		karambwanVessel2, filledKarabmwanVessel, filledKarabmwanVessel2, bananaSlices, karamjanRumWithBanana, monkeyCorpse,
+		filledKarabmwanVessel, bananaSlices, karamjanRumWithBanana, monkeyCorpse,
 		monkeySkin, seaweedSandwich, craftingManual;
 
-	QuestStep goToTimfrakuLadder, talkToTimfrakuStart, fishKarambwaji, goToLubufu, getMoreVessel, fillVessel, getBananaRum,
-		makeBananaRum, talkToTiadeche1, getJogreBones, getMonkeyCorpse, talkToTamayu1, cookKarambwan, cookBones,
-		talkToTamayu2, makeSeaweedSandwich, talkToTinsay, talkToTinsay1, talkToTinsay2, talkToTinsay3, goToTiadecheFinal,
-		defaultStep, goToTimfrakuLadderEnd, talkToTimfrakuEnd;
+	QuestStep goToTimfrakuLadder, talkToTimfrakuStart, fishKarambwaji, goToLubufu, dropVessel, getAnotherVessel, pickupVessel,
+		getMoreVessel, fillVessel,	getRum, sliceBanana, makeBananaRum, talkToTiadeche1, giveVessel, getJogreBones,
+		getMonkeyCorpse, talkToTamayu1,
+		cookKarambwan, cookBones, talkToTamayu2, makeSeaweedSandwich, talkToTinsay, talkToTinsay1, talkToTinsay2, talkToTinsay3,
+		goToTiadecheFinal, defaultStep, goToTimfrakuLadderEnd, talkToTimfrakuEnd;
 
-	Requirement hasKarambwaji, inTimfrakusHut, inLufubuZone, haveOneEmptyVessel, haveTwoVessel, vesselOnGround, filledTwoVessel,
+	Requirement hasKarambwaji, inTimfrakusHut, inLufubuZone, givenKarambwanji, vesselOnGround, talkedToTiadeche,
 		haveKaramjanRum, haveBananaSlices, haveKaramjanRumWithBanana, haveSeaweed, haveJogreBones, haveMonkeyCorpse,
-		haveCookedJogreBones, havePoisonSpear, haveBurntBones, haveMonkeySkin, haveSeaweedSandwich, inCairnIsle, haveCraftingManual;
+		haveCookedJogreBones, havePoisonSpear, haveBurntBones, haveMonkeySkin, haveSeaweedSandwich, inCairnIsle,
+		haveCraftingManual;
 
 	Zone timfrakusHut, lubufuZone, cairnIsleZone;
 
@@ -98,32 +105,51 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		steps.put(1, startQuest);
 		steps.put(2, startQuest);
 
-		ConditionalStep findBrothers = new ConditionalStep(this, defaultStep);
-		findBrothers.addStep(new Conditions(LogicType.NOR, hasKarambwaji, haveCookedJogreBones, haveCraftingManual, haveCookedJogreBones), fishKarambwaji);
-		findBrothers.addStep(new Conditions(LogicType.OR, inLufubuZone, hasKarambwaji), goToLubufu);
-		findBrothers.addStep(haveOneEmptyVessel, getMoreVessel);
-		findBrothers.addStep(vesselOnGround, getMoreVessel);
-		findBrothers.addStep(haveTwoVessel, fillVessel);
-		findBrothers.addStep(new Conditions(LogicType.AND, filledTwoVessel, new Conditions(LogicType.NOR, haveKaramjanRumWithBanana, inCairnIsle), new Conditions(LogicType.NAND, haveKaramjanRum, haveBananaSlices)), getBananaRum);
-		findBrothers.addStep(new Conditions(LogicType.AND, filledTwoVessel, haveKaramjanRum, haveBananaSlices, new Conditions(LogicType.NOR, haveKaramjanRumWithBanana)), makeBananaRum);
-		findBrothers.addStep(new Conditions(LogicType.AND, filledTwoVessel, haveKaramjanRumWithBanana, new Conditions(LogicType.NOR, haveSeaweed, haveSeaweedSandwich)), talkToTiadeche1);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, new Conditions(LogicType.NOR, haveSeaweedSandwich), new Conditions(LogicType.NOR, haveJogreBones, haveBurntBones, haveCookedJogreBones)), getJogreBones);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, new Conditions(LogicType.NOR, haveMonkeyCorpse, haveMonkeySkin, haveSeaweedSandwich)), getMonkeyCorpse);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse,  new Conditions(LogicType.NOR, haveBurntBones, haveCookedJogreBones)), talkToTamayu1);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse, haveBurntBones, new Conditions(LogicType.NOR, havePoisonSpear)), cookKarambwan);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse, haveBurntBones, havePoisonSpear, new Conditions(LogicType.NOR, haveCookedJogreBones)), cookBones);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse, haveCookedJogreBones), talkToTamayu2);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeySkin, haveKaramjanRumWithBanana), makeSeaweedSandwich);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweedSandwich, haveCookedJogreBones, haveKaramjanRumWithBanana), talkToTinsay);
-		findBrothers.addStep(new Conditions(LogicType.AND, inCairnIsle, haveCookedJogreBones, haveSeaweedSandwich, new Conditions(LogicType.NOR, haveKaramjanRumWithBanana)), talkToTinsay1);
-		findBrothers.addStep(new Conditions(LogicType.AND, inCairnIsle, haveCookedJogreBones, new Conditions(LogicType.NOR, haveKaramjanRumWithBanana, haveSeaweedSandwich)), talkToTinsay2);
-		findBrothers.addStep(new Conditions(LogicType.AND, inCairnIsle, new Conditions(LogicType.NOR, haveCraftingManual, haveKaramjanRumWithBanana, haveSeaweedSandwich, haveCookedJogreBones)), talkToTinsay3);
-		findBrothers.addStep(new Conditions(LogicType.AND, haveCraftingManual), goToTiadecheFinal);
+//		ConditionalStep findBrothers = new ConditionalStep(this, defaultStep);
+//		findBrothers.addStep(new Conditions(LogicType.NOR, hasKarambwaji, haveCookedJogreBones, haveCraftingManual, haveCookedJogreBones), fishKarambwaji);
+//		findBrothers.addStep(new Conditions(LogicType.OR, inLufubuZone, hasKarambwaji), goToLubufu);
+//		findBrothers.addStep(givenKarambwanji, getMoreVessel);
+//		findBrothers.addStep(karambwanVessel, getMoreVessel);
+//		findBrothers.addStep(vesselOnGround, getMoreVessel);
+//		findBrothers.addStep(karambwanVessel.quantity(2), fillVessel);
+//		findBrothers.addStep(new Conditions(LogicType.AND,
+//			filledTwoVessel,
+//			new Conditions(LogicType.NOR, haveKaramjanRumWithBanana, inCairnIsle),
+//			new Conditions(LogicType.NAND, haveKaramjanRum, haveBananaSlices)), getRum);
+//		findBrothers.addStep(new Conditions(LogicType.AND,
+//			filledTwoVessel, haveKaramjanRum, haveBananaSlices,
+//			new Conditions(LogicType.NOR, haveKaramjanRumWithBanana)), makeBananaRum);
+//		findBrothers.addStep(new Conditions(LogicType.AND, filledTwoVessel, haveKaramjanRumWithBanana, new Conditions(LogicType.NOR, haveSeaweed, haveSeaweedSandwich)), talkToTiadeche1);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, new Conditions(LogicType.NOR, haveSeaweedSandwich), new Conditions(LogicType.NOR, haveJogreBones, haveBurntBones, haveCookedJogreBones)), getJogreBones);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, new Conditions(LogicType.NOR, haveMonkeyCorpse, haveMonkeySkin, haveSeaweedSandwich)), getMonkeyCorpse);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse,  new Conditions(LogicType.NOR, haveBurntBones, haveCookedJogreBones)), talkToTamayu1);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse, haveBurntBones, new Conditions(LogicType.NOR, havePoisonSpear)), cookKarambwan);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse, haveBurntBones, havePoisonSpear, new Conditions(LogicType.NOR, haveCookedJogreBones)), cookBones);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeyCorpse, haveCookedJogreBones), talkToTamayu2);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweed, haveMonkeySkin, haveKaramjanRumWithBanana), makeSeaweedSandwich);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveSeaweedSandwich, haveCookedJogreBones, haveKaramjanRumWithBanana), talkToTinsay);
+//		findBrothers.addStep(new Conditions(LogicType.AND, inCairnIsle, haveCookedJogreBones, haveSeaweedSandwich, new Conditions(LogicType.NOR, haveKaramjanRumWithBanana)), talkToTinsay1);
+//		findBrothers.addStep(new Conditions(LogicType.AND, inCairnIsle, haveCookedJogreBones, new Conditions(LogicType.NOR, haveKaramjanRumWithBanana, haveSeaweedSandwich)), talkToTinsay2);
+//		findBrothers.addStep(new Conditions(LogicType.AND, inCairnIsle, new Conditions(LogicType.NOR, haveCraftingManual, haveKaramjanRumWithBanana, haveSeaweedSandwich, haveCookedJogreBones)), talkToTinsay3);
+//		findBrothers.addStep(new Conditions(LogicType.AND, haveCraftingManual), goToTiadecheFinal);
 
-		steps.put(3, findBrothers);
+		ConditionalStep try2 = new ConditionalStep(this, fishKarambwaji);
+		try2.addStep(new Conditions(filledKarabmwanVessel.quantity(2), karamjanRumWithBanana, talkedToTiadeche), talkToTiadeche1);
+		try2.addStep(new Conditions(filledKarabmwanVessel.quantity(2), karamjanRumWithBanana), talkToTiadeche1);
+		try2.addStep(new Conditions(filledKarabmwanVessel.quantity(2), karamjanRum, bananaSlices), makeBananaRum);
+		try2.addStep(new Conditions(filledKarabmwanVessel.quantity(2), karamjanRum), sliceBanana);
+		try2.addStep(new Conditions(filledKarabmwanVessel.quantity(2)), getRum);
+		try2.addStep(new Conditions(karambwanVessel.quantity(2)), fillVessel);
+		try2.addStep(new Conditions(vesselOnGround, karambwanVessel), pickupVessel);
+		try2.addStep(new Conditions(vesselOnGround), getAnotherVessel);
+		try2.addStep(new Conditions(karambwanVessel), dropVessel);
+		try2.addStep(new Conditions(LogicType.OR, givenKarambwanji, karambwanVessel, vesselOnGround), getMoreVessel);
+		try2.addStep(karambwanji.quantity(23), goToLubufu);
+
+		steps.put(3, try2);
 
 		ConditionalStep endQuest = new ConditionalStep(this, goToTimfrakuLadderEnd);
-		startQuest.addStep(inTimfrakusHut, talkToTimfrakuEnd);
+		endQuest.addStep(inTimfrakusHut, talkToTimfrakuEnd);
 
 		steps.put(4, endQuest);
 		return steps;
@@ -138,70 +164,118 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	private void setupSteps()
 	{
 		goToTimfrakuLadder = new ObjectStep(this, ObjectID.LADDER_16683, timfrakuHutWorldPoint,
-			"Go to Timfraku's house to start the quest");
+			"Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
 
-		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk to Timfraku to start the quest");
+		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
+		talkToTimfrakuStart.addDialogSteps("I am a roving adventurer.", "I am a travelling explorer.", "I am a " +
+			"wandering wayfarer.", "Who me? Oh I'm just a nobody.");
 		talkToTimfrakuStart.addDialogStep("Trufitus sent me.");
+		talkToTimfrakuStart.addDialogSteps("Your gratitude is all I deserve.", "Well, some gold would be nice.", "So " +
+			"far??", "Yes");
+		talkToTimfrakuStart.addSubSteps(goToTimfrakuLadder);
 
 		defaultStep = new DetailedQuestStep(this, "Hmm, it seems the quest helper has no clue what to do. " +
 			"Because this quest is old and the dev had to rely on janky logic it is most likely fixed by opening your quest " +
-			"journal and letting the helper do its thing but in the event that does not fix it create an issue on github or ask in the discord channel");
+			"journal and letting the helper do its thing but in the event that does not fix it create an issue on " +
+			"github or ask in the discord channel.");
 
 		fishKarambwaji = new NpcStep(this, NpcID.FISHING_SPOT_4710, new WorldPoint(2791,3019,0),
-			"Using your small fishing net, catch atleast 23 raw karambwanji just south of Tai Bwo Wannai");
+			"Using your small fishing net, catch atleast 23 raw karambwanji just south of Tai Bwo Wannai. If you've " +
+				"already given them to Lubufu, open your quest journal to re-sync.", smallFishingNet);
 
 		goToLubufu = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint, "Go to Brimhaven and talk to Lubufu." +
-			"You have to talk to him multiple times. The dialogue order is as follows: 3, 1-4-2-1-3-4-1, 1, 3-1");
-		goToLubufu.addDialogStep("Who are you?");
+			"You have to talk to him multiple times. You'll need to ask him twice about what he does, then talk to " +
+			"him to give him the karambwanji.", karambwanji.quantity(20));
 		goToLubufu.addDialogStep("Talk about him...");
-		goToLubufu.addDialogStep("How old are you?");
-		goToLubufu.addDialogStep("What do you use for bait?");
 		goToLubufu.addDialogStep("What do you do?");
+		goToLubufu.addDialogStepWithExclusion("What do you do with your Karambwan?", "I could help collect the bait.");
 		goToLubufu.addDialogStep("I could help collect the bait.");
 		goToLubufu.addDialogStep("You sound like you could do with the help.");
 		goToLubufu.addDialogStep("What do you use to catch Karambwan?");
 		goToLubufu.addDialogStep("Yes!");
 
 		getMoreVessel = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint,
-			"Drop the Vessel Lubufu gave you and talk to him go get another, you can get as many as you want but " +
-				"you need 2 to complete this quest");
+			"Get a Vessel from Lubufu by asking what he uses to catch them multiple times. Drop it, and talk to him " +
+				"go get another, then pick up the one you dropped. You can get as many as you want but you need 2 to" +
+				" complete this quest.");
+		getMoreVessel.addDialogStep("What do you use to catch Karambwan?");
+		getMoreVessel.addDialogStep("Yes!");
 		getMoreVessel.addDialogStep("Actually, I've lost my Karambwan vessel.");
 		getMoreVessel.addDialogStep("... a shark ate it!");
 
+		dropVessel = new DetailedQuestStep(this, "Drop the vessel, then get another from Lubufu.", karambwanVessel.highlighted());
+		getAnotherVessel = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint,
+			"Get another Vessel from Lubufu.");
+		getAnotherVessel.addDialogStep("Actually, I've lost my Karambwan vessel.");
+		getAnotherVessel.addDialogStep("... a shark ate it!");
+		pickupVessel = new ItemStep(this, "Pick up the vessel you dropped.", karambwanVessel.quantity(2));
+		getMoreVessel.addSubSteps(dropVessel, getAnotherVessel, pickupVessel);
+
 		fillVessel = new DetailedQuestStep(this, "Use a karambwanji on a karambwan Vessel to fill it. Note " +
 			"if you have less karambwanji than vessel then this will use up all your karambwanji and will require you to " +
-			"fish for atleast 1 more to complete the quest", karambwanji, karambwanVessel);
+			"fish for atleast 1 more to complete the quest.", karambwanji, karambwanVessel);
 
-		getBananaRum = new DetailedQuestStep(this, new WorldPoint(2925, 3143, 0), "Go east to Musa point to buy some Karamjan rum, while you are there grab a banana if you do not have one and use your knife on the banana to make banana slices");
-		makeBananaRum = new ItemStep(this, "Add banana slices to the karamjan rum to make Karamjan rum with banana slices", bananaSlices, karamjanRum);
+		getRum = new NpcStep(this, NpcID.ZAMBO, new WorldPoint(2925, 3143, 0),
+			"Go east to Musa point to buy some Karamjan rum from Zambo.", coins.quantity(30));
 
-		talkToTiadeche1 = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 2116, 0), "Go to Tiadeche, he is located near the fairy ring DKP, after talking to him use one of your filled karambwan vessel on him. Grab a seaweed after you are done.");
-		talkToTiadeche1.addDialogStep(3, "Is there anything I can do to help?");
+		sliceBanana = new DetailedQuestStep(this, "Slice a banana with a knife. You can get a banana from one of the " +
+			"trees in the plantation.", knife.highlighted(), banana.highlighted());
+		makeBananaRum = new ItemStep(this, "Add banana slices to the karamjan rum to make Karamjan rum with banana " +
+			"slices.", bananaSlices.highlighted(), karamjanRum.highlighted());
 
-		getJogreBones = new DetailedQuestStep(this, new WorldPoint(2925, 3062, 0), "If you do not have a Jogre bone yet there are Jogre south and you should kill one now to get its bones.");
-		getMonkeyCorpse = new DetailedQuestStep(this, "Kill a monkey to get its corpse, there are plenty of monkeys around Karamja and you will need either magic or range to kill one");
+		talkToTiadeche1 = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 3116, 0),
+			"Talk to Tiadeche in east Karamja, near the fairy ring DKP.");
 
-		talkToTamayu1 = new NpcStep(this, NpcID.TAMAYU, new WorldPoint(2845, 3041, 0), "Talk to Tamayu, he is located north of Shilo Village near the mining sign on the map, after watching him use your tinder box on your jogre bones and pick up the burnt jogre bones.");
+		giveVessel = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 3116, 0),
+			"Use a filled vessel on Tiadeche.", filledKarabmwanVessel.highlighted());
+		giveVessel.addIcon(ItemID.KARAMBWAN_VESSEL_3159);
+
+		getJogreBones = new DetailedQuestStep(this, new WorldPoint(2925, 3062, 0),
+			"If you do not have a Jogre bone yet there are Jogre south and you should kill one now to get its bones.");
+		getMonkeyCorpse = new DetailedQuestStep(this,
+			"Kill a monkey to get its corpse, there are plenty of monkeys around Karamja and you will need either magic or range to kill one");
+
+		talkToTamayu1 = new NpcStep(this, NpcID.TAMAYU, new WorldPoint(2845, 3041, 0),
+			"Talk to Tamayu, he is located north of Shilo Village near the mining sign on the map," +
+				" after watching him use your tinder box on your jogre bones and pick up the burnt jogre bones.");
 		talkToTamayu1.addDialogStep("When will you succeed?");
 		talkToTamayu1.addDialogStep("Yes");
 
-		cookKarambwan = new DetailedQuestStep(this, "Light a fire using your tinderbox and logs and cook your karambwan (If it is burnt you will need to either buy another one or fish it with 65 fishing). Use your poison karambwan on your pestel and mortar to make a poison paste and use that on your spear.");
-		cookBones = new DetailedQuestStep(this, "Use a karambwanji on your pestle and mortar to make a karambwanji paste, use that paste on your burnt jogre bones and cook the outcome again on the fire");
-		talkToTamayu2 = new NpcStep(this, NpcID.TAMAYU, new WorldPoint(2845, 3041, 0), "Use your 4 dose agility potion and poisoned spear on Tamayu then talk to him. After the cutscene use your monkey corpse on him to have him skin it for you");
+		cookKarambwan = new DetailedQuestStep(this,
+			"Light a fire using your tinderbox and logs and cook your karambwan (If it is burnt you will need to " +
+				"either buy another one or fish it with 65 fishing). Use your poison karambwan on your pestel and mortar " +
+				"to make a poison paste and use that on your spear.");
+		cookBones = new DetailedQuestStep(this,
+			"Use a karambwanji on your pestle and mortar to make a karambwanji paste, " +
+				"use that paste on your burnt jogre bones and cook the outcome again on the fire.");
+		talkToTamayu2 = new NpcStep(this, NpcID.TAMAYU, new WorldPoint(2845, 3041, 0),
+			"Use your 4 dose agility potion and poisoned spear on Tamayu then talk to him. " +
+				"After the cutscene use your monkey corpse on him to have him skin it for you.");
 		talkToTamayu2.addDialogStep("Take me on your next hunt for the Shaikahan.");
 
 		makeSeaweedSandwich = new DetailedQuestStep(this, "Use your seaweed on your monkey skin to make a seaweed sandwich");
 
-		talkToTinsay = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0), "Talk to the third brother, he is located on Carin Isle west of Shilo Village, south of fairy ring CKR. You will need some food if your agility level is low. After talking to him use your bottle of rum with banana slices on him");
-		talkToTinsay1 = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0), "Finish the conversation and use your seaweed sandwich on him. Be careful to right click on the seaweed sandwich as the default option is to eat it.");
-		talkToTinsay2 = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0), "Finish the conversation and use your marinated j'bones on him. Be careful to right click on your marinated bones as the default option is the bury it");
-		talkToTinsay3 = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0), "Use a karambwan vessel on Tinsay to get a crafting manual.");
+		talkToTinsay = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0),
+			"Talk to the third brother, he is located on Carin Isle west of Shilo Village, south of fairy ring CKR." +
+				" You will need some food if your agility level is low. After talking to him use your bottle of rum with banana slices on him");
+		talkToTinsay1 = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0),
+			"Finish the conversation and use your seaweed sandwich on him. Be careful to right click on " +
+				"the seaweed sandwich as the default option is to eat it.");
+		talkToTinsay2 = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0),
+			"Finish the conversation and use your marinated j'bones on him. Be careful to right click on " +
+				"your marinated bones as the default option is the bury it");
+		talkToTinsay3 = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0),
+			"Use a karambwan vessel on Tinsay to get a crafting manual.");
 
-		goToTiadecheFinal = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 2116, 0), "Go to back to Tiadeche located north of fairy ring DKP and use the crafting manual on him");
+		goToTiadecheFinal = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 2116, 0),
+			"Go to back to Tiadeche located north of fairy ring DKP and use the crafting manual on him");
 
 		goToTimfrakuLadderEnd = new ObjectStep(this, ObjectID.LADDER_16683, timfrakuHutWorldPoint,
 			"Go to Timfraku's house to finish the quest");
-		talkToTimfrakuEnd = new NpcStep(this, NpcID.TIMFRAKU, "Talk to Timfraku to end the quest, the option chosen here does not matter. NOTE: you will need to talk to each of the brothers individually to receive experience rewards as well as the ability to cook karambwans properly");
+		talkToTimfrakuEnd = new NpcStep(this, NpcID.TIMFRAKU,
+			"Talk to Timfraku to end the quest, the option chosen here does not matter. " +
+				"NOTE: you will need to talk to each of the brothers individually to receive " +
+				"experience rewards as well as the ability to cook karambwans properly");
 	}
 
 
@@ -210,13 +284,22 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		inTimfrakusHut = new ZoneRequirement(timfrakusHut);
 		hasKarambwaji = new ItemRequirements(karambwanji);
 		inLufubuZone = new ZoneRequirement(lubufuZone);
-		haveTwoVessel = new ItemRequirements(LogicType.OR, karambwanVessel2, new ItemRequirements(karambwanVessel, filledKarabmwanVessel));
-		haveOneEmptyVessel = new ItemRequirements(karambwanVessel);
+		givenKarambwanji = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(193, 2, "You hand Lubufu 20 raw Karambwanji."),
+			new WidgetTextRequirement(119, 3, true, "<str>I have given Lubufu 20 Karambwanji.")
+		);
+
 		vesselOnGround = new ItemOnTileRequirement(karambwanVessel);
-		filledTwoVessel = new ItemRequirements(filledKarabmwanVessel2);
 		haveKaramjanRum = new ItemRequirements(karamjanRum);
 		haveBananaSlices = new ItemRequirements(bananaSlices);
 		haveKaramjanRumWithBanana = new ItemRequirements(karamjanRumWithBanana);
+
+		talkedToTiadeche = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I will return only when I have caught a Karambwan."),
+			new WidgetTextRequirement(219, 1, true, "How are you fishing for the Karambwan?"),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>He will only return to the village once he has caught a")
+		);
+
 		haveSeaweed = new ItemRequirements(seaweed);
 		haveJogreBones = new ItemRequirements(jogreBones);
 		haveMonkeyCorpse = new ItemRequirements(monkeyCorpse);
@@ -243,6 +326,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		slicedBanana = new ItemRequirement("Sliced Banana", ItemID.SLICED_BANANA);
 		banana = new ItemRequirement("Banana", ItemID.BANANA);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife.setTooltip("There's one on the counter in the Musa Point general store");
 		slicedBananaOrKnife = new ItemRequirements(LogicType.OR, slicedBanana, knife);
 
 		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET);
@@ -279,14 +363,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
-		karambwanji = new ItemRequirement("Atleast 23 Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
+		karambwanji = new ItemRequirement("Atleast 23 Raw Karambwanji", ItemID.RAW_KARAMBWANJI);
 		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
-		coins = new ItemRequirement("30 GP", ItemID.COINS_995, 30);
+		coins = new ItemRequirement("Coins", ItemID.COINS_995);
 
 		karambwanVessel = new ItemRequirement("Karambwan Vessel", ItemID.KARAMBWAN_VESSEL);
-		karambwanVessel2 = new ItemRequirement("Karambwan Vessel", ItemID.KARAMBWAN_VESSEL, 2);
+		karambwanVessel.addAlternates(ItemID.KARAMBWAN_VESSEL_3159);
 		filledKarabmwanVessel = new ItemRequirement("Karabmwan Vessel (full)", ItemID.KARAMBWAN_VESSEL_3159);
-		filledKarabmwanVessel2 = new ItemRequirement("Karabmwan Vessel (full)", ItemID.KARAMBWAN_VESSEL_3159, 2);
 
 		bananaSlices = new ItemRequirement("Sliced Banana", ItemID.SLICED_BANANA);
 		karamjanRumWithBanana = new ItemRequirement("Karamjan Rum (with banana slices)", ItemID.KARAMJAN_RUM_3164);
@@ -300,18 +383,10 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(hammer);
-		reqs.add(smallFishingNet);
-		reqs.add(pestleAndMortar);
-		reqs.add(spear);
-		reqs.add(agilityPotion4);
-		reqs.add(rangedOrMagic);
-		reqs.add(tinderbox);
-		reqs.add(slicedBananaOrKnife);
-		reqs.add(logsForFire);
-
-		return reqs;
+		return new ArrayList<>(Arrays.asList(
+			coins.quantity(30), hammer, smallFishingNet, pestleAndMortar, spear, agilityPotion4,
+			rangedOrMagic, tinderbox, slicedBananaOrKnife, logsForFire
+		));
 	}
 
 	@Override
@@ -344,10 +419,12 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting Off", goToTimfrakuLadder, talkToTimfrakuStart));
-		allSteps.add(new PanelDetails("Gathering quest materials", fishKarambwaji, goToLubufu, getMoreVessel, fillVessel,
-			getBananaRum, makeBananaRum));
-		allSteps.add(new PanelDetails("Helping the three brothers", defaultStep, talkToTiadeche1, getJogreBones, getMonkeyCorpse,
+		allSteps.add(new PanelDetails("Starting Off", Collections.singletonList(talkToTimfrakuStart), hammer,
+			smallFishingNet, pestleAndMortar, spear, agilityPotion4, rangedOrMagic, tinderbox, slicedBananaOrKnife, logsForFire));
+		allSteps.add(new PanelDetails("Gathering quest materials", Arrays.asList(fishKarambwaji, goToLubufu,
+			getMoreVessel, fillVessel, getRum, sliceBanana, makeBananaRum), smallFishingNet, slicedBananaOrKnife));
+		allSteps.add(new PanelDetails("Helping the three brothers", talkToTiadeche1, giveVessel, getJogreBones,
+			getMonkeyCorpse,
 			talkToTamayu1, cookKarambwan, cookBones, talkToTamayu2, makeSeaweedSandwich, talkToTinsay, talkToTinsay1, talkToTinsay2,
 			talkToTinsay3, goToTiadecheFinal));
 		allSteps.add(new PanelDetails("Finishing the quest", goToTimfrakuLadderEnd, talkToTimfrakuEnd));

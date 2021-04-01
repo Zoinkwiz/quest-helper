@@ -253,9 +253,10 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		getNotesFromAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Talk to Ava to receive the research notes.");
-		translateNotes = new PuzzleStep(this, "Translate research notes by clicking on all the highlighted switches.",
+		if (config.showPuzzles()) translateNotes = new PuzzleStep(this, "Translate research notes by clicking on all the highlighted switches.",
 			new PuzzleSolver()::solver,
 			researchNotes);
+		else translateNotes = new PuzzleStep(this, "Solve the puzzle, If you'd like the solution enable puzzle solutions in the plugin settings.", null, researchNotes);
 		giveNotesToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Give Ava the translated research notes.",
 			translatedNotes);

@@ -344,8 +344,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting Off", goToTimfrakuLadder));
-
+		allSteps.add(new PanelDetails("Starting Off", goToTimfrakuLadder, talkToTimfrakuStart));
+		allSteps.add(new PanelDetails("Gathering quest materials", fishKarambwaji, goToLubufu, getMoreVessel, fillVessel,
+			getBananaRum, makeBananaRum));
+		allSteps.add(new PanelDetails("Helping the three brothers", defaultStep, talkToTiadeche1, getJogreBones, getMonkeyCorpse,
+			talkToTamayu1, cookKarambwan, cookBones, talkToTamayu2, makeSeaweedSandwich, talkToTinsay, talkToTinsay1, talkToTinsay2,
+			talkToTinsay3, goToTiadecheFinal));
+		allSteps.add(new PanelDetails("Finishing the quest", goToTimfrakuLadderEnd, talkToTimfrakuEnd));
 		return allSteps;
 	}
 }

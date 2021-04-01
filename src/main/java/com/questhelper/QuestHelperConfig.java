@@ -157,7 +157,15 @@ public interface QuestHelperConfig extends Config
 	{
 		return true;
 	}
-	
+
+	@ConfigItem(
+			keyName = "solvePuzzles",
+			name = "Show Puzzle Solutions",
+			description = "Shows the solutions to quest puzzles."
+	)
+
+	default boolean solvePuzzles() { return true; }
+
 	@ConfigSection(
 		position = 1,
 		name = "Colors",

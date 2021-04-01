@@ -328,7 +328,8 @@ public class TowerOfLife extends BasicQuestHelper
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2
 		);
 		calibratePressureMachine = new ObjectStep(this, ObjectID.PRESSURE_MACHINE, new WorldPoint(2649, 3223, 1), "Calibrate the Pressure Machine");
-		solvePressureMachinePuzzle = new PuzzleStep(this, "Click the wheels to calibrate the machine", new PuzzleSolver(client)::pressureSolver);
+		if (config.solvePuzzles()) solvePressureMachinePuzzle = new PuzzleStep(this, "Click the wheels to calibrate the machine", new PuzzleSolver(client)::pressureSolver);
+		else solvePressureMachinePuzzle = new PuzzleStep(this, "Solve the puzzle, If you'd like the solution enable puzzle solutions in the plugin settings.", null);
 
 		fixPressureMachine = new ConditionalStep(this, fixPressureMachineGetSheets);
 		fixPressureMachine.addStep(isPressureMachineBuilt, solvePressureMachinePuzzle);
@@ -351,8 +352,8 @@ public class TowerOfLife extends BasicQuestHelper
 		buildPipeMachine.addDialogStep("Yes");
 		buildPipeMachine.addSubSteps(fixPipeMachineGetPipes, fixPipeMachineGetRings, fixPipeMachineGetRivets,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);
-		solvePipeMachinePuzzle = new PuzzleStep(this, "Calibrate the pipe machine. Select pipe pieces on the right side of the UI to see where to put them", new PuzzleSolver(client)::pipeSolver);
-
+		if (config.solvePuzzles()) solvePipeMachinePuzzle = new PuzzleStep(this, "Calibrate the pipe machine. Select pipe pieces on the right side of the UI to see where to put them", new PuzzleSolver(client)::pipeSolver);
+		else solvePipeMachinePuzzle = new PuzzleStep(this, "Solve the puzzle, If you'd like the solution enable puzzle solutions in the plugin settings.", null);
 		fixPipeMachine = new ConditionalStep(this, fixPipeMachineGetPipes);
 		fixPipeMachine.addStep(isPipeMachineBuilt, solvePipeMachinePuzzle);
 		fixPipeMachine.addStep(new Conditions(hasAllPipeItems, inTowerFloor2), buildPipeMachine);
@@ -374,7 +375,8 @@ public class TowerOfLife extends BasicQuestHelper
 		buildCage.addDialogStep("Yes");
 		buildCage.addSubSteps(fixCageGetBars, fixCageGetFluid,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);
-		solveCagePuzzle = new PuzzleStep(this, "Assemble the cage", new PuzzleSolver(client)::cageSolver);
+		if (config.solvePuzzles()) solveCagePuzzle = new PuzzleStep(this, "Assemble the cage", new PuzzleSolver(client)::cageSolver);
+		else solveCagePuzzle = new PuzzleStep(this, "Solve the puzzle, If you'd like the solution enable puzzle solutions in the plugin settings.", null);
 
 		fixCage = new ConditionalStep(this, fixCageGetBars);
 		fixCage.addStep(isCageBuilt, solveCagePuzzle);

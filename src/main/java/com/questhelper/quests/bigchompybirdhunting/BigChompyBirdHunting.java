@@ -67,8 +67,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	//Items Required
 	ItemRequirement axe, feathers, knife, hammer, chisel, wolfBones4, acheyLogs, chompy, bloatedToad, knifeHighlighted, feathersHighlighted,
 		shaftsHighlighted, wolfBonesHighlighted, tipsHighlighted, flightedArrowsHighlighted, emptyBellow, fullBellow, ogreArrows6Highlighted,
-		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted,
-		seasonedChompy, bellow;
+		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted, seasonedChompy,
+		seasonedChompyHighlighted, bellow;
 
 	Requirement inCave, hasLogs, hasShafts, hasFlightedShafts, hasTips, hasArrows, hasFullBellow, hasBloatedToad,
 		hasOgreBow, chompyNearby, deadChompyNearby, rantzWantsOnion, rantzWantsPotato, knowWhatRantzWants, bugsWantsEqua,
@@ -209,6 +209,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE);
 
 		seasonedChompy = new ItemRequirement("Seasoned chompy", ItemID.SEASONED_CHOMPY);
+		seasonedChompyHighlighted = new ItemRequirement("Seasoned chompy", ItemID.SEASONED_CHOMPY);
+		seasonedChompyHighlighted.setHighlightInInventory(true);
 	}
 
 	public void loadZones()
@@ -312,7 +314,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		cookChompy = new ObjectStep(this, NullObjectID.NULL_6895, new WorldPoint(2631, 2990, 0), "Cook the chompy on Rantz's spit-roast.", chompyHighlighted);
 		cookChompy.addIcon(ItemID.RAW_CHOMPY);
 
-		giveRantzSeasonedChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Bring Rantz the seasoned chompy to finish the quest.", seasonedChompy);
+		giveRantzSeasonedChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Bring Rantz the seasoned chompy to finish the quest.", seasonedChompyHighlighted);
+		giveRantzSeasonedChompy.addIcon(ItemID.SEASONED_CHOMPY);
 	}
 
 	@Override

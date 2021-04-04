@@ -238,7 +238,6 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		superCompost = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
-		superCompost.addAlternates(ItemID.ULTRACOMPOST);
 		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGout.setTooltip("You can get more from Murcaily");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -253,7 +252,6 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE);
 		spadeHighlight.setHighlightInInventory(true);
 		superCompostHighlight = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
-		superCompostHighlight.addAlternates(ItemID.ULTRACOMPOST);
 		superCompostHighlight.setHighlightInInventory(true);
 		hardyGoutHighlight = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGoutHighlight.setTooltip("You can get more from Murcaily");
@@ -262,9 +260,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		plantCureHighlight.setHighlightInInventory(true);
 
 		supercompost7 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 7);
-		supercompost7.addAlternates(ItemID.ULTRACOMPOST);
 		superCompost8 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 8);
-		superCompost8.addAlternates(ItemID.ULTRACOMPOST);
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 
 		cureOrCompost = new ItemRequirement("Either super/ultra compost, or a plant cure", ItemID.PLANT_CURE);

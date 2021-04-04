@@ -42,7 +42,6 @@ public class AddCompost extends ObjectStep
 	{
 		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0), "Add 7 supercompost on My Arm's soil patch.");
 		this.addIcon(ItemID.SUPERCOMPOST);
-		compost.addAlternates(ItemID.ULTRACOMPOST);
 		compost.setHighlightInInventory(true);
 	}
 

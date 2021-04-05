@@ -121,7 +121,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			useVesselOnTinsay);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, hadMarinated, hadSeaweedSandwich),
 			talkToTinsay);
-		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeyCorpse),
+		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, haveMonkeySkin),
 			makeSeaweedSandwich);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeyCorpse), useCorpseOnTamayu);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated,
@@ -316,7 +316,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		cookBones.addIcon(ItemID.PASTY_JOGRE_BONES);
 
 		useCorpseOnTamayu = new NpcStep(this, NpcID.TAMAYU, new WorldPoint(2845, 3041, 0),
-			"Use your monkey corpse on him to have him skin it for you.", monkeyCorpse.highlighted());
+			"Use your monkey corpse on Tamayu to have him skin it for you.", monkeyCorpse.highlighted());
 		useCorpseOnTamayu.addIcon(ItemID.MONKEY_CORPSE);
 
 		makeSeaweedSandwich = new DetailedQuestStep(this, "Use your seaweed on your monkey skin to make a seaweed " +

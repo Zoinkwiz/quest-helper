@@ -67,8 +67,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	//Items Required
 	ItemRequirement axe, feathers, knife, hammer, chisel, wolfBones4, acheyLogs, chompy, bloatedToad, knifeHighlighted, feathersHighlighted,
 		shaftsHighlighted, wolfBonesHighlighted, tipsHighlighted, flightedArrowsHighlighted, emptyBellow, fullBellow, ogreArrows6Highlighted,
-		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted,
-		seasonedChompy, bellow;
+		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted, seasonedChompy,
+		seasonedChompyHighlighted, bellow;
 
 	Requirement inCave, hasLogs, hasShafts, hasFlightedShafts, hasTips, hasArrows, hasFullBellow, hasBloatedToad,
 		hasOgreBow, chompyNearby, deadChompyNearby, rantzWantsOnion, rantzWantsPotato, knowWhatRantzWants, bugsWantsEqua,
@@ -209,6 +209,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE);
 
 		seasonedChompy = new ItemRequirement("Seasoned chompy", ItemID.SEASONED_CHOMPY);
+		seasonedChompyHighlighted = new ItemRequirement("Seasoned chompy", ItemID.SEASONED_CHOMPY);
+		seasonedChompyHighlighted.setHighlightInInventory(true);
 	}
 
 	public void loadZones()
@@ -294,7 +296,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 
 		killChompy = new NpcStep(this, NpcID.CHOMPY_BIRD, new WorldPoint(2635, 2966, 0), "Kill the chompy. You can only hurt it with an ogre bow + ogre arrows.", ogreBow, ogreArrows);
 		pluckCarcass = new NpcStep(this, NpcID.CHOMPY_BIRD_1476, new WorldPoint(2635, 2966, 0), "Pluck the chompy.");
-		talkToRantzWithChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Talk to Rantz in the east of Feldip Hills.", chompy);
+		talkToRantzWithChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Pick up the chompy and use it on Rantz in the east of Feldip Hills.", chompyHighlighted);
+		talkToRantzWithChompy.addIcon(ItemID.RAW_CHOMPY);
 
 		enterCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3379, new WorldPoint(2630, 2999, 0), "Enter Rantz's cave.");
 		talkToFycie = new NpcStep(this, NpcID.FYCIE, new WorldPoint(2649, 9391, 0), "Talk to Fycie.");
@@ -312,7 +315,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		cookChompy = new ObjectStep(this, NullObjectID.NULL_6895, new WorldPoint(2631, 2990, 0), "Cook the chompy on Rantz's spit-roast.", chompyHighlighted);
 		cookChompy.addIcon(ItemID.RAW_CHOMPY);
 
-		giveRantzSeasonedChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Bring Rantz the seasoned chompy to finish the quest.", seasonedChompy);
+		giveRantzSeasonedChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Bring Rantz the seasoned chompy to finish the quest.", seasonedChompyHighlighted);
+		giveRantzSeasonedChompy.addIcon(ItemID.SEASONED_CHOMPY);
 	}
 
 	@Override

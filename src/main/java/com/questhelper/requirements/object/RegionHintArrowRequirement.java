@@ -22,58 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements.npc;
+package com.questhelper.requirements.object;
 
 import com.questhelper.Zone;
-import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.SimpleRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import java.util.Arrays;
-import java.util.List;
+import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 
-public class NpcHintArrowRequirement extends SimpleRequirement
+public class RegionHintArrowRequirement extends SimpleRequirement
 {
-	private final List<Integer> npcIDs;
-
 	private final Zone zone;
 
-	public NpcHintArrowRequirement(int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
-		this.zone = null;
-	}
-
-	public NpcHintArrowRequirement(WorldPoint worldPoint, int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
+	public RegionHintArrowRequirement(WorldPoint worldPoint)
+	{
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
-	public NpcHintArrowRequirement(Zone zone, int... npcIDs) {
-		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
+	public RegionHintArrowRequirement(Zone zone)
+	{
 		this.zone = zone;
 	}
 
 	public boolean check(Client client)
 	{
-		NPC currentNPC = client.getHintArrowNpc();
-		if (currentNPC == null)
-		{
-			return false;
-		}
-		WorldPoint wp = WorldPoint.fromLocalInstance(client, currentNPC.getLocalLocation());
-
-		if (zone != null && !zone.contains(wp))
+		WorldPoint hintArrowPoint = client.getHintArrowPoint();
+		if (hintArrowPoint == null)
 		{
 			return false;
 		}
 
-		if (npcIDs.contains(currentNPC.getId()))
+		WorldPoint wp = QuestPerspective.getInstanceWorldPoint(client, hintArrowPoint);
+		if (wp == null)
 		{
-			return true;
+			return false;
 		}
 
-		return false;
+		return zone.contains(wp);
 	}
 }

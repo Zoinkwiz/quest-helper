@@ -212,7 +212,11 @@ public enum QuestHelperQuest
 	FAMILY_PEST(329, "Family Pest", QuestVarbits.QUEST_FAMILY_PEST, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 	THE_MAGE_ARENA_II(330, "The Mage Arena II", QuestVarbits.QUEST_THE_MAGE_ARENA_II, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge", QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	DADDYS_HOME(1688, "Daddy's Home", QuestVarbits.QUEST_DADDYS_HOME, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST);
+	DADDYS_HOME(1688, "Daddy's Home", QuestVarbits.QUEST_DADDYS_HOME, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
+
+	//Achievement diary
+	KARAMJA_EASY("Easy Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 10, Quest.Type.ACHIEVEMENT_DIARY,
+		Quest.Difficulty.ACHIEVEMENT_DIARY);
 
 	@Getter
 	private final int id;
@@ -233,6 +237,8 @@ public enum QuestHelperQuest
 
 	private final QuestVarPlayer varPlayer;
 
+	private final int completeValue;
+
 	QuestHelperQuest(int id, String name, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
 	{
 		this.id = id;
@@ -242,6 +248,7 @@ public enum QuestHelperQuest
 		this.varPlayer = null;
 		this.questType = questType;
 		this.difficulty = difficulty;
+		this.completeValue = -1;
 	}
 
 	QuestHelperQuest(int id, String name, QuestVarPlayer varPlayer, Quest.Type questType, Quest.Difficulty difficulty)
@@ -253,6 +260,7 @@ public enum QuestHelperQuest
 		this.varPlayer = varPlayer;
 		this.questType = questType;
 		this.difficulty = difficulty;
+		this.completeValue = -1;
 	}
 
 	QuestHelperQuest(int id, String name, List<String> keywords, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
@@ -264,17 +272,19 @@ public enum QuestHelperQuest
 		this.varPlayer = null;
 		this.questType = questType;
 		this.difficulty = difficulty;
+		this.completeValue = -1;
 	}
 
-	QuestHelperQuest(int id, String name, List<String> keywords, QuestVarPlayer varPlayer, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(String name, QuestVarbits varbit, int completeValue, Quest.Type questType, Quest.Difficulty difficulty)
 	{
-		this.id = id;
+		this.id = -1;
 		this.name = name;
-		this.keywords = Stream.concat(titleToKeywords(name).stream(), keywords.stream()).collect(Collectors.toList());
-		this.varbit = null;
-		this.varPlayer = varPlayer;
+		this.keywords = titleToKeywords(name);
+		this.varbit = varbit;
+		this.varPlayer = null;
 		this.questType = questType;
 		this.difficulty = difficulty;
+		this.completeValue = completeValue;
 	}
 
 	private List<String> titleToKeywords(String title)
@@ -284,6 +294,20 @@ public enum QuestHelperQuest
 
 	public QuestState getState(Client client)
 	{
+		if (completeValue != -1)
+		{
+			int currentState = client.getVarbitValue(varbit.getId());
+			if (currentState == completeValue)
+			{
+				return  QuestState.FINISHED;
+			}
+			if (currentState == 0)
+			{
+				return QuestState.NOT_STARTED;
+			}
+			return QuestState.IN_PROGRESS;
+		}
+
 		client.runScript(ScriptID.QUEST_STATUS_GET, id);
 		switch (client.getIntStack()[0])
 		{

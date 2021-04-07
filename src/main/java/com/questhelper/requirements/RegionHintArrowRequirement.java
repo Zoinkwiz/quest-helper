@@ -25,7 +25,6 @@
 package com.questhelper.requirements;
 
 import com.questhelper.Zone;
-import com.questhelper.requirements.SimpleRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;

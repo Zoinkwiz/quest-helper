@@ -26,6 +26,7 @@
 
 package com.questhelper.questhelpers;
 
+import com.questhelper.QuestHelperQuest;
 import java.util.function.Predicate;
 
 public interface Quest
@@ -36,7 +37,7 @@ public interface Quest
 	}
 
 	/**
-	 * Describes the difficulty of a {@link com.questhelper.QuestHelperQuest}
+	 * Describes the difficulty of a {@link QuestHelperQuest}
 	 */
 	public enum Difficulty implements Predicate<QuestHelper>
 	{
@@ -47,6 +48,7 @@ public interface Quest
 		MASTER,
 		GRANDMASTER,
 		MINIQUEST,
+		ACHIEVEMENT_DIARY,
 		;
 
 		@Override
@@ -64,6 +66,7 @@ public interface Quest
 		F2P,
 		P2P,
 		MINIQUEST,
+		ACHIEVEMENT_DIARY,
 		;
 
 		@Override

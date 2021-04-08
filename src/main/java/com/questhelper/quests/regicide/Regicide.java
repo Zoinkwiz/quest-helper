@@ -75,7 +75,7 @@ public class Regicide extends BasicQuestHelper
 		barrelBombFused, barrelBombUnfused, iorwerthsMessage;
 
 	//Items Recommended
-	ItemRequirement food, staminaPotions, coins, antipoisons, faladorTeleport, westArdougneTeleport, summerPie;
+	ItemRequirement food, staminaPotions, coins, antipoisons, faladorTeleport, westArdougneTeleport, summerPie, axe;
 
 	Requirement inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
 		isBeforeBridge, isNorthEastOfBridge, haveOilyCloth, haveFireArrow, haveLitArrow, haveLitArrowEquipped,
@@ -247,7 +247,8 @@ public class Regicide extends BasicQuestHelper
 		limestone = new ItemRequirement("Limestone", ItemID.LIMESTONE);
 		limestone.setTooltip("You can mine some in the mine north of the Digsite");
 		stripOfCloth = new ItemRequirement("Strip of cloth", ItemID.STRIP_OF_CLOTH);
-		stripOfCloth.setTooltip("Made on a loom with 4 balls of wool");
+		stripOfCloth.setTooltip("Made on a loom with 4 balls of wool.");
+		stripOfCloth.appendToTooltip("There is a loom available at the Falador Farm");
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemID.LEATHER_GLOVES);
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
@@ -255,12 +256,14 @@ public class Regicide extends BasicQuestHelper
 			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
 		gloves.setTooltip("The following gloves are valid:");
 		gloves.appendToTooltip("All RFD Gloves");
-		gloves.appendToTooltip("Hard Leather Gloves");
+		gloves.appendToTooltip("Leather Gloves");
 		gloves.appendToTooltip("Ferocious Gloves");
 		gloves.appendToTooltip("Graceful Gloves");
 		gloves.appendToTooltip("Granite Gloves");
 		pot = new ItemRequirement("Pot", ItemID.POT);
-		cookedRabbit =  new ItemRequirement("Cooked rabbit", ItemID.COOKED_RABBIT);
+		cookedRabbit =  new ItemRequirement("Cooked rabbit (Obtainable during quest)", ItemID.COOKED_RABBIT);
+		cookedRabbit.setTooltip("Raw Rabbit can be killed around Isafdar or purchased from the");
+		cookedRabbit.appendToTooltip(" Charter Ship near the Tyras Camp for 50gp.");
 
 		antipoisons = new ItemRequirement("Antidotes/antipoisons", ItemCollections.getAntipoisons(), -1);
 		antipoisons.setTooltip("No amount specified. Bring as many doses as you feel comfortable bringing.");
@@ -269,6 +272,7 @@ public class Regicide extends BasicQuestHelper
 		summerPie = new ItemRequirement("Summer pie as food + agility boost", ItemID.SUMMER_PIE, -1);
 		summerPie.addAlternates(ItemID.HALF_A_SUMMER_PIE);
 		summerPie.setTooltip("This is, most likely, not needed if you have 70+ Agility. Bring more if you have lower Agility.");
+		axe = new ItemRequirement("An Axe to cook raw rabbit in case you fail too many obstacles.", ItemCollections.getAxes(), 1);
 
 		crystalPendant = new ItemRequirement("Crystal pendant", ItemID.CRYSTAL_PENDANT);
 		crystalPendant.setTooltip("You can get another from Lord Iorwerth");

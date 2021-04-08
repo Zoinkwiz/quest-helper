@@ -31,6 +31,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
@@ -262,15 +263,23 @@ public class TheFeud extends BasicQuestHelper
 		talkToAliTheKebabSalesman.addDialogStep("No thanks, I'm good.");
 
 		getBucket = new DetailedQuestStep(this, new WorldPoint(3346, 2966, 0), "Pick up a bucket to grab the dung with.");
+
+		ObjectCondition dungNearby = new ObjectCondition(ObjectID.DUNG);
+		ItemRequirement bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		ObjectStep pickupDung = new ObjectStep(this, ObjectID.DUNG,
+			"Use the bucket on the dung.", bucket.highlighted());
+		pickupDung.addIcon(ItemID.BUCKET);
+
 		getDung = new ObjectStep(this, ObjectID.TROUGH_6256, new WorldPoint(3343, 2960, 0), "Use the Red Hot Sauce on the Trough and wait for a Camel to poop out the dung.\n Only pickup brown/Ugthanki dung, if you plan to do \"My Arm's Big Adventure\" or \"Forgettable Tale of a Drunken Dwarf\" then you may want to grab four more Ugthanki dung.",
 			redHotSauce);
-		getDung.addSubSteps(getBucket);
+		getDung.addSubSteps(getBucket, pickupDung);
 		getDung.addIcon(ItemID.RED_HOT_SAUCE);
 		givenDungToHag = talkToAliTheHagStep("Talk to Ali the Hag and give her your dung.", dung);
 
 		ConditionalStep conditionalStep = new ConditionalStep(this, talkToAliTheKebabSalesman);
 
 		conditionalStep.addStep(new Conditions(givenPoisonToHag, hasDungInInventory), givenDungToHag);
+		conditionalStep.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, hasBucket, dungNearby), pickupDung);
 		conditionalStep.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, hasBucket), getDung);
 		conditionalStep.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, doesNotHaveBucket), getBucket);
 		return conditionalStep;

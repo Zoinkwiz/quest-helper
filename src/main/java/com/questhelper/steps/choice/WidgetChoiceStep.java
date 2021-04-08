@@ -42,15 +42,15 @@ public class WidgetChoiceStep
 	@Getter
 	private final String choice;
 
-	private List<String> excludedStrings;
-	private int excludedGroupId;
-	private int excludedChildId;
+	protected List<String> excludedStrings;
+	protected int excludedGroupId;
+	protected int excludedChildId;
 
 	private final int choiceById;
 
 	@Getter
-	private final int groupId;
-	private final int childId;
+	protected final int groupId;
+	protected final int childId;
 
 	protected boolean shouldNumber = false;
 
@@ -129,7 +129,7 @@ public class WidgetChoiceStep
 		}
 	}
 
-	private void checkWidgets(Widget[] choices)
+	protected void checkWidgets(Widget[] choices)
 	{
 		if (choices != null && choices.length > 0)
 		{

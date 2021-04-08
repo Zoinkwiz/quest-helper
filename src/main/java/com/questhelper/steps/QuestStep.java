@@ -36,6 +36,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.choice.DialogChoiceChange;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
+import com.questhelper.steps.choice.WidgetTextChange;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
 import com.questhelper.steps.overlay.IconOverlay;
@@ -304,6 +305,11 @@ public abstract class QuestStep implements Module
 	public void addWidgetChoice(int id, int groupID, int childID)
 	{
 		widgetChoices.addChoice(new WidgetChoiceStep(questHelper.getConfig(), id, groupID, childID));
+	}
+
+	public void addWidgetChange(String choice, int groupID, int childID, String newText)
+	{
+		widgetChoices.addChoice(new WidgetTextChange(questHelper.getConfig(), choice, groupID, childID, newText));
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)

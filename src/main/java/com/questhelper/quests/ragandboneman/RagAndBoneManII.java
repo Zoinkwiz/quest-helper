@@ -210,16 +210,6 @@ public class RagAndBoneManII extends BasicQuestHelper
 		return steps;
 	}
 
-	private Conditions nor(Requirement... req)
-	{
-		return new Conditions(LogicType.NOR, req);
-	}
-
-	private Conditions nor(Conditions req)
-	{
-		return new Conditions(LogicType.NOR, req);
-	}
-
 	private void setupRequirements()
 	{
 		// Required items

@@ -335,6 +335,7 @@ public class TheFeud extends BasicQuestHelper
 		talkToCamelman.addDialogStep("What price do you want for both of them?");
 		talkToCamelman.addDialogStep("Would 500 gold coins for the pair of them do?");
 
+
 		//Step 4
 		//Return Camels
 		talkToBanditReturnedCamel = new NpcStep(this, NpcID.BANDIT_734, new WorldPoint(3362, 2993, 0),"Tell the bandits that the Menaphites have agreed to return the camel.", true);

@@ -255,6 +255,12 @@ public class TheMageArenaII extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("An upgraded God Cloak");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

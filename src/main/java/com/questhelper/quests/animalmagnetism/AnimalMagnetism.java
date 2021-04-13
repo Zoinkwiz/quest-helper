@@ -293,6 +293,12 @@ public class AnimalMagnetism extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,000 Crafting Experience", "1,000 Fletching Experience", "1,000 Slayer Experience", "2,500 Woodcutting Experience", "</br>", "Ava's Device");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

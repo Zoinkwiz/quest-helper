@@ -778,6 +778,12 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "7,000 Agility Experience", "6,000 Thieving Experience", "2,000 Construction Experience", "</br>", "3 x 2,000 Experience Tomes (Any Skill over level 30).");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

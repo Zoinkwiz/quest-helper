@@ -225,6 +225,12 @@ public class TheForsakenTower extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "500 Mining Experience", "500 Smithing Experience", "</br>", "6,000 Coins", "Lovakengj favour certificate.", "A page for Kharedst's memoirs.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

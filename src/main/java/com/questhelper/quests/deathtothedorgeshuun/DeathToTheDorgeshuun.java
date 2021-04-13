@@ -504,6 +504,12 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "2,000 Thieving Experience", "2,000 Ranging Experience", "</br>", "Unlocked Dorgeshuun Special Attacks.", "Access to H.A.M. Store Rooms.", "Access to Dorgesh-Kann");
+	}
+
+	@Override
 	public List<String> getNotes()
 	{
 		return Collections.singletonList("If you plan on getting the H.A.M. robes yourself rather than buying them, make sure to do so after starting the quest. The drop rate for robes is considerably increased during the quest.");

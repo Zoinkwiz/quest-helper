@@ -284,6 +284,12 @@ public class WaterfallQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "13,750 Strength Experience", "13,750 Attack Experience", "</br>", "2 x Diamonds", "2 x Gold Bars", "40 x Mithril Seeds");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

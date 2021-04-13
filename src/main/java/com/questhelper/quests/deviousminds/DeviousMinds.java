@@ -219,6 +219,12 @@ public class DeviousMinds extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "5,000 Fletching Experience", "5,000 Runecrafting Experience", "6,500 Smithing Experience");
+	}
+
+	@Override
 	public List<String> getNotes()
 	{
 		return Arrays.asList("You will need to enter the Wilderness briefly during the " +

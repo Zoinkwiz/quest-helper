@@ -841,6 +841,12 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2 x 10,000 Experience Lamps (Any skill over 30).", "</br>", "A steel keyring.", "The ability to make Guthix Rest tea.", "Gnome Glider in Feldip Hills.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

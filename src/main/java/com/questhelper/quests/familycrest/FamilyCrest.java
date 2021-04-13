@@ -328,6 +328,12 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "A pair of Steel Gauntlets.", "</br>", "For 25k Steel Gauntlets can be turned into:", "Cooking Gauntlets (Caleb)", "Goldsmith Gauntlets (Avan)", "Chaos Gauntlets (Johnathon)");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

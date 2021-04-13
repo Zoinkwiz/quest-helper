@@ -1428,6 +1428,12 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("4 Quest Point", "</br>", "20,000 Agility Experience", "20,000 Contruction Experience", "20,000 Farming Experience", "20,000 Herblore Experience", "20,000 Mining Experience", "20,000 Smithing Experience", "20,000 Woodcutting Experience", "</br>", "Access to Prifddinas:", "</br>", "Ability to fight Zalcano", "Access to The Gauntlet", "Access to Trahaearn Mine.", "Access to Iorwerth Dungeon.", "Ability to respawn at Prifddinas.", "Ability to move POH to Prifddinas.", "Prifddinas Teleport added to Crystal Teleport Seed.", "Ability to make Divine Potions", "Ability to make crystal tools, weapons and armor.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels() {
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, talkToAlrena,

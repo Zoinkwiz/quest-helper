@@ -321,6 +321,12 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("5,000 Slayer Experience", "</br>", "Tarn's Diary, granting the ability to enchant Salve Amulets.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

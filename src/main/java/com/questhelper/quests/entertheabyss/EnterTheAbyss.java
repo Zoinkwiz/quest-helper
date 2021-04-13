@@ -181,6 +181,12 @@ public class EnterTheAbyss extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1,000 Runecrafting Experience", "</br>", "Ability to enter the Abyss.", "A small pouch.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

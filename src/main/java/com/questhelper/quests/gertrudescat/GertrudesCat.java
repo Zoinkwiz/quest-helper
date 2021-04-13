@@ -240,6 +240,12 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,525 Cooking Experience", "</br>", "A Kitten", "Chocolate Cake", "Stew", "Ability to buy and train kittens.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();

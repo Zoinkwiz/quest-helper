@@ -380,6 +380,12 @@ public class FairytaleII extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "3,500 Herblore Experience", "2,500 Thieving Experience", "2 x 2,500 Experience Lamps (Any Skill over level 30).", "</br>", "Access to Fairy Ring Network", "Access to Fairy Fixit's Fairy Enhancement Shop.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

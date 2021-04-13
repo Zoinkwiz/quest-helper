@@ -27,9 +27,9 @@ package com.questhelper.quests.sheepshearer;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.NpcStep;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -37,9 +37,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SHEEP_SHEARER
@@ -140,6 +137,12 @@ public class SheepShearer extends BasicQuestHelper
 		reqs.add(twentyBallsOfWool);
 		reqs.add(shears);
 		return reqs;
+	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "150 Crafting Experience", "</br>", "60 Coins");
 	}
 
 	@Override

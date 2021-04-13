@@ -470,6 +470,12 @@ public class MourningsEndPartI extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "25,000 Thieving Experience", "25,000 Hitpoints Experience", "</br>", "Elf Teleport Crystal", "Access to the Mourner HQ");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

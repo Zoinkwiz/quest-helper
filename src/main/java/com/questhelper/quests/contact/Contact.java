@@ -271,6 +271,12 @@ public class Contact extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "7,000 Thieving Experience", "2x 7,000 Experience Lamps (Combat Skills)", "</br>", "Keris", "Access to Sophanem's Bank.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

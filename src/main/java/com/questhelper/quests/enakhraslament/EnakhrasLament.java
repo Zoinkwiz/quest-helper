@@ -500,6 +500,12 @@ public class EnakhrasLament extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "7,000 Crafting Experience", "7,000 Mining Experience", "7,000 Firemaking Experience", "7,000 Magic Experience", "</br>", "Akthanakos's Camulet");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

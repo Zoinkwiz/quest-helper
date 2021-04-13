@@ -568,6 +568,12 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "5,000 Cooking Experience", "5,000 Fishing Experience", "2,500 Attack Experience", "2,500 Strength Experience", "</br>", "2,000 Coins", "Ability to catch and cook Karambwans.", "Ability to use Tai bwo wannai teleport scrolls.", "Ability to complete the Smithing Section of Barbarian Training.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

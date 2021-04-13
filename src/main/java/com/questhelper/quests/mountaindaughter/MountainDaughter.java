@@ -400,6 +400,12 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "1,000 Attack Experience", "2,000 Prayer Experience", "</br>", "A Bearhead", "Access to The Mountain Camp.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -461,6 +461,12 @@ public class TowerOfLife extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "1,000 Construction Experience", "500 Crafting Experience", "500 Thieving Experience", "</br>", "Access to Creature Creation", "Builders Costume");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

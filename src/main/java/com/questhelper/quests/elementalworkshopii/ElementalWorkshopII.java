@@ -634,6 +634,12 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "7,500 Crafting Experience", "7,500 Smithing Experience", "</br>", "A Mind Helmet.", "Ability to make and equip Elemental Mind equipment.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

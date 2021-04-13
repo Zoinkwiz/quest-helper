@@ -69,6 +69,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questItemRecommendedListPanel = new JPanel();
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
 	private final JPanel questOverviewNotesPanel = new JPanel();
+	private final JPanel questRewardPanel = new JPanel();
 	private final JPanel externalQuestResourcesPanel = new JPanel();
 
 	private final JPanel questGeneralRequirementsHeader = new JPanel();
@@ -76,6 +77,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questItemRequirementsHeader = new JPanel();
 	private final JPanel questCombatRequirementHeader = new JPanel();
 	private final JPanel questItemRecommendedHeader = new JPanel();
+	private final JPanel questRewardHeader = new JPanel();
 	private final JPanel questNoteHeader = new JPanel();
 	private final JPanel externalQuestResourcesHeader = new JPanel();
 
@@ -152,6 +154,7 @@ public class QuestOverviewPanel extends JPanel
 			"Recommended items:"));
 		overviewPanel.add(generateRequirementPanel(questCombatRequirementsListPanel, questCombatRequirementHeader,
 			"Enemies to defeat:"));
+		overviewPanel.add(generateRequirementPanel(questRewardPanel, questRewardHeader, "Rewards:"));
 		overviewPanel.add(generateRequirementPanel(questOverviewNotesPanel, questNoteHeader, "Notes:"));
 		overviewPanel.add(generateRequirementPanel(externalQuestResourcesPanel, externalQuestResourcesHeader , "External Resources:"));
 
@@ -311,6 +314,7 @@ public class QuestOverviewPanel extends JPanel
 		questItemRequirementsListPanel.removeAll();
 		questItemRecommendedListPanel.removeAll();
 		questCombatRequirementsListPanel.removeAll();
+		questRewardPanel.removeAll();
 		currentQuest = null;
 		questOverviewNotesPanel.removeAll();
 		repaint();
@@ -350,6 +354,9 @@ public class QuestOverviewPanel extends JPanel
 
 		/* Combat requirements */
 		updateCombatRequirementsPanels(quest.getCombatRequirements());
+
+		/* Quest Rewards */
+		updateQuestRewardPanels(quest.getQuestRewards());
 
 		/* External Resources */
 		updateExternalResourcesPanel(quest);
@@ -491,6 +498,28 @@ public class QuestOverviewPanel extends JPanel
 			questNoteHeader.setVisible(false);
 			questOverviewNotesPanel.setVisible(false);
 		}
+	}
+
+	private void updateQuestRewardPanels(List<String> rewards)
+	{
+		JLabel rewardLabel = new JLabel();
+		rewardLabel.setForeground(Color.GRAY);
+		StringBuilder textReward = new StringBuilder();
+		if (rewards == null)
+		{
+			textReward.append("This should not be blank and should show quest rewards. If you are seeing this message, please report it on Discord! :)");
+		}
+		else
+		{
+			for (String reward : rewards)
+			{
+				textReward.append(reward);
+				textReward.append("<br>");
+			}
+		}
+		rewardLabel.setText("<html><body style = 'text-align:left'>" + textReward + "</body></html>");
+
+		questRewardPanel.add(rewardLabel);
 	}
 
 	@Override

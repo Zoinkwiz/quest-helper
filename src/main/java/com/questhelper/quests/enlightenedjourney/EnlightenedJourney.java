@@ -246,6 +246,12 @@ public class EnlightenedJourney extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "2,000 Crafting Experience", "3,000 Farming Experience", "1,500 Woodcutting Experience", "4,000 Firemaking Experience", "</br>", "Bomber Jacket & Cap.", "Access to Hot Air Balloon transport system.", "Ability to make origami balloons.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

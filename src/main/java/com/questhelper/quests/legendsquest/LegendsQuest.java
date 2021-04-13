@@ -943,6 +943,12 @@ public class LegendsQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("4 Quest Points", "</br>", "4 x 7650 Experience Lamps (Choice of Attack, Defence, Strength, Hitpoints, Prayer, Magic, Woodcutting, Crafting, Smithing, Herblore, Agility, Thieving.)");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

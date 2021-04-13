@@ -382,6 +382,12 @@ public class DreamMentor extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "15,000 Hitpoints Experience", "10,000 Magic Experience", "15,000 Experience Lamp (Combat, No Prayer or Attack)", "</br>", "Unlocked 7 New Lunar Spells.", "Can now bank with 'Birds-Eye' Jack without a seal of passage.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

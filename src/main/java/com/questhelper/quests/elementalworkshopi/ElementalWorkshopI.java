@@ -317,6 +317,12 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "5,000 Crafting Experience", "5,000 Smithing Experience", "</br>", "An Elemental Shield.", "Access to the Elemental Workshop.", "Ability to craft and wield elemental shields.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

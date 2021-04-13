@@ -176,6 +176,12 @@ public class RFDFinal extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "20,000 Experience Lamp (Any Skill over level 50)", "</br>", "Full access to the Culinaromancer's Chest");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

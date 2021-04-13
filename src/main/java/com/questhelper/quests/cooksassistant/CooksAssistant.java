@@ -25,11 +25,9 @@
 package com.questhelper.quests.cooksassistant;
 
 import com.questhelper.QuestHelperQuest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -84,6 +82,12 @@ public class CooksAssistant extends BasicQuestHelper
 		reqs.add(flour);
 		reqs.add(milk);
 		return reqs;
+	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "300 Cooking Experience", "</br>", "Permission to use The Cook's range.");
 	}
 
 	@Override

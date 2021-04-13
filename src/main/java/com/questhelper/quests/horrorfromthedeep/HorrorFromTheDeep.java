@@ -331,6 +331,12 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "4,662 Magic Experience", "4,662 Strength Experience", "4,662 Ranged Experience", "</br>", "A damaged God Book of your choice.", "Access to The Lighthouse.", "Ability to get Dagannoth as a slayer task.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

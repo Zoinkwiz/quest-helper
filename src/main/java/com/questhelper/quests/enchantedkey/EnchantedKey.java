@@ -100,6 +100,12 @@ public class EnchantedKey extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("Saradomin Mjolnir", "Guthix Mjolnir", "Zamorak Mjolnir", "</br>", "Various Runes & Essence", "Various Ores", "Various Arrows & Tips");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

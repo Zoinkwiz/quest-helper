@@ -179,6 +179,12 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("A God Staff of your choosing", "A God Cloak of your choosing", "Ability to unlock the 3 God Spells");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

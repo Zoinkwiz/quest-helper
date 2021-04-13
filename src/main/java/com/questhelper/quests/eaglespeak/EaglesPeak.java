@@ -450,6 +450,12 @@ public class EaglesPeak extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2,500 Hunter Experience", "</br>", "Ability to use Box Traps.", "Ability to use Eagle Transport System.", "Ability to hunt rabbits.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

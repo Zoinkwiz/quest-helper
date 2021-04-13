@@ -508,6 +508,12 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "Ability to Manage Miscellania", "Ability to teleport to Miscellania using a Ring of Wealth");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

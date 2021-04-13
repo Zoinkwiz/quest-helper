@@ -275,6 +275,12 @@ public class MakingHistory extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "1,000 Crafting Experience", "1,000 Prayer Experience", "</br>",  "750 Coins", "An Enchanted Key");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

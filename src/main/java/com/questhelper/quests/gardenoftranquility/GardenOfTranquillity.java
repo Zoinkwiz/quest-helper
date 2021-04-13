@@ -606,6 +606,13 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		reqs.add(new SkillRequirement(Skill.FARMING, 25));
 		return reqs;
 	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "5,000 Farming Experience", "</br>", "Misc. Seeds", "Compost Potion (4)");
+	}
+
 	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{

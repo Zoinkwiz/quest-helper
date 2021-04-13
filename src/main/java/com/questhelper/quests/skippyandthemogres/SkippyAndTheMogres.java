@@ -135,6 +135,12 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("Ability to kill Mogres", "</br>", "Ability to recieve Mogres as a Slayer task.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

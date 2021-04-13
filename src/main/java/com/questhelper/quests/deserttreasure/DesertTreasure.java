@@ -572,6 +572,11 @@ public class DesertTreasure extends BasicQuestHelper
 		return Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions);
 	}
 
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "20,000 Magic Experience", "</br>", "Ability to use Ancient Magicks.", "Ring of Visibility", "Ability to purchase an Ancient Staff (One time only).", "Access to Smoke Dungeon");
+	}
 
 	@Override
 	public List<String> getCombatRequirements()

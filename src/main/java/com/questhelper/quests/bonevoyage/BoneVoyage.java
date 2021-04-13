@@ -274,6 +274,12 @@ public class BoneVoyage extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "Access to Fossil Island");
+	}
+
+	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		final int KUDOS_VARBIT = 3637;

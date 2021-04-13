@@ -919,6 +919,12 @@ public class LunarDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "5,000 Magic Experience", "5,000 Runecraft Experience", "</br>", "50 x Astral Runes", "</br>", "A Seal of Passage", "Lunar Equipment", "Access to Lunar Island.", "Access to the Lunar Spellbook.", "Access to the Astral Altar.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

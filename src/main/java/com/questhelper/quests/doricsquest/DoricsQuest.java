@@ -28,11 +28,9 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.steps.NpcStep;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
@@ -97,6 +95,12 @@ public class DoricsQuest extends BasicQuestHelper
 		reqs.add(copper);
 		reqs.add(iron);
 		return reqs;
+	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,300 Mining Experience", "</br>", "180 x Coins", "</br>", "Use of Doric's Anvils");
 	}
 
 	@Override

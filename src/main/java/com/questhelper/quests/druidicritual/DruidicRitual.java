@@ -180,6 +180,12 @@ public class DruidicRitual extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("4 Quest Points", "</br>", "250 Herblore Experience", "</br>", "Access to the Herblore Skill.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

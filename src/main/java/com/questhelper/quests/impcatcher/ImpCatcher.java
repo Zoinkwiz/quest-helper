@@ -25,11 +25,9 @@
 package com.questhelper.quests.impcatcher;
 
 import com.questhelper.QuestHelperQuest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -85,6 +83,12 @@ public class ImpCatcher extends BasicQuestHelper
 		reqs.add(yellowBead);
 
 		return reqs;
+	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "875 Magic Experience", "</br>", "An Amulet of Accuracy");
 	}
 
 	@Override

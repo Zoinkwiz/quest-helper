@@ -427,6 +427,12 @@ public class BetweenARock extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "5,000 Defence Experience", "5,000 Mining Experience", "5,000 Smithing Experience", "</br>", "Rune Pickaxe", "Ability to teleport to Dondakan's rock using a ring of wealth.", "Access to the Arzinian Mine");
+	}
+
+	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();

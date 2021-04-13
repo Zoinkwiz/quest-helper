@@ -20,11 +20,9 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -261,6 +259,12 @@ public class ScorpionCatcher extends BasicQuestHelper
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Collections.singletonList("The ability to run past level 172 black demons and level 64 poison spiders"));
+	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "6,625 Strength Experience", "</br>", "Ability to have Thormac turn a battlestaff into a mystic staff for 40,000 coins.");
 	}
 
 	@Override

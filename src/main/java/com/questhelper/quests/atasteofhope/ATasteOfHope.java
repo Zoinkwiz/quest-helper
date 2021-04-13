@@ -600,4 +600,10 @@ public class ATasteOfHope extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.SLAYER, 38));
 		return req;
 	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "Ivandis Flail", "Drakan's Medallion", "</br>", "3x 2,500 Experience Tomes (Any skill over 35).");
+	}
 }

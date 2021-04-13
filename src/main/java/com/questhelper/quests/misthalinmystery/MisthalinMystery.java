@@ -378,6 +378,12 @@ public class MisthalinMystery extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "600 Crafting Experience", "</br>", "Uncut Ruby", "Uncut Emerald", "Uncut Sapphire");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

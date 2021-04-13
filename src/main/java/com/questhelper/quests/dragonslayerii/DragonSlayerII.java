@@ -1133,6 +1133,12 @@ public class DragonSlayerII extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("5 Quest Points", "</br>", "25,000 Smithing Experience", "18,000 Mining Experience", "15,000 Agility Experience", "15,000 Thieving Experience", "4 x 25,000 Experience Tome (Any Combat Skill)", "</br>", "Access to the Myths Guild:", "A Locator Orb.", "Ability to make Super Antifire Potions.", "Access to Fountain of Uhld.", "Access to Wrath Altar.", "Ability to purchase Mythical Cape.", "Access to Adamant and Rune Dragons.", "Access to Vorkath.", "Ability to reforge the Dragon platebody and kiteshield.", "Ability to craft Ferocious gloves.", "Ability to further upgrade your Ava's device.", "Ability to teleport to Lithkren with the Digsite Pendant.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

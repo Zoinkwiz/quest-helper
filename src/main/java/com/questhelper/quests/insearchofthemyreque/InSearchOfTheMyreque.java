@@ -348,6 +348,12 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "600 Attack Experience", "600 Defence Experience", "600 Strength Experience", "600 Hitpoints Experience", "600 Crafting Experience", "</br>", "A quick route to Mor'ton");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

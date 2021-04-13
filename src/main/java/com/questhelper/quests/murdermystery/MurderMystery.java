@@ -307,6 +307,12 @@ public class MurderMystery extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "1,406 Crafting Experience", "</br>", "2,000 Coins");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

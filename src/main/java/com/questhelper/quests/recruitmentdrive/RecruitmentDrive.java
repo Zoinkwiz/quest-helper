@@ -385,6 +385,12 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,000 Prayer Experience", "1,000 Agility Experience", "1,000 Herblore Experience", "</br>", "Initiate Helm", "3000 Coins & A Makeover Voucher (If Male when starting Quest)", "</br>", "Ability to respawn at Falador.", "Access to Initiate Armor");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();

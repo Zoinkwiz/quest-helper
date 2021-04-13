@@ -192,6 +192,12 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("5 Quest Points", "</br>", "200 Crafting Experience", "</br>", "A Gold Bar");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

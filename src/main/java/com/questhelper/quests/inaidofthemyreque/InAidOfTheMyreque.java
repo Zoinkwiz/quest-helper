@@ -567,6 +567,12 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2,000 Attack Experience", "2,000 Strength Experience", "2,000 Crafting Experience", "2,000 Defence Experience", "</br>", "Access to Temple Trekking Minigame.", "Gadderhammer", "Ability to make the Rod of Ivandis.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

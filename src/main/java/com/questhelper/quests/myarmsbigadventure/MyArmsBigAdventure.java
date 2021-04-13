@@ -473,6 +473,12 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "10,000 Herblore Experience", "5,000 Farming Experience", "</br", "Access to a disease-free herb patch on top of the Troll Stronghold.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

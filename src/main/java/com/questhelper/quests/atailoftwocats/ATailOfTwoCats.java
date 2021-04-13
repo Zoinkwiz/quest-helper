@@ -230,6 +230,12 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2x 2,500 Experience Lamps (Any skill over level 30)", "</br>", "A Doctors or Nurses Hat", "A Mouse toy");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

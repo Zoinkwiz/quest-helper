@@ -285,6 +285,12 @@ public class TrollRomance extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "8,000 Agility Experience", "4,000 Strength Experience", "</br>", "1 x Diamond", "2 x Rubies", "4 x Emeralds", "A sled", "</br>", "Sledding route from Trollweiss Mountain");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -320,6 +320,12 @@ public class RFDPiratePete extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,000 Cooking Experience", "1,000 Crafting Experience", "1,000 Fishing Experience", "1,000 Smithing Experience", "</br>", "Diving apparatus", "Access to Mogre Camp", "Increased access to the Culinaromancer's Chest");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

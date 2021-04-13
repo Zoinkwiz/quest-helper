@@ -498,6 +498,12 @@ public class TheFremennikExiles extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "15,000 Slayer Experience", "15,000 Crafting Experience", "5,000 Runecrafting Experience", "</br>", "V's Shield", "</br>", "Access to the Isle of Stone.", "Ability to kill Basilisk Knights as a slayer task.", "Ability to craft and equip the Neitiznot faceguard.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

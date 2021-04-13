@@ -285,6 +285,12 @@ public class TheHandInTheSand extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Points", "</br>", "1,000 Thieving Experience", "9,000 Crafting Experience", "</br>", "Daily sand from Bert in Yanille", "Access to the Wizards Guild rune store.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

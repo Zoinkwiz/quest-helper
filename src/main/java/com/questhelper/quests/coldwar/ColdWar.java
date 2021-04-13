@@ -450,6 +450,12 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "2,000 Crafting Experience", "5,000 Agility Experience", "1,500 Construction Experience", "</br>", "The ability to create Penguin Suits.", "The ability to use the Penguin Agility Course.", "Ability to make more Bongo Drums.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

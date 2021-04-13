@@ -274,6 +274,11 @@ public class FishingContest extends BasicQuestHelper
 		return Arrays.asList(coins, redVineWorm, garlic, spade, fishingRod);
 	}
 
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "2,437 Fishing Experience", "</br>", "Access to the underground White Wolf Mountain passage.", "Ability to catch minnows in The Fishing Guild. (82 Fishing)");
+	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()

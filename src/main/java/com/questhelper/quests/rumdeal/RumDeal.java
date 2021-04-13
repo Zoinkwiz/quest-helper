@@ -445,6 +445,12 @@ public class RumDeal extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "7,000 Fishing Experience", "7,000 Prayer Experience", "7,000 Farming Experience", "</br>", "A Holy Wrench");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

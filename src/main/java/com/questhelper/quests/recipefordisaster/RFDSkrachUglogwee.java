@@ -254,6 +254,12 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,500 Woodcutting Experience", "1,500 Cooking Experience", "1,500 Crafting Experience", "1,500 Ranged Experience", "</br>", "New method of travel between Karamja and Feldip Hills.", "Further access to the Culinaromancer's Chest.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

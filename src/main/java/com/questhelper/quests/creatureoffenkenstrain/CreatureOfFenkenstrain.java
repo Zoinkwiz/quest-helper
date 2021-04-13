@@ -399,6 +399,12 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "1,000 Thieving Experience", "</br>", "Ring of Charos", "Access to Werewolf Agility Course.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

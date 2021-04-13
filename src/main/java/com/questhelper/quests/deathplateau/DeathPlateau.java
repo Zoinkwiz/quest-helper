@@ -310,6 +310,12 @@ public class DeathPlateau extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "3,000 Attack Experience", "</br>", "The ability to make claws.", "The ability to purchase and equip Climbing Boots.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

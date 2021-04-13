@@ -207,6 +207,12 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "600 Coins");
+	}
+
+	@Override
 	public boolean isCompleted()
 	{
 		boolean partComplete = super.isCompleted();

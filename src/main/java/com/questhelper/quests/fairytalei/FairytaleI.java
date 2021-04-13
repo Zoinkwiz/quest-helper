@@ -313,6 +313,12 @@ public class FairytaleI extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "3,500 Farming Experience", "2,000 Attack Experience", "1,000 Magic Experience", "</br>", "Magic Secateurs");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

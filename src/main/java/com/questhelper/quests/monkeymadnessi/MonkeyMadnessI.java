@@ -733,6 +733,12 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "55,000 Combat Experience", "</br>", "10,000 Coins", "3 Diamonds", "</br>", "Ability to buy and wield the Dragon Scimitar.", "Full Access to Ape Atoll.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

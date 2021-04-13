@@ -217,6 +217,12 @@ public class DwarfCannon extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "750 Crafting Experience", "</br>", "Ability to purchase and use the Drawf Multicannon.", "Ability to make cannonballs.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -445,6 +445,12 @@ public class GhostsAhoy extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2,400 Prayer Experience", "</br>", "Ectophial", "Free passage into Port Phasmatys");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

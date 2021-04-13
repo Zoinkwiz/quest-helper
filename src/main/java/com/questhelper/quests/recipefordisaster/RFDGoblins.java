@@ -43,6 +43,8 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -254,7 +256,12 @@ public class RFDGoblins extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.GOBLIN_DIPLOMACY, QuestState.FINISHED));
 
 		return reqs;
+	}
 
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,000 Cooking Experience", "1,000 Farming Experience", "1,000 Crafting Experience", "</br>", "Further access to the Culinaromancer's Chest");
 	}
 
 	@Override

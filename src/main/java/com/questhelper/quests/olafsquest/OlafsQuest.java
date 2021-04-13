@@ -296,6 +296,12 @@ public class OlafsQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "12,000 Defence Experience", "</br>", "20,000 Coins", "4 x Rubies", "</br>", "Access to Brine Rats and the ability to receive Brine Rats as a slayer task.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

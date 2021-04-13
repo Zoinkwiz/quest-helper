@@ -134,4 +134,10 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 			new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
 		return req;
 	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("10,000 Experience Lamp (Any skill over level 40).", "Xeric's Heart Teleport on Xeric's Talisman.");
+	}
 }

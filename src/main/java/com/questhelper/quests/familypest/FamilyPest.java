@@ -153,6 +153,12 @@ public class FamilyPest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("Ability to own all three Steel Gauntlets (Chaos, Cooking and Goldsmith Gauntlets) simultaneously.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

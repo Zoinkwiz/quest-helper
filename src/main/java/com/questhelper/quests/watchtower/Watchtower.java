@@ -640,6 +640,12 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("4 Quest Points", "</br>", "15,250 Magic Experience", "</br>", "5,000 Coins", "</br>", "Ability to use the Watchtower Teleport", "Access to the Ogre City, and Ogre Enclave");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

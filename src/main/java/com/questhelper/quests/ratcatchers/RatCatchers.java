@@ -487,6 +487,12 @@ public class RatCatchers extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "4,500 Thieving Experience", "</br>", "A Rat Pole", "Access to Rat Pits", "Ability to train Overgrown cats into Wily and Lazy Cats.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

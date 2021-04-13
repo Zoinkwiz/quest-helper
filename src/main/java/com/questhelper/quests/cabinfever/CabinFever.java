@@ -657,6 +657,12 @@ public class CabinFever extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "7,000 Smithing Experience", "7,000 Crafting Experience", "7,000 Agility Experience", "</br>", "The Little Book o' Piracy");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

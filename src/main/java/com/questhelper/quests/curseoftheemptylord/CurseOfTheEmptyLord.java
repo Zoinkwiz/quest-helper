@@ -263,6 +263,12 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("A Set of Ghostly Robes", "</br>", "10,000 Experience Lamp (Any skill over level 50).", "Experience Lamp can be claimed from Historian Minas in Varrock Museum.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

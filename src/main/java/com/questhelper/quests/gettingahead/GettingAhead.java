@@ -322,6 +322,12 @@ public class GettingAhead extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "4,000 Crafting Experience", "3,200 Construction Experience", "</br>", "3,000 Coins", "</br>", "Access to the tannery in Kebos Lowlands.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

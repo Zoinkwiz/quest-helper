@@ -953,6 +953,12 @@ public class ForgettableTale extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "5,000 Cooking Experience", "5,000 Farming Experience", "</br>", "2 x Dwarven Stout (m)");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

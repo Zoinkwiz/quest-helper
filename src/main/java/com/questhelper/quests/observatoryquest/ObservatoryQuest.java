@@ -230,6 +230,12 @@ public class ObservatoryQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2,250 Crafting Experience", "</br>", "A Reward depending on which constellation you observed.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

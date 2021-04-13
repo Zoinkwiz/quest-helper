@@ -246,6 +246,12 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2,000 Slayer Experience", "</br>", "The Shadow Sword.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

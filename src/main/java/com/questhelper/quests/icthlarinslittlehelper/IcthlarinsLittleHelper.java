@@ -432,6 +432,12 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "4,500 Thieving Experience", "4,000 Agility Experience", "4,000 Woodcutting Experience", "</br>", "Catspeak Amulet", "Access to the city of Sophanem.", "Ability to take carpet rides from Pollnivneach to Sophanem and Menaphos.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

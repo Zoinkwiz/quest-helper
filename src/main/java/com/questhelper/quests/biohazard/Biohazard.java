@@ -359,4 +359,10 @@ public class Biohazard extends BasicQuestHelper
 		requirements.add(new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.FINISHED));
 		return requirements;
 	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "1,250 Thieving XP");
+	}
 }

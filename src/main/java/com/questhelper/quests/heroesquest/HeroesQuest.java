@@ -476,6 +476,12 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "3,075 Attack Experience", "3,075 Defence Experience", "3,075 Strength Experience", "3,075 Hitpoints Experience", "2,075 Range Experience", "2,725 Fishing Experience", "2,825 Cooking Experience", "1,575 Woodcutting Experience", "1,575 Firemaking Experience", "2,257 Smithing Experience", "2,575 Mining Experience", "1,325 Herblore Experience", "</br>", "Access to the Heros Guild.", "Ability to use the Fountain of Rune.", "Ability to use Charge Dragonstone Jewellery scrolls.", "Ability to purchase and equip Dragon Battleaxes and Maces.");
+	}
+
+	@Override
 	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();

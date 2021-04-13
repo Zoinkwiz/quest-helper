@@ -384,6 +384,12 @@ public class GrimTales extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "4,000 Farming Experience", "5,000 Herblore Experience", "5,000 Hitpoints Experience", "14,000 Woodcutting Experience", "6,000 Agility Experience", "6,000 Thieving Experience", "</br>", "Dwarven Helmet");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

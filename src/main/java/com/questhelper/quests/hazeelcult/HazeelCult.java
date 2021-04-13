@@ -326,6 +326,12 @@ public class HazeelCult extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,500 Thieving Experience", "</br>", "2,000 Coins");
+	}
+
+	@Override
 	public List<String> getNotes()
 	{
 		return Collections.singletonList("If you sided with Hazeel and are being guided to help Ceril, just click the" +

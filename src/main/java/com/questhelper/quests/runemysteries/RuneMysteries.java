@@ -151,6 +151,12 @@ public class RuneMysteries extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "Air talisman", "</br>", "Ability to use Runecrafting Skill.", "Ability to mine Rune and Pure Essence");
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();

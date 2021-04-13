@@ -390,6 +390,12 @@ public class HauntedMine extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "22,000 Strength Experience", "</br>", "Ability to create the Salve Amulet.", "Access to Tarn's Lair");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

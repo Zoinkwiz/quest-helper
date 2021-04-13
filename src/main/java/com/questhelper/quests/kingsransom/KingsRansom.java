@@ -422,6 +422,12 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "33,000 Defence Experience", "5,000 Magic Experience", "5,000 Experience Lamp (Any skill over 50).");
+	}
+
+	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();

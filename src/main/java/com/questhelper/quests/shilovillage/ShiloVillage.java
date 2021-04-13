@@ -397,6 +397,12 @@ public class ShiloVillage extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Point", "</br>", "3,875 Crafting Experience", "</br>", "Access to Shilo Village", "Ability to mine the gem rocks in Shilo Village");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

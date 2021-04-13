@@ -237,6 +237,12 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("10,000 Experience Lamp (Any Skill over level 40).");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

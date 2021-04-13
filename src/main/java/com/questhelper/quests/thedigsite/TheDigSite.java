@@ -516,6 +516,12 @@ public class TheDigSite extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "15,300 Mining Experience", "2,000 Herblore Experience", "</br>", "2 Gold Bars", "</br>", "The ability to do Varrock Museum specimen cleaning.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

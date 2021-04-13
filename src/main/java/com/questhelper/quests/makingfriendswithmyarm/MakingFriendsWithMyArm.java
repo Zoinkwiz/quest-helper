@@ -599,6 +599,12 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "2,000 Construction Experience", "5,000 Firemaking Experience", "10,000 Mining Experience", "10,000 Agility Experience", "</br>", "Access to the Salt Mines.", "Ability to build fire pits.", "Ability to tune a house portal to Troll Stronghold.", "Access to a disease free herb patch in Weis.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

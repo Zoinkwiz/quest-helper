@@ -259,6 +259,12 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "8,000 Runecraft Experience", "2,000 Defence Experience", "</br>", "The Beacon Ring", "</br>", "Access to a shortcut to the Chaos Altar");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

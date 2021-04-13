@@ -518,6 +518,12 @@ public class DragonSlayer extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "18,650, Strength Experience", "18,650 Defence Experience", "</br>", "The ability to equip a Green D'hide Body, Rune Platebody & Dragon Platebody.", "Access to Crandor.", "Access to the Corsair Cove Resource Area.", "Ability to receive Dragons as a slayer task.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -180,6 +180,12 @@ public class APorcineOfInterest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "5,000 Coins", "1,000 Slayer Experience", "30 Slayer Points", "</br>", "Access to Sourhog Cave", "Sourhog can be assigned as a slayer task by Spria or Tureal");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

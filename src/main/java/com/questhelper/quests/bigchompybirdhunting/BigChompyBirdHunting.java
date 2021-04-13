@@ -326,6 +326,12 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "262 Fletching Experience", "1,470 Cooking Experience", "735 Ranged Experience", "</br>", "An Ogre Bow", "The ability to fletch ogre arrows.", "The ability cook Chompy Birds and earn a Bowman Hat.");
+	}
+
+	@Override
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Chompy");

@@ -280,6 +280,12 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Points", "</br>", "1,500 Hunter Experience", "500 Runecrafting Experience" , "</br>", "2,000 Coins", "Arceuus favour certificate.", "A Kharedst's Memoirs page.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

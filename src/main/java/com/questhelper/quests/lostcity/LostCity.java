@@ -204,6 +204,12 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "Access to Zanaris", "Ability to craft Cosmic Runes", "Ability to buy and wield Dragon Longswords & Dragon Daggers.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -165,6 +165,12 @@ public class ClientOfKourend extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "2x 500 Experience Lamps (Any Skill)", "</br>", "20% Kourend Favour Certificate", "Kharedst's Memoirs");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

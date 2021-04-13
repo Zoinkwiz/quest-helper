@@ -217,6 +217,11 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return null;
 	}
 
+	public List<String> getQuestRewards()
+	{
+		return null;
+	}
+
 	public List<ExternalQuestResources> getExternalResources(){ return null; }
 
 	public abstract List<PanelDetails> getPanels();

@@ -1011,6 +1011,12 @@ public class MourningsEndPartII extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "20,000 Agility Experience", "</br>", "A Crystal Trinket", "A Death Talisman", "</br>", "Access to Dark Beasts", "Ability to craft Death Runes");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

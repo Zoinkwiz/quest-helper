@@ -798,6 +798,12 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("5 Quest Points", "</br>", "3,000 Agility Experience", "3,000 Attack Experience", "</br>", "Iban's Staff and use of Ibans Blast spell.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -130,6 +130,11 @@ public class XMarksTheSpot extends BasicQuestHelper
 		return reqs;
 	}
 
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "300 Experience Lamp (Any Skill)", "</br>", "200 Coins", "A Beginner Clue Scroll");
+	}
 
 	@Override
 	public List<PanelDetails> getPanels()

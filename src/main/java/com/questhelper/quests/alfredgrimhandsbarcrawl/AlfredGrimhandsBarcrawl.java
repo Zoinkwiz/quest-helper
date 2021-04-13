@@ -208,6 +208,12 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("Access to Barbarian Outpost Agility Course", "</br>", "Speak to the Barbarian Guard to learn how to smash empty vials automatically.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

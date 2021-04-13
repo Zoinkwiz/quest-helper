@@ -218,6 +218,12 @@ public class DaddysHome extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("400 Construction Experience", "</br>", "POH in Rimmington <b>or</b> 1,000 coins if you already own one.", "</br>", "25 x Planks", "50 x Mithril Nails", "5 x Steel Bars", "10 x Oak Planks", "8 x Bolts of Cloth", "5 x House Teleports", "1 x Falador Teleport");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -896,6 +896,12 @@ public class Regicide extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "13,750 Agility Experience", "</br>", "15,000 Coins", "</br>", "Access to Tirannwn & Arandar", "Ability to wield the Dragon Halberd", "Ability to charter a ship to Port Tyras.", "The ability to use Iorwerth camp teleport scrolls.", "The ability to use Zul-Andra teleport scrolls and battle Zulrah.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

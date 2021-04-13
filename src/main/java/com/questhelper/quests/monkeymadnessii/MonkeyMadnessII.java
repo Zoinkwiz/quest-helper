@@ -718,6 +718,12 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("4 Quest Points", "</br>", "25,000 Slayer Experience", "20,000 Agility Experience", "15,000 Thieving Experience", "15,000 Hunter Experience", "2 x 50,000 Experience Lamp (Any Combat Skill).", "</br>", "A Royal sead pod", "A pet monkey", "</br>", "Access to Demonic Gorillas.", "New Glider Location.", "Access to bank on Ape Atoll.", "Ability to wield the Heavy Ballista", "Access to Meniacal Monkey Hunting Area");
+	}
+
+	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();

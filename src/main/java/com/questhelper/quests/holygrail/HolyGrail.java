@@ -336,6 +336,12 @@ public class HolyGrail extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "11,000 Prayer Experience", "15,300 Defence Experience", "</br>", "Access to the Fisher Realm.", "Ability to put King Arthur picture on the wall in the POH.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -589,6 +589,12 @@ public class EadgarsRuse extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "11,000 Herblore Experience", "</br>", "Ability to use Trollheim Teleport", "Ability to use Scrolls of Redirection to Trollheim.", "Ability to trade Goutweed to Sanfew for herbs.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

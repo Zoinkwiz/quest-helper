@@ -219,6 +219,12 @@ public class FightArena extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "12,175 Attack Experience", "2,175 Thieving Experience", "</br>", "1,000 Coins", "Khazard Armor");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -264,6 +264,12 @@ public class ErnestTheChicken extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("4 Quest Points", "</br>", "300 Coins", "</br>", "Access to the Killerwatt plane (Members Only).", "Ability to be assigned Killerwatts as a slayer task.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -287,6 +287,12 @@ public class ASoulsBane extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "500 Defence Experience", "500 Hitpoints Experience", "500 Coins", "</br>", "Access to the Dungeon of Tolna");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

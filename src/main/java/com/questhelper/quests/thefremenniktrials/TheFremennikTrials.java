@@ -923,6 +923,12 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "2,812 Agility Experience", "2,812 Attack Experience", "2,812 Crafting Experience", "2,812 Defence Experience", "2,812 Fishing Experience", "2,812 Fletching Experience", "2,812 Hitpoints Experience", "2,812 Strength Experience", "2,812 Thieving Experience", "2,812 Woodcutting Experience", "</br>", "Access to Miscellania, Etceteria, Neitiznot, Jatizso and the facilities of Rellekka.", "Ability to wear the Fremennik helms", "Free travel to Waterbirth Island.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

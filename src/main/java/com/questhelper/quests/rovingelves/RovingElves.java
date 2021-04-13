@@ -230,6 +230,12 @@ public class RovingElves extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "10,000 Strength Experience", "</br>", "A used Crystal Shield or Crystal Bow");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

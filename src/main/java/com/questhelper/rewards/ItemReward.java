@@ -34,7 +34,7 @@ public class ItemReward implements Reward {
     private final ItemID itemID;
     private final int quantity;
 
-    public ItemReward(String name, ItemID itemID, int quantity) {
+    public ItemReward(String name, int itemID, int quantity) {
         this.name = name;
         this.itemID = itemID;
         this.quantity = quantity;

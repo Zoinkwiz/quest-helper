@@ -28,5 +28,6 @@ public enum RewardType
 {
 	EXPERIENCE,
 	UNLOCK,
+	ITEM,
 	QUEST_POINT
 }

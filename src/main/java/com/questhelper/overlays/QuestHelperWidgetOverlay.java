@@ -1,4 +1,4 @@
-package com.questhelper;
+package com.questhelper.overlays;
 
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
@@ -27,6 +27,7 @@ package com.questhelper;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.questhelper.QuestHelperPlugin;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;

@@ -22,35 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.choice;
+package com.questhelper.requirements;
 
-import com.questhelper.QuestHelperConfig;
-import net.runelite.api.widgets.Widget;
+import com.questhelper.Zone;
+import com.questhelper.requirements.SimpleRequirement;
+import com.questhelper.steps.tools.QuestPerspective;
+import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
 
-public class DialogChoiceChange extends DialogChoiceStep
+public class RegionHintArrowRequirement extends SimpleRequirement
 {
-	private final String textChange;
+	private final Zone zone;
 
-	public DialogChoiceChange(QuestHelperConfig config, String choice, String textChange)
+	public RegionHintArrowRequirement(WorldPoint worldPoint)
 	{
-		super(config, choice);
-		this.textChange = textChange;
+		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
-	@Override
-	protected void highlightText(Widget text, int option)
+	public RegionHintArrowRequirement(Zone zone)
 	{
-		if (!config.showTextHighlight())
+		this.zone = zone;
+	}
+
+	public boolean check(Client client)
+	{
+		WorldPoint hintArrowPoint = client.getHintArrowPoint();
+		if (hintArrowPoint == null)
 		{
-			return;
+			return false;
 		}
-		if (shouldNumber)
+
+		WorldPoint wp = QuestPerspective.getInstanceWorldPoint(client, hintArrowPoint);
+		if (wp == null)
 		{
-			text.setText("[" + option + "] " + textChange);
+			return false;
 		}
-		else
-		{
-			text.setText(textChange);
-		}
+
+		return zone.contains(wp);
 	}
 }

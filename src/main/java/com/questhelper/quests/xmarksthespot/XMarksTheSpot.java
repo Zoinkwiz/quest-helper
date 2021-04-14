@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.xmarksthespot;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,9 @@ public class XMarksTheSpot extends BasicQuestHelper
 	//Items Required
 	ItemRequirement spade;
 
+	// Items recommended
+	ItemRequirement glory;
+
 	QuestStep speakVeosLumbridge, digOutsideBob, digCastle, digDraynor, digMartin, speakVeosSarim, speakVeosSarimWithoutCasket;
 
 	@Override
@@ -74,6 +78,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 
 	private void setupRequirements() {
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.getAmuletOfGlories());
 	}
 
 	private void setupSteps() {
@@ -116,6 +121,15 @@ public class XMarksTheSpot extends BasicQuestHelper
 		reqs.add(spade);
 		return reqs;
 	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(glory);
+		return reqs;
+	}
+
 
 	@Override
 	public List<PanelDetails> getPanels()

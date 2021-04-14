@@ -38,11 +38,6 @@ public class TileStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (inCutscene)
-		{
-			return;
-		}
-
 		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
 		if (lp == null)
 		{

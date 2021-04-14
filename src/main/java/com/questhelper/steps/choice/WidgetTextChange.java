@@ -25,16 +25,42 @@
 package com.questhelper.steps.choice;
 
 import com.questhelper.QuestHelperConfig;
+import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 
-public class DialogChoiceChange extends DialogChoiceStep
+public class WidgetTextChange extends WidgetChoiceStep
 {
 	private final String textChange;
 
-	public DialogChoiceChange(QuestHelperConfig config, String choice, String textChange)
+	public WidgetTextChange(QuestHelperConfig config, String choice, int groupId, int childId, String textChange)
 	{
-		super(config, choice);
+		super(config, choice, groupId, childId);
 		this.textChange = textChange;
+	}
+
+	@Override
+	public void highlightChoice(Client client)
+	{
+		Widget exclusionDialogChoice = client.getWidget(excludedGroupId, excludedChildId);
+		if (exclusionDialogChoice != null)
+		{
+			Widget[] exclusionChoices = exclusionDialogChoice.getChildren();
+			if (exclusionChoices != null)
+			{
+				for (Widget currentExclusionChoice : exclusionChoices)
+				{
+					if (excludedStrings.contains(currentExclusionChoice.getText()))
+					{
+						return;
+					}
+				}
+			}
+		}
+		Widget dialogChoice = client.getWidget(groupId, childId);
+		if (dialogChoice != null)
+		{
+			highlightText(dialogChoice, -1);
+		}
 	}
 
 	@Override
@@ -44,13 +70,7 @@ public class DialogChoiceChange extends DialogChoiceStep
 		{
 			return;
 		}
-		if (shouldNumber)
-		{
-			text.setText("[" + option + "] " + textChange);
-		}
-		else
-		{
-			text.setText(textChange);
-		}
+
+		text.setText(textChange);
 	}
 }

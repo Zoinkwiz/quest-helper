@@ -370,7 +370,6 @@ public class TempleOfIkov extends BasicQuestHelper
 		return reqs;
 	}
 
-
 	@Override
 	public List<String> getCombatRequirements()
 	{

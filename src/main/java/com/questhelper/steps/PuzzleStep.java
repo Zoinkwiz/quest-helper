@@ -63,7 +63,6 @@ public class PuzzleStep extends DetailedQuestStep
 		}
 	}
 
-
 	public interface ButtonHighlighCalculator
 	{
 		HashSet<WidgetDetails> getHighlightedButtons();

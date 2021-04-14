@@ -419,7 +419,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Return to Brundt in Rellekka's longhall.", combatGear, food);
 		talkToBrundtBackInRellekka.addDialogStep("Ask about the Jormungand.");
 		getFremennikShield = new DetailedQuestStep(this, "You can get a fremennik shield from dagganoths in " +
-			"Waterbirth Dungeon or Baldur in Waterbirth " +
+			"Waterbirth Dungeon or Bardur in Waterbirth " +
 			"Dungeon for 150k, or for free with the Ring of Charos(a). You'll need a friend to get there, or a rune " +
 			"thrownaxe and a pet rock.", coins150kOrCharos);
 		killBasilisks = new NpcStep(this, NpcID.BASILISK_9283, new WorldPoint(2644, 3677, 0),
@@ -501,7 +501,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToBrundt, talkToFreygerd,
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(buyKegs, talkToBrundt, talkToFreygerd,
 			searchSandpit, killYoungling, pickupLetter, readLetter, searchRockslide, searchSandpit,
 			talkToFreygardWithItems, talkToBrundtAgain, talkToBrundtSouthEastOfRellekka), combatGear, mirrorShield));
 

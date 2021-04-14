@@ -24,8 +24,9 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper;
+package com.questhelper.overlays;
 
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestDebugRenderer;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Dimension;

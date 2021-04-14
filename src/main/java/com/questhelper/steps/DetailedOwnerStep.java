@@ -27,7 +27,6 @@ package com.questhelper.steps;
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.Graphics2D;
 import java.util.Collection;
@@ -147,6 +146,24 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 		if (currentStep != null)
 		{
 			currentStep.makeWorldOverlayHint(graphics, plugin);
+		}
+	}
+
+	@Override
+	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (currentStep != null)
+		{
+			currentStep.makeWorldArrowOverlayHint(graphics, plugin);
+		}
+	}
+
+	@Override
+	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (currentStep != null)
+		{
+			currentStep.makeWorldLineOverlayHint(graphics, plugin);
 		}
 	}
 

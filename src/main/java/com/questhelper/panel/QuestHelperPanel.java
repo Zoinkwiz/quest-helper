@@ -137,7 +137,7 @@ public class QuestHelperPanel extends PluginPanel
 		JLabel questsCompletedLabel = new JLabel();
 		questsCompletedLabel.setForeground(Color.GRAY);
 		questsCompletedLabel.setText("<html><body style='text-align:left'>Please log in to see available quests" +
-			". Note that not all quests are available in the Quest Helper yet.</body></html>");
+			".</body></html>");
 
 		allQuestsCompletedPanel.setLayout(new BorderLayout());
 		allQuestsCompletedPanel.setBorder(new EmptyBorder(10, 10, 10, 10));

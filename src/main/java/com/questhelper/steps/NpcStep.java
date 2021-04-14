@@ -34,19 +34,15 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Setter;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.SpriteID;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
@@ -54,7 +50,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import static com.questhelper.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
+import static com.questhelper.overlays.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
 
 public class NpcStep extends DetailedQuestStep
 {
@@ -207,11 +203,6 @@ public class NpcStep extends DetailedQuestStep
 
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (inCutscene)
-		{
-			return;
-		}
-
 		if (worldPoint != null)
 		{
 			Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
@@ -219,11 +210,6 @@ public class NpcStep extends DetailedQuestStep
 			{
 				return;
 			}
-		}
-
-		if (!questHelper.getConfig().showSymbolOverlay())
-		{
-			return;
 		}
 
 		for (NPC npc : npcs)

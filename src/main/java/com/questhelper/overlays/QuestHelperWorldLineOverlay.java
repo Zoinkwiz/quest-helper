@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +23,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.choice;
+package com.questhelper.overlays;
 
-import com.questhelper.QuestHelperConfig;
-import net.runelite.api.widgets.Widget;
+import com.questhelper.QuestHelperPlugin;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import com.questhelper.questhelpers.QuestHelper;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class DialogChoiceChange extends DialogChoiceStep
+public class QuestHelperWorldLineOverlay extends Overlay
 {
-	private final String textChange;
+	private final QuestHelperPlugin plugin;
 
-	public DialogChoiceChange(QuestHelperConfig config, String choice, String textChange)
+	@Inject
+	public QuestHelperWorldLineOverlay(QuestHelperPlugin plugin)
 	{
-		super(config, choice);
-		this.textChange = textChange;
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.plugin = plugin;
 	}
 
 	@Override
-	protected void highlightText(Widget text, int option)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showTextHighlight())
+		QuestHelper quest = plugin.getSelectedQuest();
+
+		if (quest != null && quest.getCurrentStep() != null)
 		{
-			return;
+			quest.getCurrentStep().makeWorldLineOverlayHint(graphics, plugin);
 		}
-		if (shouldNumber)
-		{
-			text.setText("[" + option + "] " + textChange);
-		}
-		else
-		{
-			text.setText(textChange);
-		}
+
+		return null;
 	}
 }

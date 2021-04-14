@@ -224,6 +224,24 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 	}
 
 	@Override
+	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (currentStep != null)
+		{
+			currentStep.makeWorldArrowOverlayHint(graphics, plugin);
+		}
+	}
+
+	@Override
+	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (currentStep != null)
+		{
+			currentStep.makeWorldLineOverlayHint(graphics, plugin);
+		}
+	}
+
+	@Override
 	public QuestStep getActiveStep()
 	{
 		if (currentStep != this)

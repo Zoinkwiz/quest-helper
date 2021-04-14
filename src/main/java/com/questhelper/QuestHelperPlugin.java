@@ -409,7 +409,7 @@ public class QuestHelperPlugin extends Plugin
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()
 				.stream()
-				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
+				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client), (q1, q2) -> q2));
 			SwingUtilities.invokeLater(() -> {
 				panel.refresh(filteredQuests, false, completedQuests);
 			});

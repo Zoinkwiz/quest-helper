@@ -25,18 +25,16 @@
 package com.questhelper.panel;
 
 import com.google.inject.Inject;
-import com.questhelper.ExternalQuestResources;
+import com.questhelper.*;
 import com.questhelper.Icon;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.quests.biohazard.Biohazard;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import jdk.jfr.EventType;
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.Point;
@@ -423,10 +421,22 @@ public class QuestOverviewPanel extends JPanel
 					if (questReqButton.getText().length() > 0) {
 
 						questReqButton.addActionListener((e -> {
-							currentQuest.setQuest(((QuestRequirement) preReqQuestRequirement).getQuest());
+							QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
 							closeHelper();
-							questHelperPlugin.setSidebarSelectedQuest(currentQuest);
+							currentQuest.shutDown();
+							questHelperPlugin.shutDownQuestFromSidebar();
+
+							QuestHelper newQuestHelper = null;
+							assert newQuestHelper != null;
+
+							System.out.println(tempStorageOfQuest);
+
+							//this is only changing the quest inside of the current quest, not loading a current quest
+							currentQuest.setQuest(tempStorageOfQuest);
+
 							questHelperPlugin.startUpQuest(currentQuest);
+							questHelperPlugin.setSidebarSelectedQuest(currentQuest);
+
 
 						}));
 					}

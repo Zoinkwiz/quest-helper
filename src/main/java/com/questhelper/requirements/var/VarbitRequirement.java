@@ -55,12 +55,13 @@ public class VarbitRequirement extends AbstractRequirement
 	 * Check if the player's varbit value meets the required level using the given
 	 * {@link Operation}.
 	 *
-	 * @param varbitID the {@link Varbits} id to use
-	 * @param operation the {@link Operation} to check with
+	 * @param varbitID      the {@link Varbits} id to use
+	 * @param operation     the {@link Operation} to check with
 	 * @param requiredValue the required varbit value to pass this requirement
-	 * @param displayText the display text
+	 * @param displayText   the display text
 	 */
-	public VarbitRequirement(int varbitID, Operation operation, int requiredValue, String displayText) {
+	public VarbitRequirement(int varbitID, Operation operation, int requiredValue, String displayText)
+	{
 		this.varbitID = varbitID;
 		this.operation = operation;
 		this.requiredValue = requiredValue;
@@ -71,12 +72,13 @@ public class VarbitRequirement extends AbstractRequirement
 	 * Check if the player's {@link Varbits} value meets the required level using the given
 	 * {@link Operation}.
 	 *
-	 * @param varbit the {@link Varbits} to check
-	 * @param operation the {@link Operation} to check with
+	 * @param varbit        the {@link Varbits} to check
+	 * @param operation     the {@link Operation} to check with
 	 * @param requiredValue the required varbit value to pass this requirement
-	 * @param displayText the display text
+	 * @param displayText   the display text
 	 */
-	public VarbitRequirement(Varbits varbit, Operation operation, int requiredValue, String displayText) {
+	public VarbitRequirement(Varbits varbit, Operation operation, int requiredValue, String displayText)
+	{
 		this(varbit.getId(), operation, requiredValue, displayText);
 	}
 
@@ -84,7 +86,7 @@ public class VarbitRequirement extends AbstractRequirement
 	 * Check if a specified varbit value is exactly the supplied value.
 	 *
 	 * @param varbitID the varbit id
-	 * @param value the value the varbit should be
+	 * @param value    the value the varbit should be
 	 */
 	public VarbitRequirement(int varbitID, int value)
 	{
@@ -94,8 +96,8 @@ public class VarbitRequirement extends AbstractRequirement
 	/**
 	 * Check the supplied varbit's value using the given {@link Operation}
 	 *
-	 * @param varbitID the varbit id
-	 * @param value the value it should be
+	 * @param varbitID  the varbit id
+	 * @param value     the value it should be
 	 * @param operation the operation to check with
 	 */
 	public VarbitRequirement(int varbitID, int value, Operation operation)
@@ -106,8 +108,8 @@ public class VarbitRequirement extends AbstractRequirement
 	/**
 	 * Checks if a specified varbit value has a specific bit position set.
 	 *
-	 * @param varbitID the varbit id
-	 * @param bitIsSet if the bit should be set
+	 * @param varbitID    the varbit id
+	 * @param bitIsSet    if the bit should be set
 	 * @param bitPosition the position of the bit in question
 	 */
 	public VarbitRequirement(int varbitID, boolean bitIsSet, int bitPosition)
@@ -118,9 +120,10 @@ public class VarbitRequirement extends AbstractRequirement
 
 		this.bitPosition = bitPosition;
 		this.bitIsSet = bitIsSet;
-		String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+		String[] suffixes = new String[]{"th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"};
 		String text = String.valueOf(bitPosition);
-		switch (bitPosition % 100) {
+		switch (bitPosition % 100)
+		{
 			case 11:
 			case 12:
 			case 13:
@@ -145,7 +148,8 @@ public class VarbitRequirement extends AbstractRequirement
 	@Override
 	public String getDisplayText()
 	{
-		if (displayText != null) {
+		if (displayText != null)
+		{
 			return displayText;
 		}
 		if (bitPosition >= 0)

@@ -355,18 +355,18 @@ public class BetweenARock extends BasicQuestHelper
 			" to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
 		enterDwarfCave2WithHelmet = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
-			"Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
+			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
 		talkToFerrymanWithHelmet = new NpcStep(this, NpcID.DWARVEN_FERRYMAN, new WorldPoint(2829, 10129, 0),
-			"Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
+			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
 		talkToFerrymanWithHelmet.addDialogStep("Yes please.");
 		talkToDondakanWithHelmet = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0),
-			"Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
+			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
 		talkToDondakanWithHelmet.addDialogStep("You may fire when ready!");
 		talkToDondakanForEnd = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0),
-			"Prepare to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, pickaxe, combatGear, food);
+			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, pickaxe, combatGear, food);
 		talkToDondakanForEnd.addDialogStep("Ready as I'll ever be.");
 		talkToDondakanWithHelmet.addSubSteps(enterDwarfCaveWithHelmet, enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanForEnd);
 

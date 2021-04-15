@@ -600,7 +600,7 @@ public class CabinFever extends BasicQuestHelper
 		talkToBillAfterBarrel = new NpcStep(this, NpcID.BILL_TEACH_4014, new WorldPoint(1815, 4834, 1), "Talk to Bill Teach.");
 
 		goDownForRamrod = new ObjectStep(this, ObjectID.SHIPS_LADDER_11309, new WorldPoint(1815, 4836, 1), "Search the gun locker for a ram rod, and a few fuses and canisters.");
-		getRamrod = new ObjectStep(this, ObjectID.GUN_LOCKER, new WorldPoint(1816, 4833, 0), "Search the gun locker for a ram rod, 3 fuses, and a few fuses and canisters.", ramrod, fuse1, canister);
+		getRamrod = new ObjectStep(this, ObjectID.GUN_LOCKER, new WorldPoint(1816, 4833, 0), "Search the gun locker for a ram rod, 3 fuses, and canisters.", ramrod, fuse1, canister);
 		getRamrod.addAlternateObjects(ObjectID.GUN_LOCKER_11249);
 		goUpToCannon = new ObjectStep(this, ObjectID.SHIPS_LADDER_11308, new WorldPoint(1815, 4836, 0), "Go up to the deck to fire the cannon.");
 		usePowder = new ObjectStep(this, NullObjectID.NULL_11213, new WorldPoint(1817, 4833, 1), "Use the gunpowder on the cannon.", powderHighlight);
@@ -622,7 +622,7 @@ public class CabinFever extends BasicQuestHelper
 		talkToBillAfterCanisterCannon = new NpcStep(this, NpcID.BILL_TEACH_4014, new WorldPoint(1815, 4834, 1), "Talk to Bill Teach.");
 
 		goDownForBalls = new ObjectStep(this, ObjectID.SHIPS_LADDER_11309, new WorldPoint(1815, 4836, 1), "Search the gun locker for a ram rod, and a few fuses and cannon balls.");
-		getBalls = new ObjectStep(this, ObjectID.GUN_LOCKER, new WorldPoint(1816, 4833, 0), "Search the gun locker for a ram rod, 3 fuses, and a few fuses and cannon balls.", ramrod, fuses, cannonball);
+		getBalls = new ObjectStep(this, ObjectID.GUN_LOCKER, new WorldPoint(1816, 4833, 0), "Search the gun locker for a ram rod, 3 fuses, and cannon balls.", ramrod, fuses, cannonball);
 		getBalls.addAlternateObjects(ObjectID.GUN_LOCKER_11249);
 		goUpToCannonWithBalls = new ObjectStep(this, ObjectID.SHIPS_LADDER_11308, new WorldPoint(1815, 4836, 0), "Go up to the deck to fire the cannon.");
 		usePowderForBalls = new ObjectStep(this, NullObjectID.NULL_11213, new WorldPoint(1817, 4833, 1), "Use the gunpowder on the cannon.", powderHighlight);

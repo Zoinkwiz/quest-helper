@@ -229,12 +229,12 @@ public class RFDAwowogei extends BasicQuestHelper
 		useNutsOnWiseMonkeys = new NpcStep(this, NpcID.IWAZARU, new WorldPoint(2789, 2795, 0), "Use some monkey nuts on the one of the three monkeys.", monkeyNutsHighlighted, greegreeEquipped, mAmulet);
 		useNutsOnWiseMonkeys.addIcon(ItemID.MONKEY_NUTS);
 
-		goToCrashIsland = new NpcStep(this, NpcID.LUMDO_1454, new WorldPoint(2802, 2706, 0), "Travel to Crash Island with Lumbdo.", combatGear);
+		goToCrashIsland = new NpcStep(this, NpcID.LUMDO_1454, new WorldPoint(2802, 2706, 0), "Travel to Crash Island with Lumdo.", combatGear);
 		enterCrashHole = new ObjectStep(this, ObjectID.PIT_15572, new WorldPoint(2922, 2722, 0), "Enter the hole on Crash Island. Protect melee when entering as you'll be attacked straight away by snakes.", combatGear, protectMelee);
 		enterCrashHole.addDialogStep("Yes, I'm as hard as nails.");
 		killSnake = new NpcStep(this, NpcID.BIG_SNAKE, new WorldPoint(3019, 5485, 0), "Kill a giant snake for its corpse. Kill a few in case you burn it.", snakeCorpse);
 		leaveSnakeHole = new ObjectStep(this, ObjectID.ROPE_15571, new WorldPoint(3024, 5489, 0), "Leave the hole.");
-		returnToApeAtoll = new NpcStep(this, NpcID.LUMDO_1454, new WorldPoint(2892, 2723, 0), "Travel back to Ape Atoll with Lumbdo.");
+		returnToApeAtoll = new NpcStep(this, NpcID.LUMDO_1454, new WorldPoint(2892, 2723, 0), "Travel back to Ape Atoll with Lumdo.");
 
 		useRopeOnTree = new ObjectStep(this, NullObjectID.NULL_15580, new WorldPoint(2697, 2786, 0), "Use a rope on the red banana tree on the north west of Ape Atoll as a gorilla.", gorillaGreegree, ropeHighlighted);
 		useRopeOnTree.addIcon(ItemID.ROPE);

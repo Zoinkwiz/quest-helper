@@ -33,6 +33,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -599,6 +601,22 @@ public class ATasteOfHope extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.HERBLORE, 40));
 		req.add(new SkillRequirement(Skill.SLAYER, 38));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Ivandis Flail", ItemID.IVANDIS_FLAIL, 1),
+				new ItemReward("Drakan's Medallion", ItemID.DRAKANS_MEDALLION, 1),
+				new ItemReward("3 x 2,500 Experience Tomes (Any skill over level 35).", ItemID.TOME_OF_EXPERIENCE, 3) //22415 is placeholder
+		);
 	}
 
 	@Override

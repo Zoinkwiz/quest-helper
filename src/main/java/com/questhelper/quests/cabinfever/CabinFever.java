@@ -40,6 +40,10 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -51,13 +55,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -657,9 +656,39 @@ public class CabinFever extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "7,000 Smithing Experience", "7,000 Crafting Experience", "7,000 Agility Experience", "</br>", "The Little Book o' Piracy");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SMITHING, 7000),
+				new ExperienceReward(Skill.CRAFTING, 7000),
+				new ExperienceReward(Skill.AGILITY, 7000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("10,000 Coins", ItemID.COINS_995, 10000),
+				new ItemReward("The Book o' Piracy", ItemID.BOOK_O_PIRACY, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Mos Le'Harmless"),
+				new UnlockReward("Access to Cave Horrors and the ability to receive them as a Slayer Task."),
+				new UnlockReward("Charter Ship prices are now halved."),
+				new UnlockReward("Ability to play the Trouble Brewing minigame.")
+		);
 	}
 
 	@Override

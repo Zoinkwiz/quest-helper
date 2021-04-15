@@ -28,6 +28,8 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -165,9 +167,19 @@ public class ClientOfKourend extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "2x 500 Experience Lamps (Any Skill)", "</br>", "20% Kourend Favour Certificate", "Kharedst's Memoirs");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 500 Experience Lamps (Any Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 Placeholder until confirmed.
+				new ItemReward("20% Kourend Favour Certificate", ItemID.KOUREND_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS, 1)
+		);
 	}
 
 	@Override

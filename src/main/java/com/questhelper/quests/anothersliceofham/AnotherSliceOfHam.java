@@ -44,6 +44,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -436,9 +440,31 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward	getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "3,000 Mining Experience", "3,000 Prayer Experience", "</br>", "An Ancient Mace.", "Dorgeshuun Train Access.", "Ability to buy Goblin Village Teleport Spheres.");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MINING, 3000),
+				new ExperienceReward(Skill.PRAYER, 3000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("An Ancient Mace", ItemID.ANCIENT_MACE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Dorgeshuun Train Access."),
+				new UnlockReward("Ability to buy Goblin Village Teleport Spheres"));
 	}
 
 	@Override

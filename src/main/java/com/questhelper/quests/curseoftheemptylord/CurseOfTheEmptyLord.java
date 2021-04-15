@@ -35,16 +35,16 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -266,6 +266,19 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	public List<String> getQuestRewards()
 	{
 		return Arrays.asList("A Set of Ghostly Robes", "</br>", "10,000 Experience Lamp (Any skill over level 50).", "Experience Lamp can be claimed from Historian Minas in Varrock Museum.");
+	}
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (Any skill over level 50).", ItemID.ANTIQUE_LAMP, 1)); //4447 is used as placeholder
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("A Set of Ghostly Robes")
+		);
 	}
 
 	@Override

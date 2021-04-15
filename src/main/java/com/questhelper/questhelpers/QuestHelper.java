@@ -37,6 +37,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import java.awt.Graphics;
@@ -44,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -232,6 +232,11 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return null;
 	}
 
+	public List<ItemReward> getItemRewards()
+	{
+		return null;
+	}
+
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return null;
@@ -252,6 +257,13 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		if (experienceReward != null)
 		{
 			experienceReward.forEach((expReward -> rewards.add(expReward.getDisplayText())));
+			rewards.add("</br>");
+		}
+
+		List<ItemReward> itemRewards = getItemRewards();
+		if (itemRewards != null)
+		{
+			itemRewards.forEach((itemReward -> rewards.add(itemReward.getDisplayText())));
 			rewards.add("</br>");
 		}
 

@@ -42,6 +42,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -504,9 +507,28 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "2,000 Thieving Experience", "2,000 Ranging Experience", "</br>", "Unlocked Dorgeshuun Special Attacks.", "Access to H.A.M. Store Rooms.", "Access to Dorgesh-Kann");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.THIEVING, 2000),
+				new ExperienceReward(Skill.RANGED, 2000)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to use Dorgeshuun Special Attacks"),
+				new UnlockReward("Access to H.A.M. Store Rooms."),
+				new UnlockReward("Access to Dorgesh-Kann.")
+		);
 	}
 
 	@Override

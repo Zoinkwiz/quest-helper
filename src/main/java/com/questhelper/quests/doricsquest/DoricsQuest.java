@@ -27,6 +27,10 @@ package com.questhelper.quests.doricsquest;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.NpcStep;
 
 import java.util.*;
@@ -36,6 +40,8 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
+import com.sun.tools.javac.code.Scope;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
@@ -44,7 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 @QuestDescriptor(
 	quest = QuestHelperQuest.DORICS_QUEST
 )
-public class DoricsQuest extends BasicQuestHelper
+public class  DoricsQuest extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement clay, copper, iron;
@@ -98,9 +104,27 @@ public class DoricsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "1,300 Mining Experience", "</br>", "180 x Coins", "</br>", "Use of Doric's Anvils");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.MINING, 1300));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("180 Coins", ItemID.COINS_995, 180));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Use of Doric's Anvil"));
 	}
 
 	@Override

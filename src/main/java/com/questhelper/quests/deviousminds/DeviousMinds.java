@@ -25,6 +25,7 @@
 package com.questhelper.quests.deviousminds;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.questhelpers.Quest;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -32,6 +33,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -219,9 +222,19 @@ public class DeviousMinds extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "5,000 Fletching Experience", "5,000 Runecrafting Experience", "6,500 Smithing Experience");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FLETCHING, 5000),
+				new ExperienceReward(Skill.RUNECRAFT, 5000),
+				new ExperienceReward(Skill.SMITHING, 6500)
+		);
 	}
 
 	@Override

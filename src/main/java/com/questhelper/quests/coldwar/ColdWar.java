@@ -15,6 +15,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -450,9 +453,29 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "2,000 Crafting Experience", "5,000 Agility Experience", "1,500 Construction Experience", "</br>", "The ability to create Penguin Suits.", "The ability to use the Penguin Agility Course.", "Ability to make more Bongo Drums.");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.AGILITY, 5000),
+				new ExperienceReward(Skill.CONSTRUCTION, 1500)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to create Penguin Suits"),
+				new UnlockReward("Ability to use the Penguin Agility Course"),
+				new UnlockReward("Abillity to make Bongo Drums")
+		);
 	}
 
 	@Override

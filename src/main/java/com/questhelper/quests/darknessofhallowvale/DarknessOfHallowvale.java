@@ -44,6 +44,9 @@ import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -55,12 +58,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -778,9 +777,25 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "7,000 Agility Experience", "6,000 Thieving Experience", "2,000 Construction Experience", "</br>", "3 x 2,000 Experience Tomes (Any Skill over level 30).");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 7000),
+				new ExperienceReward(Skill.THIEVING, 6000),
+				new ExperienceReward(Skill.CONSTRUCTION, 2000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("3 x 2,000 Experience Tomes (Any skill over level 30).", ItemID.ANTIQUE_LAMP, 3)); //4447 is placeholder
 	}
 
 	@Override

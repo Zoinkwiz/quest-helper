@@ -34,20 +34,17 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+
+import java.util.*;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -218,9 +215,24 @@ public class DaddysHome extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList("400 Construction Experience", "</br>", "POH in Rimmington <b>or</b> 1,000 coins if you already own one.", "</br>", "25 x Planks", "50 x Mithril Nails", "5 x Steel Bars", "10 x Oak Planks", "8 x Bolts of Cloth", "5 x House Teleports", "1 x Falador Teleport");
+		return Collections.singletonList(new ExperienceReward(Skill.CONSTRUCTION, 400));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("25 x Planks", ItemID.PLANK, 25),
+				new ItemReward("10 x Oak Planks", ItemID.OAK_PLANK, 10),
+				new ItemReward("50 x Mithril Nails", ItemID.MITHRIL_NAILS, 50),
+				new ItemReward("5 x Steel Bars", ItemID.STEEL_BAR, 5),
+				new ItemReward("8 x Bolt of Cloth", ItemID.BOLT_OF_CLOTH, 8),
+				new ItemReward("5 x House Teleport Tablets", ItemID.TELEPORT_TO_HOUSE, 5),
+				new ItemReward("1 x Falador Teleport Tablet", ItemID.FALADOR_TELEPORT, 1),
+				new ItemReward("POH in Rimmington or 1,000 Coins", ItemID.COINS_995, 1000)
+		);
 	}
 
 	@Override

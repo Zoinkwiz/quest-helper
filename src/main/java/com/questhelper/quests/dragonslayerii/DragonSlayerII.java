@@ -44,6 +44,10 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -1133,9 +1137,47 @@ public class DragonSlayerII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("5 Quest Points", "</br>", "25,000 Smithing Experience", "18,000 Mining Experience", "15,000 Agility Experience", "15,000 Thieving Experience", "4 x 25,000 Experience Tome (Any Combat Skill)", "</br>", "Access to the Myths Guild:", "A Locator Orb.", "Ability to make Super Antifire Potions.", "Access to Fountain of Uhld.", "Access to Wrath Altar.", "Ability to purchase Mythical Cape.", "Access to Adamant and Rune Dragons.", "Access to Vorkath.", "Ability to reforge the Dragon platebody and kiteshield.", "Ability to craft Ferocious gloves.", "Ability to further upgrade your Ava's device.", "Ability to teleport to Lithkren with the Digsite Pendant.");
+		return new QuestPointReward(5);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SMITHING, 25000),
+				new ExperienceReward(Skill.MINING, 18000),
+				new ExperienceReward(Skill.AGILITY, 15000),
+				new ExperienceReward(Skill.THIEVING, 15000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("4 x 25,000 Experience Tome (Any Combat Skill).", ItemID.ANTIQUE_LAMP, 4), //4447 is placeholder
+				new ItemReward("A Locator Orb", ItemID.LOCATOR_ORB, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Myths Guild."),
+				new UnlockReward("Ability to make Super Antifire Potions"),
+				new UnlockReward("Access to the Fountain of Uhld."),
+				new UnlockReward("Access to the Wrath Altar."),
+				new UnlockReward("Ability to purchase the Mythical Cape"),
+				new UnlockReward("Access to Adamant and Rune Dragons"),
+				new UnlockReward("Access to Vorkath"),
+				new UnlockReward("Ability to re-forge the dragon platebody and kiteshield."),
+				new UnlockReward("Ability to craft Ferocious Gloves"),
+				new UnlockReward("Ability to further upgrade your Ava's device."),
+				new UnlockReward("Ability to teleport to Lithkren with the Digsite Pendant.")
+		);
 	}
 
 	@Override

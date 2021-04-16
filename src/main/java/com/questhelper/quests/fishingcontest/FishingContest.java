@@ -43,6 +43,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -275,9 +278,24 @@ public class FishingContest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "2,437 Fishing Experience", "</br>", "Access to the underground White Wolf Mountain passage.", "Ability to catch minnows in The Fishing Guild. (82 Fishing)");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.FISHING, 2437));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the underground White Wolf Mountain passage"),
+				new UnlockReward("Ability to catch minnows in The Fishing Guild.")
+		);
 	}
 
 	@Override

@@ -38,6 +38,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -328,9 +330,15 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "A pair of Steel Gauntlets.", "</br>", "For 25k Steel Gauntlets can be turned into:", "Cooking Gauntlets (Caleb)", "Goldsmith Gauntlets (Avan)", "Chaos Gauntlets (Johnathon)");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A pair of Steel Gauntlets", ItemID.STEEL_GAUNTLETS, 1));
 	}
 
 	@Override

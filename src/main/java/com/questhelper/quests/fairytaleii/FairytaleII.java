@@ -43,6 +43,10 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -380,9 +384,33 @@ public class FairytaleII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "3,500 Herblore Experience", "2,500 Thieving Experience", "2 x 2,500 Experience Lamps (Any Skill over level 30).", "</br>", "Access to Fairy Ring Network", "Access to Fairy Fixit's Fairy Enhancement Shop.");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.HERBLORE, 3500),
+				new ExperienceReward(Skill.THIEVING, 2500)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("2 x 2,500 Experience Lamps (Any skill over level 30.)", ItemID.ANTIQUE_LAMP, 2)); //4447 Is placeholder for filter.
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Fairy Rings."),
+				new UnlockReward("Access to Fairy Fixit's Fairy Enhancement Store.")
+		);
 	}
 
 	@Override

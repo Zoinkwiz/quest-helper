@@ -38,11 +38,16 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -264,9 +269,24 @@ public class ErnestTheChicken extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("4 Quest Points", "</br>", "300 Coins", "</br>", "Access to the Killerwatt plane (Members Only).", "Ability to be assigned Killerwatts as a slayer task.");
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("300 Coins", ItemID.COINS_995, 300));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Killerwatt plane (Members Only)."),
+				new UnlockReward("Ability to be assigned Killerwatts as a Slayer task.")
+		);
 	}
 
 	@Override

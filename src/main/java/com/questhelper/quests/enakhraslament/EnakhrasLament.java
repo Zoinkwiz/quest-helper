@@ -40,6 +40,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -500,9 +503,26 @@ public class EnakhrasLament extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "7,000 Crafting Experience", "7,000 Mining Experience", "7,000 Firemaking Experience", "7,000 Magic Experience", "</br>", "Akthanakos's Camulet");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 7000),
+				new ExperienceReward(Skill.MINING, 7000),
+				new ExperienceReward(Skill.FIREMAKING, 7000),
+				new ExperienceReward(Skill.MAGIC, 7000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Akthanakos's Camulet", ItemID.CAMULET, 1));
 	}
 
 	@Override

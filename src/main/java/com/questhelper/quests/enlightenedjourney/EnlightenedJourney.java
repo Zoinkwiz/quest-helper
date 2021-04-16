@@ -41,6 +41,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -246,9 +250,38 @@ public class EnlightenedJourney extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "2,000 Crafting Experience", "3,000 Farming Experience", "1,500 Woodcutting Experience", "4,000 Firemaking Experience", "</br>", "Bomber Jacket & Cap.", "Access to Hot Air Balloon transport system.", "Ability to make origami balloons.");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.FARMING, 3000),
+				new ExperienceReward(Skill.WOODCUTTING, 1500),
+				new ExperienceReward(Skill.FIREMAKING, 4000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Bomber Jacket", ItemID.BOMBER_JACKET, 1),
+				new ItemReward("Bomber Cap", ItemID.BOMBER_CAP, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Hot Air Balloon transport system."),
+				new UnlockReward("Ability to make origami balloons.")
+		);
 	}
 
 	@Override

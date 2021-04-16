@@ -39,6 +39,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -450,9 +453,25 @@ public class EaglesPeak extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "2,500 Hunter Experience", "</br>", "Ability to use Box Traps.", "Ability to use Eagle Transport System.", "Ability to hunt rabbits.");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.HUNTER, 2500));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to use Box Traps"),
+				new UnlockReward("Ability to use Eagle Transport System"),
+				new UnlockReward("Ability to hunt Rabbits.")
+		);
 	}
 
 	@Override

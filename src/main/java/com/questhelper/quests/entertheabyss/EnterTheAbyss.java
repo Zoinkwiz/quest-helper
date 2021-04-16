@@ -37,6 +37,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -47,11 +50,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import sun.jvm.hotspot.gc.z.ZCollectedHeap;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ENTER_THE_ABYSS
@@ -181,9 +183,21 @@ public class EnterTheAbyss extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList("1,000 Runecrafting Experience", "</br>", "Ability to enter the Abyss.", "A small pouch.");
+		return Collections.singletonList(new ExperienceReward(Skill.RUNECRAFT, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A small rune pouch", ItemID.SMALL_POUCH, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to enter The Abyss"));
 	}
 
 	@Override

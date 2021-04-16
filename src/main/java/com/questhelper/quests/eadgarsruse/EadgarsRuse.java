@@ -40,6 +40,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -589,9 +592,25 @@ public class EadgarsRuse extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "11,000 Herblore Experience", "</br>", "Ability to use Trollheim Teleport", "Ability to use Scrolls of Redirection to Trollheim.", "Ability to trade Goutweed to Sanfew for herbs.");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.HERBLORE, 11000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to use the Trollheim teleport"),
+				new UnlockReward("Ability to use Scrolls of Redirection to Trollheim."),
+				new UnlockReward("Ability to trade Goutweed to Sanfew for herbs.")
+		);
 	}
 
 	@Override

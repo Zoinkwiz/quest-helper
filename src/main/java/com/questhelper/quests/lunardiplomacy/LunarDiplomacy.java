@@ -42,6 +42,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -919,9 +923,38 @@ public class LunarDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "5,000 Magic Experience", "5,000 Runecraft Experience", "</br>", "50 x Astral Runes", "</br>", "A Seal of Passage", "Lunar Equipment", "Access to Lunar Island.", "Access to the Lunar Spellbook.", "Access to the Astral Altar.");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MAGIC, 5000),
+				new ExperienceReward(Skill.RUNECRAFT, 5000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("50 x Astral Runes", ItemID.ASTRAL_RUNE, 50),
+				new ItemReward("A Seal of Passage", ItemID.SEAL_OF_PASSAGE, 1),
+				new ItemReward("A set of Lunar Equipment", -1, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Lunar Island"),
+				new UnlockReward("Access to the Lunar Spellbook"),
+				new UnlockReward("Access to the Astral Altar")
+		);
 	}
 
 	@Override

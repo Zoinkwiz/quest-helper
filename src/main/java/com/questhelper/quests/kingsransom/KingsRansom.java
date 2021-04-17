@@ -443,12 +443,6 @@ public class KingsRansom extends BasicQuestHelper
 	{
 		return Collections.singletonList(new ItemReward("5,000 Experience Lamp (any skill over 50).", ItemID.ANTIQUE_LAMP, 1)); //4447 is Placeholder
 	}
-	@Override
-	public List<String> getQuestRewards()
-	{
-		return Arrays.asList("1 Quest Point", "</br>", "33,000 Defence Experience", "5,000 Magic Experience",
-				"5,000 Experience Lamp (Any skill over 50).");
-	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()

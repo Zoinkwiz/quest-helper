@@ -44,6 +44,9 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -599,9 +602,31 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "2,000 Construction Experience", "5,000 Firemaking Experience", "10,000 Mining Experience", "10,000 Agility Experience", "</br>", "Access to the Salt Mines.", "Ability to build fire pits.", "Ability to tune a house portal to Troll Stronghold.", "Access to a disease free herb patch in Weis.");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CONSTRUCTION, 2000),
+				new ExperienceReward(Skill.FIREMAKING, 5000),
+				new ExperienceReward(Skill.MINING, 10000),
+				new ExperienceReward(Skill.AGILITY, 10000)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Salt Mines."),
+				new UnlockReward("Ability to build fire pits"),
+				new UnlockReward("Ability to tune a house portal to Troll Stronghold."),
+				new UnlockReward("Access to a disease free herb patch in Weis.")
+		);
 	}
 
 	@Override

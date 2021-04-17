@@ -38,6 +38,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -204,9 +206,19 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("3 Quest Points", "</br>", "Access to Zanaris", "Ability to craft Cosmic Runes", "Ability to buy and wield Dragon Longswords & Dragon Daggers.");
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Zanaris."),
+				new UnlockReward("Ability to craft Cosmic Runes"),
+				new UnlockReward("Ability to buy and wield Dragon Daggers & Longswords")
+		);
 	}
 
 	@Override

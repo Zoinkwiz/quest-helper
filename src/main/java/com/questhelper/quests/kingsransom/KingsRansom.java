@@ -40,17 +40,19 @@ import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.text.CollationElementIterator;
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -422,9 +424,30 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.DEFENCE, 33000),
+				new ExperienceReward(Skill.MAGIC, 5000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("5,000 Experience Lamp (any skill over 50).", ItemID.ANTIQUE_LAMP, 1)); //4447 is Placeholder
+	}
+	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "33,000 Defence Experience", "5,000 Magic Experience", "5,000 Experience Lamp (Any skill over 50).");
+		return Arrays.asList("1 Quest Point", "</br>", "33,000 Defence Experience", "5,000 Magic Experience",
+				"5,000 Experience Lamp (Any skill over 50).");
 	}
 
 	@Override

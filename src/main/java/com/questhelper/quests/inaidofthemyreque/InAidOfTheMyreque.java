@@ -42,6 +42,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -567,9 +570,28 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "2,000 Attack Experience", "2,000 Strength Experience", "2,000 Crafting Experience", "2,000 Defence Experience", "</br>", "Access to Temple Trekking Minigame.", "Gadderhammer", "Ability to make the Rod of Ivandis.");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 2000),
+				new ExperienceReward(Skill.STRENGTH, 2000),
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.DEFENCE, 2000)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards() {
+		return Arrays.asList(
+				new UnlockReward("Access to Temple Trekking Minigame."),
+				new UnlockReward("Ability to make the Rod of Ivandis")
+		);
 	}
 
 	@Override

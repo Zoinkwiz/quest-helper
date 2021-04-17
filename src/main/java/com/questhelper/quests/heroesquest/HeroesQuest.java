@@ -44,6 +44,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -56,11 +59,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -476,9 +476,38 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "3,075 Attack Experience", "3,075 Defence Experience", "3,075 Strength Experience", "3,075 Hitpoints Experience", "2,075 Range Experience", "2,725 Fishing Experience", "2,825 Cooking Experience", "1,575 Woodcutting Experience", "1,575 Firemaking Experience", "2,257 Smithing Experience", "2,575 Mining Experience", "1,325 Herblore Experience", "</br>", "Access to the Heros Guild.", "Ability to use the Fountain of Rune.", "Ability to use Charge Dragonstone Jewellery scrolls.", "Ability to purchase and equip Dragon Battleaxes and Maces.");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 3075),
+				new ExperienceReward(Skill.DEFENCE, 3075),
+				new ExperienceReward(Skill.STRENGTH, 3075),
+				new ExperienceReward(Skill.RANGED, 2075),
+				new ExperienceReward(Skill.HITPOINTS, 3075),
+				new ExperienceReward(Skill.FISHING, 2725),
+				new ExperienceReward(Skill.COOKING, 2825),
+				new ExperienceReward(Skill.WOODCUTTING, 1575),
+				new ExperienceReward(Skill.FIREMAKING, 1575),
+				new ExperienceReward(Skill.SMITHING, 2257),
+				new ExperienceReward(Skill.MINING, 2275),
+				new ExperienceReward(Skill.HERBLORE, 1325)
+		);
+	}
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Hero's Guild."),
+				new UnlockReward("Ability to use the Fountain of Rune."),
+				new UnlockReward("Ability to use Charge Dragonstone Jewellery scrolls."),
+				new UnlockReward("Ability to purchase and equip Dragon Battleaxes and Maces.")
+		);
 	}
 
 	@Override

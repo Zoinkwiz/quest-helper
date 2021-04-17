@@ -32,6 +32,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.requirements.conditional.Conditions;
@@ -336,9 +339,27 @@ public class HolyGrail extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "11,000 Prayer Experience", "15,300 Defence Experience", "</br>", "Access to the Fisher Realm.", "Ability to put King Arthur picture on the wall in the POH.");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.PRAYER, 11000),
+				new ExperienceReward(Skill.DEFENCE, 15300)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Fisher Realm."),
+				new UnlockReward("Ability to put King Arthur picture on the wall in the POH.")
+		);
 	}
 
 	@Override

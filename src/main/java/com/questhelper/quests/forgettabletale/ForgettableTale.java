@@ -41,6 +41,8 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -955,7 +957,22 @@ public class ForgettableTale extends BasicQuestHelper
 	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "5,000 Cooking Experience", "5,000 Farming Experience", "</br>", "2 x Dwarven Stout (m)");
+		return Arrays.asList("2 Quest Points", "</br>", "5,000 Cooking Experience", "5,000 Farming Experience",
+				"</br>", "2 x Dwarven Stout (m)");
+	}
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 5000),
+				new ExperienceReward(Skill.FARMING, 5000)
+		);
 	}
 
 	@Override

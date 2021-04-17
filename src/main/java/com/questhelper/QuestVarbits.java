@@ -12,6 +12,7 @@ public enum QuestVarbits
 	/**
 	 * f2p Quest varbits, these don't hold the completion value.
 	 */
+	QUEST_BELOW_ICE_MOUNTAIN(12063),
 	QUEST_DEMON_SLAYER(2561),
 	QUEST_GOBLIN_DIPLOMACY(2378),
 	QUEST_MISTHALIN_MYSTERY(3468),

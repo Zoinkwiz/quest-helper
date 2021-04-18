@@ -50,6 +50,10 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -718,10 +722,44 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("4 Quest Points", "</br>", "25,000 Slayer Experience", "20,000 Agility Experience", "15,000 Thieving Experience", "15,000 Hunter Experience", "2 x 50,000 Experience Lamp (Any Combat Skill).", "</br>", "A Royal sead pod", "A pet monkey", "</br>", "Access to Demonic Gorillas.", "New Glider Location.", "Access to bank on Ape Atoll.", "Ability to wield the Heavy Ballista", "Access to Meniacal Monkey Hunting Area");
+		return new QuestPointReward(4);
 	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SLAYER, 25000),
+				new ExperienceReward(Skill.AGILITY, 20000),
+				new ExperienceReward(Skill.THIEVING, 15000),
+				new ExperienceReward(Skill.HUNTER, 15000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+				new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
+				new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Demonic Gorillas"),
+				new UnlockReward("A new Gnome Glider location"),
+				new UnlockReward("Access to a bank on Ape Atoll"),
+				new UnlockReward("Ability to wield the Heavy Ballista"),
+				new UnlockReward("Access to Maniacal Monkey hunting area")
+		);
+	}
+
 
 	@Override
 	public List<Requirement> getGeneralRequirements()

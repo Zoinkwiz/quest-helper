@@ -41,6 +41,9 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -320,7 +323,33 @@ public class NatureSpirit extends BasicQuestHelper
 	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "3,000 Crafting Experience", "2,000 Defence Experiecne", "2,000 Hitpoints Experience", "</br>", "Access to Mort Myre Swamp", "Ability to fight Ghasts.");
+		return Arrays.asList("2 Quest Points", "</br>", "3,000 Crafting Experience", "2,000 Defence Experiecne",
+				"2,000 Hitpoints Experience", "</br>", "Access to Mort Myre Swamp", "Ability to fight Ghasts.");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 3000),
+				new ExperienceReward(Skill.DEFENCE, 2000),
+				new ExperienceReward(Skill.HITPOINTS, 2000)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Mort Myre Swamp"),
+				new UnlockReward("Ability to fight Ghasts.")
+		);
 	}
 
 	@Override

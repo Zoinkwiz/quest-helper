@@ -62,7 +62,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.FAIRYTALE_I_GROWING_PAINS
+	quest = QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS
 )
 public class FairytaleI extends BasicQuestHelper
 {

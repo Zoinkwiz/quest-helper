@@ -31,7 +31,7 @@ import net.runelite.api.Skill;
 
 public class ItemReward implements Reward {
     private final String name;
-    private final ItemID itemID;
+    private final int itemID;
     private final int quantity;
 
     public ItemReward(String name, int itemID, int quantity) {

@@ -340,7 +340,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(107));
-		req.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1, Operation.GREATER_EQUAL));
+		req.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1, Operation.GREATER_EQUAL,
+			"Started Legends' Quest to access the Khazari Jungle"));
 		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));

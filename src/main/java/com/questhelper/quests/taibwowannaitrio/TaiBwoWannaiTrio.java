@@ -513,7 +513,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
-		karambwanji = new ItemRequirement("Atleast 23 Raw Karambwanji", ItemID.RAW_KARAMBWANJI);
+		karambwanji = new ItemRequirement("Or More Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
 		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995);
 		poisonKarambwan = new ItemRequirement("Poison karambwan", ItemID.POISON_KARAMBWAN);

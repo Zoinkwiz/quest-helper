@@ -120,11 +120,11 @@ public class RFDDwarf extends BasicQuestHelper
 		coins320.setTooltip("You only need 120 if you wear a Ring of Charos(a)");
 		coins100 = new ItemRequirement("Coins", ItemID.COINS_995, 100);
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
-		milk.setTooltip("You can by this from the  Culinaromancer's Chest");
+		milk.setTooltip("You can buy this from the  Culinaromancer's Chest");
 		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
-		flour.setTooltip("You can by this from the  Culinaromancer's Chest");
+		flour.setTooltip("You can buy this from the  Culinaromancer's Chest");
 		egg = new ItemRequirement("Egg", ItemID.EGG);
-		egg.setTooltip("You can by this from the  Culinaromancer's Chest");
+		egg.setTooltip("You can buy this from the  Culinaromancer's Chest");
 		bowlOfWater = new ItemRequirement("Bowl of water", ItemID.BOWL_OF_WATER);
 		bowlOfWater.setTooltip("You can find a bowl in Lumbridge Castle's Basement and fill it in the nearby sink");
 		asgarniaAle4 = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE, 4);

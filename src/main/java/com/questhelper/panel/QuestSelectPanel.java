@@ -39,6 +39,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Getter;
 import net.runelite.api.QuestState;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 public class QuestSelectPanel extends JPanel
@@ -62,7 +63,7 @@ public class QuestSelectPanel extends JPanel
 
 		JLabel nameLabel = new JLabel(questHelper.getQuest().getName());
 		Color color = questState == QuestState.FINISHED ? questHelperPlugin.getConfig().passColour() : (questState == QuestState.IN_PROGRESS ?
-			new Color(240,	207, 123) : Color.WHITE);
+			new Color(240,207, 123) : Color.WHITE);
 		nameLabel.setForeground(color);
 		add(nameLabel, BorderLayout.CENTER);
 
@@ -77,5 +78,19 @@ public class QuestSelectPanel extends JPanel
 			});
 			add(startButton, BorderLayout.LINE_END);
 		}
+	}
+
+	public QuestSelectPanel(String text)
+	{
+		this.questHelper = null;
+
+		setLayout(new BorderLayout(3, 3));
+		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 30));
+		setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		JLabel nameLabel = new JLabel(text);
+		Color color = Color.WHITE;
+		nameLabel.setForeground(color);
+		add(nameLabel, BorderLayout.CENTER);
 	}
 }

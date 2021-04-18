@@ -33,10 +33,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.util.Text;
 
 @ConfigGroup("questhelper")
 public interface QuestHelperConfig extends Config
@@ -44,16 +46,21 @@ public interface QuestHelperConfig extends Config
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{
 		/** Sort quests in alphabetical order */
-		A_TO_Z(QuestOrders.sortAToZ()),
+		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY),
 		/** Sort quests in reverse alphabetical order */
-		Z_TO_A(QuestOrders.sortZToA()),
+		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
 		OPTIMAL(QuestOrders.sortOptimalOrder()),
 		;
 
 		private final Comparator<QuestHelper> comparator;
-		QuestOrdering(Comparator<QuestHelper> comparator) {
+		@Getter
+		private final QuestFilter[] sections;
+
+		QuestOrdering(Comparator<QuestHelper> comparator, QuestFilter... sections) {
 			this.comparator = comparator;
+			this.sections = sections;
+
 		}
 
 		public List<QuestHelper> sort(Collection<QuestHelper> list) {
@@ -77,16 +84,29 @@ public interface QuestHelperConfig extends Config
 		FREE_TO_PLAY(Quest.Type.F2P),
 		/** Show all members' quests */
 		MEMBERS(Quest.Type.P2P),
+		/** Show all quests */
+		QUEST("Quests", q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
+			q.getQuest().getQuestType() == Quest.Type.F2P),
 		/** Show all miniquests (all miniquests are members' only) */
-		MINIQUEST(Quest.Type.MINIQUEST),
+		MINIQUEST("Miniquests", Quest.Type.MINIQUEST),
+		/** Show all achievement diaries */
+		ACHIEVEMENT_DIARY("Achievement diaries", Quest.Type.ACHIEVEMENT_DIARY),
 		;
 
 		private final Predicate<QuestHelper> predicate;
 
+		@Getter
+		private final String displayName;
+
 		QuestFilter(Predicate<QuestHelper> predicate) {
 			this.predicate = predicate;
+			this.displayName = Text.titleCase(this);
 		}
 
+		QuestFilter(String displayName, Predicate<QuestHelper> predicate) {
+			this.predicate = predicate;
+			this.displayName = displayName;
+		}
 		@Override
 		public boolean test(QuestHelper quest) {
 			return predicate.test(quest);

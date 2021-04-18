@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, llamositopia <https://github.com/llamositopia>
+ * Copyright (c) 2021, LlemonDuck <https://github.com/LlemonDuck>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

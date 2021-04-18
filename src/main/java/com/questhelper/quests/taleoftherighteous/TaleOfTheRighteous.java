@@ -336,7 +336,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 			rangedWeapon, runesForCombat));
 		allSteps.add(new PanelDetails("Investigate Quidamortem", Arrays.asList(talkToDuffy, useRopeOnCrevice, enterCrevice,
 			mineRockfall, pushBoulder, tryToEnterBarrier, inspectUnstableAltar, returnToDuffy, enterCreviceAgain, talkToDuffyInCrevice, talkToGnosi),
-			rope, combatGear));
+			rope, pickaxe, combatGear));
 		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(returnToShiro, returnToPhileasTent, finishQuest)));
 		return allSteps;
 	}

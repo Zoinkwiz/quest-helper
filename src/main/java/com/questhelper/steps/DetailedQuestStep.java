@@ -416,7 +416,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 		stream
 			.distinct()
-			.map(req -> req.getDisplayTextWithChecks(client))
+			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
 			.flatMap(Collection::stream)
 			.forEach(line -> panelComponent.getChildren().add(line));
 

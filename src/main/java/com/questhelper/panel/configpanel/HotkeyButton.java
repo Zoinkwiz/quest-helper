@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel;
+package com.questhelper.panel.configpanel;
 
-import java.awt.Dimension;
-import javax.swing.JPanel;
-import net.runelite.client.ui.PluginPanel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import lombok.Getter;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.ui.FontManager;
 
-public class FixedWidthPanel extends JPanel
+class HotkeyButton extends JButton
 {
-	@Override
-	public Dimension getPreferredSize()
+	@Getter
+	private Keybind value;
+
+	public HotkeyButton(Keybind value, boolean modifierless)
 	{
-		return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
+		setFont(FontManager.getDefaultFont().deriveFont(12.f));
+		setValue(value);
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
+				setValue(Keybind.NOT_SET);
+			}
+		});
+
+		addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (modifierless)
+				{
+					setValue(new ModifierlessKeybind(e));
+				}
+				else
+				{
+					setValue(new Keybind(e));
+				}
+			}
+		});
 	}
 
+	public void setValue(Keybind value)
+	{
+		if (value == null)
+		{
+			value = Keybind.NOT_SET;
+		}
+
+		this.value = value;
+		setText(value.toString());
+	}
 }

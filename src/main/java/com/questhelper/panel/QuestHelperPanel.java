@@ -28,6 +28,7 @@ import com.questhelper.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.panel.configpanel.ConfigPanel;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
@@ -35,6 +36,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,8 +72,10 @@ public class QuestHelperPanel extends PluginPanel
 {
 	private final QuestOverviewPanel questOverviewPanel;
 	private final FixedWidthPanel questOverviewWrapper = new FixedWidthPanel();
+	private final ConfigPanel configPanel = new ConfigPanel();
 
-	private final JPanel allQuestsCompletedPanel = new JPanel();
+	private JPanel allQuestsCompletedPanel = new JPanel();
+	private JPanel searchQuestsPanel;
 
 	private final JPanel allDropdownSections = new JPanel();
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
@@ -81,17 +85,24 @@ public class QuestHelperPanel extends PluginPanel
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
 	private final JScrollPane scrollableContainer;
 	private final int DROPDOWN_HEIGHT = 20;
-
+	private boolean settingsPanelActive = false;
+	private boolean questActive = false;
 
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
 
 	QuestHelperPlugin questHelperPlugin;
 
 	private static final ImageIcon DISCORD_ICON;
+	private static final ImageIcon GITHUB_ICON;
+	private static final ImageIcon PATREON_ICON;
+	private static final ImageIcon SETTINGS_ICON;
 
 	static
 	{
 		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		GITHUB_ICON = Icon.GITHUB.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		PATREON_ICON = Icon.PATREON.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)
@@ -113,6 +124,52 @@ public class QuestHelperPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 		titlePanel.add(title, BorderLayout.WEST);
 
+		// Options
+		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
+		viewControls.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		// Settings
+		JButton settingsBtn = new JButton();
+		SwingUtil.removeButtonDecorations(settingsBtn);
+		settingsBtn.setIcon(SETTINGS_ICON);
+		settingsBtn.setToolTipText("Change your settings");
+		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		settingsBtn.setUI(new BasicButtonUI());
+		settingsBtn.addActionListener((ev) -> {
+			configPanel.init(questHelperPlugin);
+			if (settingsPanelActive)
+			{
+				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+				deactivateSettings();
+			}
+			else
+			{
+				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				activateSettings();
+			}
+		});
+		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				if (settingsPanelActive)
+				{
+					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+				}
+				else
+				{
+					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				}
+			}
+		});
+		viewControls.add(settingsBtn);
+
+		// Discord button
 		JButton discordBtn = new JButton();
 		SwingUtil.removeButtonDecorations(discordBtn);
 		discordBtn.setIcon(DISCORD_ICON);
@@ -132,7 +189,54 @@ public class QuestHelperPanel extends PluginPanel
 				discordBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 			}
 		});
-		titlePanel.add(discordBtn, BorderLayout.EAST);
+		viewControls.add(discordBtn);
+
+		// GitHub button
+		JButton githubBtn = new JButton();
+		SwingUtil.removeButtonDecorations(githubBtn);
+		githubBtn.setIcon(GITHUB_ICON);
+		githubBtn.setToolTipText("Report issues or contribute on GitHub");
+		githubBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		githubBtn.setUI(new BasicButtonUI());
+		githubBtn.addActionListener((ev) -> LinkBrowser.browse("https://github.com/Zoinkwiz/quest-helper"));
+		githubBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				githubBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				githubBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+			}
+		});
+		viewControls.add(githubBtn);
+
+		// Patreon button
+		JButton patreonBtn = new JButton();
+		SwingUtil.removeButtonDecorations(patreonBtn);
+		patreonBtn.setIcon(PATREON_ICON);
+		patreonBtn.setToolTipText("Support development on Patreon");
+		patreonBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		patreonBtn.setUI(new BasicButtonUI());
+		patreonBtn.addActionListener((ev) -> LinkBrowser.browse("https://www.patreon.com/zoinkwiz"));
+		patreonBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				patreonBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				patreonBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+			}
+		});
+		viewControls.add(patreonBtn);
+
+
+		titlePanel.add(viewControls, BorderLayout.EAST);
 
 		JLabel questsCompletedLabel = new JLabel();
 		questsCompletedLabel.setForeground(Color.GRAY);
@@ -170,7 +274,7 @@ public class QuestHelperPanel extends PluginPanel
 			}
 		});
 
-		JPanel searchQuestsPanel = new JPanel();
+		searchQuestsPanel = new JPanel();
 		searchQuestsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		searchQuestsPanel.setLayout(new BorderLayout(0, BORDER_OFFSET));
 		searchQuestsPanel.add(searchBar, BorderLayout.CENTER);
@@ -336,6 +440,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
+		questActive = true;
 		allDropdownSections.setVisible(false);
 		scrollableContainer.setViewportView(questOverviewWrapper);
 
@@ -368,9 +473,38 @@ public class QuestHelperPanel extends PluginPanel
 
 	public void removeQuest()
 	{
+		questActive = false;
 		allDropdownSections.setVisible(true);
 		scrollableContainer.setViewportView(questListWrapper);
 		questOverviewPanel.removeQuest();
+
+		repaint();
+		revalidate();
+	}
+
+	private void activateSettings()
+	{
+		settingsPanelActive = true;
+
+		scrollableContainer.setViewportView(configPanel);
+		searchQuestsPanel.setVisible(false);
+
+		repaint();
+		revalidate();
+	}
+
+	private void deactivateSettings()
+	{
+		settingsPanelActive = false;
+		if (questActive && searchBar.getText().isEmpty())
+		{
+			scrollableContainer.setViewportView(questOverviewWrapper);
+		}
+		else
+		{
+			scrollableContainer.setViewportView(questListWrapper);
+		}
+		searchQuestsPanel.setVisible(true);
 
 		repaint();
 		revalidate();

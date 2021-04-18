@@ -28,7 +28,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.primitives.Ints;
 import com.questhelper.Icon;
-import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.FixedWidthPanel;
 import java.awt.BorderLayout;
@@ -44,7 +43,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -53,7 +51,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -71,10 +68,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
-import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ConfigObject;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ConfigSectionDescriptor;
@@ -82,17 +77,12 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
-import net.runelite.client.externalplugins.ExternalPluginManager;
-import net.runelite.client.externalplugins.ExternalPluginManifest;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ColorJButton;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
-import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -107,8 +97,6 @@ public class ConfigPanel extends PluginPanel
 	private static final ImageIcon SECTION_EXPAND_ICON_HOVER;
 	private static final ImageIcon SECTION_RETRACT_ICON;
 	private static final ImageIcon SECTION_RETRACT_ICON_HOVER;
-	static final ImageIcon BACK_ICON;
-	static final ImageIcon BACK_ICON_HOVER;
 
 	private static final Map<ConfigSectionDescriptor, Boolean> sectionExpandStates = new HashMap<>();
 
@@ -118,12 +106,9 @@ public class ConfigPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage backIcon = Icon.EXPANDED.getImage();
-		BACK_ICON = new ImageIcon(backIcon);
-		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
-
 		BufferedImage sectionRetractIcon = Icon.EXPANDED.getImage();
 		sectionRetractIcon = ImageUtil.luminanceOffset(sectionRetractIcon, -121);
+		sectionRetractIcon = ImageUtil.rotateImage(sectionRetractIcon, -Math.PI / 2);
 		SECTION_EXPAND_ICON = new ImageIcon(sectionRetractIcon);
 		SECTION_EXPAND_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionRetractIcon, -100));
 		final BufferedImage sectionExpandIcon = ImageUtil.rotateImage(sectionRetractIcon, Math.PI / 2);

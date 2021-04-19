@@ -245,6 +245,12 @@ public class RFDDwarf extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "1,000 Cooking Experience", "1,000 Slayer Experience", "</br>", "A Dwarven Rock Cake", "Increased access to the Culinaromancer's Chest");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

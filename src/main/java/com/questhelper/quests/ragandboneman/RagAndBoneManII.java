@@ -880,6 +880,12 @@ public class RagAndBoneManII extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "5,000 Prayer Experience", "</br>", "A Bonesack", "A Ram Skull Helm");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

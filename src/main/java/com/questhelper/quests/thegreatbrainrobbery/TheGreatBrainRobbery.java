@@ -557,6 +557,12 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "6,000 Prayer Experience", "3,000 Crafting Experience", "2,000 Construction Experience", "5,000 Experience Lamp (Any Skill above level 30)", "</br>", "Barrelchest Anchor", "Prayer Book");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

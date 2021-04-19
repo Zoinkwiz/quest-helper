@@ -36,6 +36,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -205,6 +206,14 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(gamesNecklace, varrockTeleport, faladorTeleport, glory, ardougneTeleport,
 			camelotTeleport, duelingRing);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Barbarian Outpost Agility Course"),
+				new UnlockReward("Speak to the Barbarian Guard to learn how to smash empty vials automatically."));
 	}
 
 	@Override

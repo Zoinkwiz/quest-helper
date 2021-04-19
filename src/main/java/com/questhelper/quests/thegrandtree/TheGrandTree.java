@@ -432,6 +432,12 @@ public class TheGrandTree extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("5 Quest Points", "</br>", "18,400 Attack Experience", "7,900 Agility Experience", "2,150 Magic Experience", "</br>", "Access to the Gnomer Glider transportation system.", "Ability to use the Spirit Tree in the Stronghold.");
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();

@@ -241,6 +241,12 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,500 Agility Experience", "</br>", "4,000 Coins", "Hosidius favour certificate.", "A page for Kharedst's Memoirs.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

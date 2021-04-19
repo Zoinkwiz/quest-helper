@@ -857,6 +857,12 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Point", "</br>", "3 x 15,000 Experience Tomes (Any skill above 60)", "</br>", "A Blisterwood Flail", "</br>", "Access to Darkmeyer and the Daeyalt Essence Mine", "Darkmeyer teleport via Drakan's Medallion.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -36,7 +36,12 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -215,6 +220,61 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	public List<String> getNotes()
 	{
 		return null;
+	}
+
+	public QuestPointReward getQuestPointReward()
+	{
+		return null;
+	}
+
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return null;
+	}
+
+	public List<ItemReward> getItemRewards()
+	{
+		return null;
+	}
+
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return null;
+	}
+
+	public List<String> getQuestRewards()
+	{
+		List<String> rewards = new ArrayList<>();
+
+		QuestPointReward questPointReward = getQuestPointReward();
+		if (questPointReward != null)
+		{
+			rewards.add(questPointReward.getDisplayText());
+			rewards.add("</br>");
+		}
+
+		List<ExperienceReward> experienceReward = getExperienceRewards();
+		if (experienceReward != null)
+		{
+			experienceReward.forEach((expReward -> rewards.add(expReward.getDisplayText())));
+			rewards.add("</br>");
+		}
+
+		List<ItemReward> itemRewards = getItemRewards();
+		if (itemRewards != null)
+		{
+			itemRewards.forEach((itemReward -> rewards.add(itemReward.getDisplayText())));
+			rewards.add("</br>");
+		}
+
+		List<UnlockReward> unlockRewards = getUnlockRewards();
+		if (unlockRewards != null)
+		{
+			unlockRewards.forEach((unlockReward -> rewards.add(unlockReward.getDisplayText())));
+			rewards.add("</br>");
+		}
+
+		return rewards;
 	}
 
 	public List<ExternalQuestResources> getExternalResources(){ return null; }

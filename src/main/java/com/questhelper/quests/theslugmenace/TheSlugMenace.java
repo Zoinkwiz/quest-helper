@@ -419,6 +419,12 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "3,500 Crafting Experience", "3,500 Runecrafting Experience", "3,500 Thieving Experience", "Ability to purchase and equip Proselyte equipment.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

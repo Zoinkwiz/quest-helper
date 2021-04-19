@@ -39,6 +39,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -234,6 +235,12 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Many monsters in the Forthos Dungeon");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (any skill over level 40).", ItemID.ANTIQUE_LAMP, 1)); //4447 Is placeholder for filter.
 	}
 
 	@Override

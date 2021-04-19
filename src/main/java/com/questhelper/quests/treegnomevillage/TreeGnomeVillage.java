@@ -323,6 +323,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "11,450 Attack Experience", "</br>", "Use of Spirit Tree transportation method");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();

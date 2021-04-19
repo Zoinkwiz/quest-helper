@@ -576,6 +576,12 @@ public class TheFremennikIsles extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "5,000 Construction Experience", "5,000 Crafting Experience", "10,000 Woodcutting Experience", "2 x 10,000 Experience Lamps (Combat)", "A Helm of Neitiznot", "A Jester Outfit");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

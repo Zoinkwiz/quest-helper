@@ -377,6 +377,12 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "2,000 Fletching Experience", "2,000 Ranged Experience", "2,000 Herblore Experience", "</br>", "3 Ourg Bones", "2 Zogre Bones", "</br>", "Ability to make Relicym's balm", "Ability to fletch Comp ogre bows and Brutal Arrows", "Ability to wear Inoculation bracelets");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

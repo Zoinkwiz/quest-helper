@@ -38,6 +38,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -49,10 +51,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -227,6 +227,22 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(cat, catspeak, deathRune5, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 2,500 Experience Lamps (Any skill over level 30).", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("A Doctors hat", ItemID.DOCTORS_HAT, 1),
+				new ItemReward("A Nurse hat", ItemID.NURSE_HAT, 1),
+				new ItemReward("A Mouse Toy", ItemID.MOUSE_TOY, 1)); //4447 Is Placeholder.
 	}
 
 	@Override

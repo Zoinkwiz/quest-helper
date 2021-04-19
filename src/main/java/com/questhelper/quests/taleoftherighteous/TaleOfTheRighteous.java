@@ -327,6 +327,12 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "8,000 Coins", "Shayzien favour certificate", "A Memoir Page");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

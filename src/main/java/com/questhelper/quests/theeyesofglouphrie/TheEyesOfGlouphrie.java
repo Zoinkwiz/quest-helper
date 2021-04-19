@@ -306,6 +306,12 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "12,000 Magic Experience", "2,500 Woodcutting Experience", "6,000 Runecraft Experience",  "250 Construction Experience", "</br>", "A Crystal Saw Seed");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

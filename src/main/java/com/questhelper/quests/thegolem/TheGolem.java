@@ -343,6 +343,12 @@ public class TheGolem extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Points", "</br>", "1,000 Thieving Experience", "1,000 Crafting Experience", "</br>", "2 x Rubies", "2 x Emeralds", "2x Sapphires", "</br>", "Ability to take the Carpet ride from Shanty Pass to Uzer.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

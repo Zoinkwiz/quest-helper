@@ -342,6 +342,12 @@ public class PriestInPeril extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "1,406 Prayer Experience", "</br>", "Wolfbane Dagger", "</br>", "Access to Canifis and Morytania");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

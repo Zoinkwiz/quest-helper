@@ -327,6 +327,12 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Point", "</br>", " 8,000 Prayer Experience", "1,000 Thieving Experience", "1,000 Magic Experience", "</br>", "Access to Nardah's fountain and shrine.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

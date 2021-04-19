@@ -289,6 +289,11 @@ public class RFDAwowogei extends BasicQuestHelper
 		return req;
 	}
 
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "10,000 Cooking Experience", "10,000 Agility Experience", "</br>", "Ability to teleport to Ape Atoll", "Further access to the Culinaromancer's Chest");
+	}
 
 	@Override
 	public List<PanelDetails> getPanels()

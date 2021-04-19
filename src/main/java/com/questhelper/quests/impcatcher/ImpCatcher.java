@@ -25,13 +25,17 @@
 package com.questhelper.quests.impcatcher;
 
 import com.questhelper.QuestHelperQuest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
@@ -85,6 +89,24 @@ public class ImpCatcher extends BasicQuestHelper
 		reqs.add(yellowBead);
 
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.MAGIC, 875));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("An Amulet of Accuracy", ItemID.AMULET_OF_ACCURACY, 1));
 	}
 
 	@Override

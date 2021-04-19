@@ -390,6 +390,12 @@ public class TempleOfIkov extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "10,500 Ranged Experience", "8,000 Fletching Experience", "Boots of Lightness");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

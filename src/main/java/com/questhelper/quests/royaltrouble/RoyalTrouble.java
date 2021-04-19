@@ -610,6 +610,12 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "5,000 Agility Experience", "5,000 Slayer Experience", "5,000 Hitpoints Experience", "</br>", "Enhanced rewards from Managing Miscellania.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

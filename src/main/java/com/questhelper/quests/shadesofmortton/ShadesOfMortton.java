@@ -325,6 +325,12 @@ public class ShadesOfMortton extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Point", "</br>", "2,000 Crafting Experience", "2,000 Herblore Experience", "</br>", "Ability to play the Shades of Mort'ton minigame.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

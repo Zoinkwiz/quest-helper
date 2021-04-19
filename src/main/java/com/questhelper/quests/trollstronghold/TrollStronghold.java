@@ -290,6 +290,12 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "Law talisman", "</br>", "Ability to make law runes", "Access to Trollheim and Troll Stronghold", "Access to God Wars Dungeon");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

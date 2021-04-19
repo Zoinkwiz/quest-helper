@@ -462,6 +462,12 @@ public class TheGiantDwarf extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2,500 Mining Experience", "2,500 Smithing Experience", "2,500 Crafting Experience", "1,500 Magic Experience", "1,500 Thieving Experience", "1,500 Firemaking Experience");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

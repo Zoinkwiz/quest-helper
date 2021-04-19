@@ -253,6 +253,12 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("3 Quest Points", "</br>", "700 Coins", "</br>", "Free use of the Al Kharid toll gates", "Access to Sorceress's Garden Minigame (Members)");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

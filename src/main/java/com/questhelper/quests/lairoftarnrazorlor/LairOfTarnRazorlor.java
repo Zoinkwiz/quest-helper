@@ -41,6 +41,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -318,6 +319,18 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.HAUNTED_MINE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.SLAYER, 40));
 		return req;
+	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("5,000 Slayer Experience", "</br>", "Tarn's Diary, granting the ability to enchant Salve Amulets.");
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.SLAYER, 5000));
 	}
 
 	@Override

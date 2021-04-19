@@ -361,6 +361,12 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "10,000 Experience Lamp (Any combat skill except Prayer)", "</br>", "Darklight", "Six Cut Gems if you use a chisel on the demon's throne.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

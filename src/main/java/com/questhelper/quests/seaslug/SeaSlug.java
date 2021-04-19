@@ -252,6 +252,12 @@ public class SeaSlug extends BasicQuestHelper
 	{
 		return Collections.singletonList(new SkillRequirement(Skill.FIREMAKING, 30, true));
 	}
+
+	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "7,125 Fishing Experience", "</br>", "Access to the Fishing Platform");
+	}
 	
 	@Override
 	public List<PanelDetails> getPanels()

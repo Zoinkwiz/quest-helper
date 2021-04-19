@@ -413,6 +413,12 @@ public class TheTouristTrap extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("2 Quest Points", "</br>", "2 x 4,650 Experience Lamps (Agility, Fletching, Smithing, or Thieving)", "</br>", "Ability to smith darts");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

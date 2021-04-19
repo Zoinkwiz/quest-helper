@@ -175,6 +175,12 @@ public class TribalTotem extends BasicQuestHelper
 	}
 
     @Override
+    public List<String> getQuestRewards()
+    {
+        return Arrays.asList("1 Quest Point", "</br>", "1,775 Thieving Experience", "</br>", "5 Swordfish");
+    }
+
+    @Override
     public List<PanelDetails> getPanels()
     {
         List<PanelDetails> allSteps = new ArrayList<>();

@@ -33,6 +33,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -133,6 +134,12 @@ public class BearYourSoul extends BasicQuestHelper
 		reqs.add(spade);
 		reqs.add(dustyKeyOr70AgilOrKeyMasterTeleport);
 		return reqs;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Soul Bearer", ItemID.SOUL_BEARER, 1));
 	}
 
 	@Override

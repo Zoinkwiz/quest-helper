@@ -370,6 +370,12 @@ public class TheLostTribe extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "3,000 Mining Experience", "</br>", "A ring of life", "Access to Dorgesh-Kann mine", "Access to Nardok's Bone Weapon Store", "2 new goblin emotes.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

@@ -207,6 +207,12 @@ public class TheKnightsSword extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "12,725 Smithing Experience", "</br>", "The ability to smelt Blurite ore.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

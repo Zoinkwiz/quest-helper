@@ -188,6 +188,12 @@ public class RFDEvilDave extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getQuestRewards()
+	{
+		return Arrays.asList("1 Quest Point", "</br>", "7,000 Cooking Experience", "</br>", "The ability to catch hell rats.", "The ability to make spicy stew.", "The ability to own a hell-cat", "Further access to the Culinaromancer's Chest.");
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

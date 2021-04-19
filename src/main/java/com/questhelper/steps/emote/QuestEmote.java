@@ -30,6 +30,7 @@ import static net.runelite.api.SpriteID.*;
 @Getter
 public enum QuestEmote
 {
+	FLEX("Flex", 2426),
 	CRY("Cry", EMOTE_CRY),
 	BOW("Bow", EMOTE_BOW),
 	DANCE("Dance", EMOTE_DANCE),

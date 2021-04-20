@@ -31,6 +31,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -46,6 +47,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -74,6 +76,10 @@ public class KaramjaMedium extends BasicQuestHelper
 		notCutTeak, notCutMahog, notCaughtKarambwan, notExchangedGems, notUsedGlider, notGrownFruitTree,
 		notEnteredCrandor, notTrappedGraahk, notCutVine, notCrossedLava, notClimbedStairs, notCharteredFromShipyard,
 		notMinedRedRopaz;
+
+	Requirement agility12, cooking16, farming27, fishing65, hunter41, mining40, woodcutting50;
+
+	Requirement grandTree, taiBwoWannaiTrio, dragonSlayerI, shiloVillage;
 
 	QuestStep enterAgilityArena, tag2Pillars, enterVolcano, returnThroughWall, useCart, doCleanup,
 		makeSpiderStick, cookSpider, climbUpToBoat, travelToKhazard, cutTeak, cutMahogany, catchKarambwan, getMachete,
@@ -180,8 +186,21 @@ public class KaramjaMedium extends BasicQuestHelper
 		notClimbedStairs = new Conditions(LogicType.NOR, new VarbitRequirement(3595, 1));
 		notTraveledToKhazard = new Conditions(LogicType.NOR, new VarbitRequirement(3596, 1));
 		notCharteredFromShipyard = new Conditions(LogicType.NOR, new VarbitRequirement(3597, 1));
-		// Ticket also: 6288 4->5
-		// 10922: 0->1
+
+		agility12 = new SkillRequirement(Skill.AGILITY, 12);
+		cooking16 = new SkillRequirement(Skill.COOKING, 16);
+		farming27 = new SkillRequirement(Skill.FARMING, 27);
+		fishing65 = new SkillRequirement(Skill.FISHING, 65, true);
+		hunter41 = new SkillRequirement(Skill.HUNTER, 41);
+		mining40 = new SkillRequirement(Skill.MINING, 40);
+		woodcutting50 = new SkillRequirement(Skill.WOODCUTTING, 50);
+
+		grandTree = new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED);
+		taiBwoWannaiTrio = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED, "Partial " +
+			"completion of Tai Bwo Wannai Trio to fish karambwan");
+		dragonSlayerI = new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED, "Partial " +
+			"completion of Dragon Slayer I for access to Crandor");
+		shiloVillage = new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED);
 
 
 		// 3578 = 2, completed final task
@@ -279,11 +298,10 @@ public class KaramjaMedium extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.AGILITY, 15, true));
-		req.add(new SkillRequirement(Skill.MINING, 40, true));
-		return req;
+		return Arrays.asList(agility12, cooking16, farming27, fishing65, hunter41, mining40, woodcutting50,
+		grandTree, taiBwoWannaiTrio, dragonSlayerI, shiloVillage);
 	}
+
 	@Override
 	public List<PanelDetails> getPanels()
 	{

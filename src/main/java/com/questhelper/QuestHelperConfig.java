@@ -46,9 +46,9 @@ public interface QuestHelperConfig extends Config
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{
 		/** Sort quests in alphabetical order */
-		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY),
+		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY, QuestFilter.GENERIC_HELPER),
 		/** Sort quests in reverse alphabetical order */
-		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY),
+		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
 		OPTIMAL(QuestOrders.sortOptimalOrder()),
 		;
@@ -91,6 +91,8 @@ public interface QuestHelperConfig extends Config
 		MINIQUEST("Miniquests", Quest.Type.MINIQUEST),
 		/** Show all achievement diaries */
 		ACHIEVEMENT_DIARY("Achievement diaries", Quest.Type.ACHIEVEMENT_DIARY),
+		/** Show all generic helpers */
+		GENERIC_HELPER("Generic helpers", Quest.Type.GENERIC),
 		;
 
 		private final Predicate<QuestHelper> predicate;

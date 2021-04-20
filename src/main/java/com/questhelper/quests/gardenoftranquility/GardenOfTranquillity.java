@@ -655,7 +655,8 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		PanelDetails plantingPanel = new PanelDetails("Planting the Garden", Arrays.asList(fillPotWithCompost, fillPotWithCompost2,
 			plantPinkOrchid, plantYellowOrchid, plantVine, plantSnowdrop, plantWhiteTree, plantDelphinium,
-			plantRedRose), compost2, rake, dibber, spade);
+			plantRedRose), compost2, rake, dibber, spade, delphiniumSeed4, pinkOrchidSeed3, yellowOrchid3,
+			snowdropSeed4, whitetreeSapling, pinkRoseSeed, whiteRoseSeed, redRoseSeed, vineSeed4);
 		plantingPanel.setLockingStep(plantGarden);
 		allSteps.add(plantingPanel);
 

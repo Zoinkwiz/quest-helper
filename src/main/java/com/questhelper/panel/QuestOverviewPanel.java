@@ -590,16 +590,17 @@ public class QuestOverviewPanel extends JPanel
 
 				if (itemRequirement instanceof NoItemRequirement)
 				{
-					newColor = itemRequirement.getColor(client); // explicitly call this because NoItemRequirement overrides it
+					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
+					// NoItemRequirement overrides it
 				}
 				else
 				{
-					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems);
+					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems, questHelperPlugin.getConfig());
 				}
 			}
 			else
 			{
-				newColor = requirementPanel.getRequirement().getColor(client);
+				newColor = requirementPanel.getRequirement().getColor(client, questHelperPlugin.getConfig());
 			}
 
 			if (newColor == Color.WHITE)

@@ -26,6 +26,7 @@
  */
 package com.questhelper.requirements.item;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
@@ -99,25 +100,26 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public Color getColor(Client client)
+	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		return this.check(client, true) ? Color.GREEN : Color.RED;
+		return this.check(client, true) ? config.passColour() : config.failColour();
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, List<Item> bankItems)
+	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
+										 List<Item> bankItems, QuestHelperConfig config)
 	{
-		Color color = Color.RED;
+		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
 		}
 		else if (this.check(client, checkConsideringSlotRestrictions))
 		{
-			color = Color.GREEN;
+			color = config.passColour();
 		}
 
-		if (color == Color.RED && bankItems != null)
+		if (color == config.failColour() && bankItems != null)
 		{
 			if (check(client, false, bankItems))
 			{

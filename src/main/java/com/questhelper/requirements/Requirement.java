@@ -27,6 +27,7 @@
 
 package com.questhelper.requirements;
 
+import com.questhelper.QuestHelperConfig;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +64,9 @@ public interface Requirement
 	 * @param client client to check
 	 * @return the {@link Color} to use
 	 */
-	default Color getColor(Client client)
+	default Color getColor(Client client, QuestHelperConfig config)
 	{
-		return check(client) ? Color.GREEN : Color.RED;
+		return check(client) ? config.passColour() : config.failColour();
 	}
 
 	/**
@@ -87,12 +88,12 @@ public interface Requirement
 	 */
 	default void setTooltip(@Nullable String tooltip) {}
 
-	default List<LineComponent> getDisplayTextWithChecks(Client client)
+	default List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperConfig config)
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
 		String text = getDisplayText();
-		Color color = getColor(client);
+		Color color = getColor(client, config);
 
 		lines.add(LineComponent.builder()
 			.left(text)

@@ -41,6 +41,10 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -52,10 +56,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -387,7 +389,45 @@ public class RecruitmentDrive extends BasicQuestHelper
 	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "1,000 Prayer Experience", "1,000 Agility Experience", "1,000 Herblore Experience", "</br>", "Initiate Helm", "3000 Coins & A Makeover Voucher (If Male when starting Quest)", "</br>", "Ability to respawn at Falador.", "Access to Initiate Armor");
+		return Arrays.asList("1 Quest Point", "</br>", "1,000 Prayer Experience", "1,000 Agility Experience",
+				"1,000 Herblore Experience", "</br>", "Initiate Helm",
+				"3000 Coins & A Makeover Voucher (If Male when starting Quest)", "</br>",
+				"Ability to respawn at Falador.", "Access to Initiate Armor");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.PRAYER, 1000),
+				new ExperienceReward(Skill.AGILITY, 1000),
+				new ExperienceReward(Skill.HERBLORE, 1000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Initiate Helm", ItemID.INITIATE_SALLET, 1),
+				new ItemReward("3000 Coins", ItemID.COINS_995, 3000),
+				new ItemReward("Makeover Voucher (If male when starting quest)", ItemID.MAKEOVER_VOUCHER, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to respawn in Falador"),
+				new UnlockReward("Access to Initiate Armor")
+		);
 	}
 
 	@Override

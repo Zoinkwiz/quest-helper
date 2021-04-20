@@ -15,6 +15,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
@@ -264,7 +267,26 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "6,625 Strength Experience", "</br>", "Ability to have Thormac turn a battlestaff into a mystic staff for 40,000 coins.");
+		return Arrays.asList("1 Quest Point", "</br>", "6,625 Strength Experience", "</br>",
+				"Ability to have Thormac turn a battlestaff into a mystic staff for 40,000 coins.");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.STRENGTH, 6625));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to have Thormac turn a Battlestaff into a Mystic Staff for 40,000 Coins."));
 	}
 
 	@Override

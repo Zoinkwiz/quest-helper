@@ -44,6 +44,9 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -883,6 +886,27 @@ public class RagAndBoneManII extends BasicQuestHelper
 	public List<String> getQuestRewards()
 	{
 		return Arrays.asList("1 Quest Point", "</br>", "5,000 Prayer Experience", "</br>", "A Bonesack", "A Ram Skull Helm");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.PRAYER, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("A Bonesack", ItemID.BONESACK, 1),
+				new ItemReward("A Ram Skull Helm", ItemID.RAM_SKULL_HELM, 1)
+		);
 	}
 
 	@Override

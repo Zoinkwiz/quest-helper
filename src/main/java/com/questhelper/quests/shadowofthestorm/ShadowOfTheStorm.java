@@ -40,6 +40,8 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -363,7 +365,23 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "10,000 Experience Lamp (Any combat skill except Prayer)", "</br>", "Darklight", "Six Cut Gems if you use a chisel on the demon's throne.");
+		return Arrays.asList("1 Quest Point", "</br>", "10,000 Experience Lamp (Any combat skill except Prayer)",
+				"</br>", "Darklight", "Six Cut Gems if you use a chisel on the demon's throne.");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("10,000 Experience Lamp (Any combat skill except Prayer)", ItemID.ANTIQUE_LAMP, 1), //4447 is placeholder for filter
+				new ItemReward("Darklight", ItemID.DARKLIGHT, 1)
+		);
 	}
 
 	@Override

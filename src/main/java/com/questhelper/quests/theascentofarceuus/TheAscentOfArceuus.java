@@ -39,6 +39,9 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -280,9 +283,28 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("1 Quest Points", "</br>", "1,500 Hunter Experience", "500 Runecrafting Experience" , "</br>", "2,000 Coins", "Arceuus favour certificate.", "A Kharedst's Memoirs page.");
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.HUNTER, 1500),
+				new ExperienceReward(Skill.RUNECRAFT, 500)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2,000 Coins", ItemID.COINS_995, 2000),
+				new ItemReward("Arceuus Favour Certificate", ItemID.ARCEUUS_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("A Kharedst's Memoirs page", ItemID.KHAREDSTS_MEMOIRS, 1)
+		);
 	}
 
 	@Override

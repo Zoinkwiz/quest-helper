@@ -40,6 +40,9 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -256,7 +259,36 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "1,500 Woodcutting Experience", "1,500 Cooking Experience", "1,500 Crafting Experience", "1,500 Ranged Experience", "</br>", "New method of travel between Karamja and Feldip Hills.", "Further access to the Culinaromancer's Chest.");
+		return Arrays.asList("1 Quest Point", "</br>", "1,500 Woodcutting Experience",
+				"1,500 Cooking Experience", "1,500 Crafting Experience", "1,500 Ranged Experience",
+				"</br>", "New method of travel between Karamja and Feldip Hills.",
+				"Further access to the Culinaromancer's Chest.");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.WOODCUTTING, 1500),
+				new ExperienceReward(Skill.COOKING, 1500),
+				new ExperienceReward(Skill.CRAFTING, 1500),
+				new ExperienceReward(Skill.RANGED, 1500)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("New method of travel between Karamja and Feldip Hills."),
+				new UnlockReward("Increased access to the Culinaromancer's Chest.")
+		);
 	}
 
 	@Override

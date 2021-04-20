@@ -43,6 +43,8 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -290,9 +292,21 @@ public class RFDAwowogei extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList("1 Quest Point", "</br>", "10,000 Cooking Experience", "10,000 Agility Experience", "</br>", "Ability to teleport to Ape Atoll", "Further access to the Culinaromancer's Chest");
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 10000),
+				new ExperienceReward(Skill.AGILITY, 10000)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to teleport to Ape Atoll"),
+				new UnlockReward("Further access to the Culinaromancer's Chest")
+		);
 	}
 
 	@Override

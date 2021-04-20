@@ -40,6 +40,9 @@ import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -50,10 +53,9 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -61,8 +63,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.HashMap;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.SINS_OF_THE_FATHER
@@ -857,9 +857,27 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
+	public QuestPointReward getQuestPointReward()
 	{
-		return Arrays.asList("2 Quest Point", "</br>", "3 x 15,000 Experience Tomes (Any skill above 60)", "</br>", "A Blisterwood Flail", "</br>", "Access to Darkmeyer and the Daeyalt Essence Mine", "Darkmeyer teleport via Drakan's Medallion.");
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("3 x 15,000 Experince Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 3), //4447 is placeholder for filter
+				new ItemReward("A Blisterwood Flail", ItemID.BLISTERWOOD_FLAIL, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Darkmeyer and the Daeyalt Essence Mine"),
+				new UnlockReward("Darkmeyer teleport via Drakan's Medallion.")
+		);
 	}
 
 	@Override

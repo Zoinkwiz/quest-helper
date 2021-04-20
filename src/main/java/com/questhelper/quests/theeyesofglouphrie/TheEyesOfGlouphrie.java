@@ -37,6 +37,9 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -308,7 +311,32 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	@Override
 	public List<String> getQuestRewards()
 	{
-		return Arrays.asList("2 Quest Points", "</br>", "12,000 Magic Experience", "2,500 Woodcutting Experience", "6,000 Runecraft Experience",  "250 Construction Experience", "</br>", "A Crystal Saw Seed");
+		return Arrays.asList("2 Quest Points", "</br>", "12,000 Magic Experience",
+				"2,500 Woodcutting Experience", "6,000 Runecraft Experience",
+				"250 Construction Experience", "</br>", "A Crystal Saw Seed");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MAGIC, 12000),
+				new ExperienceReward(Skill.WOODCUTTING, 2500),
+				new ExperienceReward(Skill.RUNECRAFT, 6000),
+				new ExperienceReward(Skill.CONSTRUCTION, 250)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("A Crystal Saw Seed"));
 	}
 
 	@Override

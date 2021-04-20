@@ -223,7 +223,11 @@ public enum QuestHelperQuest
 	KARAMJA_HARD("Hard Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
 		Quest.Difficulty.ACHIEVEMENT_DIARY),
 	KARAMJA_ELITE("Elite Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY);
+		Quest.Difficulty.ACHIEVEMENT_DIARY),
+
+	// Generic
+	MA2_LOCATOR("Mage Arena II Locator", QuestVarbits.QUEST_THE_MAGE_ARENA_II, -1, Quest.Type.GENERIC,
+		Quest.Difficulty.GENERIC);
 
 	@Getter
 	private final int id;

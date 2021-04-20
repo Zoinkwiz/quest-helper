@@ -49,6 +49,7 @@ public interface Quest
 		GRANDMASTER,
 		MINIQUEST,
 		ACHIEVEMENT_DIARY,
+		GENERIC,
 		;
 
 		@Override
@@ -67,6 +68,7 @@ public interface Quest
 		P2P,
 		MINIQUEST,
 		ACHIEVEMENT_DIARY,
+		GENERIC,
 		;
 
 		@Override

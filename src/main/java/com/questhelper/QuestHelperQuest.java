@@ -217,6 +217,12 @@ public enum QuestHelperQuest
 
 	//Achievement diary
 	KARAMJA_EASY("Easy Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
+		Quest.Difficulty.ACHIEVEMENT_DIARY),
+	KARAMJA_MEDIUM("Medium Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_MEDIUM, 1,
+		Quest.Type.ACHIEVEMENT_DIARY, Quest.Difficulty.ACHIEVEMENT_DIARY),
+	KARAMJA_HARD("Hard Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
+		Quest.Difficulty.ACHIEVEMENT_DIARY),
+	KARAMJA_ELITE("Elite Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
 		Quest.Difficulty.ACHIEVEMENT_DIARY);
 
 	@Getter

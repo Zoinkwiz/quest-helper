@@ -27,6 +27,7 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.QuestBank;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
@@ -217,7 +218,7 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	@Override
-	protected List<LineComponent> getOverlayDisplayText(Client client)
+	protected List<LineComponent> getOverlayDisplayText(Client client, QuestHelperConfig config)
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
@@ -242,12 +243,12 @@ public class ItemRequirement extends AbstractRequirement
 			text.append(this.getName());
 		}
 
-		Color color = getColor(client);
+		Color color = getColor(client, config);
 		lines.add(LineComponent.builder()
 			.left(text.toString())
 			.leftColor(color)
 			.build());
-		lines.addAll(getAdditionalText(client, true));
+		lines.addAll(getAdditionalText(client, true, config));
 		return lines;
 	}
 
@@ -258,16 +259,16 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public Color getColor(Client client)
+	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		Color color = Color.RED;
+		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
 		}
 		else if (this.check(client))
 		{
-			color = Color.GREEN;
+			color = config.passColour();
 		}
 		return color;
 	}
@@ -296,19 +297,20 @@ public class ItemRequirement extends AbstractRequirement
 		return -1;
 	}
 
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions, List<Item> bankItems)
+	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
+										 List<Item> bankItems, QuestHelperConfig config)
 	{
-		Color color = Color.RED;
+		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
 		}
 		else if (this.check(client, checkConsideringSlotRestrictions))
 		{
-			color = Color.GREEN;
+			color = config.passColour();
 		}
 
-		if (color == Color.RED && bankItems != null)
+		if (color == config.failColour() && bankItems != null)
 		{
 			if (check(client, false, bankItems))
 			{
@@ -319,9 +321,10 @@ public class ItemRequirement extends AbstractRequirement
 		return color;
 	}
 
-	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip)
+	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip,
+														 QuestHelperConfig config)
 	{
-		Color equipColor = Color.GREEN;
+		Color equipColor = config.passColour();
 
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
@@ -330,7 +333,7 @@ public class ItemRequirement extends AbstractRequirement
 			String equipText = "(equipped)";
 			if (!this.check(client, true))
 			{
-				equipColor = Color.RED;
+				equipColor = config.failColour();
 			}
 			lines.add(LineComponent.builder()
 				.left(equipText)

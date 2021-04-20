@@ -92,6 +92,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
@@ -218,6 +219,10 @@ public class QuestHelperPlugin extends Plugin
 
 	@Inject
 	SpriteManager spriteManager;
+
+	@Getter
+	@Inject
+	private ColorPickerManager colorPickerManager;
 
 	@Getter
 	@Inject

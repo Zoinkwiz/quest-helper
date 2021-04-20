@@ -29,6 +29,7 @@ package com.questhelper.requirements.var;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
+import java.util.Locale;
 import net.runelite.api.Client;
 
 public class VarplayerRequirement extends ConditionForStep
@@ -37,6 +38,7 @@ public class VarplayerRequirement extends ConditionForStep
 	private final int varplayerId;
 	private final int value;
 	private final Operation operation;
+	private final String displayText;
 
 	private final int bitPosition;
 	private final boolean bitIsSet;
@@ -46,6 +48,18 @@ public class VarplayerRequirement extends ConditionForStep
 		this.varplayerId = varplayerId;
 		this.value = value;
 		this.operation = Operation.EQUAL;
+		this.displayText = null;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+	}
+
+	public VarplayerRequirement(int varplayerId, int value, String displayText)
+	{
+		this.varplayerId = varplayerId;
+		this.value = value;
+		this.operation = Operation.EQUAL;
+		this.displayText = displayText;
 
 		this.bitPosition = -1;
 		this.bitIsSet = false;
@@ -56,6 +70,18 @@ public class VarplayerRequirement extends ConditionForStep
 		this.varplayerId = varplayerId;
 		this.value = value;
 		this.operation = operation;
+		this.displayText = null;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+	}
+
+	public VarplayerRequirement(int varplayerId, int value, Operation operation, String displayText)
+	{
+		this.varplayerId = varplayerId;
+		this.value = value;
+		this.operation = operation;
+		this.displayText = displayText;
 
 		this.bitPosition = -1;
 		this.bitIsSet = false;
@@ -66,10 +92,23 @@ public class VarplayerRequirement extends ConditionForStep
 		this.varplayerId = varplayerId;
 		this.value = -1;
 		this.operation = Operation.EQUAL;
+		this.displayText = null;
 
 		this.bitPosition = bitPosition;
 		this.bitIsSet = bitIsSet;
 	}
+
+	public VarplayerRequirement(int varplayerId, boolean bitIsSet, int bitPosition, String displayText)
+	{
+		this.varplayerId = varplayerId;
+		this.value = -1;
+		this.operation = Operation.EQUAL;
+		this.displayText = displayText;
+
+		this.bitPosition = bitPosition;
+		this.bitIsSet = bitIsSet;
+	}
+
 
 	@Override
 	public boolean check(Client client)
@@ -79,5 +118,19 @@ public class VarplayerRequirement extends ConditionForStep
 			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
 		}
 		return operation.check(client.getVarpValue(varplayerId), value);
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		if (displayText != null)
+		{
+			return displayText;
+		}
+		if (bitPosition >= 0)
+		{
+			return varplayerId + " must have the " + bitPosition + " bit set.";
+		}
+		return varplayerId + " must be + " + operation.name().toLowerCase(Locale.ROOT) + " " + value;
 	}
 }

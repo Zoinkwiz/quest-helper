@@ -149,7 +149,8 @@ public class MakingHistory extends BasicQuestHelper
 		ectoTokens.appendToTooltip("If you do not have 2 ecto-tokens bring 1 bone, 1 pot and 1 bucket to earn 5 ecto-tokens at the Ectofunctus.");
 		ectoTokens.appendToTooltip("Additionally, you can also enter Port Phasmatys via Charter ship, but that costs up to 4,100 coins.");
 
-		portPhasmatysEntry = ComplexRequirementBuilder.or("2 x Ecto-tokens")
+		portPhasmatysEntry = ComplexRequirementBuilder.or("2 x Ecto-tokens, or 4100 coins to travel there via Charter" +
+			" Ship")
 			.with(ectoTokens)
 			.with(new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.FINISHED))
 			.with(new ItemRequirement("Coins", ItemID.COINS_995, 4100))

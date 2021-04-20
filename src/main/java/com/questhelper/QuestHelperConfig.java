@@ -160,15 +160,15 @@ public interface QuestHelperConfig extends Config
 	
 	@ConfigSection(
 		position = 1,
-		name = "Colors",
-		description = "What color each option can be"
+		name = "Colours",
+		description = "What colour each option can be"
 	)
 	String colorSection = "colorSection";
 
 	@ConfigItem(
 		keyName = "textHighlightColor",
-		name = "Text highlight color",
-		description = "Change the color of dialog choices highlighted by the helper",
+		name = "Text highlight colour",
+		description = "Change the colour of dialog choices highlighted by the helper",
 		section = colorSection
 	)
 	default Color textHighlightColor()
@@ -179,7 +179,7 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "targetOverlayColor",
 		name = "Color of target overlay",
-		description = "Change the color which target NPCs/Objects will be highlighted with",
+		description = "Change the colour which target NPCs/Objects will be highlighted with",
 		section = colorSection
 	)
 	default Color targetOverlayColor()
@@ -188,8 +188,30 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "passColour",
+		name = "Colour of passed requirements/checks",
+		description = "Change the colour that will indicate a check has passed",
+		section = colorSection
+	)
+	default Color passColour()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "failColour",
+		name = "Colour of failed requirements/checks",
+		description = "Change the colour that will indicate a check has failed",
+		section = colorSection
+	)
+	default Color failColour()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
 		keyName = "debugColor",
-		name = "Debug Color",
+		name = "Debug Colour",
 		description = "debug",
 		hidden = true,
 		section = colorSection

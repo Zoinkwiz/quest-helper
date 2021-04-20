@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ExternalQuestResources {
     //Free Quests
+    BELOW_ICE_MOUNTAIN("https://oldschool.runescape.wiki/w/Below_Ice_Mountain"),
     BLACK_KNIGHTS_FORTRESS("https://oldschool.runescape.wiki/w/Black_Knights%27_Fortress"),
     COOKS_ASSISTANT("https://oldschool.runescape.wiki/w/Cook%27s_Assistant"),
     THE_CORSAIR_CURSE("https://oldschool.runescape.wiki/w/The_Corsair_Curse"),

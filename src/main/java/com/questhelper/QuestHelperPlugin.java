@@ -662,6 +662,34 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
+	public void onPreReqQuestSelected(QuestHelperQuest selectedPreqQuest) {
+
+		String questName = selectedPreqQuest.getName();
+//		questName = questName.substring(0, questName.indexOf("<"));
+		if (questName.equals("Shield of Arrav")) {
+			Player player = client.getLocalPlayer();
+			if (player == null) {
+				return;
+			}
+			WorldPoint location = player.getWorldLocation();
+
+			if (PHOENIX_START_ZONE.contains(location)) {
+				startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
+			} else {
+				startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
+			}
+		} else if (questName.equals("Recipe for Disaster")) {
+			startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
+		} else {
+			QuestHelper questHelper = quests.get(questName);
+			if (questHelper != null) {
+				startUpQuest(questHelper);
+			}
+		}
+	}
+
+
+
 	private void displayPanel()
 	{
 		SwingUtilities.invokeLater(() -> {

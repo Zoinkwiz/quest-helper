@@ -667,10 +667,8 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	public void onPreReqQuestSelected(QuestHelperQuest selectedPreqQuest) {
-
-		String questName = selectedPreqQuest.getName();
-//		questName = questName.substring(0, questName.indexOf("<"));
+	public void onPreReqQuestSelected(QuestHelperQuest selectedPreReqQuest) {
+		String questName = selectedPreReqQuest.getName();
 		if (questName.equals("Shield of Arrav")) {
 			Player player = client.getLocalPlayer();
 			if (player == null) {
@@ -693,7 +691,15 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-
+	public boolean checkQuestCompletion(QuestHelperQuest questHelperQuest){
+		QuestHelper questHelper = quests.get(questHelperQuest.getName());
+		if (questHelper.isCompleted()){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	private void displayPanel()
 	{

@@ -357,7 +357,7 @@ public class QuestOverviewPanel extends JPanel
 	public void setupQuestRequirements(QuestHelper quest)
 	{
 		/* Prerequisite quest requirements */
-		updatePreReqQuestPanels(questPreReqQuestsHeader, questPreReqQuestsListPanel, requirementPanels, quest.getGeneralRequirements());
+		updatePreReqQuestPanels(questPreReqQuestsHeader, questPreReqQuestsListPanel, quest.getGeneralRequirements());
 
 		/* Non-item requirements */
 		updateRequirementsPanels(questGeneralRequirementsHeader, questGeneralRequirementsListPanel, requirementPanels, quest.getGeneralRequirements());
@@ -401,43 +401,57 @@ public class QuestOverviewPanel extends JPanel
 		}
 	}
 
-	private void updatePreReqQuestPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
-										 List<Requirement> requirements) {
+	private void updatePreReqQuestPanels(JPanel header, JPanel listPanel, List<Requirement> requirements) {
 		questPreReqQuestsListPanel.removeAll();
 		if (requirements != null) {
 			for (Requirement preReqQuestRequirement : requirements) {
 				if (preReqQuestRequirement.getClass().equals(QuestRequirement.class)) {
-					JButton questReqButton = new JButton();
+
+					listPanel.setVisible(true);
+					header.setVisible(true);
 
 					//Button constant properties
+					JButton questReqButton = new JButton();
 					questReqButton.setUI(new BasicButtonUI());
-//					SwingUtil.removeButtonDecorations(questReqButton);
+					SwingUtil.removeButtonDecorations(questReqButton);
 					questReqButton.setHorizontalAlignment(SwingConstants.LEFT);
 					questReqButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
-					questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
-					questReqButton.setText(preReqQuestRequirement.getDisplayText());
-					questPreReqQuestsListPanel.add(questReqButton);
 
-					if (questReqButton.getText().length() > 0) {
+					//Button variable properties
+					questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
 
-						questReqButton.addActionListener((e -> {
-							QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
-							closeHelper();
-							System.out.println(tempStorageOfQuest);
+					if (!questHelperPlugin.checkQuestCompletion(((QuestRequirement) preReqQuestRequirement).getQuest())) {
+						questReqButton.setText(preReqQuestRequirement.getDisplayText());
 
-							currentQuest.setQuest(tempStorageOfQuest);
+						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+							public void mouseEntered(java.awt.event.MouseEvent evt) {
+								questReqButton.setForeground(Color.blue.brighter().brighter().brighter());
+								questReqButton.setText("<html><body style = 'text-decoration:underline'>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+								questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
 
-//							questHelperPlugin.setSidebarSelectedQuest(currentQuest);
-							questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
-//							questHelperPlugin.startUpQuest(currentQuest);
+								//Start prerequisite quest helper
+								if (questReqButton.getText().length() > 0) {
+									questReqButton.addActionListener((e -> {
+										QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+										questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
 
-							// above starts the quest, but not the steps and accurate reqs
-
-
-
-						}));
+									}));
+								}
+							}
+							public void mouseExited(java.awt.event.MouseEvent evt) {
+								questReqButton.setForeground(Color.white);
+								questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+							}
+						});
+					} else {
+						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+							public void mouseEntered(java.awt.event.MouseEvent evt) {
+								questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+							}
+						});
+						questReqButton.setForeground(Color.green);
 					}
-
+					questPreReqQuestsListPanel.add(questReqButton);
 				}
 			}
 		} else {

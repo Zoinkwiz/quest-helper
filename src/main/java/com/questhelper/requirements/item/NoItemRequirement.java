@@ -26,6 +26,7 @@
  */
 package com.questhelper.requirements.item;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.util.ItemSlots;
 import java.awt.Color;
 import java.util.Objects;
@@ -60,9 +61,9 @@ public class NoItemRequirement extends ItemRequirement
 	}
 
 	@Override
-	public Color getColor(Client client)
+	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		return check(client) ? Color.GREEN : Color.RED;
+		return check(client) ? config.passColour() : config.failColour();
 	}
 
 	@Override

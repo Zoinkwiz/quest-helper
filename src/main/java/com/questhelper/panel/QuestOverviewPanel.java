@@ -356,7 +356,7 @@ public class QuestOverviewPanel extends JPanel
 
 	public void setupQuestRequirements(QuestHelper quest)
 	{
-		/* Quest requirements */
+		/* Prerequisite quest requirements */
 		updatePreReqQuestPanels(questPreReqQuestsHeader, questPreReqQuestsListPanel, requirementPanels, quest.getGeneralRequirements());
 
 		/* Non-item requirements */
@@ -423,19 +423,16 @@ public class QuestOverviewPanel extends JPanel
 						questReqButton.addActionListener((e -> {
 							QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
 							closeHelper();
-							currentQuest.shutDown();
-							questHelperPlugin.shutDownQuestFromSidebar();
-
-							QuestHelper newQuestHelper = null;
-							assert newQuestHelper != null;
-
 							System.out.println(tempStorageOfQuest);
 
-							//this is only changing the quest inside of the current quest, not loading a current quest
 							currentQuest.setQuest(tempStorageOfQuest);
 
-							questHelperPlugin.startUpQuest(currentQuest);
-							questHelperPlugin.setSidebarSelectedQuest(currentQuest);
+//							questHelperPlugin.setSidebarSelectedQuest(currentQuest);
+							questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
+//							questHelperPlugin.startUpQuest(currentQuest);
+
+							// above starts the quest, but not the steps and accurate reqs
+
 
 
 						}));
@@ -593,16 +590,17 @@ public class QuestOverviewPanel extends JPanel
 
 				if (itemRequirement instanceof NoItemRequirement)
 				{
-					newColor = itemRequirement.getColor(client); // explicitly call this because NoItemRequirement overrides it
+					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
+					// NoItemRequirement overrides it
 				}
 				else
 				{
-					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems);
+					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems, questHelperPlugin.getConfig());
 				}
 			}
 			else
 			{
-				newColor = requirementPanel.getRequirement().getColor(client);
+				newColor = requirementPanel.getRequirement().getColor(client, questHelperPlugin.getConfig());
 			}
 
 			if (newColor == Color.WHITE)

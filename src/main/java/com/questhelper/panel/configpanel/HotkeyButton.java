@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.emote;
+package com.questhelper.panel.configpanel;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
 import lombok.Getter;
-import static net.runelite.api.SpriteID.*;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.ui.FontManager;
 
-@Getter
-public enum QuestEmote
+class HotkeyButton extends JButton
 {
-	FLEX("Flex", 2426),
-	CRY("Cry", EMOTE_CRY),
-	BOW("Bow", EMOTE_BOW),
-	DANCE("Dance", EMOTE_DANCE),
-	WAVE("Wave", EMOTE_WAVE),
-	THINK("Think", EMOTE_THINK),
-	GOBLIN_BOW("Goblin bow", EMOTE_GOBLIN_BOW),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	SPIN("Spin", EMOTE_SPIN);
+	@Getter
+	private Keybind value;
 
-	private String name;
-	private int spriteId;
-
-	QuestEmote(String name, int spriteId)
+	public HotkeyButton(Keybind value, boolean modifierless)
 	{
-		this.name = name;
-		this.spriteId = spriteId;
+		setFont(FontManager.getDefaultFont().deriveFont(12.f));
+		setValue(value);
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
+				setValue(Keybind.NOT_SET);
+			}
+		});
+
+		addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (modifierless)
+				{
+					setValue(new ModifierlessKeybind(e));
+				}
+				else
+				{
+					setValue(new Keybind(e));
+				}
+			}
+		});
+	}
+
+	public void setValue(Keybind value)
+	{
+		if (value == null)
+		{
+			value = Keybind.NOT_SET;
+		}
+
+		this.value = value;
+		setText(value.toString());
 	}
 }

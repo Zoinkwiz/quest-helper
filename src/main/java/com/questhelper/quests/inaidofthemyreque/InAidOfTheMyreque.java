@@ -574,7 +574,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 			enterBurghPubBasement, clearBasementRubble), foodForChest, pickaxe, bucketTo5, spade));
 
 		allSteps.add(new PanelDetails("Repairing the shop", Arrays.asList(talkToAurel, climbShopLadder, fixRoof, climbDownShopLadder, fixShopWall, talkToAurelForCrate), hammer, planks6, nails24));
-		allSteps.add(new PanelDetails("Stocking the shop", Collections.singletonList(fillCrate), tinderbox3, bronzeAxes10, rawMackerelOrSnail10));
+		allSteps.add(new PanelDetails("Stocking the shop", Collections.singletonList(fillCrate), tinderbox3,
+			bronzeAxes10, rawMackerelOrSnail10, hammer, planks5, nails20, swampPaste));
 
 		allSteps.add(new PanelDetails("Repairing the bank", Arrays.asList(talkToAurelWithCrate, repairBooth, repairBankWall, talkToCornelius), hammer, planks5, nails20, swampPaste));
 		allSteps.add(new PanelDetails("Repairing the furnace", Arrays.asList(talkToRazvanAfterRepairs, repairFurnace, addCoalToFurnace, lightFurnace), hammer, steelBars2, coal, tinderbox));

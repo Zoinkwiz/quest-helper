@@ -298,7 +298,7 @@ public class DesertTreasure extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
 		restorePotions = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
-		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.getStaminaPotions());
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.getRunRestoreItems());
 	}
 
 	public void loadZones()

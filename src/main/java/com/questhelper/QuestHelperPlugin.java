@@ -55,6 +55,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -688,19 +689,20 @@ public class QuestHelperPlugin extends Plugin
 		} else {
 			QuestHelper questHelper = quests.get(questName);
 			if (questHelper != null) {
-				startUpQuest(questHelper);
+				clientThread.invokeLater(() -> {
+					startUpQuest(questHelper);
+				});
 			}
 		}
 	}
 
-	public boolean checkQuestCompletion(QuestHelperQuest questHelperQuest){
-		QuestHelper questHelper = quests.get(questHelperQuest.getName());
-		if (questHelper.isCompleted()){
+	public boolean checkQuestCompletion(QuestHelperQuest questHelperQuest, Consumer<Boolean> callback) {
+		clientThread.invokeLater(() -> {
+			QuestHelper questHelper = quests.get(questHelperQuest.getName());
+			callback.accept(questHelper.isCompleted());
 			return true;
-		}
-		else {
-			return false;
-		}
+		});
+		return false;
 	}
 
 	public Color checkQuestCompletionColor(QuestHelperQuest questHelperQuest){
@@ -714,6 +716,7 @@ public class QuestHelperPlugin extends Plugin
 		}
 		return color;
 	}
+
 
 	private void displayPanel()
 	{

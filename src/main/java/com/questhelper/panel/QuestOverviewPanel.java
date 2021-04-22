@@ -419,38 +419,76 @@ public class QuestOverviewPanel extends JPanel
 
 					//Button variable properties
 					questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
-					if (!questHelperPlugin.checkQuestCompletion(((QuestRequirement) preReqQuestRequirement).getQuest())) {
-						questReqButton.setText(preReqQuestRequirement.getDisplayText());
 
-						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
-							public void mouseEntered(java.awt.event.MouseEvent evt) {
-								questReqButton.setForeground(Color.blue.brighter().brighter().brighter());
-								questReqButton.setText("<html><body style = 'text-decoration:underline'>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
-								questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+					questHelperPlugin.checkQuestCompletion((((QuestRequirement) preReqQuestRequirement).getQuest()), result -> SwingUtilities.invokeLater(() -> {
+						// do more stuff on ui thread
+						boolean qqstatus = result;
+						System.out.println(qqstatus);
+						if (!qqstatus) {
+							questReqButton.setText(preReqQuestRequirement.getDisplayText());
 
-								//Start prerequisite quest helper
-								if (questReqButton.getText().length() > 0) {
-									questReqButton.addActionListener((e -> {
-										QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
-										questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
-									}));
+							questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+								public void mouseEntered(java.awt.event.MouseEvent evt) {
+									questReqButton.setForeground(Color.blue.brighter().brighter().brighter());
+									questReqButton.setText("<html><body style = 'text-decoration:underline'>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+									questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+
+									//Start prerequisite quest helper
+									if (questReqButton.getText().length() > 0) {
+										questReqButton.addActionListener((e -> {
+											QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+											questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
+										}));
+									}
 								}
-							}
-							public void mouseExited(java.awt.event.MouseEvent evt) {
-								questReqButton.setForeground(Color.white);
-								questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
-							}
-						});
-					} else {
-						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
-							public void mouseEntered(java.awt.event.MouseEvent evt) {
-								questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
-							}
-						});
-						QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
-						Color newColor = questHelperPlugin.checkQuestCompletionColor(tempStorageOfQuest);
-						questReqButton.setForeground(newColor);
-					}
+								public void mouseExited(java.awt.event.MouseEvent evt) {
+									questReqButton.setForeground(Color.white);
+									questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+								}
+							});
+						} else {
+							questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+								public void mouseEntered(java.awt.event.MouseEvent evt) {
+									questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+								}
+
+
+					});
+						}}));
+
+
+//					if (!questHelperPlugin.checkQuestCompletion(((QuestRequirement) preReqQuestRequirement).getQuest())) {
+//						questReqButton.setText(preReqQuestRequirement.getDisplayText());
+//
+//						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+//							public void mouseEntered(java.awt.event.MouseEvent evt) {
+//								questReqButton.setForeground(Color.blue.brighter().brighter().brighter());
+//								questReqButton.setText("<html><body style = 'text-decoration:underline'>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+//								questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+//
+//								//Start prerequisite quest helper
+//								if (questReqButton.getText().length() > 0) {
+//									questReqButton.addActionListener((e -> {
+//										QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+//										questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
+//									}));
+//								}
+//							}
+//							public void mouseExited(java.awt.event.MouseEvent evt) {
+//								questReqButton.setForeground(Color.white);
+//								questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+//							}
+//						});
+//					} else {
+//						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+//							public void mouseEntered(java.awt.event.MouseEvent evt) {
+//								questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+//							}
+//						});
+//						QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+//						Color newColor = questHelperPlugin.checkQuestCompletionColor(tempStorageOfQuest);
+//						questReqButton.setForeground(newColor);
+//					}
 					questPreReqQuestsListPanel.add(questReqButton);
 				}
 			}
@@ -629,4 +667,13 @@ public class QuestOverviewPanel extends JPanel
 			requirementPanel.getLabel().setForeground(newColor);
 		}
 	}
+
+	private boolean completionCheckConverter(boolean qqstatus){
+				if (qqstatus) {
+			return true;
+		} else {
+			return false;
+		}
+
+}
 }

@@ -35,7 +35,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.*;
@@ -59,7 +58,7 @@ public class FremennikEasy extends BasicQuestHelper
 			notEnteredTrollStronghold, notChoppedAndBurnedLogs, notInWaterBirth, notTradedStonemason, notMinedSilver, notInKeldagrim;
 
 	QuestStep catchCeruleanTwitch, changeBoots,  killRockCrabs, goTrollStronghold, pickupSnapeGrass,
-		enterFightCave, enterPothole, claimReward, ChopAndBurnLogs, FillBucketWithWater, craftTiara, stealFromStall, tradeStonemason, mineSilver,
+		enterFightCave, enterPothole, claimReward, chopAndBurnLogs, fillBucketWithWater, craftTiara, stealFromStall, tradeStonemason, mineSilver,
 			goRellekka, travelToWaterbirth, goKeldagrim;
 
 	Zone Rellekka, Waterbirth, Keldagrim;
@@ -76,19 +75,20 @@ public class FremennikEasy extends BasicQuestHelper
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
 		doEasy.addStep(notGoneToRellekka, goRellekka);
-		doEasy.addStep(notChoppedAndBurnedLogs, ChopAndBurnLogs);
-		doEasy.addStep(notFilledBucketWithWater, FillBucketWithWater);
-		doEasy.addStep(new Conditions(notInKeldagrim, notCraftedTiara), goKeldagrim);
+		doEasy.addStep(notChoppedAndBurnedLogs, chopAndBurnLogs);
+		doEasy.addStep(notFilledBucketWithWater, fillBucketWithWater);
 		doEasy.addStep(new Conditions(notCraftedTiara, notMinedSilver), mineSilver);
 		doEasy.addStep(notCraftedTiara, craftTiara);
 		doEasy.addStep(new Conditions(notInKeldagrim, notTradedStonemason), goKeldagrim);
 		doEasy.addStep(notTradedStonemason, tradeStonemason);
+		doEasy.addStep(new Conditions(notInKeldagrim, notStolenFromStall), goKeldagrim);
+		doEasy.addStep(notStolenFromStall, stealFromStall);
 		doEasy.addStep(notChangedBoots, changeBoots);
 		doEasy.addStep(new Conditions(notInWaterBirth), travelToWaterbirth);
 		doEasy.addStep(new Conditions(atWaterbirth, notCollectedSnapeGrass), pickupSnapeGrass);
 		doEasy.addStep(notKilledRockCrabs, killRockCrabs);
 		doEasy.addStep(notCaughtCeruleanTwitch, catchCeruleanTwitch);
-		doEasy.addStep(notStolenFromStall, stealFromStall);
+
 		steps.put(0, doEasy);
 		return steps;
 	}
@@ -151,9 +151,9 @@ public class FremennikEasy extends BasicQuestHelper
 		pickupSnapeGrass = new DetailedQuestStep(this, new WorldPoint(2553, 3754, 0),
 				"Pick up 5 snape grass on Waterbirth Island.");
 		stealFromStall = new ObjectStep(this, ObjectID.BAKERY_STALL_6163, new WorldPoint(2891,10210,0), "Steal from the Keldagrim crafting or baker's stall.");
-		FillBucketWithWater = new ObjectStep(this, ObjectID.WELL_8927, new WorldPoint(2668, 3660, 0), "Fill a bucket "
+		fillBucketWithWater = new ObjectStep(this, ObjectID.WELL_8927, new WorldPoint(2668, 3660, 0), "Fill a bucket "
 				+ "with water at the Rellekka well.");
-		ChopAndBurnLogs = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2681,3626,0), "Chop and burn some oak logs in the Fremennik Province");
+		chopAndBurnLogs = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2681,3626,0), "Chop and burn some oak logs in the Fremennik Province");
 
 		claimReward = new NpcStep(this, NpcID.THORODIN, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");
@@ -194,7 +194,7 @@ public class FremennikEasy extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Easy Diary", Arrays.asList(catchCeruleanTwitch, changeBoots,  killRockCrabs, goTrollStronghold, pickupSnapeGrass,
-				enterFightCave, enterPothole, claimReward, ChopAndBurnLogs, FillBucketWithWater, craftTiara, stealFromStall, tradeStonemason, mineSilver,
+				enterFightCave, enterPothole, claimReward, chopAndBurnLogs, fillBucketWithWater, craftTiara, stealFromStall, tradeStonemason, mineSilver,
 				goRellekka, travelToWaterbirth, goKeldagrim)));
 
 		return allSteps;

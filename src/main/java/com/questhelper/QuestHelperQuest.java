@@ -215,8 +215,8 @@ public enum QuestHelperQuest
 	DADDYS_HOME(1688, "Daddy's Home", QuestVarbits.QUEST_DADDYS_HOME, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 
 	//Achievement diary
-	KARAMJA_EASY("Easy Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY);
+	KARAMJA_EASY("Easy Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY, Quest.Difficulty.ACHIEVEMENT_DIARY),
+	FREMENNIK_EASY("Easy Fremennik Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_EASY, 0, Quest.Type.ACHIEVEMENT_DIARY, Quest.Difficulty.ACHIEVEMENT_DIARY);
 
 	@Getter
 	private final int id;

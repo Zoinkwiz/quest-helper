@@ -163,7 +163,7 @@ public class QuestOverviewPanel extends JPanel
 		overviewPanel.add(generateRequirementPanel(questGeneralRequirementsListPanel,
 			questGeneralRequirementsHeader, "General requirements:"));
 		overviewPanel.add(generateRequirementPanel(questPreReqQuestsListPanel,
-				questPreReqQuestsHeader, "PreRequisite Quests:"));
+				questPreReqQuestsHeader, "Prerequisite Quests:"));
 		overviewPanel.add(generateRequirementPanel(questGeneralRecommendedListPanel,
 			questGeneralRecommendedHeader, "Recommended:"));
 		overviewPanel.add(generateRequirementPanel(questItemRequirementsListPanel,
@@ -419,7 +419,6 @@ public class QuestOverviewPanel extends JPanel
 
 					//Button variable properties
 					questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
-
 					if (!questHelperPlugin.checkQuestCompletion(((QuestRequirement) preReqQuestRequirement).getQuest())) {
 						questReqButton.setText(preReqQuestRequirement.getDisplayText());
 
@@ -434,7 +433,6 @@ public class QuestOverviewPanel extends JPanel
 									questReqButton.addActionListener((e -> {
 										QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
 										questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
-
 									}));
 								}
 							}
@@ -449,7 +447,9 @@ public class QuestOverviewPanel extends JPanel
 								questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
 							}
 						});
-						questReqButton.setForeground(Color.green);
+						QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+						Color newColor = questHelperPlugin.checkQuestCompletionColor(tempStorageOfQuest);
+						questReqButton.setForeground(newColor);
 					}
 					questPreReqQuestsListPanel.add(questReqButton);
 				}

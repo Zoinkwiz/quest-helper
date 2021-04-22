@@ -45,6 +45,8 @@ import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -699,6 +701,18 @@ public class QuestHelperPlugin extends Plugin
 		else {
 			return false;
 		}
+	}
+
+	public Color checkQuestCompletionColor(QuestHelperQuest questHelperQuest){
+		QuestHelper questHelper = quests.get(questHelperQuest.getName());
+		Color color;
+		if (questHelper.isCompleted()){
+			color = questHelper.getConfig().passColour();
+		}
+		else {
+			color = questHelper.getConfig().failColour();
+		}
+		return color;
 	}
 
 	private void displayPanel()

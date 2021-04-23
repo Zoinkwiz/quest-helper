@@ -610,7 +610,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		fightGlough.addSubSteps(enterNorthOfTreeNoNieve);
 		talkToZooknockToFinish = new NpcStep(this, NpcID.ZOOKNOCK_7113, new WorldPoint(2027, 5610, 0), "Talk to Zooknock to teleport to the Grand Tree.");
 		talkToZooknockToFinish.addDialogStep("Yes.");
-		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk Narnode to finish the madness!");
+		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk to Narnode to finish the madness!");
 
 	}
 

@@ -188,7 +188,7 @@ public class BetweenARock extends BasicQuestHelper
 		dwarvenLoreHighlight.setHighlightInInventory(true);
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
-		goldBars3 = new ItemRequirement("Gold bar", ItemID.GOLD_BAR, 3);
+		goldBars3 = new ItemRequirement("Gold bars", ItemID.GOLD_BAR, 3);
 		goldBarHighlight = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 		goldBarHighlight.setHighlightInInventory(true);
 
@@ -219,9 +219,9 @@ public class BetweenARock extends BasicQuestHelper
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
-		goldOre6 = new ItemRequirement("Gold ore", ItemID.GOLD_ORE, 6);
+		goldOre6 = new ItemRequirement("Gold ores", ItemID.GOLD_ORE, 6);
 
-		goldBars4 = new ItemRequirement("Gold bar", ItemID.GOLD_BAR, 4);
+		goldBars4 = new ItemRequirement("Gold bars", ItemID.GOLD_BAR, 4);
 		coins1000 = new ItemRequirement("Coins for travelling", ItemID.COINS_995, 1000);
 	}
 
@@ -370,12 +370,12 @@ public class BetweenARock extends BasicQuestHelper
 		talkToDondakanForEnd.addDialogStep("Ready as I'll ever be.");
 		talkToDondakanWithHelmet.addSubSteps(enterDwarfCaveWithHelmet, enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanForEnd);
 
-		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ore. If you want the Avatar to be level 75 vs 125, get 15.", pickaxe);
+		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15.", pickaxe);
 
 		talkToSecondFlame = new ObjectStep(this, ObjectID.WALL_OF_FLAME_5979, new WorldPoint(2373, 4956, 0),
 			"TALK to the central wall of flame.");
 		killAvatar = new NpcStep(this, NpcID.ARZINIAN_AVATAR_OF_MAGIC, new WorldPoint(2375, 4953, 0), "Kill the " +
-			"avatar. Make sure to keep the gold ore in your inventory.");
+			"avatar. Make sure to keep the gold ores in your inventory.");
 		killAvatar.addAlternateNpcs(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1234, NpcID.ARZINIAN_AVATAR_OF_MAGIC_1235,
 			NpcID.ARZINIAN_AVATAR_OF_RANGING, NpcID.ARZINIAN_AVATAR_OF_RANGING_1231, NpcID.ARZINIAN_AVATAR_OF_RANGING_1232,
 			NpcID.ARZINIAN_AVATAR_OF_STRENGTH, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1228, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1229);

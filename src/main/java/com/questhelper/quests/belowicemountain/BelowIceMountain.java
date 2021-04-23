@@ -141,9 +141,10 @@ public class BelowIceMountain extends BasicQuestHelper
 		beerHighlight = new ItemRequirement(true, "Asgarnian Ale", ItemID.ASGARNIAN_ALE);
 
 		iceMountainTeleport = new ItemRequirement("A teleport to near Ice Mountain", ItemCollections.getAmuletOfGlories());
-		iceMountainTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
+		iceMountainTeleport.addAlternates(ItemCollections.getCombatBracelets());
+		iceMountainTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.LASSAR_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.FALADOR_TELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		combatGearOrPickaxe = new ItemRequirement("Combat gear or a pickaxe if you don't want to fight", -1, -1);
 		combatGearOrPickaxe.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}

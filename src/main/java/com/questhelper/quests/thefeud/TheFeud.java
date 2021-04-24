@@ -180,6 +180,7 @@ public class TheFeud extends BasicQuestHelper
 
 		ConditionalStep killThug = new ConditionalStep(this, talkToMenaphiteLeader);
 		killThug.addStep(menaphiteThugAlive, killMenaphiteThug);
+		steps.put(24, killThug);
 
 		ConditionalStep killChampion = new ConditionalStep(this, talkToAVillager);
 		killChampion.addStep(banditChampionSpawned, killBanditChampion);

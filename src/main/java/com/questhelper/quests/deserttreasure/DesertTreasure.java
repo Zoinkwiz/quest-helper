@@ -298,7 +298,7 @@ public class DesertTreasure extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
 		restorePotions = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
-		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.getStaminaPotions());
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.getRunRestoreItems());
 	}
 
 	public void loadZones()
@@ -521,25 +521,25 @@ public class DesertTreasure extends BasicQuestHelper
 			"Talk to the Troll Child north of Trollheim to get the ice diamond.");
 
 		placeBlood = new ObjectStep(this, NullObjectID.NULL_6482, new WorldPoint(3221, 2910, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+			"Place all the diamonds in the obelisks around the pyramid south east of the Bandit Camp. Note a " +
 				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
 			bloodDiamondHighlighted,	smokeDiamond,
 			iceDiamond,	shadowDiamond);
 		placeBlood.addIcon(ItemID.BLOOD_DIAMOND);
 
 		placeSmoke = new ObjectStep(this, NullObjectID.NULL_6485, new WorldPoint(3245, 2910, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+			"Place all the diamonds in the obelisks around the pyramid south east of the Bandit Camp. Note a " +
 				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
 			smokeDiamondHighlighted, iceDiamond, shadowDiamond);
 		placeSmoke.addIcon(ItemID.SMOKE_DIAMOND);
 
 		placeIce = new ObjectStep(this, NullObjectID.NULL_6488, new WorldPoint(3245, 2886, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+			"Place all the diamonds in the obelisks around the pyramid south east of the Bandit Camp. Note a " +
 				"mysterious stranger can appear and attack you whilst you're holding the diamonds.", iceDiamondHighlighted, shadowDiamond);
 		placeIce.addIcon(ItemID.ICE_DIAMOND);
 
 		placeShadow = new ObjectStep(this, NullObjectID.NULL_6491, new WorldPoint(3221, 2886, 0),
-			"Place all the diamonds in the obelisks around the pyrimid south east of the Bandit Camp. Note a " +
+			"Place all the diamonds in the obelisks around the pyramid south east of the Bandit Camp. Note a " +
 				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
 			shadowDiamondHighlighted);
 		placeShadow.addIcon(ItemID.SHADOW_DIAMOND);

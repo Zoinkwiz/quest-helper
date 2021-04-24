@@ -111,6 +111,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 		steps.put(55, bringWandToSurok);
 
 		steps.put(60, talkToRatAfterSurok);
+		steps.put(61, talkToRatAfterSurok);
 
 		steps.put(70, talkToRatAfterSurokNoLetter);
 		steps.put(71, talkToRatAfterSurokNoLetter);

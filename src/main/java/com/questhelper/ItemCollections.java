@@ -441,6 +441,7 @@ public class ItemCollections
 		ItemID.PURPLE_SWEETS,
 		ItemID.WHITE_TREE_FRUIT,
 		ItemID.SUMMER_PIE,
+		ItemID.HALF_A_SUMMER_PIE,
 		ItemID.GUTHIX_REST4,
 		ItemID.GUTHIX_REST3,
 		ItemID.GUTHIX_REST2,
@@ -466,8 +467,32 @@ public class ItemCollections
 		ItemID.AGILITY_POTION1
 	);
 
-	// Food
 
+	@Getter
+	private static final List<Integer> antiFirePotions = ImmutableList.of(
+			ItemID.ANTIFIRE_POTION4,
+			ItemID.ANTIFIRE_POTION3,
+			ItemID.ANTIFIRE_POTION2,
+			ItemID.ANTIFIRE_POTION1,
+			ItemID.SUPER_ANTIFIRE_POTION4,
+			ItemID.SUPER_ANTIFIRE_POTION3,
+			ItemID.SUPER_ANTIFIRE_POTION2,
+			ItemID.SUPER_ANTIFIRE_POTION1,
+			ItemID.EXTENDED_ANTIFIRE4,
+			ItemID.EXTENDED_ANTIFIRE3,
+			ItemID.EXTENDED_ANTIFIRE2,
+			ItemID.EXTENDED_ANTIFIRE1,
+			ItemID.EXTENDED_SUPER_ANTIFIRE4,
+			ItemID.EXTENDED_SUPER_ANTIFIRE3,
+			ItemID.EXTENDED_SUPER_ANTIFIRE2,
+			ItemID.EXTENDED_SUPER_ANTIFIRE1,
+			ItemID.ANTIFIRE_MIX2,
+			ItemID.ANTIFIRE_MIX1,
+			ItemID.SUPER_ANTIFIRE_MIX2,
+			ItemID.SUPER_ANTIFIRE_MIX1
+	);
+
+	// Food
 	@Getter
 	private static final List<Integer> goodEatingFood = ImmutableList.of(
 		ItemID.DARK_CRAB,
@@ -828,6 +853,7 @@ public class ItemCollections
 	private static final List<Integer> lightSources = ImmutableList.of(
 		ItemID.FIREMAKING_CAPET,
 		ItemID.FIREMAKING_CAPE,
+		ItemID.MAX_CAPE,
 		ItemID.BRUMA_TORCH,
 		ItemID.KANDARIN_HEADGEAR_4,
 		ItemID.KANDARIN_HEADGEAR_3,

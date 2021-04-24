@@ -289,8 +289,8 @@ public class RFDPiratePete extends BasicQuestHelper
 		talkToCookAgain.addDialogStep("Protecting the Pirate");
 		useCrabOnKelp = new DetailedQuestStep(this, "Use the ingredients together to make the cake.", groundCrabMeatHighlighted, groundKelpHighlighted, groundCod, breadcrumbs);
 		cookCake = new DetailedQuestStep(this, "Cook the fishcake. It's possible to burn it.", rawFishCake);
-		enterDiningRoomAgain = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Go give the fish cake to Pirate Pete to finish the quest.", fishCake);
-		useCakeOnPete = new ObjectStep(this, ObjectID.PIRATE_PETE_12337, new WorldPoint(1862, 5323, 0), "Give the fish cake to Pirate Pete to finish the quest. BE CAREFUL NOT TO EAT IT.", fishCakeHighlighted);
+		enterDiningRoomAgain = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Go give the fishcake to Pirate Pete to finish the quest.", fishCake);
+		useCakeOnPete = new ObjectStep(this, ObjectID.PIRATE_PETE_12337, new WorldPoint(1862, 5323, 0), "Give the fishcake to Pirate Pete to finish the quest. BE CAREFUL NOT TO EAT IT.", fishCakeHighlighted);
 		useCakeOnPete.addIcon(ItemID.COOKED_FISHCAKE);
 		useCakeOnPete.addSubSteps(enterDiningRoomAgain);
 	}

@@ -37,6 +37,7 @@ import net.runelite.api.ScriptID;
 public enum QuestHelperQuest
 {
 	//Free Quests
+	BELOW_ICE_MOUNTAIN(2874, "Below Ice Mountain", QuestVarbits.QUEST_BELOW_ICE_MOUNTAIN, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	BLACK_KNIGHTS_FORTRESS(299, "Black Knights' Fortress", QuestVarPlayer.QUEST_BLACK_KNIGHTS_FORTRESS, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	COOKS_ASSISTANT(300, "Cook's Assistant", QuestVarPlayer.QUEST_COOKS_ASSISTANT, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	THE_CORSAIR_CURSE(301, "The Corsair Curse", QuestVarbits.QUEST_THE_CORSAIR_CURSE, Quest.Type.F2P, Quest.Difficulty.NOVICE),

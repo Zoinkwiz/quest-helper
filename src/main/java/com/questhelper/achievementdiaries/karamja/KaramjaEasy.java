@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -40,9 +41,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -51,13 +50,12 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.KARAMJA_EASY
 )
-public class KaramjaEasy extends BasicQuestHelper
+public class KaramjaEasy extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement pickaxe, coins, smallFishingNet, combatGear;
@@ -78,12 +76,11 @@ public class KaramjaEasy extends BasicQuestHelper
 	ZoneRequirement inCave, inTzhaar, inPothole;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	public QuestStep loadStep()
 	{
 		loadZones();
 		setupRequirements();
 		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
 		doEasy.addStep(notGoneToSarim, goSarim);
@@ -99,9 +96,8 @@ public class KaramjaEasy extends BasicQuestHelper
 		doEasy.addStep(notGoneToCairn, goCairn);
 		doEasy.addStep(new Conditions(notKilledJogre, inPothole), killJogre);
 		doEasy.addStep(notKilledJogre, enterPothole);
-		steps.put(0, doEasy);
 
-		return steps;
+		return doEasy;
 	}
 
 	public void setupRequirements()

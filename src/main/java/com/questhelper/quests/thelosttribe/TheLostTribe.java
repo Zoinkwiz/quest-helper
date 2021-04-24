@@ -363,6 +363,7 @@ public class TheLostTribe extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.GOBLIN_DIPLOMACY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 13, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 13, true));
 		req.add(new SkillRequirement(Skill.MINING, 17, true));

@@ -433,7 +433,7 @@ public class QuestHelperPlugin extends Plugin
 				.stream()
 				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
 			SwingUtilities.invokeLater(() -> {
-				panel.refresh(filteredQuests, false, completedQuests);
+				panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections());
 			});
 		}
 	}

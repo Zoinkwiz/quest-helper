@@ -76,7 +76,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		slayer50, smithing40, strength50, thieving50, woodcutting34;
 	Requirement taiBwoWannaiTrio, legendsQuest;
 
-	Requirement notBecomeChampion, notKilledZek, notEatenWrap, notCraftedNatured, notCookedKarambwan,
+	Requirement notBecomeChampion, notKilledZek, notEatenWrap, notCraftedNature, notCookedKarambwan,
 		notKilledDeathwing, notUsedShortcut, notCollectedLeaves, notAssignedTask, notKilledDragon;
 
 	QuestStep enterHole, enterTzhaar, enterHoleChampion, enterTzhaarChampion, becomeChampion,
@@ -115,8 +115,8 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notKilledDragon, inBrimhavenDungeon), killDragon);
 		doHard.addStep(notKilledDragon, enterBrimhavenDungeon);
 
-		doHard.addStep(new Conditions(notCraftedNatured, inNatureAltar), craftNatureRune);
-		doHard.addStep(notCraftedNatured, enterNatureAltar);
+		doHard.addStep(new Conditions(notCraftedNature, inNatureAltar), craftNatureRune);
+		doHard.addStep(notCraftedNature, enterNatureAltar);
 
 		doHard.addStep(new Conditions(notAssignedTask, atDuradel), getTask);
 		doHard.addStep(notAssignedTask, goUpToDuradel);
@@ -135,26 +135,44 @@ public class KaramjaHard extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
-		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE_WRAP);
+		notBecomeChampion = new Conditions(LogicType.NOR, new VarbitRequirement(3600, 1));
+		notKilledZek = new Conditions(LogicType.NOR, new VarbitRequirement(3601, 1));
+		notEatenWrap = new Conditions(LogicType.NOR, new VarbitRequirement(3604, 1));
+		notCraftedNature = new Conditions(LogicType.NOR, new VarbitRequirement(3603, 1));
+		notCookedKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3602, 1));
+		notKilledDeathwing = new Conditions(LogicType.NOR, new VarbitRequirement(3605, 1));
+		notUsedShortcut = new Conditions(LogicType.NOR, new VarbitRequirement(3606, 1));
+		notCollectedLeaves = new Conditions(LogicType.NOR, new VarbitRequirement(3607, 5));
+		notAssignedTask = new Conditions(LogicType.NOR, new VarbitRequirement(3608, 1));
+		notKilledDragon = new Conditions(LogicType.NOR, new VarbitRequirement(3609, 1));
+
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notKilledDeathwing);
+		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notKilledDragon);
+		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE_WRAP).showConditioned(notEatenWrap);
 		oomlieWrap.setTooltip("You can make one by using a palm leaf on a raw oomlie and cooking it. Both are " +
 			"obtained from the Khazari Jungle");
-		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE);
-		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemID.NATURE_TALISMAN);
+		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedNature);
+		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemID.NATURE_TALISMAN)
+			.showConditioned(notCraftedNature);
 		natureTalismanOrAbyss.addAlternates(ItemID.NATURE_TIARA);
-		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		machete = new ItemRequirement("Any machete", ItemID.MACHETE);
+		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN).showConditioned(notCookedKarambwan);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
+			notCollectedLeaves, notKilledDeathwing));
+		machete = new ItemRequirement("Any machete", ItemID.MACHETE).showConditioned(new Conditions(LogicType.OR,
+			notCollectedLeaves, notKilledDeathwing));
 		machete.addAlternates(ItemID.OPAL_MACHETE, ItemID.JADE_MACHETE, ItemID.RED_TOPAZ_MACHETE);
-		lockpick = new ItemRequirement("Lockpick, more in case it breaks", ItemID.LOCKPICK);
-		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW);
+		lockpick = new ItemRequirement("Lockpick, more in case it breaks", ItemID.LOCKPICK)
+			.showConditioned(notKilledDeathwing);
+		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).showConditioned(notUsedShortcut);
 		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
 			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
 			ItemID.BLURITE_CROSSBOW);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE);
-		antidragonShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.getAntifireShields());
-		antifirePotions = new ItemRequirement("Antifire potions", ItemCollections.getAntifire());
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE).showConditioned(notUsedShortcut);
+		antidragonShield =
+			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.getAntifireShields())
+				.showConditioned(notKilledDragon);
+		antifirePotions = new ItemRequirement("Antifire potions", ItemCollections.getAntifire())
+			.showConditioned(notKilledDragon);
 
 		combatGear = new ItemRequirement("Combat gear to defeat a deathwing and a metal dragon", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -163,20 +181,6 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		fightCaveCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
-
-		notBecomeChampion = new Conditions(LogicType.NOR, new VarbitRequirement(3600, 1));
-		notKilledZek = new Conditions(LogicType.NOR, new VarbitRequirement(3601, 1));
-		notEatenWrap = new Conditions(LogicType.NOR, new VarbitRequirement(3604, 1)); // TODO: Verify
-		notCraftedNatured = new Conditions(LogicType.NOR, new VarbitRequirement(3603, 1));
-		notCookedKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3602, 1)); // MAYBE WRONG?
-		notKilledDeathwing = new Conditions(LogicType.NOR, new VarbitRequirement(3605, 1));
-		notUsedShortcut = new Conditions(LogicType.NOR, new VarbitRequirement(3606, 1));
-		notCollectedLeaves = new Conditions(LogicType.NOR, new VarbitRequirement(3607, 5));
-		notAssignedTask = new Conditions(LogicType.NOR, new VarbitRequirement(3608, 1));
-		notKilledDragon = new Conditions(LogicType.NOR, new VarbitRequirement(3609, 1));
-
-			// 3578 = 2, completed final task
-			// varplayer 2943 0->1>2>3 when done final task
 
 		inCave = new ZoneRequirement(cave);
 		inTzhaar = new ZoneRequirement(tzhaar);

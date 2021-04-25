@@ -102,15 +102,6 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET);
-		combatGear = new ItemRequirement("Combat gear to defeat a Jogre (level 56)", -1, -1);
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
-
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 
 		notPickedBananas = new Conditions(LogicType.NOR, new VarbitRequirement(3566, 5));
@@ -123,6 +114,16 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 		notPickedUpSeaweed = new Conditions(LogicType.NOR, new VarbitRequirement(3573, 5));
 		notEnteredFightCave = new Conditions(LogicType.NOR, new VarbitRequirement(3574, 1));
 		notKilledJogre = new Conditions(LogicType.NOR, new VarbitRequirement(3575, 1));
+
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMinedGold);
+		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(new Conditions(LogicType.OR,
+			notGoneToSarim, notGoneToArdougne));
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFished);
+		combatGear = new ItemRequirement("Combat gear to defeat a Jogre (level 56)", -1, -1).showConditioned(notKilledJogre);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
 
 		// 3578 = 2, completed final task
 		// varplayer 2943 0->1>2>3 when done final task

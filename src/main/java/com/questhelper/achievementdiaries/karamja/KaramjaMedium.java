@@ -129,44 +129,6 @@ public class KaramjaMedium extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET);
-
-		spiderCarcass = new ItemRequirement("Spider carcass", ItemID.SPIDER_CARCASS);
-		spiderCarcass.setTooltip("You can get one killing a spider during Tai Bwo Wannai Cleanup");
-		skewerTicksOrArrowShaft = new ItemRequirement("Arrow shaft or skewer stick", ItemID.ARROW_SHAFT);
-		skewerTicksOrArrowShaft.addAlternates(ItemID.SKEWER_STICK);
-		goutTuber = new ItemRequirement("Gout tuber", ItemID.GOUT_TUBER);
-		goutTuber.setTooltip("This can be obtained rarely during Tai Bwo Wannai Cleanup. Have a spade to dig it up");
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
-		fruitTreeSapling = new ItemRequirement("A fruit tree sapling you can plant, preferably Palm Tree for the " +
-			"Elite diary", ItemID.PALM_SAPLING);
-		fruitTreeSapling.addAlternates(ItemID.APPLE_SAPLING, ItemID.BANANA_SAPLING, ItemID.ORANGE_SAPLING, ItemID.CURRY_SAPLING,
-			ItemID.PINEAPPLE_SAPLING, ItemID.PAPAYA_SAPLING, ItemID.DRAGONFRUIT_SAPLING);
-		teasingStick = new ItemRequirement("Teasing stick", ItemID.TEASING_STICK);
-		teasingStick.setTooltip("You can buy one from the hunter shop in Yanille");
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		logs = new ItemRequirement("Logs", ItemID.LOGS);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		tradingSticks = new ItemRequirement("Trading sticks", ItemID.TRADING_STICKS);
-		tradingSticks.setTooltip("You can get these from villagers when doing Tai Bwo Wannai Cleanup");
-		opal = new ItemRequirement("Opal", ItemID.OPAL);
-		karambwanVessel = new ItemRequirement("Karambwan vessel", ItemID.KARAMBWAN_VESSEL);
-		karambwanVessel.addAlternates(ItemID.KARAMBWAN_VESSEL_3159);
-		rawKarambwanji = new ItemRequirement("Raw karambwanji, or a small fishing net to catch some",
-			ItemID.RAW_KARAMBWANJI);
-
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		machete = new ItemRequirement("Machete", ItemID.RED_TOPAZ_MACHETE);
-		machete.addAlternates(ItemID.JADE_MACHETE, ItemID.OPAL_MACHETE, ItemID.MACHETE);
-
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
-
-		spiderOnAStick = new ItemRequirement("Spider on stick", ItemID.SPIDER_ON_STICK);
-		spiderOnAStick.setTooltip("You can get one by using a spider carcass on an arrow shaft");
-
 		notClaimedTicket = new Conditions(LogicType.NOR, new VarbitRequirement(3579, 1));
 		notEnteredWall = new Conditions(LogicType.NOR, new VarbitRequirement(3580, 1));
 		notEnteredCrandor = new Conditions(LogicType.NOR, new VarbitRequirement(3581, 1));
@@ -186,6 +148,52 @@ public class KaramjaMedium extends BasicQuestHelper
 		notClimbedStairs = new Conditions(LogicType.NOR, new VarbitRequirement(3595, 1));
 		notTraveledToKhazard = new Conditions(LogicType.NOR, new VarbitRequirement(3596, 1));
 		notCharteredFromShipyard = new Conditions(LogicType.NOR, new VarbitRequirement(3597, 1));
+
+		pickaxe =
+			new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR,
+				notMinedRedRopaz, notEarned100));
+		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(new Conditions(LogicType.OR,
+			notClaimedTicket, notUsedCart, notTraveledToKhazard, notCharteredFromShipyard));
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notCaughtKarambwan);
+
+		spiderCarcass = new ItemRequirement("Spider carcass", ItemID.SPIDER_CARCASS).showConditioned(notCookedSpider);
+		spiderCarcass.setTooltip("You can get one killing a spider during Tai Bwo Wannai Cleanup");
+		skewerTicksOrArrowShaft =
+			new ItemRequirement("Arrow shaft or skewer stick", ItemID.ARROW_SHAFT).showConditioned(notCookedSpider);
+		skewerTicksOrArrowShaft.addAlternates(ItemID.SKEWER_STICK);
+		goutTuber = new ItemRequirement("Gout tuber", ItemID.GOUT_TUBER).showConditioned(notExchangedGems);
+		goutTuber.setTooltip("This can be obtained rarely during Tai Bwo Wannai Cleanup. Have a spade to dig it up");
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGrownFruitTree);
+		fruitTreeSapling = new ItemRequirement("A fruit tree sapling you can plant, preferably Palm Tree for the " +
+			"Elite diary", ItemID.PALM_SAPLING).showConditioned(notGrownFruitTree);
+		fruitTreeSapling.addAlternates(ItemID.APPLE_SAPLING, ItemID.BANANA_SAPLING, ItemID.ORANGE_SAPLING, ItemID.CURRY_SAPLING,
+			ItemID.PINEAPPLE_SAPLING, ItemID.PAPAYA_SAPLING, ItemID.DRAGONFRUIT_SAPLING);
+		teasingStick = new ItemRequirement("Teasing stick", ItemID.TEASING_STICK).showConditioned(notTrappedGraahk);
+		teasingStick.setTooltip("You can buy one from the hunter shop in Yanille");
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notTrappedGraahk);
+		logs = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notTrappedGraahk);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
+				notTrappedGraahk, notCrossedLava, notClimbedStairs, notCutVine));
+		tradingSticks = new ItemRequirement("Trading sticks", ItemID.TRADING_STICKS).showConditioned(notExchangedGems);
+		tradingSticks.setTooltip("You can get these from villagers when doing Tai Bwo Wannai Cleanup");
+		opal = new ItemRequirement("Opal", ItemID.OPAL).showConditioned(notExchangedGems);
+		opal.setTooltip("You can bring a jade or red topaz instead for a machete if you also bring more trading " +
+			"sticks");
+		karambwanVessel = new ItemRequirement("Karambwan vessel", ItemID.KARAMBWAN_VESSEL).showConditioned(notCaughtKarambwan);
+		karambwanVessel.addAlternates(ItemID.KARAMBWAN_VESSEL_3159);
+		rawKarambwanji = new ItemRequirement("Raw karambwanji, or a small fishing net to catch some",
+			ItemID.RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
+
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR,
+			notEarned100, notGrownFruitTree));
+		machete = new ItemRequirement("Machete", ItemID.RED_TOPAZ_MACHETE).showConditioned((notEarned100));
+		machete.addAlternates(ItemID.JADE_MACHETE, ItemID.OPAL_MACHETE, ItemID.MACHETE);
+
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
+
+		spiderOnAStick = new ItemRequirement("Spider on stick", ItemID.SPIDER_ON_STICK);
+		spiderOnAStick.setTooltip("You can get one by using a spider carcass on an arrow shaft");
 
 		agility12 = new SkillRequirement(Skill.AGILITY, 12);
 		cooking16 = new SkillRequirement(Skill.COOKING, 16);

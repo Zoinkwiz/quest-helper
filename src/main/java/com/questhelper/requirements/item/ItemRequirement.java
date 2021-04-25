@@ -31,7 +31,9 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.InventorySlots;
+import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -176,6 +178,13 @@ public class ItemRequirement extends AbstractRequirement
 	{
 		ItemRequirement newItem = copy();
 		newItem.setConditionToHide(condition);
+		return newItem;
+	}
+
+	public ItemRequirement showConditioned(Requirement condition)
+	{
+		ItemRequirement newItem = copy();
+		newItem.setConditionToHide(new Conditions(LogicType.NOR, condition));
 		return newItem;
 	}
 

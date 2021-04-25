@@ -25,12 +25,13 @@
 package com.questhelper.achievementdiaries.karamja;
 
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -65,6 +66,10 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 	Requirement farming72, herblore87, runecraft91;
 
+	Requirement inNatureAltar;
+
+	Zone natureAltar;
+
 	QuestStep enterNatureAltar, craftRunes, equipCape, checkPalm, checkCalquat, makePotion, claimReward;
 
 	@Override
@@ -76,38 +81,44 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
 		doElite.addStep(notEquippedCape, equipCape);
 		doElite.addStep(notMadePotion, makePotion);
+		doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), enterNatureAltar);
 		doElite.addStep(notCraftedRunes, enterNatureAltar);
-		doElite.addStep(notCraftedRunes, enterNatureAltar);
+		doElite.addStep(notCheckedCalquat, checkCalquat);
+		doElite.addStep(notCheckedPalm, checkPalm);
 
 		return doElite;
 	}
 
 	public void setupRequirements()
 	{
+		notCraftedRunes = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 1));
+		notEquippedCape = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 2));
+		notCheckedPalm = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 3));
+		notMadePotion = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 4));
+		notCheckedCalquat = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 5));
+
 		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
-			ItemID.NATURE_TIARA);
-		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE);
-		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.FIRE_CAPE);
+			ItemID.NATURE_TIARA).showConditioned(notCraftedRunes);
+		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedRunes);
+		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.FIRE_CAPE).showConditioned(notEquippedCape);
 		fireCapeOrInfernal.addAlternates(ItemID.INFERNAL_CAPE);
-		palmTreeSapling = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING);
-		antidotePlusPlus = new ItemRequirement("Antidote++", ItemID.ANTIDOTE4_5952);
+		palmTreeSapling = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notCheckedPalm);
+		antidotePlusPlus = new ItemRequirement("Antidote++", ItemID.ANTIDOTE4_5952).showConditioned(notMadePotion);
 		antidotePlusPlus.addAlternates(ItemID.ANTIDOTE3_5954, ItemID.ANTIDOTE2_5956, ItemID.ANTIDOTE1_5958);
-		zulrahScales = new ItemRequirement("Zulrah scales", ItemID.ZULRAHS_SCALES);
-		calquatSapling = new ItemRequirement("Calquat sapling", ItemID.CALQUAT_SAPLING);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-
-
-		notMadePotion = new Conditions(LogicType.NOR, new VarbitRequirement(1200, 0));
-		notCraftedRunes = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, 1));
-		notEquippedCape = new Conditions(LogicType.NOR, new VarbitRequirement(1200, 2));
-		notCheckedPalm = new Conditions(LogicType.NOR, new VarbitRequirement(1200, 3));
-		notCheckedCalquat = new Conditions(LogicType.NOR, new VarbitRequirement(1200, 4));
+		zulrahScales = new ItemRequirement("Zulrah scales", ItemID.ZULRAHS_SCALES).showConditioned(notMadePotion);
+		calquatSapling = new ItemRequirement("Calquat sapling", ItemID.CALQUAT_SAPLING).showConditioned(notCheckedCalquat);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
+			notCheckedPalm));
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
+			notCheckedPalm));
 
 
 		farming72 = new SkillRequirement(Skill.FARMING, 72, true);
 		herblore87 = new SkillRequirement(Skill.HERBLORE, 87, true);
 		runecraft91 = new SkillRequirement(Skill.RUNECRAFT, 91, true);
+
+		natureAltar = new Zone(new WorldPoint(2374, 4809, 0), new WorldPoint(2421, 4859, 0));
+		inNatureAltar = new ZoneRequirement(natureAltar);
 	}
 
 	public void setupSteps()
@@ -148,7 +159,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Elite Diary", Arrays.asList(equipCape, makePotion, enterNatureAltar,
-			craftRunes, checkPalm, checkCalquat, claimReward), natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal,
+			craftRunes, checkCalquat, checkPalm, claimReward), natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal,
 			palmTreeSapling, antidotePlusPlus, zulrahScales, calquatSapling));
 
 		return allSteps;

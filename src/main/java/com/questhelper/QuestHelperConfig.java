@@ -50,7 +50,7 @@ public interface QuestHelperConfig extends Config
 		/** Sort quests in reverse alphabetical order */
 		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
-		OPTIMAL(QuestOrders.sortOptimalOrder()),
+		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
 		;
 
 		private final Comparator<QuestHelper> comparator;
@@ -80,6 +80,8 @@ public interface QuestHelperConfig extends Config
 		SHOW_ALL(q -> true),
 		/** Show quests where the client meets the quest requirements */
 		SHOW_MEETS_REQS(QuestHelper::clientMeetsRequirements),
+		/** Show all except generic helpers */
+		OPTIMAL("Optimal ordering", q -> q.getQuest().getQuestType() != Quest.Type.GENERIC),
 		/** Show all free-to-play quests */
 		FREE_TO_PLAY(Quest.Type.F2P),
 		/** Show all members' quests */

@@ -216,13 +216,13 @@ public enum QuestHelperQuest
 	DADDYS_HOME(1688, "Daddy's Home", QuestVarbits.QUEST_DADDYS_HOME, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 
 	//Achievement diary
-	KARAMJA_EASY("Easy Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
+	KARAMJA_EASY("Karamja Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
 		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KARAMJA_MEDIUM("Medium Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_MEDIUM, 1,
+	KARAMJA_MEDIUM("Karamja Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_MEDIUM, 1,
 		Quest.Type.ACHIEVEMENT_DIARY, Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KARAMJA_HARD("Hard Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
+	KARAMJA_HARD("Karamja Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
 		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KARAMJA_ELITE("Elite Karamja Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
+	KARAMJA_ELITE("Karamja Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
 		Quest.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Generic

@@ -47,6 +47,7 @@ public class ItemCollections
 		ItemID.TRAILBLAZER_AXE,
 		ItemID.INFERNAL_AXE_OR,
 		ItemID.INFERNAL_AXE,
+		ItemID.DRAGON_AXE_OR,
 		ItemID.DRAGON_AXE,
 		ItemID.RUNE_AXE,
 		ItemID.GILDED_AXE,

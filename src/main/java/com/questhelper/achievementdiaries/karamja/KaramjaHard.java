@@ -137,9 +137,9 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	{
 		notBecomeChampion = new Conditions(LogicType.NOR, new VarbitRequirement(3600, 1));
 		notKilledZek = new Conditions(LogicType.NOR, new VarbitRequirement(3601, 1));
-		notEatenWrap = new Conditions(LogicType.NOR, new VarbitRequirement(3604, 1));
+		notEatenWrap = new Conditions(LogicType.NOR, new VarbitRequirement(3602, 1));
 		notCraftedNature = new Conditions(LogicType.NOR, new VarbitRequirement(3603, 1));
-		notCookedKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3602, 1));
+		notCookedKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3604, 1));
 		notKilledDeathwing = new Conditions(LogicType.NOR, new VarbitRequirement(3605, 1));
 		notUsedShortcut = new Conditions(LogicType.NOR, new VarbitRequirement(3606, 1));
 		notCollectedLeaves = new Conditions(LogicType.NOR, new VarbitRequirement(3607, 5));

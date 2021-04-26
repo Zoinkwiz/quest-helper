@@ -188,6 +188,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement showConditioned(Requirement condition)
+	{
+		ItemRequirement newItem = copy();
+		newItem.setConditionToHide(new Conditions(LogicType.NOR, condition));
+		return newItem;
+	}
+
 	public ItemRequirement copy()
 	{
 		ItemRequirement newItem = new ItemRequirement(name, id, quantity, equip);

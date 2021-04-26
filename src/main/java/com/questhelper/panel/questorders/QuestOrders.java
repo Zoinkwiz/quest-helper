@@ -178,7 +178,8 @@ public class QuestOrders
 		QuestHelperQuest.LEGENDS_QUEST,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
 		QuestHelperQuest.KARAMJA_EASY,
-		QuestHelperQuest.KARAMJA_MEDIUM,
+		QuestHelperQuest.FALADOR_EASY,
+		QuestHelperQuest.FALADOR_MEDIUM,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.REGICIDE,
@@ -195,6 +196,7 @@ public class QuestOrders
 		QuestHelperQuest.DREAM_MENTOR,
 		QuestHelperQuest.TALE_OF_THE_RIGHTEOUS,
 		QuestHelperQuest.THE_FORSAKEN_TOWER,
+		QuestHelperQuest.KARAMJA_MEDIUM,
 		QuestHelperQuest.DEVIOUS_MINDS,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
@@ -213,7 +215,9 @@ public class QuestOrders
 		QuestHelperQuest.THE_MAGE_ARENA,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
 		QuestHelperQuest.KARAMJA_HARD,
-		QuestHelperQuest.KARAMJA_ELITE
+		QuestHelperQuest.KARAMJA_ELITE,
+		QuestHelperQuest.FALADOR_HARD,
+		QuestHelperQuest.FALADOR_ELITE
 	);
 
 	public static String normalizeQuestName(String questName)

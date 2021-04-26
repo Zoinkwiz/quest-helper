@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-
 public enum ExternalQuestResources {
     //Free Quests
     BELOW_ICE_MOUNTAIN("https://oldschool.runescape.wiki/w/Below_Ice_Mountain"),

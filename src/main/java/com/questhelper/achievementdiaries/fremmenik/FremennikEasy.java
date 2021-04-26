@@ -71,7 +71,6 @@ public class FremennikEasy extends BasicQuestHelper
 		loadZones();
 		setupRequirements();
 		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
 		doEasy.addStep(notGoneToRellekka, goRellekka);
@@ -88,7 +87,6 @@ public class FremennikEasy extends BasicQuestHelper
 		doEasy.addStep(new Conditions(atWaterbirth, notCollectedSnapeGrass), pickupSnapeGrass);
 		doEasy.addStep(notKilledRockCrabs, killRockCrabs);
 		doEasy.addStep(notCaughtCeruleanTwitch, catchCeruleanTwitch);
-
 		steps.put(0, doEasy);
 		return steps;
 	}
@@ -105,7 +103,6 @@ public class FremennikEasy extends BasicQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		combatGear = new ItemRequirement("Combat gear to defeat 5 Rock Crabs", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		notCaughtCeruleanTwitch = new Conditions(LogicType.NOR, new VarplayerRequirement(1184,true,0));
@@ -120,7 +117,6 @@ public class FremennikEasy extends BasicQuestHelper
 		notEnteredTrollStronghold = new Conditions(LogicType.NOR, new VarplayerRequirement(1184,true,9));
 		notChoppedAndBurnedLogs = new Conditions(LogicType.NOR, new VarplayerRequirement(1184,true,10));
 
-
 		inRellekka = new ZoneRequirement(Rellekka);
 		inKeldagrim = new ZoneRequirement(Keldagrim);
 		atWaterbirth = new ZoneRequirement(Waterbirth);
@@ -131,12 +127,10 @@ public class FremennikEasy extends BasicQuestHelper
 		Rellekka = new Zone(new WorldPoint(2590, 3626, 0), new WorldPoint(2750, 3790, 0));
 		Keldagrim = new Zone(new WorldPoint(2816, 10177, 0), new WorldPoint(2943, 10239, 0));
 		Waterbirth = new Zone(new WorldPoint(2496, 3712, 0), new WorldPoint(2559, 3774, 0));
-
 	}
 
 	public void setupSteps()
 	{
-
 		catchCeruleanTwitch = new NpcStep(this, NpcID.CERULEAN_TWITCH, new WorldPoint(2730, 3763, 0), "Catch a Cerulean Twitch.");
 		changeBoots = new NpcStep(this, NpcID.YRSA, new WorldPoint(2625, 3676, 0), "Change your boots "
 				+ "at Yrsa's Shoe Store. Right click Yrsa to access the store.");
@@ -154,7 +148,6 @@ public class FremennikEasy extends BasicQuestHelper
 		fillBucketWithWater = new ObjectStep(this, ObjectID.WELL_8927, new WorldPoint(2668, 3660, 0), "Fill a bucket "
 				+ "with water at the Rellekka well.");
 		chopAndBurnLogs = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2681,3626,0), "Chop and burn some oak logs in the Fremennik Province");
-
 		claimReward = new NpcStep(this, NpcID.THORODIN, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
@@ -196,7 +189,6 @@ public class FremennikEasy extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Easy Diary", Arrays.asList(catchCeruleanTwitch, changeBoots,  killRockCrabs, goTrollStronghold, pickupSnapeGrass,
 				enterFightCave, enterPothole, claimReward, chopAndBurnLogs, fillBucketWithWater, craftTiara, stealFromStall, tradeStonemason, mineSilver,
 				goRellekka, travelToWaterbirth, goKeldagrim)));
-
 		return allSteps;
 	}
 }

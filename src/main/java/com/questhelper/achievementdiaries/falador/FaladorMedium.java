@@ -66,7 +66,7 @@ public class FaladorMedium extends ComplexStateQuestHelper {
             willowBranch6;
 
     //Items Recommended
-    ItemRequirement faladorTeleport, explorersRing;
+    ItemRequirement faladorTeleport, explorersRing, combatBracelet;
 
     ItemRequirement willowLog, telegrab, haySack, scarecrow, bullseyeLanternHighLight,
             tinderboxHighlight, willowLogHighlight, scarecrowStep2, scarecrowStep2Highlight,
@@ -131,31 +131,31 @@ public class FaladorMedium extends ComplexStateQuestHelper {
     }
 
     public void setupRequirements() {
-        bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN);
-        tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+        bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
+        tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav));
         airRune4 = new ItemRequirement("Air Runes", ItemID.AIR_RUNE, 4);
         lawRune2 = new ItemRequirement("Law Runes", ItemID.LAW_RUNE, 2);
         waterRune1 = new ItemRequirement("Water Runes", ItemID.WATER_RUNE, 1);
-        crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY);
-        scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW);
-        haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
-        bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR);
-        watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON);
-        emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK);
-        fishingExplosive = new ItemRequirement("Fishing Explosive", ItemID.FISHING_EXPLOSIVE);
-        combatGear = new ItemRequirement("Combat Gear", -1, -1);
-        mithGrapple = new ItemRequirement("Mithril Grapple", ItemID.MITH_GRAPPLE);
-        anyCrossbow = new ItemRequirement("Any useable crossbow", ItemCollections.getCrossbows());
-        initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET);
-        initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK);
-        initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE);
-        pickaxe = new ItemRequirement("A Pickaxe", ItemCollections.getPickaxes());
-        axe = new ItemRequirement("An Axe", ItemCollections.getAxes());
-        brownApron = new ItemRequirement("Brown Apron", ItemID.BROWN_APRON);
-        willowBranch6 = new ItemRequirement("Willow Brances", ItemID.WILLOW_BRANCH, 6);
+        crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
+        scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlacedScarecrow);
+        haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK).showConditioned(notPlacedScarecrow);
+        bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
+        watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
+        emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
+        fishingExplosive = new ItemRequirement("Fishing Explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
+        combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
+        mithGrapple = new ItemRequirement("Mithril Grapple", ItemID.MITH_GRAPPLE).showConditioned(notGrappleNorthWall);
+        anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.getCrossbows()).showConditioned(notGrappleNorthWall);
+        initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar);
+        initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar);
+        initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE).showConditioned(notPrayAtAltar);
+        pickaxe = new ItemRequirement("A Pickaxe", ItemCollections.getPickaxes(), -1).showConditioned(notMineGold);
+        axe = new ItemRequirement("An Axe", ItemCollections.getAxes(), -1).showConditioned(notChopBurnWillowTav);
+        brownApron = new ItemRequirement("Brown Apron", ItemID.BROWN_APRON).showConditioned(notMineGold);
+        willowBranch6 = new ItemRequirement("Willow Branches", ItemID.WILLOW_BRANCH, 6);
 
         willowLog = new ItemRequirement("Willow Log", ItemID.WILLOW_LOGS);
-        telegrab = new ItemRequirement("Telekenetic Grab", ItemID.TELEKINETIC_GRAB, 1);
+        telegrab = new ItemRequirement("Telekinetic Grab", ItemID.TELEKINETIC_GRAB, 1);
         scarecrowStep2 = new ItemRequirement("Hay Sack", ItemID.HAY_SACK_6058);
 
         initiateSet = new ItemRequirements(initiateChest, initiateLegs, initiateHelm);
@@ -174,6 +174,8 @@ public class FaladorMedium extends ComplexStateQuestHelper {
         faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
         explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2);
         explorersRing.addAlternates(ItemID.EXPLORERS_RING_4, ItemID.EXPLORERS_RING_3);
+        combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.getCombatBracelets());
+        combatBracelet.addAlternates(ItemCollections.getGamesNecklaces());
 
         notLitLantern = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 11));
         notTelegrabbedWine = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 12));
@@ -217,7 +219,7 @@ public class FaladorMedium extends ComplexStateQuestHelper {
 
         //Telegrab - Chaos Altar
         goToChaosAltar = new DetailedQuestStep(this, new WorldPoint(2934, 3516, 0), "Go to the Chaos Altar near the Goblin Village north of Falador.");
-        telegrabWine = new DetailedQuestStep(this, "Use the Telekenetic Grab Spell on the Wine of Zamorak.");
+        telegrabWine = new DetailedQuestStep(this, "Use the Telekinetic Grab Spell on the Wine of Zamorak.");
         telegrabWine.addIcon(ItemID.TELEKINETIC_GRAB);
 
         //Crystal Chest
@@ -225,7 +227,7 @@ public class FaladorMedium extends ComplexStateQuestHelper {
         unlockCrystalChest.addIcon(ItemID.CRYSTAL_KEY);
 
         //Scarecrow
-        getHaysack = new ObjectStep(this, ObjectID.HAY_BALE_8713, new WorldPoint(3019, 3297, 0), "Use the empty sack on the haybale to fill it, you can buy an empty sack from Sarah for 5gp.");
+        getHaysack = new ObjectStep(this, ObjectID.HAY_BALE_8713, new WorldPoint(3019, 3297, 0), "Use the empty sack on the hay bale to fill it, you can buy an empty sack from Sarah for 5gp.");
         getHaysack.addIcon(ItemID.EMPTY_SACK);
         useSackOnSpear = new DetailedQuestStep(this, "Use the Hay sack on the Bronze Spear.", haySackHighlight, bronzeSpearHighlight);
         useWatermelonOnSack = new DetailedQuestStep(this, "Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2Highlight, watermelonHighlight);
@@ -293,7 +295,7 @@ public class FaladorMedium extends ComplexStateQuestHelper {
     @Override
     public List<ItemRequirement> getItemRecommended()
     {
-        return Arrays.asList(faladorTeleport, explorersRing);
+        return Arrays.asList(faladorTeleport, explorersRing, combatBracelet);
     }
 
     @Override

@@ -64,8 +64,7 @@ public class FaladorElite extends ComplexStateQuestHelper {
     ItemRequirement faladorTeleport;
 
     Requirement notCraftedAirRunes, notPurchasedWhite2hSword, notGotMagicRoots, notPerformedSkillCapeEmote, notJumpedOverStrangeFloor,
-            notMadeSaraBrew, stumpNearby, magicTreeNearbyNotChecked, magicTreeNearbyNotCheckedVar, stumpNearbyVar, magicTreeNearbyChecked,
-            magicTreeNearbyCheckedVar;
+            notMadeSaraBrew, magicTreeNearbyNotCheckedVar, stumpNearbyVar, magicTreeNearbyCheckedVar;
 
     QuestStep claimReward, enterAirAltar, craftAirRunes, goUpFaladorCastle2, goUpFaladorCastle1, purchaseWhite2hSword, chopMagicTree,
             goUpFaladorCastle1Emote, goUpFaladorCastle2Emote, goUpFaladorCastle3Emote, performEmote, goToTavDungeon, crossStrangeFloor,

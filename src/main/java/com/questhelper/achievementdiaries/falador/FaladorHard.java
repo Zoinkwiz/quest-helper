@@ -30,13 +30,13 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.WarriorsGuildAccessRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -47,7 +47,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-import javax.naming.spi.ObjectFactory;
 import java.util.*;
 
 @QuestDescriptor(
@@ -274,8 +273,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
         req.add(new SkillRequirement(Skill.RUNECRAFT, 56, true));
         req.add(new SkillRequirement(Skill.THIEVING, 50, true));
         req.add(new SkillRequirement(Skill.DEFENCE, 50, true));
-        req.add(new SkillRequirement(Skill.ATTACK, 65, false, "130 Total combined Attack and Strength"));
-        req.add(new SkillRequirement(Skill.STRENGTH, 65, false, "or 99 in either Attack or Strength."));
+        req.add(new WarriorsGuildAccessRequirement());
 
         return req;
     }

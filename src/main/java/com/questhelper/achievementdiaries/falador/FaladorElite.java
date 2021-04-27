@@ -153,7 +153,8 @@ public class FaladorElite extends ComplexStateQuestHelper {
 
         //Step 3 - Magic Roots
         //This step will need testing the most to ensure that it is working correctly.
-        chopMagicTree = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3003, 3372, 0), "Chop the magic tree that you grew in Falador Park, afterwards dig up the stump to get the Magic Roots.", axe, spade);
+        chopMagicTree = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0), "Chop the magic " +
+			"tree that you grew in Falador Park, afterwards dig up the stump to get the Magic Roots.", axe, spade);
 
         //Step 4 - Emote Fal Castle
         goUpFaladorCastle1Emote = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2954, 3338, 0), "Climb the staircase to the First Floor of the White Knights Castle.", skillCape);

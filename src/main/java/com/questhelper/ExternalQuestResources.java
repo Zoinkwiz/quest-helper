@@ -190,6 +190,10 @@ public enum ExternalQuestResources {
 	KARAMJA_MEDIUM("https://oldschool.runescape.wiki/w/Karamja_Diary#Medium"),
 	KARAMJA_HARD("https://oldschool.runescape.wiki/w/Karamja_Diary#Hard"),
 	KARAMJA_ELITE("https://oldschool.runescape.wiki/w/Karamja_Diary#Elite"),
+	FALADOR_EASY("https://oldschool.runescape.wiki/w/Falador_Diary#Easy"),
+	FALADOR_MEDIUM("https://oldschool.runescape.wiki/w/Falador_Diary#Medium"),
+	FALADOR_HARD("https://oldschool.runescape.wiki/w/Falador_Diary#Hard"),
+	FALADOR_ELITE("https://oldschool.runescape.wiki/w/Falador_Diary#Elite"),
 
     // Generic helpers
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II");

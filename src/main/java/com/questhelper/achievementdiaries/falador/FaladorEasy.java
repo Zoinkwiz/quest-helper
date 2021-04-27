@@ -167,61 +167,82 @@ public class FaladorEasy extends ComplexStateQuestHelper
     public void setupSteps()
     {
         //Fill a bucket of water from the pump north of Falador Park
-        fillWater = new ObjectStep(this, ObjectID.WATERPUMP_24004, new WorldPoint(2947, 3382, 0), "Use the bucket on the Waterpump outside the Hairdressers in west Falador.", bucket.highlighted());
+        fillWater = new ObjectStep(this, ObjectID.WATERPUMP_24004, new WorldPoint(2947, 3382, 0),
+                "Use the bucket on the Waterpump outside the Hairdressers in west Falador.", bucket.highlighted());
         fillWater.addIcon(ItemID.BUCKET);
 
         //Get a Haircut from the Falador hairdresser
-        getHaircut = new NpcStep(this, NpcID.HAIRDRESSER, new WorldPoint(2945, 3380, 0), "Visit the hairdresser in west Falador for a well deserved shave.", coins2000);
+        getHaircut = new NpcStep(this, NpcID.HAIRDRESSER, new WorldPoint(2945, 3380, 0),
+                "Visit the hairdresser in west Falador for a well deserved shave.", coins2000);
         getHaircut.addDialogStep("Go Ahead.");
 
         //Climb over the Western Falador Wall
-        climbWall = new ObjectStep(this, ObjectID.CRUMBLING_WALL_24222, new WorldPoint(2935, 3355, 0), "Climb over the Crumbled Wall west of the West Falador Bank.");
+        climbWall = new ObjectStep(this, ObjectID.CRUMBLING_WALL_24222, new WorldPoint(2935, 3355, 0),
+                "Climb over the Crumbled Wall west of the West Falador Bank.");
 
         //Kill a duck in Falador Park
-        killDuck = new NpcStep(this, NpcID.DUCK_1839, new WorldPoint(2989, 3379, 0), "Kill a Duck (Level 1) in the Falador Park", true, combatGear);
+        killDuck = new NpcStep(this, NpcID.DUCK_1839, new WorldPoint(2989, 3379, 0),
+                "Kill a Duck (Level 1) in the Falador Park", true, combatGear);
         killDuck.addAlternateNpcs(NpcID.DUCK);
 
         //Repair a broken strut in the Motherlode Mine
-        enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0), "Go to the Motherlode Mine.", pickaxe);
-        enterCaveToMotherlodeMine = new ObjectStep(this, ObjectID.CAVE_26654, new WorldPoint(3059, 9764, 0), "Go to the Motherlode Mine.", pickaxe);
-        fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3743,5662,0), "Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minnutes for it to break.", hammer.highlighted());
+        enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
+                "Go to the Motherlode Mine.", pickaxe);
+        enterCaveToMotherlodeMine = new ObjectStep(this, ObjectID.CAVE_26654, new WorldPoint(3059, 9764, 0),
+                "Go to the Motherlode Mine.", pickaxe);
+        fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3743,5662,0),
+                "Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minnutes for it to break.", hammer.highlighted());
         fixMotherloadMine.addSubSteps(enterDwarvenMines, enterCaveToMotherlodeMine);
         fixMotherloadMine.addIcon(ItemID.HAMMER);
 
         //Find out what your family crest is from Sir Renitee
-        climbLadderWhiteKnightCastle = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0), "Climb the ladder in The White Knights Castle!");
-        discoverFamilyCrest = new NpcStep(this, NpcID.SIR_RENITEE, new WorldPoint(2982, 3341, 1), "Speak to Sir Renitee to find out your family crest.");
+        climbLadderWhiteKnightCastle = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0),
+                "Climb the ladder in The White Knights Castle!");
+        discoverFamilyCrest = new NpcStep(this, NpcID.SIR_RENITEE, new WorldPoint(2982, 3341, 1),
+                "Speak to Sir Renitee to find out your family crest.");
         discoverFamilyCrest.addDialogStep("I don't know, what can you do for me?");
         discoverFamilyCrest.addDialogStep("Can you see if I have a family crest?");
         discoverFamilyCrest.addDialogStep("Thanks!");
 
         //Browse Sarah's Farm Shop
-        browseSarahFarmingShop = new NpcStep(this, NpcID.SARAH, new WorldPoint(3039, 3292, 0), "Trade Sarah in the Farming Shop south of Falador and browse her goods.");
+        browseSarahFarmingShop = new NpcStep(this, NpcID.SARAH, new WorldPoint(3039, 3292, 0),
+                "Trade Sarah in the Farming Shop south of Falador and browse her goods.");
 
         //Take the boat to Entrana
-        goEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3046, 3235, 0), "Deposit all your combat gear and talk to the Monk of Entrana in Port Sarim to take the boat.");
+        goEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3046, 3235, 0),
+                "Deposit all your combat gear and talk to the Monk of Entrana in Port Sarim to take the boat.");
         goEntrana.addDialogStep("Yes, okay, I'm ready to go.");
 
         //Claim a security book from the Security Guard at Port Sarim Jaiil.
-        climbLadderPortSarimJail = new ObjectStep(this, ObjectID.LADDER_9558, new WorldPoint(3010, 3184, 0), "Climb in the Port Sarim Jail to speak to the Security Guard.");
-        getSecurityBook = new NpcStep(this, NpcID.SECURITY_GUARD, new WorldPoint(3013, 3192, 1), "Speak to the Security Guard in the Port Sarim Jail to get a Security Book.");
+        climbLadderPortSarimJail = new ObjectStep(this, ObjectID.LADDER_9558, new WorldPoint(3010, 3184, 0),
+                "Climb in the Port Sarim Jail to speak to the Security Guard.");
+        getSecurityBook = new NpcStep(this, NpcID.SECURITY_GUARD, new WorldPoint(3013, 3192, 1),
+                "Speak to the Security Guard in the Port Sarim Jail to get a Security Book.");
         getSecurityBook.addSubSteps(climbLadderPortSarimJail);
 
         //Smith some Blurite Limbs on Doric's Anvil
-        getPickaxe = new DetailedQuestStep(this, new WorldPoint(2963, 3216, 0), "Get a pickaxe  in Rimmington if you do not have one.");
-        enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, hammer);
-        mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0), "Mine a blurite ore in the eastern cavern.", pickaxe, hammer);
-        smeltBlurite = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(2976, 3368, 0), "Smelt the blurite ore into a blurite bar.", hammer, bluriteOre);
-        smithBluriteLimbs = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(2950, 3451, 0), "Smith the blurite bar into blurite limbs on Dorics Anvil, north of Falador.", hammer, bluriteBar);
+        getPickaxe = new DetailedQuestStep(this, new WorldPoint(2963, 3216, 0),
+                "Get a pickaxe  in Rimmington if you do not have one.");
+        enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0),
+                "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, hammer);
+        mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0),
+                "Mine a blurite ore in the eastern cavern.", pickaxe, hammer);
+        smeltBlurite = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(2976, 3368, 0),
+                "Smelt the blurite ore into a blurite bar.", hammer, bluriteOre);
+        smithBluriteLimbs = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(2950, 3451, 0),
+                "Smith the blurite bar into blurite limbs on Dorics Anvil, north of Falador.", hammer, bluriteBar);
         smithBluriteLimbs.addSubSteps(enterDungeon, mineBlurite, smeltBlurite);
 
         //Make a Mind Tiara
-        enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2981, 3513, 0), "Use the mind talisman on the Mysterious Ruins to access the Mind Altar.", mindTalisman, tiara);
-        getMindTiara = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0), "Use the mind talisman on the Altar", mindTalisman, tiara);
+        enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2981, 3513, 0),
+                "Use the mind talisman on the Mysterious Ruins to access the Mind Altar.", mindTalisman, tiara);
+        getMindTiara = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0),
+                "Use the mind talisman on the Altar", mindTalisman, tiara);
         enterMindAltar.addSubSteps(getMindTiara);
 
         //Claim Reward
-        claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0), "Congratulations! Talk to Sir Rebral in the courtyard of The White Knight Castle to claim your reward!");
+        claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0),
+                "Congratulations! Talk to Sir Rebral in the courtyard of The White Knight Castle to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary.");
     }
 

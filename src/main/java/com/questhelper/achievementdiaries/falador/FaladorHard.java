@@ -191,14 +191,18 @@ public class FaladorHard extends ComplexStateQuestHelper {
     public void setupSteps()
     {
         //Mind Runes
-        enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2981, 3513, 0), "Use the mind tiara on the Mysterious Ruins to access the Mind Altar.", mindTiara, pureEss28);
-        craftMindRunes = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0), "Click the altar to craft the mind runes.", mindTiara, pureEss28);
+        enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2981, 3513, 0),
+                "Use the mind tiara on the Mysterious Ruins to access the Mind Altar.", mindTiara, pureEss28);
+        craftMindRunes = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0),
+                "Click the altar to craft the mind runes.", mindTiara, pureEss28);
         craftMindRunes.addIcon(ItemID.PURE_ESSENCE);
         enterMindAltar.addSubSteps(craftMindRunes);
 
         //Change Family Crest to Saradomin
-        climbLadderWhiteKnightCastle = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0), "Climb the ladder in The White Knights Castle!", coins10000);
-        changeFamilyCrest = new NpcStep(this, NpcID.SIR_RENITEE, new WorldPoint(2982, 3341, 1), "Speak to Sir Renitee to find out your family crest.", coins10000);
+        climbLadderWhiteKnightCastle = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0),
+                "Climb the ladder in The White Knights Castle!", coins10000);
+        changeFamilyCrest = new NpcStep(this, NpcID.SIR_RENITEE, new WorldPoint(2982, 3341, 1),
+                "Speak to Sir Renitee to find out your family crest.", coins10000);
         changeFamilyCrest.addDialogStep("I don't know, what can you do for me?");
         changeFamilyCrest.addDialogStep("Can you see if I have a family crest?");
         changeFamilyCrest.addDialogStep("I don't like that crest. Can I have a different one?");
@@ -208,43 +212,61 @@ public class FaladorHard extends ComplexStateQuestHelper {
         changeFamilyCrest.addDialogStep("Saradomin");
 
         //Giant Mole
-        goToGiantMole = new ObjectStep(this, ObjectID.MOLE_HILL, new WorldPoint(2989, 3378, 0), "Use a spade on one of the Mole Hills in Falador Park", combatGear, food, lightSource, spade);
-        killGiantMole = new NpcStep(this, NpcID.GIANT_MOLE, "Kill the Giant Mole.", combatGear, food, lightSource);
+        goToGiantMole = new ObjectStep(this, ObjectID.MOLE_HILL, new WorldPoint(2989, 3378, 0),
+                "Use a spade on one of the Mole Hills in Falador Park", combatGear, food, lightSource, spade);
+        killGiantMole = new NpcStep(this, NpcID.GIANT_MOLE,
+                "Kill the Giant Mole.", combatGear, food, lightSource);
 
         //Wyvern
-        goToIceDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim.", combatGear, food, wyvernProtection);
-        enterWyvernCavern = new ObjectStep(this, ObjectID.ICY_CAVERN_10596, new WorldPoint(3055, 9560, 0), "Enter the Icy Cavern at the back of the dungeon.", combatGear, food, wyvernProtection);
-        killWyvern = new NpcStep(this, NpcID.SKELETAL_WYVERN, "Kill a Skeletal Wyvern.", combatGear, food, wyvernProtection);
+        goToIceDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0),
+                "Go down the ladder south of Port Sarim.", combatGear, food, wyvernProtection);
+        enterWyvernCavern = new ObjectStep(this, ObjectID.ICY_CAVERN_10596, new WorldPoint(3055, 9560, 0),
+                "Enter the Icy Cavern at the back of the dungeon.", combatGear, food, wyvernProtection);
+        killWyvern = new NpcStep(this, NpcID.SKELETAL_WYVERN,
+                "Kill a Skeletal Wyvern.", combatGear, food, wyvernProtection);
 
         //Agi Course
-        completeAgiCourse = new ObjectStep(this, ObjectID.ROUGH_WALL_14898, new WorldPoint(3036, 3341, 0), "Complete a lap of the Falador Agility Course");
+        completeAgiCourse = new ObjectStep(this, ObjectID.ROUGH_WALL_14898, new WorldPoint(3036, 3341, 0),
+                "Complete a lap of the Falador Agility Course");
 
         //Prospectors in Mining Guild
-        enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0), "Go to the Dwarven Mines.");
-        enterMiningGuild = new ObjectStep(this, ObjectID.DOOR_30364, new WorldPoint(3046, 9756, 0), "Equip your prospector set and then enter the Mining Guild", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
+        enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
+                "Go to the Dwarven Mines.");
+        enterMiningGuild = new ObjectStep(this, ObjectID.DOOR_30364, new WorldPoint(3046, 9756, 0),
+                "Equip your prospector set and then enter the Mining Guild", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
 
         //Blue Dragon
-        enterHerosGuild = new ObjectStep(this, ObjectID.DOOR_2624, new WorldPoint(2902, 3501, 0), "Go to the Hero's Guild south of Burthorpe. You can get here faster by teleporting with a Combat Bracelet to the Warriors Guild.", combatGear, food, dragonfireProtection);
-        enterHerosGuildBasement = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2892, 3507, 0), "Climb down the ladder in the Hero's Guild.");
-        killBlueDragon = new NpcStep(this, NpcID.BLUE_DRAGON_266, "Kill the Blue Dragon to complete your task.");
+        enterHerosGuild = new ObjectStep(this, ObjectID.DOOR_2624, new WorldPoint(2902, 3501, 0),
+                "Go to the Hero's Guild south of Burthorpe. You can get here faster by teleporting with a Combat Bracelet to the Warriors Guild.", combatGear, food, dragonfireProtection);
+        enterHerosGuildBasement = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2892, 3507, 0),
+                "Climb down the ladder in the Hero's Guild.");
+        killBlueDragon = new NpcStep(this, NpcID.BLUE_DRAGON_266,
+                "Kill the Blue Dragon to complete your task.");
 
         //Rogues Den
-        enterRoguesDen = new ObjectStep(this, ObjectID.TRAPDOOR_7257, new WorldPoint(3905, 3537, 0), "Go to the Rogues Den in Burthorpe.");
-        crackWallSafe = new ObjectStep(this, ObjectID.WALL_SAFE, new WorldPoint(3055, 4977, 1), "Crack the Wall Safe inside of the Rogues Den.");
+        enterRoguesDen = new ObjectStep(this, ObjectID.TRAPDOOR_7257, new WorldPoint(3905, 3537, 0),
+                "Go to the Rogues Den in Burthorpe.");
+        crackWallSafe = new ObjectStep(this, ObjectID.WALL_SAFE, new WorldPoint(3055, 4977, 1),
+                "Crack the Wall Safe inside of the Rogues Den.");
 
         //Pray in Port Sarim in Proselyte
-        getProsySet = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0), "Speak to Sir Tiffy Cashien to purchase a set of Proselyte Armor for 28,000 Coins for a full set.");
+        getProsySet = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0),
+                "Speak to Sir Tiffy Cashien to purchase a set of Proselyte Armor for 28,000 Coins for a full set.");
         getProsySet.addDialogStep("Can I buy some armor?");
-        prayAtAltarSarim = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(2995, 3177, 0), "Equip your Proselyte armor and pray at the altar in Port Sarim.", prosyHelm, prosyChest, prosyLegs);
+        prayAtAltarSarim = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(2995, 3177, 0),
+                "Equip your Proselyte armor and pray at the altar in Port Sarim.", prosyHelm, prosyChest, prosyLegs);
 
         //Warriors Guild
-        enterWarriorsGuild = new ObjectStep(this, ObjectID.DOOR_24318, new WorldPoint(2877, 3456, 0), "Enter the Warriors Guild, in Burthorpe. You can get here faster by teleporting with a combat bracelet or a games necklace.");
+        enterWarriorsGuild = new ObjectStep(this, ObjectID.DOOR_24318, new WorldPoint(2877, 3456, 0),
+                "Enter the Warriors Guild, in Burthorpe. You can get here faster by teleporting with a combat bracelet or a games necklace.");
 
         //Dwarven Helm
-        equipDwarvenHelmet = new DetailedQuestStep(this, "Equip the Dwarven Helmet.", dwarvenHelmet);
+        equipDwarvenHelmet = new DetailedQuestStep(this,
+                "Equip the Dwarven Helmet.", dwarvenHelmet);
 
         //Fin
-        claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0), "Congratulations! Talk to Sir Rebral in the courtyard of The White Knight Castle to claim your reward!");
+        claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0),
+                "Congratulations! Talk to Sir Rebral in the courtyard of The White Knight Castle to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary.");
 
     }

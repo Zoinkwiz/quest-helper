@@ -39,8 +39,10 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
+import com.questhelper.steps.emote.QuestEmote;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -56,17 +58,18 @@ import java.util.List;
 public class FaladorElite extends ComplexStateQuestHelper {
 
     //Items Required
-    ItemRequirement pureEss28, airTiara, coins1920, spade, axe, skillCape, toadflaxPotionUnf, crushedNest;
+    ItemRequirement pureEss28, airTiara, coins1920, spade, axe, skillCape, toadflaxPotionUnf, crushedNest, rake, magicTreeSapling;
 
     //Items Recommended
     ItemRequirement faladorTeleport;
 
     Requirement notCraftedAirRunes, notPurchasedWhite2hSword, notGotMagicRoots, notPerformedSkillCapeEmote, notJumpedOverStrangeFloor,
-            notMadeSaraBrew, stumpNearby;
+            notMadeSaraBrew, stumpNearby, magicTreeNearbyNotChecked, magicTreeNearbyNotCheckedVar, stumpNearbyVar, magicTreeNearbyChecked,
+            magicTreeNearbyCheckedVar;
 
     QuestStep claimReward, enterAirAltar, craftAirRunes, goUpFaladorCastle2, goUpFaladorCastle1, purchaseWhite2hSword, chopMagicTree,
-    goUpFaladorCastle1Emote, goUpFaladorCastle2Emote, goUpFaladorCastle3Emote, performEmote, goToTavDungeon, crossStrangeFloor,
-    goToEastBank, craftSaraBrew;
+            goUpFaladorCastle1Emote, goUpFaladorCastle2Emote, goUpFaladorCastle3Emote, performEmote, goToTavDungeon, crossStrangeFloor,
+            goToEastBank, craftSaraBrew, growMagicTree, digUpStumpForRoots;
 
     Zone airAltar,faladorCastle1, faladorCastle2, faladorCastle3, tavDungeon, eastBank;
 
@@ -82,7 +85,10 @@ public class FaladorElite extends ComplexStateQuestHelper {
         ConditionalStep doElite = new ConditionalStep(this, claimReward);
         doElite.addStep(new Conditions(notCraftedAirRunes, inAirAltar), craftAirRunes);
         doElite.addStep(notCraftedAirRunes, enterAirAltar);
-        doElite.addStep(notGotMagicRoots, chopMagicTree);
+        doElite.addStep(new Conditions(notGotMagicRoots, stumpNearbyVar), digUpStumpForRoots);
+        doElite.addStep(new Conditions(notGotMagicRoots, magicTreeNearbyCheckedVar), chopMagicTree);
+        doElite.addStep(new Conditions(notGotMagicRoots, magicTreeNearbyNotCheckedVar), chopMagicTree);
+        doElite.addStep(notGotMagicRoots, growMagicTree);
         doElite.addStep(new Conditions(notPerformedSkillCapeEmote, inFaladorCastle3), performEmote);
         doElite.addStep(new Conditions(notPerformedSkillCapeEmote, inFaladorCastle2), goUpFaladorCastle3Emote);
         doElite.addStep(new Conditions(notPerformedSkillCapeEmote, inFaladorCastle1), goUpFaladorCastle2Emote);
@@ -104,13 +110,17 @@ public class FaladorElite extends ComplexStateQuestHelper {
         coins1920 = new ItemRequirement("Coins", ItemID.COINS_995, 1920).showConditioned(notPurchasedWhite2hSword);
         spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots);
         axe = new ItemRequirement("Axe", ItemCollections.getAxes()).showConditioned(notGotMagicRoots);
+        rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots);
+        magicTreeSapling = new ItemRequirement("Magic Sapling", ItemID.MAGIC_SAPLING).showConditioned(notGotMagicRoots);
         skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.getSkillCape(), -1).showConditioned(notPerformedSkillCapeEmote);
         toadflaxPotionUnf = new ItemRequirement("Toadflax Potion (unf)", ItemID.TOADFLAX_POTION_UNF).showConditioned(notMadeSaraBrew);
         crushedNest = new ItemRequirement("Crushed Nest", ItemID.CRUSHED_NEST).showConditioned(notMadeSaraBrew);
 
         faladorTeleport = new ItemRequirement("Multiple Teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
 
-        stumpNearby = new ObjectCondition(NullObjectID.NULL_8389);
+        magicTreeNearbyNotCheckedVar = new VarbitRequirement(4471, 60);
+        magicTreeNearbyCheckedVar = new VarbitRequirement(4471, 61);
+        stumpNearbyVar = new VarbitRequirement(4471, 62);
 
         notCraftedAirRunes = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 5));
         notPurchasedWhite2hSword = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 6));
@@ -140,38 +150,55 @@ public class FaladorElite extends ComplexStateQuestHelper {
     public void setupSteps()
     {
         //Step 1 - Air Runes
-        enterAirAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29090, new WorldPoint(2984, 3291, 0), "Go to the Air Altar south of Falador", pureEss28, airTiara);
+        enterAirAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29090, new WorldPoint(2984, 3291, 0),
+                "Go to the Air Altar south of Falador", pureEss28, airTiara);
         enterAirAltar.addSubSteps(craftAirRunes);
-        craftAirRunes = new ObjectStep(this, ObjectID.ALTAR_34760, new WorldPoint(2843, 4833, 0), "Use your essence on the Altar to craft the Air Runes.", pureEss28);
+        craftAirRunes = new ObjectStep(this, ObjectID.ALTAR_34760, new WorldPoint(2843, 4833, 0),
+                "Use your essence on the Altar to craft the Air Runes.", pureEss28);
         craftAirRunes.addIcon(ItemID.PURE_ESSENCE);
 
         //Step 2 - Purchase 2H Sword
-        goUpFaladorCastle1 = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0), "Climb up the east ladder in Falador Castle.", coins1920);
-        goUpFaladorCastle2 = new ObjectStep(this, ObjectID.STAIRCASE_24077, new WorldPoint(2985, 3338, 1), "Go up the staircase west of the ladder on the 1st floor.", coins1920);
-        purchaseWhite2hSword = new NpcStep(this, NpcID.SIR_VYVIN, new WorldPoint(2981, 3338, 2), "Speak to Sir Vyvin to purchase a White 2H Sword.", coins1920);
+        goUpFaladorCastle1 = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0),
+                "Climb up the east ladder in Falador Castle.", coins1920);
+        goUpFaladorCastle2 = new ObjectStep(this, ObjectID.STAIRCASE_24077, new WorldPoint(2985, 3338, 1),
+                "Go up the staircase west of the ladder on the 1st floor.", coins1920);
+        purchaseWhite2hSword = new NpcStep(this, NpcID.SIR_VYVIN, new WorldPoint(2981, 3338, 2),
+                "Speak to Sir Vyvin to purchase a White 2H Sword.", coins1920);
         purchaseWhite2hSword.addDialogStep("Do you have anything to trade?");
 
         //Step 3 - Magic Roots
-        //This step will need testing the most to ensure that it is working correctly.
-        chopMagicTree = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0), "Chop the magic " +
-			"tree that you grew in Falador Park, afterwards dig up the stump to get the Magic Roots.", axe, spade);
+        growMagicTree = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
+                "Grow and check the health of a magic tree in Falador Park, afterwards dig up the stump to get the Magic Roots.", magicTreeSapling, rake, spade);
+        chopMagicTree = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
+                "Chop the magic tree that you grew in Falador Park, afterwards dig up the stump to get the Magic Roots.", axe, spade);
+        digUpStumpForRoots = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
+                "Dig up the stump to get the magic roots.", spade);
 
         //Step 4 - Emote Fal Castle
-        goUpFaladorCastle1Emote = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2954, 3338, 0), "Climb the staircase to the First Floor of the White Knights Castle.", skillCape);
-        goUpFaladorCastle2Emote = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2960, 3338, 1), "Climb the staircase to the Second Floor of the White Knights Castle.", skillCape);
-        goUpFaladorCastle3Emote = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2957, 3338, 2), "Climb the staircase to the Top Floor of the White Knights Castle", skillCape);
-        performEmote = new DetailedQuestStep(this, "Equip your Skill Cape and perform its emote!", skillCape);
+        goUpFaladorCastle1Emote = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2954, 3338, 0),
+                "Climb the staircase to the First Floor of the White Knights Castle.", skillCape);
+        goUpFaladorCastle2Emote = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2960, 3338, 1),
+                "Climb the staircase to the Second Floor of the White Knights Castle.", skillCape);
+        goUpFaladorCastle3Emote = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2957, 3338, 2),
+                "Climb the staircase to the Top Floor of the White Knights Castle", skillCape);
+        performEmote = new EmoteStep(this, QuestEmote.SKILL_CAPE, new WorldPoint(2960, 3338, 3),
+                "Equip your skill cape and perform its emote!", skillCape);
 
         //Step 5 - Tav Dungeon
-        goToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0), "Go to the Taverly dungeon.");
-        crossStrangeFloor = new ObjectStep(this, ObjectID.STRANGE_FLOOR, new WorldPoint(2879, 9813, 0), "Cross the Strange Floor to complete the task!");
+        goToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+                "Go to the Taverly dungeon.");
+        crossStrangeFloor = new ObjectStep(this, ObjectID.STRANGE_FLOOR, new WorldPoint(2879, 9813, 0),
+                "Cross the Strange Floor to complete the task!");
 
         //Step 6 - Sara Brew
-        goToEastBank = new DetailedQuestStep(this, new WorldPoint(3013, 3356, 0), "Go to the Falador East Bank");
-        craftSaraBrew = new DetailedQuestStep(this, new WorldPoint(3013, 3356, 0), "Craft a Saradomin Brew while inside the Falador East Bank.", toadflaxPotionUnf.highlighted(), crushedNest.highlighted());
+        goToEastBank = new DetailedQuestStep(this, new WorldPoint(3013, 3356, 0),
+                "Go to the Falador East Bank");
+        craftSaraBrew = new DetailedQuestStep(this, new WorldPoint(3013, 3356, 0),
+                "Craft a Saradomin Brew while inside the Falador East Bank.", toadflaxPotionUnf.highlighted(), crushedNest.highlighted());
 
         //Claim Reward
-        claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0), "Congratulations! Talk to Sir Rebral in the courtyard of The White Knight Castle to claim your reward!");
+        claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0),
+                "Congratulations! Talk to Sir Rebral in the courtyard of The White Knight Castle to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary.");
     }
 

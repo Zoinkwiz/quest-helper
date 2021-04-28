@@ -314,7 +314,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Easy Diary", Arrays.asList(enterVolcano, returnThroughWall, enterAgilityArena,
+		allSteps.add(new PanelDetails("Medium Diary", Arrays.asList(enterVolcano, returnThroughWall, enterAgilityArena,
 			tag2Pillars, useCart, mineRedTopaz, travelToKhazard, flyToKaramja, catchKarambwan, charterFromShipyard,
 			trapGraahk, doCleanup, makeSpiderStick, cookSpider, cutTeak, cutMahogany, getMachete,
 			enterBrimhavenDungeon, chopVines, crossLava, climbBrimhavenStaircase, growFruitTree, claimReward),

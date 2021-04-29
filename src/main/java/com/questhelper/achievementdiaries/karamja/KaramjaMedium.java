@@ -208,7 +208,7 @@ public class KaramjaMedium extends BasicQuestHelper
 			"completion of Tai Bwo Wannai Trio to fish karambwan");
 		dragonSlayerI = new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED, "Partial " +
 			"completion of Dragon Slayer I for access to Crandor");
-		shiloVillage = new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED);
+		shiloVillage = new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED);
 
 
 		// 3578 = 2, completed final task
@@ -321,7 +321,7 @@ public class KaramjaMedium extends BasicQuestHelper
 			"completion of Tai Bwo Wannai Trio to fish karambwan"));
 		reqs.add(new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED, "Partial " +
 			"completion of Dragon Slayer I for access to Crandor"));
-		reqs.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
+		reqs.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));
 		
 		return reqs;
 	}

@@ -280,7 +280,8 @@ public class ShadesOfMortton extends BasicQuestHelper
 		use208OnRazmire = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Use the serum 208 on Razmire in the north of Mort'ton.", serum208);
 		use208OnRazmire.addIcon(ItemID.SERUM_208_4);
 		((NpcStep) (use207OnRazmire)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
-		use208OnUlsquire = new NpcStep(this, NpcID.AFFLICTEDULSQUIRE, new WorldPoint(3496, 3289, 0), "Use some serum 207 on Ulsquire in the east of Mort'ton.", serum208);
+		use208OnUlsquire = new NpcStep(this, NpcID.AFFLICTEDULSQUIRE, new WorldPoint(3496, 3289, 0),
+			"Use some serum 208 on Ulsquire in the east of Mort'ton.", serum208);
 		use208OnUlsquire.addIcon(ItemID.SERUM_208_4);
 		((NpcStep) (talkToUlsquire)).addAlternateNpcs(NpcID.ULSQUIRE_SHAUNCY);
 

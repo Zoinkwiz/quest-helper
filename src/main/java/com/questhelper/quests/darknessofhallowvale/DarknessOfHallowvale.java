@@ -196,7 +196,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		planks2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
 		planks1 = new ItemRequirement("Plank", ItemID.PLANK);
 		nails8 = new ItemRequirement("Nails", ItemCollections.getNails(), 8);

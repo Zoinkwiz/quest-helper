@@ -229,8 +229,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET, 5);
 		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketOrSemiFilledBucket.addAlternates(ItemID.BUCKET_OF_RUBBLE, ItemID.BUCKET_OF_RUBBLE_7624);
-		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes());
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		planks11 = new ItemRequirement("Plank", ItemID.PLANK, 11);
 		nails44 = new ItemRequirement("Any nails", ItemCollections.getNails(), 44);
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
@@ -274,6 +274,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 		morttonTeleport = new ItemRequirement("Teleports to Mort'ton (minigame tele, teleport scroll)", ItemID.MORTTON_TELEPORT);
 		canifisTeleport = new ItemRequirement("Canifis teleports (ancients spell, nearby fairy ring bip)", ItemID.KHARYRLL_TELEPORT);
+		canifisTeleport.addAlternates(ItemID.DRAMEN_STAFF, ItemID.LUNAR_STAFF, ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 
 		planks2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
 		planks3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
@@ -294,7 +295,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		sleepingSeven = new ItemRequirement("The sleeping seven", ItemID.THE_SLEEPING_SEVEN);
 		sleepingSeven.setHighlightInInventory(true);
 
-		hammerHighlighted = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		hammerHighlighted.setHighlightInInventory(true);
 
 		mould = new ItemRequirement("Rod mould", ItemID.ROD_MOULD);

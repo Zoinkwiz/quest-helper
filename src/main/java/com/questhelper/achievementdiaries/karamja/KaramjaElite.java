@@ -151,7 +151,13 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(farming72, herblore87, runecraft91);
+		List<Requirement> reqs = new ArrayList<>();
+
+		reqs.add(new SkillRequirement(Skill.FARMING, 72, true));
+		reqs.add(new SkillRequirement(Skill.HERBLORE, 87, true));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 91, true));
+
+		return reqs;
 	}
 
 	@Override

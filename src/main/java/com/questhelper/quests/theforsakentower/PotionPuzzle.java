@@ -334,9 +334,9 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == 627)
+		if (widgetLoaded.getGroupId() == 291)
 		{
-			Widget line1Widget = client.getWidget(627, 4);
+			Widget line1Widget = client.getWidget(291, 8);
 			if (line1Widget != null)
 			{
 				Matcher matcher = LINE1.matcher(line1Widget.getText());
@@ -348,7 +348,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					}
 				}
 			}
-			Widget line2Widget = client.getWidget(627, 5);
+			Widget line2Widget = client.getWidget(291, 9);
 			if (line2Widget != null)
 			{
 				Matcher matcher = LINE2.matcher(line2Widget.getText());
@@ -364,7 +364,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					}
 				}
 			}
-			Widget line3Widget = client.getWidget(627, 6);
+			Widget line3Widget = client.getWidget(291, 10);
 			if (line3Widget != null)
 			{
 				Matcher matcher = LINE3.matcher(line3Widget.getText());

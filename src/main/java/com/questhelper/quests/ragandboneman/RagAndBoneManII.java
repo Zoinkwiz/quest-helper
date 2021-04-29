@@ -223,8 +223,8 @@ public class RagAndBoneManII extends BasicQuestHelper
 		dustyKey.canBeObtainedDuringQuest();
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD);
 		mirrorShield.addAlternates(ItemID.VS_SHIELD, ItemID.VS_SHIELD_24266);
-		iceCooler = new ItemRequirement("Ice coolers", ItemID.ICE_COOLER);
-		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE);
+		iceCooler = new ItemRequirement("Ice coolers", ItemID.ICE_COOLER, 10);
+		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE, 10);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 

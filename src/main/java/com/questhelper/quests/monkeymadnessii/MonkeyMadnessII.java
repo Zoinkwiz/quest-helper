@@ -261,11 +261,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlighted.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		lightSource = new ItemRequirement("A lightsource", ItemCollections.getLightSources());
-		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemID.HAMMER);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemID.CHISEL);
 		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET);

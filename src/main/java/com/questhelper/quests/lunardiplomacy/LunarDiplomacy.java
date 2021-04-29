@@ -408,7 +408,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		lunarStaff = new ItemRequirement("Lunar staff", ItemID.LUNAR_STAFF);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);

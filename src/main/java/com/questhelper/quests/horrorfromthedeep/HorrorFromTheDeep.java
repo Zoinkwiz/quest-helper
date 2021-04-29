@@ -152,7 +152,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		arrow = new ItemRequirement("Any arrow", ItemCollections.getMetalArrows());
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		steelNails60 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 60);
 		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
 		plank = new ItemRequirement("Plank", ItemID.PLANK);

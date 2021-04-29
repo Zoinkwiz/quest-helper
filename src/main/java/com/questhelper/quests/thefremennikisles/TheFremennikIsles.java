@@ -288,7 +288,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		coins15 = new ItemRequirement("Coins", ItemID.COINS_995, 15);
 		bronzeNail = new ItemRequirement("Bronze nail", ItemID.BRONZE_NAILS);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope9 = new ItemRequirement("Rope", ItemID.ROPE, 9);
 		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR, 1, true);

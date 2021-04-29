@@ -173,7 +173,7 @@ public class GettingAhead extends BasicQuestHelper
 		bearFur.setHighlightInInventory(true);
 		softClay = new ItemRequirement("Soft Clay", ItemID.SOFT_CLAY, 1);
 		softClay.setHighlightInInventory(true);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER, 1);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer(), 1);
 		saw = new ItemRequirement("Any saw", ItemID.SAW, 1);
 		saw.addAlternates(ItemID.CRYSTAL_SAW, ItemID.AMYS_SAW);
 		planks = new ItemRequirement("Planks", ItemID.PLANK, 2);

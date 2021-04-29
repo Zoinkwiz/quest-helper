@@ -1,5 +1,6 @@
 package com.questhelper.quests.coldwar;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -185,7 +186,7 @@ public class ColdWar extends BasicQuestHelper
 		oakPlankHighlight = new ItemRequirement("Oak Plank", ItemID.OAK_PLANK, 1);
 		oakPlankHighlight.setHighlightInInventory(true);
 		steelNails = new ItemRequirement("Steel Nails", ItemID.STEEL_NAILS, 10);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER, 1);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer(), 1);
 		spade = new ItemRequirement("Spade", ItemID.SPADE, 1);
 		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE, 1);
 		spadeHighlight.setHighlightInInventory(true);

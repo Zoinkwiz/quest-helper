@@ -306,8 +306,24 @@ public class KaramjaMedium extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(agility12, cooking16, farming27, fishing65, hunter41, mining40, woodcutting50,
-		grandTree, taiBwoWannaiTrio, dragonSlayerI, shiloVillage);
+		List<Requirement> reqs = new ArrayList<>();
+
+		reqs.add(new SkillRequirement(Skill.AGILITY, 12));
+		reqs.add(new SkillRequirement(Skill.COOKING, 16));
+		reqs.add(new SkillRequirement(Skill.FARMING, 27));
+		reqs.add(new SkillRequirement(Skill.FISHING, 65, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 41));
+		reqs.add(new SkillRequirement(Skill.MINING, 40));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50));
+
+		reqs.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
+		reqs.add(new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED, "Partial " +
+			"completion of Tai Bwo Wannai Trio to fish karambwan"));
+		reqs.add(new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED, "Partial " +
+			"completion of Dragon Slayer I for access to Crandor"));
+		reqs.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
+		
+		return reqs;
 	}
 
 	@Override

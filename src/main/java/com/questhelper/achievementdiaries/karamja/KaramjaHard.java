@@ -167,7 +167,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
 			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
 			ItemID.BLURITE_CROSSBOW);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE).showConditioned(notUsedShortcut);
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notUsedShortcut);
 		antidragonShield =
 			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.getAntifireShields())
 				.showConditioned(notKilledDragon);
@@ -299,8 +299,25 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(combat100, agility53, cooking53, magic59, mining52, ranged42, runecrafting44, slayer50, smithing40,
-			strength50, thieving50, woodcutting34, taiBwoWannaiTrio, legendsQuest);
+		List<Requirement> reqs = new ArrayList<>();
+		reqs.add(new CombatLevelRequirement(100));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
+		reqs.add(new SkillRequirement(Skill.COOKING, 53));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 59));
+		reqs.add(new SkillRequirement(Skill.MINING, 52));
+		reqs.add(new SkillRequirement(Skill.RANGED, 42));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 44));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 50));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 40));
+		reqs.add(new SkillRequirement(Skill.STRENGTH, 50));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 50));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 34));
+
+		reqs.add(new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED));
+		reqs.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1,
+			Operation.GREATER_EQUAL, "Partial completion of Legends' Quest"));
+
+		return reqs;
 	}
 
 	@Override

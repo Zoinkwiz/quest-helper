@@ -415,8 +415,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		oakPlank8 = new ItemRequirement("Oak planks", ItemID.OAK_PLANK, 8);
 		swampPaste10 = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE, 10);
 		nails12OrMore = new ItemRequirement("Nails, bring more in case some break", ItemCollections.getNails(), 12);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		hammerHighlighted = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		hammerHighlighted.setHighlightInInventory(true);
 		machete = new ItemRequirement("Any machete", ItemCollections.getMachete());
 		saw = new ItemRequirement("Saw", ItemID.SAW);

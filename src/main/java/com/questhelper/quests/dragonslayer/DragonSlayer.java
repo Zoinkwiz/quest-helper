@@ -231,7 +231,7 @@ public class DragonSlayer extends BasicQuestHelper
 		planks3 = new ItemRequirement("Planks", ItemID.PLANK, 3);
 		planks2 = new ItemRequirement("Planks", ItemID.PLANK, 2);
 		planks1 = new ItemRequirement("Plank", ItemID.PLANK);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		nails90 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 90);
 		nails60 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 60);
 		nails30 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 30);

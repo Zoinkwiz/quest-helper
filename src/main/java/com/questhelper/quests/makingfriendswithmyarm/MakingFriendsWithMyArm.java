@@ -277,7 +277,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		potion = new ItemRequirement("Reduced cadava potion", ItemID.REDUCED_CADAVA_POTION);
 		potion.setTooltip("You can get another by bringing the Apothecary a cadava berry");
 

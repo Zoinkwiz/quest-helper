@@ -138,7 +138,7 @@ public class TowerOfLife extends BasicQuestHelper
 		rawChicken = new ItemRequirement("Raw chicken (for diary task)", ItemID.RAW_CHICKEN);
 
 		beer = new ItemRequirement("Beer", ItemID.BEER);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		saw = new ItemRequirement("Saw", Arrays.asList(ItemID.SAW, ItemID.CRYSTAL_SAW));
 		gloves = new ItemRequirement("Gloves", Arrays.asList(ItemID.LEATHER_GLOVES, ItemID.MYSTIC_GLOVES, ItemID.MYSTIC_GLOVES_DARK, ItemID.MYSTIC_GLOVES_DUSK, ItemID.MYSTIC_GLOVES_LIGHT));
 

@@ -230,7 +230,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketOrSemiFilledBucket.addAlternates(ItemID.BUCKET_OF_RUBBLE, ItemID.BUCKET_OF_RUBBLE_7624);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		planks11 = new ItemRequirement("Plank", ItemID.PLANK, 11);
 		nails44 = new ItemRequirement("Any nails", ItemCollections.getNails(), 44);
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
@@ -295,7 +295,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		sleepingSeven = new ItemRequirement("The sleeping seven", ItemID.THE_SLEEPING_SEVEN);
 		sleepingSeven.setHighlightInInventory(true);
 
-		hammerHighlighted = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		hammerHighlighted.setHighlightInInventory(true);
 
 		mould = new ItemRequirement("Rod mould", ItemID.ROD_MOULD);

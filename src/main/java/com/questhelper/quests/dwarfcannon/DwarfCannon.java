@@ -112,7 +112,7 @@ public class DwarfCannon extends BasicQuestHelper
 		teleToKand.addAlternates(ItemCollections.getSkillsNecklaces());
 		teleToKand.addAlternates(ItemID.ARDOUGNE_TELEPORT);
 
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		railing = new ItemRequirement("Railing", ItemID.RAILING);
 		railing.setTooltip("You can get more from Captain Lawgof");
 		toolkit = new ItemRequirement("Toolkit", ItemID.TOOLKIT);

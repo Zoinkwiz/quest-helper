@@ -1,5 +1,6 @@
 package com.questhelper.quests.coldwar;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;

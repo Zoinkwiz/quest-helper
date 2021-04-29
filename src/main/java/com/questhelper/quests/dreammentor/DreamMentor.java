@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.dreammentor;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;

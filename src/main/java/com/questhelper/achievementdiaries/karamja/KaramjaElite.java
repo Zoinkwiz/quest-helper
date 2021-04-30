@@ -86,7 +86,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		doElite.addStep(notCheckedCalquat, checkCalquat);
 		doElite.addStep(notCheckedPalm, checkPalm);
 
-		return doElite;
+		return enterNatureAltar;
 	}
 
 	public void setupRequirements()
@@ -123,7 +123,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(3869, 3019, 0),
+		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTiaraOrAbyss,
 			pureEssence.quantity(28));
 		craftRunes = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),

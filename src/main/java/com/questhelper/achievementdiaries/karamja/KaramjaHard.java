@@ -243,7 +243,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		becomeChampion.addSubSteps(enterHoleChampion, enterTzhaarChampion);
 		defeatZek = new NpcStep(this, NpcID.KETZEK, "Reach at least wave 31 to defeat Ket-Zek.");
 		eatOomlie = new DetailedQuestStep(this, "Eat an oomlie wrap.", oomlieWrap.highlighted());
-		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(3869, 3019, 0),
+		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTalismanOrAbyss, pureEssence);
 		craftNatureRune = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),
 			"Craft a nature rune.", pureEssence);

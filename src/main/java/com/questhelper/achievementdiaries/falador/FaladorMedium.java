@@ -137,12 +137,13 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		notVisitRatPits = new VarplayerRequirement(1186, false, 16);
 		notGrappleNorthWall = new VarplayerRequirement(1186, false, 17);
 		notPickpocketGuard = new VarplayerRequirement(1186, false, 18);
-		notPrayAtAltar = new VarplayerRequirement(1186, false, 19);
-		notMineGold = new VarplayerRequirement(1186, false, 20);
-		notDwarfShortcut = new VarplayerRequirement(1186, false, 21);
-		notChopBurnWillowTav = new VarplayerRequirement(1186, false, 22);
-		notBasketFalLoom = new VarplayerRequirement(1186, false, 23);
-		notTeleportFalador = new VarplayerRequirement(1186, false, 24);
+		// 19 = ???
+		notPrayAtAltar = new VarplayerRequirement(1186, false, 20);
+		notMineGold = new VarplayerRequirement(1186, false, 21);
+		notDwarfShortcut = new VarplayerRequirement(1186, false, 22);
+		notChopBurnWillowTav = new VarplayerRequirement(1186, false, 23);
+		notBasketFalLoom = new VarplayerRequirement(1186, false, 24);
+		notTeleportFalador = new VarplayerRequirement(1186, false, 25);
 
 		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav));
@@ -226,7 +227,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Crystal Chest
 		unlockCrystalChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_172, new WorldPoint(2914, 3452, 0),
-			"Use the crystal key to unlock the chest in Taverly");
+			"Use the crystal key to unlock the chest in Taverley");
 		unlockCrystalChest.addIcon(ItemID.CRYSTAL_KEY);
 
 		//Scarecrow
@@ -263,7 +264,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//PickPocket
 		pickpocketGuard = new NpcStep(this, NpcID.GUARD_3269, new WorldPoint(2961, 3381, 0),
-			"Pickpocket a villager.", true);
+			"Pickpocket a guard.", true);
 		pickpocketGuard.setHideWorldArrow(true);
 		pickpocketGuard.addAlternateNpcs(NpcID.GUARD_3271, NpcID.GUARD_3272);
 
@@ -272,7 +273,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Speak to Sir Tiffy Cashien to purchase a set of Initiate Armor for 14,000 Coins for a full set.");
 		getInitiateSet.addDialogStep("Can I buy some armor?");
 		prayAtAltar = new ObjectStep(this, ObjectID.ALTAR_OF_GUTHIX, new WorldPoint(2925, 3483, 0),
-			"Equip your Initiate armor and pray at the Altar of Guthix in Taverly", initiateSet);
+			"Equip your Initiate armor and pray at the Altar of Guthix in Taverley", initiateSet);
 
 		//Mine Gold in Crafting Guild
 		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2993, 3289, 0),
@@ -290,7 +291,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		goToTav = new DetailedQuestStep(this,
 			"Go to Taverly, north west of Falador.", axe, tinderbox);
 		chopWillowLog = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(2925, 3412, 0),
-			"Chop a Willow Tree while within Taverly.", axe, tinderbox);
+			"Chop a Willow Tree while within Taverley.", axe, tinderbox);
 		burnWillowLog = new DetailedQuestStep(this,
 			"Use your tinderbox on the Willow Logs.", willowLogHighlight, tinderboxHighlight);
 

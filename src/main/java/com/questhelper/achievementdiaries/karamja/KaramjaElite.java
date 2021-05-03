@@ -91,11 +91,11 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notCraftedRunes = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 1));
-		notEquippedCape = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 2));
-		notCheckedPalm = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 3));
-		notMadePotion = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 4));
-		notCheckedCalquat = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 5));
+		notCraftedRunes = new VarplayerRequirement(1200, false, 1);
+		notEquippedCape = new VarplayerRequirement(1200, false, 2);
+		notCheckedPalm = new VarplayerRequirement(1200, false, 3);
+		notMadePotion = new VarplayerRequirement(1200, false, 4);
+		notCheckedCalquat = new VarplayerRequirement(1200, false, 5);
 
 		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
 			ItemID.NATURE_TIARA).showConditioned(notCraftedRunes);

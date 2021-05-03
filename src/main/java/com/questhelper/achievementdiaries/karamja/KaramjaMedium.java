@@ -129,25 +129,25 @@ public class KaramjaMedium extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		notClaimedTicket = new Conditions(LogicType.NOR, new VarbitRequirement(3579, 1));
-		notEnteredWall = new Conditions(LogicType.NOR, new VarbitRequirement(3580, 1));
-		notEnteredCrandor = new Conditions(LogicType.NOR, new VarbitRequirement(3581, 1));
-		notUsedCart = new Conditions(LogicType.NOR, new VarbitRequirement(3582, 1));
-		notEarned100 = new Conditions(LogicType.NOR, new VarbitRequirement(3583, 1));
-		notCookedSpider = new Conditions(LogicType.NOR, new VarbitRequirement(3584, 1));
-		notMinedRedRopaz = new Conditions(LogicType.NOR, new VarbitRequirement(3585, 1));
-		notCutTeak = new Conditions(LogicType.NOR, new VarbitRequirement(3586, 1));
-		notCutMahog = new Conditions(LogicType.NOR, new VarbitRequirement(3587, 1));
-		notCaughtKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3588, 1));
-		notExchangedGems = new Conditions(LogicType.NOR, new VarbitRequirement(3589, 1));
-		notUsedGlider = new Conditions(LogicType.NOR, new VarbitRequirement(3590, 1));
-		notGrownFruitTree = new Conditions(LogicType.NOR, new VarbitRequirement(3591, 1));
-		notTrappedGraahk = new Conditions(LogicType.NOR, new VarbitRequirement(3592, 1));
-		notCutVine = new Conditions(LogicType.NOR, new VarbitRequirement(3593, 1));
-		notCrossedLava = new Conditions(LogicType.NOR, new VarbitRequirement(3594, 1));
-		notClimbedStairs = new Conditions(LogicType.NOR, new VarbitRequirement(3595, 1));
-		notTraveledToKhazard = new Conditions(LogicType.NOR, new VarbitRequirement(3596, 1));
-		notCharteredFromShipyard = new Conditions(LogicType.NOR, new VarbitRequirement(3597, 1));
+		notClaimedTicket = new VarbitRequirement(3579, false, 1);
+		notEnteredWall = new VarbitRequirement(3580, false, 1);
+		notEnteredCrandor = new VarbitRequirement(3581, false, 1);
+		notUsedCart = new VarbitRequirement(3582, false, 1);
+		notEarned100 = new VarbitRequirement(3583, false, 1);
+		notCookedSpider = new VarbitRequirement(3584, false, 1);
+		notMinedRedRopaz = new VarbitRequirement(3585, false, 1);
+		notCutTeak = new VarbitRequirement(3586, false, 1);
+		notCutMahog = new VarbitRequirement(3587, false, 1);
+		notCaughtKarambwan = new VarbitRequirement(3588, false, 1);
+		notExchangedGems = new VarbitRequirement(3589, false, 1);
+		notUsedGlider = new VarbitRequirement(3590, false, 1);
+		notGrownFruitTree = new VarbitRequirement(3591, false, 1);
+		notTrappedGraahk = new VarbitRequirement(3592, false, 1);
+		notCutVine = new VarbitRequirement(3593, false, 1);
+		notCrossedLava = new VarbitRequirement(3594, false, 1);
+		notClimbedStairs = new VarbitRequirement(3595, false, 1);
+		notTraveledToKhazard = new VarbitRequirement(3596, false, 1);
+		notCharteredFromShipyard = new VarbitRequirement(3597, false, 1);
 
 		pickaxe =
 			new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR,

@@ -135,16 +135,16 @@ public class KaramjaHard extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notBecomeChampion = new Conditions(LogicType.NOR, new VarbitRequirement(3600, 1));
-		notKilledZek = new Conditions(LogicType.NOR, new VarbitRequirement(3601, 1));
-		notEatenWrap = new Conditions(LogicType.NOR, new VarbitRequirement(3602, 1));
-		notCraftedNature = new Conditions(LogicType.NOR, new VarbitRequirement(3603, 1));
-		notCookedKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3604, 1));
-		notKilledDeathwing = new Conditions(LogicType.NOR, new VarbitRequirement(3605, 1));
-		notUsedShortcut = new Conditions(LogicType.NOR, new VarbitRequirement(3606, 1));
-		notCollectedLeaves = new Conditions(LogicType.NOR, new VarbitRequirement(3607, 5));
-		notAssignedTask = new Conditions(LogicType.NOR, new VarbitRequirement(3608, 1));
-		notKilledDragon = new Conditions(LogicType.NOR, new VarbitRequirement(3609, 1));
+		notBecomeChampion = new VarbitRequirement(3600, false, 1);
+		notKilledZek = new VarbitRequirement(3601, false, 1);
+		notEatenWrap = new VarbitRequirement(3602, false, 1);
+		notCraftedNature = new VarbitRequirement(3603, false, 1);
+		notCookedKarambwan = new VarbitRequirement(3604, false, 1);
+		notKilledDeathwing = new VarbitRequirement(3605, false, 1);
+		notUsedShortcut = new VarbitRequirement(3606, false, 1);
+		notCollectedLeaves = new VarbitRequirement(3607, false, 5);
+		notAssignedTask = new VarbitRequirement(3608, false, 1);
+		notKilledDragon = new VarbitRequirement(3609, false, 1);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notKilledDeathwing);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notKilledDragon);

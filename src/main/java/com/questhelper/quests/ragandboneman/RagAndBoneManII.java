@@ -44,6 +44,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -846,7 +847,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 		Conditions canAccessExperimentCave = new Conditions(LogicType.OR,
 			new VarbitRequirement(192, 1),
-			new VarbitRequirement(QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN.getId(), 2, Operation.GREATER_EQUAL)
+			new VarplayerRequirement(QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN.getId(), 2, Operation.GREATER_EQUAL)
 		);
 		canAccessExperimentCave.setText("Partial completion of Creature of Fenkenstrain");
 		requirements.add(canAccessExperimentCave);

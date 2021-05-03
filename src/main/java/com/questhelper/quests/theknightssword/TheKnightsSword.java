@@ -133,7 +133,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		sirVyinNotInRoom = new NpcCondition(NpcID.SIR_VYVIN, faladorCastle2Bedroom);
 
 		NpcRequirement sirVyinNotInRoom = new NpcRequirement("Sir Vyin not in the bedroom.", NpcID.SIR_VYVIN, true, faladorCastle2Bedroom);
-		com.questhelper.requirements.ZoneRequirement playerIsUpstairs = new com.questhelper.requirements.ZoneRequirement("Upstairs", faladorCastle2);
+		ZoneRequirement playerIsUpstairs = new ZoneRequirement("Upstairs", faladorCastle2);
 		searchCupboardReq = new ComplexRequirement(LogicType.AND, "Sir Vyin not in the bedroom.", playerIsUpstairs, sirVyinNotInRoom);
 	}
 

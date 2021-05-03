@@ -38,7 +38,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.WarriorsGuildAccessRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.ItemID;
@@ -67,7 +66,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
     ItemRequirements prosySet, prospectorSet;
 
     Requirement notCraftedMindRunes, notChangedFamilyCrest, notKilledMole, notKilledWyvern, notCompleteAgiCourse,
-            notEnterMiningGuildWithProspector, notKilledBlueDragon, notCrackedWallSafe, notPraySarimAltarProsy, notEnterWarrsGuild,
+            notEnterMiningGuildWithProspector, notKilledBlueDragon, notCrackedWallSafe, notPraySarimAltarProsy, notEnterWarriorsGuild,
             notDwarvenHelmetDwarvenMines;
 
     QuestStep claimReward, enterMindAltar, craftMindRunes, climbLadderWhiteKnightCastle, changeFamilyCrest, goToGiantMole,
@@ -98,7 +97,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
         doHard.addStep(notDwarvenHelmetDwarvenMines, enterDwarvenMines);
         doHard.addStep(new Conditions(notEnterMiningGuildWithProspector, inDwarvenMine), enterMiningGuild);
         doHard.addStep(notEnterMiningGuildWithProspector, enterDwarvenMines);
-        doHard.addStep(notEnterWarrsGuild, enterWarriorsGuild);
+        doHard.addStep(notEnterWarriorsGuild, enterWarriorsGuild);
         doHard.addStep(new Conditions(notKilledBlueDragon, inHerosGuildBasement), killBlueDragon);
         doHard.addStep(new Conditions(notKilledBlueDragon, inHerosGuild), enterHerosGuildBasement);
         doHard.addStep(notKilledBlueDragon, enterHerosGuild);
@@ -118,6 +117,18 @@ public class FaladorHard extends ComplexStateQuestHelper {
 
     public void setupRequirements()
     {
+		notCraftedMindRunes = new VarplayerRequirement(1186, false, 26);
+		notChangedFamilyCrest = new VarplayerRequirement(1186, false, 27);
+		notKilledMole = new VarplayerRequirement(1186, false, 28);
+		notKilledWyvern = new VarplayerRequirement(1186, false, 29);
+		notCompleteAgiCourse = new VarplayerRequirement(1186, false, 30);
+		notEnterMiningGuildWithProspector = new VarplayerRequirement(1186, false, 31);
+		notKilledBlueDragon = new VarplayerRequirement(1187, false, 0);
+		notCrackedWallSafe = new VarplayerRequirement(1187, false, 1);
+		notPraySarimAltarProsy = new VarplayerRequirement(1187, false, 2); // 1187 8->12
+		notEnterWarriorsGuild = new VarplayerRequirement(1187, false, 3);
+		notDwarvenHelmetDwarvenMines = new VarplayerRequirement(1187, false, 4);
+
         pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedMindRunes);
         mindTiara = new ItemRequirement("Mind Tiara", ItemID.MIND_TIARA, 1, true).showConditioned(notCraftedMindRunes);
         coins10000 = new ItemRequirement("Coins", ItemID.COINS_995, 10000).showConditioned(notChangedFamilyCrest);
@@ -126,7 +137,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
         lightSource = new ItemRequirement("Light Source", ItemCollections.getLightSources(), -1).showConditioned(notKilledMole);
         spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notKilledMole);
         wyvernProtection = new ItemRequirement("Wyvern Protection", ItemCollections.getAntiWyvernShields()).showConditioned(notKilledWyvern);
-        prospectorHelm = new ItemRequirement("Prospector Boots", ItemID.PROSPECTOR_HELMET, 1, true).showConditioned(notEnterMiningGuildWithProspector);
+        prospectorHelm = new ItemRequirement("Prospector Helm", ItemID.PROSPECTOR_HELMET, 1, true).showConditioned(notEnterMiningGuildWithProspector);
         prospectorChest = new ItemRequirement("Prospector Chest", ItemID.PROSPECTOR_JACKET, 1, true).showConditioned(notEnterMiningGuildWithProspector);
         prospectorLegs = new ItemRequirement("Prospector Legs", ItemID.PROSPECTOR_LEGS, 1, true).showConditioned(notEnterMiningGuildWithProspector);
         prospectorBoots = new ItemRequirement("Prospector Boots", ItemID.PROSPECTOR_BOOTS, 1, true).showConditioned(notEnterMiningGuildWithProspector);
@@ -145,18 +156,6 @@ public class FaladorHard extends ComplexStateQuestHelper {
 
         prosySet = new ItemRequirements(prosyHelm, prosyLegs, prosyChest);
         prospectorSet = new ItemRequirements(prospectorBoots, prospectorChest, prospectorHelm, prospectorLegs);
-
-        notCraftedMindRunes = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 26));
-        notChangedFamilyCrest = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 27));
-        notKilledMole = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 28));
-        notKilledWyvern = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 29));
-        notCompleteAgiCourse = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 30));
-        notEnterMiningGuildWithProspector = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 31));
-        notKilledBlueDragon = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 0));
-        notCrackedWallSafe = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 1));
-        notPraySarimAltarProsy = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 2));
-        notEnterWarrsGuild = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 3));
-        notDwarvenHelmetDwarvenMines = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 4));
 
         inMindAltar = new ZoneRequirement(mindAltar);
         inWyvernCavern = new ZoneRequirement(wyvernCavern);
@@ -200,14 +199,12 @@ public class FaladorHard extends ComplexStateQuestHelper {
 
         //Change Family Crest to Saradomin
         climbLadderWhiteKnightCastle = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0),
-                "Climb the ladder in The White Knights Castle!", coins10000);
+                "Climb the ladder in The White Knights Castle.", coins10000);
         changeFamilyCrest = new NpcStep(this, NpcID.SIR_RENITEE, new WorldPoint(2982, 3341, 1),
-                "Speak to Sir Renitee to find out your family crest.", coins10000);
+                "Speak to Sir Renitee to change your family crest to Saradomin.", coins10000);
         changeFamilyCrest.addDialogStep("I don't know, what can you do for me?");
         changeFamilyCrest.addDialogStep("Can you see if I have a family crest?");
         changeFamilyCrest.addDialogStep("I don't like that crest. Can I have a different one?");
-        changeFamilyCrest.addDialogStep("More...");
-        changeFamilyCrest.addDialogStep("More...");
         changeFamilyCrest.addDialogStep("More...");
         changeFamilyCrest.addDialogStep("Saradomin");
 

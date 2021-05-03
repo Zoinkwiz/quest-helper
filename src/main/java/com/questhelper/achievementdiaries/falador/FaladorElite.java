@@ -104,6 +104,13 @@ public class FaladorElite extends ComplexStateQuestHelper {
 
     public void setupRequirements()
     {
+		notCraftedAirRunes = new VarplayerRequirement(1187, false, 5);
+		notPurchasedWhite2hSword = new VarplayerRequirement(1187, false, 6);
+		notGotMagicRoots = new VarplayerRequirement(1187, false, 7);
+		notPerformedSkillCapeEmote = new VarplayerRequirement(1187, false, 8);
+		notJumpedOverStrangeFloor = new VarplayerRequirement(1187, false, 9);
+		notMadeSaraBrew = new VarplayerRequirement(1187, false, 10);
+
         pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedAirRunes);
         airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes);
         coins1920 = new ItemRequirement("Coins", ItemID.COINS_995, 1920).showConditioned(notPurchasedWhite2hSword);
@@ -120,13 +127,6 @@ public class FaladorElite extends ComplexStateQuestHelper {
         magicTreeNearbyNotCheckedVar = new VarbitRequirement(4471, 60);
         magicTreeNearbyCheckedVar = new VarbitRequirement(4471, 61);
         stumpNearbyVar = new VarbitRequirement(4471, 62);
-
-        notCraftedAirRunes = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 5));
-        notPurchasedWhite2hSword = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 6));
-        notGotMagicRoots = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 7));
-        notPerformedSkillCapeEmote = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 8));
-        notJumpedOverStrangeFloor = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 9));
-        notMadeSaraBrew = new Conditions(LogicType.NOR, new VarplayerRequirement(1187, true, 10));
 
         inAirAltar = new ZoneRequirement(airAltar);
         inFaladorCastle1 = new ZoneRequirement(faladorCastle1);

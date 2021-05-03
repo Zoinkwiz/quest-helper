@@ -112,6 +112,18 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
     public void setupRequirements()
     {
+		notFamilyCrest = new VarplayerRequirement(1186, false, 0);
+		notClimbedWall = new VarplayerRequirement(1186, false,1);
+		notSarahFarmingShop = new VarplayerRequirement(1186, false, 2);
+		notGotHaircut = new VarplayerRequirement(1186, false, 3);
+		notFilledWater = new VarplayerRequirement(1186, false, 4);
+		notKilledDuck = new VarplayerRequirement(1186, false, 5);
+		notMindTiara = new VarplayerRequirement(1186, false, 6);
+		notEntrana = new VarplayerRequirement(1186, false, 7);
+		notMotherloadMine = new VarplayerRequirement(1186, false, 8);
+		notGotSecurityBook = new VarplayerRequirement(1186, false, 9);
+		notBluriteLimbs = new VarplayerRequirement(1186, false, 10);
+
         //Required
         coins2000 = new ItemRequirement("Coins", ItemID.COINS_995, 2000).showConditioned(notGotHaircut);
         bucket = new ItemRequirement("A Bucket", ItemID.BUCKET).showConditioned(notFilledWater);
@@ -133,18 +145,6 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
         hasBluriteOre = bluriteOre.alsoCheckBank(questBank);
         hasBluriteBar = bluriteBar.alsoCheckBank(questBank);
-        
-        notFamilyCrest = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 0));
-        notClimbedWall = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true,1));
-        notSarahFarmingShop = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 2));
-        notGotHaircut = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 3));
-        notFilledWater = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 4));
-        notKilledDuck = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 5));
-        notMindTiara = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 6));
-        notEntrana = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 7));
-        notMotherloadMine = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 8));
-        notGotSecurityBook = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 9));
-        notBluriteLimbs = new Conditions(LogicType.NOR, new VarplayerRequirement(1186, true, 10));
 
         inMindAltar = new ZoneRequirement(mindAltar);
         inBluriteDungeon = new ZoneRequirement(bluriteDungeon);

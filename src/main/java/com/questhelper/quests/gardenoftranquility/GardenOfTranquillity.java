@@ -163,7 +163,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		helpingBernald.setLockingCondition(gotVineSeeds);
 
 		gettingRing = new ConditionalStep(this, fishForRing);
-		gettingRing.setLockingCondition(new Conditions(LogicType.OR, ringOfCharosA, ringNotInWell));
+		gettingRing.setLockingCondition(plantedEverything);
 
 		gettingLastSeeds = new ConditionalStep(this, collectMarigold);
 		gettingLastSeeds.addStep(new Conditions(cabbagesGrown, talkedToLyraAgain, givenMarigold), talkToKragenAgain);

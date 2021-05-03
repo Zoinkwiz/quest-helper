@@ -163,6 +163,14 @@ public class ClientOfKourend extends BasicQuestHelper
 		reqs.add(feather);
 		return reqs;
 	}
+	
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		List<Requirement> reqs = new ArrayList<>();
+		reqs.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
+		return reqs;
+	}
 
 	@Override
 	public List<PanelDetails> getPanels()

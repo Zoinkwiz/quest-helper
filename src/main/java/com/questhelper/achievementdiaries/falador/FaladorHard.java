@@ -205,7 +205,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
         changeFamilyCrest.addDialogStep("I don't know, what can you do for me?");
         changeFamilyCrest.addDialogStep("Can you see if I have a family crest?");
         changeFamilyCrest.addDialogStep("I don't like that crest. Can I have a different one?");
-        changeFamilyCrest.addDialogStep("More...");
+        changeFamilyCrest.addDialogStepWithExclusion("More...", "Saradomin");
         changeFamilyCrest.addDialogStep("Saradomin");
 
         //Giant Mole

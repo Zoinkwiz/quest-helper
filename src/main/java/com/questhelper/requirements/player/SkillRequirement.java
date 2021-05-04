@@ -86,7 +86,8 @@ public class SkillRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		int skillLevel = canBeBoosted ? client.getBoostedSkillLevel(skill) : client.getRealSkillLevel(skill);
+		int skillLevel = canBeBoosted ? Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill)) :
+			client.getRealSkillLevel(skill);
 		return skillLevel >= requiredLevel;
 	}
 

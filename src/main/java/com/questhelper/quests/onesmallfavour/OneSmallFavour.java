@@ -400,10 +400,10 @@ public class OneSmallFavour extends BasicQuestHelper
 		uncutRedTopaz.setHighlightInInventory(true);
 
 		stodgyMattress = new ItemRequirement("Stodgy mattress", ItemID.STODGY_MATTRESS);
-		stodgyMattress.setTooltip("You can buy another from the Tindel Merchant in Port Khazard for 100 gp");
+		stodgyMattress.setTooltip("You can buy another from Tindel Marchant in Port Khazard for 100 gp");
 
 		mattress = new ItemRequirement("Comfy mattress", ItemID.COMFY_MATTRESS);
-		mattress.setTooltip("You can get another stodgy mattress from Tindel Merchant for 100 gp, then get it filled by Rantz");
+		mattress.setTooltip("You can get another stodgy mattress from Tindel Marchant for 100 gp, then get it filled by Rantz");
 
 		animateRockScroll = new ItemRequirement("Animate rock scroll", ItemID.ANIMATE_ROCK_SCROLL);
 		animateRockScroll.setTooltip("You can get another from Wizard Cromperty for 100 gp");
@@ -413,7 +413,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		animateRockScrollHighlight.setTooltip("You can get another from Wizard Cromperty for 100 gp");
 
 		ironOxide = new ItemRequirement("Iron oxide", ItemID.IRON_OXIDE);
-		ironOxide.setTooltip("You can buy another from the Tindel Merchant for 200 gp");
+		ironOxide.setTooltip("You can buy another from Tindel Marchant for 200 gp");
 
 		brokenVane1 = new ItemRequirement("Broken vane part", ItemID.BROKEN_VANE_PART);
 		brokenVane1.setHighlightInInventory(true);
@@ -626,7 +626,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToCromperty.addDialogStep("I need to talk to you about a girl stuck in some rock!");
 		talkToCromperty.addDialogStep("Oh! Ok, one more 'small favour' isn't going to kill me...I hope!");
 
-		talkToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Talk to the Tindel Merchant in Port Khazard.");
+		talkToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Talk to Tindel Marchant in Port Khazard.");
 		talkToTindel.addDialogSteps("Wizard Cromperty sent me to get some iron oxide.", "Ask about iron oxide.", "Okay, I'll do it!");
 
 		talkToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2969, 0), "Talk to Rantz in Feldip Hills.");
@@ -678,7 +678,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		returnToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2975, 0), "Return to Rantz in Feldip Hills.", stodgyMattress);
 		returnToRantz.addDialogStep("Ok, I've helped that Gnome, he shouldn't bother you anymore.");
-		returnToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Return to the Tindel Merchant in Port Khazard.", mattress);
+		returnToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Return to Tindel Marchant in Port Khazard.", mattress);
 		returnToTindel.addDialogStep("I have the mattress.");
 
 		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Crompety in north east Ardougne.", ironOxide);

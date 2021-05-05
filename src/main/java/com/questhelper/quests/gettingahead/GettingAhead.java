@@ -37,6 +37,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -54,6 +55,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -331,5 +333,14 @@ public class GettingAhead extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Making the fake head", Arrays.asList(talkToMary2, makeClayHead, addFurToHead,
 			useDyeOnHead, putUpHead, talkToGordonFinal), bearFur, softClay, hammer, saw, planks, nails, knife, redDye, needle, thread));
 		return allSteps;
+	}
+	
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		List<Requirement> requirements = new ArrayList<>();
+		requirements.add(new SkillRequirement(Skill.CRAFTING, 30));
+		requirements.add(new SkillRequirement(Skill.CONSTRUCTION, 26));
+		return requirements;
 	}
 }

@@ -551,7 +551,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToFred = new NpcStep(this, NpcID.FRED_THE_FARMER, new WorldPoint(3190, 3273, 0), "Talk to Fred the Farmer north of Lumbridge.");
 		talkToFred.addDialogStep("I need to talk to you about Jimmy.");
 
-		talkToSeth = new NpcStep(this, NpcID.SETH_GROATS, new WorldPoint(3228, 3291, 0), "Talk to Seth Groats in the farm north east of Lumbridge, accross the river.");
+		talkToSeth = new NpcStep(this, NpcID.SETH_GROATS, new WorldPoint(3228, 3291, 0), "Talk to Seth Groats in the farm north east of Lumbridge, across the river.");
 		talkToSeth.addDialogStep("Oh, ok! I guess it's not that much further to Varrock!");
 		talkToHorvik = new NpcStep(this, NpcID.HORVIK, new WorldPoint(3229, 3437, 0), "Talk to Horvik in the armour shop north east of the Varrock square.", steelBars3);
 		talkToHorvik.addDialogStep("Hi, I need to talk to you about chicken cages!");

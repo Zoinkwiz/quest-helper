@@ -145,7 +145,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal, palmTreeSapling, antidotePlusPlus,
-			zulrahScales, calquatSapling, rake, spade);
+			zulrahScales.quantity(20), calquatSapling, rake, spade);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Elite Diary", Arrays.asList(equipCape, makePotion, enterNatureAltar,
 			craftRunes, checkCalquat, checkPalm, claimReward), natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal,
-			palmTreeSapling, antidotePlusPlus, zulrahScales, calquatSapling));
+			palmTreeSapling, antidotePlusPlus, zulrahScales.quantity(20), calquatSapling));
 
 		return allSteps;
 	}

@@ -215,7 +215,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		divingApparatus.setTooltip("You can get another from Murphy in Port Khazard");
 		woodenCats = new ItemRequirement("Wooden cat", ItemID.WOODEN_CAT);
 		oakPlank = new ItemRequirement("Oak plank", ItemID.OAK_PLANK);
-		saw = new ItemRequirement("Saw", ItemID.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		fur = new ItemRequirement("Fur", ItemID.FUR);
 		fur.addAlternates(ItemID.BEAR_FUR, ItemID.GREY_WOLF_FUR);

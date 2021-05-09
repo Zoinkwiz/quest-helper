@@ -140,7 +140,7 @@ public class TowerOfLife extends BasicQuestHelper
 
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		saw = new ItemRequirement("Saw", Arrays.asList(ItemID.SAW, ItemID.CRYSTAL_SAW));
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		gloves = new ItemRequirement("Gloves", Arrays.asList(ItemID.LEATHER_GLOVES, ItemID.MYSTIC_GLOVES, ItemID.MYSTIC_GLOVES_DARK, ItemID.MYSTIC_GLOVES_DUSK, ItemID.MYSTIC_GLOVES_LIGHT));
 
 		buildersHat = new ItemRequirement("Hard Hat", ItemID.HARD_HAT);

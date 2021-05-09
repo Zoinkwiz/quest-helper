@@ -105,6 +105,13 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> saw = ImmutableList.of(
+		ItemID.SAW,
+		ItemID.AMYS_SAW,
+		ItemID.CRYSTAL_SAW
+	);
+
+	@Getter
 	private static final List<Integer> nails = ImmutableList.of(
 		ItemID.STEEL_NAILS,
 		ItemID.IRON_NAILS,

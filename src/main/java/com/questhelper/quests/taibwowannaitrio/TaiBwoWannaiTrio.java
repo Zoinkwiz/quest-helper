@@ -545,7 +545,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(new ItemRequirement("Jogre Bones, obtainable during the quest", ItemID.JOGRE_BONE));
+		reqs.add(new ItemRequirement("Jogre Bones, obtainable during the quest", ItemID.JOGRE_BONES));
 		reqs.add(new ItemRequirement("Extra Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
 		reqs.add(new ItemRequirement("Any Antipoisons", ItemCollections.getAntipoisons()));
 		reqs.add(new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions()));

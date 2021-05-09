@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -398,7 +399,8 @@ public class QuestHelperPanel extends PluginPanel
 		});
 	}
 
-	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut, Map<QuestHelperQuest, QuestState> completedQuests)
+	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut,
+						Map<QuestHelperQuest, QuestState> completedQuests, QuestHelperConfig.QuestFilter... questFilters)
 	{
 		questSelectPanels.forEach(questListPanel::remove);
 		questSelectPanels.clear();
@@ -407,12 +409,33 @@ public class QuestHelperPanel extends PluginPanel
 		difficultyDropdown.setSelectedItem(questHelperPlugin.getConfig().difficulty());
 		orderDropdown.setSelectedItem(questHelperPlugin.getConfig().orderListBy());
 
-		for (QuestHelper questHelper : questHelpers)
+		if (questFilters.length > 0)
 		{
-			QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
-			questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
-		}
+			for (QuestHelperConfig.QuestFilter questFilter : questFilters)
+			{
+				List<QuestHelper> filterList = questHelpers.stream()
+					.filter(questFilter)
+					.collect(Collectors.toList());
 
+				if (filterList.size() != 0)
+				{
+					questSelectPanels.add(new QuestSelectPanel(questFilter.getDisplayName()));
+				}
+				for (QuestHelper questHelper : filterList)
+				{
+					QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
+					questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
+				}
+			}
+		}
+		else
+		{
+			for (QuestHelper questHelper : questHelpers)
+			{
+				QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
+				questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
+			}
+		}
 
 		Set<QuestHelperQuest> quests = completedQuests.keySet();
 		boolean hasMoreQuests = quests.stream().anyMatch(q -> completedQuests.get(q) != QuestState.FINISHED);

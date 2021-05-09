@@ -55,6 +55,7 @@ public class QuestOrders
 		QuestHelperQuest.HOLY_GRAIL,
 		QuestHelperQuest.DRUIDIC_RITUAL,
 		QuestHelperQuest.WITCHS_HOUSE,
+		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 		QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
 		QuestHelperQuest.RECRUITMENT_DRIVE,
 		QuestHelperQuest.OBSERVATORY_QUEST,
@@ -176,6 +177,8 @@ public class QuestOrders
 		QuestHelperQuest.FAMILY_CREST,
 		QuestHelperQuest.LEGENDS_QUEST,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
+		QuestHelperQuest.KARAMJA_EASY,
+		QuestHelperQuest.KARAMJA_MEDIUM,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.REGICIDE,
@@ -208,7 +211,9 @@ public class QuestOrders
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.THE_MAGE_ARENA,
-		QuestHelperQuest.THE_MAGE_ARENA_II
+		QuestHelperQuest.THE_MAGE_ARENA_II,
+		QuestHelperQuest.KARAMJA_HARD,
+		QuestHelperQuest.KARAMJA_ELITE
 	);
 
 	public static String normalizeQuestName(String questName)

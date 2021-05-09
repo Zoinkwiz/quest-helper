@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.theeyesofglouphrie;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -182,7 +183,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		mudRuneHighlight.setHighlightInInventory(true);
 		mapleLog = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS);
 		oakLog = new ItemRequirement("Oak logs", ItemID.OAK_LOGS);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		saw = new ItemRequirement("Saw", ItemID.SAW);
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlight = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);

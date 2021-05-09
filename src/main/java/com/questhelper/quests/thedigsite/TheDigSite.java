@@ -520,7 +520,7 @@ public class TheDigSite extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToExaminer, talkToHaig, talkToExaminer2, searchBush, takeTray, talkToGuide, panWater, pickpocketWorkmen, talkToFemaleStudent, talkToFemaleStudent2,
-			talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1)));
+			talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1), tea));
 
 		allSteps.add(new PanelDetails("Exam 2", Arrays.asList(talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3, takeTest2)));
 		allSteps.add(new PanelDetails("Exam 3", Arrays.asList(talkToFemaleStudent4, talkToFemaleStudent5, talkToOrangeStudent4,

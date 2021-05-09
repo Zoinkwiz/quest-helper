@@ -202,7 +202,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		isSouthEastWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1581, 10196, 0));
 		isNorthWestWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1574, 10203, 0));
 		isNorthEastWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1581, 10203, 0));
-		rockfallNearby = new ObjectCondition(ObjectID.ROCKFALL_32503, new WorldPoint(1182, 9974, 0));
+		rockfallNearby = new ObjectCondition(ObjectID.BOULDER_32503, new WorldPoint(1182, 9974, 0));
 		boulderBlockingPath = new ObjectCondition(ObjectID.BOULDER_32504, new WorldPoint(1201, 9960, 0));
 		corruptLizardmanNearby = new NpcCondition(NpcID.CORRUPT_LIZARDMAN_8000);
 	}
@@ -251,7 +251,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		enterCrevice = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0),
 			"Enter the crevice west side of Quidamortem, ready to fight a corrupted lizardman (level 46).", pickaxe, combatGear);
 		enterCrevice.addDialogStep("Yes.");
-		mineRockfall = new ObjectStep(this, ObjectID.ROCKFALL_32503, new WorldPoint(1182, 9974, 0), "Mine the rockfall.", pickaxe);
+		mineRockfall = new ObjectStep(this, ObjectID.BOULDER_32503, new WorldPoint(1182, 9974, 0), "Mine the rockfall.", pickaxe);
 		pushBoulder = new ObjectStep(this, ObjectID.BOULDER_32504, new WorldPoint(1201, 9960, 0),
 			"Push the boulder further along the path.");
 

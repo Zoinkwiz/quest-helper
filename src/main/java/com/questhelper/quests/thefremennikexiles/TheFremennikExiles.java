@@ -235,7 +235,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		fremennikShield.setTooltip("Obtainable during the quest for 150k, or free with a Ring of Charos(a)");
 		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES);
 		iceGloves.setTooltip("You can get another pair by killing the Ice Queen under White Wolf Mountain");
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 

@@ -127,7 +127,7 @@ public class DaddysHome extends BasicQuestHelper
 		plank10 = new ItemRequirement("Plank", ItemID.PLANK, 10);
 		bolt5 = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH, 5);
 		nails20 = new ItemRequirement("Nails (bring more in case you fail with some)", ItemCollections.getNails(), 14);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		saw = new ItemRequirement("Saw", ItemID.SAW);
 		waxwoodLog3 = new ItemRequirement("Waxwood log", ItemID.WAXWOOD_LOG, 3);
 		waxwoodPlank3 = new ItemRequirement("Waxwood plank", ItemID.WAXWOOD_PLANK, 3);

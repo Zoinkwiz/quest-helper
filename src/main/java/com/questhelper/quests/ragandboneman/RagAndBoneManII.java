@@ -44,6 +44,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -223,8 +224,8 @@ public class RagAndBoneManII extends BasicQuestHelper
 		dustyKey.canBeObtainedDuringQuest();
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD);
 		mirrorShield.addAlternates(ItemID.VS_SHIELD, ItemID.VS_SHIELD_24266);
-		iceCooler = new ItemRequirement("Ice coolers", ItemID.ICE_COOLER);
-		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE);
+		iceCooler = new ItemRequirement("Ice coolers", ItemID.ICE_COOLER, 10);
+		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE, 10);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 
@@ -846,7 +847,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 		Conditions canAccessExperimentCave = new Conditions(LogicType.OR,
 			new VarbitRequirement(192, 1),
-			new VarbitRequirement(QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN.getId(), 2, Operation.GREATER_EQUAL)
+			new VarplayerRequirement(QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN.getId(), 2, Operation.GREATER_EQUAL)
 		);
 		canAccessExperimentCave.setText("Partial completion of Creature of Fenkenstrain");
 		requirements.add(canAccessExperimentCave);

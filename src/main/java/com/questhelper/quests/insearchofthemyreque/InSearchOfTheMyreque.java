@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.insearchofthemyreque;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -189,8 +190,8 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		steelWarhammer = new ItemRequirement("Steel warhammer", ItemID.STEEL_WARHAMMER);
 		steeldagger = new ItemRequirement("Steel dagger", ItemID.STEEL_DAGGER);
 		steelNails225 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 225);
-		druidPouch5 = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH_2958, 5);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		druidPouch5 = new ItemRequirement("Charges in a druid pouch", ItemID.DRUID_POUCH_2958, 5);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		plank6 = new ItemRequirement("Plank", ItemID.PLANK, 6);
 		plank3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
 		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);

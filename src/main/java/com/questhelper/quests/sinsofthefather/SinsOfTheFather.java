@@ -483,7 +483,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	public void setupSteps()
 	{
 		startQuest = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3729, 3318, 0),
-			"Talk to Veliaf in Sleepe.");
+			"Talk to Veliaf in Slepe.");
 		startQuest.addDialogStep("Yes.");
 
 		talkToHameln = new NpcStep(this, NpcID.HAMELN_THE_JESTER_9505, new WorldPoint(3736, 3316, 0),

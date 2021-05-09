@@ -160,7 +160,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 100);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.setHighlightInInventory(true);
 		wolfBones4 = new ItemRequirement("Wolf bones", ItemID.WOLF_BONES, 4);

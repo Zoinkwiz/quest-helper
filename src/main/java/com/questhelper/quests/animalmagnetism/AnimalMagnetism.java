@@ -146,7 +146,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		//Magnet
 		ironBar5 = new ItemRequirement("Iron Bar", ItemID.IRON_BAR, 5);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		selectedIron = new ItemRequirement("Selected Iron", ItemID.SELECTED_IRON);
 		barMagnet = new ItemRequirement("Bar magnet", ItemID.BAR_MAGNET);
 

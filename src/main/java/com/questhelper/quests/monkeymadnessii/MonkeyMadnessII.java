@@ -261,11 +261,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlighted.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		lightSource = new ItemRequirement("A lightsource", ItemCollections.getLightSources());
-		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemID.HAMMER);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemID.CHISEL);
 		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET);
@@ -610,7 +610,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		fightGlough.addSubSteps(enterNorthOfTreeNoNieve);
 		talkToZooknockToFinish = new NpcStep(this, NpcID.ZOOKNOCK_7113, new WorldPoint(2027, 5610, 0), "Talk to Zooknock to teleport to the Grand Tree.");
 		talkToZooknockToFinish.addDialogStep("Yes.");
-		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk Narnode to finish the madness!");
+		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk to Narnode to finish the madness!");
 
 	}
 

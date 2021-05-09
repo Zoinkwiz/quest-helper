@@ -337,7 +337,7 @@ public class TheFeud extends BasicQuestHelper
 
 		talkToRugMerchant = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3311, 3109, 0),"Talk to the rug merchant and travel to Pollnivneach via magic carpet.", unspecifiedCoins);
 		talkToRugMerchant.addDialogStep("Pollnivneach");
-		talkToRugMerchant.addSubSteps(goToShanty, buyShantyPass);
+
 
 		//Drunken Ali
 		drunkenAli = new NpcStep(this, NpcID.DRUNKEN_ALI, new WorldPoint(3360, 2957, 0), "Buy 3 beers from the bartender and use them on Drunken Ali to get him to explain where his son is.", beer);
@@ -385,7 +385,7 @@ public class TheFeud extends BasicQuestHelper
 
 		blackjackVillager = new NpcStep(this, NpcID.VILLAGER, "Lure a villager to secluded place or an empty building, knock them out and then pickpocket them.", true);
 		blackjackVillager.addAlternateNpcs(NpcID.VILLAGER_3555, NpcID.VILLAGER_3557, NpcID.VILLAGER_3558, NpcID.VILLAGER_3560);
-		blackjackVillager.addSubSteps(equipBlackjack);
+
 
 		//Step 12
 		//Get Second Job
@@ -404,14 +404,12 @@ public class TheFeud extends BasicQuestHelper
 		goUpStairs = new ObjectStep(this, ObjectID.STAIRCASE_6244, "Go up the stairs.");
 
 		crackTheSafe = new ObjectStep(this, 6276, "Search the painting to reveal the safe. Enter the code 1, 1, 2, 3, 5, 8.");
-		crackTheSafe.addSubSteps(goUpStairs);
 
 		//Step 15
 		//Return the Jewels
 		goDownStairs = new ObjectStep(this, ObjectID.STAIRCASE_6245, "Go down the stairs.");
 
 		giveTheJewelsToAli = new NpcStep(this, NpcID.ALI_THE_OPERATOR, new WorldPoint(3332, 2948, 0), "Give Ali the Operator the jewels to get your final task from him.");
-		giveTheJewelsToAli.addSubSteps(goDownStairs);
 
 		//Step 16
 		//Find Traitor
@@ -446,7 +444,6 @@ public class TheFeud extends BasicQuestHelper
 		pickupDung.addIcon(ItemID.BUCKET);
 
 		getDung = new ObjectStep(this, ObjectID.TROUGH_6256, new WorldPoint(3343, 2960, 0), "Use the Red Hot Sauce on the Trough and wait for a Camel to poop out the dung.\n Only pickup brown/Ugthanki dung, if you plan to do \"My Arm's Big Adventure\" or \"Forgettable Tale of a Drunken Dwarf\" then you may want to grab four more Ugthanki dung.", redHotSauce);
-		getDung.addSubSteps(getBucket, pickupDung);
 		getDung.addIcon(ItemID.RED_HOT_SAUCE);
 
 		givenDungToHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Talk to Ali the Hag and give her your dung.", dung);
@@ -511,12 +508,18 @@ public class TheFeud extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(startQuest), unspecifiedCoins));
-		allSteps.add(new PanelDetails("Pollnivneach", Arrays.asList(buyDisguiseGear, createDisguise, goToPollniveachStep, drunkenAli), unspecifiedCoins));
-		allSteps.add(new PanelDetails("Find the beef between the two factions", Arrays.asList(talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel), unspecifiedCoins));
-		allSteps.add(new PanelDetails("Second job", Arrays.asList(talkToAliToGetSecondJob, hideBehindCactus, openTheDoor, goUpStairs, crackTheSafe, giveTheJewelsToAli), desertDisguise, gloves));
-		allSteps.add(new PanelDetails("Rising up", Arrays.asList(talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman, talkToAliTheHag, giveCoinToSnakeCharmer, catchSnake, givePoisonToAliTheHag, talkToAliTheKebabSalesman, getDung, givenDungToHag, tellAliOperatorPoisoned), unspecifiedCoins));
-		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader, talkToAVillagerToSpawnMayor, talkToMayor, finishQuest), combatGear));
+		allSteps.add(new PanelDetails("Starting out",
+				Collections.singletonList(startQuest), unspecifiedCoins));
+		allSteps.add(new PanelDetails("Pollnivneach",
+				Arrays.asList(buyDisguiseGear, createDisguise, goToShanty, talkToRugMerchant, drunkenAli), unspecifiedCoins));
+		allSteps.add(new PanelDetails("Find the beef between the two factions",
+				Arrays.asList(talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel), unspecifiedCoins));
+		allSteps.add(new PanelDetails("Second job",
+				Arrays.asList(talkToAliToGetSecondJob, hideBehindCactus, openTheDoor, goUpStairs, crackTheSafe, giveTheJewelsToAli), desertDisguise, gloves));
+		allSteps.add(new PanelDetails("Rising up",
+				Arrays.asList(talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman, talkToAliTheHag, giveCoinToSnakeCharmer, catchSnake, givePoisonToAliTheHag, talkToAliTheKebabSalesman, getDung, givenDungToHag, tellAliOperatorPoisoned), unspecifiedCoins));
+		allSteps.add(new PanelDetails("Finishing off",
+				Arrays.asList(talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader, talkToAVillagerToSpawnMayor, talkToMayor, finishQuest), combatGear));
 
 		return allSteps;
 	}

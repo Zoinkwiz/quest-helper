@@ -137,7 +137,7 @@ public class TrollRomance extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
-		mapleLog = new ItemRequirement("Maple/yew logs", ItemID.MAPLE_LOGS);
+		mapleLog = new ItemRequirement("Maple/yew log", ItemID.MAPLE_LOGS);
 		mapleLog.addAlternates(ItemID.YEW_LOGS);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		cakeTin = new ItemRequirement("Cake tin", ItemID.CAKE_TIN);

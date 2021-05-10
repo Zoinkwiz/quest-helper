@@ -283,7 +283,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		translationBook.setHighlightInInventory(true);
 		translationBook.setTooltip("If it's not in your bank you can get another from Narnode during the quest");
 
-		magicLog = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
+		magicLog = new ItemRequirement("Magic log", ItemID.MAGIC_LOGS);
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);

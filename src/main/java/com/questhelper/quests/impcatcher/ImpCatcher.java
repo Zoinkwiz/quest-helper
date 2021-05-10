@@ -60,6 +60,7 @@ public class ImpCatcher extends BasicQuestHelper
 		doQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
 			"Talk to Wizard Mizgog on the top floor of the Wizards' Tower with the required items to finish the quest.",
 			blackBead, whiteBead, redBead, yellowBead);
+		doQuest.addDialogStep("Give me a quest please.");
 
 		steps.put(0, doQuest);
 

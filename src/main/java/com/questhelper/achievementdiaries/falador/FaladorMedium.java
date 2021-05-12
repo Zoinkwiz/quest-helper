@@ -158,7 +158,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
 		fishingExplosive = new ItemRequirement("Fishing Explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
-		mithGrapple = new ItemRequirement("Mithril Grapple", ItemID.MITH_GRAPPLE).showConditioned(notGrappleNorthWall);
+		mithGrapple = new ItemRequirement("Mithril Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
 		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.getCrossbows()).showConditioned(notGrappleNorthWall);
 		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar);
 		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar);
@@ -166,7 +166,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		pickaxe = new ItemRequirement("A Pickaxe", ItemCollections.getPickaxes(), -1).showConditioned(notMineGold);
 		axe = new ItemRequirement("An Axe", ItemCollections.getAxes(), -1).showConditioned(notChopBurnWillowTav);
 		brownApron = new ItemRequirement("Brown Apron", ItemID.BROWN_APRON).showConditioned(notMineGold);
-		willowBranch6 = new ItemRequirement("Willow Branches", ItemID.WILLOW_BRANCH, 6);
+		willowBranch6 = new ItemRequirement("Willow Branches", ItemID.WILLOW_BRANCH, 6).showConditioned(notBasketFalLoom);
 
 		willowLog = new ItemRequirement("Willow Log", ItemID.WILLOW_LOGS);
 		telegrab = new ItemRequirement("Telekinetic Grab", ItemID.TELEKINETIC_GRAB, 1);
@@ -205,7 +205,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		chemist = new Zone(new WorldPoint(2929, 3213, 0), new WorldPoint(2936, 3207, 0));
 		chaosAltar = new Zone(new WorldPoint(2935, 3513, 0), new WorldPoint(2929, 3518, 0));
 		craftingGuild = new Zone(new WorldPoint(2929, 3288, 0), new WorldPoint(2943, 3276, 0));
-		dwarvenMine = new Zone(new WorldPoint(2979, 9538, 0), new WorldPoint(3069, 9698, 0));
+		dwarvenMine = new Zone(new WorldPoint(2979, 9855, 0), new WorldPoint(3069, 9698, 0));
 		tav = new Zone(new WorldPoint(2939, 3398, 0), new WorldPoint(2878, 3489, 0));
 		falNorthWall = new Zone(new WorldPoint(3022, 3089, 0), new WorldPoint(3039, 3089, 1));
 	}
@@ -276,7 +276,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Equip your Initiate armor and pray at the Altar of Guthix in Taverley", initiateSet);
 
 		//Mine Gold in Crafting Guild
-		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2993, 3289, 0),
+		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2933, 3289, 0),
 			"Go to the Crafting Guild west of Falador. \n You will need to equip a brown apron to enter.", brownApron, pickaxe);
 		mineGold = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(2938, 3280, 0),
 			"Mine a gold ore.", pickaxe);
@@ -354,21 +354,36 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Initialising...", Arrays.asList(getInitiateSet, prayAtAltar), initiateHelm, initiateChest, initiateLegs));
-		allSteps.add(new PanelDetails("Lost Elven Treasure", Collections.singletonList(unlockCrystalChest), crystalKey));
-		allSteps.add(new PanelDetails("Snoop Loggy-log", Arrays.asList(goToTav, chopWillowLog, burnWillowLog)));
-		allSteps.add(new PanelDetails("Au! I'm minin' here!", Arrays.asList(goToCraftingGuild, mineGold), pickaxe, brownApron));
-		allSteps.add(new PanelDetails("Bullseye!", Arrays.asList(goToChemist, lightLantern), tinderbox, bullseyeLantern));
-		allSteps.add(new PanelDetails("Mogres have layers", Arrays.asList(spawnMogre, killMogre), combatGear, fishingExplosive));
-		allSteps.add(new PanelDetails("Ahh rats..", Collections.singletonList(visitRatPits)));
-		allSteps.add(new PanelDetails("I never knew this existed", Collections.singletonList(makeBasketFalLoom)));
-		allSteps.add(new PanelDetails("Brain not included", Arrays.asList(getHaysack, useSackOnSpear, useWatermelonOnSack, placeScarecrow), emptySack, bronzeSpear, watermelon, scarecrow));
-		allSteps.add(new PanelDetails("To the window.. To the wall!", Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), mithGrapple, anyCrossbow));
-		allSteps.add(new PanelDetails("To Middle Earth", Arrays.asList(enterDwarvenMines, dwarfShortcut)));
-		allSteps.add(new PanelDetails("Beam me up Scotty!", Collections.singletonList(teleportToFalador)));
-		allSteps.add(new PanelDetails("Cor blimey mate!", Collections.singletonList(pickpocketGuard)));
-		allSteps.add(new PanelDetails("Yoink!", Arrays.asList(goToChaosAltar, telegrabWine), telegrab));
-		allSteps.add(new PanelDetails("Congratulations!", Collections.singletonList(claimReward)));
+		allSteps.add(new PanelDetails("Initialising...",
+				Arrays.asList(getInitiateSet, prayAtAltar), initiateHelm, initiateChest, initiateLegs));
+		allSteps.add(new PanelDetails("Lost Elven Treasure",
+				Collections.singletonList(unlockCrystalChest), crystalKey));
+		allSteps.add(new PanelDetails("Snoop Loggy-log",
+				Arrays.asList(goToTav, chopWillowLog, burnWillowLog), axe));
+		allSteps.add(new PanelDetails("Au! I'm minin' here!",
+				Arrays.asList(goToCraftingGuild, mineGold), pickaxe, brownApron));
+		allSteps.add(new PanelDetails("Bullseye!",
+				Arrays.asList(goToChemist, lightLantern), tinderbox, bullseyeLantern));
+		allSteps.add(new PanelDetails("Mogres have layers",
+				Arrays.asList(spawnMogre, killMogre), combatGear, fishingExplosive));
+		allSteps.add(new PanelDetails("Ahh rats..",
+				Collections.singletonList(visitRatPits)));
+		allSteps.add(new PanelDetails("I never knew this existed",
+				Collections.singletonList(makeBasketFalLoom)));
+		allSteps.add(new PanelDetails("Brain not included",
+				Arrays.asList(getHaysack, useSackOnSpear, useWatermelonOnSack, placeScarecrow), emptySack, bronzeSpear, watermelon, scarecrow));
+		allSteps.add(new PanelDetails("To the window.. To the wall!",
+				Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), mithGrapple, anyCrossbow));
+		allSteps.add(new PanelDetails("To Middle Earth",
+				Arrays.asList(enterDwarvenMines, dwarfShortcut)));
+		allSteps.add(new PanelDetails("Beam me up Scotty!",
+				Collections.singletonList(teleportToFalador)));
+		allSteps.add(new PanelDetails("Cor blimey mate!",
+				Collections.singletonList(pickpocketGuard)));
+		allSteps.add(new PanelDetails("Yoink!",
+				Arrays.asList(goToChaosAltar, telegrabWine), telegrab));
+		allSteps.add(new PanelDetails("Congratulations!",
+				Collections.singletonList(claimReward)));
 
 		return allSteps;
 	}

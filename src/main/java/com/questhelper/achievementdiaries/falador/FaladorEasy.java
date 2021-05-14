@@ -159,7 +159,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
         mindAltar = new Zone(new WorldPoint(2805,4819,0), new WorldPoint(2760,4855,0));
         bluriteDungeon = new Zone(new WorldPoint(2979, 9538, 0), new WorldPoint(3069, 9602, 0));
         faladorCastle1 = new Zone(new WorldPoint(2954, 3328, 1), new WorldPoint(2997, 3353, 1));
-        dwarvenMine = new Zone(new WorldPoint(3011, 9856, 0), new WorldPoint(3069, 9698,0));
+        dwarvenMine = new Zone(new WorldPoint(2979, 9855, 0), new WorldPoint(3069, 9698, 0));
         motherlodeMine = new Zone(new WorldPoint(3712, 5695, 0), new WorldPoint(3780, 5636, 0));
         portSarimJail1 = new Zone(new WorldPoint(3009, 3197, 1), new WorldPoint(3021, 3178, 1));
     }
@@ -191,8 +191,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
         enterCaveToMotherlodeMine = new ObjectStep(this, ObjectID.CAVE_26654, new WorldPoint(3059, 9764, 0),
                 "Go to the Motherlode Mine.", pickaxe);
         fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3743,5662,0),
-                "Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minnutes for it to break.", hammer.highlighted());
-        fixMotherloadMine.addSubSteps(enterDwarvenMines, enterCaveToMotherlodeMine);
+                "Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minutes for it to break.", hammer.highlighted());
         fixMotherloadMine.addIcon(ItemID.HAMMER);
 
         //Find out what your family crest is from Sir Renitee
@@ -218,7 +217,6 @@ public class FaladorEasy extends ComplexStateQuestHelper
                 "Climb in the Port Sarim Jail to speak to the Security Guard.");
         getSecurityBook = new NpcStep(this, NpcID.SECURITY_GUARD, new WorldPoint(3013, 3192, 1),
                 "Speak to the Security Guard in the Port Sarim Jail to get a Security Book.");
-        getSecurityBook.addSubSteps(climbLadderPortSarimJail);
 
         //Smith some Blurite Limbs on Doric's Anvil
         getPickaxe = new DetailedQuestStep(this, new WorldPoint(2963, 3216, 0),
@@ -230,7 +228,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
         smeltBlurite = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(2976, 3368, 0),
                 "Smelt the blurite ore into a blurite bar.", hammer, bluriteOre);
         smithBluriteLimbs = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(2950, 3451, 0),
-                "Smith the blurite bar into blurite limbs on Dorics Anvil, north of Falador.", hammer, bluriteBar);
+                "Smith the blurite bar into blurite limbs on Doric's Anvil, north of Falador.", hammer, bluriteBar);
         smithBluriteLimbs.addSubSteps(enterDungeon, mineBlurite, smeltBlurite);
 
         //Make a Mind Tiara

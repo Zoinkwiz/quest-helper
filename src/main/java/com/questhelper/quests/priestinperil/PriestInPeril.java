@@ -338,7 +338,7 @@ public class PriestInPeril extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Temple guardian (level 30). Can only be hurt by ranged or melee.");
+		return Arrays.asList("Temple Guardian (level 30). You cannot use Magic. Rings of recoil will not award the kill.",  "Monk of Zamorak (level 30)");
 	}
 
 	@Override

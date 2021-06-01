@@ -706,19 +706,6 @@ public class QuestHelperPlugin extends Plugin
 		return false;
 	}
 
-	public Color checkQuestCompletionColor(QuestHelperQuest questHelperQuest){
-		QuestHelper questHelper = quests.get(questHelperQuest.getName());
-		Color color;
-		if (questHelper.isCompleted()){
-			color = questHelper.getConfig().passColour();
-		}
-		else {
-			color = questHelper.getConfig().failColour();
-		}
-		return color;
-	}
-
-
 	private void displayPanel()
 	{
 		SwingUtilities.invokeLater(() -> {

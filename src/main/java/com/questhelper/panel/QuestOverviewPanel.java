@@ -426,6 +426,7 @@ public class QuestOverviewPanel extends JPanel
 						System.out.println(qqstatus);
 						if (!qqstatus) {
 							questReqButton.setText(preReqQuestRequirement.getDisplayText());
+							questReqButton.setForeground(Color.red);
 
 							questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
 								public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -450,6 +451,7 @@ public class QuestOverviewPanel extends JPanel
 							questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
 								public void mouseEntered(java.awt.event.MouseEvent evt) {
 									questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+									questReqButton.setForeground(Color.green);
 								}
 
 

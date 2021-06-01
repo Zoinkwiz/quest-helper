@@ -26,6 +26,7 @@ package com.questhelper.quests.clientofkourend;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
@@ -44,6 +45,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -161,6 +163,14 @@ public class ClientOfKourend extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(feather);
+		return reqs;
+	}
+	
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		List<Requirement> reqs = new ArrayList<>();
+		reqs.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
 		return reqs;
 	}
 

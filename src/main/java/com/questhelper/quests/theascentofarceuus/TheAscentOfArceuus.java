@@ -40,7 +40,6 @@ import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -142,7 +141,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	{
 		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
-		battlefrontTeleports2 = new ItemRequirement("Battlefront teleport", ItemID.BATTLEFRONT_TELEPORT, 2);
+		battlefrontTeleports2 = new ItemRequirement("Battlefront teleports", ItemID.BATTLEFRONT_TELEPORT, 2);
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces());
 

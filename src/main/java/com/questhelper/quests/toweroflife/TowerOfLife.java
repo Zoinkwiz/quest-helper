@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.toweroflife;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -138,8 +139,8 @@ public class TowerOfLife extends BasicQuestHelper
 		rawChicken = new ItemRequirement("Raw chicken (for diary task)", ItemID.RAW_CHICKEN);
 
 		beer = new ItemRequirement("Beer", ItemID.BEER);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		saw = new ItemRequirement("Saw", Arrays.asList(ItemID.SAW, ItemID.CRYSTAL_SAW));
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		gloves = new ItemRequirement("Gloves", Arrays.asList(ItemID.LEATHER_GLOVES, ItemID.MYSTIC_GLOVES, ItemID.MYSTIC_GLOVES_DARK, ItemID.MYSTIC_GLOVES_DUSK, ItemID.MYSTIC_GLOVES_LIGHT));
 
 		buildersHat = new ItemRequirement("Hard Hat", ItemID.HARD_HAT);

@@ -521,18 +521,18 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		enterStrongholdForParrot.addSubSteps(leaveEadgarsCaveForParrot, goDownNorthStairsForParrot, goDownToPrisonForParrot, enterPrisonForParrot, getParrotFromRack);
 
-		leavePrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to to Eadgar with the parrot.", trainedParrot);
+		leavePrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Eadgar with the parrot.", trainedParrot);
 		leavePrisonWithParrot.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
-		goUpToTopFloorWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10109, 1), "Return to to Eadgar with the parrot.", trainedParrot);
+		goUpToTopFloorWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10109, 1), "Return to Eadgar with the parrot.", trainedParrot);
 		goUpToTopFloorWithParrot.setWorldMapPoint(new WorldPoint(2906, 10140, 1));
 
-		leaveStrongholdWithParrot = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Return to to Eadgar with the parrot.", trainedParrot);
+		leaveStrongholdWithParrot = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Return to Eadgar with the parrot.", trainedParrot);
 		leaveStrongholdWithParrot.setWorldMapPoint(new WorldPoint(2965, 10155, 1));
 
-		enterEadgarCaveWithTrainedParrot = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Return to to Eadgar with the parrot.", trainedParrot);
+		enterEadgarCaveWithTrainedParrot = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Return to Eadgar with the parrot.", trainedParrot);
 
-		talkToEadgarWithTrainedParrot = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Return to to Eadgar with the parrot.", trainedParrot);
+		talkToEadgarWithTrainedParrot = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Return to Eadgar with the parrot.", trainedParrot);
 		leaveStrongholdWithParrot.addSubSteps(leavePrisonWithParrot, goUpToTopFloorWithParrot, leaveStrongholdWithParrot, enterEadgarCaveWithTrainedParrot, talkToEadgarWithTrainedParrot);
 
 		leaveEadgarsCaveWithScarecrow = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Take the fake man to Burntmeat.", fakeMan);

@@ -592,9 +592,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted.setHighlightInInventory(true);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		saw = new ItemRequirement("Saw", ItemID.SAW);
-		saw.addAlternates(ItemID.CRYSTAL_SAW);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		pickaxeHighlighted.setHighlightInInventory(true);
@@ -622,7 +621,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		crystalSeed = new ItemRequirement("Crystal seed", ItemID.CRYSTAL_SEED_23810);
 		crystalSeed.setHighlightInInventory(true);
 
-		hammerHighlighted = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		hammerHighlighted.setHighlightInInventory(true);
 
 		elderCadantine = new ItemRequirement("Elder cadantine", ItemID.ELDER_CADANTINE);

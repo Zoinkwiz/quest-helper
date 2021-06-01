@@ -247,8 +247,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		fireAltarTeleport.appendToTooltip("Ring of Dueling");
 		fireAltarTeleport.appendToTooltip("Amulet of Glory (to Al Kharid)");
 
-		waterAltarTeleport = new ItemRequirement("Teleport near Water Altar", ItemID.LUMBRIDGE_GRAVEYARD_TELEPORT);
-		waterAltarTeleport.addAlternates(ItemID.LUMBRIDGE_TELEPORT);
+		waterAltarTeleport = new ItemRequirement("Teleport near Water Altar", ItemID.LUMBRIDGE_TELEPORT);
 		waterAltarTeleport.setTooltip("The best items for this are (in order):");
 		waterAltarTeleport.appendToTooltip("Lumbridge Graveyard Teleport");
 		waterAltarTeleport.appendToTooltip("Lumbridge Teleport");

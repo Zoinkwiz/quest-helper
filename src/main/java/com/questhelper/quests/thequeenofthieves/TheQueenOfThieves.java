@@ -217,7 +217,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		return Arrays.asList(
 			new SkillRequirement(Skill.THIEVING, 20),
 			new FavourRequirement(Favour.PISCARILIUS, 20),
-			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED)
+			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED)
 		);
 	}
 

@@ -412,14 +412,14 @@ public class DragonSlayerII extends BasicQuestHelper
 		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		pickaxeHighlighted.setHighlightInInventory(true);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		oakPlank8 = new ItemRequirement("Oak plank", ItemID.OAK_PLANK, 8);
+		oakPlank8 = new ItemRequirement("Oak planks", ItemID.OAK_PLANK, 8);
 		swampPaste10 = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE, 10);
 		nails12OrMore = new ItemRequirement("Nails, bring more in case some break", ItemCollections.getNails(), 12);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		hammerHighlighted = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		hammerHighlighted.setHighlightInInventory(true);
 		machete = new ItemRequirement("Any machete", ItemCollections.getMachete());
-		saw = new ItemRequirement("Saw", ItemID.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakAmulet.setTooltip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
 		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);

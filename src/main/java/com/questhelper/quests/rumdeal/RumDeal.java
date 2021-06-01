@@ -346,7 +346,7 @@ public class RumDeal extends BasicQuestHelper
 		plantSeed = new ObjectStep(this, NullObjectID.NULL_10096, new WorldPoint(2163, 5070, 0), "Plant the seed in the blindweed patch.", blindweedSeedHighlight, dibber);
 		plantSeed.addIcon(ItemID.BLINDWEED_SEED);
 
-		waitForGrowth = new DetailedQuestStep(this, "Wait 2 minutes for the blindweed to grow.");
+		waitForGrowth = new DetailedQuestStep(this, "Wait 5 minutes for the blindweed to grow.");
 
 		pickPlant = new ObjectStep(this, NullObjectID.NULL_10096, new WorldPoint(2163, 5070, 0), "Pick the blindweed on Braindeath Island.");
 

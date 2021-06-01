@@ -263,7 +263,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		saw = new ItemRequirement("Saw", ItemID.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		boltOfCloth = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH);
 		mahogPlanks5 = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK, 5);
 		cadavaBerries = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
@@ -277,7 +277,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		potion = new ItemRequirement("Reduced cadava potion", ItemID.REDUCED_CADAVA_POTION);
 		potion.setTooltip("You can get another by bringing the Apothecary a cadava berry");
 

@@ -126,6 +126,7 @@ public class QuestHelperPlugin extends Plugin
 		};
 
 	private static final String QUEST_PACKAGE = "com.questhelper.quests";
+	private static final String ACHIEVEMENT_PACKAGE = "com.questhelper.achievementdiaries";
 
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
@@ -435,7 +436,7 @@ public class QuestHelperPlugin extends Plugin
 				.stream()
 				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client), (q1, q2) -> q2));
 			SwingUtilities.invokeLater(() -> {
-				panel.refresh(filteredQuests, false, completedQuests);
+				panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections());
 			});
 		}
 	}
@@ -818,13 +819,22 @@ public class QuestHelperPlugin extends Plugin
 
 	private Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader) throws IOException
 	{
-		Map<QuestHelperQuest, Class<? extends QuestHelper>> quests = new HashMap<>();
 
 		Map<String, QuestHelper> scannedQuests = new HashMap<>();
 		ClassPath classPath = ClassPath.from(classLoader);
 
-		ImmutableSet<ClassPath.ClassInfo> classes = QuestHelperPlugin.QUEST_PACKAGE == null ? classPath.getAllClasses()
-			: classPath.getTopLevelClassesRecursive(QuestHelperPlugin.QUEST_PACKAGE);
+		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.QUEST_PACKAGE));
+		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.ACHIEVEMENT_PACKAGE));
+
+		return scannedQuests;
+	}
+
+	private Map<String, QuestHelper> instantiate(ClassPath classPath, String packageName)
+	{
+		Map<String, QuestHelper> scannedQuests = new HashMap<>();
+		Map<QuestHelperQuest, Class<? extends QuestHelper>> tmpQuests = new HashMap<>();
+
+		ImmutableSet<ClassPath.ClassInfo> classes = classPath.getTopLevelClassesRecursive(packageName);
 		for (ClassPath.ClassInfo classInfo : classes)
 		{
 			Class<?> clazz = classInfo.load();
@@ -848,10 +858,10 @@ public class QuestHelperPlugin extends Plugin
 			}
 
 			Class<QuestHelper> questClass = (Class<QuestHelper>) clazz;
-			quests.put(questDescriptor.quest(), questClass);
+			tmpQuests.put(questDescriptor.quest(), questClass);
 		}
 
-		for (Map.Entry<QuestHelperQuest, Class<? extends QuestHelper>> questClazz : quests.entrySet())
+		for (Map.Entry<QuestHelperQuest, Class<? extends QuestHelper>> questClazz : tmpQuests.entrySet())
 		{
 			QuestHelper questHelper;
 			try

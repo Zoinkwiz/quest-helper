@@ -336,7 +336,7 @@ public class KingsRansom extends BasicQuestHelper
 		callButlerAboutDagger.addDialogSteps("Butler", "Previous page");
 		callButlerAboutDagger.setAllowInCutscene(true);
 
-		talkToButlerAboutDagger = new NpcStep(this, NpcID.HOBBES, "Ask Pierre about the dagger.");
+		talkToButlerAboutDagger = new NpcStep(this, NpcID.HOBBES, "Ask Hobbes about the dagger.");
 		talkToButlerAboutDagger.addDialogStep("Ask about the dagger");
 		talkToButlerAboutDagger.setAllowInCutscene(true);
 		callButlerAboutDagger.addSubSteps(talkToButlerAboutDagger);

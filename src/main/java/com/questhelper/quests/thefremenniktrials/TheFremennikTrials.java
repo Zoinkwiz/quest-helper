@@ -35,6 +35,7 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -56,6 +57,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -880,6 +882,17 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		finishQuest = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0), "Talk to Brundt in Rellekka's longhall to finish the quest.");
 		finishQuest.addDialogStep("Ask about anything else.");
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> reqs = new ArrayList<>();
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 25, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 40, true));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+
+		return reqs;
 	}
 
 	@Override

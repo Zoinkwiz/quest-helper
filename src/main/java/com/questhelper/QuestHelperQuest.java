@@ -277,14 +277,6 @@ public enum QuestHelperQuest
 		Quest.Difficulty.ACHIEVEMENT_DIARY),
 	KARAMJA_ELITE("Karamja Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
 		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FALADOR_EASY("Falador Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FALADOR_MEDIUM("Falador Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FALADOR_HARD("Falador Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FALADOR_ELITE("Falador Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Kourend & Kebos
 	KOUREND_EASY("Kourend Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,

@@ -222,10 +222,6 @@ public enum ExternalQuestResources {
 	KARAMJA_MEDIUM("https://oldschool.runescape.wiki/w/Karamja_Diary#Medium"),
 	KARAMJA_HARD("https://oldschool.runescape.wiki/w/Karamja_Diary#Hard"),
 	KARAMJA_ELITE("https://oldschool.runescape.wiki/w/Karamja_Diary#Elite"),
-	FALADOR_EASY("https://oldschool.runescape.wiki/w/Falador_Diary#Easy"),
-	FALADOR_MEDIUM("https://oldschool.runescape.wiki/w/Falador_Diary#Medium"),
-	FALADOR_HARD("https://oldschool.runescape.wiki/w/Falador_Diary#Hard"),
-	FALADOR_ELITE("https://oldschool.runescape.wiki/w/Falador_Diary#Elite"),
 
 	// Kourend & Kebos
 	KOUREND_EASY("https://oldschool.runescape.wiki/w/Kourend_%26_Kebos_Diary#Easy"),

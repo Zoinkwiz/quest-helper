@@ -151,10 +151,10 @@ public class FaladorElite extends ComplexStateQuestHelper {
         //Step 1 - Air Runes
         enterAirAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29090, new WorldPoint(2984, 3291, 0),
                 "Go to the Air Altar south of Falador", pureEss28, airTiara);
-        enterAirAltar.addSubSteps(craftAirRunes);
         craftAirRunes = new ObjectStep(this, ObjectID.ALTAR_34760, new WorldPoint(2843, 4833, 0),
                 "Use your essence on the Altar to craft the Air Runes.", pureEss28);
         craftAirRunes.addIcon(ItemID.PURE_ESSENCE);
+        enterAirAltar.addSubSteps(craftAirRunes);
 
         //Step 2 - Purchase 2H Sword
         goUpFaladorCastle1 = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0),

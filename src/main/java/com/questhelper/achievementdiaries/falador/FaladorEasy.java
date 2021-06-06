@@ -187,9 +187,11 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
         //Repair a broken strut in the Motherlode Mine
         enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
-                "Go to the Motherlode Mine.", pickaxe);
+                "Enter the Dwarven Mines, you can get there quickly by going down the stairs near the Party Room.", pickaxe);
+        enterDwarvenMines.addIcon(ItemID.RUNE_PICKAXE);
         enterCaveToMotherlodeMine = new ObjectStep(this, ObjectID.CAVE_26654, new WorldPoint(3059, 9764, 0),
-                "Go to the Motherlode Mine.", pickaxe);
+                "Go through the Cave entrance to the Motherlode Mines.", pickaxe);
+        enterCaveToMotherlodeMine.addIcon(ItemID.RUNE_PICKAXE);
         fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3743,5662,0),
                 "Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minutes for it to break.", hammer.highlighted());
         fixMotherloadMine.addIcon(ItemID.HAMMER);
@@ -280,7 +282,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
         allSteps.add(new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut), coins2000));
         allSteps.add(new PanelDetails("Climb West Wall", Collections.singletonList(climbWall)));
         allSteps.add(new PanelDetails("Kill The Duck", Collections.singletonList(killDuck), combatGear));
-        allSteps.add(new PanelDetails("Motherlode Repairs", Arrays.asList(enterCaveToMotherlodeMine, fixMotherloadMine), pickaxe, hammer));
+        allSteps.add(new PanelDetails("Motherlode Repairs", Arrays.asList(enterDwarvenMines, enterCaveToMotherlodeMine, fixMotherloadMine), pickaxe, hammer));
         allSteps.add(new PanelDetails("Sarah's Farming Shop", Collections.singletonList(browseSarahFarmingShop)));
         allSteps.add(new PanelDetails("To the Holy Land!", Collections.singletonList(goEntrana)));
         allSteps.add(new PanelDetails("Get A Security Book", Arrays.asList(climbLadderPortSarimJail, getSecurityBook)));

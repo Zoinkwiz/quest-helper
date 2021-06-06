@@ -191,7 +191,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
     {
         //Mind Runes
         enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2981, 3513, 0),
-                "Use the mind tiara on the Mysterious Ruins to access the Mind Altar.", mindTiara, pureEss28);
+                "Click on the Mysterious Ruins, with the Mind Tiara equipped to access the Mind Altar.", mindTiara, pureEss28);
         craftMindRunes = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0),
                 "Click the altar to craft the mind runes.", mindTiara, pureEss28);
         craftMindRunes.addIcon(ItemID.PURE_ESSENCE);

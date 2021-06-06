@@ -186,6 +186,38 @@ public enum ExternalQuestResources {
 	DADDYS_HOME("https://oldschool.runescape.wiki/w/Daddy%27s_Home"),
 
 	// Achievement diaries
+
+	// Ardougne
+	ARDOUGNE_EASY("https://oldschool.runescape.wiki/w/Ardougne_Diary#Easy"),
+	ARDOUGNE_MEDIUM("https://oldschool.runescape.wiki/w/Ardougne_Diary#Medium"),
+	ARDOUGNE_HARD("https://oldschool.runescape.wiki/w/Ardougne_Diary#Hard"),
+	ARDOUGNE_ELITE("https://oldschool.runescape.wiki/w/Ardougne_Diary#Elite"),
+
+	// Desert
+	DESERT_EASY("https://oldschool.runescape.wiki/w/Desert_Diary#Easy"),
+	DESERT_MEDIUM("https://oldschool.runescape.wiki/w/Desert_Diary#Medium"),
+	DESERT_HARD("https://oldschool.runescape.wiki/w/Desert_Diary#Hard"),
+	DESERT_ELITE("https://oldschool.runescape.wiki/w/Desert_Diary#Elite"),
+
+	// Falador
+	FALADOR_EASY("https://oldschool.runescape.wiki/w/Falador_Diary#Easy"),
+	FALADOR_MEDIUM("https://oldschool.runescape.wiki/w/Falador_Diary#Medium"),
+	FALADOR_HARD("https://oldschool.runescape.wiki/w/Falador_Diary#Hard"),
+	FALADOR_ELITE("https://oldschool.runescape.wiki/w/Falador_Diary#Elite"),
+
+	// Fremennik
+	FREMENNIK_EASY("https://oldschool.runescape.wiki/w/Fremennik_Diary#Easy"),
+	FREMENNIK_MEDIUM("https://oldschool.runescape.wiki/w/Fremennik_Diary#Medium"),
+	FREMENNIK_HARD("https://oldschool.runescape.wiki/w/Fremennik_Diary#Hard"),
+	FREMENNIK_ELITE("https://oldschool.runescape.wiki/w/Fremennik_Diary#Elite"),
+
+	// Kandarin
+	KANDARIN_EASY("https://oldschool.runescape.wiki/w/Kandarin_Diary#Easy"),
+	KANDARIN_MEDIUM("https://oldschool.runescape.wiki/w/Kandarin_Diary#Medium"),
+	KANDARIN_HARD("https://oldschool.runescape.wiki/w/Kandarin_Diary#Hard"),
+	KANDARIN_ELITE("https://oldschool.runescape.wiki/w/Kandarin_Diary#Elite"),
+
+	// Karamja
 	KARAMJA_EASY("https://oldschool.runescape.wiki/w/Karamja_Diary#Easy"),
 	KARAMJA_MEDIUM("https://oldschool.runescape.wiki/w/Karamja_Diary#Medium"),
 	KARAMJA_HARD("https://oldschool.runescape.wiki/w/Karamja_Diary#Hard"),
@@ -194,6 +226,42 @@ public enum ExternalQuestResources {
 	FALADOR_MEDIUM("https://oldschool.runescape.wiki/w/Falador_Diary#Medium"),
 	FALADOR_HARD("https://oldschool.runescape.wiki/w/Falador_Diary#Hard"),
 	FALADOR_ELITE("https://oldschool.runescape.wiki/w/Falador_Diary#Elite"),
+
+	// Kourend & Kebos
+	KOUREND_EASY("https://oldschool.runescape.wiki/w/Kourend_%26_Kebos_Diary#Easy"),
+	KOUREND_MEDIUM("https://oldschool.runescape.wiki/w/Kourend_%26_Kebos_Diary#Medium"),
+	KOUREND_HARD("https://oldschool.runescape.wiki/w/Kourend_%26_Kebos_Diary#Hard"),
+	KOUREND_ELITE("https://oldschool.runescape.wiki/w/Kourend_%26_Kebos_Diary#Elite"),
+
+	// Lumbridge & Draynor
+	LUMBRIDGE_EASY("https://oldschool.runescape.wiki/w/Lumbridge_%26_Draynor_Diary#Easy"),
+	LUMBRIDGE_MEDIUM("https://oldschool.runescape.wiki/w/Lumbridge_%26_Draynor_Diary#Medium"),
+	LUMBRIDGE_HARD("https://oldschool.runescape.wiki/w/Lumbridge_%26_Draynor_Diary#Hard"),
+	LUMBRIDGE_ELITE("https://oldschool.runescape.wiki/w/Lumbridge_%26_Draynor_Diary#Elite"),
+
+	// Morytania
+	MORYTANIA_EASY("https://oldschool.runescape.wiki/w/Morytania_Diary#Easy"),
+	MORYTANIA_MEDIUM("https://oldschool.runescape.wiki/w/Morytania_Diary#Medium"),
+	MORYTANIA_HARD("https://oldschool.runescape.wiki/w/Morytania_Diary#Hard"),
+	MORYTANIA_ELITE("https://oldschool.runescape.wiki/w/Morytania_Diary#Elite"),
+
+	// Varrock
+	VARROCK_EASY("https://oldschool.runescape.wiki/w/Varrock_Diary#Easy"),
+	VARROCK_MEDIUM("https://oldschool.runescape.wiki/w/Varrock_Diary#Medium"),
+	VARROCK_HARD("https://oldschool.runescape.wiki/w/Varrock_Diary#Hard"),
+	VARROCK_ELITE("https://oldschool.runescape.wiki/w/Varrock_Diary#Elite"),
+
+	// Western Provinces
+	WESTERNPROVINCES_EASY("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Easy"),
+	WESTERNPROVINCES_MEDIUM("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Medium"),
+	WESTERNPROVINCES_HARD("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Hard"),
+	WESTERNPROVINCES_ELITE("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Elite"),
+
+	// Wilderness
+	WILDERNESS_EASY("https://oldschool.runescape.wiki/w/Wilderness_Diary#Easy"),
+	WILDERNESS_MEDIUM("https://oldschool.runescape.wiki/w/Wilderness_Diary#Medium"),
+	WILDERNESS_HARD("https://oldschool.runescape.wiki/w/Wilderness_Diary#Hard"),
+	WILDERNESS_ELITE("https://oldschool.runescape.wiki/w/Wilderness_Diary#Elite"),
 
     // Generic helpers
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II");

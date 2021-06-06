@@ -478,7 +478,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 	private void setupItemRequirements()
 	{
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 
 		slicedBanana = new ItemRequirement("Sliced Banana", ItemID.SLICED_BANANA);
 		banana = new ItemRequirement("Banana", ItemID.BANANA);

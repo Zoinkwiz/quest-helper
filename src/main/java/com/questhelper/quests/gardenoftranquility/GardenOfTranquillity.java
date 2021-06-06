@@ -163,7 +163,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		helpingBernald.setLockingCondition(gotVineSeeds);
 
 		gettingRing = new ConditionalStep(this, fishForRing);
-		gettingRing.setLockingCondition(new Conditions(LogicType.OR, ringOfCharosA, ringNotInWell));
+		gettingRing.setLockingCondition(plantedEverything);
 
 		gettingLastSeeds = new ConditionalStep(this, collectMarigold);
 		gettingLastSeeds.addStep(new Conditions(cabbagesGrown, talkedToLyraAgain, givenMarigold), talkToKragenAgain);
@@ -231,7 +231,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		marigoldSeed = new ItemRequirement("Marigold seed", ItemID.MARIGOLD_SEED);
 		cabbageSeed3 = new ItemRequirement("Cabbage seeds (6 to be safe)", ItemID.CABBAGE_SEED, 3);
 		onionSeed3 = new ItemRequirement("Onion seeds (6 to be safe)", ItemID.ONION_SEED, 3);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		essence = new ItemRequirement("Rune/Pure essence", ItemID.RUNE_ESSENCE);
 		essence.addAlternates(ItemID.PURE_ESSENCE);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);

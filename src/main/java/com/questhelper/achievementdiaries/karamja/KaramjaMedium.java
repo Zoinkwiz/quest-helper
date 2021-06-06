@@ -129,25 +129,25 @@ public class KaramjaMedium extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		notClaimedTicket = new Conditions(LogicType.NOR, new VarbitRequirement(3579, 1));
-		notEnteredWall = new Conditions(LogicType.NOR, new VarbitRequirement(3580, 1));
-		notEnteredCrandor = new Conditions(LogicType.NOR, new VarbitRequirement(3581, 1));
-		notUsedCart = new Conditions(LogicType.NOR, new VarbitRequirement(3582, 1));
-		notEarned100 = new Conditions(LogicType.NOR, new VarbitRequirement(3583, 1));
-		notCookedSpider = new Conditions(LogicType.NOR, new VarbitRequirement(3584, 1));
-		notMinedRedRopaz = new Conditions(LogicType.NOR, new VarbitRequirement(3585, 1));
-		notCutTeak = new Conditions(LogicType.NOR, new VarbitRequirement(3586, 1));
-		notCutMahog = new Conditions(LogicType.NOR, new VarbitRequirement(3587, 1));
-		notCaughtKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3588, 1));
-		notExchangedGems = new Conditions(LogicType.NOR, new VarbitRequirement(3589, 1));
-		notUsedGlider = new Conditions(LogicType.NOR, new VarbitRequirement(3590, 1));
-		notGrownFruitTree = new Conditions(LogicType.NOR, new VarbitRequirement(3591, 1));
-		notTrappedGraahk = new Conditions(LogicType.NOR, new VarbitRequirement(3592, 1));
-		notCutVine = new Conditions(LogicType.NOR, new VarbitRequirement(3593, 1));
-		notCrossedLava = new Conditions(LogicType.NOR, new VarbitRequirement(3594, 1));
-		notClimbedStairs = new Conditions(LogicType.NOR, new VarbitRequirement(3595, 1));
-		notTraveledToKhazard = new Conditions(LogicType.NOR, new VarbitRequirement(3596, 1));
-		notCharteredFromShipyard = new Conditions(LogicType.NOR, new VarbitRequirement(3597, 1));
+		notClaimedTicket = new VarbitRequirement(3579, false, 1);
+		notEnteredWall = new VarbitRequirement(3580, false, 1);
+		notEnteredCrandor = new VarbitRequirement(3581, false, 1);
+		notUsedCart = new VarbitRequirement(3582, false, 1);
+		notEarned100 = new VarbitRequirement(3583, false, 1);
+		notCookedSpider = new VarbitRequirement(3584, false, 1);
+		notMinedRedRopaz = new VarbitRequirement(3585, false, 1);
+		notCutTeak = new VarbitRequirement(3586, false, 1);
+		notCutMahog = new VarbitRequirement(3587, false, 1);
+		notCaughtKarambwan = new VarbitRequirement(3588, false, 1);
+		notExchangedGems = new VarbitRequirement(3589, false, 1);
+		notUsedGlider = new VarbitRequirement(3590, false, 1);
+		notGrownFruitTree = new VarbitRequirement(3591, false, 1);
+		notTrappedGraahk = new VarbitRequirement(3592, false, 1);
+		notCutVine = new VarbitRequirement(3593, false, 1);
+		notCrossedLava = new VarbitRequirement(3594, false, 1);
+		notClimbedStairs = new VarbitRequirement(3595, false, 1);
+		notTraveledToKhazard = new VarbitRequirement(3596, false, 1);
+		notCharteredFromShipyard = new VarbitRequirement(3597, false, 1);
 
 		pickaxe =
 			new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR,
@@ -208,7 +208,7 @@ public class KaramjaMedium extends BasicQuestHelper
 			"completion of Tai Bwo Wannai Trio to fish karambwan");
 		dragonSlayerI = new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED, "Partial " +
 			"completion of Dragon Slayer I for access to Crandor");
-		shiloVillage = new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED);
+		shiloVillage = new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED);
 
 
 		// 3578 = 2, completed final task
@@ -306,15 +306,31 @@ public class KaramjaMedium extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(agility12, cooking16, farming27, fishing65, hunter41, mining40, woodcutting50,
-		grandTree, taiBwoWannaiTrio, dragonSlayerI, shiloVillage);
+		List<Requirement> reqs = new ArrayList<>();
+
+		reqs.add(new SkillRequirement(Skill.AGILITY, 12));
+		reqs.add(new SkillRequirement(Skill.COOKING, 16));
+		reqs.add(new SkillRequirement(Skill.FARMING, 27));
+		reqs.add(new SkillRequirement(Skill.FISHING, 65, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 41));
+		reqs.add(new SkillRequirement(Skill.MINING, 40));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50));
+
+		reqs.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
+		reqs.add(new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED, "Partial " +
+			"completion of Tai Bwo Wannai Trio to fish karambwan"));
+		reqs.add(new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED, "Partial " +
+			"completion of Dragon Slayer I for access to Crandor"));
+		reqs.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));
+		
+		return reqs;
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Easy Diary", Arrays.asList(enterVolcano, returnThroughWall, enterAgilityArena,
+		allSteps.add(new PanelDetails("Medium Diary", Arrays.asList(enterVolcano, returnThroughWall, enterAgilityArena,
 			tag2Pillars, useCart, mineRedTopaz, travelToKhazard, flyToKaramja, catchKarambwan, charterFromShipyard,
 			trapGraahk, doCleanup, makeSpiderStick, cookSpider, cutTeak, cutMahogany, getMachete,
 			enterBrimhavenDungeon, chopVines, crossLava, climbBrimhavenStaircase, growFruitTree, claimReward),

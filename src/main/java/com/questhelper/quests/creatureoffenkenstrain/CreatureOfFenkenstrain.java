@@ -156,7 +156,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		telegrabOrCoins = new ItemRequirements(LogicType.OR,
 			"33 Magic and runes to cast telegrab, or 50 coins",
 			coins50, telegrab);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak());
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		bronzeWire = new ItemRequirement("Bronze wires", ItemID.BRONZE_WIRE, 3);

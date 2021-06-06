@@ -135,16 +135,16 @@ public class KaramjaHard extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notBecomeChampion = new Conditions(LogicType.NOR, new VarbitRequirement(3600, 1));
-		notKilledZek = new Conditions(LogicType.NOR, new VarbitRequirement(3601, 1));
-		notEatenWrap = new Conditions(LogicType.NOR, new VarbitRequirement(3602, 1));
-		notCraftedNature = new Conditions(LogicType.NOR, new VarbitRequirement(3603, 1));
-		notCookedKarambwan = new Conditions(LogicType.NOR, new VarbitRequirement(3604, 1));
-		notKilledDeathwing = new Conditions(LogicType.NOR, new VarbitRequirement(3605, 1));
-		notUsedShortcut = new Conditions(LogicType.NOR, new VarbitRequirement(3606, 1));
-		notCollectedLeaves = new Conditions(LogicType.NOR, new VarbitRequirement(3607, 5));
-		notAssignedTask = new Conditions(LogicType.NOR, new VarbitRequirement(3608, 1));
-		notKilledDragon = new Conditions(LogicType.NOR, new VarbitRequirement(3609, 1));
+		notBecomeChampion = new VarbitRequirement(3600, false, 1);
+		notKilledZek = new VarbitRequirement(3601, false, 1);
+		notEatenWrap = new VarbitRequirement(3602, false, 1);
+		notCraftedNature = new VarbitRequirement(3603, false, 1);
+		notCookedKarambwan = new VarbitRequirement(3604, false, 1);
+		notKilledDeathwing = new VarbitRequirement(3605, false, 1);
+		notUsedShortcut = new VarbitRequirement(3606, false, 1);
+		notCollectedLeaves = new VarbitRequirement(3607, false, 5);
+		notAssignedTask = new VarbitRequirement(3608, false, 1);
+		notKilledDragon = new VarbitRequirement(3609, false, 1);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notKilledDeathwing);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notKilledDragon);
@@ -167,7 +167,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
 			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
 			ItemID.BLURITE_CROSSBOW);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE).showConditioned(notUsedShortcut);
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notUsedShortcut);
 		antidragonShield =
 			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.getAntifireShields())
 				.showConditioned(notKilledDragon);
@@ -243,7 +243,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		becomeChampion.addSubSteps(enterHoleChampion, enterTzhaarChampion);
 		defeatZek = new NpcStep(this, NpcID.KETZEK, "Reach at least wave 31 to defeat Ket-Zek.");
 		eatOomlie = new DetailedQuestStep(this, "Eat an oomlie wrap.", oomlieWrap.highlighted());
-		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(3869, 3019, 0),
+		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTalismanOrAbyss, pureEssence);
 		craftNatureRune = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),
 			"Craft a nature rune.", pureEssence);
@@ -299,8 +299,25 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(combat100, agility53, cooking53, magic59, mining52, ranged42, runecrafting44, slayer50, smithing40,
-			strength50, thieving50, woodcutting34, taiBwoWannaiTrio, legendsQuest);
+		List<Requirement> reqs = new ArrayList<>();
+		reqs.add(new CombatLevelRequirement(100));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
+		reqs.add(new SkillRequirement(Skill.COOKING, 53));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 59));
+		reqs.add(new SkillRequirement(Skill.MINING, 52));
+		reqs.add(new SkillRequirement(Skill.RANGED, 42));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 44));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 50));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 40));
+		reqs.add(new SkillRequirement(Skill.STRENGTH, 50));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 50));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 34));
+
+		reqs.add(new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED));
+		reqs.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1,
+			Operation.GREATER_EQUAL, "Partial completion of Legends' Quest"));
+
+		return reqs;
 	}
 
 	@Override

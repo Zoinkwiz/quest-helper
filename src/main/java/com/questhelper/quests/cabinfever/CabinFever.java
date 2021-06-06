@@ -362,7 +362,7 @@ public class CabinFever extends BasicQuestHelper
 		planks2 = new ItemRequirement("Repair plank", ItemID.REPAIR_PLANK_7148, 2);
 		planks4 = new ItemRequirement("Repair plank", ItemID.REPAIR_PLANK_7148, 4);
 		planks6 = new ItemRequirement("Repair plank", ItemID.REPAIR_PLANK_7148, 6);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		tacks10 = new ItemRequirement("Tacks", ItemID.TACKS, 10);
 		tacks20 = new ItemRequirement("Tacks", ItemID.TACKS, 20);
 		tacks30 = new ItemRequirement("Tacks", ItemID.TACKS, 30);

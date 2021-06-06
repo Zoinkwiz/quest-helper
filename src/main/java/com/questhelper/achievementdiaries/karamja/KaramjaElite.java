@@ -86,16 +86,16 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		doElite.addStep(notCheckedCalquat, checkCalquat);
 		doElite.addStep(notCheckedPalm, checkPalm);
 
-		return doElite;
+		return enterNatureAltar;
 	}
 
 	public void setupRequirements()
 	{
-		notCraftedRunes = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 1));
-		notEquippedCape = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 2));
-		notCheckedPalm = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 3));
-		notMadePotion = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 4));
-		notCheckedCalquat = new Conditions(LogicType.NOR, new VarplayerRequirement(1200, true, 5));
+		notCraftedRunes = new VarplayerRequirement(1200, false, 1);
+		notEquippedCape = new VarplayerRequirement(1200, false, 2);
+		notCheckedPalm = new VarplayerRequirement(1200, false, 3);
+		notMadePotion = new VarplayerRequirement(1200, false, 4);
+		notCheckedCalquat = new VarplayerRequirement(1200, false, 5);
 
 		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
 			ItemID.NATURE_TIARA).showConditioned(notCraftedRunes);
@@ -123,7 +123,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(3869, 3019, 0),
+		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTiaraOrAbyss,
 			pureEssence.quantity(28));
 		craftRunes = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),
@@ -145,13 +145,19 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal, palmTreeSapling, antidotePlusPlus,
-			zulrahScales, calquatSapling, rake, spade);
+			zulrahScales.quantity(20), calquatSapling, rake, spade);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(farming72, herblore87, runecraft91);
+		List<Requirement> reqs = new ArrayList<>();
+
+		reqs.add(new SkillRequirement(Skill.FARMING, 72, true));
+		reqs.add(new SkillRequirement(Skill.HERBLORE, 87, true));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 91, true));
+
+		return reqs;
 	}
 
 	@Override
@@ -160,7 +166,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Elite Diary", Arrays.asList(equipCape, makePotion, enterNatureAltar,
 			craftRunes, checkCalquat, checkPalm, claimReward), natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal,
-			palmTreeSapling, antidotePlusPlus, zulrahScales, calquatSapling));
+			palmTreeSapling, antidotePlusPlus, zulrahScales.quantity(20), calquatSapling));
 
 		return allSteps;
 	}

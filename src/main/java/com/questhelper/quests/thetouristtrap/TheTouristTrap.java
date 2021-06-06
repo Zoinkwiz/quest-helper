@@ -202,7 +202,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		desertBottomWorn = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true);
 		desertBootWorn = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS, 1, true);
 		bronzeBar3 = new ItemRequirement("Bronze bars", ItemID.BRONZE_BAR, 3);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		feather50 = new ItemRequirement("Feather", ItemID.FEATHER, 50);
 
 		metalKey = new ItemRequirement("Metal key", ItemID.METAL_KEY);

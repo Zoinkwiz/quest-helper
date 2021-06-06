@@ -145,7 +145,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
 		leather.setTooltip("You can obtain this during the quest");
 
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		coal4 = new ItemRequirement("Coal", ItemID.COAL, 4);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);

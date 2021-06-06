@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.vampyreslayer;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -103,7 +104,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		draynorManorTeleport = new ItemRequirement("Draynor manor teleport", ItemID.DRAYNOR_MANOR_TELEPORT);
 		stake = new ItemRequirement("Stake", ItemID.STAKE);
 		stake.setTooltip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1);

@@ -247,9 +247,9 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Go to Mogre Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", fishingExplosiveHighlight);
 		spawnMogre.addAlternateObjects(ObjectID.OMINOUS_FISHING_SPOT_10088, ObjectID.OMINOUS_FISHING_SPOT_10089);
 		spawnMogre.addIcon(ItemID.FISHING_EXPLOSIVE);
-		spawnMogre.addSubSteps(killMogre);
 		killMogre = new NpcStep(this, NpcID.MOGRE,
 			"Kill the Mogre", combatGear);
+		spawnMogre.addSubSteps(killMogre);
 
 		//Ratpits
 		visitRatPits = new ObjectStep(this, ObjectID.MANHOLE_10321, new WorldPoint(3018, 3232, 0),

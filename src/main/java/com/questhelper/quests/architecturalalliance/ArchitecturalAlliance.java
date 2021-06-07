@@ -24,21 +24,15 @@
  */
 package com.questhelper.quests.architecturalalliance;
 
-import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.FavourRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -51,8 +45,6 @@ import java.util.Map;
 import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -158,7 +150,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> req = new ArrayList<>();
 		req.add(kharedstsMemoirs);
-		
+
 		return req;
 	}
 }

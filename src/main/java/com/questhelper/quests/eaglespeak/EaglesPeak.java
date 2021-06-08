@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.eaglespeak;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -66,6 +67,9 @@ public class EaglesPeak extends BasicQuestHelper
 	//Items Required
 	ItemRequirement yellowDye, coins, tar, birdBook, metalFeather, tenEagleFeathers, fakeBeak, eagleCape, bronzeFeather, silverFeather, goldFeather,
 		birdFeed6, ferret, metalFeatherHighlighted, birdFeed, bronzeFeatherHighlighted, silverFeatherHighlighted, goldFeatherHighlighted;
+
+	//Items Reecommended
+	ItemRequirement dramenStaffOrNecklaceOfPassage, varrockTeleport, ardougneTeleport;
 
 	Requirement hasBirdBook, hasMetalFeather, inMainCavern, spokenToNickolaus, hasTenFeathers, spokenOnceToAsyff, spokenTwiceToAsyff, inBronzeRoom,
 		bronzeRoomPedestalUp, bronzeRoomPedestalLowered, winch1NotDone, winch2NotDone, winch3NotDone, winch4NotDone, hasSolvedBronze, hasBronzeFeather, hasSilverFeather,
@@ -197,6 +201,12 @@ public class EaglesPeak extends BasicQuestHelper
 		bronzeFeather = new ItemRequirement("Bronze feather", ItemID.BRONZE_FEATHER);
 		silverFeather = new ItemRequirement("Silver feather", ItemID.SILVER_FEATHER);
 		goldFeather = new ItemRequirement("Golden feather", ItemID.GOLDEN_FEATHER_10175);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		dramenStaffOrNecklaceOfPassage = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
+		dramenStaffOrNecklaceOfPassage.addAlternates(ItemCollections.getNecklaceOfPassages());
+		dramenStaffOrNecklaceOfPassage.setDisplayMatchedItemName(true);
+		dramenStaffOrNecklaceOfPassage.setTooltip("Necklace of Passage can also be used.");
 
 		bronzeFeatherHighlighted = new ItemRequirement("Bronze feather", ItemID.BRONZE_FEATHER);
 		bronzeFeatherHighlighted.setHighlightInInventory(true);
@@ -274,7 +284,7 @@ public class EaglesPeak extends BasicQuestHelper
 		speakToCharlie.addDialogStep("Sure.  Any idea where I should start looking?");
 
 		inspectBooks = new ObjectStep(this, NullObjectID.NULL_19787, new WorldPoint(2319, 3506, 0),
-			"Go to the camp north of Eagles' Peak and search the pile of books for a Bird Book.");
+			"Go to the camp north of Eagles' Peak and search the pile of books for a Bird Book. The closest fairy ring is AKQ or teleport to The Outpost using the Necklace of Passage.");
 
 		clickBook = new DetailedQuestStep(this, "Click the Bird Book for a Metal Feather.", birdBook);
 
@@ -446,6 +456,16 @@ public class EaglesPeak extends BasicQuestHelper
 		reqs.add(yellowDye);
 		reqs.add(coins);
 		reqs.add(tar);
+		return reqs;
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(dramenStaffOrNecklaceOfPassage);
+		reqs.add(varrockTeleport);
+		reqs.add(ardougneTeleport);
 		return reqs;
 	}
 

@@ -152,7 +152,7 @@ public class BoneVoyage extends BasicQuestHelper
 
 		digsiteTeleport = new ItemRequirement("Teleport to the Digsite", ItemCollections.getDigsitePendants());
 		digsiteTeleport.addAlternates(ItemID.DIGSITE_TELEPORT);
-		woodcuttingGuildTeleport = new ItemRequirement("Teleport to woodcuting guild", ItemCollections.getSkillsNecklaces());
+		woodcuttingGuildTeleport = new ItemRequirement("Teleport to the Woodcutting Guild", ItemCollections.getSkillsNecklaces());
 		woodcuttingGuildTeleport.addAlternates(ItemID.XERICS_TALISMAN, ItemID.KHAREDSTS_MEMOIRS);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.getAmuletOfGlories());

@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.recipefordisaster;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
@@ -60,6 +61,8 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 {
 	ItemRequirement milk, egg, flour, tin, rawGuidanceCake, guidanceCake, guidanceCakeHighlighted, enchantedEgg, enchantedMilk,
 		enchantedFlour, tinHighlighted;
+
+	ItemRequirement wizardsTowerTeleport, lumbridgeTeleport;
 
 	Requirement inDiningRoom, inUpstairsTrailborn, hasCake, hasRawCake;
 
@@ -118,6 +121,9 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		guidanceCake = new ItemRequirement("Guidance cake", ItemID.CAKE_OF_GUIDANCE);
 		guidanceCakeHighlighted = new ItemRequirement("Guidance cake", ItemID.CAKE_OF_GUIDANCE);
 		guidanceCakeHighlighted.setHighlightInInventory(true);
+
+		lumbridgeTeleport = new ItemRequirement("Lumbridge Teleport", ItemID.LUMBRIDGE_TELEPORT);
+		wizardsTowerTeleport = new ItemRequirement("Necklace of Passage for Wizards' Tower teleport", ItemCollections.getNecklaceOfPassages());
 	}
 
 	public void loadZones()
@@ -172,6 +178,16 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.MURDER_MYSTERY, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.WITCHS_HOUSE, QuestState.FINISHED));
+		return req;
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> req = new ArrayList<>();
+		req.add(lumbridgeTeleport);
+		req.add(wizardsTowerTeleport);
+
 		return req;
 	}
 

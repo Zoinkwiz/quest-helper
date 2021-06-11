@@ -42,6 +42,7 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
@@ -67,7 +68,9 @@ public class FremennikMedium extends ComplexStateQuestHelper
     Requirement horrorFromTheDeep, eaglesPeak, fairyTaleI, lostCity, natureSpirit, fairyTaleII, olafsQuest, fremennikTrials, betweenARock, dwarfCannon, fishingContest;
 
     // Steps
-    QuestStep rollBoulderExit, slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish, travelMisc, snowyKnight0, snowyKnight1, petRockPOH, moveToCannon, moveToCave, moveToRiver, moveToArzinian, mineGold, lighthouse, moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15, claimReward;
+    QuestStep rollBoulderExit, slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish, travelMisc, snowyKnight0, snowyKnight1, petRockPOH, moveToCannon, moveToCave, moveToRiver, moveToArzinian, mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15, claimReward;
+
+    ObjectStep dropPetRock;
 
     DigStep enterBrineCave;
 
@@ -296,8 +299,9 @@ public class FremennikMedium extends ComplexStateQuestHelper
         moveToDagCave = new ObjectStep(this, 8929, new WorldPoint(2521, 3740, 0),
                 "Enter cave and pray melee. Make sure you are full stam and prayer before entering.", protectMelee);
         dropPetRock = new ObjectStep(this, 8965, new WorldPoint(2490, 10162, 0),
-                "Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// itemontilereq?
+                "Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// item on tile req?
         dropPetRock.addIcon(ItemID.PET_ROCK);
+        dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
         moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
                 "Continue onwards until you reach the barrier.");
         throwAxe = new NpcStep(this, 2253, new WorldPoint(2543, 10143, 0),
@@ -370,6 +374,12 @@ public class FremennikMedium extends ComplexStateQuestHelper
         req.add(new SkillRequirement(Skill.PRAYER, 43,false,
                 "43 Prayer for protection prayers"));
         return req;
+    }
+
+    @Override
+    public List<String> getCombatRequirements()
+    {
+        return Collections.singletonList("Brine rat (level 70)");
     }
 
     @Override

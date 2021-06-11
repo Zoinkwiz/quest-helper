@@ -124,25 +124,19 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> bows = ImmutableList.of(
-		ItemID.MAGIC_COMP_BOW,
-		ItemID.MAGIC_LONGBOW,
 		ItemID.MAGIC_SHORTBOW,
 		ItemID.MAGIC_SHORTBOW_I,
-		ItemID.SEERCULL,
-		ItemID.YEW_COMP_BOW,
-		ItemID.YEW_LONGBOW,
+		ItemID.MAGIC_LONGBOW,
 		ItemID.YEW_SHORTBOW,
-		ItemID.MAPLE_LONGBOW,
+		ItemID.YEW_LONGBOW,
 		ItemID.MAPLE_SHORTBOW,
-		ItemID.WILLOW_COMP_BOW,
-		ItemID.WILLOW_LONGBOW,
+		ItemID.MAPLE_LONGBOW,
 		ItemID.WILLOW_SHORTBOW,
-		ItemID.SIGNED_OAK_BOW,
-		ItemID.OAK_LONGBOW,
+		ItemID.WILLOW_LONGBOW,
 		ItemID.OAK_SHORTBOW,
-		ItemID.STARTER_BOW,
-		ItemID.TRAINING_BOW,
-		ItemID.RAIN_BOW
+		ItemID.OAK_LONGBOW,
+		ItemID.SHORTBOW,
+		ItemID.LONGBOW
 	);
 
 	@Getter
@@ -1116,38 +1110,4 @@ public class ItemCollections
 		ItemID.RAW_ANGLERFISH,
 		ItemID.RAW_DARK_CRAB
 	);
-
-	@Getter
-	private static final List<Integer> fairyStaff = ImmutableList.of(
-			ItemID.LUNAR_STAFF,
-			ItemID.LUNAR_STAFF__PT3,
-			ItemID.LUNAR_STAFF__PT2,
-			ItemID.LUNAR_STAFF__PT1,
-			ItemID.DRAMEN_STAFF
-	);
-
-	@Getter
-	private static final List<Integer> crossbows = ImmutableList.of(
-			ItemID.DRAGON_HUNTER_CROSSBOW,
-			ItemID.ARMADYL_CROSSBOW,
-			ItemID.DORGESHUUN_CROSSBOW,
-			ItemID.DRAGON_CROSSBOW,
-			ItemID.RUNE_CROSSBOW,
-			ItemID.ADAMANT_CROSSBOW,
-			ItemID.MITHRIL_CROSSBOW,
-			ItemID.STEEL_CROSSBOW,
-			ItemID.IRON_CROSSBOW,
-			ItemID.BLURITE_CROSSBOW,
-			ItemID.BRONZE_CROSSBOW,
-			ItemID.CROSSBOW
-	);
-
-	@Getter
-	private static final List<Integer> compost = ImmutableList.of(
-			ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
-			ItemID.ULTRACOMPOST,
-			ItemID.SUPERCOMPOST,
-			ItemID.COMPOST
-	);
-
 }

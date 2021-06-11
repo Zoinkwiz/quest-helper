@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -148,10 +149,11 @@ public class KandarinHard extends ComplexStateQuestHelper
         food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
         // TODO find a way to track barb training / knight waves
-        // barbFishing = new QuestRequirement(QuestHelperQuest., QuestState.FINISHED);
-        // barbFiremaking = new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED);
-        // barbSmithing = new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED);
+        barbFishing = new ComplexRequirement("Barbarian fishing");
+        barbFiremaking = new ComplexRequirement("Barbarian firemaking");
+        barbSmithing = new ComplexRequirement("Barbarian smithing");
         taiBwoWannai = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
+        knightWaves = new ComplexRequirement("Knight waves training grounds");
         // knightWaves = new QuestRequirement(QuestHelperQuest., QuestState.FINISHED);
         desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 
@@ -270,13 +272,13 @@ public class KandarinHard extends ComplexStateQuestHelper
         allSteps.add(new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb, waterOrb), waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey));
         allSteps.add(new PanelDetails("Seers' Village Rooftop", Arrays.asList(seersRooftop)));
         allSteps.add(new PanelDetails("Yew Longbow", Arrays.asList(yewLong, cutLongbow, stringBow), axe, bowString, knife));
-        allSteps.add(new PanelDetails("Piety", Arrays.asList(pietyCourt)));
-        allSteps.add(new PanelDetails("Burn Maple", Arrays.asList(moveToSeers, burnMaple), mapleLogs, bow));
+        allSteps.add(new PanelDetails("Piety", Arrays.asList(pietyCourt), knightWaves));
+        allSteps.add(new PanelDetails("Burn Maple", Arrays.asList(moveToSeers, burnMaple), barbFiremaking, mapleLogs, bow));
         allSteps.add(new PanelDetails("Fancy Stone", Arrays.asList(fancyStone), coins.quantity(25000)));
-        allSteps.add(new PanelDetails("Shadow Hound", Arrays.asList(moveToShadow, shadowHound), ringOfVis, combatGear, food));
-        allSteps.add(new PanelDetails("Fish Leaping Sturgeon", Arrays.asList(catchStur), barbRod, feather));
-        allSteps.add(new PanelDetails("Smith Adamant Spear", Arrays.asList(addySpear), yewLogs, addyBar, hammer));
-        allSteps.add(new PanelDetails("Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2, moveToAncient3, mithrilDrag), combatGear, food));
+        allSteps.add(new PanelDetails("Shadow Hound", Arrays.asList(moveToShadow, shadowHound), desertTreasure, ringOfVis, combatGear, food));
+        allSteps.add(new PanelDetails("Fish Leaping Sturgeon", Arrays.asList(catchStur), barbFishing, barbRod, feather));
+        allSteps.add(new PanelDetails("Smith Adamant Spear", Arrays.asList(addySpear), barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer));
+        allSteps.add(new PanelDetails("Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2, moveToAncient3, mithrilDrag), barbFiremaking, combatGear, food));
         allSteps.add(new PanelDetails("Granite Body", Arrays.asList(buyGranite), coins.quantity(95000), combatGear));
         allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
 

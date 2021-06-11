@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -67,9 +68,9 @@ public class KandarinElite extends ComplexStateQuestHelper
 
     Requirement notbarb5, notPickDwarf, not5Shark, notStamMix, notRuneHasta, notPyre, notTPCath, notHeal, notAtk, notDef, notCol, notDwarfGrowing, dwarfReady, dwarfGrowing;
 
-    //Quest steps
-    Requirement barbSmith, barbFire, familyCrest, LunarDip;
+    Requirement barbSmith, barbFire, barbHerb, familyCrest, lunarDip;
 
+    //Quest steps
     QuestStep claimReward, tpCath, plantDwarf, waitDwarf, pickDwarf, cook5Sharks, moveToSeersRooftop, stamMix, runeHasta, pyre, barb5, barb52, barb5Heal, barb5Atk, barb5Def, barb5Col;
 
     NpcStep catch5Sharks;
@@ -156,10 +157,11 @@ public class KandarinElite extends ComplexStateQuestHelper
         lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
         // TODO find a way to track barb training
-        // barbSmith = new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED);
-        // barbFire = new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED);
+        barbFire = new ComplexRequirement("Barbarian firemaking");
+        barbSmith = new ComplexRequirement("Barbarian smithing");
+        barbHerb = new ComplexRequirement("Barbarian herblore");
         familyCrest = new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED);
-        LunarDip = new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED);
+        lunarDip = new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED);
 
         inBankRoof = new ZoneRequirement(bankRoof);
         inBarbUnder = new ZoneRequirement(barbUnder);
@@ -238,12 +240,12 @@ public class KandarinElite extends ComplexStateQuestHelper
     @Override
     public List<PanelDetails> getPanels() {
         List<PanelDetails> allSteps = new ArrayList<>();
-        allSteps.add(new PanelDetails("Teleport Catherby", Arrays.asList(tpCath), waterRune.quantity(10), lawRune.quantity(3), astralRune.quantity(3)));
+        allSteps.add(new PanelDetails("Teleport Catherby", Arrays.asList(tpCath), lunarDip, waterRune.quantity(10), lawRune.quantity(3), astralRune.quantity(3)));
         allSteps.add(new PanelDetails("Dwarf Weed", Arrays.asList(plantDwarf, waitDwarf, pickDwarf), dwarfSeed, seedDib, rake, spade, compost));
-        allSteps.add(new PanelDetails("5 Sharks Caught and Cooked", Arrays.asList(catch5Sharks, cook5Sharks), harpoon, cookingGaunt));
-        allSteps.add(new PanelDetails("Stamina Mix", Arrays.asList(moveToSeersRooftop, stamMix), stamPot, caviar));
-        allSteps.add(new PanelDetails("Smith Rune Hasta", Arrays.asList(runeHasta), magicLogs.quantity(1), runiteBar, hammer));
-        allSteps.add(new PanelDetails("Magic Pyre Ship", Arrays.asList(pyre), axe, tinderbox, magicLogs.quantity(1), chewedBone));
+        allSteps.add(new PanelDetails("5 Sharks Caught and Cooked", Arrays.asList(catch5Sharks, cook5Sharks), familyCrest, harpoon, cookingGaunt));
+        allSteps.add(new PanelDetails("Stamina Mix", Arrays.asList(moveToSeersRooftop, stamMix), barbHerb, stamPot, caviar));
+        allSteps.add(new PanelDetails("Smith Rune Hasta", Arrays.asList(runeHasta), barbSmith, magicLogs.quantity(1), runiteBar, hammer));
+        allSteps.add(new PanelDetails("Magic Pyre Ship", Arrays.asList(pyre), barbFire, axe, tinderbox, magicLogs.quantity(1), chewedBone));
         allSteps.add(new PanelDetails("Level 5 each Role", Arrays.asList(barb5Heal, barb5Atk, barb5Def, barb5Col, barb5)));
         allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
 

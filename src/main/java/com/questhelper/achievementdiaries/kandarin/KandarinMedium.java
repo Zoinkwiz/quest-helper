@@ -301,14 +301,14 @@ public class KandarinMedium extends ComplexStateQuestHelper
         allSteps.add(new PanelDetails("String Maple Shortbow", Arrays.asList(moveToBank, stringMaple), mapleUnstrung, bowString));
         allSteps.add(new PanelDetails("Catch and Cook Bass", Arrays.asList(catchBass, cookBass), bigFishingNet));
         allSteps.add(new PanelDetails("Mix Superantipoison", Arrays.asList(moveToSeersCath, mixUnf, crushHorn, superAnti), unicornHorn, mortarPest, vialOfWater, iritLeaf));
-        allSteps.add(new PanelDetails("Make mind helm", Arrays.asList(mindHelm), primedMind, batteredKey, beatenBook, hammer));
+        allSteps.add(new PanelDetails("Make mind helm", Arrays.asList(mindHelm), eleWorkII, primedMind, batteredKey, beatenBook, hammer));
         allSteps.add(new PanelDetails("Enter Range Guild", Arrays.asList(enterRange)));
         allSteps.add(new PanelDetails("Steal from Chest", Arrays.asList(stealHemen), lockpick));
         allSteps.add(new PanelDetails("Mine Coal", Arrays.asList(mineCoal)));
-        allSteps.add(new PanelDetails("Kill Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), combatGear, food));
-        allSteps.add(new PanelDetails("Barbarian Agility Course", Arrays.asList(barbAgi)));
+        allSteps.add(new PanelDetails("Kill Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest, combatGear, food));
+        allSteps.add(new PanelDetails("Barbarian Agility Course", Arrays.asList(barbAgi), alfredBar));
         allSteps.add(new PanelDetails("Barbarian Assault Wave", Arrays.asList(barbAss)));
-        allSteps.add(new PanelDetails("Fairy Ring to McGrubor's Woods", Arrays.asList(travelMcGrubor), staff));
+        allSteps.add(new PanelDetails("Fairy Ring to McGrubor's Woods", Arrays.asList(travelMcGrubor), fairyTaleII, staff));
         allSteps.add(new PanelDetails("Teleport to Camelot", Arrays.asList(tpCAM), lawRune.quantity(1), airRune.quantity(5), normalBook));
         allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
 

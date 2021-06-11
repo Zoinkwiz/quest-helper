@@ -222,7 +222,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         allSteps.add(new PanelDetails("Pet Fish", Arrays.asList(petFishMix, petFish, petFishFish), coins.quantity(10), fishBowl, seaweed));
         allSteps.add(new PanelDetails("Collect Flax", Arrays.asList(collectFlax)));
         allSteps.add(new PanelDetails("Sherlock", Arrays.asList(talkSherlock)));
-        allSteps.add(new PanelDetails("Defeat Elementals", Arrays.asList(moveToWorkshop, killEle), combatGear, food));
+        allSteps.add(new PanelDetails("Defeat Elementals", Arrays.asList(moveToWorkshop, killEle), eleWorkI, combatGear, food));
         allSteps.add(new PanelDetails("Play Church Organ", Arrays.asList(playOrgan)));
         allSteps.add(new PanelDetails("Plant Jute", Arrays.asList(plantJute), juteSeed.quantity(3), seedDibber, rake));
         allSteps.add(new PanelDetails("Buy Stew", Arrays.asList(buyStew), coins.quantity(20)));

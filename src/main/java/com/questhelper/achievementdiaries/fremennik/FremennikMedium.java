@@ -386,15 +386,15 @@ public class FremennikMedium extends ComplexStateQuestHelper
     public List<PanelDetails> getPanels()
     {
         List<PanelDetails> allSteps = new ArrayList<>();
-        allSteps.add(new PanelDetails("Brine Rat Slayer", Arrays.asList(enterBrineCave, slayBrineRat, rollBoulderExit), spade, combatGear));
-        allSteps.add(new PanelDetails("Travel to Miscellania", Arrays.asList(travelMisc), staff));
-        allSteps.add(new PanelDetails("Travel by Eagle", Arrays.asList(enterEaglesPeak, snowyHunter), rope));
+        allSteps.add(new PanelDetails("Brine Rat Slayer", Arrays.asList(enterBrineCave, slayBrineRat, rollBoulderExit), olafsQuest, spade, combatGear));
+        allSteps.add(new PanelDetails("Travel to Miscellania", Arrays.asList(travelMisc), fairyTaleII, fremennikTrials, staff));
+        allSteps.add(new PanelDetails("Travel by Eagle", Arrays.asList(enterEaglesPeak, snowyHunter), eaglesPeak, rope));
         allSteps.add(new PanelDetails("Catch Snowy Knight", Arrays.asList(snowyKnight0), butterFlyNet, butterFlyJar));
-        allSteps.add(new PanelDetails("Mine Gold", Arrays.asList(moveToCave, moveToRiver, moveToCannon, moveToArzinian, mineGold), pickaxe, goldHelm, coins.quantity(2)));
-        allSteps.add(new PanelDetails("Mine Coal", Arrays.asList(mineCoal), pickaxe));
-        allSteps.add(new PanelDetails("Steal Fish", Arrays.asList(stealFish)));
-        allSteps.add(new PanelDetails("Waterbirth to Lighthouse", Arrays.asList(moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15, lighthouse), petRock, combatGear, thrownaxe));
-        allSteps.add(new PanelDetails("Pet Rock", Arrays.asList(petRockPOH), coins.quantity(30000), petRock, saw, hammer, oakPlanks.quantity(4)));
+        allSteps.add(new PanelDetails("Mine Gold", Arrays.asList(moveToCave, moveToRiver, moveToCannon, moveToArzinian, mineGold), betweenARock, pickaxe, goldHelm, coins.quantity(2)));
+        allSteps.add(new PanelDetails("Mine Coal", Arrays.asList(mineCoal), fremennikTrials, pickaxe));
+        allSteps.add(new PanelDetails("Steal Fish", Arrays.asList(stealFish), fremennikTrials));
+        allSteps.add(new PanelDetails("Waterbirth to Lighthouse", Arrays.asList(moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15, lighthouse), horrorFromTheDeep, fremennikTrials, petRock, combatGear, thrownaxe, food));
+        allSteps.add(new PanelDetails("Pet Rock", Arrays.asList(petRockPOH), fremennikTrials, coins.quantity(30000), petRock, saw, hammer, oakPlanks.quantity(4)));
         allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
 
         return allSteps;

@@ -241,6 +241,12 @@ public class FremennikEasy extends ComplexStateQuestHelper
         req.add(new SkillRequirement(Skill.SMITHING, 20));
         req.add(new SkillRequirement(Skill.THIEVING, 5));
         req.add(new SkillRequirement(Skill.WOODCUTTING, 15));
+
+        req.add(fremennikTrials);
+        req.add(giantDwarf);
+        req.add(trollStronghold);
+        req.add(deathPlateau);
+
         return req;
     }
 
@@ -252,12 +258,12 @@ public class FremennikEasy extends ComplexStateQuestHelper
         allSteps.add(new PanelDetails("Kill 5 Rock Crabs", Arrays.asList(killedCrabs), combatGear));
         allSteps.add(new PanelDetails("Chop and burn", Arrays.asList(chopAndBurnOak), axe, tinderbox));
         allSteps.add(new PanelDetails("Fill bucket", Arrays.asList(fillBucket), bucket));
-        allSteps.add(new PanelDetails("Change boots", Arrays.asList(changeBoots), coins.quantity(500)));
-        allSteps.add(new PanelDetails("Craft Tiara", Arrays.asList(mineSilver, smeltSilver, craftTiara), pickaxe, tiaraMould));
-        allSteps.add(new PanelDetails("Collect snape grass", Arrays.asList(goneToWaterbirth,collectSnapeGrass)));
-        allSteps.add(new PanelDetails("Enter troll stronghold", Arrays.asList(enterTrollStronghold), climbingBoots));
-        allSteps.add(new PanelDetails("Browse Stonemason's store", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, browseStonemason)));
-        allSteps.add(new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, stealStall)));
+        allSteps.add(new PanelDetails("Change boots", Arrays.asList(changeBoots), fremennikTrials, coins.quantity(500)));
+        allSteps.add(new PanelDetails("Craft Tiara", Arrays.asList(mineSilver, smeltSilver, craftTiara), fremennikTrials, pickaxe, tiaraMould));
+        allSteps.add(new PanelDetails("Collect snape grass", Arrays.asList(goneToWaterbirth,collectSnapeGrass), fremennikTrials));
+        allSteps.add(new PanelDetails("Enter troll stronghold", Arrays.asList(enterTrollStronghold), trollStronghold, deathPlateau, climbingBoots));
+        allSteps.add(new PanelDetails("Browse Stonemason's store", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, browseStonemason), giantDwarf));
+        allSteps.add(new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, stealStall), giantDwarf));
         allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
 
         return allSteps;

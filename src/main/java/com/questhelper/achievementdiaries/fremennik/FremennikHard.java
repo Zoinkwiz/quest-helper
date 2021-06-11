@@ -249,15 +249,15 @@ public class FremennikHard extends ComplexStateQuestHelper
     public List<PanelDetails> getPanels()
     {
         List<PanelDetails> allSteps = new ArrayList<>();
-        allSteps.add(new PanelDetails("Miscellania 100% support", Arrays.asList(moveToMisc, miscSupport), rake));
-        allSteps.add(new PanelDetails("Mine Adamantite on Jatizso", Arrays.asList(moveToJatizso, moveToMine, mineAddy), pickaxe));
-        allSteps.add(new PanelDetails("Craft Shield on Neitiznot", Arrays.asList(moveToNeitiznot, craftShield), axe, arcticLog.quantity(2), hammer, rope, bronzeNail));
+        allSteps.add(new PanelDetails("Miscellania 100% support", Arrays.asList(moveToMisc, miscSupport), throneOfMisc, rake));
+        allSteps.add(new PanelDetails("Mine Adamantite on Jatizso", Arrays.asList(moveToJatizso, moveToMine, mineAddy), fremIsles, pickaxe));
+        allSteps.add(new PanelDetails("Craft Shield on Neitiznot", Arrays.asList(moveToNeitiznot, craftShield), fremIsles, axe, arcticLog.quantity(2), hammer, rope, bronzeNail));
         allSteps.add(new PanelDetails("Mix a Super Defense", Arrays.asList(mixSuperDef), cadantineUnfPot, whiteBerries));
-        allSteps.add(new PanelDetails("Catch a Kyatt", Arrays.asList(catchKyatt), teasingStick, log, knife));
+        allSteps.add(new PanelDetails("Catch a saber-toothed kyatt", Arrays.asList(catchKyatt), teasingStick, log, knife));
         allSteps.add(new PanelDetails("Steal from Gem Stall", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim, moveToKeldagrimVarrock, stealGem)));
-        allSteps.add(new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim, moveToKeldagrimVarrock, moveToBlast, freeBlast)));
-        allSteps.add(new PanelDetails("Teleport to Trollheim", Arrays.asList(tpTroll), fireRune.quantity(2), lawRune.quantity(2), normalBook));
-        allSteps.add(new PanelDetails("Teleport to Waterbirth", Arrays.asList(tpWaterbirth), waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1), lunarBook));
+        allSteps.add(new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim, moveToKeldagrimVarrock, moveToBlast, freeBlast), giantDwarf));
+        allSteps.add(new PanelDetails("Teleport to Trollheim", Arrays.asList(tpTroll), eadgarsRuse, fireRune.quantity(2), lawRune.quantity(2), normalBook));
+        allSteps.add(new PanelDetails("Teleport to Waterbirth", Arrays.asList(tpWaterbirth), lunarDiplomacy, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1), lunarBook));
         allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
 
         return allSteps;

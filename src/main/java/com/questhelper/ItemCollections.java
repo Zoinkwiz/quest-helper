@@ -1142,4 +1142,13 @@ public class ItemCollections
 			ItemID.ARMADYL_CROSSBOW,
 			ItemID.DRAGON_HUNTER_CROSSBOW
 	);
+
+	@Getter
+	private static final List<Integer> fairyStaff = ImmutableList.of(
+			ItemID.LUNAR_STAFF,
+			ItemID.LUNAR_STAFF__PT3,
+			ItemID.LUNAR_STAFF__PT2,
+			ItemID.LUNAR_STAFF__PT1,
+			ItemID.DRAMEN_STAFF
+	);
 }

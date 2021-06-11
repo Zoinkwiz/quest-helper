@@ -124,19 +124,27 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> bows = ImmutableList.of(
-		ItemID.MAGIC_SHORTBOW,
-		ItemID.MAGIC_SHORTBOW_I,
-		ItemID.MAGIC_LONGBOW,
-		ItemID.YEW_SHORTBOW,
-		ItemID.YEW_LONGBOW,
-		ItemID.MAPLE_SHORTBOW,
-		ItemID.MAPLE_LONGBOW,
-		ItemID.WILLOW_SHORTBOW,
-		ItemID.WILLOW_LONGBOW,
-		ItemID.OAK_SHORTBOW,
-		ItemID.OAK_LONGBOW,
-		ItemID.SHORTBOW,
-		ItemID.LONGBOW
+			ItemID.MAGIC_COMP_BOW,
+			ItemID.MAGIC_LONGBOW,
+			ItemID.MAGIC_SHORTBOW,
+			ItemID.MAGIC_SHORTBOW_I,
+			ItemID.SEERCULL,
+			ItemID.YEW_COMP_BOW,
+			ItemID.YEW_LONGBOW,
+			ItemID.YEW_SHORTBOW,
+			ItemID.MAPLE_LONGBOW,
+			ItemID.MAPLE_SHORTBOW,
+			ItemID.WILLOW_COMP_BOW,
+			ItemID.WILLOW_LONGBOW,
+			ItemID.WILLOW_SHORTBOW,
+			ItemID.SIGNED_OAK_BOW,
+			ItemID.OAK_LONGBOW,
+			ItemID.OAK_SHORTBOW,
+			ItemID.LONGBOW,
+			ItemID.SHORTBOW,
+			ItemID.STARTER_BOW,
+			ItemID.TRAINING_BOW,
+			ItemID.RAIN_BOW
 	);
 
 	@Getter
@@ -1109,5 +1117,13 @@ public class ItemCollections
 		ItemID.RAW_MANTA_RAY,
 		ItemID.RAW_ANGLERFISH,
 		ItemID.RAW_DARK_CRAB
+	);
+
+	@Getter
+	private static final List<Integer> compost = ImmutableList.of(
+			ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
+			ItemID.ULTRACOMPOST,
+			ItemID.SUPERCOMPOST,
+			ItemID.COMPOST
 	);
 }

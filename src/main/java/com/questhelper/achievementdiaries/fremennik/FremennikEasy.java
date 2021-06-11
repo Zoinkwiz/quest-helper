@@ -39,7 +39,6 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
@@ -136,7 +135,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
         silverOre = new ItemRequirement("Silver ore", ItemID.SILVER_ORE);
         snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
 
-        combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notKilledCrabs);
+        combatGear = new ItemRequirement("Combat gear to defeat 5 Rock Crabs (level 13)", -1, -1).showConditioned(notKilledCrabs);
         combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
         food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -222,12 +221,6 @@ public class FremennikEasy extends ComplexStateQuestHelper
     public List<ItemRequirement> getItemRecommended()
     {
         return Arrays.asList(food);
-    }
-
-    @Override
-    public List<String> getCombatRequirements()
-    {
-        return Collections.singletonList("5 Rock Crabs (Level 13)");
     }
 
     @Override

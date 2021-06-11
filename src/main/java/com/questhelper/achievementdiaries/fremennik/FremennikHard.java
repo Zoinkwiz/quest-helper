@@ -40,14 +40,12 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-
 
 @QuestDescriptor(
         quest = QuestHelperQuest.FREMENNIK_HARD

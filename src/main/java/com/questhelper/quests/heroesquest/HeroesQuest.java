@@ -515,7 +515,7 @@ public class HeroesQuest extends BasicQuestHelper
 
 		thirdPanel.setLockingStep(getThievesArmband);
 
-		PanelDetails fourthPanel = new PanelDetails("Get ice gloves", Arrays.asList(mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen));
+		PanelDetails fourthPanel = new PanelDetails("Get ice gloves", Arrays.asList(mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen), pickaxe);
 		fourthPanel.setLockingStep(getIceGloves);
 
 		PanelDetails fifthPanel = new PanelDetails("Get fire feather", Arrays.asList(goToEntrana, killFireBird));

@@ -397,7 +397,7 @@ public class RumDeal extends BasicQuestHelper
 		goDownAfterSlugs = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
 		talkToBraindeathAfterSlugs = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		talkToBraindeathAfterSlugs.addSubSteps(goDownAfterSlugs);
-		talkToDavey = new NpcStep(this, NpcID.DAVEY, new WorldPoint(2132, 5100, 1), "Talk to Davey south west of Captain Braindeath.", wrench);
+		talkToDavey = new NpcStep(this, NpcID.DAVEY, new WorldPoint(2132, 5100, 1), "Talk to Davey south west of Captain Braindeath.", wrench, prayerPoints47);
 		useWrenchOnControl = new ObjectStep(this, NullObjectID.NULL_10104, new WorldPoint(2144, 5101, 1), "Use the holy wrench on the brewing control. Be prepared to fight an evil spirit.", holyWrench);
 		useWrenchOnControl.addIcon(ItemID.HOLY_WRENCH);
 		killSpirit = new NpcStep(this, NpcID.EVIL_SPIRIT, "Kill the Evil Spirit.", prayerPoints47);

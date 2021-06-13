@@ -235,7 +235,7 @@ public class JunglePotion extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Surive against level 53 Jogres and level 46 Harpie Bug Swarms.");
+		reqs.add("Survive against level 53 Jogres and level 46 Harpie Bug Swarms.");
 		return reqs;
 	}
 

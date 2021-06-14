@@ -70,9 +70,9 @@ public class FaladorHard extends ComplexStateQuestHelper {
             notDwarvenHelmetDwarvenMines;
 
     QuestStep claimReward, enterMindAltar, craftMindRunes, climbLadderWhiteKnightCastle, changeFamilyCrest, goToGiantMole,
-            killGiantMole, goToIceDungeon, enterWyvernCavern, killWyvern, completeAgiCourse, enterDwarvenMines, enterMiningGuild,
-            enterHerosGuild, enterHerosGuildBasement, killBlueDragon, enterRoguesDen, crackWallSafe, getProsySet, prayAtAltarSarim,
-            enterWarriorsGuild, equipDwarvenHelmet;
+            killGiantMole, goToIceDungeon, enterWyvernCavern, killWyvern, completeAgiCourse, enterDwarvenMines,
+		enterDwarvenMinesHelmet, enterMiningGuild, enterHerosGuild, enterHerosGuildBasement, killBlueDragon, enterRoguesDen,
+		crackWallSafe, getProsySet, prayAtAltarSarim, enterWarriorsGuild, equipDwarvenHelmet;
 
     Zone mindAltar, iceDungeon, wyvernCavern, faladorCastle1, herosGuild, herosGuildBasement, portSarimChurch, dwarvenMine,
             miningGuild, herosGuildEntranceway, herosGuildMainHall, roguesDen, moleDen;
@@ -94,7 +94,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
         doHard.addStep(notKilledMole, goToGiantMole);
         doHard.addStep(notCompleteAgiCourse, completeAgiCourse);
         doHard.addStep(new Conditions(notDwarvenHelmetDwarvenMines, inDwarvenMine), equipDwarvenHelmet);
-        doHard.addStep(notDwarvenHelmetDwarvenMines, enterDwarvenMines);
+        doHard.addStep(notDwarvenHelmetDwarvenMines, enterDwarvenMinesHelmet);
         doHard.addStep(new Conditions(notEnterMiningGuildWithProspector, inDwarvenMine), enterMiningGuild);
         doHard.addStep(notEnterMiningGuildWithProspector, enterDwarvenMines);
         doHard.addStep(notEnterWarriorsGuild, enterWarriorsGuild);
@@ -228,7 +228,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
 
         //Prospectors in Mining Guild
         enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
-                "Go to the Dwarven Mines.");
+                "Go to the Dwarven Mines.", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
         enterMiningGuild = new ObjectStep(this, ObjectID.DOOR_30364, new WorldPoint(3046, 9756, 0),
                 "Equip your prospector set and then enter the Mining Guild", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
 
@@ -258,8 +258,11 @@ public class FaladorHard extends ComplexStateQuestHelper {
                 "Enter the Warriors Guild, in Burthorpe. You can get here faster by teleporting with a combat bracelet or a games necklace.");
 
         //Dwarven Helm
+		//Prospectors in Mining Guild
+		enterDwarvenMinesHelmet = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
+			"Go to the Dwarven Mines.", dwarvenHelmet);
         equipDwarvenHelmet = new DetailedQuestStep(this,
-                "Equip the Dwarven Helmet.", dwarvenHelmet);
+                "Equip the Dwarven Helmet.", dwarvenHelmet.equipped());
 
         //Fin
         claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0),
@@ -304,7 +307,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
         allSteps.add(new PanelDetails("To Saradomin!", Arrays.asList(climbLadderWhiteKnightCastle, changeFamilyCrest), coins10000));
         allSteps.add(new PanelDetails("Holy Moley!", Arrays.asList(goToGiantMole, killGiantMole), lightSource, combatGear, food));
         allSteps.add(new PanelDetails("Make sure to stretch!", Collections.singletonList(completeAgiCourse)));
-        allSteps.add(new PanelDetails("A snug fit", Arrays.asList(enterDwarvenMines, equipDwarvenHelmet), dwarvenHelmet));
+        allSteps.add(new PanelDetails("A snug fit", Arrays.asList(enterDwarvenMinesHelmet, equipDwarvenHelmet), dwarvenHelmet));
         allSteps.add(new PanelDetails("Gold Rush!", Arrays.asList(enterDwarvenMines, enterMiningGuild), prospectorHelm, prospectorBoots, prospectorChest, prospectorLegs));
         allSteps.add(new PanelDetails("The Dragon Defender", Collections.singletonList(enterWarriorsGuild)));
         allSteps.add(new PanelDetails("The Dragon Slayer", Arrays.asList(enterHerosGuild, enterHerosGuildBasement, killBlueDragon), combatGear, food, dragonfireProtection));

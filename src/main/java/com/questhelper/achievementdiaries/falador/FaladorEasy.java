@@ -222,7 +222,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
         //Smith some Blurite Limbs on Doric's Anvil
         getPickaxe = new DetailedQuestStep(this, new WorldPoint(2963, 3216, 0),
-                "Get a pickaxe  in Rimmington if you do not have one.");
+                "Get a pickaxe in Rimmington if you do not have one.");
         enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0),
                 "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, hammer);
         mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0),
@@ -294,5 +294,4 @@ public class FaladorEasy extends ComplexStateQuestHelper
         return allSteps;
 
     }
-
 }

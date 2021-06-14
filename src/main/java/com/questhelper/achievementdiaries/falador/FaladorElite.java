@@ -118,7 +118,7 @@ public class FaladorElite extends ComplexStateQuestHelper {
         axe = new ItemRequirement("Axe", ItemCollections.getAxes()).showConditioned(notGotMagicRoots);
         rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots);
         magicTreeSapling = new ItemRequirement("Magic Sapling", ItemID.MAGIC_SAPLING).showConditioned(notGotMagicRoots);
-        skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.getSkillCape(), -1).showConditioned(notPerformedSkillCapeEmote);
+        skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.getSkillCape()).showConditioned(notPerformedSkillCapeEmote);
         toadflaxPotionUnf = new ItemRequirement("Toadflax Potion (unf)", ItemID.TOADFLAX_POTION_UNF).showConditioned(notMadeSaraBrew);
         crushedNest = new ItemRequirement("Crushed Nest", ItemID.CRUSHED_NEST).showConditioned(notMadeSaraBrew);
 
@@ -235,7 +235,7 @@ public class FaladorElite extends ComplexStateQuestHelper {
         allSteps.add(new PanelDetails("One with the wind..", Arrays.asList(enterAirAltar, craftAirRunes), airTiara, pureEss28));
         allSteps.add(new PanelDetails("Root of all magic", Collections.singletonList(chopMagicTree), axe, spade));
         allSteps.add(new PanelDetails("Peak Efficiency", Arrays.asList(goUpFaladorCastle1Emote, goUpFaladorCastle2Emote, goUpFaladorCastle3Emote, performEmote), skillCape));
-        allSteps.add(new PanelDetails("The River Stix", Arrays.asList(goToTavDungeon, crossStrangeFloor)));
+        allSteps.add(new PanelDetails("The River Styx", Arrays.asList(goToTavDungeon, crossStrangeFloor)));
         allSteps.add(new PanelDetails("Pot Head", Arrays.asList(goToEastBank, craftSaraBrew), toadflaxPotionUnf, crushedNest));
         allSteps.add(new PanelDetails("*Tips Fedora*", Arrays.asList(goUpFaladorCastle1, goUpFaladorCastle2, purchaseWhite2hSword), coins1920));
         allSteps.add(new PanelDetails("Congratulations!", Collections.singletonList(claimReward)));

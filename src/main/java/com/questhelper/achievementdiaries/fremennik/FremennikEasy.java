@@ -177,18 +177,18 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		fillBucket.addIcon(ItemID.BUCKET);
 
 		mineSilver = new ObjectStep(this, ObjectID.ROCKS_11368, new WorldPoint(2685, 3702, 0),
-			"Mine silver ore.");
+			"Mine a silver ore in Rellekka.", pickaxe, fremennikTrials);
 		mineSilver.addIcon(ItemID.RUNE_PICKAXE);
 		smeltSilver = new ObjectStep(this, ObjectID.FURNACE_4304, new WorldPoint(2617, 3667, 0),
-			"Smelt silver Bar", silverOre.highlighted());
+			"Smelt a silver bar in Rellekka.", silverOre.highlighted(), fremennikTrials);
 		smeltSilver.addIcon(ItemID.SILVER_ORE);
 		craftTiara = new ObjectStep(this, ObjectID.FURNACE_4304, new WorldPoint(2617, 3667, 0),
-			"Craft a tiara.", silverBar.highlighted());
+			"Craft a tiara in Rellekka.", silverBar.highlighted(), fremennikTrials);
 		craftTiara.addIcon(ItemID.SILVER_BAR);
 		changeBoots = new NpcStep(this, NpcID.YRSA_3933, new WorldPoint(2625, 3674, 0),
 			"Change your boots at Yrsa's Shoe Store.", coins.quantity(500));
 		goneToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3686, 0),
-			"Speak with Jarvald to travel to Waterbirth Island");
+			"Speak with Jarvald to travel to Waterbirth Island.");
 		goneToWaterbirth.addDialogStep("What Jarvald is doing.");
 		goneToWaterbirth.addDialogStep("Can I come?");
 		goneToWaterbirth.addDialogStep("YES");
@@ -197,14 +197,17 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		enterTrollStronghold = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0),
 			"Enter the Troll Stronghold.");
 		goneToKeldagrim = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Enter the tunnel that leads to Keldagrim. Alternatively TP to Varrock and take a minecart near the Grand Exchange.");
-		goneToCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0), "Go-through cave entrance");
-		goneToRiver = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0), "Speak with the Dwarven Boatman to go to Keldagrim");
+		goneToCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+			"Go through the cave entrance.");
+		goneToRiver = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+			"Speak with the Dwarven Boatman to go to Keldagrim.");
 		goneToRiver.addDialogStep("Yes, please take me.");
 		stealStall = new ObjectStep(this, ObjectID.BAKERY_STALL_6163, new WorldPoint(2892, 10211, 0),
 			"Steal from the bakery stall.");
 		browseStonemason = new NpcStep(this, NpcID.STONEMASON, new WorldPoint(2848, 10185, 0),
 			"Browse the Stonemason's Shop.");
-		goneToVarrock = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0), "Enter the trapdoor near the Grand Exchange.");
+		goneToVarrock = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+			"Enter the trapdoor near the Grand Exchange.");
 
 		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
 			"Talk to Fossegrimen South of Rellekka to claim your reward!");
@@ -220,7 +223,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food);
+		return Collections.singletonList(food);
 	}
 
 	@Override
@@ -253,17 +256,17 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Catch a Cerulean Twitch", Arrays.asList(catchCerulean), birdSnare));
-		allSteps.add(new PanelDetails("Kill 5 Rock Crabs", Arrays.asList(killedCrabs), combatGear));
-		allSteps.add(new PanelDetails("Chop and burn", Arrays.asList(chopAndBurnOak), axe, tinderbox));
-		allSteps.add(new PanelDetails("Fill bucket", Arrays.asList(fillBucket), bucket));
-		allSteps.add(new PanelDetails("Change boots", Arrays.asList(changeBoots), fremennikTrials, coins.quantity(500)));
+		allSteps.add(new PanelDetails("Catch a Cerulean Twitch", Collections.singletonList(catchCerulean), birdSnare));
+		allSteps.add(new PanelDetails("Kill 5 Rock Crabs", Collections.singletonList(killedCrabs), combatGear));
+		allSteps.add(new PanelDetails("Chop and burn", Collections.singletonList(chopAndBurnOak), axe, tinderbox));
+		allSteps.add(new PanelDetails("Fill bucket", Collections.singletonList(fillBucket), bucket));
+		allSteps.add(new PanelDetails("Change boots", Collections.singletonList(changeBoots), fremennikTrials, coins.quantity(500)));
 		allSteps.add(new PanelDetails("Craft Tiara", Arrays.asList(mineSilver, smeltSilver, craftTiara), fremennikTrials, pickaxe, tiaraMould));
 		allSteps.add(new PanelDetails("Collect snape grass", Arrays.asList(goneToWaterbirth, collectSnapeGrass), fremennikTrials));
-		allSteps.add(new PanelDetails("Enter troll stronghold", Arrays.asList(enterTrollStronghold), trollStronghold, deathPlateau, climbingBoots));
+		allSteps.add(new PanelDetails("Enter troll stronghold", Collections.singletonList(enterTrollStronghold), trollStronghold, deathPlateau, climbingBoots));
 		allSteps.add(new PanelDetails("Browse Stonemason's store", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, browseStonemason), giantDwarf));
 		allSteps.add(new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, stealStall), giantDwarf));
-		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
+		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
 		return allSteps;
 	}

@@ -355,35 +355,35 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Initialising...",
-				Arrays.asList(getInitiateSet, prayAtAltar), initiateHelm, initiateChest, initiateLegs));
+			Arrays.asList(getInitiateSet, prayAtAltar), initiateHelm, initiateChest, initiateLegs));
 		allSteps.add(new PanelDetails("Lost Elven Treasure",
-				Collections.singletonList(unlockCrystalChest), crystalKey));
+			Collections.singletonList(unlockCrystalChest), crystalKey));
 		allSteps.add(new PanelDetails("Snoop Loggy-log",
-				Arrays.asList(goToTav, chopWillowLog, burnWillowLog), axe));
+			Arrays.asList(goToTav, chopWillowLog, burnWillowLog), axe));
 		allSteps.add(new PanelDetails("Au! I'm minin' here!",
-				Arrays.asList(goToCraftingGuild, mineGold), pickaxe, brownApron));
+			Arrays.asList(goToCraftingGuild, mineGold), pickaxe, brownApron));
 		allSteps.add(new PanelDetails("Bullseye!",
-				Arrays.asList(goToChemist, lightLantern), tinderbox, bullseyeLantern));
+			Arrays.asList(goToChemist, lightLantern), tinderbox, bullseyeLantern));
 		allSteps.add(new PanelDetails("Mogres have layers",
-				Arrays.asList(spawnMogre, killMogre), combatGear, fishingExplosive));
+			Arrays.asList(spawnMogre, killMogre), combatGear, fishingExplosive));
 		allSteps.add(new PanelDetails("Ahh rats..",
-				Collections.singletonList(visitRatPits)));
+			Collections.singletonList(visitRatPits)));
 		allSteps.add(new PanelDetails("I never knew this existed",
-				Collections.singletonList(makeBasketFalLoom)));
+			Collections.singletonList(makeBasketFalLoom)));
 		allSteps.add(new PanelDetails("Brain not included",
-				Arrays.asList(getHaysack, useSackOnSpear, useWatermelonOnSack, placeScarecrow), emptySack, bronzeSpear, watermelon, scarecrow));
+			Arrays.asList(getHaysack, useSackOnSpear, useWatermelonOnSack, placeScarecrow), emptySack, bronzeSpear, watermelon, scarecrow));
 		allSteps.add(new PanelDetails("To the window.. To the wall!",
-				Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), mithGrapple, anyCrossbow));
+			Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), mithGrapple, anyCrossbow));
 		allSteps.add(new PanelDetails("To Middle Earth",
-				Arrays.asList(enterDwarvenMines, dwarfShortcut)));
+			Arrays.asList(enterDwarvenMines, dwarfShortcut)));
 		allSteps.add(new PanelDetails("Beam me up Scotty!",
-				Collections.singletonList(teleportToFalador)));
+			Collections.singletonList(teleportToFalador)));
 		allSteps.add(new PanelDetails("Cor blimey mate!",
-				Collections.singletonList(pickpocketGuard)));
+			Collections.singletonList(pickpocketGuard)));
 		allSteps.add(new PanelDetails("Yoink!",
-				Arrays.asList(goToChaosAltar, telegrabWine), telegrab));
+			Arrays.asList(goToChaosAltar, telegrabWine), telegrab));
 		allSteps.add(new PanelDetails("Congratulations!",
-				Collections.singletonList(claimReward)));
+			Collections.singletonList(claimReward)));
 
 		return allSteps;
 	}

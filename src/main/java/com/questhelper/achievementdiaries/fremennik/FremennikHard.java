@@ -48,9 +48,8 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
-
 @QuestDescriptor(
-        quest = QuestHelperQuest.FREMENNIK_HARD
+	quest = QuestHelperQuest.FREMENNIK_HARD
 )
 
 public class FremennikHard extends ComplexStateQuestHelper
@@ -178,13 +177,14 @@ public class FremennikHard extends ComplexStateQuestHelper
 		tpTroll = new DetailedQuestStep(this,
 			"Teleport to Trollheim.", lawRune.quantity(2), fireRune.quantity(2), normalBook);
 		catchKyatt = new NpcStep(this, NpcID.SABRETOOTHED_KYATT, new WorldPoint(2725, 3770, 0),
-			"Place logs over a pit in the hunter area, and poke a kyatt with a teasing stick. Jump over the pits until the kyatt falls in and loot it.", teasingStick, log, knife);
+			"Place logs over a pit in the hunter area, and poke a kyatt with a teasing stick. " +
+				"Jump over the pits until the kyatt falls in and loot it.", teasingStick, log, knife);
 		mixSuperDef = new ItemStep(this, new WorldPoint(2662, 3657, 0),
 			"Mix a super defence potion within the Fremennik Province.", cadantineUnfPot.highlighted(), whiteBerries.highlighted());
 		moveToCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively TP to Varrock and take a minecart near the Grand Exchange.");
 		moveToRiver = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
-			"Go-through cave entrance.");
+			"Go through the cave entrance.");
 		moveToKeldagrim = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
 			"Speak with the Dwarven Boatman to go to Keldagrim.");
 		moveToKeldagrim.addDialogStep("Yes, please take me.");
@@ -203,7 +203,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		moveToMine = new ObjectStep(this, ObjectID.STAIRCASE_21455, new WorldPoint(2398, 3813, 0),
 			"Go down the staircase.");
 		mineAddy = new ObjectStep(this, 11374, new WorldPoint(2402, 10189, 0),
-			"Mine 5 Adamantite.", pickaxe);
+			"Mine 5 Adamantite ores.", pickaxe);
 		mineAddy.addIcon(ItemID.RUNE_PICKAXE);
 		moveToMisc = new NpcStep(this, NpcID.SAILOR_3936, new WorldPoint(2630, 3692, 0),
 			"Speak to the sailor to go to Miscellania.");
@@ -215,9 +215,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 			"Enter the blast furnace.");
 		freeBlast = new NpcStep(this, NpcID.BLAST_FURNACE_FOREMAN, new WorldPoint(1942, 4958, 0),
 			"Speak with the Foreman.");
-		freeBlast.addDialogStep("What?");
-		freeBlast.addDialogStep("Can I use the furnace to smelt ore?");
-		freeBlast.addDialogStep("I have level 60!");
+		freeBlast.addDialogSteps("What?", "Can I use the furnace to smelt ore?", "I have level 60!");
 
 		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
 			"Talk to Fossegrimen South of Rellekka to claim your reward!");
@@ -227,7 +225,9 @@ public class FremennikHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(rake, pickaxe, axe, arcticLog.quantity(2), hammer, rope, bronzeNail, cadantineUnfPot, whiteBerries, teasingStick, log, knife, fireRune.quantity(2), lawRune.quantity(3), astralRune.quantity(2), waterRune.quantity(1));
+		return Arrays.asList(rake, pickaxe, axe, arcticLog.quantity(2), hammer, rope, bronzeNail,
+			cadantineUnfPot, whiteBerries, teasingStick, log, knife, fireRune.quantity(2), lawRune.quantity(3),
+			astralRune.quantity(2), waterRune.quantity(1));
 	}
 
 	@Override
@@ -255,7 +255,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Mix a Super Defense", Collections.singletonList(mixSuperDef), cadantineUnfPot, whiteBerries));
 		allSteps.add(new PanelDetails("Catch a saber-toothed kyatt", Collections.singletonList(catchKyatt), teasingStick, log, knife));
 		allSteps.add(new PanelDetails("Steal from Gem Stall", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim, moveToKeldagrimVarrock, stealGem)));
-		allSteps.add(new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim, moveToKeldagrimVarrock, moveToBlast, freeBlast), giantDwarf));
+		allSteps.add(new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim,
+			moveToKeldagrimVarrock, moveToBlast, freeBlast), giantDwarf, new SkillRequirement(Skill.SMITHING, 60, false)));
 		allSteps.add(new PanelDetails("Teleport to Trollheim", Collections.singletonList(tpTroll), eadgarsRuse, fireRune.quantity(2), lawRune.quantity(2), normalBook));
 		allSteps.add(new PanelDetails("Teleport to Waterbirth", Collections.singletonList(tpWaterbirth), lunarDiplomacy, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1), lunarBook));
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

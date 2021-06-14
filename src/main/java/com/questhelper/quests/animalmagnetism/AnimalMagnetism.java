@@ -102,6 +102,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		ConditionalStep undeadChickens = new ConditionalStep(this, buyUndeadChickens);
 		undeadChickens.addStep(hasChickens, giveChickensToAva);
 		steps.put(100, undeadChickens);
+		steps.put(110, undeadChickens);
 
 		steps.put(120, talkToWitch);
 		steps.put(130, talkToWitch);
@@ -304,7 +305,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Magnet",
 			Arrays.asList(talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva), ironBar5, hammer, undeadChicken2));
 		allSteps.add(new PanelDetails("Undead twigs",
-			Arrays.asList(getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva),
+			Arrays.asList(attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva, getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva),
 			mithrilAxe, polishedButtons, hardLeather, holySymbol));
 
 		return allSteps;

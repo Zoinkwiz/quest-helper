@@ -412,6 +412,19 @@ public enum QuestHelperQuest
 		this.completeValue = completeValue;
 	}
 
+	// Can be used for non-variables based helpers
+	QuestHelperQuest(String name, Quest.Type questType, Quest.Difficulty difficulty)
+	{
+		this.id = -1;
+		this.name = name;
+		this.keywords = titleToKeywords(name);
+		this.varbit = null;
+		this.varPlayer = null;
+		this.questType = questType;
+		this.difficulty = difficulty;
+		this.completeValue = -1;
+	}
+
 	private List<String> titleToKeywords(String title)
 	{
 		return Arrays.asList(title.toLowerCase().split(" "));
@@ -419,9 +432,14 @@ public enum QuestHelperQuest
 
 	public QuestState getState(Client client)
 	{
+		if (getVar(client) == -1)
+		{
+			return QuestState.IN_PROGRESS;
+		}
+
 		if (completeValue != -1)
 		{
-			int currentState = client.getVarbitValue(varbit.getId());
+			int currentState = getVar(client);
 			if (currentState == completeValue)
 			{
 				return  QuestState.FINISHED;

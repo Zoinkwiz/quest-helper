@@ -236,13 +236,9 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		essence.addAlternates(ItemID.PURE_ESSENCE);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		plantPot = new ItemRequirement("Filled plant pot", ItemID.FILLED_PLANT_POT);
-		compost2 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 2);
-		compost2.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
-		compost = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST);
-		compost.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
-
-		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 5);
-		compost5.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost2 = new ItemRequirement("Normal/Super/Ultra compost", ItemCollections.getComposts(), 2);
+		compost = new ItemRequirement("Normal/Super/Ultra compost", ItemCollections.getComposts());
+		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemCollections.getComposts(), 5);
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
 		fishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);

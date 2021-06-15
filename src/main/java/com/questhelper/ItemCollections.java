@@ -1214,4 +1214,19 @@ public class ItemCollections
 		ItemID.DRAMEN_STAFF
 	);
 
+	@Getter
+	private static final List<Integer> crossbows = ImmutableList.of(
+		ItemID.BRONZE_CROSSBOW,
+		ItemID.BLURITE_CROSSBOW,
+		ItemID.IRON_CROSSBOW,
+		ItemID.STEEL_CROSSBOW,
+		ItemID.MITHRIL_CROSSBOW,
+		ItemID.ADAMANT_CROSSBOW,
+		ItemID.RUNE_CROSSBOW,
+		ItemID.DRAGON_CROSSBOW,
+		ItemID.CROSSBOW,
+		ItemID.DORGESHUUN_CROSSBOW,
+		ItemID.ARMADYL_CROSSBOW,
+		ItemID.DRAGON_HUNTER_CROSSBOW
+	);
 }

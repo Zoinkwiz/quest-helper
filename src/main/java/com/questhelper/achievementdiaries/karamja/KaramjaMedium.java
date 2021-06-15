@@ -129,25 +129,25 @@ public class KaramjaMedium extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		notClaimedTicket = new VarbitRequirement(3579, false, 1);
-		notEnteredWall = new VarbitRequirement(3580, false, 1);
-		notEnteredCrandor = new VarbitRequirement(3581, false, 1);
-		notUsedCart = new VarbitRequirement(3582, false, 1);
-		notEarned100 = new VarbitRequirement(3583, false, 1);
-		notCookedSpider = new VarbitRequirement(3584, false, 1);
-		notMinedRedRopaz = new VarbitRequirement(3585, false, 1);
-		notCutTeak = new VarbitRequirement(3586, false, 1);
-		notCutMahog = new VarbitRequirement(3587, false, 1);
-		notCaughtKarambwan = new VarbitRequirement(3588, false, 1);
-		notExchangedGems = new VarbitRequirement(3589, false, 1);
-		notUsedGlider = new VarbitRequirement(3590, false, 1);
-		notGrownFruitTree = new VarbitRequirement(3591, false, 1);
-		notTrappedGraahk = new VarbitRequirement(3592, false, 1);
-		notCutVine = new VarbitRequirement(3593, false, 1);
-		notCrossedLava = new VarbitRequirement(3594, false, 1);
-		notClimbedStairs = new VarbitRequirement(3595, false, 1);
-		notTraveledToKhazard = new VarbitRequirement(3596, false, 1);
-		notCharteredFromShipyard = new VarbitRequirement(3597, false, 1);
+		notClaimedTicket = new VarbitRequirement(3579, 0);
+		notEnteredWall = new VarbitRequirement(3580, 0);
+		notEnteredCrandor = new VarbitRequirement(3581, 0);
+		notUsedCart = new VarbitRequirement(3582, 0);
+		notEarned100 = new VarbitRequirement(3583, 0);
+		notCookedSpider = new VarbitRequirement(3584, 0);
+		notMinedRedRopaz = new VarbitRequirement(3585, 0);
+		notCutTeak = new VarbitRequirement(3586, 0);
+		notCutMahog = new VarbitRequirement(3587, 0);
+		notCaughtKarambwan = new VarbitRequirement(3588, 0);
+		notExchangedGems = new VarbitRequirement(3589, 0);
+		notUsedGlider = new VarbitRequirement(3590, 0);
+		notGrownFruitTree = new VarbitRequirement(3591, 0);
+		notTrappedGraahk = new VarbitRequirement(3592, 0);
+		notCutVine = new VarbitRequirement(3593, 0);
+		notCrossedLava = new VarbitRequirement(3594, 0);
+		notClimbedStairs = new VarbitRequirement(3595, 0);
+		notTraveledToKhazard = new VarbitRequirement(3596, 0);
+		notCharteredFromShipyard = new VarbitRequirement(3597, 0);
 
 		pickaxe =
 			new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR,

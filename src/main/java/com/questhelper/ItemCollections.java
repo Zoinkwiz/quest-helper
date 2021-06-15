@@ -1138,7 +1138,7 @@ public class ItemCollections
 		ItemID.WOODCUT_CAPET,
 		ItemID.QUEST_POINT_CAPE,
 		ItemID.QUEST_POINT_CAPE_T
-		);
+	);
 
 	@Getter
 	private static final List<Integer> slayerHelmets = ImmutableList.of(
@@ -1197,7 +1197,7 @@ public class ItemCollections
 		ItemID.RAW_DARK_CRAB
 	);
 
-  @Getter
+	@Getter
 	private static final List<Integer> fairyStaff = ImmutableList.of(
 		ItemID.LUNAR_STAFF,
 		ItemID.LUNAR_STAFF__PT3,
@@ -1221,12 +1221,12 @@ public class ItemCollections
 		ItemID.ARMADYL_CROSSBOW,
 		ItemID.DRAGON_HUNTER_CROSSBOW
 	);
-  
-  @Getter
+
+	@Getter
 	private static final List<Integer> composts = ImmutableList.of(
 		ItemID.COMPOST,
 		ItemID.SUPERCOMPOST,
 		ItemID.ULTRACOMPOST,
 		ItemID.BOTTOMLESS_COMPOST_BUCKET_22997
-  );
+	);
 }

@@ -261,7 +261,7 @@ public class QuestOrders
 		//QuestHelperQuest.MORYTANIA_HARD,
 		//QuestHelperQuest.MORYTANIA_ELITE,
 		//QuestHelperQuest.VARROCK_HARD,
-		//QuestHelperQuest.VARROCK_ELITE,
+		//QuestHelperQuest.VARROCK_ELITE
 		//QuestHelperQuest.WESTERN_HARD,
 		//QuestHelperQuest.WESTERN_ELITE,
 		//QuestHelperQuest.WILDERNESS_HARD,

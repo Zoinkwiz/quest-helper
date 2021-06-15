@@ -419,8 +419,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		hammerHighlighted.setHighlightInInventory(true);
 		machete = new ItemRequirement("Any machete", ItemCollections.getMachete());
-		saw = new ItemRequirement("Saw", ItemID.SAW);
-		saw.addAlternates(ItemID.AMYS_SAW, ItemID.CRYSTAL_SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakAmulet.setTooltip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
 		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);

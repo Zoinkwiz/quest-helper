@@ -184,7 +184,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		mapleLog = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS);
 		oakLog = new ItemRequirement("Oak logs", ItemID.OAK_LOGS);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		saw = new ItemRequirement("Saw", ItemID.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlight = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlight.setHighlightInInventory(true);

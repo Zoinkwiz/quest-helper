@@ -263,7 +263,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		saw = new ItemRequirement("Saw", ItemID.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		boltOfCloth = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH);
 		mahogPlanks5 = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK, 5);
 		cadavaBerries = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);

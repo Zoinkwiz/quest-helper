@@ -593,8 +593,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted.setHighlightInInventory(true);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		saw = new ItemRequirement("Saw", ItemID.SAW);
-		saw.addAlternates(ItemID.CRYSTAL_SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		pickaxeHighlighted.setHighlightInInventory(true);

@@ -135,16 +135,16 @@ public class KaramjaHard extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notBecomeChampion = new VarbitRequirement(3600, false, 1);
-		notKilledZek = new VarbitRequirement(3601, false, 1);
-		notEatenWrap = new VarbitRequirement(3602, false, 1);
-		notCraftedNature = new VarbitRequirement(3603, false, 1);
-		notCookedKarambwan = new VarbitRequirement(3604, false, 1);
-		notKilledDeathwing = new VarbitRequirement(3605, false, 1);
-		notUsedShortcut = new VarbitRequirement(3606, false, 1);
-		notCollectedLeaves = new VarbitRequirement(3607, false, 5);
-		notAssignedTask = new VarbitRequirement(3608, false, 1);
-		notKilledDragon = new VarbitRequirement(3609, false, 1);
+		notBecomeChampion = new VarbitRequirement(3600, 0);
+		notKilledZek = new VarbitRequirement(3601, 0);
+		notEatenWrap = new VarbitRequirement(3602, 0);
+		notCraftedNature = new VarbitRequirement(3603, 0);
+		notCookedKarambwan = new VarbitRequirement(3604, 0);
+		notKilledDeathwing = new VarbitRequirement(3605, 0);
+		notUsedShortcut = new VarbitRequirement(3606, 0);
+		notCollectedLeaves = new VarbitRequirement(3607, 4, Operation.LESS_EQUAL);
+		notAssignedTask = new VarbitRequirement(3608, 0);
+		notKilledDragon = new VarbitRequirement(3609, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notKilledDeathwing);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notKilledDragon);
@@ -324,7 +324,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Tzhaar!", Arrays.asList(cookKarambwan, becomeChampion, defeatZek),
+		allSteps.add(new PanelDetails("Tzhaar!", Arrays.asList(becomeChampion, defeatZek, cookKarambwan),
 			fightCaveCombatGear, rawKarambwan));
 		allSteps.add(new PanelDetails("West Karamja",
 			Arrays.asList(enterBrimhavenDungeon, killDragon, craftNatureRune, getTask), combatGear, antidragonShield,

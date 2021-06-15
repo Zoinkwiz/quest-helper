@@ -27,6 +27,7 @@ package com.questhelper.quests.thegreatbrainrobbery;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -214,7 +215,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		divingApparatus.setTooltip("You can get another from Murphy in Port Khazard");
 		woodenCats = new ItemRequirement("Wooden cat", ItemID.WOODEN_CAT);
 		oakPlank = new ItemRequirement("Oak plank", ItemID.OAK_PLANK);
-		saw = new ItemRequirement("Saw", ItemID.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		fur = new ItemRequirement("Fur", ItemID.FUR);
 		fur.addAlternates(ItemID.BEAR_FUR, ItemID.GREY_WOLF_FUR);
@@ -540,7 +541,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new QuestRequirement(QuestHelperQuest.CREATURE_OF_FENKENSTRAIN, QuestState.FINISHED));
-		reqs.add(new QuestRequirement(QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE, QuestState.FINISHED));
+		reqs.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE.getId(),
+			Operation.GREATER_EQUAL, 110, "Finished RFD - Pirate Pete"));
 		reqs.add(new QuestRequirement(QuestHelperQuest.RUM_DEAL, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.CABIN_FEVER, QuestState.FINISHED));
 

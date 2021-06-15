@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -55,6 +56,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -258,7 +261,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		talkToCook = new AskAboutFishCake(this);
 		talkToCook.addSubSteps(enterKitchen);
 		usePestleOnCod = new DetailedQuestStep(this, "Use a pestle and mortar on a raw cod.", pestleHighlighted, rawCodHighlighted);
-		useKnifeOnBread = new DetailedQuestStep(this, "Use a knife on some bread.", knifeHighlighted, breadHighlighted);
+		useKnifeOnBread = new DetailedQuestStep(this, "Use a knife on some bread and make BREADCRUMBS.", knifeHighlighted, breadHighlighted);
 		talkToMurphy = new NpcStep(this, NpcID.MURPHY, new WorldPoint(2664, 3160, 0), "Talk to Murphy in Port Khazard.", fishBowl);
 		talkToMurphy.addDialogStep("Talk about Recipe for Disaster.");
 		talkToMurphyAgain = new NpcStep(this, NpcID.MURPHY, new WorldPoint(2664, 3160, 0), "Talk to Murphy again.", fishBowl);
@@ -304,7 +307,12 @@ public class RFDPiratePete extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(combatGear);
+		ArrayList<ItemRequirement> req = new ArrayList<>();
+		req.add(combatGear);
+		req.add(new ItemRequirement("Teleport to Watchtower", ItemID.WATCHTOWER_TELEPORT));
+		req.add(new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT));
+
+		return req;
 	}
 
 	@Override

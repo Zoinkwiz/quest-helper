@@ -195,7 +195,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		talkToSphinx.addDialogStep("Ask the Sphinx for help for Bob.");
 		useRake = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Rake Unferth's patch", rake);
 		useRake.addIcon(ItemID.RAKE);
-		plantSeeds = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch", dibber, potatoSeed4);
+		plantSeeds = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch. These can take 15-35 minutes to grow.", dibber, potatoSeed4);
 		plantSeeds.addIcon(ItemID.POTATO_SEED);
 		makeBed = new ObjectStep(this, NullObjectID.NULL_9438, new WorldPoint(2917, 3557, 0), "Make Unferth's bed.");
 		useLogsOnFireplace = new ObjectStep(this, NullObjectID.NULL_9442, new WorldPoint(2919, 3557, 0), "Use logs on Unferth's fireplace", logs);

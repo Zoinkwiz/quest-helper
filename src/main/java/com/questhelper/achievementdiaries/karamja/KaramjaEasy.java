@@ -34,6 +34,7 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -104,16 +105,16 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	{
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 
-		notPickedBananas = new VarbitRequirement(3566, false, 5);
-		notSwungOnRope = new VarbitRequirement(3567, false, 1);
-		notMinedGold = new VarbitRequirement(3568, false, 1);
-		notGoneToSarim = new VarbitRequirement(3569, false, 1);
-		notGoneToArdougne = new VarbitRequirement(3570, false, 1);
-		notGoneToCairn = new VarbitRequirement(3571, false, 1);
-		notFished = new VarbitRequirement(3572, false, 1);
-		notPickedUpSeaweed = new VarbitRequirement(3573, false, 5);
-		notEnteredFightCave = new VarbitRequirement(3574, false, 1);
-		notKilledJogre = new VarbitRequirement(3575, false, 1);
+		notPickedBananas = new VarbitRequirement(3566, 4, Operation.LESS_EQUAL);
+		notSwungOnRope = new VarbitRequirement(3567, 0);
+		notMinedGold = new VarbitRequirement(3568, 0);
+		notGoneToSarim = new VarbitRequirement(3569, 0);
+		notGoneToArdougne = new VarbitRequirement(3570, 0);
+		notGoneToCairn = new VarbitRequirement(3571, 0);
+		notFished = new VarbitRequirement(3572, 0);
+		notPickedUpSeaweed = new VarbitRequirement(3573, 4, Operation.LESS_EQUAL);
+		notEnteredFightCave = new VarbitRequirement(3574, 0);
+		notKilledJogre = new VarbitRequirement(3575, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMinedGold);
 		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(new Conditions(LogicType.OR,

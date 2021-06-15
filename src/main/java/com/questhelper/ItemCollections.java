@@ -1110,4 +1110,12 @@ public class ItemCollections
 		ItemID.RAW_ANGLERFISH,
 		ItemID.RAW_DARK_CRAB
 	);
+
+	@Getter
+	private static final List<Integer> composts = ImmutableList.of(
+		ItemID.COMPOST,
+		ItemID.SUPERCOMPOST,
+		ItemID.ULTRACOMPOST,
+		ItemID.BOTTOMLESS_COMPOST_BUCKET_22997
+	);
 }

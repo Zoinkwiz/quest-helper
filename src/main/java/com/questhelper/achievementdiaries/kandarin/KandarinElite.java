@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2021, Obasill <https://github.com/Obasill>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -177,16 +177,16 @@ public class KandarinElite extends ComplexStateQuestHelper
     {
         tpCath = new DetailedQuestStep(this, "Teleport to Catherby.", lunarBook, waterRune.quantity(10), astralRune.quantity(3), lawRune.quantity(3));
         plantDwarf = new ObjectStep(this, 8151, new WorldPoint(2814, 3464, 0),
-                "Rake the patch and plant the Dwarf weed seed, don't forget to compost!");
+                "Rake the patch and plant the Dwarf weed seed, don't forget to compost!", rake, dwarfSeed, seedDib);
         plantDwarf.addIcon(ItemID.DWARF_WEED_SEED);
         waitDwarf = new DetailedQuestStep(this, "Wait for the Dwarf weed to grow.");
         pickDwarf = new ObjectStep(this, 39801, new WorldPoint(2813, 3463, 0),
                 "Pick the Dwarf weed.");
         catch5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1519, new WorldPoint(2837, 3431, 0),
-                "Catch 5 sharks.", harpoon);
+                "Catch 5 sharks in Catherby.", harpoon);
         catch5Sharks.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
         cook5Sharks = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2818, 3444, 0),
-                "Cook 5 sharks.", cookingGaunt.equipped(), rawShark.quantity(5));
+                "Cook 5 sharks at the nearby range.", cookingGaunt.equipped(), rawShark.quantity(5));
         moveToSeersRooftop = new ObjectStep(this, 14927, new WorldPoint(2729, 3489, 0),
                 "Climb on-top of Seers' Bank.");
         stamMix = new ItemStep(this, "Create a stamina mix.", stamPot.highlighted(), caviar.highlighted());
@@ -203,8 +203,9 @@ public class KandarinElite extends ComplexStateQuestHelper
                 "Click the blackboard!");
         barb52 = new ObjectStep(this, ObjectID.BLACKBOARD_20134, new WorldPoint(2587, 5264, 0),
                 "Click the blackboard!");
+
         claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
-                "Talk to the 'Wedge' infront of camelot castle to claim your reward!");
+                "Talk to the 'Wedge' in front of camelot castle to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary.");
     }
 
@@ -240,14 +241,14 @@ public class KandarinElite extends ComplexStateQuestHelper
     @Override
     public List<PanelDetails> getPanels() {
         List<PanelDetails> allSteps = new ArrayList<>();
-        allSteps.add(new PanelDetails("Teleport Catherby", Arrays.asList(tpCath), lunarDip, waterRune.quantity(10), lawRune.quantity(3), astralRune.quantity(3)));
-        allSteps.add(new PanelDetails("Dwarf Weed", Arrays.asList(plantDwarf, waitDwarf, pickDwarf), dwarfSeed, seedDib, rake, spade, compost));
-        allSteps.add(new PanelDetails("5 Sharks Caught and Cooked", Arrays.asList(catch5Sharks, cook5Sharks), familyCrest, harpoon, cookingGaunt));
-        allSteps.add(new PanelDetails("Stamina Mix", Arrays.asList(moveToSeersRooftop, stamMix), barbHerb, stamPot, caviar));
-        allSteps.add(new PanelDetails("Smith Rune Hasta", Arrays.asList(runeHasta), barbSmith, magicLogs.quantity(1), runiteBar, hammer));
-        allSteps.add(new PanelDetails("Magic Pyre Ship", Arrays.asList(pyre), barbFire, axe, tinderbox, magicLogs.quantity(1), chewedBone));
+        allSteps.add(new PanelDetails("Teleport to Catherby", Collections.singletonList(tpCath), lunarDip, waterRune.quantity(10), lawRune.quantity(3), astralRune.quantity(3)));
+        allSteps.add(new PanelDetails("Dwarf Weed in Catherby", Arrays.asList(plantDwarf, waitDwarf, pickDwarf), dwarfSeed, seedDib, rake, spade, compost));
+        allSteps.add(new PanelDetails("5 Sharks Caught and Cooked in Catherby", Arrays.asList(catch5Sharks, cook5Sharks), familyCrest, harpoon, cookingGaunt));
+        allSteps.add(new PanelDetails("Stamina Mix on the Bank", Arrays.asList(moveToSeersRooftop, stamMix), barbHerb, stamPot, caviar));
+        allSteps.add(new PanelDetails("Smith Rune Hasta", Collections.singletonList(runeHasta), barbSmith, magicLogs.quantity(1), runiteBar, hammer));
+        allSteps.add(new PanelDetails("Magic Pyre Ship", Collections.singletonList(pyre), barbFire, axe, tinderbox, magicLogs.quantity(1), chewedBone));
         allSteps.add(new PanelDetails("Level 5 each Role", Arrays.asList(barb5Heal, barb5Atk, barb5Def, barb5Col, barb5)));
-        allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
+        allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
         return allSteps;
     }

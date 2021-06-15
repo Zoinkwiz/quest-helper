@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2021, Obasill <https://github.com/Obasill>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -182,9 +182,9 @@ public class KandarinHard extends ComplexStateQuestHelper
         moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
                 "Enter the Taverly Dungeon.");
         moveToOb = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2842, 9824,0),
-                "Climb the ladder.");
+                "Climb the ladder.", dustyKey);
         waterOrb = new ObjectStep(this, 2151, new WorldPoint(2844, 3422, 0),
-                "Use charge water orb on the obelisk.");
+                "Use charge water orb on the obelisk.", waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
         waterOrb.addIcon(ItemID.WATER_ORB);
         seersRooftop = new ObjectStep(this, 14927, new WorldPoint(2729, 3489, 0),
                 "Complete a lap of the Seers' village Rooftop course.");
@@ -210,18 +210,18 @@ public class KandarinHard extends ComplexStateQuestHelper
                 "Smith an adamant spear.", addyBar, yewLogs);
         addySpear.addIcon(ItemID.ADAMANTITE_BAR);
         moveToWhirl = new ObjectStep(this, 25274, new WorldPoint(2512, 3508, 0),
-                "Jump in the whirl pool.");
+                "Jump in the whirl pool.", combatGear);
         moveToAncient2 = new ObjectStep(this, ObjectID.STAIRS_25338, new WorldPoint(1770, 5366, 1),
                 "Go down the stairs.");
         moveToAncient3 = new ObjectStep(this, ObjectID.STAIRS_25339, new WorldPoint(1778, 5345, 0),
                 "Go up the stairs.");
         mithrilDrag = new NpcStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1779, 5344, 1),
-                "Kill a mithril dragon.", true);
+                "Kill a mithril dragon.", true, combatGear, food);
         buyGranite = new NpcStep(this, NpcID.COMMANDER_CONNAD, new WorldPoint(2535, 3576, 0),
                 "Buy the granite body. (Requires at least 1 Penance Queen kill)", coins.quantity(95000));
 
         claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
-                "Talk to the 'Wedge' infront of camelot castle to claim your reward!");
+                "Talk to the 'Wedge' in front of camelot castle to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary.");
     }
 
@@ -236,7 +236,7 @@ public class KandarinHard extends ComplexStateQuestHelper
     public List<ItemRequirement> getItemRecommended()
     {
         //setup
-        return Arrays.asList(food);
+        return Collections.singletonList(food);
     }
 
     @Override
@@ -270,17 +270,17 @@ public class KandarinHard extends ComplexStateQuestHelper
     {
         List<PanelDetails> allSteps = new ArrayList<>();
         allSteps.add(new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb, waterOrb), waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey));
-        allSteps.add(new PanelDetails("Seers' Village Rooftop", Arrays.asList(seersRooftop)));
-        allSteps.add(new PanelDetails("Yew Longbow", Arrays.asList(yewLong, cutLongbow, stringBow), axe, bowString, knife));
-        allSteps.add(new PanelDetails("Piety", Arrays.asList(pietyCourt), knightWaves));
-        allSteps.add(new PanelDetails("Burn Maple", Arrays.asList(moveToSeers, burnMaple), barbFiremaking, mapleLogs, bow));
-        allSteps.add(new PanelDetails("Fancy Stone", Arrays.asList(fancyStone), coins.quantity(25000)));
-        allSteps.add(new PanelDetails("Shadow Hound", Arrays.asList(moveToShadow, shadowHound), desertTreasure, ringOfVis, combatGear, food));
-        allSteps.add(new PanelDetails("Fish Leaping Sturgeon", Arrays.asList(catchStur), barbFishing, barbRod, feather));
-        allSteps.add(new PanelDetails("Smith Adamant Spear", Arrays.asList(addySpear), barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer));
-        allSteps.add(new PanelDetails("Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2, moveToAncient3, mithrilDrag), barbFiremaking, combatGear, food));
-        allSteps.add(new PanelDetails("Granite Body", Arrays.asList(buyGranite), coins.quantity(95000), combatGear));
-        allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
+        allSteps.add(new PanelDetails("Seers' Village Rooftop", Collections.singletonList(seersRooftop)));
+        allSteps.add(new PanelDetails("Yew Longbow from Scratch", Arrays.asList(yewLong, cutLongbow, stringBow), axe, bowString, knife));
+        allSteps.add(new PanelDetails("Piety in the Courthouse", Collections.singletonList(pietyCourt), knightWaves));
+        allSteps.add(new PanelDetails("Burn Maple logs with a bow", Arrays.asList(moveToSeers, burnMaple), barbFiremaking, mapleLogs, bow));
+        allSteps.add(new PanelDetails("Fancy Stone Decoration", Collections.singletonList(fancyStone), coins.quantity(25000)));
+        allSteps.add(new PanelDetails("Kill a Shadow Hound", Arrays.asList(moveToShadow, shadowHound), desertTreasure, ringOfVis, combatGear, food));
+        allSteps.add(new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchStur), barbFishing, barbRod, feather));
+        allSteps.add(new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear), barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer));
+        allSteps.add(new PanelDetails("kill a Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2, moveToAncient3, mithrilDrag), barbFiremaking, combatGear, food));
+        allSteps.add(new PanelDetails("Purchase Granite Body", Collections.singletonList(buyGranite), coins.quantity(95000), combatGear));
+        allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
         return allSteps;
     }

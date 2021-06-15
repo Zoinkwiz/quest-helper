@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2021, Obasill <https://github.com/Obasill>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -148,8 +148,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
                 "Buy a candle from the candle maker.", coins.quantity(3));
         petFish = new NpcStep(this, NpcID.HARRY, new WorldPoint(2833, 3443, 0),
                 "Speak with harry to get a pet fish.", fishBowlSeaweed, coins.quantity(10));
-        petFish.addDialogStep("Can I get a fish for this bowl?");
-        petFish.addDialogStep("I'll take it!");
+        petFish.addDialogSteps("Can I get a fish for this bowl?", "I'll take it!");
         petFishMix = new ItemStep(this, "Put seaweed into the fishbowl.", fishBowl.highlighted(), seaweed.highlighted());
         petFishFish = new ObjectStep(this, 10091, new WorldPoint(2831, 3445, 0),
                 "Fish in the aquarium");
@@ -161,13 +160,10 @@ public class KandarinEasy extends ComplexStateQuestHelper
                 "With battered key in inventory, go through the wall then go down the staircase.", batteredKey);
         killEle = new NpcStep(this, NpcID.FIRE_ELEMENTAL, new WorldPoint(2719, 9889, 0),
                 "Kill one of each elemental.", combatGear, food);
-        killEle.addAlternateNpcs(NpcID.WATER_ELEMENTAL);
-        killEle.addAlternateNpcs(NpcID.EARTH_ELEMENTAL);
-        killEle.addAlternateNpcs(NpcID.AIR_ELEMENTAL);
+        killEle.addAlternateNpcs(NpcID.WATER_ELEMENTAL, NpcID.AIR_ELEMENTAL, NpcID.EARTH_ELEMENTAL);
         buyStew = new NpcStep(this, NpcID.BARTENDER_1318, new WorldPoint(2691, 3494, 0),
                 "Speak with the bartender and buy a stew.", coins.quantity(20));
-        buyStew.addDialogStep("What do you have?");
-        buyStew.addDialogStep("Could I have some stew please?");
+        buyStew.addDialogSteps("What do you have?", "Could I have some stew please?");
         playOrgan = new ObjectStep(this, ObjectID.CHURCH_ORGAN_25818, new WorldPoint(2692, 3463, 0),
                 "Play the organ.");
         plantJute = new ObjectStep(this, 8176, new WorldPoint(2669, 3523, 0),
@@ -179,7 +175,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
                 "Cross the log shortcut.");
 
         claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
-                "Talk to the 'Wedge' infront of camelot castle to claim your reward!");
+                "Talk to the 'Wedge' in front of camelot castle to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary.");
     }
 
@@ -192,7 +188,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
     @Override
     public List<ItemRequirement> getItemRecommended()
     {
-        return Arrays.asList(food);
+        return Collections.singletonList(food);
     }
 
 
@@ -217,18 +213,18 @@ public class KandarinEasy extends ComplexStateQuestHelper
     public List<PanelDetails> getPanels()
     {
         List<PanelDetails> allSteps = new ArrayList<>();
-        allSteps.add(new PanelDetails("Catch Makerel", Arrays.asList(catchMackerel)));
-        allSteps.add(new PanelDetails("Buy Candle", Arrays.asList(buyCandle)));
-        allSteps.add(new PanelDetails("Pet Fish", Arrays.asList(petFishMix, petFish, petFishFish), coins.quantity(10), fishBowl, seaweed));
-        allSteps.add(new PanelDetails("Collect Flax", Arrays.asList(collectFlax)));
-        allSteps.add(new PanelDetails("Sherlock", Arrays.asList(talkSherlock)));
+        allSteps.add(new PanelDetails("Catch a Makerel", Collections.singletonList(catchMackerel)));
+        allSteps.add(new PanelDetails("Buy a Candle", Collections.singletonList(buyCandle)));
+        allSteps.add(new PanelDetails("Get a Pet Fish", Arrays.asList(petFishMix, petFish, petFishFish), coins.quantity(10), fishBowl, seaweed));
+        allSteps.add(new PanelDetails("Collect 5 Flax", Collections.singletonList(collectFlax)));
+        allSteps.add(new PanelDetails("Talk to Sherlock", Collections.singletonList(talkSherlock)));
         allSteps.add(new PanelDetails("Defeat Elementals", Arrays.asList(moveToWorkshop, killEle), eleWorkI, combatGear, food));
-        allSteps.add(new PanelDetails("Play Church Organ", Arrays.asList(playOrgan)));
-        allSteps.add(new PanelDetails("Plant Jute", Arrays.asList(plantJute), juteSeed.quantity(3), seedDibber, rake));
-        allSteps.add(new PanelDetails("Buy Stew", Arrays.asList(buyStew), coins.quantity(20)));
-        allSteps.add(new PanelDetails("Cut of Tea", Arrays.asList(cupTea)));
-        allSteps.add(new PanelDetails("Log Shortcut", Arrays.asList(logShortcut)));
-        allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
+        allSteps.add(new PanelDetails("Play the Church Organ", Collections.singletonList(playOrgan)));
+        allSteps.add(new PanelDetails("Plant Jute", Collections.singletonList(plantJute), juteSeed.quantity(3), seedDibber, rake));
+        allSteps.add(new PanelDetails("Buy Stew", Collections.singletonList(buyStew), coins.quantity(20)));
+        allSteps.add(new PanelDetails("Cup of Tea with Galahad", Collections.singletonList(cupTea)));
+        allSteps.add(new PanelDetails("Log Shortcut", Collections.singletonList(logShortcut)));
+        allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
         return allSteps;
     }

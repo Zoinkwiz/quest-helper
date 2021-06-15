@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2021, Obasill <https://github.com/Obasill>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -213,8 +213,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
                 "Enter the waterfall dungeon.", rope);
         fireGiant = new NpcStep(this, NpcID.FIRE_GIANT_2080, new WorldPoint(2566, 9887, 0),
                 "Kill a Fire giant.", true);
-        fireGiant.addAlternateNpcs(NpcID.FIRE_GIANT_2079);
-        fireGiant.addAlternateNpcs(NpcID.FIRE_GIANT_2078);
+        fireGiant.addAlternateNpcs(NpcID.FIRE_GIANT_2079, NpcID.FIRE_GIANT_2078);
         moveToWorkshop = new ObjectStep(this, ObjectID.STAIRCASE_3415, new WorldPoint(2711, 3498, 0),
                 "With battered key in inventory, go through the wall then go down the staircase.", batteredKey);
         mindHelm = new ObjectStep(this, 123, new WorldPoint(2719, 9889, 0),
@@ -237,7 +236,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
         superAnti = new ItemStep(this,
                 "Create superantipoision.", hornDust.highlighted(), unfIrit.highlighted());
         plantLimp = new ObjectStep(this, 7848, new WorldPoint(2810, 3464, 0),
-                "Rake the patch and plant the Limpwurt seed, don't forget to compost!");
+                "Rake the patch and plant the Limpwurt seed, don't forget to compost!", rake, seedDib, limpSeed.quantity(1));
         plantLimp.addIcon(ItemID.LIMPWURT_SEED);
         waitLimp = new DetailedQuestStep(this, "Wait for the Limpwurt to grow.");
         pickLimp = new ObjectStep(this, ObjectID.LIMPWURT_PLANT_7855, new WorldPoint(2809, 3463, 0),
@@ -247,11 +246,11 @@ public class KandarinMedium extends ComplexStateQuestHelper
         catchBass.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
         cookBass = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2818, 3444, 0),
                 "Cook the bass.", rawBass);
-        travelMcGrubor = new DetailedQuestStep(this, "Take any fairy ring to McGrubor's Woods (ALS)", staff.equipped());
+        travelMcGrubor = new DetailedQuestStep(this, "Take a fairy ring to McGrubor's Woods (ALS)", staff.equipped());
         tpCAM = new DetailedQuestStep(this, "Teleport to Camelot", lawRune.quantity(1), airRune.quantity(5), normalBook);
 
         claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
-                "Talk to the 'Wedge' infront of camelot castle to claim your reward!");
+                "Talk to the 'Wedge' in front of camelot castle to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary.");
     }
 
@@ -264,7 +263,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
     @Override
     public List<ItemRequirement> getItemRecommended()
     {
-        return Arrays.asList(food);
+        return Collections.singletonList(food);
     }
 
     @Override
@@ -297,20 +296,20 @@ public class KandarinMedium extends ComplexStateQuestHelper
         List<PanelDetails> allSteps = new ArrayList<>();
 
         allSteps.add(new PanelDetails("Grapple from Water Obelisk", Arrays.asList(moveToTavDungeon, moveToOb, grapOb), mithGrap, crossbow, dustyKey));
-        allSteps.add(new PanelDetails("Pick Limpwurt", Arrays.asList(plantLimp, waitLimp, pickLimp), limpSeed, seedDib, compost, rake));
-        allSteps.add(new PanelDetails("String Maple Shortbow", Arrays.asList(moveToBank, stringMaple), mapleUnstrung, bowString));
+        allSteps.add(new PanelDetails("Pick Limpwurt in Catherby", Arrays.asList(plantLimp, waitLimp, pickLimp), limpSeed, seedDib, compost, rake));
+        allSteps.add(new PanelDetails("String Maple Shortbow in Seers' Bank", Arrays.asList(moveToBank, stringMaple), mapleUnstrung, bowString));
         allSteps.add(new PanelDetails("Catch and Cook Bass", Arrays.asList(catchBass, cookBass), bigFishingNet));
         allSteps.add(new PanelDetails("Mix Superantipoison", Arrays.asList(moveToSeersCath, mixUnf, crushHorn, superAnti), unicornHorn, mortarPest, vialOfWater, iritLeaf));
-        allSteps.add(new PanelDetails("Make mind helm", Arrays.asList(mindHelm), eleWorkII, primedMind, batteredKey, beatenBook, hammer));
-        allSteps.add(new PanelDetails("Enter Range Guild", Arrays.asList(enterRange)));
-        allSteps.add(new PanelDetails("Steal from Chest", Arrays.asList(stealHemen), lockpick));
-        allSteps.add(new PanelDetails("Mine Coal", Arrays.asList(mineCoal)));
-        allSteps.add(new PanelDetails("Kill Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest, combatGear, food));
-        allSteps.add(new PanelDetails("Barbarian Agility Course", Arrays.asList(barbAgi), alfredBar));
-        allSteps.add(new PanelDetails("Barbarian Assault Wave", Arrays.asList(barbAss)));
-        allSteps.add(new PanelDetails("Fairy Ring to McGrubor's Woods", Arrays.asList(travelMcGrubor), fairyTaleII, staff));
-        allSteps.add(new PanelDetails("Teleport to Camelot", Arrays.asList(tpCAM), lawRune.quantity(1), airRune.quantity(5), normalBook));
-        allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
+        allSteps.add(new PanelDetails("Make a Mind Helm", Collections.singletonList(mindHelm), eleWorkII, primedMind, batteredKey, beatenBook, hammer));
+        allSteps.add(new PanelDetails("Enter the Ranging Guild", Collections.singletonList(enterRange)));
+        allSteps.add(new PanelDetails("Steal from Hemenster Chest", Collections.singletonList(stealHemen), lockpick));
+        allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal)));
+        allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest, combatGear, food));
+        allSteps.add(new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi), alfredBar));
+        allSteps.add(new PanelDetails("Barbarian Assault Wave", Collections.singletonList(barbAss)));
+        allSteps.add(new PanelDetails("Fairy Ring to McGrubor's Woods", Collections.singletonList(travelMcGrubor), fairyTaleII, staff));
+        allSteps.add(new PanelDetails("Teleport to Camelot", Collections.singletonList(tpCAM), lawRune.quantity(1), airRune.quantity(5), normalBook));
+        allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
         return allSteps;
     }

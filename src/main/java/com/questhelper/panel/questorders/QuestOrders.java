@@ -147,7 +147,7 @@ public class QuestOrders
 		QuestHelperQuest.FALADOR_EASY,
 		//QuestHelperQuest.LUMBRIDGE_EASY,
 		//QuestHelperQuest.MORYTANIA_EASY,
-		//QuestHelperQuest.VARROCK_EASY,
+		QuestHelperQuest.VARROCK_EASY,
 		QuestHelperQuest.THE_TOURIST_TRAP,
 		QuestHelperQuest.SPIRITS_OF_THE_ELID,
 		QuestHelperQuest.THE_FREMENNIK_TRIALS,
@@ -181,7 +181,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE,
 		QuestHelperQuest.THE_EYES_OF_GLOUPHRIE,
 		//QuestHelperQuest.BALLOON_TRANSPORT_VARROCK - Placeholder for later addition.
-		//QuestHelperQuest.VARROCK_MEDIUM,
+		QuestHelperQuest.VARROCK_MEDIUM,
 		QuestHelperQuest.OLAFS_QUEST,
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
 		QuestHelperQuest.TEARS_OF_GUTHIX,
@@ -251,15 +251,15 @@ public class QuestOrders
 		//QuestHelperQuest.KANDARIN_HARD,
 		//QuestHelperQuest.KANDARIN_ELITE,
 		QuestHelperQuest.KARAMJA_HARD,
-		QuestHelperQuest.KARAMJA_ELITE
+		QuestHelperQuest.KARAMJA_ELITE,
 		//QuestHelperQuest.KOUREND_HARD,
 		//QuestHelperQuest.KOUREND_ELITE,
 		//QuestHelperQuest.LUMBRIDGE_HARD,
 		//QuestHelperQuest.LUMBRIDGE_ELITE,
 		//QuestHelperQuest.MORYTANIA_HARD,
 		//QuestHelperQuest.MORYTANIA_ELITE,
-		//QuestHelperQuest.VARROCK_HARD,
-		//QuestHelperQuest.VARROCK_ELITE,
+		QuestHelperQuest.VARROCK_HARD,
+		QuestHelperQuest.VARROCK_ELITE
 		//QuestHelperQuest.WESTERN_HARD,
 		//QuestHelperQuest.WESTERN_ELITE,
 		//QuestHelperQuest.WILDERNESS_HARD,

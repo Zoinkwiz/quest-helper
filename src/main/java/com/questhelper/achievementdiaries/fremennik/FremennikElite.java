@@ -372,13 +372,13 @@ public class FremennikElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Rellekka Rooftops", Arrays.asList(rellRooftop)));
+		allSteps.add(new PanelDetails("Rellekka Rooftops", Collections.singletonList(rellRooftop)));
 		allSteps.add(new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain, moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy, pureEss.quantity(28)));
 		allSteps.add(new PanelDetails("Dragonstone Amulet", Arrays.asList(moveToNeit, dragonAmulet), fremIsles, dragonstone, goldBar, amuletMould));
 		allSteps.add(new PanelDetails("Kill Dagannoth Kings", Arrays.asList(moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave12, moveToDagCave13, moveToDagKings, dagKings), combatGear, thrownaxe, petRock));
 		allSteps.add(new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWars, godwarsGenerals), trollStronghold, combatGear, rope.quantity(2), climbingBoots, hammer, mithGrap, crossbow));
 		allSteps.add(new PanelDetails("Slay Spiritual Mage", Arrays.asList(moveToGodWars, spiritualMage), trollStronghold, combatGear, rope.quantity(1), climbingBoots));
-		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(claimReward)));
+		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
 		return allSteps;
 	}

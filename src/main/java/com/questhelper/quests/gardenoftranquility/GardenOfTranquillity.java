@@ -378,10 +378,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEllamaria = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllamaria = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 			"Talk to Ellamaria east of Varrock Castle.");
 		talkToEllamaria.addDialogStep("I would be happy to help someone who is so in touch with the people.");
-		talkToEllamariaForTrolley = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllamariaForTrolley = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 			"Talk to Ellamaria for a trolley.");
 		talkToEllamariaForTrolley.addDialogSteps("How am I supposed to move statues all the way here?");
 		talkToWom = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3089, 3254, 0),
@@ -575,7 +575,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			new WorldPoint(3230, 3479, 0)
 		)));
 
-		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 		"Talk to Ellamaria once everything's finished growing.");
 		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3221, 3473, 0),
 			"Talk to King Roald in Varrock Castle, watch the cutscene, then finish the dialog with Ellmaria to finish" +

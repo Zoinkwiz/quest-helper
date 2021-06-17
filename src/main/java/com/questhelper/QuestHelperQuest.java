@@ -198,6 +198,7 @@ public enum QuestHelperQuest
 	SINS_OF_THE_FATHER(1276, "Sins of the Father", QuestVarbits.QUEST_SINS_OF_THE_FATHER, Quest.Type.P2P, Quest.Difficulty.MASTER),
 	GETTING_AHEAD(752, "Getting Ahead", QuestVarbits.QUEST_GETTING_AHEAD, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest", QuestVarbits.QUEST_A_PORCINE_OF_INTEREST, Quest.Type.P2P, Quest.Difficulty.NOVICE),
+	A_KINGDOM_DIVIDED(2971, "A Kingdom Divided", QuestVarbits.QUEST_A_KINGDOM_DIVIDED, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss", QuestVarPlayer.QUEST_ENTER_THE_ABYSS, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),

@@ -110,7 +110,6 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		doMedium.addStep(new Conditions(notMineGold, inRiverArea), moveToCannon);
 		doMedium.addStep(new Conditions(notMineGold, inCaveArea), moveToRiver);
 		doMedium.addStep(notMineGold, moveToCave);
-		doMedium.addStep(notPetRockPOH, petRockPOH);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave15), lighthouse);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave14), moveToDagCave15);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave13), moveToDagCave14);
@@ -132,6 +131,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave), dropPetRock);
 		doMedium.addStep(new Conditions(notLighthouse, inWaterbirthIsland), moveToDagCave);
 		doMedium.addStep(notLighthouse, moveToWaterbirth);
+		doMedium.addStep(notPetRockPOH, petRockPOH);
 
 
 		return doMedium;
@@ -345,7 +345,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		lighthouse = new ObjectStep(this, ObjectID.LADDER_10194, new WorldPoint(1975, 4408, 3),
 			"Continue through the cave.", protectMelee);
 		petRockPOH = new DetailedQuestStep(this,
-			"Use a pet rock on your Menagerie in your player owned house and then pick it up off the GROUND.");
+			"Use a pet rock on your pet house in your menagerie in your player owned house and then pick it up off the GROUND.");
 
 		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
 			"Talk to Fossegrimen south of Rellekka to claim your reward!", petRock);

@@ -179,12 +179,12 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToMori = new NpcStep(this, NpcID.MORI, new WorldPoint(1698, 3742, 0), "Talk to Mori in Arceuus.");
-		talkToMori.addDialogSteps("What can I do to help?", "We should let someone know about this.",
+		talkToMori.addDialogSteps("What can I do to help?", "We should let someone know about this.","Yes.",
 			"Of course I'll help.");
 
 		goUpToAndrews = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(1616, 3681, 0),
 			"Talk to Councillor Andrews in Kourend Castle.");
-		talkToAndrews = new NpcStep(this, NpcID.COUNCILLOR_ANDREWS, new WorldPoint(1620, 3673, 1),
+		talkToAndrews = new NpcStep(this, NpcID.COUNCILLOR_ANDREWS_11152, new WorldPoint(1620, 3673, 1),
 			"Talk to Councillor Andrews in Kourend Castle.");
 		talkToAndrews.addDialogStep("There's been a death in Arceuus.");
 		talkToAndrews.addSubSteps(goUpToAndrews);

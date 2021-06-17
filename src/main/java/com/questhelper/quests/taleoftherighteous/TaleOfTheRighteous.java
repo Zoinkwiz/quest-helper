@@ -186,7 +186,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	{
 		archive = new Zone(new WorldPoint(1538, 10210, 0), new WorldPoint(1565, 10237, 0));
 		puzzleRoom = new Zone(new WorldPoint(1563, 10186, 0), new WorldPoint(1591, 10213, 0));
-		shiroRoom = new Zone(new WorldPoint(1539, 3525, 1), new WorldPoint(1563, 3541, 1));
+		shiroRoom = new Zone(new WorldPoint(1480, 3640, 1), new WorldPoint(1489, 3631, 1));
 		cavern = new Zone(new WorldPoint(1157, 9928, 0), new WorldPoint(1205, 9977, 0));
 	}
 
@@ -209,8 +209,9 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToPhileas = new NpcStep(this, NpcID.PHILEAS_RIMOR, new WorldPoint(1513, 3631, 0), "Talk to Phileas Rimor in Shayzien.");
+		talkToPhileas = new NpcStep(this, NpcID.PHILEAS_RIMOR, new WorldPoint(1542, 3570, 0), "Talk to Phileas Rimor in Shayzien.");
 		talkToPhileas.addDialogStep("Do you need help with anything?");
+		talkToPhileas.addDialogStep("Yes.");
 		talkToPhileas.addDialogStep("What do you need?");
 		teleportToArchive = new NpcStep(this, NpcID.ARCHEIO, new WorldPoint(1625, 3808, 0), "Bring a melee weapon, " +
 			"ranged weapon, and runes for magic attacks and teleport with Archeio in the Arceuus Library.", rangedWeapon, runesForCombat);
@@ -235,12 +236,12 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		investigateSkeleton = new ObjectStep(this, ObjectID.SKELETON_31962, new WorldPoint(1577, 10213, 0),
 			"Investigate the skeleton in the north cell.");
 
-		talkToPhileasAgain = new NpcStep(this, NpcID.PHILEAS_RIMOR, new WorldPoint(1513, 3631, 0),
+		talkToPhileasAgain = new NpcStep(this, NpcID.PHILEAS_RIMOR, new WorldPoint(1542, 3570, 0),
 			"Report back to Phileas Rimor in Shayzien.");
-		goUpToShiro = new ObjectStep(this, ObjectID.STAIRS_27203, new WorldPoint(1545, 3537, 0),
-			"Talk to Shiro upstairs in the tent in the south east of Shayzien.");
-		talkToShiro = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN, new WorldPoint(1560, 3534, 1),
-			"Talk to Shiro upstairs in the tent in the south east of Shayzien.");
+		goUpToShiro = new ObjectStep(this, ObjectID.LADDER_42207, new WorldPoint(1481, 3633, 0),
+			"Talk to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
+		talkToShiro = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_11038, new WorldPoint(1484, 3634, 1),
+			"Talk to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
 		talkToShiro.addSubSteps(goUpToShiro);
 
 		talkToDuffy = new NpcStep(this, NpcID.HISTORIAN_DUFFY_8163, new WorldPoint(1278, 3561, 0),
@@ -274,16 +275,16 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 			"Talk to Historian Duffy near the Unstable Altar.");
 		talkToGnosi = new NpcStep(this, NpcID.GNOSI, new WorldPoint(1172, 9929, 0),
 			"Talk to Gnosi near the Unstable Altar.");
-		returnUpToShiro = new ObjectStep(this, ObjectID.STAIRS_27203, new WorldPoint(1545, 3537, 0),
-			"Return to Shiro upstairs in the tent in the south east of Shayzien.");
-		returnToShiro = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN, new WorldPoint(1560, 3534, 1),
-			"Return to Shiro upstairs in the tent in the south east of Shayzien.");
+		returnUpToShiro = new ObjectStep(this, ObjectID.LADDER_42207, new WorldPoint(1481, 3633, 0),
+			"Return to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
+		returnToShiro = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_11038, new WorldPoint(1484, 3634, 1),
+			"Return to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
 		returnToShiro.addSubSteps(returnUpToShiro);
-		returnToPhileasTent = new DetailedQuestStep(this, new WorldPoint(1513, 3631, 0), "Go to Phileas Rimor's tent in central Shayzien.");
-		goUpToShrioToFinish = new ObjectStep(this, ObjectID.STAIRS_27203, new WorldPoint(1545, 3537, 0),
-			"Return to Shiro upstairs in the tent in the south east of Shayzien to complete the quest.");
-		finishQuest = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN, new WorldPoint(1560, 3534, 1),
-			"Return to Shiro upstairs in the tent in the south east of Shayzien to complete the quest.");
+		returnToPhileasTent = new DetailedQuestStep(this, new WorldPoint(1542, 3570, 0), "Return to Phileas Rimor's house in Shayzien.");
+		goUpToShrioToFinish = new ObjectStep(this, ObjectID.LADDER_42207, new WorldPoint(1481, 3633, 0),
+			"Return to Shiro upstairs in the War Tent in west Shayzien to complete the quest.");
+		finishQuest = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_11038, new WorldPoint(1484, 3634, 1),
+			"Return to Shiro upstairs in the War Tent in west Shayzien to complete the quest.");
 		finishQuest.addSubSteps(goUpToShrioToFinish);
 	}
 

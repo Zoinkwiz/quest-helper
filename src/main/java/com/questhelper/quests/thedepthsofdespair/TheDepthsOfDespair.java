@@ -180,7 +180,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToLordKandur = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS, new WorldPoint(1782, 3572, 0),
+		talkToLordKandur = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0),
 			"Talk to Lord Kandur Hosidius in the house west of the vinery.");
 		talkToLordKandur.addDialogSteps("Anything I can help you with?", "Yes.");
 
@@ -214,7 +214,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		searchChest = new ObjectStep(this, ObjectID.CHEST_31703, "Search the chest.");
 
-		talkToLordKandurAgain = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS, new WorldPoint(1782, 3572, 0),
+		talkToLordKandurAgain = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0),
 			"Return to Lord Kandur Hosidius and talk to him.");
 	}
 

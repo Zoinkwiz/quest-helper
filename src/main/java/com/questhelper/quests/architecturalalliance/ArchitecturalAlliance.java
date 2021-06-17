@@ -117,9 +117,9 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		talkToPiliar = new NpcStep(this, NpcID.PILIAR, new WorldPoint(1794, 3737, 0),
 			"Talk to Piliar in the house north west of the Piscarilius general store.");
 		talkToLovada = new NpcStep(this, NpcID.LOVADA, new WorldPoint(1485, 3834, 0),
-			"Talk to Lovada in their home just south of the Blast Mine in Lovajengj.");
-		talkToShayda = new NpcStep(this, NpcID.SHAYDA, new WorldPoint(1495, 3631, 0),
-			"Talk to Shayda north of the Shayzien bank.");
+			"Talk to Lovada in their home just south of the Blast Mine in Lovakengj.");
+		talkToShayda = new NpcStep(this, NpcID.SHAYDA, new WorldPoint(1532, 3544, 0),
+			"Talk to Shayda in their home just south of the Shayzien Administration building");
 	}
 
 	@Override

@@ -102,9 +102,9 @@ public class TheForsakenTower extends BasicQuestHelper
 		powerPuzzle.addStep(new Conditions(inBasement, generatorStarted), inspectPowerGrid);
 		powerPuzzle.addStep(new Conditions(inBasement, hasCrank), inspectGenerator);
 		powerPuzzle.addStep(inBasement, searchCrate);
-		powerPuzzle.setLockingCondition(finishedPowerPuzzle);
 		powerPuzzle.addStep(inFirstFloor, goDownToGroundFloor);
 		powerPuzzle.addStep(inSecondFloor, goDownToFirstFloor);
+		powerPuzzle.setLockingCondition(finishedPowerPuzzle);
 
 		ConditionalStep puzzleSteps = new ConditionalStep(this, inspectDisplayCase);
 		puzzleSteps.addStep(new Conditions(inspectedDisplayCase, finishedFurnacePuzzle, finishedPowerPuzzle, finishedPotionPuzzle), altarPuzzle);
@@ -184,6 +184,7 @@ public class TheForsakenTower extends BasicQuestHelper
 
 		furnacePuzzleSteps = new JugPuzzle(this);
 		furnacePuzzleSteps.setLockingCondition(finishedFurnacePuzzle);
+		furnacePuzzleSteps.setBlocker(true);
 
 		goDownLadderToBasement = new ObjectStep(this, ObjectID.LADDER_33483, new WorldPoint(1382, 3825, 0), "Climb down the ladder into the tower's basement.");
 		inspectPowerGrid = new ObjectStep(this, NullObjectID.NULL_34590, new WorldPoint(1382, 10225, 0), "Inspect the power grid.");

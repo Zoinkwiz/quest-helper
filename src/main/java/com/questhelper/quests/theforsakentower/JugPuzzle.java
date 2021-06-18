@@ -388,7 +388,8 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 		fill5Gallon4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34593, new WorldPoint(1377, 3828, 0), "Fill the 5-gallon jug on the Coolant Dispenser.", fiveGallon);
 		fill5Gallon4.addDialogStep("5-gallon jug.");
 		use5GallonOn85 = new DetailedQuestStep(getQuestHelper(), "Use the 5-gallon jug on the 8-gallon jug.", fiveGallon, eightGallon);
-		use5GallonOnFurnace = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34594, new WorldPoint(1383, 3829, 0), "Use the 5-gallon jug, which should contain 4 gallons, on the Furnace Coolant.");
+		use5GallonOnFurnace = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34594, new WorldPoint(1383, 3829, 0),
+			"Use the 5-gallon jug, which should contain 4 gallons, on the Furnace Coolant.", fiveGallon);
 		restartPuzzle = new DetailedQuestStep(getQuestHelper(), "Unknown puzzle state. Empty both the jugs to continue.");
 		lightFurnace = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34591, new WorldPoint(1385, 3829, 0), "Light the furnace.", tinderbox);
 

@@ -38,7 +38,6 @@ public class QuestOrders
 	private static final Pattern QUEST_NAME_PATTERN = Pattern.compile("(?i)(a\\b)|(the\\b)|(an\\b)", Pattern.CASE_INSENSITIVE);
 	@Getter
 	private static final List<QuestHelperQuest> optimalOrder = ImmutableList.of(
-		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.X_MARKS_THE_SPOT,
@@ -211,6 +210,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
 		//QuestHelperQuest.KANDARIN_MEDIUM,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
+		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.REGICIDE,
 		QuestHelperQuest.ROVING_ELVES,

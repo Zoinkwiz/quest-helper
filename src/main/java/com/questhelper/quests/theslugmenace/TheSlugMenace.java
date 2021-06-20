@@ -151,6 +151,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB);
+		commorb.addAlternates(ItemID.COMMORB_V2);
 
 		commorb2 = new ItemRequirement("Commorb v2", ItemID.COMMORB_V2);
 		commorb2.setHighlightInInventory(true);

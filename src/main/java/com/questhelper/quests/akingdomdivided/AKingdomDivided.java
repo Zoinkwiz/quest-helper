@@ -1,5 +1,6 @@
 package com.questhelper.quests.akingdomdivided;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -44,14 +45,18 @@ public class AKingdomDivided extends BasicQuestHelper
 		teleportArcheio, pickpocketIstoria, openRosesDiaryCase, talkToMartinHolt3, readRosesNote,
 		talkToMartinHolt4, enterHomeForClueSearch, inspectReceipt, getReceipt, goDownCouncillorsHomeF3toF2,
 		goDownCouncillorsHomeF2toF1, goUpCouncillorsHomeF1toF2, goUpCouncillorsHomeF2toF3, judgeOfYamaDetailedStep,
-		enterJudgeOfYamaFightPortal, talkToMartinHolt5;
+		enterJudgeOfYamaFightPortal, talkToMartinHoltForthosRuins, chopVines, squeezeThroughVines, checkPanel, solvePanelPuzzle,
+		readRosesNote2, talkToMartinHoltForthosRuins2, talkToMartinHoltSettlementRuins, killAssassin, talkToMartinHoltSettlementRuins2,
+		castFireSpellOnIce, searchIce, openSettlementRuinsPanel, readRosesNote3, talkToMartinHoltSettlementRuins3;
 
 	Requirement hasTalkedToTomasLowry, hasBluishKey, inArceuusLibraryHistoricalArchive, inCouncillorsHouseF1, inCouncillorsHouseF2,
-		inCouncillorsHouseF3, hasReceipt, hasInspectedReceipt, freeInventorySlots, judgeOfYamaNearby;
+		inCouncillorsHouseF3, hasReceipt, hasInspectedReceipt, judgeOfYamaNearby, inPanelZone, assassinNearby,
+		hasColdKey;
 
-	ItemRequirement meleeCombatGear, bluishKey, rosesDiary, rosesNote, receipt, kharedstsmemoirs;
+	ItemRequirement meleeCombatGear, food, freeInventorySlots, bluishKey, rosesDiary, rosesNote, receipt, kharedstsmemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear,
+		coldKey, rosesNote3;
 
-	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3;
+	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1, panelArea2;
 
 	QuestStep notYetImplemented;
 
@@ -112,8 +117,33 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(38, readRosesNote);
 		steps.put(40, talkToMartinHolt4);
 
-		steps.put(42, talkToMartinHolt5);
-		steps.put(44, notYetImplemented);
+		steps.put(42, talkToMartinHoltForthosRuins);
+		steps.put(44, chopVines);
+
+		steps.put(46, solvePanelPuzzle);
+		steps.put(48, solvePanelPuzzle);
+		steps.put(50, readRosesNote2);
+
+		ConditionalStep talkToMartinHoltAgain = new ConditionalStep(this, talkToMartinHoltForthosRuins2);
+		talkToMartinHoltAgain.addStep(new Conditions(inPanelZone), squeezeThroughVines);
+
+		steps.put(52, talkToMartinHoltAgain);
+
+		ConditionalStep talkToMartinHoltSettlementRuinFight = new ConditionalStep(this, talkToMartinHoltSettlementRuins);
+		talkToMartinHoltSettlementRuinFight.addStep(assassinNearby, killAssassin);
+
+		steps.put(54, talkToMartinHoltSettlementRuinFight);
+		steps.put(56, talkToMartinHoltSettlementRuinFight);
+		steps.put(58, talkToMartinHoltSettlementRuins2);
+		steps.put(60, castFireSpellOnIce);
+
+		ConditionalStep openSettlementRuinsPanelConditional = new ConditionalStep(this, searchIce);
+		openSettlementRuinsPanelConditional.addStep(hasColdKey, openSettlementRuinsPanel);
+
+		steps.put(62, openSettlementRuinsPanelConditional);
+		steps.put(64, readRosesNote3);
+		steps.put(66, talkToMartinHoltSettlementRuins3);
+		steps.put(68, notYetImplemented);
 
 		return steps;
 	}
@@ -124,17 +154,27 @@ public class AKingdomDivided extends BasicQuestHelper
 		councillorsHouseF1 = new Zone(new WorldPoint(1670, 3684, 0), new WorldPoint(1683, 3677, 0));
 		councillorsHouseF2 = new Zone(new WorldPoint(1670, 3684, 1), new WorldPoint(1683, 3677, 1));
 		councillorsHouseF3 = new Zone(new WorldPoint(1670, 3684, 2), new WorldPoint(1683, 3677, 2));
+		panelArea1 = new Zone(new WorldPoint(1670, 3577, 0), new WorldPoint(1671, 3576, 0));
+		panelArea2 = new Zone(new WorldPoint(1669, 3581, 0), new WorldPoint(1672, 3578, 0));
+
 	}
 
 	public void setupItemRequirements()
 	{
-		meleeCombatGear = new ItemRequirement("Melee Combat gear + food", -1, -1);
+		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1);
 		bluishKey = new ItemRequirement("Bluish Key", ItemID.BLUISH_KEY);
 		rosesDiary = new ItemRequirement("Rose's diary", ItemID.ROSES_DIARY);
 		rosesNote = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE);
 		receipt = new ItemRequirement("Receipt", ItemID.RECEIPT_25793);
 		freeInventorySlots = new ItemRequirement("Free inventory slot", -1, 1);
 		kharedstsmemoirs = new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS);
+		anyAxe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		rosesNote2 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25806);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		fireSpellGear = new ItemRequirement("Runes/equipment to cast FIRE bolt or better", -1, 1);
+		coldKey = new ItemRequirement("Cold key", ItemID.COLD_KEY);
+		rosesNote3 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25807);
+		food = new ItemRequirement("Decent food", -1, -1);
 	}
 
 	public void setupConditions()
@@ -152,6 +192,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		inCouncillorsHouseF3 = new ZoneRequirement(councillorsHouseF3);
 		hasReceipt = new ItemRequirements(receipt);
 		hasInspectedReceipt = new VarbitRequirement(12298, 1);
+		inPanelZone = new ZoneRequirement(panelArea1, panelArea2);
+		assassinNearby = new NpcCondition(NpcID.ASSASSIN_10940);
+		hasColdKey = new ItemRequirements(coldKey);
 	}
 
 	public void setupSteps()
@@ -184,21 +227,21 @@ public class AKingdomDivided extends BasicQuestHelper
 			"Prepare to fight the Judge of Yama. This boss uses magic + range prayer so melee is required. Run in the " +
 				"gaps of the fire waves to approach the boss.\n\nTalk to Cabin Boy Herbert next to Veos's ship in Port" +
 				"Piscarilius to initiate the fight.",
-			meleeCombatGear);
+			meleeCombatGear, food);
 
 		talkToCabinBoyHerbert.addDialogStep("I'm looking for a councillor.");
 
 		fightJudgeofYama = new NpcStep(this, NpcID.JUDGE_OF_YAMA_10938,
 			"Fight the Judge of Yama. This boss uses magic + range prayer so melee is required. Run in the gaps of " +
-				"the fire waves to approach the boss.", meleeCombatGear);
+				"the fire waves to approach the boss.", meleeCombatGear, food);
 
 		enterJudgeOfYamaFightPortal = new ObjectStep(this, ObjectID.PORTAL_41808, new WorldPoint(1823, 3686, 0),
 			"Prepare to fight the Judge of Yama. This boss uses magic + range prayer so melee is required. Run in the " +
 				"gaps of the fire waves to approach the boss.\n\nEnter the Portal near Veos's ship to fight the Judge of Yama.",
-			meleeCombatGear);
+			meleeCombatGear, food);
 
 		judgeOfYamaDetailedStep = new DetailedQuestStep(this, "Fight the Judge of Yama. This boss uses magic + range " +
-			"prayer so melee is required. Run in the gaps of the fire waves to approach the boss.", meleeCombatGear);
+			"prayer so melee is required. Run in the gaps of the fire waves to approach the boss.", meleeCombatGear, food);
 
 		judgeOfYamaDetailedStep.addSubSteps(talkToCabinBoyHerbert, fightJudgeofYama, enterJudgeOfYamaFightPortal);
 
@@ -213,13 +256,31 @@ public class AKingdomDivided extends BasicQuestHelper
 		readRosesNote = new DetailedQuestStep(this, "Read Rose's note that fell out of the diary.", rosesNote.highlighted());
 		talkToMartinHolt4 = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1664, 3670, 0), "Talk to Martin Holt again east of the Kourend Castle.", rosesNote);
 
-		talkToMartinHolt5 = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1673, 3580, 0), "Talk to Martin Holt on the north side of the Forthos Ruins.");
+		talkToMartinHoltForthosRuins = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1673, 3580, 0), "Talk to Martin Holt on the north side of the Forthos Ruins.");
+		chopVines = new ObjectStep(this, ObjectID.VINES_41815, new WorldPoint(1671, 3577, 0), "Chop the vines south of Martin Holt.", anyAxe);
+		squeezeThroughVines = new ObjectStep(this, ObjectID.VINES_41816, new WorldPoint(1671, 3577, 0), "Squeeze through the vines." );
+		checkPanel = new ObjectStep(this, ObjectID.PANEL_41822, new WorldPoint(1672, 3579, 0), "Check the panel on the wall.");
+		solvePanelPuzzle = new StonePuzzleStep(this);
+		readRosesNote2 = new DetailedQuestStep(this, "Read Rose's note from the panel on the wall.", rosesNote2.highlighted());
+		talkToMartinHoltForthosRuins2 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1673, 3580, 0), "Talk to Martin Holt again on the north side of the Forthos Ruins.");
+		talkToMartinHoltForthosRuins2.addSubSteps(squeezeThroughVines);
+		talkToMartinHoltSettlementRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp. " +
+			"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear);
+		killAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, "Kill the Assassin. He uses a dragon dagger and dragon darts.", combatGear, food);
+		talkToMartinHoltSettlementRuins.addSubSteps(killAssassin);
+		talkToMartinHoltSettlementRuins2 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp.");
+		castFireSpellOnIce = new NpcStep(this, NpcID.ICE_CHUNKS_11029, new WorldPoint(1541, 3886, 0), "Cast FIRE bolt or stronger on the ice chunks south west of Martin Holt in the Settlement Ruins.", fireSpellGear);
+		castFireSpellOnIce.addIcon(ItemID.FIRE_RUNE);
+		searchIce = new NpcStep(this, NpcID.ICE_CHUNKS_11030, new WorldPoint(1541, 3886, 0), "Search the melted ice chunks to get the Cold key.");
+		openSettlementRuinsPanel = new ObjectStep(this, ObjectID.PANEL_41829, new WorldPoint(1543, 3892, 0), "Open the panel on the wall in the Settlement Ruins.");
+		readRosesNote3 = new DetailedQuestStep(this, "Read Rose's note from the panel on the wall.", rosesNote3.highlighted());
+		talkToMartinHoltSettlementRuins3 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again.");
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(meleeCombatGear);
+		return Arrays.asList(fireSpellGear, anyAxe, freeInventorySlots, meleeCombatGear, combatGear, food);
 	}
 
 	@Override
@@ -233,7 +294,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Judge of Yama (level 168)");
-
+		reqs.add("Assassin (level 132)");
 		return reqs;
 	}
 
@@ -266,9 +327,11 @@ public class AKingdomDivided extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("The Disgraced Councillor's Escape", Arrays.asList(talkToMartinHolt, talkToCommanderFullore, enterHomeForClueSearch,
 			talkToTomasLawry, goToLovakengjPub, judgeOfYamaDetailedStep, talkToCommanderFullore2, talkToMartinHolt2, teleportArcheio, pickpocketIstoria,
-			openRosesDiaryCase, talkToMartinHolt3, readRosesNote, talkToMartinHolt4), meleeCombatGear, kharedstsmemoirs, freeInventorySlots));
+			openRosesDiaryCase, talkToMartinHolt3, readRosesNote, talkToMartinHolt4), meleeCombatGear, food, kharedstsmemoirs, freeInventorySlots));
 
-		allSteps.add(new PanelDetails("Kourend's Last Princess", Arrays.asList(talkToMartinHolt5)));
+		allSteps.add(new PanelDetails("Kourend's Last Princess", Arrays.asList(talkToMartinHoltForthosRuins, chopVines, solvePanelPuzzle,
+			readRosesNote2, talkToMartinHoltForthosRuins2, talkToMartinHoltSettlementRuins, killAssassin, talkToMartinHoltSettlementRuins2, castFireSpellOnIce, searchIce,
+			openSettlementRuinsPanel, readRosesNote3, talkToMartinHoltSettlementRuins3), anyAxe, fireSpellGear, food, kharedstsmemoirs));
 
 		return allSteps;
 	}

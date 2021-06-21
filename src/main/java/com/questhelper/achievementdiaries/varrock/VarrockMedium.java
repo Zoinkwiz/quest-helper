@@ -66,13 +66,13 @@ import com.questhelper.steps.QuestStep;
 public class VarrockMedium extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear;
+	ItemRequirement coins, limpRoot, redSpiderEgg, ringOfCharos, digsitePend, lawRune, airRune, fireRune, mahoLog, willowLog, log;
 
 	// Items recommended
 	ItemRequirement food;
 
 	// Quests required
-	Requirement desertTreasure;
+	Requirement gardenOfTranq, digSite, gertCat, treeGnomeVillage, soulsBane, enlightenedJourney; // 32 qp
 
 	Requirement notApothStr, notChamps, notCatColour, notGESpirit, notStrongholdEmote, notTolna, notTPDigsite, notTPVarrock, notVannaka, notMaho20, notWhiteFruit, notBalloon, notVarrAgi;
 
@@ -111,14 +111,28 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		notBalloon = new VarplayerRequirement(1179, false, 27);
 		notVarrAgi = new VarplayerRequirement(1179, false, 28);
 
-		combatGear = new ItemRequirement("Combat gear to defeat a deathwing and a metal dragon", -1, -1);
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		coins = new ItemRequirement("Coins", ItemID.COINS).showConditioned(new Conditions(LogicType.OR, notApothStr, notCatColour, notMaho20));
+		limpRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notApothStr);
+		redSpiderEgg = new ItemRequirement("Red spiders' egg", ItemID.RED_SPIDERS_EGGS).showConditioned(notApothStr);
+		ringOfCharos = new ItemRequirement("Ring of Charos (A)", ItemID.RING_OF_CHAROSA).showConditioned(notCatColour);
+		digsitePend = new ItemRequirement("Digsite pendant", ItemCollections.getDigsitePendants()).showConditioned(notTPDigsite);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPVarrock);
+		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPVarrock);
+		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notTPVarrock);
+		mahoLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS, 20).showConditioned(notMaho20);
+		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS, 10).showConditioned(notBalloon);
+		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notBalloon);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		inCave = new ZoneRequirement(cave);
 
-		desertTreasure = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
+		gardenOfTranq = new QuestRequirement(QuestHelperQuest.GARDEN_OF_TRANQUILLITY, QuestState.FINISHED);
+		digSite = new QuestRequirement(QuestHelperQuest.THE_DIG_SITE, QuestState.FINISHED);
+		gertCat = new QuestRequirement(QuestHelperQuest.GERTRUDES_CAT, QuestState.FINISHED);
+		treeGnomeVillage = new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED);
+		soulsBane = new QuestRequirement(QuestHelperQuest.A_SOULS_BANE, QuestState.FINISHED);
+		enlightenedJourney = new QuestRequirement(QuestHelperQuest.ENLIGHTENED_JOURNEY, QuestState.FINISHED);
 	}
 
 	public void loadZones()
@@ -129,31 +143,42 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
-			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
+			"Talk to Toby in Varrock to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear);
+		return Arrays.asList(coins.quantity(30105), limpRoot, redSpiderEgg, ringOfCharos, digsitePend, lawRune.quantity(1), airRune.quantity(3), fireRune.quantity(1), mahoLog.quantity(20), willowLog.quantity(10), log);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food);
+		return Collections.singletonList(food);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new CombatLevelRequirement(100));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
+		reqs.add(new CombatLevelRequirement(40));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 30));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 36));
+		reqs.add(new SkillRequirement(Skill.FARMING, 30));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 40));
+		reqs.add(new SkillRequirement(Skill.HERBLORE, 10));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 25));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 25));
 
-		reqs.add(desertTreasure);
+		reqs.add(gardenOfTranq);
+		reqs.add(digSite);
+		reqs.add(treeGnomeVillage);
+		reqs.add(gertCat);
+		reqs.add(soulsBane);
+		reqs.add(enlightenedJourney);
 
 		return reqs;
 	}

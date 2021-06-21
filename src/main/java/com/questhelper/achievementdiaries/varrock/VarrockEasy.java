@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import jdk.internal.net.http.common.Log;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -66,21 +67,23 @@ import com.questhelper.steps.QuestStep;
 public class VarrockEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear;
+	ItemRequirement coins, pickaxe, log, axe, bone, softClay, earthTali, ess, flyRod, feathers;
+
+	ItemRequirement unfiredBowl;
 
 	// Items recommended
 	ItemRequirement food;
 
 	// Quests required
-	Requirement desertTreasure;
+	Requirement runeMysteries;
 
-	Requirement notThessalia, notAubury, notIron, notPlank, notStrongholdSecond, notFence, notNews, notDyingTree, notDogBone, notBowl, not50Kudos, notTrout, notTeaStall, notEarthRune;
+	Requirement notThessalia, notAubury, notIron, notPlank, notStrongholdSecond, notFence, notNews, notDyingTree, notDogBone, notBowl, notKudos, notTrout, notTeaStall, notEarthRune, notMoreKudos;
 
-	QuestStep claimReward;
+	QuestStep claimReward, thessalia, aubury, iron, plank, moveToStronghold1, moveToStronghold2, fence, dyingTree, news, dogBone, potteryWheel, bowl, kudos, moreKudos, moveToEarthRune, earthRune, trout, teaStall;
 
-	Zone cave;
+	Zone stronghold1, earth;
 
-	ZoneRequirement inCave;
+	ZoneRequirement inStronghold1, inEarth;
 
 	@Override
 	public QuestStep loadStep()
@@ -90,7 +93,21 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		// doEasy.addStep(notUsedShortcut, useShortcut);
+		doEasy.addStep(notThessalia, thessalia);
+		doEasy.addStep(notNews, news);
+		doEasy.addStep(notDogBone, dogBone);
+		doEasy.addStep(new Conditions(notKudos, notMoreKudos), kudos);
+		doEasy.addStep(notKudos, moreKudos);
+		doEasy.addStep(notAubury, aubury);
+		doEasy.addStep(notTeaStall, teaStall);
+		doEasy.addStep(notPlank, plank);
+		doEasy.addStep(notDyingTree, dyingTree);
+		doEasy.addStep(new Conditions(notEarthRune, inEarth), earthRune);
+		doEasy.addStep(notEarthRune, moveToEarthRune);
+		doEasy.addStep(notIron, iron);
+		doEasy.addStep(notFence, fence);
+		doEasy.addStep(new Conditions(LogicType.OR, notStrongholdSecond, inStronghold1), moveToStronghold2);
+		doEasy.addStep(notStrongholdSecond, moveToStronghold1);
 
 		return doEasy;
 	}
@@ -107,69 +124,130 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		notNews = new VarplayerRequirement(1176, false, 8);
 		notDogBone = new VarplayerRequirement(1176, false, 9);
 		notBowl = new VarplayerRequirement(1176, false, 10);
-		not50Kudos = new VarplayerRequirement(1176, false, 11);
+		notKudos = new VarplayerRequirement(1176, false, 11);
 		notEarthRune = new VarplayerRequirement(1176, false, 12);
 		notTrout = new VarplayerRequirement(1176, false, 13);
 		notTeaStall = new VarplayerRequirement(1176, false, 14);
 
-		combatGear = new ItemRequirement("Combat gear to defeat a deathwing and a metal dragon", -1, -1);
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		notMoreKudos = new VarplayerRequirement(3637, 50, Operation.GREATER_EQUAL, "50+ Kudos");
+
+		coins = new ItemRequirement("Coins", ItemID.COINS, 150).showConditioned(new Conditions(LogicType.OR, notNews, notPlank));
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIron);
+		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notPlank);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notDyingTree);
+		bone = new ItemRequirement("Bones", ItemID.BONE).showConditioned(notDogBone);
+		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
+		earthTali = new ItemRequirement("", ItemID.EARTH_TALISMAN).showConditioned(notEarthRune);
+		ess = new ItemRequirement("Rune essence", ItemID.RUNE_ESSENCE).showConditioned(notEarthRune);
+		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout);
+		feathers = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notTrout);
+		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
-		inCave = new ZoneRequirement(cave);
+		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 
-		desertTreasure = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
+		inStronghold1 = new ZoneRequirement(stronghold1);
+		inEarth = new ZoneRequirement(earth);
 	}
 
 	public void loadZones()
 	{
-		cave = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
+		stronghold1 = new Zone(new WorldPoint(1854, 5248, 0), new WorldPoint(1918, 5183, 0));
+		earth = new Zone(new WorldPoint(2624, 4863, 0), new WorldPoint(2687, 4800, 0));
 	}
 
 	public void setupSteps()
 	{
+		thessalia = new NpcStep(this, NpcID.THESSALIA, new WorldPoint(3206, 3417, 0),
+			"Browse Thessalia's store.");
+		aubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0),
+			"Teleport to the essence mine via Aubury.");
+		iron = new ObjectStep(this, ObjectID.ROCKS_11365, new WorldPoint(3288, 3370, 0),
+			"Mine iron.");
+		plank = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
+			"Make a regular plank at the sawmill.");
+		moveToStronghold1 = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
+			"Enter the stronghold.");
+		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
+			"Go to the 2nd floor of the stronghold.");
+		fence = new ObjectStep(this, ObjectID.FENCE_16518, new WorldPoint(3240, 3335, 0),
+			"Jump the fence.");
+		dyingTree = new ObjectStep(this, ObjectID.DYING_TREE, new WorldPoint(3308, 3495, 0),
+			"Chop down a dying tree in the sawmill area.", axe);
+		news = new NpcStep(this, NpcID.BENNY, new WorldPoint(3219, 3431, 0),
+			"Speak with Benny to purchase a newspaper.", coins.quantity(50));
+		news.addDialogSteps("Can I have a newspaper, please?", "Sure, here you go...");
+		dogBone = new NpcStep(this, NpcID.STRAY_DOG_2922, new WorldPoint(3184, 3431, 0),
+			"Give the stray dog a bone." +
+				"If the dog isn't nearby consider changing worlds.");
+		dogBone.addIcon(ItemID.BONE);
+		potteryWheel = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3410, 0),
+			"Use the potters wheel to make an unfired bowl.");
+		bowl = new ObjectStep(this, ObjectID.POTTERY_OVEN_11601, new WorldPoint(3085, 3407, 0),
+			"Put the unfired bowl in the oven.", unfiredBowl);
+		bowl.addIcon(ItemID.UNFIRED_BOWL);
+		moreKudos = new DetailedQuestStep(this, "Get more kudos from either quests, miniquests, or turning in fossils.");
+		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
+			"Speak to Curator Haig Halen.", notMoreKudos);
+		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3407, 0),
+			"Travel to the earth altar.", earthTali);
+		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
+			"Craft earth rune.", earthTali, ess);
+		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),
+			"Fish a trout.", flyRod, feathers);
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
-			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
+			"Talk to Toby in Varrock to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear);
+		return Arrays.asList(coins.quantity(150), pickaxe, log, axe, bone, softClay, earthTali, ess, flyRod, feathers);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food);
+		return Collections.singletonList(food);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new CombatLevelRequirement(100));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 13));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 8));
+		reqs.add(new SkillRequirement(Skill.FISHING, 20));
+		reqs.add(new SkillRequirement(Skill.MINING, 15));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 9));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 5));
 
-		reqs.add(desertTreasure);
+		reqs.add(runeMysteries);
 
 		return reqs;
-	}
-
-	@Override
-	public List<String> getCombatRequirements()
-	{
-		return Collections.singletonList("At least 1 Gorak (level 145)");
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-
+		allSteps.add(new PanelDetails("Browse Thessalia's Store", Collections.singletonList(thessalia)));
+		allSteps.add(new PanelDetails("Buy Newspaper", Collections.singletonList(news), coins.quantity(50)));
+		allSteps.add(new PanelDetails("Give a Dog a Bone", Collections.singletonList(dogBone), bone));
+		allSteps.add(new PanelDetails("Speak to Haig Halen", Collections.singletonList(kudos), notMoreKudos));
+		allSteps.add(new PanelDetails("Teleport to Essence Mine", Collections.singletonList(aubury)));
+		allSteps.add(new PanelDetails("Steal from the Tea Stall", Collections.singletonList(teaStall)));
+		allSteps.add(new PanelDetails("Make Plank", Collections.singletonList(plank), coins.quantity(100), log));
+		allSteps.add(new PanelDetails("Chop Down Dying Tree", Collections.singletonList(dyingTree), axe));
+		allSteps.add(new PanelDetails("Craft an Earth Rune", Arrays.asList(moveToEarthRune, earthRune), ess, earthTali));
+		allSteps.add(new PanelDetails("Mine Iron South East of Varrock", Collections.singletonList(iron), pickaxe));
+		allSteps.add(new PanelDetails("Jump the Fence", Collections.singletonList(fence)));
+		allSteps.add(new PanelDetails("Fish a Trout", Collections.singletonList(trout), flyRod, feathers));
+		allSteps.add(new PanelDetails("Spin a Bowl in Barbarian Village", Arrays.asList(potteryWheel, bowl), softClay));
+		allSteps.add(new PanelDetails("Stronghold Second Floor", Arrays.asList(moveToStronghold1, moveToStronghold2), food));
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
 		return allSteps;

@@ -274,6 +274,7 @@ public class FaladorHard extends ComplexStateQuestHelper {
         req.add(new SkillRequirement(Skill.RUNECRAFT, 56, true));
         req.add(new SkillRequirement(Skill.THIEVING, 50, true));
         req.add(new SkillRequirement(Skill.DEFENCE, 50, true));
+        req.add(new SkillRequirement(Skill.SLAYER, 72, true));
         req.add(new SkillRequirement(Skill.ATTACK, 65, false, "130 Total combined Attack and Strength"));
         req.add(new SkillRequirement(Skill.STRENGTH, 65, false, "or 99 in either Attack or Strength."));
 

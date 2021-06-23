@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2021, Zoinkwiz
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.quests.akingdomdivided;
 
 import com.questhelper.ItemCollections;
@@ -13,8 +37,10 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -47,16 +73,17 @@ public class AKingdomDivided extends BasicQuestHelper
 		goDownCouncillorsHomeF2toF1, goUpCouncillorsHomeF1toF2, goUpCouncillorsHomeF2toF3, judgeOfYamaDetailedStep,
 		enterJudgeOfYamaFightPortal, talkToMartinHoltForthosRuins, chopVines, squeezeThroughVines, checkPanel, solvePanelPuzzle,
 		readRosesNote2, talkToMartinHoltForthosRuins2, talkToMartinHoltSettlementRuins, killAssassin, talkToMartinHoltSettlementRuins2,
-		castFireSpellOnIce, searchIce, openSettlementRuinsPanel, readRosesNote3, talkToMartinHoltSettlementRuins3;
+		castFireSpellOnIce, searchIce, openSettlementRuinsPanel, readRosesNote3, talkToMartinHoltSettlementRuins3, talkToMartinHoltLeglessFaun,
+		climbUpPillarLeglessFaun, checkLeglessFaunPanel, climbDownLeglessFaun, solveStatuesPuzzle, readRosesNote4, inspectCratesInShack, watchCutsceneInShack;
 
 	Requirement hasTalkedToTomasLowry, hasBluishKey, inArceuusLibraryHistoricalArchive, inCouncillorsHouseF1, inCouncillorsHouseF2,
 		inCouncillorsHouseF3, hasReceipt, hasInspectedReceipt, judgeOfYamaNearby, inPanelZone, assassinNearby,
-		hasColdKey;
+		hasColdKey, inLeglessFaunF1, hasTattyNote;
 
 	ItemRequirement meleeCombatGear, food, freeInventorySlots, bluishKey, rosesDiary, rosesNote, receipt, kharedstsmemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear,
-		coldKey, rosesNote3;
+		coldKey, rosesNote3, gamesNecklace, rosesNote4, fairyRingStaff, tattyNote;
 
-	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1, panelArea2;
+	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1, panelArea2, leglessFaunF1;
 
 	QuestStep notYetImplemented;
 
@@ -143,7 +170,24 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(62, openSettlementRuinsPanelConditional);
 		steps.put(64, readRosesNote3);
 		steps.put(66, talkToMartinHoltSettlementRuins3);
-		steps.put(68, notYetImplemented);
+		steps.put(68, talkToMartinHoltLeglessFaun);
+
+		steps.put(70, solveStatuesPuzzle);
+		steps.put(72, solveStatuesPuzzle);
+
+		ConditionalStep openLeglessFaunPanelConditional = new ConditionalStep(this, climbUpPillarLeglessFaun);
+		openLeglessFaunPanelConditional.addStep(new Conditions(inLeglessFaunF1), checkLeglessFaunPanel);
+
+		steps.put(74, openLeglessFaunPanelConditional);
+		steps.put(76, readRosesNote4);
+
+		steps.put(78, inspectCratesInShack);
+		steps.put(80, watchCutsceneInShack);
+		steps.put(82, watchCutsceneInShack);
+		steps.put(84, notYetImplemented);
+		steps.put(86, notYetImplemented);
+		steps.put(88, notYetImplemented);
+		steps.put(90, notYetImplemented);
 
 		return steps;
 	}
@@ -156,7 +200,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		councillorsHouseF3 = new Zone(new WorldPoint(1670, 3684, 2), new WorldPoint(1683, 3677, 2));
 		panelArea1 = new Zone(new WorldPoint(1670, 3577, 0), new WorldPoint(1671, 3576, 0));
 		panelArea2 = new Zone(new WorldPoint(1669, 3581, 0), new WorldPoint(1672, 3578, 0));
-
+		leglessFaunF1 = new Zone(new WorldPoint(1766, 3686, 1), new WorldPoint(1773, 3679, 1));
 	}
 
 	public void setupItemRequirements()
@@ -175,6 +219,10 @@ public class AKingdomDivided extends BasicQuestHelper
 		coldKey = new ItemRequirement("Cold key", ItemID.COLD_KEY);
 		rosesNote3 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25807);
 		food = new ItemRequirement("Decent food", -1, -1);
+		gamesNecklace = new ItemRequirement("Games necklace for Wintertodt camp teleport", ItemCollections.getGamesNecklaces());
+		rosesNote4 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25808);
+		fairyRingStaff = new ItemRequirement("Staff for Fairy rings or a Skills Necklace", ItemCollections.getFairyStaff());
+		fairyRingStaff.addAlternates(ItemCollections.getSkillsNecklaces());
 	}
 
 	public void setupConditions()
@@ -195,6 +243,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		inPanelZone = new ZoneRequirement(panelArea1, panelArea2);
 		assassinNearby = new NpcCondition(NpcID.ASSASSIN_10940);
 		hasColdKey = new ItemRequirements(coldKey);
+		inLeglessFaunF1 = new ZoneRequirement(leglessFaunF1);
+		hasTattyNote = new ItemRequirements(tattyNote);
 	}
 
 	public void setupSteps()
@@ -265,7 +315,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToMartinHoltForthosRuins2 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1673, 3580, 0), "Talk to Martin Holt again on the north side of the Forthos Ruins.");
 		talkToMartinHoltForthosRuins2.addSubSteps(squeezeThroughVines);
 		talkToMartinHoltSettlementRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp. " +
-			"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear);
+			"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear, food);
 		killAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, "Kill the Assassin. He uses a dragon dagger and dragon darts.", combatGear, food);
 		talkToMartinHoltSettlementRuins.addSubSteps(killAssassin);
 		talkToMartinHoltSettlementRuins2 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp.");
@@ -275,18 +325,31 @@ public class AKingdomDivided extends BasicQuestHelper
 		openSettlementRuinsPanel = new ObjectStep(this, ObjectID.PANEL_41829, new WorldPoint(1543, 3892, 0), "Open the panel on the wall in the Settlement Ruins.");
 		readRosesNote3 = new DetailedQuestStep(this, "Read Rose's note from the panel on the wall.", rosesNote3.highlighted());
 		talkToMartinHoltSettlementRuins3 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again.");
+		talkToMartinHoltLeglessFaun = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1775, 3681, 0), "Talk to Martin Holt at the Legless Faun pub in the south west corner of Port Piscarilius.");
+		climbUpPillarLeglessFaun = new ObjectStep(this, ObjectID.PILLAR_41836, new WorldPoint(1772, 3680, 0), "Climb up the pillar west of Martin Holt again.");
+		checkLeglessFaunPanel = new ObjectStep(this, ObjectID.PANEL_41834, new WorldPoint(1768, 3686, 1), "Check the panel on the wall again.");
+		checkLeglessFaunPanel.addSubSteps(climbUpPillarLeglessFaun);
+		climbDownLeglessFaun = new ObjectStep(this, ObjectID.WALL_41839, new WorldPoint(1772, 3679, 1), "Climb down the wall.");
+		solveStatuesPuzzle = new StatuePuzzle(this);
+		readRosesNote4 = new DetailedQuestStep(this, "Read Rose's note from the panel on the wall.", rosesNote4.highlighted());
+
+		inspectCratesInShack = new ObjectStep(this, ObjectID.CRATES_41851, new WorldPoint(1281, 3763, 0), "Inspect the crates in the north west corner of the shack located north east of the farming guild.  Use fairy ring CIR or a skill necklace to get there quickly. " +
+			"If the crates do not have an inspect option, search the bed in the shack and read the note you find.", fairyRingStaff);
+		inspectCratesInShack.addDialogSteps("Climb through it.");
+		watchCutsceneInShack = new DetailedQuestStep(this, "Watch the cut scene.");
+
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(fireSpellGear, anyAxe, freeInventorySlots, meleeCombatGear, combatGear, food);
+		return Arrays.asList(anyAxe, freeInventorySlots, meleeCombatGear, combatGear, food);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS));
+		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS), fairyRingStaff);
 	}
 
 	@Override
@@ -317,6 +380,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.THE_FORSAKEN_TOWER, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.TALE_OF_THE_RIGHTEOUS, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.ARCHITECTURAL_ALLIANCE, QuestState.FINISHED));
+		reqs.add(new SpellbookRequirement(Spellbook.NORMAL));
 
 		return reqs;
 	}
@@ -331,7 +395,10 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Kourend's Last Princess", Arrays.asList(talkToMartinHoltForthosRuins, chopVines, solvePanelPuzzle,
 			readRosesNote2, talkToMartinHoltForthosRuins2, talkToMartinHoltSettlementRuins, killAssassin, talkToMartinHoltSettlementRuins2, castFireSpellOnIce, searchIce,
-			openSettlementRuinsPanel, readRosesNote3, talkToMartinHoltSettlementRuins3), anyAxe, fireSpellGear, food, kharedstsmemoirs));
+			openSettlementRuinsPanel, readRosesNote3, talkToMartinHoltSettlementRuins3, talkToMartinHoltLeglessFaun, solveStatuesPuzzle,
+			checkLeglessFaunPanel, readRosesNote4, inspectCratesInShack), anyAxe, fireSpellGear, food, kharedstsmemoirs, gamesNecklace, fairyRingStaff));
+
+		allSteps.add(new PanelDetails("The Mysterious Mage", Arrays.asList(notYetImplemented)));
 
 		return allSteps;
 	}

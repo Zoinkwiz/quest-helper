@@ -46,23 +46,7 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class StonePuzzleStep extends DetailedOwnerStep
 {
-	DetailedQuestStep searchRStones, searchOStones, searchSStones, searchEStones;
-
-	DetailedQuestStep readNote, setNorthValve, setSouthValve, setNorthValveNoHighlight, setSouthValveNoHighlight, cutTree;
-
-	private int valveTotalValue;
-	private int northTurns;
-	private int southTurns;
-
-	private final int GALLONS_NORTH = 7;
-	private final int GALLONS_SOUTH = 4;
-
-	private Zone northValveArea;
-	private Zone southValveArea;
-
 	Requirement inPanelZone;
-
-	ItemRequirement scentedTop, scentedLegs, scentedShoes, oldNote;
 
 	private boolean foundSum = false;
 	private boolean solving = false;

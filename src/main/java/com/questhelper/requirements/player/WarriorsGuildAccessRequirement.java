@@ -35,7 +35,7 @@ public class WarriorsGuildAccessRequirement extends AbstractRequirement
 	{
 		int attLevel = client.getRealSkillLevel(Skill.ATTACK);
 		int strLevel = client.getRealSkillLevel(Skill.STRENGTH);
-		return attLevel == 99 || strLevel == 99 | attLevel + strLevel >= 130;
+		return attLevel == 99 || strLevel == 99 || attLevel + strLevel >= 130;
 	}
 
 	@Override

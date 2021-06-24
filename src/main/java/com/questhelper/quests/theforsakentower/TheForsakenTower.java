@@ -230,7 +230,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Stating off", Arrays.asList(talkToVulcana, talkToUndor)));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToVulcana, talkToUndor)));
 		allSteps.add(new PanelDetails("To the Forsaken Tower", Arrays.asList(enterTheForsakenTower, inspectDisplayCase)));
 		allSteps.addAll(furnacePuzzleSteps.panelDetails());
 		PanelDetails powerPuzzlePanel = new PanelDetails("Power puzzle",

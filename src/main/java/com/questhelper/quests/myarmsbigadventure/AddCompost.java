@@ -27,6 +27,7 @@ package com.questhelper.quests.myarmsbigadventure;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
+import java.util.Arrays;
 import java.util.Collections;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -37,10 +38,12 @@ import net.runelite.client.eventbus.Subscribe;
 public class AddCompost extends ObjectStep
 {
 	ItemRequirement compost = new ItemRequirement("Supercompost",ItemID.SUPERCOMPOST, 7);
+	ItemRequirement spade = new ItemRequirement("Spade", ItemID.SPADE);
 
 	public AddCompost(QuestHelper questHelper)
 	{
-		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0), "Add 7 supercompost on My Arm's soil patch.");
+		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0),
+			"Add 7 supercompost on My Arm's soil patch.");
 		this.addIcon(ItemID.SUPERCOMPOST);
 		compost.setHighlightInInventory(true);
 	}
@@ -53,9 +56,9 @@ public class AddCompost extends ObjectStep
 
 	protected void updateSteps()
 	{
-		int numCompToAdd = 7- client.getVarbitValue(2792);
+		int numCompToAdd = 7 - client.getVarbitValue(2792);
 		compost.setQuantity(numCompToAdd);
-		this.setRequirements(Collections.singletonList(compost));
+		this.setRequirements(Arrays.asList(compost, spade));
 		this.setText("Add " + numCompToAdd + " supercompost on My Arm's soil patch.");
 	}
 }

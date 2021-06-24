@@ -346,7 +346,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		repairConductor = new ObjectStep(this, ObjectID.LIGHTNING_CONDUCTOR, new WorldPoint(3549, 3537, 2),
 			"Repair the lightning Conductor.");
 
-		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the the first floor of the castle and talk to Dr" +
+		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the first floor of the castle and talk to Dr" +
 			".Fenkenstrain.");
 		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
 			"Go back to the the first floor of the castle and talk to Dr.Fenkenstrain.");

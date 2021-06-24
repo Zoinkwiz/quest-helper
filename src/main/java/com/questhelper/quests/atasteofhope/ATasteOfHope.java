@@ -554,7 +554,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins1000, vialOfWaterNoTip, knife, emerald, chisel,
+		return Arrays.asList(coins1000, vialOfWaterNoTip, emerald, chisel,
 			enchantEmeraldRunesOrTablet, combatGear);
 	}
 
@@ -568,10 +568,12 @@ public class ATasteOfHope extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGarth, enterBase, talkToSafalaan)));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGarth, enterBase,
+			talkToSafalaan)));
 		allSteps.add(new PanelDetails("Spying",
-			Arrays.asList(climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof,
-				climbSecondVent, climbUpToRoof, climbDownFromRoof, lookThroughWindow)));
+			Arrays.asList(climbRubbleAtBank, talkToHarpert, climbRubbleAfterHarpert,
+				climbSteamVent, jumpOffRoof, climbSecondVent, climbUpToRoof, climbDownFromRoof,
+				lookThroughWindow), coins1000));
 		allSteps.add(new PanelDetails("Investigating",
 			Arrays.asList(returnToBase, talkToSafalaanAfterSpying, talkToFlaygian, enterSerafinaHouse,
 				talkToSafalaanInSerafinaHouse, searchForHerb, searchForMeat, searchForPestle, useHerbOnVial, usePestleOnMeat,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2021, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.emote;
+package com.questhelper.requirements.player;
 
-import lombok.Getter;
-import static net.runelite.api.SpriteID.*;
+import com.questhelper.requirements.AbstractRequirement;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
 
-@Getter
-public enum QuestEmote
+public class WarriorsGuildAccessRequirement extends AbstractRequirement
 {
-	SKILL_CAPE("Skill Cape", EMOTE_SKILLCAPE),
-	FLEX("Flex", 2426),
-	CRY("Cry", EMOTE_CRY),
-	BOW("Bow", EMOTE_BOW),
-	DANCE("Dance", EMOTE_DANCE),
-	WAVE("Wave", EMOTE_WAVE),
-	THINK("Think", EMOTE_THINK),
-	GOBLIN_BOW("Goblin bow", EMOTE_GOBLIN_BOW),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	SPIN("Spin", EMOTE_SPIN);
-
-	private String name;
-	private int spriteId;
-
-	QuestEmote(String name, int spriteId)
+	@Override
+	public boolean check(Client client)
 	{
-		this.name = name;
-		this.spriteId = spriteId;
+		int attLevel = client.getRealSkillLevel(Skill.ATTACK);
+		int strLevel = client.getRealSkillLevel(Skill.STRENGTH);
+		return attLevel == 99 || strLevel == 99 | attLevel + strLevel >= 130;
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		return "Can access the Warriors' Guild (combined Attack + Strength level of 130, or 99 in Attack or Strength)";
 	}
 }

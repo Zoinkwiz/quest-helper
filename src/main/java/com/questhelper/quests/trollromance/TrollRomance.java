@@ -214,9 +214,11 @@ public class TrollRomance extends BasicQuestHelper
 		talkToDunstanAgain.addDialogSteps("Talk about a quest.");
 		useTarOnWax = new DetailedQuestStep(this, "Use some swamp tar on a bucket of wax.", swampTar, bucketOfWax, cakeTin);
 		useWaxOnSled = new DetailedQuestStep(this, "Use the wax on the sled.", wax, sled);
-		enterTrollCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0), "Enter the cave north of Trollheim.", waxedSled);
+		enterTrollCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0),
+			"Enter the cave north of Trollheim. There are high leveled ice trolls in here, so Protect from Melee and " +
+				"be careful!",	waxedSled);
 		leaveTrollCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Leave the cave via the north crevice.");
-		equipSled = new DetailedQuestStep(this, "Equip the sled", sledEquipped);
+		equipSled = new DetailedQuestStep(this, "Equip the sled.", sledEquipped);
 		sledSouth = new ObjectStep(this, ObjectID.SLOPE, new WorldPoint(2773, 3835, 0), "Sled to the south.");
 		pickFlowers = new ObjectStep(this, ObjectID.RARE_FLOWERS, new WorldPoint(2781, 3783, 0), "Pick a rare flower.");
 

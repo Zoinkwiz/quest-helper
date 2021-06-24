@@ -127,7 +127,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Repairing the statue",
-			Arrays.asList(talkToHosa, talkToArcis, talkToPiliar, talkToShayda, talkToLovada, talkToHosaToFinish)));
+			Arrays.asList(talkToHosa, talkToArcis, talkToPiliar, talkToLovada, talkToShayda, talkToHosaToFinish)));
 
 		return allSteps;
 	}

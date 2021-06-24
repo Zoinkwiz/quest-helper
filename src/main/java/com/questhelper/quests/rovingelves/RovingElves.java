@@ -117,6 +117,8 @@ public class RovingElves extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		seed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED);
+		seed.addAlternates(ItemID.CONSECRATION_SEED_4206);
+		
 		blessedSeed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED_4206);
 		blessedSeed.setTooltip("You can get another from Eluned");
 

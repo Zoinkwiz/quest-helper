@@ -408,7 +408,8 @@ public class UndergroundPass extends BasicQuestHelper
 		));
 
 		collectPlank = new DetailedQuestStep(this, new WorldPoint(2435, 9726, 0), "Pick up the plank in the north room.", plank);
-		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, "Swing across the pit with a rope.", ropeHighlight);
+		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, new WorldPoint(2463, 9699, 0), "Swing across the pit " +
+			"with a rope.", ropeHighlight);
 		crossThePit.addIcon(ItemID.ROPE);
 		crossThePit.addSubSteps(collectPlank);
 		climbOverRockslide4 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2491, 9691, 0), "Climb-over rockslide");

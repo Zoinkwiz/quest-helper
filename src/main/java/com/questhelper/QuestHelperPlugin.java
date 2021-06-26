@@ -196,8 +196,8 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	ChatMessageManager chatMessageManager;
 
-	@Inject
-	private QuestHelperDebugOverlay questHelperDebugOverlay;
+//	@Inject
+//	private QuestHelperDebugOverlay questHelperDebugOverlay;
 
 	@Getter
 	@Inject
@@ -259,10 +259,12 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.add(questHelperWorldArrowOverlay);
 		overlayManager.add(questHelperWorldLineOverlay);
 		overlayManager.add(questHelperWidgetOverlay);
-		if (isDeveloperMode())
-		{
-			overlayManager.add(questHelperDebugOverlay);
-		}
+
+//		Removed for now as not particularly useful in present form
+//		if (isDeveloperMode())
+//		{
+//			overlayManager.add(questHelperDebugOverlay);
+//		}
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
@@ -291,10 +293,11 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.remove(questHelperWorldArrowOverlay);
 		overlayManager.remove(questHelperWorldLineOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
-		if (isDeveloperMode())
-		{
-			overlayManager.remove(questHelperDebugOverlay);
-		}
+
+//		if (isDeveloperMode())
+//		{
+//			overlayManager.remove(questHelperDebugOverlay);
+//		}
 		clientToolbar.removeNavigation(navButton);
 		shutDownQuest(false);
 		bankTagService = null;

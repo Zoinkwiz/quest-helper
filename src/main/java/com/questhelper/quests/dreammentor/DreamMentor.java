@@ -390,7 +390,9 @@ public class DreamMentor extends BasicQuestHelper
 			talkToCyrisus, feed4Food, talkToCyrisus2, feed4Food2, talkToCyrisus3, feed6Food, talkToCyrisus4, talkToJack, giveCyrisusGear,
 			useFood3, supportCyrisusToRecovery), foodAll));
 		allSteps.add(new PanelDetails("Defeating his fear", Arrays.asList(talkToOneiromancer, fillVialWithWater, addGoutweed,
-			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy, killEverlasting, killUntouchable, killIllusive, returnToOneiromancer), goutweed, astralRune, hammer, pestleAndMortar, tinderbox, combatGear));
+			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy,
+			killEverlasting, killUntouchable, killIllusive, returnToOneiromancer), sealOfPassage, goutweed, astralRune, hammer,
+			pestleAndMortar, tinderbox, combatGear));
 		return allSteps;
 	}
 

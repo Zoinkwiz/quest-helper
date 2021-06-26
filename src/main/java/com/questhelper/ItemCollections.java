@@ -1138,7 +1138,7 @@ public class ItemCollections
 		ItemID.WOODCUT_CAPET,
 		ItemID.QUEST_POINT_CAPE,
 		ItemID.QUEST_POINT_CAPE_T
-		);
+	);
 
 	@Getter
 	private static final List<Integer> slayerHelmets = ImmutableList.of(

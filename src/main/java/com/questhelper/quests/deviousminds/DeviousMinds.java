@@ -182,7 +182,7 @@ public class DeviousMinds extends BasicQuestHelper
 		usePouchOnAltar.addIcon(ItemID.LARGE_POUCH_6819);
 
 		gotoDeadMonk = new NpcStep(this, NpcID.DEAD_MONK, new WorldPoint(3406, 3494, 0),
-			"Go back to the monk near Paterdomus template and search the dead monk's body.");
+			"Go back to the monk near Paterdomus temple and search the dead monk's body.");
 
 		talkToEntranaMonk = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3045, 3236, 0),
 			"Talk to the Monk of Entrana to go to Entrana.  No weapons or armour is allowed.");

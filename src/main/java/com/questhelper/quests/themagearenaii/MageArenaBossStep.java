@@ -123,7 +123,8 @@ public class MageArenaBossStep extends DetailedQuestStep
 			}
 			foundLocation = true;
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Unable to establish spawn location. Let us know the location in Discord so we can add it in")
+				.left("Unable to establish spawn location. Let the Quest Helper team know the location in Discord so " +
+					"we can add it in")
 				.build());
 		}
 		else

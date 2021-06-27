@@ -312,6 +312,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
 		req.add(new FavourRequirement(Favour.SHAYZIEN, 20));
 		req.add(new SkillRequirement(Skill.STRENGTH, 16));

@@ -261,7 +261,9 @@ public class GettingAhead extends BasicQuestHelper
 
 		goToMine = new ObjectStep(this, ObjectID.CAVE_20852, new WorldPoint(1212, 3647, 0), "Enter the Kebos Lowlands mine just west of the bridge and kill the Headless Beast (level 82).");
 		goToMine.addDialogStep("Yes.");
-		killBeast = new NpcStep(this, NpcID.HEADLESS_BEAST_10506, new WorldPoint(1191, 10021, 0), "Kill the headless beast.");
+		killBeast = new NpcStep(this, NpcID.HEADLESS_BEAST_10506, new WorldPoint(1191, 10021, 0), "Kill the headless " +
+			"beast. You can safespot it from the south west corner of the pond in the cave.");
+		((NpcStep) killBeast).addSafeSpots(new WorldPoint(1190, 10017, 0));
 		goToMine.addSubSteps(killBeast);
 
 		talkToGordon2 = new NpcStep(this, NpcID.GORDON, new WorldPoint(1248, 3686, 0), "");

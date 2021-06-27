@@ -422,11 +422,18 @@ public class TheSlugMenace extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToTiffy), commorb));
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToNiall, talkToMaledict, talkToHobb, talkToHolgart, talkToNiall2, enterDungeon, pushFalseWall, tryToOpenImposingDoor,
-			scanWithComm, pickUpDeadSlug), commorb2));
-		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(talkToJorral, talkToNiall3, talkToMaledict2, searchMayorsDesk, talkToLovecraft, talkToNiall4, useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle, useEmptyRunes), commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
-		allSteps.add(new PanelDetails("Facing the prince", Arrays.asList(enterDungeonAgain, enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy), meleeGear, airRune, waterRune, earthRune, fireRune, mindRune));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToTiffy),
+			commorb));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToNiall,
+			talkToMaledict, talkToHobb, talkToHolgart, talkToNiall2, enterDungeon,
+			pushFalseWall, tryToOpenImposingDoor, scanWithComm, pickUpDeadSlug), commorb2));
+		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(talkToJorral,
+			talkToNiall3, talkToMaledict2, searchMayorsDesk, talkToLovecraft, talkToNiall4,
+			useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle,
+			useEmptyRunes), commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
+		allSteps.add(new PanelDetails("Facing the prince", Arrays.asList(enterDungeonAgain,
+			enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy),
+			meleeGear, airRune, waterRune, earthRune, fireRune, mindRune, commorb2));
 		return allSteps;
 	}
 }

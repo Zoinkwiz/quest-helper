@@ -323,6 +323,8 @@ public class MountainDaughter extends BasicQuestHelper
 			whitePearlSeed);
 		returnToHamalAboutFood.addDialogStep("About your food supplies...");
 
+		returnToHamalAboutDiplomacy.addSubSteps(returnToHamalAboutFood);
+
 		returnToSpirit = new ObjectStep(this, ObjectID.SHINING_POOL_5897, new WorldPoint(2781, 3689, 0),
 			"Return to the centre of the pool north of the Mountain Camp and listen to it.",
 			pole, plank);
@@ -410,7 +412,7 @@ public class MountainDaughter extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Making peace with Rellekka", Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi)));
 		allSteps.add(new PanelDetails("Find a new food source", Arrays.asList(getFruit, eatFruit), axe, gloves));
 		allSteps.add(new PanelDetails("Prepare for a fight", Collections.singletonList(new DetailedQuestStep(this, "Prepare to fight The Kendal (level 70)")), pole, plank, axe, whitePearlSeed));
-		allSteps.add(new PanelDetails("Tell Hamal about your success", Arrays.asList(returnToHamalAboutDiplomacy, returnToHamalAboutFood)));
+		allSteps.add(new PanelDetails("Tell Hamal about your success", Arrays.asList(returnToHamalAboutDiplomacy)));
 		allSteps.add(new PanelDetails("Tell Asleif about your success", Collections.singletonList(returnToSpirit)));
 		allSteps.add(new PanelDetails("Find Asleif's corpse", Arrays.asList(enterCave, talkToKendal, grabCorpse)));
 		allSteps.add(new PanelDetails("Bring Asleif's corpse to Hamal", Collections.singletonList(bringCorpseToHamal)));

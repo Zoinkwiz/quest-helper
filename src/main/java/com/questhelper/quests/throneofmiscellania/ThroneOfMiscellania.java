@@ -237,7 +237,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		bow.addAlternates(ItemID.LONGBOW, ItemID.OAK_SHORTBOW, ItemID.OAK_LONGBOW, ItemID.WILLOW_SHORTBOW, ItemID.WILLOW_LONGBOW, ItemID.MAPLE_SHORTBOW, ItemID.MAPLE_LONGBOW, ItemID.YEW_SHORTBOW, ItemID.YEW_LONGBOW);
 		bow.setTooltip("You will lose this bow");
 		bow.setHighlightInInventory(true);
-		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemID.DRAMEN_STAFF);
+		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.getFairyStaff());
 		giantNib = new ItemRequirement("Giant nib", ItemID.GIANT_NIB);
 		giantNib.setHighlightInInventory(true);
 		giantPen = new ItemRequirement("Giant pen", ItemID.GIANT_PEN);

@@ -84,6 +84,7 @@ public class QuestBankTab
 	private static final int TEXT_HEIGHT = 15;
 	private static final int ITEM_HEIGHT = 32;
 	private static final int ITEM_WIDTH = 36;
+	private static final int EMPTY_BANK_SLOT_ID = 6512;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -333,7 +334,10 @@ public class QuestBankTab
 			{
 				itemWidget.setHidden(true);
 			}
-			else if (!itemWidget.isHidden() && itemWidget.getItemId() != -1 && !itemList.contains(itemWidget.getItemId()))
+			else if (!itemWidget.isHidden() &&
+				itemWidget.getItemId() != -1 &&
+				!itemList.contains(itemWidget.getItemId()) &&
+				itemWidget.getItemId() != EMPTY_BANK_SLOT_ID)
 			{
 				itemList.add(itemWidget.getItemId());
 			}

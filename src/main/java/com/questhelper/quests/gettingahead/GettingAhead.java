@@ -267,7 +267,7 @@ public class GettingAhead extends BasicQuestHelper
 		goToMine.addSubSteps(killBeast);
 
 		talkToGordon2 = new NpcStep(this, NpcID.GORDON, new WorldPoint(1248, 3686, 0), "");
-		leaveCave = new ObjectStep(this, ObjectID.CAVE_20853, new WorldPoint(1190, 10029, 0), "Leave the cave");
+		leaveCave = new ObjectStep(this, ObjectID.CAVE_20853, new WorldPoint(1190, 10029, 0), "Leave the cave.");
 		talkToGordon2.addSubSteps(leaveCave);
 
 		//Making the fake head

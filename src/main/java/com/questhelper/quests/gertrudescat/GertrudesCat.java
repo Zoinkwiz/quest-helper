@@ -60,6 +60,8 @@ public class GertrudesCat extends BasicQuestHelper
 	ItemRequirement bucketOfMilk, coins, seasonedSardine, sardine, doogleLeaves, milkHighlighted,
 		seasonedSardineHighlighted, kittenHighlighted;
 
+	ItemRequirement lumberyardTeleport, varrockTeleport;
+
 	QuestStep talkToGertrude, talkToChildren, gertrudesCat, gertrudesCat2, searchNearbyCrates,
 		giveKittenToFluffy, finishQuest;
 
@@ -84,7 +86,14 @@ public class GertrudesCat extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToGertrude = getTalkToGertrude());
-		steps.put(1, talkToChildren = getTalkToChildren());
+
+		talkToChildren = getTalkToChildren();
+
+		ConditionalStep conditionalTalkToChildren = new ConditionalStep(this, pickupDoogle);
+		conditionalTalkToChildren.addStep(new ItemRequirements(LogicType.AND, "", sardine, doogleLeaves), makeSeasonedSardine);
+		conditionalTalkToChildren.addStep(new ItemRequirements(seasonedSardine), talkToChildren);
+		steps.put(1, conditionalTalkToChildren);
+
 		steps.put(2, giveMilkToCatSteps = getGiveMilkToCat());
 		steps.put(3, giveSardineToCat = getFeedCat());
 		steps.put(4, findFluffsKitten());
@@ -175,15 +184,12 @@ public class GertrudesCat extends BasicQuestHelper
 		makeSeasonedSardine = new DetailedQuestStep(this, "Use your Doogle Leaves on  the Sardine.", sardine, doogleLeaves);
 
 		NpcStep talkToChildren = new NpcStep(this, NpcID.SHILOP,
-			new WorldPoint(3222, 3435, 0), "", true, seasonedSardine, coins);
+			new WorldPoint(3222, 3435, 0), "Talk to Shilop or Wilough in the Varrock Square.", true,
+			seasonedSardine, coins);
 		talkToChildren.addAlternateNpcs(NpcID.WILOUGH);
 		talkToChildren.addDialogSteps("What will make you tell me?", "Okay then, I'll pay.");
 
-		ConditionalStep conditionalTalkToChildren = new ConditionalStep(this, pickupDoogle, "Talk to Shilop or Wilough.");
-		conditionalTalkToChildren.addStep(new ItemRequirements(LogicType.AND, "", sardine, doogleLeaves), makeSeasonedSardine);
-		conditionalTalkToChildren.addStep(new ItemRequirements(seasonedSardine), talkToChildren);
-
-		return conditionalTalkToChildren;
+		return talkToChildren;
 	}
 
 	private QuestStep getTalkToGertrude()
@@ -213,6 +219,10 @@ public class GertrudesCat extends BasicQuestHelper
 		sardine.setHighlightInInventory(true);
 		doogleLeaves = new ItemRequirement("Doogle Leaves", ItemID.DOOGLE_LEAVES);
 		doogleLeaves.setHighlightInInventory(true);
+
+		// Recommended items
+		lumberyardTeleport = new ItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
 	}
 
 	private void setupZones()
@@ -240,13 +250,19 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(varrockTeleport, lumberyardTeleport);
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();
 
 		PanelDetails startingPanel = new PanelDetails("Starting out",
-			Arrays.asList(talkToGertrude, talkToChildren),
-			coins);
+			Arrays.asList(talkToGertrude, pickupDoogle, makeSeasonedSardine, talkToChildren),
+			sardine, coins);
 		steps.add(startingPanel);
 
 		PanelDetails lumberYardPanel = new PanelDetails("The secret playground (Lumber Yard)",

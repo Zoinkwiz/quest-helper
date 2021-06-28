@@ -64,6 +64,9 @@ public class Contact extends BasicQuestHelper
 	//Items Required
 	ItemRequirement lightSource, combatGear, parchment, keris, food, prayerPotions;
 
+	// Item recommended
+	ItemRequirement coins, glory;
+
 	Requirement inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
 
 	QuestStep talkToHighPriest, talkToJex, goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman, talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain,
@@ -133,6 +136,9 @@ public class Contact extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
+
+		coins = new ItemRequirement("Coins for carpet rides", ItemID.COINS_995);
+		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.getAmuletOfGlories());
 	}
 
 	public void setupZones()
@@ -259,6 +265,15 @@ public class Contact extends BasicQuestHelper
 		reqs.add(combatGear);
 		reqs.add(food);
 		reqs.add(prayerPotions);
+		return reqs;
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(coins.quantity(1000));
+		reqs.add(glory);
 		return reqs;
 	}
 

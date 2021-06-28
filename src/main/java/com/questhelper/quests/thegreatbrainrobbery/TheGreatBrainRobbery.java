@@ -232,7 +232,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 		// Item recommended
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
-		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.getSkillsNecklaces());
+		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.getCombatBracelets());
 		edgevilleTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
 		fenkenstrainTeleport = new ItemRequirement("Fenkenstrain's Castle teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 		watermelonSeeds = new ItemRequirement("Watermelon seeds to plant on Harmony for Hard Morytania Diary",
@@ -524,7 +524,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(fishbowlHelmet, divingApparatus, catsOrResources, saw, plank.quantity(8), hammer,
+		return Arrays.asList(fishbowlHelmet, divingApparatus, catsOrResources, plank.quantity(8), hammer,
 			nails.quantity(100), holySymbol, ringOfCharos);
 	}
 
@@ -532,8 +532,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(ectophial, edgevilleTeleport, fenkenstrainTeleport, watermelonSeeds.quantity(3),
-			combatGearForSafespotting,
-			food, prayerPotions);
+			combatGearForSafespotting, food, prayerPotions);
 	}
 
 	@Override

@@ -57,6 +57,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
+import joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +71,7 @@ import net.runelite.api.Player;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -90,6 +92,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bank.BankSearch;
+import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
@@ -259,10 +262,6 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.add(questHelperWorldArrowOverlay);
 		overlayManager.add(questHelperWorldLineOverlay);
 		overlayManager.add(questHelperWidgetOverlay);
-		if (isDeveloperMode())
-		{
-			overlayManager.add(questHelperDebugOverlay);
-		}
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
@@ -291,10 +290,8 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.remove(questHelperWorldArrowOverlay);
 		overlayManager.remove(questHelperWorldLineOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
-		if (isDeveloperMode())
-		{
-			overlayManager.remove(questHelperDebugOverlay);
-		}
+		overlayManager.remove(questHelperDebugOverlay);
+
 		clientToolbar.removeNavigation(navButton);
 		shutDownQuest(false);
 		bankTagService = null;
@@ -409,6 +406,21 @@ public class QuestHelperPlugin extends Plugin
 		if (event.getGroup().equals("questhelper") && configEvents.contains(event.getKey()))
 		{
 			clientThread.invokeLater(this::updateQuestList);
+		}
+	}
+
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
+		{
+			if (commandExecuted.getArguments().length == 0 ||
+				(Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("disable"))
+			{
+				overlayManager.remove(questHelperDebugOverlay);
+			}
+			else if ((Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("enable"))
+				overlayManager.add(questHelperDebugOverlay);
 		}
 	}
 

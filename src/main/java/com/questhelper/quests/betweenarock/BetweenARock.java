@@ -370,7 +370,7 @@ public class BetweenARock extends BasicQuestHelper
 		talkToDondakanForEnd.addDialogStep("Ready as I'll ever be.");
 		talkToDondakanWithHelmet.addSubSteps(enterDwarfCaveWithHelmet, enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanForEnd);
 
-		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15.", pickaxe);
+		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15. Keep these in your inventory for the boss fight.", pickaxe);
 
 		talkToSecondFlame = new ObjectStep(this, ObjectID.WALL_OF_FLAME_5979, new WorldPoint(2373, 4956, 0),
 			"TALK to the central wall of flame.");

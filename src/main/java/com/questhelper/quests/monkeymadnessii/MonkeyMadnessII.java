@@ -547,7 +547,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		fightKob = new NpcStep(this, NpcID.KOB_7107, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.");
 		fightKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
 
-		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 70)
+		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 71)
 		{
 			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Get to him via the agility shortcut next to him. Be prepared to fight him and pray Protect from Melee.");
 		}
@@ -690,7 +690,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Going undercover", chapter2Steps, ninjaGreegree, mspeakAmulet, talismanOr1000Coins, lightSource, combatGear, food, prayerPotions, staminaPotions));
 
 		allSteps.add(new PanelDetails("Defeating trolls and ogres",
-			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear));
+			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear,
+			coins20.hideConditioned(new SkillRequirement(Skill.AGILITY, 71, true))));
 
 		List<QuestStep> sabotageSteps = QuestUtil.toArrayList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
 			talkToGarkorAfterSmith, talkToMonkeyGuard);

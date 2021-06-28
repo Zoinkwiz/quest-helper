@@ -66,6 +66,7 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 
 		activeQuestArrow = arrows.get(0);
 
+		this.setName("Quest Helper");
 		this.setSnapToEdge(true);
 		this.setJumpOnClick(true);
 		this.setImage(questWorldImage);

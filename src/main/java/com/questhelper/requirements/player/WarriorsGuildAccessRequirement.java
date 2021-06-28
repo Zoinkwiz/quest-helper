@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2021, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.myarmsbigadventure;
+package com.questhelper.requirements.player;
 
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.ObjectStep;
-import java.util.Arrays;
-import java.util.Collections;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import com.questhelper.requirements.AbstractRequirement;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
 
-public class AddCompost extends ObjectStep
+public class WarriorsGuildAccessRequirement extends AbstractRequirement
 {
-	ItemRequirement compost = new ItemRequirement("Supercompost",ItemID.SUPERCOMPOST, 7);
-	ItemRequirement spade = new ItemRequirement("Spade", ItemID.SPADE);
-
-	public AddCompost(QuestHelper questHelper)
+	@Override
+	public boolean check(Client client)
 	{
-		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0),
-			"Add 7 supercompost on My Arm's soil patch.");
-		this.addIcon(ItemID.SUPERCOMPOST);
-		compost.setHighlightInInventory(true);
+		int attLevel = client.getRealSkillLevel(Skill.ATTACK);
+		int strLevel = client.getRealSkillLevel(Skill.STRENGTH);
+		return attLevel == 99 || strLevel == 99 || attLevel + strLevel >= 130;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	@Override
+	public String getDisplayText()
 	{
-		updateSteps();
-	}
-
-	protected void updateSteps()
-	{
-		int numCompToAdd = 7 - client.getVarbitValue(2792);
-		compost.setQuantity(numCompToAdd);
-		this.setRequirements(Arrays.asList(compost, spade));
-		this.setText("Add " + numCompToAdd + " supercompost on My Arm's soil patch.");
+		return "Can access the Warriors' Guild (combined Attack + Strength level of 130, or 99 in Attack or Strength)";
 	}
 }

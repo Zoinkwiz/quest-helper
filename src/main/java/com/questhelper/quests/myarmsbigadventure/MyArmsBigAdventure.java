@@ -479,11 +479,11 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToBurntmeat, talkToMyArm), climbingBoots));
 		allSteps.add(new PanelDetails("Preparing to grow", Arrays.asList(useBucketOnPot, talkToArmWithLump,
 			talkToMyArmUpstairs, readBook, talkToMyArmAfterReading, useUgthankiDung, useCompost, talkToMyArmAfterFertilising),
-			climbingBoots, bucket, supercompost7, ugthanki3));
+			climbingBoots, bucket, spade, supercompost7, ugthanki3));
 		allSteps.add(new PanelDetails("Karamja adventure", Arrays.asList(talkToBarnaby, talkAfterBoat, talkToMyArmAtTai, talkToMurcaily, talkToMyArmAfterMurcaily)));
 		allSteps.add(new PanelDetails("Troll farming", Arrays.asList(talkToMyArmForFight, giveRake, giveSupercompost, giveHardyGout,
 			giveDibber, talkToMyArmAfterGrow, killBabyRoc, killGiantRoc, giveSpade, talkToMyArmAfterHarvest, talkToBurntmeatAgain,
-			talkToMyArmFinish), combatGear, rake, superCompost, dibber));
+			talkToMyArmFinish), combatGear, rake, superCompost, dibber, spade, hardyGout));
 		return allSteps;
 	}
 }

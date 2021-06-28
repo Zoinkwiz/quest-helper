@@ -395,7 +395,8 @@ public class KingsRansom extends BasicQuestHelper
 		enterFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knight Fortress.",
 			bronzeMedWorn, ironChainWorn, blackKnightHelm, blackKnightBody, blackKnightLeg, animateRock, holyGrail, granite);
 		enterWallInFortress = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Enter the secret room.", blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, animateRock, holyGrail, granite);
-		freeArthur = new ObjectStep(this, NullObjectID.NULL_25943, new WorldPoint(1867, 4233, 0), "Free King Arthur.", animateRock, holyGrail, granite);
+		freeArthur = new ObjectStep(this, NullObjectID.NULL_25943, new WorldPoint(1867, 4233, 0), "Free King Arthur " +
+			"by using the animate rock scroll.", animateRock.highlighted(), holyGrail, granite);
 
 		enterFortressAfterFreeing = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knight Fortress.",
 			bronzeMedWorn, ironChainWorn, blackKnightHelm, blackKnightBody, blackKnightLeg);

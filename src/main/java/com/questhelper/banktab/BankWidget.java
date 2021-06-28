@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.myarmsbigadventure;
+package com.questhelper.banktab;
 
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.ObjectStep;
-import java.util.Arrays;
-import java.util.Collections;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.Point;
+import net.runelite.api.widgets.Widget;
 
-public class AddCompost extends ObjectStep
+public class BankWidget
 {
-	ItemRequirement compost = new ItemRequirement("Supercompost",ItemID.SUPERCOMPOST, 7);
-	ItemRequirement spade = new ItemRequirement("Spade", ItemID.SPADE);
+	public Widget itemWidget;
 
-	public AddCompost(QuestHelper questHelper)
+	public BankWidget(Widget itemWidget)
 	{
-		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0),
-			"Add 7 supercompost on My Arm's soil patch.");
-		this.addIcon(ItemID.SUPERCOMPOST);
-		compost.setHighlightInInventory(true);
+		this.itemWidget = itemWidget;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	public boolean isPointOverWidget(Point point)
 	{
-		updateSteps();
+		return itemWidget.contains(point);
 	}
 
-	protected void updateSteps()
+	public int getItemID()
 	{
-		int numCompToAdd = 7 - client.getVarbitValue(2792);
-		compost.setQuantity(numCompToAdd);
-		this.setRequirements(Arrays.asList(compost, spade));
-		this.setText("Add " + numCompToAdd + " supercompost on My Arm's soil patch.");
+		return itemWidget.getItemId();
+	}
+
+	public int getItemQuantity()
+	{
+		return itemWidget.getItemQuantity();
+	}
+
+	public void swap(BankWidget otherWidget)
+	{
+		int otherXItem = otherWidget.itemWidget.getOriginalX();
+		int otherYItem = otherWidget.itemWidget.getOriginalY();
+
+		otherWidget.swapPosition(otherWidget.itemWidget, itemWidget);
+		swapPosition(itemWidget, otherXItem, otherYItem);
+	}
+
+	private void swapPosition(Widget thisWidget, Widget otherWidget)
+	{
+		thisWidget.setOriginalX(otherWidget.getOriginalX());
+		thisWidget.setOriginalY(otherWidget.getOriginalY());
+		thisWidget.revalidate();
+	}
+
+	private void swapPosition(Widget thisWidget, int x, int y)
+	{
+		thisWidget.setOriginalX(x);
+		thisWidget.setOriginalY(y);
+		thisWidget.revalidate();
 	}
 }

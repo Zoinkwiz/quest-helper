@@ -299,7 +299,8 @@ public class DreamMentor extends BasicQuestHelper
 		leaveCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_11399, new WorldPoint(2346, 10360, 2), "Talk to 'Bird's-Eye' Jack in the Lunar Isle bank.");
 		goUpToSurface = new ObjectStep(this, ObjectID.LADDER_14995, new WorldPoint(2330, 10353, 2), "Talk to 'Bird's-Eye' Jack in the Lunar Isle bank.");
 		selectEquipment = new SelectingCombatGear(this);
-		talkToJack = new NpcStep(this, NpcID.BIRDSEYE_JACK, new WorldPoint(2099, 3921, 0), "Talk to 'Bird's-Eye' Jack in the Lunar Isle bank for Cyrisus's equipment.");
+		talkToJack = new NpcStep(this, NpcID.BIRDSEYE_JACK, new WorldPoint(2099, 3921, 0),
+			"Talk to 'Bird's-Eye' Jack in the Lunar Isle bank for Cyrisus's equipment.", sealOfPassage);
 		talkToJack.addDialogStep("Cyrisus in the mine");
 		talkToJack.addSubSteps(leaveCave, goUpToSurface, selectEquipment);
 		goBackDownToCyrisus = new ObjectStep(this, ObjectID.LADDER_14996, new WorldPoint(2142, 3944, 0), "Enter the mine in the north east of Lunar Isle.", chest, food6);
@@ -388,7 +389,7 @@ public class DreamMentor extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping Cyrisus", Arrays.asList(goDownToCyrisus, enterCyrisusCave,
 			talkToCyrisus, feed4Food, talkToCyrisus2, feed4Food2, talkToCyrisus3, feed6Food, talkToCyrisus4, talkToJack, giveCyrisusGear,
-			useFood3, supportCyrisusToRecovery), foodAll));
+			useFood3, supportCyrisusToRecovery), foodAll, sealOfPassage));
 		allSteps.add(new PanelDetails("Defeating his fear", Arrays.asList(talkToOneiromancer, fillVialWithWater, addGoutweed,
 			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy,
 			killEverlasting, killUntouchable, killIllusive, returnToOneiromancer), sealOfPassage, goutweed, astralRune, hammer,

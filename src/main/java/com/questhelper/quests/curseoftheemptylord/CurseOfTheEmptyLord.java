@@ -42,6 +42,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	private int currentPath = 0;
 
 	//Items Required
-	ItemRequirement ringOfVis, ghostspeak;
+	ItemRequirement ringOfVis, ghostspeak, knife;
 
 	Requirement talkedToValdez, talkedToRennard, talkedToKharrim, talkedToLennissa, talkedToDhalak, talkedToViggora, inRoguesCastle, inEdgevilleDungeon, inSlayerTower,
 		inEdgevilleMonastery, inPartyRoom, onPath1, onPath2, onPath3;
@@ -129,6 +130,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		ringOfVis = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
 		ghostspeak = new ItemRequirement("Ghostspeak amulet or any pair of morytania legs", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeak.addAlternates(ItemID.MORYTANIA_LEGS, ItemID.MORYTANIA_LEGS_1, ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(new VarbitRequirement(PATH_VARBIT, 3));
 	}
 
 	public void setupConditions()
@@ -241,6 +243,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 			talkToRennard.setWorldPoint(3163, 2981, 0);
 
 			talkToKharrim.setText("Talk to the Mysterious Ghost in the centre of the Lava Maze.");
+			talkToKharrim.addItemRequirements(Collections.singletonList(knife));
 			talkToKharrim.setWorldPoint(3076, 3861, 0);
 
 			talkToLennissa.setText("Talk to the Mysterious Ghost in the west of the Tree Gnome Stronghold.");
@@ -259,7 +262,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(ringOfVis, ghostspeak);
+		return Arrays.asList(ringOfVis, ghostspeak, knife);
 	}
 
 	@Override
@@ -268,7 +271,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Learn about the Empty Lord",
 			Arrays.asList(talkToValdez, talkToRennard, talkToKharrim, talkToLennissa, talkToDhalak, talkToViggora),
-				ghostspeak, ringOfVis));
+				ghostspeak, ringOfVis, knife));
 
 		return allSteps;
 	}

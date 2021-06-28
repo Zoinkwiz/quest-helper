@@ -120,6 +120,8 @@ public class FightArena extends BasicQuestHelper
 		endQuestSteps.addStep(inArena, leaveArena);
 		steps.put(11, endQuestSteps);
 		steps.put(12, endQuestSteps);
+		steps.put(13, endQuestSteps);
+		steps.put(14, endQuestSteps);
 
 		return steps;
 	}

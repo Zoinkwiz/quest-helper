@@ -222,6 +222,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Arrays.asList(new FavourRequirement(Favour.LOVAKENGJ, 20),
+			new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
 	}
 

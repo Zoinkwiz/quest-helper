@@ -26,7 +26,6 @@ package com.questhelper.quests.akingdomdivided;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
@@ -40,21 +39,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
 public class StonePuzzleStep extends DetailedOwnerStep
 {
 	Requirement inPanelZone;
-
-	private boolean foundSum = false;
-	private boolean solving = false;
-	private boolean solved = false;
-
-	private boolean southDone = false;
-	private boolean northDone = false;
-
 	private boolean rStoneDone = false;
 	private boolean oStoneDone = false;
 	private boolean sStoneDone = false;
@@ -65,7 +55,7 @@ public class StonePuzzleStep extends DetailedOwnerStep
 
 	Zone panelArea1, panelArea2;
 
-	private HashMap<String, String> answers = new HashMap<>();
+	private final HashMap<String, String> answers = new HashMap<>();
 
 	public StonePuzzleStep(QuestHelper questHelper)
 	{
@@ -75,9 +65,10 @@ public class StonePuzzleStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if(!codeFound)
+		if (!codeFound)
 		{
-			if (!eStoneDone) {
+			if (!eStoneDone)
+			{
 				startUpStep(checkEStone);
 			}
 			else if (!rStoneDone)
@@ -107,7 +98,8 @@ public class StonePuzzleStep extends DetailedOwnerStep
 		}
 		else
 		{
-			if (inPanelZone.check(client)) {
+			if (inPanelZone.check(client))
+			{
 
 				startUpStep(checkPanel);
 			}
@@ -120,7 +112,7 @@ public class StonePuzzleStep extends DetailedOwnerStep
 
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onGameTick()
 	{
 		Widget widgetStone = client.getWidget(229, 1);
 
@@ -129,7 +121,8 @@ public class StonePuzzleStep extends DetailedOwnerStep
 			Matcher foundStoneValue = Pattern.compile("(?:^|)'([^']*?)'(?:\\s|$)").matcher(widgetStone.getText());
 			final boolean foundAnswer = foundStoneValue.find();
 
-			if (foundAnswer) {
+			if (foundAnswer)
+			{
 				final String value = foundStoneValue.group(0);
 				final String letter = value.substring(1, 2);
 				final String number = value.substring(value.length() - 2, value.length() - 1);
@@ -184,7 +177,7 @@ public class StonePuzzleStep extends DetailedOwnerStep
 		checkEStone = new ObjectStep(getQuestHelper(), ObjectID.STONE_PILE_41827, new WorldPoint(1680, 3576, 0), "Check the north east stone pile.");
 
 		chopVines = new ObjectStep(getQuestHelper(), ObjectID.VINES_41815, new WorldPoint(1671, 3577, 0), "Chop the vines south of Martin Holt.");
-		squeezeThroughVines = new ObjectStep(getQuestHelper(), ObjectID.VINES_41816, new WorldPoint(1671, 3577, 0), "Squeeze through the vines." );
+		squeezeThroughVines = new ObjectStep(getQuestHelper(), ObjectID.VINES_41816, new WorldPoint(1671, 3577, 0), "Squeeze through the vines.");
 		checkPanel = new ObjectStep(getQuestHelper(), ObjectID.PANEL_41822, new WorldPoint(1672, 3579, 0), "Check the panel on the wall.");
 	}
 

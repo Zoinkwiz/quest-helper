@@ -35,9 +35,11 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
@@ -46,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -65,7 +68,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 	// Items required
 	ItemRequirement combatGear;
 
-	ItemRequirement botSceptre, topSceptre, rightSkull, leftSkull, strangeSkull, runedSceptre, combinedSkullSceptre;
+	ItemRequirement botSceptre, topSceptre, rightSkull, leftSkull, strangeSkull, runedSceptre, combinedSkullSceptre, dashingKeb, coins, cape, axe, airRune, lawRune, fireRune, yewLog, tinderBox;
 
 	// Items recommended
 	ItemRequirement food;
@@ -73,15 +76,17 @@ public class VarrockHard extends ComplexStateQuestHelper
 	// Quests required
 	Requirement desertTreasure;
 
-	Requirement notSpottyCape, not153Kudos, notWakkaEdge, notPaddewwaTP, notSkullSceptre, notYewChurch, notFancyStone, notYewRoots, notSmiteAltar;
+	Requirement ancientBook;
 
-	QuestStep claimReward, moveToStronghold, moveToStronghold2, moveToStronghold3, moveToStronghold4, makeSceptre, makeSkull, skullSceptre, makeSkullSceptre;
+	Requirement notSpottyCape, not153Kudos, notWakkaEdge, notPaddewwaTP, notSkullSceptre, notYewChurch, notFancyStone, notYewRoots, notSmiteAltar, notPipe, notMoreKudos;
+
+	QuestStep claimReward, moveToStronghold, moveToStronghold2, moveToStronghold3, moveToStronghold4, makeSceptre, makeSkull, skullSceptre, makeSkullSceptre, getCape, spottyCape, getKudos, wakkaEdge, moveToBasement, kudos, paddewwaTP, cutYew, goUp1, goUp2, goUp3, burnLogs;
 
 	NpcStep killMino, killFlesh, killCatablepon, killAnkou;
 
-	Zone stronghold1, stronghold2, stronghold3, stronghold4;
+	Zone stronghold1, stronghold2, stronghold3, stronghold4, basement, church2, church3, church4;
 
-	ZoneRequirement inStronghold1, inStronghold2, inStronghold3, inStronghold4;
+	ZoneRequirement inStronghold1, inStronghold2, inStronghold3, inStronghold4, inBasement, inChurch2, inChurch3, inChurch4;
 
 	@Override
 	public QuestStep loadStep()
@@ -91,6 +96,21 @@ public class VarrockHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
+		doHard.addStep(new Conditions(notSpottyCape, cape), spottyCape);
+		doHard.addStep(notSpottyCape, getCape);
+		doHard.addStep(new Conditions(not153Kudos, inBasement, notMoreKudos), kudos);
+		doHard.addStep(new Conditions(not153Kudos, notMoreKudos), moveToBasement);
+		doHard.addStep(not153Kudos, getKudos);
+
+		doHard.addStep(new Conditions(notYewChurch, inChurch4, yewLog), burnLogs);
+		doHard.addStep(new Conditions(notYewChurch, inChurch3, yewLog), goUp3);
+		doHard.addStep(new Conditions(notYewChurch, inChurch2, yewLog), goUp2);
+		doHard.addStep(new Conditions(notYewChurch, yewLog), goUp1);
+		doHard.addStep(notYewChurch, cutYew);
+
+
+		doHard.addStep(notWakkaEdge, wakkaEdge);
+		doHard.addStep(notPaddewwaTP, paddewwaTP);
 		doHard.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre), skullSceptre);
 		doHard.addStep(new Conditions(notSkullSceptre, runedSceptre, strangeSkull), makeSkullSceptre);
 		doHard.addStep(new Conditions(notSkullSceptre, botSceptre, topSceptre), makeSceptre);
@@ -118,6 +138,11 @@ public class VarrockHard extends ComplexStateQuestHelper
 		notFancyStone = new VarplayerRequirement(1177, false, 3);
 		notYewRoots = new VarplayerRequirement(1177, false, 4);
 		notSmiteAltar = new VarplayerRequirement(1177, false, 5);
+		notPipe = new VarplayerRequirement(1177, false, 6);
+
+		notMoreKudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 153, "153+ Kudos");
+
+		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
 		botSceptre = new ItemRequirement("Bottom of sceptre", ItemID.BOTTOM_OF_SCEPTRE).showConditioned(notSkullSceptre);
 		topSceptre = new ItemRequirement("Top of sceptre", ItemID.TOP_OF_SCEPTRE).showConditioned(notSkullSceptre);
@@ -126,8 +151,17 @@ public class VarrockHard extends ComplexStateQuestHelper
 		strangeSkull = new ItemRequirement("Strange skull", ItemID.STRANGE_SKULL).showConditioned(notSkullSceptre);
 		runedSceptre = new ItemRequirement("Runed sceptre", ItemID.RUNED_SCEPTRE).showConditioned(notSkullSceptre);
 		combinedSkullSceptre = new ItemRequirement("Skull sceptre", ItemID.SKULL_SCEPTRE).showConditioned(notSkullSceptre);
+		dashingKeb = new ItemRequirement("Dashing kebbit fur", ItemID.DASHING_KEBBIT_FUR).showConditioned(notSpottyCape);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(notSpottyCape, notFancyStone));
+		cape = new ItemRequirement("Spottier cape", ItemID.SPOTTIER_CAPE).showConditioned(notSpottyCape);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notWakkaEdge);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notPaddewwaTP);
+		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notPaddewwaTP);
+		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notPaddewwaTP);
+		yewLog = new ItemRequirement("Yew log", ItemID.YEW_LOGS);
+		tinderBox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notYewChurch);
 
-		combatGear = new ItemRequirement("", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -136,6 +170,10 @@ public class VarrockHard extends ComplexStateQuestHelper
 		inStronghold2 = new ZoneRequirement(stronghold2);
 		inStronghold3 = new ZoneRequirement(stronghold3);
 		inStronghold4 = new ZoneRequirement(stronghold4);
+		inBasement = new ZoneRequirement(basement);
+		inChurch2 = new ZoneRequirement(church2);
+		inChurch3 = new ZoneRequirement(church3);
+		inChurch4 = new ZoneRequirement(church4);
 
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}
@@ -146,6 +184,10 @@ public class VarrockHard extends ComplexStateQuestHelper
 		stronghold2 = new Zone(new WorldPoint(1983, 5248, 0), new WorldPoint(2049, 5183, 0));
 		stronghold3 = new Zone(new WorldPoint(2113, 5313, 0), new WorldPoint(2177, 5246, 0));
 		stronghold4 = new Zone(new WorldPoint(2302, 5250, 0), new WorldPoint(2369, 5183, 0));
+		basement = new Zone(new WorldPoint(1728, 4989, 0), new WorldPoint(1792, 4931, 0));
+		church2 = new Zone(new WorldPoint(3249, 3489, 1), new WorldPoint(3262, 3469, 1));
+		church3 = new Zone(new WorldPoint(3249, 3489, 2), new WorldPoint(3262, 3469, 2));
+		church4 = new Zone(new WorldPoint(3249, 3489, 3), new WorldPoint(3262, 3469, 3));
 	}
 
 	public void setupSteps()
@@ -179,6 +221,32 @@ public class VarrockHard extends ComplexStateQuestHelper
 		makeSkullSceptre = new ItemStep(this, "Use the sceptre pieces together.", runedSceptre.highlighted(), strangeSkull.highlighted());
 		skullSceptre = new DetailedQuestStep(this, "Use the sceptre to teleport to the stronghold.", combinedSkullSceptre.highlighted());
 
+		getCape = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398, 0),
+			"Have Asyff make the spotty cape.", dashingKeb.quantity(2), coins.quantity(800));
+		getCape.addDialogStep("Could you make anything out of this fur that I got from hunting?");
+		spottyCape = new ItemStep(this, "Equip the spottier cape.", cape.highlighted());
+
+		moveToBasement = new ObjectStep(this, ObjectID.STAIRS_24428, new WorldPoint(3256, 3452, 0),
+			"Climb down the Varrock museum stairs.");
+		kudos = new NpcStep(this, NpcID.ORLANDO_SMITH, new WorldPoint(1759, 4955, 0),
+			"Speak with Orlando.");
+		getKudos = new DetailedQuestStep(this, "Complete more quests and tasks for kudos. Check out the kudos wiki page for more details.");
+
+		wakkaEdge = new ObjectStep(this, 12166, new WorldPoint(3131, 3510, 0),
+			"Make a Wakka at the canoe station.");
+
+		paddewwaTP = new DetailedQuestStep(this, "Cast teleport to Paddewwa.", ancientBook, lawRune.quantity(2), airRune.quantity(1), fireRune.quantity(1));
+
+		cutYew = new ObjectStep(this, 10823, new WorldPoint(3249, 3473, 0),
+			"Cut a yew tree until you get a log.");
+		goUp1 = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3259, 3488, 0),
+			"Climb the stairs.");
+		goUp2 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3259, 3488, 1),
+			"Climb the stairs.");
+		goUp3 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3259, 3488, 2),
+			"Climb the stairs.");
+		burnLogs = new ItemStep(this, "Burn the yew logs.", tinderBox.highlighted(), yewLog.highlighted());
+
 		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
@@ -187,13 +255,13 @@ public class VarrockHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear);
+		return Collections.singletonList(combatGear);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food);
+		return Collections.singletonList(food);
 	}
 
 	@Override
@@ -226,6 +294,13 @@ public class VarrockHard extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Trade for A Spottier Cape", Arrays.asList(getCape, spottyCape), dashingKeb.quantity(2), coins.quantity(800)));
+		allSteps.add(new PanelDetails("Speak with Orlando With 153+ Kudos", Arrays.asList(getKudos, moveToBasement, kudos), notMoreKudos));
+		allSteps.add(new PanelDetails("Cut and Burn Yew Logs Atop the Church", Arrays.asList(cutYew, goUp1, goUp2, goUp3, burnLogs), axe, tinderBox));
+
+		allSteps.add(new PanelDetails("Edgeville Wakka", Collections.singletonList(wakkaEdge), axe));
+		allSteps.add(new PanelDetails("Teleport to Paddewwa", Collections.singletonList(paddewwaTP), ancientBook, lawRune.quantity(2), airRune.quantity(1), fireRune.quantity(1)));
+		//pipe
 		allSteps.add(new PanelDetails("Teleport with Skull Sceptre", Arrays.asList(moveToStronghold, killMino, moveToStronghold2, killFlesh, moveToStronghold3, killCatablepon, moveToStronghold4, killAnkou, makeSkull, makeSceptre, makeSkullSceptre, skullSceptre), combatGear, food));
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

@@ -106,6 +106,9 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notEarthRune, moveToEarthRune);
 		doEasy.addStep(notIron, iron);
 		doEasy.addStep(notFence, fence);
+		doEasy.addStep(notTrout, trout);
+		doEasy.addStep(new Conditions(notBowl, unfiredBowl), bowl);
+		doEasy.addStep(notBowl, potteryWheel);
 		doEasy.addStep(new Conditions(LogicType.OR, notStrongholdSecond, inStronghold1), moveToStronghold2);
 		doEasy.addStep(notStrongholdSecond, moveToStronghold1);
 
@@ -125,11 +128,11 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		notDogBone = new VarplayerRequirement(1176, false, 9);
 		notBowl = new VarplayerRequirement(1176, false, 10);
 		notKudos = new VarplayerRequirement(1176, false, 11);
-		notEarthRune = new VarplayerRequirement(1176, false, 12);
+		notEarthRune = new VarplayerRequirement(1176, true, 12);
 		notTrout = new VarplayerRequirement(1176, false, 13);
 		notTeaStall = new VarplayerRequirement(1176, false, 14);
 
-		notMoreKudos = new VarplayerRequirement(3637, 50, Operation.GREATER_EQUAL, "50+ Kudos");
+		notMoreKudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 50, "50+ Kudos");
 
 		coins = new ItemRequirement("Coins", ItemID.COINS, 150).showConditioned(new Conditions(LogicType.OR, notNews, notPlank));
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIron);
@@ -137,8 +140,8 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notDyingTree);
 		bone = new ItemRequirement("Bones", ItemID.BONE).showConditioned(notDogBone);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
-		earthTali = new ItemRequirement("", ItemID.EARTH_TALISMAN).showConditioned(notEarthRune);
-		ess = new ItemRequirement("Rune essence", ItemID.RUNE_ESSENCE).showConditioned(notEarthRune);
+		earthTali = new ItemRequirement("Access to Earth altar", ItemCollections.getEarthAltar()).showConditioned(notEarthRune);
+		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notEarthRune);
 		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout);
 		feathers = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notTrout);
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
@@ -190,12 +193,14 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		moreKudos = new DetailedQuestStep(this, "Get more kudos from either quests, miniquests, or turning in fossils.");
 		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
-		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3407, 0),
-			"Travel to the earth altar.", earthTali);
+		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
+			"Travel to the earth altar or go through the abyss. ", earthTali);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
-			"Craft earth rune.", earthTali, ess);
+			"Craft earth rune.", ess);
 		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),
 			"Fish a trout.", flyRod, feathers);
+		teaStall = new ObjectStep(this, ObjectID.TEA_STALL, new WorldPoint(3270, 3411, 0),
+			"Steal from the tea stall.");
 
 		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
@@ -243,7 +248,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Make Plank", Collections.singletonList(plank), coins.quantity(100), log));
 		allSteps.add(new PanelDetails("Chop Down Dying Tree", Collections.singletonList(dyingTree), axe));
 		allSteps.add(new PanelDetails("Craft an Earth Rune", Arrays.asList(moveToEarthRune, earthRune), ess, earthTali));
-		allSteps.add(new PanelDetails("Mine Iron South East of Varrock", Collections.singletonList(iron), pickaxe));
+		allSteps.add(new PanelDetails("Mine Iron South East", Collections.singletonList(iron), pickaxe));
 		allSteps.add(new PanelDetails("Jump the Fence", Collections.singletonList(fence)));
 		allSteps.add(new PanelDetails("Fish a Trout", Collections.singletonList(trout), flyRod, feathers));
 		allSteps.add(new PanelDetails("Spin a Bowl in Barbarian Village", Arrays.asList(potteryWheel, bowl), softClay));

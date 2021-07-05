@@ -310,7 +310,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		hasPetition = petition.alsoCheckBank(questBank);
 		hasSignatures = new VarbitRequirement(209, 11, Operation.GREATER_EQUAL);
 		givenPetitionToNecro = new VarbitRequirement(209, 31, Operation.GREATER_EQUAL);
-		hadChestKey = new Conditions(LogicType.OR, new ItemRequirements(chestKey), new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
+		hadChestKey = new Conditions(LogicType.OR, chestKey, new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
 		unlockedChest2 = new VarbitRequirement(214, 3, Operation.GREATER_EQUAL);
 		doorUnlocked = new VarbitRequirement(213, 1);
 
@@ -318,7 +318,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		killedLobster = new VarbitRequirement(215, 1);
 
 		boneKeyNearby = new ItemOnTileRequirement(boneKey);
-		hasBoneKey = new Conditions(LogicType.OR, new ItemRequirements(boneKey), doorUnlocked);
+		hasBoneKey = new Conditions(LogicType.OR, boneKey, doorUnlocked);
 
 		talkedToAkHaranu = new VarbitRequirement(212, 1, Operation.GREATER_EQUAL);
 	}

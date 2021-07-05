@@ -31,7 +31,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -74,8 +73,8 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear, coinsForCarpet;
 
-	Requirement inRuin, inThroneRoom, hasMushroom, hasDyedSilverlight, hasImplement, hasSigil, hasBook, hasSigilMould, talkedToGolem,
-		talkedToMatthew, inCircleSpot, sigilNearby, evilDaveMoved, baddenMoved, reenMoved, golemMoved, golemRejected, golemReprogrammed,
+	Requirement inRuin, inThroneRoom,talkedToGolem, talkedToMatthew, inCircleSpot, sigilNearby, evilDaveMoved, baddenMoved,
+		reenMoved, golemMoved, golemRejected, golemReprogrammed,
 		inSecondCircleSpot;
 
 	DetailedQuestStep talkToReen, talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, enterPortal,
@@ -106,10 +105,10 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		steps.put(10, talkToBadden);
 
 		ConditionalStep infiltrateCult = new ConditionalStep(this, pickMushroom);
-		infiltrateCult.addStep(new Conditions(hasDyedSilverlight, hasImplement, inRuin), talkToEvilDave);
-		infiltrateCult.addStep(new Conditions(hasDyedSilverlight, inRuin), pickUpStrangeImplement);
-		infiltrateCult.addStep(hasDyedSilverlight, goIntoRuin);
-		infiltrateCult.addStep(hasMushroom, dyeSilverlight);
+		infiltrateCult.addStep(new Conditions(silverlightDyed, strangeImplement, inRuin), talkToEvilDave);
+		infiltrateCult.addStep(new Conditions(silverlightDyed, inRuin), pickUpStrangeImplement);
+		infiltrateCult.addStep(silverlightDyed, goIntoRuin);
+		infiltrateCult.addStep(blackMushroomHighlighted, dyeSilverlight);
 		steps.put(20, infiltrateCult);
 
 		ConditionalStep goTalkToDenath = new ConditionalStep(this, enterRuinNoDark);
@@ -118,13 +117,13 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		steps.put(30, goTalkToDenath);
 
 		ConditionalStep completeSubTasks = new ConditionalStep(this, enterRuinNoDark);
-		completeSubTasks.addStep(new Conditions(hasBook, hasSigil, inThroneRoom), talkToMatthewAfterBook);
-		completeSubTasks.addStep(new Conditions(hasBook, hasSigil, inRuin), enterPortalAfterBook);
-		completeSubTasks.addStep(new Conditions(hasBook, hasSigil), enterRuinAfterBook);
-		completeSubTasks.addStep(new Conditions(talkedToGolem, hasSigil), searchKiln);
-		completeSubTasks.addStep(new Conditions(talkedToMatthew, hasSigil), talkToGolem);
-		completeSubTasks.addStep(new Conditions(talkedToMatthew, hasSigilMould), smeltSigil);
-		completeSubTasks.addStep(new Conditions(inThroneRoom, hasSigilMould), talkToMatthew);
+		completeSubTasks.addStep(new Conditions(book, sigil, inThroneRoom), talkToMatthewAfterBook);
+		completeSubTasks.addStep(new Conditions(book, sigil, inRuin), enterPortalAfterBook);
+		completeSubTasks.addStep(new Conditions(book, sigil), enterRuinAfterBook);
+		completeSubTasks.addStep(new Conditions(talkedToGolem, sigil), searchKiln);
+		completeSubTasks.addStep(new Conditions(talkedToMatthew, sigil), talkToGolem);
+		completeSubTasks.addStep(new Conditions(talkedToMatthew, sigilMould), smeltSigil);
+		completeSubTasks.addStep(new Conditions(inThroneRoom, sigilMould), talkToMatthew);
 		completeSubTasks.addStep(inThroneRoom, talkToJennifer);
 		completeSubTasks.addStep(inRuin, enterPortal);
 		steps.put(40, completeSubTasks);
@@ -151,7 +150,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		prepareForSecondRitual.addStep(new Conditions(evilDaveMoved, baddenMoved, reenMoved, golemRejected), useImplementOnGolem);
 		prepareForSecondRitual.addStep(new Conditions(evilDaveMoved, baddenMoved, reenMoved), talkToTheGolemAfterRitual);
 		prepareForSecondRitual.addStep(new Conditions(evilDaveMoved, baddenMoved), talkToReenAfterRitual);
-		prepareForSecondRitual.addStep(new Conditions(hasImplement, evilDaveMoved, inRuin), goUpToBadden);
+		prepareForSecondRitual.addStep(new Conditions(strangeImplement, evilDaveMoved, inRuin), goUpToBadden);
 		prepareForSecondRitual.addStep(new Conditions(evilDaveMoved, inRuin), pickUpImplementAfterRitual);
 		prepareForSecondRitual.addStep(new Conditions(evilDaveMoved), talkToBaddenAfterRitual);
 		prepareForSecondRitual.addStep(inRuin, tellDaveToReturn);
@@ -230,13 +229,6 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		inThroneRoom = new ZoneRequirement(throneRoom);
 		inCircleSpot = new ZoneRequirement(circleSpot);
 		inSecondCircleSpot = new ZoneRequirement(secondCircleSpot);
-
-		hasDyedSilverlight = new ItemRequirements(silverlightDyed);
-		hasMushroom = new ItemRequirements(blackMushroomHighlighted);
-		hasImplement = new ItemRequirements(strangeImplement);
-		hasSigil = new ItemRequirements(sigil);
-		hasBook = new ItemRequirements(book);
-		hasSigilMould = new ItemRequirements(sigilMould);
 
 		talkedToMatthew = new VarbitRequirement(1372, 50, Operation.GREATER_EQUAL);
 		talkedToGolem = new VarbitRequirement(1372, 60, Operation.GREATER_EQUAL);

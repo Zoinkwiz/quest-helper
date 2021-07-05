@@ -35,7 +35,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.FollowerItemRequirement;
 import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -74,7 +73,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	Requirement catFollower;
 
 	Requirement inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar,
-		killedGuardian, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
+		killedGuardian, talkedToEmbalmer, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
 		givenCarpenterLogs, inEastRoom, posessedPriestNearby;
 
 	QuestStep talkToWanderer, talkToWandererAgain, enterRock, touchPyramidDoor, jumpPit, openWestDoor, solveDoorPuzzle, talkToSphinx, talkToHighPriest,
@@ -162,14 +161,14 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems, givenCarpenterLogs), talkToCarpenterOnceMore);
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems, talkedToCarpenter), talkToCarpenterAgain);
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems), talkToCarpenter);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen, givenSap, givenSalt), talkToEmbalmerAgainNoSaltNoSap);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSap, givenSalt), talkToEmbalmerAgainNoSaltNoSap);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen, givenSap), talkToEmbalmerAgainNoLinenNoSap);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen, givenSalt), talkToEmbalmerAgainNoLinenNoSalt);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen, givenSalt), talkToEmbalmerAgainNoSalt);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen, givenSap), talkToEmbalmerAgainNoSap);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSalt), talkToEmbalmerAgainNoSalt);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSap), talkToEmbalmerAgainNoSap);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen), talkToEmbalmerAgainNoLinen);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen), talkToEmbalmerAgain);
-		prepareItems.addStep(new Conditions(inSoph, hasLinen), talkToEmbalmer);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen), talkToEmbalmerAgain);
+		prepareItems.addStep(new Conditions(inSoph, linen), talkToEmbalmer);
 		prepareItems.addStep(inSoph, buyLinen);
 
 		steps.put(15, prepareItems);
@@ -271,8 +270,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		// picked up het, 404 = 1
 		// picked up apmeken, 405 = 1
 		talkedToEmbalmer = new VarbitRequirement(399, 1);
-
-		hasLinen = new ItemRequirements(linen);
 
 		givenSalt = new VarbitRequirement(401, 1);
 		givenSap = new VarbitRequirement(402, 1);

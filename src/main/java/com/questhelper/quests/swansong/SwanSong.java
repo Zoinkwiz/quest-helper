@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -70,8 +69,8 @@ public class SwanSong extends BasicQuestHelper
 	ItemRequirement mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammer, brownApron, monkfish5, rawMonkfish5, combatGear, potHiglight,
 		potLidHiglight, tinderboxHiglight, ironBar5Higlight, logHiglight, ironSheet5, smallNet, airtightPot, combatGearRanged, boneSeeds, hammerPanel;
 
-	Requirement inColonyEntrance, talkedToFranklin, addedLog, litLog, has5Sheets, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed, has5RawMonk,
-		has5CookedMonk, talkedToArnold, finishedFranklin, inBasement, queenNearby, hasAirtightPot;
+	Requirement inColonyEntrance, talkedToFranklin, addedLog, litLog, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed,
+		talkedToArnold, finishedFranklin, inBasement, queenNearby;
 
 	DetailedQuestStep talkToHerman, talkToWom, talkToWomAtColony, kill79Trolls, talkToHermanInBuilding, talkToFranklin, enterColony, useLog, useTinderbox, talkToArnold,
 		talkToFranklinAgain, talkToHermanAfterTasks, enterWizardsBasement, talkToFruscone, talkToMalignius, talkToCrafter, makeAirtightPot, talkToMaligniusWithPot,
@@ -132,7 +131,7 @@ public class SwanSong extends BasicQuestHelper
 		steps.put(120, talkToCrafter);
 
 		ConditionalStep getPotToMal = new ConditionalStep(this, makeAirtightPot);
-		getPotToMal.addStep(hasAirtightPot, talkToMaligniusWithPot);
+		getPotToMal.addStep(airtightPot, talkToMaligniusWithPot);
 
 		steps.put(130, getPotToMal);
 
@@ -213,8 +212,6 @@ public class SwanSong extends BasicQuestHelper
 		talkedToFranklin = new VarbitRequirement(2099, 1);
 		addedLog = new VarbitRequirement(2099, 2);
 		litLog = new VarbitRequirement(2099, 3);
-		has5Sheets = new ItemRequirements(ironSheet5);
-		hasAirtightPot = new ItemRequirements(airtightPot);
 		wall1Fixed = new VarbitRequirement(2100, 1);
 		wall2Fixed = new VarbitRequirement(2101, 1);
 		wall3Fixed = new VarbitRequirement(2102, 1);
@@ -222,8 +219,6 @@ public class SwanSong extends BasicQuestHelper
 		wall5Fixed = new VarbitRequirement(2104, 1);
 		wallsFixed = new Conditions(wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed);
 
-		has5RawMonk = new ItemRequirements(rawMonkfish5);
-		has5CookedMonk = new ItemRequirements(monkfish5);
 		talkedToArnold = new VarbitRequirement(2105, 1, Operation.GREATER_EQUAL);
 		finishedFranklin = new VarbitRequirement(2099, 4);
 		queenNearby = new NpcCondition(NpcID.SEA_TROLL_QUEEN);

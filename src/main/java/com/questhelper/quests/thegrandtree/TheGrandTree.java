@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -66,7 +65,7 @@ public class TheGrandTree extends BasicQuestHelper
 	ItemRequirement accessToFairyRings, energyOrStaminaPotions, transportToGrandTree, oneThousandCoins, combatGear,
 		food, prayerPotions, translationBook, barkSample, lumberOrder, gloughsKey, highlightedGloughsKey, invasionPlans,
 		twigsT, twigsU, twigsZ, twigsO, highlightedTwigsT, highlightedTwigsU, highlightedTwigsZ, highlightedTwigsO,
-		daconiaStone, passage;
+		daconiaStone;
 
 	FreeInventorySlotRequirement fourFreeInventorySlots;
 
@@ -74,9 +73,8 @@ public class TheGrandTree extends BasicQuestHelper
 		watchtower, grandTreeTunnels, cell;
 
 	Requirement isInGrandTreeF1, isInGrandTreeF2, isInGrandTreeTop, isInGrandTree, isNearHazelmere,
-		isInCell, isInGloughsHouse, isInShipyard, isInAnitasHouse, hasGloughsKey, isInWatchtower,
-		hasTwigsT, hasTwigsU, hasTwigsZ, hasTwigsO, blackDemonVisible, isInGrandTreeTunnels,
-		hasDaconiaStone, narnodeNearby;
+		isInCell, isInGloughsHouse, isInShipyard, isInAnitasHouse, isInWatchtower, blackDemonVisible,
+		isInGrandTreeTunnels, narnodeNearby;
 
 	QuestStep talkToKingNarnode, talkToKingNarnodeCaves, climbUpToHazelmere, talkToHazelmere, bringScrollToKingNarnode, climbUpToGlough,
 		talkToGlough, talkToKingNarnodeAfterGlough, talkToCharlie, returnToGlough, findGloughJournal, talkToGloughAgain, goToStronghold,
@@ -160,8 +158,8 @@ public class TheGrandTree extends BasicQuestHelper
 		goGetAnitaKey.addStep(isInGrandTree, climbToBottomOfGrandTree);
 
 		ConditionalStep goFindInvasionPlans = new ConditionalStep(this, goGetAnitaKey);
-		goFindInvasionPlans.addStep(new Conditions(hasGloughsKey, isInGloughsHouse), findInvasionPlans);
-		goFindInvasionPlans.addStep(hasGloughsKey, climbUpToGloughAgain);
+		goFindInvasionPlans.addStep(new Conditions(gloughsKey, isInGloughsHouse), findInvasionPlans);
+		goFindInvasionPlans.addStep(gloughsKey, climbUpToGloughAgain);
 		steps.put(100, goFindInvasionPlans);
 
 		steps.put(110, takeInvasionPlansToKing);
@@ -170,10 +168,10 @@ public class TheGrandTree extends BasicQuestHelper
 		goUpToWatchtower.addStep(isInGloughsHouse, climbUpToWatchtower);
 
 		ConditionalStep goPlaceTuzoTwigs = new ConditionalStep(this, goUpToWatchtower);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsT), placeTwigsT);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsU), placeTwigsU);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsZ), placeTwigsZ);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsO), placeTwigsO);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsT), placeTwigsT);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsU), placeTwigsU);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsZ), placeTwigsZ);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsO), placeTwigsO);
 		goPlaceTuzoTwigs.addStep(isInWatchtower, placeTwigs);
 		steps.put(120, goPlaceTuzoTwigs);
 
@@ -191,7 +189,7 @@ public class TheGrandTree extends BasicQuestHelper
 		steps.put(140, goTalkToKingAfterFight);
 
 		ConditionalStep bringDaconiaStoneToKing = new ConditionalStep(this, returnToGrandTreeTunnels);
-		bringDaconiaStoneToKing.addStep(hasDaconiaStone, giveDaconiaStoneToKingNarnode);
+		bringDaconiaStoneToKing.addStep(daconiaStone, giveDaconiaStoneToKingNarnode);
 		bringDaconiaStoneToKing.addStep(isInGrandTreeTunnels, findDaconiaStone);
 		steps.put(150, bringDaconiaStoneToKing);
 
@@ -267,13 +265,6 @@ public class TheGrandTree extends BasicQuestHelper
 		isInAnitasHouse = new ZoneRequirement(anitaHouse);
 		isInWatchtower = new ZoneRequirement(watchtower);
 		isInGrandTreeTunnels = new ZoneRequirement(grandTreeTunnels);
-
-		hasGloughsKey = new ItemRequirements(gloughsKey);
-		hasTwigsT = new ItemRequirements(twigsT);
-		hasTwigsU = new ItemRequirements(twigsU);
-		hasTwigsZ = new ItemRequirements(twigsZ);
-		hasTwigsO = new ItemRequirements(twigsO);
-		hasDaconiaStone = new ItemRequirements(daconiaStone);
 
 		narnodeNearby = new NpcCondition(NpcID.KING_NARNODE_SHAREEN);
 		blackDemonVisible = new NpcInteractingRequirement(NpcID.BLACK_DEMON_1432);

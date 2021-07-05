@@ -89,11 +89,9 @@ public class LegendsQuest extends BasicQuestHelper
 	Requirement inGuild, inKhazari, completeEast, completeMiddle, completeWest, completeTextAppeared, inWest, inMiddle,
 		inEast, finishedMap, gujuoNearby, inCaveRoom1, inCaves, talkedToUngadulu, hadSketch, inCaveRoom2, inCaveRoom3, inCaveRoom4,
 		addedSoulRune, addedMindRune, addedEarthRune, addedLawRune, addedLawRune2, searchedMarkedWall, inCaveRoom5, sapphirePlaced,
-		opalPlaced, jadePlaced, topazPlaced, emeraldPlaced, rubyPlaced, diamondPlaced, bookAppearing, bookNearby, hadBindingBook,
-		hasGoldBowl, hasBlessedBowl, hasReed, hasFullBowl, inFire, nezNearby, hasSeed, hasGerminatedSeeds, hasArdrigalMixture,
-		hasBraveryPotion, hasSnakeMixture, inCaveRoom6, addedRope, inChallengeCave, hasHeartCrystal2, echnedNearby, viyeldiNearby,
-		hasGlowingDagger, hasForce, sacredWaterNearby, saplingNearby, adultNearby, felledNearby, trimmedNearby, totemNearby, ranalphNearby,
-		irvigNearby, sanNearby;
+		opalPlaced, jadePlaced, topazPlaced, emeraldPlaced, rubyPlaced, diamondPlaced, bookAppearing, bookNearby, inFire, nezNearby,
+		inCaveRoom6, addedRope, inChallengeCave, echnedNearby, viyeldiNearby, sacredWaterNearby, saplingNearby, adultNearby, felledNearby,
+		trimmedNearby, totemNearby, ranalphNearby, irvigNearby, sanNearby;
 
 	QuestStep talkToGuard, talkToRadimus, enterJungle, sketchWest, sketchMiddle, sketchEast, enterJungleWithRoarer, spinBull,
 		talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain, enterMossyRockAgain,
@@ -183,22 +181,22 @@ public class LegendsQuest extends BasicQuestHelper
 		gemPuzzle.addStep(new Conditions(sapphirePlaced, diamondPlaced, rubyPlaced), useTopaz);
 		gemPuzzle.addStep(new Conditions(sapphirePlaced, diamondPlaced), useRuby);
 		gemPuzzle.addStep(new Conditions(sapphirePlaced), useDiamond);
-		gemPuzzle.setLockingCondition(hadBindingBook);
+		gemPuzzle.setLockingCondition(bindingBook.alsoCheckBank(questBank));
 		gemPuzzle.setBlocker(true);
 
 		blessBowl = new ConditionalStep(this, makeBowl);
-		blessBowl.addStep(new Conditions(inKhazari, hasBlessedBowl, hasReed), useReedOnPool);
-		blessBowl.addStep(new Conditions(inKhazari, hasBlessedBowl), useMacheteOnReeds);
-		blessBowl.addStep(new Conditions(inKhazari, hasGoldBowl, gujuoNearby), talkToGujuoWithBowl);
-		blessBowl.addStep(new Conditions(inKhazari, hasGoldBowl), spinBullToBless);
-		blessBowl.addStep(hasGoldBowl, enterJungleWithBowl);
+		blessBowl.addStep(new Conditions(inKhazari, goldBowlBlessed.alsoCheckBank(questBank), reed), useReedOnPool);
+		blessBowl.addStep(new Conditions(inKhazari, goldBowlBlessed.alsoCheckBank(questBank)), useMacheteOnReeds);
+		blessBowl.addStep(new Conditions(inKhazari, goldBowl.alsoCheckBank(questBank), gujuoNearby), talkToGujuoWithBowl);
+		blessBowl.addStep(new Conditions(inKhazari, goldBowl.alsoCheckBank(questBank)), spinBullToBless);
+		blessBowl.addStep(goldBowl.alsoCheckBank(questBank), enterJungleWithBowl);
 
 		ConditionalStep solvingCaves = new ConditionalStep(this, enterJungleWithRoarer);
 		solvingCaves.addStep(new Conditions(inFire, nezNearby), fightNezikchenedInFire);
-		solvingCaves.addStep(new Conditions(inFire, hadBindingBook), useBindingBookOnUngadulu);
-		solvingCaves.addStep(new Conditions(inCaves, hadBindingBook, hasFullBowl), useBowlOnFireWall);
-		solvingCaves.addStep(new Conditions(hadBindingBook, hasFullBowl), enterMossyRockWithBowl);
-		solvingCaves.addStep(hadBindingBook, blessBowl);
+		solvingCaves.addStep(new Conditions(inFire, bindingBook.alsoCheckBank(questBank)), useBindingBookOnUngadulu);
+		solvingCaves.addStep(new Conditions(inCaves, bindingBook.alsoCheckBank(questBank), goldBowlFull), useBowlOnFireWall);
+		solvingCaves.addStep(new Conditions(bindingBook.alsoCheckBank(questBank), goldBowlFull), enterMossyRockWithBowl);
+		solvingCaves.addStep(bindingBook.alsoCheckBank(questBank), blessBowl);
 		solvingCaves.addStep(inCaveRoom5, gemPuzzle);
 		solvingCaves.addStep(hadSketch, runePuzzle);
 		solvingCaves.addStep(new Conditions(inKhazari, gujuoNearby), talkToGujuoAgain);
@@ -212,14 +210,14 @@ public class LegendsQuest extends BasicQuestHelper
 		steps.put(11, solvingCaves);
 
 		ConditionalStep talkingToUngadulu = new ConditionalStep(this, enterMossyRockAfterFight);
-		talkingToUngadulu.addStep(hasSeed, useBowlOnSeeds);
+		talkingToUngadulu.addStep(germinatedSeeds.alsoCheckBank(questBank), useBowlOnSeeds);
 		talkingToUngadulu.addStep(inFire, talkToUngadulu);
 		talkingToUngadulu.addStep(inCaves, enterFireAfterFight);
 
 		steps.put(12, talkingToUngadulu);
 
 		ConditionalStep plantSeedAttempt = new ConditionalStep(this, useMacheteOnReedsAgain);
-		plantSeedAttempt.addStep(hasReed, useReedOnPool);
+		plantSeedAttempt.addStep(reed, useReedOnPool);
 		plantSeedAttempt.addStep(inCaves, leaveCaveWithSeed);
 
 		steps.put(13, plantSeedAttempt);
@@ -237,11 +235,11 @@ public class LegendsQuest extends BasicQuestHelper
 		reachingTheDeeperCaves.addStep(inCaveRoom4, searchMarkedWallToSource);
 		reachingTheDeeperCaves.addStep(inCaveRoom3, enterGate2ToSource);
 		reachingTheDeeperCaves.addStep(inCaveRoom2, enterGate1ToSource);
-		reachingTheDeeperCaves.addStep(new Conditions(inCaveRoom1, hasBraveryPotion), enterBookcaseToSource);
-		reachingTheDeeperCaves.addStep(new Conditions(inKhazari, hasBraveryPotion), enterMossyRockToSource);
-		reachingTheDeeperCaves.addStep(hasBraveryPotion, enterJungleToGoToSource);
-		reachingTheDeeperCaves.addStep(hasSnakeMixture, addArdrigalToSnake);
-		reachingTheDeeperCaves.addStep(hasArdrigalMixture, addSnake);
+		reachingTheDeeperCaves.addStep(new Conditions(inCaveRoom1, braveryPotion), enterBookcaseToSource);
+		reachingTheDeeperCaves.addStep(new Conditions(inKhazari, braveryPotion), enterMossyRockToSource);
+		reachingTheDeeperCaves.addStep(braveryPotion.alsoCheckBank(questBank), enterJungleToGoToSource);
+		reachingTheDeeperCaves.addStep(snakeMixture, addArdrigalToSnake);
+		reachingTheDeeperCaves.addStep(ardrigalMixture, addSnake);
 
 		steps.put(15, reachingTheDeeperCaves);
 
@@ -257,7 +255,7 @@ public class LegendsQuest extends BasicQuestHelper
 		steps.put(16, solvingViyeldiCaves);
 
 		ConditionalStep useHeart = new ConditionalStep(this, enterMossyRockForViyeldi);
-		useHeart.addStep(new Conditions(inChallengeCave, hasHeartCrystal2), useHeartOnRecess);
+		useHeart.addStep(new Conditions(inChallengeCave, heartCrystal2), useHeartOnRecess);
 		useHeart.addStep(inChallengeCave, useHeartOnRock);
 		useHeart.addStep(inCaveRoom6, climbDownWinch);
 		useHeart.addStep(inCaveRoom5, useSpellOnDoor);
@@ -283,10 +281,10 @@ public class LegendsQuest extends BasicQuestHelper
 
 		ConditionalStep killViy = new ConditionalStep(this, enterMossyRockForViyeldi);
 		killViy.addStep(new Conditions(nezNearby, inChallengeCave), fightNezikchenedAtSource);
-		killViy.addStep(new Conditions(echnedNearby, hasGlowingDagger), giveDaggerToEchned);
-		killViy.addStep(new Conditions(echnedNearby, hasForce), castForce);
-		killViy.addStep(new Conditions(inChallengeCave, hasForce), pushBoulderWithForce);
-		killViy.addStep(new Conditions(inChallengeCave, hasGlowingDagger), pushBoulderAgain);
+		killViy.addStep(new Conditions(echnedNearby, glowingDagger), giveDaggerToEchned);
+		killViy.addStep(new Conditions(echnedNearby, force), castForce);
+		killViy.addStep(new Conditions(inChallengeCave, force), pushBoulderWithForce);
+		killViy.addStep(new Conditions(inChallengeCave, glowingDagger), pushBoulderAgain);
 		killViy.addStep(viyeldiNearby, killViyeldi);
 		killViy.addStep(inChallengeCave, pickUpHat);
 		killViy.addStep(inCaveRoom6, climbDownWinch);
@@ -318,8 +316,8 @@ public class LegendsQuest extends BasicQuestHelper
 		growTree.addStep(new Conditions(inKhazari, felledNearby), useAxeAgain);
 		growTree.addStep(new Conditions(inKhazari, adultNearby), useAxe);
 		growTree.addStep(new Conditions(inKhazari, saplingNearby), useWaterOnTree);
-		growTree.addStep(new Conditions(inKhazari, hasFullBowl), plantSeed);
-		growTree.addStep(new Conditions(inKhazari, hasReed), useReedOnPoolEnd);
+		growTree.addStep(new Conditions(inKhazari, goldBowlFull), plantSeed);
+		growTree.addStep(new Conditions(inKhazari, reed), useReedOnPoolEnd);
 		growTree.addStep(inKhazari, useReedOnPoolEnd);
 		growTree.addStep(inCaves, returnToSurface);
 
@@ -605,7 +603,7 @@ public class LegendsQuest extends BasicQuestHelper
 			new WidgetTextRequirement(229, 1, "The Shaman throws himself down on the floor and starts convulsing."),
 			new WidgetTextRequirement(119, 3, true, "is acting weird and talking a lot of nonsense"));
 
-		hadSketch = new Conditions(true, LogicType.OR, new ItemRequirements(sketch));
+		hadSketch = new Conditions(true, LogicType.OR, sketch);
 
 		searchedMarkedWall = new WidgetTextRequirement(229, 1, "You can see a message on the wall");
 
@@ -637,27 +635,12 @@ public class LegendsQuest extends BasicQuestHelper
 
 		bookAppearing = new ChatMessageRequirement("You feel a powerful force picking you up....");
 		bookNearby = new ItemOnTileRequirement(ItemID.BINDING_BOOK);
-		hadBindingBook = new ItemRequirements(bindingBook);
-		hasGoldBowl = new Conditions(true, new ItemRequirements(goldBowl));
-		hasBlessedBowl = new ItemRequirements(goldBowlBlessed);
-		hasReed = new ItemRequirements(reed);
-		hasFullBowl = new ItemRequirements(goldBowlFull);
-		hasSeed = new ItemRequirements(yommiSeeds);
-		hasGerminatedSeeds = new ItemRequirements(germinatedSeeds);
-		hasBraveryPotion = new ItemRequirements(braveryPotion);
-		hasArdrigalMixture = new ItemRequirements(ardrigalMixture);
-		hasSnakeMixture = new ItemRequirements(snakeMixture);
-
-		hasHeartCrystal2 = new ItemRequirements(heartCrystal2);
 
 		nezNearby = new NpcInteractingRequirement(NpcID.NEZIKCHENED);
 
 		addedRope = new Conditions(true, new ObjectCondition(ObjectID.WINCH_2935, new WorldPoint(2761, 9331, 0)));
 		echnedNearby = new NpcCondition(NpcID.ECHNED_ZEKIN);
 		viyeldiNearby = new NpcCondition(NpcID.VIYELDI);
-
-		hasGlowingDagger = new ItemRequirements(glowingDagger);
-		hasForce = new ItemRequirements(force);
 
 		sacredWaterNearby = new ObjectCondition(ObjectID.SACRED_WATER);
 

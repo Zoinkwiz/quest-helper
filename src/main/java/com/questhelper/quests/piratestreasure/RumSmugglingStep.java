@@ -25,7 +25,6 @@
 package com.questhelper.quests.piratestreasure;
 
 import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.WidgetTextRequirement;
@@ -61,8 +60,6 @@ public class RumSmugglingStep extends ConditionalStep
 	private Conditions stashedRum;
 	private Conditions haveShippedRum;
 	private Requirement verifiedAState;
-	private Requirement hasWhiteApron;
-	private Requirement hasRum;
 	private Requirement hasRumOffKaramja;
 	private Conditions hadRumOffKaramja;
 	private Conditions lostRum;
@@ -86,13 +83,13 @@ public class RumSmugglingStep extends ConditionalStep
 	{
 		this.addStep(new Conditions(hasRumOffKaramja), bringRumToRedbeard);
 		this.addStep(new Conditions(verifiedAState, haveShippedRum, onKaramja), talkToCustomsOfficer);
-		this.addStep(new Conditions(verifiedAState, haveShippedRum, hasWhiteApron), getRumFromCrate);
+		this.addStep(new Conditions(verifiedAState, haveShippedRum, whiteApron), getRumFromCrate);
 		this.addStep(new Conditions(verifiedAState, haveShippedRum), getWhiteApron);
 		this.addStep(new Conditions(verifiedAState, filledCrateWithBananasAndRum, onKaramja), talkToLuthasAgain);
 		this.addStep(new Conditions(verifiedAState, stashedRum, onKaramja), addBananasToCrate);
-		this.addStep(new Conditions(verifiedAState, employed, hasRum, onKaramja), addRumToCrate);
+		this.addStep(new Conditions(verifiedAState, employed, karamjanRum, onKaramja), addRumToCrate);
 		this.addStep(new Conditions(verifiedAState, employed, onKaramja), talkToZambo);
-		this.addStep(new Conditions(verifiedAState, atStart, hasRum, onKaramja), talkToLuthas);
+		this.addStep(new Conditions(verifiedAState, atStart, karamjanRum, onKaramja), talkToLuthas);
 		this.addStep(new Conditions(verifiedAState, atStart, onKaramja), talkToZambo);
 		this.addStep(verifiedAState, goToKaramja);
 	}
@@ -145,10 +142,8 @@ public class RumSmugglingStep extends ConditionalStep
 		Requirement offKaramja = new ZoneRequirement(false, karamjaZone1, karamjaZone2, karamjaBoat);
 		Requirement inPirateTreasureMenu = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, getQuestHelper().getQuest().getName());
 
-		hasRum = new ItemRequirements(new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM));
-		hasWhiteApron = new ItemRequirements(whiteApron);
-		hasRumOffKaramja = new Conditions(LogicType.AND, hasRum, offKaramja);
-		hadRumOffKaramja = new Conditions(true, hasRum, offKaramja);
+		hasRumOffKaramja = new Conditions(LogicType.AND, karamjanRum, offKaramja);
+		hadRumOffKaramja = new Conditions(true, karamjanRum, offKaramja);
 		lostRum = new Conditions(LogicType.AND, inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I seem to have lost it."));
 
 		Requirement haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I should take it to"));

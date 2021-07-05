@@ -33,7 +33,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -85,8 +84,7 @@ public class GettingAhead extends BasicQuestHelper
 	ConditionalStep goUseFlourOnGate, returnToGordon, makeClayHead, addFurToHead, dyeHead, putUpHead;
 
 	//Conditions
-	Requirement inMine, inUpstairsHouse, hasClayHead, hasFurHead, hasBloodyHead, hasPotOfFlour, hasClay, hasPickaxe, hasSoftClay, hasKnife, hasBucket,
-		hasBucketOfWater, hasNeedle, hasThread, hasRedDye, hasPlanks2, hasNails6, hasHammer, hasSaw;
+	Requirement inMine, inUpstairsHouse;
 
 	//Zones
 	Zone kebosMine, upstairsHouse;
@@ -104,8 +102,8 @@ public class GettingAhead extends BasicQuestHelper
 		steps.put(2, talkToMary);
 
 		goUseFlourOnGate = new ConditionalStep(this, goUpstairsHouse, "Use the pot of flour on the cow pen gate.");
-		goUseFlourOnGate.addStep(new Conditions(inUpstairsHouse, hasPotOfFlour), goDownstairsHouse);
-		goUseFlourOnGate.addStep(new Conditions(hasPotOfFlour), usePotOfFlour);
+		goUseFlourOnGate.addStep(new Conditions(inUpstairsHouse, potOfFlour), goDownstairsHouse);
+		goUseFlourOnGate.addStep(new Conditions(potOfFlour), usePotOfFlour);
 		goUseFlourOnGate.addStep(inUpstairsHouse, takePot);
 		steps.put(4, goUseFlourOnGate);
 
@@ -118,40 +116,41 @@ public class GettingAhead extends BasicQuestHelper
 
 		returnToGordon = new ConditionalStep(this, takePickaxe, "Return to Gordon and talk to him.");
 		returnToGordon.addStep(inMine, leaveCave);
-		returnToGordon.addStep(new Conditions(new Conditions(LogicType.OR, hasClay, hasSoftClay), hasPlanks2), talkToGordon2);
-		returnToGordon.addStep(new Conditions(LogicType.OR, hasClay, hasSoftClay), takePlanks);
-		returnToGordon.addStep(hasPickaxe, mineClay);
+		returnToGordon.addStep(new Conditions(new Conditions(LogicType.OR, clay, softClay), planks),
+			talkToGordon2);
+		returnToGordon.addStep(new Conditions(LogicType.OR, clay, softClay), takePlanks);
+		returnToGordon.addStep(pickaxe, mineClay);
 
 		steps.put(14, returnToGordon);
 		steps.put(16, talkToMary2);
 
 		makeClayHead = new ConditionalStep(this, takePickaxe, "Use the knife on the soft clay then talk to Gordon.");
-		makeClayHead.addStep(new Conditions(hasSoftClay, hasKnife), useKnifeOnClay);
-		makeClayHead.addStep(hasSoftClay, takeKnife);
-		makeClayHead.addStep(new Conditions(hasBucketOfWater, hasClay), wetClay);
-		makeClayHead.addStep(new Conditions(hasBucket, hasClay), fillBucket);
-		makeClayHead.addStep(hasClay, takeBucket);
-		makeClayHead.addStep(hasPickaxe, mineClay);
+		makeClayHead.addStep(new Conditions(softClay, knife), useKnifeOnClay);
+		makeClayHead.addStep(softClay, takeKnife);
+		makeClayHead.addStep(new Conditions(bucketOfWater, clay), wetClay);
+		makeClayHead.addStep(new Conditions(bucket, clay), fillBucket);
+		makeClayHead.addStep(clay, takeBucket);
+		makeClayHead.addStep(pickaxe, mineClay);
 		steps.put(18, makeClayHead);
 
 		steps.put(20, talkToGordonGen);
 		addFurToHead = new ConditionalStep(this, goUpstairsHouse, "Use the bear fur on the clay head then talk to Gordon.");
-		addFurToHead.addStep(new Conditions(hasThread, hasNeedle), useFurOnHead);
-		addFurToHead.addStep(new Conditions(inUpstairsHouse, hasNeedle), getThread);
+		addFurToHead.addStep(new Conditions(thread, needle), useFurOnHead);
+		addFurToHead.addStep(new Conditions(inUpstairsHouse, needle), getThread);
 		addFurToHead.addStep(inUpstairsHouse, getNeedle);
 		steps.put(22, addFurToHead);
 		steps.put(24, talkToGordonGen2);
 
 		dyeHead = new ConditionalStep(this, takeDye, "Use the red dye on the fur head then talk to Gordon.");
-		dyeHead.addStep(hasRedDye, useDyeOnHead);
+		dyeHead.addStep(redDye, useDyeOnHead);
 		steps.put(26, dyeHead);
 		steps.put(28, talkToGordonGen3);
 
 		putUpHead = new ConditionalStep(this, takePlanks, "Build the Mounted Head Space inside the farmhouse.");
-		putUpHead.addStep(new Conditions(hasPlanks2, hasHammer, hasSaw, hasNails6), buildBearHead);
-		putUpHead.addStep(new Conditions(hasPlanks2, hasHammer, hasSaw), takeNails);
-		putUpHead.addStep(new Conditions(hasPlanks2, hasHammer), takeSaw);
-		putUpHead.addStep(hasPlanks2, takeHammer);
+		putUpHead.addStep(new Conditions(planks, hammer, saw, nails), buildBearHead);
+		putUpHead.addStep(new Conditions(planks, hammer, saw), takeNails);
+		putUpHead.addStep(new Conditions(planks, hammer), takeSaw);
+		putUpHead.addStep(planks, takeHammer);
 		steps.put(30, putUpHead);
 		steps.put(32, talkToGordonFinal);
 
@@ -215,25 +214,6 @@ public class GettingAhead extends BasicQuestHelper
 	{
 		inMine = new ZoneRequirement(kebosMine);
 		inUpstairsHouse = new ZoneRequirement(upstairsHouse);
-
-		hasPotOfFlour = new ItemRequirements(potOfFlour);
-		hasPickaxe = new ItemRequirements(pickaxe);
-		hasClay = new ItemRequirements(clay);
-		hasSoftClay = new ItemRequirements(softClay);
-		hasKnife = new ItemRequirements(knife);
-		hasBucket = new ItemRequirements(bucket);
-		hasBucketOfWater = new ItemRequirements(bucketOfWater);
-		hasNeedle = new ItemRequirements(needle);
-		hasThread = new ItemRequirements(thread);
-		hasPlanks2 = new ItemRequirements(planks);
-		hasSaw = new ItemRequirements(saw);
-		hasHammer = new ItemRequirements(hammer);
-		hasNails6 = new ItemRequirements(nails);
-		hasRedDye = new ItemRequirements(redDye);
-
-		hasClayHead = new ItemRequirements(clayHeadHighlighted);
-		hasFurHead = new ItemRequirements(furHeadHighlighted);
-		hasBloodyHead = new ItemRequirements(bloodyHead);
 	}
 
 	public void loadZones()

@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -76,8 +75,8 @@ public class OlafsQuest extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement  prayerPotions, food, combatGear;
 
-	Requirement hasWindsweptLogs, givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, hasKey, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
-		keyInterfaceOpen, hasCrossKey, hasSquareKey, hasTriangleKey, hasCircleKey, hasStarKey, ulfricNearby, killedUlfric;
+	Requirement givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
+		keyInterfaceOpen, ulfricNearby, killedUlfric;
 
 	QuestStep talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid, talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks, digHole, pickUpKey, searchPainting, doPuzzle, pickUpItems,
 		pickUpItems2, useBarrel, useBarrel2, openGate, chooseSquare, chooseCross, chooseTriangle, chooseCircle, chooseStar, killUlfric;
@@ -101,7 +100,7 @@ public class OlafsQuest extends BasicQuestHelper
 		steps.put(0, talkToOlaf);
 
 		ConditionalStep getLogs = new ConditionalStep(this, chopTree);
-		getLogs.addStep(hasWindsweptLogs, giveLogToOlaf);
+		getLogs.addStep(windsweptLogs, giveLogToOlaf);
 
 		steps.put(10, getLogs);
 
@@ -120,18 +119,18 @@ public class OlafsQuest extends BasicQuestHelper
 		solvePuzzleSteps.addStep(new Conditions(inThirdArea, killedUlfric), searchChestAgain);
 		solvePuzzleSteps.addStep(new Conditions(ulfricNearby, inThirdArea), killUlfric);
 		solvePuzzleSteps.addStep(inThirdArea, searchChest);
-		solvePuzzleSteps.addStep(new Conditions(hasStarKey, keyInterfaceOpen), chooseStar);
-		solvePuzzleSteps.addStep(new Conditions(hasCircleKey, keyInterfaceOpen), chooseCircle);
-		solvePuzzleSteps.addStep(new Conditions(hasTriangleKey, keyInterfaceOpen), chooseTriangle);
-		solvePuzzleSteps.addStep(new Conditions(hasSquareKey, keyInterfaceOpen), chooseSquare);
-		solvePuzzleSteps.addStep(new Conditions(hasCrossKey, keyInterfaceOpen), chooseCross);
-		solvePuzzleSteps.addStep(new Conditions(hasKey, placedBarrel2), openGate);
-		solvePuzzleSteps.addStep(new Conditions(hasKey, placedBarrel1, hasBarrel3Ropes), useBarrel2);
-		solvePuzzleSteps.addStep(new Conditions(placedBarrel1, inSecondArea, hasKey), pickUpItems2);
-		solvePuzzleSteps.addStep(new Conditions(has2Barrels6Ropes, hasKey), useBarrel);
-		solvePuzzleSteps.addStep(new Conditions(inSecondArea, hasKey), pickUpItems);
+		solvePuzzleSteps.addStep(new Conditions(starKey, keyInterfaceOpen), chooseStar);
+		solvePuzzleSteps.addStep(new Conditions(circleKey, keyInterfaceOpen), chooseCircle);
+		solvePuzzleSteps.addStep(new Conditions(triangleKey, keyInterfaceOpen), chooseTriangle);
+		solvePuzzleSteps.addStep(new Conditions(squareKey, keyInterfaceOpen), chooseSquare);
+		solvePuzzleSteps.addStep(new Conditions(crossKey, keyInterfaceOpen), chooseCross);
+		solvePuzzleSteps.addStep(new Conditions(key, placedBarrel2), openGate);
+		solvePuzzleSteps.addStep(new Conditions(key, placedBarrel1, hasBarrel3Ropes), useBarrel2);
+		solvePuzzleSteps.addStep(new Conditions(placedBarrel1, inSecondArea, key), pickUpItems2);
+		solvePuzzleSteps.addStep(new Conditions(has2Barrels6Ropes, key), useBarrel);
+		solvePuzzleSteps.addStep(new Conditions(inSecondArea, key), pickUpItems);
 		solvePuzzleSteps.addStep(puzzleOpen, doPuzzle);
-		solvePuzzleSteps.addStep(hasKey, searchPainting);
+		solvePuzzleSteps.addStep(key, searchPainting);
 		solvePuzzleSteps.addStep(keyNearby, pickUpKey);
 		solvePuzzleSteps.addStep(inFirstArea, killSkeleton);
 
@@ -182,24 +181,17 @@ public class OlafsQuest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasWindsweptLogs = new ItemRequirements(windsweptLogs);
 		givenIngridCarving = new VarbitRequirement(3536, 1, Operation.GREATER_EQUAL);
 		inFirstArea = new ZoneRequirement(firstArea, firstArea2);
 		inSecondArea = new ZoneRequirement(secondArea, secondArea2);
 		inThirdArea = new ZoneRequirement(thirdArea);
 		keyNearby = new ItemOnTileRequirement(key);
 		puzzleOpen = new WidgetModelRequirement(253, 0, 24126);
-		hasKey = new ItemRequirements(key);
-		hasBarrel3Ropes = new ItemRequirements(rottenBarrel, ropes3);
-		has2Barrels6Ropes = new ItemRequirements(rottenBarrels2, ropes6);
+		hasBarrel3Ropes = new Conditions(rottenBarrel, ropes3);
+		has2Barrels6Ropes = new Conditions(rottenBarrels2, ropes6);
 		placedBarrel1 = new VarbitRequirement(3547, 1);
 		placedBarrel2 = new VarbitRequirement(3548, 1);
 		keyInterfaceOpen = new WidgetModelRequirement(252, 0, 24124);
-		hasSquareKey = new ItemRequirements(squareKey);
-		hasCrossKey = new ItemRequirements(crossKey);
-		hasTriangleKey = new ItemRequirements(triangleKey);
-		hasCircleKey = new ItemRequirements(circleKey);
-		hasStarKey = new ItemRequirements(starKey);
 
 		ulfricNearby = new NpcCondition(NpcID.ULFRIC);
 

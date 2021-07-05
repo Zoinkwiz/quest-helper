@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
@@ -71,8 +70,8 @@ public class MakingHistory extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleport, ectophial, ringOfDueling, passage, rellekaTeleport, runRestoreItems;
 
-	Requirement hasEnchantedKey, hasChest, hasJournal, hasScroll, talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak,
-		inCastle, gotKey, gotChest, gotScroll, handedInJournal, handedInScroll, finishedFrem, finishedKey, finishedGhost, handedInEverything;
+	Requirement talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak, inCastle, gotKey, gotChest,
+		gotScroll, handedInJournal, handedInScroll, finishedFrem, finishedKey, finishedGhost, handedInEverything;
 
 	QuestStep talkToJorral, talkToSilverMerchant, dig, openChest, talkToBlanin, talkToDron, talkToDroalak,
 		talkToMelina, returnToDroalak, returnToJorral, continueTalkingToJorral, goUpToLathas, talkToLathas, finishQuest;
@@ -94,7 +93,7 @@ public class MakingHistory extends BasicQuestHelper
 		steps.put(0, talkToJorral);
 
 		keySteps = new ConditionalStep(this, talkToSilverMerchant);
-		keySteps.addStep(hasChest, openChest);
+		keySteps.addStep(chest, openChest);
 		keySteps.addStep(gotKey, dig);
 		keySteps.setLockingCondition(finishedKey);
 
@@ -188,10 +187,6 @@ public class MakingHistory extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnchantedKey = new ItemRequirements(enchantedKey);
-		hasJournal = new ItemRequirements(journal);
-		hasScroll = new ItemRequirements(scroll);
-		hasChest = new ItemRequirements(chest);
 		talkedtoBlanin = new Conditions(LogicType.OR, new VarbitRequirement(1385, 1), new VarbitRequirement(1385, 2));
 		talkedToDron = new VarbitRequirement(1385, 3, Operation.GREATER_EQUAL);
 
@@ -207,7 +202,7 @@ public class MakingHistory extends BasicQuestHelper
 		handedInEverything = new Conditions(handedInJournal, handedInScroll, talkedToDron);
 		finishedFrem = talkedToDron;
 		finishedGhost = new Conditions(LogicType.OR, handedInScroll, gotScroll);
-		finishedKey = new Conditions(LogicType.OR, handedInJournal, hasJournal);
+		finishedKey = new Conditions(LogicType.OR, handedInJournal, journal);
 	}
 
 	public void setupSteps()

@@ -24,7 +24,6 @@
  */
 package com.questhelper.quests.fairytalei;
 
-
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -34,7 +33,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -76,7 +74,7 @@ public class FairytaleI extends BasicQuestHelper
 
 	Requirement inZanaris, inTowerF1, inTowerF2, inGrotto, inTanglerootRoom;
 
-	Requirement talkedToFarmers, hasSkull, secateursNearby, hasQueensSecateurs;
+	Requirement talkedToFarmers, secateursNearby;
 
 	QuestStep talkToMartin, talkToFarmers, talkToMartinAgain;
 
@@ -117,7 +115,7 @@ public class FairytaleI extends BasicQuestHelper
 		steps.put(40, goTalkToZandar);
 
 		ConditionalStep goTalkToMortifer = new ConditionalStep(this, getSkull);
-		goTalkToMortifer.addStep(hasSkull, talkToMortifer);
+		goTalkToMortifer.addStep(draynorSkull, talkToMortifer);
 		steps.put(50, goTalkToMortifer);
 
 		ConditionalStep goEnchantSecateurs = new ConditionalStep(this, enterGrotto);
@@ -212,9 +210,7 @@ public class FairytaleI extends BasicQuestHelper
 			new WidgetTextRequirement(217, 4, "Right, well thanks for your input."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I don't think the crops ARE failing"));
 
-		hasSkull = new ItemRequirements(draynorSkull);
 		secateursNearby = new ItemOnTileRequirement(queensSecateurs);
-		hasQueensSecateurs = new ItemRequirements(queensSecateurs);
 	}
 
 	public void setupSteps()

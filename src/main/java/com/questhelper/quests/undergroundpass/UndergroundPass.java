@@ -79,16 +79,14 @@ public class UndergroundPass extends BasicQuestHelper
 	ItemRequirement food, staminaPotions, coins, telegrabRunes;
 
 	Requirement inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
-		isBeforeBridge, isNorthEastOfBridge, haveOilyCloth, haveFireArrow, haveLitArrow, haveLitArrowEquipped,
-		havePlank, isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
+		isBeforeBridge, isNorthEastOfBridge, isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
 		isBeforeTrap2, isBeforeTrap3, isBeforeTrap4, isBeforeTrap5, isInWellArea, isBeforePlank2, isBeforePlank3,
-		isAtOrb1, haveOrb1, haveOrb2, haveOrb3, haveOrb4, isInsideCell, isBeforeLedge, isAfterMaze, hasRailing,
+		isAtOrb1, haveOrb1, haveOrb2, haveOrb3, haveOrb4, isInsideCell, isBeforeLedge, isAfterMaze,
 		isInUnicornArea, isInUnicornArea2, haveUnicornHorn, isInKnightsArea, haveBadgeJerro,
 		haveBadgeCarl, haveBadgeHarry, isBeforeIbansDoor, isInDwarfCavern, haveKlanksGauntlets, isInFinalArea,
-		haveWitchsCat, haveAmuletHolthion, haveAmuletDoomion, haveAmuletOthanian, dollImbued, haveBrew, pouredBrew,
-		dollAshed, kalragKilled, doveSmeared, haveRobeTop, haveRobeBottom, clothInBag, isInFallArea, isInUndergroundSection2,
+		dollImbued, pouredBrew, dollAshed, kalragKilled, doveSmeared, clothInBag, isInFallArea, isInUndergroundSection2,
 		usedOrb1, usedOrb2, usedOrb3, usedOrb4, destroyedAllOrbs, isInUndergroundSection3, isInMaze, usedHorn, usedBadgeJerro,
-		usedBadgeCarl, usedBadgeHarry, givenWitchCat, hasIbansAshes, hasIbansShadow, hasIbansDove, isInTemple, isInPostIbanArea;
+		usedBadgeCarl, usedBadgeHarry, givenWitchCat, isInTemple, isInPostIbanArea;
 
 	DetailedQuestStep goToArdougneCastleFloor2, talkToKingLathas, goDownCastleStairs, enterWestArdougne, talkToKoftik,
 		enterTheDungeon, climbOverRockslide1, climbOverRockslide2, climbOverRockslide3, talkToKoftikAtBridge,
@@ -268,7 +266,6 @@ public class UndergroundPass extends BasicQuestHelper
 	{
 		clothInBag = new VarbitRequirement(9138, 1);
 
-
 		inCastleFloor2 = new ZoneRequirement(castleFloor2);
 		inWestArdougne = new ZoneRequirement(westArdougne);
 		isBeforeRockslide1 = new ZoneRequirement(beforeRockslide1);
@@ -277,11 +274,6 @@ public class UndergroundPass extends BasicQuestHelper
 		isInFallArea = new ZoneRequirement(inFallArea);
 		isBeforeBridge = new ZoneRequirement(beforeBridge);
 		isNorthEastOfBridge = new ZoneRequirement(northEastOfBridge);
-		haveOilyCloth = new ItemRequirements(oilyCloth);
-		haveFireArrow = new ItemRequirements(fireArrow);
-		haveLitArrow = new ItemRequirements(litArrow);
-		haveLitArrowEquipped = new ItemRequirements(litArrowEquipped);
-		havePlank = new ItemRequirements(plank);
 		isBeforeThePit = new ZoneRequirement(westOfBridge, beforeThePit);
 		isAfterThePit = new ZoneRequirement(afterThePit);
 		isBeforeTheGrid = new ZoneRequirement(beforeTheGrid);
@@ -298,10 +290,10 @@ public class UndergroundPass extends BasicQuestHelper
 		usedOrb4 = new VarbitRequirement(9119, 1);
 		destroyedAllOrbs = new Conditions(usedOrb1, usedOrb2, usedOrb3, usedOrb4);
 
-		haveOrb1 = new Conditions(LogicType.OR, usedOrb1, new ItemRequirements(orb1));
-		haveOrb2 = new Conditions(LogicType.OR, usedOrb2, new ItemRequirements(orb2));
-		haveOrb3 = new Conditions(LogicType.OR, usedOrb3, new ItemRequirements(orb3));
-		haveOrb4 = new Conditions(LogicType.OR, usedOrb4, new ItemRequirements(orb4));
+		haveOrb1 = new Conditions(LogicType.OR, usedOrb1, orb1);
+		haveOrb2 = new Conditions(LogicType.OR, usedOrb2, orb2);
+		haveOrb3 = new Conditions(LogicType.OR, usedOrb3, orb3);
+		haveOrb4 = new Conditions(LogicType.OR, usedOrb4, orb4);
 		isInWellArea = new ZoneRequirement(wellArea);
 		isInUndergroundSection2 = new ZoneRequirement(inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4);
 		isInUndergroundSection3 = new ZoneRequirement(inUndergroundSection3);
@@ -312,43 +304,31 @@ public class UndergroundPass extends BasicQuestHelper
 		isBeforeLedge = new ZoneRequirement(beforeLedge);
 		isInMaze = new ZoneRequirement(inMaze1, inMaze2);
 		isAfterMaze = new ZoneRequirement(afterMaze, afterMazeShortcut);
-		hasRailing = new ItemRequirements(railing);
 		isInUnicornArea = new ZoneRequirement(inUnicornArea);
 		isInUnicornArea2 = new ZoneRequirement(inUnicornArea2);
 		usedHorn = new VarbitRequirement(9136, 1);
-		haveUnicornHorn = new Conditions(LogicType.OR, new ItemRequirements(unicornHorn), usedHorn);
+		haveUnicornHorn = new Conditions(LogicType.OR, unicornHorn, usedHorn);
 		isInKnightsArea = new ZoneRequirement(inKnightsArea1, inKnightsArea2, inKnightsArea3);
 
 		usedBadgeJerro = new VarbitRequirement(9128, 1);
 		usedBadgeCarl = new VarbitRequirement(9129, 1);
 		usedBadgeHarry = new VarbitRequirement(9130, 1);
 
-		haveBadgeCarl = new Conditions(LogicType.OR, new ItemRequirements(badgeCarl), usedBadgeCarl);
-		haveBadgeHarry = new Conditions(LogicType.OR, new ItemRequirements(badgeHarry), usedBadgeHarry);
-		haveBadgeJerro = new Conditions(LogicType.OR, new ItemRequirements(badgeJerro), usedBadgeJerro);
+		haveBadgeCarl = new Conditions(LogicType.OR, badgeCarl, usedBadgeCarl);
+		haveBadgeHarry = new Conditions(LogicType.OR, badgeHarry, usedBadgeHarry);
+		haveBadgeJerro = new Conditions(LogicType.OR, badgeJerro, usedBadgeJerro);
 		isBeforeIbansDoor = new ZoneRequirement(inKnightsArea3, beforeIbansDoor);
 		isInFinalArea = new ZoneRequirement(inFinalArea);
 		isInDwarfCavern = new ZoneRequirement(inDwarfCavern);
-		haveKlanksGauntlets = new ItemRequirements(klanksGauntlets);
-		haveWitchsCat = new ItemRequirements(witchsCat);
+		haveKlanksGauntlets = klanksGauntlets;
 		givenWitchCat = new VarbitRequirement(9123, 1);
-		haveAmuletHolthion = new ItemRequirements(amuletHolthion);
-		haveAmuletDoomion = new ItemRequirements(amuletDoomion);
-		haveAmuletOthanian = new ItemRequirements(amuletOthanian);
 		dollImbued = new VarbitRequirement(9118, 1);
-		haveBrew = new ItemRequirements(brew);
 		pouredBrew = new VarbitRequirement(9134, 1);
 		dollAshed = new VarbitRequirement(9117, 1);
 		kalragKilled = new VarbitRequirement(9115, 1);
 		doveSmeared = new VarbitRequirement(9116, 1);
-		haveRobeTop = new ItemRequirements(robeTop);
-		haveRobeBottom = new ItemRequirements(robeBottom);
 		isInTemple = new ZoneRequirement(inTemple);
 		isInPostIbanArea = new ZoneRequirement(inPostIbanArea);
-
-		hasIbansAshes = new ItemRequirements(ibansAshes);
-		hasIbansShadow = new ItemRequirements(ibansShadow);
-		hasIbansDove = new ItemRequirements(ibansDove);
 	}
 
 	public void setupSteps()
@@ -625,15 +605,15 @@ public class UndergroundPass extends BasicQuestHelper
 		crossTheBridge.addStep(isBeforeRockslide1, climbOverRockslide1);
 		crossTheBridge.addStep(isBeforeRockslide2, climbOverRockslide2);
 		crossTheBridge.addStep(isBeforeRockslide3, climbOverRockslide3);
-		crossTheBridge.addStep(new Conditions(isNorthEastOfBridge, haveLitArrowEquipped), shootBridgeRope);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveLitArrow), walkNorthEastOfBridge);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveFireArrow), lightArrow);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveOilyCloth), useClothOnArrow);
+		crossTheBridge.addStep(new Conditions(isNorthEastOfBridge, litArrowEquipped), shootBridgeRope);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), litArrow), walkNorthEastOfBridge);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), fireArrow), lightArrow);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), oilyCloth), useClothOnArrow);
 		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), clothInBag), searchBagForCloth);
 		crossTheBridge.addStep(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), talkToKoftikAtBridge);
 
 		ConditionalStep theUndergroundPass = new ConditionalStep(this, climbDownWell);
-		theUndergroundPass.addStep(new Conditions(LogicType.NOR, havePlank), collectPlank);
+		theUndergroundPass.addStep(new Conditions(LogicType.NOR, plank), collectPlank);
 		theUndergroundPass.addStep(isBeforeThePit, crossThePit);
 		theUndergroundPass.addStep(isAfterThePit, climbOverRockslide4);
 		theUndergroundPass.addStep(isBeforeTheGrid, climbOverRockslide5);
@@ -663,7 +643,7 @@ public class UndergroundPass extends BasicQuestHelper
 		descendingDeeper.addStep(isInMaze, navigateMaze);
 		descendingDeeper.addStep(isBeforeLedge, crossLedge);
 		descendingDeeper.addStep(isInsideCell, digMud);
-		descendingDeeper.addStep(new Conditions(isInUnicornArea, hasRailing), useRailingOnBoulder);
+		descendingDeeper.addStep(new Conditions(isInUnicornArea, railing), useRailingOnBoulder);
 		descendingDeeper.addStep(isInUnicornArea, searchUnicornCage);
 
 		ConditionalStep travelThroughPassSection3 = new ConditionalStep(this, crossTheBridge);
@@ -693,33 +673,33 @@ public class UndergroundPass extends BasicQuestHelper
 
 		ConditionalStep theWitch = new ConditionalStep(this, gettingToFinalSection);
 		theWitch.addStep(new Conditions(isInFinalArea, givenWitchCat), searchWitchsChest);
-		theWitch.addStep(new Conditions(isInFinalArea, haveWitchsCat), useCatOnDoor);
+		theWitch.addStep(new Conditions(isInFinalArea, witchsCat), useCatOnDoor);
 		theWitch.addStep(isInFinalArea, pickUpWitchsCat);
 		theWitch.addStep(new Conditions(isInDwarfCavern, haveKlanksGauntlets), goBackUpToIbansCavern);
 		theWitch.addStep(new Conditions(isInDwarfCavern), talkToKlank);
 
 		ConditionalStep imbuingTheDoll = new ConditionalStep(this, gettingToFinalSection);
-		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared, haveRobeBottom, haveRobeTop), enterTemple);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared, robeBottom, robeTop), enterTemple);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared), killDisciple);
-		imbuingTheDoll.addStep(new Conditions(dollImbued, dollAshed, kalragKilled, hasIbansDove), useDoveOnDoll);
+		imbuingTheDoll.addStep(new Conditions(dollImbued, dollAshed, kalragKilled, ibansDove), useDoveOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled), searchCage);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSouless);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed), killKalrag);
-		imbuingTheDoll.addStep(new Conditions(dollImbued, pouredBrew, hasIbansAshes), useAshOnDoll);
+		imbuingTheDoll.addStep(new Conditions(dollImbued, pouredBrew, ibansAshes), useAshOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew), useTinderboxOnTomb);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, haveBrew), useBrewOnTomb);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, brew), useBrewOnTomb);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued), useBucketOnBrew);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued), returnToDwarfs);
-		imbuingTheDoll.addStep(new Conditions(hasIbansShadow), useShadowOnDoll);
-		imbuingTheDoll.addStep(new Conditions(isInFinalArea, haveAmuletHolthion, haveAmuletDoomion, haveAmuletOthanian), searchDoomionsChest);
-		imbuingTheDoll.addStep(new Conditions(isInFinalArea, haveAmuletHolthion, haveAmuletDoomion), killOthanian);
-		imbuingTheDoll.addStep(new Conditions(isInFinalArea, haveAmuletHolthion), killDoomion);
+		imbuingTheDoll.addStep(new Conditions(ibansShadow), useShadowOnDoll);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion, amuletDoomion, amuletOthanian), searchDoomionsChest);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion, amuletDoomion), killOthanian);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion), killDoomion);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea), killHolthion);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern), goBackUpToIbansCavern);
 
 		ConditionalStep goDestroyDoll = new ConditionalStep(this, gettingToFinalSection);
 		goDestroyDoll.addStep(new Conditions(isInTemple), useDollOnWell);
-		goDestroyDoll.addStep(new Conditions(isInFinalArea, haveRobeBottom, haveRobeTop), enterTemple);
+		goDestroyDoll.addStep(new Conditions(isInFinalArea, robeBottom, robeTop), enterTemple);
 		goDestroyDoll.addStep(isInFinalArea, killDisciple);
 		goDestroyDoll.addStep(isInDwarfCavern, ascendToHalfSouless);
 

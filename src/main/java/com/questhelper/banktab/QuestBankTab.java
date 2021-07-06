@@ -472,10 +472,13 @@ public class QuestBankTab
 				if (bankTabItem.getQuantity() > 0)
 				{
 					String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
-					int requirementLength = quantityString.length() * 5;
-					int xPos = adjXOffset + 8;
+					int requirementLength = quantityString.length() * 6;
+					int extraLength =
+						QuantityFormatter.quantityToStackSize(fakeItemWidget.getItemQuantity()).length() * 6;
+
+					int xPos = adjXOffset + 2 + extraLength;
 					int yPos = adjYOffset - 1;
-					if (requirementLength > 20)
+					if (extraLength + requirementLength > 24)
 					{
 						xPos = adjXOffset;
 						yPos = adjYOffset + 9;

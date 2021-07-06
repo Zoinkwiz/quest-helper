@@ -231,19 +231,7 @@ public class QuestBankTab
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
-		isSwappingDuplicates = false;
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		questBankTabInterface.handleClick(event);
-	}
-
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
-	{
-		if (isSwappingDuplicates || !questBankTabInterface.isQuestTabActive() || questBankTabInterface.isHidden()) return;
+		if (!questBankTabInterface.isQuestTabActive() || questBankTabInterface.isHidden()) return;
 
 		net.runelite.api.Point mousePoint = client.getMouseCanvasPosition();
 		if (fakeToRealItem.isEmpty())
@@ -251,7 +239,6 @@ public class QuestBankTab
 			return;
 		}
 
-		isSwappingDuplicates = true;
 		for (BankWidget bankWidget : fakeToRealItem.keySet())
 		{
 			if (bankWidget.isPointOverWidget(mousePoint))
@@ -260,6 +247,12 @@ public class QuestBankTab
 				return;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		questBankTabInterface.handleClick(event);
 	}
 
 	@Subscribe

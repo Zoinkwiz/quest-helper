@@ -243,7 +243,8 @@ public class QuestBankTab
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
-		if (isSwappingDuplicates) return;
+		if (isSwappingDuplicates || !questBankTabInterface.isQuestTabActive() || questBankTabInterface.isHidden()) return;
+
 		net.runelite.api.Point mousePoint = client.getMouseCanvasPosition();
 		if (fakeToRealItem.isEmpty())
 		{

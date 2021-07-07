@@ -28,6 +28,8 @@ import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -46,54 +49,40 @@ import net.runelite.client.eventbus.Subscribe;
 public class StatuePuzzle extends DetailedOwnerStep
 {
 	DetailedQuestStep checkPanel, climbUpPillarLeglessFaun, climbDownLeglessFaun, moveShayzienStatue, moveHosidiusStatue,
-		moveLovakengjStatue, movePiscStatue, moveArceuusStatue;
+		moveLovakengjStatue, movePiscStatue, moveArceuusStatue, invalidState;
 
 	Zone leglessFaunF1;
 
-	Requirement inLeglessFaunF1, statue1, statue2, statue3, statue4;
+	Requirement inLeglessFaunF1, statuesAllValid;
+
+	Requirement[] statueStates;
 
 	Boolean readOnce = false;
-	ArrayList<String> cityOrder;
-	HashMap<String, DetailedQuestStep> statueMap;
+	ArrayList<KourendCities> cityOrder;
+	HashMap<KourendCities, DetailedQuestStep> statueMap;
 
 
 	public enum KourendCities
 	{
-		SHAYZIEN
+		HOSIDIUS,
+		ARCEUUS,
+		SHAYZIEN,
+		LOVAKENGJ,
+		PISCARILIUS;
+
+		public int getPos()
+		{
+			KourendCities[] cities = KourendCities.values();
+			for (int i = 0; i < cities.length; i++)
 			{
-				public String toString()
+				if (cities[i] == this)
 				{
-					return "SHAYZIEN";
-				}
-			},
-		HOSIDIUS
-			{
-				public String toString()
-				{
-					return "HOSIDIUS";
-				}
-			},
-		LOVAKENGJ
-			{
-				public String toString()
-				{
-					return "LOVAKENGJ";
-				}
-			},
-		PISCARILIUS
-			{
-				public String toString()
-				{
-					return "PISCARILIUS";
-				}
-			},
-		ARCEUUS
-			{
-				public String toString()
-				{
-					return "ARCEUUS";
+					return i + 1;
 				}
 			}
+
+			return 0;
+		}
 	}
 
 	public StatuePuzzle(QuestHelper questHelper)
@@ -117,25 +106,30 @@ public class StatuePuzzle extends DetailedOwnerStep
 		}
 		else
 		{
-			if (inLeglessFaunF1.check(client))
+			if (statuesAllValid != null && !statuesAllValid.check(client))
+			{
+				startUpStep(invalidState);
+			}
+			else if (inLeglessFaunF1.check(client))
 			{
 				startUpStep(climbDownLeglessFaun);
 			}
 			else
 			{
-				if (statue1.check(client))
+				// If conditional exists and
+				if (statueStates[0].check(client))
 				{
 					startUpStep(statueMap.get(cityOrder.get(0)));
 				}
-				else if (statue2.check(client))
+				else if (statueStates[1].check(client))
 				{
 					startUpStep(statueMap.get(cityOrder.get(1)));
 				}
-				else if (statue3.check(client))
+				else if (statueStates[2].check(client))
 				{
 					startUpStep(statueMap.get(cityOrder.get(2)));
 				}
-				else if (statue4.check(client))
+				else if (statueStates[3].check(client))
 				{
 					startUpStep(statueMap.get(cityOrder.get(3)));
 				}
@@ -170,13 +164,26 @@ public class StatuePuzzle extends DetailedOwnerStep
 					word.equalsIgnoreCase(KourendCities.ARCEUUS.toString())
 				)
 				{
-					cityOrder.add(word.toUpperCase());
+					cityOrder.add(KourendCities.valueOf(word.toUpperCase()));
 				}
 			}
 
 			if (cityOrder.size() == 5)
 			{
+				if (statueStates == null)
+				{
+					return;
+				}
 				readOnce = true;
+
+				List<Requirement> validState = new ArrayList<>();
+				for (int i = 0; i < cityOrder.size() - 1; i++)
+				{
+					VarbitRequirement correctValue = new VarbitRequirement(12306 + i, cityOrder.get(i).getPos());
+					validState.add(new Conditions(LogicType.OR, statueStates[i], correctValue));
+				}
+
+				statuesAllValid = new Conditions(validState);
 			}
 		}
 
@@ -191,10 +198,12 @@ public class StatuePuzzle extends DetailedOwnerStep
 	public void setupConditions()
 	{
 		inLeglessFaunF1 = new ZoneRequirement(leglessFaunF1);
-		statue1 = new VarbitRequirement(12306, 0);
-		statue2 = new VarbitRequirement(12307, 0);
-		statue3 = new VarbitRequirement(12308, 0);
-		statue4 = new VarbitRequirement(12309, 0);
+		statueStates = new Requirement[]{
+			new VarbitRequirement(12306, 0),
+			new VarbitRequirement(12307, 0),
+			new VarbitRequirement(12308, 0),
+			new VarbitRequirement(12309, 0)
+		};
 	}
 
 	@Override
@@ -225,16 +234,20 @@ public class StatuePuzzle extends DetailedOwnerStep
 		moveShayzienStatue = new ObjectStep(getQuestHelper(), ObjectID.SHAYZIEN_STATUE_41850, new WorldPoint(1777, 3678, 0), "Inspect the Shayzien statue.");
 		moveShayzienStatue.addDialogStep("Press it in.");
 
-		statueMap.put(KourendCities.ARCEUUS.toString(), moveArceuusStatue);
-		statueMap.put(KourendCities.HOSIDIUS.toString(), moveHosidiusStatue);
-		statueMap.put(KourendCities.PISCARILIUS.toString(), movePiscStatue);
-		statueMap.put(KourendCities.LOVAKENGJ.toString(), moveLovakengjStatue);
-		statueMap.put(KourendCities.SHAYZIEN.toString(), moveShayzienStatue);
+		invalidState = new DetailedQuestStep(getQuestHelper(), "You've inspected the statues in the wrong order." +
+			" Either hop worlds or inspect the remaining statues to reset the puzzle.");
+
+		statueMap.put(KourendCities.ARCEUUS, moveArceuusStatue);
+		statueMap.put(KourendCities.HOSIDIUS, moveHosidiusStatue);
+		statueMap.put(KourendCities.PISCARILIUS, movePiscStatue);
+		statueMap.put(KourendCities.LOVAKENGJ, moveLovakengjStatue);
+		statueMap.put(KourendCities.SHAYZIEN, moveShayzienStatue);
 	}
 
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return Arrays.asList(checkPanel, climbUpPillarLeglessFaun, climbDownLeglessFaun, moveArceuusStatue, moveHosidiusStatue, moveLovakengjStatue, moveShayzienStatue, movePiscStatue);
+		return Arrays.asList(checkPanel, climbUpPillarLeglessFaun, climbDownLeglessFaun, moveArceuusStatue,
+			moveHosidiusStatue, moveLovakengjStatue, moveShayzienStatue, movePiscStatue, invalidState);
 	}
 }

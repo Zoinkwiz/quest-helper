@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -37,6 +38,7 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -53,6 +55,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -60,17 +63,19 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-
 @QuestDescriptor(
 	quest = QuestHelperQuest.A_KINGDOM_DIVIDED
 )
 
 public class AKingdomDivided extends BasicQuestHelper
 {
-	QuestStep talkToMartinHolt, talkToCommanderFullore, talkToTomasLawry, goToLovakengjPub,
-		talkToCabinBoyHerbert, fightJudgeofYama, talkToCommanderFullore2, talkToMartinHolt2,
-		teleportArcheio, pickpocketIstoria, openRosesDiaryCase, talkToMartinHolt3, readRosesNote,
-		talkToMartinHolt4, enterHomeForClueSearch, inspectReceipt, getReceipt, goDownCouncillorsHomeF3toF2,
+	QuestStep talkToMartinHolt, talkToCommanderFullore, talkToCommanderFulloreOutsideHouse, talkToTomasLawry,
+		goToLovakengjPub, talkToCabinBoyHerbert, talkToCabinBoyHerbertSidebar, fightJudgeofYama,
+		talkToCommanderFulloreAfterYama, talkToCommanderFullore2, talkToMartinHolt2, teleportArcheio,
+		pickpocketIstoria, openRosesDiaryCase, talkToMartinHolt3, talkToMartinHoltNoDiary, readRosesNote,
+		talkToMartinHolt4;
+
+	QuestStep enterHomeForClueSearch, inspectReceipt, getReceipt, goDownCouncillorsHomeF3toF2,
 		goDownCouncillorsHomeF2toF1, goUpCouncillorsHomeF1toF2, goUpCouncillorsHomeF2toF3, judgeOfYamaDetailedStep,
 		enterJudgeOfYamaFightPortal, talkToMartinHoltForthosRuins, chopVines, squeezeThroughVines, checkPanel,
 		solvePanelPuzzle, readRosesNote2, talkToMartinHoltForthosRuins2, talkToMartinHoltSettlementRuins, killAssassin,
@@ -109,11 +114,13 @@ public class AKingdomDivided extends BasicQuestHelper
 		barbarianWarlordNearby, phileasRimorNearby, lovaAssassinNearby, inArceuusChurchF1, inArceuusChurchF2,
 		inWineBarrel;
 
-	ItemRequirement combatGearForJudgeOfYama, food, freeInventorySlots, bluishKey, rosesDiary, rosesNote, receipt,
+	ItemRequirement combatGearForJudgeOfYama, food, bluishKey, rosesDiary, rosesNote, receipt,
 		kharedstsMemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear, coldKey, rosesNote3, gamesNecklace, rosesNote4,
 		fairyRingStaffOrGamesNecklace, combatGearForXamphur, kahtEgg, dampKey, defencePotion, volcanicSulphur, moltenGlass,
 		darkEssenceBlock, brokenRedirector, sulphurPotion, shieldingPotion, lovaDeclaration, fairyRingStaff, darkNullifier,
 		shayzienJournal, skillNecklace;
+
+	Requirement freeInventorySlots;
 
 	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1,
 		panelArea2, leglessFaunF1, lizardTemple, eggArea, towerOfMagic, warrens, shayzienRoom, lookoutBasement, lookoutF0,
@@ -133,7 +140,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(2, talkToMartinHolt);
 		steps.put(4, talkToCommanderFullore);
 		steps.put(6, talkToCommanderFullore);
-		steps.put(8, talkToCommanderFullore);
+		steps.put(8, talkToCommanderFulloreOutsideHouse);
 
 		ConditionalStep homeSearch = new ConditionalStep(this, enterHomeForClueSearch);
 
@@ -150,26 +157,25 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(10, homeSearch);
 		steps.put(12, homeSearch);
 		steps.put(14, talkToCabinBoyHerbert);
+		steps.put(16, talkToCabinBoyHerbert);
 
 		ConditionalStep doTheFightWithYama = new ConditionalStep(this, fightJudgeofYama);
 		doTheFightWithYama.addStep(new Conditions(LogicType.NAND, judgeOfYamaNearby), enterJudgeOfYamaFightPortal);
-
-		steps.put(16, doTheFightWithYama);
 		steps.put(18, doTheFightWithYama);
-		steps.put(20, talkToCommanderFullore2);
-		steps.put(22, talkToCommanderFullore2);
+		steps.put(20, talkToCommanderFulloreAfterYama);
+		steps.put(22, talkToCommanderFulloreAfterYama);
 		steps.put(24, talkToCommanderFullore2);
 		steps.put(26, talkToMartinHolt2);
+
+		steps.put(28, talkToMartinHolt2);
 
 		ConditionalStep gettingRosesDiary = new ConditionalStep(this, teleportArcheio);
 		gettingRosesDiary.addStep(new Conditions(inArceuusLibraryHistoricalArchive, hasBluishKey), openRosesDiaryCase);
 		gettingRosesDiary.addStep(inArceuusLibraryHistoricalArchive, pickpocketIstoria);
-
-		steps.put(28, gettingRosesDiary);
 		steps.put(30, gettingRosesDiary);
 		steps.put(32, gettingRosesDiary);
 		steps.put(34, talkToMartinHolt3);
-		steps.put(36, talkToMartinHolt3);
+		steps.put(36, talkToMartinHoltNoDiary);
 		steps.put(38, readRosesNote);
 		steps.put(40, talkToMartinHolt4);
 		steps.put(42, talkToMartinHoltForthosRuins);
@@ -410,31 +416,42 @@ public class AKingdomDivided extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGearForJudgeOfYama = new ItemRequirement("Melee combat gear to fight Judge of Yama", -1, -1);
+		combatGearForJudgeOfYama.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		combatGearForJudgeOfYama.setTooltip("Judge of Yama is immune to range and magic attacks.");
 		bluishKey = new ItemRequirement("Bluish Key", ItemID.BLUISH_KEY);
 		rosesDiary = new ItemRequirement("Rose's diary", ItemID.ROSES_DIARY);
+		rosesDiary.setTooltip("You can get another from the south east display case in the Arceuus Library Historical" +
+			" Archives");
 		rosesNote = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE);
+		rosesNote.setTooltip("You can get another from Martin Holt, east of Kourend Castle");
 		receipt = new ItemRequirement("Receipt", ItemID.RECEIPT_25793);
-		freeInventorySlots = new ItemRequirement("Free inventory slot", -1, 1);
+
+		freeInventorySlots = new FreeInventorySlotRequirement(InventoryID.INVENTORY,  1);
+
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS);
 		anyAxe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		rosesNote2 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25806);
+		rosesNote2.setTooltip("You can get another from the panel in the Forthos Ruin");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
-		fireSpellGear = new ItemRequirement("Runes/equipment to cast FIRE bolt or better", -1, 1);
+		fireSpellGear = new ItemRequirement("Runes/equipment to cast FIRE bolt or better", -1);
+		fireSpellGear.setDisplayItemId(ItemID.FIRE_RUNE);
 		coldKey = new ItemRequirement("Cold key", ItemID.COLD_KEY);
 		rosesNote3 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25807);
+		rosesNote3.setTooltip("You can get another from the panel in the Settlement Ruins south west of the Wintertodt camp.");
 		food = new ItemRequirement("Decent food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 		gamesNecklace = new ItemRequirement("Games necklace for Wintertodt camp teleport", ItemCollections.getGamesNecklaces());
 		rosesNote4 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25808);
 		fairyRingStaff = new ItemRequirement("Staff for Fairy rings", ItemCollections.getFairyStaff());
 		fairyRingStaffOrGamesNecklace = new ItemRequirement("Staff for Fairy rings or a Skills Necklace", ItemCollections.getFairyStaff());
 		fairyRingStaffOrGamesNecklace.addAlternates(ItemCollections.getSkillsNecklaces());
 		combatGearForXamphur = new ItemRequirement("Melee or range gear to fight Xamphur.", -1, -1);
+		combatGearForXamphur.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		combatGearForXamphur.setTooltip("Xamphur is immune to magic attacks.");
 
-		kahtEgg = new ItemRequirement("Lizardman Egg.", ItemID.LIZARDMAN_EGG);
+		kahtEgg = new ItemRequirement("Lizardman Egg", ItemID.LIZARDMAN_EGG);
 		kahtEgg.setTooltip("Received during quest.");
-		dampKey = new ItemRequirement("Damp Key.", ItemID.DAMP_KEY);
+		dampKey = new ItemRequirement("Damp Key", ItemID.DAMP_KEY);
 		dampKey.setTooltip("Received during quest.");
 		defencePotion = new ItemRequirement("Defence Potion (3) or (4)", ItemID.DEFENCE_POTION4);
 		defencePotion.addAlternates(ItemID.DEFENCE_POTION3);
@@ -527,30 +544,38 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToCommanderFullore = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1614, 3668, 0), "Talk to Commander Fullore in Kourend Castle.");
 		talkToCommanderFullore.addDialogStep("Let's get going.");
 
-		goUpCouncillorsHomeF1toF2 = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(1671, 3681, 0), "Climb up the stairs of the Councillors home.");
-		goUpCouncillorsHomeF2toF3 = new ObjectStep(this, ObjectID.STAIRCASE_41806, new WorldPoint(1676, 3679, 1), "Climb up the stairs of the Councillors home.");
-		goDownCouncillorsHomeF2toF1 = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1671, 3681, 1), "Climb down the stairs of the Councillors home.");
-		goDownCouncillorsHomeF3toF2 = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(1676, 3679, 2), "Climb down the stairs of the Councillors home.");
+		talkToCommanderFulloreOutsideHouse = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1676, 3674, 0),
+			"Talk to Commander Fullore east of the Kourend Castle.");
+		talkToCommanderFullore.addSubSteps(talkToCommanderFulloreOutsideHouse);
 
-		getReceipt = new ObjectStep(this, ObjectID.DRAWERS_41795, new WorldPoint(1679, 3680, 1), "Search the drawers for the Receipt.");
-		inspectReceipt = new DetailedQuestStep(this, "Inspect the Receipt.", receipt.highlighted());
+		goUpCouncillorsHomeF1toF2 = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(1671, 3681, 0), "Climb up the stairs of the Councillor's home.");
+		goUpCouncillorsHomeF2toF3 = new ObjectStep(this, ObjectID.STAIRCASE_41806, new WorldPoint(1676, 3679, 1), "Climb up the stairs of the Councillor's home.");
+		goDownCouncillorsHomeF2toF1 = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1671, 3681, 1), "Climb down the stairs of the Councillor's home.");
+		goDownCouncillorsHomeF3toF2 = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(1676, 3679, 2), "Climb down the stairs of the Councillor's home.");
 
-		talkToTomasLawry = new NpcStep(this, NpcID.TOMAS_LAWRY, new WorldPoint(1677, 3682, 0), "Speak with Tomas Lawry on the ground floor of the Councillors home.");
+		getReceipt = new ObjectStep(this, ObjectID.DRAWERS_41795, new WorldPoint(1679, 3680, 1),
+			"Search the drawers in the east room for the receipt.");
+		inspectReceipt = new DetailedQuestStep(this, "Inspect the receipt.", receipt.highlighted());
+
+		talkToTomasLawry = new NpcStep(this, NpcID.TOMAS_LAWRY, new WorldPoint(1677, 3682, 0), "Speak with Tomas Lawry on the ground floor of the Councillor's home.");
 		talkToTomasLawry.addDialogStep("I've found something that might be useful.");
 		goToLovakengjPub = new NpcStep(this, NpcID.FUGGY, new WorldPoint(1569, 3758, 0), "Talk to Fuggy in the pub in southeast Lovakengj.");
-		goToLovakengjPub.addDialogStep("Had any councillors stay here recently?");
+		goToLovakengjPub.addDialogSteps("Had any councillors stay here recently?", "So about the Councillor.");
 
-		enterHomeForClueSearch = new DetailedQuestStep(this, new WorldPoint(1676, 3680, 0), "Search the Councillors home east of Kourend castle for clues.");
+		enterHomeForClueSearch = new DetailedQuestStep(this, new WorldPoint(1676, 3680, 0), "Search the Councillor's home east of Kourend castle for clues.");
 		enterHomeForClueSearch.addSubSteps(getReceipt, inspectReceipt, goDownCouncillorsHomeF2toF1,
 			goDownCouncillorsHomeF3toF2, goUpCouncillorsHomeF1toF2, goUpCouncillorsHomeF2toF3);
 
 		talkToCabinBoyHerbert = new NpcStep(this, NpcID.CABIN_BOY_HERBERT, new WorldPoint(1826, 3691, 0),
 			"Prepare to fight the Judge of Yama. This boss uses magic + range prayer so melee is required. Run in the " +
 				"gaps of the fire waves to approach the boss.\n\nTalk to Cabin Boy Herbert next to Veos's ship in Port" +
-				"Piscarilius to initiate the fight.",
+				" Piscarilius to initiate the fight.",
 			combatGearForJudgeOfYama, food);
-
 		talkToCabinBoyHerbert.addDialogStep("I'm looking for a councillor.");
+
+		talkToCabinBoyHerbertSidebar = new DetailedQuestStep(this, "Talk to Cabin Boy Herbert next to Veos's ship in " +
+			"Port Piscarilius, ready to fight the Judge of Yama.");
+		talkToCabinBoyHerbertSidebar.addSubSteps(talkToCabinBoyHerbert);
 
 		fightJudgeofYama = new NpcStep(this, NpcID.JUDGE_OF_YAMA_10938,
 			"Fight the Judge of Yama. This boss uses magic + range prayer so melee is required. Run in the gaps of " +
@@ -566,18 +591,26 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		judgeOfYamaDetailedStep.addSubSteps(talkToCabinBoyHerbert, fightJudgeofYama, enterJudgeOfYamaFightPortal);
 
+		talkToCommanderFulloreAfterYama = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1614, 3668, 0), "Talk to Commander Fullore in Kourend Castle.");
+
 		talkToCommanderFullore2 = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1604, 3654, 0), "Talk to Commander Fullore just south of the Kourend Castle.");
 		talkToMartinHolt2 = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1664, 3670, 0), "Talk to Martin Holt again east of the Kourend Castle.");
 
 		teleportArcheio = new NpcStep(this, NpcID.ARCHEIO, new WorldPoint(1625, 3808, 0), "Have Archeio in the Arceuus library teleport you to the Historical Archives.");
+		teleportArcheio.addDialogStep("Yes please!");
 		pickpocketIstoria = new NpcStep(this, NpcID.ISTORIA_11113, new WorldPoint(1551, 10222, 0), "Pickpocket Istoria for the bluish key.");
-		openRosesDiaryCase = new ObjectStep(this, ObjectID.DISPLAY_CASE_41811, "Search the display case in the south east corner of the room to get Rose's diary", bluishKey);
+		openRosesDiaryCase = new ObjectStep(this, ObjectID.DISPLAY_CASE_41811, new WorldPoint(1559, 10219, 0),
+			"Search the display case in the south east corner of the room to get Rose's diary.", bluishKey);
 
 		talkToMartinHolt3 = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1664, 3670, 0), "Talk to Martin Holt again east of the Kourend Castle.", rosesDiary);
+		talkToMartinHoltNoDiary = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1664, 3670, 0), "Talk to Martin Holt again east of the Kourend Castle.");
+		talkToMartinHolt3.addSubSteps(talkToMartinHoltNoDiary);
+
 		readRosesNote = new DetailedQuestStep(this, "Read Rose's note that fell out of the diary.", rosesNote.highlighted());
 		talkToMartinHolt4 = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1664, 3670, 0), "Talk to Martin Holt again east of the Kourend Castle.", rosesNote);
 
-		talkToMartinHoltForthosRuins = new NpcStep(this, NpcID.MARTIN_HOLT, new WorldPoint(1673, 3580, 0), "Talk to Martin Holt on the north side of the Forthos Ruins.");
+		talkToMartinHoltForthosRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1673, 3580, 0), "Talk to " +
+			"Martin Holt on the north side of the Forthos Ruins.");
 		chopVines = new ObjectStep(this, ObjectID.VINES_41815, new WorldPoint(1671, 3577, 0), "Chop the vines south of Martin Holt.", anyAxe);
 		squeezeThroughVines = new ObjectStep(this, ObjectID.VINES_41816, new WorldPoint(1671, 3577, 0), "Squeeze through the vines.");
 		checkPanel = new ObjectStep(this, ObjectID.PANEL_41822, new WorldPoint(1672, 3579, 0), "Check the panel on the wall.");
@@ -585,7 +618,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		readRosesNote2 = new DetailedQuestStep(this, "Read Rose's note from the panel on the wall.", rosesNote2.highlighted());
 		talkToMartinHoltForthosRuins2 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1673, 3580, 0), "Talk to Martin Holt again on the north side of the Forthos Ruins.");
 		talkToMartinHoltForthosRuins2.addSubSteps(squeezeThroughVines);
-		talkToMartinHoltSettlementRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp. " +
+		talkToMartinHoltSettlementRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0),
+			"Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp. " +
 			"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear, food);
 		killAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, "Kill the Assassin. He uses a dragon dagger and dragon darts.", combatGear, food);
 		talkToMartinHoltSettlementRuins.addSubSteps(killAssassin);
@@ -816,10 +850,10 @@ public class AKingdomDivided extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("The Disgraced Councillor's Escape", Arrays.asList(talkToMartinHolt,
-			talkToCommanderFullore, enterHomeForClueSearch, talkToTomasLawry, goToLovakengjPub, judgeOfYamaDetailedStep,
-			talkToCommanderFullore2, talkToMartinHolt2, teleportArcheio, pickpocketIstoria, openRosesDiaryCase,
-			talkToMartinHolt3, readRosesNote, talkToMartinHolt4), combatGearForJudgeOfYama, food, kharedstsMemoirs,
-			freeInventorySlots)
+			talkToCommanderFullore, enterHomeForClueSearch, talkToTomasLawry, goToLovakengjPub, talkToCabinBoyHerbertSidebar,
+			judgeOfYamaDetailedStep, talkToCommanderFulloreAfterYama, talkToCommanderFullore2, talkToMartinHolt2,
+			teleportArcheio, pickpocketIstoria, openRosesDiaryCase, talkToMartinHolt3, readRosesNote, talkToMartinHolt4),
+			combatGearForJudgeOfYama, food, kharedstsMemoirs, freeInventorySlots)
 		);
 
 		allSteps.add(new PanelDetails("Kourend's Last Princess", Arrays.asList(talkToMartinHoltForthosRuins,

@@ -235,7 +235,7 @@ public class StatuePuzzle extends DetailedOwnerStep
 		moveShayzienStatue.addDialogStep("Press it in.");
 
 		invalidState = new DetailedQuestStep(getQuestHelper(), "You've inspected the statues in the wrong order." +
-			" Either hop worlds or inspect the remaining statues to reset the puzzle.");
+			" Inspect the remaining statues to reset the puzzle.");
 
 		statueMap.put(KourendCities.ARCEUUS, moveArceuusStatue);
 		statueMap.put(KourendCities.HOSIDIUS, moveHosidiusStatue);

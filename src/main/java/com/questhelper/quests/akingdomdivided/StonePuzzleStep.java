@@ -39,6 +39,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -110,47 +112,56 @@ public class StonePuzzleStep extends DetailedOwnerStep
 		}
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		updateSteps();
+	}
 
 	@Subscribe
-	public void onGameTick()
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		Widget widgetStone = client.getWidget(229, 1);
-
-		if (widgetStone != null && !widgetStone.isHidden() && !codeFound)
+		if (widgetLoaded.getGroupId() != 229)
 		{
-			Matcher foundStoneValue = Pattern.compile("(?:^|)'([^']*?)'(?:\\s|$)").matcher(widgetStone.getText());
-			final boolean foundAnswer = foundStoneValue.find();
-
-			if (foundAnswer)
-			{
-				final String value = foundStoneValue.group(0);
-				final String letter = value.substring(1, 2);
-				final String number = value.substring(value.length() - 2, value.length() - 1);
-
-				switch (letter)
-				{
-					case "R":
-						answers.put("R", number);
-						rStoneDone = true;
-						break;
-					case "O":
-						answers.put("O", number);
-						oStoneDone = true;
-						break;
-					case "S":
-						answers.put("S", number);
-						sStoneDone = true;
-						break;
-					case "E":
-						answers.put("E", number);
-						eStoneDone = true;
-						break;
-				}
-
-			}
+			return;
 		}
 
-		updateSteps();
+		clientThread.invokeLater(() -> {
+			Widget widgetStone = client.getWidget(229, 1);
+
+			if (widgetStone != null && !widgetStone.isHidden() && !codeFound)
+			{
+				Matcher foundStoneValue = Pattern.compile("(?:^|)'([^']*?)'(?:\\s|$)").matcher(widgetStone.getText());
+				final boolean foundAnswer = foundStoneValue.find();
+
+				if (foundAnswer)
+				{
+					final String value = foundStoneValue.group(0);
+					final String letter = value.substring(1, 2);
+					final String number = value.substring(value.length() - 2, value.length() - 1);
+
+					switch (letter)
+					{
+						case "R":
+							answers.put("R", number);
+							rStoneDone = true;
+							break;
+						case "O":
+							answers.put("O", number);
+							oStoneDone = true;
+							break;
+						case "S":
+							answers.put("S", number);
+							sStoneDone = true;
+							break;
+						case "E":
+							answers.put("E", number);
+							eStoneDone = true;
+							break;
+					}
+				}
+			}
+		});
 	}
 
 	protected void setupZones()

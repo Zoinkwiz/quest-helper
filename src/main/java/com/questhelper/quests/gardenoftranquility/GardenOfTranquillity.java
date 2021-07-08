@@ -237,8 +237,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		plantPot = new ItemRequirement("Filled plant pot", ItemID.FILLED_PLANT_POT);
 		compost2 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 2);
 		compost2.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost2.setTooltip("Bottomless bucket will not work for these two required composts.");
 		compost = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST);
 		compost.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost.setTooltip("Bottomless bucket will not work for these two required composts.");
 
 		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 5);
 		compost5.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);

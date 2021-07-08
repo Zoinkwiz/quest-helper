@@ -244,6 +244,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 5);
 		compost5.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost5.setTooltip("Bottomless bucket will not work for these two required composts.");
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
 		fishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);

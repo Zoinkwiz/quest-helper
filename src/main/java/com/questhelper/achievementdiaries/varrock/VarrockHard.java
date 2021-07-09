@@ -68,7 +68,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 	// Items required
 	ItemRequirement combatGear;
 
-	ItemRequirement botSceptre, topSceptre, rightSkull, leftSkull, strangeSkull, runedSceptre, combinedSkullSceptre, dashingKeb, coins, cape, axe, airRune, lawRune, fireRune, yewLog, tinderBox;
+	ItemRequirement botSceptre, topSceptre, rightSkull, leftSkull, strangeSkull, runedSceptre, combinedSkullSceptre, dashingKeb, coins, cape, axe, airRune, lawRune, fireRune, yewLog, tinderBox, yewSap, rake, spade;
 
 	// Items recommended
 	ItemRequirement food;
@@ -78,15 +78,15 @@ public class VarrockHard extends ComplexStateQuestHelper
 
 	Requirement ancientBook;
 
-	Requirement notSpottyCape, not153Kudos, notWakkaEdge, notPaddewwaTP, notSkullSceptre, notYewChurch, notFancyStone, notYewRoots, notSmiteAltar, notPipe, notMoreKudos;
+	Requirement notSpottyCape, not153Kudos, notWakkaEdge, notPaddewwaTP, notSkullSceptre, notYewChurch, notFancyStone, notYewRoots, notSmiteAltar, notPipe, notMoreKudos, yewNotChecked, yewChecked, yewStump, smiteActive;
 
-	QuestStep claimReward, moveToStronghold, moveToStronghold2, moveToStronghold3, moveToStronghold4, makeSceptre, makeSkull, skullSceptre, makeSkullSceptre, getCape, spottyCape, getKudos, wakkaEdge, moveToBasement, kudos, paddewwaTP, cutYew, goUp1, goUp2, goUp3, burnLogs;
+	QuestStep claimReward, moveToStronghold, moveToStronghold2, moveToStronghold3, moveToStronghold4, makeSceptre, makeSkull, skullSceptre, makeSkullSceptre, getCape, spottyCape, getKudos, wakkaEdge, moveToBasement, kudos, paddewwaTP, cutYew, goUp1, goUp2, goUp3, burnLogs, fancyStone, growYew, chopYew, digUpYewRoots, moveToUpstairs, activateSmite, prayAtAltar, obsPipe, moveToEdge;
 
 	NpcStep killMino, killFlesh, killCatablepon, killAnkou;
 
-	Zone stronghold1, stronghold2, stronghold3, stronghold4, basement, church2, church3, church4;
+	Zone stronghold1, stronghold2, stronghold3, stronghold4, basement, church2, church3, church4, upstairs, sewer;
 
-	ZoneRequirement inStronghold1, inStronghold2, inStronghold3, inStronghold4, inBasement, inChurch2, inChurch3, inChurch4;
+	ZoneRequirement inStronghold1, inStronghold2, inStronghold3, inStronghold4, inBasement, inChurch2, inChurch3, inChurch4, inUpstairs, inSewer;
 
 	@Override
 	public QuestStep loadStep()
@@ -101,16 +101,23 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(not153Kudos, inBasement, notMoreKudos), kudos);
 		doHard.addStep(new Conditions(not153Kudos, notMoreKudos), moveToBasement);
 		doHard.addStep(not153Kudos, getKudos);
-
 		doHard.addStep(new Conditions(notYewChurch, inChurch4, yewLog), burnLogs);
 		doHard.addStep(new Conditions(notYewChurch, inChurch3, yewLog), goUp3);
 		doHard.addStep(new Conditions(notYewChurch, inChurch2, yewLog), goUp2);
 		doHard.addStep(new Conditions(notYewChurch, yewLog), goUp1);
 		doHard.addStep(notYewChurch, cutYew);
-
-
+		doHard.addStep(notFancyStone, fancyStone);
+		doHard.addStep(new Conditions(notYewRoots, yewStump), digUpYewRoots);
+		doHard.addStep(new Conditions(notYewRoots, yewChecked), chopYew);
+		doHard.addStep(new Conditions(notYewRoots, yewNotChecked), chopYew);
+		doHard.addStep(notYewRoots, growYew);
+		doHard.addStep(new Conditions(notSmiteAltar, inUpstairs, smiteActive), prayAtAltar);
+		doHard.addStep(new Conditions(notSmiteAltar, inUpstairs), activateSmite);
+		doHard.addStep(notSmiteAltar, moveToUpstairs);
 		doHard.addStep(notWakkaEdge, wakkaEdge);
 		doHard.addStep(notPaddewwaTP, paddewwaTP);
+		doHard.addStep(new Conditions(notPipe, inSewer), obsPipe);
+		doHard.addStep(notPipe, moveToEdge);
 		doHard.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre), skullSceptre);
 		doHard.addStep(new Conditions(notSkullSceptre, runedSceptre, strangeSkull), makeSkullSceptre);
 		doHard.addStep(new Conditions(notSkullSceptre, botSceptre, topSceptre), makeSceptre);
@@ -142,7 +149,13 @@ public class VarrockHard extends ComplexStateQuestHelper
 
 		notMoreKudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 153, "153+ Kudos");
 
+		smiteActive = new VarbitRequirement(4121, Operation.EQUAL, 1, "Smite Active");
+
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
+
+		yewNotChecked = new VarbitRequirement(4771, 45);
+		yewChecked = new VarbitRequirement(4771, 46);
+		yewStump = new VarbitRequirement(4771, 47);
 
 		botSceptre = new ItemRequirement("Bottom of sceptre", ItemID.BOTTOM_OF_SCEPTRE).showConditioned(notSkullSceptre);
 		topSceptre = new ItemRequirement("Top of sceptre", ItemID.TOP_OF_SCEPTRE).showConditioned(notSkullSceptre);
@@ -160,6 +173,9 @@ public class VarrockHard extends ComplexStateQuestHelper
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notPaddewwaTP);
 		yewLog = new ItemRequirement("Yew log", ItemID.YEW_LOGS);
 		tinderBox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notYewChurch);
+		yewSap = new ItemRequirement("Yew sapling", ItemID.YEW_SAPLING).showConditioned(notYewRoots);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notYewRoots);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notYewRoots);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -174,6 +190,8 @@ public class VarrockHard extends ComplexStateQuestHelper
 		inChurch2 = new ZoneRequirement(church2);
 		inChurch3 = new ZoneRequirement(church3);
 		inChurch4 = new ZoneRequirement(church4);
+		inUpstairs = new ZoneRequirement(upstairs);
+		inSewer = new ZoneRequirement(sewer);
 
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}
@@ -188,6 +206,8 @@ public class VarrockHard extends ComplexStateQuestHelper
 		church2 = new Zone(new WorldPoint(3249, 3489, 1), new WorldPoint(3262, 3469, 1));
 		church3 = new Zone(new WorldPoint(3249, 3489, 2), new WorldPoint(3262, 3469, 2));
 		church4 = new Zone(new WorldPoint(3249, 3489, 3), new WorldPoint(3262, 3469, 3));
+		upstairs = new Zone(new WorldPoint(3199, 3501, 1), new WorldPoint(3227, 3466, 1));
+		sewer = new Zone(new WorldPoint(3066, 10001, 0), new WorldPoint(3289, 9820, 0));
 	}
 
 	public void setupSteps()
@@ -220,23 +240,18 @@ public class VarrockHard extends ComplexStateQuestHelper
 		makeSceptre = new ItemStep(this, "Use the sceptre pieces together.", botSceptre.highlighted(), topSceptre.highlighted());
 		makeSkullSceptre = new ItemStep(this, "Use the sceptre pieces together.", runedSceptre.highlighted(), strangeSkull.highlighted());
 		skullSceptre = new DetailedQuestStep(this, "Use the sceptre to teleport to the stronghold.", combinedSkullSceptre.highlighted());
-
 		getCape = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398, 0),
 			"Have Asyff make the spotty cape.", dashingKeb.quantity(2), coins.quantity(800));
 		getCape.addDialogStep("Could you make anything out of this fur that I got from hunting?");
 		spottyCape = new ItemStep(this, "Equip the spottier cape.", cape.highlighted());
-
 		moveToBasement = new ObjectStep(this, ObjectID.STAIRS_24428, new WorldPoint(3256, 3452, 0),
 			"Climb down the Varrock museum stairs.");
 		kudos = new NpcStep(this, NpcID.ORLANDO_SMITH, new WorldPoint(1759, 4955, 0),
 			"Speak with Orlando.");
 		getKudos = new DetailedQuestStep(this, "Complete more quests and tasks for kudos. Check out the kudos wiki page for more details.");
-
 		wakkaEdge = new ObjectStep(this, 12166, new WorldPoint(3131, 3510, 0),
 			"Make a Wakka at the canoe station.");
-
 		paddewwaTP = new DetailedQuestStep(this, "Cast teleport to Paddewwa.", ancientBook, lawRune.quantity(2), airRune.quantity(1), fireRune.quantity(1));
-
 		cutYew = new ObjectStep(this, 10823, new WorldPoint(3249, 3473, 0),
 			"Cut a yew tree until you get a log.");
 		goUp1 = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3259, 3488, 0),
@@ -246,6 +261,25 @@ public class VarrockHard extends ComplexStateQuestHelper
 		goUp3 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3259, 3488, 2),
 			"Climb the stairs.");
 		burnLogs = new ItemStep(this, "Burn the yew logs.", tinderBox.highlighted(), yewLog.highlighted());
+
+		fancyStone = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(3240, 3475, 0),
+			"TALK to the estate agent to redecorate your house. Must be done through dialog.", coins.quantity(25000));
+		fancyStone.addDialogStep("Can you redecorate my house please?");
+		growYew = new ObjectStep(this, 8513, new WorldPoint(3229, 3459, 0),
+			"Grow and check the health of a yew tree in front of Varrock palace, afterwards dig up the stump to get the Yew roots.", yewSap, rake, spade);
+		chopYew = new ObjectStep(this, 8513, new WorldPoint(3229, 3459, 0),
+			"Chop the yew tree that you grew in front of Varrock palace, afterwards dig up the stump to get the Yew roots.", axe, spade);
+		digUpYewRoots = new ObjectStep(this, 8514, new WorldPoint(3229, 3459, 0),
+			"Dig up the stump to get the Yew roots.", spade);
+		moveToUpstairs = new ObjectStep(this, ObjectID.STAIRCASE_11789, new WorldPoint(3219, 3497, 0),
+			"Climb the stairs in the back of the Varrock palace.");
+		activateSmite = new DetailedQuestStep(this, "Activate smite.");
+		prayAtAltar = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(3208, 3495, 1),
+			"Pray at altar.", smiteActive);
+		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+			"Move to the Edgeville dungeon.");
+		obsPipe = new ObjectStep(this, 16511, new WorldPoint(3150, 9906, 0),
+			"Climb through the pipe.");
 
 		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
@@ -278,7 +312,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.RANGED, 40));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 53));
 		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 60));
-
+		reqs.add(ancientBook);
 		reqs.add(desertTreasure);
 
 		return reqs;
@@ -297,10 +331,12 @@ public class VarrockHard extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Trade for A Spottier Cape", Arrays.asList(getCape, spottyCape), dashingKeb.quantity(2), coins.quantity(800)));
 		allSteps.add(new PanelDetails("Speak with Orlando With 153+ Kudos", Arrays.asList(getKudos, moveToBasement, kudos), notMoreKudos));
 		allSteps.add(new PanelDetails("Cut and Burn Yew Logs Atop the Church", Arrays.asList(cutYew, goUp1, goUp2, goUp3, burnLogs), axe, tinderBox));
-
+		allSteps.add(new PanelDetails("Fancy Stone", Collections.singletonList(fancyStone), coins.quantity(25000)));
+		allSteps.add(new PanelDetails("Yew Roots", Arrays.asList(growYew, chopYew, digUpYewRoots), axe, spade, rake, yewSap));
+		allSteps.add(new PanelDetails("Altar Smited", Arrays.asList(moveToUpstairs, activateSmite, prayAtAltar)));
 		allSteps.add(new PanelDetails("Edgeville Wakka", Collections.singletonList(wakkaEdge), axe));
 		allSteps.add(new PanelDetails("Teleport to Paddewwa", Collections.singletonList(paddewwaTP), ancientBook, lawRune.quantity(2), airRune.quantity(1), fireRune.quantity(1)));
-		//pipe
+		allSteps.add(new PanelDetails("Obstacle Pipe", Arrays.asList(moveToEdge, obsPipe)));
 		allSteps.add(new PanelDetails("Teleport with Skull Sceptre", Arrays.asList(moveToStronghold, killMino, moveToStronghold2, killFlesh, moveToStronghold3, killCatablepon, moveToStronghold4, killAnkou, makeSkull, makeSceptre, makeSkullSceptre, skullSceptre), combatGear, food));
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

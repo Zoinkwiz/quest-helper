@@ -89,21 +89,19 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToLadyPisc, climbDownSewerLadyPisc, talkToLordShayzienSidebar, talkToLordShayzien,
 		climbUpLadderLordShayzien, talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar,
 		talkToPiscLookout, talkToArceuusLookout, talkToLovaLookout, talkToShayzienLookout, talkToHosidiusLookout,
-		goDownLookoutF3toF2, goDownLookoutF2toF1, goDownLookoutF1toF0, goDownLookoutF0toBasement, goUpLookoutBasementtoF0,
-		goUpLookoutF0toF1, goUpLookoutF1toF2, goUpLookoutF2toF3, talkToFulloreAboutLovaXericsLookout, talkToKaalMejSan,
+		talkToFulloreAboutLovaXericsLookout, talkToKaalMejSan,
 		talkToMartinHoltHelpingLadyLova, climbDownStairsShayzienPrison, talkToKaalMejSanGoDownElevator,
 		mixDefencePotionWithSulphur, talkToKaalMejSanWithSulphurPotion, useShieldingPotionOnDinhsDoor,
 		goDownLadderInKourendWoodland, killBarbarianInKourendWoodland, talkToPhileasRimor,
-		goDownLadderInKourendWoodland2, speakWithJoraAndFightAssassin, goUpStairsShayzienPrison,
+		goDownLadderInKourendAfterBarbFight, speakWithJoraAndFightAssassin, goUpStairsShayzienPrison,
 		fightAssassinHelpingLova, talkToJoraAgain, talkToMori, climbUpStairsArceuusChurchF0toF1,
 		climbUpStairsArceuusChurchF1toF2, enterChasmOfFire, inspectWineBarrel, picklockChestInWineBarrel,
-		talkToAllMembersInXericsLookoutSidebarFinish, talkToPiscLookoutFinish, talkToArceuusLookoutFinish,
-		talkToLovaLookoutFinish, talkToShayzienLookoutFinish, talkToHosidiusLookoutFinish, talkToFulloreAfterHelpingAll,
+		talkToAllMembersInXericsLookoutSidebarTaskFinish, talkToPiscLookoutTaskFinish, talkToArceuusLookoutTaskFinish,
+		talkToLovaLookoutTaskFinish, talkToShayzienLookoutTaskFinish, talkToHosidiusLookoutTaskFinish, talkToFulloreAfterHelpingAll,
 		watchCutsceneAfterHelpingAll, talkToFulloreAfterHelpingAllAgain, climbDownLadderAndTalkToHosidius,
-		climbDownLadderAndTalkToHosidius2, talkToFulloreToFinish, talkToFulloreToFinishClimbUp, lastCutscene,
+		talkToHosidiusXericsLookoutFinal, talkToFulloreFinalCutscene, lastCutscene,
 		goDownCouncillorsHomeF3toF2WithReceipt, watchCutsceneInShack, enterLizardTempleFirstTime, enterLizardTempleWithEgg,
-		enterLizardTempleToFightXamphur, watchCutsceneAfterXamphur, goDownLookoutF3toF2Fullore, goDownLookoutF2toF1Fullore,
-		goDownLookoutF1toF0Fullore;
+		enterLizardTempleToFightXamphur, watchCutsceneAfterXamphur, talkToFulloreToFinishQuest;
 
 	Requirement hasTalkedToTomasLowry, hasBluishKey, inArceuusLibraryHistoricalArchive, inCouncillorsHouseF1,
 		inCouncillorsHouseF2, inCouncillorsHouseF3, hasReceipt, hasInspectedReceipt, judgeOfYamaNearby, inPanelZone,
@@ -128,9 +126,6 @@ public class AKingdomDivided extends BasicQuestHelper
 	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1,
 		panelArea2, leglessFaunF1, lizardTemple, eggArea, towerOfMagic, warrens, shayzienRoom, lookoutBasement, lookoutF0,
 		lookoutF1, lookoutF2, lookoutF3, shayzienPrison, mountKaruulm, arceuusChurchF1, arceuusChurchF2, wineBarrel;
-
-	XericsLookoutStepper talkToFulloreAboutLovaLookoutStepper, talkToHosidiusLookoutStepper, talkToPiscLookoutStepper, talkToShayzienLookoutStepper,
-		talkToArceuusLookoutStepper, talkToLovaLookoutStepper;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -279,15 +274,16 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		ConditionalStep megaStep = new ConditionalStep(this, new DetailedQuestStep(this, "You should not see this!"));
 
-		ConditionalStep talkToAllLeadersLookout = new ConditionalStep(this, talkToArceuusLookoutStepper);
-		talkToAllLeadersLookout.addStep(helpingArceuus0, talkToArceuusLookoutStepper);
-		talkToAllLeadersLookout.addStep(helpingHosidius0, talkToHosidiusLookoutStepper);
-		talkToAllLeadersLookout.addStep(helpingShayzien0, talkToShayzienLookoutStepper);
-		talkToAllLeadersLookout.addStep(helpingLova0, talkToLovaLookoutStepper);
-		talkToAllLeadersLookout.addStep(helpingPisc0, talkToPiscLookoutStepper);
+		XericsLookoutStepper arceuusLookoutStepper = new XericsLookoutStepper(this, talkToArceuusLookout, 0, talkToAllMembersInXericsLookoutSidebar);
+		ConditionalStep talkToAllLeadersLookout = new ConditionalStep(this, arceuusLookoutStepper);
+		talkToAllLeadersLookout.addStep(helpingArceuus0, arceuusLookoutStepper);
+		talkToAllLeadersLookout.addStep(helpingHosidius0, new XericsLookoutStepper(this, talkToHosidiusLookout, -1, talkToAllMembersInXericsLookoutSidebar));
+		talkToAllLeadersLookout.addStep(helpingShayzien0,  new XericsLookoutStepper(this, talkToShayzienLookout, 1, talkToAllMembersInXericsLookoutSidebar));
+		talkToAllLeadersLookout.addStep(helpingLova0, new XericsLookoutStepper(this, talkToLovaLookout, 2, talkToAllMembersInXericsLookoutSidebar));
+		talkToAllLeadersLookout.addStep(helpingPisc0, new XericsLookoutStepper(this, talkToPiscLookout, 3, talkToAllMembersInXericsLookoutSidebar));
 
 		megaStep.addStep(new Conditions(LogicType.OR, helpingHosidius0, helpingArceuus0, helpingShayzien0, helpingLova0, helpingPisc0), talkToAllLeadersLookout);
-		megaStep.addStep(helpingLova2, talkToFulloreAboutLovaLookoutStepper);
+		megaStep.addStep(helpingLova2, new XericsLookoutStepper(this, talkToFulloreAboutLovaXericsLookout, 0));
 
 		ConditionalStep talkToKaalMejSanConditional = new ConditionalStep(this, talkToKaalMejSanGoDownElevator);
 		talkToKaalMejSanConditional.addStep(inMountKaruulm, talkToKaalMejSan);
@@ -302,7 +298,7 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		megaStep.addStep(new Conditions(LogicType.OR, helpingHosidius2, helpingHosidius4), fightBarbarianWarlord);
 
-		ConditionalStep talkToPhileasConditional = new ConditionalStep(this, goDownLadderInKourendWoodland2);
+		ConditionalStep talkToPhileasConditional = new ConditionalStep(this, goDownLadderInKourendAfterBarbFight);
 		talkToPhileasConditional.addStep(phileasRimorNearby, talkToPhileasRimor);
 
 		megaStep.addStep(helpingHosidius6, talkToPhileasConditional);
@@ -331,21 +327,15 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		megaStep.addStep(new Conditions(LogicType.OR, helpingShayzien2, helpingShayzien4), enterWineBarrelAndPicklock);
 
-		ConditionalStep talkToAllLeadersLookoutFinish = new ConditionalStep(this, goDownLookoutF0toBasement);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutBasement, helpingHosidius8), talkToHosidiusLookoutFinish);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutBasement, new Conditions(LogicType.OR, helpingPisc10, helpingLova14, helpingShayzien6, helpingArceuus10)), goUpLookoutBasementtoF0);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF0, helpingHosidius8), goDownLookoutF0toBasement);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF0, new Conditions(LogicType.OR, helpingPisc10, helpingLova14, helpingShayzien6)), goUpLookoutF0toF1);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF1, new Conditions(LogicType.OR, helpingArceuus10, helpingHosidius8)), goDownLookoutF1toF0);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF1, helpingShayzien6), talkToShayzienLookoutFinish);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF1, new Conditions(LogicType.OR, helpingPisc10, helpingLova14)), goUpLookoutF1toF2);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF2, new Conditions(LogicType.OR, helpingShayzien6, helpingArceuus10, helpingHosidius8)), goDownLookoutF2toF1);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF2, helpingLova14), talkToLovaLookoutFinish);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF2, new Conditions(LogicType.OR, helpingPisc10)), goUpLookoutF2toF3);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF3, new Conditions(LogicType.OR, helpingLova14, helpingShayzien6, helpingArceuus10, helpingHosidius8)), goDownLookoutF3toF2);
-		talkToAllLeadersLookoutFinish.addStep(new Conditions(inLookoutF3, helpingPisc10), talkToPiscLookoutFinish);
+		XericsLookoutStepper arceuusLookoutStepperFinish = new XericsLookoutStepper(this, talkToArceuusLookoutTaskFinish, 0, talkToAllMembersInXericsLookoutSidebarTaskFinish);
+		ConditionalStep talkToAllLeadersLookoutFinish = new ConditionalStep(this, arceuusLookoutStepperFinish);
+		talkToAllLeadersLookoutFinish.addStep(helpingArceuus10, arceuusLookoutStepperFinish);
+		talkToAllLeadersLookoutFinish.addStep(helpingHosidius8, new XericsLookoutStepper(this, talkToHosidiusLookoutTaskFinish, -1, talkToAllMembersInXericsLookoutSidebarTaskFinish));
+		talkToAllLeadersLookoutFinish.addStep(helpingShayzien6,  new XericsLookoutStepper(this, talkToShayzienLookoutTaskFinish, 1, talkToAllMembersInXericsLookoutSidebarTaskFinish));
+		talkToAllLeadersLookoutFinish.addStep(helpingLova14, new XericsLookoutStepper(this, talkToLovaLookoutTaskFinish, 2, talkToAllMembersInXericsLookoutSidebarTaskFinish));
+		talkToAllLeadersLookoutFinish.addStep(helpingPisc10, new XericsLookoutStepper(this, talkToPiscLookoutTaskFinish, 3, talkToAllMembersInXericsLookoutSidebarTaskFinish));
 
-		megaStep.addStep(new Conditions(helpingLova14, helpingPisc10, helpingShayzien6, helpingHosidius8, helpingArceuus10), talkToArceuusLookoutFinish);
+		megaStep.addStep(new Conditions(helpingLova14, helpingPisc10, helpingShayzien6, helpingHosidius8, helpingArceuus10), talkToAllLeadersLookoutFinish);
 
 		// 124 is a giant mega step
 		steps.put(124, megaStep);
@@ -356,28 +346,21 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(130, talkToAllLeadersLookoutFinish);
 		steps.put(132, talkToAllLeadersLookoutFinish);
 
-		ConditionalStep talkToFullOreAfterAllConditional = new ConditionalStep(this, talkToFulloreAfterHelpingAll);
-		talkToFullOreAfterAllConditional.addStep(inLookoutBasement, goUpLookoutBasementtoF0);
-		talkToFullOreAfterAllConditional.addStep(inLookoutF1, goDownLookoutF1toF0);
-		talkToFullOreAfterAllConditional.addStep(inLookoutF2, goDownLookoutF2toF1);
-		talkToFullOreAfterAllConditional.addStep(inLookoutF3, goDownLookoutF3toF2);
-
-		steps.put(134, talkToFullOreAfterAllConditional);
+		steps.put(134, new XericsLookoutStepper(this, talkToFulloreAfterHelpingAll, 0));
 		steps.put(136, watchCutsceneAfterHelpingAll);
 		steps.put(138, talkToFulloreAfterHelpingAllAgain);
 
 		ConditionalStep speakWithHosidius = new ConditionalStep(this, climbDownLadderAndTalkToHosidius);
-		speakWithHosidius.addStep(inLookoutBasement, climbDownLadderAndTalkToHosidius2);
+		speakWithHosidius.addStep(inLookoutBasement, talkToHosidiusXericsLookoutFinal);
 
-		steps.put(140, speakWithHosidius);
+		steps.put(140, new XericsLookoutStepper(this, talkToHosidiusXericsLookoutFinal, -1));
 
-		ConditionalStep talkToFulloreToFinishConditional = new ConditionalStep(this, talkToFulloreToFinish);
-		talkToFulloreToFinishConditional.addStep(inLookoutBasement, talkToFulloreToFinishClimbUp);
-		steps.put(142, talkToFulloreToFinishConditional);
-		steps.put(144, talkToFulloreToFinishConditional);
+		XericsLookoutStepper talkToFulloreToFinishStepper = new XericsLookoutStepper(this, talkToFulloreFinalCutscene, 0);
+		steps.put(142, talkToFulloreToFinishStepper);
+		steps.put(144, talkToFulloreToFinishStepper);
 		steps.put(146, lastCutscene);
-		steps.put(148, lastCutscene);
-		steps.put(150, lastCutscene);
+		steps.put(148, talkToFulloreToFinishQuest);
+		steps.put(150, talkToFulloreToFinishQuest);
 
 		return steps;
 	}
@@ -461,8 +444,11 @@ public class AKingdomDivided extends BasicQuestHelper
 		sulphurPotion = new ItemRequirement("Sulphur potion", ItemID.SULPHUR_POTION);
 		shieldingPotion = new ItemRequirement("Shielding potion", ItemID.SHIELDING_POTION);
 		lovaDeclaration = new ItemRequirement("Declaration", ItemID.DECLARATION);
+		lovaDeclaration.setTooltip("You can get another one from Jorra at the Graveyard of Heroes in Shayzien.");
 		darkNullifier = new ItemRequirement("Dark nullifier", ItemID.DARK_NULLIFIER);
+		darkNullifier.setTooltip("You can obtain another from Mori in the Arceuus Church.");
 		shayzienJournal = new ItemRequirement("Shayzien Journal", ItemID.SHAYZIEN_JOURNAL);
+		shayzienJournal.setTooltip("You can get another one from the chest inside of the barrel in the Hosidious vinery.");
 		skillNecklace = new ItemRequirement("Skills Necklace", ItemCollections.getSkillsNecklaces());
 	}
 
@@ -713,113 +699,75 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToLovaLookout = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_10973, new WorldPoint(1592, 3531, 2), "Talk to Lady Lovakengj in Xeric's Lookout.");
 		talkToPiscLookout = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS_10975, new WorldPoint(1592, 3531, 3), "Talk to Lady Piscarilius in Xeric's Lookout.");
 
-		goDownLookoutF3toF2 = new ObjectStep(this, ObjectID.STAIRCASE_11890, new WorldPoint(1592, 3530, 3), "Climb down the staircase.");
-		goDownLookoutF2toF1 = new ObjectStep(this, ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 2), "Climb down the staircase.");
-		goDownLookoutF2toF1.addDialogSteps("Climb down");
-		goDownLookoutF1toF0 = new ObjectStep(this, ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 1), "Climb down the staircase.");
-		goDownLookoutF1toF0.addDialogSteps("Climb down");
-		goDownLookoutF0toBasement = new ObjectStep(this, ObjectID.LADDER_41916, new WorldPoint(1590, 3526, 0), "Climb down the ladder.");
-		goUpLookoutBasementtoF0 = new ObjectStep(this, ObjectID.LADDER_41917, new WorldPoint(1564, 9949, 0), "Climb up the ladder.");
-		goUpLookoutF0toF1 = new ObjectStep(this, ObjectID.STAIRCASE_11888, new WorldPoint(1592, 3529, 0), "Climb up the staircase.");
-		goUpLookoutF1toF2 = new ObjectStep(this, ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 1), "Climb up the staircase.");
-		goUpLookoutF1toF2.addDialogSteps("Climb up");
-		goUpLookoutF2toF3 = new ObjectStep(this, ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 2), "Climb up the staircase.");
-		goUpLookoutF2toF3.addDialogSteps("Climb up");
-//		talkToAllMembersInXericsLookoutSidebar.addSubSteps(talkToArceuusLookout, talkToHosidiusLookout, talkToShayzienLookout, talkToLovaLookout, talkToPiscLookout,
-//			goDownLookoutF3toF2, goDownLookoutF2toF1, goDownLookoutF1toF0, goDownLookoutF0toBasement, goUpLookoutF0toF1, goUpLookoutF1toF2, goUpLookoutF2toF3);
+		talkToAllMembersInXericsLookoutSidebar.addSubSteps(talkToArceuusLookout, talkToHosidiusLookout, talkToShayzienLookout, talkToLovaLookout, talkToPiscLookout);
 
-		talkToPiscLookoutStepper = new XericsLookoutStepper(this, talkToPiscLookout, 3, talkToAllMembersInXericsLookoutSidebar);
-		talkToLovaLookoutStepper = new XericsLookoutStepper(this, talkToLovaLookout, 2, talkToAllMembersInXericsLookoutSidebar);
-		talkToShayzienLookoutStepper = new XericsLookoutStepper(this, talkToShayzienLookout, 1, talkToAllMembersInXericsLookoutSidebar);
-		talkToArceuusLookoutStepper = new XericsLookoutStepper(this, talkToArceuusLookout, 0, talkToAllMembersInXericsLookoutSidebar);
-		talkToHosidiusLookoutStepper = new XericsLookoutStepper(this, talkToHosidiusLookout, -1, talkToAllMembersInXericsLookoutSidebar);
-
-		talkToAllMembersInXericsLookoutSidebar.addSubSteps(talkToArceuusLookout, talkToHosidiusLookout, talkToShayzienLookout, talkToLovaLookout, talkToPiscLookout,
-			talkToArceuusLookoutStepper, talkToHosidiusLookoutStepper, talkToPiscLookoutStepper, talkToLovaLookoutStepper, talkToShayzienLookoutStepper);
-//
-//		goDownLookoutF3toF2Fullore = new ObjectStep(this, ObjectID.STAIRCASE_11890, new WorldPoint(1592, 3530, 3), "Climb down the staircase.");
-//		goDownLookoutF2toF1Fullore = new ObjectStep(this, ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 2), "Climb down the staircase.");
-//		goDownLookoutF2toF1Fullore.addDialogSteps("Climb down");
-//		goDownLookoutF1toF0Fullore = new ObjectStep(this, ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 1), "Climb down the staircase.");
-//		goDownLookoutF1toF0Fullore.addDialogSteps("Climb down");
-
-		talkToFulloreAboutLovaXericsLookout = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore in Xeric's Lookout about Lady Lovakengj.", defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, kharedstsMemoirs, fairyRingStaff, gamesNecklace, skillNecklace, combatGear);
+		talkToFulloreAboutLovaXericsLookout = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore in Xeric's Lookout about Lady Lovakengj.");
 		talkToFulloreAboutLovaXericsLookout.addDialogSteps("I need some help with Lady Lovakengj.");
-//		talkToFulloreAboutLovaXericsLookout.addSubSteps(goDownLookoutF1toF0Fullore, goDownLookoutF2toF1Fullore, goDownLookoutF3toF2Fullore);
 
-		talkToFulloreAboutLovaLookoutStepper = new XericsLookoutStepper(this, talkToFulloreAboutLovaXericsLookout, 0, talkToFulloreAboutLovaXericsLookout);
-
-
-		talkToKaalMejSanGoDownElevator = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San. Use fairy code CIR to get there quickly.", defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, kharedstsMemoirs, fairyRingStaff, gamesNecklace, skillNecklace, combatGear);
-		talkToKaalMejSan = new NpcStep(this, NpcID.KAALMEJSAN, new WorldPoint(1306, 10205, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San. Use fairy code CIR to get there quickly.", defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, kharedstsMemoirs, fairyRingStaff, gamesNecklace, skillNecklace, combatGear);
+		talkToKaalMejSanGoDownElevator = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San. Use fairy code CIR to get there quickly.", brokenRedirector);
+		talkToKaalMejSan = new NpcStep(this, NpcID.KAALMEJSAN, new WorldPoint(1306, 10205, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San. Use fairy code CIR to get there quickly.", brokenRedirector);
 		talkToKaalMejSan.addSubSteps(talkToKaalMejSanGoDownElevator);
 
 		mixDefencePotionWithSulphur = new DetailedQuestStep(this, "Mix the Defence potion with the Volcanic sulphur.", defencePotion.highlighted(), volcanicSulphur.highlighted());
 		talkToKaalMejSanWithSulphurPotion = new NpcStep(this, NpcID.KAALMEJSAN, new WorldPoint(1306, 10205, 0), "Talk to Kaal-Mej-San again.", sulphurPotion);
-		useShieldingPotionOnDinhsDoor = new ObjectStep(this, ObjectID.DOORS_OF_DINH, new WorldPoint(1627, 3964, 0), "Pour the Shielding potion over the Doors of Dinh in the Wintertodt camp. Use a games necklace to get there quickly.", shieldingPotion.highlighted());
-		goDownLadderInKourendWoodland = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, skillNecklace, combatGear);
-		killBarbarianInKourendWoodland = new NpcStep(this, NpcID.BARBARIAN_WARLORD, "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, skillNecklace, combatGear);
+		useShieldingPotionOnDinhsDoor = new ObjectStep(this, ObjectID.DOORS_OF_DINH, new WorldPoint(1630, 3965, 0), "Use the Shielding potion on the Doors of Dinh in the Wintertodt camp. Use a games necklace to get there quickly.", shieldingPotion.highlighted());
+		goDownLadderInKourendWoodland = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
+		killBarbarianInKourendWoodland = new NpcStep(this, NpcID.BARBARIAN_WARLORD, "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
 		goDownLadderInKourendWoodland.addSubSteps(killBarbarianInKourendWoodland);
-		goDownLadderInKourendWoodland2 = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Go down the ladder in the Kourend Woodlands.", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, combatGear);
-		talkToPhileasRimor = new NpcStep(this, NpcID.PHILEAS_RIMOR, "Talk to Phileas Rimor in the Barbarian Warlords prison.", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, combatGear);
-		talkToPhileasRimor.addSubSteps(goDownLadderInKourendWoodland2);
+		goDownLadderInKourendAfterBarbFight = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Talk to Phileas Rimor in the Barbarian Warlords prison.");
+		talkToPhileasRimor = new NpcStep(this, NpcID.PHILEAS_RIMOR, "Talk to Phileas Rimor in the Barbarian Warlords prison.");
+		talkToPhileasRimor.addSubSteps(goDownLadderInKourendAfterBarbFight);
 
 
-		climbDownStairsShayzienPrison = new ObjectStep(this, ObjectID.STAIRCASE_41922, new WorldPoint(1464, 3568, 0), "Talk to Martin Holt in the Shayzien Prison.", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, combatGear);
-		talkToMartinHoltHelpingLadyLova = new NpcStep(this, NpcID.MARTIN_HOLT_10892, new WorldPoint(1437, 9946, 0), "Talk to Martin Holt in the Shayzien Prison.", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, combatGear);
+		climbDownStairsShayzienPrison = new ObjectStep(this, ObjectID.STAIRCASE_41922, new WorldPoint(1464, 3568, 0), "Talk to Martin Holt in the Shayzien Prison west of the Graveyard of Heroes.");
+		talkToMartinHoltHelpingLadyLova = new NpcStep(this, NpcID.MARTIN_HOLT_10892, new WorldPoint(1437, 9946, 0), "Talk to Martin Holt in the Shayzien Prison west of the Graveyard of Heroes.");
 		talkToMartinHoltHelpingLadyLova.addSubSteps(climbDownStairsShayzienPrison);
-		speakWithJoraAndFightAssassin = new NpcStep(this, NpcID.JORRA, new WorldPoint(1496, 3557, 0), "Speak with Jorra in Shayzien then fight the Assassin (level 132).", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, combatGear);
+		speakWithJoraAndFightAssassin = new NpcStep(this, NpcID.JORRA, new WorldPoint(1496, 3557, 0), "Speak with Jorra south of the Graveyard of Heroes in Shayzien then fight the Assassin (level 132).", combatGear, food);
 		speakWithJoraAndFightAssassin.addDialogSteps("Evil only triumphs when the good do nothing.");
-		goUpStairsShayzienPrison = new ObjectStep(this, ObjectID.STAIRCASE_41923, new WorldPoint(1445, 9960, 0), "Speak with Jorra in Shayzien then fight the Assassin (level 132).", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, combatGear);
-		fightAssassinHelpingLova = new NpcStep(this, NpcID.ASSASSIN_10941, "Speak with Jorra in Shayzien then fight the Assassin (level 132).", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff, combatGear);
+		goUpStairsShayzienPrison = new ObjectStep(this, ObjectID.STAIRCASE_41923, new WorldPoint(1445, 9960, 0), "Speak with Jorra south of the Graveyard of Heroes in Shayzien then fight the Assassin (level 132).", combatGear, food);
+		fightAssassinHelpingLova = new NpcStep(this, NpcID.ASSASSIN_10941, "Speak with Jorra south of the Graveyard of Heroes in Shayzien then fight the Assassin (level 132).", combatGear, food);
 		speakWithJoraAndFightAssassin.addSubSteps(goUpStairsShayzienPrison, fightAssassinHelpingLova);
-		talkToJoraAgain = new NpcStep(this, NpcID.JORRA, new WorldPoint(1496, 3557, 0), "Speak with Jorra again.", darkEssenceBlock, moltenGlass, kharedstsMemoirs, fairyRingStaff);
+		talkToJoraAgain = new NpcStep(this, NpcID.JORRA, new WorldPoint(1496, 3557, 0), "Speak with Jorra again.");
 
-		talkToMori = new NpcStep(this, NpcID.MORI_8502, new WorldPoint(1703, 3797, 2), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass, lovaDeclaration, kharedstsMemoirs, fairyRingStaff);
-		climbUpStairsArceuusChurchF0toF1 = new ObjectStep(this, ObjectID.STAIRS_27854, new WorldPoint(1680, 3784, 0), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass, lovaDeclaration, kharedstsMemoirs, fairyRingStaff);
-		climbUpStairsArceuusChurchF1toF2 = new ObjectStep(this, ObjectID.STAIRS_27853, new WorldPoint(1708, 3793, 1), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass, lovaDeclaration, kharedstsMemoirs, fairyRingStaff);
+		talkToMori = new NpcStep(this, NpcID.MORI_8502, new WorldPoint(1703, 3797, 2), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass);
+		climbUpStairsArceuusChurchF0toF1 = new ObjectStep(this, ObjectID.STAIRS_27854, new WorldPoint(1680, 3784, 0), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass);
+		climbUpStairsArceuusChurchF1toF2 = new ObjectStep(this, ObjectID.STAIRS_27853, new WorldPoint(1708, 3793, 1), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass);
 
 		talkToMori.addSubSteps(climbUpStairsArceuusChurchF0toF1, climbUpStairsArceuusChurchF1toF2);
 
-		enterChasmOfFire = new ObjectStep(this, ObjectID.CHASM_30236, new WorldPoint(1436, 3671, 0), "Enter the Chasm of Fire. Use fairy code DJR to get there quickly.", darkNullifier, lovaDeclaration, kharedstsMemoirs, fairyRingStaff);
+		enterChasmOfFire = new ObjectStep(this, ObjectID.CHASM_30236, new WorldPoint(1436, 3671, 0), "Enter the Chasm of Fire. Use fairy code DJR to get there quickly.", darkNullifier);
 
-		inspectWineBarrel = new ObjectStep(this, ObjectID.WINE_BARREL_41928, new WorldPoint(1809, 3544, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.", lovaDeclaration, kharedstsMemoirs);
+		inspectWineBarrel = new ObjectStep(this, ObjectID.WINE_BARREL_41928, new WorldPoint(1809, 3544, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.");
 		inspectWineBarrel.addDialogSteps("Climb through it.");
-		picklockChestInWineBarrel = new ObjectStep(this, ObjectID.CHEST_41931, new WorldPoint(1898, 9957, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.", lovaDeclaration, kharedstsMemoirs);
+		picklockChestInWineBarrel = new ObjectStep(this, ObjectID.CHEST_41931, new WorldPoint(1898, 9957, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.");
 
 		inspectWineBarrel.addSubSteps(picklockChestInWineBarrel);
 
-		talkToAllMembersInXericsLookoutSidebarFinish = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout.", lovaDeclaration, shayzienJournal, kharedstsMemoirs);
-		talkToArceuusLookoutFinish = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_10962, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceeus in Xeric's Lookout.", lovaDeclaration, shayzienJournal, kharedstsMemoirs);
-		talkToHosidiusLookoutFinish = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_10971, new WorldPoint(1568, 9955, 0), "Talk to Lord Hosidius in Xeric's Lookout.", lovaDeclaration, shayzienJournal, kharedstsMemoirs);
-		talkToShayzienLookoutFinish = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_10965, new WorldPoint(1591, 3530, 1), "Talk to Lord Shayzien in Xeric's Lookout.", lovaDeclaration, shayzienJournal, kharedstsMemoirs);
-		talkToLovaLookoutFinish = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_10973, new WorldPoint(1592, 3531, 2), "Talk to Lady Lovakengj in Xeric's Lookout.", lovaDeclaration, shayzienJournal, kharedstsMemoirs);
-		talkToPiscLookoutFinish = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS_10975, new WorldPoint(1592, 3531, 3), "Talk to Lady Piscarilius in Xeric's Lookout.", lovaDeclaration, shayzienJournal, kharedstsMemoirs);
+		talkToAllMembersInXericsLookoutSidebarTaskFinish = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout.");
+		talkToArceuusLookoutTaskFinish = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_10962, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceeus in Xeric's Lookout.");
+		talkToHosidiusLookoutTaskFinish = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_10971, new WorldPoint(1568, 9955, 0), "Talk to Lord Hosidius in Xeric's Lookout.");
+		talkToShayzienLookoutTaskFinish = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_10965, new WorldPoint(1591, 3530, 1), "Talk to Lord Shayzien in Xeric's Lookout.", shayzienJournal);
+		talkToLovaLookoutTaskFinish = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_10973, new WorldPoint(1592, 3531, 2), "Talk to Lady Lovakengj in Xeric's Lookout.", lovaDeclaration);
+		talkToPiscLookoutTaskFinish = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS_10975, new WorldPoint(1592, 3531, 3), "Talk to Lady Piscarilius in Xeric's Lookout.");
 
-		talkToAllMembersInXericsLookoutSidebarFinish.addSubSteps(talkToArceuusLookoutFinish, talkToHosidiusLookoutFinish,
-			talkToShayzienLookoutFinish, talkToLovaLookoutFinish, talkToPiscLookoutFinish);
+		talkToAllMembersInXericsLookoutSidebarTaskFinish.addSubSteps(talkToArceuusLookoutTaskFinish, talkToHosidiusLookoutTaskFinish,
+			talkToShayzienLookoutTaskFinish, talkToLovaLookoutTaskFinish, talkToPiscLookoutTaskFinish);
 		talkToFulloreAfterHelpingAll = new NpcStep(this, NpcID.COMMANDER_FULLORE,
 			new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore at Xeric's Lookout.");
 		watchCutsceneAfterHelpingAll = new DetailedQuestStep(this, "Watch cutscene.");
 		talkToFulloreAfterHelpingAllAgain = new NpcStep(this, NpcID.COMMANDER_FULLORE,
 			new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore again at Xeric's Lookout.");
 
-		climbDownLadderAndTalkToHosidius = new ObjectStep(this, ObjectID.LADDER_41916,
-			new WorldPoint(1590, 3526, 0), "Speak with Lord Hosidius.");
-		climbDownLadderAndTalkToHosidius2 = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_10971,
-			new WorldPoint(1568, 9955, 0), "Speak with Lord Hosidius.");
+		talkToHosidiusXericsLookoutFinal = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_10971,
+			new WorldPoint(1568, 9955, 0), "Speak with Lord Hosidius Xeric's Lookout basement.");
 
-		climbDownLadderAndTalkToHosidius.addSubSteps(climbDownLadderAndTalkToHosidius2);
-
-		talkToFulloreToFinish = new NpcStep(this, NpcID.COMMANDER_FULLORE,
-			new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore to finish the quest.");
-		talkToFulloreToFinish.addDialogSteps("Let's do this.");
-		talkToFulloreToFinishClimbUp = new ObjectStep(this, ObjectID.LADDER_41917,
-			new WorldPoint(1564, 9949, 0), "Speak to Commander Fullore to finish the quest.");
-
-		talkToFulloreToFinish.addSubSteps(talkToFulloreToFinishClimbUp);
+		talkToFulloreFinalCutscene = new NpcStep(this, NpcID.COMMANDER_FULLORE,
+			new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore to being the final cutscene.");
+		talkToFulloreFinalCutscene.addDialogSteps("Let's do this.");
 
 		lastCutscene = new DetailedQuestStep(this, "Watch the final cutscene.");
+
+		talkToFulloreToFinishQuest = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1612, 3669, 0), "Speak with Commander Fullore in Kourend Castle to finish the quest.");
 	}
 
 	@Override
@@ -903,8 +851,8 @@ public class AKingdomDivided extends BasicQuestHelper
 			talkToKaalMejSan, mixDefencePotionWithSulphur, talkToKaalMejSanWithSulphurPotion,
 			useShieldingPotionOnDinhsDoor, goDownLadderInKourendWoodland, talkToPhileasRimor, talkToMartinHoltHelpingLadyLova,
 			speakWithJoraAndFightAssassin, talkToJoraAgain, talkToMori, enterChasmOfFire, inspectWineBarrel,
-			talkToAllMembersInXericsLookoutSidebarFinish, talkToFulloreAfterHelpingAll, watchCutsceneAfterHelpingAll,
-			talkToFulloreAfterHelpingAllAgain, climbDownLadderAndTalkToHosidius, talkToFulloreToFinish, lastCutscene),
+			talkToAllMembersInXericsLookoutSidebarTaskFinish, talkToFulloreAfterHelpingAll, watchCutsceneAfterHelpingAll,
+			talkToFulloreAfterHelpingAllAgain, talkToHosidiusXericsLookoutFinal, talkToFulloreFinalCutscene, lastCutscene, talkToFulloreToFinishQuest),
 			kharedstsMemoirs, defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, gamesNecklace,
 			skillNecklace, combatGear, food, fairyRingStaff)
 		);

@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -70,11 +69,10 @@ public class CabinFever extends BasicQuestHelper
 		planks6, hammer, tacks10, tacks20, tacks30, paste1, paste2, paste3, ropes2, loot10, plunderHighlight, barrel, gunpowder, ramrod, canister,
 		powderHighlight, ramrodHighlight, canisterHighlight, fuses, cannonball, cannonballHighlight;
 
-	Requirement onBoatF0, onBoatF1, onBoatF2, onEnemyBoatF0, onEnemyBoatF1, onEnemyBoatF2, onEnemyBoat, onBoatAtDock, hasRopes4, hasTinderbox, hasFuseOrAdded,
-		hasSetSail, onSail, onEnemySail, hasRope, addedFuse, explodedBarrel, hasPlank6, hasPlank4, hasPlank2, hasHammer, hasTacks30, hasTacks60, hasTacks90,
-		hasPaste3, hasPaste6, hasPaste9, planked1, planked2, planked3, pasted1, pasted2, pasted3, hasPlanked1, hasPlanked2, hasPlanked3,
-		hasRepaired1, hasRepaired2, hasRepaired3, hasRopes2, lootedAll, has10Plunder, hasBarrel, cannonBroken, addedPowder, hasFuse, hasCanister, hasRamrod,
-		hasPowder, usedRamrod, usedCanister, usedFuse, firedCannon, canisterInWrong, hasCannonball, usedBalls;
+	Requirement onBoatF0, onBoatF1, onBoatF2, onEnemyBoatF0, onEnemyBoatF1, onEnemyBoatF2, onEnemyBoat, onBoatAtDock,
+		hasSetSail, onSail, onEnemySail, addedFuse, explodedBarrel, planked1, planked2, planked3, pasted1, pasted2, pasted3,
+		hasPlanked1, hasPlanked2, hasPlanked3, hasRepaired1, hasRepaired2, hasRepaired3, lootedAll, cannonBroken, addedPowder,
+		usedRamrod, usedCanister, usedFuse, firedCannon, canisterInWrong, usedBalls, hasFuseOrAdded;
 
 	DetailedQuestStep talkToBill, goOnBillBoat, talkToBillOnBoat, takeTinderbox, leaveHullForSabo, goUpToSail, goUpToEnemySail,
 		climbUpNetForSabo, useRopeOnSailForSabo, useFuseOnEnemyBarrel, lightEnemyFuse, climbEnemyNetAfterSabo, useRopeOnEnemySailAfterSabo, talkToBillAfterSabo,
@@ -112,24 +110,24 @@ public class CabinFever extends BasicQuestHelper
 		// Set sail, 1741 0->1
 
 		ConditionalStep sabotageSteps = new ConditionalStep(this, setSail);
-		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, addedFuse, hasTinderbox), lightEnemyFuse);
-		sabotageSteps.addStep(new Conditions(onEnemySail, addedFuse, hasTinderbox), leaveEnemySail);
-		sabotageSteps.addStep(new Conditions(onEnemySail, addedFuse, hasRope), swingToBoat);
-		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, addedFuse, hasRope), goUpToEnemySail);
+		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, addedFuse, tinderbox), lightEnemyFuse);
+		sabotageSteps.addStep(new Conditions(onEnemySail, addedFuse, tinderbox), leaveEnemySail);
+		sabotageSteps.addStep(new Conditions(onEnemySail, addedFuse, ropeHighlight), swingToBoat);
+		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, addedFuse, ropeHighlight), goUpToEnemySail);
 		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, addedFuse), pickUpRope);
 
 		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, hasFuseOrAdded), useFuseOnEnemyBarrel);
 		sabotageSteps.addStep(new Conditions(onEnemyBoatF0, hasFuseOrAdded), leaveEnemyHull);
 		sabotageSteps.addStep(new Conditions(onEnemySail, hasFuseOrAdded), leaveEnemySail);
 
-		sabotageSteps.addStep(new Conditions(onSail, hasRopes4, hasFuseOrAdded, hasTinderbox), useRopeOnSailForSabo);
-		sabotageSteps.addStep(new Conditions(onBoatF1, hasRopes4, hasFuseOrAdded, hasTinderbox), climbUpNetForSabo);
-		sabotageSteps.addStep(new Conditions(onBoatF0, hasRopes4, hasFuseOrAdded, hasTinderbox), leaveHullForSabo);
-		sabotageSteps.addStep(new Conditions(onBoatF0, hasRopes4, hasFuseOrAdded), takeTinderbox);
-		sabotageSteps.addStep(new Conditions(onBoatF0, hasRopes4), take1Fuse);
+		sabotageSteps.addStep(new Conditions(onSail, ropes4, hasFuseOrAdded, tinderbox), useRopeOnSailForSabo);
+		sabotageSteps.addStep(new Conditions(onBoatF1, ropes4, hasFuseOrAdded, tinderbox), climbUpNetForSabo);
+		sabotageSteps.addStep(new Conditions(onBoatF0, ropes4, hasFuseOrAdded, tinderbox), leaveHullForSabo);
+		sabotageSteps.addStep(new Conditions(onBoatF0, ropes4, hasFuseOrAdded), takeTinderbox);
+		sabotageSteps.addStep(new Conditions(onBoatF0, ropes4), take1Fuse);
 
-		sabotageSteps.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		sabotageSteps.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		sabotageSteps.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		sabotageSteps.addStep(onEnemySail, leaveEnemySail);
 		sabotageSteps.addStep(onEnemyBoatF2, leaveEnemyTop);
 		sabotageSteps.addStep(onEnemyBoatF1, pickUpRope);
@@ -142,8 +140,8 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(30, sabotageSteps);
 
 		ConditionalStep talkToBillAfterSaboSteps = new ConditionalStep(this, setSail);
-		talkToBillAfterSaboSteps.addStep(new Conditions(onEnemySail, hasRope), useRopeOnEnemySailAfterSabo);
-		talkToBillAfterSaboSteps.addStep(new Conditions(onEnemyBoatF1, hasRope), climbEnemyNetAfterSabo);
+		talkToBillAfterSaboSteps.addStep(new Conditions(onEnemySail, ropeHighlight), useRopeOnEnemySailAfterSabo);
+		talkToBillAfterSaboSteps.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), climbEnemyNetAfterSabo);
 		talkToBillAfterSaboSteps.addStep(onEnemySail, leaveEnemySail);
 		talkToBillAfterSaboSteps.addStep(onEnemyBoatF2, leaveEnemyTop);
 		talkToBillAfterSaboSteps.addStep(onEnemyBoatF1, pickUpRope);
@@ -157,12 +155,13 @@ public class CabinFever extends BasicQuestHelper
 
 		// TODO: Make this at least a bit less terrible
 		ConditionalStep repairWalls = new ConditionalStep(this, setSail);
-		repairWalls.addStep(new Conditions(onBoatF0, pasted1, pasted2, planked3, hasHammer, hasPaste3), pasteHole3);
-		repairWalls.addStep(new Conditions(onBoatF0, pasted1, pasted2, hasHammer, hasPaste3, hasPlank2, hasTacks30), repairHole3);
-		repairWalls.addStep(new Conditions(onBoatF0, pasted1, planked2, hasHammer, hasPaste6, hasPlank2, hasTacks30), pasteHole2);
-		repairWalls.addStep(new Conditions(onBoatF0, pasted1, hasHammer, hasPaste6, hasPlank4, hasTacks60), repairHole2);
-		repairWalls.addStep(new Conditions(onBoatF0, planked1, hasHammer, hasPaste9, hasPlank4, hasTacks60), pasteHole1);
-		repairWalls.addStep(new Conditions(onBoatF0, hasHammer, hasPaste9, hasPlank6, hasTacks90), repairHole1);
+		repairWalls.addStep(new Conditions(onBoatF0, pasted1, pasted2, planked3, hammer, paste1), pasteHole3);
+		repairWalls.addStep(new Conditions(onBoatF0, pasted1, pasted2, hammer, paste1, planks2, tacks10),
+			repairHole3);
+		repairWalls.addStep(new Conditions(onBoatF0, pasted1, planked2, hammer, paste2, planks2, tacks10), pasteHole2);
+		repairWalls.addStep(new Conditions(onBoatF0, pasted1, hammer, paste2, planks4, tacks20), repairHole2);
+		repairWalls.addStep(new Conditions(onBoatF0, planked1, hammer, paste3, planks4, tacks20), pasteHole1);
+		repairWalls.addStep(new Conditions(onBoatF0, hammer, paste3, planks6, tacks30), repairHole1);
 
 		repairWalls.addStep(new Conditions(onBoatF0, hasRepaired3, hasPlanked3), takePasteHole3);
 		repairWalls.addStep(new Conditions(onBoatF0, hasRepaired2), takeHoleItems3);
@@ -171,8 +170,8 @@ public class CabinFever extends BasicQuestHelper
 		repairWalls.addStep(new Conditions(onBoatF0, planked1), takePasteHole1);
 		repairWalls.addStep(onBoatF0, takeHoleItems1);
 
-		repairWalls.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		repairWalls.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		repairWalls.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		repairWalls.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		repairWalls.addStep(onEnemySail, leaveEnemySail);
 		repairWalls.addStep(onEnemyBoatF2, leaveEnemyTop);
 		repairWalls.addStep(onEnemyBoatF1, pickUpRope);
@@ -184,8 +183,8 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(50, repairWalls);
 
 		ConditionalStep talkToBillAfterRepairing = new ConditionalStep(this, setSail);
-		talkToBillAfterRepairing.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		talkToBillAfterRepairing.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		talkToBillAfterRepairing.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		talkToBillAfterRepairing.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		talkToBillAfterRepairing.addStep(onEnemySail, leaveEnemySail);
 		talkToBillAfterRepairing.addStep(onEnemyBoatF2, leaveEnemyTop);
 		talkToBillAfterRepairing.addStep(onEnemyBoatF1, pickUpRope);
@@ -198,22 +197,22 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(60, talkToBillAfterRepairing);
 
 		ConditionalStep lootingSteps = new ConditionalStep(this, setSail);
-		lootingSteps.addStep(new Conditions(onBoatF0, has10Plunder), useLootOnChest);
-		lootingSteps.addStep(new Conditions(onBoatF1, has10Plunder), enterHullWithLoot);
-		lootingSteps.addStep(new Conditions(onEnemySail, has10Plunder, hasRope), useRopeOnSailWithLoot);
-		lootingSteps.addStep(new Conditions(onEnemySail, has10Plunder), leaveEnemySail);
-		lootingSteps.addStep(new Conditions(onEnemyBoatF1, has10Plunder, hasRope), climbNetWithLoot);
-		lootingSteps.addStep(new Conditions(onEnemyBoatF1, has10Plunder), pickUpRope);
-		lootingSteps.addStep(new Conditions(onEnemyBoatF0, has10Plunder), leaveEnemyHullWithLoot);
+		lootingSteps.addStep(new Conditions(onBoatF0, loot10), useLootOnChest);
+		lootingSteps.addStep(new Conditions(onBoatF1, loot10), enterHullWithLoot);
+		lootingSteps.addStep(new Conditions(onEnemySail, loot10, ropeHighlight), useRopeOnSailWithLoot);
+		lootingSteps.addStep(new Conditions(onEnemySail, loot10), leaveEnemySail);
+		lootingSteps.addStep(new Conditions(onEnemyBoatF1, loot10, ropeHighlight), climbNetWithLoot);
+		lootingSteps.addStep(new Conditions(onEnemyBoatF1, loot10), pickUpRope);
+		lootingSteps.addStep(new Conditions(onEnemyBoatF0, loot10), leaveEnemyHullWithLoot);
 		lootingSteps.addStep(new Conditions(onEnemyBoatF0, lootedAll), hopWorld);
 		// TODO: Make this change if you've already handed in some plunder
 		lootingSteps.addStep(onEnemyBoatF0, lootEnemyShip);
 		lootingSteps.addStep(onEnemyBoatF1, enterEnemyHullForLoot);
 		lootingSteps.addStep(onEnemyBoatF2, leaveEnemyTop);
 		lootingSteps.addStep(onEnemySail, leaveEnemySail);
-		lootingSteps.addStep(new Conditions(onSail, hasRopes2), useRopeOnSailToLoot);
-		lootingSteps.addStep(new Conditions(onBoatF1, hasRopes2), goUpToSailToLoot);
-		lootingSteps.addStep(new Conditions(onBoatF0, hasRopes2), leaveHull);
+		lootingSteps.addStep(new Conditions(onSail, ropes2), useRopeOnSailToLoot);
+		lootingSteps.addStep(new Conditions(onBoatF1, ropes2), goUpToSailToLoot);
+		lootingSteps.addStep(new Conditions(onBoatF0, ropes2), leaveHull);
 		lootingSteps.addStep(onSail, leaveSail);
 		lootingSteps.addStep(onBoatF2, leaveTop);
 		lootingSteps.addStep(onBoatF1, enterHull);
@@ -222,8 +221,8 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(70, lootingSteps);
 
 		ConditionalStep talkToBillAfterLooting = new ConditionalStep(this, setSail);
-		talkToBillAfterLooting.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		talkToBillAfterLooting.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		talkToBillAfterLooting.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		talkToBillAfterLooting.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		talkToBillAfterLooting.addStep(onEnemySail, leaveEnemySail);
 		talkToBillAfterLooting.addStep(onEnemyBoatF2, leaveEnemyTop);
 		talkToBillAfterLooting.addStep(onEnemyBoatF1, pickUpRope);
@@ -236,10 +235,10 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(80, talkToBillAfterLooting);
 
 		ConditionalStep repairCannonSteps = new ConditionalStep(this, setSail);
-		repairCannonSteps.addStep(new Conditions(onBoatF1, hasBarrel), useBarrel);
-		repairCannonSteps.addStep(new Conditions(onBoatF0, hasBarrel), goUpWithBarrel);
-		repairCannonSteps.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		repairCannonSteps.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		repairCannonSteps.addStep(new Conditions(onBoatF1, barrel), useBarrel);
+		repairCannonSteps.addStep(new Conditions(onBoatF0, barrel), goUpWithBarrel);
+		repairCannonSteps.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		repairCannonSteps.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		repairCannonSteps.addStep(onEnemySail, leaveEnemySail);
 		repairCannonSteps.addStep(onEnemyBoatF2, leaveEnemyTop);
 		repairCannonSteps.addStep(onEnemyBoatF1, pickUpRope);
@@ -252,8 +251,8 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(90, repairCannonSteps);
 
 		ConditionalStep billAfterCannonRepair = new ConditionalStep(this, setSail);
-		billAfterCannonRepair.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		billAfterCannonRepair.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		billAfterCannonRepair.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		billAfterCannonRepair.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		billAfterCannonRepair.addStep(onEnemySail, leaveEnemySail);
 		billAfterCannonRepair.addStep(onEnemyBoatF2, leaveEnemyTop);
 		billAfterCannonRepair.addStep(onEnemyBoatF1, pickUpRope);
@@ -266,23 +265,23 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(100, billAfterCannonRepair);
 
 		ConditionalStep fireCannons = new ConditionalStep(this, setSail);
-		fireCannons.addStep(new Conditions(onBoatF1, cannonBroken, hasBarrel), useBarrel);
-		fireCannons.addStep(new Conditions(onBoatF0, cannonBroken, hasBarrel), goUpWithBarrel);
+		fireCannons.addStep(new Conditions(onBoatF1, cannonBroken, barrel), useBarrel);
+		fireCannons.addStep(new Conditions(onBoatF0, cannonBroken, barrel), goUpWithBarrel);
 		fireCannons.addStep(new Conditions(onBoatF1, cannonBroken), goDownForBarrel);
 		fireCannons.addStep(new Conditions(onBoatF0, cannonBroken), takeBarrel);
 
 		fireCannons.addStep(new Conditions(onBoatF1, canisterInWrong), resetCannon);
 		fireCannons.addStep(new Conditions(onBoatF1, firedCannon), useRamrodToClean);
 		fireCannons.addStep(new Conditions(onBoatF1, usedFuse, usedCanister), fireCannon);
-		fireCannons.addStep(new Conditions(onBoatF1, hasFuse, usedCanister), useFuse);
-		fireCannons.addStep(new Conditions(onBoatF1, hasFuse, hasCanister, usedRamrod), useCanister);
-		fireCannons.addStep(new Conditions(onBoatF1, hasFuse, hasCanister, hasRamrod, addedPowder), useRamrod);
-		fireCannons.addStep(new Conditions(onBoatF1, hasFuse, hasCanister, hasRamrod, hasPowder), usePowder);
-		fireCannons.addStep(new Conditions(onBoatF1, hasFuse, hasCanister, hasRamrod), getPowder);
-		fireCannons.addStep(new Conditions(onBoatF0, hasFuse, hasCanister, hasRamrod), goUpToCannon);
+		fireCannons.addStep(new Conditions(onBoatF1, fuse1, usedCanister), useFuse);
+		fireCannons.addStep(new Conditions(onBoatF1, fuse1, canister, usedRamrod), useCanister);
+		fireCannons.addStep(new Conditions(onBoatF1, fuse1, canister, ramrod, addedPowder), useRamrod);
+		fireCannons.addStep(new Conditions(onBoatF1, fuse1, canister, ramrod, gunpowder), usePowder);
+		fireCannons.addStep(new Conditions(onBoatF1, fuse1, canister, ramrod), getPowder);
+		fireCannons.addStep(new Conditions(onBoatF0, fuse1, canister, ramrod), goUpToCannon);
 
-		fireCannons.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		fireCannons.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		fireCannons.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		fireCannons.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		fireCannons.addStep(onEnemySail, leaveEnemySail);
 		fireCannons.addStep(onEnemyBoatF2, leaveEnemyTop);
 		fireCannons.addStep(onEnemyBoatF1, pickUpRope);
@@ -295,8 +294,8 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(110, fireCannons);
 
 		ConditionalStep talkToBillAfterCanisters = new ConditionalStep(this, setSail);
-		talkToBillAfterCanisters.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		talkToBillAfterCanisters.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		talkToBillAfterCanisters.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		talkToBillAfterCanisters.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		talkToBillAfterCanisters.addStep(onEnemySail, leaveEnemySail);
 		talkToBillAfterCanisters.addStep(onEnemyBoatF2, leaveEnemyTop);
 		talkToBillAfterCanisters.addStep(onEnemyBoatF1, pickUpRope);
@@ -309,23 +308,23 @@ public class CabinFever extends BasicQuestHelper
 		steps.put(120, talkToBillAfterCanisters);
 
 		ConditionalStep fireCannonsWithBalls = new ConditionalStep(this, setSail);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, cannonBroken, hasBarrel), useBarrel);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF0, cannonBroken, hasBarrel), goUpWithBarrel);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, cannonBroken, barrel), useBarrel);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF0, cannonBroken, barrel), goUpWithBarrel);
 		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, cannonBroken), goDownForBarrel);
 		fireCannonsWithBalls.addStep(new Conditions(onBoatF0, cannonBroken), takeBarrel);
 
 		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, canisterInWrong), resetCannon);
 		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, firedCannon), useRamrodToCleanForBalls);
 		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, usedFuse, usedBalls), fireCannonForBalls);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, hasFuse, usedBalls), useFuseForBalls);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, hasFuse, hasCannonball, usedRamrod), useBall);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, hasFuse, hasCannonball, hasRamrod, addedPowder), useRamrodForBalls);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, hasFuse, hasCannonball, hasRamrod, hasPowder), usePowderForBalls);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, hasFuse, hasCannonball, hasRamrod), getPowderForBalls);
-		fireCannonsWithBalls.addStep(new Conditions(onBoatF0, hasFuse, hasCannonball, hasRamrod), goUpToCannonWithBalls);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, fuse1, usedBalls), useFuseForBalls);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, fuse1, cannonball, usedRamrod), useBall);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, fuse1, cannonball, ramrod, addedPowder), useRamrodForBalls);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, fuse1, cannonball, ramrod, gunpowder), usePowderForBalls);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF1, fuse1, cannonball, ramrod), getPowderForBalls);
+		fireCannonsWithBalls.addStep(new Conditions(onBoatF0, fuse1, cannonball, ramrod), goUpToCannonWithBalls);
 
-		fireCannonsWithBalls.addStep(new Conditions(onEnemySail, hasRope), swingToBoat);
-		fireCannonsWithBalls.addStep(new Conditions(onEnemyBoatF1, hasRope), goUpToEnemySail);
+		fireCannonsWithBalls.addStep(new Conditions(onEnemySail, ropeHighlight), swingToBoat);
+		fireCannonsWithBalls.addStep(new Conditions(onEnemyBoatF1, ropeHighlight), goUpToEnemySail);
 		fireCannonsWithBalls.addStep(onEnemySail, leaveEnemySail);
 		fireCannonsWithBalls.addStep(onEnemyBoatF2, leaveEnemyTop);
 		fireCannonsWithBalls.addStep(onEnemyBoatF1, pickUpRope);
@@ -423,13 +422,9 @@ public class CabinFever extends BasicQuestHelper
 		onEnemyBoat = new ZoneRequirement(enemyBoatF0, enemyBoatF1, enemyBoatF2, enemySail);
 
 		hasSetSail = new VarbitRequirement(1741, 1);
-		hasRopes4 = new ItemRequirements(ropes4);
-		hasRopes2 = new ItemRequirements(ropes2);
-		hasTinderbox = new ItemRequirements(tinderbox);
-		hasRope = new ItemRequirements(ropeHighlight);
 
 		addedFuse = new VarbitRequirement(1756, 2);
-		hasFuseOrAdded = new Conditions(LogicType.OR, new ItemRequirements(fuse1), addedFuse);
+		hasFuseOrAdded = new Conditions(LogicType.OR, fuse1, addedFuse);
 
 		explodedBarrel = new VarbitRequirement(1756, 1);
 		// 1740 1 if swinging
@@ -441,17 +436,6 @@ public class CabinFever extends BasicQuestHelper
 		pasted2 = new VarbitRequirement(1757, 2);
 		pasted3 = new VarbitRequirement(1758, 2);
 
-		hasHammer = new ItemRequirements(hammer);
-		hasPlank2 = new ItemRequirements(planks2);
-		hasPlank4 = new ItemRequirements(planks4);
-		hasPlank6 = new ItemRequirements(planks6);
-		hasTacks30 = new ItemRequirements(tacks10);
-		hasTacks60 = new ItemRequirements(tacks20);
-		hasTacks90 = new ItemRequirements(tacks30);
-		hasPaste3 = new ItemRequirements(paste1);
-		hasPaste6 = new ItemRequirements(paste2);
-		hasPaste9 = new ItemRequirements(paste3);
-
 		hasPlanked1 = new VarbitRequirement(1759, 1);
 		hasPlanked2 = new VarbitRequirement(1759, 2);
 		hasPlanked3 = new VarbitRequirement(1759, 3);
@@ -462,9 +446,6 @@ public class CabinFever extends BasicQuestHelper
 
 		lootedAll = new Conditions(new VarbitRequirement(1753, 1), new VarbitRequirement(1754, 1), new VarbitRequirement(1755, 1));
 
-		has10Plunder = new ItemRequirements(loot10);
-		hasBarrel = new ItemRequirements(barrel);
-
 		cannonBroken = new VarbitRequirement(1741, 1);
 		addedPowder = new VarbitRequirement(1742, 1);
 		usedRamrod = new VarbitRequirement(1743, 1);
@@ -473,16 +454,9 @@ public class CabinFever extends BasicQuestHelper
 		usedFuse = new VarbitRequirement(1741, 3);
 		firedCannon = new VarbitRequirement(1746, 1);
 
-		hasFuse = new ItemRequirements(fuse1);
-		hasCanister = new ItemRequirements(canister);
-		hasRamrod = new ItemRequirements(ramrod);
-		hasPowder = new ItemRequirements(gunpowder);
-		hasCannonball = new ItemRequirements(cannonball);
-
 		canisterInWrong = new VarbitRequirement(1747, 1);
 
 		// 1752 = num plunder stashed
-
 	}
 
 	public void setupSteps()

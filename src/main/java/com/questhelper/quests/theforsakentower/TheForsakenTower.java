@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -68,8 +67,8 @@ public class TheForsakenTower extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement gamesNecklace;
 
-	Requirement inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, hasCrank, generatorStarted,
-		powerPuzzleVisible, finishedPowerPuzzle, hasOldNotes, finishedPotionPuzzle, finishedAltarPuzzle, hasDinhsHammer;
+	Requirement inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, generatorStarted,
+		powerPuzzleVisible, finishedPowerPuzzle, finishedPotionPuzzle, finishedAltarPuzzle;
 
 	QuestStep talkToVulcana, talkToUndor, enterTheForsakenTower, inspectDisplayCase, goDownLadderToBasement, searchCrate, inspectGenerator, inspectPowerGrid, doPowerPuzzle,
 		goDownToGroundFloor, goDownToFirstFloor, getHammer, goUpToGroundFloor, returnToUndor, returnToVulcana;
@@ -100,7 +99,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		powerPuzzle = new ConditionalStep(this, goDownLadderToBasement);
 		powerPuzzle.addStep(powerPuzzleVisible, doPowerPuzzle);
 		powerPuzzle.addStep(new Conditions(inBasement, generatorStarted), inspectPowerGrid);
-		powerPuzzle.addStep(new Conditions(inBasement, hasCrank), inspectGenerator);
+		powerPuzzle.addStep(new Conditions(inBasement, crank), inspectGenerator);
 		powerPuzzle.addStep(inBasement, searchCrate);
 		powerPuzzle.addStep(inFirstFloor, goDownToGroundFloor);
 		powerPuzzle.addStep(inSecondFloor, goDownToFirstFloor);
@@ -118,7 +117,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		steps.put(7, puzzleSteps);
 
 		ConditionalStep gettingHammer = new ConditionalStep(this, getHammer);
-		gettingHammer.addStep(hasDinhsHammer, returnToUndor);
+		gettingHammer.addStep(dinhsHammer, returnToUndor);
 		gettingHammer.addStep(inBasement, goUpToGroundFloor);
 		gettingHammer.addStep(inFirstFloor, goDownToGroundFloor);
 		gettingHammer.addStep(inSecondFloor, goDownToFirstFloor);
@@ -149,11 +148,8 @@ public class TheForsakenTower extends BasicQuestHelper
 		finishedFurnacePuzzle = new VarbitRequirement(7798, 4);
 		finishedPotionPuzzle = new VarbitRequirement(7799, 4);
 		finishedAltarPuzzle = new VarbitRequirement(7800, 2);
-		hasCrank = new ItemRequirements(crank);
 		generatorStarted = new VarbitRequirement(7797, 2, Operation.GREATER_EQUAL);
 		powerPuzzleVisible = new WidgetModelRequirement(624, 2, 0, 36246);
-		hasOldNotes = new ItemRequirements(oldNotes);
-		hasDinhsHammer = new ItemRequirements(dinhsHammer);
 	}
 
 	public void setupZones()

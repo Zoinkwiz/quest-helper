@@ -29,8 +29,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -54,22 +52,19 @@ public class WitchsPotion extends BasicQuestHelper
 	//Items Required
 	ItemRequirement ratTail, onion, burntMeat, eyeOfNewt;
 
-	Requirement hasRatTail;
-
 	QuestStep talkToWitch, killRat, returnToWitch, drinkPotion;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupItemRequirements();
-		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToWitch);
 
 		ConditionalStep getIngredients = new ConditionalStep(this, killRat);
-		getIngredients.addStep(hasRatTail, returnToWitch);
+		getIngredients.addStep(ratTail.alsoCheckBank(questBank), returnToWitch);
 
 		steps.put(1, getIngredients);
 
@@ -87,11 +82,6 @@ public class WitchsPotion extends BasicQuestHelper
 		burntMeat.setTooltip("You can use cooked meat on a fire/range to burn it");
 		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
 		eyeOfNewt.setTooltip("You can buy one from Betty in Port Sarim for 3gp");
-	}
-
-	public void setupConditions()
-	{
-		hasRatTail = new ItemRequirements(ratTail);
 	}
 
 	public void setupSteps()

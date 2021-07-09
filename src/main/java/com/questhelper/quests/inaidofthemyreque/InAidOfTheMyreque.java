@@ -79,8 +79,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	Requirement normalSpellbook;
 
 	Requirement onEntranceIsland, inCaves, inMyrequeCave, inBoatArea, inNewBase, onRoof, filledCrate, addedCoal, litFurnace, talkedToGadderanks, talkedToJuvinates,
-		talkedToWiskit, inGadderanksFight, defeatedGadderanks, veliafReturnedToBase, inTempleTrekArea, inTempleTrekArea2, inTemple, libraryOpen, hasBook, inTempleLibrary,
-		inCoffinRoom, hasEnchatedRod, hasRod, hasMould, boardsRemoved;
+		talkedToWiskit, inGadderanksFight, defeatedGadderanks, veliafReturnedToBase, inTempleTrekArea, inTempleTrekArea2, inTemple, libraryOpen, inTempleLibrary,
+		inCoffinRoom, boardsRemoved;
 
 	QuestStep climbDownCanifis, enterMyrequeCave, talkToVeliaf;
 
@@ -196,16 +196,16 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		steps.put(350, unlockLibrary);
 
 		ConditionalStep goReadBook = new ConditionalStep(this, goDownToDrezel);
-		goReadBook.addStep(hasBook, readBook);
+		goReadBook.addStep(sleepingSeven, readBook);
 		goReadBook.addStep(inTempleLibrary, searchBookcase);
 		goReadBook.addStep(inTemple, enterLibrary);
 		steps.put(360, goReadBook);
 		steps.put(370, goReadBook);
 
 		ConditionalStep goMakeRod = new ConditionalStep(this, goIntoCavesAgain);
-		goMakeRod.addStep(hasEnchatedRod, goBlessRod);
-		goMakeRod.addStep(hasRod, enchantRod);
-		goMakeRod.addStep(hasMould, makeRod);
+		goMakeRod.addStep(enchantedRod, goBlessRod);
+		goMakeRod.addStep(silvRod, enchantRod);
+		goMakeRod.addStep(mould, makeRod);
 		goMakeRod.addStep(inCoffinRoom, useClayOnCoffin);
 		goMakeRod.addStep(new Conditions(inCaves, boardsRemoved), enterCoffinRoom);
 		goMakeRod.addStep(inCaves, useHammerOnBoards);
@@ -383,10 +383,6 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 		libraryOpen = new VarbitRequirement(1982, 1);
 
-		hasBook = new ItemRequirements(sleepingSeven);
-		hasEnchatedRod = new ItemRequirements(enchantedRod);
-		hasRod = new ItemRequirements(silvRod);
-		hasMould = new ItemRequirements(mould);
 		boardsRemoved = new VarbitRequirement(1983, 1);
 
 		// 1981 1->2 when talked to Gadderanks

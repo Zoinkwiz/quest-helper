@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -76,12 +75,8 @@ public class TowerOfLife extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement rawSwordfish, rawChicken;
 
-	Requirement
-		hasBeer, hasGloves,
-		hasBuildersHat, hasSpokenToNoFingers, hasBuildersShirt, hasBuildersTrousers, hasBuildersBoots,
-		hasPressureMachineSheets, hasPressureMachineBalls, hasPressureMachineWheels, isPressureMachineBuilt, isPressureMachineFixed,
-		hasPipeMachinePipes, hasPipeMachineRings, hasPipeMachineRivets, isPipeMachineBuilt, isPipeMachineFixed,
-		hasCageMetalBars, hasCageBindingFluid, isCageBuilt, isCageFixed, isTowerFixed;
+	Requirement  hasSpokenToNoFingers, isPressureMachineBuilt, isPressureMachineFixed,
+		isPipeMachineBuilt, isPipeMachineFixed, isCageBuilt, isCageFixed, isTowerFixed;
 
 	QuestStep
 		talkToEffigy, talkToBonafido,
@@ -206,24 +201,6 @@ public class TowerOfLife extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBeer = new ItemRequirements(beer);
-		hasGloves = new ItemRequirements(gloves);
-		hasBuildersHat = new ItemRequirements(buildersHat);
-		hasBuildersShirt = new ItemRequirements(buildersShirt);
-		hasBuildersTrousers = new ItemRequirements(buildersTrousers);
-		hasBuildersBoots = new ItemRequirements(buildersBoots);
-
-		hasPressureMachineBalls = new ItemRequirements(pressureMachineBalls);
-		hasPressureMachineSheets = new ItemRequirements(pressureMachineSheets);
-		hasPressureMachineWheels = new ItemRequirements(pressureMachineWheels);
-
-		hasPipeMachinePipes = new ItemRequirements(pipeMachinePipes);
-		hasPipeMachineRings = new ItemRequirements(pipeMachineRings);
-		hasPipeMachineRivets = new ItemRequirements(pipeMachineRivets);
-
-		hasCageMetalBars = new ItemRequirements(cageMetalBar);
-		hasCageBindingFluid = new ItemRequirements(cageBindingFluid);
-
 		inTower = new ZoneRequirement(tower1, tower2, tower3, tower4);
 		inTowerBasement = new ZoneRequirement(towerBasement);
 		inTowerGround = new ZoneRequirement(tower11, tower12, tower13, tower14);
@@ -320,7 +297,7 @@ public class TowerOfLife extends BasicQuestHelper
 		fixPressureMachineGetSheets = new ObjectStep(this, ObjectID.CRATE_21913, new WorldPoint(2643, 3219, 0), "Get 3 Metal sheets");
 		fixPressureMachineGetBalls = new ObjectStep(this, ObjectID.CRATE_21914, new WorldPoint(2644, 3216, 0), "Get 4 Coloured balls");
 		fixPressureMachineGetWheels = new ObjectStep(this, ObjectID.CRATE_21912, new WorldPoint(2655, 3217, 0), "Get 4 Valve wheels");
-		Conditions hasAllPressureItems = new Conditions(hasPressureMachineSheets, hasPressureMachineBalls, hasPressureMachineWheels);
+		Conditions hasAllPressureItems = new Conditions(pressureMachineSheets, pressureMachineBalls, pressureMachineWheels);
 
 		buildPressureMachine = new ObjectStep(this, ObjectID.PRESSURE_MACHINE, new WorldPoint(2649, 3223, 1), "Build the Pressure Machine", saw, hammer);
 		buildPressureMachine.addDialogStep("Yes");
@@ -340,13 +317,13 @@ public class TowerOfLife extends BasicQuestHelper
 		fixPressureMachine.addStep(inTowerFloor1, climbDownToGround);
 		fixPressureMachine.addStep(inTowerFloor2, climbDownToFloor1);
 		fixPressureMachine.addStep(inTowerFloor3, climbDownToFloor2);
-		fixPressureMachine.addStep(new Conditions(hasPressureMachineSheets, hasPressureMachineBalls), fixPressureMachineGetWheels);
-		fixPressureMachine.addStep(hasPressureMachineSheets, fixPressureMachineGetBalls);
+		fixPressureMachine.addStep(new Conditions(pressureMachineSheets, pressureMachineBalls), fixPressureMachineGetWheels);
+		fixPressureMachine.addStep(pressureMachineSheets, fixPressureMachineGetBalls);
 
 		fixPipeMachineGetPipes = new ObjectStep(this, ObjectID.CRATE_21909, new WorldPoint(2648, 3222, 0), "Get 4 Pipes");
 		fixPipeMachineGetRings = new ObjectStep(this, ObjectID.CRATE_21910, new WorldPoint(2652, 3222, 0), "Get 5 Pipe rings");
 		fixPipeMachineGetRivets = new ObjectStep(this, ObjectID.CRATE_21911, new WorldPoint(2654, 3220, 0), "Get 6 Rivets");
-		Conditions hasAllPipeItems = new Conditions(hasPipeMachinePipes, hasPipeMachineRings, hasPipeMachineRivets);
+		Conditions hasAllPipeItems = new Conditions(pipeMachinePipes, pipeMachineRings, pipeMachineRivets);
 
 		buildPipeMachine = new ObjectStep(this, 21943, new WorldPoint(2650, 3214, 2), "Build the Pipe Machine");
 		buildPipeMachine.addDialogStep("Yes");
@@ -363,13 +340,13 @@ public class TowerOfLife extends BasicQuestHelper
 		fixPipeMachine.addStep(inTowerFloor1, climbDownToGround);
 		fixPipeMachine.addStep(inTowerFloor2, climbDownToFloor1);
 		fixPipeMachine.addStep(inTowerFloor3, climbDownToFloor2);
-		fixPipeMachine.addStep(new Conditions(hasPipeMachinePipes, hasPipeMachineRings), fixPipeMachineGetRivets);
-		fixPipeMachine.addStep(hasPipeMachinePipes, fixPipeMachineGetRings);
+		fixPipeMachine.addStep(new Conditions(pipeMachinePipes, pipeMachineRings), fixPipeMachineGetRivets);
+		fixPipeMachine.addStep(pipeMachinePipes, fixPipeMachineGetRings);
 
 
 		fixCageGetBars = new ObjectStep(this, ObjectID.CRATE_21917, new WorldPoint(2650, 3212, 0), "Get 5 Metal bars");
 		fixCageGetFluid = new ObjectStep(this, ObjectID.CRATE_21915, new WorldPoint(2651, 3213, 0), "Get 4 Binding fluid");
-		Conditions hasAllCageItems = new Conditions(hasCageMetalBars, hasCageBindingFluid);
+		Conditions hasAllCageItems = new Conditions(cageMetalBar, cageBindingFluid);
 
 		buildCage = new ObjectStep(this, 21941, new WorldPoint(2649, 3218, 3), "Build the cage");
 		buildCage.addDialogStep("Yes");
@@ -386,7 +363,7 @@ public class TowerOfLife extends BasicQuestHelper
 		fixCage.addStep(inTowerFloor1, climbDownToGround);
 		fixCage.addStep(inTowerFloor2, climbDownToFloor1);
 		fixCage.addStep(inTowerFloor3, climbDownToFloor2);
-		fixCage.addStep(hasCageMetalBars, fixCageGetFluid);
+		fixCage.addStep(cageMetalBar, fixCageGetFluid);
 
 		talkToEffigyAgain = new NpcStep(this, NpcID.EFFIGY, new WorldPoint(2637, 3218, 0), "Go back and talk to Effigy");
 		talkToEffigyAgain.addSubSteps(climbBackDownToGround, climbBackDownToFloor1, climbBackDownToFloor2);
@@ -417,7 +394,7 @@ public class TowerOfLife extends BasicQuestHelper
 		talkToGuns = new NpcStep(this, NpcID.THE_GUNS, new WorldPoint(2643, 3226, 0), "Talk to 'The Guns'");
 		getBeerForGuns = new ItemStep(this, "Get a Beer for 'The Guns'", beer);
 		ConditionalStep getShirt = new ConditionalStep(this, getBeerForGuns);
-		getShirt.addStep(hasBeer, talkToGuns);
+		getShirt.addStep(beer, talkToGuns);
 
 		getTrousers = new ObjectStep(this, ObjectID.PLANT_21924, "Search the bushes to the south for some Builder's Trousers");
 		getTrousers.addText("(Hint: try the south-east bushes first)");
@@ -430,10 +407,10 @@ public class TowerOfLife extends BasicQuestHelper
 		talkToBonafidoWithOutfit.addDialogStep(2, "Carry on, it'll fix itself");
 
 		getBuildersOutfit = new ConditionalStep(this, talkToBlackeye);
-		getBuildersOutfit.addStep(new Conditions(hasBuildersHat, hasBuildersBoots, hasBuildersShirt, hasBuildersTrousers), talkToBonafidoWithOutfit);
-		getBuildersOutfit.addStep(new Conditions(hasBuildersHat, hasBuildersBoots, hasBuildersShirt), getTrousers);
-		getBuildersOutfit.addStep(new Conditions(hasBuildersHat, hasBuildersBoots), getShirt);
-		getBuildersOutfit.addStep(hasBuildersHat, getBoots);
+		getBuildersOutfit.addStep(new Conditions(buildersHat, buildersBoots, buildersShirt, buildersTrousers), talkToBonafidoWithOutfit);
+		getBuildersOutfit.addStep(new Conditions(buildersHat, buildersBoots, buildersShirt), getTrousers);
+		getBuildersOutfit.addStep(new Conditions(buildersHat, buildersBoots), getShirt);
+		getBuildersOutfit.addStep(buildersHat, getBoots);
 
 	}
 

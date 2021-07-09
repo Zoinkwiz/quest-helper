@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -64,7 +63,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	ItemRequirement litSapphireLantern, chisel, tinderbox, pickaxe, rope, litSapphireLanternHighlighted,
 		ropeHighlighted, tinderboxHighlighted, pickaxeHighlighted, chiselHighlighted, rockHighlighted, stoneBowl;
 
-	Requirement inSwamp, inJunaRoom, atRocks, addedRope, hasRock, hasStoneBowl;
+	Requirement inSwamp, inJunaRoom, atRocks, addedRope;
 
 	QuestStep addRope, enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock,
 		talkToJunaToFinish;
@@ -90,8 +89,8 @@ public class TearsOfGuthix extends BasicQuestHelper
 		steps.put(0, goTalkToJuna);
 
 		ConditionalStep goGetRock = new ConditionalStep(this, getToJunaRoom);
-		goGetRock.addStep(new Conditions(hasStoneBowl, inJunaRoom), talkToJunaToFinish);
-		goGetRock.addStep(hasRock, useChiselOnRock);
+		goGetRock.addStep(new Conditions(stoneBowl.alsoCheckBank(questBank), inJunaRoom), talkToJunaToFinish);
+		goGetRock.addStep(rockHighlighted, useChiselOnRock);
 		goGetRock.addStep(atRocks, mineRock);
 		goGetRock.addStep(inJunaRoom, useLanternOnLightCreature);
 		steps.put(1, goGetRock);
@@ -140,9 +139,6 @@ public class TearsOfGuthix extends BasicQuestHelper
 		atRocks = new ZoneRequirement(rocks);
 
 		addedRope = new VarbitRequirement(279, 1);
-
-		hasRock = new ItemRequirements(rockHighlighted);
-		hasStoneBowl = new ItemRequirements(stoneBowl);
 
 		// 452 = 1, gone through Juna's first dialog
 	}

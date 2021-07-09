@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -75,11 +74,11 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement trollTele, draynorTele, varrockTele;
 
-	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, inWeissArrivalArea, hasPickaxe, hasRope, onCliff1, onCliff2, onCliff3,
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, inWeissArrivalArea, onCliff1, onCliff2, onCliff3,
 		onCliff4, onCliff5, isOutsideWeiss, inWeiss, inInstance, inSneakArea1, inSneakArea2, inSneakArea3, inSneakArea4, inSneakArea5, inCave1, inCave2,
 		inWater1, inWater2, inWater3, inWater4, inCave3, inCave4, rockR0C0, rockR0C1, rockR0C2, rockR0C3, rockR0C4, rockR1C0, rockR1C1, rockR1C2, rockR1C3,
 		rockR1C4, rockR2C0, rockR2C1, rockR2C2, rockR2C3, rockR2C4, row0Made, row1Made, row2Made, rowMade, pickedUpWom, inWeissPrison, oddMushroomDied,
-		firstBossNearby, defeatedBoss1, secondBossNearby, hasBucket, hasBucketOfWater, hasPutOutFire, hasDung;
+		firstBossNearby, defeatedBoss1, secondBossNearby, hasPutOutFire;
 
 	DetailedQuestStep enterStronghold, goDownToBurntmeat, goUpToBurntmeat, talkToBurntmeat, enterStrongholdAfterStart, goUpToMyArmAfterStart,
 		goUpFromF1ToMyArm, goUpAfterStart, talkToMyArmUpstairs, talkToLarry, talkToLarryAgain, boardBoat, attemptToMine, searchBoatForRopeAndPickaxe,
@@ -134,11 +133,11 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		steps.put(35, arrivingInWeissSteps);
 
 		ConditionalStep addTheRope = new ConditionalStep(this, boardBoat);
-		addTheRope.addStep(new Conditions(onCliff2, hasRope), useRope);
-		addTheRope.addStep(new Conditions(onCliff1, hasPickaxe, hasRope), climbRocks2);
-		addTheRope.addStep(new Conditions(inWeissArrivalArea, hasPickaxe, hasRope), climbRocks);
-		addTheRope.addStep(new Conditions(inWeissArrivalArea, hasRope), searchBoatForPickaxe);
-		addTheRope.addStep(new Conditions(inWeissArrivalArea, hasPickaxe), searchBoatForRope);
+		addTheRope.addStep(new Conditions(onCliff2, rope), useRope);
+		addTheRope.addStep(new Conditions(onCliff1, pickaxe, rope), climbRocks2);
+		addTheRope.addStep(new Conditions(inWeissArrivalArea, pickaxe, rope), climbRocks);
+		addTheRope.addStep(new Conditions(inWeissArrivalArea, rope), searchBoatForPickaxe);
+		addTheRope.addStep(new Conditions(inWeissArrivalArea, pickaxe), searchBoatForRope);
 		addTheRope.addStep(inWeissArrivalArea, searchBoatForRopeAndPickaxe);
 
 		steps.put(40, addTheRope);
@@ -150,7 +149,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		scalingTheMountain.addStep(new Conditions(onCliff3), crossLedge);
 		scalingTheMountain.addStep(new Conditions(onCliff2), climbRope);
 		scalingTheMountain.addStep(new Conditions(onCliff1), climbRocks2);
-		scalingTheMountain.addStep(new Conditions(inWeissArrivalArea, hasPickaxe), climbRocks);
+		scalingTheMountain.addStep(new Conditions(inWeissArrivalArea, pickaxe), climbRocks);
 		scalingTheMountain.addStep(new Conditions(inWeissArrivalArea), searchBoatForRope);
 
 		ConditionalStep goTalkToBoulder = new ConditionalStep(this, scalingTheMountain);
@@ -221,8 +220,8 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		ConditionalStep prisonSteps = new ConditionalStep(this, takeBoatToPrison);
 		prisonSteps.addStep(new Conditions(secondBossNearby, hasPutOutFire), killMother);
-		prisonSteps.addStep(new Conditions(secondBossNearby, hasBucketOfWater), useBucketOnFire);
-		prisonSteps.addStep(new Conditions(secondBossNearby, hasBucket), useBucketOnWater);
+		prisonSteps.addStep(new Conditions(secondBossNearby, bucketOfWaterHighlight), useBucketOnFire);
+		prisonSteps.addStep(new Conditions(secondBossNearby, bucketHighlight), useBucketOnWater);
 		prisonSteps.addStep(secondBossNearby, pickUpBucket);
 		prisonSteps.addStep(new Conditions(inWeissPrison, firstBossNearby), killDontKnowWhat);
 		prisonSteps.addStep(new Conditions(inWeissPrison, oddMushroomDied), talkToSnowflake);
@@ -246,9 +245,9 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		steps.put(180, talkToSnowflakeAfterFight);
 
 		ConditionalStep getDungForSnowflake = new ConditionalStep(this, pickUpBucketForDung);
-		getDungForSnowflake.addStep(hasDung, bringDungToSnowflake);
-		getDungForSnowflake.addStep(hasBucket, pickUpGoatDung);
-		getDungForSnowflake.addStep(hasBucketOfWater, emptyBucket);
+		getDungForSnowflake.addStep(goatDung, bringDungToSnowflake);
+		getDungForSnowflake.addStep(bucketHighlight, pickUpGoatDung);
+		getDungForSnowflake.addStep(bucketOfWaterHighlight, emptyBucket);
 
 		steps.put(185, getDungForSnowflake);
 		steps.put(186, getDungForSnowflake);
@@ -369,9 +368,6 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		inWeissPrison = new ZoneRequirement(weissPrison);
 
-		hasPickaxe = new ItemRequirements(pickaxe);
-		hasRope = new ItemRequirements(rope);
-
 		// 33240, 33242, 33244, 33240, 33242
 		// 33241, 33243, 33245, 33241, 33243
 
@@ -418,10 +414,6 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		hasPutOutFire = new VarbitRequirement(6528, 170, Operation.GREATER_EQUAL);
 		firstBossNearby = new NpcCondition(NpcID.DONT_KNOW_WHAT_8439);
 		secondBossNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.MOTHER_8428), new NpcCondition(NpcID.MOTHER_8429), new NpcCondition(NpcID.MOTHER_8430));
-
-		hasBucket = new ItemRequirements(bucketHighlight);
-		hasBucketOfWater = new ItemRequirements(bucketOfWaterHighlight);
-		hasDung = new ItemRequirements(goatDung);
 	}
 
 	public void setupSteps()

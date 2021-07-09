@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -67,7 +66,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	ItemRequirement varrockTeleport, faladorTeleports, homeTele;
 	ComplexRequirement searchCupboardReq;
 
-	Requirement hasPortrait, hasBluriteOre, hasBluriteSword, inDungeon, inFaladorCastle1, inFaladorCastle2, inFaladorCastle2Bedroom, sirVyinNotInRoom;
+	Requirement inDungeon, inFaladorCastle1, inFaladorCastle2, inFaladorCastle2Bedroom, sirVyinNotInRoom;
 
 	QuestStep talkToSquire, talkToReldo, talkToThurgo, talkToThurgoAgain, talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, enterDungeon,
 		mineBlurite, givePortraitToThurgo, bringThurgoOre, finishQuest;
@@ -91,15 +90,15 @@ public class TheKnightsSword extends BasicQuestHelper
 		steps.put(4, talkToSquire2);
 
 		ConditionalStep getPortrait = new ConditionalStep(this, goUpCastle1);
-		getPortrait.addStep(hasPortrait, givePortraitToThurgo);
+		getPortrait.addStep(portrait.alsoCheckBank(questBank), givePortraitToThurgo);
 		getPortrait.addStep(inFaladorCastle2, searchCupboard);
 		getPortrait.addStep(inFaladorCastle1, goUpCastle2);
 
 		steps.put(5, getPortrait);
 
 		ConditionalStep returnSwordToSquire = new ConditionalStep(this, enterDungeon);
-		returnSwordToSquire.addStep(hasBluriteSword, finishQuest);
-		returnSwordToSquire.addStep(hasBluriteOre, bringThurgoOre);
+		returnSwordToSquire.addStep(bluriteSword.alsoCheckBank(questBank), finishQuest);
+		returnSwordToSquire.addStep(bluriteOre.alsoCheckBank(questBank), bringThurgoOre);
 		returnSwordToSquire.addStep(inDungeon, mineBlurite);
 
 		steps.put(6, returnSwordToSquire);
@@ -123,9 +122,6 @@ public class TheKnightsSword extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBluriteOre = new ItemRequirements(bluriteOre);
-		hasBluriteSword = new ItemRequirements(bluriteSword);
-		hasPortrait = new ItemRequirements(portrait);
 		inDungeon = new ZoneRequirement(dungeon);
 		inFaladorCastle1 = new ZoneRequirement(faladorCastle1);
 		inFaladorCastle2 = new ZoneRequirement(faladorCastle2);

@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -66,7 +65,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement glory;
 
-	Requirement hasWig, hasDyedWig, hasKey, hasPaste, hasOrGivenKeyMould, inCell, givenKeyMould;
+	Requirement hasOrGivenKeyMould, inCell, givenKeyMould, hasWigPasteAndKey;
 
 	QuestStep talkToHassan, talkToOsman, talkToNed, talkToAggie, dyeWig, talkToKeli, bringImprintToOsman, talkToLeela, talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli, returnToHassan;
 
@@ -88,11 +87,11 @@ public class PrinceAliRescue extends BasicQuestHelper
 		steps.put(10, talkToOsman);
 
 		makeDyedWig = new ConditionalStep(this, talkToNed);
-		makeDyedWig.addStep(hasWig, dyeWig);
-		makeDyedWig.setLockingCondition(hasDyedWig);
+		makeDyedWig.addStep(wig.alsoCheckBank(questBank), dyeWig);
+		makeDyedWig.setLockingCondition(dyedWig.alsoCheckBank(questBank));
 
 		makePaste = new ConditionalStep(this, talkToAggie);
-		makePaste.setLockingCondition(hasPaste);
+		makePaste.setLockingCondition(paste.alsoCheckBank(questBank));
 
 		makeKeyMould = new ConditionalStep(this, talkToKeli);
 		makeKeyMould.setLockingCondition(hasOrGivenKeyMould);
@@ -101,16 +100,16 @@ public class PrinceAliRescue extends BasicQuestHelper
 		getKey.setLockingCondition(givenKeyMould);
 
 		ConditionalStep prepareToSaveAli = new ConditionalStep(this, makeDyedWig);
-		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste, givenKeyMould), talkToLeela);
-		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste, hasOrGivenKeyMould), getKey);
-		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste), makeKeyMould);
-		prepareToSaveAli.addStep(hasDyedWig, makePaste);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), givenKeyMould), talkToLeela);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), hasOrGivenKeyMould), getKey);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank)), makeKeyMould);
+		prepareToSaveAli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 
 		steps.put(20, prepareToSaveAli);
 
 		ConditionalStep getJoeDrunk = new ConditionalStep(this, makeDyedWig);
-		getJoeDrunk.addStep(new Conditions(hasDyedWig, hasPaste, hasKey), talkToJoe);
-		getJoeDrunk.addStep(hasDyedWig, makePaste);
+		getJoeDrunk.addStep(hasWigPasteAndKey, talkToJoe);
+		getJoeDrunk.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 
 		steps.put(30, getJoeDrunk);
 		steps.put(31, getJoeDrunk);
@@ -118,14 +117,14 @@ public class PrinceAliRescue extends BasicQuestHelper
 		steps.put(33, getJoeDrunk);
 
 		ConditionalStep tieUpKeli = new ConditionalStep(this, makeDyedWig);
-		tieUpKeli.addStep(new Conditions(hasDyedWig, hasPaste, hasKey), useRopeOnKeli);
-		tieUpKeli.addStep(hasDyedWig, makePaste);
+		tieUpKeli.addStep(hasWigPasteAndKey, useRopeOnKeli);
+		tieUpKeli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 		steps.put(40, tieUpKeli);
 
 		ConditionalStep freeAli = new ConditionalStep(this, makeDyedWig);
-		freeAli.addStep(new Conditions(hasDyedWig, hasPaste, hasKey, inCell), talkToAli);
-		freeAli.addStep(new Conditions(hasDyedWig, hasPaste, hasKey), useKeyOnDoor);
-		freeAli.addStep(hasDyedWig, makePaste);
+		freeAli.addStep(new Conditions(hasWigPasteAndKey, inCell), talkToAli);
+		freeAli.addStep(hasWigPasteAndKey, useKeyOnDoor);
+		freeAli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 		steps.put(50, freeAli);
 
 		steps.put(100, returnToHassan);
@@ -166,16 +165,13 @@ public class PrinceAliRescue extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCell = new ZoneRequirement(cell);
-		hasDyedWig = new ItemRequirements(dyedWig);
-		hasWig = new ItemRequirements(wig);
-		hasKey = new ItemRequirements(key);
-		hasPaste = new ItemRequirements(paste);
+		hasWigPasteAndKey = new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), key.alsoCheckBank(questBank));
 		givenKeyMould = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "I have duplicated a key, I need to get it from"),
 			new WidgetTextRequirement(119, 3, true, "I got a duplicated cell door key"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Pick the key up from Leela."),
-			hasKey);
-		hasOrGivenKeyMould = new Conditions(LogicType.OR, new ItemRequirements(keyMould), givenKeyMould, hasKey);
+			key.alsoCheckBank(questBank));
+		hasOrGivenKeyMould = new Conditions(LogicType.OR, keyMould, givenKeyMould, key.alsoCheckBank(questBank));
 	}
 
 	public void setupZones()

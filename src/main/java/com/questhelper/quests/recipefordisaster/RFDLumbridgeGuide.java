@@ -31,7 +31,6 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -64,7 +63,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 
 	ItemRequirement wizardsTowerTeleport, lumbridgeTeleport;
 
-	Requirement inDiningRoom, inUpstairsTrailborn, hasCake, hasRawCake;
+	Requirement inDiningRoom, inUpstairsTrailborn;
 
 	QuestStep enterDiningRoom, inspectLumbridgeGuide, goUpToTraiborn, talkToTraiborn, cookCake, enterDiningRoomAgain,
 		useCakeOnLumbridgeGuide, mixIngredients;
@@ -91,9 +90,9 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		steps.put(2, goTalkToTrailborn);
 
 		ConditionalStep saveGuide = new ConditionalStep(this, mixIngredients);
-		saveGuide.addStep(new Conditions(hasCake, inDiningRoom), useCakeOnLumbridgeGuide);
-		saveGuide.addStep(hasCake, enterDiningRoomAgain);
-		saveGuide.addStep(hasRawCake, cookCake);
+		saveGuide.addStep(new Conditions(guidanceCake, inDiningRoom), useCakeOnLumbridgeGuide);
+		saveGuide.addStep(guidanceCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		saveGuide.addStep(rawGuidanceCake, cookCake);
 		steps.put(3, saveGuide);
 		steps.put(4, saveGuide);
 		return steps;
@@ -137,9 +136,6 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	{
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inUpstairsTrailborn = new ZoneRequirement(upstairsTrailborn, quizSpot);
-
-		hasCake = new ItemRequirements(guidanceCake);
-		hasRawCake = new ItemRequirements(rawGuidanceCake);
 	}
 
 	public void setupSteps()

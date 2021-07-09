@@ -217,7 +217,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnoughPouch = new ItemRequirements(druidPouch5);
+		hasEnoughPouch = druidPouch5;
 		repairedBridge1 = new VarbitRequirement(176, 1);
 		repairedBridge2 = new VarbitRequirement(177, 1);
 		repairedBridge3 = new VarbitRequirement(178, 1);

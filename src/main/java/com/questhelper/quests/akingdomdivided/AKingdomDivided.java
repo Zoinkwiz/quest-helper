@@ -744,6 +744,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		mixDefencePotionWithSulphur = new DetailedQuestStep(this, "Mix the Defence potion with the Volcanic sulphur.", defencePotion.highlighted(), volcanicSulphur.highlighted());
 		talkToKaalMejSanWithSulphurPotion = new NpcStep(this, NpcID.KAALMEJSAN, new WorldPoint(1306, 10205, 0), "Talk to Kaal-Mej-San again.", sulphurPotion);
 		useShieldingPotionOnDinhsDoor = new ObjectStep(this, ObjectID.DOORS_OF_DINH, new WorldPoint(1630, 3965, 0), "Use the Shielding potion on the Doors of Dinh in the Wintertodt camp. Use a games necklace to get there quickly.", shieldingPotion.highlighted());
+		useShieldingPotionOnDinhsDoor.addIcon(ItemID.SHIELDING_POTION);
 		goDownLadderInKourendWoodland = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
 		killBarbarianInKourendWoodland = new NpcStep(this, NpcID.BARBARIAN_WARLORD, "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
 		goDownLadderInKourendWoodland.addSubSteps(killBarbarianInKourendWoodland);

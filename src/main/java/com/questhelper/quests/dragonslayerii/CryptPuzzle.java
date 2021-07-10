@@ -28,10 +28,9 @@ import com.google.inject.Inject;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -73,7 +72,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 	private final HashMap<Integer, QuestStep> getBustSteps = new HashMap<>();
 	private final HashMap<Integer, ItemRequirement> items = new HashMap<>();
-	private final HashMap<Integer, ItemRequirements> bustsConditions = new HashMap<>();
+	private final HashMap<Integer, ItemRequirement> bustsConditions = new HashMap<>();
 
 
 	private boolean solutionFound;
@@ -111,10 +110,10 @@ public class CryptPuzzle extends DetailedOwnerStep
 		getBustSteps.put(ROBERT, takeRobertBust);
 		getBustSteps.put(TRISTAN, takeTristanBust);
 
-		bustsConditions.put(AIVAS, new ItemRequirements(aivasBust));
-		bustsConditions.put(CAMORRA, new ItemRequirements(camorraBust));
-		bustsConditions.put(ROBERT, new ItemRequirements(robertBust));
-		bustsConditions.put(TRISTAN, new ItemRequirements(tristanBust));
+		bustsConditions.put(AIVAS, aivasBust);
+		bustsConditions.put(CAMORRA, camorraBust);
+		bustsConditions.put(ROBERT, robertBust);
+		bustsConditions.put(TRISTAN, tristanBust);
 
 		items.put(AIVAS, aivasBust);
 		items.put(CAMORRA, camorraBust);
@@ -221,10 +220,10 @@ public class CryptPuzzle extends DetailedOwnerStep
 		inSecondFloor = new ZoneRequirement(secondFloor);
 		inBasement = new ZoneRequirement(basement);
 
-		hasAivasBust = new ItemRequirements(aivasBust);
-		hasRobertBust = new ItemRequirements(robertBust);
-		hasCamorraBust = new ItemRequirements(camorraBust);
-		hasTristanBust = new ItemRequirements(tristanBust);
+		hasAivasBust = aivasBust;
+		hasRobertBust = robertBust;
+		hasCamorraBust = camorraBust;
+		hasTristanBust = tristanBust;
 	}
 
 	@Override

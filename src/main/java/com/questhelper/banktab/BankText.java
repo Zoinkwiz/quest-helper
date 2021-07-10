@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.myarmsbigadventure;
+package com.questhelper.banktab;
 
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.ObjectStep;
-import java.util.Arrays;
-import java.util.Collections;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
-
-public class AddCompost extends ObjectStep
+public class BankText
 {
-	ItemRequirement compost = new ItemRequirement("Supercompost",ItemID.SUPERCOMPOST, 7);
-	ItemRequirement spade = new ItemRequirement("Spade", ItemID.SPADE);
+	String text;
+	int x;
+	int y;
 
-	public AddCompost(QuestHelper questHelper)
+	public BankText(String text, int x, int y)
 	{
-		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0),
-			"Add 7 supercompost on My Arm's soil patch.");
-		this.addIcon(ItemID.SUPERCOMPOST);
-		compost.setHighlightInInventory(true);
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateSteps();
-	}
-
-	protected void updateSteps()
-	{
-		int numCompToAdd = 7 - client.getVarbitValue(2792);
-		compost.setQuantity(numCompToAdd);
-		this.setRequirements(Arrays.asList(compost, spade));
-		this.setText("Add " + numCompToAdd + " supercompost on My Arm's soil patch.");
+		this.text = text;
+		this.x = x;
+		this.y = y;
 	}
 }

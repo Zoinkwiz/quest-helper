@@ -26,6 +26,7 @@ package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -59,7 +60,8 @@ public class MsCheevesSetup
 		getKnife, leaveRoom;
 	private ItemStep getMetalSpade;
 
-	private ItemRequirements hasMagnet, hasAceticAcid, hasOneVialOfLiquid,
+	// TODO: Clean up to just use ItemRequirement
+	private Requirement hasMagnet, hasAceticAcid, hasOneVialOfLiquid,
 		hasCupricSulfate, hasGypsum, hasSodiumChloride, hasWire, hasTin,
 		hasShears, hasChisel, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 		hasKnife, hasMetalSpade, hasMetalSpadeHead, hasAshes, hasBronzeKey;
@@ -76,7 +78,7 @@ public class MsCheevesSetup
 	private ItemRequirement tin, gypsumTin, gypsum, tinKeyPrint, cupricOrePowder, tinOrePowder, tinWithCupricOre,
 		tinWithTinOre, tinWithAllOre, bronzeKey, knife, chisel, bronzeWire;
 	private VarbitRequirement hasLiquidInTin;
-	ItemRequirements hasGypsumTin, hasTinKeyPrint, hasTinCupricOre, hasTinWithTinOre, hasTinWithAllOre;
+	ItemRequirement hasGypsumTin, hasTinKeyPrint, hasTinCupricOre, hasTinWithTinOre, hasTinWithAllOre;
 
 	private final int VARBIT_NITROUS_OXIDE = 5581;
 	private final int VARBIT_VIAL_OF_LIQUID = 671;
@@ -368,29 +370,29 @@ public class MsCheevesSetup
 	{
 		hasMagnet = new ItemRequirements(new ItemRequirement("Magnet", ItemID.MAGNET_5604));
 		hasAceticAcid = new ItemRequirements(new ItemRequirement("Acetic Acid", ItemID.ACETIC_ACID));
-		hasOneVialOfLiquid = new ItemRequirements(vialOfLiquid);
-		hasCupricSulfate = new ItemRequirements(cupricSulfate);
-		hasGypsum = new ItemRequirements(gypsum);
+		hasOneVialOfLiquid = vialOfLiquid;
+		hasCupricSulfate = cupricSulfate;
+		hasGypsum = gypsum;
 		hasSodiumChloride = new ItemRequirements(new ItemRequirement("Sodium Chloride", ItemID.SODIUM_CHLORIDE));
-		hasTin = new ItemRequirements(tin);
-		hasWire = new ItemRequirements(bronzeWire);
+		hasTin = tin;
+		hasWire = bronzeWire;
 		hasShears = new ItemRequirements(new ItemRequirement("Shears", ItemID.SHEARS_5603));
-		hasChisel = new ItemRequirements(chisel);
+		hasChisel = chisel;
 		hasNitrousOxide = new ItemRequirements(new ItemRequirement("Nitrous Oxide", ItemID.NITROUS_OXIDE));
-		hasTinOrePowder = new ItemRequirements(tinOrePowder);
-		hasCupricOrePowder = new ItemRequirements(cupricOrePowder);
-		hasKnife = new ItemRequirements(knife);
-		hasMetalSpade = new ItemRequirements(metalSpade);
-		hasMetalSpadeHead = new ItemRequirements(metalSpadeHead);
-		hasAshes = new ItemRequirements(ashes);
+		hasTinOrePowder = tinOrePowder;
+		hasCupricOrePowder = cupricOrePowder;
+		hasKnife = knife;
+		hasMetalSpade = metalSpade;
+		hasMetalSpadeHead = metalSpadeHead;
+		hasAshes = ashes;
 
-		hasGypsumTin = new ItemRequirements(gypsumTin);
-		hasTinKeyPrint = new ItemRequirements(tinKeyPrint);
-		hasTinCupricOre = new ItemRequirements(tinWithCupricOre);
-		hasTinWithTinOre = new ItemRequirements(tinWithTinOre);
-		hasTinWithAllOre = new ItemRequirements(tinWithAllOre);
+		hasGypsumTin = gypsumTin;
+		hasTinKeyPrint = tinKeyPrint;
+		hasTinCupricOre = tinWithCupricOre;
+		hasTinWithTinOre = tinWithTinOre;
+		hasTinWithAllOre = tinWithAllOre;
 
-		hasBronzeKey = new ItemRequirements(bronzeKey);
+		hasBronzeKey = bronzeKey;
 
 		hasRetrievedThreeVials = new VarbitRequirement(VARBIT_THREE_VIALS, 3);
 		hasSpadeHeadOnDoor = new VarbitRequirement(VARBIT_SPADEHEAD_ON_DOOR, 1);

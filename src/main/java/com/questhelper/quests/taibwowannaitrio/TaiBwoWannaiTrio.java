@@ -86,14 +86,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	QuestStep makeKarambwanjiPaste, usePasteOnSpear, usePestleOnKarambwan, usePasteOnBones, getPoisonKarambwan,
 	goOnHuntToKill, askAboutResearch, useVesselOnTinsay;
 
-	Requirement startedQuestDuringSession, syncedState, hasKarambwaji, inTimfrakusHut, inLufubuZone, givenKarambwanji,
+	Requirement startedQuestDuringSession, syncedState, inTimfrakusHut, inLufubuZone, givenKarambwanji,
 		vesselOnGround,	talkedToTiadeche, givenVessel, bonesNearby, corpseNearby, wentOnHunt, givenPotion, givenSpear,
 		burningBonesNearby, burntBonesNearby, hadAtLeastRawKarambwan, hadRumWithBanana, hadSeaweed, hadMarinated,
-		haveCookedJogreBones, havePoisonSpear, haveBurntBones, haveMonkeySkin, haveSeaweedSandwich, inCairnIsle,
-		haveCraftingManual, defeatedBeast, talkedTinsay1, givenRum, givenSandwich, givenBones, hadSeaweedSandwich,
+		defeatedBeast, talkedTinsay1, givenRum, givenSandwich, givenBones, hadSeaweedSandwich,
 		beenAskedToResearchVessel, hadManual;
 
-	Zone timfrakusHut, lubufuZone, cairnIsleZone;
+	Zone timfrakusHut, lubufuZone;
 
 	WorldPoint lubufuWorldPoint, timfrakuHutWorldPoint;
 
@@ -117,12 +116,9 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		ConditionalStep coreQuest = new ConditionalStep(this, fishKarambwaji);
 		coreQuest.addStep(hadManual, goToTiadecheFinal);
-		coreQuest.addStep(new Conditions(beenAskedToResearchVessel, defeatedBeast, givenBones),
-			useVesselOnTinsay);
-		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, hadMarinated, hadSeaweedSandwich),
-			talkToTinsay);
-		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, haveMonkeySkin),
-			makeSeaweedSandwich);
+		coreQuest.addStep(new Conditions(beenAskedToResearchVessel, defeatedBeast, givenBones), useVesselOnTinsay);
+		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, hadMarinated, hadSeaweedSandwich), talkToTinsay);
+		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeySkin), makeSeaweedSandwich);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeyCorpse), useCorpseOnTamayu);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated,
 				corpseNearby), pickupCorpse);
@@ -348,7 +344,6 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	private void setupConditions()
 	{
 		inTimfrakusHut = new ZoneRequirement(timfrakusHut);
-		hasKarambwaji = new ItemRequirements(karambwanji);
 		inLufubuZone = new ZoneRequirement(lubufuZone);
 
 		startedQuestDuringSession = new Conditions(true,
@@ -459,21 +454,12 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
 			new WidgetTextRequirement(119, 3, true, "<str>retrieved crafting instructions for Tiadeche.")
 		);
-
-		haveCookedJogreBones = new ItemRequirements(marinatedJogreBones);
-		havePoisonSpear = new ItemRequirements(poisonedSpear);
-		haveBurntBones = new ItemRequirements(burntJogreBones);
-		haveMonkeySkin = new ItemRequirements(monkeySkin);
-		haveSeaweedSandwich = new ItemRequirements(seaweedSandwich);
-		inCairnIsle = new ZoneRequirement(cairnIsleZone);
-		haveCraftingManual = new ItemRequirements(craftingManual);
 	}
 
 	private void setupZones()
 	{
 		timfrakusHut = new Zone(new WorldPoint(2778,3084,1), new WorldPoint(2786, 3090,1));
 		lubufuZone = new Zone(new WorldPoint(2759,3173,0), new WorldPoint(2780,3162,0));
-		cairnIsleZone = new Zone(new WorldPoint(2747, 2992, 0), new WorldPoint(2774, 2963, 0));
 	}
 
 	private void setupItemRequirements()

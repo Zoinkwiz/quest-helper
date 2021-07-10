@@ -68,10 +68,9 @@ public class DeathPlateau extends BasicQuestHelper
 	ItemRequirement asgarnianAle, premadeBlurbOrCoins, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
 		yellowStone, pinkStone, greenStone, certificate, climbingBoots, spikedBoots, secretMap, combination;
 
-	Requirement hasAsgarnianAle, inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs,
-		inHaroldsRoom, givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
-		isGreenStoneDone, inSabaCave, hasCertificate, hasClimbingBoots, hasSpikedBoots, hasSecretMap, hasCombination,
-		isFarEnough, talkedToSaba, talkedToDunstan;
+	Requirement inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs, inHaroldsRoom,
+		givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
+		isGreenStoneDone, inSabaCave, isFarEnough, talkedToSaba, talkedToDunstan;
 
 	QuestStep talkToDenulth1, goToEohric1, talkToEohric1, goToHaroldStairs1, goToHaroldDoor1, talkToHarold1,
 		goToEohric2, talkToEohric2, takeAsgarnianAle, goToHaroldStairs2, goToHaroldDoor2, talkToHarold2,
@@ -108,9 +107,9 @@ public class DeathPlateau extends BasicQuestHelper
 		steps.put(30, talkToEohricSteps2);
 
 		ConditionalStep talkToHaroldSteps2 = new ConditionalStep(this, takeAsgarnianAle);
-		talkToHaroldSteps2.addStep(new Conditions(hasAsgarnianAle, inHaroldsRoom), talkToHarold2);
-		talkToHaroldSteps2.addStep(new Conditions(hasAsgarnianAle, inBarUpstairs), goToHaroldDoor2);
-		talkToHaroldSteps2.addStep(new Conditions(hasAsgarnianAle), goToHaroldStairs2);
+		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle, inHaroldsRoom), talkToHarold2);
+		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle, inBarUpstairs), goToHaroldDoor2);
+		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle), goToHaroldStairs2);
 		steps.put(40, talkToHaroldSteps2);
 
 		ConditionalStep gambleSteps = new ConditionalStep(this, giveHaroldBlurberry);
@@ -128,15 +127,15 @@ public class DeathPlateau extends BasicQuestHelper
 		steps.put(60, stoneSteps);
 
 		ConditionalStep finalSteps = new ConditionalStep(this, enterSabaCave);
-		finalSteps.addStep(new Conditions(isFarEnough, hasCombination), talkToDenulth3);
+		finalSteps.addStep(new Conditions(isFarEnough, combination), talkToDenulth3);
 		finalSteps.addStep(new Conditions(isFarEnough, inHaroldsRoom), talkToHarold3);
 		finalSteps.addStep(new Conditions(isFarEnough, inBarUpstairs), goToHaroldDoor3);
 		finalSteps.addStep(new Conditions(isFarEnough), goToHaroldDoor3);
-		finalSteps.addStep(new Conditions(hasSecretMap), goNorth);
-		finalSteps.addStep(new Conditions(hasSpikedBoots), talkToTenzing2);
-		finalSteps.addStep(new Conditions(hasClimbingBoots, hasCertificate), talkToDunstan2);
-		finalSteps.addStep(new Conditions(hasClimbingBoots, talkedToDunstan), talkToDenulthForDunstan);
-		finalSteps.addStep(new Conditions(hasClimbingBoots), talkToDunstan1);
+		finalSteps.addStep(new Conditions(secretMap), goNorth);
+		finalSteps.addStep(new Conditions(spikedBoots.alsoCheckBank(questBank)), talkToTenzing2);
+		finalSteps.addStep(new Conditions(climbingBoots, certificate.alsoCheckBank(questBank)), talkToDunstan2);
+		finalSteps.addStep(new Conditions(climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
+		finalSteps.addStep(new Conditions(climbingBoots), talkToDunstan1);
 		finalSteps.addStep(new Conditions(talkedToSaba, inSabaCave), leaveSabaCave);
 		finalSteps.addStep(talkedToSaba, talkToTenzing1);
 		finalSteps.addStep(inSabaCave, talkToSaba);
@@ -197,7 +196,6 @@ public class DeathPlateau extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasAsgarnianAle = new ItemRequirements(asgarnianAle);
 		inCastleDownstairs = new ZoneRequirement(castleDownstairs);
 		inCastleUpstairs = new ZoneRequirement(castleUpstairs);
 		inBarDownstairs = new ZoneRequirement(barDownstairs);
@@ -210,11 +208,6 @@ public class DeathPlateau extends BasicQuestHelper
 		isPinkStoneDone = new ItemOnTileRequirement(pinkStone, new WorldPoint(2895, 3563, 0));
 		isGreenStoneDone = new ItemOnTileRequirement(greenStone, new WorldPoint(2895, 3564, 0));
 		inSabaCave = new ZoneRequirement(sabaCave);
-		hasCertificate = new Conditions(true, new ItemRequirements(certificate));
-		hasClimbingBoots = new ItemRequirements(climbingBoots);
-		hasSpikedBoots = new Conditions(true, new ItemRequirements(spikedBoots));
-		hasSecretMap = new ItemRequirements(secretMap);
-		hasCombination = new ItemRequirements(combination);
 		isFarEnough = new ChatMessageRequirement("You should go and speak to Denulth.");
 		talkedToSaba = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Before the trolls came there used to be a nettlesome"),

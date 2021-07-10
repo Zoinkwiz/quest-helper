@@ -67,6 +67,7 @@ public class ItemCollections
 		ItemID.CRYSTAL_PICKAXE_INACTIVE,
 		ItemID._3RD_AGE_PICKAXE,
 		ItemID.INFERNAL_PICKAXE,
+		ItemID.DRAGON_PICKAXE_OR_25376,
 		ItemID.DRAGON_PICKAXE_12797,
 		ItemID.DRAGON_PICKAXE_OR,
 		ItemID.DRAGON_PICKAXE,
@@ -1138,7 +1139,7 @@ public class ItemCollections
 		ItemID.WOODCUT_CAPET,
 		ItemID.QUEST_POINT_CAPE,
 		ItemID.QUEST_POINT_CAPE_T
-		);
+	);
 
 	@Getter
 	private static final List<Integer> slayerHelmets = ImmutableList.of(
@@ -1212,21 +1213,5 @@ public class ItemCollections
 		ItemID.LUNAR_STAFF__PT2,
 		ItemID.LUNAR_STAFF__PT1,
 		ItemID.DRAMEN_STAFF
-	);
-
-	@Getter
-	private static final List<Integer> crossbows = ImmutableList.of(
-		ItemID.BRONZE_CROSSBOW,
-		ItemID.BLURITE_CROSSBOW,
-		ItemID.IRON_CROSSBOW,
-		ItemID.STEEL_CROSSBOW,
-		ItemID.MITHRIL_CROSSBOW,
-		ItemID.ADAMANT_CROSSBOW,
-		ItemID.RUNE_CROSSBOW,
-		ItemID.DRAGON_CROSSBOW,
-		ItemID.CROSSBOW,
-		ItemID.DORGESHUUN_CROSSBOW,
-		ItemID.ARMADYL_CROSSBOW,
-		ItemID.DRAGON_HUNTER_CROSSBOW
 	);
 }

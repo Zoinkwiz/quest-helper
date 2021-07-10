@@ -73,8 +73,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		antifirePotion, radimusNotes, bruleeWithEgg, baseBrulee, uncookedBrulee, finishedBrulee, finishedBruleeHighlighted,
 		milkyMixture, cornflourMixture, evilEgg, token, cinnamon, pestleAndMortarHighlighted, tokenHighlighted;
 
-	Requirement inDiningRoom, talkedToWom, inEvilChickenLair, inZanaris, hasEgg, hasEggAndToken, tokenNearby, eggNearby, hasToken,
-		hasMilkyMixture, hasCornflourMixture, hasBruleeWithEgg, hasBaseBrulee, hasUncookedBrulee, hasCompleteBrulee, hasCinnamon;
+	Requirement inDiningRoom, talkedToWom, inEvilChickenLair, inZanaris, hasEggAndToken, tokenNearby, eggNearby;
 
 	QuestStep enterDiningRoom, inspectAmik, enterKitchen, talkToCook, enterDiningRoomAgain, useBruleeOnVarze, talkToWom, useMilkOnCream,
 		useCornflourOnMilky, addPodToCornflourMixture, enterZanaris, useChickenOnShrine, killEvilChicken, pickUpEgg, useEggOnBrulee,
@@ -108,7 +107,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 
 		tokenAndEggSteps = new ConditionalStep(this, enterZanaris);
 		tokenAndEggSteps.addStep(tokenNearby, pickUpToken);
-		tokenAndEggSteps.addStep(new Conditions(hasEgg, inEvilChickenLair), killBlackDragon);
+		tokenAndEggSteps.addStep(new Conditions(evilEgg.alsoCheckBank(questBank), inEvilChickenLair), killBlackDragon);
 		tokenAndEggSteps.addStep(eggNearby, pickUpEgg);
 		tokenAndEggSteps.addStep(inEvilChickenLair, killEvilChicken);
 		tokenAndEggSteps.addStep(inZanaris, useChickenOnShrine);
@@ -116,16 +115,16 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		tokenAndEggSteps.setBlocker(true);
 
 		ConditionalStep makeBrulee = new ConditionalStep(this, useMilkOnCream);
-		makeBrulee.addStep(new Conditions(hasUncookedBrulee), rubToken);
-		makeBrulee.addStep(new Conditions(hasBruleeWithEgg, hasCinnamon), useCinnamonOnBrulee);
-		makeBrulee.addStep(hasBruleeWithEgg, grindBranch);
-		makeBrulee.addStep(hasBaseBrulee, useEggOnBrulee);
-		makeBrulee.addStep(hasCornflourMixture, addPodToCornflourMixture);
-		makeBrulee.addStep(hasMilkyMixture, useCornflourOnMilky);
+		makeBrulee.addStep(new Conditions(uncookedBrulee), rubToken);
+		makeBrulee.addStep(new Conditions(bruleeWithEgg, cinnamon), useCinnamonOnBrulee);
+		makeBrulee.addStep(bruleeWithEgg, grindBranch);
+		makeBrulee.addStep(baseBrulee, useEggOnBrulee);
+		makeBrulee.addStep(cornflourMixture, addPodToCornflourMixture);
+		makeBrulee.addStep(milkyMixture, useCornflourOnMilky);
 
 		ConditionalStep saveAmik = new ConditionalStep(this, talkToWom);
-		saveAmik.addStep(new Conditions(inDiningRoom, hasCompleteBrulee), useBruleeOnVarze);
-		saveAmik.addStep(hasCompleteBrulee, enterDiningRoomAgain);
+		saveAmik.addStep(new Conditions(inDiningRoom, finishedBrulee), useBruleeOnVarze);
+		saveAmik.addStep(finishedBrulee.alsoCheckBank(questBank), enterDiningRoomAgain);
 		saveAmik.addStep(hasEggAndToken, makeBrulee);
 		saveAmik.addStep(talkedToWom, tokenAndEggSteps);
 		steps.put(10, saveAmik);
@@ -229,18 +228,9 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 
 		inEvilChickenLair = new ZoneRequirement(evilChickenLair);
 		inZanaris = new ZoneRequirement(zanaris);
-		hasEgg = new ItemRequirements(evilEgg);
-		hasToken = new ItemRequirements(token);
-		hasEggAndToken = new Conditions(hasEgg, hasToken);
-		hasCornflourMixture = new ItemRequirements(cornflourMixture);
-		hasMilkyMixture = new ItemRequirements(milkyMixture);
+		hasEggAndToken = new Conditions(evilEgg, token);
 		tokenNearby = new ItemOnTileRequirement(token);
 		eggNearby = new ItemOnTileRequirement(evilEgg);
-		hasBruleeWithEgg = new ItemRequirements(bruleeWithEgg);
-		hasBaseBrulee = new ItemRequirements(baseBrulee);
-		hasUncookedBrulee = new ItemRequirements(uncookedBrulee);
-		hasCompleteBrulee = new ItemRequirements(finishedBrulee);
-		hasCinnamon = new ItemRequirements(cinnamon);
 	}
 
 	public void setupSteps()

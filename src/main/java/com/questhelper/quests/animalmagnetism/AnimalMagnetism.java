@@ -34,7 +34,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -43,13 +42,17 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.PuzzleStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.*;
 
 @QuestDescriptor(
 		quest = QuestHelperQuest.ANIMAL_MAGNETISM
@@ -72,7 +75,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva,
 		getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva;
 
-	Requirement hasChickens, hasBarMagnet, hasTwigs, inIronMine;
+	Requirement inIronMine;
 
 	Zone ironMine;
 
@@ -100,7 +103,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		//Step 90 is a cutscene
 
 		ConditionalStep undeadChickens = new ConditionalStep(this, buyUndeadChickens);
-		undeadChickens.addStep(hasChickens, giveChickensToAva);
+		undeadChickens.addStep(undeadChicken2, giveChickensToAva);
 		steps.put(100, undeadChickens);
 		steps.put(110, undeadChickens);
 
@@ -109,7 +112,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		ConditionalStep createMagnet = new ConditionalStep(this, goToIronMine);
 		//Goes before iron mine so that acquiring it shows the right step
-		createMagnet.addStep(hasBarMagnet, giveMagnetToAva);
+		createMagnet.addStep(barMagnet, giveMagnetToAva);
 		createMagnet.addStep(inIronMine, useHammerOnMagnet);
 		steps.put(140, createMagnet);
 
@@ -119,7 +122,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		steps.put(170, talkToTurael);
 
 		ConditionalStep getTwigs = new ConditionalStep(this, cutTree);
-		getTwigs.addStep(hasTwigs, giveTwigsToAva);
+		getTwigs.addStep(twigs, giveTwigsToAva);
 		steps.put(180, getTwigs);
 
 		steps.put(190, getNotesFromAva);
@@ -177,9 +180,6 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		hasChickens = new ItemRequirements(undeadChicken2);
-		hasBarMagnet = new ItemRequirements(barMagnet);
-		hasTwigs = new ItemRequirements(twigs);
 		inIronMine = new ZoneRequirement(ironMine);
 	}
 

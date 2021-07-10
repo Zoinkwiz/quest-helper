@@ -30,7 +30,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -69,7 +68,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement morttonTele, food, flamHammer, flamtaerBracelet;
 
-	Requirement hasDiary, hadSerum208, razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, hasSacredOil, has20Sanctity, hasPyreLog, curedRazmire, curedUlsquire;
+	Requirement razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, has20Sanctity, curedRazmire, curedUlsquire;
 
 	QuestStep searchShelf, readDiary, addAshes, use207OnRazmire, talkToRazmire, kill5Shades, kill4Shades, kill3Shades, kill2Shades, kill1Shades, use207OnRazmireAgain, talkToRazmireAgain, buyTimberLimeAndSwamp,
 		use207OnUlsquire, talkToUlsquire, talkToUlsquireAgain, repairTemple, lightAltar, useOilOnFlame, use207OnFlame, useOilOnLog, burnCorpse, repairTo20Sanctity, use208OnRazmire, use208OnUlsquire, talkToUlsquireToFinish;
@@ -83,7 +82,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep goReadDiary = new ConditionalStep(this, searchShelf);
-		goReadDiary.addStep(hasDiary, readDiary);
+		goReadDiary.addStep(diary.alsoCheckBank(questBank), readDiary);
 		steps.put(0, goReadDiary);
 
 		steps.put(5, addAshes);
@@ -111,7 +110,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		steps.put(47, goTalkToUlsquireAgain);
 
 		ConditionalStep makeSacredOil = new ConditionalStep(this, repairTemple);
-		makeSacredOil.addStep(new Conditions(litFire, has20Sanctity, hasSacredOil), use207OnFlame);
+		makeSacredOil.addStep(new Conditions(litFire, has20Sanctity, sacredOilHighlighted), use207OnFlame);
 		makeSacredOil.addStep(new Conditions(litFire, has20Sanctity), useOilOnFlame);
 		makeSacredOil.addStep(litFire, repairTo20Sanctity);
 		makeSacredOil.addStep(repairedTemple, lightAltar);
@@ -120,8 +119,8 @@ public class ShadesOfMortton extends BasicQuestHelper
 		steps.put(60, makeSacredOil);
 
 		ConditionalStep saveRemains = new ConditionalStep(this, repairTemple);
-		saveRemains.addStep(new Conditions(hadSerum208, hasSacredOil), useOilOnLog);
-		saveRemains.addStep(new Conditions(litFire, has20Sanctity, hasSacredOil), use207OnFlame);
+		saveRemains.addStep(new Conditions(serum208.alsoCheckBank(questBank), sacredOilHighlighted), useOilOnLog);
+		saveRemains.addStep(new Conditions(litFire, has20Sanctity, sacredOilHighlighted), use207OnFlame);
 		saveRemains.addStep(new Conditions(litFire, has20Sanctity), useOilOnFlame);
 		saveRemains.addStep(litFire, repairTo20Sanctity);
 		saveRemains.addStep(repairedTemple, lightAltar);
@@ -206,10 +205,6 @@ public class ShadesOfMortton extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDiary = new ItemRequirements(diary);
-		hadSerum208 = new Conditions(true, new ItemRequirements(serum208));
-		hasSacredOil = new ItemRequirements(sacredOilHighlighted);
-		hasPyreLog = new ItemRequirements(pyreLog);
 		has20Sanctity = new VarplayerRequirement(341, 20);
 
 		razmirePartlyCured = new VarplayerRequirement(340, true, 3);

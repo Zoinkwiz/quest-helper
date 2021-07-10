@@ -29,7 +29,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -54,15 +53,12 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	//Items Required
 	ItemRequirement bucketOfWater, nettleTea, chocolateDust, bucketOfMilk, snapeGrass, chocolateMilk, hangoverCure;
 
-	Requirement hasChocolateMilk, hasHangoverCure;
-
 	QuestStep soberSkippy, useTeaOnSkippy, useChocolateDustOnMilk, useSnapeGrassOnMilk, useHangoverCure;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupItemRequirements();
-		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -70,8 +66,8 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 		steps.put(1, useTeaOnSkippy);
 
 		ConditionalStep makeAndUseCure = new ConditionalStep(this, useChocolateDustOnMilk);
-		makeAndUseCure.addStep(hasHangoverCure, useHangoverCure);
-		makeAndUseCure.addStep(hasChocolateMilk, useSnapeGrassOnMilk);
+		makeAndUseCure.addStep(hangoverCure, useHangoverCure);
+		makeAndUseCure.addStep(chocolateMilk, useSnapeGrassOnMilk);
 
 		steps.put(2, makeAndUseCure);
 
@@ -94,12 +90,6 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 		snapeGrass.setHighlightInInventory(true);
 		chocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
 		chocolateMilk.setHighlightInInventory(true);
-	}
-
-	public void setupConditions()
-	{
-		hasHangoverCure = new ItemRequirements(hangoverCure);
-		hasChocolateMilk = new ItemRequirements(chocolateMilk);
 	}
 
 	public void setupSteps()

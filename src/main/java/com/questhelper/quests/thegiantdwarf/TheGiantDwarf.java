@@ -33,7 +33,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -218,7 +217,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		);
 
 		hasBookOnCostumes = new Conditions(true, LogicType.OR,
-			new ItemRequirements(bookOnCostumes),
+			bookOnCostumes,
 			new WidgetTextRequirement(119, 3, true, "<col=000080>with the <col=800000>book on dwarven costumes<col=000080> that I got from the")
 		);
 
@@ -261,7 +260,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new WidgetTextRequirement(217, 4, "Are you sure you don't want to give me those boots?"));
 
 		hasLeftBoot = new Conditions(true, LogicType.OR,
-			new ItemRequirements(leftBoot),
+			leftBoot,
 			new WidgetTextRequirement(119, 3, true,
 				"<str>I have sneakily stolen one boots from the old dwarf.")
 		);
@@ -273,18 +272,18 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs.")
 		);
 
-		talkedToSantiri = new Conditions(true, new ItemRequirements(dwarvenBattleaxeBroken));
+		talkedToSantiri = new Conditions(true, dwarvenBattleaxeBroken);
 
 		usedSapphires = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Great, all it needs now is a little sharpening!"),
-			new ItemRequirements(dwarvenBattleaxeSapphires));
+			dwarvenBattleaxeSapphires);
 
 		givenThurgoPie = new VarbitRequirement(580, 1);
 		// Thurgo makes axe, 2781 = 1
 		givenDwarvenBattleaxe = new VarbitRequirement(576, true, 2);
 		hasDwarvenBattleaxe = new Conditions(true, LogicType.OR,
 			givenDwarvenBattleaxe,
-			new ItemRequirements(dwarvenBattleaxe),
+			dwarvenBattleaxe,
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
 
 		inConsortium = new ZoneRequirement(consortium);

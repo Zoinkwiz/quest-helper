@@ -30,7 +30,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -63,8 +62,8 @@ public class DaddysHome extends BasicQuestHelper
 	ItemRequirement lumberyardTeleport, varrockTeleport3;
 
 	Requirement removedChair, removedTable, removedTable2, removedStool, removedStool2, removedCampbed,
-		removedCarpet, hasLogs, hasPlanks, repairedCampbed, repairedCarpet, repairedStool, repairedTable,
-		repairedChair, repairedStool2, repairedTable2;
+		removedCarpet, repairedCampbed, repairedCarpet, repairedStool, repairedTable, repairedChair,
+		repairedStool2, repairedTable2;
 
 	//NPC Steps
 	DetailedQuestStep talkToMarlo, talkToYarlo, talkToYarloAgain, talkToOperator, talkToYarloOnceMore, talkToMarloToFinish;
@@ -100,8 +99,8 @@ public class DaddysHome extends BasicQuestHelper
 
 		ConditionalStep repairFurniture = new ConditionalStep(this, buildCarpet);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, repairedCampbed), talkToYarloOnceMore);
-		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, hasPlanks), buildCampbed);
-		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, hasLogs), talkToOperator);
+		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, waxwoodPlank3), buildCampbed);
+		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, waxwoodLog3), talkToOperator);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2), searchCrate);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2), buildTable2);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair), buildStool2);
@@ -163,9 +162,6 @@ public class DaddysHome extends BasicQuestHelper
 		repairedChair = new VarbitRequirement(10565, 3);
 		repairedStool2 = new VarbitRequirement(10563, 3);
 		repairedTable2 = new VarbitRequirement(10566, 3);
-
-		hasPlanks = new ItemRequirements(waxwoodPlank3);
-		hasLogs = new ItemRequirements(waxwoodLog3);
 	}
 
 	public void setupSteps()

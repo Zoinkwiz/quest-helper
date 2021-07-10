@@ -30,7 +30,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -59,7 +58,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	//Required items
 	ItemRequirement goblinMailThree, orangeDye, blueDye, goblinMail, goblinMailTwo, blueArmour, orangeArmour, mailReq;
 
-	Requirement hasThreeGoblinMail, isUpstairs, hasUpstairsArmour, hasWestArmour, hasNorthArmour, hasOrangeArmour, hasBlueArmour, hasThreeMail, hasTwoMail, hasMail;
+	Requirement isUpstairs, hasUpstairsArmour, hasWestArmour, hasNorthArmour;
 
 	QuestStep talkToGeneral1, talkToGeneral2, talkToGeneral3, goUpLadder, searchUpLadder, goDownLadder, searchWestHut, searchBehindGenerals,
 		dyeOrange, dyeBlue, getCrate2, getCrate3;
@@ -83,25 +82,28 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		lootArmour.addStep(isUpstairs, searchUpLadder);
 
 		ConditionalStep prepareForQuest = new ConditionalStep(this, lootArmour);
-		prepareForQuest.addStep(new Conditions(hasMail, hasBlueArmour), dyeOrange);
-		prepareForQuest.addStep(new Conditions(LogicType.OR, hasThreeMail, new Conditions(hasUpstairsArmour, hasWestArmour, hasNorthArmour)), dyeBlue);
+		prepareForQuest.addStep(new Conditions(goblinMail, blueArmour), dyeOrange);
+		prepareForQuest.addStep(new Conditions(LogicType.OR, goblinMailThree, new Conditions(hasUpstairsArmour, hasWestArmour,
+			hasNorthArmour)), dyeBlue);
 
 		ConditionalStep step1 = new ConditionalStep(this, prepareForQuest);
-		step1.addStep(new Conditions(hasMail, hasBlueArmour, hasOrangeArmour), talkToGeneral1);
+		step1.addStep(new Conditions(goblinMail, blueArmour, orangeArmour), talkToGeneral1);
 
 		steps.put(0, step1);
 		steps.put(3, step1);
 
 		ConditionalStep prepareBlueArmour = new ConditionalStep(this, lootArmour);
-		prepareBlueArmour.addStep(new Conditions(LogicType.OR, hasTwoMail, new Conditions(hasUpstairsArmour, hasWestArmour, hasNorthArmour)), dyeBlue);
+		prepareBlueArmour.addStep(new Conditions(LogicType.OR, goblinMailTwo, new Conditions(hasUpstairsArmour, hasWestArmour,
+			hasNorthArmour)), dyeBlue);
 
 		ConditionalStep step2 = new ConditionalStep(this, prepareBlueArmour);
-		step2.addStep(hasBlueArmour, talkToGeneral2);
+		step2.addStep(blueArmour, talkToGeneral2);
 
 		steps.put(4, step2);
 
 		ConditionalStep step3 = new ConditionalStep(this, lootArmour);
-		step3.addStep(new Conditions(LogicType.OR, hasMail, new Conditions(hasUpstairsArmour, hasWestArmour, hasNorthArmour)), talkToGeneral3);
+		step3.addStep(new Conditions(LogicType.OR, goblinMail, new Conditions(hasUpstairsArmour, hasWestArmour,
+			hasNorthArmour)), talkToGeneral3);
 
 		steps.put(5, step3);
 
@@ -131,15 +133,9 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	public void setupConditions()
 	{
 		isUpstairs = new ZoneRequirement(upstairs);
-		hasThreeGoblinMail = new ItemRequirements(goblinMailThree);
 		hasUpstairsArmour = new VarbitRequirement(2381, 1);
 		hasWestArmour = new VarbitRequirement(2380, 1);
 		hasNorthArmour = new VarbitRequirement(2379, 1);
-		hasOrangeArmour = new ItemRequirements(orangeArmour);
-		hasBlueArmour = new ItemRequirements(blueArmour);
-		hasThreeMail = new ItemRequirements(goblinMailThree);
-		hasTwoMail = new ItemRequirements(goblinMailTwo);
-		hasMail = new ItemRequirements(goblinMail);
 	}
 
 	public void setupZones()
@@ -178,6 +174,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 
 		talkToGeneral3 = new NpcStep(this, NpcID.GENERAL_BENTNOZE, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village once more.", goblinMail);
 		talkToGeneral3.addDialogStep("So how is life for the goblins?");
+		talkToGeneral3.addDialogStep("Yes, Wartface looks fat");
 		talkToGeneral3.addDialogStep("I have some brown armour here");
 	}
 

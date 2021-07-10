@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -70,9 +69,8 @@ public class DreamMentor extends BasicQuestHelper
 	ItemRequirement sealOfPassage, dreamVial, astralRune, astralRuneShards, groundAstralRune, dreamVialWater, dreamVialWithGoutweed,
 		pestleAndMortar, dreamPotion, foodAll, food4, food6, goutweed, tinderbox, hammer, combatGear, food14, chest;
 
-	Requirement inLunarMine, inCyrisusRoom, at40Health, at70Health, lookingAtBank, gotItems, cyrisusDressed, at100Health, hasVialWater, hasVialGout,
-		hasAstralShard, hasAstralPowder, hasDreamPotion, litBrazier, inArena, unlockedDream, inadaquacyNearby, everlastingNearby,
-		untouchableNearby, illusiveNearby;
+	Requirement inLunarMine, inCyrisusRoom, at40Health, at70Health, lookingAtBank, gotItems, cyrisusDressed, at100Health, litBrazier,
+		inArena, unlockedDream, inadaquacyNearby, everlastingNearby, untouchableNearby, illusiveNearby;
 
 	QuestStep goDownToCyrisus, enterCyrisusCave, talkToCyrisus, feed4Food, talkToCyrisus2, feed4Food2, talkToCyrisus3, feed6Food, talkToCyrisus4,
 		leaveCave, goUpToSurface, talkToJack, selectEquipment, goBackDownToCyrisus, enterCyrisusCaveAgain, giveCyrisusGear, useFood3, goBackDownAfterGearing,
@@ -150,12 +148,12 @@ public class DreamMentor extends BasicQuestHelper
 		enterDream.addStep(new Conditions(inArena, everlastingNearby), killEverlasting);
 		enterDream.addStep(new Conditions(inArena, inadaquacyNearby), killInadaquacy);
 		enterDream.addStep(inArena, killIllusive);
-		enterDream.addStep(new Conditions(litBrazier, new Conditions(LogicType.OR, hasDreamPotion, unlockedDream)), talkToCyrisusForDream);
-		enterDream.addStep(new Conditions(LogicType.OR, unlockedDream, hasDreamPotion), lightBrazier);
-		enterDream.addStep(new Conditions(hasVialGout, hasAstralPowder), useGroundAstralOnVial);
-		enterDream.addStep(new Conditions(hasVialGout, hasAstralShard), usePestleOnShards);
-		enterDream.addStep(hasVialGout, useHammerOnAstralRune);
-		enterDream.addStep(hasVialWater, addGoutweed);
+		enterDream.addStep(new Conditions(litBrazier, new Conditions(LogicType.OR, dreamPotion, unlockedDream)), talkToCyrisusForDream);
+		enterDream.addStep(new Conditions(LogicType.OR, unlockedDream, dreamPotion), lightBrazier);
+		enterDream.addStep(new Conditions(dreamVialWithGoutweed, groundAstralRune), useGroundAstralOnVial);
+		enterDream.addStep(new Conditions(dreamVialWithGoutweed, astralRuneShards), usePestleOnShards);
+		enterDream.addStep(dreamVialWithGoutweed, useHammerOnAstralRune);
+		enterDream.addStep(dreamVialWater, addGoutweed);
 		steps.put(24, enterDream);
 
 		steps.put(26, returnToOneiromancer);
@@ -229,12 +227,6 @@ public class DreamMentor extends BasicQuestHelper
 		gotItems = new CyrisusBankConditional();
 		cyrisusDressed = new VarbitRequirement(3623, 100);
 
-		hasVialWater = new ItemRequirements(dreamVialWater);
-		hasVialGout = new ItemRequirements(dreamVialWithGoutweed);
-		hasAstralShard = new ItemRequirements(astralRuneShards);
-		hasAstralPowder = new ItemRequirements(groundAstralRune);
-		hasDreamPotion = new ItemRequirements(dreamPotion);
-
 		litBrazier = new VarbitRequirement(2430, 1);
 
 		unlockedDream = new VarbitRequirement(3625, 1);
@@ -299,7 +291,8 @@ public class DreamMentor extends BasicQuestHelper
 		leaveCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_11399, new WorldPoint(2346, 10360, 2), "Talk to 'Bird's-Eye' Jack in the Lunar Isle bank.");
 		goUpToSurface = new ObjectStep(this, ObjectID.LADDER_14995, new WorldPoint(2330, 10353, 2), "Talk to 'Bird's-Eye' Jack in the Lunar Isle bank.");
 		selectEquipment = new SelectingCombatGear(this);
-		talkToJack = new NpcStep(this, NpcID.BIRDSEYE_JACK, new WorldPoint(2099, 3921, 0), "Talk to 'Bird's-Eye' Jack in the Lunar Isle bank for Cyrisus's equipment.");
+		talkToJack = new NpcStep(this, NpcID.BIRDSEYE_JACK, new WorldPoint(2099, 3921, 0),
+			"Talk to 'Bird's-Eye' Jack in the Lunar Isle bank for Cyrisus's equipment.", sealOfPassage);
 		talkToJack.addDialogStep("Cyrisus in the mine");
 		talkToJack.addSubSteps(leaveCave, goUpToSurface, selectEquipment);
 		goBackDownToCyrisus = new ObjectStep(this, ObjectID.LADDER_14996, new WorldPoint(2142, 3944, 0), "Enter the mine in the north east of Lunar Isle.", chest, food6);
@@ -388,9 +381,11 @@ public class DreamMentor extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping Cyrisus", Arrays.asList(goDownToCyrisus, enterCyrisusCave,
 			talkToCyrisus, feed4Food, talkToCyrisus2, feed4Food2, talkToCyrisus3, feed6Food, talkToCyrisus4, talkToJack, giveCyrisusGear,
-			useFood3, supportCyrisusToRecovery), foodAll));
+			useFood3, supportCyrisusToRecovery), foodAll, sealOfPassage));
 		allSteps.add(new PanelDetails("Defeating his fear", Arrays.asList(talkToOneiromancer, fillVialWithWater, addGoutweed,
-			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy, killEverlasting, killUntouchable, killIllusive, returnToOneiromancer), goutweed, astralRune, hammer, pestleAndMortar, tinderbox, combatGear));
+			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy,
+			killEverlasting, killUntouchable, killIllusive, returnToOneiromancer), sealOfPassage, goutweed, astralRune, hammer,
+			pestleAndMortar, tinderbox, combatGear));
 		return allSteps;
 	}
 

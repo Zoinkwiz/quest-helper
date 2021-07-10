@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -62,7 +61,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, draynorManorTeleport;
 
-	Requirement inManor, inBasement, hasGarlic, isUpstairsInMorgans, draynorNearby, hasStake;
+	Requirement inManor, inBasement, isUpstairsInMorgans, draynorNearby;
 
 	QuestStep talkToMorgan, goUpstairsMorgan, getGarlic, ifNeedGarlic, talkToHarlow, talkToHarlowAgain, enterDraynorManor, goDownToBasement, openCoffin, killDraynor;
 
@@ -81,7 +80,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		steps.put(0, talkToMorgan);
 
 		ConditionalStep getGarlicAndStake = new ConditionalStep(this, goUpstairsMorgan);
-		getGarlicAndStake.addStep(hasGarlic, talkToHarlow);
+		getGarlicAndStake.addStep(garlic, talkToHarlow);
 		getGarlicAndStake.addStep(isUpstairsInMorgans, getGarlic);
 
 		steps.put(1, getGarlicAndStake);
@@ -90,7 +89,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		prepareAndKillDraynor.addStep(draynorNearby, killDraynor);
 		prepareAndKillDraynor.addStep(inBasement, openCoffin);
 		prepareAndKillDraynor.addStep(inManor, goDownToBasement);
-		prepareAndKillDraynor.addStep(hasStake, enterDraynorManor);
+		prepareAndKillDraynor.addStep(stake, enterDraynorManor);
 
 		steps.put(2, prepareAndKillDraynor);
 
@@ -118,8 +117,6 @@ public class VampyreSlayer extends BasicQuestHelper
 		inManor = new ZoneRequirement(manor);
 		isUpstairsInMorgans = new ZoneRequirement(upstairsInMorgans);
 		draynorNearby = new NpcCondition(NpcID.COUNT_DRAYNOR);
-		hasGarlic = new ItemRequirements(garlic);
-		hasStake = new ItemRequirements(stake);
 	}
 
 	public void setupZones()

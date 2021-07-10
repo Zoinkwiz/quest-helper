@@ -30,7 +30,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -313,30 +312,30 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		talkedToDantaera = new VarbitRequirement(976, 1);
 		cutShoot = new VarbitRequirement(976, 2);
-		hasPlantedShoot = new Conditions(new ItemRequirements(whiteTreePot));
+		hasPlantedShoot = new Conditions(whiteTreePot);
 		hasWateredShoot = new Conditions(LogicType.OR,
 			new VarbitRequirement(985, 4, Operation.GREATER_EQUAL),
-			new ItemRequirements(whiteTreeWatered),
-			new ItemRequirements(whitetreeSapling));
+			whiteTreeWatered,
+			whitetreeSapling);
 
 		talkedToAlthric = new VarbitRequirement(977, 1, Operation.GREATER_EQUAL);
 		ringInWell = new VarbitRequirement(966, 1);
 		canPickRoses = new Conditions(LogicType.OR,
 			new VarbitRequirement(977, 2, Operation.GREATER_EQUAL),
 			ringInWell
-			);
+		);
 		ringNotInWell = new VarbitRequirement(966, 0);
 
 		hasRedRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirements(redRoseSeed),
+			redRoseSeed,
 			new VarbitRequirement(979, 4, Operation.GREATER_EQUAL)
 		);
 		hasWhiteRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirements(whiteRoseSeed),
+			whiteRoseSeed,
 			new VarbitRequirement(980, 4, Operation.GREATER_EQUAL)
 		);
 		hasPinkRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirements(pinkRoseSeed),
+			pinkRoseSeed,
 			new VarbitRequirement(981, 4, Operation.GREATER_EQUAL)
 		);
 		hasRoseSeeds = new Conditions(hasRedRoseSeed, hasWhiteRoseSeed, hasPinkRoseSeed);
@@ -345,9 +344,9 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		usedCureOnVines = new VarbitRequirement(988, 2);
 		talkedToAlain = new VarbitRequirement(988, 3);
 		curedVine = new VarbitRequirement(988, 4);
-		hasShards = new ItemRequirements(runeShards);
-		hasDust = new ItemRequirements(runeDust);
-		hasEnhancedCure = new ItemRequirements(magicPlantCure);
+		hasShards = runeShards;
+		hasDust = runeDust;
+		hasEnhancedCure = magicPlantCure;
 		gotVineSeeds = new VarbitRequirement(988, 5);
 
 		notAddedCompost1 = new VarbitRequirement(984, 0);
@@ -366,7 +365,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			notPlantedWhiteRose, notPlantedVine);
 
 		hasTrolley = new Conditions(LogicType.OR,
-			new ItemRequirements(trolley),
+			trolley,
 			new NpcCondition(NpcID.TROLLEY));
 
 		lumbridgeStatueOnTrolley = new VarbitRequirement(965, 2);
@@ -378,10 +377,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEllamaria = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllamaria = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 			"Talk to Ellamaria east of Varrock Castle.");
 		talkToEllamaria.addDialogStep("I would be happy to help someone who is so in touch with the people.");
-		talkToEllamariaForTrolley = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllamariaForTrolley = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 			"Talk to Ellamaria for a trolley.");
 		talkToEllamariaForTrolley.addDialogSteps("How am I supposed to move statues all the way here?");
 		talkToWom = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3089, 3254, 0),
@@ -575,7 +574,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			new WorldPoint(3230, 3479, 0)
 		)));
 
-		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 		"Talk to Ellamaria once everything's finished growing.");
 		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3221, 3473, 0),
 			"Talk to King Roald in Varrock Castle, watch the cutscene, then finish the dialog with Ellmaria to finish" +

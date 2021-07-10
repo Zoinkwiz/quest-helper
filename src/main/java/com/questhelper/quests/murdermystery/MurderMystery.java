@@ -63,10 +63,7 @@ public class MurderMystery extends BasicQuestHelper
 		silverPot, silverNeedleFlour, silverPotFlour, elizabethPrint, frankPrint, criminalsDaggerHighlighted, criminalsDaggerFlourHighlighted, silverCup, silverCupFlour, silverBottle,
 		silverBottleFlour, bobPrint, carolPrint;
 
-	Requirement hasCriminalsThreadAny, hasCriminalsDagger, hasPungentPot, hasThreeFlypaper, hasCriminalsDaggerNoFlour, hasCriminalsDaggerWithflour,
-		hasCriminalsThread1, hasCriminalsThread2, hasCriminalsThread3, hasPotOfFlour, hasUnknownPrint, hasSilverNecklace, hasSilverBook, hasAnyThread2Item,
-		hasKillersPrint, hasSilverNeedle, hasSilverPot, hasAnyThread1Item, hasAnyThread3Item, heardAboutPoisonSalesman, talkedToPoisonSalesman, hasSilverBottle,
-		hasSilverCup;
+	Requirement hasAnyThread2Item, hasAnyThread1Item, hasAnyThread3Item, heardAboutPoisonSalesman, talkedToPoisonSalesman;
 
 	QuestStep talkToGuard, talkToGossip, talkToPoisonSalesman, pickUpDagger, pickUpPungentPot, searchWindowForThread, fillPotWithFlour, useFlourOnDagger, collectThreeFlypaper,
 		useFlypaperOnDagger, getSilverItems, searchAnnasBarrel, searchDavidsBarrel, compareSilverToMurdererPrint, getAndComparePrintsOfNecklaceOrBook, remainingSteps,
@@ -93,34 +90,36 @@ public class MurderMystery extends BasicQuestHelper
 		// Thread2, get Anna or David's items
 
 		ConditionalStep investigating = new ConditionalStep(this, collectThreeFlypaper);
-		investigating.addStep(new Conditions(hasKillersPrint), new SolvingTheCrimeStep(this, remainingSteps));
+		investigating.addStep(new Conditions(killersPrint), new SolvingTheCrimeStep(this, remainingSteps));
 
 		/* compare prints */
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsThread1, hasUnknownPrint, hasAnyThread1Item), getAndComparePrintsOfCupOrBottle);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsThread2, hasUnknownPrint, hasAnyThread2Item), getAndComparePrintsOfNecklaceOrBook);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsThread3, hasUnknownPrint, hasAnyThread3Item), getAndComparePrintsOfNeeedleOrPot);
+		investigating.addStep(new Conditions(pungentPot, criminalsThread1, unknownPrint, hasAnyThread1Item),
+			getAndComparePrintsOfCupOrBottle);
+		investigating.addStep(new Conditions(pungentPot, criminalsThread2, unknownPrint, hasAnyThread2Item), getAndComparePrintsOfNecklaceOrBook);
+		investigating.addStep(new Conditions(pungentPot, criminalsThread3, unknownPrint, hasAnyThread3Item), getAndComparePrintsOfNeeedleOrPot);
 
 		/* Get dagger print */
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerWithflour, hasCriminalsThreadAny), useFlypaperOnDagger);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThreadAny, hasPotOfFlour), useFlourOnDagger);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerFlour, criminalsThread), useFlypaperOnDagger);
+		investigating.addStep(new Conditions(pungentPot, criminalsDagger, criminalsThread, potOfFlourHighlighted),
+			useFlourOnDagger);
 
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThread1, hasSilverCup, hasSilverBottle), fillPotWithFlour);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThread2, hasSilverNecklace, hasSilverBook), fillPotWithFlour);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDaggerNoFlour, hasCriminalsThread3, hasSilverNeedle, hasSilverPot), fillPotWithFlour);
+		investigating.addStep(new Conditions(pungentPot, criminalsDagger, criminalsThread1, silverCup, silverBottle), fillPotWithFlour);
+		investigating.addStep(new Conditions(pungentPot, criminalsDagger, criminalsThread2, silverNecklace, silverBook), fillPotWithFlour);
+		investigating.addStep(new Conditions(pungentPot, criminalsDagger, criminalsThread3, silverNeedle, silverPot), fillPotWithFlour);
 
 		/* Getting silver items for thread 1 */
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDagger, hasCriminalsThread1, hasSilverBottle), searchBobsBarrel);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDagger, hasCriminalsThread1), searchCarolsBarrel);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerAny, criminalsThread1, silverBottle), searchBobsBarrel);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerAny, criminalsThread1), searchCarolsBarrel);
 		/* Getting silver items for thread 2 */
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDagger, hasCriminalsThread3, hasSilverNeedle), searchFranksBarrel);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDagger, hasCriminalsThread3), searchElizabethsBarrel);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerAny, criminalsThread3, silverNeedle), searchFranksBarrel);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerAny, criminalsThread3), searchElizabethsBarrel);
 		/* Getting silver items for thread 3 */
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDagger, hasCriminalsThread2, hasSilverNecklace), searchDavidsBarrel);
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDagger, hasCriminalsThread2), searchAnnasBarrel);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerAny, criminalsThread2, silverNecklace), searchDavidsBarrel);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerAny, criminalsThread2), searchAnnasBarrel);
 
-		investigating.addStep(new Conditions(hasPungentPot, hasCriminalsDagger), searchWindowForThread);
-		investigating.addStep(hasCriminalsDagger, pickUpPungentPot);
-		investigating.addStep(new Conditions(LogicType.OR, hasThreeFlypaper, hasCriminalsThreadAny, hasPungentPot), pickUpDagger);
+		investigating.addStep(new Conditions(pungentPot, criminalsDaggerAny), searchWindowForThread);
+		investigating.addStep(criminalsDaggerAny, pickUpPungentPot);
+		investigating.addStep(new Conditions(LogicType.OR, threeFlypaper, criminalsThread, pungentPot), pickUpDagger);
 
 		steps.put(1, investigating);
 
@@ -137,34 +136,9 @@ public class MurderMystery extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasCriminalsThreadAny = new ItemRequirements(criminalsThread);
-		hasCriminalsThread1 = new ItemRequirements(criminalsThread1);
-		hasCriminalsThread2 = new ItemRequirements(criminalsThread2);
-		hasCriminalsThread3 = new ItemRequirements(criminalsThread3);
-		hasCriminalsDagger = new ItemRequirements(criminalsDaggerAny);
-		hasCriminalsDaggerNoFlour = new ItemRequirements(criminalsDagger);
-		hasCriminalsDaggerWithflour = new ItemRequirements(criminalsDaggerFlour);
-		hasPungentPot = new ItemRequirements(pungentPot);
-		hasPotOfFlour = new ItemRequirements(potOfFlourHighlighted);
-
-		hasUnknownPrint = new ItemRequirements(unknownPrint);
-
-		hasSilverBottle = new ItemRequirements(silverBottle);
-		hasSilverCup = new ItemRequirements(silverCup);
-
-		hasSilverBook = new ItemRequirements(silverBook);
-		hasSilverNecklace = new ItemRequirements(silverNecklace);
-
-		hasSilverNeedle = new ItemRequirements(silverNeedle);
-		hasSilverPot = new ItemRequirements(silverPot);
-
 		hasAnyThread1Item = new ItemRequirements(LogicType.OR, silverCupFlour, silverCup, silverBottleFlour, silverBottle, bobPrint, carolPrint);
 		hasAnyThread2Item = new ItemRequirements(LogicType.OR, silverBookFlour, silverBook, silverNecklaceFlour, silverNecklace, annasPrint, davidsPrint);
 		hasAnyThread3Item = new ItemRequirements(LogicType.OR, silverNeedleFlour, silverNeedle, silverPotFlour, silverPot, elizabethPrint, frankPrint);
-
-		hasThreeFlypaper = new ItemRequirements(threeFlypaper);
-
-		hasKillersPrint = new ItemRequirements(killersPrint);
 
 		heardAboutPoisonSalesman = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Especially as I heard that the poison salesman in the<br>Seers' village made a big sale to one of the family the<br>other day."));
 		talkedToPoisonSalesman = new Conditions(true, new WidgetTextRequirement(217, 4, "Uh... no, it's ok."));

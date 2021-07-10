@@ -28,7 +28,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -59,7 +58,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	//Other items used
 	ItemRequirement enchantedScroll, enchantedQuill, mysteriousOrb;
 
-	Requirement hasEnchantedScroll, hasEnchantedQuill, hasMysteriousOrb, hasFeather, talkedToLeenz, talkedToHorace, talkedToJennifer, talkedToMunty, talkedToRegath;
+	Requirement talkedToLeenz, talkedToHorace, talkedToJennifer, talkedToMunty, talkedToRegath;
 
 	QuestStep talkToVeos, useFeatherOnScroll, talkToLeenz, talkToHorace, talkToJennifer, talkToMunty, talkToRegath, returnToVeos, goToAltar, finishQuest;
 
@@ -74,18 +73,18 @@ public class ClientOfKourend extends BasicQuestHelper
 		steps.put(0, talkToVeos);
 
 		ConditionalStep makeEnchantedQuill = new ConditionalStep(this, talkToVeos);
-		makeEnchantedQuill.addStep(new Conditions(hasEnchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
-		makeEnchantedQuill.addStep(new Conditions(hasEnchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
-		makeEnchantedQuill.addStep(new Conditions(hasEnchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
-		makeEnchantedQuill.addStep(new Conditions(hasEnchantedQuill, talkedToLeenz), talkToRegath);
-		makeEnchantedQuill.addStep(new Conditions(hasEnchantedQuill), talkToLeenz);
-		makeEnchantedQuill.addStep(hasEnchantedScroll, useFeatherOnScroll);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz), talkToRegath);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill), talkToLeenz);
+		makeEnchantedQuill.addStep(enchantedScroll, useFeatherOnScroll);
 		steps.put(1, makeEnchantedQuill);
 
 		steps.put(2, returnToVeos);
 
 		ConditionalStep takeOrbToAltar = new ConditionalStep(this, returnToVeos);
-		takeOrbToAltar.addStep(hasMysteriousOrb, goToAltar);
+		takeOrbToAltar.addStep(mysteriousOrb, goToAltar);
 
 		steps.put(3, returnToVeos);
 
@@ -111,10 +110,6 @@ public class ClientOfKourend extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnchantedQuill = new ItemRequirements(enchantedQuill);
-		hasEnchantedScroll = new ItemRequirements(enchantedScroll);
-		hasFeather = new ItemRequirements(feather);
-		hasMysteriousOrb = new ItemRequirements(mysteriousOrb);
 		talkedToLeenz = new VarbitRequirement(5620, 1);
 		talkedToRegath = new VarbitRequirement(5621, 1);
 		talkedToMunty = new VarbitRequirement(5622, 1);
@@ -139,10 +134,10 @@ public class ClientOfKourend extends BasicQuestHelper
 		talkToHorace = new NpcStep(this, NpcID.HORACE, new WorldPoint(1774, 3589, 0), "Talk to Horace in the Hosidius general store.", enchantedQuill);
 		talkToHorace.addDialogStep("Can I ask you about Hosidius?");
 		talkToHorace.addDialogStep("Why should I gain favour with Hosidius?");
-		talkToJennifer = new NpcStep(this, NpcID.JENNIFER, new WorldPoint(1545, 3636, 0), "Talk to Jennifer in Shayzien general store.", enchantedQuill);
+		talkToJennifer = new NpcStep(this, NpcID.JENNIFER, new WorldPoint(1518, 3586, 0), "Talk to Jennifer in Shayzien general store.", enchantedQuill);
 		talkToJennifer.addDialogStep("Can I ask you about Shayzien?");
 		talkToJennifer.addDialogStep("Why should I gain favour with Shayzien?");
-		talkToMunty = new NpcStep(this, NpcID.MUNTY, new WorldPoint(1552, 3716, 0), "Talk to Munty in Lovakengj general store.", enchantedQuill);
+		talkToMunty = new NpcStep(this, NpcID.MUNTY, new WorldPoint(1551, 3752, 0), "Talk to Munty in Lovakengj general store.", enchantedQuill);
 		talkToMunty.addDialogStep("Can I ask you about Lovakengj?");
 		talkToMunty.addDialogStep("Why should I gain favour with Lovakengj?");
 		talkToRegath = new NpcStep(this, NpcID.REGATH, new WorldPoint(1720, 3724, 0), "Talk to Regath in Arceuus general store.", enchantedQuill);

@@ -105,7 +105,7 @@ public class AKingdomDivided extends BasicQuestHelper
 
 	Requirement hasTalkedToTomasLowry, hasBluishKey, inArceuusLibraryHistoricalArchive, inCouncillorsHouseF1,
 		inCouncillorsHouseF2, inCouncillorsHouseF3, hasReceipt, hasInspectedReceipt, judgeOfYamaNearby, inPanelZone,
-		assassinNearby, hasColdKey, inLeglessFaunF1, inLizardTemple, hasKahtEgg, inEggArea, xamphurNearby,
+		assassinNearby, hasColdKey, inLeglessFaunF1, inPrisonRoom, inLizardTemple, hasKahtEgg, inEggArea, xamphurNearby,
 		xamphurGateNearby, inTowerOfMagic, inWarrens, inShayzienRoom, inLookoutBasement, inLookoutF0, inLookoutF1,
 		inLookoutF2, inLookoutF3, helpingLova0, helpingPisc0, helpingHosidius0, helpingShayzien0, helpingArceuus0,
 		helpingLova2, helpingPisc2, helpingHosidius2, helpingShayzien2, helpingArceuus2, helpingLova4, helpingPisc4,
@@ -123,9 +123,9 @@ public class AKingdomDivided extends BasicQuestHelper
 
 	Requirement freeInventorySlots;
 
-	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1,
-		panelArea2, leglessFaunF1, lizardTemple, eggArea, towerOfMagic, warrens, shayzienRoom, lookoutBasement, lookoutF0,
-		lookoutF1, lookoutF2, lookoutF3, shayzienPrison, mountKaruulm, arceuusChurchF1, arceuusChurchF2, wineBarrel;
+	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1, panelArea2,
+		prisonRoom, leglessFaunF1, lizardTemple, eggArea, towerOfMagic, warrens, shayzienRoom, lookoutBasement,
+		lookoutF0,lookoutF1, lookoutF2, lookoutF3, shayzienPrison, mountKaruulm, arceuusChurchF1, arceuusChurchF2, wineBarrel;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -214,8 +214,11 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(74, openLeglessFaunPanelConditional);
 		steps.put(76, readRosesNote4);
 		steps.put(78, inspectCratesInShack);
-		steps.put(80, watchCutsceneInShack);
-		steps.put(82, watchCutsceneInShack);
+
+		ConditionalStep goWatchDiscoveryCutscene = new ConditionalStep(this, inspectCratesInShack);
+		goWatchDiscoveryCutscene.addStep(inPrisonRoom, watchCutsceneInShack);
+		steps.put(80, goWatchDiscoveryCutscene);
+		steps.put(82, goWatchDiscoveryCutscene);
 
 		ConditionalStep talkToKaht = new ConditionalStep(this, enterLizardTempleFirstTime);
 		talkToKaht.addStep(new Conditions(inLizardTemple), talkToKahtbalam);
@@ -236,7 +239,7 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		steps.put(90, returnToKaht);
 		steps.put(92, openDoorNearKaht);
-		steps.put(94, openDoorNearKaht);
+		steps.put(94, openDoorNearKahtNoKey);
 
 		ConditionalStep xamphurFightConditional = new ConditionalStep(this, fightXamphur);
 		xamphurFightConditional.addStep(inLizardTemple, openDoorNearKahtNoKey);
@@ -389,6 +392,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		arceuusChurchF1 = new Zone(new WorldPoint(1677, 3806, 1), new WorldPoint(1714, 3781, 1));
 		arceuusChurchF2 = new Zone(new WorldPoint(1681, 3805, 2), new WorldPoint(1714, 3781, 2));
 		wineBarrel = new Zone(new WorldPoint(1890, 9961, 0), new WorldPoint(1907, 9950, 0));
+		prisonRoom = new Zone(new WorldPoint(1181, 10262, 0), new WorldPoint(1200, 10270, 0));
 	}
 
 	public void setupItemRequirements()
@@ -432,7 +436,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		kahtEgg = new ItemRequirement("Lizardman Egg", ItemID.LIZARDMAN_EGG);
 		kahtEgg.setTooltip("Received during quest.");
 		dampKey = new ItemRequirement("Damp Key", ItemID.DAMP_KEY);
-		dampKey.setTooltip("Received during quest.");
+		dampKey.setTooltip("You can get another from Kaht B'alam");
 		defencePotion = new ItemRequirement("Defence Potion (3) or (4)", ItemID.DEFENCE_POTION4);
 		defencePotion.addAlternates(ItemID.DEFENCE_POTION3);
 		volcanicSulphur = new ItemRequirement("Volcanic sulphur", ItemID.VOLCANIC_SULPHUR);
@@ -467,6 +471,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		assassinNearby = new NpcCondition(NpcID.ASSASSIN_10940);
 		hasColdKey = new ItemRequirements(coldKey);
 		inLeglessFaunF1 = new ZoneRequirement(leglessFaunF1);
+		inPrisonRoom = new ZoneRequirement(prisonRoom);
 		inLizardTemple = new ZoneRequirement(lizardTemple);
 		hasKahtEgg = new ItemRequirements(kahtEgg);
 		inEggArea = new ZoneRequirement(eggArea);
@@ -631,13 +636,17 @@ public class AKingdomDivided extends BasicQuestHelper
 		inspectCratesInShack.addDialogSteps("Climb through it.");
 		watchCutsceneAfterTalkingToFulloreInBasement = new DetailedQuestStep(this, "Watch the cutscene.");
 		watchCutsceneInShack = new DetailedQuestStep(this, "Watch the cutscene.");
+		inspectCratesInShack.addSubSteps(watchCutsceneInShack);
 		enterLizardTemple = new ObjectStep(this, ObjectID.LIZARD_DWELLING, new WorldPoint(1292, 3657, 0), "Enter the Lizard Dwelling south east of the Farming guild.");
 		enterLizardTempleFirstTime = new ObjectStep(this, ObjectID.LIZARD_DWELLING, new WorldPoint(1292, 3657, 0), "Enter the Lizard Dwelling south east of the Farming guild.");
 		enterLizardTempleWithEgg = new ObjectStep(this, ObjectID.LIZARD_DWELLING, new WorldPoint(1292, 3657, 0), "Enter the Lizard Dwelling south east of the Farming guild.");
 		enterLizardTempleToFightXamphur = new ObjectStep(this, ObjectID.LIZARD_DWELLING, new WorldPoint(1292, 3657, 0), "Enter the Lizard Dwelling south east of the Farming guild.");
 		talkToKahtbalam = new NpcStep(this, NpcID.KAHT_BALAM, new WorldPoint(1330, 10084, 0), "Talk to Kaht B'alam located on the east side of the middle tunnel.");
+		((NpcStep) talkToKahtbalam).setWorldMapPoint(new WorldPoint(1331, 10037, 0));
 		talkToKahtbalam.addDialogSteps("Do you think you could help me find a mage?");
 		exitLizardTemple = new ObjectStep(this, ObjectID.STRANGE_HOLE, new WorldPoint(1292, 10077, 0), "Exit the Lizard Temple by jumping down the hole to the west.");
+		((ObjectStep) exitLizardTemple).setWorldMapPoint(new WorldPoint(1292, 10029, 0));
+
 		goToEggArea = new DetailedQuestStep(this, new WorldPoint(1238, 3618, 0), "Search the Lizardman eggs found in the Kebos Lowlands until you find a Lizardman egg. You will be attacked by a level 75 lizardman but you do not need to kill it.", freeInventorySlots);
 		collectEgg = new ObjectStep(this, ObjectID.LIZARDMAN_EGGS_41874, "Search the Lizardman eggs found in the Kebos Lowlands until you find a Lizardman egg. You will be attacked by a level 75 lizardman but you do not need to kill it.", freeInventorySlots);
 		((ObjectStep) collectEgg).setHideWorldArrow(true);
@@ -649,13 +658,16 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		returntoKahtBalam = new DetailedQuestStep(this, "Return to Kaht B'alam with the Lizardman egg.");
 		talkToKahtbalamAgain = new NpcStep(this, NpcID.KAHT_BALAM, new WorldPoint(1330, 10084, 0), "Talk to Kaht B'alam located on the east side of the middle tunnel.");
-		talkToKahtbalamAgain.addDialogSteps("So, about the key to that door...");
+		((NpcStep) talkToKahtbalamAgain).setWorldMapPoint(new WorldPoint(1331, 10037, 0));
+		talkToKahtbalamAgain.addDialogSteps("So, about the key to that door...", "So about the door over there...");
 
 		returntoKahtBalam.addSubSteps(collectEgg, talkToKahtbalamAgain, enterLizardTempleWithEgg);
 		openDoorNearKaht = new ObjectStep(this, ObjectID.DOOR_41870, new WorldPoint(1323, 10080, 0), "Open and enter the door near Kaht B'alam with the damp key.", dampKey);
-		openDoorNearKaht.addDialogSteps("Yes.");
+		((ObjectStep) openDoorNearKaht).setWorldMapPoint(new WorldPoint(1292, 10031, 0));
+		openDoorNearKaht.addDialogSteps("Yes.", "So about the door over there...");
 
 		openDoorNearKahtNoKey = new ObjectStep(this, ObjectID.DOORWAY_41871, new WorldPoint(1323, 10080, 0), "Enter the door near Kaht B'alam.");
+		((ObjectStep) openDoorNearKahtNoKey).setWorldMapPoint(new WorldPoint(1292, 10031, 0));
 		openDoorNearKahtNoKey.addDialogSteps("Yes.");
 		openXamphurGate = new ObjectStep(this, ObjectID.GATE_41877, "Open the gate once you are ready to fight.", combatGearForXamphur);
 

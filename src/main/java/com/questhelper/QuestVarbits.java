@@ -98,6 +98,7 @@ public enum QuestVarbits
 	QUEST_SINS_OF_THE_FATHER(7255),
 	QUEST_A_PORCINE_OF_INTEREST(10582),
 	QUEST_GETTING_AHEAD(693),
+	QUEST_A_KINGDOM_DIVIDED(12296),
 
 	/**
 	 * mini-quest varbits, these don't hold the completion value.

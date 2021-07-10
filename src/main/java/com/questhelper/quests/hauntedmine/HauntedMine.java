@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -69,10 +68,10 @@ public class HauntedMine extends BasicQuestHelper
 	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear,
 	zealotsKeyHighlighted, food;
 
-	Requirement askedAboutKey, hasKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve, hasGlowingFungus, hasChisel,
+	Requirement askedAboutKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve,
 		inLiftRoom, inLevel2North, inLevel3North, inLevel2South, inLevel3South, inCartRoom, inCollectRoom, leverAWrong, leverBWrong,
 		leverCWrong, leverDWrong, leverEWrong, leverFWrong, leverGWrong, leverHWrong, fungusInCart, fungusOnOtherSide, inLevel1North,
-		inFloodedRoom, daythNearby, inDaythRoom, inCrystalRoom, inCrystalEntrance, killedDayth, hasCrystalMineKey, inCrystalOrCrystalEntranceRoom,
+		inFloodedRoom, daythNearby, inDaythRoom, inCrystalRoom, inCrystalEntrance, killedDayth, inCrystalOrCrystalEntranceRoom,
 		inDarkDaythRoom, inDarkCrystalRoom;
 
 	DetailedQuestStep talkToZealot, pickpocketZealot, enterMine, goDownFromLevel1South, goDownFromLevel2North, goDownFromLevel3NorthEast,
@@ -112,23 +111,23 @@ public class HauntedMine extends BasicQuestHelper
 		exploreMine.addStep(inCrystalRoom, cutCrystal);
 		exploreMine.addStep(inDarkCrystalRoom, leaveDarkCrystalRoom);
 		exploreMine.addStep(inDarkDaythRoom, leaveDarkDaythRoom);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inCrystalEntrance, hasCrystalMineKey, hasChisel), cutCrystal);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inFloodedRoom, hasCrystalMineKey, hasChisel), goDownToCrystals);
-		exploreMine.addStep(new Conditions(inFloodedRoom, hasCrystalMineKey), goBackUpLift);
-		exploreMine.addStep(new Conditions(inDaythRoom, hasCrystalMineKey), goUpFromDayth);
+		exploreMine.addStep(new Conditions(glowingFungus, inCrystalEntrance, crystalMineKey, chisel), cutCrystal);
+		exploreMine.addStep(new Conditions(glowingFungus, inFloodedRoom, crystalMineKey, chisel), goDownToCrystals);
+		exploreMine.addStep(new Conditions(inFloodedRoom, crystalMineKey), goBackUpLift);
+		exploreMine.addStep(new Conditions(inDaythRoom, crystalMineKey), goUpFromDayth);
 		exploreMine.addStep(new Conditions(inDaythRoom, killedDayth), pickUpKey);
 		exploreMine.addStep(new Conditions(daythNearby), killDayth);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inDaythRoom), tryToPickUpKey);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inFloodedRoom), goDownToDayth);
+		exploreMine.addStep(new Conditions(glowingFungus, inDaythRoom), tryToPickUpKey);
+		exploreMine.addStep(new Conditions(glowingFungus, inFloodedRoom), goDownToDayth);
 		exploreMine.addStep(new Conditions(inCrystalEntrance), leaveCrystalRoom);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inLiftRoom, valveOpen, hasChisel), goDownLift);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inLiftRoom, valveOpened, hasChisel), openValve);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inLiftRoom, hasKey, hasChisel), useKeyOnValve);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inLiftRoom, hasKeyOrOpenedValve), pickUpChisel);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inCollectRoom, hasKeyOrOpenedValve), goUpFromCollectRoom);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inLevel3North, hasKeyOrOpenedValve), goDownFromLevel3NorthEast);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inLevel2North, hasKeyOrOpenedValve), goDownLevel2North);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inLevel1North, hasKeyOrOpenedValve), goDownLevel1North);
+		exploreMine.addStep(new Conditions(glowingFungus, inLiftRoom, valveOpen, chisel), goDownLift);
+		exploreMine.addStep(new Conditions(glowingFungus, inLiftRoom, valveOpened, chisel), openValve);
+		exploreMine.addStep(new Conditions(glowingFungus, inLiftRoom, zealotsKey, chisel), useKeyOnValve);
+		exploreMine.addStep(new Conditions(glowingFungus, inLiftRoom, hasKeyOrOpenedValve), pickUpChisel);
+		exploreMine.addStep(new Conditions(glowingFungus, inCollectRoom, hasKeyOrOpenedValve), goUpFromCollectRoom);
+		exploreMine.addStep(new Conditions(glowingFungus, inLevel3North, hasKeyOrOpenedValve), goDownFromLevel3NorthEast);
+		exploreMine.addStep(new Conditions(glowingFungus, inLevel2North, hasKeyOrOpenedValve), goDownLevel2North);
+		exploreMine.addStep(new Conditions(glowingFungus, inLevel1North, hasKeyOrOpenedValve), goDownLevel1North);
 
 		exploreMine.addStep(new Conditions(fungusOnOtherSide, inCollectRoom, hasKeyOrOpenedValve), collectFungus);
 		exploreMine.addStep(new Conditions(fungusOnOtherSide, inLevel3North, hasKeyOrOpenedValve), goDownToCollectFungus);
@@ -142,7 +141,7 @@ public class HauntedMine extends BasicQuestHelper
 		exploreMine.addStep(new Conditions(fungusOnOtherSide, hasKeyOrOpenedValve), enterMineNorth);
 
 		exploreMine.addStep(new Conditions(fungusInCart, inCartRoom), solveMineCarts);
-		exploreMine.addStep(new Conditions(hasGlowingFungus, inCartRoom), putFungusInCart);
+		exploreMine.addStep(new Conditions(glowingFungus, inCartRoom), putFungusInCart);
 		exploreMine.addStep(inCartRoom, pickFungus);
 
 		exploreMine.addStep(inLevel3South, goDownToFungusRoom);
@@ -227,7 +226,6 @@ public class HauntedMine extends BasicQuestHelper
 	public void setupConditions()
 	{
 		askedAboutKey = new VarbitRequirement(2397, 1);
-		hasKey = new ItemRequirements(zealotsKey);
 		inLevel1North = new ZoneRequirement(level1North);
 		inLevel1South = new ZoneRequirement(level1South);
 		inLevel2South = new ZoneRequirement(level2South);
@@ -246,10 +244,8 @@ public class HauntedMine extends BasicQuestHelper
 
 		valveOpened = new VarbitRequirement(2393, 1);
 		valveOpen = new VarbitRequirement(2394, 1);
-		hasGlowingFungus = new ItemRequirements(glowingFungus);
-		hasChisel = new ItemRequirements(chisel);
 
-		hasKeyOrOpenedValve = new Conditions(LogicType.OR, hasKey, valveOpened);
+		hasKeyOrOpenedValve = new Conditions(LogicType.OR, zealotsKey, valveOpened);
 
 		leverAWrong = new VarbitRequirement(2385, 0);
 		leverBWrong = new VarbitRequirement(2386, 0);
@@ -266,8 +262,6 @@ public class HauntedMine extends BasicQuestHelper
 		daythNearby = new NpcHintArrowRequirement(NpcID.TREUS_DAYTH, NpcID.GHOST_3617);
 
 		killedDayth = new VarplayerRequirement(382, 9, Operation.GREATER_EQUAL);
-
-		hasCrystalMineKey = new ItemRequirements(crystalMineKey);
 
 		inDarkCrystalRoom = new ZoneRequirement(crystalEntranceDark);
 		inDarkDaythRoom = new ZoneRequirement(daythRoomDark);

@@ -39,7 +39,6 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,7 +66,7 @@ public class Contact extends BasicQuestHelper
 	// Item recommended
 	ItemRequirement coins, glory;
 
-	Requirement inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
+	Requirement inBank, inDungeon, inChasm, hasReadParchment, kerisNearby;
 
 	QuestStep talkToHighPriest, talkToJex, goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman, talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain,
 		killGiantScarab, pickUpKeris, returnToHighPriest;
@@ -91,7 +90,7 @@ public class Contact extends BasicQuestHelper
 
 		ConditionalStep goInvestigate = new ConditionalStep(this, goDownToBank);
 		goInvestigate.addStep(new Conditions(inChasm, hasReadParchment), talkToMaisa);
-		goInvestigate.addStep(hasParchment, readParchment);
+		goInvestigate.addStep(parchment, readParchment);
 		goInvestigate.addStep(inChasm, searchKaleef);
 		goInvestigate.addStep(inDungeon, goDownToChasm);
 		goInvestigate.addStep(inBank, goDownToDungeon);
@@ -153,7 +152,6 @@ public class Contact extends BasicQuestHelper
 		inBank = new ZoneRequirement(bank);
 		inDungeon = new ZoneRequirement(dungeon);
 		inChasm = new ZoneRequirement(chasm);
-		hasParchment = new ItemRequirements(parchment);
 		hasReadParchment = new VarbitRequirement(3274, 50);
 		kerisNearby = new ItemOnTileRequirement(keris);
 	}

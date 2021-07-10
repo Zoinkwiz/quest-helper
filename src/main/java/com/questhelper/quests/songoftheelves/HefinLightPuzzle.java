@@ -334,10 +334,10 @@ public class HefinLightPuzzle extends ConditionalStep
 	protected void setupConditions()
 	{
 		hasMirrorsAndCrystal = new Conditions(
-			new ItemRequirements(handMirrorHighlighted),
-			new ItemRequirements(redCrystalHighlighted),
-			new ItemRequirements(fracturedCrystalHighlighted),
-			new ItemRequirements(yellowCrystalHighlighted)
+			handMirrorHighlighted,
+			redCrystalHighlighted,
+			fracturedCrystalHighlighted,
+			yellowCrystalHighlighted
 		);
 
 		onF0 = new ZoneRequirement(f0);

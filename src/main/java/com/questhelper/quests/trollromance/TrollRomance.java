@@ -31,7 +31,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -63,8 +62,7 @@ public class TrollRomance extends BasicQuestHelper
 	//Items Required
 	ItemRequirement ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, wax, sled, waxedSled, trollweissFlowers, combatGear, sledEquipped;
 
-	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation, hasWax, hasWaxedSled, hasFlower, inTrollCave,
-		isSledEquipped, fightableArrgNearby;
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation,inTrollCave, fightableArrgNearby;
 
 	DetailedQuestStep enterStronghold, goDownToUg, goUpToUg, talkToUg, talkToAga, talkToTenzing, talkToDunstan, talkToDunstanAgain, useTarOnWax,
 		useWaxOnSled, enterTrollCave, leaveTrollCave, equipSled, sledSouth, goDownToUgAgain, goUpToUgAgain, enterStrongholdAgain, talkToUgWithFlowers,
@@ -97,13 +95,13 @@ public class TrollRomance extends BasicQuestHelper
 		steps.put(20, talkToDunstanAgain);
 
 		ConditionalStep getSled = new ConditionalStep(this, useTarOnWax);
-		getSled.addStep(hasWax, useWaxOnSled);
+		getSled.addStep(wax, useWaxOnSled);
 
 		steps.put(22, getSled);
 
 		ConditionalStep getFlower = new ConditionalStep(this, enterTrollCave);
 		getFlower.addStep(atFlowerLocation, pickFlowers);
-		getFlower.addStep(new Conditions(inTrollweiss, isSledEquipped), sledSouth);
+		getFlower.addStep(new Conditions(inTrollweiss, sledEquipped), sledSouth);
 		getFlower.addStep(inTrollweiss, equipSled);
 		getFlower.addStep(inTrollCave, leaveTrollCave);
 
@@ -179,10 +177,6 @@ public class TrollRomance extends BasicQuestHelper
 		inTrollweiss = new ZoneRequirement(trollweiss);
 		inTrollCave = new ZoneRequirement(trollCave);
 		atFlowerLocation = new ZoneRequirement(flowerLocation);
-		hasWax = new ItemRequirements(wax);
-		hasWaxedSled = new ItemRequirements(waxedSled);
-		hasFlower = new ItemRequirements(trollweissFlowers);
-		isSledEquipped = new ItemRequirements(sledEquipped);
 		fightableArrgNearby = new NpcCondition(NpcID.ARRG_643);
 	}
 

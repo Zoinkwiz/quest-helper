@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -169,7 +168,7 @@ public class JunglePotion extends BasicQuestHelper
 		DetailedQuestStep cleanGrimyHerb = new DetailedQuestStep(this, "", grimyHerb);
 
 		ConditionalStep cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return the " + herbName + " to Trufitus.");
-		cleanAndReturnHerb.addStep(new ItemRequirements(cleanHerb), returnHerb);
+		cleanAndReturnHerb.addStep(cleanHerb, returnHerb);
 		return cleanAndReturnHerb;
 	}
 

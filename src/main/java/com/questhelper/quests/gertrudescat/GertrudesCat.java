@@ -91,7 +91,7 @@ public class GertrudesCat extends BasicQuestHelper
 
 		ConditionalStep conditionalTalkToChildren = new ConditionalStep(this, pickupDoogle);
 		conditionalTalkToChildren.addStep(new ItemRequirements(LogicType.AND, "", sardine, doogleLeaves), makeSeasonedSardine);
-		conditionalTalkToChildren.addStep(new ItemRequirements(seasonedSardine), talkToChildren);
+		conditionalTalkToChildren.addStep(seasonedSardine, talkToChildren);
 		steps.put(1, conditionalTalkToChildren);
 
 		steps.put(2, giveMilkToCatSteps = getGiveMilkToCat());

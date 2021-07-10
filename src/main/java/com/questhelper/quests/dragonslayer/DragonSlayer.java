@@ -73,10 +73,9 @@ public class DragonSlayer extends BasicQuestHelper
 
 	Requirement askedAboutShip, askedAboutShield, askedAboutMelzar, askedAboutThalzar, askedAboutLozar, askedAllQuestions, askedOracleAboutMap,
 		inDwarvenMines, silkUsed, lobsterPotUsed, mindBombUsed, unfiredBowlUsed, thalzarDoorOpened, thalzarChest2Nearby, hasMapPart1, hasMapPart2,
-		hasMapPart3, inMelzarsMaze, inRatRoom, inPostRatRoom, inGhostRoom, inPostGhostRoom, inSkeletonRoom, inPostSkeletonRoom, hasRatKey,
-		hasGhostKey, hasSkeletonKey, hasZombieKey, hasMelzarKey, hasDemonKey, inLadderRoom, inRoomToBasement, inZombieRoom, inMelzarRoom,
-		inDemonRoom, inLastMelzarRoom, hasShield, inShipHull, onShipDeck, hasFullMap, hasBoughtBoat, hasRepairedHullOnce, hasRepairedHullTwice,
-		fullyRepairedHull, onCrandorSurface, inCrandorUnderground, inElvargArea, inKaramjaVolcano, unlockedShortcut;
+		hasMapPart3, inMelzarsMaze, inRatRoom, inPostRatRoom, inGhostRoom, inPostGhostRoom, inSkeletonRoom, inPostSkeletonRoom, inLadderRoom,
+		inRoomToBasement, inZombieRoom, inMelzarRoom, inDemonRoom, inLastMelzarRoom, hasShield, inShipHull, onShipDeck, hasBoughtBoat,
+		hasRepairedHullOnce, hasRepairedHullTwice, fullyRepairedHull, onCrandorSurface, inCrandorUnderground, inElvargArea, inKaramjaVolcano, unlockedShortcut;
 
 	ConditionalStep getLozarPiece, getThalzarPiece, getMelzarPiece, getShieldSteps;
 
@@ -129,22 +128,22 @@ public class DragonSlayer extends BasicQuestHelper
 
 		getMelzarPiece = new ConditionalStep(this, enterMelzarsMaze);
 		getMelzarPiece.addStep(inLastMelzarRoom, openMelzarChest);
-		getMelzarPiece.addStep(new Conditions(inDemonRoom, hasDemonKey), openGreenDoor);
+		getMelzarPiece.addStep(new Conditions(inDemonRoom, demonKey), openGreenDoor);
 		getMelzarPiece.addStep(inDemonRoom, killLesserDemon);
-		getMelzarPiece.addStep(new Conditions(inMelzarRoom, hasMelzarKey), openMagntaDoor);
+		getMelzarPiece.addStep(new Conditions(inMelzarRoom, melzarKey), openMagntaDoor);
 		getMelzarPiece.addStep(inMelzarRoom, killMelzar);
-		getMelzarPiece.addStep(new Conditions(inZombieRoom, hasZombieKey), openBlueDoor);
+		getMelzarPiece.addStep(new Conditions(inZombieRoom, zombieKey), openBlueDoor);
 		getMelzarPiece.addStep(inZombieRoom, killZombie);
 		getMelzarPiece.addStep(inRoomToBasement, goDownBasementEntryLadder);
 		getMelzarPiece.addStep(inLadderRoom, goDownLadderRoomLadder);
 		getMelzarPiece.addStep(inPostSkeletonRoom, goDownSkeletonLadder);
-		getMelzarPiece.addStep(new Conditions(inSkeletonRoom, hasSkeletonKey), openYellowDoor);
+		getMelzarPiece.addStep(new Conditions(inSkeletonRoom, skeletonKey), openYellowDoor);
 		getMelzarPiece.addStep(inSkeletonRoom, killSkeleton);
 		getMelzarPiece.addStep(inPostGhostRoom, goUpGhostLadder);
-		getMelzarPiece.addStep(new Conditions(inGhostRoom, hasGhostKey), openOrangeDoor);
+		getMelzarPiece.addStep(new Conditions(inGhostRoom, ghostKey), openOrangeDoor);
 		getMelzarPiece.addStep(inGhostRoom, killGhost);
 		getMelzarPiece.addStep(inPostRatRoom, goUpRatLadder);
-		getMelzarPiece.addStep(new Conditions(inRatRoom, hasRatKey), openRedDoor);
+		getMelzarPiece.addStep(new Conditions(inRatRoom, ratKey), openRedDoor);
 		getMelzarPiece.addStep(inRatRoom, killRat);
 		getMelzarPiece.setLockingCondition(hasMapPart3);
 
@@ -162,7 +161,7 @@ public class DragonSlayer extends BasicQuestHelper
 		getBoat.setLockingCondition(fullyRepairedHull);
 
 		ConditionalStep getCaptain = new ConditionalStep(this, repairMap);
-		getCaptain.addStep(hasFullMap, talkToNed);
+		getCaptain.addStep(fullMap, talkToNed);
 
 		ConditionalStep getMapAndBoat = new ConditionalStep(this, askQuestions);
 		getMapAndBoat.addStep(new Conditions(hasMapPart1, hasMapPart2, hasMapPart3, askedAllQuestions, hasShield, fullyRepairedHull), getCaptain);
@@ -300,19 +299,14 @@ public class DragonSlayer extends BasicQuestHelper
 		mindBombUsed = new VarplayerRequirement(177, true, 20);
 		thalzarDoorOpened = new Conditions(silkUsed, unfiredBowlUsed, lobsterPotUsed, mindBombUsed);
 		thalzarChest2Nearby = new ObjectCondition(ObjectID.CHEST_2588);
-		hasFullMap = new ItemRequirements(fullMap);
-		hasMapPart1 = new Conditions(LogicType.OR, hasFullMap, new ItemRequirements(mapPart1));
-		hasMapPart2 = new Conditions(LogicType.OR, hasFullMap, new ItemRequirements(mapPart2));
-		hasMapPart3 = new Conditions(LogicType.OR, hasFullMap, new ItemRequirements(mapPart3));
+
+		hasMapPart1 = new Conditions(LogicType.OR, fullMap, mapPart1);
+		hasMapPart2 = new Conditions(LogicType.OR, fullMap, mapPart2);
+		hasMapPart3 = new Conditions(LogicType.OR, fullMap, mapPart3);
 
 		inMelzarsMaze = new ZoneRequirement(melzarsMaze, melzarsBasement);
 		inRatRoom = new ZoneRequirement(ratRoom1, ratRoom2, ratRoom3);
-		hasRatKey = new ItemRequirements(ratKey);
-		hasGhostKey = new ItemRequirements(ghostKey);
-		hasSkeletonKey = new ItemRequirements(skeletonKey);
-		hasZombieKey = new ItemRequirements(zombieKey);
-		hasMelzarKey = new ItemRequirements(melzarKey);
-		hasDemonKey = new ItemRequirements(demonKey);
+
 		inPostRatRoom = new ZoneRequirement(postRatRoom1, postRatRoom2);
 		inGhostRoom = new ZoneRequirement(ghostRoom1, ghostRoom2);
 		inPostGhostRoom = new ZoneRequirement(postGhostRoom1, postGhostRoom2);
@@ -325,7 +319,7 @@ public class DragonSlayer extends BasicQuestHelper
 		inDemonRoom = new ZoneRequirement(demonRoom1, demonRoom2);
 		inLastMelzarRoom = new ZoneRequirement(lastMelzarRoom1, lastMelzarRoom2);
 
-		hasShield = new Conditions(new ItemRequirements(antidragonShield));
+		hasShield = antidragonShield;
 
 		onShipDeck = new ZoneRequirement(shipDeck);
 		inShipHull = new ZoneRequirement(shipHull);

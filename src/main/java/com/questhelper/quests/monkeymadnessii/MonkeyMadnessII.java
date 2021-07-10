@@ -110,9 +110,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	Requirement inGloughHouse, inGloughHouseF1, inGloughHouseF2, inGloughHouseF3, inAnitaHouse, inCaves, inZooknockDungeon, inStrongholdFloor2, inLab,
 		isPastMonkeyBars, isNorthOfTree, inCrashSiteCavern, gorillaNotOnHoldingArea, hasChiselAndHammer;
 
-	Requirement foundHandkerchief, talkedToAnita, openedCupboard, foundNote, hasBrush, hasNote, hasLemonNote, hasLemonCandleNote, hasScrawledNote, hasGrapeBrush, triedTranslating,
-		greegreeNearby, krukCorpseNearby, hasKruksPaw, kob2Nearby, keef2Nearby, defeatedKob, defeatedKeef, smithNearby, smithInLocation1, smithInLocation2, smithInLocation3, smithInLocation4,
-		hasChargedOnyx, hasDeconstructedOnyx, killedGorillas, nieveFollowing;
+	Requirement foundHandkerchief, talkedToAnita, openedCupboard, foundNote, hasBrush, triedTranslating, greegreeNearby, krukCorpseNearby, kob2Nearby,
+		keef2Nearby, defeatedKob, defeatedKeef, smithNearby, smithInLocation1, smithInLocation2, smithInLocation3, smithInLocation4, killedGorillas,
+		nieveFollowing;
 
 	ConditionalStep goToGlough2ndFloor, goInvestigateGloughHouse, leaveGloughHouse, goTalkToAnita, goToGlough3rdFloor, goInvestigateUpstairs, goShowNoteToNarnode, goTalkToAnitaWithNote,
 		bringTranslationToNarnode;
@@ -159,7 +159,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		ConditionalStep goMakeGreegree = new ConditionalStep(this, goDownToZooknock);
 		goMakeGreegree.addStep(new Conditions(inZooknockDungeon), talkToZooknock);
-		goMakeGreegree.addStep(new Conditions(inCaves, hasKruksPaw), leaveKrukDungeon);
+		goMakeGreegree.addStep(new Conditions(inCaves, kruksPaw), leaveKrukDungeon);
 		goMakeGreegree.addStep(krukCorpseNearby, pickUpKrukCorpse);
 		steps.put(45, goMakeGreegree);
 
@@ -204,8 +204,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		steps.put(80, fightingGorillasInLab);
 
 		ConditionalStep sabotageOnyx = new ConditionalStep(this, enterLab);
-		sabotageOnyx.addStep(new Conditions(inLab, hasDeconstructedOnyx), useOnyxOnDevice);
-		sabotageOnyx.addStep(new Conditions(inLab, hasChargedOnyx, hasChiselAndHammer), useChiselOnOnyx);
+		sabotageOnyx.addStep(new Conditions(inLab, deconstructedOnyx), useOnyxOnDevice);
+		sabotageOnyx.addStep(new Conditions(inLab, chargedOnyx, hasChiselAndHammer), useChiselOnOnyx);
 		sabotageOnyx.addStep(new Conditions(inLab, hasChiselAndHammer), tamperWithDevice);
 		sabotageOnyx.addStep(inLab, getChiselAndHammer);
 		steps.put(95, sabotageOnyx);
@@ -342,7 +342,6 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-
 		// Started quest:
 		// 5039 0->1
 		// 5032 1->0
@@ -360,16 +359,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		inCrashSiteCavern = new ZoneRequirement(crashSiteCavern);
 
 		// 5039 1->2 when removing handkerchief search option
-		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(5039, 2, Operation.GREATER_EQUAL), new ItemRequirements(handkerchief));
+		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(5039, 2, Operation.GREATER_EQUAL), handkerchief);
 		talkedToAnita = new VarbitRequirement(5030, 1, Operation.GREATER_EQUAL);
 		openedCupboard = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 1, "You turn the statue and hear a clicking sound in the room."), new ChatMessageRequirement("You have already activated the statue."));
 		foundNote = new VarbitRequirement(5028, 1);
-		hasBrush = new Conditions(LogicType.OR, new ItemRequirements(grapeBrush), new ItemRequirements(brush));
-		hasGrapeBrush = new ItemRequirements(grapeBrush);
-		hasNote = new ItemRequirements(mysteriousNote);
-		hasLemonNote = new ItemRequirements(mysteriousNoteLemon);
-		hasLemonCandleNote = new ItemRequirements(mysteriousNoteLemonCandle);
-		hasScrawledNote = new ItemRequirements(scrawledNote);
+		hasBrush = new Conditions(LogicType.OR, grapeBrush, brush);
 
 		// Read note:
 		// 5027 5->6
@@ -380,7 +374,6 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		greegreeNearby = new ItemOnTileRequirement(greegree);
 		krukCorpseNearby = new ObjectCondition(NullObjectID.NULL_28811);
-		hasKruksPaw = new ItemRequirements(kruksPaw);
 
 		kob2Nearby = new NpcCondition(NpcID.KOB_7107);
 		keef2Nearby = new NpcCondition(NpcID.KEEF_7105);
@@ -398,9 +391,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		gorillaNotOnHoldingArea = new Conditions(LogicType.NOR, new NpcCondition(NpcID.STUNTED_DEMONIC_GORILLA));
 
-		hasChiselAndHammer = new Conditions(new ItemRequirements(hammer), new ItemRequirements(chisel));
-		hasChargedOnyx = new ItemRequirements(chargedOnyx);
-		hasDeconstructedOnyx = new ItemRequirements(deconstructedOnyx);
+		hasChiselAndHammer = new Conditions(hammer, chisel);
 
 		// Nieve leaves:
 		// 5037 0->1 (Steve appears)
@@ -635,11 +626,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		goToGlough3rdFloor.addStep(inGloughHouseF2, goUpGloughTreeToThirdFloor);
 
 		goInvestigateUpstairs = new ConditionalStep(this, goToGlough3rdFloor);
-		goInvestigateUpstairs.addStep(new Conditions(hasScrawledNote), readScrawledNote);
-		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasGrapeBrush, hasLemonCandleNote), useBrushOnNote);
-		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, hasLemonCandleNote), usePestleOnGrapes);
-		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, hasLemonNote), useNotesOnCandles);
-		goInvestigateUpstairs.addStep(new Conditions(openedCupboard, hasBrush, hasNote), usePestleOnLemon);
+		goInvestigateUpstairs.addStep(new Conditions(scrawledNote), readScrawledNote);
+		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, grapeBrush, mysteriousNoteLemonCandle), useBrushOnNote);
+		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, mysteriousNoteLemonCandle), usePestleOnGrapes);
+		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, mysteriousNoteLemon), useNotesOnCandles);
+		goInvestigateUpstairs.addStep(new Conditions(openedCupboard, hasBrush, mysteriousNote), usePestleOnLemon);
 		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, openedCupboard, hasBrush), searchRemains);
 		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, openedCupboard), searchCrate);
 		goInvestigateUpstairs.addStep(inGloughHouseF3, investigateStatue);

@@ -77,21 +77,18 @@ public class TheFremennikTrials extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement camelotTeleport, rellekkaTeleports, ringsOfRecoil, combatGear;
 
-	Requirement synced, syncedAll, syncedOlaf, syncedManni, syncedSigmund, inQuestJournal, hasStartedOlaf, hasBranch, hasLyreUnstrung,
-		talkedToLalli, gottenRock, hasPetRock, hasLyre, finishedOlafTask, hasOnion, hasCabbage, hasPotato, petRockInCauldron,
-		cabbageInCauldron, potatoInCauldron, onionInCauldron, cauldronFilledDialog, stewReady, hasGoldenWool, hasGoldenFleece,
-		hasEnchantedLyre, finishedOlafMessage, finishedOlafWidget, hasBeer, talkedToManni, hasStrangeObject, hasAlcoholFreeBeer,
-		hasLitStrangeObject, isNearPipe, hasPlacedStrangeObject, hasReplacedBeer, finishedManniTask, hasKegOfBeer, talkedToManniWidget,
-		talkedToManniChat, hasHuntersTalisman, hasChargedHuntersTalisman, finishedSigliTask, getFlower, talkedToSailor, talkedToOlafForSigmund,
+	Requirement synced, syncedAll, syncedOlaf, syncedManni, syncedSigmund, inQuestJournal, hasStartedOlaf,
+		talkedToLalli, gottenRock, finishedOlafTask, petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron,
+		cauldronFilledDialog, stewReady,finishedOlafMessage, finishedOlafWidget,talkedToManni,
+		isNearPipe, hasPlacedStrangeObject, hasReplacedBeer, finishedManniTask, talkedToManniWidget,
+		talkedToManniChat, finishedSigliTask, getFlower, talkedToSailor, talkedToOlafForSigmund,
 		talkedToYsra, talkedToBrundtForSigmund, talkedToSigliForSigmund, talkedToSkulgrimenForSigmund, talkedToFishermanForSigmund, talkedToSwensenForSigmund,
-		talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund, talkedToAskeladdenForSigmund, hasPromissoryNote,
-		hasLegendaryCocktail, hasChampionsToken, hasWarriorsContract, hasWeatherForecast, hasSeaFishingMap, hasUnusualFish, hasCustomBowString, hasTrackingMap, hasFiscalStatement,
-		hasSturdyBoots, hasBallad, hasExoticFlower, finishedSigmundTask, inKoscheiRoom, talkedToThorvald, koschei1Near, koschei2Near, koschei3Near, koschei4Near, syncedThorvald,
-		finishedThorvaldTask, talkedToSwensen, syncedSwensen, inSwensenRoom1, inSwensenRoom2, inSwensenRoom3, inSwensenRoom4, inSwensenRoom5, inSwensenRoom6, inSwensenRoom7, inSwensenArea,
-		inSwensenFinalRoom, finishedSwensenTask, talkedToPeer, finishedPeerTask, isMind, isTree, isLife, isFire, isTime, isWind, inPeerEntrance, inPeerUpstairs, inPeerExit, hasSolvedDoor,
-		hasRedHerring, hasWoodenDisk, hasRedDiskOld, hasRedDiskNew, hasStickyRedGoop, trapDoorOpen, hasUsedDisk, muralHasDisks, hasVase, hasVaseLid,
-		hasEmptyBucket, hasFullBucket, hasBucket45, hasBucket35, hasBucket25, hasBucket15, hasAnyBucket, hasFullJug, hasEmptyJug, hasJug23, hasJug13, hasAnyJug, cupboardOpen,
-		chestOpen, hasFilledVase, hasFilledVaseWithLid, hasVaseWithLidWrong, hasFrozenKey, hasSeersKey, hasFrozenVase, syncedPeer, noRockAskeladdenNearby;
+		talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund, talkedToAskeladdenForSigmund, finishedSigmundTask,
+		inKoscheiRoom, talkedToThorvald, koschei1Near, koschei2Near, koschei3Near, koschei4Near, syncedThorvald,
+		finishedThorvaldTask, talkedToSwensen, syncedSwensen, inSwensenRoom1, inSwensenRoom2, inSwensenRoom3, inSwensenRoom4, inSwensenRoom5,
+		inSwensenRoom6, inSwensenRoom7, inSwensenArea, inSwensenFinalRoom, finishedSwensenTask, talkedToPeer, finishedPeerTask, isMind, isTree, isLife, isFire,
+		isTime, isWind, inPeerEntrance, inPeerUpstairs, inPeerExit, hasSolvedDoor, trapDoorOpen, hasUsedDisk, muralHasDisks,
+		hasAnyBucket, hasAnyJug, cupboardOpen, chestOpen, syncedPeer, noRockAskeladdenNearby;
 
 	QuestStep talkToBrundt, talkToOlaf, pickVeg, chopSwayingTree, fletchLyre, talkToLalli,
 		talkToAskeladdenForRock, useCabbage, useOnion, usePotato, useRock, talkToLaliAfterStew, spinWool,
@@ -126,12 +123,12 @@ public class TheFremennikTrials extends BasicQuestHelper
 		steps.put(0, talkToBrundt);
 
 		olafTask = new ConditionalStep(this, talkToOlaf);
-		olafTask.addStep(hasEnchantedLyre, performMusic);
-		olafTask.addStep(new Conditions(hasStartedOlaf, hasLyre), enchantLyre);
-		olafTask.addStep(new Conditions(hasGoldenWool, hasLyreUnstrung), makeLyre);
-		olafTask.addStep(new Conditions(hasGoldenFleece, hasLyreUnstrung), spinWool);
-		olafTask.addStep(new Conditions(hasGoldenFleece, hasBranch), fletchLyre);
-		olafTask.addStep(hasGoldenFleece, chopSwayingTree);
+		olafTask.addStep(enchantedLyre.alsoCheckBank(questBank), performMusic);
+		olafTask.addStep(new Conditions(hasStartedOlaf, lyre.alsoCheckBank(questBank)), enchantLyre);
+		olafTask.addStep(new Conditions(goldenWool, lyreUnstrung), makeLyre);
+		olafTask.addStep(new Conditions(goldenFleece, lyreUnstrung), spinWool);
+		olafTask.addStep(new Conditions(goldenFleece, branch), fletchLyre);
+		olafTask.addStep(goldenFleece, chopSwayingTree);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron, potatoInCauldron, petRockInCauldron), talkToLaliAfterStew);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron, potatoInCauldron), useRock);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron), usePotato);
@@ -142,38 +139,38 @@ public class TheFremennikTrials extends BasicQuestHelper
 		olafTask.setLockingCondition(finishedOlafTask);
 
 		manniTask = new ConditionalStep(this, talkToManni);
-		manniTask.addStep(new Conditions(hasReplacedBeer, hasKegOfBeer), cheatInBeerDrinking);
+		manniTask.addStep(new Conditions(hasReplacedBeer, kegOfBeer), cheatInBeerDrinking);
 		manniTask.addStep(new Conditions(hasReplacedBeer), getKegOfBeer);
-		manniTask.addStep(new Conditions(hasPlacedStrangeObject, hasAlcoholFreeBeer, hasKegOfBeer), useAlcoholFreeOnKeg);
-		manniTask.addStep(new Conditions(hasPlacedStrangeObject, hasAlcoholFreeBeer), getKegOfBeer);
+		manniTask.addStep(new Conditions(hasPlacedStrangeObject, alcoholFreeBeer, kegOfBeer), useAlcoholFreeOnKeg);
+		manniTask.addStep(new Conditions(hasPlacedStrangeObject, alcoholFreeBeer), getKegOfBeer);
 		manniTask.addStep(new Conditions(hasPlacedStrangeObject), getAlcoholFreeBeer);
-		manniTask.addStep(new Conditions(talkedToManni, hasLitStrangeObject, hasAlcoholFreeBeer, isNearPipe), useStrangeObjectOnPipe);
-		manniTask.addStep(new Conditions(talkedToManni, hasStrangeObject, hasAlcoholFreeBeer, isNearPipe), useStrangeObject);
-		manniTask.addStep(new Conditions(talkedToManni, hasStrangeObject, hasAlcoholFreeBeer), prepareToUseStrangeObject);
-		manniTask.addStep(new Conditions(talkedToManni, hasStrangeObject), getAlcoholFreeBeer);
-		manniTask.addStep(new Conditions(talkedToManni, hasBeer), getStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, litStrangeObject, alcoholFreeBeer, isNearPipe), useStrangeObjectOnPipe);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject, alcoholFreeBeer, isNearPipe), useStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject, alcoholFreeBeer), prepareToUseStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject), getAlcoholFreeBeer);
+		manniTask.addStep(new Conditions(talkedToManni, beer), getStrangeObject);
 		manniTask.addStep(talkedToManni, pickUpBeer);
 		manniTask.setLockingCondition(finishedManniTask);
 
 		sigliTask = new ConditionalStep(this, talkToSigli);
-		sigliTask.addStep(hasChargedHuntersTalisman, returnToSigli);
-		sigliTask.addStep(hasHuntersTalisman, huntDraugen);
+		sigliTask.addStep(chargedHuntersTalisman, returnToSigli);
+		sigliTask.addStep(huntersTalisman, huntDraugen);
 		sigliTask.setLockingCondition(finishedSigliTask);
 
 		sigmundTask = new ConditionalStep(this, talkToSigmund);
-		sigmundTask.addStep(hasExoticFlower, bringExoticFlowerToSigmund);
-		sigmundTask.addStep(hasBallad, bringBalladToSailor);
-		sigmundTask.addStep(hasSturdyBoots, bringSturdyBootsToOlaf);
-		sigmundTask.addStep(hasFiscalStatement, bringFiscalStatementToYsra);
-		sigmundTask.addStep(hasTrackingMap, bringTrackingMapToBrundt);
-		sigmundTask.addStep(hasCustomBowString, bringCustomBowStringToSigli);
-		sigmundTask.addStep(hasUnusualFish, bringUnusualFishToSkulgrimen);
-		sigmundTask.addStep(hasSeaFishingMap, bringSeaFishingMapToFisherman);
-		sigmundTask.addStep(hasWeatherForecast, bringWeatherForecastToSwensen);
-		sigmundTask.addStep(hasWarriorsContract, bringWarriorsContractToPeer);
-		sigmundTask.addStep(hasChampionsToken, bringChampionsTokenToThorvald);
-		sigmundTask.addStep(hasLegendaryCocktail, bringCocktailToManni);
-		sigmundTask.addStep(hasPromissoryNote, bringNoteToThora);
+		sigmundTask.addStep(exoticFlower, bringExoticFlowerToSigmund);
+		sigmundTask.addStep(ballad, bringBalladToSailor);
+		sigmundTask.addStep(sturdyBoots, bringSturdyBootsToOlaf);
+		sigmundTask.addStep(fiscalStatement, bringFiscalStatementToYsra);
+		sigmundTask.addStep(trackingMap, bringTrackingMapToBrundt);
+		sigmundTask.addStep(customBowString, bringCustomBowStringToSigli);
+		sigmundTask.addStep(unusualFish, bringUnusualFishToSkulgrimen);
+		sigmundTask.addStep(seaFishingMap, bringSeaFishingMapToFisherman);
+		sigmundTask.addStep(weatherForecast, bringWeatherForecastToSwensen);
+		sigmundTask.addStep(warriorsContract, bringWarriorsContractToPeer);
+		sigmundTask.addStep(championsToken, bringChampionsTokenToThorvald);
+		sigmundTask.addStep(legendaryCocktail, bringCocktailToManni);
+		sigmundTask.addStep(promissoryNote, bringNoteToThora);
 
 		sigmundTask.addStep(new Conditions(talkedToThoraForSigmund, noRockAskeladdenNearby), talkToAskeladdenForSigmund2);
 		sigmundTask.addStep(talkedToThoraForSigmund, talkToAskeladdenForSigmund);
@@ -214,36 +211,38 @@ public class TheFremennikTrials extends BasicQuestHelper
 		swensenTask.setLockingCondition(finishedSwensenTask);
 
 		peerTask = new ConditionalStep(this, talkToPeer);
-		peerTask.addStep(new Conditions(inPeerExit, hasSeersKey), leaveSeersHouse);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasSeersKey, trapDoorOpen), goDownstairsWithKey2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasSeersKey), goDownstairsWithKey);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasFrozenKey), useFrozenKeyOnRange);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasFilledVaseWithLid), useVaseOnTable);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasFilledVase), useLidOnVase);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasVase), fillVase);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseWithLidWrong), takeLidOff);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasBucket45), useBucketOnScale);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasFullBucket, hasJug23), useBucketOnJug3);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasEmptyBucket, hasJug23), useBucketOnTap2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasBucket25, hasEmptyJug), useBucketOnJug2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasBucket25, hasFullJug), useJugOnDrain1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasFullBucket, hasEmptyJug), useBucketOnJug1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasEmptyBucket, hasEmptyJug), useBucketOnTap1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasAnyBucket, hasAnyJug), emptyJugAndBucket);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasAnyBucket, chestOpen), searchChest2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasAnyBucket), searchChest1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, cupboardOpen), searchCupboard2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid), searchCupboard1);
-		peerTask.addStep(new Conditions(inPeerExit, hasVaseLid), goUpstairsWithVaseLid);
-		peerTask.addStep(new Conditions(inPeerExit, hasRedDiskNew, hasUsedDisk), useDiskNewOnMural);
-		peerTask.addStep(new Conditions(inPeerExit, hasRedDiskOld, hasUsedDisk), useDiskOldOnMural);
-		peerTask.addStep(new Conditions(inPeerExit, hasRedDiskOld, hasRedDiskNew), useDiskAnyOnMural);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasRedDiskOld, hasRedDiskNew, trapDoorOpen), goDown1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasRedDiskOld, hasRedDiskNew), openTrapDoorAndGoDown1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasStickyRedGoop, hasWoodenDisk, hasRedDiskOld), useGoopOnDisk);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasRedHerring, hasWoodenDisk, hasRedDiskOld), cookHerring);
-		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, hasRedDiskNew, new Conditions(hasRedHerring, hasWoodenDisk))), searchUnicorn);
-		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, hasStickyRedGoop, hasRedHerring)), searchBull);
+		peerTask.addStep(new Conditions(inPeerExit, seersKey), leaveSeersHouse);
+		peerTask.addStep(new Conditions(inPeerUpstairs, seersKey, trapDoorOpen), goDownstairsWithKey2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, seersKey), goDownstairsWithKey);
+		peerTask.addStep(new Conditions(inPeerUpstairs, frozenKey), useFrozenKeyOnRange);
+		peerTask.addStep(new Conditions(inPeerUpstairs, filledVaseWithLid), useVaseOnTable);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, filledVase), useLidOnVase);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, vase), fillVase);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseWithLidWrong), takeLidOff);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, bucket45), useBucketOnScale);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, fullBucket, jug23), useBucketOnJug3);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, emptyBucket, jug23), useBucketOnTap2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, bucket25, emptyJug), useBucketOnJug2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, bucket25, fullJug), useJugOnDrain1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, fullBucket, emptyJug), useBucketOnJug1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, emptyBucket, emptyJug), useBucketOnTap1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, hasAnyBucket, hasAnyJug), emptyJugAndBucket);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, hasAnyBucket, chestOpen), searchChest2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, hasAnyBucket), searchChest1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, cupboardOpen), searchCupboard2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid), searchCupboard1);
+		peerTask.addStep(new Conditions(inPeerExit, vaseLid), goUpstairsWithVaseLid);
+		peerTask.addStep(new Conditions(inPeerExit, redDiskNew, hasUsedDisk), useDiskNewOnMural);
+		peerTask.addStep(new Conditions(inPeerExit, redDiskOld, hasUsedDisk), useDiskOldOnMural);
+		peerTask.addStep(new Conditions(inPeerExit, redDiskOld, redDiskNew), useDiskAnyOnMural);
+		peerTask.addStep(new Conditions(inPeerUpstairs, redDiskOld, redDiskNew, trapDoorOpen), goDown1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, redDiskOld, redDiskNew), openTrapDoorAndGoDown1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, stickyRedGoop, woodenDisk, redDiskOld), useGoopOnDisk);
+		peerTask.addStep(new Conditions(inPeerUpstairs, redHerring, woodenDisk, redDiskOld), cookHerring);
+		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, redDiskNew,
+			new Conditions(redHerring, woodenDisk))), searchUnicorn);
+		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, stickyRedGoop, redHerring)),
+			searchBull);
 		peerTask.addStep(inPeerUpstairs, searchBookcase);
 		peerTask.addStep(inPeerExit, goBackUpstairs);
 		peerTask.addStep(new Conditions(LogicType.OR, inPeerEntrance, hasSolvedDoor), goUpEntranceLadderPeer);
@@ -394,16 +393,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		syncedOlaf = new Conditions(true, LogicType.AND, synced, hasStartedOlaf);
 
-		hasBranch = new ItemRequirements(branch);
-		hasLyreUnstrung = new ItemRequirements(lyreUnstrung);
-		hasLyre = new ItemRequirements(lyre);
-
 		talkedToLalli = new Conditions(true, new WidgetTextRequirement(217, 4, "I see... okay, well, bye!"));
 		gottenRock = new VarbitRequirement(6486, 1);
-		hasPetRock = new ItemRequirements(petRock);
-		hasOnion = new ItemRequirements(onion);
-		hasCabbage = new ItemRequirements(cabbage);
-		hasPotato = new ItemRequirements(potato);
 
 		petRockInCauldron = new ChatMessageRequirement("You put your pet rock into the cauldron.");
 		cabbageInCauldron = new ChatMessageRequirement("You put a cabbage into the cauldron.");
@@ -413,25 +404,16 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		stewReady = new Conditions(new Conditions(petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron), cauldronFilledDialog);
 
-		hasGoldenFleece = new ItemRequirements(goldenFleece);
-		hasGoldenWool = new ItemRequirements(goldenWool);
-		hasEnchantedLyre = new ItemRequirements(enchantedLyre);
-
 		finishedOlafMessage = new ChatMessageRequirement("Congratulations! You have completed the Bard's Trial!");
 		finishedOlafWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "I now have the Bard's vote"));
 		finishedOlafTask = new Conditions(true, LogicType.OR, finishedOlafMessage, finishedOlafWidget);
-
-		hasBeer = new ItemRequirements(beer);
 
 		talkedToManniWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "Reveller<col=000080> will vote for me"));
 		talkedToManniChat = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"));
 		talkedToManni = new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat);
 
 		syncedManni = new Conditions(true, LogicType.OR, talkedToManni);
-
-		hasStrangeObject = new ItemRequirements(strangeObject);
-		hasLitStrangeObject = new ItemRequirements(litStrangeObject);
-		hasAlcoholFreeBeer = new ItemRequirements(alcoholFreeBeer);
+		
 		isNearPipe = new ZoneRequirement(nearPipe);
 
 		hasPlacedStrangeObject = new Conditions(true, LogicType.OR,
@@ -441,13 +423,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		finishedManniTask = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial!"),
 			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"));
-
-		hasKegOfBeer = new ItemRequirements(kegOfBeer);
-
-		hasHuntersTalisman = new ItemRequirements(huntersTalisman);
-
-		hasChargedHuntersTalisman = new ItemRequirements(chargedHuntersTalisman);
-
+		
 		// No gz message
 		finishedSigliTask = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),
@@ -517,22 +493,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		syncedSigmund = new Conditions(LogicType.OR, getFlower, talkedToSailor, talkedToOlafForSigmund, talkedToYsra, talkedToBrundtForSigmund, talkedToSigliForSigmund, talkedToSkulgrimenForSigmund,
 			talkedToFishermanForSigmund, talkedToSwensenForSigmund, talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund);
 
-		talkedToAskeladdenForSigmund = new ItemRequirements(promissoryNote);
+		talkedToAskeladdenForSigmund = promissoryNote;
 		noRockAskeladdenNearby = new NpcCondition(NpcID.ASKELADDEN);
-
-		hasPromissoryNote = new ItemRequirements(promissoryNote);
-		hasLegendaryCocktail = new ItemRequirements(legendaryCocktail);
-		hasChampionsToken = new ItemRequirements(championsToken);
-		hasWarriorsContract = new ItemRequirements(warriorsContract);
-		hasWeatherForecast = new ItemRequirements(weatherForecast);
-		hasSeaFishingMap = new ItemRequirements(seaFishingMap);
-		hasUnusualFish = new ItemRequirements(unusualFish);
-		hasCustomBowString = new ItemRequirements(customBowString);
-		hasTrackingMap = new ItemRequirements(trackingMap);
-		hasFiscalStatement = new ItemRequirements(fiscalStatement);
-		hasSturdyBoots = new ItemRequirements(sturdyBoots);
-		hasBallad = new ItemRequirements(ballad);
-		hasExoticFlower = new ItemRequirements(exoticFlower);
 
 		inKoscheiRoom = new ZoneRequirement(koscheiRoom);
 		talkedToThorvald = new Conditions(true, LogicType.OR,
@@ -587,12 +549,6 @@ public class TheFremennikTrials extends BasicQuestHelper
 		inPeerExit = new ZoneRequirement(peerExit);
 		hasSolvedDoor = new ChatMessageRequirement("You have solved the riddle!");
 
-		hasRedHerring = new ItemRequirements(redHerring);
-		hasWoodenDisk = new ItemRequirements(woodenDisk);
-		hasRedDiskOld = new ItemRequirements(redDiskOld);
-		hasRedDiskNew = new ItemRequirements(redDiskNew);
-		hasStickyRedGoop = new ItemRequirements(stickyRedGoop);
-
 		cupboardOpen = new ObjectCondition(ObjectID.CUPBOARD_4178);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_4168, new WorldPoint(2635, 3660, 2));
 		trapDoorOpen = new ObjectCondition(ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2));
@@ -600,27 +556,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		/* Currently does not capture the case a user uses a disk, then logs out */
 		hasUsedDisk = new ChatMessageRequirement("You put the red disk into the empty hole on the mural.", "You've already put the red disk into the empty hole on the mural.");
 		muralHasDisks = new ObjectCondition(ObjectID.ABSTRACT_MURAL_4180);
-		hasEmptyBucket = new ItemRequirements(emptyBucket);
-		hasFullBucket = new ItemRequirements(fullBucket);
-		hasBucket45 = new ItemRequirements(bucket45);
-		hasBucket35 = new ItemRequirements(bucket35);
-		hasBucket25 = new ItemRequirements(bucket25);
-		hasBucket15 = new ItemRequirements(bucket15);
-		hasAnyBucket = new Conditions(LogicType.OR, hasBucket15, hasBucket25, hasBucket35, hasBucket45, hasFullBucket, hasEmptyBucket);
-		hasEmptyJug = new ItemRequirements(emptyJug);
-		hasFullJug = new ItemRequirements(fullJug);
-		hasJug23 = new ItemRequirements(jug23);
-		hasJug13 = new ItemRequirements(jug13);
-		hasAnyJug = new Conditions(LogicType.OR, hasJug13, hasJug23, hasEmptyJug, hasFullJug);
-		hasVase = new ItemRequirements(vase);
-		hasVaseLid = new ItemRequirements(vaseLid);
-		hasFilledVase = new ItemRequirements(filledVase);
-		hasFilledVaseWithLid = new ItemRequirements(filledVaseWithLid);
-		hasVaseWithLidWrong = new ItemRequirements(vaseWithLidWrong);
-		hasFrozenVase = new ItemRequirements(frozenVase);
-
-		hasFrozenKey = new ItemRequirements(frozenKey);
-		hasSeersKey = new ItemRequirements(seersKey);
+		hasAnyBucket = new Conditions(LogicType.OR, bucket15, bucket25, bucket35, bucket45, fullBucket, emptyBucket);
+		hasAnyJug = new Conditions(LogicType.OR, jug13, jug23, emptyJug, fullJug);
 
 		finishedPeerTask = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "To have solved my puzzle"),

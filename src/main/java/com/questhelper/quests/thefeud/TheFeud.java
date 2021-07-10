@@ -58,11 +58,9 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-
 @QuestDescriptor(
 		quest = QuestHelperQuest.THE_FEUD
 )
-
 public class TheFeud extends BasicQuestHelper
 {
 
@@ -70,19 +68,18 @@ public class TheFeud extends BasicQuestHelper
 	ItemRequirement coins, unspecifiedCoins, gloves, headPiece, fakeBeard, desertDisguise,
 			shantyPass, beer, oakBlackjack, glovesEquipped, disguiseEquipped, doorKeys,
 			highlightedCoins, snakeCharmHighlighted, snakeBasket, snakeBasketFull,
-			redHotSauce, bucket, dung, poisonHighlighted;
+			redHotSauce, bucket, dung, poisonHighlighted, oakBlackjackEquipped;
 
 	//Items Recommended
 	ItemRequirement combatGear;
 
-	Requirement oakBlackjackEquipped, desertDisguiseCondition, hasShantyPass, hasOakBlackjack, snakeCharm, hasSnakeBasket,
-			hasSnakeBasketFull, hasRedHotSauce, hasBucket, doesNotHaveBucket, hasDungInventory;
+	Requirement doesNotHaveBucket;
 
 	Conditions hasDisguiseComponents, doesNotHaveDisguise, doesNotHaveDisguiseComponents, notThroughShantyGate, hasDisguise;
 
 	ObjectCondition dungNearby;
 
-	QuestStep startQuest, buyDisguiseGear, createDisguise, goToPollniveachStep, goToShanty;
+	QuestStep startQuest, buyDisguiseGear, createDisguise, goToShanty;
 
 	DetailedQuestStep getBucket, equipBlackjack, killMenaphiteThug, killBanditChampion;
 
@@ -113,7 +110,7 @@ public class TheFeud extends BasicQuestHelper
 		steps.put(0, startQuest);
 
 		ConditionalStep goToPollniveach = new ConditionalStep(this, buyShantyPass);
-		goToPollniveach.addStep(new Conditions(notThroughShantyGate, hasShantyPass), goToShanty);
+		goToPollniveach.addStep(new Conditions(notThroughShantyGate, shantyPass), goToShanty);
 		goToPollniveach.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
 		goToPollniveach.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
 		goToPollniveach.addStep(inShantyDesertSide, talkToRugMerchant);
@@ -139,7 +136,7 @@ public class TheFeud extends BasicQuestHelper
 
 		ConditionalStep blackjackVillagerStep = new ConditionalStep(this, getBlackjackFromAli);
 		blackjackVillagerStep.addStep(oakBlackjackEquipped, blackjackVillager);
-		blackjackVillagerStep.addStep(hasOakBlackjack, equipBlackjack);
+		blackjackVillagerStep.addStep(oakBlackjack, equipBlackjack);
 		steps.put(9, blackjackVillagerStep);
 		steps.put(10, blackjackVillagerStep);
 		steps.put(11, blackjackVillagerStep);
@@ -162,17 +159,17 @@ public class TheFeud extends BasicQuestHelper
 
 		ConditionalStep getSnake = new ConditionalStep(this, talkToAliTheBarman);
 		getSnake.addStep(givenPoisonToHag, talkToAliTheKebabSalesman);
-		getSnake.addStep(hasSnakeBasketFull, givePoisonToAliTheHag);
-		getSnake.addStep(new Conditions(talkedToAliTheHag, snakeCharm, hasSnakeBasket), catchSnake);
+		getSnake.addStep(snakeBasketFull, givePoisonToAliTheHag);
+		getSnake.addStep(new Conditions(talkedToAliTheHag, snakeCharmHighlighted, snakeBasket), catchSnake);
 		getSnake.addStep(talkedToAliTheHag, giveCoinToSnakeCharmer);
 		getSnake.addStep(talkedToBarman, talkToAliTheHag);
 		steps.put(17, getSnake);
 
 		ConditionalStep camelDung = new ConditionalStep(this, talkToAliTheKebabSalesman);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasDungInventory), givenDungToHag);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, hasBucket, dungNearby), pickupDung);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, hasBucket), getDung);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, doesNotHaveBucket), getBucket);
+		camelDung.addStep(new Conditions(givenPoisonToHag, dung), givenDungToHag);
+		camelDung.addStep(new Conditions(givenPoisonToHag, bucket, dungNearby), pickupDung);
+		camelDung.addStep(new Conditions(givenPoisonToHag, redHotSauce, bucket), getDung);
+		camelDung.addStep(new Conditions(givenPoisonToHag, redHotSauce, doesNotHaveBucket), getBucket);
 		steps.put(18, camelDung);
 
 		steps.put(22, poisonTheDrink);
@@ -284,32 +281,19 @@ public class TheFeud extends BasicQuestHelper
 	public void setupConditions()
 	{
 		//Disguise
-		ItemRequirements hasFakeBeard = new ItemRequirements(fakeBeard);
-		ItemRequirements hasFakeHeadPiece = new ItemRequirements(headPiece);
-		hasDisguiseComponents = new Conditions(hasFakeBeard, hasFakeHeadPiece);
-		desertDisguiseCondition = new ItemRequirements(desertDisguise);
-		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguiseCondition);
-		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, hasFakeBeard, hasFakeHeadPiece);
-		hasDisguise = new Conditions(desertDisguiseCondition);
+		hasDisguiseComponents = new Conditions(fakeBeard, headPiece);
+		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguise);
+		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, fakeBeard, headPiece);
+		hasDisguise = new Conditions(desertDisguise);
 
 		//Shanty
-		hasShantyPass = new ItemRequirements(shantyPass);
 		notThroughShantyGate = new Conditions(LogicType.NAND, inShantyDesertSide);
 
 		//Blackjack
-		hasOakBlackjack = new ItemRequirements(oakBlackjack);
 		oakBlackjackEquipped = new ItemRequirements(new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK, 1, true));
 
-		//Snakes
-		hasSnakeBasket = new ItemRequirements(snakeBasket);
-		hasSnakeBasketFull = new ItemRequirements(snakeBasketFull);
-		snakeCharm = new ItemRequirements(snakeCharmHighlighted);
-
 		//Dung
-		hasBucket = new ItemRequirements(bucket);
 		doesNotHaveBucket = new ComplexRequirement(LogicType.NOR, "", new ItemRequirement("Bucket", ItemID.BUCKET));
-		hasRedHotSauce = new ItemRequirements(redHotSauce);
-		hasDungInventory = new ItemRequirements(dung);
 		dungNearby = new ObjectCondition(ObjectID.DUNG);
 
 		//Combat Gear

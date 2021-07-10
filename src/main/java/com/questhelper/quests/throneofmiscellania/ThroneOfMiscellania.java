@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -70,10 +69,10 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement dramenStaff;
 
-	Requirement inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom, hasFlowers,
+	Requirement inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom,
 		talked1P1, talked1P2, talked1P3, givenFlowers, doneEmote, talked1P4, talked2P1, talked2P2, talked2P3, givenBowOrCake,
-		talked2P4, talked3P1, talked3P2, talked3P3, blownKiss, hasAwfulAnthem, hasGoodAnthem, hasGiantNib, hasGiantPen,
-		diplomacyStep1, diplomacyStep2, diplomacyStep3, diplomacyStep4, diplomacyStep5, diplomacyStep6, hasCourted, hasTreaty, has75Support;
+		talked2P4, talked3P1, talked3P2, talked3P3, blownKiss, diplomacyStep1, diplomacyStep2, diplomacyStep3, diplomacyStep4,
+		diplomacyStep5, diplomacyStep6, hasCourted, has75Support;
 
 	QuestStep travelToMisc, talkToVargas, getFlowers, goUpToVargas, talkAstrid1, talkAstrid2, talkAstrid3,
 		talkBrand1, talkBrand2, talkBrand3, giveFlowersToAstrid, giveFlowersToBrand, giveBowToAstrid,
@@ -99,7 +98,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		ConditionalStep startQuest = new ConditionalStep(this, travelToMisc);
 		startQuest.addStep(inMiscCastleFirstFloor, talkToVargas);
-		startQuest.addStep(new Conditions(inIslands, hasFlowers), goUpToVargas);
+		startQuest.addStep(new Conditions(inIslands, flowers), goUpToVargas);
 		startQuest.addStep(inIslands, getFlowers);
 
 		steps.put(0, startQuest);
@@ -142,30 +141,30 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		establishPeace4.addStep(inEtcCastleFirstFloor, goDownEtcDip2);
 
 		ConditionalStep establishPeace5 = new ConditionalStep(this, goUpMiscDip2);
-		establishPeace5.addStep(new Conditions(inEtcCastleFirstFloor, hasGoodAnthem), talkToSigridDip3);
-		establishPeace5.addStep(new Conditions(inMiscCastleFirstFloor, hasGoodAnthem), goDownMiscDip2);
-		establishPeace5.addStep(hasGoodAnthem, goUpEtcDip3);
-		establishPeace5.addStep(new Conditions(hasAwfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
+		establishPeace5.addStep(new Conditions(inEtcCastleFirstFloor, goodAnthem), talkToSigridDip3);
+		establishPeace5.addStep(new Conditions(inMiscCastleFirstFloor, goodAnthem), goDownMiscDip2);
+		establishPeace5.addStep(goodAnthem, goUpEtcDip3);
+		establishPeace5.addStep(new Conditions(awfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
 		establishPeace5.addStep(inMiscCastleFirstFloor, getAnotherAwfulAnthem);
 
 		ConditionalStep establishPeace6 = new ConditionalStep(this, goUpMiscDip2);
-		establishPeace6.addStep(new Conditions(inEtcCastleFirstFloor, hasGoodAnthem), talkToSigridDip3);
-		establishPeace6.addStep(new Conditions(inMiscCastleFirstFloor, hasGoodAnthem), goDownMiscDip2);
-		establishPeace6.addStep(hasGoodAnthem, goUpEtcDip3);
-		establishPeace6.addStep(new Conditions(hasAwfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
+		establishPeace6.addStep(new Conditions(inEtcCastleFirstFloor, goodAnthem), talkToSigridDip3);
+		establishPeace6.addStep(new Conditions(inMiscCastleFirstFloor, goodAnthem), goDownMiscDip2);
+		establishPeace6.addStep(goodAnthem, goUpEtcDip3);
+		establishPeace6.addStep(new Conditions(awfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
 		establishPeace6.addStep(inMiscCastleFirstFloor, getAnotherAwfulAnthem);
 
 		ConditionalStep establishPeace7 = new ConditionalStep(this, goUpEtcDip3);
-		establishPeace7.addStep(new Conditions(hasTreaty, inMiscCastleFirstFloor), talkToVargasDip2);
-		establishPeace7.addStep(new Conditions(hasTreaty, inEtcCastleFirstFloor), goDownEtcDip3);
-		establishPeace7.addStep(hasTreaty, goUpMiscDip3);
+		establishPeace7.addStep(new Conditions(treaty, inMiscCastleFirstFloor), talkToVargasDip2);
+		establishPeace7.addStep(new Conditions(treaty, inEtcCastleFirstFloor), goDownEtcDip3);
+		establishPeace7.addStep(treaty, goUpMiscDip3);
 		establishPeace7.addStep(inEtcCastleFirstFloor, talkToSigridDip3);
 		establishPeace7.addStep(inMiscCastleFirstFloor, goDownMiscDip2);
 
 		ConditionalStep establishPeace8 = new ConditionalStep(this, talkToDerrik);
-		establishPeace8.addStep(new Conditions(hasGiantPen, inMiscCastleFirstFloor), giveVargasPen);
-		establishPeace8.addStep(hasGiantPen, goUpMiscDip4);
-		establishPeace8.addStep(hasGiantNib, makePen);
+		establishPeace8.addStep(new Conditions(giantPen, inMiscCastleFirstFloor), giveVargasPen);
+		establishPeace8.addStep(giantPen, goUpMiscDip4);
+		establishPeace8.addStep(giantNib, makePen);
 		establishPeace8.addStep(inMiscCastleFirstFloor, goDownMiscDip3);
 
 		ConditionalStep courting;
@@ -280,7 +279,6 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		inEtcCastleFirstFloor = new ZoneRequirement(etcCastleFirstFloor);
 		inBrandRoom = new ZoneRequirement(brandRoom1, brandRoom2);
 		inAstridRoom = new ZoneRequirement(astridRoom1, astridRoom2);
-		hasFlowers = new ItemRequirements(flowers);
 
 		talked1P1 = new VarbitRequirement(85, 1);
 		talked1P2 = new VarbitRequirement(86, 1);
@@ -309,11 +307,6 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		diplomacyStep5 = new VarplayerRequirement(359, 60);
 		diplomacyStep6 = new VarplayerRequirement(359, 70);
 
-		hasAwfulAnthem = new ItemRequirements(awfulAnthem);
-		hasGoodAnthem = new ItemRequirements(goodAnthem);
-		hasGiantNib = new ItemRequirements(giantNib);
-		hasGiantPen = new ItemRequirements(giantPen);
-		hasTreaty = new ItemRequirements(treaty);
 		has75Support = new VarbitRequirement(72, 96, Operation.GREATER_EQUAL);
 	}
 

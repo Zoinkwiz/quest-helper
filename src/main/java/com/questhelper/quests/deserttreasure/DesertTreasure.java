@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -77,11 +76,10 @@ public class DesertTreasure extends BasicQuestHelper
 		spikedBootsEquipped, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted,
 		shadowDiamondHighlighted;
 
-	Requirement hasWarmKey, gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3,
+	Requirement gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3, inDraynorSewer,
 		litTorch4, unlockedFareedDoor, killedFareed, talkedToRasolo, unlockedCrossChest, gotRing, inShadowDungeon, damis1Nearby, damis2Nearby, talkedToMalak,
-		askedAboutKillingDessous, hasSilverPot, hasSilverPot2, inDraynorSewer, hasSilverPotBlood, hasSilverPotGarlic, hasSilverPotComplete, hasSilverPotSpice,
-		dessousNearby, killedDessous, gaveCake, talkedToTrollChild, killedTrolls, inTrollArea, inPath, killedKamil, onIcePath, onIceBridge, smashedIce1,
-		freedTrolls, placedBlood, placedIce, placedSmoke, placedShadow, inFloor1, inFloor2, inFloor3, inFloor4, inAzzRoom;
+		askedAboutKillingDessous, dessousNearby, killedDessous, gaveCake, talkedToTrollChild, killedTrolls, inTrollArea, inPath, killedKamil, onIcePath,
+		onIceBridge, smashedIce1, freedTrolls, placedBlood, placedIce, placedSmoke, placedShadow, inFloor1, inFloor2, inFloor3, inFloor4, inAzzRoom;
 
 	QuestStep talkToArchaeologist, talkToExpert, talkToExpertAgain, bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation,
 		buyDrink, talkToBartender, talkToEblis, bringItemsToEblis, talkToEblisAtMirrors, enterSmokeDungeon, lightTorch1, lightTorch2, lightTorch3,
@@ -124,7 +122,7 @@ public class DesertTreasure extends BasicQuestHelper
 		getSmokeDiamond = new ConditionalStep(this, enterSmokeDungeon);
 		getSmokeDiamond.addStep(new Conditions(inFareedRoom), killFareed);
 		getSmokeDiamond.addStep(new Conditions(inSmokeDungeon, unlockedFareedDoor), enterFareedRoom);
-		getSmokeDiamond.addStep(new Conditions(inSmokeDungeon, hasWarmKey), useWarmKey);
+		getSmokeDiamond.addStep(new Conditions(inSmokeDungeon, warmKey), useWarmKey);
 		getSmokeDiamond.addStep(new Conditions(inSmokeDungeon, litTorch1, litTorch2, litTorch3, litTorch4), openChest);
 		getSmokeDiamond.addStep(new Conditions(inSmokeDungeon, litTorch1, litTorch2, litTorch3), lightTorch4);
 		getSmokeDiamond.addStep(new Conditions(inSmokeDungeon, litTorch1, litTorch2), lightTorch3);
@@ -145,12 +143,12 @@ public class DesertTreasure extends BasicQuestHelper
 		getBloodDiamond = new ConditionalStep(this, talkToMalak);
 		getBloodDiamond.addStep(killedDessous, talkToMalakForDiamond);
 		getBloodDiamond.addStep(dessousNearby, killDessous);
-		getBloodDiamond.addStep(hasSilverPotComplete, usePotOnGrave);
-		getBloodDiamond.addStep(hasSilverPotGarlic, addSpice);
-		getBloodDiamond.addStep(hasSilverPotSpice, addPowderToFinish);
-		getBloodDiamond.addStep(hasSilverPotBlood, addPowder);
-		getBloodDiamond.addStep(hasSilverPot2, talkToMalakWithPot);
-		getBloodDiamond.addStep(hasSilverPot, blessPot);
+		getBloodDiamond.addStep(potComplete, usePotOnGrave);
+		getBloodDiamond.addStep(potWithGarlic, addSpice);
+		getBloodDiamond.addStep(potWithSpice, addPowderToFinish);
+		getBloodDiamond.addStep(potOfBlood, addPowder);
+		getBloodDiamond.addStep(silverPot2, talkToMalakWithPot);
+		getBloodDiamond.addStep(silverPot, blessPot);
 		getBloodDiamond.addStep(new Conditions(askedAboutKillingDessous, inDraynorSewer), talkToRuantun);
 		getBloodDiamond.addStep(askedAboutKillingDessous, enterSewer);
 		getBloodDiamond.addStep(talkedToMalak, askAboutKillingDessous);
@@ -323,10 +321,9 @@ public class DesertTreasure extends BasicQuestHelper
 	public void setupConditions()
 	{
 		// Given all items, 392 = 1;
-		hasWarmKey = new ItemRequirements(warmKey);
 		killedDamis = new VarbitRequirement(383, 5);
-		hadSmokeDiamond = new Conditions(true, new ItemRequirements(smokeDiamond));
-		gotIceDiamond = new Conditions(true, new ItemRequirements(iceDiamond));
+		hadSmokeDiamond = new Conditions(true, smokeDiamond);
+		gotIceDiamond = new Conditions(true, iceDiamond);
 		gotBloodDiamond = new VarbitRequirement(373, 4);
 		inSmokeDungeon = new ZoneRequirement(smokeDungeon);
 		inFareedRoom = new ZoneRequirement(fareedRoom);
@@ -348,14 +345,6 @@ public class DesertTreasure extends BasicQuestHelper
 
 		talkedToMalak = new VarbitRequirement(373, 1);
 		askedAboutKillingDessous = new VarbitRequirement(373, 2);
-
-		hasSilverPot = new ItemRequirements(silverPot);
-		hasSilverPot2 = new ItemRequirements(silverPot2);
-
-		hasSilverPotBlood = new ItemRequirements(potOfBlood);
-		hasSilverPotGarlic = new ItemRequirements(potWithGarlic);
-		hasSilverPotSpice = new ItemRequirements(potWithSpice);
-		hasSilverPotComplete = new ItemRequirements(potComplete);
 
 		inDraynorSewer = new ZoneRequirement(draynorSewer);
 

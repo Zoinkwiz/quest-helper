@@ -71,10 +71,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food;
 
 	Requirement inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6,
-		inSerafinaHouse, hasHerb, hasMeat, hasPestle, hasVialOrVialOfWater, hasVialOfWater, hasCrushedMeat,
-		hasUnfinishedPotion, hasUnfinishedBloodPotion, hasBloodVial, hasBloodPotion, hasPotion, hasVial,
-		hasOldNotes, hasSickle, hasEmeraldSickle, hasEnchantedEmeraldSickle, hasChain, hasFlail, inNewBase,
-		hasFlaygianNotes, inRanisFight, wallPressed;
+		inSerafinaHouse, inNewBase, inRanisFight, wallPressed, hasVialOrVialOfWater;
 
 	DetailedQuestStep talkToGarth, enterBase, talkToSafalaan, climbRubbleAtBank, talkToHarpert,
 		climbRubbleAfterHarpert, climbSteamVent, jumpOffRoof, climbSecondVent, climbUpToRoof,
@@ -150,35 +147,36 @@ public class ATasteOfHope extends BasicQuestHelper
 		steps.put(75, goToSerafinaHouse);
 
 		ConditionalStep tryFirstPotion = new ConditionalStep(this, enterSerafinaHouse);
-		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, hasPotion), usePotionOnDoor);
-		tryFirstPotion.addStep(new Conditions(hasPotion), enterSerafinaHouse);
-		tryFirstPotion.addStep(new Conditions(hasCrushedMeat, hasUnfinishedPotion), useMeatOnPotion);
-		tryFirstPotion.addStep(new Conditions(hasMeat, hasPestle, hasUnfinishedPotion), usePestleOnMeat);
-		tryFirstPotion.addStep(new Conditions(hasHerb, hasMeat, hasPestle, hasVialOrVialOfWater), useHerbOnVial);
-		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, hasHerb, hasMeat, hasPestle), searchForVial);
-		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, hasHerb, hasMeat), searchForPestle);
-		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, hasHerb), searchForMeat);
+		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, potion), usePotionOnDoor);
+		tryFirstPotion.addStep(new Conditions(potion), enterSerafinaHouse);
+		tryFirstPotion.addStep(new Conditions(crushedMeat, unfinishedPotion), useMeatOnPotion);
+		tryFirstPotion.addStep(new Conditions(meatHighlighted, pestleAndMortarHighlighted, unfinishedPotion), usePestleOnMeat);
+		tryFirstPotion.addStep(new Conditions(herb, meatHighlighted, pestleAndMortarHighlighted, hasVialOrVialOfWater),
+			useHerbOnVial);
+		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, herb, meatHighlighted, pestleAndMortarHighlighted), searchForVial);
+		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, herb, meatHighlighted), searchForPestle);
+		tryFirstPotion.addStep(new Conditions(inSerafinaHouse, herb), searchForMeat);
 		tryFirstPotion.addStep(inSerafinaHouse, searchForHerb);
 		steps.put(80, tryFirstPotion);
 		steps.put(81, tryFirstPotion);
 
 		ConditionalStep trySecondPotion = new ConditionalStep(this, enterSerafinaHouse);
-		trySecondPotion.addStep(new Conditions(inSerafinaHouse, hasBloodPotion), useBloodOnDoor);
-		trySecondPotion.addStep(new Conditions(hasBloodPotion), enterSerafinaHouse);
-		trySecondPotion.addStep(new Conditions(hasCrushedMeat, hasUnfinishedBloodPotion), useMeatOnBlood);
-		trySecondPotion.addStep(new Conditions(hasMeat, hasPestle, hasUnfinishedBloodPotion), usePestleOnMeat);
-		trySecondPotion.addStep(new Conditions(hasHerb, hasMeat, hasPestle, hasBloodVial), useHerbOnBlood);
-		trySecondPotion.addStep(new Conditions(inSerafinaHouse, hasHerb, hasMeat, hasBloodVial), searchForPestle);
-		trySecondPotion.addStep(new Conditions(inSerafinaHouse, hasHerb, hasBloodVial), searchForMeat);
-		trySecondPotion.addStep(new Conditions(inSerafinaHouse, hasBloodVial), searchForHerb);
-		trySecondPotion.addStep(new Conditions(inSerafinaHouse, hasVial), talkToSafalaanAfterPotion);
+		trySecondPotion.addStep(new Conditions(inSerafinaHouse, bloodPotion), useBloodOnDoor);
+		trySecondPotion.addStep(new Conditions(bloodPotion), enterSerafinaHouse);
+		trySecondPotion.addStep(new Conditions(crushedMeat, unfinishedBloodPotion), useMeatOnBlood);
+		trySecondPotion.addStep(new Conditions(meatHighlighted, pestleAndMortarHighlighted, unfinishedBloodPotion), usePestleOnMeat);
+		trySecondPotion.addStep(new Conditions(herb, meatHighlighted, pestleAndMortarHighlighted, bloodVial), useHerbOnBlood);
+		trySecondPotion.addStep(new Conditions(inSerafinaHouse, herb, meatHighlighted, bloodVial), searchForPestle);
+		trySecondPotion.addStep(new Conditions(inSerafinaHouse, herb, bloodVial), searchForMeat);
+		trySecondPotion.addStep(new Conditions(inSerafinaHouse, bloodVial), searchForHerb);
+		trySecondPotion.addStep(new Conditions(inSerafinaHouse, vial), talkToSafalaanAfterPotion);
 		trySecondPotion.addStep(new Conditions(inSerafinaHouse), searchForVial);
 		steps.put(82, trySecondPotion);
 		steps.put(83, trySecondPotion);
 		steps.put(84, trySecondPotion);
 
 		ConditionalStep goGetNotes = new ConditionalStep(this, enterSerafinaHouse);
-		goGetNotes.addStep(new Conditions(inSerafinaHouse, hasOldNotes), talkToSafalaanWithNotes);
+		goGetNotes.addStep(new Conditions(inSerafinaHouse, oldNotes), talkToSafalaanWithNotes);
 		goGetNotes.addStep(inSerafinaHouse, getOldNotes);
 		steps.put(85, goGetNotes);
 		steps.put(86, goGetNotes);
@@ -205,17 +203,17 @@ public class ATasteOfHope extends BasicQuestHelper
 		steps.put(115, goToNewBase);
 
 		ConditionalStep goTalkToVertida = new ConditionalStep(this, enterOldManRalBasement);
-		goTalkToVertida.addStep(hasFlaygianNotes, readFlaygianNotes);
+		goTalkToVertida.addStep(flaygianNotes, readFlaygianNotes);
 		goTalkToVertida.addStep(inNewBase, talkToVertidaInRalBasement);
 		steps.put(120, goTalkToVertida);
 
 		ConditionalStep makeFlail = new ConditionalStep(this, enterOldManRalBasement);
-		makeFlail.addStep(new Conditions(inNewBase, hasFlail), talkToSafalaanAfterFlail);
-		makeFlail.addStep(new Conditions(hasFlail), enterRalWithFlail);
-		makeFlail.addStep(new Conditions(hasEnchantedEmeraldSickle, hasChain), addSickleToRod);
-		makeFlail.addStep(new Conditions(hasEmeraldSickle, hasChain), enchantSickle);
-		makeFlail.addStep(new Conditions(hasSickle, hasChain), useEmeraldOnSickle);
-		makeFlail.addStep(new Conditions(inNewBase, hasSickle), getChain);
+		makeFlail.addStep(new Conditions(inNewBase, ivandisFlail), talkToSafalaanAfterFlail);
+		makeFlail.addStep(new Conditions(ivandisFlail), enterRalWithFlail);
+		makeFlail.addStep(new Conditions(enchantedEmeraldSickleB, chain), addSickleToRod);
+		makeFlail.addStep(new Conditions(emeraldSickleB, chain), enchantSickle);
+		makeFlail.addStep(new Conditions(sickleB, chain), useEmeraldOnSickle);
+		makeFlail.addStep(new Conditions(inNewBase, sickleB), getChain);
 		makeFlail.addStep(inNewBase, getSickle);
 		steps.put(125, makeFlail);
 
@@ -336,26 +334,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		inSerafinaHouse = new ZoneRequirement(serafinaHouse);
 		inNewBase = new ZoneRequirement(newBase);
 
-		hasCrushedMeat = new ItemRequirements(crushedMeat);
-		hasMeat = new ItemRequirements(meatHighlighted);
-		hasHerb = new ItemRequirements(herb);
-		hasVialOfWater = new ItemRequirements(vialOfWater);
-		hasVial = new ItemRequirements(vial);
-		hasVialOrVialOfWater = new Conditions(LogicType.OR, hasVialOfWater, hasVial);
-		hasBloodVial = new ItemRequirements(bloodVial);
-		hasPestle = new ItemRequirements(pestleAndMortarHighlighted);
-		hasUnfinishedPotion = new ItemRequirements(unfinishedPotion);
-		hasUnfinishedBloodPotion = new ItemRequirements(unfinishedBloodPotion);
-		hasBloodPotion = new ItemRequirements(bloodPotion);
-		hasPotion = new ItemRequirements(potion);
-		hasOldNotes = new ItemRequirements(oldNotes);
-		hasSickle = new ItemRequirements(sickleB);
-		hasEmeraldSickle = new ItemRequirements(emeraldSickleB);
+		hasVialOrVialOfWater = new Conditions(LogicType.OR, vialOfWater, vial);
 
-		hasEnchantedEmeraldSickle = new ItemRequirements(enchantedEmeraldSickleB);
-		hasChain = new ItemRequirements(chain);
-		hasFlail = new ItemRequirements(ivandisFlail);
-		hasFlaygianNotes = new ItemRequirements(flaygianNotes);
 		inRanisFight = new ZoneRequirement(ranisFight);
 
 		wallPressed = new VarbitRequirement(2590, 1, Operation.GREATER_EQUAL);

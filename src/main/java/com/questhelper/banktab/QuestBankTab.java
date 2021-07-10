@@ -231,26 +231,14 @@ public class QuestBankTab
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
-		isSwappingDuplicates = false;
-	}
+		if (!questBankTabInterface.isQuestTabActive() || questBankTabInterface.isHidden()) return;
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		questBankTabInterface.handleClick(event);
-	}
-
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
-	{
-		if (isSwappingDuplicates) return;
 		net.runelite.api.Point mousePoint = client.getMouseCanvasPosition();
 		if (fakeToRealItem.isEmpty())
 		{
 			return;
 		}
 
-		isSwappingDuplicates = true;
 		for (BankWidget bankWidget : fakeToRealItem.keySet())
 		{
 			if (bankWidget.isPointOverWidget(mousePoint))
@@ -259,6 +247,12 @@ public class QuestBankTab
 				return;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		questBankTabInterface.handleClick(event);
 	}
 
 	@Subscribe
@@ -478,10 +472,13 @@ public class QuestBankTab
 				if (bankTabItem.getQuantity() > 0)
 				{
 					String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
-					int requirementLength = quantityString.length() * 5;
-					int xPos = adjXOffset + 8;
+					int requirementLength = quantityString.length() * 6;
+					int extraLength =
+						QuantityFormatter.quantityToStackSize(fakeItemWidget.getItemQuantity()).length() * 6;
+
+					int xPos = adjXOffset + 2 + extraLength;
 					int yPos = adjYOffset - 1;
-					if (requirementLength > 20)
+					if (extraLength + requirementLength > 24)
 					{
 						xPos = adjXOffset;
 						yPos = adjYOffset + 9;

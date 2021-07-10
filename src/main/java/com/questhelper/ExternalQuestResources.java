@@ -32,6 +32,7 @@ public enum ExternalQuestResources {
     X_MARKS_THE_SPOT("https://oldschool.runescape.wiki/w/X_Marks_the_Spot"),
 
 	//Members' Quests
+	A_KINGDOM_DIVIDED("https://oldschool.runescape.wiki/w/A_Kingdom_Divided"),
 	ANIMAL_MAGNETISM("https://oldschool.runescape.wiki/w/Animal_Magnetism"),
 	ANOTHER_SLICE_OF_HAM("https://oldschool.runescape.wiki/w/Another_Slice_of_H.A.M."),
 	THE_ASCENT_OF_ARCEUUS("https://oldschool.runescape.wiki/w/The_Ascent_of_Arceuus"),

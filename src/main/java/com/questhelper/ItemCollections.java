@@ -1234,4 +1234,13 @@ public class ItemCollections
 		ItemID.COINS_995,
 		ItemID.COINS
 	);
+
+	@Getter
+	private  static final List<Integer> cookingGuild = ImmutableList.of(
+		ItemID.COOKING_CAPET,
+		ItemID.COOKING_CAPE,
+		ItemID.VARROCK_ARMOUR_4,
+		ItemID.VARROCK_ARMOUR_3,
+		ItemID.CHEFS_HAT
+	);
 }

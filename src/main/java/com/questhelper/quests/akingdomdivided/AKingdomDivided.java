@@ -84,9 +84,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		climbDownLeglessFaun, solveStatuesPuzzle, readRosesNote4, inspectCratesInShack, watchCutsceneAfterTalkingToFulloreInBasement, enterLizardTemple,
 		talkToKahtbalam, exitLizardTemple, goToEggArea, collectEgg, returntoKahtBalam, talkToKahtbalamAgain,
 		openDoorNearKaht, openXamphurGate, openDoorNearKahtNoKey, fightXamphurSidebar, fightXamphur,
-		searchTableAfterXamphur, returnToFulloreAgainSidebar, inspectCratesInShack2, talkToLordArceuusSidebar,
-		talkToLordArceuus, climbTowerOfMagicStairs, talkToLordHosidius, talkToLadyLova, talkToLadyPiscSidebar,
-		talkToLadyPisc, climbDownSewerLadyPisc, talkToLordShayzienSidebar, talkToLordShayzien,
+		searchTableAfterXamphur, returnToFulloreAgainSidebar, inspectCratesInShack2, talkToFulloreForBurial,
+		talkToLordArceuusSidebar, talkToLordArceuus, climbTowerOfMagicStairs, talkToLordHosidius, talkToLadyLova,
+		talkToLadyPiscSidebar, talkToLadyPisc, climbDownSewerLadyPisc, talkToLordShayzienSidebar, talkToLordShayzien,
 		climbUpLadderLordShayzien, talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar,
 		talkToPiscLookout, talkToArceuusLookout, talkToLovaLookout, talkToShayzienLookout, talkToHosidiusLookout,
 		talkToFulloreAboutLovaXericsLookout, talkToKaalMejSan,
@@ -103,10 +103,12 @@ public class AKingdomDivided extends BasicQuestHelper
 		goDownCouncillorsHomeF3toF2WithReceipt, watchCutsceneInShack, enterLizardTempleFirstTime, enterLizardTempleWithEgg,
 		enterLizardTempleToFightXamphur, watchCutsceneAfterXamphur, talkToFulloreToFinishQuest;
 
+	ConditionalStep xamphurCutscene, xamphurTableSearch;
+
 	Requirement hasTalkedToTomasLowry, hasBluishKey, inArceuusLibraryHistoricalArchive, inCouncillorsHouseF1,
 		inCouncillorsHouseF2, inCouncillorsHouseF3, hasReceipt, hasInspectedReceipt, judgeOfYamaNearby, inPanelZone,
 		assassinNearby, hasColdKey, inLeglessFaunF1, inPrisonRoom, inLizardTemple, hasKahtEgg, inEggArea, xamphurNearby,
-		xamphurGateNearby, inTowerOfMagic, inWarrens, inShayzienRoom, inLookoutBasement, inLookoutF0, inLookoutF1,
+		xamphurGateNearby, inXamphurRoom, inTowerOfMagic, inWarrens, inShayzienRoom, inLookoutBasement, inLookoutF0, inLookoutF1,
 		inLookoutF2, inLookoutF3, helpingLova0, helpingPisc0, helpingHosidius0, helpingShayzien0, helpingArceuus0,
 		helpingLova2, helpingPisc2, helpingHosidius2, helpingShayzien2, helpingArceuus2, helpingLova4, helpingPisc4,
 		helpingHosidius4, helpingShayzien4, helpingArceuus4, helpingLova6, helpingPisc6, helpingHosidius6, helpingShayzien6,
@@ -124,7 +126,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	Requirement freeInventorySlots;
 
 	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1, panelArea2,
-		prisonRoom, leglessFaunF1, lizardTemple, eggArea, towerOfMagic, warrens, shayzienRoom, lookoutBasement,
+		prisonRoom, leglessFaunF1, lizardTemple, eggArea, xamphurRoom, towerOfMagic, warrens, shayzienRoom, lookoutBasement,
 		lookoutF0,lookoutF1, lookoutF2, lookoutF3, shayzienPrison, mountKaruulm, arceuusChurchF1, arceuusChurchF2, wineBarrel;
 
 	@Override
@@ -241,20 +243,33 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(92, openDoorNearKaht);
 		steps.put(94, openDoorNearKahtNoKey);
 
-		ConditionalStep xamphurFightConditional = new ConditionalStep(this, fightXamphur);
-		xamphurFightConditional.addStep(inLizardTemple, openDoorNearKahtNoKey);
-		xamphurFightConditional.addStep(xamphurGateNearby, openXamphurGate);
+		ConditionalStep goToXamphurRoom = new ConditionalStep(this, enterLizardTempleToFightXamphur);
+		goToXamphurRoom.addStep(inLizardTemple, openDoorNearKahtNoKey);
+
+		ConditionalStep xamphurFightConditional = new ConditionalStep(this, goToXamphurRoom);
 		xamphurFightConditional.addStep(xamphurNearby, fightXamphur);
-		xamphurFightConditional.addStep(new Conditions(LogicType.NAND, inLizardTemple), enterLizardTempleToFightXamphur);
+		xamphurFightConditional.addStep(xamphurGateNearby, openXamphurGate);
 
 		steps.put(96, xamphurFightConditional);
 		steps.put(98, xamphurFightConditional);
 		steps.put(100, xamphurFightConditional);
-		steps.put(102, watchCutsceneAfterXamphur);
-		steps.put(104, searchTableAfterXamphur);
 
-		steps.put(106, inspectCratesInShack2);
-		steps.put(108, watchCutsceneAfterTalkingToFulloreInBasement);
+		xamphurCutscene = new ConditionalStep(this, goToXamphurRoom, "Watch the Xamphur cutscene.");
+		xamphurCutscene.addStep(inXamphurRoom, watchCutsceneAfterXamphur);
+		steps.put(102, xamphurCutscene);
+
+		xamphurTableSearch = new ConditionalStep(this, goToXamphurRoom, "Search the table in the north of the" +
+			" room you fought Xamphur for some notes.");
+		xamphurTableSearch.addStep(inXamphurRoom, searchTableAfterXamphur);
+		steps.put(104, xamphurTableSearch);
+
+		ConditionalStep goWatchSecondFulloreCutsceneCutscene = new ConditionalStep(this, inspectCratesInShack2);
+		goWatchSecondFulloreCutsceneCutscene.addStep(inPrisonRoom, watchCutsceneAfterTalkingToFulloreInBasement);
+		steps.put(106, goWatchSecondFulloreCutsceneCutscene);
+
+		ConditionalStep goWatchBurial = new ConditionalStep(this, talkToFulloreForBurial);
+		goWatchBurial.addStep(inPrisonRoom, watchCutsceneAfterTalkingToFulloreInBasement);
+		steps.put(108, goWatchBurial);
 
 		ConditionalStep talkingToArceuus = new ConditionalStep(this, climbTowerOfMagicStairs);
 		talkingToArceuus.addStep(inTowerOfMagic, talkToLordArceuus);
@@ -379,6 +394,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		leglessFaunF1 = new Zone(new WorldPoint(1766, 3686, 1), new WorldPoint(1773, 3679, 1));
 		lizardTemple = new Zone(new WorldPoint(1281, 10109, 0), new WorldPoint(1341, 10051, 0));
 		eggArea = new Zone(new WorldPoint(1232, 3624, 0), new WorldPoint(1244, 3612, 0));
+		xamphurRoom = new Zone(new WorldPoint(3026, 5895, 0), new WorldPoint(3047, 5943, 0));
 		towerOfMagic = new Zone(new WorldPoint(1563, 3802, 1), new WorldPoint(1595, 3836, 1));
 		warrens = new Zone(new WorldPoint(1728, 10115, 0), new WorldPoint(1814, 10177, 0));
 		shayzienRoom = new Zone(new WorldPoint(1480, 3640, 1), new WorldPoint(1489, 3631, 1));
@@ -477,6 +493,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		inEggArea = new ZoneRequirement(eggArea);
 		xamphurGateNearby = new ObjectCondition(ObjectID.GATE_41877);
 		xamphurNearby = new NpcCondition(NpcID.XAMPHUR_10955);
+		inXamphurRoom = new ZoneRequirement(xamphurRoom);
 		inTowerOfMagic = new ZoneRequirement(towerOfMagic);
 		inWarrens = new ZoneRequirement(warrens);
 		inShayzienRoom = new ZoneRequirement(shayzienRoom);
@@ -634,7 +651,6 @@ public class AKingdomDivided extends BasicQuestHelper
 		inspectCratesInShack = new ObjectStep(this, ObjectID.CRATES_41851, new WorldPoint(1281, 3763, 0),
 			"Inspect the crates in the north west corner of the shack located north east of the farming guild.  Use fairy ring CIR or a skill necklace to get there quickly.", fairyRingStaffOrGamesNecklace);
 		inspectCratesInShack.addDialogSteps("Climb through it.");
-		watchCutsceneAfterTalkingToFulloreInBasement = new DetailedQuestStep(this, "Watch the cutscene.");
 		watchCutsceneInShack = new DetailedQuestStep(this, "Watch the cutscene.");
 		inspectCratesInShack.addSubSteps(watchCutsceneInShack);
 		enterLizardTemple = new ObjectStep(this, ObjectID.LIZARD_DWELLING, new WorldPoint(1292, 3657, 0), "Enter the Lizard Dwelling south east of the Farming guild.");
@@ -676,12 +692,17 @@ public class AKingdomDivided extends BasicQuestHelper
 		fightXamphur = new NpcStep(this, NpcID.XAMPHUR_10955, "Fight Xamphur.", combatGearForXamphur, food);
 		fightXamphurSidebar.addSubSteps(openXamphurGate, openDoorNearKahtNoKey, fightXamphur, enterLizardTempleToFightXamphur);
 
-		watchCutsceneAfterXamphur = new DetailedQuestStep(this, "Watch the cutscene.");
-		searchTableAfterXamphur = new ObjectStep(this, ObjectID.TABLE_41880, "Search the northern table to find some notes.");
+		watchCutsceneAfterXamphur = new DetailedQuestStep(this, "");
+		searchTableAfterXamphur = new ObjectStep(this, ObjectID.TABLE_41880, "");
 		returnToFulloreAgainSidebar = new DetailedQuestStep(this, "Return to Commandore Fullore in the shack basement north east of the Farming guild.");
 		inspectCratesInShack2 = new ObjectStep(this, ObjectID.CRATES_41851, new WorldPoint(1281, 3763, 0), "Inspect the crates in the north west corner of the shack located north east of the farming guild.  " +
 			"Use fairy ring CIR or a skill necklace to get there quickly. ", fairyRingStaffOrGamesNecklace);
 		returnToFulloreAgainSidebar.addSubSteps(inspectCratesInShack2);
+
+		talkToFulloreForBurial = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1273, 3760, 0),
+			"Talk to Commander Fullore east of the Farming Guild to watch the burial cutscene.");
+		watchCutsceneAfterTalkingToFulloreInBasement = new DetailedQuestStep(this, "Watch the cutscene.");
+		watchCutsceneAfterTalkingToFulloreInBasement.addSubSteps(talkToFulloreForBurial);
 
 		talkToLordArceuusSidebar = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_8505, "Speak to Lord Arceuus in the Tower of Magic, north west of Arceuus.");
 		talkToLordArceuus = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_8505, "Speak to Lord Arceuus in the Tower of Magic, north west of Arceuus.");
@@ -852,8 +873,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		);
 
 		allSteps.add(new PanelDetails("The Mysterious Mage", Arrays.asList(enterLizardTempleFirstTime, talkToKahtbalam,
-			collectEgg, returntoKahtBalam, openDoorNearKaht, fightXamphurSidebar, watchCutsceneAfterXamphur, searchTableAfterXamphur, returnToFulloreAgainSidebar,
-			watchCutsceneAfterTalkingToFulloreInBasement,
+			collectEgg, returntoKahtBalam, openDoorNearKaht, fightXamphurSidebar, xamphurCutscene, xamphurTableSearch,
+			returnToFulloreAgainSidebar, watchCutsceneAfterTalkingToFulloreInBasement,
 			talkToLordArceuusSidebar, talkToLordHosidius, talkToLadyLova, talkToLadyPiscSidebar, talkToLordShayzienSidebar,
 			talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar), fairyRingStaffOrGamesNecklace, kharedstsMemoirs,
 			combatGearForXamphur, food)

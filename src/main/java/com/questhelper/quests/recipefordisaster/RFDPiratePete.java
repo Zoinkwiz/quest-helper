@@ -33,8 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -51,13 +49,10 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -76,8 +71,7 @@ public class RFDPiratePete extends BasicQuestHelper
 
 	WeightRequirement canSwim;
 
-	Requirement inDiningRoom, askedCookOptions, inUnderWater, hasEnoughRocks, has5Hide, hasCrabMeat, hasKelp, hasGroundKelp, hasGroundCrabMeat,
-		walkingUnderwater, hasCake, hasRawCake, hasGroundCod, hasBreadcrumbs;
+	Requirement inDiningRoom, askedCookOptions, inUnderWater, hasEnoughRocks, hasCrabMeat, hasKelp, walkingUnderwater;
 
 	QuestStep enterDiningRoom, inspectPete, enterKitchen, usePestleOnCod, useKnifeOnBread, talkToMurphy, talkToMurphyAgain, goDiving,
 		pickKelp, talkToNung, pickUpRocks, enterCave, killMudksippers5, returnToNung, talkToNungAgain, giveNungWire, killCrab, grindKelp, grindCrab, climbAnchor,
@@ -116,7 +110,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		steps.put(40, goTalkToNung);
 
 		ConditionalStep goGetHides = new ConditionalStep(this, goDiving);
-		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, has5Hide), returnToNung);
+		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, mudskipperHide5), returnToNung);
 		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, walkingUnderwater), killMudksippers5);
 		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, hasEnoughRocks), enterCave);
 		goGetHides.addStep(new Conditions(hasKelp, inUnderWater), pickUpRocks);
@@ -134,25 +128,25 @@ public class RFDPiratePete extends BasicQuestHelper
 		steps.put(70, goBringNungWire);
 
 		ConditionalStep goLearnHowToMakeFishCake = new ConditionalStep(this, goDivingAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasCake, inDiningRoom), useCakeOnPete);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasCake), enterDiningRoomAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasRawCake), cookCake);
+		goLearnHowToMakeFishCake.addStep(new Conditions(fishCake, inDiningRoom), useCakeOnPete);
+		goLearnHowToMakeFishCake.addStep(new Conditions(fishCake.alsoCheckBank(questBank)), enterDiningRoomAgain);
+		goLearnHowToMakeFishCake.addStep(new Conditions(rawFishCake.alsoCheckBank(questBank)), cookCake);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, hasCrabMeat, inUnderWater), climbAnchor);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, inUnderWater, hasEnoughRocks), killCrab);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, inUnderWater), pickUpRocksAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasGroundKelp, hasGroundCrabMeat, hasGroundCod, hasBreadcrumbs), talkToCookAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasGroundKelp, hasGroundCrabMeat, hasGroundCod), useKnifeOnBread);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasGroundKelp, hasGroundCrabMeat), usePestleOnCod);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, hasGroundCrabMeat), grindKelp);
+		goLearnHowToMakeFishCake.addStep(new Conditions(groundKelpHighlighted, groundCrabMeatHighlighted, groundCod, breadcrumbs), talkToCookAgain);
+		goLearnHowToMakeFishCake.addStep(new Conditions(groundKelpHighlighted, groundCrabMeatHighlighted, groundCod), useKnifeOnBread);
+		goLearnHowToMakeFishCake.addStep(new Conditions(groundKelpHighlighted, groundCrabMeatHighlighted), usePestleOnCod);
+		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, groundCrabMeatHighlighted), grindKelp);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, hasCrabMeat), grindCrab);
 		goLearnHowToMakeFishCake.addStep(inUnderWater, pickKelp);
 		steps.put(80, goLearnHowToMakeFishCake);
 		steps.put(90, goLearnHowToMakeFishCake);
 
 		ConditionalStep savePete = new ConditionalStep(this, useCrabOnKelp);
-		savePete.addStep(new Conditions(hasCake, inDiningRoom), useCakeOnPete);
-		savePete.addStep(new Conditions(hasCake), enterDiningRoomAgain);
-		savePete.addStep(new Conditions(hasRawCake), cookCake);
+		savePete.addStep(new Conditions(fishCake, inDiningRoom), useCakeOnPete);
+		savePete.addStep(new Conditions(fishCake.alsoCheckBank(questBank)), enterDiningRoomAgain);
+		savePete.addStep(new Conditions(rawFishCake), cookCake);
 		steps.put(100, savePete);
 
 		return steps;
@@ -224,15 +218,8 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		hasEnoughRocks = new VarbitRequirement(1869, 5);
 
-		has5Hide = new ItemRequirements(mudskipperHide5);
-		hasGroundCrabMeat = new ItemRequirements(groundCrabMeatHighlighted);
-		hasCrabMeat = new Conditions(LogicType.OR, new ItemRequirements(crabMeat), hasGroundCrabMeat);
-		hasGroundKelp = new ItemRequirements(groundKelpHighlighted);
-		hasKelp = new Conditions(LogicType.OR, new ItemRequirements(kelp), hasGroundKelp);
-		hasCake = new ItemRequirements(fishCake);
-		hasRawCake = new ItemRequirements(rawFishCake);
-		hasGroundCod = new ItemRequirements(groundCod);
-		hasBreadcrumbs = new ItemRequirements(breadcrumbs);
+		hasCrabMeat = new Conditions(LogicType.OR, crabMeat, groundCrabMeatHighlighted);
+		hasKelp = new Conditions(LogicType.OR, kelp, groundKelpHighlighted);
 
 		generalReqs = new ArrayList<>();
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));

@@ -48,6 +48,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +69,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	ItemRequirement rawJubbly, cookedJubbly, axeHighlighted, ironSpit, log, tinderbox, pickaxe, ogreBellows, ballOfWool, ogreBowAndArrows,
 		ogreBow, ogreArrows, chompy, chompySpitted, ogreBellowsFilled, toad, toadReady, rock, cookedJubblyHighlighted;
 
-	Requirement inDiningRoom, hasSpitChompy, hasToad, hasRock, hasBalloonToad, hasRawJubbly, hasCookedJubbly, jubblyNearby,
-		jubblyCarcassNearby, hasFilledBellows, rawJubblyOnFloor;
+	Requirement inDiningRoom, jubblyNearby, jubblyCarcassNearby, rawJubblyOnFloor, hadBalloonToad;
 
 	QuestStep enterDiningRoom, inspectSkrach, talkToRantz, talkToRantzOnCoast, useAxeOnTree, useAxeOnTreeAgain, talkToRantzOnCoastAgain,
 		useSpitOnChompy, lightFire, talkToRantzAfterReturn, getToad, getRock, useBellowOnToadInInv, dropBalloonToad, killJubbly, lootJubbly,
@@ -103,7 +103,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		steps.put(70, talkToRantzOnCoastAgain);
 
 		ConditionalStep getChildrenToKaramja = new ConditionalStep(this, useSpitOnChompy);
-		getChildrenToKaramja.addStep(hasSpitChompy, lightFire);
+		getChildrenToKaramja.addStep(chompySpitted, lightFire);
 
 		steps.put(80, getChildrenToKaramja);
 
@@ -111,14 +111,14 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		steps.put(100, talkToRantzAfterReturn);
 
 		ConditionalStep getJubbly = new ConditionalStep(this, fillUpBellows);
-		getJubbly.addStep(hasRawJubbly, cookJubbly);
+		getJubbly.addStep(rawJubbly.alsoCheckBank(questBank), cookJubbly);
 		getJubbly.addStep(rawJubblyOnFloor, pickUpRawJubbly);
 		getJubbly.addStep(jubblyCarcassNearby, lootJubbly);
 		getJubbly.addStep(jubblyNearby, killJubbly);
-		getJubbly.addStep(hasBalloonToad, dropBalloonToad);
-		getJubbly.addStep(new Conditions(hasToad, hasRock, hasFilledBellows), useBellowOnToadInInv);
-		getJubbly.addStep(new Conditions(hasToad, hasFilledBellows), getRock);
-		getJubbly.addStep(hasFilledBellows, getToad);
+		getJubbly.addStep(hadBalloonToad, dropBalloonToad);
+		getJubbly.addStep(new Conditions(toad, rock, ogreBellowsFilled), useBellowOnToadInInv);
+		getJubbly.addStep(new Conditions(toad, ogreBellowsFilled), getRock);
+		getJubbly.addStep(ogreBellowsFilled, getToad);
 		steps.put(110, getJubbly);
 		steps.put(120, getJubbly);
 		steps.put(130, getJubbly);
@@ -180,15 +180,9 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inDiningRoom = new ZoneRequirement(diningRoom);
-		hasSpitChompy = new ItemRequirements(chompySpitted);
-		hasToad = new ItemRequirements(toad);
-		hasBalloonToad = new Conditions(true, new ItemRequirements(toadReady));
-		hasRawJubbly = new ItemRequirements(rawJubbly);
-		hasCookedJubbly = new ItemRequirements(cookedJubbly);
-		hasRock = new ItemRequirements(rock);
+		hadBalloonToad = new Conditions(true, toadReady);
 		jubblyNearby = new NpcCondition(NpcID.JUBBLY_BIRD);
 		jubblyCarcassNearby = new NpcCondition(NpcID.JUBBLY_BIRD_4864);
-		hasFilledBellows = new ItemRequirements(ogreBellowsFilled);
 		rawJubblyOnFloor = new ItemOnTileRequirement(rawJubbly);
 	}
 
@@ -240,7 +234,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Jubbly (level 9)");
+		return Collections.singletonList("Jubbly (level 9)");
 	}
 
 	@Override
@@ -257,7 +251,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectSkrach)));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(inspectSkrach)));
 		allSteps.add(new PanelDetails("Help Rantz", Arrays.asList(talkToRantz, talkToRantzOnCoast, useAxeOnTree, useAxeOnTreeAgain,
 			talkToRantzOnCoastAgain, useSpitOnChompy, lightFire, talkToRantzAfterReturn),
 			axeHighlighted, log, tinderbox, chompy, ironSpit, ogreBowAndArrows, pickaxe, ogreBellows, ballOfWool));

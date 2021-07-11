@@ -7,7 +7,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -40,9 +39,11 @@ public class DwarfCannon extends BasicQuestHelper
 	//Items Required
 	ItemRequirement hammer, railing, dwarfRemains, toolkit, cannonballMould, nulodionsNotes;
 
-	Requirement upTower1, upTower2, inCave, bar1, bar2, bar3, bar4, bar5, bar6, hasRailings, hasHammer, hasRemains, nearLawgof, hasToolkit, springFixed, safetyFixed, cannonFixed, hasCannonballMould, hasNulodionsNotes;
+	Requirement upTower1, upTower2, inCave, bar1, bar2, bar3, bar4, bar5, bar6, nearLawgof, springFixed, safetyFixed, cannonFixed;
 
-	QuestStep talkToCaptainLawgof, talkToCaptainLawgof2, gotoTower, goToTower2, talkToCaptainLawgof3, gotoCave, inspectRailings1, inspectRailings2, inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6, getRemainsStep, downTower, downTower2, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5, talkToNulodion, talkToCaptainLawgof6;
+	QuestStep talkToCaptainLawgof, talkToCaptainLawgof2, gotoTower, goToTower2, talkToCaptainLawgof3, gotoCave, inspectRailings1, inspectRailings2,
+		inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6, getRemainsStep, downTower, downTower2, searchCrates,
+		talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5, talkToNulodion, talkToCaptainLawgof6;
 
 	//Zones
 	Zone cave, tower1, tower2, lawgofArea;
@@ -62,19 +63,19 @@ public class DwarfCannon extends BasicQuestHelper
 		//Repair Bars
 		ConditionalStep fixedRailings = new ConditionalStep(this, inspectRailings1);
 		fixedRailings.addStep(new Conditions(bar6), talkToCaptainLawgof2);
-		fixedRailings.addStep(new Conditions(hasHammer, hasRailings, bar5), inspectRailings6);
-		fixedRailings.addStep(new Conditions(hasHammer, hasRailings, bar4), inspectRailings5);
-		fixedRailings.addStep(new Conditions(hasHammer, hasRailings, bar3), inspectRailings4);
-		fixedRailings.addStep(new Conditions(hasHammer, hasRailings, bar2), inspectRailings3);
-		fixedRailings.addStep(new Conditions(hasHammer, hasRailings, bar1), inspectRailings2);
+		fixedRailings.addStep(new Conditions(hammer, railing, bar5), inspectRailings6);
+		fixedRailings.addStep(new Conditions(hammer, railing, bar4), inspectRailings5);
+		fixedRailings.addStep(new Conditions(hammer, railing, bar3), inspectRailings4);
+		fixedRailings.addStep(new Conditions(hammer, railing, bar2), inspectRailings3);
+		fixedRailings.addStep(new Conditions(hammer, railing, bar1), inspectRailings2);
 
 		steps.put(1, fixedRailings);
 
 		//Go to tower, get remains, come back
 		ConditionalStep getRemains = new ConditionalStep(this, gotoTower);
-		getRemains.addStep(new Conditions(hasRemains, nearLawgof), talkToCaptainLawgof3);
-		getRemains.addStep(new Conditions(hasRemains, upTower1), downTower2);
-		getRemains.addStep(new Conditions(hasRemains, upTower2), downTower);
+		getRemains.addStep(new Conditions(dwarfRemains, nearLawgof), talkToCaptainLawgof3);
+		getRemains.addStep(new Conditions(dwarfRemains, upTower1), downTower2);
+		getRemains.addStep(new Conditions(dwarfRemains, upTower2), downTower);
 		getRemains.addStep(upTower2, getRemainsStep);
 		getRemains.addStep(upTower1, goToTower2);
 		steps.put(2, getRemains);
@@ -93,7 +94,7 @@ public class DwarfCannon extends BasicQuestHelper
 
 		//Ammo mould and back
 		ConditionalStep captainLawgofFinal = new ConditionalStep(this, talkToNulodion);
-		captainLawgofFinal.addStep(new Conditions(hasNulodionsNotes, hasCannonballMould), talkToCaptainLawgof6);
+		captainLawgofFinal.addStep(new Conditions(nulodionsNotes, cannonballMould), talkToCaptainLawgof6);
 		steps.put(9, captainLawgofFinal);
 		steps.put(10, captainLawgofFinal);
 
@@ -124,14 +125,6 @@ public class DwarfCannon extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		//Items
-		hasRailings = new ItemRequirements(railing);
-		hasHammer = new ItemRequirements(hammer);
-		hasRemains = new ItemRequirements(dwarfRemains);
-		hasToolkit = new ItemRequirements(toolkit);
-		hasCannonballMould = new ItemRequirements(cannonballMould);
-		hasNulodionsNotes = new ItemRequirements(nulodionsNotes);
-
 		//Varbits
 		bar1 = new VarbitRequirement(2240, 1);
 		bar2 = new VarbitRequirement(2241, 1);

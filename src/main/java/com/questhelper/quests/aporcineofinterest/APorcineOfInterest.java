@@ -31,7 +31,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -59,7 +58,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	//Items Required
 	ItemRequirement rope, slashItem, reinforcedGoggles, combatGear, hoof;
 
-	Requirement inCave, hasFoot;
+	Requirement inCave;
 
 	DetailedQuestStep readNotice, talkToSarah, useRopeOnHole, enterHole, investigateSkeleton, talkToSpria, enterHoleAgain, killSourhog,
 		enterHoleForFoot, cutOffFoot, returnToSarah, returnToSpria;
@@ -93,7 +92,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		steps.put(25, goKillSourhog);
 
 		ConditionalStep getFootSteps = new ConditionalStep(this, enterHoleForFoot);
-		getFootSteps.addStep(hasFoot, returnToSarah);
+		getFootSteps.addStep(hoof, returnToSarah);
 		getFootSteps.addStep(inCave, cutOffFoot);
 
 		steps.put(30, getFootSteps);
@@ -127,7 +126,6 @@ public class APorcineOfInterest extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCave = new ZoneRequirement(cave);
-		hasFoot = new ItemRequirements(hoof);
 	}
 
 	public void setupSteps()

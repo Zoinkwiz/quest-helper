@@ -65,7 +65,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 	ItemRequirement scryingOrb, scryingOrbCharged;
 
 	Requirement inWizardBasement, teleportedFromVarrock, teleportedFromArdougne, teleportedFromWizardsTower,
-		teleportedFromGnome, teleportedFromDistentor, chargedScryingOrb;
+		teleportedFromGnome, teleportedFromDistentor;
 
 	QuestStep talkToMageInWildy, talkToMageInVarrock, talkToAubury, goDownInWizardsTower, talkToSedridor,
 		talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish;
@@ -85,7 +85,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 		steps.put(1, talkToMageInVarrock);
 
 		ConditionalStep locateEssenceMine = new ConditionalStep(this, talkToAubury);
-		locateEssenceMine.addStep(new Conditions(chargedScryingOrb), talkToMageAfterTeleports);
+		locateEssenceMine.addStep(new Conditions(scryingOrbCharged), talkToMageAfterTeleports);
 		locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, teleportedFromWizardsTower), talkToCromperty);
 		locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, inWizardBasement), talkToSedridor);
 		locateEssenceMine.addStep(teleportedFromVarrock, goDownInWizardsTower);
@@ -124,8 +124,6 @@ public class EnterTheAbyss extends BasicQuestHelper
 		teleportedFromArdougne = new VarbitRequirement(2316, 1);
 		teleportedFromDistentor = new VarbitRequirement(2317, 1);
 		teleportedFromGnome = new VarbitRequirement(2318, 1);
-
-		chargedScryingOrb = new ItemRequirements(scryingOrbCharged);
 	}
 
 	public void setupSteps()

@@ -31,7 +31,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -67,8 +66,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, camelotTeleport, twoFaladorTeleports;
 
-	Requirement inFaye, inFayeGround, inFaye1, inFaye2, inCamelot1, inCamelot2, morganNearby, hasBucket, hasRepellent, clearedHive, hasWax, hasBlackCandle,
-		hasAnyBlackCandle, hasLitBlackCandle, beggarNearby, talkedToLady, hasExcalibur, hasReadSpell, inCamelot, inStar, thrantaxNearby, inCamelotTower1, inCamelotTower2;
+	Requirement inFaye, inFayeGround, inFaye1, inFaye2, inCamelot1, inCamelot2, morganNearby, clearedHive,
+		hasAnyBlackCandle, beggarNearby, talkedToLady, hasReadSpell, inCamelot, inStar, thrantaxNearby, inCamelotTower1, inCamelotTower2;
 
 	QuestStep startQuest, talkToGawain, goUpstairsInCamelot, talkToLancelot, goBackDownStairsCamelot, hideInArheinCrate, goToFirstFloor, goToSecondFloor,
 		attackMordred, talkToMorgan, goToCatherbyAfterFortress, optionalGetRepellent, optionalGetBucket, optionalUseRepellent, talkToCandleMaker, talkToLadyOfLake,
@@ -108,26 +107,26 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 		getBlackCandle = new ConditionalStep(this, optionalGetRepellent);
 		getBlackCandle.addStep(inFaye, goToCatherbyAfterFortress);
-		getBlackCandle.addStep(hasWax, talkToCandleMaker);
-		getBlackCandle.addStep(new Conditions(hasRepellent, hasBucket), optionalUseRepellent);
-		getBlackCandle.addStep(hasRepellent, optionalGetBucket);
+		getBlackCandle.addStep(bucketOfWax, talkToCandleMaker);
+		getBlackCandle.addStep(new Conditions(repellent, bucket), optionalUseRepellent);
+		getBlackCandle.addStep(repellent, optionalGetBucket);
 		getBlackCandle.setLockingCondition(hasAnyBlackCandle);
 
 		getExcalibur = new ConditionalStep(this, talkToLadyOfLake);
 		getExcalibur.addStep(beggarNearby, talkToBeggar);
 		getExcalibur.addStep(talkedToLady, enterSarimShopAndTalk);
-		getExcalibur.setLockingCondition(hasExcalibur);
+		getExcalibur.setLockingCondition(excalibur);
 
 		ConditionalStep performSpell = new ConditionalStep(this, returnToCamelot);
 		performSpell.addStep(thrantaxNearby, sayWords);
-		performSpell.addStep(new Conditions(inStar, hasLitBlackCandle), dropBatBones);
+		performSpell.addStep(new Conditions(inStar, litBlackCandle), dropBatBones);
 		performSpell.addStep(inStar, lightCandle);
 		performSpell.addStep(inCamelot, goStandInStar);
-		performSpell.addStep(hasLitBlackCandle, returnToCamelotLit);
+		performSpell.addStep(litBlackCandle, returnToCamelotLit);
 
 		ConditionalStep completeAllTasks = new ConditionalStep(this, getBlackCandle);
-		completeAllTasks.addStep(new Conditions(hasAnyBlackCandle, hasExcalibur, hasReadSpell), performSpell);
-		completeAllTasks.addStep(new Conditions(hasAnyBlackCandle, hasExcalibur), goReadMagicWords);
+		completeAllTasks.addStep(new Conditions(hasAnyBlackCandle, excalibur, hasReadSpell), performSpell);
+		completeAllTasks.addStep(new Conditions(hasAnyBlackCandle, excalibur), goReadMagicWords);
 		completeAllTasks.addStep(hasAnyBlackCandle, getExcalibur);
 
 		steps.put(4, completeAllTasks);
@@ -193,16 +192,10 @@ public class MerlinsCrystal extends BasicQuestHelper
 		inCamelot1 = new ZoneRequirement(camelot1);
 		inCamelot2 = new ZoneRequirement(camelot2);
 		morganNearby = new NpcCondition(NpcID.MORGAN_LE_FAYE);
-		hasBucket = new ItemRequirements(bucket);
-		hasRepellent = new ItemRequirements(repellent);
 		clearedHive = new ObjectCondition(ObjectID.BEEHIVE_305);
-		hasWax = new ItemRequirements(bucketOfWax);
-		hasBlackCandle = new ItemRequirements(blackCandle);
-		hasLitBlackCandle = new ItemRequirements(litBlackCandle);
-		hasAnyBlackCandle = new ItemRequirements(LogicType.OR, "", blackCandle, litBlackCandle);
+		hasAnyBlackCandle = new Conditions(LogicType.OR, blackCandle, litBlackCandle);
 		beggarNearby = new NpcCondition(NpcID.BEGGAR);
 		talkedToLady = new WidgetTextRequirement(217, 4, "Ok. That seems easy enough.");
-		hasExcalibur = new ItemRequirements(excalibur);
 		hasReadSpell = new Conditions(true, LogicType.AND, new WidgetTextRequirement(229, 1, "You find a small inscription"));
 		inStar = new ZoneRequirement(star);
 		thrantaxNearby = new NpcCondition(NpcID.THRANTAX_THE_MIGHTY);

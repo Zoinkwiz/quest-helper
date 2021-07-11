@@ -67,6 +67,7 @@ public class ItemCollections
 		ItemID.CRYSTAL_PICKAXE_INACTIVE,
 		ItemID._3RD_AGE_PICKAXE,
 		ItemID.INFERNAL_PICKAXE,
+		ItemID.DRAGON_PICKAXE_OR_25376,
 		ItemID.DRAGON_PICKAXE_12797,
 		ItemID.DRAGON_PICKAXE_OR,
 		ItemID.DRAGON_PICKAXE,
@@ -1138,7 +1139,7 @@ public class ItemCollections
 		ItemID.WOODCUT_CAPET,
 		ItemID.QUEST_POINT_CAPE,
 		ItemID.QUEST_POINT_CAPE_T
-		);
+	);
 
 	@Getter
 	private static final List<Integer> slayerHelmets = ImmutableList.of(

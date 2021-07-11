@@ -30,7 +30,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -66,7 +65,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement chronicle;
 
-	Requirement inChaosAltar, hasFullFolder, inBattle;
+	Requirement inChaosAltar, inBattle;
 
 	QuestStep talkToRat, bringFolderToRat, talkToRatAfterFolder, talkToSurok, talkToSurokNoLetter, enterChaosAltar, useWandOnAltar, bringWandToSurok,
 		talkToRatAfterSurok, talkToZaff, talkToSurokToFight, fightRoald, talkToRatToFinish, talkToRatAfterSurokNoLetter;
@@ -90,7 +89,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 		steps.put(5, talkToRat);
 
 		ConditionalStep getIntel = new ConditionalStep(this, killOutlaws);
-		getIntel.addStep(hasFullFolder, bringFolderToRat);
+		getIntel.addStep(fullFolder, bringFolderToRat);
 
 		steps.put(10, getIntel);
 
@@ -173,7 +172,6 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasFullFolder = new ItemRequirements(fullFolder);
 		inChaosAltar = new ZoneRequirement(chaosAltar);
 		inBattle = new VarbitRequirement(6719, 2);
 	}

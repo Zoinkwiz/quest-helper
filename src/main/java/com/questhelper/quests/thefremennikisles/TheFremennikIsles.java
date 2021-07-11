@@ -69,7 +69,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	Requirement inIslands, inJatizso, inNeitiznot, inTrollLands, hasJesterOutfit, jestering1, repairedBridge1,
 		repairedBridge2, inNeitiznotOrTrollLands, collectedFlosi, collectedHring, collectedSkuli,
-		collectedValigga, collectedKeepa, collectedRaum, inTrollCave, inKingCave, killedTrolls, haveHead;
+		collectedValigga, collectedKeepa, collectedRaum, inTrollCave, inKingCave, killedTrolls;
 
 	QuestStep talkToMord, travelToJatizso, talkToGjuki, continueTalkingToGjuki, bringOreToGjuki,
 		talkToGjukiAfterOre, getJesterOutfit, talkToSlug, travelToNeitiznot, returnToRellekkaFromJatizso,
@@ -405,7 +405,6 @@ public class TheFremennikIsles extends BasicQuestHelper
 		collectedFlosi = new VarbitRequirement(3322, 1);
 
 		killedTrolls = new VarbitRequirement(3312, 0);
-		haveHead = new ItemRequirements(head);
 	}
 
 	public void setupSteps()

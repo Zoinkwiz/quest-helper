@@ -30,7 +30,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -83,7 +82,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 
 	ItemRequirement[] fluids;
 
-	Requirement hasOldNotes, inFirstFloor, inBasement, triedToActivate, cleanedRefinery, hasFluid1, hasFluid2, hasFluid3, hasFluid4, hasFluid5, inSecondFloor;
+	Requirement inFirstFloor, inBasement, triedToActivate, cleanedRefinery, inSecondFloor;
 
 	Requirement[] hasFluids;
 
@@ -161,7 +160,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					startUpStep(getFluid);
 				}
 			}
-			else if (hasOldNotes.check(client))
+			else if (oldNotes.check(client))
 			{
 				startUpStep(readNote);
 			}
@@ -280,13 +279,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 
 		triedToActivate = new VarbitRequirement(7799, 2);
 		cleanedRefinery = new VarbitRequirement(7799, 3);
-		hasOldNotes = new ItemRequirements(oldNotes);
-		hasFluid1 = new ItemRequirements(fluid1);
-		hasFluid2 = new ItemRequirements(fluid2);
-		hasFluid3 = new ItemRequirements(fluid3);
-		hasFluid4 = new ItemRequirements(fluid4);
-		hasFluid5 = new ItemRequirements(fluid5);
-		hasFluids = new Requirement[]{null, hasFluid1, hasFluid2, hasFluid3, hasFluid4, hasFluid5 };
+		hasFluids = new Requirement[]{null, fluid1, fluid2, fluid3, fluid4, fluid5 };
 	}
 
 	private void setupZones()
@@ -336,7 +329,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 	{
 		if (widgetLoaded.getGroupId() == 291)
 		{
-			Widget line1Widget = client.getWidget(291, 8);
+			Widget line1Widget = client.getWidget(291, 9);
 			if (line1Widget != null)
 			{
 				Matcher matcher = LINE1.matcher(line1Widget.getText());
@@ -348,7 +341,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					}
 				}
 			}
-			Widget line2Widget = client.getWidget(291, 9);
+			Widget line2Widget = client.getWidget(291, 10);
 			if (line2Widget != null)
 			{
 				Matcher matcher = LINE2.matcher(line2Widget.getText());
@@ -364,7 +357,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					}
 				}
 			}
-			Widget line3Widget = client.getWidget(291, 10);
+			Widget line3Widget = client.getWidget(291, 11);
 			if (line3Widget != null)
 			{
 				Matcher matcher = LINE3.matcher(line3Widget.getText());

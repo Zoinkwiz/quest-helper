@@ -210,6 +210,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
 		//QuestHelperQuest.KANDARIN_MEDIUM,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
+		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.REGICIDE,
 		QuestHelperQuest.ROVING_ELVES,

@@ -60,8 +60,6 @@ public class RFDStart extends BasicQuestHelper
 	//Items Required
 	ItemRequirement eyeOfNewt, greenmansAle, rottenTomato, fruitBlast, ashes, ashesHighlighted, fruitBlastHighlighted, dirtyBlast;
 
-	Requirement hasDirtyBlast;
-
 	QuestStep talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom;
 
 	@Override
@@ -75,7 +73,7 @@ public class RFDStart extends BasicQuestHelper
 		steps.put(0, talkToCook);
 
 		ConditionalStep goGiveCookItems = new ConditionalStep(this, useAshesOnFruitBlast);
-		goGiveCookItems.addStep(hasDirtyBlast, talkToCookAgain);
+		goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(questBank), talkToCookAgain);
 		steps.put(1, goGiveCookItems);
 
 		steps.put(2, enterDiningRoom);
@@ -99,7 +97,6 @@ public class RFDStart extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDirtyBlast = new ItemRequirements(dirtyBlast);
 		// 4606 0->1
 
 		// 1850 = 2->3

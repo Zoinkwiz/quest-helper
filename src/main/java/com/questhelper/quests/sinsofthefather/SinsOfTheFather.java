@@ -95,10 +95,10 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 	DetailedQuestStep goDownToMakeFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle;
 
-	Requirement has8Logs, inFollowingCarlArea, inKroyArea, destroyedLabTable1, inPater, inSwingArea, inSwingExitArea, vineAdded, has3Vines, hasKnife, hasLongVine,
-		inNailBeastArea, inBridgeArea, nailBeastNearby, hasAxe, hasLog, has2Logs, has3Logs, hasRepairedBridge1, hasRepairedBridge2, hasRepairedBridge3, inBridgeExitArea,
-		inJuvinateArea, juvinateNearby, inPuzzleInterface, talkedToKael, talkedToVertida, talkedToPolmafi, talkedToRadigad, talkedToIvan, inLab, inDeepLab, inNewBase,
-		inDamienRoom, hasNote, hasSickle, hasRubySickle, hasEnchantedRubySickle, hasBlisterwoodSickle, inFinalFightArea;
+	Requirement inFollowingCarlArea, inKroyArea, destroyedLabTable1, inPater, inSwingArea, inSwingExitArea, vineAdded, inNailBeastArea,
+		inBridgeArea, nailBeastNearby, hasRepairedBridge1, hasRepairedBridge2, hasRepairedBridge3, inBridgeExitArea, inJuvinateArea,
+		juvinateNearby, inPuzzleInterface, talkedToKael, talkedToVertida, talkedToPolmafi, talkedToRadigad, talkedToIvan, inLab, inDeepLab,
+		inNewBase, inDamienRoom, inFinalFightArea;
 
 	//Zones
 	Zone followingCarlArea, kroyArea, pater, swingArea, swingExitArea, nailBeastArea, bridgeArea, bridgeExitArea, juvinateArea, lab, newBase, damienRoom, finalFightArea;
@@ -157,18 +157,18 @@ public class SinsOfTheFather extends BasicQuestHelper
 		goTempleTrekking.addStep(new Conditions(inJuvinateArea), leaveJuvinateArea);
 		goTempleTrekking.addStep(new Conditions(inBridgeExitArea), leaveBridgeArea);
 		goTempleTrekking.addStep(new Conditions(inBridgeArea, hasRepairedBridge3), crossBridge);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, hasLog, hasRepairedBridge2), repairBridge3);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, has2Logs, hasRepairedBridge1), repairBridge2);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, has3Logs), repairBridge1);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, hasAxe), get3LogsForBridge);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, log1, hasRepairedBridge2), repairBridge3);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, log2, hasRepairedBridge1), repairBridge2);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, log3), repairBridge1);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, axe), get3LogsForBridge);
 		goTempleTrekking.addStep(new Conditions(inBridgeArea), killZombieForAxe);
 		goTempleTrekking.addStep(new Conditions(inNailBeastArea, nailBeastNearby), killNailBeasts);
 		goTempleTrekking.addStep(new Conditions(inNailBeastArea), leaveNailBeastArea);
 		goTempleTrekking.addStep(new Conditions(inSwingExitArea), leaveSwingArea);
 		goTempleTrekking.addStep(new Conditions(inSwingArea, vineAdded), swingOnVine);
-		goTempleTrekking.addStep(new Conditions(inSwingArea, hasLongVine), useVineOnBranch);
-		goTempleTrekking.addStep(new Conditions(inSwingArea, has3Vines), combineVines);
-		goTempleTrekking.addStep(new Conditions(inSwingArea, hasKnife), cutVines);
+		goTempleTrekking.addStep(new Conditions(inSwingArea, longVine), useVineOnBranch);
+		goTempleTrekking.addStep(new Conditions(inSwingArea, vine3), combineVines);
+		goTempleTrekking.addStep(new Conditions(inSwingArea, knife), cutVines);
 		goTempleTrekking.addStep(inSwingArea, searchForKnife);
 		steps.put(36, goTempleTrekking);
 
@@ -260,7 +260,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		steps.put(102, getNote);
 
 		ConditionalStep goReadNote = new ConditionalStep(this, getNote);
-		goReadNote.addStep(hasNote, readNote);
+		goReadNote.addStep(oldNote, readNote);
 		steps.put(104, getNote);
 
 		steps.put(106, valveStep);
@@ -268,22 +268,22 @@ public class SinsOfTheFather extends BasicQuestHelper
 		steps.put(110, valveStep);
 
 		ConditionalStep getLogs = new ConditionalStep(this, cutLogs);
-		getLogs.addStep(has8Logs, bringVanesculaLogs);
+		getLogs.addStep(blisterwood8.alsoCheckBank(questBank), bringVanesculaLogs);
 
 		steps.put(112, getLogs);
 
 		ConditionalStep bringItemsToVertida = new ConditionalStep(this, cutLogs);
-		bringItemsToVertida.addStep(new Conditions(inNewBase, has8Logs), bringVertidaLogs);
-		bringItemsToVertida.addStep(has8Logs, goDownToVerditaWithLogs);
+		bringItemsToVertida.addStep(new Conditions(inNewBase, blisterwood8), bringVertidaLogs);
+		bringItemsToVertida.addStep(blisterwood8.alsoCheckBank(questBank), goDownToVerditaWithLogs);
 		steps.put(114, bringItemsToVertida);
 
 		steps.put(116, talkToVertidaForFlail);
 
 		ConditionalStep createFlail = new ConditionalStep(this, goDownToMakeFlail);
-		createFlail.addStep(hasBlisterwoodSickle, useFlailOnSickle);
-		createFlail.addStep(hasEnchantedRubySickle, useLogOnSickle);
-		createFlail.addStep(hasRubySickle, enchantRubySickle);
-		createFlail.addStep(hasSickle, addRubyToSickle);
+		createFlail.addStep(blisterwoodSickle, useFlailOnSickle);
+		createFlail.addStep(enchantedSickle, useLogOnSickle);
+		createFlail.addStep(rubySickle, enchantRubySickle);
+		createFlail.addStep(sickle, addRubyToSickle);
 		createFlail.addStep(inNewBase, getSickle);
 		steps.put(118, createFlail);
 
@@ -330,17 +330,6 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		has8Logs = new ItemRequirements(blisterwood8);
-		hasKnife = new ItemRequirements(knife);
-		has3Vines = new ItemRequirements(vine3);
-		hasLongVine = new ItemRequirements(longVine);
-		hasAxe = new ItemRequirements(axe);
-		hasNote = new ItemRequirements(oldNote);
-		hasSickle = new ItemRequirements(sickle);
-		hasRubySickle = new ItemRequirements(rubySickle);
-		hasEnchantedRubySickle = new ItemRequirements(enchantedSickle);
-		hasBlisterwoodSickle = new ItemRequirements(blisterwoodSickle);
-
 		destroyedLabTable1 = new VarbitRequirement(10353, 2, Operation.GREATER_EQUAL);
 		vineAdded = new ObjectCondition(ObjectID.SWAMP_TREE_BRANCH_38005, new WorldPoint(2093, 5015, 0));
 		nailBeastNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.NAIL_BEAST_9612), new NpcCondition(NpcID.NAIL_BEAST_9613));
@@ -361,9 +350,6 @@ public class SinsOfTheFather extends BasicQuestHelper
 		inDamienRoom = new ZoneRequirement(damienRoom);
 		inFinalFightArea = new ZoneRequirement(finalFightArea);
 
-		hasLog = new ItemRequirements(log1);
-		has2Logs = new ItemRequirements(log2);
-		has3Logs = new ItemRequirements(log3);
 		hasRepairedBridge1 = new ObjectCondition(ObjectID.PARTIALLY_BROKEN_BRIDGE, new WorldPoint(2090, 5039, 0));
 		hasRepairedBridge2 = new ObjectCondition(ObjectID.SLIGHTLY_BROKEN_BRIDGE, new WorldPoint(2090, 5039, 0));
 		hasRepairedBridge3 = new ObjectCondition(ObjectID.FIXED_BRIDGE, new WorldPoint(2090, 5039, 0));

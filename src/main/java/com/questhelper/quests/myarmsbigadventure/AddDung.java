@@ -3,6 +3,7 @@ package com.questhelper.quests.myarmsbigadventure;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
+import java.util.Arrays;
 import java.util.Collections;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -13,6 +14,7 @@ import net.runelite.client.eventbus.Subscribe;
 public class AddDung extends ObjectStep
 {
 	ItemRequirement dung = new ItemRequirement("Ugthanki dung", ItemID.UGTHANKI_DUNG, 3);
+	ItemRequirement spade = new ItemRequirement("Spade", ItemID.SPADE);
 
 	public AddDung(QuestHelper questHelper)
 	{
@@ -32,7 +34,7 @@ public class AddDung extends ObjectStep
 	{
 		int numCompToAdd = 3 - client.getVarbitValue(2791);
 		dung.setQuantity(numCompToAdd);
-		this.setRequirements(Collections.singletonList(dung));
+		this.setRequirements(Arrays.asList(dung, spade));
 		this.setText("Add " + numCompToAdd + " ugthanki dung on My Arm's soil patch.");
 	}
 }

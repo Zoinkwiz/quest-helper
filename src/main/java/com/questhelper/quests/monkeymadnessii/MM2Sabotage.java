@@ -126,9 +126,9 @@ public class MM2Sabotage extends ConditionalStep
 		onPlatformGunpowderArea = new ZoneRequirement(platformGunpowderArea);
 		onPlatformAboveGunpowder = new ZoneRequirement(platformAboveGunpowder);
 
-		hasSatchelNeededQuantity = new ItemRequirements(satchelCurrentQuantity);
-		hasFilledSatchel1 = new ItemRequirements(filledSatchel1Highlighted);
-		hasFilledSatchelNeededQuantity = new ItemRequirements(filledSatchelCurrentQuantity);
+		hasSatchelNeededQuantity = satchelCurrentQuantity;
+		hasFilledSatchel1 = filledSatchel1Highlighted;
+		hasFilledSatchelNeededQuantity = filledSatchelCurrentQuantity;
 
 		// 5047 0->8 when first placed
 		// 8->10

@@ -76,8 +76,8 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines, inHamBase, zanikIsFollowing,
 		talkedToShopkeeper, talkedToWoman, talkedToDuke, talkedToAereck, talkedToGoblins, goneOutside, heardSpeaker, isBehindGuard1,
 		killedGuard1, isNearGuard4, isNearGuard5, inStoreroom, killedGuard2, killedGuard3, killedGuard4, killedGuard5, zanikWaitingFor4,
-		zanikWaitingFor5, isDisguisedZanikFollowing, zanikPickedUp, ropeAddedToHole, minedRocks, inSwamp, inJunaRoom, holdingCrate,
-		inMill, killedGuards, talkedToJohn;
+		zanikWaitingFor5, isDisguisedZanikFollowing, zanikPickedUp, ropeAddedToHole, minedRocks, inSwamp, inJunaRoom, inMill, killedGuards,
+		talkedToJohn;
 
 	DetailedQuestStep goDownFromF2, talkToMistag, talkToZanik, talkToMistagToTravel, talkToCook, talkToDuke, talkToHans,
 		talkToWoman, talkToBob, talkToAereck, talkToGuide, approachGoblins, talkToShopkeeper, goOutside, talkToZanikAboutOrigin,
@@ -155,7 +155,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		ConditionalStep infiltrateMill = new ConditionalStep(this, goGetZanikForMill);
 		infiltrateMill.addStep(inMill, killGuards);
-		infiltrateMill.addStep(holdingCrate, enterMill);
+		infiltrateMill.addStep(crate, enterMill);
 		infiltrateMill.addStep(zanikIsFollowing, searchCrate);
 		steps.put(9, infiltrateMill);
 
@@ -288,8 +288,6 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		ropeAddedToHole = new VarbitRequirement(279, 1);
 		minedRocks = new VarbitRequirement(538, 1);
-
-		holdingCrate = new ItemRequirements(crate);
 
 		killedGuards = new VarbitRequirement(2283, 3);
 	}

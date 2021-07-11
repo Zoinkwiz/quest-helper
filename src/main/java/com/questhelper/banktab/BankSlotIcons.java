@@ -33,6 +33,9 @@ public class BankSlotIcons
 	private static final Integer combatGear = ItemID.ABYSSAL_WHIP;
 
 	@Getter
+	private static final Integer meleeCombatGear = ItemID.ABYSSAL_WHIP;
+
+	@Getter
 	private static final Integer rangedCombatGear = ItemID.MAGIC_SHORTBOW;
 
 	@Getter

@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -71,11 +70,11 @@ public class EaglesPeak extends BasicQuestHelper
 	//Items Reecommended
 	ItemRequirement dramenStaffOrNecklaceOfPassage, varrockTeleport, ardougneTeleport;
 
-	Requirement hasBirdBook, hasMetalFeather, inMainCavern, spokenToNickolaus, hasTenFeathers, spokenOnceToAsyff, spokenTwiceToAsyff, inBronzeRoom,
-		bronzeRoomPedestalUp, bronzeRoomPedestalLowered, winch1NotDone, winch2NotDone, winch3NotDone, winch4NotDone, hasSolvedBronze, hasBronzeFeather, hasSilverFeather,
-		hasGoldFeather, hasInspectedSilverPedestal, inSilverRoom, hasInspectedRocks1, hasInspectedRocks2, hasInspectedOpening, threatenedKebbit, inGoldRoom, hasBirdFeed,
-		lever1OriginalPosition, lever1Pulled, lever2Pulled, lever3Pulled, lever4Pulled, bird1Moved, bird2Moved, bird3Moved, bird4Moved, bird5Moved, hasInsertedBronzeFeather,
-		hasInsertedSilverFeather, hasInsertedGoldFeather, silverFeatherNearby;
+	Requirement inMainCavern, spokenToNickolaus, spokenOnceToAsyff, spokenTwiceToAsyff, inBronzeRoom, bronzeRoomPedestalUp, bronzeRoomPedestalLowered,
+		winch1NotDone, winch2NotDone, winch3NotDone, winch4NotDone, hasInspectedSilverPedestal, inSilverRoom, hasInspectedRocks1, hasInspectedRocks2,
+		hasInspectedOpening, threatenedKebbit, inGoldRoom, lever1OriginalPosition, lever1Pulled, lever2Pulled, lever3Pulled, lever4Pulled, bird1Moved,
+		bird2Moved, bird3Moved, bird4Moved, bird5Moved, hasInsertedBronzeFeather, hasInsertedSilverFeather, hasInsertedGoldFeather, silverFeatherNearby,
+		hasSolvedBronze;
 
 	QuestStep speakToCharlie, inspectBooks, clickBook, inspectBooksForFeather, useFeatherOnDoor, enterPeak, shoutAtNickolaus, pickupFeathers, enterEastCave,
 		goToFancyStore, speakAsyffAgain, returnToEaglesPeak, enterBronzeRoom, attemptToTakeBronzeFeather, winch1, winch2, winch3, winch4, grabBronzeFeather,
@@ -100,19 +99,19 @@ public class EaglesPeak extends BasicQuestHelper
 		steps.put(0, speakToCharlie);
 
 		ConditionalStep getFeatherKey = new ConditionalStep(this, inspectBooks);
-		getFeatherKey.addStep(hasBirdBook, clickBook);
+		getFeatherKey.addStep(birdBook, clickBook);
 
 		steps.put(5, getFeatherKey);
 
 		// TODO: Need a missing step for entering the
 		ConditionalStep enterEaglesPeak = new ConditionalStep(this, inspectBooksForFeather);
-		enterEaglesPeak.addStep(hasMetalFeather, useFeatherOnDoor);
+		enterEaglesPeak.addStep(metalFeather, useFeatherOnDoor);
 
 		steps.put(10, enterEaglesPeak);
 
-		Conditions hasGoldFeatherOrUsed = new Conditions(LogicType.OR, hasGoldFeather, hasInsertedGoldFeather);
-		Conditions hasSilverFeatherOrUsed = new Conditions(LogicType.OR, hasSilverFeather, hasInsertedSilverFeather);
-		Conditions hasBronzeFeatherOrUsed = new Conditions(LogicType.OR, hasBronzeFeather, hasInsertedBronzeFeather);
+		Conditions hasGoldFeatherOrUsed = new Conditions(LogicType.OR, goldFeather, hasInsertedGoldFeather);
+		Conditions hasSilverFeatherOrUsed = new Conditions(LogicType.OR, silverFeather, hasInsertedSilverFeather);
+		Conditions hasBronzeFeatherOrUsed = new Conditions(LogicType.OR, bronzeFeather, hasInsertedBronzeFeather);
 
 		ConditionalStep createDisguises = new ConditionalStep(this, enterPeak);
 		createDisguises.addStep(new Conditions(inMainCavern, hasInsertedGoldFeather, hasInsertedBronzeFeather, hasSilverFeatherOrUsed), useSilverFeathersOnStoneDoor);
@@ -137,7 +136,7 @@ public class EaglesPeak extends BasicQuestHelper
 		createDisguises.addStep(new Conditions(inGoldRoom, lever1Pulled, bird2Moved), fillFeeder3);
 		createDisguises.addStep(new Conditions(inGoldRoom, lever1Pulled, bird1Moved), fillFeeder2);
 		createDisguises.addStep(new Conditions(inGoldRoom, lever1Pulled), fillFeeder1);
-		createDisguises.addStep(new Conditions(inGoldRoom, hasBirdFeed), pullLever1Down);
+		createDisguises.addStep(new Conditions(inGoldRoom, birdFeed), pullLever1Down);
 		createDisguises.addStep(new Conditions(inGoldRoom), collectFeed);
 		createDisguises.addStep(new Conditions(inMainCavern, hasSilverFeatherOrUsed, hasBronzeFeatherOrUsed), enterGoldRoom);
 		createDisguises.addStep(new Conditions(inSilverRoom, hasSilverFeatherOrUsed), enterMainCavernFromSilver);
@@ -158,8 +157,8 @@ public class EaglesPeak extends BasicQuestHelper
 		createDisguises.addStep(new Conditions(inBronzeRoom, spokenTwiceToAsyff), attemptToTakeBronzeFeather);
 		createDisguises.addStep(new Conditions(new ZoneRequirement(inMainCave), spokenTwiceToAsyff), enterBronzeRoom);
 		createDisguises.addStep(new Conditions(spokenTwiceToAsyff), returnToEaglesPeak);
-		createDisguises.addStep(new Conditions(spokenOnceToAsyff, hasTenFeathers), speakAsyffAgain);
-		createDisguises.addStep(new Conditions(spokenToNickolaus, hasTenFeathers), goToFancyStore);
+		createDisguises.addStep(new Conditions(spokenOnceToAsyff, tenEagleFeathers), speakAsyffAgain);
+		createDisguises.addStep(new Conditions(spokenToNickolaus, tenEagleFeathers), goToFancyStore);
 		createDisguises.addStep(new Conditions(spokenToNickolaus, inMainCavern), pickupFeathers);
 		createDisguises.addStep(inMainCavern, shoutAtNickolaus);
 		steps.put(15, createDisguises);
@@ -233,14 +232,11 @@ public class EaglesPeak extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBirdBook = new ItemRequirements(birdBook);
-		hasMetalFeather = new ItemRequirements(metalFeather);
 		inBronzeRoom = new ObjectCondition(ObjectID.PEDESTAL_19980);
 		bronzeRoomPedestalUp = new ObjectCondition(ObjectID.PEDESTAL_19981);
 		bronzeRoomPedestalLowered = new ObjectCondition(ObjectID.STONE_PEDESTAL_19984);
 		inMainCavern = new ZoneRequirement(inMainCave);
 		spokenToNickolaus = new VarbitRequirement(3110, 3);
-		hasTenFeathers = new ItemRequirements(tenEagleFeathers);
 		spokenOnceToAsyff = new VarbitRequirement(3110, 4);
 		spokenTwiceToAsyff = new VarbitRequirement(3110, 5);
 		winch1NotDone = new VarbitRequirement(3101, 0);
@@ -248,9 +244,6 @@ public class EaglesPeak extends BasicQuestHelper
 		winch3NotDone = new VarbitRequirement(3103, 0);
 		winch4NotDone = new VarbitRequirement(3104, 0);
 		hasSolvedBronze = new VarbitRequirement(3105, 0);
-		hasBronzeFeather = new ItemRequirements(bronzeFeather);
-		hasSilverFeather = new ItemRequirements(silverFeather);
-		hasGoldFeather = new ItemRequirements(goldFeather);
 		hasInspectedSilverPedestal = new VarbitRequirement(3099, 1);
 		hasInspectedRocks1 = new VarbitRequirement(3099, 2);
 		hasInspectedRocks2 = new VarbitRequirement(3099, 3);
@@ -268,7 +261,6 @@ public class EaglesPeak extends BasicQuestHelper
 		bird3Moved = new VarbitRequirement(3095, 1);
 		bird4Moved = new VarbitRequirement(3094, 1);
 		bird5Moved = new VarbitRequirement(3096, 1);
-		hasBirdFeed = new ItemRequirements(birdFeed6);
 		hasInsertedBronzeFeather = new VarbitRequirement(3108, 1);
 		hasInsertedSilverFeather = new VarbitRequirement(3099, 6);
 		hasInsertedGoldFeather = new VarbitRequirement(3107, 1);

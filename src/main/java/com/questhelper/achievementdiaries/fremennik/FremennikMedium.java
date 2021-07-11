@@ -110,7 +110,6 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		doMedium.addStep(new Conditions(notMineGold, inRiverArea), moveToCannon);
 		doMedium.addStep(new Conditions(notMineGold, inCaveArea), moveToRiver);
 		doMedium.addStep(notMineGold, moveToCave);
-		doMedium.addStep(notPetRockPOH, petRockPOH);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave15), lighthouse);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave14), moveToDagCave15);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave13), moveToDagCave14);
@@ -132,6 +131,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave), dropPetRock);
 		doMedium.addStep(new Conditions(notLighthouse, inWaterbirthIsland), moveToDagCave);
 		doMedium.addStep(notLighthouse, moveToWaterbirth);
+		doMedium.addStep(notPetRockPOH, petRockPOH);
 
 
 		return doMedium;
@@ -141,8 +141,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	{
 		notSlayBrineRat = new VarplayerRequirement(1184, false, 11);
 		notSnowyHunter = new VarplayerRequirement(1184, false, 12);
-		notMineCoal = new VarplayerRequirement(1184, true, 13);
-		notStealFish = new VarplayerRequirement(1184, true, 14);
+		notMineCoal = new VarplayerRequirement(1184, false, 13);
+		notStealFish = new VarplayerRequirement(1184, false, 14);
 		notTravelMisc = new VarplayerRequirement(1184, false, 15);
 		notSnowyKnight = new VarplayerRequirement(1184, false, 17);
 		notPetRockPOH = new VarplayerRequirement(1184, false, 18);
@@ -184,7 +184,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		natureSpirit = new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED);
 		fairyTaleII = new VarbitRequirement( QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(),
 			Operation.GREATER_EQUAL, 40, "Partial completion of Fairytale II for access to fairy rings");
-		olafsQuest = new QuestRequirement(QuestHelperQuest.OLAFS_QUEST, QuestState.FINISHED);
+		olafsQuest = new QuestRequirement(QuestHelperQuest.OLAFS_QUEST, QuestState.FINISHED,
+			"Partial completion of Olaf's Quest to access the Brine Rat Cavern");
 		fremennikTrials = new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED);
 		betweenARock = new QuestRequirement(QuestHelperQuest.BETWEEN_A_ROCK, QuestState.FINISHED,
 			"Mostly completed Between a Rock for access to the Azinian Mine");
@@ -268,9 +269,9 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		travelMisc = new ObjectStep(this, 29495, new WorldPoint(2744, 3719, 0),
 			"Use a fairy ring and travel to (CIP).", fairyTaleII);
 		enterEaglesPeak = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
-			"Enter cave at the top of the hill. Use fairy ring and travel to (AKQ), then head south.");
+			"Enter the cave at the top of Eagles' Peak. Use fairy ring and travel to (AKQ), then head south.", rope);
 		snowyHunter = new NpcStep(this, NpcID.POLAR_EAGLE, new WorldPoint(2027, 4964, 3),
-			"Use rope on the Polar Eagle to travel to the Snowy Hunter area.");
+			"Use rope on the Polar Eagle to travel to the Snowy Hunter area.", rope.highlighted());
 		snowyHunter.addIcon(ItemID.ROPE);
 		exitIceCave = new ObjectStep(this, 19764, new WorldPoint(2706, 10205, 0), "Exit the cave.");
 		snowyKnight0 = new NpcStep(this, NpcID.SNOWY_KNIGHT, new WorldPoint(2725, 3770, 0),
@@ -299,7 +300,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 			"Speak with Jarvald to travel to Waterbirth Island.", petRock, thrownaxe);
 		moveToWaterbirth.addDialogSteps("What Jarvald is doing.", "Can I come?", "YES");
 		moveToDagCave = new ObjectStep(this, 8929, new WorldPoint(2521, 3740, 0),
-			"Enter cave and pray melee. Make sure you are full stamina and prayer before entering.", protectMelee,
+			"Enter the cave and pray melee. Make sure you are full stamina and prayer before entering.", protectMelee,
 			thrownaxe, petRock, food, stamPot, prayerPot);
 		dropPetRock = new ObjectStep(this, 8965, new WorldPoint(2490, 10162, 0),
 			"Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// item on tile req?
@@ -344,7 +345,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		lighthouse = new ObjectStep(this, ObjectID.LADDER_10194, new WorldPoint(1975, 4408, 3),
 			"Keep current protection and continue through the cave.", protectMelee);
 		petRockPOH = new DetailedQuestStep(this,
-			"Use a pet rock on your Menagerie in your player owned house and then pick it up off the GROUND.");
+			"Use a pet rock on your pet house in your menagerie in your player owned house and then pick it up off the GROUND.");
 
 		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
 			"Talk to Fossegrimen south of Rellekka to claim your reward!", petRock);
@@ -354,7 +355,9 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(pickaxe, coins.quantity(30002), spade, staff, butterFlyJar, butterFlyNet, petRock, goldHelm, oakPlanks.quantity(4), saw, hammer, thrownaxe, combatGear);
+		return Arrays.asList(pickaxe, coins.quantity(30002), spade, staff, rope, butterFlyJar,
+			butterFlyNet, petRock, goldHelm, oakPlanks.quantity(4), saw, hammer, thrownaxe,
+			combatGear);
 	}
 
 	@Override

@@ -163,7 +163,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	}
 
 	@Override
-	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, QuestHelper quest, PanelComponent panelComponent)
+	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
 	{
 		if (!plugin.isDeveloperMode()) return;
 		panelComponent.getChildren().add(LineComponent.builder()
@@ -174,10 +174,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			.build()
 		);
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(quest.getQuest().getName())
-			.leftColor(quest.getConfig().debugColor())
-			.right(quest.getVar() + "")
-			.rightColor(quest.getConfig().debugColor())
+			.left(getQuest().getName())
+			.leftColor(getConfig().debugColor())
+			.right(getVar() + "")
+			.rightColor(getConfig().debugColor())
 			.build()
 		);
 	}

@@ -30,7 +30,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -69,11 +68,10 @@ public class TheDigSite extends BasicQuestHelper
 		trowel, varrock2, digsiteTeleports, sealedLetter, specialCup, teddybear, skull, nitro, nitrate, chemicalCompound, groundCharcoal, invitation, talisman,
 		mixedChemicals, mixedChemicals2, arcenia, powder, liquid, tablet, key, unstampedLetter, pick, trowelHighlighted, tinderboxHighlighted, chemicalCompoundHighlighted;
 
-	Requirement hasTeddy, hasTray, hasSkull, hasBrush, hasSpecialCup, talkedToFemaleStudent, talkedToOrangeStudent, talkedToGreenStudent, talkedToGuide, letterStamped,
+	Requirement talkedToFemaleStudent, talkedToOrangeStudent, talkedToGreenStudent, talkedToGuide, letterStamped, hasTeddy, hasSkull, hasSpecialCup,
 		femaleStudentQ1Learnt, orangeStudentQ1Learnt, greenStudentQ1Learnt, femaleStudentQ2Learnt, orangeStudentQ2Learnt, greenStudentQ2Learnt, femaleStudentQ3Learnt,
-		femaleExtorting, orangeStudentQ3Learnt, greenStudentQ3Learnt, syncedUp, syncedUp2, syncedUp3, hasJar, hasPick, hasTalisman, givenTalismanIn, rope1Added, rope2Added,
-		inUndergroundTemple1, inDougRoom, hasArcenia, hasChemicalCompound, hasMixedChemicals2, hasMixedChemicals, hasNitrate, hasNitro, hasPowder, hasLiquid, openedBarrel,
-		searchedBricks, hasKeyOrPowderOrMixtures, openPowderChestNearby, inUndergroundTemple2, hasTablet;
+		femaleExtorting, orangeStudentQ3Learnt, greenStudentQ3Learnt, syncedUp, syncedUp2, syncedUp3, givenTalismanIn, rope1Added, rope2Added,
+		inUndergroundTemple1, inDougRoom,openedBarrel, searchedBricks, hasKeyOrPowderOrMixtures, openPowderChestNearby, inUndergroundTemple2;
 
 	QuestStep talkToExaminer, talkToHaig, talkToExaminer2, searchBush, takeTray, talkToGuide, panWater, pickpocketWorkmen, talkToFemaleStudent, talkToFemaleStudent2,
 		talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1, talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3,
@@ -103,17 +101,18 @@ public class TheDigSite extends BasicQuestHelper
 		ConditionalStep goTakeTest1 = new ConditionalStep(this, syncStep);
 		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, orangeStudentQ1Learnt, greenStudentQ1Learnt), takeTest1);
 		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, orangeStudentQ1Learnt, talkedToGreenStudent), talkToGreenStudent2);
-		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, orangeStudentQ1Learnt, hasSkull, hasBrush), talkToGreenStudent);
+		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, orangeStudentQ1Learnt, hasSkull, specimenBrush),
+			talkToGreenStudent);
 
-		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, talkedToOrangeStudent, hasSkull, hasBrush), talkToOrangeStudent2);
-		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, hasSpecialCup, hasSkull, hasBrush), talkToOrangeStudent);
+		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, talkedToOrangeStudent, hasSkull, specimenBrush), talkToOrangeStudent2);
+		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, hasSpecialCup, hasSkull, specimenBrush), talkToOrangeStudent);
 
-		goTakeTest1.addStep(new Conditions(talkedToFemaleStudent, hasSpecialCup, hasSkull, hasBrush), talkToFemaleStudent2);
-		goTakeTest1.addStep(new Conditions(hasTeddy, hasSpecialCup, hasSkull, hasBrush), talkToFemaleStudent);
+		goTakeTest1.addStep(new Conditions(talkedToFemaleStudent, hasSpecialCup, hasSkull, specimenBrush), talkToFemaleStudent2);
+		goTakeTest1.addStep(new Conditions(hasTeddy, hasSpecialCup, hasSkull, specimenBrush), talkToFemaleStudent);
 
 		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, hasSpecialCup), pickpocketWorkmen);
-		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, hasTray, talkedToGuide), panWater);
-		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, hasTray), talkToGuide);
+		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, panningTray, talkedToGuide), panWater);
+		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, panningTray), talkToGuide);
 		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy), takeTray);
 		goTakeTest1.addStep(syncedUp, searchBush);
 		steps.put(2, goTakeTest1);
@@ -135,41 +134,41 @@ public class TheDigSite extends BasicQuestHelper
 
 		ConditionalStep findTalisman = new ConditionalStep(this, getJar);
 		findTalisman.addStep(new Conditions(givenTalismanIn), useInvitationOnWorkman);
-		findTalisman.addStep(new Conditions(hasTalisman), talkToExpert);
-		findTalisman.addStep(new Conditions(hasJar, hasPick, hasBrush), digForTalisman);
-		findTalisman.addStep(new Conditions(hasJar, hasPick), getBrush);
-		findTalisman.addStep(hasJar, getPick);
+		findTalisman.addStep(new Conditions(talisman), talkToExpert);
+		findTalisman.addStep(new Conditions(specimenJar, pick, specimenBrush), digForTalisman);
+		findTalisman.addStep(new Conditions(specimenJar, pick), getBrush);
+		findTalisman.addStep(specimenBrush, getPick);
 		steps.put(5, findTalisman);
 
 		ConditionalStep learnHowToMakeExplosives = new ConditionalStep(this, useRopeOnWinch2);
 		learnHowToMakeExplosives.addStep(inDougRoom, talkToDoug);
-		learnHowToMakeExplosives.addStep(new Conditions(inUndergroundTemple1, hasArcenia), goUpRope);
+		learnHowToMakeExplosives.addStep(new Conditions(inUndergroundTemple1, arcenia), goUpRope);
 		learnHowToMakeExplosives.addStep(inUndergroundTemple1, pickUpRoot);
 		learnHowToMakeExplosives.addStep(new Conditions(rope2Added), goDownToDoug);
 
 		ConditionalStep makeExplosives = new ConditionalStep(this, goDownWinch);
-		makeExplosives.addStep(new Conditions(hasChemicalCompound, inUndergroundTemple1), useCompound);
+		makeExplosives.addStep(new Conditions(chemicalCompound, inUndergroundTemple1), useCompound);
 
 		makeExplosives.addStep(inDougRoom, goUpFromDoug);
-		makeExplosives.addStep(new Conditions(inUndergroundTemple1, hasArcenia), goUpRope);
+		makeExplosives.addStep(new Conditions(inUndergroundTemple1, arcenia), goUpRope);
 		makeExplosives.addStep(inUndergroundTemple1, pickUpRoot);
 
-		makeExplosives.addStep(new Conditions(hasChemicalCompound), goDownToExplode);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasMixedChemicals2), addRoot);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasMixedChemicals), addCharcoal);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasNitrate, hasNitro), mixNitroWithNitrate);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasPowder, hasNitro), usePowderOnExpert);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasPowder, hasLiquid), useLiquidOnExpert);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasPowder, hasLiquid), useVialOnBarrel);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasPowder, openedBarrel), useVialOnBarrel);
-		makeExplosives.addStep(new Conditions(hasArcenia, hasPowder), useTrowelOnBarrel);
-		makeExplosives.addStep(new Conditions(openPowderChestNearby, hasArcenia), searchChest);
-		makeExplosives.addStep(hasArcenia, unlockChest);
+		makeExplosives.addStep(new Conditions(chemicalCompound), goDownToExplode);
+		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals2), addRoot);
+		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals), addCharcoal);
+		makeExplosives.addStep(new Conditions(arcenia, nitrate, nitro), mixNitroWithNitrate);
+		makeExplosives.addStep(new Conditions(arcenia, powder, nitro), usePowderOnExpert);
+		makeExplosives.addStep(new Conditions(arcenia, powder, liquid), useLiquidOnExpert);
+		makeExplosives.addStep(new Conditions(arcenia, powder, liquid), useVialOnBarrel);
+		makeExplosives.addStep(new Conditions(arcenia, powder, openedBarrel), useVialOnBarrel);
+		makeExplosives.addStep(new Conditions(arcenia, powder), useTrowelOnBarrel);
+		makeExplosives.addStep(new Conditions(openPowderChestNearby, arcenia), searchChest);
+		makeExplosives.addStep(arcenia, unlockChest);
 
 		ConditionalStep discovery = new ConditionalStep(this, useRopeOnWinch);
 		discovery.addStep(hasKeyOrPowderOrMixtures, makeExplosives);
 		discovery.addStep(searchedBricks, learnHowToMakeExplosives);
-		discovery.addStep(new Conditions(inUndergroundTemple1, hasArcenia), searchBricks);
+		discovery.addStep(new Conditions(inUndergroundTemple1, arcenia), searchBricks);
 		discovery.addStep(inUndergroundTemple1, pickUpRoot);
 		discovery.addStep(rope1Added, goDownWinch);
 		steps.put(6, discovery);
@@ -179,8 +178,8 @@ public class TheDigSite extends BasicQuestHelper
 		steps.put(7, explodeWall);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, goDownForTablet);
-		completeQuest.addStep(new Conditions(hasTablet, inUndergroundTemple2), goUpWithTablet);
-		completeQuest.addStep(new Conditions(hasTablet), useTabletOnExpert);
+		completeQuest.addStep(new Conditions(tablet.alsoCheckBank(questBank), inUndergroundTemple2), goUpWithTablet);
+		completeQuest.addStep(new Conditions(tablet.alsoCheckBank(questBank)), useTabletOnExpert);
 		completeQuest.addStep(inUndergroundTemple2, takeTablet);
 		steps.put(8, completeQuest);
 
@@ -354,32 +353,18 @@ public class TheDigSite extends BasicQuestHelper
 		rope2Added = new VarbitRequirement(2546, 1);
 
 		// 45 - 54
-		hasTray = new ItemRequirements(panningTray);
-		hasTeddy = new Conditions(LogicType.OR, new ItemRequirements(teddybear), talkedToFemaleStudent);
-		hasSkull = new Conditions(LogicType.OR, new ItemRequirements(skull), talkedToGreenStudent);
-		hasSpecialCup = new Conditions(LogicType.OR, new ItemRequirements(specialCup), talkedToOrangeStudent);
-		hasBrush = new ItemRequirements(specimenBrush);
+		hasTeddy = new Conditions(LogicType.OR, teddybear, talkedToFemaleStudent);
+		hasSkull = new Conditions(LogicType.OR, skull, talkedToGreenStudent);
+		hasSpecialCup = new Conditions(LogicType.OR, specialCup, talkedToOrangeStudent);
 		letterStamped = new VarbitRequirement(2552, 1);
-		hasJar = new ItemRequirements(specimenJar);
-		hasPick = new ItemRequirements(pick);
-		hasTalisman = new ItemRequirements(talisman);
-		hasArcenia = new ItemRequirements(arcenia);
-		hasChemicalCompound = new ItemRequirements(chemicalCompound);
-		hasMixedChemicals2 = new ItemRequirements(mixedChemicals2);
-		hasMixedChemicals = new ItemRequirements(mixedChemicals);
-		hasNitrate = new ItemRequirements(nitrate);
-		hasNitro = new ItemRequirements(nitro);
-		hasPowder = new ItemRequirements(powder);
-		hasLiquid = new ItemRequirements(liquid);
-		hasTablet = new ItemRequirements(tablet);
+
 
 		searchedBricks = new VarbitRequirement(2549, 1);
 		openPowderChestNearby = new ObjectCondition(ObjectID.CHEST_2360);
 		openedBarrel = new VarbitRequirement(2547, 1);
 
 		hasKeyOrPowderOrMixtures = new Conditions(LogicType.OR,
-			new ItemRequirements(key),
-			hasPowder, hasNitrate, hasMixedChemicals, hasMixedChemicals2, hasChemicalCompound, openPowderChestNearby);
+			key, powder, nitrate, mixedChemicals, mixedChemicals2, chemicalCompound, openPowderChestNearby);
 	}
 
 	public void setupSteps()

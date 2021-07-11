@@ -34,7 +34,6 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -73,8 +72,8 @@ public class RumDeal extends BasicQuestHelper
 
 	Requirement prayerPoints47;
 
-	Requirement onIsland, onIslandF1, onIslandF2, onIslandF0, rakedPatch, plantedPatch, grownPatch, hasBlindweed, onNorthIsland, hasStagnantWater, added5Sluglings,
-		inSpiderRoom, hasHolyWrench, evilSpiritNearby, hasSpiderCarcass, hasSwill, carcassNearby;
+	Requirement onIsland, onIslandF1, onIslandF2, onIslandF0, rakedPatch, plantedPatch, grownPatch, onNorthIsland, added5Sluglings,
+		inSpiderRoom, evilSpiritNearby,carcassNearby;
 
 	DetailedQuestStep talkToPete, talkToBraindeath, goDownstairs, rakePatch, plantSeed, waitForGrowth, pickPlant, goUpStairsWithPlant, talkToBraindeathWithPlant, talkToPeteWithPlant,
 		climbUpToDropPlant, dropPlant, goDownFromDropPlant, talkToBraindeathAfterPlant, goDownForWater, openGate, useBucketOnWater, goUpWithWater, goUpToDropWater, dropWater,
@@ -142,9 +141,9 @@ public class RumDeal extends BasicQuestHelper
 
 		ConditionalStep getWater = new ConditionalStep(this, talkToPete);
 		getWater.addStep(inSpiderRoom, goUpFromSpiders);
-		getWater.addStep(new Conditions(onIslandF2, hasStagnantWater), dropWater);
-		getWater.addStep(new Conditions(onIslandF1, hasStagnantWater), goUpToDropWater);
-		getWater.addStep(new Conditions(onIslandF0, hasStagnantWater), goUpWithWater);
+		getWater.addStep(new Conditions(onIslandF2, stagnantWater), dropWater);
+		getWater.addStep(new Conditions(onIslandF1, stagnantWater), goUpToDropWater);
+		getWater.addStep(new Conditions(onIslandF0, stagnantWater), goUpWithWater);
 		getWater.addStep(onNorthIsland, useBucketOnWater);
 		getWater.addStep(onIslandF0, openGate);
 		getWater.addStep(onIslandF1, goDownForWater);
@@ -184,8 +183,8 @@ public class RumDeal extends BasicQuestHelper
 
 		ConditionalStep killSpiritSteps = new ConditionalStep(this, talkToPete);
 		killSpiritSteps.addStep(inSpiderRoom, goUpFromSpiders);
-		killSpiritSteps.addStep(new Conditions(onIslandF1, hasHolyWrench, evilSpiritNearby), killSpirit);
-		killSpiritSteps.addStep(new Conditions(onIslandF1, hasHolyWrench), useWrenchOnControl);
+		killSpiritSteps.addStep(new Conditions(onIslandF1, holyWrench, evilSpiritNearby), killSpirit);
+		killSpiritSteps.addStep(new Conditions(onIslandF1, holyWrench), useWrenchOnControl);
 		killSpiritSteps.addStep(onIslandF1, talkToDavey);
 		killSpiritSteps.addStep(onIslandF2, goDownFromTop);
 		killSpiritSteps.addStep(onIslandF0, goUpFromBottom);
@@ -201,9 +200,9 @@ public class RumDeal extends BasicQuestHelper
 		steps.put(14, spiderStepsStart);
 
 		ConditionalStep spiderSteps = new ConditionalStep(this, talkToPete);
-		spiderSteps.addStep(new Conditions(onIslandF2, hasSpiderCarcass), dropSpider);
-		spiderSteps.addStep(new Conditions(onIslandF1, hasSpiderCarcass), goUpToDropSpider);
-		spiderSteps.addStep(new Conditions(inSpiderRoom, hasSpiderCarcass), goUpFromSpidersWithCorpse);
+		spiderSteps.addStep(new Conditions(onIslandF2, spiderCarcass), dropSpider);
+		spiderSteps.addStep(new Conditions(onIslandF1, spiderCarcass), goUpToDropSpider);
+		spiderSteps.addStep(new Conditions(inSpiderRoom, spiderCarcass), goUpFromSpidersWithCorpse);
 		spiderSteps.addStep(carcassNearby, pickUpCarcass);
 		spiderSteps.addStep(inSpiderRoom, killSpider);
 		spiderSteps.addStep(onIslandF1, goDownToSpiders);
@@ -221,8 +220,8 @@ public class RumDeal extends BasicQuestHelper
 		steps.put(16, makeBrewForDonnieStart);
 
 		ConditionalStep giveBrewToDonnie = new ConditionalStep(this, talkToPete);
-		giveBrewToDonnie.addStep(new Conditions(onIslandF0, hasSwill), talkToDonnie);
-		giveBrewToDonnie.addStep(new Conditions(onIslandF1, hasSwill), goDownToDonnie);
+		giveBrewToDonnie.addStep(new Conditions(onIslandF0, swill), talkToDonnie);
+		giveBrewToDonnie.addStep(new Conditions(onIslandF1, swill), goDownToDonnie);
 		giveBrewToDonnie.addStep(inSpiderRoom, goUpFromSpiders);
 		giveBrewToDonnie.addStep(onIslandF1, useBucketOnTap);
 		giveBrewToDonnie.addStep(onIslandF2, goDownAfterSpider);
@@ -315,16 +314,10 @@ public class RumDeal extends BasicQuestHelper
 		rakedPatch = new VarbitRequirement(1366, 3);
 		plantedPatch = new VarbitRequirement(1366, 4);
 		grownPatch = new VarbitRequirement(1366, 5);
-		hasBlindweed = new ItemRequirements(blindweed);
-		hasStagnantWater = new ItemRequirements(stagnantWater);
 
 		added5Sluglings = new VarbitRequirement(1354, 5);
-		hasHolyWrench = new ItemRequirements(holyWrench);
 
 		evilSpiritNearby = new NpcCondition(NpcID.EVIL_SPIRIT);
-
-		hasSpiderCarcass = new ItemRequirements(spiderCarcass);
-		hasSwill = new ItemRequirements(swill);
 
 		carcassNearby = new ItemOnTileRequirement(spiderCarcass);
 		// 1359-64 0->1 given swill

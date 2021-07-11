@@ -78,8 +78,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	Requirement normalSpellbook;
 
 	Requirement inNewBase, inTemple, inMeiyditch, inMyrequeBase, inMine, inNorthMeiy, inRandomRoom, atBarricade, pushedBoat, onEntryWall, onSecondWall, onThirdWall,
-		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, hasDoorKey, pathDoorOpen, hasLadderPiece, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
-		hasLargeOrnateKey, hasMessage, cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab, hasHaemBook;
+		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, pathDoorOpen, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
+		cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab;
 
 	DetailedQuestStep enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat;
 
@@ -276,9 +276,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		pushedBoat = new VarbitRequirement(2587, 1);
 		knockedDownBoard = new VarbitRequirement(2589, 1);
 
-		hasDoorKey = new ItemRequirements(doorKey);
 		pathDoorOpen = new VarbitRequirement(2578, 1);
-		hasLadderPiece = new ItemRequirements(ladderPiece);
 
 		fixedLadder = new VarbitRequirement(2598, 2);
 		wallPressed = new VarbitRequirement(2590, 1, Operation.GREATER_EQUAL);
@@ -286,8 +284,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		searchedRockySurface = new Conditions(true, new WidgetTextRequirement(229, 1, "a mechanical click."));
 
 		hasSketches = new ItemRequirements(sketch1, sketch2, sketch3);
-		hasMessage = new ItemRequirements(messageFromFireplace);
-		hasLargeOrnateKey = new ItemRequirements(largeOrnateKey);
 
 		cutPortrait = new VarbitRequirement(2595, 1, Operation.GREATER_EQUAL);
 
@@ -297,7 +293,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		searchedRuneCase = new VarbitRequirement(2584, 1);
 		hasTeleGrabRunesOrSearchedCase = new Conditions(LogicType.OR, searchedRuneCase, new ItemRequirements(lawRune, airRune));
-		hasHaemBook = new ItemRequirements(haemBook);
 
 		// Repaired boat, 2585 = 1
 		// Repaired chute 2586 = 1
@@ -641,8 +636,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		goTravelToMyrequeBase = new ConditionalStep(this, travelToPots, "Follow the path to the Meiyerditch Myreque base.", knife);
 		goTravelToMyrequeBase.addStep(fixedLadder, travelToMyrequeBase);
-		goTravelToMyrequeBase.addStep(hasLadderPiece, travelToFixLadder);
-		goTravelToMyrequeBase.addStep(new Conditions(LogicType.OR, hasDoorKey, pathDoorOpen), travelToLadderPart);
+		goTravelToMyrequeBase.addStep(ladderPiece, travelToFixLadder);
+		goTravelToMyrequeBase.addStep(new Conditions(LogicType.OR, doorKey, pathDoorOpen), travelToLadderPart);
 
 		talkToVeliafAfterContact = new ConditionalStep(this, enterBurghPubBasement, "Bring the message to Veliaf in the Myreque base under Burgh de Rott.", message);
 		talkToVeliafAfterContact.addStep(inNewBase, talkToVeliaf);
@@ -706,7 +701,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		returnToSafalaanInBaseNoSketches = new ConditionalStep(this, getToNorthMeiy, "Return to Safalaan in the Meiyerditch Myreque base.", knife);
 		returnToSafalaanInBaseNoSketches.addStep(inMyrequeBase, talkToSafalaanInBase);
 		returnToSafalaanInBaseNoSketches.addStep(wallPressed, enterRug);
-		returnToSafalaanInBaseNoSketches.addStep(new Conditions(inNorthMeiy, hasLargeOrnateKey), returnToMeiyBase);
+		returnToSafalaanInBaseNoSketches.addStep(new Conditions(inNorthMeiy, largeOrnateKey), returnToMeiyBase);
 		returnToSafalaanInBaseNoSketches.addStep(new Conditions(inNorthMeiy, cutPortrait), inspectPortrait);
 		returnToSafalaanInBaseNoSketches.addStep(inNorthMeiy, useKnifeOnPortrait);
 
@@ -715,8 +710,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		ConditionalStep travelToLab = new ConditionalStep(this, getToNorthMeiy, "Travel to the labs in Meiyerditch.", knife);
 
 		goUnlockLab = new ConditionalStep(this, travelToLab);
-		goUnlockLab.addStep(new Conditions(inNorthMeiy, hasLargeOrnateKey, tapestryCut), useKeyOnStatue);
-		goUnlockLab.addStep(new Conditions(inNorthMeiy, hasLargeOrnateKey), useKnifeOnTapestry);
+		goUnlockLab.addStep(new Conditions(inNorthMeiy, largeOrnateKey, tapestryCut), useKeyOnStatue);
+		goUnlockLab.addStep(new Conditions(inNorthMeiy, largeOrnateKey), useKnifeOnTapestry);
 		goUnlockLab.addStep(new Conditions(inNorthMeiy, cutPortrait), inspectPortrait);
 		goUnlockLab.addStep(inNorthMeiy, useKnifeOnPortrait);
 		goUnlockLab.addStep(inMyrequeBase, leaveMeiyerBase);
@@ -727,7 +722,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		bringSafalaanBook.addStep(wallPressed, enterRug);
 
 		getHaemBook = new ConditionalStep(this, travelToLab);
-		getHaemBook.addStep(hasHaemBook, bringSafalaanBook);
+		getHaemBook.addStep(haemBook, bringSafalaanBook);
 		getHaemBook.addStep(new Conditions(inLab, hasTeleGrabRunesOrSearchedCase), telegrabBook);
 		getHaemBook.addStep(inLab, getRunes);
 		getHaemBook.addStep(inNorthMeiy, goDownToLab);

@@ -151,7 +151,7 @@ public class QuestBankTabInterface
 		}
 	}
 
-	private boolean isHidden()
+	public boolean isHidden()
 	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
 		return widget == null || widget.isHidden();

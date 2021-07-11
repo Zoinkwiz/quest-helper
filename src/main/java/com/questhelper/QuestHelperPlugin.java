@@ -45,6 +45,8 @@ import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -53,6 +55,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -443,7 +446,7 @@ public class QuestHelperPlugin extends Plugin
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()
 				.stream()
-				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
+				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client), (q1, q2) -> q2));
 			SwingUtilities.invokeLater(() -> {
 				panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections());
 			});
@@ -678,6 +681,41 @@ public class QuestHelperPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	public void onPreReqQuestSelected(QuestHelperQuest selectedPreReqQuest) {
+		String questName = selectedPreReqQuest.getName();
+		if (questName.equals("Shield of Arrav")) {
+			Player player = client.getLocalPlayer();
+			if (player == null) {
+				return;
+			}
+			WorldPoint location = player.getWorldLocation();
+
+			if (PHOENIX_START_ZONE.contains(location)) {
+				startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
+			} else {
+				startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
+			}
+		} else if (questName.equals("Recipe for Disaster")) {
+			startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
+		} else {
+			QuestHelper questHelper = quests.get(questName);
+			if (questHelper != null) {
+				clientThread.invokeLater(() -> {
+					startUpQuest(questHelper);
+				});
+			}
+		}
+	}
+
+	public boolean checkQuestCompletion(QuestHelperQuest questHelperQuest, Consumer<Boolean> callback) {
+		clientThread.invokeLater(() -> {
+			QuestHelper questHelper = quests.get(questHelperQuest.getName());
+			callback.accept(questHelper.isCompleted());
+			return true;
+		});
+		return false;
 	}
 
 	private void displayPanel()

@@ -24,35 +24,51 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.ExternalQuestResources;
+import com.google.inject.Inject;
+import com.questhelper.*;
 import com.questhelper.Icon;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
+import jdk.jfr.EventType;
+import lombok.Getter;
+import net.runelite.api.*;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.api.vars.AccountType;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.api.Client;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 public class QuestOverviewPanel extends JPanel
 {
+
+	@Inject
+	protected Client client;
+
 	private final QuestHelperPlugin questHelperPlugin;
 	public QuestHelper currentQuest;
 
@@ -63,6 +79,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JLabel questOverviewNotes = new JLabel();
 
 	private final JPanel questGeneralRequirementsListPanel = new JPanel();
+	private final JPanel questPreReqQuestsListPanel = new JPanel();
 	private final JPanel questGeneralRecommendedListPanel = new JPanel();
 
 	private final JPanel questItemRequirementsListPanel = new JPanel();
@@ -72,6 +89,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel externalQuestResourcesPanel = new JPanel();
 
 	private final JPanel questGeneralRequirementsHeader = new JPanel();
+	private final JPanel questPreReqQuestsHeader = new JPanel();
 	private final JPanel questGeneralRecommendedHeader = new JPanel();
 	private final JPanel questItemRequirementsHeader = new JPanel();
 	private final JPanel questCombatRequirementHeader = new JPanel();
@@ -144,6 +162,8 @@ public class QuestOverviewPanel extends JPanel
 
 		overviewPanel.add(generateRequirementPanel(questGeneralRequirementsListPanel,
 			questGeneralRequirementsHeader, "General requirements:"));
+		overviewPanel.add(generateRequirementPanel(questPreReqQuestsListPanel,
+				questPreReqQuestsHeader, "Prerequisite Quests:"));
 		overviewPanel.add(generateRequirementPanel(questGeneralRecommendedListPanel,
 			questGeneralRecommendedHeader, "Recommended:"));
 		overviewPanel.add(generateRequirementPanel(questItemRequirementsListPanel,
@@ -336,6 +356,9 @@ public class QuestOverviewPanel extends JPanel
 
 	public void setupQuestRequirements(QuestHelper quest)
 	{
+		/* Prerequisite quest requirements */
+		updatePreReqQuestPanels(questPreReqQuestsHeader, questPreReqQuestsListPanel, quest.getGeneralRequirements());
+
 		/* Non-item requirements */
 		updateRequirementsPanels(questGeneralRequirementsHeader, questGeneralRequirementsListPanel, requirementPanels, quest.getGeneralRequirements());
 
@@ -359,22 +382,119 @@ public class QuestOverviewPanel extends JPanel
 	}
 
 	private void updateRequirementsPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
-										  List<Requirement> requirements)
-	{
-		if (requirements != null)
-		{
-			for (Requirement generalRecommend : requirements)
-			{
-				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
-				panels.add(reqPanel);
-				listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
+										  List<Requirement> requirements) {
+		if (requirements != null) {
+			for (Requirement generalRecommend : requirements) {
+				if (!generalRecommend.getClass().equals(QuestRequirement.class)) {
 
-				listPanel.setVisible(true);
-				header.setVisible(true);
+					QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
+					panels.add(reqPanel);
+					listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
+
+					listPanel.setVisible(true);
+					header.setVisible(true);
+				}
 			}
+		} else {
+			listPanel.setVisible(false);
+			header.setVisible(false);
 		}
-		else
-		{
+	}
+
+	private void updatePreReqQuestPanels(JPanel header, JPanel listPanel, List<Requirement> requirements) {
+		questPreReqQuestsListPanel.removeAll();
+		if (requirements != null) {
+			for (Requirement preReqQuestRequirement : requirements) {
+				if (preReqQuestRequirement.getClass().equals(QuestRequirement.class)) {
+
+					listPanel.setVisible(true);
+					header.setVisible(true);
+
+					//Button constant properties
+					JButton questReqButton = new JButton();
+					questReqButton.setUI(new BasicButtonUI());
+					SwingUtil.removeButtonDecorations(questReqButton);
+					questReqButton.setHorizontalAlignment(SwingConstants.LEFT);
+					questReqButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+					//Button variable properties
+					questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+
+					questHelperPlugin.checkQuestCompletion((((QuestRequirement) preReqQuestRequirement).getQuest()), result -> SwingUtilities.invokeLater(() -> {
+						// do more stuff on ui thread
+						boolean qqstatus = result;
+						System.out.println(qqstatus);
+						if (!qqstatus) {
+							questReqButton.setText(preReqQuestRequirement.getDisplayText());
+							questReqButton.setForeground(Color.red);
+
+							questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+								public void mouseEntered(java.awt.event.MouseEvent evt) {
+									questReqButton.setForeground(Color.blue.brighter().brighter().brighter());
+									questReqButton.setText("<html><body style = 'text-decoration:underline'>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+									questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+
+									//Start prerequisite quest helper
+									if (questReqButton.getText().length() > 0) {
+										questReqButton.addActionListener((e -> {
+											QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+											questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
+										}));
+									}
+								}
+								public void mouseExited(java.awt.event.MouseEvent evt) {
+									questReqButton.setForeground(Color.white);
+									questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+								}
+							});
+						} else {
+							questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+								public void mouseEntered(java.awt.event.MouseEvent evt) {
+									questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+									questReqButton.setForeground(Color.green);
+								}
+
+
+					});
+						}}));
+
+
+//					if (!questHelperPlugin.checkQuestCompletion(((QuestRequirement) preReqQuestRequirement).getQuest())) {
+//						questReqButton.setText(preReqQuestRequirement.getDisplayText());
+//
+//						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+//							public void mouseEntered(java.awt.event.MouseEvent evt) {
+//								questReqButton.setForeground(Color.blue.brighter().brighter().brighter());
+//								questReqButton.setText("<html><body style = 'text-decoration:underline'>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+//								questReqButton.setToolTipText("Open the quest helper for " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+//
+//								//Start prerequisite quest helper
+//								if (questReqButton.getText().length() > 0) {
+//									questReqButton.addActionListener((e -> {
+//										QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+//										questHelperPlugin.onPreReqQuestSelected(tempStorageOfQuest);
+//									}));
+//								}
+//							}
+//							public void mouseExited(java.awt.event.MouseEvent evt) {
+//								questReqButton.setForeground(Color.white);
+//								questReqButton.setText("<html><body>" + preReqQuestRequirement.getDisplayText() + "</body></html>");
+//							}
+//						});
+//					} else {
+//						questReqButton.addMouseListener(new java.awt.event.MouseAdapter() {
+//							public void mouseEntered(java.awt.event.MouseEvent evt) {
+//								questReqButton.setToolTipText("You've already completed " + ((QuestRequirement) preReqQuestRequirement).getQuest().getName());
+//							}
+//						});
+//						QuestHelperQuest tempStorageOfQuest = (((QuestRequirement) preReqQuestRequirement).getQuest());
+//						Color newColor = questHelperPlugin.checkQuestCompletionColor(tempStorageOfQuest);
+//						questReqButton.setForeground(newColor);
+//					}
+					questPreReqQuestsListPanel.add(questReqButton);
+				}
+			}
+		} else {
 			listPanel.setVisible(false);
 			header.setVisible(false);
 		}
@@ -549,4 +669,13 @@ public class QuestOverviewPanel extends JPanel
 			requirementPanel.getLabel().setForeground(newColor);
 		}
 	}
+
+	private boolean completionCheckConverter(boolean qqstatus){
+				if (qqstatus) {
+			return true;
+		} else {
+			return false;
+		}
+
+}
 }

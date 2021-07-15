@@ -183,7 +183,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		crabMeatHighlighted = new ItemRequirement("Crab meat", ItemID.CRAB_MEAT);
 		crabMeatHighlighted.addAlternates(ItemID.CRAB_MEAT_7519);
 		crabMeatHighlighted.setHighlightInInventory(true);
-		groundCrabMeatHighlighted = new ItemRequirement("Ground kelp", ItemID.GROUND_CRAB_MEAT);
+		groundCrabMeatHighlighted = new ItemRequirement("Ground crab meat", ItemID.GROUND_CRAB_MEAT);
 		groundCrabMeatHighlighted.setTooltip("You will need to kill another underwater crab and grind its meat");
 		groundCrabMeatHighlighted.setHighlightInInventory(true);
 		groundKelpHighlighted = new ItemRequirement("Ground kelp", ItemID.GROUND_KELP);

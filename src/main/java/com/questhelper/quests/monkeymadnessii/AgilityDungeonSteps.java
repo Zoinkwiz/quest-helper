@@ -132,7 +132,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		inCavesSection4 = new ZoneRequirement(cavesSection4P1, cavesSection4P2, cavesSection4P3);
 		inKrukRoom = new ZoneRequirement(krukRoom);
 
-		hasBronzeKey = new ItemRequirements(bronzeKey);
+		hasBronzeKey = bronzeKey;
 		openedShortcut = new VarbitRequirement(5029, 1);
 
 		path1SouthIsWrongChat = new ChatMessageRequirement(

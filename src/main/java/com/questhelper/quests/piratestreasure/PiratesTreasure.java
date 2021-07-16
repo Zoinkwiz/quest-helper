@@ -29,7 +29,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -88,8 +87,6 @@ public class PiratesTreasure extends BasicQuestHelper
 		ItemRequirement chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
 		chestKey.setTooltip("You can get another one from Redbeard Frank");
 
-		ItemRequirements hasPirateMessage = new ItemRequirements(pirateMessage);
-
 		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage);
 		openChest = new ObjectStep(this, ObjectID.CHEST_2079, new WorldPoint(3219, 3396, 1),
 			"Open the chest upstairs in The Blue Moon Inn in Varrock by using the key on it.",
@@ -98,7 +95,7 @@ public class PiratesTreasure extends BasicQuestHelper
 		openChest.addIcon(ItemID.CHEST_KEY);
 
 		ConditionalStep getTreasureMap = new ConditionalStep(this, openChest);
-		getTreasureMap.addStep(hasPirateMessage, readPirateMessage);
+		getTreasureMap.addStep(pirateMessage, readPirateMessage);
 
 		steps.put(2, getTreasureMap);
 

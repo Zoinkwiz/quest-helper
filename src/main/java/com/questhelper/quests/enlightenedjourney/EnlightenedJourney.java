@@ -24,7 +24,6 @@
  */
 package com.questhelper.quests.enlightenedjourney;
 
-
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -32,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -72,7 +70,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 	ItemRequirement balloonStructure, origamiBalloon, sandbag8;
 
-	Requirement onEntrana, hasBalloonStructure, hasOrigamiBalloon, hasSandbags, flying;
+	Requirement onEntrana, hasSandbags, flying;
 
 	Zone entrana;
 
@@ -103,8 +101,8 @@ public class EnlightenedJourney extends BasicQuestHelper
 		steps.put(10, startingOff);
 
 		ConditionalStep makingPrototype = new ConditionalStep(this, usePapyrusOnWool);
-		makingPrototype.addStep(hasOrigamiBalloon, talkToAugusteAgain);
-		makingPrototype.addStep(hasBalloonStructure, useCandleOnBalloon);
+		makingPrototype.addStep(origamiBalloon, talkToAugusteAgain);
+		makingPrototype.addStep(balloonStructure, useCandleOnBalloon);
 		steps.put(20, makingPrototype);
 
 		steps.put(40, talkToAugusteWithPapyrus);
@@ -164,11 +162,9 @@ public class EnlightenedJourney extends BasicQuestHelper
 	{
 		onEntrana = new ZoneRequirement(entrana);
 
-		hasBalloonStructure = new ItemRequirements(balloonStructure);
-		hasOrigamiBalloon = new ItemRequirements(origamiBalloon);
 		hasSandbags = new Conditions(LogicType.OR,
 			new VarbitRequirement(2875, 1),
-			new ItemRequirements(sandbag8));
+			sandbag8);
 
 		flying = new WidgetTextRequirement(471, 1, "Balloon Controls");
 		// Finished flight, 2868 = 1

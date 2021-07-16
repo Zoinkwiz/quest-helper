@@ -76,7 +76,7 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 
 	ItemRequirement tinderbox, fiveGallon, eightGallon;
 
-	Requirement has5Gallon, has8Gallon, missingTinderbox, hasFilledWithFuel, inFirstFloor, inSecondFloor, inBasement;
+	Requirement missingTinderbox, hasFilledWithFuel, inFirstFloor, inSecondFloor, inBasement;
 
 	DetailedQuestStep syncStep, searchCupboardTinderbox, searchCupboardJug, fill5Gallon, use5GallonOn8, fill5Gallon2, use5GallonOn82, empty8Gallon, use5GallonOn83, fill5Gallon3, use5GallonOn84, fill5Gallon4, use5GallonOn85, use5GallonOnFurnace,
 		lightFurnace, restartPuzzle, goUpToGroundFloor, goDownToGroundFloor, goDownToFirstFloor;
@@ -172,12 +172,12 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 			}
 		}
 
-		if (!has5Gallon.check(client))
+		if (!fiveGallon.check(client))
 		{
 			jugs.put("5", 0);
 		}
 
-		if (!has8Gallon.check(client))
+		if (!eightGallon.check(client))
 		{
 			jugs.put("8", 0);
 		}
@@ -203,7 +203,7 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 		{
 			startUpStep(lightFurnace);
 		}
-		else if (!has5Gallon.check(client) || !has8Gallon.check(client))
+		else if (!fiveGallon.check(client) || !eightGallon.check(client))
 		{
 			startUpStep(searchCupboardJug);
 		}
@@ -357,8 +357,6 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 
 	private void setupConditions()
 	{
-		has5Gallon = new ItemRequirements(fiveGallon);
-		has8Gallon = new ItemRequirements(eightGallon);
 		missingTinderbox = new ItemRequirements(LogicType.NAND, tinderbox);
 		hasFilledWithFuel = new VarbitRequirement(7798, 3);
 		inFirstFloor = new ZoneRequirement(firstFloor);

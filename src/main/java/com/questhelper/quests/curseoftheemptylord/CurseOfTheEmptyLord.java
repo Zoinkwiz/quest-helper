@@ -63,7 +63,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	private int currentPath = 0;
 
 	//Items Required
-	ItemRequirement ringOfVis, ghostspeak, knife;
+	ItemRequirement ringOfVis, ghostspeakItems, ghostspeak, knife;
 
 	Requirement talkedToValdez, talkedToRennard, talkedToKharrim, talkedToLennissa, talkedToDhalak, talkedToViggora, inRoguesCastle, inEdgevilleDungeon, inSlayerTower,
 		inEdgevilleMonastery, inPartyRoom, onPath1, onPath2, onPath3;
@@ -128,8 +128,9 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		ringOfVis = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
-		ghostspeak = new ItemRequirement("Ghostspeak amulet or any pair of morytania legs", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ghostspeak.addAlternates(ItemID.MORYTANIA_LEGS, ItemID.MORYTANIA_LEGS_1, ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
+		ghostspeakItems = new ItemRequirement("Ghostspeak amulet or any pair of morytania legs", ItemID.GHOSTSPEAK_AMULET, 1, true);
+		ghostspeakItems.addAlternates(ItemID.MORYTANIA_LEGS, ItemID.MORYTANIA_LEGS_1, ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(new VarbitRequirement(PATH_VARBIT, 3));
 	}
 
@@ -165,22 +166,22 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	{
 		int pathID = client.getVarbitValue(PATH_VARBIT);
 
-		talkToValdez = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3452, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost outside Glarial's Tomb.", ghostspeak, ringOfVis);
+		talkToValdez = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3452, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost outside Glarial's Tomb.", ghostspeakItems, ringOfVis);
 		talkToValdez.addDialogStep("Tell me your story");
 
-		talkToRennard = new NpcStep(this, NpcID.MYSTERIOUS_GHOST, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Rennard.", ghostspeak, ringOfVis);
+		talkToRennard = new NpcStep(this, NpcID.MYSTERIOUS_GHOST, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Rennard.", ghostspeakItems, ringOfVis);
 		talkToRennard.addDialogStep("Tell me your story");
 
-		talkToKharrim = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3453, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Kharrim.", ghostspeak, ringOfVis);
+		talkToKharrim = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3453, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Kharrim.", ghostspeakItems, ringOfVis);
 		talkToKharrim.addDialogStep("Tell me your story");
 
-		talkToLennissa = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3454, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Lennissa.", ghostspeak, ringOfVis);
+		talkToLennissa = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3454, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Lennissa.", ghostspeakItems, ringOfVis);
 		talkToLennissa.addDialogStep("Tell me your story");
 
-		talkToDhalak = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3451, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Dhalak.", ghostspeak, ringOfVis);
+		talkToDhalak = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3451, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Dhalak.", ghostspeakItems, ringOfVis);
 		talkToDhalak.addDialogStep("Tell me your story");
 
-		talkToViggora = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3455, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Viggora.", ghostspeak, ringOfVis);
+		talkToViggora = new NpcStep(this, NpcID.MYSTERIOUS_GHOST_3455, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost Viggora.", ghostspeakItems, ringOfVis);
 		talkToViggora.addDialogStep("Tell me your story");
 
 		goUpstairsMonastery = new ObjectStep(this, ObjectID.LADDER_2641, new WorldPoint(3057, 3483, 0), "Talk to the Mysterious Ghost upstairs in the Edgeville Monastery.");
@@ -208,6 +209,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 			talkToKharrim.setWorldPoint(2954, 3821, 0);
 
 			talkToLennissa.setText("Talk to the Mysterious Ghost in the church on Entrana.");
+			talkToLennissa.setRequirements(Arrays.asList(ghostspeak, ringOfVis));
 			talkToLennissa.setWorldPoint(2846, 3349, 0);
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost in the Wizard's Tower ground floor.");
@@ -262,7 +264,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(ringOfVis, ghostspeak, knife);
+		return Arrays.asList(ringOfVis, ghostspeakItems, knife);
 	}
 
 	@Override
@@ -271,7 +273,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Learn about the Empty Lord",
 			Arrays.asList(talkToValdez, talkToRennard, talkToKharrim, talkToLennissa, talkToDhalak, talkToViggora),
-				ghostspeak, ringOfVis, knife));
+			ghostspeakItems, ringOfVis, knife));
 
 		return allSteps;
 	}

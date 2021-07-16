@@ -45,6 +45,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -283,7 +284,7 @@ public class ASoulsBane extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Multiple level 40-46 enemies");
+		return Collections.singletonList("Multiple level 40-46 enemies");
 	}
 
 	@Override

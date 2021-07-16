@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -69,8 +68,8 @@ public class TheLostTribe extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, faladorTeleport, lumbridgeTeleports;
 
-	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, hasBrooch, hasBook, inMines,
-		hasKey, foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
+	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines,
+		foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
 
 	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
 		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, climbOutThroughHole, goUpFromBasement,
@@ -100,12 +99,12 @@ public class TheLostTribe extends BasicQuestHelper
 		steps.put(3, goMineRubble);
 
 		ConditionalStep goGrabBrooch = new ConditionalStep(this, enterTunnels);
-		goGrabBrooch.addStep(hasBrooch, goShowBroochToDuke);
+		goGrabBrooch.addStep(brooch, goShowBroochToDuke);
 		goGrabBrooch.addStep(inTunnels, grabBrooch);
 		steps.put(4, goGrabBrooch);
 
 		ConditionalStep getBook = new ConditionalStep(this, searchBookcase);
-		getBook.addStep(hasBook, readBook);
+		getBook.addStep(book, readBook);
 		steps.put(5, getBook);
 
 		steps.put(6, talkToGenerals);
@@ -120,7 +119,7 @@ public class TheLostTribe extends BasicQuestHelper
 		ConditionalStep revealSigmund = new ConditionalStep(this, goGetKey);
 		revealSigmund.addStep(foundSilverware, goToDukeWithSilverware);
 		revealSigmund.addStep(foundRobes, goIntoHamLair);
-		revealSigmund.addStep(hasKey, goOpenRobeChest);
+		revealSigmund.addStep(key, goOpenRobeChest);
 		steps.put(9, revealSigmund);
 
 		steps.put(10, travelToMakePeace);
@@ -167,10 +166,6 @@ public class TheLostTribe extends BasicQuestHelper
 		inTunnels = new ZoneRequirement(tunnels);
 		inMines = new ZoneRequirement(mines);
 		inHamBase = new ZoneRequirement(hamBase);
-
-		hasBrooch = new ItemRequirements(brooch);
-		hasBook = new ItemRequirements(book);
-		hasKey = new ItemRequirements(key);
 
 		foundRobes = new VarbitRequirement(534, 1, Operation.GREATER_EQUAL);
 		foundSilverware = new VarbitRequirement(534, 3, Operation.GREATER_EQUAL);

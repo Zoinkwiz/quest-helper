@@ -30,7 +30,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -61,7 +60,7 @@ public class SeaSlug extends BasicQuestHelper
 	//Items Required
 	ItemRequirement swampPaste, glass, dampSticks, torch, litTorch, drySticks;
 
-	Requirement onPlatformGroundFloor, onPlatformFirstFloor, onPlatform, onIsland, hasGlass, hasDampSticks, hasTorch, hasLitTorch, hasDrySticks;
+	Requirement onPlatformGroundFloor, onPlatformFirstFloor, onPlatform, onIsland;
 
 	QuestStep talkToCaroline, talkToHolgart, talkToHolgartWithSwampPaste, travelWithHolgart, pickupGlass, pickupDampSticks,
 		climbLadder, talkToKennith, goDownLadder, goToIsland, goToIslandFromMainland, talkToKent, returnFromIsland, talkToBaileyForTorch, useGlassOnDampSticks,
@@ -103,59 +102,36 @@ public class SeaSlug extends BasicQuestHelper
 
 		steps.put(5, talkWithKent);
 
-		ConditionalStep lightTheTorch = new ConditionalStep(this, travelWithHolgartFreeingKennith);
-		lightTheTorch.addStep(new Conditions(onPlatformFirstFloor, hasLitTorch), talkToKennithAgain);
-		lightTheTorch.addStep(new Conditions(onPlatformGroundFloor, hasLitTorch), goBackUpLadder);
-		lightTheTorch.addStep(new Conditions(onPlatform, hasTorch, hasDrySticks), rubSticks);
-		lightTheTorch.addStep(new Conditions(onPlatform, hasTorch, hasGlass, hasDampSticks), useGlassOnDampSticks);
-		lightTheTorch.addStep(new Conditions(onPlatform, hasTorch, hasGlass), pickupDampSticks);
-		lightTheTorch.addStep(new Conditions(onPlatform, hasTorch), pickupGlass);
-		lightTheTorch.addStep(onPlatform, talkToBaileyForTorch);
+		ConditionalStep goToFirstFloor = new ConditionalStep(this, travelWithHolgartFreeingKennith);
+		goToFirstFloor.addStep(new Conditions(litTorch), goBackUpLadder);
+		goToFirstFloor.addStep(new Conditions(torch, drySticks), rubSticks);
+		goToFirstFloor.addStep(new Conditions(torch, glass, dampSticks), useGlassOnDampSticks);
+		goToFirstFloor.addStep(new Conditions(torch, glass), pickupDampSticks);
+		goToFirstFloor.addStep(new Conditions(torch), pickupGlass);
+		goToFirstFloor.addStep(onPlatform, talkToBaileyForTorch);
+
+		ConditionalStep lightTheTorch = new ConditionalStep(this, goToFirstFloor);
 		lightTheTorch.addStep(onIsland, returnFromIsland);
 
 		steps.put(6, lightTheTorch);
 
-		ConditionalStep freeKennith = new ConditionalStep(this, travelWithHolgartFreeingKennith);
+		ConditionalStep freeKennith = new ConditionalStep(this, goToFirstFloor);
 		freeKennith.addStep(onPlatformFirstFloor, talkToKennithAgain);
-		freeKennith.addStep(new Conditions(onPlatformGroundFloor, hasLitTorch), goBackUpLadder);
-		freeKennith.addStep(new Conditions(onPlatform, hasTorch, hasDrySticks), rubSticks);
-		freeKennith.addStep(new Conditions(onPlatform, hasTorch, hasGlass, hasDampSticks), useGlassOnDampSticks);
-		freeKennith.addStep(new Conditions(onPlatform, hasTorch, hasGlass), pickupDampSticks);
-		freeKennith.addStep(new Conditions(onPlatform, hasTorch), pickupGlass);
-		freeKennith.addStep(onPlatform, talkToBaileyForTorch);
 
 		steps.put(7, freeKennith);
 
-		ConditionalStep breakWall = new ConditionalStep(this, travelWithHolgartFreeingKennith);
+		ConditionalStep breakWall = new ConditionalStep(this, goToFirstFloor);
 		breakWall.addStep(onPlatformFirstFloor, kickWall);
-		breakWall.addStep(new Conditions(onPlatformGroundFloor, hasLitTorch), goBackUpLadder);
-		breakWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasDrySticks), rubSticks);
-		breakWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasGlass, hasDampSticks), useGlassOnDampSticks);
-		breakWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasGlass), pickupDampSticks);
-		breakWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch), pickupGlass);
-		breakWall.addStep(onPlatformGroundFloor, talkToBaileyForTorch);
 
 		steps.put(8, breakWall);
 
-		ConditionalStep tellKennethYouBrokeWall = new ConditionalStep(this, travelWithHolgartFreeingKennith);
+		ConditionalStep tellKennethYouBrokeWall = new ConditionalStep(this, goToFirstFloor);
 		tellKennethYouBrokeWall.addStep(onPlatformFirstFloor, talkToKennithAfterKicking);
-		tellKennethYouBrokeWall.addStep(new Conditions(onPlatformGroundFloor, hasLitTorch), goBackUpLadder);
-		tellKennethYouBrokeWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasDrySticks), rubSticks);
-		tellKennethYouBrokeWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasGlass, hasDampSticks), useGlassOnDampSticks);
-		tellKennethYouBrokeWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasGlass), pickupDampSticks);
-		tellKennethYouBrokeWall.addStep(new Conditions(onPlatformGroundFloor, hasTorch), pickupGlass);
-		tellKennethYouBrokeWall.addStep(onPlatformGroundFloor, talkToBaileyForTorch);
 
 		steps.put(9, tellKennethYouBrokeWall);
 
-		ConditionalStep turnTheCrane = new ConditionalStep(this, travelWithHolgartFreeingKennith);
+		ConditionalStep turnTheCrane = new ConditionalStep(this, goToFirstFloor);
 		turnTheCrane.addStep(onPlatformFirstFloor, activateCrane);
-		turnTheCrane.addStep(new Conditions(onPlatformGroundFloor, hasLitTorch), goBackUpLadder);
-		turnTheCrane.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasDrySticks), rubSticks);
-		turnTheCrane.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasGlass, hasDampSticks), useGlassOnDampSticks);
-		turnTheCrane.addStep(new Conditions(onPlatformGroundFloor, hasTorch, hasGlass), pickupDampSticks);
-		turnTheCrane.addStep(new Conditions(onPlatformGroundFloor, hasTorch), pickupGlass);
-		turnTheCrane.addStep(onPlatformGroundFloor, talkToBaileyForTorch);
 
 		steps.put(10, turnTheCrane);
 
@@ -191,11 +167,6 @@ public class SeaSlug extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDampSticks = new ItemRequirements(dampSticks);
-		hasDrySticks = new ItemRequirements(drySticks);
-		hasTorch = new ItemRequirements(torch);
-		hasLitTorch = new ItemRequirements(litTorch);
-		hasGlass = new ItemRequirements(glass);
 		onPlatformFirstFloor = new ZoneRequirement(platformFirstFloor);
 		onPlatformGroundFloor = new ZoneRequirement(platformGroundFloor);
 		onPlatform = new ZoneRequirement(platformFirstFloor, platformGroundFloor);

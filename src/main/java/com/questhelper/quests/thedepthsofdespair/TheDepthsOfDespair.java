@@ -34,7 +34,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -69,7 +68,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	ItemRequirement weapon, dramenStaff, foodIfLowLevel, superEnergyOrStamina, xericsTalisman, skillsNecklace,
 		varlamoreEnvoy, royalAccordOfTwill;
 
-	Requirement inVineryHouse, inArceuusLibrary, hasTheVarlamoreEnvoy, inCaves, inFirstAreaOfCaves,
+	Requirement inVineryHouse, inArceuusLibrary, inCaves, inFirstAreaOfCaves,
 		inSecondAreaOfCaves, inThirdAreaOfCaves, downstairsInCaves;
 
 	QuestStep talkToLordKandur, talkToChefOlivia, talkToGalana, findTheVarlamoreEnvoy, readTheVarlamoreEnvoy,
@@ -99,7 +98,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		steps.put(2, goTalkToGalana);
 
 		ConditionalStep findAndReadTheVarlamoreEnvoy = new ConditionalStep(this, findTheVarlamoreEnvoy);
-		findAndReadTheVarlamoreEnvoy.addStep(hasTheVarlamoreEnvoy, readTheVarlamoreEnvoy);
+		findAndReadTheVarlamoreEnvoy.addStep(varlamoreEnvoy.alsoCheckBank(questBank), readTheVarlamoreEnvoy);
 		steps.put(3, findAndReadTheVarlamoreEnvoy);
 
 		steps.put(4, enterCrabclawCaves);
@@ -174,8 +173,6 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		ZoneRequirement cavesDownstairs = new ZoneRequirement(crabclawCavesDownstairs);
 		downstairsInCaves = new Conditions(cavesDownstairs, new InInstanceRequirement());
-
-		hasTheVarlamoreEnvoy = new ItemRequirements(varlamoreEnvoy);
 	}
 
 	public void setupSteps()

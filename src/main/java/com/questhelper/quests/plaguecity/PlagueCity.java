@@ -30,7 +30,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -65,8 +64,8 @@ public class PlagueCity extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement fourBucketsOfWater, threeBucketsOfWater, twoBucketsOfWater, bucketOfWater;
 
-	Requirement inUnderground, hasPictureOfElena, hasTriedToPullGrill, inWestArdougne, hasBook, inUpstairsMathasHouse, hasBucketOfChocolateMilk, hasHangoverCure,
-	hasWarrant, inPlagueHouse, inDownstairsOfPlagueHouse, hasKey, manholeClosed;
+	Requirement inUnderground, hasTriedToPullGrill, inWestArdougne, inUpstairsMathasHouse,
+		inPlagueHouse, inDownstairsOfPlagueHouse, manholeClosed;
 
 	QuestStep talkToEdmond, talkToAlrena, talkToEdmondAgain, useWaterOnMudPatch1, useWaterOnMudPatch2, useWaterOnMudPatch3, useWaterOnMudPatch4,
 		digHole, grabPictureOfElena, goDownHole, attemptToPullGrill, climbMudPile, talkToEdmondUnderground, useRopeOnGrill, climbThroughPipe, talkToJethick,
@@ -90,7 +89,7 @@ public class PlagueCity extends BasicQuestHelper
 		steps.put(1, talkToAlrena);
 
 		ConditionalStep getPictureThenTalkEdmond = new ConditionalStep(this, grabPictureOfElena);
-		getPictureThenTalkEdmond.addStep(hasPictureOfElena, talkToEdmondAgain);
+		getPictureThenTalkEdmond.addStep(pictureOfElena, talkToEdmondAgain);
 		steps.put(2, getPictureThenTalkEdmond);
 
 		steps.put(3, useWaterOnMudPatch1);
@@ -99,34 +98,34 @@ public class PlagueCity extends BasicQuestHelper
 		steps.put(6, useWaterOnMudPatch4);
 
 		ConditionalStep getPictureThenDig = new ConditionalStep(this, grabPictureOfElena);
-		getPictureThenDig.addStep(hasPictureOfElena, digHole);
+		getPictureThenDig.addStep(pictureOfElena, digHole);
 		steps.put(7, getPictureThenDig);
 
 		ConditionalStep attemptToOpenGrill = new ConditionalStep(this, grabPictureOfElena);
-		attemptToOpenGrill.addStep(new Conditions(hasTriedToPullGrill, inUnderground, hasPictureOfElena), useRopeOnGrill);
-		attemptToOpenGrill.addStep(new Conditions(inUnderground, hasPictureOfElena), attemptToPullGrill);
+		attemptToOpenGrill.addStep(new Conditions(hasTriedToPullGrill, inUnderground, pictureOfElena), useRopeOnGrill);
+		attemptToOpenGrill.addStep(new Conditions(inUnderground, pictureOfElena), attemptToPullGrill);
 		attemptToOpenGrill.addStep(inUnderground, climbMudPile);
-		attemptToOpenGrill.addStep(hasPictureOfElena, goDownHole);
+		attemptToOpenGrill.addStep(pictureOfElena, goDownHole);
 
 		steps.put(8, attemptToOpenGrill);
 
 		ConditionalStep pullOffGrill = new ConditionalStep(this, grabPictureOfElena);
-		pullOffGrill.addStep(new Conditions(inUnderground, hasPictureOfElena), talkToEdmondUnderground);
+		pullOffGrill.addStep(new Conditions(inUnderground, pictureOfElena), talkToEdmondUnderground);
 		pullOffGrill.addStep(inUnderground, climbMudPile);
-		pullOffGrill.addStep(hasPictureOfElena, goDownHole);
+		pullOffGrill.addStep(pictureOfElena, goDownHole);
 
 		steps.put(9, pullOffGrill);
 
 		ConditionalStep enterWestArdougne = new ConditionalStep(this, grabPictureOfElena);
-		enterWestArdougne.addStep(new Conditions(inWestArdougne, hasPictureOfElena), talkToJethick);
-		enterWestArdougne.addStep(new Conditions(inUnderground, hasPictureOfElena), climbThroughPipe);
+		enterWestArdougne.addStep(new Conditions(inWestArdougne, pictureOfElena), talkToJethick);
+		enterWestArdougne.addStep(new Conditions(inUnderground, pictureOfElena), climbThroughPipe);
 		enterWestArdougne.addStep(inUnderground, climbMudPile);
-		enterWestArdougne.addStep(hasPictureOfElena, goDownHole);
+		enterWestArdougne.addStep(pictureOfElena, goDownHole);
 
 		steps.put(10, enterWestArdougne);
 
 		ConditionalStep goToMarthasHouse = new ConditionalStep(this, goDownHole);
-		goToMarthasHouse.addStep(new Conditions(inWestArdougne, hasBook), enterMarthasHouse);
+		goToMarthasHouse.addStep(new Conditions(inWestArdougne, book), enterMarthasHouse);
 		goToMarthasHouse.addStep(inWestArdougne, talkToJethick);
 		goToMarthasHouse.addStep(inUnderground, climbThroughPipe);
 
@@ -164,19 +163,19 @@ public class PlagueCity extends BasicQuestHelper
 		steps.put(25, goTalkToBravek);
 
 		ConditionalStep createHangoverCureForBravek = new ConditionalStep(this, useDustOnMilk);
-		createHangoverCureForBravek.addStep(new Conditions(inWestArdougne, hasHangoverCure), giveHangoverCureToBravek);
-		createHangoverCureForBravek.addStep(new Conditions(hasHangoverCure, inUnderground), climbThroughPipe);
-		createHangoverCureForBravek.addStep(hasHangoverCure, goDownHole);
-		createHangoverCureForBravek.addStep(hasBucketOfChocolateMilk, useSnapeGrassOnChocolateMilk);
+		createHangoverCureForBravek.addStep(new Conditions(inWestArdougne, hangoverCure), giveHangoverCureToBravek);
+		createHangoverCureForBravek.addStep(new Conditions(hangoverCure, inUnderground), climbThroughPipe);
+		createHangoverCureForBravek.addStep(hangoverCure, goDownHole);
+		createHangoverCureForBravek.addStep(bucketOfChocolateMilk, useSnapeGrassOnChocolateMilk);
 
 		steps.put(26, createHangoverCureForBravek);
 
 		ConditionalStep continueTalkingToBravek = new ConditionalStep(this, goDownHole);
-		continueTalkingToBravek.addStep(new Conditions(inDownstairsOfPlagueHouse, hasKey), talkToElena);
-		continueTalkingToBravek.addStep(new Conditions(inPlagueHouse, hasKey), goDownstairsInPlagueHouse);
+		continueTalkingToBravek.addStep(new Conditions(inDownstairsOfPlagueHouse, key), talkToElena);
+		continueTalkingToBravek.addStep(new Conditions(inPlagueHouse, key), goDownstairsInPlagueHouse);
 		continueTalkingToBravek.addStep(inPlagueHouse, searchBarrel);
 		continueTalkingToBravek.addStep(inDownstairsOfPlagueHouse, goUpstairsInPlagueHouse);
-		continueTalkingToBravek.addStep(new Conditions(hasWarrant, inWestArdougne), tryToEnterPlagueHouseAgain);
+		continueTalkingToBravek.addStep(new Conditions(warrant, inWestArdougne), tryToEnterPlagueHouseAgain);
 		continueTalkingToBravek.addStep(inWestArdougne, talkToBravekAgain);
 		continueTalkingToBravek.addStep(inUnderground, climbThroughPipe);
 
@@ -243,15 +242,9 @@ public class PlagueCity extends BasicQuestHelper
 
 	public void setupConditions() {
 		inUnderground = new ZoneRequirement(underground);
-		hasPictureOfElena = new ItemRequirements(pictureOfElena);
 		hasTriedToPullGrill = new VarbitRequirement(1786, 1);
 		inWestArdougne = new ZoneRequirement(westArdougne1, westArdougne2, westArdougne3);
-		hasBook = new ItemRequirements(book);
 		inUpstairsMathasHouse = new ZoneRequirement(upstairsMathasHouse);
-		hasBucketOfChocolateMilk = new ItemRequirements(bucketOfChocolateMilk);
-		hasHangoverCure = new ItemRequirements(hangoverCure);
-		hasWarrant = new ItemRequirements(warrant);
-		hasKey = new ItemRequirements(key);
 		manholeClosed = new ObjectCondition(ObjectID.MANHOLE_2543);
 	}
 

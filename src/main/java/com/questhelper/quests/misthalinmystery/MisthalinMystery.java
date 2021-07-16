@@ -30,7 +30,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -63,9 +62,9 @@ public class MisthalinMystery extends BasicQuestHelper
 	//Requirements
 	ItemRequirement bucket, manorKey, knife, notes1, rubyKey, tinderbox, notes2, emeraldKey, notes3, sapphireKey, killersKnife, killersKnifeEquipped;
 
-	Requirement onIsland, hasBucket, hasManorKey, hasKnife, hasNotes1, hasRubyKey, hasTinderbox, litCandle1, litCandle2, litCandle3, inOutsideArea, hasNotes2,
-		inPianoWidget, playedD, playedE, playedA, playedAnyKey, hasEmeraldKey, hasNotes3, inGemWidget, selectedSaphire, selectedDiamond, selectedZenyte, selectedEmerald, selectedOnyx,
-		selectAnyGem, hasSapphireKey, inBossRoom, hasKillersKnife;
+	Requirement onIsland, litCandle1, litCandle2, litCandle3, inOutsideArea, inPianoWidget, playedD, playedE,
+		playedA, playedAnyKey, inGemWidget, selectedSaphire, selectedDiamond, selectedZenyte, selectedEmerald, selectedOnyx,
+		selectAnyGem, inBossRoom;
 
 	QuestStep talkToAbigale, takeTheBoat, takeTheBucket, searchTheBarrel, useBucketOnBarrel, searchTheBarrelForKey, openManorDoor,
 		takeKnife, tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor, takeTinderbox, lightCandle1, lightCandle2,
@@ -91,51 +90,51 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(5, talkToAbigale);
 
 		ConditionalStep investigatingTheBarrel = new ConditionalStep(this, takeTheBoat);
-		investigatingTheBarrel.addStep(new Conditions(onIsland, hasBucket), searchTheBarrel);
+		investigatingTheBarrel.addStep(new Conditions(onIsland, bucket), searchTheBarrel);
 		investigatingTheBarrel.addStep(onIsland, takeTheBucket);
 		steps.put(10, investigatingTheBarrel);
 		steps.put(15, investigatingTheBarrel);
 
 		ConditionalStep emptyTheBarrel = new ConditionalStep(this, takeTheBoat);
-		emptyTheBarrel.addStep(new Conditions(onIsland, hasBucket), useBucketOnBarrel);
+		emptyTheBarrel.addStep(new Conditions(onIsland, bucket), useBucketOnBarrel);
 		emptyTheBarrel.addStep(onIsland, takeTheBucket);
 		steps.put(20, emptyTheBarrel);
 
 		ConditionalStep enterTheHouse = new ConditionalStep(this, takeTheBoat);
-		enterTheHouse.addStep(new Conditions(onIsland, hasManorKey), openManorDoor);
+		enterTheHouse.addStep(new Conditions(onIsland, manorKey), openManorDoor);
 		enterTheHouse.addStep(onIsland, searchTheBarrelForKey);
 		steps.put(25, enterTheHouse);
 
 		ConditionalStep pinkDoor = new ConditionalStep(this, takeTheBoat);
-		pinkDoor.addStep(hasKnife, tryToOpenPinkKnobDoor);
+		pinkDoor.addStep(knife, tryToOpenPinkKnobDoor);
 		pinkDoor.addStep(onIsland, takeKnife);
 		steps.put(30, pinkDoor);
 
 		ConditionalStep pickUpAndReadNotes1 = new ConditionalStep(this, takeTheBoat);
-		pickUpAndReadNotes1.addStep(new Conditions(onIsland, hasNotes1), readNotes1);
+		pickUpAndReadNotes1.addStep(new Conditions(onIsland, notes1), readNotes1);
 		pickUpAndReadNotes1.addStep(onIsland, takeNote1);
 		steps.put(35, pickUpAndReadNotes1);
 
 		ConditionalStep cutPainting = new ConditionalStep(this, takeTheBoat);
-		cutPainting.addStep(new Conditions(onIsland, hasKnife), useKnifeOnPainting);
+		cutPainting.addStep(new Conditions(onIsland, knife), useKnifeOnPainting);
 		cutPainting.addStep(onIsland, takeKnife);
 		steps.put(40, cutPainting);
 
 		ConditionalStep enterRubyRoom = new ConditionalStep(this, takeTheBoat);
-		enterRubyRoom.addStep(new Conditions(onIsland, hasRubyKey), goThroughRubyDoor);
+		enterRubyRoom.addStep(new Conditions(onIsland, rubyKey), goThroughRubyDoor);
 		enterRubyRoom.addStep(onIsland, searchPainting);
 		steps.put(45, enterRubyRoom);
 
 		ConditionalStep lightCandles = new ConditionalStep(this, takeTheBoat);
-		lightCandles.addStep(new Conditions(onIsland, hasTinderbox, litCandle1, litCandle2, litCandle3), lightCandle4);
-		lightCandles.addStep(new Conditions(onIsland, hasTinderbox, litCandle1, litCandle2), lightCandle3);
-		lightCandles.addStep(new Conditions(onIsland, hasTinderbox, litCandle1), lightCandle2);
-		lightCandles.addStep(new Conditions(onIsland, hasTinderbox), lightCandle1);
+		lightCandles.addStep(new Conditions(onIsland, tinderbox, litCandle1, litCandle2, litCandle3), lightCandle4);
+		lightCandles.addStep(new Conditions(onIsland, tinderbox, litCandle1, litCandle2), lightCandle3);
+		lightCandles.addStep(new Conditions(onIsland, tinderbox, litCandle1), lightCandle2);
+		lightCandles.addStep(new Conditions(onIsland, tinderbox), lightCandle1);
 		lightCandles.addStep(onIsland, takeTinderbox);
 		steps.put(50, lightCandles);
 
 		ConditionalStep lightFuseOnBarrel = new ConditionalStep(this, takeTheBoat);
-		lightFuseOnBarrel.addStep(new Conditions(onIsland, hasTinderbox), lightBarrel);
+		lightFuseOnBarrel.addStep(new Conditions(onIsland, tinderbox), lightBarrel);
 		lightFuseOnBarrel.addStep(onIsland, takeTinderbox);
 		steps.put(55, lightFuseOnBarrel);
 		steps.put(60, leaveExplosionRoom);
@@ -146,7 +145,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(65, goToLacey);
 
 		ConditionalStep pickUpAndReadNotes2 = new ConditionalStep(this, takeTheBoat);
-		pickUpAndReadNotes2.addStep(hasNotes2, readNotes2);
+		pickUpAndReadNotes2.addStep(notes2, readNotes2);
 		pickUpAndReadNotes2.addStep(inOutsideArea, takeNote2);
 		pickUpAndReadNotes2.addStep(onIsland, climbWall);
 		steps.put(70, pickUpAndReadNotes2);
@@ -162,9 +161,9 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(75, playMusic);
 
 		ConditionalStep openingTheEmeraldDoor = new ConditionalStep(this, takeTheBoat);
-		openingTheEmeraldDoor.addStep(new Conditions(inOutsideArea, hasEmeraldKey), returnOverBrokenWall);
+		openingTheEmeraldDoor.addStep(new Conditions(inOutsideArea, emeraldKey), returnOverBrokenWall);
 		openingTheEmeraldDoor.addStep(inOutsideArea, searchThePiano);
-		openingTheEmeraldDoor.addStep(new Conditions(onIsland, hasEmeraldKey), openEmeraldDoor);
+		openingTheEmeraldDoor.addStep(new Conditions(onIsland, emeraldKey), openEmeraldDoor);
 		openingTheEmeraldDoor.addStep(onIsland, climbWall);
 		steps.put(80, openingTheEmeraldDoor);
 
@@ -173,12 +172,12 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(85, enterBandosGodswordRoom);
 
 		ConditionalStep startPuzzle3 = new ConditionalStep(this, takeTheBoat);
-		startPuzzle3.addStep(new Conditions(onIsland, hasNotes3), readNotes3);
+		startPuzzle3.addStep(new Conditions(onIsland, notes3), readNotes3);
 		startPuzzle3.addStep(onIsland, takeNote3);
 		steps.put(90, startPuzzle3);
 
 		ConditionalStep openFireplace = new ConditionalStep(this, takeTheBoat);
-		openFireplace.addStep(new Conditions(onIsland, hasKnife), useKnifeOnFireplace);
+		openFireplace.addStep(new Conditions(onIsland, knife), useKnifeOnFireplace);
 		openFireplace.addStep(onIsland, takeKnife);
 		steps.put(95, openFireplace);
 
@@ -194,7 +193,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(100, solveFireplacePuzzle);
 
 		ConditionalStep openSapphireDoor = new ConditionalStep(this, takeTheBoat);
-		openSapphireDoor.addStep(new Conditions(onIsland, hasSapphireKey), goThroughSapphireDoor);
+		openSapphireDoor.addStep(new Conditions(onIsland, sapphireKey), goThroughSapphireDoor);
 		openSapphireDoor.addStep(onIsland, searchFireplaceForSapphireKey);
 		steps.put(105, openSapphireDoor);
 
@@ -209,7 +208,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(115, watchRevealCutscene);
 
 		ConditionalStep goFightAbigale = new ConditionalStep(this, takeTheBoat);
-		goFightAbigale.addStep(new Conditions(inBossRoom, hasKillersKnife), fightAbigale);
+		goFightAbigale.addStep(new Conditions(inBossRoom, killersKnife), fightAbigale);
 		goFightAbigale.addStep(inBossRoom, pickUpKillersKnife);
 		goFightAbigale.addStep(onIsland, continueThroughSapphireDoor);
 		steps.put(120, goFightAbigale);
@@ -237,14 +236,7 @@ public class MisthalinMystery extends BasicQuestHelper
 	public void setupConditions()
 	{
 		onIsland = new ZoneRequirement(island);
-		hasBucket = new ItemRequirements(bucket);
-		hasManorKey = new ItemRequirements(manorKey);
-		hasKnife = new ItemRequirements(knife);
-		hasNotes1 = new ItemRequirements(notes1);
-		hasRubyKey = new ItemRequirements(rubyKey);
-		hasTinderbox = new ItemRequirements(tinderbox);
 		inOutsideArea = new ZoneRequirement(outside1, outside2, outside3);
-		hasNotes2 = new ItemRequirements(notes2);
 
 		litCandle1 = new VarbitRequirement(4042, 1);
 		litCandle2 = new VarbitRequirement(4041, 1);
@@ -255,8 +247,6 @@ public class MisthalinMystery extends BasicQuestHelper
 		playedA = new Conditions(new VarbitRequirement(4046, 1), new VarbitRequirement(4049, 3));
 		playedAnyKey = new VarbitRequirement(4049, 1, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetTextRequirement(554, 20, "C");
-		hasEmeraldKey = new ItemRequirements(emeraldKey);
-		hasNotes3 = new ItemRequirements(notes3);
 		inGemWidget = new WidgetTextRequirement(555, 1, 1, "Gemstone switch panel");
 		selectedSaphire = new Conditions(new VarbitRequirement(4051, 1), new VarbitRequirement(4050, 1));
 		selectedDiamond = new Conditions(new VarbitRequirement(4052, 1), new VarbitRequirement(4050, 2));
@@ -264,9 +254,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		selectedEmerald = new Conditions(new VarbitRequirement(4054, 1), new VarbitRequirement(4050, 4));
 		selectedOnyx = new Conditions(new VarbitRequirement(4055, 1), new VarbitRequirement(4050, 5));
 		selectAnyGem = new VarbitRequirement(4050, 1, Operation.GREATER_EQUAL);
-		hasSapphireKey = new ItemRequirements(sapphireKey);
 		inBossRoom = new ZoneRequirement(bossRoom);
-		hasKillersKnife = new ItemRequirements(killersKnife);
 	}
 
 	public void setupItemRequirements()

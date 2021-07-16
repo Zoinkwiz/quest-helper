@@ -62,7 +62,7 @@ public class FightArena extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear;
 
-	Requirement hasKhazardArmour, hasKhaliBrew, hasCellKeys, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
+	Requirement hasKhazardArmour, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
 
 	QuestStep startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew, getCellKeys, openCell, talkToSammy, killOgre,
 		talkToKhazard, talkToHengrad, talkToSammyForScorpion, killScorpion, talkToSammyForBouncer, killBouncer, leaveArena, endQuest;
@@ -87,14 +87,14 @@ public class FightArena extends BasicQuestHelper
 		steps.put(2, talkToGuardSteps);
 
 		ConditionalStep giveKhaliBrewSteps = new ConditionalStep(this, searchChest);
-		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour, hasKhaliBrew), giveKhaliBrew);
+		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour, khaliBrew), giveKhaliBrew);
 		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour), buyKhaliBrew);
 		steps.put(3, giveKhaliBrewSteps);
 
 		ConditionalStep openCellSteps = new ConditionalStep(this, searchChest);
 		// You don't need Khazard armour to open the cell, but unless zones are added for the prison, keep the armour
 		// requirement in case you leave the prison and lose the armour
-		openCellSteps.addStep(new Conditions(hasKhazardArmour, hasCellKeys), openCell);
+		openCellSteps.addStep(new Conditions(hasKhazardArmour, cellKeys), openCell);
 		openCellSteps.addStep(new Conditions(hasKhazardArmour), getCellKeys);
 		steps.put(4, openCellSteps);
 		steps.put(5, openCellSteps);
@@ -148,8 +148,6 @@ public class FightArena extends BasicQuestHelper
 	public void setupConditions()
 	{
 		hasKhazardArmour = new ItemRequirements(khazardHelmet, khazardPlatebody);
-		hasKhaliBrew = new ItemRequirements(khaliBrew);
-		hasCellKeys = new ItemRequirements(cellKeys);
 		inArena = new ZoneRequirement(arena1);
 		inArenaWithOgre = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_OGRE, arena1));
 		inArenaWithScorpion = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_SCORPION, arena1));

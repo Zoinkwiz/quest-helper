@@ -32,13 +32,11 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -70,8 +68,7 @@ public class RovingElves extends BasicQuestHelper
 	//I don't know amounts of teleports, hopefully someone can fix that later
 	ItemRequirement prayerPotions, food, ardougneTeleports, camelotTeleports, iorwerthCampTeleports, skillsNecklace;
 
-
-	Requirement inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, hasSeed, hadBlessedSeed, hasKey, inThroneRoom;
+	Requirement inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, inThroneRoom;
 
 	QuestStep talkToIslwyn, talkToEluned, enterGlarialsTombstone, killGuardian, pickUpSeed, returnSeedToEluned, boardRaft, useRopeOnRock, useRopeOnTree, enterFalls,
 		searchFallsCrate, useKeyOnFallsDoor, plantSeed, returnToIslwyn;
@@ -93,7 +90,7 @@ public class RovingElves extends BasicQuestHelper
 		steps.put(2, talkToEluned);
 
 		ConditionalStep getTheSeed = new ConditionalStep(this, enterGlarialsTombstone);
-		getTheSeed.addStep(hasSeed, returnSeedToEluned);
+		getTheSeed.addStep(seed.alsoCheckBank(questBank), returnSeedToEluned);
 		getTheSeed.addStep(seedNearby, pickUpSeed);
 		getTheSeed.addStep(inGlarialsTomb, killGuardian);
 
@@ -101,7 +98,7 @@ public class RovingElves extends BasicQuestHelper
 
 		ConditionalStep plantingTheSeed = new ConditionalStep(this, boardRaft);
 		plantingTheSeed.addStep(inThroneRoom, plantSeed);
-		plantingTheSeed.addStep(new Conditions(inFalls, hasKey), useKeyOnFallsDoor);
+		plantingTheSeed.addStep(new Conditions(inFalls, key), useKeyOnFallsDoor);
 		plantingTheSeed.addStep(inFalls, searchFallsCrate);
 		plantingTheSeed.addStep(onLedge, enterFalls);
 		plantingTheSeed.addStep(onDeadTreeIsland, useRopeOnTree);
@@ -154,10 +151,7 @@ public class RovingElves extends BasicQuestHelper
 		inFalls = new ZoneRequirement(falls);
 		inGlarialsTomb = new ZoneRequirement(glarialTomb);
 		inThroneRoom = new ZoneRequirement(throneRoom);
-		hasSeed = new ItemRequirements(seed);
-		hadBlessedSeed = new Conditions(true, LogicType.OR, new ItemRequirements(blessedSeed));
 		seedNearby = new ItemOnTileRequirement(seed);
-		hasKey = new ItemRequirements(key);
 
 		// 8374 0->1 when leaving?
 	}

@@ -233,6 +233,8 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		emote = new DetailedQuestStep(this, "Use the flap, slap head, idea, and stamp emotes");
 		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
 			"Move to the Edgeville dungeon.");
+
+		//TODO find a better way to check for slayer task
 		vannaka = new NpcStep(this, NpcID.VANNAKA, new WorldPoint(3146, 9913, 0),
 			"Get a task from Vannaka.");
 		tolna = new ObjectStep(this, 13968, new WorldPoint(3310, 3452, 0),

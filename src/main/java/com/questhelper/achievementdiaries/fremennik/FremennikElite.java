@@ -51,7 +51,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.FREMENNIK_ELITE
+	quest = QuestHelperQuest.FREMENNIK_ELITE
 )
 
 public class FremennikElite extends ComplexStateQuestHelper

@@ -346,7 +346,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		useSwampPasteOnFragments = new DetailedQuestStep(this, "Use some swamp paste on one of the page fragments.", swampPaste, pageFragment1, pageFragment2, pageFragment3);
 		talkToJeb = new NpcStep(this, NpcID.JEB_4803, new WorldPoint(2721, 3304, 0), "Talk to Jeb north of Witchaven to travel to the Fishing Platform.", deadSeaSlug);
 		talkToBailey = new NpcStep(this, NpcID.BAILEY, new WorldPoint(2764, 3275, 0), "Talk to Bailey on the Fishing Platform.", deadSeaSlug);
-		useGlueOnFragment = new DetailedQuestStep(this, "Us the slug glue on one of the fragments.", glue, pageFragment1);
+		useGlueOnFragment = new DetailedQuestStep(this, "Use the slug glue on one of the fragments.", glue, pageFragment1);
 
 		solvePuzzle = new PuzzleStep(this);
 

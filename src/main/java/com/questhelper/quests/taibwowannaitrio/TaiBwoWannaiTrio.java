@@ -201,7 +201,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		fishKarambwaji = new NpcStep(this, NpcID.FISHING_SPOT_4710, new WorldPoint(2791,3019,0),
 			"Using your small fishing net, catch atleast 23 raw karambwanji just south of Tai Bwo Wannai.", smallFishingNet);
 
-		goToLubufu = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint, "Go to Brimhaven and talk to Lubufu." +
+		goToLubufu = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint, "Go to Brimhaven and talk to Lubufu. " +
 			"You have to talk to him multiple times. You'll need to ask him twice about what he does, then talk to " +
 			"him to give him the karambwanji.", karambwanji.quantity(20));
 		goToLubufu.addDialogStep("Talk about him...");
@@ -475,10 +475,11 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET);
 		pestleAndMortar = new ItemRequirement("Pestle And Mortar", ItemID.PESTLE_AND_MORTAR);
 		logsForFire = new ItemRequirement("Any logs to make a fire", ItemCollections.getLogsForFire());
-		spear = new ItemRequirement("Iron spear or better", ItemID.IRON_SPEAR);
+		spear = new ItemRequirement("Iron spear or better (You will lose the spear)", ItemID.IRON_SPEAR);
+		spear.setTooltip("Bone and black spear does NOT work");
 		spear.addAlternates(ItemID.STEEL_SPEAR, ItemID.MITHRIL_SPEAR, ItemID.ADAMANT_SPEAR, ItemID.RUNE_SPEAR,
 			ItemID.DRAGON_SPEAR);
-		poisonedSpear = new ItemRequirement("Any iron spear or better (kp)", ItemID.IRON_SPEARKP);
+		poisonedSpear = new ItemRequirement("Iron spear or better (kp) (You will lose the spear)", ItemID.IRON_SPEARKP);
 		poisonedSpear.addAlternates(ItemID.STEEL_SPEARKP, ItemID.MITHRIL_SPEARKP, ItemID.ADAMANT_SPEARKP, ItemID.RUNE_SPEARKP,
 			ItemID.DRAGON_SPEARKP);
 
@@ -547,6 +548,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.JUNGLE_POTION, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 30, false));
 		req.add(new SkillRequirement(Skill.AGILITY, 15, false));
 		req.add(new SkillRequirement(Skill.COOKING, 30, false));
 		req.add(new SkillRequirement(Skill.FISHING, 5, false));

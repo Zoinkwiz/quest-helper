@@ -328,8 +328,8 @@ public class FremennikElite extends ComplexStateQuestHelper
 		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_PRIME_6497);
 		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_REX_6498);
 
-		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
-			"Talk to Fossegrimen South of Rellekka to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 

@@ -67,6 +67,10 @@ public class ComplexRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
+		if (logicType == null)
+		{
+			return false;
+		}
 		return logicType.test(Stream.of(requirements), r -> r.check(client));
 	}
 

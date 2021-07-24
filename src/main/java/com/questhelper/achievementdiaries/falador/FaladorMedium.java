@@ -183,7 +183,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		scarecrowStep2Highlight = new ItemRequirement(true, "Hay Sack", ItemID.HAY_SACK_6058);
 		bronzeSpearHighlight = new ItemRequirement(true, "Bronze Spear", ItemID.BRONZE_SPEAR);
 		fishingExplosiveHighlight = new ItemRequirement(true, "Fishing Explosive", ItemID.FISHING_EXPLOSIVE);
-		mithGrappleHighlight = new ItemRequirement(true, "Mithril Grapple", ItemID.MITH_GRAPPLE);
+		mithGrappleHighlight = new ItemRequirement(true, "Mithril Grapple", ItemID.MITH_GRAPPLE_9419);
 
 		faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
 		explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2);

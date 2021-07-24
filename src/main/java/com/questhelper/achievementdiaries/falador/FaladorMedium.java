@@ -213,7 +213,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		//Bullseye Lantern - Rim Chemist
-		goToChemist = new DetailedQuestStep(this, new WorldPoint(2930, 3515, 0),
+		goToChemist = new DetailedQuestStep(this, new WorldPoint(2932, 3213, 0),
 			"Go to the Chemist's in Rimmington.", bullseyeLantern, tinderbox);
 		lightLantern = new DetailedQuestStep(this,
 			"Use the tinderbox on the bullseye lantern.", bullseyeLanternHighLight, tinderboxHighlight);

@@ -30,9 +30,9 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -66,14 +66,6 @@ public class JunglePotion extends BasicQuestHelper
 		getRoguesPurse, cleanAndReturnRoguesPurse;
 
 	ZoneRequirement isUnderground;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		setupItemRequirements();
-		setupZones();
-		return getSteps();
-	}
 
 	private void setupItemRequirements()
 	{
@@ -198,7 +190,7 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		getVolenciaMoss = new ObjectStep(this, ObjectID.ROCK_2581, new WorldPoint(2851, 3036, 0),
 			"Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
-		getVolenciaMoss.addText("If you plan on doing Fairy Tail I then take an extra.");
+		getVolenciaMoss.addText("If you plan on doing Fairy Tale I then take an extra.");
 		return getVolenciaMoss;
 	}
 
@@ -230,14 +222,6 @@ public class JunglePotion extends BasicQuestHelper
 		return new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0), text, requirements);
 	}
 
-	@Override
-	public List<String> getCombatRequirements()
-	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Survive against level 53 Jogres and level 46 Harpie Bug Swarms.");
-		return reqs;
-	}
-
 	//Recommended
 	@Override
 	public List<ItemRequirement> getItemRecommended()
@@ -251,6 +235,14 @@ public class JunglePotion extends BasicQuestHelper
 			ItemID.BRIMHAVEN_TELEPORT);
 		karaTele.addAlternates(ItemCollections.getAmuletOfGlories());
 		reqs.add(karaTele);
+		return reqs;
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		ArrayList<String> reqs = new ArrayList<>();
+		reqs.add("Survive against level 53 Jogres and level 46 Harpie Bug Swarms.");
 		return reqs;
 	}
 
@@ -275,14 +267,22 @@ public class JunglePotion extends BasicQuestHelper
 			Arrays.asList(getSitoFoil, cleanAndReturnSitoFoil));
 		steps.add(sitoFoilpanel);
 
-		PanelDetails volcaniaMossPanel = new PanelDetails("Volcania Moss",
+		PanelDetails volenciaMossPanel = new PanelDetails("Volencia Moss",
 			Arrays.asList(getVolenciaMoss, cleanAndReturnVolenciaMoss));
-		steps.add(volcaniaMossPanel);
+		steps.add(volenciaMossPanel);
 
 		PanelDetails roguesPursePanel = new PanelDetails("Rogues Purse",
 			Arrays.asList(enterCave, getRoguePurseHerb, cleanAndReturnRoguesPurse));
 		steps.add(roguesPursePanel);
 
 		return steps;
+	}
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		setupItemRequirements();
+		setupZones();
+		return getSteps();
 	}
 }

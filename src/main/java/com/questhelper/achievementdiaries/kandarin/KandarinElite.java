@@ -69,10 +69,10 @@ public class KandarinElite extends ComplexStateQuestHelper
 	Requirement barbSmith, barbFire, barbHerb, familyCrest, lunarDip;
 
 	//Quest steps
-	QuestStep claimReward, tpCath, plantAndPickDwarf, cook5Sharks, moveToSeersRooftop, stamMix,
+	QuestStep claimReward, tpCath, plantAndPickDwarf, moveToSeersRooftop, stamMix,
 		runeHasta, pyre, barb5, barb52, barb5Heal, barb5Atk, barb5Def, barb5Col;
 
-	NpcStep catch5Sharks;
+	NpcStep catchAndCook5Sharks;
 
 	Zone bankRoof, barbUnder;
 
@@ -89,8 +89,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
 		doElite.addStep(notTPCath, tpCath);
-		doElite.addStep(new Conditions(not5Shark, rawShark.quantity(5)), cook5Sharks);
-		doElite.addStep(not5Shark, catch5Sharks);
+		doElite.addStep(not5Shark, catchAndCook5Sharks);
 		doElite.addStep(new Conditions(notStamMix, inBankRoof), stamMix);
 		doElite.addStep(notStamMix, moveToSeersRooftop);
 		doElite.addStep(notRuneHasta, runeHasta);
@@ -181,18 +180,17 @@ public class KandarinElite extends ComplexStateQuestHelper
 			lunarBook, waterRune.quantity(10), astralRune.quantity(3), lawRune.quantity(3));
 		plantAndPickDwarf = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2814, 3464, 0),
 			"Plant and harvest the dwarf weed from the Catherby patch.", rake, dwarfSeed, seedDib);
-		catch5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1519, new WorldPoint(2837, 3431, 0),
-			"Catch 5 sharks in Catherby.", harpoon);
-		catch5Sharks.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
-		cook5Sharks = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2818, 3444, 0),
-			"Cook 5 sharks at the nearby range.", cookingGaunt.equipped(), rawShark.quantity(5));
-		moveToSeersRooftop = new ObjectStep(this, 14927, new WorldPoint(2729, 3489, 0),
+		catchAndCook5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1519, new WorldPoint(2837, 3431, 0),
+			"Catch 5 sharks in Catherby, then successfully cook 5 on the ranged in Catherby.", harpoon,
+			cookingGaunt.equipped());
+		catchAndCook5Sharks.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
+		moveToSeersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Climb on top of Seers' Bank.", stamPot, caviar);
 		stamMix = new ItemStep(this, "Create a stamina mix.", stamPot.highlighted(), caviar.highlighted());
 		runeHasta = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Smith an adamant spear on the barbarian anvil near Otto.", runiteBar, magicLogs, hammer);
 		runeHasta.addIcon(ItemID.RUNITE_BAR);
-		pyre = new ObjectStep(this, 25286, new WorldPoint(2519, 3519, 0),
+		pyre = new ObjectStep(this, ObjectID.PYRE_SITE, new WorldPoint(2519, 3519, 0),
 			"Construct a pyre ship from magic logs.", magicLogs, chewedBone, tinderbox, axe);
 		barb5Heal = new DetailedQuestStep(this, "Get to level 5 in the healer role at Barbarian Assault.");
 		barb5Atk = new DetailedQuestStep(this, "Get to level 5 in the attacker role at Barbarian Assault.");
@@ -257,7 +255,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Dwarf Weed in Catherby", Collections.singletonList(plantAndPickDwarf),
 			new SkillRequirement(Skill.FARMING, 79, true),
 			dwarfSeed, seedDib, rake, spade, compost));
-		allSteps.add(new PanelDetails("5 Sharks Caught and Cooked in Catherby", Arrays.asList(catch5Sharks, cook5Sharks),
+		allSteps.add(new PanelDetails("5 Sharks Caught and Cooked in Catherby", Collections.singletonList(catchAndCook5Sharks),
 			new SkillRequirement(Skill.FISHING, 76, true),
 			new SkillRequirement(Skill.COOKING, 80, true),
 			familyCrest, harpoon, cookingGaunt));

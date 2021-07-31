@@ -245,10 +245,10 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		mixUnf = new DetailedQuestStep(this,
 			"Create an unfinished Irit potion.", iritLeaf.highlighted(), vialOfWater.highlighted());
 		crushHorn = new DetailedQuestStep(this,
-			"Crush the unicorn horn.", unicornHorn.highlighted(), mortarPest.highlighted());
+			"Crush a unicorn horn.", unicornHorn.highlighted(), mortarPest.highlighted());
 		superAnti = new DetailedQuestStep(this,
 			"Create a super antipoision potion.", hornDust.highlighted(), unfIrit.highlighted());
-		plantAndPickLimp = new ObjectStep(this, ObjectID.LIMPWURT_PLANT_7855, new WorldPoint(2809, 3463, 0),
+		plantAndPickLimp = new ObjectStep(this, NullObjectID.NULL_7848, new WorldPoint(2810, 3464, 0),
 			"Plant a limpwurt seed in the Catherby Allotment Patch, wait for it to grow then pick it.", rake,
 			limpSeed, seedDib);
 		catchBass = new NpcStep(this, NpcID.FISHING_SPOT_1518, new WorldPoint(2837, 3431, 0),

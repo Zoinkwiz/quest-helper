@@ -132,6 +132,8 @@ public class KandarinEasy extends ComplexStateQuestHelper
         rake = new ItemRequirement("Small fishing net", ItemID.RAKE).showConditioned(notPlantJute);
         seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantJute);
         batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY).showConditioned(notKillEle);
+        batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
+			"Workshop, then reading the book you get from it");
 
         combatGear = new ItemRequirement("Combat gear to defeat all types of elementals (level 35)", -1, -1).showConditioned(notKillEle);
         combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -154,13 +156,13 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
     public void loadZones()
     {
-        workshop = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
+        workshop = new Zone(new WorldPoint(2682, 9862, 0), new WorldPoint(2747, 9927, 0));
     }
 
     public void setupSteps()
     {
-        catchMackerel = new NpcStep(this, NpcID.FISHING_SPOT_1518, new WorldPoint(2708, 3209, 0),
-                "Fish on Catherby beach at the Big Net fishing spots for a mackerel.", bigFishingNet);
+        catchMackerel = new NpcStep(this, NpcID.FISHING_SPOT_1518, new WorldPoint(2841, 3432, 0),
+                "Fish on Catherby beach at the Big Net fishing spots for a mackerel.", true, bigFishingNet);
         catchMackerel.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
         buyCandle = new NpcStep(this, NpcID.CANDLE_MAKER, new WorldPoint(2799, 3439, 0),
                 "Buy a candle from the candle maker in Catherby.", coins.quantity(3));
@@ -172,7 +174,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
                 "Speak with Harry in the Catherby Fishing Shop to get a tiny net.", fishBowlSeaweed, coins.quantity(10));
         petFish.addDialogSteps("Can I get a fish for this bowl?", "I'll take it!");
         petFishMix = new ItemStep(this, "Put seaweed into the fishbowl.", fishBowl.highlighted(), seaweed.highlighted());
-        petFishFish = new ObjectStep(this, 10091, new WorldPoint(2831, 3445, 0),
+        petFishFish = new ObjectStep(this, ObjectID.AQUARIUM, new WorldPoint(2831, 3445, 0),
                 "Fish in the aquarium near Harry.", tinyNet);
         collectFlax = new ObjectStep(this, ObjectID.FLAX, new WorldPoint(2742, 3446, 0),
                 "Pick 5 flax at the flax field west of Catherby.");
@@ -188,7 +190,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         buyStew.addDialogSteps("What do you have?", "Could I have some stew please?");
         playOrgan = new ObjectStep(this, ObjectID.CHURCH_ORGAN_25818, new WorldPoint(2692, 3463, 0),
                 "Play the organ in Seers' Village Church.");
-        plantJute = new ObjectStep(this, 8176, new WorldPoint(2669, 3523, 0),
+        plantJute = new ObjectStep(this, NullObjectID.NULL_8176, new WorldPoint(2669, 3523, 0),
                 "Plant 3 jute seeds in the hops patch north west of Seers' Village.", juteSeed.quantity(3),
 			seedDibber, rake);
         plantJute.addIcon(ItemID.JUTE_SEED);

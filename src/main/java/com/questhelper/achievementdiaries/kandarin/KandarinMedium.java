@@ -187,18 +187,14 @@ public class KandarinMedium extends ComplexStateQuestHelper
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		alfredBar = new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED);
-		eleWorkII = new QuestRequirement(QuestHelperQuest.ELEMENTAL_WORKSHOP_II, QuestState.FINISHED);
-		waterfallQuest = new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED);
-		fairyTaleII = new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(),
-			Operation.GREATER_EQUAL, 40, "Partial completion of Fairytale II for access to fairy rings");
-
 		inBank = new ZoneRequirement(bank);
 		inSeersCath = new ZoneRequirement(seersCath);
 		inTavDungeon = new ZoneRequirement(tavDungeon);
 		inWorkshop = new ZoneRequirement(workshop);
 		inObIsland = new ZoneRequirement(obIsland);
 		inWaterfall = new ZoneRequirement(waterfall);
+
+		setupGeneralRequirements();
 	}
 
 	public void loadZones()
@@ -283,10 +279,25 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		return Collections.singletonList(food);
 	}
 
+	private void setupGeneralRequirements()
+	{
+		alfredBar = new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED);
+		eleWorkII = new QuestRequirement(QuestHelperQuest.ELEMENTAL_WORKSHOP_II, QuestState.FINISHED);
+		waterfallQuest = new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED);
+		fairyTaleII = new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(),
+			Operation.GREATER_EQUAL, 40, "Partial completion of Fairytale II for access to fairy rings");
+	}
+
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
+		setupGeneralRequirements();
+
 		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(alfredBar);
+		req.add(eleWorkII);
+		req.add(waterfallQuest);
+		req.add((fairyTaleII));
 		req.add(new SkillRequirement(Skill.AGILITY, 36));
 		req.add(new SkillRequirement(Skill.COOKING, 43));
 		req.add(new SkillRequirement(Skill.FARMING, 26));
@@ -313,20 +324,39 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Grapple from Water Obelisk", Arrays.asList(moveToTavDungeon, moveToOb, grapOb),
+			new SkillRequirement(Skill.AGILITY, 36),
+			new SkillRequirement(Skill.STRENGTH, 22),
+			new SkillRequirement(Skill.RANGED, 39),
 			mithGrap, crossbow, dustyKey));
-		allSteps.add(new PanelDetails("String Maple Shortbow in Seers' Bank", Arrays.asList(moveToBank, stringMaple), mapleUnstrung, bowString));
-		allSteps.add(new PanelDetails("Catch and Cook Bass", Arrays.asList(catchBass, cookBass), bigFishingNet));
-		allSteps.add(new PanelDetails("Mix Superantipoison", Arrays.asList(moveToSeersCath, mixUnf, crushHorn, superAnti), unicornHorn, mortarPest, vialOfWater, iritLeaf));
-		allSteps.add(new PanelDetails("Make a Mind Helm", Collections.singletonList(mindHelm), eleWorkII, primedMind, batteredKey, beatenBook, hammer));
-		allSteps.add(new PanelDetails("Enter the Ranging Guild", Collections.singletonList(enterRange)));
-		allSteps.add(new PanelDetails("Steal from Hemenster Chest", Collections.singletonList(stealHemen), lockpick));
-		allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal)));
+		allSteps.add(new PanelDetails("String Maple Shortbow in Seers' Bank", Arrays.asList(moveToBank, stringMaple),
+			new SkillRequirement(Skill.FLETCHING, 50, true),
+			mapleUnstrung, bowString));
+		allSteps.add(new PanelDetails("Catch and Cook Bass", Arrays.asList(catchBass, cookBass),
+			new SkillRequirement(Skill.FISHING, 46, true),
+			new SkillRequirement(Skill.COOKING, 43, true),
+			bigFishingNet));
+		allSteps.add(new PanelDetails("Mix Superantipoison", Arrays.asList(moveToSeersCath, mixUnf, crushHorn, superAnti),
+			new SkillRequirement(Skill.HERBLORE, 48, true),
+			unicornHorn, mortarPest, vialOfWater, iritLeaf));
+		allSteps.add(new PanelDetails("Make a Mind Helm", Collections.singletonList(mindHelm), eleWorkII,
+			primedMind, batteredKey, beatenBook, hammer));
+		allSteps.add(new PanelDetails("Enter the Ranging Guild", Collections.singletonList(enterRange),
+			new SkillRequirement(Skill.RANGED, 40)));
+		allSteps.add(new PanelDetails("Steal from Hemenster Chest", Collections.singletonList(stealHemen),
+			new SkillRequirement(Skill.THIEVING, 47),
+			lockpick));
+		allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
+			new SkillRequirement(Skill.MINING, 30, true)));
 		allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest, combatGear, food));
-		allSteps.add(new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi), alfredBar));
+		allSteps.add(new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi), alfredBar,
+			new SkillRequirement(Skill.AGILITY, 35)));
 		allSteps.add(new PanelDetails("Barbarian Assault Wave", Collections.singletonList(barbAss)));
 		allSteps.add(new PanelDetails("Fairy Ring to McGrubor's Woods", Collections.singletonList(travelMcGrubor), fairyTaleII, staff));
-		allSteps.add(new PanelDetails("Teleport to Camelot", Collections.singletonList(tpCAM), lawRune.quantity(1), airRune.quantity(5), normalBook));
+		allSteps.add(new PanelDetails("Teleport to Camelot", Collections.singletonList(tpCAM),
+			new SkillRequirement(Skill.MAGIC, 45, true),
+			lawRune.quantity(1), airRune.quantity(5), normalBook));
 		allSteps.add(new PanelDetails("Pick Limpwurt in Catherby", Collections.singletonList(plantAndPickLimp),
+			new SkillRequirement(Skill.FARMING, 26, true),
 			limpSeed, seedDib, compost, rake));
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

@@ -29,7 +29,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -57,7 +56,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement barbRod, feather, axe, bowString, knife, cosmicRune, waterRune, unpoweredOrb, dustyKey,
-		mapleLogs, bow, ringOfVis, coins, addyBar, hammer, yewLogs, combatGear;
+		mapleLogs, bow, ringOfVis, coins, addyBar, hammer, yewLogs, combatGear, antidragonfire;
 
 	// Items recommended
 	ItemRequirement food;
@@ -103,7 +102,6 @@ public class KandarinHard extends ComplexStateQuestHelper
 		doHard.addStep(notShadowHound, moveToShadow);
 		doHard.addStep(notCatchStur, catchStur);
 		doHard.addStep(notAddySpear, addySpear);
-		doHard.addStep(new Conditions(notMithrilDrag, inShadow), shadowHound);
 		doHard.addStep(new Conditions(notMithrilDrag, inAncient3), mithrilDrag);
 		doHard.addStep(new Conditions(notMithrilDrag, inAncient2), moveToAncient3);
 		doHard.addStep(new Conditions(notMithrilDrag, inAncient1), moveToAncient2);
@@ -136,7 +134,13 @@ public class KandarinHard extends ComplexStateQuestHelper
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notWaterOrb);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notWaterOrb);
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notWaterOrb);
-		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY).showConditioned(notWaterOrb);
+
+		Conditions not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
+
+		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
+			notWaterOrb));
+		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
+			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
 		bow = new ItemRequirement("Dusty key", ItemCollections.getBows()).showConditioned(notBurnMaple);
 		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound);
@@ -149,16 +153,11 @@ public class KandarinHard extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR, notShadowHound, notMithrilDrag));
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
+		antidragonfire = new ItemRequirement("An antifire shield", ItemCollections.getAntifireShields());
+
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
-		// TODO find a way to track barb training / knight waves
-		barbFishing = new ComplexRequirement("Barbarian fishing");
-		barbFiremaking = new ComplexRequirement("Barbarian firemaking");
-		barbSmithing = new ComplexRequirement("Barbarian smithing");
-		taiBwoWannai = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
-		knightWaves = new ComplexRequirement("Knight waves training grounds");
-		// knightWaves = new QuestRequirement(QuestHelperQuest., QuestState.FINISHED);
-		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
+		setupGeneralRequirements();
 
 		inTavDungeon = new ZoneRequirement(tavDungeon);
 		inObIsland = new ZoneRequirement(obIsland);
@@ -183,45 +182,50 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
-			"Enter the Taverly Dungeon.");
+			"Enter the Taverley Dungeon.", dustyKey, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
 		moveToOb = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2842, 9824, 0),
-			"Climb the ladder.", dustyKey);
-		waterOrb = new ObjectStep(this, 2151, new WorldPoint(2844, 3422, 0),
-			"Use charge water orb on the obelisk.", waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
+			"Make your way through Taverley Dungeon to the end, and climb the ladder there. If you're 70+ " +
+				"Agility, use on of the shortcuts near the entrance to get there quickly.",
+			dustyKey, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
+		waterOrb = new ObjectStep(this, ObjectID.OBELISK_OF_WATER, new WorldPoint(2844, 3422, 0),
+			"Use the charge water orb spell on the obelisk.", waterRune.quantity(30), cosmicRune.quantity(3),
+			unpoweredOrb);
 		waterOrb.addIcon(ItemID.WATER_ORB);
-		seersRooftop = new ObjectStep(this, 14927, new WorldPoint(2729, 3489, 0),
+		seersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Complete a lap of the Seers' village Rooftop course.");
-		yewLong = new ObjectStep(this, 10822, new WorldPoint(2715, 3460, 0),
-			"Cut some yew logs. Make sure to use the knife on the ones you cut.", axe);
+		yewLong = new ObjectStep(this, ObjectID.YEW, new WorldPoint(2715, 3460, 0),
+			"Cut some yew logs near Catherby. Make sure to use the knife on the ones you cut.", axe);
 		cutLongbow = new ItemStep(this, "Use knife on yew logs to make a yew longbow (u)", yewLogs.highlighted(), knife.highlighted());
 		stringBow = new ItemStep(this, "String the bow.", bowString.highlighted(), unstrungYewLong.highlighted());
-		pietyCourt = new ObjectStep(this, 123, new WorldPoint(2735, 3469, 0),
-			"Activate piety then enter the courthouse.", piety);
-		moveToSeers = new ObjectStep(this, 123, new WorldPoint(2714, 3484, 0),
-			"Move to Seers' Village.");
+		pietyCourt = new DetailedQuestStep(this, new WorldPoint(2735, 3469, 0),
+			"Activate piety then enter the Seers' Village courthouse.", piety);
+		moveToSeers = new DetailedQuestStep(this, new WorldPoint(2714, 3484, 0),
+			"Go to Seers' Village.", bow, mapleLogs);
 		burnMaple = new ItemStep(this, "Burn some maple logs with a bow.", bow.highlighted(), mapleLogs.highlighted());
 		fancyStone = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(2735, 3500, 0),
-			"TALK to the estate agent to redecorate your house. Must be done through dialog.", coins.quantity(25000));
+			"TALK to the estate agent to redecorate your house to Fancy Stone. Must be done through dialog.",
+			coins.quantity(25000));
 		fancyStone.addDialogStep("Can you redecorate my house please?");
-		moveToShadow = new ObjectStep(this, 6560, new WorldPoint(2547, 3421, 0),
-			"Go down the ladder.", ringOfVis.equipped());
+		moveToShadow = new ObjectStep(this, NullObjectID.NULL_6560, new WorldPoint(2547, 3421, 0),
+			"Climb down the shadow ladder south of Glarial's Tomb.", ringOfVis.equipped(), combatGear);
 		shadowHound = new NpcStep(this, NpcID.SHADOW_HOUND, new WorldPoint(2699, 5095, 0),
 			"Kill a shadow hound.", true);
 		catchStur = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2501, 3504, 0),
-			"Catch a leaping Sturgeon.", true);
+			"Catch a leaping Sturgeon south of Barbarian Assault.", true, barbRod, feather.quantity(20));
 		addySpear = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
-			"Smith an adamant spear.", addyBar, yewLogs);
+			"Smith an adamant spear on the barbarian anvil south of Barbarian Assault.", addyBar, yewLogs);
 		addySpear.addIcon(ItemID.ADAMANTITE_BAR);
-		moveToWhirl = new ObjectStep(this, 25274, new WorldPoint(2512, 3508, 0),
-			"Jump in the whirl pool.", combatGear);
+		moveToWhirl = new ObjectStep(this, ObjectID.WHIRLPOOL_25274, new WorldPoint(2512, 3508, 0),
+			"Jump in the whirlpool south of Barbarian Assault.", combatGear, antidragonfire.equipped());
 		moveToAncient2 = new ObjectStep(this, ObjectID.STAIRS_25338, new WorldPoint(1770, 5366, 1),
 			"Go down the stairs.");
 		moveToAncient3 = new ObjectStep(this, ObjectID.STAIRS_25339, new WorldPoint(1778, 5345, 0),
-			"Go up the stairs.");
+			"Go up the stairs in the east of the cavern.");
 		mithrilDrag = new NpcStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1779, 5344, 1),
-			"Kill a mithril dragon.", true, combatGear, food);
+			"Kill a mithril dragon.", true, combatGear, antidragonfire.equipped(), food);
 		buyGranite = new NpcStep(this, NpcID.COMMANDER_CONNAD, new WorldPoint(2535, 3576, 0),
-			"Buy the granite body. (Requires at least 1 Penance Queen kill)", coins.quantity(95000));
+			"Buy a granite body from Commander Connad. (Requires at least 1 Penance Queen kill)",
+			coins.quantity(95000));
 
 		claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
 			"Talk to the 'Wedge' in front of camelot castle to claim your reward!");
@@ -231,21 +235,41 @@ public class KandarinHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		//setup
-		return Arrays.asList(barbRod, feather, axe, bowString, knife, cosmicRune.quantity(3), waterRune.quantity(30), unpoweredOrb, dustyKey, mapleLogs, bow, ringOfVis, coins, addyBar, hammer, yewLogs, combatGear);
+		return Arrays.asList(barbRod, feather, axe, bowString, knife, cosmicRune.quantity(3),
+			waterRune.quantity(30), unpoweredOrb, dustyKey, mapleLogs, bow, ringOfVis,
+			coins, addyBar, hammer, yewLogs, combatGear);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		//setup
 		return Collections.singletonList(food);
+	}
+
+	private void setupGeneralRequirements()
+	{
+		// TODO find a way to track barb training / knight waves
+		barbFishing = new ItemRequirement("Completed Barbarian fishing", 1, -1);
+		barbFiremaking = new ItemRequirement("Unlocked the Ancient Caverns through Barbarian Firemaking", 1, -1);
+		barbSmithing = new ItemRequirement("Completed Barbarian Smithing", 1, -1);
+		taiBwoWannai = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
+		knightWaves = new ItemRequirement("Completed the Knight Waves Training Grounds", 1, -1);
+		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
+		setupGeneralRequirements();
 		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(taiBwoWannai);
+		req.add(desertTreasure);
+
+		req.add(barbFishing);
+		req.add(barbFiremaking);
+		req.add(barbSmithing);
+		req.add(knightWaves);
+
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
 		req.add(new SkillRequirement(Skill.DEFENCE, 70));
@@ -272,17 +296,39 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb, waterOrb), waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey));
-		allSteps.add(new PanelDetails("Seers' Village Rooftop", Collections.singletonList(seersRooftop)));
-		allSteps.add(new PanelDetails("Yew Longbow from Scratch", Arrays.asList(yewLong, cutLongbow, stringBow), axe, bowString, knife));
-		allSteps.add(new PanelDetails("Piety in the Courthouse", Collections.singletonList(pietyCourt), knightWaves));
-		allSteps.add(new PanelDetails("Burn Maple logs with a bow", Arrays.asList(moveToSeers, burnMaple), barbFiremaking, mapleLogs, bow));
-		allSteps.add(new PanelDetails("Fancy Stone Decoration", Collections.singletonList(fancyStone), coins.quantity(25000)));
-		allSteps.add(new PanelDetails("Kill a Shadow Hound", Arrays.asList(moveToShadow, shadowHound), desertTreasure, ringOfVis, combatGear, food));
-		allSteps.add(new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchStur), barbFishing, barbRod, feather));
-		allSteps.add(new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear), barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer));
-		allSteps.add(new PanelDetails("kill a Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2, moveToAncient3, mithrilDrag), barbFiremaking, combatGear, food));
-		allSteps.add(new PanelDetails("Purchase Granite Body", Collections.singletonList(buyGranite), coins.quantity(95000), combatGear));
+		allSteps.add(new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb, waterOrb),
+			waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey));
+		allSteps.add(new PanelDetails("Seers' Village Rooftop", Collections.singletonList(seersRooftop),
+			new SkillRequirement(Skill.AGILITY, 60, true)));
+		allSteps.add(new PanelDetails("Yew Longbow from Scratch", Arrays.asList(yewLong, cutLongbow, stringBow),
+			new SkillRequirement(Skill.FLETCHING, 70, true),
+			new SkillRequirement(Skill.WOODCUTTING, 60, true),
+			axe, bowString, knife));
+		allSteps.add(new PanelDetails("Piety in the Courthouse", Collections.singletonList(pietyCourt),
+			new QuestRequirement(QuestHelperQuest.KINGS_RANSOM, QuestState.FINISHED),
+			knightWaves,
+			new SkillRequirement(Skill.PRAYER, 70),
+			new SkillRequirement(Skill.DEFENCE, 70)));
+		allSteps.add(new PanelDetails("Burn Maple logs with a bow", Arrays.asList(moveToSeers, burnMaple),
+			new SkillRequirement(Skill.FIREMAKING, 65, true),
+			barbFiremaking, mapleLogs, bow));
+		allSteps.add(new PanelDetails("Fancy Stone Decoration", Collections.singletonList(fancyStone),
+			new SkillRequirement(Skill.CONSTRUCTION, 50),
+			coins.quantity(25000)));
+		allSteps.add(new PanelDetails("Kill a Shadow Hound", Arrays.asList(moveToShadow, shadowHound),
+			desertTreasure, ringOfVis, combatGear, food));
+		allSteps.add(new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchStur),
+			new SkillRequirement(Skill.FISHING, 70, true),
+			new SkillRequirement(Skill.AGILITY, 45),
+			new SkillRequirement(Skill.STRENGTH, 45),
+			barbFishing, barbRod, feather.quantity(20)));
+		allSteps.add(new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear),
+			new SkillRequirement(Skill.SMITHING, 75, true),
+			barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer));
+		allSteps.add(new PanelDetails("kill a Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2,
+			moveToAncient3, mithrilDrag), barbFiremaking, combatGear, antidragonfire, food));
+		allSteps.add(new PanelDetails("Purchase Granite Body", Collections.singletonList(buyGranite),
+			coins.quantity(95000), combatGear));
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 
 		return allSteps;

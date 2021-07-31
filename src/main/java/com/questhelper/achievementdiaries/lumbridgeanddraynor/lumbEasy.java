@@ -89,15 +89,26 @@ public class lumbEasy extends ComplexStateQuestHelper
 		setupRequirements();
 		setupSteps();
 
-		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		// doHard.addStep(notUsedShortcut, useShortcut);
+		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
+		// doEasy.addStep(notUsedShortcut, useShortcut);
 
-		return doMedium;
+		return doEasy;
 	}
 
 	public void setupRequirements()
 	{
-		not = new VarplayerRequirement(3600, false, 1);
+		notDrayAgi = new VarplayerRequirement(1194, false, 1);
+		notCavebug = new VarplayerRequirement(1194, false, 2);
+		notSedridor = new VarplayerRequirement(1194, false, 3);
+		notWaterRune = new VarplayerRequirement(1194, false, 4);
+		notHans = new VarplayerRequirement(1194, false, 5);
+		notPickpocket = new VarplayerRequirement(1194, false, 6);
+		notOak = new VarplayerRequirement(1194, false, 7);
+		notZombie = new VarplayerRequirement(1194, false, 8);
+		notAnchovies = new VarplayerRequirement(1194, false, 9);
+		notBread = new VarplayerRequirement(1194, false, 10);
+		notIron = new VarplayerRequirement(1194, false, 11);
+		notHAM = new VarplayerRequirement(1194, false, 12);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

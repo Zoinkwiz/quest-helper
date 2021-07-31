@@ -88,7 +88,7 @@ public class lumbElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		// doHard.addStep(notUsedShortcut, useShortcut);
+		// doElite.addStep(notUsedShortcut, useShortcut);
 
 		return doElite;
 	}

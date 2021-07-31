@@ -325,7 +325,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear),
 			new SkillRequirement(Skill.SMITHING, 75, true),
 			barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer));
-		allSteps.add(new PanelDetails("kill a Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2,
+		allSteps.add(new PanelDetails("Kill a Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2,
 			moveToAncient3, mithrilDrag), barbFiremaking, combatGear, antidragonfire, food));
 		allSteps.add(new PanelDetails("Purchase Granite Body", Collections.singletonList(buyGranite),
 			coins.quantity(95000), combatGear));

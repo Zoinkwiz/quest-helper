@@ -99,6 +99,7 @@ public enum QuestVarbits
 	QUEST_A_PORCINE_OF_INTEREST(10582),
 	QUEST_GETTING_AHEAD(693),
 	QUEST_A_KINGDOM_DIVIDED(12296),
+	QUEST_A_NIGHT_AT_THE_THEATRE(12276),
 
 	/**
 	 * mini-quest varbits, these don't hold the completion value.

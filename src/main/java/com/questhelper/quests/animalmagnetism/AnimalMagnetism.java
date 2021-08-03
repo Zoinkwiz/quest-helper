@@ -234,7 +234,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		attemptToCutTree = new NpcStep(this, NpcID.UNDEAD_TREE, "Try to chop an undead tree outside Draynor manor.", true,
 			mithrilAxe);
 		talkToTurael = new NpcStep(this, NpcID.TURAEL, new WorldPoint(2931, 3536, 0),
-			"Talk to Turael in Burthrope twice, giving him the Mithril axe and Holy symbol.",
+			"Talk to Turael in Burthorpe twice, giving him the Mithril axe and Holy symbol.",
 			mithrilAxe, holySymbol);
 		talkToTurael.addDialogSteps("I'm here about a quest.", "Hello, I'm here about those trees again.",
 			"I'd love one, thanks.");

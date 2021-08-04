@@ -526,8 +526,7 @@ public class QuestHelperPlugin extends Plugin
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		String target = Text.removeTags(event.getTarget());
-
-		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
+		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read journal:".equals(event.getOption()))
 		{
 			if (target.equals("Shield of Arrav"))
 			{

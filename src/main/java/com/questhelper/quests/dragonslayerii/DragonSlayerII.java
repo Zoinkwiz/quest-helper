@@ -805,7 +805,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		// Kourend key piece
 		talkToAmelia = new NpcStep(this, NpcID.AMELIA, new WorldPoint(1540, 3545, 0), "Talk to Amelia south west of the Shayzien Archery Store.");
-		enterCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0), "Enter the Crypt south of Amelia.");
+		enterCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0), "Enter the Crypt west of Amelia.");
 		goDownInCryptF2ToF1 = new ObjectStep(this, ObjectID.LADDER_32397, new WorldPoint(1524, 9967, 3), "Climb down to the bottom of the crypts.");
 		goDownInCryptF1ToF0 = new ObjectStep(this, ObjectID.STAIRCASE_32394, new WorldPoint(1511, 9979, 2), "Climb down to the bottom of the crypts.");
 		goDownInCryptF2ToF1.addSubSteps(goDownInCryptF1ToF0);

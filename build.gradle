@@ -10,7 +10,7 @@ repositories {
 	mavenCentral()
 }
 
-def runeLiteVersion = '1.7.14.1'
+def runeLiteVersion = '1.7.18'
 
 dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
@@ -25,7 +25,7 @@ dependencies {
 }
 
 group = 'com.questhelper'
-version = '2.2.4'
+version = '2.3.0'
 sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {

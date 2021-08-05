@@ -236,7 +236,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			"Enter the Taverly Dungeon.", dustyKey, mithGrap, crossbow);
 		moveToOb = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2842, 9824, 0),
 			"Make your way through Taverley Dungeon to the end, and climb the ladder there. If you're 70+ " +
-				"Agility, use on of the shortcuts near the entrance to get there quickly.",
+				"Agility, use one of the shortcuts near the entrance to get there quickly.",
 			dustyKey, mithGrap.equipped(), crossbow.equipped());
 		grapOb = new ObjectStep(this, ObjectID.CROSSBOW_TREE_17062, new WorldPoint(2842, 3435, 0),
 			"Grapple across!", mithGrap.equipped(), crossbow.equipped());
@@ -261,7 +261,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			normalBook);
 
 		claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
-			"Talk to the 'Wedge' in front of camelot castle to claim your reward!");
+			"Talk to the 'Wedge' in front of Camelot Castle to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 

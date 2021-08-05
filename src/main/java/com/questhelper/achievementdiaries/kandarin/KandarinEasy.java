@@ -113,7 +113,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         notPlantJute = new VarplayerRequirement(1178, false, 5);
         notCupTea = new VarplayerRequirement(1178, false, 6);
         notKillEle = new VarplayerRequirement(1178, false, 7);
-        notPetFish = new VarplayerRequirement(1178, false, 8);
+        notPetFish = new VarplayerRequirement(1178, true, 8);
         notBuyStew = new VarplayerRequirement(1178, false, 9);
         notTalkSherlock = new VarplayerRequirement(1178, false, 10);
         notLogShortcut = new VarplayerRequirement(1178, false, 11);
@@ -125,7 +125,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         fishBowl = new ItemRequirement("Filled fishbowl", ItemID.FISHBOWL).showConditioned(notPetFish);
 		fishBowlSeaweed = new ItemRequirement("Fishbowl with seaweed", ItemID.FISHBOWL_6669).showConditioned(notPetFish);
 		tinyNet = new ItemRequirement("Tiny fish net", ItemID.TINY_NET).showConditioned(notPetFish);
-		genericFishbowl = new ItemRequirements("Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed).showConditioned(notPetFish);
+		genericFishbowl = new ItemRequirements(LogicType.OR, "Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed);
 
         seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
         juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);

@@ -280,7 +280,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 			"Use an earth rune on the strange wall.", earthRune.highlighted());
 		useEarthRune.addIcon(ItemID.EARTH_RUNE);
 		useFireRune = new ObjectStep(this, ObjectID.STRANGE_WALL_4544, new WorldPoint(2515, 4627, 0),
-			"Use an fire rune on the strange wall.", fireRune.highlighted());
+			"Use a fire rune on the strange wall.", fireRune.highlighted());
 		useFireRune.addIcon(ItemID.FIRE_RUNE);
 		useArrow = new ObjectStep(this, ObjectID.STRANGE_WALL_4544, new WorldPoint(2515, 4627, 0),
 			"Use an arrow on the strange wall.", arrow.highlighted());

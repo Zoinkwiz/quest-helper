@@ -45,6 +45,8 @@ public class PanelDetails
 	@Getter
 	private QuestStep lockingQuestSteps;
 
+	public Requirement shouldHideCondition;
+
 	@Getter
 	private List<Requirement> requirements;
 

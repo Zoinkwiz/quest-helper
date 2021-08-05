@@ -324,7 +324,7 @@ public class QuestHelperPlugin extends Plugin
 				if (currentStep != null && currentStep != lastStep)
 				{
 					lastStep = currentStep;
-					panel.updateHighlight(currentStep);
+					panel.updateHighlight(client, currentStep);
 				}
 				panel.updateLocks();
 			}

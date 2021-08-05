@@ -228,7 +228,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 			coins.quantity(95000));
 
 		claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
-			"Talk to the 'Wedge' in front of camelot castle to claim your reward!");
+			"Talk to the 'Wedge' in front of Camelot Castle to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 

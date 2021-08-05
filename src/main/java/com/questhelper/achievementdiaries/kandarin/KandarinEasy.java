@@ -125,11 +125,11 @@ public class KandarinEasy extends ComplexStateQuestHelper
         fishBowl = new ItemRequirement("Filled fishbowl", ItemID.FISHBOWL).showConditioned(notPetFish);
 		fishBowlSeaweed = new ItemRequirement("Fishbowl with seaweed", ItemID.FISHBOWL_6669).showConditioned(notPetFish);
 		tinyNet = new ItemRequirement("Tiny fish net", ItemID.TINY_NET).showConditioned(notPetFish);
-		genericFishbowl = new ItemRequirements("Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed).showConditioned(notPetFish);
+		genericFishbowl = new ItemRequirements(LogicType.OR, "Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed).showConditioned(notPetFish);
 
         seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
         juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
-        rake = new ItemRequirement("Small fishing net", ItemID.RAKE).showConditioned(notPlantJute);
+        rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute);
         seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantJute);
         batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY).showConditioned(notKillEle);
         batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +

@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
@@ -63,6 +64,13 @@ public class ItemRequirements extends ItemRequirement
 	{
 		super(name, itemRequirements[0].getId(), -1);
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
+		this.logicType = logicType;
+	}
+
+	public ItemRequirements(LogicType logicType, String name, List<ItemRequirement> itemRequirements)
+	{
+		super(name, itemRequirements.get(0).getId(), -1);
+		this.itemRequirements.addAll(itemRequirements);
 		this.logicType = logicType;
 	}
 
@@ -128,6 +136,23 @@ public class ItemRequirements extends ItemRequirement
 		}
 
 		return color;
+	}
+
+	@Override
+	public ItemRequirement copy()
+	{
+		ItemRequirements newItem = new ItemRequirements(getLogicType(), getName(), getItemRequirements());
+		newItem.addAlternates(alternateItems);
+		newItem.setDisplayItemId(getDisplayItemId());
+		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
+		newItem.setHighlightInInventory(highlightInInventory);
+		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
+		newItem.setConditionToHide(getConditionToHide());
+		newItem.setQuestBank(getQuestBank());
+		newItem.setTooltip(getTooltip());
+		newItem.logicType = logicType;
+
+		return newItem;
 	}
 
 	@Override

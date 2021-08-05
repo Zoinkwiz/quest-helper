@@ -113,7 +113,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         notPlantJute = new VarplayerRequirement(1178, false, 5);
         notCupTea = new VarplayerRequirement(1178, false, 6);
         notKillEle = new VarplayerRequirement(1178, false, 7);
-        notPetFish = new VarplayerRequirement(1178, true, 8);
+        notPetFish = new VarplayerRequirement(1178, false, 8);
         notBuyStew = new VarplayerRequirement(1178, false, 9);
         notTalkSherlock = new VarplayerRequirement(1178, false, 10);
         notLogShortcut = new VarplayerRequirement(1178, false, 11);

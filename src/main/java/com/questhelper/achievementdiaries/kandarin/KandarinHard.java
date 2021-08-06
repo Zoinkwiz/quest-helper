@@ -296,40 +296,75 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb, waterOrb),
-			waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey));
-		allSteps.add(new PanelDetails("Seers' Village Rooftop", Collections.singletonList(seersRooftop),
-			new SkillRequirement(Skill.AGILITY, 60, true)));
-		allSteps.add(new PanelDetails("Yew Longbow from Scratch", Arrays.asList(yewLong, cutLongbow, stringBow),
-			new SkillRequirement(Skill.FLETCHING, 70, true),
+		PanelDetails chargeOrbSteps = new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb,
+			waterOrb), waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey);
+		chargeOrbSteps.setDisplayCondition(notWaterOrb);
+		allSteps.add(chargeOrbSteps);
+
+		PanelDetails agilitySteps = new PanelDetails("Seers' Village Rooftop", Collections.singletonList(seersRooftop),
+			new SkillRequirement(Skill.AGILITY, 60, true));
+		agilitySteps.setDisplayCondition(notSeersRooftop);
+		allSteps.add(agilitySteps);
+
+		PanelDetails yewLongSteps = new PanelDetails("Yew Longbow from Scratch", Arrays.asList(yewLong, cutLongbow,
+			stringBow), new SkillRequirement(Skill.FLETCHING, 70, true),
 			new SkillRequirement(Skill.WOODCUTTING, 60, true),
-			axe, bowString, knife));
-		allSteps.add(new PanelDetails("Piety in the Courthouse", Collections.singletonList(pietyCourt),
+			axe, bowString, knife);
+		yewLongSteps.setDisplayCondition(notYewLong);
+		allSteps.add(yewLongSteps);
+
+		PanelDetails pietySteps = new PanelDetails("Piety in the Courthouse", Collections.singletonList(pietyCourt),
 			new QuestRequirement(QuestHelperQuest.KINGS_RANSOM, QuestState.FINISHED),
 			knightWaves,
 			new SkillRequirement(Skill.PRAYER, 70),
-			new SkillRequirement(Skill.DEFENCE, 70)));
-		allSteps.add(new PanelDetails("Burn Maple logs with a bow", Arrays.asList(moveToSeers, burnMaple),
+			new SkillRequirement(Skill.DEFENCE, 70));
+		pietySteps.setDisplayCondition(notPietyCourt);
+		allSteps.add(pietySteps);
+
+		PanelDetails burnMapleSteps = new PanelDetails("Burn Maple logs with a bow", Arrays.asList(moveToSeers, burnMaple),
 			new SkillRequirement(Skill.FIREMAKING, 65, true),
-			barbFiremaking, mapleLogs, bow));
-		allSteps.add(new PanelDetails("Fancy Stone Decoration", Collections.singletonList(fancyStone),
+			barbFiremaking, mapleLogs, bow);
+		burnMapleSteps.setDisplayCondition(notBurnMaple);
+		allSteps.add(burnMapleSteps);
+
+		PanelDetails fancyStoneSteps = new PanelDetails("Fancy Stone Decoration", Collections.singletonList(fancyStone),
 			new SkillRequirement(Skill.CONSTRUCTION, 50),
-			coins.quantity(25000)));
-		allSteps.add(new PanelDetails("Kill a Shadow Hound", Arrays.asList(moveToShadow, shadowHound),
-			desertTreasure, ringOfVis, combatGear, food));
-		allSteps.add(new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchStur),
+			coins.quantity(25000));
+		fancyStoneSteps.setDisplayCondition(notFancyStone);
+		allSteps.add(fancyStoneSteps);
+
+		PanelDetails killHoundSteps = new PanelDetails("Kill a Shadow Hound", Arrays.asList(moveToShadow, shadowHound),
+			desertTreasure, ringOfVis, combatGear, food);
+		killHoundSteps.setDisplayCondition(notShadowHound);
+		allSteps.add(killHoundSteps);
+
+		PanelDetails fishSturgeonSteps = new PanelDetails("Fish a Leaping Sturgeon",
+			Collections.singletonList(catchStur),
 			new SkillRequirement(Skill.FISHING, 70, true),
 			new SkillRequirement(Skill.AGILITY, 45),
 			new SkillRequirement(Skill.STRENGTH, 45),
-			barbFishing, barbRod, feather.quantity(20)));
-		allSteps.add(new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear),
+			barbFishing, barbRod, feather.quantity(20));
+		fishSturgeonSteps.setDisplayCondition(notCatchStur);
+		allSteps.add(fishSturgeonSteps);
+
+		PanelDetails smithSpearSteps = new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear),
 			new SkillRequirement(Skill.SMITHING, 75, true),
-			barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer));
-		allSteps.add(new PanelDetails("Kill a Mithril Dragon", Arrays.asList(moveToWhirl, moveToAncient2,
-			moveToAncient3, mithrilDrag), barbFiremaking, combatGear, antidragonfire, food));
-		allSteps.add(new PanelDetails("Purchase Granite Body", Collections.singletonList(buyGranite),
-			coins.quantity(95000), combatGear));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+			barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer);
+		smithSpearSteps.setDisplayCondition(notAddySpear);
+		allSteps.add(smithSpearSteps);
+
+		PanelDetails killMithSteps = new PanelDetails("Kill a Mithril Dragon", Arrays.asList(moveToWhirl,
+			moveToAncient2, moveToAncient3, mithrilDrag), barbFiremaking, combatGear, antidragonfire, food);
+		killMithSteps.setDisplayCondition(notMithrilDrag);
+		allSteps.add(killMithSteps);
+
+		PanelDetails buyGraniteSteps = new PanelDetails("Purchase Granite Body", Collections.singletonList(buyGranite),
+			coins.quantity(95000), combatGear);
+		buyGraniteSteps.setDisplayCondition(notBuyGranite);
+		allSteps.add(buyGraniteSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

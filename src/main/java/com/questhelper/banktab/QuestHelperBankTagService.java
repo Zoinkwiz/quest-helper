@@ -90,7 +90,12 @@ public class QuestHelperBankTagService
 			newList.add(pluginItems);
 		}
 
-		for (PanelDetails questSection : questSections)
+		List<PanelDetails> shouldShowSections = questSections.stream()
+			.filter(panelDetail -> panelDetail.getHideCondition() == null ||
+				!panelDetail.getHideCondition().check(plugin.getClient()))
+			.collect(Collectors.toList());
+
+		for (PanelDetails questSection : shouldShowSections)
 		{
 			List<ItemRequirement> items = questSection.getRequirements()
 				.stream()

@@ -347,7 +347,8 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			lockpick));
 		allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
 			new SkillRequirement(Skill.MINING, 30, true)));
-		allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest, combatGear, food));
+		allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest,
+			combatGear, food, rope));
 		allSteps.add(new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi), alfredBar,
 			new SkillRequirement(Skill.AGILITY, 35)));
 		allSteps.add(new PanelDetails("Barbarian Assault Wave", Collections.singletonList(barbAss)));

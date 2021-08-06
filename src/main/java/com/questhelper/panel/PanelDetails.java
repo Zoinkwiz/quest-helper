@@ -26,6 +26,8 @@ package com.questhelper.panel;
 
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +50,7 @@ public class PanelDetails
 
 	@Setter
 	@Getter
-	private Requirement shouldHideCondition;
+	private Requirement hideCondition;
 
 	@Getter
 	private List<Requirement> requirements;
@@ -81,6 +83,11 @@ public class PanelDetails
 		this.header = header;
 		this.steps = steps;
 		this.requirements = requirements;
+	}
+
+	public void setDisplayCondition(Requirement req)
+	{
+		setHideCondition(new Conditions(LogicType.NOR, req));
 	}
 
 	public void setVars(Integer... vars)

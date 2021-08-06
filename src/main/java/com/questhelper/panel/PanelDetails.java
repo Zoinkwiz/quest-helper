@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Collection;
 import java.util.Objects;
 import lombok.Getter;
+import lombok.Setter;
 
 public class PanelDetails
 {
@@ -45,7 +46,9 @@ public class PanelDetails
 	@Getter
 	private QuestStep lockingQuestSteps;
 
-	public Requirement shouldHideCondition;
+	@Setter
+	@Getter
+	private Requirement shouldHideCondition;
 
 	@Getter
 	private List<Requirement> requirements;

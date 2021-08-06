@@ -270,7 +270,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(mithGrap, crossbow, dustyKey, bigFishingNet, unicornHorn, mortarPest,
-			vialOfWater, iritLeaf, mapleUnstrung, bowString, lockpick, lawRune.quantity(1),
+			vialOfWater, iritLeaf, mapleUnstrung, bowString, lockpick, pickaxe, lawRune.quantity(1),
 			airRune.quantity(5), limpSeed, seedDib, compost, rake, primedMind, batteredKey,
 			beatenBook, hammer, staff, combatGear);
 	}
@@ -348,7 +348,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.THIEVING, 47),
 			lockpick));
 		allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
-			new SkillRequirement(Skill.MINING, 30, true)));
+			new SkillRequirement(Skill.MINING, 30, true), pickaxe));
 		allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest,
 			combatGear, food, rope));
 		allSteps.add(new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi), alfredBar,

@@ -249,6 +249,8 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 			new WorldPoint(3808, 9695, 1),
 			new WorldPoint(3808, 9712, 1),
 			new WorldPoint(3808, 9733, 1),
+			new WorldPoint(3814, 9733, 1),
+			new WorldPoint(3824, 9733, 1),
 			new WorldPoint(3831, 9733, 1),
 			new WorldPoint(3831, 9746, 1),
 			new WorldPoint(3831, 9760, 1),
@@ -339,6 +341,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		speakWithMysteriousStrangerToFinish = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
 			"Speak with the Mysterious Stranger in Ver Sinhaza and watch the cutscenes to finish the quest.");
 		((NpcStep) speakWithMysteriousStrangerToFinish).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10877, NpcID.MYSTERIOUS_STRANGER_10875);
+		speakWithMysteriousStrangerToFinish.addDialogSteps("Did you manage to get any useful memories from Verzik?");
 
 	}
 

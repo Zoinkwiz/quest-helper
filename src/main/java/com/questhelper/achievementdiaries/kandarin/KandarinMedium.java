@@ -229,9 +229,10 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			"Enter the Elemental Workshop.", batteredKey, primedMind);
 		mindHelm = new ObjectStep(this, 123, new WorldPoint(2719, 9889, 0),
 			"Make a mind helm.", primedMind);
-		moveToBank = new ObjectStep(this, 123, new WorldPoint(2725, 3492, 0),
-			"Move into the bank before stringing the bow.");
-		stringMaple = new DetailedQuestStep(this, "String the maple bow.", mapleUnstrung.highlighted(), bowString.highlighted());
+		moveToBank = new DetailedQuestStep(this, new WorldPoint(2725, 3492, 0),
+			"Go to Seers' Village bank to string a maple shortbow.");
+		stringMaple = new DetailedQuestStep(this, "String a maple shortbow.", mapleUnstrung.highlighted(),
+			bowString.highlighted());
 		moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
 			"Enter the Taverly Dungeon.", dustyKey, mithGrap, crossbow);
 		moveToOb = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2842, 9824, 0),
@@ -269,8 +270,9 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(mithGrap, crossbow, dustyKey, bigFishingNet, unicornHorn, mortarPest,
-			vialOfWater, iritLeaf, lockpick, lawRune.quantity(1), airRune.quantity(5), limpSeed,
-			seedDib, compost, rake, primedMind, batteredKey, beatenBook, hammer, staff, combatGear);
+			vialOfWater, iritLeaf, mapleUnstrung, bowString, lockpick, pickaxe, lawRune.quantity(1),
+			airRune.quantity(5), limpSeed, seedDib, compost, rake, primedMind, batteredKey,
+			beatenBook, hammer, staff, combatGear);
 	}
 
 	@Override
@@ -346,8 +348,9 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.THIEVING, 47),
 			lockpick));
 		allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
-			new SkillRequirement(Skill.MINING, 30, true)));
-		allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest, combatGear, food));
+			new SkillRequirement(Skill.MINING, 30, true), pickaxe));
+		allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest,
+			combatGear, food, rope));
 		allSteps.add(new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi), alfredBar,
 			new SkillRequirement(Skill.AGILITY, 35)));
 		allSteps.add(new PanelDetails("Barbarian Assault Wave", Collections.singletonList(barbAss)));

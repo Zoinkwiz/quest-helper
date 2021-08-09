@@ -268,24 +268,32 @@ public class QuestOverviewPanel extends JPanel
 		});
 	}
 
-	public void updateHighlight(QuestStep newStep)
+	public void updateHighlight(Client client, QuestStep newStep)
 	{
 		questStepPanelList.forEach(panel -> {
-			boolean highlighted = false;
-			panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
-				(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
-			for (QuestStep step : panel.getSteps())
+			if (panel.panelDetails.getShouldHideCondition() == null || !panel.panelDetails.getShouldHideCondition().check(client))
 			{
-				if (step == newStep || step.getSubsteps().contains(newStep))
+				panel.setVisible(true);
+				boolean highlighted = false;
+				panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
+					(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
+				for (QuestStep step : panel.getSteps())
 				{
-					highlighted = true;
-					panel.updateHighlight(step);
-					break;
+					if (step == newStep || step.getSubsteps().contains(newStep))
+					{
+						highlighted = true;
+						panel.updateHighlight(step);
+						break;
+					}
+				}
+				if (!highlighted)
+				{
+					panel.removeHighlight();
 				}
 			}
-			if (!highlighted)
+			else
 			{
-				panel.removeHighlight();
+				panel.setVisible(false);
 			}
 		});
 

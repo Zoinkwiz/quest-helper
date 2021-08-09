@@ -86,7 +86,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		doElite.addStep(notCheckedCalquat, checkCalquat);
 		doElite.addStep(notCheckedPalm, checkPalm);
 
-		return enterNatureAltar;
+		return doElite;
 	}
 
 	public void setupRequirements()

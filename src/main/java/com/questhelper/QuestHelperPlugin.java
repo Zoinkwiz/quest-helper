@@ -324,8 +324,9 @@ public class QuestHelperPlugin extends Plugin
 				if (currentStep != null && currentStep != lastStep)
 				{
 					lastStep = currentStep;
-					panel.updateHighlight(currentStep);
+					panel.updateHighlight(client, currentStep);
 				}
+				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
 				panel.updateLocks();
 			}
 		}
@@ -342,10 +343,6 @@ public class QuestHelperPlugin extends Plugin
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
 		{
 			questBank.updateLocalBank(event.getItemContainer().getItems());
-		}
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
-		{
-			clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
 		}
 	}
 
@@ -736,7 +733,6 @@ public class QuestHelperPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
-				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
 			});
 		}
 		else

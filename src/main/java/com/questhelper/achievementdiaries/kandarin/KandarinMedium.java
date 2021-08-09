@@ -325,43 +325,91 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Grapple from Water Obelisk", Arrays.asList(moveToTavDungeon, moveToOb, grapOb),
+		PanelDetails grappleStep = new PanelDetails("Grapple from Water Obelisk", Arrays.asList(moveToTavDungeon, moveToOb, grapOb),
 			new SkillRequirement(Skill.AGILITY, 36),
 			new SkillRequirement(Skill.STRENGTH, 22),
 			new SkillRequirement(Skill.RANGED, 39),
-			mithGrap, crossbow, dustyKey));
-		allSteps.add(new PanelDetails("String Maple Shortbow in Seers' Bank", Arrays.asList(moveToBank, stringMaple),
+			mithGrap, crossbow, dustyKey);
+		grappleStep.setDisplayCondition(notGrapOb);
+		allSteps.add(grappleStep);
+
+		PanelDetails stringMapleShortbow = new PanelDetails("String Maple Shortbow in Seers' Bank",
+			Arrays.asList(moveToBank, stringMaple),
 			new SkillRequirement(Skill.FLETCHING, 50, true),
-			mapleUnstrung, bowString));
-		allSteps.add(new PanelDetails("Catch and Cook Bass", Arrays.asList(catchBass, cookBass),
+			mapleUnstrung, bowString);
+		stringMapleShortbow.setDisplayCondition(notStringMaple);
+		allSteps.add(stringMapleShortbow);
+
+		PanelDetails catchCookBassSteps = new PanelDetails("Catch and Cook Bass", Arrays.asList(catchBass, cookBass),
 			new SkillRequirement(Skill.FISHING, 46, true),
 			new SkillRequirement(Skill.COOKING, 43, true),
-			bigFishingNet));
-		allSteps.add(new PanelDetails("Mix Superantipoison", Arrays.asList(moveToSeersCath, mixUnf, crushHorn, superAnti),
+			bigFishingNet);
+		catchCookBassSteps.setDisplayCondition(notCatchCookBass);
+		allSteps.add(catchCookBassSteps);
+
+		PanelDetails mixSuperantiSteps = new PanelDetails("Mix Superantipoison", Arrays.asList(moveToSeersCath, mixUnf, crushHorn, superAnti),
 			new SkillRequirement(Skill.HERBLORE, 48, true),
-			unicornHorn, mortarPest, vialOfWater, iritLeaf));
-		allSteps.add(new PanelDetails("Make a Mind Helm", Collections.singletonList(mindHelm), eleWorkII,
-			primedMind, batteredKey, beatenBook, hammer));
-		allSteps.add(new PanelDetails("Enter the Ranging Guild", Collections.singletonList(enterRange),
-			new SkillRequirement(Skill.RANGED, 40)));
-		allSteps.add(new PanelDetails("Steal from Hemenster Chest", Collections.singletonList(stealHemen),
+			unicornHorn, mortarPest, vialOfWater, iritLeaf);
+		mixSuperantiSteps.setDisplayCondition(notSuperAnti);
+		allSteps.add(mixSuperantiSteps);
+
+		PanelDetails makeMindHelmStep = new PanelDetails("Make a Mind Helm", Collections.singletonList(mindHelm), eleWorkII,
+			primedMind, batteredKey, beatenBook, hammer);
+		makeMindHelmStep.setDisplayCondition(notMindHelm);
+		allSteps.add(makeMindHelmStep);
+
+		PanelDetails enterRangeSteps = new PanelDetails("Enter the Ranging Guild", Collections.singletonList(enterRange),
+			new SkillRequirement(Skill.RANGED, 40));
+		enterRangeSteps.setDisplayCondition(notEnterRange);
+		allSteps.add(enterRangeSteps);
+
+		PanelDetails stealHemSteps = new PanelDetails("Steal from Hemenster Chest",
+			Collections.singletonList(stealHemen),
 			new SkillRequirement(Skill.THIEVING, 47),
-			lockpick));
-		allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
-			new SkillRequirement(Skill.MINING, 30, true), pickaxe));
-		allSteps.add(new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest,
-			combatGear, food, rope));
-		allSteps.add(new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi), alfredBar,
-			new SkillRequirement(Skill.AGILITY, 35)));
-		allSteps.add(new PanelDetails("Barbarian Assault Wave", Collections.singletonList(barbAss)));
-		allSteps.add(new PanelDetails("Fairy Ring to McGrubor's Woods", Collections.singletonList(travelMcGrubor), fairyTaleII, staff));
-		allSteps.add(new PanelDetails("Teleport to Camelot", Collections.singletonList(tpCAM),
+			lockpick);
+		stealHemSteps.setDisplayCondition(notStealHemen);
+		allSteps.add(stealHemSteps);
+
+		PanelDetails mineCoalSteps = new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
+			new SkillRequirement(Skill.MINING, 30, true), pickaxe);
+		mineCoalSteps.setDisplayCondition(notMineCoal);
+		allSteps.add(mineCoalSteps);
+
+		PanelDetails killFireGiantSteps = new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest,
+			combatGear, food, rope);
+		killFireGiantSteps.setDisplayCondition(notFireGiant);
+		allSteps.add(killFireGiantSteps);
+
+		PanelDetails barbAgiSteps = new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi),
+			alfredBar,
+			new SkillRequirement(Skill.AGILITY, 35));
+		barbAgiSteps.setDisplayCondition(notBarbAgi);
+		allSteps.add(barbAgiSteps);
+
+		PanelDetails barbAssSteps = new PanelDetails("Barbarian Assault Wave", Collections.singletonList(barbAss));
+		barbAssSteps.setDisplayCondition(notBarbAss);
+		allSteps.add(barbAssSteps);
+
+		PanelDetails travelGrubSteps = new PanelDetails("Fairy Ring to McGrubor's Woods",
+			Collections.singletonList(travelMcGrubor), fairyTaleII, staff);
+		travelGrubSteps.setDisplayCondition(notTravelMcGrubor);
+		allSteps.add(travelGrubSteps);
+
+		PanelDetails teleCamSteps = new PanelDetails("Teleport to Camelot", Collections.singletonList(tpCAM),
 			new SkillRequirement(Skill.MAGIC, 45, true),
-			lawRune.quantity(1), airRune.quantity(5), normalBook));
-		allSteps.add(new PanelDetails("Pick Limpwurt in Catherby", Collections.singletonList(plantAndPickLimp),
+			lawRune.quantity(1), airRune.quantity(5), normalBook);
+		teleCamSteps.setDisplayCondition(notTPCam);
+		allSteps.add(teleCamSteps);
+
+		PanelDetails pickLimpSteps = new PanelDetails("Pick Limpwurt in Catherby",
+			Collections.singletonList(plantAndPickLimp),
 			new SkillRequirement(Skill.FARMING, 26, true),
-			limpSeed, seedDib, compost, rake));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+			limpSeed, seedDib, compost, rake);
+		pickLimpSteps.setDisplayCondition(notPickLimp);
+		allSteps.add(pickLimpSteps);
+
+		PanelDetails finishingOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishingOffSteps);
 
 		return allSteps;
 	}

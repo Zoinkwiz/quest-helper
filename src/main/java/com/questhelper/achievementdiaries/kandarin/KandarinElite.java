@@ -249,29 +249,52 @@ public class KandarinElite extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Teleport to Catherby", Collections.singletonList(tpCath),
+
+		PanelDetails teleCathSteps = new PanelDetails("Teleport to Catherby", Collections.singletonList(tpCath),
 			new SkillRequirement(Skill.MAGIC, 87, true),
-			lunarDip, waterRune.quantity(10), lawRune.quantity(3), astralRune.quantity(3)));
-		allSteps.add(new PanelDetails("Dwarf Weed in Catherby", Collections.singletonList(plantAndPickDwarf),
+			lunarDip, waterRune.quantity(10), lawRune.quantity(3), astralRune.quantity(3));
+		teleCathSteps.setDisplayCondition(notTPCath);
+		allSteps.add(teleCathSteps);
+
+		PanelDetails dwarfWeedSteps = new PanelDetails("Dwarf Weed in Catherby", Collections.singletonList(plantAndPickDwarf),
 			new SkillRequirement(Skill.FARMING, 79, true),
-			dwarfSeed, seedDib, rake, spade, compost));
-		allSteps.add(new PanelDetails("5 Sharks Caught and Cooked in Catherby", Collections.singletonList(catchAndCook5Sharks),
+			dwarfSeed, seedDib, rake, spade, compost);
+		dwarfWeedSteps.setDisplayCondition(notPickDwarf);
+		allSteps.add(dwarfWeedSteps);
+
+		PanelDetails catchSharkSteps = new PanelDetails("5 Sharks Caught and Cooked in Catherby", Collections.singletonList(catchAndCook5Sharks),
 			new SkillRequirement(Skill.FISHING, 76, true),
 			new SkillRequirement(Skill.COOKING, 80, true),
-			familyCrest, harpoon, cookingGaunt));
-		allSteps.add(new PanelDetails("Stamina Mix on the Bank", Arrays.asList(moveToSeersRooftop, stamMix),
+			familyCrest, harpoon, cookingGaunt);
+		catchSharkSteps.setDisplayCondition(not5Shark);
+		allSteps.add(catchSharkSteps);
+
+		PanelDetails staminaSteps = new PanelDetails("Stamina Mix on the Bank", Arrays.asList(moveToSeersRooftop, stamMix),
 			new SkillRequirement(Skill.HERBLORE, 86, true),
 			new SkillRequirement(Skill.AGILITY, 60, true),
-			barbHerb, stamPot, caviar));
-		allSteps.add(new PanelDetails("Smith Rune Hasta", Collections.singletonList(runeHasta),
+			barbHerb, stamPot, caviar);
+		staminaSteps.setDisplayCondition(notStamMix);
+		allSteps.add(staminaSteps);
+
+		PanelDetails smithRuneHastaSteps = new PanelDetails("Smith Rune Hasta", Collections.singletonList(runeHasta),
 			new SkillRequirement(Skill.SMITHING, 90, true),
-			barbSmith, magicLogs.quantity(1), runiteBar, hammer));
-		allSteps.add(new PanelDetails("Magic Pyre Ship", Collections.singletonList(pyre),
+			barbSmith, magicLogs.quantity(1), runiteBar, hammer);
+		smithRuneHastaSteps.setDisplayCondition(notRuneHasta);
+		allSteps.add(smithRuneHastaSteps);
+
+		PanelDetails magicPyreSteps = new PanelDetails("Magic Pyre Ship", Collections.singletonList(pyre),
 			new SkillRequirement(Skill.FIREMAKING, 85, true),
 			new SkillRequirement(Skill.CRAFTING, 85, true),
-			barbFire, axe, tinderbox, magicLogs.quantity(1), chewedBone));
-		allSteps.add(new PanelDetails("Level 5 each Role", Arrays.asList(barb5Heal, barb5Atk, barb5Def, barb5Col, barb5)));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+			barbFire, axe, tinderbox, magicLogs.quantity(1), chewedBone);
+		magicPyreSteps.setDisplayCondition(notPyre);
+		allSteps.add(magicPyreSteps);
+
+		PanelDetails level5RolesSteps = new PanelDetails("Level 5 each Role", Arrays.asList(barb5Heal, barb5Atk, barb5Def, barb5Col, barb5));
+		level5RolesSteps.setDisplayCondition(notbarb5);
+		allSteps.add(level5RolesSteps);
+
+		PanelDetails finishingOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishingOffSteps);
 
 		return allSteps;
 	}

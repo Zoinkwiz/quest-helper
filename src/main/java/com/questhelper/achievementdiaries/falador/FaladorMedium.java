@@ -133,16 +133,15 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		notTelegrabbedWine = new VarplayerRequirement(1186, false, 12);
 		notUnlockedCrystalChest = new VarplayerRequirement(1186, false, 13);
 		notPlacedScarecrow = new VarplayerRequirement(1186, false, 14);
-		notKilledMogre = new VarplayerRequirement(1186, false, 15);
+		notKilledMogre = new VarplayerRequirement(1186, true, 15);
 		notVisitRatPits = new VarplayerRequirement(1186, false, 16);
-		notGrappleNorthWall = new VarplayerRequirement(1186, false, 17);
+		notGrappleNorthWall = new VarplayerRequirement(1186, true, 17);
 		notPickpocketGuard = new VarplayerRequirement(1186, false, 18);
-		// 19 = ???
 		notPrayAtAltar = new VarplayerRequirement(1186, false, 20);
 		notMineGold = new VarplayerRequirement(1186, false, 21);
-		notDwarfShortcut = new VarplayerRequirement(1186, false, 22);
+		notDwarfShortcut = new VarplayerRequirement(1186, true, 22);
 		notChopBurnWillowTav = new VarplayerRequirement(1186, false, 23);
-		notBasketFalLoom = new VarplayerRequirement(1186, false, 24);
+		notBasketFalLoom = new VarplayerRequirement(1186, true, 24);
 		notTeleportFalador = new VarplayerRequirement(1186, false, 25);
 
 		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
@@ -355,36 +354,91 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Initialising...",
-			Arrays.asList(getInitiateSet, prayAtAltar), initiateHelm, initiateChest, initiateLegs));
-		allSteps.add(new PanelDetails("Lost Elven Treasure",
-			Collections.singletonList(unlockCrystalChest), crystalKey));
-		allSteps.add(new PanelDetails("Snoop Loggy-log",
-			Arrays.asList(goToTav, chopWillowLog, burnWillowLog), axe));
-		allSteps.add(new PanelDetails("Au! I'm minin' here!",
-			Arrays.asList(goToCraftingGuild, mineGold), pickaxe, brownApron));
-		allSteps.add(new PanelDetails("Bullseye!",
-			Arrays.asList(goToChemist, lightLantern), tinderbox, bullseyeLantern));
-		allSteps.add(new PanelDetails("Mogres have layers",
-			Arrays.asList(spawnMogre, killMogre), combatGear, fishingExplosive));
-		allSteps.add(new PanelDetails("Ahh rats..",
-			Collections.singletonList(visitRatPits)));
-		allSteps.add(new PanelDetails("I never knew this existed",
-			Collections.singletonList(makeBasketFalLoom)));
-		allSteps.add(new PanelDetails("Brain not included",
-			Arrays.asList(getHaysack, useSackOnSpear, useWatermelonOnSack, placeScarecrow), emptySack, bronzeSpear, watermelon, scarecrow));
-		allSteps.add(new PanelDetails("To the window.. To the wall!",
-			Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), mithGrapple, anyCrossbow));
-		allSteps.add(new PanelDetails("To Middle Earth",
-			Arrays.asList(enterDwarvenMines, dwarfShortcut)));
-		allSteps.add(new PanelDetails("Beam me up Scotty!",
-			Collections.singletonList(teleportToFalador)));
-		allSteps.add(new PanelDetails("Cor blimey mate!",
-			Collections.singletonList(pickpocketGuard)));
 		allSteps.add(new PanelDetails("Yoink!",
 			Arrays.asList(goToChaosAltar, telegrabWine), telegrab));
 		allSteps.add(new PanelDetails("Congratulations!",
 			Collections.singletonList(claimReward)));
+
+		PanelDetails initiateSteps = new PanelDetails("Initialising...", Arrays.asList(getInitiateSet, prayAtAltar),
+			new QuestRequirement(QuestHelperQuest.RECRUITMENT_DRIVE, QuestState.FINISHED), initiateHelm, initiateChest,
+			initiateLegs);
+		initiateSteps.setDisplayCondition(notPrayAtAltar);
+		allSteps.add(initiateSteps);
+
+		PanelDetails crystalChestSteps = new PanelDetails("Lost Elven Treasure",
+			Collections.singletonList(unlockCrystalChest), crystalKey);
+		crystalChestSteps.setDisplayCondition(notUnlockedCrystalChest);
+		allSteps.add(crystalChestSteps);
+
+		PanelDetails willowTavSteps = new PanelDetails("Snoop Loggy-log", Arrays.asList(goToTav, chopWillowLog,
+			burnWillowLog), new SkillRequirement(Skill.WOODCUTTING, 30, true),
+			new SkillRequirement(Skill.FIREMAKING, 30, true), axe, tinderbox);
+		willowTavSteps.setDisplayCondition(notChopBurnWillowTav);
+		allSteps.add(willowTavSteps);
+
+		PanelDetails mineGoldSteps = new PanelDetails("Au! I'm minin' here!", Arrays.asList(goToCraftingGuild,
+			mineGold), new SkillRequirement(Skill.MINING, 40, true),
+			new SkillRequirement(Skill.CRAFTING, 40, true), pickaxe, brownApron);
+		mineGoldSteps.setDisplayCondition(notMineGold);
+		allSteps.add(mineGoldSteps);
+
+		PanelDetails lanternSteps = new PanelDetails("Bullseye!", Arrays.asList(goToChemist, lightLantern),
+			new SkillRequirement(Skill.FIREMAKING, 49, true), tinderbox, bullseyeLantern);
+		lanternSteps.setDisplayCondition(notLitLantern);
+		allSteps.add(lanternSteps);
+
+		PanelDetails mogreSteps = new PanelDetails("Mogres have layers", Arrays.asList(spawnMogre, killMogre),
+			new QuestRequirement(QuestHelperQuest.SKIPPY_AND_THE_MOGRES, QuestState.FINISHED),
+			new SkillRequirement(Skill.SLAYER, 32), combatGear, fishingExplosive);
+		mogreSteps.setDisplayCondition(notKilledMogre);
+		allSteps.add(mogreSteps);
+
+		PanelDetails visitRatsSteps = new PanelDetails("Ahh rats..", Collections.singletonList(visitRatPits));
+		visitRatsSteps.setDisplayCondition(notVisitRatPits);
+		allSteps.add(visitRatsSteps);
+
+		PanelDetails basketSteps = new PanelDetails("I never knew this existed",
+			Collections.singletonList(makeBasketFalLoom), new SkillRequirement(Skill.CRAFTING, 36, true),
+			willowBranch6);
+		basketSteps.setDisplayCondition(notBasketFalLoom);
+		allSteps.add(basketSteps);
+
+		PanelDetails scarecrowSteps = new PanelDetails("Brain not included", Arrays.asList(getHaysack, useSackOnSpear,
+			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23, true),
+			emptySack, bronzeSpear, watermelon, scarecrow);
+		scarecrowSteps.setDisplayCondition(notPlacedScarecrow);
+		allSteps.add(scarecrowSteps);
+
+		PanelDetails grappleSteps = new PanelDetails("To the window.. To the wall!",
+			Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), new SkillRequirement(Skill.AGILITY, 11),
+			new SkillRequirement(Skill.STRENGTH, 37), new SkillRequirement(Skill.RANGED, 19),
+			mithGrapple, anyCrossbow);
+		grappleSteps.setDisplayCondition(notGrappleNorthWall);
+		allSteps.add(grappleSteps);
+
+		PanelDetails dwarfShortcutSteps = new PanelDetails("To Middle Earth", Arrays.asList(enterDwarvenMines,
+			dwarfShortcut),
+			new SkillRequirement(Skill.AGILITY, 42));
+		dwarfShortcutSteps.setDisplayCondition(notDwarfShortcut);
+		allSteps.add(dwarfShortcutSteps);
+
+		PanelDetails teleFallySteps = new PanelDetails("Beam me up Scotty!",
+			Collections.singletonList(teleportToFalador), new SkillRequirement(Skill.MAGIC, 37, true));
+		teleFallySteps.setDisplayCondition(notTeleportFalador);
+		allSteps.add(teleFallySteps);
+
+		PanelDetails pickGuardSteps = new PanelDetails("Cor blimey mate!", Collections.singletonList(pickpocketGuard),
+			new SkillRequirement(Skill.THIEVING, 40));
+		pickGuardSteps.setDisplayCondition(notPickpocketGuard);
+		allSteps.add(pickGuardSteps);
+
+		PanelDetails teleGrabSteps = new PanelDetails("Yoink!", Arrays.asList(goToChaosAltar, telegrabWine),
+			new SkillRequirement(Skill.MAGIC, 33, true), telegrab);
+		teleGrabSteps.setDisplayCondition(notTelegrabbedWine);
+		allSteps.add(teleGrabSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

@@ -38,13 +38,11 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.WarriorsGuildAccessRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -300,10 +298,6 @@ public class FaladorHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
 		req.add(new WarriorsGuildAccessRequirement());
 
-		req.add(new QuestRequirement(QuestHelperQuest.THE_SLUG_MENACE, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED));
-
 		return req;
 	}
 
@@ -312,68 +306,18 @@ public class FaladorHard extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails changeCrestSteps = new PanelDetails("To Saradomin!", Arrays.asList(climbLadderWhiteKnightCastle,
-			changeFamilyCrest), new SkillRequirement(Skill.PRAYER, 70), coins10000);
-		changeCrestSteps.setDisplayCondition(notChangedFamilyCrest);
-		allSteps.add(changeCrestSteps);
-
-		PanelDetails moleSteps = new PanelDetails("Holy Moley!", Arrays.asList(goToGiantMole, killGiantMole),
-			lightSource, combatGear, food);
-		moleSteps.setDisplayCondition(notKilledMole);
-		allSteps.add(moleSteps);
-
-		PanelDetails fallyRoofSteps = new PanelDetails("Make sure to stretch!",
-			Collections.singletonList(completeAgiCourse), new SkillRequirement(Skill.AGILITY, 50));
-		fallyRoofSteps.setDisplayCondition(notCompleteAgiCourse);
-		allSteps.add(fallyRoofSteps);
-
-		PanelDetails dwarvenHelmSteps = new PanelDetails("A snug fit", Arrays.asList(enterDwarvenMinesHelmet,
-			equipDwarvenHelmet), new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED),
-			new SkillRequirement(Skill.DEFENCE, 50), dwarvenHelmet);
-		dwarvenHelmSteps.setDisplayCondition(notDwarvenHelmetDwarvenMines);
-		allSteps.add(dwarvenHelmSteps);
-
-		PanelDetails miningGuildSteps = new PanelDetails("Gold Rush!", Arrays.asList(enterDwarvenMines,
-			enterMiningGuild), new SkillRequirement(Skill.MINING, 60, true), prospectorHelm, prospectorBoots,
-			prospectorChest, prospectorLegs);
-		miningGuildSteps.setDisplayCondition(notEnterMiningGuildWithProspector);
-		allSteps.add(miningGuildSteps);
-
-		PanelDetails warriorsGuildSteps = new PanelDetails("The Dragon Defender",
-			Collections.singletonList(enterWarriorsGuild), new WarriorsGuildAccessRequirement());
-		warriorsGuildSteps.setDisplayCondition(notEnterWarriorsGuild);
-		allSteps.add(warriorsGuildSteps);
-
-		PanelDetails blueDragonSteps = new PanelDetails("The Dragon Slayer", Arrays.asList(enterHerosGuild,
-			enterHerosGuildBasement, killBlueDragon), new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED),
-			combatGear, food, dragonfireProtection);
-		blueDragonSteps.setDisplayCondition(notKilledBlueDragon);
-		allSteps.add(blueDragonSteps);
-
-		PanelDetails crackSafeSteps = new PanelDetails("The cat burglar", Arrays.asList(enterRoguesDen, crackWallSafe),
-			new SkillRequirement(Skill.THIEVING, 50, true));
-		crackSafeSteps.setDisplayCondition(notCrackedWallSafe);
-		allSteps.add(crackSafeSteps);
-
-		PanelDetails mindRunesSteps = new PanelDetails("Do you mind?", Arrays.asList(enterMindAltar, craftMindRunes),
-			new SkillRequirement(Skill.RUNECRAFT, 56, true), mindTiara, pureEss28);
-		mindRunesSteps.setDisplayCondition(notCraftedMindRunes);
-		allSteps.add(mindRunesSteps);
-
-		PanelDetails praySteps = new PanelDetails("Praise the Lord!", Arrays.asList(getProsySet, prayAtAltarSarim),
-			new SkillRequirement(Skill.DEFENCE, 30), new QuestRequirement(QuestHelperQuest.THE_SLUG_MENACE,
-			QuestState.FINISHED), prosyHelm, prosyChest, prosyLegs);
-		praySteps.setDisplayCondition(notPraySarimAltarProsy);
-		allSteps.add(praySteps);
-
-		PanelDetails wyvernSteps = new PanelDetails("This ain't no dragon!", Arrays.asList(goToIceDungeon,
-			enterWyvernCavern, killWyvern), new SkillRequirement(Skill.SLAYER, 72, true), combatGear, food,
-			wyvernProtection);
-		wyvernSteps.setDisplayCondition(notKilledWyvern);
-		allSteps.add(wyvernSteps);
-
-		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
-		allSteps.add(finishOffSteps);
+		allSteps.add(new PanelDetails("To Saradomin!", Arrays.asList(climbLadderWhiteKnightCastle, changeFamilyCrest), coins10000));
+		allSteps.add(new PanelDetails("Holy Moley!", Arrays.asList(goToGiantMole, killGiantMole), lightSource, combatGear, food));
+		allSteps.add(new PanelDetails("Make sure to stretch!", Collections.singletonList(completeAgiCourse)));
+		allSteps.add(new PanelDetails("A snug fit", Arrays.asList(enterDwarvenMinesHelmet, equipDwarvenHelmet), dwarvenHelmet));
+		allSteps.add(new PanelDetails("Gold Rush!", Arrays.asList(enterDwarvenMines, enterMiningGuild), prospectorHelm, prospectorBoots, prospectorChest, prospectorLegs));
+		allSteps.add(new PanelDetails("The Dragon Defender", Collections.singletonList(enterWarriorsGuild)));
+		allSteps.add(new PanelDetails("The Dragon Slayer", Arrays.asList(enterHerosGuild, enterHerosGuildBasement, killBlueDragon), combatGear, food, dragonfireProtection));
+		allSteps.add(new PanelDetails("The cat burglar", Arrays.asList(enterRoguesDen, crackWallSafe)));
+		allSteps.add(new PanelDetails("Do you mind?", Arrays.asList(enterMindAltar, craftMindRunes), mindTiara, pureEss28));
+		allSteps.add(new PanelDetails("Praise the Lord!", Arrays.asList(getProsySet, prayAtAltarSarim), prosyHelm, prosyChest, prosyLegs));
+		allSteps.add(new PanelDetails("This ain't no dragon!", Arrays.asList(goToIceDungeon, enterWyvernCavern, killWyvern), combatGear, food, wyvernProtection));
+		allSteps.add(new PanelDetails("Congratulations!", Collections.singletonList(claimReward)));
 
 		return allSteps;
 	}

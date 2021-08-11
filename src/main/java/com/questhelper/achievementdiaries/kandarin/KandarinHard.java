@@ -248,7 +248,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 	private void setupGeneralRequirements()
 	{
-		// TODO find a way to track barb training / knight waves
+		// TODO find a way to track barb training
 		barbFishing = new ItemRequirement("Completed Barbarian fishing", 1, -1);
 		barbFiremaking = new ItemRequirement("Unlocked the Ancient Caverns through Barbarian Firemaking", 1, -1);
 		barbSmithing = new ItemRequirement("Completed Barbarian Smithing", 1, -1);

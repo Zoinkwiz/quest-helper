@@ -115,8 +115,6 @@ public enum QuestVarbits
 	QUEST_IN_SEARCH_OF_KNOWLEDGE(8403),
 	QUEST_DADDYS_HOME(10570),
 
-	// Fake miniquests
-	KNIGHT_WAVES_TRAINING_GROUNDS(3909),
 
 	// Achievement Diaries
 

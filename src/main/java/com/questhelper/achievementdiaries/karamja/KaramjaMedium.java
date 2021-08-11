@@ -85,7 +85,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	QuestStep enterAgilityArena, tag2Pillars, enterVolcano, returnThroughWall, useCart, doCleanup,
 		makeSpiderStick, cookSpider, climbUpToBoat, travelToKhazard, cutTeak, cutMahogany, catchKarambwan, getMachete,
 		flyToKaramja, growFruitTree, trapGraahk, enterBrimhavenDungeon, chopVines, crossLava, climbBrimhavenStaircase,
-		charterFromShipyard, mineRedTopaz, claimReward;
+		charterFromShipyard, mineRedTopaz, enterCrandor, claimReward;
 
 	Zone cave, agilityArena, brimhavenDungeon;
 
@@ -102,6 +102,8 @@ public class KaramjaMedium extends BasicQuestHelper
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
 		doMedium.addStep(new Conditions(notEnteredWall, inCave), returnThroughWall);
 		doMedium.addStep(notEnteredWall, enterVolcano);
+		doMedium.addStep(new Conditions(notEnteredCrandor, inCave), enterCrandor);
+		doMedium.addStep(notEnteredCrandor, enterVolcano);
 		doMedium.addStep(new Conditions(notClaimedTicket, inAgilityArena), tag2Pillars);
 		doMedium.addStep(notClaimedTicket, enterAgilityArena);
 		doMedium.addStep(notUsedCart, useCart);
@@ -284,6 +286,8 @@ public class KaramjaMedium extends BasicQuestHelper
 		mineRedTopaz = new ObjectStep(this, ObjectID.ROCKS_11380, new WorldPoint(2823, 2999, 0),
 			"Mine gem rocks until you get a red topaz.", pickaxe);
 		((ObjectStep) mineRedTopaz).addAlternateObjects(ObjectID.ROCKS_11381);
+		enterCrandor = new ObjectStep(this, ObjectID.CLIMBING_ROPE_25213, new WorldPoint(2833, 9657, 0),
+			"Climb the rope to Crandor Isle.");
 
 		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
 			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
@@ -336,6 +340,11 @@ public class KaramjaMedium extends BasicQuestHelper
 			Arrays.asList(enterVolcano, returnThroughWall), dragonSlayerI);
 		enteredWallSteps.setDisplayCondition(notEnteredWall);
 		allSteps.add(enteredWallSteps);
+
+		PanelDetails enteredCrandorSteps = new PanelDetails("Discover Hidden Wall in Volcano",
+			Arrays.asList(enterVolcano, enterCrandor), dragonSlayerI, food);
+		enteredCrandorSteps.setDisplayCondition(notEnteredCrandor);
+		allSteps.add(enteredCrandorSteps);
 
 		PanelDetails enterAgiSteps = new PanelDetails("Claim a ticket in The Agility Arena",
 			Arrays.asList(enterAgilityArena,

@@ -379,8 +379,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		eatOomlieWrapSteps.setDisplayCondition(notEatenWrap);
 		allSteps.add(eatOomlieWrapSteps);
 
-		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
-		allSteps.add(finishOffSteps);
+
 
 		return allSteps;
 	}

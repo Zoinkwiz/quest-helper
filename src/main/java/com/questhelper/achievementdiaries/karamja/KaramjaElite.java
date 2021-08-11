@@ -39,6 +39,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -81,7 +82,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
 		doElite.addStep(notEquippedCape, equipCape);
 		doElite.addStep(notMadePotion, makePotion);
-		doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), enterNatureAltar);
+		doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), craftRunes);
 		doElite.addStep(notCraftedRunes, enterNatureAltar);
 		doElite.addStep(notCheckedCalquat, checkCalquat);
 		doElite.addStep(notCheckedPalm, checkPalm);
@@ -164,9 +165,34 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Elite Diary", Arrays.asList(equipCape, makePotion, enterNatureAltar,
-			craftRunes, checkCalquat, checkPalm, claimReward), natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal,
-			palmTreeSapling, antidotePlusPlus, zulrahScales.quantity(20), calquatSapling));
+
+		PanelDetails equipCapeSteps = new PanelDetails("Equip Fire / Infernal Cape",
+			Collections.singletonList(equipCape), fireCapeOrInfernal);
+		equipCapeSteps.setDisplayCondition(notEquippedCape);
+		allSteps.add(equipCapeSteps);
+
+		PanelDetails potionSteps = new PanelDetails("Create Antivenom Potion", Collections.singletonList(makePotion),
+			herblore87 , antidotePlusPlus, zulrahScales.quantity(20));
+		potionSteps.setDisplayCondition(notMadePotion);
+		allSteps.add(potionSteps);
+
+		PanelDetails craftRunesSteps = new PanelDetails("Craft 56 Nature Runes", Arrays.asList(enterNatureAltar,
+			craftRunes), runecraft91, pureEssence.quantity(28), natureTiaraOrAbyss);
+		craftRunesSteps.setDisplayCondition(notCraftedRunes);
+		allSteps.add(craftRunesSteps);
+
+		PanelDetails palmSteps = new PanelDetails("Check Palm Tree Health", Collections.singletonList(checkPalm),
+			new SkillRequirement(Skill.FARMING, 68, true), palmTreeSapling, rake, spade);
+		palmSteps.setDisplayCondition(notCheckedPalm);
+		allSteps.add(palmSteps);
+
+		PanelDetails calquatSteps = new PanelDetails("Check Calquat Tree Health",
+			Collections.singletonList(checkCalquat), farming72, calquatSapling, rake, spade);
+		calquatSteps.setDisplayCondition(notCheckedCalquat);
+		allSteps.add(calquatSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

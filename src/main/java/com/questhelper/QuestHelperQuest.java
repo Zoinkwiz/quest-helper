@@ -217,6 +217,9 @@ public enum QuestHelperQuest
 	IN_SEARCH_OF_KNOWLEDGE(3143, "In Search of Knowledge", QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 	DADDYS_HOME(1688, "Daddy's Home", QuestVarbits.QUEST_DADDYS_HOME, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 
+	// Fake miniquests
+	KNIGHT_WAVES_TRAINING_GROUNDS("Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,
+		Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 
 	// Achievement diaries
 

@@ -221,6 +221,7 @@ public enum QuestHelperQuest
 	KNIGHT_WAVES_TRAINING_GROUNDS("Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,
 		Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
 
+
 	// Achievement diaries
 
 	// Ardougne

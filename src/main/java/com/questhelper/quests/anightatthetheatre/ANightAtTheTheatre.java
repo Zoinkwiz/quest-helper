@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -200,7 +201,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		NotYetImplemented = new DetailedQuestStep(this, "Not yet Implemented");
 
 		speakWithMysteriousStrangerToStart = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0), "Speak with the Mysterious Stranger in Ver Sinhaza.");
-		speakWithMysteriousStrangerToStart.addDialogSteps("What's all this really about?", "Yes.");
+		speakWithMysteriousStrangerToStart.addDialogSteps("What's all this really about?", "What's this thing you need from me?", "Yes.");
 
 		enterVerSinhazaCrypts = new ObjectStep(this, ObjectID.STAIRCASE_42523, new WorldPoint(3682, 3231, 0), "Enter the crypts north east of the Mysterious Stranger.");
 		enterVerSinhazaCrypts.addDialogSteps("Yes.");
@@ -223,6 +224,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 		speakMoreWithMysteriousStranger = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0), "Speak to the Mysterious Strange some more.");
 		((NpcStep) speakMoreWithMysteriousStranger).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10876, NpcID.MYSTERIOUS_STRANGER);
+		speakMoreWithMysteriousStranger.addDialogSteps("So what are we doing with Ranis' head?", "So about that memory...");
 
 		enterSpiderCave = new ObjectStep(this, ObjectID.CAVE_42594, new WorldPoint(3658, 3409, 0), "Enter the spider cave south of Port Phasmatys.");
 		enterSpiderCave.addDialogSteps("Yes.");
@@ -278,8 +280,10 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		Collections.reverse(sisterhoodSanctuaryLinesReversed);
 		((ObjectStep) exitSisterhoodSanctuary).setLinePoints(sisterhoodSanctuaryLinesReversed);
 		useSulphuricAcidOnEggSac = new ObjectStep(this, ObjectID.EGG_SAC_42601,
-			"Return to the spider cave south of Port Phasmatys then use the Sulphuric acid on the Egg sac at the end of the cave.", sulphuricAcid.highlighted());
+			"Return to the spider cave south of Port Phasmatys then use the Sulphuric acid on the Egg sac at the end " +
+				"of the cave. You do not need to kill the spiders which appear.", sulphuricAcid.highlighted());
 		returnToSpiderCave.addSubSteps(climbStairsDownSisterhoodF0, exitSisterhoodSanctuary, useSulphuricAcidOnEggSac);
+		useSulphuricAcidOnEggSac.addIcon(ItemID.SULPHURIC_ACID);
 
 		returnToMysteriousStrangerWithEggs = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
 			"Speak with the Mysterious Stranger in Ver Sinhaza again with the spider eggs retrieved from the Egg sac. " +
@@ -292,10 +296,13 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 			"Speak with the Mysterious Stranger in Ver Sinhaza and watch the cutscenes.");
 		((NpcStep) speakWithMysteriousStrangerAndWatchCutscenes).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10875);
 		mysteriousStrangerCutscenes.addSubSteps(speakWithMysteriousStrangerAndWatchCutscenes);
+		speakWithMysteriousStrangerAndWatchCutscenes.addDialogSteps("That memory didn't tell us too much.",
+			"That memory seemed more useful.");
 
 		goToNatureGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0),
 			"Go to the Nature Grotto in the Mort Myre Swamp and speak with the Nature Spirit inside. " +
-				"Use fairy ring BIP (with 50 agility) to get there quickly.", ghostSpeakAmulet.equipped());
+				"Use fairy ring BIP (with 50 agility) to get there quickly.",
+			ghostSpeakAmulet.equipped(), combatGear, food, antipoison, axe);
 		speakToNatureSpiritInGrotto = new NpcStep(this, NpcID.NATURE_SPIRIT,
 			"Go to the Nature Grotto in the Mort Myre Swamp and speak with the Nature Spirit inside. " +
 				"Use fairy ring BIP (with 50 agility) to get there quickly.", ghostSpeakAmulet.equipped());
@@ -332,6 +339,8 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		speakWithMysteriousStrangerAndWatchCutscenes2 = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
 			"Speak with the Mysterious Stranger in Ver Sinhaza and watch the cutscenes.");
 		mysteriousStrangerCutscenes2.addSubSteps(speakWithMysteriousStrangerAndWatchCutscenes2);
+
+		speakWithMysteriousStrangerAndWatchCutscenes2.addDialogSteps("Can we use this bark to find more memories?", "Do you have any more memories for us to look at?");
 		((NpcStep) speakWithMysteriousStrangerAndWatchCutscenes2).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10875);
 
 
@@ -356,18 +365,19 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
-		food = new ItemRequirement("Food", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood());
 		drakensMedallion = new ItemRequirement("Draken's Medallion", ItemID.DRAKANS_MEDALLION, 1);
 		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.getAntivenoms(), 1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), 1);
 		fairyRings = new ItemRequirement("Access to fairy rings", ItemCollections.getFairyStaff(), 1);
 
-		flail = new ItemRequirement("Ivandis/Blisterwood flail", ItemID.IVANDIS_FLAIL, 1);
+		flail = new ItemRequirement("Ivandis/Blisterwood flail", ItemID.IVANDIS_FLAIL);
 		flail.addAlternates(ItemID.BLISTERWOOD_FLAIL);
-		saw = new ItemRequirement("Saw", ItemCollections.getSaw(), 1);
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1);
+		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak());
 		ghostSpeakAmulet.setTooltip("Morytania legs 2+ work as well.");
-		axe = new ItemRequirement("An axe", ItemCollections.getAxes(), 1);
+		axe = new ItemRequirement("An axe", ItemCollections.getAxes());
 
 		cryptKey = new ItemRequirement("Crypt key", ItemID.CRYPT_KEY);
 		ranisHead = new ItemRequirement("Ranis' Head", ItemID.RANIS_HEAD);
@@ -377,6 +387,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		stickyNote.setTooltip("You can obtain another from the skeleton in the spider cave south of Port Phasmatys.");
 
 		sulphuricAcid = new ItemRequirement("Sulphiric acid", ItemID.SULPHURIC_ACID);
+		sulphuricAcid.setTooltip("You can get more from Daer Krand in the Sisterhood Sanctuary");
 
 		strangeSpiderEggs = new ItemRequirement("Strange spider eggs", ItemID.STRANGE_SPIDER_EGGS);
 		strangeSpiderEggs.setTooltip("You can obtain more from the egg sac in the spider cave south of Port Phasmatys.");
@@ -447,10 +458,13 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Memories of a \"Friend\"", Arrays.asList(speakWithMysteriousStrangerToStart, enterVerSinhazaCrypts, killVyrewatchForKey, unlockTheCryptGate,
 			searchTheCoffinInVerSinhazaCrypts, speakWithMysteriousStrangerWithRanisHead, speakMoreWithMysteriousStranger, enterSpiderCave, searchSpiderCaveSkeleton,
-			readStickyNote, speakWithDaerKrand, returnToSpiderCave, returnToMysteriousStrangerWithEggs, mysteriousStrangerCutscenes), combatGear, food, flail, saw, antiVenom, drakensMedallion));
+			readStickyNote, speakWithDaerKrand, returnToSpiderCave, returnToMysteriousStrangerWithEggs,
+			mysteriousStrangerCutscenes), combatGear, food.quantity(20), flail, saw, antiVenom, drakensMedallion));
 
 		allSteps.add(new PanelDetails("In Touch with Nature", Arrays.asList(goToNatureGrotto, goToHesporiFight, fightHespori,
-			chopHesporiForBark, returnToMysteriousStrangerWithBark, mysteriousStrangerCutscenes2), combatGear, food, ghostSpeakAmulet, axe, antipoison));
+			chopHesporiForBark, returnToMysteriousStrangerWithBark, mysteriousStrangerCutscenes2), combatGear,
+			food.quantity(20),
+			ghostSpeakAmulet, axe, antipoison));
 
 		allSteps.add(new PanelDetails("Theatre of Blood", Arrays.asList(completeTob, speakWithMysteriousStrangerToFinish)));
 

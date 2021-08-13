@@ -199,6 +199,7 @@ public enum QuestHelperQuest
 	GETTING_AHEAD(752, "Getting Ahead", QuestVarbits.QUEST_GETTING_AHEAD, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	A_PORCINE_OF_INTEREST(3151, "A Porcine of Interest", QuestVarbits.QUEST_A_PORCINE_OF_INTEREST, Quest.Type.P2P, Quest.Difficulty.NOVICE),
 	A_KINGDOM_DIVIDED(2971, "A Kingdom Divided", QuestVarbits.QUEST_A_KINGDOM_DIVIDED, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
+	A_NIGHT_AT_THE_THEATRE(949, "A Night at the Theatre", QuestVarbits.QUEST_A_NIGHT_AT_THE_THEATRE, Quest.Type.P2P, Quest.Difficulty.MASTER),
 
 
 	//Miniquests

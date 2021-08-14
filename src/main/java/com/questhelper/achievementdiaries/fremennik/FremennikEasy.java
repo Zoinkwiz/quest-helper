@@ -47,7 +47,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.FREMENNIK_EASY
+	quest = QuestHelperQuest.FREMENNIK_EASY
 )
 
 public class FremennikEasy extends ComplexStateQuestHelper
@@ -70,7 +70,8 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	ObjectStep fillBucket, chopAndBurnOak, mineSilver, smeltSilver, craftTiara;
 
 	QuestStep catchCerulean, changeBoots, browseStonemason,
-		collectSnapeGrass, stealStall, enterTrollStronghold, goneToWaterbirth, goneToKeldagrim, goneToCave, goneToRiver, goneToVarrock, claimReward;
+		collectSnapeGrass, stealStall, enterTrollStronghold, goneToWaterbirth, goneToKeldagrim, goneToCave,
+		goneToRiver, goneToVarrock, claimReward;
 
 	Zone waterbirth, keldagrim, hunterArea, caveArea, riverArea, varrockArea;
 
@@ -299,12 +300,12 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		allSteps.add(trollStrongholdSteps);
 
 		PanelDetails browseStonemasonSteps = new PanelDetails("Browse Stonemason's store",
-			Arrays.asList(goneToKeldagrim,	goneToCave, goneToRiver, browseStonemason), giantDwarf);
+			Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, browseStonemason), giantDwarf);
 		browseStonemasonSteps.setDisplayCondition(notBrowseStonemason);
 		allSteps.add(browseStonemasonSteps);
 
 		PanelDetails bakersStallSteps = new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrim,
-			goneToCave,	goneToRiver, stealStall), giantDwarf);
+			goneToCave, goneToRiver, stealStall), giantDwarf);
 		bakersStallSteps.setDisplayCondition(notStealStall);
 		allSteps.add(bakersStallSteps);
 

@@ -60,26 +60,40 @@ import com.questhelper.panel.PanelDetails;
 public class FremennikMedium extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement coins, spade, rope, pickaxe, staff, butterFlyJar, butterFlyNet, petRock, goldHelm, oakPlanks, saw, hammer, thrownaxe, combatGear, coinsForFerry;
+	ItemRequirement coins, spade, rope, pickaxe, staff, butterFlyJar, butterFlyNet, petRock, goldHelm, oakPlanks,
+		saw, hammer, thrownaxe, combatGear, coinsForFerry;
 
 	// Recommended
 	ItemRequirement food, prayerPot, stamPot;
 
-	Requirement notSlayBrineRat, notSnowyHunter, notMineCoal, notStealFish, notTravelMisc, notSnowyKnight, notPetRockPOH, notLighthouse, notMineGold;
+	Requirement notSlayBrineRat, notSnowyHunter, notMineCoal, notStealFish, notTravelMisc, notSnowyKnight,
+		notPetRockPOH, notLighthouse, notMineGold;
 
 	// Quest requirements
-	Requirement horrorFromTheDeep, eaglesPeak, fairyTaleI, lostCity, natureSpirit, fairyTaleII, olafsQuest, fremennikTrials, betweenARock, dwarfCannon, fishingContest;
+	Requirement horrorFromTheDeep, eaglesPeak, fairyTaleI, lostCity, natureSpirit, fairyTaleII, olafsQuest,
+		fremennikTrials, betweenARock, dwarfCannon, fishingContest;
 
 	// Steps
-	QuestStep rollBoulderExit, slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish, travelMisc, snowyKnight0, snowyKnight1, petRockPOH, moveToCannon, moveToCave, moveToRiver, moveToArzinian, mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15, claimReward;
+	QuestStep rollBoulderExit, slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish,
+		travelMisc, snowyKnight0, snowyKnight1, petRockPOH, moveToCannon, moveToCave, moveToRiver, moveToArzinian,
+		mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1,
+		moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7,
+		moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13,
+		moveToDagCave14, moveToDagCave15, claimReward;
 
 	ObjectStep dropPetRock;
 
 	DigStep enterBrineCave;
 
-	Zone eagleArea, iceCave, hunterArea0, hunterArea1, riverArea, riverArea2, caveArea, arzinianMine, waterbirthIsland, brineRatCave, dagCave, dagCave1, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave3, dagCave4, dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCave13, dagCave14, dagCave15;
+	Zone eagleArea, iceCave, hunterArea0, hunterArea1, riverArea, riverArea2, caveArea, arzinianMine,
+		waterbirthIsland, brineRatCave, dagCave, dagCave1, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave3,
+		dagCave4, dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCave13,
+		dagCave14, dagCave15;
 
-	ZoneRequirement inEagleArea, inIceCave, inHunterArea0, inHunterArea1, inRiverArea, inCannonArea, inCaveArea, inArzinianMine, inWaterbirthIsland, inDagCave, inBrineRatCave, inDagCave1, inDagCave_2, inDagCave_3, inDagCave_4, inDagCave2, inDagCave3, inDagCave4, inDagCave5, inDagCave6, inDagCave7, inDagCave8, inDagCave9, inDagCave10, inDagCave11, inDagCave12, inDagCave13, inDagCave14, inDagCave15;
+	ZoneRequirement inEagleArea, inIceCave, inHunterArea0, inHunterArea1, inRiverArea, inCannonArea, inCaveArea,
+		inArzinianMine, inWaterbirthIsland, inDagCave, inBrineRatCave, inDagCave1, inDagCave_2, inDagCave_3,
+		inDagCave_4, inDagCave2, inDagCave3, inDagCave4, inDagCave5, inDagCave6, inDagCave7, inDagCave8, inDagCave9,
+		inDagCave10, inDagCave11, inDagCave12, inDagCave13, inDagCave14, inDagCave15;
 
 	Requirement protectMelee, protectMissiles, protectMagic, specialAttackEnabled;
 

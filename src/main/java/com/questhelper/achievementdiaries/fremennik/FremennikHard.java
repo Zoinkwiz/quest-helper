@@ -55,9 +55,11 @@ import com.questhelper.panel.PanelDetails;
 public class FremennikHard extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement bronzeNail, rope, lawRune, lawRune2, astralRune, waterRune, fireRune, teasingStick, knife, axe, pickaxe, hammer, arcticLog, whiteBerries, log, cadantineUnfPot, rake;
+	ItemRequirement bronzeNail, rope, lawRune, lawRune2, astralRune, waterRune, fireRune, teasingStick, knife, axe,
+		pickaxe, hammer, arcticLog, whiteBerries, log, cadantineUnfPot, rake;
 
-	Requirement notTPTroll, notCatchKyatt, notMixSuperDef, notStealGem, notCraftShield, notMineAddy, notMiscSupport, notTPWaterbirth, notFreeBlast;
+	Requirement notTPTroll, notCatchKyatt, notMixSuperDef, notStealGem, notCraftShield, notMineAddy, notMiscSupport,
+		notTPWaterbirth, notFreeBlast;
 
 	// Quest requirements
 	Requirement giantDwarf, fremIsles, throneOfMisc, eadgarsRuse, lunarDiplomacy;
@@ -65,11 +67,14 @@ public class FremennikHard extends ComplexStateQuestHelper
 	Requirement normalBook, lunarBook;
 
 	// Steps
-	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, miscSupport, tpWaterbirth, freeBlast, moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc, moveToMine, moveToBlast, claimReward;
+	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, miscSupport, tpWaterbirth, freeBlast
+		,  moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc, moveToMine, moveToBlast, claimReward;
 
-	Zone misc, neitiznot, keldagrim, jatizso, caveArea, riverArea, varrockArea, hunterArea, rellekkaArea, mineArea, blastArea;
+	Zone misc, neitiznot, keldagrim, jatizso, caveArea, riverArea, varrockArea, hunterArea, rellekkaArea, mineArea,
+		blastArea;
 
-	ZoneRequirement inMisc, inNeitiznot, inKeldagrim, inJatizso, inCaveArea, inRiverArea, inVarrockArea, inHunterArea, inRellekka, inMineArea, inBlastArea;
+	ZoneRequirement inMisc, inNeitiznot, inKeldagrim, inJatizso, inCaveArea, inRiverArea, inVarrockArea, inHunterArea
+		,  inRellekka, inMineArea, inBlastArea;
 
 	@Override
 	public QuestStep loadStep()

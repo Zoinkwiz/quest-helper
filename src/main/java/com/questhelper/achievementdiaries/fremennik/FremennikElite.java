@@ -156,7 +156,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.getCrossbows()).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
-		mithGrap = new ItemRequirement("Mith Grapple", ItemID.MITH_GRAPPLE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
+		mithGrap = new ItemRequirement("Mith Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 
 		combatGear = new ItemRequirement("High tier combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR, notDagKings, notGodwarsGenerals, notSpiritualMage));
@@ -328,8 +328,8 @@ public class FremennikElite extends ComplexStateQuestHelper
 		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_PRIME_6497);
 		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_REX_6498);
 
-		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
-			"Talk to Fossegrimen South of Rellekka to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 

@@ -45,6 +45,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
@@ -56,6 +57,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
 	@Inject
 	protected Client client;
+
+	@Inject
+	@Getter
+	protected ConfigManager configManager;
 
 	@Inject
 	protected QuestBank questBank;

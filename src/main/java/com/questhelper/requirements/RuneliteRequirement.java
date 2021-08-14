@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,59 +24,76 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.util.LogicType;
-import java.util.stream.Stream;
-import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
 
-/**
- * Requirement that combines multiple other {@link Requirement}s using
- * {@link LogicType} to determine if the requirement(s) is/are met.
- */
-@Getter
-public class ComplexRequirement extends AbstractRequirement
+public class RuneliteRequirement extends AbstractRequirement
 {
-	private final Requirement[] requirements;
-	private final LogicType logicType;
-	private final String name;
+	private final String CONFIG_GROUP = "questhelpervars";
 
-	/**
-	 * Requirement that combines multiple other {@link Requirement}s using
-	 * {@link LogicType} to determine if the requirement(s) is/are met.
-	 * <br>
-	 * The default {@link LogicType} is {@link LogicType#AND}.
-	 */
-	public ComplexRequirement(String name, Requirement... requirements)
+	private String displayText;
+	private String runeliteIdentifier;
+	private String expectedValue;
+	private ConfigManager configManager;
+
+	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text)
 	{
-		this.name = name;
-		this.requirements = requirements;
-		this.logicType = LogicType.AND;
+		this.configManager = configManager;
+		this.runeliteIdentifier = id;
+		this.displayText = text;
+		this.expectedValue = expectedValue;
 	}
 
-	/**
-	 * Requirement that combines multiple other {@link Requirement}s using
-	 * {@link LogicType} to determine if the requirement(s) is/are met.
-	 */
-	public ComplexRequirement(LogicType logicType, String name, Requirement... requirements)
+	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue)
 	{
-		this.name = name;
-		this.requirements = requirements;
-		this.logicType = logicType;
+		this.configManager = configManager;
+		this.runeliteIdentifier = id;
+		this.expectedValue = expectedValue;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		if (logicType == null)
-		{
-			return false;
-		}
-		return logicType.test(Stream.of(requirements), r -> r.check(client));
+		return getConfigValue().equals(expectedValue);
 	}
 
 	@Override
 	public String getDisplayText()
 	{
-		return name;
+		String returnText;
+		if (displayText != null)
+		{
+			returnText = displayText;
+		}
+		else
+		{
+			returnText = "You need " + runeliteIdentifier;
+		}
+
+		return returnText;
+	}
+
+	public String getConfigValue()
+	{
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
+	}
+
+	public void setConfigValue(String obj)
+	{
+		configManager.setRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier, obj);
+	}
+
+	public boolean configExists()
+	{
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier) != null;
+	}
+
+	public void initWithValue(String value)
+	{
+		if (!configExists())
+		{
+			setConfigValue(value);
+		}
 	}
 }
+

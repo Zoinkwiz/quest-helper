@@ -498,6 +498,9 @@ public class TheFeud extends BasicQuestHelper
 				Arrays.asList(buyDisguiseGear, createDisguise, goToShanty, talkToRugMerchant, drunkenAli), unspecifiedCoins));
 		allSteps.add(new PanelDetails("Find the beef between the two factions",
 				Arrays.asList(talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel), unspecifiedCoins));
+		allSteps.add(new PanelDetails("First job",
+			Arrays.asList(talkToAliTheOperator, pickpocketVillager, pickPocketVillagerWithUrchin,
+				getBlackjackFromAli, blackjackVillager), unspecifiedCoins));
 		allSteps.add(new PanelDetails("Second job",
 				Arrays.asList(talkToAliToGetSecondJob, hideBehindCactus, openTheDoor, goUpStairs, crackTheSafe, giveTheJewelsToAli), desertDisguise, gloves));
 		allSteps.add(new PanelDetails("Rising up",

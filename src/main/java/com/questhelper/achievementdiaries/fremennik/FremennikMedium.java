@@ -347,8 +347,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		petRockPOH = new DetailedQuestStep(this,
 			"Use a pet rock on your pet house in your menagerie in your player owned house and then pick it up off the GROUND.");
 
-		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
-			"Talk to Fossegrimen south of Rellekka to claim your reward!", petRock);
+		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 

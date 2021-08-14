@@ -284,7 +284,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		yellowOrchid3 = new ItemRequirement("Orchid seeds (yellow)", ItemID.ORCHID_SEED_6459, 3);
 		yellowOrchid3.setTooltip("You can get more from Lyra");
 		snowdropSeed4 = new ItemRequirement("Snowdrop seeds", ItemID.SNOWDROP_SEED, 4);
-		snowdropSeed4.setTooltip("You cvan get more from Kragen");
+		snowdropSeed4.setTooltip("You can get more from Kragen");
 		delphiniumSeed4 = new ItemRequirement("Delphinium seeds", ItemID.DELPHINIUM_SEED, 4);
 		delphiniumSeed4.setTooltip("You can get more from Elstan");
 		trolley = new ItemRequirement("Trolley", ItemID.TROLLEY);

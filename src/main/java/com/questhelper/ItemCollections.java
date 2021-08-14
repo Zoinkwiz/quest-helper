@@ -1243,4 +1243,18 @@ public class ItemCollections
 		ItemID.TWISTED_SLAYER_HELMET_I,
 		ItemID.TWISTED_SLAYER_HELMET_I_25191
 	);
+
+	@Getter
+	private static final List<Integer> waterAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.WATER_TIARA,
+		ItemID.WATER_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> essenceLow = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE,
+		ItemID.RUNE_ESSENCE
+	);
 }

@@ -42,13 +42,16 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -66,8 +69,8 @@ import com.questhelper.steps.QuestStep;
 public class lumbEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, lightSource, rope, runeEss, axe, tinderbox, smallFishingNet, breadDough, pickaxe,
-		waterAccessOrAbyss, spinyHelm;
+	ItemRequirement combatGear, lightSource, rope, runeEss, axe, tinderbox, smallFishingNet, pickaxe,
+		waterAccessOrAbyss, spinyHelm, dough, oakLogs;
 
 	// Items recommended
 	ItemRequirement food;
@@ -79,9 +82,9 @@ public class lumbEasy extends ComplexStateQuestHelper
 		notFishAnchovies, notBread, notIron, notEnterHAM;
 
 	QuestStep claimReward, drayAgi, killCaveBug, moveToDarkHole, sedridor, moveToSed, moveToWaterAltar, waterRune, hans,
-		pickpocket, oakChopandBurn, fishAnchovies, bread, mineIron;
+		chopOak, burnOak, fishAnchovies, bread, mineIron;
 
-	NpcStep killZombie;
+	NpcStep pickpocket, killZombie;
 
 	ObjectStep moveToDraySewer, enterHAM;
 
@@ -105,6 +108,15 @@ public class lumbEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notEnterHAM, enterHAM);
 		doEasy.addStep(new Conditions(notKillCaveBug, inCave), killCaveBug);
 		doEasy.addStep(notKillCaveBug, moveToDarkHole);
+		doEasy.addStep(new Conditions(notWaterRune, inWater), waterRune);
+		doEasy.addStep(notWaterRune, moveToWaterAltar);
+		doEasy.addStep(notBread, bread);
+		doEasy.addStep(notHans, hans);
+		doEasy.addStep(notPickpocket, pickpocket);
+		doEasy.addStep(new Conditions(notOak, oakLogs), burnOak);
+		doEasy.addStep(notOak, chopOak);
+		doEasy.addStep(notIron, mineIron);
+		doEasy.addStep(notFishAnchovies, fishAnchovies);
 
 		return doEasy;
 	}
@@ -112,7 +124,7 @@ public class lumbEasy extends ComplexStateQuestHelper
 	public void setupRequirements()
 	{
 		notDrayAgi = new VarplayerRequirement(1194, false, 1);
-		notKillCaveBug = new VarplayerRequirement(1194, true, 2);
+		notKillCaveBug = new VarplayerRequirement(1194, false, 2);
 		notSedridor = new VarplayerRequirement(1194, false, 3);
 		notWaterRune = new VarplayerRequirement(1194, false, 4);
 		notHans = new VarplayerRequirement(1194, false, 5);
@@ -128,7 +140,15 @@ public class lumbEasy extends ComplexStateQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKillCaveBug);
 		spinyHelm = new ItemRequirement("Spiny helmet or slayer helmet (Recommended for low combat levels / Ironmen)",
 			ItemCollections.getWallBeast()).showConditioned(notKillCaveBug);
-		//waterAccessOrAbyss = new ItemRequirement(this, ItemCollections);
+		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss.",
+			ItemCollections.getWaterAltar()).showConditioned(notWaterRune);
+		runeEss = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notWaterRune);
+		dough = new ItemRequirement("Bread dough", ItemID.BREAD_DOUGH).showConditioned(notBread);
+		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS).showConditioned(notOak);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notOak);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notOak);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIron);
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFishAnchovies);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -138,6 +158,7 @@ public class lumbEasy extends ComplexStateQuestHelper
 		inCave = new ZoneRequirement(cave);
 		inSewer = new ZoneRequirement(sewer);
 		inMageTower = new ZoneRequirement(mageTower);
+		inWater = new ZoneRequirement(water);
 
 		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 		cooksAssistant = new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED);
@@ -148,6 +169,7 @@ public class lumbEasy extends ComplexStateQuestHelper
 		cave = new Zone(new WorldPoint(3140, 9602, 0), new WorldPoint(3261, 9537, 0));
 		sewer = new Zone(new WorldPoint(3077, 9699, 0), new WorldPoint(3132, 9641, 0));
 		mageTower = new Zone(new WorldPoint(3095, 9578, 0), new WorldPoint(3122, 9554, 0));
+		water = new Zone(new WorldPoint(2688, 4863, 0), new WorldPoint(2751, 4800, 0));
 	}
 
 	public void setupSteps()
@@ -175,27 +197,53 @@ public class lumbEasy extends ComplexStateQuestHelper
 		//TODO track if rope necessary
 		moveToDarkHole = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
 			"Enter the dark hole in the lumbridge swamp." + "Bring a rope if this is your first time down here.",
-			lightSource, rope);
+			lightSource, rope, combatGear);
 		killCaveBug = new NpcStep(this, NpcID.CAVE_BUG, new WorldPoint(3151, 9574, 0),
 			"Kill a Cave Bug.");
 
-		//moveToWaterAltar = new ObjectStep();
+		moveToWaterAltar = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
+			"Enter the water altar", waterAccessOrAbyss.highlighted(), runeEss);
+		waterRune = new ObjectStep(this, ObjectID.ALTAR_34762, new WorldPoint(2716, 4836, 0),
+			"Craft water runes.", runeEss);
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
-			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
+		bread = new ObjectStep(this, ObjectID.COOKING_RANGE, new WorldPoint(3212, 3216, 0),
+		"Cook bread on the cooking range in Lumbridge Castle.");
+
+		hans = new NpcStep(this, NpcID.HANS, new WorldPoint(3215, 3219, 0),
+			"Talk to Hans to learn your age.");
+		hans.addDialogStep("Can you tell me how long I've been here?");
+
+		pickpocket = new NpcStep(this, NpcID.MAN_3107, new WorldPoint(3215, 3219, 0),
+			"Pickpocket a man or woman infront of Lumbridge Castle.", true);
+		pickpocket.addAlternateNpcs(NpcID.MAN_3108, NpcID.WOMAN_3111, NpcID.MAN_3106);
+
+		chopOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(3219, 3206, 0),
+			"Chop the oak tree.", axe);
+		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
+			oakLogs.highlighted());
+
+		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3303, 3284, 0),
+			"Mine some iron ore at the Al-Kharid mine.", pickaxe);
+
+		fishAnchovies = new NpcStep(this, NpcID.FISHING_SPOT_1528, new WorldPoint(3267, 3148, 0),
+			"Fish for anchovies in Al-Kharid.", smallFishingNet);
+
+		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
+			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear);
+		return Arrays.asList(lightSource, rope, runeEss, axe, tinderbox, smallFishingNet, pickaxe,
+			waterAccessOrAbyss, dough, combatGear);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food);
+		return Arrays.asList(food, spinyHelm);
 	}
 
 	@Override
@@ -251,7 +299,38 @@ public class lumbEasy extends ComplexStateQuestHelper
 		killCaveBugSteps.setDisplayCondition(notKillCaveBug);
 		allSteps.add(killCaveBugSteps);
 
+		PanelDetails waterRunesSteps = new PanelDetails("Craft Water Runes", Arrays.asList(moveToWaterAltar, waterRune),
+			new SkillRequirement(Skill.RUNECRAFT, 5), waterAccessOrAbyss, runeEss);
+		waterRunesSteps.setDisplayCondition(notWaterRune);
+		allSteps.add(waterRunesSteps);
 
+		PanelDetails breadSteps = new PanelDetails("Cooking Bread", Collections.singletonList(bread), cooksAssistant,
+			dough);
+		breadSteps.setDisplayCondition(notBread);
+		allSteps.add(breadSteps);
+
+		PanelDetails hansSteps = new PanelDetails("Learn Age from Hans", Collections.singletonList(hans));
+		hansSteps.setDisplayCondition(notHans);
+		allSteps.add(hansSteps);
+
+		PanelDetails pickpocketSteps = new PanelDetails("Pickpocket Man or Woman", Collections.singletonList(pickpocket));
+		pickpocketSteps.setDisplayCondition(notPickpocket);
+		allSteps.add(pickpocketSteps);
+
+		PanelDetails oakSteps = new PanelDetails("Chop and Burn Oak Logs", Arrays.asList(chopOak, burnOak),
+			new SkillRequirement(Skill.WOODCUTTING, 15), new SkillRequirement(Skill.FIREMAKING, 15), tinderbox, axe);
+		oakSteps.setDisplayCondition(notOak);
+		allSteps.add(oakSteps);
+
+		PanelDetails mineIronSteps = new PanelDetails("Mine Iron in Al-Kharid", Collections.singletonList(mineIron),
+			new SkillRequirement(Skill.MINING, 15), pickaxe);
+		mineIronSteps.setDisplayCondition(notIron);
+		allSteps.add(mineIronSteps);
+
+		PanelDetails anchoviesSteps = new PanelDetails("Fish Anchovies in Al-Kharid",
+			Collections.singletonList(fishAnchovies), new SkillRequirement(Skill.FISHING, 15), smallFishingNet);
+		anchoviesSteps.setDisplayCondition(notFishAnchovies);
+		allSteps.add(anchoviesSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

@@ -51,7 +51,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.FREMENNIK_ELITE
+	quest = QuestHelperQuest.FREMENNIK_ELITE
 )
 
 public class FremennikElite extends ComplexStateQuestHelper
@@ -361,7 +361,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.RANGED, 70, false));
 		req.add(new SkillRequirement(Skill.RUNECRAFT, 82));
 		req.add(new SkillRequirement(Skill.SLAYER, 83, true));
-		req.add(new SkillRequirement(Skill.STRENGTH, 70, true));
+		req.add(new SkillRequirement(Skill.STRENGTH, 70, false));
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"At least 43 Prayer for protection prayers"));
 		return req;
@@ -372,13 +372,46 @@ public class FremennikElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Rellekka Rooftops", Collections.singletonList(rellRooftop)));
-		allSteps.add(new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain, moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy, pureEss.quantity(28)));
-		allSteps.add(new PanelDetails("Dragonstone Amulet", Arrays.asList(moveToNeit, dragonAmulet), fremIsles, dragonstone, goldBar, amuletMould));
-		allSteps.add(new PanelDetails("Kill Dagannoth Kings", Arrays.asList(moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave12, moveToDagCave13, moveToDagKings, dagKings), combatGear, thrownaxe, petRock));
-		allSteps.add(new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWars, godwarsGenerals), trollStronghold, combatGear, rope.quantity(2), climbingBoots, hammer, mithGrap, crossbow));
-		allSteps.add(new PanelDetails("Slay Spiritual Mage", Arrays.asList(moveToGodWars, spiritualMage), trollStronghold, combatGear, rope.quantity(1), climbingBoots));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+		PanelDetails rellekkaRooftopsSteps = new PanelDetails("Rellekka Rooftops", Collections.singletonList(rellRooftop),
+			new SkillRequirement(Skill.AGILITY, 80));
+		rellekkaRooftopsSteps.setDisplayCondition(notRellRooftop);
+		allSteps.add(rellekkaRooftopsSteps);
+
+		PanelDetails astralRunesSteps = new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain,
+			moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy,
+			new SkillRequirement(Skill.RUNECRAFT, 82), pureEss.quantity(28));
+		astralRunesSteps.setDisplayCondition(notAstralRunes);
+		allSteps.add(astralRunesSteps);
+
+		PanelDetails dragonstoneAmuletSteps = new PanelDetails("Dragonstone Amulet", Arrays.asList(moveToNeit, dragonAmulet),
+			fremIsles, new SkillRequirement(Skill.CRAFTING, 80), dragonstone, goldBar, amuletMould);
+		dragonstoneAmuletSteps.setDisplayCondition(notDragonAmulet);
+		allSteps.add(dragonstoneAmuletSteps);
+
+		PanelDetails dagannothKingsSteps = new PanelDetails("Kill Dagannoth Kings", Arrays.asList(moveToWaterbirth, moveToDagCave,
+			dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4,
+			moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10,
+			moveToDagCave12, moveToDagCave13, moveToDagKings, dagKings), combatGear, thrownaxe, petRock);
+		dagannothKingsSteps.setDisplayCondition(notDagKings);
+		allSteps.add(dagannothKingsSteps);
+
+		PanelDetails godWarsSteps = new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWars,
+			godwarsGenerals), trollStronghold, new SkillRequirement(Skill.AGILITY, 70),
+			new SkillRequirement(Skill.STRENGTH, 70, false), new SkillRequirement(Skill.HITPOINTS, 70, false),
+			new SkillRequirement(Skill.RANGED, 70, false), combatGear, rope.quantity(2), climbingBoots, hammer,
+			mithGrap, crossbow);
+		godWarsSteps.setDisplayCondition(notGodwarsGenerals);
+		allSteps.add(godWarsSteps);
+
+		PanelDetails spiritualMageSteps = new PanelDetails("Slay Spiritual Mage", Arrays.asList(moveToGodWars,
+			spiritualMage), trollStronghold, new SkillRequirement(Skill.SLAYER, 83, true), combatGear,
+			rope.quantity(1), climbingBoots);
+		spiritualMageSteps.setDisplayCondition(notSpiritualMage);
+		allSteps.add(spiritualMageSteps);
+
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

@@ -74,13 +74,17 @@ public class lumbEasy extends ComplexStateQuestHelper
 	// Quests required
 	Requirement runeMysteries, cooksAssistant;
 
-	Requirement not;
+	Requirement notDrayAgi, notKillCavebug, notSedridor, notWaterRune, notHans, notPickpocket, notOak, notKillZombie,
+	notFishAnchovies, notBread, notIron, notEnterHAM;
 
-	QuestStep claimReward;
+	QuestStep claimReward, drayAgi, killCavebug, moveToDarkHole, sedridor, moveToSed, enterWaterAltar, waterRune, hans,
+		pickpocket, oakChopandBurn, moveToDraySewer, fishAnchovies, bread, mineIron, enterHAM;
 
-	Zone cave;
+	NpcStep killZombie;
 
-	ZoneRequirement inCave;
+	Zone cave, sewer, water, mageTower;
+
+	ZoneRequirement inCave, inSewer, inWater, inMageTower;
 
 	@Override
 	public QuestStep loadStep()
@@ -90,7 +94,9 @@ public class lumbEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		// doEasy.addStep(notUsedShortcut, useShortcut);
+		doEasy.addStep(notDrayAgi, drayAgi);
+		doEasy.addStep(new Conditions(notKillZombie, inSewer), killZombie);
+		doEasy.addStep(notKillZombie, moveToDraySewer);
 
 		return doEasy;
 	}
@@ -98,17 +104,17 @@ public class lumbEasy extends ComplexStateQuestHelper
 	public void setupRequirements()
 	{
 		notDrayAgi = new VarplayerRequirement(1194, false, 1);
-		notCavebug = new VarplayerRequirement(1194, false, 2);
+		notKillCavebug = new VarplayerRequirement(1194, false, 2);
 		notSedridor = new VarplayerRequirement(1194, false, 3);
 		notWaterRune = new VarplayerRequirement(1194, false, 4);
 		notHans = new VarplayerRequirement(1194, false, 5);
 		notPickpocket = new VarplayerRequirement(1194, false, 6);
 		notOak = new VarplayerRequirement(1194, false, 7);
-		notZombie = new VarplayerRequirement(1194, false, 8);
-		notAnchovies = new VarplayerRequirement(1194, false, 9);
+		notKillZombie = new VarplayerRequirement(1194, false, 8);
+		notFishAnchovies = new VarplayerRequirement(1194, false, 9);
 		notBread = new VarplayerRequirement(1194, false, 10);
 		notIron = new VarplayerRequirement(1194, false, 11);
-		notHAM = new VarplayerRequirement(1194, false, 12);
+		notEnterHAM = new VarplayerRequirement(1194, false, 12);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -116,6 +122,8 @@ public class lumbEasy extends ComplexStateQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		inCave = new ZoneRequirement(cave);
+		inSewer = new ZoneRequirement(sewer);
+		inMageTower = new ZoneRequirement(mageTower);
 
 		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 		cooksAssistant = new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED);
@@ -123,11 +131,22 @@ public class lumbEasy extends ComplexStateQuestHelper
 
 	public void loadZones()
 	{
-		cave = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
+		cave = new Zone(new WorldPoint(3140, 9602, 0), new WorldPoint(3261,9537, 0));
+		sewer = new Zone(new WorldPoint(3077, 9699, 0), new WorldPoint(3132,9641, 0));
+		mageTower = new Zone(new WorldPoint(3095, 9578, 0), new WorldPoint(3122,9554, 0));
 	}
 
 	public void setupSteps()
 	{
+		drayAgi = new ObjectStep(this, 11404, new WorldPoint(3103, 3279, 0),
+			"Complete a lap of the Draynor Rooftop Course.");
+
+		moveToDraySewer = new ObjectStep(this, ObjectID.TRAPDOOR_6435, new WorldPoint(3118, 3244, 0),
+		"Climb down into the Draynor Sewer.");
+		((ObjectStep) moveToDraySewer).addAlternateObjects(ObjectID.TRAPDOOR_6434);
+		killZombie = new NpcStep(this, NpcID.ZOMBIE_38, new WorldPoint(3123, 9648, 0),
+			"Kill a zombie.");
+		killZombie.addAlternateNpcs(NpcID.ZOMBIE_40, NpcID.ZOMBIE_57, NpcID.ZOMBIE_55, NpcID.ZOMBIE_56);
 
 		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
 			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
@@ -174,6 +193,16 @@ public class lumbEasy extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
+
+		PanelDetails draynorRooftopsSteps = new PanelDetails("Draynor Rooftops", Collections.singletonList( ));
+		draynorRooftopsSteps.setDisplayCondition(notDrayAgi);
+		allSteps.add(draynorRooftopsSteps);
+
+		PanelDetails zombieSteps = new PanelDetails("Kill Zombie in Draynor Sewers", Collections.singletonList( ));
+		zombieSteps.setDisplayCondition(notKillZombie);
+		allSteps.add(zombieSteps);
+
+
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

@@ -66,7 +66,8 @@ import com.questhelper.steps.QuestStep;
 public class lumbEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear;
+	ItemRequirement combatGear, lightSource, rope, runeEss, axe, tinderbox, smallFishingNet, breadDough, pickaxe,
+		waterAccessOrAbyss, spinyHelm;
 
 	// Items recommended
 	ItemRequirement food;
@@ -74,13 +75,15 @@ public class lumbEasy extends ComplexStateQuestHelper
 	// Quests required
 	Requirement runeMysteries, cooksAssistant;
 
-	Requirement notDrayAgi, notKillCavebug, notSedridor, notWaterRune, notHans, notPickpocket, notOak, notKillZombie,
-	notFishAnchovies, notBread, notIron, notEnterHAM;
+	Requirement notDrayAgi, notKillCaveBug, notSedridor, notWaterRune, notHans, notPickpocket, notOak, notKillZombie,
+		notFishAnchovies, notBread, notIron, notEnterHAM;
 
-	QuestStep claimReward, drayAgi, killCavebug, moveToDarkHole, sedridor, moveToSed, enterWaterAltar, waterRune, hans,
-		pickpocket, oakChopandBurn, moveToDraySewer, fishAnchovies, bread, mineIron, enterHAM;
+	QuestStep claimReward, drayAgi, killCaveBug, moveToDarkHole, sedridor, moveToSed, moveToWaterAltar, waterRune, hans,
+		pickpocket, oakChopandBurn, fishAnchovies, bread, mineIron;
 
 	NpcStep killZombie;
+
+	ObjectStep moveToDraySewer, enterHAM;
 
 	Zone cave, sewer, water, mageTower;
 
@@ -97,6 +100,11 @@ public class lumbEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notDrayAgi, drayAgi);
 		doEasy.addStep(new Conditions(notKillZombie, inSewer), killZombie);
 		doEasy.addStep(notKillZombie, moveToDraySewer);
+		doEasy.addStep(new Conditions(notSedridor, inMageTower), sedridor);
+		doEasy.addStep(notSedridor, moveToSed);
+		doEasy.addStep(notEnterHAM, enterHAM);
+		doEasy.addStep(new Conditions(notKillCaveBug, inCave), killCaveBug);
+		doEasy.addStep(notKillCaveBug, moveToDarkHole);
 
 		return doEasy;
 	}
@@ -104,7 +112,7 @@ public class lumbEasy extends ComplexStateQuestHelper
 	public void setupRequirements()
 	{
 		notDrayAgi = new VarplayerRequirement(1194, false, 1);
-		notKillCavebug = new VarplayerRequirement(1194, false, 2);
+		notKillCaveBug = new VarplayerRequirement(1194, true, 2);
 		notSedridor = new VarplayerRequirement(1194, false, 3);
 		notWaterRune = new VarplayerRequirement(1194, false, 4);
 		notHans = new VarplayerRequirement(1194, false, 5);
@@ -115,6 +123,12 @@ public class lumbEasy extends ComplexStateQuestHelper
 		notBread = new VarplayerRequirement(1194, false, 10);
 		notIron = new VarplayerRequirement(1194, false, 11);
 		notEnterHAM = new VarplayerRequirement(1194, false, 12);
+
+		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources()).showConditioned(notKillCaveBug);
+		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKillCaveBug);
+		spinyHelm = new ItemRequirement("Spiny helmet or slayer helmet (Recommended for low combat levels / Ironmen)",
+			ItemCollections.getWallBeast()).showConditioned(notKillCaveBug);
+		//waterAccessOrAbyss = new ItemRequirement(this, ItemCollections);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -131,9 +145,9 @@ public class lumbEasy extends ComplexStateQuestHelper
 
 	public void loadZones()
 	{
-		cave = new Zone(new WorldPoint(3140, 9602, 0), new WorldPoint(3261,9537, 0));
-		sewer = new Zone(new WorldPoint(3077, 9699, 0), new WorldPoint(3132,9641, 0));
-		mageTower = new Zone(new WorldPoint(3095, 9578, 0), new WorldPoint(3122,9554, 0));
+		cave = new Zone(new WorldPoint(3140, 9602, 0), new WorldPoint(3261, 9537, 0));
+		sewer = new Zone(new WorldPoint(3077, 9699, 0), new WorldPoint(3132, 9641, 0));
+		mageTower = new Zone(new WorldPoint(3095, 9578, 0), new WorldPoint(3122, 9554, 0));
 	}
 
 	public void setupSteps()
@@ -142,11 +156,30 @@ public class lumbEasy extends ComplexStateQuestHelper
 			"Complete a lap of the Draynor Rooftop Course.");
 
 		moveToDraySewer = new ObjectStep(this, ObjectID.TRAPDOOR_6435, new WorldPoint(3118, 3244, 0),
-		"Climb down into the Draynor Sewer.");
-		((ObjectStep) moveToDraySewer).addAlternateObjects(ObjectID.TRAPDOOR_6434);
+			"Climb down into the Draynor Sewer.");
+		moveToDraySewer.addAlternateObjects(ObjectID.TRAPDOOR_6434);
 		killZombie = new NpcStep(this, NpcID.ZOMBIE_38, new WorldPoint(3123, 9648, 0),
-			"Kill a zombie.");
+			"Kill a zombie.", true);
 		killZombie.addAlternateNpcs(NpcID.ZOMBIE_40, NpcID.ZOMBIE_57, NpcID.ZOMBIE_55, NpcID.ZOMBIE_56);
+
+		moveToSed = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+			"Climb down the ladder in the Wizards' Tower");
+		sedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3103, 9571, 0),
+			"Teleport to the Rune essence mine via Sedridor.");
+		sedridor.addDialogStep("Can you teleport me to the Rune Essence?");
+
+		enterHAM = new ObjectStep(this, ObjectID.TRAPDOOR_5490, new WorldPoint(3166, 3252, 0),
+			"Lock pick and enter the HAM hideout.");
+		enterHAM.addAlternateObjects(ObjectID.TRAPDOOR_5491);
+
+		//TODO track if rope necessary
+		moveToDarkHole = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+			"Enter the dark hole in the lumbridge swamp." + "Bring a rope if this is your first time down here.",
+			lightSource, rope);
+		killCaveBug = new NpcStep(this, NpcID.CAVE_BUG, new WorldPoint(3151, 9574, 0),
+			"Kill a Cave Bug.");
+
+		//moveToWaterAltar = new ObjectStep();
 
 		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
 			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
@@ -194,13 +227,29 @@ public class lumbEasy extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails draynorRooftopsSteps = new PanelDetails("Draynor Rooftops", Collections.singletonList( ));
+		PanelDetails draynorRooftopsSteps = new PanelDetails("Draynor Rooftops", Collections.singletonList(drayAgi),
+			new SkillRequirement(Skill.AGILITY, 10));
 		draynorRooftopsSteps.setDisplayCondition(notDrayAgi);
 		allSteps.add(draynorRooftopsSteps);
 
-		PanelDetails zombieSteps = new PanelDetails("Kill Zombie in Draynor Sewers", Collections.singletonList( ));
+		PanelDetails zombieSteps = new PanelDetails("Kill Zombie in Draynor Sewers", Arrays.asList(moveToDraySewer,
+			killZombie), combatGear);
 		zombieSteps.setDisplayCondition(notKillZombie);
 		allSteps.add(zombieSteps);
+
+		PanelDetails sedridorSteps = new PanelDetails("Rune Essence Mine", Arrays.asList(moveToSed, sedridor),
+			runeMysteries);
+		sedridorSteps.setDisplayCondition(notSedridor);
+		allSteps.add(sedridorSteps);
+
+		PanelDetails enterTheHamHideoutSteps = new PanelDetails("Enter the HAM Hideout", Collections.singletonList(enterHAM));
+		enterTheHamHideoutSteps.setDisplayCondition(notEnterHAM);
+		allSteps.add(enterTheHamHideoutSteps);
+
+		PanelDetails killCaveBugSteps = new PanelDetails("Kill Cave Bug", Arrays.asList(moveToDarkHole, killCaveBug),
+			new SkillRequirement(Skill.SLAYER, 7), lightSource, rope, spinyHelm);
+		killCaveBugSteps.setDisplayCondition(notKillCaveBug);
+		allSteps.add(killCaveBugSteps);
 
 
 

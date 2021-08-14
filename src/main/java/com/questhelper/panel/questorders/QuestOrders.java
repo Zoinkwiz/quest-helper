@@ -232,7 +232,7 @@ public class QuestOrders
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		QuestHelperQuest.FREMENNIK_MEDIUM,
-		//QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
+		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,

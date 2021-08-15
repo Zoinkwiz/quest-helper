@@ -1199,6 +1199,14 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> compost = ImmutableList.of(
+			ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
+			ItemID.ULTRACOMPOST,
+			ItemID.SUPERCOMPOST,
+			ItemID.COMPOST
+	);
+
+	@Getter
 	private static final List<Integer> fairyStaff = ImmutableList.of(
 		ItemID.LUNAR_STAFF,
 		ItemID.LUNAR_STAFF__PT3,

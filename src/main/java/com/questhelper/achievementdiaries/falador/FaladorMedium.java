@@ -147,7 +147,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav));
-		airRune4 = new ItemRequirement("Air Runes", ItemID.AIR_RUNE, 4);
+		airRune4 = new ItemRequirement("Air Runes", ItemID.AIR_RUNE, 4).showConditioned(new Conditions(LogicType.OR,
+			notTelegrabbedWine, notTeleportFalador));
 		lawRune2 = new ItemRequirement("Law Runes", ItemID.LAW_RUNE, 2);
 		waterRune1 = new ItemRequirement("Water Runes", ItemID.WATER_RUNE, 1);
 		crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
@@ -183,7 +184,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		scarecrowStep2Highlight = new ItemRequirement(true, "Hay Sack", ItemID.HAY_SACK_6058);
 		bronzeSpearHighlight = new ItemRequirement(true, "Bronze Spear", ItemID.BRONZE_SPEAR);
 		fishingExplosiveHighlight = new ItemRequirement(true, "Fishing Explosive", ItemID.FISHING_EXPLOSIVE);
-		mithGrappleHighlight = new ItemRequirement(true, "Mithril Grapple", ItemID.MITH_GRAPPLE);
+		mithGrappleHighlight = new ItemRequirement(true, "Mithril Grapple", ItemID.MITH_GRAPPLE_9419);
 
 		faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
 		explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2);
@@ -213,7 +214,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		//Bullseye Lantern - Rim Chemist
-		goToChemist = new DetailedQuestStep(this, new WorldPoint(2930, 3515, 0),
+		goToChemist = new DetailedQuestStep(this, new WorldPoint(2932, 3213, 0),
 			"Go to the Chemist's in Rimmington.", bullseyeLantern, tinderbox);
 		lightLantern = new DetailedQuestStep(this,
 			"Use the tinderbox on the bullseye lantern.", bullseyeLanternHighLight, tinderboxHighlight);
@@ -244,7 +245,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Mogre
 		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT,
-			"Go to Mogre Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", fishingExplosiveHighlight);
+			"Go to Mudskipper Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", fishingExplosiveHighlight);
 		spawnMogre.addAlternateObjects(ObjectID.OMINOUS_FISHING_SPOT_10088, ObjectID.OMINOUS_FISHING_SPOT_10089);
 		spawnMogre.addIcon(ItemID.FISHING_EXPLOSIVE);
 		killMogre = new NpcStep(this, NpcID.MOGRE,

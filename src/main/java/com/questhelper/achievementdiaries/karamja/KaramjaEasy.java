@@ -42,6 +42,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -204,9 +205,55 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Easy Diary", Arrays.asList(goSarim, pickBananas, goFish,
-			enterFightCave, goArdougne, mineGold, swingRope, pickupSeaweed, goCairn, enterPothole, claimReward),
-			pickaxe, coins, smallFishingNet, combatGear));
+
+		PanelDetails travelSarimSteps = new PanelDetails("Travel to Port Sarim", Collections.singletonList(goSarim),
+			coins.quantity(30));
+		travelSarimSteps.setDisplayCondition(notGoneToSarim);
+		allSteps.add(travelSarimSteps);
+
+		PanelDetails pickBananasSteps = new PanelDetails("Pick 5 Bananas", Collections.singletonList(pickBananas));
+		pickBananasSteps.setDisplayCondition(notPickedBananas);
+		allSteps.add(pickBananasSteps);
+
+		PanelDetails goFishSteps = new PanelDetails("Fish North of Banana Plantation", Collections.singletonList(goFish),
+			smallFishingNet);
+		goFishSteps.setDisplayCondition(notFished);
+		allSteps.add(goFishSteps);
+
+		PanelDetails enterFightCaveSteps = new PanelDetails("Attempt the Fight Cave or TzHaar Fight Pits", Collections.singletonList(enterFightCave));
+		enterFightCaveSteps.setDisplayCondition(notEnteredFightCave);
+		allSteps.add(enterFightCaveSteps);
+
+		PanelDetails goArdougneSteps = new PanelDetails("Travel to Ardougne", Collections.singletonList(goArdougne),
+			coins.quantity(30));
+		goArdougneSteps.setDisplayCondition(notGoneToArdougne);
+		allSteps.add(goArdougneSteps);
+
+		PanelDetails mineGoldSteps = new PanelDetails("Mine gold", Collections.singletonList(mineGold),
+			new SkillRequirement(Skill.MINING, 40, true), pickaxe);
+		mineGoldSteps.setDisplayCondition(notMinedGold);
+		allSteps.add(mineGoldSteps);
+
+		PanelDetails swingRopeSteps = new PanelDetails("Swing Rope to Moss Giant Isle", Collections.singletonList(swingRope),
+			new SkillRequirement(Skill.AGILITY, 10, true));
+		swingRopeSteps.setDisplayCondition(notSwungOnRope);
+		allSteps.add(swingRopeSteps);
+
+		PanelDetails pickupSeaweedSteps = new PanelDetails("Pickup 5 Seaweed", Collections.singletonList(pickupSeaweed));
+		pickupSeaweedSteps.setDisplayCondition(notPickedUpSeaweed);
+		allSteps.add(pickupSeaweedSteps);
+
+		PanelDetails goCairnSteps = new PanelDetails("Explore Cairn Isle", Collections.singletonList(goCairn),
+			new SkillRequirement(Skill.AGILITY, 15, true));
+		goCairnSteps.setDisplayCondition(notGoneToCairn);
+		allSteps.add(goCairnSteps);
+
+		PanelDetails killJogreSteps = new PanelDetails("Kill Jogre in Pothole Dungeon", Collections.singletonList(enterPothole));
+		killJogreSteps.setDisplayCondition(notKilledJogre);
+		allSteps.add(killJogreSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

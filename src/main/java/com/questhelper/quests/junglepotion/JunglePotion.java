@@ -198,7 +198,7 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		getVolenciaMoss = new ObjectStep(this, ObjectID.ROCK_2581, new WorldPoint(2851, 3036, 0),
 			"Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
-		getVolenciaMoss.addText("If you plan on doing Fairy Tail I then take an extra.");
+		getVolenciaMoss.addText("If you plan on doing Fairy Tale I then take an extra.");
 		return getVolenciaMoss;
 	}
 
@@ -275,9 +275,9 @@ public class JunglePotion extends BasicQuestHelper
 			Arrays.asList(getSitoFoil, cleanAndReturnSitoFoil));
 		steps.add(sitoFoilpanel);
 
-		PanelDetails volcaniaMossPanel = new PanelDetails("Volcania Moss",
+		PanelDetails volenciaMossPanel = new PanelDetails("Volencia Moss",
 			Arrays.asList(getVolenciaMoss, cleanAndReturnVolenciaMoss));
-		steps.add(volcaniaMossPanel);
+		steps.add(volenciaMossPanel);
 
 		PanelDetails roguesPursePanel = new PanelDetails("Rogues Purse",
 			Arrays.asList(enterCave, getRoguePurseHerb, cleanAndReturnRoguesPurse));

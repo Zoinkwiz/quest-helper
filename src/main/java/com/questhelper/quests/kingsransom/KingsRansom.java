@@ -215,7 +215,8 @@ public class KingsRansom extends BasicQuestHelper
 		blackKnightHelmWorn = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true);
 
 		animateRock = new ItemRequirement("Animate rock scroll", ItemID.ANIMATE_ROCK_SCROLL);
-		animateRock.setTooltip("If you don't have one, you can get another from Wizard Cromperty in Ardougne");
+		animateRock.setTooltip("If you don't have one, you can get another from Wizard Cromperty in Ardougne during " +
+			"the quest");
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
 
@@ -436,10 +437,16 @@ public class KingsRansom extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain)));
-		allSteps.add(new PanelDetails("Freeing Anna", Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison, callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial)));
-		allSteps.add(new PanelDetails("Saving Merlin and Knights", Arrays.asList(enterStatue, talkToMerlin, reachForVent, useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable), grabOrLockpick));
-		allSteps.add(new PanelDetails("Saving Arthur", Arrays.asList(talkToCromperty, enterFortress, enterWallInFortress, goDownToArthur, freeArthur, talkToArthur, talkToArthurInCamelot), bronzeMed, ironChain, blackKnightHelm, blackKnightBody, blackKnightLeg, granite));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper,
+			goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain)));
+		allSteps.add(new PanelDetails("Freeing Anna", Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison,
+			callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial)));
+		allSteps.add(new PanelDetails("Saving Merlin and Knights", Arrays.asList(enterStatue, talkToMerlin, reachForVent,
+			useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable, talkToCromperty),
+			grabOrLockpick));
+		allSteps.add(new PanelDetails("Saving Arthur", Arrays.asList(enterFortress, enterWallInFortress, goDownToArthur,
+			freeArthur, talkToArthur, talkToArthurInCamelot), bronzeMed, ironChain, blackKnightHelm, blackKnightBody,
+			blackKnightLeg, granite, animateRock));
 
 		return allSteps;
 	}

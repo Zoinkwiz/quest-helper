@@ -217,8 +217,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 			"Speak with the Foreman.");
 		freeBlast.addDialogSteps("What?", "Can I use the furnace to smelt ore?", "I have level 60!");
 
-		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
-			"Talk to Fossegrimen South of Rellekka to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
@@ -241,7 +241,10 @@ public class FremennikHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.SMITHING, 60, false));
 		req.add(new SkillRequirement(Skill.THIEVING, 75, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 56, true));
-		req.add(new ComplexRequirement("Normal and Lunar spellbooks", normalBook, lunarBook));
+		req.add(new ComplexRequirement("Normal and Lunar spellbooks",
+			new SpellbookRequirement(Spellbook.NORMAL),
+			new SpellbookRequirement(Spellbook.LUNAR))
+		);
 		return req;
 	}
 

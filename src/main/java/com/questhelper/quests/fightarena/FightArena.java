@@ -62,13 +62,13 @@ public class FightArena extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear;
 
-	Requirement hasKhazardArmour, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
+	Requirement hasKhazardArmour, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer, inCell;
 
 	QuestStep startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew, getCellKeys, openCell, talkToSammy, killOgre,
 		talkToKhazard, talkToHengrad, talkToSammyForScorpion, killScorpion, talkToSammyForBouncer, killBouncer, leaveArena, endQuest;
 
 	//Zones
-	Zone arena1;
+	Zone arena1, cell;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -101,16 +101,15 @@ public class FightArena extends BasicQuestHelper
 
 		ConditionalStep killOgreSteps = new ConditionalStep(this, talkToSammy);
 		killOgreSteps.addStep(new Conditions(inArenaWithOgre), killOgre);
-		steps.put(6, killOgre);
+		steps.put(6, killOgreSteps);
 
-		ConditionalStep inPrisonSteps = new ConditionalStep(this, talkToHengrad);
-		inPrisonSteps.addStep(new Conditions(inArena), talkToKhazard);
-		steps.put(7, inPrisonSteps);
-		steps.put(8, inPrisonSteps);
+		steps.put(7, talkToKhazard); // Step not actually seen, 6->8 when kill Ogre
+		steps.put(8, talkToKhazard);
 
-		ConditionalStep killScorpionSteps = new ConditionalStep(this, talkToSammyForScorpion);
-		killScorpionSteps.addStep(new Conditions(inArenaWithScorpion), killScorpion);
-		steps.put(9, killScorpionSteps);
+		ConditionalStep inPrisonAndKillScorpionSteps = new ConditionalStep(this, talkToSammyForScorpion);
+		inPrisonAndKillScorpionSteps.addStep(inCell, talkToHengrad);
+		inPrisonAndKillScorpionSteps.addStep(new Conditions(inArenaWithScorpion), killScorpion);
+		steps.put(9, inPrisonAndKillScorpionSteps);
 
 		ConditionalStep killBouncerSteps = new ConditionalStep(this, talkToSammyForBouncer);
 		killBouncerSteps.addStep(new Conditions(inArenaWithBouncer), killBouncer);
@@ -143,11 +142,13 @@ public class FightArena extends BasicQuestHelper
 	public void setupZones()
 	{
 		arena1 = new Zone(new WorldPoint(2583, 3152, 0), new WorldPoint(2606, 3170, 0));
+		cell = new Zone(new WorldPoint(2597, 3142, 0), new WorldPoint(2601, 3144, 0));
 	}
 
 	public void setupConditions()
 	{
 		hasKhazardArmour = new ItemRequirements(khazardHelmet, khazardPlatebody);
+		inCell = new ZoneRequirement(cell);
 		inArena = new ZoneRequirement(arena1);
 		inArenaWithOgre = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_OGRE, arena1));
 		inArenaWithScorpion = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_SCORPION, arena1));

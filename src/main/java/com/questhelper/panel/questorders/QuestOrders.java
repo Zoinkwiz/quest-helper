@@ -218,6 +218,7 @@ public class QuestOrders
 		QuestHelperQuest.MOURNINGS_END_PART_II,
 		QuestHelperQuest.LUNAR_DIPLOMACY,
 		QuestHelperQuest.KINGS_RANSOM,
+		QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS,
 		QuestHelperQuest.SWAN_SONG,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
 		//QuestHelperQuest.WILDERNESS_MEDIUM,

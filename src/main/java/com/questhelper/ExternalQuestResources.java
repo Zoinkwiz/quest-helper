@@ -187,6 +187,9 @@ public enum ExternalQuestResources {
 	IN_SEARCH_OF_KNOWLEDGE("https://oldschool.runescape.wiki/w/In_Search_of_Knowledge"),
 	DADDYS_HOME("https://oldschool.runescape.wiki/w/Daddy%27s_Home"),
 
+	// Fake miniquests
+	KNIGHT_WAVES_TRAINING_GROUNDS("https://oldschool.runescape.wiki/w/Camelot_training_room"),
+
 	// Achievement diaries
 
 	// Ardougne

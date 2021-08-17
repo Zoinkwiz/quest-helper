@@ -72,16 +72,16 @@ public class FremennikElite extends ComplexStateQuestHelper
 	// Steps
 	QuestStep dragonAmulet, astralRunes, rellRooftop, claimReward, moveToNeit, moveToDagKings, moveToGodWars,
 		moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6,
-		moveToDagCave7,  moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12,
-		moveToDagCave13,  moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToLunarIsle, moveToPirates,
+		moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12,
+		moveToDagCave13, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToLunarIsle, moveToPirates,
 		moveToCaptain, moveToCaptain2, moveToAltar1, moveToAltar2;
 
 	ObjectStep dropPetRock;
 
 	NpcStep dagKings, godwarsGenerals, spiritualMage;
 
-	Zone godWars, waterbirthIsland, dagCave, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave1, dagCave3,  dagCave4
-		, dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCaveKings, neitiznot,
+	Zone godWars, waterbirthIsland, dagCave, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave1, dagCave3, dagCave4,
+		dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCaveKings, neitiznot,
 		pirates, lunarIsle, godWars2, godWars3, pirates2, pirates3, lunarIsle2, lunarIsle3;
 
 	ZoneRequirement inGodwars, inWaterbirthIsland, inDagCave, inDagCave_2, inDagCave_3, inDagCave_4, inDagCave2,

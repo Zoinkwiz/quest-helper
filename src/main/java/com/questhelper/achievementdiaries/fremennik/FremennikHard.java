@@ -67,14 +67,14 @@ public class FremennikHard extends ComplexStateQuestHelper
 	Requirement normalBook, lunarBook;
 
 	// Steps
-	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, miscSupport, tpWaterbirth, freeBlast
-		,  moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc, moveToMine, moveToBlast, claimReward;
+	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, miscSupport, tpWaterbirth, freeBlast,
+		moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc,
+		moveToMine, moveToBlast, claimReward;
 
 	Zone misc, neitiznot, keldagrim, jatizso, caveArea, riverArea, varrockArea, hunterArea, rellekkaArea, mineArea,
 		blastArea;
 
-	ZoneRequirement inMisc, inNeitiznot, inKeldagrim, inJatizso, inCaveArea, inRiverArea, inVarrockArea, inHunterArea
-		,  inRellekka, inMineArea, inBlastArea;
+	ZoneRequirement inMisc, inNeitiznot, inKeldagrim, inJatizso, inCaveArea, inRiverArea, inVarrockArea, inHunterArea, inRellekka, inMineArea, inBlastArea;
 
 	@Override
 	public QuestStep loadStep()

@@ -69,14 +69,16 @@ import com.questhelper.steps.QuestStep;
 public class VarrockElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement sAtk4, sStr4, sDef4, torstol, natRune, astRune, earthRune, coins, mahoLog, cookingGuild, rawPie, runeBar, feather, hammer, ess, earthTali, runeDartTip;
+	ItemRequirement sAtk4, sStr4, sDef4, torstol, natRune, astRune, earthRune, coins, mahoLog, cookingGuild, rawPie,
+		runeBar, feather, hammer, ess, earthTali, runeDartTip;
 
 	// Quests required
 	Requirement dreamMentor, runeMyster, touristTrap;
 
 	Requirement notSuperCombat, notPlankMake, notSummerPie, notRuneDart, not100Earth;
 
-	QuestStep claimReward, moveToBank, superCombat, moveToLumb, plankMake, moveToCookingGuild, summerPie, moveToEarthRune, earthRune100, dartTip, runeDart;
+	QuestStep claimReward, moveToBank, superCombat, moveToLumb, plankMake, moveToCookingGuild, summerPie,
+		moveToEarthRune, earthRune100, dartTip, runeDart;
 
 	Zone bank, lumb, cGuild, earth;
 
@@ -128,7 +130,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneDart);
 		runeDartTip = new ItemRequirement("Rune dart tip", ItemID.RUNE_DART_TIP);
 		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(not100Earth);
-		earthTali = new ItemRequirement("Access to Earth altar", ItemCollections.getEarthAltar()).showConditioned(not100Earth);
+		earthTali =
+			new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.getEarthAltar()).showConditioned(not100Earth);
 
 		inBank = new ZoneRequirement(bank);
 		inLumb = new ZoneRequirement(lumb);
@@ -158,14 +161,14 @@ public class VarrockElite extends ComplexStateQuestHelper
 		moveToCookingGuild = new ObjectStep(this, ObjectID.DOOR_24958, new WorldPoint(3143, 3443, 0),
 			"Enter the cooking guild.", cookingGuild.equipped());
 		summerPie = new ObjectStep(this, ObjectID.RANGE_7183, new WorldPoint(3146, 3453, 0),
-			"Cook the pie.");
+			"Cook the pie.", rawPie);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
 			"Travel to the earth altar or go through the abyss. ", earthTali);
 		earthRune100 = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft earth rune.", ess.quantity(25));
 		dartTip = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3188, 3426, 0),
 			"Make rune dart tips on the anvil.", runeBar);
-		runeDart = new ItemStep(this, "", runeDartTip.highlighted(), feather.highlighted());
+		runeDart = new ItemStep(this, "", runeDartTip.highlighted(), feather.quantity(10).highlighted());
 
 		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
@@ -175,7 +178,9 @@ public class VarrockElite extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(sAtk4, sStr4, sDef4, torstol, natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20), cookingGuild, rawPie, runeBar, feather, hammer, ess.quantity(25), earthTali);
+		return Arrays.asList(sAtk4, sStr4, sDef4, torstol, natRune.quantity(20), astRune.quantity(40),
+			earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20), cookingGuild, rawPie, runeBar,
+			feather, hammer, ess.quantity(25), earthTali);
 	}
 
 	@Override
@@ -205,7 +210,36 @@ public class VarrockElite extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(dartTip, runeDart), runeBar, feather, hammer));
 		allSteps.add(new PanelDetails("Plank Make", Arrays.asList(moveToLumb, plankMake), natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20)));
 		allSteps.add(new PanelDetails("Craft 100 Earth runes", Arrays.asList(moveToEarthRune, earthRune100), ess.quantity(25), earthTali));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+
+		PanelDetails superCombatSteps = new PanelDetails("Make Super Combat", Arrays.asList(moveToBank, superCombat),
+			new SkillRequirement(Skill.HERBLORE, 90), sAtk4, sStr4, sDef4, torstol);
+		superCombatSteps.setDisplayCondition(notSuperCombat);
+		allSteps.add(superCombatSteps);
+
+		PanelDetails summerPieSteps = new PanelDetails("Summer Pie", Arrays.asList(moveToCookingGuild, summerPie),
+			new SkillRequirement(Skill.COOKING, 95), cookingGuild, rawPie);
+		summerPieSteps.setDisplayCondition(notSummerPie);
+		allSteps.add(summerPieSteps);
+
+		PanelDetails runeDartsSteps = new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(dartTip,
+			runeDart), new SkillRequirement(Skill.FLETCHING, 81), new SkillRequirement(Skill.SMITHING, 89),
+			touristTrap, runeBar, feather.quantity(10), hammer);
+		runeDartsSteps.setDisplayCondition(notRuneDart);
+		allSteps.add(runeDartsSteps);
+
+		PanelDetails plankMakeSteps = new PanelDetails("Plank Make", Arrays.asList(moveToLumb, plankMake),
+			new SkillRequirement(Skill.MAGIC, 86), dreamMentor, natRune.quantity(20), astRune.quantity(40),
+			earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20));
+		plankMakeSteps.setDisplayCondition(notPlankMake);
+		allSteps.add(plankMakeSteps);
+
+		PanelDetails earth100Steps = new PanelDetails("Craft 100 Earth runes", Arrays.asList(moveToEarthRune,
+			earthRune100), new SkillRequirement(Skill.RUNECRAFT, 78), ess.quantity(25), earthTali);
+		earth100Steps.setDisplayCondition(not100Earth);
+		allSteps.add(earth100Steps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

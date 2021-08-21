@@ -99,6 +99,8 @@ public class ClientOfKourend extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		feather = new ItemRequirement("Feather", ItemID.FEATHER);
+		feather.addAlternates(ItemID.BLUE_FEATHER, ItemID.ORANGE_FEATHER, ItemID.RED_FEATHER, ItemID.YELLOW_FEATHER,
+			ItemID.EAGLE_FEATHER, ItemID.STRIPY_FEATHER);
 		feather.setHighlightInInventory(true);
 		enchantedScroll = new ItemRequirement("Enchanted scroll", ItemID.ENCHANTED_SCROLL);
 		enchantedScroll.setHighlightInInventory(true);

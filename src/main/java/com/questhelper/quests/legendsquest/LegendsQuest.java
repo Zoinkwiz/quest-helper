@@ -80,7 +80,7 @@ public class LegendsQuest extends BasicQuestHelper
 		goldBowlHighlighted, combatGear, goldBowlBlessed, goldBowlFull, goldBowlFullHighlighted, reed, macheteHighlighted, yommiSeeds, germinatedSeeds,
 		germinatedSeedsHighlighted, runeOrDragonAxe, ardrigal, snakeWeed, vialOfWater, unpoweredOrb, ardrigalMixture, braveryPotion, braveryPotionHighlighted,
 		snakeMixture, rope, elemental30, cosmic3, ropeHighlighted, lumpCrystal, chunkCrystal, hunkCrystal, heartCrystal, heartCrystal2, darkDagger, glowingDagger,
-		force, forceHighlighted, yommiTotem, yommiTotemHighlighted, gildedTotem, completeNotes;
+		force, forceHighlighted, yommiTotem, yommiTotemHighlighted, gildedTotem, completeNotes, anyNotes;
 
 	ItemRequirements chargeOrbRunes;
 
@@ -386,11 +386,9 @@ public class LegendsQuest extends BasicQuestHelper
 	private void setupItemRequirements()
 	{
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		machete = new ItemRequirement("A machete", ItemID.MACHETE);
-		machete.addAlternates(ItemID.JADE_MACHETE, ItemID.OPAL_MACHETE, ItemID.RED_TOPAZ_MACHETE);
+		machete = new ItemRequirement("A machete", ItemCollections.getMachete());
 
-		macheteHighlighted = new ItemRequirement("A machete", ItemID.MACHETE);
-		macheteHighlighted.addAlternates(ItemID.JADE_MACHETE, ItemID.OPAL_MACHETE, ItemID.RED_TOPAZ_MACHETE);
+		macheteHighlighted = new ItemRequirement("A machete", ItemCollections.getMachete());
 		macheteHighlighted.setHighlightInInventory(true);
 
 		radimusNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
@@ -407,6 +405,9 @@ public class LegendsQuest extends BasicQuestHelper
 		completeNotesHighlighted = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
 		completeNotesHighlighted.setTooltip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
 		completeNotesHighlighted.setHighlightInInventory(true);
+
+		anyNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
+		anyNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
 
 		sketch = new ItemRequirement("Sketch", ItemID.SKETCH);
 		sketch.setTooltip("You can get another by summoning Gujuo with the bull roarer again");
@@ -931,11 +932,13 @@ public class LegendsQuest extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGuard, talkToRadimus)));
-		allSteps.add(new PanelDetails("Mapping Khazari", Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes), axe, machete, papyrus3, charcoal3, radimusNotes));
-		allSteps.add(new PanelDetails("Contacting the locals", Arrays.asList(enterJungleWithRoarer, spinBull, talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain),
-			bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
+		allSteps.add(new PanelDetails("Mapping Khazari", Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes), axe, machete, papyrus3, charcoal3, anyNotes));
+		allSteps.add(new PanelDetails("Contacting the locals", Arrays.asList(enterJungleWithRoarer, spinBull, talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain,
+			talkToGujuoAgain),
+			anyNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
 		PanelDetails runePuzzlePanel = new PanelDetails("Unlocking the caves", Arrays.asList(enterMossyRockAgain, enterBookcase, enterGate1, enterGate2, searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2),
-			bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond);
+			completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade,
+			topaz,	sapphire, emerald, ruby, diamond);
 		runePuzzlePanel.setLockingStep(runePuzzle);
 		allSteps.add(runePuzzlePanel);
 
@@ -950,7 +953,8 @@ public class LegendsQuest extends BasicQuestHelper
 				fightNezikchenedInFire, talkToUngadulu), completeNotes, bullRoarer, goldBar2, hammer, axe, machete, combatGear));
 
 		allSteps.add(new PanelDetails("Attempted planting", Arrays.asList(
-		useBowlOnSeeds, leaveCaveWithSeed, useMacheteOnReedsAgain, useReedOnPoolAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds), machete, axe, goldBowlFull, yommiSeeds, bullRoarer));
+		useBowlOnSeeds, leaveCaveWithSeed, useMacheteOnReedsAgain, useReedOnPoolAgain, spinBullAfterSeeds,
+			talkToGujuoAfterSeeds), completeNotes, machete, axe, goldBowlFull, yommiSeeds, bullRoarer));
 
 		allSteps.add(new PanelDetails("To the source", Arrays.asList(
 			addArdrigal, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource, enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, climbDownWinch),

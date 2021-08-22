@@ -82,7 +82,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	ItemRequirement flail, saw, axe, ghostSpeakAmulet, combatGear, food;
 
 	// Recommended Items
-	ItemRequirement drakensMedallion, antiVenom, antipoison, fairyRings;
+	ItemRequirement drakansMedallion, antiVenom, antipoison, fairyRings;
 
 	// Quest Items
 	ItemRequirement cryptKey, ranisHead, stickyNote, sulphuricAcid, strangeSpiderEggs, hesporiBark;
@@ -272,10 +272,10 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		returnToSpiderCave.addDialogSteps("Yes.");
 		climbStairsDownSisterhoodF0 = new ObjectStep(this, ObjectID.STAIRS_37833, new WorldPoint(3826, 9778, 2),
 			"Return to the spider cave south of Port Phasmatys then use the Sulphuric acid on the Egg sac at the end of the cave. " +
-				"Use the Draken's Medallion Slepe tele to exit the Sisterhood Sanctuary quickly.", sulphuricAcid);
+				"Use the Drakan's Medallion Slepe tele to exit the Sisterhood Sanctuary quickly.", sulphuricAcid);
 		exitSisterhoodSanctuary = new ObjectStep(this, ObjectID.STAIRS_32638, new WorldPoint(3739, 9701, 1),
 			"Return to the spider cave south of Port Phasmatys then use the Sulphuric acid on the Egg sac at the end of the cave. " +
-				"Use the Draken's Medallion Slepe tele to exit the Sisterhood Sanctuary quickly.", sulphuricAcid);
+				"Use the Drakan's Medallion Slepe tele to exit the Sisterhood Sanctuary quickly.", sulphuricAcid);
 		List<WorldPoint> sisterhoodSanctuaryLinesReversed = new ArrayList<>(sisterhoodSanctuaryLines);
 		Collections.reverse(sisterhoodSanctuaryLinesReversed);
 		((ObjectStep) exitSisterhoodSanctuary).setLinePoints(sisterhoodSanctuaryLinesReversed);
@@ -287,7 +287,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 		returnToMysteriousStrangerWithEggs = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
 			"Speak with the Mysterious Stranger in Ver Sinhaza again with the spider eggs retrieved from the Egg sac. " +
-				"Use the Draken's Medallion tele to get to Ver Sinhaza quickly.", strangeSpiderEggs);
+				"Use the Drakan's Medallion tele to get to Ver Sinhaza quickly.", strangeSpiderEggs);
 		returnToMysteriousStrangerWithEggs.addDialogSteps("I found some of those eggs.");
 		((NpcStep) returnToMysteriousStrangerWithEggs).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10875);
 
@@ -331,7 +331,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 		chopHesporiForBark = new ObjectStep(this, ObjectID.HESPORI_42592, new WorldPoint(3507, 3357, 0), "Chop Hespori to obtain Hespori bark.", axe);
 		returnToMysteriousStrangerWithBark = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
-			"Speak with the Mysterious Stranger in Ver Sinhaza again with the Hespori bark. Use the Draken's Medallion tele to get to Ver Sinhaza quickly.", hesporiBark);
+			"Speak with the Mysterious Stranger in Ver Sinhaza again with the Hespori bark. Use the Drakan's Medallion tele to get to Ver Sinhaza quickly.", hesporiBark);
 		returnToMysteriousStrangerWithBark.addDialogSteps("I found a hespori.");
 		((NpcStep) returnToMysteriousStrangerWithBark).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10875);
 
@@ -367,7 +367,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood());
-		drakensMedallion = new ItemRequirement("Draken's Medallion", ItemID.DRAKANS_MEDALLION, 1);
+		drakansMedallion = new ItemRequirement("Drakan's Medallion", ItemID.DRAKANS_MEDALLION, 1);
 		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.getAntivenoms(), 1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), 1);
 		fairyRings = new ItemRequirement("Access to fairy rings", ItemCollections.getFairyStaff(), 1);
@@ -428,7 +428,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(drakensMedallion, antiVenom, antipoison, fairyRings);
+		return Arrays.asList(drakansMedallion, antiVenom, antipoison, fairyRings);
 	}
 
 	@Override
@@ -459,7 +459,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Memories of a \"Friend\"", Arrays.asList(speakWithMysteriousStrangerToStart, enterVerSinhazaCrypts, killVyrewatchForKey, unlockTheCryptGate,
 			searchTheCoffinInVerSinhazaCrypts, speakWithMysteriousStrangerWithRanisHead, speakMoreWithMysteriousStranger, enterSpiderCave, searchSpiderCaveSkeleton,
 			readStickyNote, speakWithDaerKrand, returnToSpiderCave, returnToMysteriousStrangerWithEggs,
-			mysteriousStrangerCutscenes), combatGear, food.quantity(20), flail, saw, antiVenom, drakensMedallion));
+			mysteriousStrangerCutscenes), combatGear, food.quantity(20), flail, saw, antiVenom, drakansMedallion));
 
 		allSteps.add(new PanelDetails("In Touch with Nature", Arrays.asList(goToNatureGrotto, goToHesporiFight, fightHespori,
 			chopHesporiForBark, returnToMysteriousStrangerWithBark, mysteriousStrangerCutscenes2), combatGear,

@@ -164,7 +164,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			return true;
 		}
 
-		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r -> r.check(client));
+		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r ->
+			!r.shouldConsiderForFilter() || r.check(client));
 	}
 
 	@Override

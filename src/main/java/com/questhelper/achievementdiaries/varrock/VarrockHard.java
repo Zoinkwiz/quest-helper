@@ -123,16 +123,16 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(notPaddewwaTP, paddewwaTP);
 		doHard.addStep(new Conditions(notPipe, inSewer), obsPipe);
 		doHard.addStep(notPipe, moveToEdge);
-		doHard.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre), skullSceptre);
-		doHard.addStep(new Conditions(notSkullSceptre, runedSceptre, strangeSkull), makeSkullSceptre);
-		doHard.addStep(new Conditions(notSkullSceptre, botSceptre, topSceptre), makeSceptre);
-		doHard.addStep(new Conditions(notSkullSceptre, leftSkull, rightSkull), makeSkull);
+		doHard.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre.alsoCheckBank(questBank)), skullSceptre);
+		doHard.addStep(new Conditions(notSkullSceptre, runedSceptre.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)), makeSkullSceptre);
+		doHard.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), topSceptre), makeSceptre);
+		doHard.addStep(new Conditions(notSkullSceptre, leftSkull.alsoCheckBank(questBank), rightSkull.alsoCheckBank(questBank)), makeSkull);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold4), killAnkou);
-		doHard.addStep(new Conditions(notSkullSceptre, rightSkull, inStronghold3), moveToStronghold4);
+		doHard.addStep(new Conditions(notSkullSceptre, rightSkull.alsoCheckBank(questBank), inStronghold3), moveToStronghold4);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold3), killCatablepon);
-		doHard.addStep(new Conditions(notSkullSceptre, botSceptre, inStronghold2), moveToStronghold3);
+		doHard.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), inStronghold2), moveToStronghold3);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold2), killFlesh);
-		doHard.addStep(new Conditions(notSkullSceptre, rightSkull, inStronghold1), moveToStronghold2);
+		doHard.addStep(new Conditions(notSkullSceptre, rightSkull.alsoCheckBank(questBank), inStronghold1), moveToStronghold2);
 		doHard.addStep(new Conditions(notSkullSceptre, inStronghold1), killMino);
 		doHard.addStep(notSkullSceptre, moveToStronghold);
 
@@ -162,10 +162,16 @@ public class VarrockHard extends ComplexStateQuestHelper
 		yewChecked = new VarbitRequirement(4771, 46);
 		yewStump = new VarbitRequirement(4771, 47);
 
+		// We consider the combined sceptre bits for logic checks (if have runed sceptre, don't need bottom for example)
 		botSceptre = new ItemRequirement("Bottom of sceptre", ItemID.BOTTOM_OF_SCEPTRE).showConditioned(notSkullSceptre);
+		botSceptre.addAlternates(ItemID.RUNED_SCEPTRE);
 		topSceptre = new ItemRequirement("Top of sceptre", ItemID.TOP_OF_SCEPTRE).showConditioned(notSkullSceptre);
+		topSceptre.addAlternates(ItemID.RUNED_SCEPTRE);
 		leftSkull = new ItemRequirement("Left skull half", ItemID.LEFT_SKULL_HALF).showConditioned(notSkullSceptre);
+		leftSkull.addAlternates(ItemID.STRANGE_SKULL);
 		rightSkull = new ItemRequirement("Right skull half", ItemID.RIGHT_SKULL_HALF).showConditioned(notSkullSceptre);
+		rightSkull.addAlternates(ItemID.STRANGE_SKULL);
+
 		strangeSkull = new ItemRequirement("Strange skull", ItemID.STRANGE_SKULL).showConditioned(notSkullSceptre);
 		runedSceptre = new ItemRequirement("Runed sceptre", ItemID.RUNED_SCEPTRE).showConditioned(notSkullSceptre);
 		combinedSkullSceptre = new ItemRequirement("Skull sceptre", ItemID.SKULL_SCEPTRE).showConditioned(notSkullSceptre);

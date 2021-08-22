@@ -39,6 +39,9 @@ public class ChatMessageRequirement extends ConditionForStep
 
 	private Requirement condition;
 
+	@Setter
+	private ChatMessageRequirement invalidateRequirement;
+
 	private final List<String> messages;
 
 	public ChatMessageRequirement(String... message)
@@ -58,7 +61,8 @@ public class ChatMessageRequirement extends ConditionForStep
 		return hasReceivedChatMessage;
 	}
 
-	public void validateCondition(Client client, String chatMessage) {
+	public void validateCondition(Client client, String chatMessage)
+	{
 		if (!hasReceivedChatMessage)
 		{
 			if (messages.contains(chatMessage))
@@ -67,6 +71,15 @@ public class ChatMessageRequirement extends ConditionForStep
 				{
 					hasReceivedChatMessage = true;
 				}
+			}
+		}
+		else
+		{
+			invalidateRequirement.validateCondition(client, chatMessage);
+			if (invalidateRequirement.check(client))
+			{
+				invalidateRequirement.setHasReceivedChatMessage(false);
+				setHasReceivedChatMessage(false);
 			}
 		}
 	}

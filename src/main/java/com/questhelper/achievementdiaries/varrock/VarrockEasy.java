@@ -30,6 +30,7 @@ import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -78,14 +79,14 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	Requirement runeMysteries;
 
 	Requirement notThessalia, notAubury, notIron, notPlank, notStrongholdSecond, notFence, notNews, notDyingTree,
-		notDogBone, notBowl, notKudos, notTrout, notTeaStall, notEarthRune, notMoreKudos;
+		notDogBone, notBowl, notKudos, notTrout, notTeaStall, notEarthRune, notMoreKudos, madeBowl;
 
 	QuestStep claimReward, thessalia, aubury, iron, plank, moveToStronghold1, moveToStronghold2, fence, dyingTree,
 		news, dogBone, potteryWheel, bowl, kudos, moreKudos, moveToEarthRune, earthRune, trout, teaStall;
 
 	Zone stronghold1, earth;
 
-	ZoneRequirement inStronghold1, inEarth;
+	ZoneRequirement inStronghold1, inEarth, inPotteryRoom;
 
 	@Override
 	public QuestStep loadStep()
@@ -109,7 +110,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notIron, iron);
 		doEasy.addStep(notFence, fence);
 		doEasy.addStep(notTrout, trout);
-		doEasy.addStep(new Conditions(notBowl, unfiredBowl), bowl);
+		doEasy.addStep(new Conditions(notBowl, madeBowl), bowl);
 		doEasy.addStep(notBowl, potteryWheel);
 		doEasy.addStep(new Conditions(LogicType.OR, notStrongholdSecond, inStronghold1), moveToStronghold2);
 		doEasy.addStep(notStrongholdSecond, moveToStronghold1);
@@ -136,11 +137,12 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 		notMoreKudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 50, "50+ Kudos");
 
-		coins = new ItemRequirement("Coins", ItemID.COINS, 150).showConditioned(new Conditions(LogicType.OR, notNews, notPlank));
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 150).showConditioned(new Conditions(LogicType.OR,
+			notNews, notPlank));
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIron);
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notPlank);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notDyingTree);
-		bone = new ItemRequirement("Bones", ItemID.BONE).showConditioned(notDogBone);
+		bone = new ItemRequirement("Bones", ItemCollections.getBones()).showConditioned(notDogBone);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
 		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.getEarthAltar()).showConditioned(notEarthRune);
 		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notEarthRune);
@@ -154,6 +156,19 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 		inStronghold1 = new ZoneRequirement(stronghold1);
 		inEarth = new ZoneRequirement(earth);
+
+		inPotteryRoom = new ZoneRequirement(new Zone(new WorldPoint(3082, 3407, 0), new WorldPoint(3087, 3411, 0)));
+
+		madeBowl = new ChatMessageRequirement(
+			inPotteryRoom,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) madeBowl).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inPotteryRoom),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
 	}
 
 	public void loadZones()
@@ -197,6 +212,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 			"Speak to Curator Haig Halen.", notMoreKudos);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
 			"Travel to the earth altar or go through the abyss. ", earthTali);
+		((ObjectStep) moveToEarthRune).addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft earth rune.", ess);
 		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),

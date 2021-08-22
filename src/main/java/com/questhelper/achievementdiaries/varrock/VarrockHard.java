@@ -329,13 +329,14 @@ public class VarrockHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Collections.singletonList(combatGear);
+		return Arrays.asList(coins.quantity(25800), dashingKeb.quantity(2), axe, lawRune.quantity(2),
+			fireRune, airRune, tinderBox, yewSap, spade);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(food);
+		return Arrays.asList(combatGear, food);
 	}
 
 	@Override

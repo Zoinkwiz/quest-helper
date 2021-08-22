@@ -47,7 +47,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.FREMENNIK_EASY
+	quest = QuestHelperQuest.FREMENNIK_EASY
 )
 
 public class FremennikEasy extends ComplexStateQuestHelper
@@ -70,7 +70,8 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	ObjectStep fillBucket, chopAndBurnOak, mineSilver, smeltSilver, craftTiara;
 
 	QuestStep catchCerulean, changeBoots, browseStonemason,
-		collectSnapeGrass, stealStall, enterTrollStronghold, goneToWaterbirth, goneToKeldagrim, goneToCave, goneToRiver, goneToVarrock, claimReward;
+		collectSnapeGrass, stealStall, enterTrollStronghold, goneToWaterbirth, goneToKeldagrim, goneToCave,
+		goneToRiver, goneToVarrock, claimReward;
 
 	Zone waterbirth, keldagrim, hunterArea, caveArea, riverArea, varrockArea;
 
@@ -256,17 +257,60 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Catch a Cerulean Twitch", Collections.singletonList(catchCerulean), birdSnare));
-		allSteps.add(new PanelDetails("Kill 5 Rock Crabs", Collections.singletonList(killedCrabs), combatGear));
-		allSteps.add(new PanelDetails("Chop and burn", Collections.singletonList(chopAndBurnOak), axe, tinderbox));
-		allSteps.add(new PanelDetails("Fill bucket", Collections.singletonList(fillBucket), bucket));
-		allSteps.add(new PanelDetails("Change boots", Collections.singletonList(changeBoots), fremennikTrials, coins.quantity(500)));
-		allSteps.add(new PanelDetails("Craft Tiara", Arrays.asList(mineSilver, smeltSilver, craftTiara), fremennikTrials, pickaxe, tiaraMould));
-		allSteps.add(new PanelDetails("Collect snape grass", Arrays.asList(goneToWaterbirth, collectSnapeGrass), fremennikTrials));
-		allSteps.add(new PanelDetails("Enter troll stronghold", Collections.singletonList(enterTrollStronghold), trollStronghold, deathPlateau, climbingBoots));
-		allSteps.add(new PanelDetails("Browse Stonemason's store", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, browseStonemason), giantDwarf));
-		allSteps.add(new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, stealStall), giantDwarf));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+
+		PanelDetails ceruleanTwitchSteps = new PanelDetails("Catch a Cerulean Twitch", Collections.singletonList(catchCerulean),
+			birdSnare);
+		ceruleanTwitchSteps.setDisplayCondition(notCatchCerulean);
+		allSteps.add(ceruleanTwitchSteps);
+
+		PanelDetails rockCrabSteps = new PanelDetails("Kill 5 Rock Crabs", Collections.singletonList(killedCrabs),
+			combatGear, food);
+		rockCrabSteps.setDisplayCondition(notKilledCrabs);
+		allSteps.add(rockCrabSteps);
+
+		PanelDetails oakSteps = new PanelDetails("Chop and burn", Collections.singletonList(chopAndBurnOak),
+			new SkillRequirement(Skill.FIREMAKING, 15), new SkillRequirement(Skill.WOODCUTTING, 15),
+			axe, tinderbox);
+		oakSteps.setDisplayCondition(notChopAndBurnOak);
+		allSteps.add(oakSteps);
+
+		PanelDetails bucketSteps = new PanelDetails("Fill bucket", Collections.singletonList(fillBucket), bucket);
+		bucketSteps.setDisplayCondition(notFillBucket);
+		allSteps.add(bucketSteps);
+
+		PanelDetails changeBootsSteps = new PanelDetails("Change boots", Collections.singletonList(changeBoots),
+			fremennikTrials, coins.quantity(500));
+		changeBootsSteps.setDisplayCondition(notChangeBoots);
+		allSteps.add(changeBootsSteps);
+
+		PanelDetails tiaraSteps = new PanelDetails("Craft Tiara", Arrays.asList(mineSilver, smeltSilver, craftTiara),
+			new SkillRequirement(Skill.CRAFTING, 23), new SkillRequirement(Skill.MINING, 20),
+			new SkillRequirement(Skill.SMITHING, 20), fremennikTrials, pickaxe, tiaraMould);
+		tiaraSteps.setDisplayCondition(notCraftTiara);
+		allSteps.add(tiaraSteps);
+
+		PanelDetails snapeGrassSteps = new PanelDetails("Collect snape grass", Arrays.asList(goneToWaterbirth,
+			collectSnapeGrass), fremennikTrials);
+		snapeGrassSteps.setDisplayCondition(notCollectSnapeGrass);
+		allSteps.add(snapeGrassSteps);
+
+		PanelDetails trollStrongholdSteps = new PanelDetails("Enter troll stronghold",
+			Collections.singletonList(enterTrollStronghold), trollStronghold, deathPlateau, climbingBoots);
+		trollStrongholdSteps.setDisplayCondition(notEnterTrollStronghold);
+		allSteps.add(trollStrongholdSteps);
+
+		PanelDetails browseStonemasonSteps = new PanelDetails("Browse Stonemason's store",
+			Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, browseStonemason), giantDwarf);
+		browseStonemasonSteps.setDisplayCondition(notBrowseStonemason);
+		allSteps.add(browseStonemasonSteps);
+
+		PanelDetails bakersStallSteps = new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrim,
+			goneToCave, goneToRiver, stealStall), giantDwarf);
+		bakersStallSteps.setDisplayCondition(notStealStall);
+		allSteps.add(bakersStallSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

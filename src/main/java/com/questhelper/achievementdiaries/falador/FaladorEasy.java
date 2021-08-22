@@ -1,51 +1,51 @@
-/*
- * Copyright (c) 2021, Kerpackie <https://github.com/Kerpackie/>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+	/*
+	 * Copyright (c) 2021, Kerpackie <https://github.com/Kerpackie/>
+	 * All rights reserved.
+	 *
+	 * Redistribution and use in source and binary forms, with or without
+	 * modification, are permitted provided that the following conditions are met:
+	 *
+	 * 1. Redistributions of source code must retain the above copyright notice, this
+	 *    list of conditions and the following disclaimer.
+	 * 2. Redistributions in binary form must reproduce the above copyright notice,
+	 *    this list of conditions and the following disclaimer in the documentation
+	 *    and/or other materials provided with the distribution.
+	 *
+	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+	 * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+	 * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	 * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+	 * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+	 * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+	 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+	 * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+	 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+	 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	 */
 
-package com.questhelper.achievementdiaries.falador;
+	package com.questhelper.achievementdiaries.falador;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.steps.*;
+	import com.questhelper.ItemCollections;
+	import com.questhelper.QuestHelperQuest;
+	import com.questhelper.Zone;
+	import com.questhelper.banktab.BankSlotIcons;
+	import com.questhelper.questhelpers.ComplexStateQuestHelper;
+	import com.questhelper.requirements.Requirement;
+	import com.questhelper.requirements.ZoneRequirement;
+	import com.questhelper.requirements.conditional.Conditions;
+	import com.questhelper.requirements.player.SkillRequirement;
+	import com.questhelper.requirements.quest.QuestRequirement;
+	import com.questhelper.requirements.util.LogicType;
+	import com.questhelper.requirements.var.VarplayerRequirement;
+	import com.questhelper.steps.*;
 
-import java.util.*;
+	import java.util.*;
 
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.panel.PanelDetails;
+	import net.runelite.api.*;
+	import net.runelite.api.coords.WorldPoint;
+	import com.questhelper.requirements.item.ItemRequirement;
+	import com.questhelper.QuestDescriptor;
+	import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.FALADOR_EASY
@@ -279,18 +279,65 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Fill Water Bucket:", Collections.singletonList(fillWater), bucket));
-		allSteps.add(new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut), coins2000));
-		allSteps.add(new PanelDetails("Climb West Wall", Collections.singletonList(climbWall)));
-		allSteps.add(new PanelDetails("Kill The Duck", Collections.singletonList(killDuck), combatGear));
-		allSteps.add(new PanelDetails("Motherlode Repairs", Arrays.asList(enterDwarvenMines, enterCaveToMotherlodeMine, fixMotherloadMine), pickaxe, hammer));
-		allSteps.add(new PanelDetails("Sarah's Farming Shop", Collections.singletonList(browseSarahFarmingShop)));
-		allSteps.add(new PanelDetails("To the Holy Land!", Collections.singletonList(goEntrana)));
-		allSteps.add(new PanelDetails("Get A Security Book", Arrays.asList(climbLadderPortSarimJail, getSecurityBook)));
-		allSteps.add(new PanelDetails("Blurite Limbs", Arrays.asList(getPickaxe, enterDungeon, mineBlurite, smeltBlurite, smithBluriteLimbs)));
-		allSteps.add(new PanelDetails("Mind Tiara", Arrays.asList(enterMindAltar, getMindTiara)));
-		allSteps.add(new PanelDetails("Family Crest", Arrays.asList(climbLadderWhiteKnightCastle, discoverFamilyCrest)));
-		allSteps.add(new PanelDetails("Congratulations!", Collections.singletonList(claimReward)));
+
+		PanelDetails fillBucketSteps = new PanelDetails("Fill Water Bucket", Collections.singletonList(fillWater),
+			bucket);
+		fillBucketSteps.setDisplayCondition(notFilledWater);
+		allSteps.add(fillBucketSteps);
+
+		PanelDetails haircutSteps = new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut),
+			coins2000);
+		haircutSteps.setDisplayCondition(notGotHaircut);
+		allSteps.add(haircutSteps);
+
+		PanelDetails westWallSteps = new PanelDetails("Climb West Wall", Collections.singletonList(climbWall),
+			new SkillRequirement(Skill.AGILITY, 5, true));
+		westWallSteps.setDisplayCondition(notClimbedWall);
+		allSteps.add(westWallSteps);
+
+		PanelDetails duckSteps = new PanelDetails("Kill The Duck", Collections.singletonList(killDuck), combatGear);
+		duckSteps.setDisplayCondition(notKilledDuck);
+		allSteps.add(duckSteps);
+
+		PanelDetails motherlodeRepairsSteps = new PanelDetails("Motherlode Repairs", Arrays.asList(enterDwarvenMines,
+			enterCaveToMotherlodeMine, fixMotherloadMine), pickaxe, hammer);
+		motherlodeRepairsSteps.setDisplayCondition(notMotherloadMine);
+		allSteps.add(motherlodeRepairsSteps);
+
+		PanelDetails sarahsFarmingSteps = new PanelDetails("Sarah's Farming Shop",
+			Collections.singletonList(browseSarahFarmingShop));
+		sarahsFarmingSteps.setDisplayCondition(notSarahFarmingShop);
+		allSteps.add(sarahsFarmingSteps);
+
+		PanelDetails holyLandSteps = new PanelDetails("To the Holy Land!", Collections.singletonList(goEntrana));
+		holyLandSteps.setDisplayCondition(notEntrana);
+		allSteps.add(holyLandSteps);
+
+		PanelDetails securityBookSteps = new PanelDetails("Get A Security Book",
+			Arrays.asList(climbLadderPortSarimJail, getSecurityBook));
+		securityBookSteps.setDisplayCondition(notGotSecurityBook);
+		allSteps.add(securityBookSteps);
+
+		PanelDetails bluriteLimbsSteps = new PanelDetails("Blurite Limbs", Arrays.asList(getPickaxe, enterDungeon,
+			mineBlurite, smeltBlurite, smithBluriteLimbs), new QuestRequirement(QuestHelperQuest.DORICS_QUEST,
+			QuestState.FINISHED), new QuestRequirement(QuestHelperQuest.THE_KNIGHTS_SWORD, QuestState.FINISHED),
+			new SkillRequirement(Skill.MINING, 10, true), new SkillRequirement(Skill.SMITHING, 13, true),
+			hammer, pickaxe);
+		bluriteLimbsSteps.setDisplayCondition(notBluriteLimbs);
+		allSteps.add(bluriteLimbsSteps);
+
+		PanelDetails mindTiaraSteps = new PanelDetails("Mind Tiara", Arrays.asList(enterMindAltar, getMindTiara),
+			new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED), tiara, mindTalisman);
+		mindTiaraSteps.setDisplayCondition(notMindTiara);
+		allSteps.add(mindTiaraSteps);
+
+		PanelDetails familyCrestSteps = new PanelDetails("Family Crest", Arrays.asList(climbLadderWhiteKnightCastle,
+			discoverFamilyCrest), new SkillRequirement(Skill.CONSTRUCTION, 16));
+		familyCrestSteps.setDisplayCondition(notFamilyCrest);
+		allSteps.add(familyCrestSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 

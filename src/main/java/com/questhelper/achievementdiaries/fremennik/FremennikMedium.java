@@ -54,33 +54,46 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.FREMENNIK_MEDIUM
+	quest = QuestHelperQuest.FREMENNIK_MEDIUM
 )
 
 public class FremennikMedium extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement coins, spade, rope, pickaxe, staff, butterFlyJar, butterFlyNet, petRock, goldHelm, oakPlanks, saw
-	, hammer, thrownaxe, combatGear, coinsForFerry;
+	ItemRequirement coins, spade, rope, pickaxe, staff, butterFlyJar, butterFlyNet, petRock, goldHelm, oakPlanks,
+		saw, hammer, thrownaxe, combatGear, coinsForFerry;
 
 	// Recommended
 	ItemRequirement food, prayerPot, stamPot;
 
-	Requirement notSlayBrineRat, notSnowyHunter, notMineCoal, notStealFish, notTravelMisc, notSnowyKnight, notPetRockPOH, notLighthouse, notMineGold;
+	Requirement notSlayBrineRat, notSnowyHunter, notMineCoal, notStealFish, notTravelMisc, notSnowyKnight,
+		notPetRockPOH, notLighthouse, notMineGold;
 
 	// Quest requirements
-	Requirement horrorFromTheDeep, eaglesPeak, fairyTaleI, lostCity, natureSpirit, fairyTaleII, olafsQuest, fremennikTrials, betweenARock, dwarfCannon, fishingContest;
+	Requirement horrorFromTheDeep, eaglesPeak, fairyTaleI, lostCity, natureSpirit, fairyTaleII, olafsQuest,
+		fremennikTrials, betweenARock, dwarfCannon, fishingContest;
 
 	// Steps
-	QuestStep rollBoulderExit, slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish, travelMisc, snowyKnight0, snowyKnight1, petRockPOH, moveToCannon, moveToCave, moveToRiver, moveToArzinian, mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15, claimReward;
+	QuestStep rollBoulderExit, slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish,
+		travelMisc, snowyKnight0, snowyKnight1, petRockPOH, moveToCannon, moveToCave, moveToRiver, moveToArzinian,
+		mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1,
+		moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7,
+		moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13,
+		moveToDagCave14, moveToDagCave15, claimReward;
 
 	ObjectStep dropPetRock;
 
 	DigStep enterBrineCave;
 
-	Zone eagleArea, iceCave, hunterArea0, hunterArea1, riverArea, riverArea2, caveArea, arzinianMine, waterbirthIsland, brineRatCave, dagCave, dagCave1, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave3, dagCave4, dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCave13, dagCave14, dagCave15;
+	Zone eagleArea, iceCave, hunterArea0, hunterArea1, riverArea, riverArea2, caveArea, arzinianMine,
+		waterbirthIsland, brineRatCave, dagCave, dagCave1, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave3,
+		dagCave4, dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCave13,
+		dagCave14, dagCave15;
 
-	ZoneRequirement inEagleArea, inIceCave, inHunterArea0, inHunterArea1, inRiverArea, inCannonArea, inCaveArea, inArzinianMine, inWaterbirthIsland, inDagCave, inBrineRatCave, inDagCave1, inDagCave_2, inDagCave_3, inDagCave_4, inDagCave2, inDagCave3, inDagCave4, inDagCave5, inDagCave6, inDagCave7, inDagCave8, inDagCave9, inDagCave10, inDagCave11, inDagCave12, inDagCave13, inDagCave14, inDagCave15;
+	ZoneRequirement inEagleArea, inIceCave, inHunterArea0, inHunterArea1, inRiverArea, inCannonArea, inCaveArea,
+		inArzinianMine, inWaterbirthIsland, inDagCave, inBrineRatCave, inDagCave1, inDagCave_2, inDagCave_3,
+		inDagCave_4, inDagCave2, inDagCave3, inDagCave4, inDagCave5, inDagCave6, inDagCave7, inDagCave8, inDagCave9,
+		inDagCave10, inDagCave11, inDagCave12, inDagCave13, inDagCave14, inDagCave15;
 
 	Requirement protectMelee, protectMissiles, protectMagic, specialAttackEnabled;
 
@@ -182,7 +195,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		fairyTaleI = new QuestRequirement(QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS, QuestState.FINISHED);
 		lostCity = new QuestRequirement(QuestHelperQuest.LOST_CITY, QuestState.FINISHED);
 		natureSpirit = new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED);
-		fairyTaleII = new VarbitRequirement( QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(),
+		fairyTaleII = new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(),
 			Operation.GREATER_EQUAL, 40, "Partial completion of Fairytale II for access to fairy rings");
 		olafsQuest = new QuestRequirement(QuestHelperQuest.OLAFS_QUEST, QuestState.FINISHED,
 			"Partial completion of Olaf's Quest to access the Brine Rat Cavern");
@@ -393,16 +406,59 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Brine Rat Slayer", Arrays.asList(enterBrineCave, slayBrineRat, rollBoulderExit), olafsQuest, spade, combatGear));
-		allSteps.add(new PanelDetails("Travel to Miscellania", Collections.singletonList(travelMisc), fairyTaleII, fremennikTrials, staff));
-		allSteps.add(new PanelDetails("Travel by Eagle", Arrays.asList(enterEaglesPeak, snowyHunter), eaglesPeak, rope));
-		allSteps.add(new PanelDetails("Catch Snowy Knight", Collections.singletonList(snowyKnight0), butterFlyNet, butterFlyJar));
-		allSteps.add(new PanelDetails("Mine Gold", Arrays.asList(moveToCave, moveToRiver, moveToCannon, moveToArzinian, mineGold), betweenARock, pickaxe, goldHelm, coins.quantity(2)));
-		allSteps.add(new PanelDetails("Mine Coal", Collections.singletonList(mineCoal), pickaxe, fremennikTrials));
-		allSteps.add(new PanelDetails("Steal Fish", Collections.singletonList(stealFish), fremennikTrials));
-		allSteps.add(new PanelDetails("Waterbirth to Lighthouse", Arrays.asList(moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15, lighthouse), horrorFromTheDeep, fremennikTrials, petRock, combatGear, thrownaxe, food, stamPot, prayerPot));
-		allSteps.add(new PanelDetails("Pet Rock", Collections.singletonList(petRockPOH), fremennikTrials, coins.quantity(30000), petRock, saw, hammer, oakPlanks.quantity(4)));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+
+		PanelDetails brineRatSteps = new PanelDetails("Brine Rat Slayer", Arrays.asList(enterBrineCave, slayBrineRat,
+			rollBoulderExit), olafsQuest, new SkillRequirement(Skill.SLAYER, 47, true), spade, combatGear);
+		brineRatSteps.setDisplayCondition(notSlayBrineRat);
+		allSteps.add(brineRatSteps);
+
+		PanelDetails miscellaniaSteps = new PanelDetails("Travel to Miscellania", Collections.singletonList(travelMisc),
+			fairyTaleII, fremennikTrials, staff);
+		miscellaniaSteps.setDisplayCondition(notTravelMisc);
+		allSteps.add(miscellaniaSteps);
+
+		PanelDetails snowyHunterSteps = new PanelDetails("Travel by Eagle", Arrays.asList(enterEaglesPeak, snowyHunter),
+			eaglesPeak, rope);
+		snowyHunterSteps.setDisplayCondition(notSnowyHunter);
+		allSteps.add(snowyHunterSteps);
+
+		PanelDetails snowyKnightSteps = new PanelDetails("Catch Snowy Knight", Collections.singletonList(snowyKnight0),
+			new SkillRequirement(Skill.HUNTER, 35, true), butterFlyNet, butterFlyJar);
+		snowyKnightSteps.setDisplayCondition(notSnowyKnight);
+		allSteps.add(snowyKnightSteps);
+
+		PanelDetails mineGoldSteps = new PanelDetails("Mine Gold", Arrays.asList(moveToCave, moveToRiver, moveToCannon,
+			moveToArzinian, mineGold), betweenARock, new SkillRequirement(Skill.MINING, 40), pickaxe, goldHelm,
+			coins.quantity(2));
+		mineGoldSteps.setDisplayCondition(notMineGold);
+		allSteps.add(mineGoldSteps);
+
+		PanelDetails mineCoalSteps = new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
+			fremennikTrials, new SkillRequirement(Skill.MINING, 30), pickaxe);
+		mineCoalSteps.setDisplayCondition(notMineCoal);
+		allSteps.add(mineCoalSteps);
+
+		PanelDetails stealFishSteps = new PanelDetails("Steal Fish", Collections.singletonList(stealFish),
+			fremennikTrials, new SkillRequirement(Skill.THIEVING, 42, true));
+		stealFishSteps.setDisplayCondition(notStealFish);
+		allSteps.add(stealFishSteps);
+
+		PanelDetails lighthouseSteps = new PanelDetails("Waterbirth to Lighthouse", Arrays.asList(moveToWaterbirth,
+			moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3,
+			moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9,
+			moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15,
+			lighthouse), horrorFromTheDeep, fremennikTrials, petRock, combatGear, thrownaxe, food, stamPot, prayerPot);
+		lighthouseSteps.setDisplayCondition(notLighthouse);
+		allSteps.add(lighthouseSteps);
+
+		PanelDetails petRockSteps = new PanelDetails("Pet Rock", Collections.singletonList(petRockPOH),
+			fremennikTrials, new SkillRequirement(Skill.CONSTRUCTION, 37, true), coins.quantity(30000),
+			petRock, saw, hammer, oakPlanks.quantity(4));
+		petRockSteps.setDisplayCondition(notPetRockPOH);
+		allSteps.add(petRockSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

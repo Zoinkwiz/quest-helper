@@ -1257,10 +1257,10 @@ public class ItemCollections
 
 	@Getter
 	private  static final List<Integer> cookingGuild = ImmutableList.of(
-		ItemID.COOKING_CAPET,
-		ItemID.COOKING_CAPE,
-		ItemID.VARROCK_ARMOUR_4,
+		ItemID.CHEFS_HAT,
 		ItemID.VARROCK_ARMOUR_3,
-		ItemID.CHEFS_HAT
+		ItemID.VARROCK_ARMOUR_4,
+		ItemID.COOKING_CAPET,
+		ItemID.COOKING_CAPE
 	);
 }

@@ -26,15 +26,12 @@ package com.questhelper.achievementdiaries.varrock;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -49,10 +46,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import jdk.internal.net.http.common.Log;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -188,33 +183,33 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		plank = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
 			"Make a regular plank at the sawmill.", log);
 		moveToStronghold1 = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
-			"Enter the Security Stronghold.");
+			"Enter the Stronghold of Security.");
 		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
-			"Go to the 2nd floor of the stronghold.");
+			"Go to the 2nd floor of the Stronghold of Security.");
 		fence = new ObjectStep(this, ObjectID.FENCE_16518, new WorldPoint(3240, 3335, 0),
 			"Jump the fence south of Varrock.");
 		dyingTree = new ObjectStep(this, ObjectID.DYING_TREE, new WorldPoint(3308, 3495, 0),
 			"Chop down a dying tree in the sawmill area.", axe);
 		news = new NpcStep(this, NpcID.BENNY, new WorldPoint(3219, 3431, 0),
-			"Speak with Benny to purchase a newspaper.", coins.quantity(50));
+			"Speak with Benny in the Varrock Square to purchase a newspaper.", coins.quantity(50));
 		news.addDialogSteps("Can I have a newspaper, please?", "Sure, here you go...");
 		dogBone = new NpcStep(this, NpcID.STRAY_DOG_2922, new WorldPoint(3184, 3431, 0),
-			"Give the stray dog a bone." +
-				"If the dog isn't nearby consider changing worlds.");
-		dogBone.addIcon(ItemID.BONE);
+			"Give the stray dog a bone. If the dog isn't nearby consider changing worlds.");
+		dogBone.addIcon(ItemID.BONES);
 		potteryWheel = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3410, 0),
-			"Use the potters wheel to make an unfired bowl.", softClay);
+			"Use the potters wheel in Barbarian Village to make an unfired bowl.", softClay);
 		bowl = new ObjectStep(this, ObjectID.POTTERY_OVEN_11601, new WorldPoint(3085, 3407, 0),
 			"Put the unfired bowl in the oven.", unfiredBowl);
 		bowl.addIcon(ItemID.UNFIRED_BOWL);
-		moreKudos = new DetailedQuestStep(this, "Get more kudos from either quests, miniquests, or turning in fossils.");
+		moreKudos = new DetailedQuestStep(this,
+			"Get more kudos from either quests, miniquests, or turning in fossils.");
 		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss. ", earthTali);
-		((ObjectStep) moveToEarthRune).addIcon(ItemID.EARTH_TALISMAN);
+			"Travel to the earth altar or go through the abyss.", earthTali);
+		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
-			"Craft earth rune.", ess);
+			"Craft an earth rune.", ess);
 		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),
 			"Fish a trout in the River Lum.", flyRod, feathers);
 		teaStall = new ObjectStep(this, ObjectID.TEA_STALL, new WorldPoint(3270, 3411, 0),

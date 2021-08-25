@@ -487,7 +487,7 @@ public class TheDigSite extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal, leatherBoots, leatherGloves);
+		return Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal, leatherBoots, leatherGloves, trowel);
 	}
 
 	@Override

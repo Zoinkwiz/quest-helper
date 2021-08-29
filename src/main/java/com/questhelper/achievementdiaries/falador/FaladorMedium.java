@@ -76,7 +76,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		notKilledMogre, notVisitRatPits, notGrappleNorthWall, notPickpocketGuard, notPrayAtAltar,
 		notMineGold, notDwarfShortcut, notChopBurnWillowTav, notBasketFalLoom, notTeleportFalador;
 
-	QuestStep claimReward, goToChemist, lightLantern, goToChaosAltar, telegrabWine, unlockCrystalChest,
+	QuestStep claimReward, goToChemist, lightLantern, goToChaosTemple, telegrabWine, unlockCrystalChest,
 		getHaysack, useSackOnSpear, useWatermelonOnSack, placeScarecrow, killMogre, visitRatPits,
 		grappleNorthWallStart, grappleNorthWallEnd, prayAtAltar, getInitiateSet, goToCraftingGuild,
 		mineGold, enterDwarvenMines, dwarfShortcut, goToTav, chopWillowLog, burnWillowLog,
@@ -122,7 +122,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		doMed.addStep(notTeleportFalador, teleportToFalador);
 		doMed.addStep(notPickpocketGuard, pickpocketGuard);
 		doMed.addStep(new Conditions(notTelegrabbedWine, inChaosAltar), telegrabWine);
-		doMed.addStep(notTelegrabbedWine, goToChaosAltar);
+		doMed.addStep(notTelegrabbedWine, goToChaosTemple);
 
 		return doMed;
 	}
@@ -219,9 +219,9 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		lightLantern = new DetailedQuestStep(this,
 			"Use the tinderbox on the bullseye lantern.", bullseyeLanternHighLight, tinderboxHighlight);
 
-		//Telegrab - Chaos Altar
-		goToChaosAltar = new DetailedQuestStep(this, new WorldPoint(2934, 3516, 0),
-			"Go to the Chaos Altar near the Goblin Village north of Falador.");
+		//Telegrab - Chaos Temple
+		goToChaosTemple = new DetailedQuestStep(this, new WorldPoint(2934, 3516, 0),
+			"Go to the Chaos Temple near the Goblin Village north of Falador.");
 		telegrabWine = new DetailedQuestStep(this,
 			"Use the Telekinetic Grab Spell on the Wine of Zamorak.");
 		telegrabWine.addIcon(ItemID.TELEKINETIC_GRAB);
@@ -429,7 +429,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		pickGuardSteps.setDisplayCondition(notPickpocketGuard);
 		allSteps.add(pickGuardSteps);
 
-		PanelDetails teleGrabSteps = new PanelDetails("Yoink!", Arrays.asList(goToChaosAltar, telegrabWine),
+		PanelDetails teleGrabSteps = new PanelDetails("Yoink!", Arrays.asList(goToChaosTemple, telegrabWine),
 			new SkillRequirement(Skill.MAGIC, 33, true), telegrab);
 		teleGrabSteps.setDisplayCondition(notTelegrabbedWine);
 		allSteps.add(teleGrabSteps);

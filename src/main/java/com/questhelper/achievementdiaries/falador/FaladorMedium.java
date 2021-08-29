@@ -86,9 +86,9 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 	ObjectStep spawnMogre;
 
-	Zone chemist, chaosAltar, craftingGuild, dwarvenMine, tav, falNorthWall;
+	Zone chemist, chaosTemple, craftingGuild, dwarvenMine, tav, falNorthWall;
 
-	ZoneRequirement inChemist, inChaosAltar, inCraftingGuild, inDwarvenMine, inTav, inFalNorthWall;
+	ZoneRequirement inChemist, inChaosTemple, inCraftingGuild, inDwarvenMine, inTav, inFalNorthWall;
 
 	@Override
 	public QuestStep loadStep()
@@ -121,7 +121,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		doMed.addStep(notDwarfShortcut, enterDwarvenMines);
 		doMed.addStep(notTeleportFalador, teleportToFalador);
 		doMed.addStep(notPickpocketGuard, pickpocketGuard);
-		doMed.addStep(new Conditions(notTelegrabbedWine, inChaosAltar), telegrabWine);
+		doMed.addStep(new Conditions(notTelegrabbedWine, inChaosTemple), telegrabWine);
 		doMed.addStep(notTelegrabbedWine, goToChaosTemple);
 
 		return doMed;
@@ -193,7 +193,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		combatBracelet.addAlternates(ItemCollections.getGamesNecklaces());
 
 		inChemist = new ZoneRequirement(chemist);
-		inChaosAltar = new ZoneRequirement(chaosAltar);
+		inChaosTemple = new ZoneRequirement(chaosTemple);
 		inCraftingGuild = new ZoneRequirement(craftingGuild);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inTav = new ZoneRequirement(tav);
@@ -204,7 +204,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public void loadZones()
 	{
 		chemist = new Zone(new WorldPoint(2929, 3213, 0), new WorldPoint(2936, 3207, 0));
-		chaosAltar = new Zone(new WorldPoint(2935, 3513, 0), new WorldPoint(2929, 3518, 0));
+		chaosTemple = new Zone(new WorldPoint(2935, 3513, 0), new WorldPoint(2929, 3518, 0));
 		craftingGuild = new Zone(new WorldPoint(2929, 3288, 0), new WorldPoint(2943, 3276, 0));
 		dwarvenMine = new Zone(new WorldPoint(2979, 9855, 0), new WorldPoint(3069, 9698, 0));
 		tav = new Zone(new WorldPoint(2939, 3398, 0), new WorldPoint(2878, 3489, 0));

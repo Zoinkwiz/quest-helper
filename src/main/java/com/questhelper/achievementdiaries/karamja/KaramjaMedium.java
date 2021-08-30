@@ -341,7 +341,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		enteredWallSteps.setDisplayCondition(notEnteredWall);
 		allSteps.add(enteredWallSteps);
 
-		PanelDetails enteredCrandorSteps = new PanelDetails("Discover Hidden Wall in Volcano",
+		PanelDetails enteredCrandorSteps = new PanelDetails("Enter Crandor",
 			Arrays.asList(enterVolcano, enterCrandor), dragonSlayerI, food);
 		enteredCrandorSteps.setDisplayCondition(notEnteredCrandor);
 		allSteps.add(enteredCrandorSteps);

@@ -51,13 +51,14 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.FREMENNIK_ELITE
+	quest = QuestHelperQuest.FREMENNIK_ELITE
 )
 
 public class FremennikElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement pureEss, dragonstone, goldBar, amuletMould, combatGear, thrownaxe, climbingBoots, rope, petRock, crossbow, hammer, mithGrap;
+	ItemRequirement pureEss, dragonstone, goldBar, amuletMould, combatGear, thrownaxe, climbingBoots, rope, petRock,
+		crossbow, hammer, mithGrap;
 
 	// Recommended
 	ItemRequirement food, prayerPot, stamPot;
@@ -69,15 +70,24 @@ public class FremennikElite extends ComplexStateQuestHelper
 
 
 	// Steps
-	QuestStep dragonAmulet, astralRunes, rellRooftop, claimReward, moveToNeit, moveToDagKings, moveToGodWars, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToLunarIsle, moveToPirates, moveToCaptain, moveToCaptain2, moveToAltar1, moveToAltar2;
+	QuestStep dragonAmulet, astralRunes, rellRooftop, claimReward, moveToNeit, moveToDagKings, moveToGodWars,
+		moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6,
+		moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12,
+		moveToDagCave13, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToLunarIsle, moveToPirates,
+		moveToCaptain, moveToCaptain2, moveToAltar1, moveToAltar2;
 
 	ObjectStep dropPetRock;
 
 	NpcStep dagKings, godwarsGenerals, spiritualMage;
 
-	Zone godWars, waterbirthIsland, dagCave, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave1, dagCave3, dagCave4, dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCaveKings, neitiznot, pirates, lunarIsle, godWars2, godWars3, pirates2, pirates3, lunarIsle2, lunarIsle3;
+	Zone godWars, waterbirthIsland, dagCave, dagCave_2, dagCave_3, dagCave_4, dagCave2, dagCave1, dagCave3, dagCave4,
+		dagCave5, dagCave6, dagCave7, dagCave8, dagCave9, dagCave10, dagCave11, dagCave12, dagCaveKings, neitiznot,
+		pirates, lunarIsle, godWars2, godWars3, pirates2, pirates3, lunarIsle2, lunarIsle3;
 
-	ZoneRequirement inGodwars, inWaterbirthIsland, inDagCave, inDagCave_2, inDagCave_3, inDagCave_4, inDagCave2, inDagCave1, inDagCave3, inDagCave4, inDagCave5, inDagCave6, inDagCave7, inDagCave8, inDagCave9, inDagCave10, inDagCave11, inDagCave12, inDagCaveKings, inNeitiznot, inPirates, inLunarIsle, inGodwars2, inGodwars3, inPirates2, inPirates3, inLunarIsle2, inLunarIsle3;
+	ZoneRequirement inGodwars, inWaterbirthIsland, inDagCave, inDagCave_2, inDagCave_3, inDagCave_4, inDagCave2,
+		inDagCave1, inDagCave3, inDagCave4, inDagCave5, inDagCave6, inDagCave7, inDagCave8, inDagCave9, inDagCave10,
+		inDagCave11, inDagCave12, inDagCaveKings, inNeitiznot, inPirates, inLunarIsle, inGodwars2, inGodwars3,
+		inPirates2, inPirates3, inLunarIsle2, inLunarIsle3;
 
 	Requirement protectMelee, protectMissiles, protectMagic, specialAttackEnabled;
 
@@ -361,7 +371,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.RANGED, 70, false));
 		req.add(new SkillRequirement(Skill.RUNECRAFT, 82));
 		req.add(new SkillRequirement(Skill.SLAYER, 83, true));
-		req.add(new SkillRequirement(Skill.STRENGTH, 70, true));
+		req.add(new SkillRequirement(Skill.STRENGTH, 70, false));
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"At least 43 Prayer for protection prayers"));
 		return req;
@@ -372,13 +382,45 @@ public class FremennikElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Rellekka Rooftops", Collections.singletonList(rellRooftop)));
-		allSteps.add(new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain, moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy, pureEss.quantity(28)));
-		allSteps.add(new PanelDetails("Dragonstone Amulet", Arrays.asList(moveToNeit, dragonAmulet), fremIsles, dragonstone, goldBar, amuletMould));
-		allSteps.add(new PanelDetails("Kill Dagannoth Kings", Arrays.asList(moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave12, moveToDagCave13, moveToDagKings, dagKings), combatGear, thrownaxe, petRock));
-		allSteps.add(new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWars, godwarsGenerals), trollStronghold, combatGear, rope.quantity(2), climbingBoots, hammer, mithGrap, crossbow));
-		allSteps.add(new PanelDetails("Slay Spiritual Mage", Arrays.asList(moveToGodWars, spiritualMage), trollStronghold, combatGear, rope.quantity(1), climbingBoots));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+		PanelDetails dagannothKingsSteps = new PanelDetails("Kill Dagannoth Kings", Arrays.asList(moveToWaterbirth, moveToDagCave,
+			dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4,
+			moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10,
+			moveToDagCave12, moveToDagCave13, moveToDagKings, dagKings), combatGear, thrownaxe, petRock);
+		dagannothKingsSteps.setDisplayCondition(notDagKings);
+		allSteps.add(dagannothKingsSteps);
+
+		PanelDetails dragonstoneAmuletSteps = new PanelDetails("Dragonstone Amulet", Arrays.asList(moveToNeit, dragonAmulet),
+			fremIsles, new SkillRequirement(Skill.CRAFTING, 80), dragonstone, goldBar, amuletMould);
+		dragonstoneAmuletSteps.setDisplayCondition(notDragonAmulet);
+		allSteps.add(dragonstoneAmuletSteps);
+
+		PanelDetails astralRunesSteps = new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain,
+			moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy,
+			new SkillRequirement(Skill.RUNECRAFT, 82), pureEss.quantity(28));
+		astralRunesSteps.setDisplayCondition(notAstralRunes);
+		allSteps.add(astralRunesSteps);
+
+		PanelDetails rellekkaRooftopsSteps = new PanelDetails("Rellekka Rooftops", Collections.singletonList(rellRooftop),
+			new SkillRequirement(Skill.AGILITY, 80));
+		rellekkaRooftopsSteps.setDisplayCondition(notRellRooftop);
+		allSteps.add(rellekkaRooftopsSteps);
+
+		PanelDetails spiritualMageSteps = new PanelDetails("Slay Spiritual Mage", Arrays.asList(moveToGodWars,
+			spiritualMage), trollStronghold, new SkillRequirement(Skill.SLAYER, 83, true), combatGear,
+			rope.quantity(1), climbingBoots);
+		spiritualMageSteps.setDisplayCondition(notSpiritualMage);
+		allSteps.add(spiritualMageSteps);
+
+		PanelDetails godWarsSteps = new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWars,
+			godwarsGenerals), trollStronghold, new SkillRequirement(Skill.AGILITY, 70),
+			new SkillRequirement(Skill.STRENGTH, 70, false), new SkillRequirement(Skill.HITPOINTS, 70, false),
+			new SkillRequirement(Skill.RANGED, 70, false), combatGear, rope.quantity(2), climbingBoots, hammer,
+			mithGrap, crossbow);
+		godWarsSteps.setDisplayCondition(notGodwarsGenerals);
+		allSteps.add(godWarsSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

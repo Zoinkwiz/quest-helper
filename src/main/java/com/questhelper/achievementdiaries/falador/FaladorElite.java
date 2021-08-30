@@ -35,11 +35,10 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
@@ -235,6 +234,8 @@ public class FaladorElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 81, true));
 
+		req.add(new QuestRequirement(QuestHelperQuest.WANTED, QuestState.FINISHED));
+
 		return req;
 	}
 
@@ -243,13 +244,40 @@ public class FaladorElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("One with the wind..", Arrays.asList(enterAirAltar, craftAirRunes), airTiara, pureEss28));
-		allSteps.add(new PanelDetails("Root of all magic", Collections.singletonList(chopMagicTree), axe, spade));
-		allSteps.add(new PanelDetails("Peak Efficiency", Arrays.asList(goUpFaladorCastle1Emote, goUpFaladorCastle2Emote, goUpFaladorCastle3Emote, performEmote), skillCape));
-		allSteps.add(new PanelDetails("The River Styx", Arrays.asList(goToTavDungeon, crossStrangeFloor)));
-		allSteps.add(new PanelDetails("Pot Head", Arrays.asList(goToEastBank, craftSaraBrew), toadflaxPotionUnf, crushedNest));
-		allSteps.add(new PanelDetails("*Tips Fedora*", Arrays.asList(goUpFaladorCastle1, goUpFaladorCastle2, purchaseWhite2hSword), coins1920));
-		allSteps.add(new PanelDetails("Congratulations!", Collections.singletonList(claimReward)));
+		PanelDetails airRunesSteps = new PanelDetails("One with the wind..", Arrays.asList(enterAirAltar,
+			craftAirRunes),	new SkillRequirement(Skill.RUNECRAFT, 88, true), airTiara, pureEss28);
+		airRunesSteps.setDisplayCondition(notCraftedAirRunes);
+		allSteps.add(airRunesSteps);
+
+		PanelDetails magicRootsSteps = new PanelDetails("Root of all magic", Collections.singletonList(chopMagicTree),
+			new SkillRequirement(Skill.FARMING, 91, true),
+			new SkillRequirement(Skill.WOODCUTTING, 75, true), axe, spade);
+		magicRootsSteps.setDisplayCondition(notGotMagicRoots);
+		allSteps.add(magicRootsSteps);
+
+		PanelDetails capeEmoteSteps = new PanelDetails("Peak Efficiency", Arrays.asList(goUpFaladorCastle1Emote,
+			goUpFaladorCastle2Emote, goUpFaladorCastle3Emote, performEmote), skillCape);
+		capeEmoteSteps.setDisplayCondition(notPerformedSkillCapeEmote);
+		allSteps.add(capeEmoteSteps);
+
+		PanelDetails strangeFloorSteps = new PanelDetails("The River Styx", Arrays.asList(goToTavDungeon,
+			crossStrangeFloor), new SkillRequirement(Skill.AGILITY, 80, true));
+		strangeFloorSteps.setDisplayCondition(notJumpedOverStrangeFloor);
+		allSteps.add(strangeFloorSteps);
+
+		PanelDetails saraBrewSteps = new PanelDetails("Pot Head", Arrays.asList(goToEastBank, craftSaraBrew),
+			new SkillRequirement(Skill.HERBLORE, 81, true), toadflaxPotionUnf, crushedNest);
+		saraBrewSteps.setDisplayCondition(notMadeSaraBrew);
+		allSteps.add(saraBrewSteps);
+
+		PanelDetails swordSteps = new PanelDetails("*Tips Fedora*", Arrays.asList(goUpFaladorCastle1,
+			goUpFaladorCastle2,	purchaseWhite2hSword), new QuestRequirement(QuestHelperQuest.WANTED,
+			QuestState.FINISHED), coins1920);
+		swordSteps.setDisplayCondition(notPurchasedWhite2hSword);
+		allSteps.add(swordSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

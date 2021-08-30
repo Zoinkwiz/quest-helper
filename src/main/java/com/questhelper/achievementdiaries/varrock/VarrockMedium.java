@@ -201,14 +201,16 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		apothStr = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3404, 0),
-			"Speak with the apothecary to create a strength potion", limpRoot, redSpiderEgg, coins.quantity(5));
+			"Speak with the apothecary to create a strength potion.", limpRoot, redSpiderEgg, coins.quantity(5));
+		apothStr.addDialogSteps("Can you make potions for me?");
 		champs = new ObjectStep(this, ObjectID.DOOR_1805, new WorldPoint(3191, 3363, 0),
-			"Enter the Champions' Guild", qp);
+			"Enter the Champions' Guild.", qp);
 		colourCat = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3415, 0),
-			"Check your bank if you own a cat/kitten and shoo them. Then speak with Gertrude.", coins.quantity(100), ringOfCharos.equipped());
+			"Check your bank if you own a cat/kitten and shoo them. Then speak with Gertrude for a new kitten.",
+			coins.quantity(100), ringOfCharos.equipped());
 		colourCat.addDialogSteps("Do you have any more kittens?", "[Charm] I'm quite fussy over cats - can I pick my own?");
 		geSpirit = new ObjectStep(this, 1295, new WorldPoint(3185, 3510, 0),
-			"Use the spirit tree.");
+			"Use the spirit tree in the Grand Exchange.");
 		/* TODO get progress variable and implement multiple emote steps
 		emoteFlap = new EmoteStep(this, QuestEmote.FLAP,
 			"Equip your skill cape and perform its emote!");
@@ -235,7 +237,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 			"Collect the box of health.");
 		cradle = new ObjectStep(this, ObjectID.CRADLE_OF_LIFE, new WorldPoint(2344, 5214, 0),
 			"Collect the cradle of life.");
-		emote = new DetailedQuestStep(this, "Use the flap, slap head, idea, and stamp emotes");
+		emote = new DetailedQuestStep(this, "Use the flap, slap head, idea, and stamp emotes.");
 		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
 			"Move to the Edgeville dungeon.");
 
@@ -250,13 +252,15 @@ public class VarrockMedium extends ComplexStateQuestHelper
 
 		maho20 = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
 			"Make 20 mahogany planks at the sawmill in ONE run.", mahoLog.quantity(20), coins.quantity(30000));
+
 		balloon = new ObjectStep(this, 19143, new WorldPoint(3297, 3482, 0),
-			"Use the basket to fly to any available destination.", willowLog.quantity(1));
+			"Use the basket east of Varrock to fly to any available destination.", willowLog.quantity(1));
 		moveToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3236, 0),
 			"Speak with a monk to travel to Entrana.", true, willowLog.quantity(10));
 		moveToEntrana.addAlternateNpcs(NpcID.MONK_OF_ENTRANA_1166, NpcID.MONK_OF_ENTRANA);
 		talkToAug = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2810, 3356, 0),
 			"Speak with Augustine and travel to Varrock.", willowLog.quantity(10));
+
 		whiteFruit = new ObjectStep(this, 9209, new WorldPoint(3230, 3475, 0),
 			"Pick a white tree fruit at Varrock Castle.");
 		varrAgi = new ObjectStep(this, ObjectID.ROUGH_WALL_14412, new WorldPoint(3221, 3414, 0),
@@ -292,7 +296,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.HERBLORE, 10));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 25));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 25));
-		reqs.add(new ComplexRequirement("Normal spellbook", normalBook));
+		reqs.add(normalBook);
 
 		reqs.add(qp);
 		reqs.add(gardenOfTranq);
@@ -365,7 +369,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		allSteps.add(tpVarrSteps);
 
 		PanelDetails whiteFruitSteps = new PanelDetails("Pick a White Fruit", Collections.singletonList(whiteFruit),
-			new SkillRequirement(Skill.FARMING, 25));
+			gardenOfTranq);
 		whiteFruitSteps.setDisplayCondition(notWhiteFruit);
 		allSteps.add(whiteFruitSteps);
 

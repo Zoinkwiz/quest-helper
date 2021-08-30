@@ -30,6 +30,11 @@ import net.runelite.api.Skill;
 
 public class WarriorsGuildAccessRequirement extends AbstractRequirement
 {
+	public WarriorsGuildAccessRequirement()
+	{
+		shouldCountForFilter = true;
+	}
+
 	@Override
 	public boolean check(Client client)
 	{

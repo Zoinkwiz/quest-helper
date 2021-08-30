@@ -124,6 +124,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notPlankMake);
 		mahoLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS).showConditioned(notPlankMake);
 		cookingGuild = new ItemRequirement("Access to cooking guild", ItemCollections.getCookingGuild()).showConditioned(notSummerPie);
+		cookingGuild.setTooltip("A chef's hat, Varrock Armour 3, or Cooking Cape");
 		rawPie = new ItemRequirement("Raw summer pie", ItemID.RAW_SUMMER_PIE).showConditioned(notSummerPie);
 		runeBar = new ItemRequirement("Rune bar", ItemID.RUNITE_BAR).showConditioned(notRuneDart);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notRuneDart);
@@ -154,21 +155,24 @@ public class VarrockElite extends ComplexStateQuestHelper
 	{
 		moveToBank = new TileStep(this, new WorldPoint(3183, 3440, 0),
 			"Move to the west Varrock bank.");
-		superCombat = new ItemStep(this, "Combine the potions to create a super combat potion.", sAtk4.highlighted(), sStr4.highlighted(), sDef4.highlighted(), torstol.highlighted());
+		superCombat = new ItemStep(this, "Create a super combat potion.", sAtk4.highlighted(), sStr4.highlighted(),
+			sDef4.highlighted(), torstol.highlighted());
 		moveToLumb = new ObjectStep(this, 2618, new WorldPoint(3308, 3492, 0),
 			"Climb the fence to enter the lumber yard.");
-		plankMake = new DetailedQuestStep(this, "Cast plank make until you've made 20 planks.", natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20));
+		plankMake = new DetailedQuestStep(this, "Cast plank make until you've made 20 mahogany planks.",
+			natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20));
 		moveToCookingGuild = new ObjectStep(this, ObjectID.DOOR_24958, new WorldPoint(3143, 3443, 0),
 			"Enter the cooking guild.", cookingGuild.equipped());
 		summerPie = new ObjectStep(this, ObjectID.RANGE_7183, new WorldPoint(3146, 3453, 0),
-			"Cook the pie.", rawPie);
+			"Cook the summer pie.", rawPie);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss. ", earthTali);
+			"Travel to the earth altar or go through the abyss.", earthTali);
 		earthRune100 = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
-			"Craft earth rune.", ess.quantity(25));
+			"Craft the earth runes.", ess.quantity(25));
 		dartTip = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3188, 3426, 0),
-			"Make rune dart tips on the anvil.", runeBar);
-		runeDart = new ItemStep(this, "", runeDartTip.highlighted(), feather.quantity(10).highlighted());
+			"Make rune dart tips on the anvil in east Varrock.", runeBar);
+		runeDart = new ItemStep(this, "Use feathers on the rune dart tips.", runeDartTip.highlighted(),
+			feather.quantity(10).highlighted());
 
 		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");

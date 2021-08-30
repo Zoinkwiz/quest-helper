@@ -877,6 +877,18 @@ public class ItemCollections
 		ItemID.BLUE_LOGS
 	);
 
+	@Getter
+	private static final List<Integer> bones = ImmutableList.of(
+		ItemID.BONES,
+		ItemID.BURNT_BONES,
+		ItemID.WOLF_BONES,
+		ItemID.BAT_BONES,
+		ItemID.BIG_BONES,
+		ItemID.JOGRE_BONES,
+		ItemID.BABYDRAGON_BONES,
+		ItemID.DRAGON_BONES,
+		ItemID.DAGANNOTH_BONES
+	);
 
 	// Other
 
@@ -1237,18 +1249,18 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> coins = ImmutableList.of(
+		ItemID.COINS_995,
 		ItemID.COINS_8890,
 		ItemID.COINS_6964,
-		ItemID.COINS_995,
 		ItemID.COINS
 	);
 
 	@Getter
 	private  static final List<Integer> cookingGuild = ImmutableList.of(
-		ItemID.COOKING_CAPET,
-		ItemID.COOKING_CAPE,
-		ItemID.VARROCK_ARMOUR_4,
+		ItemID.CHEFS_HAT,
 		ItemID.VARROCK_ARMOUR_3,
-		ItemID.CHEFS_HAT
+		ItemID.VARROCK_ARMOUR_4,
+		ItemID.COOKING_CAPET,
+		ItemID.COOKING_CAPE
 	);
 }

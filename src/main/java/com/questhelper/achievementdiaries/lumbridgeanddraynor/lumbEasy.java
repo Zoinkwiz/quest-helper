@@ -236,14 +236,14 @@ public class lumbEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(lightSource, rope, runeEss, axe, tinderbox, smallFishingNet, pickaxe,
+		return Arrays.asList(lightSource, runeEss, axe, tinderbox, smallFishingNet, pickaxe,
 			waterAccessOrAbyss, dough, combatGear);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food, spinyHelm);
+		return Arrays.asList(food, rope, spinyHelm);
 	}
 
 	@Override

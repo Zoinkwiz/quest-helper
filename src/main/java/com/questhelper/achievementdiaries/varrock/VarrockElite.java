@@ -79,7 +79,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	Requirement notSuperCombat, notPlankMake, notSummerPie, notRuneDart, not100Earth, madeTips;
 
 	QuestStep claimReward, moveToBank, superCombat, moveToLumb, plankMake, moveToCookingGuild, summerPie,
-		moveToEarthRune, earthRune100, dartTip, runeDart;
+		moveToEarthRune, earthRune100, dartTip, runeDart, moveToAnvil;
 
 	Zone bank, lumb, cGuild, earth, anvil;
 
@@ -98,7 +98,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 		doElite.addStep(new Conditions(notSummerPie, inCookingGuild), summerPie);
 		doElite.addStep(notSummerPie, moveToCookingGuild);
 		doElite.addStep(new Conditions(notRuneDart, runeDartTip, madeTips), runeDart);
-		doElite.addStep(notRuneDart, dartTip);
+		doElite.addStep(new Conditions(notRuneDart, inAnvil), dartTip);
+		doElite.addStep(notRuneDart, moveToAnvil);
 		doElite.addStep(new Conditions(notPlankMake, inLumb), plankMake);
 		doElite.addStep(notPlankMake, moveToLumb);
 		doElite.addStep(new Conditions(not100Earth, inEarth), earthRune100);
@@ -183,6 +184,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 			"Travel to the earth altar or go through the abyss.", earthTali);
 		earthRune100 = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft the earth runes.", ess.quantity(25));
+		moveToAnvil = new TileStep(this, new WorldPoint(3188, 3426, 0),
+			"Go to the anvil beside the east Varrock bank.");
 		dartTip = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3188, 3426, 0),
 			"Make rune dart tips on the anvil in east Varrock.", runeBar);
 		runeDart = new ItemStep(this, "Use feathers on the rune dart tips.", runeDartTip.highlighted(),
@@ -239,8 +242,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 		summerPieSteps.setDisplayCondition(notSummerPie);
 		allSteps.add(summerPieSteps);
 
-		PanelDetails runeDartsSteps = new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(dartTip,
-			runeDart), new SkillRequirement(Skill.FLETCHING, 81), new SkillRequirement(Skill.SMITHING, 89),
+		PanelDetails runeDartsSteps = new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(moveToAnvil,
+			dartTip, runeDart), new SkillRequirement(Skill.FLETCHING, 81), new SkillRequirement(Skill.SMITHING, 89),
 			touristTrap, runeBar, feather.quantity(10), hammer);
 		runeDartsSteps.setDisplayCondition(notRuneDart);
 		allSteps.add(runeDartsSteps);

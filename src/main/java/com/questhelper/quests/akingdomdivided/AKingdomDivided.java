@@ -469,7 +469,6 @@ public class AKingdomDivided extends BasicQuestHelper
 		darkNullifier.setTooltip("You can obtain another from Mori in the Arceuus Church.");
 		shayzienJournal = new ItemRequirement("Shayzien Journal", ItemID.SHAYZIEN_JOURNAL);
 		shayzienJournal.setTooltip("You can get another one from the chest inside of the barrel in the Hosidious vinery.");
-		skillNecklace = new ItemRequirement("Skills Necklace", ItemCollections.getSkillsNecklaces());
 	}
 
 	public void setupConditions()

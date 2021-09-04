@@ -338,7 +338,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 		chopHesporiForBark = new ObjectStep(this, ObjectID.HESPORI_42592, new WorldPoint(3507, 3357, 0), "Chop Hespori to obtain Hespori bark.", axe);
 		returnToMysteriousStrangerWithBark = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
-		"Speak with the Mysterious Stranger in Ver Sinhaza again with the Hespori bark. Use the Drakan's Medallion tele to get to Ver Sinhaza quickly.", hesporiBark);
+			"Speak with the Mysterious Stranger in Ver Sinhaza again with the Hespori bark. Use the Drakan's Medallion tele to get to Ver Sinhaza quickly.", hesporiBark);
 		returnToMysteriousStrangerWithBark.addDialogSteps("I found a hespori.");
 		((NpcStep) returnToMysteriousStrangerWithBark).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10875);
 

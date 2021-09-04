@@ -30,6 +30,7 @@ import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -75,14 +76,14 @@ public class VarrockElite extends ComplexStateQuestHelper
 	// Quests required
 	Requirement dreamMentor, runeMyster, touristTrap;
 
-	Requirement notSuperCombat, notPlankMake, notSummerPie, notRuneDart, not100Earth;
+	Requirement notSuperCombat, notPlankMake, notSummerPie, notRuneDart, not100Earth, madeTips;
 
 	QuestStep claimReward, moveToBank, superCombat, moveToLumb, plankMake, moveToCookingGuild, summerPie,
 		moveToEarthRune, earthRune100, dartTip, runeDart;
 
-	Zone bank, lumb, cGuild, earth;
+	Zone bank, lumb, cGuild, earth, anvil;
 
-	ZoneRequirement inBank, inLumb, inCookingGuild, inEarth;
+	ZoneRequirement inBank, inLumb, inCookingGuild, inEarth, inAnvil;
 
 	@Override
 	public QuestStep loadStep()
@@ -96,7 +97,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		doElite.addStep(notSuperCombat, moveToBank);
 		doElite.addStep(new Conditions(notSummerPie, inCookingGuild), summerPie);
 		doElite.addStep(notSummerPie, moveToCookingGuild);
-		doElite.addStep(new Conditions(notRuneDart, runeDartTip), runeDart);
+		doElite.addStep(new Conditions(notRuneDart, runeDartTip, madeTips), runeDart);
 		doElite.addStep(notRuneDart, dartTip);
 		doElite.addStep(new Conditions(notPlankMake, inLumb), plankMake);
 		doElite.addStep(notPlankMake, moveToLumb);
@@ -131,12 +132,24 @@ public class VarrockElite extends ComplexStateQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneDart);
 		runeDartTip = new ItemRequirement("Rune dart tip", ItemID.RUNE_DART_TIP);
 		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(not100Earth);
-		earthTali =
-			new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.getEarthAltar()).showConditioned(not100Earth);
+		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss",
+			ItemCollections.getEarthAltar()).showConditioned(not100Earth);
 
 		inBank = new ZoneRequirement(bank);
 		inLumb = new ZoneRequirement(lumb);
 		inCookingGuild = new ZoneRequirement(cGuild);
+		inAnvil = new ZoneRequirement(anvil);
+
+		madeTips = new ChatMessageRequirement(
+			inAnvil,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) madeTips).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inAnvil),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
 
 		dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
 		runeMyster = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
@@ -149,6 +162,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		lumb = new Zone(new WorldPoint(3300, 3501, 0), new WorldPoint(3313, 3493, 0));
 		cGuild = new Zone(new WorldPoint(3138, 3453, 0), new WorldPoint(3148, 3444, 0));
 		earth = new Zone(new WorldPoint(2624, 4863, 0), new WorldPoint(2687, 4800, 0));
+		anvil = new Zone(new WorldPoint(3185, 3427, 0), new WorldPoint(3190, 3420, 0));
 	}
 
 	public void setupSteps()

@@ -46,11 +46,23 @@ public class ComplexRequirement extends AbstractRequirement
 	 * <br>
 	 * The default {@link LogicType} is {@link LogicType#AND}.
 	 */
-	public ComplexRequirement(String name, Requirement... requirements)
+	public ComplexRequirement(String name, AbstractRequirement... requirements)
 	{
 		this.name = name;
 		this.requirements = requirements;
 		this.logicType = LogicType.AND;
+
+		shouldCountForFilter = true;
+		// If any sub-requirements shouldn't be considered for filtering, don't consider the
+		// whole ComplexRequirement for filtering
+		for (AbstractRequirement requirement : requirements)
+		{
+			if (!requirement.shouldConsiderForFilter())
+			{
+				shouldCountForFilter = false;
+				break;
+			}
+		}
 	}
 
 	/**

@@ -305,7 +305,7 @@ public class TheFeud extends BasicQuestHelper
 	{
 		//Step 0-1
 		//Start Quest & Purchase Disguise
-		startQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kahrid to start the quest.");
+		startQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kharid to start the quest.");
 		startQuest.addDialogStep("If you are, then why are you still selling goods from a stall?");
 		startQuest.addDialogStep("I'd like to help you but");
 		startQuest.addDialogStep("I'll find you your help.");
@@ -402,13 +402,13 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 17
 		//Get Snake & Talk to Barman
-		talkToAliTheBarman = new NpcStep(this, NpcID.ALI_THE_BARMAN, new WorldPoint(3361, 2956, 0), "Talk to Ali the Barman to find outwhere Traitorous Ali is.");
+		talkToAliTheBarman = new NpcStep(this, NpcID.ALI_THE_BARMAN, new WorldPoint(3361, 2956, 0), "Talk to Ali the Barman to find out where Traitorous Ali is.");
 		talkToAliTheBarman.addDialogStep(("I'm looking for Traitorous Ali."));
 		talkToAliTheBarman.addDialogStep("No thanks I'm ok.");
 
 		talkToAliTheHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Talk to Ali the Hag to ask her to make some poison for you.");
 
-		giveCoinToSnakeCharmer = new ObjectStep(this, ObjectID.MONEY_POT, new WorldPoint(3355, 2953, 0), "Talk to Ali the Hag to ask her to make some poison for you.", highlightedCoins);
+		giveCoinToSnakeCharmer = new ObjectStep(this, ObjectID.MONEY_POT, new WorldPoint(3355, 2953, 0), "Use coins on the snake charmer's money pot to get a snake charm and a snake basket.", highlightedCoins);
 		giveCoinToSnakeCharmer.addIcon(ItemID.COINS);
 
 		catchSnake = new NpcStep(this, NpcID.DESERT_SNAKE, new WorldPoint(3332, 2958, 0), "Use the Snake Charm on a snake to capture it.", true, snakeCharmHighlighted, snakeBasket);
@@ -446,7 +446,7 @@ public class TheFeud extends BasicQuestHelper
 		talkToMenaphiteLeader = new NpcStep(this, NpcID.MENAPHITE_LEADER, "Talk to the Menaphite Leader and prepare for a fight against a tough guy. You can safespot him inside the tent by using a chair.");
 		talkToMenaphiteLeader.addSubSteps(killMenaphiteThug);
 
-		killMenaphiteThug = new DetailedQuestStep(this, "Kill the Menahite Thug. You can safespot him inside the tent by using a chair, if he's not spawned then talk to the Menaphite Leader again.");
+		killMenaphiteThug = new DetailedQuestStep(this, "Kill the Menaphite Thug. You can safespot him inside the tent by using a chair, if he's not spawned then talk to the Menaphite Leader again.");
 
 		//Step 25
 		//Kill Champion - Talk to Villager
@@ -467,7 +467,7 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 27
 		//Finish Quest
-		finishQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kahrid to finish the quest.");
+		finishQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kharid to finish the quest.");
 	}
 
 	@Override

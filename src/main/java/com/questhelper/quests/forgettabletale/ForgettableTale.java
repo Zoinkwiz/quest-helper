@@ -591,7 +591,7 @@ public class ForgettableTale extends BasicQuestHelper
 		goUpstairsPub = new ObjectStep(this, ObjectID.STAIRS_6085, new WorldPoint(2916, 10196, 0),
 			"Go upstairs in Keldagrim's east pub.");
 		buyYeast = new NpcStep(this, NpcID.BLANDEBIR, new WorldPoint(2916, 10193, 1),
-			"Buy yeast from Blandebir.", coins.quantity(25), pot);
+			"Buy yeast from Blandebir. You can get a pot from the table in the brewing room.", coins.quantity(25), pot);
 		buyYeast.addDialogSteps("Do you have any spare ale yeast?", "That's a good deal - please fill my pot with ale" +
 			" yeast for 25GP.");
 		addWater = new ObjectStep(this, NullObjectID.NULL_11670, new WorldPoint(2918, 10195, 1),

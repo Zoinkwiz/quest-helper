@@ -48,6 +48,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
+
 @QuestDescriptor(
 	quest = QuestHelperQuest.FREMENNIK_HARD
 )

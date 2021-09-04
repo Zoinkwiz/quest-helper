@@ -253,7 +253,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		barbFiremaking = new ItemRequirement("Unlocked the Ancient Caverns through Barbarian Firemaking", 1, -1);
 		barbSmithing = new ItemRequirement("Completed Barbarian Smithing", 1, -1);
 		taiBwoWannai = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
-		knightWaves = new QuestRequirement(QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS, QuestState.FINISHED);
+		knightWaves = new ItemRequirement("Completed the Knight Waves Training Grounds", 1, -1);
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}
 

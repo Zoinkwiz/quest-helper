@@ -200,10 +200,12 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	{
 		NotYetImplemented = new DetailedQuestStep(this, "Not yet Implemented");
 
-		speakWithMysteriousStrangerToStart = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0), "Speak with the Mysterious Stranger in Ver Sinhaza.");
+		speakWithMysteriousStrangerToStart = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0),
+			"Speak with the Mysterious Stranger in Ver Sinhaza.");
 		speakWithMysteriousStrangerToStart.addDialogSteps("What's all this really about?", "What's this thing you need from me?", "Yes.");
 
-		enterVerSinhazaCrypts = new ObjectStep(this, ObjectID.STAIRCASE_42523, new WorldPoint(3682, 3231, 0), "Enter the crypts north east of the Mysterious Stranger.");
+		enterVerSinhazaCrypts = new ObjectStep(this, ObjectID.STAIRCASE_42523, new WorldPoint(3682, 3231, 0),
+			"Enter the crypts north east of the Mysterious Stranger.");
 		enterVerSinhazaCrypts.addDialogSteps("Yes.");
 
 		killVyrewatchForKey = new NpcStep(this, NpcID.VYREWATCH_11173,
@@ -217,12 +219,14 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		searchTheCoffinInVerSinhazaCrypts = new ObjectStep(this, ObjectID.COFFIN_42532, "Search the coffin.");
 
 		leaveCrypts = new ObjectStep(this, ObjectID.DOOR_42524, "Return to the Mysterious Stranger with Ranis' head.", ranisHead);
-		speakWithMysteriousStrangerWithRanisHead = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0), "Return to the Mysterious Stranger with Ranis' head.", ranisHead);
+		speakWithMysteriousStrangerWithRanisHead = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875,
+			new WorldPoint(3673, 3223, 0), "Return to the Mysterious Stranger with Ranis' head.", ranisHead);
 		((NpcStep) speakWithMysteriousStrangerWithRanisHead).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10876, NpcID.MYSTERIOUS_STRANGER);
 		speakWithMysteriousStrangerWithRanisHead.addDialogSteps("I managed to recover Ranis' head.");
 		speakWithMysteriousStrangerWithRanisHead.addSubSteps(leaveCrypts);
 
-		speakMoreWithMysteriousStranger = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0), "Speak to the Mysterious Strange some more.");
+		speakMoreWithMysteriousStranger = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0),
+			"Speak to the Mysterious Strange some more.");
 		((NpcStep) speakMoreWithMysteriousStranger).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10876, NpcID.MYSTERIOUS_STRANGER);
 		speakMoreWithMysteriousStranger.addDialogSteps("So what are we doing with Ranis' head?", "So about that memory...");
 
@@ -310,7 +314,8 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 		String hesporiFightText = "Go to the island directly east of the Nature Grotto. Be prepared to fight Hespori. " +
 			"The fight is similar to what you would expect from the Hespori fight in the Farming Guild. Activate Hespori when ready.";
-		goToHesporiFight = new ObjectStep(this, ObjectID.STEPPING_STONE_42588, new WorldPoint(3499, 3355, 0), hesporiFightText, combatGear, food, antipoison, axe);
+		goToHesporiFight = new ObjectStep(this, ObjectID.STEPPING_STONE_42588, new WorldPoint(3499, 3355, 0),
+				hesporiFightText, combatGear, food, antipoison, axe);
 		((ObjectStep) goToHesporiFight).setLinePoints(Arrays.asList(
 			new WorldPoint(3440, 3327, 0),
 			new WorldPoint(3427, 3330, 0),
@@ -323,8 +328,10 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 			new WorldPoint(3487, 3356, 0),
 			new WorldPoint(3497, 3355, 0)
 		));
-		exitNatureGrotto = new ObjectStep(this, ObjectID.GROTTO_3526, new WorldPoint(3442, 9733, 1), hesporiFightText, combatGear, food, antipoison, axe);
-		activateHesporiFight = new ObjectStep(this, ObjectID.HESPORI_42591, new WorldPoint(3507, 3357, 0), hesporiFightText, combatGear, food, antipoison, axe);
+		exitNatureGrotto = new ObjectStep(this, ObjectID.GROTTO_3526, new WorldPoint(3442, 9733, 1),
+				hesporiFightText, combatGear, food, antipoison, axe);
+		activateHesporiFight = new ObjectStep(this, ObjectID.HESPORI_42591, new WorldPoint(3507, 3357, 0),
+				hesporiFightText, combatGear, food, antipoison, axe);
 		goToHesporiFight.addSubSteps(exitNatureGrotto, activateHesporiFight);
 
 		fightHespori = new NpcStep(this, NpcID.HESPORI_11192, "Fight Hespori.");
@@ -337,10 +344,11 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 		mysteriousStrangerCutscenes2 = new DetailedQuestStep(this, "Watch cutscenes.");
 		speakWithMysteriousStrangerAndWatchCutscenes2 = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
-			"Speak with the Mysterious Stranger in Ver Sinhaza and watch the cutscenes.");
+		"Speak with the Mysterious Stranger in Ver Sinhaza and watch the cutscenes.");
 		mysteriousStrangerCutscenes2.addSubSteps(speakWithMysteriousStrangerAndWatchCutscenes2);
 
-		speakWithMysteriousStrangerAndWatchCutscenes2.addDialogSteps("Can we use this bark to find more memories?", "Do you have any more memories for us to look at?");
+		speakWithMysteriousStrangerAndWatchCutscenes2.addDialogSteps("Can we use this bark to find more memories?",
+			"Do you have any more memories for us to look at?");
 		((NpcStep) speakWithMysteriousStrangerAndWatchCutscenes2).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10875);
 
 
@@ -456,8 +464,9 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Memories of a \"Friend\"", Arrays.asList(speakWithMysteriousStrangerToStart, enterVerSinhazaCrypts, killVyrewatchForKey, unlockTheCryptGate,
-			searchTheCoffinInVerSinhazaCrypts, speakWithMysteriousStrangerWithRanisHead, speakMoreWithMysteriousStranger, enterSpiderCave, searchSpiderCaveSkeleton,
+		allSteps.add(new PanelDetails("Memories of a \"Friend\"", Arrays.asList(speakWithMysteriousStrangerToStart,
+			enterVerSinhazaCrypts, killVyrewatchForKey, unlockTheCryptGate, searchTheCoffinInVerSinhazaCrypts,
+			speakWithMysteriousStrangerWithRanisHead, speakMoreWithMysteriousStranger, enterSpiderCave, searchSpiderCaveSkeleton,
 			readStickyNote, speakWithDaerKrand, returnToSpiderCave, returnToMysteriousStrangerWithEggs,
 			mysteriousStrangerCutscenes), combatGear, food.quantity(20), flail, saw, antiVenom, drakansMedallion));
 

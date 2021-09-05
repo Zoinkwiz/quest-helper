@@ -877,6 +877,18 @@ public class ItemCollections
 		ItemID.BLUE_LOGS
 	);
 
+	@Getter
+	private static final List<Integer> bones = ImmutableList.of(
+		ItemID.BONES,
+		ItemID.BURNT_BONES,
+		ItemID.WOLF_BONES,
+		ItemID.BAT_BONES,
+		ItemID.BIG_BONES,
+		ItemID.JOGRE_BONES,
+		ItemID.BABYDRAGON_BONES,
+		ItemID.DRAGON_BONES,
+		ItemID.DAGANNOTH_BONES
+	);
 
 	// Other
 
@@ -1222,5 +1234,42 @@ public class ItemCollections
 		ItemID.LUNAR_STAFF__PT2,
 		ItemID.LUNAR_STAFF__PT1,
 		ItemID.DRAMEN_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> earthAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.EARTH_TIARA,
+		ItemID.EARTH_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> essenceLow = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE,
+		ItemID.RUNE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> essenceHigh = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> coins = ImmutableList.of(
+		ItemID.COINS_995,
+		ItemID.COINS_8890,
+		ItemID.COINS_6964,
+		ItemID.COINS
+	);
+
+	@Getter
+	private  static final List<Integer> cookingGuild = ImmutableList.of(
+		ItemID.CHEFS_HAT,
+		ItemID.VARROCK_ARMOUR_3,
+		ItemID.VARROCK_ARMOUR_4,
+		ItemID.COOKING_CAPET,
+		ItemID.COOKING_CAPE
 	);
 }

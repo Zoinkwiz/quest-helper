@@ -54,6 +54,7 @@ public class SkillRequirement extends AbstractRequirement
 		this.skill = skill;
 		this.requiredLevel = requiredLevel;
 		this.displayText = getDisplayText();
+		shouldCountForFilter = true;
 	}
 
 	/**

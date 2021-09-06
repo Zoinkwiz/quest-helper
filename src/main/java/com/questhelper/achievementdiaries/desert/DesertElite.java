@@ -66,17 +66,17 @@ import com.questhelper.steps.QuestStep;
 public class DesertElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear;
+	ItemRequirement combatGear, rawPie, waterRune, bloodRune, deathRune, dragonDartTip, feather, KQHead;
 
 	// Items recommended
 	ItemRequirement food;
 
 	// Quests required
-	Requirement taiBwoWannaiTrio;
+	Requirement desertTreasure, icthlarinsLittleHelper;
 
-	Requirement not;
+	Requirement notWildPie, notIceBarrage, notDragonDarts, notTalkKQHead, notGrandGoldChest, notRestorePrayer;
 
-	QuestStep claimReward;
+	QuestStep claimReward, wildPie, iceBarrage, dragonDarts, talkKQHead, grandGoldChest, restorePrayer;
 
 	Zone cave;
 
@@ -97,7 +97,7 @@ public class DesertElite extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		not = new VarplayerRequirement(3600, false, 1);
+		//not = new VarplayerRequirement(3600, false, 1);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -106,7 +106,8 @@ public class DesertElite extends ComplexStateQuestHelper
 
 		inCave = new ZoneRequirement(cave);
 
-		taiBwoWannaiTrio = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
+		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
+		icthlarinsLittleHelper = new QuestRequirement(QuestHelperQuest.ICTHLARINS_LITTLE_HELPER, QuestState.FINISHED);
 	}
 
 	public void loadZones()
@@ -117,8 +118,8 @@ public class DesertElite extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
-			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
+			"Talk to Jarr at the Shantay pass to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
@@ -138,10 +139,17 @@ public class DesertElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new CombatLevelRequirement(100));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 78));
+		reqs.add(new SkillRequirement(Skill.COOKING, 85));
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 95));
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 78));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 94));
+		reqs.add(new SkillRequirement(Skill.PRAYER, 85));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 91));
 
-		reqs.add(taiBwoWannaiTrio);
+
+		reqs.add(desertTreasure);
+		reqs.add(icthlarinsLittleHelper);
 
 		return reqs;
 	}

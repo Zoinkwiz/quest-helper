@@ -123,8 +123,8 @@ public class DesertMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
-			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
+			"Talk to Jarr at the Shantay pass to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 

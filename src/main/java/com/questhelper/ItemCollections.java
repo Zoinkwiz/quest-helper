@@ -1272,4 +1272,40 @@ public class ItemCollections
 		ItemID.COOKING_CAPET,
 		ItemID.COOKING_CAPE
 	);
+
+	@Getter
+	private  static final List<Integer> plunderArtefacts = ImmutableList.of(
+		ItemID.IVORY_COMB,
+		ItemID.POTTERY_SCARAB,
+		ItemID.POTTERY_STATUETTE,
+		ItemID.STONE_SEAL,
+		ItemID.STONE_SCARAB,
+		ItemID.STONE_STATUETTE,
+		ItemID.GOLD_SEAL,
+		ItemID.GOLDEN_SCARAB,
+		ItemID.GOLDEN_STATUETTE
+	);
+
+	@Getter
+	private  static final List<Integer> waterskin = ImmutableList.of(
+		ItemID.WATERSKIN4,
+		ItemID.WATERSKIN3,
+		ItemID.WATERSKIN2,
+		ItemID.WATERSKIN1
+	);
+
+	@Getter
+	private  static final List<Integer> grimyHerb = ImmutableList.of(
+		ItemID.GRIMY_AVANTOE,
+		ItemID.GRIMY_CADANTINE,
+		ItemID.GRIMY_LANTADYME,
+		ItemID.GRIMY_ARDRIGAL,
+		ItemID.GRIMY_ROGUES_PURSE,
+		ItemID.GRIMY_GUAM_LEAF,
+		ItemID.GRIMY_HARRALANDER,
+		ItemID.GRIMY_TOADFLAX,
+		ItemID.GRIMY_TORSTOL,
+		ItemID.GRIMY_TARROMIN,
+		ItemID.GRIMY_IRIT_LEAF
+	);
 }

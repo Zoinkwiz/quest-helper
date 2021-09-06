@@ -66,17 +66,20 @@ import com.questhelper.steps.QuestStep;
 public class DesertHard extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear;
+	ItemRequirement combatGear, blackjack, pickaxe, fireRune, waterRune, astralRune, waterskin, slayerHelm, keris,
+		lightsource, yewLog, tinderbox, mithBar, hammer;
 
 	// Items recommended
 	ItemRequirement food;
 
 	// Quests required
-	Requirement taiBwoWannaiTrio;
+	Requirement theFued, dreamMentor, desertTreasure, contact;
 
-	Requirement not;
+	Requirement notMenaThug, notGranite, notRefillWaterskin, notKalphQueen, notPollRooftop, notKillDust,
+		notAncientMagicks, notKillLocustRider, notBurnYew, notMithPlatebody;
 
-	QuestStep claimReward;
+	QuestStep claimReward, menaThug, granite, refillWaterskin, kalphQueen, pollRooftop, killDust,
+		ancientMagicks, killLocustRider, burnYew, mithPlatebody;
 
 	Zone cave;
 
@@ -97,7 +100,7 @@ public class DesertHard extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		not = new VarplayerRequirement(3600, false, 1);
+		//not = new VarplayerRequirement(3600, false, 1);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -106,7 +109,10 @@ public class DesertHard extends ComplexStateQuestHelper
 
 		inCave = new ZoneRequirement(cave);
 
-		taiBwoWannaiTrio = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
+		theFued = new QuestRequirement(QuestHelperQuest.THE_FEUD, QuestState.FINISHED);
+		dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
+		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
+		contact = new QuestRequirement(QuestHelperQuest.CONTACT, QuestState.FINISHED);
 	}
 
 	public void loadZones()
@@ -117,8 +123,8 @@ public class DesertHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
-			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
+			"Talk to Jarr at the Shantay pass to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
@@ -138,10 +144,21 @@ public class DesertHard extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new CombatLevelRequirement(100));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
+		reqs.add(new SkillRequirement(Skill.ATTACK, 50));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 55));
+		reqs.add(new SkillRequirement(Skill.DEFENCE, 10));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 68));
+		reqs.add(new SkillRequirement(Skill.MINING, 45));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 68));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 65));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 65));
 
-		reqs.add(taiBwoWannaiTrio);
+		reqs.add(contact);
+		reqs.add(dreamMentor);
+		reqs.add(desertTreasure);
+		reqs.add(theFued);
 
 		return reqs;
 	}
@@ -149,7 +166,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("At least 1 Gorak (level 145)");
+		return Collections.singletonList("Kill a Dust devil (lvl 93), Locust rider (lvl 98), Kalphite Queen, (lvl 333)");
 	}
 
 	@Override

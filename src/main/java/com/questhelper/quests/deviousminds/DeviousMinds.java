@@ -87,7 +87,7 @@ public class DeviousMinds extends BasicQuestHelper
 		makeEntireBowSword.addStep(bowSword.alsoCheckBank(questBank), talkToMonk2);
 		makeEntireBowSword.addStep(slenderBlade.alsoCheckBank(questBank), makeBowSword);
 		steps.put(10, makeEntireBowSword);
-		steps.put(20, makeEntireBowSword);   //Finished talking
+		steps.put(20, talkToMonk2);   //Finished talking
 
 		ConditionalStep entranaAltarPouch = new ConditionalStep(this, makeIllumPouch);
 		entranaAltarPouch.addStep(new Conditions(illumPouch, onEntrana), usePouchOnAltar);

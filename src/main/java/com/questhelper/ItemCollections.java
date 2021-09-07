@@ -1308,4 +1308,25 @@ public class ItemCollections
 		ItemID.GRIMY_TARROMIN,
 		ItemID.GRIMY_IRIT_LEAF
 	);
+
+	@Getter
+	private  static final List<Integer> blackjacks = ImmutableList.of(
+		ItemID.MAPLE_BLACKJACKD,
+		ItemID.MAPLE_BLACKJACKO,
+		ItemID.MAPLE_BLACKJACK,
+		ItemID.WILLOW_BLACKJACKD,
+		ItemID.WILLOW_BLACKJACKO,
+		ItemID.WILLOW_BLACKJACK,
+		ItemID.OAK_BLACKJACKO,
+		ItemID.OAK_BLACKJACKD,
+		ItemID.OAK_BLACKJACK
+	);
+
+	@Getter
+	private  static final List<Integer> keris = ImmutableList.of(
+		ItemID.KERISP_10584,
+		ItemID.KERISP_10583,
+		ItemID.KERISP,
+		ItemID.KERIS
+	);
 }

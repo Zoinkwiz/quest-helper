@@ -126,7 +126,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		notEnterDesert = new VarplayerRequirement(1198, false, 4);
 		notKillVulture = new VarplayerRequirement(1198, false, 5);
 		notNardahHerb = new VarplayerRequirement(1198,  false, 6);
-		notCollectCacti = new VarplayerRequirement(1198, true, 7);
+		notCollectCacti = new VarplayerRequirement(1198, false, 7);
 		notSellArtefact = new VarplayerRequirement(1198, false, 8);
 		notOpenSarc = new VarplayerRequirement(1198, false, 9);
 		notCutCactus = new VarplayerRequirement(1198, false, 10);
@@ -180,7 +180,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 			"Enter the desert.", desertBoots.equipped(), desertRobe.equipped(), desertShirt.equipped(), shantayPass);
 
 		goldWarbler = new ObjectStep(this, ObjectID.BIRD_SNARE_9375, new WorldPoint(3404, 3148, 0),
-			"Catch a Golden Warbler in the desert.", birdSnare.highlighted());
+			"Catch a Golden Warbler in the Uzer hunter area.", birdSnare.highlighted());
 
 		magicCarpet = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3310, 3108, 0),
 			"Talk to the rug merchant and travel to Pollnivneach.", coins.quantity(200));
@@ -227,7 +227,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins.quantity(205), shantayPass, birdSnare, pickaxe, rope, knife, desertBoots,
+		return Arrays.asList(coins.quantity(405), shantayPass, birdSnare, pickaxe, rope, knife, desertBoots,
 			desertRobe, desertShirt, grimyHerb, pyramidPlunderArtefact, emptyWaterskin, combatGear);
 	}
 
@@ -261,8 +261,8 @@ public class DesertEasy extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails enterSteps = new PanelDetails("Enter the Desert Dressed Appropriately",
-			Collections.singletonList(enterDesert), desertBoots.equipped(), desertShirt.equipped(),
-			desertRobe.equipped(), shantayPass);
+			Collections.singletonList(enterDesert), desertBoots.equipped(), desertShirt.equipped(), desertRobe.equipped(),
+			shantayPass);
 		enterSteps.setDisplayCondition(notEnterDesert);
 		allSteps.add(enterSteps);
 

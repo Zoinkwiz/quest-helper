@@ -146,7 +146,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notOrangeSally);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notChopTeak);
 		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
-				.showConditioned(notVisitGenie);
+			.showConditioned(notVisitGenie);
 		scrollOfRedir = new ItemRequirement("Scroll of redirection", ItemID.SCROLL_OF_REDIRECTION)
 			.showConditioned(notTPPollnivneach);
 		teleToHouse = new ItemRequirement("Teleport to house", ItemID.TELEPORT_TO_HOUSE)
@@ -232,8 +232,6 @@ public class DesertMedium extends ComplexStateQuestHelper
 		tpEnakhra = new DetailedQuestStep(this, "Teleport to Enakhra's Temple with the Camulet.", camulet);
 		tpPollnivneach = new DetailedQuestStep(this, "Teleport to Pollnivneach with a redirected house tablet. " +
 			"For Ironmen, move then enter your house from Pollnivneach", scrollOfRedir, teleToHouse);
-
-
 
 		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");

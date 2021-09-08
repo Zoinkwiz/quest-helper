@@ -44,12 +44,15 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import jogamp.opengl.macosx.cgl.MacOSXPbufferCGLDrawable;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -72,7 +75,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		lightsource, yewLog, tinderbox, mithBar, hammer;
 
 	// Items recommended
-	ItemRequirement food, waterskin, desertBoots, desertRobe, desertShirt;
+	ItemRequirement food, waterskin, desertBoots, desertRobe, desertShirt, rope, nardahTP;
 
 	// Quests required
 	Requirement theFued, dreamMentor, desertTreasure, contact, lunarBook;
@@ -80,13 +83,17 @@ public class DesertHard extends ComplexStateQuestHelper
 	Requirement notMenaThug, notGranite, notRefillWaterskin, notKalphQueen, notPollRooftop, notKillDust,
 		notAncientMagicks, notKillLocustRider, notBurnYew, notMithPlatebody;
 
-	QuestStep claimReward, menaThug, granite, refillWaterskin, kalphQueen, pollRooftop, killDust,
-		ancientMagicks, killLocustRider, burnYew, mithPlatebody, moveToKalph, moveToSmoke, moveToPyramid, moveToMayor,
-		moveToSoph;
+	QuestStep claimReward, menaThug, granite, refillWaterskin, pollRooftop, killDust,
+		ancientMagicks, burnYew, mithPlatebody, moveToSmoke, moveToPyramid, moveToMayor,
+		moveToSoph, moveToSoph2;
 
-	Zone kalph, smoke, soph, pyramid, mayor;
+	ObjectStep moveToKalph, kalphQueen;
 
-	ZoneRequirement inKalph, inSmoke, inPyramid, inSoph, inMayor;
+	NpcStep killLocustRider;
+
+	Zone kalph, smoke, soph1, soph2, pyramid, mayor;
+
+	ZoneRequirement inKalph, inSmoke, inPyramid, inSoph1, inSoph2, inMayor;
 
 	@Override
 	public QuestStep loadStep()
@@ -109,10 +116,9 @@ public class DesertHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notBurnYew, inMayor), burnYew);
 		doHard.addStep(notBurnYew, moveToMayor);
 		doHard.addStep(notMithPlatebody, mithPlatebody);
-		doHard.addStep(new Conditions(notKillLocustRider, inSoph), killLocustRider);
+		doHard.addStep(new Conditions(notKillLocustRider, inSoph2), killLocustRider);
+		doHard.addStep(new Conditions(notKillLocustRider, inSoph1), moveToSoph2);
 		doHard.addStep(notKillLocustRider, moveToSoph);
-
-		// 9, 10, 8
 
 		return doHard;
 	}
@@ -147,7 +153,9 @@ public class DesertHard extends ComplexStateQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnYew);
 		mithBar = new ItemRequirement("Mithril bar", ItemID.MITHRIL_BAR).showConditioned(notMithPlatebody);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMithPlatebody);
+		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKalphQueen);
 
+		nardahTP = new ItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
@@ -161,7 +169,8 @@ public class DesertHard extends ComplexStateQuestHelper
 		inKalph = new ZoneRequirement(kalph);
 		inSmoke = new ZoneRequirement(smoke);
 		inPyramid = new ZoneRequirement(pyramid);
-		inSoph = new ZoneRequirement(soph);
+		inSoph1 = new ZoneRequirement(soph1);
+		inSoph2 = new ZoneRequirement(soph2);
 		inMayor = new ZoneRequirement(mayor);
 
 		theFued = new QuestRequirement(QuestHelperQuest.THE_FEUD, QuestState.FINISHED);
@@ -172,15 +181,63 @@ public class DesertHard extends ComplexStateQuestHelper
 
 	public void loadZones()
 	{
-		kalph = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
-		smoke  = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
-		soph = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
-		pyramid = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
-		mayor = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
+		kalph = new Zone(new WorldPoint(3454, 9531, 0), new WorldPoint(3520, 9473, 2));
+		smoke = new Zone(new WorldPoint(3166, 9408, 0), new WorldPoint(3332, 9344, 0));
+		soph1 = new Zone(new WorldPoint(2792, 5174, 0), new WorldPoint(2807, 5158, 0));
+		soph2 = new Zone(new WorldPoint(3264, 9281, 2), new WorldPoint(3327, 9216, 2));
+		pyramid = new Zone(new WorldPoint(3199, 9340, 0), new WorldPoint(3265, 9282, 0));
+		mayor = new Zone(new WorldPoint(3436, 2924, 1), new WorldPoint(3452, 2907, 1));
 	}
 
 	public void setupSteps()
 	{
+		moveToKalph = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
+			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted().quantity(2));
+		moveToKalph.addAlternateObjects(ObjectID.TUNNEL_ENTRANCE);
+		moveToKalph.addIcon(ItemID.ROPE);
+		kalphQueen = new ObjectStep(this, 23609, new WorldPoint(3510, 9498, 2),
+			"Climb down the tunnel entrance that leads to the Kalphite Queen and kill her.", rope);
+		kalphQueen.addAlternateObjects(10230);
+		kalphQueen.addIcon(ItemID.ROPE);
+
+		pollRooftop = new ObjectStep(this, ObjectID.BASKET_14935, new WorldPoint(3351, 2962, 0),
+			"Climb on the basket and complete a lap of the Pollnivneach Rooftop course.");
+
+		menaThug = new NpcStep(this, NpcID.MENAPHITE_THUG, new WorldPoint(3347, 2959, 0),
+			"Knockout and pickpocket a Menaphite thug.", blackjack);
+
+		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify",
+			lunarBook, fireRune.quantity(1), waterRune.quantity(3), astralRune.quantity(1));
+
+		moveToSmoke = new ObjectStep(this, ObjectID.SMOKEY_WELL, new WorldPoint(3310, 2962, 0),
+			"Go down the Smokey well.");
+		killDust = new NpcStep(this, NpcID.DUST_DEVIL, new WorldPoint(3219, 9370, 0),
+			"Kill a Dust devil with a slayer helm equipped.", slayerHelm.equipped());
+
+		moveToPyramid = new ObjectStep(this, ObjectID.TUNNEL_6481, new WorldPoint(3233, 2889, 0),
+			"Enter the Jaldraocht Pyramid.");
+		ancientMagicks = new ObjectStep(this, ObjectID.ALTAR_6552, new WorldPoint(3233, 9311, 0),
+			"Pray at the altar.");
+
+		granite = new ObjectStep(this, ObjectID.ROCKS_11387, new WorldPoint(3167, 2911, 0),
+			"Mine granite.", pickaxe);
+
+		moveToMayor = new ObjectStep(this, ObjectID.STAIRCASE_10525, new WorldPoint(3447, 2912, 0),
+			"Climb the staircase in the Nardah Mayor's house.");
+		burnYew = new TileStep(this, new WorldPoint(3440, 2913, 1),
+			"Burn yew logs on the balcony. ", yewLog, tinderbox);
+
+		mithPlatebody = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3409, 2921, 0),
+			"Make a Mithril platebody", mithBar.quantity(5), hammer);
+
+		moveToSoph = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0),
+			"Climb down the ladder to enter the Sophanem Dungeon.");
+		moveToSoph2 = new ObjectStep(this, ObjectID.LADDER_20278, new WorldPoint(2800, 5159, 0),
+			"Climb down the ladder again.", lightsource);
+		killLocustRider = new NpcStep(this, NpcID.LOCUST_RIDER_796, new WorldPoint(3296, 9267, 2),
+			"Kill a Scarab mage or Locust rider with keris.", true, keris.equipped());
+		killLocustRider.addAlternateNpcs(NpcID.SCARAB_MAGE, NpcID.SCARAB_MAGE_799, NpcID.LOCUST_RIDER,
+			NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
 
 		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
@@ -192,13 +249,13 @@ public class DesertHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(combatGear, blackjack, pickaxe, fireRune.quantity(1), waterRune.quantity(3),
 			astralRune.quantity(1), emptyWaterskin, slayerHelm, keris, lightsource, yewLog, tinderbox,
-			mithBar.quantity(5), hammer);
+			mithBar.quantity(5), hammer, rope.quantity(2));
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food, waterskin, desertBoots, desertRobe, desertShirt);
+		return Arrays.asList(food, waterskin, desertBoots, desertRobe, desertShirt, nardahTP);
 	}
 
 	@Override
@@ -235,10 +292,8 @@ public class DesertHard extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		// 4, 5, 1, 3, 6, 7, 2, 9, 10, 8
-
 		PanelDetails kalphiteQueenSteps = new PanelDetails("Kalphite Queen", Arrays.asList(moveToKalph, kalphQueen),
-			combatGear, food);
+			combatGear, food, rope.quantity(2));
 		kalphiteQueenSteps.setDisplayCondition(notKalphQueen);
 		allSteps.add(kalphiteQueenSteps);
 
@@ -289,8 +344,6 @@ public class DesertHard extends ComplexStateQuestHelper
 			killLocustRider), new SkillRequirement(Skill.ATTACK, 50), contact, keris, combatGear, lightsource, food);
 		locusRiderSteps.setDisplayCondition(notKillLocustRider);
 		allSteps.add(locusRiderSteps);
-
-
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

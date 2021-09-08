@@ -1426,4 +1426,10 @@ public class ItemCollections
 		ItemID.KERISP,
 		ItemID.KERIS
 	);
+
+	@Getter
+	private  static final List<Integer> stuffedKQHead = ImmutableList.of(
+		ItemID.STUFFED_KQ_HEAD,
+		ItemID.STUFFED_KQ_HEAD_TATTERED
+	);
 }

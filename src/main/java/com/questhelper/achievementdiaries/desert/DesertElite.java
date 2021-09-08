@@ -44,8 +44,10 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,19 +70,21 @@ import com.questhelper.steps.QuestStep;
 public class DesertElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, rawPie, waterRune, bloodRune, deathRune, dragonDartTip, feather, KQHead, mahoPlank,
+	ItemRequirement combatGear, rawPie, waterRune, bloodRune, deathRune, dragonDartTip, feather, mahoPlank,
 		goldLeaves, coins, saw, hammer, kqHead;
 
 	// Items recommended
 	ItemRequirement food, pharaohSceptre, desertRobe, waterskin, desertBoots, desertShirt;
 
 	// Quests required
-	Requirement desertTreasure, icthlarinsLittleHelper, touristTrap;
+	Requirement desertTreasure, icthlarinsLittleHelper, touristTrap, priestInPeril;
 
 	Requirement notWildPie, notIceBarrage, notDragonDarts, notTalkKQHead, notGrandGoldChest, notRestorePrayer, ancientBook;
 
-	QuestStep claimReward, wildPie, iceBarrage, dragonDarts, talkKQHead, grandGoldChest, restorePrayer,
+	QuestStep claimReward, wildPie, dragonDarts, talkKQHead, grandGoldChest, restorePrayer,
 		moveToPyramidPlunder, startPyramidPlunder, moveToBed;
+
+	NpcStep iceBarrage;
 
 	Zone bed, pyramidPlunderLobby, lastRoom;
 
@@ -128,7 +132,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF).showConditioned(notTalkKQHead);
 		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notTalkKQHead);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead);
-		kqHead = new ItemRequirement("Stuffed KQ head", ItemID.STUFFED_KQ_HEAD).showConditioned(notTalkKQHead);
+		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.getStuffedKQHead()).showConditioned(notTalkKQHead);
 
 		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.getPharoahSceptre());
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
@@ -146,15 +150,16 @@ public class DesertElite extends ComplexStateQuestHelper
 		inPyramidPlunderLobby = new ZoneRequirement(pyramidPlunderLobby);
 
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
-		icthlarinsLittleHelper = new QuestRequirement(QuestHelperQuest.ICTHLARINS_LITTLE_HELPER, QuestState.FINISHED);
+		icthlarinsLittleHelper = new QuestRequirement(QuestHelperQuest.ICTHLARINS_LITTLE_HELPER, QuestState.IN_PROGRESS);
 		touristTrap = new QuestRequirement(QuestHelperQuest.THE_TOURIST_TRAP, QuestState.FINISHED);
+		priestInPeril = new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED);
 	}
 
 	public void loadZones()
 	{
-		bed = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
+		bed = new Zone(new WorldPoint(3163, 3049, 0), new WorldPoint(3181, 3024, 0));
 		pyramidPlunderLobby = new Zone(new WorldPoint(1926, 4465, 2), new WorldPoint(1976, 4419, 3));
-		lastRoom = new Zone(new WorldPoint(1920, 4478, 0), new WorldPoint(1934, 4462, 0));
+		lastRoom = new Zone(new WorldPoint(1966, 4437, 0), new WorldPoint(1980, 4419, 0));
 	}
 
 	public void setupSteps()
@@ -164,6 +169,27 @@ public class DesertElite extends ComplexStateQuestHelper
 		startPyramidPlunder = new NpcStep(this, NpcID.GUARDIAN_MUMMY, new WorldPoint(1934, 4427, 3),
 			"Talk to the guardian mummy to start the minigame. If you don't see a Guardian mummy exit and try a different entrance.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
+		grandGoldChest = new ObjectStep(this, ObjectID.GRAND_GOLD_CHEST, new WorldPoint(1973, 4431, 0),
+			"Loot the grand gold chest.");// Can't test the coords but should be close / correct
+
+		restorePrayer = new ObjectStep(this, ObjectID.ALTAR_20377, new WorldPoint(3281, 2774, 0),
+			"Pray at the altar restoring at least 85 prayer points.");
+
+		iceBarrage = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3334, 2865, 0),
+			"Cast Ice barrage against any foe in the Desert (away from any city). You must not splash.", true,
+			waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4));
+		iceBarrage.addAlternateNpcs(NpcID.VULTURE_1268);
+
+		wildPie = new ObjectStep(this, ObjectID.CLAY_OVEN, new WorldPoint(3434, 2886, 0),
+			"Cook a wild pie on the clay over in Nardah.", rawPie);
+
+		moveToBed = new TileStep(this, new WorldPoint(3175, 3041, 0),
+			"Go to Bedabin Camp south-west of Al Karid.");
+		dragonDarts = new ItemStep(this, "Fletch a dragon dart.", dragonDartTip.highlighted(), feather.highlighted());
+
+		talkKQHead = new DetailedQuestStep(this, "Mount and then talk to a Kalphite Queen head in your POH. The 50k " +
+			"is necessary to stuff the KQ head at the taxidermist in Canifis.",
+			kqHead, mahoPlank.quantity(2), goldLeaves.quantity(2), saw, hammer, coins.quantity(50000));
 
 		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
@@ -174,7 +200,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(rawPie, waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4),
-			dragonDartTip, feather, KQHead, mahoPlank.quantity(2), goldLeaves.quantity(2), coins.quantity(50000), saw,
+			dragonDartTip, feather, kqHead, mahoPlank.quantity(2), goldLeaves.quantity(2), coins.quantity(50000), saw,
 			hammer, kqHead);
 	}
 
@@ -199,6 +225,8 @@ public class DesertElite extends ComplexStateQuestHelper
 
 		reqs.add(desertTreasure);
 		reqs.add(icthlarinsLittleHelper);
+		reqs.add(priestInPeril);
+		reqs.add(touristTrap);
 
 		return reqs;
 	}
@@ -229,14 +257,14 @@ public class DesertElite extends ComplexStateQuestHelper
 		restorePrayerSteps.setDisplayCondition(notRestorePrayer);
 		allSteps.add(restorePrayerSteps);
 
-		PanelDetails dragonDartsSteps = new PanelDetails("Dragon Darts", Collections.singletonList(dragonDarts),
+		PanelDetails dragonDartsSteps = new PanelDetails("Dragon Darts", Arrays.asList(moveToBed, dragonDarts),
 			new SkillRequirement(Skill.FLETCHING, 95), touristTrap, dragonDartTip, feather);
 		dragonDartsSteps.setDisplayCondition(notDragonDarts);
 		allSteps.add(dragonDartsSteps);
 
 		PanelDetails kqHeadSteps = new PanelDetails("Kalphite Queen Head", Collections.singletonList(talkKQHead),
-			new SkillRequirement(Skill.CONSTRUCTION, 78), kqHead, coins.quantity(50000), mahoPlank.quantity(2),
-			goldLeaves.quantity(2), saw, hammer);
+			new SkillRequirement(Skill.CONSTRUCTION, 78), priestInPeril, kqHead, coins.quantity(50000),
+			mahoPlank.quantity(2), goldLeaves.quantity(2), saw, hammer);
 		kqHeadSteps.setDisplayCondition(notTalkKQHead);
 		allSteps.add(kqHeadSteps);
 

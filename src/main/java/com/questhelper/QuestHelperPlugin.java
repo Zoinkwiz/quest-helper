@@ -105,9 +105,6 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class QuestHelperPlugin extends Plugin
 {
-	private static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
-	private static final int QUESTTAB_GROUP_ID = 629;
-
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
 		{
 			WidgetInfo.QUESTLIST_FREE_CONTAINER.getId(),
@@ -147,14 +144,11 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
+	private static final String MENUOP_QUESTHELPER = "Quest Helper";
 
 	private static final String MENUOP_STARTGENERICHELPER = "Start Helper";
 	private static final String MENUOP_STOPGENERICHELPER = "Stop Helper";
-
-	private static final String MENUOP_PHOENIXGANG = "Start Quest Helper (Phoenix Gang)";
-	private static final String MENUOP_BLACKARMGANG = "Start Quest Helper (Black Arm Gang)";
-
-	private static final String MENUOP_RFD_START = "Start Quest Helper (Starting off)";
+	private static final String MENUOP_GENERICHELPER = "Helper";
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
@@ -518,7 +512,7 @@ public class QuestHelperPlugin extends Plugin
 			diary = Text.removeTags(diary);
 			for (String achievementTier : achievementTiers)
 			{
-				menuEntries = addRightClickMenuOptions(diary + achievementTier + " Diary", "Helper",
+				menuEntries = addRightClickMenuOptions(diary + achievementTier + " Diary", MENUOP_GENERICHELPER,
 					"<col=ff9040>" + diary + achievementTier + " Diary</col>", menuEntries, widgetIndex, widgetID);
 			}
 		}
@@ -540,12 +534,12 @@ public class QuestHelperPlugin extends Plugin
 					QuestHelper questHelperBlackArm = quests.get(blackArmName);
 					if (!questHelperPhoenix.isCompleted())
 					{
-						menuEntries = addRightClickMenuOptions(phoenixName, "Quest Helper",
+						menuEntries = addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
 							"<col=ff9040>" + phoenixName + "</col>", menuEntries, widgetIndex, widgetID);
 					}
 					if (!questHelperBlackArm.isCompleted())
 					{
-						addRightClickMenuOptions(blackArmName, "Quest Helper",
+						addRightClickMenuOptions(blackArmName, MENUOP_QUESTHELPER,
 							"<col=ff9040>" + blackArmName + "</col>", menuEntries, widgetIndex, widgetID);
 					}
 				}
@@ -555,14 +549,14 @@ public class QuestHelperPlugin extends Plugin
 				if (selectedQuest != null &&
 					(selectedQuest.getQuest().getId() == QuestHelperQuest.RECIPE_FOR_DISASTER.getId()))
 				{
-					addRightClickMenuOptions(QuestHelperQuest.RECIPE_FOR_DISASTER.getName(), "Quest Helper",
+					addRightClickMenuOptions(QuestHelperQuest.RECIPE_FOR_DISASTER.getName(), MENUOP_QUESTHELPER,
 						event.getTarget(), menuEntries, widgetIndex, widgetID);
 				}
 				else
 				{
 					for (String rfdName : RFD_NAMES)
 					{
-						menuEntries = addRightClickMenuOptions(rfdName, "Quest Helper",
+						menuEntries = addRightClickMenuOptions(rfdName, MENUOP_QUESTHELPER,
 							"<col=ff9040>" + rfdName + "</col>", menuEntries, widgetIndex, widgetID);
 					}
 				}
@@ -594,6 +588,8 @@ public class QuestHelperPlugin extends Plugin
 			{
 				String questName = chatMessage.getMessage().substring(chatMessage.getMessage().indexOf(">") + 1);
 				questName = questName.substring(0, questName.indexOf("<"));
+
+				// Prompt for starting Shield of Arrav is the same for both routes. Display actual route started
 				if (questName.equals("Shield of Arrav"))
 				{
 					Player player = client.getLocalPlayer();

@@ -121,7 +121,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		kharedstsMemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear, coldKey, rosesNote3, gamesNecklace, rosesNote4,
 		fairyRingStaffOrGamesNecklace, combatGearForXamphur, kahtEgg, dampKey, defencePotion, volcanicSulphur, moltenGlass,
 		darkEssenceBlock, brokenRedirector, sulphurPotion, shieldingPotion, lovaDeclaration, fairyRingStaff, darkNullifier,
-		shayzienJournal, skillNecklace;
+		shayzienJournal;
 
 	Requirement freeInventorySlots;
 
@@ -814,7 +814,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS),
-			fairyRingStaffOrGamesNecklace, gamesNecklace, skillNecklace);
+			fairyRingStaffOrGamesNecklace, gamesNecklace);
 	}
 
 	@Override
@@ -887,7 +887,7 @@ public class AKingdomDivided extends BasicQuestHelper
 			talkToAllMembersInXericsLookoutSidebarTaskFinish, talkToFulloreAfterHelpingAll, watchCutsceneAfterHelpingAll,
 			talkToFulloreAfterHelpingAllAgain, talkToHosidiusXericsLookoutFinal, talkToFulloreFinalCutscene, lastCutscene, talkToFulloreToFinishQuest),
 			kharedstsMemoirs, defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, gamesNecklace,
-			skillNecklace, combatGear, food, fairyRingStaff)
+			combatGear, food, fairyRingStaff)
 		);
 
 		return allSteps;

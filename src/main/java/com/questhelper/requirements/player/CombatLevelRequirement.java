@@ -51,6 +51,7 @@ public class CombatLevelRequirement extends AbstractRequirement
 	{
 		this.operation = operation;
 		this.requiredLevel = requiredLevel;
+		shouldCountForFilter = true;
 	}
 
 	/**

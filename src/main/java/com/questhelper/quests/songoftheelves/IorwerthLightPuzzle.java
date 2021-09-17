@@ -461,9 +461,9 @@ public class IorwerthLightPuzzle extends ConditionalStep
 	{
 		hasMirrorsAndCrystal = new Conditions(
 			new ItemRequirements(new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR_23775, 14)),
-			new ItemRequirements(redCrystalHighlighted),
-			new ItemRequirements(fracturedCrystalHighlighted),
-			new ItemRequirements(yellowCrystalHighlighted)
+			redCrystalHighlighted,
+			fracturedCrystalHighlighted,
+			yellowCrystalHighlighted
 		);
 
 		onF0 = new ZoneRequirement(f0);

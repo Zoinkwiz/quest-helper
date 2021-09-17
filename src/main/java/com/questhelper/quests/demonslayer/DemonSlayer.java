@@ -31,7 +31,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -67,8 +66,8 @@ public class DemonSlayer extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, wizardsTowerTeleport;
 
-	Requirement inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1, hasBucket, hasFilledBucket, hasFirstKey, hasSecondKey, hasThirdKey,
-		hasPouredWaterIntoDrain, inTowerFloor1, obtainedSilverlight, hasSilverlight, delrithNearby, delrithWeakenedNearby, inInstance;
+	Requirement inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1,
+		hasPouredWaterIntoDrain, inTowerFloor1, obtainedSilverlight, delrithNearby, delrithWeakenedNearby, inInstance;
 
 	QuestStep talkToAris, talkToPrysin, goUpToRovin, goUpToRovin2, talkToRovin, goDownstairsFromRovin, goDownstairsFromRovin2, goUpToBucket, pickupBucket,
 		goDownFromBucket, fillBucket, useFilledBucketOnDrain, goDownManhole, pickupSecondKey, goUpManhole, goUpstairsWizard, talkToTraiborn, returnToPrysin,
@@ -94,32 +93,32 @@ public class DemonSlayer extends BasicQuestHelper
 		getFirstKey = new ConditionalStep(this, goUpToRovin);
 		getFirstKey.addStep(inCastleNWFloor2, talkToRovin);
 		getFirstKey.addStep(inCastleNWFloor1, goUpToRovin2);
-		getFirstKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, hasFirstKey));
+		getFirstKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key1.alsoCheckBank(questBank)));
 
 		getSecondKey = new ConditionalStep(this, goUpToBucket);
 		getSecondKey.addStep(inVarrockSewer, pickupSecondKey);
 		getSecondKey.addStep(hasPouredWaterIntoDrain, goDownManhole);
 		getSecondKey.addStep(inCastleNWFloor1, goDownstairsFromRovin2);
 		getSecondKey.addStep(inCastleNWFloor2, goDownstairsFromRovin);
-		getSecondKey.addStep(hasFilledBucket, useFilledBucketOnDrain);
-		getSecondKey.addStep(new Conditions(inCastleNEFloor1, hasBucket), goDownFromBucket);
-		getSecondKey.addStep(hasBucket, fillBucket);
+		getSecondKey.addStep(bucketOfWater, useFilledBucketOnDrain);
+		getSecondKey.addStep(new Conditions(inCastleNEFloor1, bucketOfWater), goDownFromBucket);
+		getSecondKey.addStep(bucket, fillBucket);
 		getSecondKey.addStep(inCastleNEFloor1, pickupBucket);
-		getSecondKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, hasSecondKey));
+		getSecondKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key2.alsoCheckBank(questBank)));
 
 		getThirdKey = new ConditionalStep(this, goUpstairsWizard);
 		getThirdKey.addStep(inTowerFloor1, talkToTraiborn);
 		getThirdKey.addStep(inVarrockSewer, goUpManhole);
-		getThirdKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, hasThirdKey));
+		getThirdKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key3.alsoCheckBank(questBank)));
 
 		goAndKillDelrith = new ConditionalStep(this, getSilverlightBack);
-		goAndKillDelrith.addStep(hasSilverlight, killDelrith);
+		goAndKillDelrith.addStep(silverlight.alsoCheckBank(questBank), killDelrith);
 
 		ConditionalStep getKeys = new ConditionalStep(this, getFirstKey);
 		getKeys.addStep(obtainedSilverlight, goAndKillDelrith);
-		getKeys.addStep(new Conditions(hasFirstKey, hasSecondKey, hasThirdKey), returnToPrysin);
-		getKeys.addStep(new Conditions(hasFirstKey, hasSecondKey), getThirdKey);
-		getKeys.addStep(hasFirstKey, getSecondKey);
+		getKeys.addStep(new Conditions(key1, key2, key3), returnToPrysin);
+		getKeys.addStep(new Conditions(key1, key2), getThirdKey);
+		getKeys.addStep(key1, getSecondKey);
 
 		steps.put(2, getKeys);
 
@@ -155,14 +154,8 @@ public class DemonSlayer extends BasicQuestHelper
 		inCastleNWFloor2 = new ZoneRequirement(castleNWFloor2);
 		inVarrockSewer = new ZoneRequirement(varrockSewer);
 		inTowerFloor1 = new ZoneRequirement(towerFloor1);
-		hasBucket = new ItemRequirements(bucket);
-		hasFilledBucket = new ItemRequirements(bucketOfWater);
-		hasFirstKey = new ItemRequirements(key1);
-		hasSecondKey = new ItemRequirements(key2);
-		hasThirdKey = new ItemRequirements(key3);
 		hasPouredWaterIntoDrain = new VarbitRequirement(2568, 1);
 		obtainedSilverlight = new VarbitRequirement(2567, 1);
-		hasSilverlight = new ItemRequirements(silverlight);
 		delrithNearby = new NpcCondition(NpcID.DELRITH);
 		delrithWeakenedNearby = new NpcCondition(NpcID.WEAKENED_DELRITH);
 		inInstance = new VarbitRequirement(2569, 1);

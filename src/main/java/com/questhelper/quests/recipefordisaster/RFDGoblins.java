@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -66,8 +65,7 @@ public class RFDGoblins extends BasicQuestHelper
 		spicedBait, wetBread, teleportLumbridge, teleportFalador, slop, slopHighlighted,
 		orangeSliceHighlighted;
 
-	Requirement inDiningRoom, inCookRoom, hasSlop, hasSpicedBait, hasWetBread, hasDyedOrange,
-		hasOrangeSlices;
+	Requirement inDiningRoom, inCookRoom;
 
 	QuestStep enterDiningRoom, inspectGoblin, goDownToKitchen, talkToCook, talkToCookAfterChar,
 		sliceOrange, dyeOrange, spiceBait, useWaterOnBread, enterDiningRoomAgain,
@@ -96,11 +94,11 @@ public class RFDGoblins extends BasicQuestHelper
 		steps.put(15, goTalkCook3);
 
 		ConditionalStep goGetIngredients = new ConditionalStep(this, useWaterOnBread);
-		goGetIngredients.addStep(new Conditions(hasWetBread, hasDyedOrange, hasSpicedBait),
+		goGetIngredients.addStep(new Conditions(wetBread, dyedOrange, spicedBait),
 			goTalkCook4);
-		goGetIngredients.addStep(new Conditions(hasWetBread, hasDyedOrange), spiceBait);
-		goGetIngredients.addStep(new Conditions(hasWetBread, hasOrangeSlices), dyeOrange);
-		goGetIngredients.addStep(hasWetBread, sliceOrange);
+		goGetIngredients.addStep(new Conditions(wetBread, dyedOrange), spiceBait);
+		goGetIngredients.addStep(new Conditions(wetBread, orangeSliceHighlighted), dyeOrange);
+		goGetIngredients.addStep(wetBread, sliceOrange);
 		steps.put(30, goGetIngredients);
 
 		ConditionalStep goGiveSlop = new ConditionalStep(this, enterDiningRoomAgain);
@@ -172,12 +170,6 @@ public class RFDGoblins extends BasicQuestHelper
 	{
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inCookRoom = new ZoneRequirement(cookRoom, cookRoomDestroyed);
-
-		hasDyedOrange = new ItemRequirements(dyedOrange);
-		hasOrangeSlices = new ItemRequirements(orangeSliceHighlighted);
-		hasSpicedBait = new ItemRequirements(spicedBait);
-		hasWetBread = new ItemRequirements(wetBread);
-		hasSlop = new ItemRequirements(slop);
 	}
 
 	public void setupSteps()

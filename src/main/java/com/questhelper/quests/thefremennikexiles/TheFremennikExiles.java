@@ -149,6 +149,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		goMakeGlass.addStep(moltenGlassI, makeLunarGlass);
 		goMakeGlass.addStep(inYagaHouse, talkToYaga);
 		goMakeGlass.setLockingCondition(lunarGlass);
+		goMakeGlass.setBlocker(true);
 
 		goMakeSigil = new ConditionalStep(this, enterMine);
 		goMakeSigil.addStep(sigil, talkToFossegrimen);
@@ -249,7 +250,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 			.with(sealOfPassage)
 			.build();
 
-		coins150kOrCharos = new ItemRequirements("Ring of Charos(a) or 150k coins",
+		coins150kOrCharos = new ItemRequirements(LogicType.OR,
+			"Ring of Charos(a) or 150k coins",
 			new ItemRequirement("Ring of Charos(a)", ItemID.RING_OF_CHAROSA),
 			new ItemRequirement("Coins", ItemID.COINS_995, 150000));
 

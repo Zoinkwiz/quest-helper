@@ -310,7 +310,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		hasPetition = petition.alsoCheckBank(questBank);
 		hasSignatures = new VarbitRequirement(209, 11, Operation.GREATER_EQUAL);
 		givenPetitionToNecro = new VarbitRequirement(209, 31, Operation.GREATER_EQUAL);
-		hadChestKey = new Conditions(LogicType.OR, new ItemRequirements(chestKey), new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
+		hadChestKey = new Conditions(LogicType.OR, chestKey, new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
 		unlockedChest2 = new VarbitRequirement(214, 3, Operation.GREATER_EQUAL);
 		doorUnlocked = new VarbitRequirement(213, 1);
 
@@ -318,7 +318,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		killedLobster = new VarbitRequirement(215, 1);
 
 		boneKeyNearby = new ItemOnTileRequirement(boneKey);
-		hasBoneKey = new Conditions(LogicType.OR, new ItemRequirements(boneKey), doorUnlocked);
+		hasBoneKey = new Conditions(LogicType.OR, boneKey, doorUnlocked);
 
 		talkedToAkHaranu = new VarbitRequirement(212, 1, Operation.GREATER_EQUAL);
 	}
@@ -393,7 +393,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		talkToAkHaranu = new NpcStep(this, NpcID.AKHARANU, new WorldPoint(3689, 3499, 0), "Talk to Ak-Haranu.");
 		talkToAkHaranu.addDialogStep("Okay, wait here - I'll get you your bow.");
 		talkToAkHaranu.addSubSteps(enterPhasForManual);
-		talkToRobin = new NpcStep(this, NpcID.ROBIN, new WorldPoint(3675, 3495, 0), "Talk to Robin the the Port Phasmatys pub. Keep playing runedraw until he agrees to sign your bow.", oakLongbow, coins400);
+		talkToRobin = new NpcStep(this, NpcID.ROBIN, new WorldPoint(3675, 3495, 0), "Talk to Robin in the Port Phasmatys pub. Keep playing runedraw until he agrees to sign your bow.", oakLongbow, coins400);
 		talkToRobin.addDialogStep("Yes, I'll give you a game.");
 		bringBowToAkHaranu = new NpcStep(this, NpcID.AKHARANU, new WorldPoint(3689, 3499, 0), "Bring the signed bow to Ak-Haranu.", signedOakBow);
 

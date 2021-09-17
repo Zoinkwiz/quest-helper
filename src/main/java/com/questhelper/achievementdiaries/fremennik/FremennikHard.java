@@ -55,9 +55,11 @@ import com.questhelper.panel.PanelDetails;
 public class FremennikHard extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement bronzeNail, rope, lawRune, lawRune2, astralRune, waterRune, fireRune, teasingStick, knife, axe, pickaxe, hammer, arcticLog, whiteBerries, log, cadantineUnfPot, rake;
+	ItemRequirement bronzeNail, rope, lawRune, lawRune2, astralRune, waterRune, fireRune, teasingStick, knife, axe,
+		pickaxe, hammer, arcticLog, whiteBerries, log, cadantineUnfPot, rake;
 
-	Requirement notTPTroll, notCatchKyatt, notMixSuperDef, notStealGem, notCraftShield, notMineAddy, notMiscSupport, notTPWaterbirth, notFreeBlast;
+	Requirement notTPTroll, notCatchKyatt, notMixSuperDef, notStealGem, notCraftShield, notMineAddy, notMiscSupport,
+		notTPWaterbirth, notFreeBlast;
 
 	// Quest requirements
 	Requirement giantDwarf, fremIsles, throneOfMisc, eadgarsRuse, lunarDiplomacy;
@@ -65,9 +67,12 @@ public class FremennikHard extends ComplexStateQuestHelper
 	Requirement normalBook, lunarBook;
 
 	// Steps
-	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, miscSupport, tpWaterbirth, freeBlast, moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc, moveToMine, moveToBlast, claimReward;
+	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, miscSupport, tpWaterbirth, freeBlast,
+		moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc,
+		moveToMine, moveToBlast, claimReward;
 
-	Zone misc, neitiznot, keldagrim, jatizso, caveArea, riverArea, varrockArea, hunterArea, rellekkaArea, mineArea, blastArea;
+	Zone misc, neitiznot, keldagrim, jatizso, caveArea, riverArea, varrockArea, hunterArea, rellekkaArea, mineArea,
+		blastArea;
 
 	ZoneRequirement inMisc, inNeitiznot, inKeldagrim, inJatizso, inCaveArea, inRiverArea, inVarrockArea, inHunterArea, inRellekka, inMineArea, inBlastArea;
 
@@ -217,8 +222,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 			"Speak with the Foreman.");
 		freeBlast.addDialogSteps("What?", "Can I use the furnace to smelt ore?", "I have level 60!");
 
-		claimReward = new NpcStep(this, NpcID.FOSSEGRIMEN, new WorldPoint(2658, 3627, 0),
-			"Talk to Fossegrimen South of Rellekka to claim your reward!");
+		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
@@ -241,7 +246,10 @@ public class FremennikHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.SMITHING, 60, false));
 		req.add(new SkillRequirement(Skill.THIEVING, 75, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 56, true));
-		req.add(new ComplexRequirement("Normal and Lunar spellbooks", normalBook, lunarBook));
+		req.add(new ComplexRequirement("Normal and Lunar spellbooks",
+			new SpellbookRequirement(Spellbook.NORMAL),
+			new SpellbookRequirement(Spellbook.LUNAR))
+		);
 		return req;
 	}
 
@@ -249,17 +257,56 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Miscellania 100% support", Arrays.asList(moveToMisc, miscSupport), throneOfMisc, rake));
-		allSteps.add(new PanelDetails("Mine Adamantite on Jatizso", Arrays.asList(moveToJatizso, moveToMine, mineAddy), fremIsles, pickaxe));
-		allSteps.add(new PanelDetails("Craft Shield on Neitiznot", Arrays.asList(moveToNeitiznot, craftShield), fremIsles, axe, arcticLog.quantity(2), hammer, rope, bronzeNail));
-		allSteps.add(new PanelDetails("Mix a Super Defense", Collections.singletonList(mixSuperDef), cadantineUnfPot, whiteBerries));
-		allSteps.add(new PanelDetails("Catch a saber-toothed kyatt", Collections.singletonList(catchKyatt), teasingStick, log, knife));
-		allSteps.add(new PanelDetails("Steal from Gem Stall", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim, moveToKeldagrimVarrock, stealGem)));
-		allSteps.add(new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCave, moveToRiver, moveToKeldagrim,
-			moveToKeldagrimVarrock, moveToBlast, freeBlast), giantDwarf, new SkillRequirement(Skill.SMITHING, 60, false)));
-		allSteps.add(new PanelDetails("Teleport to Trollheim", Collections.singletonList(tpTroll), eadgarsRuse, fireRune.quantity(2), lawRune.quantity(2), normalBook));
-		allSteps.add(new PanelDetails("Teleport to Waterbirth", Collections.singletonList(tpWaterbirth), lunarDiplomacy, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1), lunarBook));
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+
+		PanelDetails miscSupportSteps = new PanelDetails("Miscellania 100% Support", Arrays.asList(moveToMisc,
+			miscSupport), throneOfMisc, rake);
+		miscSupportSteps.setDisplayCondition(notMiscSupport);
+		allSteps.add(miscSupportSteps);
+
+		PanelDetails mineAdamantiteOnJatizsoSteps = new PanelDetails("Mine Adamantite on Jatizso", Arrays.asList(moveToJatizso, moveToMine,
+			mineAddy), fremIsles, new SkillRequirement(Skill.MINING, 70, true), pickaxe);
+		mineAdamantiteOnJatizsoSteps.setDisplayCondition(notMineAddy);
+		allSteps.add(mineAdamantiteOnJatizsoSteps);
+
+		PanelDetails shieldOnNeitiznotSteps = new PanelDetails("Craft Shield on Neitiznot", Arrays.asList(moveToNeitiznot,
+			craftShield), fremIsles, new SkillRequirement(Skill.WOODCUTTING, 56, true), axe, arcticLog.quantity(2),
+			hammer, rope, bronzeNail);
+		shieldOnNeitiznotSteps.setDisplayCondition(notCraftShield);
+		allSteps.add(shieldOnNeitiznotSteps);
+
+		PanelDetails superDefenseSteps = new PanelDetails("Mix a Super Defense", Collections.singletonList(mixSuperDef),
+			new SkillRequirement(Skill.HERBLORE, 66, true), cadantineUnfPot, whiteBerries);
+		superDefenseSteps.setDisplayCondition(notMixSuperDef);
+		allSteps.add(superDefenseSteps);
+
+		PanelDetails kyattSteps = new PanelDetails("Catch a saber-toothed kyatt", Collections.singletonList(catchKyatt),
+			new SkillRequirement(Skill.HUNTER, 55, true), teasingStick, log, knife);
+		kyattSteps.setDisplayCondition(notCatchKyatt);
+		allSteps.add(kyattSteps);
+
+		PanelDetails gemStallSteps = new PanelDetails("Steal from Gem Stall", Arrays.asList(moveToCave, moveToRiver,
+			moveToKeldagrim, moveToKeldagrimVarrock, stealGem), giantDwarf, new SkillRequirement(Skill.THIEVING, 75, true));
+		gemStallSteps.setDisplayCondition(notStealGem);
+		allSteps.add(gemStallSteps);
+
+		PanelDetails freeBlastFurnaceSteps = new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCave, moveToRiver,
+			moveToKeldagrim, moveToKeldagrimVarrock, moveToBlast, freeBlast), giantDwarf,
+			new SkillRequirement(Skill.SMITHING, 60, false));
+		freeBlastFurnaceSteps.setDisplayCondition(notFreeBlast);
+		allSteps.add(freeBlastFurnaceSteps);
+
+		PanelDetails teleportToTrollheimSteps = new PanelDetails("Teleport to Trollheim", Collections.singletonList(tpTroll),
+			eadgarsRuse, new SkillRequirement(Skill.MAGIC, 61), normalBook, fireRune.quantity(2), lawRune.quantity(2));
+		teleportToTrollheimSteps.setDisplayCondition(notTPTroll);
+		allSteps.add(teleportToTrollheimSteps);
+
+		PanelDetails teleportToWaterbirthSteps = new PanelDetails("Teleport to Waterbirth", Collections.singletonList(tpWaterbirth),
+			lunarDiplomacy, new SkillRequirement(Skill.MAGIC, 72), lunarBook, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1));
+		teleportToWaterbirthSteps.setDisplayCondition(notTPWaterbirth);
+		allSteps.add(teleportToWaterbirthSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

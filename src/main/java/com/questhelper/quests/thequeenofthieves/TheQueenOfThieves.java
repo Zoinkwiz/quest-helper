@@ -48,6 +48,7 @@ import java.util.Map;
 import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -190,7 +191,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		exitWarrens2 = new ObjectStep(this, ObjectID.LADDER_31708, ladderPoint, "Exit the Warrens.");
 
 		goToKingstown = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(1672, 3681, 0), "Go up the stairs in Councillor Hughes' home in Kingstown.");
-		openChest = new ObjectStep(this, ObjectID.CHEST_31710, new WorldPoint(1681, 3677, 1), "Pick the locked chest.");
+		openChest = new ObjectStep(this, NullObjectID.NULL_10084, new WorldPoint(1681, 3677, 1), "Pick the locked chest.");
 
 		leaveKingstown = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1672, 3682, 1), "Go downstairs.");
 

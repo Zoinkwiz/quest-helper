@@ -79,12 +79,15 @@ public class ItemRequirement extends AbstractRequirement
 	protected boolean exclusiveToOneItemType;
 
 	@Setter
+	@Getter
 	private boolean displayMatchedItemName;
 
 	@Setter
 	@Getter
 	private Requirement conditionToHide;
 
+	@Getter
+	@Setter
 	private QuestBank questBank;
 
 	public ItemRequirement(String name, int id)

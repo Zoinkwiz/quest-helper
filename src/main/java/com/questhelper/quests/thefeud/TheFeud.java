@@ -58,11 +58,9 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-
 @QuestDescriptor(
 		quest = QuestHelperQuest.THE_FEUD
 )
-
 public class TheFeud extends BasicQuestHelper
 {
 
@@ -70,19 +68,18 @@ public class TheFeud extends BasicQuestHelper
 	ItemRequirement coins, unspecifiedCoins, gloves, headPiece, fakeBeard, desertDisguise,
 			shantyPass, beer, oakBlackjack, glovesEquipped, disguiseEquipped, doorKeys,
 			highlightedCoins, snakeCharmHighlighted, snakeBasket, snakeBasketFull,
-			redHotSauce, bucket, dung, poisonHighlighted;
+			redHotSauce, bucket, dung, poisonHighlighted, oakBlackjackEquipped;
 
 	//Items Recommended
 	ItemRequirement combatGear;
 
-	Requirement oakBlackjackEquipped, desertDisguiseCondition, hasShantyPass, hasOakBlackjack, snakeCharm, hasSnakeBasket,
-			hasSnakeBasketFull, hasRedHotSauce, hasBucket, doesNotHaveBucket, hasDungInventory;
+	Requirement doesNotHaveBucket;
 
 	Conditions hasDisguiseComponents, doesNotHaveDisguise, doesNotHaveDisguiseComponents, notThroughShantyGate, hasDisguise;
 
 	ObjectCondition dungNearby;
 
-	QuestStep startQuest, buyDisguiseGear, createDisguise, goToPollniveachStep, goToShanty;
+	QuestStep startQuest, buyDisguiseGear, createDisguise, goToShanty;
 
 	DetailedQuestStep getBucket, equipBlackjack, killMenaphiteThug, killBanditChampion;
 
@@ -113,7 +110,7 @@ public class TheFeud extends BasicQuestHelper
 		steps.put(0, startQuest);
 
 		ConditionalStep goToPollniveach = new ConditionalStep(this, buyShantyPass);
-		goToPollniveach.addStep(new Conditions(notThroughShantyGate, hasShantyPass), goToShanty);
+		goToPollniveach.addStep(new Conditions(notThroughShantyGate, shantyPass), goToShanty);
 		goToPollniveach.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
 		goToPollniveach.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
 		goToPollniveach.addStep(inShantyDesertSide, talkToRugMerchant);
@@ -139,7 +136,7 @@ public class TheFeud extends BasicQuestHelper
 
 		ConditionalStep blackjackVillagerStep = new ConditionalStep(this, getBlackjackFromAli);
 		blackjackVillagerStep.addStep(oakBlackjackEquipped, blackjackVillager);
-		blackjackVillagerStep.addStep(hasOakBlackjack, equipBlackjack);
+		blackjackVillagerStep.addStep(oakBlackjack, equipBlackjack);
 		steps.put(9, blackjackVillagerStep);
 		steps.put(10, blackjackVillagerStep);
 		steps.put(11, blackjackVillagerStep);
@@ -162,17 +159,17 @@ public class TheFeud extends BasicQuestHelper
 
 		ConditionalStep getSnake = new ConditionalStep(this, talkToAliTheBarman);
 		getSnake.addStep(givenPoisonToHag, talkToAliTheKebabSalesman);
-		getSnake.addStep(hasSnakeBasketFull, givePoisonToAliTheHag);
-		getSnake.addStep(new Conditions(talkedToAliTheHag, snakeCharm, hasSnakeBasket), catchSnake);
+		getSnake.addStep(snakeBasketFull, givePoisonToAliTheHag);
+		getSnake.addStep(new Conditions(talkedToAliTheHag, snakeCharmHighlighted, snakeBasket), catchSnake);
 		getSnake.addStep(talkedToAliTheHag, giveCoinToSnakeCharmer);
 		getSnake.addStep(talkedToBarman, talkToAliTheHag);
 		steps.put(17, getSnake);
 
 		ConditionalStep camelDung = new ConditionalStep(this, talkToAliTheKebabSalesman);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasDungInventory), givenDungToHag);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, hasBucket, dungNearby), pickupDung);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, hasBucket), getDung);
-		camelDung.addStep(new Conditions(givenPoisonToHag, hasRedHotSauce, doesNotHaveBucket), getBucket);
+		camelDung.addStep(new Conditions(givenPoisonToHag, dung), givenDungToHag);
+		camelDung.addStep(new Conditions(givenPoisonToHag, bucket, dungNearby), pickupDung);
+		camelDung.addStep(new Conditions(givenPoisonToHag, redHotSauce, bucket), getDung);
+		camelDung.addStep(new Conditions(givenPoisonToHag, redHotSauce, doesNotHaveBucket), getBucket);
 		steps.put(18, camelDung);
 
 		steps.put(22, poisonTheDrink);
@@ -284,32 +281,19 @@ public class TheFeud extends BasicQuestHelper
 	public void setupConditions()
 	{
 		//Disguise
-		ItemRequirements hasFakeBeard = new ItemRequirements(fakeBeard);
-		ItemRequirements hasFakeHeadPiece = new ItemRequirements(headPiece);
-		hasDisguiseComponents = new Conditions(hasFakeBeard, hasFakeHeadPiece);
-		desertDisguiseCondition = new ItemRequirements(desertDisguise);
-		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguiseCondition);
-		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, hasFakeBeard, hasFakeHeadPiece);
-		hasDisguise = new Conditions(desertDisguiseCondition);
+		hasDisguiseComponents = new Conditions(fakeBeard, headPiece);
+		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguise);
+		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, fakeBeard, headPiece);
+		hasDisguise = new Conditions(desertDisguise);
 
 		//Shanty
-		hasShantyPass = new ItemRequirements(shantyPass);
 		notThroughShantyGate = new Conditions(LogicType.NAND, inShantyDesertSide);
 
 		//Blackjack
-		hasOakBlackjack = new ItemRequirements(oakBlackjack);
 		oakBlackjackEquipped = new ItemRequirements(new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK, 1, true));
 
-		//Snakes
-		hasSnakeBasket = new ItemRequirements(snakeBasket);
-		hasSnakeBasketFull = new ItemRequirements(snakeBasketFull);
-		snakeCharm = new ItemRequirements(snakeCharmHighlighted);
-
 		//Dung
-		hasBucket = new ItemRequirements(bucket);
 		doesNotHaveBucket = new ComplexRequirement(LogicType.NOR, "", new ItemRequirement("Bucket", ItemID.BUCKET));
-		hasRedHotSauce = new ItemRequirements(redHotSauce);
-		hasDungInventory = new ItemRequirements(dung);
 		dungNearby = new ObjectCondition(ObjectID.DUNG);
 
 		//Combat Gear
@@ -321,7 +305,7 @@ public class TheFeud extends BasicQuestHelper
 	{
 		//Step 0-1
 		//Start Quest & Purchase Disguise
-		startQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kahrid to start the quest.");
+		startQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kharid to start the quest.");
 		startQuest.addDialogStep("If you are, then why are you still selling goods from a stall?");
 		startQuest.addDialogStep("I'd like to help you but");
 		startQuest.addDialogStep("I'll find you your help.");
@@ -418,13 +402,13 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 17
 		//Get Snake & Talk to Barman
-		talkToAliTheBarman = new NpcStep(this, NpcID.ALI_THE_BARMAN, new WorldPoint(3361, 2956, 0), "Talk to Ali the Barman to find outwhere Traitorous Ali is.");
+		talkToAliTheBarman = new NpcStep(this, NpcID.ALI_THE_BARMAN, new WorldPoint(3361, 2956, 0), "Talk to Ali the Barman to find out where Traitorous Ali is.");
 		talkToAliTheBarman.addDialogStep(("I'm looking for Traitorous Ali."));
 		talkToAliTheBarman.addDialogStep("No thanks I'm ok.");
 
 		talkToAliTheHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Talk to Ali the Hag to ask her to make some poison for you.");
 
-		giveCoinToSnakeCharmer = new ObjectStep(this, ObjectID.MONEY_POT, new WorldPoint(3355, 2953, 0), "Talk to Ali the Hag to ask her to make some poison for you.", highlightedCoins);
+		giveCoinToSnakeCharmer = new ObjectStep(this, ObjectID.MONEY_POT, new WorldPoint(3355, 2953, 0), "Use coins on the snake charmer's money pot to get a snake charm and a snake basket.", highlightedCoins);
 		giveCoinToSnakeCharmer.addIcon(ItemID.COINS);
 
 		catchSnake = new NpcStep(this, NpcID.DESERT_SNAKE, new WorldPoint(3332, 2958, 0), "Use the Snake Charm on a snake to capture it.", true, snakeCharmHighlighted, snakeBasket);
@@ -462,7 +446,7 @@ public class TheFeud extends BasicQuestHelper
 		talkToMenaphiteLeader = new NpcStep(this, NpcID.MENAPHITE_LEADER, "Talk to the Menaphite Leader and prepare for a fight against a tough guy. You can safespot him inside the tent by using a chair.");
 		talkToMenaphiteLeader.addSubSteps(killMenaphiteThug);
 
-		killMenaphiteThug = new DetailedQuestStep(this, "Kill the Menahite Thug. You can safespot him inside the tent by using a chair, if he's not spawned then talk to the Menaphite Leader again.");
+		killMenaphiteThug = new DetailedQuestStep(this, "Kill the Menaphite Thug. You can safespot him inside the tent by using a chair, if he's not spawned then talk to the Menaphite Leader again.");
 
 		//Step 25
 		//Kill Champion - Talk to Villager
@@ -483,7 +467,7 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 27
 		//Finish Quest
-		finishQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kahrid to finish the quest.");
+		finishQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kharid to finish the quest.");
 	}
 
 	@Override
@@ -514,6 +498,9 @@ public class TheFeud extends BasicQuestHelper
 				Arrays.asList(buyDisguiseGear, createDisguise, goToShanty, talkToRugMerchant, drunkenAli), unspecifiedCoins));
 		allSteps.add(new PanelDetails("Find the beef between the two factions",
 				Arrays.asList(talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel), unspecifiedCoins));
+		allSteps.add(new PanelDetails("First job",
+			Arrays.asList(talkToAliTheOperator, pickpocketVillager, pickPocketVillagerWithUrchin,
+				getBlackjackFromAli, blackjackVillager), unspecifiedCoins));
 		allSteps.add(new PanelDetails("Second job",
 				Arrays.asList(talkToAliToGetSecondJob, hideBehindCactus, openTheDoor, goUpStairs, crackTheSafe, giveTheJewelsToAli), desertDisguise, gloves));
 		allSteps.add(new PanelDetails("Rising up",

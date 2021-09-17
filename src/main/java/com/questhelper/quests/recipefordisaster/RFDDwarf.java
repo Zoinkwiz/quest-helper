@@ -30,15 +30,14 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -67,8 +66,7 @@ public class RFDDwarf extends BasicQuestHelper
 		teleportFalador2, teleportLumbridge, coin, asgarnianAle, asgoldianAle, asgoldianAle4, coins100,
 		rockCakeHighlighted;
 
-	Requirement inDiningRoom, inTunnel, hasRockCake, hasRockCakeHot, learnedHowToMakeAle, hasAsgoldian4,
-		givenAle, has4AleOrGivenAle;
+	Requirement inDiningRoom, inTunnel, learnedHowToMakeAle, givenAle, has4AleOrGivenAle;
 
 	QuestStep enterDiningRoom, inspectDwarf, talkToKaylee, makeAle, enterTunnels, talkToOldDwarf, talkToOldDwarfMore,
 		talkToOldDwarfWithIngredients, pickUpRockCake, coolRockCake, coolRockCakeSidebar, enterDiningRoomAgain,
@@ -106,9 +104,9 @@ public class RFDDwarf extends BasicQuestHelper
 		steps.put(40, haveCakeMadeP2);
 
 		ConditionalStep giveCakeToDwarf = new ConditionalStep(this, pickUpRockCake);
-		giveCakeToDwarf.addStep(new Conditions(hasRockCake, inDiningRoom), useRockCakeOnDwarf);
-		giveCakeToDwarf.addStep(hasRockCake, enterDiningRoomAgain);
-		giveCakeToDwarf.addStep(hasRockCakeHot, coolRockCake);
+		giveCakeToDwarf.addStep(new Conditions(rockCake, inDiningRoom), useRockCakeOnDwarf);
+		giveCakeToDwarf.addStep(rockCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		giveCakeToDwarf.addStep(rockCakeHot, coolRockCake);
 		steps.put(50, giveCakeToDwarf);
 
 		return steps;
@@ -163,12 +161,9 @@ public class RFDDwarf extends BasicQuestHelper
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inTunnel = new ZoneRequirement(tunnel);
 
-		hasRockCake = new ItemRequirements(rockCake);
-		hasRockCakeHot = new ItemRequirements(rockCakeHot);
 		learnedHowToMakeAle = new VarbitRequirement(1891, 1);
-		hasAsgoldian4 = new ItemRequirements(asgoldianAle4);
 		givenAle = new VarbitRequirement(1893, 1);
-		has4AleOrGivenAle = new Conditions(LogicType.OR, hasAsgoldian4, givenAle);
+		has4AleOrGivenAle = new Conditions(LogicType.OR, asgoldianAle4, givenAle);
 	}
 
 	public void setupSteps()

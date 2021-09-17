@@ -85,7 +85,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		map18, map19, map20, map21, map22, map23, map24;
 
 	Requirement inCrandorUnderground, inElvargArea, inKaramjaVolcano, inMuralRoom, inHouseGroundFloor, inHouseFirstFloor, inLithkrenGroundFloor, inLithkrenFirstFloor, inLithkrenUnderground,
-		inLithkrenGroundFloorRoom, inDream, hasAivasDiary, hasVialWater, hasVialGout, hasAstralShard, hasAstralPowder, hasDreamPotion, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
+		inLithkrenGroundFloorRoom, inDream, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
 		hasTheKaramjaKeyPiece, inDeepLithkren, recruitedBrundt, recruitedLathas, recruitedAmik, inArdougneCastle, inFaladorF1, inFaladorF2, onBoat, inBattle;
 
 	Requirement hadChest1MapPieces, hadChest2MapPieces, hadFungiMapPieces, hadBriarMapPieces, hadMushtreeMapPieces, hadMap1, hadMap2, hadMap3, hadMap4, hadMap5, hadMap6, hadMap7, hadMap8, hadMap9, hadMap10, hadMap11, hadMap12, hadMap13, hadMap14,
@@ -115,7 +115,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	DetailedQuestStep talkToReldo, searchBookcase, talkToReldoAgain, talkToReldoAgainNoBook, talkToSarah, talkToAva, usePipeOnDragonstone, talkToAvaAgain,
 		talkToAvaAgainNoOrb, useLocatorInSwamp;
-	Requirement talkedToReldo, foundCensus, talkedToReldoAgain, givenReldoBook, talkedToSarah, talkedToAva, haveInertLocator, givenAvaOrb, talkedToAvaAgain;
+	Requirement talkedToReldo, foundCensus, talkedToReldoAgain, givenReldoBook, talkedToSarah, talkedToAva, givenAvaOrb, talkedToAvaAgain;
 
 	DetailedQuestStep talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey;
 	Requirement talkedToBrundt, defeatedVorkath, pulledLever;
@@ -248,7 +248,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		steps.put(75, goDownToLithkrenBasement);
 
 		ConditionalStep goReadDiary = new ConditionalStep(this, boardBoat);
-		goReadDiary.addStep(hasAivasDiary, readDiary);
+		goReadDiary.addStep(aivasDiary, readDiary);
 		goReadDiary.addStep(inLithkrenUnderground, searchSkeleton);
 		goReadDiary.addStep(inLithkrenGroundFloorRoom, climbDownLithkrenNorthStairs);
 		goReadDiary.addStep(inLithkrenFirstFloor, climbDownLithkrenTrapdoor);
@@ -274,12 +274,12 @@ public class DragonSlayerII extends BasicQuestHelper
 		steps.put(100, talkToOneiromancer);
 
 		ConditionalStep goEnterDream = new ConditionalStep(this, fillDreamVial);
-		goEnterDream.addStep(new Conditions(hasDreamPotion, litBrazier), usePotionOnFlame);
-		goEnterDream.addStep(hasDreamPotion, lightBrazier);
-		goEnterDream.addStep(new Conditions(hasVialGout, hasAstralPowder), addGroundAstral);
-		goEnterDream.addStep(new Conditions(hasVialGout, hasAstralShard), grindAstralShards);
-		goEnterDream.addStep(hasVialGout, crushAstralRune);
-		goEnterDream.addStep(hasVialWater, addGoutweed);
+		goEnterDream.addStep(new Conditions(dreamPotion, litBrazier), usePotionOnFlame);
+		goEnterDream.addStep(dreamPotion, lightBrazier);
+		goEnterDream.addStep(new Conditions(dreamVialWithGoutweed, groundAstralRune), addGroundAstral);
+		goEnterDream.addStep(new Conditions(dreamVialWithGoutweed, astralRuneShards), grindAstralShards);
+		goEnterDream.addStep(dreamVialWithGoutweed, crushAstralRune);
+		goEnterDream.addStep(dreamVialWater, addGoutweed);
 		steps.put(105, goEnterDream);
 
 		ConditionalStep goTalkToBobInDream = new ConditionalStep(this, talkToBobToEnterDreamAgain);
@@ -318,7 +318,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		gettingTheVarrockKey = new ConditionalStep(this, talkToReldo);
 		gettingTheVarrockKey.addStep(new Conditions(talkedToAvaAgain), useLocatorInSwamp);
 		gettingTheVarrockKey.addStep(new Conditions(givenAvaOrb), talkToAvaAgainNoOrb);
-		gettingTheVarrockKey.addStep(new Conditions(talkedToAva, haveInertLocator), talkToAvaAgain);
+		gettingTheVarrockKey.addStep(new Conditions(talkedToAva, inertLocator), talkToAvaAgain);
 		gettingTheVarrockKey.addStep(talkedToAva, usePipeOnDragonstone);
 		gettingTheVarrockKey.addStep(talkedToSarah, talkToAva);
 		gettingTheVarrockKey.addStep(talkedToReldoAgain, talkToSarah);
@@ -627,49 +627,41 @@ public class DragonSlayerII extends BasicQuestHelper
 		onBoat = new ZoneRequirement(boat);
 		inBattle = new ZoneRequirement(battle);
 
-		hadMap1 = new Conditions(LogicType.OR, new ItemRequirements(map1), new VarbitRequirement(6116, 1));
-		hadMap2 = new Conditions(LogicType.OR, new ItemRequirements(map2), new VarbitRequirement(6117, 1));
-		hadMap3 = new Conditions(LogicType.OR, new ItemRequirements(map3), new VarbitRequirement(6118, 1));
-		hadMap4 = new Conditions(LogicType.OR, new ItemRequirements(map4), new VarbitRequirement(6119, 1));
-		hadMap5 = new Conditions(LogicType.OR, new ItemRequirements(map5), new VarbitRequirement(6120, 1));
+		hadMap1 = new Conditions(LogicType.OR, map1, new VarbitRequirement(6116, 1));
+		hadMap2 = new Conditions(LogicType.OR, map2, new VarbitRequirement(6117, 1));
+		hadMap3 = new Conditions(LogicType.OR, map3, new VarbitRequirement(6118, 1));
+		hadMap4 = new Conditions(LogicType.OR, map4, new VarbitRequirement(6119, 1));
+		hadMap5 = new Conditions(LogicType.OR, map5, new VarbitRequirement(6120, 1));
 		hadChest1MapPieces = new Conditions(hadMap1, hadMap2, hadMap3, hadMap4, hadMap5);
 
-		hadMap6 = new Conditions(LogicType.OR, new ItemRequirements(map6), new VarbitRequirement(6121, 1));
-		hadMap7 = new Conditions(LogicType.OR, new ItemRequirements(map7), new VarbitRequirement(6122, 1));
-		hadMap8 = new Conditions(LogicType.OR, new ItemRequirements(map8), new VarbitRequirement(6123, 1));
+		hadMap6 = new Conditions(LogicType.OR, map6, new VarbitRequirement(6121, 1));
+		hadMap7 = new Conditions(LogicType.OR, map7, new VarbitRequirement(6122, 1));
+		hadMap8 = new Conditions(LogicType.OR, map8, new VarbitRequirement(6123, 1));
 		hadChest2MapPieces = new Conditions(hadMap6, hadMap7, hadMap8);
 
-		hadMap9 = new Conditions(LogicType.OR, new ItemRequirements(map9), new VarbitRequirement(6124, 1));
-		hadMap10 = new Conditions(LogicType.OR, new ItemRequirements(map10), new VarbitRequirement(6125, 1));
-		hadMap11 = new Conditions(LogicType.OR, new ItemRequirements(map11), new VarbitRequirement(6126, 1));
-		hadMap12 = new Conditions(LogicType.OR, new ItemRequirements(map12), new VarbitRequirement(6127, 1));
+		hadMap9 = new Conditions(LogicType.OR, map9, new VarbitRequirement(6124, 1));
+		hadMap10 = new Conditions(LogicType.OR, map10, new VarbitRequirement(6125, 1));
+		hadMap11 = new Conditions(LogicType.OR, map11, new VarbitRequirement(6126, 1));
+		hadMap12 = new Conditions(LogicType.OR, map12, new VarbitRequirement(6127, 1));
 		hadFungiMapPieces = new Conditions(hadMap9, hadMap10, hadMap11, hadMap12);
 
-		hadMap13 = new Conditions(LogicType.OR, new ItemRequirements(map13), new VarbitRequirement(6128, 1));
-		hadMap14 = new Conditions(LogicType.OR, new ItemRequirements(map14), new VarbitRequirement(6129, 1));
-		hadMap15 = new Conditions(LogicType.OR, new ItemRequirements(map15), new VarbitRequirement(6130, 1));
-		hadMap16 = new Conditions(LogicType.OR, new ItemRequirements(map16), new VarbitRequirement(6131, 1));
-		hadMap17 = new Conditions(LogicType.OR, new ItemRequirements(map17), new VarbitRequirement(6132, 1));
-		hadMap18 = new Conditions(LogicType.OR, new ItemRequirements(map18), new VarbitRequirement(6133, 1));
-		hadMap19 = new Conditions(LogicType.OR, new ItemRequirements(map19), new VarbitRequirement(6134, 1));
+		hadMap13 = new Conditions(LogicType.OR, map13, new VarbitRequirement(6128, 1));
+		hadMap14 = new Conditions(LogicType.OR, map14, new VarbitRequirement(6129, 1));
+		hadMap15 = new Conditions(LogicType.OR, map15, new VarbitRequirement(6130, 1));
+		hadMap16 = new Conditions(LogicType.OR, map16, new VarbitRequirement(6131, 1));
+		hadMap17 = new Conditions(LogicType.OR, map17, new VarbitRequirement(6132, 1));
+		hadMap18 = new Conditions(LogicType.OR, map18, new VarbitRequirement(6133, 1));
+		hadMap19 = new Conditions(LogicType.OR, map19, new VarbitRequirement(6134, 1));
 		hadBriarMapPieces = new Conditions(hadMap13, hadMap14, hadMap15, hadMap16, hadMap17, hadMap18, hadMap19);
 
-		hadMap20 = new Conditions(LogicType.OR, new ItemRequirements(map20), new VarbitRequirement(6135, 1));
-		hadMap21 = new Conditions(LogicType.OR, new ItemRequirements(map21), new VarbitRequirement(6136, 1));
-		hadMap22 = new Conditions(LogicType.OR, new ItemRequirements(map22), new VarbitRequirement(6137, 1));
-		hadMap23 = new Conditions(LogicType.OR, new ItemRequirements(map23), new VarbitRequirement(6138, 1));
-		hadMap24 = new Conditions(LogicType.OR, new ItemRequirements(map23), new VarbitRequirement(6138, 1));
+		hadMap20 = new Conditions(LogicType.OR, map20, new VarbitRequirement(6135, 1));
+		hadMap21 = new Conditions(LogicType.OR, map21, new VarbitRequirement(6136, 1));
+		hadMap22 = new Conditions(LogicType.OR, map22, new VarbitRequirement(6137, 1));
+		hadMap23 = new Conditions(LogicType.OR, map23, new VarbitRequirement(6138, 1));
+		hadMap24 = new Conditions(LogicType.OR, map23, new VarbitRequirement(6138, 1));
 		hadMushtreeMapPieces = new Conditions(hadMap20, hadMap21, hadMap22, hadMap23, hadMap24);
 
 		inMapPuzzle = new WidgetModelRequirement(305, 1, 35060);
-
-		hasAivasDiary = new ItemRequirements(aivasDiary);
-
-		hasVialWater = new ItemRequirements(dreamVialWater);
-		hasVialGout = new ItemRequirements(dreamVialWithGoutweed);
-		hasAstralShard = new ItemRequirements(astralRuneShards);
-		hasAstralPowder = new ItemRequirements(groundAstralRune);
-		hasDreamPotion = new ItemRequirements(dreamPotion);
 
 		litBrazier = new VarbitRequirement(2430, 1);
 
@@ -677,7 +669,6 @@ public class DragonSlayerII extends BasicQuestHelper
 		hasTheKaramjaKeyPiece = new VarbitRequirement(6106, 20, Operation.GREATER_EQUAL);
 		hasTheVarrockKeyPiece = new VarbitRequirement(6107, 55, Operation.GREATER_EQUAL);
 		hasTheFremennikKeyPiece = new VarbitRequirement(6108, 35, Operation.GREATER_EQUAL);
-
 
 		// Kourend key piece
 		talkedToAmelia = new VarbitRequirement(6105, 20, Operation.GREATER_EQUAL);
@@ -694,7 +685,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkedToAva = new VarbitRequirement(6107, 40, Operation.GREATER_EQUAL);
 		givenAvaOrb = new VarbitRequirement(6107, 46, Operation.GREATER_EQUAL);
 		talkedToAvaAgain = new VarbitRequirement(6107, 50, Operation.GREATER_EQUAL);
-		haveInertLocator = new ItemRequirements(inertLocator);
+
 		// 6141, presumbly represents location of treasure
 		// 11: 3442, 3421, 0
 
@@ -813,8 +804,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToBobAfterRobertFight = new NpcStep(this, NpcID.BOB_8111, new WorldPoint(2074, 3912, 0), "Talk to Bob next to the brazier.");
 
 		// Kourend key piece
-		talkToAmelia = new NpcStep(this, NpcID.AMELIA, new WorldPoint(1496, 3596, 0), "Talk to Amelia south west of the Shayzien bank.");
-		enterCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0), "Enter the Crypt south of Amelia.");
+		talkToAmelia = new NpcStep(this, NpcID.AMELIA, new WorldPoint(1540, 3545, 0), "Talk to Amelia south west of the Shayzien Archery Store.");
+		enterCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0), "Enter the Crypt west of Amelia.");
 		goDownInCryptF2ToF1 = new ObjectStep(this, ObjectID.LADDER_32397, new WorldPoint(1524, 9967, 3), "Climb down to the bottom of the crypts.");
 		goDownInCryptF1ToF0 = new ObjectStep(this, ObjectID.STAIRCASE_32394, new WorldPoint(1511, 9979, 2), "Climb down to the bottom of the crypts.");
 		goDownInCryptF2ToF1.addSubSteps(goDownInCryptF1ToF0);

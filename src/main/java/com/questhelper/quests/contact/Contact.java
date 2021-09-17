@@ -39,7 +39,6 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -64,7 +63,10 @@ public class Contact extends BasicQuestHelper
 	//Items Required
 	ItemRequirement lightSource, combatGear, parchment, keris, food, prayerPotions;
 
-	Requirement inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
+	// Item recommended
+	ItemRequirement coins, glory;
+
+	Requirement inBank, inDungeon, inChasm, hasReadParchment, kerisNearby;
 
 	QuestStep talkToHighPriest, talkToJex, goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman, talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain,
 		killGiantScarab, pickUpKeris, returnToHighPriest;
@@ -88,7 +90,7 @@ public class Contact extends BasicQuestHelper
 
 		ConditionalStep goInvestigate = new ConditionalStep(this, goDownToBank);
 		goInvestigate.addStep(new Conditions(inChasm, hasReadParchment), talkToMaisa);
-		goInvestigate.addStep(hasParchment, readParchment);
+		goInvestigate.addStep(parchment, readParchment);
 		goInvestigate.addStep(inChasm, searchKaleef);
 		goInvestigate.addStep(inDungeon, goDownToChasm);
 		goInvestigate.addStep(inBank, goDownToDungeon);
@@ -133,6 +135,9 @@ public class Contact extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
+
+		coins = new ItemRequirement("Coins for carpet rides", ItemID.COINS_995);
+		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.getAmuletOfGlories());
 	}
 
 	public void setupZones()
@@ -147,7 +152,6 @@ public class Contact extends BasicQuestHelper
 		inBank = new ZoneRequirement(bank);
 		inDungeon = new ZoneRequirement(dungeon);
 		inChasm = new ZoneRequirement(chasm);
-		hasParchment = new ItemRequirements(parchment);
 		hasReadParchment = new VarbitRequirement(3274, 50);
 		kerisNearby = new ItemOnTileRequirement(keris);
 	}
@@ -259,6 +263,15 @@ public class Contact extends BasicQuestHelper
 		reqs.add(combatGear);
 		reqs.add(food);
 		reqs.add(prayerPotions);
+		return reqs;
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(coins.quantity(1000));
+		reqs.add(glory);
 		return reqs;
 	}
 

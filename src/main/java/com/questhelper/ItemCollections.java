@@ -67,6 +67,7 @@ public class ItemCollections
 		ItemID.CRYSTAL_PICKAXE_INACTIVE,
 		ItemID._3RD_AGE_PICKAXE,
 		ItemID.INFERNAL_PICKAXE,
+		ItemID.DRAGON_PICKAXE_OR_25376,
 		ItemID.DRAGON_PICKAXE_12797,
 		ItemID.DRAGON_PICKAXE_OR,
 		ItemID.DRAGON_PICKAXE,
@@ -876,6 +877,18 @@ public class ItemCollections
 		ItemID.BLUE_LOGS
 	);
 
+	@Getter
+	private static final List<Integer> bones = ImmutableList.of(
+		ItemID.BONES,
+		ItemID.BURNT_BONES,
+		ItemID.WOLF_BONES,
+		ItemID.BAT_BONES,
+		ItemID.BIG_BONES,
+		ItemID.JOGRE_BONES,
+		ItemID.BABYDRAGON_BONES,
+		ItemID.DRAGON_BONES,
+		ItemID.DAGANNOTH_BONES
+	);
 
 	// Other
 
@@ -1138,7 +1151,7 @@ public class ItemCollections
 		ItemID.WOODCUT_CAPET,
 		ItemID.QUEST_POINT_CAPE,
 		ItemID.QUEST_POINT_CAPE_T
-		);
+	);
 
 	@Getter
 	private static final List<Integer> slayerHelmets = ImmutableList.of(
@@ -1165,7 +1178,16 @@ public class ItemCollections
 		ItemID.HYDRA_SLAYER_HELMET_I_25189,
 		ItemID.TWISTED_SLAYER_HELMET,
 		ItemID.TWISTED_SLAYER_HELMET_I,
-		ItemID.TWISTED_SLAYER_HELMET_I_25191
+		ItemID.TWISTED_SLAYER_HELMET_I_25191,
+		ItemID.TZKAL_SLAYER_HELMET,
+		ItemID.TZKAL_SLAYER_HELMET_I,
+		ItemID.TZKAL_SLAYER_HELMET_I_25914,
+		ItemID.VAMPYRIC_SLAYER_HELMET,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I_25908,
+		ItemID.TZTOK_SLAYER_HELMET,
+		ItemID.TZTOK_SLAYER_HELMET_I,
+		ItemID.TZTOK_SLAYER_HELMET_I_25902
 	);
 
 	@Getter
@@ -1198,6 +1220,14 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> compost = ImmutableList.of(
+			ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
+			ItemID.ULTRACOMPOST,
+			ItemID.SUPERCOMPOST,
+			ItemID.COMPOST
+	);
+
+	@Getter
 	private static final List<Integer> fairyStaff = ImmutableList.of(
 		ItemID.LUNAR_STAFF,
 		ItemID.LUNAR_STAFF__PT3,
@@ -1207,18 +1237,39 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> crossbows = ImmutableList.of(
-		ItemID.BRONZE_CROSSBOW,
-		ItemID.BLURITE_CROSSBOW,
-		ItemID.IRON_CROSSBOW,
-		ItemID.STEEL_CROSSBOW,
-		ItemID.MITHRIL_CROSSBOW,
-		ItemID.ADAMANT_CROSSBOW,
-		ItemID.RUNE_CROSSBOW,
-		ItemID.DRAGON_CROSSBOW,
-		ItemID.CROSSBOW,
-		ItemID.DORGESHUUN_CROSSBOW,
-		ItemID.ARMADYL_CROSSBOW,
-		ItemID.DRAGON_HUNTER_CROSSBOW
+	private static final List<Integer> earthAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.EARTH_TIARA,
+		ItemID.EARTH_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> essenceLow = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE,
+		ItemID.RUNE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> essenceHigh = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> coins = ImmutableList.of(
+		ItemID.COINS_995,
+		ItemID.COINS_8890,
+		ItemID.COINS_6964,
+		ItemID.COINS
+	);
+
+	@Getter
+	private  static final List<Integer> cookingGuild = ImmutableList.of(
+		ItemID.CHEFS_HAT,
+		ItemID.VARROCK_ARMOUR_3,
+		ItemID.VARROCK_ARMOUR_4,
+		ItemID.COOKING_CAPET,
+		ItemID.COOKING_CAPE
 	);
 }

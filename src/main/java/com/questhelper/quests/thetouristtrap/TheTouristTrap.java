@@ -73,9 +73,8 @@ public class TheTouristTrap extends BasicQuestHelper
 		//Items Required
 	ItemRequirement waterskins, knife, pickaxe, coins100, combatGear;
 
-	Requirement inJail, onSlope, inCamp, hasSlaveClothes, inUpstairs, onCliff, onSecondCliff, inJailEscape, inMine1, hasPlans, distractedSiad, searchedBookcase,
-		hasTip, hasDart, hasBarrel, inDeepMine, inDeepMineP1, inDeepMineP2, hasAnaInBarrel, anaOnCart, anaOnSurfaceInBarrel, anaOnSurface, anaPlacedOnCartOfLift,
-		inMiningRoom, anaFree;
+	Requirement inJail, onSlope, inCamp, hasSlaveClothes, inUpstairs, onCliff, onSecondCliff, inJailEscape, inMine1, distractedSiad, searchedBookcase,
+		inDeepMine, inDeepMineP1, inDeepMineP2, anaOnCart, anaOnSurfaceInBarrel, anaOnSurface, anaPlacedOnCartOfLift, inMiningRoom, anaFree;
 
 	DetailedQuestStep talkToIrena, talkToCaptain, killCaptain, enterCamp, talkToSlave, enterMine, talkToGuard, leaveCamp, talkToShabim, enterCampForTask,
 		goUpToSiad, searchBookcase, talkToSiad, searchChest, returnToShabim, useAnvil, bringPrototypeToShabim, enterCampWithPineapple, enterMineWithPineapple,
@@ -130,7 +129,7 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		ConditionalStep goGetPlans = new ConditionalStep(this, enterCampForTask);
 		goGetPlans.addStep(inJailEscape, escapeJailSteps);
-		goGetPlans.addStep(hasPlans, returnToShabim);
+		goGetPlans.addStep(technicalPlans, returnToShabim);
 		goGetPlans.addStep(new Conditions(inUpstairs, distractedSiad), searchChest);
 		goGetPlans.addStep(new Conditions(inUpstairs, searchedBookcase), talkToSiad);
 		goGetPlans.addStep(inUpstairs, searchBookcase);
@@ -141,8 +140,8 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		ConditionalStep makeDart = new ConditionalStep(this, useAnvil);
 		makeDart.addStep(inJailEscape, escapeJailSteps);
-		makeDart.addStep(hasDart, bringPrototypeToShabim);
-		makeDart.addStep(hasTip, useFeatherOnTip);
+		makeDart.addStep(prototypeDart, bringPrototypeToShabim);
+		makeDart.addStep(prototypeDartTip, useFeatherOnTip);
 		steps.put(13, makeDart);
 		steps.put(14, makeDart);
 		steps.put(15, makeDart);
@@ -157,19 +156,19 @@ public class TheTouristTrap extends BasicQuestHelper
 		captureAna.addStep(inJailEscape, escapeJailSteps);
 		captureAna.addStep(new Conditions(anaFree), talkToAna);
 		captureAna.addStep(new Conditions(inCamp, anaOnCart), talkToDriver);
-		captureAna.addStep(new Conditions(inCamp, hasAnaInBarrel), useBarrelOnCart);
+		captureAna.addStep(new Conditions(inCamp, anaInABarrel), useBarrelOnCart);
 		captureAna.addStep(new Conditions(inCamp, anaPlacedOnCartOfLift, anaOnSurfaceInBarrel), searchWinchBarrel);
 		captureAna.addStep(new Conditions(inCamp, anaOnSurface, anaPlacedOnCartOfLift), operateWinch);
 		captureAna.addStep(new Conditions(inMine1, anaOnSurface, anaPlacedOnCartOfLift), leaveMineForAna);
-		captureAna.addStep(new Conditions(inDeepMineP1, hasAnaInBarrel), sendAnaUp);
+		captureAna.addStep(new Conditions(inDeepMineP1, anaInABarrel), sendAnaUp);
 		captureAna.addStep(new Conditions(inDeepMineP1, anaOnSurface, anaPlacedOnCartOfLift), leaveDeepMine);
 		captureAna.addStep(new Conditions(inDeepMineP1, anaPlacedOnCartOfLift), searchBarrelsForAna);
-		captureAna.addStep(new Conditions(inDeepMineP2, hasAnaInBarrel), useBarrelOnMineCart);
+		captureAna.addStep(new Conditions(inDeepMineP2, anaInABarrel), useBarrelOnMineCart);
 		captureAna.addStep(new Conditions(inDeepMineP2, anaPlacedOnCartOfLift), returnInMineCart);
-		captureAna.addStep(new Conditions(inDeepMineP2, hasBarrel), useBarrelOnAna);
-		captureAna.addStep(new Conditions(inDeepMineP1, hasBarrel), enterMineCart);
+		captureAna.addStep(new Conditions(inDeepMineP2, barrel), useBarrelOnAna);
+		captureAna.addStep(new Conditions(inDeepMineP1, barrel), enterMineCart);
 		captureAna.addStep(inMiningRoom, mineRocks);
-		captureAna.addStep(hasAnaInBarrel, returnToIrena);
+		captureAna.addStep(anaInABarrel, returnToIrena);
 		captureAna.addStep(inDeepMine, getBarrel);
 		captureAna.addStep(inMine1, enterDeepMine);
 		captureAna.addStep(inCamp, enterMineAfterPineapple);
@@ -283,11 +282,6 @@ public class TheTouristTrap extends BasicQuestHelper
 		inJailEscape = new ZoneRequirement(jail, slope, cliff, secondCliff);
 
 		hasSlaveClothes = new ItemRequirements(slaveTop, slaveBoot, slaveRobe);
-		hasPlans = new ItemRequirements(technicalPlans);
-		hasTip = new ItemRequirements(prototypeDartTip);
-		hasDart = new ItemRequirements(prototypeDart);
-		hasBarrel = new ItemRequirements(barrel);
-		hasAnaInBarrel = new ItemRequirements(anaInABarrel);
 
 		searchedBookcase = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You notice several books on the subject of sailing."));
 		distractedSiad = new Conditions(true, new WidgetTextRequirement(229, 1, "The captain starts rambling on about his days as a salty sea dog. He<br>looks quite distracted..."));

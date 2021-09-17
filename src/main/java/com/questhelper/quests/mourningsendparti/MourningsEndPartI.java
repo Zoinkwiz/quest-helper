@@ -71,9 +71,9 @@ public class MourningsEndPartI extends BasicQuestHelper
 		equippedMournerGloves, equippedMournerBoots, brokenDevice, featherHighlight, fixedDevice, redToad, yellowToad, greenToad, blueToad, fixedDeviceEquipped, emptyBarrel, barrelOfRottenApples,
 		appleBarrel, naphtha, naphthaAppleMix, toxicNaphtha, toxicPowder;
 
-	Requirement hasAllMournerItems, mournerItemsNearby, hasSoap, cleanedTop, repairedTrousers, inMournerHQ, inMournerBasement, knowWeaknesses, torturedGnome, talkedWithItem, releasedGnome, repairedDevice,
-		learntAboutToads, hasAllToads, blueToadLoaded, redToadLoaded, yellowToadLoaded, greenToadLoaded, redToadGot, yellowToadGot, greenToadGot, blueToadGot, greenDyed, yellowDyed, redDyed, blueDyed, hasRottenApple,
-		givenRottenApple, receivedSieve, hasBarrel, hasRottenApples, hasAppleBarrel, hasNaphtha, hasNaphthaAppleMix, hasToxicNaphtha, hadToxicPowder, poisoned1, poisoned2, poisoned3, twoPoisoned;
+	Requirement hasAllMournerItems, mournerItemsNearby, inMournerHQ, inMournerBasement, knowWeaknesses, torturedGnome, talkedWithItem, releasedGnome, repairedDevice,
+		learntAboutToads, hasAllToads, blueToadLoaded, redToadLoaded, yellowToadLoaded, greenToadLoaded, redToadGot, yellowToadGot, greenToadGot, blueToadGot, greenDyed, yellowDyed, redDyed, blueDyed,
+		givenRottenApple, receivedSieve, poisoned1, poisoned2, poisoned3, twoPoisoned;
 
 	QuestStep talkToIslwyn, talkToArianwyn, killMourner, pickUpLoot, searchLaundry, useSoapOnTop, talkToOronwen, enterMournerBase, enterMournerBaseNoPass, enterBasement, talkToEssyllt, talkToGnome,
 		enterMournerBaseForGnome, enterBasementForGnome, useFeatherOnGnome, enterMournerBaseAfterTorture, enterBasementAfterTorture, talkToGnomeWithItems, releaseGnome, giveGnomeItems, askAboutToads,
@@ -105,19 +105,19 @@ public class MourningsEndPartI extends BasicQuestHelper
 		getItems.setLockingCondition(hasAllMournerItems);
 
 		cleanTopSteps = new ConditionalStep(this, searchLaundry);
-		cleanTopSteps.addStep(hasSoap, useSoapOnTop);
-		cleanTopSteps.setLockingCondition(cleanedTop);
+		cleanTopSteps.addStep(tegidsSoap, useSoapOnTop);
+		cleanTopSteps.setLockingCondition(mournerBody);
 
 		repairTrousersSteps = new ConditionalStep(this, talkToOronwen);
-		repairTrousersSteps.setLockingCondition(repairedTrousers);
+		repairTrousersSteps.setLockingCondition(mournerLegs);
 
 		ConditionalStep enterMournerHQ = new ConditionalStep(this, enterMournerBase);
 		enterMournerHQ.addStep(inMournerBasement, talkToEssyllt);
 		enterMournerHQ.addStep(inMournerHQ, enterBasement);
 
 		ConditionalStep prepareItems = new ConditionalStep(this, getItems);
-		prepareItems.addStep(new Conditions(hasAllMournerItems, cleanedTop, repairedTrousers), enterMournerHQ);
-		prepareItems.addStep(new Conditions(hasAllMournerItems, cleanedTop), repairTrousersSteps);
+		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(questBank), mournerLegs.alsoCheckBank(questBank)), enterMournerHQ);
+		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(questBank)), repairTrousersSteps);
 		prepareItems.addStep(new Conditions(hasAllMournerItems), cleanTopSteps);
 
 		steps.put(3, prepareItems);
@@ -158,16 +158,16 @@ public class MourningsEndPartI extends BasicQuestHelper
 		takeAppleToElena.addStep(new Conditions(twoPoisoned, inMournerHQ), enterMournerBasementAfterPoison);
 		takeAppleToElena.addStep(twoPoisoned, enterMournerBaseAfterPoison);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, poisoned1), usePowderOnFood2);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, hadToxicPowder), usePowderOnFood1);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, hasToxicNaphtha), cookNaphtha);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, hasNaphthaAppleMix), useSieveOnBarrel);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, hasAppleBarrel, hasNaphtha), useNaphthaOnBarrel);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, hasAppleBarrel), getNaphtha);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, hasRottenApples), useApplesOnPress);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, hasBarrel), useBarrelOnPile);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicPowder.alsoCheckBank(questBank)), usePowderOnFood1);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicNaphtha), cookNaphtha);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, naphthaAppleMix), useSieveOnBarrel);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank), naphtha), useNaphthaOnBarrel);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank)), getNaphtha);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, rottenApple), useApplesOnPress);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, emptyBarrel), useBarrelOnPile);
 		takeAppleToElena.addStep(receivedSieve, pickUpBarrel);
 		takeAppleToElena.addStep(givenRottenApple, talkToElenaNoApple);
-		takeAppleToElena.addStep(hasRottenApple, talkToElena);
+		takeAppleToElena.addStep(rottenApple, talkToElena);
 
 		steps.put(6, takeAppleToElena);
 
@@ -268,10 +268,6 @@ public class MourningsEndPartI extends BasicQuestHelper
 		hasAllMournerItems = new Conditions(LogicType.AND, new ItemRequirements(mournerMask, mournerLetter, mournerMask, mournerGloves, mournerCloak, mournerBoots),
 			new ItemRequirements(LogicType.OR, mournerBody, bloodyMournerBody), new ItemRequirements(LogicType.OR, mournerLegsBroken, mournerLegs));
 
-		hasSoap = new ItemRequirements(tegidsSoap);
-
-		cleanedTop = new Conditions(new ItemRequirements(mournerBody));
-		repairedTrousers = new Conditions(new ItemRequirements(mournerLegs));
 		inMournerHQ = new ZoneRequirement(mournerHQ, mournerHQ2);
 
 		inMournerBasement = new ZoneRequirement(mournerBasement);
@@ -292,26 +288,16 @@ public class MourningsEndPartI extends BasicQuestHelper
 		yellowDyed = new VarbitRequirement(802, 1);
 		blueDyed = new VarbitRequirement(800, 1);
 
-		greenToadGot = new Conditions(LogicType.OR, greenToadLoaded, new ItemRequirements(greenToad), greenDyed);
-		redToadGot = new Conditions(LogicType.OR, redToadLoaded, new ItemRequirements(redToad), redDyed);
-		yellowToadGot = new Conditions(LogicType.OR, yellowToadLoaded, new ItemRequirements(yellowToad), yellowDyed);
-		blueToadGot = new Conditions(LogicType.OR, blueToadLoaded, new ItemRequirements(blueToad), blueDyed);
+		greenToadGot = new Conditions(LogicType.OR, greenToadLoaded, greenToad, greenDyed);
+		redToadGot = new Conditions(LogicType.OR, redToadLoaded, redToad, redDyed);
+		yellowToadGot = new Conditions(LogicType.OR, yellowToadLoaded, yellowToad, yellowDyed);
+		blueToadGot = new Conditions(LogicType.OR, blueToadLoaded, blueToad, blueDyed);
 
 		hasAllToads = new Conditions(true, LogicType.AND, greenToadGot, yellowToadGot, redToadGot, blueToadGot);
-
-		hasRottenApple = new ItemRequirements(rottenApple);
 
 		givenRottenApple = new VarbitRequirement(805, 2, Operation.GREATER_EQUAL);
 		receivedSieve = new VarbitRequirement(805, 4, Operation.GREATER_EQUAL);
 
-		hasRottenApples = new ItemRequirements(barrelOfRottenApples);
-		hasBarrel = new ItemRequirements(emptyBarrel);
-		hasAppleBarrel = new Conditions(true, LogicType.OR, new ItemRequirements(appleBarrel));
-		hasNaphtha = new ItemRequirements(naphtha);
-		hasNaphthaAppleMix = new ItemRequirements(naphthaAppleMix);
-		hasToxicNaphtha = new ItemRequirements(toxicNaphtha);
-
-		hadToxicPowder = new Conditions(true, LogicType.OR, new ItemRequirements(toxicPowder));
 		poisoned1 = new VarbitRequirement(806, 1);
 		poisoned2 = new VarbitRequirement(807, 1);
 		poisoned3 = new VarbitRequirement(808, 1);

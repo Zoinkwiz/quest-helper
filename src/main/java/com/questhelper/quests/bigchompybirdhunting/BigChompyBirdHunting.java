@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -70,10 +69,9 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted, seasonedChompy,
 		seasonedChompyHighlighted, bellow;
 
-	Requirement inCave, hasLogs, hasShafts, hasFlightedShafts, hasTips, hasArrows, hasFullBellow, hasBloatedToad,
-		hasOgreBow, chompyNearby, deadChompyNearby, rantzWantsOnion, rantzWantsPotato, knowWhatRantzWants, bugsWantsEqua,
-		bugsWantsCabbage, knowWhatBugsWants, fycieWantsDoogle, fycieWantsTomato, knowWhatFycieWants, hasOnion, hasTomato,
-		hasPotato, hasDoogle, hasEqua, hasCabbage, hasRantzItem, hasFycieItem, hasBugsItem, hasBellows;
+	Requirement inCave, chompyNearby, deadChompyNearby, rantzWantsOnion, rantzWantsPotato, knowWhatRantzWants,
+		bugsWantsEqua, bugsWantsCabbage, knowWhatBugsWants, fycieWantsDoogle, fycieWantsTomato, knowWhatFycieWants,
+		hasRantzItem, hasFycieItem, hasBugsItem;
 
 	DetailedQuestStep talkToRantz, getLogs, makeShafts, useFeathersOnShafts, useChiselOnBones, useTipsOnShafts, useArrowsOnRantz,
 		askRantzQuestions, enterCave, getBellow, leaveCave, fillBellows, inflateToad, talkToRantzWithToad, dropToad, waitForChompy,
@@ -95,11 +93,12 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		steps.put(0, talkToRantz);
 
 		ConditionalStep makeArrows = new ConditionalStep(this, getLogs);
-		makeArrows.addStep(hasArrows, useArrowsOnRantz);
-		makeArrows.addStep(new Conditions(hasFlightedShafts, hasTips), useTipsOnShafts);
-		makeArrows.addStep(hasFlightedShafts, useChiselOnBones);
-		makeArrows.addStep(hasShafts, useFeathersOnShafts);
-		makeArrows.addStep(hasLogs, makeShafts);
+		makeArrows.addStep(ogreArrows6Highlighted, useArrowsOnRantz);
+		makeArrows.addStep(new Conditions(flightedArrowsHighlighted, tipsHighlighted), useTipsOnShafts);
+		makeArrows.addStep(flightedArrowsHighlighted, useChiselOnBones);
+		makeArrows.addStep(shaftsHighlighted, useFeathersOnShafts);
+		makeArrows.addStep(acheyLogs, makeShafts);
+
 		steps.put(5, makeArrows);
 
 		steps.put(10, askRantzQuestions);
@@ -109,10 +108,10 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		steps.put(15, goGetBellows);
 
 		ConditionalStep goInflateToad = new ConditionalStep(this, fillBellows);
-		goInflateToad.addStep(new Conditions(inCave, hasBellows), leaveCave);
+		goInflateToad.addStep(new Conditions(inCave, bellow), leaveCave);
 		goInflateToad.addStep(inCave, getBellow);
-		goInflateToad.addStep(hasBloatedToad, talkToRantzWithToad);
-		goInflateToad.addStep(hasFullBellow, inflateToad);
+		goInflateToad.addStep(bloatedToad, talkToRantzWithToad);
+		goInflateToad.addStep(fullBellow, inflateToad);
 		steps.put(20, goInflateToad);
 
 		steps.put(25, dropToad);
@@ -222,15 +221,6 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	{
 		inCave = new ZoneRequirement(cave);
 
-		hasLogs = new ItemRequirements(acheyLogs);
-		hasShafts = new ItemRequirements(shaftsHighlighted);
-		hasFlightedShafts = new ItemRequirements(flightedArrowsHighlighted);
-		hasTips = new ItemRequirements(tipsHighlighted);
-		hasArrows = new ItemRequirements(ogreArrows6Highlighted);
-		hasFullBellow = new ItemRequirements(fullBellow);
-		hasBellows = new ItemRequirements(bellow);
-		hasBloatedToad = new ItemRequirements(bloatedToad);
-		hasOgreBow = new ItemRequirements(ogreBow);
 
 		chompyNearby = new NpcHintArrowRequirement(NpcID.CHOMPY_BIRD);
 		deadChompyNearby = new NpcCondition(NpcID.CHOMPY_BIRD_1476);
@@ -247,24 +237,18 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		fycieWantsDoogle = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Me's wants doogle leaves wiv mine!"));
 		knowWhatFycieWants = new Conditions(LogicType.OR, fycieWantsTomato, fycieWantsDoogle);
 
-		hasOnion = new ItemRequirements(onion);
-		hasTomato = new ItemRequirements(tomato);
-		hasPotato = new ItemRequirements(potato);
-		hasDoogle = new ItemRequirements(doogle);
-		hasEqua = new ItemRequirements(equa);
-		hasCabbage = new ItemRequirements(cabbage);
 
 		hasRantzItem = new Conditions(LogicType.OR,
-			new Conditions(rantzWantsOnion, hasOnion),
-			new Conditions(rantzWantsPotato, hasPotato)
+			new Conditions(rantzWantsOnion, onion),
+			new Conditions(rantzWantsPotato, potato)
 		);
 		hasFycieItem = new Conditions(LogicType.OR,
-			new Conditions(fycieWantsDoogle, hasDoogle),
-			new Conditions(fycieWantsTomato, hasTomato)
+			new Conditions(fycieWantsDoogle, doogle),
+			new Conditions(fycieWantsTomato, tomato)
 		);
 		hasBugsItem = new Conditions(LogicType.OR,
-			new Conditions(bugsWantsCabbage, hasCabbage),
-			new Conditions(bugsWantsEqua, hasEqua)
+			new Conditions(bugsWantsCabbage, cabbage),
+			new Conditions(bugsWantsEqua, equa)
 		);
 	}
 

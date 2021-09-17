@@ -86,14 +86,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	QuestStep makeKarambwanjiPaste, usePasteOnSpear, usePestleOnKarambwan, usePasteOnBones, getPoisonKarambwan,
 	goOnHuntToKill, askAboutResearch, useVesselOnTinsay;
 
-	Requirement startedQuestDuringSession, syncedState, hasKarambwaji, inTimfrakusHut, inLufubuZone, givenKarambwanji,
+	Requirement startedQuestDuringSession, syncedState, inTimfrakusHut, inLufubuZone, givenKarambwanji,
 		vesselOnGround,	talkedToTiadeche, givenVessel, bonesNearby, corpseNearby, wentOnHunt, givenPotion, givenSpear,
 		burningBonesNearby, burntBonesNearby, hadAtLeastRawKarambwan, hadRumWithBanana, hadSeaweed, hadMarinated,
-		haveCookedJogreBones, havePoisonSpear, haveBurntBones, haveMonkeySkin, haveSeaweedSandwich, inCairnIsle,
-		haveCraftingManual, defeatedBeast, talkedTinsay1, givenRum, givenSandwich, givenBones, hadSeaweedSandwich,
+		defeatedBeast, talkedTinsay1, givenRum, givenSandwich, givenBones, hadSeaweedSandwich,
 		beenAskedToResearchVessel, hadManual;
 
-	Zone timfrakusHut, lubufuZone, cairnIsleZone;
+	Zone timfrakusHut, lubufuZone;
 
 	WorldPoint lubufuWorldPoint, timfrakuHutWorldPoint;
 
@@ -117,12 +116,9 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		ConditionalStep coreQuest = new ConditionalStep(this, fishKarambwaji);
 		coreQuest.addStep(hadManual, goToTiadecheFinal);
-		coreQuest.addStep(new Conditions(beenAskedToResearchVessel, defeatedBeast, givenBones),
-			useVesselOnTinsay);
-		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, hadMarinated, hadSeaweedSandwich),
-			talkToTinsay);
-		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, haveMonkeySkin),
-			makeSeaweedSandwich);
+		coreQuest.addStep(new Conditions(beenAskedToResearchVessel, defeatedBeast, givenBones), useVesselOnTinsay);
+		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, hadMarinated, hadSeaweedSandwich), talkToTinsay);
+		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeySkin), makeSeaweedSandwich);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeyCorpse), useCorpseOnTamayu);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated,
 				corpseNearby), pickupCorpse);
@@ -205,7 +201,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		fishKarambwaji = new NpcStep(this, NpcID.FISHING_SPOT_4710, new WorldPoint(2791,3019,0),
 			"Using your small fishing net, catch atleast 23 raw karambwanji just south of Tai Bwo Wannai.", smallFishingNet);
 
-		goToLubufu = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint, "Go to Brimhaven and talk to Lubufu." +
+		goToLubufu = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint, "Go to Brimhaven and talk to Lubufu. " +
 			"You have to talk to him multiple times. You'll need to ask him twice about what he does, then talk to " +
 			"him to give him the karambwanji.", karambwanji.quantity(20));
 		goToLubufu.addDialogStep("Talk about him...");
@@ -348,7 +344,6 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	private void setupConditions()
 	{
 		inTimfrakusHut = new ZoneRequirement(timfrakusHut);
-		hasKarambwaji = new ItemRequirements(karambwanji);
 		inLufubuZone = new ZoneRequirement(lubufuZone);
 
 		startedQuestDuringSession = new Conditions(true,
@@ -459,21 +454,12 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
 			new WidgetTextRequirement(119, 3, true, "<str>retrieved crafting instructions for Tiadeche.")
 		);
-
-		haveCookedJogreBones = new ItemRequirements(marinatedJogreBones);
-		havePoisonSpear = new ItemRequirements(poisonedSpear);
-		haveBurntBones = new ItemRequirements(burntJogreBones);
-		haveMonkeySkin = new ItemRequirements(monkeySkin);
-		haveSeaweedSandwich = new ItemRequirements(seaweedSandwich);
-		inCairnIsle = new ZoneRequirement(cairnIsleZone);
-		haveCraftingManual = new ItemRequirements(craftingManual);
 	}
 
 	private void setupZones()
 	{
 		timfrakusHut = new Zone(new WorldPoint(2778,3084,1), new WorldPoint(2786, 3090,1));
 		lubufuZone = new Zone(new WorldPoint(2759,3173,0), new WorldPoint(2780,3162,0));
-		cairnIsleZone = new Zone(new WorldPoint(2747, 2992, 0), new WorldPoint(2774, 2963, 0));
 	}
 
 	private void setupItemRequirements()
@@ -489,10 +475,11 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET);
 		pestleAndMortar = new ItemRequirement("Pestle And Mortar", ItemID.PESTLE_AND_MORTAR);
 		logsForFire = new ItemRequirement("Any logs to make a fire", ItemCollections.getLogsForFire());
-		spear = new ItemRequirement("Iron spear or better", ItemID.IRON_SPEAR);
+		spear = new ItemRequirement("Iron spear or better (You will lose the spear)", ItemID.IRON_SPEAR);
+		spear.setTooltip("Bone and black spear does NOT work");
 		spear.addAlternates(ItemID.STEEL_SPEAR, ItemID.MITHRIL_SPEAR, ItemID.ADAMANT_SPEAR, ItemID.RUNE_SPEAR,
 			ItemID.DRAGON_SPEAR);
-		poisonedSpear = new ItemRequirement("Any iron spear or better (kp)", ItemID.IRON_SPEARKP);
+		poisonedSpear = new ItemRequirement("Iron spear or better (kp) (You will lose the spear)", ItemID.IRON_SPEARKP);
 		poisonedSpear.addAlternates(ItemID.STEEL_SPEARKP, ItemID.MITHRIL_SPEARKP, ItemID.ADAMANT_SPEARKP, ItemID.RUNE_SPEARKP,
 			ItemID.DRAGON_SPEARKP);
 
@@ -561,6 +548,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.JUNGLE_POTION, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 30, false));
 		req.add(new SkillRequirement(Skill.AGILITY, 15, false));
 		req.add(new SkillRequirement(Skill.COOKING, 30, false));
 		req.add(new SkillRequirement(Skill.FISHING, 5, false));

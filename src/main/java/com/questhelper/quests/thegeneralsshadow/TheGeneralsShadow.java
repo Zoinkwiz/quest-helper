@@ -159,7 +159,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		inGoblinCave = new ZoneRequirement(goblinCave);
 		inBouncerCave = new ZoneRequirement(bouncerCave);
 
-		hasNote = new ItemRequirements(sinSeersNote);
+		hasNote = sinSeersNote;
 		givenNote = new VarbitRequirement(3335, 2);
 		talkedToGnomeScout = new VarbitRequirement(3332, 1);
 		talkedToFaladorScout = new VarbitRequirement(3333, 1);

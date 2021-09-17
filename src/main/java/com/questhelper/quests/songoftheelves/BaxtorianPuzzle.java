@@ -221,8 +221,10 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 
 		flowers = new ItemRequirement("Flowers", ItemCollections.getFlowers());
 
-		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
-		iritLeaf.addAlternates(ItemID.GRIMY_IRIT_LEAF);
+		ItemRequirement grimyIritLeaf = new ItemRequirement("Grimy irit leaf", ItemID.GRIMY_IRIT_LEAF);
+		ItemRequirement cleanIritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
+
+		iritLeaf = new ItemRequirements(LogicType.OR, "Irit leaf", cleanIritLeaf, grimyIritLeaf);
 		iritLeaf.setDisplayMatchedItemName(true);
 		iritLeaf.setTooltip("Grimy Irit Leaf is also valid.");
 
@@ -233,8 +235,14 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		adamantChainbody.setHighlightInInventory(true);
 
 		wineOfZamorak = new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK);
-		zamorakBrew = new ItemRequirement("Zamorak brew", ItemID.ZAMORAK_BREW1);
-		zamorakBrew.addAlternates(ItemID.ZAMORAK_BREW2, ItemID.ZAMORAK_BREW3, ItemID.ZAMORAK_BREW4);
+
+		ItemRequirement zamorakBrew1 = new ItemRequirement("Zamorak brew(1)", ItemID.ZAMORAK_BREW1);
+		ItemRequirement zamorakBrew2 = new ItemRequirement("Zamorak brew(2)", ItemID.ZAMORAK_BREW2);
+		ItemRequirement zamorakBrew3 = new ItemRequirement("Zamorak brew(3)", ItemID.ZAMORAK_BREW3);
+		ItemRequirement zamorakBrew4 = new ItemRequirement("Zamorak brew(4)", ItemID.ZAMORAK_BREW4);
+
+		zamorakBrew = new ItemRequirements("Zamorak brew", zamorakBrew1, zamorakBrew2, zamorakBrew3, zamorakBrew4);
+		zamorakBrew.setDisplayMatchedItemName(true);
 
 		wineOfZamorakOrZamorakBrew = new ItemRequirements(LogicType.OR, "Wine of zamorak or Zamorak brew", wineOfZamorak, zamorakBrew);
 		wineOfZamorakOrZamorakBrew.setHighlightInInventory(true);
@@ -242,11 +250,21 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE);
 		cabbage.setHighlightInInventory(true);
 
-		blackKnife = new ItemRequirement("Black knife", ItemID.BLACK_KNIFE);
-		blackKnife.addAlternates(ItemID.BLACK_KNIFEP, ItemID.BLACK_KNIFEP_5658, ItemID.BLACK_KNIFEP_5665);
+		ItemRequirement blackKnifeClean = new ItemRequirement("Black knife", ItemID.BLACK_KNIFE);
+		ItemRequirement blackKnifeP = new ItemRequirement("Black knife(p)", ItemID.BLACK_KNIFEP);
+		ItemRequirement blackKnifePplus = new ItemRequirement("Black knife(p+)", ItemID.BLACK_KNIFEP_5658);
+		ItemRequirement blackKnifePplusPlus = new ItemRequirement("Black knife(p++)", ItemID.BLACK_KNIFEP_5665);
+
+		blackKnife = new ItemRequirements(LogicType.OR, "Black knife", blackKnifeClean, blackKnifeP, blackKnifePplus,
+			blackKnifePplusPlus);
 		blackKnife.setHighlightInInventory(true);
-		blackDagger = new ItemRequirement("Black dagger", ItemID.BLACK_DAGGER);
-		blackDagger.addAlternates(ItemID.BLACK_DAGGERP, ItemID.BLACK_DAGGERP_5682, ItemID.BLACK_DAGGERP_5700);
+
+		ItemRequirement blackDaggerClean = new ItemRequirement("Black dagger", ItemID.BLACK_DAGGER);
+		ItemRequirement blackDaggerP = new ItemRequirement("Black dagger(p)", ItemID.BLACK_DAGGERP);
+		ItemRequirement blackDaggerPplus = new ItemRequirement("Black dagger(p+)", ItemID.BLACK_DAGGERP_5682);
+		ItemRequirement blackDaggerPplusPlus = new ItemRequirement("Black dagger(p++)", ItemID.BLACK_DAGGERP_5700);
+		blackDagger = new ItemRequirements(LogicType.OR, "Black dagger", blackDaggerClean, blackDaggerP, blackDaggerPplus,
+		blackDaggerPplusPlus);
 
 		blackKnifeOrDagger = new ItemRequirements(LogicType.OR, "Black knife or black dagger", blackKnife, blackDagger);
 		blackKnifeOrDagger.setHighlightInInventory(true);

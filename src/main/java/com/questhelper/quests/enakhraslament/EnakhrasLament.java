@@ -71,10 +71,9 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	SpellbookRequirement onNormals;
 
-	Requirement hasBase, hasBody, has32, has20, hasPlacedBase, hasTalkedToLazimAfterBase, hasPlacedBody, chiseledStatue,
-		canChooseHead, has2Granite, hasGranite, hasHead, inTempleEntranceRoom, inTempleGroundFloor, startedTemple, hasMSigil,
-		gottenLimbs, hasKSigil, hasRSigil, hasZSigil, openedDoor1, openedDoor2, openedDoor3, openedDoor4, mPlaced, kPlaced,
-		rPlaced, zPlaced, goneUpstairs, hasCamelMould, hasCamelHead, hasGottenRightArm, hasGottenRightLeg, inCentreRoom, inPuzzleFloor,
+	Requirement hasPlacedBase, hasTalkedToLazimAfterBase, hasPlacedBody, chiseledStatue, canChooseHead, inTempleEntranceRoom,
+		inTempleGroundFloor, startedTemple, gottenLimbs, openedDoor1, openedDoor2, openedDoor3, openedDoor4, mPlaced, kPlaced,
+		rPlaced, zPlaced, goneUpstairs, hasGottenRightArm, hasGottenRightLeg, inCentreRoom, inPuzzleFloor,
 		fedBread, meltedFountain, cleanedFurnace, litBraziers, litLog, litOak, litWillow, litMaple, litCandle, litCoal, inNorthPuzzleRoom,
 		inTopRoom, inLastRoom, wallNeedsChisel, finishedWall;
 
@@ -101,33 +100,33 @@ public class EnakhrasLament extends BasicQuestHelper
 		steps.put(0, talkToLazim);
 
 		ConditionalStep makeAndPlaceBase = new ConditionalStep(this, bringLazim32Sandstone);
-		makeAndPlaceBase.addStep(new Conditions(hasHead, hasGranite), giveLazimHead);
-		makeAndPlaceBase.addStep(new Conditions(has2Granite, canChooseHead), craftHead);
+		makeAndPlaceBase.addStep(new Conditions(head, granite), giveLazimHead);
+		makeAndPlaceBase.addStep(new Conditions(granite2, canChooseHead), craftHead);
 		makeAndPlaceBase.addStep(canChooseHead, getGranite);
 		makeAndPlaceBase.addStep(chiseledStatue, talkToLazimToChooseHead);
 		makeAndPlaceBase.addStep(hasPlacedBody, chiselStatue);
-		makeAndPlaceBase.addStep(hasBody, placeBody);
-		makeAndPlaceBase.addStep(has20, useChiselOn20Sandstone);
+		makeAndPlaceBase.addStep(body, placeBody);
+		makeAndPlaceBase.addStep(sandstone20, useChiselOn20Sandstone);
 		makeAndPlaceBase.addStep(hasTalkedToLazimAfterBase, bringLazim20Sandstone);
 		makeAndPlaceBase.addStep(hasPlacedBase, talkToLazimAboutBody);
-		makeAndPlaceBase.addStep(hasBase, placeBase);
-		makeAndPlaceBase.addStep(has32, useChiselOn32Sandstone);
+		makeAndPlaceBase.addStep(base, placeBase);
+		makeAndPlaceBase.addStep(sandstone32, useChiselOn32Sandstone);
 
 		steps.put(10, makeAndPlaceBase);
 
 		ConditionalStep exploreBottomLayer = new ConditionalStep(this, enterTemple);
-		exploreBottomLayer.addStep(new Conditions(hasCamelHead, inPuzzleFloor), useStoneHeadOnPedestal);
-		exploreBottomLayer.addStep(hasCamelMould, useChiselOnGranite);
+		exploreBottomLayer.addStep(new Conditions(camelHead, inPuzzleFloor), useStoneHeadOnPedestal);
+		exploreBottomLayer.addStep(camelMould, useChiselOnGranite);
 		exploreBottomLayer.addStep(inPuzzleFloor, useSoftClayOnPedestal);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, openedDoor4), goUpToPuzzles);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, hasKSigil), enterDoor4);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, kSigil), enterDoor4);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3), takeK);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, hasRSigil), enterDoor3);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, rSigil), enterDoor3);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2), takeR);
 		// It's possible to skip the rest of this, but it skips some of the quest story and leaves doors locked after you finish, so this encourages players to explore
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, hasZSigil), enterDoor2);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, zSigil), enterDoor2);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1), takeZ);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, hasMSigil), enterDoor1);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, mSigil), enterDoor1);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor), takeM);
 		exploreBottomLayer.addStep(new Conditions(startedTemple, inTempleGroundFloor), cutOffLimb);
 		exploreBottomLayer.addStep(inTempleGroundFloor, talkToLazimInTemple);
@@ -284,21 +283,12 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBase = new ItemRequirements(base);
-		has32 = new ItemRequirements(sandstone32);
-		hasBody = new ItemRequirements(body);
-		has20 = new ItemRequirements(sandstone20);
 		hasPlacedBase = new VarbitRequirement(1593, 1);
 		hasPlacedBody = new VarbitRequirement(1593, 2);
 		chiseledStatue = new VarbitRequirement(1593, 3);
 		canChooseHead = new VarbitRequirement(1563, 1);
 		hasTalkedToLazimAfterBase = new VarbitRequirement(1562, 1);
-		has2Granite = new ItemRequirements(granite2);
-		hasGranite = new ItemRequirements(granite);
 
-		hasHead = new ItemRequirements(head);
-		hasCamelMould = new ItemRequirements(camelMould);
-		hasCamelHead = new ItemRequirements(camelHead);
 		hasGottenRightArm = new VarbitRequirement(1590, 1);
 		hasGottenRightLeg = new VarbitRequirement(1592, 1);
 
@@ -313,10 +303,6 @@ public class EnakhrasLament extends BasicQuestHelper
 		startedTemple = new VarbitRequirement(1566, 1);
 
 		gottenLimbs = new VarbitRequirement(1587, 63);
-		hasMSigil = new ItemRequirements(mSigil);
-		hasZSigil = new ItemRequirements(zSigil);
-		hasKSigil = new ItemRequirements(kSigil);
-		hasRSigil = new ItemRequirements(rSigil);
 
 		openedDoor1 = new VarbitRequirement(1608, 1);
 		openedDoor2 = new VarbitRequirement(1609, 1);

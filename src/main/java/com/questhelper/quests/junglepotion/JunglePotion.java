@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -169,7 +168,7 @@ public class JunglePotion extends BasicQuestHelper
 		DetailedQuestStep cleanGrimyHerb = new DetailedQuestStep(this, "", grimyHerb);
 
 		ConditionalStep cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return the " + herbName + " to Trufitus.");
-		cleanAndReturnHerb.addStep(new ItemRequirements(cleanHerb), returnHerb);
+		cleanAndReturnHerb.addStep(cleanHerb, returnHerb);
 		return cleanAndReturnHerb;
 	}
 
@@ -199,7 +198,7 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		getVolenciaMoss = new ObjectStep(this, ObjectID.ROCK_2581, new WorldPoint(2851, 3036, 0),
 			"Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
-		getVolenciaMoss.addText("If you plan on doing Fairy Tail I then take an extra.");
+		getVolenciaMoss.addText("If you plan on doing Fairy Tale I then take an extra.");
 		return getVolenciaMoss;
 	}
 
@@ -276,9 +275,9 @@ public class JunglePotion extends BasicQuestHelper
 			Arrays.asList(getSitoFoil, cleanAndReturnSitoFoil));
 		steps.add(sitoFoilpanel);
 
-		PanelDetails volcaniaMossPanel = new PanelDetails("Volcania Moss",
+		PanelDetails volenciaMossPanel = new PanelDetails("Volencia Moss",
 			Arrays.asList(getVolenciaMoss, cleanAndReturnVolenciaMoss));
-		steps.add(volcaniaMossPanel);
+		steps.add(volenciaMossPanel);
 
 		PanelDetails roguesPursePanel = new PanelDetails("Rogues Purse",
 			Arrays.asList(enterCave, getRoguePurseHerb, cleanAndReturnRoguesPurse));

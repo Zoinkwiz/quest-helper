@@ -45,6 +45,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
@@ -56,6 +57,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
 	@Inject
 	protected Client client;
+
+	@Inject
+	@Getter
+	protected ConfigManager configManager;
 
 	@Inject
 	protected QuestBank questBank;
@@ -159,11 +164,12 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			return true;
 		}
 
-		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r -> r.check(client));
+		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r ->
+			!r.shouldConsiderForFilter() || r.check(client));
 	}
 
 	@Override
-	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, QuestHelper quest, PanelComponent panelComponent)
+	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
 	{
 		if (!plugin.isDeveloperMode()) return;
 		panelComponent.getChildren().add(LineComponent.builder()
@@ -174,10 +180,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			.build()
 		);
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(quest.getQuest().getName())
-			.leftColor(quest.getConfig().debugColor())
-			.right(quest.getVar() + "")
-			.rightColor(quest.getConfig().debugColor())
+			.left(getQuest().getName())
+			.leftColor(getConfig().debugColor())
+			.right(getVar() + "")
+			.rightColor(getConfig().debugColor())
 			.build()
 		);
 	}

@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -65,7 +64,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	//Items Required
 	ItemRequirement bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar, groundMud, magicGlue, mudRuneHighlight, pestleHighlight, bucketOfSapHiglight;
 
-	Requirement inCave, inspectedMachine, inspectedBowl, inHazelmereHut, hasGroundMud, hasMagicGlue, killedCreature1, killedCreature2, killedCreature3, killedCreature4, killedCreature5,
+	Requirement inCave, inspectedMachine, inspectedBowl, inHazelmereHut, killedCreature1, killedCreature2, killedCreature3, killedCreature4, killedCreature5,
 		killedCreature6, inFloor1, inFloor2, inFloor3;
 
 	QuestStep enterCave, talkToBrimstail, inspectBowl, inspectMachine, talkToBrimstailAgain, goUpToHazelmere, talkToHazelmere, enterCaveAgain, talkToBrimstailAfterHazelmere, grindMudRunes,
@@ -117,9 +116,9 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		steps.put(15, talkToBrimAfterHazel);
 
 		ConditionalStep fixMachine = new ConditionalStep(this, grindMudRunes);
-		fixMachine.addStep(new Conditions(hasMagicGlue, inCave), repairMachine);
-		fixMachine.addStep(hasMagicGlue, enterCaveAgain);
-		fixMachine.addStep(hasGroundMud, useMudOnSap);
+		fixMachine.addStep(new Conditions(magicGlue, inCave), repairMachine);
+		fixMachine.addStep(magicGlue, enterCaveAgain);
+		fixMachine.addStep(groundMud, useMudOnSap);
 
 		steps.put(20, fixMachine);
 		steps.put(21, fixMachine);
@@ -207,8 +206,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		inspectedBowl = new VarbitRequirement(2515, 1);
 		inspectedMachine = new VarbitRequirement(2516, 1);
 		inHazelmereHut = new ZoneRequirement(hazelmereHut);
-		hasGroundMud = new ItemRequirements(groundMud);
-		hasMagicGlue = new ItemRequirements(magicGlue);
+
 		killedCreature1 = new VarbitRequirement(2504, 2);
 		killedCreature2 = new VarbitRequirement(2505, 2);
 		killedCreature3 = new VarbitRequirement(2506, 2);

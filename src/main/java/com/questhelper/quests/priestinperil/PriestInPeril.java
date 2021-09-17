@@ -64,8 +64,7 @@ public class PriestInPeril extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement runePouches, varrockTeleport;
 
-	Requirement inUnderground, hasGoldenOrIronKey, inTempleGroundFloor, inTemple, inTempleFirstFloor, inTempleSecondFloor, hasBlessedOrMurkyWater, hasIronKey,
-		hasBlessedWater;
+	Requirement inUnderground, hasGoldenOrIronKey, inTempleGroundFloor, inTemple, inTempleFirstFloor, inTempleSecondFloor;
 
 	QuestStep talkToRoald, goToTemple, goDownToDog, killTheDog, climbUpAfterKillingDog, returnToKingRoald, returnToTemple, killMonk, talkToDrezel,
 		goUpToFloorTwoTemple, goUpToFloorOneTemple, goDownToFloorOneTemple, goDownToGroundFloorTemple, enterUnderground, fillBucket, useKeyForKey,
@@ -104,11 +103,11 @@ public class PriestInPeril extends BasicQuestHelper
 		steps.put(4, goTalkToDrezel);
 
 		ConditionalStep goGetKey = new ConditionalStep(this, returnToTemple);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater, inTempleSecondFloor), openDoor);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater, inUnderground), goUpWithWaterToSurface);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater), goUpWithWaterToFirstFloor);
-		goGetKey.addStep(new Conditions(hasIronKey, inUnderground), fillBucket);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater, inTempleSecondFloor), openDoor);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater, inUnderground), goUpWithWaterToSurface);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater), goUpWithWaterToFirstFloor);
+		goGetKey.addStep(new Conditions(ironKey, inUnderground), fillBucket);
 		goGetKey.addStep(new Conditions(hasGoldenOrIronKey, inUnderground), useKeyForKey);
 		goGetKey.addStep(new Conditions(hasGoldenOrIronKey, inTempleSecondFloor), goDownToFloorOneTemple);
 		goGetKey.addStep(new Conditions(hasGoldenOrIronKey, inTempleFirstFloor), goDownToGroundFloorTemple);
@@ -117,11 +116,11 @@ public class PriestInPeril extends BasicQuestHelper
 		steps.put(5, goGetKey);
 
 		ConditionalStep goGetWater = new ConditionalStep(this, enterUnderground);
-		goGetWater.addStep(new Conditions(hasBlessedWater, inTempleSecondFloor), useBlessedWater);
-		goGetWater.addStep(new Conditions(hasBlessedOrMurkyWater, inTempleSecondFloor), blessWater);
-		goGetWater.addStep(new Conditions(hasBlessedOrMurkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
-		goGetWater.addStep(new Conditions(hasBlessedOrMurkyWater, inUnderground), goUpWithWaterToSurface);
-		goGetWater.addStep(hasBlessedOrMurkyWater, goUpWithWaterToFirstFloor);
+		goGetWater.addStep(new Conditions(blessedWaterHighlighted, inTempleSecondFloor), useBlessedWater);
+		goGetWater.addStep(new Conditions(murkyWater, inTempleSecondFloor), blessWater);
+		goGetWater.addStep(new Conditions(murkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
+		goGetWater.addStep(new Conditions(murkyWater, inUnderground), goUpWithWaterToSurface);
+		goGetWater.addStep(murkyWater, goUpWithWaterToFirstFloor);
 		goGetWater.addStep(inUnderground, fillBucket);
 		goGetWater.addStep(inTempleSecondFloor, goDownToFloorOneTemple);
 		goGetWater.addStep(inTempleFirstFloor, goDownToGroundFloorTemple);
@@ -218,6 +217,7 @@ public class PriestInPeril extends BasicQuestHelper
 		rangedMagedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		lotsOfRuneEssence = new ItemRequirement("As much essence as you can carry, you'll need to bring 50 UNNOTED in total", ItemID.PURE_ESSENCE, -1);
 		murkyWater = new ItemRequirement("Murky water", ItemID.MURKY_WATER);
+		murkyWater.addAlternates(ItemID.BLESSED_WATER);
 		ironKey = new ItemRequirement("Iron key", ItemID.IRON_KEY);
 		blessedWaterHighlighted = new ItemRequirement("Blessed water", ItemID.BLESSED_WATER);
 		blessedWaterHighlighted.setHighlightInInventory(true);
@@ -244,10 +244,7 @@ public class PriestInPeril extends BasicQuestHelper
 		inTempleSecondFloor = new ZoneRequirement(templeFloorTwo);
 		inTemple = new ZoneRequirement(temple1, temple2, temple3, temple4, temple5, temple6, templeFloorOne, templeFloorTwo);
 
-		hasIronKey = new ItemRequirements(ironKey);
-		hasGoldenOrIronKey = new Conditions(LogicType.OR, new ItemRequirements(goldenKey), hasIronKey);
-		hasBlessedOrMurkyWater = new ItemRequirements(murkyWater);
-		hasBlessedWater = new ItemRequirements(blessedWaterHighlighted);
+		hasGoldenOrIronKey = new Conditions(LogicType.OR, goldenKey, ironKey);
 	}
 
 	public void setupSteps()

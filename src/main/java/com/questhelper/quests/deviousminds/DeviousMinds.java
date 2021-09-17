@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.deviousminds;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -69,7 +70,7 @@ public class DeviousMinds extends BasicQuestHelper
 	Requirement inAbyss, inLawAlter, onEntrana, onEntranaBoat;
 
 	//Zones
-	Zone abyss, lawAlter, entrana, entranaBoat;
+	Zone abyss, lawAltar, entrana, entranaBoat;
 
 
 	@Override
@@ -87,13 +88,13 @@ public class DeviousMinds extends BasicQuestHelper
 		makeEntireBowSword.addStep(bowSword.alsoCheckBank(questBank), talkToMonk2);
 		makeEntireBowSword.addStep(slenderBlade.alsoCheckBank(questBank), makeBowSword);
 		steps.put(10, makeEntireBowSword);
-		steps.put(20, makeEntireBowSword);   //Finished talking
+		steps.put(20, talkToMonk2);   //Finished talking
 
 		ConditionalStep entranaAltarPouch = new ConditionalStep(this, makeIllumPouch);
-		entranaAltarPouch.addStep(new Conditions(illumPouch, onEntrana), usePouchOnAltar);
-		entranaAltarPouch.addStep(new Conditions(illumPouch, inLawAlter), leaveLawAltar);
-		entranaAltarPouch.addStep(new Conditions(illumPouch, inAbyss), enterLawRift);
-		entranaAltarPouch.addStep(illumPouch, teleToAbyss);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), onEntrana), usePouchOnAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), inLawAlter), leaveLawAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), inAbyss), enterLawRift);
+		entranaAltarPouch.addStep(illumPouch.alsoCheckBank(questBank), teleToAbyss);
 		steps.put(30, entranaAltarPouch);
 		steps.put(40, entranaAltarPouch);   //Cutscene finished
 
@@ -112,9 +113,9 @@ public class DeviousMinds extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		//Recommended
-		fallyTele = new ItemRequirement("Falador Teleports", -1, -1);
-		lumberTele = new ItemRequirement("Lumberyard Teleports", -1, -1);
-		glory = new ItemRequirement("Amulet of Glory", -1, -1);
+		fallyTele = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
+		lumberTele = new ItemRequirement("Lumberyard Teleports", ItemID.LUMBERYARD_TELEPORT);
+		glory = new ItemRequirement("Amulet of Glory", ItemCollections.getAmuletOfGlories());
 
 		//Required
 		mith2h = new ItemRequirement("Mithril 2h Sword", ItemID.MITHRIL_2H_SWORD);
@@ -122,6 +123,7 @@ public class DeviousMinds extends BasicQuestHelper
 		bowString = new ItemRequirement("Bow String", ItemID.BOW_STRING);
 		bowString.setHighlightInInventory(true);
 		largePouch = new ItemRequirement("Large Pouch (non-degraded)", ItemID.LARGE_POUCH);
+		largePouch.addAlternates(ItemID.LARGE_POUCH_6819);
 		largePouch.setHighlightInInventory(true);
 		slenderBlade = new ItemRequirement("Slender Blade", ItemID.SLENDER_BLADE);
 		slenderBlade.setHighlightInInventory(true);
@@ -135,7 +137,7 @@ public class DeviousMinds extends BasicQuestHelper
 	{
 		//Zones
 		inAbyss = new ZoneRequirement(abyss);
-		inLawAlter = new ZoneRequirement(lawAlter);
+		inLawAlter = new ZoneRequirement(lawAltar);
 		onEntrana = new ZoneRequirement(entrana);
 		onEntranaBoat = new ZoneRequirement(entranaBoat);
 	}
@@ -143,7 +145,7 @@ public class DeviousMinds extends BasicQuestHelper
 	public void loadZones()
 	{
 		abyss = new Zone(new WorldPoint(3005, 4800, 0), new WorldPoint(3070, 4860, 0));
-		lawAlter = new Zone(new WorldPoint(2429, 4801, 0), new WorldPoint(2480, 4850, 0));
+		lawAltar = new Zone(new WorldPoint(2429, 4801, 0), new WorldPoint(2480, 4850, 0));
 		entrana = new Zone(new WorldPoint(2799, 3393, 0), new WorldPoint(2880, 3330, 0));
 		entranaBoat = new Zone(new WorldPoint(2824, 3333, 1), new WorldPoint(2841, 3328, 1));
 	}
@@ -182,7 +184,7 @@ public class DeviousMinds extends BasicQuestHelper
 		usePouchOnAltar.addIcon(ItemID.LARGE_POUCH_6819);
 
 		gotoDeadMonk = new NpcStep(this, NpcID.DEAD_MONK, new WorldPoint(3406, 3494, 0),
-			"Go back to the monk near Paterdomus template and search the dead monk's body.");
+			"Go back to the monk near Paterdomus temple and search the dead monk's body.");
 
 		talkToEntranaMonk = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3045, 3236, 0),
 			"Talk to the Monk of Entrana to go to Entrana.  No weapons or armour is allowed.");

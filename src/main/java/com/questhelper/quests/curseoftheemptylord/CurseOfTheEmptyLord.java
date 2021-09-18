@@ -35,6 +35,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -265,6 +267,18 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(ringOfVis, ghostspeakItems, knife);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (Any skill over level 50).", ItemID.ANTIQUE_LAMP, 1)); //4447 is used as placeholder
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("A Set of Ghostly Robes"));
 	}
 
 	@Override

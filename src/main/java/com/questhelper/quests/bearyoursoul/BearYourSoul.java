@@ -32,6 +32,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -103,6 +104,12 @@ public class BearYourSoul extends BasicQuestHelper
 	{
 		inTaverleyDungeon = new ZoneRequirement(inTaverleyDungeonZone);
 		inKeyMaster = new ZoneRequirement(inKeyMasterZone);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Soul Bearer", ItemID.SOUL_BEARER, 1));
 	}
 
 	public void setupSteps()

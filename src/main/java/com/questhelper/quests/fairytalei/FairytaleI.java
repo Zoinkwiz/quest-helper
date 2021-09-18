@@ -39,6 +39,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.ItemStep;
@@ -51,11 +54,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -306,6 +306,27 @@ public class FairytaleI extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Tanglefoot (level 111)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FARMING, 3500),
+				new ExperienceReward(Skill.ATTACK, 2000),
+				new ExperienceReward(Skill.MAGIC, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Magic Secateurs", ItemID.MAGIC_SECATEURS, 1));
 	}
 
 	@Override

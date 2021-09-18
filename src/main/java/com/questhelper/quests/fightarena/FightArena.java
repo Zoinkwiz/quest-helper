@@ -36,6 +36,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -49,6 +52,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -217,6 +221,28 @@ public class FightArena extends BasicQuestHelper
 		reqs.add("Bouncer (level 137) (safespottable)");
 		reqs.add("General Khazard (level 112) (safespottable) (optional)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 12175),
+				new ExperienceReward(Skill.THIEVING, 2175));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("1,000 Coins", ItemID.COINS_995, 1000),
+				new ItemReward("Khazard Armor", ItemID.KHAZARD_ARMOUR, 1));
 	}
 
 	@Override

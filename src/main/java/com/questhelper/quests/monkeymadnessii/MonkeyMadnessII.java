@@ -50,6 +50,10 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -664,6 +668,42 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 378)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SLAYER, 25000),
+				new ExperienceReward(Skill.AGILITY, 20000),
+				new ExperienceReward(Skill.THIEVING, 15000),
+				new ExperienceReward(Skill.HUNTER, 15000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+				new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
+				new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Demonic Gorillas"),
+				new UnlockReward("A new Gnome Glider location"),
+				new UnlockReward("Access to a bank on Ape Atoll"),
+				new UnlockReward("Ability to wield the Heavy Ballista"),
+				new UnlockReward("Access to Maniacal Monkey hunting area"));
 	}
 
 	@Override

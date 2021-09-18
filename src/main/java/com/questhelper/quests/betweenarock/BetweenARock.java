@@ -40,6 +40,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -386,7 +390,6 @@ public class BetweenARock extends BasicQuestHelper
 		return reqs;
 	}
 
-
 	@Override
 	public List<String> getCombatRequirements()
 	{
@@ -394,6 +397,35 @@ public class BetweenARock extends BasicQuestHelper
 		reqs.add("Scorpion (level 14)");
 		reqs.add("Arzinian Being of Bordanzan (level 75 - 125)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.DEFENCE, 5000),
+				new ExperienceReward(Skill.MINING, 5000),
+				new ExperienceReward(Skill.SMITHING, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Rune Pickaxe.", ItemID.RUNE_PICKAXE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to Teleport to Dondakan's Rock using a Ring of Wealth."),
+				new UnlockReward("Access to Arzinian Mine."));
 	}
 
 	@Override

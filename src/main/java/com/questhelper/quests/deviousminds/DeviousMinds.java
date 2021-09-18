@@ -33,6 +33,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -243,6 +245,21 @@ public class DeviousMinds extends BasicQuestHelper
 		reqs.add(new VarbitRequirement(626, Operation.GREATER_EQUAL, 1, "Talked to the " +
 			"Zamorak Mage in Varrock after Enter the Abyss"));
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FLETCHING, 5000),
+				new ExperienceReward(Skill.RUNECRAFT, 5000),
+				new ExperienceReward(Skill.SMITHING, 6500));
 	}
 
 	@Override

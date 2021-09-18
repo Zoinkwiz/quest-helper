@@ -33,15 +33,15 @@ import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -143,6 +143,18 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		req.add(new FavourRequirement(Favour.SHAYZIEN, 100));
 
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (Any skill over level 40).", ItemID.ANTIQUE_LAMP_21262, 1)); //21262 May not be the correct ID, I can't find a proper way to confirm until I can get it ingame again.
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Xeric's Heart Teleport on Xeric's Talisman."));
 	}
 
 	@Override

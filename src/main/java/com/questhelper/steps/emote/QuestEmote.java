@@ -39,6 +39,10 @@ public enum QuestEmote
 	THINK("Think", EMOTE_THINK),
 	GOBLIN_BOW("Goblin bow", EMOTE_GOBLIN_BOW),
 	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
+	IDEA("Idea", 732),
+	STAMP("Stamp", 730),
+	FLAP("Flap", 731),
+	SLAP_HEAD("Slap Head", 729),
 	SPIN("Spin", EMOTE_SPIN);
 
 	private String name;

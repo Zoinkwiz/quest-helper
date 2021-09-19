@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -72,7 +73,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	ItemRequirement ringOfDueling, gamesNeck, dorgSphere, lightsource;
 
 	// Quests required
-	Requirement tearOfGuth, anotherSliceOfHAM, recipeForDisaster, lostCity;
+	Requirement tearOfGuth, anotherSliceOfHAM, recipeForDisaster, lostCity, madeAmuletU;
 
 	Requirement notBonesToPeachesPalace, notJuttingWall, notCosmics, notWakaToEdge, notHundredTears, notTrainToKeld,
 		notBarrowsGloves, notBelladonna, notLightMiningHelm, notSmiteAltar, notPowerAmmy, smiteActive;
@@ -99,8 +100,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notBonesToPeachesPalace, inPalace), bonesToPeachesPalace);
 		doHard.addStep(notBonesToPeachesPalace, moveToPalace);
 		doHard.addStep(notWakaToEdge, wakaToEdge);
-		doHard.addStep(new Conditions(notPowerAmmy, inLumby, diamondAmulet), powerAmmy);
-		doHard.addStep(new Conditions(notPowerAmmy, inLumby, diamondAmuletU), stringAmmy);
+		doHard.addStep(new Conditions(notPowerAmmy, inLumby, madeAmuletU, diamondAmulet), powerAmmy);
+		doHard.addStep(new Conditions(notPowerAmmy, inLumby, madeAmuletU, diamondAmuletU), stringAmmy);
 		doHard.addStep(new Conditions(notPowerAmmy, inLumby), smeltAmmy);
 		doHard.addStep(notPowerAmmy, moveToLumby);
 		doHard.addStep(new Conditions(notLightMiningHelm, inBasement), lightMiningHelm);
@@ -185,7 +186,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		inCosmicAltar = new ZoneRequirement(cosmicAltar);
 		inStation = new ZoneRequirement(station);
 
-		/*
+
 		madeAmuletU = new ChatMessageRequirement(
 			inLumby,
 			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
@@ -195,7 +196,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 				new Conditions(LogicType.NOR, inLumby),
 				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
 			)
-		);*/
+		);
 
 		recipeForDisaster = new QuestRequirement(QuestHelperQuest.RECIPE_FOR_DISASTER, QuestState.FINISHED);
 		anotherSliceOfHAM = new QuestRequirement(QuestHelperQuest.ANOTHER_SLICE_OF_HAM, QuestState.FINISHED);

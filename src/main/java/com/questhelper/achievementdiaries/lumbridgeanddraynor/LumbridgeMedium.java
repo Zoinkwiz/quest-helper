@@ -26,10 +26,8 @@ package com.questhelper.achievementdiaries.lumbridgeanddraynor;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -52,12 +50,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.IconID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -73,15 +67,12 @@ import com.questhelper.steps.QuestStep;
 public class LumbridgeMedium extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, crossbow, mithGrap, steelArrows, avasAttractor, coins, fairyAccess, earthRune,
+	ItemRequirement crossbow, mithGrap, steelArrows, avasAttractor, coins, fairyAccess, earthRune,
 		airRune, lawRune, earthTali, fireAccess, flyFishingRod, feathers, leather, needle, thread, axe, butterflyNet,
 		implingJar, ess, bindingNeck;
 
 	ItemRequirements avasAccumulator;
 	// magic imbue
-
-	// Items recommended
-	ItemRequirement food;
 
 	// Quests required
 	Requirement animalMagnetism, fairyTaleII, lostCity;
@@ -89,8 +80,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	Requirement notAlKaridRooftop, notGrappleLum, notUpgradeDevice, notWizardFairy, notTPlumb, notCatchSalmon,
 		notCraftCoif, notChopWillow, notPickGardener, notChaeldarTask, notPuroImp, notCraftLava;
 
-	QuestStep claimReward, moveToCowPen, moveToZanaris, moveToPuro, moveToLavaAltar, alKaridRooftop, grappleLum,
-		upgradeDevice, wizardFairy, tpLumb, catchSalmon, craftCoif, chopWillow, pickGardener, chaeldarTask, craftLava;
+	QuestStep claimReward, moveToCowPen, moveToZanarisChaeldar, moveToZanarisPuro, moveToPuro, moveToLavaAltar, alKaridRooftop,
+		grappleLum, upgradeDevice, wizardFairy, tpLumb, catchSalmon, craftCoif, chopWillow, pickGardener, chaeldarTask, craftLava;
 
 	NpcStep puroImp;
 
@@ -107,10 +98,10 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
 		doMedium.addStep(new Conditions(notChaeldarTask, inZanaris), chaeldarTask);
-		doMedium.addStep(notChaeldarTask, moveToZanaris);
+		doMedium.addStep(notChaeldarTask, moveToZanarisChaeldar);
 		doMedium.addStep(new Conditions(notPuroImp, inPuroPuro), puroImp);
 		doMedium.addStep(new Conditions(notPuroImp, inZanaris), moveToPuro);
-		doMedium.addStep(notPuroImp, moveToZanaris);
+		doMedium.addStep(notPuroImp, moveToZanarisPuro);
 		doMedium.addStep(notWizardFairy, wizardFairy);
 		doMedium.addStep(notChopWillow, chopWillow);
 		doMedium.addStep(notPickGardener, pickGardener);
@@ -196,43 +187,48 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 			"Grapple across the River Lum.", mithGrap.equipped(), crossbow.equipped());
 
 		moveToLavaAltar = new ObjectStep(this, 34817, new WorldPoint(3313, 3255, 0),
-			"Enter the fire altar north of Al Karid.", fireAccess);
+			"Enter the fire altar north of Al Kharid.", fireAccess);
 		craftLava = new ObjectStep(this, ObjectID.ALTAR_34764, new WorldPoint(2585, 4838, 0),
-			"Use the earth talisman on the fire altar.", earthTali, ess, earthRune);
+			"Use an earth talisman on the fire altar.", earthTali.highlighted(), ess, earthRune);
 		craftLava.addIcon(ItemID.EARTH_TALISMAN);
 
 		catchSalmon = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1527, new WorldPoint(3241, 3248, 0),
-			"Catch a salmon in the River Lum.", feathers, flyFishingRod);
+			"Catch a salmon in the River Lum.", feathers.quantity(10), flyFishingRod);
 
 		moveToCowPen = new TileStep(this, new WorldPoint(3257, 3267, 0),
-			"Move to the cow pen in Lumbridge.");
+			"Enter the cow pen in Lumbridge.", thread, needle, leather);
 		craftCoif = new ItemStep(this, "Craft a coif.", thread, needle.highlighted(), leather.highlighted());
 
-		tpLumb = new DetailedQuestStep(this, "Cast teleport to Lumbridge.", airRune.quantity(3),
+		tpLumb = new DetailedQuestStep(this, "Cast the Teleport to Lumbridge spell.", airRune.quantity(3),
 			earthRune.quantity(1), lawRune.quantity(1));
 
 		upgradeDevice = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-			"Talk to Ava in the Draynor Mansion to get an Ava's Accumulator.", avasAccumulator, steelArrows.quantity(75));
+			"Buy an Ava's Accumulator from Ava in the Draynor Manor.", avasAccumulator, steelArrows.quantity(75));
 
 		pickGardener = new NpcStep(this, NpcID.MARTIN_THE_MASTER_GARDENER, new WorldPoint(3077, 3263, 0),
 			"Pickpocket Martin the Master Gardener in Draynor Village.");
 
 		chopWillow = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(3089, 3235, 0),
-			"Chop some Willow logs in Draynor Village.");
+			"Chop some Willow logs in Draynor Village.", axe);
 
-		moveToZanaris = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
+		moveToZanarisChaeldar = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
 			"Go to Zanaris through the shed in Lumbridge swamp " +
-				"or any fairy ring in the world if you've partially completed Fairytale II", fairyAccess.equipped());
+				"or any fairy ring in the world if you've partially completed Fairytale II.", fairyAccess.equipped());
+		moveToZanarisPuro = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
+			"Go to Zanaris through the shed in Lumbridge swamp " +
+				"or any fairy ring in the world if you've partially completed Fairytale II.", fairyAccess.equipped(),
+			butterflyNet, implingJar);
+
 		moveToPuro = new ObjectStep(this, ObjectID.CENTRE_OF_CROP_CIRCLE_24991, new WorldPoint(2427, 4446, 0),
-			"Enter the centre of the crop circle.");
+			"Enter the centre of the crop circle in Zanaris.");
 		puroImp = new NpcStep(this, NpcID.ESSENCE_IMPLING, new WorldPoint(2592, 4322, 0),
-			"Catch an essence or eclectic impling in Puro-Puro", true, butterflyNet, implingJar);
+			"Catch an essence or eclectic impling in Puro-Puro.", true, butterflyNet, implingJar);
 		puroImp.addAlternateNpcs(NpcID.ESSENCE_IMPLING_1649, NpcID.ECLECTIC_IMPLING, NpcID.ECLECTIC_IMPLING_1650);
 		chaeldarTask = new NpcStep(this, NpcID.CHAELDAR, new WorldPoint(2446, 4430, 0),
-			"Get a slayer task from Chaeldar in Zanaris");
+			"Get a slayer task from Chaeldar in Zanaris.");
 
 		wizardFairy = new ObjectStep(this, 29560, new WorldPoint(2412, 4434, 0),
-			"Take the nearest fairy ring and travel to the Wizards' Tower (DIS)", fairyAccess.equipped());
+			"Take the nearest fairy ring and travel to the Wizards' Tower (DIS).", fairyAccess.equipped());
 
 		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
 			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");
@@ -281,13 +277,13 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails chaeldarSteps = new PanelDetails("Slayer Task from Chaeldar", Arrays.asList(moveToZanaris,
+		PanelDetails chaeldarSteps = new PanelDetails("Slayer Task from Chaeldar", Arrays.asList(moveToZanarisChaeldar,
 			chaeldarTask), new CombatLevelRequirement(70), fairyAccess);
 		chaeldarSteps.setDisplayCondition(notChaeldarTask);
 		allSteps.add(chaeldarSteps);
 
-		PanelDetails puroImpSteps = new PanelDetails("Catch Essence or Eclectic Imp", Arrays.asList(moveToZanaris,
-			moveToPuro, puroImp), new SkillRequirement(Skill.HUNTER, 42), lostCity, fairyAccess, butterflyNet);
+		PanelDetails puroImpSteps = new PanelDetails("Catch Essence or Eclectic Imp", Arrays.asList(moveToZanarisPuro,
+			moveToPuro, puroImp), new SkillRequirement(Skill.HUNTER, 42), lostCity, fairyAccess, butterflyNet, implingJar);
 		puroImpSteps.setDisplayCondition(notPuroImp);
 		allSteps.add(puroImpSteps);
 

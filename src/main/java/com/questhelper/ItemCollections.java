@@ -1244,49 +1244,6 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> wallBeast = ImmutableList.of(
-		ItemID.SPINY_HELMET,
-		ItemID.SLAYER_HELMET,
-		ItemID.SLAYER_HELMET_I,
-		ItemID.SLAYER_HELMET_I_25177,
-		ItemID.BLACK_SLAYER_HELMET,
-		ItemID.BLACK_SLAYER_HELMET_I,
-		ItemID.BLACK_SLAYER_HELMET_I_25179,
-		ItemID.GREEN_SLAYER_HELMET,
-		ItemID.GREEN_SLAYER_HELMET_I,
-		ItemID.GREEN_SLAYER_HELMET_I_25181,
-		ItemID.RED_SLAYER_HELMET,
-		ItemID.RED_SLAYER_HELMET_I,
-		ItemID.RED_SLAYER_HELMET_I_25183,
-		ItemID.PURPLE_SLAYER_HELMET,
-		ItemID.PURPLE_SLAYER_HELMET_I,
-		ItemID.PURPLE_SLAYER_HELMET_I_25185,
-		ItemID.TURQUOISE_SLAYER_HELMET,
-		ItemID.TURQUOISE_SLAYER_HELMET_I,
-		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
-		ItemID.HYDRA_SLAYER_HELMET,
-		ItemID.HYDRA_SLAYER_HELMET_I,
-		ItemID.HYDRA_SLAYER_HELMET_I_25189,
-		ItemID.TWISTED_SLAYER_HELMET,
-		ItemID.TWISTED_SLAYER_HELMET_I,
-		ItemID.TWISTED_SLAYER_HELMET_I_25191
-	);
-
-	@Getter
-	private static final List<Integer> waterAltar = ImmutableList.of(
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.WATER_TIARA,
-		ItemID.WATER_TALISMAN
-	);
-
-	@Getter
-	private static final List<Integer> fireAltar = ImmutableList.of(
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.FIRE_TIARA,
-		ItemID.FIRE_TALISMAN
-	);
-
-	@Getter
 	private static final List<Integer> essenceLow = ImmutableList.of(
 		ItemID.DAEYALT_ESSENCE,
 		ItemID.PURE_ESSENCE,
@@ -1297,12 +1254,6 @@ public class ItemCollections
 	private static final List<Integer> essenceHigh = ImmutableList.of(
 		ItemID.DAEYALT_ESSENCE,
 		ItemID.PURE_ESSENCE
-	);
-
-	@Getter
-	private static final List<Integer> cosmicAltar = ImmutableList.of(
-		ItemID.COSMIC_TIARA,
-		ItemID.COSMIC_TALISMAN
 	);
 
 	@Getter
@@ -1368,4 +1319,54 @@ public class ItemCollections
 		ItemID.QUEST_POINT_CAPE_T,
 		ItemID.QUEST_POINT_CAPE
 	);
+
+	@Getter
+	private static final List<Integer> cosmicAltar = ImmutableList.of(
+		ItemID.COSMIC_TIARA,
+		ItemID.COSMIC_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> wallBeast = ImmutableList.of(
+		ItemID.SPINY_HELMET,
+		ItemID.SLAYER_HELMET,
+		ItemID.SLAYER_HELMET_I,
+		ItemID.SLAYER_HELMET_I_25177,
+		ItemID.BLACK_SLAYER_HELMET,
+		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET_I_25179,
+		ItemID.GREEN_SLAYER_HELMET,
+		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET_I_25181,
+		ItemID.RED_SLAYER_HELMET,
+		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET_I_25183,
+		ItemID.PURPLE_SLAYER_HELMET,
+		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET_I_25185,
+		ItemID.TURQUOISE_SLAYER_HELMET,
+		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
+		ItemID.HYDRA_SLAYER_HELMET,
+		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET_I_25189,
+		ItemID.TWISTED_SLAYER_HELMET,
+		ItemID.TWISTED_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET_I_25191
+	);
+
+	@Getter
+	private static final List<Integer> waterAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.WATER_TIARA,
+		ItemID.WATER_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> fireAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.FIRE_TIARA,
+		ItemID.FIRE_TALISMAN
+	);
+
 }

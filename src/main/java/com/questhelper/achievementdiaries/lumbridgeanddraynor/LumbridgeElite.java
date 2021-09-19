@@ -67,7 +67,7 @@ import com.questhelper.steps.QuestStep;
 @QuestDescriptor(
 	quest = QuestHelperQuest.LUMBRIDGE_ELITE
 )
-public class lumbElite extends ComplexStateQuestHelper
+public class LumbridgeElite extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement lockpick, crossbow, mithgrap, lightsource, axe, addyBar, hammer, ess, waterAccessOrAbyss, qcCape;

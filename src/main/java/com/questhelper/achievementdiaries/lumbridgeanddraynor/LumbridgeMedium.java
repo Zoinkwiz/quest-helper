@@ -70,7 +70,7 @@ import com.questhelper.steps.QuestStep;
 @QuestDescriptor(
 	quest = QuestHelperQuest.LUMBRIDGE_MEDIUM
 )
-public class lumbMedium extends ComplexStateQuestHelper
+public class LumbridgeMedium extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, crossbow, mithGrap, steelArrows, avasAttractor, coins, fairyAccess, earthRune,

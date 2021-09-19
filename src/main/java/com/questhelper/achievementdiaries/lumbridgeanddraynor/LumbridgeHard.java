@@ -67,7 +67,7 @@ import com.questhelper.steps.QuestStep;
 @QuestDescriptor(
 	quest = QuestHelperQuest.LUMBRIDGE_HARD
 )
-public class lumbHard extends ComplexStateQuestHelper
+public class LumbridgeHard extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement bones, earthRune, waterRune, natureRune, fairyAccess, axe, goldBar, cutDiamond, amuletMould,

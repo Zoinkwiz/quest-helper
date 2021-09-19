@@ -26,22 +26,17 @@ package com.questhelper.achievementdiaries.lumbridgeanddraynor;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -49,11 +44,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -66,7 +58,7 @@ import com.questhelper.steps.QuestStep;
 @QuestDescriptor(
 	quest = QuestHelperQuest.LUMBRIDGE_EASY
 )
-public class lumbEasy extends ComplexStateQuestHelper
+public class LumbridgeEasy extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, lightSource, rope, runeEss, axe, tinderbox, smallFishingNet, pickaxe,
@@ -81,7 +73,10 @@ public class lumbEasy extends ComplexStateQuestHelper
 	Requirement notDrayAgi, notKillCaveBug, notSedridor, notWaterRune, notHans, notPickpocket, notOak, notKillZombie,
 		notFishAnchovies, notBread, notIron, notEnterHAM;
 
-	QuestStep claimReward, drayAgi, killCaveBug, moveToDarkHole, sedridor, moveToSed, moveToWaterAltar, waterRune, hans,
+	Requirement addedRopeToHole;
+
+	QuestStep claimReward, drayAgi, killCaveBug, addRopeToHole, moveToDarkHole,
+		sedridor, moveToSed, moveToWaterAltar, waterRune, hans,
 		chopOak, burnOak, fishAnchovies, bread, mineIron;
 
 	NpcStep pickpocket, killZombie;
@@ -107,7 +102,8 @@ public class lumbEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notSedridor, moveToSed);
 		doEasy.addStep(notEnterHAM, enterHAM);
 		doEasy.addStep(new Conditions(notKillCaveBug, inCave), killCaveBug);
-		doEasy.addStep(notKillCaveBug, moveToDarkHole);
+		doEasy.addStep(new Conditions(addedRopeToHole, notKillCaveBug), moveToDarkHole);
+		doEasy.addStep(notKillCaveBug, addRopeToHole);
 		doEasy.addStep(new Conditions(notWaterRune, inWater), waterRune);
 		doEasy.addStep(notWaterRune, moveToWaterAltar);
 		doEasy.addStep(notBread, bread);
@@ -135,6 +131,8 @@ public class lumbEasy extends ComplexStateQuestHelper
 		notBread = new VarplayerRequirement(1194, false, 10);
 		notIron = new VarplayerRequirement(1194, false, 11);
 		notEnterHAM = new VarplayerRequirement(1194, false, 12);
+
+		addedRopeToHole = new VarbitRequirement(279, 1);
 
 		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources()).showConditioned(notKillCaveBug);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKillCaveBug);
@@ -185,7 +183,7 @@ public class lumbEasy extends ComplexStateQuestHelper
 		killZombie.addAlternateNpcs(NpcID.ZOMBIE_40, NpcID.ZOMBIE_57, NpcID.ZOMBIE_55, NpcID.ZOMBIE_56);
 
 		moveToSed = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
-			"Climb down the ladder in the Wizards' Tower");
+			"Climb down the ladder in the Wizards' Tower.");
 		sedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3103, 9571, 0),
 			"Teleport to the Rune essence mine via Sedridor.");
 		sedridor.addDialogStep("Can you teleport me to the Rune Essence?");
@@ -194,20 +192,24 @@ public class lumbEasy extends ComplexStateQuestHelper
 			"Lock pick and enter the HAM hideout.");
 		enterHAM.addAlternateObjects(ObjectID.TRAPDOOR_5491);
 
-		//TODO track if rope necessary
 		moveToDarkHole = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
-			"Enter the dark hole in the lumbridge swamp." + "Bring a rope if this is your first time down here.",
-			lightSource, rope, combatGear);
+			"Enter the dark hole in the Lumbridge Swamp.", lightSource, combatGear);
+		addRopeToHole = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+			"Use a rope on the dark hole in the Lumbridge Swamp, and then enter it.",
+			lightSource, rope.highlighted(), combatGear);
+		addRopeToHole.addSubSteps(moveToDarkHole);
+		addRopeToHole.addIcon(ItemID.ROPE);
 		killCaveBug = new NpcStep(this, NpcID.CAVE_BUG, new WorldPoint(3151, 9574, 0),
-			"Kill a Cave Bug.");
+			"Kill a Cave Bug.", combatGear, lightSource);
 
 		moveToWaterAltar = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
-			"Enter the water altar", waterAccessOrAbyss.highlighted(), runeEss);
+			"Enter the water altar in Lumbridge Swamp.", waterAccessOrAbyss.highlighted(), runeEss);
+		moveToWaterAltar.addIcon(ItemID.WATER_TALISMAN);
 		waterRune = new ObjectStep(this, ObjectID.ALTAR_34762, new WorldPoint(2716, 4836, 0),
 			"Craft water runes.", runeEss);
 
 		bread = new ObjectStep(this, ObjectID.COOKING_RANGE, new WorldPoint(3212, 3216, 0),
-		"Cook bread on the cooking range in Lumbridge Castle.");
+			"Cook bread on the cooking range in Lumbridge Castle.", dough);
 
 		hans = new NpcStep(this, NpcID.HANS, new WorldPoint(3215, 3219, 0),
 			"Talk to Hans to learn your age.");
@@ -218,7 +220,7 @@ public class lumbEasy extends ComplexStateQuestHelper
 		pickpocket.addAlternateNpcs(NpcID.MAN_3108, NpcID.WOMAN_3111, NpcID.MAN_3106);
 
 		chopOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(3219, 3206, 0),
-			"Chop the oak tree.", axe);
+			"Chop the oak tree in the Lumbridge Castle Courtyard.", axe);
 		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
 			oakLogs.highlighted());
 
@@ -294,7 +296,7 @@ public class lumbEasy extends ComplexStateQuestHelper
 		enterTheHamHideoutSteps.setDisplayCondition(notEnterHAM);
 		allSteps.add(enterTheHamHideoutSteps);
 
-		PanelDetails killCaveBugSteps = new PanelDetails("Kill Cave Bug", Arrays.asList(moveToDarkHole, killCaveBug),
+		PanelDetails killCaveBugSteps = new PanelDetails("Kill Cave Bug", Arrays.asList(addRopeToHole, killCaveBug),
 			new SkillRequirement(Skill.SLAYER, 7), lightSource, rope, spinyHelm);
 		killCaveBugSteps.setDisplayCondition(notKillCaveBug);
 		allSteps.add(killCaveBugSteps);

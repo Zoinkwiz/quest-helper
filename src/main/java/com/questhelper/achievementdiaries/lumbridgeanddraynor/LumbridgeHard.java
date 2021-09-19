@@ -198,6 +198,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 			)
 		);
 
+
 		recipeForDisaster = new QuestRequirement(QuestHelperQuest.RECIPE_FOR_DISASTER, QuestState.FINISHED);
 		anotherSliceOfHAM = new QuestRequirement(QuestHelperQuest.ANOTHER_SLICE_OF_HAM, QuestState.FINISHED);
 		tearOfGuth = new QuestRequirement(QuestHelperQuest.TEARS_OF_GUTHIX, QuestState.FINISHED);

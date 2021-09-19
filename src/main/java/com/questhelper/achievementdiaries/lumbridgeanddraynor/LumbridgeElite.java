@@ -26,23 +26,17 @@ package com.questhelper.achievementdiaries.lumbridgeanddraynor;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.EmoteStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -54,7 +48,6 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -78,8 +71,9 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	Requirement notRichChest, notMovario, notChopMagic, notAddyPlatebody, notWaterRunes, notQCEmote, allQuests,
 		deathToDorg, templeOfIkov;
 
-	QuestStep claimReward, richChest, movario, chopMagic, addyPlatebody, waterRunes, qcEmote, moveToWater, dorgStairs,
-		moveToOldman, moveToDorg, moveToUnderground, moveToDorgAgi;
+	QuestStep claimReward, richChest, movario, chopMagic, addyPlatebody, waterRunes, qcEmote, moveToWater,
+		dorgStairsChest, dorgStairsMovario, moveToOldman, moveToDorgChest, moveToDorgMovario, moveToUndergroundChest,
+		moveToUndergroundMovario, moveToDorgAgi;
 
 	ObjectStep moveToDraySewer;
 
@@ -99,17 +93,15 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		doElite.addStep(notAddyPlatebody, moveToDraySewer);
 		doElite.addStep(new Conditions(notQCEmote, inOldman), qcEmote);
 		doElite.addStep(notQCEmote, moveToOldman);
-		doElite.addStep(new Conditions(notQCEmote, inOldman), qcEmote);
-		doElite.addStep(notQCEmote, moveToOldman);
 		doElite.addStep(new Conditions(notRichChest, inDorg2), richChest);
-		doElite.addStep(new Conditions(notRichChest, inDorg1), dorgStairs);
-		doElite.addStep(new Conditions(notRichChest, inUnderground), moveToDorg);
-		doElite.addStep(notRichChest, moveToUnderground);
+		doElite.addStep(new Conditions(notRichChest, inDorg1), dorgStairsChest);
+		doElite.addStep(new Conditions(notRichChest, inUnderground), moveToDorgChest);
+		doElite.addStep(notRichChest, moveToUndergroundChest);
 		doElite.addStep(new Conditions(notMovario, inDorgAgi), movario);
 		doElite.addStep(new Conditions(notMovario, inDorg2), moveToDorgAgi);
-		doElite.addStep(new Conditions(notMovario, inDorg1), dorgStairs);
-		doElite.addStep(new Conditions(notMovario, inUnderground), moveToDorg);
-		doElite.addStep(notMovario, moveToUnderground);
+		doElite.addStep(new Conditions(notMovario, inDorg1), dorgStairsMovario);
+		doElite.addStep(new Conditions(notMovario, inUnderground), moveToDorgMovario);
+		doElite.addStep(notMovario, moveToUndergroundMovario);
 		doElite.addStep(new Conditions(notWaterRunes, inWaterAltar), waterRunes);
 		doElite.addStep(notWaterRunes, moveToWater);
 		doElite.addStep(notChopMagic, chopMagic);
@@ -140,7 +132,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyPlatebody);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody);
 		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notWaterRunes);
-		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss.",
+		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss",
 			ItemCollections.getWaterAltar()).showConditioned(notWaterRunes);
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.getQuestCape()).showConditioned(notQCEmote);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE)
@@ -180,23 +172,32 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			"Smith a adamant platebody at the anvil in Draynor Sewer.", addyBar.quantity(5), hammer);
 
 		moveToOldman = new TileStep(this, new WorldPoint(3088, 3253, 0),
-			"Go to the old man's house in Draynor Village.");
+			"Go to the Wise Old Man's house in Draynor Village.");
 		qcEmote = new EmoteStep(this, QuestEmote.SKILL_CAPE, new WorldPoint(3088, 3253, 0),
-			"Perform the skill cape emote with the quest cape equiped.", qcCape.equipped());
+			"Perform the skill cape emote with the quest cape equipped.", qcCape.equipped());
 
 		moveToWater = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
-			"Enter the water altar", waterAccessOrAbyss.highlighted(), ess.quantity(28));
+			"Enter the water altar.", waterAccessOrAbyss.highlighted(), ess.quantity(28));
 		waterRunes = new ObjectStep(this, ObjectID.ALTAR_34762, new WorldPoint(2716, 4836, 0),
 			"Craft water runes.", ess.quantity(28));
 
-		moveToUnderground = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
-			"Climb down the trapdoor in the Lumbridge Castle.");
-		moveToDorg = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
-			"Go through the doors to Dorgesh-Kaan.");
-		dorgStairs = new ObjectStep(this, ObjectID.STAIRS_22939, new WorldPoint(2721, 5360, 0),
-			"Climb the stairs to the second level of Dorgesh-Kaan.");
+		moveToUndergroundMovario = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
+			"Climb down the trapdoor in the Lumbridge Castle.", mithgrap, crossbow, lightsource);
+		moveToUndergroundChest = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
+			"Climb down the trapdoor in the Lumbridge Castle.", lockpick, lightsource);
+
+		moveToDorgChest = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
+			"Go through the doors to Dorgesh-Kaan.", lockpick, lightsource);
+		moveToDorgMovario = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
+			"Go through the doors to Dorgesh-Kaan.", mithgrap, crossbow, lightsource);
+
+		dorgStairsMovario = new ObjectStep(this, ObjectID.STAIRS_22939, new WorldPoint(2721, 5360, 0),
+			"Climb the stairs to the second level of Dorgesh-Kaan.", mithgrap, crossbow, lightsource);
+		dorgStairsChest = new ObjectStep(this, ObjectID.STAIRS_22939, new WorldPoint(2721, 5360, 0),
+			"Climb the stairs to the second level of Dorgesh-Kaan.", lockpick);
+
 		richChest = new ObjectStep(this, ObjectID.CHEST_22681, new WorldPoint(2703, 5348, 1),
-			"Lockpick the chest.");
+			"Lockpick the chest.", lockpick);
 		moveToDorgAgi = new ObjectStep(this, ObjectID.STAIRS_22941, new WorldPoint(2723, 5253, 1),
 			"Climb the stairs to enter the Dorgesh-Kaan agility course.");
 		movario = new NpcStep(this, NpcID.MOVARIO, new WorldPoint(2706, 5237, 3),
@@ -265,13 +266,14 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		waterRunesSteps.setDisplayCondition(notWaterRunes);
 		allSteps.add(waterRunesSteps);
 
-		PanelDetails richChestSteps = new PanelDetails("Dorgesh-Kaan Rich Chest", Arrays.asList(moveToUnderground,
-			moveToDorg, dorgStairs, richChest), new SkillRequirement(Skill.THIEVING, 78), deathToDorg, lockpick);
+		PanelDetails richChestSteps = new PanelDetails("Dorgesh-Kaan Rich Chest", Arrays.asList(moveToUndergroundChest,
+			moveToDorgChest, dorgStairsChest, richChest), new SkillRequirement(Skill.THIEVING, 78), deathToDorg, lightsource,
+			lockpick);
 		richChestSteps.setDisplayCondition(notRichChest);
 		allSteps.add(richChestSteps);
 
-		PanelDetails movarioSteps = new PanelDetails("Movario", Arrays.asList(moveToUnderground, moveToDorg,
-			dorgStairs, moveToDorgAgi, movario), new SkillRequirement(Skill.THIEVING, 42),
+		PanelDetails movarioSteps = new PanelDetails("Movario", Arrays.asList(moveToUndergroundMovario, moveToDorgMovario,
+			dorgStairsMovario, moveToDorgAgi, movario), new SkillRequirement(Skill.THIEVING, 42),
 			new SkillRequirement(Skill.AGILITY, 70), new SkillRequirement(Skill.RANGED, 70),
 			new SkillRequirement(Skill.STRENGTH, 70), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource);
 		movarioSteps.setDisplayCondition(notMovario);

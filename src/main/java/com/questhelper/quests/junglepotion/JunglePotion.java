@@ -44,9 +44,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -253,6 +252,16 @@ public class JunglePotion extends BasicQuestHelper
 		reqs.add(karaTele);
 		return reqs;
 	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.HERBLORE, 3, false));
+		return req;
+	}
+
 
 	@Override
 	public List<PanelDetails> getPanels()

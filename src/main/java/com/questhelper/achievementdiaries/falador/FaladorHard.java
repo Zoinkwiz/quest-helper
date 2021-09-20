@@ -40,6 +40,8 @@ import com.questhelper.requirements.player.WarriorsGuildAccessRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -305,6 +307,23 @@ public class FaladorHard extends ComplexStateQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED));
 
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Falador Shield (3)", ItemID.FALADOR_SHIELD_3, 1),
+				new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the bank in the Crafting Guild"),
+				new UnlockReward("Giant Moles primary drops are now noted"),
+				new UnlockReward("Access to shortcut to Fountain of Heroes"));
 	}
 
 	@Override

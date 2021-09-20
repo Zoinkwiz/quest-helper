@@ -33,6 +33,9 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -572,6 +575,30 @@ public class TheFremennikIsles extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CONSTRUCTION, 5000),
+				new ExperienceReward(Skill.CRAFTING, 5000),
+				new ExperienceReward(Skill.WOODCUTTING, 10000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
+				new ItemReward("Jester Outfit", ItemID.JESTER, 1));
 	}
 
 	@Override

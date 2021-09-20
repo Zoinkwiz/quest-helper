@@ -39,6 +39,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -170,6 +174,24 @@ public class TribalTotem extends BasicQuestHelper
 	{
 		return Collections.singletonList(new SkillRequirement(Skill.THIEVING, 21, true));
 	}
+
+    @Override
+    public QuestPointReward getQuestPointReward()
+    {
+        return new QuestPointReward(1);
+    }
+
+    @Override
+    public List<ExperienceReward> getExperienceRewards()
+    {
+        return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 1775));
+    }
+
+    @Override
+    public List<ItemReward> getItemRewards()
+    {
+        return Collections.singletonList(new ItemReward("Swordfish", ItemID.SWORDFISH, 5));
+    }
 
     @Override
     public List<PanelDetails> getPanels()

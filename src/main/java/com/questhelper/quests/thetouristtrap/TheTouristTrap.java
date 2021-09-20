@@ -34,6 +34,9 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -404,6 +407,24 @@ public class TheTouristTrap extends BasicQuestHelper
 	{
 		return Arrays.asList(new SkillRequirement(Skill.FLETCHING, 10, true),
 			new SkillRequirement(Skill.SMITHING, 20, true));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("4,650 Exp. Lamps (Agility, Fletching, Smithing or Theiving)", ItemID.ANTIQUE_LAMP, 2));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to smith darts."));
 	}
 
 	@Override

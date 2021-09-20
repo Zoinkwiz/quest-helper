@@ -39,16 +39,16 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -498,6 +498,20 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 30, false, "30 Mining (or any of the other skill requirements)"));
 		req.add(new SkillRequirement(Skill.SMITHING, 35, false, "35 Smithing (or any of the other skill requirements)"));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to manage Miscellania."),
+				new UnlockReward("Ability to teleport to MIscellania with the Ring of Wealth."));
 	}
 
 	@Override

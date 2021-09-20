@@ -38,6 +38,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -248,6 +249,12 @@ public class TheMageArenaII extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.THE_MAGE_ARENA, QuestState.FINISHED));
 		reqs.add(new ItemRequirement("Unlocked all 3 god spells", -1, -1));
 		return reqs;
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to upgrade your God Cape"));
 	}
 
 	@Override

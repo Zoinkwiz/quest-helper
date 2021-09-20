@@ -44,6 +44,8 @@ import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -483,6 +485,24 @@ public class TheGiantDwarf extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.MAGIC, 33, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 14, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MINING, 2500),
+				new ExperienceReward(Skill.SMITHING, 2500),
+				new ExperienceReward(Skill.CRAFTING, 2500),
+				new ExperienceReward(Skill.MAGIC, 1500),
+				new ExperienceReward(Skill.THIEVING, 1500),
+				new ExperienceReward(Skill.FIREMAKING, 1500));
 	}
 
 	@Override

@@ -43,6 +43,10 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -870,6 +874,37 @@ public class TheFremennikTrials extends BasicQuestHelper
 		reqs.add("Koschei the deathless");
 		reqs.add("Draugen (level 69)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 2812),
+				new ExperienceReward(Skill.ATTACK, 2812),
+				new ExperienceReward(Skill.CRAFTING, 2812),
+				new ExperienceReward(Skill.DEFENCE, 2812),
+				new ExperienceReward(Skill.FISHING, 2812),
+				new ExperienceReward(Skill.FLETCHING, 2812),
+				new ExperienceReward(Skill.HITPOINTS, 2812),
+				new ExperienceReward(Skill.STRENGTH, 2812),
+				new ExperienceReward(Skill.THIEVING, 2812),
+				new ExperienceReward(Skill.WOODCUTTING, 2812));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Miscellania, Etceteria, Neitiznot, Jatizso and the facilities of Rellekka."),
+				new UnlockReward("Ability to wear and purchase Fremmennik Helms"),
+				new UnlockReward("Free travel to Waterbirth Island"));
 	}
 
 	@Override

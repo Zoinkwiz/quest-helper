@@ -38,6 +38,9 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -200,6 +203,26 @@ public class TheKnightsSword extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Collections.singletonList(new SkillRequirement(Skill.MINING, 10, true));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.SMITHING, 12725));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("The ability to smelt Blurite ore."),
+				new UnlockReward("The ability to smith Blurite bars."));
 	}
 
 	@Override

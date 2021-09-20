@@ -39,6 +39,10 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -420,6 +424,27 @@ public class TheGrandTree extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Black demon (level 172) (can be safespotted)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(5);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 18400),
+				new ExperienceReward(Skill.AGILITY, 7900),
+				new ExperienceReward(Skill.MAGIC, 2150));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to use the Spirit Tree in the Tree Gnome Stronghold."));
 	}
 
 	@Override

@@ -32,6 +32,8 @@ import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -326,6 +328,21 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Corrupt Lizardman (level 46)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("8,000 Coins", ItemID.COINS_995, 8000),
+				new ItemReward("Shayzien Favour Certificate", ItemID.SHAYZIEN_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("A Memoir Page", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

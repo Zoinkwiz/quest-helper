@@ -43,6 +43,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -1410,6 +1413,44 @@ public class SongOfTheElves extends BasicQuestHelper
 		req.add(new ItemRequirement("Recommended: 75 Magic", -1, -1));
 		req.add(new ItemRequirement("Recommended: 40+ Prayer", -1, -1));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 20000),
+				new ExperienceReward(Skill.CONSTRUCTION, 20000),
+				new ExperienceReward(Skill.CONSTRUCTION, 20000),
+				new ExperienceReward(Skill.FARMING, 20000),
+				new ExperienceReward(Skill.HERBLORE, 20000),
+				new ExperienceReward(Skill.MINING, 20000),
+				new ExperienceReward(Skill.SMITHING, 20000),
+				new ExperienceReward(Skill.WOODCUTTING, 20000)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Prifddinas"),
+				new UnlockReward("Ability to fight Zalcano"),
+				new UnlockReward("Access to The Gauntlet"),
+				new UnlockReward("Access to Trahaearn Mine"),
+				new UnlockReward("Access to Iorwerth Dungeon"),
+				new UnlockReward("Ability to respawn at Prifddinas"),
+				new UnlockReward("Ability to move POH to Prifddinas"),
+				new UnlockReward("Prifddinas Teleport added to Crystal Teleport Seed"),
+				new UnlockReward("Ability to make Divine Potions"),
+				new UnlockReward("Ability to make Crystal Tools, Weapons and Armor")
+		);
 	}
 
 	@Override

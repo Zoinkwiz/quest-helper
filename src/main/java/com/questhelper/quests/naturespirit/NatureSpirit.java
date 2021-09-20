@@ -312,13 +312,6 @@ public class NatureSpirit extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getQuestRewards()
-	{
-		return Arrays.asList("2 Quest Points", "</br>", "3,000 Crafting Experience", "2,000 Defence Experiecne",
-				"2,000 Hitpoints Experience", "</br>", "Access to Mort Myre Swamp", "Ability to fight Ghasts.");
-	}
-
-	@Override
 	public QuestPointReward getQuestPointReward()
 	{
 		return new QuestPointReward(2);

@@ -41,6 +41,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -220,6 +222,25 @@ public class VarrockElite extends ComplexStateQuestHelper
 		reqs.add(runeMyster);
 
 		return reqs;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Varrock Armor (4)", ItemID.VARROCK_ARMOUR_4, 1),
+				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("10% Chance to mine 2 ores at once, up to and including Amethyst"),
+				new UnlockReward("10% Chance of smelting 2 bars at once when using the Edgeville furnace"),
+				new UnlockReward("Zaff will sell 120 Battlestaves per day for 7,000 Coins each"),
+				new UnlockReward("The Skull sceptre will now hold 26 charges"),
+				new UnlockReward("Acts as a prospector jacket for experience bonus and clues"));
 	}
 
 	@Override

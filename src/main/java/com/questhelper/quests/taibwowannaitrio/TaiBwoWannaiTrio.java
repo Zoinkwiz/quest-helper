@@ -46,6 +46,10 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -553,6 +557,37 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.COOKING, 30, false));
 		req.add(new SkillRequirement(Skill.FISHING, 5, false));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 5000),
+				new ExperienceReward(Skill.FISHING, 5000),
+				new ExperienceReward(Skill.ATTACK, 2500),
+				new ExperienceReward(Skill.STRENGTH, 2500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("2,000 Coins", ItemID.COINS_995, 2000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to catch and cook Karambwans"),
+				new UnlockReward("Ability to use Tai Bwo Wannai teleport scrolls"),
+				new UnlockReward("Ability to complete the smithing section of Barbarian Training"));
 	}
 
 	@Override

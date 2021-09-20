@@ -29,6 +29,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
@@ -277,6 +281,28 @@ public class TheHandInTheSand extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Arrays.asList(new SkillRequirement(Skill.THIEVING, 17), new SkillRequirement(Skill.CRAFTING, 49));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.THIEVING, 1000),
+				new ExperienceReward(Skill.CRAFTING, 9000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Daily sand from Bert in Yanille."),
+				new UnlockReward("Access to the Wizards Guild rune store."));
 	}
 
 	@Override

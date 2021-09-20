@@ -39,6 +39,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.requirements.util.Spellbook;
 import java.util.ArrayList;
@@ -243,6 +245,25 @@ public class KandarinElite extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Mithril Dragons (level 304) for chewed bones");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Kandarin headgear (4)", ItemID.KANDARIN_HEADGEAR_4, 1),
+				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Thormac will enchant battlestaves for 20,000 coins each"),
+				new UnlockReward("The Flax keeper will exchange 250 noted flax for 250 noted bow strings daily"),
+				new UnlockReward("15% increased chance to save a harvest life from the Catherby herb patch"),
+				new UnlockReward("The first 200 Coal placed into coal trucks every day will be automatically transported to your bank"),
+				new UnlockReward("Otto Godblessed will turn a Zamorakian spear into Zamorakian hasta for 150,000 Coins"));
 	}
 
 	@Override

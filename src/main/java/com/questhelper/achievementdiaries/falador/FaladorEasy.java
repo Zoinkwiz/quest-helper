@@ -37,6 +37,8 @@
 	import com.questhelper.requirements.quest.QuestRequirement;
 	import com.questhelper.requirements.util.LogicType;
 	import com.questhelper.requirements.var.VarplayerRequirement;
+	import com.questhelper.rewards.ItemReward;
+	import com.questhelper.rewards.UnlockReward;
 	import com.questhelper.steps.*;
 
 	import java.util.*;
@@ -273,6 +275,20 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
 
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Falador Shield (1)", ItemID.FALADOR_SHIELD_1, 1),
+				new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Tight-gap shortcut to the Chaos Temple from Burthorpe."));
 	}
 
 	@Override

@@ -22,35 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.rewards;
+package com.questhelper.panel;
 
-import java.util.Locale;
-import javax.annotation.Nonnull;
-import net.runelite.api.Skill;
-import net.runelite.client.util.QuantityFormatter;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import lombok.Getter;
 
-public class ExperienceReward implements Reward
+public class QuestRewardWrapperPanel extends JPanel
 {
-    private final Skill skill;
-    private final int experience;
+	@Getter
+	private final QuestRewardPanel questRewardPanel;
 
-    public ExperienceReward(Skill skill, int experience)
-    {
-        this.skill = skill;
-        this.experience = experience;
-    }
-
-    @Nonnull
-    @Override
-    public RewardType rewardType()
-    {
-        return RewardType.EXPERIENCE;
-    }
-
-    @Nonnull
-    @Override
-    public String getDisplayText()
-    {
-        return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience";
-    }
+	public QuestRewardWrapperPanel(QuestRewardPanel questRewardPanel)
+	{
+		setLayout(new BorderLayout());
+		setBorder(new EmptyBorder(0, 0, 0, 0));
+		add(questRewardPanel, BorderLayout.CENTER);
+		this.questRewardPanel = questRewardPanel;
+	}
 }

@@ -42,6 +42,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.SpecialAttack;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -400,6 +402,22 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Brine rat (level 70) and tank many hits in the Waterbirth Island Dungeon");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Fremennik Sea Boots (2)", ItemID.FREMENNIK_SEA_BOOTS_2, 1),
+				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Shortcut jump between Miscellania dock and Etceteria."),
+				new UnlockReward("Improved rate of gaining approval on Miscellania."));
 	}
 
 	@Override

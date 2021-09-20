@@ -33,6 +33,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -159,6 +161,27 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 91, true));
 
 		return reqs;
+	}
+
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Karamja Gloves (4)", ItemID.KARAMJA_GLOVES_4, 1),
+				new ItemReward("50,000 Exp. Lamp (Any skill above level 70)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("10% chance of receiving 2 Agility arena tickets in the Brimhaven Agility Dungeon"),
+				new UnlockReward("Free usage of Shilo Village's furnace"),
+				new UnlockReward("Free cart rides on Hajedy's cart system"),
+				new UnlockReward("Free access to the Hardwood Grove"),
+				new UnlockReward("Access to the stepping stones shortcut leading to the red dragons in Brimhaven Dungeon"),
+				new UnlockReward("Red and Metal in Brimhaven Dungeon will drop noted draonhide and bars"),
+				new UnlockReward("One free resurrection per day in the Fight Caves (Not the Inferno)"),
+				new UnlockReward("Double Tokkul from TzHaar Fight Caves, Inferno and Ket-Rak's Challenges"));
 	}
 
 	@Override

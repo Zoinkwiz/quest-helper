@@ -252,7 +252,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 			new PuzzleSolver()::solver,
 			researchNotes);
 		giveNotesToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-			"Give Ava the translating research notes.",
+			"Give Ava the translated research notes.",
 			translatedNotes);
 		buildPattern = new ItemStep(this, "Combine Hard leather and Polished buttons with the pattern.",
 			pattern, hardLeather, polishedButtons);

@@ -379,7 +379,8 @@ public class QuestOverviewPanel extends JPanel
 		updateQuestOverview(quest.getNotes());
 
 		/* Rewards */
-		List<Reward> rewards = new ArrayList<>(Collections.singletonList(quest.getQuestPointReward()));
+		List<Reward> rewards = new ArrayList<>();
+		if (quest.getQuestPointReward() != null) rewards.add(quest.getQuestPointReward());
 		if (quest.getExperienceRewards() != null) rewards.addAll(quest.getExperienceRewards());
 		if (quest.getItemRewards() != null) rewards.addAll(quest.getItemRewards());
 		if (quest.getUnlockRewards() != null) rewards.addAll(quest.getUnlockRewards());
@@ -439,6 +440,8 @@ public class QuestOverviewPanel extends JPanel
 		{
 			for (Reward reward : rewards)
 			{
+				System.out.println(reward);
+				System.out.println(reward.getDisplayText());
 				if (lastReward != null && lastReward.rewardType() != reward.rewardType())
 				{
 					questRewardPanel.add(new JLabel(" "));

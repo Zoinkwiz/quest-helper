@@ -216,6 +216,8 @@ public class QuestStepPanel extends JPanel
 
 	public void updateHighlight(QuestStep currentStep)
 	{
+		expand();
+
 		if (currentlyHighlighted != null && steps.get(currentlyHighlighted) != null)
 		{
 			steps.get(currentlyHighlighted).setForeground(Color.LIGHT_GRAY);
@@ -253,6 +255,7 @@ public class QuestStepPanel extends JPanel
 			}
 			currentlyHighlighted = null;
 		}
+		collapse();
 	}
 
 	public void updateLock()

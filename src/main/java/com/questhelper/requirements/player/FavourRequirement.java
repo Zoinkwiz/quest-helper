@@ -28,10 +28,9 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.Favour;
+import com.questhelper.requirements.player.Favour;
 
 /**
  * Requirement that checks if the player has a certain percentage of favour

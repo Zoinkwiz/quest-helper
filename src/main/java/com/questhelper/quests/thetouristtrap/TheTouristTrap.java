@@ -73,7 +73,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		metalKey, slaveTop, slaveRobe, slaveBoot, slaveTopWorn, slaveRobeWorn, slaveBootWorn, bedabinKey, technicalPlans, prototypeDart, prototypeDartTip,
 		feather10, bronzeBar, tentiPineapple, bronzeBarHighlighted, barrel, anaInABarrel, anaInABarrelHighlighted, barrelHighlighted;
 
-		//Items Required
+	//Items Required
 	ItemRequirement waterskins, knife, pickaxe, coins100, combatGear;
 
 	Requirement inJail, onSlope, inCamp, hasSlaveClothes, inUpstairs, onCliff, onSecondCliff, inJailEscape, inMine1, distractedSiad, searchedBookcase,
@@ -231,7 +231,6 @@ public class TheTouristTrap extends BasicQuestHelper
 		prototypeDartTip.setHighlightInInventory(true);
 
 		feather10 = new ItemRequirement("Feather", ItemID.FEATHER, 10);
-		feather10.setHighlightInInventory(true);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		bronzeBarHighlighted = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		bronzeBarHighlighted.setHighlightInInventory(true);
@@ -336,7 +335,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		useAnvil = new ObjectStep(this, ObjectID.AN_EXPERIMENTAL_ANVIL, new WorldPoint(3171, 3048, 0), "Enter the north tent and attempt to make an prototype dart tip on the anvil.", technicalPlans, bronzeBarHighlighted, hammer, feather10);
 		useAnvil.addDialogStep("Yes. I'd like to try.");
 		useAnvil.addIcon(ItemID.BRONZE_BAR);
-		useFeatherOnTip = new DetailedQuestStep(this, "Add 10 feathers to the prototype dart tip.", prototypeDartTip, feather10);
+		useFeatherOnTip = new DetailedQuestStep(this, "Add 10 feathers to the prototype dart tip.", prototypeDartTip, feather10.highlighted());
 		bringPrototypeToShabim = new NpcStep(this, NpcID.AL_SHABIM, new WorldPoint(3171, 3028, 0), "Bring the prototype dart to Al Shabim.", prototypeDart);
 
 		enterCampWithPineapple = new ObjectStep(this, ObjectID.GATE_2673, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", metalKey, tentiPineapple, slaveTop, slaveRobe, slaveBoot);
@@ -438,7 +437,7 @@ public class TheTouristTrap extends BasicQuestHelper
 			Arrays.asList(talkToShabim, enterCampForTask, goUpToSiad, searchBookcase, talkToSiad, searchChest, returnToShabim,
 				useAnvil, useFeatherOnTip, bringPrototypeToShabim),
 			bronzeBar3, hammer, feather50));
-		allSteps.add(new PanelDetails("Freeing Ana", 
+		allSteps.add(new PanelDetails("Freeing Ana",
 			Arrays.asList(enterCampWithPineapple, enterMineWithPineapple, talkToGuardWithPineapple, enterDeepMine, getBarrel, enterMineCart, useBarrelOnAna, useBarrelOnMineCart,
 				returnInMineCart, searchBarrelsForAna, sendAnaUp, leaveDeepMine, operateWinch, searchWinchBarrel, useBarrelOnCart, talkToDriver, returnToIrena, talkToAna, talkToIrenaToFinish),
 			slaveTop, slaveRobe, slaveBoot));

@@ -71,7 +71,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep talkToKingBolren, talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 		firstTracker, secondTracker, thirdTracker, fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder,
-		talkToKingBolrenFirstOrb, talkToTheWarlord, fightTheWarlord, returnOrbs, finishQuestDialog;
+		talkToKingBolrenFirstOrb, talkToTheWarlord, fightTheWarlord, returnOrbs, finishQuestDialog, elkoySkip;
 
 	Requirement completeFirstTracker, completeSecondTracker, completeThirdTracker, handedInOrbs,
 		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker, orbsOfProtectionNearby;
@@ -79,7 +79,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private Conditions talkToSecondTracker, talkToThirdTracker, completedTrackers,
 		shouldFireBallista1, shouldFireBallista2, shouldFireBallista3, shouldFireBallista4;
 
-	private ConditionalStep retrieveOrb, talkToBolrenAtCentreOfMaze, fireBalistaConditional;
+	private ConditionalStep retrieveOrb, talkToBolrenAtCentreOfMaze, fireBalistaConditional, returnFirstOrb;
 
 	//Zones
 	Zone upstairsTower, zoneVillage;
@@ -109,7 +109,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		steps.put(3, talkToCommanderMontaiAgain);
 		steps.put(4, talkToTrackersStep());
 		steps.put(5, retrieveOrbStep());
-		steps.put(6, talkToKingBolrenFirstOrb);
+		steps.put(6, returnFirstOrb);
 		steps.put(7, defeatWarlordStep());
 		steps.put(8, returnOrbsStep());
 		return steps;
@@ -302,9 +302,14 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		ItemRequirement firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
 		firstOrb.setTooltip("If you have lost the orb you can get another from the chest");
 		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
-			"Speak to King Bolren in the centre of the Tree Gnome Maze. You can talk to Elkoy outside the maze to travel to the centre.",
-			firstOrb);
+			"Speak to King Bolren in the centre of the Tree Gnome Maze.", firstOrb);
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
+		elkoySkip = new NpcStep(this, NpcID.ELKOY_4968, new WorldPoint(2505, 3191, 0),
+			"Talk to Elkoy outside the maze to travel to the centre.");
+		returnFirstOrb = new ConditionalStep(this, elkoySkip,
+			"Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		returnFirstOrb.addStep(insideGnomeVillage, talkToKingBolrenFirstOrb);
+		returnFirstOrb.addSubSteps(talkToKingBolrenFirstOrb, elkoySkip);
 
 		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
 			"Talk to King Bolren in the centre of the Tree Gnome Maze.", orbsOfProtection);
@@ -358,7 +363,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		ItemRequirement combatGear = new ItemRequirement("Weapon & Armour (magic is best)", -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 
-		steps.add(new PanelDetails("Retrieving the orbs", Arrays.asList(retrieveOrb, talkToKingBolrenFirstOrb,
+		steps.add(new PanelDetails("Retrieving the orbs", Arrays.asList(retrieveOrb, elkoySkip, talkToKingBolrenFirstOrb,
 			talkToTheWarlord, fightTheWarlord, returnOrbs), combatGear, food));
 		return steps;
 	}

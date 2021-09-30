@@ -247,11 +247,6 @@ public class VarrockElite extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Make Super Combat", Arrays.asList(moveToBank, superCombat), sAtk4, sStr4, sDef4, torstol));
-		allSteps.add(new PanelDetails("Summer Pie", Arrays.asList(moveToCookingGuild, summerPie), cookingGuild, rawPie));
-		allSteps.add(new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(dartTip, runeDart), runeBar, feather, hammer));
-		allSteps.add(new PanelDetails("Plank Make", Arrays.asList(moveToLumb, plankMake), natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20)));
-		allSteps.add(new PanelDetails("Craft 100 Earth runes", Arrays.asList(moveToEarthRune, earthRune100), ess.quantity(25), earthTali));
 
 		PanelDetails superCombatSteps = new PanelDetails("Make Super Combat", Arrays.asList(moveToBank, superCombat),
 			new SkillRequirement(Skill.HERBLORE, 90), sAtk4, sStr4, sDef4, torstol);

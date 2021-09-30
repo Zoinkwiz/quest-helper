@@ -256,6 +256,15 @@ public class JunglePotion extends BasicQuestHelper
 		reqs.add(karaTele);
 		return reqs;
 	}
+  
+  @Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.HERBLORE, 3, false));
+		return req;
+	}
 
 	@Override
 	public QuestPointReward getQuestPointReward()

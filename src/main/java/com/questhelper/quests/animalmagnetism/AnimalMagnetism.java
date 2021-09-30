@@ -36,7 +36,6 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -275,6 +274,12 @@ public class AnimalMagnetism extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(draynorTeleport, burthorpeTeleport, portPhasmatysTeleport);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
 	}
 
 	@Override

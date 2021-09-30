@@ -58,14 +58,10 @@ public class QuestRewardPanel extends JPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		StringBuilder text = new StringBuilder();
-
-		text.append(reward.getDisplayText());
-
 		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
 		String html2 = "</body></html>";
 
-		label = new JLabel(html1 + text + html2);
+		label = new JLabel(html1 + reward.getDisplayText() + html2);
 		label.setForeground(Color.WHITE);
 		label.setSize(label.getPreferredSize());
 		setPreferredSize(label.getSize());

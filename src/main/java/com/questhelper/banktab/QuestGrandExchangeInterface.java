@@ -79,7 +79,7 @@ public class QuestGrandExchangeInterface
 
 	public void init()
 	{
-		if (isHidden())
+		if (isHidden() || questHelper.getSelectedQuest() == null)
 		{
 			return;
 		}
@@ -113,7 +113,7 @@ public class QuestGrandExchangeInterface
 	{
 		if (active)
 		{
-			closeTab();
+			closeOptions();
 		}
 
 		parent = null;
@@ -145,7 +145,7 @@ public class QuestGrandExchangeInterface
 	{
 		if (active)
 		{
-			closeTab();
+			closeOptions();
 		}
 		else
 		{
@@ -155,7 +155,7 @@ public class QuestGrandExchangeInterface
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
 
-	public void closeTab()
+	public void closeOptions()
 	{
 		active = false;
 		if (questBackgroundWidget != null)

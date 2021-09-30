@@ -441,8 +441,6 @@ public class QuestOverviewPanel extends JPanel
 		{
 			for (Reward reward : rewards)
 			{
-				System.out.println(reward);
-				System.out.println(reward.getDisplayText());
 				if (lastReward != null && lastReward.rewardType() != reward.rewardType())
 				{
 					questRewardPanel.add(new JLabel(" "));
@@ -576,6 +574,10 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateRequirementPanels(Client client, List<QuestRequirementPanel> reqPanels, List<Item> bankItems)
 	{
+		if (reqPanels == null)
+		{
+			return;
+		}
 		for (QuestRequirementPanel requirementPanel : reqPanels)
 		{
 			Color newColor;

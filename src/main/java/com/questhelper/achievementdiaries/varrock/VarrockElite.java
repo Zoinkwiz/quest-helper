@@ -41,6 +41,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -223,14 +225,28 @@ public class VarrockElite extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Varrock Armor (4)", ItemID.VARROCK_ARMOUR_4, 1),
+				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("10% Chance to mine 2 ores at once, up to and including Amethyst"),
+				new UnlockReward("10% Chance of smelting 2 bars at once when using the Edgeville furnace"),
+				new UnlockReward("Zaff will sell 120 Battlestaves per day for 7,000 Coins each"),
+				new UnlockReward("The Skull sceptre will now hold 26 charges"),
+				new UnlockReward("Acts as a prospector jacket for experience bonus and clues"));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Make Super Combat", Arrays.asList(moveToBank, superCombat), sAtk4, sStr4, sDef4, torstol));
-		allSteps.add(new PanelDetails("Summer Pie", Arrays.asList(moveToCookingGuild, summerPie), cookingGuild, rawPie));
-		allSteps.add(new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(dartTip, runeDart), runeBar, feather, hammer));
-		allSteps.add(new PanelDetails("Plank Make", Arrays.asList(moveToLumb, plankMake), natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20)));
-		allSteps.add(new PanelDetails("Craft 100 Earth runes", Arrays.asList(moveToEarthRune, earthRune100), ess.quantity(25), earthTali));
 
 		PanelDetails superCombatSteps = new PanelDetails("Make Super Combat", Arrays.asList(moveToBank, superCombat),
 			new SkillRequirement(Skill.HERBLORE, 90), sAtk4, sStr4, sDef4, torstol);

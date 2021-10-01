@@ -254,7 +254,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
-		bankTagService = new QuestHelperBankTagService(this);
+		bankTagService = new QuestHelperBankTagService(this, questBank);
 		bankTagsMain = new QuestBankTab(this);
 		bankTagsMain.startUp();
 

@@ -34,6 +34,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.questhelper.rewards.ItemReward;
 import net.runelite.api.ItemID;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
@@ -97,6 +99,15 @@ public class EnchantedKey extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(rellekkaTeleports, varrockTeleports, ardougneTeleports, lumbridgeTeleports, passage);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Saradomin Mjolnir", ItemID.SARADOMIN_MJOLNIR, 1),
+				new ItemReward("Guthix Mjolnir", ItemID.GUTHIX_MJOLNIR, 1),
+				new ItemReward("Zamorak Mjolnir", ItemID.ZAMORAK_MJOLNIR, 1));
 	}
 
 	@Override

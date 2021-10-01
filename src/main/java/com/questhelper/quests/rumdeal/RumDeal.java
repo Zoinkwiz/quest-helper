@@ -41,17 +41,18 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -369,14 +370,14 @@ public class RumDeal extends BasicQuestHelper
 		useBucketOnWater.addSubSteps(goDownForWater, openGate);
 		useBucketOnWater.addIcon(ItemID.BUCKET);
 
-		goUpWithWater = new ObjectStep(this, ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0), "Take the water back to hopper on the top floor.", stagnantWater);
+		goUpWithWater = new ObjectStep(this, ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0), "Take the water back to the hopper on the top floor.", stagnantWater);
 
 		goUpToDropWater = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1),
-			"Take the water back to hopper on the top floor.", stagnantWater);
+			"Take the water back to the hopper on the top floor.", stagnantWater);
 		goUpToDropWater.addDialogStep("What exactly do you want me to do?");
 
 		dropWater = new ObjectStep(this, ObjectID.HOPPER_10170, new WorldPoint(2142, 5102, 2),
-			"Take the water back to hopper on the top floor.", stagnantWaterHighlight);
+			"Take the water back to the hopper on the top floor.", stagnantWaterHighlight);
 		dropWater.addSubSteps(goUpWithWater, goUpToDropWater);
 		dropWater.addIcon(ItemID.BUCKET_OF_WATER_6712);
 
@@ -435,6 +436,27 @@ public class RumDeal extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Evil spirit (level 150)", "Fever spider (level 49)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FISHING, 7000),
+				new ExperienceReward(Skill.PRAYER, 7000),
+				new ExperienceReward(Skill.FARMING, 7000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Holy Wrench", ItemID.HOLY_WRENCH, 1));
 	}
 
 	@Override

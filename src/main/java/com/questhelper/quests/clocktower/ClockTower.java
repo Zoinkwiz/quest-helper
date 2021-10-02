@@ -86,7 +86,7 @@ public class ClockTower extends BasicQuestHelper
 
 	QuestStep kojoReward;
 
-	ConditionalStep startingOut, getRedCog, getBlueCog, getBlackCog, getWhiteCog;
+	ConditionalStep getRedCog, getBlueCog, getBlackCog, getWhiteCog;
 
 	ConditionalStep goToBasementForRed, goToBasementForBlue, goToBasementForBlack, goToBasementForWhite,
 		goToFirstFloorWithBlueCog, goToGroundFloorWithRedCog, goToBasementWithBlackCog, goToSecondFloorWithWhiteCog,

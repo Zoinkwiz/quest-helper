@@ -87,7 +87,7 @@ public class QuestGrandExchangeInterface
 		parent = client.getWidget(WidgetInfo.CHATBOX_CONTAINER);
 
 		int QUEST_BUTTON_SIZE = 20;
-		int QUEST_BUTTON_X = 0;
+		int QUEST_BUTTON_X = 480;
 		int QUEST_BUTTON_Y = 0;
 		questBackgroundWidget = createGraphic("quest helper", SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL,
 			QUEST_BUTTON_SIZE,

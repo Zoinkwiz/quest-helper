@@ -32,12 +32,14 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -69,20 +71,21 @@ public class TheDigSite extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, rope, opal, charcoal, leatherBoots, leatherGloves, specimenBrush, specimenJar, panningTray,
-		trowel, varrock2, digsiteTeleports, sealedLetter, specialCup, teddybear, skull, nitro, nitrate, chemicalCompound, groundCharcoal, invitation, talisman,
+		panningTrayFull, trowel, varrock2, digsiteTeleports, sealedLetter, specialCup, teddybear, skull, nitro, nitrate, chemicalCompound, groundCharcoal, invitation, talisman,
 		mixedChemicals, mixedChemicals2, arcenia, powder, liquid, tablet, key, unstampedLetter, pick, trowelHighlighted, tinderboxHighlighted, chemicalCompoundHighlighted;
 
 	Requirement talkedToFemaleStudent, talkedToOrangeStudent, talkedToGreenStudent, talkedToGuide, letterStamped, hasTeddy, hasSkull, hasSpecialCup,
 		femaleStudentQ1Learnt, orangeStudentQ1Learnt, greenStudentQ1Learnt, femaleStudentQ2Learnt, orangeStudentQ2Learnt, greenStudentQ2Learnt, femaleStudentQ3Learnt,
 		femaleExtorting, orangeStudentQ3Learnt, greenStudentQ3Learnt, syncedUp, syncedUp2, syncedUp3, givenTalismanIn, rope1Added, rope2Added,
-		inUndergroundTemple1, inDougRoom,openedBarrel, searchedBricks, hasKeyOrPowderOrMixtures, openPowderChestNearby, inUndergroundTemple2;
+		inUndergroundTemple1, inDougRoom,openedBarrel, searchedBricks, hasKeyOrPowderOrMixtures, openPowderChestNearby, inUndergroundTemple2,
+		knowStateAsJustStartedQuest, knowStateAsJustCompletedFirstExam, knowStateAsJustCompletedSecondExam;
 
 	QuestStep talkToExaminer, talkToHaig, talkToExaminer2, searchBush, takeTray, talkToGuide, panWater, pickpocketWorkmen, talkToFemaleStudent, talkToFemaleStudent2,
 		talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1, talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3,
 		takeTest2, talkToFemaleStudent4, takeTest3, getJar, getPick, getBrush, digForTalisman, talkToExpert, useInvitationOnWorkman, useRopeOnWinch, goDownWinch, pickUpRoot,
 		searchBricks, goUpRope, goDownToDoug, talkToDoug, goUpFromDoug, unlockChest, searchChest, useTrowelOnBarrel, useVialOnBarrel, grindCharcoal, usePowderOnExpert,
 		useLiquidOnExpert, mixNitroWithNitrate, addCharcoal, addRoot, goDownToExplode, useCompound, useTinderbox, takeTablet, useTabletOnExpert, syncStep, talkToFemaleStudent5,
-		talkToOrangeStudent4, talkToGreenStudent4, useRopeOnWinch2, goDownToExplode2, goDownForTablet, goUpWithTablet;
+		talkToOrangeStudent4, talkToGreenStudent4, useRopeOnWinch2, goDownToExplode2, goDownForTablet, goUpWithTablet, searchPanningTray;
 
 	//Zones
 	Zone undergroundTemple1, dougRoom, undergroundTemple2;
@@ -99,10 +102,15 @@ public class TheDigSite extends BasicQuestHelper
 		steps.put(0, talkToExaminer);
 
 		ConditionalStep returnWithLetter = new ConditionalStep(this, talkToHaig);
+		// This is used to set knowStateAsJustStartedQuest to true
+		returnWithLetter.addStep(new Conditions(LogicType.NOR, knowStateAsJustStartedQuest), talkToExaminer);
 		returnWithLetter.addStep(letterStamped, talkToExaminer2);
 		steps.put(1, returnWithLetter);
 
 		ConditionalStep goTakeTest1 = new ConditionalStep(this, syncStep);
+		// Sets the state of knowStateAsJustCompleted to true for ConditionalStep after this
+		goTakeTest1.addStep(new Conditions(LogicType.NOR, knowStateAsJustCompletedFirstExam), takeTest1);
+
 		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, orangeStudentQ1Learnt, greenStudentQ1Learnt), takeTest1);
 		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, orangeStudentQ1Learnt, talkedToGreenStudent), talkToGreenStudent2);
 		goTakeTest1.addStep(new Conditions(femaleStudentQ1Learnt, orangeStudentQ1Learnt, hasSkull, specimenBrush),
@@ -115,6 +123,7 @@ public class TheDigSite extends BasicQuestHelper
 		goTakeTest1.addStep(new Conditions(hasTeddy, hasSpecialCup, hasSkull, specimenBrush), talkToFemaleStudent);
 
 		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, hasSpecialCup), pickpocketWorkmen);
+		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, panningTrayFull, talkedToGuide), searchPanningTray);
 		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, panningTray, talkedToGuide), panWater);
 		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy, panningTray), talkToGuide);
 		goTakeTest1.addStep(new Conditions(syncedUp, hasTeddy), takeTray);
@@ -122,6 +131,9 @@ public class TheDigSite extends BasicQuestHelper
 		steps.put(2, goTakeTest1);
 
 		ConditionalStep goTakeTest2 = new ConditionalStep(this, syncStep);
+		// Sets the state of knowStateAsJustCompletedFirstExam to true for ConditionalStep after this
+		goTakeTest1.addStep(new Conditions(LogicType.NOR, knowStateAsJustCompletedSecondExam), takeTest2);
+
 		goTakeTest2.addStep(new Conditions(syncedUp2, femaleStudentQ2Learnt, orangeStudentQ2Learnt, greenStudentQ2Learnt), takeTest2);
 		goTakeTest2.addStep(new Conditions(syncedUp2, femaleStudentQ2Learnt, orangeStudentQ2Learnt), talkToGreenStudent3);
 		goTakeTest2.addStep(new Conditions(syncedUp2, femaleStudentQ2Learnt), talkToOrangeStudent3);
@@ -133,7 +145,7 @@ public class TheDigSite extends BasicQuestHelper
 		goTakeTest3.addStep(new Conditions(syncedUp3, femaleStudentQ3Learnt, orangeStudentQ3Learnt), talkToGreenStudent4);
 		goTakeTest3.addStep(new Conditions(syncedUp3, femaleStudentQ3Learnt), talkToOrangeStudent4);
 		goTakeTest3.addStep(new Conditions(syncedUp3, femaleExtorting), talkToFemaleStudent5);
-		goTakeTest3.addStep(syncedUp2, talkToFemaleStudent4);
+		goTakeTest3.addStep(syncedUp3, talkToFemaleStudent4);
 		steps.put(4, goTakeTest3);
 
 		ConditionalStep findTalisman = new ConditionalStep(this, getJar);
@@ -141,7 +153,7 @@ public class TheDigSite extends BasicQuestHelper
 		findTalisman.addStep(new Conditions(talisman), talkToExpert);
 		findTalisman.addStep(new Conditions(specimenJar, pick, specimenBrush), digForTalisman);
 		findTalisman.addStep(new Conditions(specimenJar, pick), getBrush);
-		findTalisman.addStep(specimenBrush, getPick);
+		findTalisman.addStep(specimenJar, getPick);
 		steps.put(5, findTalisman);
 
 		ConditionalStep learnHowToMakeExplosives = new ConditionalStep(this, useRopeOnWinch2);
@@ -212,6 +224,7 @@ public class TheDigSite extends BasicQuestHelper
 		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR);
 		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY);
 		panningTray.addAlternates(ItemID.PANNING_TRAY_678, ItemID.PANNING_TRAY_679);
+		panningTrayFull = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY_679);
 		trowel = new ItemRequirement("Trowel", ItemID.TROWEL);
 		trowel.setTooltip("You can get another from one of the Examiners");
 		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL);
@@ -271,15 +284,28 @@ public class TheDigSite extends BasicQuestHelper
 		inUndergroundTemple2 = new ZoneRequirement(undergroundTemple2);
 		inDougRoom = new ZoneRequirement(dougRoom);
 
-		syncedUp = new Conditions(true, new WidgetTextRequirement(119, 2, "The Dig Site"));
-		syncedUp2 = new Conditions(true, LogicType.OR, new WidgetTextRequirement(119, 2, "The Dig Site"),
+
+		knowStateAsJustStartedQuest = new Conditions(true, new VarplayerRequirement(131, 1, Operation.LESS_EQUAL));
+		knowStateAsJustCompletedFirstExam = new Conditions(true, new VarplayerRequirement(131, 2, Operation.LESS_EQUAL));
+		knowStateAsJustCompletedSecondExam = new Conditions(true, new VarplayerRequirement(131, 3, Operation.LESS_EQUAL));
+
+
+		syncedUp = new Conditions(true, LogicType.OR, knowStateAsJustStartedQuest,
+			new WidgetTextRequirement(119, 2, "The Dig Site"));
+
+		syncedUp2 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedFirstExam,
+			new WidgetTextRequirement(119, 2, "The Dig Site"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct. Well done!"),
 			new WidgetTextRequirement(217, 4, "Hey! Excellent!"));
-		syncedUp3 = new Conditions(true, LogicType.OR, new WidgetTextRequirement(119, 2, "The Dig Site"),
+
+		syncedUp3 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedSecondExam,
+			new WidgetTextRequirement(119,	2, "The Dig Site"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct, well done!"),
 			new WidgetTextRequirement(217, 4, "Great, I'm getting good at this."));
 
 		talkedToGuide = new VarbitRequirement(2544, 1);
+		tea = tea.hideConditioned(talkedToGuide);
+
 
 		// Exam questions 1
 		talkedToFemaleStudent = new Conditions(true, LogicType.OR,
@@ -373,16 +399,20 @@ public class TheDigSite extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToExaminer = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Talk to an Examiner in the Exam Centre south east of Varrock.", unstampedLetter);
+		talkToExaminer = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Talk to an Examiner in the Exam Centre south east of Varrock.");
 		talkToExaminer.addDialogStep("Can I take an exam?");
 		((NpcStep) (talkToExaminer)).addAlternateNpcs(NpcID.EXAMINER_3636, NpcID.EXAMINER_3637);
-		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3448, 0), "Talk to Curator Haig in the Varrock Museum.");
+		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3448, 0),
+			"Talk to Curator Haig in the Varrock Museum.", unstampedLetter);
 		talkToExaminer2 = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Return to an Examiner in the Exam Centre south east of Varrock.", sealedLetter);
 
 		searchBush = new ObjectStep(this, ObjectID.BUSH_2358, new WorldPoint(3357, 3372, 0), "Search the bushes north of the Exam Centre for a teddy.");
 		takeTray = new DetailedQuestStep(this, new WorldPoint(3369, 3378, 0), "Pick up the tray in the south east of the dig site.", panningTray);
 		talkToGuide = new NpcStep(this, NpcID.PANNING_GUIDE, new WorldPoint(3385, 3386, 0), "Talk to the Panning Guide nearby.", tea);
 		panWater = new ObjectStep(this, ObjectID.PANNING_POINT, new WorldPoint(3384, 3381, 0), "Pan in the river for a special cup.", panningTray);
+		searchPanningTray = new DetailedQuestStep(this, "Search the panning tray.", panningTrayFull.highlighted());
+		panWater.addSubSteps(searchPanningTray);
+
 		pickpocketWorkmen = new NpcStep(this, NpcID.DIGSITE_WORKMAN, new WorldPoint(3372, 3390, 0), "Pickpocket workmen until you get an animal skull and a specimen brush.", true);
 		((NpcStep) (pickpocketWorkmen)).addAlternateNpcs(NpcID.DIGSITE_WORKMAN_3630, NpcID.DIGSITE_WORKMAN_3631);
 		((NpcStep) (pickpocketWorkmen)).setMaxRoamRange(100);
@@ -492,6 +522,12 @@ public class TheDigSite extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal, leatherBoots, leatherGloves);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(digsiteTeleports, varrock2);
 	}
 
 	@Override

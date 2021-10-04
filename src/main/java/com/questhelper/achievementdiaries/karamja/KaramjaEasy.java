@@ -215,7 +215,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Better prices in shops on Karmaja and in Tzhaar City."),
+				new UnlockReward("Better prices in shops on Karamja and in Tzhaar City."),
 				new UnlockReward("Half price ships from Ardogune to Brimhaven and Musa Point to Port Sarim."));
 	}
 

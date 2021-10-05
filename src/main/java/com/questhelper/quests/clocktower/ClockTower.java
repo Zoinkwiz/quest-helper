@@ -86,7 +86,7 @@ public class ClockTower extends BasicQuestHelper
 
 	QuestStep kojoReward;
 
-	ConditionalStep startingOut, getRedCog, getBlueCog, getBlackCog, getWhiteCog;
+	ConditionalStep getRedCog, getBlueCog, getBlackCog, getWhiteCog;
 
 	ConditionalStep goToBasementForRed, goToBasementForBlue, goToBasementForBlack, goToBasementForWhite,
 		goToFirstFloorWithBlueCog, goToGroundFloorWithRedCog, goToBasementWithBlackCog, goToSecondFloorWithWhiteCog,
@@ -106,8 +106,8 @@ public class ClockTower extends BasicQuestHelper
 		ConditionalStep goStart = new ConditionalStep(this, talkToKojo);
 		// This is so we can lock the startedQuestDuringSession to true, so we don't need to ask to sync after
 		goStart.addStep(startedQuestDuringSession, talkToKojo);
+
 		steps.put(0, talkToKojo);
-		startingOut = new ConditionalStep(this, talkToKojo);
 
 		getRedCog = new ConditionalStep(this, goToBasementForRed);
 		getRedCog.addStep(redCog, goToGroundFloorWithRedCog);
@@ -140,7 +140,7 @@ public class ClockTower extends BasicQuestHelper
 		steps.put(2, doQuest);
 		steps.put(3, doQuest);
 		steps.put(4, doQuest);
-		steps.put(5, doQuest);
+		steps.put(5, goFinishQuest);
 		steps.put(6, goFinishQuest);
 		steps.put(7, goFinishQuest);
 
@@ -308,11 +308,11 @@ public class ClockTower extends BasicQuestHelper
 			"black cog.");
 
 		goToFirstFloorWithBlueCog = new ConditionalStep(this, goToFirstFloor,
-			"Place the blue cog on the peg on the ground floor.");
+			"Place the blue cog on the peg on the first floor.");
 		goToFirstFloorWithBlueCog.addStep(inFirstFloor, blueCogOnBlueSpindle);
 
 		goToGroundFloorWithRedCog = goToGroundFloor.copy();
-		goToGroundFloorWithRedCog.setText("Place the red cog on the peg on the first floor.");
+		goToGroundFloorWithRedCog.setText("Place the red cog on the peg on the ground floor.");
 		goToGroundFloorWithRedCog.addStep(null, redCogOnRedSpindle);
 
 		goToBasementWithBlackCog = new ConditionalStep(this, goToBasementSteps,

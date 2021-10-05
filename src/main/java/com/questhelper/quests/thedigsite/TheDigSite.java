@@ -70,9 +70,9 @@ import net.runelite.api.widgets.WidgetInfo;
 public class TheDigSite extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, rope, opal, charcoal, leatherBoots, leatherGloves, specimenBrush, specimenJar, panningTray,
+	ItemRequirement pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, rope, opal, charcoal, specimenBrush, specimenJar, panningTray,
 		panningTrayFull, trowel, varrock2, digsiteTeleports, sealedLetter, specialCup, teddybear, skull, nitro, nitrate, chemicalCompound, groundCharcoal, invitation, talisman,
-		mixedChemicals, mixedChemicals2, arcenia, powder, liquid, tablet, key, unstampedLetter, pick, trowelHighlighted, tinderboxHighlighted, chemicalCompoundHighlighted;
+		mixedChemicals, mixedChemicals2, arcenia, powder, liquid, tablet, key, unstampedLetter, trowelHighlighted, tinderboxHighlighted, chemicalCompoundHighlighted;
 
 	Requirement talkedToFemaleStudent, talkedToOrangeStudent, talkedToGreenStudent, talkedToGuide, letterStamped, hasTeddy, hasSkull, hasSpecialCup,
 		femaleStudentQ1Learnt, orangeStudentQ1Learnt, greenStudentQ1Learnt, femaleStudentQ2Learnt, orangeStudentQ2Learnt, greenStudentQ2Learnt, femaleStudentQ3Learnt,
@@ -82,7 +82,7 @@ public class TheDigSite extends BasicQuestHelper
 
 	QuestStep talkToExaminer, talkToHaig, talkToExaminer2, searchBush, takeTray, talkToGuide, panWater, pickpocketWorkmen, talkToFemaleStudent, talkToFemaleStudent2,
 		talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1, talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3,
-		takeTest2, talkToFemaleStudent4, takeTest3, getJar, getPick, getBrush, digForTalisman, talkToExpert, useInvitationOnWorkman, useRopeOnWinch, goDownWinch, pickUpRoot,
+		takeTest2, talkToFemaleStudent4, takeTest3, getJar, getBrush, digForTalisman, talkToExpert, useInvitationOnWorkman, useRopeOnWinch, goDownWinch, pickUpRoot,
 		searchBricks, goUpRope, goDownToDoug, talkToDoug, goUpFromDoug, unlockChest, searchChest, useTrowelOnBarrel, useVialOnBarrel, grindCharcoal, usePowderOnExpert,
 		useLiquidOnExpert, mixNitroWithNitrate, addCharcoal, addRoot, goDownToExplode, useCompound, useTinderbox, takeTablet, useTabletOnExpert, syncStep, talkToFemaleStudent5,
 		talkToOrangeStudent4, talkToGreenStudent4, useRopeOnWinch2, goDownToExplode2, goDownForTablet, goUpWithTablet, searchPanningTray;
@@ -151,9 +151,8 @@ public class TheDigSite extends BasicQuestHelper
 		ConditionalStep findTalisman = new ConditionalStep(this, getJar);
 		findTalisman.addStep(new Conditions(givenTalismanIn), useInvitationOnWorkman);
 		findTalisman.addStep(new Conditions(talisman), talkToExpert);
-		findTalisman.addStep(new Conditions(specimenJar, pick, specimenBrush), digForTalisman);
-		findTalisman.addStep(new Conditions(specimenJar, pick), getBrush);
-		findTalisman.addStep(specimenJar, getPick);
+		findTalisman.addStep(new Conditions(specimenJar, specimenBrush), digForTalisman);
+		findTalisman.addStep(new Conditions(specimenJar), getBrush);
 		steps.put(5, findTalisman);
 
 		ConditionalStep learnHowToMakeExplosives = new ConditionalStep(this, useRopeOnWinch2);
@@ -218,8 +217,6 @@ public class TheDigSite extends BasicQuestHelper
 		opal.setTooltip("You can get one by panning at the Digsite");
 		opal.addAlternates(ItemID.UNCUT_OPAL);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
-		leatherBoots = new ItemRequirement("Leather boots", ItemID.LEATHER_BOOTS, 1, true);
-		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true);
 		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH);
 		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR);
 		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY);
@@ -230,7 +227,6 @@ public class TheDigSite extends BasicQuestHelper
 		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL);
 		trowelHighlighted.setHighlightInInventory(true);
 		trowelHighlighted.setTooltip("You can get another from one of the Examiners");
-		pick = new ItemRequirement("Rock pick", ItemID.ROCK_PICK);
 		varrock2 = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
 		digsiteTeleports = new ItemRequirement("Digsite teleports", ItemID.DIGSITE_TELEPORT, 2);
 		sealedLetter = new ItemRequirement("Sealed letter", ItemID.SEALED_LETTER);
@@ -447,14 +443,12 @@ public class TheDigSite extends BasicQuestHelper
 
 		getJar = new ObjectStep(this, ObjectID.CUPBOARD_17302, new WorldPoint(3355, 3332, 0), "Search the cupboard on the south wall of the west room of the Exam Centre for a specimen jar.");
 		((ObjectStep) (getJar)).addAlternateObjects(ObjectID.CUPBOARD_17303);
-		getPick = new ObjectStep(this, ObjectID.CUPBOARD_17300, new WorldPoint(3356, 3337, 0), "Search the cupboard on the north wall of the west room of the Exam Centre for a rock pick.");
-		((ObjectStep) (getPick)).addAlternateObjects(ObjectID.CUPBOARD_17301);
 		getBrush = new NpcStep(this, NpcID.DIGSITE_WORKMAN, new WorldPoint(3372, 3390, 0), "Pickpocket workmen until you get a specimen brush.", true);
 		((NpcStep) (getBrush)).addAlternateNpcs(NpcID.DIGSITE_WORKMAN_3630, NpcID.DIGSITE_WORKMAN_3631);
 		((NpcStep) (getBrush)).setMaxRoamRange(100);
 		// NOTE: May not need pick
 		digForTalisman = new ObjectStep(this, ObjectID.SOIL_2377, new WorldPoint(3374, 3438, 0), "Dig in the north east dig spot in the Digsite until you get a talisman.",
-			trowelHighlighted, specimenJar);
+			trowelHighlighted, specimenJar, specimenBrush);
 		digForTalisman.addIcon(ItemID.TROWEL);
 		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Talk Archaeological expert in the Exam Centre.", talisman);
 
@@ -521,7 +515,7 @@ public class TheDigSite extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal, leatherBoots, leatherGloves);
+		return Arrays.asList(pestleAndMortar, vialHighlighted, tinderbox, tea, ropes2, opal, charcoal);
 	}
 
 	@Override
@@ -576,7 +570,7 @@ public class TheDigSite extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Exam 2", Arrays.asList(talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3, takeTest2)));
 		allSteps.add(new PanelDetails("Exam 3", Arrays.asList(talkToFemaleStudent4, talkToFemaleStudent5, talkToOrangeStudent4,
 			talkToGreenStudent4, takeTest3), opal));
-		allSteps.add(new PanelDetails("Discovery", Arrays.asList(getJar, getPick, digForTalisman, talkToExpert, useInvitationOnWorkman), trowel, specimenBrush, leatherBoots, leatherGloves));
+		allSteps.add(new PanelDetails("Discovery", Arrays.asList(getJar, digForTalisman, talkToExpert, useInvitationOnWorkman), trowel, specimenBrush));
 		allSteps.add(new PanelDetails("Digging deeper", Arrays.asList(useRopeOnWinch, goDownWinch, pickUpRoot, searchBricks, goUpRope, useRopeOnWinch2, goDownToDoug,
 			talkToDoug, goUpFromDoug, unlockChest, searchChest, useTrowelOnBarrel, useVialOnBarrel, useLiquidOnExpert, usePowderOnExpert, mixNitroWithNitrate, grindCharcoal, addCharcoal, addRoot, goDownToExplode,
 			useCompound, useTinderbox, takeTablet, useTabletOnExpert), ropes2, pestleAndMortar, vialHighlighted, tinderboxHighlighted, charcoal));

@@ -39,6 +39,8 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.SpecialAttack;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -375,6 +377,25 @@ public class FremennikElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"At least 43 Prayer for protection prayers"));
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Fremennik Sea Boots (4)", ItemID.FREMENNIK_SEA_BOOTS_4, 1),
+				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Dagganoth bones will be dropped in noted form"),
+				new UnlockReward("Enchanted lyre can now teleport to Jatizso and Neitiznot"),
+				new UnlockReward("Even faster approval gain in Miscellania"),
+				new UnlockReward("Seal of passage is no longer needed to interact with anyone on Lunar Isle"),
+				new UnlockReward("Access to the Return Orb inside the bank on Lunar Isle"));
 	}
 
 	@Override

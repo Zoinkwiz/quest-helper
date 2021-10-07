@@ -41,6 +41,10 @@ import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -405,6 +409,27 @@ public class TheSlugMenace extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.SLAYER, 30));
 		req.add(new SkillRequirement(Skill.THIEVING, 30));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.RUNECRAFT, 3500),
+				new ExperienceReward(Skill.CRAFTING, 3500),
+				new ExperienceReward(Skill.THIEVING, 3500));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to purchase and equip Proselyte equipment."));
 	}
 
 	@Override

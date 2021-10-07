@@ -42,6 +42,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -281,6 +284,27 @@ public class TrollStronghold extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 15, true, "15 Agility (47+ Agility is recommended)"));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Law Talisman", ItemID.LAW_TALISMAN, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to make Law Runes"),
+				new UnlockReward("Access to Trollheim and the Troll Stronghold"),
+				new UnlockReward("Access to the God Wars Dungeon"));
 	}
 
 	@Override

@@ -43,6 +43,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -459,6 +462,39 @@ public class HeroesQuest extends BasicQuestHelper
 		reqs.add(antifireShield);
 
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 3075),
+				new ExperienceReward(Skill.DEFENCE, 3075),
+				new ExperienceReward(Skill.STRENGTH, 3075),
+				new ExperienceReward(Skill.RANGED, 2075),
+				new ExperienceReward(Skill.HITPOINTS, 3075),
+				new ExperienceReward(Skill.FISHING, 2725),
+				new ExperienceReward(Skill.COOKING, 2825),
+				new ExperienceReward(Skill.WOODCUTTING, 1575),
+				new ExperienceReward(Skill.FIREMAKING, 1575),
+				new ExperienceReward(Skill.SMITHING, 2257),
+				new ExperienceReward(Skill.MINING, 2275),
+				new ExperienceReward(Skill.HERBLORE, 1325));
+	}
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Hero's Guild."),
+				new UnlockReward("Ability to use the Fountain of Rune."),
+				new UnlockReward("Ability to use Charge Dragonstone Jewellery scrolls."),
+				new UnlockReward("Ability to purchase and equip Dragon Battleaxes and Maces."));
 	}
 
 	@Override

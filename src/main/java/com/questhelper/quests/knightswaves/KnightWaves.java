@@ -32,6 +32,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
@@ -40,11 +42,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.SpriteID;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
@@ -162,6 +161,25 @@ public class KnightWaves extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(combatGear, poisonedWeapon, food, potions);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 20000),
+				new ExperienceReward(Skill.STRENGTH, 20000),
+				new ExperienceReward(Skill.DEFENCE, 20000),
+				new ExperienceReward(Skill.HITPOINTS, 20000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Chivalry Prayer (60 Prayer & 65 Defence)"),
+				new UnlockReward("Access to Piety (70 Prayer & 70 Defence)"),
+				new UnlockReward("Ability to change your spawn point to Camelot."));
 	}
 
 	@Override

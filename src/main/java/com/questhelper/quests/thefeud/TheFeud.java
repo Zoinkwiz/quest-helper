@@ -42,6 +42,10 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -486,6 +490,37 @@ public class TheFeud extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Bandit Champion (level 70) - Safespottable", "Tough Guy (level 75) - Safespottable");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 15000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("500 Coins", ItemID.COINS_995, 500),
+				new ItemReward("Oak Blackjack", ItemID.OAK_BLACKJACK, 1),
+				new ItemReward("Desert Disguise", ItemID.DESERT_DISGUISE, 1),
+				new ItemReward("Willow Blackjack", ItemID.WILLOW_BLACKJACK, 1),
+				new ItemReward("An Adamant Scimitar", ItemID.ADAMANT_SCIMITAR, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to blackjack."),
+				new UnlockReward("Access to the Rogue Trader minigame"));
 	}
 
 	@Override

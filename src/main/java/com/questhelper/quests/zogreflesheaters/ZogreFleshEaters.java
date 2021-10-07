@@ -32,6 +32,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -362,6 +366,38 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 5));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FLETCHING, 2000),
+				new ExperienceReward(Skill.RANGED, 2000),
+				new ExperienceReward(Skill.HERBLORE, 2000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Ourg Bones", ItemID.OURG_BONES, 3),
+				new ItemReward("Zogre Bones", ItemID.ZOGRE_BONE, 2));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to make Relicym's balm"),
+				new UnlockReward("Ability to fletch Comp Ogre Bows and Brutal Arrows"),
+				new UnlockReward("Ability to wear Inoculation Bracelets"));
 	}
 
 	@Override

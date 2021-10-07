@@ -40,6 +40,9 @@ import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -840,6 +843,28 @@ public class SinsOfTheFather extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.SLAYER, 50));
 		req.add(new SkillRequirement(Skill.MAGIC, 49));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("3 x 15,000 Experince Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 3), //4447 is placeholder for filter
+				new ItemReward("A Blisterwood Flail", ItemID.BLISTERWOOD_FLAIL, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Darkmeyer and the Daeyalt Essence Mine"),
+				new UnlockReward("Darkmeyer teleport via Drakan's Medallion."));
 	}
 
 	@Override

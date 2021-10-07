@@ -532,7 +532,8 @@ public class HeroesQuest extends BasicQuestHelper
 		else
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband", 
-				Arrays.asList(talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, pushWall, useKeyOnDoor, killGrip, bringCandlestickToStraven));
+				Arrays.asList(talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, pushWall, useKeyOnDoor,
+					killGrip, bringCandlestickToStraven), rangedMage);
 		}
 
 		thirdPanel.setLockingStep(getThievesArmband);

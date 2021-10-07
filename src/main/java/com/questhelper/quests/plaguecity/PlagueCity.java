@@ -280,7 +280,7 @@ public class PlagueCity extends BasicQuestHelper
 		goDownHole = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
 			"Go down the hole.");
 
-		attemptToPullGrill = new ObjectStep(this, NullObjectID.NULL_11422, new WorldPoint(2514,9739,0), "Attempt to pull the grill in the east of the sewer.");
+		attemptToPullGrill = new ObjectStep(this, NullObjectID.NULL_11422, new WorldPoint(2514,9739,0), "Attempt to pull the grill in the south of the sewer.");
 		climbMudPile = new ObjectStep(this, ObjectID.MUD_PILE_2533, new WorldPoint(2519,9760,0), "Climb the mud pile.");
 
 		grabPictureOfElena.addSubSteps(climbMudPile);

@@ -346,7 +346,7 @@ public class Biohazard extends BasicQuestHelper
 			enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard, enterMournerHeadquaters,
 			goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
 
-		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist, goToVarrock, talkToAsyff, talkToGuidor);
+		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist);
 		testingSteps.addAll(giveChemicals.getDisplaySteps());
 		testingSteps.addAll(Arrays.asList(goToVarrock, talkToAsyff, talkToGuidor));
 		allSteps.add(new PanelDetails("Testing the plague sample", testingSteps, plagueSample, liquidHoney, ethenea, sulphuricBroline));

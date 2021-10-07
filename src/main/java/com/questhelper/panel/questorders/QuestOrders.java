@@ -146,7 +146,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE,
 		QuestHelperQuest.KANDARIN_EASY,
 		QuestHelperQuest.FALADOR_EASY,
-		//QuestHelperQuest.LUMBRIDGE_EASY,
+		QuestHelperQuest.LUMBRIDGE_EASY,
 		//QuestHelperQuest.MORYTANIA_EASY,
 		QuestHelperQuest.VARROCK_EASY,
 		QuestHelperQuest.THE_TOURIST_TRAP,
@@ -186,7 +186,7 @@ public class QuestOrders
 		QuestHelperQuest.OLAFS_QUEST,
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
 		QuestHelperQuest.TEARS_OF_GUTHIX,
-		//QuestHelperQuest.LUMBRIDGE_MEDIUM,
+		QuestHelperQuest.LUMBRIDGE_MEDIUM,
 		QuestHelperQuest.BETWEEN_A_ROCK,
 		QuestHelperQuest.THE_HAND_IN_THE_SAND,
 		QuestHelperQuest.A_TASTE_OF_HOPE,
@@ -256,8 +256,8 @@ public class QuestOrders
 		QuestHelperQuest.KARAMJA_ELITE,
 		//QuestHelperQuest.KOUREND_HARD,
 		//QuestHelperQuest.KOUREND_ELITE,
-		//QuestHelperQuest.LUMBRIDGE_HARD,
-		//QuestHelperQuest.LUMBRIDGE_ELITE,
+		QuestHelperQuest.LUMBRIDGE_HARD,
+		QuestHelperQuest.LUMBRIDGE_ELITE,
 		//QuestHelperQuest.MORYTANIA_HARD,
 		//QuestHelperQuest.MORYTANIA_ELITE,
 		QuestHelperQuest.VARROCK_HARD,
@@ -268,7 +268,7 @@ public class QuestOrders
 		//QuestHelperQuest.WILDERNESS_ELITE
 	);
 	@Getter
-	private static final List<QuestHelperQuest> getOptimalIronmanOrder = ImmutableList.of(
+	private static final List<QuestHelperQuest> optimalIronmanOrder = ImmutableList.of(
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.MISTHALIN_MYSTERY,
@@ -417,7 +417,7 @@ public class QuestOrders
 		//QuestHelperQuest.WILDERNESS_EASY,
 		//QuestHelperQuest.DESERT_EASY,
 		//QuestHelperQuest.ARDOUGNE_EASY,
-		//QuestHelperQuest.LUMBRIDGE_EASY,
+		QuestHelperQuest.LUMBRIDGE_EASY,
 		//QuestHelperQuest.MORYTANIA_EASY,
 		//QuestHelperQuest.KOUREND_EASY,
 		//QuestHelperQuest.WESTERN_EASY,
@@ -446,7 +446,7 @@ public class QuestOrders
 		//QuestHelperQuest.WILDERNESS_MEDIUM,
 		QuestHelperQuest.KARAMJA_MEDIUM,
 		//QuestHelperQuest.KOUREND_MEDIUM,
-		//QuestHelperQuest.LUMBRIDGE_MEDIUM,
+		QuestHelperQuest.LUMBRIDGE_MEDIUM,
 		//QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.DEVIOUS_MINDS,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
@@ -459,7 +459,7 @@ public class QuestOrders
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		QuestHelperQuest.CLOCK_TOWER,
-		
+
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
 
 		//QuestHelperQuest.STRONGHOLD_OF_SECURITY - Placeholder for future addition.
@@ -490,8 +490,8 @@ public class QuestOrders
 		QuestHelperQuest.KARAMJA_ELITE,
 		//QuestHelperQuest.KOUREND_HARD,
 		//QuestHelperQuest.KOUREND_ELITE,
-		//QuestHelperQuest.LUMBRIDGE_HARD,
-		//QuestHelperQuest.LUMBRIDGE_ELITE,
+		QuestHelperQuest.LUMBRIDGE_HARD,
+		QuestHelperQuest.LUMBRIDGE_ELITE,
 		//QuestHelperQuest.MORYTANIA_HARD,
 		//QuestHelperQuest.MORYTANIA_ELITE,
 		QuestHelperQuest.VARROCK_HARD,

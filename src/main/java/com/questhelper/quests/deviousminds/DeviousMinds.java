@@ -173,7 +173,7 @@ public class DeviousMinds extends BasicQuestHelper
 		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large Pouch.", orb, largePouch);
 
 		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0),
-			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
+			"Bank any weapons and armour and teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
 				"monsters upon entering, and your prayer drained to 0!", illumPouch);
 		enterLawRift = new ObjectStep(this, ObjectID.LAW_RIFT, new WorldPoint(3049, 4839, 0),
 			"Enter the central area through a gap/passage/eyes. Enter the Law Rift.", illumPouch);
@@ -189,7 +189,7 @@ public class DeviousMinds extends BasicQuestHelper
 			"Go back to the monk near Paterdomus temple and search the dead monk's body.");
 
 		talkToEntranaMonk = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3045, 3236, 0),
-			"Talk to the Monk of Entrana to go to Entrana.  No weapons or armour is allowed.");
+			"Talk to the Monk of Entrana to go to Entrana. No weapons or armour is allowed.");
 		useGangPlank = new ObjectStep(this, ObjectID.GANGPLANK_2415, new WorldPoint(2834, 3333, 1),
 			"Use the gangplank to disembark the boat.");
 		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),

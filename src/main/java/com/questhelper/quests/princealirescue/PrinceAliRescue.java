@@ -213,7 +213,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		useKeyOnDoor.addIcon(ItemID.BRONZE_KEY);
 		talkToAli = new NpcStep(this, NpcID.PRINCE_ALI, new WorldPoint(3123, 3240, 0), "Talk to Prince Ali and free him.", key, dyedWig, paste, pinkSkirt);
 
-		returnToHassan = new NpcStep(this, NpcID.HASSAN, new WorldPoint(3298, 3163, 0), "Return Hassan in the Al Kharid Palace to complete the quest.");
+		returnToHassan = new NpcStep(this, NpcID.HASSAN, new WorldPoint(3298, 3163, 0), "Return to Hassan in the Al Kharid Palace to complete the quest.");
 	}
 
 	@Override

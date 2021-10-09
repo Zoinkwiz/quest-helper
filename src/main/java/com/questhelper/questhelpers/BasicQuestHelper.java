@@ -26,10 +26,8 @@ package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.steps.ConditionalStep;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -62,7 +62,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	ItemRequirement combatGear, bullseyeLantern, tinderbox, lawRune2, airRune4, waterRune1,
 		crystalKey, bronzeSpear, watermelon, emptySack, fishingExplosive, mithGrapple,
 		anyCrossbow, initiateHelm, initiateChest, initiateLegs, pickaxe, axe, brownApron,
-		willowBranch6;
+		willowBranch6, rake;
 
 	//Items Recommended
 	ItemRequirement faladorTeleport, explorersRing, combatBracelet;
@@ -159,6 +159,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow);
 		fishingExplosive = new ItemRequirement("Fishing Explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
 		mithGrapple = new ItemRequirement("Mithril Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
@@ -317,7 +318,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, lawRune2, waterRune1, crystalKey, bronzeSpear, watermelon, emptySack,
+		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, lawRune2, waterRune1, crystalKey, bronzeSpear, watermelon, rake, emptySack,
 			fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest, initiateLegs, pickaxe, axe, brownApron, willowBranch6);
 	}
 
@@ -421,7 +422,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		PanelDetails scarecrowSteps = new PanelDetails("Brain not included", Arrays.asList(getHaysack, useSackOnSpear,
 			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23, true),
-			emptySack, bronzeSpear, watermelon, scarecrow);
+			emptySack, bronzeSpear, watermelon, scarecrow, rake);
 		scarecrowSteps.setDisplayCondition(notPlacedScarecrow);
 		allSteps.add(scarecrowSteps);
 

@@ -40,6 +40,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -321,6 +323,21 @@ public class KaramjaHard extends ComplexStateQuestHelper
 			Operation.GREATER_EQUAL, "Partial completion of Legends' Quest"));
 
 		return reqs;
+	}
+
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Karamja Gloves (3)", ItemID.KARAMJA_GLOVES_3, 1),
+				new ItemReward("10,000 Exp. Lamp (Any skill above level 40)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Unlimited Teleports to the underground Shilo Village mine"),
+				new UnlockReward("Access to the underground Shilo Village mine"));
 	}
 
 	@Override

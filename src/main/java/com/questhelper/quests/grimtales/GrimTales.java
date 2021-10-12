@@ -40,6 +40,9 @@ import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -375,6 +378,30 @@ public class GrimTales extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Glod (level 138)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FARMING, 4000),
+				new ExperienceReward(Skill.HERBLORE, 5000),
+				new ExperienceReward(Skill.HITPOINTS, 5000),
+				new ExperienceReward(Skill.WOODCUTTING, 14000),
+				new ExperienceReward(Skill.AGILITY, 6000),
+				new ExperienceReward(Skill.THIEVING, 6000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Dwarven Helmet", ItemID.DWARVEN_HELMET, 1));
 	}
 
 	@Override

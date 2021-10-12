@@ -34,6 +34,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -329,6 +331,22 @@ public class KaramjaMedium extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));
 
 		return reqs;
+	}
+
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Karamja Gloves (2)", ItemID.KARAMJA_GLOVES_2, 1),
+				new ItemReward("5,000 Exp. Lamp (Any skill above level 30)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Increased Agility Experience when redeeming Agility tickets"),
+				new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena"),
+				new UnlockReward("Access to the stepping stone shortcut across the river of Shilo Village"));
 	}
 
 	@Override

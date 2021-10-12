@@ -28,7 +28,6 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.QuestBank;
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -41,7 +40,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -49,7 +47,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class ItemRequirement extends AbstractRequirement
 {

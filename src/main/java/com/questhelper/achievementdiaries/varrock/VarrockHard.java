@@ -41,6 +41,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 
 import java.util.ArrayList;
@@ -353,7 +355,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
 		reqs.add(new SkillRequirement(Skill.FARMING, 68, true));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 66, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 66));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 54));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 52));
 		reqs.add(new SkillRequirement(Skill.RANGED, 40));
@@ -369,6 +371,25 @@ public class VarrockHard extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Kill various monsters in the stronghold of security (levels 13-86)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Varrock Armor (3)", ItemID.VARROCK_ARMOUR_3, 1),
+				new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("10% Chance to mine 2 ores at once up to adamantite ore"),
+				new UnlockReward("10% Chance of smelting 2 bars at once up to adamantite when using the Edgeville furnace"),
+				new UnlockReward("Zaff will sell 60 Battlestaves per day for 7,000 Coins each"),
+				new UnlockReward("The Skull sceptre will now hold 22 charges"),
+				new UnlockReward("Access to the Cooks' Guild bank"));
 	}
 
 	@Override

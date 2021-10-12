@@ -162,21 +162,17 @@ public class QuestStepPanel extends JPanel
 
 		for (QuestStep step : panelDetails.getSteps())
 		{
-			if (!step.isShowInSidebar())
-			{
-				steps.put(step, null);
-				continue;
-			}
-
 			JLabel questStepLabel = new JLabel();
 			questStepLabel.setLayout(new BorderLayout());
 			questStepLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
 			questStepLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			questStepLabel.setVerticalAlignment(SwingConstants.TOP);
 			questStepLabel.setText(generateText(step));
+			questStepLabel.setVisible(step.isShowInSidebar());
 
 			steps.put(step, questStepLabel);
 			questStepsPanel.add(questStepLabel);
+
 		}
 
 		bodyPanel.add(questStepsPanel, BorderLayout.CENTER);
@@ -216,6 +212,8 @@ public class QuestStepPanel extends JPanel
 
 	public void updateHighlight(QuestStep currentStep)
 	{
+		expand();
+
 		if (currentlyHighlighted != null && steps.get(currentlyHighlighted) != null)
 		{
 			steps.get(currentlyHighlighted).setForeground(Color.LIGHT_GRAY);
@@ -253,6 +251,7 @@ public class QuestStepPanel extends JPanel
 			}
 			currentlyHighlighted = null;
 		}
+		collapse();
 	}
 
 	public void updateLock()
@@ -339,5 +338,15 @@ public class QuestStepPanel extends JPanel
 	public void updateRequirements(Client client, List<Item> bankItems, QuestOverviewPanel questOverviewPanel)
 	{
 		questOverviewPanel.updateRequirementPanels(client, requirementPanels, bankItems);
+		updateStepVisibility(client);
+	}
+
+	public void updateStepVisibility(Client client)
+	{
+		for (QuestStep step : steps.keySet())
+		{
+			step.setShowInSidebar(step.getConditionToHide() == null || !step.getConditionToHide().check(client));
+			steps.get(step).setVisible(step.isShowInSidebar());
+		}
 	}
 }

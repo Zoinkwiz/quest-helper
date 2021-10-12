@@ -36,6 +36,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -199,6 +201,22 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 15, true));
 		req.add(new SkillRequirement(Skill.MINING, 40, true));
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Karamja Gloves (1)", ItemID.KARAMJA_GLOVES_1, 1),
+				new ItemReward("1,000 Exp. Lamp (Any skill)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Better prices in shops on Karamja and in Tzhaar City."),
+				new UnlockReward("Half price ships from Ardogune to Brimhaven and Musa Point to Port Sarim."));
 	}
 
 	@Override

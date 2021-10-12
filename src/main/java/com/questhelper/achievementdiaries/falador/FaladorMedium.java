@@ -244,7 +244,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2Highlight, watermelonHighlight);
 
 		placeScarecrow = new ObjectStep(this, ObjectID.FLOWER_PATCH, new WorldPoint(3054, 3307, 0),
-			"Rake any weeds in the flower patch, then plant your scarecrow.");
+			"Rake any weeds in the flower patch, then plant your scarecrow.", rake);
 
 		//Mogre
 		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT,

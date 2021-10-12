@@ -38,6 +38,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
@@ -68,15 +69,15 @@ public class MountainDaughter extends BasicQuestHelper
 {
 	//Items Required
 	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee,
-	halfRock, gloves, corpse, pole, rope, rocks, necklace;
+		halfRock, gloves, corpse, pole, rope, rocks, necklace;
 
 	//Items Recommended
 	private ItemRequirement slayerRing, combatGear;
 
 	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock,
-		gottenGuarantee, givenGuaranteeToSvidi, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, fightableKendalNearby, hasBuried;
+		gottenGuarantee, givenGuaranteeToSvidi, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, fightableKendalNearby, hasBuried, rubbedMudIntoTree, hasMudOrRubbed;
 
-	private QuestStep enterCamp, enterCampOverRocks, talkToHamal, rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit, plankRocksReturn, talkToHamalAfterSpirit,
+	private QuestStep enterCamp, enterCampOverRocks, talkToHamal, digUpMud, rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit, plankRocksReturn, talkToHamalAfterSpirit,
 		talkToJokul, talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi, getFruit, eatFruit, returnToSpirit, returnToHamalAboutFood,
 		returnToHamalAboutDiplomacy, talkToKendal, killKendal, noPlankRocksReturn, enterCave, grabCorpse, bringCorpseToHamal, collectRocks, createCairn,
 		buryCorpseOnIsland, speakRagnar;
@@ -103,7 +104,8 @@ public class MountainDaughter extends BasicQuestHelper
 		speakToSpirit.addStep(onIsland3, listenToSpirit);
 		speakToSpirit.addStep(onIsland2, plankRocks);
 		speakToSpirit.addStep(onIsland1, poleVaultRocks);
-		speakToSpirit.addStep(inTheCamp, rubMudIntoTree);
+		speakToSpirit.addStep(new Conditions(inTheCamp, hasMudOrRubbed), rubMudIntoTree);
+		speakToSpirit.addStep(inTheCamp, digUpMud);
 
 		steps.put(10, speakToSpirit);
 
@@ -214,6 +216,8 @@ public class MountainDaughter extends BasicQuestHelper
 
 		inTheCamp = new Conditions(new ZoneRequirement(CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3));
 		askedAboutDiplomacy = new Conditions(new VarbitRequirement(262, 10));
+		rubbedMudIntoTree = new Conditions(new VarbitRequirement(261, 1));
+		hasMudOrRubbed = new Conditions(LogicType.OR, rubbedMudIntoTree, mud);
 
 		VarbitRequirement askedAboutFood = new VarbitRequirement(263, 10, Operation.GREATER_EQUAL);
 		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(262, 10), askedAboutFood);
@@ -246,6 +250,8 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToHamal.addDialogStep("Why is everyone so hostile?");
 		talkToHamal.addDialogStep("So what are you doing up here?");
 		talkToHamal.addDialogStep("I will search for her!");
+
+		digUpMud = new ObjectStep(this, ObjectID.ROOTS_5885, new WorldPoint(2805, 3661, 0), "Dig some mud from the mud pond south of Hamal's house.");
 
 		rubMudIntoTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3679, 0),
 			"Use mud on the Tall Tree on the lake north of the camp, and then climb it.",
@@ -412,8 +418,8 @@ public class MountainDaughter extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.ATTACK, 1000),
-				new ExperienceReward(Skill.PRAYER, 2000));
+			new ExperienceReward(Skill.ATTACK, 1000),
+			new ExperienceReward(Skill.PRAYER, 2000));
 	}
 
 	@Override

@@ -69,8 +69,8 @@ public class Wanted extends BasicQuestHelper
 	private static final String TEXT_ASK_ABOUT_WANTED_QUEST = "Ask about the Wanted! Quest";
 
 	ItemRequirement commorbComponents, tenThousandGp, commorbComponentsOrTenThousandGp, lightSource, spinyHelmet, rope,
-		combatGear, commorb, highlightedCommorb, essence, amuletOfGlory, faladorTeleport, varrockTeleport,
-		canifisTeleport;
+		combatGear, commorb, highlightedCommorb, runeEssence, pureEssence, essence, amuletOfGlory, faladorTeleport,
+		varrockTeleport, canifisTeleport;
 
 	Zone whiteKnightsCastleF1, whiteKnightsCastleF2, taverleyDungeonP1, taverleyDungeonP2, blackKnightsBase, nearCanifis,
 		canifis, championsGuild, essenceMine, dorgeshKaan, lumbridgeCellar, musaPoint, draynorMarket, goblinVillage,

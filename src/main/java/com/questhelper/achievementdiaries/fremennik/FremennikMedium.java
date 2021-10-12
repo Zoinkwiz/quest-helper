@@ -81,7 +81,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1,
 		moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7,
 		moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13,
-		moveToDagCave14, moveToDagCave15, claimReward;
+		moveToDagCave14, moveToDagCave15, claimReward, activateSpecial;
 
 	ObjectStep dropPetRock;
 
@@ -141,7 +141,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave2), moveToDagCave3);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave1), moveToDagCave2);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave_4), moveToDagCave1);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3), throwAxe);
+		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3, specialAttackEnabled), throwAxe);
+		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3), activateSpecial);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave_2), moveToAxeSpot);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave), dropPetRock);
 		doMedium.addStep(new Conditions(notLighthouse, inWaterbirthIsland), moveToDagCave);
@@ -323,6 +324,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
 		moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
+		activateSpecial = new DetailedQuestStep(this, "Activate special attack with the rune thrownaxes equpped.",
+			thrownaxe.equipped(), specialAttackEnabled);
 		throwAxe = new NpcStep(this, 2253, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet" +
 				" and lower all 3 barriers.", thrownaxe.equipped(), specialAttackEnabled);

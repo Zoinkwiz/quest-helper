@@ -321,17 +321,17 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		craftACoifSteps.setDisplayCondition(notCraftCoif);
 		allSteps.add(craftACoifSteps);
 
+		PanelDetails alKaridRooftopCourseSteps = new PanelDetails("Al Karid Rooftop Course",
+			Collections.singletonList(alKaridRooftop), new SkillRequirement(Skill.AGILITY, 20));
+		alKaridRooftopCourseSteps.setDisplayCondition(notAlKaridRooftop);
+		allSteps.add(alKaridRooftopCourseSteps);
+
 		PanelDetails grappleRiverLumSteps = new PanelDetails("Grapple River Lum",
 			Collections.singletonList(grappleLum), new SkillRequirement(Skill.AGILITY, 8),
 			new SkillRequirement(Skill.STRENGTH, 19), new SkillRequirement(Skill.RANGED, 37),
 			crossbow, mithGrap);
 		grappleRiverLumSteps.setDisplayCondition(notGrappleLum);
 		allSteps.add(grappleRiverLumSteps);
-
-		PanelDetails alKaridRooftopCourseSteps = new PanelDetails("Al Karid Rooftop Course",
-			Collections.singletonList(alKaridRooftop), new SkillRequirement(Skill.AGILITY, 20));
-		alKaridRooftopCourseSteps.setDisplayCondition(notAlKaridRooftop);
-		allSteps.add(alKaridRooftopCourseSteps);
 
 		PanelDetails lavaRunesSteps = new PanelDetails("Craft Lava Runes", Arrays.asList(moveToLavaAltar, craftLava),
 			new SkillRequirement(Skill.RUNECRAFT, 23), fireAccess, earthTali, earthRune, ess);

@@ -273,7 +273,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(mithGrap, crossbow, dustyKey, bigFishingNet, unicornHorn, mortarPest,
 			vialOfWater, iritLeaf, mapleUnstrung, bowString, lockpick, pickaxe, lawRune.quantity(1),
-			airRune.quantity(5), limpSeed, seedDib, compost, rake, primedMind, batteredKey,
+			airRune.quantity(5), limpSeed, seedDib, compost, rake, rope, primedMind, batteredKey,
 			beatenBook, hammer, staff, combatGear);
 	}
 

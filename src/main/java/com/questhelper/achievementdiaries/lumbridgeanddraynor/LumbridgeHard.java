@@ -127,11 +127,11 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notBonesToPeachesPalace = new VarplayerRequirement(1194, true, 25);
+		notBonesToPeachesPalace = new VarplayerRequirement(1194, false, 25);
 		notJuttingWall = new VarplayerRequirement(1194, false, 26);
-		notCosmics = new VarplayerRequirement(1194, true, 27);
+		notCosmics = new VarplayerRequirement(1194, false, 27);
 		notWakaToEdge = new VarplayerRequirement(1194, false, 28);
-		notHundredTears = new VarplayerRequirement(1194, true, 29);
+		notHundredTears = new VarplayerRequirement(1194, false, 29);
 		notTrainToKeld = new VarplayerRequirement(1194, false, 30);
 		notBarrowsGloves = new VarplayerRequirement(1194, false, 31);
 		notBelladonna = new VarplayerRequirement(1195, false, 0);

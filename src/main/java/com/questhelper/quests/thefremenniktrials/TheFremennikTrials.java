@@ -52,6 +52,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -259,7 +260,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		peerTask.addStep(talkedToPeer, enterPeerHouse);
 		peerTask.setLockingCondition(finishedPeerTask);
 
-		DetailedQuestStep resyncStep = new DetailedQuestStep(this, "Please open the quest's Quest Journal to sync your state.");
+		QuestSyncStep resyncStep = new QuestSyncStep(this, getQuest(),
+			"Please open the quest's Quest Journal to sync your state.");
 		ConditionalStep resyncCondition = new ConditionalStep(this, resyncStep);
 		resyncCondition.setLockingCondition(syncedAll);
 
@@ -417,7 +419,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		talkedToManni = new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat);
 
 		syncedManni = new Conditions(true, LogicType.OR, talkedToManni);
-		
+
 		isNearPipe = new ZoneRequirement(nearPipe);
 
 		hasPlacedStrangeObject = new Conditions(true, LogicType.OR,
@@ -427,7 +429,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		finishedManniTask = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial!"),
 			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"));
-		
+
 		// No gz message
 		finishedSigliTask = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),

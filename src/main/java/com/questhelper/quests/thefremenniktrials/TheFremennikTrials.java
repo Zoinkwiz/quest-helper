@@ -691,7 +691,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		bringWarriorsContractToPeer.addDialogStep("Ask about the Merchant's trial");
 		bringWeatherForecastToSwensen = new NpcStep(this, NpcID.SWENSEN_THE_NAVIGATOR, new WorldPoint(2646, 3660, 0), "Bring the weather forecast to Swensen the Navigator in his hut south west of the longhall.", weatherForecast);
 		bringWeatherForecastToSwensen.addDialogStep("Ask about the Merchant's trial");
-		bringSeaFishingMapToFisherman = new NpcStep(this, NpcID.FISHERMAN, new WorldPoint(2641, 3699, 0), "Bring the sea fishing map to the Fisherman on the peer north of the market.", seaFishingMap);
+		bringSeaFishingMapToFisherman = new NpcStep(this, NpcID.FISHERMAN, new WorldPoint(2641, 3699, 0), "Bring the sea fishing map to the Fisherman on the pier north of the market.", seaFishingMap);
 		bringSeaFishingMapToFisherman.addDialogStep("Ask about the Merchant's trial");
 		bringUnusualFishToSkulgrimen = new NpcStep(this, NpcID.SKULGRIMEN, new WorldPoint(2663, 3692, 0), "Bring the unusual fish to Skulgrimen north of the longhall.", unusualFish);
 		bringUnusualFishToSkulgrimen.addDialogStep("Ask about the Merchant's trial");

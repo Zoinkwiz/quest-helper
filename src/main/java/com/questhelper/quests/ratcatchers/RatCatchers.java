@@ -92,7 +92,7 @@ public class RatCatchers extends BasicQuestHelper
 		talkToJackAfterCure, climbJackLadderAgain, useCatOnHole, feedCatAsItFights, goDownToJackAfterFight,
 		talkToJackAfterFight;
 
-	QuestStep travelToKeldagrim, talkToSmokinJoe, lightWeeds, usePotOnHole, usePotOnHoleAgain, talkToJoeAgain;
+	QuestStep travelToKeldagrim, talkToSmokinJoe, lightWeeds, dropCat, usePotOnHole, usePotOnHoleAgain, talkToJoeAgain;
 
 	QuestStep enterSarimRatPits, talkToFelkrash, leaveSarimRatPits, talkToTheFaceAgain;
 
@@ -420,6 +420,7 @@ public class RatCatchers extends BasicQuestHelper
 		talkToSmokinJoe.addDialogStep("I could help you.");
 		lightWeeds = new DetailedQuestStep(this, "Use a tinderbox on the pot of weeds.", potOfWeeds.highlighted(),
 			tinderbox.highlighted());
+		dropCat = new DetailedQuestStep(this, "Place your cat on the ground.", cat.highlighted());
 		usePotOnHole = new ObjectStep(this, ObjectID.RAT_HOLE_10350, new WorldPoint(2933, 10212, 0),
 			"Use the smouldering pot on the hole east of Joe.", smoulderingPot.highlighted(), catFollower,
 			catspeakAmuletOrDS2.equipped());

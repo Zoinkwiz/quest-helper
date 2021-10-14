@@ -877,6 +877,18 @@ public class ItemCollections
 		ItemID.BLUE_LOGS
 	);
 
+	@Getter
+	private static final List<Integer> bones = ImmutableList.of(
+		ItemID.BONES,
+		ItemID.BURNT_BONES,
+		ItemID.WOLF_BONES,
+		ItemID.BAT_BONES,
+		ItemID.BIG_BONES,
+		ItemID.JOGRE_BONES,
+		ItemID.BABYDRAGON_BONES,
+		ItemID.DRAGON_BONES,
+		ItemID.DAGANNOTH_BONES
+	);
 
 	// Other
 
@@ -1222,5 +1234,105 @@ public class ItemCollections
 		ItemID.LUNAR_STAFF__PT2,
 		ItemID.LUNAR_STAFF__PT1,
 		ItemID.DRAMEN_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> earthAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.EARTH_TIARA,
+		ItemID.EARTH_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> essenceLow = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE,
+		ItemID.RUNE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> essenceHigh = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> coins = ImmutableList.of(
+		ItemID.COINS_995,
+		ItemID.COINS_8890,
+		ItemID.COINS_6964,
+		ItemID.COINS
+	);
+
+	@Getter
+	private  static final List<Integer> cookingGuild = ImmutableList.of(
+		ItemID.CHEFS_HAT,
+		ItemID.VARROCK_ARMOUR_3,
+		ItemID.VARROCK_ARMOUR_4,
+		ItemID.COOKING_CAPET,
+		ItemID.COOKING_CAPE
+	);
+
+	@Getter
+	private  static final List<Integer> plunderArtefacts = ImmutableList.of(
+		ItemID.IVORY_COMB,
+		ItemID.POTTERY_SCARAB,
+		ItemID.POTTERY_STATUETTE,
+		ItemID.STONE_SEAL,
+		ItemID.STONE_SCARAB,
+		ItemID.STONE_STATUETTE,
+		ItemID.GOLD_SEAL,
+		ItemID.GOLDEN_SCARAB,
+		ItemID.GOLDEN_STATUETTE
+	);
+
+	@Getter
+	private  static final List<Integer> waterskin = ImmutableList.of(
+		ItemID.WATERSKIN4,
+		ItemID.WATERSKIN3,
+		ItemID.WATERSKIN2,
+		ItemID.WATERSKIN1
+	);
+
+	@Getter
+	private  static final List<Integer> grimyHerb = ImmutableList.of(
+		ItemID.GRIMY_AVANTOE,
+		ItemID.GRIMY_CADANTINE,
+		ItemID.GRIMY_LANTADYME,
+		ItemID.GRIMY_ARDRIGAL,
+		ItemID.GRIMY_ROGUES_PURSE,
+		ItemID.GRIMY_GUAM_LEAF,
+		ItemID.GRIMY_HARRALANDER,
+		ItemID.GRIMY_TOADFLAX,
+		ItemID.GRIMY_TORSTOL,
+		ItemID.GRIMY_TARROMIN,
+		ItemID.GRIMY_IRIT_LEAF
+	);
+
+	@Getter
+	private  static final List<Integer> blackjacks = ImmutableList.of(
+		ItemID.MAPLE_BLACKJACKD,
+		ItemID.MAPLE_BLACKJACKO,
+		ItemID.MAPLE_BLACKJACK,
+		ItemID.WILLOW_BLACKJACKD,
+		ItemID.WILLOW_BLACKJACKO,
+		ItemID.WILLOW_BLACKJACK,
+		ItemID.OAK_BLACKJACKO,
+		ItemID.OAK_BLACKJACKD,
+		ItemID.OAK_BLACKJACK
+	);
+
+	@Getter
+	private  static final List<Integer> keris = ImmutableList.of(
+		ItemID.KERISP_10584,
+		ItemID.KERISP_10583,
+		ItemID.KERISP,
+		ItemID.KERIS
+	);
+
+	@Getter
+	private  static final List<Integer> stuffedKQHead = ImmutableList.of(
+		ItemID.STUFFED_KQ_HEAD,
+		ItemID.STUFFED_KQ_HEAD_TATTERED
 	);
 }

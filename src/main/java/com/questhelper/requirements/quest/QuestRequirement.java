@@ -48,21 +48,22 @@ public class QuestRequirement extends AbstractRequirement
 	/**
 	 * Check if a {@link net.runelite.api.Quest} meets the required {@link QuestState}
 	 *
-	 * @param quest the quest to check
+	 * @param quest         the quest to check
 	 * @param requiredState the required quest state
 	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState)
 	{
 		this.quest = quest;
 		this.requiredState = requiredState;
+		shouldCountForFilter = true;
 	}
 
 	/**
 	 * Check if a {@link net.runelite.api.Quest} meets the required {@link QuestState}.
 	 *
-	 * @param quest the quest to check
+	 * @param quest         the quest to check
 	 * @param requiredState the required quest state
-	 * @param displayText display text
+	 * @param displayText   display text
 	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, String displayText)
 	{

@@ -49,6 +49,12 @@ public class EmoteStep extends DetailedQuestStep
 		this.emote = emote;
 	}
 
+	public EmoteStep(QuestHelper questHelper, QuestEmote emote, String text, Requirement... requirements)
+	{
+		super(questHelper, text, requirements);
+		this.emote = emote;
+	}
+
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{

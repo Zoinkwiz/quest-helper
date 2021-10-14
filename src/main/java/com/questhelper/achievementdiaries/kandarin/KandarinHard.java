@@ -37,6 +37,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -194,7 +196,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		seersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Complete a lap of the Seers' village Rooftop course.");
 		yewLong = new ObjectStep(this, ObjectID.YEW, new WorldPoint(2715, 3460, 0),
-			"Cut some yew logs near Catherby. Make sure to use the knife on the ones you cut.", axe);
+			"Cut some yew logs near Seers' Village. Make sure to use the knife on the ones you cut.", axe);
 		cutLongbow = new ItemStep(this, "Use knife on yew logs to make a yew longbow (u)", yewLogs.highlighted(), knife.highlighted());
 		stringBow = new ItemStep(this, "String the bow.", bowString.highlighted(), unstrungYewLong.highlighted());
 		pietyCourt = new DetailedQuestStep(this, new WorldPoint(2735, 3469, 0),
@@ -290,6 +292,28 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Shadow Hound (Level 63), Mithril Dragon (level 304)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Kandarin headgear (3)", ItemID.KANDARIN_HEADGEAR_3, 1),
+				new ItemReward("15,500 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Coal trucks can hold up to 308 coal."),
+				new UnlockReward("Thormac will enchant battlestaves for 30,000 coins each"),
+				new UnlockReward("The Flax keeper will exchange 120 noted flax for 120 noted bow strings daily"),
+				new UnlockReward("15% more marks of grace on Seers' Village Rooftop Course"),
+				new UnlockReward("10% increased chance to save a harvest life from the Catherby herb patch"),
+				new UnlockReward("10% increased reward points from Barbarian Assault"),
+				new UnlockReward("10% increased activation chance (multiplicative) for the special effect from enchanted bolts (Inlcluding PvP)"),
+				new UnlockReward("Ability to toggle Camelot Teleport to outside Seers' Village bank"));
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public class ChatMessageRequirement extends ConditionForStep
 				}
 			}
 		}
-		else
+		else if (invalidateRequirement != null)
 		{
 			invalidateRequirement.validateCondition(client, chatMessage);
 			if (invalidateRequirement.check(client))

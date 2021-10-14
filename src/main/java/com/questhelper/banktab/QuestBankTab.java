@@ -33,7 +33,6 @@ import com.questhelper.QuestHelperPlugin;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +50,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GrandExchangeSearched;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
@@ -69,7 +67,6 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
@@ -90,6 +87,8 @@ public class QuestBankTab
 
 	private final ArrayList<Widget> addedWidgets = new ArrayList<>();
 
+	private ArrayList<Integer> priorEvents = new ArrayList<>();
+
 	boolean isSwappingDuplicates = false;
 
 	@Inject
@@ -107,6 +106,9 @@ public class QuestBankTab
 	@Inject
 	private QuestBankTabInterface questBankTabInterface;
 
+	@Inject
+	private QuestGrandExchangeInterface geButtonWidget;
+
 	private final QuestHelperPlugin questHelper;
 
 	private final HashMap<Widget, BankTabItem> widgetItems = new HashMap<>();
@@ -123,12 +125,14 @@ public class QuestBankTab
 		if (questHelper.getSelectedQuest() != null)
 		{
 			clientThread.invokeLater(questBankTabInterface::init);
+			clientThread.invokeLater(geButtonWidget::init);
 		}
 	}
 
 	public void shutDown()
 	{
 		clientThread.invokeLater(questBankTabInterface::destroy);
+		clientThread.invokeLater(geButtonWidget::destroy);
 		if (!addedWidgets.isEmpty())
 		{
 			for (Widget addedWidget : addedWidgets)
@@ -144,24 +148,25 @@ public class QuestBankTab
 	{
 		final String input = client.getVar(VarClientStr.INPUT_TEXT);
 		String QUEST_BANK_TAG = "quest-helper";
-		if (!input.equals(QUEST_BANK_TAG))
+
+		if (!input.equals(QUEST_BANK_TAG) || questHelper.getSelectedQuest() == null)
 		{
 			return;
 		}
-
 		event.consume();
+		updateGrandExchangeResults();
+	}
 
+	public void updateGrandExchangeResults()
+	{
 		final List<Integer> idsList = questHelper.getBankTagService().itemsToTag();
 
-		final Set<Integer> ids = idsList
-			.stream()
-			.mapToInt(Math::abs)
-			.mapToObj(ItemVariationMapping::getVariations)
-			.flatMap(Collection::stream)
+		final Set<Integer> ids = idsList.stream()
 			.distinct()
 			.filter(i -> itemManager.getItemComposition(i).isTradeable())
 			.limit(MAX_RESULT_COUNT)
 			.collect(Collectors.toCollection(TreeSet::new));
+
 
 		client.setGeSearchResultIndex(0);
 		client.setGeSearchResultCount(ids.size());
@@ -172,6 +177,7 @@ public class QuestBankTab
 	public void onScriptPreFired(ScriptPreFired event)
 	{
 		int scriptId = event.getScriptId();
+
 		if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
 			// Since we apply tag tab search filters even when the bank is not in search mode,
@@ -258,6 +264,12 @@ public class QuestBankTab
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired event)
 	{
+		int SEARCHBOX_LOADED = 750;
+		if (event.getScriptId() == SEARCHBOX_LOADED)
+		{
+			geButtonWidget.init();
+		}
+
 		if (event.getScriptId() == ScriptID.BANKMAIN_SEARCHING)
 		{
 			// The return value of bankmain_searching is on the stack. If we have a tag tab active
@@ -308,7 +320,7 @@ public class QuestBankTab
 
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
 
-		ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections();
+		ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections(false);
 
 		if (tabLayout != null)
 		{

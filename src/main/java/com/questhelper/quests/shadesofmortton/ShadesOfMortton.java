@@ -35,6 +35,9 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -318,6 +321,26 @@ public class ShadesOfMortton extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.HERBLORE, 15, true));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 5));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.HERBLORE, 2000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to play the Shades of Mort'ton Minigame"));
 	}
 
 	@Override

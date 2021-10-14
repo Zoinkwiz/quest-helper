@@ -40,6 +40,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
 import net.runelite.api.*;
@@ -237,6 +239,23 @@ public class FaladorElite extends ComplexStateQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.WANTED, QuestState.FINISHED));
 
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Falador Shield (4)", ItemID.FALADOR_SHIELD_4, 1),
+				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Tree patch in Falador is now disease free."),
+				new UnlockReward("Increased chance at higher level ores when clearing pay-dirt in the Motherlode Mine."),
+				new UnlockReward("Access to the alternative Amethyst mining spot."));
 	}
 
 	@Override

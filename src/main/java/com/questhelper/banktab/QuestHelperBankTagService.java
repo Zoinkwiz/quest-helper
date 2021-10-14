@@ -24,6 +24,7 @@
  */
 package com.questhelper.banktab;
 
+import com.questhelper.QuestBank;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -41,16 +42,18 @@ import net.runelite.api.ItemContainer;
 public class QuestHelperBankTagService
 {
 	private final QuestHelperPlugin plugin;
+	private final QuestBank questBank;
 
 	@Inject
-	public QuestHelperBankTagService(QuestHelperPlugin plugin)
+	public QuestHelperBankTagService(QuestHelperPlugin plugin, QuestBank questBank)
 	{
 		this.plugin = plugin;
+		this.questBank = questBank;
 	}
 
 	public ArrayList<Integer> itemsToTag()
 	{
-		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections();
+		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(true);
 
 		if (sortedItems == null)
 		{
@@ -70,7 +73,7 @@ public class QuestHelperBankTagService
 		return flattenedList;
 	}
 	
-	public ArrayList<BankTabItems> getPluginBankTagItemsForSections()
+	public ArrayList<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)
 	{
 		ArrayList<BankTabItems> newList = new ArrayList<>();
 
@@ -101,6 +104,7 @@ public class QuestHelperBankTagService
 				.stream()
 				.filter(ItemRequirement.class::isInstance)
 				.map(ItemRequirement.class::cast)
+				.filter(i -> !onlyGetMissingItems || !i.check(plugin.getClient(), false, questBank.getBankItems()))
 				.collect(Collectors.toList());
 
 			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());

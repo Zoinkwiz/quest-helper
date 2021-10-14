@@ -28,10 +28,13 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -42,7 +45,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -326,6 +328,21 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Corrupt Lizardman (level 46)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("8,000 Coins", ItemID.COINS_995, 8000),
+				new ItemReward("Shayzien Favour Certificate", ItemID.SHAYZIEN_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("A Memoir Page", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

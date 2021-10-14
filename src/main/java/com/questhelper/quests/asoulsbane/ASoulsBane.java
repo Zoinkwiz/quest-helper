@@ -38,6 +38,10 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -49,10 +53,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -285,6 +287,32 @@ public class ASoulsBane extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Multiple level 40-46 enemies");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.DEFENCE, 500),
+				new ExperienceReward(Skill.HITPOINTS, 500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("500 Coins", ItemID.COINS_995, 500));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to the Dungeon of Tolna"));
 	}
 
 	@Override

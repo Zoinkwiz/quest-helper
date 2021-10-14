@@ -45,6 +45,9 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -878,6 +881,26 @@ public class RagAndBoneManII extends BasicQuestHelper
 	{
 		return Collections.singletonList("If you've handed in any bones to the Odd Old Man, open the quest journal to" +
 			" sync up the helper's state");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.PRAYER, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("A Bonesack", ItemID.BONESACK, 1),
+				new ItemReward("A Ram Skull Helm", ItemID.RAM_SKULL_HELM, 1));
 	}
 
 	@Override

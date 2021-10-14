@@ -46,21 +46,18 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import java.util.*;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -72,8 +69,8 @@ public class Wanted extends BasicQuestHelper
 	private static final String TEXT_ASK_ABOUT_WANTED_QUEST = "Ask about the Wanted! Quest";
 
 	ItemRequirement commorbComponents, tenThousandGp, commorbComponentsOrTenThousandGp, lightSource, spinyHelmet, rope,
-		combatGear, commorb, highlightedCommorb, essence, amuletOfGlory, faladorTeleport, varrockTeleport,
-		canifisTeleport;
+		combatGear, commorb, highlightedCommorb, runeEssence, pureEssence, essence, amuletOfGlory, faladorTeleport,
+		varrockTeleport, canifisTeleport;
 
 	Zone whiteKnightsCastleF1, whiteKnightsCastleF2, taverleyDungeonP1, taverleyDungeonP2, blackKnightsBase, nearCanifis,
 		canifis, championsGuild, essenceMine, dorgeshKaan, lumbridgeCellar, musaPoint, draynorMarket, goblinVillage,
@@ -261,8 +258,10 @@ public class Wanted extends BasicQuestHelper
 		commorbComponents.setTooltip("Alternatively, you can bring 10k gp.");
 		tenThousandGp = new ItemRequirement("10k gp", ItemID.COINS_995, 10000);
 		commorbComponentsOrTenThousandGp = new ItemRequirements(LogicType.OR, "A law rune, an enchanted gem and some molten glass OR 10k gp", commorbComponents, tenThousandGp);
-
-		essence = new ItemRequirement("Rune or Pure Essence (UNNOTED)", Arrays.asList(ItemID.RUNE_ESSENCE, ItemID.PURE_ESSENCE), 20);
+		
+		runeEssence = new ItemRequirement("Rune Essence (UNNOTED)", ItemID.RUNE_ESSENCE, 20);
+		pureEssence = new ItemRequirement("Pure Essence (UNNOTED)", ItemID.PURE_ESSENCE, 20);
+		essence =  new ItemRequirements(LogicType.OR, "Rune or Pure Essence (UNNOTED)", runeEssence, pureEssence);
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
 		rope = new ItemRequirement("A rope", ItemID.ROPE);
 
@@ -538,6 +537,24 @@ public class Wanted extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Black Knight (level 33)", "Solus Dellagar (similar strength)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.SLAYER, 5000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to the White Knight's Armory"));
 	}
 
 	@Override

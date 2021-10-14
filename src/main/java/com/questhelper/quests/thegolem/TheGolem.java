@@ -30,15 +30,17 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -328,6 +330,35 @@ public class TheGolem extends BasicQuestHelper
 	{
 		return Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20),
 			new SkillRequirement(Skill.THIEVING, 25, true));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.THIEVING, 1000),
+				new ExperienceReward(Skill.CRAFTING, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Rubies", ItemID.RUBY, 2),
+				new ItemReward("Emeralds", ItemID.EMERALD, 2),
+				new ItemReward("Sapphires", ItemID.SAPPHIRE, 2));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to take the Carpet ride from Shanty Pass to Uzer."));
 	}
 
 	@Override

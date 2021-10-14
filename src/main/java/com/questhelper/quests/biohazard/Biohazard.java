@@ -38,6 +38,8 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -49,11 +51,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -325,6 +324,18 @@ public class Biohazard extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 1250));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -335,7 +346,7 @@ public class Biohazard extends BasicQuestHelper
 			enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard, enterMournerHeadquaters,
 			goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
 
-		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist, goToVarrock, talkToAsyff, talkToGuidor);
+		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist);
 		testingSteps.addAll(giveChemicals.getDisplaySteps());
 		testingSteps.addAll(Arrays.asList(goToVarrock, talkToAsyff, talkToGuidor));
 		allSteps.add(new PanelDetails("Testing the plague sample", testingSteps, plagueSample, liquidHoney, ethenea, sulphuricBroline));

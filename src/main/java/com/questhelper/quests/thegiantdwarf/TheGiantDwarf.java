@@ -27,6 +27,7 @@ package com.questhelper.quests.thegiantdwarf;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -44,6 +45,9 @@ import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -84,14 +88,15 @@ public class TheGiantDwarf extends BasicQuestHelper
 	Requirement inTrollRoom, inKeldagrim, inDwarfEntrance, askedToStartMachine, talkedToVermundi,
 		talkedToLibrarian, hasBookOnCostumes, talkedToVermundiWithBook, usedCoalOnMachine, startedMachine,
 		hasExquisiteClothes, talkedToSaro, talkedToDromund, hasLeftBoot, hasExquisiteBoots, givenThurgoPie,
-		talkedToSantiri, usedSapphires, hasDwarvenBattleaxe, givenExquisiteClothes, givenExquisiteBoots,
-		givenDwarvenBattleaxe, inConsortium, completedSecretaryTasks, completedDirectorTasks, joinedCompany;
+		talkedToLibrarianAboutReldo, talkedToSantiri, usedSapphires, hasDwarvenBattleaxe, givenExquisiteClothes,
+		givenExquisiteBoots, givenDwarvenBattleaxe, inConsortium, completedSecretaryTasks, completedDirectorTasks,
+		joinedCompany, previouslyGivenPieToThurgo, talkedToReldo;
 
 	QuestStep enterDwarfCave, enterDwarfCave2, talkToBoatman, talkToVeldaban, talkToBlasidar, talkToVermundi,
 		talkToLibrarian, climbBookcase, talkToVermundiWithBook, talkToVermundiAfterBook, useCoalOnMachine, startMachine,
 		talkToVermundiWithMachine,
 		talkToSaro, talkToDromund, takeLeftBoot, takeRightBoot,
-		talkToSantiri, useSapphires, talkToThurgo, talkToThurgoAfterPie,
+		talkToSantiri, useSapphires, talkToLibrarianAboutImcando, talkToReldo, talkToThurgo, talkToThurgoAfterPie,
 		giveItemsToRiki, talkToBlasidarAfterItems,
 		enterConsortium, talkToSecretary, talkToDirector, joinCompany, talkToDirectorAfterJoining, leaveConsortium, talkToVeldabanAfterJoining;
 
@@ -106,7 +111,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 		coins200 = new ItemRequirement("Coins", ItemID.COINS_995, 200);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		logs.setTooltip("Most logs will work, however, arctic pine logs do not work.");
-		logs.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.TEAK_LOGS, ItemID.MAPLE_LOGS, ItemID.MAHOGANY_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
+		logs.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.TEAK_LOGS, ItemID.MAPLE_LOGS,
+			ItemID.MAHOGANY_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderbox.setHighlightInInventory(true);
 		coal = new ItemRequirement("Coal", ItemID.COAL);
@@ -278,6 +284,14 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new ChatMessageRequirement("Great, all it needs now is a little sharpening!"),
 			dwarvenBattleaxeSapphires);
 
+		talkedToLibrarianAboutReldo = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I suppose you could try Reldo"),
+			new WidgetTextRequirement(217, 4, "Do you think he can help me?"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "He lives quite a good deal closer"));
+		previouslyGivenPieToThurgo = new VarplayerRequirement(QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD.getId(), 3, Operation.GREATER_EQUAL);
+		talkedToReldo = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "you could try taking them some redberry pie."));
+
 		givenThurgoPie = new VarbitRequirement(580, 1);
 		// Thurgo makes axe, 2781 = 1
 		givenDwarvenBattleaxe = new VarbitRequirement(576, true, 2);
@@ -375,6 +389,17 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		useSapphires = new DetailedQuestStep(this, "Use the 3 sapphires on the axe.", dwarvenBattleaxeBroken, sapphires3);
 
+		talkToLibrarianAboutImcando = new NpcStep(this, NpcID.LIBRARIAN, new WorldPoint(2861, 10226, 0), "Talk to the" +
+			" Librarian about Imcando Dwarves. If you already have and no option appears for this, go talk to Reldo " +
+			"in Varrock Castle.");
+		talkToLibrarianAboutImcando.addDialogSteps("Can you help me find an Imcando dwarf?");
+		talkToLibrarianAboutImcando.conditionToHideInSidebar(previouslyGivenPieToThurgo);
+
+		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0),
+			"Talk to Reldo in Varrock Castle's library.");
+		talkToReldo.addDialogSteps("Ask about Imcando dwarves.");
+		talkToReldo.conditionToHideInSidebar(previouslyGivenPieToThurgo);
+
 		talkToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3001, 3144, 0),
 			"Talk to Thurgo at Mudskipper Point.", redberryPieNoInfo, ironBar, dwarvenBattleaxeSapphires);
 		talkToThurgo.addDialogSteps("Something else.");
@@ -467,7 +492,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting out", Arrays.asList(talkToBoatman, talkToVeldaban, talkToBlasidar)));
 		allSteps.add(new PanelDetails("Clothes fit for a king", Arrays.asList(talkToVermundi, talkToLibrarian, climbBookcase, talkToVermundiWithBook, useCoalOnMachine, startMachine, talkToVermundiWithMachine), weightBelow30, logs, coal, tinderbox, coins2500, inventorySpace));
 		allSteps.add(new PanelDetails("Boots fit for a king", Arrays.asList(talkToSaro, talkToDromund, takeLeftBoot, takeRightBoot), lawRune, airRune));
-		allSteps.add(new PanelDetails("An axe fit for a king", Arrays.asList(talkToSantiri, useSapphires, talkToThurgo), sapphires3, ironBar, redberryPie));
+		allSteps.add(new PanelDetails("An axe fit for a king", Arrays.asList(talkToSantiri, useSapphires,
+			talkToLibrarianAboutImcando, talkToReldo, talkToThurgo), sapphires3, ironBar, redberryPie));
 		allSteps.add(new PanelDetails("Halfway there", Arrays.asList(giveItemsToRiki, talkToBlasidarAfterItems), exquisiteClothes, exquisiteBoots, dwarvenBattleaxe));
 		allSteps.add(new PanelDetails("Joining the consortium", Arrays.asList(enterConsortium, talkToSecretary, talkToDirector, joinCompany, talkToDirectorAfterJoining, talkToVeldabanAfterJoining), oresBars, staminaPotions));
 		return allSteps;
@@ -483,6 +509,24 @@ public class TheGiantDwarf extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.MAGIC, 33, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 14, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MINING, 2500),
+				new ExperienceReward(Skill.SMITHING, 2500),
+				new ExperienceReward(Skill.CRAFTING, 2500),
+				new ExperienceReward(Skill.MAGIC, 1500),
+				new ExperienceReward(Skill.THIEVING, 1500),
+				new ExperienceReward(Skill.FIREMAKING, 1500));
 	}
 
 	@Override
@@ -523,7 +567,11 @@ public class TheGiantDwarf extends BasicQuestHelper
 		// An axe fit for a king
 		ConditionalStep getDwarvenBattleaxe = new ConditionalStep(this, talkToSantiri);
 		getDwarvenBattleaxe.addStep(new Conditions(givenThurgoPie, usedSapphires), talkToThurgoAfterPie);
-		getDwarvenBattleaxe.addStep(usedSapphires, talkToThurgo);
+		getDwarvenBattleaxe.addStep(new Conditions(previouslyGivenPieToThurgo, usedSapphires), talkToThurgo);
+		// If not done Knight's Sword quest...
+		getDwarvenBattleaxe.addStep(new Conditions(talkedToLibrarianAboutReldo, usedSapphires), talkToReldo);
+		getDwarvenBattleaxe.addStep(usedSapphires, talkToLibrarianAboutImcando);
+
 		getDwarvenBattleaxe.addStep(talkedToSantiri, useSapphires);
 
 		// Halfway there

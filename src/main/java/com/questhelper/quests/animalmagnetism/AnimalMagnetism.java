@@ -36,6 +36,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -252,7 +255,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 			new PuzzleSolver()::solver,
 			researchNotes);
 		giveNotesToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-			"Give Ava the translating research notes.",
+			"Give Ava the translated research notes.",
 			translatedNotes);
 		buildPattern = new ItemStep(this, "Combine Hard leather and Polished buttons with the pattern.",
 			pattern, hardLeather, polishedButtons);
@@ -271,6 +274,24 @@ public class AnimalMagnetism extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(draynorTeleport, burthorpeTeleport, portPhasmatysTeleport);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Ava's Attractor", ItemID.AVAS_ATTRACTOR, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to purchase Ava's Devices"));
 	}
 
 

@@ -35,6 +35,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -251,6 +253,22 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		req.add(deathPlateau);
 
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Fremennik Sea Boots (1)", ItemID.FREMENNIK_SEA_BOOTS_1, 1),
+				new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Peer the Seer will act as a bank deposit box."),
+				new UnlockReward("Fossegrimen will give your enchanted lyre an extra charge when making a sacrifice."));
 	}
 
 	@Override

@@ -29,11 +29,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
@@ -42,7 +45,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -281,6 +283,18 @@ public class BoneVoyage extends BasicQuestHelper
 		req.add(new VarbitRequirement(KUDOS_VARBIT, Operation.GREATER_EQUAL, 100, "100 Kudos"));
 		req.add(new QuestRequirement(QuestHelperQuest.THE_DIG_SITE, QuestState.FINISHED));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Fossil Island"));
 	}
 
 	@Override

@@ -39,6 +39,10 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -313,6 +317,35 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Chompy");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FLETCHING, 262),
+				new ExperienceReward(Skill.COOKING, 1470),
+				new ExperienceReward(Skill.RANGED, 735));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("An Ogre Bow", ItemID.OGRE_BOW, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("The ability to fletch Ogre Arrows."),
+				new UnlockReward("The ability to hunt and cook Chompy Birds."));
 	}
 
 	@Override

@@ -41,6 +41,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -719,7 +723,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		talkToOneiromancerWithStaff = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Bring the staff to the Oneiromancer in the south east of Lunar Isle.", sealOfPassage, lunarStaff);
 
 		enterMine = new ObjectStep(this, ObjectID.LADDER_14996, new WorldPoint(2142, 3944, 0), "Enter the mine in the north east of Lunar Isle.", pickaxe);
-		mineOre = new ObjectStep(this, ObjectID.STALAGMITE_15251, "Mine a lunar ore from one of the stalagmites in the area.", pickaxe);
+		mineOre = new ObjectStep(this, ObjectID.STALAGMITE_15251, "Mine a lunar ore from one of the stalagmites in the area. (Tip: Grab 3 extra ores to save time during The Fremennik Exiles quest)", pickaxe);
 		mineOre.addAlternateObjects(ObjectID.STALAGMITES_15250);
 		smeltBar = new DetailedQuestStep(this, "Smelt the ore at a furnace.", lunarOre);
 		makeHelmet = new DetailedQuestStep(this, "Make the lunar helmet on an anvil.", lunarBar, hammer);
@@ -788,7 +792,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		startNumber = new NpcStep(this, NpcID.ETHEREAL_NUMERATOR, new WorldPoint(1786, 5066, 2),
 			"Talk to the Ethereal Numerator to begin the challenge.");
 
-		doTreeChallenge = new DetailedQuestStep(this, "Chop logs and deposit them in the log pile.");
+		doTreeChallenge = new DetailedQuestStep(this, "Chop 20 logs and deposit them in the log pile.");
 
 		startRace = new NpcStep(this, NpcID.ETHEREAL_EXPERT, new WorldPoint(1788, 5068, 2), "Talk to the Ethereal Expert. Be prepared to race!");
 		startRace.addDialogStep("Ok.");
@@ -890,6 +894,38 @@ public class LunarDiplomacy extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 55));
 		req.add(new ItemRequirement("Access to the following altars: \nAir, Earth, Fire, Water", -1, -1));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MAGIC, 5000),
+				new ExperienceReward(Skill.RUNECRAFT, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("50 x Astral Runes", ItemID.ASTRAL_RUNE, 50),
+				new ItemReward("A Seal of Passage", ItemID.SEAL_OF_PASSAGE, 1),
+				new ItemReward("A set of Lunar Equipment", -1, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Lunar Island"),
+				new UnlockReward("Access to the Lunar Spellbook"),
+				new UnlockReward("Access to the Astral Altar"));
 	}
 
 	@Override

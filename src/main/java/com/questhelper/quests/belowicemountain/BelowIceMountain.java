@@ -38,6 +38,9 @@ import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
 import net.runelite.api.ItemID;
@@ -259,6 +262,26 @@ public class BelowIceMountain extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Collections.singletonList(new QuestPointRequirement(16));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Acess to the Ruins of Camdozaal."),
+				new UnlockReward("Flex Emote"));
 	}
 
 	@Override

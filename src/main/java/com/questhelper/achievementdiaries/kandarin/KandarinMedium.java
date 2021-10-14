@@ -40,6 +40,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.requirements.util.Spellbook;
 import java.util.ArrayList;
@@ -271,7 +273,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(mithGrap, crossbow, dustyKey, bigFishingNet, unicornHorn, mortarPest,
 			vialOfWater, iritLeaf, mapleUnstrung, bowString, lockpick, pickaxe, lawRune.quantity(1),
-			airRune.quantity(5), limpSeed, seedDib, compost, rake, primedMind, batteredKey,
+			airRune.quantity(5), limpSeed, seedDib, compost, rake, rope, primedMind, batteredKey,
 			beatenBook, hammer, staff, combatGear);
 	}
 
@@ -318,6 +320,24 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Fire giant (Level 86)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Kandarin headgear (2)", ItemID.KANDARIN_HEADGEAR_2, 1),
+				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Coal trucks can hold up to 280 coal."),
+				new UnlockReward("The Flax keeper will exchange 60 noted flax for 60 noted bow strings daily"),
+				new UnlockReward("10% more marks of grace on Seers' Village Rooftop Course"),
+				new UnlockReward("5% increased chance to save a harvest life from the Catherby herb patch"));
 	}
 
 	@Override

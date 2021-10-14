@@ -36,6 +36,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -150,6 +151,12 @@ public class FamilyPest extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(dueling, camelotTele, varrockTele, lumberTele);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Abliity to own all three Steel Gauntlets simultaneously"));
 	}
 
 	@Override

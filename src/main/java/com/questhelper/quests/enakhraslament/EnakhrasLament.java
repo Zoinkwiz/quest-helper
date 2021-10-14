@@ -40,6 +40,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -234,9 +237,9 @@ public class EnakhrasLament extends BasicQuestHelper
 		breadOrCake.setHighlightInInventory(true);
 		breadOrCake.setDisplayMatchedItemName(true);
 
-		airSpellRunes = new ItemRequirement("Runes for an air spell", -1, -1);
+		airSpellRunes = new ItemRequirement("Runes to cast Wind Bolt or stronger", -1, -1);
 		airSpellRunes.setDisplayItemId(ItemID.AIR_RUNE);
-		fireSpellRunes = new ItemRequirement("Runes for a fire spell", -1, -1);
+		fireSpellRunes = new ItemRequirement("Runes to cast Fire Bolt or stronger", -1, -1);
 		fireSpellRunes.setDisplayItemId(ItemID.FIRE_RUNE);
 		crumbleUndeadRunes = new ItemRequirement("Runes for crumble undead spell", -1, -1);
 		crumbleUndeadRunes.setDisplayItemId(ItemID.SKULL);
@@ -483,6 +486,28 @@ public class EnakhrasLament extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.PRAYER, 43));
 		req.add(new SkillRequirement(Skill.MAGIC, 39));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 7000),
+				new ExperienceReward(Skill.MINING, 7000),
+				new ExperienceReward(Skill.FIREMAKING, 7000),
+				new ExperienceReward(Skill.MAGIC, 7000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Akthanakos's Camulet", ItemID.CAMULET, 1));
 	}
 
 	@Override

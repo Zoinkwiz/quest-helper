@@ -31,6 +31,7 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -39,6 +40,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -51,7 +55,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -235,6 +238,27 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		req.add(new FavourRequirement(Favour.HOSIDIUS, 20));
 		req.add(new SkillRequirement(Skill.AGILITY, 18, false));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 1500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("4,000 Coins", ItemID.COINS_995, 4000),
+				new ItemReward("Hosidius Favour Certificate", ItemID.HOSIDIUS_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("A Kharedst's Memoirs page", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

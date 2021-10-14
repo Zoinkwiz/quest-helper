@@ -41,6 +41,10 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -53,10 +57,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -449,6 +451,18 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		reqs.add("All ToB Bosses");
 
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Antique Lamp (20,000 Exp. Any Combat Skill)", ItemID.ANTIQUE_LAMP, 3));
 	}
 
 	@Override

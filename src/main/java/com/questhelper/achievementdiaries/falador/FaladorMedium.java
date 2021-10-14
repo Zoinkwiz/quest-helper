@@ -39,6 +39,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -60,7 +62,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	ItemRequirement combatGear, bullseyeLantern, tinderbox, lawRune2, airRune4, waterRune1,
 		crystalKey, bronzeSpear, watermelon, emptySack, fishingExplosive, mithGrapple,
 		anyCrossbow, initiateHelm, initiateChest, initiateLegs, pickaxe, axe, brownApron,
-		willowBranch6;
+		willowBranch6, rake;
 
 	//Items Recommended
 	ItemRequirement faladorTeleport, explorersRing, combatBracelet;
@@ -157,6 +159,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow);
 		fishingExplosive = new ItemRequirement("Fishing Explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
 		mithGrapple = new ItemRequirement("Mithril Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
@@ -241,7 +244,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2Highlight, watermelonHighlight);
 
 		placeScarecrow = new ObjectStep(this, ObjectID.FLOWER_PATCH, new WorldPoint(3054, 3307, 0),
-			"Rake any weeds in the flower patch, then plant your scarecrow.");
+			"Rake any weeds in the flower patch, then plant your scarecrow.", rake);
 
 		//Mogre
 		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT,
@@ -315,7 +318,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, lawRune2, waterRune1, crystalKey, bronzeSpear, watermelon, emptySack,
+		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, lawRune2, waterRune1, crystalKey, bronzeSpear, watermelon, rake, emptySack,
 			fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest, initiateLegs, pickaxe, axe, brownApron, willowBranch6);
 	}
 
@@ -349,6 +352,23 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.SKIPPY_AND_THE_MOGRES, QuestState.FINISHED));
 
 		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Falador Shield (2)", ItemID.FALADOR_SHIELD_2, 1),
+				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("10% more experience from the Falador Farming Patch"),
+				new UnlockReward("Access to a shortcut in the Motherlode Mine"),
+				new UnlockReward("Increased chance to receiving a clue scroll from a guard in Falador"));
 	}
 
 	@Override
@@ -402,7 +422,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		PanelDetails scarecrowSteps = new PanelDetails("Brain not included", Arrays.asList(getHaysack, useSackOnSpear,
 			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23, true),
-			emptySack, bronzeSpear, watermelon, scarecrow);
+			emptySack, bronzeSpear, watermelon, scarecrow, rake);
 		scarecrowSteps.setDisplayCondition(notPlacedScarecrow);
 		allSteps.add(scarecrowSteps);
 

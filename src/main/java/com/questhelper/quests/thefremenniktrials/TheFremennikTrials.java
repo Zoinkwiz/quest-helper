@@ -43,11 +43,16 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -255,7 +260,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		peerTask.addStep(talkedToPeer, enterPeerHouse);
 		peerTask.setLockingCondition(finishedPeerTask);
 
-		DetailedQuestStep resyncStep = new DetailedQuestStep(this, "Please open the quest's Quest Journal to sync your state.");
+		QuestSyncStep resyncStep = new QuestSyncStep(this, getQuest(),
+			"Please open the quest's Quest Journal to sync your state.");
 		ConditionalStep resyncCondition = new ConditionalStep(this, resyncStep);
 		resyncCondition.setLockingCondition(syncedAll);
 
@@ -413,7 +419,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		talkedToManni = new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat);
 
 		syncedManni = new Conditions(true, LogicType.OR, talkedToManni);
-		
+
 		isNearPipe = new ZoneRequirement(nearPipe);
 
 		hasPlacedStrangeObject = new Conditions(true, LogicType.OR,
@@ -423,7 +429,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		finishedManniTask = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial!"),
 			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"));
-		
+
 		// No gz message
 		finishedSigliTask = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),
@@ -687,7 +693,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		bringWarriorsContractToPeer.addDialogStep("Ask about the Merchant's trial");
 		bringWeatherForecastToSwensen = new NpcStep(this, NpcID.SWENSEN_THE_NAVIGATOR, new WorldPoint(2646, 3660, 0), "Bring the weather forecast to Swensen the Navigator in his hut south west of the longhall.", weatherForecast);
 		bringWeatherForecastToSwensen.addDialogStep("Ask about the Merchant's trial");
-		bringSeaFishingMapToFisherman = new NpcStep(this, NpcID.FISHERMAN, new WorldPoint(2641, 3699, 0), "Bring the sea fishing map to the Fisherman on the peer north of the market.", seaFishingMap);
+		bringSeaFishingMapToFisherman = new NpcStep(this, NpcID.FISHERMAN, new WorldPoint(2641, 3699, 0), "Bring the sea fishing map to the Fisherman on the pier north of the market.", seaFishingMap);
 		bringSeaFishingMapToFisherman.addDialogStep("Ask about the Merchant's trial");
 		bringUnusualFishToSkulgrimen = new NpcStep(this, NpcID.SKULGRIMEN, new WorldPoint(2663, 3692, 0), "Bring the unusual fish to Skulgrimen north of the longhall.", unusualFish);
 		bringUnusualFishToSkulgrimen.addDialogStep("Ask about the Merchant's trial");
@@ -870,6 +876,37 @@ public class TheFremennikTrials extends BasicQuestHelper
 		reqs.add("Koschei the deathless");
 		reqs.add("Draugen (level 69)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 2812),
+				new ExperienceReward(Skill.ATTACK, 2812),
+				new ExperienceReward(Skill.CRAFTING, 2812),
+				new ExperienceReward(Skill.DEFENCE, 2812),
+				new ExperienceReward(Skill.FISHING, 2812),
+				new ExperienceReward(Skill.FLETCHING, 2812),
+				new ExperienceReward(Skill.HITPOINTS, 2812),
+				new ExperienceReward(Skill.STRENGTH, 2812),
+				new ExperienceReward(Skill.THIEVING, 2812),
+				new ExperienceReward(Skill.WOODCUTTING, 2812));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Miscellania, Etceteria, Neitiznot, Jatizso and the facilities of Rellekka."),
+				new UnlockReward("Ability to wear and purchase Fremmennik Helms"),
+				new UnlockReward("Free travel to Waterbirth Island"));
 	}
 
 	@Override

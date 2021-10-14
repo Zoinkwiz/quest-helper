@@ -42,16 +42,18 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -312,6 +314,36 @@ public class RFDPiratePete extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return generalReqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 1000),
+				new ExperienceReward(Skill.CRAFTING, 1000),
+				new ExperienceReward(Skill.FISHING, 1000),
+				new ExperienceReward(Skill.SMITHING, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Diving Apparatus", ItemID.DIVING_APPARATUS, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Mogre Camp"),
+				new UnlockReward("Increased access to the Culinaromancer's Chest"));
 	}
 
 	@Override

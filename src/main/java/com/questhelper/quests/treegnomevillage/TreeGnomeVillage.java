@@ -27,6 +27,7 @@ package com.questhelper.quests.treegnomevillage;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -40,6 +41,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -55,6 +60,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -65,12 +71,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	//Items Required
 	ItemRequirement logRequirement, orbsOfProtection;
 
-	private QuestStep talkToKingBolren, talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
+	private QuestStep talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 		firstTracker, secondTracker, thirdTracker, fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder,
 		talkToKingBolrenFirstOrb, talkToTheWarlord, fightTheWarlord, returnOrbs, finishQuestDialog, elkoySkip;
 
 	Requirement completeFirstTracker, completeSecondTracker, completeThirdTracker, handedInOrbs,
-		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker, orbsOfProtectionNearby;
+		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker, orbsOfProtectionNearby, givenWood;
 
 	private Conditions talkToSecondTracker, talkToThirdTracker, completedTrackers,
 		shouldFireBallista1, shouldFireBallista2, shouldFireBallista3, shouldFireBallista4;
@@ -181,7 +187,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private void setupItemRequirements()
 	{
-		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6);
+		givenWood = new VarplayerRequirement(QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE.getId(), 3, Operation.GREATER_EQUAL);
+		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6).hideConditioned(givenWood);
 		orbsOfProtection = new ItemRequirement("Orbs of protection", ItemID.ORBS_OF_PROTECTION);
 		orbsOfProtection.setTooltip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
 	}
@@ -218,7 +225,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
+		QuestStep talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
 		talkToKingBolren.addDialogStep("Can I help at all?");
 		talkToKingBolren.addDialogStep("I would be glad to help.");
 
@@ -328,11 +335,29 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.ATTACK, 11450));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Use of the Spirit Tree transportation method."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();
 
-		steps.add(new PanelDetails("Getting started", Collections.singletonList(talkToKingBolren)));
+		steps.add(new PanelDetails("Getting started", Collections.singletonList(talkToBolrenAtCentreOfMaze)));
 		steps.add(new PanelDetails("The three trackers", Arrays.asList(
 			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 			firstTracker, secondTracker, thirdTracker, fireBalistaConditional), logRequirement));

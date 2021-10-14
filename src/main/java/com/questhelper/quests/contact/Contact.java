@@ -32,6 +32,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -39,20 +43,15 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -281,6 +280,33 @@ public class Contact extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Giant Scarab (level 191)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 7000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 7,000 Experience Lamps (Combat Skills)", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("Keris", ItemID.KERIS, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Sophanem's Bank"));
 	}
 
 	@Override

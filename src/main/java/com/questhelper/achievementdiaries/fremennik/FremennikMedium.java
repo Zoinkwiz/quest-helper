@@ -42,6 +42,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.SpecialAttack;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +81,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1,
 		moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7,
 		moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13,
-		moveToDagCave14, moveToDagCave15, claimReward;
+		moveToDagCave14, moveToDagCave15, claimReward, activateSpecial;
 
 	ObjectStep dropPetRock;
 
@@ -139,7 +141,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave2), moveToDagCave3);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave1), moveToDagCave2);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave_4), moveToDagCave1);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3), throwAxe);
+		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3, specialAttackEnabled), throwAxe);
+		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3), activateSpecial);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave_2), moveToAxeSpot);
 		doMedium.addStep(new Conditions(notLighthouse, inDagCave), dropPetRock);
 		doMedium.addStep(new Conditions(notLighthouse, inWaterbirthIsland), moveToDagCave);
@@ -321,6 +324,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
 		moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
+		activateSpecial = new DetailedQuestStep(this, "Activate special attack with the rune thrownaxes equpped.",
+			thrownaxe.equipped(), specialAttackEnabled);
 		throwAxe = new NpcStep(this, 2253, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet" +
 				" and lower all 3 barriers.", thrownaxe.equipped(), specialAttackEnabled);
@@ -400,6 +405,22 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Brine rat (level 70) and tank many hits in the Waterbirth Island Dungeon");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Fremennik Sea Boots (2)", ItemID.FREMENNIK_SEA_BOOTS_2, 1),
+				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Shortcut jump between Miscellania dock and Etceteria."),
+				new UnlockReward("Improved rate of gaining approval on Miscellania."));
 	}
 
 	@Override

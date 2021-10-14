@@ -38,6 +38,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -236,6 +238,23 @@ public class KandarinEasy extends ComplexStateQuestHelper
         req.add(new SkillRequirement(Skill.FISHING, 16, true));
 
         return req;
+    }
+
+    @Override
+    public List<ItemReward> getItemRewards()
+    {
+        return Arrays.asList(
+                new ItemReward("Kandarin headgear (1)", ItemID.KANDARIN_HEADGEAR_1, 1),
+                new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+    }
+
+    @Override
+    public List<UnlockReward> getUnlockRewards()
+    {
+        return Arrays.asList(
+                new UnlockReward("Coal trucks can hold up to 140 coal."),
+                new UnlockReward("The Flax keeper will exchange 30 noted flax for 30 noted bow strings daily"),
+                new UnlockReward("5% more marks of grace on Seers' Village Rooftop Course"));
     }
 
     @Override

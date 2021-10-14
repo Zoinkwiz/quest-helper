@@ -40,17 +40,18 @@ import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -306,8 +307,8 @@ public class KingsRansom extends BasicQuestHelper
 
 		takeForm = new DetailedQuestStep(this, new WorldPoint(2739, 3581, 1), "Pick up the address form.", addressForm);
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_26053, new WorldPoint(2738, 3580, 1), "Search the west bookcase for a black knight helm.");
-		goDownstairsManor = new ObjectStep(this, ObjectID.STAIRCASE_25683, new WorldPoint(2736, 3581, 1), "Return to the guard with the 3 items.");
-		leaveWindow = new ObjectStep(this, NullObjectID.NULL_26123, new WorldPoint(2748, 3577, 0), "Return to the guard with the 3 items.");
+		goDownstairsManor = new ObjectStep(this, ObjectID.STAIRCASE_25683, new WorldPoint(2736, 3581, 1), "Go down the staircase.");
+		leaveWindow = new ObjectStep(this, NullObjectID.NULL_26123, new WorldPoint(2748, 3577, 0), "Step out of the window.");
 		returnToGuard = new NpcStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Return to the guard with the 3 items.");
 		returnToGuard.addDialogSteps("I have proof that the Sinclairs have left.", "I have proof that links the Sinclairs to Camelot.", "I have proof of foul play.");
 
@@ -431,6 +432,26 @@ public class KingsRansom extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.MAGIC, 45));
 		req.add(new SkillRequirement(Skill.DEFENCE, 65));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.DEFENCE, 33000),
+				new ExperienceReward(Skill.MAGIC, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("5,000 Experience Lamp (any skill over 50).", ItemID.ANTIQUE_LAMP, 1)); //4447 is Placeholder
 	}
 
 	@Override

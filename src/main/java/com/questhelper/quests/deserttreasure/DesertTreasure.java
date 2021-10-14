@@ -42,16 +42,18 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullItemID;
@@ -572,6 +574,33 @@ public class DesertTreasure extends BasicQuestHelper
 		reqs.add("Damis (level 103, then level 174 in second phase)");
 		reqs.add("5 ice trolls (level 120-124)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.MAGIC, 20000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Ring of Visibility", ItemID.RING_OF_VISIBILITY, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to use Ancient Magicks."),
+				new UnlockReward("Ability to purchase an Ancient Staff."),
+				new UnlockReward("Access to Smoke Dungeon."));
 	}
 
 	@Override

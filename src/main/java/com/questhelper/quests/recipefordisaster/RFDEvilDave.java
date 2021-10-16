@@ -62,7 +62,7 @@ public class RFDEvilDave extends BasicQuestHelper
 
 	Requirement inDiningRoom, inEvilDaveRoom;
 
-	QuestStep enterDiningRoom, inspectEvilDave, talkToDoris, enterBasement, talkToEvilDave, goUpToDorris,
+	QuestStep enterDiningRoom, inspectEvilDave, talkToDoris, enterBasement, talkToEvilDave, goUpToDoris,
 		enterBasementAgain, enterDiningRoomAgain, useStewOnEvilDave, makeStew;
 
 	//Zones
@@ -86,7 +86,7 @@ public class RFDEvilDave extends BasicQuestHelper
 		steps.put(1, goTalkToEvilDave);
 
 		ConditionalStep goTalkToDoris = new ConditionalStep(this, talkToDoris);
-		goTalkToDoris.addStep(inEvilDaveRoom, goUpToDorris);
+		goTalkToDoris.addStep(inEvilDaveRoom, goUpToDoris);
 		steps.put(2, goTalkToDoris);
 
 		steps.put(3, makeStew);
@@ -133,18 +133,18 @@ public class RFDEvilDave extends BasicQuestHelper
 			"Inspect Evil Dave.");
 		inspectEvilDave.addSubSteps(enterDiningRoom);
 
-		talkToDoris = new NpcStep(this, NpcID.DORIS, new WorldPoint(3079, 3494, 0), "Talk to Dorris.");
+		talkToDoris = new NpcStep(this, NpcID.DORIS, new WorldPoint(3079, 3494, 0), "Talk to Doris.");
 
 		enterBasement = new ObjectStep(this, ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
-			"Enter Dorris's basement.");
+			"Enter Doris's basement.");
 		((ObjectStep) enterBasement).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
 
 		talkToEvilDave = new NpcStep(this, NpcID.EVIL_DAVE_4806, new WorldPoint(3080, 9889, 0), "Talk to Evil Dave.");
 		talkToEvilDave.addDialogSteps("What did you eat at the secret council meeting?",
 			"You've got to tell me because the magic requires it!");
 
-		goUpToDorris = new ObjectStep(this, ObjectID.CELLAR_STAIRS, new WorldPoint(3076, 9893, 0),
-			"Go up to Dorris.");
+		goUpToDoris = new ObjectStep(this, ObjectID.CELLAR_STAIRS, new WorldPoint(3076, 9893, 0),
+			"Go up to Doris.");
 
 		enterBasementAgain = new ObjectStep(this, ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
 			"Go back down to Evil Dave.");
@@ -212,7 +212,7 @@ public class RFDEvilDave extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		List<QuestStep> steps = QuestUtil.toArrayList(inspectEvilDave, enterBasement,
-			talkToEvilDave, goUpToDorris, talkToDoris, enterBasementAgain);
+			talkToEvilDave, goUpToDoris, talkToDoris, enterBasementAgain);
 		steps.addAll(makeStew.getSubsteps());
 		steps.add(useStewOnEvilDave);
 

@@ -1032,7 +1032,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new UnlockReward("Ability to craft Death Runes."),
-				new UnlockReward("Ability kill Dark Beasts and receive them as a slayer task."));
+				new UnlockReward("Ability to kill Dark Beasts and receive them as a slayer task."));
 	}
 
 	@Override

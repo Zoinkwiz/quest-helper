@@ -935,7 +935,7 @@ public class ForgettableTale extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins500, barleyMalt2, bucketOfWater2, spade, dibber, rake, kebab, beer.quantity(3),
-			dwarvenStout, beerGlass, randomItem);
+			dwarvenStout, beerGlass, pot, randomItem);
 	}
 
 	@Override

@@ -353,7 +353,7 @@ public class HeroesQuest extends BasicQuestHelper
 		enterTaverleyDungeon.addSubSteps(goThroughPipe, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
 
 		/* Black Arm Gang steps */
-		talkToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Talk to Katrine at the Black Gang base in South west Varrock.");
+		talkToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Talk to Katrine at the Black Arm Gang base in South west Varrock.");
 		talkToKatrine.addDialogStep("Is there any way I can get the rank of master thief?");
 
 		tryToEnterTrobertHouse = new ObjectStep(this, ObjectID.DOOR_2626, new WorldPoint(2811, 3170, 0), "Try to enter the house in east Brimhaven.");

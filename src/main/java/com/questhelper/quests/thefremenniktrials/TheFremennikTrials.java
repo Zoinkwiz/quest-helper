@@ -629,7 +629,9 @@ public class TheFremennikTrials extends BasicQuestHelper
 		trapDoorOpen = new ObjectCondition(ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2));
 
 		/* Currently does not capture the case a user uses a disk, then logs out */
-		hasUsedDisk = new ChatMessageRequirement("You put the red disk into the empty hole on the mural.", "You've already put the red disk into the empty hole on the mural.");
+		hasUsedDisk = new RuneliteRequirement(configManager, "fremmytrialsuseddisk",
+			new ChatMessageRequirement("You put the red disk into the empty hole on the mural.", "You've already put the red disk into the empty hole on the mural.")
+		);
 		muralHasDisks = new ObjectCondition(ObjectID.ABSTRACT_MURAL_4180);
 		hasAnyBucket = new Conditions(LogicType.OR, bucket15, bucket25, bucket35, bucket45, fullBucket, emptyBucket);
 		hasAnyJug = new Conditions(LogicType.OR, jug13, jug23, emptyJug, fullJug);

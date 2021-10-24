@@ -57,7 +57,9 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -212,6 +214,28 @@ public abstract class QuestStep implements Module
 		if (event.getGroupId() == WidgetID.DIALOG_OPTION_GROUP_ID) // 219
 		{
 			clientThread.invokeLater(this::highlightChoice);
+		}
+
+		if (event.getGroupId() == WidgetID.DIALOG_NPC_GROUP_ID)
+		{
+			clientThread.invokeLater(() -> {
+				Widget widg = client.getWidget(event.getGroupId(), WidgetInfo.DIALOG_NPC_TEXT.getChildId());
+				if (widg != null)
+				{
+					System.out.println(widg.getText());
+				}
+			});
+		}
+
+		if (event.getGroupId() == WidgetID.DIALOG_PLAYER_GROUP_ID)
+		{
+			clientThread.invokeLater(() -> {
+				Widget widg = client.getWidget(event.getGroupId(), WidgetInfo.DIALOG_PLAYER_TEXT.getChildId());
+				if (widg != null)
+				{
+					System.out.println(widg.getText());
+				}
+			});
 		}
 
 		for (WidgetChoiceStep choice : widgetChoices.getChoices())

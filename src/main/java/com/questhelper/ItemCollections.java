@@ -1274,6 +1274,102 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> miningHelm = ImmutableList.of(
+		ItemID.MINING_HELMET_5014,
+		ItemID.MINING_HELMET
+	);
+
+	@Getter
+	private static final List<Integer> gloves = ImmutableList.of(
+		ItemID.FEROCIOUS_GLOVES,
+		ItemID.BARROWS_GLOVES,
+		ItemID.DRAGON_GLOVES,
+		ItemID.GRANITE_GLOVES,
+		ItemID.RUNE_GLOVES,
+		ItemID.ADAMANT_GLOVES,
+		ItemID.MITHRIL_GLOVES,
+		ItemID.BLACK_GLOVES,
+		ItemID.STEEL_GLOVES,
+		ItemID.IRON_GLOVES,
+		ItemID.BRONZE_GLOVES,
+		ItemID.KARAMJA_GLOVES_1,
+		ItemID.KARAMJA_GLOVES_2,
+		ItemID.KARAMJA_GLOVES_3,
+		ItemID.KARAMJA_GLOVES_4,
+		ItemID.FREMENNIK_GLOVES,
+		ItemID.GLOVES_OF_SILENCE,
+		ItemID.HARDLEATHER_GLOVES,
+		ItemID.ICE_GLOVES,
+		ItemID.HAM_GLOVES,
+		ItemID.LEATHER_GLOVES,
+		ItemID.LUNAR_GLOVES,
+		ItemID.MYSTIC_GLOVES,
+		ItemID.MYSTIC_GLOVES_DARK,
+		ItemID.MYSTIC_GLOVES_DUSK,
+		ItemID.MYSTIC_GLOVES_LIGHT,
+		ItemID.ROCKSHELL_GLOVES,
+		ItemID.ROGUE_GLOVES,
+		ItemID.SLAYER_GLOVES,
+		ItemID.VOID_KNIGHT_GLOVES,
+		ItemID.WHITE_GLOVES
+	);
+
+	@Getter
+	private static final List<Integer> questCape = ImmutableList.of(
+		ItemID.QUEST_POINT_CAPE_T,
+		ItemID.QUEST_POINT_CAPE
+	);
+
+	@Getter
+	private static final List<Integer> cosmicAltar = ImmutableList.of(
+		ItemID.COSMIC_TIARA,
+		ItemID.COSMIC_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> wallBeast = ImmutableList.of(
+		ItemID.SPINY_HELMET,
+		ItemID.SLAYER_HELMET,
+		ItemID.SLAYER_HELMET_I,
+		ItemID.SLAYER_HELMET_I_25177,
+		ItemID.BLACK_SLAYER_HELMET,
+		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET_I_25179,
+		ItemID.GREEN_SLAYER_HELMET,
+		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET_I_25181,
+		ItemID.RED_SLAYER_HELMET,
+		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET_I_25183,
+		ItemID.PURPLE_SLAYER_HELMET,
+		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET_I_25185,
+		ItemID.TURQUOISE_SLAYER_HELMET,
+		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
+		ItemID.HYDRA_SLAYER_HELMET,
+		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET_I_25189,
+		ItemID.TWISTED_SLAYER_HELMET,
+		ItemID.TWISTED_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET_I_25191
+	);
+
+	@Getter
+	private static final List<Integer> waterAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.WATER_TIARA,
+		ItemID.WATER_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> fireAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.FIRE_TIARA,
+		ItemID.FIRE_TALISMAN
+	);
+
+	@Getter
 	private  static final List<Integer> plunderArtefacts = ImmutableList.of(
 		ItemID.IVORY_COMB,
 		ItemID.POTTERY_SCARAB,
@@ -1334,13 +1430,6 @@ public class ItemCollections
 	private  static final List<Integer> stuffedKQHead = ImmutableList.of(
 		ItemID.STUFFED_KQ_HEAD,
 		ItemID.STUFFED_KQ_HEAD_TATTERED
-	);
-
-	@Getter
-	private static final List<Integer> fireAltar = ImmutableList.of(
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.FIRE_TIARA,
-		ItemID.FIRE_TALISMAN
 	);
 
 }

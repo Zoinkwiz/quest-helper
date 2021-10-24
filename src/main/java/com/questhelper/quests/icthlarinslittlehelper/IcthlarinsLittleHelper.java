@@ -421,7 +421,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions);
+		return Arrays.asList(combatGear, food, prayerPotions, antipoison);
 	}
 
 	@Override

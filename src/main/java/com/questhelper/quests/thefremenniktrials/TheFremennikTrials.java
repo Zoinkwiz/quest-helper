@@ -32,6 +32,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
@@ -44,7 +45,6 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
-import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -150,9 +150,9 @@ public class TheFremennikTrials extends BasicQuestHelper
 		manniTask.addStep(new Conditions(hasPlacedStrangeObject, alcoholFreeBeer), getKegOfBeer);
 		manniTask.addStep(new Conditions(hasPlacedStrangeObject), getAlcoholFreeBeer);
 		manniTask.addStep(new Conditions(talkedToManni, litStrangeObject, alcoholFreeBeer, isNearPipe), useStrangeObjectOnPipe);
-		manniTask.addStep(new Conditions(talkedToManni, strangeObject, alcoholFreeBeer, isNearPipe), useStrangeObject);
-		manniTask.addStep(new Conditions(talkedToManni, strangeObject, alcoholFreeBeer), prepareToUseStrangeObject);
-		manniTask.addStep(new Conditions(talkedToManni, strangeObject), getAlcoholFreeBeer);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject.alsoCheckBank(questBank), alcoholFreeBeer, isNearPipe), useStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject.alsoCheckBank(questBank), alcoholFreeBeer), prepareToUseStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject.alsoCheckBank(questBank)), getAlcoholFreeBeer);
 		manniTask.addStep(new Conditions(talkedToManni, beer), getStrangeObject);
 		manniTask.addStep(talkedToManni, pickUpBeer);
 		manniTask.setLockingCondition(finishedManniTask);
@@ -316,6 +316,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		enchantedLyre = new ItemRequirement("Enchanted lyre", ItemID.ENCHANTED_LYRE);
 		strangeObject = new ItemRequirement("Strange object", ItemID.STRANGE_OBJECT);
+		strangeObject.addAlternates(ItemID.LIT_STRANGE_OBJECT);
 		litStrangeObject = new ItemRequirement("Lit strange object", ItemID.LIT_STRANGE_OBJECT);
 		alcoholFreeBeer = new ItemRequirement("Low alcohol keg", ItemID.LOW_ALCOHOL_KEG);
 		kegOfBeer = new ItemRequirement("Keg of beer", ItemID.KEG_OF_BEER);
@@ -390,16 +391,21 @@ public class TheFremennikTrials extends BasicQuestHelper
 	{
 		inQuestJournal = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, "The Fremennik Trials");
 
-		synced = new Conditions(true, LogicType.OR, inQuestJournal,
+		Requirement syncedReqs = new Conditions(true, LogicType.OR, inQuestJournal,
 			new WidgetTextRequirement(217, 4, true, "I think I would enjoy the challenge"));
+		synced = new RuneliteRequirement(configManager, "fremmytrialssynced", syncedReqs);
 
-		hasStartedOlaf = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is great news outerlander! We always need more music lovers here!"),
-			new WidgetTextRequirement(119, 3, true, "Bard<col=000080> will vote for me if"));
+		hasStartedOlaf = new RuneliteRequirement(configManager, "fremmytrialsstartedolaf",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is great news outerlander! We always need more<br>music lovers here!"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "So how would I go about writing this epic?"),
+			new WidgetTextRequirement(119, 3, true, "Bard<col=000080> will vote for me if"))
+		);
 
-		syncedOlaf = new Conditions(true, LogicType.AND, synced, hasStartedOlaf);
+		syncedOlaf = new Conditions(true, synced, hasStartedOlaf);
 
-		talkedToLalli = new Conditions(true, new WidgetTextRequirement(217, 4, "I see... okay, well, bye!"));
+		talkedToLalli = new RuneliteRequirement(configManager, "fremmytrialstalkedtolalli",
+			new Conditions(true, new WidgetTextRequirement(217, 4, "I see... okay, well, bye!")));
 		gottenRock = new VarbitRequirement(6486, 1);
 
 		petRockInCauldron = new ChatMessageRequirement("You put your pet rock into the cauldron.");
@@ -408,27 +414,42 @@ public class TheFremennikTrials extends BasicQuestHelper
 		onionInCauldron = new ChatMessageRequirement("You put an onion into the cauldron.");
 		cauldronFilledDialog = new WidgetTextRequirement(217, 4, "Indeed it is. Try it and see.");
 
-		stewReady = new Conditions(new Conditions(petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron), cauldronFilledDialog);
+		stewReady = new RuneliteRequirement(configManager, "fremmytrialsstewready",
+			new Conditions(petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron, cauldronFilledDialog));
 
 		finishedOlafMessage = new ChatMessageRequirement("Congratulations! You have completed the Bard's Trial!");
 		finishedOlafWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "I now have the Bard's vote"));
-		finishedOlafTask = new Conditions(true, LogicType.OR, finishedOlafMessage, finishedOlafWidget);
+		finishedOlafTask = new RuneliteRequirement(configManager, "fremmytrialscompletedolaf",
+			new Conditions(true, LogicType.OR, finishedOlafMessage, finishedOlafWidget));
 
 		talkedToManniWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "Reveller<col=000080> will vote for me"));
-		talkedToManniChat = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"));
-		talkedToManni = new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat);
+		talkedToManniChat = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Grab a keg of beer<br>from that table near the bar, and come back here with<br>it.")
+		);
+		talkedToManni = new RuneliteRequirement(configManager, "fremmytrialsstartedmanni",
+			new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat)
+		);
 
-		syncedManni = new Conditions(true, LogicType.OR, talkedToManni);
+		syncedManni = talkedToManni;
 
 		isNearPipe = new ZoneRequirement(nearPipe);
 
-		hasPlacedStrangeObject = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "That is going to make a really loud bang"));
+		hasPlacedStrangeObject = new RuneliteRequirement(configManager, "fremmytrialsplacedstrangeobject",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(217, 4,
+				"That is going to make a really loud bang when it goes<br>off!"),
+			new ChatMessageRequirement("You put the lit strange object into the pipe."))
+		);
 
-		hasReplacedBeer = new Conditions(true, LogicType.AND, new ChatMessageRequirement("You empty the keg and refill it with low alcohol beer."));
-		finishedManniTask = new Conditions(true, LogicType.OR,
+		hasReplacedBeer = new RuneliteRequirement(configManager, "fremmytrialsreplacedbeer",
+			new ChatMessageRequirement("You empty the keg and refill it with low alcohol beer.")
+		);
+		finishedManniTask = new RuneliteRequirement(configManager, "fremmytrialsfinishedmanni",
+			new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"));
+			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"))
+		);
 
 		// No gz message
 		finishedSigliTask = new Conditions(true, LogicType.OR,
@@ -617,17 +638,20 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		/* Manni Task */
 		talkToManni = new NpcStep(this, NpcID.MANNI_THE_REVELLER, new WorldPoint(2658, 3675, 0), "Talk to Manni the Reveller in the Rellekka longhall.");
-		talkToManni.addDialogStep("Ask about becoming a Fremennik");
-		pickUpBeer = new DetailedQuestStep(this, new WorldPoint(2658, 3676, 0), "Get some beer. There is beer tankard in the Rellekka longhall.", beer);
+		talkToManni.addDialogSteps("Ask about becoming a Fremennik", "Yes");
+		pickUpBeer = new DetailedQuestStep(this, new WorldPoint(2658, 3676, 0),
+			"Get some beer. There is beer tankard in the Rellekka longhall.", beer);
 		getStrangeObject = new NpcStep(this, NpcID.COUNCIL_WORKMAN, new WorldPoint(2654, 3593, 0), "Give the Council workman on the bridge south of Rellekka going to Seer's Village a beer.", beer);
 		getStrangeObject.addIcon(ItemID.BEER_TANKARD);
+		getStrangeObject.addDialogSteps("Yes");
 		getAlcoholFreeBeer = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2695, 3491, 0), "Buy some alcohol free beer from the Poison Salesman in the Seer's Village pub.", coins250);
 		getAlcoholFreeBeer.addDialogStep("Talk about the Fremennik Trials");
 		getAlcoholFreeBeer.addDialogStep("Yes");
 
 		prepareToUseStrangeObject = new DetailedQuestStep(this, new WorldPoint(2664, 3674, 0), "Return to Rellekka with the strange object, a tinderbox, and low alcohol beer.", strangeObject, tinderbox, alcoholFreeBeer);
 		useStrangeObject = new ObjectStep(this, ObjectID.PIPE_4162, new WorldPoint(2663, 3674, 0), "Use a tinderbox on the strange object then use it on the nearby pipe.", strangeObject, tinderbox);
-		useStrangeObjectOnPipe = new ObjectStep(this, ObjectID.PIPE_4162, new WorldPoint(2663, 3674, 0), "Use the lit strange object on the nearby pipe!", litStrangeObject);
+		useStrangeObjectOnPipe = new ObjectStep(this, ObjectID.PIPE_4162, new WorldPoint(2663, 3674, 0),
+			"Use the lit strange object on the nearby pipe!", litStrangeObject.highlighted());
 		useStrangeObjectOnPipe.addIcon(ItemID.LIT_STRANGE_OBJECT);
 		useStrangeObject.addSubSteps(useStrangeObjectOnPipe);
 		getKegOfBeer = new DetailedQuestStep(this, new WorldPoint(2660, 3676, 0), "Pick up a keg of beer in the longhall.", kegOfBeer);
@@ -923,7 +947,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		PanelDetails manniPanel = new PanelDetails("Manni's task",
 			Arrays.asList(talkToManni, pickUpBeer, getStrangeObject, getAlcoholFreeBeer, prepareToUseStrangeObject,
-				useStrangeObject, cheatInBeerDrinking), tinderbox, coins250);
+				useStrangeObject, getKegOfBeer, useAlcoholFreeOnKeg, cheatInBeerDrinking), tinderbox, coins250);
 		manniPanel.setLockingStep(manniTask);
 		manniPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 

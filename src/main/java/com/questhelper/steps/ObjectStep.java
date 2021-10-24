@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import net.runelite.api.Point;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
@@ -49,14 +50,26 @@ public class ObjectStep extends DetailedQuestStep
 	private final int objectID;
 	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
 	private TileObject object;
+	private boolean showAllInArea;
 
 	private final List<TileObject> objects = new ArrayList<>();
 	private int lastPlane;
 	private boolean revalidateObjects;
 
+	private int MAX_OBJECT_DISTANCE = 50;
+
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
+		this.objectID = objectID;
+		this.showAllInArea = false;
+	}
+
+	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, boolean showAllInArea,
+					  Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, requirements);
+		this.showAllInArea = showAllInArea;
 		this.objectID = objectID;
 	}
 
@@ -75,7 +88,7 @@ public class ObjectStep extends DetailedQuestStep
 	public void startUp()
 	{
 		super.startUp();
-		if (worldPoint != null)
+		if (worldPoint != null || !showAllInArea)
 		{
 			checkTileForObject(worldPoint);
 		}
@@ -297,8 +310,6 @@ public class ObjectStep extends DetailedQuestStep
 		}
 	}
 
-
-
 	@Override
 	public void renderArrow(Graphics2D graphics) {
 		if (questHelper.getConfig().showMiniMapArrow()) {
@@ -372,12 +383,28 @@ public class ObjectStep extends DetailedQuestStep
 			}
 			return;
 		}
+
+
 		if (worldPoint == null)
 		{
 			this.object = object;
 			if (!this.objects.contains(object))
 			{
 				this.objects.add(object);
+			}
+		}
+		else if (localWorldPoints != null && showAllInArea)
+		{
+			for (WorldPoint localWorldPoint : localWorldPoints)
+			{
+				if (localWorldPoint.distanceTo(object.getWorldLocation()) < MAX_OBJECT_DISTANCE)
+				{
+					this.object = object;
+					if (!this.objects.contains(object))
+					{
+						this.objects.add(object);
+					}
+				}
 			}
 		}
 	}

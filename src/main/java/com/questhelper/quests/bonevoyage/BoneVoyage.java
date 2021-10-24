@@ -220,6 +220,7 @@ public class BoneVoyage extends BasicQuestHelper
 		talkToNavigator = new NpcStep(this, NpcID.LEAD_NAVIGATOR, new WorldPoint(3363, 3453, 1),
 			"Talk to the Lead Navigator.");
 		talkToNavigator.addDialogStep("Yep, that would be me.");
+		talkToNavigator.addDialogStep("No, what happened?");
 		talkToJack = new NpcStep(this, NpcID.JACK_SEAGULL, new WorldPoint(3050, 3257, 0),
 			"Talk to Jack Seagull in the Port Sarim Pub.");
 		talkToJack.addDialogStep("Ever made any cursed voyages?");

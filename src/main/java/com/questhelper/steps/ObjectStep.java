@@ -29,7 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
-import jdk.nashorn.internal.objects.annotations.Setter;
+import lombok.Setter;
 import net.runelite.api.Point;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
@@ -49,14 +49,15 @@ public class ObjectStep extends DetailedQuestStep
 {
 	private final int objectID;
 	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
-	private TileObject object;
+	private TileObject closestObject = null;
 	private boolean showAllInArea;
 
 	private final List<TileObject> objects = new ArrayList<>();
 	private int lastPlane;
 	private boolean revalidateObjects;
 
-	private int MAX_OBJECT_DISTANCE = 50;
+	@Setter
+	private int maxObjectDistance = 50;
 
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
@@ -88,7 +89,7 @@ public class ObjectStep extends DetailedQuestStep
 	public void startUp()
 	{
 		super.startUp();
-		if (worldPoint != null || !showAllInArea)
+		if (worldPoint != null && !showAllInArea)
 		{
 			checkTileForObject(worldPoint);
 		}
@@ -121,7 +122,6 @@ public class ObjectStep extends DetailedQuestStep
 		}
 	}
 
-
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
@@ -133,11 +133,11 @@ public class ObjectStep extends DetailedQuestStep
 				loadObjects();
 			}
 		}
-		if (worldPoint == null)
+		if (worldPoint == null || showAllInArea)
 		{
 			return;
 		}
-		object = null;
+		closestObject = null;
 		objects.clear();
 		checkTileForObject(worldPoint);
 	}
@@ -184,7 +184,7 @@ public class ObjectStep extends DetailedQuestStep
 		super.onGameStateChanged(event);
 		if (event.getGameState() == GameState.LOADING)
 		{
-			object = null;
+			closestObject = null;
 			objects.clear();
 		}
 	}
@@ -286,10 +286,20 @@ public class ObjectStep extends DetailedQuestStep
 
 		Point mousePosition = client.getMouseCanvasPosition();
 
+		if (client.getLocalPlayer() == null)
+		{
+			return;
+		}
+		WorldPoint playerPosition = client.getLocalPlayer().getWorldLocation();
+
 		for (TileObject tileObject : objects)
 		{
 			if (tileObject.getPlane() == client.getPlane())
 			{
+				if (closestObject == null || closestObject.getWorldLocation().distanceTo(playerPosition) > tileObject.getWorldLocation().distanceTo(playerPosition))
+				{
+					closestObject = tileObject;
+				}
 				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
 				Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
 				OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition, fillColor,
@@ -298,9 +308,9 @@ public class ObjectStep extends DetailedQuestStep
 			}
 		}
 
-		if (iconItemID != -1 && object != null)
+		if (iconItemID != -1 && closestObject != null)
 		{
-			Shape clickbox = object.getClickbox();
+			Shape clickbox = closestObject.getClickbox();
 			if (clickbox != null && !inCutscene)
 			{
 				Rectangle2D boundingBox = clickbox.getBounds2D();
@@ -311,13 +321,17 @@ public class ObjectStep extends DetailedQuestStep
 	}
 
 	@Override
-	public void renderArrow(Graphics2D graphics) {
-		if (questHelper.getConfig().showMiniMapArrow()) {
-			if (object == null || hideWorldArrow) {
+	public void renderArrow(Graphics2D graphics)
+	{
+		if (questHelper.getConfig().showMiniMapArrow())
+		{
+			if (closestObject == null || hideWorldArrow)
+			{
 				return;
 			}
-			Shape clickbox = object.getClickbox();
-			if (clickbox != null && questHelper.getConfig().showMiniMapArrow()) {
+			Shape clickbox = closestObject.getClickbox();
+			if (clickbox != null && questHelper.getConfig().showMiniMapArrow())
+			{
 				Rectangle2D boundingBox = clickbox.getBounds2D();
 				int x = (int) boundingBox.getCenterX();
 				int y = (int) boundingBox.getMinY() - 20;
@@ -329,9 +343,9 @@ public class ObjectStep extends DetailedQuestStep
 
 	private void handleRemoveObjects(TileObject object)
 	{
-		if (object.equals(this.object))
+		if (object.equals(this.closestObject))
 		{
-			this.object = null;
+			this.closestObject = null;
 		}
 
 		objects.remove(object);
@@ -350,6 +364,8 @@ public class ObjectStep extends DetailedQuestStep
 			localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
 		}
 
+		System.out.println(object.getId());
+		System.out.println(objectID);
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
 			setObjects(object, localWorldPoints);
@@ -376,18 +392,13 @@ public class ObjectStep extends DetailedQuestStep
 			(localWorldPoints.contains(object.getWorldLocation()) ||
 				localWorldPoints.contains(objLocation(object))))
 		{
-			this.object = object;
 			if (!this.objects.contains(object))
 			{
 				this.objects.add(object);
 			}
-			return;
 		}
-
-
-		if (worldPoint == null)
+		else if (worldPoint == null)
 		{
-			this.object = object;
 			if (!this.objects.contains(object))
 			{
 				this.objects.add(object);
@@ -397,9 +408,8 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			for (WorldPoint localWorldPoint : localWorldPoints)
 			{
-				if (localWorldPoint.distanceTo(object.getWorldLocation()) < MAX_OBJECT_DISTANCE)
+				if (localWorldPoint.distanceTo(objLocation(object)) < maxObjectDistance)
 				{
-					this.object = object;
 					if (!this.objects.contains(object))
 					{
 						this.objects.add(object);

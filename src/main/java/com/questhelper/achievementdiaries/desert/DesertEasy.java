@@ -47,7 +47,6 @@ import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -181,6 +180,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		cutCactus = new ObjectStep(this, ObjectID.KHARIDIAN_CACTUS_HEALTHY, new WorldPoint(3290, 3103, 0),
 			"Cut Khardian cacti and fill up your waterskin. You may need to cut multiple cacti before you " +
 				"successfully get water.", true, knife, emptyWaterskin);
+		((ObjectStep) cutCactus).setMaxObjectDistance(5000);
 
 		fiveClay = new ObjectStep(this, ObjectID.ROCKS_11362, new WorldPoint(3420, 3163, 0),
 			"Mine five clay in the north east of the desert.");

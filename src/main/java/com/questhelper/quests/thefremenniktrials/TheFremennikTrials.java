@@ -88,7 +88,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		isNearPipe, hasPlacedStrangeObject, hasReplacedBeer, finishedManniTask, talkedToManniWidget,
 		talkedToManniChat, finishedSigliTask, getFlower, talkedToSailor, talkedToOlafForSigmund,
 		talkedToYsra, talkedToBrundtForSigmund, talkedToSigliForSigmund, talkedToSkulgrimenForSigmund, talkedToFishermanForSigmund, talkedToSwensenForSigmund,
-		talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund, talkedToAskeladdenForSigmund, finishedSigmundTask,
+		talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund, finishedSigmundTask,
 		inKoscheiRoom, talkedToThorvald, koschei1Near, koschei2Near, koschei3Near, koschei4Near, syncedThorvald,
 		finishedThorvaldTask, talkedToSwensen, syncedSwensen, inSwensenRoom1, inSwensenRoom2, inSwensenRoom3, inSwensenRoom4, inSwensenRoom5,
 		inSwensenRoom6, inSwensenRoom7, inSwensenArea, inSwensenFinalRoom, finishedSwensenTask, talkedToPeer, finishedPeerTask, isMind, isTree, isLife, isFire,
@@ -452,81 +452,121 @@ public class TheFremennikTrials extends BasicQuestHelper
 		);
 
 		// No gz message
-		finishedSigliTask = new Conditions(true, LogicType.OR,
-			new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Hunter's vote"));
+		finishedSigliTask = new RuneliteRequirement(configManager, "fremmytrialsfinishedsigli",
+			new Conditions(true, LogicType.OR,
+				new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),
+				new WidgetTextRequirement(119, 3, true, "I now have the Hunter's vote")
+			)
+		);
 
-		getFlower = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are a very insular clan"),
-			new WidgetTextRequirement(119, 3, true, "has a <col=800000>rare flower<col=000080> that he wants."));
+		getFlower = new RuneliteRequirement(configManager, "fremmytrialsstartedsigmund",
+			new Conditions(true, LogicType.OR,
+				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are a very insular clan"),
+				new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Any<br>suggestions on where to start looking for this flower?"),
+				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Did you manage to<br>obtain my flower for me yet?"),
+				new WidgetTextRequirement(119, 3, true, "has a <col=800000>rare flower<col=000080> that he wants."))
+		);
 
-		talkedToSailor = new Conditions(true, LogicType.OR,
+		talkedToSailor = new RuneliteRequirement(configManager, "fremmytrialssigmundsailor",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That sounds like a fair deal to me, outerlander."),
-			new WidgetTextRequirement(217, 4, "find a<br>love ballad, do you?"));
+			new WidgetTextRequirement(217, 4, "find a<br>love ballad, do you?"))
+		);
 
-		talkedToOlafForSigmund = new Conditions(true, LogicType.OR,
+		talkedToOlafForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundolaf",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "composing you a romantic ballad"),
-			new WidgetTextRequirement(217, 4, "where I could find<br>some custom sturdy boots, do you?"));
+			new WidgetTextRequirement(217, 4, "where I could find<br>some custom sturdy boots, do you?"))
+		);
 
-		Conditions ysraAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(217, 4, true, "Okay, I will see what I can do."),
+		Conditions ysraAsked = new Conditions(true, LogicType.AND,
+			new WidgetTextRequirement(217, 4, true, "Okay, I will see what I can do."),
 			new ZoneRequirement(new Zone(new WorldPoint(2622, 3672, 0), new WorldPoint(2629, 3679, 0))));
 
-		talkedToYsra = new Conditions(true, LogicType.OR,
+		talkedToYsra = new RuneliteRequirement(configManager, "fremmytrialssigmundysra",
+			new Conditions(true, LogicType.OR,
 			ysraAsked,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>shopkeeper<col=000080> is looking for a <col=800000>tax reduction<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true,
+				"<col=000080>The <col=800000>shopkeeper<col=000080> is looking for a <col=800000>tax " +
+					"reduction<col=000080>..."))
+		);
 
-		talkedToBrundtForSigmund = new Conditions(true, LogicType.OR,
+		talkedToBrundtForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundbrundt",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Speak to Sigli then, and you may have my promise to<br>reduce our sales taxes. And best of luck with the rest<br>of your trials."),
-			new WidgetTextRequirement(119, 3, true, "The <col=800000>chieftain<col=000080> wants a <col=800000>map of new hunting grounds<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "The <col=800000>chieftain<col=000080> wants a <col=800000>map of new hunting grounds<col=000080>...")
+			));
 
-		talkedToSigliForSigmund = new Conditions(true, LogicType.OR,
+		talkedToSigliForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundsigli",
+			new Conditions(true, LogicType.OR,
 			// TODO: Fix this check, missing a br
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "who knows where<br>my hunting ground is."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The hunter<col=000080> is looking for a <col=800000>custom bow string<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The hunter<col=000080> is looking for a <col=800000>custom bow string<col=000080>...")
+			));
 
-		talkedToSkulgrimenForSigmund = new Conditions(true, LogicType.OR,
+		talkedToSkulgrimenForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundskulgrimen",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(217, 4, "Sounds good to me."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>armourer<col=000080> is looking for a <col=800000>rare inedible fish<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>armourer<col=000080> is looking for a <col=800000>rare inedible fish<col=000080>...")
+			));
 
-		talkedToFishermanForSigmund = new Conditions(true, LogicType.OR,
+		talkedToFishermanForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundfisherman",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(217, 4, true, "I'll see what I can do."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>fisherman<col=000080> is looking for a <col=800000>map of fishing spots<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>fisherman<col=000080> is looking for a <col=800000>map of fishing spots<col=000080>..."))
+		);
 
-		talkedToSwensenForSigmund = new Conditions(true, LogicType.OR,
+		talkedToSwensenForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundswensen",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, " take the time to make a forecast<br>somehow."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>navigator<col=000080> is looking for a <col=800000>weather forecast<col=000080>..."));
-		talkedToPeerForSigmund = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>navigator<col=000080> is looking for a <col=800000>weather forecast<col=000080>..."))
+		);
+
+		talkedToPeerForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundpeer",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is all."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>seer<col=000080> is looking for a <col=800000>warrior to be his bodyguard<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>seer<col=000080> is looking for a <col=800000>warrior to be his bodyguard<col=000080>..."))
+		);
 		Conditions thorvaldAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(217, 4, "Okay, I'll see what I can do."),
 			new ZoneRequirement(new Zone(new WorldPoint(2661, 3690, 0), new WorldPoint(2669, 3696, 0))));
-		talkedToThorvaldForSigmund = new Conditions(true, LogicType.OR,
+
+		talkedToThorvaldForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundthorvald",
+			new Conditions(true, LogicType.OR,
 			thorvaldAsked,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>warrior<col=000080> is looking for a <col=800000>champions token<col=000080>..."));
-		talkedToManniForSigmund = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>warrior<col=000080> is looking for a <col=800000>champions token<col=000080>..."))
+		);
+
+		talkedToManniForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundmanni",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That's all."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."));
-		talkedToThoraForSigmund = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."))
+		);
+
+		talkedToThoraForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundthora",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "cash. You should go ask him"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is " +
 				"<col=800000>some money<col=000080>!"),
-			new WidgetTextRequirement(119, 3, true, "<col=800000>Thora"));
+			new WidgetTextRequirement(119, 3, true, "<col=800000>Thora")
+			));
 
 		// TODO: No gz message
-		finishedSigmundTask = new Conditions(true, LogicType.OR,
+		finishedSigmundTask = new RuneliteRequirement(configManager, "fremmytrialssigmundfinished",
+			new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Merchant's Trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Merchant's vote"));
+			new WidgetTextRequirement(119, 3, true, "I now have the Merchant's vote")));
 
 		syncedSigmund = new Conditions(LogicType.OR, getFlower, talkedToSailor, talkedToOlafForSigmund, talkedToYsra, talkedToBrundtForSigmund, talkedToSigliForSigmund, talkedToSkulgrimenForSigmund,
 			talkedToFishermanForSigmund, talkedToSwensenForSigmund, talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund);
 
-		talkedToAskeladdenForSigmund = promissoryNote;
 		noRockAskeladdenNearby = new NpcCondition(NpcID.ASKELADDEN);
 
 		inKoscheiRoom = new ZoneRequirement(koscheiRoom);
-		talkedToThorvald = new Conditions(true, LogicType.OR,
+		talkedToThorvald = new RuneliteRequirement(configManager, "fremmytrialsthorvaldstarted",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hahahahaha! I'm beginning"),
-			new WidgetTextRequirement(119, 3, true, "Warrior<col=000080> will vote for me if"));
+			new WidgetTextRequirement(119, 3, true, "Warrior<col=000080> will vote for me if"))
+		);
 
 		koschei1Near = new NpcCondition(NpcID.KOSCHEI_THE_DEATHLESS);
 		koschei2Near = new NpcCondition(NpcID.KOSCHEI_THE_DEATHLESS_3898);
@@ -535,13 +575,17 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		syncedThorvald = new Conditions(talkedToThorvald);
 
-		finishedThorvaldTask = new Conditions(true, LogicType.OR,
+		finishedThorvaldTask = new RuneliteRequirement(configManager, "fremmytrialsthorvaldfinished",
+			new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the warrior's trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Warrior's vote"));
+			new WidgetTextRequirement(119, 3, true, "I now have the Warrior's vote"))
+		);
 
-		talkedToSwensen = new Conditions(true, LogicType.OR,
+		talkedToSwensen = new RuneliteRequirement(configManager, "fremmytrialsswensenstarted",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(217, 4, true, "A maze? Is that all?"),
-			new WidgetTextRequirement(119, 3, true, "Navigator<col=000080> will vote for me if"));
+			new WidgetTextRequirement(119, 3, true, "Navigator<col=000080> will vote for me if"))
+		);
 
 		inSwensenRoom1 = new ZoneRequirement(swensenRoom1);
 		inSwensenRoom2 = new ZoneRequirement(swensenRoom2);
@@ -554,22 +598,26 @@ public class TheFremennikTrials extends BasicQuestHelper
 		inSwensenArea = new ZoneRequirement(swensenArea);
 
 		syncedSwensen = new Conditions(talkedToSwensen);
-		finishedSwensenTask = new Conditions(true, LogicType.OR,
+		finishedSwensenTask = new RuneliteRequirement(configManager, "fremmytrialswensenfinished",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Outerlander! You have finished my maze!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Navigator's vote"));
+			new WidgetTextRequirement(119, 3, true, "I now have the Navigator's vote"))
+		);
 
 		/* Peer Task */
 
-		talkedToPeer = new Conditions(true, LogicType.OR,
+		talkedToPeer = new RuneliteRequirement(configManager, "fremmytrialpeerstarted",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(217, 4, true, "I have one small question"),
-			new WidgetTextRequirement(119, 3, true, "Seer<col=000080> will vote for me if"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "So I can bring nothing with me when I enter your<br>house?"),
+			new WidgetTextRequirement(119, 3, true, "Seer<col=000080> will vote for me if")));
 
-		isMind = new WidgetTextRequirement(229, 1, "My first is in mage");
-		isTree = new WidgetTextRequirement(229, 1, "My first is in tar");
-		isLife = new WidgetTextRequirement(229, 1, "My first is in well");
-		isFire = new WidgetTextRequirement(229, 1, "My first is in fish");
-		isTime = new WidgetTextRequirement(229, 1, "My first is in water");
-		isWind = new WidgetTextRequirement(229, 1, "My first is in wizard");
+		isMind = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in mage"));
+		isTree = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in tar"));
+		isLife = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in well"));
+		isFire = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in fish"));
+		isTime = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in water"));
+		isWind = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in wizard"));
 
 		inPeerEntrance = new ZoneRequirement(peerEntrance);
 		inPeerUpstairs = new ZoneRequirement(peerUpstairs);
@@ -771,18 +819,12 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		enterCode = new DetailedQuestStep(this, "Enter the solution to Peer's door.");
 
-		inputMind = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'MIND' into the door's combination lock.");
-		inputMind.addDialogStep("Solve the riddle");
-		inputTree = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'TREE' into the door's combination lock.");
-		inputTree.addDialogStep("Solve the riddle");
-		inputLife = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'LIFE' into the door's combination lock.");
-		inputLife.addDialogStep("Solve the riddle");
-		inputFire = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'FIRE' into the door's combination lock.");
-		inputFire.addDialogStep("Solve the riddle");
-		inputTime = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'TIME' into the door's combination lock.");
-		inputTime.addDialogStep("Solve the riddle");
-		inputWind = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'WIND' into the door's combination lock.");
-		inputWind.addDialogStep("Solve the riddle");
+		inputMind = new CombinationPuzzle(this, "MIND");
+		inputTree = new CombinationPuzzle(this, "TREE");
+		inputLife = new CombinationPuzzle(this, "LIFE");
+		inputFire = new CombinationPuzzle(this, "FIRE");
+		inputTime = new CombinationPuzzle(this, "TIME");
+		inputWind = new CombinationPuzzle(this, "WIND");
 		enterCode.addSubSteps(inputMind, inputTree, inputLife, inputFire, inputTime, inputWind);
 
 		goUpEntranceLadderPeer = new ObjectStep(this, ObjectID.LADDER_4163, new WorldPoint(2631, 3663, 0), "Go up the ladder.");

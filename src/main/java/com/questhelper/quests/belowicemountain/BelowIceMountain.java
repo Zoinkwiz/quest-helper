@@ -280,7 +280,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Acess to the Ruins of Camdozaal."),
+				new UnlockReward("Access to the Ruins of Camdozaal."),
 				new UnlockReward("Flex Emote"));
 	}
 

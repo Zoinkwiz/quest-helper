@@ -766,7 +766,7 @@ public class UndergroundPass extends BasicQuestHelper
 	{
 		ArrayList<String> notes = new ArrayList<>();
 		notes.add("Kalrag attacks with melee only, so Protect From Melee can keep you safe in that fight.");
-		notes.add("The 3 Demons can be easily safespotted by staying on the connecting brides.");
+		notes.add("The 3 Demons can be easily safespotted by staying on the connecting bridges.");
 		notes.add("Using the bow provided for combat can save inventory space.");
 		notes.add("Bring all items with you to start the quest, as leaving the dungeon will require you to restart from the beginning.");
 		return notes;

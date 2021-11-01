@@ -216,28 +216,6 @@ public abstract class QuestStep implements Module
 			clientThread.invokeLater(this::highlightChoice);
 		}
 
-		if (event.getGroupId() == WidgetID.DIALOG_NPC_GROUP_ID)
-		{
-			clientThread.invokeLater(() -> {
-				Widget widg = client.getWidget(event.getGroupId(), WidgetInfo.DIALOG_NPC_TEXT.getChildId());
-				if (widg != null)
-				{
-					System.out.println(widg.getText());
-				}
-			});
-		}
-
-		if (event.getGroupId() == WidgetID.DIALOG_PLAYER_GROUP_ID)
-		{
-			clientThread.invokeLater(() -> {
-				Widget widg = client.getWidget(event.getGroupId(), WidgetInfo.DIALOG_PLAYER_TEXT.getChildId());
-				if (widg != null)
-				{
-					System.out.println(widg.getText());
-				}
-			});
-		}
-
 		for (WidgetChoiceStep choice : widgetChoices.getChoices())
 		{
 			if (event.getGroupId() == choice.getGroupIdForChecking())

@@ -511,7 +511,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new UnlockReward("Ability to manage Miscellania."),
-				new UnlockReward("Ability to teleport to MIscellania with the Ring of Wealth."));
+				new UnlockReward("Ability to teleport to Miscellania with the Ring of Wealth."));
 	}
 
 	@Override

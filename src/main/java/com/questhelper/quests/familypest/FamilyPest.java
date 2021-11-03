@@ -156,7 +156,7 @@ public class FamilyPest extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Abliity to own all three Steel Gauntlets simultaneously"));
+		return Collections.singletonList(new UnlockReward("Ability to own all three Steel Gauntlets simultaneously"));
 	}
 
 	@Override

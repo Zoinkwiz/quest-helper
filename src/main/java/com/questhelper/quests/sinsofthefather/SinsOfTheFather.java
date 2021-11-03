@@ -456,6 +456,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		ItemRequirements vyrewatchOutfit = new ItemRequirements("Vyrewatch outfit",
 			new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP),
 			new ItemRequirement("Vyrewatch legs", ItemID.VYREWATCH_LEGS),

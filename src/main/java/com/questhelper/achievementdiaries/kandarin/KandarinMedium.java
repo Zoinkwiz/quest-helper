@@ -254,9 +254,8 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		plantAndPickLimp = new ObjectStep(this, NullObjectID.NULL_7848, new WorldPoint(2810, 3464, 0),
 			"Plant a limpwurt seed in the Catherby Allotment Patch, wait for it to grow then pick it.", rake,
 			limpSeed, seedDib);
-		catchBass = new NpcStep(this, NpcID.FISHING_SPOT_1518, new WorldPoint(2837, 3431, 0),
+		catchBass = new NpcStep(this, NpcID.FISHING_SPOT_1520, new WorldPoint(2837, 3431, 0),
 			"Catch a bass.", bigFishingNet);
-		catchBass.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
 		cookBass = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2818, 3444, 0),
 			"Cook the bass on the ranged in Catherby.", rawBass);
 		travelMcGrubor = new DetailedQuestStep(this, "Take a fairy ring to McGrubor's Woods (ALS)", staff.equipped());

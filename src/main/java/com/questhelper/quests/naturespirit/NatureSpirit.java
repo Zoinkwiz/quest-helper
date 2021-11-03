@@ -243,7 +243,7 @@ public class NatureSpirit extends BasicQuestHelper
 		useMirrorOnFilliman.addDialogStep("How long have you been a ghost?");
 		useMirrorOnFilliman.addIcon(ItemID.MIRROR);
 		searchGrotto = new ObjectStep(this, ObjectID.GROTTO_TREE, new WorldPoint(3440, 3339, 0), "Right-click search the grotto tree.");
-		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock.", ghostspeak, journalHighlighted);
+		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Use the journal on Filliman Tarlock.", ghostspeak, journalHighlighted);
 		useJournalOnFilliman.addIcon(ItemID.JOURNAL);
 		offerToHelp = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock and offer to help.", ghostspeak);
 		offerToHelp.addDialogStep("How can I help?");
@@ -343,9 +343,9 @@ public class NatureSpirit extends BasicQuestHelper
 				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Helping Filliman",
 			Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
-				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto), ghostspeak, silverSickle));
+				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto, blessSickle), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Killing Ghasts",
-			Arrays.asList(blessSickle, fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, silverSickle));
+			Arrays.asList(fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, blessedSickle));
 
 		return allSteps;
 	}

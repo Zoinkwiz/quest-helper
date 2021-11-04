@@ -248,11 +248,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWoolHighlight.setHighlightInInventory(true);
 
 		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES_3183);
-		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);
-
-		monkeyBonesOrCorpseHighlight = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
+		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE, ItemID.MONKEY_BONES, ItemID.MONKEY_BONES_3180, ItemID.MONKEY_BONES_3181, ItemID.MONKEY_BONES_3182, ItemID.MONKEY_BONES_3185, ItemID.MONKEY_BONES_3186);
+		monkeyBonesOrCorpse.setTooltip("You can kill a monkey on Ape Atoll during the quest if you do not have them.");
+		monkeyBonesOrCorpseHighlight = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES_3183);
 		monkeyBonesOrCorpseHighlight.setHighlightInInventory(true);
-		monkeyBonesOrCorpseHighlight.addAlternates(ItemID.MONKEY_CORPSE);
+		monkeyBonesOrCorpseHighlight.addAlternates(ItemID.MONKEY_CORPSE, ItemID.MONKEY_BONES, ItemID.MONKEY_BONES_3180, ItemID.MONKEY_BONES_3181, ItemID.MONKEY_BONES_3182, ItemID.MONKEY_BONES_3185, ItemID.MONKEY_BONES_3186);
 
 		narnodesOrders = new ItemRequirement("Narnode's orders", ItemID.NARNODES_ORDERS);
 		narnodesOrders.setTooltip("You can get another from King Narnode");

@@ -326,7 +326,7 @@ public class ClockTower extends BasicQuestHelper
 		goToSecondFloorWithWhiteCog.addSubSteps(climbWhiteLadder);
 
 		goFinishQuest = goToGroundFloor.copy();
-		goFinishQuest.setText("Talk to Koja for your reward.");
+		goFinishQuest.setText("Talk to Kojo for your reward.");
 		goFinishQuest.addStep(null, kojoReward);
 	}
 

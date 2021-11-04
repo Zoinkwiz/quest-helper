@@ -537,13 +537,13 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(goTalkToMistag, goTalkToZanik), lightSource, hamSet2));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(goTalkToMistag, goTalkToZanik), lightSource, hamSet2, pickaxe));
 		allSteps.add(new PanelDetails("Exploring Lumbridge", Arrays.asList(goTalkToCook, goTalkToDuke, goOutsideSteps, goTalkToWoman, goTalkToGuide, goTalkToBob, goTalkToAereck, goNearGoblins,
 			goTalkToShopkeeper, talkToZanikAboutOrigin), lightSource, hamSet2));
 		allSteps.add(new PanelDetails("Infiltrate the H.A.M", Arrays.asList(goIntoHamLair, talkToJohanhus, listenToSpeaker, standNearTrapdoor, goDownTrapdoor), lightSource, hamSet));
 		allSteps.add(new PanelDetails("Reaching the meeting", Arrays.asList(standBehindGuard1, talkToGuard2, tellZanikToKillGuard3, standNearGuard4,
 			tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor)));
-		allSteps.add(new PanelDetails("Saving Zanik", Arrays.asList(checkZanikCorpse, goToJunaSteps, learnZanikStory), lightSource, tinderbox));
+		allSteps.add(new PanelDetails("Saving Zanik", Arrays.asList(checkZanikCorpse, goToJunaSteps, learnZanikStory), lightSource, tinderbox, pickaxe));
 		allSteps.add(new PanelDetails("Foiling H.A.M", Arrays.asList(goGetZanikForMill, searchCrate, enterMill, killGuards, killSigmund, smashDrill, enterExit), hamSet, combatGear));
 		return allSteps;
 	}

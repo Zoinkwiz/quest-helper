@@ -1221,10 +1221,10 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> compost = ImmutableList.of(
-			ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
-			ItemID.ULTRACOMPOST,
-			ItemID.SUPERCOMPOST,
-			ItemID.COMPOST
+		ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
+		ItemID.ULTRACOMPOST,
+		ItemID.SUPERCOMPOST,
+		ItemID.COMPOST
 	);
 
 	@Getter
@@ -1265,7 +1265,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> cookingGuild = ImmutableList.of(
+	private static final List<Integer> cookingGuild = ImmutableList.of(
 		ItemID.CHEFS_HAT,
 		ItemID.VARROCK_ARMOUR_3,
 		ItemID.VARROCK_ARMOUR_4,
@@ -1312,7 +1312,7 @@ public class ItemCollections
 		ItemID.SLAYER_GLOVES,
 		ItemID.VOID_KNIGHT_GLOVES,
 		ItemID.WHITE_GLOVES
-		);
+	);
 
 	@Getter
 	private static final List<Integer> questCape = ImmutableList.of(
@@ -1367,6 +1367,66 @@ public class ItemCollections
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.FIRE_TIARA,
 		ItemID.FIRE_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> teamCape = ImmutableList.of(
+		ItemID.TEAM1_CAPE,
+		ItemID.TEAM2_CAPE,
+		ItemID.TEAM3_CAPE,
+		ItemID.TEAM4_CAPE,
+		ItemID.TEAM5_CAPE,
+		ItemID.TEAM6_CAPE,
+		ItemID.TEAM7_CAPE,
+		ItemID.TEAM8_CAPE,
+		ItemID.TEAM9_CAPE,
+		ItemID.TEAM10_CAPE,
+		ItemID.TEAM11_CAPE,
+		ItemID.TEAM12_CAPE,
+		ItemID.TEAM13_CAPE,
+		ItemID.TEAM14_CAPE,
+		ItemID.TEAM15_CAPE,
+		ItemID.TEAM16_CAPE,
+		ItemID.TEAM17_CAPE,
+		ItemID.TEAM18_CAPE,
+		ItemID.TEAM19_CAPE,
+		ItemID.TEAM20_CAPE,
+		ItemID.TEAM21_CAPE,
+		ItemID.TEAM22_CAPE,
+		ItemID.TEAM23_CAPE,
+		ItemID.TEAM24_CAPE,
+		ItemID.TEAM25_CAPE,
+		ItemID.TEAM26_CAPE,
+		ItemID.TEAM27_CAPE,
+		ItemID.TEAM28_CAPE,
+		ItemID.TEAM29_CAPE,
+		ItemID.TEAM30_CAPE,
+		ItemID.TEAM31_CAPE,
+		ItemID.TEAM32_CAPE,
+		ItemID.TEAM33_CAPE,
+		ItemID.TEAM34_CAPE,
+		ItemID.TEAM35_CAPE,
+		ItemID.TEAM36_CAPE,
+		ItemID.TEAM37_CAPE,
+		ItemID.TEAM38_CAPE,
+		ItemID.TEAM39_CAPE,
+		ItemID.TEAM40_CAPE,
+		ItemID.TEAM41_CAPE,
+		ItemID.TEAM42_CAPE,
+		ItemID.TEAM43_CAPE,
+		ItemID.TEAM44_CAPE,
+		ItemID.TEAM45_CAPE,
+		ItemID.TEAM46_CAPE,
+		ItemID.TEAM47_CAPE,
+		ItemID.TEAM48_CAPE,
+		ItemID.TEAM49_CAPE,
+		ItemID.TEAM50_CAPE
+	);
+
+	@Getter
+	private static final List<Integer> chaosAltar = ImmutableList.of(
+		ItemID.CHAOS_TIARA,
+		ItemID.CHAOS_TALISMAN
 	);
 
 }

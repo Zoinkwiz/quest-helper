@@ -517,7 +517,9 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			NpcID.VYREWATCH_3725, NpcID.VYREWATCH_3726, NpcID.VYREWATCH_3727, NpcID.VYREWATCH_3728, NpcID.VYREWATCH_3729, NpcID.VYREWATCH_3730, NpcID.VYREWATCH_3748, NpcID.VYREWATCH_3749,
 			NpcID.VYREWATCH_3750, NpcID.VYREWATCH_3751, NpcID.VYREWATCH_3752, NpcID.VYREWATCH_3753, NpcID.VYREWATCH_3754, NpcID.VYREWATCH_3755, NpcID.VYREWATCH_3756, NpcID.VYREWATCH_3757,
 			NpcID.VYREWATCH_3758, NpcID.VYREWATCH_3759, NpcID.VYREWATCH_3760, NpcID.VYREWATCH_3761, NpcID.VYREWATCH_3762, NpcID.VYREWATCH_3763);
-		mineDaeyaltThenLeave = new NpcStep(this, NpcID.VAMPYRE_JUVINATE, new WorldPoint(2389, 4624, 2), "Mine Daeyalt ore from the walls and put them into the mine carts. Once you've mined 15, talk to the vampyres to leave.", pickaxe);
+		mineDaeyaltThenLeave = new NpcStep(this, NpcID.VAMPYRE_JUVINATE, new WorldPoint(2389, 4624, 2),
+			"Mine Daeyalt ore from the walls and put them into the mine carts. If you have no pickaxe, talk to a " +
+				"miner to obtain a bronze one. Once you've mined 15, talk to the vampyres to leave.", pickaxe);
 		mineDaeyaltThenLeave.addDialogStep("Do you have a spare pick?");
 
 		List<WorldPoint> pathFromMineToBase = Arrays.asList(
@@ -766,7 +768,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(lawRune, airRune);
+		return Arrays.asList(lawRune, airRune, pickaxe);
 	}
 
 	@Override
@@ -807,7 +809,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			talkToVeliafAfterDrezel)));
 
 		allSteps.add(new PanelDetails("Mapping Castle Drakan", Arrays.asList(returnToMeiyerditch, goToSafalaan, goSketchNorth, goSketchWest, goSketchSouth,
-			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage, returnToSafalaanInBaseNoSketches), knife));
+			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage,
+			returnToSafalaanInBaseNoSketches), knife));
 
 		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(useKnifeOnTapestry, useKeyOnStatue, goDownToLab, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife));
 

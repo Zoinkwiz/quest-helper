@@ -363,7 +363,7 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
 		}
-		
+
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
 			setObjects(object, localWorldPoints);

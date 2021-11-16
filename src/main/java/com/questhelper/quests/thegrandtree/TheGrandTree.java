@@ -282,7 +282,8 @@ public class TheGrandTree extends BasicQuestHelper
 		goToStronghold = new DetailedQuestStep(this, locationBottomOfGrandTree, "Travel to the Tree Gnome Stronghold.");
 
 		// Getting Started
-		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree.");
+		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree" +
+			"(Make sure to have two empty inventory slots to start the quest).");
 		talkToKingNarnode.addDialogSteps("You seem worried, what's up?", "I'd be happy to help!");
 		talkToKingNarnodeCaves = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
 			"Talk to King Narnode.");

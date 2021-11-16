@@ -224,7 +224,7 @@ public class FairytaleI extends BasicQuestHelper
 		talkToFarmers.addText("Elstan north west of Draynor.");
 		talkToFarmers.addText("Heskel in Falador Park.");
 		talkToFarmers.addText("Treznor south of Varrock Castle.");
-		talkToFarmers.addText(" Dreven south of Varrock.");
+		talkToFarmers.addText("Dreven south of Varrock, next to the Champions' Guild.");
 		talkToFarmers.addDialogStep("Are you a member of the Group of Advanced Gardeners?");
 		((NpcStep) (talkToFarmers)).addAlternateNpcs(NpcID.FRIZZY_SKERNIP, NpcID.HESKEL, NpcID.DREVEN, NpcID.FAYETH,
 			NpcID.TREZNOR);

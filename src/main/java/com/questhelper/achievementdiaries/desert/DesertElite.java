@@ -37,6 +37,8 @@ import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -49,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -76,13 +79,13 @@ public class DesertElite extends ComplexStateQuestHelper
 	Requirement notWildPie, notIceBarrage, notDragonDarts, notTalkKQHead, notGrandGoldChest, notRestorePrayer, ancientBook;
 
 	QuestStep claimReward, wildPie, dragonDarts, talkKQHead, grandGoldChest, restorePrayer,
-		moveToPyramidPlunder, startPyramidPlunder, moveToBed;
+		moveToPyramidPlunder, startPyramidPlunder, traversePyramid, moveToBed;
 
 	NpcStep iceBarrage;
 
-	Zone bed, pyramidPlunderLobby, lastRoom;
+	Zone bed, pyramidPlunderLobby, lastRoom, pyramidRooms;
 
-	ZoneRequirement inBed, inPyramidPlunderLobby, inLastRoom;
+	ZoneRequirement inBed, inPyramidPlunderLobby, inPyramidRooms, inLastRoom;
 
 	@Override
 	public QuestStep loadStep()
@@ -95,8 +98,10 @@ public class DesertElite extends ComplexStateQuestHelper
 		doElite.addStep(notWildPie, wildPie);
 		doElite.addStep(notIceBarrage, iceBarrage);
 		doElite.addStep(new Conditions(notGrandGoldChest, inLastRoom), grandGoldChest);
+		doElite.addStep(new Conditions(notGrandGoldChest, inPyramidRooms), traversePyramid);
 		doElite.addStep(new Conditions(notGrandGoldChest, inPyramidPlunderLobby), startPyramidPlunder);
 		doElite.addStep(notGrandGoldChest, moveToPyramidPlunder);
+		doElite.addStep(notRestorePrayer, restorePrayer);
 		doElite.addStep(new Conditions(notDragonDarts, inBed), dragonDarts);
 		doElite.addStep(notDragonDarts, moveToBed);
 		doElite.addStep(notTalkKQHead, talkKQHead);
@@ -142,6 +147,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		inBed = new ZoneRequirement(bed);
 		inLastRoom = new ZoneRequirement(lastRoom);
 		inPyramidPlunderLobby = new ZoneRequirement(pyramidPlunderLobby);
+		inPyramidRooms = new ZoneRequirement(pyramidRooms);
 
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 		icthlarinsLittleHelper = new QuestRequirement(QuestHelperQuest.ICTHLARINS_LITTLE_HELPER, QuestState.IN_PROGRESS);
@@ -154,20 +160,35 @@ public class DesertElite extends ComplexStateQuestHelper
 		bed = new Zone(new WorldPoint(3163, 3049, 0), new WorldPoint(3181, 3024, 0));
 		pyramidPlunderLobby = new Zone(new WorldPoint(1926, 4465, 2), new WorldPoint(1976, 4419, 3));
 		lastRoom = new Zone(new WorldPoint(1966, 4437, 0), new WorldPoint(1980, 4419, 0));
+		pyramidRooms = new Zone(new WorldPoint(1922, 4417, 0), new WorldPoint(1984, 4480, 0));
 	}
 
 	public void setupSteps()
 	{
 		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
-			"Enter the Pyramid plunder mini-game. If you don't see a Guardian mummy exit and try a different entrance.");
+			"Enter the Pyramid plunder minigame. If you don't see a Guardian mummy exit and try a different " +
+				"entrance.", true);
+		((ObjectStep) moveToPyramidPlunder).addAlternateObjects(NullObjectID.NULL_26623, NullObjectID.NULL_26624,
+			NullObjectID.NULL_26625);
 		startPyramidPlunder = new NpcStep(this, NpcID.GUARDIAN_MUMMY, new WorldPoint(1934, 4427, 3),
-			"Talk to the guardian mummy to start the minigame. If you don't see a Guardian mummy exit and try a different entrance.");
+			"Talk to the guardian mummy to start the minigame.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
+
+		traversePyramid = new ObjectStep(this, 26618, new WorldPoint(1951, 4452, 0),
+			"Go through each of the pyramid rooms until the final room.", true);
+		((ObjectStep) traversePyramid).setMaxObjectDistance(40);
+		((ObjectStep) traversePyramid).setMaxRenderDistance(10);
+		for (int i=26619; i<26651; i++)
+		{
+			if (i == 26626) continue;
+			((ObjectStep) traversePyramid).addAlternateObjects(i);
+		}
+
 		grandGoldChest = new ObjectStep(this, ObjectID.GRAND_GOLD_CHEST, new WorldPoint(1973, 4431, 0),
-			"Loot the grand gold chest.");// Can't test the coords but should be close / correct
+			"Loot the grand gold chest.", true);// Can't test the coords but should be close / correct
 
 		restorePrayer = new ObjectStep(this, ObjectID.ALTAR_20377, new WorldPoint(3281, 2774, 0),
-			"Pray at the altar restoring at least 85 prayer points.");
+			"Pray at the altar in Sophanem restoring at least 85 prayer points.");
 
 		iceBarrage = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3334, 2865, 0),
 			"Cast Ice barrage against any foe in the Desert (away from any city). You must not splash.", true,
@@ -202,6 +223,33 @@ public class DesertElite extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(food, pharaohSceptre, desertRobe, desertBoots, desertShirt, waterskin);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Desert amulet 4", ItemID.DESERT_AMULET_4),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Unlimited teleports to Nardah and the Kalphite Cave on the " +
+				"desert amulet"),
+			new UnlockReward("The Nardah teleport on the desert amulet now takes players " +
+				"directly inside the Elidinis" +
+				" shrine"),
+			new UnlockReward("100% protection against desert heat when the desert amulet is worn"),
+			new UnlockReward("Pharaoh's sceptre can hold up to 8 charges"),
+			new UnlockReward("Free pass-through of the Shantay Pass"),
+			new UnlockReward("Access to a crevice shortcut, requiring 86 Agility, " +
+				"in the Kalphite Lair from the entrance to the antechamber before the " +
+				"Kalphite Queen boss room.")
+		);
 	}
 
 	@Override

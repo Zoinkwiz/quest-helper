@@ -36,6 +36,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -72,10 +74,10 @@ public class DesertEasy extends ComplexStateQuestHelper
 	Requirement notGoldWarbler, notFiveClay, notEnterKalph, notEnterDesert, notKillVulture, notNardahHerb,
 		notCollectCacti, notSellArtefact, notOpenSarc, notCutCactus, notMagicCarpet;
 
-	QuestStep claimReward, goldWarbler, fiveClay, enterDesert, nardahHerb,
-		collectCacti, sellArtefact, openSarc, cutCactus, magicCarpet, moveToPyramidPlunder, startPyramidPlunder;
+	QuestStep claimReward, goldWarbler, fiveClay, enterDesert, nardahHerb, collectCacti, sellArtefact,
+		openSarc, cutCactus, magicCarpet, moveToPyramidPlunder, startPyramidPlunder;
 
-	ObjectStep enterKalph;
+	ObjectStep enterKalph, enterKalphForCacti;
 
 	NpcStep killVulture;
 
@@ -95,7 +97,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notCutCactus, cutCactus);
 		doEasy.addStep(notEnterKalph, enterKalph);
 		doEasy.addStep(new Conditions(notCollectCacti, inKalphHive), collectCacti);
-		doEasy.addStep(notCollectCacti, enterKalph);
+		doEasy.addStep(notCollectCacti, enterKalphForCacti);
 		doEasy.addStep(notGoldWarbler, goldWarbler);
 		doEasy.addStep(notFiveClay, fiveClay);
 		doEasy.addStep(notMagicCarpet, magicCarpet);
@@ -116,7 +118,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		notEnterKalph = new VarplayerRequirement(1198, false, 3);
 		notEnterDesert = new VarplayerRequirement(1198, false, 4);
 		notKillVulture = new VarplayerRequirement(1198, false, 5);
-		notNardahHerb = new VarplayerRequirement(1198,  false, 6);
+		notNardahHerb = new VarplayerRequirement(1198, false, 6);
 		notCollectCacti = new VarplayerRequirement(1198, false, 7);
 		notSellArtefact = new VarplayerRequirement(1198, false, 8);
 		notOpenSarc = new VarplayerRequirement(1198, false, 9);
@@ -186,7 +188,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 			"Mine five clay in the north east of the desert.");
 
 		nardahHerb = new NpcStep(this, NpcID.ZAHUR, new WorldPoint(3425, 2906, 0),
-			"Have Zahur clean a grimy herb for you.", grimyHerb, coins.quantity(200));
+			"Have Zahur in Nardah clean a grimy herb for you.", grimyHerb, coins.quantity(200));
 		nardahHerb.addDialogStep("Please clean all my herbs.");
 
 		killVulture = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3334, 2865, 0),
@@ -194,7 +196,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		killVulture.addAlternateNpcs(NpcID.VULTURE_1268);
 
 		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
-		"Enter the Pyramid plunder mini-game. If you don't see a Guardian mummy exit and try a different entrance.");
+			"Enter the Pyramid plunder minigame. If you don't see a Guardian mummy exit and try a different entrance.");
 		startPyramidPlunder = new NpcStep(this, NpcID.GUARDIAN_MUMMY, new WorldPoint(1934, 4427, 3),
 			"Talk to the guardian mummy to start the minigame. If you don't see a Guardian mummy exit and try a different entrance.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
@@ -202,13 +204,19 @@ public class DesertEasy extends ComplexStateQuestHelper
 			"Open the sarcophagus in the first room.");
 
 		sellArtefact = new NpcStep(this, NpcID.SIMON_TEMPLETON, new WorldPoint(3346, 2827, 0),
-			"Talk to Simon Templeton and sell your artefact", pyramidPlunderArtefact);
+			"Talk to Simon Templeton and sell your artefact.", pyramidPlunderArtefact);
 		sellArtefact.addDialogStep("Yes, show me the money.");
 
 		enterKalph = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
 			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted());
 		enterKalph.addAlternateObjects(ObjectID.TUNNEL_ENTRANCE);
 		enterKalph.addIcon(ItemID.ROPE);
+
+		enterKalphForCacti = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
+			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted());
+		enterKalphForCacti.addAlternateObjects(ObjectID.TUNNEL_ENTRANCE);
+		enterKalphForCacti.addIcon(ItemID.ROPE);
+
 		collectCacti = new DetailedQuestStep(this, new WorldPoint(3463, 9482, 2),
 			"Pickup and drop cacti until task is completed", potatoCacti);
 
@@ -249,6 +257,25 @@ public class DesertEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Desert amulet 1", ItemID.DESERT_AMULET_1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Pharaoh's sceptre can hold up to 4 charges"),
+			new UnlockReward("Goats will always drop noted desert goat horn"),
+			new UnlockReward("Simon Templeton will now buy your noted artefacts too")
+		);
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -269,7 +296,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		kalphiteHiveSteps.setDisplayCondition(notEnterKalph);
 		allSteps.add(kalphiteHiveSteps);
 
-		PanelDetails kalphiteCactiSteps = new PanelDetails("Kalphite Cacti", Arrays.asList(enterKalph, collectCacti),
+		PanelDetails kalphiteCactiSteps = new PanelDetails("Kalphite Cacti", Arrays.asList(enterKalphForCacti, collectCacti),
 			rope, combatGear, food, antipoison);
 		kalphiteCactiSteps.setDisplayCondition(notCollectCacti);
 		allSteps.add(kalphiteCactiSteps);

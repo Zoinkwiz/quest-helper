@@ -38,6 +38,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -75,7 +77,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	Requirement theGolem, eaglesPeak, spiritsOfTheElid, enakhrasLament;
 
 	Requirement notAgiPyramid, notDesertLizard, notOrangeSally, notPhoenixFeather, notMagicCarpet, notEagleTravel,
-		notPrayElidinis, notCombatPot, notTPEnakhra, notVisitGenie, notTPPollnivneach, notChopTeak, notTalkSimon;
+		notPrayElidinis, notCombatPot, notTPEnakhra, notVisitGenie, notTPPollnivneach, notChopTeak, talkedToSimon;
 
 	QuestStep claimReward, agiPyramid, orangeSally, phoenixFeather, magicCarpet, eagleTravel, prayElidinis,
 		combatPot, tpEnakhra, visitGenie, tpPollnivneach, chopTeak, moveToEagle, moveToDesert, moveToGenie,
@@ -106,7 +108,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notPrayElidinis, prayElidinis);
 		doMedium.addStep(new Conditions(notVisitGenie, inGenie), visitGenie);
 		doMedium.addStep(notVisitGenie, moveToGenie);
-		doMedium.addStep(new Conditions(notAgiPyramid, inPyramid, notTalkSimon), agiPyramid);
+		doMedium.addStep(new Conditions(notAgiPyramid, inPyramid, talkedToSimon), agiPyramid);
 		doMedium.addStep(new Conditions(notAgiPyramid, inPyramid), talkToSimon);
 		doMedium.addStep(notAgiPyramid, moveToPyramid);
 		doMedium.addStep(notTPEnakhra, tpEnakhra);
@@ -135,7 +137,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		//3088 0->1 for boulder in eagle area
 		// 1557 0->1 talking to simon
 		// 1558 0->1 talking to simon
-		notTalkSimon = new VarbitRequirement(1558, 1, Operation.EQUAL);
+		talkedToSimon = new VarbitRequirement(1558, 1, Operation.EQUAL);
 
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notMagicCarpet);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notOrangeSally,
@@ -152,7 +154,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 			.showConditioned(notCombatPot);
 		goatHornDust = new ItemRequirement("Goat horn dust", ItemID.GOAT_HORN_DUST).showConditioned(notCombatPot);
 		camulet = new ItemRequirement("Camulet", ItemID.CAMULET).showConditioned(notTPEnakhra);
-		iceCooler = new ItemRequirement("Ice cooler", ItemID.ICE_COOLER).showConditioned(notDesertLizard);
+		iceCooler = new ItemRequirement("Ice cooler (bring multiple just in case)", ItemID.ICE_COOLER).showConditioned(notDesertLizard);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -186,9 +188,10 @@ public class DesertMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		moveToEagle = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
-			"Enter the cave at the top of Eagles' Peak. Use fairy ring and travel to (AKQ), then head south.");
+			"Enter the cave at the top of Eagles' Peak. You can use a fairy ring to (AKQ), then head " +
+				"south to get there easily.");
 		eagleTravel = new NpcStep(this, NpcID.DESERT_EAGLE, new WorldPoint(2027, 4964, 3),
-			"Use rope on the Polar Eagle to travel to the Snowy Hunter area.", rope.highlighted());
+			"Use a rope on the Polar Eagle to travel to the Snowy Hunter area.", rope.highlighted());
 
 		magicCarpet = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3310, 3108, 0),
 			"Talk to the rug merchant and travel to Uzer.", coins.quantity(200));
@@ -200,7 +203,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		orangeSally = new ObjectStep(this, ObjectID.YOUNG_TREE_8732, new WorldPoint(3404, 3134, 0),
 			"Setup a net trap and catch an Orange Salamander in the Uzer hunting area.", rope, smallFishingNet);
 
-		combatPot = new ItemStep(this, "Create a combat potion in the desert. Note: Do not be within a city either.",
+		combatPot = new ItemStep(this, "Create a combat potion in the desert. Note: Do not be within a city.",
 			harraPot.highlighted(), goatHornDust.highlighted());
 		moveToDesert = new TileStep(this, new WorldPoint(3305, 3112, 0),
 			"Enter the desert and be out of any city limits (You must be losing health or water from the heat).");
@@ -227,8 +230,16 @@ public class DesertMedium extends ComplexStateQuestHelper
 			"Climb the Agility Pyramid and collect the pyramid top. Be sure to click continue in the dialog.");
 
 		tpEnakhra = new DetailedQuestStep(this, "Teleport to Enakhra's Temple with the Camulet.", camulet);
-		tpPollnivneach = new DetailedQuestStep(this, "Teleport to Pollnivneach with a redirected house tablet. " +
-			"For Ironmen, move then enter your house from Pollnivneach", scrollOfRedir, teleToHouse);
+
+		if (client.getAccountType().isIronman())
+		{
+			tpPollnivneach = new DetailedQuestStep(this, "Move your house to Pollnivneach, then enter your house " +
+				"there.", coins.quantity(7500));
+		}
+		else
+		{
+			tpPollnivneach = new DetailedQuestStep(this, "Teleport to Pollnivneach with a redirected house tablet.", scrollOfRedir, teleToHouse);
+		}
 
 		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
@@ -272,6 +283,24 @@ public class DesertMedium extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Kill a Desert lizard (lvl 24)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Desert amulet 2", ItemID.DESERT_AMULET_2, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Pharaoh's sceptre can hold up to 5 charges"),
+			new UnlockReward("One teleport to Nardah per day on desert amulet")
+		);
 	}
 
 	@Override

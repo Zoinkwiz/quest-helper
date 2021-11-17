@@ -37,6 +37,9 @@ import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
@@ -198,7 +201,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		menaThug = new NpcStep(this, NpcID.MENAPHITE_THUG, new WorldPoint(3347, 2959, 0),
 			"Knockout and pickpocket a Menaphite thug.", blackjack);
 
-		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify",
+		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify.",
 			lunarBook, fireRune.quantity(1), waterRune.quantity(3), astralRune.quantity(1));
 
 		moveToSmoke = new ObjectStep(this, ObjectID.SMOKEY_WELL, new WorldPoint(3310, 2962, 0),
@@ -212,7 +215,7 @@ public class DesertHard extends ComplexStateQuestHelper
 			"Pray at the altar.");
 
 		granite = new ObjectStep(this, ObjectID.ROCKS_11387, new WorldPoint(3167, 2911, 0),
-			"Mine granite.", pickaxe);
+			"Mine granite in the mine south of the Bandit Camp.", pickaxe);
 
 		moveToMayor = new ObjectStep(this, ObjectID.STAIRCASE_10525, new WorldPoint(3447, 2912, 0),
 			"Climb the staircase in the Nardah Mayor's house.");
@@ -220,14 +223,14 @@ public class DesertHard extends ComplexStateQuestHelper
 			"Burn yew logs on the balcony. ", yewLog, tinderbox);
 
 		mithPlatebody = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3409, 2921, 0),
-			"Make a Mithril platebody", mithBar.quantity(5), hammer);
+			"Make a Mithril platebody in Nardah.", mithBar.quantity(5), hammer);
 
 		moveToSoph = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0),
-			"Climb down the ladder to enter the Sophanem Dungeon.");
+			"Climb down the ladder to enter the Sophanem Dungeon.", combatGear, lightsource);
 		moveToSoph2 = new ObjectStep(this, ObjectID.LADDER_20278, new WorldPoint(2800, 5159, 0),
-			"Climb down the ladder again.", lightsource);
+			"Climb down the ladder again.", combatGear, lightsource);
 		killLocustRider = new NpcStep(this, NpcID.LOCUST_RIDER_796, new WorldPoint(3296, 9267, 2),
-			"Kill a Scarab mage or Locust rider with keris.", true, keris.equipped());
+			"Kill a Scarab mage or Locust rider with keris.", true, combatGear, keris.equipped());
 		killLocustRider.addAlternateNpcs(NpcID.SCARAB_MAGE, NpcID.SCARAB_MAGE_799, NpcID.LOCUST_RIDER,
 			NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
 
@@ -277,6 +280,30 @@ public class DesertHard extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Kill a Dust devil (lvl 93), Locust rider (lvl 98), Kalphite Queen, (lvl 333)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Desert amulet 3", ItemID.DESERT_AMULET_3, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Pharaoh's sceptre can hold up to 6 charges"),
+			new UnlockReward("Access to the big window shortcut in Al Kharid Palace that takes you to the south of the palace, " +
+				"just north of the Shantay Pass, requiring 70 Agility"),
+			new UnlockReward("Unlocked the ability to toggle the Camulet teleport location between the inside and outside of Enakhra's Temple"),
+			new UnlockReward("All carpet rides are free"),
+			new UnlockReward("Zahur will create unfinished potions for 200 coins per potion from a vial of water and a clean herb. Items can be noted or unnoted"),
+			new UnlockReward("Zahur will now clean noted grimy herbs for 200 coins each"),
+			new UnlockReward("Ropes placed at both the Kalphite Lair entrance and the Kalphite Queen tunnel entrance become permanent")
+		);
 	}
 
 	@Override

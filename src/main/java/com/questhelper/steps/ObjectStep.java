@@ -59,6 +59,9 @@ public class ObjectStep extends DetailedQuestStep
 	@Setter
 	private int maxObjectDistance = 50;
 
+	@Setter
+	private int maxRenderDistance = 50;
+
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
@@ -294,9 +297,15 @@ public class ObjectStep extends DetailedQuestStep
 
 		for (TileObject tileObject : objects)
 		{
+			int distanceFromPlayer = tileObject.getWorldLocation().distanceTo(playerPosition);
+			if (maxRenderDistance < distanceFromPlayer)
+			{
+				continue;
+			}
+
 			if (tileObject.getPlane() == client.getPlane())
 			{
-				if (closestObject == null || closestObject.getWorldLocation().distanceTo(playerPosition) > tileObject.getWorldLocation().distanceTo(playerPosition))
+				if (closestObject == null || closestObject.getWorldLocation().distanceTo(playerPosition) > distanceFromPlayer)
 				{
 					closestObject = tileObject;
 				}

@@ -191,7 +191,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 			"Enter the cave at the top of Eagles' Peak. You can use a fairy ring to (AKQ), then head " +
 				"south to get there easily.");
 		eagleTravel = new NpcStep(this, NpcID.DESERT_EAGLE, new WorldPoint(2027, 4964, 3),
-			"Use a rope on the Polar Eagle to travel to the Snowy Hunter area.", rope.highlighted());
+			"Use a rope on the Desert Eagle to travel to the Desert area.", rope.highlighted());
 
 		magicCarpet = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3310, 3108, 0),
 			"Talk to the rug merchant and travel to Uzer.", coins.quantity(200));

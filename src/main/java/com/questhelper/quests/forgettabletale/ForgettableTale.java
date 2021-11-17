@@ -779,10 +779,10 @@ public class ForgettableTale extends BasicQuestHelper
 
 		startPuzzle7 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
-		puzzle7P1 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 68);
-		puzzle7P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 69);
-		puzzle7P3 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 71);
-		puzzle7P4 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 73);
+		puzzle7P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 68);
+		puzzle7P2 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 69);
+		puzzle7P3 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 71);
+		puzzle7P4 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 73);
 		puzzle7Ok = new WidgetStep(this, "Click the Ok button.", 247, 108);
 		takePuzzle7Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");

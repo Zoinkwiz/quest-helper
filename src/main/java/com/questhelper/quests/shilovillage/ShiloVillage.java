@@ -199,7 +199,7 @@ public class ShiloVillage extends BasicQuestHelper
 		stonePlaque = new ItemRequirement("Stone-plaque", ItemID.STONEPLAQUE);
 		tatteredScroll = new ItemRequirement("Tattered scroll", ItemID.TATTERED_SCROLL);
 		crumpledScroll = new ItemRequirement("Crumpled scroll", ItemID.CRUMPLED_SCROLL);
-		zadimusCorpse = new ItemRequirement("Zadminus corpse", ItemID.ZADIMUS_CORPSE);
+		zadimusCorpse = new ItemRequirement("Zadimus corpse", ItemID.ZADIMUS_CORPSE);
 		zadimusCorpse.addAlternates(ItemID.BONE_SHARD, ItemID.BONE_KEY);
 		boneShard = new ItemRequirement("Bone shard", ItemID.BONE_SHARD);
 		boneShard.addAlternates(ItemID.BONE_KEY);

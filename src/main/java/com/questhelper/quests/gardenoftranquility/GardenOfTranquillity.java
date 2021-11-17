@@ -438,7 +438,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToLyraAgain.addSubSteps(waitForLyraToGrow);
 
 		talkToKragen = new NpcStep(this, NpcID.KRAGEN, new WorldPoint(2668, 3376, 0),
-			"Talk to Kragen east of Ardougne.", ringOfCharosA.equipped());
+			"Talk to Kragen northeast of Ardougne.", ringOfCharosA.equipped());
 		talkToKragen.addDialogSteps("Do you have any snowdrop seeds to spare?", "[Charm] You seem to be a little " +
 			"irritable, my friend.", "[Charm] I don't like to see a fellow human being so upset.", "[Charm] So what " +
 			"ails you, my friend?", "[Charm] Well, is there anything I can do for you?", "[Charm] So what can I do " +
@@ -450,7 +450,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		waitForKragenToGrow = new ObjectStep(this, NullObjectID.NULL_8554, new WorldPoint(2669, 3378, 0),
 			"Wait for your cabbages to finish growing. If they died you'll need to plant more in Kragen's patches.", spade);
 		talkToKragenAgain = new NpcStep(this, NpcID.KRAGEN, new WorldPoint(2668, 3376, 0),
-			"Talk to Kragen east of Ardougne for his seeds.");
+			"Talk to Kragen northeast of Ardougne for his seeds.");
 		talkToKragenAgain.addDialogSteps("Okay, I've grown those cabbages like you asked.");
 		talkToKragenAgain.addSubSteps(waitForKragenToGrow);
 

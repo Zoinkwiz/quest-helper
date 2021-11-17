@@ -244,7 +244,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		useAmuletOnStatue = new ObjectStep(this, ObjectID.STATUE_OF_GLARIAL, new WorldPoint(2603, 9915, 0), "Use Glarial's amulet on the Statue of Glarial", unequippedAmulet);
 		useAmuletOnStatue.addIcon(ItemID.GLARIALS_AMULET);
 
-		useUrnOnChalice = new ObjectStep(this, ObjectID.CHALICE, new WorldPoint(2604, 9911, 0), "Use Glarial's urn on the Chalice to finish the quest.", glarialsUrn);
+		useUrnOnChalice = new ObjectStep(this, ObjectID.CHALICE, new WorldPoint(2604, 9911, 0), "DO NOT LEFT-CLICK THE CHALICE! Use Glarial's urn on the Chalice to finish the quest.", glarialsUrn);
 		useUrnOnChalice.addIcon(ItemID.GLARIALS_URN);
 	}
 

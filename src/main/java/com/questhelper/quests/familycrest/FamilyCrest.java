@@ -143,7 +143,7 @@ public class FamilyCrest extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		// Recommended
-		varrockTele = new ItemRequirement("Varrock Teleport", ItemID.VARROCK_TELEPORT);
+		varrockTele = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 2);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
 		ardyTele = new ItemRequirement("Ardounge Teleport", ItemID.ARDOUGNE_TELEPORT);
 		alkharidTele = new ItemRequirement("Al-Kharid Teleport", ItemCollections.getRingOfDuelings());

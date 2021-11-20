@@ -1431,4 +1431,13 @@ public class ItemCollections
 		ItemID.STUFFED_KQ_HEAD,
 		ItemID.STUFFED_KQ_HEAD_TATTERED
 	);
+
+	@Getter
+	private  static final List<Integer> ardyCloaks = ImmutableList.of(
+			ItemID.ARDOUGNE_CLOAK_1,
+			ItemID.ARDOUGNE_CLOAK_2,
+			ItemID.ARDOUGNE_CLOAK_3,
+			ItemID.ARDOUGNE_CLOAK_4,
+			ItemID.ARDOUGNE_MAX_CAPE
+	);
 }

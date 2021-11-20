@@ -384,7 +384,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist in the Bedabin Camp.");
+		talkToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist in the Bedabin Camp. If unlocked, you can use the flying carpet service.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
 
@@ -408,7 +408,7 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToEblis.addDialogStep("Tell me of The four diamonds of Azzanadra");
 		talkToEblis.addDialogStep("Yes");
 
-		bringItemsToEblis = new GiveItems(this, NpcID.EBLIS, new WorldPoint(3184, 2989, 0), "Use the items on Eblis in the east of the Bandit Camp.", ashes, bloodRune, bones, charcoal, moltenGlass6, magicLogs12, steelBars6);
+		bringItemsToEblis = new GiveItems(this, NpcID.EBLIS, new WorldPoint(3184, 2989, 0), "Use the items on Eblis in the east of the Bandit Camp. You will need to make two trips.", ashes, bloodRune, bones, charcoal, moltenGlass6, magicLogs12, steelBars6);
 
 		talkToEblisAtMirrors = new NpcStep(this, NpcID.EBLIS_689, new WorldPoint(3214, 2954, 0), "Talk to Eblis at the mirrors south east of the Bandit Camp.");
 

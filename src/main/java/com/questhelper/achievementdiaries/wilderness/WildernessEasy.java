@@ -175,14 +175,17 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	{
 		killMammoth = new NpcStep(this, NpcID.MAMMOTH, new WorldPoint(3164, 3593, 0),
 			"Kill a Mammoth in the wilderness.", combatGear);
+
 		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
-			"Move to the Edgeville dungeon.");
+			"Enter to the Edgeville dungeon.", combatGear, food);
+
+		moveToWildy = new DetailedQuestStep(this, "Enter the wilderness.", teamCape);
 		equipTeamCape = new DetailedQuestStep(this, "Equip a team cape. If you already have one on, re-equip it.",
 			teamCape);
+
 		chaosTemple = new ObjectStep(this, 34822, new WorldPoint(3060, 3591, 0),
 			"Travel to the chaos altar or go through the abyss.");
 		chaosTemple.addIcon(ItemID.CHAOS_TALISMAN);
-		moveToWildy = new DetailedQuestStep(this, "Enter the wilderness.");
 
 		moveToFount = new DetailedQuestStep(this, new WorldPoint(3373, 3893, 0), "Go to the Fountain of Rune");
 		lowAlch = new DetailedQuestStep(this, "Cast Low Alchemy on anything. Be sure to bring something alch-able.");
@@ -203,13 +206,13 @@ public class WildernessEasy extends ComplexStateQuestHelper
 			"Kill an Earth warrior.", combatGear, food);
 
 		wildyLever = new ObjectStep(this, ObjectID.LEVER_26761, new WorldPoint(3090, 3475, 0),
-			"Pull the Lever in Edgeville. This will take you to DEEP Wilderness, bank anything you aren't willing to lose");
+			"Pull the Lever in Edgeville. This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
 
 		demonicPrayer = new DetailedQuestStep(this, new WorldPoint(3288, 3886, 0),
 			"Restore prayer at the Demonic Ruins. You must be at less than your max prayer points.");
 
 		chaosAltar = new ObjectStep(this, ObjectID.CHAOS_ALTAR_411, new WorldPoint(2947, 3821, 0),
-			"Pray at the Chaos Altar. ");
+			"Pray at the Chaos Altar.");
 
 		enterKBDLair = new ObjectStep(this, ObjectID.LADDER_18987, new WorldPoint(3017, 3849, 0),
 			"Climb down the ladder that leads to the King black dragon Lair.", oneClick);

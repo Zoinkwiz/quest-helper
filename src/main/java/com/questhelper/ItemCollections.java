@@ -1429,4 +1429,15 @@ public class ItemCollections
 		ItemID.CHAOS_TALISMAN
 	);
 
+	@Getter
+	private static final List<Integer> runeAxeBetter = ImmutableList.of(
+		ItemID.RUNE_AXE,
+		ItemID.DRAGON_AXE,
+		ItemID.INFERNAL_AXE_UNCHARGED,
+		ItemID.INFERNAL_AXE_UNCHARGED_25371,
+		ItemID.CRYSTAL_AXE_INACTIVE,
+		ItemID.CRYSTAL_AXE,
+		ItemID.CRYSTAL_AXE_23862
+	);
+
 }

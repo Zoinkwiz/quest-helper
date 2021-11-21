@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import lombok.Getter;
 import lombok.Setter;
@@ -95,7 +96,7 @@ public class ItemRequirements extends ItemRequirement
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
-		int successes = (int) itemRequirements.stream().filter(predicate).count();
+		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		return logicType.compare(successes, itemRequirements.size());
 	}
 
@@ -103,7 +104,7 @@ public class ItemRequirements extends ItemRequirement
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
-		int successes = (int) itemRequirements.stream().filter(predicate).count();
+		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		return logicType.compare(successes, itemRequirements.size());
 	}
 

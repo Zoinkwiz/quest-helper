@@ -323,7 +323,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			"sandwich.", seaweed.highlighted(), monkeySkin.highlighted());
 
 		talkToTinsay = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0),
-			"Talk to Tinsay on Carin Isle west of Shilo Village, south of fairy ring CKR. Keep talking to him, giving" +
+			"Talk to Tinsay on Cairn Isle west of Shilo Village, south of fairy ring CKR. Keep talking to him, giving" +
 				" him the items he asks for.");
 		talkToTinsay.addDialogStep("Yes.");
 

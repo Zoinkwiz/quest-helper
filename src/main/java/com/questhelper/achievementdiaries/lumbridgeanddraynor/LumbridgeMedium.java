@@ -238,7 +238,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), ess, feathers, needle,
+		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), ess, feathers.quantity(10), flyFishingRod, needle,
 			thread, leather, lawRune.quantity(1), airRune.quantity(3), steelArrows.quantity(75), avasAccumulator, axe,
 			fairyAccess, butterflyNet, implingJar);
 	}

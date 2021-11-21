@@ -347,7 +347,7 @@ public class GrimTales extends BasicQuestHelper
 		plantBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", magicBeans, dibber, can);
 		plantBean.addIcon(ItemID.MAGIC_BEANS);
 
-		waterBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", canHighlight);
+		waterBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Use your watering can on the magic beans you just planted in the earth mound", canHighlight);
 		waterBean.addIcon(ItemID.WATERING_CAN);
 
 		climbBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Climb the bean stalk, ready to fight Glod.", combatGear);

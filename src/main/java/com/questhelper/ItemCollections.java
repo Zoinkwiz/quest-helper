@@ -1431,6 +1431,7 @@ public class ItemCollections
 		ItemID.STUFFED_KQ_HEAD,
 		ItemID.STUFFED_KQ_HEAD_TATTERED
 	);
+
 	@Getter
 	private static final List<Integer> teamCape = ImmutableList.of(
 		ItemID.TEAM1_CAPE,

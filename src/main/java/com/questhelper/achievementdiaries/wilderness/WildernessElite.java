@@ -30,6 +30,7 @@ import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -79,7 +80,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 	ItemRequirement food;
 
 	// Quests required
-	Requirement desertTreasure, enterGodwars, ancientBook;
+	Requirement desertTreasure, enterGodwars, ancientBook, gatheredLogs, caughtCrab;
+	// potentially need one more for rune scim step
 
 	Requirement notThreeBosses, notTPGhorrock, notDarkCrab, notRuneScim, notRoguesChest, notSpiritMage, notMagicLogs;
 
@@ -102,14 +104,14 @@ public class WildernessElite extends ComplexStateQuestHelper
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
 		doElite.addStep(notTPGhorrock, tPGhorrock);
-		doElite.addStep(new Conditions(notMagicLogs, inResource, magicLog), burnLogs);
+		doElite.addStep(new Conditions(notMagicLogs, inResource, gatheredLogs, magicLog), burnLogs);
 		doElite.addStep(new Conditions(notMagicLogs, inResource), magicLogs);
 		doElite.addStep(notMagicLogs, moveToResource1);
 		doElite.addStep(new Conditions(notRuneScim, inResource, runeBar.quantity(2)), runeScim);
 		doElite.addStep(new Conditions(notRuneScim, inResource, runeOre.quantity(2), coal.quantity(16)), smeltBar);
 		doElite.addStep(new Conditions(notRuneScim, inResource), runiteGolem);
 		doElite.addStep(notRuneScim, moveToResource2);
-		doElite.addStep(new Conditions(notDarkCrab, inResource, rawDarkCrab), cookDarkCrab);
+		doElite.addStep(new Conditions(notDarkCrab, inResource, caughtCrab, rawDarkCrab), cookDarkCrab);
 		doElite.addStep(new Conditions(notDarkCrab, inResource), darkCrab);
 		doElite.addStep(notDarkCrab, moveToResource3);
 		doElite.addStep(notRoguesChest, roguesChest);
@@ -161,6 +163,28 @@ public class WildernessElite extends ComplexStateQuestHelper
 		inResource = new ZoneRequirement(resource);
 		inGodWars1 = new ZoneRequirement(godWars1);
 		inGodWars2 = new ZoneRequirement(godWars2);
+
+		gatheredLogs = new ChatMessageRequirement(
+			inResource,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) gatheredLogs).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inResource),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
+
+		caughtCrab = new ChatMessageRequirement(
+			inResource,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) caughtCrab).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inResource),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
 
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}

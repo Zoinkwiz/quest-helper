@@ -143,8 +143,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPGhorrock);
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).showConditioned(notDarkCrab);
 		darkFishingBait = new ItemRequirement("Dark fish bait", ItemID.DARK_FISHING_BAIT).showConditioned(notDarkCrab);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(notDarkCrab,
-			notMagicLogs, notRuneScim));
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR,
+			notDarkCrab, notMagicLogs, notRuneScim));
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notRuneScim);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notMagicLogs);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notMagicLogs);

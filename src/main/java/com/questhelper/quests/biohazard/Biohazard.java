@@ -110,7 +110,7 @@ public class Biohazard extends BasicQuestHelper
 		ConditionalStep poisonFood = new ConditionalStep(this, talkToOmartToReturnToWest);
 		poisonFood.addStep(new Conditions(inMournerBackyard, rottenApple), useRottenAppleOnCauldron);
 		poisonFood.addStep(inMournerBackyard, pickupRottenApple);
-		poisonFood.addStep(inWestArdougne, enterBackyardOfHeadquatrers);
+		poisonFood.addStep(inWestArdougne, enterBackyardOfHeadquarters);
 
 		steps.put(5, poisonFood);
 

@@ -366,7 +366,7 @@ public class ForgettableTale extends BasicQuestHelper
 		kebab = new ItemRequirement("Kebab", ItemID.KEBAB);
 		kebab.setTooltip("You can buy one for 1 coin in the food shop northeast in Keldagrim");
 		beer = new ItemRequirement("Beer", ItemID.BEER);
-		beer.setTooltip("You can buy these from either of the bars in Keldagrim before starting quest");
+		beer.setTooltip("You can buy these from either of the bars in Keldagrim for 2 coins");
 		dwarvenStout = new ItemRequirement("Dwarven stout", ItemID.DWARVEN_STOUT);
 		beerGlass = new ItemRequirement("Beer glass", ItemID.BEER_GLASS);
 		randomItem = new ItemRequirement("A random item per player", -1, -1);

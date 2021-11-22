@@ -1503,4 +1503,19 @@ public class ItemCollections
 		ItemID.CRYSTAL_AXE_23862
 	);
 
+	@Getter
+	private static final List<Integer> godStaff = ImmutableList.of(
+		ItemID.ZAMORAK_STAFF,
+		ItemID.STAFF_OF_THE_DEAD,
+		ItemID.STAFF_OF_THE_DEAD_23613,
+		ItemID.TOXIC_STAFF_OF_THE_DEAD,
+		ItemID.TOXIC_STAFF_UNCHARGED,
+		ItemID.GUTHIX_STAFF,
+		ItemID.VOID_KNIGHT_MACE,
+		ItemID.VOID_KNIGHT_MACE_BROKEN,
+		ItemID.VOID_KNIGHT_MACE_L,
+		ItemID.STAFF_OF_BALANCE,
+		ItemID.SARADOMIN_STAFF,
+		ItemID.STAFF_OF_LIGHT
+	);
 }

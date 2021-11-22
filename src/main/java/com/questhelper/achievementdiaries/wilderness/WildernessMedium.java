@@ -41,6 +41,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -125,17 +127,17 @@ public class WildernessMedium extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notMineMith = new VarplayerRequirement(1192, true, 13);
-		notEntYew = new VarplayerRequirement(1192, true, 14);
-		notWildyGodWars = new VarplayerRequirement(1192, true, 15);
-		notWildyAgi = new VarplayerRequirement(1192, true, 16);
-		notKillGreenDrag = new VarplayerRequirement(1192, true, 18);
-		notKillAnkou = new VarplayerRequirement(1192, true, 19);
-		notEarthOrb = new VarplayerRequirement(1192, true, 20);
-		notWildyGWBloodveld = new VarplayerRequirement(1192, true, 21);
-		notEmblemTrader = new VarplayerRequirement(1192, true, 22);
-		notGoldHelm = new VarplayerRequirement(1192, true, 23);
-		notMuddyChest = new VarplayerRequirement(1192, true, 24);
+		notMineMith = new VarplayerRequirement(1192, false, 13);
+		notEntYew = new VarplayerRequirement(1192, false, 14);
+		notWildyGodWars = new VarplayerRequirement(1192, false, 15);
+		notWildyAgi = new VarplayerRequirement(1192, false, 16);
+		notKillGreenDrag = new VarplayerRequirement(1192, false, 18);
+		notKillAnkou = new VarplayerRequirement(1192, false, 19);
+		notEarthOrb = new VarplayerRequirement(1192, false, 20);
+		notWildyGWBloodveld = new VarplayerRequirement(1192, false, 21);
+		notEmblemTrader = new VarplayerRequirement(1192, false, 22);
+		notGoldHelm = new VarplayerRequirement(1192, false, 23);
+		notMuddyChest = new VarplayerRequirement(1192, false, 24);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -159,7 +161,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notGoldHelm);
 		goldOre = new ItemRequirement("Gold ore", ItemID.GOLD_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notGoldHelm);
-		barsOrPick = new ItemRequirements(LogicType.OR,"3 gold bars or a pickaxe", goldBar.quantity(3), pickaxe);
+		barsOrPick = new ItemRequirements(LogicType.OR, "3 gold bars or a pickaxe", goldBar.quantity(3), pickaxe);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
@@ -167,7 +169,6 @@ public class WildernessMedium extends ComplexStateQuestHelper
 
 		// TODO: implement skillRequirements to check for 60 str or 60 agi
 		enterGodwars = new ItemRequirement("60 Strength or Agility", -1, -1);
-
 
 		inEdge = new ZoneRequirement(edge);
 		inResource = new ZoneRequirement(resource);
@@ -209,7 +210,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		moveToGodWars = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 		wildyGodwars = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 0),
-			"Use the crevice to enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
+			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
+			combatGear, food, godEquip);
 		wildyGWBloodveld = new NpcStep(this, NpcID.BLOODVELD_3138, new WorldPoint(3050, 10131, 0),
 			"Kill a Bloodveld in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 
@@ -228,15 +230,14 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		emblemTrader = new NpcStep(this, NpcID.EMBLEM_TRADER, new WorldPoint(3097, 3504, 0),
 			"Speak with the Emblem Trader.");
 
-
 		goldHelm = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
 			"Smith the gold helmet in the Resource Area.", hammer, goldBar.quantity(3));
 		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
-			"Enter the Wildreness Resource Area.", coins.quantity(7500), hammer, barsOrPick);
+			"Enter the Wilderness Resource Area.", coins.quantity(7500), hammer, barsOrPick);
 		smeltGoldOre = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
 			"Smelt the gold ore into gold bars.", hammer, goldOre.quantity(3));
 		mineGoldOre = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(3184, 3941, 0),
-			"Mine gold ore.", hammer, pickaxe);
+			"Mine gold ore.", true, hammer, pickaxe);
 
 		muddyChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_170, new WorldPoint(3089, 3859, 0),
 			"Use a Muddy key on the chest in the Lava Maze.", muddyKey, knife);
@@ -283,6 +284,27 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Bloodveld (lvl 81), Green dragon (lvl 88), Ankou (lvl 98), Ent (lvl 101)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Wilderness Sword 2", ItemID.WILDERNESS_SWORD_2),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Increases the chance of a successful yield from ents by 15%"),
+			new UnlockReward("20% off entry to Resource Area (6000gp)"),
+			new UnlockReward("Can have 4 ecumenical keys at a time"),
+			new UnlockReward("20 random free runes from Lundail once per day"),
+			new UnlockReward("Access to the shortcut in the Deep Wilderness Dungeon (requires Agility 46 )")
+		);
 	}
 
 	@Override

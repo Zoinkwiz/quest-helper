@@ -42,6 +42,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -253,6 +255,24 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Kill an Earth Warrior (lvl 51) and a Mammoth (lvl 80).");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Wilderness Sword 1", ItemID.WILDERNESS_SWORD_1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Wilderness lever can teleport you to either Edgeville or Ardougne"),
+			new UnlockReward("10 random free runes from Lundail once per day")
+		);
 	}
 
 	@Override

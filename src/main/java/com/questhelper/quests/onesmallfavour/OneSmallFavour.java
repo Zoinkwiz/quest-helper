@@ -609,7 +609,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		enterGoblinCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild.");
 		searchWall = new ObjectStep(this, ObjectID.SCULPTURE, new WorldPoint(2621, 9835, 0), "Right-click search the sculpture in the wall in the north east corner of the cave.");
 
-		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Crompety in north east Ardougne.");
+		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Cromperty in north east Ardougne.");
 		talkToCromperty.addDialogStep("I need to talk to you about a girl stuck in some rock!");
 		talkToCromperty.addDialogStep("Oh! Ok, one more 'small favour' isn't going to kill me...I hope!");
 
@@ -668,10 +668,10 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Return to Tindel Marchant in Port Khazard.", mattress);
 		returnToTindel.addDialogStep("I have the mattress.");
 
-		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Crompety in north east Ardougne.", ironOxide);
+		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Cromperty in north east Ardougne.", ironOxide);
 		returnToCromperty.addDialogStep("I have that iron oxide you asked for!");
 
-		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cage from behind Jerico's house in central East Ardougne.", pigeonCages5);
+		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cages from behind Jerico's house in central East Ardougne.", pigeonCages5);
 
 		enterGoblinCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild. Be prepared to fight the Slagilith (level 92).", pigeonCages5, animateRockScroll);
 		standNextToSculpture = new DetailedQuestStep(this, new WorldPoint(2616, 9835, 0), "Use the animate rock scroll next to the sculpture in the north east cavern.", animateRockScroll);

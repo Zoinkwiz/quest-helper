@@ -42,6 +42,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -611,6 +612,13 @@ public class RoyalTrouble extends BasicQuestHelper
 				new ExperienceReward(Skill.AGILITY, 5000),
 				new ExperienceReward(Skill.SLAYER, 5000),
 				new ExperienceReward(Skill.HITPOINTS, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(
+			new ItemReward("20,000 Coins", ItemID.COINS_995, 20000));
 	}
 
 	@Override

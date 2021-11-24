@@ -43,6 +43,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -84,9 +87,8 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	Requirement inArdougneCastleF1, inPassF0, inPassF1, inWellEntrance, inIbanRoom, inArdyPrison, inHideout, inWestArdyInstance, inMournerBaseHQInstance,
 		inEastArdyInstance, inArdougneCastleF1Instance, inLletyaF1, onHudonIsland, onDeadTreeIsland, onLedge, inFalls, inBaxThroneRoom, inIorwerthCave,
-		inLletyaF0Battle, inLletyaF1Battle, inLletyaF1Damaged, inBossArea, hasArdyHelm, hasArdyBody, hasTabard, hasBaxKey, hasOdeBook, hasCrystal,
-		hasCrystalDust, hasCadantineVial, hasInversionPotion, askedAboutCrwys, askedAboutHefin, learnedHowToMakeStatue, dugNearTyras, dugNearStash, dugNearPrif,
-		spunOutsideUndergroundPass;
+		inLletyaF0Battle, inLletyaF1Battle, inLletyaF1Damaged, inBossArea, askedAboutCrwys, askedAboutHefin, learnedHowToMakeStatue, dugNearTyras,
+		dugNearStash, dugNearPrif, spunOutsideUndergroundPass;
 
 	QuestStep talkToEdmond, goUpToLathas, talkToLathas, goDownFromLathas, talkToEdmondAgain, useRedDyeOnSteelFullHelm, talkToAlrena, talkToAlrenaNoItems,
 		useTabardOnPlatebody, talkToEdmondWithOutfit, goDownstairsCastle, talkToElenaInCell, goUpFromCastleBasement, searchElenaCabinet, goDownstairsCastleAgain,
@@ -99,7 +101,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	Requirement burnedGrain1, burnedGrain2, burnedGrain3, talkedToPriest1, talkedToSarah, talkedToChadwell, talkedToWestArdougne, talkedToSilverMerchant,
 		talkedToBaker1, talkedToBaker2, talkedToGemMerchant, talkedToFurTrader, talkedToSpiceSeller, talkedToSilkMerchant, talkedToMarketStalls, talkedToTownCrier,
 		talkedToZenesha, talkedToEstateAgent, talkedToProbita, talkedToAemad, talkedToPriest2, talkedToOrbon, askedAboutAmlodd, askedAboutTrahaearn,
-		gottenTeleportCrystal, inValley, clearedTraBlockage, inTraRoom, repairedExo, hasElderCadantine, inLightPuzzle, inLibraryF0, inLibraryF1, inLibraryF2,
+		gottenTeleportCrystal, inValley, clearedTraBlockage, inTraRoom, repairedExo, inLightPuzzle, inLibraryF0, inLibraryF1, inLibraryF2,
 		foundHefin, revealedCrwys, tracked1, tracked2, tracked3, tracked4, tracked5, foundEoin, askedAboutIthell, askedAboutMeilyr, checkedSymbol1,
 		checkedSymbol2, checkedSymbol3, checkedSymbol4, checkedSymbol5, builtStatue, finishedIthell, filledHole1, filledHole2, filledHole3,
 		filledHole4, filledHole5, filledHole6, filledHole7;
@@ -183,9 +185,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(14, talkToAlrenaNoItems);
 
 		ConditionalStep infiltrateCastle = new ConditionalStep(this, talkToAlrenaNoItems);
-		infiltrateCastle.addStep(new Conditions(hasArdyHelm, hasArdyBody), talkToEdmondWithOutfit);
-		infiltrateCastle.addStep(new Conditions(hasArdyBody), useRedDyeOnSteelFullHelm);
-		infiltrateCastle.addStep(new Conditions(hasTabard), useTabardOnPlatebody);
+		infiltrateCastle.addStep(new Conditions(ardyFullHelm, ardyPlatebody), talkToEdmondWithOutfit);
+		infiltrateCastle.addStep(new Conditions(ardyPlatebody), useRedDyeOnSteelFullHelm);
+		infiltrateCastle.addStep(new Conditions(ardyTabard), useTabardOnPlatebody);
 		steps.put(16, infiltrateCastle);
 
 		steps.put(18, goDownstairsCastle);
@@ -288,7 +290,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(64, talkToArianwynAfterMeeting);
 
 		ConditionalStep goEnterFalls = new ConditionalStep(this, boardRaft);
-		goEnterFalls.addStep(new Conditions(inFalls, hasBaxKey), enterBaxThroneRoom);
+		goEnterFalls.addStep(new Conditions(inFalls, baxKey), enterBaxThroneRoom);
 		goEnterFalls.addStep(inFalls, searchCrateForKey);
 		goEnterFalls.addStep(onLedge, enterFalls);
 		goEnterFalls.addStep(onDeadTreeIsland, useRopeOnTree);
@@ -332,11 +334,11 @@ public class SongOfTheElves extends BasicQuestHelper
 		steps.put(85, talkToElenaAfterTra);
 
 		ConditionalStep makePotion = new ConditionalStep(this, talkToElenaAfterTra);
-		makePotion.addStep(new Conditions(hasInversionPotion), talkToArianwynAfterPotion);
-		makePotion.addStep(new Conditions(hasCrystalDust, hasCadantineVial), useDustOnVial);
-		makePotion.addStep(new Conditions(hasCrystalDust, hasElderCadantine), useCadantineOnVial);
-		makePotion.addStep(new Conditions(hasCrystal, hasElderCadantine), usePestleOnCrystal);
-		makePotion.addStep(hasElderCadantine, talkToArianwynAfterTra);
+		makePotion.addStep(new Conditions(inversionPotion), talkToArianwynAfterPotion);
+		makePotion.addStep(new Conditions(crystalDust, cadantineSeed), useDustOnVial);
+		makePotion.addStep(new Conditions(crystalDust, elderCadantine), useCadantineOnVial);
+		makePotion.addStep(new Conditions(crystal, elderCadantine), usePestleOnCrystal);
+		makePotion.addStep(elderCadantine, talkToArianwynAfterTra);
 		steps.put(86, makePotion);
 
 		steps.put(88, talkToArianwynAfterGivingPotion);
@@ -690,13 +692,6 @@ public class SongOfTheElves extends BasicQuestHelper
 		inIbanRoom = new ZoneRequirement(ibanRoom);
 		inBossArea = new ZoneRequirement(bossArea);
 
-		hasArdyHelm = new ItemRequirements(ardyFullHelm);
-		hasArdyBody = new ItemRequirements(ardyPlatebody);
-		hasTabard = new ItemRequirements(ardyTabard);
-		hasBaxKey = new ItemRequirements(baxKey);
-		hasOdeBook = new ItemRequirements(odeToEternityHighlighted);
-
-
 		burnedGrain1 = new VarbitRequirement(9058, 1);
 		burnedGrain2 = new VarbitRequirement(9059, 1);
 		burnedGrain3 = new VarbitRequirement(9060, 1);
@@ -744,12 +739,6 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		// Tra has come:
 		// 9016: 82 ->84, 9018, 5->6, 9019 0->1
-
-		hasElderCadantine = new ItemRequirements(elderCadantine);
-		hasCrystal = new ItemRequirements(crystal);
-		hasCadantineVial = new ItemRequirements(elderCadantineVial);
-		hasCrystalDust = new ItemRequirements(crystalDust);
-		hasInversionPotion = new ItemRequirements(inversionPotion);
 
 		askedAboutCrwys = new VarbitRequirement(9022, 1, Operation.GREATER_EQUAL);
 		revealedCrwys = new VarbitRequirement(9022, 2, Operation.GREATER_EQUAL);
@@ -1424,6 +1413,44 @@ public class SongOfTheElves extends BasicQuestHelper
 		req.add(new ItemRequirement("Recommended: 75 Magic", -1, -1));
 		req.add(new ItemRequirement("Recommended: 40+ Prayer", -1, -1));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 20000),
+				new ExperienceReward(Skill.CONSTRUCTION, 20000),
+				new ExperienceReward(Skill.CONSTRUCTION, 20000),
+				new ExperienceReward(Skill.FARMING, 20000),
+				new ExperienceReward(Skill.HERBLORE, 20000),
+				new ExperienceReward(Skill.MINING, 20000),
+				new ExperienceReward(Skill.SMITHING, 20000),
+				new ExperienceReward(Skill.WOODCUTTING, 20000)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Prifddinas"),
+				new UnlockReward("Ability to fight Zalcano"),
+				new UnlockReward("Access to The Gauntlet"),
+				new UnlockReward("Access to Trahaearn Mine"),
+				new UnlockReward("Access to Iorwerth Dungeon"),
+				new UnlockReward("Ability to respawn at Prifddinas"),
+				new UnlockReward("Ability to move POH to Prifddinas"),
+				new UnlockReward("Prifddinas Teleport added to Crystal Teleport Seed"),
+				new UnlockReward("Ability to make Divine Potions"),
+				new UnlockReward("Ability to make Crystal Tools, Weapons and Armor")
+		);
 	}
 
 	@Override

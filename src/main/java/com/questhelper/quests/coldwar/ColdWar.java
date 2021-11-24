@@ -7,7 +7,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -16,6 +15,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -48,10 +50,9 @@ public class ColdWar extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear, teleportArdougne, teleportLumbridge2, teleportHouse;
 
-	Requirement isOnIceberg, birdHideBuilt, tableNearby, hasClockwork, hasSteelBar, hasClockworkSuit, isPenguin,
-		isInPenguinPen, isAtZoo, isAtLumbridgeSheepFarm, hasCowbell, isInAgilityStart, isInAgilityWater,
-		isInAgilityStones, isInAgilityTreadSoftly, isInAgilityCrossIce, isInAgilityDone, isInPingPongRoom,
-		hasBongos, isPreWarRoom, isInIcelordPit, isInIcelordRoom, isEmoting, isInPenguinRooms, guardMoved;
+	Requirement isOnIceberg, birdHideBuilt, tableNearby, isPenguin, isInPenguinPen, isAtZoo, isAtLumbridgeSheepFarm,
+		isInAgilityStart, isInAgilityWater, isInAgilityStones, isInAgilityTreadSoftly, isInAgilityCrossIce, isInAgilityDone,
+		isInPingPongRoom, isPreWarRoom, isInIcelordPit, isInIcelordRoom, isEmoting, isInPenguinRooms, guardMoved;
 
 	QuestStep talkToLarry, talkToLarryAgain, usePlankOnFirmSnow, useSpadeOnBirdHide, learnPenguinEmotes,
 		talkToLarryAfterEmotes, returnToRelleka, talkToLarryInRelleka, enterPoh, makeClockwork, makePenguin,
@@ -95,8 +96,8 @@ public class ColdWar extends BasicQuestHelper
 		steps.put(20, larryInRelleka);
 
 		ConditionalStep clockworkPenguin = new ConditionalStep(this, enterPoh);
-		clockworkPenguin.addStep(hasClockworkSuit, bringSuitToLarry);
-		clockworkPenguin.addStep(new Conditions(tableNearby, hasClockwork), makePenguin);
+		clockworkPenguin.addStep(clockworkSuit, bringSuitToLarry);
+		clockworkPenguin.addStep(new Conditions(tableNearby, clockwork), makePenguin);
 		clockworkPenguin.addStep(new Conditions(tableNearby), makeClockwork);
 		steps.put(25, clockworkPenguin);
 
@@ -123,7 +124,7 @@ public class ColdWar extends BasicQuestHelper
 		steps.put(60, fredTheFarmer);
 
 		ConditionalStep outpostInfo = new ConditionalStep(this, stealCowbell);
-		outpostInfo.addStep(hasCowbell, askThingAboutOutpost);
+		outpostInfo.addStep(cowbell, askThingAboutOutpost);
 		steps.put(65, outpostInfo);
 
 		ConditionalStep enterTheIceberg = new ConditionalStep(this, tellLarryAboutOutpost);
@@ -158,9 +159,9 @@ public class ColdWar extends BasicQuestHelper
 		steps.put(110, goTalkToPingPong);
 
 		ConditionalStep gatherInstruments = new ConditionalStep(this, makeBongos);
-		gatherInstruments.addStep(new Conditions(hasBongos, hasCowbell, isInPenguinRooms), pingPong2);
-		gatherInstruments.addStep(new Conditions(hasBongos, hasCowbell), enterAvalanche3);
-		gatherInstruments.addStep(hasBongos, stealCowbell);
+		gatherInstruments.addStep(new Conditions(bongos, cowbell, isInPenguinRooms), pingPong2);
+		gatherInstruments.addStep(new Conditions(bongos, cowbell), enterAvalanche3);
+		gatherInstruments.addStep(bongos, stealCowbell);
 		gatherInstruments.addStep(isPenguin, removePenguinSuitForBongos);
 		steps.put(115, gatherInstruments);
 
@@ -256,15 +257,11 @@ public class ColdWar extends BasicQuestHelper
 		tableNearby = new Conditions(LogicType.OR,
 			new ObjectCondition(ObjectID.CLOCKMAKERS_BENCH_6798),
 			new ObjectCondition(ObjectID.CLOCKMAKERS_BENCH_6799));
-		hasClockwork = new ItemRequirements(clockwork);
-		hasSteelBar = new ItemRequirements(steelBar);
-		hasClockworkSuit = new ItemRequirements(clockworkSuit);
 		isPenguin = new VarbitRequirement(3306, 1);
 		isInPenguinPen = new ZoneRequirement(inPenguinPen, inPenguinPen2);
 		isEmoting = new VarbitRequirement(3308, 1);
 		isAtZoo = new ZoneRequirement(atZoo);
 		isAtLumbridgeSheepFarm = new ZoneRequirement(atLumbridgeSheepFarm);
-		hasCowbell = new ItemRequirements(cowbell);
 		isInAgilityStart = new ZoneRequirement(inAgilityStart);
 		isInAgilityWater = new ZoneRequirement(inAgilityWater);
 		isInAgilityStones = new ZoneRequirement(inAgilityStones);
@@ -272,7 +269,6 @@ public class ColdWar extends BasicQuestHelper
 		isInAgilityCrossIce = new ZoneRequirement(inAgilityCrossIce);
 		isInAgilityDone = new ZoneRequirement(inAgilityDone);
 		isInPingPongRoom = new ZoneRequirement(inPingPongRoom);
-		hasBongos = new ItemRequirements(bongos);
 		isPreWarRoom = new ZoneRequirement(preWarRoom);
 		isInIcelordPit = new ZoneRequirement(inIcelordPit);
 		isInIcelordRoom = new ZoneRequirement(inIcelordRoom);
@@ -448,6 +444,30 @@ public class ColdWar extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("1-3 Icelords (level 51)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.AGILITY, 5000),
+				new ExperienceReward(Skill.CONSTRUCTION, 1500));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to create Penguin Suits"),
+				new UnlockReward("Ability to use the Penguin Agility Course"),
+				new UnlockReward("Abillity to make Bongo Drums"));
 	}
 
 	@Override

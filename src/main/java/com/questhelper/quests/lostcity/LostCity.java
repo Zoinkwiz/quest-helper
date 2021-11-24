@@ -32,12 +32,13 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -63,7 +64,7 @@ public class LostCity extends BasicQuestHelper
 	//Items Required
 	ItemRequirement knife, axe, combatGear, teleport, bronzeAxe, dramenBranch, dramenStaff, dramenStaffEquipped;
 
-	Requirement onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, hasBronzeAxe, dramenSpiritNearby, hasBranch, hasStaff;
+	Requirement onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, dramenSpiritNearby;
 
 	QuestStep talkToWarrior, chopTree, talkToShamus, goToEntrana, goDownHole, getAxe, pickupAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch,
 		teleportAway, craftBranch, enterZanaris, getAnotherBranch;
@@ -89,7 +90,7 @@ public class LostCity extends BasicQuestHelper
 
 		ConditionalStep killingTheSpirit = new ConditionalStep(this, goToEntrana);
 		killingTheSpirit.addStep(new Conditions(inDungeon, dramenSpiritNearby), killDramenSpirit);
-		killingTheSpirit.addStep(new Conditions(inDungeon, hasBronzeAxe), attemptToCutDramen);
+		killingTheSpirit.addStep(new Conditions(inDungeon, bronzeAxe), attemptToCutDramen);
 		killingTheSpirit.addStep(new Conditions(inDungeon, bronzeAxeNearby), pickupAxe);
 		killingTheSpirit.addStep(inDungeon, getAxe);
 		killingTheSpirit.addStep(onEntrana, goDownHole);
@@ -97,11 +98,11 @@ public class LostCity extends BasicQuestHelper
 		steps.put(2, killingTheSpirit);
 
 		ConditionalStep finishQuest = new ConditionalStep(this, getAnotherBranch);
-		finishQuest.addStep(new Conditions(inDungeon, hasStaff), teleportAway);
-		finishQuest.addStep(hasStaff, enterZanaris);
-		finishQuest.addStep(new Conditions(inDungeon, hasBranch), teleportAway);
-		finishQuest.addStep(hasBranch, craftBranch);
-		finishQuest.addStep(new Conditions(inDungeon, hasBronzeAxe), cutDramenBranch);
+		finishQuest.addStep(new Conditions(inDungeon, dramenStaff), teleportAway);
+		finishQuest.addStep(dramenStaff, enterZanaris);
+		finishQuest.addStep(new Conditions(inDungeon, dramenBranch), teleportAway);
+		finishQuest.addStep(dramenBranch, craftBranch);
+		finishQuest.addStep(new Conditions(inDungeon, bronzeAxe), cutDramenBranch);
 		finishQuest.addStep(new Conditions(inDungeon, bronzeAxeNearby), pickupAxe);
 		finishQuest.addStep(inDungeon, getAxe);
 		finishQuest.addStep(onEntrana, goDownHole);
@@ -115,7 +116,8 @@ public class LostCity extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements() {
+	public void setupItemRequirements()
+	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		bronzeAxe = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE);
 		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE);
@@ -128,23 +130,23 @@ public class LostCity extends BasicQuestHelper
 		dramenStaffEquipped = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF, 1, true);
 	}
 
-	public void loadZones() {
-		entrana = new Zone(new WorldPoint(2798, 3327,0), new WorldPoint(2878, 3394,1));
-		entranaDungeon = new Zone(new WorldPoint(2817, 9722,0), new WorldPoint(2879, 9784,0));
+	public void loadZones()
+	{
+		entrana = new Zone(new WorldPoint(2798, 3327, 0), new WorldPoint(2878, 3394, 1));
+		entranaDungeon = new Zone(new WorldPoint(2817, 9722, 0), new WorldPoint(2879, 9784, 0));
 	}
 
-	public void setupConditions() {
+	public void setupConditions()
+	{
 		onEntrana = new ZoneRequirement(entrana);
 		inDungeon = new ZoneRequirement(entranaDungeon);
 		shamusNearby = new NpcCondition(NpcID.SHAMUS);
 		bronzeAxeNearby = new ItemOnTileRequirement(ItemID.BRONZE_AXE);
-		hasBronzeAxe = new ItemRequirements(bronzeAxe);
 		dramenSpiritNearby = new NpcCondition(NpcID.TREE_SPIRIT);
-		hasBranch = new ItemRequirements(dramenBranch);
-		hasStaff = new ItemRequirements(dramenStaff);
 	}
 
-	public void setupSteps() {
+	public void setupSteps()
+	{
 		talkToWarrior = new NpcStep(this, NpcID.WARRIOR, new WorldPoint(3151, 3207, 0), "Talk to the Warrior south east of Draynor Village.");
 		talkToWarrior.addDialogStep("What are you camped out here for?");
 		talkToWarrior.addDialogStep("What makes you think it's out here?");
@@ -201,6 +203,21 @@ public class LostCity extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 31, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 36, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Zanaris."),
+				new UnlockReward("Ability to craft Cosmic Runes"),
+				new UnlockReward("Ability to buy and wield Dragon Daggers & Longswords"));
 	}
 
 	@Override

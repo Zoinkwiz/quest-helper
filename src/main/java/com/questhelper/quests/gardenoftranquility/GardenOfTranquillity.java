@@ -30,7 +30,6 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -41,6 +40,9 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -238,11 +240,14 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		plantPot = new ItemRequirement("Filled plant pot", ItemID.FILLED_PLANT_POT);
 		compost2 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 2);
 		compost2.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost2.setTooltip("Bottomless bucket will not work for this compost.");
 		compost = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST);
 		compost.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost.setTooltip("Bottomless bucket will not work for these two required composts.");
 
 		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 5);
 		compost5.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost5.setTooltip("Bottomless bucket will not work for these five required composts.");
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
 		fishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
@@ -282,7 +287,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		yellowOrchid3 = new ItemRequirement("Orchid seeds (yellow)", ItemID.ORCHID_SEED_6459, 3);
 		yellowOrchid3.setTooltip("You can get more from Lyra");
 		snowdropSeed4 = new ItemRequirement("Snowdrop seeds", ItemID.SNOWDROP_SEED, 4);
-		snowdropSeed4.setTooltip("You cvan get more from Kragen");
+		snowdropSeed4.setTooltip("You can get more from Kragen");
 		delphiniumSeed4 = new ItemRequirement("Delphinium seeds", ItemID.DELPHINIUM_SEED, 4);
 		delphiniumSeed4.setTooltip("You can get more from Elstan");
 		trolley = new ItemRequirement("Trolley", ItemID.TROLLEY);
@@ -313,30 +318,30 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		talkedToDantaera = new VarbitRequirement(976, 1);
 		cutShoot = new VarbitRequirement(976, 2);
-		hasPlantedShoot = new Conditions(new ItemRequirements(whiteTreePot));
+		hasPlantedShoot = new Conditions(whiteTreePot);
 		hasWateredShoot = new Conditions(LogicType.OR,
 			new VarbitRequirement(985, 4, Operation.GREATER_EQUAL),
-			new ItemRequirements(whiteTreeWatered),
-			new ItemRequirements(whitetreeSapling));
+			whiteTreeWatered,
+			whitetreeSapling);
 
 		talkedToAlthric = new VarbitRequirement(977, 1, Operation.GREATER_EQUAL);
 		ringInWell = new VarbitRequirement(966, 1);
 		canPickRoses = new Conditions(LogicType.OR,
 			new VarbitRequirement(977, 2, Operation.GREATER_EQUAL),
 			ringInWell
-			);
+		);
 		ringNotInWell = new VarbitRequirement(966, 0);
 
 		hasRedRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirements(redRoseSeed),
+			redRoseSeed,
 			new VarbitRequirement(979, 4, Operation.GREATER_EQUAL)
 		);
 		hasWhiteRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirements(whiteRoseSeed),
+			whiteRoseSeed,
 			new VarbitRequirement(980, 4, Operation.GREATER_EQUAL)
 		);
 		hasPinkRoseSeed = new Conditions(LogicType.OR,
-			new ItemRequirements(pinkRoseSeed),
+			pinkRoseSeed,
 			new VarbitRequirement(981, 4, Operation.GREATER_EQUAL)
 		);
 		hasRoseSeeds = new Conditions(hasRedRoseSeed, hasWhiteRoseSeed, hasPinkRoseSeed);
@@ -345,9 +350,9 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		usedCureOnVines = new VarbitRequirement(988, 2);
 		talkedToAlain = new VarbitRequirement(988, 3);
 		curedVine = new VarbitRequirement(988, 4);
-		hasShards = new ItemRequirements(runeShards);
-		hasDust = new ItemRequirements(runeDust);
-		hasEnhancedCure = new ItemRequirements(magicPlantCure);
+		hasShards = runeShards;
+		hasDust = runeDust;
+		hasEnhancedCure = magicPlantCure;
 		gotVineSeeds = new VarbitRequirement(988, 5);
 
 		notAddedCompost1 = new VarbitRequirement(984, 0);
@@ -366,7 +371,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			notPlantedWhiteRose, notPlantedVine);
 
 		hasTrolley = new Conditions(LogicType.OR,
-			new ItemRequirements(trolley),
+			trolley,
 			new NpcCondition(NpcID.TROLLEY));
 
 		lumbridgeStatueOnTrolley = new VarbitRequirement(965, 2);
@@ -378,10 +383,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEllamaria = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllamaria = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 			"Talk to Ellamaria east of Varrock Castle.");
 		talkToEllamaria.addDialogStep("I would be happy to help someone who is so in touch with the people.");
-		talkToEllamariaForTrolley = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllamariaForTrolley = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 			"Talk to Ellamaria for a trolley.");
 		talkToEllamariaForTrolley.addDialogSteps("How am I supposed to move statues all the way here?");
 		talkToWom = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3089, 3254, 0),
@@ -433,7 +438,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToLyraAgain.addSubSteps(waitForLyraToGrow);
 
 		talkToKragen = new NpcStep(this, NpcID.KRAGEN, new WorldPoint(2668, 3376, 0),
-			"Talk to Kragen east of Ardougne.", ringOfCharosA.equipped());
+			"Talk to Kragen northeast of Ardougne.", ringOfCharosA.equipped());
 		talkToKragen.addDialogSteps("Do you have any snowdrop seeds to spare?", "[Charm] You seem to be a little " +
 			"irritable, my friend.", "[Charm] I don't like to see a fellow human being so upset.", "[Charm] So what " +
 			"ails you, my friend?", "[Charm] Well, is there anything I can do for you?", "[Charm] So what can I do " +
@@ -445,7 +450,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		waitForKragenToGrow = new ObjectStep(this, NullObjectID.NULL_8554, new WorldPoint(2669, 3378, 0),
 			"Wait for your cabbages to finish growing. If they died you'll need to plant more in Kragen's patches.", spade);
 		talkToKragenAgain = new NpcStep(this, NpcID.KRAGEN, new WorldPoint(2668, 3376, 0),
-			"Talk to Kragen east of Ardougne for his seeds.");
+			"Talk to Kragen northeast of Ardougne for his seeds.");
 		talkToKragenAgain.addDialogSteps("Okay, I've grown those cabbages like you asked.");
 		talkToKragenAgain.addSubSteps(waitForKragenToGrow);
 
@@ -575,7 +580,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			new WorldPoint(3230, 3479, 0)
 		)));
 
-		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.ELLAMARIA, new WorldPoint(3230, 3478, 0),
+		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 		"Talk to Ellamaria once everything's finished growing.");
 		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3221, 3473, 0),
 			"Talk to King Roald in Varrock Castle, watch the cutscene, then finish the dialog with Ellmaria to finish" +
@@ -606,6 +611,25 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		reqs.add(new SkillRequirement(Skill.FARMING, 25));
 		return reqs;
 	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.FARMING, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Compost Potion (4)", ItemID.COMPOST_POTION4, 1));
+	}
+
 	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{

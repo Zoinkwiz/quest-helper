@@ -27,6 +27,7 @@ package com.questhelper.requirements;
 import com.questhelper.QuestHelperConfig;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
@@ -35,7 +36,15 @@ public abstract class AbstractRequirement implements Requirement
 	private String tooltip;
 	private Requirement panelReplacement = null;
 
+	protected boolean shouldCountForFilter = false;
+
 	abstract public boolean check(Client client);
+
+	@Override
+	public boolean shouldConsiderForFilter()
+	{
+		return shouldCountForFilter;
+	}
 
 	abstract public String getDisplayText();
 

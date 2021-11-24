@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -42,6 +41,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -83,13 +86,11 @@ public class LunarDiplomacy extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatRunes, combatGear;
 
-	Requirement atBaseOfStairs, onCoveF1, onBoatF0, onBoatF1, onBoatF2, onBoatF3, hasLitBullseye, hasBullseye,
-		hasEmeraldLantern, revealedCannon, revealedChart, revealedChest, revealedPillar, revealedCrate, hasEmeraldLanternLit,
-		onBoatLunar, onLunarDock, onLunarIsle, inYagaHouse, toothNearby, hasTooth, hasGuamPotion, hasMarrentillPotion,
-		hasGuamAndMarrentilPotion, hasGroundTooth, hasSleepPotion, hasSpecialVial, hasWaterVial, hasStaffP1, hasStaffP2, hasStaffP3,
-		hasLunarStaff, inAirAltar, inEarthAltar, inWaterAltar, inFireAltar, inLunarMine, hasTiara, hadHelm, hadAmulet, hadRing, hadCape,
-		hadTorso, hadGloves, hadBoots, hadLegs, hasOre, hasBar, talkedToSelene, talkedToMeteora, talkedToRimae, tiaraNearby, hadClothes,
-		hasSoakedKindling, litBrazier, inCentreOfDream, inChanceDream, inNumbersDream, inTreeDream, inMemoryDream, inRaceDream,
+	Requirement atBaseOfStairs, onCoveF1, onBoatF0, onBoatF1, onBoatF2, onBoatF3, revealedCannon, revealedChart, revealedChest,
+		revealedPillar, revealedCrate, onBoatLunar, onLunarDock, onLunarIsle, inYagaHouse, toothNearby,
+		inAirAltar, inEarthAltar, inWaterAltar, inFireAltar, inLunarMine, talkedToSelene, talkedToMeteora, talkedToRimae, tiaraNearby,
+		hadClothes, hadHelm, hadCape, hadAmulet, hadTorso, hadGloves, hadLegs, hadRing, hadBoots,
+		litBrazier, inCentreOfDream, inChanceDream, inNumbersDream, inTreeDream, inMemoryDream, inRaceDream,
 		inMimicDream, startedNumberChallenge, finishedChance, finishedNumbers, finishedTree, finishedMemory, finishedRace,
 		finishedMimic, needToTalkAtMiddle, doingTreeChallenge, startedRaceChallenge, inFightArena;
 
@@ -186,27 +187,28 @@ public class LunarDiplomacy extends BasicQuestHelper
 		steps.put(100, talkingToCabinBoyAgain);
 
 		ConditionalStep removingSymbols = new ConditionalStep(this, getLensAndBullseye);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF0, revealedCannon, revealedChart, revealedChest, revealedPillar), useLanternOnCrate);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF0, revealedCannon, revealedChart, revealedChest), useLanternOnPillar);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF3, revealedCannon, revealedChart), goDownToChest1);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF2, revealedCannon, revealedChart), goDownToChest2);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF1, revealedCannon, revealedChart), goDownToChest3);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF0, revealedCannon, revealedChart), useLanternOnChest);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF0, revealedCannon, revealedChart, revealedChest,
+			revealedPillar), useLanternOnCrate);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF0, revealedCannon, revealedChart, revealedChest), useLanternOnPillar);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF3, revealedCannon, revealedChart), goDownToChest1);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF2, revealedCannon, revealedChart), goDownToChest2);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF1, revealedCannon, revealedChart), goDownToChest3);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF0, revealedCannon, revealedChart), useLanternOnChest);
 
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF3, revealedCannon), goDownToChart);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF2, revealedCannon), useLanternOnChart);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF1, revealedCannon), goUpToChart2);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF0, revealedCannon), goUpToChart1);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF3, revealedCannon), goDownToChart);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF2, revealedCannon), useLanternOnChart);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF1, revealedCannon), goUpToChart2);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF0, revealedCannon), goUpToChart1);
 
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF3), useLanternOnCannon);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF2), goUpToCannon3);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF1), goUpToCannon2);
-		removingSymbols.addStep(new Conditions(hasEmeraldLanternLit, onBoatF0), goUpToCannon1);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF3), useLanternOnCannon);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF2), goUpToCannon3);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF1), goUpToCannon2);
+		removingSymbols.addStep(new Conditions(emeraldLanternLit, onBoatF0), goUpToCannon1);
 
-		removingSymbols.addStep(hasEmeraldLanternLit, boardingTheBoat);
-		removingSymbols.addStep(hasEmeraldLantern, lightLantern);
-		removingSymbols.addStep(hasBullseye, replaceLens);
-		removingSymbols.addStep(hasLitBullseye, extinguishLantern);
+		removingSymbols.addStep(emeraldLanternLit, boardingTheBoat);
+		removingSymbols.addStep(emeraldLantern, lightLantern);
+		removingSymbols.addStep(bullseyeLantern, replaceLens);
+		removingSymbols.addStep(bullseyeLanternLit, extinguishLantern);
 		steps.put(110, removingSymbols);
 		steps.put(112, removingSymbols);
 		steps.put(114, removingSymbols);
@@ -229,28 +231,28 @@ public class LunarDiplomacy extends BasicQuestHelper
 		steps.put(135, talkingToYaga);
 
 		ConditionalStep makingThePotion = new ConditionalStep(this, fillVial);
-		makingThePotion.addStep(new Conditions(hasSleepPotion, hasSleepPotion), bringPotionToOneiromancer);
-		makingThePotion.addStep(new Conditions(hasSleepPotion), returnToOneWithPotion);
-		makingThePotion.addStep(new Conditions(hasGroundTooth, hasGuamAndMarrentilPotion), addToothToPotion);
-		makingThePotion.addStep(new Conditions(hasTooth, hasGuamAndMarrentilPotion), grindTooth);
-		makingThePotion.addStep(new Conditions(toothNearby, hasGuamAndMarrentilPotion), pickUpTooth);
-		makingThePotion.addStep(new Conditions(hasGuamAndMarrentilPotion, onLunarIsle), killSuqahForTooth);
-		makingThePotion.addStep(hasGuamAndMarrentilPotion, returnToMakePotion);
-		makingThePotion.addStep(hasMarrentillPotion, addGuamToMarrentill);
-		makingThePotion.addStep(hasGuamPotion, addMarrentil);
-		makingThePotion.addStep(hasWaterVial, addGuam);
+		makingThePotion.addStep(new Conditions(onLunarIsle, sleepPotion), bringPotionToOneiromancer);
+		makingThePotion.addStep(new Conditions(sleepPotion), returnToOneWithPotion);
+		makingThePotion.addStep(new Conditions(groundTooth, guamMarrentilPotion), addToothToPotion);
+		makingThePotion.addStep(new Conditions(suqahTooth, guamMarrentilPotion), grindTooth);
+		makingThePotion.addStep(new Conditions(toothNearby, guamMarrentilPotion), pickUpTooth);
+		makingThePotion.addStep(new Conditions(guamMarrentilPotion, onLunarIsle), killSuqahForTooth);
+		makingThePotion.addStep(guamMarrentilPotion, returnToMakePotion);
+		makingThePotion.addStep(marrentilPotion, addGuamToMarrentill);
+		makingThePotion.addStep(guamPotion, addMarrentil);
+		makingThePotion.addStep(waterVial, addGuam);
 		makingThePotion.addStep(inYagaHouse, leaveChickenHouse);
 		steps.put(140, makingThePotion);
 
 		ConditionalStep makingTheLunarStaff = new ConditionalStep(this, enterAirAltar);
-		makingTheLunarStaff.addStep(new Conditions(onLunarIsle, hasLunarStaff), talkToOneiromancerWithStaff);
-		makingTheLunarStaff.addStep(hasLunarStaff, returnWithStaff);
-		makingTheLunarStaff.addStep(new Conditions(hasStaffP3, inEarthAltar), useOnEarth);
-		makingTheLunarStaff.addStep(hasStaffP3, enterEarthAltar);
-		makingTheLunarStaff.addStep(new Conditions(hasStaffP2, inWaterAltar), useOnWater);
-		makingTheLunarStaff.addStep(hasStaffP2, enterWaterAltar);
-		makingTheLunarStaff.addStep(new Conditions(hasStaffP1, inFireAltar), useOnFire);
-		makingTheLunarStaff.addStep(hasStaffP1, enterFireAltar);
+		makingTheLunarStaff.addStep(new Conditions(onLunarIsle, lunarStaff), talkToOneiromancerWithStaff);
+		makingTheLunarStaff.addStep(lunarStaff, returnWithStaff);
+		makingTheLunarStaff.addStep(new Conditions(lunarStaffP3, inEarthAltar), useOnEarth);
+		makingTheLunarStaff.addStep(lunarStaffP3, enterEarthAltar);
+		makingTheLunarStaff.addStep(new Conditions(lunarStaffP2, inWaterAltar), useOnWater);
+		makingTheLunarStaff.addStep(lunarStaffP2, enterWaterAltar);
+		makingTheLunarStaff.addStep(new Conditions(lunarStaffP1, inFireAltar), useOnFire);
+		makingTheLunarStaff.addStep(lunarStaffP1, enterFireAltar);
 		makingTheLunarStaff.addStep(inAirAltar, useOnAir);
 		steps.put(145, makingTheLunarStaff);
 
@@ -263,8 +265,8 @@ public class LunarDiplomacy extends BasicQuestHelper
 		steps.put(155, gettingRestOfEquipment);
 
 		ConditionalStep enterDream = new ConditionalStep(this, useVialOnKindling);
-		enterDream.addStep(new Conditions(hasSoakedKindling, litBrazier), useKindlingOnBrazier);
-		enterDream.addStep(hasSoakedKindling, lightBrazier);
+		enterDream.addStep(new Conditions(soakedKindling, litBrazier), useKindlingOnBrazier);
+		enterDream.addStep(soakedKindling, lightBrazier);
 		steps.put(160, enterDream);
 
 		ConditionalStep startingDream = new ConditionalStep(this, enterDream);
@@ -508,36 +510,13 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		inFightArena = new ZoneRequirement(fightArena);
 
-		hasLitBullseye = new ItemRequirements(bullseyeLanternLit);
-		hasBullseye = new ItemRequirements(bullseyeLantern);
-		hasEmeraldLantern = new ItemRequirements(emeraldLantern);
-		hasEmeraldLanternLit = new ItemRequirements(emeraldLanternLit);
-
 		revealedPillar = new VarbitRequirement(2431, 2);
 		revealedCannon = new VarbitRequirement(2432, 2);
 		revealedCrate = new VarbitRequirement(2433, 2);
 		revealedChart = new VarbitRequirement(2434, 2);
 		revealedChest = new VarbitRequirement(2435, 2);
 
-		hasSpecialVial = new ItemRequirements(specialVial);
-		hasWaterVial = new ItemRequirements(waterVial);
-		hasGuamPotion = new ItemRequirements(guamPotion);
-		hasMarrentillPotion = new ItemRequirements(marrentilPotion);
-		hasGuamAndMarrentilPotion = new ItemRequirements(guamMarrentilPotion);
-		hasTooth = new ItemRequirements(suqahTooth);
-		hasGroundTooth = new ItemRequirements(groundTooth);
-		hasSleepPotion = new ItemRequirements(sleepPotion);
-		hasTiara = new ItemRequirements(tiara);
-
 		toothNearby = new ItemOnTileRequirement(suqahTooth);
-
-		hasStaffP1 = new ItemRequirements(lunarStaffP1);
-		hasStaffP2 = new ItemRequirements(lunarStaffP2);
-		hasStaffP3 = new ItemRequirements(lunarStaffP3);
-		hasLunarStaff = new ItemRequirements(lunarStaff);
-
-		hasOre = new ItemRequirements(lunarOre);
-		hasBar = new ItemRequirements(lunarBar);
 
 		talkedToSelene = new VarbitRequirement(2445, 1);
 		talkedToMeteora = new VarbitRequirement(2446, 1);
@@ -545,16 +524,15 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		tiaraNearby = new ItemOnTileRequirement(tiara);
 
-		hadHelm = new Conditions(LogicType.OR, new ItemRequirements(helm), new VarbitRequirement(2436, 1));
-		hadCape = new Conditions(LogicType.OR, new ItemRequirements(cape), new VarbitRequirement(2437, 1));
-		hadAmulet = new Conditions(LogicType.OR, new ItemRequirements(amulet), new VarbitRequirement(2438, 1));
-		hadTorso = new Conditions(LogicType.OR, new ItemRequirements(torso), new VarbitRequirement(2439, 1));
-		hadGloves = new Conditions(LogicType.OR, new ItemRequirements(gloves), new VarbitRequirement(2441, 1));
-		hadBoots = new Conditions(LogicType.OR, new ItemRequirements(boots), new VarbitRequirement(2440, 1));
-		hadLegs = new Conditions(LogicType.OR, new ItemRequirements(legs), new VarbitRequirement(2442, 1));
-		hadRing = new Conditions(LogicType.OR, new ItemRequirements(ring), new VarbitRequirement(2443, 1));
+		hadHelm = new Conditions(LogicType.OR, helm.alsoCheckBank(questBank), new VarbitRequirement(2436, 1));
+		hadCape = new Conditions(LogicType.OR, cape.alsoCheckBank(questBank), new VarbitRequirement(2437, 1));
+		hadAmulet = new Conditions(LogicType.OR, amulet.alsoCheckBank(questBank), new VarbitRequirement(2438, 1));
+		hadTorso = new Conditions(LogicType.OR, torso.alsoCheckBank(questBank), new VarbitRequirement(2439, 1));
+		hadGloves = new Conditions(LogicType.OR, gloves.alsoCheckBank(questBank), new VarbitRequirement(2441, 1));
+		hadBoots = new Conditions(LogicType.OR, boots.alsoCheckBank(questBank), new VarbitRequirement(2440, 1));
+		hadLegs = new Conditions(LogicType.OR, legs.alsoCheckBank(questBank), new VarbitRequirement(2442, 1));
+		hadRing = new Conditions(LogicType.OR, ring.alsoCheckBank(questBank), new VarbitRequirement(2443, 1));
 		hadClothes = new Conditions(hadBoots, hadTorso, hadGloves, hadLegs);
-		hasSoakedKindling = new ItemRequirements(soakedKindling);
 
 		litBrazier = new VarbitRequirement(2430, 1);
 
@@ -745,7 +723,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		talkToOneiromancerWithStaff = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Bring the staff to the Oneiromancer in the south east of Lunar Isle.", sealOfPassage, lunarStaff);
 
 		enterMine = new ObjectStep(this, ObjectID.LADDER_14996, new WorldPoint(2142, 3944, 0), "Enter the mine in the north east of Lunar Isle.", pickaxe);
-		mineOre = new ObjectStep(this, ObjectID.STALAGMITE_15251, "Mine a lunar ore from one of the stalagmites in the area.", pickaxe);
+		mineOre = new ObjectStep(this, ObjectID.STALAGMITE_15251, "Mine a lunar ore from one of the stalagmites in the area. (Tip: Grab 3 extra ores to save time during The Fremennik Exiles quest)", pickaxe);
 		mineOre.addAlternateObjects(ObjectID.STALAGMITES_15250);
 		smeltBar = new DetailedQuestStep(this, "Smelt the ore at a furnace.", lunarOre);
 		makeHelmet = new DetailedQuestStep(this, "Make the lunar helmet on an anvil.", lunarBar, hammer);
@@ -814,7 +792,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		startNumber = new NpcStep(this, NpcID.ETHEREAL_NUMERATOR, new WorldPoint(1786, 5066, 2),
 			"Talk to the Ethereal Numerator to begin the challenge.");
 
-		doTreeChallenge = new DetailedQuestStep(this, "Chop logs and deposit them in the log pile.");
+		doTreeChallenge = new DetailedQuestStep(this, "Chop 20 logs and deposit them in the log pile.");
 
 		startRace = new NpcStep(this, NpcID.ETHEREAL_EXPERT, new WorldPoint(1788, 5068, 2), "Talk to the Ethereal Expert. Be prepared to race!");
 		startRace.addDialogStep("Ok.");
@@ -857,8 +835,8 @@ public class LunarDiplomacy extends BasicQuestHelper
 		returnWithStaff.addSubSteps(talkToOneiromancerWithStaff);
 
 		makingHelm = new ConditionalStep(this, enterMine);
-		makingHelm.addStep(hasBar, makeHelmet);
-		makingHelm.addStep(hasOre, smeltBar);
+		makingHelm.addStep(lunarBar, makeHelmet);
+		makingHelm.addStep(lunarOre, smeltBar);
 		makingHelm.addStep(inLunarMine, mineOre);
 		makingHelm.setLockingCondition(hadHelm);
 
@@ -870,7 +848,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		gettingCape.setLockingCondition(hadCape);
 
 		gettingAmulet = new ConditionalStep(this, talkToMeteora);
-		gettingAmulet.addStep(hasTiara, returnTiaraToMeteora);
+		gettingAmulet.addStep(tiara, returnTiaraToMeteora);
 		gettingAmulet.addStep(tiaraNearby, pickUpTiara);
 		gettingAmulet.addStep(talkedToMeteora, killSuqahForTiara);
 		gettingAmulet.setLockingCondition(hadAmulet);
@@ -916,6 +894,38 @@ public class LunarDiplomacy extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 55));
 		req.add(new ItemRequirement("Access to the following altars: \nAir, Earth, Fire, Water", -1, -1));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MAGIC, 5000),
+				new ExperienceReward(Skill.RUNECRAFT, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("50 x Astral Runes", ItemID.ASTRAL_RUNE, 50),
+				new ItemReward("A Seal of Passage", ItemID.SEAL_OF_PASSAGE, 1),
+				new ItemReward("A set of Lunar Equipment", -1, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Lunar Island"),
+				new UnlockReward("Access to the Lunar Spellbook"),
+				new UnlockReward("Access to the Astral Altar"));
 	}
 
 	@Override

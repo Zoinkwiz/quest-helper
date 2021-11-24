@@ -33,7 +33,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -41,6 +40,9 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -52,10 +54,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -70,8 +70,8 @@ public class NatureSpirit extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear, salveTele;
 
-	Requirement inUnderground, fillimanNearby, hasMirror, mirrorNearby, hasJournal, hasMushroom, usedMushroom, onOrange,
-		usedCard, inGrotto, hasPouch, hasFullPouch, natureSpiritNearby, ghastNearby;
+	Requirement inUnderground, fillimanNearby, mirrorNearby, usedMushroom, onOrange,
+		usedCard, inGrotto, natureSpiritNearby, ghastNearby;
 
 	QuestStep goDownToDrezel, talkToDrezel, leaveDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
 		takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman, goBackDownToDrezel, talkToDrezelForBlessing,
@@ -110,14 +110,14 @@ public class NatureSpirit extends BasicQuestHelper
 		steps.put(15, goTalkToFilliman);
 
 		ConditionalStep showFillimanReflection = new ConditionalStep(this, takeWashingBowl);
-		showFillimanReflection.addStep(new Conditions(hasMirror, fillimanNearby), useMirrorOnFilliman);
-		showFillimanReflection.addStep(hasMirror, tryToEnterGrotto);
+		showFillimanReflection.addStep(new Conditions(mirror, fillimanNearby), useMirrorOnFilliman);
+		showFillimanReflection.addStep(mirror, tryToEnterGrotto);
 		showFillimanReflection.addStep(mirrorNearby, takeMirror);
 		steps.put(20, showFillimanReflection);
 
 		ConditionalStep goGetJournal = new ConditionalStep(this, searchGrotto);
-		goGetJournal.addStep(new Conditions(hasJournal, fillimanNearby), useJournalOnFilliman);
-		goGetJournal.addStep(hasJournal, tryToEnterGrotto);
+		goGetJournal.addStep(new Conditions(journal, fillimanNearby), useJournalOnFilliman);
+		goGetJournal.addStep(journal, tryToEnterGrotto);
 		steps.put(25, goGetJournal);
 
 		ConditionalStep goOfferHelp = new ConditionalStep(this, tryToEnterGrotto);
@@ -133,7 +133,7 @@ public class NatureSpirit extends BasicQuestHelper
 		performRitual.addStep(new Conditions(usedMushroom, usedCard, fillimanNearby), standOnOrange);
 		performRitual.addStep(new Conditions(usedMushroom, usedCard), spawnFillimanForRitual);
 		performRitual.addStep(usedMushroom, useSpellCard);
-		performRitual.addStep(hasMushroom, useMushroom);
+		performRitual.addStep(mushroom, useMushroom);
 		steps.put(40, performRitual);
 		steps.put(45, performRitual);
 		steps.put(50, performRitual);
@@ -153,7 +153,7 @@ public class NatureSpirit extends BasicQuestHelper
 		ConditionalStep goKillGhasts = new ConditionalStep(this, fillPouches);
 		// TODO: Fix ghast changing form not counting towards becoming nearby
 		goKillGhasts.addStep(ghastNearby, killGhast);
-		goKillGhasts.addStep(hasFullPouch, killGhasts);
+		goKillGhasts.addStep(druidPouchFull, killGhasts);
 		steps.put(75, goKillGhasts);
 		steps.put(80, goKillGhasts);
 		steps.put(85, goKillGhasts);
@@ -193,7 +193,7 @@ public class NatureSpirit extends BasicQuestHelper
 		mushroom = new ItemRequirement("Mort myre fungus", ItemID.MORT_MYRE_FUNGUS);
 		mushroomHighlighted = new ItemRequirement("Mort myre fungus", ItemID.MORT_MYRE_FUNGUS);
 		mushroomHighlighted.setHighlightInInventory(true);
-		salveTele = new ItemRequirement("2 Salve Graveyard Teleports", ItemID.SALVE_GRAVEYARD_TELEPORT, 2);
+		salveTele = new ItemRequirement("Salve Graveyard Teleports", ItemID.SALVE_GRAVEYARD_TELEPORT, 2);
 		combatGear = new ItemRequirement("Combat gear to kill the ghasts", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
@@ -212,10 +212,7 @@ public class NatureSpirit extends BasicQuestHelper
 		inGrotto = new ZoneRequirement(grotto);
 		fillimanNearby = new NpcCondition(NpcID.FILLIMAN_TARLOCK);
 		natureSpiritNearby = new NpcCondition(NpcID.NATURE_SPIRIT);
-		hasMirror = new ItemRequirements(mirror);
 		mirrorNearby = new ItemOnTileRequirement(mirror);
-		hasJournal = new ItemRequirements(journal);
-		hasMushroom = new ItemRequirements(mushroom);
 		usedMushroom = new Conditions(true, LogicType.OR, new ChatMessageRequirement("The stone seems to absorb the fungus."),
 			new WidgetTextRequirement(229, 1, "nature symbol<br>scratched into it. This stone seems complete in some way."),
 			new WidgetTextRequirement(119, 3, true, "Mort Myre Fungi was absorbed"));
@@ -224,8 +221,6 @@ public class NatureSpirit extends BasicQuestHelper
 			new WidgetTextRequirement(229, 1, "spirit symbol<br>scratched into it. This stone seems to be complete"),
 			new WidgetTextRequirement(119, 3, true, "spell scroll was absorbed"));
 
-		hasFullPouch = new ItemRequirements(druidPouchFull);
-		hasPouch = new Conditions(LogicType.OR, new ItemRequirements(druidPouch), hasFullPouch);
 		ghastNearby = new NpcCondition(NpcID.GHAST_946);
 	}
 
@@ -248,7 +243,7 @@ public class NatureSpirit extends BasicQuestHelper
 		useMirrorOnFilliman.addDialogStep("How long have you been a ghost?");
 		useMirrorOnFilliman.addIcon(ItemID.MIRROR);
 		searchGrotto = new ObjectStep(this, ObjectID.GROTTO_TREE, new WorldPoint(3440, 3339, 0), "Right-click search the grotto tree.");
-		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock.", ghostspeak, journalHighlighted);
+		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Use the journal on Filliman Tarlock.", ghostspeak, journalHighlighted);
 		useJournalOnFilliman.addIcon(ItemID.JOURNAL);
 		offerToHelp = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock and offer to help.", ghostspeak);
 		offerToHelp.addDialogStep("How can I help?");
@@ -317,6 +312,29 @@ public class NatureSpirit extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 3000),
+				new ExperienceReward(Skill.DEFENCE, 2000),
+				new ExperienceReward(Skill.HITPOINTS, 2000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Mort Myre Swamp"),
+				new UnlockReward("Ability to fight Ghasts."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -325,9 +343,9 @@ public class NatureSpirit extends BasicQuestHelper
 				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Helping Filliman",
 			Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
-				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto), ghostspeak, silverSickle));
+				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto, blessSickle), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Killing Ghasts",
-			Arrays.asList(blessSickle, fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, silverSickle));
+			Arrays.asList(fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, blessedSickle));
 
 		return allSteps;
 	}

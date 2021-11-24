@@ -8,23 +8,23 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -37,13 +37,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ScorpionCatcher extends BasicQuestHelper
 {
-	ItemRequirement dustyKey, jailKey, scorpionCageEmpty, scorpionCageTaverley, scorpionCageEmptyOrTaverley, scorpionCageTaverleyAndMonastery, scorpionCageFull, food,
+	ItemRequirement dustyKey, jailKey, scorpionCageMissingTaverley, scorpionCageMissingMonastery, scorpionCageEmptyOrTaverley, scorpionCageTaverleyAndMonastery, scorpionCageFull, food,
 		antiDragonShield, antiPoison, teleRunesFalador, gamesNecklace, gloryOrCombatBracelet, camelotTeleport;
 	QuestRequirement fairyRingAccess;
 	Zone sorcerersTower3, sorcerersTower2, sorcerersTower1, taverleyDungeon, deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4,
 		jailCell, taverleyScorpionRoom, upstairsMonastery, barbarianOutpost;
-	Requirement has70Agility, hasScorpionCageEmpty, hasScorpionCageTaverley, hasScorpionCageEmptyOrTaverley, hasScorpionCageTaverleyAndMonastery,
-		hasScorpionCageFull, hasDustyKey, inTaverleyDungeon, inDeepTaverleyDungeon, inJailCell, hasJailKey, inSorcerersTower1, inSorcerersTower2,
+	Requirement has70Agility, inTaverleyDungeon, inDeepTaverleyDungeon, inJailCell, inSorcerersTower1, inSorcerersTower2,
 		inSorcerersTower3, inTaverleyScorpionRoom, inUpstairsMonastery, inBarbarianOutpost, jailKeyNearby;
 	QuestStep speakToThormac, speakToSeer1, enterTaverleyDungeon, goThroughPipe, killJailerForKey,
 		getDustyFromAdventurer, enterDeeperTaverley, pickUpJailKey,
@@ -73,19 +72,23 @@ public class ScorpionCatcher extends BasicQuestHelper
 			"Return to Thormac to finish the quest.",	scorpionCageFull);
 		finishQuest.addStep(inSorcerersTower3, returnToThormac);
 
-		ConditionalStep scorpions = new ConditionalStep(this, enterTaverleyDungeon);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyScorpionRoom), catchTaverleyScorpion);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inDeepTaverleyDungeon), searchOldWall);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, has70Agility), goThroughPipe);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, hasDustyKey), enterDeeperTaverley);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, new Conditions(LogicType.OR, inJailCell, hasJailKey)), getDustyFromAdventurer);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon, jailKeyNearby), pickUpJailKey);
-		scorpions.addStep(new Conditions(hasScorpionCageEmpty, inTaverleyDungeon), killJailerForKey);
-		scorpions.addStep(new Conditions(hasScorpionCageTaverley, inUpstairsMonastery), catchMonasteryScorpion);
-		scorpions.addStep(hasScorpionCageTaverley, enterMonastery);
-		scorpions.addStep(new Conditions(hasScorpionCageTaverleyAndMonastery, inBarbarianOutpost), catchOutpostScorpion);
-		scorpions.addStep(hasScorpionCageTaverleyAndMonastery, enterOutpost);
-		scorpions.addStep(hasScorpionCageFull, finishQuest);
+		ConditionalStep goGetTaverleyScorpion = new ConditionalStep(this, enterTaverleyDungeon);
+		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyScorpionRoom), catchTaverleyScorpion);
+		goGetTaverleyScorpion.addStep(new Conditions(inDeepTaverleyDungeon), searchOldWall);
+		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, has70Agility), goThroughPipe);
+		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, dustyKey), enterDeeperTaverley);
+		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, new Conditions(LogicType.OR, inJailCell, jailKey)), getDustyFromAdventurer);
+		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, jailKeyNearby), pickUpJailKey);
+		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon), killJailerForKey);
+
+		ConditionalStep scorpions = new ConditionalStep(this, finishQuest);
+		scorpions.addStep(scorpionCageMissingTaverley.alsoCheckBank(questBank), goGetTaverleyScorpion);
+
+		scorpions.addStep(new Conditions(scorpionCageMissingMonastery, inUpstairsMonastery), catchMonasteryScorpion);
+		scorpions.addStep(scorpionCageMissingMonastery.alsoCheckBank(questBank), enterMonastery);
+
+		scorpions.addStep(new Conditions(scorpionCageTaverleyAndMonastery, inBarbarianOutpost), catchOutpostScorpion);
+		scorpions.addStep(scorpionCageTaverleyAndMonastery.alsoCheckBank(questBank), enterOutpost);
 
 		steps.put(0, beginQuest);
 		steps.put(1, speakToSeer1);
@@ -120,16 +123,20 @@ public class ScorpionCatcher extends BasicQuestHelper
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");
 		jailKey = new ItemRequirement("Jail Key", ItemID.JAIL_KEY);
 
-		scorpionCageEmpty = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE);
+		scorpionCageMissingTaverley = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE);
 		// The 3 below cages are combos of cages without the taverley scorpion
-		scorpionCageEmpty.addAlternates(ItemID.SCORPION_CAGE_460, ItemID.SCORPION_CAGE_461, ItemID.SCORPION_CAGE_462);
-		scorpionCageEmpty.setTooltip("You can get another from Thormac");
-		scorpionCageTaverley = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE_457);
-		scorpionCageTaverley.addAlternates(ItemID.SCORPION_CAGE_458);
+		scorpionCageMissingTaverley.addAlternates(ItemID.SCORPION_CAGE_460, ItemID.SCORPION_CAGE_461, ItemID.SCORPION_CAGE_462);
+		scorpionCageMissingTaverley.setTooltip("You can get another from Thormac");
+
+		scorpionCageMissingMonastery = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE_457);
+		scorpionCageMissingMonastery.addAlternates(ItemID.SCORPION_CAGE_458);
+
 		scorpionCageEmptyOrTaverley = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE);
 		// Alternative is taverley + barb
 		scorpionCageEmptyOrTaverley.addAlternates(ItemID.SCORPION_CAGE_457);
+
 		scorpionCageTaverleyAndMonastery = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE_459);
+
 		scorpionCageFull = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE_463);
 
 		// Recommended
@@ -149,22 +156,15 @@ public class ScorpionCatcher extends BasicQuestHelper
 	private void setupConditions()
 	{
 		has70Agility = new SkillRequirement(Skill.AGILITY, 70);
-		hasDustyKey = new ItemRequirements(dustyKey);
 
 		inSorcerersTower1 = new ZoneRequirement(sorcerersTower1);
 		inSorcerersTower2 = new ZoneRequirement(sorcerersTower2);
 		inSorcerersTower3 = new ZoneRequirement(sorcerersTower3);
 
-		hasScorpionCageEmpty = new ItemRequirements(scorpionCageEmpty);
-		hasScorpionCageTaverley = new ItemRequirements(scorpionCageTaverley);
-		hasScorpionCageEmptyOrTaverley = new ItemRequirements(scorpionCageEmptyOrTaverley);
-		hasScorpionCageTaverleyAndMonastery = new ItemRequirements(scorpionCageTaverleyAndMonastery);
-		hasScorpionCageFull = new ItemRequirements(scorpionCageFull);
 
 		inTaverleyDungeon = new ZoneRequirement(taverleyDungeon);
 		inDeepTaverleyDungeon = new ZoneRequirement(deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4);
 		inJailCell = new ZoneRequirement(jailCell);
-		hasJailKey = new ItemRequirements(jailKey);
 		jailKeyNearby = new ItemOnTileRequirement(jailKey);
 
 		inTaverleyScorpionRoom = new ZoneRequirement(taverleyScorpionRoom);
@@ -195,12 +195,12 @@ public class ScorpionCatcher extends BasicQuestHelper
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)
 		{
 			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
-				"Go to Taverley Dungeon. As you're 70 Agility, you don't need a dusty key.", scorpionCageEmpty);
+				"Go to Taverley Dungeon. As you're 70 Agility, you don't need a dusty key.", scorpionCageMissingTaverley);
 		}
 		else
 		{
 			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
-				"Go to Taverley Dungeon. Bring a dusty key if you have one, otherwise you can get one in the dungeon.", scorpionCageEmpty, dustyKey);
+				"Go to Taverley Dungeon. Bring a dusty key if you have one, otherwise you can get one in the dungeon.", scorpionCageMissingTaverley, dustyKey);
 		}
 
 		goThroughPipe = new ObjectStep(this, ObjectID.OBSTACLE_PIPE_16509, new WorldPoint(2888, 9799, 0),
@@ -217,14 +217,14 @@ public class ScorpionCatcher extends BasicQuestHelper
 		enterTaverleyDungeon.addSubSteps(goThroughPipe, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
 		searchOldWall = new ObjectStep(this, ObjectID.OLD_WALL, new WorldPoint(2875, 9799, 0), "Search the Old wall.");
 		// TODO: Highlight item
-		catchTaverleyScorpion = new NpcStep(this, NpcID.KHARID_SCORPION, "Use the scorpion cage on the scorpion.", scorpionCageEmpty);
+		catchTaverleyScorpion = new NpcStep(this, NpcID.KHARID_SCORPION, "Use the scorpion cage on the scorpion.", scorpionCageMissingTaverley);
 		catchTaverleyScorpion.addIcon(ItemID.SCORPION_CAGE);
 
 		enterMonastery = new ObjectStep(this, ObjectID.LADDER_2641, new WorldPoint(3057, 3483, 0),
 			"Enter the Edgeville Monastery.");
 		// TODO: Highlight item
 		catchMonasteryScorpion = new NpcStep(this, NpcID.KHARID_SCORPION_5230, "Use the scorpion cage on the scorpion.",
-			scorpionCageTaverley);
+			scorpionCageMissingMonastery);
 		catchMonasteryScorpion.addIcon(ItemID.SCORPION_CAGE);
 
 		enterOutpost = new ObjectStep(this, ObjectID.GATE_2115, new WorldPoint(2545, 3570, 0),
@@ -261,6 +261,24 @@ public class ScorpionCatcher extends BasicQuestHelper
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(Collections.singletonList("The ability to run past level 172 black demons and level 64 poison spiders"));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.STRENGTH, 6625));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to have Thormac turn a Battlestaff into a Mystic Staff for 40,000 Coins."));
 	}
 
 	@Override

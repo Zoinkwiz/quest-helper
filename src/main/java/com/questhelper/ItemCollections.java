@@ -67,6 +67,7 @@ public class ItemCollections
 		ItemID.CRYSTAL_PICKAXE_INACTIVE,
 		ItemID._3RD_AGE_PICKAXE,
 		ItemID.INFERNAL_PICKAXE,
+		ItemID.DRAGON_PICKAXE_OR_25376,
 		ItemID.DRAGON_PICKAXE_12797,
 		ItemID.DRAGON_PICKAXE_OR,
 		ItemID.DRAGON_PICKAXE,
@@ -137,6 +138,29 @@ public class ItemCollections
 		ItemID.OAK_LONGBOW,
 		ItemID.SHORTBOW,
 		ItemID.LONGBOW
+	);
+
+	@Getter
+	private static final List<Integer> crossbows = ImmutableList.of(
+		ItemID.ARMADYL_CROSSBOW,
+		ItemID.DRAGON_HUNTER_CROSSBOW,
+		ItemID.KARILS_CROSSBOW,
+		ItemID.KARILS_CROSSBOW_100,
+		ItemID.KARILS_CROSSBOW_75,
+		ItemID.KARILS_CROSSBOW_50,
+		ItemID.KARILS_CROSSBOW_25,
+		ItemID.HUNTERS_CROSSBOW,
+		ItemID.DORGESHUUN_CROSSBOW,
+		ItemID.BLURITE_CROSSBOW,
+		ItemID.DRAGON_CROSSBOW,
+		ItemID.RUNE_CROSSBOW,
+		ItemID.ADAMANT_CROSSBOW,
+		ItemID.MITHRIL_CROSSBOW,
+		ItemID.STEEL_CROSSBOW,
+		ItemID.IRON_CROSSBOW,
+		ItemID.BRONZE_CROSSBOW,
+		ItemID.PHOENIX_CROSSBOW,
+		ItemID.CROSSBOW
 	);
 
 	@Getter
@@ -512,26 +536,26 @@ public class ItemCollections
 
 	@Getter
 	private static final List<Integer> antiFirePotions = ImmutableList.of(
-			ItemID.ANTIFIRE_POTION4,
-			ItemID.ANTIFIRE_POTION3,
-			ItemID.ANTIFIRE_POTION2,
-			ItemID.ANTIFIRE_POTION1,
-			ItemID.SUPER_ANTIFIRE_POTION4,
-			ItemID.SUPER_ANTIFIRE_POTION3,
-			ItemID.SUPER_ANTIFIRE_POTION2,
-			ItemID.SUPER_ANTIFIRE_POTION1,
-			ItemID.EXTENDED_ANTIFIRE4,
-			ItemID.EXTENDED_ANTIFIRE3,
-			ItemID.EXTENDED_ANTIFIRE2,
-			ItemID.EXTENDED_ANTIFIRE1,
-			ItemID.EXTENDED_SUPER_ANTIFIRE4,
-			ItemID.EXTENDED_SUPER_ANTIFIRE3,
-			ItemID.EXTENDED_SUPER_ANTIFIRE2,
-			ItemID.EXTENDED_SUPER_ANTIFIRE1,
-			ItemID.ANTIFIRE_MIX2,
-			ItemID.ANTIFIRE_MIX1,
-			ItemID.SUPER_ANTIFIRE_MIX2,
-			ItemID.SUPER_ANTIFIRE_MIX1
+		ItemID.ANTIFIRE_POTION4,
+		ItemID.ANTIFIRE_POTION3,
+		ItemID.ANTIFIRE_POTION2,
+		ItemID.ANTIFIRE_POTION1,
+		ItemID.SUPER_ANTIFIRE_POTION4,
+		ItemID.SUPER_ANTIFIRE_POTION3,
+		ItemID.SUPER_ANTIFIRE_POTION2,
+		ItemID.SUPER_ANTIFIRE_POTION1,
+		ItemID.EXTENDED_ANTIFIRE4,
+		ItemID.EXTENDED_ANTIFIRE3,
+		ItemID.EXTENDED_ANTIFIRE2,
+		ItemID.EXTENDED_ANTIFIRE1,
+		ItemID.EXTENDED_SUPER_ANTIFIRE4,
+		ItemID.EXTENDED_SUPER_ANTIFIRE3,
+		ItemID.EXTENDED_SUPER_ANTIFIRE2,
+		ItemID.EXTENDED_SUPER_ANTIFIRE1,
+		ItemID.ANTIFIRE_MIX2,
+		ItemID.ANTIFIRE_MIX1,
+		ItemID.SUPER_ANTIFIRE_MIX2,
+		ItemID.SUPER_ANTIFIRE_MIX1
 	);
 
 	// Food
@@ -689,7 +713,6 @@ public class ItemCollections
 		ItemID.MEAT_PIE,
 		ItemID.REDBERRY_PIE
 	);
-
 
 
 	// Teleport items
@@ -854,6 +877,18 @@ public class ItemCollections
 		ItemID.BLUE_LOGS
 	);
 
+	@Getter
+	private static final List<Integer> bones = ImmutableList.of(
+		ItemID.BONES,
+		ItemID.BURNT_BONES,
+		ItemID.WOLF_BONES,
+		ItemID.BAT_BONES,
+		ItemID.BIG_BONES,
+		ItemID.JOGRE_BONES,
+		ItemID.BABYDRAGON_BONES,
+		ItemID.DRAGON_BONES,
+		ItemID.DAGANNOTH_BONES
+	);
 
 	// Other
 
@@ -880,6 +915,18 @@ public class ItemCollections
 		ItemID.ANCIENT_WYVERN_SHIELD_21634,
 		ItemID.ANTIDRAGON_SHIELD,
 		ItemID.ANTIDRAGON_SHIELD_8282
+	);
+
+	@Getter
+	private static final List<Integer> antiWyvernShields = ImmutableList.of(
+		ItemID.DRAGONFIRE_SHIELD,
+		ItemID.DRAGONFIRE_SHIELD_11284,
+		ItemID.DRAGONFIRE_WARD,
+		ItemID.DRAGONFIRE_WARD_22003,
+		ItemID.ANCIENT_WYVERN_SHIELD,
+		ItemID.ANCIENT_WYVERN_SHIELD_21634,
+		ItemID.MIND_SHIELD,
+		ItemID.ELEMENTAL_SHIELD
 	);
 
 	@Getter
@@ -1055,6 +1102,58 @@ public class ItemCollections
 	);
 
 	@Getter
+	private static final List<Integer> skillCape = ImmutableList.of(
+		ItemID.AGILITY_CAPE,
+		ItemID.AGILITY_CAPET,
+		ItemID.ATTACK_CAPE,
+		ItemID.ATTACK_CAPET,
+		ItemID.CONSTRUCT_CAPE,
+		ItemID.CONSTRUCT_CAPET,
+		ItemID.COOKING_CAPE,
+		ItemID.COOKING_CAPET,
+		ItemID.CRAFTING_CAPE,
+		ItemID.CRAFTING_CAPET,
+		ItemID.DEFENCE_CAPE,
+		ItemID.DEFENCE_CAPET,
+		ItemID.FARMING_CAPE,
+		ItemID.FARMING_CAPET,
+		ItemID.FIREMAKING_CAPE,
+		ItemID.FIREMAKING_CAPET,
+		ItemID.FISHING_CAPE,
+		ItemID.FISHING_CAPET,
+		ItemID.FLETCHING_CAPE,
+		ItemID.FLETCHING_CAPET,
+		ItemID.HERBLORE_CAPE,
+		ItemID.HERBLORE_CAPET,
+		ItemID.HITPOINTS_CAPE,
+		ItemID.HITPOINTS_CAPET,
+		ItemID.HUNTER_CAPE,
+		ItemID.HUNTER_CAPET,
+		ItemID.MAGIC_CAPE,
+		ItemID.MAGIC_CAPET,
+		ItemID.MINING_CAPE,
+		ItemID.MINING_CAPET,
+		ItemID.PRAYER_CAPE,
+		ItemID.PRAYER_CAPET,
+		ItemID.RANGING_CAPE,
+		ItemID.RANGING_CAPET,
+		ItemID.RUNECRAFT_CAPE,
+		ItemID.RUNECRAFT_CAPET,
+		ItemID.SLAYER_CAPE,
+		ItemID.SLAYER_CAPET,
+		ItemID.SMITHING_CAPE,
+		ItemID.SMITHING_CAPET,
+		ItemID.STRENGTH_CAPE,
+		ItemID.STRENGTH_CAPET,
+		ItemID.THIEVING_CAPE,
+		ItemID.THIEVING_CAPET,
+		ItemID.WOODCUTTING_CAPE,
+		ItemID.WOODCUT_CAPET,
+		ItemID.QUEST_POINT_CAPE,
+		ItemID.QUEST_POINT_CAPE_T
+	);
+
+	@Getter
 	private static final List<Integer> slayerHelmets = ImmutableList.of(
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
@@ -1079,7 +1178,16 @@ public class ItemCollections
 		ItemID.HYDRA_SLAYER_HELMET_I_25189,
 		ItemID.TWISTED_SLAYER_HELMET,
 		ItemID.TWISTED_SLAYER_HELMET_I,
-		ItemID.TWISTED_SLAYER_HELMET_I_25191
+		ItemID.TWISTED_SLAYER_HELMET_I_25191,
+		ItemID.TZKAL_SLAYER_HELMET,
+		ItemID.TZKAL_SLAYER_HELMET_I,
+		ItemID.TZKAL_SLAYER_HELMET_I_25914,
+		ItemID.VAMPYRIC_SLAYER_HELMET,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I_25908,
+		ItemID.TZTOK_SLAYER_HELMET,
+		ItemID.TZTOK_SLAYER_HELMET_I,
+		ItemID.TZTOK_SLAYER_HELMET_I_25902
 	);
 
 	@Getter
@@ -1112,27 +1220,215 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> fairyStaff = ImmutableList.of(
-			ItemID.LUNAR_STAFF,
-			ItemID.LUNAR_STAFF__PT3,
-			ItemID.LUNAR_STAFF__PT2,
-			ItemID.LUNAR_STAFF__PT1,
-			ItemID.DRAMEN_STAFF
+	private static final List<Integer> compost = ImmutableList.of(
+			ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
+			ItemID.ULTRACOMPOST,
+			ItemID.SUPERCOMPOST,
+			ItemID.COMPOST
 	);
 
 	@Getter
-	private static final List<Integer> crossbows = ImmutableList.of(
-			ItemID.BRONZE_CROSSBOW,
-			ItemID.BLURITE_CROSSBOW,
-			ItemID.IRON_CROSSBOW,
-			ItemID.STEEL_CROSSBOW,
-			ItemID.MITHRIL_CROSSBOW,
-			ItemID.ADAMANT_CROSSBOW,
-			ItemID.RUNE_CROSSBOW,
-			ItemID.DRAGON_CROSSBOW,
-			ItemID.CROSSBOW,
-			ItemID.DORGESHUUN_CROSSBOW,
-			ItemID.ARMADYL_CROSSBOW,
-			ItemID.DRAGON_HUNTER_CROSSBOW
+	private static final List<Integer> fairyStaff = ImmutableList.of(
+		ItemID.LUNAR_STAFF,
+		ItemID.LUNAR_STAFF__PT3,
+		ItemID.LUNAR_STAFF__PT2,
+		ItemID.LUNAR_STAFF__PT1,
+		ItemID.DRAMEN_STAFF
+	);
+
+	@Getter
+	private static final List<Integer> earthAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.EARTH_TIARA,
+		ItemID.EARTH_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> essenceLow = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE,
+		ItemID.RUNE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> essenceHigh = ImmutableList.of(
+		ItemID.DAEYALT_ESSENCE,
+		ItemID.PURE_ESSENCE
+	);
+
+	@Getter
+	private static final List<Integer> coins = ImmutableList.of(
+		ItemID.COINS_995,
+		ItemID.COINS_8890,
+		ItemID.COINS_6964,
+		ItemID.COINS
+	);
+
+	@Getter
+	private  static final List<Integer> cookingGuild = ImmutableList.of(
+		ItemID.CHEFS_HAT,
+		ItemID.VARROCK_ARMOUR_3,
+		ItemID.VARROCK_ARMOUR_4,
+		ItemID.COOKING_CAPET,
+		ItemID.COOKING_CAPE
+	);
+
+	@Getter
+	private static final List<Integer> miningHelm = ImmutableList.of(
+		ItemID.MINING_HELMET_5014,
+		ItemID.MINING_HELMET
+	);
+
+	@Getter
+	private static final List<Integer> gloves = ImmutableList.of(
+		ItemID.FEROCIOUS_GLOVES,
+		ItemID.BARROWS_GLOVES,
+		ItemID.DRAGON_GLOVES,
+		ItemID.GRANITE_GLOVES,
+		ItemID.RUNE_GLOVES,
+		ItemID.ADAMANT_GLOVES,
+		ItemID.MITHRIL_GLOVES,
+		ItemID.BLACK_GLOVES,
+		ItemID.STEEL_GLOVES,
+		ItemID.IRON_GLOVES,
+		ItemID.BRONZE_GLOVES,
+		ItemID.KARAMJA_GLOVES_1,
+		ItemID.KARAMJA_GLOVES_2,
+		ItemID.KARAMJA_GLOVES_3,
+		ItemID.KARAMJA_GLOVES_4,
+		ItemID.FREMENNIK_GLOVES,
+		ItemID.GLOVES_OF_SILENCE,
+		ItemID.HARDLEATHER_GLOVES,
+		ItemID.ICE_GLOVES,
+		ItemID.HAM_GLOVES,
+		ItemID.LEATHER_GLOVES,
+		ItemID.LUNAR_GLOVES,
+		ItemID.MYSTIC_GLOVES,
+		ItemID.MYSTIC_GLOVES_DARK,
+		ItemID.MYSTIC_GLOVES_DUSK,
+		ItemID.MYSTIC_GLOVES_LIGHT,
+		ItemID.ROCKSHELL_GLOVES,
+		ItemID.ROGUE_GLOVES,
+		ItemID.SLAYER_GLOVES,
+		ItemID.VOID_KNIGHT_GLOVES,
+		ItemID.WHITE_GLOVES
+	);
+
+	@Getter
+	private static final List<Integer> questCape = ImmutableList.of(
+		ItemID.QUEST_POINT_CAPE_T,
+		ItemID.QUEST_POINT_CAPE
+	);
+
+	@Getter
+	private static final List<Integer> cosmicAltar = ImmutableList.of(
+		ItemID.COSMIC_TIARA,
+		ItemID.COSMIC_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> wallBeast = ImmutableList.of(
+		ItemID.SPINY_HELMET,
+		ItemID.SLAYER_HELMET,
+		ItemID.SLAYER_HELMET_I,
+		ItemID.SLAYER_HELMET_I_25177,
+		ItemID.BLACK_SLAYER_HELMET,
+		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET_I_25179,
+		ItemID.GREEN_SLAYER_HELMET,
+		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET_I_25181,
+		ItemID.RED_SLAYER_HELMET,
+		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET_I_25183,
+		ItemID.PURPLE_SLAYER_HELMET,
+		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET_I_25185,
+		ItemID.TURQUOISE_SLAYER_HELMET,
+		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
+		ItemID.HYDRA_SLAYER_HELMET,
+		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET_I_25189,
+		ItemID.TWISTED_SLAYER_HELMET,
+		ItemID.TWISTED_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET_I_25191
+	);
+
+	@Getter
+	private static final List<Integer> waterAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.WATER_TIARA,
+		ItemID.WATER_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> fireAltar = ImmutableList.of(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.FIRE_TIARA,
+		ItemID.FIRE_TALISMAN
+	);
+
+	@Getter
+	private  static final List<Integer> plunderArtefacts = ImmutableList.of(
+		ItemID.IVORY_COMB,
+		ItemID.POTTERY_SCARAB,
+		ItemID.POTTERY_STATUETTE,
+		ItemID.STONE_SEAL,
+		ItemID.STONE_SCARAB,
+		ItemID.STONE_STATUETTE,
+		ItemID.GOLD_SEAL,
+		ItemID.GOLDEN_SCARAB,
+		ItemID.GOLDEN_STATUETTE
+	);
+
+	@Getter
+	private  static final List<Integer> waterskin = ImmutableList.of(
+		ItemID.WATERSKIN4,
+		ItemID.WATERSKIN3,
+		ItemID.WATERSKIN2,
+		ItemID.WATERSKIN1
+	);
+
+	@Getter
+	private  static final List<Integer> grimyHerb = ImmutableList.of(
+		ItemID.GRIMY_AVANTOE,
+		ItemID.GRIMY_CADANTINE,
+		ItemID.GRIMY_LANTADYME,
+		ItemID.GRIMY_ARDRIGAL,
+		ItemID.GRIMY_ROGUES_PURSE,
+		ItemID.GRIMY_GUAM_LEAF,
+		ItemID.GRIMY_HARRALANDER,
+		ItemID.GRIMY_TOADFLAX,
+		ItemID.GRIMY_TORSTOL,
+		ItemID.GRIMY_TARROMIN,
+		ItemID.GRIMY_IRIT_LEAF
+	);
+
+	@Getter
+	private  static final List<Integer> blackjacks = ImmutableList.of(
+		ItemID.MAPLE_BLACKJACKD,
+		ItemID.MAPLE_BLACKJACKO,
+		ItemID.MAPLE_BLACKJACK,
+		ItemID.WILLOW_BLACKJACKD,
+		ItemID.WILLOW_BLACKJACKO,
+		ItemID.WILLOW_BLACKJACK,
+		ItemID.OAK_BLACKJACKO,
+		ItemID.OAK_BLACKJACKD,
+		ItemID.OAK_BLACKJACK
+	);
+
+	@Getter
+	private  static final List<Integer> keris = ImmutableList.of(
+		ItemID.KERISP_10584,
+		ItemID.KERISP_10583,
+		ItemID.KERISP,
+		ItemID.KERIS
+	);
+
+	@Getter
+	private  static final List<Integer> stuffedKQHead = ImmutableList.of(
+		ItemID.STUFFED_KQ_HEAD,
+		ItemID.STUFFED_KQ_HEAD_TATTERED
 	);
 }

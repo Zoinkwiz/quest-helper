@@ -30,15 +30,18 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -51,11 +54,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -67,8 +67,7 @@ public class RFDDwarf extends BasicQuestHelper
 		teleportFalador2, teleportLumbridge, coin, asgarnianAle, asgoldianAle, asgoldianAle4, coins100,
 		rockCakeHighlighted;
 
-	Requirement inDiningRoom, inTunnel, hasRockCake, hasRockCakeHot, learnedHowToMakeAle, hasAsgoldian4,
-		givenAle, has4AleOrGivenAle;
+	Requirement inDiningRoom, inTunnel, learnedHowToMakeAle, givenAle, has4AleOrGivenAle;
 
 	QuestStep enterDiningRoom, inspectDwarf, talkToKaylee, makeAle, enterTunnels, talkToOldDwarf, talkToOldDwarfMore,
 		talkToOldDwarfWithIngredients, pickUpRockCake, coolRockCake, coolRockCakeSidebar, enterDiningRoomAgain,
@@ -106,9 +105,9 @@ public class RFDDwarf extends BasicQuestHelper
 		steps.put(40, haveCakeMadeP2);
 
 		ConditionalStep giveCakeToDwarf = new ConditionalStep(this, pickUpRockCake);
-		giveCakeToDwarf.addStep(new Conditions(hasRockCake, inDiningRoom), useRockCakeOnDwarf);
-		giveCakeToDwarf.addStep(hasRockCake, enterDiningRoomAgain);
-		giveCakeToDwarf.addStep(hasRockCakeHot, coolRockCake);
+		giveCakeToDwarf.addStep(new Conditions(rockCake, inDiningRoom), useRockCakeOnDwarf);
+		giveCakeToDwarf.addStep(rockCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		giveCakeToDwarf.addStep(rockCakeHot, coolRockCake);
 		steps.put(50, giveCakeToDwarf);
 
 		return steps;
@@ -163,12 +162,9 @@ public class RFDDwarf extends BasicQuestHelper
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inTunnel = new ZoneRequirement(tunnel);
 
-		hasRockCake = new ItemRequirements(rockCake);
-		hasRockCakeHot = new ItemRequirements(rockCakeHot);
 		learnedHowToMakeAle = new VarbitRequirement(1891, 1);
-		hasAsgoldian4 = new ItemRequirements(asgoldianAle4);
 		givenAle = new VarbitRequirement(1893, 1);
-		has4AleOrGivenAle = new Conditions(LogicType.OR, hasAsgoldian4, givenAle);
+		has4AleOrGivenAle = new Conditions(LogicType.OR, asgoldianAle4, givenAle);
 	}
 
 	public void setupSteps()
@@ -242,6 +238,32 @@ public class RFDDwarf extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.FISHING_CONTEST, QuestState.FINISHED));
 
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 1000),
+				new ExperienceReward(Skill.SLAYER, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Dwarven Rock Cake", ItemID.DWARVEN_ROCK_CAKE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Increased access to the Culinaromancer's Chest"));
 	}
 
 	@Override

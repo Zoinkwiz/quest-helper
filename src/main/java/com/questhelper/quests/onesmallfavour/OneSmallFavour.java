@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -40,6 +39,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -75,13 +77,12 @@ public class OneSmallFavour extends BasicQuestHelper
 		guam2HarrTea, guamHarrMarrTea, herbTeaMix;
 
 	//Items Recommended
-	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports,
-		cutTopazExtra, cutOpalExtra, cutJadeExtra;
+	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports;
 
 	Requirement inSanfewRoom, inHamBase, inDwarvenMine, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
-		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full, lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, hasSapphire, hasOpal,
-		hasJade, hasRedTopaz, hasPigeonCages, inScrollSpot, slagilithNearby, petraNearby, inSeersVillageUpstairs, onRoof, hasOrnament, hasWeathervanePillar, hasDirectionals, hasPot,
-		addedOrnaments, addedDirectionals, addedWeathervanePillar, hasOrUsedOrnament, hasOrUsedDirectionals, hasOrUsedWeathervanePillar, hasPotWithLid, hasPotLid, hasUnfiredPotLid;
+		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full, lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, inScrollSpot,
+		slagilithNearby, petraNearby, inSeersVillageUpstairs, onRoof, addedOrnaments, addedDirectionals, addedWeathervanePillar, hasOrUsedOrnament, hasOrUsedDirectionals,
+		hasOrUsedWeathervanePillar;
 
 	DetailedQuestStep talkToYanni, talkToJungleForester, talkToBrian, talkToAggie, goDownToJohanhus, talkToJohanhus, talkToFred, talkToSeth, talkToHorvik,
 		talkToApoth, talkToTassie, goDownToHammerspike, talkToHammerspike, goUpToSanfew, talkToSanfew, makeGuthixRest, talkToBleemadge, talkToArhein, talkToPhantuwti, enterGoblinCave,
@@ -172,28 +173,29 @@ public class OneSmallFavour extends BasicQuestHelper
 		steps.put(115, talkToGnormadium);
 
 		ConditionalStep repairLights = new ConditionalStep(this, take1);
-		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Full, lamp8Empty, hasSapphire), put8);
+		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Full, lamp8Empty, sapphire), put8);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Full, lamp8Empty), cutSaph);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Full), take8);
-		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Empty, hasOpal), put7);
+		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Empty, opal), put7);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Empty), cutOpal);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full), take7);
-		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Empty, hasRedTopaz), put6);
+		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Empty, redTopaz),
+			put6);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Empty), cutTopaz);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full), take6);
-		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Empty, hasJade), put5);
+		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Empty, jade), put5);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Empty), cutJade);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Full), take5);
-		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Empty, hasSapphire), put4);
+		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Empty, sapphire), put4);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full, lamp4Empty), cutSaph);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Full), take4);
-		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Empty, hasOpal), put3);
+		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Empty, opal), put3);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full, lamp3Empty), cutOpal);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Full), take3);
-		repairLights.addStep(new Conditions(lamp1Full, lamp2Empty, hasRedTopaz), put2);
+		repairLights.addStep(new Conditions(lamp1Full, lamp2Empty, redTopaz), put2);
 		repairLights.addStep(new Conditions(lamp1Full, lamp2Empty), cutTopaz);
 		repairLights.addStep(lamp1Full, take2);
-		repairLights.addStep(new Conditions(lamp1Empty, hasJade), put1);
+		repairLights.addStep(new Conditions(lamp1Empty, jade), put1);
 		repairLights.addStep(lamp1Empty, cutJade);
 
 		steps.put(120, repairLights);
@@ -210,7 +212,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		fightSlagilith.addStep(slagilithNearby, killSlagilith);
 		fightSlagilith.addStep(inScrollSpot, readScroll);
 		fightSlagilith.addStep(inGoblinCave, standNextToSculpture);
-		fightSlagilith.addStep(hasPigeonCages, enterGoblinCaveAgain);
+		fightSlagilith.addStep(pigeonCages5, enterGoblinCaveAgain);
 
 		steps.put(145, fightSlagilith);
 		steps.put(150, fightSlagilith);
@@ -219,7 +221,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		freePetra.addStep(petraNearby, talkToPetra);
 		freePetra.addStep(inScrollSpot, readScroll);
 		freePetra.addStep(inGoblinCave, standNextToSculpture);
-		freePetra.addStep(hasPigeonCages, enterGoblinCaveAgain);
+		freePetra.addStep(pigeonCages5, enterGoblinCaveAgain);
 
 		steps.put(152, freePetra);
 		steps.put(155, freePetra);
@@ -248,9 +250,9 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		ConditionalStep repairVaneParts = new ConditionalStep(this, useVane123OnAnvil);
 
-		repairVaneParts.addStep(new Conditions(addedOrnaments, addedDirectionals, hasWeathervanePillar, onRoof), useVane3);
-		repairVaneParts.addStep(new Conditions(addedOrnaments, hasDirectionals, onRoof), useVane2);
-		repairVaneParts.addStep(new Conditions(hasOrnament, onRoof), useVane1);
+		repairVaneParts.addStep(new Conditions(addedOrnaments, addedDirectionals, weathervanePillar, onRoof), useVane3);
+		repairVaneParts.addStep(new Conditions(addedOrnaments, directionals, onRoof), useVane2);
+		repairVaneParts.addStep(new Conditions(ornament, onRoof), useVane1);
 		repairVaneParts.addStep(onRoof, goDownFromRoof);
 		repairVaneParts.addStep(new Conditions(hasOrUsedDirectionals, hasOrUsedOrnament, hasOrUsedWeathervanePillar, inSeersVillageUpstairs), goBackUpToRoof);
 		repairVaneParts.addStep(inSeersVillageUpstairs, goDownLadderToSeers);
@@ -294,10 +296,10 @@ public class OneSmallFavour extends BasicQuestHelper
 		steps.put(230, returnToTassie);
 
 		ConditionalStep makePotAndReturnToApoth = new ConditionalStep(this, spinPotLid);
-		makePotAndReturnToApoth.addStep(hasPotWithLid, returnToApothecary);
-		makePotAndReturnToApoth.addStep(new Conditions(hasPotLid, hasPot), usePotLidOnPot);
-		makePotAndReturnToApoth.addStep(hasPotLid, pickUpPot);
-		makePotAndReturnToApoth.addStep(hasUnfiredPotLid, firePotLid);
+		makePotAndReturnToApoth.addStep(potWithLid, returnToApothecary);
+		makePotAndReturnToApoth.addStep(new Conditions(potLid, pot), usePotLidOnPot);
+		makePotAndReturnToApoth.addStep(potLid, pickUpPot);
+		makePotAndReturnToApoth.addStep(unfiredPotLid, firePotLid);
 
 		steps.put(235, makePotAndReturnToApoth);
 
@@ -492,12 +494,6 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		allFull = new VarbitRequirement(6241, 255);
 
-		hasSapphire = new ItemRequirements(sapphire);
-		hasOpal = new ItemRequirements(opal);
-		hasJade = new ItemRequirements(jade);
-		hasRedTopaz = new ItemRequirements(redTopaz);
-
-		hasPigeonCages = new ItemRequirements(pigeonCages5);
 		slagilithNearby = new NpcCondition(NpcID.SLAGILITH);
 		inScrollSpot = new ZoneRequirement(scrollSpot);
 		inSeersVillageUpstairs = new ZoneRequirement(seersVillageUpstairs);
@@ -505,22 +501,13 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		petraNearby = new NpcCondition(NpcID.PETRA_FIYED);
 
-		hasOrnament = new ItemRequirements(ornament);
-		hasWeathervanePillar = new ItemRequirements(weathervanePillar);
-		hasDirectionals = new ItemRequirements(directionals);
-
 		addedOrnaments = new VarbitRequirement(255, 1);
 		addedDirectionals = new VarbitRequirement(254, 1);
 		addedWeathervanePillar = new VarbitRequirement(253, 1);
 
-		hasOrUsedDirectionals = new Conditions(LogicType.OR, addedDirectionals, hasDirectionals);
-		hasOrUsedOrnament = new Conditions(LogicType.OR, addedOrnaments, hasOrnament);
-		hasOrUsedWeathervanePillar = new Conditions(LogicType.OR, addedWeathervanePillar, hasWeathervanePillar);
-
-		hasPotLid = new ItemRequirements(potLid);
-		hasUnfiredPotLid = new ItemRequirements(unfiredPotLid);
-		hasPotWithLid = new ItemRequirements(potWithLid);
-		hasPot = new ItemRequirements(pot);
+		hasOrUsedDirectionals = new Conditions(LogicType.OR, addedDirectionals, directionals.alsoCheckBank(questBank));
+		hasOrUsedOrnament = new Conditions(LogicType.OR, addedOrnaments, ornament.alsoCheckBank(questBank));
+		hasOrUsedWeathervanePillar = new Conditions(LogicType.OR, addedWeathervanePillar, weathervanePillar.alsoCheckBank(questBank));
 	}
 
 	public void setupSteps()
@@ -622,7 +609,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		enterGoblinCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild.");
 		searchWall = new ObjectStep(this, ObjectID.SCULPTURE, new WorldPoint(2621, 9835, 0), "Right-click search the sculpture in the wall in the north east corner of the cave.");
 
-		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Crompety in north east Ardougne.");
+		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Cromperty in north east Ardougne.");
 		talkToCromperty.addDialogStep("I need to talk to you about a girl stuck in some rock!");
 		talkToCromperty.addDialogStep("Oh! Ok, one more 'small favour' isn't going to kill me...I hope!");
 
@@ -681,10 +668,10 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Return to Tindel Marchant in Port Khazard.", mattress);
 		returnToTindel.addDialogStep("I have the mattress.");
 
-		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Crompety in north east Ardougne.", ironOxide);
+		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Cromperty in north east Ardougne.", ironOxide);
 		returnToCromperty.addDialogStep("I have that iron oxide you asked for!");
 
-		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cage from behind Jerico's house in central East Ardougne.", pigeonCages5);
+		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cages from behind Jerico's house in central East Ardougne.", pigeonCages5);
 
 		enterGoblinCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild. Be prepared to fight the Slagilith (level 92).", pigeonCages5, animateRockScroll);
 		standNextToSculpture = new DetailedQuestStep(this, new WorldPoint(2616, 9835, 0), "Use the animate rock scroll next to the sculpture in the north east cavern.", animateRockScroll);
@@ -839,6 +826,28 @@ public class OneSmallFavour extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.HERBLORE, 18, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 30, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 10,000 Experience Lamps (Any skill over level 30)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+				new ItemReward("A Steel Keyring", ItemID.STEEL_KEY_RING, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("The ability to make Guthix Rest tea."),
+				new UnlockReward("Gnome Glider in Feldip Hills."));
 	}
 
 	@Override

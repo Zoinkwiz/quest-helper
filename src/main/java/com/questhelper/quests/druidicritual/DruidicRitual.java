@@ -30,22 +30,23 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -57,7 +58,7 @@ public class DruidicRitual extends BasicQuestHelper
 	ItemRequirement rawRat, rawBear, rawBeef, rawChicken, rawRatHighlighted, rawBearHighlighted, rawBeefHighlighted,
 		rawChickenHighlighted, enchantedBear, enchantedBeef, enchantedChicken, enchantedRat;
 
-	Requirement inDungeon, inSanfewRoom, hasEnchantedBeef, hasEnchantedBear, hasEnchantedRat, hasEnchantedChicken;
+	Requirement inDungeon, inSanfewRoom;
 
 	QuestStep talkToKaqemeex, goUpToSanfew, talkToSanfew, enterDungeon, enchantMeats, useRatOnCauldron, useBeefOnCauldron,
 		useBearOnCauldron, useChickenOnCauldron, goUpToSanfewWithMeat, talkToSanfewWithMeat, talkToKaqemeexToFinish;
@@ -81,11 +82,11 @@ public class DruidicRitual extends BasicQuestHelper
 		steps.put(1, goTalkToSanfew);
 
 		ConditionalStep prepareMeats = new ConditionalStep(this, enterDungeon);
-		prepareMeats.addStep(new Conditions(inSanfewRoom, hasEnchantedRat, hasEnchantedBear, hasEnchantedBeef, hasEnchantedChicken), talkToSanfewWithMeat);
-		prepareMeats.addStep(new Conditions(hasEnchantedRat, hasEnchantedBear, hasEnchantedBeef, hasEnchantedChicken), goUpToSanfewWithMeat);
-		prepareMeats.addStep(new Conditions(inDungeon, hasEnchantedRat, hasEnchantedBear, hasEnchantedBeef), useChickenOnCauldron);
-		prepareMeats.addStep(new Conditions(inDungeon, hasEnchantedRat, hasEnchantedBear), useBeefOnCauldron);
-		prepareMeats.addStep(new Conditions(inDungeon, hasEnchantedRat), useBearOnCauldron);
+		prepareMeats.addStep(new Conditions(inSanfewRoom, enchantedRat, enchantedBear, enchantedBeef, enchantedChicken), talkToSanfewWithMeat);
+		prepareMeats.addStep(new Conditions(enchantedRat, enchantedBear, enchantedBeef, enchantedChicken), goUpToSanfewWithMeat);
+		prepareMeats.addStep(new Conditions(inDungeon, enchantedRat, enchantedBear, enchantedBeef), useChickenOnCauldron);
+		prepareMeats.addStep(new Conditions(inDungeon, enchantedRat, enchantedBear), useBeefOnCauldron);
+		prepareMeats.addStep(new Conditions(inDungeon, enchantedRat), useBearOnCauldron);
 		prepareMeats.addStep(inDungeon, useRatOnCauldron);
 		steps.put(2, prepareMeats);
 
@@ -130,11 +131,6 @@ public class DruidicRitual extends BasicQuestHelper
 	{
 		inSanfewRoom = new ZoneRequirement(sanfewRoom);
 		inDungeon = new ZoneRequirement(dungeon);
-
-		hasEnchantedBear = new ItemRequirements(enchantedBear);
-		hasEnchantedBeef = new ItemRequirements(enchantedBeef);
-		hasEnchantedChicken = new ItemRequirements(enchantedChicken);
-		hasEnchantedRat = new ItemRequirements(enchantedRat);
 	}
 
 	public void setupSteps()
@@ -178,6 +174,25 @@ public class DruidicRitual extends BasicQuestHelper
 	{
 		return Arrays.asList(rawBear, rawBeef, rawChicken, rawRat);
 	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.HERBLORE, 250));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to the Herblore Skill"));
+	}
+
 
 	@Override
 	public List<PanelDetails> getPanels()

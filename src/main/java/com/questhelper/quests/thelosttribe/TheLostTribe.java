@@ -31,13 +31,16 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcEmoteStep;
@@ -45,11 +48,9 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.emote.QuestEmote;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -69,8 +70,8 @@ public class TheLostTribe extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, faladorTeleport, lumbridgeTeleports;
 
-	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, hasBrooch, hasBook, inMines,
-		hasKey, foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
+	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines,
+		foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
 
 	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
 		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, climbOutThroughHole, goUpFromBasement,
@@ -100,12 +101,12 @@ public class TheLostTribe extends BasicQuestHelper
 		steps.put(3, goMineRubble);
 
 		ConditionalStep goGrabBrooch = new ConditionalStep(this, enterTunnels);
-		goGrabBrooch.addStep(hasBrooch, goShowBroochToDuke);
+		goGrabBrooch.addStep(brooch, goShowBroochToDuke);
 		goGrabBrooch.addStep(inTunnels, grabBrooch);
 		steps.put(4, goGrabBrooch);
 
 		ConditionalStep getBook = new ConditionalStep(this, searchBookcase);
-		getBook.addStep(hasBook, readBook);
+		getBook.addStep(book, readBook);
 		steps.put(5, getBook);
 
 		steps.put(6, talkToGenerals);
@@ -120,7 +121,7 @@ public class TheLostTribe extends BasicQuestHelper
 		ConditionalStep revealSigmund = new ConditionalStep(this, goGetKey);
 		revealSigmund.addStep(foundSilverware, goToDukeWithSilverware);
 		revealSigmund.addStep(foundRobes, goIntoHamLair);
-		revealSigmund.addStep(hasKey, goOpenRobeChest);
+		revealSigmund.addStep(key, goOpenRobeChest);
 		steps.put(9, revealSigmund);
 
 		steps.put(10, travelToMakePeace);
@@ -167,10 +168,6 @@ public class TheLostTribe extends BasicQuestHelper
 		inTunnels = new ZoneRequirement(tunnels);
 		inMines = new ZoneRequirement(mines);
 		inHamBase = new ZoneRequirement(hamBase);
-
-		hasBrooch = new ItemRequirements(brooch);
-		hasBook = new ItemRequirements(book);
-		hasKey = new ItemRequirements(key);
 
 		foundRobes = new VarbitRequirement(534, 1, Operation.GREATER_EQUAL);
 		foundSilverware = new VarbitRequirement(534, 3, Operation.GREATER_EQUAL);
@@ -368,6 +365,33 @@ public class TheLostTribe extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 13, true));
 		req.add(new SkillRequirement(Skill.MINING, 17, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.MINING, 3000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Ring of Life", ItemID.RING_OF_LIFE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Dorgesh-Kann mine."),
+				new UnlockReward("Access to Nardok's Bone Weapon Store"),
+				new UnlockReward("2 new goblin emotes."));
 	}
 
 	@Override

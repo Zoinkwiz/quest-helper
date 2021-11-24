@@ -28,21 +28,26 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.Favour;
+import com.questhelper.requirements.player.Favour;
 
 /**
  * Requirement that checks if the player has a certain percentage of favour
  * with a specified Kourend house.
  */
-@AllArgsConstructor
 @Getter
 public class FavourRequirement extends AbstractRequirement
 {
-	private Favour houseFavour;
-	private int percentage;
+	private final Favour houseFavour;
+	private final int percentage;
+
+	public FavourRequirement(Favour houseFavour, int percentage)
+	{
+		this.houseFavour = houseFavour;
+		this.percentage = percentage;
+		shouldCountForFilter = true;
+	}
 
 	@Override
 	public boolean check(Client client)

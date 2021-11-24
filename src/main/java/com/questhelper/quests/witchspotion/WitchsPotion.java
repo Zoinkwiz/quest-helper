@@ -29,8 +29,8 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.Requirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -44,6 +44,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -54,22 +55,19 @@ public class WitchsPotion extends BasicQuestHelper
 	//Items Required
 	ItemRequirement ratTail, onion, burntMeat, eyeOfNewt;
 
-	Requirement hasRatTail;
-
 	QuestStep talkToWitch, killRat, returnToWitch, drinkPotion;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupItemRequirements();
-		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToWitch);
 
 		ConditionalStep getIngredients = new ConditionalStep(this, killRat);
-		getIngredients.addStep(hasRatTail, returnToWitch);
+		getIngredients.addStep(ratTail.alsoCheckBank(questBank), returnToWitch);
 
 		steps.put(1, getIngredients);
 
@@ -87,11 +85,6 @@ public class WitchsPotion extends BasicQuestHelper
 		burntMeat.setTooltip("You can use cooked meat on a fire/range to burn it");
 		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
 		eyeOfNewt.setTooltip("You can buy one from Betty in Port Sarim for 3gp");
-	}
-
-	public void setupConditions()
-	{
-		hasRatTail = new ItemRequirements(ratTail);
 	}
 
 	public void setupSteps()
@@ -117,6 +110,18 @@ public class WitchsPotion extends BasicQuestHelper
 		reqs.add(burntMeat);
 		reqs.add(eyeOfNewt);
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.MAGIC, 325));
 	}
 
 	@Override

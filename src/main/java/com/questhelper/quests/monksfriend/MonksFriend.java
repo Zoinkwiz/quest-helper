@@ -30,10 +30,12 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -48,6 +50,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -61,7 +64,7 @@ public class MonksFriend extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneCloak;
 
-	Requirement inDungeon, hasBlanket;
+	Requirement inDungeon;
 
 	QuestStep talkToOmad, goDownLadder, grabBlanket, goUpLadder, returnToOmadWithBlanket, talkToOmadAgain, talkToCedric, talkToCedricWithJug,
 		continueTalkingToCedric, talkToCedricWithLog, finishQuest;
@@ -81,8 +84,8 @@ public class MonksFriend extends BasicQuestHelper
 		steps.put(0, talkToOmad);
 
 		ConditionalStep getBlanket = new ConditionalStep(this, goDownLadder);
-		getBlanket.addStep(new Conditions(inDungeon, hasBlanket), goUpLadder);
-		getBlanket.addStep(hasBlanket, returnToOmadWithBlanket);
+		getBlanket.addStep(new Conditions(inDungeon, blanket.alsoCheckBank(questBank)), goUpLadder);
+		getBlanket.addStep(blanket.alsoCheckBank(questBank), returnToOmadWithBlanket);
 		getBlanket.addStep(inDungeon, grabBlanket);
 
 		steps.put(10, getBlanket);
@@ -113,7 +116,6 @@ public class MonksFriend extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inDungeon = new ZoneRequirement(dungeon);
-		hasBlanket = new ItemRequirements(blanket);
 	}
 
 	public void setupSteps()
@@ -153,6 +155,24 @@ public class MonksFriend extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneCloak);
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.WOODCUTTING, 2000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("8 Law Runes", ItemID.LAW_RUNE, 8));
 	}
 
 	@Override

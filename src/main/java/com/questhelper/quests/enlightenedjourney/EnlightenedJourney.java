@@ -24,7 +24,6 @@
  */
 package com.questhelper.quests.enlightenedjourney;
 
-
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -32,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -41,6 +39,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -72,7 +74,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 	ItemRequirement balloonStructure, origamiBalloon, sandbag8;
 
-	Requirement onEntrana, hasBalloonStructure, hasOrigamiBalloon, hasSandbags, flying;
+	Requirement onEntrana, hasSandbags, flying;
 
 	Zone entrana;
 
@@ -103,8 +105,8 @@ public class EnlightenedJourney extends BasicQuestHelper
 		steps.put(10, startingOff);
 
 		ConditionalStep makingPrototype = new ConditionalStep(this, usePapyrusOnWool);
-		makingPrototype.addStep(hasOrigamiBalloon, talkToAugusteAgain);
-		makingPrototype.addStep(hasBalloonStructure, useCandleOnBalloon);
+		makingPrototype.addStep(origamiBalloon, talkToAugusteAgain);
+		makingPrototype.addStep(balloonStructure, useCandleOnBalloon);
 		steps.put(20, makingPrototype);
 
 		steps.put(40, talkToAugusteWithPapyrus);
@@ -164,11 +166,9 @@ public class EnlightenedJourney extends BasicQuestHelper
 	{
 		onEntrana = new ZoneRequirement(entrana);
 
-		hasBalloonStructure = new ItemRequirements(balloonStructure);
-		hasOrigamiBalloon = new ItemRequirements(origamiBalloon);
 		hasSandbags = new Conditions(LogicType.OR,
 			new VarbitRequirement(2875, 1),
-			new ItemRequirements(sandbag8));
+			sandbag8);
 
 		flying = new WidgetTextRequirement(471, 1, "Balloon Controls");
 		// Finished flight, 2868 = 1
@@ -244,6 +244,39 @@ public class EnlightenedJourney extends BasicQuestHelper
 		reqs.add(new SkillRequirement(Skill.CRAFTING, 36, true));
 		return reqs;
 	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.FARMING, 3000),
+				new ExperienceReward(Skill.WOODCUTTING, 1500),
+				new ExperienceReward(Skill.FIREMAKING, 4000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Bomber Jacket", ItemID.BOMBER_JACKET, 1),
+				new ItemReward("Bomber Cap", ItemID.BOMBER_CAP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Hot Air Balloon transport system."),
+				new UnlockReward("Ability to make origami balloons."));
+	}
+
 
 	@Override
 	public ArrayList<PanelDetails> getPanels()

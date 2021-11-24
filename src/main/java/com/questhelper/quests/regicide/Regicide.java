@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -41,6 +40,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -78,8 +81,8 @@ public class Regicide extends BasicQuestHelper
 	ItemRequirement food, staminaPotions, coins, antipoisons, faladorTeleport, westArdougneTeleport, summerPie, axe;
 
 	Requirement inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
-		isBeforeBridge, isNorthEastOfBridge, haveOilyCloth, haveFireArrow, haveLitArrow, haveLitArrowEquipped,
-		havePlank, isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
+		isBeforeBridge, isNorthEastOfBridge,
+		isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
 		isBeforeTrap2, isBeforeTrap3, isBeforeTrap4, isBeforeTrap5, isInWellArea, isAtOrb1, isInsideCell, isBeforeLedge,
 		isAfterMaze, isInUnicornArea, isInUnicornArea2, isInKnightsArea, isBeforeIbansDoor, isInDwarfCavern, isInFinalArea,
 	    isInFallArea, isInUndergroundSection2, isInUndergroundSection3, isInMaze, isInTemple, isInPostIbanArea,
@@ -383,11 +386,6 @@ public class Regicide extends BasicQuestHelper
 		isInFallArea = new ZoneRequirement(inFallArea);
 		isBeforeBridge = new ZoneRequirement(beforeBridge);
 		isNorthEastOfBridge = new ZoneRequirement(northEastOfBridge);
-		haveOilyCloth = new ItemRequirements(oilyCloth);
-		haveFireArrow = new ItemRequirements(fireArrow);
-		haveLitArrow = new ItemRequirements(litArrow);
-		haveLitArrowEquipped = new ItemRequirements(litArrowEquipped);
-		havePlank = new ItemRequirements(plank);
 		isBeforeThePit = new ZoneRequirement(westOfBridge, beforeThePit);
 		isAfterThePit = new ZoneRequirement(afterThePit);
 		isBeforeTheGrid = new ZoneRequirement(beforeTheGrid);
@@ -505,7 +503,8 @@ public class Regicide extends BasicQuestHelper
 		shootBridgeRope.addSubSteps(searchBagForCloth, useClothOnArrow, lightArrow, walkNorthEastOfBridge);
 
 		collectPlank = new DetailedQuestStep(this, new WorldPoint(2435, 9726, 0), "Pick up the plank in the north room.", plank);
-		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, "Swing across the pit with a rope.", ropeHighlight);
+		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, new WorldPoint(2463, 9699, 0), "Swing across the pit " +
+			"with a rope.", ropeHighlight);
 		crossThePit.addIcon(ItemID.ROPE);
 		crossThePit.addSubSteps(collectPlank);
 		climbOverRockslide4 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2491, 9691, 0), "Climb-over rockslide");
@@ -718,14 +717,16 @@ public class Regicide extends BasicQuestHelper
 		crossTheBridge.addStep(isBeforeRockslide1, climbOverRockslide1);
 		crossTheBridge.addStep(isBeforeRockslide2, climbOverRockslide2);
 		crossTheBridge.addStep(isBeforeRockslide3, climbOverRockslide3);
-		crossTheBridge.addStep(new Conditions(isNorthEastOfBridge, haveLitArrowEquipped), shootBridgeRope);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveLitArrow), walkNorthEastOfBridge);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveFireArrow), lightArrow);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveOilyCloth), useClothOnArrow);
+		crossTheBridge.addStep(new Conditions(isNorthEastOfBridge, litArrowEquipped), shootBridgeRope);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), litArrow),
+			walkNorthEastOfBridge);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), fireArrow), lightArrow);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), oilyCloth),
+			useClothOnArrow);
 		crossTheBridge.addStep(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), searchBagForCloth);
 
 		ConditionalStep theUndergroundPass = new ConditionalStep(this, climbDownWell);
-		theUndergroundPass.addStep(new Conditions(LogicType.NOR, havePlank), collectPlank);
+		theUndergroundPass.addStep(new Conditions(LogicType.NOR, plank), collectPlank);
 		theUndergroundPass.addStep(isBeforeThePit, crossThePit);
 		theUndergroundPass.addStep(isAfterThePit, climbOverRockslide4);
 		theUndergroundPass.addStep(isBeforeTheGrid, climbOverRockslide5);
@@ -897,6 +898,35 @@ public class Regicide extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 10));
 		req.add(new SkillRequirement(Skill.AGILITY, 56, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 13750));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("15,000 Coins", ItemID.COINS_995, 15000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Tirannwn & Arandar"),
+				new UnlockReward("Ability to wield the Dragon Halberd"),
+				new UnlockReward("Ability to charter a ship to Port Tyras."),
+				new UnlockReward("Ability to use Iorwerth Camp teleport scrolls."),
+				new UnlockReward("Ability to use Zul-Andra teleport scrolls and battle Zulrah."));
 	}
 
 	@Override

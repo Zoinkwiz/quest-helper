@@ -42,6 +42,10 @@ import com.questhelper.requirements.util.ComplexRequirementBuilder;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -149,6 +153,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		goMakeGlass.addStep(moltenGlassI, makeLunarGlass);
 		goMakeGlass.addStep(inYagaHouse, talkToYaga);
 		goMakeGlass.setLockingCondition(lunarGlass);
+		goMakeGlass.setBlocker(true);
 
 		goMakeSigil = new ConditionalStep(this, enterMine);
 		goMakeSigil.addStep(sigil, talkToFossegrimen);
@@ -249,7 +254,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 			.with(sealOfPassage)
 			.build();
 
-		coins150kOrCharos = new ItemRequirements("Ring of Charos(a) or 150k coins",
+		coins150kOrCharos = new ItemRequirements(LogicType.OR,
+			"Ring of Charos(a) or 150k coins",
 			new ItemRequirement("Ring of Charos(a)", ItemID.RING_OF_CHAROSA),
 			new ItemRequirement("Coins", ItemID.COINS_995, 150000));
 
@@ -495,6 +501,36 @@ public class TheFremennikExiles extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.MOUNTAIN_DAUGHTER, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SLAYER, 15000),
+				new ExperienceReward(Skill.CRAFTING, 15000),
+				new ExperienceReward(Skill.RUNECRAFT, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("V's Shield", ItemID.VS_SHIELD, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Isle of Stone"),
+				new UnlockReward("Ability to kill Basilisk Knights as a slayer task"),
+				new UnlockReward("Ability to craft and equip the Neitiznot faceguard."));
 	}
 
 	@Override

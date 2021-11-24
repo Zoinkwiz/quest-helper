@@ -50,6 +50,10 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -110,9 +114,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	Requirement inGloughHouse, inGloughHouseF1, inGloughHouseF2, inGloughHouseF3, inAnitaHouse, inCaves, inZooknockDungeon, inStrongholdFloor2, inLab,
 		isPastMonkeyBars, isNorthOfTree, inCrashSiteCavern, gorillaNotOnHoldingArea, hasChiselAndHammer;
 
-	Requirement foundHandkerchief, talkedToAnita, openedCupboard, foundNote, hasBrush, hasNote, hasLemonNote, hasLemonCandleNote, hasScrawledNote, hasGrapeBrush, triedTranslating,
-		greegreeNearby, krukCorpseNearby, hasKruksPaw, kob2Nearby, keef2Nearby, defeatedKob, defeatedKeef, smithNearby, smithInLocation1, smithInLocation2, smithInLocation3, smithInLocation4,
-		hasChargedOnyx, hasDeconstructedOnyx, killedGorillas, nieveFollowing;
+	Requirement foundHandkerchief, talkedToAnita, openedCupboard, foundNote, hasBrush, triedTranslating, greegreeNearby, krukCorpseNearby, kob2Nearby,
+		keef2Nearby, defeatedKob, defeatedKeef, smithNearby, smithInLocation1, smithInLocation2, smithInLocation3, smithInLocation4, killedGorillas,
+		nieveFollowing;
 
 	ConditionalStep goToGlough2ndFloor, goInvestigateGloughHouse, leaveGloughHouse, goTalkToAnita, goToGlough3rdFloor, goInvestigateUpstairs, goShowNoteToNarnode, goTalkToAnitaWithNote,
 		bringTranslationToNarnode;
@@ -159,7 +163,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		ConditionalStep goMakeGreegree = new ConditionalStep(this, goDownToZooknock);
 		goMakeGreegree.addStep(new Conditions(inZooknockDungeon), talkToZooknock);
-		goMakeGreegree.addStep(new Conditions(inCaves, hasKruksPaw), leaveKrukDungeon);
+		goMakeGreegree.addStep(new Conditions(inCaves, kruksPaw), leaveKrukDungeon);
 		goMakeGreegree.addStep(krukCorpseNearby, pickUpKrukCorpse);
 		steps.put(45, goMakeGreegree);
 
@@ -204,8 +208,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		steps.put(80, fightingGorillasInLab);
 
 		ConditionalStep sabotageOnyx = new ConditionalStep(this, enterLab);
-		sabotageOnyx.addStep(new Conditions(inLab, hasDeconstructedOnyx), useOnyxOnDevice);
-		sabotageOnyx.addStep(new Conditions(inLab, hasChargedOnyx, hasChiselAndHammer), useChiselOnOnyx);
+		sabotageOnyx.addStep(new Conditions(inLab, deconstructedOnyx), useOnyxOnDevice);
+		sabotageOnyx.addStep(new Conditions(inLab, chargedOnyx, hasChiselAndHammer), useChiselOnOnyx);
 		sabotageOnyx.addStep(new Conditions(inLab, hasChiselAndHammer), tamperWithDevice);
 		sabotageOnyx.addStep(inLab, getChiselAndHammer);
 		steps.put(95, sabotageOnyx);
@@ -342,7 +346,6 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-
 		// Started quest:
 		// 5039 0->1
 		// 5032 1->0
@@ -360,16 +363,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		inCrashSiteCavern = new ZoneRequirement(crashSiteCavern);
 
 		// 5039 1->2 when removing handkerchief search option
-		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(5039, 2, Operation.GREATER_EQUAL), new ItemRequirements(handkerchief));
+		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(5039, 2, Operation.GREATER_EQUAL), handkerchief);
 		talkedToAnita = new VarbitRequirement(5030, 1, Operation.GREATER_EQUAL);
 		openedCupboard = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 1, "You turn the statue and hear a clicking sound in the room."), new ChatMessageRequirement("You have already activated the statue."));
 		foundNote = new VarbitRequirement(5028, 1);
-		hasBrush = new Conditions(LogicType.OR, new ItemRequirements(grapeBrush), new ItemRequirements(brush));
-		hasGrapeBrush = new ItemRequirements(grapeBrush);
-		hasNote = new ItemRequirements(mysteriousNote);
-		hasLemonNote = new ItemRequirements(mysteriousNoteLemon);
-		hasLemonCandleNote = new ItemRequirements(mysteriousNoteLemonCandle);
-		hasScrawledNote = new ItemRequirements(scrawledNote);
+		hasBrush = new Conditions(LogicType.OR, grapeBrush, brush);
 
 		// Read note:
 		// 5027 5->6
@@ -380,7 +378,6 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		greegreeNearby = new ItemOnTileRequirement(greegree);
 		krukCorpseNearby = new ObjectCondition(NullObjectID.NULL_28811);
-		hasKruksPaw = new ItemRequirements(kruksPaw);
 
 		kob2Nearby = new NpcCondition(NpcID.KOB_7107);
 		keef2Nearby = new NpcCondition(NpcID.KEEF_7105);
@@ -398,9 +395,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		gorillaNotOnHoldingArea = new Conditions(LogicType.NOR, new NpcCondition(NpcID.STUNTED_DEMONIC_GORILLA));
 
-		hasChiselAndHammer = new Conditions(new ItemRequirements(hammer), new ItemRequirements(chisel));
-		hasChargedOnyx = new ItemRequirements(chargedOnyx);
-		hasDeconstructedOnyx = new ItemRequirements(deconstructedOnyx);
+		hasChiselAndHammer = new Conditions(hammer, chisel);
 
 		// Nieve leaves:
 		// 5037 0->1 (Steve appears)
@@ -547,7 +542,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		fightKob = new NpcStep(this, NpcID.KOB_7107, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.");
 		fightKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
 
-		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 70)
+		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 71)
 		{
 			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Get to him via the agility shortcut next to him. Be prepared to fight him and pray Protect from Melee.");
 		}
@@ -635,11 +630,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		goToGlough3rdFloor.addStep(inGloughHouseF2, goUpGloughTreeToThirdFloor);
 
 		goInvestigateUpstairs = new ConditionalStep(this, goToGlough3rdFloor);
-		goInvestigateUpstairs.addStep(new Conditions(hasScrawledNote), readScrawledNote);
-		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasGrapeBrush, hasLemonCandleNote), useBrushOnNote);
-		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, hasLemonCandleNote), usePestleOnGrapes);
-		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, hasLemonNote), useNotesOnCandles);
-		goInvestigateUpstairs.addStep(new Conditions(openedCupboard, hasBrush, hasNote), usePestleOnLemon);
+		goInvestigateUpstairs.addStep(new Conditions(scrawledNote), readScrawledNote);
+		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, grapeBrush, mysteriousNoteLemonCandle), useBrushOnNote);
+		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, mysteriousNoteLemonCandle), usePestleOnGrapes);
+		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, hasBrush, mysteriousNoteLemon), useNotesOnCandles);
+		goInvestigateUpstairs.addStep(new Conditions(openedCupboard, hasBrush, mysteriousNote), usePestleOnLemon);
 		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, openedCupboard, hasBrush), searchRemains);
 		goInvestigateUpstairs.addStep(new Conditions(inGloughHouseF3, openedCupboard), searchCrate);
 		goInvestigateUpstairs.addStep(inGloughHouseF3, investigateStatue);
@@ -676,6 +671,42 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SLAYER, 25000),
+				new ExperienceReward(Skill.AGILITY, 20000),
+				new ExperienceReward(Skill.THIEVING, 15000),
+				new ExperienceReward(Skill.HUNTER, 15000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+				new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
+				new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Demonic Gorillas"),
+				new UnlockReward("A new Gnome Glider location"),
+				new UnlockReward("Access to a bank on Ape Atoll"),
+				new UnlockReward("Ability to wield the Heavy Ballista"),
+				new UnlockReward("Access to Maniacal Monkey hunting area"));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -690,7 +721,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Going undercover", chapter2Steps, ninjaGreegree, mspeakAmulet, talismanOr1000Coins, lightSource, combatGear, food, prayerPotions, staminaPotions));
 
 		allSteps.add(new PanelDetails("Defeating trolls and ogres",
-			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear));
+			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear,
+			coins20.hideConditioned(new SkillRequirement(Skill.AGILITY, 71, true))));
 
 		List<QuestStep> sabotageSteps = QuestUtil.toArrayList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
 			talkToGarkorAfterSmith, talkToMonkeyGuard);

@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -41,6 +40,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -74,9 +76,9 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 	Requirement inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,
 		talkedToDaeroAfterPuzzle, onCrashIsland, talkedToLumdo, talkedToWaydar, onApeAtollSouth, inPrison, onApeAtollNorth, talkedToGarkor, inDentureBuilding,
-		hasMonkeyDentures, hasMould, inMouldRoom, hadDenturesAndMould, inZooknockDungeon, talkedToZooknock, givenDentures, givenBar, givenMould, hadEnchantedBar,
-		inTempleDungeon, hasUnstrungAmulet, hasAmulet, hasTalisman, hasMonkeyTalismanMade, givenTalisman, givenBones, hasMonkey, inMonkeyPen, talkedToGarkorWithGreeGree,
-		talkedToGuard, talkedToKruk, onApeAtollNorthBridge, onApeAtollOverBridge, inThroneRoom, givenMonkey, gotSigil, inJungleDemonRoom;
+		inMouldRoom, hadDenturesAndMould, inZooknockDungeon, talkedToZooknock, givenDentures, givenBar, givenMould, hadEnchantedBar,
+		inTempleDungeon, givenTalisman, givenBones, inMonkeyPen, talkedToGarkorWithGreeGree, talkedToGuard, talkedToKruk, onApeAtollNorthBridge,
+		onApeAtollOverBridge, inThroneRoom, givenMonkey, gotSigil, inJungleDemonRoom, hasTalisman;
 
 	DetailedQuestStep talkToNarnode, goUpF0ToF1, goUpF1ToF2, goUpF2ToF3, flyGandius, enterShipyard, talkToCaranock, talkToNarnodeAfterShipyard, goUpToDaero,
 		clickPuzzle, enterValley, leavePrison, talkToGarkor, enterDentureBuilding, searchForDentures, goDownFromDentures, leaveToPrepareForAmulet, enterValleyForAmuletMake,
@@ -86,7 +88,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToMonkeyAtZoo, talkToMinderAgain, talkToGuard, goUpToBridge, goDownFromBridge, talkToKruk, talkToAwow, talkToGarkorForSigil, prepareForBattle, killDemon,
 		talkToNarnodeToFinish, goUpToDaeroForTalkingToAwow, talkToGarkorWithMonkey;
 
-	ConditionalStep getAmuletParts, makeBar, makeAmulet, getTalisman, makeTalisman;
+	ConditionalStep getAmuletParts, makeBar, makeAmulet, getTalisman, makeKaramjanGreeGree;
 
 	NpcStep talkToDaero, talkToDaeroInHangar, talkToDaeroAfterPuzzle, talkToWaydarAfterPuzzle, talkToWaydarOnCrash, talkToDaeroTravel,
 		talkToDaeroForAmuletRun, talkToWaydarForAmuletRun, talkToLumdoForAmuletRun, talkToLumdo, talkToLumdoToReturn, talkToDaeroForAmuletMake,
@@ -131,8 +133,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		steps.put(2, gettingToApeAtoll);
 
 		ConditionalStep gettingToGarkor = new ConditionalStep(this, goUpToDaero);
-		gettingToGarkor.addStep(new Conditions(talkedToGarkor, inMouldRoom, hasMonkeyDentures), searchForMould);
-		gettingToGarkor.addStep(new Conditions(talkedToGarkor, inDentureBuilding, hasMonkeyDentures), goDownFromDentures);
+		gettingToGarkor.addStep(new Conditions(talkedToGarkor, inMouldRoom, monkeyDentures), searchForMould);
+		gettingToGarkor.addStep(new Conditions(talkedToGarkor, inDentureBuilding, monkeyDentures), goDownFromDentures);
 		gettingToGarkor.addStep(new Conditions(talkedToGarkor, inDentureBuilding), searchForDentures);
 		gettingToGarkor.addStep(inPrison, leavePrison);
 		gettingToGarkor.addStep(new Conditions(onApeAtollNorth, talkedToGarkor), enterDentureBuilding);
@@ -160,7 +162,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeBar.setLockingCondition(hadEnchantedBar);
 
 		makeAmulet = new ConditionalStep(this, goUpToDaeroForAmuletMake);
-		makeAmulet.addStep(hasUnstrungAmulet, useWool);
+		makeAmulet.addStep(unstrungAmuletHighlight, useWool);
 		makeAmulet.addStep(inTempleDungeon, useBarOnFlame);
 		makeAmulet.addStep(onApeAtollNorth, enterTemple);
 		makeAmulet.addStep(onApeAtollSouth, enterValleyForAmuletMake);
@@ -168,28 +170,28 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeAmulet.addStep(inHangar, talkToWaydarForAmuletMake);
 		makeAmulet.addStep(inFloor1, talkToDaeroForAmuletMake);
 		makeAmulet.addStep(inZooknockDungeon, leaveToPrepareForAmulet);
-		makeAmulet.setLockingCondition(hasAmulet);
+		makeAmulet.setLockingCondition(amulet);
 
 		getTalisman = new ConditionalStep(this, leaveTempleDungeon);
 		getTalisman.addStep(onApeAtollNorth, talkToMonkeyChild);
 		getTalisman.setLockingCondition(hasTalisman);
 
-		makeTalisman = new ConditionalStep(this, goUpToDaeroForTalismanRun);
-		makeTalisman.addStep(new Conditions(inZooknockDungeon, givenTalisman, givenBones), talkToZooknockForTalisman);
-		makeTalisman.addStep(new Conditions(inZooknockDungeon, givenTalisman), useBones);
-		makeTalisman.addStep(new Conditions(inZooknockDungeon), useTalisman);
-		makeTalisman.addStep(onApeAtollSouth, enterDungeonForTalismanRun);
-		makeTalisman.addStep(onCrashIsland, talkToLumdoForTalismanRun);
-		makeTalisman.addStep(inHangar, talkToWaydarForTalismanRun);
-		makeTalisman.addStep(inFloor1, talkToDaeroForTalismanRun);
-		makeTalisman.addStep(inTempleDungeon, leaveToPrepareForTalismanRun);
-		makeTalisman.addStep(inMouldRoom, leaveToPrepareForTalismanRun);
-		makeTalisman.addStep(onApeAtollNorth, leaveToPrepareForTalismanRun);
-		makeTalisman.setLockingCondition(hasMonkeyTalismanMade);
+		makeKaramjanGreeGree = new ConditionalStep(this, goUpToDaeroForTalismanRun);
+		makeKaramjanGreeGree.addStep(new Conditions(inZooknockDungeon, givenTalisman, givenBones), talkToZooknockForTalisman);
+		makeKaramjanGreeGree.addStep(new Conditions(inZooknockDungeon, givenTalisman), useBones);
+		makeKaramjanGreeGree.addStep(new Conditions(inZooknockDungeon), useTalisman);
+		makeKaramjanGreeGree.addStep(onApeAtollSouth, enterDungeonForTalismanRun);
+		makeKaramjanGreeGree.addStep(onCrashIsland, talkToLumdoForTalismanRun);
+		makeKaramjanGreeGree.addStep(inHangar, talkToWaydarForTalismanRun);
+		makeKaramjanGreeGree.addStep(inFloor1, talkToDaeroForTalismanRun);
+		makeKaramjanGreeGree.addStep(inTempleDungeon, leaveToPrepareForTalismanRun);
+		makeKaramjanGreeGree.addStep(inMouldRoom, leaveToPrepareForTalismanRun);
+		makeKaramjanGreeGree.addStep(onApeAtollNorth, leaveToPrepareForTalismanRun);
+		makeKaramjanGreeGree.setLockingCondition(karamjanGreegree.alsoCheckBank(questBank));
 
 		ConditionalStep infiltratingTheMonkeys = new ConditionalStep(this, getAmuletParts);
-		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hasTalisman), makeTalisman);
-		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hasAmulet), getTalisman);
+		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hasTalisman), makeKaramjanGreeGree);
+		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, amulet.alsoCheckBank(questBank)), getTalisman);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadEnchantedBar), makeAmulet);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadDenturesAndMould), makeBar);
 
@@ -213,7 +215,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		ConditionalStep bringingAMonkeyToAwow = new ConditionalStep(this, talkToMinder);
 		bringingAMonkeyToAwow.addStep(givenMonkey, talkToGarkorForSigil);
-		bringingAMonkeyToAwow.addStep(hasMonkey, bringMonkey);
+		bringingAMonkeyToAwow.addStep(new Conditions(true, monkey), bringMonkey);
 		bringingAMonkeyToAwow.addStep(inMonkeyPen, talkToMonkeyAtZoo);
 		bringingAMonkeyToAwow.addStep(inZooknockDungeon, leaveDungeonWithGreeGree);
 
@@ -245,7 +247,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWoolHighlight = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL);
 		ballOfWoolHighlight.setHighlightInInventory(true);
 
-		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES_3183);
+		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);
 
 		monkeyBonesOrCorpseHighlight = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
@@ -382,10 +384,6 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		talkedToGarkor = new VarbitRequirement(126, 2, Operation.GREATER_EQUAL);
 
-		hasMonkeyDentures = new ItemRequirements(monkeyDentures);
-
-		hasMould = new ItemRequirements(mould);
-
 		talkedToZooknock = new VarbitRequirement(127, 5, Operation.GREATER_EQUAL);
 
 		givenDentures = new Conditions(true, LogicType.OR,
@@ -398,31 +396,30 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey amulet mould."),
 			new WidgetTextRequirement(119, 3, true, "<str> - A monkey amulet mould."));
 
-		hasUnstrungAmulet = new ItemRequirements(unstrungAmuletHighlight);
-		hasAmulet = new ItemRequirements(amulet);
+		hasTalisman = new Conditions(LogicType.OR, karamjanGreegree, talisman);
 
-		hasMonkeyTalismanMade = new ItemRequirements(karamjanGreegree);
-
-		hasTalisman = new Conditions(LogicType.OR, hasMonkeyTalismanMade, new ItemRequirements(talisman));
-
-		hadEnchantedBar = new Conditions(LogicType.OR, hasTalisman, hasUnstrungAmulet, hasAmulet, new ItemRequirements(enchantedBar));
-		hadDenturesAndMould = new Conditions(LogicType.OR, hadEnchantedBar, new Conditions(hasMonkeyDentures, hasMould));
+		hadEnchantedBar = new Conditions(LogicType.OR, talisman, unstrungAmuletHighlight, amulet, enchantedBar);
+		hadDenturesAndMould = new Conditions(LogicType.OR, hadEnchantedBar, new Conditions(monkeyDentures, mould));
 
 		givenTalisman = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey talisman."),
-			new WidgetTextRequirement(119, 3, true, "<str> - An authentic magical monkey talisman."));
+			new WidgetTextRequirement(119, 3, true, "<str> - An authentic magical monkey talisman.")
+		);
 		givenBones = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
-			new WidgetTextRequirement(119, 3, true, "<str> - Some kind of monkey remains."));
-
-		hasMonkey = new Conditions(true, new ItemRequirements(monkey));
+			new WidgetTextRequirement(119, 3, true, "<str> - Some kind of monkey remains.")
+		);
 
 		talkedToGarkorWithGreeGree = new VarbitRequirement(126, 3, Operation.GREATER_EQUAL);
-		talkedToGuard = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "He goes by the name of Kruk."));
-		talkedToKruk = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "As you wish.", "I see. Very well, you look genuine enough. Follow me."));
+		talkedToGuard = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "He goes by the name of Kruk."));
+		talkedToKruk = new Conditions(true,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "As you wish.", "I see. Very well, you look genuine enough. Follow me.")
+		);
 
-		givenMonkey = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."),
-			new WidgetTextRequirement(119, 3, true, "appear to have earnt Awowogei's favour."));
+		givenMonkey = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."),
+			new WidgetTextRequirement(119, 3, true, "appear to have earnt Awowogei's favour.")
+		);
 
 		gotSigil = new VarbitRequirement(126, 6, Operation.GREATER_EQUAL);
 	}
@@ -730,6 +727,29 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("55,000 Experience Combat Lamp (Over multiple Skills)", ItemID.ANTIQUE_LAMP, 1), //4447 is placeholder for filter
+				new ItemReward("10,000 Coins", ItemID.COINS_995, 10000),
+				new ItemReward("3 Diamonds", ItemID.DIAMOND, 3));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to purchase and wield the Dragon Scimitar."),
+				new UnlockReward("Full access to Ape Atoll."));
 	}
 
 	@Override

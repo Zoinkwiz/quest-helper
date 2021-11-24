@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -40,6 +39,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -51,11 +52,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -69,8 +67,8 @@ public class WitchsHouse extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement armourAndWeapon;
 
-	Requirement hasKey, hasMagnet, inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
-		ratHasMagnet, hasShedKey, inShed, hasBall, experimentNearby;
+	Requirement inHouse, inUpstairsHouse, inDownstairsHouseWest, inDownstairsHouseEast, inDownstairsHouse, inHouseOrGarden,
+		ratHasMagnet, inShed, experimentNearby;
 
 	QuestStep talkToBoy, getKey, goDownstairs, enterGate, goDownstairsFromTop, openCupboardAndLoot, openCupboardAndLoot2, goBackUpstairs, useCheeseOnHole,
 		enterHouse, searchFountain, enterShed, enterShedWithoutKey, killWitchsExperiment, returnToBoy, pickupBall, grabBall;
@@ -90,14 +88,14 @@ public class WitchsHouse extends BasicQuestHelper
 		steps.put(0, talkToBoy);
 
 		ConditionalStep getTheMagnet = new ConditionalStep(this, getKey);
-		getTheMagnet.addStep(new Conditions(inHouse, hasMagnet), useCheeseOnHole);
-		getTheMagnet.addStep(new Conditions(inDownstairsHouse, hasMagnet), goBackUpstairs);
+		getTheMagnet.addStep(new Conditions(inHouse, magnet), useCheeseOnHole);
+		getTheMagnet.addStep(new Conditions(inDownstairsHouse, magnet), goBackUpstairs);
 		getTheMagnet.addStep(new Conditions(inDownstairsHouseWest, new ObjectCondition(ObjectID.CUPBOARD_2869)), openCupboardAndLoot2);
 		getTheMagnet.addStep(inDownstairsHouseWest, openCupboardAndLoot);
 		getTheMagnet.addStep(inDownstairsHouseEast, enterGate);
 		getTheMagnet.addStep(inHouse, goDownstairs);
 		getTheMagnet.addStep(inUpstairsHouse, goDownstairsFromTop);
-		getTheMagnet.addStep(hasKey, enterHouse);
+		getTheMagnet.addStep(houseKey.alsoCheckBank(questBank), enterHouse);
 
 		steps.put(1, getTheMagnet);
 		steps.put(2, getTheMagnet);
@@ -105,25 +103,25 @@ public class WitchsHouse extends BasicQuestHelper
 		ConditionalStep killExperiment = new ConditionalStep(this, getKey);
 		killExperiment.addStep(new Conditions(inShed, experimentNearby), killWitchsExperiment);
 		killExperiment.addStep(inShed, grabBall);
-		killExperiment.addStep(new Conditions(ratHasMagnet, inHouseOrGarden, hasShedKey), enterShed);
+		killExperiment.addStep(new Conditions(ratHasMagnet, inHouseOrGarden, shedKey), enterShed);
 		killExperiment.addStep(new Conditions(ratHasMagnet, inHouseOrGarden), searchFountain);
 		killExperiment.addStep(new Conditions(ratHasMagnet, inDownstairsHouse), goBackUpstairs);
-		killExperiment.addStep(new Conditions(inHouse, hasMagnet), useCheeseOnHole);
-		killExperiment.addStep(new Conditions(inDownstairsHouse, hasMagnet), goBackUpstairs);
+		killExperiment.addStep(new Conditions(inHouse, magnet), useCheeseOnHole);
+		killExperiment.addStep(new Conditions(inDownstairsHouse, magnet), goBackUpstairs);
 		killExperiment.addStep(new Conditions(inDownstairsHouseWest, new ObjectCondition(ObjectID.CUPBOARD_2869)), openCupboardAndLoot2);
 		killExperiment.addStep(inDownstairsHouseWest, openCupboardAndLoot);
 		killExperiment.addStep(inDownstairsHouseEast, enterGate);
 		killExperiment.addStep(inHouse, goDownstairs);
 		killExperiment.addStep(inUpstairsHouse, goDownstairsFromTop);
-		killExperiment.addStep(hasKey, enterHouse);
+		killExperiment.addStep(houseKey.alsoCheckBank(questBank), enterHouse);
 
 		steps.put(3, killExperiment);
 
 		ConditionalStep returnBall = new ConditionalStep(this, getKey);
-		returnBall.addStep(new Conditions(hasBall), returnToBoy);
+		returnBall.addStep(ball.alsoCheckBank(questBank), returnToBoy);
 		returnBall.addStep(inShed, pickupBall);
 		returnBall.addStep(inHouseOrGarden, enterShedWithoutKey);
-		returnBall.addStep(hasKey, enterHouse);
+		returnBall.addStep(houseKey.alsoCheckBank(questBank), enterHouse);
 		returnBall.addStep(inDownstairsHouse, goBackUpstairs);
 		returnBall.addStep(inUpstairsHouse, goDownstairsFromTop);
 
@@ -158,8 +156,6 @@ public class WitchsHouse extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasMagnet = new ItemRequirements(magnet);
-		hasKey = new ItemRequirements(houseKey);
 		inHouse = new ZoneRequirement(house);
 		inUpstairsHouse = new ZoneRequirement(upstairsHouse);
 		inDownstairsHouseWest = new ZoneRequirement(downstairsHouseWest);
@@ -167,14 +163,12 @@ public class WitchsHouse extends BasicQuestHelper
 		inDownstairsHouse = new ZoneRequirement(downstairsHouseEast, downstairsHouseWest);
 		inHouseOrGarden = new ZoneRequirement(house, garden1, garden2, garden3);
 		ratHasMagnet = new VarplayerRequirement(226, 3);
-		hasShedKey = new ItemRequirements(shedKey);
 		inShed = new ZoneRequirement(shed);
 		experimentNearby = new Conditions(LogicType.OR,
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT),
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT_SECOND_FORM),
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT_THIRD_FORM),
 			new NpcCondition(NpcID.WITCHS_EXPERIMENT_FOURTH_FORM));
-		hasBall = new ItemRequirements(ball);
 	}
 
 	public void setupSteps()
@@ -234,6 +228,18 @@ public class WitchsHouse extends BasicQuestHelper
 	public List<Requirement> getGeneralRecommended()
 	{
 		return Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 2));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.HITPOINTS, 6325));
 	}
 
 	@Override

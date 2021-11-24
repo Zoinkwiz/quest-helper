@@ -30,12 +30,13 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -60,11 +61,10 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	//Items Required
 	ItemRequirement storeRoomKey, twoPhoenixCrossbow, shieldHalf, certificateHalf, phoenixCertificateHalf, certificate;
 
-	Requirement inStoreRoom, hasTwoPhoenixCrossbow, hasStoreRoomKey, weaponMasterAlive, isUpstairsInBase, cupboardOpen, hasCertificateHalf,
-		hasPhoenixCertificateHalf, hasCertificate, hasShieldHalf;
+	Requirement inStoreRoom, weaponMasterAlive, isUpstairsInBase, cupboardOpen;
 
 	QuestStep talkToCharlie, getWeaponStoreKey, talkToKatrine, goUpToWeaponStore, killWeaponsMaster, pickupTwoCrossbows, goDownFromWeaponStore, returnToKatrine,
-	goUpstairsInBase, getShieldFromCupboard, getShieldFromCupboard1, goDownstairsInBase, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald;
+		goUpstairsInBase, getShieldFromCupboard, getShieldFromCupboard1, goDownstairsInBase, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald;
 
 	//Zones
 	Zone storeRoom, upstairsInBase;
@@ -82,20 +82,20 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		steps.put(1, talkToKatrine);
 
 		ConditionalStep gettingTheCrossbows = new ConditionalStep(this, getWeaponStoreKey);
-		gettingTheCrossbows.addStep(new Conditions(hasTwoPhoenixCrossbow, inStoreRoom), goDownFromWeaponStore);
-		gettingTheCrossbows.addStep(hasTwoPhoenixCrossbow, returnToKatrine);
+		gettingTheCrossbows.addStep(new Conditions(twoPhoenixCrossbow, inStoreRoom), goDownFromWeaponStore);
+		gettingTheCrossbows.addStep(twoPhoenixCrossbow, returnToKatrine);
 		gettingTheCrossbows.addStep(new Conditions(weaponMasterAlive, inStoreRoom), killWeaponsMaster);
 		gettingTheCrossbows.addStep(inStoreRoom, pickupTwoCrossbows);
-		gettingTheCrossbows.addStep(hasStoreRoomKey, goUpToWeaponStore);
+		gettingTheCrossbows.addStep(storeRoomKey.alsoCheckBank(questBank), goUpToWeaponStore);
 
 		steps.put(2, gettingTheCrossbows);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, goUpstairsInBase);
-		completeQuest.addStep(hasCertificate, talkToRoald);
-		completeQuest.addStep(new Conditions(hasCertificateHalf, hasPhoenixCertificateHalf), combineCertificate);
-		completeQuest.addStep(hasCertificateHalf, tradeCertificateHalf);
-		completeQuest.addStep(new Conditions(hasShieldHalf, isUpstairsInBase), goDownstairsInBase);
-		completeQuest.addStep(hasShieldHalf, talkToHaig);
+		completeQuest.addStep(certificate.alsoCheckBank(questBank), talkToRoald);
+		completeQuest.addStep(new Conditions(certificateHalf.alsoCheckBank(questBank), phoenixCertificateHalf.alsoCheckBank(questBank)), combineCertificate);
+		completeQuest.addStep(certificateHalf.alsoCheckBank(questBank), tradeCertificateHalf);
+		completeQuest.addStep(new Conditions(shieldHalf.alsoCheckBank(questBank), isUpstairsInBase), goDownstairsInBase);
+		completeQuest.addStep(shieldHalf.alsoCheckBank(questBank), talkToHaig);
 		completeQuest.addStep(new Conditions(isUpstairsInBase, cupboardOpen), getShieldFromCupboard1);
 		completeQuest.addStep(isUpstairsInBase, getShieldFromCupboard);
 
@@ -103,7 +103,8 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements() {
+	public void setupItemRequirements()
+	{
 		storeRoomKey = new ItemRequirement("Weapon store key", ItemID.WEAPON_STORE_KEY);
 		twoPhoenixCrossbow = new ItemRequirement("Phoenix crossbow", ItemID.PHOENIX_CROSSBOW, 2);
 		shieldHalf = new ItemRequirement("Broken shield", ItemID.BROKEN_SHIELD_765);
@@ -112,26 +113,23 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		certificate = new ItemRequirement("Certificate", ItemID.CERTIFICATE);
 	}
 
-	public void loadZones() {
-		storeRoom = new Zone(new WorldPoint(3242, 3380,1), new WorldPoint(3252, 3386, 1));
-		upstairsInBase = new Zone(new WorldPoint(3182, 3382,1), new WorldPoint(3201, 3398, 1));
+	public void loadZones()
+	{
+		storeRoom = new Zone(new WorldPoint(3242, 3380, 1), new WorldPoint(3252, 3386, 1));
+		upstairsInBase = new Zone(new WorldPoint(3182, 3382, 1), new WorldPoint(3201, 3398, 1));
 	}
 
-	public void setupConditions() {
-		hasStoreRoomKey = new ItemRequirements(storeRoomKey);
+	public void setupConditions()
+	{
 		inStoreRoom = new ZoneRequirement(storeRoom);
-		hasTwoPhoenixCrossbow = new ItemRequirements(twoPhoenixCrossbow);
 		weaponMasterAlive = new NpcCondition(NpcID.WEAPONSMASTER);
 		isUpstairsInBase = new ZoneRequirement(upstairsInBase);
 		cupboardOpen = new ObjectCondition(ObjectID.CUPBOARD_2401);
-		hasShieldHalf = new ItemRequirements(shieldHalf);
-		hasCertificateHalf = new ItemRequirements(certificateHalf);
-		hasPhoenixCertificateHalf = new ItemRequirements(phoenixCertificateHalf);
-		hasCertificate = new ItemRequirements(certificate);
 	}
 
-	public void setupSteps() {
-		talkToCharlie = new NpcStep(this, NpcID.CHARLIE_THE_TRAMP, new WorldPoint(3208, 3392,0), "To start the quest as the Black Arm Gang, talk to Charlie the Tramp in south Varrock to start.");
+	public void setupSteps()
+	{
+		talkToCharlie = new NpcStep(this, NpcID.CHARLIE_THE_TRAMP, new WorldPoint(3208, 3392, 0), "To start the quest as the Black Arm Gang, talk to Charlie the Tramp in south Varrock to start.");
 		talkToCharlie.addDialogStep("Is there anything down this alleyway?");
 		talkToCharlie.addDialogStep("Do you think they would let me join?");
 
@@ -176,6 +174,18 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("600 Coins", ItemID.COINS_995, 600));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -194,10 +204,10 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	@Override
 	public List<String> getNotes()
 	{
-		return 
+		return
 			Arrays.asList("You can also do this quest by joining the Phoenix Gang, which instead requires you to kill Jonny the beard (level 2).",
-			"Once you're accepted into one of the gangs, you CANNOT change gang.",
-			"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there.");
+				"Once you're accepted into one of the gangs, you CANNOT change gang.",
+				"This quest requires you to swap items with another player who's in the other gang, so it's recommended to either find a friend to help you, or you can use the friend's chat 'OSRS SOA' and find someone to help there.");
 	}
 
 	@Override

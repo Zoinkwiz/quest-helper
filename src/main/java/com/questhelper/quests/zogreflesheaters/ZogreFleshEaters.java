@@ -27,12 +27,15 @@ package com.questhelper.quests.zogreflesheaters;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -74,9 +77,9 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portrait, goodPort, strangePotionHighlighted,
 		badPort, charcoal, papyrus, signedPort, cupOfTea, strangePotion, grishKey, ogreRelic, combatGear, knifeHighlighted, tankardHighlighted;
 
-	Requirement askedAboutSickies, inSurface, inTombF2, killedZombie, hasBackpack, hasTankard, hasTornPage, hasBlackPrism, searchedCoffin, usedKnife, openedCoffin,
-		talkedToZavistic, hasBackpackOrTankard, atSith, askedSithToLookAround, hasOrShownNecroBook, hasOrShownHamBook, hasPortait, hasNecroBook, hasHamBook,
-		hasGoodPortrait, hasBadPortrait, hasPapyrus, shownNecroBook, shownHamBook, shownTankard, usedTankardOnBartender, usedPortraitOnBartender, hasOrShownSignedPortrait,
+	Requirement askedAboutSickies, inSurface, inTombF2, killedZombie, searchedCoffin, usedKnife, openedCoffin,
+		talkedToZavistic, hasBackpackOrTankard, atSith, askedSithToLookAround, hasOrShownNecroBook, hasOrShownHamBook, 
+		shownNecroBook, shownHamBook, shownTankard, usedTankardOnBartender, usedPortraitOnBartender, hasOrShownSignedPortrait,
 		shownSignedPortrait, sithTransformed, askedAboutDisease, askedAboutGettingRidOfUndead, askedAboutBow, inTombF0, inTombF2ToBoss, ogreRelicNearby;
 
 	QuestStep talkToGrish, talkToGuard, climbBarricade, goDownStairs, searchSkeleton, killZombie, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin,
@@ -102,23 +105,23 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 		ConditionalStep explore = new ConditionalStep(this, climbBarricade);
 		explore.addStep(new Conditions(hasOrShownHamBook, hasOrShownNecroBook, hasOrShownSignedPortrait), bringSignedPortraitToZavistic);
-		explore.addStep(new Conditions(hasOrShownHamBook, hasOrShownNecroBook, hasGoodPortrait, usedTankardOnBartender), usePortraitOnBartender);
-		explore.addStep(new Conditions(hasTankard, hasOrShownHamBook, hasOrShownNecroBook, hasGoodPortrait), useTankardOnBartender);
-		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook, hasOrShownNecroBook, hasPapyrus), usePapyrusOnSith);
-		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook, hasOrShownNecroBook, hasBadPortrait), dropPortraitAndSearchDrawers);
-		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook, hasOrShownNecroBook), searchDrawers);
-		explore.addStep(new Conditions(hasTankard, atSith, hasOrShownHamBook), searchCupboard);
-		explore.addStep(new Conditions(hasTankard, atSith, askedSithToLookAround), searchWardrobe);
-		explore.addStep(new Conditions(hasTankard, talkedToZavistic, atSith), talkToSith);
-		explore.addStep(new Conditions(hasTankard, talkedToZavistic), goUpToSith);
+		explore.addStep(new Conditions(hasOrShownHamBook, hasOrShownNecroBook, goodPort, usedTankardOnBartender), usePortraitOnBartender);
+		explore.addStep(new Conditions(tankard, hasOrShownHamBook, hasOrShownNecroBook, goodPort), useTankardOnBartender);
+		explore.addStep(new Conditions(tankard, atSith, hasOrShownHamBook, hasOrShownNecroBook, papyrus), usePapyrusOnSith);
+		explore.addStep(new Conditions(tankard, atSith, hasOrShownHamBook, hasOrShownNecroBook, badPort), dropPortraitAndSearchDrawers);
+		explore.addStep(new Conditions(tankard, atSith, hasOrShownHamBook, hasOrShownNecroBook), searchDrawers);
+		explore.addStep(new Conditions(tankard, atSith, hasOrShownHamBook), searchCupboard);
+		explore.addStep(new Conditions(tankard, atSith, askedSithToLookAround), searchWardrobe);
+		explore.addStep(new Conditions(tankard, talkedToZavistic, atSith), talkToSith);
+		explore.addStep(new Conditions(tankard, talkedToZavistic), goUpToSith);
 
-		explore.addStep(new Conditions(hasTankard, hasTornPage, hasBlackPrism), talkToZavistic);
-		explore.addStep(new Conditions(inTombF2, hasTankard, hasTornPage, openedCoffin), searchCoffinProperly);
-		explore.addStep(new Conditions(inTombF2, hasTankard, hasTornPage, usedKnife), openCoffin);
-		explore.addStep(new Conditions(inTombF2, hasTankard, hasTornPage, searchedCoffin), useKnifeOnCoffin);
-		explore.addStep(new Conditions(inTombF2, hasTankard, hasTornPage), searchCoffin);
-		explore.addStep(new Conditions(inTombF2, hasTankard), searchLectern);
-		explore.addStep(new Conditions(inTombF2, hasBackpack), openBackpack);
+		explore.addStep(new Conditions(tankard, tornPage, blackPrism), talkToZavistic);
+		explore.addStep(new Conditions(inTombF2, tankard, tornPage, openedCoffin), searchCoffinProperly);
+		explore.addStep(new Conditions(inTombF2, tankard, tornPage, usedKnife), openCoffin);
+		explore.addStep(new Conditions(inTombF2, tankard, tornPage, searchedCoffin), useKnifeOnCoffin);
+		explore.addStep(new Conditions(inTombF2, tankard, tornPage), searchCoffin);
+		explore.addStep(new Conditions(inTombF2, tankard), searchLectern);
+		explore.addStep(new Conditions(inTombF2, backpack), openBackpack);
 		explore.addStep(inTombF2, searchSkeleton);
 		explore.addStep(inSurface, goDownStairs);
 		steps.put(3, explore);
@@ -211,11 +214,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		inTombF0 = new ZoneRequirement(tombF0);
 		inTombF2ToBoss = new ZoneRequirement(tombF2ToBoss);
 		killedZombie = new VarbitRequirement(503, 2);
-		hasBackpack = new ItemRequirements(backpack);
-		hasTankard = new ItemRequirements(tankard);
-		hasBackpackOrTankard = new Conditions(LogicType.OR, hasBackpack, hasTankard);
-		hasBlackPrism = new ItemRequirements(blackPrism);
-		hasTornPage = new ItemRequirements(tornPage);
+		hasBackpackOrTankard = new Conditions(LogicType.OR, backpack, tankard);
 		searchedCoffin = new VarbitRequirement(488, 1);
 		usedKnife = new VarbitRequirement(488, 2);
 		openedCoffin = new VarbitRequirement(488, 3);
@@ -224,9 +223,6 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 		atSith = new ZoneRequirement(sith);
 
-		hasPortait = new ItemRequirements(portrait);
-		hasNecroBook = new ItemRequirements(necroBook);
-		hasHamBook = new ItemRequirements(hamBook);
 		usedTankardOnBartender = new VarbitRequirement(489, 1);
 		usedPortraitOnBartender = new VarbitRequirement(490, 1);
 		shownNecroBook = new VarbitRequirement(491, 1);
@@ -234,13 +230,9 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		shownTankard = new VarbitRequirement(493, 1);
 		shownSignedPortrait = new VarbitRequirement(494, 1);
 
-		hasOrShownHamBook = new Conditions(LogicType.OR, shownHamBook, hasHamBook);
-		hasOrShownNecroBook = new Conditions(LogicType.OR, shownNecroBook, hasNecroBook);
-		hasOrShownSignedPortrait = new Conditions(LogicType.OR, shownSignedPortrait, new ItemRequirements(signedPort));
-
-		hasGoodPortrait = new ItemRequirements(goodPort);
-		hasBadPortrait = new ItemRequirements(badPort);
-		hasPapyrus = new ItemRequirements(papyrus);
+		hasOrShownHamBook = new Conditions(LogicType.OR, shownHamBook, hamBook);
+		hasOrShownNecroBook = new Conditions(LogicType.OR, shownNecroBook, necroBook);
+		hasOrShownSignedPortrait = new Conditions(LogicType.OR, shownSignedPortrait, signedPort);
 
 		sithTransformed = new VarbitRequirement(495, 1);
 
@@ -374,6 +366,38 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 5));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FLETCHING, 2000),
+				new ExperienceReward(Skill.RANGED, 2000),
+				new ExperienceReward(Skill.HERBLORE, 2000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Ourg Bones", ItemID.OURG_BONES, 3),
+				new ItemReward("Zogre Bones", ItemID.ZOGRE_BONE, 2));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to make Relicym's balm"),
+				new UnlockReward("Ability to fletch Comp Ogre Bows and Brutal Arrows"),
+				new UnlockReward("Ability to wear Inoculation Bracelets"));
 	}
 
 	@Override

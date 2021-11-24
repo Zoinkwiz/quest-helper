@@ -33,6 +33,9 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -69,7 +72,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	Requirement inIslands, inJatizso, inNeitiznot, inTrollLands, hasJesterOutfit, jestering1, repairedBridge1,
 		repairedBridge2, inNeitiznotOrTrollLands, collectedFlosi, collectedHring, collectedSkuli,
-		collectedValigga, collectedKeepa, collectedRaum, inTrollCave, inKingCave, killedTrolls, haveHead;
+		collectedValigga, collectedKeepa, collectedRaum, inTrollCave, inKingCave, killedTrolls;
 
 	QuestStep talkToMord, travelToJatizso, talkToGjuki, continueTalkingToGjuki, bringOreToGjuki,
 		talkToGjukiAfterOre, getJesterOutfit, talkToSlug, travelToNeitiznot, returnToRellekkaFromJatizso,
@@ -340,24 +343,24 @@ public class TheFremennikIsles extends BasicQuestHelper
 			{
 				splitLogs8.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
 				splitLogs4.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
 				splitLogs8.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
 				splitLogs4.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
+				roundShield.setTooltip("Buy from the GE, or get level 56 Woodcutting");
 			}
 
 			if (client.getRealSkillLevel(Skill.CRAFTING) >= 46)
 			{
 				yakTop.setTooltip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
 				yakBottom.setTooltip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-				roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
 				yakBottom.setTooltip("Buy from the GE, or get 46 crafting");
 				yakTop.setTooltip("Buy from the GE, or get 46 crafting");
-				roundShield.setTooltip("Buy from the GE, or get 46 crafting");
 			}
 		}
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
@@ -405,7 +408,6 @@ public class TheFremennikIsles extends BasicQuestHelper
 		collectedFlosi = new VarbitRequirement(3322, 1);
 
 		killedTrolls = new VarbitRequirement(3312, 0);
-		haveHead = new ItemRequirements(head);
 	}
 
 	public void setupSteps()
@@ -573,6 +575,30 @@ public class TheFremennikIsles extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CONSTRUCTION, 5000),
+				new ExperienceReward(Skill.CRAFTING, 5000),
+				new ExperienceReward(Skill.WOODCUTTING, 10000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
+				new ItemReward("Jester Outfit", ItemID.JESTER, 1));
 	}
 
 	@Override

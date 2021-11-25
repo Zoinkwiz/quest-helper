@@ -32,12 +32,13 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -65,8 +66,8 @@ public class FamilyCrest extends BasicQuestHelper
 	ItemRequirement shrimp, salmon, tuna, bass, swordfish, pickaxe, ruby, ruby2, ringMould, necklaceMould, antipoison, runesForBlasts, gold2, gold,
 		perfectRing, perfectNecklace, goldBar, goldBar2, crestPiece1, crestPiece2, crestPiece3, crest;
 
-	Requirement inDwarvenMines, inHobgoblinDungeon, northWallUp, southRoomUp, northRoomUp, northWallDown, southRoomDown, northRoomDown, hasGold2,
-		hasPerfectRing, hasPerfectNecklace, hasGoldBar2, inJollyBoar, inEdgevilleDungeon, hasCrestPiece3, hasCrest, crest3Nearby;
+	Requirement inDwarvenMines, inHobgoblinDungeon, northWallUp, southRoomUp, northRoomUp, northWallDown, southRoomDown, northRoomDown,
+		inJollyBoar, inEdgevilleDungeon, crest3Nearby;
 
 	QuestStep talkToDimintheis, talkToCaleb, talkToCalebWithFish, talkToCalebOnceMore, talkToGemTrader, talkToMan, enterDwarvenMine, talkToBoot,
 		enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLeverAgain, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2,
@@ -100,10 +101,10 @@ public class FamilyCrest extends BasicQuestHelper
 		steps.put(6, goTalkToBoot);
 
 		ConditionalStep getGold = new ConditionalStep(this, enterWitchavenDungeon);
-		getGold.addStep(new Conditions(hasPerfectNecklace, hasPerfectRing), returnToMan);
-		getGold.addStep(hasPerfectNecklace, makeRing);
-		getGold.addStep(hasGoldBar2, makeNecklace);
-		getGold.addStep(hasGold2, smeltGold);
+		getGold.addStep(new Conditions(perfectNecklace.alsoCheckBank(questBank), perfectRing.alsoCheckBank(questBank)), returnToMan);
+		getGold.addStep(perfectNecklace.alsoCheckBank(questBank), makeRing);
+		getGold.addStep(goldBar2.alsoCheckBank(questBank), makeNecklace);
+		getGold.addStep(goldBar2.alsoCheckBank(questBank), smeltGold);
 		getGold.addStep(new Conditions(northRoomUp, southRoomDown), mineGold);
 		getGold.addStep(new Conditions(northRoomUp, northWallUp), pullSouthRoomLever2);
 		getGold.addStep(new Conditions(northRoomUp, northWallDown), pullNorthLever3);
@@ -126,8 +127,8 @@ public class FamilyCrest extends BasicQuestHelper
 		steps.put(9, goGiveAntipoisonToJohnathon);
 
 		ConditionalStep goKillChronizon = new ConditionalStep(this, goDownToChronizon);
-		goKillChronizon.addStep(hasCrest, returnCrest);
-		goKillChronizon.addStep(hasCrestPiece3, repairCrest);
+		goKillChronizon.addStep(crest.alsoCheckBank(questBank), returnCrest);
+		goKillChronizon.addStep(crestPiece3.alsoCheckBank(questBank), repairCrest);
 		goKillChronizon.addStep(crest3Nearby, pickUpCrest3);
 		goKillChronizon.addStep(inEdgevilleDungeon, killChronizon);
 
@@ -191,20 +192,11 @@ public class FamilyCrest extends BasicQuestHelper
 		southRoomDown = new ObjectCondition(ObjectID.LEVER_2423, new WorldPoint(2724, 9669, 0));
 		northRoomDown = new ObjectCondition(ObjectID.LEVER_2425, new WorldPoint(2722, 9718, 0));
 
-		hasGold2 = new Conditions(true, new ItemRequirements(gold2));
-		hasGoldBar2 = new Conditions(true, new ItemRequirements(goldBar2));
-
-		hasPerfectNecklace = new Conditions(true, new ItemRequirements(perfectNecklace));
-		hasPerfectRing = new Conditions(true, new ItemRequirements(perfectRing));
-
 		inJollyBoar = new ZoneRequirement(jollyBoar);
 
 		inEdgevilleDungeon = new ZoneRequirement(edgevilleDungeon);
 
-		hasCrestPiece3 = new ItemRequirements(crestPiece3);
 		crest3Nearby = new ItemOnTileRequirement(crestPiece3);
-
-		hasCrest = new ItemRequirements(crest);
 	}
 
 	public void setupSteps()
@@ -325,6 +317,18 @@ public class FamilyCrest extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Chronozon (level 170, in the Wilderness)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A pair of Steel Gauntlets", ItemID.STEEL_GAUNTLETS, 1));
 	}
 
 	@Override

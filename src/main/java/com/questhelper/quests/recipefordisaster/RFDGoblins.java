@@ -31,28 +31,24 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import java.util.*;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -66,8 +62,7 @@ public class RFDGoblins extends BasicQuestHelper
 		spicedBait, wetBread, teleportLumbridge, teleportFalador, slop, slopHighlighted,
 		orangeSliceHighlighted;
 
-	Requirement inDiningRoom, inCookRoom, hasSlop, hasSpicedBait, hasWetBread, hasDyedOrange,
-		hasOrangeSlices;
+	Requirement inDiningRoom, inCookRoom;
 
 	QuestStep enterDiningRoom, inspectGoblin, goDownToKitchen, talkToCook, talkToCookAfterChar,
 		sliceOrange, dyeOrange, spiceBait, useWaterOnBread, enterDiningRoomAgain,
@@ -96,11 +91,11 @@ public class RFDGoblins extends BasicQuestHelper
 		steps.put(15, goTalkCook3);
 
 		ConditionalStep goGetIngredients = new ConditionalStep(this, useWaterOnBread);
-		goGetIngredients.addStep(new Conditions(hasWetBread, hasDyedOrange, hasSpicedBait),
+		goGetIngredients.addStep(new Conditions(wetBread, dyedOrange, spicedBait),
 			goTalkCook4);
-		goGetIngredients.addStep(new Conditions(hasWetBread, hasDyedOrange), spiceBait);
-		goGetIngredients.addStep(new Conditions(hasWetBread, hasOrangeSlices), dyeOrange);
-		goGetIngredients.addStep(hasWetBread, sliceOrange);
+		goGetIngredients.addStep(new Conditions(wetBread, dyedOrange), spiceBait);
+		goGetIngredients.addStep(new Conditions(wetBread, orangeSliceHighlighted), dyeOrange);
+		goGetIngredients.addStep(wetBread, sliceOrange);
 		steps.put(30, goGetIngredients);
 
 		ConditionalStep goGiveSlop = new ConditionalStep(this, enterDiningRoomAgain);
@@ -172,12 +167,27 @@ public class RFDGoblins extends BasicQuestHelper
 	{
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inCookRoom = new ZoneRequirement(cookRoom, cookRoomDestroyed);
+	}
 
-		hasDyedOrange = new ItemRequirements(dyedOrange);
-		hasOrangeSlices = new ItemRequirements(orangeSliceHighlighted);
-		hasSpicedBait = new ItemRequirements(spicedBait);
-		hasWetBread = new ItemRequirements(wetBread);
-		hasSlop = new ItemRequirements(slop);
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 1000),
+				new ExperienceReward(Skill.FARMING, 1000),
+				new ExperienceReward(Skill.CRAFTING, 1000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Increased access to the Culinaromancer's Chest"));
 	}
 
 	public void setupSteps()

@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -40,16 +39,16 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -70,10 +69,10 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement dramenStaff;
 
-	Requirement inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom, hasFlowers,
+	Requirement inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom,
 		talked1P1, talked1P2, talked1P3, givenFlowers, doneEmote, talked1P4, talked2P1, talked2P2, talked2P3, givenBowOrCake,
-		talked2P4, talked3P1, talked3P2, talked3P3, blownKiss, hasAwfulAnthem, hasGoodAnthem, hasGiantNib, hasGiantPen,
-		diplomacyStep1, diplomacyStep2, diplomacyStep3, diplomacyStep4, diplomacyStep5, diplomacyStep6, hasCourted, hasTreaty, has75Support;
+		talked2P4, talked3P1, talked3P2, talked3P3, blownKiss, diplomacyStep1, diplomacyStep2, diplomacyStep3, diplomacyStep4,
+		diplomacyStep5, diplomacyStep6, hasCourted, has75Support;
 
 	QuestStep travelToMisc, talkToVargas, getFlowers, goUpToVargas, talkAstrid1, talkAstrid2, talkAstrid3,
 		talkBrand1, talkBrand2, talkBrand3, giveFlowersToAstrid, giveFlowersToBrand, giveBowToAstrid,
@@ -99,7 +98,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		ConditionalStep startQuest = new ConditionalStep(this, travelToMisc);
 		startQuest.addStep(inMiscCastleFirstFloor, talkToVargas);
-		startQuest.addStep(new Conditions(inIslands, hasFlowers), goUpToVargas);
+		startQuest.addStep(new Conditions(inIslands, flowers), goUpToVargas);
 		startQuest.addStep(inIslands, getFlowers);
 
 		steps.put(0, startQuest);
@@ -142,30 +141,30 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		establishPeace4.addStep(inEtcCastleFirstFloor, goDownEtcDip2);
 
 		ConditionalStep establishPeace5 = new ConditionalStep(this, goUpMiscDip2);
-		establishPeace5.addStep(new Conditions(inEtcCastleFirstFloor, hasGoodAnthem), talkToSigridDip3);
-		establishPeace5.addStep(new Conditions(inMiscCastleFirstFloor, hasGoodAnthem), goDownMiscDip2);
-		establishPeace5.addStep(hasGoodAnthem, goUpEtcDip3);
-		establishPeace5.addStep(new Conditions(hasAwfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
+		establishPeace5.addStep(new Conditions(inEtcCastleFirstFloor, goodAnthem), talkToSigridDip3);
+		establishPeace5.addStep(new Conditions(inMiscCastleFirstFloor, goodAnthem), goDownMiscDip2);
+		establishPeace5.addStep(goodAnthem, goUpEtcDip3);
+		establishPeace5.addStep(new Conditions(awfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
 		establishPeace5.addStep(inMiscCastleFirstFloor, getAnotherAwfulAnthem);
 
 		ConditionalStep establishPeace6 = new ConditionalStep(this, goUpMiscDip2);
-		establishPeace6.addStep(new Conditions(inEtcCastleFirstFloor, hasGoodAnthem), talkToSigridDip3);
-		establishPeace6.addStep(new Conditions(inMiscCastleFirstFloor, hasGoodAnthem), goDownMiscDip2);
-		establishPeace6.addStep(hasGoodAnthem, goUpEtcDip3);
-		establishPeace6.addStep(new Conditions(hasAwfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
+		establishPeace6.addStep(new Conditions(inEtcCastleFirstFloor, goodAnthem), talkToSigridDip3);
+		establishPeace6.addStep(new Conditions(inMiscCastleFirstFloor, goodAnthem), goDownMiscDip2);
+		establishPeace6.addStep(goodAnthem, goUpEtcDip3);
+		establishPeace6.addStep(new Conditions(awfulAnthem, inMiscCastleFirstFloor), talkToGhrimDip);
 		establishPeace6.addStep(inMiscCastleFirstFloor, getAnotherAwfulAnthem);
 
 		ConditionalStep establishPeace7 = new ConditionalStep(this, goUpEtcDip3);
-		establishPeace7.addStep(new Conditions(hasTreaty, inMiscCastleFirstFloor), talkToVargasDip2);
-		establishPeace7.addStep(new Conditions(hasTreaty, inEtcCastleFirstFloor), goDownEtcDip3);
-		establishPeace7.addStep(hasTreaty, goUpMiscDip3);
+		establishPeace7.addStep(new Conditions(treaty, inMiscCastleFirstFloor), talkToVargasDip2);
+		establishPeace7.addStep(new Conditions(treaty, inEtcCastleFirstFloor), goDownEtcDip3);
+		establishPeace7.addStep(treaty, goUpMiscDip3);
 		establishPeace7.addStep(inEtcCastleFirstFloor, talkToSigridDip3);
 		establishPeace7.addStep(inMiscCastleFirstFloor, goDownMiscDip2);
 
 		ConditionalStep establishPeace8 = new ConditionalStep(this, talkToDerrik);
-		establishPeace8.addStep(new Conditions(hasGiantPen, inMiscCastleFirstFloor), giveVargasPen);
-		establishPeace8.addStep(hasGiantPen, goUpMiscDip4);
-		establishPeace8.addStep(hasGiantNib, makePen);
+		establishPeace8.addStep(new Conditions(giantPen, inMiscCastleFirstFloor), giveVargasPen);
+		establishPeace8.addStep(giantPen, goUpMiscDip4);
+		establishPeace8.addStep(giantNib, makePen);
 		establishPeace8.addStep(inMiscCastleFirstFloor, goDownMiscDip3);
 
 		ConditionalStep courting;
@@ -237,7 +236,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		bow.addAlternates(ItemID.LONGBOW, ItemID.OAK_SHORTBOW, ItemID.OAK_LONGBOW, ItemID.WILLOW_SHORTBOW, ItemID.WILLOW_LONGBOW, ItemID.MAPLE_SHORTBOW, ItemID.MAPLE_LONGBOW, ItemID.YEW_SHORTBOW, ItemID.YEW_LONGBOW);
 		bow.setTooltip("You will lose this bow");
 		bow.setHighlightInInventory(true);
-		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemID.DRAMEN_STAFF);
+		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.getFairyStaff());
 		giantNib = new ItemRequirement("Giant nib", ItemID.GIANT_NIB);
 		giantNib.setHighlightInInventory(true);
 		giantPen = new ItemRequirement("Giant pen", ItemID.GIANT_PEN);
@@ -280,7 +279,6 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		inEtcCastleFirstFloor = new ZoneRequirement(etcCastleFirstFloor);
 		inBrandRoom = new ZoneRequirement(brandRoom1, brandRoom2);
 		inAstridRoom = new ZoneRequirement(astridRoom1, astridRoom2);
-		hasFlowers = new ItemRequirements(flowers);
 
 		talked1P1 = new VarbitRequirement(85, 1);
 		talked1P2 = new VarbitRequirement(86, 1);
@@ -309,11 +307,6 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		diplomacyStep5 = new VarplayerRequirement(359, 60);
 		diplomacyStep6 = new VarplayerRequirement(359, 70);
 
-		hasAwfulAnthem = new ItemRequirements(awfulAnthem);
-		hasGoodAnthem = new ItemRequirements(goodAnthem);
-		hasGiantNib = new ItemRequirements(giantNib);
-		hasGiantPen = new ItemRequirements(giantPen);
-		hasTreaty = new ItemRequirements(treaty);
 		has75Support = new VarbitRequirement(72, 96, Operation.GREATER_EQUAL);
 	}
 
@@ -505,6 +498,20 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 30, false, "30 Mining (or any of the other skill requirements)"));
 		req.add(new SkillRequirement(Skill.SMITHING, 35, false, "35 Smithing (or any of the other skill requirements)"));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to manage Miscellania."),
+				new UnlockReward("Ability to teleport to Miscellania with the Ring of Wealth."));
 	}
 
 	@Override

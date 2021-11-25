@@ -46,6 +46,9 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -196,7 +199,7 @@ public class ShiloVillage extends BasicQuestHelper
 		stonePlaque = new ItemRequirement("Stone-plaque", ItemID.STONEPLAQUE);
 		tatteredScroll = new ItemRequirement("Tattered scroll", ItemID.TATTERED_SCROLL);
 		crumpledScroll = new ItemRequirement("Crumpled scroll", ItemID.CRUMPLED_SCROLL);
-		zadimusCorpse = new ItemRequirement("Zadminus corpse", ItemID.ZADIMUS_CORPSE);
+		zadimusCorpse = new ItemRequirement("Zadimus corpse", ItemID.ZADIMUS_CORPSE);
 		zadimusCorpse.addAlternates(ItemID.BONE_SHARD, ItemID.BONE_KEY);
 		boneShard = new ItemRequirement("Bone shard", ItemID.BONE_SHARD);
 		boneShard.addAlternates(ItemID.BONE_KEY);
@@ -346,7 +349,7 @@ public class ShiloVillage extends BasicQuestHelper
 			"Enter the doors behind the palm trees.", beadsOfTheDead.equipped(), bones3,
 			combatGear);
 		useBonesOnDoor = new ObjectStep(this, ObjectID.TOMB_DOORS, new WorldPoint(2892, 9480, 0),
-			"Make your way through the gate, down the rocks, then to the north west corner. Use bones on the door there.",
+			"Make your way through the gate, down the rocks, then to the south west corner. Use bones on the door there.",
 			beadsOfTheDead.equipped(), bones3.highlighted());
 		useBonesOnDoor.addIcon(ItemID.BONES);
 		searchDolmenForFight = new ObjectStep(this, ObjectID.TOMB_DOLMEN_2258, new WorldPoint(2893, 9488, 0),
@@ -395,6 +398,27 @@ public class ShiloVillage extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 32));
 		return req;
 	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.CRAFTING, 3875));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Shilo Village"),
+				new UnlockReward("Ability to mine gem rocks in Shilo Village"));
+	}
+
 
 	@Override
 	public List<PanelDetails> getPanels()

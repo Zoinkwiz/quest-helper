@@ -28,25 +28,23 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ComplexRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.Favour;
+import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
+import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -56,11 +54,15 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 {
 	Requirement talkedToHosaStart, talkedToHosa, talkedToArcis, talkedToLovada, talkedToPiliar, talkedToShayda;
 
+	// Recommended Items
+	ItemRequirement kharedstsMemoirs;
+
 	DetailedQuestStep talkToHosa, talkToHosaAsArchitect, talkToArcis, talkToLovada, talkToPiliar, talkToShayda, talkToHosaToFinish;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
+		setupItemRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -82,6 +84,13 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		return steps;
 	}
 
+	public void setupItemRequirements()
+	{
+		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS);
+		kharedstsMemoirs.setTooltip("Make sure to have memories available. Xeric's Talisman + Fairy Rings can be used instead.");
+
+	}
+
 	public void setupConditions()
 	{
 		talkedToArcis = new VarbitRequirement(4971, 1);
@@ -95,7 +104,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToHosa = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0),
-			"Talk to Hosa outside the Kourend Castle. You'll need 100% favour in all the Kourend houses to complete this miniquest.");
+			"Talk to Hosa outside the Kourend Castle.");
 		talkToHosa.addDialogStep("Can I help?");
 		talkToHosaAsArchitect = new NpcStep(this, NpcID.HOSA, new WorldPoint(1636, 3670, 0),
 			"Talk to Hosa outside the Kourend Castle again.");
@@ -108,9 +117,9 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		talkToPiliar = new NpcStep(this, NpcID.PILIAR, new WorldPoint(1794, 3737, 0),
 			"Talk to Piliar in the house north west of the Piscarilius general store.");
 		talkToLovada = new NpcStep(this, NpcID.LOVADA, new WorldPoint(1485, 3834, 0),
-			"Talk to Lovada in their home just south of the Blast Mine in Lovajengj.");
-		talkToShayda = new NpcStep(this, NpcID.SHAYDA, new WorldPoint(1495, 3631, 0),
-			"Talk to Shayda north of the Shayzien bank.");
+			"Talk to Lovada in their home just south of the Blast Mine in Lovakengj.");
+		talkToShayda = new NpcStep(this, NpcID.SHAYDA, new WorldPoint(1532, 3544, 0),
+			"Talk to Shayda in their home just south of the Shayzien Administration building");
 	}
 
 	@Override
@@ -118,7 +127,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Repairing the statue",
-			Arrays.asList(talkToHosa, talkToArcis, talkToPiliar, talkToShayda, talkToLovada, talkToHosaToFinish)));
+			Arrays.asList(talkToHosa, talkToArcis, talkToPiliar, talkToLovada, talkToShayda, talkToHosaToFinish)));
 
 		return allSteps;
 	}
@@ -127,11 +136,33 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.CRAFTING, 30));
-		req.add(new SkillRequirement(Skill.MINING, 42));
-		req.add(new ComplexRequirement(LogicType.OR, "10 Slayer, or started Plague City for" +
-			" Gas mask", new SkillRequirement(Skill.SLAYER, 10, false),
-			new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.IN_PROGRESS)));
+		req.add(new FavourRequirement(Favour.LOVAKENGJ, 100));
+		req.add(new FavourRequirement(Favour.ARCEUUS, 100));
+		req.add(new FavourRequirement(Favour.HOSIDIUS, 100));
+		req.add(new FavourRequirement(Favour.PISCARILIUS, 100));
+		req.add(new FavourRequirement(Favour.SHAYZIEN, 100));
+
+		return req;
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (Any skill over level 40).", ItemID.ANTIQUE_LAMP_21262, 1)); //21262 May not be the correct ID, I can't find a proper way to confirm until I can get it ingame again.
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Xeric's Heart Teleport on Xeric's Talisman."));
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> req = new ArrayList<>();
+		req.add(kharedstsMemoirs);
+
 		return req;
 	}
 }

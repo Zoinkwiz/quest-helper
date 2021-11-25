@@ -33,7 +33,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -43,6 +42,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -72,12 +74,12 @@ public class RFDAwowogei extends BasicQuestHelper
 	//Items Required
 	ItemRequirement cookedSnake, cookedSnakeHighlighted, mAmulet, gorillaGreegree, ninjaGreegree, zombieGreegree, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted,
 		knife, pestleAndMortar, tchikiNuts, tchikiNutsHighlighted, redBanana, redBananaHighlighted, snakeCorpse, snakeCorpseHighlighted,
-		rawStuffedSnake, rawStuffedSnakeHighlighted, slicedBanana, greegreeEquipped, paste, combatGear;
+		rawStuffedSnake, rawStuffedSnakeHighlighted, slicedRedBanana, greegreeEquipped, paste, combatGear;
 
 	Requirement protectMelee;
 
-	Requirement inDiningRoom, askedAboutBanana, askedAboutNut, onCrashIsland, inSnakeHole, inNutHole, inTempleDungeon, hasRawStuffedSnake,
-		hasPaste, hasSnakeCorpse, hasSlicedRedBanana, hasRedBanana, hasTchikiNut, inCookRoom, hasCookedsnake;
+	Requirement inDiningRoom, askedAboutBanana, askedAboutNut, hasSnakeCorpse, hasRedBanana, hasTchikiNut, onCrashIsland, inSnakeHole,
+		inNutHole, inTempleDungeon, inCookRoom;
 
 	QuestStep enterDiningRoom, inspectAwowogei, talkToAwowogei, talkToWiseMonkeys, useBananaOnWiseMonkeys, useNutsOnWiseMonkeys, goToCrashIsland,
 		enterCrashHole, killSnake, leaveSnakeHole, returnToApeAtoll, useRopeOnTree, enterNutHole, takeNuts, grindNuts, sliceBanana, stuffSnake,
@@ -105,13 +107,13 @@ public class RFDAwowogei extends BasicQuestHelper
 		steps.put(10, talkToWiseMonkeys);
 
 		ConditionalStep prepareMeal = new ConditionalStep(this, useBananaOnWiseMonkeys);
-		prepareMeal.addStep(new Conditions(new Conditions(inDiningRoom, hasCookedsnake)), useSnakeOnAwowogei);
-		prepareMeal.addStep(new Conditions(hasCookedsnake), enterDiningRoomAgain);
-		prepareMeal.addStep(new Conditions(hasRawStuffedSnake, inCookRoom), cookSnake);
-		prepareMeal.addStep(new Conditions(hasRawStuffedSnake, inTempleDungeon), enterCookingHole);
-		prepareMeal.addStep(new Conditions(hasRawStuffedSnake), enterZombieDungeon);
-		prepareMeal.addStep(new Conditions(hasSnakeCorpse, hasSlicedRedBanana, hasPaste), stuffSnake);
-		prepareMeal.addStep(new Conditions(hasSnakeCorpse, hasRedBanana, hasPaste), sliceBanana);
+		prepareMeal.addStep(new Conditions(new Conditions(inDiningRoom, cookedSnake)), useSnakeOnAwowogei);
+		prepareMeal.addStep(new Conditions(cookedSnake), enterDiningRoomAgain);
+		prepareMeal.addStep(new Conditions(rawStuffedSnake, inCookRoom), cookSnake);
+		prepareMeal.addStep(new Conditions(rawStuffedSnake, inTempleDungeon), enterCookingHole);
+		prepareMeal.addStep(new Conditions(rawStuffedSnake), enterZombieDungeon);
+		prepareMeal.addStep(new Conditions(hasSnakeCorpse, slicedRedBanana, paste), stuffSnake);
+		prepareMeal.addStep(new Conditions(hasSnakeCorpse, hasRedBanana, paste), sliceBanana);
 		prepareMeal.addStep(new Conditions(hasSnakeCorpse, hasRedBanana, hasTchikiNut), grindNuts);
 		prepareMeal.addStep(new Conditions(askedAboutNut, hasSnakeCorpse, hasRedBanana, inNutHole), takeNuts);
 		prepareMeal.addStep(new Conditions(askedAboutNut, hasSnakeCorpse, hasRedBanana), enterNutHole);
@@ -172,7 +174,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		rawStuffedSnakeHighlighted = new ItemRequirement("Raw stuffed snake", ItemID.RAW_STUFFED_SNAKE);
 		rawStuffedSnakeHighlighted.setHighlightInInventory(true);
 
-		slicedBanana = new ItemRequirement("Sliced red banana", ItemID.SLICED_RED_BANANA);
+		slicedRedBanana = new ItemRequirement("Sliced red banana", ItemID.SLICED_RED_BANANA);
 		paste = new ItemRequirement("Tchiki nut paste", ItemID.TCHIKI_NUT_PASTE);
 		paste.setHighlightInInventory(true);
 
@@ -205,14 +207,10 @@ public class RFDAwowogei extends BasicQuestHelper
 		askedAboutBanana = new VarbitRequirement(1915, 10, Operation.GREATER_EQUAL);
 		askedAboutNut = new VarbitRequirement(1916, 10, Operation.GREATER_EQUAL);
 
-		hasRawStuffedSnake = new ItemRequirements(rawStuffedSnake);
 
-		hasPaste = new ItemRequirements(paste);
-		hasSnakeCorpse = new Conditions(LogicType.OR, new ItemRequirements(snakeCorpse), new ItemRequirements(rawStuffedSnake));
-		hasSlicedRedBanana = new ItemRequirements(slicedBanana);
-		hasRedBanana = new Conditions(LogicType.OR, new ItemRequirements(redBanana), new ItemRequirements(slicedBanana));
-		hasTchikiNut = new Conditions(LogicType.OR, new ItemRequirements(tchikiNuts), new ItemRequirements(paste));
-		hasCookedsnake = new ItemRequirements(cookedSnake);
+		hasSnakeCorpse = new Conditions(LogicType.OR, snakeCorpse, rawStuffedSnake);
+		hasRedBanana = new Conditions(LogicType.OR, redBanana, slicedRedBanana);
+		hasTchikiNut = new Conditions(LogicType.OR, tchikiNuts, paste);
 	}
 
 	public void setupSteps()
@@ -245,7 +243,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		grindNuts = new DetailedQuestStep(this, "Use a pestle and mortar on the tchiki nuts.", pestleAndMortar, tchikiNutsHighlighted);
 		sliceBanana = new DetailedQuestStep(this, "Use a knife/slash weapon on the red banana.", knife, redBananaHighlighted);
 
-		stuffSnake = new DetailedQuestStep(this, "Use the paste on the snake to stuff it.", paste, slicedBanana, snakeCorpseHighlighted);
+		stuffSnake = new DetailedQuestStep(this, "Use the paste on the snake to stuff it.", paste, slicedRedBanana, snakeCorpseHighlighted);
 
 		enterZombieDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_4880, new WorldPoint(2807, 2785, 0), "Enter the trapdoor in the monkey temple.", zombieGreegree, rawStuffedSnake);
 		((ObjectStep) (enterZombieDungeon)).addAlternateObjects(ObjectID.TRAPDOOR_4879);
@@ -289,6 +287,27 @@ public class RFDAwowogei extends BasicQuestHelper
 		return req;
 	}
 
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 10000),
+				new ExperienceReward(Skill.AGILITY, 10000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to teleport to Ape Atoll"),
+				new UnlockReward("Increased access to the Culinaromancer's Chest"));
+	}
 
 	@Override
 	public List<PanelDetails> getPanels()

@@ -31,9 +31,12 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -45,10 +48,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -59,7 +60,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	//Items Required
 	ItemRequirement rope, slashItem, reinforcedGoggles, combatGear, hoof;
 
-	Requirement inCave, hasFoot;
+	Requirement inCave;
 
 	DetailedQuestStep readNotice, talkToSarah, useRopeOnHole, enterHole, investigateSkeleton, talkToSpria, enterHoleAgain, killSourhog,
 		enterHoleForFoot, cutOffFoot, returnToSarah, returnToSpria;
@@ -93,7 +94,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		steps.put(25, goKillSourhog);
 
 		ConditionalStep getFootSteps = new ConditionalStep(this, enterHoleForFoot);
-		getFootSteps.addStep(hasFoot, returnToSarah);
+		getFootSteps.addStep(hoof, returnToSarah);
 		getFootSteps.addStep(inCave, cutOffFoot);
 
 		steps.put(30, getFootSteps);
@@ -127,7 +128,6 @@ public class APorcineOfInterest extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCave = new ZoneRequirement(cave);
-		hasFoot = new ItemRequirements(hoof);
 	}
 
 	public void setupSteps()
@@ -177,6 +177,30 @@ public class APorcineOfInterest extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Sourhog (level 37)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.SLAYER, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("5,000 Coins", ItemID.COINS_995, 5000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(new UnlockReward("30 Slayer Points"), new UnlockReward("Access to Sourhog Cave"), new UnlockReward("Sourhog can be assigned as a slayer task by Spria or Tureal"));
 	}
 
 	@Override

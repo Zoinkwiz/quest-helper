@@ -240,9 +240,9 @@ public class CrwysLightPuzzle extends ConditionalStep
 	protected void setupConditions()
 	{
 		hasMirrorsAndCrystal = new Conditions(
-			new ItemRequirements(handMirrorHighlighted),
-			new ItemRequirements(redCrystalHighlighted),
-			new ItemRequirements(fracturedCrystalHighlighted)
+			handMirrorHighlighted,
+			redCrystalHighlighted,
+			fracturedCrystalHighlighted
 		);
 
 		onF0 = new ZoneRequirement(f0);

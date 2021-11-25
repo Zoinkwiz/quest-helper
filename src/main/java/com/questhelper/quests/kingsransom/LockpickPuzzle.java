@@ -45,7 +45,6 @@ public class LockpickPuzzle extends QuestStep
 
 	int highlightChildID;
 
-
 	public LockpickPuzzle(QuestHelper questHelper)
 	{
 		super(questHelper, "Click the highlighted boxes to solve the puzzle. The solution is:");

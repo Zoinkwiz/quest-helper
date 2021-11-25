@@ -38,6 +38,9 @@ import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
 import net.runelite.api.ItemID;
@@ -66,7 +69,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	ItemRequirement iceMountainTeleport, faladorTeleport, varrockTeleport, combatGearOrPickaxe;
 
 	Requirement needFlex, leftFlexBeforeLearning, haveFlex, recruitedCheckal, needRecipe, haveRecipe, haveIngredients,
-		haveSandwich, fedMarley, recruitedMarley, needBeer, haveBeer, gaveBeer, needRPS, recruitedBurntof, inDungeon;
+		fedMarley, recruitedMarley, needBeer,gaveBeer, needRPS, recruitedBurntof, inDungeon;
 
 	QuestStep talkToWillowToStart, recruitCheckal, talkToAtlas, flexCheckal, talkToMarley, talkToCook, getIngredients,
 		makeSandwich, feedMarley, talkToMarleyAfterFeeding, talkToBurntof, buyBeer, giveBeer, playRPS, goToDungeon,
@@ -96,7 +99,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		getMarley = new ConditionalStep(this, talkToMarley);
 		getMarley.addStep(fedMarley, talkToMarleyAfterFeeding);
 		getMarley.addStep(needRecipe, talkToCook);
-		getMarley.addStep(haveSandwich, feedMarley);
+		getMarley.addStep(steakSandwich, feedMarley);
 		getMarley.addStep(new Conditions(LogicType.AND, haveRecipe, haveIngredients), makeSandwich);
 		getMarley.addStep(haveRecipe, getIngredients);
 		getMarley.setLockingCondition(recruitedMarley);
@@ -104,7 +107,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		getBurntof = new ConditionalStep(this, talkToBurntof);
 		getBurntof.addStep(needRPS, playRPS);
 		getBurntof.addStep(gaveBeer, playRPS);
-		getBurntof.addStep(new Conditions(LogicType.AND, needBeer, haveBeer), giveBeer);
+		getBurntof.addStep(new Conditions(LogicType.AND, needBeer, beerHighlight), giveBeer);
 		getBurntof.addStep(needBeer, buyBeer);
 		getBurntof.setLockingCondition(recruitedBurntof);
 
@@ -159,12 +162,10 @@ public class BelowIceMountain extends BasicQuestHelper
 		needRecipe = new VarbitRequirement(VARBIT_MARLEY_LINE, 5);
 		haveRecipe = new VarbitRequirement(VARBIT_MARLEY_LINE, 10);
 		haveIngredients = new ItemRequirements(cookedMeat, bread, knife);
-		haveSandwich = new ItemRequirements(steakSandwich);
 		fedMarley = new VarbitRequirement(VARBIT_MARLEY_LINE, 35);
 		recruitedMarley = new VarbitRequirement(VARBIT_MARLEY_LINE, 40);
 
 		needBeer = new VarbitRequirement(VARBIT_BURNTOF_LINE, 5);
-		haveBeer = new ItemRequirements(beerHighlight);
 		gaveBeer = new VarbitRequirement(VARBIT_BURNTOF_LINE, 10);
 		needRPS = new VarbitRequirement(VARBIT_BURNTOF_LINE, 15);
 		recruitedBurntof = new VarbitRequirement(VARBIT_BURNTOF_LINE, 40);
@@ -261,6 +262,26 @@ public class BelowIceMountain extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Collections.singletonList(new QuestPointRequirement(16));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Ruins of Camdozaal."),
+				new UnlockReward("Flex Emote"));
 	}
 
 	@Override

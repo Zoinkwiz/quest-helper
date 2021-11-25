@@ -30,9 +30,9 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -58,7 +58,7 @@ public class BearYourSoul extends BasicQuestHelper
 	//Items Required
 	ItemRequirement spade, dustyKeyOr70AgilOrKeyMasterTeleport, damagedSoulBearer;
 
-	Requirement hasSoulBearer, inTaverleyDungeon, inKeyMaster;
+	Requirement inTaverleyDungeon, inKeyMaster;
 
 	QuestStep findSoulJourneyAndRead, talkToAretha, arceuusChurchDig, goToTaverleyDungeon, enterCaveToKeyMaster, speakKeyMaster;
 
@@ -80,7 +80,7 @@ public class BearYourSoul extends BasicQuestHelper
 		ConditionalStep repairSoulBearer = new ConditionalStep(this, arceuusChurchDig);
 		repairSoulBearer.addStep(inKeyMaster, speakKeyMaster);
 		repairSoulBearer.addStep(inTaverleyDungeon, enterCaveToKeyMaster);
-		repairSoulBearer.addStep(hasSoulBearer, goToTaverleyDungeon);
+		repairSoulBearer.addStep(damagedSoulBearer, goToTaverleyDungeon);
 
 		steps.put(2, repairSoulBearer);
 
@@ -104,7 +104,12 @@ public class BearYourSoul extends BasicQuestHelper
 	{
 		inTaverleyDungeon = new ZoneRequirement(inTaverleyDungeonZone);
 		inKeyMaster = new ZoneRequirement(inKeyMasterZone);
-		hasSoulBearer = new ItemRequirements(damagedSoulBearer);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Soul Bearer", ItemID.SOUL_BEARER, 1));
 	}
 
 	public void setupSteps()

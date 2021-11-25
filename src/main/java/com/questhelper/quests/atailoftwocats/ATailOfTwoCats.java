@@ -38,6 +38,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -195,7 +197,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		talkToSphinx.addDialogStep("Ask the Sphinx for help for Bob.");
 		useRake = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Rake Unferth's patch", rake);
 		useRake.addIcon(ItemID.RAKE);
-		plantSeeds = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch", dibber, potatoSeed4);
+		plantSeeds = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch. These can take 15-35 minutes to grow.", dibber, potatoSeed4);
 		plantSeeds.addIcon(ItemID.POTATO_SEED);
 		makeBed = new ObjectStep(this, NullObjectID.NULL_9438, new WorldPoint(2917, 3557, 0), "Make Unferth's bed.");
 		useLogsOnFireplace = new ObjectStep(this, NullObjectID.NULL_9442, new WorldPoint(2919, 3557, 0), "Use logs on Unferth's fireplace", logs);
@@ -227,6 +229,22 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(cat, catspeak, deathRune5, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 2,500 Experience Lamps (Any skill over level 30).", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("A Doctors hat", ItemID.DOCTORS_HAT, 1),
+				new ItemReward("A Nurse hat", ItemID.NURSE_HAT, 1),
+				new ItemReward("A Mouse Toy", ItemID.MOUSE_TOY, 1)); //4447 Is Placeholder.
 	}
 
 	@Override

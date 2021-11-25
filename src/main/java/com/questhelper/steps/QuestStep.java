@@ -33,6 +33,7 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.steps.choice.DialogChoiceChange;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
@@ -50,10 +51,15 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -121,6 +127,9 @@ public abstract class QuestStep implements Module
 
 	@Getter
 	private final List<QuestStep> substeps = new ArrayList<>();
+
+	@Getter
+	private Requirement conditionToHide;
 
 	@Getter
 	@Setter
@@ -419,6 +428,11 @@ public abstract class QuestStep implements Module
 		{
 			icon = getQuestImage();
 		}
+	}
+
+	public void conditionToHideInSidebar(Requirement hideCondition)
+	{
+		conditionToHide = hideCondition;
 	}
 
 	public BufferedImage getQuestImage()

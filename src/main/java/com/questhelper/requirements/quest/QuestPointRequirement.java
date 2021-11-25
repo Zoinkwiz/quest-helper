@@ -48,21 +48,25 @@ public class QuestPointRequirement extends AbstractRequirement
 	 *
 	 * @param requiredQuestPoints the required number of quest points
 	 */
-	public QuestPointRequirement(int requiredQuestPoints) {
+	public QuestPointRequirement(int requiredQuestPoints)
+	{
 		this.requiredQuestPoints = requiredQuestPoints;
 		this.operation = Operation.GREATER_EQUAL;
+		shouldCountForFilter = true;
 	}
 
 	/**
 	 * Checks if a player has a required number of quest points.
 	 *
 	 * @param requiredQuestPoints the required number of quest points
-	 * @param operation the {@link Operation} to use.
+	 * @param operation           the {@link Operation} to use.
 	 */
-	public QuestPointRequirement(int requiredQuestPoints, Operation operation) {
+	public QuestPointRequirement(int requiredQuestPoints, Operation operation)
+	{
 		this.requiredQuestPoints = requiredQuestPoints;
 		this.operation = operation;
 	}
+
 	@Override
 	public boolean check(Client client)
 	{

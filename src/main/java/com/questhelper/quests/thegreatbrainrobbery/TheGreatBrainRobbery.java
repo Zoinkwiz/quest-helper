@@ -44,6 +44,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -232,7 +235,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 		// Item recommended
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
-		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.getSkillsNecklaces());
+		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.getCombatBracelets());
 		edgevilleTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
 		fenkenstrainTeleport = new ItemRequirement("Fenkenstrain's Castle teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 		watermelonSeeds = new ItemRequirement("Watermelon seeds to plant on Harmony for Hard Morytania Diary",
@@ -524,7 +527,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(fishbowlHelmet, divingApparatus, catsOrResources, saw, plank.quantity(8), hammer,
+		return Arrays.asList(fishbowlHelmet, divingApparatus, catsOrResources, plank.quantity(8), hammer,
 			nails.quantity(100), holySymbol, ringOfCharos);
 	}
 
@@ -532,8 +535,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(ectophial, edgevilleTeleport, fenkenstrainTeleport, watermelonSeeds.quantity(3),
-			combatGearForSafespotting,
-			food, prayerPotions);
+			combatGearForSafespotting, food, prayerPotions);
 	}
 
 	@Override
@@ -556,6 +558,30 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Barrelchest (level 190, safespottable)", "4 Sorebones (level 57)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.PRAYER, 6000),
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.CONSTRUCTION, 2000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Barrelchest Anchor", ItemID.BARRELCHEST_ANCHOR, 1),
+				new ItemReward("5,000 Exp Reward Lamp (Any skill above 30)", ItemID.ANTIQUE_LAMP, 1),
+				new ItemReward("Prayer Book", ItemID.PRAYER_BOOK, 1));
 	}
 
 	@Override

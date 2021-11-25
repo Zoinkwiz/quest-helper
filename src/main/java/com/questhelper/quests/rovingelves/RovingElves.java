@@ -32,13 +32,14 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -70,8 +71,7 @@ public class RovingElves extends BasicQuestHelper
 	//I don't know amounts of teleports, hopefully someone can fix that later
 	ItemRequirement prayerPotions, food, ardougneTeleports, camelotTeleports, iorwerthCampTeleports, skillsNecklace;
 
-
-	Requirement inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, hasSeed, hadBlessedSeed, hasKey, inThroneRoom;
+	Requirement inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, inThroneRoom;
 
 	QuestStep talkToIslwyn, talkToEluned, enterGlarialsTombstone, killGuardian, pickUpSeed, returnSeedToEluned, boardRaft, useRopeOnRock, useRopeOnTree, enterFalls,
 		searchFallsCrate, useKeyOnFallsDoor, plantSeed, returnToIslwyn;
@@ -93,7 +93,7 @@ public class RovingElves extends BasicQuestHelper
 		steps.put(2, talkToEluned);
 
 		ConditionalStep getTheSeed = new ConditionalStep(this, enterGlarialsTombstone);
-		getTheSeed.addStep(hasSeed, returnSeedToEluned);
+		getTheSeed.addStep(seed.alsoCheckBank(questBank), returnSeedToEluned);
 		getTheSeed.addStep(seedNearby, pickUpSeed);
 		getTheSeed.addStep(inGlarialsTomb, killGuardian);
 
@@ -101,7 +101,7 @@ public class RovingElves extends BasicQuestHelper
 
 		ConditionalStep plantingTheSeed = new ConditionalStep(this, boardRaft);
 		plantingTheSeed.addStep(inThroneRoom, plantSeed);
-		plantingTheSeed.addStep(new Conditions(inFalls, hasKey), useKeyOnFallsDoor);
+		plantingTheSeed.addStep(new Conditions(inFalls, key), useKeyOnFallsDoor);
 		plantingTheSeed.addStep(inFalls, searchFallsCrate);
 		plantingTheSeed.addStep(onLedge, enterFalls);
 		plantingTheSeed.addStep(onDeadTreeIsland, useRopeOnTree);
@@ -117,6 +117,8 @@ public class RovingElves extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		seed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED);
+		seed.addAlternates(ItemID.CONSECRATION_SEED_4206);
+		
 		blessedSeed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED_4206);
 		blessedSeed.setTooltip("You can get another from Eluned");
 
@@ -152,10 +154,7 @@ public class RovingElves extends BasicQuestHelper
 		inFalls = new ZoneRequirement(falls);
 		inGlarialsTomb = new ZoneRequirement(glarialTomb);
 		inThroneRoom = new ZoneRequirement(throneRoom);
-		hasSeed = new ItemRequirements(seed);
-		hadBlessedSeed = new Conditions(true, LogicType.OR, new ItemRequirements(blessedSeed));
 		seedNearby = new ItemOnTileRequirement(seed);
-		hasKey = new ItemRequirements(key);
 
 		// 8374 0->1 when leaving?
 	}
@@ -227,6 +226,26 @@ public class RovingElves extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 56, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.STRENGTH, 10000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("A used Crystal Shield", ItemID.CRYSTAL_SHIELD, 1),
+				new ItemReward("or Crystal Bow", ItemID.CRYSTAL_BOW, 1));
 	}
 
 	@Override

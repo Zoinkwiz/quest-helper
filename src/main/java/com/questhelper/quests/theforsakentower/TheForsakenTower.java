@@ -30,9 +30,9 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -40,6 +40,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -49,12 +52,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Favour;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -68,8 +72,8 @@ public class TheForsakenTower extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement gamesNecklace;
 
-	Requirement inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, hasCrank, generatorStarted,
-		powerPuzzleVisible, finishedPowerPuzzle, hasOldNotes, finishedPotionPuzzle, finishedAltarPuzzle, hasDinhsHammer;
+	Requirement inFirstFloor, inSecondFloor, inBasement, inspectedDisplayCase, finishedFurnacePuzzle, generatorStarted,
+		powerPuzzleVisible, finishedPowerPuzzle, finishedPotionPuzzle, finishedAltarPuzzle;
 
 	QuestStep talkToVulcana, talkToUndor, enterTheForsakenTower, inspectDisplayCase, goDownLadderToBasement, searchCrate, inspectGenerator, inspectPowerGrid, doPowerPuzzle,
 		goDownToGroundFloor, goDownToFirstFloor, getHammer, goUpToGroundFloor, returnToUndor, returnToVulcana;
@@ -100,11 +104,11 @@ public class TheForsakenTower extends BasicQuestHelper
 		powerPuzzle = new ConditionalStep(this, goDownLadderToBasement);
 		powerPuzzle.addStep(powerPuzzleVisible, doPowerPuzzle);
 		powerPuzzle.addStep(new Conditions(inBasement, generatorStarted), inspectPowerGrid);
-		powerPuzzle.addStep(new Conditions(inBasement, hasCrank), inspectGenerator);
+		powerPuzzle.addStep(new Conditions(inBasement, crank), inspectGenerator);
 		powerPuzzle.addStep(inBasement, searchCrate);
-		powerPuzzle.setLockingCondition(finishedPowerPuzzle);
 		powerPuzzle.addStep(inFirstFloor, goDownToGroundFloor);
 		powerPuzzle.addStep(inSecondFloor, goDownToFirstFloor);
+		powerPuzzle.setLockingCondition(finishedPowerPuzzle);
 
 		ConditionalStep puzzleSteps = new ConditionalStep(this, inspectDisplayCase);
 		puzzleSteps.addStep(new Conditions(inspectedDisplayCase, finishedFurnacePuzzle, finishedPowerPuzzle, finishedPotionPuzzle), altarPuzzle);
@@ -118,7 +122,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		steps.put(7, puzzleSteps);
 
 		ConditionalStep gettingHammer = new ConditionalStep(this, getHammer);
-		gettingHammer.addStep(hasDinhsHammer, returnToUndor);
+		gettingHammer.addStep(dinhsHammer, returnToUndor);
 		gettingHammer.addStep(inBasement, goUpToGroundFloor);
 		gettingHammer.addStep(inFirstFloor, goDownToGroundFloor);
 		gettingHammer.addStep(inSecondFloor, goDownToFirstFloor);
@@ -149,11 +153,8 @@ public class TheForsakenTower extends BasicQuestHelper
 		finishedFurnacePuzzle = new VarbitRequirement(7798, 4);
 		finishedPotionPuzzle = new VarbitRequirement(7799, 4);
 		finishedAltarPuzzle = new VarbitRequirement(7800, 2);
-		hasCrank = new ItemRequirements(crank);
 		generatorStarted = new VarbitRequirement(7797, 2, Operation.GREATER_EQUAL);
 		powerPuzzleVisible = new WidgetModelRequirement(624, 2, 0, 36246);
-		hasOldNotes = new ItemRequirements(oldNotes);
-		hasDinhsHammer = new ItemRequirements(dinhsHammer);
 	}
 
 	public void setupZones()
@@ -184,6 +185,7 @@ public class TheForsakenTower extends BasicQuestHelper
 
 		furnacePuzzleSteps = new JugPuzzle(this);
 		furnacePuzzleSteps.setLockingCondition(finishedFurnacePuzzle);
+		furnacePuzzleSteps.setBlocker(true);
 
 		goDownLadderToBasement = new ObjectStep(this, ObjectID.LADDER_33483, new WorldPoint(1382, 3825, 0), "Climb down the ladder into the tower's basement.");
 		inspectPowerGrid = new ObjectStep(this, NullObjectID.NULL_34590, new WorldPoint(1382, 10225, 0), "Inspect the power grid.");
@@ -221,7 +223,31 @@ public class TheForsakenTower extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Arrays.asList(new FavourRequirement(Favour.LOVAKENGJ, 20),
+			new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MINING, 500),
+				new ExperienceReward(Skill.SMITHING, 500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("6000 Coins", ItemID.COINS_995, 6000),
+				new ItemReward("Lovakenj Favour Certificate", ItemID.LOVAKENGJ_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("A page for Kharedst's memoirs.", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override
@@ -229,7 +255,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Stating off", Arrays.asList(talkToVulcana, talkToUndor)));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToVulcana, talkToUndor)));
 		allSteps.add(new PanelDetails("To the Forsaken Tower", Arrays.asList(enterTheForsakenTower, inspectDisplayCase)));
 		allSteps.addAll(furnacePuzzleSteps.panelDetails());
 		PanelDetails powerPuzzlePanel = new PanelDetails("Power puzzle",

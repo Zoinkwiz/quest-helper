@@ -34,22 +34,28 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.PuzzleStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.*;
 
 @QuestDescriptor(
 		quest = QuestHelperQuest.ANIMAL_MAGNETISM
@@ -72,7 +78,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva,
 		getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva;
 
-	Requirement hasChickens, hasBarMagnet, hasTwigs, inIronMine;
+	Requirement inIronMine;
 
 	Zone ironMine;
 
@@ -100,15 +106,16 @@ public class AnimalMagnetism extends BasicQuestHelper
 		//Step 90 is a cutscene
 
 		ConditionalStep undeadChickens = new ConditionalStep(this, buyUndeadChickens);
-		undeadChickens.addStep(hasChickens, giveChickensToAva);
+		undeadChickens.addStep(undeadChicken2, giveChickensToAva);
 		steps.put(100, undeadChickens);
+		steps.put(110, undeadChickens);
 
 		steps.put(120, talkToWitch);
 		steps.put(130, talkToWitch);
 
 		ConditionalStep createMagnet = new ConditionalStep(this, goToIronMine);
 		//Goes before iron mine so that acquiring it shows the right step
-		createMagnet.addStep(hasBarMagnet, giveMagnetToAva);
+		createMagnet.addStep(barMagnet, giveMagnetToAva);
 		createMagnet.addStep(inIronMine, useHammerOnMagnet);
 		steps.put(140, createMagnet);
 
@@ -118,7 +125,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		steps.put(170, talkToTurael);
 
 		ConditionalStep getTwigs = new ConditionalStep(this, cutTree);
-		getTwigs.addStep(hasTwigs, giveTwigsToAva);
+		getTwigs.addStep(twigs, giveTwigsToAva);
 		steps.put(180, getTwigs);
 
 		steps.put(190, getNotesFromAva);
@@ -176,9 +183,6 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		hasChickens = new ItemRequirements(undeadChicken2);
-		hasBarMagnet = new ItemRequirements(barMagnet);
-		hasTwigs = new ItemRequirements(twigs);
 		inIronMine = new ZoneRequirement(ironMine);
 	}
 
@@ -233,7 +237,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		attemptToCutTree = new NpcStep(this, NpcID.UNDEAD_TREE, "Try to chop an undead tree outside Draynor manor.", true,
 			mithrilAxe);
 		talkToTurael = new NpcStep(this, NpcID.TURAEL, new WorldPoint(2931, 3536, 0),
-			"Talk to Turael in Burthrope twice, giving him the Mithril axe and Holy symbol.",
+			"Talk to Turael in Burthorpe twice, giving him the Mithril axe and Holy symbol.",
 			mithrilAxe, holySymbol);
 		talkToTurael.addDialogSteps("I'm here about a quest.", "Hello, I'm here about those trees again.",
 			"I'd love one, thanks.");
@@ -251,7 +255,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 			new PuzzleSolver()::solver,
 			researchNotes);
 		giveNotesToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-			"Give Ava the translating research notes.",
+			"Give Ava the translated research notes.",
 			translatedNotes);
 		buildPattern = new ItemStep(this, "Combine Hard leather and Polished buttons with the pattern.",
 			pattern, hardLeather, polishedButtons);
@@ -270,6 +274,24 @@ public class AnimalMagnetism extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(draynorTeleport, burthorpeTeleport, portPhasmatysTeleport);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Ava's Attractor", ItemID.AVAS_ATTRACTOR, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to purchase Ava's Devices"));
 	}
 
 
@@ -304,7 +326,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Magnet",
 			Arrays.asList(talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva), ironBar5, hammer, undeadChicken2));
 		allSteps.add(new PanelDetails("Undead twigs",
-			Arrays.asList(getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva),
+			Arrays.asList(attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva, getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva),
 			mithrilAxe, polishedButtons, hardLeather, holySymbol));
 
 		return allSteps;

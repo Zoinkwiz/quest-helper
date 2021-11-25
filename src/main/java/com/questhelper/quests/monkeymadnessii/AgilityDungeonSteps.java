@@ -26,9 +26,9 @@ package com.questhelper.quests.monkeymadnessii;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -43,6 +43,7 @@ import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
@@ -78,15 +79,17 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 	Requirement inCavesSection2, inCavesSection3, inCavesSection4, hasBronzeKey, inFallArea1, inFallArea2, inFallArea3, inFallArea4, inKrukRoom, openedShortcut;
 
-	boolean shouldUsePath1V2, shouldUsePath2V2, shouldUsePath3V2, shouldUsePath4V2, shouldntUsePath5V1, shouldntUsePath5V2, shouldntUsePath5V3, shouldUsePath6V2;
-
 	ChatMessageRequirement path1SouthIsWrongChat, path2NorthIsWrongChat, path2NorthIsWrongChat2, path3SouthIsWrongChat, path4NorthIsWrongChat, path5WestIsWrongChat,
 		path5MiddleIsWrongChat, path5EastIsWrongChat, path5WestToMiddleWrongChat, path5MiddleToWestWrongChat, path5MiddleToEastWrongChat, path5EastToMiddleWrongChat,
 		path6WestIsWrongChat;
 	Conditions path1SouthIsWrong, path2NorthIsWrong, path3SouthIsWrong, path4NorthIsWrong, path5WestIsWrong, path5MiddleIsWrong, path5EastIsWrong, path6WestIsWrong;
 
+	HashMap<MM2Route, RuneliteRequirement> routeSavedValues;
 	MM2AgilityNodes[] fifthSectionMap;
 	int[] fifthSectionRightPaths;
+
+	RuneliteRequirement shouldUsePath1V2, shouldUsePath2V2, shouldUsePath3V2, shouldUsePath4V2, shouldntUsePath5V1,
+		shouldntUsePath5V2, shouldntUsePath5V3, shouldUsePath6V2;
 
 	public AgilityDungeonSteps(QuestHelper questHelper)
 	{
@@ -132,7 +135,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		inCavesSection4 = new ZoneRequirement(cavesSection4P1, cavesSection4P2, cavesSection4P3);
 		inKrukRoom = new ZoneRequirement(krukRoom);
 
-		hasBronzeKey = new ItemRequirements(bronzeKey);
+		hasBronzeKey = bronzeKey;
 		openedShortcut = new VarbitRequirement(5029, 1);
 
 		path1SouthIsWrongChat = new ChatMessageRequirement(
@@ -193,16 +196,50 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		path5EastIsWrong = new Conditions(LogicType.OR, path5EastIsWrongChat, path5MiddleToEastWrongChat, path5WestToMiddleWrongChat);
 
 		path6WestIsWrongChat = new ChatMessageRequirement(
-			new ZoneRequirement(new Zone(new WorldPoint(2550, 9258, 1), new WorldPoint(2552, 9258, 1))),
+			new ZoneRequirement(new Zone(new WorldPoint(2550, 9258, 1), new WorldPoint(2553, 9259, 1))),
 			"Something about this route feels wrong.");
 		path6WestIsWrong = new Conditions(true, LogicType.OR, path6WestIsWrongChat,
 			new ZoneRequirement(new Zone(new WorldPoint(2546, 9226, 1), new WorldPoint(2554, 9255, 1))));
+
+
+		shouldUsePath1V2 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path1v2", "true");
+		shouldUsePath2V2 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path2v2", "true");
+		shouldUsePath3V2 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path3v2", "true");
+		shouldUsePath4V2 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path4v2", "true");
+		shouldntUsePath5V1 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path5v1", "false");
+		shouldntUsePath5V2 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path5v2", "false");
+		shouldntUsePath5V3 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path5v3", "false");
+		shouldUsePath6V2 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "mm2path6v2", "true");
+
+		shouldUsePath1V2.initWithValue("false");
+		shouldUsePath2V2.initWithValue("false");
+		shouldUsePath3V2.initWithValue("false");
+		shouldUsePath4V2.initWithValue("false");
+		shouldntUsePath5V1.initWithValue("false");
+		shouldntUsePath5V2.initWithValue("false");
+		shouldntUsePath5V3.initWithValue("false");
+		shouldUsePath6V2.initWithValue("false");
 	}
 
 	@Override
 	public void setupSteps()
 	{
+		routeSavedValues = new HashMap<>();
 		fifthSectionMap = MM2AgilityNodes.values();
+		for (MM2AgilityNodes mm2AgilityNodes : fifthSectionMap)
+		{
+			for (MM2Route path : mm2AgilityNodes.getPaths())
+			{
+				if (path == null)
+				{
+					continue;
+				}
+				routeSavedValues.putIfAbsent(path,
+					new RuneliteRequirement(questHelper.getConfigManager(), "mm2agilitywrongway" + path.name(), "false"));
+				routeSavedValues.get(path).initWithValue("false");
+			}
+		}
+
 		fifthSectionRightPaths = new int[fifthSectionMap.length];
 		Arrays.fill(fifthSectionRightPaths, -1);
 
@@ -248,7 +285,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	private void updateSection1Route()
 	{
 		ArrayList<WorldPoint> newRoute = new ArrayList<>();
-		if(shouldUsePath1V2)
+		if(shouldUsePath1V2.check(client))
 		{
 			newRoute.addAll(path1V2);
 		}
@@ -257,9 +294,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			newRoute.addAll(path1V1);
 		}
 
-		if(shouldUsePath2V2)
+		if(shouldUsePath2V2.check(client))
 		{
-			if (shouldUsePath1V2)
+			if (shouldUsePath1V2.check(client))
 			{
 				newRoute.addAll(pathConnectingPath1V1ToV2);
 			}
@@ -267,7 +304,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		else
 		{
-			if (!shouldUsePath1V2)
+			if (!shouldUsePath1V2.check(client))
 			{
 				newRoute.addAll(pathConnectingPath1V2ToV1);
 			}
@@ -275,7 +312,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		newRoute.addAll(pathMaze);
 
-		if(shouldUsePath3V2)
+		if(shouldUsePath3V2.check(client))
 		{
 			newRoute.addAll(path3V2);
 		}
@@ -290,7 +327,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	private void updateSection2Route()
 	{
 		ArrayList<WorldPoint> newRoute = new ArrayList<>();
-		if(shouldUsePath4V2)
+		if(shouldUsePath4V2.check(client))
 		{
 			newRoute.addAll(path4V2);
 			newRoute.addAll(workOutFifthSection(0, new ArrayList<>(), 0));
@@ -305,7 +342,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 	private void updateSection3Route()
 	{
-		if(shouldUsePath6V2)
+		if(shouldUsePath6V2.check(client))
 		{
 			goToKruk.setLinePoints(pathToKrukV2);
 			goToKruk.setWorldPoint(new WorldPoint(2548, 9225, 1));
@@ -335,8 +372,10 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		int nextNodeId;
 
+		// If we've tried the un-indicated path and it was correct...
 		if (currentCorrectRoute != -1)
 		{
+			// Check if we've just gone backwards/looped, thus it's not the 'correct' next step
 			if (previousIds.contains(currentNode.getPaths()[currentCorrectRoute].getIdEnd()))
 			{
 				// If we're going back onto ourself, we've done something wrong. Set back to unknown
@@ -345,6 +384,16 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			else
 			{
 				nextNodeId = currentNode.getPaths()[currentCorrectRoute].getIdEnd();
+
+				// If we know this path is correct, all other paths are invalid. Save them as thus
+				for (MM2Route path : currentNode.getPaths())
+				{
+					if (path != null && path.getIdEnd() != nextNodeId)
+					{
+						routeSavedValues.get(path).setConfigValue("true");
+					}
+				}
+
 				newPoints.addAll(currentNode.getPaths()[currentCorrectRoute].getPath());
 				newPoints.addAll(workOutFifthSection(currentDepth + 1, previousIds, nextNodeId));
 				return newPoints;
@@ -352,12 +401,16 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		for (int i = 0; i < currentNode.getPaths().length; i++)
 		{
-			if (currentNode.getPaths()[i] != null && !currentNode.getPaths()[i].getWrongWay().check(client) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
+			if (currentNode.getPaths()[i] != null)
 			{
-				nextNodeId = currentNode.getPaths()[i].getIdEnd();
-				newPoints.addAll(currentNode.getPaths()[i].getPath());
-				newPoints.addAll(workOutFifthSection(currentDepth + 1, previousIds, nextNodeId));
-				return newPoints;
+				if (currentNode.getPaths()[i].getWrongWay().check(client)) routeSavedValues.get(currentNode.getPaths()[i]).setConfigValue("true");
+				if (routeSavedValues.get(currentNode.getPaths()[i]).check(client) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
+				{
+					nextNodeId = currentNode.getPaths()[i].getIdEnd();
+					newPoints.addAll(currentNode.getPaths()[i].getPath());
+					newPoints.addAll(workOutFifthSection(currentDepth + 1, previousIds, nextNodeId));
+					return newPoints;
+				}
 			}
 		}
 
@@ -397,71 +450,71 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!shouldUsePath1V2)
+		if (!shouldUsePath1V2.check(client))
 		{
-			shouldUsePath1V2 = path1SouthIsWrong.check(client);
-			if (shouldUsePath1V2)
+			if (path1SouthIsWrong.check(client)) shouldUsePath1V2.setConfigValue("true");
+			if (shouldUsePath1V2.check(client))
 			{
 				updateSection1Route();
 			}
 		}
-		if (!shouldUsePath2V2)
+		if (!shouldUsePath2V2.check(client))
 		{
-			shouldUsePath2V2 = path2NorthIsWrong.check(client);
-			if (shouldUsePath2V2)
+			if (path2NorthIsWrong.check(client)) shouldUsePath2V2.setConfigValue("true");
+			if (shouldUsePath2V2.check(client))
 			{
 				updateSection1Route();
 			}
 		}
-		if (!shouldUsePath3V2)
+		if (!shouldUsePath3V2.check(client))
 		{
-			shouldUsePath3V2 = path3SouthIsWrong.check(client);
-			if (shouldUsePath3V2)
+			if (path3SouthIsWrong.check(client)) shouldUsePath3V2.setConfigValue("true");
+			if (shouldUsePath3V2.check(client))
 			{
 				updateSection1Route();
 			}
 		}
 
-		if (!shouldUsePath4V2)
+		if (!shouldUsePath4V2.check(client))
 		{
-			shouldUsePath4V2 = path4NorthIsWrong.check(client);
-			if (shouldUsePath4V2)
+			if (path4NorthIsWrong.check(client)) shouldUsePath4V2.setConfigValue("true");
+			if (shouldUsePath4V2.check(client))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldntUsePath5V1)
+		if (!shouldntUsePath5V1.check(client))
 		{
-			shouldntUsePath5V1 = path5EastIsWrong.check(client);
-			if (shouldntUsePath5V1)
+			if (path5EastIsWrong.check(client)) shouldntUsePath5V1.setConfigValue("true");
+			if (shouldntUsePath5V1.check(client))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldntUsePath5V2)
+		if (!shouldntUsePath5V2.check(client))
 		{
-			shouldntUsePath5V2 = path5MiddleIsWrong.check(client);
-			if (shouldntUsePath5V2)
+			if (path5MiddleIsWrong.check(client)) shouldntUsePath5V2.setConfigValue("true");
+			if (shouldntUsePath5V2.check(client))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldntUsePath5V3)
+		if (!shouldntUsePath5V3.check(client))
 		{
-			shouldntUsePath5V3 = path5WestIsWrong.check(client);
-			if (shouldntUsePath5V1)
+			if (path5WestIsWrong.check(client)) shouldntUsePath5V3.setConfigValue("true");
+			if (shouldntUsePath5V1.check(client))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldUsePath6V2)
+		if (!shouldUsePath6V2.check(client))
 		{
-			shouldUsePath6V2 = path6WestIsWrong.check(client);
-			if (shouldUsePath6V2)
+			if (path6WestIsWrong.check(client)) shouldUsePath6V2.setConfigValue("true");
+			if (shouldUsePath6V2.check(client))
 			{
 				updateSection3Route();
 			}

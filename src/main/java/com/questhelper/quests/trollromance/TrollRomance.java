@@ -31,23 +31,24 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -63,8 +64,7 @@ public class TrollRomance extends BasicQuestHelper
 	//Items Required
 	ItemRequirement ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, wax, sled, waxedSled, trollweissFlowers, combatGear, sledEquipped;
 
-	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation, hasWax, hasWaxedSled, hasFlower, inTrollCave,
-		isSledEquipped, fightableArrgNearby;
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation,inTrollCave, fightableArrgNearby;
 
 	DetailedQuestStep enterStronghold, goDownToUg, goUpToUg, talkToUg, talkToAga, talkToTenzing, talkToDunstan, talkToDunstanAgain, useTarOnWax,
 		useWaxOnSled, enterTrollCave, leaveTrollCave, equipSled, sledSouth, goDownToUgAgain, goUpToUgAgain, enterStrongholdAgain, talkToUgWithFlowers,
@@ -97,13 +97,13 @@ public class TrollRomance extends BasicQuestHelper
 		steps.put(20, talkToDunstanAgain);
 
 		ConditionalStep getSled = new ConditionalStep(this, useTarOnWax);
-		getSled.addStep(hasWax, useWaxOnSled);
+		getSled.addStep(wax, useWaxOnSled);
 
 		steps.put(22, getSled);
 
 		ConditionalStep getFlower = new ConditionalStep(this, enterTrollCave);
 		getFlower.addStep(atFlowerLocation, pickFlowers);
-		getFlower.addStep(new Conditions(inTrollweiss, isSledEquipped), sledSouth);
+		getFlower.addStep(new Conditions(inTrollweiss, sledEquipped), sledSouth);
 		getFlower.addStep(inTrollweiss, equipSled);
 		getFlower.addStep(inTrollCave, leaveTrollCave);
 
@@ -179,10 +179,6 @@ public class TrollRomance extends BasicQuestHelper
 		inTrollweiss = new ZoneRequirement(trollweiss);
 		inTrollCave = new ZoneRequirement(trollCave);
 		atFlowerLocation = new ZoneRequirement(flowerLocation);
-		hasWax = new ItemRequirements(wax);
-		hasWaxedSled = new ItemRequirements(waxedSled);
-		hasFlower = new ItemRequirements(trollweissFlowers);
-		isSledEquipped = new ItemRequirements(sledEquipped);
 		fightableArrgNearby = new NpcCondition(NpcID.ARRG_643);
 	}
 
@@ -214,9 +210,11 @@ public class TrollRomance extends BasicQuestHelper
 		talkToDunstanAgain.addDialogSteps("Talk about a quest.");
 		useTarOnWax = new DetailedQuestStep(this, "Use some swamp tar on a bucket of wax.", swampTar, bucketOfWax, cakeTin);
 		useWaxOnSled = new DetailedQuestStep(this, "Use the wax on the sled.", wax, sled);
-		enterTrollCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0), "Enter the cave north of Trollheim.", waxedSled);
+		enterTrollCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0),
+			"Enter the cave north of Trollheim. There are high leveled ice trolls in here, so Protect from Melee and " +
+				"be careful!",	waxedSled);
 		leaveTrollCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Leave the cave via the north crevice.");
-		equipSled = new DetailedQuestStep(this, "Equip the sled", sledEquipped);
+		equipSled = new DetailedQuestStep(this, "Equip the sled.", sledEquipped);
 		sledSouth = new ObjectStep(this, ObjectID.SLOPE, new WorldPoint(2773, 3835, 0), "Sled to the south.");
 		pickFlowers = new ObjectStep(this, ObjectID.RARE_FLOWERS, new WorldPoint(2781, 3783, 0), "Pick a rare flower.");
 
@@ -282,6 +280,36 @@ public class TrollRomance extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 28));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 8000),
+				new ExperienceReward(Skill.STRENGTH, 4000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Diamond", ItemID.DIAMOND, 1),
+				new ItemReward("Rubies", ItemID.RUBY, 2),
+				new ItemReward("Emeralds", ItemID.EMERALD, 4),
+				new ItemReward("A Sled", ItemID.SLED, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Sledding route from Trollweiss Mountain."));
 	}
 
 	@Override

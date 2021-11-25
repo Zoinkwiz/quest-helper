@@ -31,9 +31,12 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -45,9 +48,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -169,7 +175,7 @@ public class JunglePotion extends BasicQuestHelper
 		DetailedQuestStep cleanGrimyHerb = new DetailedQuestStep(this, "", grimyHerb);
 
 		ConditionalStep cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return the " + herbName + " to Trufitus.");
-		cleanAndReturnHerb.addStep(new ItemRequirements(cleanHerb), returnHerb);
+		cleanAndReturnHerb.addStep(cleanHerb, returnHerb);
 		return cleanAndReturnHerb;
 	}
 
@@ -199,7 +205,7 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		getVolenciaMoss = new ObjectStep(this, ObjectID.ROCK_2581, new WorldPoint(2851, 3036, 0),
 			"Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
-		getVolenciaMoss.addText("If you plan on doing Fairy Tail I then take an extra.");
+		getVolenciaMoss.addText("If you plan on doing Fairy Tale I then take an extra.");
 		return getVolenciaMoss;
 	}
 
@@ -235,7 +241,7 @@ public class JunglePotion extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Surive against level 53 Jogres and level 46 Harpie Bug Swarms.");
+		reqs.add("Survive against level 53 Jogres and level 46 Harpie Bug Swarms.");
 		return reqs;
 	}
 
@@ -253,6 +259,27 @@ public class JunglePotion extends BasicQuestHelper
 		karaTele.addAlternates(ItemCollections.getAmuletOfGlories());
 		reqs.add(karaTele);
 		return reqs;
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.HERBLORE, 3, false));
+		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.HERBLORE, 775));
 	}
 
 	@Override
@@ -276,9 +303,9 @@ public class JunglePotion extends BasicQuestHelper
 			Arrays.asList(getSitoFoil, cleanAndReturnSitoFoil));
 		steps.add(sitoFoilpanel);
 
-		PanelDetails volcaniaMossPanel = new PanelDetails("Volcania Moss",
+		PanelDetails volenciaMossPanel = new PanelDetails("Volencia Moss",
 			Arrays.asList(getVolenciaMoss, cleanAndReturnVolenciaMoss));
-		steps.add(volcaniaMossPanel);
+		steps.add(volenciaMossPanel);
 
 		PanelDetails roguesPursePanel = new PanelDetails("Rogues Purse",
 			Arrays.asList(enterCave, getRoguePurseHerb, cleanAndReturnRoguesPurse));

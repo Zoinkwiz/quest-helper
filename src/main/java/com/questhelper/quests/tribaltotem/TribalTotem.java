@@ -33,13 +33,16 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -69,7 +72,7 @@ public class TribalTotem extends BasicQuestHelper
 
     QuestStep talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, leaveHouse, talkToKangaiMauAgain;
 
-    Requirement hasLabel, inEntrance, inMiddleRoom, openedLockWidget, inStairway, investigatedStairs, isUpstairs, chestOpened, hasTotem;
+    Requirement inEntrance, inMiddleRoom, openedLockWidget, inStairway, investigatedStairs, isUpstairs, chestOpened;
 
     //Zones
     Zone houseGroundFloorEntrance, houseGroundFloorMiddleRoom, houseGroundFloor, houseFirstFloor;
@@ -83,10 +86,10 @@ public class TribalTotem extends BasicQuestHelper
         setupSteps();
 
         ConditionalStep useLabelOnCrate = new ConditionalStep(this, investigateCrate);
-        useLabelOnCrate.addStep(hasLabel, useLabel);
+        useLabelOnCrate.addStep(addressLabel, useLabel);
 
         ConditionalStep navigateMansion = new ConditionalStep(this, talkToCromperty);
-        navigateMansion.addStep(hasTotem, talkToKangaiMauAgain);
+        navigateMansion.addStep(totem.alsoCheckBank(questBank), talkToKangaiMauAgain);
         navigateMansion.addStep(new Conditions(openedLockWidget, inMiddleRoom), solvePassword);
         navigateMansion.addStep(inStairway, climbStairs);
         navigateMansion.addStep(isUpstairs, searchChest);
@@ -132,7 +135,6 @@ public class TribalTotem extends BasicQuestHelper
 
     public void setupConditions()
     {
-        hasLabel = new ItemRequirements(addressLabel);
         inEntrance = new ZoneRequirement(houseGroundFloorEntrance);
         inMiddleRoom = new ZoneRequirement(houseGroundFloorMiddleRoom);
         openedLockWidget = new WidgetTextRequirement(369, 54,"Combination Lock Door");
@@ -140,7 +142,6 @@ public class TribalTotem extends BasicQuestHelper
         investigatedStairs = new WidgetTextRequirement(229, 1, "Your trained senses as a thief enable you to see that there is a trap<br>in these stairs. You make a note of its location for future reference<br>when using these stairs.");
         isUpstairs = new ZoneRequirement(houseFirstFloor);
         chestOpened = new ObjectCondition(ObjectID.CHEST_2710);
-        hasTotem = new ItemRequirements(totem);
     }
 
     public void setupSteps()
@@ -173,6 +174,24 @@ public class TribalTotem extends BasicQuestHelper
 	{
 		return Collections.singletonList(new SkillRequirement(Skill.THIEVING, 21, true));
 	}
+
+    @Override
+    public QuestPointReward getQuestPointReward()
+    {
+        return new QuestPointReward(1);
+    }
+
+    @Override
+    public List<ExperienceReward> getExperienceRewards()
+    {
+        return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 1775));
+    }
+
+    @Override
+    public List<ItemReward> getItemRewards()
+    {
+        return Collections.singletonList(new ItemReward("Swordfish", ItemID.SWORDFISH, 5));
+    }
 
     @Override
     public List<PanelDetails> getPanels()

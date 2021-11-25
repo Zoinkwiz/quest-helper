@@ -37,14 +37,21 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
+
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
@@ -56,6 +63,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
 	@Inject
 	protected Client client;
+
+	@Inject
+	@Getter
+	protected ConfigManager configManager;
 
 	@Inject
 	protected QuestBank questBank;
@@ -159,11 +170,12 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			return true;
 		}
 
-		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r -> r.check(client));
+		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r ->
+			!r.shouldConsiderForFilter() || r.check(client));
 	}
 
 	@Override
-	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, QuestHelper quest, PanelComponent panelComponent)
+	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
 	{
 		if (!plugin.isDeveloperMode()) return;
 		panelComponent.getChildren().add(LineComponent.builder()
@@ -174,10 +186,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			.build()
 		);
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(quest.getQuest().getName())
-			.leftColor(quest.getConfig().debugColor())
-			.right(quest.getVar() + "")
-			.rightColor(quest.getConfig().debugColor())
+			.left(getQuest().getName())
+			.leftColor(getConfig().debugColor())
+			.right(getVar() + "")
+			.rightColor(getConfig().debugColor())
 			.build()
 		);
 	}
@@ -215,6 +227,61 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	public List<String> getNotes()
 	{
 		return null;
+	}
+
+	public QuestPointReward getQuestPointReward()
+	{
+		return null;
+	}
+
+	public List<ItemReward> getItemRewards()
+	{
+		return null;
+	}
+
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return null;
+	}
+
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return null;
+	}
+
+	public List<String> getQuestRewards()
+	{
+		List<String> rewards = new ArrayList<>();
+
+		QuestPointReward questPointReward = getQuestPointReward();
+		if (questPointReward != null)
+		{
+			rewards.add(questPointReward.getDisplayText());
+			rewards.add("</br>");
+		}
+
+		List<ItemReward> itemRewards = getItemRewards();
+		if (itemRewards != null)
+		{
+			itemRewards.forEach((itemReward -> rewards.add(itemReward.getDisplayText())));
+			rewards.add("</br>");
+		}
+
+		List<ExperienceReward> experienceReward = getExperienceRewards();
+		if (experienceReward != null)
+		{
+			experienceReward.forEach((expReward -> rewards.add(expReward.getDisplayText())));
+			rewards.add("</br>");
+		}
+
+		List<UnlockReward> unlockRewards = getUnlockRewards();
+		if (unlockRewards != null)
+		{
+			unlockRewards.forEach((unlockReward -> rewards.add(unlockReward.getDisplayText())));
+			rewards.add("</br>");
+		}
+
+		return rewards;
 	}
 
 	public List<ExternalQuestResources> getExternalResources(){ return null; }

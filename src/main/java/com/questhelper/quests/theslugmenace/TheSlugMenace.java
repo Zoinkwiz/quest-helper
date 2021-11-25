@@ -41,6 +41,10 @@ import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -73,8 +77,8 @@ public class TheSlugMenace extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleports, necklaceOfPassage, airAltarTeleport, earthAltarTeleport, fireAltarTeleport, waterAltarTeleport, mindAltarTeleport;
 
-	Requirement talkedToMaledict, talkedToHobb, talkedToHolgart, talkedToAllImportantPeople, inHobgoblinDungeon, inSeaSlugDungeon, openedWall, hasDeadSlug, hasPage1, hasPage2, hasPage3, receivedFragments,
-		onPlatform, puzzleUp, repairedPage, pickedUpSlug, hasAirRune, hasWaterRune, hasEarthRune, hasFireRune, hasMindRune, hasOrUsedAirRune, hasOrUsedWaterRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune,
+	Requirement talkedToMaledict, talkedToHobb, talkedToHolgart, talkedToAllImportantPeople, inHobgoblinDungeon, inSeaSlugDungeon, openedWall, receivedFragments,
+		onPlatform, puzzleUp, repairedPage, pickedUpSlug, hasOrUsedAirRune, hasOrUsedWaterRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune,
 		hasAllRunes, usedAirRune, usedWaterRune, usedEarthRune, usedFireRune, usedMindRune, usedAllRunes;
 
 	QuestStep talkToTiffy, talkToNiall, talkToMaledict, talkToHobb, talkToHolgart, talkToNiall2, enterDungeon, pushFalseWall, enterWall, tryToOpenImposingDoor, scanWithComm, pickUpDeadSlug, talkToJorral,
@@ -111,7 +115,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		steps.put(3, goToDungeon);
 
 		ConditionalStep getSlugAndTalkJorral = new ConditionalStep(this, pickUpDeadSlug);
-		getSlugAndTalkJorral.addStep(new Conditions(LogicType.OR, hasDeadSlug, pickedUpSlug), talkToJorral);
+		getSlugAndTalkJorral.addStep(new Conditions(LogicType.OR, deadSeaSlug, pickedUpSlug), talkToJorral);
 
 		steps.put(4, getSlugAndTalkJorral);
 
@@ -122,8 +126,8 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		ConditionalStep findPages = new ConditionalStep(this, searchMayorsDesk);
 		findPages.addStep(receivedFragments, useSwampPasteOnFragments);
-		findPages.addStep(new Conditions(hasPage1, hasPage2), talkToNiall4);
-		findPages.addStep(hasPage1, talkToLovecraft);
+		findPages.addStep(new Conditions(page1, page2), talkToNiall4);
+		findPages.addStep(page1, talkToLovecraft);
 
 		steps.put(9, findPages);
 
@@ -151,6 +155,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB);
+		commorb.addAlternates(ItemID.COMMORB_V2);
 
 		commorb2 = new ItemRequirement("Commorb v2", ItemID.COMMORB_V2);
 		commorb2.setHighlightInInventory(true);
@@ -280,11 +285,6 @@ public class TheSlugMenace extends BasicQuestHelper
 		inSeaSlugDungeon = new ZoneRequirement(seaSlugDungeon);
 		openedWall = new VarbitRequirement(2618, 1);
 
-		hasDeadSlug = new ItemRequirements(deadSeaSlug);
-		hasPage1 = new ItemRequirements(page1);
-		hasPage2 = new ItemRequirements(page2);
-		hasPage3 = new ItemRequirements(page3);
-
 		onPlatform = new ZoneRequirement(platform);
 
 		puzzleUp = new WidgetModelRequirement(460, 4, 18393);
@@ -293,23 +293,17 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		pickedUpSlug = new VarbitRequirement(2631, 1);
 
-		hasAirRune = new ItemRequirements(airRune);
-		hasEarthRune = new ItemRequirements(earthRune);
-		hasWaterRune = new ItemRequirements(waterRune);
-		hasFireRune = new ItemRequirements(fireRune);
-		hasMindRune = new ItemRequirements(mindRune);
-
 		usedAirRune = new VarbitRequirement(2623, 1);
 		usedEarthRune = new VarbitRequirement(2622, 1);
 		usedWaterRune = new VarbitRequirement(2625, 1);
 		usedFireRune = new VarbitRequirement(2624, 1);
 		usedMindRune = new VarbitRequirement(2626, 1);
 
-		hasOrUsedAirRune = new Conditions(LogicType.OR, hasAirRune, usedAirRune);
-		hasOrUsedWaterRune = new Conditions(LogicType.OR, hasWaterRune, usedWaterRune);
-		hasOrUsedEarthRune = new Conditions(LogicType.OR, hasEarthRune, usedEarthRune);
-		hasOrUsedFireRune = new Conditions(LogicType.OR, hasFireRune, usedFireRune);
-		hasOrUsedMindRune = new Conditions(LogicType.OR, hasMindRune, usedMindRune);
+		hasOrUsedAirRune = new Conditions(LogicType.OR, airRune, usedAirRune);
+		hasOrUsedWaterRune = new Conditions(LogicType.OR, waterRune, usedWaterRune);
+		hasOrUsedEarthRune = new Conditions(LogicType.OR, earthRune, usedEarthRune);
+		hasOrUsedFireRune = new Conditions(LogicType.OR, fireRune, usedFireRune);
+		hasOrUsedMindRune = new Conditions(LogicType.OR, mindRune, usedMindRune);
 
 		hasAllRunes = new Conditions(hasOrUsedAirRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune, hasOrUsedWaterRune);
 
@@ -356,7 +350,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		useSwampPasteOnFragments = new DetailedQuestStep(this, "Use some swamp paste on one of the page fragments.", swampPaste, pageFragment1, pageFragment2, pageFragment3);
 		talkToJeb = new NpcStep(this, NpcID.JEB_4803, new WorldPoint(2721, 3304, 0), "Talk to Jeb north of Witchaven to travel to the Fishing Platform.", deadSeaSlug);
 		talkToBailey = new NpcStep(this, NpcID.BAILEY, new WorldPoint(2764, 3275, 0), "Talk to Bailey on the Fishing Platform.", deadSeaSlug);
-		useGlueOnFragment = new DetailedQuestStep(this, "Us the slug glue on one of the fragments.", glue, pageFragment1);
+		useGlueOnFragment = new DetailedQuestStep(this, "Use the slug glue on one of the fragments.", glue, pageFragment1);
 
 		solvePuzzle = new PuzzleStep(this);
 
@@ -418,14 +412,42 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.RUNECRAFT, 3500),
+				new ExperienceReward(Skill.CRAFTING, 3500),
+				new ExperienceReward(Skill.THIEVING, 3500));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to purchase and equip Proselyte equipment."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToTiffy), commorb));
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToNiall, talkToMaledict, talkToHobb, talkToHolgart, talkToNiall2, enterDungeon, pushFalseWall, tryToOpenImposingDoor,
-			scanWithComm, pickUpDeadSlug), commorb2));
-		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(talkToJorral, talkToNiall3, talkToMaledict2, searchMayorsDesk, talkToLovecraft, talkToNiall4, useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle, useEmptyRunes), commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
-		allSteps.add(new PanelDetails("Facing the prince", Arrays.asList(enterDungeonAgain, enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy), meleeGear, airRune, waterRune, earthRune, fireRune, mindRune));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToTiffy),
+			commorb));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToNiall,
+			talkToMaledict, talkToHobb, talkToHolgart, talkToNiall2, enterDungeon,
+			pushFalseWall, tryToOpenImposingDoor, scanWithComm, pickUpDeadSlug), commorb2));
+		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(talkToJorral,
+			talkToNiall3, talkToMaledict2, searchMayorsDesk, talkToLovecraft, talkToNiall4,
+			useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle,
+			useEmptyRunes), commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
+		allSteps.add(new PanelDetails("Facing the prince", Arrays.asList(enterDungeonAgain,
+			enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy),
+			meleeGear, airRune, waterRune, earthRune, fireRune, mindRune, commorb2));
 		return allSteps;
 	}
 }

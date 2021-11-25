@@ -118,7 +118,13 @@ public class Conditions extends ConditionForStep
 			return true;
 		}
 
-		int conditionsPassed = (int) conditions.stream().filter(c -> c.check(client)).count();
+		int conditionsPassed = (int) conditions.stream().filter(c -> {
+			if (c == null)
+			{
+				return true;
+			}
+			return c.check(client);
+		}).count();
 
 		if (operation != null)
 		{

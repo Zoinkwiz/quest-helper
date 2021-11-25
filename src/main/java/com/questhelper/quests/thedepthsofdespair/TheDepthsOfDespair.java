@@ -31,15 +31,18 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -52,7 +55,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -69,7 +71,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	ItemRequirement weapon, dramenStaff, foodIfLowLevel, superEnergyOrStamina, xericsTalisman, skillsNecklace,
 		varlamoreEnvoy, royalAccordOfTwill;
 
-	Requirement inVineryHouse, inArceuusLibrary, hasTheVarlamoreEnvoy, inCaves, inFirstAreaOfCaves,
+	Requirement inVineryHouse, inArceuusLibrary, inCaves, inFirstAreaOfCaves,
 		inSecondAreaOfCaves, inThirdAreaOfCaves, downstairsInCaves;
 
 	QuestStep talkToLordKandur, talkToChefOlivia, talkToGalana, findTheVarlamoreEnvoy, readTheVarlamoreEnvoy,
@@ -99,7 +101,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		steps.put(2, goTalkToGalana);
 
 		ConditionalStep findAndReadTheVarlamoreEnvoy = new ConditionalStep(this, findTheVarlamoreEnvoy);
-		findAndReadTheVarlamoreEnvoy.addStep(hasTheVarlamoreEnvoy, readTheVarlamoreEnvoy);
+		findAndReadTheVarlamoreEnvoy.addStep(varlamoreEnvoy.alsoCheckBank(questBank), readTheVarlamoreEnvoy);
 		steps.put(3, findAndReadTheVarlamoreEnvoy);
 
 		steps.put(4, enterCrabclawCaves);
@@ -174,13 +176,11 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		ZoneRequirement cavesDownstairs = new ZoneRequirement(crabclawCavesDownstairs);
 		downstairsInCaves = new Conditions(cavesDownstairs, new InInstanceRequirement());
-
-		hasTheVarlamoreEnvoy = new ItemRequirements(varlamoreEnvoy);
 	}
 
 	public void setupSteps()
 	{
-		talkToLordKandur = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS, new WorldPoint(1782, 3572, 0),
+		talkToLordKandur = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0),
 			"Talk to Lord Kandur Hosidius in the house west of the vinery.");
 		talkToLordKandur.addDialogSteps("Anything I can help you with?", "Yes.");
 
@@ -214,7 +214,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		searchChest = new ObjectStep(this, ObjectID.CHEST_31703, "Search the chest.");
 
-		talkToLordKandurAgain = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS, new WorldPoint(1782, 3572, 0),
+		talkToLordKandurAgain = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0),
 			"Return to Lord Kandur Hosidius and talk to him.");
 	}
 
@@ -238,6 +238,27 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		req.add(new FavourRequirement(Favour.HOSIDIUS, 20));
 		req.add(new SkillRequirement(Skill.AGILITY, 18, false));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 1500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("4,000 Coins", ItemID.COINS_995, 4000),
+				new ItemReward("Hosidius Favour Certificate", ItemID.HOSIDIUS_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("A Kharedst's Memoirs page", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

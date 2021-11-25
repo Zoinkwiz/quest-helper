@@ -43,6 +43,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -79,8 +82,8 @@ public class FishingContest extends BasicQuestHelper
 
 	ConditionalStep goToHemensterStep, getWorms, fishNearPipes;
 
-	ItemRequirements hasCombatBracelet, noCombatBracelet, noFishingRod, hasFishingRod, noGarlic, hasGarlic, hasWorms, noWorms, hasFishingPass;
-	Conditions hasEverything, notNearWorms, inWoods, notInWoods, enteredContest, hasPutGarlicInPipe;
+	ItemRequirement noCombatBracelet, noFishingRod, noGarlic, noWorms;
+	Requirement hasEverything, notNearWorms, inWoods, notInWoods, enteredContest, hasPutGarlicInPipe;
 	VarbitRequirement garlicInPipeVarbit;
 	WidgetTextRequirement garlicInPipeScreen, confirmGarlicInPipe;
 
@@ -176,7 +179,7 @@ public class FishingContest extends BasicQuestHelper
 		NpcStep fishingSpot = new NpcStep(this, NpcID.FISHING_SPOT_4080, new WorldPoint(2637, 3444, 0), "");
 		fishingSpot.setText("Fish near the pipes after the Sinister Stranger leaves.");
 		fishNearPipes = new ConditionalStep(this, fishingSpot, "Catch the winning fish at the fishing spot near the pipes.", fishingRod, redVineWorm);
-		fishNearPipes.addStep(new ItemRequirements(winningFish), speakToBonzoWithFish);
+		fishNearPipes.addStep(winningFish, speakToBonzoWithFish);
 
 		teleToHemenster = new NpcStep(this, NpcID.GRANDPA_JACK, "", coins);
 		teleToHemenster.addText("\nTeleport to Hemenster via the combat bracelet.\n\nSpeak to Grandpa Jack to buy a fishing rod.");
@@ -201,18 +204,14 @@ public class FishingContest extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasCombatBracelet = new ItemRequirements(combatBracelet);
 		noCombatBracelet = new ItemRequirements(LogicType.NOR, "", combatBracelet);
 		noFishingRod = new ItemRequirements(LogicType.NOR, "", fishingRod);
-		hasFishingRod = new ItemRequirements(fishingRod);
-		hasGarlic = new ItemRequirements(garlic);
+
 		noGarlic = new ItemRequirements(LogicType.NOR, "", garlic);
-		hasWorms = new ItemRequirements(redVineWorm);
 		noWorms = new ItemRequirements(LogicType.NOR, "", redVineWorm);
-		hasFishingPass = new ItemRequirements(fishingPass);
 
 		// Conditions
-		hasEverything = new Conditions(hasGarlic, hasWorms, hasFishingRod, hasFishingPass);
+		hasEverything = new Conditions(garlic, redVineWorm, fishingRod, fishingPass);
 		notNearWorms = new Conditions(LogicType.NOR, new ZoneRequirement(nearRedVineWorms));
 		inWoods = new Conditions(true, passedThroughMcGruborEntrance); // passed through northern entrance
 		notInWoods = new Conditions(LogicType.NOR, inWoods);
@@ -238,10 +237,10 @@ public class FishingContest extends BasicQuestHelper
 		goToHemensterStep.addStep(enteredContest, putGarlicInPipe); // enteredContest already checks for if the player has garlic
 		goToHemensterStep.addStep(noGarlic, getGarlic);
 		goToHemensterStep.addStep(noWorms, getWorms);
-		goToHemensterStep.addStep(hasFishingRod, goToHemenster);
-		goToHemensterStep.addStep(new Conditions(noCombatBracelet, hasWorms, noFishingRod), runToJack);
-		goToHemensterStep.addStep(new Conditions(hasCombatBracelet, hasWorms, noFishingRod), teleToHemenster);
-		goToHemensterStep.addStep(new Conditions(noFishingRod, hasWorms), grandpaJack);
+		goToHemensterStep.addStep(fishingRod, goToHemenster);
+		goToHemensterStep.addStep(new Conditions(noCombatBracelet, redVineWorm, noFishingRod), runToJack);
+		goToHemensterStep.addStep(new Conditions(combatBracelet, redVineWorm, noFishingRod), teleToHemenster);
+		goToHemensterStep.addStep(new Conditions(noFishingRod, redVineWorm), grandpaJack);
 
 		steps.put(0, talkToVestriStep);
 		steps.put(1, goToHemensterStep);
@@ -251,6 +250,25 @@ public class FishingContest extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.FISHING, 2437));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the underground White Wolf Mountain passage"),
+				new UnlockReward("Ability to catch minnows in The Fishing Guild."));
+	}
 
 	@Override
 	public List<PanelDetails> getPanels()

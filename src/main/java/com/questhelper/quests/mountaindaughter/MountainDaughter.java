@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -40,6 +39,10 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -64,19 +67,19 @@ import net.runelite.api.coords.WorldPoint;
 public class MountainDaughter extends BasicQuestHelper
 {
 	//Items Required
-	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee, halfRock, gloves, corpse, pole, rope;
+	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee,
+		halfRock, gloves, corpse, pole, rope, rocks, necklace;
 
 	//Items Recommended
 	private ItemRequirement slayerRing, combatGear;
 
-	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock, hasCorpse,
-		gottenGuarantee, givenGuaranteeToSvidi, gottenFruit, gottenSeed, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, fightableKendalNearby, hasRocks,
-		hasNecklace, hasBuried;
+	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock,
+		gottenGuarantee, givenGuaranteeToSvidi, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, fightableKendalNearby, hasBuried, rubbedMudIntoTree;
 
-	private QuestStep enterCamp, enterCampOverRocks, talkToHamal, rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit, plankRocksReturn, talkToHamalAfterSpirit,
-		talkToJokul, talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi, getFruit, eatFruit, returnToSpirit, returnToHamalAboutFood,
-		returnToHamalAboutDiplomacy, talkToKendal, killKendal, noPlankRocksReturn, enterCave, grabCorpse, bringCorpseToHamal, collectRocks, createCairn,
-		buryCorpseOnIsland, speakRagnar;
+	private QuestStep enterCamp, enterCampOverRocks, talkToHamal, digUpMud, rubMudIntoTree, climbTree, poleVaultRocks, plankRocks, listenToSpirit,
+		plankRocksReturn, talkToHamalAfterSpirit, talkToJokul, talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi, getFruit,
+		eatFruit, returnToSpirit, returnToHamalAboutFood, returnToHamalAboutDiplomacy, talkToKendal, killKendal, noPlankRocksReturn, enterCave,
+		grabCorpse, bringCorpseToHamal, collectRocks, createCairn, buryCorpseOnIsland, speakRagnar;
 
 	//Zones
 	private Zone CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3, LAKE_ISLAND_1, LAKE_ISLAND_2, LAKE_ISLAND_3, KENDAL_CAVE;
@@ -100,15 +103,17 @@ public class MountainDaughter extends BasicQuestHelper
 		speakToSpirit.addStep(onIsland3, listenToSpirit);
 		speakToSpirit.addStep(onIsland2, plankRocks);
 		speakToSpirit.addStep(onIsland1, poleVaultRocks);
-		speakToSpirit.addStep(inTheCamp, rubMudIntoTree);
+		speakToSpirit.addStep(new Conditions(inTheCamp, rubbedMudIntoTree), climbTree);
+		speakToSpirit.addStep(new Conditions(inTheCamp, mud), rubMudIntoTree);
+		speakToSpirit.addStep(inTheCamp, digUpMud);
 
 		steps.put(10, speakToSpirit);
 
 		ConditionalStep helpTheCamp = new ConditionalStep(this, enterCampOverRocks);
 		helpTheCamp.addStep(finishedFoodAndDiplomacy, returnToSpirit);
 		helpTheCamp.addStep(finishedDiplomacy, returnToHamalAboutFood);
-		helpTheCamp.addStep(gottenSeed, returnToHamalAboutDiplomacy);
-		helpTheCamp.addStep(gottenFruit, eatFruit);
+		helpTheCamp.addStep(whitePearlSeed.alsoCheckBank(questBank), returnToHamalAboutDiplomacy);
+		helpTheCamp.addStep(whitePearl.alsoCheckBank(questBank), eatFruit);
 		helpTheCamp.addStep(givenGuaranteeToSvidi, getFruit);
 		helpTheCamp.addStep(gottenGuarantee, returnToSvidi);
 		helpTheCamp.addStep(minedRock, returnToBrundt);
@@ -134,15 +139,15 @@ public class MountainDaughter extends BasicQuestHelper
 		steps.put(40, killKendalStep);
 
 		ConditionalStep returnTheCorpse = new ConditionalStep(this, enterCave);
-		returnTheCorpse.addStep(hasCorpse, bringCorpseToHamal);
+		returnTheCorpse.addStep(corpse.alsoCheckBank(questBank), bringCorpseToHamal);
 		returnTheCorpse.addStep(inKendalCave, grabCorpse);
 
 		steps.put(50, returnTheCorpse);
 
 		ConditionalStep buryCorpse = new ConditionalStep(this, enterCampOverRocks);
 		buryCorpse.addStep(hasBuried, createCairn);
-		buryCorpse.addStep(hasNecklace, buryCorpseOnIsland);
-		buryCorpse.addStep(hasRocks, speakRagnar);
+		buryCorpse.addStep(necklace.alsoCheckBank(questBank), buryCorpseOnIsland);
+		buryCorpse.addStep(rocks.alsoCheckBank(questBank), speakRagnar);
 		buryCorpse.addStep(inTheCamp, collectRocks);
 
 		steps.put(60, buryCorpse);
@@ -198,6 +203,9 @@ public class MountainDaughter extends BasicQuestHelper
 		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.getSlayerRings());
 		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		rocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK);
+		necklace = new ItemRequirement("Asleif's necklace", ItemID.ASLEIFS_NECKLACE);
 	}
 
 	private void loadConditions()
@@ -208,6 +216,7 @@ public class MountainDaughter extends BasicQuestHelper
 
 		inTheCamp = new Conditions(new ZoneRequirement(CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3));
 		askedAboutDiplomacy = new Conditions(new VarbitRequirement(262, 10));
+		rubbedMudIntoTree = new Conditions(new VarbitRequirement(261, 1));
 
 		VarbitRequirement askedAboutFood = new VarbitRequirement(263, 10, Operation.GREATER_EQUAL);
 		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(262, 10), askedAboutFood);
@@ -216,29 +225,22 @@ public class MountainDaughter extends BasicQuestHelper
 		minedRock = new Conditions(new VarbitRequirement(262, 40), askedAboutFood);
 		gottenGuarantee = new Conditions(new VarbitRequirement(262, 50), askedAboutFood);
 		givenGuaranteeToSvidi = new Conditions(new VarbitRequirement(262, 60), askedAboutFood);
-		gottenFruit = new Conditions(new ItemRequirements(whitePearl));
-		gottenSeed = new Conditions(new ItemRequirements(whitePearlSeed));
 		finishedDiplomacy = new Conditions(new VarbitRequirement(266, 1));
 		finishedFoodAndDiplomacy = new Conditions(new VarbitRequirement(266, 1), new VarbitRequirement(263, 20));
 		inKendalCave = new Conditions(new ZoneRequirement(KENDAL_CAVE));
 		fightableKendalNearby = new Conditions(new NpcHintArrowRequirement(NpcID.THE_KENDAL_1378));
 
-		hasCorpse = new Conditions(new ItemRequirements(corpse));
-		hasRocks = new Conditions(new ItemRequirements(new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5)));
-		hasNecklace = new Conditions(new ItemRequirements(new ItemRequirement("Asleif's necklace", ItemID.ASLEIFS_NECKLACE)));
 		hasBuried = new Conditions(new VarbitRequirement(273, 1));
 	}
 
 	private void loadQuestSteps()
 	{
 		enterCamp = new ObjectStep(this, ObjectID.BOULDER_5842, new WorldPoint(2766, 3667, 0),
-			"Use your rope on the boulder outside the Mountain Camp east of Rellekka.",
-			rope);
+			"Use your rope on the boulder outside the Mountain Camp east of Rellekka.", rope.highlighted());
 		enterCamp.addIcon(ItemID.ROPE);
 
 		enterCampOverRocks = new ObjectStep(this, ObjectID.ROCKSLIDE_5847, new WorldPoint(2760, 3658, 0),
-			"Return to the Mountain Camp.",
-			rope);
+			"Return to the Mountain Camp.", rope.highlighted());
 
 		talkToHamal = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0), "Speak to Hamal the Chieftain in the Mountain Camp.",
 			rope, pickaxe, axe, plank, pole, gloves);
@@ -246,14 +248,19 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToHamal.addDialogStep("So what are you doing up here?");
 		talkToHamal.addDialogStep("I will search for her!");
 
-		rubMudIntoTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3679, 0),
+		digUpMud = new ObjectStep(this, ObjectID.ROOTS_5885, new WorldPoint(2805, 3661, 0),
+			"Dig some mud from the mud pond south of Hamal's house.");
+
+		rubMudIntoTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3681, 0),
 			"Use mud on the Tall Tree on the lake north of the camp, and then climb it.",
-			pole, mud, plank);
+			mud.highlighted(), pole, plank);
 		rubMudIntoTree.addIcon(ItemID.MUD);
 
+		climbTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3681, 0),
+			"Climb the Tall Tree on the lake north of the camp.", pole, plank);
+
 		poleVaultRocks = new ObjectStep(this, ObjectID.CLUMP_OF_ROCKS, new WorldPoint(2773, 3688, 0),
-			"Use your pole or a staff on the clump of rocks.",
-			pole, plank);
+			"Use your pole or a staff on the clump of rocks.", pole, plank);
 		poleVaultRocks.addIcon(ItemID.POLE);
 
 		plankRocks = new ObjectStep(this, ObjectID.FLAT_STONE, new WorldPoint(2775, 3691, 0),
@@ -322,6 +329,8 @@ public class MountainDaughter extends BasicQuestHelper
 			"Return to Hamal the Chieftain in the Mountain Camp.",
 			whitePearlSeed);
 		returnToHamalAboutFood.addDialogStep("About your food supplies...");
+
+		returnToHamalAboutDiplomacy.addSubSteps(returnToHamalAboutFood);
 
 		returnToSpirit = new ObjectStep(this, ObjectID.SHINING_POOL_5897, new WorldPoint(2781, 3689, 0),
 			"Return to the centre of the pool north of the Mountain Camp and listen to it.",
@@ -400,17 +409,44 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+			new ExperienceReward(Skill.ATTACK, 1000),
+			new ExperienceReward(Skill.PRAYER, 2000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Bearhead", ItemID.BEARHEAD, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to the Mountain Camp"));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Speak to Hamal", Arrays.asList(enterCamp, talkToHamal), rope, plank, pickaxe));
-		allSteps.add(new PanelDetails("Go to the centre of the lake", Arrays.asList(rubMudIntoTree, poleVaultRocks, plankRocks, listenToSpirit)));
+		allSteps.add(new PanelDetails("Go to the centre of the lake", Arrays.asList(digUpMud, rubMudIntoTree, climbTree,
+			poleVaultRocks, plankRocks, listenToSpirit)));
 		allSteps.add(new PanelDetails("Find out how to help", Arrays.asList(talkToHamalAfterSpirit, talkToJokul)));
 		allSteps.add(new PanelDetails("Making peace with Rellekka", Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi)));
 		allSteps.add(new PanelDetails("Find a new food source", Arrays.asList(getFruit, eatFruit), axe, gloves));
 		allSteps.add(new PanelDetails("Prepare for a fight", Collections.singletonList(new DetailedQuestStep(this, "Prepare to fight The Kendal (level 70)")), pole, plank, axe, whitePearlSeed));
-		allSteps.add(new PanelDetails("Tell Hamal about your success", Arrays.asList(returnToHamalAboutDiplomacy, returnToHamalAboutFood)));
+		allSteps.add(new PanelDetails("Tell Hamal about your success", Collections.singletonList(returnToHamalAboutDiplomacy)));
 		allSteps.add(new PanelDetails("Tell Asleif about your success", Collections.singletonList(returnToSpirit)));
 		allSteps.add(new PanelDetails("Find Asleif's corpse", Arrays.asList(enterCave, talkToKendal, grabCorpse)));
 		allSteps.add(new PanelDetails("Bring Asleif's corpse to Hamal", Collections.singletonList(bringCorpseToHamal)));

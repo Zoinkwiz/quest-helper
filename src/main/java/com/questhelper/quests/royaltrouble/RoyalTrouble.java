@@ -41,17 +41,18 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -72,11 +73,13 @@ public class RoyalTrouble extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement antipoison, food, prayerPotions;
 
-	Requirement inMiscFloor1, inEtcFloor1, onIslands, hasPickaxe, hasCoal5, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject, talkedToSigrid, talkedToEtcSubject, reportedToVargas,
-		reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas, enteredDungeon, inDungeon, inLiftRoom, inPath1, inPath2, inPath3, inPath4, hasLiftManual, talkedToDonal, usedProp, hasEngine,
-		hasUsedPulley, hasUsedLongerPulley, hasUsedPulley2, hasUsedRope, hasUsedBeam, hasUsedEngine, hasPulley, hasLongPulley, hasLongerPulley, hasRope, hasBeam, has1CoalInEngine, has2CoalInEngine, has3CoalInEngine,
-		has4CoalInEngine, hasFullEngine, hasRepairedScaffold, inPlankRoom, hasPlank, inLiftOrPlankOrTunnel1Room, attachedRope, onJumpIsland1, onJumpIsland2, onJumpIsland3, inPaths, seenFire, searchedFire1, searchedFire2,
-		searchedFire3, searchedFire4, searchedFire5, hasDiary5, hasReadDiary, enteredSnakeRoom, talkedToKids, inBossRoom, killedBoss, hasBox, finishedFinalConvoWithSigrid;
+	Requirement inMiscFloor1, inEtcFloor1, onIslands, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject,
+		talkedToSigrid, talkedToEtcSubject, reportedToVargas, reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas,
+		enteredDungeon, inDungeon, inLiftRoom, inPath1, inPath2, inPath3, inPath4, talkedToDonal, usedProp,
+		hasUsedPulley, hasUsedLongerPulley, hasUsedPulley2, hasUsedRope, hasUsedBeam, hasUsedEngine, has1CoalInEngine, has2CoalInEngine, has3CoalInEngine,
+		has4CoalInEngine, hasFullEngine, hasRepairedScaffold, inPlankRoom, inLiftOrPlankOrTunnel1Room, attachedRope, onJumpIsland1, onJumpIsland2, onJumpIsland3,
+		inPaths, seenFire, searchedFire1, searchedFire2, searchedFire3, searchedFire4, searchedFire5, hasReadDiary, enteredSnakeRoom, talkedToKids,
+		inBossRoom, killedBoss, finishedFinalConvoWithSigrid;
 
 	QuestStep travelToMisc, goUpToGhrim, talkToGhrim, goUpToPartner, talkToPartner, talkToVargas, goUpToVargas, goDownFromVargas, talkToGunnhild, goBackUpToVargas, talkToVargasAgain, goDownFromVargas2, goUpToSigrid,
 		talkToSigrid, goDownFromSigridToMatilda, talkToMatilda, goBackUpToSigrid, talkToSigridAfterMatilda, getCoalOrPickaxe, goDownFromSigridToVargas, goBackUpToVargasFromSigrid, talkToVargasAfterSigrid, talkToGhrim2,
@@ -130,43 +133,43 @@ public class RoyalTrouble extends BasicQuestHelper
 		continueInvestigationForVargas.addStep(new Conditions(inEtcFloor1), goDownFromSigridToVargas);
 
 		ConditionalStep repairLift = new ConditionalStep(this, takePulley);
-		repairLift.addStep(new Conditions(hasRepairedScaffold, new Conditions(LogicType.OR, hasRope, attachedRope)), useLift);
+		repairLift.addStep(new Conditions(hasRepairedScaffold, new Conditions(LogicType.OR, rope, attachedRope)), useLift);
 		repairLift.addStep(new Conditions(inLiftOrPlankOrTunnel1Room, hasRepairedScaffold), takeRope2);
 
 		repairLift.addStep(new Conditions(hasUsedEngine, has4CoalInEngine), putCoalIntoEnginePlaced5);
 		repairLift.addStep(new Conditions(hasUsedEngine, has3CoalInEngine), putCoalIntoEnginePlaced4);
 		repairLift.addStep(new Conditions(hasUsedEngine, has2CoalInEngine), putCoalIntoEnginePlaced3);
 		repairLift.addStep(new Conditions(hasUsedEngine, has1CoalInEngine), putCoalIntoEnginePlaced2);
-		repairLift.addStep(new Conditions(hasUsedEngine, hasEngine), putCoalIntoEnginePlaced);
+		repairLift.addStep(new Conditions(hasUsedEngine, engine), putCoalIntoEnginePlaced);
 
-		repairLift.addStep(new Conditions(hasUsedBeam, hasEngine, hasFullEngine), useEngineOnPlatform);
-		repairLift.addStep(new Conditions(hasUsedBeam, hasEngine, has4CoalInEngine), putCoalIntoEngine5);
-		repairLift.addStep(new Conditions(hasUsedBeam, hasEngine, has3CoalInEngine), putCoalIntoEngine4);
-		repairLift.addStep(new Conditions(hasUsedBeam, hasEngine, has2CoalInEngine), putCoalIntoEngine3);
-		repairLift.addStep(new Conditions(hasUsedBeam, hasEngine, has1CoalInEngine), putCoalIntoEngine2);
-		repairLift.addStep(new Conditions(hasUsedBeam, hasEngine), putCoalIntoEngine);
+		repairLift.addStep(new Conditions(hasUsedBeam, engine, hasFullEngine), useEngineOnPlatform);
+		repairLift.addStep(new Conditions(hasUsedBeam, engine, has4CoalInEngine), putCoalIntoEngine5);
+		repairLift.addStep(new Conditions(hasUsedBeam, engine, has3CoalInEngine), putCoalIntoEngine4);
+		repairLift.addStep(new Conditions(hasUsedBeam, engine, has2CoalInEngine), putCoalIntoEngine3);
+		repairLift.addStep(new Conditions(hasUsedBeam, engine, has1CoalInEngine), putCoalIntoEngine2);
+		repairLift.addStep(new Conditions(hasUsedBeam, engine), putCoalIntoEngine);
 		repairLift.addStep(new Conditions(hasUsedBeam), pickUpEngine);
 
-		repairLift.addStep(new Conditions(hasUsedRope, hasBeam), useBeamOnPlatform);
+		repairLift.addStep(new Conditions(hasUsedRope, beam), useBeamOnPlatform);
 		repairLift.addStep(new Conditions(hasUsedRope), takeBeam3);
-		repairLift.addStep(new Conditions(hasUsedPulley2, hasRope), useRopeOnScaffold);
+		repairLift.addStep(new Conditions(hasUsedPulley2, rope), useRopeOnScaffold);
 		repairLift.addStep(new Conditions(hasUsedPulley2), takeRope);
-		repairLift.addStep(new Conditions(hasUsedLongerPulley, hasPulley), usePulleyOnScaffold2);
+		repairLift.addStep(new Conditions(hasUsedLongerPulley, pulleyBeam), usePulleyOnScaffold2);
 		repairLift.addStep(new Conditions(hasUsedLongerPulley), takePulley3);
-		repairLift.addStep(new Conditions(hasUsedPulley, hasLongerPulley), useLongerPulleyOnScaffold);
-		repairLift.addStep(new Conditions(hasUsedPulley, hasLongPulley, hasBeam), useBeamOnLongPulley);
-		repairLift.addStep(new Conditions(hasUsedPulley, hasLongPulley), takeBeam2);
-		repairLift.addStep(new Conditions(hasUsedPulley, hasPulley, hasBeam), useBeamOnPulley);
-		repairLift.addStep(new Conditions(hasUsedPulley, hasPulley), takeBeam);
+		repairLift.addStep(new Conditions(hasUsedPulley, longerPulleyBeam), useLongerPulleyOnScaffold);
+		repairLift.addStep(new Conditions(hasUsedPulley, longPulleyBeam, beam), useBeamOnLongPulley);
+		repairLift.addStep(new Conditions(hasUsedPulley, longPulleyBeam), takeBeam2);
+		repairLift.addStep(new Conditions(hasUsedPulley, pulleyBeam, beam), useBeamOnPulley);
+		repairLift.addStep(new Conditions(hasUsedPulley, pulleyBeam), takeBeam);
 		repairLift.addStep(hasUsedPulley, takePulley2);
-		repairLift.addStep(hasPulley, usePulleyOnScaffold);
+		repairLift.addStep(pulleyBeam, usePulleyOnScaffold);
 
 		ConditionalStep dungeonExplore = new ConditionalStep(this, talkToDonal);
 		dungeonExplore.addStep(inBossRoom, killBoss);
 		dungeonExplore.addStep(new Conditions(inPath4, talkedToKids), enterBossRoom);
 		dungeonExplore.addStep(inPath4, talkToArmod);
 		dungeonExplore.addStep(new Conditions(searchedFire5, hasReadDiary, inPath3), enterSnakesRoom);
-		dungeonExplore.addStep(new Conditions(searchedFire5, inPath3, hasDiary5), readDiary);
+		dungeonExplore.addStep(new Conditions(searchedFire5, inPath3, diary5), readDiary);
 		dungeonExplore.addStep(new Conditions(searchedFire4, inPath3), searchFire5);
 		dungeonExplore.addStep(new Conditions(searchedFire3, inPath3), searchFire4);
 		dungeonExplore.addStep(new Conditions(searchedFire2, inPath3), searchFire3);
@@ -176,11 +179,11 @@ public class RoyalTrouble extends BasicQuestHelper
 		dungeonExplore.addStep(new Conditions(searchedFire1, onJumpIsland1), plankRock2);
 		dungeonExplore.addStep(new Conditions(searchedFire1, inPath2), plankRock1);
 		dungeonExplore.addStep(new Conditions(LogicType.OR, inPath2, inPath3), searchFire1);
-		dungeonExplore.addStep(new Conditions(inPath1, attachedRope, hasPlank), swingOverRope);
-		dungeonExplore.addStep(new Conditions(inPath1, hasRope, hasPlank), attachRope);
-		dungeonExplore.addStep(new Conditions(inPlankRoom, new Conditions(LogicType.OR, hasRope, attachedRope), hasPlank), enterTunnelFromPlankRoom);
-		dungeonExplore.addStep(new Conditions(inPath1, new Conditions(LogicType.OR, hasRope, attachedRope)), goBackToPlank);
-		dungeonExplore.addStep(new Conditions(inPlankRoom, new Conditions(LogicType.OR, hasRope, attachedRope)), takePlank);
+		dungeonExplore.addStep(new Conditions(inPath1, attachedRope, plank), swingOverRope);
+		dungeonExplore.addStep(new Conditions(inPath1, rope, plank), attachRope);
+		dungeonExplore.addStep(new Conditions(inPlankRoom, new Conditions(LogicType.OR, rope, attachedRope), plank), enterTunnelFromPlankRoom);
+		dungeonExplore.addStep(new Conditions(inPath1, new Conditions(LogicType.OR, rope, attachedRope)), goBackToPlank);
+		dungeonExplore.addStep(new Conditions(inPlankRoom, new Conditions(LogicType.OR, rope, attachedRope)), takePlank);
 		dungeonExplore.addStep(inLiftRoom, repairLift);
 
 		dungeonExplore.addStep(usedProp, enterCrevice);
@@ -190,7 +193,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		reportBackToSigrid.addStep(inEtcFloor1, talkToSigridToFinish);
 		reportBackToSigrid.addStep(onIslands, goUpToSigridToFinish);
 		reportBackToSigrid.addStep(inPath4, goUpRope);
-		reportBackToSigrid.addStep(new Conditions(inBossRoom, hasBox), leaveBossRoom);
+		reportBackToSigrid.addStep(new Conditions(inBossRoom, box), leaveBossRoom);
 		reportBackToSigrid.addStep(inBossRoom, pickUpBox);
 
 		ConditionalStep finishingOffVargas = new ConditionalStep(this, travelToMisc);
@@ -320,15 +323,13 @@ public class RoyalTrouble extends BasicQuestHelper
 		onJumpIsland3 = new ZoneRequirement(jumpIsland3);
 		inBossRoom = new ZoneRequirement(bossRoom);
 
-		hasPickaxe = new ItemRequirements(pickaxe);
-		hasCoal5 = new ItemRequirements(coal5);
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
-			hasCoalOrPickaxe = new Conditions(LogicType.OR, hasPickaxe, hasCoal5);
+			hasCoalOrPickaxe = new Conditions(LogicType.OR, pickaxe, coal5);
 		}
 		else
 		{
-			hasCoalOrPickaxe = hasCoal5;
+			hasCoalOrPickaxe = coal5;
 		}
 		partnerIsAstrid = new VarbitRequirement(98, 0);
 
@@ -366,18 +367,6 @@ public class RoyalTrouble extends BasicQuestHelper
 		hasFullEngine = new VarbitRequirement(2156, 5);
 
 		attachedRope = new VarbitRequirement(2147, 1);
-
-		hasLiftManual = new ItemRequirements(liftManual);
-		hasEngine = new ItemRequirements(engine);
-		hasPulley = new ItemRequirements(pulleyBeam);
-		hasLongPulley = new ItemRequirements(longPulleyBeam);
-		hasLongerPulley = new ItemRequirements(longerPulleyBeam);
-		hasRope = new ItemRequirements(rope);
-		hasBeam = new ItemRequirements(beam);
-		hasPlank = new ItemRequirements(plank);
-		hasDiary5 = new ItemRequirements(diary5);
-
-		hasBox = new ItemRequirements(box);
 
 		inPlankRoom = new ZoneRequirement(plankRoom);
 
@@ -607,6 +596,27 @@ public class RoyalTrouble extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 40, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 5000),
+				new ExperienceReward(Skill.SLAYER, 5000),
+				new ExperienceReward(Skill.HITPOINTS, 5000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Increased rewards from Managing Miscellania"));
 	}
 
 	@Override

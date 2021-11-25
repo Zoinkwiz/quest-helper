@@ -34,7 +34,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -43,6 +42,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -74,9 +77,9 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		pullBellowsLever, getStoneBowl, useBowlOnLava, useLavaOnFurnace, mineRock, killRock, pickUpOre,
 		forgeBar, smithShield;
 
-	Requirement inWorkshop, inStairwell, hasBook, hasKey, hasSlashedBook, hasReadBook, enteredWall, foundLeather,
-		turnedValve1, turnedValve2, solvedWater, hasLeatherOrSearched, hasNeedle, hasBowl, hasLavaBowl,
-		hasElementalBar, hasElementalOre, elementalOreNearby, earthNearby, solvedAir, solvedFire, fixedBellow;
+	Requirement inWorkshop, inStairwell, hasSlashedBook, hasReadBook, enteredWall, foundLeather,
+		turnedValve1, turnedValve2, solvedWater, hasLeatherOrSearched, elementalOreNearby, earthNearby,
+		solvedAir, solvedFire, fixedBellow;
 
 	//Zones
 	Zone workshop, stairwell;
@@ -90,12 +93,12 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep goReadBook = new ConditionalStep(this, searchBookcase);
-		goReadBook.addStep(hasBook, readBook);
+		goReadBook.addStep(batteredBook, readBook);
 
 		ConditionalStep enterElementalWorkshop = new ConditionalStep(this, searchBookcase);
 		enterElementalWorkshop.addStep(inStairwell, goDownStairs);
-		enterElementalWorkshop.addStep(hasKey, openOddWall);
-		enterElementalWorkshop.addStep(hasBook, useKnifeOnBook);
+		enterElementalWorkshop.addStep(batteredKey, openOddWall);
+		enterElementalWorkshop.addStep(batteredBook, useKnifeOnBook);
 
 		ConditionalStep goSolveWater = new ConditionalStep(this, openOddWall);
 		goSolveWater.addStep(new Conditions(inWorkshop, turnedValve1, turnedValve2), pullLever);
@@ -104,21 +107,21 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		goSolveWater.addStep(inStairwell, goDownStairs);
 
 		ConditionalStep goSolveAir = new ConditionalStep(this, openOddWall);
-		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, fixedBellow, inWorkshop), pullBellowsLever);
-		goSolveAir.addStep(new Conditions(hasNeedle, hasLeatherOrSearched, inWorkshop), fixBellows);
-		goSolveAir.addStep(new Conditions(hasNeedle, inWorkshop), searchLeatherCrate);
+		goSolveAir.addStep(new Conditions(needle, hasLeatherOrSearched, fixedBellow, inWorkshop), pullBellowsLever);
+		goSolveAir.addStep(new Conditions(needle, hasLeatherOrSearched, inWorkshop), fixBellows);
+		goSolveAir.addStep(new Conditions(needle, inWorkshop), searchLeatherCrate);
 		goSolveAir.addStep(inWorkshop, searchNeedleCrate);
 		goSolveAir.addStep(inStairwell, goDownStairs);
 
 		ConditionalStep goSolveFire = new ConditionalStep(this, openOddWall);
-		goSolveFire.addStep(new Conditions(hasLavaBowl, inWorkshop), useLavaOnFurnace);
-		goSolveFire.addStep(new Conditions(hasBowl, inWorkshop), useBowlOnLava);
+		goSolveFire.addStep(new Conditions(lavaBowlHighlighted, inWorkshop), useLavaOnFurnace);
+		goSolveFire.addStep(new Conditions(stoneBowlHighlighted, inWorkshop), useBowlOnLava);
 		goSolveFire.addStep(inWorkshop, getStoneBowl);
 		goSolveFire.addStep(inStairwell, goDownStairs);
 
 		ConditionalStep goMakeShield = new ConditionalStep(this, openOddWall);
-		goMakeShield.addStep(new Conditions(inWorkshop, hasElementalBar), smithShield);
-		goMakeShield.addStep(new Conditions(inWorkshop, hasElementalOre), forgeBar);
+		goMakeShield.addStep(new Conditions(inWorkshop, elementalBar), smithShield);
+		goMakeShield.addStep(new Conditions(inWorkshop, elementalOre), forgeBar);
 		goMakeShield.addStep(new Conditions(elementalOreNearby), pickUpOre);
 		goMakeShield.addStep(new Conditions(earthNearby), killRock);
 		goMakeShield.addStep(inWorkshop, mineRock);
@@ -222,27 +225,20 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		inStairwell = new ZoneRequirement(stairwell);
 		inWorkshop = new ZoneRequirement(workshop);
 
-		hasBook = new ItemRequirements(batteredBook);
-		hasKey = new ItemRequirements(batteredKey);
 		hasSlashedBook = new VarbitRequirement(2057, 1);
 		hasReadBook = new VarplayerRequirement(299, true, 1);
 		enteredWall = new VarplayerRequirement(299, true, 15);
 		foundLeather = new VarbitRequirement(2066, 1);
-		hasNeedle = new ItemRequirements(needle);
 		turnedValve1 = new VarbitRequirement(2059, 1);
 		turnedValve2 = new VarbitRequirement(2058, 1);
 		solvedWater = new VarbitRequirement(2060, 1);
 
-		hasLeatherOrSearched = new Conditions(LogicType.OR, foundLeather, new ItemRequirements(leather));
+		hasLeatherOrSearched = new Conditions(LogicType.OR, foundLeather, leather);
 		solvedAir = new VarbitRequirement(2063, 1);
 		fixedBellow = new VarbitRequirement(2061, 1);
 
-		hasBowl = new ItemRequirements(stoneBowlHighlighted);
-		hasLavaBowl = new ItemRequirements(lavaBowlHighlighted);
 		solvedFire = new VarbitRequirement(2062, 1);
 
-		hasElementalBar = new ItemRequirements(elementalBar);
-		hasElementalOre = new ItemRequirements(elementalOre);
 		elementalOreNearby = new ItemOnTileRequirement(elementalOre);
 		earthNearby = new NpcCondition(NpcID.EARTH_ELEMENTAL_1367);
 
@@ -314,6 +310,34 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Earth elemental (level 35)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return  Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 5000),
+				new ExperienceReward(Skill.SMITHING, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("An Elemental Shield", ItemID.ELEMENTAL_SHIELD, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Elemental Workshop."),
+				new UnlockReward("Ability to craft and wield Elemental equipment."));
 	}
 
 	@Override

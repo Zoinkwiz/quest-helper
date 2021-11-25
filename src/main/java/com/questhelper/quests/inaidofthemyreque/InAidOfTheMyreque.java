@@ -42,6 +42,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -79,8 +82,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	Requirement normalSpellbook;
 
 	Requirement onEntranceIsland, inCaves, inMyrequeCave, inBoatArea, inNewBase, onRoof, filledCrate, addedCoal, litFurnace, talkedToGadderanks, talkedToJuvinates,
-		talkedToWiskit, inGadderanksFight, defeatedGadderanks, veliafReturnedToBase, inTempleTrekArea, inTempleTrekArea2, inTemple, libraryOpen, hasBook, inTempleLibrary,
-		inCoffinRoom, hasEnchatedRod, hasRod, hasMould, boardsRemoved;
+		talkedToWiskit, inGadderanksFight, defeatedGadderanks, veliafReturnedToBase, inTempleTrekArea, inTempleTrekArea2, inTemple, libraryOpen, inTempleLibrary,
+		inCoffinRoom, boardsRemoved;
 
 	QuestStep climbDownCanifis, enterMyrequeCave, talkToVeliaf;
 
@@ -196,16 +199,16 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		steps.put(350, unlockLibrary);
 
 		ConditionalStep goReadBook = new ConditionalStep(this, goDownToDrezel);
-		goReadBook.addStep(hasBook, readBook);
+		goReadBook.addStep(sleepingSeven, readBook);
 		goReadBook.addStep(inTempleLibrary, searchBookcase);
 		goReadBook.addStep(inTemple, enterLibrary);
 		steps.put(360, goReadBook);
 		steps.put(370, goReadBook);
 
 		ConditionalStep goMakeRod = new ConditionalStep(this, goIntoCavesAgain);
-		goMakeRod.addStep(hasEnchatedRod, goBlessRod);
-		goMakeRod.addStep(hasRod, enchantRod);
-		goMakeRod.addStep(hasMould, makeRod);
+		goMakeRod.addStep(enchantedRod, goBlessRod);
+		goMakeRod.addStep(silvRod, enchantRod);
+		goMakeRod.addStep(mould, makeRod);
 		goMakeRod.addStep(inCoffinRoom, useClayOnCoffin);
 		goMakeRod.addStep(new Conditions(inCaves, boardsRemoved), enterCoffinRoom);
 		goMakeRod.addStep(inCaves, useHammerOnBoards);
@@ -383,10 +386,6 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 		libraryOpen = new VarbitRequirement(1982, 1);
 
-		hasBook = new ItemRequirements(sleepingSeven);
-		hasEnchatedRod = new ItemRequirements(enchantedRod);
-		hasRod = new ItemRequirements(silvRod);
-		hasMould = new ItemRequirements(mould);
 		boardsRemoved = new VarbitRequirement(1983, 1);
 
 		// 1981 1->2 when talked to Gadderanks
@@ -567,6 +566,29 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Gadderanks (level 35)", "Vampyre Juvenites (levels 50-75)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 2000),
+				new ExperienceReward(Skill.STRENGTH, 2000),
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.DEFENCE, 2000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards() {
+		return Arrays.asList(
+				new UnlockReward("Access to Temple Trekking Minigame."),
+				new UnlockReward("Ability to make the Rod of Ivandis"));
 	}
 
 	@Override

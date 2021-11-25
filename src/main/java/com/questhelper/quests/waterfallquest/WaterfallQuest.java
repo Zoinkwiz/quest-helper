@@ -31,11 +31,13 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -50,6 +52,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -64,8 +67,8 @@ public class WaterfallQuest extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement gamesNecklace, food;
 
-	Requirement inGnomeBasement, inGlarialTomb, inFalls, onHudonIsland, onDeadTreeIsland, onLedge, hasGlarialsPebble, hasGlarialsUrn, hasGlarialsAmulet,
-		hasBook, inUpstairsInHouse, hasKey, hasBaxKey, inGolrieRoom, gotPebble, hasAirRunes, hasEarthRunes, hasWaterRunes, hasRope, inEndRoom, inEnd2;
+	Requirement inGnomeBasement, inGlarialTomb, inFalls, onHudonIsland, onDeadTreeIsland, onLedge, inUpstairsInHouse,
+		inGolrieRoom, gotPebble, inEndRoom, inEnd2;
 
 	QuestStep talkToAlmera, boardRaft, talkToHudon, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase,
 		readBook, enterGnomeDungeon, searchGnomeCrate, enterGnomeDoor, talkToGolrie, usePebble, searchGlarialChest, searchGlarialCoffin,
@@ -94,7 +97,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		steps.put(1, goTalkToHudon);
 
 		ConditionalStep goReadBook = new ConditionalStep(this, goUpstairsHadley);
-		goReadBook.addStep(hasBook, readBook);
+		goReadBook.addStep(book, readBook);
 		goReadBook.addStep(inUpstairsInHouse, searchBookcase);
 		goReadBook.addStep(onLedge, getInBarrel);
 		goReadBook.addStep(onDeadTreeIsland, useRopeOnTree);
@@ -105,27 +108,27 @@ public class WaterfallQuest extends BasicQuestHelper
 		// TODO: Add lines to guide through maze
 		goGetPebble = new ConditionalStep(this, enterGnomeDungeon);
 		goGetPebble.addStep(inGolrieRoom, talkToGolrie);
-		goGetPebble.addStep(new Conditions(inGnomeBasement, hasKey), enterGnomeDoor);
+		goGetPebble.addStep(new Conditions(inGnomeBasement, key), enterGnomeDoor);
 		goGetPebble.addStep(inGnomeBasement, searchGnomeCrate);
 		goGetPebble.setLockingCondition(gotPebble);
 
 		getGlarialStuff = new ConditionalStep(this, usePebble);
-		getGlarialStuff.addStep(new Conditions(hasGlarialsAmulet, inGlarialTomb), searchGlarialCoffin);
+		getGlarialStuff.addStep(new Conditions(glarialsAmulet.alsoCheckBank(questBank), inGlarialTomb), searchGlarialCoffin);
 		getGlarialStuff.addStep(inGlarialTomb, searchGlarialChest);
-		getGlarialStuff.setLockingCondition(new Conditions(new Conditions(hasGlarialsAmulet, hasGlarialsUrn)));
+		getGlarialStuff.setLockingCondition(new Conditions(new Conditions(glarialsAmulet.alsoCheckBank(questBank), glarialsUrn.alsoCheckBank(questBank))));
 
 		ConditionalStep puttingToRest = new ConditionalStep(this, getFinalItems);
 		puttingToRest.addStep(inEnd2, useUrnOnChalice);
 		puttingToRest.addStep(inEndRoom, useRunes);
-		puttingToRest.addStep(new Conditions(inFalls, hasBaxKey), useKeyOnFallsDoor);
+		puttingToRest.addStep(new Conditions(inFalls, baxKey), useKeyOnFallsDoor);
 		puttingToRest.addStep(inFalls, searchFallsCrate);
 		puttingToRest.addStep(onLedge, enterFalls);
 		puttingToRest.addStep(onDeadTreeIsland, useRopeOnTreeFinal);
 		puttingToRest.addStep(onHudonIsland, useRopeOnRockFinal);
-		puttingToRest.addStep(new Conditions(hasGlarialsUrn, hasGlarialsAmulet, hasAirRunes, hasEarthRunes, hasWaterRunes, hasRope), boardRaftFinal);
+		puttingToRest.addStep(new Conditions(glarialsUrn, glarialsAmulet, airRunes, earthRunes, waterRunes, rope), boardRaftFinal);
 
 		ConditionalStep finishingSteps = new ConditionalStep(this, goGetPebble);
-		finishingSteps.addStep(new Conditions(hasGlarialsUrn, hasGlarialsAmulet), puttingToRest);
+		finishingSteps.addStep(new Conditions(glarialsUrn.alsoCheckBank(questBank), glarialsAmulet.alsoCheckBank(questBank)), puttingToRest);
 		finishingSteps.addStep(gotPebble, getGlarialStuff);
 
 		steps.put(3, finishingSteps);
@@ -188,23 +191,13 @@ public class WaterfallQuest extends BasicQuestHelper
 		onHudonIsland = new ZoneRequirement(hudonIsland);
 		onLedge = new ZoneRequirement(ledge);
 		inUpstairsInHouse = new ZoneRequirement(upstairsInHouse);
-		hasBook = new ItemRequirements(book);
 		inGnomeBasement = new ZoneRequirement(gnomeBasement);
 		inGolrieRoom = new ZoneRequirement(golrieRoom);
 		inGlarialTomb = new ZoneRequirement(glarialTomb);
 		inFalls = new ZoneRequirement(falls);
 		inEndRoom = new ZoneRequirement(endRoom);
 		inEnd2 = new ZoneRequirement(end2);
-		hasGlarialsAmulet = new ItemRequirements(unequippedAmulet);
-		hasGlarialsPebble = new ItemRequirements(glarialsPebble);
-		hasGlarialsUrn = new ItemRequirements(glarialsUrn);
-		hasKey = new ItemRequirements(key);
-		hasBaxKey = new ItemRequirements(baxKey);
 		gotPebble = new VarbitRequirement(9110, 1);
-		hasEarthRunes = new ItemRequirements(earthRunes);
-		hasWaterRunes = new ItemRequirements(waterRunes);
-		hasAirRunes = new ItemRequirements(airRunes);
-		hasRope = new ItemRequirements(highlightRope);
 	}
 
 	public void setupSteps()
@@ -251,7 +244,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		useAmuletOnStatue = new ObjectStep(this, ObjectID.STATUE_OF_GLARIAL, new WorldPoint(2603, 9915, 0), "Use Glarial's amulet on the Statue of Glarial", unequippedAmulet);
 		useAmuletOnStatue.addIcon(ItemID.GLARIALS_AMULET);
 
-		useUrnOnChalice = new ObjectStep(this, ObjectID.CHALICE, new WorldPoint(2604, 9911, 0), "Use Glarial's urn on the Chalice to finish the quest.", glarialsUrn);
+		useUrnOnChalice = new ObjectStep(this, ObjectID.CHALICE, new WorldPoint(2604, 9911, 0), "DO NOT LEFT-CLICK THE CHALICE! Use Glarial's urn on the Chalice to finish the quest.", glarialsUrn);
 		useUrnOnChalice.addIcon(ItemID.GLARIALS_URN);
 	}
 
@@ -281,6 +274,29 @@ public class WaterfallQuest extends BasicQuestHelper
 		reqs.add(gamesNecklace);
 		reqs.add(food);
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.STRENGTH, 13750),
+				new ExperienceReward(Skill.ATTACK, 13750));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Diamonds", ItemID.DIAMOND, 2),
+				new ItemReward("Gold Bars", ItemID.GOLD_BAR, 2),
+				new ItemReward("Mithril Seeds", ItemID.MITHRIL_SEEDS, 40));
 	}
 
 	@Override

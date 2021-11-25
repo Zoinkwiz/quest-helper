@@ -41,6 +41,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -280,7 +283,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 			"Use an earth rune on the strange wall.", earthRune.highlighted());
 		useEarthRune.addIcon(ItemID.EARTH_RUNE);
 		useFireRune = new ObjectStep(this, ObjectID.STRANGE_WALL_4544, new WorldPoint(2515, 4627, 0),
-			"Use an fire rune on the strange wall.", fireRune.highlighted());
+			"Use a fire rune on the strange wall.", fireRune.highlighted());
 		useFireRune.addIcon(ItemID.FIRE_RUNE);
 		useArrow = new ObjectStep(this, ObjectID.STRANGE_WALL_4544, new WorldPoint(2515, 4627, 0),
 			"Use an arrow on the strange wall.", arrow.highlighted());
@@ -329,6 +332,31 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	{
 		return Arrays.asList("Dagannoth (level 100)", "Dagannoth Mother (level 100)");
 	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MAGIC, 4662),
+				new ExperienceReward(Skill.STRENGTH, 4662),
+				new ExperienceReward(Skill.RANGED, 4662));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("A damaged God Book of your choice."),
+				new UnlockReward("Access to The Lighthouse"),
+				new UnlockReward("Ability to receive Dagannoth as a Slayer task."));
+	}
+
 
 	@Override
 	public ArrayList<PanelDetails> getPanels()

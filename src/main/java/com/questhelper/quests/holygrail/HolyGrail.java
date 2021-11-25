@@ -27,11 +27,13 @@ package com.questhelper.quests.holygrail;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.requirements.conditional.Conditions;
@@ -72,10 +74,10 @@ public class HolyGrail extends BasicQuestHelper
 	//Items Required
 	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
 
-	Requirement inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inGalahadHouse, hasNapkin, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
-		inDraynorManorTopFloor, inMagicWhistleRoom, hasTwoWhistles, inTeleportLocation, hasExcalibur, inFisherKingRealmEntrance, titanNearby, inFisherKingRealmAfterTitan, talkedToFisherman,
-		hasGrailBell, inGrailBellRingLocation, inFisherKingCastle1BottomFloor, inFisherKingCastle1SecondFloor, hasFeather, inFisherKingRealm, inFisherKingCastle2BottomFloor, inFisherKingCastle2SecondFloor, inFisherKingCastle2ThirdFloor,
-		hasGrail;
+	Requirement inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inGalahadHouse, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
+		inDraynorManorTopFloor, inMagicWhistleRoom, inTeleportLocation, inFisherKingRealmEntrance, titanNearby, inFisherKingRealmAfterTitan, talkedToFisherman,
+		inGrailBellRingLocation, inFisherKingCastle1BottomFloor, inFisherKingCastle1SecondFloor, inFisherKingRealm, inFisherKingCastle2BottomFloor,
+		inFisherKingCastle2SecondFloor, inFisherKingCastle2ThirdFloor;
 
 	QuestStep talkToKingArthur1, talkToMerlin, goUpStairsCamelot, openMerlinDoor, goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad, goToDraynorManor, enterDraynorManor, goUpStairsDraynor1,
 		goUpStairsDraynor2, openWhistleDoor, takeWhistles, goGetExcalibur, goToTeleportLocation1, blowWhistle1, attackTitan, talkToFisherman, pickupBell, ringBell, goUpStairsBrokenCastle, talkToFisherKing, goToCamelot,
@@ -113,33 +115,32 @@ public class HolyGrail extends BasicQuestHelper
 		findFisherKing = new ConditionalStep(this, goToGalahad);
 		findFisherKing.addStep(inFisherKingCastle1SecondFloor, talkToFisherKing);
 		findFisherKing.addStep(inFisherKingCastle1BottomFloor, goUpStairsBrokenCastle);
-		findFisherKing.addStep(new Conditions(hasGrailBell, inFisherKingRealmAfterTitan), ringBell);
+		findFisherKing.addStep(new Conditions(grailBell, inFisherKingRealmAfterTitan), ringBell);
 		findFisherKing.addStep(talkedToFisherman, pickupBell);
 		findFisherKing.addStep(inFisherKingRealmAfterTitan, talkToFisherman);
-		findFisherKing.addStep(new Conditions(hasExcalibur, titanNearby), attackTitan);
-		findFisherKing.addStep(new Conditions(hasTwoWhistles, inTeleportLocation, hasExcalibur), blowWhistle1);
-		findFisherKing.addStep(new Conditions(hasTwoWhistles, hasExcalibur), goToTeleportLocation1);
-		findFisherKing.addStep(hasTwoWhistles, goGetExcalibur);
+		findFisherKing.addStep(new Conditions(excalibur, titanNearby), attackTitan);
+		findFisherKing.addStep(new Conditions(twoMagicWhistles, inTeleportLocation, excalibur), blowWhistle1);
+		findFisherKing.addStep(new Conditions(twoMagicWhistles, excalibur), goToTeleportLocation1);
+		findFisherKing.addStep(twoMagicWhistles, goGetExcalibur);
 		findFisherKing.addStep(inMagicWhistleRoom, takeWhistles);
 		findFisherKing.addStep(inDraynorManorTopFloor, openWhistleDoor);
 		findFisherKing.addStep(inDraynorManorSecondFloor, goUpStairsDraynor2);
 		findFisherKing.addStep(inDraynorManorBottomFloor, goUpStairsDraynor1);
 		findFisherKing.addStep(inDraynorFrontManor, enterDraynorManor);
-		findFisherKing.addStep(hasNapkin, goToDraynorManor);
+		findFisherKing.addStep(holyTableNapkin, goToDraynorManor);
 		findFisherKing.addStep(inGalahadHouse, talkToGalahad);
-
-		findFisherKing.setLockingCondition(hasTwoWhistles);
+		findFisherKing.setLockingCondition(twoMagicWhistles);
 
 		steps.put(4, findFisherKing);
 		steps.put(7, findFisherKing);
 
 		ConditionalStep findPercival = new ConditionalStep(this, talkToKingArthur2);
-		findPercival.addStep(hasFeather, openSack);
+		findPercival.addStep(goldFeather, openSack);
 
 		steps.put(8, findPercival);
 
 		ConditionalStep finishQuest = new ConditionalStep(this, goToTeleportLocation2);
-		finishQuest.addStep(hasGrail, talkToKingArthur3);
+		finishQuest.addStep(grail, talkToKingArthur3);
 		finishQuest.addStep(inFisherKingCastle2ThirdFloor, takeGrail);
 		finishQuest.addStep(inFisherKingCastle2SecondFloor, goUpNewCastleLadder);
 		finishQuest.addStep(inFisherKingCastle2BottomFloor, goUpNewCastleStairs);
@@ -219,15 +220,12 @@ public class HolyGrail extends BasicQuestHelper
 			new ZoneRequirement(entranaBoat),
 			new ZoneRequirement(entranaIsland));
 		inGalahadHouse = new ZoneRequirement(galahadHouse);
-		hasNapkin = new ItemRequirements(holyTableNapkin);
 		inDraynorFrontManor = new ZoneRequirement(draynorManorFront);
 		inDraynorManorBottomFloor = new ZoneRequirement(draynorManorBottomFloor);
 		inDraynorManorSecondFloor = new ZoneRequirement(draynorManorSecondFloor);
 		inDraynorManorTopFloor = new ZoneRequirement(draynorManorTopFloor);
 		inMagicWhistleRoom = new ZoneRequirement(magicWhistleRoom);
-		hasTwoWhistles = new ItemRequirements(twoMagicWhistles);
 		inTeleportLocation = new ZoneRequirement(teleportLocation);
-		hasExcalibur = new ItemRequirements(excalibur);
 		inFisherKingRealmEntrance = new ZoneRequirement(fisherKingRealmEntrance);
 		titanNearby = new NpcCondition(NpcID.BLACK_KNIGHT_TITAN);
 		inFisherKingRealmAfterTitan = new Conditions(LogicType.OR,
@@ -235,16 +233,13 @@ public class HolyGrail extends BasicQuestHelper
 			new ZoneRequirement(fisherKingRealmAfterTitan2),
 			new ZoneRequirement(fisherKingRealmAfterTitan3));
 		talkedToFisherman = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You must be blind then. There's ALWAYS bells there<br>when I go to the castle."));
-		hasGrailBell = new ItemRequirements(grailBell);
 		inGrailBellRingLocation = new ZoneRequirement(grailBellRingLocation);
 		inFisherKingCastle1BottomFloor = new ZoneRequirement(fisherKingRealmCastle1BottomFloor);
 		inFisherKingCastle1SecondFloor = new ZoneRequirement(fisherKingRealmCastle1SecondFloor);
-		hasFeather = new ItemRequirements(goldFeather);
 		inFisherKingRealm = new ZoneRequirement(fisherKingRealm);
 		inFisherKingCastle2BottomFloor = new ZoneRequirement(fisherKingRealmCastle2BottomFloor);
 		inFisherKingCastle2SecondFloor = new ZoneRequirement(fisherKingRealmCastle2SecondFloor);
 		inFisherKingCastle2ThirdFloor = new ZoneRequirement(fisherKingRealmCastle2ThirdFloor);
-		hasGrail = new ItemRequirements(grail);
 	}
 
 	public void setupSteps()
@@ -333,6 +328,28 @@ public class HolyGrail extends BasicQuestHelper
 		reqs.add(food);
 		reqs.add(combatGear);
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.PRAYER, 11000),
+				new ExperienceReward(Skill.DEFENCE, 15300));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Fisher Realm."),
+				new UnlockReward("Ability to put King Arthur picture on the wall in the POH."));
 	}
 
 	@Override

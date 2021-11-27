@@ -26,23 +26,18 @@ package com.questhelper.achievementdiaries.wilderness;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.quests.deathplateau.DeathPlateau;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -57,7 +52,6 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -86,7 +80,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		notTrollWildy, notSprirtualWarrior, notRawLavaEel, enterGodwars;
 
 	QuestStep claimReward, godSpells, airOrb, blackSally, addyScim, lavaDrag, trollWildy, rawLavaEel, moveToEdge,
-		moveToAir, moveToResource, smeltAddyBar, mineAddyOre, moveToGodWars1, moveToGodWars2, buryBone, moveToScorpia,
+		moveToAir, moveToResource, moveToGodWars1, moveToGodWars2, buryBone, moveToScorpia,
 		killChaosFan, killScorpia;
 
 	NpcStep threeBosses, chaosEle, sprirtualWarrior;
@@ -115,9 +109,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notSprirtualWarrior, inGodWars1), moveToGodWars2);
 		doHard.addStep(notSprirtualWarrior, moveToGodWars1);
 		doHard.addStep(notTrollWildy, trollWildy);
-		doHard.addStep(new Conditions(notAddyScim, inResource, addyBar.quantity(3)), addyScim);
-		doHard.addStep(new Conditions(notAddyScim, inResource, addyOre.quantity(3)), smeltAddyBar);
-		doHard.addStep(new Conditions(notAddyScim, inResource), mineAddyOre);
+		doHard.addStep(new Conditions(notAddyScim, inResource), addyScim);
 		doHard.addStep(notAddyScim, moveToResource);
 		doHard.addStep(notChaosEle, chaosEle);
 		doHard.addStep(notThreeBosses, threeBosses);
@@ -161,7 +153,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim);
-		barsOrPick = new ItemRequirements(LogicType.OR, "3 gold bars or a pickaxe", addyBar.quantity(2), pickaxe);
+		barsOrPick = new ItemRequirements(LogicType.OR, "Adamant bar", addyBar.quantity(2));
 		lavaDragonBones = new ItemRequirement("Lava Dragon Bones", ItemID.LAVA_DRAGON_BONES);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -220,11 +212,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		addyScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
 			"Smith an adamantite scimitar in the Resource Area.", hammer, addyBar.quantity(2));
 		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
-			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, barsOrPick);
-		smeltAddyBar = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
-			"Smelt the ore into adamantite bars.", hammer, addyOre.quantity(2));
-		mineAddyOre = new ObjectStep(this, ObjectID.ROCKS_11374, new WorldPoint(3184, 3941, 0),
-			"Mine adamantite ore and coal.", hammer, pickaxe);
+			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, addyBar.quantity(2));
 
 		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);

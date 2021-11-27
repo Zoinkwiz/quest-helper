@@ -178,7 +178,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 			"Kill a Mammoth in the Wilderness.", combatGear);
 
 		moveToEdgeSpider = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
-			"Enter the Edgeville dungeon." food);
+			"Enter the Edgeville dungeon.", food);
 
 		moveToEdgeEarth = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
 			"Enter the Edgeville dungeon.", combatGear, food);

@@ -26,25 +26,21 @@ package com.questhelper.achievementdiaries.wilderness;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
@@ -53,7 +49,6 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -70,7 +65,9 @@ public class WildernessMedium extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, pickaxe, runeAxe, antiDragonShield, unpoweredOrb, cosmicRune, earthRune, coins,
-		goldBar, goldOre, hammer, muddyKey, godEquip, knife, goldHelmet, barsOrPick, enterGodwars;
+		goldBar, goldOre, hammer, muddyKey, godEquip, knife, goldHelmet, barsOrPick;
+
+	Requirement enterGodwars;
 
 	// Items recommended
 	ItemRequirement food, burningAmulet, gamesNeck;
@@ -115,11 +112,10 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notEarthOrb, moveToEdge);
 		doMedium.addStep(notMineMith, mineMith);
 		doMedium.addStep(notWildyAgi, wildyAgi);
-		doMedium.addStep(new Conditions(notGoldHelm, inResource, goldBar.quantity(3)), goldHelm);
+		doMedium.addStep(new Conditions(notGoldHelm, inResource, goldBar.quantity(3).alsoCheckBank(questBank)), goldHelm);
 		doMedium.addStep(new Conditions(notGoldHelm, inResource, goldOre.quantity(3)), smeltGoldOre);
 		doMedium.addStep(new Conditions(notGoldHelm, inResource), mineGoldOre);
 		doMedium.addStep(notGoldHelm, moveToResource);
-
 		doMedium.addStep(notMuddyChest, muddyChest);
 
 		return doMedium;
@@ -168,7 +164,9 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 
 		// TODO: implement skillRequirements to check for 60 str or 60 agi
-		enterGodwars = new ItemRequirement("60 Strength or Agility", -1, -1);
+		enterGodwars = new ComplexRequirement(LogicType.OR,"60 Strength or Agility",
+			new SkillRequirement(Skill.AGILITY,	60),
+			new SkillRequirement(Skill.STRENGTH, 60));
 
 		inEdge = new ZoneRequirement(edge);
 		inResource = new ZoneRequirement(resource);
@@ -193,18 +191,18 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	{
 
 		entYew = new NpcStep(this, NpcID.ENT, new WorldPoint(3227, 3666, 0),
-			"Kill an Ent in the wilderness and cut yew logs from it's trunk after killing it.", combatGear, runeAxe);
+			"Kill an Ent in the wilderness and cut yew logs from its trunk after killing it.", combatGear, runeAxe);
 		entYew.addAlternateNpcs(NpcID.ENT_TRUNK);
 
 		moveToSlayer1 = new ObjectStep(this, ObjectID.STAIRS_40388, new WorldPoint(3260, 3665, 0),
 			"Enter the Wilderness Slayer Cave.", combatGear, food);
 		killAnkou = new NpcStep(this, NpcID.ANKOU_7864, new WorldPoint(3373, 10073, 0),
-			"Kill an Ankou.", true, combatGear, food);
+			"Kill an Ankou in the Wilderness Slayer Cave.", true, combatGear, food);
 
 		moveToSlayer2 = new ObjectStep(this, ObjectID.STAIRS_40388, new WorldPoint(3260, 3665, 0),
 			"Enter the Wilderness Slayer Cave.", combatGear, food, antiDragonShield);
 		killGreenDrag = new NpcStep(this, NpcID.GREEN_DRAGON_7868, new WorldPoint(3412, 10066, 0),
-			"Kill a Green dragon.", true, combatGear, food, antiDragonShield);
+			"Kill a Green dragon in the Wilderness Slayer Cave.", true, combatGear, food, antiDragonShield);
 		killGreenDrag.addAlternateNpcs(NpcID.GREEN_DRAGON_7869, NpcID.GREEN_DRAGON_7870);
 
 		moveToGodWars = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
@@ -216,13 +214,13 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			"Kill a Bloodveld in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 
 		mineMith = new ObjectStep(this, ObjectID.ROCKS_11373, new WorldPoint(3057, 3944, 0),
-			"Mine mithril in the wilderness.", pickaxe);
+			"Mine mithril in the Wilderness.", pickaxe);
 
 		wildyAgi = new ObjectStep(this, ObjectID.DOOR_23555, new WorldPoint(2998, 3917, 0),
 			"Complete a lap of the Wilderness Agility Course.");
 
 		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
-			"Enter to the Edgeville dungeon.");
+			"Enter to the Edgeville Dungeon.");
 		earthOrb = new ObjectStep(this, ObjectID.OBELISK_OF_EARTH, new WorldPoint(3087, 9933, 0),
 			"Cast charge earth orb on the Obelisk of Earth.", unpoweredOrb, earthRune.quantity(30),
 			cosmicRune.quantity(3));
@@ -245,8 +243,6 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC, new WorldPoint(3121, 3518, 0),
 			"Talk to Lesser Fanatic in Edgeville to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
-
-
 	}
 
 	@Override

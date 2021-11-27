@@ -85,7 +85,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 
 	QuestStep claimReward, killMammoth, chaosAltar, lowAlch, chaosTemple, wildyLever, earthWarrior,
 		demonicPrayer, enterKBDLair, spiderEggs, enterAbyss, ironOre, equipTeamCape, moveToWildy, moveToFount,
-		moveToEdge, abyssEnable, moveToRedSpiders, enterKBDLair2;
+		moveToEdgeSpider, moveToEdgeEarth, abyssEnable, enterKBDLair2;
 
 	Zone wildy, fount, edge, eggs, kbd;
 
@@ -106,11 +106,10 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notChaosTemple, chaosTemple);
 		doEasy.addStep(new Conditions(notEquipTeamCape, inWildy), equipTeamCape);
 		doEasy.addStep(notEquipTeamCape, moveToWildy);
-		doEasy.addStep(new Conditions(notSpiderEggs, inEggs), spiderEggs);
-		doEasy.addStep(new Conditions(notSpiderEggs, inEdge), moveToRedSpiders);
-		doEasy.addStep(notSpiderEggs, moveToEdge);
+		doEasy.addStep(new Conditions(notSpiderEggs, new Conditions(LogicType.OR, inEdge, inEggs)), spiderEggs);
+		doEasy.addStep(notSpiderEggs, moveToEdgeSpider);
 		doEasy.addStep(new Conditions(notEarthWarrior, inEdge), earthWarrior);
-		doEasy.addStep(notEarthWarrior, moveToEdge);
+		doEasy.addStep(notEarthWarrior, moveToEdgeEarth);
 		doEasy.addStep(notWildyLever, wildyLever);
 		doEasy.addStep(new Conditions(notLowAlch, inFount), lowAlch);
 		doEasy.addStep(notLowAlch, moveToFount);
@@ -176,20 +175,24 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		killMammoth = new NpcStep(this, NpcID.MAMMOTH, new WorldPoint(3164, 3593, 0),
-			"Kill a Mammoth in the wilderness.", combatGear);
+			"Kill a Mammoth in the Wilderness.", combatGear);
 
-		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
-			"Enter to the Edgeville dungeon.", combatGear, food);
+		moveToEdgeSpider = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+			"Enter the Edgeville dungeon." food);
 
-		moveToWildy = new DetailedQuestStep(this, "Enter the wilderness.", teamCape);
+		moveToEdgeEarth = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+			"Enter the Edgeville dungeon.", combatGear, food);
+
+		moveToWildy = new DetailedQuestStep(this, "Enter the Wilderness.", teamCape);
 		equipTeamCape = new DetailedQuestStep(this, "Equip a team cape. If you already have one on, re-equip it.",
-			teamCape);
+			teamCape.equipped());
 
 		chaosTemple = new ObjectStep(this, 34822, new WorldPoint(3060, 3591, 0),
-			"Travel to the chaos altar or go through the abyss.");
+			"Enter the chaos altar north of Edgeville with a chaos talisman/tiara, or enter it through the Abyss.");
 		chaosTemple.addIcon(ItemID.CHAOS_TALISMAN);
 
-		moveToFount = new DetailedQuestStep(this, new WorldPoint(3373, 3893, 0), "Go to the Fountain of Rune");
+		moveToFount = new DetailedQuestStep(this, new WorldPoint(3373, 3893, 0), "Go to the Fountain of Rune, with an" +
+			" item you can cast Low Alchemy on.");
 		lowAlch = new DetailedQuestStep(this, "Cast Low Alchemy on anything. Be sure to bring something alch-able.");
 
 		abyssEnable = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3385, 0),
@@ -200,29 +203,29 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		ironOre = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3104, 3570, 0),
 			"Mine iron in the Wilderness.", pickaxe);
 
-		spiderEggs = new ItemStep(this, "Pickup 5 red spider eggs in the Edgeville dungeon.", redSpiderEggs);
-		moveToRedSpiders = new DetailedQuestStep(this, new WorldPoint(3123, 9953, 0),
-			"Move to the red spiders.");
+		spiderEggs = new ItemStep(this, new WorldPoint(3122, 9953, 0), "Pickup 5 red spider eggs in the Edgeville " +
+			"Wilderness Dungeon.",	redSpiderEggs);
 
 		earthWarrior = new NpcStep(this, NpcID.EARTH_WARRIOR, new WorldPoint(3121, 9972, 0),
-			"Kill an Earth warrior.", combatGear, food);
+			"Kill an Earth warrior in the north of the Edgeville Wilderness Dungeon.", combatGear, food);
 
 		wildyLever = new ObjectStep(this, ObjectID.LEVER_26761, new WorldPoint(3090, 3475, 0),
 			"Pull the Lever in Edgeville. This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
 
 		demonicPrayer = new DetailedQuestStep(this, new WorldPoint(3288, 3886, 0),
-			"Restore prayer at the Demonic Ruins. You must be at less than your max prayer points.");
+			"Stand in the Demonic Ruins until the ruins automatically restore a prayer point for you. You must be at " +
+				"less than your max prayer points.");
 
 		chaosAltar = new ObjectStep(this, ObjectID.CHAOS_ALTAR_411, new WorldPoint(2947, 3821, 0),
 			"Pray at the Chaos Altar.");
 
 		enterKBDLair = new ObjectStep(this, ObjectID.LADDER_18987, new WorldPoint(3017, 3849, 0),
-			"Climb down the ladder that leads to the King black dragon Lair.", oneClick);
+			"Climb down the ladder that leads to the King Black Dragon Lair.", oneClick);
 		enterKBDLair2 = new ObjectStep(this, ObjectID.LEVER_1816, new WorldPoint(3067, 10253, 0),
-			"Pull the lever.", oneClick);
+			"Pull the lever to enter the King Black Dragon lair.", oneClick);
 
 		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC, new WorldPoint(3121, 3518, 0),
-			"Talk to Lesser Fanatic in Edgeville to claim your reward!");
+			"Talk to the Lesser Fanatic in Edgeville to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
 
@@ -243,8 +246,8 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.AGILITY, 15));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 21));
-		reqs.add(new SkillRequirement(Skill.MINING, 15));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 21, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 15, true));
 
 		reqs.add(enterTheAbyss);
 
@@ -303,11 +306,11 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		teamCapeSteps.setDisplayCondition(notEquipTeamCape);
 		allSteps.add(teamCapeSteps);
 
-		PanelDetails eggsSteps = new PanelDetails("Spider Eggs", Arrays.asList(moveToEdge, spiderEggs), food);
+		PanelDetails eggsSteps = new PanelDetails("Spider Eggs", Arrays.asList(moveToEdgeSpider, spiderEggs), food);
 		eggsSteps.setDisplayCondition(notSpiderEggs);
 		allSteps.add(eggsSteps);
 
-		PanelDetails earthWarriorSteps = new PanelDetails("Earth Warrior", Arrays.asList(moveToEdge, earthWarrior),
+		PanelDetails earthWarriorSteps = new PanelDetails("Earth Warrior", Arrays.asList(moveToEdgeEarth, earthWarrior),
 			new SkillRequirement(Skill.AGILITY, 15), combatGear, food);
 		earthWarriorSteps.setDisplayCondition(notEarthWarrior);
 		allSteps.add(earthWarriorSteps);

@@ -617,7 +617,7 @@ public class Watchtower extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Gorad (level 59)");
+		reqs.add("Gorad (level 68)");
 		reqs.add("Able to survive blue dragons, ogres, and greater demons attacking you");
 		return reqs;
 	}

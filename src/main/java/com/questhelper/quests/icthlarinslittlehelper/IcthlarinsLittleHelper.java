@@ -69,7 +69,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar,
-		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions;
+		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions, antipoison;
 
 	Requirement catFollower;
 
@@ -232,6 +232,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
@@ -420,7 +421,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions);
+		return Arrays.asList(combatGear, food, prayerPotions, antipoison);
 	}
 
 	@Override

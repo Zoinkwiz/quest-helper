@@ -70,7 +70,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	ItemRequirement coins1000, knife, emerald, chisel, enchantEmeraldRunesOrTablet, rodOfIvandis, pestleAndMortarHighlighted, vialOfWater,
 		combatGear, airRune3, airStaff, cosmicRune, enchantTablet, enchantRunes, vial, herb, meatHighlighted, crushedMeat, unfinishedPotion,
 		unfinishedBloodPotion, potion, bloodPotion, bloodVial, oldNotes, flaygianNotes, sickleB, chain, emeraldSickleB, enchantedEmeraldSickleB,
-		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food;
+		ivandisFlail, rodOfIvandisHighlighted, ivandisFlailEquipped, emeraldHighlighted, vialOfWaterNoTip, food, pickaxe;
 
 	Requirement inMyrequeBase, inTheatreP1, inTheatreP2, inTheatreP3, inTheatreP4, inTheatreP5, inTheatreP6,
 		inSerafinaHouse, inNewBase, inRanisFight, wallPressed, hasVialOrVialOfWater;
@@ -251,6 +251,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		airRune3 = new ItemRequirement("Air rune", ItemCollections.getAirRune(), 3);
 		airStaff = new ItemRequirement("Air staff", ItemCollections.getAirStaff());
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		enchantRunes = new ItemRequirements("Emerald enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", airRune3, airStaff), cosmicRune);
 		enchantTablet = new ItemRequirement("Emerald enchant tablet", ItemID.ENCHANT_EMERALD_OR_JADE);
 		enchantEmeraldRunesOrTablet = new ItemRequirements(LogicType.OR, "Runes or tablet for Enchant Emerald", enchantRunes, enchantTablet);
@@ -539,6 +541,12 @@ public class ATasteOfHope extends BasicQuestHelper
 	{
 		return Arrays.asList(coins1000, vialOfWaterNoTip, rodOfIvandis, emerald, chisel,
 			enchantEmeraldRunesOrTablet, combatGear);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(pickaxe);
 	}
 
 	@Override

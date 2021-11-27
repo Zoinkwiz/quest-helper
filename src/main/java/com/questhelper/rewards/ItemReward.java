@@ -29,31 +29,42 @@ import javax.annotation.Nonnull;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 
-public class ItemReward implements Reward {
-    private final String name;
-    private final int itemID;
-    private final int quantity;
+public class ItemReward implements Reward
+{
+	private final String name;
+	private final int itemID;
+	private final int quantity;
 
-    public ItemReward(String name, int itemID, int quantity) {
-        this.name = name;
-        this.itemID = itemID;
-        this.quantity = quantity;
-    }
+	public ItemReward(String name, int itemID, int quantity)
+	{
+		this.name = name;
+		this.itemID = itemID;
+		this.quantity = quantity;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public ItemReward(String name, int itemID)
+	{
+		this.name = name;
+		this.itemID = itemID;
+		this.quantity = 1;
+	}
 
-    @Nonnull
-    @Override
-    public RewardType rewardType() {
-        return RewardType.ITEM;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    @Nonnull
-    @Override
-    public String getDisplayText()
-    {
-        return getName();
-    }
+	@Nonnull
+	@Override
+	public RewardType rewardType()
+	{
+		return RewardType.ITEM;
+	}
+
+	@Nonnull
+	@Override
+	public String getDisplayText()
+	{
+		return getName();
+	}
 }

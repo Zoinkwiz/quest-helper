@@ -213,7 +213,7 @@ public class OlafsQuest extends BasicQuestHelper
 	{
 		talkToOlaf = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Talk to Olaf Hradson north east of Rellekka.");
 		talkToOlaf.addDialogStep("Yes.");
-		chopTree = new ObjectStep(this, ObjectID.WINDSWEPT_TREE_18137, new WorldPoint(2749, 3735, 0), "Chop a log from the Swaying Tree east of Olaf.", axe);
+		chopTree = new ObjectStep(this, ObjectID.WINDSWEPT_TREE_18137, new WorldPoint(2749, 3735, 0), "Chop a log from the Windswept Tree east of Olaf.", axe);
 		giveLogToOlaf = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Bring the logs to Olaf Hradson north east of Rellekka.", windsweptLogs);
 		talkToIngrid = new NpcStep(this, NpcID.INGRID_HRADSON, new WorldPoint(2670, 3670, 0), "Talk to Ingrid Hradson in Rellekka.", crudeCarving);
 		talkToVolf = new NpcStep(this, NpcID.VOLF_OLAFSON, new WorldPoint(2662, 3700, 0), "Talk to Volf Hradson in Rellekka.", cruderCarving);
@@ -222,7 +222,7 @@ public class OlafsQuest extends BasicQuestHelper
 		useDampPlanks = new ObjectStep(this, NullObjectID.NULL_14172, new WorldPoint(2724, 3728, 0), "Use the damp planks on Olaf's embers.", dampPlanks);
 		talkToOlafAfterPlanks = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Talk to Olaf again, and give him some food.", food);
 		talkToOlafAfterPlanks.addDialogStep("Alright, here, have some food. Now give me the map.");
-		digHole = new DigStep(this, new WorldPoint(2748, 3732, 0), "Dig next to the windswept tree.");
+		digHole = new DigStep(this, new WorldPoint(2748, 3732, 0), "Dig next to the Windswept Tree.");
 
 		killSkeleton = new NpcStep(this, NpcID.SKELETON_FREMENNIK, new WorldPoint(2727, 10141, 0), "Go deeper into the caverns and kill a Skeleton Fremennik for a key.", true);
 		killSkeleton.addAlternateNpcs(NpcID.SKELETON_FREMENNIK_4492, NpcID.SKELETON_FREMENNIK_4493, NpcID.SKELETON_FREMENNIK_4494, NpcID.SKELETON_FREMENNIK_4495,

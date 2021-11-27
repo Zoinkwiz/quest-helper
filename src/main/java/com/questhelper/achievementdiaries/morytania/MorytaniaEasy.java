@@ -95,7 +95,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notKillGhoul, killGhoul);
 		doEasy.addStep(notEnterSwamp, enterSwamp);
 		doEasy.addStep(notCraftSnelm, craftSnelm);
-		doEasy.addStep(new Conditions(notRestorePrayer, inGrotto), moveToGrotto);
+		doEasy.addStep(new Conditions(notRestorePrayer, inGrotto), restorePrayer);
 		doEasy.addStep(notRestorePrayer, moveToGrotto);
 		doEasy.addStep(notKillBanshee, killBanshee);
 		doEasy.addStep(notSbottTan, sbottTan);
@@ -167,7 +167,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		killGhoul = new NpcStep(this, NpcID.GHOUL, new WorldPoint(3434, 3461, 0),
-			"Kill a ghoul in Morytania.");
+			"Kill a ghoul in Morytania.", combatGear);
 		enterSwamp = new ObjectStep(this, ObjectID.GATE_3507, new WorldPoint(3443, 3458, 0),
 			"Enter the Mort Myre Swamp.");
 		craftSnelm = new ItemStep(this, "Craft a snelm in Morytania. Note: Do not be in the swamp when completing " +
@@ -179,7 +179,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 			"Pray at the altar.");
 
 		killBanshee = new NpcStep(this, NpcID.BANSHEE, new WorldPoint(3436, 3550, 0),
-			"Kill a banshee.", earProtection, combatGear);
+			"Kill a banshee.", earProtection.equipped(), combatGear);
 
 		killWerewolf = new NpcStep(this, NpcID.ZOJA, new WorldPoint(3501, 3488, 0),
 			"Kill any attackable NPC in Canifis with the wolfbane dagger.", wolfbane.equipped());
@@ -189,7 +189,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 			"Tan a hide using Sbott's services.", tannableHide, coins.quantity(45));
 
 		placeScarecrow = new ObjectStep(this, 7850, new WorldPoint(3602, 3526, 0),
-			"Place a scarecrow at the Morytania flower patch, West of Port Phasmatys.", scarecrow);
+			"Place a scarecrow at the Morytania flower patch, West of Port Phasmatys.", scarecrow.highlighted());
 		placeScarecrow.addIcon(ItemID.SCARECROW);
 
 		moveToBonemeal = new ObjectStep(this, ObjectID.STAIRCASE_16646, new WorldPoint(3667, 3520, 0),
@@ -246,7 +246,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a Ghoul (lvl 42), Banshee (lvl 23), and Werewolf in human form (lvl 24)");
+		return Arrays.asList("Ghoul (lvl 42)", "Banshee (lvl 23)", "Werewolf in human form (lvl 24)");
 	}
 
 	@Override

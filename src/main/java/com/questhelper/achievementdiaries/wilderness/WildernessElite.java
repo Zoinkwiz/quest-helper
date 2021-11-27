@@ -26,7 +26,6 @@ package com.questhelper.achievementdiaries.wilderness;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -34,14 +33,11 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -54,10 +50,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -213,7 +207,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 		smeltBar = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
 			"Smelt the ore into runite bars.", hammer, runeOre.quantity(2), coal.quantity(16));
 		runeScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
-			"Smith an adamantite scimitar in the Resource Area.", hammer, runeBar.quantity(2));
+			"Smith a runite scimitar in the Resource Area.", hammer, runeBar.quantity(2));
 
 		moveToResource3 = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), lobsterPot, darkFishingBait);
@@ -228,7 +222,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 		moveToGodWars2 = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 0),
-			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
+			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the west.",
 			combatGear, food, godEquip);
 		spiritMage = new NpcStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(3050, 10131, 0),
 			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
@@ -287,8 +281,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Callisto (lvl 470), Venenatis (lvl 464), Vet'ion (lvl 454), Runite Golem " +
-			"(lvl 178),  Spiritual Mage (lvl 121)");
+		return Arrays.asList("Callisto (lvl 470)", "Venenatis (lvl 464)", "Vet'ion (lvl 454)",
+			"Runite Golem (lvl 178)", "Spiritual Mage (lvl 121)");
 	}
 
 	@Override

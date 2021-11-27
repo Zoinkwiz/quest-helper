@@ -275,8 +275,8 @@ public class WildernessHard extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Chaos Elemental (lvl 305), Crazy archaeologist (lvl 204), Chaos Fanatic " +
-			"(lvl 202), Lava dragon (lvl 252), Scorpia (lvl 225), Spiritual warrior (lvl 115-134)");
+		return Arrays.asList("Chaos Elemental (lvl 305)", "Crazy archaeologist (lvl 204)",
+			"Chaos Fanatic (lvl 202)", "Lava dragon (lvl 252)", "Scorpia (lvl 225)", "Spiritual warrior (lvl 115-134)");
 	}
 
 	@Override

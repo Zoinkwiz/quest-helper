@@ -145,7 +145,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
 			.showConditioned(notWildyGWBloodveld);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes())
-			.showConditioned(new Conditions(LogicType.OR, notGoldHelm, notMineMith));
+			.showConditioned(notMineMith);
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notEarthOrb);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notEarthOrb);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notEarthOrb);
@@ -163,7 +163,6 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
 		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 
-		// TODO: implement skillRequirements to check for 60 str or 60 agi
 		enterGodwars = new ComplexRequirement(LogicType.OR,"60 Strength or Agility",
 			new SkillRequirement(Skill.AGILITY,	60),
 			new SkillRequirement(Skill.STRENGTH, 60));
@@ -229,7 +228,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			"Speak with the Emblem Trader.");
 
 		goldHelm = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
-			"Smith the gold helmet in the Resource Area.", hammer, goldBar.quantity(3));
+			"Smith the gold helmet in the Resource Area. If you already have one in your bank you will need to drop " +
+				"it first.", hammer, goldBar.quantity(3));
 		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(7500), hammer, barsOrPick);
 		smeltGoldOre = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
@@ -279,7 +279,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Bloodveld (lvl 81), Green dragon (lvl 88), Ankou (lvl 98), Ent (lvl 101)");
+		return Arrays.asList("Bloodveld (lvl 81)", "Green dragon (lvl 88)", "Ankou (lvl 98)",
+			"Ent (lvl 101)");
 	}
 
 	@Override

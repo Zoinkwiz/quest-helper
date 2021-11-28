@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.quests.lairoftarnrazorlor.TarnRoute;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -39,7 +40,6 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -78,16 +78,13 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	Requirement notSwampLizard, notCanifisAgi, notHollowTree, notDragontoothIsland, notTerrorDog, notTroubleBrewing,
 		notSwampBoaty, notCannonBall, notFeverSpider, notEctophialTP, notGuthBalance;
 
+	TarnRoute getToTerrorDogs;
+
 	QuestStep claimReward, swampLizard, canifisAgi, hollowTree, dragontoothIsland, troubleBrewing,
-		swampBoaty, cannonBall, feverSpider, ectophialTP, guthBalance, enterHauntedMine, enterLair, searchWall2Room1,
-		goThroughRoom1, goThroughRoom3, goThroughRoom4, goThroughRoom5, jumpToPillar1, jumpToPillar2, jumpToPillar3,
-		jumpToPillar4, jumpToPillar5, jumpToPillar6, jumpToSwitch, pressSwitch, jumpBackToPillar4, jumpBackToPillar3,
-		jumpToNorthLedge, searchWallRoom6, searchWall2Room6, goThroughRoom6, leaveExtraRoom1, leaveExtraRoom2,
-		goThroughRoom7, enterBossRoom, moveToMine, moveToBrainDeath, moveToDownstairs, moveToCapt, moveToMos;
+		swampBoaty, cannonBall, feverSpider, ectophialTP, guthBalance,
+		moveToMine, moveToBrainDeath, moveToDownstairs, moveToCapt, moveToMos;
 
 	NpcStep terrorDog;
-
-	DetailedQuestStep searchWallRoom1, goThroughRoom2;
 
 	Zone hauntedMineZone, room1, room1PastTrap1, room1PastTrap2, room2, room3, room4, room5P1, room5P2, room6P1,
 		room6P2, room6P3, pillar1, pillar2, pillar3, pillar4, switch1, pillar5, pillar6, room6PastTrap1,
@@ -109,31 +106,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
 		doMedium.addStep(notSwampBoaty, swampBoaty);
 		doMedium.addStep(new Conditions(notTerrorDog, inBossRoom), terrorDog);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom8), enterBossRoom);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom7), goThroughRoom7);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom6PastTrap2), goThroughRoom6);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom6PastTrap1), searchWall2Room6);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom6P2), searchWallRoom6);
-		doMedium.addStep(new Conditions(notTerrorDog, onPillar6), jumpToNorthLedge);
-		doMedium.addStep(new Conditions(notTerrorDog, onPillar5), jumpToPillar6);
-		doMedium.addStep(new Conditions(onPillar3, switchPressed), jumpToPillar5);
-		doMedium.addStep(new Conditions(onPillar4, switchPressed), jumpBackToPillar3);
-		doMedium.addStep(new Conditions(atSwitch1, switchPressed), jumpBackToPillar4);
-		doMedium.addStep(new Conditions(notTerrorDog, atSwitch1), pressSwitch);
-		doMedium.addStep(new Conditions(notTerrorDog, onPillar4), jumpToSwitch);
-		doMedium.addStep(new Conditions(notTerrorDog, onPillar3), jumpToPillar4);
-		doMedium.addStep(new Conditions(notTerrorDog, onPillar2), jumpToPillar3);
-		doMedium.addStep(new Conditions(notTerrorDog, onPillar1), jumpToPillar2);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom6P1), jumpToPillar1);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom5), goThroughRoom5);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom4), goThroughRoom4);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom3), goThroughRoom3);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom2), goThroughRoom2);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom1PastTrap2), goThroughRoom1);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom1PastTrap1), searchWall2Room1);
-		doMedium.addStep(new Conditions(notTerrorDog, inRoom1), searchWallRoom1);
-		doMedium.addStep(new Conditions(notTerrorDog, inHauntedMineZone), enterLair);
-		doMedium.addStep(notTerrorDog, moveToMine);
+		doMedium.addStep(notTerrorDog, getToTerrorDogs);
 		doMedium.addStep(notCanifisAgi, canifisAgi);
 		doMedium.addStep(notSwampLizard, swampLizard);
 		doMedium.addStep(notEctophialTP, ectophialTP);
@@ -271,98 +244,11 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		// Shoutout to zoinkwiz for the route below from the lair of tarn razorlor miniquest
-		enterHauntedMine = new ObjectStep(this, ObjectID.CART_TUNNEL, new WorldPoint(3440, 3232, 0),
-			"Enter the Haunted Mine. If you have a Slayer Ring, instead teleport to Tarn's Lair to skip most of the quest.");
-		enterLair = new ObjectStep(this, ObjectID.ENTRANCE_15833, new WorldPoint(3424, 9661, 0),
-			"Enter the entrance to the north.");
-		searchWallRoom1 = new ObjectStep(this, ObjectID.WALL_20588, new WorldPoint(3196, 4557, 0),
-			"Follow the path west then north, and go through the door you reach.");
-		searchWallRoom1.setLinePoints(Arrays.asList(
-			new WorldPoint(3166, 4547, 0),
-			new WorldPoint(3166, 4550, 0),
-			new WorldPoint(3175, 4550, 0),
-			new WorldPoint(3175, 4549, 0),
-			new WorldPoint(3184, 4549, 0),
-			new WorldPoint(3184, 4548, 0),
-			new WorldPoint(3189, 4548, 0),
-			new WorldPoint(3190, 4547, 0),
-			new WorldPoint(3191, 4548, 0),
-			new WorldPoint(3190, 4550, 0),
-			new WorldPoint(3190, 4555, 0),
-			new WorldPoint(3196, 4555, 0),
-			new WorldPoint(3196, 4556, 0)
-		));
-		searchWall2Room1 = new ObjectStep(this, ObjectID.WALL_20588, new WorldPoint(3197, 4562, 0),
-			"Follow the path west then north, and go through the door you reach.");
-		goThroughRoom1 = new ObjectStep(this, ObjectID.PASSAGEWAY_20517, new WorldPoint(3195, 4571, 0),
-			"Follow the path west then north, and go through the door you reach.");
-		goThroughRoom1.addSubSteps(searchWallRoom1, searchWall2Room1);
-		goThroughRoom2 = new ObjectStep(this, ObjectID.PASSAGEWAY_20513, new WorldPoint(3174, 4577, 1),
-			"Continue out the west of this room.");
-		goThroughRoom2.setLinePoints(Arrays.asList(
-			new WorldPoint(3195, 4575, 1),
-			new WorldPoint(3195, 4579, 1),
-			new WorldPoint(3196, 4580, 1),
-			new WorldPoint(3195, 4581, 1),
-			new WorldPoint(3195, 4585, 1),
-			new WorldPoint(3182, 4585, 1),
-			new WorldPoint(3181, 4586, 1),
-			new WorldPoint(3176, 4586, 1),
-			new WorldPoint(3176, 4583, 1),
-			new WorldPoint(3175, 4582, 1),
-			new WorldPoint(3175, 4577, 1)
-		));
-		goThroughRoom3 = new ObjectStep(this, ObjectID.PASSAGEWAY_20523, new WorldPoint(3168, 4580, 0),
-			"Go through the north door.");
-		goThroughRoom4 = new ObjectStep(this, ObjectID.PASSAGEWAY_20525, new WorldPoint(3165, 4589, 0),
-			"Go through the west door.");
-		leaveExtraRoom1 = new ObjectStep(this, ObjectID.PASSAGEWAY_20531, new WorldPoint(3168, 4596, 0),
-			"Go into the south door.");
-		leaveExtraRoom2 = new ObjectStep(this, ObjectID.PASSAGEWAY_20529, new WorldPoint(3150, 4598, 0),
-			"Go into the east passageway.");
-		goThroughRoom5 = new ObjectStep(this, ObjectID.PASSAGEWAY_20533, new WorldPoint(3154, 4597, 1),
-			"Go through the north door.");
-		goThroughRoom5.addSubSteps(leaveExtraRoom1, leaveExtraRoom2);
-		jumpToPillar1 = new ObjectStep(this, ObjectID.PILLAR_20543, new WorldPoint(3148, 4595, 1),
-			"Jump across the pillars to the west ledge.");
-		jumpToPillar2 = new ObjectStep(this, ObjectID.PILLAR_20544, new WorldPoint(3146, 4595, 1),
-			"Jump across the pillars.");
-		jumpToPillar3 = new ObjectStep(this, ObjectID.PILLAR_20545, new WorldPoint(3144, 4595, 1),
-			"Jump across the pillars.");
-		jumpToPillar4 = new ObjectStep(this, ObjectID.PILLAR_20546, new WorldPoint(3142, 4595, 1),
-			"Jump across the pillars.");
-		jumpToSwitch = new ObjectStep(this, ObjectID.LEDGE_20562, new WorldPoint(3140, 4595, 1),
-			"Jump to the ledge.");
-		jumpToPillar1.addSubSteps(jumpToPillar2, jumpToPillar3, jumpToPillar4, jumpToSwitch);
-		pressSwitch = new ObjectStep(this, ObjectID.FLOOR_20634, new WorldPoint(3138, 4595, 1),
-			"Search the floor.");
-		jumpBackToPillar4 = new ObjectStep(this, ObjectID.PILLAR_20546, new WorldPoint(3142, 4595, 1),
-			"Jump across the pillars to the north side.");
-		jumpBackToPillar3 = new ObjectStep(this, ObjectID.PILLAR_20545, new WorldPoint(3144, 4595, 1),
-			"Jump across the pillars to the north side.");
-		jumpToPillar5 = new ObjectStep(this, ObjectID.PILLAR_20547, new WorldPoint(3144, 4597, 1),
-			"Jump across the pillars to the north side.");
-		jumpToPillar6 = new ObjectStep(this, ObjectID.PILLAR_20548, new WorldPoint(3144, 4599, 1),
-			"Jump across the pillars to the north side.");
-		jumpToNorthLedge = new ObjectStep(this, ObjectID.LEDGE_20563, new WorldPoint(3144, 4601, 1),
-			"Jump across the pillars to the north side.");
-		jumpToNorthLedge.addSubSteps(jumpBackToPillar3, jumpBackToPillar4, jumpToPillar5, jumpToPillar6);
-		searchWallRoom6 = new ObjectStep(this, ObjectID.WALL_20590, new WorldPoint(3149, 4604, 1),
-			"Follow the path to the east.");
-		searchWall2Room6 = new ObjectStep(this, ObjectID.WALL_20590, new WorldPoint(3154, 4605, 1),
-			"Follow the path to the east.");
-		goThroughRoom6 = new ObjectStep(this, ObjectID.PASSAGEWAY_20535, new WorldPoint(3176, 4598, 1),
-			"Follow the path to the east.");
-		goThroughRoom6.addSubSteps(searchWallRoom6, searchWall2Room6);
-		goThroughRoom7 = new ObjectStep(this, ObjectID.STAIRS_17098, new WorldPoint(3193, 4598, 1),
-			"Activate Protect from Magic and jump across the pillars. Go down the stairs.", protectFromMagic);
-		enterBossRoom = new ObjectStep(this, ObjectID.PASSAGEWAY_20539, new WorldPoint(3185, 4602, 0),
-			"Enter the north passageway, and be prepared to fight.");
+		getToTerrorDogs = new TarnRoute(this);
 		moveToMine = new ObjectStep(this, ObjectID.CART_TUNNEL, new WorldPoint(3440, 3232, 0),
-			"Enter the haunted mine or use slayer ring to teleport directly to Tarn's Lair.");
+			"Enter the Haunted Mine or use slayer ring to teleport directly to Tarn's Lair.");
 		terrorDog = new NpcStep(this, NpcID.TERROR_DOG, new WorldPoint(3149, 4652, 0),
-			"Kill a terror dog. You can enter the room with the diary to safe zone.", true);
+			"Kill a terror dog. You can enter the room with the diary if you need a safe zone.", true);
 		terrorDog.addAlternateNpcs(NpcID.TERROR_DOG_6474);
 
 		canifisAgi = new ObjectStep(this, ObjectID.TALL_TREE_14843, new WorldPoint(3507, 3489, 0),
@@ -459,8 +345,9 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		swampBoatySteps.setDisplayCondition(notSwampBoaty);
 		allSteps.add(swampBoatySteps);
 
-		PanelDetails terrorDogSteps = new PanelDetails("Terror Dog", Collections.singletonList(terrorDog),
+		PanelDetails terrorDogSteps = new PanelDetails("Terror Dog", getToTerrorDogs.getDisplaySteps(),
 			lairOfTarnRaz, combatGear, food);
+		terrorDogSteps.addSteps(terrorDog);
 		terrorDogSteps.setDisplayCondition(notTerrorDog);
 		allSteps.add(terrorDogSteps);
 

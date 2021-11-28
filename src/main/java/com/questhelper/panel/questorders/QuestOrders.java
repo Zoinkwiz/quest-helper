@@ -113,7 +113,7 @@ public class QuestOrders
 		QuestHelperQuest.MAKING_HISTORY,
 		QuestHelperQuest.ONE_SMALL_FAVOUR,
 		QuestHelperQuest.ENTER_THE_ABYSS,
-		//QuestHelperQuest.WILDERNESS_EASY,
+		QuestHelperQuest.WILDERNESS_EASY,
 		QuestHelperQuest.WANTED,
 		QuestHelperQuest.DESERT_EASY,
 		QuestHelperQuest.A_TAIL_OF_TWO_CATS,
@@ -222,7 +222,7 @@ public class QuestOrders
 		QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS,
 		QuestHelperQuest.SWAN_SONG,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
-		//QuestHelperQuest.WILDERNESS_MEDIUM,
+		QuestHelperQuest.WILDERNESS_MEDIUM,
 		QuestHelperQuest.DEVIOUS_MINDS,
 		QuestHelperQuest.GRIM_TALES,
 		QuestHelperQuest.DREAM_MENTOR,
@@ -261,11 +261,11 @@ public class QuestOrders
 		QuestHelperQuest.MORYTANIA_HARD,
 		QuestHelperQuest.MORYTANIA_ELITE,
 		QuestHelperQuest.VARROCK_HARD,
-		QuestHelperQuest.VARROCK_ELITE
+		QuestHelperQuest.VARROCK_ELITE,
 		//QuestHelperQuest.WESTERN_HARD,
 		//QuestHelperQuest.WESTERN_ELITE,
-		//QuestHelperQuest.WILDERNESS_HARD,
-		//QuestHelperQuest.WILDERNESS_ELITE
+		QuestHelperQuest.WILDERNESS_HARD,
+		QuestHelperQuest.WILDERNESS_ELITE
 	);
 	@Getter
 	private static final List<QuestHelperQuest> optimalIronmanOrder = ImmutableList.of(
@@ -414,7 +414,7 @@ public class QuestOrders
 		QuestHelperQuest.FALADOR_EASY,
 		QuestHelperQuest.VARROCK_EASY,
 		QuestHelperQuest.FREMENNIK_EASY,
-		//QuestHelperQuest.WILDERNESS_EASY,
+		QuestHelperQuest.WILDERNESS_EASY,
 		QuestHelperQuest.DESERT_EASY,
 		//QuestHelperQuest.ARDOUGNE_EASY,
 		QuestHelperQuest.LUMBRIDGE_EASY,
@@ -443,7 +443,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
 		QuestHelperQuest.GRIM_TALES,
 		QuestHelperQuest.DREAM_MENTOR,
-		//QuestHelperQuest.WILDERNESS_MEDIUM,
+		QuestHelperQuest.WILDERNESS_MEDIUM,
 		QuestHelperQuest.KARAMJA_MEDIUM,
 		//QuestHelperQuest.KOUREND_MEDIUM,
 		QuestHelperQuest.LUMBRIDGE_MEDIUM,
@@ -495,11 +495,11 @@ public class QuestOrders
 		QuestHelperQuest.MORYTANIA_HARD,
 		QuestHelperQuest.MORYTANIA_ELITE,
 		QuestHelperQuest.VARROCK_HARD,
-		QuestHelperQuest.VARROCK_ELITE
+		QuestHelperQuest.VARROCK_ELITE,
 		//QuestHelperQuest.WESTERN_HARD,
 		//QuestHelperQuest.WESTERN_ELITE,
-		//QuestHelperQuest.WILDERNESS_HARD,
-		//QuestHelperQuest.WILDERNESS_ELITE
+		QuestHelperQuest.WILDERNESS_HARD,
+		QuestHelperQuest.WILDERNESS_ELITE
 	);
 
 	public static String normalizeQuestName(String questName)

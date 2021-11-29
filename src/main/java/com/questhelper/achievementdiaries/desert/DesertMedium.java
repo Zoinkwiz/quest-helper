@@ -225,7 +225,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		talkToSimon = new NpcStep(this, NpcID.SIMON_TEMPLETON, new WorldPoint(3346, 2827, 0),
 			"Talk to Simon Templeton.");
 		moveToPyramid = new ObjectStep(this, ObjectID.CLIMBING_ROCKS_11948, new WorldPoint(3335, 2829, 0),
-			"Go the the Agility Pyramid.");
+			"Go to the Agility Pyramid.");
 		agiPyramid = new ObjectStep(this, ObjectID.STAIRS_10857, new WorldPoint(3355, 2832, 0),
 			"Climb the Agility Pyramid and collect the pyramid top. Be sure to click continue in the dialog.");
 

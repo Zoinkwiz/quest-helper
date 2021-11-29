@@ -113,7 +113,7 @@ public class QuestOrders
 		QuestHelperQuest.MAKING_HISTORY,
 		QuestHelperQuest.ONE_SMALL_FAVOUR,
 		QuestHelperQuest.ENTER_THE_ABYSS,
-		//QuestHelperQuest.WILDERNESS_EASY,
+		QuestHelperQuest.WILDERNESS_EASY,
 		QuestHelperQuest.WANTED,
 		QuestHelperQuest.DESERT_EASY,
 		QuestHelperQuest.A_TAIL_OF_TWO_CATS,
@@ -147,7 +147,7 @@ public class QuestOrders
 		QuestHelperQuest.KANDARIN_EASY,
 		QuestHelperQuest.FALADOR_EASY,
 		QuestHelperQuest.LUMBRIDGE_EASY,
-		//QuestHelperQuest.MORYTANIA_EASY,
+		QuestHelperQuest.MORYTANIA_EASY,
 		QuestHelperQuest.VARROCK_EASY,
 		QuestHelperQuest.THE_TOURIST_TRAP,
 		QuestHelperQuest.SPIRITS_OF_THE_ELID,
@@ -196,7 +196,7 @@ public class QuestOrders
 		QuestHelperQuest.DESERT_MEDIUM,
 		QuestHelperQuest.RUM_DEAL,
 		QuestHelperQuest.CABIN_FEVER,
-		//QuestHelperQuest.MORYTANIA_MEDIUM,
+		QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY,
 		QuestHelperQuest.ENAKHRAS_LAMENT,
 		QuestHelperQuest.DESERT_TREASURE,
@@ -222,7 +222,7 @@ public class QuestOrders
 		QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS,
 		QuestHelperQuest.SWAN_SONG,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
-		//QuestHelperQuest.WILDERNESS_MEDIUM,
+		QuestHelperQuest.WILDERNESS_MEDIUM,
 		QuestHelperQuest.DEVIOUS_MINDS,
 		QuestHelperQuest.GRIM_TALES,
 		QuestHelperQuest.DREAM_MENTOR,
@@ -258,14 +258,14 @@ public class QuestOrders
 		//QuestHelperQuest.KOUREND_ELITE,
 		QuestHelperQuest.LUMBRIDGE_HARD,
 		QuestHelperQuest.LUMBRIDGE_ELITE,
-		//QuestHelperQuest.MORYTANIA_HARD,
-		//QuestHelperQuest.MORYTANIA_ELITE,
+		QuestHelperQuest.MORYTANIA_HARD,
+		QuestHelperQuest.MORYTANIA_ELITE,
 		QuestHelperQuest.VARROCK_HARD,
-		QuestHelperQuest.VARROCK_ELITE
+		QuestHelperQuest.VARROCK_ELITE,
 		//QuestHelperQuest.WESTERN_HARD,
 		//QuestHelperQuest.WESTERN_ELITE,
-		//QuestHelperQuest.WILDERNESS_HARD,
-		//QuestHelperQuest.WILDERNESS_ELITE
+		QuestHelperQuest.WILDERNESS_HARD,
+		QuestHelperQuest.WILDERNESS_ELITE
 	);
 	@Getter
 	private static final List<QuestHelperQuest> optimalIronmanOrder = ImmutableList.of(
@@ -414,11 +414,11 @@ public class QuestOrders
 		QuestHelperQuest.FALADOR_EASY,
 		QuestHelperQuest.VARROCK_EASY,
 		QuestHelperQuest.FREMENNIK_EASY,
-		//QuestHelperQuest.WILDERNESS_EASY,
+		QuestHelperQuest.WILDERNESS_EASY,
 		QuestHelperQuest.DESERT_EASY,
 		//QuestHelperQuest.ARDOUGNE_EASY,
 		QuestHelperQuest.LUMBRIDGE_EASY,
-		//QuestHelperQuest.MORYTANIA_EASY,
+		QuestHelperQuest.MORYTANIA_EASY,
 		//QuestHelperQuest.KOUREND_EASY,
 		//QuestHelperQuest.WESTERN_EASY,
 		//QuestHelperQuest.ARDOUGNE_MEDIUM,
@@ -443,11 +443,11 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
 		QuestHelperQuest.GRIM_TALES,
 		QuestHelperQuest.DREAM_MENTOR,
-		//QuestHelperQuest.WILDERNESS_MEDIUM,
+		QuestHelperQuest.WILDERNESS_MEDIUM,
 		QuestHelperQuest.KARAMJA_MEDIUM,
 		//QuestHelperQuest.KOUREND_MEDIUM,
 		QuestHelperQuest.LUMBRIDGE_MEDIUM,
-		//QuestHelperQuest.MORYTANIA_MEDIUM,
+		QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.DEVIOUS_MINDS,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
@@ -492,14 +492,14 @@ public class QuestOrders
 		//QuestHelperQuest.KOUREND_ELITE,
 		QuestHelperQuest.LUMBRIDGE_HARD,
 		QuestHelperQuest.LUMBRIDGE_ELITE,
-		//QuestHelperQuest.MORYTANIA_HARD,
-		//QuestHelperQuest.MORYTANIA_ELITE,
+		QuestHelperQuest.MORYTANIA_HARD,
+		QuestHelperQuest.MORYTANIA_ELITE,
 		QuestHelperQuest.VARROCK_HARD,
-		QuestHelperQuest.VARROCK_ELITE
+		QuestHelperQuest.VARROCK_ELITE,
 		//QuestHelperQuest.WESTERN_HARD,
 		//QuestHelperQuest.WESTERN_ELITE,
-		//QuestHelperQuest.WILDERNESS_HARD,
-		//QuestHelperQuest.WILDERNESS_ELITE
+		QuestHelperQuest.WILDERNESS_HARD,
+		QuestHelperQuest.WILDERNESS_ELITE
 	);
 
 	public static String normalizeQuestName(String questName)

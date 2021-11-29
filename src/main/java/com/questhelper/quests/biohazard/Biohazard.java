@@ -72,9 +72,9 @@ public class Biohazard extends BasicQuestHelper
 		hasPriestSet, isUpstairsArdougneCastle, hasChemicals;
 
 	QuestStep talkToElena, talkToJerico, getBirdFeed, getBirdFeed2, getPigeonCage, investigateWatchtower, clickPigeonCage, talkToOmartAgain,
-		talkToOmartToReturnToWest, talkToKilron, enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard,
-		searchSarahsCupboard2, enterMournerHeadquaters, goUpstairsInMournerBuilding, killMourner, searchCrateForDistillator,
-		goBackDownstairsInMournersHeadquaters, talkToElenaWithDistillator, talkToTheChemist, goToVarrock, vinciVarrock, chancyVarrock, hopsVarrock,
+		talkToOmartToReturnToWest, talkToKilron, enterBackyardOfHeadquarters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard,
+		searchSarahsCupboard2, enterMournerHeadquarters, goUpstairsInMournerBuilding, killMourner, searchCrateForDistillator,
+		goBackDownstairsInMournersHeadquarters, talkToElenaWithDistillator, talkToTheChemist, goToVarrock, vinciVarrock, chancyVarrock, hopsVarrock,
 		talkToAsyff, talkToGuidor, returnToElenaAfterSampling, informTheKing, informTheKingGoUpstairs;
 
 	GiveIngredientsToHelpersStep giveChemicals;
@@ -110,7 +110,7 @@ public class Biohazard extends BasicQuestHelper
 		ConditionalStep poisonFood = new ConditionalStep(this, talkToOmartToReturnToWest);
 		poisonFood.addStep(new Conditions(inMournerBackyard, rottenApple), useRottenAppleOnCauldron);
 		poisonFood.addStep(inMournerBackyard, pickupRottenApple);
-		poisonFood.addStep(inWestArdougne, enterBackyardOfHeadquaters);
+		poisonFood.addStep(inWestArdougne, enterBackyardOfHeadquarters);
 
 		steps.put(5, poisonFood);
 
@@ -118,21 +118,21 @@ public class Biohazard extends BasicQuestHelper
 		infiltrateMourners.addStep(new Conditions(key, upstairsInMournerBuilding), searchCrateForDistillator);
 		infiltrateMourners.addStep(upstairsInMournerBuilding, killMourner);
 		infiltrateMourners.addStep(inMournerBuilding, goUpstairsInMournerBuilding);
-		infiltrateMourners.addStep(new Conditions(inWestArdougne, medicalGown), enterMournerHeadquaters);
+		infiltrateMourners.addStep(new Conditions(inWestArdougne, medicalGown), enterMournerHeadquarters);
 		infiltrateMourners.addStep(new Conditions(inWestArdougne, new ObjectCondition(ObjectID.CUPBOARD_2063)), searchSarahsCupboard2);
 		infiltrateMourners.addStep(inWestArdougne, searchSarahsCupboard);
 
 		steps.put(6, infiltrateMourners);
 
 		ConditionalStep returnToElenaWithDistillator = new ConditionalStep(this, talkToOmartToReturnToWest);
-		returnToElenaWithDistillator.addStep(new Conditions(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquaters);
+		returnToElenaWithDistillator.addStep(new Conditions(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters);
 		returnToElenaWithDistillator.addStep(new Conditions(distillator, inWestArdougne), talkToKilron);
 		returnToElenaWithDistillator.addStep(distillator, talkToElenaWithDistillator);
 
 		returnToElenaWithDistillator.addStep(new Conditions(key, upstairsInMournerBuilding), searchCrateForDistillator);
 		returnToElenaWithDistillator.addStep(upstairsInMournerBuilding, killMourner);
 		returnToElenaWithDistillator.addStep(inMournerBuilding, goUpstairsInMournerBuilding);
-		returnToElenaWithDistillator.addStep(new Conditions(inWestArdougne, medicalGown), enterMournerHeadquaters);
+		returnToElenaWithDistillator.addStep(new Conditions(inWestArdougne, medicalGown), enterMournerHeadquarters);
 		returnToElenaWithDistillator.addStep(new Conditions(inWestArdougne, new ObjectCondition(ObjectID.CUPBOARD_2063)), searchSarahsCupboard2);
 		returnToElenaWithDistillator.addStep(inWestArdougne, searchSarahsCupboard);
 
@@ -245,7 +245,7 @@ public class Biohazard extends BasicQuestHelper
 		talkToOmartToReturnToWest.addDialogStep("Okay, lets do it.");
 		talkToOmartAgain.addSubSteps(talkToOmartToReturnToWest);
 
-		enterBackyardOfHeadquaters = new ObjectStep(this, ObjectID.FENCE, new WorldPoint(2541, 3331, 0), "Squeeze through the fence to enter the Mourner's Headquaters yard in the north east of West Ardougne.");
+		enterBackyardOfHeadquarters = new ObjectStep(this, ObjectID.FENCE, new WorldPoint(2541, 3331, 0), "Squeeze through the fence to enter the Mourner's Headquarters yard in the north east of West Ardougne.");
 		pickupRottenApple = new DetailedQuestStep(this, new WorldPoint(2549, 3332, 0), "Pick up the rotten apple in the yard.", rottenApple);
 		useRottenAppleOnCauldron = new ObjectStep(this, NullObjectID.NULL_37327, new WorldPoint(2543, 3332, 0), "Use the rotten apple on the cauldron.", rottenApple);
 		useRottenAppleOnCauldron.addIcon(ItemID.ROTTEN_APPLE);
@@ -253,7 +253,7 @@ public class Biohazard extends BasicQuestHelper
 		searchSarahsCupboard = new ObjectStep(this, ObjectID.CUPBOARD_2062, new WorldPoint(2518, 3276, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church.");
 		searchSarahsCupboard2 = new ObjectStep(this, ObjectID.CUPBOARD_2063, new WorldPoint(2518, 3276, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church.");
 		searchSarahsCupboard.addSubSteps(searchSarahsCupboard2);
-		enterMournerHeadquaters = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0), "Enter the Mourners' Headquaters whilst wearing the medical gown.", medicalGownEquipped);
+		enterMournerHeadquarters = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0), "Enter the Mourners' Headquarters whilst wearing the medical gown.", medicalGownEquipped);
 
 		goUpstairsInMournerBuilding = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2543, 3325, 0), "Go upstairs and kill the mourner there.");
 		killMourner = new NpcStep(this, NpcID.MOURNER_9008, new WorldPoint(2549, 3325, 1), "Kill the mourner here for a key to the caged area.");
@@ -261,13 +261,13 @@ public class Biohazard extends BasicQuestHelper
 
 		searchCrateForDistillator = new ObjectStep(this, ObjectID.CRATE_2064, new WorldPoint(2554, 3327, 1), "Search the crate in the caged area for Elena's Distillator.");
 
-		goBackDownstairsInMournersHeadquaters = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(2543, 3325, 1), "Return to Elena. Go back downstairs or teleport out.");
+		goBackDownstairsInMournersHeadquarters = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(2543, 3325, 1), "Return to Elena. Go back downstairs or teleport out.");
 
 		talkToKilron = new NpcStep(this, NpcID.KILRON_9001, new WorldPoint(2556, 3266, 0), "Return to Elena. Talk to Kilron to return back to East Ardougne.");
 		talkToKilron.addDialogStep("Yes I do.");
 
 		talkToElenaWithDistillator = new NpcStep(this, NpcID.ELENA, new WorldPoint(2592, 3336, 0), "Return to Elena.");
-		talkToElenaWithDistillator.addSubSteps(goBackDownstairsInMournersHeadquaters, talkToKilron);
+		talkToElenaWithDistillator.addSubSteps(goBackDownstairsInMournersHeadquarters, talkToKilron);
 
 		talkToTheChemist = new NpcStep(this, NpcID.CHEMIST, new WorldPoint(2933, 3210, 0),
 			"Take the Plague Sample to the Chemist in Rimmington. You can take a boat from Ardougne Dock to Rimmington for 30gp.", plagueSample, liquidHoney, sulphuricBroline, ethenea);
@@ -343,7 +343,7 @@ public class Biohazard extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Getting back into West Ardougne",
 			Arrays.asList(talkToJerico, getBirdFeed, getPigeonCage, investigateWatchtower, clickPigeonCage, talkToOmartAgain)));
 		allSteps.add(new PanelDetails("Getting the Distillator",
-			enterBackyardOfHeadquaters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard, enterMournerHeadquaters,
+			enterBackyardOfHeadquarters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard, enterMournerHeadquarters,
 			goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
 
 		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist);

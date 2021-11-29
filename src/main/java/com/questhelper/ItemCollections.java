@@ -1433,6 +1433,14 @@ public class ItemCollections
 	);
 
 	@Getter
+	private  static final List<Integer> ardyCloaks = ImmutableList.of(
+			ItemID.ARDOUGNE_CLOAK_1,
+			ItemID.ARDOUGNE_CLOAK_2,
+			ItemID.ARDOUGNE_CLOAK_3,
+			ItemID.ARDOUGNE_CLOAK_4,
+			ItemID.ARDOUGNE_MAX_CAPE
+	);
+
 	private static final List<Integer> teamCape = ImmutableList.of(
 		ItemID.TEAM1_CAPE,
 		ItemID.TEAM2_CAPE,

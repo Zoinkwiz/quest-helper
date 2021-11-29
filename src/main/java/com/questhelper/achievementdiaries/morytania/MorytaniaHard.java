@@ -224,11 +224,12 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			"Pray at the altar.", piety);
 
 		hardTempleTrekk = new NpcStep(this, NpcID.ROLAYNE_TWICKIT_HARD, new WorldPoint(3477, 3236, 0),
-			"Complete a Hard Temple Trekk. Alternatively complete a Hard Burgh de Rott Ramble. You can use Route 1 to" +
+			"Complete a Hard Temple Trek. Alternatively complete a Hard Burgh de Rott Ramble. You can use Route 1 to" +
 				" evade combat events.");
 
 		bridgeSalve = new ObjectStep(this, ObjectID.ORNATE_RAILING, new WorldPoint(3424, 3476, 0),
-			"Use the shortcut to get to the bridge. This is one-way, so you must go from top-down.");
+			"Use the shortcut to get to the bridge. This achievement only works one-way, so you must go from " +
+				"top-down.");
 
 		bittercapMush = new ObjectStep(this, NullObjectID.NULL_8337, new WorldPoint(3452, 3473, 0),
 			"Plant and harvest the bittercap mushrooms in Canifis. It takes 4 hours to fully grow.", rake, seedDibber,
@@ -244,13 +245,13 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		moveToMos = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
 			"Talk to Bill Teach to travel to Mos Le'Harmless.");
 		moveToCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3650, new WorldPoint(3748, 2973, 0),
-			"Enter the Mos Le'Harmless Cave.", witchwoodIcon, lightSource);
+			"Enter the Mos Le'Harmless Cave.", witchwoodIcon.equipped(), lightSource);
 		caveHorror = new NpcStep(this, NpcID.CAVE_HORROR, new WorldPoint(3740, 9373, 0),
-			"Kill a Cave horror.");
+			"Kill a Cave horror.", witchwoodIcon.equipped());
 		caveHorror.addAlternateNpcs(NpcID.CAVE_HORROR_1048, NpcID.CAVE_HORROR_1049, NpcID.CAVE_HORROR_1050,
 			NpcID.CAVE_HORROR_1051);
 		moveToIsland = new ObjectStep(this, ObjectID.STAIRCASE_5269, new WorldPoint(3830, 9463, 0),
-			"Climb the staircase.");
+			"Climb the staircase in the north east of the Cave Horror dungeon.");
 		burnMaho = new ObjectStep(this, 9034, new WorldPoint(3826, 3056, 0),
 			"Chop and burn mahogany logs on the island.", axe, tinderbox);
 		moveToHarmony = new NpcStep(this, NpcID.BROTHER_TRANQUILITY_551, new WorldPoint(3680, 2961, 0),

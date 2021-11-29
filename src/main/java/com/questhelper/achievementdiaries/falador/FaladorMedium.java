@@ -277,7 +277,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Speak to Sir Tiffy Cashien to purchase a set of Initiate Armor for 14,000 Coins for a full set.");
 		getInitiateSet.addDialogStep("Can I buy some armor?");
 		prayAtAltar = new ObjectStep(this, ObjectID.ALTAR_OF_GUTHIX, new WorldPoint(2925, 3483, 0),
-			"Equip your Initiate armor and pray at the Altar of Guthix in Taverley", initiateSet);
+			"Equip your Initiate armor and pray at the Altar of Guthix in Taverley", initiateHelm.equipped(),
+			initiateChest.equipped(), initiateLegs.equipped());
 
 		//Mine Gold in Crafting Guild
 		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2933, 3289, 0),

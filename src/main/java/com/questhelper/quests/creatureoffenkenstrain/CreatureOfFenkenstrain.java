@@ -73,7 +73,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	ItemRequirement armor, hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, pickledBrain,
 		obsidianAmulet, marbleAmulet, starAmulet, decapitatedHead, decapitatedHeadWithBrain, cavernKey, torso, legs, arms,
 		shedKey, brush, canes, extendedBrush3, conductorMould, lightningRod, towerKey,
-		fenkenstrainTeleports, teleportToFurnance, staminaPotion;
+		fenkenstrainTeleports, teleportToFurnace, staminaPotion;
 	Zone barZone, castleZoneFloor0, castleZoneFloor1, experimentCave, graveIsland, castleTower, monsterTower;
 	Requirement inCanifisBar, inCastleFloor0, inCastleFloor1, followingGardenerForHead, putStarOnGrave, inExperiementCave,
 		inGraveIsland, inCastleTower, usedTowerKey, inMonsterTower, keyNearby, hasDecapitatedHeadWithBrain, hasArm, hasLegs,
@@ -189,9 +189,9 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		towerKey = new ItemRequirement("Tower Key", ItemID.TOWER_KEY);
 
 		fenkenstrainTeleports = new ItemRequirement("Fenkenstrain's Castle Teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, 2);
-		teleportToFurnance = new ItemRequirement("Teleport to any furnance such as glory for edgeville teleport, ectophial to Port Phasmatys or a Falador teleport",
+		teleportToFurnace = new ItemRequirement("Teleport to any furnance such as glory for edgeville teleport, ectophial to Port Phasmatys or a Falador teleport",
 			ItemCollections.getAmuletOfGlories());
-		teleportToFurnance.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
+		teleportToFurnace.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);
 	}
 
@@ -377,7 +377,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(fenkenstrainTeleports);
-		reqs.add(teleportToFurnance);
+		reqs.add(teleportToFurnace);
 		reqs.add(staminaPotion);
 
 		return reqs;

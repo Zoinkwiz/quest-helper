@@ -189,7 +189,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		towerKey = new ItemRequirement("Tower Key", ItemID.TOWER_KEY);
 
 		fenkenstrainTeleports = new ItemRequirement("Fenkenstrain's Castle Teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, 2);
-		teleportToFurnace = new ItemRequirement("Teleport to any furnace such as glory for Edgeville teleport, ectophial to Port Phasmatys or a Falador teleport",
+		teleportToFurnace = new ItemRequirement("Teleport to any furnace such as glory for Edgeville teleport, Ectophial to Port Phasmatys or a Falador teleport",
 			ItemCollections.getAmuletOfGlories());
 		teleportToFurnace.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);

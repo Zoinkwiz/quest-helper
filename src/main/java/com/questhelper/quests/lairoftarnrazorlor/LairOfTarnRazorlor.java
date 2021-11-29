@@ -127,7 +127,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		killTarn1 = new NpcStep(this, NpcID.MUTANT_TARN, new WorldPoint(3186, 4619, 0), "Kill Mutatant Tarn.");
 		killTarn2 = new NpcStep(this, NpcID.TARN, new WorldPoint(3186, 4619, 0), "Kill Ghost Tarn.");
 
-		enterFinalRoom = new ObjectStep(this, ObjectID.PASSAGEWAY_15774, new WorldPoint(3186, 4627, 0), "Go into the north passageway.");
+		enterFinalRoom = new ObjectStep(this, ObjectID.PASSAGEWAY_15774, new WorldPoint(3186, 4627, 0), "Go into the north passageway. If you would like to complete a task for the Morytania Diary, you should kill a Terror Dog now.");
 		pickUpDiary = new ItemStep(this, "Pick up Tarn's diary. Quest complete!", diary);
 	}
 

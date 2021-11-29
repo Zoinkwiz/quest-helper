@@ -351,7 +351,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the first floor of the castle and talk to Dr" +
 			".Fenkenstrain.");
 		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Go back to the the first floor of the castle and talk to Dr.Fenkenstrain.");
+			"Go back to the first floor of the castle and talk to Dr.Fenkenstrain.");
 
 		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
 			"Go up to the second floor to confront Fenkenstrain's monster.");

@@ -236,7 +236,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			mushroomSpore);
 
 		moveToUpstairs = new ObjectStep(this, ObjectID.SPIKEY_CHAIN, new WorldPoint(3422, 3550, 0),
-			"Climb up the chain to get the the second floor of the slayer tower.");
+			"Climb up the chain to get to the second floor of the slayer tower.");
 		advancedSpikes = new ObjectStep(this, 16537, new WorldPoint(3447, 3576, 1),
 			"Climb the advanced spike chain.");
 

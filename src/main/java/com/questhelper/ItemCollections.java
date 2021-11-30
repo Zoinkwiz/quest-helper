@@ -1441,6 +1441,7 @@ public class ItemCollections
 			ItemID.ARDOUGNE_MAX_CAPE
 	);
 
+	@Getter
 	private static final List<Integer> teamCape = ImmutableList.of(
 		ItemID.TEAM1_CAPE,
 		ItemID.TEAM2_CAPE,

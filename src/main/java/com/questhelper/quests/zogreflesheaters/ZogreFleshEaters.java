@@ -345,6 +345,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Slash Bash (level 111)");
+		reqs.add("Zombie (level 39)");
 		return reqs;
 	}
 

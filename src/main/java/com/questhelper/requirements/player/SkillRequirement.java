@@ -28,6 +28,7 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.requirements.util.Operation;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
@@ -40,8 +41,25 @@ public class SkillRequirement extends AbstractRequirement
 {
 	private final Skill skill;
 	private final int requiredLevel;
+	private final Operation operation;
 	private boolean canBeBoosted;
 	private String displayText;
+
+	/**
+	 * Check if a player has a certain skill level
+	 *
+	 * @param skill the {@link Skill} to check
+	 * @param requiredLevel the required level for this Requirement to pass
+	 * @param operation what type of check we're making on the stat
+	 */
+	public SkillRequirement(Skill skill, int requiredLevel, Operation operation)
+	{
+		this.skill = skill;
+		this.requiredLevel = requiredLevel;
+		this.displayText = getDisplayText();
+		this.operation = operation;
+		shouldCountForFilter = true;
+	}
 
 	/**
 	 * Check if a player has a certain skill level
@@ -51,10 +69,7 @@ public class SkillRequirement extends AbstractRequirement
 	 */
 	public SkillRequirement(Skill skill, int requiredLevel)
 	{
-		this.skill = skill;
-		this.requiredLevel = requiredLevel;
-		this.displayText = getDisplayText();
-		shouldCountForFilter = true;
+		this(skill, requiredLevel, Operation.GREATER_EQUAL);
 	}
 
 	/**
@@ -83,6 +98,7 @@ public class SkillRequirement extends AbstractRequirement
 		this(skill, requiredLevel, canBeBoosted);
 		this.displayText = displayText;
 	}
+
 
 	@Override
 	public boolean check(Client client)

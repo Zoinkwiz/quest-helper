@@ -71,7 +71,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		enchantedBarHighlight, ballOfWoolHighlight, unstrungAmuletHighlight, amulet, banana5, amuletWorn, talisman, talismanHighlight, karamjanGreegree, monkeyBonesOrCorpseHighlight,
 		monkey, karamjanGreegreeEquipped, sigilEquipped, bananaReq;
 
-	//Items Recommendded
+	//Items Recommended
 	ItemRequirement combatGear, antipoison;
 
 	Requirement inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,

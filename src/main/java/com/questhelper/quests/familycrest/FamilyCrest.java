@@ -361,7 +361,7 @@ public class FamilyCrest extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToDimintheis)));
-		allSteps.add(new PanelDetails("Caleb's piece", Arrays.asList(talkToCaleb, talkToCalebWithFish), shrimp, salmon, tuna, bass, swordfish));
+		allSteps.add(new PanelDetails("Caleb's piece", Arrays.asList(talkToCaleb, talkToCalebWithFish, talkToCalebOnceMore), shrimp, salmon, tuna, bass, swordfish));
 		allSteps.add(new PanelDetails("Avan's piece", Arrays.asList(talkToGemTrader, talkToMan, talkToBoot, enterWitchavenDungeon, pullNorthLever,
 			pullSouthRoomLever, pullNorthLever, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2, mineGold, smeltGold, makeNecklace, makeRing, returnToMan),
 			pickaxe, ruby2, necklaceMould, ringMould));

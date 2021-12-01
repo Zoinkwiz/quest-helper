@@ -265,7 +265,9 @@ public enum ExternalQuestResources {
 	WILDERNESS_ELITE("https://oldschool.runescape.wiki/w/Wilderness_Diary#Elite"),
 
     // Generic helpers
-	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II");
+	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
+
+	WOODCUTTING("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training");
 
 	ExternalQuestResources()
 	{

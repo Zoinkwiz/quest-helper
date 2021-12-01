@@ -252,7 +252,7 @@ public class ClockTower extends BasicQuestHelper
 		pullFirstLever = new ObjectStep(this, ObjectID.LEVER, new WorldPoint(2591, 9661, 0),
 			"Pull the marked lever up.");
 		ratPoisonFood = new ObjectStep(this, ObjectID.FOOD_TROUGH, new WorldPoint(2587, 9654, 0),
-			"Use the rat poison on the food through. Wait till the rats have died.", ratPoison.highlighted());
+			"Use the rat poison on the food trough. Wait till the rats have died.", ratPoison.highlighted());
 		ratPoisonFood.addIcon(ItemID.RAT_POISON);
 		westernGate = new ObjectStep(this, ObjectID.GATE_39, new WorldPoint(2579, 9656, 0), "Go through the gate.");
 		pickUpWhiteCog = new DetailedQuestStep(this, new WorldPoint(2577, 9655, 0), "Pick up the white cog.", whiteCog);
@@ -326,7 +326,7 @@ public class ClockTower extends BasicQuestHelper
 		goToSecondFloorWithWhiteCog.addSubSteps(climbWhiteLadder);
 
 		goFinishQuest = goToGroundFloor.copy();
-		goFinishQuest.setText("Talk to Koja for your reward.");
+		goFinishQuest.setText("Talk to Kojo for your reward.");
 		goFinishQuest.addStep(null, kojoReward);
 	}
 

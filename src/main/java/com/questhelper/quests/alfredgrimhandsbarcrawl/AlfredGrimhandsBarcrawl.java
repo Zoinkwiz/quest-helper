@@ -158,7 +158,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 		talkToBlueMoon.addDialogStep("I'm doing Alfred Grimhand's Barcrawl.");
 
 		talkToJollyBoar = new NpcStep(this, NpcID.BARTENDER_1310, new WorldPoint(3279, 3488, 0),
-			"Talk to the bartender in the Joly Boar Inn north east of Varrock.", coins10);
+			"Talk to the bartender in the Jolly Boar Inn north east of Varrock.", coins10);
 		talkToJollyBoar.addDialogStep("I'm doing Alfred Grimhands Barcrawl.");
 
 		talkToRisingSun = new NpcStep(this, NpcID.KAYLEE, new WorldPoint(2956, 3370, 0),

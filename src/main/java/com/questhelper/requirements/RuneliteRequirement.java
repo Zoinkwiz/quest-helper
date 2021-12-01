@@ -24,6 +24,11 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.requirements.conditional.Conditions;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 
@@ -31,30 +36,74 @@ public class RuneliteRequirement extends AbstractRequirement
 {
 	private final String CONFIG_GROUP = "questhelpervars";
 
-	private String displayText;
-	private String runeliteIdentifier;
-	private String expectedValue;
-	private ConfigManager configManager;
+	private final String displayText;
+	private final String runeliteIdentifier;
+	private final String expectedValue;
+	private final ConfigManager configManager;
+
+	@Getter
+	private final Map<String, Requirement> requirements;
+
+	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text, Map<String, Requirement> requirements)
+	{
+		this(configManager, id, "false", expectedValue, text, requirements);
+	}
 
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text)
+	{
+		this(configManager, id, "false", expectedValue, text);
+	}
+
+	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue)
+	{
+		this(configManager, id, "true", expectedValue, new HashMap<>());
+	}
+
+	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue,
+							   Map<String, Requirement> requirements)
+	{
+		this(configManager, id, "true", expectedValue, requirements);
+	}
+
+	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue,
+							  Requirement requirement)
+	{
+		this(configManager, id, expectedValue, Collections.singletonMap(expectedValue, requirement));
+	}
+
+	public RuneliteRequirement(ConfigManager configManager, String id, String initValue, String expectedValue,
+							   String text)
+	{
+		this(configManager, id, initValue, expectedValue, text, new HashMap<>());
+	}
+
+	public RuneliteRequirement(ConfigManager configManager, String id, Requirement requirement)
+	{
+		this(configManager, id, "true", Collections.singletonMap("true", requirement));
+	}
+
+	public RuneliteRequirement(ConfigManager configManager, String id, String initValue, String expectedValue,
+							   String text, Map<String, Requirement> requirements)
 	{
 		this.configManager = configManager;
 		this.runeliteIdentifier = id;
 		this.displayText = text;
 		this.expectedValue = expectedValue;
-	}
-
-	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue)
-	{
-		this.configManager = configManager;
-		this.runeliteIdentifier = id;
-		this.expectedValue = expectedValue;
+		this.requirements = requirements;
+		initWithValue(initValue);
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
 		return getConfigValue().equals(expectedValue);
+	}
+
+	public void validateCondition(Client client)
+	{
+		requirements.forEach((value, req) -> {
+			if (req.check(client)) setConfigValue(value);
+		});
 	}
 
 	@Override

@@ -393,18 +393,18 @@ public class LegendsQuest extends BasicQuestHelper
 		macheteHighlighted.setHighlightInInventory(true);
 
 		radimusNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
-		radimusNotes.setTooltip("You can get another from Radimus in the Legends' Guild");
+		radimusNotes.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp");
 		papyrus3 = new ItemRequirement("3-5 papyrus", ItemID.PAPYRUS, 3);
 		charcoal3 = new ItemRequirement("1-3 charcoal", ItemID.CHARCOAL);
 		radimusNotesHighlight = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
-		radimusNotesHighlight.setTooltip("You can get another from Radimus in the Legends' Guild");
+		radimusNotesHighlight.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp");
 		radimusNotesHighlight.setHighlightInInventory(true);
 
 		completeNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
-		completeNotes.setTooltip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
+		completeNotes.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp, and you'll need to re-sketch the jungle");
 
 		completeNotesHighlighted = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
-		completeNotesHighlighted.setTooltip("You can get another from Radimus in the Legends' Guild, and you'll need to re-sketch the jungle");
+		completeNotesHighlighted.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp, and you'll need to re-sketch the jungle");
 		completeNotesHighlighted.setHighlightInInventory(true);
 
 		anyNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
@@ -827,7 +827,7 @@ public class LegendsQuest extends BasicQuestHelper
 		enterMossyRockForViyeldi.addDialogStep("Yes, I'll crawl through, I'm very athletic.");
 
 		useCrystalsOnFurnace = new ObjectStep(this, ObjectID.FURNACE_2966, new WorldPoint(2427, 4727, 0),
-			"Follow the path down, and kill each of the 3 skeletons for crystal pieces. Use them on the furnance in the north east of the area.",
+			"Follow the path down, and kill each of the 3 skeletons for crystal pieces. Use them on the furnace in the north east of the area.",
 			lumpCrystal, chunkCrystal, hunkCrystal);
 
 		useHeartOnRock = new ObjectStep(this, ObjectID.MOSSY_ROCK_2965, new WorldPoint(2411, 4716, 0),

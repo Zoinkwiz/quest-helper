@@ -70,7 +70,7 @@ public class TheFeud extends BasicQuestHelper
 
 	//Items Requirements
 	ItemRequirement coins, unspecifiedCoins, gloves, headPiece, fakeBeard, desertDisguise,
-			shantyPass, beer, oakBlackjack, glovesEquipped, disguiseEquipped, doorKeys,
+			shantayPass, beer, oakBlackjack, glovesEquipped, disguiseEquipped, doorKeys,
 			highlightedCoins, snakeCharmHighlighted, snakeBasket, snakeBasketFull,
 			redHotSauce, bucket, dung, poisonHighlighted, oakBlackjackEquipped;
 
@@ -79,15 +79,15 @@ public class TheFeud extends BasicQuestHelper
 
 	Requirement doesNotHaveBucket;
 
-	Conditions hasDisguiseComponents, doesNotHaveDisguise, doesNotHaveDisguiseComponents, notThroughShantyGate, hasDisguise;
+	Conditions hasDisguiseComponents, doesNotHaveDisguise, doesNotHaveDisguiseComponents, notThroughShantayGate, hasDisguise;
 
 	ObjectCondition dungNearby;
 
-	QuestStep startQuest, buyDisguiseGear, createDisguise, goToShanty;
+	QuestStep startQuest, buyDisguiseGear, createDisguise, goToShantay;
 
 	DetailedQuestStep getBucket, equipBlackjack, killMenaphiteThug, killBanditChampion;
 
-	NpcStep buyShantyPass, talkToRugMerchant, drunkenAli, talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel,
+	NpcStep buyShantayPass, talkToRugMerchant, drunkenAli, talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel,
 			talkToAliTheOperator, pickpocketVillager, pickPocketVillagerWithUrchin, getBlackjackFromAli, blackjackVillager,
 			talkToAliToGetSecondJob, giveTheJewelsToAli, talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman,
 			talkToAliTheHag, catchSnake, givePoisonToAliTheHag, talkToAliTheKebabSalesman, givenDungToHag, tellAliOperatorPoisoned,
@@ -99,7 +99,7 @@ public class TheFeud extends BasicQuestHelper
 			givenPoisonToHag, menaphiteThugAlive, talkedToVillagerAboutMenaphite, banditChampionSpawned, mayorSpawned;
 
 	//Zones
-	ZoneRequirement inPollniveach, secondFloorMansion, inShantyDesertSide;
+	ZoneRequirement inPollniveach, secondFloorMansion, inShantayDesertSide;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -113,11 +113,11 @@ public class TheFeud extends BasicQuestHelper
 
 		steps.put(0, startQuest);
 
-		ConditionalStep goToPollniveach = new ConditionalStep(this, buyShantyPass);
-		goToPollniveach.addStep(new Conditions(notThroughShantyGate, shantyPass), goToShanty);
-		goToPollniveach.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
-		goToPollniveach.addStep(new Conditions(notThroughShantyGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
-		goToPollniveach.addStep(inShantyDesertSide, talkToRugMerchant);
+		ConditionalStep goToPollniveach = new ConditionalStep(this, buyShantayPass);
+		goToPollniveach.addStep(new Conditions(notThroughShantayGate, shantayPass), goToShantay);
+		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
+		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
+		goToPollniveach.addStep(inShantayDesertSide, talkToRugMerchant);
 		goToPollniveach.addStep(inPollniveach, drunkenAli);
 		steps.put(1, goToPollniveach);
 
@@ -251,7 +251,7 @@ public class TheFeud extends BasicQuestHelper
 		fakeBeard.setHighlightInInventory(true);
 		desertDisguise = new ItemRequirement("Desert Disguise", ItemID.DESERT_DISGUISE);
 		disguiseEquipped = new ItemRequirement("Desert Disguise", ItemID.DESERT_DISGUISE, 1, true);
-		shantyPass = new ItemRequirement("Shanty Pass", ItemID.SHANTAY_PASS);
+		shantayPass = new ItemRequirement("Shantay Pass", ItemID.SHANTAY_PASS);
 		beer = new ItemRequirement("Beer", ItemID.BEER, 3);
 		beer.setHighlightInInventory(true);
 		oakBlackjack = new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK);
@@ -275,11 +275,11 @@ public class TheFeud extends BasicQuestHelper
 	{
 		Zone pollniveachZone = new Zone(new WorldPoint(3320, 2926, 0), new WorldPoint(3381, 3006, 0));
 		Zone secondFloor = new Zone(new WorldPoint(3366, 2965, 1), new WorldPoint(3375, 2979, 1));
-		Zone shantyDesertSide = new Zone(new WorldPoint(3325, 3116, 0), new WorldPoint(3278, 3086, 0));
+		Zone shantayDesertSide = new Zone(new WorldPoint(3325, 3116, 0), new WorldPoint(3278, 3086, 0));
 
 		inPollniveach = new ZoneRequirement(pollniveachZone);
 		secondFloorMansion = new ZoneRequirement(secondFloor);
-		inShantyDesertSide = new ZoneRequirement(shantyDesertSide);
+		inShantayDesertSide = new ZoneRequirement(shantayDesertSide);
 	}
 
 	public void setupConditions()
@@ -290,8 +290,8 @@ public class TheFeud extends BasicQuestHelper
 		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, fakeBeard, headPiece);
 		hasDisguise = new Conditions(desertDisguise);
 
-		//Shanty
-		notThroughShantyGate = new Conditions(LogicType.NAND, inShantyDesertSide);
+		//a
+		notThroughShantayGate = new Conditions(LogicType.NAND, inShantayDesertSide);
 
 		//Blackjack
 		oakBlackjackEquipped = new ItemRequirements(new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK, 1, true));
@@ -319,9 +319,9 @@ public class TheFeud extends BasicQuestHelper
 
 		createDisguise = new DetailedQuestStep(this, "Create a disguise by using the Kharidian Headpiece on the Fake Beard.", headPiece, fakeBeard);
 
-		//To Pollniveach
-		goToShanty = new ObjectStep(this, ObjectID.SHANTAY_PASS, new WorldPoint(3304, 3116, 0), "Go through Shanty Pass.", shantyPass);
-		buyShantyPass = new NpcStep(this, NpcID.SHANTAY, new WorldPoint(3303, 3122, 0), "Buy a shanty pass from Shantay.", unspecifiedCoins);
+		//To Pollnivneach
+		goToShantay = new ObjectStep(this, ObjectID.SHANTAY_PASS, new WorldPoint(3304, 3116, 0), "Go through Shantay Pass.", shantayPass);
+		buyShantayPass = new NpcStep(this, NpcID.SHANTAY, new WorldPoint(3303, 3122, 0), "Buy a shantay pass from Shantay.", unspecifiedCoins);
 
 		talkToRugMerchant = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3311, 3109, 0),"Talk to the rug merchant and travel to Pollnivneach via magic carpet.", unspecifiedCoins);
 		talkToRugMerchant.addDialogStep("Pollnivneach");
@@ -530,7 +530,7 @@ public class TheFeud extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting out",
 				Collections.singletonList(startQuest), unspecifiedCoins));
 		allSteps.add(new PanelDetails("Pollnivneach",
-				Arrays.asList(buyDisguiseGear, createDisguise, goToShanty, talkToRugMerchant, drunkenAli), unspecifiedCoins));
+				Arrays.asList(buyDisguiseGear, createDisguise, goToShantay, talkToRugMerchant, drunkenAli), unspecifiedCoins));
 		allSteps.add(new PanelDetails("Find the beef between the two factions",
 				Arrays.asList(talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel), unspecifiedCoins));
 		allSteps.add(new PanelDetails("First job",

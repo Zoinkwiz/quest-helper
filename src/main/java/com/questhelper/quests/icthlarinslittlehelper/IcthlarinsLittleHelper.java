@@ -69,7 +69,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar,
-		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions;
+		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions, antipoison;
 
 	Requirement catFollower;
 
@@ -232,6 +232,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
@@ -328,7 +329,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		pickUpCrondisJar = new ObjectStep(this, NullObjectID.NULL_6636, new WorldPoint(3286, 9195, 0), "Attempt to pick up the Crondis Canopic Jar, and kill Crondis (level 75) when they appear.");
 		pickUpScarabasJar = new ObjectStep(this, NullObjectID.NULL_6638, new WorldPoint(3286, 9196, 0), "Attempt to pick up the Scarabas Canopic Jar, and kill Scarabas (level 75) when they appear.");
 		pickUpApmekenJar = new ObjectStep(this, NullObjectID.NULL_6640, new WorldPoint(3286, 9193, 0), "Attempt to pick up the Apmeken Canopic Jar, and kill Apmeken (level 75) when they appear.");
-		pickUpHetJar = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Attempt to pick up the Het Canopic Jar, and kill Het (level 75) when they appear.");
+		pickUpHetJar = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Attempt to pick up the Het Canopic Jar, and kill Het (level 81) when they appear.");
 
 		pickUpAnyJar = new ObjectStep(this, NullObjectID.NULL_6634, "Try picking up the canopic jars in the north " +
 			"west room until a level 75-81 enemy spawns. Kill them. You can safespot them on the central table.");
@@ -420,7 +421,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions);
+		return Arrays.asList(combatGear, food, prayerPotions, antipoison);
 	}
 
 	@Override

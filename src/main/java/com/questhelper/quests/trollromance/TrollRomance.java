@@ -62,9 +62,10 @@ import net.runelite.api.coords.WorldPoint;
 public class TrollRomance extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, wax, sled, waxedSled, trollweissFlowers, combatGear, sledEquipped;
+	ItemRequirement ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, wax, sled, waxedSled, trollweissFlowers,
+		combatGear, sledEquipped, climbingBoots;
 
-	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation,inTrollCave, fightableArrgNearby;
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation, inTrollCave, fightableArrgNearby;
 
 	DetailedQuestStep enterStronghold, goDownToUg, goUpToUg, talkToUg, talkToAga, talkToTenzing, talkToDunstan, talkToDunstanAgain, useTarOnWax,
 		useWaxOnSled, enterTrollCave, leaveTrollCave, equipSled, sledSouth, goDownToUgAgain, goUpToUgAgain, enterStrongholdAgain, talkToUgWithFlowers,
@@ -157,6 +158,7 @@ public class TrollRomance extends BasicQuestHelper
 		sledEquipped.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
 		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLWEISS);
 		trollweissFlowers.setTooltip("You can get another from the Trollweiss mountain");
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
@@ -212,7 +214,7 @@ public class TrollRomance extends BasicQuestHelper
 		useWaxOnSled = new DetailedQuestStep(this, "Use the wax on the sled.", wax, sled);
 		enterTrollCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0),
 			"Enter the cave north of Trollheim. There are high leveled ice trolls in here, so Protect from Melee and " +
-				"be careful!",	waxedSled);
+				"be careful!", waxedSled);
 		leaveTrollCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Leave the cave via the north crevice.");
 		equipSled = new DetailedQuestStep(this, "Equip the sled.", sledEquipped);
 		sledSouth = new ObjectStep(this, ObjectID.SLOPE, new WorldPoint(2773, 3835, 0), "Sled to the south.");
@@ -261,7 +263,7 @@ public class TrollRomance extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, combatGear);
+		return Arrays.asList(ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, combatGear, climbingBoots);
 	}
 
 
@@ -292,18 +294,18 @@ public class TrollRomance extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.AGILITY, 8000),
-				new ExperienceReward(Skill.STRENGTH, 4000));
+			new ExperienceReward(Skill.AGILITY, 8000),
+			new ExperienceReward(Skill.STRENGTH, 4000));
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Diamond", ItemID.DIAMOND, 1),
-				new ItemReward("Rubies", ItemID.RUBY, 2),
-				new ItemReward("Emeralds", ItemID.EMERALD, 4),
-				new ItemReward("A Sled", ItemID.SLED, 1));
+			new ItemReward("Diamond", ItemID.DIAMOND, 1),
+			new ItemReward("Rubies", ItemID.RUBY, 2),
+			new ItemReward("Emeralds", ItemID.EMERALD, 4),
+			new ItemReward("A Sled", ItemID.SLED, 1));
 	}
 
 	@Override

@@ -364,7 +364,9 @@ public class ForgettableTale extends BasicQuestHelper
 		rake = new ItemRequirement("Rake", ItemID.RAKE);
 		yeast = new ItemRequirement("Ale yeast", ItemID.ALE_YEAST);
 		kebab = new ItemRequirement("Kebab", ItemID.KEBAB);
+		kebab.setTooltip("You can buy one for 1 coin in the food shop northeast in Keldagrim");
 		beer = new ItemRequirement("Beer", ItemID.BEER);
+		beer.setTooltip("You can buy these from either of the bars in Keldagrim for 2 coins");
 		dwarvenStout = new ItemRequirement("Dwarven stout", ItemID.DWARVEN_STOUT);
 		beerGlass = new ItemRequirement("Beer glass", ItemID.BEER_GLASS);
 		randomItem = new ItemRequirement("A random item per player", -1, -1);
@@ -779,10 +781,10 @@ public class ForgettableTale extends BasicQuestHelper
 
 		startPuzzle7 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
-		puzzle7P1 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 68);
-		puzzle7P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 69);
-		puzzle7P3 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 71);
-		puzzle7P4 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 73);
+		puzzle7P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 68);
+		puzzle7P2 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 69);
+		puzzle7P3 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 71);
+		puzzle7P4 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 73);
 		puzzle7Ok = new WidgetStep(this, "Click the Ok button.", 247, 108);
 		takePuzzle7Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");

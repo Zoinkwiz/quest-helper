@@ -46,9 +46,11 @@ public interface QuestHelperConfig extends Config
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{
 		/** Sort quests in alphabetical order */
-		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY, QuestFilter.GENERIC_HELPER),
+		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
+			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests in reverse alphabetical order */
-		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY, QuestFilter.GENERIC_HELPER),
+		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
+			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
 		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (Ironman version) (https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman) */
@@ -97,6 +99,7 @@ public interface QuestHelperConfig extends Config
 		ACHIEVEMENT_DIARY("Achievement diaries", Quest.Type.ACHIEVEMENT_DIARY),
 		/** Show all generic helpers */
 		GENERIC_HELPER("Generic helpers", Quest.Type.GENERIC),
+		SKILL("Skill helpers", Quest.Type.SKILL)
 		;
 
 		private final Predicate<QuestHelper> predicate;

@@ -398,7 +398,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails spottierCapeSteps = new PanelDetails("Trade for A Spottier Cape", Arrays.asList(getCape, spottyCape),
-			new SkillRequirement(Skill.HUNTER, 66, true), dashingKeb.quantity(2), coins.quantity(800));
+			new SkillRequirement(Skill.HUNTER, 66), dashingKeb.quantity(2), coins.quantity(800));
 		spottierCapeSteps.setDisplayCondition(notSpottyCape);
 		allSteps.add(spottierCapeSteps);
 

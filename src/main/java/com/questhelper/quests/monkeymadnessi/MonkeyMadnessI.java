@@ -247,7 +247,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWoolHighlight = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL);
 		ballOfWoolHighlight.setHighlightInInventory(true);
 
-		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES_3183);
+		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);
 
 		monkeyBonesOrCorpseHighlight = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);

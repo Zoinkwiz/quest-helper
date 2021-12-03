@@ -145,10 +145,10 @@ public class FremennikHard extends ComplexStateQuestHelper
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		giantDwarf = new QuestRequirement(QuestHelperQuest.THE_GIANT_DWARF, QuestState.FINISHED);
+		giantDwarf = new QuestRequirement(QuestHelperQuest.THE_GIANT_DWARF, QuestState.IN_PROGRESS);
 		fremIsles = new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_ISLES, QuestState.FINISHED);
 		throneOfMisc = new QuestRequirement(QuestHelperQuest.THRONE_OF_MISCELLANIA, QuestState.FINISHED);
-		eadgarsRuse = new QuestRequirement(QuestHelperQuest.EADGARS_RUSE, QuestState.IN_PROGRESS);
+		eadgarsRuse = new QuestRequirement(QuestHelperQuest.EADGARS_RUSE, QuestState.FINISHED);
 		lunarDiplomacy = new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED);
 
 		inMisc = new ZoneRequirement(misc);

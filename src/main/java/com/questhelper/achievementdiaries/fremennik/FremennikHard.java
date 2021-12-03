@@ -249,6 +249,14 @@ public class FremennikHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 75, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 56, true));
 		req.add(new ItemRequirement("Normal and Lunar spellbooks", -1, -1));
+
+
+		req.add(eadgarsRuse);
+		req.add(lunarDiplomacy);
+		req.add(giantDwarf);
+		req.add(fremIsles);
+		req.add(throneOfMisc);
+
 		return req;
 	}
 

@@ -248,9 +248,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.SMITHING, 60, false));
 		req.add(new SkillRequirement(Skill.THIEVING, 75, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 56, true));
-		req.add(new ComplexRequirement("Normal and Lunar spellbooks",
-			new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED))
-		);
+		req.add(new ItemRequirement("Normal and Lunar spellbooks", -1, -1));
 		return req;
 	}
 

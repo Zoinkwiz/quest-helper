@@ -170,9 +170,9 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMiniMapArrow",
-		name = "Display arrows on the mini-map and overworld",
-		description = "Choose whether flashing arrows point to the next objective"
+			keyName = "showMiniMapArrow",
+			name = "Display arrows on the mini-map and overworld",
+			description = "Choose whether flashing arrows point to the next objective"
 	)
 	default boolean showMiniMapArrow()
 	{

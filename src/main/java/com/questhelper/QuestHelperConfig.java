@@ -47,14 +47,16 @@ public interface QuestHelperConfig extends Config
 	{
 		/** Sort quests in alphabetical order */
 		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
+				QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests in reverse alphabetical order */
 		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
+				QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
 		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (Ironman version) (https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman) */
 		OPTIMAL_IRONMAN(QuestOrders.sortOptimalIronmanOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
+		/** Sort quest by their release date (https://oldschool.runescape.wiki/w/Quests/Release_dates) */
+		RELEASE_DATE(QuestOrders.sortByRelease(), QuestFilter.QUEST, QuestFilter.MINIQUEST)
 		;
 
 		private final Comparator<QuestHelper> comparator;
@@ -92,7 +94,7 @@ public interface QuestHelperConfig extends Config
 		MEMBERS(Quest.Type.P2P),
 		/** Show all quests */
 		QUEST("Quests", q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
-			q.getQuest().getQuestType() == Quest.Type.F2P),
+				q.getQuest().getQuestType() == Quest.Type.F2P),
 		/** Show all miniquests (all miniquests are members' only) */
 		MINIQUEST("Miniquests", Quest.Type.MINIQUEST),
 		/** Show all achievement diaries */
@@ -128,9 +130,9 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "autostartQuests",
-		name = "Auto start helper",
-		description = "Automatically start the quest helper when you start a quest"
+			keyName = "autostartQuests",
+			name = "Auto start helper",
+			description = "Automatically start the quest helper when you start a quest"
 	)
 	default boolean autoStartQuests()
 	{
@@ -138,9 +140,9 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "autoOpenSidebar",
-		name = "Auto open sidebar",
-		description = "Automatically opens the quest helper sidebar when you start a quest"
+			keyName = "autoOpenSidebar",
+			name = "Auto open sidebar",
+			description = "Automatically opens the quest helper sidebar when you start a quest"
 	)
 	default boolean autoOpenSidebar()
 	{
@@ -148,9 +150,9 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showTextHighlight",
-		name = "Highlight correct dialog",
-		description = "Highlight correct dialog choices"
+			keyName = "showTextHighlight",
+			name = "Highlight correct dialog",
+			description = "Highlight correct dialog choices"
 	)
 	default boolean showTextHighlight()
 	{
@@ -158,9 +160,9 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSymbolOverlay",
-		name = "Display icons on NPCs and objects",
-		description = "Choose whether NPCs should icons marking them as the current target or not"
+			keyName = "showSymbolOverlay",
+			name = "Display icons on NPCs and objects",
+			description = "Choose whether NPCs should icons marking them as the current target or not"
 	)
 	default boolean showSymbolOverlay()
 	{
@@ -178,27 +180,27 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOverlayPanel",
-		name = "Display overlay on screen",
-		description = "Chose whether the overlay should be displayed on screen"
+			keyName = "showOverlayPanel",
+			name = "Display overlay on screen",
+			description = "Chose whether the overlay should be displayed on screen"
 	)
 	default boolean showOverlay()
 	{
 		return true;
 	}
-	
+
 	@ConfigSection(
-		position = 1,
-		name = "Colours",
-		description = "What colour each option can be"
+			position = 1,
+			name = "Colours",
+			description = "What colour each option can be"
 	)
 	String colorSection = "colorSection";
 
 	@ConfigItem(
-		keyName = "textHighlightColor",
-		name = "Text highlight colour",
-		description = "Change the colour of dialog choices highlighted by the helper",
-		section = colorSection
+			keyName = "textHighlightColor",
+			name = "Text highlight colour",
+			description = "Change the colour of dialog choices highlighted by the helper",
+			section = colorSection
 	)
 	default Color textHighlightColor()
 	{
@@ -206,10 +208,10 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "targetOverlayColor",
-		name = "Color of target overlay",
-		description = "Change the colour which target NPCs/Objects will be highlighted with",
-		section = colorSection
+			keyName = "targetOverlayColor",
+			name = "Color of target overlay",
+			description = "Change the colour which target NPCs/Objects will be highlighted with",
+			section = colorSection
 	)
 	default Color targetOverlayColor()
 	{
@@ -217,10 +219,10 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "passColour",
-		name = "Colour of passed requirements/checks",
-		description = "Change the colour that will indicate a check has passed",
-		section = colorSection
+			keyName = "passColour",
+			name = "Colour of passed requirements/checks",
+			description = "Change the colour that will indicate a check has passed",
+			section = colorSection
 	)
 	default Color passColour()
 	{
@@ -228,10 +230,10 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "failColour",
-		name = "Colour of failed requirements/checks",
-		description = "Change the colour that will indicate a check has failed",
-		section = colorSection
+			keyName = "failColour",
+			name = "Colour of failed requirements/checks",
+			description = "Change the colour that will indicate a check has failed",
+			section = colorSection
 	)
 	default Color failColour()
 	{
@@ -239,11 +241,11 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "debugColor",
-		name = "Debug Colour",
-		description = "debug",
-		hidden = true,
-		section = colorSection
+			keyName = "debugColor",
+			name = "Debug Colour",
+			description = "debug",
+			hidden = true,
+			section = colorSection
 	)
 	default Color debugColor()
 	{
@@ -251,18 +253,18 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigSection(
-		position = 2,
-		name = "Quest Filters",
-		description = "Determines which quests should be shown via the selected filter(s)"
+			position = 2,
+			name = "Quest Filters",
+			description = "Determines which quests should be shown via the selected filter(s)"
 	)
 	String filterSection = "filterSection";
 
 	@ConfigItem(
-		keyName = "orderListBy",
-		name = "Quest order",
-		description = "Configures which way to order the quest list",
-		position = 3,
-		section = filterSection
+			keyName = "orderListBy",
+			name = "Quest order",
+			description = "Configures which way to order the quest list",
+			position = 3,
+			section = filterSection
 	)
 	default QuestOrdering orderListBy()
 	{
@@ -270,11 +272,11 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filterListBy",
-		name = "Filter",
-		description = "Configures what to filter in the quest list",
-		position = 1,
-		section = filterSection
+			keyName = "filterListBy",
+			name = "Filter",
+			description = "Configures what to filter in the quest list",
+			position = 1,
+			section = filterSection
 	)
 	default QuestFilter filterListBy()
 	{
@@ -282,11 +284,11 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "questDifficulty",
-		name = "Difficulty",
-		description = "Configures what quest difficulty to show",
-		position = 2,
-		section = filterSection
+			keyName = "questDifficulty",
+			name = "Difficulty",
+			description = "Configures what quest difficulty to show",
+			position = 2,
+			section = filterSection
 	)
 	default Quest.Difficulty difficulty()
 	{
@@ -294,11 +296,11 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCompletedQuests",
-		name = "Show Completed Quests",
-		description = "Will include completed quests in the other filter(s) that are chosen",
-		position = 4,
-		section = filterSection
+			keyName = "showCompletedQuests",
+			name = "Show Completed Quests",
+			description = "Will include completed quests in the other filter(s) that are chosen",
+			position = 4,
+			section = filterSection
 	)
 	default boolean showCompletedQuests()
 	{

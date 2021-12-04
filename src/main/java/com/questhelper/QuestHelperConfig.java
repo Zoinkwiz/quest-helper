@@ -188,7 +188,7 @@ public interface QuestHelperConfig extends Config
 	{
 		return true;
 	}
-
+	
 	@ConfigSection(
 		position = 1,
 		name = "Colours",

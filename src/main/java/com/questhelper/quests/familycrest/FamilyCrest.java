@@ -234,7 +234,6 @@ public class FamilyCrest extends BasicQuestHelper
 		talkToCalebOnceMore = new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0), "Talk to Caleb in " +
 			"Catherby once more.");
 		talkToCalebOnceMore.addDialogStep("Uh.. what happened to the rest of the crest?");
-		talkToCalebWithFish.addSubSteps(talkToCalebOnceMore);
 
 		talkToGemTrader = new NpcStep(this, NpcID.GEM_TRADER, new WorldPoint(3286, 3211, 0), "Talk to the Gem Trader in Al Kharid.");
 		talkToGemTrader.addDialogStep("I'm in search of a man named Avan Fitzharmon.");
@@ -361,7 +360,7 @@ public class FamilyCrest extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToDimintheis)));
-		allSteps.add(new PanelDetails("Caleb's piece", Arrays.asList(talkToCaleb, talkToCalebWithFish), shrimp, salmon, tuna, bass, swordfish));
+		allSteps.add(new PanelDetails("Caleb's piece", Arrays.asList(talkToCaleb, talkToCalebWithFish, talkToCalebOnceMore), shrimp, salmon, tuna, bass, swordfish));
 		allSteps.add(new PanelDetails("Avan's piece", Arrays.asList(talkToGemTrader, talkToMan, talkToBoot, enterWitchavenDungeon, pullNorthLever,
 			pullSouthRoomLever, pullNorthLever, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2, mineGold, smeltGold, makeNecklace, makeRing, returnToMan),
 			pickaxe, ruby2, necklaceMould, ringMould));

@@ -124,7 +124,8 @@ public class Wanted extends BasicQuestHelper
 		ConditionalStep goToSirAmik = new ConditionalStep(this, climbToWhiteKnightsCastleF1);
 		goToSirAmik.addStep(isInWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2);
 
-		goTalkToSirAmik1 = new ConditionalStep(this, goToSirAmik, "Go tell Sir Amik Varze in the White Knights' Castle you wish to quit the White Knights.");
+		goTalkToSirAmik1 = new ConditionalStep(this, goToSirAmik, "Go tell Sir Amik Varze in the White Knights' " +
+			"Castle you wish to join the White Knights, BUT refuse to be a Squire.");
 		goTalkToSirAmik1.addStep(isInWhiteKnightsCastleF2, talkToSirAmik1);
 
 		ConditionalStep goDoAmikP1 = new ConditionalStep(this, goTalkToSirAmik1);

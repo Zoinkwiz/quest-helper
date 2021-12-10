@@ -134,7 +134,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		notCaveHorror = new VarplayerRequirement(1180, false, 28);
 		notBittercapMush = new VarplayerRequirement(1180, false, 29);
 		notPietyAltar = new VarplayerRequirement(1180, false, 30);
-		notBridgeSalve = new VarplayerRequirement(1180, false, 31);
+		notBridgeSalve = new VarplayerRequirement(1181, false, 1);
 		notMithOre = new VarplayerRequirement(1181, false, 2);
 
 		piety = new PrayerRequirement("Piety", Prayer.PIETY);

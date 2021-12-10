@@ -139,7 +139,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		firstTimeAbyss = new VarbitRequirement(626, 1);
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		chaosAccess = new ItemRequirement("Access to Earth altar, or travel through abyss",
+		chaosAccess = new ItemRequirement("Access to Chaos altar, or travel through abyss",
 			ItemCollections.getChaosAltar()).showConditioned(notChaosTemple);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIronOre);
 		teamCape = new ItemRequirement("Any team cape", ItemCollections.getTeamCape()).showConditioned(notEquipTeamCape);

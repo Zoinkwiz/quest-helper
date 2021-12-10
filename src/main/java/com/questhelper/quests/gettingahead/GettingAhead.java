@@ -174,29 +174,44 @@ public class GettingAhead extends BasicQuestHelper
 
 		//Required
 		bearFur = new ItemRequirement("Bear Fur", ItemID.BEAR_FUR);
+		bearFur.canBeObtainedDuringQuest();
 		bearFur.setTooltip("You can kill a bear west of the farm for some fur");
 		bearFur.setHighlightInInventory(true);
 		softClay = new ItemRequirement("Soft Clay", ItemID.SOFT_CLAY, 1);
+		softClay.canBeObtainedDuringQuest();
 		softClay.setHighlightInInventory(true);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer(), 1);
+		hammer.canBeObtainedDuringQuest();
 		saw = new ItemRequirement("Any saw", ItemID.SAW, 1);
+		saw.canBeObtainedDuringQuest();
 		saw.addAlternates(ItemID.CRYSTAL_SAW, ItemID.AMYS_SAW);
 		planks = new ItemRequirement("Planks", ItemID.PLANK, 2);
+		planks.canBeObtainedDuringQuest();
 		nails = new ItemRequirement("Nails", ItemCollections.getNails(), 6);
+		nails.canBeObtainedDuringQuest();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
+		knife.canBeObtainedDuringQuest();
 		knife.setHighlightInInventory(true);
 		redDye = new ItemRequirement("Red Dye", ItemID.RED_DYE, 1);
+		redDye.canBeObtainedDuringQuest();
 		redDye.setHighlightInInventory(true);
 		potOfFlour = new ItemRequirement("Pot of Flour", ItemID.POT_OF_FLOUR, 1);
+		potOfFlour.canBeObtainedDuringQuest();
 		potOfFlour.setHighlightInInventory(true);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE, 1);
+		needle.canBeObtainedDuringQuest();
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 1);
+		thread.canBeObtainedDuringQuest();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe.canBeObtainedDuringQuest();
 		clay = new ItemRequirement("Clay", ItemID.CLAY);
+		clay.canBeObtainedDuringQuest();
 		clay.setHighlightInInventory(true);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket.canBeObtainedDuringQuest();
 		bucket.setHighlightInInventory(true);
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWater.canBeObtainedDuringQuest();
 		bucketOfWater.setHighlightInInventory(true);
 
 		//Making the fake head

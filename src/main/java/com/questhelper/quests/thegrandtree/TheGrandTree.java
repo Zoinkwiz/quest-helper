@@ -390,7 +390,7 @@ public class TheGrandTree extends BasicQuestHelper
 		climbDownTrapDoor = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door. Be prepared for the fight against a Black Demon (level 172).");
 		talkToGloughBeforeFight = new NpcStep(this, NpcID.GLOUGH, "Talk to Glough. You can safespot the Demon from where he stands.");
 		killBlackDemon = new NpcStep(this, NpcID.BLACK_DEMON_1432, "Kill the black Demon. You can safespot from where Glough stands.");
-		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2487, 9858, 0));
+		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2492, 9865, 0));
 		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door again.");
 		talkToKingAfterFight = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
 		talkToKingAfterFight.addSubSteps(climbDownTrapDoorAfterFight);

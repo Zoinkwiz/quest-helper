@@ -39,11 +39,10 @@ import net.runelite.client.ui.FontManager;
 
 public class PuzzleStep extends QuestStep
 {
-
-	private final String ENTRY_ONE = "K";
-	private final String ENTRY_TWO = "U";
-	private final String ENTRY_THREE = "R";
-	private final String ENTRY_FOUR = "T";
+	private final Character ENTRY_ONE = 'K';
+	private final Character ENTRY_TWO = 'U';
+	private final Character ENTRY_THREE = 'R';
+	private final Character ENTRY_FOUR = 'T';
 
 	private final int SLOT_ONE = 42;
 	private final int SLOT_TWO = 43;
@@ -91,10 +90,10 @@ public class PuzzleStep extends QuestStep
 		highlightButtons.replace(3, matchStateToSolution(SLOT_THREE, ENTRY_THREE, ARROW_THREE_RIGHT, ARROW_THREE_LEFT));
 		highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR, ARROW_FOUR_RIGHT, ARROW_FOUR_LEFT));
 
-		distance.replace(1, matchStateToDistance(SLOT_ONE, ENTRY_ONE.charAt(0)));
-		distance.replace(2, matchStateToDistance(SLOT_TWO, ENTRY_TWO.charAt(0)));
-		distance.replace(3, matchStateToDistance(SLOT_THREE, ENTRY_THREE.charAt(0)));
-		distance.replace(4, matchStateToDistance(SLOT_FOUR, ENTRY_FOUR.charAt(0)));
+		distance.replace(1, matchStateToDistance(SLOT_ONE, ENTRY_ONE));
+		distance.replace(2, matchStateToDistance(SLOT_TWO, ENTRY_TWO));
+		distance.replace(3, matchStateToDistance(SLOT_THREE, ENTRY_THREE));
+		distance.replace(4, matchStateToDistance(SLOT_FOUR, ENTRY_FOUR));
 
 
 		if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0)
@@ -107,14 +106,14 @@ public class PuzzleStep extends QuestStep
 		}
 	}
 
-	private int matchStateToSolution(int slot, String target, int arrowRightId, int arrowLeftId)
+	private int matchStateToSolution(int slot, Character target, int arrowRightId, int arrowLeftId)
 	{
 		Widget widget = client.getWidget(369, slot);
 		if (widget == null) return 0;
 		char current = widget.getText().charAt(0);
 		int currentPos = (int) current - (int) 'A';
-		int id = Math.floorMod(currentPos - target.charAt(0), 26) < Math.floorMod(target.charAt(0) - currentPos, 26) ? arrowRightId : arrowLeftId;
-		if (current != target.charAt(0)) return id;
+		int id = Math.floorMod(currentPos - target, 26) < Math.floorMod(target - currentPos, 26) ? arrowRightId : arrowLeftId;
+		if (current != target) return id;
 		return 0;
 	}
 

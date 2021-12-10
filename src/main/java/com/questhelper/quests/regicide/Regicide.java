@@ -814,7 +814,7 @@ public class Regicide extends BasicQuestHelper
 		goIntoTyrasCamp = new ConditionalStep(this, goToTyrasCampEntrance, "Enter the Tyras Camp.");
 
 		goToIorwerthAfterCamp = new ConditionalStep(this, goToTyrasCampEntrance,
-			"Fill some barrels with tar then return to Lord Iorwerth.");
+			"Fill some barrels with tar, pick up some sulphur there, and then return to Lord Iorwerth.");
 		goToIorwerthAfterCamp.addStep(new Conditions(coalBarrel2, sulphur), pathToIorwerth);
 		goToIorwerthAfterCamp.addStep(new Conditions(inWestForestPath, coalBarrel2), getSulphur);
 		goToIorwerthAfterCamp.addStep(new Conditions(inWestForestPath, barrel2), fill2Barrels);

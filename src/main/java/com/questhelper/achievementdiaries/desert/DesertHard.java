@@ -201,7 +201,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		menaThug = new NpcStep(this, NpcID.MENAPHITE_THUG, new WorldPoint(3347, 2959, 0),
 			"Knockout and pickpocket a Menaphite thug.", blackjack);
 
-		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify.",
+		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify in the Desert.",
 			lunarBook, fireRune.quantity(1), waterRune.quantity(3), astralRune.quantity(1));
 
 		moveToSmoke = new ObjectStep(this, ObjectID.SMOKEY_WELL, new WorldPoint(3310, 2962, 0),

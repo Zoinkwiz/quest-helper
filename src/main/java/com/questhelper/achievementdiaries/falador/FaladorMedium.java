@@ -149,7 +149,9 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav));
-		airRune4 = new ItemRequirement("Air Runes", ItemID.AIR_RUNE, 4).showConditioned(new Conditions(LogicType.OR,
+		ItemRequirement airRunes = new ItemRequirement("Air rune", ItemCollections.getAirRune(), 4);
+		ItemRequirement airStaff = new ItemRequirement("Air staff", ItemCollections.getAirStaff(), 1, true);
+		airRune4 = new ItemRequirements(LogicType.OR, "2 air runes", airRunes, airStaff).showConditioned(new Conditions(LogicType.OR,
 			notTelegrabbedWine, notTeleportFalador));
 		lawRune2 = new ItemRequirement("Law Runes", ItemID.LAW_RUNE, 2);
 		waterRune1 = new ItemRequirement("Water Runes", ItemID.WATER_RUNE, 1);

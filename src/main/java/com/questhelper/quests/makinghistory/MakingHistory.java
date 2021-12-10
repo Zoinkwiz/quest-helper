@@ -209,7 +209,8 @@ public class MakingHistory extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3346, 0),
-			"Talk to Jorral at the outpost north of West Ardougne. You can teleport there with a Necklace of Passage.");
+			"Talk to Jorral at the outpost south of the Tree Gnome Stronghold. You can teleport there with a Necklace" +
+				" of Passage.");
 		talkToJorral.addDialogStep("The Outpost");
 		talkToJorral.addDialogStep("Tell me more.");
 		talkToJorral.addDialogStep("Ok, I'll make a stand for history!");

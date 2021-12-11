@@ -119,7 +119,7 @@ public class PuzzleStep extends QuestStep
 
 	private int matchStateToDistance(int slot, Character target)
 	{
-		Widget widget = client.getWidget(285, slot);
+		Widget widget = client.getWidget(369, slot);
 		if (widget == null) return 0;
 		char current = widget.getText().charAt(0);
 		return Math.min(Math.floorMod(current - target, 26), Math.floorMod(target - current, 26));

@@ -222,7 +222,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		bringManToBurntmeat.addStep(inStrongholdFloor1, talkToCookWithScarecrow);
 		bringManToBurntmeat.addStep(inPrison, goUpStairsPrison);
 
-		steps.put(87, talkToCooksAboutGoutweed);
+		steps.put(87, bringManToBurntmeat);
 
 		ConditionalStep getTheGoutweed = new ConditionalStep(this, talkToBurntmeat);
 		getTheGoutweed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);

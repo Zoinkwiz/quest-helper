@@ -175,7 +175,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		decapitatedHeadWithBrain = new ItemRequirement("Decapitated Head (with brain)", ItemID.DECAPITATED_HEAD_4198);
 		armor = new ItemRequirement("Armour and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1);
 		armor.setDisplayItemId(BankSlotIcons.getCombatGear());
-		cavernKey = new ItemRequirement("Tavern Key", ItemID.CAVERN_KEY);
+		cavernKey = new ItemRequirement("Cavern Key", ItemID.CAVERN_KEY);
 		torso = new ItemRequirement("Torso", ItemID.TORSO);
 		legs = new ItemRequirement("Legs", ItemID.LEGS);
 		arms = new ItemRequirement("Arms", ItemID.ARMS);

@@ -335,7 +335,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		ConditionalStep makePotion = new ConditionalStep(this, talkToElenaAfterTra);
 		makePotion.addStep(new Conditions(inversionPotion), talkToArianwynAfterPotion);
-		makePotion.addStep(new Conditions(crystalDust, cadantineSeed), useDustOnVial);
+		makePotion.addStep(new Conditions(crystalDust, elderCadantineVial), useDustOnVial);
 		makePotion.addStep(new Conditions(crystalDust, elderCadantine), useCadantineOnVial);
 		makePotion.addStep(new Conditions(crystal, elderCadantine), usePestleOnCrystal);
 		makePotion.addStep(elderCadantine, talkToArianwynAfterTra);

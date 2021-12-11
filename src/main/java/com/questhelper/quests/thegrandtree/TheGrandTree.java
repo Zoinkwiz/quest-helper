@@ -58,6 +58,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -152,8 +153,17 @@ public class TheGrandTree extends BasicQuestHelper
 
 		// Tuzo
 		goTalkToCharlie3 = goTalkToCharlie.copy();
-		goTalkToCharlie3.setText("Return to Charlie. If entering the Stronghold through the south entrance you'll " +
-			"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
+		if (QuestHelperQuest.TREE_GNOME_VILLAGE.getState(client) == QuestState.FINISHED)
+		{
+			goTalkToCharlie3.setText("Return to Charlie. You won't be able to enter through the main entrance, so " +
+				"make use of a Spirit Tree to enter the Tree Gnome Stronghold. The easiest tree to use is the one in " +
+				"the Grand Exchange.");
+		}
+		else
+		{
+			goTalkToCharlie3.setText("Return to Charlie. If entering the Stronghold through the south entrance you'll " +
+				"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
+		}
 		goTalkToCharlie3.addRequirement(lumberOrder);
 		steps.put(90, goTalkToCharlie3);
 

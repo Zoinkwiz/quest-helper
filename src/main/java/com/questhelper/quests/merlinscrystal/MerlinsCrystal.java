@@ -289,6 +289,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(combatGear);
 		reqs.add(bread);
 		reqs.add(tinderbox);
 		reqs.add(bucketOfWaxOptional);

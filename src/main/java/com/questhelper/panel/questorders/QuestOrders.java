@@ -38,6 +38,7 @@ public class QuestOrders
 	private static final Pattern QUEST_NAME_PATTERN = Pattern.compile("(?i)(a\\b)|(the\\b)|(an\\b)", Pattern.CASE_INSENSITIVE);
 	@Getter
 	private static final List<QuestHelperQuest> optimalOrder = ImmutableList.of(
+		// https://oldschool.runescape.wiki/w/Optimal_quest_guide
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.X_MARKS_THE_SPOT,

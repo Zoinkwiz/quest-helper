@@ -83,7 +83,7 @@ public class QuestOrders
 		QuestHelperQuest.THE_DEPTHS_OF_DESPAIR,
 		QuestHelperQuest.MOUNTAIN_DAUGHTER,
 		QuestHelperQuest.ICTHLARINS_LITTLE_HELPER,
-        QuestHelperQuest.THE_GOLEM,
+        	QuestHelperQuest.THE_GOLEM,
 		QuestHelperQuest.THE_GRAND_TREE,
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.SCORPION_CATCHER,
@@ -208,8 +208,8 @@ public class QuestOrders
 		QuestHelperQuest.ROYAL_TROUBLE,
 		QuestHelperQuest.FAMILY_CREST,
 		QuestHelperQuest.LEGENDS_QUEST,
-        QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
-        // "All remaining easy achievement diaries" TODO?
+		QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
+		// "All remaining easy achievement diaries"
 		QuestHelperQuest.KANDARIN_MEDIUM,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
@@ -233,14 +233,14 @@ public class QuestOrders
 		QuestHelperQuest.SINS_OF_THE_FATHER,
 		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
-        QuestHelperQuest.MONKEY_MADNESS_II,
-        // "All remaining medium achievement diaries"
+		QuestHelperQuest.MONKEY_MADNESS_II,
+		// "All remaining medium achievement diaries"
 		QuestHelperQuest.FREMENNIK_MEDIUM,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
-        QuestHelperQuest.SONG_OF_THE_ELVES,
-        QuestHelperQuest.CLOCK_TOWER,
-        // Remaining section is unordered as not part of list
+		QuestHelperQuest.SONG_OF_THE_ELVES,
+		QuestHelperQuest.CLOCK_TOWER,
+		// Remaining section is unordered as not part of list
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
 		QuestHelperQuest.FAMILY_PEST,

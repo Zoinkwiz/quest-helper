@@ -773,8 +773,9 @@ public class Regicide extends BasicQuestHelper
 		pathToIorwerth.addStep(inForestSectionAfterCave, goFromLeavesToStickTrap);
 		pathToIorwerth.addStep(inForestNearCave, goFromCaveToLeaves);
 
-		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "Wait around the cave exit for Idris to appear " +
+		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "WAIT OUTSIDE AROUND THE CAVE ENTRANCE for Idris to appear " +
 			"and talk to her. Afterwards, Go talk to Lord Iorwerth in the north west of the elven forest.");
+		goTalkToIorwerth.setTooltip("If Idris does not appear in the couple minutes enter and exit the cave then wait again");
 		goTalkToIorwerth.addSubSteps(talkToIdris);
 
 		goReturnToIorwerth = new ConditionalStep(this, pathToIorwerth, "Return to Lord Iorwerth in the north west of " +

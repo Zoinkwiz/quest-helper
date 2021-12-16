@@ -392,7 +392,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		loadBlueToad = new DetailedQuestStep(this, "Add a blue toad to the fixed device.", blueToad, fixedDevice);
 		shootBlueToad = new NpcStep(this, NpcID.BLUE_SHEEP, new WorldPoint(2562, 3390, 0), "Wield the fixed device and select Aim and Fire from your combat options to fire at a blue sheep north of Ardougne.", true, fixedDeviceEquipped);
 
-		dyeSheep = new DetailedQuestStep(this, "Dye each colour of sheep north of Ardougne using the dyed toads and the fixed device.");
+		dyeSheep = new DetailedQuestStep(this, "Dye each colour of sheep north of Ardougne by using the dyed toads on the fixed device and select Aim and Fire from your combat options to fire.");
 		dyeSheep.addSubSteps(loadGreenToad, loadYellowToad, loadBlueToad, loadRedToad, shootBlueToad, shootGreenToad, shootRedToad, shootYellowToad);
 
 		enterBaseAfterSheep = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),

@@ -197,7 +197,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		waterBucket = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		rottenApple = new ItemRequirement("Rotten apple", ItemID.ROTTEN_APPLE);
 		rottenApple.setTooltip("Obtained during quest.");
-		toadCrunchies = new ItemRequirement("Toad crunchies (can be premade)", ItemID.TOAD_CRUNCHIES);
+		toadCrunchies = new ItemRequirement("Toad crunchies (can be Premade t'd crunch)", ItemID.TOAD_CRUNCHIES);
 		toadCrunchies.addAlternates(ItemID.TOAD_CRUNCHIES_9538, ItemID.PREMADE_TD_CRUNCH);
 		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);

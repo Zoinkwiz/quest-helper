@@ -261,7 +261,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		caveNightshade = new ItemStep(this, "Pickup the Cave nightshade.", nightshade);
 
 		moveToPlatform = new NpcStep(this, NpcID.JEB, new WorldPoint(2719, 3305, 0),
-			"Talk to Jeb to travel to the fishing platform.", smallFishingNet);
+			"Talk to Jeb to travel to the Fishing Platform.", smallFishingNet);
 		fishOnPlatform = new NpcStep(this, NpcID.FISHING_SPOT_1514, new WorldPoint(2790, 3276, 0),
 			"Catch any fish on the Fishing Platform.", smallFishingNet);
 

@@ -161,7 +161,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		deathAccess = new ItemRequirement("Access to Death altar, or travel through abyss",
 			ItemCollections.getDeathAltar()).showConditioned(notDeathRune);
 		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.CRYSTAL_TRINKET).showConditioned(notDeathRune);
-		highEss = new ItemRequirement("Pure or daeyalt essence", ItemCollections.getEssenceHigh())
+		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.getEssenceHigh())
 			.showConditioned(notDeathRune);
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY).showConditioned(notDeathRune);
 		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");

@@ -145,7 +145,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		imbuedSalve = new ItemRequirement("Salve amulet", ItemCollections.getImbuedSalveAmulet())
 			.showConditioned(notImbueSalve);
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickTorstol);
-		torstolSeed = new ItemRequirement("Torstol seeds", ItemID.STRAWBERRY_SEED).showConditioned(notPickTorstol);
+		torstolSeed = new ItemRequirement("Torstol seed", ItemID.TORSTOL_SEED).showConditioned(notPickTorstol);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickTorstol);
 		compost = new ItemRequirement("Compost", ItemCollections.getCompost()).showConditioned(notPickTorstol);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickTorstol);
@@ -226,7 +226,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		iceBarrage = new DetailedQuestStep(this, new WorldPoint(2441, 3089, 0),
-			"Cast ice barrage on a Player within Castle Wars.", ancientBook, waterRune.quantity(6),
+			"Cast Ice Barrage on a Player within Castle Wars.", ancientBook, waterRune.quantity(6),
 			bloodRune.quantity(2), deathRune.quantity(4));
 
 		moveToYanAgi = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(2604, 3079, 0),
@@ -265,7 +265,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 			crossbowString.highlighted());
 
 		pickTorstol = new ObjectStep(this, NullObjectID.NULL_8555, new WorldPoint(2667, 3371, 0),
-			"Plant and harvest the torstol from the north Ardougne herb patch.", rake, spade, seedDib, torstolSeed);
+			"Plant and harvest the Torstol from the north Ardougne herb patch.", rake, spade, seedDib, torstolSeed);
 
 		claimReward = new NpcStep(this, NpcID.TWOPINTS, new WorldPoint(2574, 3323, 0),
 			"Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");
@@ -276,7 +276,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4), lockpick, salveAmmy,
-			sinewOrRoot, runeBar, runeBar, hammer, knife, yewLog, rake, spade, seedDib, torstolSeed);
+			sinewOrRoot, runeBar, hammer, knife, yewLog, rake, spade, seedDib, torstolSeed);
 	}
 
 	@Override

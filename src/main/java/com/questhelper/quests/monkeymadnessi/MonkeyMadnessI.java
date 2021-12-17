@@ -663,7 +663,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		leaveDungeonWithGreeGree = new DetailedQuestStep(this, "If you want to make a zombie, ninja and gorilla greegree talk to and give Zooknock the bones/talismans. Once you're done, teleport away for the next step.");
 		leaveDungeonWithGreeGree.addDialogSteps("Can you make another monkey talisman?", "Yes");
 
-		talkToMinder = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "Talk to the Monkey Minder in Ardougne Zoo whilst wielding the karmjan monkey greegree.", karamjanGreegreeEquipped, amuletWorn);
+		talkToMinder = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "Talk to the Monkey " +
+			"Minder in Ardougne Zoo whilst wielding the karamjan monkey greegree.", karamjanGreegreeEquipped, amuletWorn);
 		talkToMonkeyAtZoo = new NpcStep(this, NpcID.MONKEY_5279, new WorldPoint(2603, 3278, 0), "Talk to a monkey in the pen.", true);
 		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "UNEQUIP the gree gree, then talk to the Monkey Minder again to leave.");
 

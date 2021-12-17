@@ -157,6 +157,7 @@ public class SwanSong extends BasicQuestHelper
 		lava10 = new ItemRequirement("Lava rune", ItemID.LAVA_RUNE, 10);
 		blood5 = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE, 5);
 		bones7 = new ItemRequirement("Bones", ItemID.BONES, 7);
+		bones7.setTooltip("Obtainable during the quest, just pick up bones when killing the sea trolls.");
 
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		potLid = new ItemRequirement("Pot lid", ItemID.POT_LID);

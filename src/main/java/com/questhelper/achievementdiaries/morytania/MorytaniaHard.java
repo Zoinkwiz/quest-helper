@@ -72,7 +72,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	ItemRequirement food, fairyAccess, slayerRing;
 
 	// Quests required
-	Requirement hauntedMine, natureSpirit, kingsRansom, knightWaves, cabinFever, inAidOfMyreque, darknessOfHallowvale,
+	Requirement hauntedMine, natureSpirit, kingsRansom, knightWaves, cabinFever, inAidOfMyreque,
 		theGreatBrainRobbery, desertTreasure, piety;
 
 	Requirement notKharyrll, notAdvancedSpikes, notHarvestWatermelon, notBurnMaho, notHardTempleTrekk, notCaveHorror,
@@ -190,7 +190,6 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		knightWaves = new QuestRequirement(QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS, QuestState.FINISHED);
 		cabinFever = new QuestRequirement(QuestHelperQuest.CABIN_FEVER, QuestState.FINISHED);
 		inAidOfMyreque = new QuestRequirement(QuestHelperQuest.IN_AID_OF_THE_MYREQUE, QuestState.FINISHED);
-		darknessOfHallowvale = new QuestRequirement(QuestHelperQuest.DARKNESS_OF_HALLOWVALE, QuestState.FINISHED);
 		theGreatBrainRobbery = new QuestRequirement(QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY, QuestState.FINISHED);
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}
@@ -300,7 +299,6 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50));
 
 		reqs.add(cabinFever);
-		reqs.add(darknessOfHallowvale);
 		reqs.add(desertTreasure);
 		reqs.add(hauntedMine);
 		reqs.add(inAidOfMyreque);

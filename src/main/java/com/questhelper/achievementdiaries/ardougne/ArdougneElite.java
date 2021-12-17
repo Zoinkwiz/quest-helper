@@ -24,10 +24,8 @@
  */
 package com.questhelper.achievementdiaries.ardougne;
 
-import com.questhelper.ExternalQuestResources;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -36,14 +34,12 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -74,7 +70,7 @@ import com.questhelper.steps.QuestStep;
 public class ArdougneElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, mantaRay, lockpick, yewLog, runeBar, hammer, knife, sinewOrRoot, salveAmmy,
+	ItemRequirement combatGear, lockpick, yewLog, runeBar, hammer, knife, sinewOrRoot, salveAmmy,
 		torstolSeed, seedDib, rake, compost, waterRune, bloodRune, deathRune, sinew, root, imbuedSalve, spade,
 		runeCrossbowU, crossbowString, yewStock, runeLimbs;
 

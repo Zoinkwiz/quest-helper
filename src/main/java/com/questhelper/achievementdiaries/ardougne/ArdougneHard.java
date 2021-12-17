@@ -26,15 +26,12 @@ package com.questhelper.achievementdiaries.ardougne;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -223,7 +220,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 			lawRune.quantity(2));
 
 		moveHouse = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(2638, 3293, 0),
-			"Talk to the Estate agent and relocate your house to ", coins.quantity(25000));
+			"Talk to an Estate agent and relocate your house to Yanille.", coins.quantity(25000));
 		moveHouse.addDialogStep("Can you move my house please?");
 		yanPOH = new ObjectStep(this, 15482, new WorldPoint(2544, 3098, 0),
 			"Enter your house from the portal in Yanille.");
@@ -253,7 +250,8 @@ public class ArdougneHard extends ComplexStateQuestHelper
 			"Smith a Dragon sq shield in West Ardougne.", shieldLeft, shieldRight, hammer);
 
 		enterMournerHQ = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
-			"Enter the Mourner HQ.", deathAccess, highEss, crystalTrink, newKey, gasMask.equipped(), mournerTop.equipped(), mournerTrousers.equipped(),
+			"Enter the Mourner HQ, or enter the Death Altar via the Abyss.", deathAccess, highEss, crystalTrink, newKey,
+			gasMask.equipped(),	mournerTop.equipped(), mournerTrousers.equipped(),
 			mournerCloak.equipped(), mournerGloves.equipped(), mournerBoots.equipped());
 		enterMournerBasement = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0),
 			"Enter the Mourner HQ basement.", deathAccess, highEss, crystalTrink, newKey);
@@ -275,7 +273,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 				+ "TURN THE MIDDLE PILLAR TO POINT BACK EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.", highEss);
 
 		poisonIvy = new ObjectStep(this, 7580, new WorldPoint(2618, 3226, 0),
-			"Plant and harvest the strawberries from the Ardougne Monastery bush patch.", rake, seedDib, poisonIvySeed);
+			"Plant and harvest poison ivy in the Ardougne Monastery bush patch.", rake, seedDib, poisonIvySeed);
 
 		palmTree = new ObjectStep(this, 7963, new WorldPoint(2490, 3180, 0),
 			"Check the health of a palm tree near Tree Gnome Village", spade, rake, palmSap);

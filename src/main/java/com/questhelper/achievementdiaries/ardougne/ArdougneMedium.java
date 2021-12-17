@@ -26,7 +26,6 @@ package com.questhelper.achievementdiaries.ardougne;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
@@ -36,7 +35,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -56,8 +54,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -258,7 +254,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		moveToBasement = new ObjectStep(this, ObjectID.TRAPDOOR_21922, new WorldPoint(2648, 3212, 0),
 			"Enter the basement of the Tower of Life.", combatGear, food, rawChick, rawSword);
 		killSwordchick = new ObjectStep(this, ObjectID.SYMBOL_OF_LIFE, new WorldPoint(3034, 4362, 0),
-			"Activate the Symbol of Life and kill the Swordchick", combatGear, food, rawChick, rawSword);
+			"Activate the Symbol of Life and kill the Swordchick.", combatGear, food, rawChick, rawSword);
 
 		moveToSkavid = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2806, new WorldPoint(2524, 3069, 0),
 			"Enter the Cave.", lightSource, skavMap);

@@ -1433,6 +1433,45 @@ public class ItemCollections
 	);
 
 	@Getter
+	private  static final List<Integer> rechargeableNeckBracelet = ImmutableList.of(
+		ItemID.SKILLS_NECKLACE3,
+		ItemID.COMBAT_BRACELET3,
+		ItemID.SKILLS_NECKLACE2,
+		ItemID.COMBAT_BRACELET2,
+		ItemID.SKILLS_NECKLACE1,
+		ItemID.COMBAT_BRACELET1,
+		ItemID.SKILLS_NECKLACE,
+		ItemID.COMBAT_BRACELET
+	);
+
+	@Getter
+	private static final List<Integer> deathAltar = ImmutableList.of(
+		ItemID.DEATH_TIARA,
+		ItemID.DEATH_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> imbuableSalveAmulet = ImmutableList.of(
+		ItemID.SALVE_AMULET_E,
+		ItemID.SALVE_AMULET
+	);
+
+	@Getter
+	private static final List<Integer> imbuedSalveAmulet = ImmutableList.of(
+		ItemID.SALVE_AMULETEI,
+		ItemID.SALVE_AMULETI,
+		ItemID.SALVE_AMULETEI_25278,
+		ItemID.SALVE_AMULETI_25250
+	);
+
+	@Getter
+	private static final List<Integer> nonMagicTreeRoot = ImmutableList.of(
+		ItemID.OAK_ROOTS,
+		ItemID.WILLOW_ROOTS,
+		ItemID.MAPLE_ROOTS,
+		ItemID.YEW_ROOTS
+
+  @Getter
 	private  static final List<Integer> ardyCloaks = ImmutableList.of(
 			ItemID.ARDOUGNE_CLOAK_1,
 			ItemID.ARDOUGNE_CLOAK_2,

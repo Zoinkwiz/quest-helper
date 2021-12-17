@@ -292,7 +292,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.DEFENCE, 70, false));
 		reqs.add(new SkillRequirement(Skill.FARMING, 53, true));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 66));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 66, true));
 		reqs.add(new SkillRequirement(Skill.MINING, 55, true));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 70, false));
 		reqs.add(new SkillRequirement(Skill.SLAYER, 58, true));

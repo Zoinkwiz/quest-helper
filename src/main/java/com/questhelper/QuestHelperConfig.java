@@ -87,7 +87,10 @@ public interface QuestHelperConfig extends Config
 		/** Show quests where the client meets the quest requirements */
 		SHOW_MEETS_REQS(QuestHelper::clientMeetsRequirements),
 		/** Show all except generic helpers */
-		OPTIMAL("Optimal ordering", q -> q.getQuest().getQuestType() != Quest.Type.GENERIC),
+		OPTIMAL("Optimal ordering",
+			q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
+				q.getQuest().getQuestType() == Quest.Type.F2P ||
+				q.getQuest().getQuestType() == Quest.Type.MINIQUEST),
 		/** Show all free-to-play quests */
 		FREE_TO_PLAY(Quest.Type.F2P),
 		/** Show all members' quests */

@@ -72,7 +72,7 @@ public class ASoulsBane extends BasicQuestHelper
 		inHole2, inHole3, inHole4, inHole5, inFearRoom, reaperNearby, inConfusionRoom, inHopelessRoom, inHopeRoom, inTolnaRoom;
 
 	DetailedQuestStep talkToLauna, useRopeOnRift, enterRift, takeWeapon, killAnimals, killBears, killRats, killUnicorn, killGoblins, leaveAngerRoom,
-		lookInsideHole0, lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5, killReaper, leaveFearRoom, killRealConfusionBeast,
+		lookInsideHole0, lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5, lookInsideHoles, killReaper, leaveFearRoom, killRealConfusionBeast,
 		leaveConfusionRoom, leaveHopelessRoom, talkToTolna, talkToTolnaAgain;
 
 	NpcStep killHopelessCreatures, killHeads;
@@ -102,12 +102,7 @@ public class ASoulsBane extends BasicQuestHelper
 
 		ConditionalStep secondRoomSteps = new ConditionalStep(this, enterRift);
 		secondRoomSteps.addStep(new Conditions(inFearRoom, reaperNearby), killReaper);
-		secondRoomSteps.addStep(new Conditions(inFearRoom, inHole0), lookInsideHole0);
-		secondRoomSteps.addStep(new Conditions(inFearRoom, inHole1), lookInsideHole1);
-		secondRoomSteps.addStep(new Conditions(inFearRoom, inHole2), lookInsideHole2);
-		secondRoomSteps.addStep(new Conditions(inFearRoom, inHole3), lookInsideHole3);
-		secondRoomSteps.addStep(new Conditions(inFearRoom, inHole4), lookInsideHole4);
-		secondRoomSteps.addStep(new Conditions(inFearRoom, inHole5), lookInsideHole5);
+		secondRoomSteps.addStep(new Conditions(inFearRoom), lookInsideHoles);
 		secondRoomSteps.addStep(inAngerRoom, leaveAngerRoom);
 
 		ConditionalStep thirdRoomSteps = new ConditionalStep(this, enterRift);
@@ -241,6 +236,7 @@ public class ASoulsBane extends BasicQuestHelper
 
 		leaveAngerRoom = new ObjectStep(this, ObjectID.EXIT_13882, new WorldPoint(3038, 5229, 0), "Go to the next room.");
 
+		// Not used now
 		lookInsideHole0 = new ObjectStep(this, ObjectID.DARK_HOLE_13891, new WorldPoint(3066, 5245, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
 		lookInsideHole1 = new ObjectStep(this, ObjectID.DARK_HOLE_13892, new WorldPoint(3069, 5227, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
 		lookInsideHole2 = new ObjectStep(this, ObjectID.DARK_HOLE_13893, new WorldPoint(3064, 5219, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
@@ -248,13 +244,22 @@ public class ASoulsBane extends BasicQuestHelper
 		lookInsideHole4 = new ObjectStep(this, ObjectID.DARK_HOLE_13895, new WorldPoint(3046, 5230, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
 		lookInsideHole5 = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
 
+		lookInsideHoles = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0), "Look inside " +
+			"the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.", true);
+		((ObjectStep) lookInsideHoles).addAlternateObjects(ObjectID.DARK_HOLE_13891, ObjectID.DARK_HOLE_13892,
+			ObjectID.DARK_HOLE_13893, ObjectID.DARK_HOLE_13894, ObjectID.DARK_HOLE_13895);
+
 		killReaper = new NpcStep(this, NpcID.FEAR_REAPER, new WorldPoint(3058, 5230, 0), "Kill the Fear Reaper.");
+		lookInsideHoles.addSubSteps(killReaper);
 		lookInsideHole0.addSubSteps(lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5, killReaper);
 
 		leaveFearRoom = new ObjectStep(this, NullObjectID.NULL_13898, new WorldPoint(3046, 5236, 0), "Continue to the next room.");
 
 		killRealConfusionBeast = new NpcStep(this, NpcID.CONFUSION_BEAST, new WorldPoint(3055, 5199, 0),
-			"Kill the marked confusion beasts. The others won't take damage.", true);
+			"Attack the confusion beasts until you find one which takes damage, and kill it. The others will take 8 " +
+				"hits to die.",	true);
+		((NpcStep) killRealConfusionBeast).addAlternateNpcs(NpcID.CONFUSION_BEAST_1068, NpcID.CONFUSION_BEAST_1069,
+			NpcID.CONFUSION_BEAST_1070, NpcID.CONFUSION_BEAST_1071);
 
 		leaveConfusionRoom = new ObjectStep(this, NullObjectID.NULL_13912, new WorldPoint(3051, 5200, 0), "Leave the room through the confusing door.");
 
@@ -326,7 +331,7 @@ public class ASoulsBane extends BasicQuestHelper
 			Arrays.asList(takeWeapon, killAnimals, leaveAngerRoom), combatGear));
 
 		allSteps.add(new PanelDetails("Fear room",
-			Arrays.asList(lookInsideHole0, leaveFearRoom), combatGear));
+			Arrays.asList(lookInsideHoles, leaveFearRoom), combatGear));
 
 		allSteps.add(new PanelDetails("Confusion room",
 			Arrays.asList(killRealConfusionBeast, leaveConfusionRoom), combatGear));

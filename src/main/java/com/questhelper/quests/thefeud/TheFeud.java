@@ -114,11 +114,11 @@ public class TheFeud extends BasicQuestHelper
 		steps.put(0, startQuest);
 
 		ConditionalStep goToPollniveach = new ConditionalStep(this, buyShantayPass);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, shantayPass), goToShantay);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
+		goToPollniveach.addStep(new Conditions(hasDisguise, inPollniveach), drunkenAli);
+		goToPollniveach.addStep(new Conditions(hasDisguise, inShantayDesertSide), talkToRugMerchant);
 		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
-		goToPollniveach.addStep(inShantayDesertSide, talkToRugMerchant);
-		goToPollniveach.addStep(inPollniveach, drunkenAli);
+		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
+		goToPollniveach.addStep(new Conditions(notThroughShantayGate, shantayPass), goToShantay);
 		steps.put(1, goToPollniveach);
 
 		ConditionalStep findBeef = new ConditionalStep(this, talkToThug);
@@ -288,7 +288,7 @@ public class TheFeud extends BasicQuestHelper
 		hasDisguiseComponents = new Conditions(fakeBeard, headPiece);
 		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguise);
 		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, fakeBeard, headPiece);
-		hasDisguise = new Conditions(desertDisguise);
+		hasDisguise = new Conditions(desertDisguise.alsoCheckBank(questBank));
 
 		//a
 		notThroughShantayGate = new Conditions(LogicType.NAND, inShantayDesertSide);

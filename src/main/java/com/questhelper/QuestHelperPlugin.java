@@ -638,14 +638,12 @@ public class QuestHelperPlugin extends Plugin
 	{
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setTarget(target);
-		menuEntry.setParam0(widgetIndex);
-		menuEntry.setParam1(widgetID);
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-		menuEntry.setOption(newEntry);
-
-		client.setMenuEntries(menuEntries);
+		client.createMenuEntry(menuEntries.length - 1)
+			.setOption(newEntry)
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE)
+			.setParam0(widgetIndex)
+			.setParam1(widgetID);
 
 		return menuEntries;
 	}

@@ -121,7 +121,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToAvaAgainNoOrb, useLocatorInSwamp;
 	Requirement talkedToReldo, foundCensus, talkedToReldoAgain, givenReldoBook, talkedToSarah, talkedToAva, givenAvaOrb, talkedToAvaAgain;
 
-	DetailedQuestStep talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey;
+	DetailedQuestStep talkToBrundt, talkToTorfinn, killVorkath, killVorkathSidebar, enterVorkathCave,
+		pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey;
 	Requirement talkedToBrundt, defeatedVorkath, pulledLever;
 
 	QuestStep talkToAmelia, enterCrypt, goDownInCryptF2ToF1, goDownInCryptF1ToF0, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey;
@@ -132,7 +133,8 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	DetailedQuestStep talkToRoald, goUpToAmik1, goUpToAmik2, talkToAmik, goUpToLathasOrThoros, talkToLathasOrThoros, talkToBrundtAboutThreat, enterVarrockDiningRoom, talkToBobAfterDiningRoom;
 
-	DetailedQuestStep takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon, killMithAddyAndRuneDragons, killGalvek, talkToAlecToFinish;
+	DetailedQuestStep takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon
+	, killMithAddyAndRuneDragons, killGalvekSidebar, killGalvek, talkToAlecToFinish;
 
 	ConditionalStep goEnterMithDoorFirstTime, goEnterMithDoorSecondTime, goSmithKey, goOpenDoorWithKey, openDoorWithoutKey, goTalkToBobAfterRelease;
 
@@ -843,13 +845,22 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToTorfinn = new NpcStep(this, NpcID.TORFINN, new WorldPoint(2640, 3696, 0), "Talk to Torfinn on the Rellekka docks to go to Ungael.");
 		((NpcStep) (talkToTorfinn)).addAlternateNpcs(NpcID.TORFINN_10403);
 		talkToTorfinn.addDialogSteps("I'm ready.", "Yes please.");
-		killVorkath = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", rangedCombatGear);
-		killVorkath.addText("Protect from Magic, and drink an antifire and antivenom potion.");
-		killVorkath.addText("When Vorkath fires a pink fireball it'll turn your prayer off.");
-		killVorkath.addText("When Vorkath shoots an orange fireball into the air, move away from the spot you're on.");
-		killVorkath.addText("When Vorkath spits acid everywhere, WALK around to avoid the fireballs he will shoot.");
-		killVorkath.addText("When Vorkath freezes you, kill the zombified spawn that appears before it reaches you.");
+		killVorkath = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
+			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video and read the " +
+			"sidebar first.", rangedCombatGear);
 		((NpcStep) (killVorkath)).addAlternateNpcs(NpcID.VORKATH_8058, NpcID.VORKATH_8059, NpcID.VORKATH_8060, NpcID.VORKATH_8061);
+
+		killVorkathSidebar = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
+			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", rangedCombatGear);
+		killVorkathSidebar.addSubSteps(killVorkath);
+
+			killVorkathSidebar.addText("Protect from Magic, and drink an antifire and antivenom potion.");
+		killVorkathSidebar.addText("When Vorkath fires a pink fireball it'll turn your prayer off.");
+		killVorkathSidebar.addText("When Vorkath shoots an orange fireball into the air, move away from the spot you're on.");
+		killVorkathSidebar.addText("When Vorkath spits acid everywhere, WALK around to avoid the fireballs he will shoot.");
+		killVorkathSidebar.addText("When Vorkath freezes you, kill the zombified spawn that appears before it reaches you.");
+
+
 		enterVorkathCave = new ObjectStep(this, ObjectID.CAVE_31999, new WorldPoint(2249, 4078, 0), "Enter the cave on the north west of Ungael.");
 		enterVorkathCave.addDialogStep("I'm sure.");
 
@@ -1051,15 +1062,21 @@ public class DragonSlayerII extends BasicQuestHelper
 		killMithAddyAndRuneDragons.addText("Occasionally Galvek will shoot a fireball in the air, move to avoid it.");
 		killMithAddyAndRuneDragons.addText("");
 		((NpcStep) (killMithAddyAndRuneDragons)).addAlternateNpcs(NpcID.MITHRIL_DRAGON_8089, NpcID.ADAMANT_DRAGON, NpcID.ADAMANT_DRAGON_8090, NpcID.RUNE_DRAGON, NpcID.RUNE_DRAGON_8091);
-		killGalvek = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. This is a hard fight, so it's recommended you check a video to see what you'll have to do.", true);
+		killGalvek = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. Read the " +
+			"sidebar for more details.",true);
 		((NpcStep) (killGalvek)).addAlternateNpcs(NpcID.GALVEK_8096, NpcID.GALVEK_8097, NpcID.GALVEK_8098);
-		killGalvek.addText("Avoid the ground-targeted fireballs.");
-		killGalvek.addText("The pink attack turns off prayer.");
-		killGalvek.addText("Use Protect from Magic in phase 1, use Protect from Missiles otherwise.");
-		killGalvek.addText("Phase 1 - Fire traps appear - if you go near them you die.");
-		killGalvek.addText("Phase 2 - Fires transparent projectile which drains stats.");
-		killGalvek.addText("Phase 3 - Waves of fire appear. Go through the gap in them to avoid.");
-		killGalvek.addText("Phase 4 - Fire binding projective. Avoid it by moving.");
+
+		killGalvekSidebar = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2),
+			"Kill Galvek. This is a hard fight, so it's recommended you check a video to see what you'll have to do.");
+		killGalvekSidebar.addText("Avoid the ground-targeted fireballs.");
+		killGalvekSidebar.addText("The pink attack turns off prayer.");
+		killGalvekSidebar.addText("Use Protect from Magic in phase 1, use Protect from Missiles otherwise.");
+		killGalvekSidebar.addText("Phase 1 - Fire traps appear - if you go near them you die.");
+		killGalvekSidebar.addText("Phase 2 - Fires transparent projectile which drains stats.");
+		killGalvekSidebar.addText("Phase 3 - Waves of fire appear. Go through the gap in them to avoid.");
+		killGalvekSidebar.addText("Phase 4 - Fire binding projective. Avoid it by moving.");
+		killGalvekSidebar.addSubSteps(killGalvek);
+
 		talkToAlecToFinish = new NpcStep(this, NpcID.ALEC_KINCADE, new WorldPoint(2458, 2869, 0), "Talk to Alec Kincade to become a Myth!");
 		talkToAlecToFinish.addDialogStep("Let's talk about my quest.");
 	}
@@ -1195,7 +1212,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		PanelDetails kourendKeyPanel = new PanelDetails("Kourend key piece", Arrays.asList(talkToAmelia, enterCrypt, goDownInCryptF2ToF1, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey), combatGear, lightSource);
 		kourendKeyPanel.setLockingStep(gettingTheKourendKey);
 
-		PanelDetails fremennikKeyPanel = new PanelDetails("Fremennik key piece", Arrays.asList(talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey), combatGear);
+		PanelDetails fremennikKeyPanel = new PanelDetails("Fremennik key piece", Arrays.asList(talkToBrundt, talkToTorfinn, killVorkathSidebar, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey), combatGear);
 		fremennikKeyPanel.setLockingStep(gettingTheFremennikKey);
 
 		allSteps.add(kourendKeyPanel);
@@ -1210,7 +1227,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Creating an army", Arrays.asList(talkToRoald, talkToBrundtAboutThreat, talkToAmik, talkToLathasOrThoros, enterVarrockDiningRoom, talkToBobAfterDiningRoom)));
 
 		allSteps.add(new PanelDetails("Final showdown", Arrays.asList(takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon,
-			killMithAddyAndRuneDragons, killGalvek, talkToAlecToFinish), combatGear, antifireShield));
+			killMithAddyAndRuneDragons, killGalvekSidebar, talkToAlecToFinish), combatGear, antifireShield));
 
 		return allSteps;
 	}

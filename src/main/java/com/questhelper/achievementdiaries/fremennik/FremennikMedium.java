@@ -204,7 +204,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 			"Partial completion of Olaf's Quest to access the Brine Rat Cavern");
 		fremennikTrials = new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED);
 		betweenARock = new QuestRequirement(QuestHelperQuest.BETWEEN_A_ROCK, QuestState.FINISHED,
-			"Mostly completed Between a Rock for access to the Azinian Mine");
+			"Mostly completed Between a Rock for access to the Arzinian Mine");
 		dwarfCannon = new QuestRequirement(QuestHelperQuest.DWARF_CANNON, QuestState.FINISHED);
 		fishingContest = new QuestRequirement(QuestHelperQuest.FISHING_CONTEST, QuestState.FINISHED);
 		horrorFromTheDeep = new QuestRequirement(QuestHelperQuest.HORROR_FROM_THE_DEEP, QuestState.FINISHED);

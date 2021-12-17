@@ -196,7 +196,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 		blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE);
 		waterBucket = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		rottenApple = new ItemRequirement("Rotten apple", ItemID.ROTTEN_APPLE);
-		toadCrunchies = new ItemRequirement("Toad crunchies (can be premade)", ItemID.TOAD_CRUNCHIES);
+		rottenApple.setTooltip("Obtained during quest.");
+		toadCrunchies = new ItemRequirement("Toad crunchies (can be Premade t'd crunch)", ItemID.TOAD_CRUNCHIES);
 		toadCrunchies.addAlternates(ItemID.TOAD_CRUNCHIES_9538, ItemID.PREMADE_TD_CRUNCH);
 		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
@@ -330,7 +331,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 		searchLaundry = new ObjectStep(this, ObjectID.LAUNDRY_BASKET, new WorldPoint(2912, 3418, 0), "Search Tegid's laundry basket in south Taverley for some soap.");
 		searchLaundry.addDialogStep("Steal the soap.");
-		useSoapOnTop = new DetailedQuestStep(this, "Use the soap on the bloody mourner top", tegidsSoap, waterBucket, bloodyMournerBody);
+		useSoapOnTop = new DetailedQuestStep(this, "Use the soap on the bloody mourner top", tegidsSoap, waterBucket,
+			bloodyMournerBody.highlighted());
 
 		talkToOronwen = new NpcStep(this, NpcID.ORONWEN, new WorldPoint(2327, 3176, 0),
 			"Teleport to Lletya using a crystal teleport seed and talk to Oronwen to have them repair your trousers. Buy dyes here if you still need them.", mournerLegsBroken, bearFur, silk2);
@@ -374,7 +376,9 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 		askAboutToads = new NpcStep(this, NpcID.GNOME_5309, new WorldPoint(2035, 4630, 0), "Ask the gnome about ammo.");
 
-		getToads = new DetailedQuestStep(this, "You need to make some dyed toads. Go to Feldip Hills, use a dye on your empty bellows, then use the bellows to inflate a toad. Get at least one toad of each colour.", redToad, yellowToad, greenToad, blueToad);
+		getToads = new DetailedQuestStep(this, new WorldPoint(2599, 2966, 0),
+			"You need to make some dyed toads. Go to Feldip Hills, use a dye on your empty bellows, then use the " +
+				"bellows to inflate a toad. Get at least one toad of each colour.", redToad, yellowToad, greenToad, blueToad);
 
 		loadGreenToad = new DetailedQuestStep(this, "Add a green toad to the fixed device.", greenToad, fixedDevice);
 		shootGreenToad = new NpcStep(this, NpcID.GREEN_SHEEP, new WorldPoint(2621, 3368, 0), "Wield the fixed device and select Aim and Fire from your combat options to fire at a green sheep north of Ardougne.", true, fixedDeviceEquipped);
@@ -388,7 +392,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		loadBlueToad = new DetailedQuestStep(this, "Add a blue toad to the fixed device.", blueToad, fixedDevice);
 		shootBlueToad = new NpcStep(this, NpcID.BLUE_SHEEP, new WorldPoint(2562, 3390, 0), "Wield the fixed device and select Aim and Fire from your combat options to fire at a blue sheep north of Ardougne.", true, fixedDeviceEquipped);
 
-		dyeSheep = new DetailedQuestStep(this, "Dye each colour of sheep north of Ardougne using the dyed toads and the fixed device.");
+		dyeSheep = new DetailedQuestStep(this, "Dye each colour of sheep north of Ardougne by using the dyed toads on the fixed device and select Aim and Fire from your combat options to fire.");
 		dyeSheep.addSubSteps(loadGreenToad, loadYellowToad, loadBlueToad, loadRedToad, shootBlueToad, shootGreenToad, shootRedToad, shootYellowToad);
 
 		enterBaseAfterSheep = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
@@ -411,13 +415,16 @@ public class MourningsEndPartI extends BasicQuestHelper
 		useApplesOnPress = new ObjectStep(this, ObjectID.APPLE_PRESS, new WorldPoint(2484, 3374, 0), "Use the rotten apples on the apple press.", barrelOfRottenApples);
 		useApplesOnPress.addIcon(ItemID.ROTTEN_APPLES);
 
-		getNaphtha = new DetailedQuestStep(this, "Make some Naphtha. Grab another barrel, fill it on the swamp south of the elven lands, then refine it at the Chemist in Rimmington with 10-20 coal.", coal20OrNaphtha);
+		getNaphtha = new DetailedQuestStep(this, new WorldPoint(2927, 3212, 0), "Make some Naphtha. Grab another " +
+			"barrel, fill it on the swamp south of the elven lands, then refine it on the fractionalising still at " +
+			"the Chemist in Rimmington with 10-20 coal.", coal20OrNaphtha);
 
 		useNaphthaOnBarrel = new DetailedQuestStep(this, "Use a barrel of naptha on the apple barrel.", naphtha, appleBarrel);
 
 		useSieveOnBarrel = new DetailedQuestStep(this, "Use the sieve on the naphtha apple mix", sieve, naphthaAppleMix);
 
-		cookNaphtha = new DetailedQuestStep(this, "Cook the toxic naphtha on a range. DO NOT USE IT ON A FIRE.", toxicNaphtha);
+		cookNaphtha = new ObjectStep(this, ObjectID.RANGE, new WorldPoint(2970, 3210, 0), "Cook the toxic naphtha on " +
+			"a range. DO NOT USE IT ON A FIRE.", toxicNaphtha);
 
 		usePowderOnFood1 = new ObjectStep(this, NullObjectID.NULL_37330, new WorldPoint(2517, 3315, 0), "Use the toxic powder on the food store in the room north west of West Ardougne's town centre.", toxicPowder);
 		usePowderOnFood1.addIcon(ItemID.TOXIC_POWDER);

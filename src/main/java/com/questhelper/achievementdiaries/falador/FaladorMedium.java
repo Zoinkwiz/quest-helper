@@ -149,7 +149,9 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav));
-		airRune4 = new ItemRequirement("Air Runes", ItemID.AIR_RUNE, 4).showConditioned(new Conditions(LogicType.OR,
+		ItemRequirement airRunes = new ItemRequirement("Air rune", ItemCollections.getAirRune(), 4);
+		ItemRequirement airStaff = new ItemRequirement("Air staff", ItemCollections.getAirStaff(), 1, true);
+		airRune4 = new ItemRequirements(LogicType.OR, "2 air runes", airRunes, airStaff).showConditioned(new Conditions(LogicType.OR,
 			notTelegrabbedWine, notTeleportFalador));
 		lawRune2 = new ItemRequirement("Law Runes", ItemID.LAW_RUNE, 2);
 		waterRune1 = new ItemRequirement("Water Runes", ItemID.WATER_RUNE, 1);
@@ -274,14 +276,15 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Pray with Initiate Set
 		getInitiateSet = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0),
-			"Speak to Sir Tiffy Cashien to purchase a set of Initiate Armor for 14,000 Coins for a full set.");
+			"Speak to Sir Tiffy Cashien to purchase a set of Initiate Armor for 20,000 Coins for a full set.");
 		getInitiateSet.addDialogStep("Can I buy some armor?");
 		prayAtAltar = new ObjectStep(this, ObjectID.ALTAR_OF_GUTHIX, new WorldPoint(2925, 3483, 0),
-			"Equip your Initiate armor and pray at the Altar of Guthix in Taverley", initiateSet);
+			"Equip your Initiate armor and pray at the Altar of Guthix in Taverley", initiateHelm.equipped(),
+			initiateChest.equipped(), initiateLegs.equipped());
 
 		//Mine Gold in Crafting Guild
 		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2933, 3289, 0),
-			"Go to the Crafting Guild west of Falador. \n You will need to equip a brown apron to enter.", brownApron, pickaxe);
+			"Go to the Crafting Guild west of Falador. You will need to equip a brown apron to enter.", brownApron, pickaxe);
 		mineGold = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(2938, 3280, 0),
 			"Mine a gold ore.", pickaxe);
 

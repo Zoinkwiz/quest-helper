@@ -145,7 +145,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		giantDwarf = new QuestRequirement(QuestHelperQuest.THE_GIANT_DWARF, QuestState.FINISHED);
+		giantDwarf = new QuestRequirement(QuestHelperQuest.THE_GIANT_DWARF, QuestState.IN_PROGRESS);
 		fremIsles = new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_ISLES, QuestState.FINISHED);
 		throneOfMisc = new QuestRequirement(QuestHelperQuest.THRONE_OF_MISCELLANIA, QuestState.FINISHED);
 		eadgarsRuse = new QuestRequirement(QuestHelperQuest.EADGARS_RUSE, QuestState.FINISHED);
@@ -248,10 +248,15 @@ public class FremennikHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.SMITHING, 60, false));
 		req.add(new SkillRequirement(Skill.THIEVING, 75, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 56, true));
-		req.add(new ComplexRequirement("Normal and Lunar spellbooks",
-			new SpellbookRequirement(Spellbook.NORMAL),
-			new SpellbookRequirement(Spellbook.LUNAR))
-		);
+		req.add(new ItemRequirement("Normal and Lunar spellbooks", -1, -1));
+
+
+		req.add(eadgarsRuse);
+		req.add(lunarDiplomacy);
+		req.add(giantDwarf);
+		req.add(fremIsles);
+		req.add(throneOfMisc);
+
 		return req;
 	}
 

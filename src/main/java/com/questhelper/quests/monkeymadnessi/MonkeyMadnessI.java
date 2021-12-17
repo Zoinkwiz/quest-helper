@@ -69,9 +69,9 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	//Items Required
 	ItemRequirement monkeyBonesOrCorpse, ballOfWool, goldBar, royalSeal, narnodesOrders, monkeyDentures, mould, monkeyDenturesHighlight, mouldHighlight, barHighlight, enchantedBar,
 		enchantedBarHighlight, ballOfWoolHighlight, unstrungAmuletHighlight, amulet, banana5, amuletWorn, talisman, talismanHighlight, karamjanGreegree, monkeyBonesOrCorpseHighlight,
-		monkey, karamjanGreegreeEquipped, sigilEquipped;
+		monkey, karamjanGreegreeEquipped, sigilEquipped, bananaReq;
 
-	//Items Recommendded
+	//Items Recommended
 	ItemRequirement combatGear, antipoison;
 
 	Requirement inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, inHangar, startedPuzzle, solvedPuzzle,
@@ -246,6 +246,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWool = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL);
 		ballOfWoolHighlight = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL);
 		ballOfWoolHighlight.setHighlightInInventory(true);
+
+		bananaReq = new ItemRequirement("Banana (obtainable during quest)", ItemID.BANANA, 5);
 
 		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);
@@ -703,7 +705,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(goldBar, ballOfWool, monkeyBonesOrCorpse);
+		return Arrays.asList(goldBar, ballOfWool, bananaReq, monkeyBonesOrCorpse);
 	}
 
 	@Override

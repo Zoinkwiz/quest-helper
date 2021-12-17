@@ -60,10 +60,10 @@ import net.runelite.api.coords.WorldPoint;
 public class Contact extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement lightSource, combatGear, parchment, keris, food, prayerPotions;
+	ItemRequirement lightSource, tinderbox, combatGear, parchment, keris, food, prayerPotions;
 
 	// Item recommended
-	ItemRequirement coins, glory;
+	ItemRequirement coins, glory, antipoison;
 
 	Requirement inBank, inDungeon, inChasm, hasReadParchment, kerisNearby;
 
@@ -123,6 +123,7 @@ public class Contact extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
 
@@ -132,6 +133,7 @@ public class Contact extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 
@@ -247,7 +249,8 @@ public class Contact extends BasicQuestHelper
 		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(3268, 9229, 2), "Be careful of traps, and make your way to the south west corner of the dungeon, and go down the ladder there.");
 		((DetailedQuestStep) goDownToChasmAgain).setLinePoints(path);
 
-		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(3231, 9251, 0), "Kill the Giant Scarab near the chasm.");
+		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(3231, 9251, 0),
+			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful.");
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);
 
@@ -259,6 +262,7 @@ public class Contact extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(lightSource);
+		reqs.add(tinderbox);
 		reqs.add(combatGear);
 		reqs.add(food);
 		reqs.add(prayerPotions);
@@ -271,6 +275,7 @@ public class Contact extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(coins.quantity(1000));
 		reqs.add(glory);
+		reqs.add(antipoison);
 		return reqs;
 	}
 
@@ -314,15 +319,16 @@ public class Contact extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHighPriest, talkToJex), lightSource));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHighPriest, talkToJex), lightSource, tinderbox));
 
 		allSteps.add(new PanelDetails("Explore the dungeon",
 			Arrays.asList(goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment,
-				talkToMaisa, talkToOsman), lightSource));
+				talkToMaisa, talkToOsman), lightSource, tinderbox));
 
 		allSteps.add(new PanelDetails("Help Osman",
 			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
-				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions, lightSource));
+				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions,
+			lightSource, tinderbox));
 
 		return allSteps;
 	}

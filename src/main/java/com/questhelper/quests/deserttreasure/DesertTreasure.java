@@ -463,8 +463,8 @@ public class DesertTreasure extends BasicQuestHelper
 
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
 
-		killDamis1 = new NpcStep(this, NpcID.DAMIS, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. He can be safe spotted.");
-		killDamis2 = new NpcStep(this, NpcID.DAMIS_683, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. He can be safe spotted.");
+		killDamis1 = new NpcStep(this, NpcID.DAMIS, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can savespot him by attacking a bat and keeping the bat between the two of you.");
+		killDamis2 = new NpcStep(this, NpcID.DAMIS_683, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can savespot him by attacking a bat and keeping the bat between the two of you.");
 		killDamis1.addSubSteps(killDamis2);
 
 		enterSewer = new ObjectStep(this, ObjectID.TRAPDOOR_6434, new WorldPoint(3084, 3272, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);

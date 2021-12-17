@@ -256,7 +256,12 @@ public class Regicide extends BasicQuestHelper
 		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemID.LEATHER_GLOVES);
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
-			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
+			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES, ItemID.GRACEFUL_GLOVES_11859,
+			ItemID.GRACEFUL_GLOVES_13587, ItemID.GRACEFUL_GLOVES_13588, ItemID.GRACEFUL_GLOVES_13599, ItemID.GRACEFUL_GLOVES_13600,
+			ItemID.GRACEFUL_GLOVES_13611, ItemID.GRACEFUL_GLOVES_13612, ItemID.GRACEFUL_GLOVES_13623, ItemID.GRACEFUL_GLOVES_13624,
+			ItemID.GRACEFUL_GLOVES_13635, ItemID.GRACEFUL_GLOVES_13636, ItemID.GRACEFUL_GLOVES_13675, ItemID.GRACEFUL_GLOVES_13676,
+			ItemID.GRACEFUL_GLOVES_21073, ItemID.GRACEFUL_GLOVES_21075, ItemID.GRACEFUL_GLOVES_24755, ItemID.GRACEFUL_GLOVES_24757,
+			ItemID.GRACEFUL_GLOVES_25081, ItemID.GRACEFUL_GLOVES_25083);
 		gloves.setTooltip("The following gloves are valid:");
 		gloves.appendToTooltip("All RFD Gloves");
 		gloves.appendToTooltip("Leather Gloves");
@@ -768,8 +773,8 @@ public class Regicide extends BasicQuestHelper
 		pathToIorwerth.addStep(inForestSectionAfterCave, goFromLeavesToStickTrap);
 		pathToIorwerth.addStep(inForestNearCave, goFromCaveToLeaves);
 
-		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "Wait around the cave exit for Idris to appear " +
-			"and talk to her. Afterwards, Go talk to Lord Iorwerth in the north west of the elven forest.");
+		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "WAIT OUTSIDE AROUND the cave entrance for Idris to appear " +
+			"and talk to her (If Idris does not appear in the couple minutes enter and exit the cave). Afterwards, Go talk to Lord Iorwerth in the north west of the elven forest.");
 		goTalkToIorwerth.addSubSteps(talkToIdris);
 
 		goReturnToIorwerth = new ConditionalStep(this, pathToIorwerth, "Return to Lord Iorwerth in the north west of " +
@@ -814,7 +819,7 @@ public class Regicide extends BasicQuestHelper
 		goIntoTyrasCamp = new ConditionalStep(this, goToTyrasCampEntrance, "Enter the Tyras Camp.");
 
 		goToIorwerthAfterCamp = new ConditionalStep(this, goToTyrasCampEntrance,
-			"Fill some barrels with tar then return to Lord Iorwerth.");
+			"Fill some barrels with tar, pick up some sulphur there, and then return to Lord Iorwerth.");
 		goToIorwerthAfterCamp.addStep(new Conditions(coalBarrel2, sulphur), pathToIorwerth);
 		goToIorwerthAfterCamp.addStep(new Conditions(inWestForestPath, coalBarrel2), getSulphur);
 		goToIorwerthAfterCamp.addStep(new Conditions(inWestForestPath, barrel2), fill2Barrels);

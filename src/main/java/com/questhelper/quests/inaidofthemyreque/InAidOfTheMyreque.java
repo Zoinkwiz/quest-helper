@@ -77,7 +77,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		enchantedRodHighlighted, foodForChest;
 
 	//Items Recommended
-	ItemRequirement steelmedChainLegsSickle, morttonTeleport, canifisTeleport;
+	ItemRequirement steelmed, steelChain, steelLegs, silverSickle, morttonTeleport, canifisTeleport;
 
 	Requirement normalSpellbook;
 
@@ -271,11 +271,18 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
 
-		steelmedChainLegsSickle = new ItemRequirements("Steel med helm/chainbody/plate legs and a sickle for Ivan",
-			new ItemRequirement("Steel med helm", ItemID.STEEL_MED_HELM),
-			new ItemRequirement("Steel chainbody", ItemID.STEEL_CHAINBODY),
-			new ItemRequirement("Steel Platelegs", ItemID.STEEL_PLATELEGS),
-			new ItemRequirement("Silver sickle", ItemID.SILVER_SICKLE));
+		steelmed = new ItemRequirement("Steel med helm", ItemID.STEEL_MED_HELM);
+		steelmed.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
+			"stronger");
+		steelChain = new ItemRequirement("Steel chainbody", ItemID.STEEL_CHAINBODY);
+		steelChain.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
+			"stronger");
+		steelLegs = new ItemRequirement("Steel Platelegs", ItemID.STEEL_PLATELEGS);
+		steelLegs.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
+			"stronger");
+		silverSickle = new ItemRequirement("Silver sickle", ItemID.SILVER_SICKLE);
+		silverSickle.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
+			"stronger");
 
 		morttonTeleport = new ItemRequirement("Teleports to Mort'ton (minigame tele, teleport scroll)", ItemID.MORTTON_TELEPORT);
 		canifisTeleport = new ItemRequirement("Canifis teleports (ancients spell, nearby fairy ring bip)", ItemID.KHARYRLL_TELEPORT);
@@ -513,7 +520,9 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		goTalkToPolmafi = new ConditionalStep(this, goToHollowBase, "Talk to Polmafi in the Myreque Hideout.");
 		goTalkToPolmafi.addStep(inMyrequeCave, talkToPolmafi);
 
-		travelWithIvan = new ConditionalStep(this, goToHollowBase, "Talk to Ivan in the Myreque Hideout to temple trek with him. The long route has 4 level 50 Juvinates and the short route has 2 level 75 Juvinates. You can give him a steel med helm / chainbody / platelegs, and salmon to help him survive.");
+		travelWithIvan = new ConditionalStep(this, goToHollowBase, "Talk to Ivan in the Myreque Hideout to temple trek with him. " +
+			"The long route has 4 level 50 Juvinates and the short route has 2 level 75 Juvinates. " +
+			"You can give him a steel med helm / chainbody / platelegs, and salmon to help him survive.");
 		travelWithIvan.addStep(inTempleTrekArea2, killJuvinates2);
 		travelWithIvan.addStep(inTempleTrekArea, killJuvinates);
 		travelWithIvan.addStep(inMyrequeCave, talkToIvanForTrek);
@@ -559,7 +568,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(steelmedChainLegsSickle, morttonTeleport, canifisTeleport);
+		return Arrays.asList(steelmed, steelChain, steelLegs, silverSickle, morttonTeleport, canifisTeleport);
 	}
 
 	@Override
@@ -606,7 +615,9 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Repairing the furnace", Arrays.asList(talkToRazvanAfterRepairs, repairFurnace, addCoalToFurnace, lightFurnace), hammer, steelBars2, coal, tinderbox));
 		allSteps.add(new PanelDetails("Defending Burgh de Rott", Arrays.asList(talkToGadderanks, talkToJuvinate, talkToWiskit, killGadderanksAndJuvinates, talkToGadderanksAgain, talkToVeliafAfterFight), efaritaysAidOrSilverWeapon));
 
-		allSteps.add(new PanelDetails("Relocating", Arrays.asList(returnToHideout, goTalkToPolmafi, travelWithIvan), efaritaysAidOrSilverWeapon));
+		allSteps.add(new PanelDetails("Relocating", Arrays.asList(returnToHideout, goTalkToPolmafi, travelWithIvan),
+			Collections.singletonList(efaritaysAidOrSilverWeapon), Arrays.asList(steelmed, steelChain, steelLegs,
+			silverSickle)));
 
 		allSteps.add(new PanelDetails("Ivandis' legacy", Arrays.asList(talkToDrezel, useKeyOnHole, enterLibrary, searchBookcase, readBook, goIntoCavesAgain, useHammerOnBoards, enterCoffinRoom,
 			useClayOnCoffin, makeRod, enchantRod, goBlessRod, finishQuest), hammer, softClay, mithrilBar, silverBar, cosmicRune, waterRune, rope, sapphire));

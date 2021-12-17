@@ -199,6 +199,7 @@ public class BoneVoyage extends BasicQuestHelper
 
 		talkToOperatorInGuild = new NpcStep(this, NpcID.SAWMILL_OPERATOR_9140, new WorldPoint(1620, 3499, 0),
 			"Talk to the Sawmill Operator in the Woodcutting Guild on Zeah.", sawmillProposal);
+		talkToOperatorInGuild.addDialogStep("I'm here on behalf of the museum archaeological team.");
 		talkToOperatorInGuildFromGate = new ObjectStep(this, ObjectID.GATE_28852, new WorldPoint(1657, 3504, 0),
 			"Attempt to enter the Woodcutting Guild on Zeah to talk to the guild's sawmill operator.", sawmillProposal);
 

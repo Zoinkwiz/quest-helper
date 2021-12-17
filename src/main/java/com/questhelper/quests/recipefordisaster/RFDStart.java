@@ -116,6 +116,7 @@ public class RFDStart extends BasicQuestHelper
 
 		talkToCookAgain = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook with the required items.", eyeOfNewt, greenmansAle, rottenTomato, dirtyBlast);
+		talkToCookAgain.addDialogStep("About those ingredients you wanted for the banquet...");
 
 		enterDiningRoom = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Enter the Lumbridge Castle dining room.");
 	}

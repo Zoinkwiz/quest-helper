@@ -233,7 +233,10 @@ public class Regicide extends BasicQuestHelper
 		food.setDisplayItemId(ItemID.SHARK);
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
 		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemID.COINS_995, 750);
-		agilityPotions = new ItemRequirement("Agility Potions", ItemCollections.getAgilityPotions());
+		agilityPotions = new ItemRequirement("Agility boosting items like Summer Pie (+5) or Agility potion (+3)",
+			ItemID.SUMMER_PIE, 5);
+		agilityPotions.addAlternates(ItemID.PART_SUMMER_PIE);
+		agilityPotions.addAlternates(ItemCollections.getAgilityPotions());
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
 		oilyCloth.setTooltip("You can get another by searching the equipment by the fireplace beside Koftik.");
 		oilyClothHighlight = oilyCloth.highlighted();
@@ -487,11 +490,12 @@ public class Regicide extends BasicQuestHelper
 		talkToKingLathas.addDialogSteps("I assume you have a plan?", "I can handle it.", "Yes.");
 		talkToKingLathas.addSubSteps(goToArdougneCastleFloor2);
 
-		goDownCastleStairs = new ObjectStep(this, ObjectID.STAIRCASE_15648, new WorldPoint(2572, 3296, 1), "Talk to Koftik in West Ardougne.");
-		enterWestArdougne = new ObjectStep(this, ObjectID.ARDOUGNE_WALL_DOOR_8739, new WorldPoint(2558, 3300, 0), "Talk to Koftik in West Ardougne.");
+		goDownCastleStairs = new ObjectStep(this, ObjectID.STAIRCASE_15648, new WorldPoint(2572, 3296, 1), "Enter the Underground Pass.");
+		enterWestArdougne = new ObjectStep(this, ObjectID.ARDOUGNE_WALL_DOOR_8739, new WorldPoint(2558, 3300, 0),
+			"Enter the Underground Pass.");
 
-		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the" +
-			" dungeon.", bow, arrows, rope1, spade);
+		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0),
+			"Enter the Underground Pass.",	bow, arrows, rope1, spade);
 		climbOverRockslide1 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2480, 9713, 0), "Climb-over rockslide.");
 		climbOverRockslide2 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2471, 9706, 0), "Climb-over rockslide.");
 		climbOverRockslide3 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2458, 9712, 0), "Climb-over rockslide.");
@@ -939,11 +943,24 @@ public class Regicide extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToKingLathas)));
-		allSteps.add(new PanelDetails("To the Elven Lands",
-			Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
-				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
-				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
-			bow, arrows, rope1, spade, antipoisons, combatEquipment));
+
+		if (client.getRealSkillLevel(Skill.AGILITY) < 56)
+		{
+			allSteps.add(new PanelDetails("To the Elven Lands",
+				Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
+					goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
+					killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+				Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment, agilityPotions),
+				Collections.singletonList(staminaPotions)));
+		}
+		else
+		{
+			allSteps.add(new PanelDetails("To the Elven Lands",
+				Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
+					goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
+					killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+				Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment), Collections.singletonList(staminaPotions)));
+		}
 		allSteps.add(new PanelDetails("Making a bomb", Arrays.asList(useLimestoneOnFurnace, usePestleOnQuicklime,
 			usePestleOnSulphur, talkToChemist, useTarOnFractionalisingStill, operateStill, useQuicklimeOnNaphtha,
 			useGroundSulphurOnNaphtha, useClothOnBarrelBomb),

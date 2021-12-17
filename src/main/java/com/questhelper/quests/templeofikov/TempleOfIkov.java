@@ -187,6 +187,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		pendantOfLucien = new ItemRequirement("Pendant of lucien", ItemID.PENDANT_OF_LUCIEN);
+		pendantOfLucien.canBeObtainedDuringQuest();
 		pendantOfLucienEquipped = new ItemRequirement("Pendant of lucien", ItemID.PENDANT_OF_LUCIEN, 1, true);
 		bootsOfLightness = new ItemRequirement("Boots of lightness", ItemID.BOOTS_OF_LIGHTNESS);
 		bootsOfLightnessEquipped = new ItemRequirement("Boots of lightness", ItemID.BOOTS_OF_LIGHTNESS, 1, true);
@@ -410,7 +411,8 @@ public class TempleOfIkov extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToLucien)));
 		allSteps.add(new PanelDetails("Defeat Lesarkus", 
 			Arrays.asList(prepare, enterDungeon, goDownToBoots, getBoots, goUpFromBoots, pickUpLever, useLeverOnHole,
-				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever, tryToEnterWitchRoom, fightLes), yewOrBetterBow, knife, lightSource, limpwurt20));
+				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever,
+				tryToEnterWitchRoom, fightLes), pendantOfLucien, yewOrBetterBow, knife, lightSource, limpwurt20));
 		allSteps.add(new PanelDetails("Explore deeper", Arrays.asList(enterLesDoor, giveWineldaLimps, pickUpKey, pushWall, makeChoice, returnToLucien)));
 		return allSteps;
 	}

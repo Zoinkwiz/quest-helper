@@ -90,7 +90,8 @@ public interface QuestHelperConfig extends Config
 		OPTIMAL("Optimal ordering",
 			q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
 				q.getQuest().getQuestType() == Quest.Type.F2P ||
-				q.getQuest().getQuestType() == Quest.Type.MINIQUEST),
+				q.getQuest().getQuestType() == Quest.Type.MINIQUEST ||
+				q.getQuest().getQuestType() == Quest.Type.ACHIEVEMENT_DIARY),
 		/** Show all free-to-play quests */
 		FREE_TO_PLAY(Quest.Type.F2P),
 		/** Show all members' quests */

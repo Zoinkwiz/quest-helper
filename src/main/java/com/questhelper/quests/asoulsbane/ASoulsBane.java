@@ -246,10 +246,11 @@ public class ASoulsBane extends BasicQuestHelper
 
 		lookInsideHoles = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0), "Look inside " +
 			"the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.", true);
-		((ObjectStep) lookInsideHole1).addAlternateObjects(ObjectID.DARK_HOLE_13891, ObjectID.DARK_HOLE_13892,
+		((ObjectStep) lookInsideHoles).addAlternateObjects(ObjectID.DARK_HOLE_13891, ObjectID.DARK_HOLE_13892,
 			ObjectID.DARK_HOLE_13893, ObjectID.DARK_HOLE_13894, ObjectID.DARK_HOLE_13895);
 
 		killReaper = new NpcStep(this, NpcID.FEAR_REAPER, new WorldPoint(3058, 5230, 0), "Kill the Fear Reaper.");
+		lookInsideHoles.addSubSteps(killReaper);
 		lookInsideHole0.addSubSteps(lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5, killReaper);
 
 		leaveFearRoom = new ObjectStep(this, NullObjectID.NULL_13898, new WorldPoint(3046, 5236, 0), "Continue to the next room.");

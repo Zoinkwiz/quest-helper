@@ -349,7 +349,8 @@ public class ShiloVillage extends BasicQuestHelper
 			"Enter the doors behind the palm trees.", beadsOfTheDead.equipped(), bones3,
 			combatGear);
 		useBonesOnDoor = new ObjectStep(this, ObjectID.TOMB_DOORS, new WorldPoint(2892, 9480, 0),
-			"Make your way through the gate, down the rocks, then to the south west corner. Use bones on the door there.",
+			"Equip the beads of the dead, then make your way through the gate, down the rocks, then to the south west" +
+				" corner. Use bones on the door there.",
 			beadsOfTheDead.equipped(), bones3.highlighted());
 		useBonesOnDoor.addIcon(ItemID.BONES);
 		searchDolmenForFight = new ObjectStep(this, ObjectID.TOMB_DOLMEN_2258, new WorldPoint(2893, 9488, 0),

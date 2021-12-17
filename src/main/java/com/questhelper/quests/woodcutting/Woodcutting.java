@@ -168,9 +168,9 @@ public class Woodcutting extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("1 - 15: Cut normal trees", Collections.singletonList(chopNormalTree), ironAxe,
 			steelAxe, blackAxe,
 			lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots));
-		allSteps.add(new PanelDetails("15 - 35: Cut oak trees", Collections.singletonList(chopNormalTree), blackAxe,
+		allSteps.add(new PanelDetails("15 - 35: Cut oak trees", Collections.singletonList(chopOakTrees), blackAxe,
 			mithrilAxe, adamantAxe, lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots));
-		allSteps.add(new PanelDetails("35 - 99: Cut teak trees", Collections.singletonList(chopNormalTree), adamantAxe,
+		allSteps.add(new PanelDetails("35 - 99: Cut teak trees", Collections.singletonList(chopTeakTrees), adamantAxe,
 			runeAxe, dragonAxe, lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots));
 		return allSteps;
 	}

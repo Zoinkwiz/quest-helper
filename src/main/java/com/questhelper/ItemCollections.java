@@ -1470,8 +1470,9 @@ public class ItemCollections
 		ItemID.WILLOW_ROOTS,
 		ItemID.MAPLE_ROOTS,
 		ItemID.YEW_ROOTS
+	);
 
-  @Getter
+	@Getter
 	private  static final List<Integer> ardyCloaks = ImmutableList.of(
 			ItemID.ARDOUGNE_CLOAK_1,
 			ItemID.ARDOUGNE_CLOAK_2,

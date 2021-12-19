@@ -164,7 +164,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow);
 		fishingExplosive = new ItemRequirement("Fishing Explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
-		mithGrapple = new ItemRequirement("Mithril Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
+		mithGrapple = new ItemRequirement("Mith Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
 		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.getCrossbows()).showConditioned(notGrappleNorthWall);
 		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar);
 		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar);
@@ -189,7 +189,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		scarecrowStep2Highlight = new ItemRequirement(true, "Hay Sack", ItemID.HAY_SACK_6058);
 		bronzeSpearHighlight = new ItemRequirement(true, "Bronze Spear", ItemID.BRONZE_SPEAR);
 		fishingExplosiveHighlight = new ItemRequirement(true, "Fishing Explosive", ItemID.FISHING_EXPLOSIVE);
-		mithGrappleHighlight = new ItemRequirement(true, "Mithril Grapple", ItemID.MITH_GRAPPLE_9419);
+		mithGrappleHighlight = new ItemRequirement(true, "Mith Grapple", ItemID.MITH_GRAPPLE_9419);
 
 		faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
 		explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2);

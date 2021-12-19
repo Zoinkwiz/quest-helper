@@ -155,7 +155,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
 			.showConditioned(notCaveNightshade);
 		nightshade = new ItemRequirement("Cave nightshade", ItemID.CAVE_NIGHTSHADE);
-		mithGrap = new ItemRequirement("Mith Grapple", ItemID.MITH_GRAPPLE).showConditioned(notGrapYan);
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapYan);
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.getCrossbows()).showConditioned(notGrapYan);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET)
 			.showConditioned(new Conditions(notClaimSand));// TODO check for UIM

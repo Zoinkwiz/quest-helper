@@ -321,7 +321,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Evil Chicken (level " + evilChickenLevel + ")", "Black dragon (level 227)");
+		return Arrays.asList("Evil Chicken (level " + evilChickenLevel + ")", "Black dragon (level 227) (Can be safespotted)");
 	}
 
 	@Override

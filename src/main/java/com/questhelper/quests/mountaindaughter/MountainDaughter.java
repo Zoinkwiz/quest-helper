@@ -362,7 +362,7 @@ public class MountainDaughter extends BasicQuestHelper
 		bringCorpseToHamal.addDialogStep("But he's not a god!");
 		bringCorpseToHamal.addDialogStep("I will.");
 
-		collectRocks = new DetailedQuestStep(this, "Collect Muddy Rocks from around the camp.", muddyRocks);
+		collectRocks = new DetailedQuestStep(this, "Collect 5 Muddy Rocks from around the camp.", muddyRocks);
 
 		speakRagnar = new NpcStep(this, NpcID.RAGNAR, new WorldPoint(2766, 3676, 0),
 			"Speak to Ragnar.",

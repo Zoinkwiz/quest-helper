@@ -153,8 +153,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		ItemRequirement airStaff = new ItemRequirement("Air staff", ItemCollections.getAirStaff(), 1, true);
 		airRune4 = new ItemRequirements(LogicType.OR, "4 Air runes", airRunes, airStaff).showConditioned(new Conditions(LogicType.OR,
 			notTelegrabbedWine, notTeleportFalador));
-		lawRune2 = new ItemRequirement("Law Runes", ItemID.LAW_RUNE, 2);
-		waterRune1 = new ItemRequirement("Water Runes", ItemID.WATER_RUNE, 1);
+		lawRune2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2);
+		waterRune1 = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1);
 		crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlacedScarecrow);
 		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK).showConditioned(notPlacedScarecrow);

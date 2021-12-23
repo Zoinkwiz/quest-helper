@@ -666,7 +666,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToMinder = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "Talk to the Monkey " +
 			"Minder in Ardougne Zoo whilst wielding the karamjan monkey greegree.", karamjanGreegreeEquipped, amuletWorn);
 		talkToMonkeyAtZoo = new NpcStep(this, NpcID.MONKEY_5279, new WorldPoint(2603, 3278, 0), "Talk to a monkey in the pen.", true);
-		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "UNEQUIP the gree gree, then talk to the Monkey Minder again to leave.");
+		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "UNEQUIP the greegree, then talk to the Monkey Minder again to leave.");
 
 		goUpToDaeroForTalkingToAwow = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "WALK/RUN to Daero to return to Ape Atoll. If you teleport, you'll have to start again.", karamjanGreegree, amuletWorn, monkey);
 

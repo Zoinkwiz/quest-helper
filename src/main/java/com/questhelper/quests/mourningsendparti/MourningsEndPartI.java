@@ -451,7 +451,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Mourning (level 11)");
+		return Collections.singletonList("Mourner (level 11)");
 	}
 
 	@Override

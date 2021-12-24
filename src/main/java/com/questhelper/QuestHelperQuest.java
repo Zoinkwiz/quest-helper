@@ -51,7 +51,7 @@ public enum QuestHelperQuest
 	THE_KNIGHTS_SWORD(308, "The Knight's Sword", QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD, Quest.Type.F2P, Quest.Difficulty.INTERMEDIATE),
 	MISTHALIN_MYSTERY(309, "Misthalin Mystery", QuestVarbits.QUEST_MISTHALIN_MYSTERY, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	PIRATES_TREASURE(310, "Pirate's Treasure", QuestVarPlayer.QUEST_PIRATES_TREASURE, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	PRINCE_ALI_RESCUE(311, "Prince Ali Rescue", QuestVarPlayer.QUEST_PRINCE_ALI_RESCUE, Quest.Type.F2P, Quest.Difficulty.NOVICE),
+	PRINCE_ALI_RESCUE(311, "Prince Ali Rescue", QuestVarPlayer.QUEST_PRINCE_ALI_RESCUE, Quest.Type.F2P, Quest.Difficulty.INTERMEDIATE),
 	THE_RESTLESS_GHOST(312, "The Restless Ghost", QuestVarPlayer.QUEST_THE_RESTLESS_GHOST, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	ROMEO__JULIET(313, "Romeo & Juliet", QuestVarPlayer.QUEST_ROMEO_AND_JULIET, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	RUNE_MYSTERIES(314, "Rune Mysteries", QuestVarPlayer.QUEST_RUNE_MYSTERIES, Quest.Type.F2P, Quest.Difficulty.NOVICE),

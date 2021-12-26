@@ -134,7 +134,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		notCraftLava = new VarplayerRequirement(1194, false, 24);
 
 		crossbow = new ItemRequirement("A crossbow", ItemCollections.getCrossbows()).showConditioned(notGrappleLum);
-		mithGrap = new ItemRequirement("Mith Grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum);
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum);
 		earthTali = new ItemRequirement("Earth talisman", ItemID.EARTH_TALISMAN).showConditioned(notCraftLava);
 		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.getFireAltar()).showConditioned(notCraftLava);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE)

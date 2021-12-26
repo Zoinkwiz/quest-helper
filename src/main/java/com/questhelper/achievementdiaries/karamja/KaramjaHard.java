@@ -291,8 +291,8 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(oomlieWrap, pureEssence, natureTalismanOrAbyss, coins, rawKarambwan, axe, machete, pickaxe, lockpick
-			, crossbow, mithGrapple, antidragonShield, combatGear, fightCaveCombatGear);
+		return Arrays.asList(oomlieWrap, pureEssence, natureTalismanOrAbyss, coins.quantity(875), rawKarambwan, axe,
+			machete, pickaxe, lockpick, crossbow, mithGrapple, antidragonShield, combatGear, fightCaveCombatGear);
 	}
 
 	@Override

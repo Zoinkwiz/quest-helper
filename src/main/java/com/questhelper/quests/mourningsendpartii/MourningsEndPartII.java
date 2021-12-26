@@ -639,7 +639,9 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		goToMiddleFromSouth = new ObjectStep(this, ObjectID.STAIRCASE_10016, new WorldPoint(1891, 4636, 2), "Go down the staircase north of you.");
 
-		useChisel = new ObjectStep(this, NullObjectID.NULL_9750, new WorldPoint(1909, 4639, 2), "Use a chisel on the dark crystal to the east.", chisel);
+		useChisel = new ObjectStep(this, NullObjectID.NULL_9750, new WorldPoint(1909, 4639, 2),
+			"Use a chisel on the dark crystal to the east.", chisel);
+		useChisel.addIcon(ItemID.CHISEL);
 
 		goUpFromMiddleToSouth = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1891, 4636, 1), "Go up the stairs to the south.");
 
@@ -665,6 +667,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		goUpStairsTempleC1 = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Go up the stairs to the first floor.");
 
 		pullDispenser1 = new ObjectStep(this, ObjectID.CRYSTAL_DISPENSER_9749, new WorldPoint(1913, 4639, 1), "Pull the Crystal Dispenser in the east room.");
+		pullDispenser1.addDialogStep("Pull the lever.");
 		pullDispenser1.addDialogStep("Pull it.");
 		pullDispenser1.addDialogStep("Take everything.");
 
@@ -734,7 +737,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		enterNorthWestRoomPuzzle3 = new ObjectStep(this, NullObjectID.NULL_9777, new WorldPoint(1863, 4665, 0), "Enter the room in the far north west corner.");
 		puzzle3Pillar9 = new ObjectStep(this, NullObjectID.NULL_9941, new WorldPoint(1860, 4665, 0), "Turn the mirror in the pillar in the room to point the light south.");
 		searchYellowChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_9760, new WorldPoint(1880, 4659, 0), "Search the chest in the room south of you.");
-		searchYellowChest = new ObjectStep(this, ObjectID.OPEN_CHEST_9759, new WorldPoint(1880, 4659, 0), "Search the chest in the room south of you.");
+		searchYellowChest.addAlternateObjects(ObjectID.OPEN_CHEST_9759);
 
 		yellowRoomRotateToLeave = new ObjectStep(this, NullObjectID.NULL_9941, new WorldPoint(1860, 4665, 0), "Turn the mirror in the pillar in the room to point the light east to leave.");
 		goUpToFirstFloorPuzzle4 = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Go up the stairs to the first floor.");
@@ -796,7 +799,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle5Pillar6.addIcon(ItemID.BLUE_CRYSTAL);
 
 		puzzle5Pillar5RemoveMirror = new ObjectStep(this, NullObjectID.NULL_9959, new WorldPoint(1898, 4613, 1), "Remove the mirror from the pillar in the south of the first floor.");
-		puzzle5Pillar3RotateUp = new ObjectStep(this, NullObjectID.NULL_9954, new WorldPoint(1898, 4650, 1), "Have the mirror in the pillar north east of the dispenser point up.", mirror);
+		puzzle5Pillar3RotateUp = new ObjectStep(this, NullObjectID.NULL_9954, new WorldPoint(1898, 4650, 1), "Have " +
+			"the mirror in the pillar north west of the dispenser point up.", mirror);
 		puzzle5Pillar3RotateUp.addIcon(ItemID.HAND_MIRROR);
 		goUpToFloor2Puzzle5 = new ObjectStep(this, ObjectID.STAIRCASE_10017, new WorldPoint(1894, 4620, 1), "Go up the south staircase to the second floor.");
 		goDownToMiddleFromSouthPuzzle5 = new ObjectStep(this, ObjectID.STAIRCASE_10016, new WorldPoint(1891, 4636, 2), "Go down the staircase north of you.");
@@ -951,6 +955,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		enterSouthPass = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Enter the south cave to go to the lower level of the pass.");
 		enterAltarFromBehind = new ObjectStep(this, NullObjectID.NULL_9974, new WorldPoint(2311, 9792, 0), "Enter the cave entrance behind the dwarf camp under Iban's area to the south.");
 		enterDeathAltar = new ObjectStep(this, NullObjectID.NULL_34823, new WorldPoint(1860, 4639, 0), "Enter the death altar ruins.", deathTalisman);
+		enterDeathAltar.addIcon(ItemID.DEATH_TALISMAN);
 		turnKeyMirrorCharging = new ObjectStep(this, NullObjectID.NULL_9939, new WorldPoint(1881, 4639, 0), "Enter the central area, and turn the pillar's mirror west.");
 		goUpToF1ForCharging = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Enter the Temple of Light, and go up the south staircase to the second floor.");
 		goUpToF2ForCharging = new ObjectStep(this, ObjectID.STAIRCASE_10017, new WorldPoint(1894, 4620, 1), "Go up the south stairs to the second floor.");
@@ -1062,7 +1067,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 			goUpFromMiddleToNorthPuzzle5, puzzle5Pillar7, goDownToMiddleFromNorthPuzzle5, puzzle5Pillar8, puzzle5Pillar9, puzzle5Pillar10, puzzle5Pillar11, goDownFromF2Puzzle5,
 			goDownFromF1Puzzle5, puzzle5Pillar12, puzzle5Pillar13, puzzle5Pillar14, searchMagentaYellowChest)));
 
-		allSteps.add(new PanelDetails("Reach the Death Altar", Arrays.asList(goUpToF1Puzzle6, puzzle6Pillar1, puzzle6Pillar2, goDownFromF1Puzzle6, puzzle6Pillar3, puzzle6Pillar4,
+		allSteps.add(new PanelDetails("Reach the Death Altar", Arrays.asList(pullDispenser6, goUpToF1Puzzle6, puzzle6Pillar1,
+			puzzle6Pillar2, goDownFromF1Puzzle6, puzzle6Pillar3, puzzle6Pillar4,
 			puzzle6Pillar5, puzzle6Pillar6, puzzle6Pillar7, puzzle6Pillar8, goUpToF1Puzzle6, puzzle6Pillar9, goUpNorthLadderToF2Puzzle6, puzzle6Pillar10, goDownNorthLadderToF1Puzzle6, goUpToFloor2Puzzle6,
 			puzzle6Pillar11, puzzle6Pillar12, puzzle6Pillar13, goDownToMiddleFromSouthPuzzle6, goUpFromMiddleToNorthPuzzle6, puzzle6Pillar14, puzzle6Pillar15, puzzle6Pillar16, puzzle6Pillar17, goDownToCentre, turnKeyMirror)));
 

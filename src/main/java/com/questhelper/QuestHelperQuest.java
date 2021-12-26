@@ -33,6 +33,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Skill;
 
 public enum QuestHelperQuest
 {
@@ -50,7 +51,7 @@ public enum QuestHelperQuest
 	THE_KNIGHTS_SWORD(308, "The Knight's Sword", QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD, Quest.Type.F2P, Quest.Difficulty.INTERMEDIATE),
 	MISTHALIN_MYSTERY(309, "Misthalin Mystery", QuestVarbits.QUEST_MISTHALIN_MYSTERY, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	PIRATES_TREASURE(310, "Pirate's Treasure", QuestVarPlayer.QUEST_PIRATES_TREASURE, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	PRINCE_ALI_RESCUE(311, "Prince Ali Rescue", QuestVarPlayer.QUEST_PRINCE_ALI_RESCUE, Quest.Type.F2P, Quest.Difficulty.NOVICE),
+	PRINCE_ALI_RESCUE(311, "Prince Ali Rescue", QuestVarPlayer.QUEST_PRINCE_ALI_RESCUE, Quest.Type.F2P, Quest.Difficulty.INTERMEDIATE),
 	THE_RESTLESS_GHOST(312, "The Restless Ghost", QuestVarPlayer.QUEST_THE_RESTLESS_GHOST, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	ROMEO__JULIET(313, "Romeo & Juliet", QuestVarPlayer.QUEST_ROMEO_AND_JULIET, Quest.Type.F2P, Quest.Difficulty.NOVICE),
 	RUNE_MYSTERIES(314, "Rune Mysteries", QuestVarPlayer.QUEST_RUNE_MYSTERIES, Quest.Type.F2P, Quest.Difficulty.NOVICE),
@@ -347,7 +348,9 @@ public enum QuestHelperQuest
 
 	// Generic
 	MA2_LOCATOR("Mage Arena II Locator", QuestVarbits.QUEST_THE_MAGE_ARENA_II, -1, Quest.Type.GENERIC,
-		Quest.Difficulty.GENERIC);
+		Quest.Difficulty.GENERIC),
+
+	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, Quest.Type.SKILL, Quest.Difficulty.SKILL);
 
 	@Getter
 	private final int id;
@@ -367,6 +370,8 @@ public enum QuestHelperQuest
 	private final QuestVarbits varbit;
 
 	private final QuestVarPlayer varPlayer;
+
+	private Skill skill;
 
 	private final int completeValue;
 
@@ -418,17 +423,18 @@ public enum QuestHelperQuest
 		this.completeValue = completeValue;
 	}
 
-	// Can be used for non-variables based helpers
-	QuestHelperQuest(String name, Quest.Type questType, Quest.Difficulty difficulty)
+	// Can be used for skill based helpers
+	QuestHelperQuest(String name, Skill skill, int completeValue, Quest.Type questType, Quest.Difficulty difficulty)
 	{
 		this.id = -1;
 		this.name = name;
 		this.keywords = titleToKeywords(name);
 		this.varbit = null;
 		this.varPlayer = null;
+		this.skill = skill;
 		this.questType = questType;
 		this.difficulty = difficulty;
-		this.completeValue = -1;
+		this.completeValue = 99;
 	}
 
 	private List<String> titleToKeywords(String title)
@@ -438,6 +444,15 @@ public enum QuestHelperQuest
 
 	public QuestState getState(Client client)
 	{
+		if (skill != null)
+		{
+			if (client.getRealSkillLevel(skill) >= completeValue)
+			{
+				return QuestState.FINISHED;
+			}
+			return QuestState.IN_PROGRESS;
+		}
+
 		if (getVar(client) == -1)
 		{
 			return QuestState.IN_PROGRESS;

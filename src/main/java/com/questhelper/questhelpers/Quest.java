@@ -50,6 +50,7 @@ public interface Quest
 		MINIQUEST,
 		ACHIEVEMENT_DIARY,
 		GENERIC,
+		SKILL,
 		;
 
 		@Override
@@ -69,6 +70,7 @@ public interface Quest
 		MINIQUEST,
 		ACHIEVEMENT_DIARY,
 		GENERIC,
+		SKILL,
 		;
 
 		@Override

@@ -573,6 +573,7 @@ public class CabinFever extends BasicQuestHelper
 		goDownForBarrel = new ObjectStep(this, ObjectID.SHIPS_LADDER_11309, new WorldPoint(1815, 4836, 1), "Search the gun locker for a cannon barrel.");
 		takeBarrel = new ObjectStep(this, ObjectID.GUN_LOCKER, new WorldPoint(1816, 4833, 0), "Search the gun locker for a cannon barrel.", barrel);
 		takeBarrel.addAlternateObjects(ObjectID.GUN_LOCKER_11249);
+		takeBarrel.addSubSteps(goDownForBarrel);
 		goUpWithBarrel = new ObjectStep(this, ObjectID.SHIPS_LADDER_11308, new WorldPoint(1815, 4836, 0), "Go up to the deck and repair the cannon.");
 		useBarrel = new ObjectStep(this, NullObjectID.NULL_11213, new WorldPoint(1817, 4833, 1), "Repair the cannon.", barrel);
 		talkToBillAfterBarrel = new NpcStep(this, NpcID.BILL_TEACH_4014, new WorldPoint(1815, 4834, 1), "Talk to Bill Teach.");
@@ -580,6 +581,7 @@ public class CabinFever extends BasicQuestHelper
 		goDownForRamrod = new ObjectStep(this, ObjectID.SHIPS_LADDER_11309, new WorldPoint(1815, 4836, 1), "Search the gun locker for a ram rod, and a few fuses and canisters.");
 		getRamrod = new ObjectStep(this, ObjectID.GUN_LOCKER, new WorldPoint(1816, 4833, 0), "Search the gun locker for a ram rod, 3 fuses, and canisters.", ramrod, fuse1, canister);
 		getRamrod.addAlternateObjects(ObjectID.GUN_LOCKER_11249);
+		getRamrod.addSubSteps(goDownForRamrod);
 		goUpToCannon = new ObjectStep(this, ObjectID.SHIPS_LADDER_11308, new WorldPoint(1815, 4836, 0), "Go up to the deck to fire the cannon.");
 		usePowder = new ObjectStep(this, NullObjectID.NULL_11213, new WorldPoint(1817, 4833, 1), "Use the gunpowder on the cannon.", powderHighlight);
 		usePowder.addIcon(ItemID.GUNPOWDER);
@@ -677,8 +679,8 @@ public class CabinFever extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Repair", Arrays.asList(goDownToFixLeak, takeHoleItems1, repairHole1, pasteHole1, goUpAfterRepair, talkToBillAfterRepair)));
 		allSteps.add(new PanelDetails("Plunder the pirates", Arrays.asList(goUpToSailToLoot, useRopeOnSailToLoot, enterEnemyHullForLoot, lootEnemyShip,
 			enterHullWithLoot, useLootOnChest, goUpAfterLoot, talkToBillAfterLoot)));
-		allSteps.add(new PanelDetails("Repair the cannon", Arrays.asList(goDownForBarrel, takeBarrel, goUpWithBarrel, useBarrel, talkToBillAfterBarrel)));
-		allSteps.add(new PanelDetails("Fire canisters", Arrays.asList(goDownForRamrod, getRamrod, goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon)));
+		allSteps.add(new PanelDetails("Repair the cannon", Arrays.asList(takeBarrel, goUpWithBarrel, useBarrel, talkToBillAfterBarrel)));
+		allSteps.add(new PanelDetails("Fire canisters", Arrays.asList(getRamrod, goUpToCannon, getPowder, usePowder, useRamrod, useCanister, useFuse, fireCannon, repeatCanisterSteps, talkToBillAfterCanisterCannon)));
 		allSteps.add(new PanelDetails("Fire cannon balls", Arrays.asList(goDownForBalls, getBalls, goUpToCannonWithBalls, getPowderForBalls, usePowderForBalls, useRamrodForBalls, useBall, useFuseForBalls, fireCannonForBalls, repeatBallSteps)));
 		return allSteps;
 	}

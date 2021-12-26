@@ -56,6 +56,9 @@ public class PanelDetails
 	private List<Requirement> requirements;
 
 	@Getter
+	private List<Requirement> recommended;
+
+	@Getter
 	private List<Integer> vars;
 
 	public PanelDetails(String header)
@@ -71,18 +74,22 @@ public class PanelDetails
 		this.requirements = new ArrayList<>();
 	}
 
-	public PanelDetails(String header, List<QuestStep> steps, Requirement... requirements)
-	{
-		this.header = header;
-		this.steps = steps;
-		this.requirements = Arrays.asList(requirements);
-	}
-
 	public PanelDetails(String header, List<QuestStep> steps, List<Requirement> requirements)
 	{
 		this.header = header;
 		this.steps = steps;
 		this.requirements = requirements;
+	}
+
+	public PanelDetails(String header, List<QuestStep> steps, Requirement... requirements)
+	{
+		this(header, steps, Arrays.asList(requirements));
+	}
+
+	public PanelDetails(String header, List<QuestStep> steps, List<Requirement> requirements, List<Requirement> recommended)
+	{
+		this(header, steps, requirements);
+		this.recommended = recommended;
 	}
 
 	public void setDisplayCondition(Requirement req)

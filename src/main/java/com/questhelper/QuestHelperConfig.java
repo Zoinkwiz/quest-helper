@@ -46,13 +46,17 @@ public interface QuestHelperConfig extends Config
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{
 		/** Sort quests in alphabetical order */
-		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY, QuestFilter.GENERIC_HELPER),
+		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
+			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests in reverse alphabetical order */
-		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY, QuestFilter.GENERIC_HELPER),
+		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
+			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
 		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (Ironman version) (https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman) */
 		OPTIMAL_IRONMAN(QuestOrders.sortOptimalIronmanOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
+		/** Sort quest by their release date (https://oldschool.runescape.wiki/w/Quests/Release_dates) */
+		RELEASE_DATE(QuestOrders.sortByRelease(), QuestFilter.QUEST, QuestFilter.MINIQUEST)
 		;
 
 		private final Comparator<QuestHelper> comparator;
@@ -83,7 +87,11 @@ public interface QuestHelperConfig extends Config
 		/** Show quests where the client meets the quest requirements */
 		SHOW_MEETS_REQS(QuestHelper::clientMeetsRequirements),
 		/** Show all except generic helpers */
-		OPTIMAL("Optimal ordering", q -> q.getQuest().getQuestType() != Quest.Type.GENERIC),
+		OPTIMAL("Optimal ordering",
+			q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
+				q.getQuest().getQuestType() == Quest.Type.F2P ||
+				q.getQuest().getQuestType() == Quest.Type.MINIQUEST ||
+				q.getQuest().getQuestType() == Quest.Type.ACHIEVEMENT_DIARY),
 		/** Show all free-to-play quests */
 		FREE_TO_PLAY(Quest.Type.F2P),
 		/** Show all members' quests */
@@ -97,6 +105,7 @@ public interface QuestHelperConfig extends Config
 		ACHIEVEMENT_DIARY("Achievement diaries", Quest.Type.ACHIEVEMENT_DIARY),
 		/** Show all generic helpers */
 		GENERIC_HELPER("Generic helpers", Quest.Type.GENERIC),
+		SKILL("Skill helpers", Quest.Type.SKILL)
 		;
 
 		private final Predicate<QuestHelper> predicate;

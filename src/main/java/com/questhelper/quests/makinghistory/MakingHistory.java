@@ -175,7 +175,7 @@ public class MakingHistory extends BasicQuestHelper
 		rellekaTeleport = new ItemRequirement("Relleka Teleport", ItemID.RELLEKKA_TELEPORT);
 		rellekaTeleport.addAlternates(ItemCollections.getEnchantedLyre());
 		rellekaTeleport.addAlternates(ItemID.FREMENNIK_SEA_BOOTS_2, ItemID.FREMENNIK_SEA_BOOTS_3, ItemID.FREMENNIK_SEA_BOOTS_4);
-		rellekaTeleport.setTooltip("You can also use Fairy Rings (DKS or ATJ) if you have those unlocked.");
+		rellekaTeleport.setTooltip("You can also use Fairy Rings (DKS or AJR) if you have those unlocked.");
 		rellekaTeleport.appendToTooltip("You can also teleport to Camelot and run North.");
 		runRestoreItems = new ItemRequirement("Potions/Items to restore run energy", ItemCollections.getRunRestoreItems());
 
@@ -209,7 +209,8 @@ public class MakingHistory extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3346, 0),
-			"Talk to Jorral at the outpost north of West Ardougne. You can teleport there with a Necklace of Passage.");
+			"Talk to Jorral at the outpost south of the Tree Gnome Stronghold. You can teleport there with a Necklace" +
+				" of Passage.");
 		talkToJorral.addDialogStep("The Outpost");
 		talkToJorral.addDialogStep("Tell me more.");
 		talkToJorral.addDialogStep("Ok, I'll make a stand for history!");

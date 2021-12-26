@@ -215,7 +215,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 			talkToLennissa.setWorldPoint(2846, 3349, 0);
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost in the Wizard's Tower ground floor.");
-			talkToDhalak.setWorldPoint(3109, 3163, 1);
+			talkToDhalak.setWorldPoint(3109, 3163, 0);
 
 			talkToViggora.setText("Talk to the Mysterious Ghost Viggora upstairs in the Rogues' Castle in 54 Wilderness.");
 			talkToViggora.setWorldPoint(3295, 3934, 1);

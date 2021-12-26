@@ -190,7 +190,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 			"Climb on top of Seers' Bank.", stamPot, caviar);
 		stamMix = new ItemStep(this, "Create a stamina mix.", stamPot.highlighted(), caviar.highlighted());
 		runeHasta = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
-			"Smith an adamant spear on the barbarian anvil near Otto.", runiteBar, magicLogs, hammer);
+			"Smith an rune hasta on the barbarian anvil near Otto.", runiteBar, magicLogs, hammer);
 		runeHasta.addIcon(ItemID.RUNITE_BAR);
 		pyre = new ObjectStep(this, ObjectID.PYRE_SITE, new WorldPoint(2519, 3519, 0),
 			"Construct a pyre ship from magic logs.", magicLogs, chewedBone, tinderbox, axe);

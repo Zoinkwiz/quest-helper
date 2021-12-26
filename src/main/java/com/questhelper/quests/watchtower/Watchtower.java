@@ -482,7 +482,7 @@ public class Watchtower extends BasicQuestHelper
 		talkToGuardBattlement = new NpcStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement.");
 		talkToGuardBattlement.addDialogStep("But I am a friend to ogres...");
 		talkToGuardWithRockCake = new ObjectStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2507, 3012, 0),
-			"Attempt to cross the battelement again with a rock cake.", rockCake);
+			"Attempt to cross the battlement again with a rock cake.", rockCake);
 		jumpGap = new ObjectStep(this, ObjectID.GAP, new WorldPoint(2530, 3026, 0), "Jump over the broken bridge.", coins20);
 		jumpGap.addDialogStep("Okay, I'll pay it.");
 
@@ -617,7 +617,7 @@ public class Watchtower extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Gorad (level 59)");
+		reqs.add("Gorad (level 68)");
 		reqs.add("Able to survive blue dragons, ogres, and greater demons attacking you");
 		return reqs;
 	}

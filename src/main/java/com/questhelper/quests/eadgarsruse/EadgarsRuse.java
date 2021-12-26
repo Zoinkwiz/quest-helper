@@ -103,11 +103,15 @@ public class EadgarsRuse extends BasicQuestHelper
 		setupSteps();
 		if (freedEadgar.check(client))
 		{
-			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar));
+			travelToEadgarPanel = new PanelDetails("Travel to Eadgar",
+				Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, goUpStairsPrison,
+					goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar), climbingBoots);
 		}
 		else
 		{
-			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, getBerryKey, freeEadgar, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar));
+			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile,
+				climbOverRocks, enterSecretEntrance, getBerryKey, freeEadgar, goUpStairsPrison, goUpToTopFloorStronghold,
+				enterEadgarsCave, talkToEadgar), climbingBoots);
 		}
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -222,7 +226,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		bringManToBurntmeat.addStep(inStrongholdFloor1, talkToCookWithScarecrow);
 		bringManToBurntmeat.addStep(inPrison, goUpStairsPrison);
 
-		steps.put(87, talkToCooksAboutGoutweed);
+		steps.put(87, bringManToBurntmeat);
 
 		ConditionalStep getTheGoutweed = new ConditionalStep(this, talkToBurntmeat);
 		getTheGoutweed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);
@@ -606,13 +610,18 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		allSteps.add(travelToEadgarPanel);
 
-		allSteps.add(new PanelDetails("Talk to Burntmeat", Arrays.asList(leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, talkToEadgarFromCook), climbingBoots));
+		allSteps.add(new PanelDetails("Talk to Burntmeat", Arrays.asList(leaveEadgarsCave, enterStronghold, goDownSouthStairs,
+			talkToCook, talkToEadgarFromCook), climbingBoots));
 
-		allSteps.add(new PanelDetails("Get a parrot", Arrays.asList(talkToPete, useChunksOnParrot, talkToEadgarWithParrot, enterStrongholdWithParrot), climbingBoots));
+		allSteps.add(new PanelDetails("Get a parrot", Arrays.asList(talkToPete, useChunksOnParrot, talkToEadgarWithParrot,
+			enterStrongholdWithParrot), vodka, pineappleChunks, climbingBoots));
 
-		allSteps.add(new PanelDetails("Making a fake man", Arrays.asList(talkToTegid, talkToEadgarWithItems, pickThistle, lightFire, useThistleOnFire, grindThistle, useGroundThistleOnRanarr, giveTrollPotionToEadgar, enterStrongholdForParrot, leaveStrongholdWithParrot), climbingBoots, logs2, tinderbox, pestleAndMortar, grain10, rawChicken5, ranarrPotionUnf));
+		allSteps.add(new PanelDetails("Making a fake man", Arrays.asList(talkToTegid, talkToEadgarWithItems, pickThistle,
+			lightFire, useThistleOnFire, grindThistle, useGroundThistleOnRanarr, giveTrollPotionToEadgar, enterStrongholdForParrot,
+			leaveStrongholdWithParrot), climbingBoots, logs2, tinderbox, pestleAndMortar, grain10, rawChicken5, ranarrPotionUnf));
 
-		allSteps.add(new PanelDetails("Get the Goutweed", Arrays.asList(enterStrongholdWithScarecrow, searchDrawers, goDownToStoreroom, enterStoreroomDoor, getGoutweed, returnToSanfew)));
+		allSteps.add(new PanelDetails("Get the Goutweed", Arrays.asList(enterStrongholdWithScarecrow, searchDrawers,
+			goDownToStoreroom, enterStoreroomDoor, getGoutweed, returnToSanfew)));
 		return allSteps;
 	}
 

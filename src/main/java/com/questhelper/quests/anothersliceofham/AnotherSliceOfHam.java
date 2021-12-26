@@ -360,8 +360,9 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		enterFinalFight = new ObjectStep(this, ObjectID.LADDER_23376, new WorldPoint(2413, 5526, 0), "Climb down the " +
 			"ladder.");
 
-		useSpecial = new NpcStep(this, NpcID.SIGMUND_5142, new WorldPoint(2543, 5511, 0), "Use the ancient mace's " +
-			"special attack on Sigmund to remove his protection prayers then defeat him.", ancientMace.equipped().highlighted());
+		useSpecial = new NpcStep(this, NpcID.SIGMUND_5142, new WorldPoint(2543, 5511, 0), "When Sigmund starts " +
+			"using protection prayers, use the ancient mace's special attack on Sigmund to remove them and then " +
+			"defeat him.",	ancientMace.equipped().highlighted());
 		((NpcStep) useSpecial).addAlternateNpcs(NpcID.SIGMUND_5143, NpcID.SIGMUND_5144, NpcID.SIGMUND_5145);
 
 		defeatSigmund = new NpcStep(this, NpcID.SIGMUND_5146, new WorldPoint(2543, 5511, 0),

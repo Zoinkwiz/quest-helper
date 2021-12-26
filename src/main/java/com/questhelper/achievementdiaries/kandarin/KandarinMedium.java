@@ -148,7 +148,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		limpGrowing = new VarbitRequirement(4957, 4, Operation.GREATER_EQUAL);
 		notLimpGrowing = new VarbitRequirement(4957, 3, Operation.LESS_EQUAL);
 
-		mithGrap = new ItemRequirement("Mithril grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapOb);
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapOb);
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.getCrossbows()).showConditioned(notGrapOb);
 		unfIrit = new ItemRequirement("Unfinished Irit potion", ItemID.IRIT_POTION_UNF, 1).showConditioned(notSuperAnti);
 		unicornHorn = new ItemRequirement("Unicorn horn", ItemID.UNICORN_HORN, 1).showConditioned(notSuperAnti);
@@ -252,7 +252,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		superAnti = new DetailedQuestStep(this,
 			"Create a super antipoision potion.", hornDust.highlighted(), unfIrit.highlighted());
 		plantAndPickLimp = new ObjectStep(this, NullObjectID.NULL_7848, new WorldPoint(2810, 3464, 0),
-			"Plant a limpwurt seed in the Catherby Allotment Patch, wait for it to grow then pick it.", rake,
+			"Plant a limpwurt seed in the Catherby Flower Patch, wait for it to grow then pick it.", rake,
 			limpSeed, seedDib);
 		catchBass = new NpcStep(this, NpcID.FISHING_SPOT_1520, new WorldPoint(2837, 3431, 0),
 			"Catch a bass.", bigFishingNet);

@@ -134,7 +134,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		olafTask.addStep(new Conditions(goldenFleece, lyreUnstrung), spinWool);
 		olafTask.addStep(new Conditions(goldenFleece, branch), fletchLyre);
 		olafTask.addStep(goldenFleece, chopSwayingTree);
-		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron, potatoInCauldron, petRockInCauldron), talkToLaliAfterStew);
+		olafTask.addStep(new Conditions(gottenRock, stewReady), talkToLaliAfterStew);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron, potatoInCauldron), useRock);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron), usePotato);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron), useCabbage);
@@ -405,13 +405,26 @@ public class TheFremennikTrials extends BasicQuestHelper
 		syncedOlaf = new Conditions(true, synced, hasStartedOlaf);
 
 		talkedToLalli = new RuneliteRequirement(configManager, "fremmytrialstalkedtolalli",
-			new Conditions(true, new WidgetTextRequirement(217, 4, "I see... okay, well, bye!")));
+			new Conditions(true, LogicType.OR,
+				new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I see... okay, well, bye!"),
+				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Human call itself Askeladden!")
+			));
 		gottenRock = new VarbitRequirement(6486, 1);
 
-		petRockInCauldron = new ChatMessageRequirement("You put your pet rock into the cauldron.");
-		cabbageInCauldron = new ChatMessageRequirement("You put a cabbage into the cauldron.");
-		potatoInCauldron = new ChatMessageRequirement("You put a potato into the cauldron.");
-		onionInCauldron = new ChatMessageRequirement("You put an onion into the cauldron.");
+		petRockInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedpetrock",
+			new ChatMessageRequirement("You put your pet rock into the cauldron.")
+		);
+		cabbageInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedcabbage",
+			new ChatMessageRequirement("You put a cabbage into the cauldron.")
+		);
+		potatoInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedpotato",
+			new ChatMessageRequirement("You put a potato into the cauldron.")
+		);
+
+		onionInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedonion",
+			new ChatMessageRequirement("You put an onion into the cauldron.")
+		);
+
 		cauldronFilledDialog = new WidgetTextRequirement(217, 4, "Indeed it is. Try it and see.");
 
 		stewReady = new RuneliteRequirement(configManager, "fremmytrialsstewready",
@@ -667,13 +680,18 @@ public class TheFremennikTrials extends BasicQuestHelper
 		pickVeg = new DetailedQuestStep(this, new WorldPoint(2677, 3652, 0), "Pick a potato, cabbage and onion from the field in south east Rellekka.", cabbage, onion, potato);
 
 		useOnion = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
-			"Return to Lalli and use a onion, cabbage, potato, and pet rock on their stew. You can find the vegetables growing in the south east of Rellekka.", petRock, cabbage, potato, onion);
+			"Return to Lalli and use a onion, cabbage, potato, and pet rock on their stew. " +
+				"You can find the vegetables growing in the south east of Rellekka.",
+			petRock.hideConditioned(petRockInCauldron), cabbage.hideConditioned(cabbageInCauldron),
+			potato.hideConditioned(potatoInCauldron), onion);
 		useOnion.addIcon(ItemID.ONION);
 		useCabbage = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
-			"Use a cabbage on the stew.", petRock, cabbage, potato);
+			"Use a cabbage on the stew.", petRock.hideConditioned(petRockInCauldron),
+			cabbage, potato.hideConditioned(potatoInCauldron));
 		useCabbage.addIcon(ItemID.CABBAGE);
 		usePotato = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
-			"Use a potato on the stew.", petRock, potato);
+			"Use a potato on the stew.", petRock.hideConditioned(petRockInCauldron),
+			potato);
 		usePotato.addIcon(ItemID.POTATO);
 		useRock = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
 			"Use your pet rock on the stew.", petRock);

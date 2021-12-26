@@ -249,7 +249,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(unpoweredOrb, cosmicRune.quantity(3), earthRune.quantity(30), pickaxe, antiDragonShield,
-			runeAxe, combatGear, barsOrPick, hammer, coins.quantity(7500), knife);
+			runeAxe, combatGear, barsOrPick, hammer, coins.quantity(7500), knife, muddyKey);
 	}
 
 	@Override

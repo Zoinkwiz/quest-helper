@@ -118,42 +118,12 @@ public class QuestStepPanel extends JPanel
 
 		if (!panelDetails.getRequirements().isEmpty())
 		{
-			JPanel questRequirementsPanel = new JPanel();
-			questRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			questRequirementsPanel.setLayout(new BorderLayout());
-			questRequirementsPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
+			addRequirements("Bring the following items:", panelDetails.getRequirements(), BorderLayout.NORTH);
+		}
 
-			JPanel questRequirementsHeader = new JPanel();
-			questRequirementsHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			questRequirementsHeader.setLayout(new BorderLayout());
-			questRequirementsHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
-
-			JLabel questReqsTitle = new JLabel();
-			questReqsTitle.setForeground(Color.WHITE);
-			questReqsTitle.setText("Bring the following items:");
-			questReqsTitle.setMinimumSize(new Dimension(1, questRequirementsHeader.getPreferredSize().height));
-			questRequirementsHeader.add(questReqsTitle, BorderLayout.NORTH);
-
-			JPanel questRequirementsListPanel = new JPanel();
-			questRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
-			questRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-			List<Requirement> requirements = panelDetails.getRequirements();
-
-			if (requirements != null)
-			{
-				for (Requirement req : requirements)
-				{
-					QuestRequirementPanel reqPanel = new QuestRequirementPanel(req);
-					requirementPanels.add(reqPanel);
-					questRequirementsListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
-				}
-			}
-
-			questRequirementsPanel.add(questRequirementsHeader, BorderLayout.NORTH);
-			questRequirementsPanel.add(questRequirementsListPanel, BorderLayout.CENTER);
-
-			bodyPanel.add(questRequirementsPanel, BorderLayout.NORTH);
+		if (panelDetails.getRecommended() != null && !panelDetails.getRecommended().isEmpty())
+		{
+			addRequirements("Optionally bring the following:", panelDetails.getRecommended(), BorderLayout.CENTER);
 		}
 
 		JPanel questStepsPanel = new JPanel();
@@ -175,7 +145,7 @@ public class QuestStepPanel extends JPanel
 
 		}
 
-		bodyPanel.add(questStepsPanel, BorderLayout.CENTER);
+		bodyPanel.add(questStepsPanel, BorderLayout.SOUTH);
 
 		add(headerPanel, BorderLayout.NORTH);
 		add(bodyPanel, BorderLayout.CENTER);
@@ -184,6 +154,42 @@ public class QuestStepPanel extends JPanel
 		{
 			collapse();
 		}
+	}
+
+	public void addRequirements(String text, List<Requirement> reqs, String borderLayout)
+	{
+		JPanel questRequirementsPanel = new JPanel();
+		questRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		questRequirementsPanel.setLayout(new BorderLayout());
+		questRequirementsPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+		JPanel questRequirementsHeader = new JPanel();
+		questRequirementsHeader.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		questRequirementsHeader.setLayout(new BorderLayout());
+		questRequirementsHeader.setBorder(new EmptyBorder(5, 5, 5, 10));
+
+		JLabel questReqsTitle = new JLabel();
+		questReqsTitle.setForeground(Color.WHITE);
+		questReqsTitle.setText(text);
+		questReqsTitle.setMinimumSize(new Dimension(1, questRequirementsHeader.getPreferredSize().height));
+		questRequirementsHeader.add(questReqsTitle, BorderLayout.NORTH);
+
+		JPanel questRequirementsListPanel = new JPanel();
+		questRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
+		questRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+
+		for (Requirement req : reqs)
+		{
+			QuestRequirementPanel reqPanel = new QuestRequirementPanel(req);
+			requirementPanels.add(reqPanel);
+			questRequirementsListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
+		}
+
+		questRequirementsPanel.add(questRequirementsHeader, BorderLayout.NORTH);
+		questRequirementsPanel.add(questRequirementsListPanel, BorderLayout.CENTER);
+
+		bodyPanel.add(questRequirementsPanel, borderLayout);
 	}
 
 	public String generateText(QuestStep step)

@@ -25,7 +25,6 @@
 package com.questhelper.quests.songoftheelves;
 
 import com.google.inject.Inject;
-import com.questhelper.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -219,7 +218,19 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE);
 		natureRune.setHighlightInInventory(true);
 
-		flowers = new ItemRequirement("Flowers", ItemCollections.getFlowers());
+		flowers = new ItemRequirements(LogicType.OR, "Flowers",
+			new ItemRequirement("Assorted flowers", ItemID.ASSORTED_FLOWERS),
+			new ItemRequirement("Black flowers", ItemID.BLACK_FLOWERS),
+			new ItemRequirement("Blue flowers", ItemID.BLUE_FLOWERS),
+			new ItemRequirement("Exotic flowers", ItemID.EXOTIC_FLOWER),
+			new ItemRequirement("Marigolds", ItemID.MARIGOLDS),
+			new ItemRequirement("Mixed flowers", ItemID.MIXED_FLOWERS),
+			new ItemRequirement("Purple flowers", ItemID.PURPLE_FLOWERS),
+			new ItemRequirement("Orange flowers", ItemID.ORANGE_FLOWERS),
+			new ItemRequirement("Red flowers", ItemID.RED_FLOWERS),
+			new ItemRequirement("White flowers", ItemID.WHITE_FLOWERS),
+			new ItemRequirement("Yellow flowers", ItemID.YELLOW_FLOWERS)
+		);
 
 		ItemRequirement grimyIritLeaf = new ItemRequirement("Grimy irit leaf", ItemID.GRIMY_IRIT_LEAF);
 		ItemRequirement cleanIritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);

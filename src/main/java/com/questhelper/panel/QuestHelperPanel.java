@@ -28,7 +28,6 @@ import com.questhelper.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.panel.configpanel.ConfigPanel;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
@@ -73,7 +72,6 @@ public class QuestHelperPanel extends PluginPanel
 {
 	private final QuestOverviewPanel questOverviewPanel;
 	private final FixedWidthPanel questOverviewWrapper = new FixedWidthPanel();
-	private final ConfigPanel configPanel = new ConfigPanel();
 
 	private JPanel allQuestsCompletedPanel = new JPanel();
 	private JPanel searchQuestsPanel;
@@ -86,7 +84,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
 	private final JScrollPane scrollableContainer;
 	private final int DROPDOWN_HEIGHT = 20;
-	private boolean settingsPanelActive = false;
+//	private boolean settingsPanelActive = false;
 	private boolean questActive = false;
 
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
@@ -130,45 +128,45 @@ public class QuestHelperPanel extends PluginPanel
 		viewControls.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		// Settings
-		JButton settingsBtn = new JButton();
-		SwingUtil.removeButtonDecorations(settingsBtn);
-		settingsBtn.setIcon(SETTINGS_ICON);
-		settingsBtn.setToolTipText("Change your settings");
-		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		settingsBtn.setUI(new BasicButtonUI());
-		settingsBtn.addActionListener((ev) -> {
-			configPanel.init(questHelperPlugin);
-			if (settingsPanelActive)
-			{
-				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-				deactivateSettings();
-			}
-			else
-			{
-				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-				activateSettings();
-			}
-		});
-		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			public void mouseEntered(java.awt.event.MouseEvent evt)
-			{
-				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent evt)
-			{
-				if (settingsPanelActive)
-				{
-					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-				}
-				else
-				{
-					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-				}
-			}
-		});
-		viewControls.add(settingsBtn);
+		// TODO: Removed until the Runelite API allows for a link to the actual config panel
+//		JButton settingsBtn = new JButton();
+//		SwingUtil.removeButtonDecorations(settingsBtn);
+//		settingsBtn.setIcon(SETTINGS_ICON);
+//		settingsBtn.setToolTipText("Change your settings");
+//		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//		settingsBtn.setUI(new BasicButtonUI());
+//		settingsBtn.addActionListener((ev) -> {
+//			if (settingsPanelActive)
+//			{
+//				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+//				deactivateSettings();
+//			}
+//			else
+//			{
+//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//				activateSettings();
+//			}
+//		});
+//		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
+//		{
+//			public void mouseEntered(java.awt.event.MouseEvent evt)
+//			{
+//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+//			}
+//
+//			public void mouseExited(java.awt.event.MouseEvent evt)
+//			{
+//				if (settingsPanelActive)
+//				{
+//					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+//				}
+//				else
+//				{
+//					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//				}
+//			}
+//		});
+//		viewControls.add(settingsBtn);
 
 		// Discord button
 		JButton discordBtn = new JButton();
@@ -507,9 +505,9 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void activateSettings()
 	{
-		settingsPanelActive = true;
+//		settingsPanelActive = true;
 
-		scrollableContainer.setViewportView(configPanel);
+//		scrollableContainer.setViewportView(configPanel);
 		searchQuestsPanel.setVisible(false);
 
 		repaint();
@@ -518,7 +516,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void deactivateSettings()
 	{
-		settingsPanelActive = false;
+//		settingsPanelActive = false;
 		if (questActive && searchBar.getText().isEmpty())
 		{
 			scrollableContainer.setViewportView(questOverviewWrapper);

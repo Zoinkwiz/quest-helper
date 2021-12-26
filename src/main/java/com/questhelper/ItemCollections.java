@@ -1265,7 +1265,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private static final List<Integer> cookingGuild = ImmutableList.of(
+	private  static final List<Integer> cookingGuild = ImmutableList.of(
 		ItemID.CHEFS_HAT,
 		ItemID.VARROCK_ARMOUR_3,
 		ItemID.VARROCK_ARMOUR_4,
@@ -1433,6 +1433,55 @@ public class ItemCollections
 	);
 
 	@Getter
+	private  static final List<Integer> rechargeableNeckBracelet = ImmutableList.of(
+		ItemID.SKILLS_NECKLACE3,
+		ItemID.COMBAT_BRACELET3,
+		ItemID.SKILLS_NECKLACE2,
+		ItemID.COMBAT_BRACELET2,
+		ItemID.SKILLS_NECKLACE1,
+		ItemID.COMBAT_BRACELET1,
+		ItemID.SKILLS_NECKLACE,
+		ItemID.COMBAT_BRACELET
+	);
+
+	@Getter
+	private static final List<Integer> deathAltar = ImmutableList.of(
+		ItemID.DEATH_TIARA,
+		ItemID.DEATH_TALISMAN
+	);
+
+	@Getter
+	private static final List<Integer> imbuableSalveAmulet = ImmutableList.of(
+		ItemID.SALVE_AMULET_E,
+		ItemID.SALVE_AMULET
+	);
+
+	@Getter
+	private static final List<Integer> imbuedSalveAmulet = ImmutableList.of(
+		ItemID.SALVE_AMULETEI,
+		ItemID.SALVE_AMULETI,
+		ItemID.SALVE_AMULETEI_25278,
+		ItemID.SALVE_AMULETI_25250
+	);
+
+	@Getter
+	private static final List<Integer> nonMagicTreeRoot = ImmutableList.of(
+		ItemID.OAK_ROOTS,
+		ItemID.WILLOW_ROOTS,
+		ItemID.MAPLE_ROOTS,
+		ItemID.YEW_ROOTS
+	);
+
+	@Getter
+	private  static final List<Integer> ardyCloaks = ImmutableList.of(
+			ItemID.ARDOUGNE_CLOAK_1,
+			ItemID.ARDOUGNE_CLOAK_2,
+			ItemID.ARDOUGNE_CLOAK_3,
+			ItemID.ARDOUGNE_CLOAK_4,
+			ItemID.ARDOUGNE_MAX_CAPE
+	);
+
+	@Getter
 	private static final List<Integer> teamCape = ImmutableList.of(
 		ItemID.TEAM1_CAPE,
 		ItemID.TEAM2_CAPE,
@@ -1517,5 +1566,369 @@ public class ItemCollections
 		ItemID.STAFF_OF_BALANCE,
 		ItemID.SARADOMIN_STAFF,
 		ItemID.STAFF_OF_LIGHT
+	);
+	@Getter
+	private static final List<Integer> snailShells = ImmutableList.of(
+		ItemID.BLAMISH_BARK_SHELL,
+		ItemID.BLAMISH_BLUE_SHELL,
+		ItemID.BLAMISH_MYRE_SHELL,
+		ItemID.BLAMISH_BLUE_SHELL_3361,
+		ItemID.BLAMISH_MYRE_SHELL_3355,
+		ItemID.BLAMISH_RED_SHELL,
+		ItemID.BLAMISH_RED_SHELL_3357,
+		ItemID.BLAMISH_OCHRE_SHELL,
+		ItemID.BLAMISH_OCHRE_SHELL_3359
+	);
+
+	@Getter
+	private static final List<Integer> tannableHide = ImmutableList.of(
+		ItemID.BLACK_DRAGONHIDE,
+		ItemID.RED_DRAGONHIDE,
+		ItemID.BLUE_DRAGONHIDE,
+		ItemID.GREEN_DRAGONHIDE,
+		ItemID.SNAKE_HIDE_7801,
+		ItemID.SNAKE_HIDE,
+		ItemID.COWHIDE
+	);
+
+	@Getter
+	private static final List<Integer> bonemeal = ImmutableList.of(
+		ItemID.BONEMEAL,
+		ItemID.BAT_BONEMEAL,
+		ItemID.BURNT_BONEMEAL,
+		ItemID.BIG_BONEMEAL,
+		ItemID.BABY_DRAGON_BONEMEAL,
+		ItemID.BEARDED_GORILLA_BONEMEAL,
+		ItemID.BURNT_JOGRE_BONEMEAL,
+		ItemID.DRAGON_BONEMEAL,
+		ItemID.DRAKE_BONEMEAL,
+		ItemID.GORILLA_BONEMEAL,
+		ItemID.SMALL_NINJA_BONEMEAL,
+		ItemID.SKELETON_BONEMEAL,
+		ItemID.MONKEY_BONEMEAL,
+		ItemID.FAYRG_BONEMEAL,
+		ItemID.DAGANNOTHKING_BONEMEAL,
+		ItemID.HYDRA_BONEMEAL,
+		ItemID.JOGRE_BONEMEAL,
+		ItemID.LARGE_ZOMBIE_MONKEY_BONEMEAL,
+		ItemID.LAVA_DRAGON_BONEMEAL,
+		ItemID.MEDIUM_NINJA_BONEMEAL,
+		ItemID.OURG_BONEMEAL,
+		ItemID.RAURG_BONEMEAL,
+		ItemID.SHAIKAHAN_BONEMEAL,
+		ItemID.SUPERIOR_DRAGON_BONEMEAL,
+		ItemID.WYRM_BONEMEAL,
+		ItemID.WOLF_BONEMEAL,
+		ItemID.ZOGRE_BONEMEAL,
+		ItemID.SMALL_ZOMBIE_MONKEY_BONEMEAL,
+		ItemID.WYVERN_BONEMEAL
+	);
+
+	@Getter
+	private static final List<Integer> earProtection = ImmutableList.of(
+		ItemID.EARMUFFS,
+		ItemID.SLAYER_HELMET,
+		ItemID.SLAYER_HELMET_I,
+		ItemID.SLAYER_HELMET_I_25177,
+		ItemID.BLACK_SLAYER_HELMET,
+		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET_I_25179,
+		ItemID.GREEN_SLAYER_HELMET,
+		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET_I_25181,
+		ItemID.RED_SLAYER_HELMET,
+		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET_I_25183,
+		ItemID.PURPLE_SLAYER_HELMET,
+		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET_I_25185,
+		ItemID.TURQUOISE_SLAYER_HELMET,
+		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
+		ItemID.HYDRA_SLAYER_HELMET,
+		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET_I_25189,
+		ItemID.TWISTED_SLAYER_HELMET,
+		ItemID.TWISTED_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET_I_25191,
+		ItemID.TZKAL_SLAYER_HELMET,
+		ItemID.TZKAL_SLAYER_HELMET_I,
+		ItemID.TZKAL_SLAYER_HELMET_I_25914,
+		ItemID.VAMPYRIC_SLAYER_HELMET,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I_25908,
+		ItemID.TZTOK_SLAYER_HELMET,
+		ItemID.TZTOK_SLAYER_HELMET_I,
+		ItemID.TZTOK_SLAYER_HELMET_I_25902
+	);
+
+	@Getter
+	private static final List<Integer> noseProtection = ImmutableList.of(
+		ItemID.NOSE_PEG,
+		ItemID.SLAYER_HELMET,
+		ItemID.SLAYER_HELMET_I,
+		ItemID.SLAYER_HELMET_I_25177,
+		ItemID.BLACK_SLAYER_HELMET,
+		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET_I_25179,
+		ItemID.GREEN_SLAYER_HELMET,
+		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET_I_25181,
+		ItemID.RED_SLAYER_HELMET,
+		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET_I_25183,
+		ItemID.PURPLE_SLAYER_HELMET,
+		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET_I_25185,
+		ItemID.TURQUOISE_SLAYER_HELMET,
+		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
+		ItemID.HYDRA_SLAYER_HELMET,
+		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET_I_25189,
+		ItemID.TWISTED_SLAYER_HELMET,
+		ItemID.TWISTED_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET_I_25191,
+		ItemID.TZKAL_SLAYER_HELMET,
+		ItemID.TZKAL_SLAYER_HELMET_I,
+		ItemID.TZKAL_SLAYER_HELMET_I_25914,
+		ItemID.VAMPYRIC_SLAYER_HELMET,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I_25908,
+		ItemID.TZTOK_SLAYER_HELMET,
+		ItemID.TZTOK_SLAYER_HELMET_I,
+		ItemID.TZTOK_SLAYER_HELMET_I_25902
+	);
+
+	@Getter
+	private static final List<Integer> elitePyreLogs = ImmutableList.of(
+		ItemID.MAGIC_PYRE_LOGS,
+		ItemID.REDWOOD_PYRE_LOGS
+	);
+
+	@Getter
+	private static final List<Integer> shadeRemains = ImmutableList.of(
+		ItemID.LOAR_REMAINS,
+		ItemID.PHRIN_REMAINS,
+		ItemID.RIYL_REMAINS,
+		ItemID.ASYN_REMAINS,
+		ItemID.FIYR_REMAINS,
+		ItemID.URIUM_REMAINS
+	);
+
+	@Getter
+	private static final List<Integer> ahrimHood = ImmutableList.of(
+		ItemID.AHRIMS_HOOD,
+		ItemID.AHRIMS_HOOD_100,
+		ItemID.AHRIMS_HOOD_75,
+		ItemID.AHRIMS_HOOD_50,
+		ItemID.AHRIMS_HOOD_25
+	);
+
+	@Getter
+	private static final List<Integer> ahrimRobeSkirt = ImmutableList.of(
+		ItemID.AHRIMS_ROBESKIRT,
+		ItemID.AHRIMS_ROBESKIRT_100,
+		ItemID.AHRIMS_ROBESKIRT_75,
+		ItemID.AHRIMS_ROBESKIRT_50,
+		ItemID.AHRIMS_ROBESKIRT_25
+	);
+
+	@Getter
+	private static final List<Integer> ahrimRobeTop = ImmutableList.of(
+		ItemID.AHRIMS_ROBETOP,
+		ItemID.AHRIMS_ROBETOP_100,
+		ItemID.AHRIMS_ROBETOP_75,
+		ItemID.AHRIMS_ROBETOP_50,
+		ItemID.AHRIMS_ROBETOP_25
+	);
+
+	@Getter
+	private static final List<Integer> ahrimStaff = ImmutableList.of(
+		ItemID.AHRIMS_STAFF,
+		ItemID.AHRIMS_STAFF_100,
+		ItemID.AHRIMS_STAFF_75,
+		ItemID.AHRIMS_STAFF_50,
+		ItemID.AHRIMS_STAFF_25
+	);
+
+	@Getter
+	private static final List<Integer> karilCrossbow = ImmutableList.of(
+		ItemID.KARILS_CROSSBOW,
+		ItemID.KARILS_CROSSBOW_100,
+		ItemID.KARILS_CROSSBOW_75,
+		ItemID.KARILS_CROSSBOW_50,
+		ItemID.KARILS_CROSSBOW_25
+	);
+
+	@Getter
+	private static final List<Integer> karilCoif = ImmutableList.of(
+		ItemID.KARILS_COIF,
+		ItemID.KARILS_COIF_100,
+		ItemID.KARILS_COIF_75,
+		ItemID.KARILS_COIF_50,
+		ItemID.KARILS_COIF_25
+	);
+
+	@Getter
+	private static final List<Integer> karilSkirt = ImmutableList.of(
+		ItemID.KARILS_LEATHERSKIRT,
+		ItemID.KARILS_LEATHERSKIRT_100,
+		ItemID.KARILS_LEATHERSKIRT_75,
+		ItemID.KARILS_LEATHERSKIRT_50,
+		ItemID.KARILS_LEATHERSKIRT_25
+	);
+
+	@Getter
+	private static final List<Integer> karilTop = ImmutableList.of(
+		ItemID.KARILS_LEATHERTOP,
+		ItemID.KARILS_LEATHERTOP_100,
+		ItemID.KARILS_LEATHERTOP_75,
+		ItemID.KARILS_LEATHERTOP_50,
+		ItemID.KARILS_LEATHERTOP_25
+	);
+
+	@Getter
+	private static final List<Integer> dharokAxe = ImmutableList.of(
+		ItemID.DHAROKS_GREATAXE,
+		ItemID.DHAROKS_GREATAXE_100,
+		ItemID.DHAROKS_GREATAXE_75,
+		ItemID.DHAROKS_GREATAXE_50,
+		ItemID.DHAROKS_GREATAXE_25
+	);
+
+	@Getter
+	private static final List<Integer> dharokHelm = ImmutableList.of(
+		ItemID.DHAROKS_HELM,
+		ItemID.DHAROKS_HELM_100,
+		ItemID.DHAROKS_HELM_75,
+		ItemID.DHAROKS_HELM_50,
+		ItemID.DHAROKS_HELM_25
+	);
+
+	@Getter
+	private static final List<Integer> dharokBody = ImmutableList.of(
+		ItemID.DHAROKS_PLATEBODY,
+		ItemID.DHAROKS_PLATEBODY_100,
+		ItemID.DHAROKS_PLATEBODY_75,
+		ItemID.DHAROKS_PLATEBODY_50,
+		ItemID.DHAROKS_PLATEBODY_25
+	);
+
+	@Getter
+	private static final List<Integer> dharokLegs = ImmutableList.of(
+		ItemID.DHAROKS_PLATELEGS,
+		ItemID.DHAROKS_PLATELEGS_100,
+		ItemID.DHAROKS_PLATELEGS_75,
+		ItemID.DHAROKS_PLATELEGS_50,
+		ItemID.DHAROKS_PLATELEGS_25
+	);
+
+	@Getter
+	private static final List<Integer> guthanWarspear = ImmutableList.of(
+		ItemID.GUTHANS_WARSPEAR,
+		ItemID.GUTHANS_WARSPEAR_100,
+		ItemID.GUTHANS_WARSPEAR_75,
+		ItemID.GUTHANS_WARSPEAR_50,
+		ItemID.GUTHANS_WARSPEAR_25
+	);
+
+	@Getter
+	private static final List<Integer> guthanHelm = ImmutableList.of(
+		ItemID.GUTHANS_HELM,
+		ItemID.GUTHANS_HELM_100,
+		ItemID.GUTHANS_HELM_75,
+		ItemID.GUTHANS_HELM_50,
+		ItemID.GUTHANS_HELM_25
+	);
+
+	@Getter
+	private static final List<Integer> guthanBody = ImmutableList.of(
+		ItemID.GUTHANS_PLATEBODY,
+		ItemID.GUTHANS_PLATEBODY_100,
+		ItemID.GUTHANS_PLATEBODY_75,
+		ItemID.GUTHANS_PLATEBODY_50,
+		ItemID.GUTHANS_PLATEBODY_25
+	);
+
+	@Getter
+	private static final List<Integer> guthanSkirt = ImmutableList.of(
+		ItemID.GUTHANS_CHAINSKIRT,
+		ItemID.GUTHANS_CHAINSKIRT_100,
+		ItemID.GUTHANS_CHAINSKIRT_75,
+		ItemID.GUTHANS_CHAINSKIRT_50,
+		ItemID.GUTHANS_CHAINSKIRT_25
+	);
+
+	@Getter
+	private static final List<Integer> toragHammers = ImmutableList.of(
+		ItemID.TORAGS_HAMMERS,
+		ItemID.TORAGS_HAMMERS_100,
+		ItemID.TORAGS_HAMMERS_75,
+		ItemID.TORAGS_HAMMERS_50,
+		ItemID.TORAGS_HAMMERS_25
+	);
+
+	@Getter
+	private static final List<Integer> toragHelm = ImmutableList.of(
+		ItemID.TORAGS_HELM,
+		ItemID.TORAGS_HELM_100,
+		ItemID.TORAGS_HELM_75,
+		ItemID.TORAGS_HELM_50,
+		ItemID.TORAGS_HELM_25
+	);
+
+	@Getter
+	private static final List<Integer> toragBody = ImmutableList.of(
+		ItemID.TORAGS_PLATEBODY,
+		ItemID.TORAGS_PLATEBODY_100,
+		ItemID.TORAGS_PLATEBODY_75,
+		ItemID.TORAGS_PLATEBODY_50,
+		ItemID.TORAGS_PLATEBODY_25
+	);
+
+	@Getter
+	private static final List<Integer> toragLegs = ImmutableList.of(
+		ItemID.TORAGS_PLATELEGS,
+		ItemID.TORAGS_PLATELEGS_100,
+		ItemID.TORAGS_PLATELEGS_75,
+		ItemID.TORAGS_PLATELEGS_50,
+		ItemID.TORAGS_PLATELEGS_25
+	);
+
+	@Getter
+	private static final List<Integer> veracFlail = ImmutableList.of(
+		ItemID.VERACS_FLAIL,
+		ItemID.VERACS_FLAIL_100,
+		ItemID.VERACS_FLAIL_75,
+		ItemID.VERACS_FLAIL_50,
+		ItemID.VERACS_FLAIL_25
+	);
+
+	@Getter
+	private static final List<Integer> veracBrassard = ImmutableList.of(
+		ItemID.VERACS_BRASSARD,
+		ItemID.VERACS_BRASSARD_100,
+		ItemID.VERACS_BRASSARD_75,
+		ItemID.VERACS_BRASSARD_50,
+		ItemID.VERACS_BRASSARD_25
+	);
+
+	@Getter
+	private static final List<Integer> veracHelm = ImmutableList.of(
+		ItemID.VERACS_HELM,
+		ItemID.VERACS_HELM_100,
+		ItemID.VERACS_HELM_75,
+		ItemID.VERACS_HELM_50,
+		ItemID.VERACS_HELM_25
+	);
+
+	@Getter
+	private static final List<Integer> veracSkirt = ImmutableList.of(
+		ItemID.VERACS_PLATESKIRT,
+		ItemID.VERACS_PLATESKIRT_100,
+		ItemID.VERACS_PLATESKIRT_75,
+		ItemID.VERACS_PLATESKIRT_50,
+		ItemID.VERACS_PLATESKIRT_25
 	);
 }

@@ -410,7 +410,7 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToEblis.addDialogStep("Yes");
 
 		bringItemsToEblis = new GiveItems(this, NpcID.EBLIS, new WorldPoint(3184, 2989, 0), "Use the items on Eblis " +
-			"in the east of the Bandit Camp. You will need to make two trips from a bank.", ashes, bloodRune, bones,
+			"in the east of the Bandit Camp. Items can be noted.", ashes, bloodRune, bones,
 			charcoal, moltenGlass6, magicLogs12, steelBars6);
 
 		talkToEblisAtMirrors = new NpcStep(this, NpcID.EBLIS_689, new WorldPoint(3214, 2954, 0), "Talk to Eblis at the mirrors south east of the Bandit Camp.");

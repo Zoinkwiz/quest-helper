@@ -1427,9 +1427,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		return Arrays.asList(
 				new ExperienceReward(Skill.AGILITY, 20000),
 				new ExperienceReward(Skill.CONSTRUCTION, 20000),
-				new ExperienceReward(Skill.CONSTRUCTION, 20000),
 				new ExperienceReward(Skill.FARMING, 20000),
 				new ExperienceReward(Skill.HERBLORE, 20000),
+				new ExperienceReward(Skill.HUNTER, 20000),
 				new ExperienceReward(Skill.MINING, 20000),
 				new ExperienceReward(Skill.SMITHING, 20000),
 				new ExperienceReward(Skill.WOODCUTTING, 20000)

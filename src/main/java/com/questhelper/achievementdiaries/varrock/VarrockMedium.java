@@ -168,8 +168,8 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPVarrock);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPVarrock);
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notTPVarrock);
-		mahoLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS, 20).showConditioned(notMaho20);
-		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS, 10).showConditioned(notBalloon);
+		mahoLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS).showConditioned(notMaho20);
+		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS).showConditioned(notBalloon);
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notBalloon);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -277,7 +277,8 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins.quantity(30105), limpRoot, redSpiderEgg, ringOfCharos, digsitePend, lawRune.quantity(1), airRune.quantity(3), fireRune.quantity(1), mahoLog.quantity(20), willowLog.quantity(10), log);
+		return Arrays.asList(coins.quantity(30105), limpRoot, redSpiderEgg, ringOfCharos, digsitePend, lawRune.quantity(1),
+			airRune.quantity(3), fireRune.quantity(1), mahoLog.quantity(20), willowLog.quantity(10), log);
 	}
 
 	@Override
@@ -379,7 +380,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		allSteps.add(maho20Steps);
 
 		PanelDetails balloonSteps = new PanelDetails("Leave Varrock in a Balloon", Arrays.asList(moveToEntrana, talkToAug,
-			balloon), enlightenedJourney, new SkillRequirement(Skill.FIREMAKING, 40), willowLog.quantity(11));
+			balloon), enlightenedJourney, new SkillRequirement(Skill.FIREMAKING, 40), willowLog.quantity(1), log);
 		balloonSteps.setDisplayCondition(notBalloon);
 		allSteps.add(balloonSteps);
 

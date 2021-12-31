@@ -134,7 +134,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		notGrapYan = new VarplayerRequirement(1196, false, 14);
 		notArdyStraw = new VarplayerRequirement(1196, false, 15);
 		notTPArdy = new VarplayerRequirement(1196, false, 16);
-		notBalloonCW = new VarplayerRequirement(1196, true, 17);
+		notBalloonCW = new VarplayerRequirement(1196, false, 17);
 		notClaimSand = new VarplayerRequirement(1196, false, 18);
 		notFishOnPlatform = new VarplayerRequirement(1196, false, 19);
 		notPickMasterFarmer = new VarplayerRequirement(1196, false, 20);

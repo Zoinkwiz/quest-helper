@@ -2052,4 +2052,11 @@ public class ItemCollections
 		ItemID.UGLY_HALLOWEEN_JUMPER_BLACK,
 		ItemID.UGLY_HALLOWEEN_JUMPER_ORANGE
 	);
+
+	@Getter
+	private static final List<Integer> stoneBoots = ImmutableList.of(
+		ItemID.BOOTS_OF_STONE,
+		ItemID.BOOTS_OF_BRIMSTONE,
+		ItemID.GRANITE_BOOTS
+	);
 }

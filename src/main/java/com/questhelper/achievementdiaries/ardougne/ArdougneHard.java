@@ -402,12 +402,12 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		allSteps.add(deathSteps);
 
 		PanelDetails palmSteps = new PanelDetails("Tree Gnome Village Palm Tree", Collections.singletonList(palmTree),
-			new SkillRequirement(Skill.FARMING, 70, true), spade, rake, palmSap);
+			new SkillRequirement(Skill.FARMING, 68, true), spade, rake, palmSap);
 		palmSteps.setDisplayCondition(notPalmTree);
 		allSteps.add(palmSteps);
 
 		PanelDetails ivySteps = new PanelDetails("Monastery Poison Ivy", Collections.singletonList(poisonIvy),
-			new SkillRequirement(Skill.FARMING, 68, true), seedDib, rake, poisonIvySeed);
+			new SkillRequirement(Skill.FARMING, 70, true), seedDib, rake, poisonIvySeed);
 		ivySteps.setDisplayCondition(notPoisonIvy);
 		allSteps.add(ivySteps);
 

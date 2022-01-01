@@ -150,10 +150,10 @@ public class WildernessHard extends ComplexStateQuestHelper
 			.showConditioned(notSprirtualWarrior);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notAddyScim);
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notAddyScim);
-		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyScim);
+		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR, 2).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim);
-		barsOrPick = new ItemRequirements(LogicType.OR, "Adamant bar", addyBar.quantity(2));
+		barsOrPick = new ItemRequirements(LogicType.OR, "Adamant bar", addyBar);
 		lavaDragonBones = new ItemRequirement("Lava Dragon Bones", ItemID.LAVA_DRAGON_BONES);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -210,9 +210,9 @@ public class WildernessHard extends ComplexStateQuestHelper
 			"Fish a raw lava eel in the Lava Maze.", knife, burningAmulet, oilyRod, fishingBait);
 
 		addyScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
-			"Smith an adamantite scimitar in the Resource Area.", hammer, addyBar.quantity(2));
+			"Smith an adamantite scimitar in the Resource Area.", hammer, addyBar);
 		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
-			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, addyBar.quantity(2));
+			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, addyBar);
 
 		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);

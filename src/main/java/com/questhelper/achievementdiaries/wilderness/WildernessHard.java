@@ -210,7 +210,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 			"Fish a raw lava eel in the Lava Maze.", knife, burningAmulet, oilyRod, fishingBait);
 
 		addyScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
-			"Smith an adamantite scimitar in the Resource Area.", hammer, addyBar);
+			"Smith an Adamant scimitar in the Resource Area.", hammer, addyBar);
 		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, addyBar);
 

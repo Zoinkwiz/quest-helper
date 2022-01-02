@@ -131,8 +131,8 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	{
 		ringOfVis = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ghostspeakItems = new ItemRequirement("Ghostspeak amulet or any pair of morytania legs", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		ghostspeakItems.addAlternates(ItemID.MORYTANIA_LEGS, ItemID.MORYTANIA_LEGS_1, ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
+		ghostspeakItems = new ItemRequirement("Ghostspeak amulet or Morytania legs (2) or better", ItemID.GHOSTSPEAK_AMULET, 1, true);
+		ghostspeakItems.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(new VarbitRequirement(PATH_VARBIT, 3));
 	}
 

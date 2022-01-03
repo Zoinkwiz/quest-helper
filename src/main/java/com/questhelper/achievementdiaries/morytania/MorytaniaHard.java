@@ -273,7 +273,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(combatGear, coins.quantity(100000), limestoneBrick.quantity(2), hammer, saw,
-			teakPlank.quantity(3), lawRune.quantity(200), bloodRune.quantity(100), seedDibber, spade, rake, axe,
+			teakPlank.quantity(3), lawRune.quantity(200), bloodRune.quantity(100), watermelonSeeds,quantity(3), seedDibber, spade, rake, axe,
 			tinderbox, witchwoodIcon, lightSource, mushroomSpore, pickaxe, crystalMineKey);
 	}
 

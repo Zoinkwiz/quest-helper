@@ -190,9 +190,9 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	private void setupSteps()
 	{
 		goToTimfrakuLadder = new ObjectStep(this, ObjectID.LADDER_16683, timfrakuHutWorldPoint,
-			"Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
+			"Talk to Timfraku upstairs in his house in Tai Bwo Wannai.");
 
-		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
+		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk to Timfraku upstairs in his house in Tai Bwo Wannai.");
 		talkToTimfrakuStart.addDialogSteps("I am a roving adventurer.", "I am a travelling explorer.", "I am a " +
 			"wandering wayfarer.", "Who me? Oh I'm just a nobody.");
 		talkToTimfrakuStart.addDialogStep("Trufitus sent me.");

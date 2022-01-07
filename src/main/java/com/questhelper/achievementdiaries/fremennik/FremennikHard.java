@@ -187,7 +187,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 			"Place logs over a pit in the hunter area, and poke a kyatt with a teasing stick. " +
 				"Jump over the pits until the kyatt falls in and loot it.", teasingStick, log, knife);
 		mixSuperDef = new ItemStep(this, new WorldPoint(2662, 3657, 0),
-			"Mix a super defence potion within the Fremennik Province.", cadantineUnfPot.highlighted(), whiteBerries.highlighted());
+			"Mix a Super defence potion within the Fremennik Province (only near Rellekka).", cadantineUnfPot.highlighted(), whiteBerries.highlighted());
 		moveToCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively TP to Varrock and take a minecart near the Grand Exchange.");
 		moveToRiver = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),

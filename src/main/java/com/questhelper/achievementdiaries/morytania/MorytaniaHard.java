@@ -220,7 +220,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3338, 0),
 			"Enter the grotto tree in Mort Myre Swamp.");
 		pietyAltar = new ObjectStep(this, ObjectID.ALTAR_OF_NATURE, new WorldPoint(3442, 9741, 1),
-			"Pray at the altar.", piety);
+			"Pray at the altar with Piety activated.", piety);
 
 		hardTempleTrekk = new NpcStep(this, NpcID.ROLAYNE_TWICKIT_HARD, new WorldPoint(3477, 3236, 0),
 			"Complete a Hard Temple Trek. Alternatively complete a Hard Burgh de Rott Ramble. You can use Route 1 to" +

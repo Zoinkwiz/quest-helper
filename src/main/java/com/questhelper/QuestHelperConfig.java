@@ -184,6 +184,16 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showWorldLines",
+			name = "Display navigation paths",
+			description = "Choose whether navigation paths are drawn to the next objective"
+	)
+	default boolean showWorldLines()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showOverlayPanel",
 		name = "Display overlay on screen",
 		description = "Chose whether the overlay should be displayed on screen"

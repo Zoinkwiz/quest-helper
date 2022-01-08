@@ -99,7 +99,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notMithOre, inHauntedMine2), mithOre);
 		doHard.addStep(new Conditions(notMithOre, inHauntedMine1), moveToLevelTwo);
 		doHard.addStep(notMithOre, moveToMine);
-		doHard.addStep(new Conditions(notPietyAltar, inGrotto), moveToGrotto);
+		doHard.addStep(new Conditions(notPietyAltar, inGrotto), pietyAltar);
 		doHard.addStep(notPietyAltar, moveToGrotto);
 		doHard.addStep(notHardTempleTrekk, hardTempleTrekk);
 		doHard.addStep(notBridgeSalve, bridgeSalve);
@@ -198,7 +198,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	{
 		hauntedMine1 = new Zone(new WorldPoint(3400, 9662, 0), new WorldPoint(3439, 9614, 0));
 		hauntedMine2 = new Zone(new WorldPoint(2767, 4605, 0), new WorldPoint(2817, 4556, 0));
-		grotto = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
+		grotto = new Zone(new WorldPoint(3430, 9750, 1), new WorldPoint(3453, 9728, 1));
 		slayerTower2 = new Zone(new WorldPoint(3401, 3581, 1), new WorldPoint(3456, 3529, 1));
 		boat = new Zone(new WorldPoint(3709, 3508, 1), new WorldPoint(3721, 3489, 1));
 		mos = new Zone(new WorldPoint(3642, 3077, 0), new WorldPoint(3855, 2924, 1));
@@ -217,7 +217,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		moveToLevelTwo = new ObjectStep(this, ObjectID.LADDER_4965, new WorldPoint(3413, 9633, 0),
 			"Climb down the ladder that leads to the lower level.");
 
-		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3338, 0),
+		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0),
 			"Enter the grotto tree in Mort Myre Swamp.");
 		pietyAltar = new ObjectStep(this, ObjectID.ALTAR_OF_NATURE, new WorldPoint(3442, 9741, 1),
 			"Pray at the altar with Piety activated.", piety);
@@ -237,7 +237,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		moveToUpstairs = new ObjectStep(this, ObjectID.SPIKEY_CHAIN, new WorldPoint(3422, 3550, 0),
 			"Climb up the chain to get to the second floor of the slayer tower.");
 		advancedSpikes = new ObjectStep(this, 16537, new WorldPoint(3447, 3576, 1),
-			"Climb the advanced spike chain.");
+			"Climb the advanced spike chain. Go down and back up if you rip your hands as you climb.");
 
 		moveToCapt = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship.");

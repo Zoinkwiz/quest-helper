@@ -41,6 +41,10 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -69,12 +73,11 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	ItemRequirement armor, hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, pickledBrain,
 		obsidianAmulet, marbleAmulet, starAmulet, decapitatedHead, decapitatedHeadWithBrain, cavernKey, torso, legs, arms,
 		shedKey, brush, canes, extendedBrush3, conductorMould, lightningRod, towerKey,
-		fenkenstrainTeleports, teleportToFurnance, staminaPotion;
+		fenkenstrainTeleports, teleportToFurnace, staminaPotion;
 	Zone barZone, castleZoneFloor0, castleZoneFloor1, experimentCave, graveIsland, castleTower, monsterTower;
-	Requirement hasPickledBrain, inCanifisBar, inCastleFloor0, inCastleFloor1, hasObsidianAmulet, hasMarbleAmulet, hasStarAmulet,
-		hasGhostSpeakAmulet, followingGardenerForHead, hasDecapitatedHead, hasDecapitatedHeadWithBrain, putStarOnGrave, inExperiementCave,
-		hasCavernKey, hasTorso, hasLegs, hasArm, inGraveIsland, hasShedKey, usedShedKey, hasBrush, hasBrush3,
-		hasCanes, hasLightningRod, hasMould, inCastleTower, usedTowerKey, hasTowerKey, inMonsterTower, keyNearby;
+	Requirement inCanifisBar, inCastleFloor0, inCastleFloor1, followingGardenerForHead, putStarOnGrave, inExperiementCave,
+		inGraveIsland, inCastleTower, usedTowerKey, inMonsterTower, keyNearby, hasDecapitatedHeadWithBrain, hasArm, hasLegs,
+		hasTorso, hasCavernKey, hasStarAmulet, hasObsidianAmulet, hasMarbleAmulet, usedShedKey;
 	QuestStep getPickledBrain, talkToFrenkenstrain, goUpstairsForStar, getBook1, getBook2, combineAmulet, pickupKey,
 		goDownstairsForStar, talkToGardenerForHead, goToHeadGrave, combinedHead, useStarOnGrave, killExperiment, leaveExperimentCave,
 		getTorso, getArm, getLeg, deliverBodyParts, gatherNeedleAndThread, talkToGardenerForKey, searchForBrush,
@@ -93,7 +96,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep grabTheBrain = new ConditionalStep(this, getPickledBrain);
-		grabTheBrain.addStep(hasPickledBrain, talkToFrenkenstrain);
+		grabTheBrain.addStep(pickledBrain, talkToFrenkenstrain);
 		steps.put(0, grabTheBrain);
 
 		ConditionalStep gatherBodyParts = new ConditionalStep(this, goUpstairsForStar);
@@ -107,8 +110,8 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, putStarOnGrave), enterExperimentCave);
 		gatherBodyParts.addStep(new Conditions(hasDecapitatedHeadWithBrain, hasStarAmulet), useStarOnGrave);
-		gatherBodyParts.addStep(new Conditions(hasDecapitatedHead, hasPickledBrain), combinedHead);
-		gatherBodyParts.addStep(new Conditions(hasDecapitatedHead), getPickledBrain);
+		gatherBodyParts.addStep(new Conditions(decapitatedHead, pickledBrain), combinedHead);
+		gatherBodyParts.addStep(new Conditions(decapitatedHead), getPickledBrain);
 		gatherBodyParts.addStep(followingGardenerForHead, goToHeadGrave);
 		gatherBodyParts.addStep(new Conditions(inCastleFloor1, hasStarAmulet), goDownstairsForStar);
 		gatherBodyParts.addStep(new Conditions(hasStarAmulet), talkToGardenerForHead);
@@ -118,15 +121,15 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		gatherBodyParts.addStep(new Conditions(inCastleFloor1), getBook1);
 
 		ConditionalStep fixLightningRod = new ConditionalStep(this, talkToGardenerForKey);
-		fixLightningRod.addStep(new Conditions(inCastleTower, hasLightningRod), repairConductor);
-		fixLightningRod.addStep(new Conditions(hasLightningRod, inCastleFloor1), goUpTowerLadder);
-		fixLightningRod.addStep(new Conditions(hasLightningRod), goUpWestStairs);
-		fixLightningRod.addStep(new Conditions(hasMould), makeLightningRod);
-		fixLightningRod.addStep(new Conditions(inCastleFloor1, hasBrush3), searchFirePlace);
-		fixLightningRod.addStep(new Conditions(hasBrush3), goUpWestStairs);
-		fixLightningRod.addStep(new Conditions(LogicType.AND, hasBrush, hasCanes), extendBrush);
-		fixLightningRod.addStep(new Conditions(hasBrush), grabCanes);
-		fixLightningRod.addStep(new Conditions(LogicType.OR, usedShedKey, hasShedKey), searchForBrush);
+		fixLightningRod.addStep(new Conditions(inCastleTower, lightningRod), repairConductor);
+		fixLightningRod.addStep(new Conditions(lightningRod, inCastleFloor1), goUpTowerLadder);
+		fixLightningRod.addStep(new Conditions(lightningRod), goUpWestStairs);
+		fixLightningRod.addStep(new Conditions(conductorMould), makeLightningRod);
+		fixLightningRod.addStep(new Conditions(inCastleFloor1, extendedBrush3), searchFirePlace);
+		fixLightningRod.addStep(new Conditions(extendedBrush3), goUpWestStairs);
+		fixLightningRod.addStep(new Conditions(LogicType.AND, brush, canes), extendBrush);
+		fixLightningRod.addStep(new Conditions(brush), grabCanes);
+		fixLightningRod.addStep(new Conditions(LogicType.OR, usedShedKey, shedKey), searchForBrush);
 
 		ConditionalStep talkToFenkentrain = new ConditionalStep(this, goBackToFirstFloor);
 		talkToFenkentrain.addStep(inCastleFloor0, talkToFenkenstrainAfterFixingRod);
@@ -134,8 +137,8 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		ConditionalStep goToMonster = new ConditionalStep(this, goToMonsterFloor1);
 		goToMonster.addStep(inMonsterTower, talkToMonster);
 		goToMonster.addStep(new Conditions(usedTowerKey, inCastleFloor1), goToMonsterFloor2);
-		goToMonster.addStep(new Conditions(hasTowerKey, inCastleFloor1), openLockedDoor);
-
+		goToMonster.addStep(new Conditions(towerKey, inCastleFloor1), openLockedDoor);
+		
 		steps.put(1, gatherBodyParts);
 		steps.put(2, gatherNeedleAndThread);
 		steps.put(3, fixLightningRod);
@@ -172,7 +175,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		decapitatedHeadWithBrain = new ItemRequirement("Decapitated Head (with brain)", ItemID.DECAPITATED_HEAD_4198);
 		armor = new ItemRequirement("Armour and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1);
 		armor.setDisplayItemId(BankSlotIcons.getCombatGear());
-		cavernKey = new ItemRequirement("Tavern Key", ItemID.CAVERN_KEY);
+		cavernKey = new ItemRequirement("Cavern Key", ItemID.CAVERN_KEY);
 		torso = new ItemRequirement("Torso", ItemID.TORSO);
 		legs = new ItemRequirement("Legs", ItemID.LEGS);
 		arms = new ItemRequirement("Arms", ItemID.ARMS);
@@ -186,9 +189,9 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		towerKey = new ItemRequirement("Tower Key", ItemID.TOWER_KEY);
 
 		fenkenstrainTeleports = new ItemRequirement("Fenkenstrain's Castle Teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, 2);
-		teleportToFurnance = new ItemRequirement("Teleport to any furnance such as glory for edgeville teleport, ectophial to Port Phasmatys or a Falador teleport",
+		teleportToFurnace = new ItemRequirement("Teleport to any furnace such as glory for Edgeville teleport, Ectophial to Port Phasmatys or a Falador teleport",
 			ItemCollections.getAmuletOfGlories());
-		teleportToFurnance.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
+		teleportToFurnace.addAlternates(ItemID.ECTOPHIAL, ItemID.FALADOR_TELEPORT);
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);
 	}
 
@@ -208,46 +211,45 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		inCanifisBar = new ZoneRequirement(barZone);
 		inCastleFloor0 = new ZoneRequirement(castleZoneFloor0);
 		inCastleFloor1 = new ZoneRequirement(castleZoneFloor1);
-		hasPickledBrain = new ItemRequirements(pickledBrain);
 		putStarOnGrave = new VarbitRequirement(192, 1);
-		hasMarbleAmulet = new Conditions(LogicType.OR, new ItemRequirements(marbleAmulet), putStarOnGrave);
-		hasObsidianAmulet = new Conditions(LogicType.OR, new ItemRequirements(obsidianAmulet), putStarOnGrave);
-		hasGhostSpeakAmulet = new ItemRequirements(ghostSpeakAmulet);
-		hasStarAmulet = new Conditions(LogicType.OR, new ItemRequirements(starAmulet), putStarOnGrave);
+		hasMarbleAmulet = new Conditions(LogicType.OR, marbleAmulet, putStarOnGrave);
+		hasObsidianAmulet = new Conditions(LogicType.OR, obsidianAmulet, putStarOnGrave);
+		hasStarAmulet = new Conditions(LogicType.OR, starAmulet, putStarOnGrave);
 		followingGardenerForHead = new VarbitRequirement(185, 1);
-		hasDecapitatedHead = new ItemRequirements(decapitatedHead);
+
 		hasDecapitatedHeadWithBrain = new Conditions(LogicType.OR,
-			new ItemRequirements(decapitatedHeadWithBrain),
-			new VarbitRequirement(189, 1));
+			decapitatedHeadWithBrain,
+			new VarbitRequirement(189, 1)
+		);
+
 		inExperiementCave = new ZoneRequirement(experimentCave);
 		inGraveIsland = new ZoneRequirement(graveIsland);
-		hasCavernKey = new Conditions(LogicType.OR, new ItemRequirements(cavernKey),
-			new VarbitRequirement(199, 1));
+
+		hasCavernKey = new Conditions(LogicType.OR,
+			cavernKey,
+			new VarbitRequirement(199, 1)
+		);
 		keyNearby = new ItemOnTileRequirement(cavernKey);
 		hasTorso = new Conditions(LogicType.OR,
-			new ItemRequirements(torso),
-			new VarbitRequirement(188, 1));
+			torso,
+			new VarbitRequirement(188, 1)
+		);
 		hasLegs = new Conditions(LogicType.OR,
-			new ItemRequirements(legs),
-			new VarbitRequirement(187, 1));
+			legs,
+			new VarbitRequirement(187, 1)
+		);
 		hasArm = new Conditions(LogicType.OR,
-			new ItemRequirements(arms),
-			new VarbitRequirement(186, 1));
+			arms,
+			new VarbitRequirement(186, 1)
+		);
 
 		// Needle given, 190 = 1
 		// Thread given, 191 0->5
 
-		hasShedKey = new ItemRequirements(shedKey);
 		usedShedKey = new VarbitRequirement(200, 1);
-		hasBrush = new ItemRequirements(brush);
-		hasBrush3 = new ItemRequirements(extendedBrush3);
-		hasCanes = new ItemRequirements(canes);
-		hasLightningRod = new ItemRequirements(lightningRod);
-		hasMould = new ItemRequirements(conductorMould);
 		inCastleTower = new ZoneRequirement(castleTower);
 
 		usedTowerKey = new VarbitRequirement(198, 1);
-		hasTowerKey = new ItemRequirements(towerKey);
 		inMonsterTower = new ZoneRequirement(monsterTower);
 	}
 
@@ -346,10 +348,10 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		repairConductor = new ObjectStep(this, ObjectID.LIGHTNING_CONDUCTOR, new WorldPoint(3549, 3537, 2),
 			"Repair the lightning Conductor.");
 
-		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the the first floor of the castle and talk to Dr" +
+		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the first floor of the castle and talk to Dr" +
 			".Fenkenstrain.");
 		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Go back to the the first floor of the castle and talk to Dr.Fenkenstrain.");
+			"Go back to the first floor of the castle and talk to Dr.Fenkenstrain.");
 
 		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
 			"Go up to the second floor to confront Fenkenstrain's monster.");
@@ -375,7 +377,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(fenkenstrainTeleports);
-		reqs.add(teleportToFurnance);
+		reqs.add(teleportToFurnace);
 		reqs.add(staminaPotion);
 
 		return reqs;
@@ -396,6 +398,30 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 20, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 25, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Ring of Charos", ItemID.RING_OF_CHAROS, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to the Werewolf Agility Course"));
 	}
 
 	@Override

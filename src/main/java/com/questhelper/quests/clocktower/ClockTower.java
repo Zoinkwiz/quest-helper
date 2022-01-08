@@ -39,6 +39,8 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -84,7 +86,7 @@ public class ClockTower extends BasicQuestHelper
 
 	QuestStep kojoReward;
 
-	ConditionalStep startingOut, getRedCog, getBlueCog, getBlackCog, getWhiteCog;
+	ConditionalStep getRedCog, getBlueCog, getBlackCog, getWhiteCog;
 
 	ConditionalStep goToBasementForRed, goToBasementForBlue, goToBasementForBlack, goToBasementForWhite,
 		goToFirstFloorWithBlueCog, goToGroundFloorWithRedCog, goToBasementWithBlackCog, goToSecondFloorWithWhiteCog,
@@ -104,8 +106,8 @@ public class ClockTower extends BasicQuestHelper
 		ConditionalStep goStart = new ConditionalStep(this, talkToKojo);
 		// This is so we can lock the startedQuestDuringSession to true, so we don't need to ask to sync after
 		goStart.addStep(startedQuestDuringSession, talkToKojo);
+
 		steps.put(0, talkToKojo);
-		startingOut = new ConditionalStep(this, talkToKojo);
 
 		getRedCog = new ConditionalStep(this, goToBasementForRed);
 		getRedCog.addStep(redCog, goToGroundFloorWithRedCog);
@@ -138,7 +140,7 @@ public class ClockTower extends BasicQuestHelper
 		steps.put(2, doQuest);
 		steps.put(3, doQuest);
 		steps.put(4, doQuest);
-		steps.put(5, doQuest);
+		steps.put(5, goFinishQuest);
 		steps.put(6, goFinishQuest);
 		steps.put(7, goFinishQuest);
 
@@ -250,7 +252,7 @@ public class ClockTower extends BasicQuestHelper
 		pullFirstLever = new ObjectStep(this, ObjectID.LEVER, new WorldPoint(2591, 9661, 0),
 			"Pull the marked lever up.");
 		ratPoisonFood = new ObjectStep(this, ObjectID.FOOD_TROUGH, new WorldPoint(2587, 9654, 0),
-			"Use the rat poison on the food through. Wait till the rats have died.", ratPoison.highlighted());
+			"Use the rat poison on the food trough. Wait till the rats have died.", ratPoison.highlighted());
 		ratPoisonFood.addIcon(ItemID.RAT_POISON);
 		westernGate = new ObjectStep(this, ObjectID.GATE_39, new WorldPoint(2579, 9656, 0), "Go through the gate.");
 		pickUpWhiteCog = new DetailedQuestStep(this, new WorldPoint(2577, 9655, 0), "Pick up the white cog.", whiteCog);
@@ -306,11 +308,11 @@ public class ClockTower extends BasicQuestHelper
 			"black cog.");
 
 		goToFirstFloorWithBlueCog = new ConditionalStep(this, goToFirstFloor,
-			"Place the blue cog on the peg on the ground floor.");
+			"Place the blue cog on the peg on the first floor.");
 		goToFirstFloorWithBlueCog.addStep(inFirstFloor, blueCogOnBlueSpindle);
 
 		goToGroundFloorWithRedCog = goToGroundFloor.copy();
-		goToGroundFloorWithRedCog.setText("Place the red cog on the peg on the first floor.");
+		goToGroundFloorWithRedCog.setText("Place the red cog on the peg on the ground floor.");
 		goToGroundFloorWithRedCog.addStep(null, redCogOnRedSpindle);
 
 		goToBasementWithBlackCog = new ConditionalStep(this, goToBasementSteps,
@@ -324,7 +326,7 @@ public class ClockTower extends BasicQuestHelper
 		goToSecondFloorWithWhiteCog.addSubSteps(climbWhiteLadder);
 
 		goFinishQuest = goToGroundFloor.copy();
-		goFinishQuest.setText("Talk to Koja for your reward.");
+		goFinishQuest.setText("Talk to Kojo for your reward.");
 		goFinishQuest.addStep(null, kojoReward);
 	}
 
@@ -344,6 +346,18 @@ public class ClockTower extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Able to survive a hit or 2 from an Ogre (level 53)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("500 Coins", ItemID.COINS_995, 500));
 	}
 
 	@Override

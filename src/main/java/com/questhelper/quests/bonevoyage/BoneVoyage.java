@@ -29,11 +29,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
@@ -42,7 +45,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.Favour;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -152,7 +154,7 @@ public class BoneVoyage extends BasicQuestHelper
 
 		digsiteTeleport = new ItemRequirement("Teleport to the Digsite", ItemCollections.getDigsitePendants());
 		digsiteTeleport.addAlternates(ItemID.DIGSITE_TELEPORT);
-		woodcuttingGuildTeleport = new ItemRequirement("Teleport to woodcuting guild", ItemCollections.getSkillsNecklaces());
+		woodcuttingGuildTeleport = new ItemRequirement("Teleport to the Woodcutting Guild", ItemCollections.getSkillsNecklaces());
 		woodcuttingGuildTeleport.addAlternates(ItemID.XERICS_TALISMAN, ItemID.KHAREDSTS_MEMOIRS);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.getAmuletOfGlories());
@@ -197,6 +199,7 @@ public class BoneVoyage extends BasicQuestHelper
 
 		talkToOperatorInGuild = new NpcStep(this, NpcID.SAWMILL_OPERATOR_9140, new WorldPoint(1620, 3499, 0),
 			"Talk to the Sawmill Operator in the Woodcutting Guild on Zeah.", sawmillProposal);
+		talkToOperatorInGuild.addDialogStep("I'm here on behalf of the museum archaeological team.");
 		talkToOperatorInGuildFromGate = new ObjectStep(this, ObjectID.GATE_28852, new WorldPoint(1657, 3504, 0),
 			"Attempt to enter the Woodcutting Guild on Zeah to talk to the guild's sawmill operator.", sawmillProposal);
 
@@ -218,6 +221,7 @@ public class BoneVoyage extends BasicQuestHelper
 		talkToNavigator = new NpcStep(this, NpcID.LEAD_NAVIGATOR, new WorldPoint(3363, 3453, 1),
 			"Talk to the Lead Navigator.");
 		talkToNavigator.addDialogStep("Yep, that would be me.");
+		talkToNavigator.addDialogStep("No, what happened?");
 		talkToJack = new NpcStep(this, NpcID.JACK_SEAGULL, new WorldPoint(3050, 3257, 0),
 			"Talk to Jack Seagull in the Port Sarim Pub.");
 		talkToJack.addDialogStep("Ever made any cursed voyages?");
@@ -281,6 +285,18 @@ public class BoneVoyage extends BasicQuestHelper
 		req.add(new VarbitRequirement(KUDOS_VARBIT, Operation.GREATER_EQUAL, 100, "100 Kudos"));
 		req.add(new QuestRequirement(QuestHelperQuest.THE_DIG_SITE, QuestState.FINISHED));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Fossil Island"));
 	}
 
 	@Override

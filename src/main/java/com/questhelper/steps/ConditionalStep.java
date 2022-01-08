@@ -26,6 +26,7 @@ package com.questhelper.steps;
 
 import com.google.inject.Inject;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.RuneliteRequirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected final LinkedHashMap<Requirement, QuestStep> steps;
 	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
 	protected final List<NpcCondition> npcConditions = new ArrayList<>();
+	protected final List<RuneliteRequirement> runeliteConditions = new ArrayList<>();
 
 	protected QuestStep currentStep;
 
@@ -85,10 +87,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	public void addStep(Requirement requirement, QuestStep step)
 	{
-		this.steps.put(requirement, step);
-
-		checkForChatConditions(requirement);
-		checkForNpcConditions(requirement);
+		addStep(requirement, step, false);
 	}
 
 	public void addStep(Requirement requirement, QuestStep step, boolean isLockable)
@@ -96,26 +95,23 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		step.setLockable(isLockable);
 		this.steps.put(requirement, step);
 
-		checkForChatConditions(requirement);
-		checkForNpcConditions(requirement);
+		checkForConditions(requirement);
 	}
 
-	public void addConditionalStep(Requirement requirement, QuestStep step)
+	private void checkForConditions(Requirement requirement)
 	{
-		this.steps.put(new Conditions(requirement), step);
-
 		checkForChatConditions(requirement);
 		checkForNpcConditions(requirement);
-	}
+		checkForRuneliteConditions(requirement);
 
-	public void addConditionalStep(Requirement requirement, QuestStep step, boolean isLockable)
-	{
-		Conditions conditions = new Conditions(requirement);
-		step.setLockable(isLockable);
-		this.steps.put(conditions, step);
-
-		checkForChatConditions(requirement);
-		checkForNpcConditions(requirement);
+		if ((requirement instanceof InitializableRequirement))
+		{
+			((InitializableRequirement) requirement).getConditions().forEach(this::checkForConditions);
+		}
+		if (requirement instanceof RuneliteRequirement)
+		{
+			((RuneliteRequirement) requirement).getRequirements().values().forEach(this::checkForConditions);
+		}
 	}
 
 	public void checkForChatConditions(Requirement requirement)
@@ -150,9 +146,14 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 				npcConditions.add((NpcCondition) condition);
 			}
 		}
-		else
+	}
+
+	public void checkForRuneliteConditions(Requirement requirement)
+	{
+		if (requirement instanceof RuneliteRequirement && !runeliteConditions.contains(requirement))
 		{
-			condition.getConditions().forEach(this::checkForNpcConditions);
+			RuneliteRequirement runeliteReq = (RuneliteRequirement) requirement;
+			runeliteConditions.add(runeliteReq);
 		}
 	}
 
@@ -180,6 +181,10 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		if (started)
 		{
+			for (RuneliteRequirement runeliteCondition : runeliteConditions)
+			{
+				runeliteCondition.validateCondition(client);
+			}
 			updateSteps();
 		}
 	}

@@ -44,6 +44,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -356,8 +360,9 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		enterFinalFight = new ObjectStep(this, ObjectID.LADDER_23376, new WorldPoint(2413, 5526, 0), "Climb down the " +
 			"ladder.");
 
-		useSpecial = new NpcStep(this, NpcID.SIGMUND_5142, new WorldPoint(2543, 5511, 0), "Use the ancient mace's " +
-			"special attack on Sigmund to remove his protection prayers then defeat him.", ancientMace.equipped().highlighted());
+		useSpecial = new NpcStep(this, NpcID.SIGMUND_5142, new WorldPoint(2543, 5511, 0), "When Sigmund starts " +
+			"using protection prayers, use the ancient mace's special attack on Sigmund to remove them and then " +
+			"defeat him.",	ancientMace.equipped().highlighted());
 		((NpcStep) useSpecial).addAlternateNpcs(NpcID.SIGMUND_5143, NpcID.SIGMUND_5144, NpcID.SIGMUND_5145);
 
 		defeatSigmund = new NpcStep(this, NpcID.SIGMUND_5146, new WorldPoint(2543, 5511, 0),
@@ -433,6 +438,34 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("H.A.M. Archer (level 30)", "H.A.M. Mage (level 30)", "Sigmund (level 64)");
+	}
+
+	@Override
+	public QuestPointReward	getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MINING, 3000),
+				new ExperienceReward(Skill.PRAYER, 3000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("An Ancient Mace", ItemID.ANCIENT_MACE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Dorgeshuun Train Access."),
+				new UnlockReward("Ability to buy Goblin Village Teleport Spheres"));
 	}
 
 	@Override

@@ -32,23 +32,23 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -75,8 +75,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	QuestStep speakToAwusah2, takeShoes, leaveAwusah, cutShoes, enterCrevice, talkToGenie, talkToGenieAgain, useStatuette;
 
 	//Conditions
-	Requirement hasAncenstralKey, hasTornRobeTop, hasTornRobeBottom, hasRobeOfElidinisTop, hasRobeOfElidinisBottom, whiteGolem,
-		greyGolem, blackGolem, stabChannel, slashChannel, crushChannel, hasShoes, hasSole;
+	Requirement hasTornRobeTop, whiteGolem, greyGolem, blackGolem, stabChannel, slashChannel, crushChannel;
 	Requirement inCaveEntrance, inWhiteGolemRoom, inGreyGolemRoom, inBlackGolemRoom, notAwusahHouse, insideCrevice,
 		inSourceCave;
 
@@ -96,10 +95,10 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		steps.put(0, speakToAwusah);
 		steps.put(10, speakToGhaslor);
 		ConditionalStep getRobesAndKey = new ConditionalStep(this, openCuboard);
-		getRobesAndKey.addStep(new Conditions(hasRobeOfElidinisTop, hasRobeOfElidinisBottom, hasAncenstralKey), enterCave);
-		getRobesAndKey.addStep(new Conditions(hasRobeOfElidinisTop, hasRobeOfElidinisBottom), telegrabKey);
-		getRobesAndKey.addStep(new Conditions(hasTornRobeTop, hasRobeOfElidinisBottom), useNeedleTornRobesTop);
-		getRobesAndKey.addStep(new Conditions(hasTornRobeBottom, hasTornRobeTop), useNeedleTornRobes);
+		getRobesAndKey.addStep(new Conditions(robeOfElidinisTop, robeOfElidinisBottom, ancestralKey), enterCave);
+		getRobesAndKey.addStep(new Conditions(robeOfElidinisTop, robeOfElidinisBottom), telegrabKey);
+		getRobesAndKey.addStep(new Conditions(hasTornRobeTop, robeOfElidinisBottom), useNeedleTornRobesTop);
+		getRobesAndKey.addStep(new Conditions(tornRobeBottom, hasTornRobeTop), useNeedleTornRobes);
 		steps.put(20, getRobesAndKey);
 
 		ConditionalStep goUseKey = new ConditionalStep(this, enterCave);
@@ -126,9 +125,9 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 
 		ConditionalStep creviceSteps = new ConditionalStep(this, takeShoes);
 		creviceSteps.addStep(insideCrevice, talkToGenie);
-		creviceSteps.addStep(hasSole, enterCrevice);
-		creviceSteps.addStep(new Conditions(hasShoes, notAwusahHouse), cutShoes);
-		creviceSteps.addStep(new Conditions(hasShoes), leaveAwusah);
+		creviceSteps.addStep(soles.alsoCheckBank(questBank), enterCrevice);
+		creviceSteps.addStep(new Conditions(shoes, notAwusahHouse), cutShoes);
+		creviceSteps.addStep(new Conditions(shoes), leaveAwusah);
 		steps.put(40, creviceSteps);
 
 		steps.put(50, talkToGenieAgain);
@@ -203,14 +202,8 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasTornRobeTop = new Conditions(LogicType.OR, new ItemRequirements(tornRobeTop),
-			new ItemRequirements(robeOfElidinisTop));
-		hasTornRobeBottom = new ItemRequirements(tornRobeBottom);
-		hasRobeOfElidinisTop = new ItemRequirements(robeOfElidinisTop);
-		hasRobeOfElidinisBottom = new ItemRequirements(robeOfElidinisBottom);
-		hasAncenstralKey = new ItemRequirements(ancestralKey);
-		hasShoes = new ItemRequirements(shoes);
-		hasSole = new ItemRequirements(soles);
+		hasTornRobeTop = new Conditions(LogicType.OR, tornRobeTop,
+			robeOfElidinisTop);
 
 		inSourceCave = new ZoneRequirement(sourceCave);
 		inCaveEntrance = new ZoneRequirement(riverElidCaveEntrance);
@@ -325,6 +318,28 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		reqs.add(new SkillRequirement(Skill.THIEVING, 37, true));
 		return reqs;
 	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.PRAYER, 8000),
+				new ExperienceReward(Skill.THIEVING, 1000),
+				new ExperienceReward(Skill.MAGIC, 1000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Nardah's Fountain and Shrine"));
+	}
+
 
 	@Override
 	public List<PanelDetails> getPanels()

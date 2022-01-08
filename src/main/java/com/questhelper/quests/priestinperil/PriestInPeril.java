@@ -36,6 +36,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -50,6 +54,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -64,8 +69,7 @@ public class PriestInPeril extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement runePouches, varrockTeleport;
 
-	Requirement inUnderground, hasGoldenOrIronKey, inTempleGroundFloor, inTemple, inTempleFirstFloor, inTempleSecondFloor, hasBlessedOrMurkyWater, hasIronKey,
-		hasBlessedWater;
+	Requirement inUnderground, hasGoldenOrIronKey, inTempleGroundFloor, inTemple, inTempleFirstFloor, inTempleSecondFloor;
 
 	QuestStep talkToRoald, goToTemple, goDownToDog, killTheDog, climbUpAfterKillingDog, returnToKingRoald, returnToTemple, killMonk, talkToDrezel,
 		goUpToFloorTwoTemple, goUpToFloorOneTemple, goDownToFloorOneTemple, goDownToGroundFloorTemple, enterUnderground, fillBucket, useKeyForKey,
@@ -104,11 +108,11 @@ public class PriestInPeril extends BasicQuestHelper
 		steps.put(4, goTalkToDrezel);
 
 		ConditionalStep goGetKey = new ConditionalStep(this, returnToTemple);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater, inTempleSecondFloor), openDoor);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater, inUnderground), goUpWithWaterToSurface);
-		goGetKey.addStep(new Conditions(hasIronKey, hasBlessedOrMurkyWater), goUpWithWaterToFirstFloor);
-		goGetKey.addStep(new Conditions(hasIronKey, inUnderground), fillBucket);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater, inTempleSecondFloor), openDoor);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater, inUnderground), goUpWithWaterToSurface);
+		goGetKey.addStep(new Conditions(ironKey, murkyWater), goUpWithWaterToFirstFloor);
+		goGetKey.addStep(new Conditions(ironKey, inUnderground), fillBucket);
 		goGetKey.addStep(new Conditions(hasGoldenOrIronKey, inUnderground), useKeyForKey);
 		goGetKey.addStep(new Conditions(hasGoldenOrIronKey, inTempleSecondFloor), goDownToFloorOneTemple);
 		goGetKey.addStep(new Conditions(hasGoldenOrIronKey, inTempleFirstFloor), goDownToGroundFloorTemple);
@@ -117,11 +121,11 @@ public class PriestInPeril extends BasicQuestHelper
 		steps.put(5, goGetKey);
 
 		ConditionalStep goGetWater = new ConditionalStep(this, enterUnderground);
-		goGetWater.addStep(new Conditions(hasBlessedWater, inTempleSecondFloor), useBlessedWater);
-		goGetWater.addStep(new Conditions(hasBlessedOrMurkyWater, inTempleSecondFloor), blessWater);
-		goGetWater.addStep(new Conditions(hasBlessedOrMurkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
-		goGetWater.addStep(new Conditions(hasBlessedOrMurkyWater, inUnderground), goUpWithWaterToSurface);
-		goGetWater.addStep(hasBlessedOrMurkyWater, goUpWithWaterToFirstFloor);
+		goGetWater.addStep(new Conditions(blessedWaterHighlighted, inTempleSecondFloor), useBlessedWater);
+		goGetWater.addStep(new Conditions(murkyWater, inTempleSecondFloor), blessWater);
+		goGetWater.addStep(new Conditions(murkyWater, inTempleFirstFloor), goUpWithWaterToSecondFloor);
+		goGetWater.addStep(new Conditions(murkyWater, inUnderground), goUpWithWaterToSurface);
+		goGetWater.addStep(murkyWater, goUpWithWaterToFirstFloor);
 		goGetWater.addStep(inUnderground, fillBucket);
 		goGetWater.addStep(inTempleSecondFloor, goDownToFloorOneTemple);
 		goGetWater.addStep(inTempleFirstFloor, goDownToGroundFloorTemple);
@@ -218,6 +222,7 @@ public class PriestInPeril extends BasicQuestHelper
 		rangedMagedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		lotsOfRuneEssence = new ItemRequirement("As much essence as you can carry, you'll need to bring 50 UNNOTED in total", ItemID.PURE_ESSENCE, -1);
 		murkyWater = new ItemRequirement("Murky water", ItemID.MURKY_WATER);
+		murkyWater.addAlternates(ItemID.BLESSED_WATER);
 		ironKey = new ItemRequirement("Iron key", ItemID.IRON_KEY);
 		blessedWaterHighlighted = new ItemRequirement("Blessed water", ItemID.BLESSED_WATER);
 		blessedWaterHighlighted.setHighlightInInventory(true);
@@ -244,10 +249,7 @@ public class PriestInPeril extends BasicQuestHelper
 		inTempleSecondFloor = new ZoneRequirement(templeFloorTwo);
 		inTemple = new ZoneRequirement(temple1, temple2, temple3, temple4, temple5, temple6, templeFloorOne, templeFloorTwo);
 
-		hasIronKey = new ItemRequirements(ironKey);
-		hasGoldenOrIronKey = new Conditions(LogicType.OR, new ItemRequirements(goldenKey), hasIronKey);
-		hasBlessedOrMurkyWater = new ItemRequirements(murkyWater);
-		hasBlessedWater = new ItemRequirements(blessedWaterHighlighted);
+		hasGoldenOrIronKey = new Conditions(LogicType.OR, goldenKey, ironKey);
 	}
 
 	public void setupSteps()
@@ -282,7 +284,7 @@ public class PriestInPeril extends BasicQuestHelper
 		fillBucket = new ObjectStep(this, ObjectID.WELL_3485, new WorldPoint(3423, 9890, 0), "Use the bucket on the well in the central room.", bucketHighlighted);
 		fillBucket.addIcon(ItemID.BUCKET);
 
-		useKeyForKey = new DetailedQuestStep(this, "Got to the central room, and study the monuments to find which has a key on it. Use the Golden Key on it.", goldenKeyHighlighted);
+		useKeyForKey = new DetailedQuestStep(this, "Go to the central room, and study the monuments to find which has a key on it. Use the Golden Key on it.", goldenKeyHighlighted);
 		useKeyForKey.addIcon(ItemID.GOLDEN_KEY);
 
 		goDownToFloorOneTemple = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(3410, 3485, 2), "Go down to the underground of the temple.", bucket);
@@ -338,7 +340,31 @@ public class PriestInPeril extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Temple guardian (level 30). Can only be hurt by ranged or melee.");
+		return Arrays.asList("Temple Guardian (level 30). You cannot use Magic. Rings of recoil will not award the kill.",  "Monk of Zamorak (level 30)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.PRAYER, 1406));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Wolfbane Dagger", ItemID.WOLFBANE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Canifis and Morytania"));
 	}
 
 	@Override

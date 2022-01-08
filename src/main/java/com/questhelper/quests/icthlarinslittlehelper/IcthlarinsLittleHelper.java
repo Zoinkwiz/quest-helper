@@ -35,7 +35,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.FollowerItemRequirement;
 import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -44,6 +43,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -55,11 +58,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -69,12 +69,12 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar,
-		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions;
+		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions, antipoison;
 
 	Requirement catFollower;
 
 	Requirement inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar,
-		killedGuardian, talkedToEmbalmer, hasLinen, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
+		killedGuardian, talkedToEmbalmer, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
 		givenCarpenterLogs, inEastRoom, posessedPriestNearby;
 
 	QuestStep talkToWanderer, talkToWandererAgain, enterRock, touchPyramidDoor, jumpPit, openWestDoor, solveDoorPuzzle, talkToSphinx, talkToHighPriest,
@@ -162,14 +162,14 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems, givenCarpenterLogs), talkToCarpenterOnceMore);
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems, talkedToCarpenter), talkToCarpenterAgain);
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems), talkToCarpenter);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen, givenSap, givenSalt), talkToEmbalmerAgainNoSaltNoSap);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSap, givenSalt), talkToEmbalmerAgainNoSaltNoSap);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen, givenSap), talkToEmbalmerAgainNoLinenNoSap);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen, givenSalt), talkToEmbalmerAgainNoLinenNoSalt);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen, givenSalt), talkToEmbalmerAgainNoSalt);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen, givenSap), talkToEmbalmerAgainNoSap);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSalt), talkToEmbalmerAgainNoSalt);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSap), talkToEmbalmerAgainNoSap);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen), talkToEmbalmerAgainNoLinen);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, hasLinen), talkToEmbalmerAgain);
-		prepareItems.addStep(new Conditions(inSoph, hasLinen), talkToEmbalmer);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen), talkToEmbalmerAgain);
+		prepareItems.addStep(new Conditions(inSoph, linen), talkToEmbalmer);
 		prepareItems.addStep(inSoph, buyLinen);
 
 		steps.put(15, prepareItems);
@@ -232,6 +232,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
@@ -271,8 +272,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		// picked up het, 404 = 1
 		// picked up apmeken, 405 = 1
 		talkedToEmbalmer = new VarbitRequirement(399, 1);
-
-		hasLinen = new ItemRequirements(linen);
 
 		givenSalt = new VarbitRequirement(401, 1);
 		givenSap = new VarbitRequirement(402, 1);
@@ -330,7 +329,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		pickUpCrondisJar = new ObjectStep(this, NullObjectID.NULL_6636, new WorldPoint(3286, 9195, 0), "Attempt to pick up the Crondis Canopic Jar, and kill Crondis (level 75) when they appear.");
 		pickUpScarabasJar = new ObjectStep(this, NullObjectID.NULL_6638, new WorldPoint(3286, 9196, 0), "Attempt to pick up the Scarabas Canopic Jar, and kill Scarabas (level 75) when they appear.");
 		pickUpApmekenJar = new ObjectStep(this, NullObjectID.NULL_6640, new WorldPoint(3286, 9193, 0), "Attempt to pick up the Apmeken Canopic Jar, and kill Apmeken (level 75) when they appear.");
-		pickUpHetJar = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Attempt to pick up the Het Canopic Jar, and kill Het (level 75) when they appear.");
+		pickUpHetJar = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Attempt to pick up the Het Canopic Jar, and kill Het (level 81) when they appear.");
 
 		pickUpAnyJar = new ObjectStep(this, NullObjectID.NULL_6634, "Try picking up the canopic jars in the north " +
 			"west room until a level 75-81 enemy spawns. Kill them. You can safespot them on the central table.");
@@ -422,13 +421,42 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions);
+		return Arrays.asList(combatGear, food, prayerPotions, antipoison);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Collections.singletonList(new QuestRequirement(QuestHelperQuest.GERTRUDES_CAT, QuestState.FINISHED));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.THIEVING, 4500),
+				new ExperienceReward(Skill.AGILITY, 4000),
+				new ExperienceReward(Skill.WOODCUTTING, 4000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Catspeak Amulet", ItemID.CATSPEAK_AMULET, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the city of Sophanem."),
+				new UnlockReward("Ability to take carpet rides from Pollnivneah to Sophanem and Menaphos."));
 	}
 
 	@Override

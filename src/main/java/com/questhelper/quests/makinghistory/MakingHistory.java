@@ -31,13 +31,15 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.util.ComplexRequirementBuilder;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.requirements.conditional.Conditions;
@@ -53,10 +55,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -71,8 +71,8 @@ public class MakingHistory extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleport, ectophial, ringOfDueling, passage, rellekaTeleport, runRestoreItems;
 
-	Requirement hasEnchantedKey, hasChest, hasJournal, hasScroll, talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak,
-		inCastle, gotKey, gotChest, gotScroll, handedInJournal, handedInScroll, finishedFrem, finishedKey, finishedGhost, handedInEverything;
+	Requirement talkedtoBlanin, talkedToDron, talkedToMelina, talkedToDroalak, inCastle, gotKey, gotChest,
+		gotScroll, handedInJournal, handedInScroll, finishedFrem, finishedKey, finishedGhost, handedInEverything;
 
 	QuestStep talkToJorral, talkToSilverMerchant, dig, openChest, talkToBlanin, talkToDron, talkToDroalak,
 		talkToMelina, returnToDroalak, returnToJorral, continueTalkingToJorral, goUpToLathas, talkToLathas, finishQuest;
@@ -94,7 +94,7 @@ public class MakingHistory extends BasicQuestHelper
 		steps.put(0, talkToJorral);
 
 		keySteps = new ConditionalStep(this, talkToSilverMerchant);
-		keySteps.addStep(hasChest, openChest);
+		keySteps.addStep(chest, openChest);
 		keySteps.addStep(gotKey, dig);
 		keySteps.setLockingCondition(finishedKey);
 
@@ -175,7 +175,7 @@ public class MakingHistory extends BasicQuestHelper
 		rellekaTeleport = new ItemRequirement("Relleka Teleport", ItemID.RELLEKKA_TELEPORT);
 		rellekaTeleport.addAlternates(ItemCollections.getEnchantedLyre());
 		rellekaTeleport.addAlternates(ItemID.FREMENNIK_SEA_BOOTS_2, ItemID.FREMENNIK_SEA_BOOTS_3, ItemID.FREMENNIK_SEA_BOOTS_4);
-		rellekaTeleport.setTooltip("You can also use Fairy Rings if you have those unlocked.");
+		rellekaTeleport.setTooltip("You can also use Fairy Rings (DKS or AJR) if you have those unlocked.");
 		rellekaTeleport.appendToTooltip("You can also teleport to Camelot and run North.");
 		runRestoreItems = new ItemRequirement("Potions/Items to restore run energy", ItemCollections.getRunRestoreItems());
 
@@ -188,10 +188,6 @@ public class MakingHistory extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnchantedKey = new ItemRequirements(enchantedKey);
-		hasJournal = new ItemRequirements(journal);
-		hasScroll = new ItemRequirements(scroll);
-		hasChest = new ItemRequirements(chest);
 		talkedtoBlanin = new Conditions(LogicType.OR, new VarbitRequirement(1385, 1), new VarbitRequirement(1385, 2));
 		talkedToDron = new VarbitRequirement(1385, 3, Operation.GREATER_EQUAL);
 
@@ -207,12 +203,15 @@ public class MakingHistory extends BasicQuestHelper
 		handedInEverything = new Conditions(handedInJournal, handedInScroll, talkedToDron);
 		finishedFrem = talkedToDron;
 		finishedGhost = new Conditions(LogicType.OR, handedInScroll, gotScroll);
-		finishedKey = new Conditions(LogicType.OR, handedInJournal, hasJournal);
+		finishedKey = new Conditions(LogicType.OR, handedInJournal, journal);
 	}
 
 	public void setupSteps()
 	{
-		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3346, 0), "Talk to Jorral at the outpost north of West Ardougne.");
+		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3346, 0),
+			"Talk to Jorral at the outpost south of the Tree Gnome Stronghold. You can teleport there with a Necklace" +
+				" of Passage.");
+		talkToJorral.addDialogStep("The Outpost");
 		talkToJorral.addDialogStep("Tell me more.");
 		talkToJorral.addDialogStep("Ok, I'll make a stand for history!");
 		talkToSilverMerchant = new NpcStep(this, NpcID.SILVER_MERCHANT_8722, new WorldPoint(2658, 3316, 0), "Talk to the Silver Merchant in the East Ardougne Market.");
@@ -271,6 +270,28 @@ public class MakingHistory extends BasicQuestHelper
 		reqs.add(rellekaTeleport);
 		reqs.add(runRestoreItems);
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 1000),
+				new ExperienceReward(Skill.PRAYER, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("750 Coins", ItemID.COINS_995, 750),
+				new ItemReward("An Enchanted Key", ItemID.ENCHANTED_KEY, 1));
 	}
 
 	@Override

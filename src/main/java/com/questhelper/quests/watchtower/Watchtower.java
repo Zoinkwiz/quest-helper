@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -40,6 +39,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -69,12 +72,11 @@ public class Watchtower extends BasicQuestHelper
 		crystal, ogreRelic, rockCake, skavidMap, lightSource, nightshade, nightshade2, crystal2, jangerberries, batBones, groundBatBones, pestleAndMortar, partialPotion, potion,
 		magicPotion, magicPotionHighlight, crystal3, crystal4, crystalHighlight, crystal2Highlight, crystal3Highlight, crystal4Highlight;
 
-	Requirement inWatchtowerFloor1, inWatchtowerFloor2, hasFingernails, hasTobansKey, onGrewIsland, talkedToGrew, talkedToOg, knownOgreStep, onTobanIsland, hasGoradsTooth,
-		talkedToToban, hasTobansGold, hasRelic1, hasRelic2, hasRelic3, hasRockCake, gettingOgreRockCake, gaveCake, inEndOfJumpingPath, hasBeenAtEndOfPath, knowsRiddle, inScaredSkavidRoom,
+	Requirement inWatchtowerFloor1, inWatchtowerFloor2, hasTobansKey, onGrewIsland, talkedToGrew, talkedToOg, knownOgreStep, onTobanIsland, hasGoradsTooth,
+		talkedToToban, hasTobansGold, hasRelic1, hasRelic2, hasRelic3,gettingOgreRockCake, gaveCake, inEndOfJumpingPath, hasBeenAtEndOfPath, knowsRiddle, inScaredSkavidRoom,
 		talkedToScaredSkavid, inSkavidRoom1, inSkavidRoom2, inSkavidRoom3, inSkavidRoom4, talkedToSkavid1, talkedToSkavid2, talkedToSkavid3, talkedToSkavid4, inInsaneSkavidPath,
-		inInsaneSkavidRoom, has2Nightshade, inEnclave, seenShamans, hasGroundBatBones, hasPartialPotion, hasPotion, hasMagicPotion, killedOgre1, killedOgre2, killedOgre3, killedOgre4, killedOgre5,
-		killedOgre6, killedAllOgres, gotCrystal4, placedCrystal1, placedCrystal2, placedCrystal3, placedCrystal4,
-		inAreaBeforeBridgeJump;
+		inInsaneSkavidRoom, inEnclave, seenShamans, killedOgre1, killedOgre2, killedOgre3, killedOgre4, killedOgre5,
+		killedOgre6, killedAllOgres, gotCrystal4, placedCrystal1, placedCrystal2, placedCrystal3, placedCrystal4, inAreaBeforeBridgeJump;
 
 	QuestStep goUpTrellis, goUpLadderToWizard, talkToWizard, goDownFromWizard, goDownFromFirstFloor, searchBush, goBackUpToFirstFloor, goBackUpToWizard, talkToWizardAgain,
 		talkToOg, useRopeOnBranch, talkToGrew, leaveGrewIsland, syncStep, enterHoleSouthOfGuTanoth, killGorad, talkToToban, giveTobanDragonBones,
@@ -106,9 +108,9 @@ public class Watchtower extends BasicQuestHelper
 		steps.put(0, goTalkToWizard);
 
 		ConditionalStep getBushItem = new ConditionalStep(this, searchBush);
-		getBushItem.addStep(new Conditions(hasFingernails, inWatchtowerFloor2), talkToWizardAgain);
-		getBushItem.addStep(new Conditions(hasFingernails, inWatchtowerFloor1), goBackUpToWizard);
-		getBushItem.addStep(hasFingernails, goBackUpToFirstFloor);
+		getBushItem.addStep(new Conditions(fingernails, inWatchtowerFloor2), talkToWizardAgain);
+		getBushItem.addStep(new Conditions(fingernails, inWatchtowerFloor1), goBackUpToWizard);
+		getBushItem.addStep(fingernails, goBackUpToFirstFloor);
 		getBushItem.addStep(inWatchtowerFloor2, goDownFromWizard);
 		getBushItem.addStep(inWatchtowerFloor1, goDownFromFirstFloor);
 
@@ -139,8 +141,8 @@ public class Watchtower extends BasicQuestHelper
 		getCrystal1.addStep(new Conditions(knowsRiddle, inEndOfJumpingPath), talkToCityGuardAgain);
 		getCrystal1.addStep(inEndOfJumpingPath, talkToCityGuard);
 		getCrystal1.addStep(gaveCake, jumpGap);
-		getCrystal1.addStep(new Conditions(hasRockCake, gettingOgreRockCake), talkToGuardWithRockCake);
-		getCrystal1.addStep(hasRockCake, talkToGuardBattlement);
+		getCrystal1.addStep(new Conditions(rockCake, gettingOgreRockCake), talkToGuardWithRockCake);
+		getCrystal1.addStep(rockCake, talkToGuardBattlement);
 
 		steps.put(4, getCrystal1);
 
@@ -172,7 +174,7 @@ public class Watchtower extends BasicQuestHelper
 		infiltrateEnclave.addStep(new Conditions(seenShamans, inWatchtowerFloor1), goBackUpToWizardAfterEnclave);
 		infiltrateEnclave.addStep(new Conditions(seenShamans, inEnclave), leaveEnclave);
 		infiltrateEnclave.addStep(new Conditions(seenShamans), goBackUpToFirstFloorAfterEnclave);
-		infiltrateEnclave.addStep(new Conditions(inInsaneSkavidRoom, has2Nightshade), leaveMadSkavid);
+		infiltrateEnclave.addStep(new Conditions(inInsaneSkavidRoom, nightshade2), leaveMadSkavid);
 		infiltrateEnclave.addStep(inInsaneSkavidRoom, pickUp2Nightshade);
 
 		steps.put(7, infiltrateEnclave);
@@ -180,11 +182,11 @@ public class Watchtower extends BasicQuestHelper
 		steps.put(8, infiltrateEnclave);
 
 		ConditionalStep makePotion = new ConditionalStep(this, useJangerberriesOnGuam);
-		makePotion.addStep(new Conditions(hasPotion, inWatchtowerFloor2), talkToWizardWithPotion);
-		makePotion.addStep(new Conditions(hasPotion, inWatchtowerFloor1), goUpToWizardWithPotion);
-		makePotion.addStep(hasPotion, goUpToFirstFloorWithPotion);
-		makePotion.addStep(new Conditions(hasPartialPotion, hasGroundBatBones), useBonesOnPotion);
-		makePotion.addStep(hasPartialPotion, grindBatBones);
+		makePotion.addStep(new Conditions(potion, inWatchtowerFloor2), talkToWizardWithPotion);
+		makePotion.addStep(new Conditions(potion, inWatchtowerFloor1), goUpToWizardWithPotion);
+		makePotion.addStep(potion, goUpToFirstFloorWithPotion);
+		makePotion.addStep(new Conditions(partialPotion, groundBatBones), useBonesOnPotion);
+		makePotion.addStep(partialPotion, grindBatBones);
 
 		steps.put(9, makePotion);
 
@@ -345,15 +347,9 @@ public class Watchtower extends BasicQuestHelper
 		inEnclave = new ZoneRequirement(enclave);
 		inAreaBeforeBridgeJump = new ZoneRequirement(areaBeforeBridgeJump);
 
-		hasFingernails = new ItemRequirements(fingernails);
-		hasTobansKey = new Conditions(true, new ItemRequirements(tobansKey));
-		hasGoradsTooth = new Conditions(true, new ItemRequirements(goradsTooth));
-		hasTobansGold = new Conditions(true, new ItemRequirements(tobansGold));
-		hasRockCake = new ItemRequirements(rockCake);
-		has2Nightshade = new ItemRequirements(nightshade2);
-		hasPartialPotion = new ItemRequirements(partialPotion);
-		hasPotion = new ItemRequirements(potion);
-		hasMagicPotion = new ItemRequirements(magicPotion);
+		hasTobansKey = new Conditions(true, tobansKey);
+		hasGoradsTooth = new Conditions(true, goradsTooth);
+		hasTobansGold = new Conditions(true, tobansGold);
 
 		onGrewIsland = new ZoneRequirement(grewIsland);
 		onTobanIsland = new ZoneRequirement(tobanIsland);
@@ -371,13 +367,13 @@ public class Watchtower extends BasicQuestHelper
 		talkedToToban = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Prove to me your might", "Hahaha! Small t'ing returns."),
 			new WidgetTextRequirement(119, 3, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
 
-		hasRelic1 = new Conditions(true, LogicType.OR, new ItemRequirements(relic1),
+		hasRelic1 = new Conditions(true, LogicType.OR, relic1,
 			new WidgetTextRequirement(119, 3, true, "I returned Og's stolen gold."));
 
-		hasRelic2 = new Conditions(true, LogicType.OR, new ItemRequirements(relic2),
+		hasRelic2 = new Conditions(true, LogicType.OR, relic2,
 			new WidgetTextRequirement(119, 3, true, "I knocked out one of Gorad's teeth and gave it to Grew."));
 
-		hasRelic3 = new Conditions(true, LogicType.OR, new ItemRequirements(relic3),
+		hasRelic3 = new Conditions(true, LogicType.OR, relic3,
 			new WidgetTextRequirement(119, 3, true, "I gave the dragon bones to Toban."));
 
 		gettingOgreRockCake = new VarbitRequirement(3120, 1);
@@ -403,7 +399,6 @@ public class Watchtower extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "'Gor nod'"));
 
 		seenShamans = new VarbitRequirement(3125, 1);
-		hasGroundBatBones = new ItemRequirements(groundBatBones);
 
 		killedOgre1 = new VarbitRequirement(3131, 1);
 		killedOgre2 = new VarbitRequirement(3132, 1);
@@ -487,7 +482,7 @@ public class Watchtower extends BasicQuestHelper
 		talkToGuardBattlement = new NpcStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement.");
 		talkToGuardBattlement.addDialogStep("But I am a friend to ogres...");
 		talkToGuardWithRockCake = new ObjectStep(this, NpcID.OGRE_GUARD_4371, new WorldPoint(2507, 3012, 0),
-			"Attempt to cross the battelement again with a rock cake.", rockCake);
+			"Attempt to cross the battlement again with a rock cake.", rockCake);
 		jumpGap = new ObjectStep(this, ObjectID.GAP, new WorldPoint(2530, 3026, 0), "Jump over the broken bridge.", coins20);
 		jumpGap.addDialogStep("Okay, I'll pay it.");
 
@@ -622,7 +617,7 @@ public class Watchtower extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Gorad (level 59)");
+		reqs.add("Gorad (level 68)");
 		reqs.add("Able to survive blue dragons, ogres, and greater demons attacking you");
 		return reqs;
 	}
@@ -637,6 +632,30 @@ public class Watchtower extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.HERBLORE, 14, true));
 		req.add(new SkillRequirement(Skill.MINING, 40, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.MAGIC, 15250));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("5,000 Coins", ItemID.COINS_995, 5000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to use the Watchtower Teleport"));
 	}
 
 	@Override

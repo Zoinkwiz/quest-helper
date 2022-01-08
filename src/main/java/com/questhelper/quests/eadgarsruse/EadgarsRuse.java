@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -40,6 +39,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -73,8 +75,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	ItemRequirement ardougneTeleport;
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
-		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, hasAlcoChunks, hasParrot, hasRobe, hasLog, hasTinderbox, hasThistle, fireNearby, hasGroundThistle, hasDriedThistle,
-		hasTrollPotion, foundOutAboutKey, hasStoreroomKey, hasGoutweed, inStoreroom;
+		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom;
 
 	DetailedQuestStep goUpToSanfew, talkToSanfew, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterSecretEntrance, freeEadgar, goUpStairsPrison,
 		getBerryKey, goUpToTopFloorStronghold, exitStronghold, enterEadgarsCave, talkToEadgar, leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, goUpToTopFloorStrongholdFromCook,
@@ -102,11 +103,15 @@ public class EadgarsRuse extends BasicQuestHelper
 		setupSteps();
 		if (freedEadgar.check(client))
 		{
-			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar));
+			travelToEadgarPanel = new PanelDetails("Travel to Eadgar",
+				Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, goUpStairsPrison,
+					goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar), climbingBoots);
 		}
 		else
 		{
-			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, getBerryKey, freeEadgar, goUpStairsPrison, goUpToTopFloorStronghold, enterEadgarsCave, talkToEadgar));
+			travelToEadgarPanel = new PanelDetails("Travel to Eadgar", Arrays.asList(travelToTenzing, climbOverStile,
+				climbOverRocks, enterSecretEntrance, getBerryKey, freeEadgar, goUpStairsPrison, goUpToTopFloorStronghold,
+				enterEadgarsCave, talkToEadgar), climbingBoots);
 		}
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -161,9 +166,9 @@ public class EadgarsRuse extends BasicQuestHelper
 		steps.put(25, returnToEadgar);
 
 		ConditionalStep poisonTheParrot = new ConditionalStep(this, talkToPete);
-		poisonTheParrot.addStep(new Conditions(hasParrot, inEadgarsCave), talkToEadgarWithParrot);
-		poisonTheParrot.addStep(hasParrot, enterEadgarsCaveWithParrot);
-		poisonTheParrot.addStep(hasAlcoChunks, useChunksOnParrot);
+		poisonTheParrot.addStep(new Conditions(parrot, inEadgarsCave), talkToEadgarWithParrot);
+		poisonTheParrot.addStep(parrot, enterEadgarsCaveWithParrot);
+		poisonTheParrot.addStep(alcoChunks, useChunksOnParrot);
 		poisonTheParrot.addStep(new Conditions(askedAboutAlcohol, askedAboutPineapple), useVodkaOnChunks);
 		poisonTheParrot.addStep(askedAboutPineapple, talkToPeteAboutAlcohol);
 		poisonTheParrot.addStep(askedAboutAlcohol, talkToPeteAboutPineapple);
@@ -180,20 +185,20 @@ public class EadgarsRuse extends BasicQuestHelper
 		steps.put(50, useParrotOnRack);
 
 		ConditionalStep bringItemsToEadgar = new ConditionalStep(this, talkToTegid);
-		bringItemsToEadgar.addStep(new Conditions(hasRobe, inEadgarsCave), talkToEadgarWithItems);
-		bringItemsToEadgar.addStep(hasRobe, enterEadgarsCaveWithItems);
+		bringItemsToEadgar.addStep(new Conditions(robe, inEadgarsCave), talkToEadgarWithItems);
+		bringItemsToEadgar.addStep(robe, enterEadgarsCaveWithItems);
 
 		steps.put(60, bringItemsToEadgar);
 		steps.put(70, bringItemsToEadgar);
 
 		ConditionalStep makePotion = new ConditionalStep(this, pickThistle);
-		makePotion.addStep(new Conditions(hasTrollPotion, inEadgarsCave), giveTrollPotionToEadgar);
-		makePotion.addStep(hasTrollPotion, enterEadgarsCaveWithTrollPotion);
-		makePotion.addStep(hasGroundThistle, useGroundThistleOnRanarr);
-		makePotion.addStep(hasDriedThistle, grindThistle);
-		makePotion.addStep(new Conditions(hasThistle, fireNearby), useThistleOnFire);
-		makePotion.addStep(new Conditions(hasLog, hasTinderbox, hasThistle), lightFire);
-		makePotion.addStep(hasThistle, useThistleOnTrollFire);
+		makePotion.addStep(new Conditions(trollPotion, inEadgarsCave), giveTrollPotionToEadgar);
+		makePotion.addStep(trollPotion, enterEadgarsCaveWithTrollPotion);
+		makePotion.addStep(groundThistle, useGroundThistleOnRanarr);
+		makePotion.addStep(driedThistle, grindThistle);
+		makePotion.addStep(new Conditions(thistle, fireNearby), useThistleOnFire);
+		makePotion.addStep(new Conditions(logs1, tinderbox, thistle), lightFire);
+		makePotion.addStep(thistle, useThistleOnTrollFire);
 		makePotion.addStep(inEadgarsCave, leaveEadgarsCaveForThistle);
 
 		steps.put(80, makePotion);
@@ -221,20 +226,20 @@ public class EadgarsRuse extends BasicQuestHelper
 		bringManToBurntmeat.addStep(inStrongholdFloor1, talkToCookWithScarecrow);
 		bringManToBurntmeat.addStep(inPrison, goUpStairsPrison);
 
-		steps.put(87, talkToCooksAboutGoutweed);
+		steps.put(87, bringManToBurntmeat);
 
 		ConditionalStep getTheGoutweed = new ConditionalStep(this, talkToBurntmeat);
-		getTheGoutweed.addStep(new Conditions(inSanfewRoom, hasGoutweed), returnToSanfew);
-		getTheGoutweed.addStep(hasGoutweed, returnUpToSanfew);
-		getTheGoutweed.addStep(new Conditions(inStoreroom, hasStoreroomKey), getGoutweed);
-		getTheGoutweed.addStep(hasStoreroomKey, goDownToStoreroom);
+		getTheGoutweed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);
+		getTheGoutweed.addStep(goutweed, returnUpToSanfew);
+		getTheGoutweed.addStep(new Conditions(inStoreroom, storeroomKey), getGoutweed);
+		getTheGoutweed.addStep(storeroomKey, goDownToStoreroom);
 		getTheGoutweed.addStep(foundOutAboutKey, searchDrawers);
 
 		steps.put(90, getTheGoutweed);
 
 		ConditionalStep returnGoutWeed = new ConditionalStep(this, goDownToStoreroom);
-		returnGoutWeed.addStep(new Conditions(inSanfewRoom, hasGoutweed), returnToSanfew);
-		returnGoutWeed.addStep(hasGoutweed, returnUpToSanfew);
+		returnGoutWeed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);
+		returnGoutWeed.addStep(goutweed, returnUpToSanfew);
 		returnGoutWeed.addStep(inStoreroom, getGoutweed);
 
 		steps.put(100, returnGoutWeed);
@@ -335,14 +340,14 @@ public class EadgarsRuse extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inSanfewRoom = new ZoneRequirement(sanfewRoom);
-		hasClimbingBoots = new ItemRequirements(climbingBoots);
-		hasCoins = new ItemRequirements(coins12);
+		hasClimbingBoots = climbingBoots;
+		hasCoins = coins12;
 		inTenzingHut = new ZoneRequirement(tenzingHut);
 		onMountainPath = new ZoneRequirement(mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5);
 		inTrollArea1 = new ZoneRequirement(trollArea1);
 		inPrison = new ZoneRequirement(prison);
 		freedEadgar = new VarbitRequirement(0, 1);
-		hasCellKey2 = new ItemRequirements(cellKey2);
+		hasCellKey2 = cellKey2;
 		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
 		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
 		inEadgarsCave = new ZoneRequirement(eadgarsCave);
@@ -350,22 +355,10 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		askedAboutAlcohol = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Just recently."));
 		askedAboutPineapple = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
-		hasAlcoChunks = new ItemRequirements(alcoChunks);
-		hasParrot = new ItemRequirements(parrot);
-		hasRobe = new ItemRequirements(robe);
-		hasLog = new ItemRequirements(logs1);
-		hasTinderbox = new ItemRequirements(tinderbox);
-		hasThistle = new ItemRequirements(thistle);
 
 		fireNearby = new ObjectCondition(ObjectID.FIRE_26185);
 
-		hasDriedThistle = new ItemRequirements(driedThistle);
-		hasGroundThistle = new ItemRequirements(groundThistle);
-		hasTrollPotion = new ItemRequirements(trollPotion);
-
 		foundOutAboutKey = new Conditions(true, new WidgetTextRequirement(217, 4, "That's some well-guarded secret alright"));
-		hasStoreroomKey = new ItemRequirements(storeroomKey);
-		hasGoutweed = new ItemRequirements(goutweed);
 		inStoreroom = new ZoneRequirement(storeroom);
 	}
 
@@ -549,7 +542,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		enterStrongholdWithScarecrow.addSubSteps(leaveEadgarsCaveWithScarecrow, goDownSouthStairsWithScarecrow, talkToCookWithScarecrow, talkToBurntmeat);
 
-		searchDrawers = new ObjectStep(this, ObjectID.KITCHEN_DRAWERS, new WorldPoint(2853, 10050, 1), "Search the kitchen drawers south west of Burntmeat.");
+		searchDrawers = new ObjectStep(this, ObjectID.KITCHEN_DRAWERS, new WorldPoint(2853, 10050, 1), "Search the kitchen drawers south east of Burntmeat.");
 		searchDrawers.addAlternateObjects(ObjectID.KITCHEN_DRAWERS_3817);
 
 		goDownToStoreroom = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10061, 1), "Go down to the storeroom from the Troll Stronghold kitchen.");
@@ -589,6 +582,27 @@ public class EadgarsRuse extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.HERBLORE, 11000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to use the Trollheim teleport"),
+				new UnlockReward("Ability to use Scrolls of Redirection to Trollheim."),
+				new UnlockReward("Ability to trade Goutweed to Sanfew for herbs."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -596,13 +610,18 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		allSteps.add(travelToEadgarPanel);
 
-		allSteps.add(new PanelDetails("Talk to Burntmeat", Arrays.asList(leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, talkToEadgarFromCook), climbingBoots));
+		allSteps.add(new PanelDetails("Talk to Burntmeat", Arrays.asList(leaveEadgarsCave, enterStronghold, goDownSouthStairs,
+			talkToCook, talkToEadgarFromCook), climbingBoots));
 
-		allSteps.add(new PanelDetails("Get a parrot", Arrays.asList(talkToPete, useChunksOnParrot, talkToEadgarWithParrot, enterStrongholdWithParrot), climbingBoots));
+		allSteps.add(new PanelDetails("Get a parrot", Arrays.asList(talkToPete, useChunksOnParrot, talkToEadgarWithParrot,
+			enterStrongholdWithParrot), vodka, pineappleChunks, climbingBoots));
 
-		allSteps.add(new PanelDetails("Making a fake man", Arrays.asList(talkToTegid, talkToEadgarWithItems, pickThistle, lightFire, useThistleOnFire, grindThistle, useGroundThistleOnRanarr, giveTrollPotionToEadgar, enterStrongholdForParrot, leaveStrongholdWithParrot), climbingBoots, logs2, tinderbox, pestleAndMortar, grain10, rawChicken5, ranarrPotionUnf));
+		allSteps.add(new PanelDetails("Making a fake man", Arrays.asList(talkToTegid, talkToEadgarWithItems, pickThistle,
+			lightFire, useThistleOnFire, grindThistle, useGroundThistleOnRanarr, giveTrollPotionToEadgar, enterStrongholdForParrot,
+			leaveStrongholdWithParrot), climbingBoots, logs2, tinderbox, pestleAndMortar, grain10, rawChicken5, ranarrPotionUnf));
 
-		allSteps.add(new PanelDetails("Get the Goutweed", Arrays.asList(enterStrongholdWithScarecrow, searchDrawers, goDownToStoreroom, enterStoreroomDoor, getGoutweed, returnToSanfew)));
+		allSteps.add(new PanelDetails("Get the Goutweed", Arrays.asList(enterStrongholdWithScarecrow, searchDrawers,
+			goDownToStoreroom, enterStoreroomDoor, getGoutweed, returnToSanfew)));
 		return allSteps;
 	}
 

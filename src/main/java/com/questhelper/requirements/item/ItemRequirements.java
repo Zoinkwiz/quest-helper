@@ -34,8 +34,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
@@ -66,6 +68,13 @@ public class ItemRequirements extends ItemRequirement
 		this.logicType = logicType;
 	}
 
+	public ItemRequirements(LogicType logicType, String name, List<ItemRequirement> itemRequirements)
+	{
+		super(name, itemRequirements.get(0).getId(), -1);
+		this.itemRequirements.addAll(itemRequirements);
+		this.logicType = logicType;
+	}
+
 	public ItemRequirements(LogicType logicType, ItemRequirement... requirements)
 	{
 		this(logicType, "", requirements);
@@ -87,7 +96,7 @@ public class ItemRequirements extends ItemRequirement
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
-		int successes = (int) itemRequirements.stream().filter(predicate).count();
+		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		return logicType.compare(successes, itemRequirements.size());
 	}
 
@@ -95,7 +104,7 @@ public class ItemRequirements extends ItemRequirement
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
-		int successes = (int) itemRequirements.stream().filter(predicate).count();
+		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		return logicType.compare(successes, itemRequirements.size());
 	}
 
@@ -110,7 +119,7 @@ public class ItemRequirements extends ItemRequirement
 										 List<Item> bankItems, QuestHelperConfig config)
 	{
 		Color color = config.failColour();
-		if (!this.isActualItem())
+		if (!this.isActualItem() && !(this.getItemRequirements() instanceof ArrayList))
 		{
 			color = Color.GRAY;
 		}
@@ -128,6 +137,23 @@ public class ItemRequirements extends ItemRequirement
 		}
 
 		return color;
+	}
+
+	@Override
+	public ItemRequirement copy()
+	{
+		ItemRequirements newItem = new ItemRequirements(getLogicType(), getName(), getItemRequirements());
+		newItem.addAlternates(alternateItems);
+		newItem.setDisplayItemId(getDisplayItemId());
+		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
+		newItem.setHighlightInInventory(highlightInInventory);
+		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
+		newItem.setConditionToHide(getConditionToHide());
+		newItem.setQuestBank(getQuestBank());
+		newItem.setTooltip(getTooltip());
+		newItem.logicType = logicType;
+
+		return newItem;
 	}
 
 	@Override

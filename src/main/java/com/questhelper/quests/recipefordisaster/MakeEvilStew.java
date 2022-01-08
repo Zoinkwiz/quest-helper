@@ -91,74 +91,18 @@ public class MakeEvilStew extends DetailedOwnerStep
 		int numBrownStillNeeded = brownNeeded - brownInStew;
 		int numYellowStillNeeded = yellowNeeded - yellowInStew;
 
-		if (numRedStillNeeded == 0
-			&& numOrangeStillNeeded == 0
-			&& numBrownStillNeeded == 0
-			&& numYellowStillNeeded == 0)
+		if (!inEvilDaveRoom.check(client))
 		{
-			if (inEvilDaveRoom.check(client))
-			{
-				startUpStep(useStewOnEvilDave);
-			}
-			else
-			{
-				startUpStep(enterBasement);
-			}
-			return;
-		}
-
-		if (numBrownStillNeeded < 0
-			|| numOrangeStillNeeded < 0
-			|| numRedStillNeeded < 0
-			|| numYellowStillNeeded < 0)
-		{
-			startUpStep(restart);
-			return;
+			startUpStep(enterBasement);
 		}
 
 		catchRats.setRequirements(Collections.singletonList(cat));
 		catchRats.setText("Have your cat catch Hell-Rats for spices, and add them " +
-			"to your stew. You still need to add:");
-
-		if (redInStew == 0
-			&& brownInStew == 0
-			&& orangeInStew == 0
-			&& yellowInStew == 0)
-		{
-			catchRats.addRequirement(stew);
-		}
-		else
-		{
-			catchRats.addRequirement(evilStewHighlighted);
-		}
-
-		if (numRedStillNeeded > 0)
-		{
-			redSpice.setQuantity(numRedStillNeeded);
-			catchRats.addText(" " + numRedStillNeeded + " red spice.");
-			catchRats.addRequirement(redSpice);
-		}
-
-		if (numOrangeStillNeeded > 0)
-		{
-			orangeSpice.setQuantity(numOrangeStillNeeded);
-			catchRats.addText(" " + numOrangeStillNeeded + " orange spice.");
-			catchRats.addRequirement(orangeSpice);
-		}
-
-		if (numBrownStillNeeded > 0)
-		{
-			brownSpice.setQuantity(numBrownStillNeeded);
-			catchRats.addText(" " + numBrownStillNeeded + " brown spice.");
-			catchRats.addRequirement(brownSpice);
-		}
-
-		if (numYellowStillNeeded > 0)
-		{
-			yellowSpice.setQuantity(numYellowStillNeeded);
-			catchRats.addText(" " + numYellowStillNeeded + " yellow spice.");
-			catchRats.addRequirement(yellowSpice);
-		}
+			"to your stew. You will need to add a random number between 1-4 of each spice (red/orange/yellow/brown). " +
+			"Try adding 1 of a spice to a stew, then using the stew on Evil Dave to see if it's right. If not, try " +
+			"with 2 and then 3. " +
+			"Rinse and repeat until you know the right quantity of each spice, then use the perfect stew combination " +
+			"on Evil Dave.");
 
 		startUpStep(catchRats);
 
@@ -180,8 +124,6 @@ public class MakeEvilStew extends DetailedOwnerStep
 		enterBasement = new ObjectStep(getQuestHelper(), ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
 			"Go back down to Evil Dave.");
 		((ObjectStep) enterBasement).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
-
-		catchRats.addSubSteps(restart, enterBasement);
 
 		useStewOnEvilDave = new NpcStep(getQuestHelper(), NpcID.EVIL_DAVE_4806, new WorldPoint(3080, 9889, 0),
 			"Use the spicy stew on Evil Dave.", evilStewHighlighted);
@@ -230,7 +172,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return Arrays.asList(catchRats, enterBasement, useStewOnEvilDave, restart);
+		return Arrays.asList(catchRats, enterBasement, useStewOnEvilDave);
 	}
 
 	public List<QuestStep> getDisplaySteps()

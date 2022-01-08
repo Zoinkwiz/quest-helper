@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -41,6 +40,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -78,8 +81,8 @@ public class Regicide extends BasicQuestHelper
 	ItemRequirement food, staminaPotions, coins, antipoisons, faladorTeleport, westArdougneTeleport, summerPie, axe;
 
 	Requirement inCastleFloor2, inWestArdougne, isBeforeRockslide1, isBeforeRockslide2, isBeforeRockslide3,
-		isBeforeBridge, isNorthEastOfBridge, haveOilyCloth, haveFireArrow, haveLitArrow, haveLitArrowEquipped,
-		havePlank, isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
+		isBeforeBridge, isNorthEastOfBridge,
+		isBeforeThePit, isAfterThePit, isBeforeTheGrid, isAtTheGrid, isAfterTheGrid, isBeforeTrap1,
 		isBeforeTrap2, isBeforeTrap3, isBeforeTrap4, isBeforeTrap5, isInWellArea, isAtOrb1, isInsideCell, isBeforeLedge,
 		isAfterMaze, isInUnicornArea, isInUnicornArea2, isInKnightsArea, isBeforeIbansDoor, isInDwarfCavern, isInFinalArea,
 	    isInFallArea, isInUndergroundSection2, isInUndergroundSection3, isInMaze, isInTemple, isInPostIbanArea,
@@ -230,7 +233,10 @@ public class Regicide extends BasicQuestHelper
 		food.setDisplayItemId(ItemID.SHARK);
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
 		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemID.COINS_995, 750);
-		agilityPotions = new ItemRequirement("Agility Potions", ItemCollections.getAgilityPotions());
+		agilityPotions = new ItemRequirement("Agility boosting items like Summer Pie (+5) or Agility potion (+3)",
+			ItemID.SUMMER_PIE, 5);
+		agilityPotions.addAlternates(ItemID.PART_SUMMER_PIE);
+		agilityPotions.addAlternates(ItemCollections.getAgilityPotions());
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
 		oilyCloth.setTooltip("You can get another by searching the equipment by the fireplace beside Koftik.");
 		oilyClothHighlight = oilyCloth.highlighted();
@@ -253,7 +259,12 @@ public class Regicide extends BasicQuestHelper
 		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemID.LEATHER_GLOVES);
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
-			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
+			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES, ItemID.GRACEFUL_GLOVES_11859,
+			ItemID.GRACEFUL_GLOVES_13587, ItemID.GRACEFUL_GLOVES_13588, ItemID.GRACEFUL_GLOVES_13599, ItemID.GRACEFUL_GLOVES_13600,
+			ItemID.GRACEFUL_GLOVES_13611, ItemID.GRACEFUL_GLOVES_13612, ItemID.GRACEFUL_GLOVES_13623, ItemID.GRACEFUL_GLOVES_13624,
+			ItemID.GRACEFUL_GLOVES_13635, ItemID.GRACEFUL_GLOVES_13636, ItemID.GRACEFUL_GLOVES_13675, ItemID.GRACEFUL_GLOVES_13676,
+			ItemID.GRACEFUL_GLOVES_21073, ItemID.GRACEFUL_GLOVES_21075, ItemID.GRACEFUL_GLOVES_24755, ItemID.GRACEFUL_GLOVES_24757,
+			ItemID.GRACEFUL_GLOVES_25081, ItemID.GRACEFUL_GLOVES_25083);
 		gloves.setTooltip("The following gloves are valid:");
 		gloves.appendToTooltip("All RFD Gloves");
 		gloves.appendToTooltip("Leather Gloves");
@@ -383,11 +394,6 @@ public class Regicide extends BasicQuestHelper
 		isInFallArea = new ZoneRequirement(inFallArea);
 		isBeforeBridge = new ZoneRequirement(beforeBridge);
 		isNorthEastOfBridge = new ZoneRequirement(northEastOfBridge);
-		haveOilyCloth = new ItemRequirements(oilyCloth);
-		haveFireArrow = new ItemRequirements(fireArrow);
-		haveLitArrow = new ItemRequirements(litArrow);
-		haveLitArrowEquipped = new ItemRequirements(litArrowEquipped);
-		havePlank = new ItemRequirements(plank);
 		isBeforeThePit = new ZoneRequirement(westOfBridge, beforeThePit);
 		isAfterThePit = new ZoneRequirement(afterThePit);
 		isBeforeTheGrid = new ZoneRequirement(beforeTheGrid);
@@ -484,11 +490,12 @@ public class Regicide extends BasicQuestHelper
 		talkToKingLathas.addDialogSteps("I assume you have a plan?", "I can handle it.", "Yes.");
 		talkToKingLathas.addSubSteps(goToArdougneCastleFloor2);
 
-		goDownCastleStairs = new ObjectStep(this, ObjectID.STAIRCASE_15648, new WorldPoint(2572, 3296, 1), "Talk to Koftik in West Ardougne.");
-		enterWestArdougne = new ObjectStep(this, ObjectID.ARDOUGNE_WALL_DOOR_8739, new WorldPoint(2558, 3300, 0), "Talk to Koftik in West Ardougne.");
+		goDownCastleStairs = new ObjectStep(this, ObjectID.STAIRCASE_15648, new WorldPoint(2572, 3296, 1), "Enter the Underground Pass.");
+		enterWestArdougne = new ObjectStep(this, ObjectID.ARDOUGNE_WALL_DOOR_8739, new WorldPoint(2558, 3300, 0),
+			"Enter the Underground Pass.");
 
-		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0), "Enter the" +
-			" dungeon.", bow, arrows, rope1, spade);
+		enterTheDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3213, new WorldPoint(2434, 3315, 0),
+			"Enter the Underground Pass.",	bow, arrows, rope1, spade);
 		climbOverRockslide1 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2480, 9713, 0), "Climb-over rockslide.");
 		climbOverRockslide2 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2471, 9706, 0), "Climb-over rockslide.");
 		climbOverRockslide3 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2458, 9712, 0), "Climb-over rockslide.");
@@ -505,7 +512,8 @@ public class Regicide extends BasicQuestHelper
 		shootBridgeRope.addSubSteps(searchBagForCloth, useClothOnArrow, lightArrow, walkNorthEastOfBridge);
 
 		collectPlank = new DetailedQuestStep(this, new WorldPoint(2435, 9726, 0), "Pick up the plank in the north room.", plank);
-		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, "Swing across the pit with a rope.", ropeHighlight);
+		crossThePit = new ObjectStep(this, ObjectID.ROCK_23125, new WorldPoint(2463, 9699, 0), "Swing across the pit " +
+			"with a rope.", ropeHighlight);
 		crossThePit.addIcon(ItemID.ROPE);
 		crossThePit.addSubSteps(collectPlank);
 		climbOverRockslide4 = new ObjectStep(this, ObjectID.ROCKSLIDE, new WorldPoint(2491, 9691, 0), "Climb-over rockslide");
@@ -718,14 +726,16 @@ public class Regicide extends BasicQuestHelper
 		crossTheBridge.addStep(isBeforeRockslide1, climbOverRockslide1);
 		crossTheBridge.addStep(isBeforeRockslide2, climbOverRockslide2);
 		crossTheBridge.addStep(isBeforeRockslide3, climbOverRockslide3);
-		crossTheBridge.addStep(new Conditions(isNorthEastOfBridge, haveLitArrowEquipped), shootBridgeRope);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveLitArrow), walkNorthEastOfBridge);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveFireArrow), lightArrow);
-		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), haveOilyCloth), useClothOnArrow);
+		crossTheBridge.addStep(new Conditions(isNorthEastOfBridge, litArrowEquipped), shootBridgeRope);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), litArrow),
+			walkNorthEastOfBridge);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), fireArrow), lightArrow);
+		crossTheBridge.addStep(new Conditions(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), oilyCloth),
+			useClothOnArrow);
 		crossTheBridge.addStep(new Conditions(LogicType.OR, isBeforeBridge, isNorthEastOfBridge), searchBagForCloth);
 
 		ConditionalStep theUndergroundPass = new ConditionalStep(this, climbDownWell);
-		theUndergroundPass.addStep(new Conditions(LogicType.NOR, havePlank), collectPlank);
+		theUndergroundPass.addStep(new Conditions(LogicType.NOR, plank), collectPlank);
 		theUndergroundPass.addStep(isBeforeThePit, crossThePit);
 		theUndergroundPass.addStep(isAfterThePit, climbOverRockslide4);
 		theUndergroundPass.addStep(isBeforeTheGrid, climbOverRockslide5);
@@ -767,8 +777,8 @@ public class Regicide extends BasicQuestHelper
 		pathToIorwerth.addStep(inForestSectionAfterCave, goFromLeavesToStickTrap);
 		pathToIorwerth.addStep(inForestNearCave, goFromCaveToLeaves);
 
-		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "Wait around the cave exit for Idris to appear " +
-			"and talk to her. Afterwards, Go talk to Lord Iorwerth in the north west of the elven forest.");
+		goTalkToIorwerth = new ConditionalStep(this, pathToIorwerth, "WAIT OUTSIDE AROUND the cave entrance for Idris to appear " +
+			"and talk to her (If Idris does not appear in the couple minutes enter and exit the cave). Afterwards, Go talk to Lord Iorwerth in the north west of the elven forest.");
 		goTalkToIorwerth.addSubSteps(talkToIdris);
 
 		goReturnToIorwerth = new ConditionalStep(this, pathToIorwerth, "Return to Lord Iorwerth in the north west of " +
@@ -813,7 +823,7 @@ public class Regicide extends BasicQuestHelper
 		goIntoTyrasCamp = new ConditionalStep(this, goToTyrasCampEntrance, "Enter the Tyras Camp.");
 
 		goToIorwerthAfterCamp = new ConditionalStep(this, goToTyrasCampEntrance,
-			"Fill some barrels with tar then return to Lord Iorwerth.");
+			"Fill some barrels with tar, pick up some sulphur there, and then return to Lord Iorwerth.");
 		goToIorwerthAfterCamp.addStep(new Conditions(coalBarrel2, sulphur), pathToIorwerth);
 		goToIorwerthAfterCamp.addStep(new Conditions(inWestForestPath, coalBarrel2), getSulphur);
 		goToIorwerthAfterCamp.addStep(new Conditions(inWestForestPath, barrel2), fill2Barrels);
@@ -900,15 +910,57 @@ public class Regicide extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 13750));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("15,000 Coins", ItemID.COINS_995, 15000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Tirannwn & Arandar"),
+				new UnlockReward("Ability to wield the Dragon Halberd"),
+				new UnlockReward("Ability to charter a ship to Port Tyras."),
+				new UnlockReward("Ability to use Iorwerth Camp teleport scrolls."),
+				new UnlockReward("Ability to use Zul-Andra teleport scrolls and battle Zulrah."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToKingLathas)));
-		allSteps.add(new PanelDetails("To the Elven Lands",
-			Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
-				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
-				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
-			bow, arrows, rope1, spade, antipoisons, combatEquipment));
+
+		if (client.getRealSkillLevel(Skill.AGILITY) < 56)
+		{
+			allSteps.add(new PanelDetails("To the Elven Lands",
+				Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
+					goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
+					killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+				Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment, agilityPotions),
+				Collections.singletonList(staminaPotions)));
+		}
+		else
+		{
+			allSteps.add(new PanelDetails("To the Elven Lands",
+				Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
+					goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
+					killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+				Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment), Collections.singletonList(staminaPotions)));
+		}
 		allSteps.add(new PanelDetails("Making a bomb", Arrays.asList(useLimestoneOnFurnace, usePestleOnQuicklime,
 			usePestleOnSulphur, talkToChemist, useTarOnFractionalisingStill, operateStill, useQuicklimeOnNaphtha,
 			useGroundSulphurOnNaphtha, useClothOnBarrelBomb),

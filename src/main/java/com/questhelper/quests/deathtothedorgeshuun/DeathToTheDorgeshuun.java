@@ -42,6 +42,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -76,8 +79,8 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines, inHamBase, zanikIsFollowing,
 		talkedToShopkeeper, talkedToWoman, talkedToDuke, talkedToAereck, talkedToGoblins, goneOutside, heardSpeaker, isBehindGuard1,
 		killedGuard1, isNearGuard4, isNearGuard5, inStoreroom, killedGuard2, killedGuard3, killedGuard4, killedGuard5, zanikWaitingFor4,
-		zanikWaitingFor5, isDisguisedZanikFollowing, zanikPickedUp, ropeAddedToHole, minedRocks, inSwamp, inJunaRoom, holdingCrate,
-		inMill, killedGuards, talkedToJohn;
+		zanikWaitingFor5, isDisguisedZanikFollowing, zanikPickedUp, ropeAddedToHole, minedRocks, inSwamp, inJunaRoom, inMill, killedGuards,
+		talkedToJohn;
 
 	DetailedQuestStep goDownFromF2, talkToMistag, talkToZanik, talkToMistagToTravel, talkToCook, talkToDuke, talkToHans,
 		talkToWoman, talkToBob, talkToAereck, talkToGuide, approachGoblins, talkToShopkeeper, goOutside, talkToZanikAboutOrigin,
@@ -155,7 +158,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		ConditionalStep infiltrateMill = new ConditionalStep(this, goGetZanikForMill);
 		infiltrateMill.addStep(inMill, killGuards);
-		infiltrateMill.addStep(holdingCrate, enterMill);
+		infiltrateMill.addStep(crate, enterMill);
 		infiltrateMill.addStep(zanikIsFollowing, searchCrate);
 		steps.put(9, infiltrateMill);
 
@@ -288,8 +291,6 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		ropeAddedToHole = new VarbitRequirement(279, 1);
 		minedRocks = new VarbitRequirement(538, 1);
-
-		holdingCrate = new ItemRequirements(crate);
 
 		killedGuards = new VarbitRequirement(2283, 3);
 	}
@@ -510,6 +511,29 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.THIEVING, 2000),
+				new ExperienceReward(Skill.RANGED, 2000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to use Dorgeshuun Special Attacks"),
+				new UnlockReward("Access to H.A.M. Store Rooms."),
+				new UnlockReward("Access to Dorgesh-Kann."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -519,7 +543,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Infiltrate the H.A.M", Arrays.asList(goIntoHamLair, talkToJohanhus, listenToSpeaker, standNearTrapdoor, goDownTrapdoor), lightSource, hamSet));
 		allSteps.add(new PanelDetails("Reaching the meeting", Arrays.asList(standBehindGuard1, talkToGuard2, tellZanikToKillGuard3, standNearGuard4,
 			tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor)));
-		allSteps.add(new PanelDetails("Saving Zanik", Arrays.asList(checkZanikCorpse, goToJunaSteps, learnZanikStory), lightSource, tinderbox));
+		allSteps.add(new PanelDetails("Saving Zanik", Arrays.asList(checkZanikCorpse, goToJunaSteps, learnZanikStory), lightSource, tinderbox, pickaxe));
 		allSteps.add(new PanelDetails("Foiling H.A.M", Arrays.asList(goGetZanikForMill, searchCrate, enterMill, killGuards, killSigmund, smashDrill, enterExit), hamSet, combatGear));
 		return allSteps;
 	}

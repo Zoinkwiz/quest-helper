@@ -51,6 +51,14 @@ public interface Requirement
 	boolean check(Client client);
 
 	/**
+	 * @return whether the requirement should be considered for filtering in the sidebar
+	 */
+	default boolean shouldConsiderForFilter()
+	{
+		return false;
+	}
+
+	/**
 	 * @return display text to be used for rendering either on overlays or panels. Cannot be null.
 	 */
 	@Nonnull

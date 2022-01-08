@@ -32,12 +32,14 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -63,9 +65,8 @@ public class ErnestTheChicken extends BasicQuestHelper
 	//Items Required
 	ItemRequirement spade, fishFood, poison, poisonedFishFood, pressureGauge, oilCan, rubberTube, key;
 
-	Requirement hasSpade, hasFishFood, hasPoison, hasPoisonedFishFood, hasPressureGauge, hasOilCan, hasRubberTube, inFirstFloor, inGroundFloor,
-		inSecondFloor, hasKey, killedFish, inSecretRoom, isLeverADown, isLeverBDown, isLeverCDown, isLeverDDown, isLeverEDown, isLeverFDown,
-		isLeverAUp, isLeverBUp, isLeverCUp, isLeverDUp, isLeverEUp, isLeverFUp, inBasement, inRoomCD, inEmptyRoom;
+	Requirement inFirstFloor, inGroundFloor, inSecondFloor, killedFish, inSecretRoom, isLeverADown, isLeverBDown, isLeverCDown,
+		isLeverDDown, isLeverEDown, isLeverFDown, isLeverAUp, isLeverBUp, isLeverCUp, isLeverDUp, isLeverEUp, isLeverFUp, inBasement, inRoomCD, inEmptyRoom;
 
 	QuestStep talkToVeronica, enterManor, goToFirstFloor, pickupPoison, goToSecondFloor, pickupFishFood, usePoisonOnFishFood, goDownToGroundFloor,
 		pickupSpade, searchCompost, useFishFoodOnFountain, searchFountain, enterManorWithKey, getTube, searchBookcase, goDownLadder, pullDownLeverA,
@@ -89,18 +90,18 @@ public class ErnestTheChicken extends BasicQuestHelper
 		steps.put(0, talkToVeronica);
 
 		getGaugeAndTube = new ConditionalStep(this, enterManor);
-		getGaugeAndTube.addStep(new Conditions(hasKey, hasPressureGauge, inGroundFloor), getTube);
-		getGaugeAndTube.addStep(new Conditions(hasKey, hasPressureGauge), enterManorWithKey);
-		getGaugeAndTube.addStep(new Conditions(killedFish, hasKey), searchFountain);
-		getGaugeAndTube.addStep(new Conditions(hasPoisonedFishFood, hasKey), useFishFoodOnFountain);
-		getGaugeAndTube.addStep(new Conditions(hasPoisonedFishFood, hasSpade), searchCompost);
-		getGaugeAndTube.addStep(new Conditions(hasPoisonedFishFood), pickupSpade);
-		getGaugeAndTube.addStep(new Conditions(hasFishFood, hasPoison), usePoisonOnFishFood);
-		getGaugeAndTube.addStep(new Conditions(inGroundFloor, hasFishFood), pickupPoison);
-		getGaugeAndTube.addStep(new Conditions(inFirstFloor, hasFishFood), goDownToGroundFloor);
+		getGaugeAndTube.addStep(new Conditions(key, pressureGauge, inGroundFloor), getTube);
+		getGaugeAndTube.addStep(new Conditions(key, pressureGauge), enterManorWithKey);
+		getGaugeAndTube.addStep(new Conditions(killedFish, key), searchFountain);
+		getGaugeAndTube.addStep(new Conditions(poisonedFishFood, key), useFishFoodOnFountain);
+		getGaugeAndTube.addStep(new Conditions(poisonedFishFood, spade), searchCompost);
+		getGaugeAndTube.addStep(new Conditions(poisonedFishFood), pickupSpade);
+		getGaugeAndTube.addStep(new Conditions(fishFood, poison), usePoisonOnFishFood);
+		getGaugeAndTube.addStep(new Conditions(inGroundFloor, fishFood), pickupPoison);
+		getGaugeAndTube.addStep(new Conditions(inFirstFloor, fishFood), goDownToGroundFloor);
 		getGaugeAndTube.addStep(inFirstFloor, pickupFishFood);
 		getGaugeAndTube.addStep(inGroundFloor, goToFirstFloor);
-		getGaugeAndTube.setLockingCondition(new Conditions(hasPressureGauge, hasRubberTube));
+		getGaugeAndTube.setLockingCondition(new Conditions(pressureGauge, rubberTube));
 
 		getCan = new ConditionalStep(this, enterManor);
 		getCan.addStep(new Conditions(isLeverADown, isLeverEDown), pullUpLeverE);
@@ -121,7 +122,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 		getCan.addStep(inBasement, pullDownLeverA);
 		getCan.addStep(inSecretRoom, goDownLadder);
 		getCan.addStep(inGroundFloor, searchBookcase);
-		getCan.setLockingCondition(hasOilCan);
+		getCan.setLockingCondition(oilCan);
 
 		ConditionalStep initialOddensteinConversation = new ConditionalStep(this, goToFirstFloorToFinish);
 		initialOddensteinConversation.addStep(inSecondFloor, talkToOddenstein);
@@ -136,12 +137,12 @@ public class ErnestTheChicken extends BasicQuestHelper
 		finishOddensteinConversation.addStep(inBasement, goUpFromBasement);
 
 		ConditionalStep getAllItems = new ConditionalStep(this, getGaugeAndTube);
-		getAllItems.addStep(new Conditions(hasPressureGauge, hasRubberTube, hasOilCan), initialOddensteinConversation);
-		getAllItems.addStep(new Conditions(hasPressureGauge, hasRubberTube), getCan);
+		getAllItems.addStep(new Conditions(pressureGauge, rubberTube, oilCan), initialOddensteinConversation);
+		getAllItems.addStep(new Conditions(pressureGauge, rubberTube), getCan);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, getGaugeAndTube);
-		completeQuest.addStep(new Conditions(hasPressureGauge, hasRubberTube, hasOilCan), finishOddensteinConversation);
-		completeQuest.addStep(new Conditions(hasPressureGauge, hasRubberTube), getCan);
+		completeQuest.addStep(new Conditions(pressureGauge, rubberTube, oilCan), finishOddensteinConversation);
+		completeQuest.addStep(new Conditions(pressureGauge, rubberTube), getCan);
 
 		steps.put(1, getAllItems);
 		steps.put(2, completeQuest);
@@ -166,14 +167,6 @@ public class ErnestTheChicken extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasSpade = new ItemRequirements(spade);
-		hasFishFood = new ItemRequirements(fishFood);
-		hasPoison = new ItemRequirements(poison);
-		hasPoisonedFishFood = new ItemRequirements(poisonedFishFood);
-		hasOilCan = new ItemRequirements(oilCan);
-		hasPressureGauge = new ItemRequirements(pressureGauge);
-		hasRubberTube = new ItemRequirements(rubberTube);
-		hasKey = new ItemRequirements(key);
 		inFirstFloor = new ZoneRequirement(firstFloor);
 		inSecondFloor = new ZoneRequirement(secondFloor);
 		inGroundFloor = new ZoneRequirement(manorGround1, secretRoom, manorGround3);
@@ -261,6 +254,26 @@ public class ErnestTheChicken extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Able to survive a skeleton (level 22) attacking you");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(4);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("300 Coins", ItemID.COINS_995, 300));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Killerwatt plane (Members Only)."),
+				new UnlockReward("Ability to be assigned Killerwatts as a Slayer task."));
 	}
 
 	@Override

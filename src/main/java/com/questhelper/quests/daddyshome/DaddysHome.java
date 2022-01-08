@@ -30,24 +30,20 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+
+import java.util.*;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -63,8 +59,8 @@ public class DaddysHome extends BasicQuestHelper
 	ItemRequirement lumberyardTeleport, varrockTeleport3;
 
 	Requirement removedChair, removedTable, removedTable2, removedStool, removedStool2, removedCampbed,
-		removedCarpet, hasLogs, hasPlanks, repairedCampbed, repairedCarpet, repairedStool, repairedTable,
-		repairedChair, repairedStool2, repairedTable2;
+		removedCarpet, repairedCampbed, repairedCarpet, repairedStool, repairedTable, repairedChair,
+		repairedStool2, repairedTable2;
 
 	//NPC Steps
 	DetailedQuestStep talkToMarlo, talkToYarlo, talkToYarloAgain, talkToOperator, talkToYarloOnceMore, talkToMarloToFinish;
@@ -100,8 +96,8 @@ public class DaddysHome extends BasicQuestHelper
 
 		ConditionalStep repairFurniture = new ConditionalStep(this, buildCarpet);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, repairedCampbed), talkToYarloOnceMore);
-		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, hasPlanks), buildCampbed);
-		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, hasLogs), talkToOperator);
+		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, waxwoodPlank3), buildCampbed);
+		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, waxwoodLog3), talkToOperator);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2), searchCrate);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2), buildTable2);
 		repairFurniture.addStep(new Conditions(repairedCarpet, repairedStool, repairedTable, repairedChair), buildStool2);
@@ -163,9 +159,6 @@ public class DaddysHome extends BasicQuestHelper
 		repairedChair = new VarbitRequirement(10565, 3);
 		repairedStool2 = new VarbitRequirement(10563, 3);
 		repairedTable2 = new VarbitRequirement(10566, 3);
-
-		hasPlanks = new ItemRequirements(waxwoodPlank3);
-		hasLogs = new ItemRequirements(waxwoodLog3);
 	}
 
 	public void setupSteps()
@@ -215,6 +208,26 @@ public class DaddysHome extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(lumberyardTeleport, varrockTeleport3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.CONSTRUCTION, 400));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("25 x Planks", ItemID.PLANK, 25),
+				new ItemReward("10 x Oak Planks", ItemID.OAK_PLANK, 10),
+				new ItemReward("50 x Mithril Nails", ItemID.MITHRIL_NAILS, 50),
+				new ItemReward("5 x Steel Bars", ItemID.STEEL_BAR, 5),
+				new ItemReward("8 x Bolt of Cloth", ItemID.BOLT_OF_CLOTH, 8),
+				new ItemReward("5 x House Teleport Tablets", ItemID.TELEPORT_TO_HOUSE, 5),
+				new ItemReward("1 x Falador Teleport Tablet", ItemID.FALADOR_TELEPORT, 1),
+				new ItemReward("POH in Rimmington or 1,000 Coins", ItemID.COINS_995, 1000));
 	}
 
 	@Override

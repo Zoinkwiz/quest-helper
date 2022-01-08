@@ -26,6 +26,8 @@ package com.questhelper.panel;
 
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.Collection;
 import java.util.Objects;
 import lombok.Getter;
+import lombok.Setter;
 
 public class PanelDetails
 {
@@ -45,8 +48,15 @@ public class PanelDetails
 	@Getter
 	private QuestStep lockingQuestSteps;
 
+	@Setter
+	@Getter
+	private Requirement hideCondition;
+
 	@Getter
 	private List<Requirement> requirements;
+
+	@Getter
+	private List<Requirement> recommended;
 
 	@Getter
 	private List<Integer> vars;
@@ -64,18 +74,27 @@ public class PanelDetails
 		this.requirements = new ArrayList<>();
 	}
 
-	public PanelDetails(String header, List<QuestStep> steps, Requirement... requirements)
-	{
-		this.header = header;
-		this.steps = steps;
-		this.requirements = Arrays.asList(requirements);
-	}
-
 	public PanelDetails(String header, List<QuestStep> steps, List<Requirement> requirements)
 	{
 		this.header = header;
 		this.steps = steps;
 		this.requirements = requirements;
+	}
+
+	public PanelDetails(String header, List<QuestStep> steps, Requirement... requirements)
+	{
+		this(header, steps, Arrays.asList(requirements));
+	}
+
+	public PanelDetails(String header, List<QuestStep> steps, List<Requirement> requirements, List<Requirement> recommended)
+	{
+		this(header, steps, requirements);
+		this.recommended = recommended;
+	}
+
+	public void setDisplayCondition(Requirement req)
+	{
+		setHideCondition(new Conditions(LogicType.NOR, req));
 	}
 
 	public void setVars(Integer... vars)

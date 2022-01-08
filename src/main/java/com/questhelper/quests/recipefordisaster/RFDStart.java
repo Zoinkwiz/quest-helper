@@ -34,16 +34,16 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -60,8 +60,6 @@ public class RFDStart extends BasicQuestHelper
 	//Items Required
 	ItemRequirement eyeOfNewt, greenmansAle, rottenTomato, fruitBlast, ashes, ashesHighlighted, fruitBlastHighlighted, dirtyBlast;
 
-	Requirement hasDirtyBlast;
-
 	QuestStep talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom;
 
 	@Override
@@ -75,7 +73,7 @@ public class RFDStart extends BasicQuestHelper
 		steps.put(0, talkToCook);
 
 		ConditionalStep goGiveCookItems = new ConditionalStep(this, useAshesOnFruitBlast);
-		goGiveCookItems.addStep(hasDirtyBlast, talkToCookAgain);
+		goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(questBank), talkToCookAgain);
 		steps.put(1, goGiveCookItems);
 
 		steps.put(2, enterDiningRoom);
@@ -99,7 +97,6 @@ public class RFDStart extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDirtyBlast = new ItemRequirements(dirtyBlast);
 		// 4606 0->1
 
 		// 1850 = 2->3
@@ -119,6 +116,7 @@ public class RFDStart extends BasicQuestHelper
 
 		talkToCookAgain = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook with the required items.", eyeOfNewt, greenmansAle, rottenTomato, dirtyBlast);
+		talkToCookAgain.addDialogStep("About those ingredients you wanted for the banquet...");
 
 		enterDiningRoom = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Enter the Lumbridge Castle dining room.");
 	}
@@ -136,6 +134,18 @@ public class RFDStart extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.COOKING, 10));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to the Culinaromancer's Chest"));
 	}
 
 	@Override

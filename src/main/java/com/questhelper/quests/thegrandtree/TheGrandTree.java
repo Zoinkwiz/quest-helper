@@ -33,13 +33,16 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -55,6 +58,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -66,7 +70,7 @@ public class TheGrandTree extends BasicQuestHelper
 	ItemRequirement accessToFairyRings, energyOrStaminaPotions, transportToGrandTree, oneThousandCoins, combatGear,
 		food, prayerPotions, translationBook, barkSample, lumberOrder, gloughsKey, highlightedGloughsKey, invasionPlans,
 		twigsT, twigsU, twigsZ, twigsO, highlightedTwigsT, highlightedTwigsU, highlightedTwigsZ, highlightedTwigsO,
-		daconiaStone, passage;
+		daconiaStone;
 
 	FreeInventorySlotRequirement fourFreeInventorySlots;
 
@@ -74,9 +78,8 @@ public class TheGrandTree extends BasicQuestHelper
 		watchtower, grandTreeTunnels, cell;
 
 	Requirement isInGrandTreeF1, isInGrandTreeF2, isInGrandTreeTop, isInGrandTree, isNearHazelmere,
-		isInCell, isInGloughsHouse, isInShipyard, isInAnitasHouse, hasGloughsKey, isInWatchtower,
-		hasTwigsT, hasTwigsU, hasTwigsZ, hasTwigsO, blackDemonVisible, isInGrandTreeTunnels,
-		hasDaconiaStone, narnodeNearby;
+		isInCell, isInGloughsHouse, isInShipyard, isInAnitasHouse, isInWatchtower, blackDemonVisible,
+		isInGrandTreeTunnels, narnodeNearby;
 
 	QuestStep talkToKingNarnode, talkToKingNarnodeCaves, climbUpToHazelmere, talkToHazelmere, bringScrollToKingNarnode, climbUpToGlough,
 		talkToGlough, talkToKingNarnodeAfterGlough, talkToCharlie, returnToGlough, findGloughJournal, talkToGloughAgain, goToStronghold,
@@ -150,8 +153,17 @@ public class TheGrandTree extends BasicQuestHelper
 
 		// Tuzo
 		goTalkToCharlie3 = goTalkToCharlie.copy();
-		goTalkToCharlie3.setText("Return to Charlie. If entering the Stronghold through the south entrance you'll " +
-			"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
+		if (QuestHelperQuest.TREE_GNOME_VILLAGE.getState(client) == QuestState.FINISHED)
+		{
+			goTalkToCharlie3.setText("Return to Charlie. You won't be able to enter through the main entrance, so " +
+				"make use of a Spirit Tree to enter the Tree Gnome Stronghold. The easiest tree to use is the one in " +
+				"the Grand Exchange.");
+		}
+		else
+		{
+			goTalkToCharlie3.setText("Return to Charlie. If entering the Stronghold through the south entrance you'll " +
+				"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
+		}
 		goTalkToCharlie3.addRequirement(lumberOrder);
 		steps.put(90, goTalkToCharlie3);
 
@@ -160,8 +172,8 @@ public class TheGrandTree extends BasicQuestHelper
 		goGetAnitaKey.addStep(isInGrandTree, climbToBottomOfGrandTree);
 
 		ConditionalStep goFindInvasionPlans = new ConditionalStep(this, goGetAnitaKey);
-		goFindInvasionPlans.addStep(new Conditions(hasGloughsKey, isInGloughsHouse), findInvasionPlans);
-		goFindInvasionPlans.addStep(hasGloughsKey, climbUpToGloughAgain);
+		goFindInvasionPlans.addStep(new Conditions(gloughsKey, isInGloughsHouse), findInvasionPlans);
+		goFindInvasionPlans.addStep(gloughsKey, climbUpToGloughAgain);
 		steps.put(100, goFindInvasionPlans);
 
 		steps.put(110, takeInvasionPlansToKing);
@@ -170,10 +182,10 @@ public class TheGrandTree extends BasicQuestHelper
 		goUpToWatchtower.addStep(isInGloughsHouse, climbUpToWatchtower);
 
 		ConditionalStep goPlaceTuzoTwigs = new ConditionalStep(this, goUpToWatchtower);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsT), placeTwigsT);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsU), placeTwigsU);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsZ), placeTwigsZ);
-		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, hasTwigsO), placeTwigsO);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsT), placeTwigsT);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsU), placeTwigsU);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsZ), placeTwigsZ);
+		goPlaceTuzoTwigs.addStep(new Conditions(isInWatchtower, twigsO), placeTwigsO);
 		goPlaceTuzoTwigs.addStep(isInWatchtower, placeTwigs);
 		steps.put(120, goPlaceTuzoTwigs);
 
@@ -191,7 +203,7 @@ public class TheGrandTree extends BasicQuestHelper
 		steps.put(140, goTalkToKingAfterFight);
 
 		ConditionalStep bringDaconiaStoneToKing = new ConditionalStep(this, returnToGrandTreeTunnels);
-		bringDaconiaStoneToKing.addStep(hasDaconiaStone, giveDaconiaStoneToKingNarnode);
+		bringDaconiaStoneToKing.addStep(daconiaStone, giveDaconiaStoneToKingNarnode);
 		bringDaconiaStoneToKing.addStep(isInGrandTreeTunnels, findDaconiaStone);
 		steps.put(150, bringDaconiaStoneToKing);
 
@@ -268,13 +280,6 @@ public class TheGrandTree extends BasicQuestHelper
 		isInWatchtower = new ZoneRequirement(watchtower);
 		isInGrandTreeTunnels = new ZoneRequirement(grandTreeTunnels);
 
-		hasGloughsKey = new ItemRequirements(gloughsKey);
-		hasTwigsT = new ItemRequirements(twigsT);
-		hasTwigsU = new ItemRequirements(twigsU);
-		hasTwigsZ = new ItemRequirements(twigsZ);
-		hasTwigsO = new ItemRequirements(twigsO);
-		hasDaconiaStone = new ItemRequirements(daconiaStone);
-
 		narnodeNearby = new NpcCondition(NpcID.KING_NARNODE_SHAREEN);
 		blackDemonVisible = new NpcInteractingRequirement(NpcID.BLACK_DEMON_1432);
 	}
@@ -287,7 +292,8 @@ public class TheGrandTree extends BasicQuestHelper
 		goToStronghold = new DetailedQuestStep(this, locationBottomOfGrandTree, "Travel to the Tree Gnome Stronghold.");
 
 		// Getting Started
-		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree.");
+		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree" +
+			"(Make sure to have two empty inventory slots to start the quest).");
 		talkToKingNarnode.addDialogSteps("You seem worried, what's up?", "I'd be happy to help!");
 		talkToKingNarnodeCaves = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
 			"Talk to King Narnode.");
@@ -394,7 +400,7 @@ public class TheGrandTree extends BasicQuestHelper
 		climbDownTrapDoor = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door. Be prepared for the fight against a Black Demon (level 172).");
 		talkToGloughBeforeFight = new NpcStep(this, NpcID.GLOUGH, "Talk to Glough. You can safespot the Demon from where he stands.");
 		killBlackDemon = new NpcStep(this, NpcID.BLACK_DEMON_1432, "Kill the black Demon. You can safespot from where Glough stands.");
-		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2487, 9858, 0));
+		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2492, 9865, 0));
 		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door again.");
 		talkToKingAfterFight = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
 		talkToKingAfterFight.addSubSteps(climbDownTrapDoorAfterFight);
@@ -429,6 +435,27 @@ public class TheGrandTree extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Black demon (level 172) (can be safespotted)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(5);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 18400),
+				new ExperienceReward(Skill.AGILITY, 7900),
+				new ExperienceReward(Skill.MAGIC, 2150));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to use the Spirit Tree in the Tree Gnome Stronghold."));
 	}
 
 	@Override

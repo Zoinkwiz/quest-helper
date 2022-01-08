@@ -42,21 +42,19 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.SpriteID;
+
+import java.util.*;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -423,8 +421,8 @@ public class RatCatchers extends BasicQuestHelper
 		lightWeeds = new DetailedQuestStep(this, "Use a tinderbox on the pot of weeds.", potOfWeeds.highlighted(),
 			tinderbox.highlighted());
 		usePotOnHole = new ObjectStep(this, ObjectID.RAT_HOLE_10350, new WorldPoint(2933, 10212, 0),
-			"Use the smouldering pot on the hole east of Joe.", smoulderingPot.highlighted(), catFollower,
-			catspeakAmuletOrDS2.equipped());
+			"Use the smouldering pot on the hole east of Joe with your cat following you.",
+			smoulderingPot.highlighted(), catFollower, catspeakAmuletOrDS2.equipped());
 		usePotOnHole.addIcon(ItemID.SMOULDERING_POT);
 		usePotOnHoleAgain = new ObjectStep(this, ObjectID.RAT_HOLE_10350, new WorldPoint(2933, 10212, 0),
 			"Use the smouldering pot on the rat hole again.", smoulderingPot.highlighted(), catFollower, catspeakAmuletOrDS2.equipped());
@@ -484,6 +482,32 @@ public class RatCatchers extends BasicQuestHelper
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_THE_GIANT_DWARF.getId(), Operation.GREATER_EQUAL,
 			1, "Started The Giant Dwarf"));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 4500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Rat Pole", ItemID.RAT_POLE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Rat Pits"),
+				new UnlockReward("Ability to train Overgrown Cats into Wiley and Lazy Cats"));
 	}
 
 	@Override

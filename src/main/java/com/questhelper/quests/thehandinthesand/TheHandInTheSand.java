@@ -25,11 +25,14 @@
 package com.questhelper.quests.thehandinthesand;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
@@ -66,7 +69,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement teleportsToYanille, teleportsToBrimhaven;
 
-	Requirement hasSand, notTeleportedToSarim, inYanille, inLightSpot, receivedBottledWater, hasRedberryJuice, hasPinkDye, hasRoseLens, vialPlaced, madeTruthSerum;
+	Requirement notTeleportedToSarim, inYanille, inLightSpot, receivedBottledWater, vialPlaced, madeTruthSerum;
 
 	DetailedQuestStep talkToBert, talkToBertAboutRota, talkToBertAboutScroll, talkToBetty, talkToBettyOnceMore, talkToBettyAgain, talkToRarveAgain, talkToSandyWithPotion, giveCaptainABeer, useLensOnCounter,
 		useDyeOnLanternLens, useSerumOnCoffee, searchSandysDesk, standInDoorway, ringBell, ringBellAgain, pickpocketSandy, addWhiteberries, addRedberries, activateMagicalOrb, interrogateSandy, ringBellAfterInterrogation,
@@ -92,17 +95,17 @@ public class TheHandInTheSand extends BasicQuestHelper
 		steps.put(40, searchSandysDesk);
 
 		ConditionalStep goGetScroll = new ConditionalStep(this, pickpocketSandy);
-		goGetScroll.addStep(hasSand, talkToBertAboutScroll);
+		goGetScroll.addStep(sand, talkToBertAboutScroll);
 		steps.put(50, goGetScroll);
 		steps.put(60, ringBellAgain);
 
 		ConditionalStep goToBetty = new ConditionalStep(this, talkToBetty);
 		goToBetty.addStep(madeTruthSerum, talkToBettyOnceMore);
-		goToBetty.addStep(new Conditions(hasRoseLens, vialPlaced, inLightSpot), useLensOnCounter);
-		goToBetty.addStep(new Conditions(hasRoseLens, vialPlaced), standInDoorway);
-		goToBetty.addStep(hasRoseLens, talkToBettyAgain);
-		goToBetty.addStep(hasPinkDye, useDyeOnLanternLens);
-		goToBetty.addStep(hasRedberryJuice, addWhiteberries);
+		goToBetty.addStep(new Conditions(roseLens, vialPlaced, inLightSpot), useLensOnCounter);
+		goToBetty.addStep(new Conditions(roseLens, vialPlaced), standInDoorway);
+		goToBetty.addStep(roseLens, talkToBettyAgain);
+		goToBetty.addStep(pinkDye, useDyeOnLanternLens);
+		goToBetty.addStep(redberryJuice, addWhiteberries);
 		goToBetty.addStep(receivedBottledWater, addRedberries);
 		goToBetty.addStep(new Conditions(inYanille, notTeleportedToSarim), talkToRarveAgain);
 
@@ -194,14 +197,10 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasSand = new ItemRequirements(sand);
 		notTeleportedToSarim = new VarbitRequirement(1531, 0);
 		inYanille = new ZoneRequirement(yanille);
 		inLightSpot = new ZoneRequirement(lightSpot);
 		receivedBottledWater = new VarbitRequirement(1532, 1);
-		hasRedberryJuice = new ItemRequirements(redberryJuice);
-		hasPinkDye = new ItemRequirements(pinkDye);
-		hasRoseLens = new ItemRequirements(roseLens);
 		vialPlaced = new VarbitRequirement(1537, 1);
 		madeTruthSerum = new VarbitRequirement(1532, 5);
 	}
@@ -282,6 +281,28 @@ public class TheHandInTheSand extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Arrays.asList(new SkillRequirement(Skill.THIEVING, 17), new SkillRequirement(Skill.CRAFTING, 49));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.THIEVING, 1000),
+				new ExperienceReward(Skill.CRAFTING, 9000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Daily sand from Bert in Yanille."),
+				new UnlockReward("Access to the Wizards Guild rune store."));
 	}
 
 	@Override

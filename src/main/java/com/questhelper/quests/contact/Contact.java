@@ -32,6 +32,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -39,21 +43,15 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -62,9 +60,12 @@ import net.runelite.api.coords.WorldPoint;
 public class Contact extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement lightSource, combatGear, parchment, keris, food, prayerPotions;
+	ItemRequirement lightSource, tinderbox, combatGear, parchment, keris, food, prayerPotions;
 
-	Requirement inBank, inDungeon, inChasm, hasParchment, hasReadParchment, kerisNearby;
+	// Item recommended
+	ItemRequirement coins, glory, antipoison;
+
+	Requirement inBank, inDungeon, inChasm, hasReadParchment, kerisNearby;
 
 	QuestStep talkToHighPriest, talkToJex, goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman, talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain,
 		killGiantScarab, pickUpKeris, returnToHighPriest;
@@ -88,7 +89,7 @@ public class Contact extends BasicQuestHelper
 
 		ConditionalStep goInvestigate = new ConditionalStep(this, goDownToBank);
 		goInvestigate.addStep(new Conditions(inChasm, hasReadParchment), talkToMaisa);
-		goInvestigate.addStep(hasParchment, readParchment);
+		goInvestigate.addStep(parchment, readParchment);
 		goInvestigate.addStep(inChasm, searchKaleef);
 		goInvestigate.addStep(inDungeon, goDownToChasm);
 		goInvestigate.addStep(inBank, goDownToDungeon);
@@ -122,6 +123,7 @@ public class Contact extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
 
@@ -131,8 +133,12 @@ public class Contact extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
+
+		coins = new ItemRequirement("Coins for carpet rides", ItemID.COINS_995);
+		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.getAmuletOfGlories());
 	}
 
 	public void setupZones()
@@ -147,7 +153,6 @@ public class Contact extends BasicQuestHelper
 		inBank = new ZoneRequirement(bank);
 		inDungeon = new ZoneRequirement(dungeon);
 		inChasm = new ZoneRequirement(chasm);
-		hasParchment = new ItemRequirements(parchment);
 		hasReadParchment = new VarbitRequirement(3274, 50);
 		kerisNearby = new ItemOnTileRequirement(keris);
 	}
@@ -244,7 +249,8 @@ public class Contact extends BasicQuestHelper
 		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(3268, 9229, 2), "Be careful of traps, and make your way to the south west corner of the dungeon, and go down the ladder there.");
 		((DetailedQuestStep) goDownToChasmAgain).setLinePoints(path);
 
-		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(3231, 9251, 0), "Kill the Giant Scarab near the chasm.");
+		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(3231, 9251, 0),
+			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful.");
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);
 
@@ -256,9 +262,20 @@ public class Contact extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(lightSource);
+		reqs.add(tinderbox);
 		reqs.add(combatGear);
 		reqs.add(food);
 		reqs.add(prayerPotions);
+		return reqs;
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(coins.quantity(1000));
+		reqs.add(glory);
+		reqs.add(antipoison);
 		return reqs;
 	}
 
@@ -271,19 +288,47 @@ public class Contact extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 7000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("2 x 7,000 Experience Lamps (Combat Skills)", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("Keris", ItemID.KERIS, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Sophanem's Bank"));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHighPriest, talkToJex), lightSource));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHighPriest, talkToJex), lightSource, tinderbox));
 
 		allSteps.add(new PanelDetails("Explore the dungeon",
 			Arrays.asList(goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment,
-				talkToMaisa, talkToOsman), lightSource));
+				talkToMaisa, talkToOsman), lightSource, tinderbox));
 
 		allSteps.add(new PanelDetails("Help Osman",
 			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
-				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions, lightSource));
+				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions,
+			lightSource, tinderbox));
 
 		return allSteps;
 	}

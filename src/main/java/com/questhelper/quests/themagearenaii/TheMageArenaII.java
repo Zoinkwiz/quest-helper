@@ -38,6 +38,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -65,7 +66,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, runesForCasts, magicCombatGear, knife, brews, restores
 		, food, recoils, enchantedSymbol, justicarsHand, demonsHeart, entRoots, godCape;
 
-	Requirement inCavern, hasHand, hasHeart, hasRoots, givenHand, givenHeart, givenRoots;
+	Requirement inCavern, givenHand, givenHeart, givenRoots;
 
 	QuestStep enterCavern, talkToKolodion, locateFollowerSara, locateFollowerGuthix, locateFollowerZammy,
 		enterCavernWithHand, enterCavernWithHeart, enterCavernWithRoots, giveKolodionHeart, giveKolodionHand,
@@ -91,16 +92,17 @@ public class TheMageArenaII extends BasicQuestHelper
 		ConditionalStep goKillMinions = new ConditionalStep(this, locateFollowerSara);
 		goKillMinions.addStep(new Conditions(inCavern, givenRoots, givenHand, givenHeart), talkToKolodionAfterMinions);
 		goKillMinions.addStep(new Conditions(givenRoots, givenHand, givenHeart), enterCavernAfterMinions);
-		goKillMinions.addStep(new Conditions(inCavern, hasHeart), giveKolodionHeart);
-		goKillMinions.addStep(hasHeart, enterCavernWithHeart);
+
+		goKillMinions.addStep(new Conditions(inCavern, demonsHeart), giveKolodionHeart);
+		goKillMinions.addStep(demonsHeart, enterCavernWithHeart);
 		goKillMinions.addStep(new Conditions(givenHand, givenRoots), locateFollowerZammy);
 
-		goKillMinions.addStep(new Conditions(inCavern, hasRoots), giveKolodionRoots);
-		goKillMinions.addStep(hasRoots, enterCavernWithRoots);
+		goKillMinions.addStep(new Conditions(inCavern, entRoots.alsoCheckBank(questBank)), giveKolodionRoots);
+		goKillMinions.addStep(entRoots.alsoCheckBank(questBank), enterCavernWithRoots);
 		goKillMinions.addStep(givenHand, locateFollowerGuthix);
 
-		goKillMinions.addStep(new Conditions(inCavern, hasHand), giveKolodionHand);
-		goKillMinions.addStep(hasHand, enterCavernWithHand);
+		goKillMinions.addStep(new Conditions(inCavern, justicarsHand.alsoCheckBank(questBank)), giveKolodionHand);
+		goKillMinions.addStep(justicarsHand.alsoCheckBank(questBank), enterCavernWithHand);
 		steps.put(2, goKillMinions);
 
 		ConditionalStep goImbueCape = new ConditionalStep(this, enterCavernAfterMinions);
@@ -149,11 +151,6 @@ public class TheMageArenaII extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCavern = new ZoneRequirement(cavern);
-
-		hasRoots = new ItemRequirements(entRoots);
-		hasHand = new ItemRequirements(justicarsHand);
-		hasHeart = new ItemRequirements(demonsHeart);
-
 
 		givenHand = new VarbitRequirement(6063, 1);
 		givenRoots = new VarbitRequirement(6064, 1);
@@ -252,6 +249,12 @@ public class TheMageArenaII extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.THE_MAGE_ARENA, QuestState.FINISHED));
 		reqs.add(new ItemRequirement("Unlocked all 3 god spells", -1, -1));
 		return reqs;
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to upgrade your God Cape"));
 	}
 
 	@Override

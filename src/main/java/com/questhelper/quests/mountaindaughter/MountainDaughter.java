@@ -73,8 +73,10 @@ public class MountainDaughter extends BasicQuestHelper
 	//Items Recommended
 	private ItemRequirement slayerRing, combatGear;
 
-	private Conditions onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy, spokenToSvidi, spokenToBrundt, minedRock,
-		gottenGuarantee, givenGuaranteeToSvidi, finishedDiplomacy, finishedFoodAndDiplomacy, inKendalCave, fightableKendalNearby, hasBuried, rubbedMudIntoTree;
+	private Requirement onIsland1, onIsland2, onIsland3, inTheCamp, askedAboutDiplomacy, askedAboutFoodAndDiplomacy,
+		spokenToSvidi, spokenToBrundt, minedRock,
+		gottenGuarantee, givenGuaranteeToSvidi, finishedDiplomacy, finishedFood, finishedFoodAndDiplomacy, inKendalCave,
+		fightableKendalNearby, hasBuried, rubbedMudIntoTree;
 
 	private QuestStep enterCamp, enterCampOverRocks, talkToHamal, digUpMud, rubMudIntoTree, climbTree, poleVaultRocks, plankRocks, listenToSpirit,
 		plankRocksReturn, talkToHamalAfterSpirit, talkToJokul, talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi, getFruit,
@@ -111,10 +113,14 @@ public class MountainDaughter extends BasicQuestHelper
 
 		ConditionalStep helpTheCamp = new ConditionalStep(this, enterCampOverRocks);
 		helpTheCamp.addStep(finishedFoodAndDiplomacy, returnToSpirit);
-		helpTheCamp.addStep(finishedDiplomacy, returnToHamalAboutFood);
-		helpTheCamp.addStep(whitePearlSeed.alsoCheckBank(questBank), returnToHamalAboutDiplomacy);
-		helpTheCamp.addStep(whitePearl.alsoCheckBank(questBank), eatFruit);
+		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, finishedFood), returnToHamalAboutDiplomacy);
+
+		// Get fruit
+		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearlSeed.alsoCheckBank(questBank)), returnToHamalAboutFood);
+		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearl.alsoCheckBank(questBank)), eatFruit);
 		helpTheCamp.addStep(givenGuaranteeToSvidi, getFruit);
+
+		// Fremennik friendship
 		helpTheCamp.addStep(gottenGuarantee, returnToSvidi);
 		helpTheCamp.addStep(minedRock, returnToBrundt);
 		helpTheCamp.addStep(spokenToBrundt, getRockFragment);
@@ -226,7 +232,8 @@ public class MountainDaughter extends BasicQuestHelper
 		gottenGuarantee = new Conditions(new VarbitRequirement(262, 50), askedAboutFood);
 		givenGuaranteeToSvidi = new Conditions(new VarbitRequirement(262, 60), askedAboutFood);
 		finishedDiplomacy = new Conditions(new VarbitRequirement(266, 1));
-		finishedFoodAndDiplomacy = new Conditions(new VarbitRequirement(266, 1), new VarbitRequirement(263, 20));
+		finishedFood = new VarbitRequirement(263, 20);
+		finishedFoodAndDiplomacy = new Conditions(finishedDiplomacy, finishedFood);
 		inKendalCave = new Conditions(new ZoneRequirement(KENDAL_CAVE));
 		fightableKendalNearby = new Conditions(new NpcHintArrowRequirement(NpcID.THE_KENDAL_1378));
 

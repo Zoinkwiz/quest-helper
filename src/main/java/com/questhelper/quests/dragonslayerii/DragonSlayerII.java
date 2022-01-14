@@ -94,10 +94,10 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	Requirement hadChest1MapPieces, hadChest2MapPieces, hadFungiMapPieces, hadBriarMapPieces, hadMushtreeMapPieces, hadMap1, hadMap2, hadMap3, hadMap4, hadMap5, hadMap6, hadMap7, hadMap8, hadMap9, hadMap10, hadMap11, hadMap12, hadMap13, hadMap14,
 		hadMap15, hadMap16, hadMap17, hadMap18, hadMap19, hadMap20, hadMap21, hadMap22, hadMap23, hadMap24, inMapPuzzle, onUngael, inUngaelUnderground, inUngaelKeyRoom,
-		inKhazariMaze, openedMithrilDoor, inMithDragonEntranceArea, inMithDragonGroundArea, inMithDragonUpperArea, inMithDragonOrbRoom, inMithDragonFurnaceArea, litFurnace;
+		inKharaziMaze, openedMithrilDoor, inMithDragonEntranceArea, inMithDragonGroundArea, inMithDragonUpperArea, inMithDragonOrbRoom, inMithDragonFurnaceArea, litFurnace;
 
 	Zone crandorUnderground, elvargArea, karamjaVolcano, muralRoom, houseGroundFloor, houseFirstFloor, lithkrenGroundFloor, lithkrenFirstFloor, lithkrenUnderground, lithkrenGroundFloorRoom,
-		dream, cryptF2, cryptF1, cryptF0, ungael, ungaelUnderground, ungaelKeyRoom, khazariMaze, mithDragonEntranceArea, mithDragonGroundArea, mithDragonUpperArea,
+		dream, cryptF2, cryptF1, cryptF0, ungael, ungaelUnderground, ungaelKeyRoom, kharaziMaze, mithDragonEntranceArea, mithDragonGroundArea, mithDragonUpperArea,
 		mithDragonOrbRoom, mithDragonFurnaceArea, deepLithkren, ardougneCastle, faladorF1, faladorF2, boat, battle;
 
 	DetailedQuestStep talkToAlec, talkToDallas, enterVolcano, enterCrandorWall, talkToDallasOnCrandor, usePickaxeOnBlockage, enterBlockage, investigateMural, killSpawn,
@@ -115,7 +115,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	ConditionalStep gettingTheKaramjaKey, gettingTheKourendKey, gettingTheVarrockKey, gettingTheFremennikKey;
 
-	DetailedQuestStep enterKhazariMaze, getToCentreOfMaze;
+	DetailedQuestStep enterKharaziMaze, getToCentreOfMaze;
 
 	DetailedQuestStep talkToReldo, searchBookcase, talkToReldoAgain, talkToReldoAgainNoBook, talkToSarah, talkToAva, usePipeOnDragonstone, talkToAvaAgain,
 		talkToAvaAgainNoOrb, useLocatorInSwamp;
@@ -308,8 +308,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		gettingTheFremennikKey.addStep(talkedToBrundt, talkToTorfinn);
 		gettingTheFremennikKey.setLockingCondition(hasTheFremennikKeyPiece);
 
-		gettingTheKaramjaKey = new ConditionalStep(this, enterKhazariMaze);
-		gettingTheKaramjaKey.addStep(inKhazariMaze, getToCentreOfMaze);
+		gettingTheKaramjaKey = new ConditionalStep(this, enterKharaziMaze);
+		gettingTheKaramjaKey.addStep(inKharaziMaze, getToCentreOfMaze);
 		gettingTheKaramjaKey.setLockingCondition(hasTheKaramjaKeyPiece);
 
 		gettingTheKourendKey = new ConditionalStep(this, talkToAmelia);
@@ -539,8 +539,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		varrocKeyPiece.setTooltip("You can get another by digging in Mort Myre");
 		fremennikKeyPiece = new ItemRequirement("Dragon key piece (Fremmennik)", ItemID.DRAGON_KEY_PIECE);
 		fremennikKeyPiece.setTooltip("You can get another from Ungael");
-		karamjaKeyPiece = new ItemRequirement("Dragon key piece (Khazari)", ItemID.DRAGON_KEY_PIECE_22091);
-		karamjaKeyPiece.setTooltip("You can get another from the middle of the Khazari dungeon");
+		karamjaKeyPiece = new ItemRequirement("Dragon key piece (Kharazi)", ItemID.DRAGON_KEY_PIECE_22091);
+		karamjaKeyPiece.setTooltip("You can get another from the middle of the Kharazi dungeon");
 
 		inertLocator = new ItemRequirement("Inert locator orb", ItemID.INERT_LOCATOR_ORB);
 		glassblowingPipeHighlighted = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
@@ -586,7 +586,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		ungael = new Zone(new WorldPoint(2240, 4031, 0), new WorldPoint(2303, 4095, 0));
 		ungaelUnderground = new Zone(new WorldPoint(2254, 10454, 0), new WorldPoint(2288, 10487, 0));
 		ungaelKeyRoom = new Zone(new WorldPoint(2288, 10463, 0), new WorldPoint(2294, 10467, 0));
-		khazariMaze = new Zone(new WorldPoint(2819, 9200, 0), new WorldPoint(2880, 9294, 0));
+		kharaziMaze = new Zone(new WorldPoint(2819, 9200, 0), new WorldPoint(2880, 9294, 0));
 		mithDragonOrbRoom = new Zone(new WorldPoint(1545, 4873, 0), new WorldPoint(1567, 4892, 0));
 		mithDragonGroundArea = new Zone(new WorldPoint(1731, 5314, 0), new WorldPoint(1794, 5385, 0));
 		mithDragonEntranceArea = new Zone(new WorldPoint(1762, 5364, 1), new WorldPoint(1769, 5368, 1));
@@ -620,7 +620,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		onUngael = new ZoneRequirement(ungael);
 		inUngaelUnderground = new ZoneRequirement(ungaelUnderground);
 		inUngaelKeyRoom = new ZoneRequirement(ungaelKeyRoom);
-		inKhazariMaze = new ZoneRequirement(khazariMaze);
+		inKharaziMaze = new ZoneRequirement(kharaziMaze);
 		inMithDragonEntranceArea = new ZoneRequirement(mithDragonEntranceArea);
 		inMithDragonGroundArea = new ZoneRequirement(mithDragonGroundArea);
 		inMithDragonOrbRoom = new ZoneRequirement(mithDragonOrbRoom);
@@ -869,7 +869,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		searchStoneChestForVorkathKey = new ObjectStep(this, ObjectID.STONE_CHEST_32053, new WorldPoint(2293, 10467, 0), "Search the stone chest in the room for the key piece.");
 
 		// Karamja key piece
-		enterKhazariMaze = new ObjectStep(this, ObjectID.CAVE_32479, new WorldPoint(2944, 2895, 0), "Go down the staircase in the south east of the Khazari Jungle. MAKE SURE TO HAVE AUTO-RETALIATE OFF BEFORE ENTERING.");
+		enterKharaziMaze = new ObjectStep(this, ObjectID.CAVE_32479, new WorldPoint(2944, 2895, 0), "Go down the staircase in the south east of the Kharazi Jungle. MAKE SURE TO HAVE AUTO-RETALIATE OFF BEFORE ENTERING.");
 		getToCentreOfMaze = new ObjectStep(this, NullObjectID.NULL_30730, new WorldPoint(2848, 9248, 0), "Navigate to the middle of the maze, disarming any traps in the way.");
 		getToCentreOfMaze.setLinePoints(Arrays.asList(
 			new WorldPoint(2847, 9284, 0),
@@ -1202,7 +1202,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Entering a dream", Arrays.asList(talkToOneiromancer, fillDreamVial, addGoutweed, crushAstralRune, grindAstralShards, addGroundAstral,
 			lightBrazier, usePotionOnFlame, talkToBobInDream, killRobertTheStrong, talkToBobAfterRobertFight), sealOfPassage, goutweed, astralRune, hammer, pestleAndMortarHighlighted, tinderbox, combatGear));
 
-		PanelDetails karamjaKeyPanel = new PanelDetails("Karamja key piece", Arrays.asList(enterKhazariMaze, getToCentreOfMaze), machete, axe, food);
+		PanelDetails karamjaKeyPanel = new PanelDetails("Karamja key piece", Arrays.asList(enterKharaziMaze, getToCentreOfMaze), machete, axe, food);
 		karamjaKeyPanel.setLockingStep(gettingTheKaramjaKey);
 
 		PanelDetails varrockKeyPanel = new PanelDetails("Varrock key piece", Arrays.asList(talkToReldo, searchBookcase, talkToReldoAgain, talkToSarah,

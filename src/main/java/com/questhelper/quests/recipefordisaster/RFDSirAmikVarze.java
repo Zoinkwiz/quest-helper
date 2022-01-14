@@ -159,7 +159,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 			macheteAndRadimus.addAlternates(ItemID.RED_TOPAZ_MACHETE, ItemID.OPAL_MACHETE, ItemID.JADE_MACHETE);
 		}
 		vanillaPod = new ItemRequirement("Vanilla pod", ItemID.VANILLA_POD);
-		vanillaPod.setTooltip("You can get a pod from the Khazari Jungle. Bring an axe and machete to get in");
+		vanillaPod.setTooltip("You can get a pod from the Kharazi Jungle. Bring an axe and machete to get in");
 		vanillaPod.setHighlightInInventory(true);
 
 		dramenStaffOrLunar = new ItemRequirement("Dramen/lunar staff", ItemID.DRAMEN_STAFF, 1, true);
@@ -330,7 +330,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestPointRequirement(107));
 		req.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1, Operation.GREATER_EQUAL,
-			"Started Legends' Quest to access the Khazari Jungle"));
+			"Started Legends' Quest to access the Kharazi Jungle"));
 		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED));

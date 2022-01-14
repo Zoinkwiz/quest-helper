@@ -85,7 +85,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	QuestStep enterHole, enterTzhaar, enterHoleChampion, enterTzhaarChampion, becomeChampion,
 		enterFightCaves, defeatZek, eatOomlie, enterNatureAltar, craftNatureRune, cookKarambwan;
 
-	QuestStep enterKhazariHole, enterBookcase, enterGates, killDeathwing;
+	QuestStep enterKharaziHole, enterBookcase, enterGates, killDeathwing;
 
 	QuestStep useShortcut, collectPalmLeaves, goUpToDuradel, getTask, enterBrimhavenDungeon,
 		killDragon;
@@ -129,7 +129,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notKilledDeathwing, inDeathwingArea3), killDeathwing);
 		doHard.addStep(new Conditions(notKilledDeathwing, inDeathwingArea2), enterGates);
 		doHard.addStep(new Conditions(notKilledDeathwing, inDeathwingArea1), enterBookcase);
-		doHard.addStep(notKilledDeathwing, enterKhazariHole);
+		doHard.addStep(notKilledDeathwing, enterKharaziHole);
 
 		doHard.addStep(notUsedShortcut, useShortcut);
 		doHard.addStep(notEatenWrap, eatOomlie);
@@ -154,7 +154,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notKilledDragon);
 		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE_WRAP).showConditioned(notEatenWrap);
 		oomlieWrap.setTooltip("You can make one by using a palm leaf on a raw oomlie and cooking it. Both are " +
-			"obtained from the Khazari Jungle");
+			"obtained from the Kharazi Jungle");
 		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedNature);
 		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemID.NATURE_TALISMAN)
 			.showConditioned(notCraftedNature);
@@ -254,10 +254,10 @@ public class KaramjaHard extends ComplexStateQuestHelper
 			"Craft a nature rune.", pureEssence);
 		cookKarambwan = new DetailedQuestStep(this, "Cook a raw karambwan.", rawKarambwan);
 
-		enterKhazariHole = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0), "Search and then enter the " +
-			"Mossy Rocks in the north west of the Khazari, and follow the cavern to kill a deathwing.", machete, axe,
+		enterKharaziHole = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0), "Search and then enter the " +
+			"Mossy Rocks in the north west of the Kharazi, and follow the cavern to kill a deathwing.", machete, axe,
 			pickaxe, lockpick);
-		enterKhazariHole.addDialogStep("Yes, I'll crawl through, I'm very athletic.");
+		enterKharaziHole.addDialogStep("Yes, I'll crawl through, I'm very athletic.");
 
 		enterBookcase = new ObjectStep(this, ObjectID.BOOKCASE_2911, new WorldPoint(2796, 9339, 0), "Right-click search the bookcase and slide past it.");
 		enterBookcase.addDialogStep("Yes please!");
@@ -266,12 +266,12 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		enterGates.addDialogStep("Yes, I'm very strong, I'll force them open.");
 		killDeathwing = new NpcStep(this, NpcID.DEATH_WING, new WorldPoint(2810, 9300, 0),
 			"Kill a death wing.");
-		enterKhazariHole.addSubSteps(enterBookcase, enterGates, killDeathwing);
+		enterKharaziHole.addSubSteps(enterBookcase, enterGates, killDeathwing);
 
 		useShortcut = new ObjectStep(this, ObjectID.STRONG_TREE_17074, new WorldPoint(2874, 3135, 0),
 			"Grapple across the shortcut south of Musa Point.", crossbow.equipped(), mithGrapple.equipped());
 		collectPalmLeaves = new ObjectStep(this, ObjectID.LEAFY_PALM_TREE, new WorldPoint(2845, 2915, 0),
-			"Shake leafy palm trees in the Khazari Jungle and pick up 5 palm leaves. You can pick up and drop the " +
+			"Shake leafy palm trees in the Kharazi Jungle and pick up 5 palm leaves. You can pick up and drop the " +
 				"same leaf for this task."
 			, axe, machete, pickaxe, lockpick);
 		goUpToDuradel = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2871, 2971, 0),
@@ -380,7 +380,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		collectLeavesSteps.setDisplayCondition(notCollectedLeaves);
 		allSteps.add(collectLeavesSteps);
 
-		PanelDetails deathwingSteps = new PanelDetails("Kill a Deathwing", Arrays.asList(enterKhazariHole,
+		PanelDetails deathwingSteps = new PanelDetails("Kill a Deathwing", Arrays.asList(enterKharaziHole,
 			enterBookcase, enterGates, killDeathwing), woodcutting34, strength50, agility53, thieving50, mining52,
 			legendsQuest, axe, machete, pickaxe, lockpick);
 		deathwingSteps.setDisplayCondition(notKilledDeathwing);

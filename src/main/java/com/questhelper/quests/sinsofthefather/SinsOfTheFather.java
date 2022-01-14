@@ -407,7 +407,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwood8 = new ItemRequirement("Blisterwood logs", ItemID.BLISTERWOOD_LOGS, 8);
 
 		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
-		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old Man Ral's basement");
+		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old" +
+			" Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard");
 
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		axeEquipped = new ItemRequirement("Any axe", ItemCollections.getAxes(), 1, true);

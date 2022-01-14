@@ -86,6 +86,7 @@ public class RFDStart extends BasicQuestHelper
 		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
 		greenmansAle = new ItemRequirement("Greenman's ale", ItemID.GREENMANS_ALE);
 		rottenTomato = new ItemRequirement("Rotten tomato", ItemID.ROTTEN_TOMATO);
+		rottenTomato.setTooltip("You can buy one from the crate next to Toby in Varrock for 1gp");
 		fruitBlast = new ItemRequirement("Fruit blast", ItemID.FRUIT_BLAST);
 		ashes = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);

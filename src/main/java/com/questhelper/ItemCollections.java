@@ -127,6 +127,7 @@ public class ItemCollections
 	private static final List<Integer> bows = ImmutableList.of(
 		ItemID.MAGIC_SHORTBOW,
 		ItemID.MAGIC_SHORTBOW_I,
+		ItemID.DARK_BOW,
 		ItemID.MAGIC_LONGBOW,
 		ItemID.YEW_SHORTBOW,
 		ItemID.YEW_LONGBOW,

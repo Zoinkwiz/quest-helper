@@ -156,7 +156,6 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		{
 			macheteAndRadimus = new ItemRequirements("Machete and Radimus notes",
 				machete, radimusNotes);
-			macheteAndRadimus.addAlternates(ItemID.RED_TOPAZ_MACHETE, ItemID.OPAL_MACHETE, ItemID.JADE_MACHETE);
 		}
 		vanillaPod = new ItemRequirement("Vanilla pod", ItemID.VANILLA_POD);
 		vanillaPod.setTooltip("You can get a pod from the Kharazi Jungle. Bring an axe and machete to get in");
@@ -177,8 +176,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		iceGloves.setTooltip("Although optional, you'll take a lot of damage if you're not wearing them");
 		rawChicken = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
 		rawChicken.setHighlightInInventory(true);
-		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
-		antifirePotion = new ItemRequirement("Antifire potion", ItemID.ANTIFIRE_POTION4);
+		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.getAntifireShields());
+		antifirePotion = new ItemRequirement("Antifire potion", ItemCollections.getAntifire());
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 

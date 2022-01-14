@@ -321,7 +321,7 @@ public class HolyGrail extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(threeCamelotTele);
-		reqs.add(ardyTele);
+		reqs.add(ardyTele.quantity(2));
 		reqs.add(faladorTele);
 		reqs.add(sixtyCoins);
 		reqs.add(antipoison);

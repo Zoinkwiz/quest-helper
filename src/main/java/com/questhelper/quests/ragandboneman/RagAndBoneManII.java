@@ -553,7 +553,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 			"Light the logs under the pot-boiler.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
 
-		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned.");
+		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned. You can hop worlds to make this happen instantly.");
 
 		removePot = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
 			"Take the pot from the pot-boiler.");

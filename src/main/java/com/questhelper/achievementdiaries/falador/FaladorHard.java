@@ -277,6 +277,12 @@ public class FaladorHard extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("Giant Mole (lvl 230)", "Skeletal Wyvern (lvl 140)", "Blue dragon (lvl 111)");
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(pureEss28, mindTiara, coins10000, combatGear, lightSource, spade, wyvernProtection, prospectorHelm,
@@ -337,7 +343,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(changeCrestSteps);
 
 		PanelDetails moleSteps = new PanelDetails("Holy Moley!", Arrays.asList(goToGiantMole, killGiantMole),
-			lightSource, combatGear, food);
+			lightSource, spade, combatGear, food);
 		moleSteps.setDisplayCondition(notKilledMole);
 		allSteps.add(moleSteps);
 

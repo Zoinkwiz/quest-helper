@@ -540,9 +540,11 @@ public class DesertTreasure extends BasicQuestHelper
 
 		placeBlood.addSubSteps(placeSmoke, placeShadow, placeIce);
 
-		enterPyramid = new ObjectStep(this, ObjectID.LADDER_6497, new WorldPoint(3233, 2897, 0), "Bring any energy/stamina potions you have, some food, and enter the pyramid south east of the Bandit Camp.");
+		enterPyramid = new ObjectStep(this, ObjectID.LADDER_6497, new WorldPoint(3233, 2897, 0),
+				"Bring any energy/stamina potions you have, some food, and enter the pyramid south east of the Bandit Camp.", energyOrStaminas, food, antipoison);
 
-		goDownFromFirstFloor = new ObjectStep(this, ObjectID.LADDER_6498, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid.");
+		goDownFromFirstFloor = new ObjectStep(this, ObjectID.LADDER_6498, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid. " +
+				"You may randomly fall out of the pyramid as you traverse it and need to start again.");
 		goDownFromSecondFloor = new ObjectStep(this, ObjectID.LADDER_6499, new WorldPoint(2846, 4973, 2), "Go down to the bottom of the pyramid.");
 		goDownFromThirdFloor = new ObjectStep(this, ObjectID.LADDER_6500, new WorldPoint(2784, 4941, 1), "Go down to the bottom of the pyramid.");
 

@@ -52,6 +52,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -271,9 +272,9 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		cadavaBerries = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
 		combatRangeMelee = new ItemRequirement("Combat gear, preferably ranged or melee", -1, -1);
 		combatRangeMelee.setDisplayItemId(BankSlotIcons.getCombatGear());
-		trollTele = new ItemRequirement("Trollheim teleports", ItemID.TROLLHEIM_TELEPORT, 2);
+		trollTele = new ItemRequirement("Trollheim teleports", ItemID.TROLLHEIM_TELEPORT);
 		varrockTele = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		draynorTele = new ItemRequirement("Draynor teleport", ItemID.DRAYNOR_MANOR_TELEPORT);
+		draynorTele = new ItemRequirement("Draynor teleport", ItemID.DRAYNOR_MANOR_TELEPORT, 2);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
@@ -480,11 +481,12 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		crossFence = new ObjectStep(this, ObjectID.FENCE_33219, new WorldPoint(2890, 3948, 0), "Sneak into Weiss via the fence to the east.");
 		crossFence.addDialogStep("I'll be back!");
 
-		goSouthSneak = new DetailedQuestStep(this, new WorldPoint(2887, 3935, 0), "You need to reach the hole at the north west corner, avoiding the trolls and the boulders they throw. Go south, then west, then north.");
-		goWestSneak1 = new DetailedQuestStep(this, new WorldPoint(2879, 3922, 0), "Wait a few seconds, then run west to the next point.");
-		goWestSneak2 = new DetailedQuestStep(this, new WorldPoint(2865, 3928, 0), "Wait a few seconds, then run west to the next point.");
-		goWestSneak3 = new DetailedQuestStep(this, new WorldPoint(2856, 3923, 0), "Wait a few seconds, then run west to the next point.");
-		goNorth = new DetailedQuestStep(this, new WorldPoint(2859, 3939, 0), "Wait a few seconds, then run north to the next point.");
+		goSouthSneak = new TileStep(this, new WorldPoint(2887, 3935, 0), "You need to reach the hole at the north west " +
+			"corner, avoiding the trolls and the boulders they throw. Go south, then west, then north.");
+		goWestSneak1 = new TileStep(this, new WorldPoint(2879, 3922, 0), "Wait a few seconds, then run west to the next point.");
+		goWestSneak2 = new TileStep(this, new WorldPoint(2865, 3928, 0), "Wait a few seconds, then run west to the next point.");
+		goWestSneak3 = new TileStep(this, new WorldPoint(2856, 3923, 0), "Wait a few seconds, then run west to the next point.");
+		goNorth = new TileStep(this, new WorldPoint(2859, 3939, 0), "Wait a few seconds, then run north to the next point.");
 
 		enterHole = new ObjectStep(this, ObjectID.HOLE_33227, new WorldPoint(2854, 3944,0), "Wait a few seconds, and run into the hole.");
 		goSouthSneak.addSubSteps(goWestSneak1, goWestSneak2, goWestSneak3, goNorth, enterHole);

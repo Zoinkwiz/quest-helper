@@ -88,7 +88,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	ItemRequirement combatGear, combatGear2, magicLog, food, staminaPotions, prayerPotions, antidote;
 
 	//Other Requirements
-	Requirement nieveFollower;
+	Requirement nieveFollower, strongholdBalloon;
 
 	QuestStep talkToNarnode;
 
@@ -255,6 +255,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
+		strongholdBalloon = new VarbitRequirement(2870, Operation.EQUAL, 1, "Unlocked the Tree Gnome Stronghold balloon route");
+
 		lemon = new ItemRequirement("Lemon", ItemID.LEMON);
 		grape = new ItemRequirement("Grapes", ItemID.GRAPES);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
@@ -754,7 +756,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
-		req.add(new ItemRequirement("Unlocked the Tree Gnome Stronghold balloon route", -1, -1));
+		req.add(strongholdBalloon);
 		req.add(new QuestRequirement(QuestHelperQuest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId(),
 			Operation.GREATER_EQUAL,  50, "Finished the 'Freeing King Awowogei' subquest of RFD"));

@@ -98,7 +98,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 
 		catchRats.setRequirements(Collections.singletonList(cat));
 		catchRats.setText("Have your cat catch Hell-Rats for spices, and add them " +
-			"to your stew. You will need to add a random number between 1-4 of each spice (red/orange/yellow/brown). " +
+			"to your stew. You will need to add a random number between 1-3 of each spice (red/orange/yellow/brown). " +
 			"Try adding 1 of a spice to a stew, then using the stew on Evil Dave to see if it's right. If not, try " +
 			"with 2 and then 3. " +
 			"Rinse and repeat until you know the right quantity of each spice, then use the perfect stew combination " +

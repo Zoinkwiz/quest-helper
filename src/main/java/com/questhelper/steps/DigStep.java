@@ -65,6 +65,7 @@ public class DigStep extends DetailedQuestStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		super.onGameTick(event);
 		hasExpectedItem = InventorySlots.INVENTORY_SLOTS.contains(client, expectedItemPredicate);
 		if (!hasExpectedItem)
 		{

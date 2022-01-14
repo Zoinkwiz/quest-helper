@@ -128,6 +128,7 @@ public class ObjectStep extends DetailedQuestStep
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
+		super.onGameTick(event);
 		if (revalidateObjects)
 		{
 			if (lastPlane != client.getPlane())

@@ -60,6 +60,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.widgets.Widget;
@@ -99,6 +100,8 @@ public class DetailedQuestStep extends QuestStep
 	protected static final int MAX_DISTANCE = 2350;
 
 	protected int currentRender = 0;
+
+	protected final int MAX_RENDER_SIZE = 4;
 
 	protected boolean started;
 
@@ -237,10 +240,15 @@ public class DetailedQuestStep extends QuestStep
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		currentRender = (currentRender + 1) % MAX_RENDER_SIZE;
+	}
+
 	@Override
 	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		currentRender = (currentRender + 1) % 48;
 		if (client.getLocalPlayer() == null)
 		{
 			return;
@@ -251,7 +259,7 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (currentRender < 24)
+		if (currentRender < (MAX_RENDER_SIZE / 2))
 		{
 			renderArrow(graphics);
 		}
@@ -360,7 +368,7 @@ public class DetailedQuestStep extends QuestStep
 
 			WorldPoint point = mapPoint.getWorldPoint();
 
-			if (currentRender < 24)
+			if (currentRender < MAX_RENDER_SIZE / 2)
 			{
 				renderMinimapArrow(graphics);
 			}

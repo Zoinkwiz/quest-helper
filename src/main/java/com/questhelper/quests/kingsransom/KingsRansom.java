@@ -391,9 +391,11 @@ public class KingsRansom extends BasicQuestHelper
 		talkToCromperty.addAlternateNpcs(NpcID.WIZARD_CROMPERTY_8481);
 		talkToCromperty.addDialogSteps("Chat.");
 
-		enterFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knight Fortress.",
+		enterFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0),
+				"Enter the Black Knight Fortress wearing the bronze med helm and iron chainbody.",
 			bronzeMedWorn, ironChainWorn, blackKnightHelm, blackKnightBody, blackKnightLeg, animateRock, holyGrail, granite);
-		enterWallInFortress = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Enter the secret room.", blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, animateRock, holyGrail, granite);
+		enterWallInFortress = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Enter the secret room wearing the black knight armour.",
+				blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, animateRock, holyGrail, granite);
 		freeArthur = new ObjectStep(this, NullObjectID.NULL_25943, new WorldPoint(1867, 4233, 0), "Free King Arthur " +
 			"by using the animate rock scroll.", animateRock.highlighted(), holyGrail, granite);
 

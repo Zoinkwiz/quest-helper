@@ -160,16 +160,16 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlighted.setHighlightInInventory(true);
-		rawCodHighlighted = new ItemRequirement("Raw cod", ItemID.RAW_COD);
+		rawCodHighlighted = new ItemRequirement("Raw cod (more if you burn cake)", ItemID.RAW_COD);
 		rawCodHighlighted.setHighlightInInventory(true);
 		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE);
 		knifeHighlighted.setHighlightInInventory(true);
-		breadHighlighted = new ItemRequirement("Bread", ItemID.BREAD);
+		breadHighlighted = new ItemRequirement("Bread (more if you burn cake)", ItemID.BREAD);
 		breadHighlighted.setTooltip("You can make this by using a knife on bread");
 		breadHighlighted.setHighlightInInventory(true);
 		divingAparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS, 1, true);
 		divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET, 1, true);
-		fishBowl = new ItemRequirement("Fish bowl", ItemID.EMPTY_FISHBOWL);
+		fishBowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL);
 		bronzeWire3 = new ItemRequirement("Bronze wire", ItemID.BRONZE_WIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		fishCake = new ItemRequirement("Cooked fishcake", ItemID.COOKED_FISHCAKE);
@@ -298,7 +298,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> req = new ArrayList<>();
 		req.add(combatGear);
-		req.add(new ItemRequirement("Teleport to Watchtower", ItemID.WATCHTOWER_TELEPORT));
+		req.add(new ItemRequirement("Teleport to Khazard", ItemID.KHAZARD_TELEPORT));
 		req.add(new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT));
 
 		return req;

@@ -444,8 +444,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		enterCaveToFight = new ObjectStep(this, NullObjectID.NULL_37433, new WorldPoint(2465, 4012, 0),
 			"Enter the door, ready to fight.", combatGear, vShield.equipped());
 		enterCaveToFight.addDialogStep("Yes.");
-		fightTyphor = new NpcStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor. Protect from " +
-			"Melee until he's half health, then Protect from Magic.", vShield.equipped());
+		fightTyphor = new NpcStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor, who attacks " +
+			"with both Melee and Magic", vShield.equipped());
 		((NpcStep) fightTyphor).addAlternateNpcs(NpcID.TYPHOR_9296);
 
 		PrayerRequirement protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);

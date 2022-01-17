@@ -286,9 +286,9 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 5250);
-		coins250 = new ItemRequirement("Coins", ItemID.COINS_995, 250);
-		coins5000 = new ItemRequirement("Coins", ItemID.COINS_995, 5000);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5250);
+		coins250 = new ItemRequirement("Coins", ItemCollections.getCoins(), 250);
+		coins5000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 5000);
 		beer = new ItemRequirement(true, "Beer", ItemID.BEER);
 		beer.addAlternates(ItemID.BEER_TANKARD);
 		rawShark = new ItemRequirement("Raw shark, manta ray or sea turtle", ItemID.RAW_SHARK);

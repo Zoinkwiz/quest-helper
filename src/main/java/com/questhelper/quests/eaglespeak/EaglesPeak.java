@@ -186,7 +186,7 @@ public class EaglesPeak extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 50);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 50);
 		tar = new ItemRequirement("Swamp tar", ItemID.SWAMP_TAR);
 		birdBook = new ItemRequirement("Bird book", ItemID.BIRD_BOOK);
 		birdBook.setHighlightInInventory(true);

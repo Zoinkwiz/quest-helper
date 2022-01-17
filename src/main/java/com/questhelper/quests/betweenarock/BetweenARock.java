@@ -178,7 +178,7 @@ public class BetweenARock extends BasicQuestHelper
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		coins5 = new ItemRequirement("Coins", ItemID.COINS_995, 5);
+		coins5 = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
 		page1 = new ItemRequirement("Book page 1", ItemID.BOOK_PAGE_1);
 		page2 = new ItemRequirement("Book page 2", ItemID.BOOK_PAGE_2);
 		page3 = new ItemRequirement("Book page 3", ItemID.BOOK_PAGE_3);
@@ -225,7 +225,7 @@ public class BetweenARock extends BasicQuestHelper
 		goldOre6 = new ItemRequirement("Gold ores", ItemID.GOLD_ORE, 6);
 
 		goldBars4 = new ItemRequirement("Gold bars", ItemID.GOLD_BAR, 4);
-		coins1000 = new ItemRequirement("Coins for travelling", ItemID.COINS_995, 1000);
+		coins1000 = new ItemRequirement("Coins for travelling", ItemCollections.getCoins(), 1000);
 	}
 
 	public void loadZones()

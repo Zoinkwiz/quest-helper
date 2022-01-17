@@ -43,6 +43,7 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -242,7 +243,7 @@ public class ATasteOfHope extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins1000 = new ItemRequirement("Coins", ItemID.COINS_995, 1000);
+		coins1000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 1000);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		emerald = new ItemRequirement("Emerald", ItemID.EMERALD);
 		emeraldHighlighted = new ItemRequirement("Emerald", ItemID.EMERALD);
@@ -546,7 +547,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(pickaxe);
+		return Collections.singletonList(pickaxe);
 	}
 
 	@Override

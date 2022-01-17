@@ -36,6 +36,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
@@ -270,6 +272,24 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Zombie (lvl 13) and cave bug (lvl 6)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Explorer's ring 1", ItemID.EXPLORERS_RING_1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("30 casts of Low Level Alchemy per day without runes (does not provide experience) from Explorer's ring"),
+			new UnlockReward("50% run energy replenish twice a day from Explorer's ring")
+		);
 	}
 
 	@Override

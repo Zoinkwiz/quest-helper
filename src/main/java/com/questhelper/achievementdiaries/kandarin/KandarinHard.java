@@ -144,9 +144,10 @@ public class KandarinHard extends ComplexStateQuestHelper
 		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
-		bow = new ItemRequirement("Dusty key", ItemCollections.getBows()).showConditioned(notBurnMaple);
+		bow = new ItemRequirement("Any bow", ItemCollections.getBows()).showConditioned(notBurnMaple);
 		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound);
-		coins = new ItemRequirement("Coins", ItemID.COINS).showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins())
+			.showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddySpear);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear);
 		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notAddySpear);

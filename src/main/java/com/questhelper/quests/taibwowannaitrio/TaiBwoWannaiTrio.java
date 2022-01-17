@@ -506,7 +506,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
 		karambwanji = new ItemRequirement("Or More Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
 		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		poisonKarambwan = new ItemRequirement("Poison karambwan", ItemID.POISON_KARAMBWAN);
 		karambwanjiPaste = new ItemRequirement("Karambwanji paste", ItemID.KARAMBWANJI_PASTE);
 

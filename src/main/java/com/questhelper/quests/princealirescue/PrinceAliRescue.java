@@ -153,7 +153,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlighted.setHighlightInInventory(true);
 		ropeReqs = new ItemRequirement("Rope, or 15 coins / 4 balls of wool to obtain during the quest", ItemID.ROPE);
-		coins100 = new ItemRequirement("Coins minimum", ItemID.COINS_995, 100);
+		coins100 = new ItemRequirement("Coins minimum", ItemCollections.getCoins(), 100);
 		wig = new ItemRequirement("Wig", ItemID.WIG_2421);
 		wig.setHighlightInInventory(true);
 		dyedWig = new ItemRequirement("Wig (dyed)", ItemID.WIG);

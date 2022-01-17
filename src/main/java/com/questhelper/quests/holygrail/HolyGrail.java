@@ -160,7 +160,7 @@ public class HolyGrail extends BasicQuestHelper
 		threeCamelotTele = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, 3);
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
-		sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
+		sixtyCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 60);
 		antipoison = new ItemRequirement("Antipoison", ItemID.ANTIPOISON4);
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		combatGear = new ItemRequirement("A weapon and armour", -1, -1);

@@ -36,6 +36,8 @@ import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.EmoteStep;
 import com.questhelper.steps.NpcStep;
@@ -244,11 +246,30 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Explorer's ring 4", ItemID.EXPLORERS_RING_4),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("100% run energy replenish 3 times a day from Explorer's ring"),
+			new UnlockReward("30 casts of High Level Alchemy per day (does not provide experience) from Explorer's ring"),
+			new UnlockReward("20% discount on items in the Culinaromancer's Chest"),
+			new UnlockReward("Ability to use Fairy rings without the need of a Dramen or Lunar staff"),
+			new UnlockReward("Unlocked the 6th slot for blocking Slayer tasks")
+			);
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-
-		// addy plate, qc emote, water runes, rich chest, movario, chop
 
 		PanelDetails adamantitePlatebodySteps = new PanelDetails("Adamantite Platebody",
 			Arrays.asList(moveToDraySewer, addyPlatebody), new SkillRequirement(Skill.SMITHING, 88),

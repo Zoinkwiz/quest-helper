@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.recruitmentdrive;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -120,7 +121,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemID.COINS, 3000);
+		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemCollections.getCoins(), 3000);
 		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
 
 		femaleReq = new PlayerModelRequirement(true);

@@ -157,12 +157,12 @@ public class DeathPlateau extends BasicQuestHelper
 
 		ItemRequirement premadeBlurb = new ItemRequirement("Premade blurb' sp.", ItemID.PREMADE_BLURB_SP);
 		premadeBlurb.addAlternates(ItemID.BLURBERRY_SPECIAL);
-		ItemRequirement coins500 = new ItemRequirement("Coins", ItemID.COINS_995, 500);
+		ItemRequirement coins500 = new ItemRequirement("Coins", ItemCollections.getCoins(), 500);
 
 		premadeBlurbOrCoins = new ItemRequirements(LogicType.OR,
 			"Premade blurb' sp. (or a Blurberry special, or 500 coins to gamble with)",
 			premadeBlurb, coins500);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 60);
 		bread = new ItemRequirement("Bread (UNNOTED)", ItemID.BREAD, 10);
 		trout = new ItemRequirement("Trout (UNNOTED)", ItemID.TROUT, 10);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);

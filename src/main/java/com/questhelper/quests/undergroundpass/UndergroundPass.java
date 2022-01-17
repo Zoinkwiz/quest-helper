@@ -141,7 +141,7 @@ public class UndergroundPass extends BasicQuestHelper
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(ItemID.SHARK);
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
-		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemID.COINS_995, 750);
+		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemCollections.getCoins(), 750);
 		agilityPotions = new ItemRequirement("Agility Potions", ItemCollections.getAgilityPotions());
 		telegrabRunes = new ItemRequirements("Telegrab Runes", new ItemRequirement("Air rune", ItemID.AIR_RUNE),
 			new ItemRequirement("Law rune", ItemID.LAW_RUNE));

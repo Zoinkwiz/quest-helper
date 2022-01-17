@@ -151,7 +151,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		notKilledDragon = new VarbitRequirement(3609, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notKilledDeathwing);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notKilledDragon);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notKilledDragon);
 		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE_WRAP).showConditioned(notEatenWrap);
 		oomlieWrap.setTooltip("You can make one by using a palm leaf on a raw oomlie and cooking it. Both are " +
 			"obtained from the Kharazi Jungle");

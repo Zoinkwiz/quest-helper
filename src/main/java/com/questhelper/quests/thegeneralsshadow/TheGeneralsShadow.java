@@ -128,7 +128,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeak.addAlternates(ItemID.GHOSTSPEAK_AMULET_4250);
 
-		coins40 = new ItemRequirement("Coins", ItemID.COINS_995, 40);
+		coins40 = new ItemRequirement("Coins", ItemCollections.getCoins(), 40);
 		inventorySlot = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 1);
 
 		kharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.getAmuletOfGlories());

@@ -252,7 +252,7 @@ public class Watchtower extends BasicQuestHelper
 
 		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE);
 
-		coins20 = new ItemRequirement("Coins", ItemID.COINS_995, 20);
+		coins20 = new ItemRequirement("Coins", ItemCollections.getCoins(), 20);
 
 		skavidMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP);
 		skavidMap.setTooltip("You can get another from the city guard in south east Gu'Tanoth.");

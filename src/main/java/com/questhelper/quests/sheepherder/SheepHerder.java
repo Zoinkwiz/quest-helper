@@ -110,7 +110,7 @@ public class SheepHerder extends BasicQuestHelper
 
 	private void setupRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 
 		energyRestore = new ItemRequirement("Energy restoring items", ItemCollections.getRunRestoreItems());
 

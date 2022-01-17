@@ -291,7 +291,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	{
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
-		coins15 = new ItemRequirement("Coins", ItemID.COINS_995, 15);
+		coins15 = new ItemRequirement("Coins", ItemCollections.getCoins(), 15);
 		bronzeNail = new ItemRequirement("Bronze nail", ItemID.BRONZE_NAILS);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		rope = new ItemRequirement("Rope", ItemID.ROPE);

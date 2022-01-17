@@ -263,7 +263,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR);
 		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
-		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
+		coins12 = new ItemRequirement("Coins", ItemCollections.getCoins(), 12);
 		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
 		vodkaHighlight.setTooltip("You can buy some from the Gnome Stronghold drinks shop");

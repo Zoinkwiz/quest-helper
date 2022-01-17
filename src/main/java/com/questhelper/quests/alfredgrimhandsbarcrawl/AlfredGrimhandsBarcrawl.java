@@ -101,15 +101,15 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins208 = new ItemRequirement("Coins", ItemID.COINS_995, 208);
-		coins50 = new ItemRequirement("Coins", ItemID.COINS_995, 50);
-		coins10 = new ItemRequirement("Coins", ItemID.COINS_995, 10);
-		coins70 = new ItemRequirement("Coins", ItemID.COINS_995, 70);
-		coins8 = new ItemRequirement("Coins", ItemID.COINS_995, 8);
-		coins7 = new ItemRequirement("Coins", ItemID.COINS_995, 7);
-		coins15 = new ItemRequirement("Coins", ItemID.COINS_995, 15);
-		coins18 = new ItemRequirement("Coins", ItemID.COINS_995, 18);
-		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
+		coins208 = new ItemRequirement("Coins", ItemCollections.getCoins(), 208);
+		coins50 = new ItemRequirement("Coins", ItemCollections.getCoins(), 50);
+		coins10 = new ItemRequirement("Coins", ItemCollections.getCoins(), 10);
+		coins70 = new ItemRequirement("Coins", ItemCollections.getCoins(), 70);
+		coins8 = new ItemRequirement("Coins", ItemCollections.getCoins(), 8);
+		coins7 = new ItemRequirement("Coins", ItemCollections.getCoins(), 7);
+		coins15 = new ItemRequirement("Coins", ItemCollections.getCoins(), 15);
+		coins18 = new ItemRequirement("Coins", ItemCollections.getCoins(), 18);
+		coins12 = new ItemRequirement("Coins", ItemCollections.getCoins(), 12);
 
 			gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);

@@ -151,7 +151,7 @@ public class MakingHistory extends BasicQuestHelper
 			" Ship")
 			.with(ectoTokens)
 			.with(new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.FINISHED))
-			.with(new ItemRequirement("Coins", ItemID.COINS_995, 4100))
+			.with(new ItemRequirement("Coins", ItemCollections.getCoins(), 4100))
 			.build();
 		portPhasmatysEntry.setTooltip(ectoTokens.getTooltip());
 

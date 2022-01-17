@@ -35,6 +35,7 @@ import java.util.Map;
 
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;

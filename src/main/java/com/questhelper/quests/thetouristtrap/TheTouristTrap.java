@@ -248,7 +248,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		coins100 = new ItemRequirement("Coins", ItemID.COINS_995, 100);
+		coins100 = new ItemRequirement("Coins", ItemCollections.getCoins(), 100);
 	}
 
 	public void loadZones()

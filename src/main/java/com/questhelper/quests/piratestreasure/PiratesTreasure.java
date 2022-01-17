@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.piratestreasure;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
@@ -69,7 +70,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
+		sixtyCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 60);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 
 		Map<Integer, QuestStep> steps = new HashMap<>();

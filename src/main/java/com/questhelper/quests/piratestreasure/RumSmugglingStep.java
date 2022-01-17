@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.piratestreasure;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -184,11 +185,11 @@ public class RumSmugglingStep extends ConditionalStep
 	private void setupSteps()
 	{
 		goToKaramja = new NpcStep(getQuestHelper(), NpcID.SEAMAN_LORRIS, new WorldPoint(3027, 3222, 0),
-			"Talk to one of the Seamen on the docks in Port Sarim to go to Karamja.", new ItemRequirement("Coins", ItemID.COINS_995, 60));
+			"Talk to one of the Seamen on the docks in Port Sarim to go to Karamja.", new ItemRequirement("Coins", ItemCollections.getCoins(), 60));
 		goToKaramja.addDialogStep("Yes please.");
 
 		talkToZambo = new NpcStep(getQuestHelper(), NpcID.ZAMBO, new WorldPoint(2929, 3145, 0),
-			"Talk to Zambo in the Karamja Wines, Spirits and Beers bar. Buy one Karamjan rum.", new ItemRequirement("Coins", ItemID.COINS_995, 30));
+			"Talk to Zambo in the Karamja Wines, Spirits and Beers bar. Buy one Karamjan rum.", new ItemRequirement("Coins", ItemCollections.getCoins(), 30));
 		talkToZambo.addDialogStep("Yes please.");
 
 		talkToLuthas = new NpcStep(getQuestHelper(), NpcID.LUTHAS, new WorldPoint(2938, 3154, 0),
@@ -209,7 +210,7 @@ public class RumSmugglingStep extends ConditionalStep
 			"Talk to Luthas and tell him you finished filling the crate.");
 
 		talkToCustomsOfficer = new NpcStep(getQuestHelper(), NpcID.CUSTOMS_OFFICER, new WorldPoint(2955, 3146, 0),
-			"Head back to Port Sarim. Pay the Customs Officer to sail there.", new ItemRequirement("Coins", ItemID.COINS_995, 30));
+			"Head back to Port Sarim. Pay the Customs Officer to sail there.", new ItemRequirement("Coins", ItemCollections.getCoins(), 30));
 		talkToCustomsOfficer.addDialogStep("Thank you, I'll be on my way");
 		talkToCustomsOfficer.addDialogStep("Can I journey on this ship?");
 		talkToCustomsOfficer.addDialogStep("Search away, I have nothing to hide.");

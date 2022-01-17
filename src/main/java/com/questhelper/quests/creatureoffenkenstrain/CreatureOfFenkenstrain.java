@@ -153,7 +153,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	{
 		ItemRequirement telegrab = new ItemRequirements("Telegrab runes", new ItemRequirement("Law rune",
 			ItemID.LAW_RUNE), new ItemRequirement("Air rune", ItemID.AIR_RUNE));
-		ItemRequirement coins50 = new ItemRequirement("Coins", ItemID.COINS_995, 50);
+		ItemRequirement coins50 = new ItemRequirement("Coins", ItemCollections.getCoins(), 50);
 
 		// TODO: Add magic req once rebased
 		telegrabOrCoins = new ItemRequirements(LogicType.OR,
@@ -166,7 +166,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Threads", ItemID.THREAD, 5);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		coins = new ItemRequirement("Coins at least", ItemID.COINS_995, 100);
+		coins = new ItemRequirement("Coins at least", ItemCollections.getCoins(), 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.PICKLED_BRAIN);
 		obsidianAmulet = new ItemRequirement("Obsidian Amulet", ItemID.OBSIDIAN_AMULET);
 		marbleAmulet = new ItemRequirement("Marble Amulet", ItemID.MARBLE_AMULET);

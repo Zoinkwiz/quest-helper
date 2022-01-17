@@ -132,7 +132,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notBonesToPeachesPalace = new VarplayerRequirement(1194, true, 25);
+		notBonesToPeachesPalace = new VarplayerRequirement(1194, false, 25);
 		notJuttingWall = new VarplayerRequirement(1194, false, 26);
 		notCosmics = new VarplayerRequirement(1194, false, 27);
 		notWakaToEdge = new VarplayerRequirement(1194, false, 28);
@@ -142,8 +142,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		notBelladonna = new VarplayerRequirement(1195, false, 0);
 		notLightMiningHelm = new VarplayerRequirement(1195, false, 1);
 		notSmiteAltar = new VarplayerRequirement(1195, false, 2);
-		notPowerAmmy = new VarplayerRequirement(1195, true, 3);
-		bothEarth = new ComplexRequirement(LogicType.AND,"Earth runes", notBonesToPeachesPalace, notPowerAmmy);
+		notPowerAmmy = new VarplayerRequirement(1195, false, 3);
+		bothEarth = new ComplexRequirement(LogicType.AND, "Earth runes", notBonesToPeachesPalace, notPowerAmmy);
 
 		smiteActive = new PrayerRequirement("Smite prayer active", Prayer.SMITE);
 		bonesToPeaches = new VarbitRequirement(1505, Operation.EQUAL, 1, "Bones to peaches unlocked");
@@ -353,7 +353,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 			new UnlockReward("Unlimited teleports to cabbage patch near Falador farm for Explorer's ring"),
 			new UnlockReward("Access to a shortcut from Lumbridge Swamp to the desert"),
 			new UnlockReward("10% increased experience from Tears of Guthix")
-			);
+		);
 	}
 
 	@Override

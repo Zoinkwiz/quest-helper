@@ -179,7 +179,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER)
 			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy));
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPalmTree);
-		poisonIvySeed = new ItemRequirement("Poision ivy seed", ItemID.POISON_IVY_SEED).showConditioned(notPoisonIvy);
+		poisonIvySeed = new ItemRequirement("Poison ivy seed", ItemID.POISON_IVY_SEED).showConditioned(notPoisonIvy);
 		palmSap = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notPalmTree);
 		papaya = new ItemRequirement("Papaya fruit", ItemID.PAPAYA_FRUIT).showConditioned(notPalmTree);
 		compost = new ItemRequirement("Compost", ItemCollections.getCompost()).showConditioned(notPalmTree);

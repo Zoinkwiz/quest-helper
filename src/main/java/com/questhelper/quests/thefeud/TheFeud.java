@@ -26,6 +26,7 @@
 
 package com.questhelper.quests.thefeud;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -239,9 +240,9 @@ public class TheFeud extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 800);
-		unspecifiedCoins = new ItemRequirement("Coins", ItemID.COINS_995, -1);
-		highlightedCoins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 800);
+		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), -1);
+		highlightedCoins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		highlightedCoins.setHighlightInInventory(true);
 		gloves = new ItemRequirement("Gloves", ItemID.LEATHER_GLOVES);
 		glovesEquipped = new ItemRequirement("Gloves", ItemID.LEATHER_GLOVES, 1, true);

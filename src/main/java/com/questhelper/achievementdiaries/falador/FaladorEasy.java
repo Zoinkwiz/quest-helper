@@ -127,7 +127,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		notBluriteLimbs = new VarplayerRequirement(1186, false, 10);
 
 		//Required
-		coins2000 = new ItemRequirement("Coins", ItemID.COINS_995, 2000).showConditioned(notGotHaircut);
+		coins2000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 2000).showConditioned(notGotHaircut);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFilledWater);
 		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
 		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);

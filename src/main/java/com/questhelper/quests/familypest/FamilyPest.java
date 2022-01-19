@@ -25,6 +25,7 @@
 
 package com.questhelper.quests.familypest;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -104,7 +105,7 @@ public class FamilyPest extends BasicQuestHelper
 		lumberTele = new ItemRequirement("Lumberyard Teleport", -1, -1);
 
 		//Required
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 500000);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 500000);
 	}
 
 	public void setupSteps()

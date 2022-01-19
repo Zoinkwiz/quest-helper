@@ -216,13 +216,13 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		catFollower = new FollowerRequirement("Any cat following you", NpcCollections.getCats());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		waterskin4 = new ItemRequirement("Waterskin(4), bring a few to avoid drinking it", ItemID.WATERSKIN4);
-		coins600 = new ItemRequirement("Coins or more for various payments", ItemID.COINS_995, 600);
+		coins600 = new ItemRequirement("Coins or more for various payments", ItemCollections.getCoins(), 600);
 		bagOfSaltOrBucket = new ItemRequirement("Bag of Salt from a Slayer Master, or an empty bucket to get some", ItemID.BAG_OF_SALT);
 		bagOfSaltOrBucket.addAlternates(ItemID.PILE_OF_SALT);
 
 		coinsOrLinen = new ItemRequirement("Linen or 30 coins to buy some", ItemID.LINEN);
 
-		coins30 = new ItemRequirement("30 coins", ItemID.COINS_995, 30);
+		coins30 = new ItemRequirement("30 coins", ItemCollections.getCoins(), 30);
 
 		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS);
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);

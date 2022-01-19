@@ -141,7 +141,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 	private void setupRequirements()
 	{
 		// Required items
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		pots = new ItemRequirement("Pot", ItemID.POT);
 		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);

@@ -36,6 +36,8 @@ import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
@@ -247,6 +249,25 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Ghoul (lvl 42)", "Banshee (lvl 23)", "Werewolf in human form (lvl 24)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Morytania legs 1", ItemID.MORYTANIA_LEGS_1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("2 daily teleports to the Slime Pit beneath the Ectofuntus from Morytania legs"),
+			new UnlockReward("50% chance of a ghast ignoring you rather than attacking"),
+			new UnlockReward("2.5% more Slayer experience in the Slayer Tower while on a Slayer task")
+		);
 	}
 
 	@Override

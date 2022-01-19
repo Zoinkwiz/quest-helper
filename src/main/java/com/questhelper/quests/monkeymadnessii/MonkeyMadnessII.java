@@ -279,7 +279,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		talisman = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
 		talisman.setTooltip("You can buy one from the Ape Atoll magic shop for 1000 coins");
-		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemID.COINS_995, 1000));
+		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemCollections.getCoins(), 1000));
 		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE);
 		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
 
@@ -331,7 +331,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		krukGreegree = new ItemRequirement("Kruk monkey greegree", ItemID.KRUK_MONKEY_GREEGREE, 1, true);
 		krukGreegree.setTooltip("If you've lost this you can get another from Zooknock");
 
-		coins20 = new ItemRequirement("Coins", ItemID.COINS_995, 20);
+		coins20 = new ItemRequirement("Coins", ItemCollections.getCoins(), 20);
 
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselHighlighted.setHighlightInInventory(true);

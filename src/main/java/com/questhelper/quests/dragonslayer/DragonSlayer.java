@@ -205,7 +205,7 @@ public class DragonSlayer extends BasicQuestHelper
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		ItemRequirement telegrab = new ItemRequirement("Telekinetic grab", ItemID.TELEKINETIC_GRAB, 1);
 		telegrabOrTenK = new ItemRequirements(LogicType.OR, "Either 33 Magic for Telegrab and a ranged/mage weapon, or 10,000 coins",
-			new ItemRequirement("Coins", ItemID.COINS_995, 10000), telegrab);
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 10000), telegrab);
 		ringsOfRecoil = new ItemRequirement("Rings of Recoil for Elvarg", ItemID.RING_OF_RECOIL, -1);
 		chronicle = new ItemRequirement("The Chronicle for teleports to Champions' Guild", ItemID.CHRONICLE);
 		antifirePotion = new ItemRequirement("Antifire potion for Elvarg", ItemCollections.getAntiFirePotions(), -1);
@@ -235,7 +235,7 @@ public class DragonSlayer extends BasicQuestHelper
 		nails90 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 90);
 		nails60 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 60);
 		nails30 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 30);
-		twoThousandCoins = new ItemRequirement("Coins", ItemID.COINS_995, 2000);
+		twoThousandCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 2000);
 		fullMap = new ItemRequirement("Crandor map", ItemID.CRANDOR_MAP);
 	}
 

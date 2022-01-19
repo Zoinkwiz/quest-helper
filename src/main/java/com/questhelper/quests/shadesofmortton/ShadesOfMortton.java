@@ -151,7 +151,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		ashes2 = new ItemRequirement("Ashes", ItemID.ASHES, 2);
 		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashesHighlighted.setHighlightInInventory(true);
-		coins5000 = new ItemRequirement("Coins, more if you want to buy a Flamtaer Hammer", ItemID.COINS_995, 5000);
+		coins5000 = new ItemRequirement("Coins, more if you want to buy a Flamtaer Hammer", ItemCollections.getCoins(), 5000);
 		hammerOrFlam = new ItemRequirement("Hammer or Flamtaer Hammer", ItemCollections.getHammer());
 		hammerOrFlam.addAlternates(ItemID.FLAMTAER_HAMMER);
 		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER);

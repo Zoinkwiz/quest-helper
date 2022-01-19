@@ -257,7 +257,7 @@ public class Wanted extends BasicQuestHelper
 		ItemRequirement moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 1);
 		commorbComponents = new ItemRequirements("A law rune, an enchanted gem and some molten glass", lawRune, enchantedGem, moltenGlass);
 		commorbComponents.setTooltip("Alternatively, you can bring 10k gp.");
-		tenThousandGp = new ItemRequirement("10k gp", ItemID.COINS_995, 10000);
+		tenThousandGp = new ItemRequirement("10k gp", ItemCollections.getCoins(), 10000);
 		commorbComponentsOrTenThousandGp = new ItemRequirements(LogicType.OR, "A law rune, an enchanted gem and some molten glass OR 10k gp", commorbComponents, tenThousandGp);
 		
 		runeEssence = new ItemRequirement("20 Rune Essence (UNNOTED)", ItemID.RUNE_ESSENCE, 20);

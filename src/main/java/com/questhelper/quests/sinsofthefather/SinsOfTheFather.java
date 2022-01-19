@@ -464,7 +464,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			new ItemRequirement("Vyrewatch shoes", ItemID.VYREWATCH_SHOES));
 
 		vyrewatchOutfitOrCoins = new ItemRequirements(LogicType.OR, "Vyrewatch outfit or 1950 coins", vyrewatchOutfit,
-			new ItemRequirement("Coins", ItemID.COINS_995, 1950));
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 1950));
 
 		drakanMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION);
 		moryLegs3 = new ItemRequirement("Morytania legs 3/4", ItemID.MORYTANIA_LEGS_3);

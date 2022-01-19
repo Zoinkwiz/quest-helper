@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.shieldofarrav;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -113,7 +114,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	{
 		book = new ItemRequirement("Book", ItemID.BOOK);
 		intelReport = new ItemRequirement("Intel report", ItemID.INTEL_REPORT);
-		twentyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 20);
+		twentyCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 20);
 		shieldHalf = new ItemRequirement("Broken shield", ItemID.BROKEN_SHIELD);
 		inPhoenixBase = new ZoneRequirement(phoenixBase);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_2404);

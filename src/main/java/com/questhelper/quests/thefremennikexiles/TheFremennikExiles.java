@@ -259,9 +259,9 @@ public class TheFremennikExiles extends BasicQuestHelper
 		coins150kOrCharos = new ItemRequirements(LogicType.OR,
 			"Ring of Charos(a) or 150k coins",
 			new ItemRequirement("Ring of Charos(a)", ItemID.RING_OF_CHAROSA),
-			new ItemRequirement("Coins", ItemID.COINS_995, 150000));
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 150000));
 
-		coins650 = new ItemRequirement("Coins", ItemID.COINS_995, 650);
+		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
 		kegs2Or650Coins = new ItemRequirements(LogicType.OR, kegsOfBeer.quantity(2), coins650);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);

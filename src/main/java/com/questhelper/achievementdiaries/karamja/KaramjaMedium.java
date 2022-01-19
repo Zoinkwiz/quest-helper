@@ -157,7 +157,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		pickaxe =
 			new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR,
 				notMinedRedRopaz, notEarned100));
-		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(new Conditions(LogicType.OR,
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR,
 			notClaimedTicket, notUsedCart, notTraveledToKhazard, notCharteredFromShipyard));
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notCaughtKarambwan);
 

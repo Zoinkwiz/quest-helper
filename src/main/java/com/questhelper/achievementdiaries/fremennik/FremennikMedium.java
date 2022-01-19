@@ -167,8 +167,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 
 		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 
-		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notPetRockPOH);
-		coinsForFerry = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notPetRockPOH);
+		coinsForFerry = new ItemRequirement("Coins", ItemCollections.getCoins());
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSnowyHunter);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notSlayBrineRat);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR, notMineGold, notMineCoal));

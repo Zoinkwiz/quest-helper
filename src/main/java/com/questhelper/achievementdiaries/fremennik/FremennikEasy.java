@@ -127,7 +127,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		notChopAndBurnOak = new VarplayerRequirement(1184, false, 10);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notCraftTiara);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995).showConditioned(notChangeBoots);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notChangeBoots);
 		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCatchCerulean);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notChopAndBurnOak);
 		tiaraMould = new ItemRequirement("Tiara mould", ItemID.TIARA_MOULD).showConditioned(notCraftTiara);

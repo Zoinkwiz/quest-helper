@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.forgettabletale;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -357,8 +358,8 @@ public class ForgettableTale extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		coins500 = new ItemRequirement("Coins", ItemID.COINS_995, 500);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins500 = new ItemRequirement("Coins", ItemCollections.getCoins(), 500);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		barleyMalt2 = new ItemRequirement("Barley malt", ItemID.BARLEY_MALT, 2);
 		bucketOfWater2 = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER, 2);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);

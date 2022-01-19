@@ -232,7 +232,7 @@ public class Regicide extends BasicQuestHelper
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(ItemID.SHARK);
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
-		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemID.COINS_995, 750);
+		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemCollections.getCoins(), 750);
 		agilityPotions = new ItemRequirement("Agility boosting items like Summer Pie (+5) or Agility potion (+3)",
 			ItemID.SUMMER_PIE, 5);
 		agilityPotions.addAlternates(ItemID.PART_SUMMER_PIE);

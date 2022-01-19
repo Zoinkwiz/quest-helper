@@ -37,6 +37,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -313,7 +315,31 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("At least 1 Gorak (level 145)");
+		return Collections.singletonList("kill a Cave bug (lvl 6) and a Zombie (lvl 13)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Morytania legs 3", ItemID.MORYTANIA_LEGS_3),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Unlimited teleports to Burgh de Rott from Morytania legs"),
+			new UnlockReward("Bonecrusher - an item that automatically buries bones of monsters killed when carried"),
+			new UnlockReward("Robin offers 26 free buckets of slime and 26 pots of bonemeal in exchange for bones each day"),
+			new UnlockReward("Double Mort myre fungi when casting Bloom"),
+			new UnlockReward("50% more Prayer experience from burning shade remains"),
+			new UnlockReward("Access to a shortcut across the estuary on Mos Le'Harmless"),
+			new UnlockReward("50% more runes from the Barrows chest"),
+			new UnlockReward("7.5% more Slayer experience in the Slayer Tower while on a Slayer task")
+		);
 	}
 
 	@Override

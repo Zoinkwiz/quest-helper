@@ -39,6 +39,8 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -266,6 +268,28 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("One Abyssal Demon (lvl 124)");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Morytania legs 4", ItemID.MORYTANIA_LEGS_4),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Unlimited teleports to the slime pit beneath the Ectofuntus from Morytania legs"),
+			new UnlockReward("Robin offers 39 free buckets of slime and 39 pots of bonemeal in exchange for bones each day"),
+			new UnlockReward("50% more Firemaking experience when burning shade remains"),
+			new UnlockReward("Bones buried from the Bonecrusher grant full Prayer experience"),
+			new UnlockReward("Access to the herb patch on Harmony Island"),
+			new UnlockReward("10% more Slayer experience in the Slayer Tower while on a Slayer task")
+		);
 	}
 
 	@Override

@@ -106,9 +106,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		// Required
-		coins2500 = new ItemRequirement("coins", ItemID.COINS_995, 2500);
+		coins2500 = new ItemRequirement("coins", ItemCollections.getCoins(), 2500);
 		coins2500.setTooltip("Bring more to be safe.");
-		coins200 = new ItemRequirement("Coins", ItemID.COINS_995, 200);
+		coins200 = new ItemRequirement("Coins", ItemCollections.getCoins(), 200);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		logs.setTooltip("Most logs will work, however, arctic pine logs do not work.");
 		logs.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.TEAK_LOGS, ItemID.MAPLE_LOGS,

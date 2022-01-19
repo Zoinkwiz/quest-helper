@@ -137,7 +137,7 @@ public class Contact extends BasicQuestHelper
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 
-		coins = new ItemRequirement("Coins for carpet rides", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins for carpet rides", ItemCollections.getCoins());
 		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.getAmuletOfGlories());
 	}
 

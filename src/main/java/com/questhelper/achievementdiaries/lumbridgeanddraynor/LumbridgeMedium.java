@@ -40,6 +40,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -271,6 +273,24 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		return reqs;
 	}
 
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Explorer's ring 2", ItemID.EXPLORERS_RING_2),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("50% run energy replenish 3 times a day from Explorer's ring"),
+			new UnlockReward("Three daily teleports to cabbage patch near Falador farm for Explorer's ring"),
+			new UnlockReward("Access to Draynor Village wall shortcut")
+		);
+	}
 
 	@Override
 	public List<PanelDetails> getPanels()
@@ -298,7 +318,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		allSteps.add(chopWillowSteps);
 
 		PanelDetails pickpocketMasterGardenerSteps = new PanelDetails("Pickpocket Master Gardener",
-			Collections.singletonList(pickGardener),new SkillRequirement(Skill.THIEVING, 38));
+			Collections.singletonList(pickGardener), new SkillRequirement(Skill.THIEVING, 38));
 		pickpocketMasterGardenerSteps.setDisplayCondition(notPickGardener);
 		allSteps.add(pickpocketMasterGardenerSteps);
 

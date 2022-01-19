@@ -199,7 +199,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins650 = new ItemRequirement("Coins", ItemID.COINS_995, 650);
+		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
 		magicLogs12 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 12);
 		magicLogs12.addAlternates(NullItemID.NULL_1514);
 		steelBars6 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 6);

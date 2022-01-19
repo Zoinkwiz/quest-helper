@@ -212,7 +212,7 @@ public class TheGrandTree extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		oneThousandCoins = new ItemRequirement("Coins", ItemID.COINS_995, 1000);
+		oneThousandCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 1000);
 
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);

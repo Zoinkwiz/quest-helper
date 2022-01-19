@@ -136,7 +136,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedMindRunes);
 		mindTiara = new ItemRequirement("Mind Tiara", ItemID.MIND_TIARA, 1, true).showConditioned(notCraftedMindRunes);
-		coins10000 = new ItemRequirement("Coins", ItemID.COINS_995, 10000).showConditioned(notChangedFamilyCrest);
+		coins10000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 10000).showConditioned(notChangedFamilyCrest);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1);
 		food = new ItemRequirement("Good healing food.", ItemCollections.getGoodEatingFood(), -1);
 		lightSource = new ItemRequirement("Light Source", ItemCollections.getLightSources(), -1).showConditioned(notKilledMole);

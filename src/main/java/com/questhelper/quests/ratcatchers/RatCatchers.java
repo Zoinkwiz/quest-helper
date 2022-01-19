@@ -226,8 +226,8 @@ public class RatCatchers extends BasicQuestHelper
 		potOfWeeds = new ItemRequirement("Pot of weeds", ItemID.POT_OF_WEEDS);
 		potOfWeeds.setTooltip("You can make this by using some weeds on a pot");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		coins101 = new ItemRequirement("Coins", ItemID.COINS_995, 101);
-		coin = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins101 = new ItemRequirement("Coins", ItemCollections.getCoins(), 101);
+		coin = new ItemRequirement("Coins", ItemCollections.getCoins());
 		snakeCharm = new ItemRequirement("Snake charm", ItemID.SNAKE_CHARM);
 		snakeCharm.canBeObtainedDuringQuest();
 		fish8 = new ItemRequirement("Fish or more, raw or cooked", ItemCollections.getFishFood(), 8);
@@ -242,7 +242,7 @@ public class RatCatchers extends BasicQuestHelper
 			ItemID.ARDOUGNE_CLOAK_4);
 		keldagrimTeleport = new ItemRequirement("Mine cart access to Keldagrim from the GE", -1, -1);
 		keldagrimTeleport.setDisplayItemId(ItemID.MINECART_TICKET);
-		carpetCoins = new ItemRequirement("Coins for magic carpet travel", ItemID.COINS_995, 1000);
+		carpetCoins = new ItemRequirement("Coins for magic carpet travel", ItemCollections.getCoins(), 1000);
 
 		directions = new ItemRequirement("Directions", ItemID.DIRECTIONS);
 

@@ -28,6 +28,7 @@ import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.Quest;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -80,48 +81,76 @@ public interface QuestHelperConfig extends Config
 		}
 	}
 
-	enum QuestFilter implements Predicate<QuestHelper>
-	{
-		/** Show all quests */
+	enum QuestFilter implements Predicate<QuestHelper> {
+		/**
+		 * Show all quests
+		 */
 		SHOW_ALL(q -> true),
-		/** Show quests where the client meets the quest requirements */
+		/**
+		 * Show quests where the client meets the quest requirements
+		 */
 		SHOW_MEETS_REQS(QuestHelper::clientMeetsRequirements),
-		/** Show all except generic helpers */
+		/**
+		 * Show all except generic helpers
+		 */
 		OPTIMAL("Optimal ordering",
-			q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
-				q.getQuest().getQuestType() == Quest.Type.F2P ||
-				q.getQuest().getQuestType() == Quest.Type.MINIQUEST ||
-				q.getQuest().getQuestType() == Quest.Type.ACHIEVEMENT_DIARY),
-		/** Show all free-to-play quests */
+				q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
+						q.getQuest().getQuestType() == Quest.Type.F2P ||
+						q.getQuest().getQuestType() == Quest.Type.MINIQUEST ||
+						q.getQuest().getQuestType() == Quest.Type.ACHIEVEMENT_DIARY,
+				false),
+		/**
+		 * Show all free-to-play quests
+		 */
 		FREE_TO_PLAY(Quest.Type.F2P),
-		/** Show all members' quests */
+		/**
+		 * Show all members' quests
+		 */
 		MEMBERS(Quest.Type.P2P),
-		/** Show all quests */
+		/**
+		 * Show all quests
+		 */
 		QUEST("Quests", q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
-			q.getQuest().getQuestType() == Quest.Type.F2P),
-		/** Show all miniquests (all miniquests are members' only) */
+				q.getQuest().getQuestType() == Quest.Type.F2P),
+		/**
+		 * Show all miniquests (all miniquests are members' only)
+		 */
 		MINIQUEST("Miniquests", Quest.Type.MINIQUEST),
-		/** Show all achievement diaries */
+		/**
+		 * Show all achievement diaries
+		 */
 		ACHIEVEMENT_DIARY("Achievement diaries", Quest.Type.ACHIEVEMENT_DIARY),
-		/** Show all generic helpers */
+		/**
+		 * Show all generic helpers
+		 */
 		GENERIC_HELPER("Generic helpers", Quest.Type.GENERIC),
-		SKILL("Skill helpers", Quest.Type.SKILL)
-		;
+		SKILL("Skill helpers", Quest.Type.SKILL);
 
 		private final Predicate<QuestHelper> predicate;
 
 		@Getter
 		private final String displayName;
 
+		protected final boolean shouldDisplay;
+
 		QuestFilter(Predicate<QuestHelper> predicate) {
 			this.predicate = predicate;
 			this.displayName = Text.titleCase(this);
+			this.shouldDisplay = true;
 		}
 
 		QuestFilter(String displayName, Predicate<QuestHelper> predicate) {
 			this.predicate = predicate;
 			this.displayName = displayName;
+			this.shouldDisplay = true;
 		}
+
+		QuestFilter(String displayName, Predicate<QuestHelper> predicate, boolean shouldDisplay) {
+			this.predicate = predicate;
+			this.displayName = displayName;
+			this.shouldDisplay = shouldDisplay;
+		}
+
 		@Override
 		public boolean test(QuestHelper quest) {
 			return predicate.test(quest);
@@ -130,6 +159,11 @@ public interface QuestHelperConfig extends Config
 		public List<QuestHelper> test(Collection<QuestHelper> helpers) {
 
 			return helpers.stream().filter(this).collect(Collectors.toList());
+		}
+
+		public static QuestFilter[] displayFilters()
+		{
+			return Arrays.stream(QuestFilter.values()).filter((questFilter -> questFilter.shouldDisplay)).toArray(QuestFilter[]::new);
 		}
 	}
 

@@ -285,7 +285,7 @@ public class QuestHelperPanel extends PluginPanel
 		showMatchingQuests("");
 
 		// Filters
-		filterDropdown = makeNewDropdown(QuestHelperConfig.QuestFilter.values(), "filterListBy");
+		filterDropdown = makeNewDropdown(QuestHelperConfig.QuestFilter.displayFilters(), "filterListBy");
 		JPanel filtersPanel = makeDropdownPanel(filterDropdown, "Filters");
 		filtersPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 

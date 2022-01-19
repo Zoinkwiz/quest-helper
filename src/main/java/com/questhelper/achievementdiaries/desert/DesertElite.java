@@ -256,9 +256,9 @@ public class DesertElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 78));
 		reqs.add(new SkillRequirement(Skill.COOKING, 85));
 		reqs.add(new SkillRequirement(Skill.FLETCHING, 95));
-		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 78));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 94));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 85));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 91));

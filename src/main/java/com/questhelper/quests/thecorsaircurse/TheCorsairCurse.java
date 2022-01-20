@@ -211,7 +211,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 
 		talkedToArsen = new VarbitRequirement(6074, 2, Operation.GREATER_EQUAL);
 		returnedToothPick = new VarbitRequirement(6074, 4);
-		finishedArsen = new VarbitRequirement(6074, 5, Operation.GREATER_EQUAL);
+		finishedArsen = new VarbitRequirement(6074, 6, Operation.GREATER_EQUAL);
 
 		talkedToColin = new VarbitRequirement(6072, 1, Operation.GREATER_EQUAL);
 		lookedThroughTelescope = new VarbitRequirement(6072, 2);

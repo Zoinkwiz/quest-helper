@@ -219,7 +219,7 @@ public class FishingContest extends BasicQuestHelper
 		garlicInPipeVarbit = new VarbitRequirement(2054, 1);
 		enteredContest = new Conditions(true, LogicType.AND, hasEverything, onContestGrounds);
 		garlicInPipeScreen = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
-		confirmGarlicInPipe = new WidgetTextRequirement(217, 4, "I shoved some garlic up here.");
+		confirmGarlicInPipe = new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I shoved some garlic up here.");
 		hasPutGarlicInPipe = new Conditions(true, LogicType.OR, garlicInPipeVarbit, garlicInPipeScreen, confirmGarlicInPipe);
 	}
 

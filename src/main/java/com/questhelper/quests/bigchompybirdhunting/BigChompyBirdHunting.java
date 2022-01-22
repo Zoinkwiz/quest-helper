@@ -229,7 +229,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		chompyNearby = new NpcHintArrowRequirement(NpcID.CHOMPY_BIRD);
 		deadChompyNearby = new NpcCondition(NpcID.CHOMPY_BIRD_1476);
 
-		rantzWantsOnion = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "wants Onion wiv mine"));
+		rantzWantsOnion = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "want Onion wiv mine"));
 		rantzWantsPotato = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "wants Potato wiv mine"));
 		knowWhatRantzWants = new Conditions(LogicType.OR, rantzWantsOnion, rantzWantsPotato);
 

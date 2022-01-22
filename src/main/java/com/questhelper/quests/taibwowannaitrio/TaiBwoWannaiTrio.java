@@ -403,7 +403,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "<str>I have increased his agility to match the Shaikahan's.")
 		);
 		givenSpear = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "Tamayu, try using this weapon."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Tamayu, try using this weapon."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
 		);
@@ -449,7 +449,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		talkedTinsay1 = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "<col=000080>He requires <col=800000>banana in Karamja " +
 				"rum<col=000080> to repair the tribal"),
-			new WidgetTextRequirement(217, 4, "And you're going to use this to repair the"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "And you're going to use this to repair the"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hmm ... I think I need banana in Karamjan rum.")
 		);
 

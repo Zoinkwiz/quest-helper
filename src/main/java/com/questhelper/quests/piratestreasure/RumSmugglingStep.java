@@ -149,7 +149,7 @@ public class RumSmugglingStep extends ConditionalStep
 
 		Requirement haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I should take it to"));
 
-		Requirement agreedToGetRum = new WidgetTextRequirement(217, 4, "Ok, I will bring you some rum.");
+		Requirement agreedToGetRum = new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Ok, I will bring you some rum.");
 		Requirement atStartFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(119, 8, "I need to go to"));
 		atStart = new Conditions(true, LogicType.OR, agreedToGetRum, atStartFromWidget, lostRum, hadRumOffKaramja, haveRumFromWidget);
 

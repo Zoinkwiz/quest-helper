@@ -142,7 +142,7 @@ public class MurderMystery extends BasicQuestHelper
 		hasAnyThread3Item = new ItemRequirements(LogicType.OR, silverNeedleFlour, silverNeedle, silverPotFlour, silverPot, elizabethPrint, frankPrint);
 
 		heardAboutPoisonSalesman = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Especially as I heard that the poison salesman in the<br>Seers' village made a big sale to one of the family the<br>other day."));
-		talkedToPoisonSalesman = new Conditions(true, new WidgetTextRequirement(217, 4, "Uh... no, it's ok."));
+		talkedToPoisonSalesman = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Uh... no, it's ok."));
 	}
 
 	public void setupItemRequirements()

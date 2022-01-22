@@ -379,7 +379,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		talkToCarpenterAgain = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter again in the east of Sophanem.");
 		talkToCarpenterOnceMore = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter again in the east of Sophanem once more.");
 
-		buyLinen = new NpcStep(this, NpcID.RAETUL, new WorldPoint(3311, 2787, 0), "Get some linen. You can buy some from Raetul in east Sophanem for 30 coins.", coinsOrLinen);
+		buyLinen = new NpcStep(this, NpcID.RAETUL, new WorldPoint(3311, 2787, 0), "Get some linen. You can buy some from Raetul in east Sophanem for 30 coins.", coins30);
 
 		enterRockWithItems = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0),
 			"Enter the rock west of the Agility Pyramid to re-enter Sophanem. Make sure to bring the items you need.", bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog, catFollower);

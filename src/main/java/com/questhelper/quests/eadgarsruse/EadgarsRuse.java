@@ -358,7 +358,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		fireNearby = new ObjectCondition(ObjectID.FIRE_26185);
 
-		foundOutAboutKey = new Conditions(true, new WidgetTextRequirement(217, 4, "That's some well-guarded secret alright"));
+		foundOutAboutKey = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "That's some well-guarded secret alright"));
 		inStoreroom = new ZoneRequirement(storeroom);
 	}
 

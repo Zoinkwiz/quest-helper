@@ -33,6 +33,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -58,6 +59,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -78,7 +80,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		inTempleGroundFloor, startedTemple, gottenLimbs, openedDoor1, openedDoor2, openedDoor3, openedDoor4, mPlaced, kPlaced,
 		rPlaced, zPlaced, goneUpstairs, hasGottenRightArm, hasGottenRightLeg, inCentreRoom, inPuzzleFloor,
 		fedBread, meltedFountain, cleanedFurnace, litBraziers, litLog, litOak, litWillow, litMaple, litCandle, litCoal, inNorthPuzzleRoom,
-		inTopRoom, inLastRoom, wallNeedsChisel, finishedWall;
+		inTopRoom, inLastRoom, wallNeedsChisel, finishedWall, protectFromMelee;
 
 	DetailedQuestStep talkToLazim, bringLazim32Sandstone, useChiselOn32Sandstone, placeBase, bringLazim20Sandstone,
 		useChiselOn20Sandstone, placeBody, talkToLazimToChooseHead, getGranite, craftHead, talkToLazimAboutBody,
@@ -333,6 +335,8 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		wallNeedsChisel = new VarbitRequirement(1620, 1);
 		finishedWall = new VarbitRequirement(1602, 3);
+
+		protectFromMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 	}
 
 	public void setupSteps()
@@ -402,7 +406,8 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		goUpToPuzzles = new ObjectStep(this, ObjectID.LADDER_11041, new WorldPoint(3104, 9309, 0), "Open the central room's doors using the metal letters. Go up the ladder in the central room.");
 
-		useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use soft clay on the pedestal.", softClay);
+			useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1),
+				"Use soft clay on the pedestal.", softClay.highlighted());
 		useChiselOnGranite = new DetailedQuestStep(this, "Use a chisel on granite (5kg).", granite, chiselHighlighted);
 		useStoneHeadOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use the camel stone head on the pedestal.", camelHead);
 		useStoneHeadOnPedestal.addIcon(ItemID.STONE_HEAD_7002);
@@ -431,7 +436,8 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		goDownToFinalRoom = new ObjectStep(this, ObjectID.STONE_LADDER_11044, new WorldPoint(3105, 9300, 2), "Climb down the stone ladder past the Boneguard.");
 
-		protectThenTalk = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1), "Put on Protect from Melee, then talk to the Boneguard.");
+		protectThenTalk = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1),
+			"Put on Protect from Melee, then talk to the Boneguard.", protectFromMelee);
 		repairWall = new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Take sandstone from the nearby rubble, and use it to repair the south wall. For each piece added, use a chisel on the wall.", sandstone5);
 		repairWall.addDialogStep("Of course I'll help you out.");
 		repairWall.addIcon(ItemID.SANDSTONE_5KG);

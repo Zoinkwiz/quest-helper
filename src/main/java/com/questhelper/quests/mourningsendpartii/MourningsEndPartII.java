@@ -191,6 +191,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		ConditionalStep puzzle2 = new ConditionalStep(this, goBackIntoMournerHQ);
 		puzzle2.addStep(new Conditions(inTempleF1, f1r4c3EG), searchMagentaChest);
+		puzzle2.addStep(new Conditions(inTempleF1, f1r1c3SY), pullDispenser2);
 		puzzle2.addStep(new Conditions(inTempleF1, f1r4c2EC), puzzle2Pillar6);
 		puzzle2.addStep(new Conditions(inTempleF1, f1r3c2NC), puzzle2Pillar5);
 		puzzle2.addStep(new Conditions(inTempleF1, dispenserEmpty, f1r3c3WC), puzzle2Pillar4);

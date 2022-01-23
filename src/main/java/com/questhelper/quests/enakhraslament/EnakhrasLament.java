@@ -122,10 +122,10 @@ public class EnakhrasLament extends BasicQuestHelper
 		exploreBottomLayer.addStep(camelMould, useChiselOnGranite);
 		exploreBottomLayer.addStep(inPuzzleFloor, useSoftClayOnPedestal);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, openedDoor4), goUpToPuzzles);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, kSigil), enterDoor4);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3), takeK);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, rSigil), enterDoor3);
-		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2), takeR);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3, rSigil), enterDoor4);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, openedDoor3), takeR);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2, kSigil), enterDoor3);
+		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, openedDoor2), takeK);
 		// It's possible to skip the rest of this, but it skips some of the quest story and leaves doors locked after you finish, so this encourages players to explore
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1, zSigil), enterDoor2);
 		exploreBottomLayer.addStep(new Conditions(gottenLimbs, inTempleGroundFloor, openedDoor1), takeZ);
@@ -386,10 +386,14 @@ public class EnakhrasLament extends BasicQuestHelper
 		talkToLazimForHead = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3127, 9324, 0), "Talk to Lazim in the temple for the stone head.");
 		talkToLazimForHead.addDialogStep("Do you know where the statue's head is?");
 
-		enterDoor1 = new ObjectStep(this, ObjectID.DOOR_11066, new WorldPoint(3126, 9337, 0), "Enter the right arm door.", rightArm);
-		enterDoor2 = new ObjectStep(this, ObjectID.DOOR_11068, new WorldPoint(3079, 9334, 0), "Enter the left leg door.", leftLeg);
-		enterDoor3 = new ObjectStep(this, ObjectID.DOOR_11064, new WorldPoint(3082, 9387, 0), "Enter the left arm door.", leftArm);
-		enterDoor4 = new ObjectStep(this, ObjectID.DOOR_11070, new WorldPoint(3129, 9290, 0), "Enter the right leg door.", rightLeg);
+		enterDoor1 = new ObjectStep(this, ObjectID.DOOR_11066, new WorldPoint(3126, 9337, 0), "Enter the right arm door.", rightArm.highlighted());
+		enterDoor1.addIcon(ItemID.STONE_RIGHT_ARM);
+		enterDoor2 = new ObjectStep(this, ObjectID.DOOR_11068, new WorldPoint(3079, 9334, 0), "Enter the left leg door.", leftLeg.highlighted());
+		enterDoor2.addIcon(ItemID.STONE_LEFT_LEG);
+		enterDoor3 = new ObjectStep(this, ObjectID.DOOR_11064, new WorldPoint(3082, 9287, 0), "Enter the left arm door.", leftArm.highlighted());
+		enterDoor3.addIcon(ItemID.STONE_LEFT_ARM);
+		enterDoor4 = new ObjectStep(this, ObjectID.DOOR_11070, new WorldPoint(3129, 9290, 0), "Enter the right leg door.", rightLeg.highlighted());
+		enterDoor4.addIcon(ItemID.STONE_RIGHT_LEG);
 
 		enterKDoor = new ObjectStep(this, ObjectID.DOOR_11057, new WorldPoint(3111, 9312, 0), "Enter the door with a K.", kSigil);
 		enterRDoor = new ObjectStep(this, ObjectID.DOOR_11055, new WorldPoint(3104, 9319, 0), "Enter the door with an R.", rSigil);

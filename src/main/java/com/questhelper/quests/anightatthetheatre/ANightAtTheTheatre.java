@@ -204,6 +204,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 		speakWithMysteriousStrangerToStart = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0),
 			"Speak with the Mysterious Stranger in Ver Sinhaza.");
+		((NpcStep) speakWithMysteriousStrangerToStart).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10876);
 		speakWithMysteriousStrangerToStart.addDialogSteps("What's all this really about?", "What's this thing you need from me?", "Yes.");
 
 		enterVerSinhazaCrypts = new ObjectStep(this, ObjectID.STAIRCASE_42523, new WorldPoint(3682, 3231, 0),

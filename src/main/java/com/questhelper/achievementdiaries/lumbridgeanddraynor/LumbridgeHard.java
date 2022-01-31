@@ -157,8 +157,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		earthRune14 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 14)
 			.showConditioned(bothEarth);
 		earthRune = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notBonesToPeachesPalace);
-		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE).showConditioned(notBonesToPeachesPalace);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 4).showConditioned(notBonesToPeachesPalace);
+		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE, 2).showConditioned(notBonesToPeachesPalace);
 		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.getFairyStaff())
 			.showConditioned(new Conditions(LogicType.OR, notCosmics, notJuttingWall));
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notWakaToEdge);
@@ -234,8 +234,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 		moveToPalace = new DetailedQuestStep(this, new WorldPoint(3293, 3164, 0),
 			"Enter the Al Kharid palace.");
-		bonesToPeachesPalace = new DetailedQuestStep(this, "Cast bones to peaches.", bones, earthRune.quantity(4),
-			waterRune.quantity(4), natureRune.quantity(2));
+		bonesToPeachesPalace = new DetailedQuestStep(this, "Cast bones to peaches.", bones, earthRune4,
+			waterRune, natureRune);
 		unlockBonesToPeaches = new DetailedQuestStep(this, "Unlock bones to peaches from the Mage Training Arena.");
 
 		wakaToEdge = new ObjectStep(this, 12163, new WorldPoint(3242, 3237, 0),
@@ -303,7 +303,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(bones, earthRune4, earthRune10, earthRune14, waterRune.quantity(4), essence,
+		return Arrays.asList(bones, earthRune4, earthRune10, earthRune14, waterRune, essence,
 			fairyAccess, axe, goldBar, cutDiamond, amuletMould, ballOfWool, cosmicRune, miningHelm, tinderbox,
 			coins.quantity(130000), bellaSeed, seedDib, spade, rake, gloves);
 	}
@@ -368,8 +368,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 		PanelDetails peachesPalaceSteps = new PanelDetails("Bones to Peaches Palace",
 			Arrays.asList(unlockBonesToPeaches, moveToPalace, bonesToPeachesPalace),
-			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune.quantity(4),
-			waterRune.quantity(4), natureRune.quantity(2));
+			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune4,
+			waterRune, natureRune);
 		peachesPalaceSteps.setDisplayCondition(notBonesToPeachesPalace);
 		allSteps.add(peachesPalaceSteps);
 

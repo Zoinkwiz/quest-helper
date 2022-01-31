@@ -246,7 +246,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		smeltAmmy.addIcon(ItemID.GOLD_BAR);
 		stringAmmy = new ItemStep(this, "String the diamond amulet.", ballOfWool.highlighted(), diamondAmuletU.highlighted());
 		powerAmmy = new ItemStep(this, "Enchant the strung diamond amulet.", diamondAmulet, cosmicRune.quantity(1),
-			earthRune.quantity(10));
+			earthRune10);
 		moveToLumby = new TileStep(this, new WorldPoint(3228, 3238, 0),
 			"Move to the Lumbridge smithy.", ballOfWool, cutDiamond, goldBar);
 
@@ -381,7 +381,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		PanelDetails powerAmuletSteps = new PanelDetails("Power Amulet", Arrays.asList(moveToLumby, smeltAmmy,
 			stringAmmy, powerAmmy), new SkillRequirement(Skill.CRAFTING, 70, true),
 			new SkillRequirement(Skill.MAGIC, 57), goldBar, cutDiamond, amuletMould, ballOfWool,
-			cosmicRune.quantity(1), earthRune.quantity(10));
+			cosmicRune.quantity(1), earthRune10);
 		powerAmuletSteps.setDisplayCondition(notPowerAmmy);
 		allSteps.add(powerAmuletSteps);
 

@@ -303,9 +303,9 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(bones, earthRune4, earthRune10, earthRune14, waterRune, natureRune, essence,
+		return Arrays.asList(coins, bones, earthRune4, earthRune10, earthRune14, waterRune, natureRune, essence,
 			fairyAccess, axe, goldBar, cutDiamond, amuletMould, ballOfWool, cosmicRune, miningHelm, tinderbox,
-			coins, bellaSeed, seedDib, spade, rake, gloves);
+			bellaSeed, seedDib, spade, rake, gloves);
 	}
 
 	@Override

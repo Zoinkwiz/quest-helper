@@ -71,8 +71,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement bones, earthRune4, earthRune10, earthRune14, waterRune, natureRune, fairyAccess, axe, goldBar,
-		cutDiamond, amuletMould, ballOfWool, cosmicRune, diamondAmuletU, diamondAmulet, miningHelm, tinderbox, coins, ess,
-		cosmicAccessOrAbyss, bellaSeed, seedDib, spade, rake, gloves, earthRune;
+		cutDiamond, amuletMould, ballOfWool, cosmicRune, diamondAmuletU, diamondAmulet, miningHelm, tinderbox, coins,
+		essence, cosmicAccessOrAbyss, bellaSeed, seedDib, spade, rake, gloves, earthRune;
 
 	// Items recommended
 	ItemRequirement ringOfDueling, gamesNeck, dorgSphere, lightsource;
@@ -174,7 +174,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notBarrowsGloves);
 		gamesNeck = new ItemRequirement("Games Necklace", ItemCollections.getGamesNecklaces()).showConditioned(notHundredTears);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE).showConditioned(notTrainToKeld);
-		ess = new ItemRequirement("Pure or daeyalt essence", ItemCollections.getEssenceHigh()).showConditioned(notCosmics);
+		essence = new ItemRequirement("Pure or daeyalt essence", ItemCollections.getEssenceHigh(), 28).showConditioned(notCosmics);
 		cosmicAccessOrAbyss = new ItemRequirement("Access to cosmic altar, or travel through abyss. Tiara recommended unless using essence pouches",
 			ItemCollections.getCosmicAltar()).showConditioned(notCosmics);
 		bellaSeed = new ItemRequirement("Belladonna seed", ItemID.BELLADONNA_SEED).showConditioned(notBelladonna);
@@ -291,7 +291,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 			"Enter the cosmic altar.", cosmicAccessOrAbyss.highlighted());
 		moveToCosmic.addIcon(ItemID.COSMIC_TALISMAN);
 		cosmics = new ObjectStep(this, ObjectID.ALTAR_34766, new WorldPoint(2142, 4833, 0),
-			"Craft 56 cosmic runes.", ess.quantity(28));
+			"Craft 56 cosmic runes.", essence);
 		belladonna = new ObjectStep(this, 7572, new WorldPoint(3087, 3355, 0),
 			"Grow and pick some belladonna from the Draynor Manor farming patch.", bellaSeed, rake, spade, gloves, seedDib);
 
@@ -303,7 +303,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(bones, earthRune4, earthRune10, earthRune14, waterRune.quantity(4), ess.quantity(28),
+		return Arrays.asList(bones, earthRune4, earthRune10, earthRune14, waterRune.quantity(4), essence,
 			fairyAccess, axe, goldBar, cutDiamond, amuletMould, ballOfWool, cosmicRune, miningHelm, tinderbox,
 			coins.quantity(130000), bellaSeed, seedDib, spade, rake, gloves);
 	}
@@ -411,7 +411,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		allSteps.add(juttingWallSteps);
 
 		PanelDetails cosmicsSteps = new PanelDetails("56 Cosmic Runes", Arrays.asList(moveToZanarisForCosmics, moveToCosmic,
-			cosmics), new SkillRequirement(Skill.RUNECRAFT, 59, true), lostCity, ess.quantity(28),
+			cosmics), new SkillRequirement(Skill.RUNECRAFT, 59, true), lostCity, essence,
 			cosmicAccessOrAbyss, fairyAccess);
 		cosmicsSteps.setDisplayCondition(notCosmics);
 		allSteps.add(cosmicsSteps);

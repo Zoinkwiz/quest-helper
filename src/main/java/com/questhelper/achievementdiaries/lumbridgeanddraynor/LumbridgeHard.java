@@ -171,7 +171,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		diamondAmulet = new ItemRequirement("Diamond amulet", ItemID.DIAMOND_AMULET).showConditioned(notPowerAmmy);
 		miningHelm = new ItemRequirement("Mining helmet", ItemCollections.getMiningHelm()).showConditioned(notLightMiningHelm);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notLightMiningHelm);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notBarrowsGloves);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 130000).showConditioned(notBarrowsGloves);
 		gamesNeck = new ItemRequirement("Games Necklace", ItemCollections.getGamesNecklaces()).showConditioned(notHundredTears);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE).showConditioned(notTrainToKeld);
 		essence = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.getEssenceHigh(), 28).showConditioned(notCosmics);
@@ -255,10 +255,10 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		lightMiningHelm = new ItemStep(this, "Light your mining helmet.", miningHelm.highlighted(), tinderbox.highlighted());
 
 		moveToBasementForGloves = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
-			"Climb down the trapdoor in the Lumbridge Castle.", coins.quantity(130000));
+			"Climb down the trapdoor in the Lumbridge Castle.", coins);
 		barrowsGloves = new ObjectStep(this, 12308, new WorldPoint(3219, 9623, 0),
 			"Purchase the barrows gloves from the bank chest. Right click and select 'Buy-items'.",
-			coins.quantity(130000));
+			coins);
 		// 12308 is mine and I only have FULL access, and the ELITE version wouldn't make sense here
 
 		moveToBasementForTears = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
@@ -305,7 +305,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(bones, earthRune4, earthRune10, earthRune14, waterRune, natureRune, essence,
 			fairyAccess, axe, goldBar, cutDiamond, amuletMould, ballOfWool, cosmicRune, miningHelm, tinderbox,
-			coins.quantity(130000), bellaSeed, seedDib, spade, rake, gloves);
+			coins, bellaSeed, seedDib, spade, rake, gloves);
 	}
 
 	@Override
@@ -391,7 +391,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		allSteps.add(miningHelmetSteps);
 
 		PanelDetails barrowsGlovesSteps = new PanelDetails("Barrows Gloves", Arrays.asList(moveToBasementForGloves,
-			barrowsGloves), recipeForDisaster, coins.quantity(130000));
+			barrowsGloves), recipeForDisaster, coins);
 		barrowsGlovesSteps.setDisplayCondition(notBarrowsGloves);
 		allSteps.add(barrowsGlovesSteps);
 

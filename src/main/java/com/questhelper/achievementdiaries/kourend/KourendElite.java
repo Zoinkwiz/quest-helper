@@ -38,6 +38,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -88,8 +89,11 @@ public class KourendElite extends ComplexStateQuestHelper
     @Override
     public QuestStep loadStep()
     {
-        ConditionalStep doElite = new ConditionalStep(this, claimReward);
+        loadZones();
+        setupRequirements();
+        setupSteps();
 
+        ConditionalStep doElite = new ConditionalStep(this, claimReward);
         doElite.addStep(new Conditions(notCraftBloodRune, darkEssenceFragment), craftBloodRune);
         doElite.addStep(new Conditions(notCraftBloodRune, darkEssenceBlock), chiselEssenceBlock);
         doElite.addStep(new Conditions(notCraftBloodRune, denseEssenceBlock), venerateEssenceBlock);
@@ -202,10 +206,14 @@ public class KourendElite extends ComplexStateQuestHelper
         ultraCompost = new ItemRequirement("Ultra compost", Arrays.asList(ItemID.ULTRACOMPOST,
                 ItemID.BOTTOMLESS_COMPOST_BUCKET), -1);
 
-        arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), 1000);
-        hosidiusFavour60 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), 600);
-        hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), 750);
-        piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), 1000);
+        arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), Operation.GREATER_EQUAL, 1000,
+                "");
+        hosidiusFavour60 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 600,
+                "");
+        hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 750,
+                "");
+        piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), Operation.GREATER_EQUAL, 1000,
+                "");
 
         // Zone requirements
         inRedwoodTree = new ZoneRequirement(redwoodTree);

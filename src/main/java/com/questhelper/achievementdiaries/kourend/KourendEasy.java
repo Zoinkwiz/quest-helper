@@ -38,6 +38,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -58,7 +59,7 @@ import java.util.List;
 public class KourendEasy extends ComplexStateQuestHelper
 {
     // Items required
-    ItemRequirement pickaxe, weapon, spade, coins, medpack, tarrominPotU, limpwurtRoot,
+    ItemRequirement pickaxe, spade, coins, medpack, tarrominPotU, limpwurtRoot,
         flyFishingRod, feathers, libraryBook;
 
     // Items recommended
@@ -84,8 +85,11 @@ public class KourendEasy extends ComplexStateQuestHelper
     @Override
     public QuestStep loadStep()
     {
-        ConditionalStep doEasy = new ConditionalStep(this, claimReward);
+        loadZones();
+        setupRequirements();
+        setupSteps();
 
+        ConditionalStep doEasy = new ConditionalStep(this, claimReward);
         doEasy.addStep(notMineIron, mineIron);
         doEasy.addStep(notSandCrab, sandCrab);
         doEasy.addStep(notArceuusBook, arceuusBook);
@@ -109,26 +113,25 @@ public class KourendEasy extends ComplexStateQuestHelper
 
     public void setupRequirements()
     {
-        // TODO: find varplayerid
-        notMineIron = new VarplayerRequirement(0000, false, 0);
-        notSandCrab = new VarplayerRequirement(0000, false, 1);
-        notArceuusBook = new VarplayerRequirement(0000, false, 2);
-        notStealFruit = new VarplayerRequirement(0000, false, 3);
-        notWarrensStore = new VarplayerRequirement(0000, false, 4);
-        notBoatLandsEnd = new VarplayerRequirement(0000, false, 5);
-        notPrayCastle = new VarplayerRequirement(0000, false, 6);
-        notDigSaltpeter = new VarplayerRequirement(0000, false, 7);
-        notEnterPoh = new VarplayerRequirement(0000, false, 8);
-        notHealSoldier = new VarplayerRequirement(0000, false, 9);
-        notStrengthPotion = new VarplayerRequirement(0000, false, 10);
-        notFishTrout = new VarplayerRequirement(0000, false, 11);
+        notMineIron = new VarplayerRequirement(2085, false, 1);
+        notSandCrab = new VarplayerRequirement(2085, false, 2);
+        notArceuusBook = new VarplayerRequirement(2085, false, 3);
+        notStealFruit = new VarplayerRequirement(2085, false, 4);
+        notWarrensStore = new VarplayerRequirement(2085, false, 5);
+        notBoatLandsEnd = new VarplayerRequirement(2085, false, 6);
+        notPrayCastle = new VarplayerRequirement(2085, false, 7);
+        notDigSaltpeter = new VarplayerRequirement(2085, false, 8);
+        notEnterPoh = new VarplayerRequirement(2085, false, 9);
+        notHealSoldier = new VarplayerRequirement(2085, false, 10);
+        notStrengthPotion = new VarplayerRequirement(2085, false, 11);
+        notFishTrout = new VarplayerRequirement(2085, false, 12);
 
         // Required items
         pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineIron);
         spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notDigSaltpeter);
         libraryBook = new ItemRequirement("Arceuus library book", ItemCollections.getArceuusBooks()).showConditioned(notArceuusBook);
 
-        coins = new ItemRequirement("Coins", ItemID.COINS).showConditioned(notEnterPoh);
+        coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 8075).showConditioned(notEnterPoh);
         medpack = new ItemRequirement("Medpacks", ItemID.SHAYZIEN_MEDPACK).showConditioned(notHealSoldier);
         tarrominPotU = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF).showConditioned(notStrengthPotion);
         limpwurtRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notStrengthPotion);
@@ -157,8 +160,10 @@ public class KourendEasy extends ComplexStateQuestHelper
         hasMedpack = medpack.alsoCheckBank(questBank);
 
         houseInKourend = new VarbitRequirement(2187, 8);
-        portPiscFavour = new VarbitRequirement(4899, 200);
-        hosidiusFavour = new VarbitRequirement(4895, 150);
+        portPiscFavour = new VarbitRequirement(4899, Operation.GREATER_EQUAL, 200,
+                "20% Piscarilius Favour");
+        hosidiusFavour = new VarbitRequirement(4895, Operation.GREATER_EQUAL, 150,
+                "15% Hosidius Favour");
     }
 
     public void loadZones()
@@ -171,32 +176,32 @@ public class KourendEasy extends ComplexStateQuestHelper
 
     public void setupSteps()
     {
-        //Mine some iron
+        // Mine some iron
         mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(1275, 3817, 0),
                 "Mine some iron ore at the Mount Karuulm mine.", pickaxe);
 
-        //Kill a sand crab
+        // Kill a sand crab
         sandCrab = new NpcStep(this, NpcID.SAND_CRAB, new WorldPoint(1739, 3468, 0),
                 "Kill a sand crab.", true, combatGear, food);
 
-        //Hand in a book in the Arceuus library
+        // Hand in a book in the Arceuus library
         arceuusBook = new NpcStep(this, NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3801, 0),
                 "Collect a book for a library patron", libraryBook);
         arceuusBook.addAlternateNpcs(NpcID.SAM_7049);
         arceuusBook.addAlternateNpcs(NpcID.VILLIA);
 
-        //Steal from a Hosidius fruit stall
+        // Steal from a Hosidius fruit stall
         stealFruit = new ObjectStep(this, ObjectID.FRUIT_STALL_28823, new WorldPoint(1766, 3598, 0),
                 "Steal from a Hosidius fruit stall.", true);
 
-        //Browse the Warrens general store
+        // Browse the Warrens general store
         enterWarrens = new ObjectStep(this, ObjectID.MANHOLE_31707, new WorldPoint(1813, 3745, 0),
                 "Enter the Warrens.");
         warrensStore = new NpcStep(this, NpcID.SHOP_KEEPER_7913, new WorldPoint(1775, 10148, 0),
                 "Browse the Warrens general store.");
         warrensStore.addSubSteps(enterWarrens);
 
-        //Take a boat from Land's End
+        // Take a boat from Land's End
         boatLandsEnd = new NpcStep(this, NpcID.CABIN_BOY_HERBERT, new WorldPoint(3054, 3245, 0),
                 "Take a boat to Land's End", true);
         boatLandsEnd.addAlternateNpcs(NpcID.CABIN_BOY_HERBERT_10933);
@@ -204,7 +209,7 @@ public class KourendEasy extends ComplexStateQuestHelper
         boatLandsEnd.addDialogStep("Can you take me somewhere?");
         boatLandsEnd.addDialogStep("Travel to Land's End.");
 
-        //Pray at the Kourend castle altar
+        // Pray at the Kourend castle altar
         enterCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(1618, 3681, 0),
                 "Climb the stairs to the second floor of the castle.");
         enterCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(1616, 3686, 1),
@@ -213,36 +218,36 @@ public class KourendEasy extends ComplexStateQuestHelper
                 "Pray at the Kourend castle altar.");
         prayCastle.addSubSteps(enterCastleF1, enterCastleF2);
 
-        //Dig some saltpeter
+        // Dig some saltpeter
         digSaltpeter = new ObjectStep(this, ObjectID.SALTPETRE_27436, new WorldPoint(1703, 3526, 0),
             "Dig up some saltpeter.", spade);
 
-        //Enter your POH from Kourend
+        // Enter your POH from Kourend
         relocateHouse = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(1779, 3625, 0),
-                "Relocate your player-owned house to Hosidius", true, coins);
+                "Relocate your player-owned house to Hosidius", true, coins.quantity(8750));
         relocateHouse.addDialogStep(1, "Can you move my house please?");
         relocateHouse.addDialogStep(4, "Hosidius (8,750)");
         enterPoh = new ObjectStep(this, ObjectID.PORTAL_28822, new WorldPoint(1742, 3517, 0),
                 "Enter your player-owned house from Hosidius.", houseInKourend);
         enterPoh.addSubSteps(relocateHouse);
 
-        //Heal a wounded shayzien soldier
+        // Heal a wounded shayzien soldier
         collectMedpack = new ObjectStep(this, ObjectID.MEDPACK_BOX, new WorldPoint(1522, 3615, 0),
                 "Collect a medpack.", true);
         healSoldier = new NpcStep(this, NpcID.WOUNDED_SOLDIER, new WorldPoint(1516, 3621, 0),
                 "Heal a wounded shayzien soldier.", true, medpack);
         healSoldier.addSubSteps(collectMedpack);
 
-        //Create a strength potion in the Lovakenji pub
+        // Create a strength potion in the Lovakenji pub
         enterPub = new TileStep(this, new WorldPoint(1564, 3759, 0), "Enter the Deeper Lode Pub");
         strengthPotion = new ItemStep(this, "Create a strength Potion", tarrominPotU.highlighted(),
                 limpwurtRoot.highlighted());
 
-        //Fish trout from the Rover Molch
+        // Fish trout from the Rover Molch
         fishTrout = new NpcStep(this, NpcID.ROD_FISHING_SPOT, new WorldPoint(1267, 3706, 0),
                 "Fish a trout from the River Molch.", flyFishingRod, feathers);
 
-        //Claim rewards
+        // Claim rewards
         claimReward = new NpcStep(this, NpcID.ELISE, new WorldPoint(1647, 3665, 0),
                 "Talk to Elise in the Kourend castle courtyard to claim your reward!");
         claimReward.addDialogStep("I have a question about my Achievement Diary");
@@ -257,7 +262,7 @@ public class KourendEasy extends ComplexStateQuestHelper
     @Override
     public List<ItemRequirement> getItemRequirements()
     {
-        return Arrays.asList(coins.quantity(8075),pickaxe, weapon, spade, medpack,
+        return Arrays.asList(coins.quantity(8750),pickaxe, spade,
                 tarrominPotU, limpwurtRoot, flyFishingRod, feathers);
     }
 
@@ -297,7 +302,7 @@ public class KourendEasy extends ComplexStateQuestHelper
     public List<UnlockReward> getUnlockRewards()
     {
         return Arrays.asList(
-                new UnlockReward("Halved access cost for Crabclaw Isle"),
+                new UnlockReward("Halved access cost for Crabclaw Isle."),
                 new UnlockReward("Doubled drop rate of Xeric's talisman, excluding stone chests."),
                 new UnlockReward("Reduced tanning prices at Eodan in Forthos Dungeon to 80%."));
     }
@@ -347,7 +352,7 @@ public class KourendEasy extends ComplexStateQuestHelper
         allSteps.add(digSaltpeterStep);
 
         PanelDetails enterPohStep = new PanelDetails("Enter your PoH from Hosidius", Arrays.asList(relocateHouse,
-                enterPoh), new SkillRequirement(Skill.CONSTRUCTION, 25), coins);
+                enterPoh), new SkillRequirement(Skill.CONSTRUCTION, 25), coins.quantity(8750));
         enterPohStep.setDisplayCondition(notEnterPoh);
         allSteps.add(enterPohStep);
 

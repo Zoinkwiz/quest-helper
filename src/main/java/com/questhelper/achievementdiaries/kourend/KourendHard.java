@@ -39,6 +39,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -87,8 +88,11 @@ public class KourendHard extends ComplexStateQuestHelper
     @Override
     public QuestStep loadStep()
     {
-        ConditionalStep doHard = new ConditionalStep(this, claimReward);
+        loadZones();
+        setupRequirements();
+        setupSteps();
 
+        ConditionalStep doHard = new ConditionalStep(this, claimReward);
         doHard.addStep(notWoodcuttingGuild, enterWoodcuttingGuild);
         doHard.addStep(new Conditions(notSmeltAddyBar, inForsakenTower), smeltAddyBar);
         doHard.addStep(notSmeltAddyBar, enterForsakenTower);
@@ -114,16 +118,16 @@ public class KourendHard extends ComplexStateQuestHelper
     public void setupRequirements()
     {
         // TODO: Find varplayerid
-        notWoodcuttingGuild = new VarplayerRequirement(0000, false, 0);
-        notSmeltAddyBar = new VarplayerRequirement(0000, false, 0);
-        notKillLizardmanShaman = new VarplayerRequirement(0000, false, 0);
-        notMineLovakite = new VarplayerRequirement(0000, false, 0);
-        notPlantLogavano = new VarplayerRequirement(0000, false, 0);
-        notKillZombie = new VarplayerRequirement(0000, false, 0);
-        notTeleportHeart = new VarplayerRequirement(0000, false, 0);
-        notDeliverArtifact = new VarplayerRequirement(0000, false, 0);
-        notKillWyrm = new VarplayerRequirement(0000, false, 0);
-        notExamineMonster = new VarplayerRequirement(0000, false, 0);
+        notWoodcuttingGuild = new VarplayerRequirement(2085, false, 25);
+        notSmeltAddyBar = new VarplayerRequirement(2085, false, 26);
+        notKillLizardmanShaman = new VarplayerRequirement(2085, false, 27);
+        notMineLovakite = new VarplayerRequirement(2085, false, 28);
+        notPlantLogavano = new VarplayerRequirement(2085, false, 29);
+        notKillZombie = new VarplayerRequirement(2085, false, 30);
+        notTeleportHeart = new VarplayerRequirement(2086, false, 0);
+        notDeliverArtifact = new VarplayerRequirement(2086, false, 1);
+        notKillWyrm = new VarplayerRequirement(2086, false, 2);
+        notExamineMonster = new VarplayerRequirement(2086, false, 3);
 
         // Items required
         adamantiteOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE).showConditioned(notSmeltAddyBar);
@@ -143,6 +147,8 @@ public class KourendHard extends ComplexStateQuestHelper
         wateringCan = new ItemRequirement("Watering can", ItemCollections.getWateringCans())
                 .showConditioned(notPlantLogavano);
         spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPlantLogavano);
+        artifact = new ItemRequirement("Artifact", ItemID.ARTEFACT).showConditioned(notDeliverArtifact);
+        logavanoSeeds = new ItemRequirement("Logavano seeds", ItemID.LOGAVANO_SEED).showConditioned(notPlantLogavano);
 
         // Items recommended
         combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -156,19 +162,19 @@ public class KourendHard extends ComplexStateQuestHelper
         radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
                 ItemID.RADAS_BLESSING_2), -1).showConditioned(notWoodcuttingGuild);
         skillsNecklace = new ItemRequirement("Skills neckalce", ItemCollections.getSkillsNecklaces(), -1);
-        shayzienHelmet = new ItemRequirement("shayzien Helmet (5)", ItemID.SHAYZIEN_HELM_5, -1, true)
+        shayzienHelmet = new ItemRequirement("Shayzien Helmet (5)", ItemID.SHAYZIEN_HELM_5, -1, true)
                 .showConditioned(notKillLizardmanShaman);
         shayzienHelmet.setTooltip("Not required, but STRONGLY recommended.");
-        shayzienBody = new ItemRequirement("shayzien Body (5)", ItemID.SHAYZIEN_BODY_5, -1, true)
+        shayzienBody = new ItemRequirement("Shayzien Body (5)", ItemID.SHAYZIEN_BODY_5, -1, true)
                 .showConditioned(notKillLizardmanShaman);
         shayzienBody.setTooltip("Not required, but STRONGLY recommended.");
-        shayzienGreaves = new ItemRequirement("shayzien Greaves (5)", ItemID.SHAYZIEN_GREAVES_5, -1, true)
+        shayzienGreaves = new ItemRequirement("Shayzien Greaves (5)", ItemID.SHAYZIEN_GREAVES_5, -1, true)
                 .showConditioned(notKillLizardmanShaman);
         shayzienGreaves.setTooltip("Not required, but STRONGLY recommended.");
-        shayzienBoots = new ItemRequirement("shayzien Boots (5)", ItemID.SHAYZIEN_BOOTS_5, -1, true)
+        shayzienBoots = new ItemRequirement("Shayzien Boots (5)", ItemID.SHAYZIEN_BOOTS_5, -1, true)
                 .showConditioned(notKillLizardmanShaman);
         shayzienBoots.setTooltip("Not required, but STRONGLY recommended.");
-        shayzienGloves = new ItemRequirement("shayzien Gloves (5)", ItemID.SHAYZIEN_GLOVES_5, -1, true)
+        shayzienGloves = new ItemRequirement("Shayzien Gloves (5)", ItemID.SHAYZIEN_GLOVES_5, -1, true)
                 .showConditioned(notKillLizardmanShaman);
         shayzienGloves.setTooltip("Not required, but STRONGLY recommended.");
 
@@ -177,11 +183,16 @@ public class KourendHard extends ComplexStateQuestHelper
         dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
         theForsakenTower = new QuestRequirement(QuestHelperQuest.THE_FORSAKEN_TOWER, QuestState.FINISHED);
 
-        shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN.getId(), 1000);
-        hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), 750);
-        hosidiusFavour100 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), 1000);
-        lovakengjFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ.getId(), 300);
-        piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), 750);
+        shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN.getId(), Operation.GREATER_EQUAL, 1000,
+                "100% Shayzien favour");
+        hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 750,
+                "75% Hosidius favour");
+        hosidiusFavour100 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 1000,
+                "100% Hosidius favour");
+        lovakengjFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ.getId(), Operation.GREATER_EQUAL, 300,
+                "30% Lovakengj favour");
+        piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), Operation.GREATER_EQUAL, 750,
+                "75% Piscarilius favour");
 
         // Zone requirements
         inForsakenTower = new ZoneRequirement(forsakenTower);

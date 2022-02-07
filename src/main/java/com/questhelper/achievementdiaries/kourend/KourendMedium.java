@@ -38,6 +38,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -73,11 +74,11 @@ public class KourendMedium extends ComplexStateQuestHelper
             notSwitchSpellbooks, notRepairCrane, notDeliverIntelligence, notCatchBluegill, notUseBoulderShortcut,
             notSubdueWintertodt, notCatchChinchompa, notChopMahoganyTree, hasIntelligence, hasBird;
 
-    QuestStep travelFairyRing, travelWithMemoirs, enterFarmingGuild, travelToMolchIsland,
+    QuestStep travelFairyRing, travelWithMemoirs, enterFarmingGuild,
             repairCrane, catchBluegill, useBoulderShortcut, subdueWintertodt, catchChinchompa,
             chopMahoganyTree, claimReward, pickupWorms;
 
-    ObjectStep mineSulphur;
+    ObjectStep mineSulphur, travelToMolchIsland;
 
     NpcStep killLizardman, switchSpellbooks, killGangBoss, deliverIntelligence, talkToAlry;
 
@@ -87,8 +88,11 @@ public class KourendMedium extends ComplexStateQuestHelper
     @Override
     public QuestStep loadStep()
     {
-        ConditionalStep doMedium = new ConditionalStep(this, claimReward);
+        loadZones();
+        setupRequirements();
+        setupSteps();
 
+        ConditionalStep doMedium = new ConditionalStep(this, claimReward);
         doMedium.addStep(notFairyRing, travelFairyRing);
         doMedium.addStep(notKillLizardman, killLizardman);
         doMedium.addStep(notTravelWithMemoirs, travelWithMemoirs);
@@ -113,27 +117,27 @@ public class KourendMedium extends ComplexStateQuestHelper
     public void setupRequirements()
     {
         // TODO: Find varplayerid
-        notFairyRing = new VarplayerRequirement(0000, false, 0);
-        notKillLizardman = new VarplayerRequirement(0000, false, 0);
-        notTravelWithMemoirs = new VarplayerRequirement(0000, false, 0);
-        notMineSulphur = new VarplayerRequirement(0000, false, 0);
-        notEnterFarmingGuild = new VarplayerRequirement(0000, false, 0);
-        notSwitchSpellbooks = new VarplayerRequirement(0000, false, 0);
-        notRepairCrane = new VarplayerRequirement(0000, false, 0);
-        notDeliverIntelligence = new VarplayerRequirement(0000, false, 0);
-        notCatchBluegill = new VarplayerRequirement(0000, false, 0);
-        notUseBoulderShortcut = new VarplayerRequirement(0000, false, 0);
-        notSubdueWintertodt = new VarplayerRequirement(0000, false, 0);
-        notCatchChinchompa = new VarplayerRequirement(0000, false, 0);
-        notChopMahoganyTree = new VarplayerRequirement(0000, false, 0);
+        notFairyRing = new VarplayerRequirement(2085, false, 1);  // todo
+        notKillLizardman = new VarplayerRequirement(2085, false, 1);  // todo
+        notTravelWithMemoirs = new VarplayerRequirement(2085, false, 1);  // todo
+        notMineSulphur = new VarplayerRequirement(2085, false, 1);  // todo
+        notEnterFarmingGuild = new VarplayerRequirement(2085, false, 1);  // todo
+        notSwitchSpellbooks = new VarplayerRequirement(2085, false, 1);  // todo
+        notRepairCrane = new VarplayerRequirement(2085, false, 1);  // todo
+        notDeliverIntelligence = new VarplayerRequirement(2085, false, 1);  // todo
+        notCatchBluegill = new VarplayerRequirement(2085, false, 19);
+        notUseBoulderShortcut = new VarplayerRequirement(2085, false, 22);
+        notSubdueWintertodt = new VarplayerRequirement(2085, false, 1);  // todo
+        notCatchChinchompa = new VarplayerRequirement(2085, false, 23);
+        notChopMahoganyTree = new VarplayerRequirement(2085, false, 1); // todo
 
         // Required items
-        dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff())
+        dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff(), 1, true)
                 .showConditioned(notFairyRing);
         kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
                 Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS)).showConditioned(notTravelWithMemoirs);
         pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineSulphur);
-        faceMask = new ItemRequirement("Facemask or slayer helmet", ItemCollections.getSlayerHelmets())
+        faceMask = new ItemRequirement("Facemask or slayer helmet", ItemCollections.getSlayerHelmets(), 1, true)
                 .showConditioned(notMineSulphur);
         faceMask.addAlternates(ItemID.FACEMASK, ItemID.GAS_MASK);
         hammer = new ItemRequirement("A hammer", ItemCollections.getHammer()).showConditioned(notRepairCrane);
@@ -149,14 +153,14 @@ public class KourendMedium extends ComplexStateQuestHelper
 
         // Recommended items
         knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notSubdueWintertodt);
-        warmClothing = new ItemRequirement("Warm clothing", ItemCollections.getWarmClothing())
+        warmClothing = new ItemRequirement("Warm clothing", ItemCollections.getWarmClothing(), 4, true)
                 .showConditioned(notSubdueWintertodt);
         combatGear = new ItemRequirement("Combat gear", -1, -1);
         combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-        food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood()).showConditioned(notKillLizardman);
+        food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1).showConditioned(notKillLizardman);
         antipoison = new ItemRequirement("Anti-poison", ItemCollections.getAntipoisons())
                 .showConditioned(notKillLizardman);
-        radasBlessing1 = new ItemRequirement("Rada's Blessing (1)", ItemID.RADAS_BLESSING_1)
+        radasBlessing1 = new ItemRequirement("Rada's Blessing (1)", ItemID.RADAS_BLESSING_1, -1)
                 .showConditioned(notCatchChinchompa);
 
         // Required quests
@@ -168,14 +172,18 @@ public class KourendMedium extends ComplexStateQuestHelper
         ascentOfArceuus = new QuestRequirement(QuestHelperQuest.THE_ASCENT_OF_ARCEUUS, QuestState.FINISHED);
         eaglesPeak = new QuestRequirement(QuestHelperQuest.EAGLES_PEAK, QuestState.FINISHED);
 
-        arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), 600);
-        hosidiusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), 600);
-        shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN.getId(), 400);
+        arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), Operation.GREATER_EQUAL, 600,
+                "60% Arceuus favour");
+        hosidiusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 600,
+                "60% Hosidius favour");
+        shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN.getId(), Operation.GREATER_EQUAL, 400,
+                "40% Shayzien favour");
 
         // Zone requirements
         inMolchIsland = new ZoneRequirement(molchIsland);
 
         hasIntelligence = intelligence.alsoCheckBank(questBank);
+        hasBird = new VarbitRequirement(5983, 1);
     }
 
     public void loadZones()
@@ -236,8 +244,9 @@ public class KourendMedium extends ComplexStateQuestHelper
         deliverIntelligence.addIcon(ItemID.INTELLIGENCE);
 
         // Catch a bluegill on Lake Molch
-        travelToMolchIsland = new ObjectStep(this, ObjectID.BOATY, new WorldPoint(1408, 3612, 0),
+        travelToMolchIsland = new ObjectStep(this, ObjectID.BOATY, new WorldPoint(1405, 3611, 0),
                 "Board the boaty to Molch Island.");
+        travelToMolchIsland.addAlternateObjects(ObjectID.BOATY);
         travelToMolchIsland.addDialogStep("Molch Island");
         pickupWorms = new ItemStep(this, new WorldPoint(1371, 3633, 0), "Collect some King Worms");
         talkToAlry = new NpcStep(this, NpcID.ALRY_THE_ANGLER, new WorldPoint(1366, 3631, 0),

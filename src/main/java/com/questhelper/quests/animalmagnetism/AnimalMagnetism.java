@@ -37,6 +37,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -280,6 +281,16 @@ public class AnimalMagnetism extends BasicQuestHelper
 	public QuestPointReward getQuestPointReward()
 	{
 		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 1000),
+				new ExperienceReward(Skill.FLETCHING, 1000),
+				new ExperienceReward(Skill.SLAYER, 1000));
+				new ExperienceReward(Skill.WOODCUTTING, 2500),
 	}
 
 	@Override

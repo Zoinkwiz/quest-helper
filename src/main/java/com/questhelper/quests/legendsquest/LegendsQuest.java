@@ -501,7 +501,7 @@ public class LegendsQuest extends BasicQuestHelper
 		ardrigal.setTooltip("You can find some in the palm trees north east of Tai Bwo Wannai");
 		ardrigal.setHighlightInInventory(true);
 		snakeWeed = new ItemRequirement("Snake weed", ItemID.SNAKE_WEED);
-		snakeWeed.setTooltip("You can find some in the marshy jungle vines south west of Tai Bwo Wannai");
+		snakeWeed.setTooltip("You can find some in the marshy jungle vines south west of Tai Bwo Wannai.");
 		snakeWeed.setHighlightInInventory(true);
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
 		vialOfWater.setHighlightInInventory(true);

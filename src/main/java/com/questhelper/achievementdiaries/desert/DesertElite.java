@@ -128,7 +128,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		dragonDartTip = new ItemRequirement("Dragon dart tip", ItemID.DRAGON_DART_TIP).showConditioned(notDragonDarts);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notDragonDarts);
 		mahoPlank = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK).showConditioned(notTalkKQHead);
-		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF).showConditioned(notTalkKQHead);
+		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF_8784).showConditioned(notTalkKQHead);
 		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notTalkKQHead);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead);
 		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.getStuffedKQHead()).showConditioned(notTalkKQHead);

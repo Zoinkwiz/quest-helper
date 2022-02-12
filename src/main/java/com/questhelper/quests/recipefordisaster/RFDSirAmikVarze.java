@@ -253,7 +253,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		useChickenOnShrine = new ObjectStep(this, ObjectID.CHICKEN_SHRINE, new WorldPoint(2453, 4477, 0),
 			"Use a raw chicken on the Chicken Shrine in the north east of Zanaris.", rawChicken, combatGear);
 		useChickenOnShrine.addIcon(ItemID.RAW_CHICKEN);
-		killEvilChicken = new NpcStep(this, NpcID.EVIL_CHICKEN, new WorldPoint(2455, 4399, 0), "Kill the Evil Chicken in the north of the range.");
+		killEvilChicken = new NpcStep(this, NpcID.EVIL_CHICKEN, new WorldPoint(2455, 4399, 0), "Kill the Evil Chicken in the north of the range. Pray protect from magic against it.");
 		pickUpEgg = new ItemStep(this, "Pick up the evil chicken egg.", evilEgg);
 		useEggOnBrulee = new DetailedQuestStep(this, "Use the evil chickens egg on the brulee.", evilEgg, baseBrulee, pestleAndMortar);
 		killBlackDragon = new NpcStep(this, NpcID.BLACK_DRAGON, new WorldPoint(2461, 4367, 0), "Kill a black dragon.", combatGear, antidragonShield);

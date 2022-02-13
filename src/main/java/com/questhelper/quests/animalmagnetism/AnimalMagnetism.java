@@ -289,8 +289,8 @@ public class AnimalMagnetism extends BasicQuestHelper
 		return Arrays.asList(
 				new ExperienceReward(Skill.CRAFTING, 1000),
 				new ExperienceReward(Skill.FLETCHING, 1000),
-				new ExperienceReward(Skill.SLAYER, 1000));
-				new ExperienceReward(Skill.WOODCUTTING, 2500),
+				new ExperienceReward(Skill.SLAYER, 1000),
+				new ExperienceReward(Skill.WOODCUTTING, 2500));
 	}
 
 	@Override

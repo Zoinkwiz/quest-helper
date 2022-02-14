@@ -65,7 +65,7 @@ import com.questhelper.steps.QuestStep;
 public class VarrockEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement coins, pickaxe, log, axe, bone, softClay, earthTali, ess, flyRod, feathers;
+	ItemRequirement coins, pickaxe, log, axe, bone, softClay, earthTali, essence, flyRod, feathers;
 
 	ItemRequirement unfiredBowl;
 
@@ -142,7 +142,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		bone = new ItemRequirement("Bones", ItemCollections.getBones()).showConditioned(notDogBone);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
 		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.getEarthAltar()).showConditioned(notEarthRune);
-		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notEarthRune);
+		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notEarthRune);
 		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout);
 		feathers = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notTrout);
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
@@ -211,7 +211,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 			"Travel to the earth altar or go through the abyss.", earthTali);
 		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
-			"Craft an earth rune.", ess);
+			"Craft an earth rune.", essence);
 		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),
 			"Fish a trout in the River Lum.", flyRod, feathers);
 		teaStall = new ObjectStep(this, ObjectID.TEA_STALL, new WorldPoint(3270, 3411, 0),
@@ -225,7 +225,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins.quantity(150), pickaxe, log, axe, bone, softClay, earthTali, ess, flyRod, feathers);
+		return Arrays.asList(coins.quantity(150), pickaxe, log, axe, bone, softClay, earthTali, essence, flyRod, feathers);
 	}
 
 	@Override
@@ -308,7 +308,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		allSteps.add(dyingTreeSteps);
 
 		PanelDetails earthRuneSteps = new PanelDetails("Craft an Earth Rune", Arrays.asList(moveToEarthRune,
-			earthRune), new SkillRequirement(Skill.RUNECRAFT, 9), ess, earthTali);
+			earthRune), new SkillRequirement(Skill.RUNECRAFT, 9), essence, earthTali);
 		earthRuneSteps.setDisplayCondition(notEarthRune);
 		allSteps.add(earthRuneSteps);
 

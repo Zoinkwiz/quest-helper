@@ -59,7 +59,7 @@ import com.questhelper.panel.PanelDetails;
 public class FremennikElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement pureEss, dragonstone, goldBar, amuletMould, combatGear, thrownaxe, climbingBoots, rope, petRock,
+	ItemRequirement pureEssence, dragonstone, goldBar, amuletMould, combatGear, thrownaxe, climbingBoots, rope, petRock,
 		crossbow, hammer, mithGrap;
 
 	// Recommended
@@ -160,7 +160,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		protectMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
 		petRock = new ItemRequirement("Pet Rock", ItemID.PET_ROCK).showConditioned(notDagKings);
-		pureEss = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notAstralRunes);
+		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notAstralRunes);
 		dragonstone = new ItemRequirement("Cut dragonstone", ItemID.DRAGONSTONE).showConditioned(notDragonAmulet);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notDragonAmulet);
 		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet);
@@ -348,7 +348,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(pureEss.quantity(28), dragonstone, goldBar, amuletMould, combatGear, rope.quantity(3), climbingBoots, petRock, crossbow, mithGrap, hammer);
+		return Arrays.asList(pureEssence.quantity(28), dragonstone, goldBar, amuletMould, combatGear, rope.quantity(3), climbingBoots, petRock, crossbow, mithGrap, hammer);
 	}
 
 	@Override
@@ -417,7 +417,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 
 		PanelDetails astralRunesSteps = new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain,
 			moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy,
-			new SkillRequirement(Skill.RUNECRAFT, 82), pureEss.quantity(28));
+			new SkillRequirement(Skill.RUNECRAFT, 82), pureEssence.quantity(28));
 		astralRunesSteps.setDisplayCondition(notAstralRunes);
 		allSteps.add(astralRunesSteps);
 

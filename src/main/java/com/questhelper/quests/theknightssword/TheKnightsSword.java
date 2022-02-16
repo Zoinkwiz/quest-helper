@@ -162,7 +162,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		goUpCastle2 = new ObjectStep(this, ObjectID.STAIRCASE_24077, new WorldPoint(2985, 3338, 1), "Go up the staircase west of the ladder on the 1st floor.");
 		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_2272, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", searchCupboardReq);
 		((ObjectStep)searchCupboard).addAlternateObjects(ObjectID.CUPBOARD_2271); // 2271 is the closed cupboard
-		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", bluriteOre, ironBars, portrait);
+		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", ironBars, portrait);
 		givePortraitToThurgo.addDialogStep("About that sword...");
 		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars);
 		mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0), "Mine a blurite ore in the eastern cavern.", pickaxe);

@@ -426,7 +426,7 @@ public class EaglesPeak extends BasicQuestHelper
 
 		sneakPastEagle = new NpcStep(this, NpcID.EAGLE, new WorldPoint(2008, 4955, 3),
 			"Go through the feather door and sneak past the Eagle whilst wearing your eagle disguise.",
-			fakeBeak, eagleCape);
+			fakeBeak.equipped(), eagleCape.equipped());
 
 		speakToNickolaus = new NpcStep(this, NpcID.NICKOLAUS_1485, new WorldPoint(2006, 4960, 3),
 			"Speak to Nickolaus.",

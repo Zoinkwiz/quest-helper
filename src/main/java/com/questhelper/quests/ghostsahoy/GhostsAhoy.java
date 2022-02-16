@@ -378,7 +378,7 @@ public class GhostsAhoy extends BasicQuestHelper
 			new WorldPoint(3605, 3564, 0)
 		));
 
-		useMapsTogether = new DetailedQuestStep(this, "Use the map pieces together.", mapPiece1, mapPiece2, mapPiece3);
+		useMapsTogether = new DetailedQuestStep(this, "Use the map pieces together.", mapPiece1.highlighted(), mapPiece2.highlighted(), mapPiece3.highlighted());
 
 		if (canUseCharos)
 		{

@@ -164,7 +164,8 @@ public class JunglePotion extends BasicQuestHelper
 	private QuestStep returnRoguesPurse()
 	{
 		cleanAndReturnRoguesPurse = getReturnHerbStep("Rogues Purse", grimyRoguesPurse, roguesPurse);
-		cleanAndReturnRoguesPurse.addStep(isUnderground, new DetailedQuestStep(this, "Teleport out of the cave."));
+		cleanAndReturnRoguesPurse.addStep(isUnderground, new ObjectStep(this,
+			ObjectID.HAND_HOLDS, new WorldPoint(2830, 9522, 0), "Climb out of the cave."));
 		return cleanAndReturnRoguesPurse;
 	}
 

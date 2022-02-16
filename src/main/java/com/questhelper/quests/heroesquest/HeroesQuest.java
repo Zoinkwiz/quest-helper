@@ -371,7 +371,7 @@ public class HeroesQuest extends BasicQuestHelper
 		getKeyFromGrip.addDialogStep("He won't notice me having a quick look.");
 
 		pickupKey = new DetailedQuestStep(this, "Pick up Grip's keyring", gripsKey);
-		enterTreasureRoom = new ObjectStep(this, ObjectID.DOOR_2621, new WorldPoint(2764, 3197, 0), "Use Grip's keyring on the treasure room door.", gripsKey);
+		enterTreasureRoom = new ObjectStep(this, ObjectID.DOOR_2621, new WorldPoint(2764, 3197, 0), "Use Grip's keyring on the treasure room door.", gripsKey.highlighted());
 		enterTreasureRoom.addIcon(ItemID.GRIPS_KEYRING);
 		searchChest = new ObjectStep(this, ObjectID.CHEST_2632, new WorldPoint(2766, 3199, 0), "Search the chest in the treasure room for two candlesticks.");
 		((ObjectStep) (searchChest)).addAlternateObjects(ObjectID.CHEST_2633);

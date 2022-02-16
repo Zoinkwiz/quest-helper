@@ -64,7 +64,7 @@ public class BelowIceMountain extends BasicQuestHelper
 
 	//Items Required
 	ItemRequirement cookedMeat, bread, knife, coins, knifeHighlight, breadHighlight, steakSandwich,
-		steakSandwichHighlight, beerHighlight;
+		beerHighlight;
 
 	ItemRequirement iceMountainTeleport, faladorTeleport, varrockTeleport, combatGearOrPickaxe;
 
@@ -139,7 +139,6 @@ public class BelowIceMountain extends BasicQuestHelper
 		breadHighlight = new ItemRequirement(true, "Bread", ItemID.BREAD);
 
 		steakSandwich = new ItemRequirement("Steak Sandwich", ItemID.STEAK_SANDWICH);
-		steakSandwichHighlight = new ItemRequirement(true, "Steak Sandwich", ItemID.STEAK_SANDWICH);
 
 		beerHighlight = new ItemRequirement(true, "Asgarnian Ale", ItemID.ASGARNIAN_ALE);
 
@@ -199,8 +198,7 @@ public class BelowIceMountain extends BasicQuestHelper
 
 		makeSandwich = new DetailedQuestStep(this, "Use the knife on the bread to make a steak sandwich. Be careful not to eat it!", knifeHighlight, breadHighlight);
 
-		feedMarley = new NpcStep(this, NpcID.MARLEY, new WorldPoint(3088, 3470, 0), "Return to Marley and give him the" +
-			" steak sandwich. Be careful not to eat it!", steakSandwichHighlight);
+		feedMarley = new NpcStep(this, NpcID.MARLEY, new WorldPoint(3088, 3470, 0), "Return to Marley and give him the steak sandwich. Be careful not to eat it!", steakSandwich);
 
 		talkToMarleyAfterFeeding = new NpcStep(this,  NpcID.MARLEY, new WorldPoint(3088, 3470, 0), "Talk to Marley to send him off to the excavation site.");
 		feedMarley.addSubSteps(talkToMarleyAfterFeeding);
@@ -273,7 +271,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 1));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2000));
 	}
 
 	@Override
@@ -281,7 +279,9 @@ public class BelowIceMountain extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new UnlockReward("Access to the Ruins of Camdozaal."),
-				new UnlockReward("Flex Emote"));
+				new UnlockReward("Flex Emote"),
+				new UnlockReward("The ability to make a steak sandwich")
+		);
 	}
 
 	@Override

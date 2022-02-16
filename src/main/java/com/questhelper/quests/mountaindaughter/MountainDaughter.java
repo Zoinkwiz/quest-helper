@@ -180,8 +180,7 @@ public class MountainDaughter extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);
 		pickaxe.addAlternates(ItemCollections.getPickaxes());
 
-		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE);
-		axe.addAlternates(ItemCollections.getAxes());
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		pole = new ItemRequirement("A staff or a Pole", ItemID.POLE);
 		pole.addAlternates(ItemID.LUNAR_STAFF);
@@ -325,7 +324,7 @@ public class MountainDaughter extends BasicQuestHelper
 			"Go to the top of White Wolf Mountain and pick the Thorny Bushes whilst wearing gloves.",
 			gloves);
 
-		eatFruit = new DetailedQuestStep(this, "Eat the White Pearl.", whitePearl);
+		eatFruit = new DetailedQuestStep(this, "Eat the White Pearl.", whitePearl.highlighted());
 
 		returnToHamalAboutDiplomacy = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
 			"Return to Hamal the Chieftain in the Mountain Camp.",

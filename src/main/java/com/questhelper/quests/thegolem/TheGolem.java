@@ -350,9 +350,9 @@ public class TheGolem extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Rubies", ItemID.RUBY, 2),
-				new ItemReward("Emeralds", ItemID.EMERALD, 2),
-				new ItemReward("Sapphires", ItemID.SAPPHIRE, 2));
+				new ItemReward("Rubies (by using a chisel and hammer on the throne)", ItemID.RUBY, 2),
+				new ItemReward("Emeralds (by using a chisel and hammer on the throne)", ItemID.EMERALD, 2),
+				new ItemReward("Sapphires (by using a chisel and hammer on the throne)", ItemID.SAPPHIRE, 2));
 	}
 
 	@Override

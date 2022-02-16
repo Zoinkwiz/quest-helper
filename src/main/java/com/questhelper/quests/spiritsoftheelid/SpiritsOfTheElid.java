@@ -156,7 +156,9 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		rope.setHighlightInInventory(true);
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.getPickaxes(), 1);
 		bow = new ItemRequirement("Any bow", ItemCollections.getBows(), 1, true);
+		bow.setTooltip("Short bow obtainable during quest east of the cave entrance");
 		arrows = new ItemRequirement("Arrows for bow", ItemCollections.getMetalArrows(), 1, true);
+		arrows.setTooltip("Bronze arrows obtainable during quest south of cave entrance");
 
 		//Quest Items
 		tornRobeTop = new ItemRequirement("Torn Robe (top)", ItemID.TORN_ROBE, 1);

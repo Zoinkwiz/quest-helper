@@ -217,7 +217,7 @@ public class TrollRomance extends BasicQuestHelper
 				"be careful!", waxedSled);
 		leaveTrollCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Leave the cave via the north crevice.");
 		equipSled = new DetailedQuestStep(this, "Equip the sled.", sledEquipped);
-		sledSouth = new ObjectStep(this, ObjectID.SLOPE, new WorldPoint(2773, 3835, 0), "Sled to the south.");
+		sledSouth = new ObjectStep(this, ObjectID.SLOPE, new WorldPoint(2773, 3835, 0), "Sled to the south.", sledEquipped);
 		pickFlowers = new ObjectStep(this, ObjectID.RARE_FLOWERS, new WorldPoint(2781, 3783, 0), "Pick a rare flower.");
 
 		enterStrongholdAgain = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to Ug with the trollweiss flowers.", trollweissFlowers, combatGear);
@@ -255,7 +255,7 @@ public class TrollRomance extends BasicQuestHelper
 		challengeArrg.addSubSteps(enterStrongholdForFight, goUpToUgForFight, goDownToUgForFight);
 
 		killArrg = new NpcStep(this, NpcID.ARRG_643, "Kill Arrg.");
-		returnToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room to finish.");
+		returnToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room to finish the quest.");
 		returnToUg.setWorldMapPoint(new WorldPoint(2891, 10097, 0));
 		returnToUg.addSubSteps(goDownToUgForEnd, goUpToUgForEnd, enterStrongholdForEnd);
 	}
@@ -271,7 +271,7 @@ public class TrollRomance extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Arrg (level 113)");
+		reqs.add("Arrg (level 113) can be safe spotted");
 		return reqs;
 	}
 

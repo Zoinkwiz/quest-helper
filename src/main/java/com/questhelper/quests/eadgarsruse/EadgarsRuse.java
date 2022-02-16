@@ -68,7 +68,7 @@ public class EadgarsRuse extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement climbingBoots, climbingBootsOr12Coins, vodka, vodkaHighlight, pineappleChunks, pineappleChunksHighlight, logs2, grain10, rawChicken5, tinderbox, pestleAndMortar, ranarrPotionUnf,
-		coins12, cellKey2, alcoChunks, parrot, parrotHighlighted, robe, logs1, thistle, logHighlight, tinderboxHighlight, driedThistle, pestleAndMortarHighlight, groundThistle, ranarrUnfHighlight, trollPotion, trainedParrot,
+		coins12, cellKey2, alcoChunks, parrot, parrotHighlighted, robe, logs1, thistle, logHighlight, tinderboxHighlight, driedThistle, groundThistle, ranarrUnfHighlight, trollPotion, trainedParrot,
 		fakeMan, storeroomKey, goutweed, climbingBootsEquipped;
 
 	//Items Recommended
@@ -297,9 +297,6 @@ public class EadgarsRuse extends BasicQuestHelper
 		driedThistle = new ItemRequirement("Dried thistle", ItemID.DRIED_THISTLE);
 		driedThistle.setHighlightInInventory(true);
 
-		pestleAndMortarHighlight = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleAndMortarHighlight.setHighlightInInventory(true);
-
 		groundThistle = new ItemRequirement("Ground thistle", ItemID.GROUND_THISTLE);
 		groundThistle.setHighlightInInventory(true);
 
@@ -490,7 +487,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		useThistleOnFire.addSubSteps(useThistleOnTrollFire);
 
-		grindThistle = new DetailedQuestStep(this, "Use the pestle and mortar on the dried thistle", pestleAndMortar, driedThistle);
+		grindThistle = new DetailedQuestStep(this, "Use the pestle and mortar on the dried thistle", pestleAndMortar.highlighted(), driedThistle.highlighted());
 
 		useGroundThistleOnRanarr = new DetailedQuestStep(this, "Use the ground thistle on a ranarr potion (unf)", groundThistle, ranarrUnfHighlight);
 

@@ -291,7 +291,8 @@ public class ColdWar extends BasicQuestHelper
 		useSpadeOnBirdHide = new ObjectStep(this, NullObjectID.NULL_21246, new WorldPoint(2666, 3991, 1), "Use a spade on the bird hide to cover it in snow.", spadeHighlight);
 		useSpadeOnBirdHide.addIcon(ItemID.SPADE);
 
-		learnPenguinEmotes = new NpcStep(this, NpcID.LARRY_829, new WorldPoint(2670,3988,1), "Talk to Larry on the iceberg to enter the bird hide. PAY ATTENTION TO THIS CUTSCENE and note the 3 emotes the LEFT penguin does.");
+		learnPenguinEmotes = new NpcStep(this, NpcID.LARRY_829, new WorldPoint(2670,3988,1), "Talk to Larry on the iceberg to enter the bird hide.");
+
 
 		talkToLarryAfterEmotes = new NpcStep(this, NpcID.LARRY_829, new WorldPoint(2670,3988,1), "Talk to Larry again.");
 		talkToLarryAfterEmotes.addDialogStep("That's crazy!");
@@ -316,7 +317,7 @@ public class ColdWar extends BasicQuestHelper
 		bringSuitToLarry.addDialogStep("Yes");
 
 		talkToLarryOnIcebergWithSuit = new NpcStep(this, NpcID.LARRY_829, new WorldPoint(2670,3988,1), "Talk to Larry on the iceberg.");
-		talkToLarryOnIcebergWithSuit.addDialogStep("It looks like a warning message to keep us away.");
+		talkToLarryOnIcebergWithSuit.addDialogSteps("It looks like a warning message to keep us away.", "Yes");
 
 		readMissionReport = new DetailedQuestStep(this, "Read the mission report.", missionReportHighlight);
 
@@ -369,9 +370,8 @@ public class ColdWar extends BasicQuestHelper
 
 		kgpAgent2 = new NpcStep(this, NpcID.KGP_AGENT, new WorldPoint(2639, 4008, 1), "Talk to the KGP Agent again.", kgpId);
 		enterAvalanche = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche.");
-		enterAvalanche2 = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche " +
-			"as a penguin");
-		enterAvalanche3 = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche.");
+		enterAvalanche2 = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche as a penguin.");
+		enterAvalanche3 = new ObjectStep(this, ObjectID.AVALANCHE, new WorldPoint(2638,4011,1),"Enter the avalanche as a penguin.");
 
 		kgpAgentInAvalanche = new NpcStep(this, NpcID.KGP_AGENT, new WorldPoint(2647, 10384, 0), "Talk to the KGP Agent in the first room to the west of the entrance.");
 		((NpcStep) kgpAgentInAvalanche).setMaxRoamRange(12);

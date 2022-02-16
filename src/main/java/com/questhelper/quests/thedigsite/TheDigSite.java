@@ -217,6 +217,7 @@ public class TheDigSite extends BasicQuestHelper
 		opal.setTooltip("You can get one by panning at the Digsite");
 		opal.addAlternates(ItemID.UNCUT_OPAL);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
+		charcoal.setTooltip("Obtainable during quest by searching specimen trays");
 		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH);
 		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR);
 		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY);

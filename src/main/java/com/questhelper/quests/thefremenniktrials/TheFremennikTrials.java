@@ -672,7 +672,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		talkToOlaf.addDialogStep("Ask about becoming a Fremennik");
 		talkToOlaf.addDialogStep("Yes");
 		chopSwayingTree = new ObjectStep(this, ObjectID.SWAYING_TREE, new WorldPoint(2739, 3639, 0), "Go south east of Rellekka and cut a branch from the swaying tree", axe, knife);
-		fletchLyre = new DetailedQuestStep(this, "Use a knife on the branch to make an unstrung lyre", knife, branch);
+		fletchLyre = new DetailedQuestStep(this, "Use a knife on the branch to make an unstrung lyre", knife.highlighted(), branch.highlighted());
 		talkToLalli = new NpcStep(this, NpcID.LALLI, new WorldPoint(2771, 3621, 0), "Talk to Lalli to the south east of Rellekka.");
 		talkToLalli.addDialogStep("Other human?");
 		talkToAskeladdenForRock = new NpcStep(this, NpcID.ASKELADDEN, new WorldPoint(2658, 3660, 0), "Return to Rellekka and talk to Askeladden for a pet rock.");
@@ -699,10 +699,10 @@ public class TheFremennikTrials extends BasicQuestHelper
 		useOnion.addSubSteps(useCabbage, usePotato, useRock);
 		talkToLaliAfterStew = new NpcStep(this, NpcID.LALLI, new WorldPoint(2771, 3621, 0), "Talk to Lalli for golden wool.");
 		spinWool = new DetailedQuestStep(this, "Spin the golden fleece into wool using a spinning wheel. The closest wheel is in Seers' Village.", goldenFleece);
-		makeLyre = new DetailedQuestStep(this, "Use the golden wool on your unstrung lyre.", lyreUnstrung, goldenWool);
+		makeLyre = new DetailedQuestStep(this, "Use the golden wool on your unstrung lyre.", lyreUnstrung.highlighted(), goldenWool.highlighted());
 		enchantLyre = new ObjectStep(this, ObjectID.STRANGE_ALTAR, new WorldPoint(2626, 3598, 0), "Bring your lyre to the Strange Altar south west of Rellekka, and use either a raw shark, raw sea turtle or raw manta ray on it.", lyre, rawShark);
 		enchantLyre.addIcon(ItemID.RAW_SHARK);
-		performMusic = new DetailedQuestStep(this, new WorldPoint(2658, 3683, 0), "Return to Rellekka and enter the longhall's stage to perform. Once on stage, play the enchanted lyre.", enchantedLyre);
+		performMusic = new DetailedQuestStep(this, new WorldPoint(2658, 3683, 0), "Return to Rellekka and enter the longhall's stage to perform. Once on stage, play the enchanted lyre.", enchantedLyre.highlighted());
 
 		/* Manni Task */
 		talkToManni = new NpcStep(this, NpcID.MANNI_THE_REVELLER, new WorldPoint(2658, 3675, 0), "Talk to Manni the Reveller in the Rellekka longhall.");

@@ -247,10 +247,12 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWoolHighlight = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL);
 		ballOfWoolHighlight.setHighlightInInventory(true);
 
-		bananaReq = new ItemRequirement("Banana (obtainable during quest)", ItemID.BANANA, 5);
+		bananaReq = new ItemRequirement("Banana", ItemID.BANANA, 5);
+		bananaReq.setTooltip("Obtainable during quest");
 
 		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);
+		monkeyBonesOrCorpse.setTooltip("Obtainable during quest");
 
 		monkeyBonesOrCorpseHighlight = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpseHighlight.setHighlightInInventory(true);
@@ -444,7 +446,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToNarnodeAfterShipyard = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Return to King Narnode Shareen in the Tree Gnome Stronghold.");
 
 		goUpToDaero = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Talk to Daero on the 1st floor of the Tree Gnome Stronghold.");
-		talkToDaero = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Talk to Daero on the 1st floor of the Tree Gnome Stronghold.", narnodesOrders, royalSeal);
+		talkToDaero = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Talk to Daero on the 1st floor of the Tree Gnome Stronghold. Make sure to go through all of the Chat Options to be teleported to a new location.", narnodesOrders, royalSeal);
 		talkToDaero.addDialogSteps("Leave...", "Who is it?", "Yes");
 		talkToDaero.addAlternateNpcs(NpcID.DAERO_1445);
 		talkToDaero.addSubSteps(goUpToDaero);
@@ -507,7 +509,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		leaveToPrepareForBar = new DetailedQuestStep(this, "Teleport out to prepare for a dangerous portion. You'll want energy/stamina potions, food and prayer potions.");
 
-		goUpToDaeroForAmuletRun = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Get food, antipoison, energy/stamina/prayer potions, and return to Ape Atoll.", goldBar, monkeyDentures, mould);
+		goUpToDaeroForAmuletRun = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Get food, antipoison, energy / stamina / prayer potions, and return to Ape Atoll.", goldBar, monkeyDentures,
+			mould);
 
 		talkToDaeroForAmuletRun = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Travel with Daero on the 1st floor of the Tree Gnome Stronghold.", goldBar, monkeyDentures, mould);
 		talkToDaeroForAmuletRun.addDialogSteps("Yes");

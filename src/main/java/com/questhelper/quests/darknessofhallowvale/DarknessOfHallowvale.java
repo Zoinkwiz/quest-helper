@@ -623,10 +623,10 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3640, 3302, 0)
 		);
 
-		useKnifeOnTapestry = new ObjectStep(this, NullObjectID.NULL_18125, new WorldPoint(3638, 3304, 0), "Slash the tapestry in the building in north east Meiyerditch.");
+		useKnifeOnTapestry = new ObjectStep(this, NullObjectID.NULL_18125, new WorldPoint(3638, 3304, 0), "Slash the tapestry in the building in north east Meiyerditch.", knife.highlighted());
 		useKnifeOnTapestry.setLinePoints(pathFromBaseToTapestry);
 		useKnifeOnTapestry.addIcon(ItemID.KNIFE);
-		useKeyOnStatue = new ObjectStep(this, NullObjectID.NULL_18127, new WorldPoint(3641, 3304, 0), "Use the ornate key on the nearby statue.", largeOrnateKey);
+		useKeyOnStatue = new ObjectStep(this, NullObjectID.NULL_18127, new WorldPoint(3641, 3304, 0), "Use the ornate key on the nearby statue.", largeOrnateKey.highlighted());
 		useKeyOnStatue.addIcon(ItemID.LARGE_ORNATE_KEY);
 		goDownToLab = new ObjectStep(this, ObjectID.STAIRCASE_18049, new WorldPoint(3643, 3305, 0), "Go down the staircase to the lab.");
 		getRunes = new ObjectStep(this, ObjectID.BROKEN_RUNE_CASE, new WorldPoint(3629, 9695, 0), "Search the broken rune case.");

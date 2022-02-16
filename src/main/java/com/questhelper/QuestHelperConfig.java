@@ -252,7 +252,7 @@ public interface QuestHelperConfig extends Config
 	)
 	default Color textHighlightColor()
 	{
-		return Color.CYAN.darker();
+		return Color.BLUE;
 	}
 
 	@ConfigItem(

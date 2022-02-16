@@ -161,6 +161,7 @@ public class LegendsQuest extends BasicQuestHelper
 		steps.put(7, investigatingTheCave);
 
 		runePuzzle = new ConditionalStep(this, enterMossyRockAgain);
+		runePuzzle.addStep(new Conditions(inCaveRoom4, addedLawRune2), searchMarkedWall);
 		runePuzzle.addStep(new Conditions(inCaveRoom4, addedLawRune), useLaw2);
 		runePuzzle.addStep(new Conditions(inCaveRoom4, addedEarthRune), useLaw);
 		runePuzzle.addStep(new Conditions(inCaveRoom4, addedMindRune), useEarth);
@@ -211,7 +212,7 @@ public class LegendsQuest extends BasicQuestHelper
 		steps.put(11, solvingCaves);
 
 		ConditionalStep talkingToUngadulu = new ConditionalStep(this, enterMossyRockAfterFight);
-		talkingToUngadulu.addStep(germinatedSeeds.alsoCheckBank(questBank), useBowlOnSeeds);
+		talkingToUngadulu.addStep(yommiSeeds, useBowlOnSeeds);
 		talkingToUngadulu.addStep(inFire, talkToUngadulu);
 		talkingToUngadulu.addStep(inCaves, enterFireAfterFight);
 
@@ -607,7 +608,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		hadSketch = new Conditions(true, LogicType.OR, sketch);
 
-		searchedMarkedWall = new WidgetTextRequirement(229, 1, "You can see a message on the wall");
+		searchedMarkedWall = new ChatMessageRequirement("You search the wall.");
 
 		addedSoulRune = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(229, 1,  "You slide the Soul Rune into the first"),
@@ -689,7 +690,7 @@ public class LegendsQuest extends BasicQuestHelper
 		leaveCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2903, new WorldPoint(2773, 9342, 0), "Leave the cave back to the surface.");
 		spinBullAgain = new DetailedQuestStep(this, "Spin the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuoAgain = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo about pure water and the vessel needed for it.");
-		talkToGujuoAgain.addDialogSteps("I need some pure water to douse some magic flames.", "What kind of a vessel?");
+		talkToGujuoAgain.addDialogSteps("I need some pure water to douse some magic flames.", "What kind of a vessel?", "Where is the pool of sacred water?");
 
 		enterMossyRockAgain = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0), "Search and then enter the Mossy Rocks in the north west of the Kharazi.");
 		enterMossyRockAgain.addDialogStep("Yes, I'll crawl through, I'm very athletic.");
@@ -702,7 +703,7 @@ public class LegendsQuest extends BasicQuestHelper
 		enterGate2.addDialogStep("Yes, I'm very strong, I'll force them open.");
 
 		searchMarkedWall = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Follow the cave around until you reach a marked wall. Right-click search it. Kill a Deathwing for the Karamja Achievement Diary whilst you're here.");
-		searchMarkedWall.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!");
+		searchMarkedWall.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!", "Yes, I'll read it.");
 		useSoul = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Use a Soul Rune on the marked wall.", soulRuneHighlight);
 		useSoul.addIcon(ItemID.SOUL_RUNE);
 		useMind = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Use a Mind Rune on the marked wall.", mindRuneHighlight);
@@ -766,7 +767,8 @@ public class LegendsQuest extends BasicQuestHelper
 
 		talkToUngadulu = new NpcStep(this, NpcID.UNGADULU, new WorldPoint(2792, 9328, 0), "Right-click talk to Ungadulu.");
 		talkToUngadulu.addSubSteps(enterMossyRockAfterFight, enterFireAfterFight);
-		talkToUngadulu.addDialogSteps("I need to collect some Yommi tree seeds for Gujuo.");
+		talkToUngadulu.addDialogSteps("I need to collect some Yommi tree seeds for Gujuo.", "How do I grow the Yommi tree?",
+			"What will you do now?", "How do I get out of here?", "Ok, thanks...");
 
 		useBowlOnSeeds = new DetailedQuestStep(this, "Use the blessed bowl of water on the yommi seeds.", yommiSeeds, goldBowlFullHighlighted);
 		leaveCaveWithSeed = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2903, new WorldPoint(2773, 9342, 0), "Leave the cave back to the surface.");
@@ -781,7 +783,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		spinBullAfterSeeds = new DetailedQuestStep(this, "Spin the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuoAfterSeeds = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo about what's happened to the water pool.");
-		talkToGujuoAfterSeeds.addDialogSteps("The sacred water pool has dried up and I need more water.", "Where is the source of the spring of pure water?");
+		talkToGujuoAfterSeeds.addDialogSteps("The water pool has dried up and I need more water.", "Where is the source of the spring of pure water?");
 
 		enterJungleAfterSeeds = new DetailedQuestStep(this, "Return to the Kharazi Jungle with your bull roarer, and be prepared for some fights.",
 			bullRoarer, runeOrDragonAxe, machete, pickaxe, lockpick, vialOfWater, snakeWeed, ardrigal, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, combatGear, normalSpellbook);
@@ -895,7 +897,10 @@ public class LegendsQuest extends BasicQuestHelper
 
 		pickUpTotem = new ObjectStep(this, ObjectID.TOTEM_POLE_2954, "Pick up the totem pole.");
 
-		useTotemOnTotem = new ObjectStep(this, ObjectID.TOTEM_POLE_2938, new WorldPoint(2852, 2917, 0), "Put Protect from Melee on, and use the new totem on one of the corrupted totems.", yommiTotemHighlighted, combatGear);
+		useTotemOnTotem = new ObjectStep(this, ObjectID.TOTEM_POLE_2938, new WorldPoint(2852, 2917, 0),
+			"Put Protect from Melee on, and use the new totem on one of the corrupted totems. " +
+				"If you investigated the totem on accident, wait for a few seconds before trying again.",
+			yommiTotemHighlighted,	combatGear);
 		useTotemOnTotem.addAlternateObjects(ObjectID.TOTEM_POLE_2936);
 		useTotemOnTotem.addIcon(ItemID.YOMMI_TOTEM);
 		killRanalph = new NpcStep(this, NpcID.RANALPH_DEVERE, "Kill Ranalph.");

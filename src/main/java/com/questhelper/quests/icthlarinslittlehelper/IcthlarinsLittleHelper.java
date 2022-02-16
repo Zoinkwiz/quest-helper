@@ -218,7 +218,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		waterskin4 = new ItemRequirement("Waterskin(4), bring a few to avoid drinking it", ItemID.WATERSKIN4);
 		coins600 = new ItemRequirement("Coins or more for various payments", ItemCollections.getCoins(), 600);
 		bagOfSaltOrBucket = new ItemRequirement("Bag of Salt from a Slayer Master, or an empty bucket to get some", ItemID.BAG_OF_SALT);
-		bagOfSaltOrBucket.addAlternates(ItemID.PILE_OF_SALT);
+		bagOfSaltOrBucket.addAlternates(ItemID.PILE_OF_SALT, ItemID.BUCKET);
 
 		coinsOrLinen = new ItemRequirement("Linen or 30 coins to buy some", ItemID.LINEN);
 
@@ -390,6 +390,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		enterEastRoom = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Enter the east room.");
 		useSymbolOnSarcopagus = new ObjectStep(this, ObjectID.SARCOPHAGUS_6630, new WorldPoint(3312, 9197, 0), "Use the unholy symbol on a sarcophagus.", unholySymbol);
+		useSymbolOnSarcopagus.addIcon(ItemID.UNHOLY_SYMBOL_4683);
 
 		leaveEastRoom = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Leave the east room.");
 

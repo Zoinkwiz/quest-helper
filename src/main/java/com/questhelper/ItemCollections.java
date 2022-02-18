@@ -1266,7 +1266,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> cookingGuild = ImmutableList.of(
+	private static final List<Integer> cookingGuild = ImmutableList.of(
 		ItemID.CHEFS_HAT,
 		ItemID.VARROCK_ARMOUR_3,
 		ItemID.VARROCK_ARMOUR_4,
@@ -1371,7 +1371,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> plunderArtefacts = ImmutableList.of(
+	private static final List<Integer> plunderArtefacts = ImmutableList.of(
 		ItemID.IVORY_COMB,
 		ItemID.POTTERY_SCARAB,
 		ItemID.POTTERY_STATUETTE,
@@ -1384,7 +1384,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> waterskin = ImmutableList.of(
+	private static final List<Integer> waterskin = ImmutableList.of(
 		ItemID.WATERSKIN4,
 		ItemID.WATERSKIN3,
 		ItemID.WATERSKIN2,
@@ -1392,7 +1392,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> grimyHerb = ImmutableList.of(
+	private static final List<Integer> grimyHerb = ImmutableList.of(
 		ItemID.GRIMY_AVANTOE,
 		ItemID.GRIMY_CADANTINE,
 		ItemID.GRIMY_LANTADYME,
@@ -1407,7 +1407,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> blackjacks = ImmutableList.of(
+	private static final List<Integer> blackjacks = ImmutableList.of(
 		ItemID.MAPLE_BLACKJACKD,
 		ItemID.MAPLE_BLACKJACKO,
 		ItemID.MAPLE_BLACKJACK,
@@ -1420,7 +1420,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> keris = ImmutableList.of(
+	private static final List<Integer> keris = ImmutableList.of(
 		ItemID.KERISP_10584,
 		ItemID.KERISP_10583,
 		ItemID.KERISP,
@@ -1428,13 +1428,13 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> stuffedKQHead = ImmutableList.of(
+	private static final List<Integer> stuffedKQHead = ImmutableList.of(
 		ItemID.STUFFED_KQ_HEAD,
 		ItemID.STUFFED_KQ_HEAD_TATTERED
 	);
 
 	@Getter
-	private  static final List<Integer> rechargeableNeckBracelet = ImmutableList.of(
+	private static final List<Integer> rechargeableNeckBracelet = ImmutableList.of(
 		ItemID.SKILLS_NECKLACE3,
 		ItemID.COMBAT_BRACELET3,
 		ItemID.SKILLS_NECKLACE2,
@@ -1474,7 +1474,7 @@ public class ItemCollections
 	);
 
 	@Getter
-	private  static final List<Integer> ardyCloaks = ImmutableList.of(
+	private static final List<Integer> ardyCloaks = ImmutableList.of(
 		ItemID.ARDOUGNE_CLOAK_1,
 		ItemID.ARDOUGNE_CLOAK_2,
 		ItemID.ARDOUGNE_CLOAK_3,
@@ -1931,5 +1931,31 @@ public class ItemCollections
 		ItemID.VERACS_PLATESKIRT_75,
 		ItemID.VERACS_PLATESKIRT_50,
 		ItemID.VERACS_PLATESKIRT_25
+	);
+
+	@Getter
+	private static final List<Integer> OgreBrutalArrows = ImmutableList.of(
+		ItemID.RUNE_BRUTAL,
+		ItemID.ADAMANT_BRUTAL,
+		ItemID.MITHRIL_BRUTAL,
+		ItemID.BLACK_BRUTAL,
+		ItemID.STEEL_BRUTAL,
+		ItemID.IRON_BRUTAL,
+		ItemID.BRONZE_BRUTAL,
+		ItemID.OGRE_ARROW
+	);
+
+	@Getter
+	private static final List<Integer> OgreBellows = ImmutableList.of(
+		ItemID.OGRE_BELLOWS_3,
+		ItemID.OGRE_BELLOWS_2,
+		ItemID.OGRE_BELLOWS_1,
+		ItemID.OGRE_BELLOWS
+	);
+
+	@Getter
+	private static final List<Integer> OgreBow = ImmutableList.of(
+		ItemID.OGRE_BOW,
+		ItemID.COMP_OGRE_BOW
 	);
 }

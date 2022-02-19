@@ -72,7 +72,7 @@ import com.questhelper.steps.QuestStep;
 public class WesternHard extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, crystalBow, smallFishingNet, coins, ninjaGreegree, axe, tinderbox, pickaxe, palmTree,
+	ItemRequirement combatGear, crystalBow, smallFishingNet, coins, ninjaGreegree, axe, tinderbox, pickaxe, palmSapling,
 		ogreBellows, ogreBow, ogreArrows, mahoganyPlank, painting, saw, hammer, lawRunes2, fireRunes2,
 		waterRunes2, banana, rake, spade, rawMonkfish, birdReady, mahoganyLogs;
 
@@ -165,7 +165,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		banana = new ItemRequirement("Banana", ItemID.BANANA).showConditioned(notTPApe);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notLletyaPalm);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notLletyaPalm);
-		palmTree = new ItemRequirement("Palm sapling", ItemID.PALM_SAPLING).showConditioned(notLletyaPalm);
+		palmSapling = new ItemRequirement("Palm sapling", ItemID.PALM_SAPLING).showConditioned(notLletyaPalm);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineAddyOre);
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.getOgreBellows()).showConditioned(notChompyHat);
@@ -273,14 +273,14 @@ public class WesternHard extends ComplexStateQuestHelper
 			"Complete a veteran game of Pest Control.");
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
-			"Claim any Chompy bird hat from Rantz. Kill chompy birds until you have 125 kills. \n \nYou can check " +
+			"Claim any Chompy bird hat from Rantz. Kill chompy birds until you have 300 kills. \n \nYou can check " +
 				"your kill count by right clicking selecting 'Check Kills' on an ogre bow.",
 			ogreBow, ogreArrows, ogreBellows);
 		chompyHat.addDialogStep("Can I have a hat please?");
 
 		lletyaPalm = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2346, 3161, 0),
 			"Check the health of your palm tree in Lletya. It will take about 16 hours to grow fully.", rake, spade,
-			palmTree);
+			palmSapling);
 
 		claimReward = new NpcStep(this, NpcID.ELDER_GNOME_CHILD, new WorldPoint(2466, 3460, 0),
 			"Talk to the Elder gnome child in Gnome Stronghold to claim your reward!");
@@ -290,7 +290,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear, crystalBow, smallFishingNet, coins, ninjaGreegree, axe, tinderbox, pickaxe, palmTree,
+		return Arrays.asList(combatGear, crystalBow, smallFishingNet, coins, ninjaGreegree, axe, tinderbox, pickaxe, palmSapling,
 			ogreBellows, ogreBow, ogreArrows, mahoganyPlank, painting, saw, hammer, lawRunes2, fireRunes2,
 			waterRunes2, banana, rake, spade);
 	}
@@ -422,7 +422,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		allSteps.add(hatSteps);
 
 		PanelDetails palmSteps = new PanelDetails("Lletya Palm tree", Collections.singletonList(lletyaPalm),
-			new SkillRequirement(Skill.FARMING, 68), mourningsEndPartI, palmTree, rake, spade);
+			new SkillRequirement(Skill.FARMING, 68), mourningsEndPartI, palmSapling, rake, spade);
 		palmSteps.setDisplayCondition(notLletyaPalm);
 		allSteps.add(palmSteps);
 

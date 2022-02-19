@@ -123,7 +123,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notGliderToFeldip, gliderToFeldip);
 		doMedium.addStep(new Conditions(notApeBass, inApeAtoll), apeBass);
 		doMedium.addStep(notApeBass, moveToApeBass);
-		doMedium.addStep(new Conditions(notApeTeak, inApeAtoll, teakLogs), apeTeakBurn);
+		doMedium.addStep(new Conditions(notApeTeak, inApeAtoll, teakLogs, choppedLogs), apeTeakBurn);
 		doMedium.addStep(new Conditions(notApeTeak, inApeAtoll), apeTeakChop);
 		doMedium.addStep(notApeTeak, moveToApeTeak);
 		doMedium.addStep(new Conditions(notInterPest, inPest), interPest);
@@ -220,7 +220,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		eagleArea = new Zone(new WorldPoint(1986, 4985, 3), new WorldPoint(2030, 4944, 3));
 		strongholdFirst = new Zone(new WorldPoint(2436, 3515, 1), new WorldPoint(2496, 3475, 1));
 		strongholdBasement = new Zone(new WorldPoint(2431, 9919, 0), new WorldPoint(2499, 9855, 0));
-		apeAtoll = new Zone(new WorldPoint(2687, 28141, 0), new WorldPoint(2817, 2686, 0));
+		apeAtoll = new Zone(new WorldPoint(2687, 2814, 0), new WorldPoint(2817, 2686, 0));
 	}
 
 	public void setupSteps()
@@ -289,10 +289,10 @@ public class WesternMedium extends ComplexStateQuestHelper
 			"Talk to the squire to travel to the Void Knights' Outpost. Alternatively, use the pest control minigame teleport.");
 		moveToPest.addDialogStep("I'd like to go to your outpost.");
 		interPest = new ObjectStep(this, ObjectID.GANGPLANK_25631, new WorldPoint(2643, 2644, 0),
-			"Complete a novice game of Pest Control.");
+			"Complete an intermediate game of Pest Control.");
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
-			"Claim any Chompy bird hat from Rantz. Kill chompy birds until you have 30 kills. \n \nYou can check " +
+			"Claim any Chompy bird hat from Rantz. Kill chompy birds until you have 125 kills. \n \nYou can check " +
 				"your kill count by right clicking selecting 'Check Kills' on an ogre bow.",
 			ogreBow, ogreArrows, ogreBellows);
 		chompyHat.addDialogStep("Can I have a hat please?");
@@ -307,7 +307,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(combatGear, ogreBellows, ogreBow, ogreArrows, teasingStick, logs, knife, bigFishingNet, axe,
 			tinderbox, rope, gnomebowl, gianneDough, chocolateBar, equaLeaf, potOfCream, chocolateDust, crystalSawSeed,
-			pickaxe, teakLogs);
+			pickaxe);
 	}
 
 	@Override

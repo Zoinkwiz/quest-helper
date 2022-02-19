@@ -29,12 +29,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -67,7 +69,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	ItemRequirement combatGear, birdSnare, pickaxe, oakShortU, bowString, ogreBellows, ogreBow, ogreArrows, swampToad;
 
 	// Items recommended
-	ItemRequirement food;
+	ItemRequirement food, fairyAccess;
 
 	// Quests required
 	Requirement bigChompy, runeMysteries;
@@ -104,10 +106,10 @@ public class WesternEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notSwampToadCollect, swampToadCollect);
 		doEasy.addStep(notCopperLongtail, copperLongtail);
 		doEasy.addStep(notMineIron, mineIron);
-		doEasy.addStep(notChompyHat, chompyHat);
 		doEasy.addStep(notTPPest, tpPest);
 		doEasy.addStep(new Conditions(notNovicePest, inPest), novicePest);
 		doEasy.addStep(notNovicePest, moveToPest);
+		doEasy.addStep(notChompyHat, chompyHat);
 
 		return doEasy;
 	}
@@ -141,12 +143,14 @@ public class WesternEasy extends ComplexStateQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		bigChompy = new QuestRequirement(QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED);
-		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
+		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff());
 
 		inBrimstailCave = new ZoneRequirement(brimstailCave);
 		inPest = new ZoneRequirement(pest);
 		inStronghold = new ZoneRequirement(stronghold);
+
+		bigChompy = new QuestRequirement(QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED);
+		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 	}
 
 	public void loadZones()
@@ -218,7 +222,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food);
+		return Arrays.asList(food, fairyAccess);
 	}
 
 	@Override
@@ -304,20 +308,20 @@ public class WesternEasy extends ComplexStateQuestHelper
 		ironSteps.setDisplayCondition(notMineIron);
 		allSteps.add(ironSteps);
 
-		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Arrays.asList(chompyHat),
-			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
-		hatSteps.setDisplayCondition(notChompyHat);
-		allSteps.add(hatSteps);
-
 		PanelDetails tpSteps = new PanelDetails("Teleport to Pest Control", Collections.singletonList(tpPest),
 			new CombatLevelRequirement(40));
 		tpSteps.setDisplayCondition(notTPPest);
 		allSteps.add(tpSteps);
 
 		PanelDetails pestSteps = new PanelDetails("Novice Pest Control", Arrays.asList(moveToPest,
-			novicePest), new CombatLevelRequirement(40));
+			novicePest), new CombatLevelRequirement(40), combatGear);
 		pestSteps.setDisplayCondition(notNovicePest);
 		allSteps.add(pestSteps);
+
+		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
+			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
+		hatSteps.setDisplayCondition(notChompyHat);
+		allSteps.add(hatSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

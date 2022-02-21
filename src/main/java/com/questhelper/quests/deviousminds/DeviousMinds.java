@@ -59,7 +59,7 @@ public class DeviousMinds extends BasicQuestHelper
 	ItemRequirement fallyTele, lumberTele, glory;
 
 	//Items Required
-	ItemRequirement mith2h, bowString, largePouch, slenderBlade, bowSword, orb, illumPouch;
+	ItemRequirement mith2h, bowString, largePouch, slenderBlade, bowSword, orb, illumPouch, noEquipment;
 
 	//NPC Discussions
 	QuestStep talkToMonk, talkToMonk2, teleToAbyss, enterLawRift, leaveLawAltar, talkToHighPriest,
@@ -133,6 +133,7 @@ public class DeviousMinds extends BasicQuestHelper
 		orb = new ItemRequirement("Orb", ItemID.ORB);
 		orb.setHighlightInInventory(true);
 		illumPouch = new ItemRequirement("Illuminated Pouch", ItemID.LARGE_POUCH_6819);
+		noEquipment = new ItemRequirement("Banked all equipment and weapons", -1, -1);
 	}
 
 	public void setupConditions()
@@ -173,12 +174,12 @@ public class DeviousMinds extends BasicQuestHelper
 		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large Pouch.", orb, largePouch);
 
 		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0),
-			"Bank any weapons and armour and teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
-				"monsters upon entering, and your prayer drained to 0!", illumPouch);
+			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
+				"monsters upon entering, and your prayer drained to 0!", illumPouch, noEquipment);
 		enterLawRift = new ObjectStep(this, ObjectID.LAW_RIFT, new WorldPoint(3049, 4839, 0),
-			"Enter the central area through a gap/passage/eyes. Enter the Law Rift.", illumPouch);
+			"Enter the central area through a gap/passage/eyes. Enter the Law Rift.", illumPouch, noEquipment);
 		leaveLawAltar = new ObjectStep(this, ObjectID.PORTAL_34755, new WorldPoint(2464, 4817, 0),
-			"Enter the portal to leave the Law Altar.", illumPouch);
+			"Enter the portal to leave the Law Altar.", illumPouch, noEquipment);
 
 		//Surprise!
 		usePouchOnAltar = new ObjectStep(this, NullObjectID.NULL_10638, new WorldPoint(2853, 3349, 0),
@@ -189,7 +190,7 @@ public class DeviousMinds extends BasicQuestHelper
 			"Go back to the monk near Paterdomus temple and search the dead monk's body.");
 
 		talkToEntranaMonk = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3045, 3236, 0),
-			"Talk to the Monk of Entrana to go to Entrana. No weapons or armour is allowed.");
+			"Talk to the Monk of Entrana to go to Entrana.", noEquipment);
 		useGangPlank = new ObjectStep(this, ObjectID.GANGPLANK_2415, new WorldPoint(2834, 3333, 1),
 			"Use the gangplank to disembark the boat.");
 		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),

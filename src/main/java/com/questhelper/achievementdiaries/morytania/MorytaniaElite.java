@@ -109,8 +109,8 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		notBareHandShark = new VarplayerRequirement(1181, true, 3);
-		notCremateShade = new VarplayerRequirement(1181, true, 4);
+		notBareHandShark = new VarplayerRequirement(1181, false, 3);
+		notCremateShade = new VarplayerRequirement(1181, false, 4);
 		notFertilizeHerb = new VarplayerRequirement(1181, false, 5);
 		notCraftBlackDhideBody = new VarplayerRequirement(1181, false, 6);
 		notAbyssalDemon = new VarplayerRequirement(1181, false, 7);

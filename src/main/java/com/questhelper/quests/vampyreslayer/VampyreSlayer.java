@@ -106,6 +106,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		stake.setTooltip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
+		garlic.setTooltip("Optional, makes Count Draynor weaker");
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -153,7 +154,6 @@ public class VampyreSlayer extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(hammer);
 		reqs.add(beer);
-		reqs.add(garlicObtainable);
 		reqs.add(combatGear);
 		return reqs;
 	}
@@ -164,6 +164,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
 		reqs.add(draynorManorTeleport);
+		reqs.add(garlicObtainable);
 		return reqs;
 	}
 

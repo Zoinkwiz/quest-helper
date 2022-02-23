@@ -163,7 +163,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 
 		talkToLawry = new NpcStep(this, NpcID.TOMAS_LAWRY, tomasPoint, "Speak to Tomas Lawry in Port Piscarilius.");
 		talkToLawry.addDialogStep("I'm looking for a quest.");
-		talkToLawry.addDialogStep("Absolutely.");
+		talkToLawry.addDialogStep("What are you investigating?");
+		talkToLawry.addDialogStep("Yes.");
 
 		talkToPoorLookingPerson = new NpcStep(this, NpcID.POOR_LOOKING_WOMAN_7923, new WorldPoint(1803, 3738, 0), "Speak to the poor looking woman.");
 		talkToOReilly = new NpcStep(this, NpcID.ROBERT_OREILLY, new WorldPoint(1794, 3757, 0), "Speak to Robert O'Reilly, and give him the bowl of stew.", stew);
@@ -173,6 +174,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		enterWarrens.addAlternateObjects(ObjectID.MANHOLE_31707);
 
 		talkToDevan = new NpcStep(this, NpcID.DEVAN_RUTTER, devanPoint, "Speak to Devan Rutter.");
+		talkToDevan.addDialogStep("Nope, sounds good to me.");
 
 		exitWarrens = new ObjectStep(this, ObjectID.LADDER_31708, ladderPoint, "Exit the Warrens.");
 

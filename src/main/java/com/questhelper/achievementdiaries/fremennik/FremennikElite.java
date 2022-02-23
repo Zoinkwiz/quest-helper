@@ -272,7 +272,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		moveToGodWars = new ObjectStep(this, 26419, new WorldPoint(2919, 3747, 0),
 			"Go down the hole. Bring a rope if this is your first time entering.");
 		godwarsGenerals = new NpcStep(this, NpcID.KREEARRA, new WorldPoint(2832, 5301, 2),
-			"Get kills for a faction then kill it's respective general", true);
+			"Get kills for a faction then kill its respective general.", true);
 		godwarsGenerals.addAlternateNpcs(NpcID.KRIL_TSUTSAROTH);
 		godwarsGenerals.addAlternateNpcs(NpcID.GENERAL_GRAARDOR);
 		godwarsGenerals.addAlternateNpcs(NpcID.COMMANDER_ZILYANA);

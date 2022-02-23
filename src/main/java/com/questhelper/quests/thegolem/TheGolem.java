@@ -186,7 +186,7 @@ public class TheGolem extends BasicQuestHelper
 
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 
-		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.BLACK_MUSHROOM_INK);
+		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
 		inkHighlight.setHighlightInInventory(true);
 
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);

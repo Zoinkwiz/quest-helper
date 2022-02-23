@@ -327,7 +327,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		upgradeSteps.setDisplayCondition(notUpgradeDevice);
 		allSteps.add(upgradeSteps);
 
-		PanelDetails tpLumbSteps = new PanelDetails("Teleport to Lumbridge", Collections.singletonList(tpLumb));
+		PanelDetails tpLumbSteps = new PanelDetails("Teleport to Lumbridge", Collections.singletonList(tpLumb),
+		airRune, earthRune, lawRune);
 		tpLumbSteps.setDisplayCondition(notTPlumb);
 		allSteps.add(tpLumbSteps);
 

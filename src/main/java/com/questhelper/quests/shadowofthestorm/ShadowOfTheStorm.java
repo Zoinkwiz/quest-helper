@@ -201,7 +201,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		strangeImplementHighlighted = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
 		strangeImplementHighlighted.setHighlightInInventory(true);
 		strangeImplementHighlighted.setTooltip("You can find another in the underground of Uzer");
-		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.BLACK_MUSHROOM_INK);
+		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);

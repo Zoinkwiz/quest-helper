@@ -481,7 +481,7 @@ public class TheDigSite extends BasicQuestHelper
 		grindCharcoal = new DetailedQuestStep(this, "Grind charcoal with a pestle and mortar.", pestleAndMortar, charcoal);
 		usePowderOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the powder on the Archaeological expert in the Exam Centre.", powder);
 		usePowderOnExpert.addIcon(ItemID.CHEMICAL_POWDER);
-		useLiquidOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the liquid on the Archaeological expert in the Exam Centre.", liquid);
+		useLiquidOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "(DO NOT LEFT CLICK) Right-click use the liquid on the Archaeological expert in the Exam Centre.", liquid);
 		useLiquidOnExpert.addIcon(ItemID.UNIDENTIFIED_LIQUID);
 		mixNitroWithNitrate = new DetailedQuestStep(this, "Mix the nitroglycerin and ammonium nitrate together.", nitro, nitrate);
 		addCharcoal = new DetailedQuestStep(this, "Add charcoal to the vial.", groundCharcoal, mixedChemicals);

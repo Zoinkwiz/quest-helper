@@ -67,7 +67,7 @@ import net.runelite.api.coords.WorldPoint;
 public class HorrorFromTheDeep extends BasicQuestHelper
 {
 	ItemRequirement fireRune, airRune, waterRune, earthRune, sword, arrow, moltenGlass, tinderbox, hammer,
-	steelNails60, plank2, plank, swampTar1, combatRunes;
+	steelNails, plank2, plank, swampTar1, combatRunes;
 
 	ItemRequirement magicCombat, food, prayerPotions, gamesNecklace;
 
@@ -156,7 +156,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		steelNails60 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 60);
+		steelNails = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS);
 		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		swampTar1 = new ItemRequirement("Swamp tar", ItemID.SWAMP_TAR);
@@ -226,11 +226,11 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		talkToLarrissa.addDialogSteps("With what?", "But how can I help?", "Okay, I'll help!");
 
 		usePlankOnBridge = new ObjectStep(this, ObjectID.BROKEN_BRIDGE, new WorldPoint(2596, 3608, 0), "Use a plank " +
-			"on the bridge east of the Lighthouse.", plank.highlighted(), steelNails60, hammer);
+			"on the bridge east of the Lighthouse.", plank.highlighted(), steelNails.quantity(30), hammer);
 		usePlankOnBridge.addIcon(ItemID.PLANK);
 
 		useSecondPlank = new ObjectStep(this, ObjectID.BROKEN_BRIDGE_4616, new WorldPoint(2598, 3608, 0),
-			"Use a plank on the other side of the bridge east of the Lighthouse.", plank.highlighted(), steelNails60,
+			"Use a plank on the other side of the bridge east of the Lighthouse.", plank.highlighted(), steelNails.quantity(30),
 			hammer);
 		useSecondPlank.addIcon(ItemID.PLANK);
 
@@ -309,7 +309,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(fireRune, airRune, waterRune, earthRune, sword, arrow, moltenGlass, tinderbox, hammer,
-			steelNails60, plank2, swampTar1, combatRunes);
+			steelNails.quantity(60), plank2, swampTar1, combatRunes);
 	}
 
 	@Override
@@ -366,7 +366,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Saving Jossik",
 			Arrays.asList(talkToLarrissa, usePlankOnBridge, useSecondPlank, talkToGunnjorn, openLighthouse,
 				enterLighthouse, goToF1, useTar, useTinderbox, useGlass, goDownToBasement, useAirRune, useWaterRune,
-				useEarthRune, useFireRune, useArrow, useSword), hammer, steelNails60, plank2, moltenGlass, tinderbox,
+				useEarthRune, useFireRune, useArrow, useSword), hammer, steelNails.quantity(60), plank2, moltenGlass, tinderbox,
 			swampTar1, fireRune, airRune, waterRune, earthRune, sword, arrow, combatRunes));
 
 		allSteps.add(new PanelDetails("Defeating the dagannoths",

@@ -108,6 +108,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		doHard.addStep(notMonkeyCage, monkeyCage);
 		doHard.addStep(new Conditions(notStealChest, inCastle), stealChest);
 		doHard.addStep(notStealChest, moveToCastle);
+		doHard.addStep(notDragSquare, dragSquare);
 		doHard.addStep(new Conditions(notDeathRune, redAtAltar, inDeath02), deathRune);
 		doHard.addStep(new Conditions(notDeathRune, redAtDoor, inDeath02), turnKeyMirror);
 		doHard.addStep(new Conditions(notDeathRune, inDeath12), deathMoveDown0);

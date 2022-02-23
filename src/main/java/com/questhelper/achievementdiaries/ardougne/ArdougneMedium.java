@@ -152,7 +152,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff())
 			.showConditioned(new Conditions(LogicType.OR, notNecroTower, notUniPen));
 		skavMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP).showConditioned(notCaveNightshade);
-		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
+		lightSource = new ItemRequirement("Any light source", ItemCollections.getLightSources())
 			.showConditioned(notCaveNightshade);
 		nightshade = new ItemRequirement("Cave nightshade", ItemID.CAVE_NIGHTSHADE);
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapYan);
@@ -261,7 +261,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		caveNightshade = new ItemStep(this, "Pickup the Cave nightshade.", nightshade);
 
 		moveToPlatform = new NpcStep(this, NpcID.JEB, new WorldPoint(2719, 3305, 0),
-			"Talk to Jeb to travel to the Fishing Platform.", smallFishingNet);
+				"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
+		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGART_7789);
 		fishOnPlatform = new NpcStep(this, NpcID.FISHING_SPOT_1514, new WorldPoint(2790, 3276, 0),
 			"Catch any fish on the Fishing Platform.", smallFishingNet);
 
@@ -288,7 +289,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	{
 		// TODO handle yew log item req without making it look weird.
 		return Arrays.asList(combatGear, crossbow, mithGrap, rake, strawSeeds.quantity(3), seedDib, ibanStaff,
-			coins.quantity(200000), smallFishingNet, rawChick, rawSword, yewLog.quantity(10), yewLog2.quantity(1),
+			coins.quantity(200000), skavMap, lightSource, smallFishingNet, rawChick, rawSword, yewLog.quantity(10), yewLog2.quantity(1),
 			fairyAccess, spade);
 	}
 

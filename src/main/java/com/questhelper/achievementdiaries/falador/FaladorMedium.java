@@ -162,7 +162,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow);
-		fishingExplosive = new ItemRequirement("Fishing Explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
+		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
@@ -189,7 +189,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		haySackHighlight = new ItemRequirement(true, "Hay Sack", ItemID.HAY_SACK);
 		scarecrowStep2Highlight = new ItemRequirement(true, "Hay Sack", ItemID.HAY_SACK_6058);
 		bronzeSpearHighlight = new ItemRequirement(true, "Bronze Spear", ItemID.BRONZE_SPEAR);
-		fishingExplosiveHighlight = new ItemRequirement(true, "Fishing Explosive", ItemID.FISHING_EXPLOSIVE);
+		fishingExplosiveHighlight = new ItemRequirement(true, "Fishing explosive", ItemID.FISHING_EXPLOSIVE);
 		mithGrappleHighlight = new ItemRequirement(true, "Mith grapple", ItemID.MITH_GRAPPLE_9419);
 
 		faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
@@ -251,7 +251,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Mogre
 		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT,
-			"Go to Mudskipper Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", fishingExplosiveHighlight);
+			"Go to Mudskipper Point south of Port Sarim and use your Fishing explosive to spawn a Mogre.", fishingExplosiveHighlight);
 		spawnMogre.addAlternateObjects(ObjectID.OMINOUS_FISHING_SPOT_10088, ObjectID.OMINOUS_FISHING_SPOT_10089);
 		spawnMogre.addIcon(ItemID.FISHING_EXPLOSIVE);
 		killMogre = new NpcStep(this, NpcID.MOGRE,

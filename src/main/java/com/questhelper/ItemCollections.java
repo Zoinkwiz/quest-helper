@@ -145,11 +145,6 @@ public class ItemCollections
 	private static final List<Integer> crossbows = ImmutableList.of(
 		ItemID.ARMADYL_CROSSBOW,
 		ItemID.DRAGON_HUNTER_CROSSBOW,
-		ItemID.KARILS_CROSSBOW,
-		ItemID.KARILS_CROSSBOW_100,
-		ItemID.KARILS_CROSSBOW_75,
-		ItemID.KARILS_CROSSBOW_50,
-		ItemID.KARILS_CROSSBOW_25,
 		ItemID.HUNTERS_CROSSBOW,
 		ItemID.DORGESHUUN_CROSSBOW,
 		ItemID.BLURITE_CROSSBOW,

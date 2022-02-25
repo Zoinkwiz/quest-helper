@@ -148,12 +148,6 @@ public class FremennikElite extends ComplexStateQuestHelper
 		notGodwarsGenerals = new VarplayerRequirement(1185, false, 3);
 		notSpiritualMage = new VarplayerRequirement(1185, false, 4);
 
-		// TODO add varb req for generals and army kills (my combat lvl is too low to ensure this works properly)
-		// notKillArma = new VarbitRequirement(3973, true, 1);
-		// notKillSara = new VarbitRequirement(3973, true, 1);
-		// notKillBand = new VarbitRequirement(3973, true, 1);
-		// notKillZam = new VarbitRequirement(3973, true, 1);
-
 		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 		protectMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 		protectMissiles = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
@@ -276,11 +270,6 @@ public class FremennikElite extends ComplexStateQuestHelper
 		godwarsGenerals.addAlternateNpcs(NpcID.KRIL_TSUTSAROTH);
 		godwarsGenerals.addAlternateNpcs(NpcID.GENERAL_GRAARDOR);
 		godwarsGenerals.addAlternateNpcs(NpcID.COMMANDER_ZILYANA);
-		// TODO count kills with each army and generals
-		// killArma = new NpcStep(this, NpcID.AVIANSIE_3172, new WorldPoint(2880, 5298,  2), "Kill armadyl guys");
-		// npc id       kree 3162 kril 3129 graar 2215 zil 2205
-		// varb count   arma 3973 zam 3976 bandos 3975 sara 3972
-		// need varbs for generals kills
 
 		spiritualMage = new NpcStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(2832, 5301, 2),
 			"Kill a spiritual mage", true);

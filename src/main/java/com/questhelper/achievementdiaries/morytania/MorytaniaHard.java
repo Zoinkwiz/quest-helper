@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -41,6 +42,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
@@ -68,7 +70,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	// Items required
 	ItemRequirement combatGear, crystalMineKey, pickaxe, coins, limestoneBrick, hammer, saw, teakPlank, lawRune,
 		bloodRune, noseProtection, watermelonSeeds, seedDibber, rake, axe, tinderbox, witchwoodIcon, lightSource,
-		mushroomSpore, spade;
+		mushroomSpore, spade, mahoLogs;
 
 	// Items recommended
 	ItemRequirement food, fairyAccess, slayerRing;
@@ -78,11 +80,11 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		theGreatBrainRobbery, desertTreasure, piety;
 
 	Requirement notKharyrll, notAdvancedSpikes, notHarvestWatermelon, notBurnMaho, notHardTempleTrekk, notCaveHorror,
-		notBittercapMush, notPietyAltar, notBridgeSalve, notMithOre;
+		notBittercapMush, notPietyAltar, notBridgeSalve, notMithOre, choppedLogs;
 
-	QuestStep claimReward, moveToMine, moveToLevelTwo, mithOre, kharyrll, advancedSpikes, harvestWatermelon,
-		burnMaho, bittercapMush, pietyAltar, bridgeSalve, moveToGrotto, moveToMos, moveToCave,
-		moveToHarmony, moveToUpstairs, moveToCapt, moveToIsland;
+	QuestStep claimReward, moveToMine, moveToLevelTwo, mithOre, kharyrll, advancedSpikes, harvestWatermelon, burnMaho,
+		chopMaho, bittercapMush, pietyAltar, bridgeSalve, moveToGrotto, moveToMos, moveToCave, moveToHarmony, moveToUpstairs,
+		moveToCapt, moveToIsland;
 
 	NpcStep hardTempleTrekk, caveHorror;
 
@@ -111,7 +113,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		doHard.addStep(new Conditions(notCaveHorror, inMos), moveToCave);
 		doHard.addStep(new Conditions(notCaveHorror, inBoat), moveToMos);
 		doHard.addStep(notCaveHorror, moveToCapt);
-		doHard.addStep(new Conditions(notBurnMaho, inIsland), burnMaho);
+		doHard.addStep(new Conditions(notBurnMaho, inIsland, choppedLogs, mahoLogs), burnMaho);
+		doHard.addStep(new Conditions(notBurnMaho, inIsland), chopMaho);
 		doHard.addStep(new Conditions(notBurnMaho, inCave), moveToIsland);
 		doHard.addStep(new Conditions(notBurnMaho, inMos), moveToCave);
 		doHard.addStep(new Conditions(notBurnMaho, inBoat), moveToMos);
@@ -139,7 +142,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		notBridgeSalve = new VarplayerRequirement(1181, false, 1);
 		notMithOre = new VarplayerRequirement(1181, false, 2);
 
-		piety = new PrayerRequirement("Piety", Prayer.PIETY);
+		piety = new PrayerRequirement("Piety activated", Prayer.PIETY);
 
 		crystalMineKey = new ItemRequirement("Crystal mine key", ItemID.CRYSTALMINE_KEY).showConditioned(notMithOre);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMithOre);
@@ -165,8 +168,9 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
 			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho));
 		mushroomSpore = new ItemRequirement("Mushroom spores", ItemID.MUSHROOM_SPORE).showConditioned(notBittercapMush);
-		spade = new ItemRequirement("SPADE", ItemID.SPADE)
+		spade = new ItemRequirement("Spade", ItemID.SPADE)
 			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon));
+		mahoLogs = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -185,6 +189,16 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		inIsland = new ZoneRequirement(island);
 		inCave = new ZoneRequirement(cave);
 		inHarmony = new ZoneRequirement(harmony);
+
+		choppedLogs = new ChatMessageRequirement(
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) choppedLogs).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inIsland),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
 
 		hauntedMine = new QuestRequirement(QuestHelperQuest.HAUNTED_MINE, QuestState.FINISHED);
 		natureSpirit = new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED);
@@ -253,8 +267,9 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			NpcID.CAVE_HORROR_1051);
 		moveToIsland = new ObjectStep(this, ObjectID.STAIRCASE_5269, new WorldPoint(3830, 9463, 0),
 			"Climb the staircase in the north east of the Cave Horror dungeon.");
-		burnMaho = new ObjectStep(this, 9034, new WorldPoint(3826, 3056, 0),
-			"Chop and burn mahogany logs on the island.", axe, tinderbox);
+		burnMaho = new ItemStep(this, "Burn mahogany logs on the island.", tinderbox.highlighted(), mahoLogs.highlighted());
+		chopMaho = new ObjectStep(this, 9034, new WorldPoint(3826, 3056, 0),
+			"Chop mahogany logs on the island.", axe, tinderbox);
 		moveToHarmony = new NpcStep(this, NpcID.BROTHER_TRANQUILITY_551, new WorldPoint(3680, 2961, 0),
 			"Talk to Brother Tranquility to travel to Harmony Island.");
 		moveToHarmony.addDialogStep("Yes, please.");
@@ -315,7 +330,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("kill a Cave bug (lvl 6) and a Zombie (lvl 13)");
+		return Collections.singletonList("Kill a cave horror (lvl 80)");
 	}
 
 	@Override
@@ -372,21 +387,21 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		salveSteps.setDisplayCondition(notBridgeSalve);
 		allSteps.add(salveSteps);
 
-		PanelDetails caveHorrorSteps = new PanelDetails("Kill Cave Horror", Arrays.asList(moveToMos, moveToCave,
-			caveHorror), new SkillRequirement(Skill.SLAYER, 58, true), cabinFever, combatGear,
-			witchwoodIcon.equipped(), lightSource, food);
+		PanelDetails caveHorrorSteps = new PanelDetails("Kill Cave Horror", Arrays.asList(moveToCapt, moveToMos,
+			moveToCave, caveHorror), new SkillRequirement(Skill.SLAYER, 58, true), cabinFever,
+			combatGear, witchwoodIcon.equipped(), lightSource, food);
 		caveHorrorSteps.setDisplayCondition(notCaveHorror);
 		allSteps.add(caveHorrorSteps);
 
-		PanelDetails mahoSteps = new PanelDetails("Chop and Burn Mahogany", Arrays.asList(moveToMos, burnMaho),
-			new SkillRequirement(Skill.FIREMAKING, 50), new SkillRequirement(Skill.WOODCUTTING, 50),
+		PanelDetails mahoSteps = new PanelDetails("Chop and Burn Mahogany", Arrays.asList(moveToCapt, moveToMos,
+			chopMaho, burnMaho), new SkillRequirement(Skill.FIREMAKING, 50), new SkillRequirement(Skill.WOODCUTTING, 50),
 			axe, tinderbox, witchwoodIcon.equipped(), lightSource);
 		mahoSteps.setDisplayCondition(notBurnMaho);
 		allSteps.add(mahoSteps);
 
-		PanelDetails watermelonsSteps = new PanelDetails("Harmony Watermelons", Arrays.asList(moveToMos, moveToHarmony,
-			harvestWatermelon), new SkillRequirement(Skill.FARMING, 53, true), theGreatBrainRobbery,
-			watermelonSeeds.quantity(3), rake, seedDibber);
+		PanelDetails watermelonsSteps = new PanelDetails("Harmony Watermelons", Arrays.asList(moveToCapt, moveToMos,
+			moveToHarmony, harvestWatermelon), new SkillRequirement(Skill.FARMING, 53, true),
+			theGreatBrainRobbery, watermelonSeeds.quantity(3), rake, seedDibber);
 		watermelonsSteps.setDisplayCondition(notHarvestWatermelon);
 		allSteps.add(watermelonsSteps);
 

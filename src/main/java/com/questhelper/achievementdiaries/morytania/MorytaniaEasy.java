@@ -161,7 +161,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 
 	public void loadZones()
 	{
-		grotto = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
+		grotto = new Zone(new WorldPoint(3434, 9746, 0), new WorldPoint(3449, 9731, 1));
 		bonezone = new Zone(new WorldPoint(3650, 3528, 1), new WorldPoint(3669, 3511, 1));
 		slimezone = new Zone(new WorldPoint(3666, 9905, 0), new WorldPoint(3695, 9868, 3));
 	}
@@ -175,13 +175,13 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		craftSnelm = new ItemStep(this, "Craft a snelm in Morytania. Note: Do not be in the swamp when completing " +
 			"this task", chisel.highlighted(), snailShell.highlighted());
 
-		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3338, 0),
+		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0),
 			"Enter the grotto tree in Mort Myre Swamp.");
 		restorePrayer = new ObjectStep(this, ObjectID.ALTAR_OF_NATURE, new WorldPoint(3442, 9741, 1),
 			"Pray at the altar.");
 
 		killBanshee = new NpcStep(this, NpcID.BANSHEE, new WorldPoint(3436, 3550, 0),
-			"Kill a banshee.", earProtection.equipped(), combatGear);
+			"Kill a banshee.", true, earProtection.equipped(), combatGear);
 
 		killWerewolf = new NpcStep(this, NpcID.ZOJA, new WorldPoint(3501, 3488, 0),
 			"Kill any attackable NPC in Canifis with the wolfbane dagger.", wolfbane.equipped());

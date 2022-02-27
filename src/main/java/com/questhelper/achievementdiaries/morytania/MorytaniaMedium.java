@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -68,7 +69,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, rope, smallFishingNet, axe, ectoToken, ghostspeakAmulet, steelBar, ammoMould,
-		slayerGloves, ectophial, restorePot, garlic, silverDust;
+		slayerGloves, ectophial, restorePot, garlic, silverDust, guthixBalanceUnf;
 
 	// Items recommended
 	ItemRequirement food, slayerRing, fairyAccess;
@@ -82,9 +83,9 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 
 	TarnRoute getToTerrorDogs;
 
-	QuestStep claimReward, swampLizard, canifisAgi, hollowTree, dragontoothIsland, troubleBrewing,
-		swampBoaty, cannonBall, feverSpider, ectophialTP, guthBalance,
-		moveToMine, moveToBrainDeath, moveToDownstairs, moveToCapt, moveToMos;
+	QuestStep claimReward, swampLizard, canifisAgi, hollowTree, dragontoothIsland, troubleBrewing, swampBoaty, cannonBall,
+		feverSpider, ectophialTP, guthBalance, moveToMine, moveToBrainDeath, moveToDownstairs, moveToCapt, moveToMos,
+		guthBalance2;
 
 	NpcStep terrorDog;
 
@@ -113,6 +114,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notSwampLizard, swampLizard);
 		doMedium.addStep(notEctophialTP, ectophialTP);
 		doMedium.addStep(notCannonBall, cannonBall);
+		doMedium.addStep(new Conditions(notGuthBalance, guthixBalanceUnf), guthBalance2);
 		doMedium.addStep(notGuthBalance, guthBalance);
 		doMedium.addStep(notHollowTree, hollowTree);
 		doMedium.addStep(notDragontoothIsland, dragontoothIsland);
@@ -153,10 +155,11 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		ammoMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD).showConditioned(notCannonBall);
 		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES).showConditioned(notFeverSpider);
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(notEctophialTP);
-		restorePot = new ItemRequirement("Restore potion (4)", ItemID.RESTORE_POTION4).showConditioned(notGuthBalance);
+		restorePot = new ItemRequirement("Restore potion (4)", ItemCollections.getRestorePotions()).showConditioned(notGuthBalance);
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC).showConditioned(notGuthBalance);
 		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST).showConditioned(notGuthBalance);
 		silverDust.setTooltip("Created by grinding a silver bar in the ectofuntus bone grinder.");
+		guthixBalanceUnf = new ItemRequirement("Guthix balance (unf)", ItemCollections.getGuthixBalanceUnf());
 
 		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.getSlayerRings()).showConditioned(notTerrorDog);
 		fairyAccess = new ItemRequirement("Access to the fairy ring system", ItemCollections.getFairyStaff())
@@ -265,7 +268,9 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		ectophialTP = new ItemStep(this, "Use your Ectophial to teleport to Port Phasmatys.", ectophial.highlighted());
 
 		guthBalance = new ItemStep(this, "Mix a Guthix balance potion while in Morytania.", restorePot.highlighted(),
-			garlic.highlighted(), silverDust.highlighted());
+			garlic.highlighted());
+		guthBalance2 = new ItemStep(this, "Mix a Guthix balance potion while in Morytania.", guthixBalanceUnf.highlighted(),
+			silverDust.highlighted());
 
 		hollowTree = new ObjectStep(this, ObjectID.HOLLOW_TREE_10830, new WorldPoint(3663, 3451, 0),
 			"Chop some bark off the hollow tree south of Port phasmatys.", axe);
@@ -388,6 +393,11 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		ectophialSteps.setDisplayCondition(notEctophialTP);
 		allSteps.add(ectophialSteps);
 
+		PanelDetails cannonballsSteps = new PanelDetails("Cannonballs", Collections.singletonList(cannonBall),
+			new SkillRequirement(Skill.SMITHING, 35), dwarfCannon, ammoMould, steelBar);
+		cannonballsSteps.setDisplayCondition(notCannonBall);
+		allSteps.add(cannonballsSteps);
+
 		PanelDetails guthSteps = new PanelDetails("Guthix Balance", Collections.singletonList(guthBalance),
 			new SkillRequirement(Skill.HERBLORE, 22), inAidOfMyreque, restorePot, garlic, silverDust);
 		guthSteps.setDisplayCondition(notGuthBalance);
@@ -397,11 +407,6 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.WOODCUTTING, 45), axe);
 		hollowSteps.setDisplayCondition(notHollowTree);
 		allSteps.add(hollowSteps);
-
-		PanelDetails cannonballsSteps = new PanelDetails("Cannonballs", Collections.singletonList(cannonBall),
-			new SkillRequirement(Skill.SMITHING, 35), dwarfCannon, ammoMould, steelBar);
-		cannonballsSteps.setDisplayCondition(notCannonBall);
-		allSteps.add(cannonballsSteps);
 
 		PanelDetails dragSteps = new PanelDetails("Dragontooth Island", Collections.singletonList(dragontoothIsland),
 			ectoToken.quantity(25), ghostspeakAmulet);

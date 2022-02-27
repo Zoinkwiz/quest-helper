@@ -1927,4 +1927,12 @@ public class ItemCollections
 		ItemID.VERACS_PLATESKIRT_50,
 		ItemID.VERACS_PLATESKIRT_25
 	);
+
+	@Getter
+	private static final List<Integer> guthixBalanceUnf = ImmutableList.of(
+		ItemID.GUTHIX_BALANCE_UNF,
+		ItemID.GUTHIX_BALANCE_UNF_7654,
+		ItemID.GUTHIX_BALANCE_UNF_7656,
+		ItemID.GUTHIX_BALANCE_UNF_7658
+	);
 }

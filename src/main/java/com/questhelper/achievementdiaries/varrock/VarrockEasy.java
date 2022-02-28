@@ -81,7 +81,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	QuestStep claimReward, thessalia, aubury, iron, plank, moveToStronghold1, moveToStronghold2, fence, dyingTree,
 		news, dogBone, potteryWheel, bowl, kudos, moreKudos, moveToEarthRune, earthRune, trout, teaStall;
 
-	Zone stronghold1, earth;
+	Zone stronghold1, earth, potteryRoom;
 
 	ZoneRequirement inStronghold1, inEarth, inPotteryRoom;
 
@@ -153,8 +153,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 		inStronghold1 = new ZoneRequirement(stronghold1);
 		inEarth = new ZoneRequirement(earth);
-
-		inPotteryRoom = new ZoneRequirement(new Zone(new WorldPoint(3082, 3407, 0), new WorldPoint(3087, 3411, 0)));
+		inPotteryRoom = new ZoneRequirement(potteryRoom);
 
 		madeBowl = new ChatMessageRequirement(
 			inPotteryRoom,
@@ -172,6 +171,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	{
 		stronghold1 = new Zone(new WorldPoint(1854, 5248, 0), new WorldPoint(1918, 5183, 0));
 		earth = new Zone(new WorldPoint(2624, 4863, 0), new WorldPoint(2687, 4800, 0));
+		potteryRoom = new Zone(new WorldPoint(3082, 3407, 0), new WorldPoint(3087, 3411, 0));
 	}
 
 	public void setupSteps()
@@ -208,7 +208,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss.", earthTali);
+			"Travel to the earth altar or go through the abyss.", earthTali, ess);
 		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft an earth rune.", ess);
@@ -254,18 +254,18 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Varrock Armor (1)", ItemID.VARROCK_ARMOUR_1, 1),
-				new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (1)", ItemID.VARROCK_ARMOUR_1, 1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("10% Chance to mine 2 ores at once up to gold ore"),
-				new UnlockReward("10% Chance of smelting 2 bars at once up to Steel when using the Edgeville furnace"),
-				new UnlockReward("Zaff will sell 15 Battlestaves per day for 7,000 Coins each"),
-				new UnlockReward("The Skull sceptre will now hold 14 charges"));
+			new UnlockReward("10% Chance to mine 2 ores at once up to gold ore"),
+			new UnlockReward("10% Chance of smelting 2 bars at once up to Steel when using the Edgeville furnace"),
+			new UnlockReward("Zaff will sell 15 Battlestaves per day for 7,000 Coins each"),
+			new UnlockReward("The Skull sceptre will now hold 14 charges"));
 	}
 
 	@Override

@@ -36,9 +36,11 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -78,7 +80,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	// Quests required
 	Requirement dreamMentor, runeMyster, touristTrap;
 
-	Requirement notSuperCombat, notPlankMake, notSummerPie, notRuneDart, not100Earth, madeTips;
+	Requirement notSuperCombat, notPlankMake, notSummerPie, notRuneDart, not100Earth, madeTips, lunarBook;
 
 	QuestStep claimReward, moveToBank, superCombat, moveToLumb, plankMake, moveToCookingGuild, summerPie,
 		moveToEarthRune, earthRune100, dartTip, runeDart, moveToAnvil;
@@ -95,7 +97,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(new Conditions(notSuperCombat, inBank), moveToBank);
+		doElite.addStep(new Conditions(notSuperCombat, inBank), superCombat);
 		doElite.addStep(notSuperCombat, moveToBank);
 		doElite.addStep(new Conditions(notSummerPie, inCookingGuild), summerPie);
 		doElite.addStep(notSummerPie, moveToCookingGuild);
@@ -117,6 +119,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 		notSummerPie = new VarplayerRequirement(1177, false, 9);
 		notRuneDart = new VarplayerRequirement(1177, false, 10);
 		not100Earth = new VarplayerRequirement(1177, false, 11);
+
+		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
 		sAtk4 = new ItemRequirement("Super attack(4)", ItemID.SUPER_ATTACK4).showConditioned(notSuperCombat);
 		sStr4 = new ItemRequirement("Super strength(4)", ItemID.SUPER_STRENGTH4).showConditioned(notSuperCombat);
@@ -142,6 +146,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		inLumb = new ZoneRequirement(lumb);
 		inCookingGuild = new ZoneRequirement(cGuild);
 		inAnvil = new ZoneRequirement(anvil);
+		inEarth = new ZoneRequirement(earth);
 
 		madeTips = new ChatMessageRequirement(
 			inAnvil,
@@ -175,7 +180,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 		superCombat = new ItemStep(this, "Create a super combat potion.", sAtk4.highlighted(), sStr4.highlighted(),
 			sDef4.highlighted(), torstol.highlighted());
 		moveToLumb = new ObjectStep(this, 2618, new WorldPoint(3308, 3492, 0),
-			"Climb the fence to enter the lumber yard.");
+			"Climb the fence to enter the lumber yard.", natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300),
+			coins.quantity(21000), mahoLog.quantity(20));
 		plankMake = new DetailedQuestStep(this, "Cast plank make until you've made 20 mahogany planks.",
 			natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20));
 		moveToCookingGuild = new ObjectStep(this, ObjectID.DOOR_24958, new WorldPoint(3143, 3443, 0),
@@ -183,13 +189,13 @@ public class VarrockElite extends ComplexStateQuestHelper
 		summerPie = new ObjectStep(this, ObjectID.RANGE_7183, new WorldPoint(3146, 3453, 0),
 			"Cook the summer pie.", rawPie);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss.", earthTali);
+			"Travel to the earth altar or go through the abyss.", earthTali, ess.quantity(25));
 		earthRune100 = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft the earth runes.", ess.quantity(25));
 		moveToAnvil = new TileStep(this, new WorldPoint(3188, 3426, 0),
-			"Go to the anvil beside the east Varrock bank.");
+			"Go to the anvil beside the west Varrock bank.", runeBar, feather.quantity(10), hammer);
 		dartTip = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3188, 3426, 0),
-			"Make rune dart tips on the anvil in east Varrock.", runeBar);
+			"Make rune dart tips on the anvil in west Varrock.", runeBar);
 		runeDart = new ItemStep(this, "Use feathers on the rune dart tips.", runeDartTip.highlighted(),
 			feather.quantity(10).highlighted());
 
@@ -265,7 +271,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		allSteps.add(runeDartsSteps);
 
 		PanelDetails plankMakeSteps = new PanelDetails("Plank Make", Arrays.asList(moveToLumb, plankMake),
-			new SkillRequirement(Skill.MAGIC, 86), dreamMentor, natRune.quantity(20), astRune.quantity(40),
+			new SkillRequirement(Skill.MAGIC, 86), lunarBook, dreamMentor, natRune.quantity(20), astRune.quantity(40),
 			earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20));
 		plankMakeSteps.setDisplayCondition(notPlankMake);
 		allSteps.add(plankMakeSteps);

@@ -265,13 +265,6 @@ public class KandarinHard extends ComplexStateQuestHelper
 	{
 		setupGeneralRequirements();
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(taiBwoWannai);
-		req.add(desertTreasure);
-
-		req.add(barbFishing);
-		req.add(barbFiremaking);
-		req.add(barbSmithing);
-		req.add(knightWaves);
 
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
@@ -285,6 +278,14 @@ public class KandarinHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.STRENGTH, 50));
 		req.add(new SkillRequirement(Skill.THIEVING, 53));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 60, true));
+
+		req.add(taiBwoWannai);
+		req.add(desertTreasure);
+
+		req.add(barbFishing);
+		req.add(barbFiremaking);
+		req.add(barbSmithing);
+		req.add(knightWaves);
 
 		return req;
 	}

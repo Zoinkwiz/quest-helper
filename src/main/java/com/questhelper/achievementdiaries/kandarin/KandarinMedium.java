@@ -297,10 +297,6 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		setupGeneralRequirements();
 
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(alfredBar);
-		req.add(eleWorkII);
-		req.add(waterfallQuest);
-		req.add((fairyTaleII));
 		req.add(new SkillRequirement(Skill.AGILITY, 36));
 		req.add(new SkillRequirement(Skill.COOKING, 43));
 		req.add(new SkillRequirement(Skill.FARMING, 26));
@@ -312,6 +308,12 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.RANGED, 40));
 		req.add(new SkillRequirement(Skill.STRENGTH, 22));
 		req.add(new SkillRequirement(Skill.THIEVING, 47));
+
+		req.add(alfredBar);
+		req.add(eleWorkII);
+		req.add(waterfallQuest);
+		req.add(fairyTaleII);
+
 		return req;
 	}
 

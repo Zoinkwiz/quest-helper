@@ -231,11 +231,11 @@ public class KandarinEasy extends ComplexStateQuestHelper
     {
 		setupGenericRequirements();
         ArrayList<Requirement> req = new ArrayList<>();
-
-        req.add(eleWorkI);
         req.add(new SkillRequirement(Skill.AGILITY, 20, true));
         req.add(new SkillRequirement(Skill.FARMING, 13, true));
         req.add(new SkillRequirement(Skill.FISHING, 16, true));
+
+		req.add(eleWorkI);
 
         return req;
     }

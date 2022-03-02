@@ -112,11 +112,11 @@ public class DesertElite extends ComplexStateQuestHelper
 	public void setupRequirements()
 	{
 		notWildPie = new VarplayerRequirement(1199, false, 2);
-		notIceBarrage = new VarplayerRequirement(1199, false, 3);
-		notDragonDarts = new VarplayerRequirement(1199, false, 4);
-		notTalkKQHead = new VarplayerRequirement(1199, false, 5);
-		notGrandGoldChest = new VarplayerRequirement(1199, false, 6);
-		notRestorePrayer = new VarplayerRequirement(1199, false, 7);
+		notIceBarrage = new VarplayerRequirement(1199, false, 4);
+		notDragonDarts = new VarplayerRequirement(1199, false, 5);
+		notTalkKQHead = new VarplayerRequirement(1199, false, 6);
+		notGrandGoldChest = new VarplayerRequirement(1199, false, 7);
+		notRestorePrayer = new VarplayerRequirement(1199, false, 8);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
@@ -216,7 +216,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(rawPie, waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4),
 			dragonDartTip, feather, kqHead, mahoPlank.quantity(2), goldLeaves.quantity(2), coins.quantity(50000), saw,
-			hammer, kqHead);
+			hammer);
 	}
 
 	@Override

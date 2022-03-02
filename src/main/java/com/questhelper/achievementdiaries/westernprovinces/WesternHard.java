@@ -26,7 +26,6 @@ package com.questhelper.achievementdiaries.westernprovinces;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -39,9 +38,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -87,10 +84,12 @@ public class WesternHard extends ComplexStateQuestHelper
 		notMineAddyOre, notLletyaPalm, notChompyHat, notIsafdarPainting, notKillZulrah, notTPApe, notPickpocketGnome;
 
 	QuestStep claimReward, elfCystalBow, monkfishPisc, vetPest, dashingKebbit, apeAtollAgi, mahoganyBurned,
-		mahoganyChopped, mineAddyOre, lletyaPalm, chompyHat, isafdarPainting, killZulrah, tpApe, pickpocketGnome,
+		mahoganyChopped, lletyaPalm, chompyHat, isafdarPainting, killZulrah, tpApe, pickpocketGnome,
 		fishMonkfish, moveToApeMahogany, moveToApeAgi, moveToPest;
 
 	NpcStep getBird;
+
+	ObjectStep mineAddyOre;
 
 	Zone pest, apeAtoll, pisc;
 
@@ -259,7 +258,8 @@ public class WesternHard extends ComplexStateQuestHelper
 			"Kill Zulrah.", combatGear, food);
 
 		mineAddyOre = new ObjectStep(this, ObjectID.ROCKS_11374, new WorldPoint(2277, 3160, 0),
-			"Mine some adamantite ore in Tirannwn.", pickaxe);
+			"Mine some adamantite ore in Tirannwn.", true, pickaxe);
+		mineAddyOre.addAlternateObjects(ObjectID.ROCKS_11375);
 
 		elfCystalBow = new DetailedQuestStep(this, "Kill an elf with a crystal bow.", crystalBow.equipped());
 

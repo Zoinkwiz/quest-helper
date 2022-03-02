@@ -74,7 +74,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		rope, gnomebowl, gianneDough, chocolateBar, equaLeaf, potOfCream, chocolateDust, crystalSawSeed, pickaxe, teakLogs;
 
 	// Items recommended
-	ItemRequirement food, fairyAccess;
+	ItemRequirement food, fairyAccess, seedPod;
 
 	// Quests required
 	Requirement grandTree, eyesOfGlouphrie, bigChompy, eaglesPeak, monkeyMadnessI, treeGnomeVillage, oneSmallFavour,
@@ -185,6 +185,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff());
+		seedPod = new ItemRequirement("Royal seed pod", ItemID.ROYAL_SEED_POD);
 
 		inBrimstailCave = new ZoneRequirement(brimstailCave);
 		inPest = new ZoneRequirement(pest);
@@ -249,10 +250,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 		moveToStrongBase2 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1),
 			"Open the trapdoor to enter the underground of the Grand Tree.", pickaxe);
 		moveToStrongBase2.addDialogStep("Climb Down.");
-		mineGold = new ObjectStep(this, ObjectID.ROCKS_11363, new WorldPoint(2490, 9916, 0),
+		mineGold = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(2490, 9916, 0),
 			"Mine some gold ore underneath the Grand Tree.", true, pickaxe);
-		mineGold.addAlternateObjects(ObjectID.ROCKS_11370);
-
 
 		moveToBrimstailCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2403, 3419, 0),
 			"Enter Brimstail's cave.", crystalSawSeed);
@@ -313,7 +312,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food, fairyAccess);
+		return Arrays.asList(food, fairyAccess, seedPod);
 	}
 
 	@Override
@@ -338,12 +337,6 @@ public class WesternMedium extends ComplexStateQuestHelper
 		reqs.add(oneSmallFavour);
 
 		return reqs;
-	}
-
-	@Override
-	public List<String> getCombatRequirements()
-	{
-		return Collections.singletonList("");
 	}
 
 	@Override
@@ -423,8 +416,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 		PanelDetails teakSteps = new PanelDetails("Teaks On Ape Atoll", Arrays.asList(moveToApeTeak, apeTeakChop,
 			apeTeakBurn), new SkillRequirement(Skill.FIREMAKING, 35), new SkillRequirement(Skill.WOODCUTTING, 35),
 			monkeyMadnessI, axe, tinderbox);
-		Steps.setDisplayCondition(notApeTeak);
-		allSteps.add(Steps);
+		teakSteps.setDisplayCondition(notApeTeak);
+		allSteps.add(teakSteps);
 
 		PanelDetails pestSteps = new PanelDetails("Intermediate Pest Control", Arrays.asList(moveToPest, interPest),
 			new CombatLevelRequirement(70), combatGear);

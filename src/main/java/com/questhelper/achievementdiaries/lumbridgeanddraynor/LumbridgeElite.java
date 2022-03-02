@@ -231,7 +231,6 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		//keep this up to date
-		reqs.add(new QuestPointRequirement(284));
 		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
 		reqs.add(new SkillRequirement(Skill.RANGED, 70));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 76));

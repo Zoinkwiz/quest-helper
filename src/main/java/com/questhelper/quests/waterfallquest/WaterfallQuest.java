@@ -70,9 +70,9 @@ public class WaterfallQuest extends BasicQuestHelper
 	Requirement inGnomeBasement, inGlarialTomb, inFalls, onHudonIsland, onDeadTreeIsland, onLedge, inUpstairsInHouse,
 		inGolrieRoom, gotPebble, inEndRoom, inEnd2;
 
-	QuestStep talkToAlmera, boardRaft, talkToHudon, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase,
+	QuestStep talkToAlmera, boardRaft, talkToHudon, clickOnRock, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase,
 		readBook, enterGnomeDungeon, searchGnomeCrate, enterGnomeDoor, talkToGolrie, usePebble, searchGlarialChest, searchGlarialCoffin,
-		getFinalItems, boardRaftFinal, useRopeOnRockFinal, useRopeOnTreeFinal, enterFalls, searchFallsCrate, useKeyOnFallsDoor,
+		getFinalItems, boardRaftFinal, enterFalls, searchFallsCrate, useKeyOnFallsDoor,
 		useRunes, useAmuletOnStatue, useUrnOnChalice;
 
 	ConditionalStep goGetPebble, getGlarialStuff;
@@ -99,9 +99,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		ConditionalStep goReadBook = new ConditionalStep(this, goUpstairsHadley);
 		goReadBook.addStep(book, readBook);
 		goReadBook.addStep(inUpstairsInHouse, searchBookcase);
-		goReadBook.addStep(onLedge, getInBarrel);
-		goReadBook.addStep(onDeadTreeIsland, useRopeOnTree);
-		goReadBook.addStep(onHudonIsland, useRopeOnRock);
+		goReadBook.addStep(onHudonIsland, clickOnRock);
 
 		steps.put(2, goReadBook);
 
@@ -123,8 +121,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		puttingToRest.addStep(new Conditions(inFalls, baxKey), useKeyOnFallsDoor);
 		puttingToRest.addStep(inFalls, searchFallsCrate);
 		puttingToRest.addStep(onLedge, enterFalls);
-		puttingToRest.addStep(onDeadTreeIsland, useRopeOnTreeFinal);
-		puttingToRest.addStep(onHudonIsland, useRopeOnRockFinal);
+		puttingToRest.addStep(onDeadTreeIsland, useRopeOnTree);
+		puttingToRest.addStep(onHudonIsland, useRopeOnRock);
 		puttingToRest.addStep(new Conditions(glarialsUrn, glarialsAmulet, airRunes, earthRunes, waterRunes, rope), boardRaftFinal);
 
 		ConditionalStep finishingSteps = new ConditionalStep(this, goGetPebble);
@@ -206,8 +204,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		talkToAlmera.addDialogStep("How can I help?");
 		boardRaft = new ObjectStep(this, ObjectID.LOG_RAFT, new WorldPoint(2509, 3494, 0), "Board the log raft west of Almera.");
 		talkToHudon = new NpcStep(this, NpcID.HUDON, new WorldPoint(2511, 3484, 0), "Talk to Hudon.");
-		useRopeOnRock = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the rock to" +
-			" the south.", highlightRope);
+		clickOnRock = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Click on the rock to the south to fall off.");
+		useRopeOnRock = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the rock to the south.", highlightRope);
 		useRopeOnRock.addIcon(ItemID.ROPE);
 		useRopeOnTree = new ObjectStep(this, ObjectID.DEAD_TREE_2020, new WorldPoint(2512, 3465, 0), "Use a rope on the dead tree.", highlightRope);
 		useRopeOnTree.addIcon(ItemID.ROPE);
@@ -229,11 +227,6 @@ public class WaterfallQuest extends BasicQuestHelper
 		getFinalItems = new DetailedQuestStep(this, "Leave Glarial's Tomb and get 6 air, water and earth runes, a rope, glarial's amulet, glarial's urn, a rope, and some food.", airRunes, earthRunes, waterRunes, glarialsAmulet, glarialsUrn, rope);
 
 		boardRaftFinal = new ObjectStep(this, ObjectID.LOG_RAFT, new WorldPoint(2509, 3494, 0), "Board the log raft west of Almera.");
-		useRopeOnRockFinal = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the " +
-			"rock to the south.", highlightRope);
-		useRopeOnRockFinal.addIcon(ItemID.ROPE);
-		useRopeOnTreeFinal = new ObjectStep(this, ObjectID.DEAD_TREE_2020, new WorldPoint(2512, 3465, 0), "Use a rope on the dead tree.", highlightRope);
-		useRopeOnTreeFinal.addIcon(ItemID.ROPE);
 		enterFalls = new ObjectStep(this, ObjectID.DOOR_2010, new WorldPoint(2511, 3464, 0), "EQUIP Glarial's amulet, then enter the falls.", glarialsAmulet);
 
 		searchFallsCrate = new ObjectStep(this, ObjectID.CRATE_1999, new WorldPoint(2589, 9888, 0), "Search the crate in the east room for a key.");
@@ -304,7 +297,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToAlmera)));
-		allSteps.add(new PanelDetails("Investigate", Arrays.asList(boardRaft, talkToHudon, useRopeOnRock, useRopeOnTree, getInBarrel, goUpstairsHadley, searchBookcase, readBook), rope));
+		allSteps.add(new PanelDetails("Investigate", Arrays.asList(boardRaft, talkToHudon, clickOnRock, goUpstairsHadley, searchBookcase, readBook)));
 
 		PanelDetails getPebblePanel = new PanelDetails("Get Glarial's Pebble", Arrays.asList(enterGnomeDungeon, searchGnomeCrate, enterGnomeDoor, talkToGolrie));
 		getPebblePanel.setLockingStep(goGetPebble);
@@ -315,7 +308,7 @@ public class WaterfallQuest extends BasicQuestHelper
 
 		allSteps.add(getGlarialStuffPanel);
 
-		PanelDetails finishOffPanel = new PanelDetails("Put Glarial to rest", Arrays.asList(getFinalItems, boardRaftFinal, useRopeOnRockFinal, useRopeOnTreeFinal, enterFalls, searchFallsCrate, useKeyOnFallsDoor, useRunes, useUrnOnChalice), rope, airRunes, earthRunes, waterRunes, glarialsUrn, glarialsAmulet);
+		PanelDetails finishOffPanel = new PanelDetails("Put Glarial to rest", Arrays.asList(getFinalItems, boardRaftFinal, useRopeOnRock, useRopeOnTree, enterFalls, searchFallsCrate, useKeyOnFallsDoor, useRunes, useUrnOnChalice), rope, airRunes, earthRunes, waterRunes, glarialsUrn, glarialsAmulet);
 		allSteps.add(finishOffPanel);
 		return allSteps;
 	}

@@ -208,7 +208,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss.", earthTali, ess);
+			"Travel to the earth altar or go through the abyss.", earthTali, essence);
 		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft an earth rune.", essence);

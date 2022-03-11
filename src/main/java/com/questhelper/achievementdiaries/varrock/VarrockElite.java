@@ -180,8 +180,9 @@ public class VarrockElite extends ComplexStateQuestHelper
 		superCombat = new ItemStep(this, "Create a super combat potion.", sAtk4.highlighted(), sStr4.highlighted(),
 			sDef4.highlighted(), torstol.highlighted());
 		moveToLumb = new ObjectStep(this, 2618, new WorldPoint(3308, 3492, 0),
-			"Climb the fence to enter the lumber yard.", natRune.quantity(20), astRune.quantity(40), earthRune.quantity(300),
-			coins.quantity(21000), mahoLog.quantity(20));
+			"Climb the fence to enter the lumber yard.", natureRune.quantity(20), astralRune.quantity(40),
+			earthRune.quantity(300),
+			coins.quantity(21000), mahoganyLog.quantity(20));
 		plankMake = new DetailedQuestStep(this, "Cast plank make until you've made 20 mahogany planks.",
 			natureRune.quantity(20), astralRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoganyLog.quantity(20));
 		moveToCookingGuild = new ObjectStep(this, ObjectID.DOOR_24958, new WorldPoint(3143, 3443, 0),
@@ -189,7 +190,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		summerPie = new ObjectStep(this, ObjectID.RANGE_7183, new WorldPoint(3146, 3453, 0),
 			"Cook the summer pie.", rawPie);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss.", earthTali, ess.quantity(25));
+			"Travel to the earth altar or go through the abyss.", earthTali, essence.quantity(25));
 		earthRune100 = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft the earth runes.", essence.quantity(25));
 		moveToAnvil = new TileStep(this, new WorldPoint(3188, 3426, 0),
@@ -271,8 +272,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 		allSteps.add(runeDartsSteps);
 
 		PanelDetails plankMakeSteps = new PanelDetails("Plank Make", Arrays.asList(moveToLumb, plankMake),
-			new SkillRequirement(Skill.MAGIC, 86), lunarBook, dreamMentor, natRune.quantity(20), astRune.quantity(40),
-			earthRune.quantity(300), coins.quantity(21000), mahoLog.quantity(20));
+			new SkillRequirement(Skill.MAGIC, 86), lunarBook, dreamMentor, natureRune.quantity(20),
+			astralRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoganyLog.quantity(20));
 		plankMakeSteps.setDisplayCondition(notPlankMake);
 		allSteps.add(plankMakeSteps);
 

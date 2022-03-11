@@ -293,7 +293,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allSteps.add(movarioSteps);
 
 		PanelDetails waterRunesSteps = new PanelDetails("140 Water Runes", Arrays.asList(moveToWater, waterRunes),
-			new SkillRequirement(Skill.RUNECRAFT, 76), ess.quantity(28), waterAccessOrAbyss);
+			new SkillRequirement(Skill.RUNECRAFT, 76), essence.quantity(28), waterAccessOrAbyss);
 		waterRunesSteps.setDisplayCondition(notWaterRunes);
 		allSteps.add(waterRunesSteps);
 

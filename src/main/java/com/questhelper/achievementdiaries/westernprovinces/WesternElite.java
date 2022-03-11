@@ -176,7 +176,8 @@ public class WesternElite extends ComplexStateQuestHelper
 		moveToThermy = new ObjectStep(this, ObjectID.CREVICE, new WorldPoint(2378, 9452, 0),
 			"Enter the boss area of the Thermonuclear smoke devil.", combatGear, food, mouthProtection);
 		killThermy = new NpcStep(this, NpcID.THERMONUCLEAR_SMOKE_DEVIL, new WorldPoint(2356, 9456, 0),
-			"Thermonuclear smoke devil. You are allowed one kill off-task for the diary.", combatGear, food, mouthProtection);
+			"Defeat the Thermonuclear smoke devil. You are allowed one kill off-task for the diary.", combatGear, food,
+			mouthProtection);
 
 		advancedAgi = new ObjectStep(this, ObjectID.ROCKS_16515, new WorldPoint(2337, 3253, 0),
 			"Use the advanced elven overpass cliffside shortcut.");
@@ -184,7 +185,7 @@ public class WesternElite extends ComplexStateQuestHelper
 		fullVoid = new DetailedQuestStep(this, "Equip any complete void set.", voidHelm.equipped(), voidTop.equipped(),
 			voidRobe.equipped(), voidGloves.equipped());
 
-		pickpocketElf = new DetailedQuestStep(this, "Pickpocket an elf.");
+		pickpocketElf = new DetailedQuestStep(this, new WorldPoint(2333, 3171, 0), "Pickpocket an elf.");
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
 			"Claim any Chompy bird hat from Rantz. Kill chompy birds until you have 1000 kills. \n \nYou can check " +
@@ -215,11 +216,11 @@ public class WesternElite extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(40));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 85));
-		reqs.add(new SkillRequirement(Skill.FARMING, 75));
-		reqs.add(new SkillRequirement(Skill.FLETCHING, 85));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 85, true));
+		reqs.add(new SkillRequirement(Skill.FARMING, 75, true));
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 85, true));
 		reqs.add(new SkillRequirement(Skill.SLAYER, 93, false));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 85));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 85, true));
 		reqs.add(base42CombatSkills);
 
 		reqs.add(bigChompy);

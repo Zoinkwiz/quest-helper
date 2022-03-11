@@ -176,6 +176,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight);
 		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight);
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(notPetRockPOH);
+		petRock.setTooltip("Obtained from Askeladden in Rellekka");
 		goldHelm = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET).showConditioned(notMineGold);
 		oakPlanks = new ItemRequirement("Oak planks", ItemID.OAK_PLANK).showConditioned(notPetRockPOH);
 		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notPetRockPOH);
@@ -363,7 +364,9 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		lighthouse = new ObjectStep(this, ObjectID.LADDER_10194, new WorldPoint(1975, 4408, 3),
 			"Keep current protection and continue through the cave.", protectMelee);
 		petRockPOH = new DetailedQuestStep(this,
-			"Use a pet rock on your pet house in your menagerie in your player owned house and then pick it up off the GROUND.");
+			"Use a pet rock on your pet house in your menagerie in your player owned house and then pick it up off the GROUND." +
+				" You may need to re-enter your house after placing your pet rock in the pet house.",
+			petRock, oakPlanks.quantity(4), saw, hammer);
 
 		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");

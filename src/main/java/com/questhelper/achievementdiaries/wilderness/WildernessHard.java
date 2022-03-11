@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -80,8 +81,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		notTrollWildy, notSprirtualWarrior, notRawLavaEel, enterGodwars;
 
 	QuestStep claimReward, godSpells, airOrb, blackSally, addyScim, lavaDrag, trollWildy, rawLavaEel, moveToEdge,
-		moveToAir, moveToResource, moveToGodWars1, moveToGodWars2, buryBone, moveToScorpia,
-		killChaosFan, killScorpia;
+		moveToAir, moveToResource, moveToGodWars1, moveToGodWars2, buryBone;
 
 	NpcStep threeBosses, chaosEle, sprirtualWarrior;
 
@@ -159,7 +159,8 @@ public class WildernessHard extends ComplexStateQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
 
-		enterGodwars = new ItemRequirement("60 Strength or Agility", -1, -1);
+		enterGodwars = new ComplexRequirement(LogicType.OR,"60 Agility or Strength",
+			new SkillRequirement(Skill.AGILITY,	60), new SkillRequirement(Skill.STRENGTH, 60));
 
 		inEdge = new ZoneRequirement(edge);
 		inAir = new ZoneRequirement(air);
@@ -184,7 +185,6 @@ public class WildernessHard extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		// get varbs for each spell learned for outside use
 		godSpells = new DetailedQuestStep(this, "Cast one of the 3 god spells against another player in the " +
 			"Wilderness. Splashing will not count.", godStaff.equipped(), godRunes);
 
@@ -207,16 +207,16 @@ public class WildernessHard extends ComplexStateQuestHelper
 		buryBone = new ItemStep(this, "Bury the dragon bones", lavaDragonBones.highlighted());
 
 		rawLavaEel = new NpcStep(this, NpcID.FISHING_SPOT_6784, new WorldPoint(3071, 3839, 0),
-			"Fish a raw lava eel in the Lava Maze.", knife, burningAmulet, oilyRod, fishingBait);
+			"Fish a raw lava eel in the Lava Maze.", knife, oilyRod, fishingBait);
 
 		addyScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
 			"Smith an Adamant scimitar in the Resource Area.", hammer, addyBar);
 		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, addyBar);
 
-		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
+		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3017, 3738, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		moveToGodWars2 = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 0),
+		moveToGodWars2 = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 3),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
 			combatGear, food, godEquip);
 		sprirtualWarrior = new NpcStep(this, NpcID.SPIRITUAL_WARRIOR, new WorldPoint(3050, 10131, 0),
@@ -224,14 +224,10 @@ public class WildernessHard extends ComplexStateQuestHelper
 		sprirtualWarrior.addAlternateNpcs(NpcID.SPIRITUAL_WARRIOR_2243, NpcID.SPIRITUAL_WARRIOR_3159,
 			NpcID.SPIRITUAL_WARRIOR_3166);
 
-		// TODO multiple minimap markers / track this tasks' varb for multiple steps (I'm a skiller T_T)
 		threeBosses = new NpcStep(this, NpcID.CRAZY_ARCHAEOLOGIST, new WorldPoint(3947, 3706, 0),
-			"Kill Crazy archaeologist, Chaos Fanatic, and Scorpia (lvl 225). You must complete this task " +
+			"Kill Crazy archaeologist, Chaos Fanatic, and Scorpia. You must complete this task " +
 				"fully before continuing the other tasks.", combatGear, food);
 		threeBosses.addAlternateNpcs(NpcID.SCORPIA, NpcID.CHAOS_FANATIC);
-		//moveToScorpia = new ObjectStep(this, 26762, new WorldPoint(3233, 3937, 0), "Enter Scorpia's cave.", combatGear, food);
-		//killScorpia = new NpcStep(this, NpcID.SCORPIA, new WorldPoint(3233, 10340, 0), "Kill Scorpia", combatGear, food);
-		//killChaosFan = new NpcStep(this, NpcID.CHAOS_FANATIC, new WorldPoint(2980, 3843, 0),"Kill the Chaos Fanatic.", combatGear, food);
 
 		trollWildy = new ObjectStep(this, ObjectID.ROCKS_16545, new WorldPoint(2916, 3672, 0),
 			"Take the agility shortcut from Trollhiem to the Wilderness.");
@@ -245,7 +241,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(combatGear, godStaff, godRunes, airRune.quantity(30), cosmicRune.quantity(3),
-			unpoweredOrb, knife, burningAmulet, oilyRod, fishingBait, coins.quantity(6000), hammer, barsOrPick, godEquip);
+			unpoweredOrb, knife, oilyRod, fishingBait, coins.quantity(6000), hammer, barsOrPick, godEquip);
 	}
 
 	@Override

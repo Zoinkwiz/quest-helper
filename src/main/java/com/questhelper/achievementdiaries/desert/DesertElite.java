@@ -67,7 +67,7 @@ import com.questhelper.steps.QuestStep;
 public class DesertElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, rawPie, waterRune, bloodRune, deathRune, dragonDartTip, feather, mahoPlank,
+	ItemRequirement combatGear, rawPie, waterRune, bloodRune, deathRune, dragonDartTip, feather, mahoganyPlank,
 		goldLeaves, coins, saw, hammer, kqHead;
 
 	// Items recommended
@@ -112,11 +112,11 @@ public class DesertElite extends ComplexStateQuestHelper
 	public void setupRequirements()
 	{
 		notWildPie = new VarplayerRequirement(1199, false, 2);
-		notIceBarrage = new VarplayerRequirement(1199, false, 3);
-		notDragonDarts = new VarplayerRequirement(1199, false, 4);
-		notTalkKQHead = new VarplayerRequirement(1199, false, 5);
-		notGrandGoldChest = new VarplayerRequirement(1199, false, 6);
-		notRestorePrayer = new VarplayerRequirement(1199, false, 7);
+		notIceBarrage = new VarplayerRequirement(1199, false, 4);
+		notDragonDarts = new VarplayerRequirement(1199, false, 5);
+		notTalkKQHead = new VarplayerRequirement(1199, false, 6);
+		notGrandGoldChest = new VarplayerRequirement(1199, false, 7);
+		notRestorePrayer = new VarplayerRequirement(1199, false, 8);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
@@ -127,7 +127,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE).showConditioned(notIceBarrage);
 		dragonDartTip = new ItemRequirement("Dragon dart tip", ItemID.DRAGON_DART_TIP).showConditioned(notDragonDarts);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notDragonDarts);
-		mahoPlank = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK).showConditioned(notTalkKQHead);
+		mahoganyPlank = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK).showConditioned(notTalkKQHead);
 		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF_8784).showConditioned(notTalkKQHead);
 		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notTalkKQHead);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead);
@@ -204,7 +204,7 @@ public class DesertElite extends ComplexStateQuestHelper
 
 		talkKQHead = new DetailedQuestStep(this, "Mount and then talk to a Kalphite Queen head in your POH. The 50k " +
 			"is necessary to stuff the KQ head at the taxidermist in Canifis.",
-			kqHead, mahoPlank.quantity(2), goldLeaves.quantity(2), saw, hammer, coins.quantity(50000));
+			kqHead, mahoganyPlank.quantity(2), goldLeaves.quantity(2), saw, hammer, coins.quantity(50000));
 
 		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
@@ -215,7 +215,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(rawPie, waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4),
-			dragonDartTip, feather, kqHead, mahoPlank.quantity(2), goldLeaves.quantity(2), coins.quantity(50000), saw,
+			dragonDartTip, feather, kqHead, mahoganyPlank.quantity(2), goldLeaves.quantity(2), coins.quantity(50000), saw,
 			hammer, kqHead);
 	}
 
@@ -305,7 +305,7 @@ public class DesertElite extends ComplexStateQuestHelper
 
 		PanelDetails kqHeadSteps = new PanelDetails("Kalphite Queen Head", Collections.singletonList(talkKQHead),
 			new SkillRequirement(Skill.CONSTRUCTION, 78), priestInPeril, kqHead, coins.quantity(50000),
-			mahoPlank.quantity(2), goldLeaves.quantity(2), saw, hammer);
+			mahoganyPlank.quantity(2), goldLeaves.quantity(2), saw, hammer);
 		kqHeadSteps.setDisplayCondition(notTalkKQHead);
 		allSteps.add(kqHeadSteps);
 

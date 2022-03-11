@@ -1,53 +1,51 @@
-	/*
-	 * Copyright (c) 2021, Kerpackie <https://github.com/Kerpackie/>
-	 * All rights reserved.
-	 *
-	 * Redistribution and use in source and binary forms, with or without
-	 * modification, are permitted provided that the following conditions are met:
-	 *
-	 * 1. Redistributions of source code must retain the above copyright notice, this
-	 *    list of conditions and the following disclaimer.
-	 * 2. Redistributions in binary form must reproduce the above copyright notice,
-	 *    this list of conditions and the following disclaimer in the documentation
-	 *    and/or other materials provided with the distribution.
-	 *
-	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-	 * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-	 * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-	 * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-	 * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-	 * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-	 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-	 * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-	 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-	 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-	 */
+/*
+ * Copyright (c) 2021, Kerpackie <https://github.com/Kerpackie/>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-	package com.questhelper.achievementdiaries.falador;
+package com.questhelper.achievementdiaries.falador;
 
-	import com.questhelper.ItemCollections;
-	import com.questhelper.QuestHelperQuest;
-	import com.questhelper.Zone;
-	import com.questhelper.banktab.BankSlotIcons;
-	import com.questhelper.questhelpers.ComplexStateQuestHelper;
-	import com.questhelper.requirements.Requirement;
-	import com.questhelper.requirements.ZoneRequirement;
-	import com.questhelper.requirements.conditional.Conditions;
-	import com.questhelper.requirements.player.SkillRequirement;
-	import com.questhelper.requirements.quest.QuestRequirement;
-	import com.questhelper.requirements.util.LogicType;
-	import com.questhelper.requirements.var.VarplayerRequirement;
-	import com.questhelper.rewards.ItemReward;
-	import com.questhelper.rewards.UnlockReward;
-	import com.questhelper.steps.*;
-
-	import java.util.*;
-
-	import net.runelite.api.*;
-	import net.runelite.api.coords.WorldPoint;
-	import com.questhelper.requirements.item.ItemRequirement;
-	import com.questhelper.QuestDescriptor;
-	import com.questhelper.panel.PanelDetails;
+import com.questhelper.ItemCollections;
+import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
+import com.questhelper.steps.*;
+import java.util.*;
+import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.QuestDescriptor;
+import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.FALADOR_EASY
@@ -62,6 +60,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	ItemRequirement teleportFalador, teleportMindAltar, explorersRing;
 
 	ItemRequirement bluriteBar, bluriteOre;
+
+	Requirement doricsQuest, knightSword;
 
 	Requirement notFilledWater, notKilledDuck, notClimbedWall, notGotHaircut, notMotherloadMine,
 		notEntrana, notMindTiara, notBluriteLimbs, notGotSecurityBook, notSarahFarmingShop,
@@ -155,6 +155,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inMotherlodeMine = new ZoneRequirement(motherlodeMine);
 
+		doricsQuest = new QuestRequirement(QuestHelperQuest.DORICS_QUEST, QuestState.FINISHED);
+		knightSword = new QuestRequirement(QuestHelperQuest.THE_KNIGHTS_SWORD, QuestState.FINISHED);
 	}
 
 	public void loadZones()
@@ -237,8 +239,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		smithBluriteLimbs.addSubSteps(enterDungeon, mineBlurite, smeltBlurite);
 
 		//Make a Mind Tiara
-		enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2981, 3513, 0),
-			"Use the mind talisman on the Mysterious Ruins to access the Mind Altar.", mindTalisman, tiara);
+		enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2982, 3514, 0),
+			"Use the mind talisman on the Mysterious Ruins to access the Mind Altar.", mindTalisman.highlighted(), tiara);
 		getMindTiara = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0),
 			"Use the mind talisman on the Altar", mindTalisman, tiara);
 		enterMindAltar.addSubSteps(getMindTiara);
@@ -270,8 +272,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 10, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 13, true));
 
-		req.add(new QuestRequirement(QuestHelperQuest.DORICS_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.THE_KNIGHTS_SWORD, QuestState.FINISHED));
+		req.add(doricsQuest);
+		req.add(knightSword);
 		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
 
 		return req;
@@ -281,8 +283,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Falador Shield (1)", ItemID.FALADOR_SHIELD_1, 1),
-				new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Falador Shield (1)", ItemID.FALADOR_SHIELD_1, 1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
@@ -335,10 +337,9 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		allSteps.add(securityBookSteps);
 
 		PanelDetails bluriteLimbsSteps = new PanelDetails("Blurite Limbs", Arrays.asList(getPickaxe, enterDungeon,
-			mineBlurite, smeltBlurite, smithBluriteLimbs), new QuestRequirement(QuestHelperQuest.DORICS_QUEST,
-			QuestState.FINISHED), new QuestRequirement(QuestHelperQuest.THE_KNIGHTS_SWORD, QuestState.FINISHED),
-			new SkillRequirement(Skill.MINING, 10, true), new SkillRequirement(Skill.SMITHING, 13, true),
-			hammer, pickaxe);
+			mineBlurite, smeltBlurite, smithBluriteLimbs), doricsQuest, knightSword,
+			new SkillRequirement(Skill.MINING, 10, true),
+			new SkillRequirement(Skill.SMITHING, 13, true), hammer, pickaxe);
 		bluriteLimbsSteps.setDisplayCondition(notBluriteLimbs);
 		allSteps.add(bluriteLimbsSteps);
 

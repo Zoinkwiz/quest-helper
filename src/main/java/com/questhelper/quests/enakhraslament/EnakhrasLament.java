@@ -412,7 +412,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		useStoneHeadOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use the camel stone head on the pedestal.", camelHead);
 		useStoneHeadOnPedestal.addIcon(ItemID.STONE_HEAD_7002);
 
-		useBread = new NpcStep(this, NpcID.PENTYN, new WorldPoint(3091, 9324, 1), "Use bread or cake on Pentyn.", breadOrCake);
+		useBread = new NpcStep(this, NpcID.PENTYN, new WorldPoint(3091, 9324, 1), "Right-click use bread or cake on Pentyn.",	breadOrCake.highlighted());
 		castFireSpell = new NpcStep(this, NpcID.CRUST_OF_ICE, new WorldPoint(3092, 9308, 1), "Cast a fire spell on the frozen fountain.", fireSpellRunes, onNormals);
 		castAirSpell = new NpcStep(this, NpcID.FURNACE_GRATE, new WorldPoint(3116, 9323, 1), "Cast an air spell on the furnace.", airSpellRunes, onNormals);
 		useMapleLog = new ObjectStep(this, NullObjectID.NULL_11014, new WorldPoint(3114, 9309, 1), "Use a maple log on the north west brazier.", mapleLog);
@@ -439,11 +439,11 @@ public class EnakhrasLament extends BasicQuestHelper
 		protectThenTalk = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1),
 			"Put on Protect from Melee, then talk to the Boneguard.", protectFromMelee);
 		repairWall = new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Take sandstone from the nearby rubble, and use it to repair the south wall. For each piece added, use a chisel on the wall.", sandstone5);
-		repairWall.addDialogStep("Of course I'll help you out.");
+		repairWall.addDialogSteps("Of course, I'll help you out.", "Okay, I'll start building.");
 		repairWall.addIcon(ItemID.SANDSTONE_5KG);
 
 		useChiselOnWall = new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Use a chisel on the wall.", chiselHighlighted);
-		useChiselOnWall.addDialogStep("Of course I'll help you out.");
+		useChiselOnWall.addDialogSteps("Of course, I'll help you out.", "Okay, I'll start building.");
 		useChiselOnWall.addIcon(ItemID.CHISEL);
 
 		talkToAkthankos = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1), "Talk to the Boneguard to finish the quest.");

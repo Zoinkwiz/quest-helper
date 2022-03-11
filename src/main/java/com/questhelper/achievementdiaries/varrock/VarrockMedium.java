@@ -75,7 +75,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement coins, limpRoot, redSpiderEgg, ringOfCharos, digsitePend, lawRune, airRune, fireRune, mahoLog,
-		willowLog, log;
+		willowLog, log, willowLog1, willowLog11;
 
 	// Items recommended
 	ItemRequirement food;
@@ -85,7 +85,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 
 	Requirement notApothStr, notChamps, notCatColour, notGESpirit, notStrongholdEmote, notTolna, notTPDigsite,
 		notTPVarrock, notVannaka, notMaho20, notWhiteFruit, notBalloon, notVarrAgi, notFlap, notSlap, notIdea,
-		notStamp, notVarrBalloon;
+		notStamp, notVarrBalloon, notVarrBalloon2;
 
 	Requirement normalBook;
 
@@ -159,6 +159,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		notVarrBalloon = new VarbitRequirement(2872, 0);
+		notVarrBalloon2 = new VarbitRequirement(2872, 1);
 
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notApothStr, notCatColour, notMaho20));
 		limpRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notApothStr);
@@ -169,6 +170,10 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPVarrock);
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notTPVarrock);
 		mahoLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS).showConditioned(notMaho20);
+		willowLog1 = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS, 1)
+			.showConditioned(new Conditions(notBalloon, notVarrBalloon2));
+		willowLog11 = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS, 11)
+			.showConditioned(new Conditions(notBalloon, notVarrBalloon));
 		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS).showConditioned(notBalloon);
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notBalloon);
 
@@ -213,16 +218,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		colourCat.addDialogSteps("Do you have any more kittens?", "[Charm] I'm quite fussy over cats - can I pick my own?");
 		geSpirit = new ObjectStep(this, 1295, new WorldPoint(3185, 3510, 0),
 			"Use the spirit tree in the Grand Exchange.");
-		/* TODO get progress variable and implement multiple emote steps
-		emoteFlap = new EmoteStep(this, QuestEmote.FLAP,
-			"Equip your skill cape and perform its emote!");
-		emoteSlap = new EmoteStep(this, QuestEmote.SLAP_HEAD,
-			"Equip your skill cape and perform its emote!");
-		emoteIdea = new EmoteStep(this, QuestEmote.IDEA,
-			"Equip your skill cape and perform its emote!");
-		emoteStamp = new EmoteStep(this, QuestEmote.STAMP,
-			"Equip your skill cape and perform its emote!");
-		**/
+
 		moveToStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
 			"Enter the Security Stronghold.");
 		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
@@ -249,19 +245,19 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		tolna = new ObjectStep(this, 13968, new WorldPoint(3310, 3452, 0),
 			"Enter the Tolna dungeon.");
 
-		// TODO check for digsite necklace varb and include steps for obtaining (cleaning fossils / ench ruby neck)
-		tpDigsite = new DetailedQuestStep(this, "Rub the digsite pendant and select the 'Digsite' teleport.", digsitePend.highlighted());
+		tpDigsite = new DetailedQuestStep(this, "Rub the digsite pendant and select the 'Digsite' teleport.",
+			digsitePend.highlighted());
 
 		maho20 = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
 			"Make 20 mahogany planks at the sawmill in ONE run.", mahoLog.quantity(20), coins.quantity(30000));
 
 		balloon = new ObjectStep(this, 19143, new WorldPoint(3297, 3482, 0),
-			"Use the basket east of Varrock to fly to any available destination.", willowLog.quantity(1));
+			"Use the basket east of Varrock to fly to any available destination.", willowLog1);
 		moveToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3236, 0),
-			"Speak with a monk to travel to Entrana.", true, willowLog.quantity(10));
+			"Speak with a monk to travel to Entrana.", true, willowLog11);
 		moveToEntrana.addAlternateNpcs(NpcID.MONK_OF_ENTRANA_1166, NpcID.MONK_OF_ENTRANA);
 		talkToAug = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2810, 3356, 0),
-			"Speak with Augustine and travel to Varrock.", willowLog.quantity(10));
+			"Speak with Augustine and travel to Varrock.", willowLog11);
 
 		whiteFruit = new ObjectStep(this, 9209, new WorldPoint(3230, 3475, 0),
 			"Pick a white tree fruit at Varrock Castle.");
@@ -278,7 +274,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins.quantity(30105), limpRoot, redSpiderEgg, ringOfCharos, digsitePend, lawRune.quantity(1),
-			airRune.quantity(3), fireRune.quantity(1), mahoLog.quantity(20), willowLog.quantity(10), log);
+			airRune.quantity(3), fireRune.quantity(1), mahoLog.quantity(20), willowLog1, willowLog11, log);
 	}
 
 	@Override
@@ -292,6 +288,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(40));
+		reqs.add(qp);
 		reqs.add(new SkillRequirement(Skill.AGILITY, 30));
 		reqs.add(new SkillRequirement(Skill.CRAFTING, 36));
 		reqs.add(new SkillRequirement(Skill.FARMING, 30));
@@ -301,7 +298,6 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.THIEVING, 25));
 		reqs.add(normalBook);
 
-		reqs.add(qp);
 		reqs.add(gardenOfTranq);
 		reqs.add(digSite);
 		reqs.add(treeGnomeVillage);
@@ -316,19 +312,19 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Varrock Armor (2)", ItemID.VARROCK_ARMOUR_2, 1),
-				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (2)", ItemID.VARROCK_ARMOUR_2, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("10% Chance to mine 2 ores at once up to mithril ore"),
-				new UnlockReward("10% Chance of smelting 2 bars at once up to mithril when using the Edgeville furnace"),
-				new UnlockReward("Zaff will sell 30 Battlestaves per day for 7,000 Coins each"),
-				new UnlockReward("The Skull sceptre will now hold 18 charges"),
-				new UnlockReward("Ability to toggle the Varrock Teleport to go to The Grand Exchange"));
+			new UnlockReward("10% Chance to mine 2 ores at once up to mithril ore"),
+			new UnlockReward("10% Chance of smelting 2 bars at once up to mithril when using the Edgeville furnace"),
+			new UnlockReward("Zaff will sell 30 Battlestaves per day for 7,000 Coins each"),
+			new UnlockReward("The Skull sceptre will now hold 18 charges"),
+			new UnlockReward("Ability to toggle the Varrock Teleport to go to The Grand Exchange"));
 	}
 
 	@Override
@@ -380,9 +376,14 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		allSteps.add(maho20Steps);
 
 		PanelDetails balloonSteps = new PanelDetails("Leave Varrock in a Balloon", Arrays.asList(moveToEntrana, talkToAug,
-			balloon), enlightenedJourney, new SkillRequirement(Skill.FIREMAKING, 40), willowLog.quantity(1), log);
-		balloonSteps.setDisplayCondition(notBalloon);
+			balloon), new SkillRequirement(Skill.FIREMAKING, 40), enlightenedJourney, willowLog1, log);
+		balloonSteps.setDisplayCondition(new Conditions(notBalloon, notVarrBalloon2));
 		allSteps.add(balloonSteps);
+
+		PanelDetails balloon2Steps = new PanelDetails("Leave Varrock in a Balloon", Arrays.asList(moveToEntrana, talkToAug,
+			balloon), new SkillRequirement(Skill.FIREMAKING, 40), enlightenedJourney, willowLog11, log);
+		balloon2Steps.setDisplayCondition(new Conditions(notBalloon, notVarrBalloon));
+		allSteps.add(balloon2Steps);
 
 		PanelDetails tpVarrSteps = new PanelDetails("Teleport to Varrock", Collections.singletonList(tpVarrock),
 			new SkillRequirement(Skill.MAGIC, 25), airRune.quantity(3), lawRune.quantity(1), fireRune.quantity(1),
@@ -391,7 +392,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		allSteps.add(tpVarrSteps);
 
 		PanelDetails whiteFruitSteps = new PanelDetails("Pick a White Fruit", Collections.singletonList(whiteFruit),
-			gardenOfTranq);
+			new SkillRequirement(Skill.FARMING, 25), gardenOfTranq);
 		whiteFruitSteps.setDisplayCondition(notWhiteFruit);
 		allSteps.add(whiteFruitSteps);
 
@@ -399,7 +400,6 @@ public class VarrockMedium extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.AGILITY, 30));
 		varrAgiSteps.setDisplayCondition(notVarrAgi);
 		allSteps.add(varrAgiSteps);
-
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishOffSteps);

@@ -65,7 +65,7 @@ import com.questhelper.steps.QuestStep;
 public class VarrockEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement coins, pickaxe, log, axe, bone, softClay, earthTali, ess, flyRod, feathers;
+	ItemRequirement coins, pickaxe, log, axe, bone, softClay, earthTali, essence, flyRod, feathers;
 
 	ItemRequirement unfiredBowl;
 
@@ -81,7 +81,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	QuestStep claimReward, thessalia, aubury, iron, plank, moveToStronghold1, moveToStronghold2, fence, dyingTree,
 		news, dogBone, potteryWheel, bowl, kudos, moreKudos, moveToEarthRune, earthRune, trout, teaStall;
 
-	Zone stronghold1, earth;
+	Zone stronghold1, earth, potteryRoom;
 
 	ZoneRequirement inStronghold1, inEarth, inPotteryRoom;
 
@@ -142,7 +142,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		bone = new ItemRequirement("Bones", ItemCollections.getBones()).showConditioned(notDogBone);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
 		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.getEarthAltar()).showConditioned(notEarthRune);
-		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notEarthRune);
+		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notEarthRune);
 		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout);
 		feathers = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notTrout);
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
@@ -153,8 +153,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 		inStronghold1 = new ZoneRequirement(stronghold1);
 		inEarth = new ZoneRequirement(earth);
-
-		inPotteryRoom = new ZoneRequirement(new Zone(new WorldPoint(3082, 3407, 0), new WorldPoint(3087, 3411, 0)));
+		inPotteryRoom = new ZoneRequirement(potteryRoom);
 
 		madeBowl = new ChatMessageRequirement(
 			inPotteryRoom,
@@ -172,6 +171,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	{
 		stronghold1 = new Zone(new WorldPoint(1854, 5248, 0), new WorldPoint(1918, 5183, 0));
 		earth = new Zone(new WorldPoint(2624, 4863, 0), new WorldPoint(2687, 4800, 0));
+		potteryRoom = new Zone(new WorldPoint(3082, 3407, 0), new WorldPoint(3087, 3411, 0));
 	}
 
 	public void setupSteps()
@@ -208,10 +208,10 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss.", earthTali);
+			"Travel to the earth altar or go through the abyss.", earthTali, ess);
 		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
-			"Craft an earth rune.", ess);
+			"Craft an earth rune.", essence);
 		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),
 			"Fish a trout in the River Lum.", flyRod, feathers);
 		teaStall = new ObjectStep(this, ObjectID.TEA_STALL, new WorldPoint(3270, 3411, 0),
@@ -225,7 +225,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins.quantity(150), pickaxe, log, axe, bone, softClay, earthTali, ess, flyRod, feathers);
+		return Arrays.asList(coins.quantity(150), pickaxe, log, axe, bone, softClay, earthTali, essence, flyRod, feathers);
 	}
 
 	@Override
@@ -254,18 +254,18 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Varrock Armor (1)", ItemID.VARROCK_ARMOUR_1, 1),
-				new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (1)", ItemID.VARROCK_ARMOUR_1, 1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("10% Chance to mine 2 ores at once up to gold ore"),
-				new UnlockReward("10% Chance of smelting 2 bars at once up to Steel when using the Edgeville furnace"),
-				new UnlockReward("Zaff will sell 15 Battlestaves per day for 7,000 Coins each"),
-				new UnlockReward("The Skull sceptre will now hold 14 charges"));
+			new UnlockReward("10% Chance to mine 2 ores at once up to gold ore"),
+			new UnlockReward("10% Chance of smelting 2 bars at once up to Steel when using the Edgeville furnace"),
+			new UnlockReward("Zaff will sell 15 Battlestaves per day for 7,000 Coins each"),
+			new UnlockReward("The Skull sceptre will now hold 14 charges"));
 	}
 
 	@Override
@@ -308,7 +308,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		allSteps.add(dyingTreeSteps);
 
 		PanelDetails earthRuneSteps = new PanelDetails("Craft an Earth Rune", Arrays.asList(moveToEarthRune,
-			earthRune), new SkillRequirement(Skill.RUNECRAFT, 9), ess, earthTali);
+			earthRune), new SkillRequirement(Skill.RUNECRAFT, 9), essence, earthTali);
 		earthRuneSteps.setDisplayCondition(notEarthRune);
 		allSteps.add(earthRuneSteps);
 

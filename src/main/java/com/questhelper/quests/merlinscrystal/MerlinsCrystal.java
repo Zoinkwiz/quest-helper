@@ -237,7 +237,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 		optionalGetRepellent = new DetailedQuestStep(this, new WorldPoint(2807, 3450, 0), "If you still need wax, go grab the insect repellent in a house in north Catherby. Otherwise, get your wax out.", repellent);
 		optionalGetBucket = new DetailedQuestStep(this, new WorldPoint(2766, 3441, 0), "Go grab the bucket in the bee field west of Catherby.", bucket);
 
-		optionalUseRepellent = new ObjectStep(this, ObjectID.BEEHIVE, new WorldPoint(2762, 3443, 0), "Use the insect repellent on a bee hive, then try to take some wax.", bucket, repellent);
+		optionalUseRepellent = new ObjectStep(this, ObjectID.BEEHIVE, new WorldPoint(2762, 3443, 0), "Use the insect repellent on a bee hive, then try to take some wax.", bucket, repellent.highlighted());
 		talkToCandleMaker = new NpcStep(this, NpcID.CANDLE_MAKER, new WorldPoint(2797, 3440, 0), "Talk to the Candle Maker in Catherby twice until he gives you a black candle.", bucketOfWax);
 		talkToCandleMaker.addDialogStep("Have you got any black candles?");
 
@@ -259,8 +259,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 		goStandInStar = new DetailedQuestStep(this, new WorldPoint(2780, 3515, 0), "Go stand in the star symbol north east of Camelot Castle.");
 		goStandInStar.addDialogStep("Snarthon Candtrick Termanto");
 
-		lightCandle = new DetailedQuestStep(this, "Light the Black candle with your tinderbox.", blackCandle, tinderbox);
-		dropBatBones = new DetailedQuestStep(this, "Drop the bat bones in the star.", batBones, excalibur, litBlackCandle);
+		lightCandle = new DetailedQuestStep(this, "Light the Black candle with your tinderbox.", blackCandle.highlighted(), tinderbox.highlighted());
+		dropBatBones = new DetailedQuestStep(this, "Right-click drop the bat bones in the star.", batBones.highlighted(), excalibur, litBlackCandle);
 		dropBatBones.addDialogStep("Snarthon Candtrick Termanto");
 		sayWords = new DetailedQuestStep(this, "Say the spell 'Snarthon Candtrick Termanto'. Be careful not to click the wrong option or you'll have to get another Black Candle.", excalibur);
 		sayWords.addDialogStep("Snarthon Candtrick Termanto");

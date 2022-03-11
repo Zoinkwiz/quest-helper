@@ -127,7 +127,7 @@ public class BearYourSoul extends BasicQuestHelper
 
 		enterCaveToKeyMaster = new ObjectStep(this, ObjectID.CAVE_26567, new WorldPoint(2874, 9846, 0), "Enter the cave to the Key Master.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
 
-		speakKeyMaster = new NpcStep(this, NpcID.KEY_MASTER, new WorldPoint(2686, 9884, 0),
+		speakKeyMaster = new NpcStep(this, NpcID.KEY_MASTER, new WorldPoint(1310, 1251, 0),
 			"Talk to Key Master in the Cerberus' Lair.", damagedSoulBearer);
 	}
 

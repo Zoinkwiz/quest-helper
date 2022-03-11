@@ -253,10 +253,10 @@ public enum ExternalQuestResources {
 	VARROCK_ELITE("https://oldschool.runescape.wiki/w/Varrock_Diary#Elite"),
 
 	// Western Provinces
-	WESTERNPROVINCES_EASY("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Easy"),
-	WESTERNPROVINCES_MEDIUM("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Medium"),
-	WESTERNPROVINCES_HARD("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Hard"),
-	WESTERNPROVINCES_ELITE("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Elite"),
+	WESTERN_EASY("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Easy"),
+	WESTERN_MEDIUM("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Medium"),
+	WESTERN_HARD("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Hard"),
+	WESTERN_ELITE("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Elite"),
 
 	// Wilderness
 	WILDERNESS_EASY("https://oldschool.runescape.wiki/w/Wilderness_Diary#Easy"),

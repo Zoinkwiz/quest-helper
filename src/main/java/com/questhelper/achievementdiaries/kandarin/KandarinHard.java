@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -66,7 +67,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	// unlisted item reqs
 	ItemRequirement unstrungYewLong;
 
-	Requirement piety;
+	Requirement piety, choppedLogs;
 
 	Requirement notCatchStur, notSeersRooftop, notYewLong, notPietyCourt, notWaterOrb, notBurnMaple,
 		notShadowHound, notMithrilDrag, notBuyGranite, notFancyStone, notAddySpear;
@@ -94,7 +95,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		doHard.addStep(notWaterOrb, moveToTavDungeon);
 		doHard.addStep(notSeersRooftop, seersRooftop);
 		doHard.addStep(new Conditions(notYewLong, unstrungYewLong), stringBow);
-		doHard.addStep(new Conditions(notYewLong, yewLogs), cutLongbow);
+		doHard.addStep(new Conditions(notYewLong, yewLogs, choppedLogs), cutLongbow);
 		doHard.addStep(notYewLong, yewLong);
 		doHard.addStep(notPietyCourt, pietyCourt);
 		doHard.addStep(new Conditions(notBurnMaple, inSeers), burnMaple);
@@ -169,6 +170,18 @@ public class KandarinHard extends ComplexStateQuestHelper
 		inAncient1 = new ZoneRequirement(ancient1);
 		inAncient2 = new ZoneRequirement(ancient2);
 		inAncient3 = new ZoneRequirement(ancient3);
+
+		choppedLogs = new ChatMessageRequirement(
+			inSeers,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) choppedLogs).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inSeers),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
+
 	}
 
 	public void loadZones()
@@ -265,13 +278,6 @@ public class KandarinHard extends ComplexStateQuestHelper
 	{
 		setupGeneralRequirements();
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(taiBwoWannai);
-		req.add(desertTreasure);
-
-		req.add(barbFishing);
-		req.add(barbFiremaking);
-		req.add(barbSmithing);
-		req.add(knightWaves);
 
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
@@ -285,6 +291,13 @@ public class KandarinHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.STRENGTH, 50));
 		req.add(new SkillRequirement(Skill.THIEVING, 53));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 60, true));
+
+		req.add(taiBwoWannai);
+		req.add(desertTreasure);
+		req.add(barbFishing);
+		req.add(barbFiremaking);
+		req.add(barbSmithing);
+		req.add(knightWaves);
 
 		return req;
 	}

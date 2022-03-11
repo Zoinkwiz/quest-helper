@@ -328,16 +328,16 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Karamja Gloves (3)", ItemID.KARAMJA_GLOVES_3, 1),
-				new ItemReward("10,000 Exp. Lamp (Any skill above level 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Karamja Gloves (3)", ItemID.KARAMJA_GLOVES_3, 1),
+			new ItemReward("10,000 Exp. Lamp (Any skill above level 40)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Unlimited Teleports to the underground Shilo Village mine"),
-				new UnlockReward("Access to the underground Shilo Village mine"));
+			new UnlockReward("Unlimited Teleports to the underground Shilo Village mine"),
+			new UnlockReward("Access to the underground Shilo Village mine"));
 	}
 
 	@Override

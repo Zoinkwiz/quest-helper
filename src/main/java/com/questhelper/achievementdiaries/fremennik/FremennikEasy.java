@@ -29,11 +29,13 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -55,7 +57,7 @@ import com.questhelper.panel.PanelDetails;
 public class FremennikEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement birdSnare, coins, tiaraMould, pickaxe, bucket, climbingBoots, axe, tinderbox, combatGear;
+	ItemRequirement birdSnare, coins, tiaraMould, pickaxe, bucket, climbingBoots, axe, tinderbox, combatGear, oakLogs;
 
 	// Items recommended
 	ItemRequirement food;
@@ -65,19 +67,19 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	Requirement notCatchCerulean, notChangeBoots, notKilledCrabs, notCraftTiara, notBrowseStonemason,
 		notCollectSnapeGrass, notStealStall, notFillBucket, notEnterTrollStronghold, notChopAndBurnOak;
 
-	Requirement fremennikTrials, giantDwarf, trollStronghold, deathPlateau;
+	Requirement fremennikTrials, giantDwarf, trollStronghold, deathPlateau, choppedLogs, minedSilver;
 
 	NpcStep killedCrabs;
 
-	ObjectStep fillBucket, chopAndBurnOak, mineSilver, smeltSilver, craftTiara;
+	ObjectStep fillBucket, chopOak, mineSilver, smeltSilver, craftTiara;
 
 	QuestStep catchCerulean, changeBoots, browseStonemason,
 		collectSnapeGrass, stealStall, enterTrollStronghold, goneToWaterbirth, goneToKeldagrim, goneToCave,
-		goneToRiver, goneToVarrock, claimReward;
+		goneToRiver, goneToVarrock, claimReward, burnOak;
 
-	Zone waterbirth, keldagrim, hunterArea, caveArea, riverArea, varrockArea;
+	Zone waterbirth, keldagrim, hunterArea, caveArea, riverArea, varrockArea, mine;
 
-	ZoneRequirement inWaterbirth, inKeldagrim, inHunterArea, inCaveArea, inRiverArea, inVarrockArea;
+	ZoneRequirement inWaterbirth, inKeldagrim, inHunterArea, inCaveArea, inRiverArea, inVarrockArea, inMine;
 
 	@Override
 	public QuestStep loadStep()
@@ -90,11 +92,12 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		doEasy.addStep(new Conditions(notCatchCerulean, inHunterArea), catchCerulean);
 		doEasy.addStep(notCatchCerulean, catchCerulean);
 		doEasy.addStep(notKilledCrabs, killedCrabs);
-		doEasy.addStep(notChopAndBurnOak, chopAndBurnOak);
+		doEasy.addStep(new Conditions(notChopAndBurnOak, oakLogs, choppedLogs), burnOak);
+		doEasy.addStep(notChopAndBurnOak, chopOak);
 		doEasy.addStep(notFillBucket, fillBucket);
 		doEasy.addStep(notChangeBoots, changeBoots);
 		doEasy.addStep(new Conditions(notCraftTiara, silverBar), craftTiara);
-		doEasy.addStep(new Conditions(notCraftTiara, silverOre), smeltSilver);
+		doEasy.addStep(new Conditions(notCraftTiara, silverOre, minedSilver), smeltSilver);
 		doEasy.addStep(new Conditions(notCraftTiara, pickaxe), mineSilver);
 		doEasy.addStep(new Conditions(notCollectSnapeGrass, inWaterbirth), collectSnapeGrass);
 		doEasy.addStep(notCollectSnapeGrass, goneToWaterbirth);
@@ -137,6 +140,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		silverOre = new ItemRequirement("Silver ore", ItemID.SILVER_ORE);
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
+		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notKilledCrabs);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -147,6 +151,21 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		trollStronghold = new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED);
 		deathPlateau = new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.FINISHED);
 
+		choppedLogs = new ChatMessageRequirement(
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+
+		minedSilver = new ChatMessageRequirement(
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) minedSilver).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inMine),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
+
+		inMine = new ZoneRequirement(mine);
 		inKeldagrim = new ZoneRequirement(keldagrim);
 		inWaterbirth = new ZoneRequirement(waterbirth);
 		inHunterArea = new ZoneRequirement(hunterArea);
@@ -158,6 +177,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	public void loadZones()
 	{
 		keldagrim = new Zone(new WorldPoint(2816, 10238, 0), new WorldPoint(2943, 10158, 0));
+		mine = new Zone(new WorldPoint(2675, 3712, 0), new WorldPoint(2690, 3697, 0));
 		waterbirth = new Zone(new WorldPoint(2499, 3770, 0), new WorldPoint(2557, 3713, 0));
 		hunterArea = new Zone(new WorldPoint(2690, 3838, 0), new WorldPoint(2748, 3767, 0));
 		caveArea = new Zone(new WorldPoint(2767, 10165, 0), new WorldPoint(2802, 10127, 0));
@@ -172,9 +192,13 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		killedCrabs = new NpcStep(this, NpcID.ROCK_CRAB, new WorldPoint(2707, 3723, 0),
 			"Kill 5 Rock crabs.", true, combatGear);
 		killedCrabs.addAlternateNpcs(NpcID.ROCK_CRAB_102);
-		chopAndBurnOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2714, 3664, 0),
-			"Chop and burn some oak logs.", axe, tinderbox.highlighted());
-		chopAndBurnOak.addIcon(6739);
+
+		chopOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2714, 3664, 0),
+			"Chop some oak logs in Rellekka.", axe, tinderbox);
+		chopOak.addIcon(6739);
+		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
+			oakLogs.highlighted());
+
 		fillBucket = new ObjectStep(this, ObjectID.WELL_8927, new WorldPoint(2669, 3661, 0),
 			"Fill a bucket at the Rellekka well.", bucket);
 		fillBucket.addIcon(ItemID.BUCKET);
@@ -199,7 +223,8 @@ public class FremennikEasy extends ComplexStateQuestHelper
 			"Collect 5 snape grass on Waterbirth Island. Speak with Jarvald to return to Rellekka when complete.", snapeGrass.highlighted().quantity(5));
 		enterTrollStronghold = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0),
 			"Enter the Troll Stronghold.");
-		goneToKeldagrim = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Enter the tunnel that leads to Keldagrim. Alternatively TP to Varrock and take a minecart near the Grand Exchange.");
+		goneToKeldagrim = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+			"Enter the tunnel that leads to Keldagrim. Alternatively Teleport to Varrock and take a minecart near the Grand Exchange.");
 		goneToCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
 		goneToRiver = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
@@ -286,7 +311,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		rockCrabSteps.setDisplayCondition(notKilledCrabs);
 		allSteps.add(rockCrabSteps);
 
-		PanelDetails oakSteps = new PanelDetails("Chop and burn", Collections.singletonList(chopAndBurnOak),
+		PanelDetails oakSteps = new PanelDetails("Chop and burn", Arrays.asList(chopOak, burnOak),
 			new SkillRequirement(Skill.FIREMAKING, 15), new SkillRequirement(Skill.WOODCUTTING, 15),
 			axe, tinderbox);
 		oakSteps.setDisplayCondition(notChopAndBurnOak);

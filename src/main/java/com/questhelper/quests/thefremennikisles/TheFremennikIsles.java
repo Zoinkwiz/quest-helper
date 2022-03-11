@@ -608,7 +608,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 		return Arrays.asList(
 				new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
 				new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
-				new ItemReward("Jester Outfit", ItemID.JESTER, 1));
+				new ItemReward("Jester Outfit", ItemID.JESTER, 1),
+				new ItemReward("Around 20,000 coins in assorted rewards during quest", ItemID.COINS));
 	}
 
 	@Override

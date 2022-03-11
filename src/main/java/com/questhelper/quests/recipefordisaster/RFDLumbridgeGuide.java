@@ -155,7 +155,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		useCakeOnLumbridgeGuide.addIcon(ItemID.CAKE_OF_GUIDANCE);
 		useCakeOnLumbridgeGuide.addSubSteps(enterDiningRoomAgain);
 
-		mixIngredients = new DetailedQuestStep(this, "Talk to Traiborn for the enchanted ingredients, then mix them in a tin.", enchantedEgg, enchantedFlour, enchantedMilk, tin);
+		mixIngredients = new DetailedQuestStep(this, "Talk to Traiborn for the enchanted ingredients, then mix them in a tin.", enchantedEgg.highlighted(), enchantedFlour.highlighted(), enchantedMilk.highlighted(), tin.highlighted());
 	}
 
 	@Override

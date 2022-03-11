@@ -74,8 +74,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, fairyAccess, mithGrap, crossbow, strawSeeds, rake, seedDib, basketOrCompost,
-		waterRune, lawRune, yewLog, smallFishingNet, lightSource, rawChick, rawSword, ibanStaff, skavMap, nightshade,
-		bucket, ibanStaffU, coins, basket, compost, spade, yewLog2;
+		waterRune, lawRune, yewLog1, smallFishingNet, lightSource, rawChick, rawSword, ibanStaff, skavMap, nightshade,
+		bucket, ibanStaffU, coins, basket, compost, spade, yewLog11;
 
 	// Items recommended
 	ItemRequirement food;
@@ -158,7 +158,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapYan);
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.getCrossbows()).showConditioned(notGrapYan);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET)
-			.showConditioned(new Conditions(notClaimSand));// TODO check for UIM
+			.showConditioned(new Conditions(notClaimSand));
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPArdy);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPArdy);
 		rawChick = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN).showConditioned(notKillSwordchick);
@@ -171,10 +171,10 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notArdyStraw);
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET)
 			.showConditioned(notFishOnPlatform);
-		yewLog = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(new Conditions(notBalloonCW,
-			notCWBallon2));
-		yewLog2 = new ItemRequirement("Yew log", ItemID.YEW_LOGS).showConditioned(new Conditions(notBalloonCW,
+		yewLog1 = new ItemRequirement("Yew logs", ItemID.YEW_LOGS, 1).showConditioned(new Conditions(notBalloonCW,
 			notCWBallon));
+		yewLog11 = new ItemRequirement("Yew logs", ItemID.YEW_LOGS, 11).showConditioned(new Conditions(notBalloonCW,
+			notCWBallon2));
 		basket = new ItemRequirement("Basket of apples", ItemID.APPLES5).showConditioned(notArdyStraw);
 		compost = new ItemRequirement("Compost", ItemCollections.getCompost()).showConditioned(notArdyStraw);
 		basketOrCompost = new ItemRequirements(LogicType.OR, "Basket of apples or compost", compost, basket).showConditioned(notArdyStraw);
@@ -241,12 +241,12 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		}
 
 		balloonCW = new DetailedQuestStep(this, "Use a nearby Hot Air Ballon to travel to Castle Wars.",
-			yewLog2.quantity(1));
+			yewLog1);
 		moveToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3236, 0),
-			"Speak with a monk to travel to Entrana.", true, yewLog.quantity(11));
+			"Speak with a monk to travel to Entrana.", true, yewLog11);
 		moveToEntrana.addAlternateNpcs(NpcID.MONK_OF_ENTRANA_1166, NpcID.MONK_OF_ENTRANA);
 		talkToAug = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2810, 3356, 0),
-			"Speak with Augustine and travel to Castle Wars.", yewLog.quantity(11));
+			"Speak with Augustine and travel to Castle Wars.", yewLog11);
 
 		tPArdy = new DetailedQuestStep(this, "Cast Teleport to Ardougne spell.", lawRune.quantity(2),
 			waterRune.quantity(2));
@@ -287,9 +287,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		// TODO handle yew log item req without making it look weird.
 		return Arrays.asList(combatGear, crossbow, mithGrap, rake, strawSeeds.quantity(3), seedDib, ibanStaff,
-			coins.quantity(200000), skavMap, lightSource, smallFishingNet, rawChick, rawSword, yewLog.quantity(10), yewLog2.quantity(1),
+			coins.quantity(200000), skavMap, lightSource, smallFishingNet, rawChick, rawSword, yewLog1, yewLog11,
 			fairyAccess, spade);
 	}
 
@@ -356,13 +355,12 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails cwSteps = new PanelDetails("Castle Wars Balloon", Arrays.asList(moveToEntrana, talkToAug,
-			balloonCW), new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog.quantity(10),
-			yewLog2.quantity(1));
+			balloonCW), new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog11);
 		cwSteps.setDisplayCondition(new Conditions(notBalloonCW, notCWBallon2));
 		allSteps.add(cwSteps);
 
 		PanelDetails cw2Steps = new PanelDetails("Castle Wars Balloon", Collections.singletonList(balloonCW),
-			new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog2.quantity(1));
+			new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog1);
 		cw2Steps.setDisplayCondition(new Conditions(notBalloonCW, notCWBallon));
 		allSteps.add(cw2Steps);
 

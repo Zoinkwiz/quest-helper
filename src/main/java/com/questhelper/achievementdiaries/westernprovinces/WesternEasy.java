@@ -194,14 +194,15 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
 			"Claim any Chompy bird hat from Rantz. Kill chompy birds until you have 30 kills. \n \nYou can check " +
-				"your kill count by right clicking selecting 'Check Kills' on an ogre bow.",
+				"your kill count by right-clicking 'Check Kills' on an ogre bow.",
 			ogreBow, ogreArrows, ogreBellows);
 		chompyHat.addDialogStep("Can I have a hat please?");
 
 		tpPest = new DetailedQuestStep(this, "Teleport to Pest Control using the minigame teleport.");
 
 		moveToPest = new NpcStep(this, NpcID.SQUIRE_1770, new WorldPoint(3041, 3202, 0),
-			"Talk to the squire to travel to the Void Knights' Outpost. Alternatively, use the pest control minigame teleport.");
+			"Talk to the squire in Port Sarim to travel to the Void Knights' Outpost. Alternatively, use the pest " +
+				"control minigame teleport.");
 		moveToPest.addDialogStep("I'd like to go to your outpost.");
 		novicePest = new ObjectStep(this, ObjectID.GANGPLANK_14315, new WorldPoint(2658, 2639, 0),
 			"Complete a novice game of Pest Control.");
@@ -242,7 +243,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill one Terror bird (lvl 28) and complete a Novice Pest Control game");
+		return Arrays.asList("Terror bird (lvl 28)",  "Complete a Novice Pest Control game");
 	}
 
 	@Override

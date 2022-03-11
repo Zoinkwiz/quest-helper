@@ -28,7 +28,6 @@
 package com.questhelper.requirements.quest;
 
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.AbstractRequirement;
 import java.util.Locale;
 import lombok.Getter;
@@ -125,6 +124,10 @@ public class QuestRequirement extends AbstractRequirement
 			return displayText;
 		}
 		String text = Character.toUpperCase(requiredState.name().charAt(0)) + requiredState.name().toLowerCase(Locale.ROOT).substring(1);
+		if (requiredState == QuestState.IN_PROGRESS)
+		{
+			text = "Started ";
+		}
 		return text.replaceAll("_", " ") + " " + quest.getName();
 	}
 }

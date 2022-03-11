@@ -173,7 +173,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP);
 		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS);
 		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers,
-			mournerCloak, mournerBoots, mournerGloves);
+			mournerCloak, mournerBoots, mournerGloves).showConditioned(notDeathRune);
 		mournersOutfit.setTooltip("Another set can be obtained at the north entrance to Arandar.");
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
 			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy));

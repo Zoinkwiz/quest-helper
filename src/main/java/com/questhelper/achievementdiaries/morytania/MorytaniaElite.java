@@ -49,11 +49,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.IconID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
@@ -78,8 +80,10 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	Requirement notBareHandShark, notCremateShade, notFertilizeHerb, notCraftBlackDhideBody, notAbyssalDemon,
 		notBarrowsChest;
 
-	QuestStep claimReward, bareHandShark, cremateShade, fertilizeHerb, craftBlackDhideBody, abyssalDemon,
+	QuestStep claimReward, bareHandShark, fertilizeHerb, craftBlackDhideBody, abyssalDemon,
 		barrowsChest, moveToCanifisBank, moveToSlayer2, moveToSlayer3, moveToBarrows;
+
+	ObjectStep cremateShade;
 
 	Zone canifisBank, slayer2, slayer3, barrows;
 
@@ -155,7 +159,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 			ItemCollections.getToragBody()), new ItemRequirement("legs", ItemCollections.getToragLegs()));
 
 		barrowsSet = new ItemRequirements(LogicType.OR, "Any complete barrows set", ahrimSet, karilSet, guthanSet,
-			veracSet, dharokSet, toragSet);
+			veracSet, dharokSet, toragSet).showConditioned(notBarrowsChest);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -201,6 +205,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		cremateShade = new ObjectStep(this, ObjectID.FUNERAL_PYRE, new WorldPoint(3500, 3266, 0),
 			"Place the pyre logs and shade remains on the funeral pyre and light them with a tinderbox", tinderbox,
 			shadeRemains, magicRedwoodPyreLogs);
+		cremateShade.addAlternateObjects(ObjectID.FUNERAL_PYRE_28865, ObjectID.FUNERAL_PYRE_4099);
 
 		bareHandShark = new NpcStep(this, NpcID.FISHING_SPOT_4476, new WorldPoint(3479, 3189, 0),
 			"Bare hand fish a shark in Burgh de Rott.");
@@ -222,6 +227,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		fertilizeHerb = new ObjectStep(this, 8153, new WorldPoint(3606, 3530, 0),
 			"Cast Fertile Soil on the herb patch in Morytania.", lunarBook, earthRune.quantity(15),
 			astralRune.quantity(3), natureRune.quantity(2));
+		fertilizeHerb.addIcon(SpriteID.SPELL_FERTILE_SOIL);
 
 		claimReward = new NpcStep(this, NpcID.LESABR, new WorldPoint(3464, 3480, 0),
 			"Talk to Le-Sabre near Canifis to claim your reward!");

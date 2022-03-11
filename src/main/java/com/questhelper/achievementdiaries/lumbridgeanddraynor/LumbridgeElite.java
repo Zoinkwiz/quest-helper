@@ -74,10 +74,10 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		deathToDorg, templeOfIkov;
 
 	QuestStep claimReward, richChest, movario, chopMagic, addyPlatebody, waterRunes, qcEmote, moveToWater,
-		dorgStairsChest, dorgStairsMovario, moveToOldman, moveToDorgChest, moveToDorgMovario, moveToUndergroundChest,
+		dorgStairsChest, dorgStairsMovario, moveToOldman, moveToUndergroundChest,
 		moveToUndergroundMovario, moveToDorgAgi;
 
-	ObjectStep moveToDraySewer;
+	ObjectStep moveToDraySewer, moveToDorgChest, moveToDorgMovario;
 
 	Zone underground, dorg1, dorg2, draySewer, oldman, waterAltar, dorgAgi;
 
@@ -108,9 +108,6 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		doElite.addStep(notWaterRunes, moveToWater);
 		doElite.addStep(notChopMagic, chopMagic);
 
-
-		// addy plate, qc emote, water runes, rich chest, movario, chop
-
 		return doElite;
 	}
 
@@ -121,10 +118,10 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		notChopMagic = new VarplayerRequirement(1195, false, 6);
 		notAddyPlatebody = new VarplayerRequirement(1195, false, 7);
 		notWaterRunes = new VarplayerRequirement(1195, false, 8);
-		notQCEmote = new VarplayerRequirement(1195, false, 9);
+		notQCEmote = new VarplayerRequirement(1195, true, 9);
 
 		// todo find better way to check for all quests completed
-		allQuests = new QuestPointRequirement(284, Operation.EQUAL);
+		allQuests = new QuestPointRequirement(286, Operation.EQUAL);
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest);
 		crossbow = new ItemRequirement("Crossbow", ItemCollections.getCrossbows()).showConditioned(notMovario);
@@ -135,7 +132,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody);
 		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notWaterRunes);
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss",
-			ItemCollections.getWaterAltar()).showConditioned(notWaterRunes);
+			ItemID.WATER_TIARA).showConditioned(notWaterRunes);
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.getQuestCape()).showConditioned(notQCEmote);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE)
 			.showConditioned(new Conditions(notMovario, notRichChest));
@@ -189,9 +186,11 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			"Climb down the trapdoor in the Lumbridge Castle.", lockpick, lightsource);
 
 		moveToDorgChest = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
-			"Go through the doors to Dorgesh-Kaan.", lockpick, lightsource);
+			"Go through the doors to Dorgesh-Kaan.", true, lockpick, lightsource);
+		moveToDorgChest.addAlternateObjects(ObjectID.DOOR_6920);
 		moveToDorgMovario = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
-			"Go through the doors to Dorgesh-Kaan.", mithgrap, crossbow, lightsource);
+			"Go through the doors to Dorgesh-Kaan.", true, mithgrap, crossbow, lightsource);
+		moveToDorgMovario.addAlternateObjects(ObjectID.DOOR_6920);
 
 		dorgStairsMovario = new ObjectStep(this, ObjectID.STAIRS_22939, new WorldPoint(2721, 5360, 0),
 			"Climb the stairs to the second level of Dorgesh-Kaan.", mithgrap, crossbow, lightsource);
@@ -230,8 +229,6 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		//keep this up to date
-		reqs.add(new QuestPointRequirement(284));
 		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
 		reqs.add(new SkillRequirement(Skill.RANGED, 70));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 76));
@@ -263,7 +260,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			new UnlockReward("20% discount on items in the Culinaromancer's Chest"),
 			new UnlockReward("Ability to use Fairy rings without the need of a Dramen or Lunar staff"),
 			new UnlockReward("Unlocked the 6th slot for blocking Slayer tasks")
-			);
+		);
 	}
 
 	@Override
@@ -282,11 +279,6 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		questCapeEmoteSteps.setDisplayCondition(notQCEmote);
 		allSteps.add(questCapeEmoteSteps);
 
-		PanelDetails waterRunesSteps = new PanelDetails("140 Water Runes", Arrays.asList(moveToWater, waterRunes),
-			new SkillRequirement(Skill.RUNECRAFT, 76), essence.quantity(28), waterAccessOrAbyss);
-		waterRunesSteps.setDisplayCondition(notWaterRunes);
-		allSteps.add(waterRunesSteps);
-
 		PanelDetails richChestSteps = new PanelDetails("Dorgesh-Kaan Rich Chest", Arrays.asList(moveToUndergroundChest,
 			moveToDorgChest, dorgStairsChest, richChest), new SkillRequirement(Skill.THIEVING, 78), deathToDorg, lightsource,
 			lockpick);
@@ -299,6 +291,11 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.STRENGTH, 70), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource);
 		movarioSteps.setDisplayCondition(notMovario);
 		allSteps.add(movarioSteps);
+
+		PanelDetails waterRunesSteps = new PanelDetails("140 Water Runes", Arrays.asList(moveToWater, waterRunes),
+			new SkillRequirement(Skill.RUNECRAFT, 76), ess.quantity(28), waterAccessOrAbyss);
+		waterRunesSteps.setDisplayCondition(notWaterRunes);
+		allSteps.add(waterRunesSteps);
 
 		PanelDetails chopMagicsSteps = new PanelDetails("Chop Magics", Collections.singletonList(chopMagic),
 			new SkillRequirement(Skill.WOODCUTTING, 75), axe);

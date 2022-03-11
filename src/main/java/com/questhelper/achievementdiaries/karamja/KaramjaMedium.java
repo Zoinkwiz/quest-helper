@@ -336,17 +336,17 @@ public class KaramjaMedium extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Karamja Gloves (2)", ItemID.KARAMJA_GLOVES_2, 1),
-				new ItemReward("5,000 Exp. Lamp (Any skill above level 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Karamja Gloves (2)", ItemID.KARAMJA_GLOVES_2, 1),
+			new ItemReward("5,000 Exp. Lamp (Any skill above level 30)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Increased Agility Experience when redeeming Agility tickets"),
-				new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena"),
-				new UnlockReward("Access to the stepping stone shortcut across the river of Shilo Village"));
+			new UnlockReward("Increased Agility Experience when redeeming Agility tickets"),
+			new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena"),
+			new UnlockReward("Access to the stepping stone shortcut across the river of Shilo Village"));
 	}
 
 	@Override
@@ -366,7 +366,7 @@ public class KaramjaMedium extends BasicQuestHelper
 
 		PanelDetails enterAgiSteps = new PanelDetails("Claim a ticket in The Agility Arena",
 			Arrays.asList(enterAgilityArena,
-			tag2Pillars), coins.quantity(200));
+				tag2Pillars), coins.quantity(200));
 		enterAgiSteps.setDisplayCondition(notClaimedTicket);
 		allSteps.add(enterAgiSteps);
 

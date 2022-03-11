@@ -204,7 +204,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 			"Mine iron in the Wilderness.", pickaxe);
 
 		spiderEggs = new ItemStep(this, new WorldPoint(3122, 9953, 0), "Pickup 5 red spider eggs in the Edgeville " +
-			"Wilderness Dungeon.",	redSpiderEggs);
+			"Wilderness Dungeon.", redSpiderEggs);
 
 		earthWarrior = new NpcStep(this, NpcID.EARTH_WARRIOR, new WorldPoint(3121, 9972, 0),
 			"Kill an Earth warrior in the north of the Edgeville Wilderness Dungeon.", combatGear, food);

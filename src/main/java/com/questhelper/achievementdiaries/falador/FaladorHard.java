@@ -49,7 +49,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-
 import java.util.*;
 
 @QuestDescriptor(
@@ -66,9 +65,9 @@ public class FaladorHard extends ComplexStateQuestHelper
 	//Items Recommended
 	ItemRequirement faladorTeleport, combatBracelet;
 
-	ItemRequirement spadeHighlighted;
-
 	ItemRequirements prosySet, prospectorSet;
+
+	Requirement herosQuest, slugMenace, grimTales;
 
 	Requirement notCraftedMindRunes, notChangedFamilyCrest, notKilledMole, notKilledWyvern, notCompleteAgiCourse,
 		notEnterMiningGuildWithProspector, notKilledBlueDragon, notCrackedWallSafe, notPraySarimAltarProsy, notEnterWarriorsGuild,
@@ -110,7 +109,9 @@ public class FaladorHard extends ComplexStateQuestHelper
 		doHard.addStep(notCrackedWallSafe, enterRoguesDen);
 		doHard.addStep(new Conditions(notCraftedMindRunes, inMindAltar), craftMindRunes);
 		doHard.addStep(notCraftedMindRunes, enterMindAltar);
-		doHard.addStep(new Conditions(notPraySarimAltarProsy, prosySet), prayAtAltarSarim);
+		doHard.addStep(new Conditions(notPraySarimAltarProsy, prosyHelm.alsoCheckBank(questBank),
+				prosyLegs.alsoCheckBank(questBank), prosyChest.alsoCheckBank(questBank)),
+			prayAtAltarSarim);
 		doHard.addStep(notPraySarimAltarProsy, getProsySet);
 		doHard.addStep(new Conditions(notKilledWyvern, inWyvernCavern), killWyvern);
 		doHard.addStep(new Conditions(notKilledWyvern, inIceDungeon), enterWyvernCavern);
@@ -130,7 +131,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		notEnterMiningGuildWithProspector = new VarplayerRequirement(1186, false, 31);
 		notKilledBlueDragon = new VarplayerRequirement(1187, false, 0);
 		notCrackedWallSafe = new VarplayerRequirement(1187, false, 1);
-		notPraySarimAltarProsy = new VarplayerRequirement(1187, false, 2); // 1187 8->12
+		notPraySarimAltarProsy = new VarplayerRequirement(1187, false, 2);
 		notEnterWarriorsGuild = new VarplayerRequirement(1187, false, 3);
 		notDwarvenHelmetDwarvenMines = new VarplayerRequirement(1187, false, 4);
 
@@ -147,17 +148,15 @@ public class FaladorHard extends ComplexStateQuestHelper
 		prospectorLegs = new ItemRequirement("Prospector Legs", ItemID.PROSPECTOR_LEGS, 1, true).showConditioned(notEnterMiningGuildWithProspector);
 		prospectorBoots = new ItemRequirement("Prospector Boots", ItemID.PROSPECTOR_BOOTS, 1, true).showConditioned(notEnterMiningGuildWithProspector);
 		dragonfireProtection = new ItemRequirement("Protection from Dragonfire", ItemCollections.getAntifireShields()).showConditioned(notKilledBlueDragon);
-		prosyHelm = new ItemRequirement("Proselyte Helmet", ItemID.PROSELYTE_SALLET, 1, true).showConditioned(notPraySarimAltarProsy);
-		prosyChest = new ItemRequirement("Proselyte Chest", ItemID.PROSELYTE_HAUBERK, 1, true).showConditioned(notPraySarimAltarProsy);
-		prosyLegs = new ItemRequirement("Proselyte Legs", ItemID.PROSELYTE_CUISSE, 1, true).showConditioned(notPraySarimAltarProsy);
+		prosyHelm = new ItemRequirement("Proselyte Helmet", ItemID.PROSELYTE_SALLET).showConditioned(notPraySarimAltarProsy);
+		prosyChest = new ItemRequirement("Proselyte Chest", ItemID.PROSELYTE_HAUBERK).showConditioned(notPraySarimAltarProsy);
+		prosyLegs = new ItemRequirement("Proselyte Legs", ItemID.PROSELYTE_CUISSE).showConditioned(notPraySarimAltarProsy);
 		prosyLegs.addAlternates(ItemID.PROSELYTE_TASSET);
-		dwarvenHelmet = new ItemRequirement("Dwarven Helmet", ItemID.DWARVEN_HELMET, 1, true).showConditioned(notDwarvenHelmetDwarvenMines);
+		dwarvenHelmet = new ItemRequirement("Dwarven Helmet", ItemID.DWARVEN_HELMET, 1).showConditioned(notDwarvenHelmetDwarvenMines);
 
 		faladorTeleport = new ItemRequirement("Multiple teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
 		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.getCombatBracelets());
 		combatBracelet.addAlternates(ItemCollections.getGamesNecklaces());
-
-		spadeHighlighted = new ItemRequirement(true, "A Spade", ItemID.SPADE);
 
 		prosySet = new ItemRequirements(prosyHelm, prosyLegs, prosyChest);
 		prospectorSet = new ItemRequirements(prospectorBoots, prospectorChest, prospectorHelm, prospectorLegs);
@@ -175,6 +174,10 @@ public class FaladorHard extends ComplexStateQuestHelper
 		inHerosGuild = new ZoneRequirement(herosGuildEntranceway, herosGuildMainHall);
 		inRoguesDen = new ZoneRequirement(roguesDen);
 		inMoleDen = new ZoneRequirement(moleDen);
+
+		slugMenace = new QuestRequirement(QuestHelperQuest.THE_SLUG_MENACE, QuestState.FINISHED);
+		herosQuest = new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED);
+		grimTales = new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED);
 	}
 
 	public void loadZones()
@@ -195,9 +198,9 @@ public class FaladorHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		//Mind Runes
-		enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2981, 3513, 0),
+		enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2982, 3514, 0),
 			"Click on the Mysterious Ruins, with the Mind Tiara equipped to access the Mind Altar.", mindTiara, pureEss28);
-		craftMindRunes = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0),
+		craftMindRunes = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2786, 4841, 0),
 			"Click the altar to craft the mind runes.", mindTiara, pureEss28);
 		craftMindRunes.addIcon(ItemID.PURE_ESSENCE);
 		enterMindAltar.addSubSteps(craftMindRunes);
@@ -232,7 +235,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 			"Complete a lap of the Falador Agility Course");
 
 		//Prospectors in Mining Guild
-		enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
+		enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3059, 3376, 0),
 			"Go to the Dwarven Mines.", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
 		enterMiningGuild = new ObjectStep(this, ObjectID.DOOR_30364, new WorldPoint(3046, 9756, 0),
 			"Equip your prospector set and then enter the Mining Guild", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
@@ -246,7 +249,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 			"Kill the Blue Dragon to complete your task.");
 
 		//Rogues Den
-		enterRoguesDen = new ObjectStep(this, ObjectID.TRAPDOOR_7257, new WorldPoint(3905, 3537, 0),
+		enterRoguesDen = new ObjectStep(this, ObjectID.TRAPDOOR_7257, new WorldPoint(2905, 3537, 0),
 			"Go to the Rogues Den in Burthorpe.");
 		crackWallSafe = new ObjectStep(this, ObjectID.WALL_SAFE, new WorldPoint(3055, 4977, 1),
 			"Crack the Wall Safe inside of the Rogues Den.");
@@ -259,12 +262,12 @@ public class FaladorHard extends ComplexStateQuestHelper
 			"Equip your Proselyte armor and pray at the altar in Port Sarim.", prosyHelm, prosyChest, prosyLegs);
 
 		//Warriors Guild
-		enterWarriorsGuild = new ObjectStep(this, ObjectID.DOOR_24318, new WorldPoint(2877, 3456, 0),
+		enterWarriorsGuild = new ObjectStep(this, ObjectID.DOOR_24318, new WorldPoint(2896, 3510, 0),
 			"Enter the Warriors Guild, in Burthorpe. You can get here faster by teleporting with a combat bracelet or a games necklace.");
 
 		//Dwarven Helm
 		//Prospectors in Mining Guild
-		enterDwarvenMinesHelmet = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
+		enterDwarvenMinesHelmet = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3059, 3376, 0),
 			"Go to the Dwarven Mines.", dwarvenHelmet);
 		equipDwarvenHelmet = new DetailedQuestStep(this,
 			"Equip the Dwarven Helmet.", dwarvenHelmet.equipped());
@@ -308,9 +311,10 @@ public class FaladorHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
 		req.add(new WarriorsGuildAccessRequirement());
 
-		req.add(new QuestRequirement(QuestHelperQuest.THE_SLUG_MENACE, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED));
+
+		req.add(grimTales);
+		req.add(herosQuest);
+		req.add(slugMenace);
 
 		return req;
 	}
@@ -353,8 +357,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(fallyRoofSteps);
 
 		PanelDetails dwarvenHelmSteps = new PanelDetails("A snug fit", Arrays.asList(enterDwarvenMinesHelmet,
-			equipDwarvenHelmet), new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED),
-			new SkillRequirement(Skill.DEFENCE, 50), dwarvenHelmet);
+			equipDwarvenHelmet), new SkillRequirement(Skill.DEFENCE, 50), dwarvenHelmet), grimTales;
 		dwarvenHelmSteps.setDisplayCondition(notDwarvenHelmetDwarvenMines);
 		allSteps.add(dwarvenHelmSteps);
 
@@ -370,8 +373,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(warriorsGuildSteps);
 
 		PanelDetails blueDragonSteps = new PanelDetails("The Dragon Slayer", Arrays.asList(enterHerosGuild,
-			enterHerosGuildBasement, killBlueDragon), new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED),
-			combatGear, food, dragonfireProtection);
+			enterHerosGuildBasement, killBlueDragon), herosQuest, combatGear, food, dragonfireProtection);
 		blueDragonSteps.setDisplayCondition(notKilledBlueDragon);
 		allSteps.add(blueDragonSteps);
 
@@ -386,8 +388,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(mindRunesSteps);
 
 		PanelDetails praySteps = new PanelDetails("Praise the Lord!", Arrays.asList(getProsySet, prayAtAltarSarim),
-			new SkillRequirement(Skill.DEFENCE, 30), new QuestRequirement(QuestHelperQuest.THE_SLUG_MENACE,
-			QuestState.FINISHED), prosyHelm, prosyChest, prosyLegs);
+			new SkillRequirement(Skill.DEFENCE, 30), slugMenace, prosyHelm, prosyChest, prosyLegs);
 		praySteps.setDisplayCondition(notPraySarimAltarProsy);
 		allSteps.add(praySteps);
 

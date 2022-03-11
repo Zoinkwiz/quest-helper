@@ -122,8 +122,8 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	{
 		notTrawlerRay = new VarplayerRequirement(1197, false, 6);
 		notYanAgi = new VarplayerRequirement(1197, false, 7);
-		notPickHero = new VarplayerRequirement(1197, false, 8);
-		notRuneCrossbow = new VarplayerRequirement(1197, false, 9);
+		notPickHero = new VarplayerRequirement(1197, false, 9);
+		notRuneCrossbow = new VarplayerRequirement(1197, false, 8);
 		notImbueSalve = new VarplayerRequirement(1197, false, 10);
 		notPickTorstol = new VarplayerRequirement(1197, false, 11);
 		notArdyRooftops = new VarplayerRequirement(1197, false, 12);
@@ -133,7 +133,6 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		enoughNMZPoints = new VarplayerRequirement(1060, 800000, Operation.GREATER_EQUAL,
 			"800,000 Nightmare Zone reward points");
 
-		// = new ItemRequirement("", ItemID.).showConditioned();
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE).showConditioned(notIceBarrage);
@@ -157,7 +156,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 			.showConditioned(notRuneCrossbow);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneCrossbow);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notRuneCrossbow);
-		runeCrossbowU = new ItemRequirement("Rune crossbow (u)", ItemID.RUNE_CROSSBOW_23601).showConditioned(notRuneCrossbow);
+		runeCrossbowU = new ItemRequirement("Rune crossbow (u)", ItemID.RUNITE_CROSSBOW_U).showConditioned(notRuneCrossbow);
 		crossbowString = new ItemRequirement("Crossbow string", ItemID.CROSSBOW_STRING)
 			.showConditioned(notRuneCrossbow);
 		yewStock = new ItemRequirement("Yew stock", ItemID.YEW_STOCK).showConditioned(notRuneCrossbow);
@@ -241,7 +240,6 @@ public class ArdougneElite extends ComplexStateQuestHelper
 			"Imbue a salve amulet at Nightmare Zone.", enoughNMZPoints, salveAmmy);
 		equipSalve = new ItemStep(this, "Equip your salve amulet.", imbuedSalve);
 
-		// TODO make this task two steps and check varb / chat message
 		trawlerRay = new DetailedQuestStep(this, new WorldPoint(2659, 3160, 0),
 			"Catch a manta ray in the Fishing Trawler and cook it in Port Khazard.");
 
@@ -264,7 +262,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		runeCrossbow = new ItemStep(this, "String the rune crossbow (u).", runeCrossbowU.highlighted(),
 			crossbowString.highlighted());
 
-		pickTorstol = new ObjectStep(this, NullObjectID.NULL_8555, new WorldPoint(2667, 3371, 0),
+		pickTorstol = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0),
 			"Plant and harvest the Torstol from the north Ardougne herb patch.", rake, spade, seedDib, torstolSeed);
 
 		claimReward = new NpcStep(this, NpcID.TWOPINTS, new WorldPoint(2574, 3323, 0),

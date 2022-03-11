@@ -78,9 +78,8 @@ public class DesertHard extends ComplexStateQuestHelper
 	Requirement notMenaThug, notGranite, notRefillWaterskin, notKalphQueen, notPollRooftop, notKillDust,
 		notAncientMagicks, notKillLocustRider, notBurnYew, notMithPlatebody;
 
-	QuestStep claimReward, menaThug, granite, refillWaterskin, pollRooftop, killDust,
-		ancientMagicks, burnYew, mithPlatebody, moveToSmoke, moveToPyramid, moveToMayor,
-		moveToSoph, moveToSoph2;
+	QuestStep claimReward, menaThug, granite, refillWaterskin, pollRooftop, killDust, ancientMagicks, burnYew,
+		mithPlatebody, moveToSmoke, moveToPyramid, moveToMayor, moveToSoph, moveToSoph2;
 
 	ObjectStep moveToKalph, kalphQueen;
 
@@ -201,7 +200,8 @@ public class DesertHard extends ComplexStateQuestHelper
 		menaThug = new NpcStep(this, NpcID.MENAPHITE_THUG, new WorldPoint(3347, 2959, 0),
 			"Knockout and pickpocket a Menaphite thug.", blackjack);
 
-		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify in the Desert.",
+		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify in the Desert " +
+			"(You must be losing health or water from the heat).",
 			lunarBook, fireRune.quantity(1), waterRune.quantity(3), astralRune.quantity(1));
 
 		moveToSmoke = new ObjectStep(this, ObjectID.SMOKEY_WELL, new WorldPoint(3310, 2962, 0),
@@ -220,7 +220,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		moveToMayor = new ObjectStep(this, ObjectID.STAIRCASE_10525, new WorldPoint(3447, 2912, 0),
 			"Climb the staircase in the Nardah Mayor's house.");
 		burnYew = new TileStep(this, new WorldPoint(3440, 2913, 1),
-			"Burn yew logs on the balcony. ", yewLog, tinderbox);
+			"Burn yew logs on the balcony. ", yewLog.highlighted(), tinderbox.highlighted());
 
 		mithPlatebody = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3409, 2921, 0),
 			"Make a Mithril platebody in Nardah.", mithBar.quantity(5), hammer);
@@ -279,7 +279,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a Dust devil (lvl 93), Locust rider (lvl 98), Kalphite Queen, (lvl 333)");
+		return Collections.singletonList("Kill a Dust devil (lvl 93), Locust rider (lvl 98), Kalphite Queen (lvl 333)");
 	}
 
 	@Override

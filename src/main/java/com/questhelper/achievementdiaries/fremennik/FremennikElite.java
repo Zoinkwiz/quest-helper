@@ -59,7 +59,7 @@ import com.questhelper.panel.PanelDetails;
 public class FremennikElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement pureEss, dragonstone, goldBar, amuletMould, combatGear, thrownaxe, climbingBoots, rope, petRock,
+	ItemRequirement pureEssence, dragonstone, goldBar, amuletMould, combatGear, thrownaxe, climbingBoots, rope, petRock,
 		crossbow, hammer, mithGrap;
 
 	// Recommended
@@ -148,19 +148,13 @@ public class FremennikElite extends ComplexStateQuestHelper
 		notGodwarsGenerals = new VarplayerRequirement(1185, false, 3);
 		notSpiritualMage = new VarplayerRequirement(1185, false, 4);
 
-		// TODO add varb req for generals and army kills (my combat lvl is too low to ensure this works properly)
-		// notKillArma = new VarbitRequirement(3973, true, 1);
-		// notKillSara = new VarbitRequirement(3973, true, 1);
-		// notKillBand = new VarbitRequirement(3973, true, 1);
-		// notKillZam = new VarbitRequirement(3973, true, 1);
-
 		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 		protectMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 		protectMissiles = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
 		protectMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
 		petRock = new ItemRequirement("Pet Rock", ItemID.PET_ROCK).showConditioned(notDagKings);
-		pureEss = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notAstralRunes);
+		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notAstralRunes);
 		dragonstone = new ItemRequirement("Cut dragonstone", ItemID.DRAGONSTONE).showConditioned(notDragonAmulet);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notDragonAmulet);
 		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet);
@@ -276,11 +270,6 @@ public class FremennikElite extends ComplexStateQuestHelper
 		godwarsGenerals.addAlternateNpcs(NpcID.KRIL_TSUTSAROTH);
 		godwarsGenerals.addAlternateNpcs(NpcID.GENERAL_GRAARDOR);
 		godwarsGenerals.addAlternateNpcs(NpcID.COMMANDER_ZILYANA);
-		// TODO count kills with each army and generals
-		// killArma = new NpcStep(this, NpcID.AVIANSIE_3172, new WorldPoint(2880, 5298,  2), "Kill armadyl guys");
-		// npc id       kree 3162 kril 3129 graar 2215 zil 2205
-		// varb count   arma 3973 zam 3976 bandos 3975 sara 3972
-		// need varbs for generals kills
 
 		spiritualMage = new NpcStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(2832, 5301, 2),
 			"Kill a spiritual mage", true);
@@ -348,7 +337,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(pureEss.quantity(28), dragonstone, goldBar, amuletMould, combatGear, rope.quantity(3), climbingBoots, petRock, crossbow, mithGrap, hammer);
+		return Arrays.asList(pureEssence.quantity(28), dragonstone, goldBar, amuletMould, combatGear, rope.quantity(3), climbingBoots, petRock, crossbow, mithGrap, hammer);
 	}
 
 	@Override
@@ -417,7 +406,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 
 		PanelDetails astralRunesSteps = new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain,
 			moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy,
-			new SkillRequirement(Skill.RUNECRAFT, 82), pureEss.quantity(28));
+			new SkillRequirement(Skill.RUNECRAFT, 82), pureEssence.quantity(28));
 		astralRunesSteps.setDisplayCondition(notAstralRunes);
 		allSteps.add(astralRunesSteps);
 

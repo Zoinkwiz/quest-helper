@@ -85,17 +85,18 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	ItemRequirement prayerBook, wolfWhistle, shippingOrder, cratePart, keg, fuse, cranialClamp, brainTongs, bellJars,
 		skullStaples, neededJars, neededStaples, anchor;
 
-	Zone harmony, waterEntrance, water, waterExit, peepRoom, fenkF2, fenkF1, harmonyBasement, boat;
+	Zone harmony, waterEntrance, water, waterExit, peepRoom, fenkF2, fenkF1, harmonyBasement, boat, boatToMos, mos;
 
 	Requirement inHarmony, inWaterEntrance, inWater, inWaterExit, inPeepRoom, inFenkF2, inFenkF1, inHarmonyBasement,
 		onBoat, repairedStairs,	hasReadPrayerBook, talkedToFenk, talkedToRufus, madeCrateWalls, madeCrateBottom,
 		addedCats, addedCatsOrHas10, fenkInCrate, placedKeg, addedFuse, litFuse, churchDoorGone, hasKeg, hasFuse,
 		hasTinderbox, givenClamp, givenStaples, givenBells, givenTongs, hadClamp, hadStaples, hadBells, hadTongs,
-		givenHammer, barrelchestAppeared;
+		givenHammer, barrelchestAppeared, inBoatToMos, inMos;
 
 	QuestStep talkToTranquility, talkToTranquilityOnIsland, pullStatue, enterWater, repairWaterStairs,
 		climbFromWater, climbFromWaterCaveToPeep, peerThroughHole, goFromHoleToWater, leaveWaterBack,
-		enterWaterReturn, leaveWaterEntranceReturn, talkToTranquilityAfterPeeping, talkToTranquilityMosAfterPeeping;
+		enterWaterReturn, leaveWaterEntranceReturn, talkToTranquilityAfterPeeping, talkToTranquilityMosAfterPeeping,
+		moveToMos, moveToCapt;
 
 	QuestStep searchBookcase, readBook, returnToTranquility, recitePrayer, returnToHarmonyAfterPrayer,
 		talkToTranquilityAfterPrayer;
@@ -120,7 +121,9 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		ConditionalStep goStart = new ConditionalStep(this, talkToTranquility);
+		ConditionalStep goStart = new ConditionalStep(this, moveToCapt);
+		goStart.addStep(inBoatToMos, moveToMos);
+		goStart.addStep(inMos, talkToTranquility);
 		goStart.addStep(inHarmony, talkToTranquilityOnIsland);
 		steps.put(0, goStart);
 
@@ -278,6 +281,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		fenkF2 = new Zone(new WorldPoint(3544, 3558, 2), new WorldPoint(3553, 3551, 2));
 		harmonyBasement = new Zone(new WorldPoint(3778, 9219, 0), new WorldPoint(3792, 9232, 0));
 		boat = new Zone(new WorldPoint(3790, 2870, 1), new WorldPoint(3810, 2876, 2));
+		boatToMos = new Zone(new WorldPoint(3709, 3508, 1), new WorldPoint(3721, 3489, 1));
+		mos = new Zone(new WorldPoint(3642, 3077, 0), new WorldPoint(3855, 2924, 1));
 	}
 
 	public void setupConditions()
@@ -291,6 +296,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		inFenkF1 = new ZoneRequirement(fenkF1);
 		inHarmonyBasement = new ZoneRequirement(harmonyBasement);
 		onBoat = new ZoneRequirement(boat);
+		inBoatToMos = new ZoneRequirement(boatToMos);
+		inMos = new ZoneRequirement(mos);
 		// 3383 started talking to tranq =1, accepted =2
 
 		// Pulling statue, 3401 =1, statue pulled, 3401 = 2
@@ -350,6 +357,10 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		moveToCapt = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
+			"Cross the gangplank to Bill Teach's ship.");
+		moveToMos = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
+			"Talk to Bill Teach to travel to Mos Le'Harmless.");
 		talkToTranquility = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
 			"Talk to Brother Tranquility on Mos Le'Harmless.");
 		talkToTranquility.addDialogStep("Undead pirates? Let me at 'em!");

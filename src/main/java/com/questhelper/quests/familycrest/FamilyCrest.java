@@ -296,7 +296,7 @@ public class FamilyCrest extends BasicQuestHelper
 		pickUpCrest3 = new ItemStep(this, "Pick up the crest part.", crestPiece3);
 		killChronizon.addSubSteps(pickUpCrest3);
 
-		repairCrest = new DetailedQuestStep(this, "Combine the 3 crest parts together.", crestPiece1, crestPiece2, crestPiece3);
+		repairCrest = new DetailedQuestStep(this, "Combine the 3 crest parts together.", crestPiece1.highlighted(), crestPiece2.highlighted(), crestPiece3.highlighted());
 
 		returnCrest = new NpcStep(this, NpcID.DIMINTHEIS, new WorldPoint(3280, 3402, 0),
 			"Return the family crest to Dimintheis in south east Varrock.", crest);

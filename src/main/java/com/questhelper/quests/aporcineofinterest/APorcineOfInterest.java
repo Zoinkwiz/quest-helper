@@ -136,7 +136,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		readNotice.addDialogStep("Yes.");
 
 		talkToSarah = new NpcStep(this, NpcID.SARAH, new WorldPoint(3033, 3293, 0), "Talk to Sarah in the South Falador Farm.");
-		talkToSarah.addDialogSteps("Talk about the bounty.", "I think that'll be all for now.");
+		talkToSarah.addDialogSteps("Talk about the bounty.");
 
 		useRopeOnHole = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Use a rope on the Strange Hole east of Draynor Manor.", rope);
 		useRopeOnHole.addIcon(ItemID.ROPE);

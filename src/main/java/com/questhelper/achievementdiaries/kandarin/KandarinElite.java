@@ -29,6 +29,8 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -55,30 +57,32 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.KANDARIN_ELITE
+	quest = QuestHelperQuest.KANDARIN_ELITE
 )
 
 public class KandarinElite extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement dwarfSeed, seedDib, spade, rake, compost, harpoon, cookingGaunt, stamPot, caviar, runiteBar, magicLogs, hammer, chewedBone, tinderbox, axe, lawRune, astralRune, waterRune, combatGear;
+	ItemRequirement dwarfSeed, seedDib, spade, rake, compost, harpoon, cookingGaunt, stamPot, caviar, runiteBar,
+		magicLogs1, magicLogs2, magicLogs, hammer, chewedBone, tinderbox, axe, lawRune, astralRune, waterRune, combatGear;
 
 	// unlisted item reqs
 	ItemRequirement rawShark;
 
-	Requirement notbarb5, notPickDwarf, not5Shark, notStamMix, notRuneHasta, notPyre, notTPCath, notHeal, notAtk, notDef, notCol, notDwarfGrowing, dwarfReady, dwarfGrowing;
+	Requirement notbarb5, notPickDwarf, not5Shark, notStamMix, notRuneHasta, notPyre, notTPCath, notHeal, notAtk, notDef,
+		notCol, bothLogs;
 
-	Requirement barbSmith, barbFire, barbHerb, familyCrest, lunarDip;
+	Requirement barbSmith, barbFire, barbHerb, familyCrest, lunarDip, fishedSharks;
 
 	//Quest steps
-	QuestStep claimReward, tpCath, plantAndPickDwarf, moveToSeersRooftop, stamMix,
-		runeHasta, pyre, barb5, barb52, barb5Heal, barb5Atk, barb5Def, barb5Col;
+	QuestStep claimReward, tpCath, plantAndPickDwarf, moveToSeersRooftop, stamMix, runeHasta, pyre, barb5, barb52,
+		barb5Heal, barb5Atk, barb5Def, barb5Col, cook5Sharks;
 
-	NpcStep catchAndCook5Sharks;
+	NpcStep catch5Sharks;
 
-	Zone bankRoof, barbUnder;
+	Zone bankRoof, barbUnder, catherby;
 
-	ZoneRequirement inBankRoof, inBarbUnder;
+	ZoneRequirement inBankRoof, inBarbUnder, inCatherby;
 
 	Requirement lunarBook;
 
@@ -91,7 +95,8 @@ public class KandarinElite extends ComplexStateQuestHelper
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
 		doElite.addStep(notTPCath, tpCath);
-		doElite.addStep(not5Shark, catchAndCook5Sharks);
+		doElite.addStep(new Conditions(not5Shark,fishedSharks, rawShark.quantity(5)), cook5Sharks);
+		doElite.addStep(not5Shark, catch5Sharks);
 		doElite.addStep(new Conditions(notStamMix, inBankRoof), stamMix);
 		doElite.addStep(notStamMix, moveToSeersRooftop);
 		doElite.addStep(notRuneHasta, runeHasta);
@@ -116,11 +121,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 		notRuneHasta = new VarplayerRequirement(1179, false, 9);
 		notPyre = new VarplayerRequirement(1179, false, 10);
 		notTPCath = new VarplayerRequirement(1179, false, 11);
-
-		// dwarf weed
-		dwarfReady = new VarbitRequirement(4774, 100);
-		dwarfGrowing = new VarbitRequirement(4774, 96, Operation.GREATER_EQUAL);
-		notDwarfGrowing = new VarbitRequirement(4774, 6, Operation.LESS_EQUAL);
+		bothLogs = new ComplexRequirement(LogicType.AND, "Magic logs", notRuneHasta, notPyre);
 
 		// BA levels
 		notHeal = new VarbitRequirement(3255, 4, Operation.LESS_EQUAL);
@@ -138,7 +139,11 @@ public class KandarinElite extends ComplexStateQuestHelper
 		stamPot = new ItemRequirement("Stamina potion (2)", ItemID.STAMINA_POTION2).showConditioned(notStamMix);
 		caviar = new ItemRequirement("Caviar", ItemID.CAVIAR).showConditioned(notStamMix);
 		runiteBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR).showConditioned(notRuneHasta);
-		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS).showConditioned(new Conditions(LogicType.OR, notRuneHasta, notPyre));
+		magicLogs1 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 1)
+			.showConditioned(new Conditions(new Conditions(LogicType.OR, notRuneHasta, notPyre), new Conditions(LogicType.NOR, bothLogs)));
+		magicLogs2 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 2)
+			.showConditioned(new Conditions(LogicType.OR, notRuneHasta, notPyre));
+		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 1);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneHasta);
 		chewedBone = new ItemRequirement("Chewed bones", ItemID.CHEWED_BONES).showConditioned(notPyre);
 		chewedBone.setTooltip("These are a rare drop from mithril dragons");
@@ -158,14 +163,26 @@ public class KandarinElite extends ComplexStateQuestHelper
 
 		inBankRoof = new ZoneRequirement(bankRoof);
 		inBarbUnder = new ZoneRequirement(barbUnder);
+		inCatherby = new ZoneRequirement(catherby);
+
+		fishedSharks = new ChatMessageRequirement(
+			inCatherby,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 5 caught, 0 cooked.</col>"
+		);
+		((ChatMessageRequirement) fishedSharks).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inCatherby),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 5 caught, 0 cooked.</col>"
+			)
+		);
 	}
 
 	private void setupGeneralRequirements()
 	{
 		// TODO find a way to track barb training
-		barbHerb = new ItemRequirement("Completed Barbarian herblore", 1, -1);
-		barbFire = new ItemRequirement("Unlocked the Ancient Caverns through Barbarian Firemaking", 1, -1);
-		barbSmith = new ItemRequirement("Completed Barbarian Smithing", 1, -1);
+		barbHerb = new ItemRequirement("Completed Barbarian herblore", 1, -1).showConditioned(notStamMix);
+		barbFire = new ItemRequirement("Unlocked the Ancient Caverns through Barbarian Firemaking", 1, -1).showConditioned(notPyre);
+		barbSmith = new ItemRequirement("Completed Barbarian Smithing", 1, -1).showConditioned(notRuneHasta);
 		familyCrest = new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED);
 		lunarDip = new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED);
 	}
@@ -174,6 +191,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	{
 		bankRoof = new Zone(new WorldPoint(2721, 3495, 3), new WorldPoint(2730, 3490, 3));
 		barbUnder = new Zone(new WorldPoint(2572, 53202, 0), new WorldPoint(2614, 5258, 0));
+		catherby = new Zone(new WorldPoint(2801, 3457, 0), new WorldPoint(2864, 3416, 0));
 	}
 
 	public void setupSteps()
@@ -182,15 +200,16 @@ public class KandarinElite extends ComplexStateQuestHelper
 			lunarBook, waterRune.quantity(10), astralRune.quantity(3), lawRune.quantity(3));
 		plantAndPickDwarf = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2814, 3464, 0),
 			"Plant and harvest the dwarf weed from the Catherby patch.", rake, dwarfSeed, seedDib);
-		catchAndCook5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1519, new WorldPoint(2837, 3431, 0),
-			"Catch 5 sharks in Catherby, then successfully cook 5 on the ranged in Catherby.", harpoon,
-			cookingGaunt.equipped());
-		catchAndCook5Sharks.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
+		catch5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1519, new WorldPoint(2837, 3431, 0),
+			"Catch 5 sharks in Catherby.", harpoon, cookingGaunt.equipped());
+		catch5Sharks.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
+		cook5Sharks = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2817, 3444, 0),
+			"Successfully cook 5 on the range in Catherby.", cookingGaunt.equipped());
 		moveToSeersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Climb on top of Seers' Bank.", stamPot, caviar);
 		stamMix = new ItemStep(this, "Create a stamina mix.", stamPot.highlighted(), caviar.highlighted());
 		runeHasta = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
-			"Smith an rune hasta on the barbarian anvil near Otto.", runiteBar, magicLogs, hammer);
+			"Smith a rune hasta on the barbarian anvil near Otto.", runiteBar, magicLogs, hammer);
 		runeHasta.addIcon(ItemID.RUNITE_BAR);
 		pyre = new ObjectStep(this, ObjectID.PYRE_SITE, new WorldPoint(2519, 3519, 0),
 			"Construct a pyre ship from magic logs.", magicLogs, chewedBone, tinderbox, axe);
@@ -213,7 +232,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(dwarfSeed, seedDib, spade, rake, compost, harpoon,
-			cookingGaunt, stamPot, caviar, runiteBar, magicLogs.quantity(2), hammer, chewedBone, tinderbox, axe,
+			cookingGaunt, stamPot, caviar, runiteBar, magicLogs1, magicLogs2, hammer, chewedBone, tinderbox, axe,
 			lawRune.quantity(3), astralRune.quantity(3), waterRune.quantity(10), combatGear);
 	}
 
@@ -223,11 +242,6 @@ public class KandarinElite extends ComplexStateQuestHelper
 		setupGeneralRequirements();
 
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(barbHerb);
-		req.add(barbFire);
-		req.add(barbSmith);
-		req.add(familyCrest);
-		req.add(lunarDip);
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
 		req.add(new SkillRequirement(Skill.COOKING, 80));
 		req.add(new SkillRequirement(Skill.CRAFTING, 85));
@@ -237,6 +251,12 @@ public class KandarinElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.HERBLORE, 86));
 		req.add(new SkillRequirement(Skill.MAGIC, 87));
 		req.add(new SkillRequirement(Skill.SMITHING, 90));
+
+		req.add(barbHerb);
+		req.add(barbFire);
+		req.add(barbSmith);
+		req.add(familyCrest);
+		req.add(lunarDip);
 
 		return req;
 	}
@@ -251,19 +271,19 @@ public class KandarinElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Kandarin headgear (4)", ItemID.KANDARIN_HEADGEAR_4, 1),
-				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Kandarin headgear (4)", ItemID.KANDARIN_HEADGEAR_4, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Thormac will enchant battlestaves for 20,000 coins each"),
-				new UnlockReward("The Flax keeper will exchange 250 noted flax for 250 noted bow strings daily"),
-				new UnlockReward("15% increased chance to save a harvest life from the Catherby herb patch"),
-				new UnlockReward("The first 200 Coal placed into coal trucks every day will be automatically transported to your bank"),
-				new UnlockReward("Otto Godblessed will turn a Zamorakian spear into Zamorakian hasta for 150,000 Coins"));
+			new UnlockReward("Thormac will enchant battlestaves for 20,000 coins each"),
+			new UnlockReward("The Flax keeper will exchange 250 noted flax for 250 noted bow strings daily"),
+			new UnlockReward("15% increased chance to save a harvest life from the Catherby herb patch"),
+			new UnlockReward("The first 200 Coal placed into coal trucks every day will be automatically transported to your bank"),
+			new UnlockReward("Otto Godblessed will turn a Zamorakian spear into Zamorakian hasta for 150,000 Coins"));
 	}
 
 	@Override
@@ -277,13 +297,8 @@ public class KandarinElite extends ComplexStateQuestHelper
 		teleCathSteps.setDisplayCondition(notTPCath);
 		allSteps.add(teleCathSteps);
 
-		PanelDetails dwarfWeedSteps = new PanelDetails("Dwarf Weed in Catherby", Collections.singletonList(plantAndPickDwarf),
-			new SkillRequirement(Skill.FARMING, 79, true),
-			dwarfSeed, seedDib, rake, spade, compost);
-		dwarfWeedSteps.setDisplayCondition(notPickDwarf);
-		allSteps.add(dwarfWeedSteps);
-
-		PanelDetails catchSharkSteps = new PanelDetails("5 Sharks Caught and Cooked in Catherby", Collections.singletonList(catchAndCook5Sharks),
+		PanelDetails catchSharkSteps = new PanelDetails("5 Sharks Caught and Cooked in Catherby",
+			Arrays.asList(catch5Sharks, cook5Sharks),
 			new SkillRequirement(Skill.FISHING, 76, true),
 			new SkillRequirement(Skill.COOKING, 80, true),
 			familyCrest, harpoon, cookingGaunt);
@@ -299,20 +314,26 @@ public class KandarinElite extends ComplexStateQuestHelper
 
 		PanelDetails smithRuneHastaSteps = new PanelDetails("Smith Rune Hasta", Collections.singletonList(runeHasta),
 			new SkillRequirement(Skill.SMITHING, 90, true),
-			barbSmith, magicLogs.quantity(1), runiteBar, hammer);
+			barbSmith, magicLogs, runiteBar, hammer);
 		smithRuneHastaSteps.setDisplayCondition(notRuneHasta);
 		allSteps.add(smithRuneHastaSteps);
 
 		PanelDetails magicPyreSteps = new PanelDetails("Magic Pyre Ship", Collections.singletonList(pyre),
 			new SkillRequirement(Skill.FIREMAKING, 85, true),
 			new SkillRequirement(Skill.CRAFTING, 85, true),
-			barbFire, axe, tinderbox, magicLogs.quantity(1), chewedBone);
+			barbFire, axe, tinderbox, magicLogs, chewedBone);
 		magicPyreSteps.setDisplayCondition(notPyre);
 		allSteps.add(magicPyreSteps);
 
 		PanelDetails level5RolesSteps = new PanelDetails("Level 5 each Role", Arrays.asList(barb5Heal, barb5Atk, barb5Def, barb5Col, barb5));
 		level5RolesSteps.setDisplayCondition(notbarb5);
 		allSteps.add(level5RolesSteps);
+
+		PanelDetails dwarfWeedSteps = new PanelDetails("Dwarf Weed in Catherby", Collections.singletonList(plantAndPickDwarf),
+			new SkillRequirement(Skill.FARMING, 79, true),
+			dwarfSeed, seedDib, rake, spade, compost);
+		dwarfWeedSteps.setDisplayCondition(notPickDwarf);
+		allSteps.add(dwarfWeedSteps);
 
 		PanelDetails finishingOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishingOffSteps);

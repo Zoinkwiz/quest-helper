@@ -29,11 +29,13 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -73,7 +75,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	Requirement runeMysteries, cooksAssistant;
 
 	Requirement notDrayAgi, notKillCaveBug, notSedridor, notWaterRune, notHans, notPickpocket, notOak, notKillZombie,
-		notFishAnchovies, notBread, notIron, notEnterHAM;
+		notFishAnchovies, notBread, notIron, notEnterHAM, choppedLogs;
 
 	Requirement addedRopeToHole;
 
@@ -85,9 +87,9 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 
 	ObjectStep moveToDraySewer, enterHAM;
 
-	Zone cave, sewer, water, mageTower;
+	Zone cave, sewer, water, mageTower, lumby;
 
-	ZoneRequirement inCave, inSewer, inWater, inMageTower;
+	ZoneRequirement inCave, inSewer, inWater, inMageTower, inLumby;
 
 	@Override
 	public QuestStep loadStep()
@@ -111,7 +113,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notBread, bread);
 		doEasy.addStep(notHans, hans);
 		doEasy.addStep(notPickpocket, pickpocket);
-		doEasy.addStep(new Conditions(notOak, oakLogs), burnOak);
+		doEasy.addStep(new Conditions(notOak, oakLogs, choppedLogs), burnOak);
 		doEasy.addStep(notOak, chopOak);
 		doEasy.addStep(notIron, mineIron);
 		doEasy.addStep(notFishAnchovies, fishAnchovies);
@@ -159,6 +161,17 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		inSewer = new ZoneRequirement(sewer);
 		inMageTower = new ZoneRequirement(mageTower);
 		inWater = new ZoneRequirement(water);
+		inLumby = new ZoneRequirement(lumby);
+
+		choppedLogs = new ChatMessageRequirement(
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+		);
+		((ChatMessageRequirement) choppedLogs).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inLumby),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			)
+		);
 
 		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 		cooksAssistant = new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED);
@@ -166,6 +179,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 
 	public void loadZones()
 	{
+		lumby = new Zone(new WorldPoint(3212, 3213, 0), new WorldPoint(3227, 3201, 0));
 		cave = new Zone(new WorldPoint(3140, 9602, 0), new WorldPoint(3261, 9537, 0));
 		sewer = new Zone(new WorldPoint(3077, 9699, 0), new WorldPoint(3132, 9641, 0));
 		mageTower = new Zone(new WorldPoint(3095, 9578, 0), new WorldPoint(3122, 9554, 0));

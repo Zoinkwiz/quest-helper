@@ -131,10 +131,9 @@ public class DesertMedium extends ComplexStateQuestHelper
 		notCombatPot = new VarplayerRequirement(1198, false, 19);
 		notTPEnakhra = new VarplayerRequirement(1198, false, 20);
 		notVisitGenie = new VarplayerRequirement(1198, false, 21);
-		notTPPollnivneach = new VarplayerRequirement(1198, false, 22);
+		notTPPollnivneach = new VarplayerRequirement(1198, false, 22);// iron varb different
 		notChopTeak = new VarplayerRequirement(1198, false, 23);
 
-		//3088 0->1 for boulder in eagle area
 		// 1557 0->1 talking to simon
 		// 1558 0->1 talking to simon
 		talkedToSimon = new VarbitRequirement(1558, 1, Operation.EQUAL);

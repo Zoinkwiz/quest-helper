@@ -401,7 +401,7 @@ public class RumDeal extends BasicQuestHelper
 		talkToBraindeathAfterSpirit = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		goDownToSpiders = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1), "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
 
-		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
+		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves.equipped());
 		pickUpCarcass = new ItemStep(this, "Pick up the fever spider body.", spiderCarcass);
 		goUpFromSpidersWithCorpse = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Add the spider body to the hopper on the top floor.", spiderCarcass);
 		goUpToDropSpider = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);

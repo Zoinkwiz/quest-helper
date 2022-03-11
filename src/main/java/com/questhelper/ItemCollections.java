@@ -145,11 +145,6 @@ public class ItemCollections
 	private static final List<Integer> crossbows = ImmutableList.of(
 		ItemID.ARMADYL_CROSSBOW,
 		ItemID.DRAGON_HUNTER_CROSSBOW,
-		ItemID.KARILS_CROSSBOW,
-		ItemID.KARILS_CROSSBOW_100,
-		ItemID.KARILS_CROSSBOW_75,
-		ItemID.KARILS_CROSSBOW_50,
-		ItemID.KARILS_CROSSBOW_25,
 		ItemID.HUNTERS_CROSSBOW,
 		ItemID.DORGESHUUN_CROSSBOW,
 		ItemID.BLURITE_CROSSBOW,
@@ -185,8 +180,6 @@ public class ItemCollections
 		ItemID.WILDERNESS_SWORD_3,
 		ItemID.WILDERNESS_SWORD_4
 	);
-
-	// Teleports
 
 	@Getter
 	private static final List<Integer> metalArrows = ImmutableList.of(
@@ -715,134 +708,133 @@ public class ItemCollections
 		ItemID.REDBERRY_PIE
 	);
 
-
 	// Teleport items
 
 	@Getter
 	private static final List<Integer> gamesNecklaces = ImmutableList.of(
-		ItemID.GAMES_NECKLACE8,
-		ItemID.GAMES_NECKLACE7,
-		ItemID.GAMES_NECKLACE6,
-		ItemID.GAMES_NECKLACE5,
-		ItemID.GAMES_NECKLACE4,
-		ItemID.GAMES_NECKLACE3,
+		ItemID.GAMES_NECKLACE1,
 		ItemID.GAMES_NECKLACE2,
-		ItemID.GAMES_NECKLACE1
+		ItemID.GAMES_NECKLACE3,
+		ItemID.GAMES_NECKLACE4,
+		ItemID.GAMES_NECKLACE5,
+		ItemID.GAMES_NECKLACE6,
+		ItemID.GAMES_NECKLACE7,
+		ItemID.GAMES_NECKLACE8
 	);
 
 	@Getter
 	private static final List<Integer> ringOfDuelings = ImmutableList.of(
-		ItemID.RING_OF_DUELING8,
-		ItemID.RING_OF_DUELING7,
-		ItemID.RING_OF_DUELING6,
-		ItemID.RING_OF_DUELING5,
-		ItemID.RING_OF_DUELING4,
-		ItemID.RING_OF_DUELING3,
+		ItemID.RING_OF_DUELING1,
 		ItemID.RING_OF_DUELING2,
-		ItemID.RING_OF_DUELING1
+		ItemID.RING_OF_DUELING3,
+		ItemID.RING_OF_DUELING4,
+		ItemID.RING_OF_DUELING5,
+		ItemID.RING_OF_DUELING6,
+		ItemID.RING_OF_DUELING7,
+		ItemID.RING_OF_DUELING8
 	);
 
 	@Getter
 	private static final List<Integer> burningAmulets = ImmutableList.of(
-		ItemID.BURNING_AMULET5,
-		ItemID.BURNING_AMULET4,
-		ItemID.BURNING_AMULET3,
+		ItemID.BURNING_AMULET1,
 		ItemID.BURNING_AMULET2,
-		ItemID.BURNING_AMULET1
+		ItemID.BURNING_AMULET3,
+		ItemID.BURNING_AMULET4,
+		ItemID.BURNING_AMULET5
 	);
 
 	@Getter
 	private static final List<Integer> necklaceOfPassages = ImmutableList.of(
-		ItemID.NECKLACE_OF_PASSAGE5,
-		ItemID.NECKLACE_OF_PASSAGE4,
-		ItemID.NECKLACE_OF_PASSAGE3,
+		ItemID.NECKLACE_OF_PASSAGE1,
 		ItemID.NECKLACE_OF_PASSAGE2,
-		ItemID.NECKLACE_OF_PASSAGE1
+		ItemID.NECKLACE_OF_PASSAGE3,
+		ItemID.NECKLACE_OF_PASSAGE4,
+		ItemID.NECKLACE_OF_PASSAGE5
 	);
 
 	@Getter
 	private static final List<Integer> skillsNecklaces = ImmutableList.of(
-		ItemID.SKILLS_NECKLACE6,
-		ItemID.SKILLS_NECKLACE5,
-		ItemID.SKILLS_NECKLACE4,
-		ItemID.SKILLS_NECKLACE3,
+		ItemID.SKILLS_NECKLACE1,
 		ItemID.SKILLS_NECKLACE2,
-		ItemID.SKILLS_NECKLACE1
+		ItemID.SKILLS_NECKLACE3,
+		ItemID.SKILLS_NECKLACE4,
+		ItemID.SKILLS_NECKLACE5,
+		ItemID.SKILLS_NECKLACE6
 	);
 
 	@Getter
 	private static final List<Integer> ringOfWealths = ImmutableList.of(
-		ItemID.RING_OF_WEALTH_5,
-		ItemID.RING_OF_WEALTH_I5,
-		ItemID.RING_OF_WEALTH_4,
-		ItemID.RING_OF_WEALTH_I4,
-		ItemID.RING_OF_WEALTH_3,
-		ItemID.RING_OF_WEALTH_I3,
+		ItemID.RING_OF_WEALTH_1,
+		ItemID.RING_OF_WEALTH_I1,
 		ItemID.RING_OF_WEALTH_2,
 		ItemID.RING_OF_WEALTH_I2,
-		ItemID.RING_OF_WEALTH_1,
-		ItemID.RING_OF_WEALTH_I1
+		ItemID.RING_OF_WEALTH_3,
+		ItemID.RING_OF_WEALTH_I3,
+		ItemID.RING_OF_WEALTH_4,
+		ItemID.RING_OF_WEALTH_I4,
+		ItemID.RING_OF_WEALTH_5,
+		ItemID.RING_OF_WEALTH_I5
 	);
 
 	@Getter
 	private static final List<Integer> combatBracelets = ImmutableList.of(
-		ItemID.COMBAT_BRACELET6,
-		ItemID.COMBAT_BRACELET5,
-		ItemID.COMBAT_BRACELET4,
-		ItemID.COMBAT_BRACELET3,
+		ItemID.COMBAT_BRACELET1,
 		ItemID.COMBAT_BRACELET2,
-		ItemID.COMBAT_BRACELET1
+		ItemID.COMBAT_BRACELET3,
+		ItemID.COMBAT_BRACELET4,
+		ItemID.COMBAT_BRACELET5,
+		ItemID.COMBAT_BRACELET6
 	);
 
 	@Getter
 	private static final List<Integer> amuletOfGlories = ImmutableList.of(
 		ItemID.AMULET_OF_ETERNAL_GLORY,
-		ItemID.AMULET_OF_GLORY6,
-		ItemID.AMULET_OF_GLORY_T6,
-		ItemID.AMULET_OF_GLORY5,
-		ItemID.AMULET_OF_GLORY_T5,
-		ItemID.AMULET_OF_GLORY4,
-		ItemID.AMULET_OF_GLORY_T4,
-		ItemID.AMULET_OF_GLORY3,
-		ItemID.AMULET_OF_GLORY_T3,
+		ItemID.AMULET_OF_GLORY1,
+		ItemID.AMULET_OF_GLORY_T1,
 		ItemID.AMULET_OF_GLORY2,
 		ItemID.AMULET_OF_GLORY_T2,
-		ItemID.AMULET_OF_GLORY1,
-		ItemID.AMULET_OF_GLORY_T1
+		ItemID.AMULET_OF_GLORY3,
+		ItemID.AMULET_OF_GLORY_T3,
+		ItemID.AMULET_OF_GLORY4,
+		ItemID.AMULET_OF_GLORY_T4,
+		ItemID.AMULET_OF_GLORY5,
+		ItemID.AMULET_OF_GLORY_T5,
+		ItemID.AMULET_OF_GLORY6,
+		ItemID.AMULET_OF_GLORY_T6
 	);
 
 	@Getter
 	private static final List<Integer> digsitePendants = ImmutableList.of(
-		ItemID.DIGSITE_PENDANT_5,
-		ItemID.DIGSITE_PENDANT_4,
-		ItemID.DIGSITE_PENDANT_3,
+		ItemID.DIGSITE_PENDANT_1,
 		ItemID.DIGSITE_PENDANT_2,
-		ItemID.DIGSITE_PENDANT_1
+		ItemID.DIGSITE_PENDANT_3,
+		ItemID.DIGSITE_PENDANT_4,
+		ItemID.DIGSITE_PENDANT_5
 	);
 
 	@Getter
 	private static final List<Integer> slayerRings = ImmutableList.of(
 		ItemID.SLAYER_RING_ETERNAL,
-		ItemID.SLAYER_RING_8,
-		ItemID.SLAYER_RING_7,
-		ItemID.SLAYER_RING_6,
-		ItemID.SLAYER_RING_5,
-		ItemID.SLAYER_RING_4,
-		ItemID.SLAYER_RING_3,
+		ItemID.SLAYER_RING_1,
 		ItemID.SLAYER_RING_2,
-		ItemID.SLAYER_RING_1
+		ItemID.SLAYER_RING_3,
+		ItemID.SLAYER_RING_4,
+		ItemID.SLAYER_RING_5,
+		ItemID.SLAYER_RING_6,
+		ItemID.SLAYER_RING_7,
+		ItemID.SLAYER_RING_8
 	);
 
 	@Getter
 	private static final List<Integer> pharoahSceptre = ImmutableList.of(
-		ItemID.PHARAOHS_SCEPTRE_8,
-		ItemID.PHARAOHS_SCEPTRE_7,
-		ItemID.PHARAOHS_SCEPTRE_6,
-		ItemID.PHARAOHS_SCEPTRE_5,
-		ItemID.PHARAOHS_SCEPTRE_4,
-		ItemID.PHARAOHS_SCEPTRE_3,
+		ItemID.PHARAOHS_SCEPTRE_1,
 		ItemID.PHARAOHS_SCEPTRE_2,
-		ItemID.PHARAOHS_SCEPTRE_1
+		ItemID.PHARAOHS_SCEPTRE_3,
+		ItemID.PHARAOHS_SCEPTRE_4,
+		ItemID.PHARAOHS_SCEPTRE_5,
+		ItemID.PHARAOHS_SCEPTRE_6,
+		ItemID.PHARAOHS_SCEPTRE_7,
+		ItemID.PHARAOHS_SCEPTRE_8
 	);
 
 	// Logs
@@ -2060,5 +2052,13 @@ public class ItemCollections
 	private static final List<Integer> voidRobe = ImmutableList.of(
 		ItemID.ELITE_VOID_ROBE,
 		ItemID.VOID_KNIGHT_ROBE
+  );
+	
+  @Getter
+  private static final List<Integer> guthixBalanceUnf = ImmutableList.of(
+		ItemID.GUTHIX_BALANCE_UNF,
+		ItemID.GUTHIX_BALANCE_UNF_7654,
+		ItemID.GUTHIX_BALANCE_UNF_7656,
+		ItemID.GUTHIX_BALANCE_UNF_7658
 	);
 }

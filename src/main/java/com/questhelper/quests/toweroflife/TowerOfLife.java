@@ -68,7 +68,7 @@ public class TowerOfLife extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement
-		beer, gloves, hammer, saw, //Pre-requirements
+		beer, hammer, saw, //Pre-requirements
 		buildersHat, buildersShirt, buildersTrousers, buildersBoots,
 		buildersHatEquipped, buildersShirtEquipped, buildersTrousersEquipped, buildersBootsEquipped,
 		pressureMachineSheets, pressureMachineBalls, pressureMachineWheels,
@@ -139,7 +139,6 @@ public class TowerOfLife extends BasicQuestHelper
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
-		gloves = new ItemRequirement("Gloves", Arrays.asList(ItemID.LEATHER_GLOVES, ItemID.MYSTIC_GLOVES, ItemID.MYSTIC_GLOVES_DARK, ItemID.MYSTIC_GLOVES_DUSK, ItemID.MYSTIC_GLOVES_LIGHT));
 
 		buildersHat = new ItemRequirement("Hard Hat", ItemID.HARD_HAT);
 		buildersShirt = new ItemRequirement("Builder's Shirt", ItemID.BUILDERS_SHIRT);
@@ -416,7 +415,7 @@ public class TowerOfLife extends BasicQuestHelper
 
 		talkToNoFingers = new NpcStep(this, NpcID.NO_FINGERS, new WorldPoint(2645, 3224, 0), "Talk to 'No fingers'.");
 		pickpocketNoFingers = new NpcStep(this, NpcID.NO_FINGERS, new WorldPoint(2645, 3224, 0), "Pickpocket 'No " +
-			"fingers'.", gloves);
+			"fingers'.");
 		hasSpokenToNoFingers = new VarbitRequirement(3376, 1);
 		ConditionalStep getBoots = new ConditionalStep(this, talkToNoFingers); // "Get the Builder's Boots from 'No fingers'"
 		getBoots.addStep(hasSpokenToNoFingers, pickpocketNoFingers);
@@ -449,7 +448,7 @@ public class TowerOfLife extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(beer, gloves, hammer, saw);
+		return Arrays.asList(beer, hammer, saw);
 	}
 
 	@Override
@@ -496,15 +495,14 @@ public class TowerOfLife extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEffigy, talkToBonafido), saw, hammer, beer,
-			gloves));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEffigy, talkToBonafido), saw, hammer, beer));
 		PanelDetails getBuildersOutfitPanel = new PanelDetails("Get the Builders' outfit", Arrays.asList(
 			talkToBlackeye, //Get hat
 			talkToNoFingers, pickpocketNoFingers, //Get Boots
 			getBeerForGuns, talkToGuns, //Get shirt
 			getTrousers,
 			talkToBonafidoWithOutfit
-		), beer, gloves);
+		), beer);
 		getBuildersOutfitPanel.setLockingStep(getBuildersOutfit);
 		allSteps.add(getBuildersOutfitPanel);
 

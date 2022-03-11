@@ -163,9 +163,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
 		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 
-		enterGodwars = new ComplexRequirement(LogicType.OR,"60 Strength or Agility",
-			new SkillRequirement(Skill.AGILITY,	60),
-			new SkillRequirement(Skill.STRENGTH, 60));
+		enterGodwars = new ComplexRequirement(LogicType.OR, "60 Agility or Strength",
+			new SkillRequirement(Skill.AGILITY, 60), new SkillRequirement(Skill.STRENGTH, 60));
 
 		inEdge = new ZoneRequirement(edge);
 		inResource = new ZoneRequirement(resource);
@@ -188,7 +187,6 @@ public class WildernessMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-
 		entYew = new NpcStep(this, NpcID.ENT, new WorldPoint(3227, 3666, 0),
 			"Kill an Ent in the wilderness and cut yew logs from its trunk after killing it.", combatGear, runeAxe);
 		entYew.addAlternateNpcs(NpcID.ENT_TRUNK);
@@ -204,9 +202,9 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			"Kill a Green dragon in the Wilderness Slayer Cave.", true, combatGear, food, antiDragonShield);
 		killGreenDrag.addAlternateNpcs(NpcID.GREEN_DRAGON_7869, NpcID.GREEN_DRAGON_7870);
 
-		moveToGodWars = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
+		moveToGodWars = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3017, 3738, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		wildyGodwars = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 0),
+		wildyGodwars = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 3),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
 			combatGear, food, godEquip);
 		wildyGWBloodveld = new NpcStep(this, NpcID.BLOODVELD_3138, new WorldPoint(3050, 10131, 0),

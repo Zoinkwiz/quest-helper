@@ -413,10 +413,10 @@ public class Wanted extends BasicQuestHelper
 		talkToSirTiffy3.addDialogStep(TEXT_ASK_ABOUT_WANTED_QUEST);
 
 		getCommorbWithGp = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
-		getCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "YES");
+		getCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "Buy One", "YES");
 
 		getCommorbWithComponents = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
-		getCommorbWithComponents.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "YES");
+		getCommorbWithComponents.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "Have One Made", "YES");
 
 		doNotGetCommorbWithGp = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
 		doNotGetCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "NO");

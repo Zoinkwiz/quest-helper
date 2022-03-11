@@ -73,7 +73,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 
 	Requirement notBarbAgi, notSuperAnti, notEnterRange, notGrapOb, notCatchCookBass, notTPCam,
 		notStringMaple, notPickLimp, notMindHelm, notFireGiant, notBarbAss, notStealHemen, notTravelMcGrubor,
-		notMineCoal, limpReady, limpGrowing, notLimpGrowing, not70Agility;
+		notMineCoal, not70Agility;
 
 	Requirement normalBook;
 
@@ -119,8 +119,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notBarbAss, barbAss);
 		doMedium.addStep(notTravelMcGrubor, travelMcGrubor);
 		doMedium.addStep(notTPCam, tpCAM);
-
-		doMedium.addStep(new Conditions(notPickLimp), plantAndPickLimp);
+		doMedium.addStep(notPickLimp, plantAndPickLimp);
 
 		return doMedium;
 	}
@@ -143,10 +142,6 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		notMineCoal = new VarplayerRequirement(1178, false, 25);
 
 		not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
-
-		limpReady = new VarbitRequirement(4957, 0);
-		limpGrowing = new VarbitRequirement(4957, 4, Operation.GREATER_EQUAL);
-		notLimpGrowing = new VarbitRequirement(4957, 3, Operation.LESS_EQUAL);
 
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapOb);
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.getCrossbows()).showConditioned(notGrapOb);
@@ -297,10 +292,6 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		setupGeneralRequirements();
 
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(alfredBar);
-		req.add(eleWorkII);
-		req.add(waterfallQuest);
-		req.add((fairyTaleII));
 		req.add(new SkillRequirement(Skill.AGILITY, 36));
 		req.add(new SkillRequirement(Skill.COOKING, 43));
 		req.add(new SkillRequirement(Skill.FARMING, 26));
@@ -312,6 +303,12 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.RANGED, 40));
 		req.add(new SkillRequirement(Skill.STRENGTH, 22));
 		req.add(new SkillRequirement(Skill.THIEVING, 47));
+
+		req.add(alfredBar);
+		req.add(eleWorkII);
+		req.add(waterfallQuest);
+		req.add(fairyTaleII);
+
 		return req;
 	}
 

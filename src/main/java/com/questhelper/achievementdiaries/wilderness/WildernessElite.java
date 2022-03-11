@@ -74,14 +74,12 @@ public class WildernessElite extends ComplexStateQuestHelper
 	ItemRequirement food;
 
 	// Quests required
-	Requirement desertTreasure, enterGodwars, ancientBook, gatheredLogs, caughtCrab;
-	// potentially need one more for rune scim step
+	Requirement desertTreasure, enterGodwars, ancientBook, gatheredLogs, caughtCrab, runiteFromGolems, barsSmelted;
 
 	Requirement notThreeBosses, notTPGhorrock, notDarkCrab, notRuneScim, notRoguesChest, notSpiritMage, notMagicLogs;
 
 	QuestStep claimReward, tPGhorrock, darkCrab, cookDarkCrab, runeScim, roguesChest, magicLogs,
-		burnLogs, moveToResource1, moveToResource2, moveToResource3, smeltBar, moveToGodWars1, moveToGodWars2,
-		killCallisto, killVene, killVetion;
+		burnLogs, moveToResource1, moveToResource2, moveToResource3, smeltBar, moveToGodWars1, moveToGodWars2;
 
 	NpcStep threeBosses, spiritMage, runiteGolem;
 
@@ -101,8 +99,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 		doElite.addStep(new Conditions(notMagicLogs, inResource, gatheredLogs, magicLog), burnLogs);
 		doElite.addStep(new Conditions(notMagicLogs, inResource), magicLogs);
 		doElite.addStep(notMagicLogs, moveToResource1);
-		doElite.addStep(new Conditions(notRuneScim, inResource, runeBar.quantity(2)), runeScim);
-		doElite.addStep(new Conditions(notRuneScim, inResource, runeOre.quantity(2), coal.quantity(16)), smeltBar);
+		doElite.addStep(new Conditions(notRuneScim, inResource, runeBar.quantity(2), barsSmelted), runeScim);
+		doElite.addStep(new Conditions(notRuneScim, inResource, runeOre.quantity(2), coal.quantity(16), runiteFromGolems), smeltBar);
 		doElite.addStep(new Conditions(notRuneScim, inResource), runiteGolem);
 		doElite.addStep(notRuneScim, moveToResource2);
 		doElite.addStep(new Conditions(notDarkCrab, inResource, caughtCrab, rawDarkCrab), cookDarkCrab);
@@ -119,13 +117,12 @@ public class WildernessElite extends ComplexStateQuestHelper
 
 	public void setupRequirements()
 	{
-		// unsure bits need to be tested. If you already have this completed send me the result of your "::getvarp 1193"
-		notThreeBosses = new VarplayerRequirement(1193, false, 3); // unsure of bit
-		notTPGhorrock = new VarplayerRequirement(1193, false, 4);// unsure of bit
-		notDarkCrab = new VarplayerRequirement(1193, false, 5);// unsure of bit
-		notRuneScim = new VarplayerRequirement(1193, false, 6);// unsure of bit
-		notRoguesChest = new VarplayerRequirement(1193, false, 7);// unsure of bit
-		notSpiritMage = new VarplayerRequirement(1193, false, 8);// unsure of bit
+		notThreeBosses = new VarplayerRequirement(1193, false, 3);
+		notTPGhorrock = new VarplayerRequirement(1193, false, 5);
+		notDarkCrab = new VarplayerRequirement(1193, false, 7);
+		notRuneScim = new VarplayerRequirement(1193, false, 8);
+		notRoguesChest = new VarplayerRequirement(1193, false, 9);
+		notSpiritMage = new VarplayerRequirement(1193, false, 10);
 		notMagicLogs = new VarplayerRequirement(1193, false, 11);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
@@ -180,6 +177,28 @@ public class WildernessElite extends ComplexStateQuestHelper
 			)
 		);
 
+		barsSmelted = new ChatMessageRequirement(
+			inResource,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 4.</col>"
+		);
+		((ChatMessageRequirement) caughtCrab).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inResource),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 4.</col>"
+			)
+		);
+
+		runiteFromGolems = new ChatMessageRequirement(
+			inResource,
+			"<col=0040ff>Achievement Diary Stage Task - Current stage: 2.</col>"
+		);
+		((ChatMessageRequirement) caughtCrab).setInvalidateRequirement(
+			new ChatMessageRequirement(
+				new Conditions(LogicType.NOR, inResource),
+				"<col=0040ff>Achievement Diary Stage Task - Current stage: 2.</col>"
+			)
+		);
+
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}
 
@@ -200,12 +219,13 @@ public class WildernessElite extends ComplexStateQuestHelper
 			magicLog.highlighted());
 
 		moveToResource2 = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
-			"Enter the Wilderness Resource Area.", coins.quantity(6000), combatGear, food, pickaxe, coal.quantity(16));
+			"Enter the Wilderness Resource Area.", coins.quantity(6000), combatGear, food, pickaxe, coal.quantity(16), hammer);
 		runiteGolem = new NpcStep(this, NpcID.RUNITE_GOLEM, new WorldPoint(3189, 3938, 0),
-			"Kill and mine the Runite Golems in the Resource Area.", combatGear, food, pickaxe, coal.quantity(16));
-		runiteGolem.addAlternateNpcs(NpcID.RUNITE_ORE);
+			"Kill and mine the Runite Golems in the Resource Area.", true, combatGear, food,
+			pickaxe, coal.quantity(16), hammer);
+		runiteGolem.addAlternateNpcs(NpcID.ROCKS_6601);
 		smeltBar = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
-			"Smelt the ore into runite bars.", hammer, runeOre.quantity(2), coal.quantity(16));
+			"Smelt the ore into runite bars.", hammer, runeOre.quantity(2), coal.quantity(16), hammer);
 		runeScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
 			"Smith a runite scimitar in the Resource Area.", hammer, runeBar.quantity(2));
 
@@ -228,14 +248,10 @@ public class WildernessElite extends ComplexStateQuestHelper
 			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 		spiritMage.addAlternateNpcs(NpcID.SPIRITUAL_MAGE_2244, NpcID.SPIRITUAL_MAGE_3161, NpcID.SPIRITUAL_MAGE_3168);
 
-		// TODO multiple minimap markers / track this tasks' varb for multiple steps (I'm a skiller T_T)
 		threeBosses = new NpcStep(this, NpcID.CALLISTO, new WorldPoint(3291, 3844, 0),
 			"Kill Callisto, Venenatis, and Vet'ion. You must complete this task fully before continuing the other " +
 				"tasks.", combatGear, food);
 		threeBosses.addAlternateNpcs(NpcID.VETION, NpcID.VENENATIS);
-		//killCallisto = new NpcStep(this, NpcID.CALLISTO, new WorldPoint(3291, 3844, 0), "Kill Callisto");
-		//killVene = new NpcStep(this, NpcID.VENENATIS, new WorldPoint(3329, 3743, 0), "Kill Venenatis");
-		//killVetion = new NpcStep(this, NpcID.VETION, new WorldPoint(3225, 3797, 0), "Kill Vet'ion");
 
 		roguesChest = new ObjectStep(this, ObjectID.CHEST_26757, new WorldPoint(3297, 3940, 0),
 			"Steal from the chest in Rogues' Castle.");
@@ -313,7 +329,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails tpSteps = new PanelDetails("Teleport to Ghorrock", Collections.singletonList(tPGhorrock),
-			new SkillRequirement(Skill.MAGIC, 96), desertTreasure, lawRune.quantity(2), waterRune.quantity(8));
+			new SkillRequirement(Skill.MAGIC, 96), desertTreasure, ancientBook, lawRune.quantity(2),
+			waterRune.quantity(8));
 		tpSteps.setDisplayCondition(notTPGhorrock);
 		allSteps.add(tpSteps);
 

@@ -255,6 +255,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 
 		repairMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0),
 			"Use the magic glue on oaknock's machine in the north of the cave.", magicGlue, oakLog, mapleLog, saw, hammer);
+		repairMachine.addIcon(ItemID.MAGIC_GLUE);
 
 		talkToBrimstailAfterRepairing = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstailAfterRepairing.addDialogStep("I think I've fixed the machine now!");

@@ -50,6 +50,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.KOUREND_MEDIUM
@@ -96,8 +98,8 @@ public class KourendMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notFairyRing, travelFairyRing);
 		doMedium.addStep(notChopMahoganyTree, chopMahoganyTree);
 		doMedium.addStep(notEnterFarmingGuild, enterFarmingGuild);
-		doMedium.addStep(new Conditions(notCatchBluegill, hasBird), catchBluegill);
-		doMedium.addStep(new Conditions(notCatchBluegill, kingWorm), talkToAlry);
+		doMedium.addStep(new Conditions(notCatchBluegill, inMolchIsland, kingWorm, hasBird), catchBluegill);
+		doMedium.addStep(new Conditions(notCatchBluegill, inMolchIsland, kingWorm), talkToAlry);
 		doMedium.addStep(new Conditions(notCatchBluegill, inMolchIsland), pickupWorms);
 		doMedium.addStep(notCatchBluegill, travelToMolchIsland);
 		doMedium.addStep(notMineSulphur, mineSulphur);
@@ -196,21 +198,15 @@ public class KourendMedium extends ComplexStateQuestHelper
 		molchIsland = new Zone(new WorldPoint(1360, 3640, 0), new WorldPoint(1376, 3625, 0));
 	}
 
-	public void setupSteps()
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
-		// Travel to Fairy Ring
-		travelFairyRing = new ObjectStep(this, ObjectID.FAIRY_RING, new WorldPoint(2658, 3230, 0),
-			"Travel from any fairy ring to south of Mount Karuulm (CIR).", dramenStaff.highlighted());
+		if (memoirArc == null)
+		{
+			return;
+		}
 
-		// Kill a lizardman
-		killLizardman = new NpcStep(this, NpcID.LIZARDMAN, new WorldPoint(1507, 3683, 0),
-			"Kill a lizardman.", true, combatGear, antipoison, food);
-		killLizardman.addAlternateNpcs(NpcID.LIZARDMAN_6915, NpcID.LIZARDMAN_6916, NpcID.LIZARDMAN_6917,
-			NpcID.LIZARDMAN_BRUTE, NpcID.LIZARDMAN_BRUTE_6919);
-
-		// Travel with Kharedst's Memoirs
-		travelWithMemoirs = new ItemStep(this, "Teleport to each of the five cities via the memoirs.",
-			kharedstsMemoirs.highlighted());
+		travelWithMemoirs.resetDialogSteps();
 		if (memoirArc.check(client))
 		{
 			travelWithMemoirs.addDialogStep("'A Dark Disposition' - Arceuus");
@@ -231,10 +227,27 @@ public class KourendMedium extends ComplexStateQuestHelper
 		{
 			travelWithMemoirs.addDialogStep("'The Fisher's Flute' - Piscarilius");
 		}
+	}
+
+	public void setupSteps()
+	{
+		// Travel to Fairy Ring
+		travelFairyRing = new ObjectStep(this, ObjectID.FAIRY_RING, new WorldPoint(2658, 3230, 0),
+			"Travel from any fairy ring to south of Mount Karuulm (CIR).", dramenStaff.highlighted());
+
+		// Kill a lizardman
+		killLizardman = new NpcStep(this, NpcID.LIZARDMAN, new WorldPoint(1507, 3683, 0),
+			"Kill a lizardman.", true, combatGear, antipoison, food);
+		killLizardman.addAlternateNpcs(NpcID.LIZARDMAN_6915, NpcID.LIZARDMAN_6916, NpcID.LIZARDMAN_6917,
+			NpcID.LIZARDMAN_BRUTE, NpcID.LIZARDMAN_BRUTE_6919);
+
+		// Travel with Kharedst's Memoirs
+		travelWithMemoirs = new ItemStep(this, "Teleport to each of the five cities via the memoirs.",
+			kharedstsMemoirs.highlighted());
 
 		// Mine some volcanic sulphur
 		mineSulphur = new ObjectStep(this, ObjectID.VOLCANIC_SULPHUR, new WorldPoint(1444, 3860, 0),
-			"Mine some volcanic sulfur.", true, pickaxe, faceMask.equipped());
+			"Mine some volcanic sulfur in Lovakengj.", true, pickaxe, faceMask.equipped());
 		mineSulphur.addAlternateObjects(ObjectID.VOLCANIC_SULPHUR_28497, ObjectID.VOLCANIC_SULPHUR_28498);
 
 		// Enter the farming guild
@@ -262,9 +275,8 @@ public class KourendMedium extends ComplexStateQuestHelper
 		// Catch a bluegill on Lake Molch
 		travelToMolchIsland = new ObjectStep(this, ObjectID.BOATY, new WorldPoint(1405, 3611, 0),
 			"Board the boaty to Molch Island.");
-		travelToMolchIsland.addAlternateObjects(ObjectID.BOATY);
 		travelToMolchIsland.addDialogStep("Molch Island");
-		pickupWorms = new ItemStep(this, new WorldPoint(1371, 3633, 0), "Collect some King Worms");
+		pickupWorms = new ItemStep(this, new WorldPoint(1371, 3633, 0), "Collect some King Worms.");
 		talkToAlry = new NpcStep(this, NpcID.ALRY_THE_ANGLER, new WorldPoint(1366, 3631, 0),
 			"Talk to Alry the Angler to receive a bird.");
 		talkToAlry.addDialogStep(2, "Could I have a go with your bird?");
@@ -274,7 +286,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 
 		// Use the boulder leap shortcut
 		useBoulderShortcut = new ObjectStep(this, ObjectID.BOULDER_27990, new WorldPoint(1776, 3883, 0),
-			"Use the boulder leap shortcut from the North side.", new SkillRequirement(Skill.AGILITY, 49));
+			"Use the boulder leap shortcut from the path to the Soul Altar.", new SkillRequirement(Skill.AGILITY, 49));
 
 		// Subdue the Wintertodt
 		subdueWintertodt = new ObjectStep(this, ObjectID.DOORS_OF_DINH, new WorldPoint(1631, 3962, 0),
@@ -396,7 +408,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		killLizardmanStep.setDisplayCondition(notKillLizardman);
 		allSteps.add(killLizardmanStep);
 
-		PanelDetails catchChinStep = new PanelDetails("Catch A Ahinchompa", Collections.singletonList(catchChinchompa),
+		PanelDetails catchChinStep = new PanelDetails("Catch A Chinchompa", Collections.singletonList(catchChinchompa),
 			new SkillRequirement(Skill.HUNTER, 53), boxTrap, eaglesPeak);
 		catchChinStep.setDisplayCondition(notCatchChinchompa);
 		allSteps.add(catchChinStep);

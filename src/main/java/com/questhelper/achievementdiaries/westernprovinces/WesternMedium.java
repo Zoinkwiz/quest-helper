@@ -227,7 +227,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 
-		spiritToStronghold = new DetailedQuestStep(this, "Travel to the Gnome Stronghold by Spirit tree.");
+		spiritToStronghold = new DetailedQuestStep(this, "Travel to the Gnome Stronghold by spirit tree.");
 
 		// todo more detailed chocobomb steps
 		moveToStrongFirstChoco = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
@@ -250,13 +250,14 @@ public class WesternMedium extends ComplexStateQuestHelper
 		moveToStrongBase2 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1),
 			"Open the trapdoor to enter the underground of the Grand Tree.", pickaxe);
 		moveToStrongBase2.addDialogStep("Climb Down.");
+		moveToStrongBase.addSubSteps(moveToStrongBase2);
 		mineGold = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(2490, 9916, 0),
 			"Mine some gold ore underneath the Grand Tree.", true, pickaxe);
 
 		moveToBrimstailCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2403, 3419, 0),
 			"Enter Brimstail's cave.", crystalSawSeed);
 		crystalSaw = new ObjectStep(this, ObjectID.SINGING_BOWL, new WorldPoint(2388, 9813, 0),
-			"Turn your crystal saw seed into a crystal saw", crystalSawSeed);
+			"Turn your crystal saw seed into a crystal saw.", crystalSawSeed);
 
 		agiShortcut = new ObjectStep(this, ObjectID.ROCKS_16534, new WorldPoint(2487, 3515, 0),
 			"Take the agility shortcut from the Grand Tree to Otto's Grotto.");
@@ -269,10 +270,10 @@ public class WesternMedium extends ComplexStateQuestHelper
 		eagleFeldip.addIcon(ItemID.ROPE);
 
 		spinedLarupia = new NpcStep(this, NpcID.SPINED_LARUPIA, new WorldPoint(2551, 2904, 0),
-			"Place logs over a pit in the hunter area, and poke a kyatt with a teasing stick. " +
+			"Place logs over a pit in the snowy hunter area, and poke a kyatt with a teasing stick. " +
 				"Jump over the pits until the kyatt falls in and loot it.", teasingStick, logs, knife);
 
-		gliderToFeldip = new DetailedQuestStep(this, "Travel to the Feldip Hills by Gnome glider.");
+		gliderToFeldip = new DetailedQuestStep(this, "Travel to the Feldip Hills by Gnome Glider.");
 
 		moveToApeBass = new DetailedQuestStep(this, "Travel to Ape Atoll.", bigFishingNet);
 		apeBass = new NpcStep(this, NpcID.FISHING_SPOT_5234, new WorldPoint(2705, 2700, 0),
@@ -292,7 +293,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
 			"Claim any Chompy bird hat from Rantz. Kill chompy birds until you have 125 kills. \n \nYou can check " +
-				"your kill count by right clicking selecting 'Check Kills' on an ogre bow.",
+				"your kill count by right clicking 'Check Kills' on an ogre bow.",
 			ogreBow, ogreArrows, ogreBellows);
 		chompyHat.addDialogStep("Can I have a hat please?");
 

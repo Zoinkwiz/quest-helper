@@ -83,7 +83,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	Requirement notElfCystalBow, notMonkfishPisc, notVetPest, notDashingKebbit, notApeAtollAgi, notMahoganyBurned,
 		notMineAddyOre, notLletyaPalm, notChompyHat, notIsafdarPainting, notKillZulrah, notTPApe, notPickpocketGnome;
 
-	QuestStep claimReward, elfCystalBow, monkfishPisc, vetPest, dashingKebbit, apeAtollAgi, mahoganyBurned,
+	QuestStep claimReward, elfCrystalBow, monkfishPisc, vetPest, dashingKebbit, apeAtollAgi, mahoganyBurned,
 		mahoganyChopped, lletyaPalm, chompyHat, isafdarPainting, killZulrah, tpApe, pickpocketGnome,
 		fishMonkfish, moveToApeMahogany, moveToApeAgi, moveToPest;
 
@@ -116,7 +116,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		doHard.addStep(notApeAtollAgi, moveToApeAgi);
 		doHard.addStep(notKillZulrah, killZulrah);
 		doHard.addStep(notMineAddyOre, mineAddyOre);
-		doHard.addStep(notElfCystalBow, elfCystalBow);
+		doHard.addStep(notElfCystalBow, elfCrystalBow);
 		doHard.addStep(new Conditions(notVetPest, inPest), vetPest);
 		doHard.addStep(notVetPest, moveToPest);
 		doHard.addStep(notIsafdarPainting, isafdarPainting);
@@ -239,7 +239,11 @@ public class WesternHard extends ComplexStateQuestHelper
 		dashingKebbit = new NpcStep(this, NpcID.DASHING_KEBBIT, new WorldPoint(2372, 3581, 0),
 			"Catch a dashing kebbit with your falcon!");
 
-		pickpocketGnome = new DetailedQuestStep(this, "Pickpocket a gnome.");
+		pickpocketGnome = new NpcStep(this, NpcID.GNOME_6094, new WorldPoint(2466, 3460, 0), "Pickpocket a gnome.",
+			true);
+		((NpcStep) pickpocketGnome).setMaxRoamRange(2000);
+		((NpcStep) pickpocketGnome).addAlternateNpcs(NpcID.GNOME_6095, NpcID.GNOME_6096, NpcID.GNOME_WOMAN,
+			NpcID.GNOME_WOMAN_6087);
 
 		tpApe = new DetailedQuestStep(this, "Cast teleport to Ape Atoll.", normalBook, lawRunes2, fireRunes2,
 			waterRunes2, banana);
@@ -247,7 +251,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		moveToApeMahogany = new DetailedQuestStep(this, "Travel to Ape Atoll.", axe, tinderbox);
 		mahoganyChopped = new ObjectStep(this, ObjectID.MAHOGANY, new WorldPoint(2718, 2710, 0),
 			"Chop some mahogany logs on Ape Atoll.", axe, tinderbox);
-		mahoganyBurned = new ItemStep(this, "Burn some teak logs on Ape Atoll.",
+		mahoganyBurned = new ItemStep(this, "Burn some mahogany logs on Ape Atoll.",
 			mahoganyLogs.highlighted(), tinderbox.highlighted());
 
 		moveToApeAgi = new DetailedQuestStep(this, "Travel to Ape Atoll.", ninjaGreegree);
@@ -261,7 +265,10 @@ public class WesternHard extends ComplexStateQuestHelper
 			"Mine some adamantite ore in Tirannwn.", true, pickaxe);
 		mineAddyOre.addAlternateObjects(ObjectID.ROCKS_11375);
 
-		elfCystalBow = new DetailedQuestStep(this, "Kill an elf with a crystal bow.", crystalBow.equipped());
+		elfCrystalBow = new NpcStep(this, NpcID.ELF_ARCHER, new WorldPoint(2333, 3171, 0), "Kill an elf with a crystal" +
+			" bow.", true, crystalBow.equipped());
+		((NpcStep) elfCrystalBow).addAlternateNpcs(NpcID.ELF_ARCHER_5296, NpcID.ELF_WARRIOR, NpcID.ELF_WARRIOR_5294);
+		((NpcStep) elfCrystalBow).setMaxRoamRange(2000);
 
 		isafdarPainting = new DetailedQuestStep(this, "Build an Isafdar painting in your POH Quest Hall.",
 			mahoganyPlank, painting, saw, hammer);
@@ -402,7 +409,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		addySteps.setDisplayCondition(notMineAddyOre);
 		allSteps.add(addySteps);
 
-		PanelDetails elfSteps = new PanelDetails("Kill Elf With Crystal Bow", Collections.singletonList(elfCystalBow));
+		PanelDetails elfSteps = new PanelDetails("Kill Elf With Crystal Bow", Collections.singletonList(elfCrystalBow));
 		elfSteps.setDisplayCondition(notElfCystalBow);
 		allSteps.add(elfSteps);
 

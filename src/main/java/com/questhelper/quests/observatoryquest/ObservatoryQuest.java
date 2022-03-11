@@ -179,7 +179,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 		enterDungeon = new ObjectStep(this, ObjectID.STAIRS_25432, new WorldPoint(2458, 3186, 0),
 			"Enter the dungeon east of the Professor.");
 		searchChests = new ObjectStep(this, ObjectID.CHEST_25385, "Search only the marked chests in the dungeon. " +
-			"Unmarked chests contain monsters and poison you may.");
+			"Unmarked chests contain monsters and may poison you.");
 		((ObjectStep) searchChests).addAlternateObjects(ObjectID.CHEST_25386, ObjectID.CHEST_25387,
 			ObjectID.CHEST_25388, ObjectID.CHEST_25389, ObjectID.CHEST_25390);
 		prodGuard = new NpcStep(this, NpcID.SLEEPING_GUARD, new WorldPoint(2327, 9394, 0),

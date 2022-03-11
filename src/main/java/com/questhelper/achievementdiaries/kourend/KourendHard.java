@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.questhelper.achievementdiaries.kourend;
 
 import com.questhelper.ItemCollections;
@@ -241,7 +240,7 @@ public class KourendHard extends ComplexStateQuestHelper
 
 		// Plant some logavano seeds
 		searchSeedTable = new ObjectStep(this, ObjectID.SEED_TABLE, new WorldPoint(1802, 3503, 0),
-			"Take some logavano seeds from the table.");
+			"Take some logavano seeds from the table in the Tithe Farm entrance.");
 		searchSeedTable.addDialogStep("Logavano seed (level 74)");
 		enterTitheFarm = new DetailedQuestStep(this, new WorldPoint(1806, 3501, 0),
 			"Enter the Tithe Farm.");
@@ -254,7 +253,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		entershayzienCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0),
 			"Enter the shayzien crypt.", lightSource);
 		killZombie = new NpcStep(this, NpcID.ZOMBIE_8068, new WorldPoint(1491, 9949, 3),
-			"Kill a zombie.", combatGear, food);
+			"Kill a zombie in the shayzien crypt.", combatGear, food);
 		killZombie.addSubSteps(entershayzienCrypt);
 
 		// Teleport to Xeric's heart
@@ -268,7 +267,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		talkToCaptainKhaled.addDialogStep("Looking for any help?");
 		talkToCaptainKhaled.addDialogStep("I have what it takes.");
 		deliverArtifact = new NpcStep(this, NpcID.CAPTAIN_KHALED, new WorldPoint(1845, 3753, 0),
-			"Deliver the stolen artifact to Captain Khaled", lockpick, artifact);
+			"Deliver the stolen artifact to Captain Khaled.", lockpick, artifact);
 
 		// Kill a wyrm
 		enterMountKaruulmDungeon = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0),

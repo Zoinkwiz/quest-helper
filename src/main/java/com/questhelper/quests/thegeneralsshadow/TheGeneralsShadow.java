@@ -195,7 +195,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		talkToFaladorScout = new NpcStep(this, NpcID.SCOUT_3513, new WorldPoint(3073, 3336, 0), "Talk to the scout " +
 			"east of Falador.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToShantyScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3107, 0), "Talk to the scout " +
+		talkToShantyScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3084, 0), "Talk to the scout " +
 			"south of the Shanty Pass.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToKaramjaScout = new NpcStep(this, NpcID.SCOUT, new WorldPoint(2825, 3053, 0), "Talk to the scout " +

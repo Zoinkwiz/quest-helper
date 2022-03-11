@@ -213,6 +213,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		talkToBert.addDialogStep("Sure, I'll give you a hand.");
 		giveCaptainABeer = new NpcStep(this, NpcID.GUARD_CAPTAIN, new WorldPoint(2552, 3080, 0), "Give the Guard Captain in the pub south of Bert a beer. You can buy one for 2gp from the pub.", beer);
 		ringBell = new ObjectStep(this, ObjectID.BELL_6847, new WorldPoint(2598, 3085, 0), "Ring the bell outside the Wizards' Guild in Yanille. Talk to Zavistic Rarve when he appears.", beerHand);
+		ringBell.addDialogStep("I have a rather sandy problem that I'd like to palm off on you.");
 		talkToBertAboutRota = new NpcStep(this, NpcID.BERT, new WorldPoint(2551, 3099, 0), "Return to Bert in west Yanille.");
 
 		searchSandysDesk = new ObjectStep(this, ObjectID.SANDYS_DESK, new WorldPoint(2789, 3174, 0), "Travel to Brimhaven, then enter Sandy's building south of the restaurant. Search Sandy's desk for Sandy's rota.");

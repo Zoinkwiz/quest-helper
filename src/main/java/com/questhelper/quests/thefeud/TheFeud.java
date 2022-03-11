@@ -312,7 +312,7 @@ public class TheFeud extends BasicQuestHelper
 		//Start Quest & Purchase Disguise
 		startQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kharid to start the quest.");
 		startQuest.addDialogStep("If you are, then why are you still selling goods from a stall?");
-		startQuest.addDialogStep("I'd like to help you but");
+		startQuest.addDialogStep("I'd like to help you but.....");
 		startQuest.addDialogStep("I'll find you your help.");
 
 		buyDisguiseGear = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Buy a Kharidian Headpiece and a Fake Beard to create a disguise.", unspecifiedCoins);
@@ -329,7 +329,7 @@ public class TheFeud extends BasicQuestHelper
 
 
 		//Drunken Ali
-		drunkenAli = new NpcStep(this, NpcID.DRUNKEN_ALI, new WorldPoint(3360, 2957, 0), "Buy 3 beers from the bartender and use them on Drunken Ali to get him to explain where his son is.", beer);
+		drunkenAli = new NpcStep(this, NpcID.DRUNKEN_ALI, new WorldPoint(3360, 2957, 0), "Buy 3 beers from the bartender and use them on Drunken Ali to get him to explain where his son is. Talk with him between beers", beer);
 		drunkenAli.addIcon(ItemID.BEER);
 
 		//Step 2
@@ -363,7 +363,7 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 7 -> 8
 		//Pickpocket with Urchin
-		pickPocketVillagerWithUrchin = new NpcStep(this, NpcID.STREET_URCHIN, "Talk to a street urchin and get them to distract a villager, once he has them distracted pickpocket them from behind.", true);
+		pickPocketVillagerWithUrchin = new NpcStep(this, NpcID.STREET_URCHIN, "Lure a villager then talk to a street urchin and get them to distract a villager, once he has them distracted pickpocket them from behind.", true);
 
 		//Step 9 -> 11
 		//Blackjack

@@ -412,8 +412,8 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		goTalkToScribe.addStep(inCityF1, enterRailway);
 		goTalkToScribe.addDialogStep("Yes");
 
-		goTalkToOldak = new ConditionalStep(this, goToCityF0, "Talk to Oldak in the north west of " +
-			"Dorgesh-Kaan with Zanik.");
+		goTalkToOldak = new ConditionalStep(this, goToCityF0,
+			"Talk to Oldak in the north west of Dorgesh-Kaan with Zanik.", zanikFollower);
 		goTalkToOldak.addStep(new Conditions(inCityF0, zanikFollowing), talkToOldak);
 		goTalkToOldak.addStep(new Conditions(inCityF1, zanikFollowing), goDownToF0City);
 		goTalkToOldak.addStep(new Conditions(inRailway, zanikFollowing), leaveRailway);

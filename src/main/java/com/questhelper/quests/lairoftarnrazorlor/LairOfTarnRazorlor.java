@@ -68,9 +68,11 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	//Requirements
 	ItemRequirement combatGear, diary;
 
-	Requirement inBossRoom, tarnInSecondForm, killedTarn, inFinalRoom;
+	Requirement inBossRoom, killedTarn, inFinalRoom;
 
-	DetailedQuestStep killTarn1, killTarn2, enterFinalRoom, pickUpDiary;
+	DetailedQuestStep enterFinalRoom, pickUpDiary;
+
+	NpcStep killTarn;
 
 	TarnRoute tarnRoute;
 
@@ -89,8 +91,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		ConditionalStep fullQuest = new ConditionalStep(this, tarnRoute);
 		fullQuest.addStep(inFinalRoom, pickUpDiary);
 		fullQuest.addStep(new Conditions(inBossRoom, killedTarn), enterFinalRoom);
-		fullQuest.addStep(new Conditions(inBossRoom, tarnInSecondForm), killTarn2);
-		fullQuest.addStep(inBossRoom, killTarn1);
+		fullQuest.addStep(inBossRoom, killTarn);
 
 		steps.put(0, fullQuest);
 		steps.put(1, fullQuest);
@@ -117,15 +118,14 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		inBossRoom = new ZoneRequirement(bossRoom);
 		inFinalRoom = new ZoneRequirement(finalRoom);
 
-		tarnInSecondForm = new NpcCondition(NpcID.TARN);
 		killedTarn = new VarbitRequirement(3290, 2, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
 	{
 		tarnRoute = new TarnRoute(this);
-		killTarn1 = new NpcStep(this, NpcID.MUTANT_TARN, new WorldPoint(3186, 4619, 0), "Kill Mutatant Tarn.");
-		killTarn2 = new NpcStep(this, NpcID.TARN, new WorldPoint(3186, 4619, 0), "Kill Ghost Tarn.");
+		killTarn = new NpcStep(this, NpcID.MUTANT_TARN, new WorldPoint(3186, 4619, 0), "Kill Mutatant and Ghost Tarn.");
+		killTarn.addAlternateNpcs(NpcID.TARN, NpcID.TARN_6476);
 
 		enterFinalRoom = new ObjectStep(this, ObjectID.PASSAGEWAY_15774, new WorldPoint(3186, 4627, 0), "Go into the north passageway. If you would like to complete a task for the Morytania Diary, you should kill a Terror Dog now.");
 		pickUpDiary = new ItemStep(this, "Pick up Tarn's diary. Quest complete!", diary);
@@ -175,7 +175,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails fullQuestPanel = new PanelDetails("Traversing the dungeon", tarnRoute.getDisplaySteps(), combatGear);
-		fullQuestPanel.addSteps(killTarn1, killTarn2, enterFinalRoom, pickUpDiary);
+		fullQuestPanel.addSteps(killTarn, enterFinalRoom, pickUpDiary);
 		allSteps.add(fullQuestPanel);
 		return allSteps;
 	}

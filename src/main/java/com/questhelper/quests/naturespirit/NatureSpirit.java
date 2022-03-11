@@ -76,7 +76,7 @@ public class NatureSpirit extends BasicQuestHelper
 	QuestStep goDownToDrezel, talkToDrezel, leaveDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
 		takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman, goBackDownToDrezel, talkToDrezelForBlessing,
 		castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange, tellFillimanToCast, enterGrotto, searchAltar,
-		blessSickle, fillPouches, killGhasts, killGhast, enterGrottoAgain, touchAltarAgain, talkToNatureSpiritToFinish, offerToHelp,
+		blessSickle, fillPouches, killGhasts, killGhast, enterGrottoAgain, touchAltarAgain, talkToNatureSpiritToFinish,
 		spawnFillimanForRitual, talkToFillimanInGrotto;
 
 	//Zones
@@ -245,8 +245,7 @@ public class NatureSpirit extends BasicQuestHelper
 		searchGrotto = new ObjectStep(this, ObjectID.GROTTO_TREE, new WorldPoint(3440, 3339, 0), "Right-click search the grotto tree.");
 		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Use the journal on Filliman Tarlock.", ghostspeak, journalHighlighted);
 		useJournalOnFilliman.addIcon(ItemID.JOURNAL);
-		offerToHelp = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock and offer to help.", ghostspeak);
-		offerToHelp.addDialogStep("How can I help?");
+		useJournalOnFilliman.addDialogStep("How can I help?");
 		goBackDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_3432, new WorldPoint(3422, 3485, 0), "Talk to Drezel to get blessed.");
 		((ObjectStep) (goBackDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
 		talkToDrezelForBlessing = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");

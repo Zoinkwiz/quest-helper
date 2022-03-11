@@ -264,7 +264,7 @@ public class ASoulsBane extends BasicQuestHelper
 		leaveConfusionRoom = new ObjectStep(this, NullObjectID.NULL_13912, new WorldPoint(3051, 5200, 0), "Leave the room through the confusing door.");
 
 		killHopelessCreatures = new NpcStep(this, NpcID.HOPELESS_CREATURE, new WorldPoint(3087, 5198, 0), "Kill each hopeless creature 3 times.", true);
-		killHopelessCreatures.addAlternateNpcs(NpcID.HOPELESS_CREATURE_1073, NpcID.HOPELESS_CREATURE_1074);
+		killHopelessCreatures.addAlternateNpcs(NpcID.HOPELESS_CREATURE_1073, NpcID.HOPELESS_CREATURE_1074, NpcID.HOPELESS_CREATURE_4695);
 
 		leaveHopelessRoom = new ObjectStep(this, ObjectID.EXIT_13933, new WorldPoint(3021, 5188, 0), "Continue through the exit of the room.");
 

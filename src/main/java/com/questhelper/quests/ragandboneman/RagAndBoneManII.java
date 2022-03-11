@@ -508,7 +508,8 @@ public class RagAndBoneManII extends BasicQuestHelper
 		enterFremmyDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2123, new WorldPoint(2798, 3615, 0),
 			"Enter the Fremennik Slayer Dungeon.", mirrorShield.equipped());
 		killBasilisk = new NpcStep(this, NpcID.BASILISK_417, new WorldPoint(2743, 10010, 0),
-			"Kill basilisks in the middle of the dungeon.", mirrorShield.equipped(), new SkillRequirement(Skill.SLAYER,
+			"Kill basilisks in the middle of the dungeon.", true, mirrorShield.equipped(),
+			new SkillRequirement(Skill.SLAYER,
 			40,	true));
 		travelToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3685, 0), "Travel to Waterbirth " +
 			"Island.");

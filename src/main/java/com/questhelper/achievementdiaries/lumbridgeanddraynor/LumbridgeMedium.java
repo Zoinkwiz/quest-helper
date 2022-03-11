@@ -71,7 +71,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	// Items required
 	ItemRequirement crossbow, mithGrap, steelArrows, avasAttractor, coins, fairyAccess, earthRune,
 		airRune, lawRune, earthTali, fireAccess, flyFishingRod, feathers, leather, needle, thread, axe, butterflyNet,
-		implingJar, ess, bindingNeck;
+		implingJar, essence, bindingNeck;
 
 	ItemRequirements avasAccumulator;
 	// magic imbue
@@ -141,7 +141,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.getFireAltar()).showConditioned(notCraftLava);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE)
 			.showConditioned(new Conditions(LogicType.OR, notCraftLava, notTPlumb));
-		ess = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notCraftLava);
+		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notCraftLava);
 		bindingNeck = new ItemRequirement("Binding necklace", ItemID.BINDING_NECKLACE).showConditioned(notCraftLava);
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSalmon);
 		flyFishingRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notCatchSalmon);
@@ -191,7 +191,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		moveToLavaAltar = new ObjectStep(this, 34817, new WorldPoint(3313, 3255, 0),
 			"Enter the fire altar north of Al Kharid.", fireAccess);
 		craftLava = new ObjectStep(this, ObjectID.ALTAR_34764, new WorldPoint(2585, 4838, 0),
-			"Use an earth talisman on the fire altar.", earthTali.highlighted(), ess, earthRune);
+			"Use an earth talisman on the fire altar.", earthTali.highlighted(), essence, earthRune);
 		craftLava.addIcon(ItemID.EARTH_TALISMAN);
 
 		catchSalmon = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1527, new WorldPoint(3241, 3248, 0),
@@ -240,7 +240,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), ess, feathers.quantity(10), flyFishingRod, needle,
+		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), essence, feathers.quantity(10), flyFishingRod, needle,
 			thread, leather, lawRune.quantity(1), airRune.quantity(3), steelArrows.quantity(75), avasAccumulator, axe,
 			fairyAccess, butterflyNet, implingJar);
 	}
@@ -355,7 +355,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		allSteps.add(grappleRiverLumSteps);
 
 		PanelDetails lavaRunesSteps = new PanelDetails("Craft Lava Runes", Arrays.asList(moveToLavaAltar, craftLava),
-			new SkillRequirement(Skill.RUNECRAFT, 23), fireAccess, earthTali, earthRune, ess);
+			new SkillRequirement(Skill.RUNECRAFT, 23), fireAccess, earthTali, earthRune, essence);
 		lavaRunesSteps.setDisplayCondition(notCraftLava);
 		allSteps.add(lavaRunesSteps);
 

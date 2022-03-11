@@ -133,6 +133,7 @@ public class WitchsHouse extends BasicQuestHelper
 	{
 		cheese = new ItemRequirement("Cheese (multiple if you mess up)", ItemID.CHEESE);
 		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true);
+		leatherGloves.setTooltip("Obtainable during quest");
 		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
 		magnet = new ItemRequirement("Magnet", ItemID.MAGNET);
 		shedKey = new ItemRequirement("Key", ItemID.KEY_2411);
@@ -178,7 +179,8 @@ public class WitchsHouse extends BasicQuestHelper
 		getKey = new ObjectStep(this, ObjectID.POTTED_PLANT_2867, new WorldPoint(2900, 3474, 0), "Look under the potted plant just outside the witch's house.");
 		enterHouse = new ObjectStep(this, ObjectID.DOOR_2861, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
 		goDownstairs = new ObjectStep(this, ObjectID.LADDER_24718, new WorldPoint(2907, 3476, 0), "Go down the ladder to the basement.");
-		enterGate = new ObjectStep(this, ObjectID.GATE_2866, new WorldPoint(2902, 9873, 0), "Go through the gate whilst wearing gloves.", leatherGloves);
+		enterGate = new ObjectStep(this, ObjectID.GATE_2866, new WorldPoint(2902, 9873, 0), "Go through the gate " +
+			"whilst wearing gloves. Search the nearby boxes if you don't have gloves.", leatherGloves);
 		openCupboardAndLoot = new ObjectStep(this, ObjectID.CUPBOARD_2868, new WorldPoint(2898, 9874, 0), "Open the cupboard and get a magnet from it");
 		openCupboardAndLoot2 = new ObjectStep(this, ObjectID.CUPBOARD_2869, new WorldPoint(2898, 9874, 0), "Open the cupboard and get a magnet from it");
 		openCupboardAndLoot.addSubSteps(openCupboardAndLoot2);

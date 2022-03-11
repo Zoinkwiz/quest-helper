@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.questhelper.achievementdiaries.kourend;
 
 import com.questhelper.ItemCollections;
@@ -77,7 +76,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		notCompleteRaid, notFletchBattlestaff, onArceuusSpellbook, anglerCaught, barkHarvested;
 
 	QuestStep craftBloodRune, enterCatacombs, enterSkotizoLair, defeatSkotizo, catchAngler, killHydra, createTeleportTab,
-		completeRaid, plantCelastrusTree, harvestCelastrus, fletchBattlestaff, enterHydraArea, enterMountKaruulmDungeon,
+		completeRaid, plantCelastrusTree, fletchBattlestaff, enterHydraArea, enterMountKaruulmDungeon,
 		climbRedwoodTree, cookAnglerfish, combineDarkTotem, claimReward, bloodMineDenseEssence, bloodVenerateEssenceBlock,
 		chiselEssenceBlock, apeMineDenseEssence, apeVenerateEssenceBlock;
 
@@ -98,8 +97,6 @@ public class KourendElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(new Conditions(notCatchAngler, rawAnglerfish, anglerCaught), cookAnglerfish);
-		doElite.addStep(notCatchAngler, catchAngler);
 		doElite.addStep(new Conditions(notCraftBloodRune, darkEssenceFragment), craftBloodRune);
 		doElite.addStep(new Conditions(notCraftBloodRune, darkEssenceBlock), chiselEssenceBlock);
 		doElite.addStep(new Conditions(notCraftBloodRune, denseEssenceBlock), bloodVenerateEssenceBlock);
@@ -114,13 +111,15 @@ public class KourendElite extends ComplexStateQuestHelper
 		doElite.addStep(new Conditions(notChopRedwood, inRedwoodTree), chopRedwood);
 		doElite.addStep(new Conditions(notChopRedwood, inWoodcuttingGuild), climbRedwoodTree);
 		doElite.addStep(notChopRedwood, enterWoodcuttingGuild);
-		doElite.addStep(new Conditions(notFletchBattlestaff, barkHarvested, celastrusBark), fletchBattlestaff);
-		doElite.addStep(notFletchBattlestaff, plantCelastrusTree);
+		doElite.addStep(new Conditions(notCatchAngler, rawAnglerfish, anglerCaught), cookAnglerfish);
+		doElite.addStep(notCatchAngler, catchAngler);
 		doElite.addStep(notCompleteRaid, completeRaid);
-		doElite.addStep(new Conditions(notDefeatSkotizo, darkTotem.alsoCheckBank(questBank), inSkotizoLair), defeatSkotizo);
+		doElite.addStep(new Conditions(notDefeatSkotizo, inSkotizoLair), defeatSkotizo);
 		doElite.addStep(new Conditions(notDefeatSkotizo, darkTotem.alsoCheckBank(questBank), inCatacombs), enterSkotizoLair);
 		doElite.addStep(new Conditions(notDefeatSkotizo, darkTotem.alsoCheckBank(questBank)), enterCatacombs);
 		doElite.addStep(notDefeatSkotizo, combineDarkTotem);
+		doElite.addStep(new Conditions(notFletchBattlestaff, barkHarvested), fletchBattlestaff);
+		doElite.addStep(notFletchBattlestaff, plantCelastrusTree);
 
 		return doElite;
 	}
@@ -243,9 +242,9 @@ public class KourendElite extends ComplexStateQuestHelper
 	{
 		// Craft blood runes
 		bloodMineDenseEssence = new ObjectStep(this, ObjectID.DENSE_RUNESTONE, new WorldPoint(1764, 3858, 0),
-			"Mine a dense essence block", pickaxe, chisel);
+			"Mine a dense essence block.", pickaxe, chisel);
 		bloodVenerateEssenceBlock = new ObjectStep(this, ObjectID.DARK_ALTAR, new WorldPoint(1716, 3883, 0),
-			"Venerate the essence block.", denseEssenceBlock);
+			"Venerate the essence block on the Dark Altar.", denseEssenceBlock);
 		chiselEssenceBlock = new ItemStep(this, "Chisel the dark essence block.", chisel.highlighted(),
 			darkEssenceBlock.highlighted());
 		craftBloodRune = new ObjectStep(this, ObjectID.BLOOD_ALTAR, new WorldPoint(1718, 3828, 0),
@@ -255,7 +254,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		enterWoodcuttingGuild = new ObjectStep(this, ObjectID.GATE_28851, new WorldPoint(1657, 3505, 0),
 			"Enter the Woodcutting Guild.", true);
 		enterWoodcuttingGuild.addAlternateObjects(ObjectID.GATE_28852);
-		climbRedwoodTree = new ObjectStep(this, ObjectID.ROPE_LADDER_28857, "Climb the redwood tree.");
+		climbRedwoodTree = new ObjectStep(this, ObjectID.ROPE_LADDER_28857, "Climb the redwood tree.", axe);
 		chopRedwood = new ObjectStep(this, ObjectID.REDWOOD, "Chop the redwood tree.", axe);
 		chopRedwood.addAlternateObjects(ObjectID.REDWOOD_29670);
 
@@ -267,7 +266,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		enterSkotizoLair = new ObjectStep(this, ObjectID.ALTAR_28900, "Enter Skotizo's Lair.",
 			darkTotem.highlighted());
 		enterSkotizoLair.addIcon(ItemID.DARK_TOTEM);
-		defeatSkotizo = new NpcStep(this, NpcID.SKOTIZO, "Defeat Skotizo", combatGear, food, prayerPotion);
+		defeatSkotizo = new NpcStep(this, NpcID.SKOTIZO, "Defeat Skotizo.", combatGear, food, prayerPotion);
 
 		// Catch and cook and an anglerfish
 		catchAngler = new NpcStep(this, NpcID.ROD_FISHING_SPOT_6825, "Catch a raw anglerfish.",
@@ -279,18 +278,18 @@ public class KourendElite extends ComplexStateQuestHelper
 		enterMountKaruulmDungeon = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0),
 			"Enter the Mount Karuulm Slayer Dungeon.");
 		enterHydraArea = new ObjectStep(this, ObjectID.ROCKS_34544, new WorldPoint(1312, 10215, 0),
-			"Enter the hydra area", bootsOfStone.equipped());
+			"Enter the hydra area.", bootsOfStone.equipped());
 		killHydra = new NpcStep(this, NpcID.HYDRA, new WorldPoint(1312, 10232, 0),
 			"Kill a hydra.", combatGear, food);
 		killHydra.addSubSteps(enterMountKaruulmDungeon, enterHydraArea);
 
 		// Create an Ape Atoll teleport tab
 		apeMineDenseEssence = new ObjectStep(this, ObjectID.DENSE_RUNESTONE, new WorldPoint(1764, 3858, 0),
-			"Mine a dense essence block", pickaxe, chisel);
+			"Mine a dense essence block.", pickaxe, chisel);
 		apeVenerateEssenceBlock = new ObjectStep(this, ObjectID.DARK_ALTAR, new WorldPoint(1716, 3883, 0),
 			"Venerate the essence block.", denseEssenceBlock);
 		switchSpellbook = new NpcStep(this, NpcID.TYSS, new WorldPoint(1712, 3882, 0),
-			"Switch to the Arceuus spellbook via Tyss");
+			"Switch to the Arceuus spellbook via Tyss.");
 		switchSpellbook.addDialogStep("Can I try the magicks myself?");
 		createTeleportTab = new ObjectStep(this, ObjectID.LECTERN_28802, new WorldPoint(1679, 3765, 0),
 			"Create an Ape Atoll teleport tablet.", arceuusFavour, bloodRune.quantity(2), lawRune.quantity(2),
@@ -302,9 +301,9 @@ public class KourendElite extends ComplexStateQuestHelper
 
 		// Fletch a battlestaff from scratch
 		plantCelastrusTree = new ObjectStep(this, NullObjectID.NULL_34629, new WorldPoint(1244, 3750, 0),
-			"Plant a celastrus sapling (Fully grown after 13 hours). When it's fully grown harvest it's bark .",
+			"Plant a celastrus sapling (Fully grown after 13 hours). When it's fully grown harvest its bark.",
 			celastrusSapling, spade, axe);
-		fletchBattlestaff = new ItemStep(this, "Fletch a battlestaff", knife.highlighted(),
+		fletchBattlestaff = new ItemStep(this, "Fletch a battlestaff.", knife.highlighted(),
 			celastrusBark.highlighted());
 
 		// Claim reward
@@ -390,11 +389,6 @@ public class KourendElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails catchAnglerStep = new PanelDetails("Catch And Cook Anglerfish", Arrays.asList(catchAngler,
-			cookAnglerfish), new SkillRequirement(Skill.COOKING, 84, true),
-			new SkillRequirement(Skill.FISHING, 82, true), piscariliusFavour, fishingRod,
-			sandworm);
-
 		PanelDetails craftBloodRuneStep = new PanelDetails("Craft Blood Rune",
 			Arrays.asList(bloodMineDenseEssence, bloodVenerateEssenceBlock, chiselEssenceBlock, craftBloodRune),
 			new SkillRequirement(Skill.RUNECRAFT, 77, true), new SkillRequirement(Skill.MINING, 38),
@@ -420,14 +414,13 @@ public class KourendElite extends ComplexStateQuestHelper
 			hosidiusFavour75, axe);
 		chopRedwoodStep.setDisplayCondition(notChopRedwood);
 		allSteps.add(chopRedwoodStep);
+
+		PanelDetails catchAnglerStep = new PanelDetails("Catch And Cook Anglerfish", Arrays.asList(catchAngler,
+			cookAnglerfish), new SkillRequirement(Skill.COOKING, 84, true),
+			new SkillRequirement(Skill.FISHING, 82, true), piscariliusFavour, fishingRod,
+			sandworm);
 		catchAnglerStep.setDisplayCondition(notCatchAngler);
 		allSteps.add(catchAnglerStep);
-
-		PanelDetails battlestaffStep = new PanelDetails("Battlestaff From Scratch", Arrays.asList(plantCelastrusTree,
-			harvestCelastrus, fletchBattlestaff), new SkillRequirement(Skill.FARMING, 85),
-			new SkillRequirement(Skill.FLETCHING, 40), hosidiusFavour60, spade, celastrusSapling, knife, axe);
-		battlestaffStep.setDisplayCondition(notFletchBattlestaff);
-		allSteps.add(battlestaffStep);
 
 		PanelDetails raidStep = new PanelDetails("Complete Chambers Of Xerric Raid", Collections.singletonList(
 			completeRaid));
@@ -438,6 +431,12 @@ public class KourendElite extends ComplexStateQuestHelper
 			enterSkotizoLair, defeatSkotizo), darkTotem, combatGear, food);
 		defeatSkotizoStep.setDisplayCondition(notDefeatSkotizo);
 		allSteps.add(defeatSkotizoStep);
+
+		PanelDetails battlestaffStep = new PanelDetails("Battlestaff From Scratch", Arrays.asList(plantCelastrusTree,
+			fletchBattlestaff), new SkillRequirement(Skill.FARMING, 85),
+			new SkillRequirement(Skill.FLETCHING, 40), hosidiusFavour60, spade, celastrusSapling, knife, axe);
+		battlestaffStep.setDisplayCondition(notFletchBattlestaff);
+		allSteps.add(battlestaffStep);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.questhelper.achievementdiaries.kourend;
 
 import com.questhelper.ItemCollections;
@@ -100,9 +99,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notBoatLandsEnd, boatLandsEnd);
 		doEasy.addStep(notStealFruit, stealFruit);
 		doEasy.addStep(notDigSaltpeter, digSaltpeter);
+		doEasy.addStep(notSandCrab, sandCrab);
 		doEasy.addStep(new Conditions(notEnterPoh, houseInKourend), enterPoh);
 		doEasy.addStep(notEnterPoh, relocateHouse);
-		doEasy.addStep(notSandCrab, sandCrab);
 		doEasy.addStep(new Conditions(notPrayCastle, inCastleF2), prayCastle);
 		doEasy.addStep(new Conditions(notPrayCastle, inCastleF1), enterCastleF2);
 		doEasy.addStep(notPrayCastle, enterCastleF1);
@@ -189,7 +188,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 		// Hand in a book in the Arceuus library
 		arceuusBook = new NpcStep(this, NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3801, 0),
-			"Collect a book for a library patron.", libraryBook);
+			"Collect a book for a patron in the Arceuus Library.", libraryBook);
 		arceuusBook.addAlternateNpcs(NpcID.SAM_7049);
 		arceuusBook.addAlternateNpcs(NpcID.VILLIA);
 
@@ -202,7 +201,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 			"Enter the Warrens.");
 		enterWarrens.addAlternateObjects(ObjectID.MANHOLE_31706);
 		warrensStore = new NpcStep(this, NpcID.SHOP_KEEPER_7913, new WorldPoint(1775, 10148, 0),
-			"Browse the Warrens general store.");
+			"Browse the Warrens General Store.");
 
 		// Take a boat from Land's End
 		boatLandsEnd = new NpcStep(this, NpcID.CABIN_BOY_HERBERT, new WorldPoint(1826, 3691, 0),
@@ -213,16 +212,16 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 		// Pray at the Kourend castle altar
 		enterCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(1618, 3681, 0),
-			"Climb the stairs to the second floor of the castle.");
+			"Climb the stairs to the second floor of the Kourend Castle.");
 		enterCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(1616, 3686, 1),
-			"Climb the stairs to the third floor of the castle.");
+			"Climb the stairs to the third floor of the Kourend Castle.");
 		prayCastle = new ObjectStep(this, ObjectID.ALTAR_18258, new WorldPoint(1616, 3672, 2),
-			"Pray at the Kourend castle altar.");
+			"Pray at the Kourend Castle altar.");
 		prayCastle.addSubSteps(enterCastleF1, enterCastleF2);
 
 		// Dig some saltpeter
 		digSaltpeter = new ObjectStep(this, ObjectID.SALTPETRE_27436, new WorldPoint(1703, 3526, 0),
-			"Dig up some saltpeter.", spade);
+			"Dig up some saltpeter in Hosidius.", spade);
 
 		// Enter your POH from Kourend
 		relocateHouse = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(1779, 3625, 0),
@@ -235,15 +234,15 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 		// Heal a wounded shayzien soldier
 		collectMedpack = new ObjectStep(this, ObjectID.MEDPACK_BOX, new WorldPoint(1522, 3615, 0),
-			"Collect a medpack.", true);
+			"Collect a medpack in Shayzien.", true);
 		healSoldier = new NpcStep(this, NpcID.WOUNDED_SOLDIER, new WorldPoint(1516, 3621, 0),
 			"Heal a wounded shayzien soldier.", true, medpack);
 		healSoldier.addSubSteps(collectMedpack);
 
 		// Create a strength potion in the Lovakenji pub
-		enterPub = new DetailedQuestStep(this, new WorldPoint(1564, 3759, 0), "Enter the Deeper Lode Pub");
-		strengthPotion = new ItemStep(this, "Create a strength Potion.", tarrominPotU.highlighted(),
-			limpwurtRoot.highlighted());
+		enterPub = new DetailedQuestStep(this, new WorldPoint(1564, 3759, 0), "Enter The Deeper Lode pub in Lovakengj.");
+		strengthPotion = new ItemStep(this, "Create a strength Potion in The Deeper Lode pub.",
+			tarrominPotU.highlighted(), limpwurtRoot.highlighted());
 
 		// Fish trout from the Rover Molch
 		fishTrout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_8524, new WorldPoint(1267, 3706, 0),

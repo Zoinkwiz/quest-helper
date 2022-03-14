@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.fightarena;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -36,6 +37,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -49,6 +53,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -62,13 +67,13 @@ public class FightArena extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement combatGear;
 
-	Requirement hasKhazardArmour, hasKhaliBrew, hasCellKeys, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer;
+	Requirement hasKhazardArmour, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer, inCell;
 
 	QuestStep startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew, getCellKeys, openCell, talkToSammy, killOgre,
 		talkToKhazard, talkToHengrad, talkToSammyForScorpion, killScorpion, talkToSammyForBouncer, killBouncer, leaveArena, endQuest;
 
 	//Zones
-	Zone arena1;
+	Zone arena1, cell;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -87,30 +92,29 @@ public class FightArena extends BasicQuestHelper
 		steps.put(2, talkToGuardSteps);
 
 		ConditionalStep giveKhaliBrewSteps = new ConditionalStep(this, searchChest);
-		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour, hasKhaliBrew), giveKhaliBrew);
+		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour, khaliBrew), giveKhaliBrew);
 		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour), buyKhaliBrew);
 		steps.put(3, giveKhaliBrewSteps);
 
 		ConditionalStep openCellSteps = new ConditionalStep(this, searchChest);
 		// You don't need Khazard armour to open the cell, but unless zones are added for the prison, keep the armour
 		// requirement in case you leave the prison and lose the armour
-		openCellSteps.addStep(new Conditions(hasKhazardArmour, hasCellKeys), openCell);
+		openCellSteps.addStep(new Conditions(hasKhazardArmour, cellKeys), openCell);
 		openCellSteps.addStep(new Conditions(hasKhazardArmour), getCellKeys);
 		steps.put(4, openCellSteps);
 		steps.put(5, openCellSteps);
 
 		ConditionalStep killOgreSteps = new ConditionalStep(this, talkToSammy);
 		killOgreSteps.addStep(new Conditions(inArenaWithOgre), killOgre);
-		steps.put(6, killOgre);
+		steps.put(6, killOgreSteps);
 
-		ConditionalStep inPrisonSteps = new ConditionalStep(this, talkToHengrad);
-		inPrisonSteps.addStep(new Conditions(inArena), talkToKhazard);
-		steps.put(7, inPrisonSteps);
-		steps.put(8, inPrisonSteps);
+		steps.put(7, talkToKhazard); // Step not actually seen, 6->8 when kill Ogre
+		steps.put(8, talkToKhazard);
 
-		ConditionalStep killScorpionSteps = new ConditionalStep(this, talkToSammyForScorpion);
-		killScorpionSteps.addStep(new Conditions(inArenaWithScorpion), killScorpion);
-		steps.put(9, killScorpionSteps);
+		ConditionalStep inPrisonAndKillScorpionSteps = new ConditionalStep(this, talkToSammyForScorpion);
+		inPrisonAndKillScorpionSteps.addStep(inCell, talkToHengrad);
+		inPrisonAndKillScorpionSteps.addStep(new Conditions(inArenaWithScorpion), killScorpion);
+		steps.put(9, inPrisonAndKillScorpionSteps);
 
 		ConditionalStep killBouncerSteps = new ConditionalStep(this, talkToSammyForBouncer);
 		killBouncerSteps.addStep(new Conditions(inArenaWithBouncer), killBouncer);
@@ -120,13 +124,15 @@ public class FightArena extends BasicQuestHelper
 		endQuestSteps.addStep(inArena, leaveArena);
 		steps.put(11, endQuestSteps);
 		steps.put(12, endQuestSteps);
+		steps.put(13, endQuestSteps);
+		steps.put(14, endQuestSteps);
 
 		return steps;
 	}
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 5);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
 		khazardHelmet = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET);
 		khazardPlatebody = new ItemRequirement("Khazard armour", ItemID.KHAZARD_ARMOUR);
 		khazardHelmetEquipped = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET, 1, true);
@@ -141,13 +147,13 @@ public class FightArena extends BasicQuestHelper
 	public void setupZones()
 	{
 		arena1 = new Zone(new WorldPoint(2583, 3152, 0), new WorldPoint(2606, 3170, 0));
+		cell = new Zone(new WorldPoint(2597, 3142, 0), new WorldPoint(2601, 3144, 0));
 	}
 
 	public void setupConditions()
 	{
 		hasKhazardArmour = new ItemRequirements(khazardHelmet, khazardPlatebody);
-		hasKhaliBrew = new ItemRequirements(khaliBrew);
-		hasCellKeys = new ItemRequirements(cellKeys);
+		inCell = new ZoneRequirement(cell);
 		inArena = new ZoneRequirement(arena1);
 		inArenaWithOgre = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_OGRE, arena1));
 		inArenaWithScorpion = new Conditions(inArena, new NpcCondition(NpcID.KHAZARD_SCORPION, arena1));
@@ -216,6 +222,28 @@ public class FightArena extends BasicQuestHelper
 		reqs.add("Bouncer (level 137) (safespottable)");
 		reqs.add("General Khazard (level 112) (safespottable) (optional)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 12175),
+				new ExperienceReward(Skill.THIEVING, 2175));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("1,000 Coins", ItemID.COINS_995, 1000),
+				new ItemReward("Khazard Armor", ItemID.KHAZARD_ARMOUR, 1));
 	}
 
 	@Override

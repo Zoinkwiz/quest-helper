@@ -39,6 +39,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -49,11 +51,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -129,7 +128,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeak.addAlternates(ItemID.GHOSTSPEAK_AMULET_4250);
 
-		coins40 = new ItemRequirement("Coins", ItemID.COINS_995, 40);
+		coins40 = new ItemRequirement("Coins", ItemCollections.getCoins(), 40);
 		inventorySlot = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 1);
 
 		kharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.getAmuletOfGlories());
@@ -159,7 +158,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		inGoblinCave = new ZoneRequirement(goblinCave);
 		inBouncerCave = new ZoneRequirement(bouncerCave);
 
-		hasNote = new ItemRequirements(sinSeersNote);
+		hasNote = sinSeersNote;
 		givenNote = new VarbitRequirement(3335, 2);
 		talkedToGnomeScout = new VarbitRequirement(3332, 1);
 		talkedToFaladorScout = new VarbitRequirement(3333, 1);
@@ -196,7 +195,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		talkToFaladorScout = new NpcStep(this, NpcID.SCOUT_3513, new WorldPoint(3073, 3336, 0), "Talk to the scout " +
 			"east of Falador.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToShantyScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3107, 0), "Talk to the scout " +
+		talkToShantyScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3084, 0), "Talk to the scout " +
 			"south of the Shanty Pass.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToKaramjaScout = new NpcStep(this, NpcID.SCOUT, new WorldPoint(2825, 3053, 0), "Talk to the scout " +
@@ -243,6 +242,18 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.FIGHT_ARENA, QuestState.FINISHED));
 		return req;
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.SLAYER, 2000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("The Shadow Sword", ItemID.SHADOW_SWORD, 1));
 	}
 
 	@Override

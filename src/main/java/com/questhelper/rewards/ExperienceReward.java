@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2021, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,62 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel.configpanel;
+package com.questhelper.rewards;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
-import net.runelite.client.ui.FontManager;
+import java.util.Locale;
+import javax.annotation.Nonnull;
+import net.runelite.api.Skill;
+import net.runelite.client.util.QuantityFormatter;
 
-class HotkeyButton extends JButton
+public class ExperienceReward implements Reward
 {
-	@Getter
-	private Keybind value;
+    private final Skill skill;
+    private final int experience;
 
-	public HotkeyButton(Keybind value, boolean modifierless)
-	{
-		setFont(FontManager.getDefaultFont().deriveFont(12.f));
-		setValue(value);
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
-				// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
-				setValue(Keybind.NOT_SET);
-			}
-		});
+    public ExperienceReward(Skill skill, int experience)
+    {
+        this.skill = skill;
+        this.experience = experience;
+    }
 
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
-	}
+    @Nonnull
+    @Override
+    public RewardType rewardType()
+    {
+        return RewardType.EXPERIENCE;
+    }
 
-	public void setValue(Keybind value)
-	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
-
-		this.value = value;
-		setText(value.toString());
-	}
+    @Nonnull
+    @Override
+    public String getDisplayText()
+    {
+        return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience";
+    }
 }

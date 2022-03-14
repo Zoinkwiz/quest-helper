@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -43,6 +42,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -73,9 +75,9 @@ public class TrollStronghold extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement gamesNecklace, foodAndPotions;
 
-	Requirement inStrongholdFloor1, inStrongholdFloor2, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inArena, inNorthArena,
-		beatenDad, inArenaCave, inTrollheimArea, hasPrisonKey, prisonKeyNearby, prisonDoorUnlocked, inPrisonStairsRoom, inPrison, hasCellKey1, hasCellKey2,
-		freedEadgar, freedGodric, cellKey1Nearby, cellKey2Nearby;
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inTenzingHut, onMountainPath, inTrollArea1, inArena, inNorthArena,
+		beatenDad, inArenaCave, inTrollheimArea, prisonKeyNearby, prisonDoorUnlocked, inPrisonStairsRoom, inPrison, freedEadgar,
+		freedGodric, cellKey1Nearby, cellKey2Nearby;
 
 	QuestStep talkToDenulth, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterArena, fightDad,
 		leaveArena, enterArenaCavern, leaveArenaCavern, enterStronghold, killGeneral, pickupPrisonKey, goDownInStronghold, goThroughPrisonDoor,
@@ -99,15 +101,15 @@ public class TrollStronghold extends BasicQuestHelper
 
 		ConditionalStep enterTheStronghold = new ConditionalStep(this, getCoinsOrBoots);
 		enterTheStronghold.addStep(new Conditions(freedEadgar, freedGodric), goToDunstan);
-		enterTheStronghold.addStep(new Conditions(inPrison, freedEadgar, hasCellKey1), freeGodric);
+		enterTheStronghold.addStep(new Conditions(inPrison, freedEadgar, cellKey1), freeGodric);
 		enterTheStronghold.addStep(new Conditions(inPrison, freedEadgar, cellKey1Nearby), pickupKey1);
 		enterTheStronghold.addStep(new Conditions(inPrison, freedEadgar), getTwigKey);
-		enterTheStronghold.addStep(new Conditions(inPrison, hasCellKey2), freeEadgar);
+		enterTheStronghold.addStep(new Conditions(inPrison, cellKey2), freeEadgar);
 		enterTheStronghold.addStep(new Conditions(inPrison, cellKey2Nearby), pickupKey2);
 		enterTheStronghold.addStep(inPrison, getBerryKey);
 		enterTheStronghold.addStep(inPrisonStairsRoom, goDownToPrison);
-		enterTheStronghold.addStep(new Conditions(new Conditions(LogicType.OR, prisonDoorUnlocked, hasPrisonKey), inStrongholdFloor1), goThroughPrisonDoor);
-		enterTheStronghold.addStep(new Conditions(new Conditions(LogicType.OR, prisonDoorUnlocked, hasPrisonKey), inStrongholdFloor2), goDownInStronghold);
+		enterTheStronghold.addStep(new Conditions(new Conditions(LogicType.OR, prisonDoorUnlocked, prisonKey), inStrongholdFloor1), goThroughPrisonDoor);
+		enterTheStronghold.addStep(new Conditions(new Conditions(LogicType.OR, prisonDoorUnlocked, prisonKey), inStrongholdFloor2), goDownInStronghold);
 		enterTheStronghold.addStep(prisonKeyNearby, pickupPrisonKey);
 		enterTheStronghold.addStep(inStrongholdFloor2, killGeneral);
 		enterTheStronghold.addStep(inStrongholdFloor1, goUpTo2ndFloor);
@@ -117,10 +119,10 @@ public class TrollStronghold extends BasicQuestHelper
 		enterTheStronghold.addStep(new Conditions(inArena, beatenDad), leaveArena);
 		enterTheStronghold.addStep(inArena, fightDad);
 		enterTheStronghold.addStep(inTrollArea1, enterArena);
-		enterTheStronghold.addStep(new Conditions(hasClimbingBoots, onMountainPath), climbOverRocks);
-		enterTheStronghold.addStep(new Conditions(hasClimbingBoots, inTenzingHut), climbOverStile);
-		enterTheStronghold.addStep(hasClimbingBoots, travelToTenzing);
-		enterTheStronghold.addStep(hasCoins, buyClimbingBoots);
+		enterTheStronghold.addStep(new Conditions(climbingBoots, onMountainPath), climbOverRocks);
+		enterTheStronghold.addStep(new Conditions(climbingBoots, inTenzingHut), climbOverStile);
+		enterTheStronghold.addStep(climbingBoots, travelToTenzing);
+		enterTheStronghold.addStep(coins12, buyClimbingBoots);
 
 		steps.put(10, enterTheStronghold);
 		steps.put(20, enterTheStronghold);
@@ -135,7 +137,7 @@ public class TrollStronghold extends BasicQuestHelper
 		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
 		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", ItemID.CLIMBING_BOOTS);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
-		coins12 = new ItemRequirement("Coins", ItemID.COINS_995, 12);
+		coins12 = new ItemRequirement("Coins", ItemCollections.getCoins(), 12);
 		mageRangedGear = new ItemRequirement("Mage or ranged gear for safe spotting", -1, -1);
 		mageRangedGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		foodAndPotions = new ItemRequirement("Food + prayer potions", ItemCollections.getGoodEatingFood(), -1);
@@ -165,8 +167,6 @@ public class TrollStronghold extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasClimbingBoots = new ItemRequirements(climbingBoots);
-		hasCoins = new ItemRequirements(coins12);
 		inTenzingHut = new ZoneRequirement(tenzingHut);
 		onMountainPath = new ZoneRequirement(mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5);
 		inTrollArea1 = new ZoneRequirement(trollArea1);
@@ -180,12 +180,9 @@ public class TrollStronghold extends BasicQuestHelper
 		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
 		inPrisonStairsRoom = new ZoneRequirement(prisonStairsRoom);
 		inPrison = new ZoneRequirement(prison);
-		hasPrisonKey = new ItemRequirements(prisonKey);
 		prisonKeyNearby = new ItemOnTileRequirement(ItemID.PRISON_KEY);
 		cellKey1Nearby = new ItemOnTileRequirement(cellKey1);
 		cellKey2Nearby = new ItemOnTileRequirement(cellKey2);
-		hasCellKey1 = new ItemRequirements(cellKey1);
-		hasCellKey2 = new ItemRequirements(cellKey2);
 		freedEadgar = new VarbitRequirement(0, 1);
 		freedGodric = new VarplayerRequirement(317, 40);
 	}
@@ -287,6 +284,27 @@ public class TrollStronghold extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 15, true, "15 Agility (47+ Agility is recommended)"));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Law Talisman", ItemID.LAW_TALISMAN, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to make Law Runes"),
+				new UnlockReward("Access to Trollheim and the Troll Stronghold"),
+				new UnlockReward("Access to the God Wars Dungeon"));
 	}
 
 	@Override

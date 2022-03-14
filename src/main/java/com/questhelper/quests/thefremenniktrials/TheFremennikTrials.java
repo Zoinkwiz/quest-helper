@@ -32,9 +32,11 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -42,11 +44,15 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,6 +62,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -75,21 +82,18 @@ public class TheFremennikTrials extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement camelotTeleport, rellekkaTeleports, ringsOfRecoil, combatGear;
 
-	Requirement synced, syncedAll, syncedOlaf, syncedManni, syncedSigmund, inQuestJournal, hasStartedOlaf, hasBranch, hasLyreUnstrung,
-		talkedToLalli, gottenRock, hasPetRock, hasLyre, finishedOlafTask, hasOnion, hasCabbage, hasPotato, petRockInCauldron,
-		cabbageInCauldron, potatoInCauldron, onionInCauldron, cauldronFilledDialog, stewReady, hasGoldenWool, hasGoldenFleece,
-		hasEnchantedLyre, finishedOlafMessage, finishedOlafWidget, hasBeer, talkedToManni, hasStrangeObject, hasAlcoholFreeBeer,
-		hasLitStrangeObject, isNearPipe, hasPlacedStrangeObject, hasReplacedBeer, finishedManniTask, hasKegOfBeer, talkedToManniWidget,
-		talkedToManniChat, hasHuntersTalisman, hasChargedHuntersTalisman, finishedSigliTask, getFlower, talkedToSailor, talkedToOlafForSigmund,
+	Requirement synced, syncedAll, syncedOlaf, syncedManni, syncedSigmund, inQuestJournal, hasStartedOlaf,
+		talkedToLalli, gottenRock, finishedOlafTask, petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron,
+		cauldronFilledDialog, stewReady,finishedOlafMessage, finishedOlafWidget,talkedToManni,
+		isNearPipe, hasPlacedStrangeObject, hasReplacedBeer, finishedManniTask, talkedToManniWidget,
+		talkedToManniChat, finishedSigliTask, getFlower, talkedToSailor, talkedToOlafForSigmund,
 		talkedToYsra, talkedToBrundtForSigmund, talkedToSigliForSigmund, talkedToSkulgrimenForSigmund, talkedToFishermanForSigmund, talkedToSwensenForSigmund,
-		talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund, talkedToAskeladdenForSigmund, hasPromissoryNote,
-		hasLegendaryCocktail, hasChampionsToken, hasWarriorsContract, hasWeatherForecast, hasSeaFishingMap, hasUnusualFish, hasCustomBowString, hasTrackingMap, hasFiscalStatement,
-		hasSturdyBoots, hasBallad, hasExoticFlower, finishedSigmundTask, inKoscheiRoom, talkedToThorvald, koschei1Near, koschei2Near, koschei3Near, koschei4Near, syncedThorvald,
-		finishedThorvaldTask, talkedToSwensen, syncedSwensen, inSwensenRoom1, inSwensenRoom2, inSwensenRoom3, inSwensenRoom4, inSwensenRoom5, inSwensenRoom6, inSwensenRoom7, inSwensenArea,
-		inSwensenFinalRoom, finishedSwensenTask, talkedToPeer, finishedPeerTask, isMind, isTree, isLife, isFire, isTime, isWind, inPeerEntrance, inPeerUpstairs, inPeerExit, hasSolvedDoor,
-		hasRedHerring, hasWoodenDisk, hasRedDiskOld, hasRedDiskNew, hasStickyRedGoop, trapDoorOpen, hasUsedDisk, muralHasDisks, hasVase, hasVaseLid,
-		hasEmptyBucket, hasFullBucket, hasBucket45, hasBucket35, hasBucket25, hasBucket15, hasAnyBucket, hasFullJug, hasEmptyJug, hasJug23, hasJug13, hasAnyJug, cupboardOpen,
-		chestOpen, hasFilledVase, hasFilledVaseWithLid, hasVaseWithLidWrong, hasFrozenKey, hasSeersKey, hasFrozenVase, syncedPeer, noRockAskeladdenNearby;
+		talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund, finishedSigmundTask,
+		inKoscheiRoom, talkedToThorvald, koschei1Near, koschei2Near, koschei3Near, koschei4Near, syncedThorvald,
+		finishedThorvaldTask, talkedToSwensen, syncedSwensen, inSwensenRoom1, inSwensenRoom2, inSwensenRoom3, inSwensenRoom4, inSwensenRoom5,
+		inSwensenRoom6, inSwensenRoom7, inSwensenArea, inSwensenFinalRoom, finishedSwensenTask, talkedToPeer, finishedPeerTask, isMind, isTree, isLife, isFire,
+		isTime, isWind, inPeerEntrance, inPeerUpstairs, inPeerExit, hasSolvedDoor, trapDoorOpen, hasUsedDisk, muralHasDisks,
+		hasAnyBucket, hasAnyJug, cupboardOpen, chestOpen, syncedPeer, noRockAskeladdenNearby;
 
 	QuestStep talkToBrundt, talkToOlaf, pickVeg, chopSwayingTree, fletchLyre, talkToLalli,
 		talkToAskeladdenForRock, useCabbage, useOnion, usePotato, useRock, talkToLaliAfterStew, spinWool,
@@ -124,13 +128,13 @@ public class TheFremennikTrials extends BasicQuestHelper
 		steps.put(0, talkToBrundt);
 
 		olafTask = new ConditionalStep(this, talkToOlaf);
-		olafTask.addStep(hasEnchantedLyre, performMusic);
-		olafTask.addStep(new Conditions(hasStartedOlaf, hasLyre), enchantLyre);
-		olafTask.addStep(new Conditions(hasGoldenWool, hasLyreUnstrung), makeLyre);
-		olafTask.addStep(new Conditions(hasGoldenFleece, hasLyreUnstrung), spinWool);
-		olafTask.addStep(new Conditions(hasGoldenFleece, hasBranch), fletchLyre);
-		olafTask.addStep(hasGoldenFleece, chopSwayingTree);
-		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron, potatoInCauldron, petRockInCauldron), talkToLaliAfterStew);
+		olafTask.addStep(enchantedLyre.alsoCheckBank(questBank), performMusic);
+		olafTask.addStep(new Conditions(hasStartedOlaf, lyre.alsoCheckBank(questBank)), enchantLyre);
+		olafTask.addStep(new Conditions(goldenWool, lyreUnstrung), makeLyre);
+		olafTask.addStep(new Conditions(goldenFleece, lyreUnstrung), spinWool);
+		olafTask.addStep(new Conditions(goldenFleece, branch), fletchLyre);
+		olafTask.addStep(goldenFleece, chopSwayingTree);
+		olafTask.addStep(new Conditions(gottenRock, stewReady), talkToLaliAfterStew);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron, potatoInCauldron), useRock);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron), usePotato);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron), useCabbage);
@@ -140,38 +144,38 @@ public class TheFremennikTrials extends BasicQuestHelper
 		olafTask.setLockingCondition(finishedOlafTask);
 
 		manniTask = new ConditionalStep(this, talkToManni);
-		manniTask.addStep(new Conditions(hasReplacedBeer, hasKegOfBeer), cheatInBeerDrinking);
+		manniTask.addStep(new Conditions(hasReplacedBeer, kegOfBeer), cheatInBeerDrinking);
 		manniTask.addStep(new Conditions(hasReplacedBeer), getKegOfBeer);
-		manniTask.addStep(new Conditions(hasPlacedStrangeObject, hasAlcoholFreeBeer, hasKegOfBeer), useAlcoholFreeOnKeg);
-		manniTask.addStep(new Conditions(hasPlacedStrangeObject, hasAlcoholFreeBeer), getKegOfBeer);
+		manniTask.addStep(new Conditions(hasPlacedStrangeObject, alcoholFreeBeer, kegOfBeer), useAlcoholFreeOnKeg);
+		manniTask.addStep(new Conditions(hasPlacedStrangeObject, alcoholFreeBeer), getKegOfBeer);
 		manniTask.addStep(new Conditions(hasPlacedStrangeObject), getAlcoholFreeBeer);
-		manniTask.addStep(new Conditions(talkedToManni, hasLitStrangeObject, hasAlcoholFreeBeer, isNearPipe), useStrangeObjectOnPipe);
-		manniTask.addStep(new Conditions(talkedToManni, hasStrangeObject, hasAlcoholFreeBeer, isNearPipe), useStrangeObject);
-		manniTask.addStep(new Conditions(talkedToManni, hasStrangeObject, hasAlcoholFreeBeer), prepareToUseStrangeObject);
-		manniTask.addStep(new Conditions(talkedToManni, hasStrangeObject), getAlcoholFreeBeer);
-		manniTask.addStep(new Conditions(talkedToManni, hasBeer), getStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, litStrangeObject, alcoholFreeBeer, isNearPipe), useStrangeObjectOnPipe);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject.alsoCheckBank(questBank), alcoholFreeBeer, isNearPipe), useStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject.alsoCheckBank(questBank), alcoholFreeBeer), prepareToUseStrangeObject);
+		manniTask.addStep(new Conditions(talkedToManni, strangeObject.alsoCheckBank(questBank)), getAlcoholFreeBeer);
+		manniTask.addStep(new Conditions(talkedToManni, beer), getStrangeObject);
 		manniTask.addStep(talkedToManni, pickUpBeer);
 		manniTask.setLockingCondition(finishedManniTask);
 
 		sigliTask = new ConditionalStep(this, talkToSigli);
-		sigliTask.addStep(hasChargedHuntersTalisman, returnToSigli);
-		sigliTask.addStep(hasHuntersTalisman, huntDraugen);
+		sigliTask.addStep(chargedHuntersTalisman, returnToSigli);
+		sigliTask.addStep(huntersTalisman, huntDraugen);
 		sigliTask.setLockingCondition(finishedSigliTask);
 
 		sigmundTask = new ConditionalStep(this, talkToSigmund);
-		sigmundTask.addStep(hasExoticFlower, bringExoticFlowerToSigmund);
-		sigmundTask.addStep(hasBallad, bringBalladToSailor);
-		sigmundTask.addStep(hasSturdyBoots, bringSturdyBootsToOlaf);
-		sigmundTask.addStep(hasFiscalStatement, bringFiscalStatementToYsra);
-		sigmundTask.addStep(hasTrackingMap, bringTrackingMapToBrundt);
-		sigmundTask.addStep(hasCustomBowString, bringCustomBowStringToSigli);
-		sigmundTask.addStep(hasUnusualFish, bringUnusualFishToSkulgrimen);
-		sigmundTask.addStep(hasSeaFishingMap, bringSeaFishingMapToFisherman);
-		sigmundTask.addStep(hasWeatherForecast, bringWeatherForecastToSwensen);
-		sigmundTask.addStep(hasWarriorsContract, bringWarriorsContractToPeer);
-		sigmundTask.addStep(hasChampionsToken, bringChampionsTokenToThorvald);
-		sigmundTask.addStep(hasLegendaryCocktail, bringCocktailToManni);
-		sigmundTask.addStep(hasPromissoryNote, bringNoteToThora);
+		sigmundTask.addStep(exoticFlower, bringExoticFlowerToSigmund);
+		sigmundTask.addStep(ballad, bringBalladToSailor);
+		sigmundTask.addStep(sturdyBoots, bringSturdyBootsToOlaf);
+		sigmundTask.addStep(fiscalStatement, bringFiscalStatementToYsra);
+		sigmundTask.addStep(trackingMap, bringTrackingMapToBrundt);
+		sigmundTask.addStep(customBowString, bringCustomBowStringToSigli);
+		sigmundTask.addStep(unusualFish, bringUnusualFishToSkulgrimen);
+		sigmundTask.addStep(seaFishingMap, bringSeaFishingMapToFisherman);
+		sigmundTask.addStep(weatherForecast, bringWeatherForecastToSwensen);
+		sigmundTask.addStep(warriorsContract, bringWarriorsContractToPeer);
+		sigmundTask.addStep(championsToken, bringChampionsTokenToThorvald);
+		sigmundTask.addStep(legendaryCocktail, bringCocktailToManni);
+		sigmundTask.addStep(promissoryNote, bringNoteToThora);
 
 		sigmundTask.addStep(new Conditions(talkedToThoraForSigmund, noRockAskeladdenNearby), talkToAskeladdenForSigmund2);
 		sigmundTask.addStep(talkedToThoraForSigmund, talkToAskeladdenForSigmund);
@@ -212,36 +216,38 @@ public class TheFremennikTrials extends BasicQuestHelper
 		swensenTask.setLockingCondition(finishedSwensenTask);
 
 		peerTask = new ConditionalStep(this, talkToPeer);
-		peerTask.addStep(new Conditions(inPeerExit, hasSeersKey), leaveSeersHouse);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasSeersKey, trapDoorOpen), goDownstairsWithKey2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasSeersKey), goDownstairsWithKey);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasFrozenKey), useFrozenKeyOnRange);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasFilledVaseWithLid), useVaseOnTable);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasFilledVase), useLidOnVase);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasVase), fillVase);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseWithLidWrong), takeLidOff);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasBucket45), useBucketOnScale);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasFullBucket, hasJug23), useBucketOnJug3);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasEmptyBucket, hasJug23), useBucketOnTap2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasBucket25, hasEmptyJug), useBucketOnJug2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasBucket25, hasFullJug), useJugOnDrain1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasFullBucket, hasEmptyJug), useBucketOnJug1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasEmptyBucket, hasEmptyJug), useBucketOnTap1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasAnyBucket, hasAnyJug), emptyJugAndBucket);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasAnyBucket, chestOpen), searchChest2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, hasAnyBucket), searchChest1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid, cupboardOpen), searchCupboard2);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasVaseLid), searchCupboard1);
-		peerTask.addStep(new Conditions(inPeerExit, hasVaseLid), goUpstairsWithVaseLid);
-		peerTask.addStep(new Conditions(inPeerExit, hasRedDiskNew, hasUsedDisk), useDiskNewOnMural);
-		peerTask.addStep(new Conditions(inPeerExit, hasRedDiskOld, hasUsedDisk), useDiskOldOnMural);
-		peerTask.addStep(new Conditions(inPeerExit, hasRedDiskOld, hasRedDiskNew), useDiskAnyOnMural);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasRedDiskOld, hasRedDiskNew, trapDoorOpen), goDown1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasRedDiskOld, hasRedDiskNew), openTrapDoorAndGoDown1);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasStickyRedGoop, hasWoodenDisk, hasRedDiskOld), useGoopOnDisk);
-		peerTask.addStep(new Conditions(inPeerUpstairs, hasRedHerring, hasWoodenDisk, hasRedDiskOld), cookHerring);
-		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, hasRedDiskNew, new Conditions(hasRedHerring, hasWoodenDisk))), searchUnicorn);
-		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, hasStickyRedGoop, hasRedHerring)), searchBull);
+		peerTask.addStep(new Conditions(inPeerExit, seersKey), leaveSeersHouse);
+		peerTask.addStep(new Conditions(inPeerUpstairs, seersKey, trapDoorOpen), goDownstairsWithKey2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, seersKey), goDownstairsWithKey);
+		peerTask.addStep(new Conditions(inPeerUpstairs, frozenKey), useFrozenKeyOnRange);
+		peerTask.addStep(new Conditions(inPeerUpstairs, filledVaseWithLid), useVaseOnTable);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, filledVase), useLidOnVase);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, vase), fillVase);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseWithLidWrong), takeLidOff);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, bucket45), useBucketOnScale);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, fullBucket, jug23), useBucketOnJug3);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, emptyBucket, jug23), useBucketOnTap2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, bucket25, emptyJug), useBucketOnJug2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, bucket25, fullJug), useJugOnDrain1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, fullBucket, emptyJug), useBucketOnJug1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, emptyBucket, emptyJug), useBucketOnTap1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, hasAnyBucket, hasAnyJug), emptyJugAndBucket);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, hasAnyBucket, chestOpen), searchChest2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, hasAnyBucket), searchChest1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid, cupboardOpen), searchCupboard2);
+		peerTask.addStep(new Conditions(inPeerUpstairs, vaseLid), searchCupboard1);
+		peerTask.addStep(new Conditions(inPeerExit, vaseLid), goUpstairsWithVaseLid);
+		peerTask.addStep(new Conditions(inPeerExit, redDiskNew, hasUsedDisk), useDiskNewOnMural);
+		peerTask.addStep(new Conditions(inPeerExit, redDiskOld, hasUsedDisk), useDiskOldOnMural);
+		peerTask.addStep(new Conditions(inPeerExit, redDiskOld, redDiskNew), useDiskAnyOnMural);
+		peerTask.addStep(new Conditions(inPeerUpstairs, redDiskOld, redDiskNew, trapDoorOpen), goDown1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, redDiskOld, redDiskNew), openTrapDoorAndGoDown1);
+		peerTask.addStep(new Conditions(inPeerUpstairs, stickyRedGoop, woodenDisk, redDiskOld), useGoopOnDisk);
+		peerTask.addStep(new Conditions(inPeerUpstairs, redHerring, woodenDisk, redDiskOld), cookHerring);
+		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, redDiskNew,
+			new Conditions(redHerring, woodenDisk))), searchUnicorn);
+		peerTask.addStep(new Conditions(inPeerUpstairs, new Conditions(LogicType.OR, stickyRedGoop, redHerring)),
+			searchBull);
 		peerTask.addStep(inPeerUpstairs, searchBookcase);
 		peerTask.addStep(inPeerExit, goBackUpstairs);
 		peerTask.addStep(new Conditions(LogicType.OR, inPeerEntrance, hasSolvedDoor), goUpEntranceLadderPeer);
@@ -254,7 +260,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		peerTask.addStep(talkedToPeer, enterPeerHouse);
 		peerTask.setLockingCondition(finishedPeerTask);
 
-		DetailedQuestStep resyncStep = new DetailedQuestStep(this, "Please open the quest's Quest Journal to sync your state.");
+		QuestSyncStep resyncStep = new QuestSyncStep(this, getQuest(),
+			"Please open the quest's Quest Journal to sync your state.");
 		ConditionalStep resyncCondition = new ConditionalStep(this, resyncStep);
 		resyncCondition.setLockingCondition(syncedAll);
 
@@ -279,9 +286,9 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 5250);
-		coins250 = new ItemRequirement("Coins", ItemID.COINS_995, 250);
-		coins5000 = new ItemRequirement("Coins", ItemID.COINS_995, 5000);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5250);
+		coins250 = new ItemRequirement("Coins", ItemCollections.getCoins(), 250);
+		coins5000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 5000);
 		beer = new ItemRequirement(true, "Beer", ItemID.BEER);
 		beer.addAlternates(ItemID.BEER_TANKARD);
 		rawShark = new ItemRequirement("Raw shark, manta ray or sea turtle", ItemID.RAW_SHARK);
@@ -309,6 +316,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		enchantedLyre = new ItemRequirement("Enchanted lyre", ItemID.ENCHANTED_LYRE);
 		strangeObject = new ItemRequirement("Strange object", ItemID.STRANGE_OBJECT);
+		strangeObject.addAlternates(ItemID.LIT_STRANGE_OBJECT);
 		litStrangeObject = new ItemRequirement("Lit strange object", ItemID.LIT_STRANGE_OBJECT);
 		alcoholFreeBeer = new ItemRequirement("Low alcohol keg", ItemID.LOW_ALCOHOL_KEG);
 		kegOfBeer = new ItemRequirement("Keg of beer", ItemID.KEG_OF_BEER);
@@ -383,159 +391,195 @@ public class TheFremennikTrials extends BasicQuestHelper
 	{
 		inQuestJournal = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, "The Fremennik Trials");
 
-		synced = new Conditions(true, LogicType.OR, inQuestJournal,
-			new WidgetTextRequirement(217, 4, true, "I think I would enjoy the challenge"));
+		Requirement syncedReqs = new Conditions(true, LogicType.OR, inQuestJournal,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "I think I would enjoy the challenge"));
+		synced = new RuneliteRequirement(configManager, "fremmytrialssynced", syncedReqs);
 
-		hasStartedOlaf = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is great news outerlander! We always need more music lovers here!"),
-			new WidgetTextRequirement(119, 3, true, "Bard<col=000080> will vote for me if"));
+		hasStartedOlaf = new RuneliteRequirement(configManager, "fremmytrialsstartedolaf",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is great news outerlander! We always need more<br>music lovers here!"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "So how would I go about writing this epic?"),
+			new WidgetTextRequirement(119, 3, true, "Bard<col=000080> will vote for me if"))
+		);
 
-		syncedOlaf = new Conditions(true, LogicType.AND, synced, hasStartedOlaf);
+		syncedOlaf = new Conditions(true, synced, hasStartedOlaf);
 
-		hasBranch = new ItemRequirements(branch);
-		hasLyreUnstrung = new ItemRequirements(lyreUnstrung);
-		hasLyre = new ItemRequirements(lyre);
-
-		talkedToLalli = new Conditions(true, new WidgetTextRequirement(217, 4, "I see... okay, well, bye!"));
+		talkedToLalli = new RuneliteRequirement(configManager, "fremmytrialstalkedtolalli",
+			new Conditions(true, LogicType.OR,
+				new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I see... okay, well, bye!"),
+				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Human call itself Askeladden!")
+			));
 		gottenRock = new VarbitRequirement(6486, 1);
-		hasPetRock = new ItemRequirements(petRock);
-		hasOnion = new ItemRequirements(onion);
-		hasCabbage = new ItemRequirements(cabbage);
-		hasPotato = new ItemRequirements(potato);
 
-		petRockInCauldron = new ChatMessageRequirement("You put your pet rock into the cauldron.");
-		cabbageInCauldron = new ChatMessageRequirement("You put a cabbage into the cauldron.");
-		potatoInCauldron = new ChatMessageRequirement("You put a potato into the cauldron.");
-		onionInCauldron = new ChatMessageRequirement("You put an onion into the cauldron.");
-		cauldronFilledDialog = new WidgetTextRequirement(217, 4, "Indeed it is. Try it and see.");
+		petRockInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedpetrock",
+			new ChatMessageRequirement("You put your pet rock into the cauldron.")
+		);
+		cabbageInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedcabbage",
+			new ChatMessageRequirement("You put a cabbage into the cauldron.")
+		);
+		potatoInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedpotato",
+			new ChatMessageRequirement("You put a potato into the cauldron.")
+		);
 
-		stewReady = new Conditions(new Conditions(petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron), cauldronFilledDialog);
+		onionInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedonion",
+			new ChatMessageRequirement("You put an onion into the cauldron.")
+		);
 
-		hasGoldenFleece = new ItemRequirements(goldenFleece);
-		hasGoldenWool = new ItemRequirements(goldenWool);
-		hasEnchantedLyre = new ItemRequirements(enchantedLyre);
+		cauldronFilledDialog = new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Indeed it is. Try it and see.");
+
+		stewReady = new RuneliteRequirement(configManager, "fremmytrialsstewready",
+			new Conditions(petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron, cauldronFilledDialog));
 
 		finishedOlafMessage = new ChatMessageRequirement("Congratulations! You have completed the Bard's Trial!");
 		finishedOlafWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "I now have the Bard's vote"));
-		finishedOlafTask = new Conditions(true, LogicType.OR, finishedOlafMessage, finishedOlafWidget);
-
-		hasBeer = new ItemRequirements(beer);
+		finishedOlafTask = new RuneliteRequirement(configManager, "fremmytrialscompletedolaf",
+			new Conditions(true, LogicType.OR, finishedOlafMessage, finishedOlafWidget));
 
 		talkedToManniWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "Reveller<col=000080> will vote for me"));
-		talkedToManniChat = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"));
-		talkedToManni = new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat);
+		talkedToManniChat = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Grab a keg of beer<br>from that table near the bar, and come back here with<br>it.")
+		);
+		talkedToManni = new RuneliteRequirement(configManager, "fremmytrialsstartedmanni",
+			new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat)
+		);
 
-		syncedManni = new Conditions(true, LogicType.OR, talkedToManni);
+		syncedManni = talkedToManni;
 
-		hasStrangeObject = new ItemRequirements(strangeObject);
-		hasLitStrangeObject = new ItemRequirements(litStrangeObject);
-		hasAlcoholFreeBeer = new ItemRequirements(alcoholFreeBeer);
 		isNearPipe = new ZoneRequirement(nearPipe);
 
-		hasPlacedStrangeObject = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "That is going to make a really loud bang"));
+		hasPlacedStrangeObject = new RuneliteRequirement(configManager, "fremmytrialsplacedstrangeobject",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT,
+				"That is going to make a really loud bang when it goes<br>off!"),
+			new ChatMessageRequirement("You put the lit strange object into the pipe."))
+		);
 
-		hasReplacedBeer = new Conditions(true, LogicType.AND, new ChatMessageRequirement("You empty the keg and refill it with low alcohol beer."));
-		finishedManniTask = new Conditions(true, LogicType.OR,
+		hasReplacedBeer = new RuneliteRequirement(configManager, "fremmytrialsreplacedbeer",
+			new ChatMessageRequirement("You empty the keg and refill it with low alcohol beer.")
+		);
+		finishedManniTask = new RuneliteRequirement(configManager, "fremmytrialsfinishedmanni",
+			new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"));
-
-		hasKegOfBeer = new ItemRequirements(kegOfBeer);
-
-		hasHuntersTalisman = new ItemRequirements(huntersTalisman);
-
-		hasChargedHuntersTalisman = new ItemRequirements(chargedHuntersTalisman);
+			new WidgetTextRequirement(119, 3, true, "I now have the Reveller's vote"))
+		);
 
 		// No gz message
-		finishedSigliTask = new Conditions(true, LogicType.OR,
-			new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Hunter's vote"));
+		finishedSigliTask = new RuneliteRequirement(configManager, "fremmytrialsfinishedsigli",
+			new Conditions(true, LogicType.OR,
+				new ChatMessageRequirement("Congratulations! You have completed the Hunter's Trial!"),
+				new WidgetTextRequirement(119, 3, true, "I now have the Hunter's vote")
+			)
+		);
 
-		getFlower = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are a very insular clan"),
-			new WidgetTextRequirement(119, 3, true, "has a <col=800000>rare flower<col=000080> that he wants."));
+		getFlower = new RuneliteRequirement(configManager, "fremmytrialsstartedsigmund",
+			new Conditions(true, LogicType.OR,
+				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are a very insular clan"),
+				new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Any<br>suggestions on where to start looking for this flower?"),
+				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Did you manage to<br>obtain my flower for me yet?"),
+				new WidgetTextRequirement(119, 3, true, "has a <col=800000>rare flower<col=000080> that he wants."))
+		);
 
-		talkedToSailor = new Conditions(true, LogicType.OR,
+		talkedToSailor = new RuneliteRequirement(configManager, "fremmytrialssigmundsailor",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That sounds like a fair deal to me, outerlander."),
-			new WidgetTextRequirement(217, 4, "find a<br>love ballad, do you?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "find a<br>love ballad, do you?"))
+		);
 
-		talkedToOlafForSigmund = new Conditions(true, LogicType.OR,
+		talkedToOlafForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundolaf",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "composing you a romantic ballad"),
-			new WidgetTextRequirement(217, 4, "where I could find<br>some custom sturdy boots, do you?"));
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "where I could find<br>some custom sturdy boots, do you?"))
+		);
 
-		Conditions ysraAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(217, 4, true, "Okay, I will see what I can do."),
+		Conditions ysraAsked = new Conditions(true, LogicType.AND,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "Okay, I will see what I can do."),
 			new ZoneRequirement(new Zone(new WorldPoint(2622, 3672, 0), new WorldPoint(2629, 3679, 0))));
 
-		talkedToYsra = new Conditions(true, LogicType.OR,
+		talkedToYsra = new RuneliteRequirement(configManager, "fremmytrialssigmundysra",
+			new Conditions(true, LogicType.OR,
 			ysraAsked,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>shopkeeper<col=000080> is looking for a <col=800000>tax reduction<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true,
+				"<col=000080>The <col=800000>shopkeeper<col=000080> is looking for a <col=800000>tax " +
+					"reduction<col=000080>..."))
+		);
 
-		talkedToBrundtForSigmund = new Conditions(true, LogicType.OR,
+		talkedToBrundtForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundbrundt",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Speak to Sigli then, and you may have my promise to<br>reduce our sales taxes. And best of luck with the rest<br>of your trials."),
-			new WidgetTextRequirement(119, 3, true, "The <col=800000>chieftain<col=000080> wants a <col=800000>map of new hunting grounds<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "The <col=800000>chieftain<col=000080> wants a <col=800000>map of new hunting grounds<col=000080>...")
+			));
 
-		talkedToSigliForSigmund = new Conditions(true, LogicType.OR,
+		talkedToSigliForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundsigli",
+			new Conditions(true, LogicType.OR,
 			// TODO: Fix this check, missing a br
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "who knows where<br>my hunting ground is."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The hunter<col=000080> is looking for a <col=800000>custom bow string<col=000080>..."));
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The hunter<col=000080> is looking for a <col=800000>custom bow string<col=000080>...")
+			));
 
-		talkedToSkulgrimenForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "Sounds good to me."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>armourer<col=000080> is looking for a <col=800000>rare inedible fish<col=000080>..."));
+		talkedToSkulgrimenForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundskulgrimen",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Sounds good to me."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>armourer<col=000080> is looking for a <col=800000>rare inedible fish<col=000080>...")
+			));
 
-		talkedToFishermanForSigmund = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, true, "I'll see what I can do."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>fisherman<col=000080> is looking for a <col=800000>map of fishing spots<col=000080>..."));
+		talkedToFishermanForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundfisherman",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "I'll see what I can do."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>fisherman<col=000080> is looking for a <col=800000>map of fishing spots<col=000080>..."))
+		);
 
-		talkedToSwensenForSigmund = new Conditions(true, LogicType.OR,
+		talkedToSwensenForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundswensen",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, " take the time to make a forecast<br>somehow."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>navigator<col=000080> is looking for a <col=800000>weather forecast<col=000080>..."));
-		talkedToPeerForSigmund = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>navigator<col=000080> is looking for a <col=800000>weather forecast<col=000080>..."))
+		);
+
+		talkedToPeerForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundpeer",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is all."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>seer<col=000080> is looking for a <col=800000>warrior to be his bodyguard<col=000080>..."));
-		Conditions thorvaldAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(217, 4, "Okay, I'll see what I can do."),
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>seer<col=000080> is looking for a <col=800000>warrior to be his bodyguard<col=000080>..."))
+		);
+		Conditions thorvaldAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Okay, I'll see what I can do."),
 			new ZoneRequirement(new Zone(new WorldPoint(2661, 3690, 0), new WorldPoint(2669, 3696, 0))));
-		talkedToThorvaldForSigmund = new Conditions(true, LogicType.OR,
+
+		talkedToThorvaldForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundthorvald",
+			new Conditions(true, LogicType.OR,
 			thorvaldAsked,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>warrior<col=000080> is looking for a <col=800000>champions token<col=000080>..."));
-		talkedToManniForSigmund = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>warrior<col=000080> is looking for a <col=800000>champions token<col=000080>..."))
+		);
+
+		talkedToManniForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundmanni",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That's all."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."));
-		talkedToThoraForSigmund = new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."))
+		);
+
+		talkedToThoraForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundthora",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "cash. You should go ask him"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is " +
 				"<col=800000>some money<col=000080>!"),
-			new WidgetTextRequirement(119, 3, true, "<col=800000>Thora"));
+			new WidgetTextRequirement(119, 3, true, "<col=800000>Thora")
+			));
 
 		// TODO: No gz message
-		finishedSigmundTask = new Conditions(true, LogicType.OR,
+		finishedSigmundTask = new RuneliteRequirement(configManager, "fremmytrialssigmundfinished",
+			new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the Merchant's Trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Merchant's vote"));
+			new WidgetTextRequirement(119, 3, true, "I now have the Merchant's vote")));
 
 		syncedSigmund = new Conditions(LogicType.OR, getFlower, talkedToSailor, talkedToOlafForSigmund, talkedToYsra, talkedToBrundtForSigmund, talkedToSigliForSigmund, talkedToSkulgrimenForSigmund,
 			talkedToFishermanForSigmund, talkedToSwensenForSigmund, talkedToPeerForSigmund, talkedToThorvaldForSigmund, talkedToManniForSigmund, talkedToThoraForSigmund);
 
-		talkedToAskeladdenForSigmund = new ItemRequirements(promissoryNote);
 		noRockAskeladdenNearby = new NpcCondition(NpcID.ASKELADDEN);
 
-		hasPromissoryNote = new ItemRequirements(promissoryNote);
-		hasLegendaryCocktail = new ItemRequirements(legendaryCocktail);
-		hasChampionsToken = new ItemRequirements(championsToken);
-		hasWarriorsContract = new ItemRequirements(warriorsContract);
-		hasWeatherForecast = new ItemRequirements(weatherForecast);
-		hasSeaFishingMap = new ItemRequirements(seaFishingMap);
-		hasUnusualFish = new ItemRequirements(unusualFish);
-		hasCustomBowString = new ItemRequirements(customBowString);
-		hasTrackingMap = new ItemRequirements(trackingMap);
-		hasFiscalStatement = new ItemRequirements(fiscalStatement);
-		hasSturdyBoots = new ItemRequirements(sturdyBoots);
-		hasBallad = new ItemRequirements(ballad);
-		hasExoticFlower = new ItemRequirements(exoticFlower);
-
 		inKoscheiRoom = new ZoneRequirement(koscheiRoom);
-		talkedToThorvald = new Conditions(true, LogicType.OR,
+		talkedToThorvald = new RuneliteRequirement(configManager, "fremmytrialsthorvaldstarted",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hahahahaha! I'm beginning"),
-			new WidgetTextRequirement(119, 3, true, "Warrior<col=000080> will vote for me if"));
+			new WidgetTextRequirement(119, 3, true, "Warrior<col=000080> will vote for me if"))
+		);
 
 		koschei1Near = new NpcCondition(NpcID.KOSCHEI_THE_DEATHLESS);
 		koschei2Near = new NpcCondition(NpcID.KOSCHEI_THE_DEATHLESS_3898);
@@ -544,13 +588,17 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		syncedThorvald = new Conditions(talkedToThorvald);
 
-		finishedThorvaldTask = new Conditions(true, LogicType.OR,
+		finishedThorvaldTask = new RuneliteRequirement(configManager, "fremmytrialsthorvaldfinished",
+			new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the warrior's trial!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Warrior's vote"));
+			new WidgetTextRequirement(119, 3, true, "I now have the Warrior's vote"))
+		);
 
-		talkedToSwensen = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, true, "A maze? Is that all?"),
-			new WidgetTextRequirement(119, 3, true, "Navigator<col=000080> will vote for me if"));
+		talkedToSwensen = new RuneliteRequirement(configManager, "fremmytrialsswensenstarted",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "A maze? Is that all?"),
+			new WidgetTextRequirement(119, 3, true, "Navigator<col=000080> will vote for me if"))
+		);
 
 		inSwensenRoom1 = new ZoneRequirement(swensenRoom1);
 		inSwensenRoom2 = new ZoneRequirement(swensenRoom2);
@@ -563,62 +611,43 @@ public class TheFremennikTrials extends BasicQuestHelper
 		inSwensenArea = new ZoneRequirement(swensenArea);
 
 		syncedSwensen = new Conditions(talkedToSwensen);
-		finishedSwensenTask = new Conditions(true, LogicType.OR,
+		finishedSwensenTask = new RuneliteRequirement(configManager, "fremmytrialswensenfinished",
+			new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Outerlander! You have finished my maze!"),
-			new WidgetTextRequirement(119, 3, true, "I now have the Navigator's vote"));
+			new WidgetTextRequirement(119, 3, true, "I now have the Navigator's vote"))
+		);
 
 		/* Peer Task */
 
-		talkedToPeer = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, true, "I have one small question"),
-			new WidgetTextRequirement(119, 3, true, "Seer<col=000080> will vote for me if"));
+		talkedToPeer = new RuneliteRequirement(configManager, "fremmytrialpeerstarted",
+			new Conditions(true, LogicType.OR,
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "I have one small question"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "So I can bring nothing with me when I enter your<br>house?"),
+			new WidgetTextRequirement(119, 3, true, "Seer<col=000080> will vote for me if")));
 
-		isMind = new WidgetTextRequirement(229, 1, "My first is in mage");
-		isTree = new WidgetTextRequirement(229, 1, "My first is in tar");
-		isLife = new WidgetTextRequirement(229, 1, "My first is in well");
-		isFire = new WidgetTextRequirement(229, 1, "My first is in fish");
-		isTime = new WidgetTextRequirement(229, 1, "My first is in water");
-		isWind = new WidgetTextRequirement(229, 1, "My first is in wizard");
+		isMind = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in mage"));
+		isTree = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in tar"));
+		isLife = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in well"));
+		isFire = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in fish"));
+		isTime = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in water"));
+		isWind = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in wizard"));
 
 		inPeerEntrance = new ZoneRequirement(peerEntrance);
 		inPeerUpstairs = new ZoneRequirement(peerUpstairs);
 		inPeerExit = new ZoneRequirement(peerExit);
 		hasSolvedDoor = new ChatMessageRequirement("You have solved the riddle!");
 
-		hasRedHerring = new ItemRequirements(redHerring);
-		hasWoodenDisk = new ItemRequirements(woodenDisk);
-		hasRedDiskOld = new ItemRequirements(redDiskOld);
-		hasRedDiskNew = new ItemRequirements(redDiskNew);
-		hasStickyRedGoop = new ItemRequirements(stickyRedGoop);
-
 		cupboardOpen = new ObjectCondition(ObjectID.CUPBOARD_4178);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_4168, new WorldPoint(2635, 3660, 2));
 		trapDoorOpen = new ObjectCondition(ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2));
 
 		/* Currently does not capture the case a user uses a disk, then logs out */
-		hasUsedDisk = new ChatMessageRequirement("You put the red disk into the empty hole on the mural.", "You've already put the red disk into the empty hole on the mural.");
+		hasUsedDisk = new RuneliteRequirement(configManager, "fremmytrialsuseddisk",
+			new ChatMessageRequirement("You put the red disk into the empty hole on the mural.", "You've already put the red disk into the empty hole on the mural.")
+		);
 		muralHasDisks = new ObjectCondition(ObjectID.ABSTRACT_MURAL_4180);
-		hasEmptyBucket = new ItemRequirements(emptyBucket);
-		hasFullBucket = new ItemRequirements(fullBucket);
-		hasBucket45 = new ItemRequirements(bucket45);
-		hasBucket35 = new ItemRequirements(bucket35);
-		hasBucket25 = new ItemRequirements(bucket25);
-		hasBucket15 = new ItemRequirements(bucket15);
-		hasAnyBucket = new Conditions(LogicType.OR, hasBucket15, hasBucket25, hasBucket35, hasBucket45, hasFullBucket, hasEmptyBucket);
-		hasEmptyJug = new ItemRequirements(emptyJug);
-		hasFullJug = new ItemRequirements(fullJug);
-		hasJug23 = new ItemRequirements(jug23);
-		hasJug13 = new ItemRequirements(jug13);
-		hasAnyJug = new Conditions(LogicType.OR, hasJug13, hasJug23, hasEmptyJug, hasFullJug);
-		hasVase = new ItemRequirements(vase);
-		hasVaseLid = new ItemRequirements(vaseLid);
-		hasFilledVase = new ItemRequirements(filledVase);
-		hasFilledVaseWithLid = new ItemRequirements(filledVaseWithLid);
-		hasVaseWithLidWrong = new ItemRequirements(vaseWithLidWrong);
-		hasFrozenVase = new ItemRequirements(frozenVase);
-
-		hasFrozenKey = new ItemRequirements(frozenKey);
-		hasSeersKey = new ItemRequirements(seersKey);
+		hasAnyBucket = new Conditions(LogicType.OR, bucket15, bucket25, bucket35, bucket45, fullBucket, emptyBucket);
+		hasAnyJug = new Conditions(LogicType.OR, jug13, jug23, emptyJug, fullJug);
 
 		finishedPeerTask = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "To have solved my puzzle"),
@@ -643,7 +672,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		talkToOlaf.addDialogStep("Ask about becoming a Fremennik");
 		talkToOlaf.addDialogStep("Yes");
 		chopSwayingTree = new ObjectStep(this, ObjectID.SWAYING_TREE, new WorldPoint(2739, 3639, 0), "Go south east of Rellekka and cut a branch from the swaying tree", axe, knife);
-		fletchLyre = new DetailedQuestStep(this, "Use a knife on the branch to make an unstrung lyre", knife, branch);
+		fletchLyre = new DetailedQuestStep(this, "Use a knife on the branch to make an unstrung lyre", knife.highlighted(), branch.highlighted());
 		talkToLalli = new NpcStep(this, NpcID.LALLI, new WorldPoint(2771, 3621, 0), "Talk to Lalli to the south east of Rellekka.");
 		talkToLalli.addDialogStep("Other human?");
 		talkToAskeladdenForRock = new NpcStep(this, NpcID.ASKELADDEN, new WorldPoint(2658, 3660, 0), "Return to Rellekka and talk to Askeladden for a pet rock.");
@@ -651,13 +680,18 @@ public class TheFremennikTrials extends BasicQuestHelper
 		pickVeg = new DetailedQuestStep(this, new WorldPoint(2677, 3652, 0), "Pick a potato, cabbage and onion from the field in south east Rellekka.", cabbage, onion, potato);
 
 		useOnion = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
-			"Return to Lalli and use a onion, cabbage, potato, and pet rock on their stew. You can find the vegetables growing in the south east of Rellekka.", petRock, cabbage, potato, onion);
+			"Return to Lalli and use a onion, cabbage, potato, and pet rock on their stew. " +
+				"You can find the vegetables growing in the south east of Rellekka.",
+			petRock.hideConditioned(petRockInCauldron), cabbage.hideConditioned(cabbageInCauldron),
+			potato.hideConditioned(potatoInCauldron), onion);
 		useOnion.addIcon(ItemID.ONION);
 		useCabbage = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
-			"Use a cabbage on the stew.", petRock, cabbage, potato);
+			"Use a cabbage on the stew.", petRock.hideConditioned(petRockInCauldron),
+			cabbage, potato.hideConditioned(potatoInCauldron));
 		useCabbage.addIcon(ItemID.CABBAGE);
 		usePotato = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
-			"Use a potato on the stew.", petRock, potato);
+			"Use a potato on the stew.", petRock.hideConditioned(petRockInCauldron),
+			potato);
 		usePotato.addIcon(ItemID.POTATO);
 		useRock = new ObjectStep(this, ObjectID.LALLIS_STEW, new WorldPoint(2773, 3624, 0),
 			"Use your pet rock on the stew.", petRock);
@@ -665,24 +699,27 @@ public class TheFremennikTrials extends BasicQuestHelper
 		useOnion.addSubSteps(useCabbage, usePotato, useRock);
 		talkToLaliAfterStew = new NpcStep(this, NpcID.LALLI, new WorldPoint(2771, 3621, 0), "Talk to Lalli for golden wool.");
 		spinWool = new DetailedQuestStep(this, "Spin the golden fleece into wool using a spinning wheel. The closest wheel is in Seers' Village.", goldenFleece);
-		makeLyre = new DetailedQuestStep(this, "Use the golden wool on your unstrung lyre.", lyreUnstrung, goldenWool);
+		makeLyre = new DetailedQuestStep(this, "Use the golden wool on your unstrung lyre.", lyreUnstrung.highlighted(), goldenWool.highlighted());
 		enchantLyre = new ObjectStep(this, ObjectID.STRANGE_ALTAR, new WorldPoint(2626, 3598, 0), "Bring your lyre to the Strange Altar south west of Rellekka, and use either a raw shark, raw sea turtle or raw manta ray on it.", lyre, rawShark);
 		enchantLyre.addIcon(ItemID.RAW_SHARK);
-		performMusic = new DetailedQuestStep(this, new WorldPoint(2658, 3683, 0), "Return to Rellekka and enter the longhall's stage to perform. Once on stage, play the enchanted lyre.", enchantedLyre);
+		performMusic = new DetailedQuestStep(this, new WorldPoint(2658, 3683, 0), "Return to Rellekka and enter the longhall's stage to perform. Once on stage, play the enchanted lyre.", enchantedLyre.highlighted());
 
 		/* Manni Task */
 		talkToManni = new NpcStep(this, NpcID.MANNI_THE_REVELLER, new WorldPoint(2658, 3675, 0), "Talk to Manni the Reveller in the Rellekka longhall.");
-		talkToManni.addDialogStep("Ask about becoming a Fremennik");
-		pickUpBeer = new DetailedQuestStep(this, new WorldPoint(2658, 3676, 0), "Get some beer. There is beer tankard in the Rellekka longhall.", beer);
+		talkToManni.addDialogSteps("Ask about becoming a Fremennik", "Yes");
+		pickUpBeer = new DetailedQuestStep(this, new WorldPoint(2658, 3676, 0),
+			"Get some beer. There is beer tankard in the Rellekka longhall.", beer);
 		getStrangeObject = new NpcStep(this, NpcID.COUNCIL_WORKMAN, new WorldPoint(2654, 3593, 0), "Give the Council workman on the bridge south of Rellekka going to Seer's Village a beer.", beer);
 		getStrangeObject.addIcon(ItemID.BEER_TANKARD);
+		getStrangeObject.addDialogSteps("Yes");
 		getAlcoholFreeBeer = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2695, 3491, 0), "Buy some alcohol free beer from the Poison Salesman in the Seer's Village pub.", coins250);
 		getAlcoholFreeBeer.addDialogStep("Talk about the Fremennik Trials");
 		getAlcoholFreeBeer.addDialogStep("Yes");
 
 		prepareToUseStrangeObject = new DetailedQuestStep(this, new WorldPoint(2664, 3674, 0), "Return to Rellekka with the strange object, a tinderbox, and low alcohol beer.", strangeObject, tinderbox, alcoholFreeBeer);
 		useStrangeObject = new ObjectStep(this, ObjectID.PIPE_4162, new WorldPoint(2663, 3674, 0), "Use a tinderbox on the strange object then use it on the nearby pipe.", strangeObject, tinderbox);
-		useStrangeObjectOnPipe = new ObjectStep(this, ObjectID.PIPE_4162, new WorldPoint(2663, 3674, 0), "Use the lit strange object on the nearby pipe!", litStrangeObject);
+		useStrangeObjectOnPipe = new ObjectStep(this, ObjectID.PIPE_4162, new WorldPoint(2663, 3674, 0),
+			"Use the lit strange object on the nearby pipe!", litStrangeObject.highlighted());
 		useStrangeObjectOnPipe.addIcon(ItemID.LIT_STRANGE_OBJECT);
 		useStrangeObject.addSubSteps(useStrangeObjectOnPipe);
 		getKegOfBeer = new DetailedQuestStep(this, new WorldPoint(2660, 3676, 0), "Pick up a keg of beer in the longhall.", kegOfBeer);
@@ -748,7 +785,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		bringWarriorsContractToPeer.addDialogStep("Ask about the Merchant's trial");
 		bringWeatherForecastToSwensen = new NpcStep(this, NpcID.SWENSEN_THE_NAVIGATOR, new WorldPoint(2646, 3660, 0), "Bring the weather forecast to Swensen the Navigator in his hut south west of the longhall.", weatherForecast);
 		bringWeatherForecastToSwensen.addDialogStep("Ask about the Merchant's trial");
-		bringSeaFishingMapToFisherman = new NpcStep(this, NpcID.FISHERMAN, new WorldPoint(2641, 3699, 0), "Bring the sea fishing map to the Fisherman on the peer north of the market.", seaFishingMap);
+		bringSeaFishingMapToFisherman = new NpcStep(this, NpcID.FISHERMAN, new WorldPoint(2641, 3699, 0), "Bring the sea fishing map to the Fisherman on the pier north of the market.", seaFishingMap);
 		bringSeaFishingMapToFisherman.addDialogStep("Ask about the Merchant's trial");
 		bringUnusualFishToSkulgrimen = new NpcStep(this, NpcID.SKULGRIMEN, new WorldPoint(2663, 3692, 0), "Bring the unusual fish to Skulgrimen north of the longhall.", unusualFish);
 		bringUnusualFishToSkulgrimen.addDialogStep("Ask about the Merchant's trial");
@@ -802,18 +839,12 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		enterCode = new DetailedQuestStep(this, "Enter the solution to Peer's door.");
 
-		inputMind = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'MIND' into the door's combination lock.");
-		inputMind.addDialogStep("Solve the riddle");
-		inputTree = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'TREE' into the door's combination lock.");
-		inputTree.addDialogStep("Solve the riddle");
-		inputLife = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'LIFE' into the door's combination lock.");
-		inputLife.addDialogStep("Solve the riddle");
-		inputFire = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'FIRE' into the door's combination lock.");
-		inputFire.addDialogStep("Solve the riddle");
-		inputTime = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'TIME' into the door's combination lock.");
-		inputTime.addDialogStep("Solve the riddle");
-		inputWind = new ObjectStep(this, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0), "Enter 'WIND' into the door's combination lock.");
-		inputWind.addDialogStep("Solve the riddle");
+		inputMind = new CombinationPuzzle(this, "MIND");
+		inputTree = new CombinationPuzzle(this, "TREE");
+		inputLife = new CombinationPuzzle(this, "LIFE");
+		inputFire = new CombinationPuzzle(this, "FIRE");
+		inputTime = new CombinationPuzzle(this, "TIME");
+		inputWind = new CombinationPuzzle(this, "WIND");
 		enterCode.addSubSteps(inputMind, inputTree, inputLife, inputFire, inputTime, inputWind);
 
 		goUpEntranceLadderPeer = new ObjectStep(this, ObjectID.LADDER_4163, new WorldPoint(2631, 3663, 0), "Go up the ladder.");
@@ -883,6 +914,17 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> reqs = new ArrayList<>();
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 25, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 40, true));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+
+		return reqs;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
@@ -923,6 +965,37 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.AGILITY, 2812),
+				new ExperienceReward(Skill.ATTACK, 2812),
+				new ExperienceReward(Skill.CRAFTING, 2812),
+				new ExperienceReward(Skill.DEFENCE, 2812),
+				new ExperienceReward(Skill.FISHING, 2812),
+				new ExperienceReward(Skill.FLETCHING, 2812),
+				new ExperienceReward(Skill.HITPOINTS, 2812),
+				new ExperienceReward(Skill.STRENGTH, 2812),
+				new ExperienceReward(Skill.THIEVING, 2812),
+				new ExperienceReward(Skill.WOODCUTTING, 2812));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Miscellania, Etceteria, Neitiznot, Jatizso and the facilities of Rellekka."),
+				new UnlockReward("Ability to wear and purchase Fremmennik Helms"),
+				new UnlockReward("Free travel to Waterbirth Island"));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -936,7 +1009,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		PanelDetails manniPanel = new PanelDetails("Manni's task",
 			Arrays.asList(talkToManni, pickUpBeer, getStrangeObject, getAlcoholFreeBeer, prepareToUseStrangeObject,
-				useStrangeObject, cheatInBeerDrinking), tinderbox, coins250);
+				useStrangeObject, getKegOfBeer, useAlcoholFreeOnKeg, cheatInBeerDrinking), tinderbox, coins250);
 		manniPanel.setLockingStep(manniTask);
 		manniPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 

@@ -46,6 +46,10 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -86,14 +90,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	QuestStep makeKarambwanjiPaste, usePasteOnSpear, usePestleOnKarambwan, usePasteOnBones, getPoisonKarambwan,
 	goOnHuntToKill, askAboutResearch, useVesselOnTinsay;
 
-	Requirement startedQuestDuringSession, syncedState, hasKarambwaji, inTimfrakusHut, inLufubuZone, givenKarambwanji,
+	Requirement startedQuestDuringSession, syncedState, inTimfrakusHut, inLufubuZone, givenKarambwanji,
 		vesselOnGround,	talkedToTiadeche, givenVessel, bonesNearby, corpseNearby, wentOnHunt, givenPotion, givenSpear,
 		burningBonesNearby, burntBonesNearby, hadAtLeastRawKarambwan, hadRumWithBanana, hadSeaweed, hadMarinated,
-		haveCookedJogreBones, havePoisonSpear, haveBurntBones, haveMonkeySkin, haveSeaweedSandwich, inCairnIsle,
-		haveCraftingManual, defeatedBeast, talkedTinsay1, givenRum, givenSandwich, givenBones, hadSeaweedSandwich,
+		defeatedBeast, talkedTinsay1, givenRum, givenSandwich, givenBones, hadSeaweedSandwich,
 		beenAskedToResearchVessel, hadManual;
 
-	Zone timfrakusHut, lubufuZone, cairnIsleZone;
+	Zone timfrakusHut, lubufuZone;
 
 	WorldPoint lubufuWorldPoint, timfrakuHutWorldPoint;
 
@@ -117,12 +120,9 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		ConditionalStep coreQuest = new ConditionalStep(this, fishKarambwaji);
 		coreQuest.addStep(hadManual, goToTiadecheFinal);
-		coreQuest.addStep(new Conditions(beenAskedToResearchVessel, defeatedBeast, givenBones),
-			useVesselOnTinsay);
-		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, hadMarinated, hadSeaweedSandwich),
-			talkToTinsay);
-		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, haveMonkeySkin),
-			makeSeaweedSandwich);
+		coreQuest.addStep(new Conditions(beenAskedToResearchVessel, defeatedBeast, givenBones), useVesselOnTinsay);
+		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, hadMarinated, hadSeaweedSandwich), talkToTinsay);
+		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeySkin), makeSeaweedSandwich);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated, monkeyCorpse), useCorpseOnTamayu);
 		coreQuest.addStep(new Conditions(hadRumWithBanana, beenAskedToResearchVessel, defeatedBeast, hadSeaweed, hadMarinated,
 				corpseNearby), pickupCorpse);
@@ -190,9 +190,9 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	private void setupSteps()
 	{
 		goToTimfrakuLadder = new ObjectStep(this, ObjectID.LADDER_16683, timfrakuHutWorldPoint,
-			"Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
+			"Talk to Timfraku upstairs in his house in Tai Bwo Wannai.");
 
-		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk Timfraku upstairs in his house in Tai Bwo Wannai.");
+		talkToTimfrakuStart = new NpcStep(this, NpcID.TIMFRAKU, "Talk to Timfraku upstairs in his house in Tai Bwo Wannai.");
 		talkToTimfrakuStart.addDialogSteps("I am a roving adventurer.", "I am a travelling explorer.", "I am a " +
 			"wandering wayfarer.", "Who me? Oh I'm just a nobody.");
 		talkToTimfrakuStart.addDialogStep("Trufitus sent me.");
@@ -205,7 +205,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		fishKarambwaji = new NpcStep(this, NpcID.FISHING_SPOT_4710, new WorldPoint(2791,3019,0),
 			"Using your small fishing net, catch atleast 23 raw karambwanji just south of Tai Bwo Wannai.", smallFishingNet);
 
-		goToLubufu = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint, "Go to Brimhaven and talk to Lubufu." +
+		goToLubufu = new NpcStep(this, NpcID.LUBUFU, lubufuWorldPoint, "Go to Brimhaven and talk to Lubufu. " +
 			"You have to talk to him multiple times. You'll need to ask him twice about what he does, then talk to " +
 			"him to give him the karambwanji.", karambwanji.quantity(20));
 		goToLubufu.addDialogStep("Talk about him...");
@@ -323,7 +323,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			"sandwich.", seaweed.highlighted(), monkeySkin.highlighted());
 
 		talkToTinsay = new NpcStep(this, NpcID.TINSAY, new WorldPoint(2764, 2975, 0),
-			"Talk to Tinsay on Carin Isle west of Shilo Village, south of fairy ring CKR. Keep talking to him, giving" +
+			"Talk to Tinsay on Cairn Isle west of Shilo Village, south of fairy ring CKR. Keep talking to him, giving" +
 				" him the items he asks for.");
 		talkToTinsay.addDialogStep("Yes.");
 
@@ -348,7 +348,6 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	private void setupConditions()
 	{
 		inTimfrakusHut = new ZoneRequirement(timfrakusHut);
-		hasKarambwaji = new ItemRequirements(karambwanji);
 		inLufubuZone = new ZoneRequirement(lubufuZone);
 
 		startedQuestDuringSession = new Conditions(true,
@@ -404,7 +403,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "<str>I have increased his agility to match the Shaikahan's.")
 		);
 		givenSpear = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(217, 4, "Tamayu, try using this weapon."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Tamayu, try using this weapon."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
 		);
@@ -450,7 +449,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		talkedTinsay1 = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "<col=000080>He requires <col=800000>banana in Karamja " +
 				"rum<col=000080> to repair the tribal"),
-			new WidgetTextRequirement(217, 4, "And you're going to use this to repair the"),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "And you're going to use this to repair the"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hmm ... I think I need banana in Karamjan rum.")
 		);
 
@@ -459,21 +458,12 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
 			new WidgetTextRequirement(119, 3, true, "<str>retrieved crafting instructions for Tiadeche.")
 		);
-
-		haveCookedJogreBones = new ItemRequirements(marinatedJogreBones);
-		havePoisonSpear = new ItemRequirements(poisonedSpear);
-		haveBurntBones = new ItemRequirements(burntJogreBones);
-		haveMonkeySkin = new ItemRequirements(monkeySkin);
-		haveSeaweedSandwich = new ItemRequirements(seaweedSandwich);
-		inCairnIsle = new ZoneRequirement(cairnIsleZone);
-		haveCraftingManual = new ItemRequirements(craftingManual);
 	}
 
 	private void setupZones()
 	{
 		timfrakusHut = new Zone(new WorldPoint(2778,3084,1), new WorldPoint(2786, 3090,1));
 		lubufuZone = new Zone(new WorldPoint(2759,3173,0), new WorldPoint(2780,3162,0));
-		cairnIsleZone = new Zone(new WorldPoint(2747, 2992, 0), new WorldPoint(2774, 2963, 0));
 	}
 
 	private void setupItemRequirements()
@@ -489,10 +479,11 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET);
 		pestleAndMortar = new ItemRequirement("Pestle And Mortar", ItemID.PESTLE_AND_MORTAR);
 		logsForFire = new ItemRequirement("Any logs to make a fire", ItemCollections.getLogsForFire());
-		spear = new ItemRequirement("Iron spear or better", ItemID.IRON_SPEAR);
+		spear = new ItemRequirement("Iron spear or better (You will lose the spear)", ItemID.IRON_SPEAR);
+		spear.setTooltip("Bone and black spear does NOT work");
 		spear.addAlternates(ItemID.STEEL_SPEAR, ItemID.MITHRIL_SPEAR, ItemID.ADAMANT_SPEAR, ItemID.RUNE_SPEAR,
 			ItemID.DRAGON_SPEAR);
-		poisonedSpear = new ItemRequirement("Any iron spear or better (kp)", ItemID.IRON_SPEARKP);
+		poisonedSpear = new ItemRequirement("Iron spear or better (kp) (You will lose the spear)", ItemID.IRON_SPEARKP);
 		poisonedSpear.addAlternates(ItemID.STEEL_SPEARKP, ItemID.MITHRIL_SPEARKP, ItemID.ADAMANT_SPEARKP, ItemID.RUNE_SPEARKP,
 			ItemID.DRAGON_SPEARKP);
 
@@ -515,7 +506,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
 		karambwanji = new ItemRequirement("Or More Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
 		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		poisonKarambwan = new ItemRequirement("Poison karambwan", ItemID.POISON_KARAMBWAN);
 		karambwanjiPaste = new ItemRequirement("Karambwanji paste", ItemID.KARAMBWANJI_PASTE);
 
@@ -561,10 +552,42 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.JUNGLE_POTION, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 30, false));
 		req.add(new SkillRequirement(Skill.AGILITY, 15, false));
 		req.add(new SkillRequirement(Skill.COOKING, 30, false));
 		req.add(new SkillRequirement(Skill.FISHING, 5, false));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 5000),
+				new ExperienceReward(Skill.FISHING, 5000),
+				new ExperienceReward(Skill.ATTACK, 2500),
+				new ExperienceReward(Skill.STRENGTH, 2500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("2,000 Coins", ItemID.COINS_995, 2000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to catch and cook Karambwans"),
+				new UnlockReward("Ability to use Tai Bwo Wannai teleport scrolls"),
+				new UnlockReward("Ability to complete the smithing section of Barbarian Training"));
 	}
 
 	@Override

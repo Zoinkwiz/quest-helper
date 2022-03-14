@@ -32,6 +32,8 @@ public enum ExternalQuestResources {
     X_MARKS_THE_SPOT("https://oldschool.runescape.wiki/w/X_Marks_the_Spot"),
 
 	//Members' Quests
+	A_KINGDOM_DIVIDED("https://oldschool.runescape.wiki/w/A_Kingdom_Divided"),
+	A_NIGHT_AT_THE_THEATRE("https://oldschool.runescape.wiki/w/A_Night_at_the_Theatre"),
 	ANIMAL_MAGNETISM("https://oldschool.runescape.wiki/w/Animal_Magnetism"),
 	ANOTHER_SLICE_OF_HAM("https://oldschool.runescape.wiki/w/Another_Slice_of_H.A.M."),
 	THE_ASCENT_OF_ARCEUUS("https://oldschool.runescape.wiki/w/The_Ascent_of_Arceuus"),
@@ -185,6 +187,9 @@ public enum ExternalQuestResources {
 	IN_SEARCH_OF_KNOWLEDGE("https://oldschool.runescape.wiki/w/In_Search_of_Knowledge"),
 	DADDYS_HOME("https://oldschool.runescape.wiki/w/Daddy%27s_Home"),
 
+	// Fake miniquests
+	KNIGHT_WAVES_TRAINING_GROUNDS("https://oldschool.runescape.wiki/w/Camelot_training_room"),
+
 	// Achievement diaries
 
 	// Ardougne
@@ -248,10 +253,10 @@ public enum ExternalQuestResources {
 	VARROCK_ELITE("https://oldschool.runescape.wiki/w/Varrock_Diary#Elite"),
 
 	// Western Provinces
-	WESTERNPROVINCES_EASY("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Easy"),
-	WESTERNPROVINCES_MEDIUM("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Medium"),
-	WESTERNPROVINCES_HARD("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Hard"),
-	WESTERNPROVINCES_ELITE("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Elite"),
+	WESTERN_EASY("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Easy"),
+	WESTERN_MEDIUM("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Medium"),
+	WESTERN_HARD("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Hard"),
+	WESTERN_ELITE("https://oldschool.runescape.wiki/w/Western_Provinces_Diary#Elite"),
 
 	// Wilderness
 	WILDERNESS_EASY("https://oldschool.runescape.wiki/w/Wilderness_Diary#Easy"),
@@ -260,7 +265,9 @@ public enum ExternalQuestResources {
 	WILDERNESS_ELITE("https://oldschool.runescape.wiki/w/Wilderness_Diary#Elite"),
 
     // Generic helpers
-	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II");
+	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
+
+	WOODCUTTING("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training");
 
 	ExternalQuestResources()
 	{

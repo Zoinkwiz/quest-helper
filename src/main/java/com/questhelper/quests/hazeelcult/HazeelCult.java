@@ -38,6 +38,9 @@ import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
@@ -52,6 +55,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -200,7 +204,7 @@ public class HazeelCult extends BasicQuestHelper
 	{
 		cultEntrance = new Zone(new WorldPoint(2565, 9679, 0), new WorldPoint(2571, 9685, 0));
 		cultRoom = new Zone(new WorldPoint(2600, 9666, 0), new WorldPoint(2615, 9693, 0));
-     	manorF1 = new Zone(new WorldPoint(2564, 3267, 1), new WorldPoint(2576, 3275, 1));
+		manorF1 = new Zone(new WorldPoint(2564, 3267, 1), new WorldPoint(2576, 3275, 1));
 		manorF2 = new Zone(new WorldPoint(2564, 3267, 2), new WorldPoint(2576, 3275, 2));
 		manorBasement = new Zone(new WorldPoint(2564, 9667, 0), new WorldPoint(2574, 9672, 0));
 	}
@@ -293,7 +297,7 @@ public class HazeelCult extends BasicQuestHelper
 		pickupArmour = new ItemStep(this, "Pickup the armour.", carnilleanArmour);
 		killAlomone.addSubSteps(pickupArmour);
 		returnOnRaftAfterKilling = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2607, 9693, 0),
-		"Return to Ceril Carnillean.", carnilleanArmour);
+			"Return to Ceril Carnillean.", carnilleanArmour);
 		leaveCaveAfterKilling = new ObjectStep(this, ObjectID.STAIRS_2853, new WorldPoint(2571, 9684, 0),
 			"Return to Ceril Carnillean.", carnilleanArmour);
 
@@ -307,7 +311,7 @@ public class HazeelCult extends BasicQuestHelper
 
 		goUpToCupboard = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2569, 3269, 0),
 			"Go upstairs in the house.");
-		searchCupboardForEvidence = new ObjectStep(this, ObjectID.CUPBOARD_2850, new WorldPoint(2574 ,3267, 1),
+		searchCupboardForEvidence = new ObjectStep(this, ObjectID.CUPBOARD_2850, new WorldPoint(2574, 3267, 1),
 			"Search the cupboard in the east room.");
 		((ObjectStep) searchCupboardForEvidence).addAlternateObjects(ObjectID.CUPBOARD_2851);
 		searchCupboardForEvidence.addSubSteps(goUpToCupboard);
@@ -323,6 +327,28 @@ public class HazeelCult extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Alomone (level 13) if taking Ceril's side");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 1500));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("2,000 (2,005 if siding with Ceril) Coins", ItemID.COINS_995, 2000),
+			new ItemReward("Hazeel's mark (if you sided with Hazeel)", ItemID.HAZEELS_MARK),
+			new ItemReward("Carnillean armour (if you sided with Ceril)", ItemID.CARNILLEAN_ARMOUR)
+		);
 	}
 
 	@Override

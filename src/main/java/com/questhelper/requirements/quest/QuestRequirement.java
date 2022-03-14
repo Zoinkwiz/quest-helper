@@ -43,26 +43,29 @@ public class QuestRequirement extends AbstractRequirement
 {
 	private final QuestHelperQuest quest;
 	private final QuestState requiredState;
+	private final Integer minimumVarValue;
 	private String displayText = null;
 
 	/**
 	 * Check if a {@link net.runelite.api.Quest} meets the required {@link QuestState}
 	 *
-	 * @param quest the quest to check
+	 * @param quest         the quest to check
 	 * @param requiredState the required quest state
 	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState)
 	{
 		this.quest = quest;
 		this.requiredState = requiredState;
+		this.minimumVarValue = null;
+		shouldCountForFilter = true;
 	}
 
 	/**
 	 * Check if a {@link net.runelite.api.Quest} meets the required {@link QuestState}.
 	 *
-	 * @param quest the quest to check
+	 * @param quest         the quest to check
 	 * @param requiredState the required quest state
-	 * @param displayText display text
+	 * @param displayText   display text
 	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState, String displayText)
 	{
@@ -70,9 +73,41 @@ public class QuestRequirement extends AbstractRequirement
 		this.displayText = displayText;
 	}
 
+	/**
+	 * Check if a {@link net.runelite.api.Quest} is past the minimum var value
+	 *
+	 * @param quest         the quest to check
+	 * @param minimumVarValue the required quest state
+	 */
+	public QuestRequirement(QuestHelperQuest quest, int minimumVarValue)
+	{
+		this.quest = quest;
+		this.requiredState = null;
+		this.minimumVarValue = minimumVarValue;
+		shouldCountForFilter = true;
+	}
+
+	/**
+	 * Check if a {@link net.runelite.api.Quest} is past the minimum var value
+	 *
+	 * @param quest         the quest to check
+	 * @param minimumVarValue the required quest state
+	 * @param displayText   display text
+	 */
+	public QuestRequirement(QuestHelperQuest quest, int minimumVarValue, String displayText)
+	{
+		this(quest, minimumVarValue);
+		this.displayText = displayText;
+	}
+
 	@Override
 	public boolean check(Client client)
 	{
+		if (minimumVarValue != null)
+		{
+			return quest.getVar(client) >= minimumVarValue;
+		}
+
 		QuestState state = quest.getState(client);
 		if (requiredState == QuestState.IN_PROGRESS && state == QuestState.FINISHED)
 		{
@@ -89,6 +124,10 @@ public class QuestRequirement extends AbstractRequirement
 			return displayText;
 		}
 		String text = Character.toUpperCase(requiredState.name().charAt(0)) + requiredState.name().toLowerCase(Locale.ROOT).substring(1);
+		if (requiredState == QuestState.IN_PROGRESS)
+		{
+			text = "Started ";
+		}
 		return text.replaceAll("_", " ") + " " + quest.getName();
 	}
 }

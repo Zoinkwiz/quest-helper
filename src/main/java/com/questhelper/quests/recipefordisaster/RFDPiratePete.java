@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -43,17 +42,18 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -73,8 +73,7 @@ public class RFDPiratePete extends BasicQuestHelper
 
 	WeightRequirement canSwim;
 
-	Requirement inDiningRoom, askedCookOptions, inUnderWater, hasEnoughRocks, has5Hide, hasCrabMeat, hasKelp, hasGroundKelp, hasGroundCrabMeat,
-		walkingUnderwater, hasCake, hasRawCake, hasGroundCod, hasBreadcrumbs;
+	Requirement inDiningRoom, askedCookOptions, inUnderWater, hasEnoughRocks, hasCrabMeat, hasKelp, walkingUnderwater;
 
 	QuestStep enterDiningRoom, inspectPete, enterKitchen, usePestleOnCod, useKnifeOnBread, talkToMurphy, talkToMurphyAgain, goDiving,
 		pickKelp, talkToNung, pickUpRocks, enterCave, killMudksippers5, returnToNung, talkToNungAgain, giveNungWire, killCrab, grindKelp, grindCrab, climbAnchor,
@@ -113,7 +112,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		steps.put(40, goTalkToNung);
 
 		ConditionalStep goGetHides = new ConditionalStep(this, goDiving);
-		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, has5Hide), returnToNung);
+		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, mudskipperHide5), returnToNung);
 		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, walkingUnderwater), killMudksippers5);
 		goGetHides.addStep(new Conditions(hasKelp, inUnderWater, hasEnoughRocks), enterCave);
 		goGetHides.addStep(new Conditions(hasKelp, inUnderWater), pickUpRocks);
@@ -131,25 +130,25 @@ public class RFDPiratePete extends BasicQuestHelper
 		steps.put(70, goBringNungWire);
 
 		ConditionalStep goLearnHowToMakeFishCake = new ConditionalStep(this, goDivingAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasCake, inDiningRoom), useCakeOnPete);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasCake), enterDiningRoomAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasRawCake), cookCake);
+		goLearnHowToMakeFishCake.addStep(new Conditions(fishCake, inDiningRoom), useCakeOnPete);
+		goLearnHowToMakeFishCake.addStep(new Conditions(fishCake.alsoCheckBank(questBank)), enterDiningRoomAgain);
+		goLearnHowToMakeFishCake.addStep(new Conditions(rawFishCake.alsoCheckBank(questBank)), cookCake);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, hasCrabMeat, inUnderWater), climbAnchor);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, inUnderWater, hasEnoughRocks), killCrab);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, inUnderWater), pickUpRocksAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasGroundKelp, hasGroundCrabMeat, hasGroundCod, hasBreadcrumbs), talkToCookAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasGroundKelp, hasGroundCrabMeat, hasGroundCod), useKnifeOnBread);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasGroundKelp, hasGroundCrabMeat), usePestleOnCod);
-		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, hasGroundCrabMeat), grindKelp);
+		goLearnHowToMakeFishCake.addStep(new Conditions(groundKelpHighlighted, groundCrabMeatHighlighted, groundCod, breadcrumbs), talkToCookAgain);
+		goLearnHowToMakeFishCake.addStep(new Conditions(groundKelpHighlighted, groundCrabMeatHighlighted, groundCod), useKnifeOnBread);
+		goLearnHowToMakeFishCake.addStep(new Conditions(groundKelpHighlighted, groundCrabMeatHighlighted), usePestleOnCod);
+		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, groundCrabMeatHighlighted), grindKelp);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, hasCrabMeat), grindCrab);
 		goLearnHowToMakeFishCake.addStep(inUnderWater, pickKelp);
 		steps.put(80, goLearnHowToMakeFishCake);
 		steps.put(90, goLearnHowToMakeFishCake);
 
 		ConditionalStep savePete = new ConditionalStep(this, useCrabOnKelp);
-		savePete.addStep(new Conditions(hasCake, inDiningRoom), useCakeOnPete);
-		savePete.addStep(new Conditions(hasCake), enterDiningRoomAgain);
-		savePete.addStep(new Conditions(hasRawCake), cookCake);
+		savePete.addStep(new Conditions(fishCake, inDiningRoom), useCakeOnPete);
+		savePete.addStep(new Conditions(fishCake.alsoCheckBank(questBank)), enterDiningRoomAgain);
+		savePete.addStep(new Conditions(rawFishCake), cookCake);
 		steps.put(100, savePete);
 
 		return steps;
@@ -161,16 +160,16 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlighted.setHighlightInInventory(true);
-		rawCodHighlighted = new ItemRequirement("Raw cod", ItemID.RAW_COD);
+		rawCodHighlighted = new ItemRequirement("Raw cod (more if you burn cake)", ItemID.RAW_COD);
 		rawCodHighlighted.setHighlightInInventory(true);
 		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE);
 		knifeHighlighted.setHighlightInInventory(true);
-		breadHighlighted = new ItemRequirement("Bread", ItemID.BREAD);
+		breadHighlighted = new ItemRequirement("Bread (more if you burn cake)", ItemID.BREAD);
 		breadHighlighted.setTooltip("You can make this by using a knife on bread");
 		breadHighlighted.setHighlightInInventory(true);
 		divingAparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS, 1, true);
 		divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET, 1, true);
-		fishBowl = new ItemRequirement("Fish bowl", ItemID.EMPTY_FISHBOWL);
+		fishBowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL);
 		bronzeWire3 = new ItemRequirement("Bronze wire", ItemID.BRONZE_WIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		fishCake = new ItemRequirement("Cooked fishcake", ItemID.COOKED_FISHCAKE);
@@ -186,7 +185,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		crabMeatHighlighted = new ItemRequirement("Crab meat", ItemID.CRAB_MEAT);
 		crabMeatHighlighted.addAlternates(ItemID.CRAB_MEAT_7519);
 		crabMeatHighlighted.setHighlightInInventory(true);
-		groundCrabMeatHighlighted = new ItemRequirement("Ground kelp", ItemID.GROUND_CRAB_MEAT);
+		groundCrabMeatHighlighted = new ItemRequirement("Ground crab meat", ItemID.GROUND_CRAB_MEAT);
 		groundCrabMeatHighlighted.setTooltip("You will need to kill another underwater crab and grind its meat");
 		groundCrabMeatHighlighted.setHighlightInInventory(true);
 		groundKelpHighlighted = new ItemRequirement("Ground kelp", ItemID.GROUND_KELP);
@@ -221,15 +220,8 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		hasEnoughRocks = new VarbitRequirement(1869, 5);
 
-		has5Hide = new ItemRequirements(mudskipperHide5);
-		hasGroundCrabMeat = new ItemRequirements(groundCrabMeatHighlighted);
-		hasCrabMeat = new Conditions(LogicType.OR, new ItemRequirements(crabMeat), hasGroundCrabMeat);
-		hasGroundKelp = new ItemRequirements(groundKelpHighlighted);
-		hasKelp = new Conditions(LogicType.OR, new ItemRequirements(kelp), hasGroundKelp);
-		hasCake = new ItemRequirements(fishCake);
-		hasRawCake = new ItemRequirements(rawFishCake);
-		hasGroundCod = new ItemRequirements(groundCod);
-		hasBreadcrumbs = new ItemRequirements(breadcrumbs);
+		hasCrabMeat = new Conditions(LogicType.OR, crabMeat, groundCrabMeatHighlighted);
+		hasKelp = new Conditions(LogicType.OR, kelp, groundKelpHighlighted);
 
 		generalReqs = new ArrayList<>();
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
@@ -258,7 +250,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		talkToCook = new AskAboutFishCake(this);
 		talkToCook.addSubSteps(enterKitchen);
 		usePestleOnCod = new DetailedQuestStep(this, "Use a pestle and mortar on a raw cod.", pestleHighlighted, rawCodHighlighted);
-		useKnifeOnBread = new DetailedQuestStep(this, "Use a knife on some bread.", knifeHighlighted, breadHighlighted);
+		useKnifeOnBread = new DetailedQuestStep(this, "Use a knife on some bread and make BREADCRUMBS.", knifeHighlighted, breadHighlighted);
 		talkToMurphy = new NpcStep(this, NpcID.MURPHY, new WorldPoint(2664, 3160, 0), "Talk to Murphy in Port Khazard.", fishBowl);
 		talkToMurphy.addDialogStep("Talk about Recipe for Disaster.");
 		talkToMurphyAgain = new NpcStep(this, NpcID.MURPHY, new WorldPoint(2664, 3160, 0), "Talk to Murphy again.", fishBowl);
@@ -304,7 +296,12 @@ public class RFDPiratePete extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(combatGear);
+		ArrayList<ItemRequirement> req = new ArrayList<>();
+		req.add(combatGear);
+		req.add(new ItemRequirement("Teleport to Khazard", ItemID.KHAZARD_TELEPORT));
+		req.add(new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT));
+
+		return req;
 	}
 
 	@Override
@@ -317,6 +314,36 @@ public class RFDPiratePete extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return generalReqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 1000),
+				new ExperienceReward(Skill.CRAFTING, 1000),
+				new ExperienceReward(Skill.FISHING, 1000),
+				new ExperienceReward(Skill.SMITHING, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Diving Apparatus", ItemID.DIVING_APPARATUS, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Mogre Camp"),
+				new UnlockReward("Increased access to the Culinaromancer's Chest"));
 	}
 
 	@Override

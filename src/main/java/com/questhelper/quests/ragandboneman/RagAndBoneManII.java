@@ -45,6 +45,9 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -214,7 +217,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 	private void setupRequirements()
 	{
 		// Required items
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		pots = new ItemRequirement("Pot", ItemID.POT);
 		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
@@ -505,7 +508,8 @@ public class RagAndBoneManII extends BasicQuestHelper
 		enterFremmyDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2123, new WorldPoint(2798, 3615, 0),
 			"Enter the Fremennik Slayer Dungeon.", mirrorShield.equipped());
 		killBasilisk = new NpcStep(this, NpcID.BASILISK_417, new WorldPoint(2743, 10010, 0),
-			"Kill basilisks in the middle of the dungeon.", mirrorShield.equipped(), new SkillRequirement(Skill.SLAYER,
+			"Kill basilisks in the middle of the dungeon.", true, mirrorShield.equipped(),
+			new SkillRequirement(Skill.SLAYER,
 			40,	true));
 		travelToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3685, 0), "Travel to Waterbirth " +
 			"Island.");
@@ -550,7 +554,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 			"Light the logs under the pot-boiler.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
 
-		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned.");
+		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned. You can hop worlds to make this happen instantly.");
 
 		removePot = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
 			"Take the pot from the pot-boiler.");
@@ -878,6 +882,26 @@ public class RagAndBoneManII extends BasicQuestHelper
 	{
 		return Collections.singletonList("If you've handed in any bones to the Odd Old Man, open the quest journal to" +
 			" sync up the helper's state");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.PRAYER, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("A Bonesack", ItemID.BONESACK, 1),
+				new ItemReward("A Ram Skull Helm", ItemID.RAM_SKULL_HELM, 1));
 	}
 
 	@Override

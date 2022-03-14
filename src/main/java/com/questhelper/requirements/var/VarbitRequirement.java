@@ -66,6 +66,7 @@ public class VarbitRequirement extends AbstractRequirement
 		this.operation = operation;
 		this.requiredValue = requiredValue;
 		this.displayText = displayText;
+		shouldCountForFilter = true;
 	}
 
 	/**
@@ -132,6 +133,8 @@ public class VarbitRequirement extends AbstractRequirement
 				text = bitPosition + suffixes[bitPosition % 10];
 		}
 		this.displayText = varbitID + " must have the " + text + " bit set.";
+
+		shouldCountForFilter = true;
 	}
 
 	@Override

@@ -40,17 +40,18 @@ import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -72,8 +73,8 @@ public class KingsRansom extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement ardougneTeleport, camelotTeleport, edgevilleTeleport;
 
-	Requirement hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, hasCriminalsThread, inTrialRoom, handlerInRoom, butlerInRoom,
-		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasLockpickOrHairpin, hasTelegrabItems,
+	Requirement hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, inTrialRoom, handlerInRoom, butlerInRoom,
+		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasTelegrabItems,
 		inBoxWidget, inKeepF0, inKeepF1, inKeepF2, inFortressEntrance, inSecretRoom;
 
 	QuestStep talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, goDownstairsForPaper,
@@ -120,14 +121,14 @@ public class KingsRansom extends BasicQuestHelper
 
 		ConditionalStep trialsSteps = new ConditionalStep(this, talkToAnna);
 		trialsSteps.addStep(new Conditions(askedAboutPoison, askedAboutDagger, askedAboutNight, askedAboutThread), waitForVerdict);
-		trialsSteps.addStep(new Conditions(hasCriminalsThread, askedAboutPoison, askedAboutDagger, askedAboutNight), callAboutThread);
-		trialsSteps.addStep(new Conditions(hasCriminalsThread, askedAboutPoison, askedAboutDagger, maidInRoom), talkToMaidAboutNight);
-		trialsSteps.addStep(new Conditions(hasCriminalsThread, askedAboutPoison, askedAboutDagger), callMaidAboutNight);
-		trialsSteps.addStep(new Conditions(hasCriminalsThread, askedAboutPoison, butlerInRoom), talkToButlerAboutDagger);
-		trialsSteps.addStep(new Conditions(hasCriminalsThread, askedAboutPoison), callButlerAboutDagger);
-		trialsSteps.addStep(new Conditions(hasCriminalsThread, handlerInRoom), talkToHandlerAboutPoison);
-		trialsSteps.addStep(new Conditions(hasCriminalsThread, inTrialRoom), callHandlerAboutPoison);
-		trialsSteps.addStep(hasCriminalsThread, goIntoTrial);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger, askedAboutNight), callAboutThread);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger, maidInRoom), talkToMaidAboutNight);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger), callMaidAboutNight);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, butlerInRoom), talkToButlerAboutDagger);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison), callButlerAboutDagger);
+		trialsSteps.addStep(new Conditions(criminalsThread, handlerInRoom), talkToHandlerAboutPoison);
+		trialsSteps.addStep(new Conditions(criminalsThread, inTrialRoom), callHandlerAboutPoison);
+		trialsSteps.addStep(criminalsThread, goIntoTrial);
 
 		steps.put(30, trialsSteps);
 
@@ -150,7 +151,7 @@ public class KingsRansom extends BasicQuestHelper
 
 		ConditionalStep freeKnights = new ConditionalStep(this, enterStatue);
 		freeKnights.addStep(inPuzzle, solvePuzzle);
-		freeKnights.addStep(new Conditions(inPrison, hasLockpickOrHairpin), useHairClipOnOnDoor);
+		freeKnights.addStep(new Conditions(inPrison, hairclipOrLockpick), useHairClipOnOnDoor);
 		freeKnights.addStep(new Conditions(inPrison, hasTelegrabItems), useGrabOnGuard);
 		freeKnights.addStep(inPrison, getLockpickOrRunes);
 
@@ -215,12 +216,13 @@ public class KingsRansom extends BasicQuestHelper
 		blackKnightHelmWorn = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true);
 
 		animateRock = new ItemRequirement("Animate rock scroll", ItemID.ANIMATE_ROCK_SCROLL);
-		animateRock.setTooltip("If you don't have one, you can get another from Wizard Cromperty in Ardougne");
+		animateRock.setTooltip("If you don't have one, you can get another from Wizard Cromperty in Ardougne during " +
+			"the quest");
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
 
 		telegrab = new ItemRequirements("Telegrab runes", new ItemRequirement("Law rune", ItemID.LAW_RUNE),
-			new ItemRequirements(LogicType.OR, "Air runes or staff", new ItemRequirement("Air runes", ItemCollections.getAirRune(), 5), new ItemRequirement("Air staff", ItemCollections.getAirStaff())));
+			new ItemRequirements(LogicType.OR, "Air runes or staff", new ItemRequirement("Air runes", ItemCollections.getAirRune()), new ItemRequirement("Air staff", ItemCollections.getAirStaff())));
 
 		grabOrLockpick = new ItemRequirements(LogicType.OR, "Runes for telekinetic grab or a lockpick", new ItemRequirement("Lockpick", ItemID.LOCKPICK), telegrab);
 
@@ -260,10 +262,9 @@ public class KingsRansom extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasForm = new Conditions(LogicType.OR, new ItemRequirements(addressForm), new VarbitRequirement(3890, 1));
-		hasScrapPaper = new Conditions(LogicType.OR, new ItemRequirements(scrapPaper), new VarbitRequirement(3891, 1));
-		hasBlackHelm = new Conditions(LogicType.OR, new ItemRequirements(blackHelm), new VarbitRequirement(3892, 1));
-		hasCriminalsThread = new ItemRequirements(criminalsThread);
+		hasForm = new Conditions(LogicType.OR, addressForm, new VarbitRequirement(3890, 1));
+		hasScrapPaper = new Conditions(LogicType.OR, scrapPaper, new VarbitRequirement(3891, 1));
+		hasBlackHelm = new Conditions(LogicType.OR, blackHelm, new VarbitRequirement(3892, 1));
 		inUpstairsManor = new ZoneRequirement(upstairsManor);
 		inDownstairsManor = new ZoneRequirement(downstairsManor, downstairsManor2);
 		inTrialRoom = new ZoneRequirement(trialRoom);
@@ -285,10 +286,8 @@ public class KingsRansom extends BasicQuestHelper
 		askedAboutNight = new VarbitRequirement(3915, 1);
 
 		inPuzzle = new WidgetModelRequirement(588, 1, 27214);
-
-		hasLockpickOrHairpin = new ItemRequirements(hairclipOrLockpick);
-
-		hasTelegrabItems = new Conditions(new ItemRequirements(airRune), new ItemRequirements(lawRune));
+		
+		hasTelegrabItems = new Conditions(airRune, lawRune);
 
 		inBoxWidget = new WidgetModelRequirement(390, 0, 27488);
 	}
@@ -308,8 +307,8 @@ public class KingsRansom extends BasicQuestHelper
 
 		takeForm = new DetailedQuestStep(this, new WorldPoint(2739, 3581, 1), "Pick up the address form.", addressForm);
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_26053, new WorldPoint(2738, 3580, 1), "Search the west bookcase for a black knight helm.");
-		goDownstairsManor = new ObjectStep(this, ObjectID.STAIRCASE_25683, new WorldPoint(2736, 3581, 1), "Return to the guard with the 3 items.");
-		leaveWindow = new ObjectStep(this, NullObjectID.NULL_26123, new WorldPoint(2748, 3577, 0), "Return to the guard with the 3 items.");
+		goDownstairsManor = new ObjectStep(this, ObjectID.STAIRCASE_25683, new WorldPoint(2736, 3581, 1), "Go down the staircase.");
+		leaveWindow = new ObjectStep(this, NullObjectID.NULL_26123, new WorldPoint(2748, 3577, 0), "Step out of the window.");
 		returnToGuard = new NpcStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Return to the guard with the 3 items.");
 		returnToGuard.addDialogSteps("I have proof that the Sinclairs have left.", "I have proof that links the Sinclairs to Camelot.", "I have proof of foul play.");
 
@@ -392,10 +391,13 @@ public class KingsRansom extends BasicQuestHelper
 		talkToCromperty.addAlternateNpcs(NpcID.WIZARD_CROMPERTY_8481);
 		talkToCromperty.addDialogSteps("Chat.");
 
-		enterFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knight Fortress.",
+		enterFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0),
+				"Enter the Black Knight Fortress wearing the bronze med helm and iron chainbody.",
 			bronzeMedWorn, ironChainWorn, blackKnightHelm, blackKnightBody, blackKnightLeg, animateRock, holyGrail, granite);
-		enterWallInFortress = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Enter the secret room.", blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, animateRock, holyGrail, granite);
-		freeArthur = new ObjectStep(this, NullObjectID.NULL_25943, new WorldPoint(1867, 4233, 0), "Free King Arthur.", animateRock, holyGrail, granite);
+		enterWallInFortress = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Enter the secret room wearing the black knight armour.",
+				blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, animateRock, holyGrail, granite);
+		freeArthur = new ObjectStep(this, NullObjectID.NULL_25943, new WorldPoint(1867, 4233, 0), "Free King Arthur " +
+			"by using the animate rock scroll.", animateRock.highlighted(), holyGrail, granite);
 
 		enterFortressAfterFreeing = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knight Fortress.",
 			bronzeMedWorn, ironChainWorn, blackKnightHelm, blackKnightBody, blackKnightLeg);
@@ -435,13 +437,39 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.DEFENCE, 33000),
+				new ExperienceReward(Skill.MAGIC, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("5,000 Experience Lamp (any skill over 50).", ItemID.ANTIQUE_LAMP, 1)); //4447 is Placeholder
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain)));
-		allSteps.add(new PanelDetails("Freeing Anna", Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison, callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial)));
-		allSteps.add(new PanelDetails("Saving Merlin and Knights", Arrays.asList(enterStatue, talkToMerlin, reachForVent, useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable), grabOrLockpick));
-		allSteps.add(new PanelDetails("Saving Arthur", Arrays.asList(talkToCromperty, enterFortress, enterWallInFortress, goDownToArthur, freeArthur, talkToArthur, talkToArthurInCamelot), bronzeMed, ironChain, blackKnightHelm, blackKnightBody, blackKnightLeg, granite));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper,
+			goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain)));
+		allSteps.add(new PanelDetails("Freeing Anna", Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison,
+			callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial)));
+		allSteps.add(new PanelDetails("Saving Merlin and Knights", Arrays.asList(enterStatue, talkToMerlin, reachForVent,
+			useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable, talkToCromperty),
+			grabOrLockpick));
+		allSteps.add(new PanelDetails("Saving Arthur", Arrays.asList(enterFortress, enterWallInFortress, goDownToArthur,
+			freeArthur, talkToArthur, talkToArthurInCamelot), bronzeMed, ironChain, blackKnightHelm, blackKnightBody,
+			blackKnightLeg, granite, animateRock));
 
 		return allSteps;
 	}

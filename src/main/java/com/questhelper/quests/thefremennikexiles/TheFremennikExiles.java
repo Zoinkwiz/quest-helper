@@ -42,6 +42,10 @@ import com.questhelper.requirements.util.ComplexRequirementBuilder;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -74,11 +78,11 @@ import com.questhelper.steps.QuestStep;
 public class TheFremennikExiles extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement combatGear, mirrorShield, kegsOfBeer, moltenGlass, astralRunes, petRock, kegs2Or700Coins,
+	ItemRequirement combatGear, mirrorShield, kegsOfBeer, moltenGlass, astralRunes, petRock, kegs2Or650Coins,
 	fishingOrFlyFishingRod, fremennikShield, iceGloves, hammer, glassblowingPipe, pickaxe, sealOfPassage, coins150kOrCharos;
 
 	//Items Recommended
-	ItemRequirement food, rellekkaTeleport, coins700;
+	ItemRequirement food, rellekkaTeleport, coins650, restorePot;
 
 	ItemRequirement letter, fang, venomGland, lunarOre, lunarBar, lunarGlass, moltenGlassI, sigil, sigilE,
 	polishedRock, vShield, runeThrowingaxeOrFriend;
@@ -149,6 +153,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		goMakeGlass.addStep(moltenGlassI, makeLunarGlass);
 		goMakeGlass.addStep(inYagaHouse, talkToYaga);
 		goMakeGlass.setLockingCondition(lunarGlass);
+		goMakeGlass.setBlocker(true);
 
 		goMakeSigil = new ConditionalStep(this, enterMine);
 		goMakeSigil.addStep(sigil, talkToFossegrimen);
@@ -238,6 +243,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		restorePot = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
+		restorePot.setTooltip("Highly recommended to make up for mistakes");
 
 		runeThrowingaxeOrFriend = new ItemRequirement("Rune thrownaxe, or a friend to help enter Waterbirth Isle " +
 			"Dungeon",
@@ -249,15 +256,13 @@ public class TheFremennikExiles extends BasicQuestHelper
 			.with(sealOfPassage)
 			.build();
 
-		coins150kOrCharos = new ItemRequirements("Ring of Charos(a) or 150k coins",
+		coins150kOrCharos = new ItemRequirements(LogicType.OR,
+			"Ring of Charos(a) or 150k coins",
 			new ItemRequirement("Ring of Charos(a)", ItemID.RING_OF_CHAROSA),
-			new ItemRequirement("Coins", ItemID.COINS_995, 150000));
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 150000));
 
-		coins700 = new ItemRequirement("Coins", ItemID.COINS_995, 700);
-		kegs2Or700Coins = new ItemRequirements(LogicType.OR,
-			kegsOfBeer.quantity(2),
-			coins700
-		);
+		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
+		kegs2Or650Coins = new ItemRequirements(LogicType.OR, kegsOfBeer.quantity(2), coins650);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		rellekkaTeleport = new ItemRequirement("Rellekka teleports", ItemID.RELLEKKA_TELEPORT, -1);
@@ -331,13 +336,13 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Talk to Brundt in Rellekka's longhall.");
 		talkToBrundt.addDialogSteps("Ask for a quest.", "Yes.");
 		buyKegs = new NpcStep(this, NpcID.THORA_THE_BARKEEP, new WorldPoint(2662, 3673, 0),
-			"Buy 2 kegs of beer from Thora in Rellekka.", coins700);
+			"Buy 2 kegs of beer from Thora in Rellekka.", coins650);
 		talkToFreygerd = new NpcStep(this, NpcID.FREYGERD_3942, new WorldPoint(2668, 3703, 0),
 			"Talk to Freygerd in north Rellekka.", combatGear, mirrorShield.equipped());
 		searchSandpit = new ObjectStep(this, NullObjectID.NULL_4373, new WorldPoint(2668, 3708, 0),
 			"Search the sand pit near Freygerd, ready to fight a basilisk youngling.", combatGear, mirrorShield.equipped());
 		searchSandpitForLetter = new ObjectStep(this, NullObjectID.NULL_4373, new WorldPoint(2668, 3708, 0),
-			"Search the sand pit near Freygerd for a letter.");
+			"Search the sand pit near Freygerd for a letter.", letter.highlighted());
 		killYoungling = new NpcStep(this, NpcID.BASILISK_YOUNGLING, new WorldPoint(2666, 3708, 0),
 			"Defeat the Basilisk Youngling.", combatGear, mirrorShield.equipped());
 		pickupLetter = new ItemStep(this, "Pick up the letter.", letter);
@@ -439,8 +444,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		enterCaveToFight = new ObjectStep(this, NullObjectID.NULL_37433, new WorldPoint(2465, 4012, 0),
 			"Enter the door, ready to fight.", combatGear, vShield.equipped());
 		enterCaveToFight.addDialogStep("Yes.");
-		fightTyphor = new NpcStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor. Protect from " +
-			"Melee until he's half health, then Protect from Magic.", vShield.equipped());
+		fightTyphor = new NpcStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor, who attacks " +
+			"with both Melee and Magic", vShield.equipped());
 		((NpcStep) fightTyphor).addAlternateNpcs(NpcID.TYPHOR_9296);
 
 		PrayerRequirement protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
@@ -459,14 +464,14 @@ public class TheFremennikExiles extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear, mirrorShield, kegs2Or700Coins, moltenGlass, astralRunes.quantity(100), petRock,
+		return Arrays.asList(combatGear, mirrorShield, kegs2Or650Coins, moltenGlass, astralRunes.quantity(100), petRock,
 			runeThrowingaxeOrFriend, fishingOrFlyFishingRod, fremennikShield, iceGloves, hammer, glassblowingPipe, pickaxe, sealOfPassage);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(food, rellekkaTeleport);
+		return Arrays.asList(food, rellekkaTeleport, restorePot);
 	}
 
 	@Override
@@ -495,6 +500,36 @@ public class TheFremennikExiles extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.MOUNTAIN_DAUGHTER, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SLAYER, 15000),
+				new ExperienceReward(Skill.CRAFTING, 15000),
+				new ExperienceReward(Skill.RUNECRAFT, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("V's Shield", ItemID.VS_SHIELD, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Isle of Stone"),
+				new UnlockReward("Ability to kill Basilisk Knights as a slayer task"),
+				new UnlockReward("Ability to craft and equip the Neitiznot faceguard."));
 	}
 
 	@Override

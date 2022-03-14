@@ -32,13 +32,15 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -67,7 +69,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	ItemRequirement varrockTeleport, faladorTeleports, homeTele;
 	ComplexRequirement searchCupboardReq;
 
-	Requirement hasPortrait, hasBluriteOre, hasBluriteSword, inDungeon, inFaladorCastle1, inFaladorCastle2, inFaladorCastle2Bedroom, sirVyinNotInRoom;
+	Requirement inDungeon, inFaladorCastle1, inFaladorCastle2, inFaladorCastle2Bedroom, sirVyinNotInRoom;
 
 	QuestStep talkToSquire, talkToReldo, talkToThurgo, talkToThurgoAgain, talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, enterDungeon,
 		mineBlurite, givePortraitToThurgo, bringThurgoOre, finishQuest;
@@ -91,15 +93,15 @@ public class TheKnightsSword extends BasicQuestHelper
 		steps.put(4, talkToSquire2);
 
 		ConditionalStep getPortrait = new ConditionalStep(this, goUpCastle1);
-		getPortrait.addStep(hasPortrait, givePortraitToThurgo);
+		getPortrait.addStep(portrait.alsoCheckBank(questBank), givePortraitToThurgo);
 		getPortrait.addStep(inFaladorCastle2, searchCupboard);
 		getPortrait.addStep(inFaladorCastle1, goUpCastle2);
 
 		steps.put(5, getPortrait);
 
 		ConditionalStep returnSwordToSquire = new ConditionalStep(this, enterDungeon);
-		returnSwordToSquire.addStep(hasBluriteSword, finishQuest);
-		returnSwordToSquire.addStep(hasBluriteOre, bringThurgoOre);
+		returnSwordToSquire.addStep(bluriteSword.alsoCheckBank(questBank), finishQuest);
+		returnSwordToSquire.addStep(bluriteOre.alsoCheckBank(questBank), bringThurgoOre);
 		returnSwordToSquire.addStep(inDungeon, mineBlurite);
 
 		steps.put(6, returnSwordToSquire);
@@ -123,9 +125,6 @@ public class TheKnightsSword extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBluriteOre = new ItemRequirements(bluriteOre);
-		hasBluriteSword = new ItemRequirements(bluriteSword);
-		hasPortrait = new ItemRequirements(portrait);
 		inDungeon = new ZoneRequirement(dungeon);
 		inFaladorCastle1 = new ZoneRequirement(faladorCastle1);
 		inFaladorCastle2 = new ZoneRequirement(faladorCastle2);
@@ -163,7 +162,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		goUpCastle2 = new ObjectStep(this, ObjectID.STAIRCASE_24077, new WorldPoint(2985, 3338, 1), "Go up the staircase west of the ladder on the 1st floor.");
 		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_2272, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", searchCupboardReq);
 		((ObjectStep)searchCupboard).addAlternateObjects(ObjectID.CUPBOARD_2271); // 2271 is the closed cupboard
-		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", bluriteOre, ironBars, portrait);
+		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", ironBars, portrait);
 		givePortraitToThurgo.addDialogStep("About that sword...");
 		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars);
 		mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0), "Mine a blurite ore in the eastern cavern.", pickaxe);
@@ -204,6 +203,26 @@ public class TheKnightsSword extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Collections.singletonList(new SkillRequirement(Skill.MINING, 10, true));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.SMITHING, 12725));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("The ability to smelt Blurite ore."),
+				new UnlockReward("The ability to smith Blurite bars."));
 	}
 
 	@Override

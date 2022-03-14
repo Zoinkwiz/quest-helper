@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -43,16 +42,18 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -70,8 +71,8 @@ public class SwanSong extends BasicQuestHelper
 	ItemRequirement mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammer, brownApron, monkfish5, rawMonkfish5, combatGear, potHiglight,
 		potLidHiglight, tinderboxHiglight, ironBar5Higlight, logHiglight, ironSheet5, smallNet, airtightPot, combatGearRanged, boneSeeds, hammerPanel;
 
-	Requirement inColonyEntrance, talkedToFranklin, addedLog, litLog, has5Sheets, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed, has5RawMonk,
-		has5CookedMonk, talkedToArnold, finishedFranklin, inBasement, queenNearby, hasAirtightPot;
+	Requirement inColonyEntrance, talkedToFranklin, addedLog, litLog, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed,
+		talkedToArnold, finishedFranklin, inBasement, queenNearby;
 
 	DetailedQuestStep talkToHerman, talkToWom, talkToWomAtColony, kill79Trolls, talkToHermanInBuilding, talkToFranklin, enterColony, useLog, useTinderbox, talkToArnold,
 		talkToFranklinAgain, talkToHermanAfterTasks, enterWizardsBasement, talkToFruscone, talkToMalignius, talkToCrafter, makeAirtightPot, talkToMaligniusWithPot,
@@ -132,7 +133,7 @@ public class SwanSong extends BasicQuestHelper
 		steps.put(120, talkToCrafter);
 
 		ConditionalStep getPotToMal = new ConditionalStep(this, makeAirtightPot);
-		getPotToMal.addStep(hasAirtightPot, talkToMaligniusWithPot);
+		getPotToMal.addStep(airtightPot, talkToMaligniusWithPot);
 
 		steps.put(130, getPotToMal);
 
@@ -156,6 +157,7 @@ public class SwanSong extends BasicQuestHelper
 		lava10 = new ItemRequirement("Lava rune", ItemID.LAVA_RUNE, 10);
 		blood5 = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE, 5);
 		bones7 = new ItemRequirement("Bones", ItemID.BONES, 7);
+		bones7.setTooltip("Obtainable during the quest, just pick up bones when killing the sea trolls.");
 
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		potLid = new ItemRequirement("Pot lid", ItemID.POT_LID);
@@ -213,8 +215,6 @@ public class SwanSong extends BasicQuestHelper
 		talkedToFranklin = new VarbitRequirement(2099, 1);
 		addedLog = new VarbitRequirement(2099, 2);
 		litLog = new VarbitRequirement(2099, 3);
-		has5Sheets = new ItemRequirements(ironSheet5);
-		hasAirtightPot = new ItemRequirements(airtightPot);
 		wall1Fixed = new VarbitRequirement(2100, 1);
 		wall2Fixed = new VarbitRequirement(2101, 1);
 		wall3Fixed = new VarbitRequirement(2102, 1);
@@ -222,8 +222,6 @@ public class SwanSong extends BasicQuestHelper
 		wall5Fixed = new VarbitRequirement(2104, 1);
 		wallsFixed = new Conditions(wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed);
 
-		has5RawMonk = new ItemRequirements(rawMonkfish5);
-		has5CookedMonk = new ItemRequirements(monkfish5);
 		talkedToArnold = new VarbitRequirement(2105, 1, Operation.GREATER_EQUAL);
 		finishedFranklin = new VarbitRequirement(2099, 4);
 		queenNearby = new NpcCondition(NpcID.SEA_TROLL_QUEEN);
@@ -311,6 +309,36 @@ public class SwanSong extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 40, true));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 42));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MAGIC, 15000),
+				new ExperienceReward(Skill.PRAYER, 10000),
+				new ExperienceReward(Skill.FISHING, 10000)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("25,000 Coins", ItemID.COINS_995, 25000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Piscatoris Fishing Colony"),
+				new UnlockReward("The ability to fish Monkfish"));
 	}
 
 	@Override

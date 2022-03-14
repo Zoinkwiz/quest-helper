@@ -41,6 +41,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -200,7 +203,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		steelNails75 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 75);
 		coins10OrCharos = new ItemRequirements(LogicType.OR, "10 coins or a Ring of Charos (a)",
 			new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA),
-			new ItemRequirement("Coins", ItemID.COINS_995, 10));
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 10));
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		morttonTeleport = new ItemRequirement("Teleport to Mort'ton, such as minigame teleport or Barrows Teleport", ItemID.MORTTON_TELEPORT);
@@ -217,7 +220,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasEnoughPouch = new ItemRequirements(druidPouch5);
+		hasEnoughPouch = druidPouch5;
 		repairedBridge1 = new VarbitRequirement(176, 1);
 		repairedBridge2 = new VarbitRequirement(177, 1);
 		repairedBridge3 = new VarbitRequirement(178, 1);
@@ -346,6 +349,29 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Skeleton hellhound (level 97)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.ATTACK, 600),
+				new ExperienceReward(Skill.DEFENCE, 600),
+				new ExperienceReward(Skill.STRENGTH, 600),
+				new ExperienceReward(Skill.HITPOINTS, 600),
+				new ExperienceReward(Skill.CRAFTING, 600));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("A quick route to Mor'ton"));
 	}
 
 	@Override

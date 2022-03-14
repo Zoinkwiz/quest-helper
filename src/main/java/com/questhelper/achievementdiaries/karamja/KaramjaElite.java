@@ -33,12 +33,15 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -66,11 +69,11 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 	Requirement farming72, herblore87, runecraft91;
 
-	Requirement inNatureAltar;
+	Requirement inNatureAltar, inHorse;
 
-	Zone natureAltar;
+	Zone natureAltar, horse;
 
-	QuestStep enterNatureAltar, craftRunes, equipCape, checkPalm, checkCalquat, makePotion, claimReward;
+	QuestStep enterNatureAltar, craftRunes, equipCape, checkPalm, checkCalquat, makePotion, claimReward, moveToHorseShoe;
 
 	@Override
 	public QuestStep loadStep()
@@ -80,13 +83,15 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
 		doElite.addStep(notEquippedCape, equipCape);
-		doElite.addStep(notMadePotion, makePotion);
-		doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), enterNatureAltar);
+
+		doElite.addStep(new Conditions(notMadePotion, inHorse), makePotion);
+		doElite.addStep(notMadePotion, moveToHorseShoe);
+		doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), craftRunes);
 		doElite.addStep(notCraftedRunes, enterNatureAltar);
 		doElite.addStep(notCheckedCalquat, checkCalquat);
 		doElite.addStep(notCheckedPalm, checkPalm);
 
-		return enterNatureAltar;
+		return doElite;
 	}
 
 	public void setupRequirements()
@@ -118,7 +123,10 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		runecraft91 = new SkillRequirement(Skill.RUNECRAFT, 91, true);
 
 		natureAltar = new Zone(new WorldPoint(2374, 4809, 0), new WorldPoint(2421, 4859, 0));
+		horse = new Zone(new WorldPoint(2731, 3227, 0), new WorldPoint(2736, 3222, 0));
+
 		inNatureAltar = new ZoneRequirement(natureAltar);
+		inHorse = new ZoneRequirement(horse);
 	}
 
 	public void setupSteps()
@@ -133,8 +141,11 @@ public class KaramjaElite extends ComplexStateQuestHelper
 			"Grow and check the health of a palm tree in the Brimhaven patch.", palmTreeSapling, rake, spade);
 		checkCalquat = new ObjectStep(this, NullObjectID.NULL_7807, new WorldPoint(2796, 3101, 0),
 			"Grow and check the health of a Calquat in Tai Bwo Wannai.", calquatSapling, rake, spade);
-		makePotion = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0), "Make an antivenom potion whilst " +
-			"standing in the horse shoe mine.", antidotePlusPlus.highlighted(), zulrahScales.quantity(20).highlighted());
+		moveToHorseShoe = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0),
+			"Go to the horse shoe mine north west of Brimhaven.");
+		makePotion = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0),
+			"Make an antivenom potion whilst standing in the horse shoe mine.",
+			antidotePlusPlus.highlighted(), zulrahScales.quantity(20).highlighted());
 
 		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
 			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
@@ -144,8 +155,8 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal, palmTreeSapling, antidotePlusPlus,
-			zulrahScales.quantity(20), calquatSapling, rake, spade);
+		return Arrays.asList(natureTiaraOrAbyss, pureEssence.quantity(28), fireCapeOrInfernal, palmTreeSapling,
+			antidotePlusPlus, zulrahScales.quantity(20), calquatSapling, rake, spade);
 	}
 
 	@Override
@@ -160,13 +171,59 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		return reqs;
 	}
 
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Karamja Gloves (4)", ItemID.KARAMJA_GLOVES_4, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill above level 70)", ItemID.ANTIQUE_LAMP, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("10% chance of receiving 2 Agility arena tickets in the Brimhaven Agility Dungeon"),
+			new UnlockReward("Free usage of Shilo Village's furnace"),
+			new UnlockReward("Free cart rides on Hajedy's cart system"),
+			new UnlockReward("Free access to the Hardwood Grove"),
+			new UnlockReward("Access to the stepping stones shortcut leading to the red dragons in Brimhaven Dungeon"),
+			new UnlockReward("Red and Metal in Brimhaven Dungeon will drop noted draonhide and bars"),
+			new UnlockReward("One free resurrection per day in the Fight Caves (Not the Inferno)"),
+			new UnlockReward("Double Tokkul from TzHaar Fight Caves, Inferno and Ket-Rak's Challenges"));
+	}
+
 	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Elite Diary", Arrays.asList(equipCape, makePotion, enterNatureAltar,
-			craftRunes, checkCalquat, checkPalm, claimReward), natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal,
-			palmTreeSapling, antidotePlusPlus, zulrahScales.quantity(20), calquatSapling));
+
+		PanelDetails equipCapeSteps = new PanelDetails("Equip Fire / Infernal Cape",
+			Collections.singletonList(equipCape), fireCapeOrInfernal);
+		equipCapeSteps.setDisplayCondition(notEquippedCape);
+		allSteps.add(equipCapeSteps);
+
+		PanelDetails potionSteps = new PanelDetails("Create Antivenom Potion", Arrays.asList(moveToHorseShoe,
+			makePotion), herblore87, antidotePlusPlus, zulrahScales.quantity(20));
+		potionSteps.setDisplayCondition(notMadePotion);
+		allSteps.add(potionSteps);
+
+		PanelDetails craftRunesSteps = new PanelDetails("Craft 56 Nature Runes", Arrays.asList(enterNatureAltar,
+			craftRunes), runecraft91, pureEssence.quantity(28), natureTiaraOrAbyss);
+		craftRunesSteps.setDisplayCondition(notCraftedRunes);
+		allSteps.add(craftRunesSteps);
+
+		PanelDetails palmSteps = new PanelDetails("Check Palm Tree Health", Collections.singletonList(checkPalm),
+			new SkillRequirement(Skill.FARMING, 68, true), palmTreeSapling, rake, spade);
+		palmSteps.setDisplayCondition(notCheckedPalm);
+		allSteps.add(palmSteps);
+
+		PanelDetails calquatSteps = new PanelDetails("Check Calquat Tree Health",
+			Collections.singletonList(checkCalquat), farming72, calquatSapling, rake, spade);
+		calquatSteps.setDisplayCondition(notCheckedCalquat);
+		allSteps.add(calquatSteps);
+
+		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
+		allSteps.add(finishOffSteps);
 
 		return allSteps;
 	}

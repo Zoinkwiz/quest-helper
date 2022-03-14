@@ -40,6 +40,10 @@ import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -69,10 +73,10 @@ public class MourningsEndPartII extends BasicQuestHelper
 	ItemRequirement deathTalisman, deathTalismanHeader, mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, chisel, rope, ropeHighlight, prayerPotions, food, newKey, edernsJournal,
 		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, deathTalismanNote, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight;
 
-	Requirement inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, hasEdernsJournal, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
-		hasBlackenedCrystal, knowToUseCrystal, inBlueRoom, inCyanRoom, solvedPuzzle1, solvedPuzzle2, solvedPuzzle3, solvedPuzzle4, solvedPuzzle5, dispenserEmpty, inYellowRoom, usedRope,
-		placedBlueCrystalInJumpRoom, blueCrystalNotPlaced, inCentralArea, inDeathAltarArea, inBehindBarrierCentralArea, enteredDeathArea, hasDeathTalisman, inIbanRoom, inPassF1, inPassF0,
-		inWellEntrance, receivedList, inDeathAltar, hasChargedCrystal, hasMirror;
+	Requirement inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
+		knowToUseCrystal, inBlueRoom, inCyanRoom, solvedPuzzle1, solvedPuzzle2, solvedPuzzle3, solvedPuzzle4, solvedPuzzle5, dispenserEmpty, inYellowRoom, usedRope,
+		placedBlueCrystalInJumpRoom, blueCrystalNotPlaced, inCentralArea, inDeathAltarArea, inBehindBarrierCentralArea, enteredDeathArea, inIbanRoom,
+		inPassF1, inPassF0, inWellEntrance, receivedList, inDeathAltar;
 
 	Requirement f0r4c0SB,
 		f0r1c2SG, f0r1c2U,
@@ -154,7 +158,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		steps.put(5, goTalkToEssyllt);
 
 		ConditionalStep getCrystal = new ConditionalStep(this, enterMournerHQ);
-		getCrystal.addStep(hasBlackenedCrystal, bringCrystalToArianwyn);
+		getCrystal.addStep(blackenedCrystal.alsoCheckBank(questBank), bringCrystalToArianwyn);
 		getCrystal.addStep(inNorthF2, useChisel);
 		getCrystal.addStep(inTempleStairSquare, goUpFromMiddleToNorth);
 		getCrystal.addStep(inSouthF2, goToMiddleFromSouth);
@@ -175,8 +179,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle1.addStep(new Conditions(inTempleF1, f1r1c3SY), puzzle1Pillar5);
 		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, f1r3c3S), puzzle1Pillar4);
 		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, f1r3c4W), puzzle1Pillar3);
-		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, hasMirror, startColumnN), puzzle1Pillar2);
-		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, hasMirror), puzzle1Pillar1);
+		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, mirror, startColumnN), puzzle1Pillar2);
+		puzzle1.addStep(new Conditions(inTempleF1, dispenserEmpty, mirror), puzzle1Pillar1);
 		puzzle1.addStep(inTempleF1, pullDispenser1);
 		puzzle1.addStep(inTempleF2, genericGoDownToFloor1);
 		puzzle1.addStep(inTempleF0, goUpStairsTempleC1);
@@ -187,6 +191,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		ConditionalStep puzzle2 = new ConditionalStep(this, goBackIntoMournerHQ);
 		puzzle2.addStep(new Conditions(inTempleF1, f1r4c3EG), searchMagentaChest);
+		puzzle2.addStep(new Conditions(inTempleF1, f1r1c3SY), pullDispenser2);
 		puzzle2.addStep(new Conditions(inTempleF1, f1r4c2EC), puzzle2Pillar6);
 		puzzle2.addStep(new Conditions(inTempleF1, f1r3c2NC), puzzle2Pillar5);
 		puzzle2.addStep(new Conditions(inTempleF1, dispenserEmpty, f1r3c3WC), puzzle2Pillar4);
@@ -349,23 +354,23 @@ public class MourningsEndPartII extends BasicQuestHelper
 		deathAltarPuzzle.addStep(inMournerHQ, goBackIntoMournerBasement);
 
 		ConditionalStep addCrystal = new ConditionalStep(this, getDeathTalisman);
-		addCrystal.addStep(new Conditions(inNorthF2, hasChargedCrystal), useCrystalOnCrystal);
-		addCrystal.addStep(new Conditions(inBehindBarrierCentralArea, hasChargedCrystal), goUpFromCentre);
-		addCrystal.addStep(new Conditions(inCentralArea, hasChargedCrystal, redAtDoor), goUpFromCentre);
-		addCrystal.addStep(new Conditions(inCentralArea, hasChargedCrystal, redAtAltar), turnPillarFromTemple);
-		addCrystal.addStep(new Conditions(inDeathAltarArea, hasChargedCrystal, redAtAltar), turnPillarFromTemple);
-		addCrystal.addStep(new Conditions(inTempleStairSquare, hasChargedCrystal), goUpToNorthToCharge);
-		addCrystal.addStep(new Conditions(inSouthF2, hasChargedCrystal), goDownToMiddleFromSouthCrystal);
-		addCrystal.addStep(new Conditions(inTempleF1, hasChargedCrystal), enterFloor2Crystal);
-		addCrystal.addStep(new Conditions(inCaveOrF0, hasChargedCrystal), enterFloor1Crystal);
-		addCrystal.addStep(new Conditions(inMournerBasement, hasChargedCrystal), enterMournerCaveCrystal);
-		addCrystal.addStep(new Conditions(inMournerHQ, hasChargedCrystal), enterMournerBasementCrystal);
-		addCrystal.addStep(new Conditions(inDeathAltarArea, hasChargedCrystal), enterMournerHQCrystal);
-		addCrystal.addStep(new Conditions(inDeathAltar, hasChargedCrystal), leaveDeathAltar);
+		addCrystal.addStep(new Conditions(inNorthF2, chargedCrystal), useCrystalOnCrystal);
+		addCrystal.addStep(new Conditions(inBehindBarrierCentralArea, chargedCrystal), goUpFromCentre);
+		addCrystal.addStep(new Conditions(inCentralArea, chargedCrystal, redAtDoor), goUpFromCentre);
+		addCrystal.addStep(new Conditions(inCentralArea, chargedCrystal, redAtAltar), turnPillarFromTemple);
+		addCrystal.addStep(new Conditions(inDeathAltarArea, chargedCrystal, redAtAltar), turnPillarFromTemple);
+		addCrystal.addStep(new Conditions(inTempleStairSquare, chargedCrystal), goUpToNorthToCharge);
+		addCrystal.addStep(new Conditions(inSouthF2, chargedCrystal), goDownToMiddleFromSouthCrystal);
+		addCrystal.addStep(new Conditions(inTempleF1, chargedCrystal), enterFloor2Crystal);
+		addCrystal.addStep(new Conditions(inCaveOrF0, chargedCrystal), enterFloor1Crystal);
+		addCrystal.addStep(new Conditions(inMournerBasement, chargedCrystal), enterMournerCaveCrystal);
+		addCrystal.addStep(new Conditions(inMournerHQ, chargedCrystal), enterMournerBasementCrystal);
+		addCrystal.addStep(new Conditions(inDeathAltarArea, chargedCrystal), enterMournerHQCrystal);
+		addCrystal.addStep(new Conditions(inDeathAltar, chargedCrystal), leaveDeathAltar);
 		addCrystal.addStep(inDeathAltar, useCrystalOnAltar);
-		addCrystal.addStep(new Conditions(hasDeathTalisman, inDeathAltarArea), enterDeathAltar);
-		addCrystal.addStep(new Conditions(hasDeathTalisman, redAtAltar, inCentralArea), enterDeathAltar);
-		addCrystal.addStep(new Conditions(hasDeathTalisman, redAtDoor, inCentralArea), turnKeyMirrorCharging);
+		addCrystal.addStep(new Conditions(deathTalisman, inDeathAltarArea), enterDeathAltar);
+		addCrystal.addStep(new Conditions(deathTalisman, redAtAltar, inCentralArea), enterDeathAltar);
+		addCrystal.addStep(new Conditions(deathTalisman, redAtDoor, inCentralArea), turnKeyMirrorCharging);
 		addCrystal.addStep(new Conditions(inDeathAltarArea, redAtAltar), getDeathTalismanInCentre);
 		addCrystal.addStep(new Conditions(inCentralArea), getDeathTalismanInCentre);
 		addCrystal.addStep(new Conditions(inDeathAltarArea), getDeathTalismanInCentreDoorCorrect);
@@ -495,18 +500,11 @@ public class MourningsEndPartII extends BasicQuestHelper
 		inIbanRoom = new ZoneRequirement(ibanRoom);
 		inWellEntrance = new ZoneRequirement(wellEntrance);
 
-		hasEdernsJournal = new ItemRequirements(edernsJournal);
-		hasBlackenedCrystal = new ItemRequirements(blackenedCrystal);
-		hasDeathTalisman = new ItemRequirements(deathTalisman);
-		hasChargedCrystal = new ItemRequirements(chargedCrystal);
-
 		inBehindBarrierCentralArea = new ZoneRequirement(centralAreaBehindBarrier);
 
 		inDeathAltar = new ZoneRequirement(deathAltar);
 
 		dispenserEmpty = new VarbitRequirement(1106, 0);
-
-		hasMirror = new ItemRequirements(mirror);
 
 		usedRope = new VarbitRequirement(1328, 1);
 
@@ -642,7 +640,9 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		goToMiddleFromSouth = new ObjectStep(this, ObjectID.STAIRCASE_10016, new WorldPoint(1891, 4636, 2), "Go down the staircase north of you.");
 
-		useChisel = new ObjectStep(this, NullObjectID.NULL_9750, new WorldPoint(1909, 4639, 2), "Use a chisel on the dark crystal to the east.", chisel);
+		useChisel = new ObjectStep(this, NullObjectID.NULL_9750, new WorldPoint(1909, 4639, 2),
+			"Use a chisel on the dark crystal to the east.", chisel);
+		useChisel.addIcon(ItemID.CHISEL);
 
 		goUpFromMiddleToSouth = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1891, 4636, 1), "Go up the stairs to the south.");
 
@@ -668,6 +668,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		goUpStairsTempleC1 = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Go up the stairs to the first floor.");
 
 		pullDispenser1 = new ObjectStep(this, ObjectID.CRYSTAL_DISPENSER_9749, new WorldPoint(1913, 4639, 1), "Pull the Crystal Dispenser in the east room.");
+		pullDispenser1.addDialogStep("Pull the lever.");
 		pullDispenser1.addDialogStep("Pull it.");
 		pullDispenser1.addDialogStep("Take everything.");
 
@@ -737,7 +738,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		enterNorthWestRoomPuzzle3 = new ObjectStep(this, NullObjectID.NULL_9777, new WorldPoint(1863, 4665, 0), "Enter the room in the far north west corner.");
 		puzzle3Pillar9 = new ObjectStep(this, NullObjectID.NULL_9941, new WorldPoint(1860, 4665, 0), "Turn the mirror in the pillar in the room to point the light south.");
 		searchYellowChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_9760, new WorldPoint(1880, 4659, 0), "Search the chest in the room south of you.");
-		searchYellowChest = new ObjectStep(this, ObjectID.OPEN_CHEST_9759, new WorldPoint(1880, 4659, 0), "Search the chest in the room south of you.");
+		searchYellowChest.addAlternateObjects(ObjectID.OPEN_CHEST_9759);
 
 		yellowRoomRotateToLeave = new ObjectStep(this, NullObjectID.NULL_9941, new WorldPoint(1860, 4665, 0), "Turn the mirror in the pillar in the room to point the light east to leave.");
 		goUpToFirstFloorPuzzle4 = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Go up the stairs to the first floor.");
@@ -799,7 +800,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle5Pillar6.addIcon(ItemID.BLUE_CRYSTAL);
 
 		puzzle5Pillar5RemoveMirror = new ObjectStep(this, NullObjectID.NULL_9959, new WorldPoint(1898, 4613, 1), "Remove the mirror from the pillar in the south of the first floor.");
-		puzzle5Pillar3RotateUp = new ObjectStep(this, NullObjectID.NULL_9954, new WorldPoint(1898, 4650, 1), "Have the mirror in the pillar north east of the dispenser point up.", mirror);
+		puzzle5Pillar3RotateUp = new ObjectStep(this, NullObjectID.NULL_9954, new WorldPoint(1898, 4650, 1), "Have " +
+			"the mirror in the pillar north west of the dispenser point up.", mirror);
 		puzzle5Pillar3RotateUp.addIcon(ItemID.HAND_MIRROR);
 		goUpToFloor2Puzzle5 = new ObjectStep(this, ObjectID.STAIRCASE_10017, new WorldPoint(1894, 4620, 1), "Go up the south staircase to the second floor.");
 		goDownToMiddleFromSouthPuzzle5 = new ObjectStep(this, ObjectID.STAIRCASE_10016, new WorldPoint(1891, 4636, 2), "Go down the staircase north of you.");
@@ -954,6 +956,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		enterSouthPass = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Enter the south cave to go to the lower level of the pass.");
 		enterAltarFromBehind = new ObjectStep(this, NullObjectID.NULL_9974, new WorldPoint(2311, 9792, 0), "Enter the cave entrance behind the dwarf camp under Iban's area to the south.");
 		enterDeathAltar = new ObjectStep(this, NullObjectID.NULL_34823, new WorldPoint(1860, 4639, 0), "Enter the death altar ruins.", deathTalisman);
+		enterDeathAltar.addIcon(ItemID.DEATH_TALISMAN);
 		turnKeyMirrorCharging = new ObjectStep(this, NullObjectID.NULL_9939, new WorldPoint(1881, 4639, 0), "Enter the central area, and turn the pillar's mirror west.");
 		goUpToF1ForCharging = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Enter the Temple of Light, and go up the south staircase to the second floor.");
 		goUpToF2ForCharging = new ObjectStep(this, ObjectID.STAIRCASE_10017, new WorldPoint(1894, 4620, 1), "Go up the south stairs to the second floor.");
@@ -1011,6 +1014,34 @@ public class MourningsEndPartII extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 20000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("A Crystal Trinket", ItemID.CRYSTAL_TRINKET, 1),
+				new ItemReward("A Death Talisman", ItemID.DEATH_TALISMAN, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to craft Death Runes."),
+				new UnlockReward("Ability to kill Dark Beasts and receive them as a slayer task."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -1037,7 +1068,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 			goUpFromMiddleToNorthPuzzle5, puzzle5Pillar7, goDownToMiddleFromNorthPuzzle5, puzzle5Pillar8, puzzle5Pillar9, puzzle5Pillar10, puzzle5Pillar11, goDownFromF2Puzzle5,
 			goDownFromF1Puzzle5, puzzle5Pillar12, puzzle5Pillar13, puzzle5Pillar14, searchMagentaYellowChest)));
 
-		allSteps.add(new PanelDetails("Reach the Death Altar", Arrays.asList(goUpToF1Puzzle6, puzzle6Pillar1, puzzle6Pillar2, goDownFromF1Puzzle6, puzzle6Pillar3, puzzle6Pillar4,
+		allSteps.add(new PanelDetails("Reach the Death Altar", Arrays.asList(pullDispenser6, goUpToF1Puzzle6, puzzle6Pillar1,
+			puzzle6Pillar2, goDownFromF1Puzzle6, puzzle6Pillar3, puzzle6Pillar4,
 			puzzle6Pillar5, puzzle6Pillar6, puzzle6Pillar7, puzzle6Pillar8, goUpToF1Puzzle6, puzzle6Pillar9, goUpNorthLadderToF2Puzzle6, puzzle6Pillar10, goDownNorthLadderToF1Puzzle6, goUpToFloor2Puzzle6,
 			puzzle6Pillar11, puzzle6Pillar12, puzzle6Pillar13, goDownToMiddleFromSouthPuzzle6, goUpFromMiddleToNorthPuzzle6, puzzle6Pillar14, puzzle6Pillar15, puzzle6Pillar16, puzzle6Pillar17, goDownToCentre, turnKeyMirror)));
 

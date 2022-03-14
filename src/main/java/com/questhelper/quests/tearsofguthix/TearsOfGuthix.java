@@ -31,23 +31,23 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -64,7 +64,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	ItemRequirement litSapphireLantern, chisel, tinderbox, pickaxe, rope, litSapphireLanternHighlighted,
 		ropeHighlighted, tinderboxHighlighted, pickaxeHighlighted, chiselHighlighted, rockHighlighted, stoneBowl;
 
-	Requirement inSwamp, inJunaRoom, atRocks, addedRope, hasRock, hasStoneBowl;
+	Requirement inSwamp, inJunaRoom, atRocks, addedRope;
 
 	QuestStep addRope, enterSwamp, enterJunaRoom, talkToJuna, useLanternOnLightCreature, mineRock, useChiselOnRock,
 		talkToJunaToFinish;
@@ -90,8 +90,8 @@ public class TearsOfGuthix extends BasicQuestHelper
 		steps.put(0, goTalkToJuna);
 
 		ConditionalStep goGetRock = new ConditionalStep(this, getToJunaRoom);
-		goGetRock.addStep(new Conditions(hasStoneBowl, inJunaRoom), talkToJunaToFinish);
-		goGetRock.addStep(hasRock, useChiselOnRock);
+		goGetRock.addStep(new Conditions(stoneBowl.alsoCheckBank(questBank), inJunaRoom), talkToJunaToFinish);
+		goGetRock.addStep(rockHighlighted, useChiselOnRock);
 		goGetRock.addStep(atRocks, mineRock);
 		goGetRock.addStep(inJunaRoom, useLanternOnLightCreature);
 		steps.put(1, goGetRock);
@@ -141,9 +141,6 @@ public class TearsOfGuthix extends BasicQuestHelper
 
 		addedRope = new VarbitRequirement(279, 1);
 
-		hasRock = new ItemRequirements(rockHighlighted);
-		hasStoneBowl = new ItemRequirements(stoneBowl);
-
 		// 452 = 1, gone through Juna's first dialog
 	}
 
@@ -187,6 +184,24 @@ public class TearsOfGuthix extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 20));
 		req.add(new SkillRequirement(Skill.MINING, 20));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.CRAFTING, 1000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Tears of Guthix"));
 	}
 
 	@Override

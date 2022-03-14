@@ -40,10 +40,13 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 public class QuestHelperDebugOverlay extends OverlayPanel implements QuestDebugRenderer
 {
 	private final QuestHelperPlugin plugin;
+	private QuestHelper quest;
+
 	@Inject
 	public QuestHelperDebugOverlay(QuestHelperPlugin plugin)
 	{
 		this.plugin = plugin;
+		this.quest = plugin.getSelectedQuest();
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}
 
@@ -52,22 +55,25 @@ public class QuestHelperDebugOverlay extends OverlayPanel implements QuestDebugR
 	{
 		QuestHelper quest = plugin.getSelectedQuest();
 
-		if (plugin.isDeveloperMode() && quest != null)
-		{
-			renderDebugOverlay(graphics, plugin, quest, panelComponent);
-			renderDebugWorldOverlayHint(graphics, plugin, quest, panelComponent);
-			renderDebugWidgetOverlayHint(graphics, plugin, quest, panelComponent);
-		}
+		renderDebugOverlay(graphics, plugin, panelComponent);
+		renderDebugWorldOverlayHint(graphics, plugin, quest, panelComponent);
+		renderDebugWidgetOverlayHint(graphics, plugin, quest, panelComponent);
 
 		return super.render(graphics);
 	}
 
 	@Override
-	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, QuestHelper quest, PanelComponent panelComponent)
+	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
 	{
-		if (plugin.isDeveloperMode())
+		QuestHelper currentQuest = plugin.getSelectedQuest();
+		if ((quest == null || (currentQuest != quest)) && currentQuest != null)
 		{
-			quest.renderDebugOverlay(graphics, plugin, quest, panelComponent);
+			quest = currentQuest;
+		}
+
+		if (plugin.isDeveloperMode() && quest != null)
+		{
+			quest.renderDebugOverlay(graphics, plugin, panelComponent);
 		}
 	}
 }

@@ -32,13 +32,13 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -67,8 +67,8 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 
 	Requirement protectFromMagic;
 
-	Requirement inDungeon, fedAimeri, hadTempleTome, hadSunTome, hadMoonTome, hasTemplePage, hasMoonPage,
-		hasSunPage, repairedMoon, repairedSun, repairedTemple, repairedTomes, givenSunTome, givenMoonTome, givenTempleTome;
+	Requirement inDungeon, fedAimeri, hadTempleTome, hadSunTome, hadMoonTome, repairedMoon, repairedSun,
+		repairedTemple, repairedTomes, givenSunTome, givenMoonTome, givenTempleTome;
 
 	QuestStep enterDungeon, useFoodOnAimeri, talkToAimeriAgain, searchBookcasesForTemple, searchBookcasesForMoon,
 		searchBookcasesForSun, getPages, enterDungeonAgain, useMoonOnLogosia, useSunOnLogosia, useTempleOnLogosia,
@@ -155,18 +155,14 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 		givenTempleTome = new VarbitRequirement(8406, 1);
 
 		hadTempleTome = new Conditions(true, LogicType.OR,
-			new ItemRequirements(templeTome),
+			templeTome,
 			givenTempleTome);
 		hadMoonTome = new Conditions(true, LogicType.OR,
-			new ItemRequirements(moonTome),
+			moonTome,
 			givenMoonTome);
 		hadSunTome = new Conditions(true, LogicType.OR,
-			new ItemRequirements(sunTome),
+			sunTome,
 			givenSunTome);
-
-		hasMoonPage = new ItemRequirements(moonPage);
-		hasTemplePage = new ItemRequirements(templePage);
-		hasSunPage = new ItemRequirements(sunPage);
 
 		repairedSun = new VarbitRequirement(8399, 4);
 		repairedMoon = new VarbitRequirement(8400, 4);
@@ -234,6 +230,12 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Many monsters in the Forthos Dungeon");
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (any skill over level 40).", ItemID.ANTIQUE_LAMP, 1)); //4447 Is placeholder for filter.
 	}
 
 	@Override

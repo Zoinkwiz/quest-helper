@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.ghostsahoy;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
@@ -38,6 +39,10 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -220,7 +225,7 @@ public class GhostsAhoy extends BasicQuestHelper
 
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		enchantedGhostspeakEquipped = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET_4250, 1, true);
-		coins400 = new ItemRequirement("400+ coins", ItemID.COINS_995, -1);
+		coins400 = new ItemRequirement("400+ coins", ItemCollections.getCoins(), -1);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted.setHighlightInInventory(true);
@@ -310,7 +315,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		hasPetition = petition.alsoCheckBank(questBank);
 		hasSignatures = new VarbitRequirement(209, 11, Operation.GREATER_EQUAL);
 		givenPetitionToNecro = new VarbitRequirement(209, 31, Operation.GREATER_EQUAL);
-		hadChestKey = new Conditions(LogicType.OR, new ItemRequirements(chestKey), new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
+		hadChestKey = new Conditions(LogicType.OR, chestKey, new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
 		unlockedChest2 = new VarbitRequirement(214, 3, Operation.GREATER_EQUAL);
 		doorUnlocked = new VarbitRequirement(213, 1);
 
@@ -318,7 +323,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		killedLobster = new VarbitRequirement(215, 1);
 
 		boneKeyNearby = new ItemOnTileRequirement(boneKey);
-		hasBoneKey = new Conditions(LogicType.OR, new ItemRequirements(boneKey), doorUnlocked);
+		hasBoneKey = new Conditions(LogicType.OR, boneKey, doorUnlocked);
 
 		talkedToAkHaranu = new VarbitRequirement(212, 1, Operation.GREATER_EQUAL);
 	}
@@ -373,7 +378,7 @@ public class GhostsAhoy extends BasicQuestHelper
 			new WorldPoint(3605, 3564, 0)
 		));
 
-		useMapsTogether = new DetailedQuestStep(this, "Use the map pieces together.", mapPiece1, mapPiece2, mapPiece3);
+		useMapsTogether = new DetailedQuestStep(this, "Use the map pieces together.", mapPiece1.highlighted(), mapPiece2.highlighted(), mapPiece3.highlighted());
 
 		if (canUseCharos)
 		{
@@ -393,7 +398,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		talkToAkHaranu = new NpcStep(this, NpcID.AKHARANU, new WorldPoint(3689, 3499, 0), "Talk to Ak-Haranu.");
 		talkToAkHaranu.addDialogStep("Okay, wait here - I'll get you your bow.");
 		talkToAkHaranu.addSubSteps(enterPhasForManual);
-		talkToRobin = new NpcStep(this, NpcID.ROBIN, new WorldPoint(3675, 3495, 0), "Talk to Robin the the Port Phasmatys pub. Keep playing runedraw until he agrees to sign your bow.", oakLongbow, coins400);
+		talkToRobin = new NpcStep(this, NpcID.ROBIN, new WorldPoint(3675, 3495, 0), "Talk to Robin in the Port Phasmatys pub. Keep playing runedraw until he agrees to sign your bow.", oakLongbow, coins400);
 		talkToRobin.addDialogStep("Yes, I'll give you a game.");
 		bringBowToAkHaranu = new NpcStep(this, NpcID.AKHARANU, new WorldPoint(3689, 3499, 0), "Bring the signed bow to Ak-Haranu.", signedOakBow);
 
@@ -478,6 +483,30 @@ public class GhostsAhoy extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Undoing the curse", Arrays.asList(returnToCrone, talkToNecroAfterCurse, talkToVelorinaFinal), ghostspeak, book, manual, robes));
 
 		return allSteps;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.PRAYER, 2400));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Ectophial", ItemID.ECTOPHIAL, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Free passage into Port Phasmatys"));
 	}
 
 	@Override

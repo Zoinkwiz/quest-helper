@@ -39,6 +39,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -53,6 +57,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -68,10 +73,9 @@ public class DeathPlateau extends BasicQuestHelper
 	ItemRequirement asgarnianAle, premadeBlurbOrCoins, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
 		yellowStone, pinkStone, greenStone, certificate, climbingBoots, spikedBoots, secretMap, combination;
 
-	Requirement hasAsgarnianAle, inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs,
-		inHaroldsRoom, givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
-		isGreenStoneDone, inSabaCave, hasCertificate, hasClimbingBoots, hasSpikedBoots, hasSecretMap, hasCombination,
-		isFarEnough, talkedToSaba, talkedToDunstan;
+	Requirement inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs, inHaroldsRoom,
+		givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
+		isGreenStoneDone, inSabaCave, isFarEnough, talkedToSaba, talkedToDunstan;
 
 	QuestStep talkToDenulth1, goToEohric1, talkToEohric1, goToHaroldStairs1, goToHaroldDoor1, talkToHarold1,
 		goToEohric2, talkToEohric2, takeAsgarnianAle, goToHaroldStairs2, goToHaroldDoor2, talkToHarold2,
@@ -108,9 +112,9 @@ public class DeathPlateau extends BasicQuestHelper
 		steps.put(30, talkToEohricSteps2);
 
 		ConditionalStep talkToHaroldSteps2 = new ConditionalStep(this, takeAsgarnianAle);
-		talkToHaroldSteps2.addStep(new Conditions(hasAsgarnianAle, inHaroldsRoom), talkToHarold2);
-		talkToHaroldSteps2.addStep(new Conditions(hasAsgarnianAle, inBarUpstairs), goToHaroldDoor2);
-		talkToHaroldSteps2.addStep(new Conditions(hasAsgarnianAle), goToHaroldStairs2);
+		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle, inHaroldsRoom), talkToHarold2);
+		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle, inBarUpstairs), goToHaroldDoor2);
+		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle), goToHaroldStairs2);
 		steps.put(40, talkToHaroldSteps2);
 
 		ConditionalStep gambleSteps = new ConditionalStep(this, giveHaroldBlurberry);
@@ -128,15 +132,15 @@ public class DeathPlateau extends BasicQuestHelper
 		steps.put(60, stoneSteps);
 
 		ConditionalStep finalSteps = new ConditionalStep(this, enterSabaCave);
-		finalSteps.addStep(new Conditions(isFarEnough, hasCombination), talkToDenulth3);
+		finalSteps.addStep(new Conditions(isFarEnough, combination), talkToDenulth3);
 		finalSteps.addStep(new Conditions(isFarEnough, inHaroldsRoom), talkToHarold3);
 		finalSteps.addStep(new Conditions(isFarEnough, inBarUpstairs), goToHaroldDoor3);
 		finalSteps.addStep(new Conditions(isFarEnough), goToHaroldDoor3);
-		finalSteps.addStep(new Conditions(hasSecretMap), goNorth);
-		finalSteps.addStep(new Conditions(hasSpikedBoots), talkToTenzing2);
-		finalSteps.addStep(new Conditions(hasClimbingBoots, hasCertificate), talkToDunstan2);
-		finalSteps.addStep(new Conditions(hasClimbingBoots, talkedToDunstan), talkToDenulthForDunstan);
-		finalSteps.addStep(new Conditions(hasClimbingBoots), talkToDunstan1);
+		finalSteps.addStep(new Conditions(secretMap), goNorth);
+		finalSteps.addStep(new Conditions(spikedBoots.alsoCheckBank(questBank)), talkToTenzing2);
+		finalSteps.addStep(new Conditions(climbingBoots, certificate.alsoCheckBank(questBank)), talkToDunstan2);
+		finalSteps.addStep(new Conditions(climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
+		finalSteps.addStep(new Conditions(climbingBoots), talkToDunstan1);
 		finalSteps.addStep(new Conditions(talkedToSaba, inSabaCave), leaveSabaCave);
 		finalSteps.addStep(talkedToSaba, talkToTenzing1);
 		finalSteps.addStep(inSabaCave, talkToSaba);
@@ -153,12 +157,12 @@ public class DeathPlateau extends BasicQuestHelper
 
 		ItemRequirement premadeBlurb = new ItemRequirement("Premade blurb' sp.", ItemID.PREMADE_BLURB_SP);
 		premadeBlurb.addAlternates(ItemID.BLURBERRY_SPECIAL);
-		ItemRequirement coins500 = new ItemRequirement("Coins", ItemID.COINS_995, 500);
+		ItemRequirement coins500 = new ItemRequirement("Coins", ItemCollections.getCoins(), 500);
 
 		premadeBlurbOrCoins = new ItemRequirements(LogicType.OR,
 			"Premade blurb' sp. (or a Blurberry special, or 500 coins to gamble with)",
 			premadeBlurb, coins500);
-		coins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 60);
 		bread = new ItemRequirement("Bread (UNNOTED)", ItemID.BREAD, 10);
 		trout = new ItemRequirement("Trout (UNNOTED)", ItemID.TROUT, 10);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
@@ -197,7 +201,6 @@ public class DeathPlateau extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasAsgarnianAle = new ItemRequirements(asgarnianAle);
 		inCastleDownstairs = new ZoneRequirement(castleDownstairs);
 		inCastleUpstairs = new ZoneRequirement(castleUpstairs);
 		inBarDownstairs = new ZoneRequirement(barDownstairs);
@@ -210,11 +213,6 @@ public class DeathPlateau extends BasicQuestHelper
 		isPinkStoneDone = new ItemOnTileRequirement(pinkStone, new WorldPoint(2895, 3563, 0));
 		isGreenStoneDone = new ItemOnTileRequirement(greenStone, new WorldPoint(2895, 3564, 0));
 		inSabaCave = new ZoneRequirement(sabaCave);
-		hasCertificate = new Conditions(true, new ItemRequirements(certificate));
-		hasClimbingBoots = new ItemRequirements(climbingBoots);
-		hasSpikedBoots = new Conditions(true, new ItemRequirements(spikedBoots));
-		hasSecretMap = new ItemRequirements(secretMap);
-		hasCombination = new ItemRequirements(combination);
 		isFarEnough = new ChatMessageRequirement("You should go and speak to Denulth.");
 		talkedToSaba = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Before the trolls came there used to be a nettlesome"),
@@ -307,6 +305,32 @@ public class DeathPlateau extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Collections.singletonList(gamesNecklace);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.ATTACK, 3000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A pair of Steel Claws", ItemID.STEEL_CLAWS, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("The ability to craft claws."),
+				new UnlockReward("The ability to purchase and equip Climbing Boots."));
 	}
 
 	@Override

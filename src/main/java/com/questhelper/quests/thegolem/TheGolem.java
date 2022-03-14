@@ -26,20 +26,21 @@ package com.questhelper.quests.thegolem;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -69,9 +70,8 @@ public class TheGolem extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, digsiteTeleport, waterskins;
 
-	Requirement inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4, hasLetter, hasReadLetter, added1Clay, added2Clay, added3Clay,
-		talkedToElissa, hasVarmenNotes, hasReadNotes, talkedToCurator, hasKey, inUpstairsMuseum, stolenStatuette, inThroneRoom, hasImplement, openedHead,
-		hasMushroom, hasInk, hasFeather, hasQuill, hasProgram, enteredRuins;
+	Requirement inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4,hasReadLetter, added1Clay, added2Clay, added3Clay, talkedToElissa,
+		hasReadNotes, talkedToCurator, inUpstairsMuseum, stolenStatuette, inThroneRoom, openedHead, enteredRuins;
 
 	QuestStep pickUpLetter, readLetter, talkToGolem, useClay, useClay2, useClay3, useClay4, talkToElissa, searchBookcase, readBook, talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet,
 		stealFeather, enterRuin, useStatuette, turnStatue1, turnStatue2, turnStatue3, turnStatue4, enterThroneRoom, leaveThroneRoom, leaveRuin, pickBlackMushroom, grindMushroom,
@@ -101,21 +101,21 @@ public class TheGolem extends BasicQuestHelper
 		ConditionalStep goTalkToElissa = new ConditionalStep(this, pickUpLetter);
 		goTalkToElissa.addStep(talkedToCurator, pickpocketCurator);
 		goTalkToElissa.addStep(new Conditions(hasReadNotes, enteredRuins), talkToCurator);
-		goTalkToElissa.addStep(new Conditions(hasVarmenNotes, enteredRuins), readBook);
+		goTalkToElissa.addStep(new Conditions(notesHighlight, enteredRuins), readBook);
 		goTalkToElissa.addStep(new Conditions(talkedToElissa, enteredRuins), searchBookcase);
-		goTalkToElissa.addStep(new Conditions(inRuin, hasImplement), talkToElissa);
+		goTalkToElissa.addStep(new Conditions(inRuin, strangeImplement), talkToElissa);
 		goTalkToElissa.addStep(new Conditions(inRuin), pickUpImplement);
 		goTalkToElissa.addStep(new Conditions(hasReadLetter, enteredRuins), talkToElissa);
 		goTalkToElissa.addStep(hasReadLetter, enterRuinForFirstTime);
-		goTalkToElissa.addStep(hasLetter, readLetter);
+		goTalkToElissa.addStep(letter, readLetter);
 
 		steps.put(2, goTalkToElissa);
 
 		ConditionalStep getStatuette = new ConditionalStep(this, pickpocketCurator);
 		getStatuette.addStep(new Conditions(stolenStatuette, inRuin), useStatuette);
 		getStatuette.addStep(stolenStatuette, enterRuin);
-		getStatuette.addStep(new Conditions(hasKey, inUpstairsMuseum), openCabinet);
-		getStatuette.addStep(hasKey, goUpInMuseum);
+		getStatuette.addStep(new Conditions(key, inUpstairsMuseum), openCabinet);
+		getStatuette.addStep(key, goUpInMuseum);
 
 		steps.put(3, getStatuette);
 
@@ -128,28 +128,28 @@ public class TheGolem extends BasicQuestHelper
 		steps.put(4, openPortal);
 
 		ConditionalStep goEnterPortal = new ConditionalStep(this, enterRuin);
-		goEnterPortal.addStep(new Conditions(inRuin, hasImplement), enterThroneRoom);
+		goEnterPortal.addStep(new Conditions(inRuin, strangeImplement), enterThroneRoom);
 		goEnterPortal.addStep(new Conditions(inRuin), pickUpImplement);
 
 		steps.put(5, goEnterPortal);
 
 		ConditionalStep returnToTheGolem = new ConditionalStep(this, talkToGolemAfterPortal);
-		returnToTheGolem.addStep(new Conditions(inRuin, hasImplement), leaveRuin);
+		returnToTheGolem.addStep(new Conditions(inRuin, strangeImplement), leaveRuin);
 		returnToTheGolem.addStep(new Conditions(inRuin), pickUpImplement);
 		returnToTheGolem.addStep(inThroneRoom, leaveThroneRoom);
 
 		steps.put(6, returnToTheGolem);
 
 		ConditionalStep reprogramTheGolem = new ConditionalStep(this, enterRuinWithoutStatuette);
-		reprogramTheGolem.addStep(new Conditions(openedHead, hasProgram), useProgramOnGolem);
-		reprogramTheGolem.addStep(new Conditions(hasImplement, hasProgram), useImplementOnGolem);
-		reprogramTheGolem.addStep(new Conditions(hasImplement, hasQuill), useQuillOnPapyrus);
-		reprogramTheGolem.addStep(new Conditions(hasImplement, hasFeather, hasInk), useFeatherOnInk);
-		reprogramTheGolem.addStep(new Conditions(hasImplement, hasInk), stealFeather);
-		reprogramTheGolem.addStep(new Conditions(hasImplement, hasMushroom), grindMushroom);
-		reprogramTheGolem.addStep(new Conditions(inRuin, hasImplement), leaveRuin);
+		reprogramTheGolem.addStep(new Conditions(openedHead, programHighlight), useProgramOnGolem);
+		reprogramTheGolem.addStep(new Conditions(strangeImplement, programHighlight), useImplementOnGolem);
+		reprogramTheGolem.addStep(new Conditions(strangeImplement, quill), useQuillOnPapyrus);
+		reprogramTheGolem.addStep(new Conditions(strangeImplement, phoenixFeather, inkHighlight), useFeatherOnInk);
+		reprogramTheGolem.addStep(new Conditions(strangeImplement, inkHighlight), stealFeather);
+		reprogramTheGolem.addStep(new Conditions(strangeImplement, mushroomHighlight), grindMushroom);
+		reprogramTheGolem.addStep(new Conditions(inRuin, strangeImplement), leaveRuin);
 		reprogramTheGolem.addStep(new Conditions(inRuin), pickUpImplement);
-		reprogramTheGolem.addStep(new Conditions(hasImplement), pickBlackMushroom);
+		reprogramTheGolem.addStep(new Conditions(strangeImplement), pickBlackMushroom);
 		reprogramTheGolem.addStep(inThroneRoom, leaveThroneRoom);
 
 		steps.put(7, reprogramTheGolem);
@@ -186,7 +186,7 @@ public class TheGolem extends BasicQuestHelper
 
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 
-		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.BLACK_MUSHROOM_INK);
+		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
 		inkHighlight.setHighlightInInventory(true);
 
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
@@ -247,19 +247,9 @@ public class TheGolem extends BasicQuestHelper
 
 		openedHead = new VarbitRequirement(353, 1);
 
-		stolenStatuette = new Conditions(LogicType.OR, new VarbitRequirement(355, 1), new ItemRequirements(statuette));
+		stolenStatuette = new Conditions(LogicType.OR, new VarbitRequirement(355, 1), statuette);
 
 		enteredRuins = new VarbitRequirement(356, 1);
-
-		hasLetter = new ItemRequirements(letter);
-		hasVarmenNotes = new ItemRequirements(notesHighlight);
-		hasKey = new ItemRequirements(key);
-		hasImplement = new ItemRequirements(strangeImplement);
-		hasMushroom = new ItemRequirements(mushroomHighlight);
-		hasInk = new ItemRequirements(inkHighlight);
-		hasFeather = new ItemRequirements(phoenixFeather);
-		hasQuill = new ItemRequirements(quill);
-		hasProgram = new ItemRequirements(programHighlight);
 	}
 
 	private void setupSteps()
@@ -340,6 +330,35 @@ public class TheGolem extends BasicQuestHelper
 	{
 		return Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20),
 			new SkillRequirement(Skill.THIEVING, 25, true));
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.THIEVING, 1000),
+				new ExperienceReward(Skill.CRAFTING, 1000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("Rubies (by using a chisel and hammer on the throne)", ItemID.RUBY, 2),
+				new ItemReward("Emeralds (by using a chisel and hammer on the throne)", ItemID.EMERALD, 2),
+				new ItemReward("Sapphires (by using a chisel and hammer on the throne)", ItemID.SAPPHIRE, 2));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to take the Carpet ride from Shanty Pass to Uzer."));
 	}
 
 	@Override

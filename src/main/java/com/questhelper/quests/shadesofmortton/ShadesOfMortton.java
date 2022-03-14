@@ -30,12 +30,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -69,7 +71,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement morttonTele, food, flamHammer, flamtaerBracelet;
 
-	Requirement hasDiary, hadSerum208, razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, hasSacredOil, has20Sanctity, hasPyreLog, curedRazmire, curedUlsquire;
+	Requirement razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, has20Sanctity, curedRazmire, curedUlsquire;
 
 	QuestStep searchShelf, readDiary, addAshes, use207OnRazmire, talkToRazmire, kill5Shades, kill4Shades, kill3Shades, kill2Shades, kill1Shades, use207OnRazmireAgain, talkToRazmireAgain, buyTimberLimeAndSwamp,
 		use207OnUlsquire, talkToUlsquire, talkToUlsquireAgain, repairTemple, lightAltar, useOilOnFlame, use207OnFlame, useOilOnLog, burnCorpse, repairTo20Sanctity, use208OnRazmire, use208OnUlsquire, talkToUlsquireToFinish;
@@ -83,7 +85,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep goReadDiary = new ConditionalStep(this, searchShelf);
-		goReadDiary.addStep(hasDiary, readDiary);
+		goReadDiary.addStep(diary.alsoCheckBank(questBank), readDiary);
 		steps.put(0, goReadDiary);
 
 		steps.put(5, addAshes);
@@ -111,7 +113,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		steps.put(47, goTalkToUlsquireAgain);
 
 		ConditionalStep makeSacredOil = new ConditionalStep(this, repairTemple);
-		makeSacredOil.addStep(new Conditions(litFire, has20Sanctity, hasSacredOil), use207OnFlame);
+		makeSacredOil.addStep(new Conditions(litFire, has20Sanctity, sacredOilHighlighted), use207OnFlame);
 		makeSacredOil.addStep(new Conditions(litFire, has20Sanctity), useOilOnFlame);
 		makeSacredOil.addStep(litFire, repairTo20Sanctity);
 		makeSacredOil.addStep(repairedTemple, lightAltar);
@@ -120,8 +122,8 @@ public class ShadesOfMortton extends BasicQuestHelper
 		steps.put(60, makeSacredOil);
 
 		ConditionalStep saveRemains = new ConditionalStep(this, repairTemple);
-		saveRemains.addStep(new Conditions(hadSerum208, hasSacredOil), useOilOnLog);
-		saveRemains.addStep(new Conditions(litFire, has20Sanctity, hasSacredOil), use207OnFlame);
+		saveRemains.addStep(new Conditions(serum208.alsoCheckBank(questBank), sacredOilHighlighted), useOilOnLog);
+		saveRemains.addStep(new Conditions(litFire, has20Sanctity, sacredOilHighlighted), use207OnFlame);
 		saveRemains.addStep(new Conditions(litFire, has20Sanctity), useOilOnFlame);
 		saveRemains.addStep(litFire, repairTo20Sanctity);
 		saveRemains.addStep(repairedTemple, lightAltar);
@@ -149,7 +151,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		ashes2 = new ItemRequirement("Ashes", ItemID.ASHES, 2);
 		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashesHighlighted.setHighlightInInventory(true);
-		coins5000 = new ItemRequirement("Coins, more if you want to buy a Flamtaer Hammer", ItemID.COINS_995, 5000);
+		coins5000 = new ItemRequirement("Coins, more if you want to buy a Flamtaer Hammer", ItemCollections.getCoins(), 5000);
 		hammerOrFlam = new ItemRequirement("Hammer or Flamtaer Hammer", ItemCollections.getHammer());
 		hammerOrFlam.addAlternates(ItemID.FLAMTAER_HAMMER);
 		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER);
@@ -206,10 +208,6 @@ public class ShadesOfMortton extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasDiary = new ItemRequirements(diary);
-		hadSerum208 = new Conditions(true, new ItemRequirements(serum208));
-		hasSacredOil = new ItemRequirements(sacredOilHighlighted);
-		hasPyreLog = new ItemRequirements(pyreLog);
 		has20Sanctity = new VarplayerRequirement(341, 20);
 
 		razmirePartlyCured = new VarplayerRequirement(340, true, 3);
@@ -323,6 +321,26 @@ public class ShadesOfMortton extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.HERBLORE, 15, true));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 5));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 2000),
+				new ExperienceReward(Skill.HERBLORE, 2000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Ability to play the Shades of Mort'ton Minigame"));
 	}
 
 	@Override

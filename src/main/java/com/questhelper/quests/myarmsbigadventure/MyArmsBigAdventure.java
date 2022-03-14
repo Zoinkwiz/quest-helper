@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -42,17 +41,18 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -73,7 +73,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement food, prayerPotions, combatGear, gamesNecklace;
 
-	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, hasLump, onRoof, added3Dung, added7Comp, usedRake, givenCompost, givenHardy, givenDibber,
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, added3Dung, added7Comp, usedRake, givenCompost, givenHardy, givenDibber,
 		givenCure, hasRakeHeadAndHandle, rakeHeadNearby, babyNearby, giantNearby;
 
 	DetailedQuestStep enterStronghold, goDownToChef, goUpToChef, talkToBurntmeat, talkToMyArm, useBucketOnPot, enterStrongholdWithLump, goDownToArmWithLump, goUpToArmWithLump, talkToArmWithLump,
@@ -115,10 +115,10 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		steps.put(50, goTalkToBurntmeat);
 
 		ConditionalStep getGout = new ConditionalStep(this, useBucketOnPot);
-		getGout.addStep(new Conditions(hasLump, inStrongholdFloor1), talkToArmWithLump);
-		getGout.addStep(new Conditions(hasLump, inStrongholdFloor2), goDownToArmWithLump);
-		getGout.addStep(new Conditions(hasLump, inPrison), goUpToArmWithLump);
-		getGout.addStep(hasLump, enterStrongholdWithLump);
+		getGout.addStep(new Conditions(goutLump.alsoCheckBank(questBank), inStrongholdFloor1), talkToArmWithLump);
+		getGout.addStep(new Conditions(goutLump.alsoCheckBank(questBank), inStrongholdFloor2), goDownToArmWithLump);
+		getGout.addStep(new Conditions(goutLump.alsoCheckBank(questBank), inPrison), goUpToArmWithLump);
+		getGout.addStep(goutLump.alsoCheckBank(questBank), enterStrongholdWithLump);
 
 		steps.put(60, getGout);
 
@@ -288,7 +288,6 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
 		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
 		inPrison = new ZoneRequirement(prison);
-		hasLump = new ItemRequirements(goutLump);
 		onRoof = new ZoneRequirement(roof);
 
 		added3Dung = new VarbitRequirement(2791, 3);
@@ -301,7 +300,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		givenDibber = new VarbitRequirement(2799, 9, Operation.GREATER_EQUAL);
 		givenCure = new VarbitRequirement(2798, 1);
 
-		hasRakeHeadAndHandle = new Conditions(new ItemRequirements(rakeHead), new ItemRequirements(rakeHandle));
+		hasRakeHeadAndHandle = new Conditions(rakeHead, rakeHandle);
 		rakeHeadNearby = new ItemOnTileRequirement(rakeHead);
 
 		babyNearby = new NpcCondition(NpcID.BABY_ROC);
@@ -473,17 +472,37 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.HERBLORE, 10000),
+				new ExperienceReward(Skill.FARMING, 5000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to a disease-free herb patch on top of the Troll Stronghold."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToBurntmeat, talkToMyArm), climbingBoots));
 		allSteps.add(new PanelDetails("Preparing to grow", Arrays.asList(useBucketOnPot, talkToArmWithLump,
 			talkToMyArmUpstairs, readBook, talkToMyArmAfterReading, useUgthankiDung, useCompost, talkToMyArmAfterFertilising),
-			climbingBoots, bucket, supercompost7, ugthanki3));
+			climbingBoots, bucket, spade, supercompost7, ugthanki3));
 		allSteps.add(new PanelDetails("Karamja adventure", Arrays.asList(talkToBarnaby, talkAfterBoat, talkToMyArmAtTai, talkToMurcaily, talkToMyArmAfterMurcaily)));
 		allSteps.add(new PanelDetails("Troll farming", Arrays.asList(talkToMyArmForFight, giveRake, giveSupercompost, giveHardyGout,
 			giveDibber, talkToMyArmAfterGrow, killBabyRoc, killGiantRoc, giveSpade, talkToMyArmAfterHarvest, talkToBurntmeatAgain,
-			talkToMyArmFinish), combatGear, rake, superCompost, dibber));
+			talkToMyArmFinish), combatGear, rake, superCompost, dibber, spade, hardyGout));
 		return allSteps;
 	}
 }

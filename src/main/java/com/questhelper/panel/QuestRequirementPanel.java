@@ -66,7 +66,14 @@ public class QuestRequirementPanel extends JPanel
 				text.append(itemRequirement.getQuantity()).append(" x ");
 			}
 		}
-		text.append(requirement.getDisplayText());
+		try {text.append(requirement.getDisplayText()); }
+		catch (Exception e) {
+			e.getCause();
+		}
+		if (requirement == null)
+		{
+			StringBuilder wer = new StringBuilder();
+		}
 
 		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
 		String html2 = "</body></html>";

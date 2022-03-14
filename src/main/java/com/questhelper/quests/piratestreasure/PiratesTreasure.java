@@ -24,12 +24,17 @@
  */
 package com.questhelper.quests.piratestreasure;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
@@ -61,14 +66,18 @@ public class PiratesTreasure extends BasicQuestHelper
 
 	private QuestStep readPirateMessage;
 
-	private ObjectStep openChest;
+	private ObjectStep openChest, climbStairs;
 
 	private QuestStep digUpTreasure;
+
+	Zone blueMoonFirst;
+
+	ZoneRequirement inBlueMoonFirst;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		sixtyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 60);
+		sixtyCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 60);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -88,17 +97,20 @@ public class PiratesTreasure extends BasicQuestHelper
 		ItemRequirement chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
 		chestKey.setTooltip("You can get another one from Redbeard Frank");
 
-		ItemRequirements hasPirateMessage = new ItemRequirements(pirateMessage);
-
-		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage);
+		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage.highlighted());
+		climbStairs = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(3228, 3393, 0),
+			"Climb up the stairs in The Blue Moon Inn in Varrock.");
 		openChest = new ObjectStep(this, ObjectID.CHEST_2079, new WorldPoint(3219, 3396, 1),
-			"Open the chest upstairs in The Blue Moon Inn in Varrock by using the key on it.",
-			chestKey);
+			"Open the chest by using the key on it.", chestKey.highlighted());
 		openChest.addDialogStep("Ok thanks, I'll go and get it.");
 		openChest.addIcon(ItemID.CHEST_KEY);
 
-		ConditionalStep getTreasureMap = new ConditionalStep(this, openChest);
-		getTreasureMap.addStep(hasPirateMessage, readPirateMessage);
+		inBlueMoonFirst = new ZoneRequirement(blueMoonFirst);
+		blueMoonFirst = new Zone(new WorldPoint(3213, 3405, 1), new WorldPoint(3234, 3391, 1));
+
+		ConditionalStep getTreasureMap = new ConditionalStep(this, climbStairs);
+		getTreasureMap.addStep(new Conditions(chestKey, inBlueMoonFirst), openChest);
+		getTreasureMap.addStep(pirateMessage, readPirateMessage);
 
 		steps.put(2, getTreasureMap);
 
@@ -137,13 +149,29 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("A Gold Ring", ItemID.GOLD_RING, 1),
+				new ItemReward("An Emerald", ItemID.EMERALD, 1),
+				new ItemReward("450 Coins", ItemID.COINS_995, 450));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Talk to Redbeard Frank", Collections.singletonList(speakToRedbeard), sixtyCoins));
 		allSteps.addAll(smuggleRum.panelDetails());
-		allSteps.add(new PanelDetails("Discover the treasure", Arrays.asList(openChest, readPirateMessage, digUpTreasure), spade));
+		allSteps.add(new PanelDetails("Discover the treasure", Arrays.asList(climbStairs, openChest, readPirateMessage,
+			digUpTreasure), spade));
 
 		return allSteps;
 	}

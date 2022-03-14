@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -41,6 +40,10 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -69,8 +72,8 @@ public class BetweenARock extends BasicQuestHelper
 		baseSchematic, schematicEngineer, khorvakSchematic, goldHelmet, hammer, goldBars3, schematicHighlight, solvedSchematic, combatGear,
 		goldOre6, goldBars4, coins1000, goldHelmetEquipped, food;
 
-	Requirement inTrollRoom, inDwarfEntrance, inDwarfMine, inKeldagrim, inDwarvenMine, hasPage1, hasPage2, hasPage3, hasPages, hasUsedGoldBar, hasCannonball, shotGoldCannonball, hasBaseSchematic,
-		hasSchematicEngineer, inKhorvakRoom, hasGoldHelmet, hasKhorvakSchematic, hasSolvedSchematic, has6Ore, inRealm, avatarNearby;
+	Requirement inTrollRoom, inDwarfEntrance, inDwarfMine, inKeldagrim, inDwarvenMine, hasUsedGoldBar, hasCannonball, shotGoldCannonball,
+		inKhorvakRoom, inRealm, avatarNearby, hasSolvedSchematic;
 
 	QuestStep enterDwarfCave, enterDwarfCave2, talkToFerryman, talkToDondakan, travelBackWithFerryman, talkToBoatman, talkToEngineer, talkToRolad, enterDwarvenMine, killScorpion,
 		searchCart, mineRock, goBackUpToRolad, returnToRolad, readEntireBook, travelToKeldagrim, enterDwarfCaveWithBook, enterDwarfCave2WithBook, talkToFerrymanWithBook, talkToDondakanWithBook,
@@ -109,10 +112,10 @@ public class BetweenARock extends BasicQuestHelper
 		steps.put(20, talkToRolad);
 
 		ConditionalStep getPages = new ConditionalStep(this, enterDwarvenMine);
-		getPages.addStep(new Conditions(inDwarvenMine, hasPages), goBackUpToRolad);
-		getPages.addStep(new Conditions(hasPages), returnToRolad);
-		getPages.addStep(new Conditions(inDwarvenMine, hasPage2, hasPage1), mineRock);
-		getPages.addStep(new Conditions(inDwarvenMine, hasPage2), killScorpion);
+		getPages.addStep(new Conditions(inDwarvenMine, pages), goBackUpToRolad);
+		getPages.addStep(new Conditions(pages), returnToRolad);
+		getPages.addStep(new Conditions(inDwarvenMine, page2, page1), mineRock);
+		getPages.addStep(new Conditions(inDwarvenMine, page2), killScorpion);
 		getPages.addStep(inDwarvenMine, searchCart);
 
 		steps.put(30, getPages);
@@ -142,26 +145,26 @@ public class BetweenARock extends BasicQuestHelper
 		steps.put(70, talkToDondakanAfterShot);
 
 		ConditionalStep sortSchematics = new ConditionalStep(this, readBookAgain);
-		sortSchematics.addStep(new Conditions(hasSolvedSchematic, hasGoldHelmet, inDwarfMine), talkToDondakanWithHelmet);
-		sortSchematics.addStep(new Conditions(hasSolvedSchematic, hasGoldHelmet, inDwarfEntrance), talkToFerrymanWithHelmet);
-		sortSchematics.addStep(new Conditions(hasSolvedSchematic, hasGoldHelmet, inTrollRoom), enterDwarfCave2WithHelmet);
-		sortSchematics.addStep(new Conditions(hasSolvedSchematic, hasGoldHelmet), enterDwarfCaveWithHelmet);
+		sortSchematics.addStep(new Conditions(hasSolvedSchematic, goldHelmet, inDwarfMine), talkToDondakanWithHelmet);
+		sortSchematics.addStep(new Conditions(hasSolvedSchematic, goldHelmet, inDwarfEntrance), talkToFerrymanWithHelmet);
+		sortSchematics.addStep(new Conditions(hasSolvedSchematic, goldHelmet, inTrollRoom), enterDwarfCave2WithHelmet);
+		sortSchematics.addStep(new Conditions(hasSolvedSchematic, goldHelmet), enterDwarfCaveWithHelmet);
 		sortSchematics.addStep(new Conditions(hasSolvedSchematic), useGoldBarOnAnvil);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, hasSchematicEngineer, hasKhorvakSchematic), assembleSchematic);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, hasSchematicEngineer, hasKhorvakSchematic), assembleSchematic);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, hasSchematicEngineer, inKhorvakRoom), talkToKhorvak);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, hasSchematicEngineer, hasGoldHelmet), enterKhorvakRoom);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, hasSchematicEngineer), useGoldBarOnAnvil);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, inKeldagrim), talkToEngineerAgain);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, inDwarfEntrance), talkToBoatmanAgain);
-		sortSchematics.addStep(new Conditions(hasBaseSchematic, inDwarfMine), travelBackWithFerrymanAgain);
-		sortSchematics.addStep(hasBaseSchematic, travelToKeldagrimAgain);
+		sortSchematics.addStep(new Conditions(baseSchematic, schematicEngineer, khorvakSchematic), assembleSchematic);
+		sortSchematics.addStep(new Conditions(baseSchematic, schematicEngineer, khorvakSchematic), assembleSchematic);
+		sortSchematics.addStep(new Conditions(baseSchematic, schematicEngineer, inKhorvakRoom), talkToKhorvak);
+		sortSchematics.addStep(new Conditions(baseSchematic, schematicEngineer, goldHelmet), enterKhorvakRoom);
+		sortSchematics.addStep(new Conditions(baseSchematic, schematicEngineer), useGoldBarOnAnvil);
+		sortSchematics.addStep(new Conditions(baseSchematic, inKeldagrim), talkToEngineerAgain);
+		sortSchematics.addStep(new Conditions(baseSchematic, inDwarfEntrance), talkToBoatmanAgain);
+		sortSchematics.addStep(new Conditions(baseSchematic, inDwarfMine), travelBackWithFerrymanAgain);
+		sortSchematics.addStep(baseSchematic, travelToKeldagrimAgain);
 
 		steps.put(80, sortSchematics);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, talkToDondakanForEnd);
 		completeQuest.addStep(avatarNearby, killAvatar);
-		completeQuest.addStep(new Conditions(inRealm, has6Ore), talkToSecondFlame);
+		completeQuest.addStep(new Conditions(inRealm, goldOre6), talkToSecondFlame);
 		completeQuest.addStep(inRealm, mine6GoldOre);
 
 		steps.put(90, completeQuest);
@@ -175,7 +178,7 @@ public class BetweenARock extends BasicQuestHelper
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		coins5 = new ItemRequirement("Coins", ItemID.COINS_995, 5);
+		coins5 = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
 		page1 = new ItemRequirement("Book page 1", ItemID.BOOK_PAGE_1);
 		page2 = new ItemRequirement("Book page 2", ItemID.BOOK_PAGE_2);
 		page3 = new ItemRequirement("Book page 3", ItemID.BOOK_PAGE_3);
@@ -222,7 +225,7 @@ public class BetweenARock extends BasicQuestHelper
 		goldOre6 = new ItemRequirement("Gold ores", ItemID.GOLD_ORE, 6);
 
 		goldBars4 = new ItemRequirement("Gold bars", ItemID.GOLD_BAR, 4);
-		coins1000 = new ItemRequirement("Coins for travelling", ItemID.COINS_995, 1000);
+		coins1000 = new ItemRequirement("Coins for travelling", ItemCollections.getCoins(), 1000);
 	}
 
 	public void loadZones()
@@ -245,19 +248,11 @@ public class BetweenARock extends BasicQuestHelper
 		inKeldagrim = new ZoneRequirement(keldagrim, keldagrim2);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inKhorvakRoom = new ZoneRequirement(khorvakRoom);
-		hasPage1 = new ItemRequirements(page1);
-		hasPage2 = new ItemRequirements(page2);
-		hasPage3 = new ItemRequirements(page3);
-		hasPages = new ItemRequirements(pages);
-		hasKhorvakSchematic = new ItemRequirements(khorvakSchematic);
+
 		hasUsedGoldBar = new VarbitRequirement(301, 1);
 		shotGoldCannonball = new VarbitRequirement(313, 1);
-		hasCannonball = new Conditions(LogicType.OR, new ItemRequirements(goldCannonball), shotGoldCannonball);
-		hasBaseSchematic = new ItemRequirements(baseSchematic);
-		hasGoldHelmet = new Conditions(true, new ItemRequirements(goldHelmet));
-		hasSchematicEngineer = new ItemRequirements(schematicEngineer);
+		hasCannonball = new Conditions(LogicType.OR, goldCannonball, shotGoldCannonball);
 		hasSolvedSchematic = new VarbitRequirement(305, 1);
-		has6Ore = new ItemRequirements(goldOre6);
 		inRealm = new ZoneRequirement(realm);
 
 		avatarNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1234),
@@ -370,12 +365,13 @@ public class BetweenARock extends BasicQuestHelper
 		talkToDondakanForEnd.addDialogStep("Ready as I'll ever be.");
 		talkToDondakanWithHelmet.addSubSteps(enterDwarfCaveWithHelmet, enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanForEnd);
 
-		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15.", pickaxe);
+		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15. " +
+				"Keep these in your inventory for the boss fight. Do not remove your gold helmet.", pickaxe, goldHelmetEquipped);
 
 		talkToSecondFlame = new ObjectStep(this, ObjectID.WALL_OF_FLAME_5979, new WorldPoint(2373, 4956, 0),
-			"TALK to the central wall of flame.");
+			"TALK to the central wall of flame.", goldHelmetEquipped);
 		killAvatar = new NpcStep(this, NpcID.ARZINIAN_AVATAR_OF_MAGIC, new WorldPoint(2375, 4953, 0), "Kill the " +
-			"avatar. Make sure to keep the gold ores in your inventory.");
+			"avatar. Make sure to keep the gold ores in your inventory.", goldHelmetEquipped);
 		killAvatar.addAlternateNpcs(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1234, NpcID.ARZINIAN_AVATAR_OF_MAGIC_1235,
 			NpcID.ARZINIAN_AVATAR_OF_RANGING, NpcID.ARZINIAN_AVATAR_OF_RANGING_1231, NpcID.ARZINIAN_AVATAR_OF_RANGING_1232,
 			NpcID.ARZINIAN_AVATAR_OF_STRENGTH, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1228, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1229);
@@ -395,7 +391,6 @@ public class BetweenARock extends BasicQuestHelper
 		return reqs;
 	}
 
-
 	@Override
 	public List<String> getCombatRequirements()
 	{
@@ -403,6 +398,35 @@ public class BetweenARock extends BasicQuestHelper
 		reqs.add("Scorpion (level 14)");
 		reqs.add("Arzinian Being of Bordanzan (level 75 - 125)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.DEFENCE, 5000),
+				new ExperienceReward(Skill.MINING, 5000),
+				new ExperienceReward(Skill.SMITHING, 5000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Rune Pickaxe.", ItemID.RUNE_PICKAXE, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Ability to Teleport to Dondakan's Rock using a Ring of Wealth."),
+				new UnlockReward("Access to Arzinian Mine."));
 	}
 
 	@Override

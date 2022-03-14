@@ -31,23 +31,22 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -63,7 +62,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 	ItemRequirement spade, tinderbox, ogreArtfact, combatGear;
 
 	Requirement inCove, inCavern, inIthoiHut, inGnocciHut, inArsenHut, inShip, talkedToIthoi, talkedToGnocci, talkedToArsen, talkedToColin,
-		hasTinderbox, hasSpade, hasOgreArtefact, foundDoll, returnedToothPick, lookedThroughTelescope, finishedGnocci, finishedArsen, finishedColin;
+		foundDoll, returnedToothPick, lookedThroughTelescope, finishedGnocci, finishedArsen, finishedColin;
 
 	QuestStep talkToTockFarm, talkToTockRimmington, returnToCove, goUpToIthoi, talkToIthoi, goDownFromIthoi, goUpToArsen, talkToArsen,
 		goUpToColin, talkToColin, goDownFromArsen, goUpToGnocci, talkToGnocci, grabTinderbox, goDownFromGnocci, pickUpSpade, goOntoShip,
@@ -105,15 +104,16 @@ public class TheCorsairCurse extends BasicQuestHelper
 		solveCurses.addStep(new Conditions(talkedToIthoi, returnedToothPick, talkedToColin, foundDoll, inIthoiHut), lookThroughTelescope);
 		solveCurses.addStep(new Conditions(talkedToIthoi, returnedToothPick, talkedToColin, foundDoll), goUpToIthoi2);
 
-		solveCurses.addStep(new Conditions(talkedToIthoi, returnedToothPick, talkedToColin, hasSpade), digSand);
+		solveCurses.addStep(new Conditions(talkedToIthoi, returnedToothPick, talkedToColin, spade), digSand);
 
-		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, inCavern, hasOgreArtefact), talkToTess);
-		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, inShip, hasOgreArtefact), leaveShip);
-		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, hasOgreArtefact), goDownToTess);
+		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, inCavern, ogreArtfact), talkToTess);
+		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, inShip, ogreArtfact), leaveShip);
+		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, ogreArtfact), goDownToTess);
 
-		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, hasSpade, inShip), talkToTockShip);
-		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, hasSpade), goOntoShip);
-		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, inGnocciHut, hasTinderbox), pickUpSpade);
+		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, spade, inShip),
+			talkToTockShip);
+		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, spade), goOntoShip);
+		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, inGnocciHut, tinderbox), pickUpSpade);
 		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci, inGnocciHut), grabTinderbox);
 		solveCurses.addStep(new Conditions(talkedToIthoi, talkedToArsen, talkedToColin, talkedToGnocci), pickUpSpade);
 
@@ -142,15 +142,15 @@ public class TheCorsairCurse extends BasicQuestHelper
 
 		ConditionalStep solveFoodWithArsen = new ConditionalStep(this, grabTinderbox);
 		solveFoodWithArsen.addStep(inArsenHut, talkToArsen3);
-		solveFoodWithArsen.addStep(new Conditions(hasTinderbox, inGnocciHut), goDownFromGnocci3);
-		solveFoodWithArsen.addStep(hasTinderbox, goUpToArsen3);
+		solveFoodWithArsen.addStep(new Conditions(tinderbox, inGnocciHut), goDownFromGnocci3);
+		solveFoodWithArsen.addStep(tinderbox, goUpToArsen3);
 
 		steps.put(30, solveFoodWithArsen);
 
 		ConditionalStep solveFoodWithIthoi = new ConditionalStep(this, grabTinderbox);
 		solveFoodWithIthoi.addStep(inArsenHut, goDownFromArsen3);
-		solveFoodWithIthoi.addStep(new Conditions(hasTinderbox, inIthoiHut), talkToIthoi2);
-		solveFoodWithIthoi.addStep(hasTinderbox, goUpToIthoi3);
+		solveFoodWithIthoi.addStep(new Conditions(tinderbox, inIthoiHut), talkToIthoi2);
+		solveFoodWithIthoi.addStep(tinderbox, goUpToIthoi3);
 
 		steps.put(35, solveFoodWithIthoi);
 		steps.put(40, solveFoodWithIthoi);
@@ -211,7 +211,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 
 		talkedToArsen = new VarbitRequirement(6074, 2, Operation.GREATER_EQUAL);
 		returnedToothPick = new VarbitRequirement(6074, 4);
-		finishedArsen = new VarbitRequirement(6074, 5, Operation.GREATER_EQUAL);
+		finishedArsen = new VarbitRequirement(6074, 6, Operation.GREATER_EQUAL);
 
 		talkedToColin = new VarbitRequirement(6072, 1, Operation.GREATER_EQUAL);
 		lookedThroughTelescope = new VarbitRequirement(6072, 2);
@@ -220,10 +220,6 @@ public class TheCorsairCurse extends BasicQuestHelper
 		talkedToGnocci = new VarbitRequirement(6073, 1);
 		foundDoll = new VarbitRequirement(6073, 2);
 		finishedGnocci = new VarbitRequirement(6073, 3);
-
-		hasTinderbox = new ItemRequirements(tinderbox);
-		hasSpade = new ItemRequirements(spade);
-		hasOgreArtefact = new ItemRequirements(ogreArtfact);
 	}
 
 	public void setupSteps()
@@ -362,6 +358,18 @@ public class TheCorsairCurse extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Ithoi the Navigator (level 34)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to Yusuf's Bank in the Corsair Cove."));
 	}
 
 	@Override

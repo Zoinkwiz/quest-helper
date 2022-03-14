@@ -29,10 +29,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -53,6 +57,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -69,7 +74,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	Requirement inIslands, inJatizso, inNeitiznot, inTrollLands, hasJesterOutfit, jestering1, repairedBridge1,
 		repairedBridge2, inNeitiznotOrTrollLands, collectedFlosi, collectedHring, collectedSkuli,
-		collectedValigga, collectedKeepa, collectedRaum, inTrollCave, inKingCave, killedTrolls, haveHead;
+		collectedValigga, collectedKeepa, collectedRaum, inTrollCave, inKingCave, killedTrolls, protectRanged;
 
 	QuestStep talkToMord, travelToJatizso, talkToGjuki, continueTalkingToGjuki, bringOreToGjuki,
 		talkToGjukiAfterOre, getJesterOutfit, talkToSlug, travelToNeitiznot, returnToRellekkaFromJatizso,
@@ -286,7 +291,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	{
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
-		coins15 = new ItemRequirement("Coins", ItemID.COINS_995, 15);
+		coins15 = new ItemRequirement("Coins", ItemCollections.getCoins(), 15);
 		bronzeNail = new ItemRequirement("Bronze nail", ItemID.BRONZE_NAILS);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
@@ -340,24 +345,24 @@ public class TheFremennikIsles extends BasicQuestHelper
 			{
 				splitLogs8.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
 				splitLogs4.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
 				splitLogs8.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
 				splitLogs4.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
+				roundShield.setTooltip("Buy from the GE, or get level 56 Woodcutting");
 			}
 
 			if (client.getRealSkillLevel(Skill.CRAFTING) >= 46)
 			{
 				yakTop.setTooltip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
 				yakBottom.setTooltip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-				roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
 				yakBottom.setTooltip("Buy from the GE, or get 46 crafting");
 				yakTop.setTooltip("Buy from the GE, or get 46 crafting");
-				roundShield.setTooltip("Buy from the GE, or get 46 crafting");
 			}
 		}
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
@@ -369,6 +374,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 		head = new ItemRequirement("Decapitated head", ItemID.DECAPITATED_HEAD_10842);
 		head.setTooltip("You can get another from the corpse of the Ice Troll King");
+
+		protectRanged = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
 	}
 
 	public void loadZones()
@@ -405,7 +412,6 @@ public class TheFremennikIsles extends BasicQuestHelper
 		collectedFlosi = new VarbitRequirement(3322, 1);
 
 		killedTrolls = new VarbitRequirement(3312, 0);
-		haveHead = new ItemRequirements(head);
 	}
 
 	public void setupSteps()
@@ -455,9 +461,15 @@ public class TheFremennikIsles extends BasicQuestHelper
 		talkToMawnisAfterItems = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis.");
 		talkToMawnisWithLogs.addSubSteps(talkToMawnisAfterItems);
 
-		repairBridge1 = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21310, new WorldPoint(2314, 3840, 0), "Right-click repair the bridges to the north of Neitiznot.", splitLogs8, rope8, knife);
-		repairBridge1Second = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21310, new WorldPoint(2314, 3840, 0), "Right-click repair the bridges to the north of Neitiznot.", splitLogs4, rope4, knife);
-		repairBridge2 = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21312, new WorldPoint(2355, 3840, 0), "Right-click repair the bridges to the north of Neitiznot.", splitLogs4, rope4, knife);
+		repairBridge1 = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21310, new WorldPoint(2314, 3840, 0), "Right-click " +
+			"repair the bridges to the north of Neitiznot. Protect from Missiles before doing this as you'll " +
+			"automatically cross the aggressive trolls.", splitLogs8, rope8, knife, protectRanged);
+		repairBridge1Second = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21310, new WorldPoint(2314, 3840, 0),
+			"Right-click repair the bridges to the north of Neitiznot. Protect from Missiles before doing this as " +
+				"you'll automatically cross the aggressive trolls. Protect from Missiles before doing this as you'll " +
+				"automatically cross the aggressive trolls.", splitLogs4, rope4, knife, protectRanged);
+		repairBridge2 = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21312, new WorldPoint(2355, 3840, 0),
+			"Right-click repair the bridges to the north of Neitiznot.", splitLogs4, rope4, knife, protectRanged);
 		repairBridge1.addSubSteps(repairBridge1Second, repairBridge2);
 
 		talkToMawnisAfterRepair = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Report back to Mawnis.");
@@ -573,6 +585,31 @@ public class TheFremennikIsles extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CONSTRUCTION, 5000),
+				new ExperienceReward(Skill.CRAFTING, 5000),
+				new ExperienceReward(Skill.WOODCUTTING, 10000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
+				new ItemReward("Jester Outfit", ItemID.JESTER, 1),
+				new ItemReward("Around 20,000 coins in assorted rewards during quest", ItemID.COINS));
 	}
 
 	@Override

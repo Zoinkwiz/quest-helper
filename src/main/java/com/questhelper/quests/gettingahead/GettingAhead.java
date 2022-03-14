@@ -33,12 +33,15 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -85,8 +88,7 @@ public class GettingAhead extends BasicQuestHelper
 	ConditionalStep goUseFlourOnGate, returnToGordon, makeClayHead, addFurToHead, dyeHead, putUpHead;
 
 	//Conditions
-	Requirement inMine, inUpstairsHouse, hasClayHead, hasFurHead, hasBloodyHead, hasPotOfFlour, hasClay, hasPickaxe, hasSoftClay, hasKnife, hasBucket,
-		hasBucketOfWater, hasNeedle, hasThread, hasRedDye, hasPlanks2, hasNails6, hasHammer, hasSaw;
+	Requirement inMine, inUpstairsHouse;
 
 	//Zones
 	Zone kebosMine, upstairsHouse;
@@ -104,8 +106,8 @@ public class GettingAhead extends BasicQuestHelper
 		steps.put(2, talkToMary);
 
 		goUseFlourOnGate = new ConditionalStep(this, goUpstairsHouse, "Use the pot of flour on the cow pen gate.");
-		goUseFlourOnGate.addStep(new Conditions(inUpstairsHouse, hasPotOfFlour), goDownstairsHouse);
-		goUseFlourOnGate.addStep(new Conditions(hasPotOfFlour), usePotOfFlour);
+		goUseFlourOnGate.addStep(new Conditions(inUpstairsHouse, potOfFlour), goDownstairsHouse);
+		goUseFlourOnGate.addStep(new Conditions(potOfFlour), usePotOfFlour);
 		goUseFlourOnGate.addStep(inUpstairsHouse, takePot);
 		steps.put(4, goUseFlourOnGate);
 
@@ -118,40 +120,41 @@ public class GettingAhead extends BasicQuestHelper
 
 		returnToGordon = new ConditionalStep(this, takePickaxe, "Return to Gordon and talk to him.");
 		returnToGordon.addStep(inMine, leaveCave);
-		returnToGordon.addStep(new Conditions(new Conditions(LogicType.OR, hasClay, hasSoftClay), hasPlanks2), talkToGordon2);
-		returnToGordon.addStep(new Conditions(LogicType.OR, hasClay, hasSoftClay), takePlanks);
-		returnToGordon.addStep(hasPickaxe, mineClay);
+		returnToGordon.addStep(new Conditions(new Conditions(LogicType.OR, clay, softClay), planks),
+			talkToGordon2);
+		returnToGordon.addStep(new Conditions(LogicType.OR, clay, softClay), takePlanks);
+		returnToGordon.addStep(pickaxe, mineClay);
 
 		steps.put(14, returnToGordon);
 		steps.put(16, talkToMary2);
 
 		makeClayHead = new ConditionalStep(this, takePickaxe, "Use the knife on the soft clay then talk to Gordon.");
-		makeClayHead.addStep(new Conditions(hasSoftClay, hasKnife), useKnifeOnClay);
-		makeClayHead.addStep(hasSoftClay, takeKnife);
-		makeClayHead.addStep(new Conditions(hasBucketOfWater, hasClay), wetClay);
-		makeClayHead.addStep(new Conditions(hasBucket, hasClay), fillBucket);
-		makeClayHead.addStep(hasClay, takeBucket);
-		makeClayHead.addStep(hasPickaxe, mineClay);
+		makeClayHead.addStep(new Conditions(softClay, knife), useKnifeOnClay);
+		makeClayHead.addStep(softClay, takeKnife);
+		makeClayHead.addStep(new Conditions(bucketOfWater, clay), wetClay);
+		makeClayHead.addStep(new Conditions(bucket, clay), fillBucket);
+		makeClayHead.addStep(clay, takeBucket);
+		makeClayHead.addStep(pickaxe, mineClay);
 		steps.put(18, makeClayHead);
 
 		steps.put(20, talkToGordonGen);
 		addFurToHead = new ConditionalStep(this, goUpstairsHouse, "Use the bear fur on the clay head then talk to Gordon.");
-		addFurToHead.addStep(new Conditions(hasThread, hasNeedle), useFurOnHead);
-		addFurToHead.addStep(new Conditions(inUpstairsHouse, hasNeedle), getThread);
+		addFurToHead.addStep(new Conditions(thread, needle), useFurOnHead);
+		addFurToHead.addStep(new Conditions(inUpstairsHouse, needle), getThread);
 		addFurToHead.addStep(inUpstairsHouse, getNeedle);
 		steps.put(22, addFurToHead);
 		steps.put(24, talkToGordonGen2);
 
 		dyeHead = new ConditionalStep(this, takeDye, "Use the red dye on the fur head then talk to Gordon.");
-		dyeHead.addStep(hasRedDye, useDyeOnHead);
+		dyeHead.addStep(redDye, useDyeOnHead);
 		steps.put(26, dyeHead);
 		steps.put(28, talkToGordonGen3);
 
 		putUpHead = new ConditionalStep(this, takePlanks, "Build the Mounted Head Space inside the farmhouse.");
-		putUpHead.addStep(new Conditions(hasPlanks2, hasHammer, hasSaw, hasNails6), buildBearHead);
-		putUpHead.addStep(new Conditions(hasPlanks2, hasHammer, hasSaw), takeNails);
-		putUpHead.addStep(new Conditions(hasPlanks2, hasHammer), takeSaw);
-		putUpHead.addStep(hasPlanks2, takeHammer);
+		putUpHead.addStep(new Conditions(planks, hammer, saw, nails), buildBearHead);
+		putUpHead.addStep(new Conditions(planks, hammer, saw), takeNails);
+		putUpHead.addStep(new Conditions(planks, hammer), takeSaw);
+		putUpHead.addStep(planks, takeHammer);
 		steps.put(30, putUpHead);
 		steps.put(32, talkToGordonFinal);
 
@@ -171,29 +174,44 @@ public class GettingAhead extends BasicQuestHelper
 
 		//Required
 		bearFur = new ItemRequirement("Bear Fur", ItemID.BEAR_FUR);
+		bearFur.canBeObtainedDuringQuest();
 		bearFur.setTooltip("You can kill a bear west of the farm for some fur");
 		bearFur.setHighlightInInventory(true);
 		softClay = new ItemRequirement("Soft Clay", ItemID.SOFT_CLAY, 1);
+		softClay.canBeObtainedDuringQuest();
 		softClay.setHighlightInInventory(true);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer(), 1);
+		hammer.canBeObtainedDuringQuest();
 		saw = new ItemRequirement("Any saw", ItemID.SAW, 1);
+		saw.canBeObtainedDuringQuest();
 		saw.addAlternates(ItemID.CRYSTAL_SAW, ItemID.AMYS_SAW);
 		planks = new ItemRequirement("Planks", ItemID.PLANK, 2);
+		planks.canBeObtainedDuringQuest();
 		nails = new ItemRequirement("Nails", ItemCollections.getNails(), 6);
+		nails.canBeObtainedDuringQuest();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
+		knife.canBeObtainedDuringQuest();
 		knife.setHighlightInInventory(true);
 		redDye = new ItemRequirement("Red Dye", ItemID.RED_DYE, 1);
+		redDye.canBeObtainedDuringQuest();
 		redDye.setHighlightInInventory(true);
 		potOfFlour = new ItemRequirement("Pot of Flour", ItemID.POT_OF_FLOUR, 1);
+		potOfFlour.canBeObtainedDuringQuest();
 		potOfFlour.setHighlightInInventory(true);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE, 1);
+		needle.canBeObtainedDuringQuest();
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 1);
+		thread.canBeObtainedDuringQuest();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe.canBeObtainedDuringQuest();
 		clay = new ItemRequirement("Clay", ItemID.CLAY);
+		clay.canBeObtainedDuringQuest();
 		clay.setHighlightInInventory(true);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket.canBeObtainedDuringQuest();
 		bucket.setHighlightInInventory(true);
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWater.canBeObtainedDuringQuest();
 		bucketOfWater.setHighlightInInventory(true);
 
 		//Making the fake head
@@ -215,25 +233,6 @@ public class GettingAhead extends BasicQuestHelper
 	{
 		inMine = new ZoneRequirement(kebosMine);
 		inUpstairsHouse = new ZoneRequirement(upstairsHouse);
-
-		hasPotOfFlour = new ItemRequirements(potOfFlour);
-		hasPickaxe = new ItemRequirements(pickaxe);
-		hasClay = new ItemRequirements(clay);
-		hasSoftClay = new ItemRequirements(softClay);
-		hasKnife = new ItemRequirements(knife);
-		hasBucket = new ItemRequirements(bucket);
-		hasBucketOfWater = new ItemRequirements(bucketOfWater);
-		hasNeedle = new ItemRequirements(needle);
-		hasThread = new ItemRequirements(thread);
-		hasPlanks2 = new ItemRequirements(planks);
-		hasSaw = new ItemRequirements(saw);
-		hasHammer = new ItemRequirements(hammer);
-		hasNails6 = new ItemRequirements(nails);
-		hasRedDye = new ItemRequirements(redDye);
-
-		hasClayHead = new ItemRequirements(clayHeadHighlighted);
-		hasFurHead = new ItemRequirements(furHeadHighlighted);
-		hasBloodyHead = new ItemRequirements(bloodyHead);
 	}
 
 	public void loadZones()
@@ -261,11 +260,13 @@ public class GettingAhead extends BasicQuestHelper
 
 		goToMine = new ObjectStep(this, ObjectID.CAVE_20852, new WorldPoint(1212, 3647, 0), "Enter the Kebos Lowlands mine just west of the bridge and kill the Headless Beast (level 82).");
 		goToMine.addDialogStep("Yes.");
-		killBeast = new NpcStep(this, NpcID.HEADLESS_BEAST_10506, new WorldPoint(1191, 10021, 0), "Kill the headless beast.");
+		killBeast = new NpcStep(this, NpcID.HEADLESS_BEAST_10506, new WorldPoint(1191, 10021, 0), "Kill the headless " +
+			"beast. You can safespot it from the south west corner of the pond in the cave.");
+		((NpcStep) killBeast).addSafeSpots(new WorldPoint(1190, 10017, 0));
 		goToMine.addSubSteps(killBeast);
 
 		talkToGordon2 = new NpcStep(this, NpcID.GORDON, new WorldPoint(1248, 3686, 0), "");
-		leaveCave = new ObjectStep(this, ObjectID.CAVE_20853, new WorldPoint(1190, 10029, 0), "Leave the cave");
+		leaveCave = new ObjectStep(this, ObjectID.CAVE_20853, new WorldPoint(1190, 10029, 0), "Leave the cave.");
 		talkToGordon2.addSubSteps(leaveCave);
 
 		//Making the fake head
@@ -321,6 +322,32 @@ public class GettingAhead extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Headless Beast (level 82, safespottable)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CRAFTING, 4000),
+				new ExperienceReward(Skill.CONSTRUCTION, 3200));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("3,000 Coins", ItemID.COINS_995, 3000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Access to the tannery on Kebos Lowlands"));
 	}
 
 	@Override

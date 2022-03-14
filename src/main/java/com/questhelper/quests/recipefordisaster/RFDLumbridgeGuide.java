@@ -24,28 +24,29 @@
  */
 package com.questhelper.quests.recipefordisaster;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.requirements.conditional.Conditions;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
@@ -61,7 +62,9 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	ItemRequirement milk, egg, flour, tin, rawGuidanceCake, guidanceCake, guidanceCakeHighlighted, enchantedEgg, enchantedMilk,
 		enchantedFlour, tinHighlighted;
 
-	Requirement inDiningRoom, inUpstairsTrailborn, hasCake, hasRawCake;
+	ItemRequirement wizardsTowerTeleport, lumbridgeTeleport;
+
+	Requirement inDiningRoom, inUpstairsTrailborn;
 
 	QuestStep enterDiningRoom, inspectLumbridgeGuide, goUpToTraiborn, talkToTraiborn, cookCake, enterDiningRoomAgain,
 		useCakeOnLumbridgeGuide, mixIngredients;
@@ -88,9 +91,9 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		steps.put(2, goTalkToTrailborn);
 
 		ConditionalStep saveGuide = new ConditionalStep(this, mixIngredients);
-		saveGuide.addStep(new Conditions(hasCake, inDiningRoom), useCakeOnLumbridgeGuide);
-		saveGuide.addStep(hasCake, enterDiningRoomAgain);
-		saveGuide.addStep(hasRawCake, cookCake);
+		saveGuide.addStep(new Conditions(guidanceCake, inDiningRoom), useCakeOnLumbridgeGuide);
+		saveGuide.addStep(guidanceCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		saveGuide.addStep(rawGuidanceCake, cookCake);
 		steps.put(3, saveGuide);
 		steps.put(4, saveGuide);
 		return steps;
@@ -118,6 +121,9 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		guidanceCake = new ItemRequirement("Guidance cake", ItemID.CAKE_OF_GUIDANCE);
 		guidanceCakeHighlighted = new ItemRequirement("Guidance cake", ItemID.CAKE_OF_GUIDANCE);
 		guidanceCakeHighlighted.setHighlightInInventory(true);
+
+		lumbridgeTeleport = new ItemRequirement("Lumbridge Teleport", ItemID.LUMBRIDGE_TELEPORT);
+		wizardsTowerTeleport = new ItemRequirement("Necklace of Passage for Wizards' Tower teleport", ItemCollections.getNecklaceOfPassages());
 	}
 
 	public void loadZones()
@@ -131,9 +137,6 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	{
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inUpstairsTrailborn = new ZoneRequirement(upstairsTrailborn, quizSpot);
-
-		hasCake = new ItemRequirements(guidanceCake);
-		hasRawCake = new ItemRequirements(rawGuidanceCake);
 	}
 
 	public void setupSteps()
@@ -152,7 +155,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		useCakeOnLumbridgeGuide.addIcon(ItemID.CAKE_OF_GUIDANCE);
 		useCakeOnLumbridgeGuide.addSubSteps(enterDiningRoomAgain);
 
-		mixIngredients = new DetailedQuestStep(this, "Talk to Traiborn for the enchanted ingredients, then mix them in a tin.", enchantedEgg, enchantedFlour, enchantedMilk, tin);
+		mixIngredients = new DetailedQuestStep(this, "Talk to Traiborn for the enchanted ingredients, then mix them in a tin.", enchantedEgg.highlighted(), enchantedFlour.highlighted(), enchantedMilk.highlighted(), tin.highlighted());
 	}
 
 	@Override
@@ -174,6 +177,37 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.WITCHS_HOUSE, QuestState.FINISHED));
 		return req;
 	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		ArrayList<ItemRequirement> req = new ArrayList<>();
+		req.add(lumbridgeTeleport);
+		req.add(wizardsTowerTeleport);
+
+		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 2500),
+				new ExperienceReward(Skill.MAGIC, 2500));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Collections.singletonList(new UnlockReward("Increased access to the Culinaromancer's Chest"));
+	}
+
 
 	@Override
 	public List<PanelDetails> getPanels()

@@ -40,6 +40,9 @@ import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -73,7 +76,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	ItemRequirement haemBook, unscentedTop, unscentedLegs, unscentedShoes, vyreTop, vyreLegs, vyreShoes, ivandisFlailEquipped, blisterwoodFlail, scentedTop, scentedLegs,
 			scentedShoes, blisterwood8, axe, knife, vine3, longVine, log1, log2, log3, axeEquipped, oldNote, ruby, sickle, enchantedSickle, enchantRubyRunesOrTablet, fireRune5,
 			fireStaff, cosmicRune, enchantRunes, enchantTablet, rubySickle, blisterwoodLog, blisterwoodSickle, ivandisFlailHighlighted, chisel, rubyHighlighted, ivandisFlail,
-			combatGear, vyrewatchOutfitOrCoins;
+			combatGear, rangedWeaponForBloodveld, vyrewatchOutfitOrCoins;
 
 	//Items Recommended
 	ItemRequirement antipoison, pickaxe, drakanMedallion, moryLegs3;
@@ -95,10 +98,10 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 	DetailedQuestStep goDownToMakeFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle;
 
-	Requirement has8Logs, inFollowingCarlArea, inKroyArea, destroyedLabTable1, inPater, inSwingArea, inSwingExitArea, vineAdded, has3Vines, hasKnife, hasLongVine,
-		inNailBeastArea, inBridgeArea, nailBeastNearby, hasAxe, hasLog, has2Logs, has3Logs, hasRepairedBridge1, hasRepairedBridge2, hasRepairedBridge3, inBridgeExitArea,
-		inJuvinateArea, juvinateNearby, inPuzzleInterface, talkedToKael, talkedToVertida, talkedToPolmafi, talkedToRadigad, talkedToIvan, inLab, inDeepLab, inNewBase,
-		inDamienRoom, hasNote, hasSickle, hasRubySickle, hasEnchantedRubySickle, hasBlisterwoodSickle, inFinalFightArea;
+	Requirement inFollowingCarlArea, inKroyArea, destroyedLabTable1, inPater, inSwingArea, inSwingExitArea, vineAdded, inNailBeastArea,
+		inBridgeArea, nailBeastNearby, hasRepairedBridge1, hasRepairedBridge2, hasRepairedBridge3, inBridgeExitArea, inJuvinateArea,
+		juvinateNearby, inPuzzleInterface, talkedToKael, talkedToVertida, talkedToPolmafi, talkedToRadigad, talkedToIvan, inLab, inDeepLab,
+		inNewBase, inDamienRoom, inFinalFightArea;
 
 	//Zones
 	Zone followingCarlArea, kroyArea, pater, swingArea, swingExitArea, nailBeastArea, bridgeArea, bridgeExitArea, juvinateArea, lab, newBase, damienRoom, finalFightArea;
@@ -157,18 +160,18 @@ public class SinsOfTheFather extends BasicQuestHelper
 		goTempleTrekking.addStep(new Conditions(inJuvinateArea), leaveJuvinateArea);
 		goTempleTrekking.addStep(new Conditions(inBridgeExitArea), leaveBridgeArea);
 		goTempleTrekking.addStep(new Conditions(inBridgeArea, hasRepairedBridge3), crossBridge);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, hasLog, hasRepairedBridge2), repairBridge3);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, has2Logs, hasRepairedBridge1), repairBridge2);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, has3Logs), repairBridge1);
-		goTempleTrekking.addStep(new Conditions(inBridgeArea, hasAxe), get3LogsForBridge);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, log1, hasRepairedBridge2), repairBridge3);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, log2, hasRepairedBridge1), repairBridge2);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, log3), repairBridge1);
+		goTempleTrekking.addStep(new Conditions(inBridgeArea, axe), get3LogsForBridge);
 		goTempleTrekking.addStep(new Conditions(inBridgeArea), killZombieForAxe);
 		goTempleTrekking.addStep(new Conditions(inNailBeastArea, nailBeastNearby), killNailBeasts);
 		goTempleTrekking.addStep(new Conditions(inNailBeastArea), leaveNailBeastArea);
 		goTempleTrekking.addStep(new Conditions(inSwingExitArea), leaveSwingArea);
 		goTempleTrekking.addStep(new Conditions(inSwingArea, vineAdded), swingOnVine);
-		goTempleTrekking.addStep(new Conditions(inSwingArea, hasLongVine), useVineOnBranch);
-		goTempleTrekking.addStep(new Conditions(inSwingArea, has3Vines), combineVines);
-		goTempleTrekking.addStep(new Conditions(inSwingArea, hasKnife), cutVines);
+		goTempleTrekking.addStep(new Conditions(inSwingArea, longVine), useVineOnBranch);
+		goTempleTrekking.addStep(new Conditions(inSwingArea, vine3), combineVines);
+		goTempleTrekking.addStep(new Conditions(inSwingArea, knife), cutVines);
 		goTempleTrekking.addStep(inSwingArea, searchForKnife);
 		steps.put(36, goTempleTrekking);
 
@@ -260,7 +263,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		steps.put(102, getNote);
 
 		ConditionalStep goReadNote = new ConditionalStep(this, getNote);
-		goReadNote.addStep(hasNote, readNote);
+		goReadNote.addStep(oldNote, readNote);
 		steps.put(104, getNote);
 
 		steps.put(106, valveStep);
@@ -268,22 +271,22 @@ public class SinsOfTheFather extends BasicQuestHelper
 		steps.put(110, valveStep);
 
 		ConditionalStep getLogs = new ConditionalStep(this, cutLogs);
-		getLogs.addStep(has8Logs, bringVanesculaLogs);
+		getLogs.addStep(blisterwood8.alsoCheckBank(questBank), bringVanesculaLogs);
 
 		steps.put(112, getLogs);
 
 		ConditionalStep bringItemsToVertida = new ConditionalStep(this, cutLogs);
-		bringItemsToVertida.addStep(new Conditions(inNewBase, has8Logs), bringVertidaLogs);
-		bringItemsToVertida.addStep(has8Logs, goDownToVerditaWithLogs);
+		bringItemsToVertida.addStep(new Conditions(inNewBase, blisterwood8), bringVertidaLogs);
+		bringItemsToVertida.addStep(blisterwood8.alsoCheckBank(questBank), goDownToVerditaWithLogs);
 		steps.put(114, bringItemsToVertida);
 
 		steps.put(116, talkToVertidaForFlail);
 
 		ConditionalStep createFlail = new ConditionalStep(this, goDownToMakeFlail);
-		createFlail.addStep(hasBlisterwoodSickle, useFlailOnSickle);
-		createFlail.addStep(hasEnchantedRubySickle, useLogOnSickle);
-		createFlail.addStep(hasRubySickle, enchantRubySickle);
-		createFlail.addStep(hasSickle, addRubyToSickle);
+		createFlail.addStep(blisterwoodSickle, useFlailOnSickle);
+		createFlail.addStep(enchantedSickle, useLogOnSickle);
+		createFlail.addStep(rubySickle, enchantRubySickle);
+		createFlail.addStep(sickle, addRubyToSickle);
 		createFlail.addStep(inNewBase, getSickle);
 		steps.put(118, createFlail);
 
@@ -330,17 +333,6 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		has8Logs = new ItemRequirements(blisterwood8);
-		hasKnife = new ItemRequirements(knife);
-		has3Vines = new ItemRequirements(vine3);
-		hasLongVine = new ItemRequirements(longVine);
-		hasAxe = new ItemRequirements(axe);
-		hasNote = new ItemRequirements(oldNote);
-		hasSickle = new ItemRequirements(sickle);
-		hasRubySickle = new ItemRequirements(rubySickle);
-		hasEnchantedRubySickle = new ItemRequirements(enchantedSickle);
-		hasBlisterwoodSickle = new ItemRequirements(blisterwoodSickle);
-
 		destroyedLabTable1 = new VarbitRequirement(10353, 2, Operation.GREATER_EQUAL);
 		vineAdded = new ObjectCondition(ObjectID.SWAMP_TREE_BRANCH_38005, new WorldPoint(2093, 5015, 0));
 		nailBeastNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.NAIL_BEAST_9612), new NpcCondition(NpcID.NAIL_BEAST_9613));
@@ -361,9 +353,6 @@ public class SinsOfTheFather extends BasicQuestHelper
 		inDamienRoom = new ZoneRequirement(damienRoom);
 		inFinalFightArea = new ZoneRequirement(finalFightArea);
 
-		hasLog = new ItemRequirements(log1);
-		has2Logs = new ItemRequirements(log2);
-		has3Logs = new ItemRequirements(log3);
 		hasRepairedBridge1 = new ObjectCondition(ObjectID.PARTIALLY_BROKEN_BRIDGE, new WorldPoint(2090, 5039, 0));
 		hasRepairedBridge2 = new ObjectCondition(ObjectID.SLIGHTLY_BROKEN_BRIDGE, new WorldPoint(2090, 5039, 0));
 		hasRepairedBridge3 = new ObjectCondition(ObjectID.FIXED_BRIDGE, new WorldPoint(2090, 5039, 0));
@@ -418,7 +407,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwood8 = new ItemRequirement("Blisterwood logs", ItemID.BLISTERWOOD_LOGS, 8);
 
 		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
-		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old Man Ral's basement");
+		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old" +
+			" Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard");
 
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
 		axeEquipped = new ItemRequirement("Any axe", ItemCollections.getAxes(), 1, true);
@@ -451,7 +441,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
 
 		enchantRunes = new ItemRequirements("Ruby enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", fireRune5, fireStaff), cosmicRune);
-		enchantTablet = new ItemRequirement("Ruby enchant tablet", ItemID.ENCHANT_EMERALD_OR_JADE);
+		enchantTablet = new ItemRequirement("Ruby enchant tablet", ItemID.ENCHANT_RUBY_OR_TOPAZ);
 		enchantRubyRunesOrTablet = new ItemRequirements(LogicType.OR, "Runes or tablet for Enchant Ruby", enchantRunes, enchantTablet);
 
 		rubySickle = new ItemRequirement("Ruby sickle", ItemID.RUBY_SICKLE_B);
@@ -465,15 +455,18 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		rangedWeaponForBloodveld = new ItemRequirement("Anything to range the bloodveld during bossfight", -1, -1);
+		rangedWeaponForBloodveld.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		ItemRequirements vyrewatchOutfit = new ItemRequirements("Vyrewatch outfit",
 			new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP),
 			new ItemRequirement("Vyrewatch legs", ItemID.VYREWATCH_LEGS),
 			new ItemRequirement("Vyrewatch shoes", ItemID.VYREWATCH_SHOES));
 
 		vyrewatchOutfitOrCoins = new ItemRequirements(LogicType.OR, "Vyrewatch outfit or 1950 coins", vyrewatchOutfit,
-			new ItemRequirement("Coins", ItemID.COINS_995, 1950));
+			new ItemRequirement("Coins", ItemCollections.getCoins(), 1950));
 
 		drakanMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION);
 		moryLegs3 = new ItemRequirement("Morytania legs 3/4", ItemID.MORYTANIA_LEGS_3);
@@ -857,6 +850,28 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("3 x 15,000 Experince Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 3), //4447 is placeholder for filter
+				new ItemReward("A Blisterwood Flail", ItemID.BLISTERWOOD_FLAIL, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to Darkmeyer and the Daeyalt Essence Mine"),
+				new UnlockReward("Darkmeyer teleport via Drakan's Medallion."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -882,7 +897,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			Arrays.asList(bringVertidaLogs, talkToVertidaForFlail, getSickle, addRubyToSickle, enchantRubySickle, useLogOnSickle, useFlailOnSickle), blisterwood8, chisel, knife, ruby, ivandisFlail, enchantRubyRunesOrTablet));
 		allSteps.add(new PanelDetails("Taking on Drakan",
 			Arrays.asList(talkToVanesculaWithFlail, talkToSafalaanWithFlail, talkToVanesculaBeforeFight,
-				fightVanstromSidebar, finishQuest), combatGear, blisterwoodFlail));
+				fightVanstromSidebar, finishQuest), combatGear, rangedWeaponForBloodveld, blisterwoodFlail));
 
 		return allSteps;
 	}

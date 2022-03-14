@@ -31,9 +31,15 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.rewards.Reward;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
 import jdk.jfr.EventType;
 import lombok.Getter;
 import net.runelite.api.*;
@@ -86,6 +92,9 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questItemRecommendedListPanel = new JPanel();
 	private final JPanel questCombatRequirementsListPanel = new JPanel();
 	private final JPanel questOverviewNotesPanel = new JPanel();
+
+	private final JPanel questRewardPanel = new JPanel();
+
 	private final JPanel externalQuestResourcesPanel = new JPanel();
 
 	private final JPanel questGeneralRequirementsHeader = new JPanel();
@@ -95,6 +104,9 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel questCombatRequirementHeader = new JPanel();
 	private final JPanel questItemRecommendedHeader = new JPanel();
 	private final JPanel questNoteHeader = new JPanel();
+
+	private final JPanel questRewardHeader = new JPanel();
+
 	private final JPanel externalQuestResourcesHeader = new JPanel();
 
 	private final JLabel questNameLabel = new JLabel();
@@ -173,6 +185,8 @@ public class QuestOverviewPanel extends JPanel
 		overviewPanel.add(generateRequirementPanel(questCombatRequirementsListPanel, questCombatRequirementHeader,
 			"Enemies to defeat:"));
 		overviewPanel.add(generateRequirementPanel(questOverviewNotesPanel, questNoteHeader, "Notes:"));
+		overviewPanel.add(generateRequirementPanel(questRewardPanel, questRewardHeader,
+			"Rewards:"));
 		overviewPanel.add(generateRequirementPanel(externalQuestResourcesPanel, externalQuestResourcesHeader , "External Resources:"));
 
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
@@ -288,24 +302,33 @@ public class QuestOverviewPanel extends JPanel
 		});
 	}
 
-	public void updateHighlight(QuestStep newStep)
+	public void updateHighlight(Client client, QuestStep newStep)
 	{
 		questStepPanelList.forEach(panel -> {
-			boolean highlighted = false;
-			panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
-				(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
-			for (QuestStep step : panel.getSteps())
+			if (panel.panelDetails.getHideCondition() == null || !panel.panelDetails.getHideCondition().check(client))
 			{
-				if (step == newStep || step.getSubsteps().contains(newStep))
+				panel.setVisible(true);
+				boolean highlighted = false;
+				panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
+					(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
+
+				for (QuestStep step : panel.getSteps())
 				{
-					highlighted = true;
-					panel.updateHighlight(step);
-					break;
+					if (step == newStep || step.getSubsteps().contains(newStep))
+					{
+						highlighted = true;
+						panel.updateHighlight(step);
+						break;
+					}
+				}
+				if (!highlighted)
+				{
+					panel.removeHighlight();
 				}
 			}
-			if (!highlighted)
+			else
 			{
-				panel.removeHighlight();
+				panel.setVisible(false);
 			}
 		});
 
@@ -333,6 +356,7 @@ public class QuestOverviewPanel extends JPanel
 		questCombatRequirementsListPanel.removeAll();
 		currentQuest = null;
 		questOverviewNotesPanel.removeAll();
+		questRewardPanel.removeAll();
 		repaint();
 		revalidate();
 	}
@@ -379,6 +403,15 @@ public class QuestOverviewPanel extends JPanel
 
 		/* Quest overview */
 		updateQuestOverview(quest.getNotes());
+
+		/* Rewards */
+		List<Reward> rewards = new ArrayList<>();
+		if (quest.getQuestPointReward() != null) rewards.add(quest.getQuestPointReward());
+		if (quest.getExperienceRewards() != null) rewards.addAll(quest.getExperienceRewards());
+		if (quest.getItemRewards() != null) rewards.addAll(quest.getItemRewards());
+		if (quest.getUnlockRewards() != null) rewards.addAll(quest.getUnlockRewards());
+
+		updateRewardsPanels(rewards);
 	}
 
 	private void updateRequirementsPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
@@ -523,6 +556,34 @@ public class QuestOverviewPanel extends JPanel
 		}
 	}
 
+	private void updateRewardsPanels(List<Reward> rewards)
+	{
+		Reward lastReward = null;
+		if (rewards != null)
+		{
+			for (Reward reward : rewards)
+			{
+				if (lastReward != null && lastReward.rewardType() != reward.rewardType())
+				{
+					questRewardPanel.add(new JLabel(" "));
+				}
+				lastReward = reward;
+
+				QuestRewardPanel rewardPanel = new QuestRewardPanel(reward);
+				questRewardPanel.add(new QuestRewardWrapperPanel(rewardPanel));
+
+				questRewardPanel.setVisible(true);
+			}
+		}
+		else
+		{
+			JLabel itemRequiredLabel = new JLabel();
+			itemRequiredLabel.setForeground(Color.GRAY);
+			itemRequiredLabel.setText("None");
+			questRewardPanel.add(itemRequiredLabel);
+		}
+	}
+
 	private void updateCombatRequirementsPanels(List<String> combatRequirementList)
 	{
 		JLabel combatLabel = new JLabel();
@@ -623,15 +684,22 @@ public class QuestOverviewPanel extends JPanel
 	{
 		updateRequirementPanels(client, requirementPanels, bankItems);
 
-		for (QuestStepPanel questStepPanel : questStepPanelList)
+		if (questStepPanelList != null)
 		{
-			questStepPanel.updateRequirements(client, bankItems, this);
+			for (QuestStepPanel questStepPanel : questStepPanelList)
+			{
+				questStepPanel.updateRequirements(client, bankItems, this);
+			}
 		}
 		revalidate();
 	}
 
 	public void updateRequirementPanels(Client client, List<QuestRequirementPanel> reqPanels, List<Item> bankItems)
 	{
+		if (reqPanels == null)
+		{
+			return;
+		}
 		for (QuestRequirementPanel requirementPanel : reqPanels)
 		{
 			Color newColor;

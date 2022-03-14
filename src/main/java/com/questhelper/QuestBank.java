@@ -54,8 +54,8 @@ public class QuestBank
 	private String rsProfileKey;
 	private RuneScapeProfileType worldType;
 
-	public List<WorldType> worldTypes = Arrays.asList(WorldType.LEAGUE, WorldType.TOURNAMENT,
-		WorldType.DEADMAN, WorldType.DEADMAN_TOURNAMENT);
+	public List<WorldType> worldTypes = Arrays.asList(WorldType.SEASONAL, WorldType.TOURNAMENT_WORLD,
+		WorldType.DEADMAN, WorldType.NOSAVE_MODE);
 
 	@Inject
 	public QuestBank(Client client, ConfigManager configManager, Gson gson)

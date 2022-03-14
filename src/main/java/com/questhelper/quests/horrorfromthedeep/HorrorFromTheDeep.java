@@ -41,6 +41,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -64,7 +67,7 @@ import net.runelite.api.coords.WorldPoint;
 public class HorrorFromTheDeep extends BasicQuestHelper
 {
 	ItemRequirement fireRune, airRune, waterRune, earthRune, sword, arrow, moltenGlass, tinderbox, hammer,
-	steelNails60, plank2, plank, swampTar1, combatRunes;
+	steelNails, plank2, plank, swampTar1, combatRunes;
 
 	ItemRequirement magicCombat, food, prayerPotions, gamesNecklace;
 
@@ -153,7 +156,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		steelNails60 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 60);
+		steelNails = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS);
 		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		swampTar1 = new ItemRequirement("Swamp tar", ItemID.SWAMP_TAR);
@@ -223,11 +226,11 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		talkToLarrissa.addDialogSteps("With what?", "But how can I help?", "Okay, I'll help!");
 
 		usePlankOnBridge = new ObjectStep(this, ObjectID.BROKEN_BRIDGE, new WorldPoint(2596, 3608, 0), "Use a plank " +
-			"on the bridge east of the Lighthouse.", plank.highlighted(), steelNails60, hammer);
+			"on the bridge east of the Lighthouse.", plank.highlighted(), steelNails.quantity(30), hammer);
 		usePlankOnBridge.addIcon(ItemID.PLANK);
 
 		useSecondPlank = new ObjectStep(this, ObjectID.BROKEN_BRIDGE_4616, new WorldPoint(2598, 3608, 0),
-			"Use a plank on the other side of the bridge east of the Lighthouse.", plank.highlighted(), steelNails60,
+			"Use a plank on the other side of the bridge east of the Lighthouse.", plank.highlighted(), steelNails.quantity(30),
 			hammer);
 		useSecondPlank.addIcon(ItemID.PLANK);
 
@@ -280,7 +283,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 			"Use an earth rune on the strange wall.", earthRune.highlighted());
 		useEarthRune.addIcon(ItemID.EARTH_RUNE);
 		useFireRune = new ObjectStep(this, ObjectID.STRANGE_WALL_4544, new WorldPoint(2515, 4627, 0),
-			"Use an fire rune on the strange wall.", fireRune.highlighted());
+			"Use a fire rune on the strange wall.", fireRune.highlighted());
 		useFireRune.addIcon(ItemID.FIRE_RUNE);
 		useArrow = new ObjectStep(this, ObjectID.STRANGE_WALL_4544, new WorldPoint(2515, 4627, 0),
 			"Use an arrow on the strange wall.", arrow.highlighted());
@@ -306,7 +309,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(fireRune, airRune, waterRune, earthRune, sword, arrow, moltenGlass, tinderbox, hammer,
-			steelNails60, plank2, swampTar1, combatRunes);
+			steelNails.quantity(60), plank2, swampTar1, combatRunes);
 	}
 
 	@Override
@@ -331,6 +334,31 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.MAGIC, 4662),
+				new ExperienceReward(Skill.STRENGTH, 4662),
+				new ExperienceReward(Skill.RANGED, 4662));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("A damaged God Book of your choice."),
+				new UnlockReward("Access to The Lighthouse"),
+				new UnlockReward("Ability to receive Dagannoth as a Slayer task."));
+	}
+
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
@@ -338,7 +366,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Saving Jossik",
 			Arrays.asList(talkToLarrissa, usePlankOnBridge, useSecondPlank, talkToGunnjorn, openLighthouse,
 				enterLighthouse, goToF1, useTar, useTinderbox, useGlass, goDownToBasement, useAirRune, useWaterRune,
-				useEarthRune, useFireRune, useArrow, useSword), hammer, steelNails60, plank2, moltenGlass, tinderbox,
+				useEarthRune, useFireRune, useArrow, useSword), hammer, steelNails.quantity(60), plank2, moltenGlass, tinderbox,
 			swampTar1, fireRune, airRune, waterRune, earthRune, sword, arrow, combatRunes));
 
 		allSteps.add(new PanelDetails("Defeating the dagannoths",

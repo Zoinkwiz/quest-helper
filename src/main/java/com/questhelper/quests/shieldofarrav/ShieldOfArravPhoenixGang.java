@@ -24,10 +24,12 @@
  */
 package com.questhelper.quests.shieldofarrav;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -60,8 +62,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	//Items Required
 	ItemRequirement book, intelReport, twentyCoins, shieldHalf, certificateHalf, blackArmCertificateHalf, certificate;
 
-	Requirement hasBook, inPhoenixEntry, hasIntelReport, intelReportNearby, inPhoenixBase, hasShieldHalf, hasCertificateHalf, hasBlackArmCertificateHalf,
-		hasCertificate, chestOpen;
+	Requirement inPhoenixEntry,intelReportNearby, inPhoenixBase, chestOpen;
 
 	QuestStep startQuest, searchBookcase, talkToReldoAgain, talkToBaraek, goDownToPhoenixGang, talkToStraven, goUpFromPhoenixGang, killJonny, pickupIntelReport,
 		returnDownLadder, talkToStravenAgain, getShieldHalf, getShieldHalf1, tradeCertificateHalf, combineCertificate, talkToHaig, talkToRoald, leaveAfterGettingShieldHalf;
@@ -89,19 +90,19 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		steps.put(4, getPhoenixTask);
 
 		ConditionalStep goToKillJonny = new ConditionalStep(this, killJonny);
-		goToKillJonny.addStep(new Conditions(hasIntelReport, inPhoenixEntry), talkToStravenAgain);
-		goToKillJonny.addStep(hasIntelReport, returnDownLadder);
+		goToKillJonny.addStep(new Conditions(intelReport, inPhoenixEntry), talkToStravenAgain);
+		goToKillJonny.addStep(intelReport.alsoCheckBank(questBank), returnDownLadder);
 		goToKillJonny.addStep(intelReportNearby, pickupIntelReport);
 		goToKillJonny.addStep(inPhoenixEntry, goUpFromPhoenixGang);
 
 		steps.put(5, goToKillJonny);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, returnDownLadder);
-		completeQuest.addStep(hasCertificate, talkToRoald);
-		completeQuest.addStep(new Conditions(hasCertificateHalf, hasBlackArmCertificateHalf), combineCertificate);
-		completeQuest.addStep(hasCertificateHalf, tradeCertificateHalf);
-		completeQuest.addStep(new Conditions(inPhoenixBase, hasShieldHalf), leaveAfterGettingShieldHalf);
-		completeQuest.addStep(hasShieldHalf, talkToHaig);
+		completeQuest.addStep(certificate.alsoCheckBank(questBank), talkToRoald);
+		completeQuest.addStep(new Conditions(certificateHalf.alsoCheckBank(questBank), blackArmCertificateHalf.alsoCheckBank(questBank)), combineCertificate);
+		completeQuest.addStep(certificateHalf.alsoCheckBank(questBank), tradeCertificateHalf);
+		completeQuest.addStep(new Conditions(inPhoenixBase, shieldHalf.alsoCheckBank(questBank)), leaveAfterGettingShieldHalf);
+		completeQuest.addStep(shieldHalf.alsoCheckBank(questBank), talkToHaig);
 		completeQuest.addStep(new Conditions(inPhoenixBase, chestOpen), getShieldHalf1);
 		completeQuest.addStep(inPhoenixBase, getShieldHalf);
 
@@ -113,7 +114,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	{
 		book = new ItemRequirement("Book", ItemID.BOOK);
 		intelReport = new ItemRequirement("Intel report", ItemID.INTEL_REPORT);
-		twentyCoins = new ItemRequirement("Coins", ItemID.COINS_995, 20);
+		twentyCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 20);
 		shieldHalf = new ItemRequirement("Broken shield", ItemID.BROKEN_SHIELD);
 		inPhoenixBase = new ZoneRequirement(phoenixBase);
 		chestOpen = new ObjectCondition(ObjectID.CHEST_2404);
@@ -130,14 +131,8 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasBook = new ItemRequirements(book);
 		inPhoenixEntry = new ZoneRequirement(phoenixEntry);
-		hasIntelReport = new ItemRequirements(intelReport);
 		intelReportNearby = new ItemOnTileRequirement(intelReport);
-		hasShieldHalf = new ItemRequirements(shieldHalf);
-		hasCertificateHalf = new ItemRequirements(certificateHalf);
-		hasBlackArmCertificateHalf = new ItemRequirements(blackArmCertificateHalf);
-		hasCertificate = new ItemRequirements(certificate);
 	}
 
 	public void setupSteps()
@@ -178,6 +173,18 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(twentyCoins);
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("600 Coins", ItemID.COINS_995, 600));
 	}
 
 	@Override

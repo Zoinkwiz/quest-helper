@@ -32,7 +32,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -41,6 +40,9 @@ import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -71,10 +73,10 @@ public class GrimTales extends BasicQuestHelper
 	ItemRequirement tarrominUnf2, tarrominUnf, dibber, can, axe, combatGear, griffinFeather, rupertsHelmet, miazrqasPendant, goldenGoblin, houseKey, ogleroot, shrinkPotion,
 		shrinkPotionHighlight, tarrominUnfHighlight, oglerootHighlight, magicBeans, canHighlight, food;
 
-	Requirement inHouse, inBasement, grimgnashAsleep, hasFeather, givenFeather, inTowerBase, inTowerUpstairs, talkedToDrainOnce, beardDropped, talkedToRupert, talkedToMiazrqa,
-		inPianoWidget, pressed1, pressed2, pressed3, pressed4, pressed5, pressed6, pressed7, pressed8, unlockedPiano, searchedPiano, hasShrinkPotion, inMouseRoom1, inMouseRoom2, inMouseRoom3,
-		inMouseRoom4, inMouseRoom5, inMouseRoom6, inWrongMouse1, inWrongMouse2, hasMiazrqasPendant, givenPendant, releasedRupert, hasHelmet, plantedSeed, wateredSeed, onCloud, killedGlod, hasGoblin,
-		usedPotion;
+	Requirement inHouse, inBasement, grimgnashAsleep, givenFeather, inTowerBase, inTowerUpstairs, talkedToDrainOnce, beardDropped, talkedToRupert, talkedToMiazrqa,
+		inPianoWidget, pressed1, pressed2, pressed3, pressed4, pressed5, pressed6, pressed7, pressed8, unlockedPiano, searchedPiano, inMouseRoom1, inMouseRoom2, inMouseRoom3,
+		inMouseRoom4, inMouseRoom5, inMouseRoom6, inWrongMouse1, inWrongMouse2, givenPendant, releasedRupert,
+		plantedSeed, wateredSeed, onCloud, killedGlod, usedPotion, hasMiazrqasPendant;
 
 	QuestStep talkToSylas, talkToGrimgnash, stealFeather, returnFeatherToSylas, climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard, talkToMiazrqa,
 		enterWitchsHouse, enterWitchBasement, playPiano, upperE, upperF, upperEAgain, upperD, upperC, lowerA, lowerE, lowerG, lowerAAgain, searchPiano, makePotions, leaveBasement, drinkPotion,
@@ -100,7 +102,7 @@ public class GrimTales extends BasicQuestHelper
 		steps.put(4, talkToSylas);
 
 		ConditionalStep getHelmet = new ConditionalStep(this, climbWall);
-		getHelmet.addStep(hasHelmet, giveHelmetToSylas);
+		getHelmet.addStep(rupertsHelmet, giveHelmetToSylas);
 		getHelmet.addStep(releasedRupert, talkToRupertAfterAmulet);
 		getHelmet.addStep(new Conditions(givenPendant), talkMizAfterPendant);
 		getHelmet.addStep(new Conditions(hasMiazrqasPendant), givePendant);
@@ -112,9 +114,9 @@ public class GrimTales extends BasicQuestHelper
 		getHelmet.addStep(new Conditions(inMouseRoom1), climb1);
 		getHelmet.addStep(new Conditions(inWrongMouse2), leaveWrong2);
 		getHelmet.addStep(new Conditions(inWrongMouse1), leaveWrong1);
-		getHelmet.addStep(new Conditions(inHouse, hasShrinkPotion), drinkPotion);
-		getHelmet.addStep(new Conditions(inBasement, hasShrinkPotion), leaveBasement);
-		getHelmet.addStep(new Conditions(hasShrinkPotion), enterWitchsHouseWithPotion);
+		getHelmet.addStep(new Conditions(inHouse, shrinkPotion), drinkPotion);
+		getHelmet.addStep(new Conditions(inBasement, shrinkPotion), leaveBasement);
+		getHelmet.addStep(new Conditions(shrinkPotion), enterWitchsHouseWithPotion);
 		getHelmet.addStep(new Conditions(unlockedPiano), makePotions);
 		getHelmet.addStep(new Conditions(inBasement, unlockedPiano), searchPiano);
 		getHelmet.addStep(new Conditions(inPianoWidget, talkedToMiazrqa, pressed8), lowerAAgain);
@@ -139,7 +141,7 @@ public class GrimTales extends BasicQuestHelper
 
 		ConditionalStep getFeatherAndHelmet = new ConditionalStep(this, talkToGrimgnash);
 		getFeatherAndHelmet.addStep(givenFeather, getHelmet);
-		getFeatherAndHelmet.addStep(hasFeather, returnFeatherToSylas);
+		getFeatherAndHelmet.addStep(griffinFeather, returnFeatherToSylas);
 		getFeatherAndHelmet.addStep(grimgnashAsleep, stealFeather);
 
 		steps.put(10, getFeatherAndHelmet);
@@ -156,7 +158,7 @@ public class GrimTales extends BasicQuestHelper
 		steps.put(20, sortBean);
 
 		ConditionalStep climbAndKillGlod = new ConditionalStep(this, climbBean);
-		climbAndKillGlod.addStep(hasGoblin, giveGoldenGoblinToSylas);
+		climbAndKillGlod.addStep(goldenGoblin, giveGoldenGoblinToSylas);
 		climbAndKillGlod.addStep(new Conditions(onCloud, killedGlod), pickUpGoldenGoblin);
 		climbAndKillGlod.addStep(killedGlod, climbBeanForStatue);
 		climbAndKillGlod.addStep(onCloud, killGlod);
@@ -238,7 +240,6 @@ public class GrimTales extends BasicQuestHelper
 		inTowerUpstairs = new ZoneRequirement(towerUpstairs);
 
 		grimgnashAsleep = new VarbitRequirement(3717, 1);
-		hasFeather = new ItemRequirements(griffinFeather);
 		givenFeather = new VarbitRequirement(3719, 1);
 
 		talkedToDrainOnce = new VarbitRequirement(3694, 5, Operation.GREATER_EQUAL);
@@ -259,8 +260,6 @@ public class GrimTales extends BasicQuestHelper
 		unlockedPiano = new VarbitRequirement(3698, 1);
 		searchedPiano = new VarbitRequirement(3716, 1);
 
-		hasShrinkPotion = new ItemRequirements(shrinkPotion);
-
 		inMouseRoom1 = new ZoneRequirement(mouseRoom1);
 		inMouseRoom2 = new ZoneRequirement(mouseRoom2);
 		inMouseRoom3 = new ZoneRequirement(mouseRoom3);
@@ -276,7 +275,6 @@ public class GrimTales extends BasicQuestHelper
 		givenPendant = new VarbitRequirement(3694, 25);
 
 		releasedRupert = new VarbitRequirement(3701, 1);
-		hasHelmet = new ItemRequirements(rupertsHelmet);
 
 		plantedSeed = new VarbitRequirement(3714, 1);
 		wateredSeed = new VarbitRequirement(3714, 2);
@@ -284,13 +282,13 @@ public class GrimTales extends BasicQuestHelper
 
 		killedGlod = new VarbitRequirement(3715, 1);
 
-		hasGoblin = new ItemRequirements(goldenGoblin);
 		usedPotion = new VarbitRequirement(3714, 3);
 	}
 
 	public void setupSteps()
 	{
 		talkToSylas = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
+		talkToSylas.addDialogStep("Yes");
 		talkToGrimgnash = new NpcStep(this, NpcID.GRIMGNASH, new WorldPoint(2862, 3511, 0), "Talk to Grimgnash in the north east of White Wolf Mountain.");
 		talkToGrimgnash.addDialogSteps("I heard you were a great and mighty Griffin!", "There once was a graveyard filled with undead.", "There lived a skeleton named Skullrot.",
 			"Skullrot was insane!", "Skullrot hungrily grabbed the gnome's hair.", "Started to strangle the poor gnome.", "He saw some bones lying in the corner.");
@@ -350,7 +348,7 @@ public class GrimTales extends BasicQuestHelper
 		plantBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", magicBeans, dibber, can);
 		plantBean.addIcon(ItemID.MAGIC_BEANS);
 
-		waterBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", canHighlight);
+		waterBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Use your watering can on the magic beans you just planted in the earth mound", canHighlight);
 		waterBean.addIcon(ItemID.WATERING_CAN);
 
 		climbBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Climb the bean stalk, ready to fight Glod.", combatGear);
@@ -384,6 +382,30 @@ public class GrimTales extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.FARMING, 4000),
+				new ExperienceReward(Skill.HERBLORE, 5000),
+				new ExperienceReward(Skill.HITPOINTS, 5000),
+				new ExperienceReward(Skill.WOODCUTTING, 14000),
+				new ExperienceReward(Skill.AGILITY, 6000),
+				new ExperienceReward(Skill.THIEVING, 6000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("A Dwarven Helmet", ItemID.DWARVEN_HELMET, 1));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -394,7 +416,7 @@ public class GrimTales extends BasicQuestHelper
 			Arrays.asList(climbWall, talkToDrainPipe, talkToDrainPipeAgain, climbBeard, talkToRupert, climbDownBeard,
 				talkToMiazrqa, enterWitchsHouse, enterWitchBasement, playPiano, searchPiano, makePotions, leaveBasement, drinkPotion,
 				climb1, climb2, climb3, climb4, climb5, takePendant, givePendant, talkToRupertAfterAmulet),
-			tarrominUnf2, food));
+			tarrominUnf2, houseKey, food));
 		allSteps.add(new PanelDetails("Golden goblin",
 			Arrays.asList(giveHelmetToSylas, plantBean, waterBean, climbBean, killGlod, pickUpGoldenGoblin,
 				giveGoldenGoblinToSylas, usePotionOnBean, chopBean, talkToSylasFinish), combatGear, food, dibber, can,

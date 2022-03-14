@@ -31,12 +31,14 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -66,7 +68,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement glory;
 
-	Requirement hasWig, hasDyedWig, hasKey, hasPaste, hasOrGivenKeyMould, inCell, givenKeyMould;
+	Requirement hasOrGivenKeyMould, inCell, givenKeyMould, hasWigPasteAndKey;
 
 	QuestStep talkToHassan, talkToOsman, talkToNed, talkToAggie, dyeWig, talkToKeli, bringImprintToOsman, talkToLeela, talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli, returnToHassan;
 
@@ -88,11 +90,11 @@ public class PrinceAliRescue extends BasicQuestHelper
 		steps.put(10, talkToOsman);
 
 		makeDyedWig = new ConditionalStep(this, talkToNed);
-		makeDyedWig.addStep(hasWig, dyeWig);
-		makeDyedWig.setLockingCondition(hasDyedWig);
+		makeDyedWig.addStep(wig.alsoCheckBank(questBank), dyeWig);
+		makeDyedWig.setLockingCondition(dyedWig.alsoCheckBank(questBank));
 
 		makePaste = new ConditionalStep(this, talkToAggie);
-		makePaste.setLockingCondition(hasPaste);
+		makePaste.setLockingCondition(paste.alsoCheckBank(questBank));
 
 		makeKeyMould = new ConditionalStep(this, talkToKeli);
 		makeKeyMould.setLockingCondition(hasOrGivenKeyMould);
@@ -101,16 +103,16 @@ public class PrinceAliRescue extends BasicQuestHelper
 		getKey.setLockingCondition(givenKeyMould);
 
 		ConditionalStep prepareToSaveAli = new ConditionalStep(this, makeDyedWig);
-		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste, givenKeyMould), talkToLeela);
-		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste, hasOrGivenKeyMould), getKey);
-		prepareToSaveAli.addStep(new Conditions(hasDyedWig, hasPaste), makeKeyMould);
-		prepareToSaveAli.addStep(hasDyedWig, makePaste);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), givenKeyMould), talkToLeela);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), hasOrGivenKeyMould), getKey);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank)), makeKeyMould);
+		prepareToSaveAli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 
 		steps.put(20, prepareToSaveAli);
 
 		ConditionalStep getJoeDrunk = new ConditionalStep(this, makeDyedWig);
-		getJoeDrunk.addStep(new Conditions(hasDyedWig, hasPaste, hasKey), talkToJoe);
-		getJoeDrunk.addStep(hasDyedWig, makePaste);
+		getJoeDrunk.addStep(hasWigPasteAndKey, talkToJoe);
+		getJoeDrunk.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 
 		steps.put(30, getJoeDrunk);
 		steps.put(31, getJoeDrunk);
@@ -118,14 +120,14 @@ public class PrinceAliRescue extends BasicQuestHelper
 		steps.put(33, getJoeDrunk);
 
 		ConditionalStep tieUpKeli = new ConditionalStep(this, makeDyedWig);
-		tieUpKeli.addStep(new Conditions(hasDyedWig, hasPaste, hasKey), useRopeOnKeli);
-		tieUpKeli.addStep(hasDyedWig, makePaste);
+		tieUpKeli.addStep(hasWigPasteAndKey, useRopeOnKeli);
+		tieUpKeli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 		steps.put(40, tieUpKeli);
 
 		ConditionalStep freeAli = new ConditionalStep(this, makeDyedWig);
-		freeAli.addStep(new Conditions(hasDyedWig, hasPaste, hasKey, inCell), talkToAli);
-		freeAli.addStep(new Conditions(hasDyedWig, hasPaste, hasKey), useKeyOnDoor);
-		freeAli.addStep(hasDyedWig, makePaste);
+		freeAli.addStep(new Conditions(hasWigPasteAndKey, inCell), talkToAli);
+		freeAli.addStep(hasWigPasteAndKey, useKeyOnDoor);
+		freeAli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
 		steps.put(50, freeAli);
 
 		steps.put(100, returnToHassan);
@@ -151,7 +153,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlighted.setHighlightInInventory(true);
 		ropeReqs = new ItemRequirement("Rope, or 15 coins / 4 balls of wool to obtain during the quest", ItemID.ROPE);
-		coins100 = new ItemRequirement("Coins minimum", ItemID.COINS_995, 100);
+		coins100 = new ItemRequirement("Coins minimum", ItemCollections.getCoins(), 100);
 		wig = new ItemRequirement("Wig", ItemID.WIG_2421);
 		wig.setHighlightInInventory(true);
 		dyedWig = new ItemRequirement("Wig (dyed)", ItemID.WIG);
@@ -166,16 +168,13 @@ public class PrinceAliRescue extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCell = new ZoneRequirement(cell);
-		hasDyedWig = new ItemRequirements(dyedWig);
-		hasWig = new ItemRequirements(wig);
-		hasKey = new ItemRequirements(key);
-		hasPaste = new ItemRequirements(paste);
+		hasWigPasteAndKey = new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), key.alsoCheckBank(questBank));
 		givenKeyMould = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "I have duplicated a key, I need to get it from"),
 			new WidgetTextRequirement(119, 3, true, "I got a duplicated cell door key"),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Pick the key up from Leela."),
-			hasKey);
-		hasOrGivenKeyMould = new Conditions(LogicType.OR, new ItemRequirements(keyMould), givenKeyMould, hasKey);
+			key.alsoCheckBank(questBank));
+		hasOrGivenKeyMould = new Conditions(LogicType.OR, keyMould, givenKeyMould, key.alsoCheckBank(questBank));
 	}
 
 	public void setupZones()
@@ -214,7 +213,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		useKeyOnDoor.addIcon(ItemID.BRONZE_KEY);
 		talkToAli = new NpcStep(this, NpcID.PRINCE_ALI, new WorldPoint(3123, 3240, 0), "Talk to Prince Ali and free him.", key, dyedWig, paste, pinkSkirt);
 
-		returnToHassan = new NpcStep(this, NpcID.HASSAN, new WorldPoint(3298, 3163, 0), "Return Hassan in the Al Kharid Palace to complete the quest.");
+		returnToHassan = new NpcStep(this, NpcID.HASSAN, new WorldPoint(3298, 3163, 0), "Return to Hassan in the Al Kharid Palace to complete the quest.");
 	}
 
 	@Override
@@ -250,6 +249,26 @@ public class PrinceAliRescue extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Able to survive jail guards (level 26) attacking you");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("700 Coins", ItemID.COINS_995, 700));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Free use of the Al Kharid toll gates."),
+				new UnlockReward("Access to Sorceress's Garden Minigame (Members)"));
 	}
 
 	@Override

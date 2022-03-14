@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -44,12 +43,16 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,11 +78,11 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement trollTele, draynorTele, varrockTele;
 
-	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, inWeissArrivalArea, hasPickaxe, hasRope, onCliff1, onCliff2, onCliff3,
+	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, onRoof, inWeissArrivalArea, onCliff1, onCliff2, onCliff3,
 		onCliff4, onCliff5, isOutsideWeiss, inWeiss, inInstance, inSneakArea1, inSneakArea2, inSneakArea3, inSneakArea4, inSneakArea5, inCave1, inCave2,
 		inWater1, inWater2, inWater3, inWater4, inCave3, inCave4, rockR0C0, rockR0C1, rockR0C2, rockR0C3, rockR0C4, rockR1C0, rockR1C1, rockR1C2, rockR1C3,
 		rockR1C4, rockR2C0, rockR2C1, rockR2C2, rockR2C3, rockR2C4, row0Made, row1Made, row2Made, rowMade, pickedUpWom, inWeissPrison, oddMushroomDied,
-		firstBossNearby, defeatedBoss1, secondBossNearby, hasBucket, hasBucketOfWater, hasPutOutFire, hasDung;
+		firstBossNearby, defeatedBoss1, secondBossNearby, hasPutOutFire;
 
 	DetailedQuestStep enterStronghold, goDownToBurntmeat, goUpToBurntmeat, talkToBurntmeat, enterStrongholdAfterStart, goUpToMyArmAfterStart,
 		goUpFromF1ToMyArm, goUpAfterStart, talkToMyArmUpstairs, talkToLarry, talkToLarryAgain, boardBoat, attemptToMine, searchBoatForRopeAndPickaxe,
@@ -134,11 +137,11 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		steps.put(35, arrivingInWeissSteps);
 
 		ConditionalStep addTheRope = new ConditionalStep(this, boardBoat);
-		addTheRope.addStep(new Conditions(onCliff2, hasRope), useRope);
-		addTheRope.addStep(new Conditions(onCliff1, hasPickaxe, hasRope), climbRocks2);
-		addTheRope.addStep(new Conditions(inWeissArrivalArea, hasPickaxe, hasRope), climbRocks);
-		addTheRope.addStep(new Conditions(inWeissArrivalArea, hasRope), searchBoatForPickaxe);
-		addTheRope.addStep(new Conditions(inWeissArrivalArea, hasPickaxe), searchBoatForRope);
+		addTheRope.addStep(new Conditions(onCliff2, rope), useRope);
+		addTheRope.addStep(new Conditions(onCliff1, pickaxe, rope), climbRocks2);
+		addTheRope.addStep(new Conditions(inWeissArrivalArea, pickaxe, rope), climbRocks);
+		addTheRope.addStep(new Conditions(inWeissArrivalArea, rope), searchBoatForPickaxe);
+		addTheRope.addStep(new Conditions(inWeissArrivalArea, pickaxe), searchBoatForRope);
 		addTheRope.addStep(inWeissArrivalArea, searchBoatForRopeAndPickaxe);
 
 		steps.put(40, addTheRope);
@@ -150,7 +153,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		scalingTheMountain.addStep(new Conditions(onCliff3), crossLedge);
 		scalingTheMountain.addStep(new Conditions(onCliff2), climbRope);
 		scalingTheMountain.addStep(new Conditions(onCliff1), climbRocks2);
-		scalingTheMountain.addStep(new Conditions(inWeissArrivalArea, hasPickaxe), climbRocks);
+		scalingTheMountain.addStep(new Conditions(inWeissArrivalArea, pickaxe), climbRocks);
 		scalingTheMountain.addStep(new Conditions(inWeissArrivalArea), searchBoatForRope);
 
 		ConditionalStep goTalkToBoulder = new ConditionalStep(this, scalingTheMountain);
@@ -221,8 +224,8 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		ConditionalStep prisonSteps = new ConditionalStep(this, takeBoatToPrison);
 		prisonSteps.addStep(new Conditions(secondBossNearby, hasPutOutFire), killMother);
-		prisonSteps.addStep(new Conditions(secondBossNearby, hasBucketOfWater), useBucketOnFire);
-		prisonSteps.addStep(new Conditions(secondBossNearby, hasBucket), useBucketOnWater);
+		prisonSteps.addStep(new Conditions(secondBossNearby, bucketOfWaterHighlight), useBucketOnFire);
+		prisonSteps.addStep(new Conditions(secondBossNearby, bucketHighlight), useBucketOnWater);
 		prisonSteps.addStep(secondBossNearby, pickUpBucket);
 		prisonSteps.addStep(new Conditions(inWeissPrison, firstBossNearby), killDontKnowWhat);
 		prisonSteps.addStep(new Conditions(inWeissPrison, oddMushroomDied), talkToSnowflake);
@@ -246,9 +249,9 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		steps.put(180, talkToSnowflakeAfterFight);
 
 		ConditionalStep getDungForSnowflake = new ConditionalStep(this, pickUpBucketForDung);
-		getDungForSnowflake.addStep(hasDung, bringDungToSnowflake);
-		getDungForSnowflake.addStep(hasBucket, pickUpGoatDung);
-		getDungForSnowflake.addStep(hasBucketOfWater, emptyBucket);
+		getDungForSnowflake.addStep(goatDung, bringDungToSnowflake);
+		getDungForSnowflake.addStep(bucketHighlight, pickUpGoatDung);
+		getDungForSnowflake.addStep(bucketOfWaterHighlight, emptyBucket);
 
 		steps.put(185, getDungForSnowflake);
 		steps.put(186, getDungForSnowflake);
@@ -269,9 +272,9 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		cadavaBerries = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
 		combatRangeMelee = new ItemRequirement("Combat gear, preferably ranged or melee", -1, -1);
 		combatRangeMelee.setDisplayItemId(BankSlotIcons.getCombatGear());
-		trollTele = new ItemRequirement("Trollheim teleports", ItemID.TROLLHEIM_TELEPORT, 2);
+		trollTele = new ItemRequirement("Trollheim teleports", ItemID.TROLLHEIM_TELEPORT);
 		varrockTele = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		draynorTele = new ItemRequirement("Draynor teleport", ItemID.DRAYNOR_MANOR_TELEPORT);
+		draynorTele = new ItemRequirement("Draynor teleport", ItemID.DRAYNOR_MANOR_TELEPORT, 2);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
@@ -369,9 +372,6 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		inWeissPrison = new ZoneRequirement(weissPrison);
 
-		hasPickaxe = new ItemRequirements(pickaxe);
-		hasRope = new ItemRequirements(rope);
-
 		// 33240, 33242, 33244, 33240, 33242
 		// 33241, 33243, 33245, 33241, 33243
 
@@ -418,10 +418,6 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		hasPutOutFire = new VarbitRequirement(6528, 170, Operation.GREATER_EQUAL);
 		firstBossNearby = new NpcCondition(NpcID.DONT_KNOW_WHAT_8439);
 		secondBossNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.MOTHER_8428), new NpcCondition(NpcID.MOTHER_8429), new NpcCondition(NpcID.MOTHER_8430));
-
-		hasBucket = new ItemRequirements(bucketHighlight);
-		hasBucketOfWater = new ItemRequirements(bucketOfWaterHighlight);
-		hasDung = new ItemRequirements(goatDung);
 	}
 
 	public void setupSteps()
@@ -485,11 +481,12 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		crossFence = new ObjectStep(this, ObjectID.FENCE_33219, new WorldPoint(2890, 3948, 0), "Sneak into Weiss via the fence to the east.");
 		crossFence.addDialogStep("I'll be back!");
 
-		goSouthSneak = new DetailedQuestStep(this, new WorldPoint(2887, 3935, 0), "You need to reach the hole at the north west corner, avoiding the trolls and the boulders they throw. Go south, then west, then north.");
-		goWestSneak1 = new DetailedQuestStep(this, new WorldPoint(2879, 3922, 0), "Wait a few seconds, then run west to the next point.");
-		goWestSneak2 = new DetailedQuestStep(this, new WorldPoint(2865, 3928, 0), "Wait a few seconds, then run west to the next point.");
-		goWestSneak3 = new DetailedQuestStep(this, new WorldPoint(2856, 3923, 0), "Wait a few seconds, then run west to the next point.");
-		goNorth = new DetailedQuestStep(this, new WorldPoint(2859, 3939, 0), "Wait a few seconds, then run north to the next point.");
+		goSouthSneak = new TileStep(this, new WorldPoint(2887, 3935, 0), "You need to reach the hole at the north west " +
+			"corner, avoiding the trolls and the boulders they throw. Go south, then west, then north.");
+		goWestSneak1 = new TileStep(this, new WorldPoint(2879, 3922, 0), "Wait a few seconds, then run west to the next point.");
+		goWestSneak2 = new TileStep(this, new WorldPoint(2865, 3928, 0), "Wait a few seconds, then run west to the next point.");
+		goWestSneak3 = new TileStep(this, new WorldPoint(2856, 3923, 0), "Wait a few seconds, then run west to the next point.");
+		goNorth = new TileStep(this, new WorldPoint(2859, 3939, 0), "Wait a few seconds, then run north to the next point.");
 
 		enterHole = new ObjectStep(this, ObjectID.HOLE_33227, new WorldPoint(2854, 3944,0), "Wait a few seconds, and run into the hole.");
 		goSouthSneak.addSubSteps(goWestSneak1, goWestSneak2, goWestSneak3, goNorth, enterHole);
@@ -596,6 +593,32 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("Don't Know What (level 163)", "Mother (level 198)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.CONSTRUCTION, 2000),
+				new ExperienceReward(Skill.FIREMAKING, 5000),
+				new ExperienceReward(Skill.MINING, 10000),
+				new ExperienceReward(Skill.AGILITY, 10000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Salt Mines."),
+				new UnlockReward("Ability to build fire pits"),
+				new UnlockReward("Ability to tune a house portal to Troll Stronghold."),
+				new UnlockReward("Access to a disease free herb patch in Weis."));
 	}
 
 	@Override

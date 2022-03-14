@@ -32,23 +32,23 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -62,7 +62,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrockTeleport, draynorManorTeleport;
 
-	Requirement inManor, inBasement, hasGarlic, isUpstairsInMorgans, draynorNearby, hasStake;
+	Requirement inManor, inBasement, isUpstairsInMorgans, draynorNearby;
 
 	QuestStep talkToMorgan, goUpstairsMorgan, getGarlic, ifNeedGarlic, talkToHarlow, talkToHarlowAgain, enterDraynorManor, goDownToBasement, openCoffin, killDraynor;
 
@@ -81,7 +81,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		steps.put(0, talkToMorgan);
 
 		ConditionalStep getGarlicAndStake = new ConditionalStep(this, goUpstairsMorgan);
-		getGarlicAndStake.addStep(hasGarlic, talkToHarlow);
+		getGarlicAndStake.addStep(garlic, talkToHarlow);
 		getGarlicAndStake.addStep(isUpstairsInMorgans, getGarlic);
 
 		steps.put(1, getGarlicAndStake);
@@ -90,7 +90,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		prepareAndKillDraynor.addStep(draynorNearby, killDraynor);
 		prepareAndKillDraynor.addStep(inBasement, openCoffin);
 		prepareAndKillDraynor.addStep(inManor, goDownToBasement);
-		prepareAndKillDraynor.addStep(hasStake, enterDraynorManor);
+		prepareAndKillDraynor.addStep(stake, enterDraynorManor);
 
 		steps.put(2, prepareAndKillDraynor);
 
@@ -106,6 +106,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		stake.setTooltip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
+		garlic.setTooltip("Optional, makes Count Draynor weaker");
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -118,8 +119,6 @@ public class VampyreSlayer extends BasicQuestHelper
 		inManor = new ZoneRequirement(manor);
 		isUpstairsInMorgans = new ZoneRequirement(upstairsInMorgans);
 		draynorNearby = new NpcCondition(NpcID.COUNT_DRAYNOR);
-		hasGarlic = new ItemRequirements(garlic);
-		hasStake = new ItemRequirements(stake);
 	}
 
 	public void setupZones()
@@ -155,7 +154,6 @@ public class VampyreSlayer extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(hammer);
 		reqs.add(beer);
-		reqs.add(garlicObtainable);
 		reqs.add(combatGear);
 		return reqs;
 	}
@@ -166,6 +164,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(varrockTeleport);
 		reqs.add(draynorManorTeleport);
+		reqs.add(garlicObtainable);
 		return reqs;
 	}
 
@@ -175,6 +174,18 @@ public class VampyreSlayer extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Count Draynor (level 34)");
 		return reqs;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.ATTACK, 4825));
 	}
 
 	@Override

@@ -38,6 +38,8 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -52,11 +54,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.SpriteID;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
@@ -142,7 +141,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 	private void setupRequirements()
 	{
 		// Required items
-		coins = new ItemRequirement("Coins", ItemID.COINS_995);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		pots = new ItemRequirement("Pot", ItemID.POT);
 		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
@@ -326,7 +325,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 			"Light the logs under the pot-boiler.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
 
-		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned.");
+		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned. You can hop worlds to make this happen instantly.");
 
 		removePot = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
 			"Take the pot from the pot-boiler.");
@@ -367,6 +366,20 @@ public class RagAndBoneManI extends BasicQuestHelper
 	{
 		return Collections.singletonList("If you've handed in any bones to the Odd Old Man, open the quest journal to" +
 			" sync up the helper's state");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.COOKING, 500),
+				new ExperienceReward(Skill.PRAYER, 500));
 	}
 
 	@Override

@@ -44,6 +44,10 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -85,15 +89,15 @@ public class DragonSlayerII extends BasicQuestHelper
 		map18, map19, map20, map21, map22, map23, map24;
 
 	Requirement inCrandorUnderground, inElvargArea, inKaramjaVolcano, inMuralRoom, inHouseGroundFloor, inHouseFirstFloor, inLithkrenGroundFloor, inLithkrenFirstFloor, inLithkrenUnderground,
-		inLithkrenGroundFloorRoom, inDream, hasAivasDiary, hasVialWater, hasVialGout, hasAstralShard, hasAstralPowder, hasDreamPotion, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
+		inLithkrenGroundFloorRoom, inDream, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
 		hasTheKaramjaKeyPiece, inDeepLithkren, recruitedBrundt, recruitedLathas, recruitedAmik, inArdougneCastle, inFaladorF1, inFaladorF2, onBoat, inBattle;
 
 	Requirement hadChest1MapPieces, hadChest2MapPieces, hadFungiMapPieces, hadBriarMapPieces, hadMushtreeMapPieces, hadMap1, hadMap2, hadMap3, hadMap4, hadMap5, hadMap6, hadMap7, hadMap8, hadMap9, hadMap10, hadMap11, hadMap12, hadMap13, hadMap14,
 		hadMap15, hadMap16, hadMap17, hadMap18, hadMap19, hadMap20, hadMap21, hadMap22, hadMap23, hadMap24, inMapPuzzle, onUngael, inUngaelUnderground, inUngaelKeyRoom,
-		inKhazariMaze, openedMithrilDoor, inMithDragonEntranceArea, inMithDragonGroundArea, inMithDragonUpperArea, inMithDragonOrbRoom, inMithDragonFurnaceArea, litFurnace;
+		inKharaziMaze, openedMithrilDoor, inMithDragonEntranceArea, inMithDragonGroundArea, inMithDragonUpperArea, inMithDragonOrbRoom, inMithDragonFurnaceArea, litFurnace;
 
 	Zone crandorUnderground, elvargArea, karamjaVolcano, muralRoom, houseGroundFloor, houseFirstFloor, lithkrenGroundFloor, lithkrenFirstFloor, lithkrenUnderground, lithkrenGroundFloorRoom,
-		dream, cryptF2, cryptF1, cryptF0, ungael, ungaelUnderground, ungaelKeyRoom, khazariMaze, mithDragonEntranceArea, mithDragonGroundArea, mithDragonUpperArea,
+		dream, cryptF2, cryptF1, cryptF0, ungael, ungaelUnderground, ungaelKeyRoom, kharaziMaze, mithDragonEntranceArea, mithDragonGroundArea, mithDragonUpperArea,
 		mithDragonOrbRoom, mithDragonFurnaceArea, deepLithkren, ardougneCastle, faladorF1, faladorF2, boat, battle;
 
 	DetailedQuestStep talkToAlec, talkToDallas, enterVolcano, enterCrandorWall, talkToDallasOnCrandor, usePickaxeOnBlockage, enterBlockage, investigateMural, killSpawn,
@@ -111,13 +115,14 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	ConditionalStep gettingTheKaramjaKey, gettingTheKourendKey, gettingTheVarrockKey, gettingTheFremennikKey;
 
-	DetailedQuestStep enterKhazariMaze, getToCentreOfMaze;
+	DetailedQuestStep enterKharaziMaze, getToCentreOfMaze;
 
 	DetailedQuestStep talkToReldo, searchBookcase, talkToReldoAgain, talkToReldoAgainNoBook, talkToSarah, talkToAva, usePipeOnDragonstone, talkToAvaAgain,
 		talkToAvaAgainNoOrb, useLocatorInSwamp;
-	Requirement talkedToReldo, foundCensus, talkedToReldoAgain, givenReldoBook, talkedToSarah, talkedToAva, haveInertLocator, givenAvaOrb, talkedToAvaAgain;
+	Requirement talkedToReldo, foundCensus, talkedToReldoAgain, givenReldoBook, talkedToSarah, talkedToAva, givenAvaOrb, talkedToAvaAgain;
 
-	DetailedQuestStep talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey;
+	DetailedQuestStep talkToBrundt, talkToTorfinn, killVorkath, killVorkathSidebar, enterVorkathCave,
+		pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey;
 	Requirement talkedToBrundt, defeatedVorkath, pulledLever;
 
 	QuestStep talkToAmelia, enterCrypt, goDownInCryptF2ToF1, goDownInCryptF1ToF0, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey;
@@ -128,7 +133,8 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	DetailedQuestStep talkToRoald, goUpToAmik1, goUpToAmik2, talkToAmik, goUpToLathasOrThoros, talkToLathasOrThoros, talkToBrundtAboutThreat, enterVarrockDiningRoom, talkToBobAfterDiningRoom;
 
-	DetailedQuestStep takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon, killMithAddyAndRuneDragons, killGalvek, talkToAlecToFinish;
+	DetailedQuestStep takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon
+	, killMithAddyAndRuneDragons, killGalvekSidebar, killGalvek, talkToAlecToFinish;
 
 	ConditionalStep goEnterMithDoorFirstTime, goEnterMithDoorSecondTime, goSmithKey, goOpenDoorWithKey, openDoorWithoutKey, goTalkToBobAfterRelease;
 
@@ -248,7 +254,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		steps.put(75, goDownToLithkrenBasement);
 
 		ConditionalStep goReadDiary = new ConditionalStep(this, boardBoat);
-		goReadDiary.addStep(hasAivasDiary, readDiary);
+		goReadDiary.addStep(aivasDiary, readDiary);
 		goReadDiary.addStep(inLithkrenUnderground, searchSkeleton);
 		goReadDiary.addStep(inLithkrenGroundFloorRoom, climbDownLithkrenNorthStairs);
 		goReadDiary.addStep(inLithkrenFirstFloor, climbDownLithkrenTrapdoor);
@@ -274,12 +280,12 @@ public class DragonSlayerII extends BasicQuestHelper
 		steps.put(100, talkToOneiromancer);
 
 		ConditionalStep goEnterDream = new ConditionalStep(this, fillDreamVial);
-		goEnterDream.addStep(new Conditions(hasDreamPotion, litBrazier), usePotionOnFlame);
-		goEnterDream.addStep(hasDreamPotion, lightBrazier);
-		goEnterDream.addStep(new Conditions(hasVialGout, hasAstralPowder), addGroundAstral);
-		goEnterDream.addStep(new Conditions(hasVialGout, hasAstralShard), grindAstralShards);
-		goEnterDream.addStep(hasVialGout, crushAstralRune);
-		goEnterDream.addStep(hasVialWater, addGoutweed);
+		goEnterDream.addStep(new Conditions(dreamPotion, litBrazier), usePotionOnFlame);
+		goEnterDream.addStep(dreamPotion, lightBrazier);
+		goEnterDream.addStep(new Conditions(dreamVialWithGoutweed, groundAstralRune), addGroundAstral);
+		goEnterDream.addStep(new Conditions(dreamVialWithGoutweed, astralRuneShards), grindAstralShards);
+		goEnterDream.addStep(dreamVialWithGoutweed, crushAstralRune);
+		goEnterDream.addStep(dreamVialWater, addGoutweed);
 		steps.put(105, goEnterDream);
 
 		ConditionalStep goTalkToBobInDream = new ConditionalStep(this, talkToBobToEnterDreamAgain);
@@ -302,8 +308,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		gettingTheFremennikKey.addStep(talkedToBrundt, talkToTorfinn);
 		gettingTheFremennikKey.setLockingCondition(hasTheFremennikKeyPiece);
 
-		gettingTheKaramjaKey = new ConditionalStep(this, enterKhazariMaze);
-		gettingTheKaramjaKey.addStep(inKhazariMaze, getToCentreOfMaze);
+		gettingTheKaramjaKey = new ConditionalStep(this, enterKharaziMaze);
+		gettingTheKaramjaKey.addStep(inKharaziMaze, getToCentreOfMaze);
 		gettingTheKaramjaKey.setLockingCondition(hasTheKaramjaKeyPiece);
 
 		gettingTheKourendKey = new ConditionalStep(this, talkToAmelia);
@@ -318,7 +324,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		gettingTheVarrockKey = new ConditionalStep(this, talkToReldo);
 		gettingTheVarrockKey.addStep(new Conditions(talkedToAvaAgain), useLocatorInSwamp);
 		gettingTheVarrockKey.addStep(new Conditions(givenAvaOrb), talkToAvaAgainNoOrb);
-		gettingTheVarrockKey.addStep(new Conditions(talkedToAva, haveInertLocator), talkToAvaAgain);
+		gettingTheVarrockKey.addStep(new Conditions(talkedToAva, inertLocator), talkToAvaAgain);
 		gettingTheVarrockKey.addStep(talkedToAva, usePipeOnDragonstone);
 		gettingTheVarrockKey.addStep(talkedToSarah, talkToAva);
 		gettingTheVarrockKey.addStep(talkedToReldoAgain, talkToSarah);
@@ -533,8 +539,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		varrocKeyPiece.setTooltip("You can get another by digging in Mort Myre");
 		fremennikKeyPiece = new ItemRequirement("Dragon key piece (Fremmennik)", ItemID.DRAGON_KEY_PIECE);
 		fremennikKeyPiece.setTooltip("You can get another from Ungael");
-		karamjaKeyPiece = new ItemRequirement("Dragon key piece (Khazari)", ItemID.DRAGON_KEY_PIECE_22091);
-		karamjaKeyPiece.setTooltip("You can get another from the middle of the Khazari dungeon");
+		karamjaKeyPiece = new ItemRequirement("Dragon key piece (Kharazi)", ItemID.DRAGON_KEY_PIECE_22091);
+		karamjaKeyPiece.setTooltip("You can get another from the middle of the Kharazi dungeon");
 
 		inertLocator = new ItemRequirement("Inert locator orb", ItemID.INERT_LOCATOR_ORB);
 		glassblowingPipeHighlighted = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
@@ -580,7 +586,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		ungael = new Zone(new WorldPoint(2240, 4031, 0), new WorldPoint(2303, 4095, 0));
 		ungaelUnderground = new Zone(new WorldPoint(2254, 10454, 0), new WorldPoint(2288, 10487, 0));
 		ungaelKeyRoom = new Zone(new WorldPoint(2288, 10463, 0), new WorldPoint(2294, 10467, 0));
-		khazariMaze = new Zone(new WorldPoint(2819, 9200, 0), new WorldPoint(2880, 9294, 0));
+		kharaziMaze = new Zone(new WorldPoint(2819, 9200, 0), new WorldPoint(2880, 9294, 0));
 		mithDragonOrbRoom = new Zone(new WorldPoint(1545, 4873, 0), new WorldPoint(1567, 4892, 0));
 		mithDragonGroundArea = new Zone(new WorldPoint(1731, 5314, 0), new WorldPoint(1794, 5385, 0));
 		mithDragonEntranceArea = new Zone(new WorldPoint(1762, 5364, 1), new WorldPoint(1769, 5368, 1));
@@ -614,7 +620,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		onUngael = new ZoneRequirement(ungael);
 		inUngaelUnderground = new ZoneRequirement(ungaelUnderground);
 		inUngaelKeyRoom = new ZoneRequirement(ungaelKeyRoom);
-		inKhazariMaze = new ZoneRequirement(khazariMaze);
+		inKharaziMaze = new ZoneRequirement(kharaziMaze);
 		inMithDragonEntranceArea = new ZoneRequirement(mithDragonEntranceArea);
 		inMithDragonGroundArea = new ZoneRequirement(mithDragonGroundArea);
 		inMithDragonOrbRoom = new ZoneRequirement(mithDragonOrbRoom);
@@ -627,49 +633,41 @@ public class DragonSlayerII extends BasicQuestHelper
 		onBoat = new ZoneRequirement(boat);
 		inBattle = new ZoneRequirement(battle);
 
-		hadMap1 = new Conditions(LogicType.OR, new ItemRequirements(map1), new VarbitRequirement(6116, 1));
-		hadMap2 = new Conditions(LogicType.OR, new ItemRequirements(map2), new VarbitRequirement(6117, 1));
-		hadMap3 = new Conditions(LogicType.OR, new ItemRequirements(map3), new VarbitRequirement(6118, 1));
-		hadMap4 = new Conditions(LogicType.OR, new ItemRequirements(map4), new VarbitRequirement(6119, 1));
-		hadMap5 = new Conditions(LogicType.OR, new ItemRequirements(map5), new VarbitRequirement(6120, 1));
+		hadMap1 = new Conditions(LogicType.OR, map1, new VarbitRequirement(6116, 1));
+		hadMap2 = new Conditions(LogicType.OR, map2, new VarbitRequirement(6117, 1));
+		hadMap3 = new Conditions(LogicType.OR, map3, new VarbitRequirement(6118, 1));
+		hadMap4 = new Conditions(LogicType.OR, map4, new VarbitRequirement(6119, 1));
+		hadMap5 = new Conditions(LogicType.OR, map5, new VarbitRequirement(6120, 1));
 		hadChest1MapPieces = new Conditions(hadMap1, hadMap2, hadMap3, hadMap4, hadMap5);
 
-		hadMap6 = new Conditions(LogicType.OR, new ItemRequirements(map6), new VarbitRequirement(6121, 1));
-		hadMap7 = new Conditions(LogicType.OR, new ItemRequirements(map7), new VarbitRequirement(6122, 1));
-		hadMap8 = new Conditions(LogicType.OR, new ItemRequirements(map8), new VarbitRequirement(6123, 1));
+		hadMap6 = new Conditions(LogicType.OR, map6, new VarbitRequirement(6121, 1));
+		hadMap7 = new Conditions(LogicType.OR, map7, new VarbitRequirement(6122, 1));
+		hadMap8 = new Conditions(LogicType.OR, map8, new VarbitRequirement(6123, 1));
 		hadChest2MapPieces = new Conditions(hadMap6, hadMap7, hadMap8);
 
-		hadMap9 = new Conditions(LogicType.OR, new ItemRequirements(map9), new VarbitRequirement(6124, 1));
-		hadMap10 = new Conditions(LogicType.OR, new ItemRequirements(map10), new VarbitRequirement(6125, 1));
-		hadMap11 = new Conditions(LogicType.OR, new ItemRequirements(map11), new VarbitRequirement(6126, 1));
-		hadMap12 = new Conditions(LogicType.OR, new ItemRequirements(map12), new VarbitRequirement(6127, 1));
+		hadMap9 = new Conditions(LogicType.OR, map9, new VarbitRequirement(6124, 1));
+		hadMap10 = new Conditions(LogicType.OR, map10, new VarbitRequirement(6125, 1));
+		hadMap11 = new Conditions(LogicType.OR, map11, new VarbitRequirement(6126, 1));
+		hadMap12 = new Conditions(LogicType.OR, map12, new VarbitRequirement(6127, 1));
 		hadFungiMapPieces = new Conditions(hadMap9, hadMap10, hadMap11, hadMap12);
 
-		hadMap13 = new Conditions(LogicType.OR, new ItemRequirements(map13), new VarbitRequirement(6128, 1));
-		hadMap14 = new Conditions(LogicType.OR, new ItemRequirements(map14), new VarbitRequirement(6129, 1));
-		hadMap15 = new Conditions(LogicType.OR, new ItemRequirements(map15), new VarbitRequirement(6130, 1));
-		hadMap16 = new Conditions(LogicType.OR, new ItemRequirements(map16), new VarbitRequirement(6131, 1));
-		hadMap17 = new Conditions(LogicType.OR, new ItemRequirements(map17), new VarbitRequirement(6132, 1));
-		hadMap18 = new Conditions(LogicType.OR, new ItemRequirements(map18), new VarbitRequirement(6133, 1));
-		hadMap19 = new Conditions(LogicType.OR, new ItemRequirements(map19), new VarbitRequirement(6134, 1));
+		hadMap13 = new Conditions(LogicType.OR, map13, new VarbitRequirement(6128, 1));
+		hadMap14 = new Conditions(LogicType.OR, map14, new VarbitRequirement(6129, 1));
+		hadMap15 = new Conditions(LogicType.OR, map15, new VarbitRequirement(6130, 1));
+		hadMap16 = new Conditions(LogicType.OR, map16, new VarbitRequirement(6131, 1));
+		hadMap17 = new Conditions(LogicType.OR, map17, new VarbitRequirement(6132, 1));
+		hadMap18 = new Conditions(LogicType.OR, map18, new VarbitRequirement(6133, 1));
+		hadMap19 = new Conditions(LogicType.OR, map19, new VarbitRequirement(6134, 1));
 		hadBriarMapPieces = new Conditions(hadMap13, hadMap14, hadMap15, hadMap16, hadMap17, hadMap18, hadMap19);
 
-		hadMap20 = new Conditions(LogicType.OR, new ItemRequirements(map20), new VarbitRequirement(6135, 1));
-		hadMap21 = new Conditions(LogicType.OR, new ItemRequirements(map21), new VarbitRequirement(6136, 1));
-		hadMap22 = new Conditions(LogicType.OR, new ItemRequirements(map22), new VarbitRequirement(6137, 1));
-		hadMap23 = new Conditions(LogicType.OR, new ItemRequirements(map23), new VarbitRequirement(6138, 1));
-		hadMap24 = new Conditions(LogicType.OR, new ItemRequirements(map23), new VarbitRequirement(6138, 1));
+		hadMap20 = new Conditions(LogicType.OR, map20, new VarbitRequirement(6135, 1));
+		hadMap21 = new Conditions(LogicType.OR, map21, new VarbitRequirement(6136, 1));
+		hadMap22 = new Conditions(LogicType.OR, map22, new VarbitRequirement(6137, 1));
+		hadMap23 = new Conditions(LogicType.OR, map23, new VarbitRequirement(6138, 1));
+		hadMap24 = new Conditions(LogicType.OR, map23, new VarbitRequirement(6138, 1));
 		hadMushtreeMapPieces = new Conditions(hadMap20, hadMap21, hadMap22, hadMap23, hadMap24);
 
 		inMapPuzzle = new WidgetModelRequirement(305, 1, 35060);
-
-		hasAivasDiary = new ItemRequirements(aivasDiary);
-
-		hasVialWater = new ItemRequirements(dreamVialWater);
-		hasVialGout = new ItemRequirements(dreamVialWithGoutweed);
-		hasAstralShard = new ItemRequirements(astralRuneShards);
-		hasAstralPowder = new ItemRequirements(groundAstralRune);
-		hasDreamPotion = new ItemRequirements(dreamPotion);
 
 		litBrazier = new VarbitRequirement(2430, 1);
 
@@ -677,7 +675,6 @@ public class DragonSlayerII extends BasicQuestHelper
 		hasTheKaramjaKeyPiece = new VarbitRequirement(6106, 20, Operation.GREATER_EQUAL);
 		hasTheVarrockKeyPiece = new VarbitRequirement(6107, 55, Operation.GREATER_EQUAL);
 		hasTheFremennikKeyPiece = new VarbitRequirement(6108, 35, Operation.GREATER_EQUAL);
-
 
 		// Kourend key piece
 		talkedToAmelia = new VarbitRequirement(6105, 20, Operation.GREATER_EQUAL);
@@ -694,7 +691,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkedToAva = new VarbitRequirement(6107, 40, Operation.GREATER_EQUAL);
 		givenAvaOrb = new VarbitRequirement(6107, 46, Operation.GREATER_EQUAL);
 		talkedToAvaAgain = new VarbitRequirement(6107, 50, Operation.GREATER_EQUAL);
-		haveInertLocator = new ItemRequirements(inertLocator);
+
 		// 6141, presumbly represents location of treasure
 		// 11: 3442, 3421, 0
 
@@ -813,8 +810,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToBobAfterRobertFight = new NpcStep(this, NpcID.BOB_8111, new WorldPoint(2074, 3912, 0), "Talk to Bob next to the brazier.");
 
 		// Kourend key piece
-		talkToAmelia = new NpcStep(this, NpcID.AMELIA, new WorldPoint(1496, 3596, 0), "Talk to Amelia south west of the Shayzien bank.");
-		enterCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0), "Enter the Crypt south of Amelia.");
+		talkToAmelia = new NpcStep(this, NpcID.AMELIA, new WorldPoint(1540, 3545, 0), "Talk to Amelia south west of the Shayzien Archery Store.");
+		enterCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0), "Enter the Crypt west of Amelia.");
 		goDownInCryptF2ToF1 = new ObjectStep(this, ObjectID.LADDER_32397, new WorldPoint(1524, 9967, 3), "Climb down to the bottom of the crypts.");
 		goDownInCryptF1ToF0 = new ObjectStep(this, ObjectID.STAIRCASE_32394, new WorldPoint(1511, 9979, 2), "Climb down to the bottom of the crypts.");
 		goDownInCryptF2ToF1.addSubSteps(goDownInCryptF1ToF0);
@@ -848,13 +845,22 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToTorfinn = new NpcStep(this, NpcID.TORFINN, new WorldPoint(2640, 3696, 0), "Talk to Torfinn on the Rellekka docks to go to Ungael.");
 		((NpcStep) (talkToTorfinn)).addAlternateNpcs(NpcID.TORFINN_10403);
 		talkToTorfinn.addDialogSteps("I'm ready.", "Yes please.");
-		killVorkath = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", rangedCombatGear);
-		killVorkath.addText("Protect from Magic, and drink an antifire and antivenom potion.");
-		killVorkath.addText("When Vorkath fires a pink fireball it'll turn your prayer off.");
-		killVorkath.addText("When Vorkath shoots an orange fireball into the air, move away from the spot you're on.");
-		killVorkath.addText("When Vorkath spits acid everywhere, WALK around to avoid the fireballs he will shoot.");
-		killVorkath.addText("When Vorkath freezes you, kill the zombified spawn that appears before it reaches you.");
+		killVorkath = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
+			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video and read the " +
+			"sidebar first.", rangedCombatGear);
 		((NpcStep) (killVorkath)).addAlternateNpcs(NpcID.VORKATH_8058, NpcID.VORKATH_8059, NpcID.VORKATH_8060, NpcID.VORKATH_8061);
+
+		killVorkathSidebar = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
+			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", rangedCombatGear);
+		killVorkathSidebar.addSubSteps(killVorkath);
+
+			killVorkathSidebar.addText("Protect from Magic, and drink an antifire and antivenom potion.");
+		killVorkathSidebar.addText("When Vorkath fires a pink fireball it'll turn your prayer off.");
+		killVorkathSidebar.addText("When Vorkath shoots an orange fireball into the air, move away from the spot you're on.");
+		killVorkathSidebar.addText("When Vorkath spits acid everywhere, WALK around to avoid the fireballs he will shoot.");
+		killVorkathSidebar.addText("When Vorkath freezes you, kill the zombified spawn that appears before it reaches you.");
+
+
 		enterVorkathCave = new ObjectStep(this, ObjectID.CAVE_31999, new WorldPoint(2249, 4078, 0), "Enter the cave on the north west of Ungael.");
 		enterVorkathCave.addDialogStep("I'm sure.");
 
@@ -863,7 +869,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		searchStoneChestForVorkathKey = new ObjectStep(this, ObjectID.STONE_CHEST_32053, new WorldPoint(2293, 10467, 0), "Search the stone chest in the room for the key piece.");
 
 		// Karamja key piece
-		enterKhazariMaze = new ObjectStep(this, ObjectID.CAVE_32479, new WorldPoint(2944, 2895, 0), "Go down the staircase in the south east of the Khazari Jungle. MAKE SURE TO HAVE AUTO-RETALIATE OFF BEFORE ENTERING.");
+		enterKharaziMaze = new ObjectStep(this, ObjectID.CAVE_32479, new WorldPoint(2944, 2895, 0), "Go down the staircase in the south east of the Kharazi Jungle. MAKE SURE TO HAVE AUTO-RETALIATE OFF BEFORE ENTERING.");
 		getToCentreOfMaze = new ObjectStep(this, NullObjectID.NULL_30730, new WorldPoint(2848, 9248, 0), "Navigate to the middle of the maze, disarming any traps in the way.");
 		getToCentreOfMaze.setLinePoints(Arrays.asList(
 			new WorldPoint(2847, 9284, 0),
@@ -1056,15 +1062,21 @@ public class DragonSlayerII extends BasicQuestHelper
 		killMithAddyAndRuneDragons.addText("Occasionally Galvek will shoot a fireball in the air, move to avoid it.");
 		killMithAddyAndRuneDragons.addText("");
 		((NpcStep) (killMithAddyAndRuneDragons)).addAlternateNpcs(NpcID.MITHRIL_DRAGON_8089, NpcID.ADAMANT_DRAGON, NpcID.ADAMANT_DRAGON_8090, NpcID.RUNE_DRAGON, NpcID.RUNE_DRAGON_8091);
-		killGalvek = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. This is a hard fight, so it's recommended you check a video to see what you'll have to do.", true);
+		killGalvek = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. Read the " +
+			"sidebar for more details.",true);
 		((NpcStep) (killGalvek)).addAlternateNpcs(NpcID.GALVEK_8096, NpcID.GALVEK_8097, NpcID.GALVEK_8098);
-		killGalvek.addText("Avoid the ground-targeted fireballs.");
-		killGalvek.addText("The pink attack turns off prayer.");
-		killGalvek.addText("Use Protect from Magic in phase 1, use Protect from Missiles otherwise.");
-		killGalvek.addText("Phase 1 - Fire traps appear - if you go near them you die.");
-		killGalvek.addText("Phase 2 - Fires transparent projectile which drains stats.");
-		killGalvek.addText("Phase 3 - Waves of fire appear. Go through the gap in them to avoid.");
-		killGalvek.addText("Phase 4 - Fire binding projective. Avoid it by moving.");
+
+		killGalvekSidebar = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2),
+			"Kill Galvek. This is a hard fight, so it's recommended you check a video to see what you'll have to do.");
+		killGalvekSidebar.addText("Avoid the ground-targeted fireballs.");
+		killGalvekSidebar.addText("The pink attack turns off prayer.");
+		killGalvekSidebar.addText("Use Protect from Magic in phase 1, use Protect from Missiles otherwise.");
+		killGalvekSidebar.addText("Phase 1 - Fire traps appear - if you go near them you die.");
+		killGalvekSidebar.addText("Phase 2 - Fires transparent projectile which drains stats.");
+		killGalvekSidebar.addText("Phase 3 - Waves of fire appear. Go through the gap in them to avoid.");
+		killGalvekSidebar.addText("Phase 4 - Fire binding projective. Avoid it by moving.");
+		killGalvekSidebar.addSubSteps(killGalvek);
+
 		talkToAlecToFinish = new NpcStep(this, NpcID.ALEC_KINCADE, new WorldPoint(2458, 2869, 0), "Talk to Alec Kincade to become a Myth!");
 		talkToAlecToFinish.addDialogStep("Let's talk about my quest.");
 	}
@@ -1133,6 +1145,47 @@ public class DragonSlayerII extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(5);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.SMITHING, 25000),
+				new ExperienceReward(Skill.MINING, 18000),
+				new ExperienceReward(Skill.AGILITY, 15000),
+				new ExperienceReward(Skill.THIEVING, 15000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+				new ItemReward("25,000 Experience Tome (Any Combat Skill).", ItemID.ANTIQUE_LAMP, 4), //4447 is placeholder
+				new ItemReward("A Locator Orb", ItemID.LOCATOR_ORB, 1));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+				new UnlockReward("Access to the Myths Guild."),
+				new UnlockReward("Ability to make Super Antifire Potions"),
+				new UnlockReward("Access to the Fountain of Uhld."),
+				new UnlockReward("Access to the Wrath Altar."),
+				new UnlockReward("Ability to purchase the Mythical Cape"),
+				new UnlockReward("Access to Adamant and Rune Dragons"),
+				new UnlockReward("Access to Vorkath"),
+				new UnlockReward("Ability to re-forge the dragon platebody and kiteshield."),
+				new UnlockReward("Ability to craft Ferocious Gloves"),
+				new UnlockReward("Ability to further upgrade your Ava's device."),
+				new UnlockReward("Ability to teleport to Lithkren with the Digsite Pendant."));
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
@@ -1149,7 +1202,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Entering a dream", Arrays.asList(talkToOneiromancer, fillDreamVial, addGoutweed, crushAstralRune, grindAstralShards, addGroundAstral,
 			lightBrazier, usePotionOnFlame, talkToBobInDream, killRobertTheStrong, talkToBobAfterRobertFight), sealOfPassage, goutweed, astralRune, hammer, pestleAndMortarHighlighted, tinderbox, combatGear));
 
-		PanelDetails karamjaKeyPanel = new PanelDetails("Karamja key piece", Arrays.asList(enterKhazariMaze, getToCentreOfMaze), machete, axe, food);
+		PanelDetails karamjaKeyPanel = new PanelDetails("Karamja key piece", Arrays.asList(enterKharaziMaze, getToCentreOfMaze), machete, axe, food);
 		karamjaKeyPanel.setLockingStep(gettingTheKaramjaKey);
 
 		PanelDetails varrockKeyPanel = new PanelDetails("Varrock key piece", Arrays.asList(talkToReldo, searchBookcase, talkToReldoAgain, talkToSarah,
@@ -1159,7 +1212,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		PanelDetails kourendKeyPanel = new PanelDetails("Kourend key piece", Arrays.asList(talkToAmelia, enterCrypt, goDownInCryptF2ToF1, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey), combatGear, lightSource);
 		kourendKeyPanel.setLockingStep(gettingTheKourendKey);
 
-		PanelDetails fremennikKeyPanel = new PanelDetails("Fremennik key piece", Arrays.asList(talkToBrundt, talkToTorfinn, killVorkath, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey), combatGear);
+		PanelDetails fremennikKeyPanel = new PanelDetails("Fremennik key piece", Arrays.asList(talkToBrundt, talkToTorfinn, killVorkathSidebar, enterVorkathCave, pullLeverInVorkathCave, enterEastVorkathRoom, searchStoneChestForVorkathKey), combatGear);
 		fremennikKeyPanel.setLockingStep(gettingTheFremennikKey);
 
 		allSteps.add(kourendKeyPanel);
@@ -1174,7 +1227,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Creating an army", Arrays.asList(talkToRoald, talkToBrundtAboutThreat, talkToAmik, talkToLathasOrThoros, enterVarrockDiningRoom, talkToBobAfterDiningRoom)));
 
 		allSteps.add(new PanelDetails("Final showdown", Arrays.asList(takeBoatToUngael, keepShipAfloat, getToMainShip, kill2Blue2Green, killBlackSteelBrutalRedDragon,
-			killMithAddyAndRuneDragons, killGalvek, talkToAlecToFinish), combatGear, antifireShield));
+			killMithAddyAndRuneDragons, killGalvekSidebar, talkToAlecToFinish), combatGear, antifireShield));
 
 		return allSteps;
 	}

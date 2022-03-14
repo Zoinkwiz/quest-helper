@@ -35,6 +35,7 @@ public class PuzzleStep extends DetailedQuestStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		super.onGameTick(event);
 		this.highlightedButtons = highlightCalculator.getHighlightedButtons();
 	}
 

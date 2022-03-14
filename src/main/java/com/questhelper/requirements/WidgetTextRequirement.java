@@ -26,7 +26,6 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.SimpleRequirement;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
@@ -40,7 +39,6 @@ public class WidgetTextRequirement extends SimpleRequirement
 	@Setter
 	@Getter
 	protected boolean hasPassed;
-	protected boolean onlyNeedToPassOnce;
 
 	@Getter
 	private final int groupId;
@@ -66,6 +64,14 @@ public class WidgetTextRequirement extends SimpleRequirement
 	{
 		this.groupId = groupId;
 		this.childId = childId;
+		this.checkChildren = checkChildren;
+		this.text = Arrays.asList(text);
+	}
+
+	public WidgetTextRequirement(WidgetInfo widgetInfo, boolean checkChildren, String... text)
+	{
+		this.groupId = widgetInfo.getGroupId();
+		this.childId = widgetInfo.getChildId();
 		this.checkChildren = checkChildren;
 		this.text = Arrays.asList(text);
 	}

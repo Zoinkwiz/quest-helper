@@ -270,8 +270,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 		eagleFeldip.addIcon(ItemID.ROPE);
 
 		spinedLarupia = new NpcStep(this, NpcID.SPINED_LARUPIA, new WorldPoint(2551, 2904, 0),
-			"Place logs over a pit in the Feldip hunter area, and poke a kyatt with a teasing stick. " +
-				"Jump over the pits until the kyatt falls in and loot it.", teasingStick, logs, knife);
+			"Place logs over a pit in the Feldip hunter area, and poke a larupia with a teasing stick. " +
+				"Jump over the pits until the larupia falls in and loot it.", teasingStick, logs, knife);
 
 		gliderToFeldip = new DetailedQuestStep(this, "Travel to the Feldip Hills by Gnome Glider.");
 

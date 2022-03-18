@@ -74,14 +74,14 @@ import net.runelite.api.widgets.WidgetInfo;
 public class LegendsQuest extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement axe, machete, radimusNotes, papyrus3, charcoal3, papyrus, charcoal, radimusNotesHighlight, completeNotesHighlighted, bullRoarer,  lockpick,
+	ItemRequirement axe, machete, completedNotes, completeNotesHighlighted, papyrus3, charcoal3, papyrus, charcoal, bullRoarer,  lockpick,
 		soulRune, mindRune, earthRune, lawRune2, opal, jade, sapphire, ruby, diamond, pickaxe, bullRoarerHighlight, sketch, lawRuneHighlight,
 		soulRuneHighlight, mindRuneHighlight, earthRuneHighlight, opalHighlighted, jadeHighlighted, topazHighlighted, sapphireHighlighted,
 		emeraldHighlighted, rubyHighlighted, diamondHighlighted, topaz, emerald, bindingBook, bindingBookHighlighted, goldBar2, hammer, goldBowl,
 		goldBowlHighlighted, combatGear, goldBowlBlessed, goldBowlFull, goldBowlFullHighlighted, reed, macheteHighlighted, yommiSeeds, germinatedSeeds,
 		germinatedSeedsHighlighted, runeOrDragonAxe, ardrigal, snakeWeed, vialOfWater, unpoweredOrb, ardrigalMixture, braveryPotion, braveryPotionHighlighted,
 		snakeMixture, rope, elemental30, cosmic3, ropeHighlighted, lumpCrystal, chunkCrystal, hunkCrystal, heartCrystal, heartCrystal2, darkDagger, glowingDagger,
-		force, forceHighlighted, yommiTotem, yommiTotemHighlighted, gildedTotem, completeNotes, anyNotes;
+		force, forceHighlighted, yommiTotem, yommiTotemHighlighted, gildedTotem, completeNotes, anyNotes, anyNotesHighlighted;
 
 	ItemRequirements chargeOrbRunes;
 
@@ -393,29 +393,27 @@ public class LegendsQuest extends BasicQuestHelper
 		macheteHighlighted = new ItemRequirement("A machete", ItemCollections.getMachete());
 		macheteHighlighted.setHighlightInInventory(true);
 
-		radimusNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
-		radimusNotes.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp");
-		papyrus3 = new ItemRequirement("3-5 papyrus", ItemID.PAPYRUS, 3);
-		charcoal3 = new ItemRequirement("1-3 charcoal", ItemID.CHARCOAL);
-		radimusNotesHighlight = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
-		radimusNotesHighlight.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp");
-		radimusNotesHighlight.setHighlightInInventory(true);
+		anyNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
+		anyNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
+		anyNotes.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp");
+
+		anyNotesHighlighted = anyNotes;
+		anyNotesHighlighted.setHighlightInInventory(true);
 
 		completeNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
 		completeNotes.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp, and you'll need to re-sketch the jungle");
 
-		completeNotesHighlighted = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES_715);
-		completeNotesHighlighted.setTooltip("You can get another from Radimus in the Legends' Guild for 30 gp, and you'll need to re-sketch the jungle");
+		completeNotesHighlighted = completeNotes;
 		completeNotesHighlighted.setHighlightInInventory(true);
 
-		anyNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
-		anyNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
+		papyrus3 = new ItemRequirement("papyrus", ItemID.PAPYRUS, 3);
+		papyrus3.setTooltip("Bring 4-5 in case one is torn");
+
+		charcoal3 = new ItemRequirement("charcoal", ItemID.CHARCOAL, 1);
+		charcoal3.setTooltip("Bring 2-3 in case it breaks");
 
 		sketch = new ItemRequirement("Sketch", ItemID.SKETCH);
 		sketch.setTooltip("You can get another by summoning Gujuo with the bull roarer again");
-
-		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
-		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 
 		bullRoarer = new ItemRequirement("Bull roarer", ItemID.BULL_ROARER);
 		bullRoarer.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
@@ -661,23 +659,32 @@ public class LegendsQuest extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		talkToGuard = new NpcStep(this, NpcID.LEGENDS_GUARD, new WorldPoint(2729, 3348, 0), "Talk to one of the guards outside the Legends' Guild.");
-		talkToGuard.addDialogSteps("Can I speak to someone in charge?", "Can I go on the quest?", "Yes, I'd like to talk to Grand Vizier Erkle.");
-		talkToRadimus = new NpcStep(this, NpcID.RADIMUS_ERKLE, new WorldPoint(2725, 3368, 0), "Talk to Radimus Erkle inside the Legends' Guild's grounds.");
+		talkToGuard = new NpcStep(this, NpcID.LEGENDS_GUARD, new WorldPoint(2729, 3348, 0),
+				"Talk to one of the guards outside the Legends' Guild.");
+		talkToGuard.addDialogSteps("Can I speak to someone in charge?", "Can I go on the quest?",
+				"Yes, I'd like to talk to Grand Vizier Erkle.");
+
+		talkToRadimus = new NpcStep(this, NpcID.RADIMUS_ERKLE, new WorldPoint(2725, 3368, 0),
+				"Talk to Radimus Erkle inside the Legends' Guild's grounds.");
 		talkToRadimus.addDialogSteps("Yes actually, what's involved?", "Yes, it sounds great!");
-		enterJungle = new DetailedQuestStep(this, "Travel to the Kharazi Jungle in south Karamja. You'll need to cut through some trees and bushes to enter.", radimusNotes, axe, machete, papyrus3, charcoal3);
-		sketchEast = new DetailedQuestStep(this, new WorldPoint(2944, 2916, 0), "Stand in the east of the Kharazi Jungle and right-click complete the Radimus note.", radimusNotesHighlight, papyrus, charcoal);
-		sketchEast.addDialogStep("Start Mapping Kharazi Jungle.");
-		sketchMiddle = new DetailedQuestStep(this, new WorldPoint(2852, 2915, 0), "Stand in the middle of the Kharazi Jungle and right-click complete the Radimus note.", radimusNotesHighlight, papyrus, charcoal);
-		sketchMiddle.addDialogStep("Start Mapping Kharazi Jungle.");
-		sketchWest = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0), "Stand in the west of the Kharazi Jungle and right-click complete the Radimus note.", radimusNotesHighlight, papyrus, charcoal);
+
+		enterJungle = new DetailedQuestStep(this, "Travel to the Kharazi Jungle in south Karamja. You'll need to cut through some trees and bushes to enter.", anyNotes, axe, machete, papyrus3, charcoal3);
+
+		sketchWest = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0), "Stand in the west of the Kharazi Jungle and right-click complete the Radimus note.", anyNotesHighlighted, papyrus, charcoal);
 		sketchWest.addDialogStep("Start Mapping Kharazi Jungle.");
+
+		sketchMiddle = new DetailedQuestStep(this, new WorldPoint(2852, 2915, 0), "Stand in the middle of the Kharazi Jungle and right-click complete the Radimus note.", anyNotesHighlighted, papyrus, charcoal);
+		sketchMiddle.addDialogStep("Start Mapping Kharazi Jungle.");
+
+		sketchEast = new DetailedQuestStep(this, new WorldPoint(2944, 2916, 0), "Stand in the east of the Kharazi Jungle and right-click complete the Radimus note.", anyNotesHighlighted, papyrus, charcoal);
+		sketchEast.addDialogStep("Start Mapping Kharazi Jungle.");
+
 		useNotes = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2867, 2942, 0),
 				"Use the Radimus notes on a Jungle Forester outside the Kharazi Jungle. Whilst in the jungle, consider grabbing a Vanilla Pod from a Vanilla plant in the south west of the Kharazi.", true, completeNotesHighlighted);
 		useNotes.addAlternateNpcs(NpcID.JUNGLE_FORESTER_3955);
 		useNotes.addDialogStep("Yes, go ahead make a copy!");
 		enterJungleWithRoarer = new DetailedQuestStep(this, "Re-enter the Kharazi Jungle. You'll need to cut through some trees and bushes to enter.", completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond);
-		spinBull = new DetailedQuestStep(this, "Spin the bull roarer until Gujuo appears.", bullRoarerHighlight);
+		spinBull = new DetailedQuestStep(this, "swing the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuo = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo.");
 		talkToGujuo.addDialogSteps("I was hoping to attract the attention of a native.", "I want to develop friendly relations with your people.", "Can you get your people together?", "What can we do instead then?", "How do we make the totem pole?", "I will release Ungadulu...");
 
@@ -688,7 +695,7 @@ public class LegendsQuest extends BasicQuestHelper
 		investigateFireWall.addDialogSteps("How can I extinguish the flames?", "Where do I get pure water from?");
 
 		leaveCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2903, new WorldPoint(2773, 9342, 0), "Leave the cave back to the surface.");
-		spinBullAgain = new DetailedQuestStep(this, "Spin the bull roarer until Gujuo appears.", bullRoarerHighlight);
+		spinBullAgain = new DetailedQuestStep(this, "swing the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuoAgain = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo about pure water and the vessel needed for it.");
 		talkToGujuoAgain.addDialogSteps("I need some pure water to douse some magic flames.", "What kind of a vessel?", "Where is the pool of sacred water?");
 
@@ -738,7 +745,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		enterJungleWithBowl = new DetailedQuestStep(this, "Return to the Kharazi Jungle with your gold bowl, and be prepared for a fight.", bullRoarer, goldBowl, bindingBook, axe, machete, combatGear);
 
-		spinBullToBless = new DetailedQuestStep(this, "Spin the bull roarer until Gujuo appears.", bullRoarerHighlight, goldBowl);
+		spinBullToBless = new DetailedQuestStep(this, "swing the bull roarer until Gujuo appears.", bullRoarerHighlight, goldBowl);
 
 		talkToGujuoWithBowl = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo to bless the gold bowl.");
 		talkToGujuoWithBowl.addDialogSteps("Yes, I'd like you to bless my gold bowl.");
@@ -781,7 +788,7 @@ public class LegendsQuest extends BasicQuestHelper
 		useReedOnPoolAgain.addIcon(ItemID.HOLLOW_REED);
 		useReedOnPoolAgain.addAlternateObjects(ObjectID.POLLUTED_WATER);
 
-		spinBullAfterSeeds = new DetailedQuestStep(this, "Spin the bull roarer until Gujuo appears.", bullRoarerHighlight);
+		spinBullAfterSeeds = new DetailedQuestStep(this, "Swing the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuoAfterSeeds = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo about what's happened to the water pool.");
 		talkToGujuoAfterSeeds.addDialogSteps("The water pool has dried up and I need more water.", "Where is the source of the spring of pure water?");
 
@@ -924,7 +931,7 @@ public class LegendsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(charcoal3, papyrus3, machete, runeOrDragonAxe, goldBar2, hammer, rope, lockpick, pickaxe, vialOfWater, ardrigal, snakeWeed, sapphire, emerald, ruby, diamond, opal, jade, topaz, soulRune, mindRune, earthRune, lawRune2, unpoweredOrb, chargeOrbRunes, combatGear);
+		return Arrays.asList(anyNotes, charcoal3, papyrus3, machete, runeOrDragonAxe, goldBar2, hammer, rope, lockpick, pickaxe, vialOfWater, ardrigal, snakeWeed, sapphire, emerald, ruby, diamond, opal, jade, topaz, soulRune, mindRune, earthRune, lawRune2, unpoweredOrb, chargeOrbRunes, combatGear);
 	}
 
 	@Override
@@ -942,13 +949,17 @@ public class LegendsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("7,650 Experience Lamps (Choice of Attack, Defence, Strength, Hitpoints, Prayer, Magic, Woodcutting, Crafting, Smithing, Herblore, Agility or Thieving", ItemID.ANTIQUE_LAMP, 4)); //4447 Is placeholder for filtering.
+		return Collections.singletonList(new ItemReward("7,650 experience in four skills of your choice (limited to Attack, Defence, Strength, Hitpoints, Prayer, Magic, Woodcutting, Crafting, Smithing, Herblore, Agility or Thieving", -1, 4)); //4447 Is placeholder for filtering.
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Access to the Kharazi Jungle"));
+		List<UnlockReward> unlockRewards = new ArrayList<>();
+		unlockRewards.add(new UnlockReward("Ability to wield the dragon sq shield"));
+		unlockRewards.add(new UnlockReward("Ability to charge your Skills necklace or Combat bracelet at the Legends' Guild"));
+		unlockRewards.add(new UnlockReward("Access to the Kharazi Jungle"));
+		return unlockRewards;
 	}
 
 	@Override
@@ -957,10 +968,13 @@ public class LegendsQuest extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGuard, talkToRadimus)));
-		allSteps.add(new PanelDetails("Mapping Kharazi", Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes), axe, machete, papyrus3, charcoal3, anyNotes));
+		allSteps.add(new PanelDetails("Mapping Kharazi",
+				Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes),
+				machete, axe, anyNotes, papyrus3, charcoal3));
+
 		allSteps.add(new PanelDetails("Contacting the locals", Arrays.asList(enterJungleWithRoarer, spinBull, talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain,
 			talkToGujuoAgain),
-			anyNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
+			completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
 		PanelDetails runePuzzlePanel = new PanelDetails("Unlocking the caves", Arrays.asList(enterMossyRockAgain, enterBookcase, enterGate1, enterGate2, searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2),
 			completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade,
 			topaz,	sapphire, emerald, ruby, diamond);
@@ -975,7 +989,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Freeing Ungadulu", 
 			Arrays.asList(makeBowl, enterJungleWithBowl, spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall, useBindingBookOnUngadulu,
-				fightNezikchenedInFire, talkToUngadulu), completeNotes, bullRoarer, goldBar2, hammer, axe, machete, combatGear));
+				fightNezikchenedInFire, talkToUngadulu), completeNotes, bullRoarer, goldBar2, hammer, axe, machete, bindingBook, combatGear));
 
 		allSteps.add(new PanelDetails("Attempted planting", Arrays.asList(
 		useBowlOnSeeds, leaveCaveWithSeed, useMacheteOnReedsAgain, useReedOnPoolAgain, spinBullAfterSeeds,

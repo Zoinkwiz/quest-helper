@@ -26,6 +26,7 @@ package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestWidgets;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -49,55 +50,46 @@ public class QuestSyncStep extends QuestStep
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
 
-		Widget questContainer = client.getWidget(WidgetInfo.QUESTLIST_CONTAINER);
+		Widget questContainer = client.getWidget(QuestWidgets.QUESTLIST_CONTAINER.getPackedId());
 		if (questContainer == null || questContainer.isHidden())
 		{
 			return;
 		}
 
-		Widget questFreeContainer = client.getWidget(WidgetInfo.QUESTLIST_FREE_CONTAINER);
-		Widget questMembersContainer = client.getWidget(WidgetInfo.QUESTLIST_MEMBERS_CONTAINER);
-		Widget questMiniquestContainer = client.getWidget(WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER);
-
-		Widget[] containers = new Widget[]{ questFreeContainer, questMembersContainer, questMiniquestContainer };
+		Widget questsContainer = client.getWidget(QuestWidgets.QUEST_CONTAINER.getPackedId());
 
 		Widget finalEmoteWidget = null;
 
-		int extraHeight = 0;
 
-		for (Widget container : containers)
+		for (Widget questWidget : questsContainer.getDynamicChildren())
 		{
-			for (Widget questWidget : container.getDynamicChildren())
+			if (questWidget.getText().equals(quest.getName()))
 			{
-				if (questWidget.getText().equals(quest.getName()))
+				finalEmoteWidget = questWidget;
+				if (questWidget.getCanvasLocation().getY() > questContainer.getCanvasLocation().getY() &&
+					questWidget.getCanvasLocation().getY() < questContainer.getCanvasLocation().getY() + questContainer.getHeight())
 				{
-					finalEmoteWidget = questWidget;
-					if (questWidget.getCanvasLocation().getY() > questContainer.getCanvasLocation().getY() &&
-						questWidget.getCanvasLocation().getY() < questContainer.getCanvasLocation().getY() + questContainer.getHeight())
-					{
-						graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-							questHelper.getConfig().targetOverlayColor().getGreen(),
-							questHelper.getConfig().targetOverlayColor().getBlue(), 65));
-						graphics.fill(questWidget.getBounds());
-						graphics.setColor(questHelper.getConfig().targetOverlayColor());
-						graphics.draw(questWidget.getBounds());
-						break;
-					}
+					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+						questHelper.getConfig().targetOverlayColor().getGreen(),
+						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+					graphics.fill(questWidget.getBounds());
+					graphics.setColor(questHelper.getConfig().targetOverlayColor());
+					graphics.draw(questWidget.getBounds());
+					break;
 				}
 			}
-			if (finalEmoteWidget != null) break;
-			extraHeight += container.getHeight();
 		}
+
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			scrollToWidget(finalEmoteWidget, extraHeight);
+			scrollToWidget(finalEmoteWidget);
 		}
 	}
 
-	void scrollToWidget(Widget widget, int extraHeight)
+	void scrollToWidget(Widget widget)
 	{
-		final Widget parent = client.getWidget(WidgetInfo.QUESTLIST_CONTAINER);
+		final Widget parent = client.getWidget(QuestWidgets.QUESTLIST_CONTAINER.getPackedId());
 
 		if (widget == null || parent == null)
 		{
@@ -105,12 +97,12 @@ public class QuestSyncStep extends QuestStep
 		}
 
 		final int newScroll = Math.max(0, Math.min(parent.getScrollHeight(),
-			(extraHeight + widget.getRelativeY() + (widget.getHeight()) / 2) - parent.getHeight() / 2));
+			(widget.getRelativeY() / 2 + (widget.getHeight()) / 2) - parent.getHeight() / 2));
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			WidgetInfo.QUESTLIST_SCROLLBAR.getId(),
-			WidgetInfo.QUESTLIST_CONTAINER.getId(),
+			QuestWidgets.QUESTLIST_SCROLLBAR.getId(),
+			QuestWidgets.QUESTLIST_CONTAINER.getId(),
 			newScroll
 		);
 	}

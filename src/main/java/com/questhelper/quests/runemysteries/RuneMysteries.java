@@ -133,11 +133,11 @@ public class RuneMysteries extends BasicQuestHelper
 		goDownToSedridor = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
 		goDownToSedridor.addDialogStep("Have you any quests for me?");
 
-		talkToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
+		talkToSedridor = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
 		talkToSedridor.addDialogStep("I'm looking for the head wizard.");
 		talkToSedridor.addDialogStep("Ok, here you are.");
 
-		finishTalkingToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Accept taking the package for Sedridor.");
+		finishTalkingToSedridor = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR, new WorldPoint(3104, 9571, 0), "Accept taking the package for Sedridor.");
 		finishTalkingToSedridor.addDialogStep("Yes, certainly.");
 
 		talkToSedridor.addSubSteps(goDownToSedridor, finishTalkingToSedridor);
@@ -147,7 +147,7 @@ public class RuneMysteries extends BasicQuestHelper
 		talkToAudburyAgain = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0), "Talk to Aubury again in south east Varrock.");
 
 		goDownToSedridor2 = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", notes);
-		talkToSedridor2 = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", notes);
+		talkToSedridor2 = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", notes);
 		talkToSedridor2.addSubSteps(goDownToSedridor2);
 	}
 

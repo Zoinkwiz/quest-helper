@@ -200,7 +200,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 
 		moveToSed = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
 			"Climb down the ladder in the Wizards' Tower.");
-		sedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3103, 9571, 0),
+		sedridor = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR, new WorldPoint(3103, 9571, 0),
 			"Teleport to the Rune essence mine via Sedridor.");
 		sedridor.addDialogStep("Can you teleport me to the Rune Essence?");
 

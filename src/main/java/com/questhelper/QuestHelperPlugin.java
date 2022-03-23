@@ -107,9 +107,7 @@ public class QuestHelperPlugin extends Plugin
 {
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
 		{
-			WidgetInfo.QUESTLIST_FREE_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MEMBERS_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId()
+			QuestWidgets.QUEST_CONTAINER.getId()
 		};
 
 	private static final String[] RFD_NAMES = new String[]

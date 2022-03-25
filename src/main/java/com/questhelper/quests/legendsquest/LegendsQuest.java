@@ -684,7 +684,7 @@ public class LegendsQuest extends BasicQuestHelper
 		useNotes.addAlternateNpcs(NpcID.JUNGLE_FORESTER_3955);
 		useNotes.addDialogStep("Yes, go ahead make a copy!");
 		enterJungleWithRoarer = new DetailedQuestStep(this, "Re-enter the Kharazi Jungle. You'll need to cut through some trees and bushes to enter.", completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond);
-		spinBull = new DetailedQuestStep(this, "swing the bull roarer until Gujuo appears.", bullRoarerHighlight);
+		spinBull = new DetailedQuestStep(this, "Swing the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuo = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo.");
 		talkToGujuo.addDialogSteps("I was hoping to attract the attention of a native.", "I want to develop friendly relations with your people.", "Can you get your people together?", "What can we do instead then?", "How do we make the totem pole?", "I will release Ungadulu...");
 
@@ -695,7 +695,7 @@ public class LegendsQuest extends BasicQuestHelper
 		investigateFireWall.addDialogSteps("How can I extinguish the flames?", "Where do I get pure water from?");
 
 		leaveCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2903, new WorldPoint(2773, 9342, 0), "Leave the cave back to the surface.");
-		spinBullAgain = new DetailedQuestStep(this, "swing the bull roarer until Gujuo appears.", bullRoarerHighlight);
+		spinBullAgain = new DetailedQuestStep(this, "Swing the bull roarer until Gujuo appears.", bullRoarerHighlight);
 		talkToGujuoAgain = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo about pure water and the vessel needed for it.");
 		talkToGujuoAgain.addDialogSteps("I need some pure water to douse some magic flames.", "What kind of a vessel?", "Where is the pool of sacred water?");
 
@@ -745,7 +745,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		enterJungleWithBowl = new DetailedQuestStep(this, "Return to the Kharazi Jungle with your gold bowl, and be prepared for a fight.", bullRoarer, goldBowl, bindingBook, axe, machete, combatGear);
 
-		spinBullToBless = new DetailedQuestStep(this, "swing the bull roarer until Gujuo appears.", bullRoarerHighlight, goldBowl);
+		spinBullToBless = new DetailedQuestStep(this, "Swing the bull roarer until Gujuo appears.", bullRoarerHighlight, goldBowl);
 
 		talkToGujuoWithBowl = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo to bless the gold bowl.");
 		talkToGujuoWithBowl.addDialogSteps("Yes, I'd like you to bless my gold bowl.");

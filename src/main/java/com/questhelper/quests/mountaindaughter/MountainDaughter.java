@@ -181,8 +181,9 @@ public class MountainDaughter extends BasicQuestHelper
 		pickaxe.addAlternates(ItemCollections.getPickaxes());
 
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		plank = new ItemRequirement("Plank", ItemID.PLANK);
-		pole = new ItemRequirement("A staff or a Pole", ItemID.POLE);
+		plank = new ItemRequirement("Any plank", ItemID.PLANK);
+		plank.addAlternates(ItemID.OAK_PLANK, ItemID.TEAK_PLANK, ItemID.MAHOGANY_PLANK);
+		pole = new ItemRequirement("A staff or a pole", ItemID.POLE);
 		pole.addAlternates(ItemID.LUNAR_STAFF);
 		pole.setTooltip("You can find one in the north part of the Mountain Camp.");
 		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES);

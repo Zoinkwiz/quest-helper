@@ -188,9 +188,27 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showOverlayPanel",
+		name = "Display overlay on screen",
+		description = "Chose whether the overlay should be displayed on screen"
+	)
+	default boolean showOverlay()
+	{
+		return true;
+	}
+
+	@ConfigSection(
+		position = 1,
+		name = "Quest Hints",
+		description = "Determines what hints should be shown"
+	)
+	String hintsSection = "hintsSection";
+
+	@ConfigItem(
 		keyName = "showTextHighlight",
 		name = "Highlight correct dialog",
-		description = "Highlight correct dialog choices"
+		description = "Highlight correct dialog choices",
+		section = hintsSection
 	)
 	default boolean showTextHighlight()
 	{
@@ -200,7 +218,8 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "showSymbolOverlay",
 		name = "Display icons on NPCs and objects",
-		description = "Choose whether NPCs should icons marking them as the current target or not"
+		description = "Choose whether NPCs should icons marking them as the current target or not",
+		section = hintsSection
 	)
 	default boolean showSymbolOverlay()
 	{
@@ -208,9 +227,10 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showMiniMapArrow",
-			name = "Display arrows on the mini-map and overworld",
-			description = "Choose whether flashing arrows point to the next objective"
+		keyName = "showMiniMapArrow",
+		name = "Display arrows on the mini-map and overworld",
+		description = "Choose whether flashing arrows point to the next objective",
+		section = hintsSection
 	)
 	default boolean showMiniMapArrow()
 	{
@@ -218,9 +238,10 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showWorldLines",
-			name = "Display navigation paths",
-			description = "Choose whether navigation paths are drawn to the next objective"
+		keyName = "showWorldLines",
+		name = "Display navigation paths",
+		description = "Choose whether navigation paths are drawn to the next objective",
+		section = hintsSection
 	)
 	default boolean showWorldLines()
 	{
@@ -228,11 +249,12 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOverlayPanel",
-		name = "Display overlay on screen",
-		description = "Chose whether the overlay should be displayed on screen"
+		keyName = "showWidgetHints",
+		name = "Display widget hints",
+		description = "Choose whether important widget actions are highlighted",
+		section = hintsSection
 	)
-	default boolean showOverlay()
+	default boolean showWidgetHints()
 	{
 		return true;
 	}

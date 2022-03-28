@@ -67,7 +67,7 @@ public class HauntedMine extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement zealotsKey, chisel, glowingFungus, glowingFungusHighlight, crystalMineKey, combatGear,
-	zealotsKeyHighlighted, food;
+	zealotsKeyHighlighted, food, emptyInvSpots;
 
 	Requirement askedAboutKey, inLevel1South, valveOpened, valveOpen, hasKeyOrOpenedValve,
 		inLiftRoom, inLevel2North, inLevel3North, inLevel2South, inLevel3South, inCartRoom, inCollectRoom, leverAWrong, leverBWrong,
@@ -175,6 +175,8 @@ public class HauntedMine extends BasicQuestHelper
 		glowingFungus = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight.setHighlightInInventory(true);
+
+		emptyInvSpots = new ItemRequirement("Empty Inventory Spot", -1, 3);
 
 		crystalMineKey = new ItemRequirement("Crystal-mine key", ItemID.CRYSTALMINE_KEY);
 
@@ -410,7 +412,7 @@ public class HauntedMine extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToZealot, pickpocketZealot),
-			combatGear, food));
+			combatGear, food, emptyInvSpots));
 		allSteps.add(new PanelDetails("Getting a light source",
 			Arrays.asList(enterMine, goDownFromLevel1South, goDownFromLevel2South, goDownToFungusRoom,
 				pickFungus, putFungusInCart, solvePuzzle, readPanel, goUpFromFungusRoom)));

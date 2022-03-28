@@ -427,6 +427,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	{
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_17382, new WorldPoint(3367, 3335, 0),
 			"Search the marked bookcase in the Exam Centre in the Dig Site.");
+		searchBookcase.addDialogStep("Yes.");
 
 		readBook = new DetailedQuestStep(this, "Read the beaten book.", beatenBook.highlighted());
 		readScroll = new DetailedQuestStep(this, "Read the scroll.", scroll.highlighted());

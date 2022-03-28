@@ -177,6 +177,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_26113, new WorldPoint(2716, 3482, 0), "Search the " +
 			"marked bookcase in Seers' Village.");
 		readBook = new DetailedQuestStep(this, "Read the battered book.", batteredBook);
+		readBook.addDialogStep("Yes.");
 		useKnifeOnBook = new DetailedQuestStep(this, "Use a knife on the battered book.", knife, batteredBook);
 		openOddWall = new ObjectStep(this, ObjectID.ODD_LOOKING_WALL_26115, new WorldPoint(2709, 3495, 0),
 			"Open the odd wall to the north of the bookcase.", batteredKey, slashedBook);

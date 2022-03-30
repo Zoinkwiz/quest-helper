@@ -468,7 +468,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		putOrderOnCrate.addSubSteps(goF1WithOrder, goF2WithOrder);
 
 		goToHarmonyAfterFenk = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
-			"Return to armony and talk to Fenkenstrain in the windmill's basement.");
+			"Return to Harmony and talk to Fenkenstrain in the windmill's basement.");
 		goDownToFenk = new ObjectStep(this, ObjectID.LADDER_22173, new WorldPoint(3789, 2826, 0),
 			"Talk to Dr. Fenkenstrain in the Harmony Windmill basement.");
 		talkToFenkOnHarmony = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3785, 9225, 0),

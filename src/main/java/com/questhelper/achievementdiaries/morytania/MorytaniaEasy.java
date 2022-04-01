@@ -129,7 +129,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		notRestorePrayer = new VarplayerRequirement(1180, false, 11);
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).showConditioned(notCraftSnelm);
-		snailShell = new ItemRequirement("Snail shell", ItemCollections.getSnailShells()).showConditioned(notCraftSnelm);
+		snailShell = new ItemRequirement("Blamish shell", ItemCollections.getSnailShells()).showConditioned(notCraftSnelm);
 		thinSnail = new ItemRequirement("Thin snail", ItemID.THIN_SNAIL).showConditioned(notCookSnail);
 		tannableHide = new ItemRequirement("Tannable hide", ItemCollections.getTannableHide()).showConditioned(notSbottTan);
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notSbottTan);

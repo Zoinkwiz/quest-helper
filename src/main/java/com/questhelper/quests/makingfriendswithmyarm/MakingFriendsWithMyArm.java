@@ -618,7 +618,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 				new UnlockReward("Access to the Salt Mines."),
 				new UnlockReward("Ability to build fire pits"),
 				new UnlockReward("Ability to tune a house portal to Troll Stronghold."),
-				new UnlockReward("Access to a disease free herb patch in Weis."));
+				new UnlockReward("Access to a disease free herb patch in Weiss."));
 	}
 
 	@Override

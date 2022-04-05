@@ -400,7 +400,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		allSteps.add(mahoSteps);
 
 		PanelDetails watermelonsSteps = new PanelDetails("Harmony Watermelons", Arrays.asList(moveToCapt, moveToMos,
-			moveToHarmony, harvestWatermelon), new SkillRequirement(Skill.FARMING, 53, true),
+			moveToHarmony, harvestWatermelon), new SkillRequirement(Skill.FARMING, 47, true),
 			theGreatBrainRobbery, watermelonSeeds.quantity(3), rake, seedDibber);
 		watermelonsSteps.setDisplayCondition(notHarvestWatermelon);
 		allSteps.add(watermelonsSteps);

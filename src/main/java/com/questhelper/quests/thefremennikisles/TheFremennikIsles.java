@@ -584,6 +584,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 56, true));
 		return req;
 	}
 

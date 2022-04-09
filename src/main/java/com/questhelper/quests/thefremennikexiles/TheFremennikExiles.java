@@ -252,7 +252,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
 		sealOfPassageOrEliteDiary = ComplexRequirementBuilder.or("Seal of Passage")
-			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE.getId(), 1))
+			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE, 1))
 			.with(sealOfPassage)
 			.build();
 

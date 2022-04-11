@@ -57,7 +57,10 @@ public interface QuestHelperConfig extends Config
 		/** Sort quests according to the Optimal Quest Guide (Ironman version) (https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman) */
 		OPTIMAL_IRONMAN(QuestOrders.sortOptimalIronmanOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
 		/** Sort quest by their release date (https://oldschool.runescape.wiki/w/Quests/Release_dates) */
-		RELEASE_DATE(QuestOrders.sortByRelease(), QuestFilter.QUEST, QuestFilter.MINIQUEST)
+		RELEASE_DATE(QuestOrders.sortByRelease(), QuestFilter.QUEST, QuestFilter.MINIQUEST),
+
+		QUEST_POINTS_ASCENDING(QuestOrders.sortByQuestPointRewardAscending(), QuestFilter.QUEST),
+		QUEST_POINTS_DESCENDING(QuestOrders.sortByQuestPointRewardDescending(), QuestFilter.QUEST)
 		;
 
 		private final Comparator<QuestHelper> comparator;

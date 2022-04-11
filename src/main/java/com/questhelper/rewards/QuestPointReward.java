@@ -24,10 +24,13 @@
  */
 package com.questhelper.rewards;
 
+import lombok.Getter;
+
 import javax.annotation.Nonnull;
 
 public class QuestPointReward implements Reward
 {
+    @Getter
     private final int points;
 
     public QuestPointReward(int points)

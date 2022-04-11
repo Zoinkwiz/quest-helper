@@ -715,4 +715,14 @@ public class QuestOrders
 	{
 		return Comparator.comparing(q -> getReleaseOrder().indexOf(q.getQuest()));
 	}
+
+	public static Comparator<QuestHelper> sortByQuestPointRewardAscending()
+	{
+		return Comparator.comparing(q -> q.getQuestPointReward() != null ? q.getQuestPointReward().getPoints() : 0 );
+	}
+
+	public static Comparator<QuestHelper> sortByQuestPointRewardDescending()
+	{
+		return Comparator.comparing(q -> q.getQuestPointReward() != null ? q.getQuestPointReward().getPoints() : 0, Comparator.reverseOrder());
+	}
 }

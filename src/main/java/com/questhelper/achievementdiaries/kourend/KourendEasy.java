@@ -64,7 +64,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 	ItemRequirement combatGear, food;
 
 	// Quests required
-	Requirement druidicRitual, portPiscFavour, hosidiusFavour;
+	Requirement druidicRitual, hosidiusFavour;
 
 	// Requirements
 	Requirement notMineIron, notSandCrab, notArceuusBook, notStealFruit, notWarrensStore, notBoatLandsEnd, notPrayCastle,
@@ -161,8 +161,6 @@ public class KourendEasy extends ComplexStateQuestHelper
 		hasMedpack = medpack.alsoCheckBank(questBank);
 
 		houseInKourend = new VarbitRequirement(2187, 8);
-		portPiscFavour = new VarbitRequirement(4899, Operation.GREATER_EQUAL, 200,
-			"20% Piscarilius Favour");
 		hosidiusFavour = new VarbitRequirement(4895, Operation.GREATER_EQUAL, 150,
 			"15% Hosidius Favour");
 	}
@@ -283,7 +281,6 @@ public class KourendEasy extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 15));
 		req.add(new SkillRequirement(Skill.THIEVING, 25));
 
-		req.add(portPiscFavour);
 		req.add(hosidiusFavour);
 		req.add(druidicRitual);
 

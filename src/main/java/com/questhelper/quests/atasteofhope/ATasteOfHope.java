@@ -262,7 +262,7 @@ public class ATasteOfHope extends BasicQuestHelper
 			"Old Man Ral's basement during the quest");
 
 		rodOfIvandisHighlighted = new ItemRequirement("Rod of Ivandis", ItemCollections.getRodOfIvandis());
-		rodOfIvandisHighlighted.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott");
+		rodOfIvandisHighlighted.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott, in the basement under the pub.");
 		rodOfIvandisHighlighted.setHighlightInInventory(true);
 
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);

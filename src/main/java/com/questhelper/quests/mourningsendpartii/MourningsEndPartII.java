@@ -71,7 +71,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement deathTalisman, deathTalismanHeader, mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, chisel, rope, ropeHighlight, prayerPotions, food, newKey, edernsJournal,
-		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, deathTalismanNote, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight, teleportCrystal;
+		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, deathTalismanNote, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight;
 
 	Requirement inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
 		knowToUseCrystal, inBlueRoom, inCyanRoom, solvedPuzzle1, solvedPuzzle2, solvedPuzzle3, solvedPuzzle4, solvedPuzzle5, dispenserEmpty, inYellowRoom, usedRope,
@@ -408,7 +408,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		deathTalisman = new ItemRequirement("Death talisman", ItemID.DEATH_TALISMAN);
-		deathTalisman.addAlternates(ItemID.DEATH_TALISMAN, ItemID.RUNECRAFT_CAPE, ItemID.CATALYTIC_TALISMAN);
+		deathTalisman.addAlternates(ItemID.DEATH_TALISMAN, ItemID.RUNECRAFT_CAPE);
 
 		deathTalismanHeader = new ItemRequirement("Death talisman or 50 items asked of you by a dwarf", ItemID.DEATH_TALISMAN);
 		deathTalismanNote = new ItemRequirement("Death talisman, or if you're an ironman you can earn one later", ItemID.DEATH_TALISMAN);
@@ -429,7 +429,6 @@ public class MourningsEndPartII extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee",
 			ItemCollections.getPrayerPotions(), -1);
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		teleportCrystal = new ItemRequirement("Teleport Crystal", ItemID.TELEPORT_CRYSTAL);
 
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY);
 		newKey.setTooltip("You can get another from Essyllt's desk");
@@ -997,7 +996,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(prayerPotions, food, teleportCrystal);
+		return Arrays.asList(prayerPotions, food);
 	}
 
 	@Override

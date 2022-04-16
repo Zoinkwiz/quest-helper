@@ -27,8 +27,10 @@ package com.questhelper.quests.thefremennikisles;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.IronmanRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -584,6 +586,10 @@ public class TheFremennikIsles extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
+		req.add(new ComplexRequirement(LogicType.OR, "56 Woodcutting if an Ironman",
+				new IronmanRequirement(false),
+				new SkillRequirement(Skill.WOODCUTTING, 56, true))
+		);
 		return req;
 	}
 

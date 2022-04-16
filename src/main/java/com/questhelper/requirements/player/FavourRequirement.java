@@ -52,7 +52,7 @@ public class FavourRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		int realFavour = client.getVar(houseFavour.getVarbit());
+		int realFavour = client.getVarbitValue(houseFavour.getVarbit());
 		return (realFavour / 10) >= percentage;
 	}
 

@@ -182,15 +182,15 @@ public class KourendHard extends ComplexStateQuestHelper
 		dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
 		theForsakenTower = new QuestRequirement(QuestHelperQuest.THE_FORSAKEN_TOWER, QuestState.FINISHED);
 
-		shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN.getId(), Operation.GREATER_EQUAL, 1000,
+		shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN, Operation.GREATER_EQUAL, 1000,
 			"100% Shayzien favour");
-		hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 750,
+		hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 750,
 			"75% Hosidius favour");
-		hosidiusFavour100 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 1000,
+		hosidiusFavour100 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 1000,
 			"100% Hosidius favour");
-		lovakengjFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ.getId(), Operation.GREATER_EQUAL, 300,
+		lovakengjFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ, Operation.GREATER_EQUAL, 300,
 			"30% Lovakengj favour");
-		piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), Operation.GREATER_EQUAL, 750,
+		piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 750,
 			"75% Piscarilius favour");
 
 		// Zone requirements
@@ -327,15 +327,15 @@ public class KourendHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 60));
 
 		// Overall required favours
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), Operation.GREATER_EQUAL, 1000,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 1000,
 			"100% Arceuus favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 1000,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 1000,
 			"100% Hosidius favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ.getId(), Operation.GREATER_EQUAL, 1000,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ, Operation.GREATER_EQUAL, 1000,
 			"100% Lovakengj favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), Operation.GREATER_EQUAL, 1000,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 1000,
 			"100% Piscarilius favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN.getId(), Operation.GREATER_EQUAL, 1000,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN, Operation.GREATER_EQUAL, 1000,
 			"100% Shayzien favour"));
 
 		req.add(architecturalAlliance);

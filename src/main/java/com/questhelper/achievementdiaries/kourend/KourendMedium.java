@@ -182,11 +182,11 @@ public class KourendMedium extends ComplexStateQuestHelper
 		ascentOfArceuus = new QuestRequirement(QuestHelperQuest.THE_ASCENT_OF_ARCEUUS, QuestState.FINISHED);
 		eaglesPeak = new QuestRequirement(QuestHelperQuest.EAGLES_PEAK, QuestState.FINISHED);
 
-		arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), Operation.GREATER_EQUAL, 600,
+		arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 600,
 			"60% Arceuus favour");
-		hosidiusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 600,
+		hosidiusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 600,
 			"60% Hosidius favour");
-		shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN.getId(), Operation.GREATER_EQUAL, 400,
+		shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN, Operation.GREATER_EQUAL, 400,
 			"40% Shayzien favour");
 
 		// Zone requirements

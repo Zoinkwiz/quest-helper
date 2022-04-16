@@ -70,20 +70,6 @@ public class VarbitRequirement extends AbstractRequirement
 	}
 
 	/**
-	 * Check if the player's {@link Varbits} value meets the required level using the given
-	 * {@link Operation}.
-	 *
-	 * @param varbit        the {@link Varbits} to check
-	 * @param operation     the {@link Operation} to check with
-	 * @param requiredValue the required varbit value to pass this requirement
-	 * @param displayText   the display text
-	 */
-	public VarbitRequirement(Varbits varbit, Operation operation, int requiredValue, String displayText)
-	{
-		this(varbit.getId(), operation, requiredValue, displayText);
-	}
-
-	/**
 	 * Check if a specified varbit value is exactly the supplied value.
 	 *
 	 * @param varbitID the varbit id

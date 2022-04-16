@@ -39,5 +39,5 @@ public enum Favour
 	SHAYZIEN("Shayzien", Varbits.KOUREND_FAVOR_SHAYZIEN);
 
 	private final String name;
-	private final Varbits varbit;
+	private final int varbit;
 }

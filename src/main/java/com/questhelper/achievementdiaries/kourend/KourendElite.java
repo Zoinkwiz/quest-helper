@@ -183,13 +183,13 @@ public class KourendElite extends ComplexStateQuestHelper
 		potatoCactus = new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS, 8);
 		ultraCompost = new ItemRequirement("Compost", ItemCollections.getCompost());
 
-		arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), Operation.GREATER_EQUAL, 1000,
+		arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 1000,
 			"100% Arceuus favour");
-		hosidiusFavour60 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 600,
+		hosidiusFavour60 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 600,
 			"60% Hosidius favour");
-		hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 750,
+		hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 750,
 			"75% Hosidius favour");
-		piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), Operation.GREATER_EQUAL, 1000,
+		piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 1000,
 			"100% Piscarilius favour");
 
 		// Zone requirements
@@ -352,11 +352,11 @@ public class KourendElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 90, true));
 
 		// Overall required favours
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS.getId(), Operation.GREATER_EQUAL, 1000,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 1000,
 			"100% Arceuus favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS.getId(), Operation.GREATER_EQUAL, 750,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 750,
 			"75% Hosidius favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS.getId(), Operation.GREATER_EQUAL, 1000,
+		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 1000,
 			"100% Piscarilius favour"));
 
 		return req;

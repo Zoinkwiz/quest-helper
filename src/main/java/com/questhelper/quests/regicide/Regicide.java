@@ -213,6 +213,7 @@ public class Regicide extends BasicQuestHelper
 	private void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
+		rope1.setTooltip("Bring extras as you can fail");
 		rope2 = rope1.quantity(2);
 		ropeHighlight = rope1.highlighted();
 		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.getBows(), 1, true);

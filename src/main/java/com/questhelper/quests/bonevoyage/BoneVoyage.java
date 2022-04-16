@@ -188,7 +188,7 @@ public class BoneVoyage extends BasicQuestHelper
 	{
 		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3448, 0),
 			"Talk to Curator Haig in the Varrock Museum.");
-		talkToHaig.addDialogSteps("Have you any interesting news?", "Sign me up!");
+		talkToHaig.addDialogSteps("Have you any interesting news?", "Sign me up!", "Yes.");
 
 		talkToForeman = new NpcStep(this, NpcID.BARGE_FOREMAN, new WorldPoint(3364, 3445, 0),
 			"Talk to the Barge Foreman north of the Dig Site.");

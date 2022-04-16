@@ -31,9 +31,11 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -251,7 +253,6 @@ public class EadgarsRuse extends BasicQuestHelper
 	{
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
-		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", ItemID.CLIMBING_BOOTS);
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		pineappleChunks.setTooltip("You can make these by using a knife on a pineapple");
@@ -268,6 +269,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
 		vodkaHighlight.setTooltip("You can buy some from the Gnome Stronghold drinks shop");
 		vodkaHighlight.setHighlightInInventory(true);
+		climbingBootsOr12Coins = new ItemRequirements(LogicType.OR, "Climbing boots or 12 coins", coins12, climbingBoots);
 
 		pineappleChunksHighlight = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		pineappleChunksHighlight.setTooltip("You can cut a pineapple into chunks with a knife");
@@ -366,6 +368,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		talkToSanfew.addDialogStep("Ask general questions.");
 		talkToSanfew.addDialogStep("Have you any more work for me, to help reclaim the circle?");
 		talkToSanfew.addDialogStep("I'll do it.");
+		talkToSanfew.addDialogStep("Yes.");
 		talkToSanfew.addSubSteps(goUpToSanfew);
 
 		getCoinsOrBoots = new DetailedQuestStep(this, "Get some climbing boots or 12 coins.", climbingBootsOr12Coins);
@@ -377,7 +380,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		travelToTenzing.addSubSteps(getCoinsOrBoots, buyClimbingBoots);
 
 		climbOverStile = new ObjectStep(this, ObjectID.STILE_3730, new WorldPoint(2817, 3563, 0), "Climb over the stile north of Tenzing.");
-		climbOverRocks = new ObjectStep(this, ObjectID.ROCKS_3748, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBoots);
+		climbOverRocks = new ObjectStep(this, ObjectID.ROCKS_3748, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBoots.equipped());
 
 		enterSecretEntrance = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Enter the Secret Door to the Troll Stronghold.");
 
@@ -442,7 +445,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		useChunksOnParrot = new ObjectStep(this, ObjectID.AVIARY_HATCH, new WorldPoint(2611, 3287, 0), "Use the alco-chunks on the aviary hatch of the parrot cage.", alcoChunks);
 		useChunksOnParrot.addIcon(ItemID.ALCOCHUNKS);
 
-		enterEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Return the parrot to Eadgar on top of Trollheim.", parrot, climbingBoots);
+		enterEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Return the parrot to Eadgar on top of Trollheim.", parrot, climbingBoots.equipped());
 
 		talkToEadgarWithParrot = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Return the parrot to Eadgar on top of Trollheim.");
 		talkToEadgarWithParrot.addSubSteps(enterEadgarsCaveWithParrot);
@@ -466,7 +469,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		talkToTegid = new NpcStep(this, NpcID.TEGID, new WorldPoint(2910, 3417, 0), "Talk to Tegid in the south of Taverley for a dirty robe. Once you have it, return to Eadgar with all the items he needs.", robe, grain10, rawChicken5, logs2, climbingBoots, ranarrPotionUnf, tinderbox, pestleAndMortar);
 		talkToTegid.addDialogStep("Sanfew won't be happy...");
-		enterEadgarsCaveWithItems = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Bring Eadgar all the listed items. Check the quest log if you're not sure what items you've already handed in.", robe, grain10, rawChicken5, logs2, climbingBoots, ranarrPotionUnf, tinderbox, pestleAndMortar);
+		enterEadgarsCaveWithItems = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Bring Eadgar all the listed items. Check the quest log if you're not sure what items you've already handed in.", robe, grain10, rawChicken5, logs2, climbingBoots.equipped(), ranarrPotionUnf, tinderbox, pestleAndMortar);
 		talkToEadgarWithItems = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Bring Eadgar all the listed items. Check the quest log if you're not sure what items you've already handed in.", robe, grain10, rawChicken5, logs2, climbingBoots, ranarrPotionUnf, tinderbox, pestleAndMortar);
 
 		talkToEadgarWithItems.addSubSteps(enterEadgarsCaveWithItems);

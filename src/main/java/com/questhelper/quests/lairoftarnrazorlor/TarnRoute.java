@@ -219,7 +219,7 @@ public class TarnRoute extends ConditionalStep
 		goThroughRoom1 = new ObjectStep(questHelper, ObjectID.PASSAGEWAY_20517, new WorldPoint(3195, 4571, 0), "Follow the path west then north, and go through the door you reach.");
 		goThroughRoom1.addSubSteps(searchWallRoom1, searchWall2Room1);
 
-		goThroughRoom2 = new ObjectStep(questHelper, ObjectID.PASSAGEWAY_20513, new WorldPoint(3174, 4577, 1), "Continue out the west of questHelper room.");
+		goThroughRoom2 = new ObjectStep(questHelper, ObjectID.PASSAGEWAY_20513, new WorldPoint(3174, 4577, 1), "Continue to the west of the room.");
 		goThroughRoom2.setLinePoints(Arrays.asList(
 			new WorldPoint(3195, 4575, 1),
 			new WorldPoint(3195, 4579, 1),

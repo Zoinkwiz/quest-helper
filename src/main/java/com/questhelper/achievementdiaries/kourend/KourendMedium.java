@@ -38,6 +38,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -153,7 +154,8 @@ public class KourendMedium extends ComplexStateQuestHelper
 		kingWorm = new ItemRequirement("King worm or fish chunks", ItemID.KING_WORM).showConditioned(notCatchBluegill);
 		kingWorm.addAlternates(ItemID.FISH_CHUNKS);
 		kingWorm.setTooltip("Obtainable on Molch Island");
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notSubdueWintertodt);
+		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
+				notSubdueWintertodt, notChopMahoganyTree));
 		tinderbox = new ItemRequirement("Tinderbox", Arrays.asList(ItemID.BRUMA_TORCH, ItemID.TINDERBOX))
 			.showConditioned(notSubdueWintertodt);
 		boxTrap = new ItemRequirement("Box trap", ItemID.BOX_TRAP).showConditioned(notCatchChinchompa);

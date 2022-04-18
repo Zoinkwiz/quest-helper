@@ -282,7 +282,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
 		req.add(new SkillRequirement(Skill.DEFENCE, 70));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 65));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 65, true));
 		req.add(new SkillRequirement(Skill.FISHING, 70, true));
 		req.add(new SkillRequirement(Skill.FLETCHING, 70, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 70));

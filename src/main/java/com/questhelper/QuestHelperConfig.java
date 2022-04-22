@@ -59,8 +59,8 @@ public interface QuestHelperConfig extends Config
 		/** Sort quest by their release date (https://oldschool.runescape.wiki/w/Quests/Release_dates) */
 		RELEASE_DATE(QuestOrders.sortByRelease(), QuestFilter.QUEST, QuestFilter.MINIQUEST),
 
-		QUEST_POINTS_ASCENDING(QuestOrders.sortByQuestPointRewardAscending(), QuestFilter.QUEST),
-		QUEST_POINTS_DESCENDING(QuestOrders.sortByQuestPointRewardDescending(), QuestFilter.QUEST)
+		QUEST_POINTS_ASC(QuestOrders.sortByQuestPointRewardAscending(), QuestFilter.QUEST),
+		QUEST_POINTS_DESC(QuestOrders.sortByQuestPointRewardDescending(), QuestFilter.QUEST)
 		;
 
 		private final Comparator<QuestHelper> comparator;

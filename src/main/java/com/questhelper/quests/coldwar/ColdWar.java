@@ -503,7 +503,7 @@ public class ColdWar extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.HUNTER, 10, true));
 		req.add(new SkillRequirement(Skill.AGILITY, 30));
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 34, true));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 34));
 		req.add(new SkillRequirement(Skill.THIEVING, 15));
 		return req;
 	}

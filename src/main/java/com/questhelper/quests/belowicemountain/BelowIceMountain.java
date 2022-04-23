@@ -297,14 +297,12 @@ public class BelowIceMountain extends BasicQuestHelper
 		allSteps.add(checkalPanel);
 
 		PanelDetails marleyPanel = new PanelDetails("Recruit Marley",
-			Arrays.asList(talkToMarley, talkToCook, getIngredients, makeSandwich, feedMarley),
-			cookedMeat, bread, knife);
+			Arrays.asList(talkToMarley, talkToCook, getIngredients, makeSandwich, feedMarley), cookedMeat, bread, knife);
 		marleyPanel.setLockingStep(getMarley);
 		allSteps.add(marleyPanel);
 
 		PanelDetails burntofPanel = new PanelDetails("Recruit Burntof",
-			Arrays.asList(talkToBurntof, buyBeer, giveBeer, playRPS),
-			coins);
+			Arrays.asList(talkToBurntof, buyBeer, giveBeer, playRPS), coins);
 		burntofPanel.setLockingStep(getBurntof);
 		allSteps.add(burntofPanel);
 

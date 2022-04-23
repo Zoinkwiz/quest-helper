@@ -155,7 +155,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		ammoMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD).showConditioned(notCannonBall);
 		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES).showConditioned(notFeverSpider);
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(notEctophialTP);
-		restorePot = new ItemRequirement("Restore potion (4)", ItemCollections.getRestorePotions()).showConditioned(notGuthBalance);
+		restorePot = new ItemRequirement("Restore potion (4)", ItemID.RESTORE_POTION4).showConditioned(notGuthBalance);
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC).showConditioned(notGuthBalance);
 		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST).showConditioned(notGuthBalance);
 		silverDust.setTooltip("Created by grinding a silver bar in the ectofuntus bone grinder.");

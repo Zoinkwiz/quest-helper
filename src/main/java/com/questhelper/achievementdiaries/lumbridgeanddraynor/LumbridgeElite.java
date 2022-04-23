@@ -118,7 +118,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		notChopMagic = new VarplayerRequirement(1195, false, 6);
 		notAddyPlatebody = new VarplayerRequirement(1195, false, 7);
 		notWaterRunes = new VarplayerRequirement(1195, false, 8);
-		notQCEmote = new VarplayerRequirement(1195, true, 9);
+		notQCEmote = new VarplayerRequirement(1195, false, 9);
 
 		// todo find better way to check for all quests completed
 		allQuests = new QuestPointRequirement(286, Operation.EQUAL);

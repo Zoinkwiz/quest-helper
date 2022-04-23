@@ -325,10 +325,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.COOKING, 42));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 35));
 		reqs.add(new SkillRequirement(Skill.FISHING, 46));
-		reqs.add(new SkillRequirement(Skill.FLETCHING, 5));
 		reqs.add(new SkillRequirement(Skill.HUNTER, 31));
 		reqs.add(new SkillRequirement(Skill.MINING, 40));
-		reqs.add(new SkillRequirement(Skill.RANGED, 30));
 		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 35));
 
 		reqs.add(bigChompy);

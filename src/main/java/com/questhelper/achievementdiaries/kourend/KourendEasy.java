@@ -35,6 +35,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.Favour;
+import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -161,8 +163,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		hasMedpack = medpack.alsoCheckBank(questBank);
 
 		houseInKourend = new VarbitRequirement(2187, 8);
-		hosidiusFavour = new VarbitRequirement(4895, Operation.GREATER_EQUAL, 150,
-			"15% Hosidius Favour");
+		hosidiusFavour = new FavourRequirement(Favour.HOSIDIUS, 15);
 	}
 
 	public void loadZones()

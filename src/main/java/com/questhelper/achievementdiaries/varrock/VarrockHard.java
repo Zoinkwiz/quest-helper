@@ -358,8 +358,6 @@ public class VarrockHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.HUNTER, 66));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 54));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 52));
-		reqs.add(new SkillRequirement(Skill.RANGED, 40));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 53));
 		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 60));
 		reqs.add(ancientBook);
 		reqs.add(desertTreasure);

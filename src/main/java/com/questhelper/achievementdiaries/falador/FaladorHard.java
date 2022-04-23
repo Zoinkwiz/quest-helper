@@ -302,12 +302,12 @@ public class FaladorHard extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.AGILITY, 59, true));
+		req.add(new SkillRequirement(Skill.AGILITY, 50));
 		req.add(new SkillRequirement(Skill.DEFENCE, 50));
-		req.add(new SkillRequirement(Skill.SLAYER, 72, true));
 		req.add(new SkillRequirement(Skill.MINING, 60, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 70));
 		req.add(new SkillRequirement(Skill.RUNECRAFT, 56, true));
+		req.add(new SkillRequirement(Skill.SLAYER, 72, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
 		req.add(new WarriorsGuildAccessRequirement());
 

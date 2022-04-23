@@ -265,7 +265,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 23));
 		reqs.add(new SkillRequirement(Skill.STRENGTH, 19));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 38));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 36));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 30));
 
 		reqs.add(fairyTaleII);
 		reqs.add(animalMagnetism);

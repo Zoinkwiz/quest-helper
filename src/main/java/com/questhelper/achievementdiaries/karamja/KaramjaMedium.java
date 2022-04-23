@@ -216,11 +216,6 @@ public class KaramjaMedium extends BasicQuestHelper
 		shiloVillage = new QuestRequirement(QuestHelperQuest.SHILO_VILLAGE, QuestState.FINISHED);
 		junglePotion = new QuestRequirement(QuestHelperQuest.JUNGLE_POTION, QuestState.FINISHED);
 
-		// 3578 = 2, completed final task
-		// varplayer 2943 0->1>2>3 when done final task
-
-		// Used skewer on spider, 2943 3->4 (VARPLAYER)
-
 		inCave = new ZoneRequirement(cave);
 		inAgilityArena = new ZoneRequirement(agilityArena);
 		inBrimhavenDungeon = new ZoneRequirement(brimhavenDungeon);

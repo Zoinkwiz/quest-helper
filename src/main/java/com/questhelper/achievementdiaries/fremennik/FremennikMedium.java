@@ -391,13 +391,10 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.AGILITY, 35, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 37, true));
-		req.add(new SkillRequirement(Skill.DEFENCE, 30));
 		req.add(new SkillRequirement(Skill.HUNTER, 35, true));
 		req.add(new SkillRequirement(Skill.MINING, 40));
 		req.add(new SkillRequirement(Skill.SLAYER, 47, true));
-		req.add(new SkillRequirement(Skill.SMITHING, 50, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"43 Prayer for protection prayers"));

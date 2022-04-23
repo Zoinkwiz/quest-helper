@@ -259,7 +259,6 @@ public class DesertHard extends ComplexStateQuestHelper
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
 		reqs.add(new SkillRequirement(Skill.ATTACK, 50));
-		reqs.add(new SkillRequirement(Skill.CRAFTING, 55));
 		reqs.add(new SkillRequirement(Skill.DEFENCE, 10));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 68));

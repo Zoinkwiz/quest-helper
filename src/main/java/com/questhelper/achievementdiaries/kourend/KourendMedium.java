@@ -36,6 +36,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.Favour;
+import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -155,7 +157,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		kingWorm.addAlternates(ItemID.FISH_CHUNKS);
 		kingWorm.setTooltip("Obtainable on Molch Island");
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
-				notSubdueWintertodt, notChopMahoganyTree));
+			notSubdueWintertodt, notChopMahoganyTree));
 		tinderbox = new ItemRequirement("Tinderbox", Arrays.asList(ItemID.BRUMA_TORCH, ItemID.TINDERBOX))
 			.showConditioned(notSubdueWintertodt);
 		boxTrap = new ItemRequirement("Box trap", ItemID.BOX_TRAP).showConditioned(notCatchChinchompa);
@@ -182,12 +184,9 @@ public class KourendMedium extends ComplexStateQuestHelper
 		ascentOfArceuus = new QuestRequirement(QuestHelperQuest.THE_ASCENT_OF_ARCEUUS, QuestState.FINISHED);
 		eaglesPeak = new QuestRequirement(QuestHelperQuest.EAGLES_PEAK, QuestState.FINISHED);
 
-		arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 600,
-			"60% Arceuus favour");
-		hosidiusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 600,
-			"60% Hosidius favour");
-		shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN, Operation.GREATER_EQUAL, 400,
-			"40% Shayzien favour");
+		arceuusFavour = new FavourRequirement(Favour.ARCEUUS, 60);
+		hosidiusFavour = new FavourRequirement(Favour.HOSIDIUS, 60);
+		shayzienFavour = new FavourRequirement(Favour.SHAYZIEN, 40);
 
 		// Zone requirements
 		inMolchIsland = new ZoneRequirement(molchIsland);
@@ -335,10 +334,9 @@ public class KourendMedium extends ComplexStateQuestHelper
 
 		req.add(new SkillRequirement(Skill.AGILITY, 49, true));
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));
-		req.add(new SkillRequirement(Skill.FARMING, 45));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 50));
 		req.add(new SkillRequirement(Skill.FISHING, 43));
-		req.add(new SkillRequirement(Skill.HUNTER, 53));
+		req.add(new SkillRequirement(Skill.HUNTER, 35));
 		req.add(new SkillRequirement(Skill.MINING, 42));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
 

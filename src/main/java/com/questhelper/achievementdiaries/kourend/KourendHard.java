@@ -137,7 +137,7 @@ public class KourendHard extends ComplexStateQuestHelper
 
 		// Items required
 		adamantiteOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE).showConditioned(notSmeltAddyBar);
-		coal = new ItemRequirement("6 Coal", ItemID.COAL).showConditioned(notSmeltAddyBar);
+		coal = new ItemRequirement("Coal", ItemID.COAL).showConditioned(notSmeltAddyBar);
 		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.getStoneBoots()).showConditioned(notKillWyrm);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineLovakite);
 		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())

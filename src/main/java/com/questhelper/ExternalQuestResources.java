@@ -154,6 +154,7 @@ public enum ExternalQuestResources {
 	A_TASTE_OF_HOPE("https://oldschool.runescape.wiki/w/A_Taste_of_Hope"),
 	TEARS_OF_GUTHIX("https://oldschool.runescape.wiki/w/Tears_of_Guthix"),
 	TEMPLE_OF_IKOV("https://oldschool.runescape.wiki/w/Temple_of_Ikov"),
+	TEMPLE_OF_THE_EYE("https://oldschool.runescape.wiki/w/Temple_of_the_Eye"),
 	THRONE_OF_MISCELLANIA("https://oldschool.runescape.wiki/w/Throne_of_Miscellania"),
 	THE_TOURIST_TRAP("https://oldschool.runescape.wiki/w/The_Tourist_Trap"),
 	TOWER_OF_LIFE("https://oldschool.runescape.wiki/w/Tower_of_Life"),

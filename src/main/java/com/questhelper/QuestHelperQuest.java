@@ -177,6 +177,7 @@ public enum QuestHelperQuest
 	A_TASTE_OF_HOPE(432, "A Taste of Hope", QuestVarbits.QUEST_A_TASTE_OF_HOPE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
 	TEARS_OF_GUTHIX(433, "Tears of Guthix", QuestVarbits.QUEST_TEARS_OF_GUTHIX, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	TEMPLE_OF_IKOV(434, "Temple of Ikov", QuestVarPlayer.QUEST_TEMPLE_OF_IKOV, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
+	TEMPLE_OF_THE_EYE(4273, "Temple of the Eye", QuestVarbits.QUEST_TEMPLE_OF_THE_EYE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	THRONE_OF_MISCELLANIA(435, "Throne of Miscellania", QuestVarPlayer.QUEST_THRONE_OF_MISCELLANIA, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
 	THE_TOURIST_TRAP(436, "The Tourist Trap", QuestVarPlayer.QUEST_THE_TOURIST_TRAP, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	TOWER_OF_LIFE(437, "Tower of Life", QuestVarbits.QUEST_TOWER_OF_LIFE, Quest.Type.P2P, Quest.Difficulty.NOVICE),

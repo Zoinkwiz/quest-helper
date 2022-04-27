@@ -2076,9 +2076,9 @@ public class ItemCollections
 	private static final List<Integer> fishingRod = ImmutableList.of(
 		ItemID.PEARL_FISHING_ROD,
 		ItemID.FISHING_ROD
-  );
+	);
 
-  @Getter
+	@Getter
 	private static final List<Integer> OgreBrutalArrows = ImmutableList.of(
 		ItemID.RUNE_BRUTAL,
 		ItemID.ADAMANT_BRUTAL,
@@ -2205,10 +2205,10 @@ public class ItemCollections
 	private static final List<Integer> voidRobe = ImmutableList.of(
 		ItemID.ELITE_VOID_ROBE,
 		ItemID.VOID_KNIGHT_ROBE
-  );
-	
-  @Getter
-  private static final List<Integer> guthixBalanceUnf = ImmutableList.of(
+	);
+
+	@Getter
+	private static final List<Integer> guthixBalanceUnf = ImmutableList.of(
 		ItemID.GUTHIX_BALANCE_UNF,
 		ItemID.GUTHIX_BALANCE_UNF_7654,
 		ItemID.GUTHIX_BALANCE_UNF_7656,

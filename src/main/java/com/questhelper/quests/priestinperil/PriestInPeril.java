@@ -205,7 +205,7 @@ public class PriestInPeril extends BasicQuestHelper
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlighted = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlighted.setHighlightInInventory(true);
-		runePouches = new ItemRequirements(LogicType.AND, "Rune pouches for carrying essence",
+		runePouches = new ItemRequirements(LogicType.AND, "Essence pouches for carrying essence",
 			new ItemRequirement("Small pouch", ItemID.SMALL_POUCH),
 			new ItemRequirement("Medium pouch", ItemID.MEDIUM_POUCH),
 			new ItemRequirement("Large pouch", ItemID.LARGE_POUCH),

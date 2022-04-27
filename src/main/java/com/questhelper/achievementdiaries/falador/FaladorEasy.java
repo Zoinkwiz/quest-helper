@@ -267,8 +267,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 16));
 		req.add(new SkillRequirement(Skill.AGILITY, 5, true));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 16));
 		req.add(new SkillRequirement(Skill.MINING, 10, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 13, true));
 

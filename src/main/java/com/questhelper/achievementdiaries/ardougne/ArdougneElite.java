@@ -296,6 +296,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.MAGIC, 94));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 91, true));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 82, true));
+
 		reqs.add(ancientBook);
 		reqs.add(desertTreasure);
 		reqs.add(hauntedMine);

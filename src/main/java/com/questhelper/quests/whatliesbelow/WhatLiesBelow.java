@@ -249,17 +249,11 @@ public class WhatLiesBelow extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.MINING, 42, false));
 		req.add(new SkillRequirement(Skill.RUNECRAFT, 35));
 		return req;
 	}
 
-	@Override
-	public List<Requirement> getGeneralRecommended()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.MINING, 42, false, "42 Mining to unlock a shortcut to the Chaos altar"));
-		return req;
-	}
 
 	@Override
 	public QuestPointReward getQuestPointReward()

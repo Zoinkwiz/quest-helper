@@ -235,10 +235,10 @@ public class FaladorElite extends ComplexStateQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 
 		req.add(new SkillRequirement(Skill.AGILITY, 80, true));
-		req.add(new SkillRequirement(Skill.RUNECRAFT, 88, true));
 		req.add(new SkillRequirement(Skill.FARMING, 91, true));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 81, true));
+		req.add(new SkillRequirement(Skill.RUNECRAFT, 88, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 
 		req.add(wanted);
 

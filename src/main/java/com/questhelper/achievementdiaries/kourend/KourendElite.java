@@ -36,6 +36,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.Favour;
+import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -183,14 +185,10 @@ public class KourendElite extends ComplexStateQuestHelper
 		potatoCactus = new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS, 8);
 		ultraCompost = new ItemRequirement("Compost", ItemCollections.getCompost());
 
-		arceuusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 1000,
-			"100% Arceuus favour");
-		hosidiusFavour60 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 600,
-			"60% Hosidius favour");
-		hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 750,
-			"75% Hosidius favour");
-		piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 1000,
-			"100% Piscarilius favour");
+		arceuusFavour = new FavourRequirement(Favour.ARCEUUS, 100);
+		hosidiusFavour60 = new FavourRequirement(Favour.HOSIDIUS, 60);
+		hosidiusFavour75 = new FavourRequirement(Favour.HOSIDIUS, 75);
+		piscariliusFavour = new FavourRequirement(Favour.PISCARILIUS, 100);
 
 		// Zone requirements
 		inRedwoodTree = new ZoneRequirement(redwoodTree);
@@ -351,13 +349,9 @@ public class KourendElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.SLAYER, 95, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 90, true));
 
-		// Overall required favours
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 1000,
-			"100% Arceuus favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 750,
-			"75% Hosidius favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 1000,
-			"100% Piscarilius favour"));
+		req.add(arceuusFavour);
+		req.add(hosidiusFavour75);
+		req.add(piscariliusFavour);
 
 		return req;
 	}

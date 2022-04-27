@@ -290,12 +290,9 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		reqs.add(new CombatLevelRequirement(40));
 		reqs.add(qp);
 		reqs.add(new SkillRequirement(Skill.AGILITY, 30));
-		reqs.add(new SkillRequirement(Skill.CRAFTING, 36));
 		reqs.add(new SkillRequirement(Skill.FARMING, 30));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 40));
-		reqs.add(new SkillRequirement(Skill.HERBLORE, 10));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 25));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 25));
 		reqs.add(normalBook);
 
 		reqs.add(gardenOfTranq);

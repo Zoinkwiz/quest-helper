@@ -36,6 +36,8 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
+import com.questhelper.requirements.player.Favour;
+import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -135,7 +137,7 @@ public class KourendHard extends ComplexStateQuestHelper
 
 		// Items required
 		adamantiteOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE).showConditioned(notSmeltAddyBar);
-		coal = new ItemRequirement("6 Coal", ItemID.COAL).showConditioned(notSmeltAddyBar);
+		coal = new ItemRequirement("Coal", ItemID.COAL).showConditioned(notSmeltAddyBar);
 		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.getStoneBoots()).showConditioned(notKillWyrm);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineLovakite);
 		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
@@ -182,16 +184,11 @@ public class KourendHard extends ComplexStateQuestHelper
 		dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
 		theForsakenTower = new QuestRequirement(QuestHelperQuest.THE_FORSAKEN_TOWER, QuestState.FINISHED);
 
-		shayzienFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN, Operation.GREATER_EQUAL, 1000,
-			"100% Shayzien favour");
-		hosidiusFavour75 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 750,
-			"75% Hosidius favour");
-		hosidiusFavour100 = new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 1000,
-			"100% Hosidius favour");
-		lovakengjFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ, Operation.GREATER_EQUAL, 300,
-			"30% Lovakengj favour");
-		piscariliusFavour = new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 750,
-			"75% Piscarilius favour");
+		shayzienFavour = new FavourRequirement(Favour.SHAYZIEN, 100);
+		hosidiusFavour75 = new FavourRequirement(Favour.HOSIDIUS, 100);
+		hosidiusFavour100 = new FavourRequirement(Favour.HOSIDIUS, 100);
+		lovakengjFavour = new FavourRequirement(Favour.LOVAKENGJ,30);
+		piscariliusFavour = new FavourRequirement(Favour.PISCARILIUS, 75);
 
 		// Zone requirements
 		inForsakenTower = new ZoneRequirement(forsakenTower);
@@ -326,17 +323,10 @@ public class KourendHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 49));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 60));
 
-		// Overall required favours
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_ARCEUUS, Operation.GREATER_EQUAL, 1000,
-			"100% Arceuus favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_HOSIDIUS, Operation.GREATER_EQUAL, 1000,
-			"100% Hosidius favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_LOVAKENGJ, Operation.GREATER_EQUAL, 1000,
-			"100% Lovakengj favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_PISCARILIUS, Operation.GREATER_EQUAL, 1000,
-			"100% Piscarilius favour"));
-		req.add(new VarbitRequirement(Varbits.KOUREND_FAVOR_SHAYZIEN, Operation.GREATER_EQUAL, 1000,
-			"100% Shayzien favour"));
+		req.add(shayzienFavour);
+		req.add(hosidiusFavour100);
+		req.add(lovakengjFavour);
+		req.add(piscariliusFavour);
 
 		req.add(architecturalAlliance);
 		req.add(dreamMentor);

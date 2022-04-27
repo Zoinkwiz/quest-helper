@@ -129,9 +129,6 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
 
-		// 3578 = 2, completed final task
-		// varplayer 2943 0->1>2>3 when done final task
-
 		inCave = new ZoneRequirement(cave);
 		inTzhaar = new ZoneRequirement(tzhaar);
 		inPothole = new ZoneRequirement(pothole);

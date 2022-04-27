@@ -232,7 +232,6 @@ public class WesternEasy extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.FLETCHING, 20));
 		reqs.add(new SkillRequirement(Skill.HUNTER, 9));
 		reqs.add(new SkillRequirement(Skill.MINING, 15));
-		reqs.add(new SkillRequirement(Skill.RANGED, 30));
 
 		reqs.add(bigChompy);
 		reqs.add(runeMysteries);

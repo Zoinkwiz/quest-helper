@@ -308,15 +308,13 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		reqs.add(new CombatLevelRequirement(100));
 		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
 		reqs.add(new SkillRequirement(Skill.COOKING, 30));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 59));
 		reqs.add(new SkillRequirement(Skill.MINING, 52));
 		reqs.add(new SkillRequirement(Skill.RANGED, 42));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 44));
 		reqs.add(new SkillRequirement(Skill.SLAYER, 50));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 40));
 		reqs.add(new SkillRequirement(Skill.STRENGTH, 50));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 50));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 34));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 15));
 
 		reqs.add(new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED));
 		reqs.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1,

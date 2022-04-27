@@ -322,7 +322,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		talkToHighPriestWithoutToken = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in the south west of Sophanem.");
 		talkToHighPriest.addSubSteps(talkToHighPriestWithoutToken);
 
-		openPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Right-click open the south pyramid's door in Sophanem.", catFollower);
+		openPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Open the door of the pyramid in the south of Sophanem.", catFollower);
 
 		jumpPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
@@ -384,7 +384,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		enterRockWithItems = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0),
 			"Enter the rock west of the Agility Pyramid to re-enter Sophanem. Make sure to bring the items you need.", bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog, catFollower);
 
-		openPyramidDoorWithSymbol = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Right-click open the south pyramid's door in Sophanem.", catFollower, holySymbol);
+		openPyramidDoorWithSymbol = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Open the door of the pyramid in the south of Sophanem.", catFollower, holySymbol);
 
 		jumpPitWithSymbol = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.", holySymbol);
 

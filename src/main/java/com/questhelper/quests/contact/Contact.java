@@ -231,7 +231,8 @@ public class Contact extends BasicQuestHelper
 
 		((DetailedQuestStep) goDownToChasm).setLinePoints(path);
 
-		searchKaleef = new ObjectStep(this, ObjectID.KALEEFS_BODY, new WorldPoint(3239, 9244, 0), "Follow the path along, and search Kaleef's corpse there.");
+		searchKaleef = new ObjectStep(this, NullObjectID.NULL_44597, new WorldPoint(3239, 9244, 0),
+			"Follow the path along, and search Kaleef's corpse there.");
 
 		readParchment = new DetailedQuestStep(this, "Read the parchment", parchment);
 		talkToMaisa = new NpcStep(this, NpcID.MAISA, new WorldPoint(3218, 9246, 0), "Talk to Maisa on the west side of the chasm.");

@@ -84,7 +84,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		dropCrondisJar, dropScarabasJar, dropHetJar, dropApmekenJar, solvePuzzleAgain, leavePyramid, returnToHighPriest, talkToEmbalmer,
 		talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain, talkToCarpenterOnceMore, buyLinen, enterRockWithItems,
 		openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus, leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest,
-		talkToHighPriestInPyramid, leavePyramidToFinish, talkToHighPriestToFinish;
+		talkToHighPriestInPyramid, enterPyramidAtEnd, leavePyramidToFinish, talkToHighPriestToFinish;
 
 	QuestStep fillBucketWithWater, makeSalt;
 
@@ -197,12 +197,14 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		steps.put(22, goToRitual);
 		steps.put(23, goToRitual);
-		steps.put(24, goToRitual);
+
+		ConditionalStep meetIcthlarin = new ConditionalStep(this, enterPyramidAtEnd);
+		meetIcthlarin.addStep(inPyramid, leavePyramidToFinish);
+		steps.put(24, meetIcthlarin);
 
 		ConditionalStep finishTheQuest = new ConditionalStep(this, enterRock);
 		finishTheQuest.addStep(inPyramid, leavePyramidToFinish);
 		finishTheQuest.addStep(inSoph, talkToHighPriestToFinish);
-
 		steps.put(25, finishTheQuest);
 		return steps;
 	}
@@ -401,11 +403,16 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		killPriest = new NpcStep(this, NpcID.POSSESSED_PRIEST, new WorldPoint(3306, 9196, 0), "Kill the posessed priest.");
 
-		talkToHighPriestInPyramid = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3306, 9196, 0), "Talk to the High Priest in the north east room of the pyramid.");
+		talkToHighPriestInPyramid = new NpcStep(this, NpcID.HIGH_PRIEST_11603, new WorldPoint(3306, 9196, 0),
+			"Talk to the High Priest in the north east room of the pyramid.");
 
-		leavePyramidToFinish = new ObjectStep(this, ObjectID.LADDER_6645, new WorldPoint(3277, 9172, 0), "Leave the pyramid and return to the High Priest.");
-		talkToHighPriestToFinish = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Return to the High Priest in the south west of Sophanem to finish the quest.");
-		leavePyramidToFinish.addSubSteps(talkToHighPriestToFinish);
+		enterPyramidAtEnd = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0),
+			"Open the door of the pyramid in the south of Sophanem to watch a cutscene.");
+
+		leavePyramidToFinish = new ObjectStep(this, ObjectID.LADDER_6645, new WorldPoint(3277, 9172, 0), "Leave the pyramid and witness a cutscene at the exit.");
+		talkToHighPriestToFinish = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0),
+			"Return to the High Priest in the south west of Sophanem to finish the quest.");
+		leavePyramidToFinish.addSubSteps(enterPyramidAtEnd);
 	}
 
 	@Override
@@ -482,7 +489,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Save the ritual",
 			Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus,
 				leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest, talkToHighPriestInPyramid,
-				leavePyramidToFinish), cat));
+				leavePyramidToFinish, talkToHighPriestToFinish), cat));
 
 		return allSteps;
 	}

@@ -304,11 +304,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		enterRock = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0), "Enter the rock west of the Agility Pyramid to re-enter Sophanem.");
 
-		touchPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Touch the south pyramid door in Sophanem.");
+		touchPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Open door to the south pyramid in Sophanem.");
 
 		jumpPit = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
-		openWestDoor = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3280, 9199, 0), "Attempt to open the west door.");
+		openWestDoor = new ObjectStep(this, ObjectID.DOOR_44059, new WorldPoint(3280, 9199, 0), "Attempt to open the west door.");
 
 		solveDoorPuzzle = new DoorPuzzleStep(this);
 
@@ -388,15 +388,15 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		jumpPitWithSymbol = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.", holySymbol);
 
-		enterEastRoom = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Enter the east room.");
-		useSymbolOnSarcopagus = new ObjectStep(this, ObjectID.SARCOPHAGUS_6630, new WorldPoint(3312, 9197, 0), "Use the unholy symbol on a sarcophagus.", unholySymbol);
+		enterEastRoom = new ObjectStep(this, ObjectID.DOOR_44060, new WorldPoint(3306, 9199, 0), "Enter the east room.");
+		useSymbolOnSarcopagus = new ObjectStep(this, NullObjectID.NULL_6505, new WorldPoint(3312, 9197, 0), "Use the unholy symbol on a sarcophagus.", unholySymbol);
 		useSymbolOnSarcopagus.addIcon(ItemID.UNHOLY_SYMBOL_4683);
 
-		leaveEastRoom = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Leave the east room.");
+		leaveEastRoom = new ObjectStep(this, ObjectID.DOOR_44060, new WorldPoint(3306, 9199, 0), "Leave the east room.");
 
 		jumpPitWithSymbolAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Jump over the pit.", holySymbol);
 
-		enterEastRoomAgain = new ObjectStep(this, ObjectID.DOORWAY_6643, new WorldPoint(3306, 9199, 0), "Enter the east room again.");
+		enterEastRoomAgain = new ObjectStep(this, ObjectID.DOOR_44060, new WorldPoint(3306, 9199, 0), "Enter the east room again.");
 
 		killPriest = new NpcStep(this, NpcID.POSSESSED_PRIEST, new WorldPoint(3306, 9196, 0), "Kill the posessed priest.");
 

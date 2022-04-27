@@ -443,6 +443,11 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
+		if (inventoryWidget.getWidgetItems() == null)
+		{
+			return;
+		}
+
 		for (WidgetItem item : inventoryWidget.getWidgetItems())
 		{
 			for (Requirement requirement : requirements)

@@ -37,6 +37,7 @@ import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -69,7 +70,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement cat, tinderbox, coins600, bagOfSaltOrBucket, willowLog, bucketOfSap, waterskin4, food, sphinxsToken, jar,
-		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions, antipoison;
+		coinsOrLinen, coins30, linen, holySymbol, unholySymbol, combatGear, prayerPotions, antipoison, bucketOfSaltwater, salt, bucket;
 
 	Requirement catFollower;
 
@@ -81,10 +82,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		talkToHighPriestWithoutToken, openPyramidDoor, jumpPitAgain, pickUpScarabasJar, pickUpCrondisJar, pickUpHetJar, pickUpApmekenJar,
 		pickUpScarabasJarAgain, pickUpCrondisJarAgain, pickUpHetJarAgain, pickUpApmekenJarAgain, returnOverPit, jumpOverPitAgain, dropJar,
 		dropCrondisJar, dropScarabasJar, dropHetJar, dropApmekenJar, solvePuzzleAgain, leavePyramid, returnToHighPriest, talkToEmbalmer,
-		talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain, talkToCarpenterOnceMore, buyLinen, enterRockWithItems, talkToEmbalmerAgainNoLinen,
-		talkToEmbalmerAgainNoSalt, talkToEmbalmerAgainNoSap, talkToEmbalmerAgainNoLinenNoSalt, talkToEmbalmerAgainNoLinenNoSap, talkToEmbalmerAgainNoSaltNoSap,
+		talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain, talkToCarpenterOnceMore, buyLinen, enterRockWithItems,
 		openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus, leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest,
 		talkToHighPriestInPyramid, leavePyramidToFinish, talkToHighPriestToFinish;
+
+	QuestStep fillBucketWithWater, makeSalt;
 
 	ObjectStep pickUpAnyJar, pickUpAnyJarAgain;
 
@@ -95,8 +97,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
 		setupConditions();
+		setupItemRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -162,15 +164,13 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems, givenCarpenterLogs), talkToCarpenterOnceMore);
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems, talkedToCarpenter), talkToCarpenterAgain);
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems), talkToCarpenter);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSap, givenSalt), talkToEmbalmerAgainNoSaltNoSap);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen, givenSap), talkToEmbalmerAgainNoLinenNoSap);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen, givenSalt), talkToEmbalmerAgainNoLinenNoSalt);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSalt), talkToEmbalmerAgainNoSalt);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen, givenSap), talkToEmbalmerAgainNoSap);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenLinen), talkToEmbalmerAgainNoLinen);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, linen), talkToEmbalmerAgain);
+		Requirement givenOrHaveLinen = new Conditions(LogicType.OR, linen, givenLinen);
+		Requirement givenOrHaveSalt = new Conditions(LogicType.OR, salt, givenSalt);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen, givenOrHaveSalt), talkToEmbalmerAgain);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen, bucketOfSaltwater), makeSalt);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen), fillBucketWithWater);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer), buyLinen);
 		prepareItems.addStep(new Conditions(inSoph, linen), talkToEmbalmer);
-		prepareItems.addStep(inSoph, buyLinen);
 
 		steps.put(15, prepareItems);
 
@@ -217,15 +217,18 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		waterskin4 = new ItemRequirement("Waterskin(4), bring a few to avoid drinking it", ItemID.WATERSKIN4);
 		coins600 = new ItemRequirement("Coins or more for various payments", ItemCollections.getCoins(), 600);
-		bagOfSaltOrBucket = new ItemRequirement("Bag of Salt from a Slayer Master, or an empty bucket to get some", ItemID.BAG_OF_SALT);
+		bagOfSaltOrBucket = new ItemRequirement("Bag of Salt from a Slayer Master, or an empty bucket to get some", ItemID.BAG_OF_SALT).hideConditioned(givenSalt);
 		bagOfSaltOrBucket.addAlternates(ItemID.PILE_OF_SALT, ItemID.BUCKET);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		salt = new ItemRequirement("Salt", ItemID.BAG_OF_SALT).hideConditioned(givenSalt);
+		salt.addAlternates(ItemID.PILE_OF_SALT);
 
-		coinsOrLinen = new ItemRequirement("Linen or 30 coins to buy some", ItemID.LINEN);
+		coinsOrLinen = new ItemRequirement("Linen or 30 coins to buy some", ItemID.LINEN).hideConditioned(givenLinen);
 
-		coins30 = new ItemRequirement("30 coins", ItemCollections.getCoins(), 30);
+		coins30 = new ItemRequirement("Coins", ItemCollections.getCoins(), 30).hideConditioned(givenLinen);
 
-		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS);
-		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
+		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS).hideConditioned(givenCarpenterLogs);
+		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP).hideConditioned(givenSap);
 		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 
@@ -242,7 +245,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		jar.addAlternates(ItemID.CANOPIC_JAR_4679, ItemID.CANOPIC_JAR_4680, ItemID.CANOPIC_JAR_4681);
 		jar.setHighlightInInventory(true);
 
-		linen = new ItemRequirement("Linen", ItemID.LINEN);
+		linen = new ItemRequirement("Linen", ItemID.LINEN).hideConditioned(givenLinen);
+		bucketOfSaltwater = new ItemRequirement("Bucket of saltwater", ItemID.BUCKET_OF_SALTWATER);
 
 		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL_4682);
 		holySymbol.setTooltip("You can get another from the Carpenter in Sophanem");
@@ -364,17 +368,13 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		returnToHighPriest.addDialogStep("Sure, no problem.");
 		leavePyramid.addSubSteps(returnToHighPriest);
 
-		talkToEmbalmer = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer just south of the High Priest.", bagOfSaltOrBucket, linen, bucketOfSap);
+		talkToEmbalmer = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer just south of the High Priest.",
+			bagOfSaltOrBucket, bucketOfSap);
 		talkToEmbalmerAgain = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer again just south of the High Priest.", bagOfSaltOrBucket, linen, bucketOfSap);
-		talkToEmbalmerAgainNoLinen = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0),
-			"Talk to the Embalmer again just south of the High Priest.", bagOfSaltOrBucket, bucketOfSap);
-		talkToEmbalmerAgainNoSalt = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer again just south of the High Priest.", linen, bucketOfSap);
-		talkToEmbalmerAgainNoSap = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer again just south of the High Priest.", bagOfSaltOrBucket, linen);
-		talkToEmbalmerAgainNoLinenNoSalt = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer again just south of the High Priest.", bucketOfSap);
-		talkToEmbalmerAgainNoLinenNoSap = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer again just south of the High Priest.", bagOfSaltOrBucket);
-		talkToEmbalmerAgainNoSaltNoSap = new NpcStep(this, NpcID.EMBALMER, new WorldPoint(3287, 2755, 0), "Talk to the Embalmer again just south of the High Priest.", linen);
-		talkToEmbalmerAgain.addSubSteps(talkToEmbalmerAgainNoLinen, talkToEmbalmerAgainNoLinenNoSalt, talkToEmbalmerAgainNoLinenNoSap, talkToEmbalmerAgainNoSalt, talkToEmbalmerAgainNoLinenNoSap, talkToEmbalmerAgainNoSaltNoSap);
 
+		fillBucketWithWater = new ObjectStep(this, ObjectID.WATER_6605, new WorldPoint(3286, 2840, 0), "Fill up a bucket with salt water from the lake north of Sophanem, or buy a bag of salt from a Slayer Master.", bucket);
+		makeSalt = new ObjectStep(this, ObjectID.SUNTRAP, new WorldPoint(3305, 2756, 0), "Use the bucket of saltwater on the suntrap in the south east of Sophenam.", bucketOfSaltwater.highlighted());
+		makeSalt.addIcon(ItemID.BUCKET_OF_SALTWATER);
 		talkToCarpenter = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter in the east of Sophanem.", willowLog);
 		talkToCarpenter.addDialogStep("Alright, I'll get the wood for you.");
 		talkToCarpenterAgain = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter again in the east of Sophanem.");

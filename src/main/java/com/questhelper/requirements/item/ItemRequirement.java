@@ -268,6 +268,12 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	@Override
+	public boolean shouldDisplayText(Client client)
+	{
+		return !conditionToHide.check(client);
+	}
+
+	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
 		Color color = config.failColour();

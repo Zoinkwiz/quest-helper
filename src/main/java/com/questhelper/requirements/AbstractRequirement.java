@@ -25,6 +25,7 @@
 package com.questhelper.requirements;
 
 import com.questhelper.QuestHelperConfig;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Getter;
@@ -73,6 +74,11 @@ public abstract class AbstractRequirement implements Requirement
 
 	protected List<LineComponent> getOverlayDisplayText(Client client, QuestHelperConfig config)
 	{
+		if (!shouldDisplayText(client))
+		{
+			return new ArrayList<>();
+		}
+
 		return Requirement.super.getDisplayTextWithChecks(client, config);
 	}
 

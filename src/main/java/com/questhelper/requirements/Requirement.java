@@ -100,6 +100,11 @@ public interface Requirement
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
+		if (shouldDisplayText(client))
+		{
+			return lines;
+		}
+
 		String text = getDisplayText();
 		Color color = getColor(client, config);
 
@@ -117,6 +122,14 @@ public interface Requirement
 	default Requirement getOverlayReplacement()
 	{
 		return null;
+	}
+
+	/**
+	 * @return If requirements pass, returns true
+	 */
+	default boolean shouldDisplayText(Client client)
+	{
+		return true;
 	}
 
 	/**

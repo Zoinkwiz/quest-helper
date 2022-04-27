@@ -326,10 +326,10 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		jumpPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
-		pickUpCrondisJar = new ObjectStep(this, NullObjectID.NULL_6636, new WorldPoint(3286, 9195, 0), "Attempt to pick up the Crondis Canopic Jar, and kill Crondis (level 75) when they appear.");
-		pickUpScarabasJar = new ObjectStep(this, NullObjectID.NULL_6638, new WorldPoint(3286, 9196, 0), "Attempt to pick up the Scarabas Canopic Jar, and kill Scarabas (level 75) when they appear.");
-		pickUpApmekenJar = new ObjectStep(this, NullObjectID.NULL_6640, new WorldPoint(3286, 9193, 0), "Attempt to pick up the Apmeken Canopic Jar, and kill Apmeken (level 75) when they appear.");
-		pickUpHetJar = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Attempt to pick up the Het Canopic Jar, and kill Het (level 81) when they appear.");
+		pickUpCrondisJar = new ObjectStep(this, NullObjectID.NULL_6636, new WorldPoint(3286, 9195, 0), "Attempt to pick up the Crondis Canopic Jar, and kill Apparition (level 75) when they appear. They will attack with magic.");
+		pickUpScarabasJar = new ObjectStep(this, NullObjectID.NULL_6638, new WorldPoint(3286, 9196, 0), "Attempt to pick up the Scarabas Canopic Jar, and kill Apparition (level 75) when they appear. They will attack with melee.");
+		pickUpApmekenJar = new ObjectStep(this, NullObjectID.NULL_6640, new WorldPoint(3286, 9193, 0), "Attempt to pick up the Apmeken Canopic Jar, and kill Apparition (level 75) when they appear. They will attack with magic.");
+		pickUpHetJar = new ObjectStep(this, NullObjectID.NULL_6634, new WorldPoint(3286, 9194, 0), "Attempt to pick up the Het Canopic Jar, and kill Apparition (level 81) when they appear. They will attack with melee.");
 
 		pickUpAnyJar = new ObjectStep(this, NullObjectID.NULL_6634, "Try picking up the canopic jars in the north " +
 			"west room until a level 75-81 enemy spawns. Kill them. You can safespot them on the central table.");
@@ -346,8 +346,9 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		pickUpAnyJarAgain.addAlternateObjects(NullObjectID.NULL_6636, NullObjectID.NULL_6638, NullObjectID.NULL_6640);
 		pickUpAnyJarAgain.addSubSteps(pickUpCrondisJarAgain, pickUpScarabasJarAgain, pickUpApmekenJarAgain, pickUpHetJarAgain);
 
-		returnOverPit = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9196, 0), "Jump back over the pit with the jar.");
-		jumpOverPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
+		returnOverPit = new ObjectStep(this, ObjectID.PIT_6633, new WorldPoint(3292, 9196, 0), "Jump back over the pit with the jar.");
+		jumpOverPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Jump back over to the north side of the pit. " +
+			"Move using the minimap to avoid all the traps inside the pyramid.");
 
 		dropCrondisJar = new DetailedQuestStep(this, new WorldPoint(3286, 9195, 0), "Drop the canopic jar in the spot you took it from.", jar);
 		dropApmekenJar = new DetailedQuestStep(this, new WorldPoint(3286, 9193, 0), "Drop the canopic jar in the spot you took it from.", jar);

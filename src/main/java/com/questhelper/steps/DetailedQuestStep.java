@@ -443,18 +443,18 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (inventoryWidget.getWidgetItems() == null)
+		if (inventoryWidget.getDynamicChildren() == null)
 		{
 			return;
 		}
 
-		for (WidgetItem item : inventoryWidget.getWidgetItems())
+		for (Widget item : inventoryWidget.getDynamicChildren())
 		{
 			for (Requirement requirement : requirements)
 			{
 				if (isValidRequirementForRenderInInventory(requirement, item))
 				{
-					Rectangle slotBounds = item.getCanvasBounds();
+					Rectangle slotBounds = item.getBounds();
 					int red = getQuestHelper().getConfig().targetOverlayColor().getRed();
 					int green = getQuestHelper().getConfig().targetOverlayColor().getGreen();
 					int blue = getQuestHelper().getConfig().targetOverlayColor().getBlue();
@@ -465,14 +465,14 @@ public class DetailedQuestStep extends QuestStep
 		}
 	}
 
-	private boolean isValidRequirementForRenderInInventory(Requirement requirement, WidgetItem item)
+	private boolean isValidRequirementForRenderInInventory(Requirement requirement, Widget item)
 	{
 		return requirement instanceof ItemRequirement && isValidRenderRequirementInInventory((ItemRequirement) requirement, item);
 	}
 
-	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, WidgetItem item)
+	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
 	{
-		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getId());
+		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	@Subscribe

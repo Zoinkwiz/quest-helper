@@ -121,7 +121,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		notQCEmote = new VarplayerRequirement(1195, false, 9);
 
 		// todo find better way to check for all quests completed
-		allQuests = new QuestPointRequirement(286, Operation.EQUAL);
+		allQuests = new QuestPointRequirement(289, Operation.EQUAL);
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest);
 		crossbow = new ItemRequirement("Crossbow", ItemCollections.getCrossbows()).showConditioned(notMovario);

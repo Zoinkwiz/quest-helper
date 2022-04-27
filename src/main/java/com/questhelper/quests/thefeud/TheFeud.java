@@ -71,7 +71,7 @@ public class TheFeud extends BasicQuestHelper
 
 	//Items Requirements
 	ItemRequirement coins, unspecifiedCoins, gloves, headPiece, fakeBeard, desertDisguise,
-			shantayPass, beer, oakBlackjack, glovesEquipped, disguiseEquipped, doorKeys,
+			shantayPass, beer, oakBlackjack, disguiseEquipped, doorKeys,
 			highlightedCoins, snakeCharmHighlighted, snakeBasket, snakeBasketFull,
 			redHotSauce, bucket, dung, poisonHighlighted, oakBlackjackEquipped;
 
@@ -244,8 +244,9 @@ public class TheFeud extends BasicQuestHelper
 		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), -1);
 		highlightedCoins = new ItemRequirement("Coins", ItemCollections.getCoins());
 		highlightedCoins.setHighlightInInventory(true);
-		gloves = new ItemRequirement("Gloves", ItemID.LEATHER_GLOVES);
-		glovesEquipped = new ItemRequirement("Gloves", ItemID.LEATHER_GLOVES, 1, true);
+		gloves = new ItemRequirement("Leather or Graceful Gloves", ItemID.LEATHER_GLOVES);
+		gloves.addAlternates(ItemCollections.getGracefulGloves());
+
 		headPiece = new ItemRequirement("Kharidian Headpiece", ItemID.KHARIDIAN_HEADPIECE);
 		headPiece.setHighlightInInventory(true);
 		fakeBeard = new ItemRequirement("Fake Beard", ItemID.FAKE_BEARD);
@@ -314,6 +315,7 @@ public class TheFeud extends BasicQuestHelper
 		startQuest.addDialogStep("If you are, then why are you still selling goods from a stall?");
 		startQuest.addDialogStep("I'd like to help you but.....");
 		startQuest.addDialogStep("I'll find you your help.");
+		startQuest.addDialogStep("Yes.");
 
 		buyDisguiseGear = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Buy a Kharidian Headpiece and a Fake Beard to create a disguise.", unspecifiedCoins);
 		buyDisguiseGear.addDialogStep("Okay.");
@@ -382,7 +384,7 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 13
 		//Hide Behind Cactus - Second Job
-		hideBehindCactus = new ObjectStep(this, ObjectID.CACTUS_6277, new WorldPoint(3364, 2968, 0), "Hide behind the cactus", glovesEquipped, disguiseEquipped);
+		hideBehindCactus = new ObjectStep(this, ObjectID.CACTUS_6277, new WorldPoint(3364, 2968, 0), "Hide behind the cactus", gloves.equipped(), disguiseEquipped);
 
 		//Step 14
 		//Open the Door

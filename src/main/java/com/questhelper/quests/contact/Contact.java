@@ -161,6 +161,7 @@ public class Contact extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in Sophanem.");
+		talkToHighPriest.addDialogStep("Yes.");
 		talkToHighPriest.addDialogStep("Sounds like a quest for me; I can't turn that down!");
 		talkToHighPriest.addDialogStep("Is there any way into Menaphos from below?");
 		talkToJex = new NpcStep(this, NpcID.JEX, new WorldPoint(3312, 2799, 0), "Talk to Jex in the building in north east Sophanem.");
@@ -232,27 +233,28 @@ public class Contact extends BasicQuestHelper
 
 		((DetailedQuestStep) goDownToChasm).setLinePoints(path);
 
-		searchKaleef = new ObjectStep(this, NullObjectID.NULL_44597, new WorldPoint(3239, 9244, 0),
+		searchKaleef = new ObjectStep(this, NullObjectID.NULL_44597, new WorldPoint(2284, 4315, 0),
 			"Follow the path along, and search Kaleef's corpse there.");
 
 		readParchment = new DetailedQuestStep(this, "Read the parchment", parchment);
 		talkToMaisa = new NpcStep(this, NpcID.MAISA, new WorldPoint(2258, 4317, 0), "Talk to Maisa on the west side of the chasm.");
-		talkToMaisa.addDialogStep("Draynor Village");
+		talkToMaisa.addDialogStep("Draynor Village.");
 		talkToMaisa.addDialogStep("Leela.");
 
 		talkToOsman = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3287, 3179, 0), "Talk to Osman in Al Kharid.");
 		talkToOsman.addDialogStep("I want to talk to you about Sophanem.");
-		talkToOsman.addDialogStep("It would drive a wedge between the Menaphite cities.");
+		talkToOsman.addDialogStep("It could drive a wedge between the Menaphite cities.");
 		talkToOsmanOutsideSoph = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3285, 2812, 0), "Talk to Osman north of Sophanem.");
 		talkToOsmanOutsideSoph.addDialogStep("I know of a secret entrance to the north.");
 
 		goDownToBankAgain = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0), "Prepare to fight a level 191 Giant Scarab. Go down the ladder east of Jex.", lightSource, combatGear);
 		goDownToDungeonAgain = new ObjectStep(this, ObjectID.TRAPDOOR_20340, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
-		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(2116, 4365, 2), "Be careful of traps, and make your way to the south west corner of the dungeon, and go down the ladder there.");
+		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(2116, 4365, 2), "Be careful of traps, and follow the path to the south west ladder. Disarm traps where the path breaks, " +
+				"and use protection prayers against the monsters.");
 		((DetailedQuestStep) goDownToChasmAgain).setLinePoints(path);
 
 		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(2272, 4323, 0),
-			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful.");
+			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful. Pray melee if you are meleeing it, range if you are attacking it from a distance.");
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);
 
@@ -329,7 +331,7 @@ public class Contact extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Help Osman",
 			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
-				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions,
+				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions, antipoison,
 			lightSource, tinderbox));
 
 		return allSteps;

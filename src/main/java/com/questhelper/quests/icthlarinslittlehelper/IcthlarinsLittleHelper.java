@@ -33,6 +33,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.FollowerItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -76,7 +77,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	Requirement inSoph, inPyramid, inNorthPyramid, puzzleOpen, givenToken, hasScarabasJar, hasCrondisJar, hasHetJar, hasApmekenJar,
 		killedGuardian, talkedToEmbalmer, givenLinen, givenSalt, givenSap, givenEmbalmerAllItems, talkedToCarpenter,
-		givenCarpenterLogs, inEastRoom, posessedPriestNearby;
+		givenCarpenterLogs, inEastRoom, possessedPriestNearby;
 
 	QuestStep talkToWanderer, talkToWandererAgain, enterRock, touchPyramidDoor, jumpPit, openWestDoor, solveDoorPuzzle, talkToSphinx, talkToHighPriest,
 		talkToHighPriestWithoutToken, openPyramidDoor, jumpPitAgain, pickUpScarabasJar, pickUpCrondisJar, pickUpHetJar, pickUpApmekenJar,
@@ -170,12 +171,12 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen, bucketOfSaltwater), makeSalt);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen), fillBucketWithWater);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer), buyLinen);
-		prepareItems.addStep(new Conditions(inSoph, linen), talkToEmbalmer);
+		prepareItems.addStep(new Conditions(inSoph), talkToEmbalmer);
 
 		steps.put(15, prepareItems);
 
 		ConditionalStep goToRitual = new ConditionalStep(this, enterRock);
-		goToRitual.addStep(new Conditions(inEastRoom, posessedPriestNearby), killPriest);
+		goToRitual.addStep(new Conditions(inEastRoom, possessedPriestNearby), killPriest);
 		goToRitual.addStep(inEastRoom, talkToHighPriestInPyramid);
 		goToRitual.addStep(inNorthPyramid, enterEastRoomAgain);
 		goToRitual.addStep(inPyramid, jumpPitWithSymbol);
@@ -186,6 +187,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		ConditionalStep placeSymbol = new ConditionalStep(this, enterRock);
 		placeSymbol.addStep(inEastRoom, useSymbolOnSarcopagus);
 		placeSymbol.addStep(inPyramid, enterEastRoom);
+		placeSymbol.addStep(inSoph, openPyramidDoorWithSymbol);
 
 		steps.put(17, placeSymbol);
 
@@ -225,9 +227,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		salt = new ItemRequirement("Salt", ItemID.BAG_OF_SALT).hideConditioned(givenSalt);
 		salt.addAlternates(ItemID.PILE_OF_SALT);
 
-		coinsOrLinen = new ItemRequirement("Linen or 30 coins to buy some", ItemID.LINEN).hideConditioned(givenLinen);
 
 		coins30 = new ItemRequirement("Coins", ItemCollections.getCoins(), 30).hideConditioned(givenLinen);
+		linen = new ItemRequirement("Linen", ItemID.LINEN).hideConditioned(givenLinen);
+
+		coinsOrLinen = new ItemRequirements(LogicType.OR, "1 x Linen or 30 coins to buy some", coins30, linen).hideConditioned(givenLinen);
 
 		willowLog = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS).hideConditioned(givenCarpenterLogs);
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP).hideConditioned(givenSap);
@@ -247,7 +251,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		jar.addAlternates(ItemID.CANOPIC_JAR_4679, ItemID.CANOPIC_JAR_4680, ItemID.CANOPIC_JAR_4681);
 		jar.setHighlightInInventory(true);
 
-		linen = new ItemRequirement("Linen", ItemID.LINEN).hideConditioned(givenLinen);
 		bucketOfSaltwater = new ItemRequirement("Bucket of saltwater", ItemID.BUCKET_OF_SALTWATER);
 
 		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL_4682);
@@ -287,7 +290,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		talkedToCarpenter = new VarbitRequirement(412, 1);
 		givenCarpenterLogs = new VarbitRequirement(398, 1);
 
-		posessedPriestNearby = new NpcCondition(NpcID.POSSESSED_PRIEST);
+		possessedPriestNearby = new NpcCondition(NpcID.POSSESSED_PRIEST);
 	}
 
 	public void loadZones()
@@ -302,6 +305,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToWanderer = new NpcStep(this, NpcID.WANDERER_4194, new WorldPoint(3316, 2849, 0), "Talk to the Wanderer west of the Agility Pyramid.", catFollower, waterskin4, tinderbox);
+		talkToWanderer.addDialogStep("Yes.");
 		talkToWanderer.addDialogStep("Why? What's your problem with it?");
 		talkToWanderer.addDialogStep("Ok I'll get your supplies.");
 
@@ -310,11 +314,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		enterRock = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0), "Enter the rock west of the Agility Pyramid to re-enter Sophanem.");
 
-		touchPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Open door to the south pyramid in Sophanem.");
+		touchPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Enter the pyramid in the south of Sophanem.");
 
 		jumpPit = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
-		openWestDoor = new ObjectStep(this, ObjectID.DOOR_44059, new WorldPoint(3280, 9199, 0), "Attempt to open the west door.");
+		openWestDoor = new ObjectStep(this, ObjectID.DOOR_44059, new WorldPoint(3280, 9199, 0), "Attempt to open the western door.");
 
 		solveDoorPuzzle = new DoorPuzzleStep(this);
 
@@ -328,7 +332,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		talkToHighPriestWithoutToken = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in the south west of Sophanem.");
 		talkToHighPriest.addSubSteps(talkToHighPriestWithoutToken);
 
-		openPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Open the door of the pyramid in the south of Sophanem.", catFollower);
+		openPyramidDoor = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Enter the pyramid in the south of Sophanem.", catFollower);
 
 		jumpPitAgain = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.");
 
@@ -377,17 +381,17 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		fillBucketWithWater = new ObjectStep(this, ObjectID.WATER_6605, new WorldPoint(3286, 2840, 0), "Fill up a bucket with salt water from the lake north of Sophanem, or buy a bag of salt from a Slayer Master.", bucket);
 		makeSalt = new ObjectStep(this, ObjectID.SUNTRAP, new WorldPoint(3305, 2756, 0), "Use the bucket of saltwater on the suntrap in the south east of Sophenam.", bucketOfSaltwater.highlighted());
 		makeSalt.addIcon(ItemID.BUCKET_OF_SALTWATER);
-		talkToCarpenter = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter in the east of Sophanem.", willowLog);
+		talkToCarpenter = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter in the east of Sophanem until he gives you the holy symbol.", willowLog);
 		talkToCarpenter.addDialogStep("Alright, I'll get the wood for you.");
 		talkToCarpenterAgain = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter again in the east of Sophanem.");
 		talkToCarpenterOnceMore = new NpcStep(this, NpcID.CARPENTER, new WorldPoint(3313, 2770, 0), "Talk to the Carpenter again in the east of Sophanem once more.");
-
+		talkToCarpenter.addSubSteps(talkToCarpenterAgain, talkToCarpenterOnceMore);
 		buyLinen = new NpcStep(this, NpcID.RAETUL, new WorldPoint(3311, 2787, 0), "Get some linen. You can buy some from Raetul in east Sophanem for 30 coins.", coins30);
 
 		enterRockWithItems = new ObjectStep(this, NullObjectID.NULL_6621, new WorldPoint(3324, 2858, 0),
 			"Enter the rock west of the Agility Pyramid to re-enter Sophanem. Make sure to bring the items you need.", bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog, catFollower);
 
-		openPyramidDoorWithSymbol = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Open the door of the pyramid in the south of Sophanem.", catFollower, holySymbol);
+		openPyramidDoorWithSymbol = new ObjectStep(this, ObjectID.DOOR_6614, new WorldPoint(3295, 2779, 0), "Enter the pyramid in the south of Sophanem.", catFollower, holySymbol);
 
 		jumpPitWithSymbol = new ObjectStep(this, ObjectID.PIT, new WorldPoint(3292, 9194, 0), "Follow the path again until you reach a pit, and jump it. Move using the minimap to avoid all the traps.", holySymbol);
 
@@ -401,7 +405,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		enterEastRoomAgain = new ObjectStep(this, ObjectID.DOOR_44060, new WorldPoint(3306, 9199, 0), "Enter the east room again.");
 
-		killPriest = new NpcStep(this, NpcID.POSSESSED_PRIEST, new WorldPoint(3306, 9196, 0), "Kill the posessed priest.");
+		killPriest = new NpcStep(this, NpcID.POSSESSED_PRIEST, new WorldPoint(3306, 9196, 0), "Kill the possessed priest. Pray protect from magic against the priest.");
 
 		talkToHighPriestInPyramid = new NpcStep(this, NpcID.HIGH_PRIEST_11603, new WorldPoint(3306, 9196, 0),
 			"Talk to the High Priest in the north east room of the pyramid.");
@@ -483,8 +487,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 				pickUpAnyJarAgain, returnOverPit, jumpOverPitAgain, solvePuzzleAgain, dropJar, leavePyramid), cat));
 
 		allSteps.add(new PanelDetails("Prepare the ritual",
-			Arrays.asList(buyLinen, talkToEmbalmer, talkToEmbalmerAgain, talkToCarpenter, talkToCarpenterAgain,
-				talkToCarpenterOnceMore), bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog));
+			Arrays.asList(talkToEmbalmer, buyLinen, talkToEmbalmerAgain, talkToCarpenter), bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog));
 
 		allSteps.add(new PanelDetails("Save the ritual",
 			Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus,

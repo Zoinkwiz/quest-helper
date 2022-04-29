@@ -25,14 +25,19 @@
  */
 package com.questhelper;
 
+import lombok.Getter;
 import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.coords.WorldPoint;
 
 public class Zone
 {
+	@Getter
 	private final int minX;
+	@Getter
 	private final int maxX;
+	@Getter
 	private final int minY;
+	@Getter
 	private final int maxY;
 	private int minPlane = 0;
 	private int maxPlane = 2;
@@ -69,11 +74,9 @@ public class Zone
 
 	public Zone(int regionID)
 	{
-		int regionX = (regionID >> 8) & 0xff;
-		int regionY = regionID & 0xff;
-		minX = regionX >> 6;
+		minX = ((regionID >> 8) & 0xFF) << 6;
 		maxX = minX + REGION_SIZE;
-		minY = regionY >> 6;
+		minY = (regionID & 0xFF) << 6;
 		maxY = minY + REGION_SIZE;
 	}
 
@@ -92,5 +95,10 @@ public class Zone
 			&& worldPoint.getY() <= maxY
 			&& minPlane <= worldPoint.getPlane()
 			&& worldPoint.getPlane() <= maxPlane;
+	}
+
+	public WorldPoint getMinWorldPoint()
+	{
+		return new WorldPoint(minX, minY, minPlane);
 	}
 }

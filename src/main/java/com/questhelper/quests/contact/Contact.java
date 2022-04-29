@@ -167,12 +167,12 @@ public class Contact extends BasicQuestHelper
 
 		goDownToBank = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0), "Go down the ladder east of Jex.", lightSource);
 		goDownToDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_20340, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
-		goDownToChasm = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(3268, 9229, 2),
+		goDownToChasm = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(2116, 4365, 2),
 			"Be careful of traps, and follow the path to the south west ladder. Disarm traps where the path breaks, " +
 				"and use protection prayers against the monsters.");
 
 		List<WorldPoint> path = Arrays.asList(
-			new WorldPoint(2166, 4409, 2), // 1152, 4862
+			new WorldPoint(2166, 4409, 2),
 			new WorldPoint(2166, 4401, 2),
 			new WorldPoint(2161, 4401, 2),
 			new WorldPoint(2161, 4408, 2),
@@ -248,10 +248,10 @@ public class Contact extends BasicQuestHelper
 
 		goDownToBankAgain = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0), "Prepare to fight a level 191 Giant Scarab. Go down the ladder east of Jex.", lightSource, combatGear);
 		goDownToDungeonAgain = new ObjectStep(this, ObjectID.TRAPDOOR_20340, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
-		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(3268, 9229, 2), "Be careful of traps, and make your way to the south west corner of the dungeon, and go down the ladder there.");
+		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(2116, 4365, 2), "Be careful of traps, and make your way to the south west corner of the dungeon, and go down the ladder there.");
 		((DetailedQuestStep) goDownToChasmAgain).setLinePoints(path);
 
-		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(3231, 9251, 0),
+		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(2272, 4323, 0),
 			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful.");
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);

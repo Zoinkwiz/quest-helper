@@ -30,6 +30,7 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -152,8 +153,8 @@ public class Contact extends BasicQuestHelper
 	{
 		inBank = new ZoneRequirement(bank);
 		inDungeon = new ZoneRequirement(dungeon);
-		inChasm = new ZoneRequirement(chasm);
-		hasReadParchment = new VarbitRequirement(3274, 50);
+		inChasm = new ZoneRequirement(chasm, new Zone(9027));
+		hasReadParchment = new VarbitRequirement(3274, 50, Operation.GREATER_EQUAL);
 		kerisNearby = new ItemOnTileRequirement(keris);
 	}
 
@@ -235,7 +236,7 @@ public class Contact extends BasicQuestHelper
 			"Follow the path along, and search Kaleef's corpse there.");
 
 		readParchment = new DetailedQuestStep(this, "Read the parchment", parchment);
-		talkToMaisa = new NpcStep(this, NpcID.MAISA, new WorldPoint(3218, 9246, 0), "Talk to Maisa on the west side of the chasm.");
+		talkToMaisa = new NpcStep(this, NpcID.MAISA, new WorldPoint(2258, 4317, 0), "Talk to Maisa on the west side of the chasm.");
 		talkToMaisa.addDialogStep("Draynor Village");
 		talkToMaisa.addDialogStep("Leela.");
 

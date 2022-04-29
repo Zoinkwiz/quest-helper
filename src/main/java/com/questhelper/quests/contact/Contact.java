@@ -69,7 +69,7 @@ public class Contact extends BasicQuestHelper
 	Requirement inBank, inDungeon, inChasm, hasReadParchment, kerisNearby;
 
 	QuestStep talkToHighPriest, talkToJex, goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment, talkToMaisa, talkToOsman, talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain, goDownToChasmAgain,
-		killGiantScarab, pickUpKeris, returnToHighPriest;
+		killGiantScarab, pickUpKeris, talkToOsmanChasm, returnToHighPriest;
 
 	//Zones
 	Zone bank, dungeon, chasm;
@@ -112,10 +112,17 @@ public class Contact extends BasicQuestHelper
 		steps.put(90, scarabBattle);
 		steps.put(100, scarabBattle);
 
+		ConditionalStep talkToOsmanInCrevice = new ConditionalStep(this, goDownToBankAgain);
+		talkToOsmanInCrevice.addStep(kerisNearby, pickUpKeris);
+		talkToOsmanInCrevice.addStep(inChasm, talkToOsmanChasm);
+		talkToOsmanInCrevice.addStep(inDungeon, goDownToChasmAgain);
+		talkToOsmanInCrevice.addStep(inBank, goDownToDungeonAgain);
+
+		steps.put(110, talkToOsmanInCrevice);
+
 		ConditionalStep finishOff = new ConditionalStep(this, returnToHighPriest);
 		finishOff.addStep(kerisNearby, pickUpKeris);
 
-		steps.put(110, finishOff);
 		steps.put(120, finishOff);
 
 		return steps;
@@ -256,6 +263,8 @@ public class Contact extends BasicQuestHelper
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);
 
+		talkToOsmanChasm = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(2272, 4323, 0), "Talk to Osman in the chasm.");
+
 		returnToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Report back to the High Priest in Sophanem.");
 	}
 
@@ -329,7 +338,7 @@ public class Contact extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Help Osman",
 			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
-				goDownToChasmAgain, killGiantScarab, returnToHighPriest), combatGear, food, prayerPotions,
+				goDownToChasmAgain, killGiantScarab, talkToOsmanChasm, returnToHighPriest), combatGear, food, prayerPotions,
 			lightSource, tinderbox));
 
 		return allSteps;

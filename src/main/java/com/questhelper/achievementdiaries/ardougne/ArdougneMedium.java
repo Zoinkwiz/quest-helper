@@ -227,7 +227,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		grapYan = new ObjectStep(this, ObjectID.WALL_17047, new WorldPoint(2556, 3072, 0),
 			"Grapple up Yanille's south wall.", crossbow.equipped(), mithGrap);
 		grapYan2 = new ObjectStep(this, ObjectID.WALL_17048, new WorldPoint(2556, 3075, 1),
-			"Jump off!");
+			"Climb down into Yanille!");
 
 		if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN)// will need testing to confirm this works
 		{
@@ -240,7 +240,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 				"Claim buckets of sand from Bert in Yanille.");
 		}
 
-		balloonCW = new DetailedQuestStep(this, "Use a nearby Hot Air Ballon to travel to Castle Wars.",
+		balloonCW = new DetailedQuestStep(this, "Use the Taverley Hot Air Ballon to travel to Castle Wars.",
 			yewLog1);
 		moveToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3236, 0),
 			"Speak with a monk to travel to Entrana.", true, yewLog11);

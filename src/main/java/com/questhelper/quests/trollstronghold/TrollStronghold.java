@@ -33,6 +33,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -135,9 +136,9 @@ public class TrollStronghold extends BasicQuestHelper
 	{
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
-		climbingBootsOr12Coins = new ItemRequirement("Climbing boots or 12 coins", ItemID.CLIMBING_BOOTS);
-		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 		coins12 = new ItemRequirement("Coins", ItemCollections.getCoins(), 12);
+		climbingBootsOr12Coins = new ItemRequirements(LogicType.OR, "Climbing boots or 12 coins", climbingBoots, coins12);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 		mageRangedGear = new ItemRequirement("Mage or ranged gear for safe spotting", -1, -1);
 		mageRangedGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		foodAndPotions = new ItemRequirement("Food + prayer potions", ItemCollections.getGoodEatingFood(), -1);

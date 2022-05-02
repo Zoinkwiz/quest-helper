@@ -669,6 +669,10 @@ public class QuestOrders
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
+		//QuestHelperQuest.THE_FROZEN_DOOR - Placeholder for future addition.
+		//QuestHelperQuest.HOPESPEARS_WILL - Placeholder for future addition.
+		//QuestHelperQuest.TEMPLE_OF_THE_EYE - Placeholder for future addition.
+		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

@@ -293,7 +293,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		getKudos = new DetailedQuestStep(this, "Complete more quests and tasks for kudos. " +
 			"Check out the kudos wiki page for more details.");
 		wakkaEdge = new ObjectStep(this, 12166, new WorldPoint(3131, 3510, 0),
-			"Make a Wakka at the canoe station in Edgeville.", axe);
+			"Make a Waka at the canoe station in Edgeville.", axe);
 		paddewwaTP = new DetailedQuestStep(this, "Cast teleport to Paddewwa.", ancientBook, lawRune.quantity(2), airRune.quantity(1), fireRune.quantity(1));
 		cutYew = new ObjectStep(this, 10823, new WorldPoint(3249, 3473, 0),
 			"Cut a yew tree until you get a log.", axe);

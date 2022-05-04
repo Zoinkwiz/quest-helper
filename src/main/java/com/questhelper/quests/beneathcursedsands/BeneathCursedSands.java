@@ -52,8 +52,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 	ItemRequirement coal, tinderbox, ironBar, spade, meat, prayerPotions, fiveCoins;
 
 	// Items Recommended
-	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, combatGear,
-		combatGearChampionOfScabaras, staminaPotions, nardahTeleport;
+	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, meleeCombatGear, rangedCombatGear,
+		staminaPotions, nardahTeleport;
 
 	// Quest Items
 	ItemRequirement messageFromJamila, stoneTablet, chest, scarabMould, scarabEmblem, riddleEmblemBaboon,
@@ -281,10 +281,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 		pharaosSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		combatGearChampionOfScabaras = new ItemRequirement("Ranged combat gear", -1, -1);
-		combatGearChampionOfScabaras.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
+		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1);
+		meleeCombatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
+		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
+		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions(), -1);
 		nardahTeleport = new ItemRequirement("Nardah Teleport", ItemID.DESERT_AMULET_4);
 		nardahTeleport.addAlternates(ItemID.NARDAH_TELEPORT, ItemID.DESERT_AMULET_3, ItemID.DESERT_AMULET_2);
@@ -387,7 +387,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		talkToCitizenOrGuard = new NpcStep(this, NpcID.CITIZEN_11537, new WorldPoint(3347, 2718, 0), "Prepare to fight the Head Menaphite Guard, and talk to either a citizen or Menaphite Guard to start the fight.", true);
 		((NpcStep) talkToCitizenOrGuard).addAlternateNpcs(NpcID.CITIZEN_11536, NpcID.CITIZEN_11534, NpcID.MENAPHITE_GUARD_11515, NpcID.MENAPHITE_GUARD_11516, NpcID.MENAPHITE_GUARD_11518);
 
-		fightHeadMenaphiteGuard = new NpcStep(this, NpcID.HEAD_MENAPHITE_GUARD_11529, "Fight the Head Menaphite Guard. This boss uses melee, and can hit up to 16. DO NOT USE ANY OVERHEAD PROTECTION PRAYERS, OR YOU WILL GET HIT FOR 1/3RD OF YOUR HITPOINTS", combatGear, food);
+		fightHeadMenaphiteGuard = new NpcStep(this, NpcID.HEAD_MENAPHITE_GUARD_11529, "Fight the Head Menaphite Guard. This boss uses melee, and can hit up to 16. DO NOT USE ANY OVERHEAD PROTECTION PRAYERS, OR YOU WILL GET HIT FOR 1/3RD OF YOUR HITPOINTS", meleeCombatGear, food);
 
 		// TODO: Verify the following NPC ID. Can be done by interrupting (walking away) during the post-fight cutscene.
 		talkToMaisaPostFightCutsceneInterruption = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Talk to Maisa to continue the quest.");
@@ -432,9 +432,9 @@ public class BeneathCursedSands extends BasicQuestHelper
 		rotateScarabRight = new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 8);
 		confirmScarabRotation = new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 9);
 
-		enterDungeonToFightScarabMages = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3411, 2848, 0), "Enter the dungeon.", combatGear, food);
+		enterDungeonToFightScarabMages = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3411, 2848, 0), "Enter the dungeon.", meleeCombatGear, food);
 		enterDungeon = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3411, 2848, 0), "Enter the dungeon.");
-		fightScarabMages = new NpcStep(this, NpcID.SCARAB_MAGE_11508, "Use Protect from Magic and defeat the two Scarab Mages", combatGear, food, antipoison);
+		fightScarabMages = new NpcStep(this, NpcID.SCARAB_MAGE_11508, "Use Protect from Magic and defeat the two Scarab Mages", meleeCombatGear, food, antipoison);
 
 		climbDownStairsAgain = new ObjectStep(this, ObjectID.STAIRS_43959, "Climb down the stairs.");
 		((ObjectStep) climbDownStairsAgain).addAlternateObjects(ObjectID.STAIRS_43958);
@@ -471,12 +471,12 @@ public class BeneathCursedSands extends BasicQuestHelper
 		((ObjectStep) climbUpstairs).addAlternateObjects(ObjectID.STAIRS_43957);
 		((DetailedQuestStep) climbUpstairs).setLinePoints(Arrays.asList(new WorldPoint(3408, 9248, 0), new WorldPoint(3411, 9244, 0), new WorldPoint(3415, 9248, 0), new WorldPoint(3431, 9248, 0), new WorldPoint(3431, 9239, 0), new WorldPoint(3438, 9239, 0), new WorldPoint(3438, 9243, 0)));
 
-		unlockBossDoor = new ObjectStep(this, ObjectID.DOOR_43960, "Prepare to fight the Champion of Scabaras, and unlock the door to start the fight.", combatGearChampionOfScabaras, food, antipoison, staminaPotions, prayerPotions, rustyKey);
+		unlockBossDoor = new ObjectStep(this, ObjectID.DOOR_43960, "Prepare to fight the Champion of Scabaras, and unlock the door to start the fight.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions, rustyKey);
 		unlockBossDoor.addIcon(ItemID.RUSTY_KEY);
 
-		openBossDoor = new ObjectStep(this, ObjectID.DOOR_43960, "Prepare to fight the Champion of Scabaras, and open the door to start the fight.", combatGearChampionOfScabaras, food, antipoison, staminaPotions, prayerPotions);
+		openBossDoor = new ObjectStep(this, ObjectID.DOOR_43960, "Prepare to fight the Champion of Scabaras, and open the door to start the fight.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions);
 
-		fightChampionOfScabaras = new NpcStep(this, NpcID.CHAMPION_OF_SCABARAS_11483, "Fight the Champion of Scabaras.", combatGearChampionOfScabaras, food, antipoison, staminaPotions, prayerPotions);
+		fightChampionOfScabaras = new NpcStep(this, NpcID.CHAMPION_OF_SCABARAS_11483, "Fight the Champion of Scabaras.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions);
 		fightChampionOfScabaras.addText("Protect from Magic, and keep 4+ tiles distance at all times.");
 		fightChampionOfScabaras.addText("He is weak to ranged attacks, so bring your best ranged gear.");
 		fightScarabSwarm = new NpcStep(this, NpcID.SCARAB_SWARM_11484, "Defeat the Swarm as soon as possible, to prevent shadow flames from hindering your movement.");
@@ -530,9 +530,9 @@ public class BeneathCursedSands extends BasicQuestHelper
 		talkToSophanemHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in Sophanem.");
 
 		// Fight with the Menaphite Akh
-		prepareFightMenaphiteAkh = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Prepare to fight the Menaphite Akh (lvl 351), and talk to Maisa in Necropolis when ready.", combatGear, waterskins);
+		prepareFightMenaphiteAkh = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Prepare to fight the Menaphite Akh (lvl 351), and talk to Maisa in Necropolis when ready.", meleeCombatGear, waterskins);
 
-		defeatMenaphiteAkh = new NpcStep(this, NpcID.MENAPHITE_AKH_11492, "Defeat the Menaphite Akh. This boss uses melee, and will occasionally cast lightning in front of her, so be prepared to walk behind her to avoid this attack.", combatGear, waterskins);
+		defeatMenaphiteAkh = new NpcStep(this, NpcID.MENAPHITE_AKH_11492, "Defeat the Menaphite Akh. This boss uses melee, and will occasionally cast lightning in front of her, so be prepared to walk behind her to avoid this attack.", meleeCombatGear, waterskins);
 		defeatMenaphiteShadow = new NpcStep(this, NpcID.MENAPHITE_SHADOW, "Quickly defeat the Menaphite Shadow, which attack using Ranged and Magic and can deal large damage.");
 
 		talkToOsman = new NpcStep(this, NpcID.OSMAN_11486, new WorldPoint(3369, 2799, 0), "Talk to Osman");
@@ -544,7 +544,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaosSceptre, combatGear, food, staminaPotions, nardahTeleport);
+		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaosSceptre, meleeCombatGear, food, staminaPotions, nardahTeleport);
 	}
 
 	@Override
@@ -588,12 +588,12 @@ public class BeneathCursedSands extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToJamilaToStart, readMessage), Collections.emptyList(), Collections.singletonList(waterskins)));
-		allSteps.add(new PanelDetails("Entranced Menaphites", Arrays.asList(talkToMaisaStartInvestigation, inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard), Collections.singletonList(combatGear), Arrays.asList(waterskins, food)));
-		allSteps.add(new PanelDetails("The Ruins of Ullek", Arrays.asList(talkToMaisaExploreCliffs, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, digForChest, openChest, craftEmblem, useEmblemOnPillar, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor), Arrays.asList(combatGear, coal, tinderbox, spade, ironBar), Arrays.asList(food, antipoison, waterskins)));
+		allSteps.add(new PanelDetails("Entranced Menaphites", Arrays.asList(talkToMaisaStartInvestigation, inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard), Collections.singletonList(meleeCombatGear), Arrays.asList(waterskins, food)));
+		allSteps.add(new PanelDetails("The Ruins of Ullek", Arrays.asList(talkToMaisaExploreCliffs, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, digForChest, openChest, craftEmblem, useEmblemOnPillar, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor), Arrays.asList(meleeCombatGear, coal, tinderbox, spade, ironBar), Arrays.asList(food, antipoison, waterskins)));
 		allSteps.add(new PanelDetails("Riddle of the Tomb", Arrays.asList(obtainEmblemsFromPlaque, placeEmblemsInUrns, pullRiddleLever, enterTombDoor, talkToSpirit, takeRustyKey)));
-		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(combatGearChampionOfScabaras, food, rustyKey)));
+		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey)));
 		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, warmUpChemistryEquipment), Arrays.asList(meat, waterskins)));
-		allSteps.add(new PanelDetails("Fight with the Menaphite Akh", Arrays.asList(prepareFightMenaphiteAkh, defeatMenaphiteAkh, finishQuest), Arrays.asList(combatGear, waterskins)));
+		allSteps.add(new PanelDetails("Fight with the Menaphite Akh", Arrays.asList(prepareFightMenaphiteAkh, defeatMenaphiteAkh, finishQuest), Arrays.asList(meleeCombatGear, waterskins)));
 
 		return allSteps;
 	}

@@ -286,8 +286,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		combatGearChampionOfScabaras = new ItemRequirement("Ranged combat gear", -1, -1);
 		combatGearChampionOfScabaras.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions(), -1);
-		nardahTeleport = new ItemRequirement("Nardah Teleport", ItemID.NARDAH_TELEPORT);
-		nardahTeleport.addAlternates(ItemID.DESERT_AMULET_2, ItemID.DESERT_AMULET_3, ItemID.DESERT_AMULET_4);
+		nardahTeleport = new ItemRequirement("Nardah Teleport", ItemID.DESERT_AMULET_4);
+		nardahTeleport.addAlternates(ItemID.NARDAH_TELEPORT, ItemID.DESERT_AMULET_3, ItemID.DESERT_AMULET_2);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
 		prayerPotions.addAlternates(ItemCollections.getSuperRestorePotions());
 

@@ -385,7 +385,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		inspectBlockedPyramidEntry = new ObjectStep(this, NullObjectID.NULL_44596, new WorldPoint(3358, 2712, 0), "Inspect the blocked entry at the Jaltevas Pyramid.");
 
 		talkToCitizenOrGuard = new NpcStep(this, NpcID.CITIZEN_11537, new WorldPoint(3347, 2718, 0), "Prepare to fight the Head Menaphite Guard, and talk to either a citizen or Menaphite Guard to start the fight.", true);
-		((NpcStep) (talkToCitizenOrGuard)).addAlternateNpcs(NpcID.CITIZEN_11536, NpcID.CITIZEN_11534, NpcID.MENAPHITE_GUARD_11515, NpcID.MENAPHITE_GUARD_11516, NpcID.MENAPHITE_GUARD_11518);
+		((NpcStep) talkToCitizenOrGuard).addAlternateNpcs(NpcID.CITIZEN_11536, NpcID.CITIZEN_11534, NpcID.MENAPHITE_GUARD_11515, NpcID.MENAPHITE_GUARD_11516, NpcID.MENAPHITE_GUARD_11518);
 
 		fightHeadMenaphiteGuard = new NpcStep(this, NpcID.HEAD_MENAPHITE_GUARD_11529, "Fight the Head Menaphite Guard. This boss uses melee, and can hit up to 16. DO NOT USE ANY OVERHEAD PROTECTION PRAYERS, OR YOU WILL GET HIT FOR 1/3RD OF YOUR HITPOINTS", combatGear, food);
 

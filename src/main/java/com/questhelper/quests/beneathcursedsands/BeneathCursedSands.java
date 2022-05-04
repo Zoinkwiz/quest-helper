@@ -315,7 +315,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		fiveCoins.quantity(5);
 		lilyOfTheElid = new ItemRequirement("Lily of the Elid", ItemID.LILY_OF_THE_ELID);
 		cureCrate = new ItemRequirement("Cure crate", ItemID.CURE_CRATE);
-
 	}
 
 	public void setupZones()

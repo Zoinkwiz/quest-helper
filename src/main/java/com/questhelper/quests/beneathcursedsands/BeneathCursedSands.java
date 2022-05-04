@@ -52,21 +52,42 @@ public class BeneathCursedSands extends BasicQuestHelper
 	ItemRequirement coal, tinderbox, ironBar, spade, meat, prayerPotions, fiveCoins;
 
 	// Items Recommended
-	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, combatGear, combatGearChampionOfScabaras, staminaPotions, nardahTeleport;
+	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, combatGear,
+		combatGearChampionOfScabaras, staminaPotions, nardahTeleport;
 
 	// Quest Items
-	ItemRequirement messageFromJamila, stoneTablet, chest, scarabMould, scarabEmblem, riddleEmblemBaboon, riddleEmblemHuman, riddleEmblemCrocodile, riddleEmblemScarab, rustyKey, lilyOfTheElid, cureCrate;
+	ItemRequirement messageFromJamila, stoneTablet, chest, scarabMould, scarabEmblem, riddleEmblemBaboon,
+		riddleEmblemHuman, riddleEmblemCrocodile, riddleEmblemScarab, rustyKey, lilyOfTheElid, cureCrate;
 
 	// Primary Quest Line Steps
-	QuestStep talkToJamilaToStart, receiveSpecialItemFromJamila, readMessage, talkToMaisaStartInvestigation, inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard, talkToMaisaExploreCliffs, goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, leaveRuinsOfUllek, digForChest, openChest, craftEmblem, useEmblemOnPillar, rotateScarabLeft, rotateScarabRight, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor, obtainEmblemsFromPlaque, placeEmblemsInUrns, pullRiddleLever, enterTombDoor, talkToSpirit, takeRustyKey, unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest, talkToMaisaInNardah, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, warmUpChemistryEquipment, bringCureToPriest, prepareFightMenaphiteAkh, talkToSophanemHighPriest, defeatMenaphiteAkh, defeatMenaphiteShadow, finishQuest;
+	QuestStep talkToJamilaToStart, receiveSpecialItemFromJamila, readMessage, talkToMaisaStartInvestigation,
+		inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard, talkToMaisaExploreCliffs,
+		goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell,
+		readStoneTablet, leaveRuinsOfUllek, digForChest, openChest, craftEmblem, useEmblemOnPillar, rotateScarabLeft,
+		rotateScarabRight, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages,
+		climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor, obtainEmblemsFromPlaque, placeEmblemsInUrns,
+		pullRiddleLever, enterTombDoor, talkToSpirit, takeRustyKey, unlockBossDoor, fightChampionOfScabaras,
+		talkToScabarasHighPriest, talkToMaisaInNardah, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur,
+		talkToZahur, warmUpChemistryEquipment, bringCureToPriest, prepareFightMenaphiteAkh, talkToSophanemHighPriest,
+		defeatMenaphiteAkh, defeatMenaphiteShadow, finishQuest;
 
 	// Optional & Supportive Quest Steps
-	QuestStep talkToMaisaPostFightCutsceneInterruption, obtainTinderbox, obtainSpade, goToRuinsOfUllek, enterDungeon, leaveTombDoor, leaveRiddleDoor, climbUpstairs, openBossDoor, fightScarabSwarm, destroyShadowRift, goToScabarasHighPriestDoorOne, goToScabarasHighPriestDoorTwo, leaveHighPriestDoorOne, leaveHighPriestDoorTwo, leaveDungeon, purchaseBeef, chemistryValveDecreaseLeft, chemistryValveIncreaseMiddle, chemistryValveDecreaseMiddle, chemistryValveIncreaseRight, chemistryValveDecreaseRight, talkToOsman;
+	QuestStep talkToMaisaPostFightCutsceneInterruption, obtainTinderbox, obtainSpade, goToRuinsOfUllek, enterDungeon,
+		leaveTombDoor, leaveRiddleDoor, climbUpstairs, openBossDoor, fightScarabSwarm, destroyShadowRift,
+		goToScabarasHighPriestDoorOne, goToScabarasHighPriestDoorTwo, leaveHighPriestDoorOne, leaveHighPriestDoorTwo,
+		leaveDungeon, purchaseBeef, chemistryValveDecreaseLeft, chemistryValveIncreaseMiddle,
+		chemistryValveDecreaseMiddle, chemistryValveIncreaseRight, chemistryValveDecreaseRight, talkToOsman;
 
-	Zone ruinsOfUllekArea1, ruinsOfUllekArea2, ruinsOfUllekArea3, ruinsOfUllekArea4, scarabMageArea, leverMazeArea, riddleArea, tombArea, bossArea, bossTransitionArea;
-	Requirement inRuinsOfUllek, inScarabMageArea, inLeverMazeArea, inRiddleArea, inTombArea, inBossArea, inBossTransitionArea;
+	Zone ruinsOfUllekArea1, ruinsOfUllekArea2, ruinsOfUllekArea3, ruinsOfUllekArea4, scarabMageArea, leverMazeArea,
+		riddleArea, tombArea, bossArea, bossTransitionArea;
 
-	VarbitRequirement hasReadStoneTablet, scarabRotatedDownwards, scarabRotationQuickestRight, southernmostUrn, centreSouthUrn, centreNorthUrn, northernmostUrn, chemistryValveLeftStepZero, chemistryValveLeftStepOne, chemistryValveLeftStepTwo, chemistryValveLeftStepThree, chemistryValveMiddleNearMax, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum, chemistryValveRightNearMax;
+	Requirement inRuinsOfUllek, inScarabMageArea, inLeverMazeArea, inRiddleArea, inTombArea, inBossArea,
+		inBossTransitionArea;
+
+	VarbitRequirement hasReadStoneTablet, scarabRotatedDownwards, scarabRotationQuickestRight, southernmostUrn,
+		centreSouthUrn, centreNorthUrn, northernmostUrn, chemistryValveLeftStepZero, chemistryValveLeftStepOne,
+		chemistryValveLeftStepTwo, chemistryValveLeftStepThree, chemistryValveMiddleNearMax,
+		chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum, chemistryValveRightNearMax;
 
 	ObjectCondition firstLeverPulled;
 

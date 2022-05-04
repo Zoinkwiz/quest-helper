@@ -556,7 +556,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Head Menaphite Guard (174) without protection prayers", "Two Scabarite Mages (119)", "Champion of Scabaras (379)", "Menaphite Akh (351)");
+		return Arrays.asList("Head Menaphite Guard (lvl 174) without protection prayers", "Two Scabarite Mages (lvl 119)", "Champion of Scabaras (lvl 379)", "Menaphite Akh (lvl 351)");
 	}
 
 	@Override

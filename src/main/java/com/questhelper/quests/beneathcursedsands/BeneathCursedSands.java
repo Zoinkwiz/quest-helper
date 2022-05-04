@@ -530,7 +530,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		talkToSophanemHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in Sophanem.");
 
 		// Fight with the Menaphite Akh
-		prepareFightMenaphiteAkh = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Prepare to fight the Menaphite Akh (level 351, melee), and talk to Maisa in Necropolis when ready.", combatGear, waterskins);
+		prepareFightMenaphiteAkh = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Prepare to fight the Menaphite Akh (lvl 351), and talk to Maisa in Necropolis when ready.", combatGear, waterskins);
 
 		defeatMenaphiteAkh = new NpcStep(this, NpcID.MENAPHITE_AKH_11492, "Defeat the Menaphite Akh. This boss uses melee, and will occasionally cast lightning in front of her, so be prepared to walk behind her to avoid this attack.", combatGear, waterskins);
 		defeatMenaphiteShadow = new NpcStep(this, NpcID.MENAPHITE_SHADOW, "Quickly defeat the Menaphite Shadow, which attack using Ranged and Magic and can deal large damage.");

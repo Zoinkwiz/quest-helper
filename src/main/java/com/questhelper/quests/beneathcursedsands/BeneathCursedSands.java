@@ -8,6 +8,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -90,6 +91,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 
 	NpcCondition shouldFightScarabSwarm, shouldDestroyShadowRift, shouldFightMenaphiteShadow;
 
+	WidgetModelRequirement isRotatingScarab, inChemistryPuzzle;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -136,12 +139,11 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(32, obtainEmblem);
 		steps.put(34, obtainEmblem);
 
-		// TODO: Forgot a step that tells to interact with the pillar when the interface isn't open.
 		ConditionalStep rotateScarab = new ConditionalStep(this, goToRuinsOfUllek);
-		rotateScarab.addStep(new Conditions(inRuinsOfUllek), useEmblemOnPillar);
-		rotateScarab.addStep(new Conditions(scarabRotatedDownwards), confirmScarabRotation);
-		rotateScarab.addStep(new Conditions(scarabRotationQuickestRight), rotateScarabRight);
-		rotateScarab.addStep(new Conditions(LogicType.NOR, scarabRotationQuickestRight), rotateScarabLeft);
+		rotateScarab.addStep(new Conditions(new Conditions(LogicType.NOR, isRotatingScarab), inRuinsOfUllek), useEmblemOnPillar);
+		rotateScarab.addStep(new Conditions(isRotatingScarab, scarabRotatedDownwards), confirmScarabRotation);
+		rotateScarab.addStep(new Conditions(isRotatingScarab, scarabRotationQuickestRight), rotateScarabRight);
+		rotateScarab.addStep(new Conditions(isRotatingScarab), rotateScarabLeft);
 		steps.put(36, rotateScarab);
 
 		ConditionalStep defeatScarabMages = new ConditionalStep(this, goToRuinsOfUllek);
@@ -234,9 +236,25 @@ public class BeneathCursedSands extends BasicQuestHelper
 		returnToZahur.addStep(new Conditions(lilyOfTheElid), takeLilyToZahur);
 		steps.put(76, returnToZahur);
 		steps.put(78, returnToZahur);
-
 		steps.put(80, talkToZahur);
-		steps.put(82, warmUpChemistryEquipment);
+
+		// TODO: I accidentally finished this step before being able to test this, but the pre-step conditions (commented) should work. My main concern is that the varbit values are not correct.
+		ConditionalStep chemistryPuzzle = new ConditionalStep(this, warmUpChemistryEquipment);
+		// First, we'll increase the middle valve all the way up (Left = 0, Middle < 45, Right < 45)
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, new Conditions(LogicType.NAND, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum)), chemistryValveIncreaseMiddle);
+		// Then, we'll increase the rightmost valve all the way up (Left = 0, Middle = 45, Right < 45)
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, new Conditions(LogicType.NAND, chemistryValveRightAtMaximum)), chemistryValveIncreaseRight);
+		// Then, we'll decrease the rightmost valve one step (Left = 0, Middle = 45, Right = 45)
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
+		// Next, we'll decrease the middle valve one step (Left = 3, Middle = 45, Right = 42)
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepOne, chemistryValveMiddleAtMaximum, chemistryValveRightNearMax), chemistryValveDecreaseMiddle);
+		// Next, we'll decrease the rightmost valve again (Left = 6, Middle = 42, Right = 45)
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepTwo, chemistryValveMiddleNearMax, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
+		// Then, we'll decrease the middle valve once again (Left = 9, Middle = 42, Right = 42)
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepThree, chemistryValveMiddleNearMax, chemistryValveRightNearMax), chemistryValveDecreaseMiddle);
+		// Otherwise, just keep decreasing the left one as a fallback.
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle), chemistryValveDecreaseLeft);
+		steps.put(82, chemistryPuzzle);
 		steps.put(84, talkToZahur);
 		steps.put(86, talkToZahur);
 
@@ -344,8 +362,11 @@ public class BeneathCursedSands extends BasicQuestHelper
 	public void setupConditions()
 	{
 		hasReadStoneTablet = new VarbitRequirement(13847, 1, Operation.GREATER_EQUAL);
+
+		isRotatingScarab = new WidgetModelRequirement(12, 5, -1); // TODO: Fix Widget indexes
 		scarabRotatedDownwards = new VarbitRequirement(13849, 15);
 		scarabRotationQuickestRight = new VarbitRequirement(13849, 15, Operation.GREATER_EQUAL);
+
 		firstLeverPulled = new ObjectCondition(ObjectID.LEVER_43968, new WorldPoint(3439, 9225, 0));
 
 		southernmostUrn = new VarbitRequirement(13859, 0, Operation.NOT_EQUAL); // 3
@@ -356,6 +377,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		shouldFightScarabSwarm = new NpcCondition(NpcID.SCARAB_SWARM_11484);
 		shouldDestroyShadowRift = new NpcCondition(NpcID.SHADOW_RIFT);
 
+		inChemistryPuzzle = new WidgetModelRequirement(588, 1, -1); // TODO: Fix Widget indexes
 		// TODO: Multiples of three? Could be wrong here, was not able to test.
 		chemistryValveLeftStepZero = new VarbitRequirement(13863, 0);
 		chemistryValveLeftStepOne = new VarbitRequirement(13863, 3);
@@ -511,22 +533,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		chemistryValveDecreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the second valve.", 751, 26);
 		chemistryValveIncreaseRight = new WidgetStep(this, "Warm up the Chemistry Equipment. Increase the temperature of the third valve.", 751, 27);
 		chemistryValveDecreaseRight = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the third valve.", 751, 28);
-
-		// TODO: I accidentally finished this step before being able to test this, but the pre-step conditions (commented) should work. My main concern is that the varbit values are not correct.
-		ConditionalStep chemistryPuzzle = new ConditionalStep(this, chemistryValveDecreaseLeft);
-		// First, we'll increase the middle valve all the way up (Left = 0, Middle < 45, Right < 45)
-		chemistryPuzzle.addStep(new Conditions(chemistryValveLeftStepZero, new Conditions(LogicType.NAND, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum)), chemistryValveIncreaseMiddle);
-		// Then, we'll increase the rightmost valve all the way up (Left = 0, Middle = 45, Right < 45)
-		chemistryPuzzle.addStep(new Conditions(chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, new Conditions(LogicType.NAND, chemistryValveRightAtMaximum)), chemistryValveIncreaseRight);
-		// Then, we'll decrease the rightmost valve one step (Left = 0, Middle = 45, Right = 45)
-		chemistryPuzzle.addStep(new Conditions(chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
-		// Next, we'll decrease the middle valve one step (Left = 3, Middle = 45, Right = 42)
-		chemistryPuzzle.addStep(new Conditions(chemistryValveLeftStepOne, chemistryValveMiddleAtMaximum, chemistryValveRightNearMax), chemistryValveDecreaseMiddle);
-		// Next, we'll decrease the rightmost valve again (Left = 6, Middle = 42, Right = 45)
-		chemistryPuzzle.addStep(new Conditions(chemistryValveLeftStepTwo, chemistryValveMiddleNearMax, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
-		// Then, we'll decrease the middle valve once again (Left = 9, Middle = 42, Right = 42)
-		chemistryPuzzle.addStep(new Conditions(chemistryValveLeftStepThree, chemistryValveMiddleNearMax, chemistryValveRightNearMax), chemistryValveDecreaseMiddle);
-		warmUpChemistryEquipment.addSubSteps(chemistryPuzzle); // TODO: Not sure if this works? Again, wasn't able to test.
 
 		bringCureToPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Bring the cure crate to the High Priest in Sophanem.", cureCrate);
 		talkToSophanemHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in Sophanem.");

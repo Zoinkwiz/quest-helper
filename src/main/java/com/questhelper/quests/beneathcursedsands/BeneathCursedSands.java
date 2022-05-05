@@ -78,9 +78,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		leaveDungeon, purchaseBeef, chemistryValveDecreaseLeft, chemistryValveIncreaseMiddle,
 		chemistryValveDecreaseMiddle, chemistryValveIncreaseRight, chemistryValveDecreaseRight, talkToOsman;
 
-	Zone ruinsOfUllekArea1, ruinsOfUllekArea2, ruinsOfUllekArea3, ruinsOfUllekArea4, scarabMageArea, leverMazeArea,
-		riddleArea, tombArea, bossArea, bossTransitionArea;
-
 	Requirement inRuinsOfUllek, inScarabMageArea, inLeverMazeArea, inRiddleArea, inTombArea, inBossArea,
 		inBossTransitionArea;
 
@@ -319,28 +316,33 @@ public class BeneathCursedSands extends BasicQuestHelper
 
 	public void setupZones()
 	{
-		ruinsOfUllekArea1 = new Zone(new WorldPoint(3388, 2821, 0), new WorldPoint(3416, 2803, 0));
-		ruinsOfUllekArea2 = new Zone(new WorldPoint(3388, 2821, 0), new WorldPoint(3445, 2858, 0));
-		ruinsOfUllekArea3 = new Zone(new WorldPoint(3393, 2803, 0), new WorldPoint(3404, 2793, 0));
-		ruinsOfUllekArea4 = new Zone(new WorldPoint(3412, 2799, 0), new WorldPoint(3400, 2802, 0));
-		scarabMageArea = new Zone(new WorldPoint(3446, 9240, 2), new WorldPoint(3433, 9256, 2));
-		leverMazeArea = new Zone(new WorldPoint(3440, 9217, 0), new WorldPoint(3406, 9277, 0));
-		riddleArea = new Zone(new WorldPoint(3390, 9240, 0), new WorldPoint(3405, 9256, 0));
-		tombArea = new Zone(new WorldPoint(3389, 9240, 0), new WorldPoint(3365, 9254, 0));
-		bossArea = new Zone(new WorldPoint(3432, 9241, 2), new WorldPoint(3404, 9255, 2));
-		bossTransitionArea = new Zone(new WorldPoint(3421, 9241, 2), new WorldPoint(3434, 9255, 2));
+		Zone ruinsOfUllekArea1 = new Zone(new WorldPoint(3388, 2821, 0), new WorldPoint(3416, 2803, 0));
+		Zone ruinsOfUllekArea2 = new Zone(new WorldPoint(3388, 2821, 0), new WorldPoint(3445, 2858, 0));
+		Zone ruinsOfUllekArea3 = new Zone(new WorldPoint(3393, 2803, 0), new WorldPoint(3404, 2793, 0));
+		Zone ruinsOfUllekArea4 = new Zone(new WorldPoint(3412, 2799, 0), new WorldPoint(3400, 2802, 0));
+		inRuinsOfUllek = new ZoneRequirement(ruinsOfUllekArea1, ruinsOfUllekArea2, ruinsOfUllekArea3, ruinsOfUllekArea4);
+
+		Zone scarabMageArea = new Zone(new WorldPoint(3446, 9240, 2), new WorldPoint(3433, 9256, 2));
+		inScarabMageArea = new ZoneRequirement(scarabMageArea);
+
+		Zone leverMazeArea = new Zone(new WorldPoint(3440, 9217, 0), new WorldPoint(3406, 9277, 0));
+		inLeverMazeArea = new ZoneRequirement(leverMazeArea);
+
+		Zone riddleArea = new Zone(new WorldPoint(3390, 9240, 0), new WorldPoint(3405, 9256, 0));
+		inRiddleArea = new ZoneRequirement(riddleArea);
+
+		Zone tombArea = new Zone(new WorldPoint(3389, 9240, 0), new WorldPoint(3365, 9254, 0));
+		inTombArea = new ZoneRequirement(tombArea);
+
+		Zone bossArea = new Zone(new WorldPoint(3432, 9241, 2), new WorldPoint(3404, 9255, 2));
+		inBossArea = new ZoneRequirement(bossArea);
+
+		Zone bossTransitionArea = new Zone(new WorldPoint(3421, 9241, 2), new WorldPoint(3434, 9255, 2));
+		inBossTransitionArea = new ZoneRequirement(bossTransitionArea);
 	}
 
 	public void setupConditions()
 	{
-		inRuinsOfUllek = new ZoneRequirement(ruinsOfUllekArea1, ruinsOfUllekArea2, ruinsOfUllekArea3, ruinsOfUllekArea4);
-		inScarabMageArea = new ZoneRequirement(scarabMageArea);
-		inLeverMazeArea = new ZoneRequirement(leverMazeArea);
-		inRiddleArea = new ZoneRequirement(riddleArea);
-		inTombArea = new ZoneRequirement(tombArea);
-		inBossArea = new ZoneRequirement(bossArea);
-		inBossTransitionArea = new ZoneRequirement(bossTransitionArea);
-
 		hasReadStoneTablet = new VarbitRequirement(13847, 1, Operation.GREATER_EQUAL);
 		scarabRotatedDownwards = new VarbitRequirement(13849, 15);
 		scarabRotationQuickestRight = new VarbitRequirement(13849, 15, Operation.GREATER_EQUAL);

@@ -36,7 +36,6 @@ public class WidgetModelRequirement extends WidgetPresenceRequirement
 	public WidgetModelRequirement(int groupId, int childId, int childChildId, int id)
 	{
 		super(groupId, childId, childChildId);
-		;
 		this.id = id;
 	}
 

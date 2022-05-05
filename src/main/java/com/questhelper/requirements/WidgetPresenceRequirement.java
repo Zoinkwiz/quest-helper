@@ -26,39 +26,66 @@
  */
 package com.questhelper.requirements;
 
+import javax.annotation.Nullable;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 
-public class WidgetModelRequirement extends WidgetPresenceRequirement
+public class WidgetPresenceRequirement extends SimpleRequirement
 {
-	private final int id;
+	@Setter
+	@Getter
+	protected boolean hasPassed;
+	protected boolean onlyNeedToPassOnce;
 
-	public WidgetModelRequirement(int groupId, int childId, int childChildId, int id)
+	@Getter
+	protected final int groupId;
+
+	protected final int childId;
+	protected int childChildId = -1;
+
+	public WidgetPresenceRequirement(int groupId, int childId, int childChildId)
 	{
-		super(groupId, childId, childChildId);
-		;
-		this.id = id;
+		this.groupId = groupId;
+		this.childId = childId;
+		this.childChildId = childChildId;
 	}
 
-	public WidgetModelRequirement(int groupId, int childId, int id)
+	public WidgetPresenceRequirement(int groupId, int childId)
 	{
-		super(groupId, childId);
-		this.id = id;
+		this.groupId = groupId;
+		this.childId = childId;
+	}
+
+	@Override
+	public boolean check(Client client)
+	{
+		if (onlyNeedToPassOnce && hasPassed)
+		{
+			return true;
+		}
+		return checkWidget(client);
+	}
+
+	@Nullable
+	protected Widget getWidget(Client client)
+	{
+		Widget widget = client.getWidget(groupId, childId);
+		if (widget == null)
+		{
+			return null;
+		}
+		if (childChildId != -1)
+		{
+			return widget.getChild(childChildId);
+		}
+		return widget;
 	}
 
 	public boolean checkWidget(Client client)
 	{
-		Widget widget = getWidget(client);
-		if (widget == null)
-		{
-			return false;
-		}
-		return widget.getModelId() == id;
-	}
-
-	public void checkWidgetText(Client client)
-	{
-		hasPassed = hasPassed || checkWidget(client);
+		return getWidget(client) != null;
 	}
 }
 

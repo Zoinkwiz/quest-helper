@@ -140,7 +140,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(34, obtainEmblem);
 
 		ConditionalStep rotateScarab = new ConditionalStep(this, goToRuinsOfUllek);
-		rotateScarab.addStep(new Conditions(new Conditions(LogicType.NOR, isRotatingScarab), inRuinsOfUllek, new WidgetModelRequirement(750, 3, -1)), useEmblemOnPillar);
+		rotateScarab.addStep(new Conditions(new Conditions(LogicType.NOR, isRotatingScarab), inRuinsOfUllek), useEmblemOnPillar);
 		rotateScarab.addStep(new Conditions(isRotatingScarab, scarabRotatedDownwards), confirmScarabRotation);
 		rotateScarab.addStep(new Conditions(isRotatingScarab, scarabRotationQuickestRight), rotateScarabRight);
 		rotateScarab.addStep(new Conditions(isRotatingScarab), rotateScarabLeft);
@@ -363,7 +363,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	{
 		hasReadStoneTablet = new VarbitRequirement(13847, 1, Operation.GREATER_EQUAL);
 
-		isRotatingScarab = new WidgetModelRequirement(12, 5, -1); // TODO: Fix Widget indexes
+		isRotatingScarab = new WidgetModelRequirement(750, 3, -1);
 		scarabRotatedDownwards = new VarbitRequirement(13849, 15);
 		scarabRotationQuickestRight = new VarbitRequirement(13849, 15, Operation.GREATER_EQUAL);
 

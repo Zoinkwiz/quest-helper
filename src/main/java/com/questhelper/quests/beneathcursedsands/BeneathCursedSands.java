@@ -380,7 +380,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		shouldFightScarabSwarm = new NpcCondition(NpcID.SCARAB_SWARM_11484);
 		shouldDestroyShadowRift = new NpcCondition(NpcID.SHADOW_RIFT);
 
-		inChemistryPuzzle = new WidgetModelRequirement(588, 1, -1); // TODO: Fix Widget indexes
+		inChemistryPuzzle = new WidgetModelRequirement(751, 3, -1);
 		// TODO: Multiples of three? Could be wrong here, was not able to test.
 		chemistryValveLeftStepZero = new VarbitRequirement(13863, 0);
 		chemistryValveLeftStepOne = new VarbitRequirement(13863, 3);
@@ -422,7 +422,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		// The Ruins of Ullek
 		talkToMaisaExploreCliffs = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3378, 2792, 0), "Go back to Maisa's camp and talk to her.");
 
-		// TODO: This step might be skippable by directly using a tinderbox?
 		inspectFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2825, 0), "Inspect the furnace");
 		obtainTinderbox = new ObjectStep(this, ObjectID.CAMPING_EQUIPMENT_43889, new WorldPoint(3379, 2791, 0), "Search the camping equipment by the tent for a tinderbox.");
 		obtainTinderbox.addIcon(ItemID.TINDERBOX);

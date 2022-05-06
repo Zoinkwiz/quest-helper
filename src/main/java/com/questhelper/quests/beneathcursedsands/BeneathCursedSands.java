@@ -407,7 +407,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 
 		fightHeadMenaphiteGuard = new NpcStep(this, NpcID.HEAD_MENAPHITE_GUARD_11529, "Fight the Head Menaphite Guard. This boss uses melee, and can hit up to 16. DO NOT USE ANY OVERHEAD PROTECTION PRAYERS, OR YOU WILL GET HIT FOR 1/3RD OF YOUR HITPOINTS", meleeCombatGear, food);
 
-		// TODO: Verify the following NPC ID. Can be done by interrupting (walking away) during the post-fight cutscene.
 		talkToMaisaPostFightCutsceneInterruption = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Talk to Maisa to continue the quest.");
 
 		// The Ruins of Ullek

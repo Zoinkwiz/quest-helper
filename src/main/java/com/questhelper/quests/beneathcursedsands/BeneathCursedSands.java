@@ -240,21 +240,13 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(78, returnToZahur);
 		steps.put(80, talkToZahur);
 
-		// TODO: I accidentally finished this step before being able to test this, but the pre-step conditions (commented) should work. My main concern is that the varbit values are not correct.
 		ConditionalStep chemistryPuzzle = new ConditionalStep(this, warmUpChemistryEquipment);
-		// First, we'll increase the middle valve all the way up (Left = 0, Middle < 45, Right < 45)
-		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, new Conditions(LogicType.NAND, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum)), chemistryValveIncreaseMiddle);
-		// Then, we'll increase the rightmost valve all the way up (Left = 0, Middle = 45, Right < 45)
+		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, new Conditions(LogicType.NAND, chemistryValveMiddleAtMaximum)), chemistryValveIncreaseMiddle);
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, new Conditions(LogicType.NAND, chemistryValveRightAtMaximum)), chemistryValveIncreaseRight);
-		// Then, we'll decrease the rightmost valve one step (Left = 0, Middle = 45, Right = 45)
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
-		// Next, we'll decrease the middle valve one step (Left = 3, Middle = 45, Right = 42)
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepOne, chemistryValveMiddleAtMaximum, chemistryValveRightNearMax), chemistryValveDecreaseMiddle);
-		// Next, we'll decrease the rightmost valve again (Left = 6, Middle = 42, Right = 45)
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepTwo, chemistryValveMiddleNearMax, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
-		// Then, we'll decrease the middle valve once again (Left = 9, Middle = 42, Right = 42)
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepThree, chemistryValveMiddleNearMax, chemistryValveRightNearMax), chemistryValveDecreaseMiddle);
-		// Otherwise, just keep decreasing the left one as a fallback.
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle), chemistryValveDecreaseLeft);
 		steps.put(82, chemistryPuzzle);
 		steps.put(84, talkToZahur);
@@ -381,7 +373,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		shouldDestroyShadowRift = new NpcCondition(NpcID.SHADOW_RIFT);
 
 		inChemistryPuzzle = new WidgetModelRequirement(751, 3, -1);
-		// TODO: Multiples of three? Could be wrong here, was not able to test.
 		chemistryValveLeftStepZero = new VarbitRequirement(13863, 0);
 		chemistryValveLeftStepOne = new VarbitRequirement(13863, 3);
 		chemistryValveLeftStepTwo = new VarbitRequirement(13863, 6);

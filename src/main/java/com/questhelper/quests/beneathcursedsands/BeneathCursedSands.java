@@ -82,9 +82,9 @@ public class BeneathCursedSands extends BasicQuestHelper
 	Requirement inRuinsOfUllek, inScarabMageArea, inLeverMazeArea, inRiddleArea, inTombArea, inBossArea,
 		inBossTransitionArea;
 
-	VarbitRequirement hasReadStoneTablet, scarabRotatedDownwards, scarabRotationQuickestRight, southernmostUrn,
-		centreSouthUrn, centreNorthUrn, northernmostUrn, chemistryValveLeftStepZero, chemistryValveLeftStepOne,
-		chemistryValveLeftStepTwo, chemistryValveLeftStepThree, chemistryValveMiddleNearMax,
+	VarbitRequirement investigatedPyramid, hasReadStoneTablet, scarabRotatedDownwards, scarabRotationQuickestRight,
+		southernmostUrn, centreSouthUrn, centreNorthUrn, northernmostUrn, chemistryValveLeftStepZero,
+		chemistryValveLeftStepOne, chemistryValveLeftStepTwo, chemistryValveLeftStepThree, chemistryValveMiddleNearMax,
 		chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum, chemistryValveRightNearMax;
 
 	ObjectCondition firstLeverPulled;
@@ -111,8 +111,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(10, talkToMaisaStartInvestigation);
 		steps.put(12, talkToMaisaStartInvestigation);
 
-//		steps.put(14, inspectBlockedPyramidEntry); // TODO: Both this and the 'talkToCitizenOrGuard' step belong to step 14. Did I miss a different flag?
-		steps.put(14, talkToCitizenOrGuard);
+		ConditionalStep investigatePyramid = new ConditionalStep(this, inspectBlockedPyramidEntry);
+		investigatePyramid.addStep(new Conditions(investigatedPyramid), talkToCitizenOrGuard);
+		steps.put(14, investigatePyramid);
+
 		steps.put(16, talkToCitizenOrGuard);
 		steps.put(18, fightHeadMenaphiteGuard);
 		steps.put(20, talkToMaisaPostFightCutsceneInterruption);
@@ -361,6 +363,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 
 	public void setupConditions()
 	{
+		investigatedPyramid = new VarbitRequirement(13844, 1, Operation.EQUAL);
 		hasReadStoneTablet = new VarbitRequirement(13847, 1, Operation.GREATER_EQUAL);
 
 		isRotatingScarab = new WidgetModelRequirement(750, 3, -1);

@@ -53,12 +53,12 @@ public class BeneathCursedSands extends BasicQuestHelper
 	ItemRequirement coal, tinderbox, ironBar, spade, meat, prayerPotions, fiveCoins;
 
 	// Items Recommended
-	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, meleeCombatGear, rangedCombatGear,
-		staminaPotions, nardahTeleport;
+	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, meleeCombatGear,
+		rangedCombatGear, staminaPotions, nardahTeleport;
 
 	// Quest Items
-	ItemRequirement messageFromJamila, stoneTablet, chest, scarabMould, scarabEmblem, riddleEmblemBaboon,
-		riddleEmblemHuman, riddleEmblemCrocodile, riddleEmblemScarab, rustyKey, lilyOfTheElid, cureCrate;
+	ItemRequirement messageFromJamila, stoneTablet, chest, scarabMould, scarabEmblem, rustyKey, lilyOfTheElid,
+		cureCrate;
 
 	// Primary Quest Line Steps
 	QuestStep talkToJamilaToStart, receiveSpecialItemFromJamila, readMessage, talkToMaisaStartInvestigation,
@@ -66,10 +66,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 		goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell,
 		readStoneTablet, leaveRuinsOfUllek, digForChest, openChest, craftEmblem, useEmblemOnPillar, rotateScarabLeft,
 		rotateScarabRight, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages,
-		climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor, obtainEmblemsFromPlaque, placeEmblemsInUrns,
-		pullRiddleLever, enterTombDoor, talkToSpirit, takeRustyKey, unlockBossDoor, fightChampionOfScabaras,
-		talkToScabarasHighPriest, talkToMaisaInNardah, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur,
-		talkToZahur, warmUpChemistryEquipment, bringCureToPriest, prepareFightMenaphiteAkh, talkToSophanemHighPriest,
+		climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor, solveTombRiddle, enterTombDoor,
+		talkToSpirit, takeRustyKey, unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest,
+		talkToMaisaInNardah, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur,
+		warmUpChemistryEquipment, bringCureToPriest, prepareFightMenaphiteAkh, talkToSophanemHighPriest,
 		defeatMenaphiteAkh, defeatMenaphiteShadow, finishQuest;
 
 	// Optional & Supportive Quest Steps
@@ -83,9 +83,9 @@ public class BeneathCursedSands extends BasicQuestHelper
 		inBossTransitionArea;
 
 	VarbitRequirement investigatedPyramid, hasReadStoneTablet, scarabRotatedDownwards, scarabRotationQuickestRight,
-		southernmostUrn, centreSouthUrn, centreNorthUrn, northernmostUrn, chemistryValveLeftStepZero,
-		chemistryValveLeftStepOne, chemistryValveLeftStepTwo, chemistryValveLeftStepThree, chemistryValveMiddleNearMax,
-		chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum, chemistryValveRightNearMax;
+		chemistryValveLeftStepZero, chemistryValveLeftStepOne, chemistryValveLeftStepTwo, chemistryValveLeftStepThree,
+		chemistryValveMiddleNearMax, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum,
+		chemistryValveRightNearMax;
 
 	ObjectCondition firstLeverPulled;
 
@@ -170,9 +170,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		solveRiddle.addStep(new Conditions(inRuinsOfUllek), enterDungeon);
 		solveRiddle.addStep(new Conditions(inScarabMageArea), climbDownStairsAgain);
 		solveRiddle.addStep(new Conditions(inLeverMazeArea), enterRiddleDoor);
-		solveRiddle.addStep(new Conditions(new Conditions(LogicType.NOR, riddleEmblemBaboon, riddleEmblemHuman, riddleEmblemCrocodile, riddleEmblemScarab), new Conditions(LogicType.NAND, southernmostUrn, centreSouthUrn, centreNorthUrn, northernmostUrn), inRiddleArea), obtainEmblemsFromPlaque);
-		solveRiddle.addStep(new Conditions(new Conditions(LogicType.NAND, southernmostUrn, centreSouthUrn, centreNorthUrn, northernmostUrn), inRiddleArea), placeEmblemsInUrns);
-		solveRiddle.addStep(new Conditions(inRiddleArea), pullRiddleLever);
+		solveRiddle.addStep(new Conditions(inRiddleArea), solveTombRiddle);
 		steps.put(46, solveRiddle);
 
 		ConditionalStep enterTomb = new ConditionalStep(this, goToRuinsOfUllek);
@@ -310,14 +308,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		scarabMould = new ItemRequirement("Scarab mould", ItemID.SCARAB_MOULD);
 		scarabEmblem = new ItemRequirement("Scarab emblem", ItemID.SCARAB_EMBLEM);
 		scarabEmblem.setHighlightInInventory(true);
-		riddleEmblemBaboon = new ItemRequirement("Baboon emblem", ItemID.BABOON_EMBLEM);
-		riddleEmblemBaboon.setHighlightInInventory(true);
-		riddleEmblemHuman = new ItemRequirement("Human emblem", ItemID.HUMAN_EMBLEM);
-		riddleEmblemHuman.setHighlightInInventory(true);
-		riddleEmblemCrocodile = new ItemRequirement("Crocodile emblem", ItemID.CROCODILE_EMBLEM);
-		riddleEmblemCrocodile.setHighlightInInventory(true);
-		riddleEmblemScarab = new ItemRequirement("Scarab emblem", ItemID.SCARAB_EMBLEM_26956);
-		riddleEmblemScarab.setHighlightInInventory(true);
 		rustyKey = new ItemRequirement("Rusty key", ItemID.RUSTY_KEY);
 		rustyKey.setHighlightInInventory(true);
 		fiveCoins = new ItemRequirement("5 Coins", ItemCollections.getCoins());
@@ -363,11 +353,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		scarabRotationQuickestRight = new VarbitRequirement(13849, 15, Operation.GREATER_EQUAL);
 
 		firstLeverPulled = new ObjectCondition(ObjectID.LEVER_43968, new WorldPoint(3439, 9225, 0));
-
-		southernmostUrn = new VarbitRequirement(13859, 0, Operation.NOT_EQUAL); // 3
-		centreSouthUrn = new VarbitRequirement(13860, 0, Operation.NOT_EQUAL); // 2
-		centreNorthUrn = new VarbitRequirement(13861, 0, Operation.NOT_EQUAL); // 4
-		northernmostUrn = new VarbitRequirement(13862, 0, Operation.NOT_EQUAL); // 1
 
 		shouldFightScarabSwarm = new NpcCondition(NpcID.SCARAB_SWARM_11484);
 		shouldDestroyShadowRift = new NpcCondition(NpcID.SHADOW_RIFT);
@@ -464,13 +449,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		enterRiddleDoor = new ObjectStep(this, ObjectID.DOOR_43961, new WorldPoint(3405, 9248, 0), "With the traps disabled, go through the door west of the juncture.");
 
 		// Riddle of the Tomb
-		obtainEmblemsFromPlaque = new ObjectStep(this, NullObjectID.NULL_20392, new WorldPoint(3391, 9245, 0), "Inspect the south-western plaque and to get four emblems.");
-
-		placeEmblemsInUrns = new ObjectStep(this, NullObjectID.NULL_20391, new WorldPoint(3391, 9251, 0), "Inspect the north-western plaque and read it. The solution to the riddle is different for everyone. Please check the wiki guide to solve this.", true);
-		((ObjectStep) placeEmblemsInUrns).addAlternateObjects(NullObjectID.NULL_44587, NullObjectID.NULL_44588, NullObjectID.NULL_44589, NullObjectID.NULL_44590);
-		((ObjectStep) placeEmblemsInUrns).setHideWorldArrow(true);
-
-		pullRiddleLever = new ObjectStep(this, NullObjectID.NULL_20288, new WorldPoint(3390, 9247, 0), "Pull the lever to the south-west.");
+		// TODO: This step needs to be tested.
+		solveTombRiddle = new TombRiddle(this);
 
 		enterTombDoor = new ObjectStep(this, ObjectID.DOOR_43962, new WorldPoint(3389, 9248, 0), "Enter the tomb.");
 
@@ -590,7 +570,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToJamilaToStart, readMessage), Collections.emptyList(), Collections.singletonList(waterskins)));
 		allSteps.add(new PanelDetails("Entranced Menaphites", Arrays.asList(talkToMaisaStartInvestigation, inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard), Collections.singletonList(meleeCombatGear), Arrays.asList(waterskins, food)));
 		allSteps.add(new PanelDetails("The Ruins of Ullek", Arrays.asList(talkToMaisaExploreCliffs, goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, digForChest, openChest, craftEmblem, useEmblemOnPillar, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor), Arrays.asList(meleeCombatGear, coal, tinderbox, spade, ironBar), Arrays.asList(food, antipoison, waterskins)));
-		allSteps.add(new PanelDetails("Riddle of the Tomb", Arrays.asList(obtainEmblemsFromPlaque, placeEmblemsInUrns, pullRiddleLever, enterTombDoor, talkToSpirit, takeRustyKey)));
+		allSteps.add(new PanelDetails("Riddle of the Tomb", Arrays.asList(solveTombRiddle, enterTombDoor, talkToSpirit, takeRustyKey)));
 		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey)));
 		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, warmUpChemistryEquipment), Arrays.asList(meat, waterskins)));
 		allSteps.add(new PanelDetails("Fight with the Menaphite Akh", Arrays.asList(prepareFightMenaphiteAkh, defeatMenaphiteAkh, finishQuest), Arrays.asList(meleeCombatGear, waterskins)));

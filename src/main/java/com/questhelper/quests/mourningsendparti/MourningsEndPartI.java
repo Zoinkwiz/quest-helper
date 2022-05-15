@@ -462,7 +462,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.SHEEP_HERDER, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.RANGED, 60));
-		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 50));
 		return req;
 	}
 

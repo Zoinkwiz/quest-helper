@@ -158,7 +158,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchCookBass);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE, 1).showConditioned(notTPCam);
 		airRune = new ItemRequirement("Air Rune", ItemID.AIR_RUNE, 5).showConditioned(notTPCam);
-		mapleUnstrung = new ItemRequirement("Unstring Maple shortbow", ItemID.MAPLE_SHORTBOW_U).showConditioned(notStringMaple);
+		mapleUnstrung = new ItemRequirement("Maple shortbow (u)", ItemID.MAPLE_SHORTBOW_U).showConditioned(notStringMaple);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notStringMaple);
 		limpSeed = new ItemRequirement("Limpwurt seed", ItemID.LIMPWURT_SEED).showConditioned(notPickLimp);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickLimp);

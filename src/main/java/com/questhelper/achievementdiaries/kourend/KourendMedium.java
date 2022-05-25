@@ -336,7 +336,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 50));
 		req.add(new SkillRequirement(Skill.FISHING, 43));
-		req.add(new SkillRequirement(Skill.HUNTER, 35));
+		req.add(new SkillRequirement(Skill.HUNTER, 53));
 		req.add(new SkillRequirement(Skill.MINING, 42));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
 

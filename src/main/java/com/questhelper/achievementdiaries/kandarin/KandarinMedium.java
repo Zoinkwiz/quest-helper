@@ -158,7 +158,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchCookBass);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE, 1).showConditioned(notTPCam);
 		airRune = new ItemRequirement("Air Rune", ItemID.AIR_RUNE, 5).showConditioned(notTPCam);
-		mapleUnstrung = new ItemRequirement("Unstring Maple shortbow", ItemID.MAPLE_SHORTBOW_U).showConditioned(notStringMaple);
+		mapleUnstrung = new ItemRequirement("Maple shortbow (u)", ItemID.MAPLE_SHORTBOW_U).showConditioned(notStringMaple);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notStringMaple);
 		limpSeed = new ItemRequirement("Limpwurt seed", ItemID.LIMPWURT_SEED).showConditioned(notPickLimp);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickLimp);
@@ -252,7 +252,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		catchBass = new NpcStep(this, NpcID.FISHING_SPOT_1520, new WorldPoint(2837, 3431, 0),
 			"Catch a bass.", bigFishingNet);
 		cookBass = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2818, 3444, 0),
-			"Cook the bass on the ranged in Catherby.", rawBass);
+			"Cook the bass on the range in Catherby.", rawBass);
 		travelMcGrubor = new DetailedQuestStep(this, "Take a fairy ring to McGrubor's Woods (ALS)", staff.equipped());
 		tpCAM = new DetailedQuestStep(this, "Teleport to Camelot.", lawRune.quantity(1), airRune.quantity(5),
 			normalBook);

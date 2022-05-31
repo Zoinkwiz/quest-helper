@@ -371,6 +371,7 @@ public class ForgettableTale extends BasicQuestHelper
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		beer.setTooltip("You can buy these from either of the bars in Keldagrim for 2 coins");
 		dwarvenStout = new ItemRequirement("Dwarven stout", ItemID.DWARVEN_STOUT);
+		dwarvenStout.setTooltip("You can pick up one of these next to the NPC you need to give it to.");
 		beerGlass = new ItemRequirement("Beer glass", ItemID.BEER_GLASS);
 		randomItem = new ItemRequirement("A random item per player", -1, -1);
 		pot = new ItemRequirement("Pot", ItemID.POT);

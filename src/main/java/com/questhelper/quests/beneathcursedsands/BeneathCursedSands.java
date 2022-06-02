@@ -203,8 +203,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		ConditionalStep championOfScabarasFight = new ConditionalStep(this, goToRuinsOfUllek);
 		championOfScabarasFight.addStep(new Conditions(inRuinsOfUllek), enterDungeon);
 		championOfScabarasFight.addStep(new Conditions(inScarabMageArea), openBossDoor);
-		championOfScabarasFight.addStep(new Conditions(shouldFightScarabSwarm), fightScarabSwarm);
-		championOfScabarasFight.addStep(new Conditions(shouldDestroyShadowRift), destroyShadowRift);
+//		championOfScabarasFight.addStep(new Conditions(shouldFightScarabSwarm), fightScarabSwarm);
+//		championOfScabarasFight.addStep(new Conditions(shouldDestroyShadowRift), destroyShadowRift);
 		championOfScabarasFight.addStep(new Conditions(inBossArea), fightChampionOfScabaras);
 		steps.put(58, championOfScabarasFight);
 		steps.put(60, championOfScabarasFight);
@@ -257,7 +257,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(96, prepareFightMenaphiteAkh);
 
 		ConditionalStep menaphiteAkhFight = new ConditionalStep(this, defeatMenaphiteAkh);
-		menaphiteAkhFight.addStep(shouldFightMenaphiteShadow, defeatMenaphiteShadow);
+//		menaphiteAkhFight.addStep(shouldFightMenaphiteShadow, defeatMenaphiteShadow);
 		steps.put(98, menaphiteAkhFight);
 		steps.put(100, talkToOsman);
 		steps.put(102, finishQuest);
@@ -310,8 +310,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		scarabEmblem.setHighlightInInventory(true);
 		rustyKey = new ItemRequirement("Rusty key", ItemID.RUSTY_KEY);
 		rustyKey.setHighlightInInventory(true);
-		fiveCoins = new ItemRequirement("5 Coins", ItemCollections.getCoins());
-		fiveCoins.quantity(5);
+		fiveCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
 		lilyOfTheElid = new ItemRequirement("Lily of the Elid", ItemID.LILY_OF_THE_ELID);
 		cureCrate = new ItemRequirement("Cure crate", ItemID.CURE_CRATE);
 	}
@@ -346,7 +345,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 	public void setupConditions()
 	{
 		investigatedPyramid = new VarbitRequirement(13844, 1, Operation.EQUAL);
-		hasReadStoneTablet = new VarbitRequirement(13847, 1, Operation.GREATER_EQUAL);
+
+		// Has found stone tablet, =1
+		// Has read stone tablet, =2
+		hasReadStoneTablet = new VarbitRequirement(13847, 2, Operation.GREATER_EQUAL);
 
 		isRotatingScarab = new WidgetModelRequirement(750, 3, -1);
 		scarabRotatedDownwards = new VarbitRequirement(13849, 15);
@@ -373,7 +375,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	public void setupSteps()
 	{
 		// Starting off
-		talkToJamilaToStart = new NpcStep(this, NpcID.JAMILA, new WorldPoint(3311, 2779, 0), "Talk to Jamila in Sophanem to start the quest");
+		talkToJamilaToStart = new NpcStep(this, NpcID.JAMILA, new WorldPoint(3311, 2779, 0), "Talk to Jamila in Sophanem to start the quest.");
 		talkToJamilaToStart.addDialogSteps("What's this special item?", "Yes.");
 
 		receiveSpecialItemFromJamila = new NpcStep(this, NpcID.JAMILA, new WorldPoint(3311, 2779, 0), "Talk to Jamila to obtain a special item");
@@ -397,7 +399,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		// The Ruins of Ullek
 		talkToMaisaExploreCliffs = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3378, 2792, 0), "Go back to Maisa's camp and talk to her.");
 
-		inspectFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2825, 0), "Inspect the furnace");
+		inspectFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Inspect the furnace.");
 		obtainTinderbox = new ObjectStep(this, ObjectID.CAMPING_EQUIPMENT_43889, new WorldPoint(3379, 2791, 0), "Search the camping equipment by the tent for a tinderbox.");
 		obtainTinderbox.addIcon(ItemID.TINDERBOX);
 		obtainSpade = new DetailedQuestStep(this, new WorldPoint(3355, 2758, 0), "Pick up a spade south of the campsite.");
@@ -406,26 +408,27 @@ public class BeneathCursedSands extends BasicQuestHelper
 		goFromCampsiteToRuinsOfUllek = new ObjectStep(this, ObjectID.STEPS_44113, new WorldPoint(3419, 2803, 0), "From the campsite, head south and then to the east, around the cliffs, where you will find a set of stairs to the Ruins of Ullek.");
 		((DetailedQuestStep) goFromCampsiteToRuinsOfUllek).setLinePoints(Arrays.asList(new WorldPoint(3370, 2795, 0), new WorldPoint(3370, 2773, 0), new WorldPoint(3387, 2758, 0), new WorldPoint(3402, 2758, 0), new WorldPoint(3402, 2758, 0), new WorldPoint(3419, 2778, 0), new WorldPoint(3419, 2802, 0)));
 
-		useCoalOnFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2825, 0), "Use coal on the furnace to refuel it.", tinderbox, coal.highlighted());
+		useCoalOnFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Use coal on the furnace to refuel it.", tinderbox, coal.highlighted());
 		useCoalOnFurnace.addDialogStep("Yes.");
 		useCoalOnFurnace.addIcon(ItemID.COAL);
 
-		useTinderboxOnFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2825, 0), "Use your tinderbox on the furnace to light it.", tinderbox);
+		useTinderboxOnFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Use your tinderbox on the furnace to light it.", tinderbox.highlighted());
 		useTinderboxOnFurnace.addDialogStep("Yes.");
 		useTinderboxOnFurnace.addIcon(ItemID.TINDERBOX);
 
-		searchWell = new ObjectStep(this, NullObjectID.NULL_6630, new WorldPoint(3401, 2828, 0), "Search the well to receive a stone tablet.");
+		searchWell = new ObjectStep(this, NullObjectID.NULL_6630, new WorldPoint(3400, 2828, 0), "Search the well to receive a stone tablet.");
 		readStoneTablet = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet);
-		leaveRuinsOfUllek = new ObjectStep(this, ObjectID.STEPS_44111, new WorldPoint(3417, 2806, 0), "Leave the Ruins of Ullek using the steps in the south-east.");
+		leaveRuinsOfUllek = new ObjectStep(this, ObjectID.STEPS_44111, new WorldPoint(3417, 2805, 0), "Leave the Ruins of Ullek using the steps in the south-east.");
 		digForChest = new DigStep(this, new WorldPoint(3411, 2786, 0), "Dig in front of the southernmost ritual pillar");
 		openChest = new DetailedQuestStep(this, "Open the chest and input the passcode \"1118513\".", chest);
 		goToRuinsOfUllek = new ObjectStep(this, ObjectID.STEPS_44113, new WorldPoint(3419, 2803, 0), "Return to the Ruins of Ullek.");
 
-		craftEmblem = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2825, 0), "Craft a scarab emblem using the furnace.", scarabMould, ironBar.highlighted());
+		craftEmblem = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Craft a scarab emblem using the furnace.", scarabMould, ironBar.highlighted());
 		craftEmblem.addDialogStep("Yes.");
 		craftEmblem.addIcon(ItemID.IRON_BAR);
 
-		useEmblemOnPillar = new ObjectStep(this, NullObjectID.NULL_6579, new WorldPoint(3418, 2848, 0), "Inspect the pillar in to insert the emblem.", scarabEmblem);
+		useEmblemOnPillar = new ObjectStep(this, NullObjectID.NULL_6579, new WorldPoint(3418, 2848, 0), "Inspect the " +
+			"pillar to the north to insert the emblem.", scarabEmblem);
 		useEmblemOnPillar.addIcon(ItemID.SCARAB_EMBLEM);
 		useEmblemOnPillar.addDialogStep("Yes.");
 
@@ -433,9 +436,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 		rotateScarabRight = new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 8);
 		confirmScarabRotation = new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 9);
 
-		enterDungeonToFightScarabMages = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3411, 2848, 0), "Enter the dungeon.", meleeCombatGear, food);
-		enterDungeon = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3411, 2848, 0), "Enter the dungeon.");
-		fightScarabMages = new NpcStep(this, NpcID.SCARAB_MAGE_11508, "Use Protect from Magic and defeat the two Scarab Mages", meleeCombatGear, food, antipoison);
+		enterDungeonToFightScarabMages = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3409, 2848, 0),
+			"Enter the dungeon.", meleeCombatGear, food);
+		enterDungeon = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3409, 2848, 0), "Enter the dungeon.");
+		fightScarabMages = new NpcStep(this, NpcID.SCARAB_MAGE_11508, "Use Protect from Magic and defeat the two Scarab Mages.", meleeCombatGear, food, antipoison);
 
 		climbDownStairsAgain = new ObjectStep(this, ObjectID.STAIRS_43959, "Climb down the stairs.");
 		((ObjectStep) climbDownStairsAgain).addAlternateObjects(ObjectID.STAIRS_43958);
@@ -455,6 +459,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		enterTombDoor = new ObjectStep(this, ObjectID.DOOR_43962, new WorldPoint(3389, 9248, 0), "Enter the tomb.");
 
 		talkToSpirit = new NpcStep(this, NpcID.SPIRIT, new WorldPoint(3377, 9248, 0), "Speak to the Spirit.");
+		((NpcStep) talkToSpirit).addAlternateNpcs(NpcID.MEHHAR);
 
 		takeRustyKey = new ObjectStep(this, NullObjectID.NULL_44591, new WorldPoint(3368, 9248, 0), "Take the rusty key from the urn in the back of the room.");
 
@@ -469,11 +474,13 @@ public class BeneathCursedSands extends BasicQuestHelper
 
 		unlockBossDoor = new ObjectStep(this, ObjectID.DOOR_43960, "Prepare to fight the Champion of Scabaras, and unlock the door to start the fight.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions, rustyKey);
 		unlockBossDoor.addIcon(ItemID.RUSTY_KEY);
+		unlockBossDoor.addSubSteps(leaveTombDoor, leaveRiddleDoor, climbUpstairs);
 
 		openBossDoor = new ObjectStep(this, ObjectID.DOOR_43960, "Prepare to fight the Champion of Scabaras, and open the door to start the fight.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions);
 
 		fightChampionOfScabaras = new NpcStep(this, NpcID.CHAMPION_OF_SCABARAS_11483, "Fight the Champion of Scabaras.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions);
 		fightChampionOfScabaras.addText("Protect from Magic, and keep 4+ tiles distance at all times.");
+		fightChampionOfScabaras.addText("Whenever a rift or swarm appears, kill it.");
 		fightChampionOfScabaras.addText("He is weak to ranged attacks, so bring your best ranged gear.");
 		fightScarabSwarm = new NpcStep(this, NpcID.SCARAB_SWARM_11484, "Defeat the Swarm as soon as possible, to prevent shadow flames from hindering your movement.");
 		destroyShadowRift = new NpcStep(this, NpcID.SHADOW_RIFT, "Destroy the Shadow Rift as soon as possible, to prevent 35+ damage from occurring once it explodes.");
@@ -489,8 +496,9 @@ public class BeneathCursedSands extends BasicQuestHelper
 		// Cure for the Pox
 		talkToMaisaInNardah = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3425, 2909, 0), "Talk to Maisa or Zahur in Nardah.");
 		((NpcStep) talkToMaisaInNardah).addAlternateNpcs(NpcID.ZAHUR);
+		talkToMaisaInNardah.addSubSteps(leaveHighPriestDoorOne, leaveHighPriestDoorTwo, leaveDungeon);
 
-		purchaseBeef = new NpcStep(this, NpcID.KAZEMDE, new WorldPoint(3415, 2908, 0), "Purchase some meat from the General Store", fiveCoins);
+		purchaseBeef = new NpcStep(this, NpcID.KAZEMDE, new WorldPoint(3415, 2908, 0), "Purchase some meat from the General Store.", fiveCoins);
 
 		attemptSteppingStones = new ObjectStep(this, ObjectID.STEPPING_STONE_43988, new WorldPoint(3353, 2923, 0), "Head west and attempt to jump to the stepping stones over the River Elid.", meat);
 		attemptSteppingStones.addDialogStep("Yes.");
@@ -505,6 +513,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		chemistryValveDecreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the second valve.", 751, 26);
 		chemistryValveIncreaseRight = new WidgetStep(this, "Warm up the Chemistry Equipment. Increase the temperature of the third valve.", 751, 27);
 		chemistryValveDecreaseRight = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the third valve.", 751, 28);
+		warmUpChemistryEquipment.addSubSteps(chemistryValveDecreaseLeft, chemistryValveIncreaseMiddle,
+			chemistryValveDecreaseMiddle, chemistryValveIncreaseRight, chemistryValveDecreaseRight);
 
 		bringCureToPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Bring the cure crate to the High Priest in Sophanem.", cureCrate);
 		talkToSophanemHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in Sophanem.");
@@ -512,8 +522,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 		// Fight with the Menaphite Akh
 		prepareFightMenaphiteAkh = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Prepare to fight the Menaphite Akh (lvl 351), and talk to Maisa in Necropolis when ready.", meleeCombatGear, waterskins);
 
-		defeatMenaphiteAkh = new NpcStep(this, NpcID.MENAPHITE_AKH_11492, "Defeat the Menaphite Akh. This boss uses melee, and will occasionally cast lightning in front of her, so be prepared to walk behind her to avoid this attack.", meleeCombatGear, waterskins);
-		defeatMenaphiteShadow = new NpcStep(this, NpcID.MENAPHITE_SHADOW, "Quickly defeat the Menaphite Shadow, which attack using Ranged and Magic and can deal large damage.");
+		defeatMenaphiteAkh = new NpcStep(this, NpcID.MENAPHITE_AKH_11492, "Defeat the Menaphite Akh. This boss uses melee, and will occasionally cast lightning in front of her, " +
+			"so be prepared to walk behind her to avoid this attack. Whenever a shadow version of them appears, kill " +
+			"them quickly as they'll deal a lot of damage.", meleeCombatGear,waterskins);
+//		defeatMenaphiteShadow = new NpcStep(this, NpcID.MENAPHITE_SHADOW, "Quickly defeat the Menaphite Shadow, which attack using Ranged and Magic and can deal large damage.");
 
 		talkToOsman = new NpcStep(this, NpcID.OSMAN_11486, new WorldPoint(3369, 2799, 0), "Talk to Osman");
 
@@ -568,11 +580,12 @@ public class BeneathCursedSands extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToJamilaToStart, readMessage), Collections.emptyList(), Collections.singletonList(waterskins)));
-		allSteps.add(new PanelDetails("Entranced Menaphites", Arrays.asList(talkToMaisaStartInvestigation, inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard), Collections.singletonList(meleeCombatGear), Arrays.asList(waterskins, food)));
+		allSteps.add(new PanelDetails("Entranced Menaphites", Arrays.asList(talkToMaisaStartInvestigation, inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard, talkToMaisaPostFightCutsceneInterruption),
+			Collections.singletonList(meleeCombatGear), Arrays.asList(waterskins, food)));
 		allSteps.add(new PanelDetails("The Ruins of Ullek", Arrays.asList(talkToMaisaExploreCliffs, goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, digForChest, openChest, craftEmblem, useEmblemOnPillar, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor), Arrays.asList(meleeCombatGear, coal, tinderbox, spade, ironBar), Arrays.asList(food, antipoison, waterskins)));
 		allSteps.add(new PanelDetails("Riddle of the Tomb", Arrays.asList(solveTombRiddle, enterTombDoor, talkToSpirit, takeRustyKey)));
 		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey)));
-		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, warmUpChemistryEquipment), Arrays.asList(meat, waterskins)));
+		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, warmUpChemistryEquipment, bringCureToPriest), Arrays.asList(meat, waterskins)));
 		allSteps.add(new PanelDetails("Fight with the Menaphite Akh", Arrays.asList(prepareFightMenaphiteAkh, defeatMenaphiteAkh, finishQuest), Arrays.asList(meleeCombatGear, waterskins)));
 
 		return allSteps;

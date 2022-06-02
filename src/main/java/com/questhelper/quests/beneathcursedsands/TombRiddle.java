@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -48,9 +47,9 @@ public class TombRiddle extends DetailedOwnerStep
 	{
 		super(questHelper, "Solve the riddle.");
 
-		final int SCARAB = 2;
-		final int HUMAN = 3;
-		final int CROCODILE = 4;
+		final int SCARAB = 4;
+		final int HUMAN = 2;
+		final int CROCODILE = 3;
 		final int BABOON = 1;
 
 		gods.put("god of isolation", SCARAB);
@@ -105,28 +104,47 @@ public class TombRiddle extends DetailedOwnerStep
 		{
 			if (!emblems.get(northernEmblem).check(client)) {
 				startUpStep(obtainEmblems);
-			} else {
+			}
+			else
+			{
 				startUpStep(placeNorthernUrn);
 			}
-		} else if (currentCentreNorthEmblem != centreNorthEmblem) {
-			if (!emblems.get(centreNorthEmblem).check(client)) {
+		}
+		else if (currentCentreNorthEmblem != centreNorthEmblem)
+		{
+			if (!emblems.get(centreNorthEmblem).check(client))
+			{
 				startUpStep(obtainEmblems);
-			} else {
+			}
+			else
+			{
 				startUpStep(placeCentreNorthUrn);
 			}
-		} else if (currentCentreSouthEmblem != centreSouthEmblem) {
-			if (!emblems.get(centreSouthEmblem).check(client)) {
+		}
+		else if (currentCentreSouthEmblem != centreSouthEmblem)
+		{
+			if (!emblems.get(centreSouthEmblem).check(client))
+			{
 				startUpStep(obtainEmblems);
-			} else {
+			}
+			else
+			{
 				startUpStep(placeCentreSouthUrn);
 			}
-		} else if (currentSouthernEmblem != southernEmblem) {
-			if (!emblems.get(southernEmblem).check(client)) {
+		}
+		else if (currentSouthernEmblem != southernEmblem)
+		{
+			if (!emblems.get(southernEmblem).check(client))
+			{
 				startUpStep(obtainEmblems);
-			} else {
+			}
+			else
+			{
 				startUpStep(placeSouthernUrn);
 			}
-		} else {
+		}
+		else
+		{
 			startUpStep(pullLever);
 		}
 	}
@@ -146,14 +164,14 @@ public class TombRiddle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		inspectPlaque =  new ObjectStep(questHelper, NullObjectID.NULL_20391, new WorldPoint(3391, 9251, 0), "Inspect the north-western plaque and read it.");
-		obtainEmblems =  new ObjectStep(questHelper, NullObjectID.NULL_20392, new WorldPoint(3391, 9245, 0), "Inspect the south-western plaque to get four emblems.");
-		pullLever =  new ObjectStep(questHelper, NullObjectID.NULL_20288, new WorldPoint(3390, 9247, 0), "Pull the lever to the south-west.");
+		inspectPlaque = new ObjectStep(questHelper, NullObjectID.NULL_20391, new WorldPoint(3391, 9251, 0), "Inspect the north-western plaque and read it.");
+		obtainEmblems = new ObjectStep(questHelper, NullObjectID.NULL_20392, new WorldPoint(3391, 9245, 0), "Inspect the south-western plaque to get four emblems.");
+		pullLever = new ObjectStep(questHelper, NullObjectID.NULL_20288, new WorldPoint(3390, 9247, 0), "Pull the lever to the south-west.");
 
-		placeNorthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44587, "Place the emblem in the northernmost urn.");
-		placeCentreNorthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44588, "Place the emblem in the centre-north urn.");
-		placeCentreSouthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44589, "Place the emblem in the centre-south urn.");
-		placeSouthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44590, "Place the emblem in the southernmost urn.");
+		placeNorthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44590, "Place the emblem in the northernmost urn.");
+		placeCentreNorthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44589, "Place the emblem in the centre-north urn.");
+		placeCentreSouthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44588, "Place the emblem in the centre-south urn.");
+		placeSouthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44587, "Place the emblem in the southernmost urn.");
 
 		setupItemRequirements();
 	}
@@ -161,7 +179,7 @@ public class TombRiddle extends DetailedOwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return Arrays.asList(inspectPlaque, obtainEmblems, placeNorthernUrn, placeCentreNorthUrn, placeCentreSouthUrn, placeSouthernUrn);
+		return Arrays.asList(inspectPlaque, obtainEmblems, placeNorthernUrn, placeCentreNorthUrn, placeCentreSouthUrn, placeSouthernUrn, pullLever);
 	}
 
 	@Subscribe
@@ -171,13 +189,14 @@ public class TombRiddle extends DetailedOwnerStep
 		if (!solutionFound && widgetLoaded.getGroupId() == 749)
 		{
 			Widget plaqueWidget = client.getWidget(749, 2);
-			if (plaqueWidget == null) {
+			if (plaqueWidget == null || plaqueWidget.getStaticChildren() == null)
+			{
 				return;
 			}
 
-			String riddle = Arrays.stream(Objects.requireNonNull(plaqueWidget.getChildren()))
+			String riddle = Arrays.stream(plaqueWidget.getStaticChildren())
 				.map(Widget::getText)
-				.reduce("", (carry, widget) -> carry + widget);
+				.reduce("", (carry, widget) -> carry + widget + " ");
 
 			if (riddle.length() > 0)
 			{

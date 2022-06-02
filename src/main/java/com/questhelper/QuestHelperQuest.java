@@ -65,6 +65,7 @@ public enum QuestHelperQuest
 	//Members' Quests
 	ANIMAL_MAGNETISM(331, "Animal Magnetism", QuestVarbits.QUEST_ANIMAL_MAGNETISM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	ANOTHER_SLICE_OF_HAM(332, "Another Slice of H.A.M.", QuestVarbits.QUEST_ANOTHER_SLICE_OF_HAM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
+	BENEATH_CURSED_SANDS(4287, "Beneath Cursed Sands", QuestVarbits.QUEST_BENEATH_CURSED_SANDS, Quest.Type.P2P, Quest.Difficulty.MASTER),
 	BETWEEN_A_ROCK(333, "Between a Rock...", QuestVarbits.QUEST_BETWEEN_A_ROCK, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
 	BIG_CHOMPY_BIRD_HUNTING(334, "Big Chompy Bird Hunting", QuestVarPlayer.QUEST_BIG_CHOMPY_BIRD_HUNTING, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	BIOHAZARD(335, "Biohazard", QuestVarPlayer.QUEST_BIOHAZARD, Quest.Type.P2P, Quest.Difficulty.NOVICE),

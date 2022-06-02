@@ -37,6 +37,7 @@ public enum ExternalQuestResources {
 	ANIMAL_MAGNETISM("https://oldschool.runescape.wiki/w/Animal_Magnetism"),
 	ANOTHER_SLICE_OF_HAM("https://oldschool.runescape.wiki/w/Another_Slice_of_H.A.M."),
 	THE_ASCENT_OF_ARCEUUS("https://oldschool.runescape.wiki/w/The_Ascent_of_Arceuus"),
+	BENEATH_CURSED_SANDS("https://oldschool.runescape.wiki/w/Beneath_Cursed_Sands"),
 	BETWEEN_A_ROCK("https://oldschool.runescape.wiki/w/Between_a_Rock..."),
 	BIG_CHOMPY_BIRD_HUNTING("https://oldschool.runescape.wiki/w/Big_Chompy_Bird_Hunting"),
 	BIOHAZARD("https://oldschool.runescape.wiki/w/Biohazard"),

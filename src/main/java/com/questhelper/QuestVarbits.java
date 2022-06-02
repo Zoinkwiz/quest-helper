@@ -23,6 +23,7 @@ public enum QuestVarbits
 	 * member Quest varbits, these don't hold the completion value.
 	 */
 	QUEST_ANIMAL_MAGNETISM(3185),
+	QUEST_BENEATH_CURSED_SANDS(13841),
 	QUEST_BETWEEN_A_ROCK(299),
 	QUEST_CONTACT(3274),
 	QUEST_ZOGRE_FLESH_EATERS(487),

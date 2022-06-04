@@ -70,9 +70,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 	// Requirements
 	Requirement notMineIron, notSandCrab, notArceuusBook, notStealFruit, notWarrensStore, notBoatLandsEnd, notPrayCastle,
-		notDigSaltpeter, houseInKourend, notEnterPoh, hasMedpack, notHealSoldier, notStrengthPotion, notFishTrout;
+		notDigSaltpetre, houseInKourend, notEnterPoh, hasMedpack, notHealSoldier, notStrengthPotion, notFishTrout;
 
-	QuestStep sandCrab, stealFruit, warrensStore, enterCastleF1, enterCastleF2, prayCastle, digSaltpeter, enterPoh,
+	QuestStep sandCrab, stealFruit, warrensStore, enterCastleF1, enterCastleF2, prayCastle, digSaltpetre, enterPoh,
 		collectMedpack, healSoldier, enterPub, strengthPotion, fishTrout, claimReward;
 
 	ObjectStep enterWarrens, mineIron;
@@ -100,7 +100,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notWarrensStore, enterWarrens);
 		doEasy.addStep(notBoatLandsEnd, boatLandsEnd);
 		doEasy.addStep(notStealFruit, stealFruit);
-		doEasy.addStep(notDigSaltpeter, digSaltpeter);
+		doEasy.addStep(notDigSaltpetre, digSaltpetre);
 		doEasy.addStep(notSandCrab, sandCrab);
 		doEasy.addStep(new Conditions(notEnterPoh, houseInKourend), enterPoh);
 		doEasy.addStep(notEnterPoh, relocateHouse);
@@ -123,7 +123,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		notWarrensStore = new VarplayerRequirement(2085, false, 5);
 		notBoatLandsEnd = new VarplayerRequirement(2085, false, 6);
 		notPrayCastle = new VarplayerRequirement(2085, false, 7);
-		notDigSaltpeter = new VarplayerRequirement(2085, false, 8);
+		notDigSaltpetre = new VarplayerRequirement(2085, false, 8);
 		notEnterPoh = new VarplayerRequirement(2085, false, 9);
 		notHealSoldier = new VarplayerRequirement(2085, false, 10);
 		notStrengthPotion = new VarplayerRequirement(2085, false, 11);
@@ -131,7 +131,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 		// Required items
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineIron);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notDigSaltpeter);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notDigSaltpetre);
 		libraryBook = new ItemRequirement("Arceuus library book", ItemCollections.getArceuusBooks()).showConditioned(notArceuusBook);
 
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 8075).showConditioned(notEnterPoh);
@@ -218,9 +218,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 			"Pray at the Kourend Castle altar.");
 		prayCastle.addSubSteps(enterCastleF1, enterCastleF2);
 
-		// Dig some saltpeter
-		digSaltpeter = new ObjectStep(this, ObjectID.SALTPETRE_27436, new WorldPoint(1703, 3526, 0),
-			"Dig up some saltpeter in Hosidius.", spade);
+		// Dig some Saltpetre
+		digSaltpetre = new ObjectStep(this, ObjectID.SALTPETRE_27436, new WorldPoint(1703, 3526, 0),
+			"Dig up some Saltpetre in Hosidius.", spade);
 
 		// Enter your POH from Kourend
 		relocateHouse = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(1779, 3625, 0),
@@ -344,10 +344,10 @@ public class KourendEasy extends ComplexStateQuestHelper
 		stealStallStep.setDisplayCondition(notStealFruit);
 		allSteps.add(stealStallStep);
 
-		PanelDetails digSaltpeterStep = new PanelDetails("Dig Up Some Saltpeter",
-			Collections.singletonList(digSaltpeter), spade);
-		digSaltpeterStep.setDisplayCondition(notDigSaltpeter);
-		allSteps.add(digSaltpeterStep);
+		PanelDetails digSaltpetreStep = new PanelDetails("Dig Up Some Saltpetre",
+			Collections.singletonList(digSaltpetre), spade);
+		digSaltpetreStep.setDisplayCondition(notDigSaltpetre);
+		allSteps.add(digSaltpetreStep);
 
 		PanelDetails killCrabStep = new PanelDetails("Kill Sand Crab", Collections.singletonList(sandCrab),
 			combatGear);

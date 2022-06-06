@@ -166,7 +166,7 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		newPuzzleState.grid[x].cells[y] = state;
 		newPuzzleState.numberOfGray--;
 		newPuzzleState.rowSolutions[x] = removeIncorrectSolutions(newPuzzleState.rowSolutions[x], y, state);
-		newPuzzleState.rowSolutions[y] = removeIncorrectSolutions(newPuzzleState.rowSolutions[y], x, state);
+		newPuzzleState.columnSolutions[y] = removeIncorrectSolutions(newPuzzleState.columnSolutions[y], x, state);
 		return newPuzzleState;
 	}
 

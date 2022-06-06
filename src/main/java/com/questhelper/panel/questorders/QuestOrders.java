@@ -83,7 +83,7 @@ public class QuestOrders
 		QuestHelperQuest.THE_DEPTHS_OF_DESPAIR,
 		QuestHelperQuest.MOUNTAIN_DAUGHTER,
 		QuestHelperQuest.ICTHLARINS_LITTLE_HELPER,
-        	QuestHelperQuest.THE_GOLEM,
+		QuestHelperQuest.THE_GOLEM,
 		QuestHelperQuest.THE_GRAND_TREE,
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.SCORPION_CATCHER,
@@ -232,6 +232,7 @@ public class QuestOrders
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
 		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
+		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		// "All remaining medium achievement diaries"
@@ -455,7 +456,9 @@ public class QuestOrders
 		QuestHelperQuest.DEVIOUS_MINDS,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
+		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
+		// Hopespear's Will
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		QuestHelperQuest.FREMENNIK_MEDIUM,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,

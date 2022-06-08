@@ -125,7 +125,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notTPDigsite, tpDigsite);
 		doMedium.addStep(notTolna, tolna);
 		doMedium.addStep(notMaho20, maho20);
-		doMedium.addStep(new Conditions(notBalloon, notVarrBalloon), balloon);
+		doMedium.addStep(new Conditions(notBalloon, notVarrBalloon2), balloon);
 		doMedium.addStep(new Conditions(notBalloon, inEntrana), talkToAug);
 		doMedium.addStep(notBalloon, moveToEntrana);
 		doMedium.addStep(notTPVarrock, tpVarrock);

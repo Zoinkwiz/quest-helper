@@ -89,6 +89,7 @@ public class QuestOrders
 		QuestHelperQuest.SCORPION_CATCHER,
 		QuestHelperQuest.TRIBAL_TOTEM,
 		QuestHelperQuest.THE_KNIGHTS_SWORD,
+		QuestHelperQuest.SLEEPING_GIANTS,
 		QuestHelperQuest.DEMON_SLAYER,
 		QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG,
 		QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG,
@@ -526,6 +527,7 @@ public class QuestOrders
 		QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
 		QuestHelperQuest.WITCHS_POTION,
 		QuestHelperQuest.THE_KNIGHTS_SWORD,
+		QuestHelperQuest.SLEEPING_GIANTS,
 		QuestHelperQuest.GOBLIN_DIPLOMACY,
 		QuestHelperQuest.PIRATES_TREASURE,
 		QuestHelperQuest.DRAGON_SLAYER_I,
@@ -676,6 +678,7 @@ public class QuestOrders
 		//QuestHelperQuest.HOPESPEARS_WILL - Placeholder for future addition.
 		//QuestHelperQuest.TEMPLE_OF_THE_EYE - Placeholder for future addition.
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
+		QuestHelperQuest.SLEEPING_GIANTS,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

@@ -167,7 +167,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		takeAppleToElena.addStep(new Conditions(receivedSieve, naphthaAppleMix), useSieveOnBarrel);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank), naphtha), useNaphthaOnBarrel);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank)), getNaphtha);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, rottenApple), useApplesOnPress);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, barrelOfRottenApples), useApplesOnPress);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, emptyBarrel), useBarrelOnPile);
 		takeAppleToElena.addStep(receivedSieve, pickUpBarrel);
 		takeAppleToElena.addStep(givenRottenApple, talkToElenaNoApple);

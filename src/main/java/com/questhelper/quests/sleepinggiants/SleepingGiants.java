@@ -25,6 +25,7 @@
  */
 package com.questhelper.quests.sleepinggiants;
 
+import com.jogamp.opengl.GLProfile;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -194,7 +195,7 @@ public class SleepingGiants extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 
 		iceGloves = new ItemRequirement("Ice Gloves", ItemID.ICE_GLOVES);
-		iceGloves.setTooltip("Allows you to skip (filling and) using a bucket of water.");
+		iceGloves.setTooltip("Allows you to skip filling and using a bucket of water.");
 
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucket.canBeObtainedDuringQuest();
@@ -258,7 +259,7 @@ public class SleepingGiants extends BasicQuestHelper
 		tipTabOpen = new WidgetSpriteRequirement(718, 12, 19, 297);
 
 		storedPreform = new VarbitRequirement(13947, 1, Operation.GREATER_EQUAL);
-		metalHeated = new VarbitRequirement(13948, 700, Operation.GREATER_EQUAL);
+		metalHeated = new VarbitRequirement(13948, 720, Operation.GREATER_EQUAL);
 
 		metalHammered = new VarbitRequirement(13949, 333, Operation.GREATER_EQUAL);
 
@@ -348,7 +349,7 @@ public class SleepingGiants extends BasicQuestHelper
 
 		pourMetal = new ObjectStep(this, NullObjectID.NULL_44776 /* Crucible (empty */, "Pour the full Crucible into the mould.");
 
-		coolDownSword = new ObjectStep(this, NullObjectID.NULL_44777, "Pick up the sword from the mould.",
+		coolDownSword = new ObjectStep(this, NullObjectID.NULL_44777, "Pick up the sword from the mould with a bucket of water or ice gloves equipped.",
 			iceGloves.equipped().showConditioned(iceGloves), bucketOfWater.showConditioned(bucketOfWater));
 		fillBucketWaterfall = new ObjectStep(this, ObjectID.WATERFALL_44632,
 			"Fill the bucket with water by using it on the Waterfall.", bucketOfWater);

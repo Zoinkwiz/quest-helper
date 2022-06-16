@@ -85,7 +85,7 @@ public class TheGolem extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -164,7 +164,8 @@ public class TheGolem extends BasicQuestHelper
 		throneRoom = new Zone(new WorldPoint(2709, 4879, 2), new WorldPoint(2731, 4919, 2));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		letter = new ItemRequirement("Letter", ItemID.LETTER_4615);
 		letter.setHighlightInInventory(true);

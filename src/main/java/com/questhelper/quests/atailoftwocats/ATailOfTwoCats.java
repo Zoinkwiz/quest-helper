@@ -74,7 +74,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -128,7 +128,8 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		catspeak = new ItemRequirement("Catspeak amulet", ItemID.CATSPEAK_AMULET, 1, true);
 		catspeak.setTooltip("You can get another from the Sphinx in Sophanem");

@@ -356,6 +356,7 @@ public class ForgettableTale extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		coins500 = new ItemRequirement("Coins", ItemCollections.COINS, 500);

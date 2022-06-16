@@ -31,7 +31,6 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
-import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
@@ -83,7 +82,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -123,7 +122,8 @@ public class TheHandInTheSand extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		bottledWater = new ItemRequirement("Bottled water", ItemID.BOTTLED_WATER);

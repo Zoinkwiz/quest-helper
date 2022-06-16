@@ -210,7 +210,8 @@ public class Regicide extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
 		rope1.setTooltip("Bring extras as you can fail");

@@ -155,6 +155,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notBonesToPeachesPalace = new VarplayerRequirement(1194, false, 25);

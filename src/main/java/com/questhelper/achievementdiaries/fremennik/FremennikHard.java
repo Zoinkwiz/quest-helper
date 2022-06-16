@@ -136,6 +136,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notTPTroll = new VarplayerRequirement(1184, false, 21);

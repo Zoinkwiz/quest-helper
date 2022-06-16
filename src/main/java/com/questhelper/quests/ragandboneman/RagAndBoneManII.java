@@ -216,7 +216,8 @@ public class RagAndBoneManII extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		// Required items
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);

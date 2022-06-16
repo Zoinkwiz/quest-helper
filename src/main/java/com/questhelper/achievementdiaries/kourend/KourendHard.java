@@ -141,6 +141,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notWoodcuttingGuild = new VarplayerRequirement(2085, false, 26);

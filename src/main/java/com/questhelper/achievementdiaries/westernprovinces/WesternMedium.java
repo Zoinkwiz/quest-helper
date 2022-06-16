@@ -160,6 +160,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notAgiShortcut = new VarplayerRequirement(1182, false, 12);

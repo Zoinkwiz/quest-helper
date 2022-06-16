@@ -143,6 +143,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCraftBloodRune = new VarplayerRequirement(2086, false, 4);

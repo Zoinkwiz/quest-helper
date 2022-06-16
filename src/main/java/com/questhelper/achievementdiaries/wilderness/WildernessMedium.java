@@ -145,6 +145,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notMineMith = new VarplayerRequirement(1192, false, 13);

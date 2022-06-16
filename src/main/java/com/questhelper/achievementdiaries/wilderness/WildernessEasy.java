@@ -143,6 +143,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notLowAlch = new VarplayerRequirement(1192, false, 1);

@@ -130,6 +130,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);

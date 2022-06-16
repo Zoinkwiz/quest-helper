@@ -112,6 +112,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notEssMine = new VarplayerRequirement(1196, false, 0);

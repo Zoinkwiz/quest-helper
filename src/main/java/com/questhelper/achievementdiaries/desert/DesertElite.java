@@ -122,6 +122,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notWildPie = new VarplayerRequirement(1199, false, 2);

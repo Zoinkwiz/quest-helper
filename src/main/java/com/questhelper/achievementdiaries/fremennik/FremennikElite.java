@@ -151,6 +151,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notDagKings = new VarplayerRequirement(1184, false, 31);

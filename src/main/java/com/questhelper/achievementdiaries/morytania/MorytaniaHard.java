@@ -153,6 +153,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notKharyrll = new VarplayerRequirement(1180, false, 23);

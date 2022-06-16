@@ -167,6 +167,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notSpottyCape = new VarplayerRequirement(1176, false, 29);

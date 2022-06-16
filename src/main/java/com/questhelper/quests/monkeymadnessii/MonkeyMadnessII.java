@@ -128,7 +128,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -253,7 +253,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		strongholdBalloon = new VarbitRequirement(2870, Operation.EQUAL, 1, "Unlocked the Tree Gnome Stronghold balloon route");
 

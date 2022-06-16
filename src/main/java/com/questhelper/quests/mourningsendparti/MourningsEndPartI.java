@@ -94,7 +94,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -186,7 +186,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		bearFur = new ItemRequirement("Bear fur", ItemID.BEAR_FUR);
 		silk2 = new ItemRequirement("Silk", ItemID.SILK, 2);

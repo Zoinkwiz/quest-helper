@@ -145,6 +145,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE);

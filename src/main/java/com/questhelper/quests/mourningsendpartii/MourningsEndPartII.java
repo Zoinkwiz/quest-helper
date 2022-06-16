@@ -146,7 +146,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -407,7 +407,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		deathTalisman = new ItemRequirement("Death talisman", ItemID.DEATH_TALISMAN);
 		deathTalisman.addAlternates(ItemID.DEATH_TALISMAN, ItemID.RUNECRAFT_CAPE, ItemID.CATALYTIC_TALISMAN);

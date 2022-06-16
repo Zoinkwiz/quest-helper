@@ -159,6 +159,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notBarbAgi = new VarplayerRequirement(1178, false, 12);

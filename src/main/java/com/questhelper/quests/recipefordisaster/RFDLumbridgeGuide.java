@@ -99,6 +99,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);

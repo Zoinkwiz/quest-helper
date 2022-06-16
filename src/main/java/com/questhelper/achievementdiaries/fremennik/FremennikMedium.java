@@ -170,6 +170,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notSlayBrineRat = new VarplayerRequirement(1184, false, 11);

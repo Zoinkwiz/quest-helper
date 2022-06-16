@@ -124,7 +124,7 @@ public class LegendsQuest extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -385,7 +385,8 @@ public class LegendsQuest extends BasicQuestHelper
 		challengeCave = new Zone(new WorldPoint(2369, 4672, 0), new WorldPoint(2430, 4736, 0));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 		machete = new ItemRequirement("A machete", ItemCollections.MACHETE);

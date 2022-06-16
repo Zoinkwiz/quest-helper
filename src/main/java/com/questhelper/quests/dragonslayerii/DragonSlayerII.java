@@ -141,7 +141,7 @@ public class DragonSlayerII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -412,7 +412,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);

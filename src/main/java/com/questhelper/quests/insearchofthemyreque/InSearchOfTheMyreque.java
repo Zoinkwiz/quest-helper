@@ -91,7 +91,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -185,7 +185,8 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		steelLong = new ItemRequirement("Steel longsword", ItemID.STEEL_LONGSWORD);
 		steelSword2 = new ItemRequirement("Steel sword", ItemID.STEEL_SWORD, 2);

@@ -88,7 +88,7 @@ public class FairytaleI extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -135,7 +135,8 @@ public class FairytaleI extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		secateurs = new ItemRequirement("Secateurs", ItemID.SECATEURS);
 		draynorSkull = new ItemRequirement("Draynor skull", ItemID.DRAYNOR_SKULL);

@@ -161,7 +161,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -545,7 +545,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);

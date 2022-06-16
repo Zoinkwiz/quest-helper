@@ -91,7 +91,8 @@ public class KnightWaves extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		floor1 = new Zone(new WorldPoint(2740, 3480, 1), new WorldPoint(2770, 3518, 1));
 		floor2 = new Zone(new WorldPoint(2740, 3480, 2), new WorldPoint(2770, 3518, 2));

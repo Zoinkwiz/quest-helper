@@ -152,6 +152,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notSwampLizard = new VarplayerRequirement(1180, false, 12);

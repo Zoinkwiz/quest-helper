@@ -56,7 +56,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -119,7 +119,8 @@ public class ScorpionCatcher extends BasicQuestHelper
 		barbarianOutpost = new Zone(new WorldPoint(2546, 3573, 0), new WorldPoint(2555, 3560, 0));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY);
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");

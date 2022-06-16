@@ -136,6 +136,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCopperLongtail = new VarplayerRequirement(1182, false, 1);

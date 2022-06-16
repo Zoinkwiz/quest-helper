@@ -105,6 +105,7 @@ public class RFDGoblins extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		bread = new ItemRequirement("Bread", ItemID.BREAD);

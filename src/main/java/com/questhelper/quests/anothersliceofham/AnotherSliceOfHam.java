@@ -113,7 +113,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -153,7 +153,8 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
 

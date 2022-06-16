@@ -128,6 +128,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notRichChest = new VarplayerRequirement(1195, false, 4);

@@ -139,6 +139,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notMineIron = new VarplayerRequirement(2085, false, 1);

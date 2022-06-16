@@ -94,7 +94,7 @@ public class EaglesPeak extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -183,7 +183,8 @@ public class EaglesPeak extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 50);

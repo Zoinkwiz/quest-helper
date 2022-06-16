@@ -80,7 +80,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -128,7 +128,8 @@ public class BelowIceMountain extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		cookedMeat = new ItemRequirement("Cooked Meat", ItemID.COOKED_MEAT, 1);
 		bread = new ItemRequirement("Bread", ItemID.BREAD, 1);

@@ -138,6 +138,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notMenaThug = new VarplayerRequirement(1198, false, 24);

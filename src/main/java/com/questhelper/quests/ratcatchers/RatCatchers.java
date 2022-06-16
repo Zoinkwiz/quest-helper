@@ -206,6 +206,7 @@ public class RatCatchers extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		cat = new FollowerItemRequirement("A non-overgrown cat",

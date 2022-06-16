@@ -199,6 +199,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return quest.getVar(client);
 	}
 
+	public abstract void setupRequirements();
+
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return null;

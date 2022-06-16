@@ -89,7 +89,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -158,7 +158,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 100);

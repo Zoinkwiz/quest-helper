@@ -66,6 +66,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 		return locateFollowerSara;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		zamorakStaff = new ItemRequirement("Zamorak staff", ItemID.ZAMORAK_STAFF);

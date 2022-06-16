@@ -155,6 +155,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notElfCystalBow = new VarplayerRequirement(1182, false, 25);

@@ -80,7 +80,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -109,7 +109,8 @@ public class TheKnightsSword extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		redberryPie = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 		ironBars = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 2);

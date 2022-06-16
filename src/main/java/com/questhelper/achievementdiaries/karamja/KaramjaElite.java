@@ -105,6 +105,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCraftedRunes = new VarplayerRequirement(1200, false, 1);

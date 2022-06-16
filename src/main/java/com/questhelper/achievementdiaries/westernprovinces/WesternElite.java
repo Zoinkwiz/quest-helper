@@ -122,6 +122,7 @@ public class WesternElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notMagicLong = new VarplayerRequirement(1183, false, 6);

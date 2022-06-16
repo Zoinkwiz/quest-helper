@@ -101,7 +101,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		updateSection3Route();
 	}
 
-	public void setupItemRequirements()
+	public void setupRequirements()
 	{
 		bronzeKey = new ItemRequirement("Bronze key", ItemID.BRONZE_KEY_19566);
 		protectFromMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
@@ -245,7 +245,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		fifthSectionRightPaths = new int[fifthSectionMap.length];
 		Arrays.fill(fifthSectionRightPaths, -1);
 
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupPaths();

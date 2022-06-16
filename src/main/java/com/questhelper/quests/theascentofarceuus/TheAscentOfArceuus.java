@@ -140,6 +140,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);

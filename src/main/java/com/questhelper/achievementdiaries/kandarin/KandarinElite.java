@@ -128,6 +128,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notbarb5 = new VarplayerRequirement(1179, false, 5);

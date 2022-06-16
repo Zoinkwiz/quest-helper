@@ -62,7 +62,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -84,7 +84,8 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS);
 		kharedstsMemoirs.setTooltip("Make sure to have memories available. Xeric's Talisman + Fairy Rings can be used instead.");

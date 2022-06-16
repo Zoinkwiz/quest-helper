@@ -88,6 +88,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Setter
 	private Injector injector;
 
+	@Setter
+	@Getter
+	protected QuestHelperPlugin questHelperPlugin;
 
 	@Override
 	public void configure(Binder binder)

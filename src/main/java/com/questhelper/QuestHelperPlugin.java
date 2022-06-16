@@ -57,6 +57,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -257,6 +259,8 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean displayNameKnown;
 
+	public SortedMap<String, List<ItemRequirement>> itemRequirements = new TreeMap<>();
+
 	@Getter
 	private Cheerer cheerer;
 
@@ -377,6 +381,7 @@ public class QuestHelperPlugin extends Plugin
 		{
 			loadQuestList = false;
 			updateQuestList();
+			getAllItemRequirements();
 		}
 	}
 
@@ -826,6 +831,7 @@ public class QuestHelperPlugin extends Plugin
 			if (shouldUpdateList)
 			{
 				updateQuestList();
+				getAllItemRequirements();
 			}
 			if (bankTagsMain != null)
 			{
@@ -846,9 +852,21 @@ public class QuestHelperPlugin extends Plugin
 
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.ACHIEVEMENT_PACKAGE));
 
+		return scannedQuests;
+	}
+
+	private void getAllItemRequirements()
+	{
+		List<QuestHelper> filteredQuests = quests.values()
+			.stream()
+			.filter(QuestHelperConfig.QuestFilter.QUEST)
+			.filter(QuestDetails::isNotCompleted)
+			.sorted(config.orderListBy())
+			.collect(Collectors.toList());
+
 		clientThread.invokeLater(() -> {
-			List<ItemRequirement> itemRequirements = new ArrayList<>();
-			scannedQuests.forEach((String name, QuestHelper questHelper) -> {
+			SortedMap<String, List<ItemRequirement>> newReqs = new TreeMap<>();
+			filteredQuests.forEach((QuestHelper questHelper) -> {
 				eventBus.register(questHelper);
 				if (questHelper instanceof BasicQuestHelper)
 				{
@@ -859,20 +877,14 @@ public class QuestHelperPlugin extends Plugin
 				{
 					((ComplexStateQuestHelper) questHelper).loadStep();
 				}
-//				questHelper.setupRequirements();
 				if (questHelper.getItemRequirements() != null)
 				{
-					List<ItemRequirement> itemReqs = questHelper.getItemRequirements();
-					itemRequirements.addAll(questHelper.getItemRequirements());
+					newReqs.put(questHelper.getQuest().getName(), questHelper.getItemRequirements());
 				}
 				eventBus.unregister(questHelper);
 			});
-			for (ItemRequirement itemRequirement : itemRequirements)
-			{
-				System.out.println(itemRequirement.getName());
-			}
+			itemRequirements = newReqs;
 		});
-		return scannedQuests;
 	}
 
 	private Map<String, QuestHelper> instantiate(ClassPath classPath, String packageName)
@@ -942,6 +954,7 @@ public class QuestHelperPlugin extends Plugin
 			questHelper.setInjector(questInjector);
 			questHelper.setQuest(quest);
 			questHelper.setConfig(config);
+			questHelper.setQuestHelperPlugin(this);
 		}
 		catch (InstantiationException | IllegalAccessException | CreationException ex)
 		{

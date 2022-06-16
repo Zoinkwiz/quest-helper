@@ -486,7 +486,14 @@ public class QuestOverviewPanel extends JPanel
 
 	private void updateExternalResourcesPanel(QuestHelper quest)
 	{
-		List<ExternalQuestResources> externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
+		List<ExternalQuestResources> externalResourcesList;
+		try
+		{
+			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
+		} catch (Exception e)
+		{
+			return;
+		}
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
 		JButton wikiBtn = new JButton();

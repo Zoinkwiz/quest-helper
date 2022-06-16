@@ -264,16 +264,16 @@ public class Wanted extends BasicQuestHelper
 		runeEssence = new ItemRequirement("20 Rune Essence (UNNOTED)", ItemID.RUNE_ESSENCE, 20);
 		pureEssence = new ItemRequirement("20 Pure Essence (UNNOTED)", ItemID.PURE_ESSENCE, 20);
 		essence =  new ItemRequirements(LogicType.OR, "20 Rune or Pure Essence (UNNOTED)", runeEssence, pureEssence);
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 		rope = new ItemRequirement("A rope", ItemID.ROPE);
 
-		spinyHelmet = new ItemRequirement("A spiny helmet or slayer helm", ItemID.SPINY_HELMET);
+		spinyHelmet = new ItemRequirement("A spiny helmet or slayer helm", ItemID.SPINY_HELMET).isNotConsumed();
 		spinyHelmet.addAlternates(ItemCollections.SLAYER_HELMETS);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		amuletOfGlory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
+		amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.RING_OF_DUELINGS);
 		faladorTeleport = new ItemRequirement("A teleport to Falador", ItemID.FALADOR_TELEPORT, -1);
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT, -1);

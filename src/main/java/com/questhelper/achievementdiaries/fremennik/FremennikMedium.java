@@ -188,23 +188,23 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notPetRockPOH);
 		coinsForFerry = new ItemRequirement("Coins", ItemCollections.COINS);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSnowyHunter);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notSlayBrineRat);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notSlayBrineRat).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(
-			new Conditions(LogicType.OR, notMineGold, notMineCoal));
-		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMisc);
-		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight);
-		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight);
+			new Conditions(LogicType.OR, notMineGold, notMineCoal)).isNotConsumed();
+		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMisc).isNotConsumed();
+		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight).isNotConsumed();
+		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight).isNotConsumed();
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(new Conditions(LogicType.OR,
-			notPetRockPOH, notLighthouse));
+			notPetRockPOH, notLighthouse)).isNotConsumed();
 		petRock.setTooltip("Obtained from Askeladden in Rellekka");
-		goldHelm = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET).showConditioned(notMineGold);
+		goldHelm = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET).showConditioned(notMineGold).isNotConsumed();
 		oakPlanks = new ItemRequirement("Oak planks", ItemID.OAK_PLANK).showConditioned(notPetRockPOH);
-		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notPetRockPOH);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notPetRockPOH);
+		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notPetRockPOH).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notPetRockPOH).isNotConsumed();
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE).showConditioned(notLighthouse);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR,
-			notSlayBrineRat, notLighthouse));
+			notSlayBrineRat, notLighthouse)).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

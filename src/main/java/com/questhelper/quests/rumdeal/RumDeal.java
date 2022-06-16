@@ -244,17 +244,17 @@ public class RumDeal extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES);
+		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES).isNotConsumed();
 		slayerGloves.addAlternates(ItemID.SLAYER_GLOVES_6720);
 		blindweedSeed = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);
 		blindweedSeedHighlight = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);
 		blindweedSeedHighlight.setHighlightInInventory(true);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
-		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
+		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		rakeHighlight.setHighlightInInventory(true);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
 		blindweed = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
 		blindweed.setTooltip("You can get another from Captain Braindeath");
 

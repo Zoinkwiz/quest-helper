@@ -106,7 +106,7 @@ public class MonksFriend extends BasicQuestHelper
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		jugOfWater = new ItemRequirement("Jug of Water", ItemID.JUG_OF_WATER);
 		blanket = new ItemRequirement("Child's blanket", ItemID.CHILDS_BLANKET);
-		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemID.ARDOUGNE_CLOAK);
+		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemID.ARDOUGNE_CLOAK).isNotConsumed();
 	}
 
 	public void loadZones()

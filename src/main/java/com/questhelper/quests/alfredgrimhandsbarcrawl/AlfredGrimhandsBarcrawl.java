@@ -112,10 +112,10 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 		coins18 = new ItemRequirement("Coins", ItemCollections.COINS, 18);
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
 
-			gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
-		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
+		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);
 		duelingRing = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);

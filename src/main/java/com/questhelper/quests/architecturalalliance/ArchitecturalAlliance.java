@@ -87,7 +87,7 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS);
+		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS).isNotConsumed();
 		kharedstsMemoirs.setTooltip("Make sure to have memories available. Xeric's Talisman + Fairy Rings can be used instead.");
 
 	}

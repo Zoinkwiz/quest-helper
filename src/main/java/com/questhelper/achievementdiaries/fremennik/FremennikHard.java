@@ -149,23 +149,23 @@ public class FremennikHard extends ComplexStateQuestHelper
 		notTPWaterbirth = new VarplayerRequirement(1184, false, 29);
 		notFreeBlast = new VarplayerRequirement(1184, false, 30);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddy);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddy).isNotConsumed();
 		bronzeNail = new ItemRequirement("Bronze nails", ItemID.BRONZE_NAILS).showConditioned(notCraftShield);
-		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notCraftShield);
+		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notCraftShield).isNotConsumed();
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPTroll);
 		lawRune2 = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPWaterbirth);
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notTPWaterbirth);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPWaterbirth);
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notTPTroll);
-		teasingStick = new ItemRequirement("Teasing Stick", ItemID.TEASING_STICK).showConditioned(notCatchKyatt);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notCatchKyatt);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notCraftShield);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notCraftShield);
+		teasingStick = new ItemRequirement("Teasing Stick", ItemID.TEASING_STICK).showConditioned(notCatchKyatt).isNotConsumed();
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notCatchKyatt).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notCraftShield).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notCraftShield).isNotConsumed();
 		arcticLog = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOGS).showConditioned(notCraftShield);
 		cadantineUnfPot = new ItemRequirement("Cadantine unf pot", ItemID.CADANTINE_POTION_UNF).showConditioned(notMixSuperDef);
 		whiteBerries = new ItemRequirement("White berries", ItemID.WHITE_BERRIES).showConditioned(notMixSuperDef);
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notCatchKyatt);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notMiscSupport);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notMiscSupport).isNotConsumed();
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);

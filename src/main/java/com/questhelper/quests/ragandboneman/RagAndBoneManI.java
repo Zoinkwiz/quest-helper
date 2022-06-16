@@ -143,11 +143,11 @@ public class RagAndBoneManI extends BasicQuestHelper
 	{
 		// Required items
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
-		pots = new ItemRequirement("Pot", ItemID.POT);
+		pots = new ItemRequirement("Pot", ItemID.POT).isNotConsumed();
 		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
 		// Optional items
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
@@ -159,7 +159,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
 		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemCollections.AMULET_OF_GLORIES);
 		karamjaTeleport.addAlternates(ItemID.BRIMHAVEN_TELEPORT, ItemID.TAI_BWO_WANNAI_TELEPORT);
-		dramenStaff = new ItemRequirement("Dramen staff for fairy rings", ItemID.DRAMEN_STAFF);
+		dramenStaff = new ItemRequirement("Dramen staff for fairy rings", ItemID.DRAMEN_STAFF).isNotConsumed();
 
 		// Quest items
 		jugOfVinegar = new ItemRequirement("Jar of vinegar", ItemID.JUG_OF_VINEGAR);

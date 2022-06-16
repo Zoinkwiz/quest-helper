@@ -143,10 +143,10 @@ public class FairytaleI extends BasicQuestHelper
 		draynorSkull.canBeObtainedDuringQuest();
 		skullOrSpade = new ItemRequirement("Draynor skull or a spade to get it", ItemID.DRAYNOR_SKULL);
 		skullOrSpade.addAlternates(ItemID.SPADE);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK, 1, true);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK, 1, true).isNotConsumed();
 		ghostspeak.setTooltip("You can get another from Father Urhney in the Lumbridge Swamp");
-		dramenOrLunarStaff = new ItemRequirement("Dramen or lunar staff", ItemID.DRAMEN_STAFF, 1, true);
+		dramenOrLunarStaff = new ItemRequirement("Dramen or lunar staff", ItemID.DRAMEN_STAFF, 1, true).isNotConsumed();
 		dramenOrLunarStaff.addAlternates(ItemID.LUNAR_STAFF);
 		dramenOrLunarStaff.setDisplayMatchedItemName(true);
 		randomItems = new ItemRequirement("3 random items requested by Malignius", -1);

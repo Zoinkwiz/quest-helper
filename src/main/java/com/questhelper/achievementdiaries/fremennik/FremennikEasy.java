@@ -153,20 +153,20 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		notEnterTrollStronghold = new VarplayerRequirement(1184, false, 9);
 		notChopAndBurnOak = new VarplayerRequirement(1184, false, 10);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notCraftTiara);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notCraftTiara).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notChangeBoots);
-		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCatchCerulean);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notChopAndBurnOak);
-		tiaraMould = new ItemRequirement("Tiara mould", ItemID.TIARA_MOULD).showConditioned(notCraftTiara);
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFillBucket);
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.BUCKET).showConditioned(notEnterTrollStronghold);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopAndBurnOak);
+		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCatchCerulean).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notChopAndBurnOak).isNotConsumed();
+		tiaraMould = new ItemRequirement("Tiara mould", ItemID.TIARA_MOULD).showConditioned(notCraftTiara).isNotConsumed();
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFillBucket).isNotConsumed();
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.BUCKET).showConditioned(notEnterTrollStronghold).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopAndBurnOak).isNotConsumed();
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		silverOre = new ItemRequirement("Silver ore", ItemID.SILVER_ORE);
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
 		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notKilledCrabs);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notKilledCrabs).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

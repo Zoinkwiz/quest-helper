@@ -154,29 +154,30 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		enoughNMZPoints = new VarplayerRequirement(1060, 800000, Operation.GREATER_EQUAL,
 			"800,000 Nightmare Zone reward points");
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE).showConditioned(notIceBarrage);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notIceBarrage);
 		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE).showConditioned(notIceBarrage);
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notYanAgi);
+		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notYanAgi).isNotConsumed();
 		salveAmmy = new ItemRequirement("Salve amulet", ItemCollections.IMBUABLE_SALVE_AMULET)
-			.showConditioned(notImbueSalve);
+			.showConditioned(notImbueSalve).isNotConsumed();
 		imbuedSalve = new ItemRequirement("Salve amulet", ItemCollections.IMBUED_SALVE_AMULET)
-			.showConditioned(notImbueSalve);
-		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickTorstol);
+			.showConditioned(notImbueSalve).isNotConsumed();
+		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickTorstol).isNotConsumed();
 		torstolSeed = new ItemRequirement("Torstol seed", ItemID.TORSTOL_SEED).showConditioned(notPickTorstol);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickTorstol);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickTorstol).isNotConsumed();
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notPickTorstol);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickTorstol);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickTorstol).isNotConsumed();
+
 		yewLog = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notRuneCrossbow);
 		runeBar = new ItemRequirement("Rune bar", ItemID.RUNITE_BAR).showConditioned(notRuneCrossbow);
 		sinew = new ItemRequirement("Sinew", ItemID.SINEW).showConditioned(notRuneCrossbow);
 		root = new ItemRequirement("Root", ItemCollections.NON_MAGIC_TREE_ROOT).showConditioned(notRuneCrossbow);
 		sinewOrRoot = new ItemRequirements(LogicType.OR, "Sinew or non-magic tree root", root, sinew)
 			.showConditioned(notRuneCrossbow);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneCrossbow);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notRuneCrossbow);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneCrossbow).isNotConsumed();
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notRuneCrossbow).isNotConsumed();
 		runeCrossbowU = new ItemRequirement("Rune crossbow (u)", ItemID.RUNITE_CROSSBOW_U).showConditioned(notRuneCrossbow);
 		crossbowString = new ItemRequirement("Crossbow string", ItemID.CROSSBOW_STRING)
 			.showConditioned(notRuneCrossbow);

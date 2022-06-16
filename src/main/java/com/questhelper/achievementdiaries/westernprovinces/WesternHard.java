@@ -175,42 +175,42 @@ public class WesternHard extends ComplexStateQuestHelper
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		crystalBow = new ItemRequirement("Crystal bow", ItemCollections.CRYSTAL_BOW).showConditioned(notElfCystalBow);
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notMonkfishPisc);
+		crystalBow = new ItemRequirement("Crystal bow", ItemCollections.CRYSTAL_BOW).showConditioned(notElfCystalBow).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notMonkfishPisc).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 500).showConditioned(notDashingKebbit);
-		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemCollections.NINJA_GREEGREE).showConditioned(notApeAtollAgi);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notMahoganyBurned);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notMahoganyBurned);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddyOre);
+		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemCollections.NINJA_GREEGREE).showConditioned(notApeAtollAgi).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notMahoganyBurned).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notMahoganyBurned).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddyOre).isNotConsumed();
 		mahoganyPlank = new ItemRequirement("Mahogany planks", ItemID.MAHOGANY_PLANK, 3)
 			.showConditioned(notIsafdarPainting);
 		painting = new ItemRequirement("Isafdar (painting)", ItemID.ISAFDAR_PAINTING).showConditioned(notIsafdarPainting);
 		painting.setTooltip("Can be bought from Sir Renitee in White Knights' Castle for 2,000 gold ");
-		saw = new ItemRequirement("Saw", ItemCollections.SAW).showConditioned(notIsafdarPainting);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notIsafdarPainting);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).showConditioned(notIsafdarPainting).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notIsafdarPainting).isNotConsumed();
 		lawRunes2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2).showConditioned(notTPApe);
 		fireRunes2 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 2).showConditioned(notTPApe);
 		waterRunes2 = new ItemRequirement("Water runes", ItemID.WATER_RUNE, 2).showConditioned(notTPApe);
 		banana = new ItemRequirement("Banana", ItemID.BANANA).showConditioned(notTPApe);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notLletyaPalm);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notLletyaPalm);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notLletyaPalm).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notLletyaPalm).isNotConsumed();
 		palmSapling = new ItemRequirement("Palm sapling", ItemID.PALM_SAPLING).showConditioned(notLletyaPalm);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddyOre);
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat);
-		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddyOre).isNotConsumed();
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
+		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat).isNotConsumed();
 		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
 		mahoganyLogs = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS);
 		rawMonkfish = new ItemRequirement("Raw monkfish", ItemID.RAW_MONKFISH);
-		birdReady = new ItemRequirement("Falconer's glove", ItemID.FALCONERS_GLOVE);
+		birdReady = new ItemRequirement("Falconer's glove", ItemID.FALCONERS_GLOVE).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		papayas = new ItemRequirement("Papayas", ItemID.PAPAYA_FRUIT, 15);
 		zulrahTP = new ItemRequirement("Zul-andra teleport", ItemID.ZULANDRA_TELEPORT);
-		tpCrystal = new ItemRequirement("Teleport Crystal", ItemCollections.TELEPORT_CRYSTAL);
+		tpCrystal = new ItemRequirement("Teleport Crystal", ItemCollections.TELEPORT_CRYSTAL).isNotConsumed();
 
 		inApeAtoll = new ZoneRequirement(apeAtoll);
 		inPest = new ZoneRequirement(pest);

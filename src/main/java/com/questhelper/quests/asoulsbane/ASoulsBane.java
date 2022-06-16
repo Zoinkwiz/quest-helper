@@ -141,7 +141,7 @@ public class ASoulsBane extends BasicQuestHelper
 	{
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
-		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear = new ItemRequirement("Combat gear + food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		angerBattleaxe = new ItemRequirement("Anger battleaxe", ItemID.ANGER_BATTLEAXE);

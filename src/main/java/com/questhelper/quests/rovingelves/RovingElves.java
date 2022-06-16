@@ -127,18 +127,17 @@ public class RovingElves extends BasicQuestHelper
 		blessedSeedHighlight.setTooltip("You can get another from Eluned");
 		blessedSeedHighlight.setHighlightInInventory(true);
 
-		glarialsPebble = new ItemRequirement("Glarial's pebble", ItemID.GLARIALS_PEBBLE);
+		glarialsPebble = new ItemRequirement("Glarial's pebble", ItemID.GLARIALS_PEBBLE).isNotConsumed();
 		glarialsPebble.setTooltip("You can get another from Golrie under Tree Gnome Village");
-		key = new ItemRequirement("Key", ItemID.KEY_298);
+		key = new ItemRequirement("Key", ItemID.KEY_298).isNotConsumed();
 		key.setTooltip("You can get another from inside Baxtorian Falls");
 
-		keyHint = new ItemRequirement("Key (obtainable in quest)", ItemID.KEY_293);
+		keyHint = new ItemRequirement("Key (obtainable in quest)", ItemID.KEY_293).isNotConsumed();
 
-		pebbleHint = new ItemRequirement("Glarial's pebble (obtainable in quest)", ItemID.GLARIALS_PEBBLE);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		highlightRope = new ItemRequirement("Rope", ItemID.ROPE);
-		highlightRope.setHighlightInInventory(true);
+		pebbleHint = new ItemRequirement("Glarial's pebble (obtainable in quest)", ItemID.GLARIALS_PEBBLE).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		rope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
+		highlightRope = rope.highlighted();
 		prayerPotions = new ItemRequirement("A few prayer potions", ItemID.PRAYER_POTION4);
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES, 1);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES, 1);

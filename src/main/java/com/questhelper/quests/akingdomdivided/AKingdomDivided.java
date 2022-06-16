@@ -415,7 +415,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		combatGearForJudgeOfYama = new ItemRequirement("Melee combat gear to fight Judge of Yama", -1, -1);
+		combatGearForJudgeOfYama = new ItemRequirement("Melee combat gear to fight Judge of Yama", -1, -1).isNotConsumed();
 		combatGearForJudgeOfYama.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		combatGearForJudgeOfYama.setTooltip("Judge of Yama is immune to range and magic attacks.");
 		bluishKey = new ItemRequirement("Bluish Key", ItemID.BLUISH_KEY);
@@ -430,11 +430,11 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		freeInventorySlots = new FreeInventorySlotRequirement(InventoryID.INVENTORY,  1);
 
-		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS);
-		anyAxe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS).isNotConsumed();
+		anyAxe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 		rosesNote2 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25806);
 		rosesNote2.setTooltip("You can get another from the panel in the Forthos Ruin");
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		fireSpellGear = new ItemRequirement("Runes/equipment to cast FIRE bolt or better", -1);
 		fireSpellGear.setDisplayItemId(ItemID.FIRE_RUNE);
 		coldKey = new ItemRequirement("Cold key", ItemID.COLD_KEY);
@@ -445,9 +445,10 @@ public class AKingdomDivided extends BasicQuestHelper
 		gamesNecklace = new ItemRequirement("Games necklace for Wintertodt camp teleport", ItemCollections.GAMES_NECKLACES);
 		rosesNote4 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25808);
 		fairyRingStaff = new ItemRequirement("Staff for Fairy rings", ItemCollections.FAIRY_STAFF);
-		fairyRingStaffOrGamesNecklace = new ItemRequirement("Staff for Fairy rings or a Skills Necklace", ItemCollections.FAIRY_STAFF);
+		fairyRingStaffOrGamesNecklace = new ItemRequirement("Staff for Fairy rings or a Skills Necklace",
+			ItemCollections.FAIRY_STAFF).isNotConsumed();
 		fairyRingStaffOrGamesNecklace.addAlternates(ItemCollections.SKILLS_NECKLACES);
-		combatGearForXamphur = new ItemRequirement("Melee or range gear to fight Xamphur.", -1, -1);
+		combatGearForXamphur = new ItemRequirement("Melee or range gear to fight Xamphur.", -1, -1).isNotConsumed();
 		combatGearForXamphur.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		combatGearForXamphur.setTooltip("Xamphur is immune to magic attacks.");
 

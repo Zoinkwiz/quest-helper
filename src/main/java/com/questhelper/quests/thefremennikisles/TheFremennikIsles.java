@@ -292,21 +292,21 @@ public class TheFremennikIsles extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		coins15 = new ItemRequirement("Coins", ItemCollections.COINS, 15);
 		bronzeNail = new ItemRequirement("Bronze nail", ItemID.BRONZE_NAILS);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope9 = new ItemRequirement("Rope", ItemID.ROPE, 9);
-		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR, 1, true);
-		yakBottomWorn = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824, 1, true);
-		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true);
-		meleeWeapon = new ItemRequirement("Melee gear", -1, -1);
+		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR, 1, true).isNotConsumed();
+		yakBottomWorn = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824, 1, true).isNotConsumed();
+		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true).isNotConsumed();
+		meleeWeapon = new ItemRequirement("Melee gear", -1, -1).isNotConsumed();
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food + potions", ItemCollections.GOOD_EATING_FOOD, -1);
 		tuna = new ItemRequirement("Raw tuna", ItemID.RAW_TUNA);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 
 		tuna.setTooltip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
 		if (client.getRealSkillLevel(Skill.MINING) >= 55)
@@ -330,9 +330,9 @@ public class TheFremennikIsles extends BasicQuestHelper
 		arcticLogs8 = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOGS, 8);
 		splitLogs8 = new ItemRequirement("Split log", ItemID.SPLIT_LOG, 8);
 		splitLogs4 = new ItemRequirement("Split log", ItemID.SPLIT_LOG, 4);
-		yakTop = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR);
-		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824);
-		roundShield = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD);
+		yakTop = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR).isNotConsumed();
+		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824).isNotConsumed();
+		roundShield = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD).isNotConsumed();
 
 		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 		{
@@ -368,7 +368,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 				yakTop.setTooltip("Buy from the GE, or get 46 crafting");
 			}
 		}
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		rope8 = new ItemRequirement("Rope", ItemID.ROPE, 8);
 		rope4 = new ItemRequirement("Rope", ItemID.ROPE, 4);
 

@@ -146,7 +146,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET);
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET).isNotConsumed();
 		ghostspeakEquip = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		croneMadeAmulet = new ItemRequirement("Crone-made amulet", ItemID.CRONEMADE_AMULET);
 		ectoToken20 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 20);
@@ -155,13 +155,13 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		//Magnet
 		ironBar5 = new ItemRequirement("Iron Bar", ItemID.IRON_BAR, 5);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		selectedIron = new ItemRequirement("Selected Iron", ItemID.SELECTED_IRON);
 		barMagnet = new ItemRequirement("Bar magnet", ItemID.BAR_MAGNET);
 
 		//Undead twigs
 		mithrilAxe = new ItemRequirement("Mithril Axe", ItemID.MITHRIL_AXE);
-		holySymbol = new ItemRequirement("Holy Symbol", ItemID.HOLY_SYMBOL);
+		holySymbol = new ItemRequirement("Holy Symbol", ItemID.HOLY_SYMBOL).isNotConsumed();
 		blessedAxe = new ItemRequirement("Blessed axe", ItemID.BLESSED_AXE);
 		twigs = new ItemRequirement("Undead twigs", ItemID.UNDEAD_TWIGS);
 		researchNotes = new ItemRequirement("Research notes", ItemID.RESEARCH_NOTES);

@@ -141,18 +141,18 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		// todo find better way to check for all quests completed
 		allQuests = new QuestPointRequirement(290, Operation.EQUAL);
 
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest);
-		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notMovario);
-		mithgrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notMovario);
-		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).showConditioned(notMovario);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopMagic);
+		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest).isNotConsumed();
+		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notMovario).isNotConsumed();
+		mithgrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notMovario).isNotConsumed();
+		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).showConditioned(notMovario).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopMagic).isNotConsumed();
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyPlatebody);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody).isNotConsumed();
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRunes);
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss",
-			ItemID.WATER_TIARA).showConditioned(notWaterRunes);
+			ItemID.WATER_TIARA).showConditioned(notWaterRunes).isNotConsumed();
 		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
-		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote);
+		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote).isNotConsumed();
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE)
 			.showConditioned(new Conditions(notMovario, notRichChest));
 		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS)

@@ -163,13 +163,13 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		chaosAccess = new ItemRequirement("Access to Chaos altar, or travel through abyss",
-			ItemCollections.CHAOS_ALTAR).showConditioned(notChaosTemple);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIronOre);
-		teamCape = new ItemRequirement("Any team cape", ItemCollections.TEAM_CAPE).showConditioned(notEquipTeamCape);
+			ItemCollections.CHAOS_ALTAR).showConditioned(notChaosTemple).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIronOre).isNotConsumed();
+		teamCape = new ItemRequirement("Any team cape", ItemCollections.TEAM_CAPE).showConditioned(notEquipTeamCape).isNotConsumed();
 		redSpiderEggs = new ItemRequirement("Red spider eggs", ItemID.RED_SPIDERS_EGGS).showConditioned(notSpiderEggs);
 		alchable = new ItemRequirement("Any item that is alch-able", 1, -1);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

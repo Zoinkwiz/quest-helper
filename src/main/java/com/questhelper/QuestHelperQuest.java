@@ -458,7 +458,7 @@ public enum QuestHelperQuest
 		this.completeValue = completeValue;
 	}
 
-	QuestHelperQuest(String name, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(String name, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
 	{
 		this.id = -1;
 		this.name = name;

@@ -165,7 +165,7 @@ public class DreamMentor extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
+		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE).isNotConsumed();
 
 		dreamVial = new ItemRequirement("Dream vial (empty)", ItemID.DREAM_VIAL_EMPTY);
 		dreamVial.setHighlightInInventory(true);
@@ -180,10 +180,10 @@ public class DreamMentor extends BasicQuestHelper
 		dreamVialWithGoutweed = new ItemRequirement("Dream vial (herb)", ItemID.DREAM_VIAL_HERB);
 		dreamVialWithGoutweed.setHighlightInInventory(true);
 
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setHighlightInInventory(true);
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.setHighlightInInventory(true);
 
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
@@ -208,7 +208,7 @@ public class DreamMentor extends BasicQuestHelper
 
 		chest = new ItemRequirement("Cyrisus's chest", ItemID.CYRISUSS_CHEST);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 

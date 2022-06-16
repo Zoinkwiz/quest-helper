@@ -211,7 +211,7 @@ public class RatCatchers extends BasicQuestHelper
 	{
 		cat = new FollowerItemRequirement("A non-overgrown cat",
 			ItemCollections.HUNTING_CATS,
-			NpcCollections.getHuntingCats());
+			NpcCollections.getHuntingCats()).isNotConsumed();
 
 		catFollower = new FollowerRequirement("A non-overgrown cat following you", NpcCollections.getHuntingCats());
 		ratPoison = new ItemRequirement("Rat poison", ItemID.RAT_POISON);
@@ -226,13 +226,13 @@ public class RatCatchers extends BasicQuestHelper
 		catspeakAmuletOrDS2.addAlternates(ItemID.CATSPEAK_AMULETE);
 		potOfWeeds = new ItemRequirement("Pot of weeds", ItemID.POT_OF_WEEDS);
 		potOfWeeds.setTooltip("You can make this by using some weeds on a pot");
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		coins101 = new ItemRequirement("Coins", ItemCollections.COINS, 101);
 		coin = new ItemRequirement("Coins", ItemCollections.COINS);
 		kwuarm = new ItemRequirement("Clean kwuarm", ItemID.KWUARM);
 		redEggs = new ItemRequirement("Red spiders' eggs", ItemID.RED_SPIDERS_EGGS);
 		vial = new ItemRequirement("Empty vial", ItemID.VIAL);
-		snakeCharm = new ItemRequirement("Snake charm", ItemID.SNAKE_CHARM);
+		snakeCharm = new ItemRequirement("Snake charm", ItemID.SNAKE_CHARM).isNotConsumed();
 		snakeCharm.canBeObtainedDuringQuest();
 		fish8 = new ItemRequirement("Fish or more, raw or cooked", ItemCollections.FISH_FOOD, 8);
 		fish8.addAlternates(ItemCollections.RAW_FISH);

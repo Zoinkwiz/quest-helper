@@ -229,12 +229,12 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		food = new ItemRequirement("Any food", ItemCollections.GOOD_EATING_FOOD);
 		foodForChest = new ItemRequirement("Food to put in a chest, multiple pieces in case a Ghast eats some",
 			ItemCollections.GOOD_EATING_FOOD);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET, 5);
 		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketOrSemiFilledBucket.addAlternates(ItemID.BUCKET_OF_RUBBLE, ItemID.BUCKET_OF_RUBBLE_7624);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		planks11 = new ItemRequirement("Plank", ItemID.PLANK, 11);
 		nails44 = new ItemRequirement("Any nails", ItemCollections.NAILS, 44);
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
@@ -248,9 +248,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		bronzeAxes10 = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE, 10);
 		tinderboxes4 = new ItemRequirement("Tinderbox", ItemID.TINDERBOX, 4);
 		tinderbox3 = new ItemRequirement("Tinderbox", ItemID.TINDERBOX, 3);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlighted.setHighlightInInventory(true);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderboxHighlighted = tinderbox.highlighted();
 
 		steelBars2 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 2);
 		steelBars2Highlighted = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 2);
@@ -308,10 +307,10 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		sleepingSeven = new ItemRequirement("The sleeping seven", ItemID.THE_SLEEPING_SEVEN);
 		sleepingSeven.setHighlightInInventory(true);
 
-		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammerHighlighted.setHighlightInInventory(true);
 
-		mould = new ItemRequirement("Rod mould", ItemID.ROD_MOULD);
+		mould = new ItemRequirement("Rod mould", ItemID.ROD_MOULD).isNotConsumed();
 		silvRod = new ItemRequirement("Silvthrill rod", ItemID.SILVTHRILL_ROD);
 		silvRod.setHighlightInInventory(true);
 		softClayHighlighted = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);

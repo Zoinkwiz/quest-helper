@@ -186,7 +186,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX)
-			.showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav));
+			.showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav)).isNotConsumed();
 		airRune1 = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 1)
 			.showConditioned(new Conditions(notTelegrabbedWine, new Conditions(LogicType.NOR, bothRunes)));
 		airRune3 = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 3)
@@ -210,18 +210,18 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			watermelon, bronzeSpear));
 		scarecrowItems.setTooltip("Created by combining a bronze spear, watermelon, and hay sack " +
 			"(empty sack filled at a hay bale, nearest is North-West of Lumbridge)");
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
-		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
-		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleNorthWall);
-		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar);
-		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar);
-		initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE).showConditioned(notPrayAtAltar);
-		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold);
-		axe = new ItemRequirement("Any Axe", ItemCollections.AXES).showConditioned(notChopBurnWillowTav);
-		brownApron = new ItemRequirement("Brown Apron", ItemID.BROWN_APRON).showConditioned(notMineGold);
+		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre).isNotConsumed();
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall).isNotConsumed();
+		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleNorthWall).isNotConsumed();
+		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar).isNotConsumed();
+		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar).isNotConsumed();
+		initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE).showConditioned(notPrayAtAltar).isNotConsumed();
+		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold).isNotConsumed();
+		axe = new ItemRequirement("Any Axe", ItemCollections.AXES).showConditioned(notChopBurnWillowTav).isNotConsumed();
+		brownApron = new ItemRequirement("Brown Apron", ItemID.BROWN_APRON).showConditioned(notMineGold).isNotConsumed();
 		willowBranch6 = new ItemRequirement("Willow Branches", ItemID.WILLOW_BRANCH, 6).showConditioned(notBasketFalLoom);
 
 		willowLog = new ItemRequirement("Willow Log", ItemID.WILLOW_LOGS);
@@ -230,9 +230,9 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		initiateSet = new ItemRequirements(initiateChest, initiateLegs, initiateHelm);
 
 		faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
-		explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2);
+		explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2).isNotConsumed();
 		explorersRing.addAlternates(ItemID.EXPLORERS_RING_4, ItemID.EXPLORERS_RING_3);
-		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS);
+		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS).isNotConsumed();
 		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		inChemist = new ZoneRequirement(chemist);

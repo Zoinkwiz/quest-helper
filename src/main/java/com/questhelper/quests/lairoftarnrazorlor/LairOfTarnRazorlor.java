@@ -101,7 +101,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		diary = new ItemRequirement("Tarn's diary", ItemID.TARNS_DIARY);
 		diary.setHighlightInInventory(true);

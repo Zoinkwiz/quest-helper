@@ -67,8 +67,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	ItemRequirement stew, hughesLetter;
 
 	QuestStep talkToLawry, talkToPoorLookingPerson, talkToOReilly, talkToDevan, exitWarrens, killConrad,
-	tellDevanAboutConrad, exitWarrens2, goToKingstown, openChest, leaveKingstown, talkToLawry2,
-	talkToShauna;
+		tellDevanAboutConrad, exitWarrens2, goToKingstown, openChest, leaveKingstown, talkToLawry2,
+		talkToShauna;
 
 	ObjectStep enterWarrens, enterWarrens2, enterWarrens3, enterWarrens4;
 
@@ -137,16 +137,18 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements() {
+	public void setupRequirements()
+	{
 		stew = new ItemRequirement("Stew", ItemID.STEW);
 		hughesLetter = new ItemRequirement("Letter", ItemID.LETTER_21774);
 		hughesLetter.setTooltip("You can get another letter by searching the chest upstairs in Hughes' house in Kingstown.");
 	}
 
-	public void loadZones() {
+	public void loadZones()
+	{
 		warrens = new Zone(new WorldPoint(1728, 10115, 0), new WorldPoint(1814, 10177, 0));
-		kingstown = new Zone(new WorldPoint(1668,  3675, 1), new WorldPoint(1685, 3684, 1));
-		upstairsHughesHouse = new Zone(new WorldPoint(1668,  3675, 1), new WorldPoint(1685, 3684, 1));
+		kingstown = new Zone(new WorldPoint(1668, 3675, 1), new WorldPoint(1685, 3684, 1));
+		upstairsHughesHouse = new Zone(new WorldPoint(1668, 3675, 1), new WorldPoint(1685, 3684, 1));
 	}
 
 	public void setupConditions()
@@ -155,7 +157,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		inUpstairsHughesHouse = new ZoneRequirement(upstairsHughesHouse);
 	}
 
-	public void setupSteps() {
+	public void setupSteps()
+	{
 		WorldPoint tomasPoint = new WorldPoint(1796, 3781, 0);
 		WorldPoint manholePoint = new WorldPoint(1813, 3745, 0);
 		WorldPoint ladderPoint = new WorldPoint(1813, 10145, 0);
@@ -246,9 +249,9 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2,000 Coins", ItemID.COINS_995, 2000),
-				new ItemReward("A Piscarilius Favour Certificate", ItemID.PISCARILIUS_FAVOUR_CERTIFICATE, 1),
-				new ItemReward("A page for Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS, 1));
+			new ItemReward("2,000 Coins", ItemID.COINS_995, 2000),
+			new ItemReward("A Piscarilius Favour Certificate", ItemID.PISCARILIUS_FAVOUR_CERTIFICATE, 1),
+			new ItemReward("A page for Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

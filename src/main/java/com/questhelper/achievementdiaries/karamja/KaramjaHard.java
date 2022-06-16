@@ -168,39 +168,39 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		notAssignedTask = new VarbitRequirement(3608, 0);
 		notKilledDragon = new VarbitRequirement(3609, 0);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notKilledDeathwing);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notKilledDeathwing).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKilledDragon);
 		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE_WRAP).showConditioned(notEatenWrap);
 		oomlieWrap.setTooltip("You can make one by using a palm leaf on a raw oomlie and cooking it. Both are " +
 			"obtained from the Kharazi Jungle");
 		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedNature);
 		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemID.NATURE_TALISMAN)
-			.showConditioned(notCraftedNature);
+			.showConditioned(notCraftedNature).isNotConsumed();
 		natureTalismanOrAbyss.addAlternates(ItemID.NATURE_TIARA);
 		natureTalismanOrAbyss.setTooltip("Nature talisman or tiara");
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN).showConditioned(notCookedKarambwan);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
-			notCollectedLeaves, notKilledDeathwing));
+			notCollectedLeaves, notKilledDeathwing)).isNotConsumed();
 		machete = new ItemRequirement("Any machete", ItemID.MACHETE).showConditioned(new Conditions(LogicType.OR,
-			notCollectedLeaves, notKilledDeathwing));
+			notCollectedLeaves, notKilledDeathwing)).isNotConsumed();
 		machete.addAlternates(ItemID.OPAL_MACHETE, ItemID.JADE_MACHETE, ItemID.RED_TOPAZ_MACHETE);
 		lockpick = new ItemRequirement("Lockpick, more in case it breaks", ItemID.LOCKPICK)
-			.showConditioned(notKilledDeathwing);
-		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).showConditioned(notUsedShortcut);
+			.showConditioned(notKilledDeathwing).isNotConsumed();
+		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).showConditioned(notUsedShortcut).isNotConsumed();
 		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
 			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
 			ItemID.BLURITE_CROSSBOW);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notUsedShortcut);
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notUsedShortcut).isNotConsumed();
 		antidragonShield =
 			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS)
-				.showConditioned(notKilledDragon);
+				.showConditioned(notKilledDragon).isNotConsumed();
 		antifirePotions = new ItemRequirement("Antifire potions", ItemCollections.ANTIFIRE)
 			.showConditioned(notKilledDragon);
 
-		combatGear = new ItemRequirement("Combat gear to defeat a deathwing and a metal dragon", -1, -1);
+		combatGear = new ItemRequirement("Combat gear to defeat a deathwing and a metal dragon", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		fightCaveCombatGear = new ItemRequirement("Combat gear to reach wave 31 in the Fight Caves and defeat a " +
-			"Ket-Zek", -1, -1);
+			"Ket-Zek", -1, -1).isNotConsumed();
 		fightCaveCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, -1);

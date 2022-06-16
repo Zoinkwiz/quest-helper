@@ -203,23 +203,21 @@ public class PriestInPeril extends BasicQuestHelper
 	{
 		runeEssence = new ItemRequirement("Rune or Pure Essence", ItemID.RUNE_ESSENCE, 50);
 		runeEssence.addAlternates(ItemID.PURE_ESSENCE);
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
-		bucketHighlighted = new ItemRequirement("Bucket", ItemID.BUCKET);
-		bucketHighlighted.setHighlightInInventory(true);
-		runePouches = new ItemRequirements(LogicType.AND, "Essence pouches for carrying essence",
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
+		bucketHighlighted = bucket.highlighted();
+		runePouches = new ItemRequirements(LogicType.OR, "Essence pouches for carrying essence",
 			new ItemRequirement("Small pouch", ItemID.SMALL_POUCH),
 			new ItemRequirement("Medium pouch", ItemID.MEDIUM_POUCH),
 			new ItemRequirement("Large pouch", ItemID.LARGE_POUCH),
 			new ItemRequirement("Giant pouch", ItemID.GIANT_POUCH)
-		);
-		runePouches.addAlternates(ItemID.MEDIUM_POUCH, ItemID.LARGE_POUCH, ItemID.GIANT_POUCH);
+		).isNotConsumed();
 		varrockTeleport = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 3);
-		weaponAndArmour = new ItemRequirement("Ranged or melee weapon + armour", -1, -1);
+		weaponAndArmour = new ItemRequirement("Ranged or melee weapon + armour", -1, -1).isNotConsumed();
 		weaponAndArmour.setDisplayItemId(BankSlotIcons.getCombatGear());
 		goldenKey = new ItemRequirement("Golden key", ItemID.GOLDEN_KEY);
 		goldenKeyHighlighted = new ItemRequirement("Golden key", ItemID.GOLDEN_KEY);
 		goldenKeyHighlighted.setHighlightInInventory(true);
-		rangedMagedGear = new ItemRequirement("Combat gear, ranged or mage to safespot", -1, -1);
+		rangedMagedGear = new ItemRequirement("Combat gear, ranged or mage to safespot", -1, -1).isNotConsumed();
 		rangedMagedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		lotsOfRuneEssence = new ItemRequirement("As much essence as you can carry, you'll need to bring 50 UNNOTED in total", ItemID.PURE_ESSENCE, -1);
 		murkyWater = new ItemRequirement("Murky water", ItemID.MURKY_WATER);

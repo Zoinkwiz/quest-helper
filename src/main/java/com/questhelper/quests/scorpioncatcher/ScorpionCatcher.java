@@ -122,7 +122,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY);
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");
 		jailKey = new ItemRequirement("Jail Key", ItemID.JAIL_KEY);
 
@@ -143,7 +143,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		scorpionCageFull = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE_463);
 
 		// Recommended
-		antiDragonShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS);
+		antiDragonShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS).isNotConsumed();
 		antiPoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		teleRunesFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT, -1);

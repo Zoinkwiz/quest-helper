@@ -246,8 +246,8 @@ public class RoyalTrouble extends BasicQuestHelper
 			coalOrPickaxe = coal5;
 		}
 
-		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES);
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

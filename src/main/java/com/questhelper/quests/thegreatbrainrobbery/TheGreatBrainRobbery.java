@@ -216,32 +216,33 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		// Item reqs
-		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET);
+		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET).isNotConsumed();
 		fishbowlHelmet.setTooltip("You can get another from Murphy in Port Khazard");
-		divingApparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS);
+		divingApparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS).isNotConsumed();
 		divingApparatus.setTooltip("You can get another from Murphy in Port Khazard");
 		woodenCats = new ItemRequirement("Wooden cat", ItemID.WOODEN_CAT);
 		oakPlank = new ItemRequirement("Oak plank", ItemID.OAK_PLANK);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		fur = new ItemRequirement("Fur", ItemID.FUR);
 		fur.addAlternates(ItemID.BEAR_FUR, ItemID.GREY_WOLF_FUR);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.setTooltip("a standard hammer, NOT Imcando Hammer, as it will be given to Dr. Fenkenstrain");
 		nails = new ItemRequirement("Nails", ItemCollections.NAILS);
-		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL);
-		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS);
+		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL).isNotConsumed();
+		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS).isNotConsumed();
 		ringOfCharos.addAlternates(ItemID.RING_OF_CHAROSA);
 		ringOfCharos.setDisplayMatchedItemName(true);
 		catsOrResources = new ItemRequirements(LogicType.OR, "10 Wooden cats, or 10 planks and 10 furs to make them",
 			woodenCats.quantity(10), new ItemRequirements(plank.quantity(10), fur.quantity(10)));
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.addAlternates(ItemID.TINDERBOX_7156);
 
 		// Item recommended
-		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
+		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).isNotConsumed();
 		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.COMBAT_BRACELETS);
 		edgevilleTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
+
 		fenkenstrainTeleport = new ItemRequirement("Fenkenstrain's Castle teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 		watermelonSeeds = new ItemRequirement("Watermelon seeds to plant on Harmony for Hard Morytania Diary",
 			ItemID.WATERMELON_SEED);

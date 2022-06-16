@@ -115,9 +115,10 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		notCheckedCalquat = new VarplayerRequirement(1200, false, 5);
 
 		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
-			ItemID.NATURE_TIARA).showConditioned(notCraftedRunes);
+			ItemID.NATURE_TIARA).showConditioned(notCraftedRunes).isNotConsumed();
 		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedRunes);
-		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.FIRE_CAPE).showConditioned(notEquippedCape);
+		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.FIRE_CAPE)
+			.showConditioned(notEquippedCape).isNotConsumed();
 		fireCapeOrInfernal.addAlternates(ItemID.INFERNAL_CAPE);
 		palmTreeSapling = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notCheckedPalm);
 		antidotePlusPlus = new ItemRequirement("Antidote++", ItemID.ANTIDOTE4_5952).showConditioned(notMadePotion);
@@ -125,9 +126,9 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		zulrahScales = new ItemRequirement("Zulrah scales", ItemID.ZULRAHS_SCALES).showConditioned(notMadePotion);
 		calquatSapling = new ItemRequirement("Calquat sapling", ItemID.CALQUAT_SAPLING).showConditioned(notCheckedCalquat);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
-			notCheckedPalm));
+			notCheckedPalm)).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
-			notCheckedPalm));
+			notCheckedPalm)).isNotConsumed();
 
 
 		farming72 = new SkillRequirement(Skill.FARMING, 72, true);

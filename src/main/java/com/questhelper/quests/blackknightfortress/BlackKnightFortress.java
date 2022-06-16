@@ -160,15 +160,15 @@ public class BlackKnightFortress extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY, 1, true);
+		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY, 1, true).isNotConsumed();
 		ironChainbody.setTooltip("You can buy one from the Chainmail Shop in south Falador");
 		cabbage = new ItemRequirement("Cabbage (NOT from Draynor Manor)", ItemID.CABBAGE);
 		cabbage.setTooltip("You can get one from the Edgeville Monastery east of the Black Knights' Fortress.");
-		bronzeMed = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM, 1, true);
+		bronzeMed = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM, 1, true).isNotConsumed();
 		bronzeMed.setTooltip("You can get one from the helmet shop in Barbarian Village.");
 
 		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
-		armour = new ItemRequirement("Armour", -1, -1);
+		armour = new ItemRequirement("Armour", -1, -1).isNotConsumed();
 		armour.setDisplayItemId(BankSlotIcons.getArmour());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}

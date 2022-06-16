@@ -142,19 +142,19 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setHighlightInInventory(true);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		needle.setTooltip("You can obtain this during the quest");
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
 		leather.setTooltip("You can obtain this during the quest");
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		coal4 = new ItemRequirement("Coal", ItemID.COAL, 4);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		batteredBook = new ItemRequirement("Battered book", ItemID.BATTERED_BOOK);
 		batteredBook.setHighlightInInventory(true);

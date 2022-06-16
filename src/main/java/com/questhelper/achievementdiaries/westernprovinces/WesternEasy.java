@@ -153,20 +153,20 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 		//todo find way to track chompy kills
 
-		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCopperLongtail);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineIron);
+		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCopperLongtail).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineIron).isNotConsumed();
 		oakShortU = new ItemRequirement("Oak shortbow (u)", ItemID.OAK_SHORTBOW_U).showConditioned(notOakShortbow);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notOakShortbow);
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat);
-		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat);
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
+		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat).isNotConsumed();
 		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
 		swampToad = new ItemRequirement("Swamp toad", ItemID.SWAMP_TOAD);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF);
+		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).isNotConsumed();
 
 		inBrimstailCave = new ZoneRequirement(brimstailCave);
 		inPest = new ZoneRequirement(pest);

@@ -191,8 +191,8 @@ public class EnakhrasLament extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		chiselHighlighted.setHighlightInInventory(true);
 
 		sandstone52 = new ItemRequirement("52 kg of sandstone", -1, -1);
@@ -271,7 +271,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		sandstone5 = new ItemRequirement("Sandstone (5kg)", ItemID.SANDSTONE_5KG);
 		sandstone5.setHighlightInInventory(true);
 
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
 		onNormals = new SpellbookRequirement(Spellbook.NORMAL);
 	}

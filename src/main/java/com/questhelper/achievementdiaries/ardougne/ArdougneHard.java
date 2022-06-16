@@ -179,38 +179,38 @@ public class ArdougneHard extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(notYanHouse, notYanPOH));
 		mithBar = new ItemRequirement("Mithril bar", ItemID.MITHRIL_BAR).showConditioned(notMithPlate);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER)
-			.showConditioned(new Conditions(LogicType.OR, notMithPlate, notDragSquare));
-		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notRedSally);
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notRedSally);
+			.showConditioned(new Conditions(LogicType.OR, notMithPlate, notDragSquare)).isNotConsumed();
+		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notRedSally).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notRedSally).isNotConsumed();
 		rechargableJewelry = new ItemRequirement("Skills necklace or Combat bracelet under 4 charges",
 			ItemCollections.RECHARGEABLE_NECK_BRACELET).showConditioned(notRecharge);
 		greeGree = new ItemRequirement("Karamja monkey greegree", ItemID.KARAMJAN_MONKEY_GREEGREE)
-			.showConditioned(notMonkeyCage);
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notStealChest);
+			.showConditioned(notMonkeyCage).isNotConsumed();
+		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notStealChest).isNotConsumed();
 		shieldLeft = new ItemRequirement("Shield left half", ItemID.SHIELD_LEFT_HALF).showConditioned(notDragSquare);
 		shieldRight = new ItemRequirement("Shield right half", ItemID.SHIELD_RIGHT_HALF).showConditioned(notDragSquare);
 		deathAccess = new ItemRequirement("Access to Death altar, or travel through abyss",
-			ItemCollections.DEATHALTAR).showConditioned(notDeathRune);
+			ItemCollections.DEATHALTAR).showConditioned(notDeathRune).isNotConsumed();
 		deathAccess.setTooltip("Death talisman or tiara");
-		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.CRYSTAL_TRINKET).showConditioned(notDeathRune);
+		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.CRYSTAL_TRINKET).showConditioned(notDeathRune).isNotConsumed();
 		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH)
 			.showConditioned(notDeathRune);
-		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune);
+		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed();
 		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
-		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS);
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK);
-		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES);
-		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK);
-		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP);
-		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS);
+		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS).isNotConsumed();
+		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK).isNotConsumed();
+		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES).isNotConsumed();
+		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK).isNotConsumed();
+		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP).isNotConsumed();
+		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS).isNotConsumed();
 		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers,
-			mournerCloak, mournerBoots, mournerGloves).showConditioned(notDeathRune);
+			mournerCloak, mournerBoots, mournerGloves).showConditioned(notDeathRune).isNotConsumed();
 		mournersOutfit.setTooltip("Another set can be obtained at the north entrance to Arandar.");
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
-			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy));
+			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy)).isNotConsumed();
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER)
-			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy));
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPalmTree);
+			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy)).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPalmTree).isNotConsumed();
 		poisonIvySeed = new ItemRequirement("Poison ivy seed", ItemID.POISON_IVY_SEED).showConditioned(notPoisonIvy);
 		palmSap = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notPalmTree);
 		papaya = new ItemRequirement("Papaya fruit", ItemID.PAPAYA_FRUIT).showConditioned(notPalmTree);

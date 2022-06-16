@@ -164,7 +164,7 @@ public class Biohazard extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
+		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
 		gasMask.setTooltip("You can get another from the cupboard in Edmond's house west of Elena's house.");
 		birdCage = new ItemRequirement("Pigeon cage", ItemID.PIGEON_CAGE);
 		birdCageHighlighted = new ItemRequirement("Pigeon cage", ItemID.PIGEON_CAGE);
@@ -172,7 +172,7 @@ public class Biohazard extends BasicQuestHelper
 		birdFeed = new ItemRequirement("Bird feed", ItemID.BIRD_FEED);
 		rottenApple = new ItemRequirement("Rotten apple", ItemID.ROTTEN_APPLE);
 		rottenApple.setHighlightInInventory(true);
-		medicalGown = new ItemRequirement("Medical gown", ItemID.MEDICAL_GOWN);
+		medicalGown = new ItemRequirement("Medical gown", ItemID.MEDICAL_GOWN).isNotConsumed();
 		medicalGownEquipped = new ItemRequirement("Medical gown", ItemID.MEDICAL_GOWN, 1, true);
 		key = new ItemRequirement("Key", ItemID.KEY_423);
 		distillator = new ItemRequirement("Distillator", ItemID.DISTILLATOR);
@@ -186,10 +186,10 @@ public class Biohazard extends BasicQuestHelper
 		sulphuricBroline.setTooltip("You can get another from Elena in East Ardougne.");
 		touchPaper = new ItemRequirement("Touch paper", ItemID.TOUCH_PAPER);
 		touchPaper.setTooltip("You can get more from the Chemist in Rimmington.");
-		priestGownBottom = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428);
-		priestGownTop = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN);
-		priestGownBottomEquipped = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428, 1, true);
-		priestGownTopEquipped = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN, 1, true);
+		priestGownBottom = new ItemRequirement("Priest gown (bottom)", ItemID.PRIEST_GOWN_428).isNotConsumed();
+		priestGownTop = new ItemRequirement("Priest gown (top)", ItemID.PRIEST_GOWN).isNotConsumed();
+		priestGownBottomEquipped = priestGownBottom.equipped();
+		priestGownTopEquipped = priestGownTop.equipped();
 		teleportVarrock = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		teleportArdougne = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
 		teleportRimmington = new ItemRequirement("Teleport to Rimmington", ItemID.RIMMINGTON_TELEPORT);

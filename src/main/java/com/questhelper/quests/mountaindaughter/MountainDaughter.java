@@ -178,20 +178,20 @@ public class MountainDaughter extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE).isNotConsumed();
 		pickaxe.addAlternates(ItemCollections.PICKAXES);
 
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		plank = new ItemRequirement("Any plank", ItemID.PLANK);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		plank = new ItemRequirement("Any plank", ItemID.PLANK).isNotConsumed();
 		plank.addAlternates(ItemID.OAK_PLANK, ItemID.TEAK_PLANK, ItemID.MAHOGANY_PLANK);
-		pole = new ItemRequirement("A staff or a pole", ItemID.POLE);
+		pole = new ItemRequirement("A staff or a pole", ItemID.POLE).isNotConsumed();
 		pole.addAlternates(ItemID.LUNAR_STAFF, ItemID.STAFF, ItemID.BATTLESTAFF);
 		pole.addAlternates(ItemCollections.AIR_STAFF);
 		pole.addAlternates(ItemCollections.WATER_STAFF);
 		pole.addAlternates(ItemCollections.EARTH_STAFF);
 		pole.addAlternates(ItemCollections.FIRE_STAFF);
 		pole.setTooltip("A Dramen Staff will NOT work. A pole can be obtained from the goat pen north of Hamal's house.");
-		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES);
+		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES).isNotConsumed();
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
 			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
@@ -212,7 +212,7 @@ public class MountainDaughter extends BasicQuestHelper
 		corpse.setTooltip("You can find this corpse again in the Kendal's cave.");
 		muddyRocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
 		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.SLAYER_RINGS);
-		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1);
+		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		rocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK);

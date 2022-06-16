@@ -142,20 +142,20 @@ public class WesternElite extends ComplexStateQuestHelper
 		magicLongU = new ItemRequirement("Magic longbow (u)", ItemID.MAGIC_LONGBOW_U).showConditioned(notMagicLong);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notMagicLong);
 		mouthProtection =
-			new ItemRequirement("Mouth protection", ItemCollections.MOUTH_PROTECTION).showConditioned(notKillThermy);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPrissyScilla);
+			new ItemRequirement("Mouth protection", ItemCollections.MOUTH_PROTECTION).showConditioned(notKillThermy).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPrissyScilla).isNotConsumed();
 		magicSapling = new ItemRequirement("Magic sapling", ItemID.MAGIC_SAPLING).showConditioned(notPrissyScilla);
 		coconuts25 = new ItemRequirement("Coconuts", ItemID.COCONUT, 25).showConditioned(notPrissyScilla);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPrissyScilla);
-		voidHelm = new ItemRequirement("Any void knight helm", ItemCollections.VOID_HELM).showConditioned(notFullVoid);
-		voidTop = new ItemRequirement("Void knight top", ItemCollections.VOID_TOP).showConditioned(notFullVoid);
-		voidRobe = new ItemRequirement("Void knight robe", ItemCollections.VOID_ROBE).showConditioned(notFullVoid);
-		voidGloves = new ItemRequirement("Void knight gloves", ItemID.VOID_KNIGHT_GLOVES).showConditioned(notFullVoid);
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat);
-		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPrissyScilla).isNotConsumed();
+		voidHelm = new ItemRequirement("Any void knight helm", ItemCollections.VOID_HELM).showConditioned(notFullVoid).isNotConsumed();
+		voidTop = new ItemRequirement("Void knight top", ItemCollections.VOID_TOP).showConditioned(notFullVoid).isNotConsumed();
+		voidRobe = new ItemRequirement("Void knight robe", ItemCollections.VOID_ROBE).showConditioned(notFullVoid).isNotConsumed();
+		voidGloves = new ItemRequirement("Void knight gloves", ItemID.VOID_KNIGHT_GLOVES).showConditioned(notFullVoid).isNotConsumed();
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
+		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat).isNotConsumed();
 		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

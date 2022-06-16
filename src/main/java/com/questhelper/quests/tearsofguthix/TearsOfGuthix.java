@@ -109,11 +109,11 @@ public class TearsOfGuthix extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		litSapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702);
+		litSapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702).isNotConsumed();
 		litSapphireLantern.setTooltip("You can make this by using a cut sapphire on a bullseye lantern");
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 
 

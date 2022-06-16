@@ -267,21 +267,21 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 		boltOfCloth = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH);
 		mahogPlanks5 = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK, 5);
 		cadavaBerries = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
-		combatRangeMelee = new ItemRequirement("Combat gear, preferably ranged or melee", -1, -1);
+		combatRangeMelee = new ItemRequirement("Combat gear, preferably ranged or melee", -1, -1).isNotConsumed();
 		combatRangeMelee.setDisplayItemId(BankSlotIcons.getCombatGear());
 		trollTele = new ItemRequirement("Trollheim teleports", ItemID.TROLLHEIM_TELEPORT);
 		varrockTele = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		draynorTele = new ItemRequirement("Draynor teleport", ItemID.DRAYNOR_MANOR_TELEPORT, 2);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		potion = new ItemRequirement("Reduced cadava potion", ItemID.REDUCED_CADAVA_POTION);
 		potion.setTooltip("You can get another by bringing the Apothecary a cadava berry");
 

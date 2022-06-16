@@ -144,7 +144,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 		silk10 = new ItemRequirement("Silk", ItemID.SILK, 10);
 		bowl = new ItemRequirement("Bowl", ItemID.BOWL);
 		logs10 = new ItemRequirement("Logs", ItemID.LOGS, 10);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		willowBranches12 = new ItemRequirement("Willow branches", ItemID.WILLOW_BRANCH, 12);
 		willowBranches12.setTooltip("You can get these by using secateurs on a willow tree you've grown. Auguste will" +
 			" give you a sapling to grow during the quest if you need one");

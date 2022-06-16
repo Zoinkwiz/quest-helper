@@ -172,7 +172,7 @@ public class NatureSpirit extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
 		silverSickle = new ItemRequirement("Silver sickle", ItemID.SILVER_SICKLE);
 		washingBowl = new ItemRequirement("Washing bowl", ItemID.WASHING_BOWL);
 		mirror = new ItemRequirement("Mirror", ItemID.MIRROR);
@@ -195,7 +195,7 @@ public class NatureSpirit extends BasicQuestHelper
 		mushroomHighlighted = new ItemRequirement("Mort myre fungus", ItemID.MORT_MYRE_FUNGUS);
 		mushroomHighlighted.setHighlightInInventory(true);
 		salveTele = new ItemRequirement("Salve Graveyard Teleports", ItemID.SALVE_GRAVEYARD_TELEPORT, 2);
-		combatGear = new ItemRequirement("Combat gear to kill the ghasts", -1, -1);
+		combatGear = new ItemRequirement("Combat gear to kill the ghasts", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 

@@ -181,10 +181,9 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		pickaxeHighlighted.setHighlightInInventory(true);
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		pickaxeHighlighted = pickaxe.highlighted().isNotConsumed();
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 		brooch = new ItemRequirement("Brooch", ItemID.BROOCH);
 		book = new ItemRequirement("Goblin symbol book", ItemID.GOBLIN_SYMBOL_BOOK);
 		book.setHighlightInInventory(true);
@@ -199,34 +198,34 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
 		faladorTeleport = new ItemRequirement("Falador teleports", ItemID.FALADOR_TELEPORT);
 
-		hamShirt = new ItemRequirement("Ham shirt", ItemID.HAM_SHIRT, 1, true);
-		hamRobe = new ItemRequirement("Ham robe", ItemID.HAM_ROBE, 1, true);
-		hamHood = new ItemRequirement("Ham hood", ItemID.HAM_HOOD, 1, true);
-		hamBoot = new ItemRequirement("Ham boots", ItemID.HAM_BOOTS, 1, true);
-		hamGloves = new ItemRequirement("Ham gloves", ItemID.HAM_GLOVES, 1, true);
-		hamLogo = new ItemRequirement("Ham logo", ItemID.HAM_LOGO, 1, true);
-		hamCloak = new ItemRequirement("Ham cloak", ItemID.HAM_CLOAK, 1, true);
+		hamShirt = new ItemRequirement("Ham shirt", ItemID.HAM_SHIRT, 1, true).isNotConsumed();
+		hamRobe = new ItemRequirement("Ham robe", ItemID.HAM_ROBE, 1, true).isNotConsumed();
+		hamHood = new ItemRequirement("Ham hood", ItemID.HAM_HOOD, 1, true).isNotConsumed();
+		hamBoot = new ItemRequirement("Ham boots", ItemID.HAM_BOOTS, 1, true).isNotConsumed();
+		hamGloves = new ItemRequirement("Ham gloves", ItemID.HAM_GLOVES, 1, true).isNotConsumed();
+		hamLogo = new ItemRequirement("Ham logo", ItemID.HAM_LOGO, 1, true).isNotConsumed();
+		hamCloak = new ItemRequirement("Ham cloak", ItemID.HAM_CLOAK, 1, true).isNotConsumed();
 
-		hamShirt2 = new ItemRequirement("Ham shirt", ItemID.HAM_SHIRT, 2);
-		hamRobe2 = new ItemRequirement("Ham robe", ItemID.HAM_ROBE, 2);
-		hamHood2 = new ItemRequirement("Ham hood", ItemID.HAM_HOOD, 2);
-		hamBoot2 = new ItemRequirement("Ham boots", ItemID.HAM_BOOTS, 2);
-		hamGloves2 = new ItemRequirement("Ham gloves", ItemID.HAM_GLOVES, 2);
-		hamLogo2 = new ItemRequirement("Ham logo", ItemID.HAM_LOGO, 2);
-		hamCloak2 = new ItemRequirement("Ham cloak", ItemID.HAM_CLOAK, 2);
+		hamShirt2 = new ItemRequirement("Ham shirt", ItemID.HAM_SHIRT, 2).isNotConsumed();
+		hamRobe2 = new ItemRequirement("Ham robe", ItemID.HAM_ROBE, 2).isNotConsumed();
+		hamHood2 = new ItemRequirement("Ham hood", ItemID.HAM_HOOD, 2).isNotConsumed();
+		hamBoot2 = new ItemRequirement("Ham boots", ItemID.HAM_BOOTS, 2).isNotConsumed();
+		hamGloves2 = new ItemRequirement("Ham gloves", ItemID.HAM_GLOVES, 2).isNotConsumed();
+		hamLogo2 = new ItemRequirement("Ham logo", ItemID.HAM_LOGO, 2).isNotConsumed();
+		hamCloak2 = new ItemRequirement("Ham cloak", ItemID.HAM_CLOAK, 2).isNotConsumed();
 
-		hamSet = new ItemRequirements("Full ham robe sets (7 pieces)(equipped)", hamShirt, hamRobe, hamHood, hamBoot, hamGloves, hamLogo, hamCloak);
-		hamSet2 = new ItemRequirements("2 full ham robe sets (7 pieces/set)", hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2);
+		hamSet = new ItemRequirements("Full ham robe sets (7 pieces)(equipped)", hamShirt, hamRobe, hamHood, hamBoot, hamGloves, hamLogo, hamCloak).isNotConsumed();
+		hamSet2 = new ItemRequirements("2 full ham robe sets (7 pieces/set)", hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2).isNotConsumed();
 		hamSet2.setTooltip("The chance of thieving a ham clothing piece increases massively AFTER starting the quest");
 
 		zanik = new ItemRequirement("Zanik", ItemID.ZANIK);
 		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from Lumbridge Basement", NpcID.ZANIK_4508);
 
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
 		crate = new ItemRequirement("Crate with Zanik", ItemID.CRATE_WITH_ZANIK, 1, true);
 
-		combatGear = new ItemRequirement("Magic or melee combat gear", -1, -1);
+		combatGear = new ItemRequirement("Magic or melee combat gear", -1, -1).isNotConsumed();
 		gamesNecklace = new ItemRequirement("Games necklace (requires Tears of Guthix to teleport to Juna)", ItemID.GAMES_NECKLACE8);
 	}
 

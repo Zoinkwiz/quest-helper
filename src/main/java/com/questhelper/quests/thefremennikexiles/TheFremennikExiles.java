@@ -226,25 +226,25 @@ public class TheFremennikExiles extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD);
+		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD).isNotConsumed();
 		kegsOfBeer = new ItemRequirement("Kegs of beer", ItemID.KEG_OF_BEER_3801);
 		kegsOfBeer.setTooltip("You can buy some from Rasolo south east of Baxtorian Falls");
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 		astralRunes = new ItemRequirement("Astral runes", ItemID.ASTRAL_RUNE);
-		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);
+		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).isNotConsumed();
 		petRock.setTooltip("You can get another from Askeladden in Rellekka");
-		fishingOrFlyFishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
+		fishingOrFlyFishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingOrFlyFishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		fremennikShield = new ItemRequirement("Fremennik shield", ItemID.FREMENNIK_SHIELD);
 		fremennikShield.setTooltip("Obtainable during the quest for 150k, or free with a Ring of Charos(a)");
-		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES);
+		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES).isNotConsumed();
 		iceGloves.setTooltip("You can get another pair of ice gloves by killing the Ice Queen under White Wolf Mountain");
 		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		restorePot = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
 		restorePot.setTooltip("Highly recommended to make up for mistakes");
 
@@ -252,7 +252,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Dungeon",
 			ItemID.RUNE_THROWNAXE);
 
-		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
+		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE).isNotConsumed();
 		sealOfPassageOrEliteDiary = ComplexRequirementBuilder.or("Seal of Passage")
 			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE, 1))
 			.with(sealOfPassage)

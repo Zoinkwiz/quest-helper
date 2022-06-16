@@ -114,7 +114,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		logs.setTooltip("Most logs will work, however, arctic pine logs do not work.");
 		logs.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.TEAK_LOGS, ItemID.MAPLE_LOGS,
 			ItemID.MAHOGANY_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.setHighlightInInventory(true);
 		coal = new ItemRequirement("Coal", ItemID.COAL);
 		coal.setTooltip("There are rocks in the city, but you need 30 Mining.");

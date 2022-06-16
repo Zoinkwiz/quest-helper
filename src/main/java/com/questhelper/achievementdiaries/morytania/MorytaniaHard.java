@@ -169,40 +169,40 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 
 		piety = new PrayerRequirement("Piety activated", Prayer.PIETY);
 
-		crystalMineKey = new ItemRequirement("Crystal mine key", ItemID.CRYSTALMINE_KEY).showConditioned(notMithOre);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMithOre);
+		crystalMineKey = new ItemRequirement("Crystal mine key", ItemID.CRYSTALMINE_KEY).showConditioned(notMithOre).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMithOre).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKharyrll);
 		limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK).showConditioned(notKharyrll);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notKharyrll);
-		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notKharyrll);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notKharyrll).isNotConsumed();
+		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notKharyrll).isNotConsumed();
 		teakPlank = new ItemRequirement("Teak plank", ItemID.TEAK_PLANK).showConditioned(notKharyrll);
 		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notKharyrll);
 		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE).showConditioned(notKharyrll);
 		noseProtection = new ItemRequirement("Nose protection", ItemCollections.NOSE_PROTECTION)
-			.showConditioned(notAdvancedSpikes);
+			.showConditioned(notAdvancedSpikes).isNotConsumed();
 		watermelonSeeds = new ItemRequirement("Watermelon seeds", ItemID.WATERMELON_SEED)
 			.showConditioned(notHarvestWatermelon);
 		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER)
-			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon));
+			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon)).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
-			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon));
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notBurnMaho);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnMaho);
+			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon)).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notBurnMaho).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnMaho).isNotConsumed();
 		witchwoodIcon = new ItemRequirement("Witchwood icon", ItemID.WITCHWOOD_ICON)
-			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho));
+			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho)).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
-			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho));
+			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho)).isNotConsumed();
 		mushroomSpore = new ItemRequirement("Mushroom spores", ItemID.MUSHROOM_SPORE).showConditioned(notBittercapMush);
 		spade = new ItemRequirement("Spade", ItemID.SPADE)
-			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon));
+			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon)).isNotConsumed();
 		mahoLogs = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		fairyAccess = new ItemRequirement("Access to the fairy ring system", ItemCollections.FAIRY_STAFF)
-			.showConditioned(new Conditions(LogicType.OR, notBridgeSalve, notPietyAltar));
+			.showConditioned(new Conditions(LogicType.OR, notBridgeSalve, notPietyAltar)).isNotConsumed();
 		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.SLAYER_RINGS);
 
 		inHauntedMine1 = new ZoneRequirement(hauntedMine1);

@@ -133,9 +133,9 @@ public class ObservatoryQuest extends BasicQuestHelper
 		antipoison = new ItemRequirement("Antipoison (there is a spawn near the Observatory of superantipoison)",
 			ItemCollections.ANTIPOISONS);
 
-		mould = new ItemRequirement("Lens mould", ItemID.LENS_MOULD);
-		lens = new ItemRequirement("Observatory lens", ItemID.OBSERVATORY_LENS);
-		key = new ItemRequirement("Goblin kitchen key", ItemID.GOBLIN_KITCHEN_KEY);
+		mould = new ItemRequirement("Lens mould", ItemID.LENS_MOULD).isNotConsumed();
+		lens = new ItemRequirement("Observatory lens", ItemID.OBSERVATORY_LENS).isNotConsumed();
+		key = new ItemRequirement("Goblin kitchen key", ItemID.GOBLIN_KITCHEN_KEY).isNotConsumed();
 	}
 
 	public void setupConditions()

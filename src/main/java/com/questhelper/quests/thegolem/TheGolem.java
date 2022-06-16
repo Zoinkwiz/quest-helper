@@ -177,10 +177,8 @@ public class TheGolem extends BasicQuestHelper
 		programHighlight = new ItemRequirement("Golem program", ItemID.GOLEM_PROGRAM);
 		programHighlight.setHighlightInInventory(true);
 
-		pestleAndMortarHighlight = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleAndMortarHighlight.setHighlightInInventory(true);
-
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
+		pestleAndMortarHighlight = pestleAndMortar.highlighted();
 
 		mushroomHighlight = new ItemRequirement("Black mushroom", ItemID.BLACK_MUSHROOM);
 		mushroomHighlight.setHighlightInInventory(true);

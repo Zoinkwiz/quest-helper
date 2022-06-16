@@ -147,12 +147,12 @@ public class KandarinElite extends ComplexStateQuestHelper
 		notCol = new VarbitRequirement(3254, 4, Operation.LESS_EQUAL);
 
 		dwarfSeed = new ItemRequirement("Dwarf weed seed", ItemID.DWARF_WEED_SEED).showConditioned(notPickDwarf);
-		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickDwarf);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickDwarf);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickDwarf);
+		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickDwarf).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickDwarf).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickDwarf).isNotConsumed();
 		compost = new ItemRequirement("Any compost", ItemCollections.COMPOST).showConditioned(notPickDwarf);
-		harpoon = new ItemRequirement("Harpoon", ItemID.HARPOON).showConditioned(not5Shark);
-		cookingGaunt = new ItemRequirement("Cooking gauntlets", ItemID.COOKING_GAUNTLETS).showConditioned(not5Shark);
+		harpoon = new ItemRequirement("Harpoon", ItemID.HARPOON).showConditioned(not5Shark).isNotConsumed();
+		cookingGaunt = new ItemRequirement("Cooking gauntlets", ItemID.COOKING_GAUNTLETS).showConditioned(not5Shark).isNotConsumed();
 		stamPot = new ItemRequirement("Stamina potion (2)", ItemID.STAMINA_POTION2).showConditioned(notStamMix);
 		caviar = new ItemRequirement("Caviar", ItemID.CAVIAR).showConditioned(notStamMix);
 		runiteBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR).showConditioned(notRuneHasta);
@@ -161,17 +161,17 @@ public class KandarinElite extends ComplexStateQuestHelper
 		magicLogs2 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 2)
 			.showConditioned(new Conditions(LogicType.OR, notRuneHasta, notPyre));
 		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 1);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneHasta);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneHasta).isNotConsumed();
 		chewedBone = new ItemRequirement("Chewed bones", ItemID.CHEWED_BONES).showConditioned(notPyre);
 		chewedBone.setTooltip("These are a rare drop from mithril dragons");
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notPyre);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notPyre);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notPyre).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notPyre).isNotConsumed();
 		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPCath);
 		astralRune = new ItemRequirement("Astral runes", ItemID.ASTRAL_RUNE).showConditioned(notTPCath);
 		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notTPCath);
 		rawShark = new ItemRequirement("Raw shark", ItemID.RAW_SHARK).showConditioned(not5Shark);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notbarb5);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notbarb5).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);

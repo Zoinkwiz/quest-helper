@@ -153,7 +153,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		fishFood = new ItemRequirement("Fish food", ItemID.FISH_FOOD);
 		fishFood.setHighlightInInventory(true);
 		poison = new ItemRequirement("Poison", ItemID.POISON);

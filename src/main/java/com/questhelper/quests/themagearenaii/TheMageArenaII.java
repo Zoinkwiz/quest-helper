@@ -115,19 +115,19 @@ public class TheMageArenaII extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		zamorakStaff = new ItemRequirement("Zamorak staff", ItemID.ZAMORAK_STAFF);
+		zamorakStaff = new ItemRequirement("Zamorak staff", ItemID.ZAMORAK_STAFF).isNotConsumed();
 		zamorakStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
-		guthixStaff = new ItemRequirement("Guthix staff", ItemID.GUTHIX_STAFF);
+		guthixStaff = new ItemRequirement("Guthix staff", ItemID.GUTHIX_STAFF).isNotConsumed();
 		guthixStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
-		saradominStaff = new ItemRequirement("Saradomin staff", ItemID.SARADOMIN_STAFF);
+		saradominStaff = new ItemRequirement("Saradomin staff", ItemID.SARADOMIN_STAFF).isNotConsumed();
 		saradominStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
 		runesForCasts = new ItemRequirements("Runes for 50+ casts of god spells",
 			new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, -1),
 			new ItemRequirement("Air runes", ItemID.AIR_RUNE, -1),
 			new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, -1));
-		magicCombatGear = new ItemRequirement("Magic combat gear", -1, 1);
+		magicCombatGear = new ItemRequirement("Magic combat gear", -1, 1).isNotConsumed();
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
-		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
 		brews =  new ItemRequirement("Saradomin brews", ItemCollections.SARADOMIN_BREWS, -1);
 		restores = new ItemRequirement("Super restores", ItemCollections.SUPER_RESTORE_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -139,7 +139,7 @@ public class TheMageArenaII extends BasicQuestHelper
 		demonsHeart = new ItemRequirement("Demon's heart", ItemID.DEMONS_HEART);
 		entRoots = new ItemRequirement("Ent's roots", ItemID.ENTS_ROOTS);
 
-		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE);
+		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE).isNotConsumed();
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
 		godCape.setHighlightInInventory(true);
 	}

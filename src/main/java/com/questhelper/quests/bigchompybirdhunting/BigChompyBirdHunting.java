@@ -161,11 +161,11 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 100);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		chisel.setHighlightInInventory(true);
 		wolfBones4 = new ItemRequirement("Wolf bones", ItemID.WOLF_BONES, 4);
 		wolfBones4.setTooltip("You can kill wolves (level 64) around Feldip for bones");
@@ -193,8 +193,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		ogreArrows6Highlighted.setHighlightInInventory(true);
 
 		ogreArrows = new ItemRequirement("Ogre arrow", ItemID.OGRE_ARROW, 1, true);
-		ogreBow = new ItemRequirement("Ogre bow", ItemID.OGRE_BOW, 1, true);
-		ogreBowInventory = new ItemRequirement("Ogre bow", ItemID.OGRE_BOW);
+		ogreBow = new ItemRequirement("Ogre bow", ItemID.OGRE_BOW, 1, true).isNotConsumed();
+		ogreBowInventory = new ItemRequirement("Ogre bow", ItemID.OGRE_BOW).isNotConsumed();
 
 		emptyBellow = new ItemRequirement("Ogre bellows (empty)", ItemID.OGRE_BELLOWS);
 		emptyBellow.setTooltip("You can get more from the chest in Rantz's cave");

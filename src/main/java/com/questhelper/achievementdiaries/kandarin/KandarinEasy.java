@@ -98,7 +98,6 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
 		catchMackerelTask = new ConditionalStep(this, catchMackerel);
 		doEasy.addStep(notCatchMackerel, catchMackerelTask);
-
 		petFishTask = new ConditionalStep(this, fillFishbowl);
 		petFishTask.addStep(fishBowl, petFishMix);
 		petFishTask.addStep(fishBowlSeaweed, petFish);
@@ -148,7 +147,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		notLogShortcut = new VarplayerRequirement(1178, false, 11);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR, notPetFish, notBuyCandle, notBuyStew));
-		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchMackerel);
+		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchMackerel).isNotConsumed();
 
 		emptyFishbowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL).showConditioned(notPetFish);
 		fishBowl = new ItemRequirement("Filled fishbowl", ItemID.FISHBOWL).showConditioned(notPetFish);
@@ -156,16 +155,17 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		tinyNet = new ItemRequirement("Tiny net", ItemID.TINY_NET).showConditioned(notPetFish);
 		genericFishbowl = new ItemRequirements(LogicType.OR, "Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed).showConditioned(notPetFish);
 
-		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
-		juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute);
-		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantJute);
-		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY).showConditioned(notKillEle);
-		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
+        seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
+        juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
+        rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute).isNotConsumed();
+        seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantJute).isNotConsumed();
+        batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY).showConditioned(notKillEle).isNotConsumed();
+        batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
 			"Workshop, then reading the book you get from it");
 
-		combatGear = new ItemRequirement("Combat gear to defeat all types of elementals (level 35)", -1, -1).showConditioned(notKillEle);
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+        combatGear = new ItemRequirement("Combat gear to defeat all types of elementals (level 35)", -1, -1)
+			.showConditioned(notKillEle).isNotConsumed();
+        combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 

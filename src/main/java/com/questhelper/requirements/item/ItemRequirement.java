@@ -94,6 +94,8 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	protected boolean isConsumedItem = true;
 
+	protected boolean shouldAggregate = true;
+
 	public ItemRequirement(String name, int id)
 	{
 		this(name, id, 1);
@@ -204,7 +206,14 @@ public class ItemRequirement extends AbstractRequirement
 	public ItemRequirement isNotConsumed()
 	{
 		ItemRequirement newItem = copy();
-		newItem.isConsumedItem = true;
+		newItem.isConsumedItem = false;
+		return newItem;
+	}
+
+	public ItemRequirement doNotAggregate()
+	{
+		ItemRequirement newItem = copy();
+		newItem.shouldAggregate = false;
 		return newItem;
 	}
 
@@ -241,6 +250,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.questBank = questBank;
 		newItem.hadItemLastCheck = hadItemLastCheck;
 		newItem.isConsumedItem = isConsumedItem;
+		newItem.shouldAggregate = shouldAggregate;
 		newItem.setTooltip(getTooltip());
 		newItem.setUrlSuffix(getUrlSuffix());
 

@@ -388,11 +388,10 @@ public class LegendsQuest extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		machete = new ItemRequirement("A machete", ItemCollections.MACHETE);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		machete = new ItemRequirement("A machete", ItemCollections.MACHETE).isNotConsumed();
 
-		macheteHighlighted = new ItemRequirement("A machete", ItemCollections.MACHETE);
-		macheteHighlighted.setHighlightInInventory(true);
+		macheteHighlighted = machete.highlighted();
 
 		anyNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
 		anyNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
@@ -422,7 +421,7 @@ public class LegendsQuest extends BasicQuestHelper
 		bullRoarerHighlight.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
 		bullRoarerHighlight.setHighlightInInventory(true);
 
-		lockpick = new ItemRequirement("Lockpick (multiple in case they break)", ItemID.LOCKPICK);
+		lockpick = new ItemRequirement("Lockpick (multiple in case they break)", ItemID.LOCKPICK).isNotConsumed();
 		soulRune = new ItemRequirement("Soul rune", ItemID.SOUL_RUNE);
 		soulRuneHighlight = new ItemRequirement("Soul rune", ItemID.SOUL_RUNE);
 		soulRuneHighlight.setHighlightInInventory(true);
@@ -458,7 +457,7 @@ public class LegendsQuest extends BasicQuestHelper
 		diamondHighlighted = new ItemRequirement("Diamond", ItemID.DIAMOND);
 		diamondHighlighted.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 
 		bindingBook = new ItemRequirement("Binding book", ItemID.BINDING_BOOK);
 		bindingBookHighlighted = new ItemRequirement("Binding book", ItemID.BINDING_BOOK);
@@ -466,14 +465,14 @@ public class LegendsQuest extends BasicQuestHelper
 
 		goldBar2 = new ItemRequirement("Gold bar", ItemID.GOLD_BAR, 2);
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 
 		goldBowl = new ItemRequirement("Gold bowl", ItemID.GOLD_BOWL);
 		goldBowl.addAlternates(ItemID.GOLDEN_BOWL, ItemID.GOLDEN_BOWL_724, ItemID.GOLDEN_BOWL_725, ItemID.GOLDEN_BOWL_726, ItemID.BLESSED_GOLD_BOWL);
 		goldBowlHighlighted = new ItemRequirement("Gold bowl", ItemID.GOLD_BOWL);
 		goldBowlHighlighted.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		goldBowlBlessed = new ItemRequirement("Blessed gold bowl", ItemID.BLESSED_GOLD_BOWL);
@@ -495,7 +494,7 @@ public class LegendsQuest extends BasicQuestHelper
 		germinatedSeedsHighlighted.setTooltip("You can get more seeds from Ungadulu, and use sacred water on them");
 		germinatedSeedsHighlighted.setHighlightInInventory(true);
 
-		runeOrDragonAxe = new ItemRequirement("Rune or Dragon axe", ItemID.RUNE_AXE);
+		runeOrDragonAxe = new ItemRequirement("Rune or Dragon axe", ItemID.RUNE_AXE).isNotConsumed();
 		runeOrDragonAxe.addAlternates(ItemID.DRAGON_AXE);
 		ardrigal = new ItemRequirement("Ardrigal", ItemID.ARDRIGAL);
 		ardrigal.setTooltip("You can find some in the palm trees north east of Tai Bwo Wannai");

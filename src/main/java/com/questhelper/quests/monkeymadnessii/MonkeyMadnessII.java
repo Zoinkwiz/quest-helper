@@ -260,7 +260,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		lemon = new ItemRequirement("Lemon", ItemID.LEMON);
 		grape = new ItemRequirement("Grapes", ItemID.GRAPES);
-		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		lemonHighlighted = new ItemRequirement("Lemon", ItemID.LEMON);
 		lemonHighlighted.setHighlightInInventory(true);
 		grapesHighlighted = new ItemRequirement("Grapes", ItemID.GRAPES);
@@ -268,24 +268,23 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlighted.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
-		lightSource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES);
-		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.HAMMER);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
-		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemID.CHISEL);
-		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET);
-		mspeakAmuletEquipped = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET, 1, true);
+		lightSource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).isNotConsumed();
+		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.HAMMER).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemID.CHISEL).isNotConsumed();
+		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET).isNotConsumed();
+		mspeakAmuletEquipped = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET, 1, true).isNotConsumed();
 
 		talisman = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
 		talisman.setTooltip("You can buy one from the Ape Atoll magic shop for 1000 coins");
 		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemCollections.COINS, 1000));
-		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE);
+		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE).isNotConsumed();
 		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
 
-		ninjaGreegreeEquipped = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE, 1, true);
-		ninjaGreegreeEquipped.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
+		ninjaGreegreeEquipped = ninjaGreegree.equipped();
 		translationBook = new ItemRequirement("Translation book", ItemID.TRANSLATION_BOOK);
 		translationBook.setHighlightInInventory(true);
 		translationBook.setTooltip("If it's not in your bank you can get another from Narnode during the quest");
@@ -295,7 +294,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		antidote = new ItemRequirement("Antidote", ItemCollections.ANTIPOISONS, -1);
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		handkerchief = new ItemRequirement("Handkerchief", ItemID.HANDKERCHIEF);
@@ -323,8 +322,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		noCombatItems = new ItemRequirement("No combat items to travel to Entrana", -1, -1);
 
-		greegree = new ItemRequirement("Greegree", ItemCollections.GREEGREES);
-		greegreeEquipped = new ItemRequirement("Any greegree", ItemCollections.GREEGREES, 1, true);
+		greegree = new ItemRequirement("Greegree", ItemCollections.GREEGREES).isNotConsumed();
+		greegreeEquipped = greegree.equipped();
 
 		kruksPaw = new ItemRequirement("Kruk's paw", ItemID.KRUKS_PAW);
 		kruksPaw.setTooltip("You can get another from where you fought Kruk");
@@ -334,14 +333,14 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		coins20 = new ItemRequirement("Coins", ItemCollections.COINS, 20);
 
-		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		chiselHighlighted.setHighlightInInventory(true);
 		deconstructedOnyx = new ItemRequirement("Deconstructed onyx", ItemID.DECONSTRUCTED_ONYX);
 		deconstructedOnyx.setHighlightInInventory(true);
 		chargedOnyx = new ItemRequirement("Charged onyx", ItemID.CHARGED_ONYX);
 		chargedOnyx.setHighlightInInventory(true);
 
-		combatGear2 = new ItemRequirement("2 styles of combat gear", -1, -1);
+		combatGear2 = new ItemRequirement("2 styles of combat gear", -1, -1).isNotConsumed();
 		combatGear2.setDisplayItemId(ItemID.BOWSWORD);
 
 		nieveFollower = new FollowerRequirement("Nieve", NpcID.NIEVE_7109);

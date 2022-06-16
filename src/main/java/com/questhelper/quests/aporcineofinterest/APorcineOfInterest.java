@@ -108,13 +108,13 @@ public class APorcineOfInterest extends BasicQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 
-		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE);
+		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE).isNotConsumed();
 		slashItem.setTooltip("Except abyssal whip, abyssal tentacle, or dragon claws.");
 
-		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.REINFORCED_GOGGLES, 1, true);
+		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.REINFORCED_GOGGLES, 1, true).isNotConsumed();
 		reinforcedGoggles.setTooltip("You can get another pair from Spria");
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		hoof = new ItemRequirement("Sourhog foot", ItemID.SOURHOG_FOOT);

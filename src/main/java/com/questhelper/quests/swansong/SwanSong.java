@@ -166,7 +166,7 @@ public class SwanSong extends BasicQuestHelper
 		ironBar5 = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 5);
 		log = new ItemRequirement("Any log", ItemID.LOGS);
 		log.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.MAPLE_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.TEAK_LOGS, ItemID.MAHOGANY_LOGS, ItemID.REDWOOD_LOGS);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
 		potHiglight = new ItemRequirement("Pot", ItemID.POT);
 		potHiglight.setHighlightInInventory(true);
@@ -178,22 +178,21 @@ public class SwanSong extends BasicQuestHelper
 		logHiglight = new ItemRequirement("Any log", ItemID.LOGS);
 		logHiglight.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.MAPLE_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.TEAK_LOGS, ItemID.MAHOGANY_LOGS, ItemID.REDWOOD_LOGS);
 		logHiglight.setHighlightInInventory(true);
-		tinderboxHiglight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHiglight.setHighlightInInventory(true);
+		tinderboxHiglight = tinderbox.highlighted();
 
-		smallNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET);
+		smallNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).isNotConsumed();
 		smallNet.setTooltip("You can get one from Arnold");
 
-		hammerPanel = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.HAMMER);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammerPanel = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.HAMMER).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.setTooltip("Franklin will give you one");
-		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true);
+		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true).isNotConsumed();
 		brownApron.setTooltip("Malignius will give you one");
 		monkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH_7943, 5);
 		rawMonkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH, 5);
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		combatGearRanged = new ItemRequirement("Ranged or melee combat gear", -1, -1);
+		combatGearRanged = new ItemRequirement("Ranged or melee combat gear", -1, -1).isNotConsumed();
 		combatGearRanged.setDisplayItemId(BankSlotIcons.getCombatGear());
 		ironSheet5 = new ItemRequirement("Iron sheet", ItemID.IRON_SHEET, 5);
 

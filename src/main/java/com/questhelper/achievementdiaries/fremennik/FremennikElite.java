@@ -166,19 +166,24 @@ public class FremennikElite extends ComplexStateQuestHelper
 		protectMissiles = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
 		protectMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
-		petRock = new ItemRequirement("Pet Rock", ItemID.PET_ROCK).showConditioned(notDagKings);
+		petRock = new ItemRequirement("Pet Rock", ItemID.PET_ROCK).showConditioned(notDagKings).isNotConsumed();
 		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notAstralRunes);
 		dragonstone = new ItemRequirement("Cut dragonstone", ItemID.DRAGONSTONE).showConditioned(notDragonAmulet);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notDragonAmulet);
-		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet);
+		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet).isNotConsumed();
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE).showConditioned(notDagKings);
-		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS)
+		.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
-		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
-		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
+		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS)
+			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419)
+			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER)
+			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 
-		combatGear = new ItemRequirement("High tier combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR, notDagKings, notGodwarsGenerals, notSpiritualMage));
+		combatGear = new ItemRequirement("High tier combat gear", -1, -1)
+			.showConditioned(new Conditions(LogicType.OR, notDagKings, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

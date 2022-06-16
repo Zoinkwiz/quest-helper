@@ -223,19 +223,18 @@ public class DesertTreasure extends BasicQuestHelper
 		cake.setDisplayMatchedItemName(true);
 		cake.setHighlightInInventory(true);
 
-		spikedBoots = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS);
+		spikedBoots = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS).isNotConsumed();
 		spikedBoots.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
 
-		spikedBootsEquipped = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS, 1, true);
-		spikedBootsEquipped.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
+		spikedBootsEquipped = spikedBoots.equipped();
 
-		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
-		faceMask = new ItemRequirement("Facemask (or other face covering)", ItemID.FACEMASK, 1, true);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).isNotConsumed();
+		faceMask = new ItemRequirement("Facemask (or other face covering)", ItemID.FACEMASK).equipped().isNotConsumed();
 		faceMask.setTooltip("Slayer mask and gas mask can also be used.");
 		faceMask.addAlternates(ItemID.FACEMASK, ItemID.SLAYER_HELMET, ItemID.SLAYER_HELMET_I, ItemID.SLAYER_HELMET_I_25177, ItemID.GAS_MASK);
 		faceMask.setDisplayMatchedItemName(true);
 
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		manyLockpicks = new ItemRequirement("Many lockpicks", ItemID.LOCKPICK, -1);
 		etchings = new ItemRequirement("Etchings", ItemID.ETCHINGS);
 		etchings.setTooltip("You can get another from the Archaeologist in the Bedabin Camp");
@@ -265,7 +264,7 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
 		bloodDiamondHighlighted.setTooltip("You can get another from Malak in Canifis");
 
-		iceGloves = new ItemRequirement("Ice gloves/smiths gloves(i)", ItemID.ICE_GLOVES, 1, true);
+		iceGloves = new ItemRequirement("Ice gloves/smiths gloves(i)", ItemID.ICE_GLOVES).equipped().isNotConsumed();
 		iceGloves.setTooltip("to be able to wield a weapon against Fareed if not using water spells with runes only");
 		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 
@@ -275,7 +274,7 @@ public class DesertTreasure extends BasicQuestHelper
 		cross = new ItemRequirement("Gilded cross", ItemID.GILDED_CROSS);
 		cross.setTooltip("You can get another from the chest in the south of the Bandit Camp");
 
-		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
+		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true).isNotConsumed();
 		ringOfVisibility.setTooltip("You can get another from Rasolo south of Baxtorian Falls");
 
 		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);

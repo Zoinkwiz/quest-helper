@@ -143,17 +143,17 @@ public class DesertElite extends ComplexStateQuestHelper
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notDragonDarts);
 		mahoganyPlank = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK).showConditioned(notTalkKQHead);
 		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF_8784).showConditioned(notTalkKQHead);
-		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notTalkKQHead);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead);
+		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notTalkKQHead).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead).isNotConsumed();
 		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.STUFFED_KQ_HEAD).showConditioned(notTalkKQHead);
 
-		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE);
-		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
-		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
-		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
-		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN);
+		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
+		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).isNotConsumed();
+		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE).isNotConsumed();
+		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT).isNotConsumed();
+		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

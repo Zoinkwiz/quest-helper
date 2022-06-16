@@ -146,6 +146,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notThessalia = new VarplayerRequirement(1176, false, 1);

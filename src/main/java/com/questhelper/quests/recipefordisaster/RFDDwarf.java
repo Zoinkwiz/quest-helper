@@ -114,6 +114,7 @@ public class RFDDwarf extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		coins320 = new ItemRequirement("Coins", ItemCollections.COINS, 320);

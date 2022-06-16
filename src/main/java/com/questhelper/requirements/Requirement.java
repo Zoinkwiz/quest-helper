@@ -24,7 +24,6 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 package com.questhelper.requirements;
 
 import com.questhelper.QuestHelperConfig;
@@ -121,10 +120,7 @@ public interface Requirement
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
-		if (!shouldDisplayText(client))
-		{
-			return lines;
-		}
+		if (!shouldDisplayText(client)) return lines;
 
 		String text = getDisplayText();
 		Color color = getColor(client, config);

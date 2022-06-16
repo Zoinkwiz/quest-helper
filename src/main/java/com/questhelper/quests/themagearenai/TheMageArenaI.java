@@ -100,6 +100,7 @@ public class TheMageArenaI extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		runesForCasts = new ItemRequirement("Runes for fighting Kolodion", -1, -1);

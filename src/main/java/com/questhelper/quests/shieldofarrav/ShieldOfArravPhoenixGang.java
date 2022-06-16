@@ -74,7 +74,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -110,7 +110,8 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		book = new ItemRequirement("Book", ItemID.BOOK);
 		intelReport = new ItemRequirement("Intel report", ItemID.INTEL_REPORT);

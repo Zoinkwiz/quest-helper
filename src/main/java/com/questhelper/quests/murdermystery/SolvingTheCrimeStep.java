@@ -10,15 +10,17 @@ public class SolvingTheCrimeStep extends ConditionalStep
 	{
 		super(questHelper, step);
 		setupConditions();
-		setupItemRequirements();
+		setupRequirements();
 		setupSteps();
 	}
 
-	public void setupConditions() {
+	public void setupConditions()
+	{
 
 	}
 
-	public void setupItemRequirements() {
+	public void setupRequirements()
+	{
 
 	}
 

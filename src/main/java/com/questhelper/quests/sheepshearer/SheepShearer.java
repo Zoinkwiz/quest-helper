@@ -64,8 +64,7 @@ public class SheepShearer extends BasicQuestHelper
 		String dialoguePrompt = "Bring Fred the Farmer north of Lumbridge 20 balls of wool (UNNOTED) to finish the " +
 			"quest. You don't have to bring them all at once.";
 
-		twentyBallsOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL, 20);
-		shears = new ItemRequirement("Shears if you plan on collecting wool yourself", ItemID.SHEARS);
+		setupRequirements();
 
 		startStep = new NpcStep(this, NpcID.FRED_THE_FARMER, farmerFredPoint, dialoguePrompt,
 			new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL, 20));
@@ -135,6 +134,13 @@ public class SheepShearer extends BasicQuestHelper
 		steps.get(0).addDialogStep("I'm looking for a quest.");
 		steps.get(0).addDialogStep("Yes, okay. I can do that.");
 		return steps;
+	}
+
+	@Override
+	public void setupRequirements()
+	{
+		twentyBallsOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL, 20);
+		shears = new ItemRequirement("Shears if you plan on collecting wool yourself", ItemID.SHEARS);
 	}
 
 	@Override

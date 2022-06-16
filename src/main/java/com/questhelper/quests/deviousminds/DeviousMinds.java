@@ -79,7 +79,7 @@ public class DeviousMinds extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -112,7 +112,8 @@ public class DeviousMinds extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		//Recommended
 		fallyTele = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);

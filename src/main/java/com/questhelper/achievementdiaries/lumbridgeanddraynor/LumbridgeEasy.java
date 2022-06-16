@@ -147,6 +147,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notDrayAgi = new VarplayerRequirement(1194, false, 1);

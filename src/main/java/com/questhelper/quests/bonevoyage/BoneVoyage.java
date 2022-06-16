@@ -134,6 +134,7 @@ public class BoneVoyage extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		canEnterGuild = new Conditions(

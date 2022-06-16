@@ -75,7 +75,8 @@ public class EnchantedKey extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		key = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);

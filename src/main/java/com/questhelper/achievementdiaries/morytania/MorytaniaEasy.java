@@ -147,6 +147,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCraftSnelm = new VarplayerRequirement(1180, false, 1);

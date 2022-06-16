@@ -76,7 +76,7 @@ public class LostCity extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -116,7 +116,8 @@ public class LostCity extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		bronzeAxe = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE);

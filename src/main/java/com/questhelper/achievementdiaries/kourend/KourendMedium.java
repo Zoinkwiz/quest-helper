@@ -149,6 +149,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notFairyRing = new VarplayerRequirement(2085, false, 25);

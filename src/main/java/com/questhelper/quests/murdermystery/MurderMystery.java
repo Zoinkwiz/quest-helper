@@ -74,7 +74,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -145,7 +145,8 @@ public class MurderMystery extends BasicQuestHelper
 		talkedToPoisonSalesman = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Uh... no, it's ok."));
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		pot3 = new ItemRequirement("Pot", ItemID.POT, 3);

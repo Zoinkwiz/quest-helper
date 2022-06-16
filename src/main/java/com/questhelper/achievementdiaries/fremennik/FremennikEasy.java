@@ -139,6 +139,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCatchCerulean = new VarplayerRequirement(1184, false, 1);

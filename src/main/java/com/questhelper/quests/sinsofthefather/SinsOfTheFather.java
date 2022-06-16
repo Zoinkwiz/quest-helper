@@ -111,7 +111,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -366,7 +366,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkedToIvan = new VarbitRequirement(10349, 1);
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		haemBook = new ItemRequirement("Haemalchemy volume 2", ItemID.HAEMALCHEMY_VOLUME_2);
 		haemBook.setTooltip("If you lost the book, search the bookshelf in the room west of Safalaan to get it back");

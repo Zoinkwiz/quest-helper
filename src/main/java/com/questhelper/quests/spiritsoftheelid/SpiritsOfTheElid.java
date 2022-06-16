@@ -88,7 +88,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -137,7 +137,8 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		//Requirements
 		airRune = new ItemRequirement("Air Rune", ItemID.AIR_RUNE, 1);

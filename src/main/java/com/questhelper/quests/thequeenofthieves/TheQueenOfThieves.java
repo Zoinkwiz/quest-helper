@@ -82,7 +82,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -136,7 +136,8 @@ public class TheQueenOfThieves extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements() {
+	@Override
+	public void setupRequirements() {
 		stew = new ItemRequirement("Stew", ItemID.STEW);
 		hughesLetter = new ItemRequirement("Letter", ItemID.LETTER_21774);
 		hughesLetter.setTooltip("You can get another letter by searching the chest upstairs in Hughes' house in Kingstown.");

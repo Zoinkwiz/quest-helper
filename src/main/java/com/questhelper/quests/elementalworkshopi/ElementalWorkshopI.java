@@ -90,7 +90,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -139,7 +139,8 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		return quest;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		knife.setHighlightInInventory(true);

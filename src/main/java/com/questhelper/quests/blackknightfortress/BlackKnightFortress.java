@@ -63,7 +63,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -157,7 +157,8 @@ public class BlackKnightFortress extends BasicQuestHelper
 		eastTurret = new Zone(new WorldPoint(3027, 3505, 3), new WorldPoint(3031, 3508, 3));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY, 1, true);
 		ironChainbody.setTooltip("You can buy one from the Chainmail Shop in south Falador");

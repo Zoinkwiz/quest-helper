@@ -76,7 +76,7 @@ public class TarnRoute extends ConditionalStep
 	{
 		super(questHelper, new ObjectStep(questHelper, ObjectID.CART_TUNNEL, new WorldPoint(3440, 3232, 0), "Enter the Haunted Mine. " +
 			"If you have a Slayer Ring, instead teleport to Tarn's Lair to skip most of this."));
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -107,7 +107,7 @@ public class TarnRoute extends ConditionalStep
 		addStep(inHauntedMine, enterLair);
 	}
 
-	public void setupItemRequirements()
+	public void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

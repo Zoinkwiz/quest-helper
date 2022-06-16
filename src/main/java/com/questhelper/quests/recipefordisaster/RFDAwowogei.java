@@ -131,6 +131,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		cookedSnake = new ItemRequirement("Stuffed snake", ItemID.STUFFED_SNAKE);

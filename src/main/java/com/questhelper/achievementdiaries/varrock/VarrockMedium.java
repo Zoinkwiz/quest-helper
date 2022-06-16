@@ -157,6 +157,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notApothStr = new VarplayerRequirement(1176, false, 15);

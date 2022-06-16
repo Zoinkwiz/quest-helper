@@ -21,11 +21,11 @@ public class BringLunarItems extends NpcStep
 	{
 		super(questHelper, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0),
 			"Bring all the items to the Oneiromancer in the south east of Lunar Isle.");
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 	}
 
-	public void setupItemRequirements()
+	public void setupRequirements()
 	{
 		helm = new ItemRequirement("Lunar helm", ItemID.LUNAR_HELM);
 		amulet = new ItemRequirement("Lunar amulet", ItemID.LUNAR_AMULET);

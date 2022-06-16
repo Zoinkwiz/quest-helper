@@ -172,6 +172,7 @@ public class ShiloVillage extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE);

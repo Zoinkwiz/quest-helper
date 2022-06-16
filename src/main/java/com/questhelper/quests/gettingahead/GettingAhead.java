@@ -97,7 +97,7 @@ public class GettingAhead extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -161,7 +161,8 @@ public class GettingAhead extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		itemsTip = new ItemRequirement("You can get all the required items during the quest.", -1, -1);
 

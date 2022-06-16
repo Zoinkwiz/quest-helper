@@ -95,7 +95,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -371,7 +371,8 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		hesporiArea = new Zone(new WorldPoint(3500, 3364, 0), new WorldPoint(3514, 3350, 0));
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());

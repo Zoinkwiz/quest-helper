@@ -44,10 +44,13 @@ import com.questhelper.overlays.QuestHelperWorldOverlay;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -259,6 +262,12 @@ public class QuestHelperPlugin extends Plugin
 
 	private int tickAddedCheerer = -1;
 
+	@Getter
+	private int lastTickInventoryUpdated = -1;
+
+	@Getter
+	private int lastTickBankUpdated = -1;
+
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -376,7 +385,13 @@ public class QuestHelperPlugin extends Plugin
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
 		{
+			lastTickBankUpdated = client.getTickCount();
 			questBank.updateLocalBank(event.getItemContainer().getItems());
+		}
+
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			lastTickInventoryUpdated = client.getTickCount();
 		}
 	}
 
@@ -824,13 +839,39 @@ public class QuestHelperPlugin extends Plugin
 
 	private Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader) throws IOException
 	{
-
 		Map<String, QuestHelper> scannedQuests = new HashMap<>();
 		ClassPath classPath = ClassPath.from(classLoader);
 
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.QUEST_PACKAGE));
+
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.ACHIEVEMENT_PACKAGE));
 
+		clientThread.invokeLater(() -> {
+			List<ItemRequirement> itemRequirements = new ArrayList<>();
+			scannedQuests.forEach((String name, QuestHelper questHelper) -> {
+				eventBus.register(questHelper);
+				if (questHelper instanceof BasicQuestHelper)
+				{
+					((BasicQuestHelper) questHelper).loadSteps();
+				}
+
+				if (questHelper instanceof ComplexStateQuestHelper)
+				{
+					((ComplexStateQuestHelper) questHelper).loadStep();
+				}
+//				questHelper.setupRequirements();
+				if (questHelper.getItemRequirements() != null)
+				{
+					List<ItemRequirement> itemReqs = questHelper.getItemRequirements();
+					itemRequirements.addAll(questHelper.getItemRequirements());
+				}
+				eventBus.unregister(questHelper);
+			});
+			for (ItemRequirement itemRequirement : itemRequirements)
+			{
+				System.out.println(itemRequirement.getName());
+			}
+		});
 		return scannedQuests;
 	}
 

@@ -137,6 +137,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notFamilyCrest = new VarplayerRequirement(1186, false, 0);

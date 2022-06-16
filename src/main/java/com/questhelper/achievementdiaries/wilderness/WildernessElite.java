@@ -131,6 +131,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notThreeBosses = new VarplayerRequirement(1193, false, 3);

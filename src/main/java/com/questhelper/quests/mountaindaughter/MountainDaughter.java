@@ -90,7 +90,7 @@ public class MountainDaughter extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		loadItemRequirements();
+		setupRequirements();
 		loadConditions();
 		loadQuestSteps();
 
@@ -174,7 +174,8 @@ public class MountainDaughter extends BasicQuestHelper
 		KENDAL_CAVE = new Zone(new WorldPoint(2828, 10118, 0), new WorldPoint(2746, 10047, 0));
 	}
 
-	private void loadItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);

@@ -148,6 +148,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCraftedMindRunes = new VarplayerRequirement(1186, false, 26);

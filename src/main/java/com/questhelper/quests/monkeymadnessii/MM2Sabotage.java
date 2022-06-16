@@ -65,7 +65,7 @@ public class MM2Sabotage extends ConditionalStep
 	public MM2Sabotage(QuestHelper questHelper, QuestStep step)
 	{
 		super(questHelper, step);
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupPaths();
@@ -98,7 +98,7 @@ public class MM2Sabotage extends ConditionalStep
 		addStep(onPlatformF1, climbF0ToF1ForSatchels);
 	}
 
-	public void setupItemRequirements()
+	public void setupRequirements()
 	{
 		satchelCurrentQuantity = new ItemRequirement("Satchel", ItemID.SATCHEL, 6);
 		satchelCurrentQuantity.addAlternates(ItemID.SATCHEL_19528);

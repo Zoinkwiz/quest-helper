@@ -74,7 +74,8 @@ public class Woodcutting extends ComplexStateQuestHelper
 		return fullTraining;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		wc6 = new SkillRequirement(Skill.WOODCUTTING, 6);
 		wc11 = new SkillRequirement(Skill.WOODCUTTING, 11);

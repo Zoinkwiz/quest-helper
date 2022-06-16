@@ -147,6 +147,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notAlKaridRooftop = new VarplayerRequirement(1194, false, 13);

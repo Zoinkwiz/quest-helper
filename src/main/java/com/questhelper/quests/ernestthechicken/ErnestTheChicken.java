@@ -81,7 +81,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -150,7 +150,8 @@ public class ErnestTheChicken extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		fishFood = new ItemRequirement("Fish food", ItemID.FISH_FOOD);

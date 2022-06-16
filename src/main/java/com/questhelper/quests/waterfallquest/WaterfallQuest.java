@@ -86,7 +86,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -143,7 +143,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		highlightRope = new ItemRequirement("Rope", ItemID.ROPE);
 		highlightRope.setHighlightInInventory(true);

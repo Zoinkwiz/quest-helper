@@ -124,6 +124,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notBareHandShark = new VarplayerRequirement(1181, false, 3);

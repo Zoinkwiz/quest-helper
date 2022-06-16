@@ -118,6 +118,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notSuperCombat = new VarplayerRequirement(1177, false, 7);

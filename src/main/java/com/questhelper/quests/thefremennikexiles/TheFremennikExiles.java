@@ -223,6 +223,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);

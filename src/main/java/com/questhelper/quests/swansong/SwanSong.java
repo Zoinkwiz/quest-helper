@@ -89,7 +89,7 @@ public class SwanSong extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -151,7 +151,8 @@ public class SwanSong extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		mist10 = new ItemRequirement("Mist rune", ItemID.MIST_RUNE, 10);
 		lava10 = new ItemRequirement("Lava rune", ItemID.LAVA_RUNE, 10);

@@ -106,7 +106,7 @@ public class TheFeud extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		setupVarBits();
@@ -238,7 +238,8 @@ public class TheFeud extends BasicQuestHelper
 		mayorSpawned = new VarbitRequirement(343, 2);
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 800);
 		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.COINS, -1);

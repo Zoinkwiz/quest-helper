@@ -58,7 +58,7 @@ public class CooksAssistant extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		doQuest = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3206, 3214, 0),
@@ -72,7 +72,9 @@ public class CooksAssistant extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements() {
+	@Override
+	public void setupRequirements()
+	{
 		egg = new ItemRequirement("Egg", ItemID.EGG);
 		egg.setTooltip("You can find an egg in the farm north of Lumbridge.");
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);

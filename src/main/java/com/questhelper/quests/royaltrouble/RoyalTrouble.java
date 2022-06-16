@@ -98,7 +98,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -218,7 +218,8 @@ public class RoyalTrouble extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		coal5 = new ItemRequirement("Coal", ItemID.COAL, 5);
 		coal5.setHighlightInInventory(true);

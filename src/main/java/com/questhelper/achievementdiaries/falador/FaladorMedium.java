@@ -163,6 +163,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		return doMed;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notLitLantern = new VarplayerRequirement(1186, false, 11);

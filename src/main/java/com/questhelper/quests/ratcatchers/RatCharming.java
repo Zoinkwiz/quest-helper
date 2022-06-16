@@ -95,7 +95,7 @@ public class RatCharming extends DetailedOwnerStep
 		updateSteps();
 	}
 
-	private void setupRequirements()
+	public void setupRequirements()
 	{
 		noteRequirements = new Requirement[8];
 		noteRequirements[0] = new Conditions(LogicType.OR,

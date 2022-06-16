@@ -77,7 +77,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -106,7 +106,8 @@ public class TearsOfGuthix extends BasicQuestHelper
 		rocks = new Zone(new WorldPoint(3209, 9486, 2), new WorldPoint(3238, 9508, 2));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		litSapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702);
 		litSapphireLantern.setTooltip("You can make this by using a cut sapphire on a bullseye lantern");

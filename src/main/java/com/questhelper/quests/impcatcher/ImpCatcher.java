@@ -74,7 +74,8 @@ public class ImpCatcher extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements() {
+	@Override
+	public void setupRequirements() {
 		blackBead = new ItemRequirement("Black bead", ItemID.BLACK_BEAD);
 		whiteBead = new ItemRequirement("White bead", ItemID.WHITE_BEAD);
 		redBead = new ItemRequirement("Red bead", ItemID.RED_BEAD);

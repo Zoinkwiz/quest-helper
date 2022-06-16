@@ -85,7 +85,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -148,7 +148,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		bread = new ItemRequirement("Bread", ItemID.BREAD);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);

@@ -138,6 +138,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notTrawlerRay = new VarplayerRequirement(1197, false, 6);

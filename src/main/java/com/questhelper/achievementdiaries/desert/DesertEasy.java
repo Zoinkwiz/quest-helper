@@ -136,6 +136,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notGoldWarbler = new VarplayerRequirement(1198, false, 1);

@@ -135,6 +135,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		rawJubbly = new ItemRequirement("Raw jubbly", ItemID.RAW_JUBBLY);

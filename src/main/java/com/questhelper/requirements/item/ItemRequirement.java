@@ -91,6 +91,9 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	protected boolean hadItemLastCheck;
 
+	@Getter
+	protected boolean isConsumedItem = true;
+
 	public ItemRequirement(String name, int id)
 	{
 		this(name, id, 1);
@@ -198,6 +201,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement isNotConsumed()
+	{
+		ItemRequirement newItem = copy();
+		newItem.isConsumedItem = true;
+		return newItem;
+	}
+
 	public ItemRequirement quantity(int newQuantity)
 	{
 		ItemRequirement newItem = copy();
@@ -230,6 +240,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setConditionToHide(conditionToHide);
 		newItem.questBank = questBank;
 		newItem.hadItemLastCheck = hadItemLastCheck;
+		newItem.isConsumedItem = isConsumedItem;
 		newItem.setTooltip(getTooltip());
 		newItem.setUrlSuffix(getUrlSuffix());
 

@@ -27,6 +27,7 @@ package com.questhelper.steps;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
+import com.questhelper.QuestBank;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.QuestTile;
@@ -77,6 +78,9 @@ public class DetailedQuestStep extends QuestStep
 	@Inject
 	WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	private QuestBank questBank;
+
 	protected WorldPoint worldPoint;
 
 	@Setter
@@ -114,10 +118,19 @@ public class DetailedQuestStep extends QuestStep
 	@Setter
 	protected boolean hideMinimapLines;
 
+	public boolean hideRequirements;
+	public boolean considerBankForItemHighlight;
+
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
 		super(questHelper, text);
 		this.requirements.addAll(Arrays.asList(requirements));
+	}
+
+	public DetailedQuestStep(QuestHelper questHelper, String text, List<ItemRequirement> requirements)
+	{
+		super(questHelper, text);
+		this.requirements.addAll(requirements);
 	}
 
 	public DetailedQuestStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
@@ -365,6 +378,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
+		if (hideRequirements) return;
 		renderInventory(graphics);
 		if (!hideMinimapLines)
 		{
@@ -431,7 +445,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText, new ArrayList<>());
 
-		if (inCutscene)
+		if (inCutscene || hideRequirements)
 		{
 			return;
 		}
@@ -656,6 +670,8 @@ public class DetailedQuestStep extends QuestStep
 			&& requirementIsItem((ItemRequirement) requirement)
 			&& requirementContainsID((ItemRequirement) requirement, ids)
 			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
-			&& !requirement.check(client);
+			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
+			considerBankForItemHighlight &&
+				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems()));
 	}
 }

@@ -80,12 +80,14 @@ public class XMarksTheSpot extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements() {
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.AMULET_OF_GLORIES);
+	public void setupRequirements()
+	{
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
 	}
 
-	private void setupSteps() {
+	private void setupSteps()
+	{
 		speakVeosLumbridge = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3228, 3242, 0),
 			"Talk to Veos in The Sheared Ram pub in Lumbridge to start the quest.");
 		speakVeosLumbridge.addDialogStep("I'm looking for a quest.");
@@ -146,9 +148,9 @@ public class XMarksTheSpot extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("300 Exp. Lamp (Any Skill)", ItemID.ANTIQUE_LAMP, 1),
-				new ItemReward("200 Coins", ItemID.COINS_995, 200),
-				new ItemReward("A Beginner Clue Scroll", ItemID.CLUE_SCROLL_BEGINNER, 1));
+			new ItemReward("300 Exp. Lamp (Any Skill)", ItemID.ANTIQUE_LAMP, 1),
+			new ItemReward("200 Coins", ItemID.COINS_995, 200),
+			new ItemReward("A Beginner Clue Scroll", ItemID.CLUE_SCROLL_BEGINNER, 1));
 	}
 
 	@Override

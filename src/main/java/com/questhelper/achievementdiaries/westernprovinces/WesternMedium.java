@@ -181,14 +181,14 @@ public class WesternMedium extends ComplexStateQuestHelper
 		trainingCompleted = new VarbitRequirement(2493, Operation.EQUAL, 1,
 			"Completed training with Blurberry and Aluft Gianne snr.");
 
-		teasingStick = new ItemRequirement("Teasing stick", ItemID.TEASING_STICK).showConditioned(notSpinedLarupia);
+		teasingStick = new ItemRequirement("Teasing stick", ItemID.TEASING_STICK).showConditioned(notSpinedLarupia).isNotConsumed();
 		logs = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notSpinedLarupia);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notSpinedLarupia);
-		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notApeBass);
-		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notApeTeak);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notApeTeak);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notSpinedLarupia).isNotConsumed();
+		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notApeBass).isNotConsumed();
+		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notApeTeak).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notApeTeak).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notEagleFeldip);
-		gnomebowl = new ItemRequirement("Gnomebowl mould", ItemID.GNOMEBOWL_MOULD).showConditioned(notChocolateBomb);
+		gnomebowl = new ItemRequirement("Gnomebowl mould", ItemID.GNOMEBOWL_MOULD).showConditioned(notChocolateBomb).isNotConsumed();
 		gnomebowl.setTooltip("can be purchased at Grand Tree Groceries");
 		gianneDough = new ItemRequirement("Gianne dough", ItemID.GIANNE_DOUGH).showConditioned(notChocolateBomb);
 		gianneDough.setTooltip("can be purchased at Grand Tree Groceries");
@@ -200,20 +200,19 @@ public class WesternMedium extends ComplexStateQuestHelper
 		potOfCream.setTooltip("can be purchased at Grand Tree Groceries");
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST).showConditioned(notChocolateBomb);
 		chocolateDust.setTooltip("can be purchased at Grand Tree Groceries");
-		crystalSawSeed = new ItemRequirement("Crystal saw seed", ItemID.CRYSTAL_SAW_SEED).showConditioned(notCrystalSaw);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold);
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat);
-		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat);
+		crystalSawSeed = new ItemRequirement("Crystal saw seed", ItemID.CRYSTAL_SAW_SEED).showConditioned(notCrystalSaw).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold).isNotConsumed();
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
+		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat).isNotConsumed();
 		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
 		teakLogs = new ItemRequirement("Teak logs", ItemID.TEAK_LOGS);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF);
-		seedPod = new ItemRequirement("Royal seed pod", ItemID.ROYAL_SEED_POD);
+		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).isNotConsumed();
+		seedPod = new ItemRequirement("Royal seed pod", ItemID.ROYAL_SEED_POD).isNotConsumed();
 
 		inBrimstailCave = new ZoneRequirement(brimstailCave);
 		inPest = new ZoneRequirement(pest);

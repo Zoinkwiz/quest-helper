@@ -214,11 +214,11 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		logs.setHighlightInInventory(true);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		harpoon = new ItemRequirement("Harpoon", ItemCollections.HARPOONS);
-		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		harpoon = new ItemRequirement("Harpoon", ItemCollections.HARPOONS).isNotConsumed();
+		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).isNotConsumed();
 		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING);
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);
 
@@ -231,7 +231,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		bow.addAlternates(ItemID.LONGBOW, ItemID.OAK_SHORTBOW, ItemID.OAK_LONGBOW, ItemID.WILLOW_SHORTBOW, ItemID.WILLOW_LONGBOW, ItemID.MAPLE_SHORTBOW, ItemID.MAPLE_LONGBOW, ItemID.YEW_SHORTBOW, ItemID.YEW_LONGBOW);
 		bow.setTooltip("You will lose this bow");
 		bow.setHighlightInInventory(true);
-		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.FAIRY_STAFF);
+		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.FAIRY_STAFF).isNotConsumed();
 		giantNib = new ItemRequirement("Giant nib", ItemID.GIANT_NIB);
 		giantNib.setHighlightInInventory(true);
 		giantPen = new ItemRequirement("Giant pen", ItemID.GIANT_PEN);

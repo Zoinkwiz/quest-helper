@@ -169,7 +169,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		tankardHighlighted.setHighlightInInventory(true);
 		tornPage = new ItemRequirement("Torn page", ItemID.TORN_PAGE);
 		blackPrism = new ItemRequirement("Black prism", ItemID.BLACK_PRISM);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE);
 		knifeHighlighted.setHighlightInInventory(true);
 		necroBook = new ItemRequirement("Necromancy book", ItemID.NECROMANCY_BOOK);
@@ -198,7 +198,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		ogreRelic = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT);
 		ogreRelic.setTooltip("You can get another by searching the stand where you fought Slash Bash");
 
-		combatGear = new ItemRequirement("Either brutal arrows or Crumble Undead for fighting Slash Bash", -1, -1);
+		combatGear = new ItemRequirement("Either brutal arrows or Crumble Undead for fighting Slash Bash", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 

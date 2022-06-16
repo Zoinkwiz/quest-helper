@@ -165,22 +165,22 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 
 		addedRopeToHole = new VarbitRequirement(279, 1);
 
-		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).showConditioned(notKillCaveBug);
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).showConditioned(notKillCaveBug).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKillCaveBug);
 		spinyHelm = new ItemRequirement("Spiny helmet or slayer helmet (Recommended for low combat levels / Ironmen)",
-			ItemCollections.WALL_BEAST).showConditioned(notKillCaveBug);
+			ItemCollections.WALL_BEAST).showConditioned(notKillCaveBug).isNotConsumed();
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss.",
-			ItemCollections.WATER_ALTAR).showConditioned(notWaterRune);
+			ItemCollections.WATER_ALTAR).showConditioned(notWaterRune).isNotConsumed();
 		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
 		runeEss = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRune);
 		dough = new ItemRequirement("Bread dough", ItemID.BREAD_DOUGH).showConditioned(notBread);
 		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS).showConditioned(notOak);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notOak);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notOak);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIron);
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFishAnchovies);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notOak).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notOak).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIron).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFishAnchovies).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

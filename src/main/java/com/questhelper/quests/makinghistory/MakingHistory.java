@@ -130,13 +130,13 @@ public class MakingHistory extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		saphAmulet = new ItemRequirement("Sapphire amulet", ItemID.SAPPHIRE_AMULET);
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK, 1, true);
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK).equipped().isNotConsumed();
 		ghostSpeakAmulet.setTooltip("You can also wear the Morytania Legs 2 or higher.");
 		ardougneTeleport = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
 
-		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL);
+		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL).isNotConsumed();
 		ectophial.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT, ItemID.KHARYRLL_TELEPORT);
 		ectophial.addAlternates(ItemCollections.SLAYER_RINGS); // Slayer Tower
 		ectophial.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);

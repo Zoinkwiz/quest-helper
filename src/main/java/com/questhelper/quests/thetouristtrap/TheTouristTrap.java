@@ -198,7 +198,7 @@ public class TheTouristTrap extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
 		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
@@ -207,7 +207,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		desertBottomWorn = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true);
 		desertBootWorn = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS, 1, true);
 		bronzeBar3 = new ItemRequirement("Bronze bars", ItemID.BRONZE_BAR, 3);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 
 		metalKey = new KeyringRequirement("Metal key", configManager, KeyringCollection.METAL_KEY);
 		metalKey.setTooltip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
@@ -248,8 +248,8 @@ public class TheTouristTrap extends BasicQuestHelper
 		anaInABarrelHighlighted.setHighlightInInventory(true);
 
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		coins100 = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 	}
 

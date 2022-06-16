@@ -206,7 +206,7 @@ public class EaglesPeak extends BasicQuestHelper
 		goldFeather = new ItemRequirement("Golden feather", ItemID.GOLDEN_FEATHER_10175);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
-		dramenStaffOrNecklaceOfPassage = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
+		dramenStaffOrNecklaceOfPassage = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaffOrNecklaceOfPassage.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
 		dramenStaffOrNecklaceOfPassage.setDisplayMatchedItemName(true);
 		dramenStaffOrNecklaceOfPassage.setTooltip("Necklace of Passage can also be used.");

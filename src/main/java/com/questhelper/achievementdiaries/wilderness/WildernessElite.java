@@ -144,20 +144,20 @@ public class WildernessElite extends ComplexStateQuestHelper
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneScim);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneScim).isNotConsumed();
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPGhorrock);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPGhorrock);
-		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).showConditioned(notDarkCrab);
+		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).showConditioned(notDarkCrab).isNotConsumed();
 		darkFishingBait = new ItemRequirement("Dark fish bait", ItemID.DARK_FISHING_BAIT).showConditioned(notDarkCrab);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
 			notDarkCrab, notMagicLogs, notRuneScim));
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notRuneScim);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notMagicLogs);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notMagicLogs);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notRuneScim).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notMagicLogs).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notMagicLogs).isNotConsumed();
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
-			.showConditioned(notSpiritMage);
+			.showConditioned(notSpiritMage).isNotConsumed();
 		coal = new ItemRequirement("Coal", ItemID.COAL).showConditioned(notRuneScim);
 		runeOre = new ItemRequirement("Runite ore", ItemID.RUNITE_ORE);
 		runeBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR);

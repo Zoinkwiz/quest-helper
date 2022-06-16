@@ -169,17 +169,17 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 
 		protectFromMagic = new PrayerRequirement("Activate Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
-		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSwampLizard);
+		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSwampLizard).isNotConsumed();
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET)
-			.showConditioned(notSwampLizard);
-		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notHollowTree);
+			.showConditioned(notSwampLizard).isNotConsumed();
+		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notHollowTree).isNotConsumed();
 		ectoToken = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN).showConditioned(notDragontoothIsland);
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak Amulet", ItemID.GHOSTSPEAK_AMULET)
-			.showConditioned(notDragontoothIsland);
+			.showConditioned(notDragontoothIsland).isNotConsumed();
 		steelBar = new ItemRequirement("Steel bar", ItemID.STEEL_BAR).showConditioned(notCannonBall);
-		ammoMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD).showConditioned(notCannonBall);
-		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES).showConditioned(notFeverSpider);
-		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(notEctophialTP);
+		ammoMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD).showConditioned(notCannonBall).isNotConsumed();
+		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES).showConditioned(notFeverSpider).isNotConsumed();
+		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(notEctophialTP).isNotConsumed();
 		restorePot = new ItemRequirement("Restore potion (4)", ItemID.RESTORE_POTION4).showConditioned(notGuthBalance);
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC).showConditioned(notGuthBalance);
 		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST).showConditioned(notGuthBalance);
@@ -188,9 +188,9 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 
 		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.SLAYER_RINGS).showConditioned(notTerrorDog);
 		fairyAccess = new ItemRequirement("Access to the fairy ring system", ItemCollections.FAIRY_STAFF)
-			.showConditioned(new Conditions(LogicType.OR, notSwampBoaty, notHollowTree));
+			.showConditioned(new Conditions(LogicType.OR, notSwampBoaty, notHollowTree)).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

@@ -152,7 +152,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		bread = new ItemRequirement("Bread", ItemID.BREAD);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		bucketOfWaxOptional = new ItemRequirement("Bucket of wax (obtainable during quest)", ItemID.BUCKET_OF_WAX);
 		bucketOfWax = new ItemRequirement("Bucket of wax", ItemID.BUCKET_OF_WAX);
 		batBones = new ItemRequirement("Bat bones", ItemID.BAT_BONES);
@@ -160,14 +160,14 @@ public class MerlinsCrystal extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		camelotTeleport = new ItemRequirement("Teleport to Camelot", ItemID.CAMELOT_TELEPORT);
 		twoFaladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 2);
-		combatGear = new ItemRequirement("Combat gear + food for Sir Mordred (level 39)", -1, -1);
+		combatGear = new ItemRequirement("Combat gear + food for Sir Mordred (level 39)", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
-		repellent = new ItemRequirement("Insect repellent", ItemID.INSECT_REPELLENT);
+		repellent = new ItemRequirement("Insect repellent", ItemID.INSECT_REPELLENT).isNotConsumed();
 		blackCandle = new ItemRequirement("Black candle", ItemID.BLACK_CANDLE);
 		litBlackCandle = new ItemRequirement("Lit black candle", ItemID.LIT_BLACK_CANDLE);
-		excalibur = new ItemRequirement("Excalibur", ItemID.EXCALIBUR);
-		equippedExcalibur = new ItemRequirement("Excalibur", ItemID.EXCALIBUR, 1, true);
+		excalibur = new ItemRequirement("Excalibur", ItemID.EXCALIBUR).isNotConsumed();
+		equippedExcalibur = excalibur.equipped();
 	}
 
 	public void loadZones()

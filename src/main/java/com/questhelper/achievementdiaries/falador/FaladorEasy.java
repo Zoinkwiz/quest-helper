@@ -154,18 +154,19 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
 		//Required
 		coins2000 = new ItemRequirement("Coins", ItemCollections.COINS, 2000).showConditioned(notGotHaircut);
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFilledWater);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFilledWater).isNotConsumed();
 		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
 		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs));
-		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs));
-		combatGear = new ItemRequirement("A range or mage attack to kill a Duck (Level 1)", -1, -1).showConditioned(notKilledDuck);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
+		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES)
+			.showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
+		combatGear = new ItemRequirement("A range or mage attack to kill a Duck (Level 1)", -1, -1).showConditioned(notKilledDuck).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 
 		//Recommended
 		teleportFalador = new ItemRequirement("Multiple teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
 		teleportMindAltar = new ItemRequirement("A Teleport to the Mind Altar", ItemID.MIND_ALTAR_TELEPORT);
-		explorersRing = new ItemRequirement("Explorers Ring (2) or above.", ItemID.EXPLORERS_RING_2);
+		explorersRing = new ItemRequirement("Explorers Ring (2) or above.", ItemID.EXPLORERS_RING_2).isNotConsumed();
 		explorersRing.addAlternates(ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4);
 
 		bluriteOre = new ItemRequirement("Blurite Ore", ItemID.BLURITE_ORE);

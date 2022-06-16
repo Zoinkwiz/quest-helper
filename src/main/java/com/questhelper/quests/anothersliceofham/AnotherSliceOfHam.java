@@ -156,21 +156,21 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
 
 		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from the " +
 			"Dorgesh-Kaan railway", NpcID.ZANIK_5147);
 
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
-		combatGearRangedMagic = new ItemRequirement("Magic or ranged combat gear", -1, -1);
+		combatGearRangedMagic = new ItemRequirement("Magic or ranged combat gear", -1, -1).isNotConsumed();
 		combatGearRangedMagic.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 
-		trowel = new ItemRequirement("Trowel", ItemID.TROWEL);
+		trowel = new ItemRequirement("Trowel", ItemID.TROWEL).isNotConsumed();
 		trowel.setTooltip("You can get another from Tegdak");
-		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH);
+		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH).isNotConsumed();
 		specimenBrush.setTooltip("You can get another from Tegdak");
 
 		artefact1 = new ItemRequirement("Artefact", ItemID.ARTEFACT);
@@ -186,7 +186,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		swordFragment = new ItemRequirement("Sword fragment", ItemID.SWORD_FRAGMENT);
 		mace = new ItemRequirement("Mace", ItemID.MACE);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		ancientMace = new ItemRequirement("Ancient mace", ItemID.ANCIENT_MACE);
 		ancientMace.setTooltip("You can get this back from the Goblin Village Generals");

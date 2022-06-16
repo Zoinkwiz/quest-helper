@@ -189,12 +189,12 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		darkItems = new ItemRequirement("pieces of black clothing", ItemID.BLACK_DESERT_SHIRT, 3, true);
+		darkItems = new ItemRequirement("pieces of black clothing", ItemID.BLACK_DESERT_SHIRT, 3, true).isNotConsumed().doNotAggregate();
 		darkItems.addAlternates(ItemID.BLACK_DESERT_ROBE, ItemID.BLACK_CHAINBODY, ItemID.BLACK_PLATEBODY, ItemID.BLACK_PLATELEGS, ItemID.BLACK_FULL_HELM, ItemID.BLACK_MED_HELM, ItemID.BLACK_GLOVES, ItemID.PRIEST_GOWN, ItemID.PRIEST_GOWN_428, ItemID.MYSTIC_HAT_DARK,
 			ItemID.MYSTIC_ROBE_BOTTOM_DARK, ItemID.MYSTIC_ROBE_TOP_DARK, ItemID.GHOSTLY_BOOTS, ItemID.GHOSTLY_CLOAK, ItemID.GHOSTLY_GLOVES, ItemID.GHOSTLY_HOOD, ItemID.GHOSTLY_ROBE, ItemID.GHOSTLY_ROBE_6108, ItemID.SHADE_ROBE, ItemID.SHADE_ROBE_TOP, ItemID.ANTISANTA_BOOTS,
 			ItemID.ANTISANTA_GLOVES, ItemID.ANTISANTA_JACKET, ItemID.ANTISANTA_MASK, ItemID.ANTISANTA_PANTALOONS, ItemID.WIZARD_HAT, ItemID.BLACK_CAPE, ItemID.BLACK_PARTYHAT, ItemID.BLACK_HWEEN_MASK, ItemID.BLACK_DRAGON_MASK, ItemID.BLACK_UNICORN_MASK, ItemID.BLACK_DEMON_MASK,
 			ItemID.BLACK_DHIDE_BODY, ItemID.BLACK_DHIDE_CHAPS, ItemID.BLACK_DHIDE_VAMBRACES, ItemID.BLACK_ROBE);
-		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
+		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT).isNotConsumed();
 		silverlight.setTooltip("You can get another from Father Reen in Al Kharid if you've lost it");
 		silverlight.addAlternates(ItemID.SILVERLIGHT_6745); // silverlight dyed black
 		strangeImplement = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
@@ -203,7 +203,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		strangeImplementHighlighted.setHighlightInInventory(true);
 		strangeImplementHighlighted.setTooltip("You can find another in the underground of Uzer");
 		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
-		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		vial = new ItemRequirement("Vial", ItemID.VIAL);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		blackMushroomHighlighted = new ItemRequirement("Black mushroom", ItemID.BLACK_MUSHROOM);
@@ -213,7 +213,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		silverlightDyed = new ItemRequirement("Silverlight (dyed)", ItemID.SILVERLIGHT_6745);
 		silverlightDyedEquipped = new ItemRequirement("Silverlight (dyed)", ItemID.SILVERLIGHT_6745, 1, true);
 		sigilMould = new ItemRequirement("Demonic sigil mould", ItemID.DEMONIC_SIGIL_MOULD);
-		combatGear = new ItemRequirement("Combat gear + potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear + potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemCollections.COINS, 400);
 		sigil = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);

@@ -217,19 +217,19 @@ public class Regicide extends BasicQuestHelper
 		rope1.setTooltip("Bring extras as you can fail");
 		rope2 = rope1.quantity(2);
 		ropeHighlight = rope1.highlighted();
-		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.BOWS, 1, true);
+		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.BOWS, 1, true).isNotConsumed();
 		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.METAL_ARROWS);
 		arrowsHighlight = arrows.highlighted();
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		spadeHighlight = spade.highlighted();
-		plank = new ItemRequirement("Plank", ItemID.PLANK);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		spadeHighlight = spade.highlighted().isNotConsumed();
+		plank = new ItemRequirement("Plank", ItemID.PLANK).isNotConsumed();
 		plankHighlight = plank.highlighted();
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
 		bucketHighlight = bucket.highlighted();
 		bucketHighlight.setTooltip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderboxHighlight = tinderbox.highlighted();
-		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1);
+		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1).isNotConsumed();
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(ItemID.SHARK);
@@ -257,8 +257,8 @@ public class Regicide extends BasicQuestHelper
 		stripOfCloth = new ItemRequirement("Strip of cloth", ItemID.STRIP_OF_CLOTH);
 		stripOfCloth.setTooltip("Made on a loom with 4 balls of wool.");
 		stripOfCloth.appendToTooltip("There is a loom available at the Falador Farm");
-		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemID.LEATHER_GLOVES);
+		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
+		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemID.LEATHER_GLOVES).isNotConsumed();
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
 			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES, ItemID.GRACEFUL_GLOVES_11859,
@@ -274,7 +274,7 @@ public class Regicide extends BasicQuestHelper
 		gloves.appendToTooltip("Graceful Gloves");
 		gloves.appendToTooltip("Granite Gloves");
 		pot = new ItemRequirement("Pot", ItemID.POT);
-		cookedRabbit =  new ItemRequirement("Cooked rabbit (Obtainable during quest)", ItemID.COOKED_RABBIT);
+		cookedRabbit = new ItemRequirement("Cooked rabbit (Obtainable during quest)", ItemID.COOKED_RABBIT);
 		cookedRabbit.setTooltip("Raw Rabbit can be killed around Isafdar or purchased from the");
 		cookedRabbit.appendToTooltip(" Charter Ship near the Tyras Camp for 50gp.");
 
@@ -285,7 +285,7 @@ public class Regicide extends BasicQuestHelper
 		summerPie = new ItemRequirement("Summer pie as food + agility boost", ItemID.SUMMER_PIE, -1);
 		summerPie.addAlternates(ItemID.HALF_A_SUMMER_PIE);
 		summerPie.setTooltip("This is, most likely, not needed if you have 70+ Agility. Bring more if you have lower Agility.");
-		axe = new ItemRequirement("An Axe to cook raw rabbit in case you fail too many obstacles.", ItemCollections.AXES, 1);
+		axe = new ItemRequirement("An Axe to cook raw rabbit in case you fail too many obstacles.", ItemCollections.AXES).isNotConsumed();
 
 		crystalPendant = new ItemRequirement("Crystal pendant", ItemID.CRYSTAL_PENDANT);
 		crystalPendant.setTooltip("You can get another from Lord Iorwerth");

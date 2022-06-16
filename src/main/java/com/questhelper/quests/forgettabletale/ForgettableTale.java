@@ -363,9 +363,9 @@ public class ForgettableTale extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		barleyMalt2 = new ItemRequirement("Barley malt", ItemID.BARLEY_MALT, 2);
 		bucketOfWater2 = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER, 2);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		yeast = new ItemRequirement("Ale yeast", ItemID.ALE_YEAST);
 		kebab = new ItemRequirement("Kebab", ItemID.KEBAB);
 		kebab.setTooltip("You can buy one for 1 coin in the food shop northeast in Keldagrim");

@@ -202,7 +202,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		toadCrunchies.addAlternates(ItemID.TOAD_CRUNCHIES_9538, ItemID.PREMADE_TD_CRUNCH);
 		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS);
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS).isNotConsumed();
 		ogreBellows.addAlternates(ItemID.OGRE_BELLOWS_1, ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
 		coal20 = new ItemRequirement("10-20 coal", ItemID.COAL, 10);
 		naphtha = new ItemRequirement("Barrel of naphtha", ItemID.BARREL_OF_NAPHTHA);
@@ -213,7 +213,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		yellowBellow = new ItemRequirement("Yellow dye bellows", ItemID.YELLOW_DYE_BELLOWS);
 		blueBellow = new ItemRequirement("Blue dye bellows", ItemID.BLUE_DYE_BELLOWS);
 		redBellow = new ItemRequirement("Red dye bellows", ItemID.RED_DYE_BELLOWS);
-		mournerMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK);
+		mournerMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK).isNotConsumed();
 		bloodyMournerBody = new ItemRequirement("Bloody mourner top", ItemID.BLOODY_MOURNER_TOP);
 		mournerLegsBroken = new ItemRequirement("Ripped mourner trousers", ItemID.RIPPED_MOURNER_TROUSERS);
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS);

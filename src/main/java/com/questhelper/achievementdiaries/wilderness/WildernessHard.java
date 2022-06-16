@@ -155,26 +155,26 @@ public class WildernessHard extends ComplexStateQuestHelper
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		godRunes = new ItemRequirement("Runes for a god spell that correspond with your god staff", -1, -1)
 			.showConditioned(notGodSpells);
-		godStaff = new ItemRequirement("Any god staff", ItemCollections.GOD_STAFF).showConditioned(notGodSpells);
+		godStaff = new ItemRequirement("Any god staff", ItemCollections.GOD_STAFF).showConditioned(notGodSpells).isNotConsumed();
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notAirOrb);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notAirOrb);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notAirOrb);
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notBlackSally);
-		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notBlackSally);
-		knife = new ItemRequirement("Knife or slashing weapon", -1, -1).showConditioned(notRawLavaEel);
-		oilyRod = new ItemRequirement("Oily fishing rod", ItemID.OILY_FISHING_ROD).showConditioned(notRawLavaEel);
-		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT).showConditioned(notRawLavaEel);
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notBlackSally).isNotConsumed();
+		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notBlackSally).isNotConsumed();
+		knife = new ItemRequirement("Knife or slashing weapon", -1, -1).showConditioned(notRawLavaEel).isNotConsumed();
+		oilyRod = new ItemRequirement("Oily fishing rod", ItemID.OILY_FISHING_ROD).showConditioned(notRawLavaEel).isNotConsumed();
+		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT).showConditioned(notRawLavaEel).isNotConsumed();
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
-			.showConditioned(notSprirtualWarrior);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notAddyScim);
+			.showConditioned(notSprirtualWarrior).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notAddyScim).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notAddyScim);
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR, 2).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim).isNotConsumed();
 		barsOrPick = new ItemRequirements(LogicType.OR, "2 Adamantite bars or a pickaxe", addyBar, pickaxe);
 		lavaDragonBones = new ItemRequirement("Lava Dragon Bones", ItemID.LAVA_DRAGON_BONES);
 

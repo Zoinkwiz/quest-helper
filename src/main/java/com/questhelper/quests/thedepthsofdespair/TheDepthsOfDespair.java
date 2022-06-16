@@ -133,17 +133,17 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES);
+		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES).isNotConsumed();
 		superEnergyOrStamina = new ItemRequirement("Super Energy or Stamina potions", -1, -1);
 
-		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
+		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 
 		foodIfLowLevel = new ItemRequirement("Food (if low level)", -1, -1);
 		foodIfLowLevel.setDisplayItemId(BankSlotIcons.getFood());
 
-		weapon = new ItemRequirement("A Weapon", -1, -1);
+		weapon = new ItemRequirement("A Weapon", -1, -1).isNotConsumed();
 		weapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		varlamoreEnvoy = new ItemRequirement("Varlamore Envoy", ItemID.VARLAMORE_ENVOY);

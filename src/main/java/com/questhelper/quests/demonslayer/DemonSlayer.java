@@ -133,7 +133,7 @@ public class DemonSlayer extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
 		bucket.setHighlightInInventory(true);
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.setHighlightInInventory(true);
@@ -141,9 +141,9 @@ public class DemonSlayer extends BasicQuestHelper
 		key2 = new ItemRequirement("Silverlight key", ItemID.SILVERLIGHT_KEY_2401);
 		key3 = new ItemRequirement("Silverlight key", ItemID.SILVERLIGHT_KEY);
 		bones = new ItemRequirement("Bones (UNNOTED)", ItemID.BONES, 25);
-		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
-		silverlightEquipped = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true);
-		combatGear = new ItemRequirement("Armour", -1, -1);
+		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT).isNotConsumed();
+		silverlightEquipped = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true).isNotConsumed();
+		combatGear = new ItemRequirement("Armour", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getArmour());
 
 		bucketOfWaterOptional = new ItemRequirement("Bucket of water (obtainable during quest)", ItemID.BUCKET_OF_WATER);

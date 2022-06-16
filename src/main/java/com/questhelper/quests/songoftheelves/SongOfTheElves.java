@@ -548,15 +548,15 @@ public class SongOfTheElves extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
-		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true);
-		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true);
-		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true);
-		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true);
-		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves);
+		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true).isNotConsumed();
+		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
+		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true).isNotConsumed();
+		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true).isNotConsumed();
+		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true).isNotConsumed();
+		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true).isNotConsumed();
+		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 
 		steelFullHelm = new ItemRequirement("Steel full helm", ItemID.STEEL_FULL_HELM);
 		steelFullHelm.setHighlightInInventory(true);
@@ -570,11 +570,11 @@ public class SongOfTheElves extends BasicQuestHelper
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		runiteBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR);
 		limestoneBricks8 = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK, 8);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		rope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
+		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderboxHighlighted.setHighlightInInventory(true);
-		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE);
+		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
 		ropeHighlighted.setHighlightInInventory(true);
 		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE);
 		iritLeafOrFlowers = new ItemRequirement("Irit leaf or a flower", ItemID.IRIT_LEAF);
@@ -592,16 +592,15 @@ public class SongOfTheElves extends BasicQuestHelper
 		cadantineSeed.setHighlightInInventory(true);
 		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleAndMortarHighlighted.setHighlightInInventory(true);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
+		pestleAndMortarHighlighted = pestleAndMortar.highlighted();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).highlighted().isNotConsumed();
 		pickaxeHighlighted.setHighlightInInventory(true);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 
 		ardyFullHelm = new ItemRequirement("Ardougne knight helm", ItemID.ARDOUGNE_KNIGHT_HELM);
 		ardyPlatebody = new ItemRequirement("Ardougne knight platebody", ItemID.ARDOUGNE_KNIGHT_PLATEBODY);
@@ -616,7 +615,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		steelPlatelegsEquipped.addAlternates(ItemID.ARDOUGNE_KNIGHT_PLATELEGS);
 
 		clearLiquid = new ItemRequirement("Clear liquid", ItemID.CLEAR_LIQUID);
-		baxKey = new ItemRequirement("Key", ItemID.KEY_298);
+		baxKey = new ItemRequirement("Key", ItemID.KEY_298).isNotConsumed();
 
 		odeToEternityHighlighted = new ItemRequirement("Ode to Eternity", ItemID.ODE_TO_ETERNITY);
 		odeToEternityHighlighted.setHighlightInInventory(true);
@@ -624,8 +623,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		crystalSeed = new ItemRequirement("Crystal seed", ItemID.CRYSTAL_SEED_23810);
 		crystalSeed.setHighlightInInventory(true);
 
-		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		hammerHighlighted.setHighlightInInventory(true);
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER).highlighted().isNotConsumed();
 
 		elderCadantine = new ItemRequirement("Elder cadantine", ItemID.ELDER_CADANTINE);
 		elderCadantine.addAlternates(ItemID.ELDER_CADANTINE_POTION_UNF);
@@ -654,7 +652,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		saradominBrews = new ItemRequirement("Saradomin brews", ItemID.SARADOMIN_BREW4);
 		superRestorePotions = new ItemRequirement("Super restores", ItemID.SUPER_RESTORE4);
 
-		teleCrystal =  new ItemRequirement("Teleport crystal", ItemID.TELEPORT_CRYSTAL_1);
+		teleCrystal = new ItemRequirement("Teleport crystal", ItemID.TELEPORT_CRYSTAL_1);
 		teleCrystal.addAlternates(ItemID.TELEPORT_CRYSTAL_2, ItemID.TELEPORT_CRYSTAL_3, ItemID.TELEPORT_CRYSTAL_4, ItemID.TELEPORT_CRYSTAL_5);
 		iorwerthCampTeleport = new ItemRequirement("Iorwerth camp teleport", ItemID.IORWERTH_CAMP_TELEPORT);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);

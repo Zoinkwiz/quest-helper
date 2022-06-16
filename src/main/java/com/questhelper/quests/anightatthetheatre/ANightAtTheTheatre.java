@@ -374,20 +374,20 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD);
-		drakansMedallion = new ItemRequirement("Drakan's Medallion", ItemID.DRAKANS_MEDALLION, 1);
-		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.ANTIVENOMS, 1);
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, 1);
-		fairyRings = new ItemRequirement("Access to fairy rings", ItemCollections.FAIRY_STAFF, 1);
+		drakansMedallion = new ItemRequirement("Drakan's Medallion", ItemID.DRAKANS_MEDALLION).isNotConsumed();
+		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.ANTIVENOMS);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
+		fairyRings = new ItemRequirement("Access to fairy rings", ItemCollections.FAIRY_STAFF).isNotConsumed();
 
-		flail = new ItemRequirement("Ivandis/Blisterwood flail", ItemID.IVANDIS_FLAIL);
+		flail = new ItemRequirement("Ivandis/Blisterwood flail", ItemID.IVANDIS_FLAIL).isNotConsumed();
 		flail.addAlternates(ItemID.BLISTERWOOD_FLAIL);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK).isNotConsumed();
 		ghostSpeakAmulet.setTooltip("Morytania legs 2+ work as well.");
-		axe = new ItemRequirement("An axe", ItemCollections.AXES);
+		axe = new ItemRequirement("An axe", ItemCollections.AXES).isNotConsumed();
 
 		cryptKey = new ItemRequirement("Crypt key", ItemID.CRYPT_KEY);
 		ranisHead = new ItemRequirement("Ranis' Head", ItemID.RANIS_HEAD);

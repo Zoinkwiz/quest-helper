@@ -166,21 +166,28 @@ public class FaladorHard extends ComplexStateQuestHelper
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedMindRunes);
 		mindTiara = new ItemRequirement("Mind Tiara", ItemID.MIND_TIARA, 1, true).showConditioned(notCraftedMindRunes);
 		coins10000 = new ItemRequirement("Coins", ItemCollections.COINS, 10000).showConditioned(notChangedFamilyCrest);
-		combatGear = new ItemRequirement("Combat Gear", -1, -1);
+		combatGear = new ItemRequirement("Combat Gear", -1, -1).isNotConsumed();
 		food = new ItemRequirement("Good healing food.", ItemCollections.GOOD_EATING_FOOD, -1);
-		lightSource = new ItemRequirement("Light Source", ItemCollections.LIGHT_SOURCES, -1).showConditioned(notKilledMole);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notKilledMole);
-		wyvernProtection = new ItemRequirement("Wyvern Protection", ItemCollections.ANTI_WYVERN_SHIELDS).showConditioned(notKilledWyvern);
-		prospectorHelm = new ItemRequirement("Prospector Helm", ItemID.PROSPECTOR_HELMET, 1, true).showConditioned(notEnterMiningGuildWithProspector);
-		prospectorChest = new ItemRequirement("Prospector Chest", ItemID.PROSPECTOR_JACKET, 1, true).showConditioned(notEnterMiningGuildWithProspector);
-		prospectorLegs = new ItemRequirement("Prospector Legs", ItemID.PROSPECTOR_LEGS, 1, true).showConditioned(notEnterMiningGuildWithProspector);
-		prospectorBoots = new ItemRequirement("Prospector Boots", ItemID.PROSPECTOR_BOOTS, 1, true).showConditioned(notEnterMiningGuildWithProspector);
-		dragonfireProtection = new ItemRequirement("Protection from Dragonfire", ItemCollections.ANTIFIRE_SHIELDS).showConditioned(notKilledBlueDragon);
-		prosyHelm = new ItemRequirement("Proselyte Helmet", ItemID.PROSELYTE_SALLET).showConditioned(notPraySarimAltarProsy);
-		prosyChest = new ItemRequirement("Proselyte Chest", ItemID.PROSELYTE_HAUBERK).showConditioned(notPraySarimAltarProsy);
-		prosyLegs = new ItemRequirement("Proselyte Legs", ItemID.PROSELYTE_CUISSE).showConditioned(notPraySarimAltarProsy);
+		lightSource = new ItemRequirement("Light Source", ItemCollections.LIGHT_SOURCES, -1).showConditioned(notKilledMole).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notKilledMole).isNotConsumed();
+		wyvernProtection = new ItemRequirement("Wyvern Protection", ItemCollections.ANTI_WYVERN_SHIELDS)
+			.showConditioned(notKilledWyvern).isNotConsumed();
+		prospectorHelm = new ItemRequirement("Prospector Helm", ItemID.PROSPECTOR_HELMET, 1, true)
+			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
+		prospectorChest = new ItemRequirement("Prospector Chest", ItemID.PROSPECTOR_JACKET, 1, true)
+			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
+		prospectorLegs = new ItemRequirement("Prospector Legs", ItemID.PROSPECTOR_LEGS, 1, true)
+			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
+		prospectorBoots = new ItemRequirement("Prospector Boots", ItemID.PROSPECTOR_BOOTS, 1, true)
+			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
+		dragonfireProtection = new ItemRequirement("Protection from Dragonfire", ItemCollections.ANTIFIRE_SHIELDS)
+			.showConditioned(notKilledBlueDragon).isNotConsumed();
+		prosyHelm = new ItemRequirement("Proselyte Helmet", ItemID.PROSELYTE_SALLET).showConditioned(notPraySarimAltarProsy).isNotConsumed();
+		prosyChest = new ItemRequirement("Proselyte Chest", ItemID.PROSELYTE_HAUBERK).showConditioned(notPraySarimAltarProsy).isNotConsumed();
+		prosyLegs = new ItemRequirement("Proselyte Legs", ItemID.PROSELYTE_CUISSE).showConditioned(notPraySarimAltarProsy).isNotConsumed();
 		prosyLegs.addAlternates(ItemID.PROSELYTE_TASSET);
-		dwarvenHelmet = new ItemRequirement("Dwarven Helmet", ItemID.DWARVEN_HELMET, 1).showConditioned(notDwarvenHelmetDwarvenMines);
+		dwarvenHelmet = new ItemRequirement("Dwarven Helmet", ItemID.DWARVEN_HELMET, 1)
+			.showConditioned(notDwarvenHelmetDwarvenMines).isNotConsumed();
 
 		faladorTeleport = new ItemRequirement("Multiple teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
 		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS);
@@ -395,7 +402,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(fallyRoofSteps);
 
 		PanelDetails dwarvenHelmSteps = new PanelDetails("A snug fit", Arrays.asList(enterDwarvenMinesHelmet,
-			equipDwarvenHelmet), new SkillRequirement(Skill.DEFENCE, 50), dwarvenHelmet), grimTales;
+			equipDwarvenHelmet), new SkillRequirement(Skill.DEFENCE, 50), dwarvenHelmet, grimTales);
 		dwarvenHelmSteps.setDisplayCondition(notDwarvenHelmetDwarvenMines);
 		dwarvenHelmSteps.setLockingStep(dwarvenHelmetDwarvenMinesTask);
 		allSteps.add(dwarvenHelmSteps);

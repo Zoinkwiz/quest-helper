@@ -171,16 +171,16 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES);
-		rangedWeapon = new ItemRequirement("Any ranged weapon + ammo", -1, -1);
+		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		rangedWeapon = new ItemRequirement("Any ranged weapon + ammo", -1, -1).isNotConsumed();
 		rangedWeapon.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		runesForCombat = new ItemRequirement("Runes for a few casts of a combat spell", -1, -1);
 		runesForCombat.setDisplayItemId(ItemID.DEATH_RUNE);
-		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		combatGear = new ItemRequirement("Combat gear for a level 46 corrupt lizardman", -1, -1);
+		rope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
+		combatGear = new ItemRequirement("Combat gear for a level 46 corrupt lizardman", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		xericTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		meleeWeapon = new ItemRequirement("A melee weapon, or your bare hands", -1, -1);
+		xericTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+		meleeWeapon = new ItemRequirement("A melee weapon, or your bare hands", -1, -1).isNotConsumed();
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 		antiPoison = new ItemRequirement("Antipoison for lizardmen", ItemCollections.ANTIPOISONS);
 	}

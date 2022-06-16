@@ -352,10 +352,9 @@ public class CabinFever extends BasicQuestHelper
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.setTooltip("You can get another from the ship's hull");
-		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlight.setHighlightInInventory(true);
+		tinderboxHighlight = tinderbox.highlighted();
 		floorTinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX_7156);
 		rope3 = new ItemRequirement("Rope", ItemID.ROPE, 3);
 		floorRope = new ItemRequirement("Rope", ItemID.ROPE_7155);

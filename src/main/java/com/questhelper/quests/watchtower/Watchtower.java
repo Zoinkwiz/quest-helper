@@ -225,7 +225,7 @@ public class Watchtower extends BasicQuestHelper
 		guamUnf = new ItemRequirement("Guam potion (unf)", ItemID.GUAM_POTION_UNF);
 		guamUnf.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 
 		fingernails = new ItemRequirement("Fingernails", ItemID.FINGERNAILS);
 		rope2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
@@ -258,7 +258,7 @@ public class Watchtower extends BasicQuestHelper
 		skavidMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP);
 		skavidMap.setTooltip("You can get another from the city guard in south east Gu'Tanoth.");
 
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 
@@ -287,7 +287,7 @@ public class Watchtower extends BasicQuestHelper
 		crystal4Highlight.setTooltip("You can get another from the Rock of Dalgroth in the Ogre Enclave");
 		crystal4Highlight.setHighlightInInventory(true);
 
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setHighlightInInventory(true);
 
 		batBones = new ItemRequirement("Bat bones", ItemID.BAT_BONES);

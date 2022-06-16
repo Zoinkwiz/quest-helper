@@ -160,13 +160,13 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		telegrabOrCoins = new ItemRequirements(LogicType.OR,
 			"33 Magic and runes to cast telegrab, or 50 coins",
 			coins50, telegrab);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK).isNotConsumed();
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		bronzeWire = new ItemRequirement("Bronze wires", ItemID.BRONZE_WIRE, 3);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Threads", ItemID.THREAD, 5);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		coins = new ItemRequirement("Coins at least", ItemCollections.COINS, 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.PICKLED_BRAIN);
 		obsidianAmulet = new ItemRequirement("Obsidian Amulet", ItemID.OBSIDIAN_AMULET);
@@ -174,7 +174,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		starAmulet = new ItemRequirement("Star Amulet", ItemID.STAR_AMULET);
 		decapitatedHead = new ItemRequirement("Decapitated Head", ItemID.DECAPITATED_HEAD);
 		decapitatedHeadWithBrain = new ItemRequirement("Decapitated Head (with brain)", ItemID.DECAPITATED_HEAD_4198);
-		armor = new ItemRequirement("Armour and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1);
+		armor = new ItemRequirement("Armour and weapons defeat a level 51 monster and run past level 72 monsters", -1, -1).isNotConsumed();
 		armor.setDisplayItemId(BankSlotIcons.getCombatGear());
 		cavernKey = new ItemRequirement("Cavern Key", ItemID.CAVERN_KEY);
 		torso = new ItemRequirement("Torso", ItemID.TORSO);

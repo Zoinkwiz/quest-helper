@@ -179,41 +179,42 @@ public class KandarinMedium extends ComplexStateQuestHelper
 
 		not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
 
-		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapOb);
-		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapOb);
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapOb).isNotConsumed();
+		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapOb).isNotConsumed();
 		unfIrit = new ItemRequirement("Unfinished Irit potion", ItemID.IRIT_POTION_UNF, 1).showConditioned(notSuperAnti);
 		unicornHorn = new ItemRequirement("Unicorn horn", ItemID.UNICORN_HORN, 1).showConditioned(notSuperAnti);
-		mortarPest = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).showConditioned(notSuperAnti);
+		mortarPest = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).showConditioned(notSuperAnti).isNotConsumed();
 		hornDust = new ItemRequirement("Horn Dust", ItemID.UNICORN_HORN_DUST, 1).showConditioned(notSuperAnti);
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER, 1).showConditioned(notSuperAnti);
 		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF, 1).showConditioned(notSuperAnti);
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
-			notGrapOb));
+			notGrapOb)).isNotConsumed();
 		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
-		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchCookBass);
+		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchCookBass).isNotConsumed();
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE, 1).showConditioned(notTPCam);
 		airRune = new ItemRequirement("Air Rune", ItemID.AIR_RUNE, 5).showConditioned(notTPCam);
 		mapleUnstrung = new ItemRequirement("Maple shortbow (u)", ItemID.MAPLE_SHORTBOW_U).showConditioned(notStringMaple);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notStringMaple);
 		limpSeed = new ItemRequirement("Limpwurt seed", ItemID.LIMPWURT_SEED).showConditioned(notPickLimp);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickLimp);
-		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickLimp);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickLimp).isNotConsumed();
+		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickLimp).isNotConsumed();
 		primedMind = new ItemRequirement("Mind bar", ItemID.PRIMED_MIND_BAR).showConditioned(notMindHelm);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMindHelm);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMindHelm).isNotConsumed();
 		beatenBook = new ItemRequirement("Beaten Book", ItemID.BEATEN_BOOK).showConditioned(notMindHelm);
 		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY).showConditioned(notMindHelm);
 		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
 			"Workshop, then reading the book you get from it");
 
-		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notFireGiant);
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notStealHemen);
-		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMcGrubor);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineCoal);
+		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notFireGiant).isNotConsumed();
+		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notStealHemen).isNotConsumed();
+		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMcGrubor).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineCoal).isNotConsumed();
 		rawBass = new ItemRequirement("Raw bass", ItemID.RAW_BASS).showConditioned(notCatchCookBass);
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notPickLimp);
 
-		combatGear = new ItemRequirement("Combat gear to kill a fire giant and complete a wave of Barbarian Assault", -1, -1).showConditioned(new Conditions(LogicType.OR, notFireGiant, notBarbAss));
+		combatGear = new ItemRequirement("Combat gear to kill a fire giant and complete a wave of Barbarian Assault", -1, -1)
+			.showConditioned(new Conditions(LogicType.OR, notFireGiant, notBarbAss)).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

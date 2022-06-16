@@ -205,13 +205,12 @@ public class TheDigSite extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setHighlightInInventory(true);
 		vialHighlighted = new ItemRequirement("Vial", ItemID.VIAL);
 		vialHighlighted.setHighlightInInventory(true);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlighted.setHighlightInInventory(true);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderboxHighlighted = tinderbox.highlighted();
 		tea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_1978);
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
@@ -222,14 +221,14 @@ public class TheDigSite extends BasicQuestHelper
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		charcoal.setTooltip("Obtainable during quest by searching specimen trays");
 		charcoal.setHighlightInInventory(true);
-		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH);
-		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR);
-		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY);
+		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH).isNotConsumed();
+		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR).isNotConsumed();
+		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY).isNotConsumed();
 		panningTray.addAlternates(ItemID.PANNING_TRAY_678, ItemID.PANNING_TRAY_679);
-		panningTrayFull = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY_679);
-		trowel = new ItemRequirement("Trowel", ItemID.TROWEL);
+		panningTrayFull = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY_679).isNotConsumed();
+		trowel = new ItemRequirement("Trowel", ItemID.TROWEL).isNotConsumed();
 		trowel.setTooltip("You can get another from one of the Examiners");
-		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL);
+		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL).isNotConsumed();
 		trowelHighlighted.setHighlightInInventory(true);
 		trowelHighlighted.setTooltip("You can get another from one of the Examiners");
 		varrock2 = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);

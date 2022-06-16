@@ -222,22 +222,22 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		secateurs = new ItemRequirement("Secateurs", ItemID.SECATEURS);
+		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		secateurs = new ItemRequirement("Secateurs", ItemID.SECATEURS).isNotConsumed();
 		secateurs.addAlternates(ItemID.MAGIC_SECATEURS);
-		wateringCan = new ItemRequirement("Watering can", ItemCollections.WATERING_CANS);
-		trowel = new ItemRequirement("Gardening trowel", ItemID.GARDENING_TROWEL);
+		wateringCan = new ItemRequirement("Watering can", ItemCollections.WATERING_CANS).isNotConsumed();
+		trowel = new ItemRequirement("Gardening trowel", ItemID.GARDENING_TROWEL).isNotConsumed();
 		plantCure2 = new ItemRequirement("Plant cure", ItemID.PLANT_CURE, 2);
 		marigoldSeed = new ItemRequirement("Marigold seed", ItemID.MARIGOLD_SEED);
 		cabbageSeed3 = new ItemRequirement("Cabbage seeds (6 to be safe)", ItemID.CABBAGE_SEED, 3);
 		onionSeed3 = new ItemRequirement("Onion seeds (6 to be safe)", ItemID.ONION_SEED, 3);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		essence = new ItemRequirement("Rune/Pure essence", ItemID.RUNE_ESSENCE);
 		essence.addAlternates(ItemID.PURE_ESSENCE);
-		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		plantPot = new ItemRequirement("Filled plant pot", ItemID.FILLED_PLANT_POT);
 		compost2 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 2);
 		compost2.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
@@ -249,7 +249,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 5);
 		compost5.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
 		compost5.setTooltip("Bottomless bucket will not work for these five required composts.");
-		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
+		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		draynorTeleport = new ItemRequirement("Draynor teleport", ItemCollections.AMULET_OF_GLORIES);
@@ -266,7 +266,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);
 
-		ringOfCharosA = new ItemRequirement("Ring of charos (a)", ItemID.RING_OF_CHAROSA);
+		ringOfCharosA = new ItemRequirement("Ring of charos (a)", ItemID.RING_OF_CHAROSA).isNotConsumed();
 		whiteTreeShoot = new ItemRequirement("White tree shoot", ItemID.WHITE_TREE_SHOOT);
 		whiteTreePot = new ItemRequirement("White tree shoot (pot)", ItemID.WHITE_TREE_SHOOT_6462);
 		whiteTreeWatered = new ItemRequirement("White tree shoot (watered)", ItemID.WHITE_TREE_SHOOT_W);

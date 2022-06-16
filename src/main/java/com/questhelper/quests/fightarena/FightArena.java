@@ -141,7 +141,7 @@ public class FightArena extends BasicQuestHelper
 		khaliBrew = new ItemRequirement("Khali brew", ItemID.KHALI_BREW);
 		cellKeys = new ItemRequirement("Khazard cell keys", ItemID.KHAZARD_CELL_KEYS);
 		cellKeys.setHighlightInInventory(true);
-		combatGear = new ItemRequirement("Combat equipment and food (magic/ranged if you want to safe spot)", -1, -1);
+		combatGear = new ItemRequirement("Combat equipment and food (magic/ranged if you want to safe spot)", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 

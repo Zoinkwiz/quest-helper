@@ -110,34 +110,23 @@ public class RFDGoblins extends BasicQuestHelper
 	{
 		bread = new ItemRequirement("Bread", ItemID.BREAD);
 		orange = new ItemRequirement("Orange", ItemID.ORANGE);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		blueGreenPurpledye = new ItemRequirement("A blue, green, or purple dye", ItemID.BLUE_DYE);
 		blueGreenPurpledye.addAlternates(ItemID.GREEN_DYE, ItemID.PURPLE_DYE);
-		spice = new ItemRequirement("Spice or gnome spice", ItemID.SPICE);
+		spice = new ItemRequirement("Spice or gnome spice", ItemID.SPICE).isNotConsumed();
 		spice.setTooltip("You can get some from the Culinaromancer's chest, or a Gnome Spice from the Tree Gnome " +
 			"Stronghold");
 		spice.addAlternates(ItemID.GNOME_SPICE);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 
-		breadHighlighted = new ItemRequirement("Bread", ItemID.BREAD);
-		breadHighlighted.setHighlightInInventory(true);
-		orangeHighlighted = new ItemRequirement("Orange", ItemID.ORANGE);
-		orangeHighlighted.setHighlightInInventory(true);
-		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE);
-		knifeHighlighted.setHighlightInInventory(true);
-		blueGreenPurpledyeHighlighted = new ItemRequirement("A blue, green, or purple dye", ItemID.BLUE_DYE);
-		blueGreenPurpledyeHighlighted.setHighlightInInventory(true);
-		blueGreenPurpledyeHighlighted.addAlternates(ItemID.GREEN_DYE, ItemID.PURPLE_DYE);
-		spiceHighlighted = new ItemRequirement("Spice or gnome spice", ItemID.SPICE);
-		spiceHighlighted.setHighlightInInventory(true);
-		spiceHighlighted.setTooltip("You can get some from the Culinaromancer's chest, or a Gnome Spice from the Tree Gnome " +
-			"Stronghold");
-		spiceHighlighted.addAlternates(ItemID.GNOME_SPICE);
-		fishingBaitHighlighted = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
-		fishingBaitHighlighted.setHighlightInInventory(true);
-		bucketOfWaterHighlighted = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
-		bucketOfWaterHighlighted.setHighlightInInventory(true);
+		breadHighlighted = bread.highlighted();
+		orangeHighlighted = orange.highlighted();
+		knifeHighlighted = knife.highlighted();
+		blueGreenPurpledyeHighlighted = blueGreenPurpledye.highlighted();
+		spiceHighlighted = spice.highlighted();
+		fishingBaitHighlighted = fishingBait.highlighted();
+		bucketOfWaterHighlighted = bucketOfWater.highlighted();
 
 		orangeSliceHighlighted = new ItemRequirement("Orange slices", ItemID.ORANGE_SLICES);
 		orangeSliceHighlighted.setHighlightInInventory(true);

@@ -131,12 +131,12 @@ public class Contact extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

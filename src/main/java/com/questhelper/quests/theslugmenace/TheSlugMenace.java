@@ -154,10 +154,10 @@ public class TheSlugMenace extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB);
+		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB).isNotConsumed();
 		commorb.addAlternates(ItemID.COMMORB_V2);
 
-		commorb2 = new ItemRequirement("Commorb v2", ItemID.COMMORB_V2);
+		commorb2 = new ItemRequirement("Commorb v2", ItemID.COMMORB_V2).isNotConsumed();
 		commorb2.setHighlightInInventory(true);
 
 		deadSeaSlug = new ItemRequirement("Dead sea slug", ItemID.DEAD_SEA_SLUG);
@@ -192,7 +192,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		blankFire = new ItemRequirement("Blank fire rune", ItemID.BLANK_FIRE_RUNE);
 		blankMind = new ItemRequirement("Blank mind rune", ItemID.BLANK_MIND_RUNE);
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE_9693);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE_9695);
@@ -200,7 +200,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE_9699);
 		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE_9697);
 
-		meleeGear = new ItemRequirement("Melee weapon to fight the Slug Prince", -1, -1);
+		meleeGear = new ItemRequirement("Melee weapon to fight the Slug Prince", -1, -1).isNotConsumed();
 		meleeGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		doorTranscript = new ItemRequirement("Door transcription", ItemID.DOOR_TRANSCRIPTION);
@@ -225,7 +225,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		mindTalisman.addAlternates(ItemID.MIND_TIARA);
 
 		accessToAltars = new ItemRequirements("Access to air, water, earth, fire, and mind runecrafting altars",
-			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman);
+			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman).isNotConsumed();
 
 		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.NECKLACE_OF_PASSAGES);
 

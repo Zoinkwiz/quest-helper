@@ -415,35 +415,32 @@ public class DragonSlayerII extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		pickaxeHighlighted.setHighlightInInventory(true);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		pickaxeHighlighted = pickaxe.highlighted();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 		oakPlank8 = new ItemRequirement("Oak planks", ItemID.OAK_PLANK, 8);
 		swampPaste10 = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE, 10);
 		nails12OrMore = new ItemRequirement("Nails, bring more in case some break", ItemCollections.NAILS, 12);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		hammerHighlighted.setHighlightInInventory(true);
-		machete = new ItemRequirement("Any machete", ItemCollections.MACHETE);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
-		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		hammerHighlighted = hammer.highlighted();
+		machete = new ItemRequirement("Any machete", ItemCollections.MACHETE).isNotConsumed();
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
+		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE).equipped().isNotConsumed();
 		catspeakAmulet.setTooltip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
-		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK, 1, true);
+		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK).equipped().isNotConsumed();
 		ghostspeakOrMory2.setTooltip("Morytania Legs 2 and above are also valid.");
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
 		goutweed.setHighlightInInventory(true);
 		goutweed.setTooltip("You can get this from the Troll Stronghold Kitchen Storeroom");
 		dragonstone = new ItemRequirement("Dragonstone", ItemID.DRAGONSTONE);
 		moltenGlass2 = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 2);
-		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE);
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleAndMortarHighlighted.setHighlightInInventory(true);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		pestleAndMortarHighlighted = new ItemRequirement(true, "Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		bloodRune1 = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE);
 		bloodRune3 = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE, 3);
 		fireRune7 = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE, 7);
@@ -465,18 +462,18 @@ public class DragonSlayerII extends BasicQuestHelper
 		runesForFireWaveOrSurge = new ItemRequirements(LogicType.OR, "Fire Wave or Fire Surge runes", fireWaveRunes, fireSurgeRunes);
 		runesForFireWaveOrSurge3 = new ItemRequirements(LogicType.OR, "3 casts of Fire Wave or Fire Surge", fireWave3Runes, fireSurge3Runes);
 
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
-		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
+		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1).isNotConsumed();
 		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 
-		dragonfireProtection = new ItemRequirement("Protection from dragonfire", ItemCollections.ANTIFIRE_SHIELDS);
+		dragonfireProtection = new ItemRequirement("Protection from dragonfire", ItemCollections.ANTIFIRE_SHIELDS).isNotConsumed();
 		venomProtection = new ItemRequirement("Anti venom", ItemCollections.ANTIVENOMS);
-		salveE = new ItemRequirement("Salve amulet", ItemCollections.SALVE_AMULET);
+		salveE = new ItemRequirement("Salve amulet", ItemCollections.SALVE_AMULET).isNotConsumed();
 
 		// Chest 1 map pieces
 		map1 = new ItemRequirement("Map piece", ItemID.MAP_PIECE);

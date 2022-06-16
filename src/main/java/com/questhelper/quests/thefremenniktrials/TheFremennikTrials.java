@@ -303,16 +303,16 @@ public class TheFremennikTrials extends BasicQuestHelper
 		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);
 		rellekkaTeleports = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT);
 
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		potato = new ItemRequirement("Potato", ItemID.POTATO);
 		onion = new ItemRequirement("Onion", ItemID.ONION);
 		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE);
 		branch = new ItemRequirement("Branch", ItemID.BRANCH);
 		lyreUnstrung = new ItemRequirement("Unstrung lyre", ItemID.UNSTRUNG_LYRE);
 		lyre = new ItemRequirement("Lyre", ItemID.LYRE);
-		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);
+		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).isNotConsumed();
 		petRock.setTooltip("You can get another from Askeladden");
 
 		emptySlot4 = new ItemRequirement("4 empty inventory slots", -1, 4);
@@ -327,7 +327,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		alcoholFreeBeer = new ItemRequirement("Low alcohol keg", ItemID.LOW_ALCOHOL_KEG);
 		kegOfBeer = new ItemRequirement("Keg of beer", ItemID.KEG_OF_BEER);
 
-		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear = new ItemRequirement("Combat gear + food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		huntersTalisman = new ItemRequirement("Hunters' talisman", ItemID.HUNTERS_TALISMAN_3697);
 		chargedHuntersTalisman = new ItemRequirement("Hunters' talisman", ItemID.HUNTERS_TALISMAN);
@@ -346,7 +346,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		exoticFlower = new ItemRequirement("Exotic flower", ItemID.EXOTIC_FLOWER);
 		optionalKoscheiGear = new ItemRequirements(LogicType.AND, "Optionally a Dramen branch + knife to make a dramen staff once inside Koschei's arena",
 			new ItemRequirement("Knife", ItemID.KNIFE), new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH));
-		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil", -1, -1);
+		koscheiGear = new ItemRequirement("Nothing except for food, potions, and rings of recoil", -1, -1).isNotConsumed();
 		koscheiGear.setDisplayItemId(ItemID.CAKE_OF_GUIDANCE);
 		redHerring = new ItemRequirement(true, "Red herring", ItemID.RED_HERRING);
 		woodenDisk = new ItemRequirement(true, "Wooden disk", ItemID.WOODEN_DISK);

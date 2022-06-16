@@ -105,8 +105,8 @@ public class TheMageArenaI extends BasicQuestHelper
 	{
 		runesForCasts = new ItemRequirement("Runes for fighting Kolodion", -1, -1);
 		runesForCasts.setDisplayItemId(ItemID.DEATH_RUNE);
-		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE);
-		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE);
+		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
+		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE).isNotConsumed();
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
 	}
 

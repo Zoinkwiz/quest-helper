@@ -190,7 +190,7 @@ public class GhostsAhoy extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		ectoToken2 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 2);
-		charos = new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA);
+		charos = new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA).isNotConsumed();
 		ectoTokensCharos = new ItemRequirement("20 Ecto-token, OR 10 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, 20);
 		ectoTokensNoCharos = new ItemRequirement("31 Ecto-token, OR 25 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, 31);ectoToken4 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 4);
 		ectoToken12 = new ItemRequirement("Ecto-token, or travel by Charter Ship and 10 ecto-tokens", ItemID.ECTOTOKEN, 12);
@@ -224,8 +224,8 @@ public class GhostsAhoy extends BasicQuestHelper
 
 		cupWithMilkyTea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_4246);
 
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
-		enchantedGhostspeakEquipped = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET_4250, 1, true);
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
+		enchantedGhostspeakEquipped = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET_4250, 1, true).isNotConsumed();
 		coins400 = new ItemRequirement("400+ coins", ItemCollections.COINS, -1);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted = new ItemRequirement("Silk", ItemID.SILK);
@@ -236,11 +236,11 @@ public class GhostsAhoy extends BasicQuestHelper
 		dyes = new ItemRequirements("3 colours of dyes. Which you'll need is random. To be prepared, bring 3 red/blue/yellow dyes",
 			redDye, blueDye, yellowDye);
 
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		oakLongbow = new ItemRequirement("Oak longbow", ItemID.OAK_LONGBOW);
 
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_OF_SLIME);
 		bucketOfSlime.setTooltip("You can buy one from the Charter Ship crew");

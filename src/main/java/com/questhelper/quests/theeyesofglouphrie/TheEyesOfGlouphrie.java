@@ -186,11 +186,10 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		mudRuneHighlight.setHighlightInInventory(true);
 		mapleLog = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS);
 		oakLog = new ItemRequirement("Oak logs", ItemID.OAK_LOGS);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleHighlight = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleHighlight.setHighlightInInventory(true);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
+		pestleHighlight = pestleAndMortar.highlighted();
 		magicGlue = new ItemRequirement("Magic glue", ItemID.MAGIC_GLUE);
 		magicGlue.setHighlightInInventory(true);
 	}

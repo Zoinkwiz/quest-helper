@@ -200,7 +200,7 @@ public class PlagueCity extends BasicQuestHelper
 		dwellberries.setTooltip("You can get these from McGrubor's Wood west of Seers' Village");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		spade.setHighlightInInventory(true);
 		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);
 		fourBucketsOfWater.setHighlightInInventory(true);
@@ -220,7 +220,7 @@ public class PlagueCity extends BasicQuestHelper
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
 		snapeGrass.setHighlightInInventory(true);
 		pictureOfElena = new ItemRequirement("Picture", ItemID.PICTURE);
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
+		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
 		gasMask.setTooltip("You can get another from the cupboard in Edmond's house.");
 		book = new ItemRequirement("Book", ItemID.BOOK_1509);
 		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);

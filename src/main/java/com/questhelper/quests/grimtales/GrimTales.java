@@ -182,11 +182,11 @@ public class GrimTales extends BasicQuestHelper
 		tarrominUnfHighlight = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
 		tarrominUnfHighlight.setHighlightInInventory(true);
 
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		can = new ItemRequirement("Watering can with at least 1 use", ItemCollections.WATERING_CANS);
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		can = new ItemRequirement("Watering can with at least 1 use", ItemCollections.WATERING_CANS).isNotConsumed();
 		can.setTooltip("Gricollers' can is also valid. ");
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		combatGear = new ItemRequirement("Combat gear and food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 

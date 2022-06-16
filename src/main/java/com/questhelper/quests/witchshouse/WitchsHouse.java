@@ -136,14 +136,14 @@ public class WitchsHouse extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		cheese = new ItemRequirement("Cheese (multiple if you mess up)", ItemID.CHEESE);
-		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true);
+		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true).isNotConsumed();
 		leatherGloves.setTooltip("Obtainable during quest");
 		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
 		magnet = new ItemRequirement("Magnet", ItemID.MAGNET);
 		shedKey = new ItemRequirement("Key", ItemID.KEY_2411);
 		shedKey.setHighlightInInventory(true);
 		ball = new ItemRequirement("Ball", ItemID.BALL);
-		armourAndWeapon = new ItemRequirement("Combat gear and food for monsters up to level 53", -1, -1);
+		armourAndWeapon = new ItemRequirement("Combat gear and food for monsters up to level 53", -1, -1).isNotConsumed();
 		armourAndWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 

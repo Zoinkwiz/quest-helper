@@ -156,7 +156,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 		infusedWand = new ItemRequirement("Infused wand", ItemID.INFUSED_WAND);
 		infusedWand.setTooltip("You can make another by getting a wand from Surok, and using it on the chaos altar with 15 chaos runes");
-		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN);
+		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN).isNotConsumed();
 
 		beaconRing = new ItemRequirement("Beacon ring", ItemID.BEACON_RING);
 		beaconRing.setTooltip("You can get another from Zaff");

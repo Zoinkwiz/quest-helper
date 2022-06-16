@@ -207,14 +207,14 @@ public class KingsRansom extends BasicQuestHelper
 		bronzeMed = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM);
 		bronzeMedWorn = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM, 1, true);
 
-		blackKnightBody = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY);
-		blackKnightBodyWorn = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY, 1, true);
+		blackKnightBody = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY).isNotConsumed();
+		blackKnightBodyWorn = blackKnightBody.equipped();
 
-		blackKnightLeg = new ItemRequirement("Black platelegs", ItemID.BLACK_PLATELEGS);
-		blackKnightLegWorn = new ItemRequirement("Black platelegs", ItemID.BLACK_PLATELEGS, 1, true);
+		blackKnightLeg = new ItemRequirement("Black platelegs", ItemID.BLACK_PLATELEGS).isNotConsumed();
+		blackKnightLegWorn = blackKnightLeg.equipped();
 
-		blackKnightHelm = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM);
-		blackKnightHelmWorn = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true);
+		blackKnightHelm = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM).isNotConsumed();
+		blackKnightHelmWorn = blackKnightHelm.equipped();
 
 		animateRock = new ItemRequirement("Animate rock scroll", ItemID.ANIMATE_ROCK_SCROLL);
 		animateRock.setTooltip("If you don't have one, you can get another from Wizard Cromperty in Ardougne during " +

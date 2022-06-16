@@ -245,15 +245,15 @@ public class ATasteOfHope extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		coins1000 = new ItemRequirement("Coins", ItemCollections.COINS, 1000);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		emerald = new ItemRequirement("Emerald", ItemID.EMERALD);
 		emeraldHighlighted = new ItemRequirement("Emerald", ItemID.EMERALD);
 		emeraldHighlighted.setHighlightInInventory(true);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		airRune3 = new ItemRequirement("Air rune", ItemCollections.AIR_RUNE, 3);
-		airStaff = new ItemRequirement("Air staff", ItemCollections.AIR_STAFF);
+		airStaff = new ItemRequirement("Air staff", ItemCollections.AIR_STAFF).isNotConsumed();
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		enchantRunes = new ItemRequirements("Emerald enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", airRune3, airStaff), cosmicRune);
 		enchantTablet = new ItemRequirement("Emerald enchant tablet", ItemID.ENCHANT_EMERALD_OR_JADE);
@@ -273,7 +273,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
 		vialOfWater.setHighlightInInventory(true);
 		vialOfWater.setTooltip("You can fill the vial upstairs on the broken fountain");
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		vial = new ItemRequirement("Vial", ItemID.VIAL);

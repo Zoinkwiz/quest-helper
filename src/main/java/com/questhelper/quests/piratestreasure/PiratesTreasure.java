@@ -120,7 +120,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATE_MESSAGE);
 		chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
 		chestKey.setTooltip("You can get another one from Redbeard Frank");

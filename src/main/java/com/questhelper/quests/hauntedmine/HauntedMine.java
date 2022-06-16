@@ -173,7 +173,7 @@ public class HauntedMine extends BasicQuestHelper
 		zealotsKeyHighlighted = new ItemRequirement("Zealot's key", ItemID.ZEALOTS_KEY);
 		zealotsKeyHighlighted.setHighlightInInventory(true);
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		glowingFungus = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight.setHighlightInInventory(true);
@@ -182,7 +182,7 @@ public class HauntedMine extends BasicQuestHelper
 
 		crystalMineKey = new ItemRequirement("Crystal-mine key", ItemID.CRYSTALMINE_KEY);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

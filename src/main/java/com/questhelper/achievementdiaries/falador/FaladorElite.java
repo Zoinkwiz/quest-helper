@@ -135,11 +135,11 @@ public class FaladorElite extends ComplexStateQuestHelper
 		notMadeSaraBrew = new VarplayerRequirement(1187, false, 10);
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedAirRunes);
-		airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes);
+		airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes).isNotConsumed();
 		coins1920 = new ItemRequirement("Coins", ItemCollections.COINS, 1920).showConditioned(notPurchasedWhite2hSword);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots);
-		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots).isNotConsumed();
+		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots).isNotConsumed();
 		magicTreeSapling = new ItemRequirement("Magic Sapling", ItemID.MAGIC_SAPLING).showConditioned(notGotMagicRoots);
 		skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.SKILLCAPE).showConditioned(notPerformedSkillCapeEmote);
 		toadflaxPotionUnf = new ItemRequirement("Toadflax Potion (unf)", ItemID.TOADFLAX_POTION_UNF).showConditioned(notMadeSaraBrew);

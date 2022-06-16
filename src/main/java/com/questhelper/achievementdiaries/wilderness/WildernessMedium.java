@@ -164,24 +164,24 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		runeAxe = new ItemRequirement("Rune axe or better", ItemCollections.RUNE_AXE_BETTER)
-			.showConditioned(notEntYew);
+			.showConditioned(notEntYew).isNotConsumed();
 		antiDragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.ANTIFIRE_SHIELDS)
-			.showConditioned(notKillGreenDrag);
+			.showConditioned(notKillGreenDrag).isNotConsumed();
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
-			.showConditioned(notWildyGWBloodveld);
+			.showConditioned(notWildyGWBloodveld).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
-			.showConditioned(notMineMith);
+			.showConditioned(notMineMith).isNotConsumed();
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notEarthOrb);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notEarthOrb);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notEarthOrb);
-		knife = new ItemRequirement("Knife or slashing weapon", -1, -1);
+		knife = new ItemRequirement("Knife or slashing weapon", -1, -1).isNotConsumed();
 		muddyKey = new ItemRequirement("Muddy key", ItemID.MUDDY_KEY).showConditioned(notMuddyChest);
 		goldHelmet = new ItemRequirement("Golden helmet not in inventory or bank (make sure this is red)",
-			ItemID.GOLD_HELMET).showConditioned(notGoldHelm);
+			ItemID.GOLD_HELMET).showConditioned(notGoldHelm).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notGoldHelm);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notGoldHelm);
 		goldOre = new ItemRequirement("Gold ore", ItemID.GOLD_ORE);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notGoldHelm);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notGoldHelm).isNotConsumed();
 		barsOrPick = new ItemRequirements(LogicType.OR, "3 gold bars or a pickaxe", goldBar.quantity(3), pickaxe);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

@@ -101,7 +101,7 @@ public class KnightWaves extends BasicQuestHelper
 		onFloor2 = new ZoneRequirement(floor2);
 		inRoom = new ZoneRequirement(room);
 
-		combatGear = new ItemRequirement("Melee combat gear", -1, -1);
+		combatGear = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		poisonedWeapon = new ItemRequirement("Poisoned weapon such as Dragon dagger (p++)", ItemID.DRAGON_DAGGERP_5698);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, 25);

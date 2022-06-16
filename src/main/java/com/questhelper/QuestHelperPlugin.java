@@ -861,6 +861,7 @@ public class QuestHelperPlugin extends Plugin
 			.stream()
 			.filter(QuestHelperConfig.QuestFilter.QUEST)
 			.filter(QuestDetails::isNotCompleted)
+			.filter((quest) -> quest.getQuest() != QuestHelperQuest.CHECK_ITEMS)
 			.sorted(config.orderListBy())
 			.collect(Collectors.toList());
 

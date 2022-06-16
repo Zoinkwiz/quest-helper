@@ -53,24 +53,38 @@ public class AllNeededItems extends ComplexStateQuestHelper
 		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> {
 			reqs.addAll(questReqs);
 		});
+
+
+
+		step1 = new DetailedQuestStep(this, "Get all items you need. You can have items being highlighted that you" +
+			" need without running this helper if you activate it in the Quest Helper settings.", refinedList(reqs));
+		step1.hideRequirements = true;
+		step1.considerBankForItemHighlight = true;
+		setupRequirements();
+
+		return step1;
+	}
+
+	private List<ItemRequirement> refinedList(List<ItemRequirement> reqs)
+	{
 		Map<Integer, ItemRequirement> compressedReqs = new HashMap<>();
 
 		for (ItemRequirement req : reqs)
 		{
 			if (!compressedReqs.containsKey(req.getId()))
 			{
-				compressedReqs.put(1, req);
+				compressedReqs.put(req.getId(), req);
+			}
+			else {
+				ItemRequirement currentReq = compressedReqs.get(req.getId());
+				if (req.isConsumedItem())
+				{
+					compressedReqs.put(req.getId(), currentReq.quantity(currentReq.getQuantity() + req.getQuantity()));
+				}
 			}
 		}
 
-
-		step1 = new DetailedQuestStep(this, "Get all items you need. You can have items being highlighted that you" +
-			" need without running this helper if you activate it in the Quest Helper settings.", reqs);
-		step1.hideRequirements = true;
-		step1.considerBankForItemHighlight = true;
-		setupRequirements();
-
-		return step1;
+		return compressedReqs.values().stream().toList();
 	}
 
 	@Override
@@ -86,7 +100,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> {
 			reqs.addAll(questReqs);
 		});
-		return reqs;
+		return refinedList(reqs);
 	}
 
 	@Override

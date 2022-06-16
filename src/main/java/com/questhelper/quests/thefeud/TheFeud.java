@@ -245,21 +245,21 @@ public class TheFeud extends BasicQuestHelper
 		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.COINS, -1);
 		highlightedCoins = new ItemRequirement("Coins", ItemCollections.COINS);
 		highlightedCoins.setHighlightInInventory(true);
-		gloves = new ItemRequirement("Leather or Graceful Gloves", ItemID.LEATHER_GLOVES);
+		gloves = new ItemRequirement("Leather or Graceful Gloves", ItemID.LEATHER_GLOVES).isNotConsumed();
 		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
 
-		headPiece = new ItemRequirement("Kharidian Headpiece", ItemID.KHARIDIAN_HEADPIECE);
+		headPiece = new ItemRequirement("Kharidian Headpiece", ItemID.KHARIDIAN_HEADPIECE).isNotConsumed();
 		headPiece.setHighlightInInventory(true);
-		fakeBeard = new ItemRequirement("Fake Beard", ItemID.FAKE_BEARD);
+		fakeBeard = new ItemRequirement("Fake Beard", ItemID.FAKE_BEARD).isNotConsumed();
 		fakeBeard.setHighlightInInventory(true);
-		desertDisguise = new ItemRequirement("Desert Disguise", ItemID.DESERT_DISGUISE);
-		disguiseEquipped = new ItemRequirement("Desert Disguise", ItemID.DESERT_DISGUISE, 1, true);
+		desertDisguise = new ItemRequirement("Desert Disguise", ItemID.DESERT_DISGUISE).isNotConsumed();
+		disguiseEquipped = new ItemRequirement("Desert Disguise", ItemID.DESERT_DISGUISE, 1, true).isNotConsumed();
 		shantayPass = new ItemRequirement("Shantay Pass", ItemID.SHANTAY_PASS);
 		beer = new ItemRequirement("Beer", ItemID.BEER, 3);
 		beer.setHighlightInInventory(true);
-		oakBlackjack = new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK);
+		oakBlackjack = new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK).isNotConsumed();
 		oakBlackjack.setHighlightInInventory(true);
-		oakBlackjackEquipped = new ItemRequirement("Oak Blackjack", ItemID.OAK_BLACKJACK, 1, true);
+		oakBlackjackEquipped = oakBlackjack.equipped();
 		doorKeys = new ItemRequirement("Keys", ItemID.KEYS);
 		doorKeys.setHighlightInInventory(true);
 		snakeCharmHighlighted = new ItemRequirement("Snake Charm", ItemID.SNAKE_CHARM);

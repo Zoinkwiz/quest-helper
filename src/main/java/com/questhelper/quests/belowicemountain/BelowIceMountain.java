@@ -133,11 +133,11 @@ public class BelowIceMountain extends BasicQuestHelper
 	{
 		cookedMeat = new ItemRequirement("Cooked Meat", ItemID.COOKED_MEAT, 1);
 		bread = new ItemRequirement("Bread", ItemID.BREAD, 1);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 3);
 
-		knifeHighlight = new ItemRequirement(true, "Knife", ItemID.KNIFE);
-		breadHighlight = new ItemRequirement(true, "Bread", ItemID.BREAD);
+		knifeHighlight = knife.highlighted();
+		breadHighlight = bread.highlighted();
 
 		steakSandwich = new ItemRequirement("Steak Sandwich", ItemID.STEAK_SANDWICH);
 
@@ -148,7 +148,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		iceMountainTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.LASSAR_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		combatGearOrPickaxe = new ItemRequirement("Combat gear or a pickaxe if you don't want to fight", -1, -1);
+		combatGearOrPickaxe = new ItemRequirement("Combat gear or a pickaxe if you don't want to fight", -1, -1).isNotConsumed();
 		combatGearOrPickaxe.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 

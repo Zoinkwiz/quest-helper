@@ -143,19 +143,19 @@ public class ShadesOfMortton extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF, 2);
 		tarrominUnfHighlighted = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
 		tarrominUnfHighlighted.setHighlightInInventory(true);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		ashes2 = new ItemRequirement("Ashes", ItemID.ASHES, 2);
 		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashesHighlighted.setHighlightInInventory(true);
 		coins5000 = new ItemRequirement("Coins for building materials, or 18000 if you want to buy a Flamtaer hammer", ItemCollections.COINS, 5000);
-		hammerOrFlam = new ItemRequirement("Hammer or Flamtaer Hammer", ItemCollections.HAMMER);
+		hammerOrFlam = new ItemRequirement("Hammer or Flamtaer Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammerOrFlam.addAlternates(ItemID.FLAMTAER_HAMMER);
-		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER);
+		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER).isNotConsumed();
 		flamHammer.setTooltip("This speeds up the repair section of the quest considerably");
 		morttonTele = new ItemRequirement("A Mort'ton teleport or Barrows teleport tablet", ItemID.MORTTON_TELEPORT);
 		morttonTele.addAlternates(ItemID.BARROWS_TELEPORT);

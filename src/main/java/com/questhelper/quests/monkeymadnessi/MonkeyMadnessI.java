@@ -300,7 +300,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		sigilEquipped = new ItemRequirement("10th squad sigil", ItemID._10TH_SQUAD_SIGIL, 1, true);
 		sigilEquipped.setTooltip("You can get another from Waymottin next to Zooknock");
 
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);

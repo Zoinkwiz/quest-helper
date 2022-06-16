@@ -141,9 +141,12 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		steps.put(26, speakWithDaerKandConditional);
 
 		ConditionalStep returnToSpiderCaveConditional = new ConditionalStep(this, returnToSpiderCave);
-		returnToSpiderCaveConditional.addStep(inSpiderCave, useSulphuricAcidOnEggSac);
-		returnToSpiderCaveConditional.addStep(inSisterhoodSanctuaryF1, climbStairsDownSisterhoodF0);
-		returnToSpiderCaveConditional.addStep(inSisterhoodSanctuaryF0, exitSisterhoodSanctuary);
+		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(questBank), inSpiderCave), useSulphuricAcidOnEggSac);
+		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(questBank), inSisterhoodSanctuaryF1), climbStairsDownSisterhoodF0);
+		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(questBank), inSisterhoodSanctuaryF0), exitSisterhoodSanctuary);
+		returnToSpiderCaveConditional.addStep(inSpiderCave, exitSpiderCave);
+		returnToSpiderCaveConditional.addStep(inSisterhoodSanctuaryF0, climbStairsToSisterhoodSanctuaryF1);
+		returnToSpiderCaveConditional.addStep(inSisterhoodSanctuaryF1, speakWithDaerKrand);
 
 		steps.put(28, returnToSpiderCaveConditional);
 		steps.put(30, returnToMysteriousStrangerWithEggs);
@@ -201,12 +204,12 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		NotYetImplemented = new DetailedQuestStep(this, "Not yet Implemented");
 
 		speakWithMysteriousStrangerToStart = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0),
-			"Speak with the Mysterious Stranger in Ver Sinhaza.");
+			"Speak with the Mysterious Stranger in Ver Sinhaza.", saw);
 		((NpcStep) speakWithMysteriousStrangerToStart).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10876);
 		speakWithMysteriousStrangerToStart.addDialogSteps("What's all this really about?", "What's this thing you need from me?", "Yes.");
 
 		enterVerSinhazaCrypts = new ObjectStep(this, ObjectID.STAIRCASE_42523, new WorldPoint(3682, 3231, 0),
-			"Enter the crypts north east of the Mysterious Stranger.");
+			"Enter the crypts north east of the Mysterious Stranger.", saw);
 		enterVerSinhazaCrypts.addDialogSteps("Yes.");
 
 		killVyrewatchForKey = new NpcStep(this, NpcID.VYREWATCH_11173,
@@ -215,9 +218,9 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		pickupCryptKey = new ItemStep(this, "Pick up the crypt key", cryptKey);
 		killVyrewatchForKey.addSubSteps(pickupCryptKey);
 
-		unlockTheCryptGate = new ObjectStep(this, ObjectID.GATE_42529, "Unlock the crypt gate with the key.", cryptKey);
+		unlockTheCryptGate = new ObjectStep(this, ObjectID.GATE_42529, "Unlock the crypt gate with the key.", cryptKey, saw);
 
-		searchTheCoffinInVerSinhazaCrypts = new ObjectStep(this, ObjectID.COFFIN_42532, "Search the coffin.");
+		searchTheCoffinInVerSinhazaCrypts = new ObjectStep(this, ObjectID.COFFIN_42532, "Search the coffin.", saw);
 
 		leaveCrypts = new ObjectStep(this, ObjectID.DOOR_42524, "Return to the Mysterious Stranger with Ranis' head.", ranisHead);
 		speakWithMysteriousStrangerWithRanisHead = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875,

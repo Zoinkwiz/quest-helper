@@ -494,7 +494,7 @@ public class QuestHelperPlugin extends Plugin
 			if (selectedQuest != null && selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS)
 			{
 				clientThread.invokeLater(() -> {
-					startUpQuest(quests.get(QuestHelperQuest.CHECK_ITEMS.getName()));
+					startUpQuest(quests.get(QuestHelperQuest.CHECK_ITEMS.getName()), false);
 				});
 			}
 		}
@@ -826,6 +826,11 @@ public class QuestHelperPlugin extends Plugin
 
 	public void startUpQuest(QuestHelper questHelper)
 	{
+		startUpQuest(questHelper, true);
+	}
+
+	public void startUpQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
+	{
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
 			return;
@@ -841,7 +846,7 @@ public class QuestHelperPlugin extends Plugin
 				shutDownBackgroundQuest(questHelper);
 			}
 
-			if (config.autoOpenSidebar())
+			if (shouldOpenSidebarIfConfig && config.autoOpenSidebar())
 			{
 				displayPanel();
 			}

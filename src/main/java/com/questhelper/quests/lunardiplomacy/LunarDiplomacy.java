@@ -762,7 +762,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 			cloakEquipped, amuletEquipped, ringEquipped, lunarStaffEquipped);
 		useKindlingOnBrazier.addIcon(ItemID.SOAKED_KINDLING);
 
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
 		{
 			talkToEthereal = new NpcStep(this, NpcID.ETHEREAL_LADY, new WorldPoint(1762, 5088, 2), "Talk to the Ethereal Lady.");
 			talkWithEtherealToFight = new NpcStep(this, NpcID.ETHEREAL_LADY, new WorldPoint(1762, 5088, 2), "Talk to the Ethereal Lady. Be prepared to fight.");

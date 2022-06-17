@@ -44,8 +44,6 @@ import com.questhelper.overlays.QuestHelperWorldOverlay;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
@@ -56,8 +54,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -258,6 +258,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean displayNameKnown;
 
+	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 	public SortedMap<String, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<String, List<ItemRequirement>> itemRecommended = new TreeMap<>();
 
@@ -313,7 +314,17 @@ public class QuestHelperPlugin extends Plugin
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			loadQuestList = true;
+			clientThread.invokeLater(() -> {
+				quests.forEach((name, questHelper) -> {
+					eventBus.register(questHelper);
+					questHelper.init();
+					eventBus.unregister(questHelper);
+				});
+				// Update with new items
+				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
+				getAllItemRequirements();
+				loadQuestList = true;
+			});
 		}
 	}
 
@@ -373,7 +384,10 @@ public class QuestHelperPlugin extends Plugin
 					lastStep = currentStep;
 					panel.updateHighlight(client, currentStep);
 				}
-				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
+				if (panel.questActive)
+				{
+					clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
+				}
 				panel.updateLocks();
 			}
 		}
@@ -420,6 +434,15 @@ public class QuestHelperPlugin extends Plugin
 		{
 			loadQuestList = true;
 			displayNameKnown = false;
+			clientThread.invokeLater(() -> {
+				quests.forEach((name, questHelper) -> {
+					eventBus.register(questHelper);
+					questHelper.init();
+					eventBus.unregister(questHelper);
+				});
+				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
+				getAllItemRequirements();
+			});
 		}
 	}
 
@@ -450,13 +473,43 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
+	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("questhelper") && configEvents.contains(event.getKey()))
+		if (!event.getGroup().equals("questhelper"))
+		{
+			return;
+		}
+
+		if (configEvents.contains(event.getKey()))
 		{
 			clientThread.invokeLater(this::updateQuestList);
+		}
+
+		if (configItemEvents.contains(event.getKey()))
+		{
+			getAllItemRequirements();
+			if (selectedQuest != null && selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS)
+			{
+				clientThread.invokeLater(() -> {
+					startUpQuest(quests.get(QuestHelperQuest.CHECK_ITEMS.getName()));
+				});
+			}
+		}
+
+		if ("highlightItemsBackground".equals(event.getKey()))
+		{
+			// If shouldn't highlight, shut down highlights
+			if (Objects.equals(event.getNewValue(), "false"))
+			{
+				shutDownBackgroundQuest(backgroundHelpers.get(QuestHelperQuest.CHECK_ITEMS.getName()));
+			}
+			else
+			{
+				startUpBackgroundQuest(QuestHelperQuest.CHECK_ITEMS.getName());
+			}
 		}
 	}
 
@@ -782,6 +835,12 @@ public class QuestHelperPlugin extends Plugin
 
 		if (!questHelper.isCompleted())
 		{
+			// If running in background, close it
+			if (backgroundHelpers.containsValue(questHelper))
+			{
+				shutDownBackgroundQuest(questHelper);
+			}
+
 			if (config.autoOpenSidebar())
 			{
 				displayPanel();
@@ -819,7 +878,17 @@ public class QuestHelperPlugin extends Plugin
 			bankTagsMain.shutDown();
 			SwingUtilities.invokeLater(() -> panel.removeQuest());
 			eventBus.unregister(selectedQuest);
-			selectedQuest = null;
+
+			// If closing the item checking helper and should still check in background, start it back up in background
+			if (selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS && config.highlightItemsBackground())
+			{
+				selectedQuest = null;
+				startUpBackgroundQuest(QuestHelperQuest.CHECK_ITEMS.getName());
+			}
+			else
+			{
+				selectedQuest = null;
+			}
 		}
 	}
 
@@ -843,6 +912,77 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
+	// Helpers to run in the background without UI
+	public void startUpBackgroundQuest(String questHelperName)
+	{
+		if (!config.highlightItemsBackground())
+		{
+			return;
+		}
+
+		if (!(client.getGameState() == GameState.LOGGED_IN))
+		{
+			return;
+		}
+
+		if (backgroundHelpers.containsKey(questHelperName))
+		{
+			return;
+		}
+
+		if (selectedQuest != null && selectedQuest.getQuest().getName().equals(questHelperName))
+		{
+			return;
+		}
+
+		QuestHelper questHelper = quests.get(questHelperName);
+
+		if (questHelper == null)
+		{
+			return;
+		}
+		clientThread.invokeLater(() -> {
+			if (!questHelper.isCompleted())
+			{
+
+				eventBus.register(questHelper);
+				questHelper.startUp(config);
+				backgroundHelpers.put(questHelperName, questHelper);
+				if (questHelper.getCurrentStep() == null)
+				{
+					questHelper.shutDown();
+					eventBus.unregister(questHelper);
+					backgroundHelpers.remove(questHelperName);
+				}
+
+			}
+		});
+	}
+
+	private void shutDownBackgroundQuest(QuestHelper questHelper)
+	{
+		if (questHelper == null)
+		{
+			return;
+		}
+
+		if (!backgroundHelpers.containsKey(questHelper.getQuest().getName()))
+		{
+			return;
+		}
+
+		if (questHelper == selectedQuest)
+		{
+			// Is active quest, so don't close it
+			return;
+		}
+
+		questHelper.shutDown();
+		eventBus.unregister(questHelper);
+		backgroundHelpers.remove(questHelper.getQuest().getName());
+
+	}
+
 	private Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader) throws IOException
 	{
 		Map<String, QuestHelper> scannedQuests = new HashMap<>();
@@ -857,40 +997,51 @@ public class QuestHelperPlugin extends Plugin
 
 	private void getAllItemRequirements()
 	{
-		List<QuestHelper> filteredQuests = quests.values()
-			.stream()
-			.filter(QuestHelperConfig.QuestFilter.QUEST)
-			.filter(QuestDetails::isNotCompleted)
-			.filter((quest) -> quest.getQuest() != QuestHelperQuest.CHECK_ITEMS)
-			.sorted(config.orderListBy())
-			.collect(Collectors.toList());
-
 		clientThread.invokeLater(() -> {
-			SortedMap<String, List<ItemRequirement>> newReqs = new TreeMap<>();
-			SortedMap<String, List<ItemRequirement>> newRecommended = new TreeMap<>();
-			filteredQuests.forEach((QuestHelper questHelper) -> {
-				eventBus.register(questHelper);
-				if (questHelper instanceof BasicQuestHelper)
-				{
-					((BasicQuestHelper) questHelper).loadSteps();
-				}
+			Predicate<QuestHelper> pred = (questHelper) -> false;
+			if (config.highlightNeededQuestItems())
+			{
+				pred = pred.or(QuestHelperConfig.QuestFilter.QUEST);
+			}
+			if (config.highlightNeededMiniquestItems())
+			{
+				pred = pred.or(QuestHelperConfig.QuestFilter.MINIQUEST);
+			}
+			if (config.highlightNeededAchievementDiaryItems())
+			{
+				pred = pred.or(QuestHelperConfig.QuestFilter.ACHIEVEMENT_DIARY);
+			}
 
-				if (questHelper instanceof ComplexStateQuestHelper)
+			List<QuestHelper> filteredQuests = quests.values()
+				.stream()
+				.filter(pred)
+				.filter(QuestDetails::isNotCompleted)
+				.sorted(config.orderListBy())
+				.collect(Collectors.toList());
+
+			clientThread.invokeLater(() -> {
+				SortedMap<String, List<ItemRequirement>> newReqs = new TreeMap<>();
+				SortedMap<String, List<ItemRequirement>> newRecommended = new TreeMap<>();
+				filteredQuests.forEach((QuestHelper questHelper) -> {
+					if (questHelper.getItemRequirements() != null)
+					{
+						newReqs.put(questHelper.getQuest().getName(), questHelper.getItemRequirements());
+					}
+					if (questHelper.getItemRecommended() != null)
+					{
+						newRecommended.put(questHelper.getQuest().getName(), questHelper.getItemRecommended());
+					}
+				});
+				itemRequirements = newReqs;
+				itemRecommended = newRecommended;
+
+				String checkItemsName = QuestHelperQuest.CHECK_ITEMS.getName();
+				if (config.highlightItemsBackground())
 				{
-					((ComplexStateQuestHelper) questHelper).loadStep();
+					shutDownBackgroundQuest(backgroundHelpers.get(checkItemsName));
+					startUpBackgroundQuest(checkItemsName);
 				}
-				if (questHelper.getItemRequirements() != null)
-				{
-					newReqs.put(questHelper.getQuest().getName(), questHelper.getItemRequirements());
-				}
-				if (questHelper.getItemRecommended() != null)
-				{
-					newRecommended.put(questHelper.getQuest().getName(), questHelper.getItemRecommended());
-				}
-				eventBus.unregister(questHelper);
 			});
-			itemRequirements = newReqs;
-			itemRecommended = newRecommended;
 		});
 	}
 

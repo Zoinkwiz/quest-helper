@@ -97,6 +97,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	{
 	}
 
+	public abstract void init();
+
 	public abstract void startUp(QuestHelperConfig config);
 
 	public abstract void shutDown();

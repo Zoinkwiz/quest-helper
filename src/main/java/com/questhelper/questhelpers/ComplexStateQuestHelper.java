@@ -37,22 +37,27 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 	protected int var;
 
 	@Override
-	public void startUp(QuestHelperConfig config)
+	public void init()
 	{
-		this.config = config;
 		if (step == null)
 		{
 			step = loadStep();
-			instantiateSteps(Collections.singletonList(step));
-			var = getVar();
-			startUpStep(step);
 		}
+	}
+
+	@Override
+	public void startUp(QuestHelperConfig config)
+	{
+		step = loadStep();
+		this.config = config;
+		instantiateSteps(Collections.singletonList(step));
+		var = getVar();
+		startUpStep(step);
 	}
 
 	@Override
 	public void shutDown()
 	{
-		step = null;
 		shutDownStep();
 	}
 

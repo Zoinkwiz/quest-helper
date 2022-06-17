@@ -85,7 +85,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final JScrollPane scrollableContainer;
 	private final int DROPDOWN_HEIGHT = 20;
 //	private boolean settingsPanelActive = false;
-	private boolean questActive = false;
+	public boolean questActive = false;
 
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
 
@@ -461,11 +461,11 @@ public class QuestHelperPanel extends PluginPanel
 
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
-		questActive = true;
 		allDropdownSections.setVisible(false);
 		scrollableContainer.setViewportView(questOverviewWrapper);
 
 		questOverviewPanel.addQuest(quest, isActive);
+		questActive = true;
 
 		repaint();
 		revalidate();
@@ -496,8 +496,8 @@ public class QuestHelperPanel extends PluginPanel
 	{
 		questActive = false;
 		allDropdownSections.setVisible(true);
-		scrollableContainer.setViewportView(questListWrapper);
 		questOverviewPanel.removeQuest();
+		scrollableContainer.setViewportView(questListWrapper);
 
 		repaint();
 		revalidate();

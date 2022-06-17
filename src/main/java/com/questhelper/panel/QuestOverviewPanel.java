@@ -571,10 +571,9 @@ public class QuestOverviewPanel extends JPanel
 
 		if (questStepPanelList != null)
 		{
-			for (QuestStepPanel questStepPanel : questStepPanelList)
-			{
+			questStepPanelList.forEach((questStepPanel) -> {
 				questStepPanel.updateRequirements(client, bankItems, this);
-			}
+			});
 		}
 		revalidate();
 	}

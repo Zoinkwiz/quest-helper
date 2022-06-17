@@ -274,9 +274,10 @@ public class Regicide extends BasicQuestHelper
 		gloves.appendToTooltip("Graceful Gloves");
 		gloves.appendToTooltip("Granite Gloves");
 		pot = new ItemRequirement("Pot", ItemID.POT);
-		cookedRabbit = new ItemRequirement("Cooked rabbit (Obtainable during quest)", ItemID.COOKED_RABBIT);
+		cookedRabbit = new ItemRequirement("Cooked rabbit", ItemID.COOKED_RABBIT);
 		cookedRabbit.setTooltip("Raw Rabbit can be killed around Isafdar or purchased from the");
 		cookedRabbit.appendToTooltip(" Charter Ship near the Tyras Camp for 50gp.");
+		cookedRabbit.appendToTooltip(" You can cook it on a fire which spawns in the clearing east of Port Tyras.");
 
 		antipoisons = new ItemRequirement("Antidotes/antipoisons", ItemCollections.ANTIPOISONS, -1);
 		antipoisons.setTooltip("No amount specified. Bring as many doses as you feel comfortable bringing.");

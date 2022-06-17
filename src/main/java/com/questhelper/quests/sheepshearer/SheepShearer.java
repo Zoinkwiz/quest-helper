@@ -140,7 +140,7 @@ public class SheepShearer extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		twentyBallsOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL, 20);
-		shears = new ItemRequirement("Shears if you plan on collecting wool yourself", ItemID.SHEARS);
+		shears = new ItemRequirement("Shears if you plan on collecting wool yourself", ItemID.SHEARS).isNotConsumed();
 	}
 
 	@Override

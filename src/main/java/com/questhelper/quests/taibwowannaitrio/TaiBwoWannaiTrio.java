@@ -494,6 +494,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
 		jogreBones = new ItemRequirement("Jogre Bones", ItemID.JOGRE_BONES);
+		jogreBones.canBeObtainedDuringQuest();
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN);
 		karambwanPaste = new ItemRequirement("Karambwan paste", ItemID.KARAMBWAN_PASTE);
 		karambwanPaste.addAlternates(ItemID.KARAMBWAN_PASTE_3153, ItemID.KARAMBWAN_PASTE_3154);
@@ -537,11 +538,11 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(new ItemRequirement("Jogre Bones, obtainable during the quest", ItemID.JOGRE_BONES));
+		reqs.add(jogreBones);
 		reqs.add(new ItemRequirement("Extra Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
 		reqs.add(new ItemRequirement("Any Antipoisons", ItemCollections.ANTIPOISONS));
 		reqs.add(new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS));
-		reqs.add(new ItemRequirement("Dramen staff if you have access to fairy rings", ItemID.DRAMEN_STAFF));
+		reqs.add(new ItemRequirement("Dramen staff if you have access to fairy rings", ItemCollections.FAIRY_STAFF));
 		reqs.add(new ItemRequirement("Sliced Banana (Use a knife on a banana)", ItemID.SLICED_BANANA));
 		reqs.add(new ItemRequirement("Poison Karambwan", ItemID.POISON_KARAMBWAN));
 		reqs.add(new ItemRequirement("Food", -1, -1));

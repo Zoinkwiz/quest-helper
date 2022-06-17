@@ -129,7 +129,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		sapphires3.setTooltip("Purchasable during the quest.");
 		sapphires3.setHighlightInInventory(true);
 		oresBars = new ItemRequirement("Various ores and bars", -1, -1);
-		oresBars.setTooltip("Obtainable during the quest.");
+		oresBars.canBeObtainedDuringQuest();
 		redberryPie = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 		redberryPie.setTooltip("Unless you have previously given Thurgo an extra pie with nothing in return.");
 		redberryPieNoInfo = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);

@@ -111,7 +111,8 @@ public class VampyreSlayer extends BasicQuestHelper
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		garlicObtainable = new ItemRequirement("Garlic (Obtainable during quest)", ItemID.GARLIC);
+		garlicObtainable = new ItemRequirement("Garlic", ItemID.GARLIC);
+		garlicObtainable.canBeObtainedDuringQuest();
 	}
 
 	public void setupConditions()

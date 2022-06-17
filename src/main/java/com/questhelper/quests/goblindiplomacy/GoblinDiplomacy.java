@@ -122,7 +122,8 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		orangeDye.setTooltip("This is made from red dye and yellow dye. Bring Aggie in Draynor Village 3 redberries and 5 coins for red dye, then 2 onions and 5 coins for yellow dye.");
 		orangeDye.setHighlightInInventory(true);
 		goblinMailThree = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 3);
-		mailReq = new ItemRequirement("Goblin mail (obtainable during quest)", ItemID.GOBLIN_MAIL, 3);
+		mailReq = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 3);
+		mailReq.canBeObtainedDuringQuest();
 		goblinMailTwo = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 2);
 
 		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);

@@ -249,7 +249,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWoolHighlight.setHighlightInInventory(true);
 
 		bananaReq = new ItemRequirement("Banana", ItemID.BANANA, 5);
-		bananaReq.setTooltip("Obtainable during quest");
+		bananaReq.canBeObtainedDuringQuest();
 
 		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);

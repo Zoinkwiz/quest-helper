@@ -160,7 +160,7 @@ public class TrollRomance extends BasicQuestHelper
 		sledEquipped.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
 		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLWEISS);
 		trollweissFlowers.setTooltip("You can get another from the Trollweiss mountain");
-		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);

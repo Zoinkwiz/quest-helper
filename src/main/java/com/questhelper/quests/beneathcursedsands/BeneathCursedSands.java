@@ -272,10 +272,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 	{
 		coal = new ItemRequirement("Coal", ItemID.COAL);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
-		tinderbox.setTooltip("Obtainable during quest");
+		tinderbox.canBeObtainedDuringQuest();
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
-		spade.setTooltip("Obtainable during quest");
+		spade.canBeObtainedDuringQuest();
 		meat = new ItemRequirement("Any cooked or raw meat", ItemID.COOKED_MEAT);
 		meat.addAlternates(ItemID.RAW_BEEF, ItemID.RAW_BEAR_MEAT, ItemID.RAW_BOAR_MEAT, ItemID.RAW_RAT_MEAT);
 		meat.setTooltip("Purchasable from a shop during the quest. Fish will NOT work");

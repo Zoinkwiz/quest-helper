@@ -590,7 +590,7 @@ public class SongOfTheElves extends BasicQuestHelper
 			ItemID.BLACK_DAGGERP, ItemID.BLACK_DAGGERP_5682, ItemID.BLACK_DAGGERP_5700);
 		cadantineSeed = new ItemRequirement("Cadantine seed", ItemID.CADANTINE_SEED);
 		cadantineSeed.setHighlightInInventory(true);
-		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
+		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortarHighlighted = pestleAndMortar.highlighted();

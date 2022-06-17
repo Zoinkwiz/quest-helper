@@ -153,10 +153,12 @@ public class MerlinsCrystal extends BasicQuestHelper
 	{
 		bread = new ItemRequirement("Bread", ItemID.BREAD);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
-		bucketOfWaxOptional = new ItemRequirement("Bucket of wax (obtainable during quest)", ItemID.BUCKET_OF_WAX);
+		bucketOfWaxOptional = new ItemRequirement("Bucket of wax", ItemID.BUCKET_OF_WAX);
+		bucketOfWaxOptional.canBeObtainedDuringQuest();
 		bucketOfWax = new ItemRequirement("Bucket of wax", ItemID.BUCKET_OF_WAX);
 		batBones = new ItemRequirement("Bat bones", ItemID.BAT_BONES);
-		batBonesOptional = new ItemRequirement("Bat bones (obtainable during quest)", ItemID.BAT_BONES);
+		batBonesOptional = new ItemRequirement("Bat bones", ItemID.BAT_BONES);
+		batBonesOptional.canBeObtainedDuringQuest();
 		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		camelotTeleport = new ItemRequirement("Teleport to Camelot", ItemID.CAMELOT_TELEPORT);
 		twoFaladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 2);

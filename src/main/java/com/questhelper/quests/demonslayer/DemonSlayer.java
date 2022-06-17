@@ -146,7 +146,9 @@ public class DemonSlayer extends BasicQuestHelper
 		combatGear = new ItemRequirement("Armour", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getArmour());
 
-		bucketOfWaterOptional = new ItemRequirement("Bucket of water (obtainable during quest)", ItemID.BUCKET_OF_WATER);
+		bucketOfWaterOptional = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWaterOptional.canBeObtainedDuringQuest();
+
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardsTowerTeleport = new ItemRequirement("Teleport to the Wizards' Tower", ItemID.NECKLACE_OF_PASSAGE5);
 		coin = new ItemRequirement("Coin", ItemCollections.COINS);

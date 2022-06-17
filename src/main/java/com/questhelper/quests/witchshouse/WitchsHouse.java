@@ -137,7 +137,7 @@ public class WitchsHouse extends BasicQuestHelper
 	{
 		cheese = new ItemRequirement("Cheese (multiple if you mess up)", ItemID.CHEESE);
 		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true).isNotConsumed();
-		leatherGloves.setTooltip("Obtainable during quest");
+		leatherGloves.canBeObtainedDuringQuest();
 		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
 		magnet = new ItemRequirement("Magnet", ItemID.MAGNET);
 		shedKey = new ItemRequirement("Key", ItemID.KEY_2411);

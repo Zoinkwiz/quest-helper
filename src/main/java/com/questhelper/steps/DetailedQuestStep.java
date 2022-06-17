@@ -120,6 +120,7 @@ public class DetailedQuestStep extends QuestStep
 
 	public boolean hideRequirements;
 	public boolean considerBankForItemHighlight;
+	public int iconToUseForNeededItems = -1;
 
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
@@ -657,7 +658,19 @@ public class DetailedQuestStep extends QuestStep
 			{
 				if (isReqValidForHighlighting(requirement, ids))
 				{
-					OverlayUtil.renderPolygon(graphics, poly, questHelper.getConfig().targetOverlayColor());
+					if (iconToUseForNeededItems != -1)
+					{
+						BufferedImage icon = spriteManager.getSprite(iconToUseForNeededItems, 0);
+						LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, tile.getWorldLocation());
+						if (localPoint != null)
+						{
+							OverlayUtil.renderTileOverlay(client, graphics, localPoint, icon, questHelper.getConfig().targetOverlayColor());
+						}
+					}
+					else
+					{
+						OverlayUtil.renderPolygon(graphics, poly, questHelper.getConfig().targetOverlayColor());
+					}
 					return;
 				}
 			}
@@ -671,7 +684,7 @@ public class DetailedQuestStep extends QuestStep
 			&& requirementContainsID((ItemRequirement) requirement, ids)
 			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
 			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
-			considerBankForItemHighlight &&
-				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems()));
+			    ( considerBankForItemHighlight &&
+				 !((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
 	}
 }

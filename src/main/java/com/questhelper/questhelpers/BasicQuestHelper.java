@@ -40,22 +40,27 @@ public abstract class BasicQuestHelper extends QuestHelper
 	protected int var;
 
 	@Override
-	public void startUp(QuestHelperConfig config)
+	public void init()
 	{
-		this.config = config;
-		if(steps == null)
+		if (steps == null)
 		{
 			steps = loadSteps();
-			instantiateSteps(steps.values());
-			var = getVar();
-			startUpStep(steps.get(var));
 		}
+	}
+
+	@Override
+	public void startUp(QuestHelperConfig config)
+	{
+		steps = loadSteps();
+		this.config = config;
+		instantiateSteps(steps.values());
+		var = getVar();
+		startUpStep(steps.get(var));
 	}
 
 	@Override
 	public void shutDown()
 	{
-		steps = null;
 		shutDownStep();
 	}
 
@@ -72,7 +77,8 @@ public abstract class BasicQuestHelper extends QuestHelper
 		return false;
 	}
 
-	public List<PanelDetails> getPanels() {
+	public List<PanelDetails> getPanels()
+	{
 		List<PanelDetails> panelSteps = new ArrayList<>();
 		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));
 		return panelSteps;

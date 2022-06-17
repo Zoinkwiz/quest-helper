@@ -43,6 +43,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import net.runelite.api.ItemID;
+import net.runelite.api.SpriteID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.CHECK_ITEMS
@@ -62,6 +64,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 			" need without running this helper if you activate it in the Quest Helper settings.", refinedList(reqs));
 		step1.hideRequirements = true;
 		step1.considerBankForItemHighlight = true;
+		step1.iconToUseForNeededItems = SpriteID.TAB_QUESTS;
 
 		return step1;
 	}
@@ -124,10 +127,9 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(step1)));
-		questHelperPlugin.itemRequirements.forEach((name, reqs) -> allSteps.add(new PanelDetails(name, Arrays.asList(),
+		questHelperPlugin.itemRequirements.forEach((name, reqs) -> allSteps.add(new PanelDetails(name, Collections.emptyList(),
 			(List<Requirement>)(List<?>) reqs,
 			(List<Requirement>)(List<?>) questHelperPlugin.itemRecommended.get(name))));
 		return allSteps;
 	}
 }
-

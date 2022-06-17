@@ -234,6 +234,61 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigSection(
+		position = 0,
+		name = "Item highlighting",
+		description = "Determines what items to highlight in the background"
+	)
+	String itemSection = "itemSection";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "highlightItemsBackground",
+		name = "Always highlight needed items",
+		description = "Highlight items you need for marked content type at all times",
+		section = itemSection
+	)
+	default boolean highlightItemsBackground()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "highlightNeededQuestItems",
+		name = "Highlight quest items",
+		description = "Highlight all quest items you're missing on the floor",
+		section = itemSection
+	)
+	default boolean highlightNeededQuestItems()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "highlightNeededMiniquestItems",
+		name = "Highlight miniquest items",
+		description = "Highlight all miniquest items you're missing on the floor",
+		section = itemSection
+	)
+	default boolean highlightNeededMiniquestItems()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "highlightNeededAchievementDiaryItems",
+		name = "Highlight achievement diary items",
+		description = "Highlight all achievement diary items you're missing on the floor",
+		section = itemSection
+	)
+	default boolean highlightNeededAchievementDiaryItems()
+	{
+		return true;
+	}
+
+	@ConfigSection(
 		position = 1,
 		name = "Quest Hints",
 		description = "Determines what hints should be shown"

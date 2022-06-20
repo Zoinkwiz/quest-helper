@@ -394,7 +394,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 			"Kill Experiments.", true);
 		((NpcStep) killExperiment).addAlternateNpcs(NpcID.EXPERIMENT_1275);
 		killWerewolf = new NpcStep(this, NpcID.WEREWOLF_2611, new WorldPoint(3491, 3487, 0),
-			"Kill the citizens/werewolves in Canifis.", true);
+			"Kill the citizens/werewolves in Canifis. (Do not use Wolfbane)", true);
 		List<Integer> werewolves = new ArrayList<>();
 		for (int i = NpcID.WEREWOLF_2594; i <= NpcID.LILIYA; i++)
 		{

@@ -433,6 +433,7 @@ public class QuestOrders
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.TALE_OF_THE_RIGHTEOUS,
 		QuestHelperQuest.THE_FORSAKEN_TOWER,
+		QuestHelperQuest.ARCHITECTURAL_ALLIANCE,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.REGICIDE,
@@ -475,7 +476,6 @@ public class QuestOrders
 		//QuestHelperQuest.BALLOON_TRANSPORT_VARROCK - Placeholder for later addition.
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
-		QuestHelperQuest.ARCHITECTURAL_ALLIANCE,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
 		QuestHelperQuest.FAMILY_PEST,

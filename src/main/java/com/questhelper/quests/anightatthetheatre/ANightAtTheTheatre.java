@@ -229,7 +229,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		speakWithMysteriousStrangerWithRanisHead.addSubSteps(leaveCrypts);
 
 		speakMoreWithMysteriousStranger = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10875, new WorldPoint(3673, 3223, 0),
-			"Speak to the Mysterious Strange some more.");
+			"Speak to the Mysterious Stranger some more.");
 		((NpcStep) speakMoreWithMysteriousStranger).addAlternateNpcs(NpcID.MYSTERIOUS_STRANGER_10876, NpcID.MYSTERIOUS_STRANGER);
 		speakMoreWithMysteriousStranger.addDialogSteps("So what are we doing with Ranis' head?", "So about that memory...");
 

@@ -30,8 +30,11 @@ package com.questhelper.quests.templeoftheeye;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -51,7 +54,39 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
+import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
+
+/*
+QUEST NOTES
+-----------
+Talk to Persten
+13738: 0
+
+Accept quest (Quest Helper closed)
+13738: 0 -> 5
+
+Listen to Persten until told to talk to Zamorak mage
+13738: 5 -> 10
+13739: 0 -> 1
+
+Herbert casts a spell on the amulet
+13738: 10 -> 15
+
+Received cup of tea
+13741: 0 -> 1
+
+Herbert drinks tea (Quest Helper closed)
+13738: 15 -> 20
+
+Herbert offers teleport
+13738: 20 -> 25
+If asked to teleport later, Quest Helper doesn't point you to talk to Mage to go to abyss.
+Talking to Herbert again doesn't highlight the correct option to teleport to the abyss.
+	Could you help me with that amulet now?
+	Yes.
+
+ */
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TEMPLE_OF_THE_EYE
@@ -60,13 +95,20 @@ public class TempleOfTheEye extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement bucketOfWater, strongTea, eyeAmulet, chisel, pickaxe, abyssalIncantation;
+
 	//Items Recommended
 	ItemRequirement varrock, alkharid;
 
-	QuestStep talkToPersten1, talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1,
+	Requirement inAbyss;
+
+	QuestStep talkToPersten1, talkToPersten1b, talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1,
 		talkToDarkMage2, talkToPersten2, talktoArchmage, talktoTrailborn1,
 		talktoApprentices, talktoTrailborn2, talktoArchmage2;
+
 	ObjectStep touchRunes;
+
+	//Zones
+	Zone abyss;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -76,16 +118,23 @@ public class TempleOfTheEye extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToPersten1);
+		steps.put(5, talkToPersten1b);
 		steps.put(10, talkToMage1);
 
 		ConditionalStep goToAbyss = new ConditionalStep(this, getTeaForMage);
 		goToAbyss.addStep(new Conditions(strongTea, bucketOfWater, eyeAmulet), talkToMage2);
 
 		steps.put(15, goToAbyss);
-		steps.put(25, talkToDarkMage1);
+		steps.put(20, talkToMage2);
+
+		ConditionalStep teleportAbyss = new ConditionalStep(this, talkToMage2);
+		teleportAbyss.addStep(inAbyss, talkToDarkMage1);
+
+		steps.put(25, teleportAbyss);
 		steps.put(35, touchRunes);
 		steps.put(40, talkToDarkMage2);
 		steps.put(45, talkToPersten2);
+
 		return steps;
 	}
 
@@ -107,16 +156,29 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 	}
 
+	public void setupConditions()
+	{
+		inAbyss = new ZoneRequirement(abyss);
+	}
+
+	public void setupZones()
+	{
+		abyss = new Zone(new WorldPoint(3008, 4800, 0), new WorldPoint(3071, 4863, 0));
+	}
+
 	public void setupSteps()
 	{
 		talkToPersten1 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate");
-		talkToPersten1.addDialogStep("What's a wizard doing in Al Kharid");
+		talkToPersten1.addDialogStep("What's a wizard doing in Al Kharid?");
 		talkToPersten1.addDialogStep("Yes.");
+
+		talkToPersten1b = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+			"Talk to Wizard Persten east of the Al Kharid gate");
 
 		talkToMage1 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
 			"Talk to Mage of Zamorak in the Varrock chaos temple");
-		talkToMage1.addDialogStep("I need your help with an amulet");
+		talkToMage1.addDialogStep("I need your help with an amulet.");
 
 		getTeaForMage = new NpcStep(this, NpcID.TEA_SELLER, new WorldPoint(3271, 3411, 0),
 			"Talk to Tea Seller near the Varrock east gate");
@@ -132,7 +194,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 		talkToDarkMage1.addDialogStep("I need your help with an amulet.");
 
 		touchRunes = new ObjectStep(this, 43768,
-			"Interact with the runic energy (pattern is different for everyone)");
+			"Interact with the runic energy (pattern is different for everyone). Click each rune type until all" +
+				" turn white.");
 		touchRunes.addAlternateObjects(43769, 43770, 43771, 43772, 43773);
 		talkToDarkMage2 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
 			"Talk to Dark Mage in the Abyss");

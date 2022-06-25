@@ -94,13 +94,15 @@ public class TempleOfTheEye extends BasicQuestHelper
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.setHighlightInInventory(true);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel.canBeObtainedDuringQuest();
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes());
+		pickaxe.canBeObtainedDuringQuest();
+
 		varrock = new ItemRequirement("Method of teleportation to Varrock", ItemID.VARROCK_TELEPORT);
 		alkharid = new ItemRequirement("Method of teleportation to Al Kharid", ItemID.LUMBRIDGE_TELEPORT);
+
 		strongTea = new ItemRequirement("Strong Cup of Tea", ItemID.STRONG_CUP_OF_TEA);
-		strongTea.canBeObtainedDuringQuest();
 		eyeAmulet = new ItemRequirement("Eye Amulet", ItemID.EYE_AMULET);
-		eyeAmulet.canBeObtainedDuringQuest();
 		abyssalIncantation = new ItemRequirement("Abyssal Incantation", ItemID.ABYSSAL_INCANTATION);
 
 	}
@@ -146,6 +148,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(bucketOfWater);
+		reqs.add(chisel);
+		reqs.add(pickaxe);
 		return reqs;
 	}
 

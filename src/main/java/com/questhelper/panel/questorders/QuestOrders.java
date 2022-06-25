@@ -382,6 +382,7 @@ public class QuestOrders
 		QuestHelperQuest.PRINCE_ALI_RESCUE,
 		QuestHelperQuest.CONTACT,
 		QuestHelperQuest.THE_EYES_OF_GLOUPHRIE,
+		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.SEA_SLUG,
 		QuestHelperQuest.OLAFS_QUEST,
 		QuestHelperQuest.TEARS_OF_GUTHIX,
@@ -675,7 +676,7 @@ public class QuestOrders
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		//QuestHelperQuest.THE_FROZEN_DOOR - Placeholder for future addition.
 		//QuestHelperQuest.HOPESPEARS_WILL - Placeholder for future addition.
-		//QuestHelperQuest.TEMPLE_OF_THE_EYE - Placeholder for future addition.
+		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,

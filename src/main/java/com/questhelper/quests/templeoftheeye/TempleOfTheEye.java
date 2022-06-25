@@ -35,6 +35,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -163,6 +164,11 @@ public class TempleOfTheEye extends BasicQuestHelper
 		return new QuestPointReward(1);
 	}
 
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Collections.singletonList(new ItemReward("Medium pouch", ItemID.MEDIUM_POUCH));
+	}
 
 	@Override
 	public List<ExperienceReward> getExperienceRewards()

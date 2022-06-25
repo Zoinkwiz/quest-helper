@@ -134,6 +134,7 @@ public class QuestOrders
 		QuestHelperQuest.GARDEN_OF_TRANQUILLITY,
 		QuestHelperQuest.ENLIGHTENED_JOURNEY,
 		QuestHelperQuest.THE_ASCENT_OF_ARCEUUS,
+		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.SHADOW_OF_THE_STORM,
 		QuestHelperQuest.HORROR_FROM_THE_DEEP,
 		QuestHelperQuest.ERNEST_THE_CHICKEN,

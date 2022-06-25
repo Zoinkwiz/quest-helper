@@ -101,6 +101,7 @@ public enum QuestVarbits
 	QUEST_GETTING_AHEAD(693),
 	QUEST_A_KINGDOM_DIVIDED(12296),
 	QUEST_A_NIGHT_AT_THE_THEATRE(12276),
+	QUEST_TEMPLE_OF_THE_EYE(13738),
 
 	/**
 	 * mini-quest varbits, these don't hold the completion value.

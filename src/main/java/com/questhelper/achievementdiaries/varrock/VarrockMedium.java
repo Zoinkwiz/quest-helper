@@ -99,6 +99,9 @@ public class VarrockMedium extends ComplexStateQuestHelper
 
 	ZoneRequirement inStronghold1, inStronghold4, inStronghold3, inStronghold2, inEdge, inEntrana;
 
+	ConditionalStep apothStrTask, champsTask, colourCatTask, geSpiritTask, stongholdEmoteTask, vannakaTask,
+		tpDigsiteTask, tolnaTask, maho20Task, balloonTask, tpVarrockTask, varrAgiTask, whiteFruitTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -107,30 +110,56 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		doMedium.addStep(notApothStr, apothStr);
-		doMedium.addStep(notChamps, champs);
-		doMedium.addStep(notCatColour, colourCat);
-		doMedium.addStep(notGESpirit, geSpirit);
-		doMedium.addStep(new Conditions(notStrongholdEmote, notIdea, notSlap, notFlap, notStamp), emote);
-		doMedium.addStep(new Conditions(notStrongholdEmote, inStronghold4), cradle);
-		doMedium.addStep(new Conditions(notStrongholdEmote, notIdea, notSlap, notFlap, inStronghold3), moveToStronghold4);
-		doMedium.addStep(new Conditions(notStrongholdEmote, inStronghold3), health);
-		doMedium.addStep(new Conditions(notStrongholdEmote, notSlap, notFlap, inStronghold2), moveToStronghold3);
-		doMedium.addStep(new Conditions(notStrongholdEmote, inStronghold2), grain);
-		doMedium.addStep(new Conditions(notStrongholdEmote, notFlap, inStronghold1), moveToStronghold2);
-		doMedium.addStep(new Conditions(notStrongholdEmote, inStronghold1), peace);
-		doMedium.addStep(notStrongholdEmote, moveToStronghold);
-		doMedium.addStep(new Conditions(notVannaka, inEdge), vannaka);
-		doMedium.addStep(notVannaka, moveToEdge);
-		doMedium.addStep(notTPDigsite, tpDigsite);
-		doMedium.addStep(notTolna, tolna);
-		doMedium.addStep(notMaho20, maho20);
-		doMedium.addStep(new Conditions(notBalloon, notVarrBalloon2), balloon);
-		doMedium.addStep(new Conditions(notBalloon, inEntrana), talkToAug);
-		doMedium.addStep(notBalloon, moveToEntrana);
-		doMedium.addStep(notTPVarrock, tpVarrock);
-		doMedium.addStep(notWhiteFruit, whiteFruit);
-		doMedium.addStep(notVarrAgi, varrAgi);
+		apothStrTask = new ConditionalStep(this, apothStr);
+		doMedium.addStep(notApothStr, apothStrTask);
+
+		champsTask = new ConditionalStep(this, champs);
+		doMedium.addStep(notChamps, champsTask);
+
+		colourCatTask = new ConditionalStep(this, colourCat);
+		doMedium.addStep(notCatColour, colourCatTask);
+
+		geSpiritTask = new ConditionalStep(this, geSpirit);
+		doMedium.addStep(notGESpirit, geSpiritTask);
+
+		stongholdEmoteTask = new ConditionalStep(this, moveToStronghold);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold1), peace);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notFlap, inStronghold1), moveToStronghold2);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold2), grain);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notSlap, notFlap, inStronghold2), moveToStronghold3);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold3), health);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notIdea, notSlap, notFlap, inStronghold3), moveToStronghold4);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold4), cradle);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notIdea, notSlap, notFlap, notStamp), emote);
+		doMedium.addStep(notStrongholdEmote, stongholdEmoteTask);
+
+		vannakaTask = new ConditionalStep(this, moveToEdge);
+		vannakaTask.addStep(new Conditions(notVannaka, inEdge), vannaka);
+		doMedium.addStep(notVannaka, vannakaTask);
+
+		tpDigsiteTask = new ConditionalStep(this, tpDigsite);
+		doMedium.addStep(notTPDigsite, tpDigsiteTask);
+
+		tolnaTask = new ConditionalStep(this, tolna);
+		doMedium.addStep(notTolna, tolnaTask);
+
+		maho20Task = new ConditionalStep(this, maho20);
+		maho20Task.addStep(new Conditions(notBalloon, notVarrBalloon2), balloon);
+		doMedium.addStep(notMaho20, maho20Task);
+
+		balloonTask = new ConditionalStep(this, moveToEntrana);
+		balloonTask.addStep(new Conditions(notBalloon, inEntrana), talkToAug);
+		balloonTask.addStep(new Conditions(notBalloon, notVarrBalloon), balloon);
+		doMedium.addStep(notBalloon, balloonTask);
+
+		tpVarrockTask = new ConditionalStep(this, tpVarrock);
+		doMedium.addStep(notTPVarrock, tpVarrockTask);
+
+		whiteFruitTask = new ConditionalStep(this, whiteFruit);
+		doMedium.addStep(notWhiteFruit, whiteFruitTask);
+
+		varrAgiTask = new ConditionalStep(this, varrAgi);
+		doMedium.addStep(notVarrAgi, varrAgiTask);
 
 		return doMedium;
 	}
@@ -332,70 +361,84 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		PanelDetails apothSteps = new PanelDetails("Apothecary Strength Potion", Collections.singletonList(apothStr),
 			limpRoot, redSpiderEgg, coins.quantity(5));
 		apothSteps.setDisplayCondition(notApothStr);
+		apothSteps.setLockingStep(apothStrTask);
 		allSteps.add(apothSteps);
 
 		PanelDetails champsSteps = new PanelDetails("Enter Champions' Guild", Collections.singletonList(champs), qp);
 		champsSteps.setDisplayCondition(notChamps);
+		champsSteps.setLockingStep(champsTask);
 		allSteps.add(champsSteps);
 
 		PanelDetails catColourSteps = new PanelDetails("Select Cat's Colour", Collections.singletonList(colourCat),
 			gardenOfTranq, gertCat, coins.quantity(100), ringOfCharos);
 		catColourSteps.setDisplayCondition(notCatColour);
+		catColourSteps.setLockingStep(colourCatTask);
 		allSteps.add(catColourSteps);
 
 		PanelDetails geSpiritSteps = new PanelDetails("Use The Spirit Tree", Collections.singletonList(geSpirit),
 			treeGnomeVillage);
 		geSpiritSteps.setDisplayCondition(notGESpirit);
+		geSpiritSteps.setLockingStep(geSpiritTask);
 		allSteps.add(geSpiritSteps);
 
 		PanelDetails strongEmotesSteps = new PanelDetails("Use 4 Stronghold Emotes", Arrays.asList(moveToStronghold,
 			peace, moveToStronghold2, grain, moveToStronghold3, health, moveToStronghold4, cradle, emote), food);
 		strongEmotesSteps.setDisplayCondition(notStrongholdEmote);
+		strongEmotesSteps.setLockingStep(stongholdEmoteTask);
 		allSteps.add(strongEmotesSteps);
 
 		PanelDetails vannakaSteps = new PanelDetails("Slayer Task From Vannaka", Arrays.asList(moveToEdge, vannaka));
 		vannakaSteps.setDisplayCondition(notVannaka);
+		vannakaSteps.setLockingStep(vannakaTask);
 		allSteps.add(vannakaSteps);
 
 		PanelDetails tpDigsiteSteps = new PanelDetails("Teleport to The Digsite", Collections.singletonList(tpDigsite),
 			digSite, digsitePend);
 		tpDigsiteSteps.setDisplayCondition(notTPDigsite);
+		tpDigsiteSteps.setLockingStep(tpDigsiteTask);
 		allSteps.add(tpDigsiteSteps);
 
 		PanelDetails tolnaSteps = new PanelDetails("Enter The Tolna Dungeon", Collections.singletonList(tolna),
 			soulsBane);
 		tolnaSteps.setDisplayCondition(notTolna);
+		tolnaSteps.setLockingStep(tolnaTask);
 		allSteps.add(tolnaSteps);
 
 		PanelDetails maho20Steps = new PanelDetails("Make 20 Mahogany Planks", Collections.singletonList(maho20),
 			mahoLog.quantity(20), coins.quantity(30000));
 		maho20Steps.setDisplayCondition(notMaho20);
+		maho20Steps.setLockingStep(maho20Task);
 		allSteps.add(maho20Steps);
 
 		PanelDetails balloonSteps = new PanelDetails("Leave Varrock in a Balloon", Arrays.asList(moveToEntrana, talkToAug,
 			balloon), new SkillRequirement(Skill.FIREMAKING, 40), enlightenedJourney, willowLog1, log);
 		balloonSteps.setDisplayCondition(new Conditions(notBalloon, notVarrBalloon2));
+		balloonSteps.setLockingStep(balloonTask);
 		allSteps.add(balloonSteps);
 
 		PanelDetails balloon2Steps = new PanelDetails("Leave Varrock in a Balloon", Arrays.asList(moveToEntrana, talkToAug,
 			balloon), new SkillRequirement(Skill.FIREMAKING, 40), enlightenedJourney, willowLog11, log);
 		balloon2Steps.setDisplayCondition(new Conditions(notBalloon, notVarrBalloon));
+		balloon2Steps.setLockingStep(balloonTask);
 		allSteps.add(balloon2Steps);
 
 		PanelDetails tpVarrSteps = new PanelDetails("Teleport to Varrock", Collections.singletonList(tpVarrock),
 			new SkillRequirement(Skill.MAGIC, 25), airRune.quantity(3), lawRune.quantity(1), fireRune.quantity(1),
 			normalBook);
 		tpVarrSteps.setDisplayCondition(notTPVarrock);
+		tpVarrSteps.setLockingStep(tpVarrockTask);
 		allSteps.add(tpVarrSteps);
 
 		PanelDetails whiteFruitSteps = new PanelDetails("Pick a White Fruit", Collections.singletonList(whiteFruit),
 			new SkillRequirement(Skill.FARMING, 25), gardenOfTranq);
 		whiteFruitSteps.setDisplayCondition(notWhiteFruit);
+		whiteFruitSteps.setLockingStep(whiteFruitTask);
 		allSteps.add(whiteFruitSteps);
 
 		PanelDetails varrAgiSteps = new PanelDetails("Rooftop Course Lap", Collections.singletonList(varrAgi),
 			new SkillRequirement(Skill.AGILITY, 30));
 		varrAgiSteps.setDisplayCondition(notVarrAgi);
+		varrAgiSteps.setLockingStep(varrAgiTask);
 		allSteps.add(varrAgiSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

@@ -95,6 +95,9 @@ public class VarrockHard extends ComplexStateQuestHelper
 	ZoneRequirement inStronghold1, inStronghold2, inStronghold3, inStronghold4, inBasement, inChurch2, inChurch3,
 		inChurch4, inUpstairs, inSewer, inAsyffShop, inYewZone;
 
+	ConditionalStep spottyCapeTask, kudosTask, wakkaEdgeTask, paddewwaTPTask, skullSceptreTask, yewChurchTask,
+		fancyStoneTask, yewRootsTask, smiteAltarTask, pipeTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -103,43 +106,63 @@ public class VarrockHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(new Conditions(notSpottyCape, boughtSpotterCape), spottyCape);
-		doHard.addStep(notSpottyCape, getCape);
-		doHard.addStep(new Conditions(not153Kudos, inBasement, notMoreKudos), kudos);
-		doHard.addStep(new Conditions(not153Kudos, notMoreKudos), moveToBasement);
-		doHard.addStep(not153Kudos, getKudos);
-		doHard.addStep(new Conditions(notYewChurch, inChurch4, cutYewTree), burnLogs);
-		doHard.addStep(new Conditions(notYewChurch, inChurch3, cutYewTree), goUp3);
-		doHard.addStep(new Conditions(notYewChurch, inChurch2, cutYewTree), goUp2);
-		doHard.addStep(new Conditions(notYewChurch, cutYewTree), goUp1);
-		doHard.addStep(notYewChurch, cutYew);
-		doHard.addStep(notFancyStone, fancyStone);
-		doHard.addStep(new Conditions(notSmiteAltar, inUpstairs, smiteActive), prayAtAltar);
-		doHard.addStep(new Conditions(notSmiteAltar, inUpstairs), activateSmite);
-		doHard.addStep(notSmiteAltar, moveToUpstairs);
-		doHard.addStep(notWakkaEdge, wakkaEdge);
-		doHard.addStep(notPaddewwaTP, paddewwaTP);
-		doHard.addStep(new Conditions(notPipe, inSewer), obsPipe);
-		doHard.addStep(notPipe, moveToEdge);
-		doHard.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre.alsoCheckBank(questBank)), skullSceptre);
-		doHard.addStep(new Conditions(notSkullSceptre, runedSceptre.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)), makeSkullSceptre);
-		doHard.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), topSceptre.alsoCheckBank(questBank)), makeSceptre);
-		doHard.addStep(new Conditions(notSkullSceptre, leftSkull.alsoCheckBank(questBank), rightSkull.alsoCheckBank(questBank)), makeSkull);
-		doHard.addStep(new Conditions(notSkullSceptre, inStronghold4), killAnkou);
-		doHard.addStep(new Conditions(new Conditions(LogicType.OR, topSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
-			notSkullSceptre, inStronghold3), moveToStronghold4);
-		doHard.addStep(new Conditions(notSkullSceptre, inStronghold3), killCatablepon);
-		doHard.addStep(new Conditions(new Conditions(LogicType.OR, botSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
+
+		yewRootsTask = new ConditionalStep(this, growYew);
+		yewRootsTask.addStep(new Conditions(notYewRoots, yewNotChecked), chopYew);
+		yewRootsTask.addStep(new Conditions(notYewRoots, yewChecked), chopYew);
+		yewRootsTask.addStep(new Conditions(notYewRoots, yewStump), digUpYewRoots);
+		doHard.addStep(notYewRoots, yewRootsTask);
+
+		spottyCapeTask = new ConditionalStep(this, getCape);
+		spottyCapeTask.addStep(new Conditions(notSpottyCape, boughtSpotterCape), spottyCape);
+		doHard.addStep(notSpottyCape, spottyCapeTask);
+
+		kudosTask = new ConditionalStep(this, getKudos);
+		kudosTask.addStep(new Conditions(not153Kudos, notMoreKudos), moveToBasement);
+		kudosTask.addStep(new Conditions(not153Kudos, inBasement, notMoreKudos), kudos);
+		doHard.addStep(not153Kudos, kudosTask);
+
+		yewChurchTask = new ConditionalStep(this, cutYew);
+		yewChurchTask.addStep(new Conditions(notYewChurch, cutYewTree), goUp1);
+		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch2, cutYewTree), goUp2);
+		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch3, cutYewTree), goUp3);
+		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch4, cutYewTree), burnLogs);
+		doHard.addStep(notYewChurch, yewChurchTask);
+
+		fancyStoneTask = new ConditionalStep(this, fancyStone);
+		doHard.addStep(notFancyStone, fancyStoneTask);
+
+		smiteAltarTask = new ConditionalStep(this, moveToUpstairs);
+		smiteAltarTask.addStep(new Conditions(notSmiteAltar, inUpstairs), activateSmite);
+		smiteAltarTask.addStep(new Conditions(notSmiteAltar, inUpstairs, smiteActive), prayAtAltar);
+		doHard.addStep(notSmiteAltar, smiteAltarTask);
+
+		wakkaEdgeTask = new ConditionalStep(this, wakkaEdge);
+		doHard.addStep(notWakkaEdge, wakkaEdgeTask);
+
+		paddewwaTPTask = new ConditionalStep(this, paddewwaTP);
+		doHard.addStep(notPaddewwaTP, paddewwaTPTask);
+
+		pipeTask = new ConditionalStep(this, moveToEdge);
+		pipeTask.addStep(new Conditions(notPipe, inSewer), obsPipe);
+		doHard.addStep(notPipe, pipeTask);
+
+		skullSceptreTask = new ConditionalStep(this, moveToStronghold);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold1), killMino);
+		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, rightSkull.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)),
+			notSkullSceptre, inStronghold1), moveToStronghold2);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold2), killFlesh);
+		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, botSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
 			notSkullSceptre, inStronghold2), moveToStronghold3);
-		doHard.addStep(new Conditions(notSkullSceptre, inStronghold2), killFlesh);
-		doHard.addStep(new Conditions(new Conditions(LogicType.OR, rightSkull.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)),
-				notSkullSceptre, inStronghold1), moveToStronghold2);
-		doHard.addStep(new Conditions(notSkullSceptre, inStronghold1), killMino);
-		doHard.addStep(notSkullSceptre, moveToStronghold);
-		doHard.addStep(new Conditions(notYewRoots, yewStump), digUpYewRoots);
-		doHard.addStep(new Conditions(notYewRoots, yewChecked), chopYew);
-		doHard.addStep(new Conditions(notYewRoots, yewNotChecked), chopYew);
-		doHard.addStep(notYewRoots, growYew);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold3), killCatablepon);
+		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, topSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
+			notSkullSceptre, inStronghold3), moveToStronghold4);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold4), killAnkou);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, leftSkull.alsoCheckBank(questBank), rightSkull.alsoCheckBank(questBank)), makeSkull);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), topSceptre.alsoCheckBank(questBank)), makeSceptre);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, runedSceptre.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)), makeSkullSceptre);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre.alsoCheckBank(questBank)), skullSceptre);
+		doHard.addStep(notSkullSceptre, skullSceptreTask);
 
 		return doHard;
 	}
@@ -175,6 +198,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		runedSceptre = new ItemRequirement("Runed sceptre", ItemID.RUNED_SCEPTRE).showConditioned(notSkullSceptre);
 		combinedSkullSceptre = new ItemRequirement("Skull sceptre", ItemID.SKULL_SCEPTRE).showConditioned(notSkullSceptre);
 		dashingKeb = new ItemRequirement("Dashing kebbit fur", ItemID.DASHING_KEBBIT_FUR).showConditioned(notSpottyCape);
+		dashingKeb.setTooltip("Requires 69 hunter to obtain.");
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notSpottyCape, notFancyStone));
 		cape = new ItemRequirement("Spottier cape", ItemID.SPOTTIER_CAPE).showConditioned(notSpottyCape);
 		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
@@ -395,59 +419,69 @@ public class VarrockHard extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails yewRootsSteps = new PanelDetails("Yew Roots", Arrays.asList(growYew, chopYew, digUpYewRoots),
+			new SkillRequirement(Skill.FARMING, 68, true), new SkillRequirement(Skill.WOODCUTTING, 60), axe, spade,
+			rake, yewSap);
+		yewRootsSteps.setDisplayCondition(notYewRoots);
+		yewRootsSteps.setLockingStep(yewRootsTask);
+		allSteps.add(yewRootsSteps);
+
 		PanelDetails spottierCapeSteps = new PanelDetails("Trade for A Spottier Cape", Arrays.asList(getCape, spottyCape),
 			new SkillRequirement(Skill.HUNTER, 66), dashingKeb.quantity(2), coins.quantity(800));
 		spottierCapeSteps.setDisplayCondition(notSpottyCape);
+		spottierCapeSteps.setLockingStep(spottyCapeTask);
 		allSteps.add(spottierCapeSteps);
 
 		PanelDetails kudosSteps = new PanelDetails("Speak with Orlando With 153+ Kudos", Arrays.asList(getKudos,
 			moveToBasement, kudos), notMoreKudos);
 		kudosSteps.setDisplayCondition(not153Kudos);
+		kudosSteps.setLockingStep(kudosTask);
 		allSteps.add(kudosSteps);
 
 		PanelDetails yewChurchSteps = new PanelDetails("Cut and Burn Yew Logs Atop the Church", Arrays.asList(cutYew,
 			goUp1, burnLogs), new SkillRequirement(Skill.FIREMAKING, 60),
 			new SkillRequirement(Skill.WOODCUTTING, 60), axe, tinderBox);
 		yewChurchSteps.setDisplayCondition(notYewChurch);
+		yewChurchSteps.setLockingStep(yewChurchTask);
 		allSteps.add(yewChurchSteps);
 
 		PanelDetails fancyStoneSteps = new PanelDetails("Fancy Stone", Collections.singletonList(fancyStone),
 			new SkillRequirement(Skill.CONSTRUCTION, 50), coins.quantity(25000));
 		fancyStoneSteps.setDisplayCondition(notFancyStone);
+		fancyStoneSteps.setLockingStep(fancyStoneTask);
 		allSteps.add(fancyStoneSteps);
 
 		PanelDetails smitedSteps = new PanelDetails("Altar Smited", Arrays.asList(moveToUpstairs, activateSmite,
 			prayAtAltar), new SkillRequirement(Skill.PRAYER, 52));
 		smitedSteps.setDisplayCondition(notSmiteAltar);
+		smitedSteps.setLockingStep(smiteAltarTask);
 		allSteps.add(smitedSteps);
 
 		PanelDetails edgevilleWakkaSteps = new PanelDetails("Edgeville Wakka", Collections.singletonList(wakkaEdge),
 			new SkillRequirement(Skill.WOODCUTTING, 57), axe);
 		edgevilleWakkaSteps.setDisplayCondition(notWakkaEdge);
+		edgevilleWakkaSteps.setLockingStep(wakkaEdgeTask);
 		allSteps.add(edgevilleWakkaSteps);
 
 		PanelDetails paddewwaSteps = new PanelDetails("Teleport to Paddewwa", Collections.singletonList(paddewwaTP),
 			new SkillRequirement(Skill.MAGIC, 54), desertTreasure, ancientBook, lawRune.quantity(2),
 			airRune.quantity(1), fireRune.quantity(1));
 		paddewwaSteps.setDisplayCondition(notPaddewwaTP);
+		paddewwaSteps.setLockingStep(paddewwaTPTask);
 		allSteps.add(paddewwaSteps);
 
 		PanelDetails obstaclePipeSteps = new PanelDetails("Obstacle Pipe", Arrays.asList(moveToEdge, obsPipe),
 			new SkillRequirement(Skill.AGILITY, 51));
 		obstaclePipeSteps.setDisplayCondition(notPipe);
+		obstaclePipeSteps.setLockingStep(pipeTask);
 		allSteps.add(obstaclePipeSteps);
 
 		PanelDetails skullSceptreSteps = new PanelDetails("Teleport with Skull Sceptre", Arrays.asList(moveToStronghold,
 			killMino, moveToStronghold2, killFlesh, moveToStronghold3, killCatablepon, moveToStronghold4, killAnkou,
 			makeSkull, makeSceptre, makeSkullSceptre, skullSceptre), combatGear, food);
 		skullSceptreSteps.setDisplayCondition(notSkullSceptre);
+		skullSceptreSteps.setLockingStep(skullSceptreTask);
 		allSteps.add(skullSceptreSteps);
-
-		PanelDetails yewRootsSteps = new PanelDetails("Yew Roots", Arrays.asList(growYew, chopYew, digUpYewRoots),
-			new SkillRequirement(Skill.FARMING, 68, true), new SkillRequirement(Skill.WOODCUTTING, 60), axe, spade,
-			rake, yewSap);
-		yewRootsSteps.setDisplayCondition(notYewRoots);
-		allSteps.add(yewRootsSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishOffSteps);

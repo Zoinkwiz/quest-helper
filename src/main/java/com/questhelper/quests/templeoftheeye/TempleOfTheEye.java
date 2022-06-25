@@ -52,8 +52,9 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(quest = QuestHelperQuest.TEMPLE_OF_THE_EYE)
-
+@QuestDescriptor(
+	quest = QuestHelperQuest.TEMPLE_OF_THE_EYE
+)
 public class TempleOfTheEye extends BasicQuestHelper
 {
 	//Items Required
@@ -65,41 +66,6 @@ public class TempleOfTheEye extends BasicQuestHelper
 		talkToDarkMage2, talkToPersten2, talktoArchmage, talktoTrailborn1,
 		talktoApprentices, talktoTrailborn2, talktoArchmage2;
 	ObjectStep touchRunes;
-	public void setupSteps()
-	{
-		talkToPersten1 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
-			"Talk to Wizard Persten east of the Al Kharid gate");
-		talkToPersten1.addDialogStep("What's a wizard doing in Al Kharid");
-		talkToPersten1.addDialogStep("Yes.");
-
-		talkToMage1 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
-			"Talk to Mage of Zamorak in the Varrock chaos temple");
-		talkToMage1.addDialogStep("I need your help with an amulet");
-
-		getTeaForMage = new NpcStep(this, NpcID.TEA_SELLER, new WorldPoint(3271,3411, 0),
-			"Talk to Tea Seller near the Varrock east gate");
-		getTeaForMage.addDialogStep("Could I have a strong cup of tea?");
-
-		talkToMage2 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
-			"Talk to Mage of Zamorak in the Varrock chaos temple");
-		talkToMage2.addDialogStep("Could you help me with that amulet now?");
-		talkToMage2.addDialogStep("Yes.");
-
-		talkToDarkMage1 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
-			"Talk to Dark Mage in the Abyss");
-		talkToDarkMage1.addDialogStep("I need your help with an amulet.");
-
-		touchRunes = new ObjectStep(this, 43768,
-			"Interact with the runic energy (pattern is different for everyone)");
-		touchRunes.addAlternateObjects( 43769, 43770, 43771, 43772, 43773);
-		talkToDarkMage2 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
-			"Talk to Dark Mage in the Abyss");
-		talkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
-			"Talk to Wizard Persten east of the Al Kharid gate");
-		talkToPersten2.addDialogStep("Yes.");
-
-
-	}
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -137,6 +103,43 @@ public class TempleOfTheEye extends BasicQuestHelper
 		abyssalIncantation = new ItemRequirement("Abyssal Incantation", ItemID.ABYSSAL_INCANTATION);
 
 	}
+
+	public void setupSteps()
+	{
+		talkToPersten1 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+			"Talk to Wizard Persten east of the Al Kharid gate");
+		talkToPersten1.addDialogStep("What's a wizard doing in Al Kharid");
+		talkToPersten1.addDialogStep("Yes.");
+
+		talkToMage1 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
+			"Talk to Mage of Zamorak in the Varrock chaos temple");
+		talkToMage1.addDialogStep("I need your help with an amulet");
+
+		getTeaForMage = new NpcStep(this, NpcID.TEA_SELLER, new WorldPoint(3271, 3411, 0),
+			"Talk to Tea Seller near the Varrock east gate");
+		getTeaForMage.addDialogStep("Could I have a strong cup of tea?");
+
+		talkToMage2 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
+			"Talk to Mage of Zamorak in the Varrock chaos temple");
+		talkToMage2.addDialogStep("Could you help me with that amulet now?");
+		talkToMage2.addDialogStep("Yes.");
+
+		talkToDarkMage1 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
+			"Talk to Dark Mage in the Abyss");
+		talkToDarkMage1.addDialogStep("I need your help with an amulet.");
+
+		touchRunes = new ObjectStep(this, 43768,
+			"Interact with the runic energy (pattern is different for everyone)");
+		touchRunes.addAlternateObjects(43769, 43770, 43771, 43772, 43773);
+		talkToDarkMage2 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
+			"Talk to Dark Mage in the Abyss");
+		talkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+			"Talk to Wizard Persten east of the Al Kharid gate");
+		talkToPersten2.addDialogStep("Yes.");
+
+
+	}
+
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
@@ -153,6 +156,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		reqs.add(alkharid);
 		return reqs;
 	}
+
 	@Override
 	public QuestPointReward getQuestPointReward()
 	{

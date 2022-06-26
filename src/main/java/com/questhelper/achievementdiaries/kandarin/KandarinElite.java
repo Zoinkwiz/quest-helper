@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
+import net.runelite.client.game.FishingSpot;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.KANDARIN_ELITE
@@ -200,9 +201,8 @@ public class KandarinElite extends ComplexStateQuestHelper
 			lunarBook, waterRune.quantity(10), astralRune.quantity(3), lawRune.quantity(3));
 		plantAndPickDwarf = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2814, 3464, 0),
 			"Plant and harvest the dwarf weed from the Catherby patch.", rake, dwarfSeed, seedDib);
-		catch5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1520, new WorldPoint(2837, 3431, 0),
+		catch5Sharks = new NpcStep(this, FishingSpot.SHARK.getIds(), new WorldPoint(2837, 3431, 0),
 			"Catch 5 sharks in Catherby.", harpoon, cookingGaunt.equipped());
-		catch5Sharks.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
 		cook5Sharks = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2817, 3444, 0),
 			"Successfully cook 5 on the range in Catherby.", cookingGaunt.equipped());
 		moveToSeersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),

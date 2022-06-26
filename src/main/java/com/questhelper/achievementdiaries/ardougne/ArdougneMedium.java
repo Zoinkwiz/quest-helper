@@ -228,7 +228,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		grapYan = new ObjectStep(this, ObjectID.WALL_17047, new WorldPoint(2556, 3072, 0),
 			"Grapple up Yanille's south wall.", crossbow.equipped(), mithGrap);
 		grapYan2 = new ObjectStep(this, ObjectID.WALL_17048, new WorldPoint(2556, 3075, 1),
-			"Jump off!");
+			"Jump off the opposite side!");
 
 		if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN)// will need testing to confirm this works
 		{

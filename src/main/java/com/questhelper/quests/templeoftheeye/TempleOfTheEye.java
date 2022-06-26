@@ -58,6 +58,13 @@ import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
 
 /*
+VARBITS
+-------
+13738: Quest Step
+13739: Told to see Herbert?
+13741: Received cup of tea?
+13740: One-time abyss teleport
+
 QUEST NOTES
 -----------
 Talk to Persten
@@ -85,6 +92,10 @@ If asked to teleport later, Quest Helper doesn't point you to talk to Mage to go
 Talking to Herbert again doesn't highlight the correct option to teleport to the abyss.
 	Could you help me with that amulet now?
 	Yes.
+
+Teleported to Abyss
+13740: 0 -> 1
+
 
  */
 
@@ -114,6 +125,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupItemRequirements();
+		setupZones();
+		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -129,6 +142,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		ConditionalStep teleportAbyss = new ConditionalStep(this, talkToMage2);
 		teleportAbyss.addStep(inAbyss, talkToDarkMage1);
+		// If varbit 13740 checked and player is not in abyss, there should be a direction to teleport to abyss via
+		// ordinary means (Herbert in wildy)
 
 		steps.put(25, teleportAbyss);
 		steps.put(35, touchRunes);
@@ -163,7 +178,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 	public void setupZones()
 	{
-		abyss = new Zone(new WorldPoint(3008, 4800, 0), new WorldPoint(3071, 4863, 0));
+		abyss = new Zone(new WorldPoint(3010, 4803, 0), new WorldPoint(3070, 4862, 0));
 	}
 
 	public void setupSteps()
@@ -253,7 +268,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", talkToPersten1));
+		allSteps.add(new PanelDetails("Starting off", talkToPersten1, talkToPersten1b));
 		allSteps.add(new PanelDetails("An Eye for a Favour", Arrays.asList(talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1, touchRunes, talkToDarkMage2), bucketOfWater, eyeAmulet));
 		allSteps.add(new PanelDetails("Help from Some Wizards", Arrays.asList(talkToPersten2), abyssalIncantation, eyeAmulet));//, talktoArchmage, talktoTrailborn1, talktoApprentices, talktoTrailborn2, talktoArchmage2)));
 		return allSteps;

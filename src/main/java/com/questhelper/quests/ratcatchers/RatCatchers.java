@@ -33,7 +33,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.FollowerItemRequirement;
 import com.questhelper.requirements.npc.FollowerRequirement;

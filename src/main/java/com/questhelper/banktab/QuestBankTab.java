@@ -146,7 +146,7 @@ public class QuestBankTab
 	@Subscribe
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
-		final String input = client.getVar(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 		String QUEST_BANK_TAG = "quest-helper";
 
 		if (!input.equals(QUEST_BANK_TAG) || questHelper.getSelectedQuest() == null)

@@ -43,7 +43,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -57,7 +56,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
-import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
 
 /*
@@ -67,6 +65,7 @@ VARBITS
 13739: Told to see Herbert?
 13740: One-time abyss teleport
 13741: Received cup of tea?
+13742: Apprentice Tamara puzzle
 13743: Apprentice Felix puzzle
 13747 - 13752: Energy orbs
 13753: One-time Wizard's Tower teleport
@@ -152,7 +151,19 @@ Traiborn wants you to talk to his apprentices
 
 Spoke to apprentices
 13743: 0 -> 1 (Felix)
+13742: 0 -> 1 (Tamara)
+13744: 0 -> 1 (Cordelia)
+13738: 75 -> 80
 
+Traiborn's fireworks
+13738: 80 -> 85
+
+Player confirms Traiborn's apprentices are ready
+13738: 85 -> 90
+	Let's do it.
+
+If not ready
+	So we're ready to perform the incantation?
 
  */
 
@@ -168,12 +179,13 @@ public class TempleOfTheEye extends BasicQuestHelper
 	ItemRequirement varrock, alkharid;
 
 	Requirement inAbyss, teleportedFromVarrock, inWizardBasement, teleportedFromPersten, inWizardFloorOne,
-	apprenticeFelix, apprenticeTamara, apprenticeCordelia;
+		apprenticeFelixPuzzle, apprenticeTamaraPuzzle, apprenticeCordeliaPuzzle;
 
 	QuestStep talkToPersten1, talkToPersten1b, talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1,
 		talkToMageInWildy, talkToDarkMage2, talkToPersten2, teleportToArchmage, goDownToArchmage, talktoArchmage,
-		finishTalkingToArchmage, goUpToTraibornBasement, goUpToTraiborn, talktoTrailborn1, talktoApprentices,
-		talkToFelix, talkToTamara, talkToCordelia, talktoTrailborn2, talktoArchmage2;
+		finishTalkingToArchmage, goUpToTraibornBasement, goUpToTraiborn, talktoTrailborn1,
+		talkToFelix, talkToTamara, talkToCordelia, talktoTrailborn2, goDownToArchmageFloorOne, goDownToArchmage2,
+		talktoArchmage2, performIncantation;
 
 	ObjectStep touchRunes;
 
@@ -197,6 +209,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		goToAbyss.addStep(new Conditions(strongTea, bucketOfWater, eyeAmulet), talkToMage2);
 
 		steps.put(15, goToAbyss);
+
 		steps.put(20, talkToMage2);
 
 		ConditionalStep teleportAbyss = new ConditionalStep(this, talkToMage2);
@@ -204,6 +217,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		teleportAbyss.addStep(teleportedFromVarrock, talkToMageInWildy);
 
 		steps.put(25, teleportAbyss);
+
 		steps.put(30, talkToDarkMage1);
 		steps.put(35, touchRunes);
 		steps.put(40, talkToDarkMage2);
@@ -214,8 +228,10 @@ public class TempleOfTheEye extends BasicQuestHelper
 		ConditionalStep goTalkToArchmage = new ConditionalStep(this, goDownToArchmage);
 		goTalkToArchmage.addStep(teleportedFromPersten, teleportToArchmage);
 		goTalkToArchmage.addStep(inWizardBasement, talktoArchmage);
+		goTalkToArchmage.addRequirement(abyssalIncantation);
 
 		steps.put(60, goTalkToArchmage);
+
 		steps.put(65, finishTalkingToArchmage);
 
 		ConditionalStep goTalkToTraiborn = new ConditionalStep(this, goUpToTraiborn);
@@ -224,10 +240,25 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		steps.put(70, goTalkToTraiborn);
 
-		ConditionalStep solveTraibornsPuzzle = new ConditionalStep(this, talktoApprentices);
-		solveTraibornsPuzzle.addStep(new Conditions(apprenticeFelix, apprenticeTamara, apprenticeCordelia), talktoTrailborn2);
+		ConditionalStep solveTraibornsPuzzle = new ConditionalStep(this, talkToFelix);
+		solveTraibornsPuzzle.addStep(new Conditions(apprenticeFelixPuzzle), talkToFelix);
+		solveTraibornsPuzzle.addStep(new Conditions(apprenticeTamaraPuzzle), talkToTamara);
+		solveTraibornsPuzzle.addStep(new Conditions(apprenticeCordeliaPuzzle), talkToCordelia);
 
 		steps.put(75, solveTraibornsPuzzle);
+
+		steps.put(80, talktoTrailborn2);
+
+		ConditionalStep goTalkToArchmage2 = new ConditionalStep(this, goDownToArchmage2);
+		goTalkToArchmage2.addStep(inWizardFloorOne, goDownToArchmageFloorOne);
+		goTalkToArchmage2.addStep(inWizardBasement, talktoArchmage2);
+
+		steps.put(85, goTalkToArchmage2);
+
+		ConditionalStep goBeginIncantation = new ConditionalStep(this, goDownToArchmage2);
+		goBeginIncantation.addStep(inWizardBasement, performIncantation);
+
+		steps.put(90, goBeginIncantation);
 
 		return steps;
 	}
@@ -259,9 +290,9 @@ public class TempleOfTheEye extends BasicQuestHelper
 		teleportedFromVarrock = new VarbitRequirement(13740, 1);
 		teleportedFromPersten = new VarbitRequirement(13753, 0);
 
-		apprenticeFelix = new VarbitRequirement(13743, 1);
-		apprenticeTamara = new VarbitRequirement(13742, 1); // Not actual varbit
-		apprenticeCordelia = new VarbitRequirement(13744, 1); // Not actual varbit
+		apprenticeFelixPuzzle = new VarbitRequirement(13743, 0);
+		apprenticeTamaraPuzzle = new VarbitRequirement(13742, 0);
+		apprenticeCordeliaPuzzle = new VarbitRequirement(13744, 0);
 	}
 
 	public void setupZones()
@@ -320,17 +351,14 @@ public class TempleOfTheEye extends BasicQuestHelper
 			abyssalIncantation);
 
 		teleportToArchmage = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
-			"Ask Wizard Persten to teleport you to the Wizard's Tower.",
-			abyssalIncantation);
+			"Ask Wizard Persten to teleport you to the Wizard's Tower.");
 		teleportToArchmage.addDialogStep("Yes.");
 
 		goDownToArchmage = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
-			"Bring the Abyssal Incantation to Sedridor in the Wizard Tower's basement.",
-			abyssalIncantation);
+			"Bring the Abyssal Incantation to Sedridor in the Wizard Tower's basement.");
 
 		talktoArchmage = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
-			"Bring the Abyssal Incantation to Sedridor in the Wizard Tower's basement.",
-			abyssalIncantation);
+			"Bring the Abyssal Incantation to Sedridor in the Wizard Tower's basement.");
 		talktoArchmage.addDialogStep("I need your help with an incantation.");
 
 		finishTalkingToArchmage = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
@@ -348,17 +376,30 @@ public class TempleOfTheEye extends BasicQuestHelper
 		talktoTrailborn1.addDialogStep("I need your apprentices to help with an incantation.");
 
 		talkToFelix = new NpcStep(this, NpcID.APPRENTICE_FELIX_11446, new WorldPoint(3112, 3162, 1),
-			"Get puzzle from Apprentice Felix.", apprenticeFelix);
+			"Get puzzle from Apprentice Felix.");
 		talkToTamara = new NpcStep(this, NpcID.APPRENTICE_TAMARA, new WorldPoint(3112, 3162, 1),
-			"Get puzzle from Apprentice Tamara.", apprenticeTamara);
+			"Get puzzle from Apprentice Tamara.");
 		talkToCordelia = new NpcStep(this, NpcID.APPRENTICE_CORDELIA_11443, new WorldPoint(3112, 3162, 1),
-			"Get puzzle from Apprentice Cordelia.", apprenticeCordelia);
-
-		talktoApprentices = new DetailedQuestStep(this, "Talk to Traiborn's apprentices to solve his puzzle.");
-		talktoApprentices.addSubSteps(talkToFelix, talkToTamara, talkToCordelia);
+			"Get puzzle from Apprentice Cordelia.");
 
 		talktoTrailborn2 = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 1),
-			"Speak to Wizard Traiborn on the Wizard's Tower 1st floor.");
+			"Tell Wizard Traiborn the solution to his puzzle is: 11");
+		talktoTrailborn2.addDialogStep("I think I know what a thingummywut is!");
+
+		goDownToArchmageFloorOne = new ObjectStep(this, ObjectID.STAIRCASE_12537, new WorldPoint(3103, 3159, 1),
+			"Speak to Archmage Sedridor in the Wizard's Tower basement.");
+
+		goDownToArchmage2 = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+			"Speak to Archmage Sedridor in the Wizard's Tower basement.");
+
+		talktoArchmage2 = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+			"Speak to Archmage Sedridor in the Wizard's Tower basement.");
+
+		performIncantation = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+			"Speak to Archmage Sedridor to begin the incantation.");
+		performIncantation.addDialogStep("Let's do it.");
+		performIncantation.addDialogStep("So we're ready to perform the incantation?");
+
 
 	}
 

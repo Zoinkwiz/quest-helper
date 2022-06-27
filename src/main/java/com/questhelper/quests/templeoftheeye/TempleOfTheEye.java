@@ -43,6 +43,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -62,13 +63,14 @@ import net.runelite.api.coords.WorldPoint;
 VARBITS
 -------
 13738: Quest Step
-13739: Told to see Herbert?
+13739: Told to see Herbert
 13740: One-time abyss teleport
-13741: Received cup of tea?
+13741: Received cup of tea
 13742: Apprentice Tamara puzzle
 13743: Apprentice Felix puzzle
 13747 - 13752: Energy orbs
 13753: One-time Wizard's Tower teleport
+13759: Guardians of the Rift Tutorial progress
 
 QUEST NOTES
 -----------
@@ -165,6 +167,54 @@ Player confirms Traiborn's apprentices are ready
 If not ready
 	So we're ready to perform the incantation?
 
+
+Begin incantation
+13738: 90 -> 95
+
+Cutscene ends
+13738: 95 -> 100
+12139: 1 -> 0
+
+Talk to Felix
+13755: 0 -> 1
+
+Talk to Tamara
+13754: 0 -> 1
+
+Talk to Cordelia
+13756: 0 -> 1
+13738: 100 -> 105
+
+Experiencing the vision
+12139: 0 -> 1
+
+Vision over. Debrief
+13738: 105 -> 110
+
+Abyssal attack
+13738: 110 -> 115
+13759: 0 -> 5
+
+Guardians built
+13761: 0 -> 1 (Elemental)
+13760: 0 -> 1 (Catalytic)
+
+Guardian essence crafted
+13763: 0 -> 1
+
+Ready for final power up
+13764: 0 -> 1
+
+Great Guardian powered up fully
+13738: 115 -> 120
+13759: 110 -> 115
+
+Great Guardian cutscene ended, told to talk to Sedridor
+13738: 120 -> 125
+
+Quest complete
+13738: 125 -> 130
+
  */
 
 @QuestDescriptor(
@@ -179,18 +229,21 @@ public class TempleOfTheEye extends BasicQuestHelper
 	ItemRequirement varrock, alkharid;
 
 	Requirement inAbyss, teleportedFromVarrock, inWizardBasement, teleportedFromPersten, inWizardFloorOne,
-		apprenticeFelixPuzzle, apprenticeTamaraPuzzle, apprenticeCordeliaPuzzle;
+		apprenticeFelixPuzzle, apprenticeTamaraPuzzle, apprenticeCordeliaPuzzle, inTempleOfTheEye,
+		felixRiftTalk, tamaraRiftTalk, cordeliaRiftTalk, mysteriousVision, inTempleOfTheEye2;
 
 	QuestStep talkToPersten1, talkToPersten1b, talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1,
 		talkToMageInWildy, talkToDarkMage2, talkToPersten2, teleportToArchmage, goDownToArchmage, talktoArchmage,
 		finishTalkingToArchmage, goUpToTraibornBasement, goUpToTraiborn, talktoTrailborn1,
 		talkToFelix, talkToTamara, talkToCordelia, talktoTrailborn2, goDownToArchmageFloorOne, goDownToArchmage2,
-		talktoArchmage2, performIncantation;
+		talktoArchmage2, performIncantation, enterWizardBasement, enterPortal, templeCutscene1,
+		talkToFelix2, talkToTamara2, talkToCordelia2, talkToPersten3, templeCutscene2, debrief, guardiansTutorial,
+		templeCutscene3, finishQuest;
 
 	ObjectStep touchRunes;
 
 	//Zones
-	Zone abyss, wizardBasement, wizardFloorOne;
+	Zone abyss, wizardBasement, wizardFloorOne, templeOfTheEye, templeOfTheEye2;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -221,6 +274,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		steps.put(30, talkToDarkMage1);
 		steps.put(35, touchRunes);
 		steps.put(40, talkToDarkMage2);
+
 		steps.put(45, talkToPersten2);
 		steps.put(50, talkToPersten2);
 		steps.put(55, talkToPersten2);
@@ -240,10 +294,10 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		steps.put(70, goTalkToTraiborn);
 
-		ConditionalStep solveTraibornsPuzzle = new ConditionalStep(this, talkToFelix);
-		solveTraibornsPuzzle.addStep(new Conditions(apprenticeFelixPuzzle), talkToFelix);
-		solveTraibornsPuzzle.addStep(new Conditions(apprenticeTamaraPuzzle), talkToTamara);
-		solveTraibornsPuzzle.addStep(new Conditions(apprenticeCordeliaPuzzle), talkToCordelia);
+		ConditionalStep solveTraibornsPuzzle = new ConditionalStep(this, goUpToTraiborn);
+		solveTraibornsPuzzle.addStep(new Conditions(inWizardFloorOne, apprenticeFelixPuzzle), talkToFelix);
+		solveTraibornsPuzzle.addStep(new Conditions(inWizardFloorOne, apprenticeTamaraPuzzle), talkToTamara);
+		solveTraibornsPuzzle.addStep(new Conditions(inWizardFloorOne, apprenticeCordeliaPuzzle), talkToCordelia);
 
 		steps.put(75, solveTraibornsPuzzle);
 
@@ -259,6 +313,46 @@ public class TempleOfTheEye extends BasicQuestHelper
 		goBeginIncantation.addStep(inWizardBasement, performIncantation);
 
 		steps.put(90, goBeginIncantation);
+
+		steps.put(95, templeCutscene1);
+
+		ConditionalStep investigateTemple = new ConditionalStep(this, enterWizardBasement);
+		investigateTemple.addStep(inWizardBasement, enterPortal);
+		investigateTemple.addStep(new Conditions(inTempleOfTheEye, felixRiftTalk), talkToFelix2);
+		investigateTemple.addStep(new Conditions(inTempleOfTheEye, tamaraRiftTalk), talkToTamara2);
+		investigateTemple.addStep(new Conditions(inTempleOfTheEye, cordeliaRiftTalk), talkToCordelia2);
+
+		steps.put(100, investigateTemple);
+
+		ConditionalStep goTalkToPerstenTemple = new ConditionalStep(this, enterWizardBasement);
+		goTalkToPerstenTemple.addStep(inWizardBasement, enterPortal);
+		goTalkToPerstenTemple.addStep(inTempleOfTheEye, talkToPersten3);
+		goTalkToPerstenTemple.addStep(mysteriousVision, templeCutscene2);
+
+		steps.put(105, goTalkToPerstenTemple);
+
+		ConditionalStep debriefAfterVision = new ConditionalStep(this, enterWizardBasement);
+		debriefAfterVision.addStep(inWizardBasement, enterPortal);
+		debriefAfterVision.addStep(inTempleOfTheEye, debrief);
+
+		steps.put(110, debriefAfterVision);
+
+		ConditionalStep doGuardiansTutorial = new ConditionalStep(this, enterWizardBasement);
+		doGuardiansTutorial.addStep(inWizardBasement, enterPortal);
+		doGuardiansTutorial.addStep(inTempleOfTheEye2, guardiansTutorial);
+
+		steps.put(115, doGuardiansTutorial);	// At this stage, the player is handheld by in-game tutorial.
+
+		ConditionalStep finishGuardiansTutorial = new ConditionalStep(this, enterWizardBasement);
+		finishGuardiansTutorial.addStep(inWizardBasement, enterPortal);
+		finishGuardiansTutorial.addStep(inTempleOfTheEye2, templeCutscene3);
+
+		steps.put(120, finishGuardiansTutorial);
+
+		ConditionalStep doFinishQuest = new ConditionalStep(this, enterWizardBasement);
+		doFinishQuest.addStep(inWizardBasement, finishQuest);
+
+		steps.put(125, doFinishQuest);
 
 		return steps;
 	}
@@ -286,6 +380,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 		inAbyss = new ZoneRequirement(abyss);
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 		inWizardFloorOne = new ZoneRequirement(wizardFloorOne);
+		inTempleOfTheEye = new ZoneRequirement(templeOfTheEye);
+		inTempleOfTheEye2 = new ZoneRequirement(templeOfTheEye2);
 
 		teleportedFromVarrock = new VarbitRequirement(13740, 1);
 		teleportedFromPersten = new VarbitRequirement(13753, 0);
@@ -293,6 +389,12 @@ public class TempleOfTheEye extends BasicQuestHelper
 		apprenticeFelixPuzzle = new VarbitRequirement(13743, 0);
 		apprenticeTamaraPuzzle = new VarbitRequirement(13742, 0);
 		apprenticeCordeliaPuzzle = new VarbitRequirement(13744, 0);
+
+		felixRiftTalk = new VarbitRequirement(13755, 0);
+		tamaraRiftTalk = new VarbitRequirement(13754, 0);
+		cordeliaRiftTalk = new VarbitRequirement(13756, 0);
+
+		mysteriousVision = new VarbitRequirement(12139, 1);
 	}
 
 	public void setupZones()
@@ -300,6 +402,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 		abyss = new Zone(new WorldPoint(3010, 4803, 0), new WorldPoint(3070, 4862, 0));
 		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
 		wizardFloorOne = new Zone(new WorldPoint(3101, 3153, 1), new WorldPoint(3116, 3167, 1));
+		templeOfTheEye = new Zone(new WorldPoint(2370, 5627, 0), new WorldPoint(2425, 5682, 0));
+		templeOfTheEye2 = new Zone(new WorldPoint(2433, 5698, 0), new WorldPoint(3648, 9523, 0));
 	}
 
 	public void setupSteps()
@@ -312,6 +416,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 		talkToPersten1b = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.");
 
+		talkToPersten1.addSubSteps(talkToPersten1b);
+
 		talkToMage1 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
 			"Talk to Mage of Zamorak in the Varrock chaos temple.",
 			eyeAmulet);
@@ -322,7 +428,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		getTeaForMage.addDialogStep("Could I have a strong cup of tea?");
 
 		talkToMage2 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
-			"Talk to Mage of Zamorak in the Varrock chaos temple.",
+			"Give the strong tea to the Mage of Zamorak in the Varrock chaos temple.",
 			strongTea);
 		talkToMage2.addDialogStep("Could you help me with that amulet now?");
 		talkToMage2.addDialogStep("Yes.");
@@ -365,6 +471,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 			"Finish listening to Sedridor.");
 		finishTalkingToArchmage.addDialogStep("I need your help with an incantation.");
 
+		talktoArchmage.addSubSteps(teleportToArchmage, goDownToArchmage, finishTalkingToArchmage);
+
 		goUpToTraibornBasement = new ObjectStep(this, ObjectID.LADDER_2148, new WorldPoint(3103, 9576, 0),
 			"Speak to Wizard Traiborn on the Wizard's Tower 1st floor.");
 
@@ -374,6 +482,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 		talktoTrailborn1 = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 1),
 			"Speak to Wizard Traiborn on the Wizard's Tower 1st floor.");
 		talktoTrailborn1.addDialogStep("I need your apprentices to help with an incantation.");
+
+		talktoTrailborn1.addSubSteps(goUpToTraibornBasement, goUpToTraiborn);
 
 		talkToFelix = new NpcStep(this, NpcID.APPRENTICE_FELIX_11446, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Felix.");
@@ -395,11 +505,41 @@ public class TempleOfTheEye extends BasicQuestHelper
 		talktoArchmage2 = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
 			"Speak to Archmage Sedridor in the Wizard's Tower basement.");
 
+		talktoArchmage2.addSubSteps(goDownToArchmageFloorOne, goDownToArchmage2);
+
 		performIncantation = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
 			"Speak to Archmage Sedridor to begin the incantation.");
 		performIncantation.addDialogStep("Let's do it.");
 		performIncantation.addDialogStep("So we're ready to perform the incantation?");
 
+		enterWizardBasement = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+			"Go to the Wizard's Tower basement.");
+
+		enterPortal = new ObjectStep(this, ObjectID.PORTAL_43765, new WorldPoint(3104, 9574, 0),
+			"Enter the portal to the Temple of the Eye.");
+
+		templeCutscene1 = new DetailedQuestStep(this, "Enter the Temple of the Eye.");
+
+		talkToFelix2 = new NpcStep(this, NpcID.APPRENTICE_FELIX_11448, new WorldPoint(2401, 5643, 0),
+			"Talk to Apprentice Felix.");
+		talkToTamara2 = new NpcStep(this, NpcID.APPRENTICE_TAMARA_11442, new WorldPoint(2385, 5659, 0),
+			"Talk to Apprentice Tamara.");
+		talkToCordelia2 = new NpcStep(this, NpcID.APPRENTICE_CORDELIA_11445, new WorldPoint(2397, 5677, 0),
+			"Talk to Apprentice Cordelia.");
+
+		talkToPersten3 = new NpcStep(this, NpcID.WIZARD_PERSTEN_11439, new WorldPoint(2400, 5667, 0),
+			"Speak with Wizard Persten.");
+
+		templeCutscene2 = new DetailedQuestStep(this, "Experience the vision.");
+		debrief = new DetailedQuestStep(this, "Debrief with Wizard Persten and the apprentices.");
+		guardiansTutorial = new DetailedQuestStep(this, "Complete the Guardians of the Rift tutorial.", pickaxe, chisel);
+
+		templeCutscene3 = new DetailedQuestStep(this, "Listen to the Great Guardian.");
+
+		guardiansTutorial.addSubSteps(templeCutscene3);
+
+		finishQuest = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+			"Speak to Archmage Sedridor in the Wizard's Tower basement to finish the quest.");
 
 	}
 
@@ -449,11 +589,13 @@ public class TempleOfTheEye extends BasicQuestHelper
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		// TODO rewrite
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", talkToPersten1, talkToPersten1b));
-		allSteps.add(new PanelDetails("An Eye for a Favour", Arrays.asList(talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1, touchRunes, talkToDarkMage2), bucketOfWater, eyeAmulet));
-		allSteps.add(new PanelDetails("Help from Some Wizards", Arrays.asList(talkToPersten2), abyssalIncantation, eyeAmulet));//, talktoArchmage, talktoTrailborn1, talktoApprentices, talktoTrailborn2, talktoArchmage2)));
+		allSteps.add(new PanelDetails("An Eye for a Favour", Arrays.asList(talkToPersten1, talkToPersten1b), Collections.emptyList(), Arrays.asList(varrock)));
+		allSteps.add(new PanelDetails("Herbert and the Dark Mage", Arrays.asList(talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1, touchRunes, talkToDarkMage2), Arrays.asList(bucketOfWater, eyeAmulet), Arrays.asList(alkharid)));
+		allSteps.add(new PanelDetails("Help from Some Wizards", Arrays.asList(talkToPersten2, talktoArchmage, talktoTrailborn1, talkToFelix, talkToTamara, talkToCordelia, talktoTrailborn2), abyssalIncantation));
+		allSteps.add(new PanelDetails("Enter the Gate", Arrays.asList(talktoArchmage2, performIncantation, templeCutscene1, talkToFelix2, talkToTamara2, talkToCordelia2, talkToPersten3, templeCutscene2, debrief)));
+		allSteps.add(new PanelDetails("Guardians of the Rift", Arrays.asList(guardiansTutorial, finishQuest), pickaxe, chisel));
+
 		return allSteps;
 	}
 }

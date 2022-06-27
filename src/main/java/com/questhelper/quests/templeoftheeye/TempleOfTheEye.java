@@ -37,6 +37,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -110,10 +111,10 @@ public class TempleOfTheEye extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement varrock, alkharid;
 
-	Requirement inAbyss;
+	Requirement inAbyss, teleportedFromVarrock;
 
 	QuestStep talkToPersten1, talkToPersten1b, talkToMage1, getTeaForMage, talkToMage2, talkToDarkMage1,
-		talkToDarkMage2, talkToPersten2, talktoArchmage, talktoTrailborn1,
+		talkToMageInWildy, talkToDarkMage2, talkToPersten2, talktoArchmage, talktoTrailborn1,
 		talktoApprentices, talktoTrailborn2, talktoArchmage2;
 
 	ObjectStep touchRunes;
@@ -142,8 +143,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		ConditionalStep teleportAbyss = new ConditionalStep(this, talkToMage2);
 		teleportAbyss.addStep(inAbyss, talkToDarkMage1);
-		// If varbit 13740 checked and player is not in abyss, there should be a direction to teleport to abyss via
-		// ordinary means (Herbert in wildy)
+		teleportAbyss.addStep(teleportedFromVarrock, talkToMageInWildy);
 
 		steps.put(25, teleportAbyss);
 		steps.put(35, touchRunes);
@@ -174,6 +174,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inAbyss = new ZoneRequirement(abyss);
+
+		teleportedFromVarrock = new VarbitRequirement(13740, 1);
 	}
 
 	public void setupZones()
@@ -207,6 +209,10 @@ public class TempleOfTheEye extends BasicQuestHelper
 		talkToDarkMage1 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
 			"Talk to Dark Mage in the Abyss");
 		talkToDarkMage1.addDialogStep("I need your help with an amulet.");
+
+		talkToMageInWildy = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3102, 3557, 0), "Talk to the Mage" +
+			" of Zamorak in the Wilderness north of Edgeville. BRING NOTHING BUT QUEST ITEMS AS YOU CAN BE KILLED BY OTHER PLAYERS HERE.");
+		talkToMageInWildy.addDialogStep("Could you teleport me to the Abyss?");
 
 		touchRunes = new ObjectStep(this, 43768,
 			"Interact with the runic energy (pattern is different for everyone). Click each rune type until all" +

@@ -97,6 +97,19 @@ Talking to Herbert again doesn't highlight the correct option to teleport to the
 Teleported to Abyss
 13740: 0 -> 1
 
+Bucket of water thrown on Dark Mage (Quest helper closed)
+13738: 25 -> 30
+
+Orbs appear:
+13838: 30 -> 35
+13747: 0 -> 1
+13748: 0 -> 1
+13749: 0 -> 1
+13750: 0 -> 1
+13751: 0 -> 1
+13752: 0 -> 1
+
+
 
  */
 
@@ -146,6 +159,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		teleportAbyss.addStep(teleportedFromVarrock, talkToMageInWildy);
 
 		steps.put(25, teleportAbyss);
+		steps.put(30, talkToDarkMage1);
 		steps.put(35, touchRunes);
 		steps.put(40, talkToDarkMage2);
 		steps.put(45, talkToPersten2);
@@ -218,8 +232,11 @@ public class TempleOfTheEye extends BasicQuestHelper
 			"Interact with the runic energy (pattern is different for everyone). Click each rune type until all" +
 				" turn white.");
 		touchRunes.addAlternateObjects(43769, 43770, 43771, 43772, 43773);
+		touchRunes.setHideWorldArrow(true);
+
 		talkToDarkMage2 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
 			"Talk to Dark Mage in the Abyss");
+
 		talkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate");
 		talkToPersten2.addDialogStep("Yes.");

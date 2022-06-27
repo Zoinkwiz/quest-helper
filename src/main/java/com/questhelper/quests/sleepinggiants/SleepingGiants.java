@@ -25,7 +25,6 @@
  */
 package com.questhelper.quests.sleepinggiants;
 
-import com.jogamp.opengl.GLProfile;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;

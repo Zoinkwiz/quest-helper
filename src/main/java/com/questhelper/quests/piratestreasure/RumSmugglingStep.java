@@ -28,7 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

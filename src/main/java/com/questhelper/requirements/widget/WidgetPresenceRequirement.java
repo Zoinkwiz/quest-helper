@@ -24,8 +24,9 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.requirements;
+package com.questhelper.requirements.widget;
 
+import com.questhelper.requirements.SimpleRequirement;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;

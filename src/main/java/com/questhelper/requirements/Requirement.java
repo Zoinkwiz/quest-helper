@@ -100,7 +100,7 @@ public interface Requirement
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
-		if (shouldDisplayText(client))
+		if (!shouldDisplayText(client))
 		{
 			return lines;
 		}

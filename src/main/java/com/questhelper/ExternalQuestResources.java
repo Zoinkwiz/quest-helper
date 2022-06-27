@@ -149,6 +149,7 @@ public enum ExternalQuestResources {
 	A_SOULS_BANE("https://oldschool.runescape.wiki/w/A_Soul%27s_Bane"),
 	SPIRITS_OF_THE_ELID("https://oldschool.runescape.wiki/w/Spirits_of_the_Elid"),
 	SWAN_SONG("https://oldschool.runescape.wiki/w/Swan_Song"),
+	SLEEPING_GIANTS("https://oldschool.runescape.wiki/w/Sleeping_Giants"),
 	TAI_BWO_WANNAI_TRIO("https://oldschool.runescape.wiki/w/Tai_Bwo_Wannai_Trio"),
 	A_TAIL_OF_TWO_CATS("https://oldschool.runescape.wiki/w/A_Tail_of_Two_Cats"),
 	TALE_OF_THE_RIGHTEOUS("https://oldschool.runescape.wiki/w/Tale_of_the_Righteous"),

@@ -24,7 +24,7 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.requirements;
+package com.questhelper.requirements.widget;
 
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;

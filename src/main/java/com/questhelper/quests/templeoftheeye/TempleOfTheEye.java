@@ -70,6 +70,7 @@ VARBITS
 13742: Apprentice Tamara puzzle
 13743: Apprentice Felix puzzle
 13744: Apprentice Cordelia puzzle
+13745: Quest offered
 13747 - 13752: Energy orbs
 13753: One-time Wizard's Tower teleport
 13759: Guardians of the Rift Tutorial progress
@@ -125,6 +126,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		ConditionalStep teleportAbyss = new ConditionalStep(this, talkToMageInWildy);
 		teleportAbyss.addStep(inAbyss, talkToDarkMage1);
 		teleportAbyss.addStep(canTeleportFromHerbert, teleportViaHerbert);
+		teleportAbyss.addRequirement(bucketOfWater);
 		steps.put(25, teleportAbyss);
 
 		ConditionalStep goTalkToDarkMage1 = new ConditionalStep(this, talkToMageInWildy);
@@ -216,7 +218,6 @@ public class TempleOfTheEye extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
-		bucketOfWater.setHighlightInInventory(true);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.canBeObtainedDuringQuest();
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes());
@@ -227,7 +228,10 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		strongTea = new ItemRequirement("Strong Cup of Tea", ItemID.STRONG_CUP_OF_TEA);
 		eyeAmulet = new ItemRequirement("Eye Amulet", ItemID.EYE_AMULET);
+		eyeAmulet.setTooltip("You can get another from Wizard Persten if you lost it");
 		abyssalIncantation = new ItemRequirement("Abyssal Incantation", ItemID.ABYSSAL_INCANTATION);
+		abyssalIncantation.setTooltip("You can get another from the Dark Mage in the Abyss if you lost it. If already" +
+			"shown to Wizard Persten, you can get another from her instead");
 
 	}
 
@@ -285,22 +289,24 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		talkToMage2 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
 			"Give the strong tea to the Mage of Zamorak in the Varrock chaos temple.",
-			strongTea);
+			strongTea, eyeAmulet);
 		talkToMage2.addDialogStep("Could you help me with that amulet now?");
 		talkToMage2.addDialogStep("Yes.");
 
 		finishTalkToMage2 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
-			"Talk to Mage of Zamorak in the Varrock chaos temple.");
+			"Talk to Mage of Zamorak in the Varrock chaos temple.",
+			eyeAmulet);
+		talkToMage2.addDialogStep("Could you help me with that amulet now?");
 
 		talkToMage2.addSubSteps(finishTalkToMage2);
 
 		teleportViaHerbert = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
 			"Ask the Mage of Zamorak in Varrock to teleport you to the Abyss (this can only be used once).",
-			strongTea);
+			eyeAmulet);
 		teleportViaHerbert.addDialogStep("Could you help me with that amulet now?");
 		teleportViaHerbert.addDialogStep("Yes.");
 
-		talkToMageInWildy = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3102, 3557, 0),
+		talkToMageInWildy = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3102, 3557, 0),
 			"Return to the Abyss by talking to the Mage of Zamorak in the Wilderness north of Edgeville. " +
 				"BRING NOTHING BUT QUEST ITEMS AS YOU CAN BE KILLED BY OTHER PLAYERS HERE.",
 			eyeAmulet);
@@ -308,29 +314,33 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		talkToDarkMage1 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
 			"Talk to Dark Mage in the Abyss.",
-			eyeAmulet, bucketOfWater);
+			eyeAmulet);
 		talkToDarkMage1.addDialogStep("I need your help with an amulet.");
 
 		finishTalkToDarkMage1 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
-			"Talk to Dark Mage in the Abyss.");
+			"Talk to Dark Mage in the Abyss.",
+			eyeAmulet);
 
 		talkToDarkMage1.addSubSteps(talkToMageInWildy, teleportViaHerbert, finishTalkToDarkMage1);
 
 		touchRunes = new ObjectStep(this, 43768,
 			"Interact with the runic energy (pattern is different for everyone). Click each rune type until all" +
-				" turn white.");
+				" turn white.",
+			eyeAmulet);
 		touchRunes.addAlternateObjects(43769, 43770, 43771, 43772, 43773);
 		touchRunes.setHideWorldArrow(true);
 
 		talkToDarkMage2 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
-			"Talk to Dark Mage in the Abyss.");
+			"Talk to Dark Mage in the Abyss.",
+			eyeAmulet);
 
 		talkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.",
-			abyssalIncantation);
+			eyeAmulet, abyssalIncantation);
 
 		finishTalkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
-			"Talk to Wizard Persten east of the Al Kharid gate.");
+			"Talk to Wizard Persten east of the Al Kharid gate.",
+			eyeAmulet, abyssalIncantation);
 
 		talkToPersten2.addSubSteps(finishTalkToPersten2);
 

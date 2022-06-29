@@ -168,6 +168,7 @@ public enum QuestHelperQuest
 	SHADOW_OF_THE_STORM(422, "Shadow of the Storm", QuestVarbits.QUEST_SHADOW_OF_THE_STORM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	SHEEP_HERDER(423, "Sheep Herder", QuestVarPlayer.QUEST_SHEEP_HERDER, Quest.Type.P2P, Quest.Difficulty.NOVICE),
 	SHILO_VILLAGE(424, "Shilo Village", QuestVarPlayer.QUEST_SHILO_VILLAGE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
+	SLEEPING_GIANTS(4290, "Sleeping Giants", QuestVarbits.QUEST_SLEEPING_GIANTS, Quest.Type.P2P, Quest.Difficulty.NOVICE),
 	THE_SLUG_MENACE(425, "The Slug Menace", QuestVarbits.QUEST_THE_SLUG_MENACE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
 	A_SOULS_BANE(426, "A Soul's Bane", QuestVarbits.QUEST_A_SOULS_BANE, Quest.Type.P2P, Quest.Difficulty.NOVICE),
 	SPIRITS_OF_THE_ELID(427, "Spirits of the Elid", QuestVarbits.QUEST_SPIRITS_OF_THE_ELID, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),

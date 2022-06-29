@@ -66,6 +66,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.vars.AccountType;
+import net.runelite.client.game.FishingSpot;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ARDOUGNE_MEDIUM
@@ -227,7 +228,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		grapYan = new ObjectStep(this, ObjectID.WALL_17047, new WorldPoint(2556, 3072, 0),
 			"Grapple up Yanille's south wall.", crossbow.equipped(), mithGrap);
 		grapYan2 = new ObjectStep(this, ObjectID.WALL_17048, new WorldPoint(2556, 3075, 1),
-			"Jump off!");
+			"Jump off the opposite side!");
 
 		if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN)// will need testing to confirm this works
 		{
@@ -263,7 +264,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		moveToPlatform = new NpcStep(this, NpcID.JEB, new WorldPoint(2719, 3305, 0),
 				"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
 		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGART_7789);
-		fishOnPlatform = new NpcStep(this, NpcID.FISHING_SPOT_1514, new WorldPoint(2790, 3276, 0),
+		fishOnPlatform = new NpcStep(this, FishingSpot.SHRIMP.getIds(), new WorldPoint(2790, 3276, 0),
 			"Catch any fish on the Fishing Platform.", smallFishingNet);
 
 		pickMasterFarmer = new NpcStep(this, NpcID.MASTER_FARMER, new WorldPoint(2637, 3362, 0),

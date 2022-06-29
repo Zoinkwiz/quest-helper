@@ -36,7 +36,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -800,7 +800,9 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle5Pillar6 = new ObjectStep(this, NullObjectID.NULL_9960, new WorldPoint(1915, 4613, 1), "Put a blue crystal in the pillar in the blue room.", blueCrystal);
 		puzzle5Pillar6.addIcon(ItemID.BLUE_CRYSTAL);
 
-		puzzle5Pillar5RemoveMirror = new ObjectStep(this, NullObjectID.NULL_9959, new WorldPoint(1898, 4613, 1), "Remove the mirror from the pillar in the south of the first floor.");
+		puzzle5Pillar5RemoveMirror = new ObjectStep(this, NullObjectID.NULL_9959, new WorldPoint(1898, 4613, 1),
+			"REMOVE the mirror from the pillar in the south of the first floor.");
+		puzzle5Pillar5RemoveMirror.addIcon(ItemID.HEALER_ICON);
 		puzzle5Pillar3RotateUp = new ObjectStep(this, NullObjectID.NULL_9954, new WorldPoint(1898, 4650, 1), "Have " +
 			"the mirror in the pillar north west of the dispenser point up.", mirror);
 		puzzle5Pillar3RotateUp.addIcon(ItemID.HAND_MIRROR);

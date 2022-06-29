@@ -357,7 +357,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new UnlockReward("Access to the Evil Chickens Lair"),
-				new UnlockReward("Further acces to the Culinaromancer's Chest"));
+				new UnlockReward("Further access to the Culinaromancer's Chest"));
 	}
 
 	@Override
@@ -372,7 +372,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		allSteps.add(tokenAndEggPanel);
 		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture,
 			useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze),
-			bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token));
+			bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token, iceGloves));
 
 		return allSteps;
 	}

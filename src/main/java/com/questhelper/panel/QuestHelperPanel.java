@@ -28,7 +28,7 @@ import com.questhelper.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.questhelpers.Quest;
+import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.BorderLayout;
@@ -289,7 +289,7 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel filtersPanel = makeDropdownPanel(filterDropdown, "Filters");
 		filtersPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 
-		difficultyDropdown = makeNewDropdown(Quest.Difficulty.values(), "questDifficulty");
+		difficultyDropdown = makeNewDropdown(QuestDetails.Difficulty.values(), "questDifficulty");
 		JPanel difficultyPanel = makeDropdownPanel(difficultyDropdown, "Difficulty");
 		difficultyPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 

@@ -24,336 +24,333 @@
  */
 package com.questhelper;
 
-import com.questhelper.questhelpers.Quest;
+import com.questhelper.questhelpers.QuestDetails;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.QuestState;
-import net.runelite.api.ScriptID;
-import net.runelite.api.Skill;
+import net.runelite.api.*;
 
 public enum QuestHelperQuest
 {
 	//Free Quests
-	BELOW_ICE_MOUNTAIN(2874, "Below Ice Mountain", QuestVarbits.QUEST_BELOW_ICE_MOUNTAIN, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	BLACK_KNIGHTS_FORTRESS(299, "Black Knights' Fortress", QuestVarPlayer.QUEST_BLACK_KNIGHTS_FORTRESS, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	COOKS_ASSISTANT(300, "Cook's Assistant", QuestVarPlayer.QUEST_COOKS_ASSISTANT, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	THE_CORSAIR_CURSE(301, "The Corsair Curse", QuestVarbits.QUEST_THE_CORSAIR_CURSE, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	DEMON_SLAYER(302, "Demon Slayer", QuestVarbits.QUEST_DEMON_SLAYER, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	DORICS_QUEST(3138, "Doric's Quest", QuestVarPlayer.QUEST_DORICS_QUEST, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	DRAGON_SLAYER_I(3139, "Dragon Slayer I", QuestVarPlayer.QUEST_DRAGON_SLAYER_I, Quest.Type.F2P, Quest.Difficulty.EXPERIENCED),
-	ERNEST_THE_CHICKEN(305, "Ernest the Chicken", QuestVarPlayer.QUEST_ERNEST_THE_CHICKEN, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	GOBLIN_DIPLOMACY(306, "Goblin Diplomacy", QuestVarbits.QUEST_GOBLIN_DIPLOMACY, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	IMP_CATCHER(307, "Imp Catcher", QuestVarPlayer.QUEST_IMP_CATCHER, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	THE_KNIGHTS_SWORD(308, "The Knight's Sword", QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD, Quest.Type.F2P, Quest.Difficulty.INTERMEDIATE),
-	MISTHALIN_MYSTERY(309, "Misthalin Mystery", QuestVarbits.QUEST_MISTHALIN_MYSTERY, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	PIRATES_TREASURE(310, "Pirate's Treasure", QuestVarPlayer.QUEST_PIRATES_TREASURE, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	PRINCE_ALI_RESCUE(311, "Prince Ali Rescue", QuestVarPlayer.QUEST_PRINCE_ALI_RESCUE, Quest.Type.F2P, Quest.Difficulty.INTERMEDIATE),
-	THE_RESTLESS_GHOST(312, "The Restless Ghost", QuestVarPlayer.QUEST_THE_RESTLESS_GHOST, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	ROMEO__JULIET(313, "Romeo & Juliet", QuestVarPlayer.QUEST_ROMEO_AND_JULIET, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	RUNE_MYSTERIES(314, "Rune Mysteries", QuestVarPlayer.QUEST_RUNE_MYSTERIES, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	SHEEP_SHEARER(315, "Sheep Shearer", QuestVarPlayer.QUEST_SHEEP_SHEARER, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	SHIELD_OF_ARRAV_PHOENIX_GANG(316, "Shield of Arrav - Phoenix Gang", QuestVarPlayer.QUEST_SHIELD_OF_ARRAV, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	SHIELD_OF_ARRAV_BLACK_ARM_GANG(316, "Shield of Arrav - Black Arm Gang", QuestVarPlayer.QUEST_SHIELD_OF_ARRAV_STATE_146, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	VAMPYRE_SLAYER(1278, "Vampyre Slayer", QuestVarPlayer.QUEST_VAMPYRE_SLAYER, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	WITCHS_POTION(318, "Witch's Potion", QuestVarPlayer.QUEST_WITCHS_POTION, Quest.Type.F2P, Quest.Difficulty.NOVICE),
-	X_MARKS_THE_SPOT(3155, "X Marks the Spot", QuestVarbits.QUEST_X_MARKS_THE_SPOT, Quest.Type.F2P, Quest.Difficulty.NOVICE),
+	BELOW_ICE_MOUNTAIN(Quest.BELOW_ICE_MOUNTAIN, QuestVarbits.QUEST_BELOW_ICE_MOUNTAIN, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	BLACK_KNIGHTS_FORTRESS(Quest.BLACK_KNIGHTS_FORTRESS, QuestVarPlayer.QUEST_BLACK_KNIGHTS_FORTRESS, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	COOKS_ASSISTANT(Quest.COOKS_ASSISTANT, QuestVarPlayer.QUEST_COOKS_ASSISTANT, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	THE_CORSAIR_CURSE(Quest.THE_CORSAIR_CURSE, QuestVarbits.QUEST_THE_CORSAIR_CURSE, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	DEMON_SLAYER(Quest.DEMON_SLAYER, QuestVarbits.QUEST_DEMON_SLAYER, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	DORICS_QUEST(Quest.DORICS_QUEST, QuestVarPlayer.QUEST_DORICS_QUEST, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	DRAGON_SLAYER_I(Quest.DRAGON_SLAYER_I, QuestVarPlayer.QUEST_DRAGON_SLAYER_I, QuestDetails.Type.F2P, QuestDetails.Difficulty.EXPERIENCED),
+	ERNEST_THE_CHICKEN(Quest.ERNEST_THE_CHICKEN, QuestVarPlayer.QUEST_ERNEST_THE_CHICKEN, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	GOBLIN_DIPLOMACY(Quest.GOBLIN_DIPLOMACY, QuestVarbits.QUEST_GOBLIN_DIPLOMACY, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	IMP_CATCHER(Quest.IMP_CATCHER, QuestVarPlayer.QUEST_IMP_CATCHER, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	THE_KNIGHTS_SWORD(Quest.THE_KNIGHTS_SWORD, QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD, QuestDetails.Type.F2P, QuestDetails.Difficulty.INTERMEDIATE),
+	MISTHALIN_MYSTERY(Quest.MISTHALIN_MYSTERY, QuestVarbits.QUEST_MISTHALIN_MYSTERY, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	PIRATES_TREASURE(Quest.PIRATES_TREASURE, QuestVarPlayer.QUEST_PIRATES_TREASURE, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	PRINCE_ALI_RESCUE(Quest.PRINCE_ALI_RESCUE, QuestVarPlayer.QUEST_PRINCE_ALI_RESCUE, QuestDetails.Type.F2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_RESTLESS_GHOST(Quest.THE_RESTLESS_GHOST, QuestVarPlayer.QUEST_THE_RESTLESS_GHOST, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	ROMEO__JULIET(Quest.ROMEO__JULIET, QuestVarPlayer.QUEST_ROMEO_AND_JULIET, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	RUNE_MYSTERIES(Quest.RUNE_MYSTERIES, QuestVarPlayer.QUEST_RUNE_MYSTERIES, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	SHEEP_SHEARER(Quest.SHEEP_SHEARER, QuestVarPlayer.QUEST_SHEEP_SHEARER, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	SHIELD_OF_ARRAV_PHOENIX_GANG(Quest.SHIELD_OF_ARRAV.getId(), "Shield of Arrav - Phoenix Gang", QuestVarPlayer.QUEST_SHIELD_OF_ARRAV, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	SHIELD_OF_ARRAV_BLACK_ARM_GANG(Quest.SHIELD_OF_ARRAV.getId(), "Shield of Arrav - Black Arm Gang", QuestVarPlayer.QUEST_SHIELD_OF_ARRAV_STATE_146, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	VAMPYRE_SLAYER(Quest.VAMPYRE_SLAYER, QuestVarPlayer.QUEST_VAMPYRE_SLAYER, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	WITCHS_POTION(Quest.WITCHS_POTION, QuestVarPlayer.QUEST_WITCHS_POTION, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	X_MARKS_THE_SPOT(Quest.X_MARKS_THE_SPOT, QuestVarbits.QUEST_X_MARKS_THE_SPOT, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
 
 	//Members' Quests
-	ANIMAL_MAGNETISM(331, "Animal Magnetism", QuestVarbits.QUEST_ANIMAL_MAGNETISM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	ANOTHER_SLICE_OF_HAM(332, "Another Slice of H.A.M.", QuestVarbits.QUEST_ANOTHER_SLICE_OF_HAM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	BENEATH_CURSED_SANDS(4287, "Beneath Cursed Sands", QuestVarbits.QUEST_BENEATH_CURSED_SANDS, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	BETWEEN_A_ROCK(333, "Between a Rock...", QuestVarbits.QUEST_BETWEEN_A_ROCK, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	BIG_CHOMPY_BIRD_HUNTING(334, "Big Chompy Bird Hunting", QuestVarPlayer.QUEST_BIG_CHOMPY_BIRD_HUNTING, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	BIOHAZARD(335, "Biohazard", QuestVarPlayer.QUEST_BIOHAZARD, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	CABIN_FEVER(336, "Cabin Fever", QuestVarPlayer.QUEST_CABIN_FEVER, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	CLOCK_TOWER(337, "Clock Tower", QuestVarPlayer.QUEST_CLOCK_TOWER, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	COLD_WAR(338, "Cold War", QuestVarbits.QUEST_COLD_WAR, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	CONTACT(339, "Contact!", QuestVarbits.QUEST_CONTACT, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	CREATURE_OF_FENKENSTRAIN(340, "Creature of Fenkenstrain", QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	DARKNESS_OF_HALLOWVALE(341, "Darkness of Hallowvale", QuestVarbits.QUEST_DARKNESS_OF_HALLOWVALE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	DEATH_PLATEAU(342, "Death Plateau", QuestVarPlayer.QUEST_DEATH_PLATEAU, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	DEATH_TO_THE_DORGESHUUN(343, "Death to the Dorgeshuun", QuestVarbits.QUEST_DEATH_TO_THE_DORGESHUUN, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_DEPTHS_OF_DESPAIR(344, "The Depths of Despair", QuestVarbits.QUEST_THE_DEPTHS_OF_DESPAIR, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	DESERT_TREASURE(345, "Desert Treasure", QuestVarbits.QUEST_DESERT_TREASURE, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	DEVIOUS_MINDS(346, "Devious Minds", QuestVarbits.QUEST_DEVIOUS_MINDS, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	THE_DIG_SITE(347, "The Dig Site", QuestVarPlayer.QUEST_THE_DIG_SITE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	DRAGON_SLAYER_II(348, "Dragon Slayer II", QuestVarbits.QUEST_DRAGON_SLAYER_II, Quest.Type.P2P, Quest.Difficulty.GRANDMASTER),
-	DREAM_MENTOR(349, "Dream Mentor", QuestVarbits.QUEST_DREAM_MENTOR, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	DRUIDIC_RITUAL(350, "Druidic Ritual", QuestVarPlayer.QUEST_DRUIDIC_RITUAL, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	DWARF_CANNON(351, "Dwarf Cannon", QuestVarPlayer.QUEST_DWARF_CANNON, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	EADGARS_RUSE(352, "Eadgar's Ruse", QuestVarPlayer.QUEST_EADGARS_RUSE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	EAGLES_PEAK(353, "Eagles' Peak", QuestVarbits.QUEST_EAGLES_PEAK, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	ELEMENTAL_WORKSHOP_I(354, "Elemental Workshop I", QuestVarPlayer.QUEST_ELEMENTAL_WORKSHOP_I, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	ELEMENTAL_WORKSHOP_II(355, "Elemental Workshop II", QuestVarbits.QUEST_ELEMENTAL_WORKSHOP_II, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	ENAKHRAS_LAMENT(356, "Enakhra's Lament", QuestVarbits.QUEST_ENAKHRAS_LAMENT, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	ENLIGHTENED_JOURNEY(357, "Enlightened Journey", QuestVarbits.QUEST_ENLIGHTENED_JOURNEY, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_EYES_OF_GLOUPHRIE(358, "The Eyes of Glouphrie", QuestVarbits.QUEST_THE_EYES_OF_GLOUPHRIE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	FAIRYTALE_I__GROWING_PAINS(359, "Fairytale I - Growing Pains", QuestVarbits.QUEST_FAIRYTALE_I_GROWING_PAINS, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	FAIRYTALE_II__CURE_A_QUEEN(360, "Fairytale II - Cure a Queen", QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	FAMILY_CREST(361, "Family Crest", QuestVarPlayer.QUEST_FAMILY_CREST, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	THE_FEUD(362, "The Feud", QuestVarbits.QUEST_THE_FEUD, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	FIGHT_ARENA(363, "Fight Arena", QuestVarPlayer.QUEST_FIGHT_ARENA, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	FISHING_CONTEST(364, "Fishing Contest", QuestVarPlayer.QUEST_FISHING_CONTEST, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	FORGETTABLE_TALE(365, "Forgettable Tale...", QuestVarbits.QUEST_FORGETTABLE_TALE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	BONE_VOYAGE(3135, "Bone Voyage", QuestVarbits.QUEST_BONE_VOYAGE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_FREMENNIK_ISLES(367, "The Fremennik Isles", QuestVarbits.QUEST_THE_FREMENNIK_ISLES, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	THE_FREMENNIK_TRIALS(368, "The Fremennik Trials", QuestVarPlayer.QUEST_THE_FREMENNIK_TRIALS, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	GARDEN_OF_TRANQUILLITY(369, "Garden of Tranquillity", QuestVarbits.QUEST_GARDEN_OF_TRANQUILLITY, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	GERTRUDES_CAT(370, "Gertrude's Cat", QuestVarPlayer.QUEST_GERTRUDES_CAT, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	GHOSTS_AHOY(371, "Ghosts Ahoy", QuestVarbits.QUEST_GHOSTS_AHOY, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_GIANT_DWARF(372, "The Giant Dwarf", QuestVarbits.QUEST_THE_GIANT_DWARF, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_GOLEM(373, "The Golem", QuestVarbits.QUEST_THE_GOLEM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_GRAND_TREE(374, "The Grand Tree", QuestVarPlayer.QUEST_THE_GRAND_TREE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	THE_GREAT_BRAIN_ROBBERY(375, "The Great Brain Robbery", QuestVarPlayer.QUEST_THE_GREAT_BRAIN_ROBBERY, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	GRIM_TALES(376, "Grim Tales", QuestVarbits.QUEST_GRIM_TALES, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	THE_HAND_IN_THE_SAND(377, "The Hand in the Sand", QuestVarbits.QUEST_THE_HAND_IN_THE_SAND, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	HAUNTED_MINE(378, "Haunted Mine", QuestVarPlayer.QUEST_HAUNTED_MINE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	HAZEEL_CULT(379, "Hazeel Cult", QuestVarPlayer.QUEST_HAZEEL_CULT, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	HEROES_QUEST(3142, "Heroes' Quest", QuestVarPlayer.QUEST_HEROES_QUEST, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	HOLY_GRAIL(381, "Holy Grail", QuestVarPlayer.QUEST_HOLY_GRAIL, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	HORROR_FROM_THE_DEEP(382, "Horror from the Deep", QuestVarbits.QUEST_HORROR_FROM_THE_DEEP, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	ICTHLARINS_LITTLE_HELPER(383, "Icthlarin's Little Helper", QuestVarbits.QUEST_ICTHLARINS_LITTLE_HELPER, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	IN_AID_OF_THE_MYREQUE(384, "In Aid of the Myreque", QuestVarbits.QUEST_IN_AID_OF_THE_MYREQUE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	IN_SEARCH_OF_THE_MYREQUE(385, "In Search of the Myreque", QuestVarPlayer.QUEST_IN_SEARCH_OF_THE_MYREQUE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	JUNGLE_POTION(386, "Jungle Potion", QuestVarPlayer.QUEST_JUNGLE_POTION, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	KINGS_RANSOM(387, "King's Ransom", QuestVarbits.QUEST_KINGS_RANSOM, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	LEGENDS_QUEST(3145, "Legends' Quest", QuestVarPlayer.QUEST_LEGENDS_QUEST, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	LOST_CITY(389, "Lost City", QuestVarPlayer.QUEST_LOST_CITY, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	THE_LOST_TRIBE(390, "The Lost Tribe", QuestVarbits.QUEST_THE_LOST_TRIBE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	LUNAR_DIPLOMACY(391, "Lunar Diplomacy", QuestVarbits.QUEST_LUNAR_DIPLOMACY, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	MAKING_FRIENDS_WITH_MY_ARM(392, "Making Friends with My Arm", QuestVarbits.QUEST_MAKING_FRIENDS_WITH_MY_ARM, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	MAKING_HISTORY(393, "Making History", QuestVarbits.QUEST_MAKING_HISTORY, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	MERLINS_CRYSTAL(394, "Merlin's Crystal", QuestVarPlayer.QUEST_MERLINS_CRYSTAL, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	MONKEY_MADNESS_I(395, "Monkey Madness I", QuestVarPlayer.QUEST_MONKEY_MADNESS_I, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	MONKEY_MADNESS_II(396, "Monkey Madness II", QuestVarbits.QUEST_MONKEY_MADNESS_II, Quest.Type.P2P, Quest.Difficulty.GRANDMASTER),
-	MONKS_FRIEND(397, "Monk's Friend", QuestVarPlayer.QUEST_MONKS_FRIEND, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	MOUNTAIN_DAUGHTER(398, "Mountain Daughter", QuestVarbits.QUEST_MOUNTAIN_DAUGHTER, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	MOURNINGS_END_PART_I(3147, "Mourning's End Part I", QuestVarPlayer.QUEST_MOURNINGS_END_PART_I, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	MOURNINGS_END_PART_II(3148, "Mourning's End Part II", QuestVarbits.QUEST_MOURNINGS_END_PART_II, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	MURDER_MYSTERY(401, "Murder Mystery", QuestVarPlayer.QUEST_MURDER_MYSTERY, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	MY_ARMS_BIG_ADVENTURE(402, "My Arm's Big Adventure", QuestVarbits.QUEST_MY_ARMS_BIG_ADVENTURE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	NATURE_SPIRIT(403, "Nature Spirit", QuestVarPlayer.QUEST_NATURE_SPIRIT, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	OBSERVATORY_QUEST(3149, "Observatory Quest", QuestVarPlayer.QUEST_OBSERVATORY_QUEST, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	OLAFS_QUEST(3150, "Olaf's Quest", QuestVarbits.QUEST_OLAFS_QUEST, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	ONE_SMALL_FAVOUR(406, "One Small Favour", QuestVarPlayer.QUEST_ONE_SMALL_FAVOUR, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	PLAGUE_CITY(407, "Plague City", QuestVarPlayer.QUEST_PLAGUE_CITY, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	PRIEST_IN_PERIL(408, "Priest in Peril", QuestVarPlayer.QUEST_PRIEST_IN_PERIL, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	THE_QUEEN_OF_THIEVES(409, "The Queen of Thieves", QuestVarbits.QUEST_THE_QUEEN_OF_THIEVES, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	RAG_AND_BONE_MAN_I(3152, "Rag and Bone Man I", QuestVarPlayer.QUEST_RAG_AND_BONE_MAN_I, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	RAG_AND_BONE_MAN_II(411, "Rag and Bone Man II", QuestVarPlayer.QUEST_RAG_AND_BONE_MAN_II, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	RATCATCHERS(412, "Ratcatchers", QuestVarbits.QUEST_RATCATCHERS, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	RECIPE_FOR_DISASTER(413, "Recipe for Disaster", QuestVarbits.QUEST_RECIPE_FOR_DISASTER, Quest.Type.P2P, Quest.Difficulty.GRANDMASTER),
-	RECIPE_FOR_DISASTER_START(413, "RFD - Start", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	RECIPE_FOR_DISASTER_DWARF(413, "RFD - Dwarf", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE(413, "RFD - Wartface & Bentnoze", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	RECIPE_FOR_DISASTER_PIRATE_PETE(413, "RFD - Pirate Pete", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE(413, "RFD - Lumbridge Guide", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	RECIPE_FOR_DISASTER_EVIL_DAVE(413, "RFD - Evil Dave", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_EVIL_DAVE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR(413, "RFD - Monkey Ambassador", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	RECIPE_FOR_DISASTER_SIR_AMIK_VARZE(413, "RFD - Sir Amik Varze", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE(413, "RFD - Skrach Uglogwee", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	RECIPE_FOR_DISASTER_FINALE(413, "RFD - Finale", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER, Quest.Type.P2P, Quest.Difficulty.GRANDMASTER),
-	RECRUITMENT_DRIVE(414, "Recruitment Drive", QuestVarbits.QUEST_RECRUITMENT_DRIVE, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	REGICIDE(415, "Regicide", QuestVarPlayer.QUEST_REGICIDE, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	ROVING_ELVES(416, "Roving Elves", QuestVarPlayer.QUEST_ROVING_ELVES, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	ROYAL_TROUBLE(417, "Royal Trouble", QuestVarbits.QUEST_ROYAL_TROUBLE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	RUM_DEAL(418, "Rum Deal", QuestVarPlayer.QUEST_RUM_DEAL, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	SCORPION_CATCHER(419, "Scorpion Catcher", QuestVarPlayer.QUEST_SCORPION_CATCHER, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	SEA_SLUG(420, "Sea Slug", QuestVarPlayer.QUEST_SEA_SLUG, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	SHADES_OF_MORTTON(421, "Shades of Mort'ton", QuestVarPlayer.QUEST_SHADES_OF_MORTTON, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	SHADOW_OF_THE_STORM(422, "Shadow of the Storm", QuestVarbits.QUEST_SHADOW_OF_THE_STORM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	SHEEP_HERDER(423, "Sheep Herder", QuestVarPlayer.QUEST_SHEEP_HERDER, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	SHILO_VILLAGE(424, "Shilo Village", QuestVarPlayer.QUEST_SHILO_VILLAGE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	SLEEPING_GIANTS(4290, "Sleeping Giants", QuestVarbits.QUEST_SLEEPING_GIANTS, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	THE_SLUG_MENACE(425, "The Slug Menace", QuestVarbits.QUEST_THE_SLUG_MENACE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	A_SOULS_BANE(426, "A Soul's Bane", QuestVarbits.QUEST_A_SOULS_BANE, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	SPIRITS_OF_THE_ELID(427, "Spirits of the Elid", QuestVarbits.QUEST_SPIRITS_OF_THE_ELID, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	SWAN_SONG(428, "Swan Song", QuestVarbits.QUEST_SWAN_SONG, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	TAI_BWO_WANNAI_TRIO(429, "Tai Bwo Wannai Trio", QuestVarPlayer.QUEST_TAI_BWO_WANNAI_TRIO, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	A_TAIL_OF_TWO_CATS(430, "A Tail of Two Cats", QuestVarbits.QUEST_A_TAIL_OF_TWO_CATS, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	TALE_OF_THE_RIGHTEOUS(431, "Tale of the Righteous", QuestVarbits.QUEST_TALE_OF_THE_RIGHTEOUS, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	A_TASTE_OF_HOPE(432, "A Taste of Hope", QuestVarbits.QUEST_A_TASTE_OF_HOPE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	TEARS_OF_GUTHIX(433, "Tears of Guthix", QuestVarbits.QUEST_TEARS_OF_GUTHIX, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	TEMPLE_OF_IKOV(434, "Temple of Ikov", QuestVarPlayer.QUEST_TEMPLE_OF_IKOV, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	TEMPLE_OF_THE_EYE(4273, "Temple of the Eye", QuestVarbits.QUEST_TEMPLE_OF_THE_EYE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THRONE_OF_MISCELLANIA(435, "Throne of Miscellania", QuestVarPlayer.QUEST_THRONE_OF_MISCELLANIA, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	THE_TOURIST_TRAP(436, "The Tourist Trap", QuestVarPlayer.QUEST_THE_TOURIST_TRAP, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	TOWER_OF_LIFE(437, "Tower of Life", QuestVarbits.QUEST_TOWER_OF_LIFE, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	TREE_GNOME_VILLAGE(438, "Tree Gnome Village", QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	TRIBAL_TOTEM(439, "Tribal Totem", QuestVarPlayer.QUEST_TRIBAL_TOTEM, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	TROLL_ROMANCE(440, "Troll Romance", QuestVarPlayer.QUEST_TROLL_ROMANCE, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	TROLL_STRONGHOLD(441, "Troll Stronghold", QuestVarPlayer.QUEST_TROLL_STRONGHOLD, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	UNDERGROUND_PASS(442, "Underground Pass", QuestVarPlayer.QUEST_UNDERGROUND_PASS, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	CLIENT_OF_KOUREND(3136, "Client of Kourend", QuestVarbits.QUEST_CLIENT_OF_KOUREND, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	WANTED(444, "Wanted!", QuestVarbits.QUEST_WANTED, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	WATCHTOWER(445, "Watchtower", QuestVarPlayer.QUEST_WATCHTOWER, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	WATERFALL_QUEST(3154, "Waterfall Quest", QuestVarPlayer.QUEST_WATERFALL_QUEST, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	WHAT_LIES_BELOW(447, "What Lies Below", QuestVarbits.QUEST_WHAT_LIES_BELOW, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	WITCHS_HOUSE(448, "Witch's House", QuestVarPlayer.QUEST_WITCHS_HOUSE, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters", QuestVarbits.QUEST_ZOGRE_FLESH_EATERS, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", QuestVarbits.QUEST_THE_FORSAKEN_TOWER, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	SONG_OF_THE_ELVES(603, "Song of the Elves", QuestVarbits.QUEST_SONG_OF_THE_ELVES, Quest.Type.P2P, Quest.Difficulty.GRANDMASTER),
-	THE_FREMENNIK_EXILES(3141, "The Fremennik Exiles", QuestVarbits.QUEST_THE_FREMENNIK_EXILES, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	SINS_OF_THE_FATHER(1276, "Sins of the Father", QuestVarbits.QUEST_SINS_OF_THE_FATHER, Quest.Type.P2P, Quest.Difficulty.MASTER),
-	GETTING_AHEAD(752, "Getting Ahead", QuestVarbits.QUEST_GETTING_AHEAD, Quest.Type.P2P, Quest.Difficulty.INTERMEDIATE),
-	A_PORCINE_OF_INTEREST(3151, "A Porcine of Interest", QuestVarbits.QUEST_A_PORCINE_OF_INTEREST, Quest.Type.P2P, Quest.Difficulty.NOVICE),
-	A_KINGDOM_DIVIDED(2971, "A Kingdom Divided", QuestVarbits.QUEST_A_KINGDOM_DIVIDED, Quest.Type.P2P, Quest.Difficulty.EXPERIENCED),
-	A_NIGHT_AT_THE_THEATRE(949, "A Night at the Theatre", QuestVarbits.QUEST_A_NIGHT_AT_THE_THEATRE, Quest.Type.P2P, Quest.Difficulty.MASTER),
+	ANIMAL_MAGNETISM(Quest.ANIMAL_MAGNETISM.getId(), "Animal Magnetism", QuestVarbits.QUEST_ANIMAL_MAGNETISM, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	ANOTHER_SLICE_OF_HAM(Quest.ANOTHER_SLICE_OF_HAM, QuestVarbits.QUEST_ANOTHER_SLICE_OF_HAM, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	BENEATH_CURSED_SANDS(Quest.BENEATH_CURSED_SANDS, QuestVarbits.QUEST_BENEATH_CURSED_SANDS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	BETWEEN_A_ROCK(Quest.BETWEEN_A_ROCK, QuestVarbits.QUEST_BETWEEN_A_ROCK, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	BIG_CHOMPY_BIRD_HUNTING(Quest.BIG_CHOMPY_BIRD_HUNTING, QuestVarPlayer.QUEST_BIG_CHOMPY_BIRD_HUNTING, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	BIOHAZARD(Quest.BIOHAZARD, QuestVarPlayer.QUEST_BIOHAZARD, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	CABIN_FEVER(Quest.CABIN_FEVER, QuestVarPlayer.QUEST_CABIN_FEVER, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	CLOCK_TOWER(Quest.CLOCK_TOWER, QuestVarPlayer.QUEST_CLOCK_TOWER, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	COLD_WAR(Quest.COLD_WAR, QuestVarbits.QUEST_COLD_WAR, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	CONTACT(Quest.CONTACT, QuestVarbits.QUEST_CONTACT, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	CREATURE_OF_FENKENSTRAIN(Quest.CREATURE_OF_FENKENSTRAIN, QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	DARKNESS_OF_HALLOWVALE(Quest.DARKNESS_OF_HALLOWVALE, QuestVarbits.QUEST_DARKNESS_OF_HALLOWVALE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	DEATH_PLATEAU(Quest.DEATH_PLATEAU, QuestVarPlayer.QUEST_DEATH_PLATEAU, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	DEATH_TO_THE_DORGESHUUN(Quest.DEATH_TO_THE_DORGESHUUN, QuestVarbits.QUEST_DEATH_TO_THE_DORGESHUUN, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_DEPTHS_OF_DESPAIR(Quest.THE_DEPTHS_OF_DESPAIR, QuestVarbits.QUEST_THE_DEPTHS_OF_DESPAIR, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	DESERT_TREASURE(Quest.DESERT_TREASURE, QuestVarbits.QUEST_DESERT_TREASURE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	DEVIOUS_MINDS(Quest.DEVIOUS_MINDS, QuestVarbits.QUEST_DEVIOUS_MINDS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_DIG_SITE(Quest.THE_DIG_SITE, QuestVarPlayer.QUEST_THE_DIG_SITE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	DRAGON_SLAYER_II(Quest.DRAGON_SLAYER_II, QuestVarbits.QUEST_DRAGON_SLAYER_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	DREAM_MENTOR(Quest.DREAM_MENTOR, QuestVarbits.QUEST_DREAM_MENTOR, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	DRUIDIC_RITUAL(Quest.DRUIDIC_RITUAL, QuestVarPlayer.QUEST_DRUIDIC_RITUAL, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	DWARF_CANNON(Quest.DWARF_CANNON, QuestVarPlayer.QUEST_DWARF_CANNON, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	EADGARS_RUSE(Quest.EADGARS_RUSE, QuestVarPlayer.QUEST_EADGARS_RUSE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	EAGLES_PEAK(Quest.EAGLES_PEAK, QuestVarbits.QUEST_EAGLES_PEAK, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	ELEMENTAL_WORKSHOP_I(Quest.ELEMENTAL_WORKSHOP_I, QuestVarPlayer.QUEST_ELEMENTAL_WORKSHOP_I, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	ELEMENTAL_WORKSHOP_II(Quest.ELEMENTAL_WORKSHOP_II, QuestVarbits.QUEST_ELEMENTAL_WORKSHOP_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	ENAKHRAS_LAMENT(Quest.ENAKHRAS_LAMENT, QuestVarbits.QUEST_ENAKHRAS_LAMENT, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	ENLIGHTENED_JOURNEY(Quest.ENLIGHTENED_JOURNEY, QuestVarbits.QUEST_ENLIGHTENED_JOURNEY, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_EYES_OF_GLOUPHRIE(Quest.THE_EYES_OF_GLOUPHRIE, QuestVarbits.QUEST_THE_EYES_OF_GLOUPHRIE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	FAIRYTALE_I__GROWING_PAINS(Quest.FAIRYTALE_I__GROWING_PAINS, QuestVarbits.QUEST_FAIRYTALE_I_GROWING_PAINS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	FAIRYTALE_II__CURE_A_QUEEN(Quest.FAIRYTALE_II__CURE_A_QUEEN, QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	FAMILY_CREST(Quest.FAMILY_CREST, QuestVarPlayer.QUEST_FAMILY_CREST, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_FEUD(Quest.THE_FEUD, QuestVarbits.QUEST_THE_FEUD, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	FIGHT_ARENA(Quest.FIGHT_ARENA, QuestVarPlayer.QUEST_FIGHT_ARENA, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	FISHING_CONTEST(Quest.FISHING_CONTEST, QuestVarPlayer.QUEST_FISHING_CONTEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	FORGETTABLE_TALE(Quest.FORGETTABLE_TALE, QuestVarbits.QUEST_FORGETTABLE_TALE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	BONE_VOYAGE(Quest.BONE_VOYAGE, QuestVarbits.QUEST_BONE_VOYAGE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_FREMENNIK_ISLES(Quest.THE_FREMENNIK_ISLES, QuestVarbits.QUEST_THE_FREMENNIK_ISLES, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_FREMENNIK_TRIALS(Quest.THE_FREMENNIK_TRIALS, QuestVarPlayer.QUEST_THE_FREMENNIK_TRIALS, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	GARDEN_OF_TRANQUILLITY(Quest.GARDEN_OF_TRANQUILLITY, QuestVarbits.QUEST_GARDEN_OF_TRANQUILLITY, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	GERTRUDES_CAT(Quest.GERTRUDES_CAT, QuestVarPlayer.QUEST_GERTRUDES_CAT, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	GHOSTS_AHOY(Quest.GHOSTS_AHOY, QuestVarbits.QUEST_GHOSTS_AHOY, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_GIANT_DWARF(Quest.THE_GIANT_DWARF, QuestVarbits.QUEST_THE_GIANT_DWARF, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_GOLEM(Quest.THE_GOLEM, QuestVarbits.QUEST_THE_GOLEM, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_GRAND_TREE(Quest.THE_GRAND_TREE, QuestVarPlayer.QUEST_THE_GRAND_TREE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_GREAT_BRAIN_ROBBERY(Quest.THE_GREAT_BRAIN_ROBBERY, QuestVarPlayer.QUEST_THE_GREAT_BRAIN_ROBBERY, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	GRIM_TALES(Quest.GRIM_TALES, QuestVarbits.QUEST_GRIM_TALES, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	THE_HAND_IN_THE_SAND(Quest.THE_HAND_IN_THE_SAND, QuestVarbits.QUEST_THE_HAND_IN_THE_SAND, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	HAUNTED_MINE(Quest.HAUNTED_MINE, QuestVarPlayer.QUEST_HAUNTED_MINE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	HAZEEL_CULT(Quest.HAZEEL_CULT, QuestVarPlayer.QUEST_HAZEEL_CULT, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	HEROES_QUEST(Quest.HEROES_QUEST, QuestVarPlayer.QUEST_HEROES_QUEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	HOLY_GRAIL(Quest.HOLY_GRAIL, QuestVarPlayer.QUEST_HOLY_GRAIL, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	HORROR_FROM_THE_DEEP(Quest.HORROR_FROM_THE_DEEP, QuestVarbits.QUEST_HORROR_FROM_THE_DEEP, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	ICTHLARINS_LITTLE_HELPER(Quest.ICTHLARINS_LITTLE_HELPER, QuestVarbits.QUEST_ICTHLARINS_LITTLE_HELPER, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	IN_AID_OF_THE_MYREQUE(Quest.IN_AID_OF_THE_MYREQUE, QuestVarbits.QUEST_IN_AID_OF_THE_MYREQUE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	IN_SEARCH_OF_THE_MYREQUE(Quest.IN_SEARCH_OF_THE_MYREQUE, QuestVarPlayer.QUEST_IN_SEARCH_OF_THE_MYREQUE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	JUNGLE_POTION(Quest.JUNGLE_POTION, QuestVarPlayer.QUEST_JUNGLE_POTION, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	KINGS_RANSOM(Quest.KINGS_RANSOM, QuestVarbits.QUEST_KINGS_RANSOM, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	LEGENDS_QUEST(Quest.LEGENDS_QUEST, QuestVarPlayer.QUEST_LEGENDS_QUEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	LOST_CITY(Quest.LOST_CITY, QuestVarPlayer.QUEST_LOST_CITY, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_LOST_TRIBE(Quest.THE_LOST_TRIBE, QuestVarbits.QUEST_THE_LOST_TRIBE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	LUNAR_DIPLOMACY(Quest.LUNAR_DIPLOMACY, QuestVarbits.QUEST_LUNAR_DIPLOMACY, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	MAKING_FRIENDS_WITH_MY_ARM(Quest.MAKING_FRIENDS_WITH_MY_ARM, QuestVarbits.QUEST_MAKING_FRIENDS_WITH_MY_ARM, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	MAKING_HISTORY(Quest.MAKING_HISTORY, QuestVarbits.QUEST_MAKING_HISTORY, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	MERLINS_CRYSTAL(Quest.MERLINS_CRYSTAL, QuestVarPlayer.QUEST_MERLINS_CRYSTAL, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	MONKEY_MADNESS_I(Quest.MONKEY_MADNESS_I, QuestVarPlayer.QUEST_MONKEY_MADNESS_I, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	MONKEY_MADNESS_II(Quest.MONKEY_MADNESS_II, QuestVarbits.QUEST_MONKEY_MADNESS_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	MONKS_FRIEND(Quest.MONKS_FRIEND, QuestVarPlayer.QUEST_MONKS_FRIEND, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	MOUNTAIN_DAUGHTER(Quest.MOUNTAIN_DAUGHTER, QuestVarbits.QUEST_MOUNTAIN_DAUGHTER, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	MOURNINGS_END_PART_I(Quest.MOURNINGS_END_PART_I, QuestVarPlayer.QUEST_MOURNINGS_END_PART_I, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	MOURNINGS_END_PART_II(Quest.MOURNINGS_END_PART_II, QuestVarbits.QUEST_MOURNINGS_END_PART_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	MURDER_MYSTERY(Quest.MURDER_MYSTERY, QuestVarPlayer.QUEST_MURDER_MYSTERY, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	MY_ARMS_BIG_ADVENTURE(Quest.MY_ARMS_BIG_ADVENTURE, QuestVarbits.QUEST_MY_ARMS_BIG_ADVENTURE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	NATURE_SPIRIT(Quest.NATURE_SPIRIT, QuestVarPlayer.QUEST_NATURE_SPIRIT, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	OBSERVATORY_QUEST(Quest.OBSERVATORY_QUEST, QuestVarPlayer.QUEST_OBSERVATORY_QUEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	OLAFS_QUEST(Quest.OLAFS_QUEST, QuestVarbits.QUEST_OLAFS_QUEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	ONE_SMALL_FAVOUR(Quest.ONE_SMALL_FAVOUR, QuestVarPlayer.QUEST_ONE_SMALL_FAVOUR, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	PLAGUE_CITY(Quest.PLAGUE_CITY, QuestVarPlayer.QUEST_PLAGUE_CITY, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	PRIEST_IN_PERIL(Quest.PRIEST_IN_PERIL, QuestVarPlayer.QUEST_PRIEST_IN_PERIL, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	THE_QUEEN_OF_THIEVES(Quest.THE_QUEEN_OF_THIEVES, QuestVarbits.QUEST_THE_QUEEN_OF_THIEVES, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	RAG_AND_BONE_MAN_I(Quest.RAG_AND_BONE_MAN_I, QuestVarPlayer.QUEST_RAG_AND_BONE_MAN_I, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	RAG_AND_BONE_MAN_II(Quest.RAG_AND_BONE_MAN_II, QuestVarPlayer.QUEST_RAG_AND_BONE_MAN_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	RATCATCHERS(Quest.RATCATCHERS, QuestVarbits.QUEST_RATCATCHERS, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	RECIPE_FOR_DISASTER(Quest.RECIPE_FOR_DISASTER, QuestVarbits.QUEST_RECIPE_FOR_DISASTER, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	RECIPE_FOR_DISASTER_START(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Start", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	RECIPE_FOR_DISASTER_DWARF(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Dwarf", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Wartface & Bentnoze", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	RECIPE_FOR_DISASTER_PIRATE_PETE(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Pirate Pete", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Lumbridge Guide", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	RECIPE_FOR_DISASTER_EVIL_DAVE(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Evil Dave", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_EVIL_DAVE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Monkey Ambassador", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	RECIPE_FOR_DISASTER_SIR_AMIK_VARZE(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Sir Amik Varze", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Skrach Uglogwee", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	RECIPE_FOR_DISASTER_FINALE(Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Finale", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	RECRUITMENT_DRIVE(Quest.RECRUITMENT_DRIVE, QuestVarbits.QUEST_RECRUITMENT_DRIVE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	REGICIDE(Quest.REGICIDE, QuestVarPlayer.QUEST_REGICIDE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	ROVING_ELVES(Quest.ROVING_ELVES, QuestVarPlayer.QUEST_ROVING_ELVES, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	ROYAL_TROUBLE(Quest.ROYAL_TROUBLE, QuestVarbits.QUEST_ROYAL_TROUBLE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	RUM_DEAL(Quest.RUM_DEAL, QuestVarPlayer.QUEST_RUM_DEAL, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	SCORPION_CATCHER(Quest.SCORPION_CATCHER, QuestVarPlayer.QUEST_SCORPION_CATCHER, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	SEA_SLUG(Quest.SEA_SLUG, QuestVarPlayer.QUEST_SEA_SLUG, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	SHADES_OF_MORTTON(Quest.SHADES_OF_MORTTON, QuestVarPlayer.QUEST_SHADES_OF_MORTTON, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	SHADOW_OF_THE_STORM(Quest.SHADOW_OF_THE_STORM, QuestVarbits.QUEST_SHADOW_OF_THE_STORM, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	SHEEP_HERDER(Quest.SHEEP_HERDER, QuestVarPlayer.QUEST_SHEEP_HERDER, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	SHILO_VILLAGE(Quest.SHILO_VILLAGE, QuestVarPlayer.QUEST_SHILO_VILLAGE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	SLEEPING_GIANTS(169, "Sleeping Giants", QuestVarbits.QUEST_SLEEPING_GIANTS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	THE_SLUG_MENACE(Quest.THE_SLUG_MENACE, QuestVarbits.QUEST_THE_SLUG_MENACE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	A_SOULS_BANE(Quest.A_SOULS_BANE, QuestVarbits.QUEST_A_SOULS_BANE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	SPIRITS_OF_THE_ELID(Quest.SPIRITS_OF_THE_ELID, QuestVarbits.QUEST_SPIRITS_OF_THE_ELID, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	SWAN_SONG(Quest.SWAN_SONG, QuestVarbits.QUEST_SWAN_SONG, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	TAI_BWO_WANNAI_TRIO(Quest.TAI_BWO_WANNAI_TRIO, QuestVarPlayer.QUEST_TAI_BWO_WANNAI_TRIO, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	A_TAIL_OF_TWO_CATS(Quest.A_TAIL_OF_TWO_CATS, QuestVarbits.QUEST_A_TAIL_OF_TWO_CATS, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	TALE_OF_THE_RIGHTEOUS(Quest.TALE_OF_THE_RIGHTEOUS, QuestVarbits.QUEST_TALE_OF_THE_RIGHTEOUS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	A_TASTE_OF_HOPE(Quest.A_TASTE_OF_HOPE, QuestVarbits.QUEST_A_TASTE_OF_HOPE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	TEARS_OF_GUTHIX(Quest.TEARS_OF_GUTHIX, QuestVarbits.QUEST_TEARS_OF_GUTHIX, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	TEMPLE_OF_IKOV(Quest.TEMPLE_OF_IKOV, QuestVarPlayer.QUEST_TEMPLE_OF_IKOV, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	TEMPLE_OF_THE_EYE(Quest.TEMPLE_OF_THE_EYE, QuestVarbits.QUEST_TEMPLE_OF_THE_EYE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THRONE_OF_MISCELLANIA(Quest.THRONE_OF_MISCELLANIA, QuestVarPlayer.QUEST_THRONE_OF_MISCELLANIA, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_TOURIST_TRAP(Quest.THE_TOURIST_TRAP, QuestVarPlayer.QUEST_THE_TOURIST_TRAP, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	TOWER_OF_LIFE(Quest.TOWER_OF_LIFE, QuestVarbits.QUEST_TOWER_OF_LIFE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	TREE_GNOME_VILLAGE(Quest.TREE_GNOME_VILLAGE, QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	TRIBAL_TOTEM(Quest.TRIBAL_TOTEM, QuestVarPlayer.QUEST_TRIBAL_TOTEM, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	TROLL_ROMANCE(Quest.TROLL_ROMANCE, QuestVarPlayer.QUEST_TROLL_ROMANCE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	TROLL_STRONGHOLD(Quest.TROLL_STRONGHOLD, QuestVarPlayer.QUEST_TROLL_STRONGHOLD, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	UNDERGROUND_PASS(Quest.UNDERGROUND_PASS, QuestVarPlayer.QUEST_UNDERGROUND_PASS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	CLIENT_OF_KOUREND(Quest.CLIENT_OF_KOUREND, QuestVarbits.QUEST_CLIENT_OF_KOUREND, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	WANTED(Quest.WANTED, QuestVarbits.QUEST_WANTED, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	WATCHTOWER(Quest.WATCHTOWER, QuestVarPlayer.QUEST_WATCHTOWER, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	WATERFALL_QUEST(Quest.WATERFALL_QUEST, QuestVarPlayer.QUEST_WATERFALL_QUEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	WHAT_LIES_BELOW(Quest.WHAT_LIES_BELOW, QuestVarbits.QUEST_WHAT_LIES_BELOW, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	WITCHS_HOUSE(Quest.WITCHS_HOUSE, QuestVarPlayer.QUEST_WITCHS_HOUSE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	ZOGRE_FLESH_EATERS(Quest.ZOGRE_FLESH_EATERS, QuestVarbits.QUEST_ZOGRE_FLESH_EATERS, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_ASCENT_OF_ARCEUUS(Quest.THE_ASCENT_OF_ARCEUUS, QuestVarbits.QUEST_THE_ASCENT_OF_ARCEUUS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	THE_FORSAKEN_TOWER(Quest.THE_FORSAKEN_TOWER, QuestVarbits.QUEST_THE_FORSAKEN_TOWER, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	SONG_OF_THE_ELVES(Quest.SONG_OF_THE_ELVES, QuestVarbits.QUEST_SONG_OF_THE_ELVES, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	THE_FREMENNIK_EXILES(Quest.THE_FREMENNIK_EXILES, QuestVarbits.QUEST_THE_FREMENNIK_EXILES, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	SINS_OF_THE_FATHER(Quest.SINS_OF_THE_FATHER, QuestVarbits.QUEST_SINS_OF_THE_FATHER, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	GETTING_AHEAD(Quest.GETTING_AHEAD, QuestVarbits.QUEST_GETTING_AHEAD, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	A_PORCINE_OF_INTEREST(Quest.A_PORCINE_OF_INTEREST, QuestVarbits.QUEST_A_PORCINE_OF_INTEREST, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	A_KINGDOM_DIVIDED(Quest.A_KINGDOM_DIVIDED, QuestVarbits.QUEST_A_KINGDOM_DIVIDED, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	A_NIGHT_AT_THE_THEATRE(Quest.A_NIGHT_AT_THE_THEATRE, QuestVarbits.QUEST_A_NIGHT_AT_THE_THEATRE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 
 
 	//Miniquests
-	ENTER_THE_ABYSS(3140, "Enter the Abyss", QuestVarPlayer.QUEST_ENTER_THE_ABYSS, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	ARCHITECTURAL_ALLIANCE(320, "Architectural Alliance", QuestVarbits.QUEST_ARCHITECTURAL_ALLIANCE, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	BEAR_YOUR_SOUL(1275, "Bear your Soul", QuestVarbits.QUEST_BEAR_YOUR_SOUL, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	ALFRED_GRIMHANDS_BARCRAWL(322, "Alfred Grimhand's Barcrawl", QuestVarPlayer.QUEST_ALFRED_GRIMHANDS_BARCRAWL, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	CURSE_OF_THE_EMPTY_LORD(3137, "Curse of the Empty Lord", QuestVarbits.QUEST_CURSE_OF_THE_EMPTY_LORD, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	ENCHANTED_KEY(324, "Enchanted Key", QuestVarbits.QUEST_ENCHANTED_KEY, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	THE_GENERALS_SHADOW(325, "The General's Shadow", QuestVarbits.QUEST_THE_GENERALS_SHADOW, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	SKIPPY_AND_THE_MOGRES(3153, "Skippy and the Mogres", QuestVarbits.QUEST_SKIPPY_AND_THE_MOGRES, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	THE_MAGE_ARENA(3146, "The Mage Arena", QuestVarPlayer.QUEST_THE_MAGE_ARENA, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	LAIR_OF_TARN_RAZORLOR(3144, "Lair of Tarn Razorlor", QuestVarbits.QUEST_LAIR_OF_TARN_RAZORLOR, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	FAMILY_PEST(329, "Family Pest", QuestVarbits.QUEST_FAMILY_PEST, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	THE_MAGE_ARENA_II(330, "The Mage Arena II", QuestVarbits.QUEST_THE_MAGE_ARENA_II, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	IN_SEARCH_OF_KNOWLEDGE(3143, "In Search of Knowledge", QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
-	DADDYS_HOME(1688, "Daddy's Home", QuestVarbits.QUEST_DADDYS_HOME, Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
+	ENTER_THE_ABYSS(Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	ARCHITECTURAL_ALLIANCE(Quest.ARCHITECTURAL_ALLIANCE, QuestVarbits.QUEST_ARCHITECTURAL_ALLIANCE, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	BEAR_YOUR_SOUL(Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	ALFRED_GRIMHANDS_BARCRAWL(Quest.ALFRED_GRIMHANDS_BARCRAWL, QuestVarPlayer.QUEST_ALFRED_GRIMHANDS_BARCRAWL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	CURSE_OF_THE_EMPTY_LORD(Quest.CURSE_OF_THE_EMPTY_LORD, QuestVarbits.QUEST_CURSE_OF_THE_EMPTY_LORD, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	ENCHANTED_KEY(Quest.THE_ENCHANTED_KEY, QuestVarbits.QUEST_ENCHANTED_KEY, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	THE_GENERALS_SHADOW(Quest.THE_GENERALS_SHADOW, QuestVarbits.QUEST_THE_GENERALS_SHADOW, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	SKIPPY_AND_THE_MOGRES(Quest.SKIPPY_AND_THE_MOGRES, QuestVarbits.QUEST_SKIPPY_AND_THE_MOGRES, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	THE_MAGE_ARENA(Quest.MAGE_ARENA_I, QuestVarPlayer.QUEST_THE_MAGE_ARENA, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	LAIR_OF_TARN_RAZORLOR(Quest.LAIR_OF_TARN_RAZORLOR, QuestVarbits.QUEST_LAIR_OF_TARN_RAZORLOR, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	FAMILY_PEST(Quest.FAMILY_PEST, QuestVarbits.QUEST_FAMILY_PEST, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	THE_MAGE_ARENA_II(Quest.MAGE_ARENA_II, QuestVarbits.QUEST_THE_MAGE_ARENA_II, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	IN_SEARCH_OF_KNOWLEDGE(Quest.IN_SEARCH_OF_KNOWLEDGE, QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	DADDYS_HOME(Quest.DADDYS_HOME, QuestVarbits.QUEST_DADDYS_HOME, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS("Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,
-		Quest.Type.MINIQUEST, Quest.Difficulty.MINIQUEST),
+		QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 
 	// Achievement diaries
 
 	// Ardougne
-	ARDOUGNE_EASY("Ardougne Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	ARDOUGNE_MEDIUM("Ardougne Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	ARDOUGNE_HARD("Ardougne Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	ARDOUGNE_ELITE("Ardougne Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	ARDOUGNE_EASY("Ardougne Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	ARDOUGNE_MEDIUM("Ardougne Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	ARDOUGNE_HARD("Ardougne Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	ARDOUGNE_ELITE("Ardougne Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_ARDOUGNE_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Desert
-	DESERT_EASY("Desert Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	DESERT_MEDIUM("Desert Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	DESERT_HARD("Desert Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	DESERT_ELITE("Desert Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	DESERT_EASY("Desert Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	DESERT_MEDIUM("Desert Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	DESERT_HARD("Desert Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	DESERT_ELITE("Desert Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_DESERT_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Falador
-	FALADOR_EASY("Falador Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FALADOR_MEDIUM("Falador Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FALADOR_HARD("Falador Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FALADOR_ELITE("Falador Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	FALADOR_EASY("Falador Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	FALADOR_MEDIUM("Falador Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	FALADOR_HARD("Falador Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	FALADOR_ELITE("Falador Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_FALADOR_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Fremennik
-	FREMENNIK_EASY("Fremennik Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FREMENNIK_MEDIUM("Fremennik Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FREMENNIK_HARD("Fremennik Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	FREMENNIK_ELITE("Fremennik Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	FREMENNIK_EASY("Fremennik Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	FREMENNIK_MEDIUM("Fremennik Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	FREMENNIK_HARD("Fremennik Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	FREMENNIK_ELITE("Fremennik Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_FREMENNIK_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Kandarin
-	KANDARIN_EASY("Kandarin Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KANDARIN_MEDIUM("Kandarin Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KANDARIN_HARD("Kandarin Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KANDARIN_ELITE("Kandarin Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	KANDARIN_EASY("Kandarin Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KANDARIN_MEDIUM("Kandarin Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KANDARIN_HARD("Kandarin Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KANDARIN_ELITE("Kandarin Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KANDARIN_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Karamja
-	KARAMJA_EASY("Karamja Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KARAMJA_MEDIUM("Karamja Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KARAMJA_HARD("Karamja Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KARAMJA_ELITE("Karamja Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY),
+	KARAMJA_EASY("Karamja Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+		QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KARAMJA_MEDIUM("Karamja Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+		QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KARAMJA_HARD("Karamja Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+		QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KARAMJA_ELITE("Karamja Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KARAMJA_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+		QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Kourend & Kebos
-	KOUREND_EASY("Kourend Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KOUREND_MEDIUM("Kourend Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KOUREND_HARD("Kourend Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	KOUREND_ELITE("Kourend Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	KOUREND_EASY("Kourend Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KOUREND_MEDIUM("Kourend Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KOUREND_HARD("Kourend Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	KOUREND_ELITE("Kourend Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Lumbridge & Draynor
-	LUMBRIDGE_EASY("Lumbridge Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	LUMBRIDGE_MEDIUM("Lumbridge Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	LUMBRIDGE_HARD("Lumbridge Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	LUMBRIDGE_ELITE("Lumbridge Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	LUMBRIDGE_EASY("Lumbridge Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	LUMBRIDGE_MEDIUM("Lumbridge Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	LUMBRIDGE_HARD("Lumbridge Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	LUMBRIDGE_ELITE("Lumbridge Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Morytania
-	MORYTANIA_EASY("Morytania Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	MORYTANIA_MEDIUM("Morytania Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	MORYTANIA_HARD("Morytania Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	MORYTANIA_ELITE("Morytania Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	MORYTANIA_EASY("Morytania Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	MORYTANIA_MEDIUM("Morytania Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	MORYTANIA_HARD("Morytania Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	MORYTANIA_ELITE("Morytania Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_MORYTANIA_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Varrock
-	VARROCK_EASY("Varrock Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	VARROCK_MEDIUM("Varrock Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	VARROCK_HARD("Varrock Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	VARROCK_ELITE("Varrock Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	VARROCK_EASY("Varrock Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	VARROCK_MEDIUM("Varrock Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	VARROCK_HARD("Varrock Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	VARROCK_ELITE("Varrock Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_VARROCK_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Western Provinces
-	WESTERN_EASY("Western Provinces Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-		Quest.Difficulty.ACHIEVEMENT_DIARY),
-	WESTERN_MEDIUM("Western Provinces Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	WESTERN_HARD("Western Provinces Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	WESTERN_ELITE("Western Provinces Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	WESTERN_EASY("Western Provinces Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+		QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	WESTERN_MEDIUM("Western Provinces Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	WESTERN_HARD("Western Provinces Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	WESTERN_ELITE("Western Provinces Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_WESTERN_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Wilderness
-	WILDERNESS_EASY("Wilderness Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_EASY, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	WILDERNESS_MEDIUM("Wilderness Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_MEDIUM, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	WILDERNESS_HARD("Wilderness Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_HARD, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
-	WILDERNESS_ELITE("Wilderness Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_ELITE, 1, Quest.Type.ACHIEVEMENT_DIARY,
-			Quest.Difficulty.ACHIEVEMENT_DIARY),
+	WILDERNESS_EASY("Wilderness Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	WILDERNESS_MEDIUM("Wilderness Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	WILDERNESS_HARD("Wilderness Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
+	WILDERNESS_ELITE("Wilderness Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_WILDERNESS_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 
 	// Generic
-	MA2_LOCATOR("Mage Arena II Locator", QuestVarbits.QUEST_THE_MAGE_ARENA_II, -1, Quest.Type.GENERIC,
-		Quest.Difficulty.GENERIC),
+	MA2_LOCATOR("Mage Arena II Locator", QuestVarbits.QUEST_THE_MAGE_ARENA_II, -1, QuestDetails.Type.GENERIC,
+		QuestDetails.Difficulty.GENERIC),
 
-	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, Quest.Type.SKILL, Quest.Difficulty.SKILL);
+	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL, QuestDetails.Difficulty.SKILL);
 
 	@Getter
 	private final int id;
@@ -365,10 +362,10 @@ public enum QuestHelperQuest
 	private final List<String> keywords;
 
 	@Getter
-	private final Quest.Type questType;
+	private final QuestDetails.Type questType;
 
 	@Getter
-	private final Quest.Difficulty difficulty;
+	private final QuestDetails.Difficulty difficulty;
 
 	private final QuestVarbits varbit;
 
@@ -378,7 +375,7 @@ public enum QuestHelperQuest
 
 	private final int completeValue;
 
-	QuestHelperQuest(int id, String name, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(int id, String name, QuestVarbits varbit, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
 	{
 		this.id = id;
 		this.name = name;
@@ -390,7 +387,31 @@ public enum QuestHelperQuest
 		this.completeValue = -1;
 	}
 
-	QuestHelperQuest(int id, String name, QuestVarPlayer varPlayer, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(Quest quest, QuestVarbits varbit, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
+	{
+		this.id = quest.getId();
+		this.name = quest.getName();
+		this.keywords = titleToKeywords(name);
+		this.varbit = varbit;
+		this.varPlayer = null;
+		this.questType = questType;
+		this.difficulty = difficulty;
+		this.completeValue = -1;
+	}
+
+	QuestHelperQuest(Quest quest, QuestVarPlayer varPlayer, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
+	{
+		this.id = quest.getId();
+		this.name = quest.getName();
+		this.keywords = titleToKeywords(name);
+		this.varbit = null;
+		this.varPlayer = varPlayer;
+		this.questType = questType;
+		this.difficulty = difficulty;
+		this.completeValue = -1;
+	}
+
+	QuestHelperQuest(int id, String name, QuestVarPlayer varPlayer, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
 	{
 		this.id = id;
 		this.name = name;
@@ -402,7 +423,7 @@ public enum QuestHelperQuest
 		this.completeValue = -1;
 	}
 
-	QuestHelperQuest(int id, String name, List<String> keywords, QuestVarbits varbit, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(int id, String name, List<String> keywords, QuestVarbits varbit, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
 	{
 		this.id = id;
 		this.name = name;
@@ -414,7 +435,7 @@ public enum QuestHelperQuest
 		this.completeValue = -1;
 	}
 
-	QuestHelperQuest(String name, QuestVarbits varbit, int completeValue, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(String name, QuestVarbits varbit, int completeValue, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
 	{
 		this.id = -1;
 		this.name = name;
@@ -427,7 +448,7 @@ public enum QuestHelperQuest
 	}
 
 	// Can be used for skill based helpers
-	QuestHelperQuest(String name, Skill skill, int completeValue, Quest.Type questType, Quest.Difficulty difficulty)
+	QuestHelperQuest(String name, Skill skill, int completeValue, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
 	{
 		this.id = -1;
 		this.name = name;

@@ -29,7 +29,7 @@ package com.questhelper.questhelpers;
 import com.questhelper.QuestHelperQuest;
 import java.util.function.Predicate;
 
-public interface Quest
+public interface QuestDetails
 {
 	public static boolean showCompletedQuests(QuestHelper quest)
 	{

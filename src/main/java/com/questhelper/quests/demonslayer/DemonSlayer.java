@@ -241,7 +241,7 @@ public class DemonSlayer extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Delirth (level 27)");
+		return Collections.singletonList("Delrith (level 27)");
 	}
 
 	@Override

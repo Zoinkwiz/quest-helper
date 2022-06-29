@@ -66,7 +66,7 @@ public class KaramjaMedium extends BasicQuestHelper
 {
 	// Items required
 	ItemRequirement pickaxe, coins, spiderCarcass, skewerTicksOrArrowShaft, goutTuber, rake, fruitTreeSapling,
-		teasingStick, knife, logs, axe, tradingSticks, opal, smallFishingNet, karambwanVessel, rawKarambwanji;
+		teasingStick, knife, logs, axe, tradingSticks, opal, smallFishingNet, karambwanVessel, rawKarambwanjiOrSmallFishingNet;
 
 	ItemRequirement spade, machete;
 
@@ -186,8 +186,9 @@ public class KaramjaMedium extends BasicQuestHelper
 			"sticks");
 		karambwanVessel = new ItemRequirement("Karambwan vessel", ItemID.KARAMBWAN_VESSEL).showConditioned(notCaughtKarambwan);
 		karambwanVessel.addAlternates(ItemID.KARAMBWAN_VESSEL_3159);
-		rawKarambwanji = new ItemRequirement("Raw karambwanji, or a small fishing net to catch some",
+		rawKarambwanjiOrSmallFishingNet = new ItemRequirement("Raw karambwanji, or a small fishing net to catch some",
 			ItemID.RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
+		rawKarambwanjiOrSmallFishingNet.addAlternates(ItemID.SMALL_FISHING_NET);
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR,
 			notEarned100, notGrownFruitTree));
@@ -257,7 +258,7 @@ public class KaramjaMedium extends BasicQuestHelper
 			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe,
 			tradingSticks.quantity(100));
 		catchKarambwan = new NpcStep(this, NpcID.FISHING_SPOT_4712, new WorldPoint(2899, 3119, 0),
-			"Fish a karambwan from the north east coast of Karamja.", karambwanVessel, rawKarambwanji);
+			"Fish a karambwan from the north east coast of Karamja.", karambwanVessel, rawKarambwanjiOrSmallFishingNet);
 		getMachete = new NpcStep(this, NpcID.SAFTA_DOC_6423, new WorldPoint(2790, 3100, 0),
 			"Get a gem machete from Safta Doc. If you want to make a red topaz one, you'll need 1200 trading sticks.",
 			goutTuber, opal.quantity(3), tradingSticks.quantity(300));
@@ -296,7 +297,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	{
 		return Arrays.asList(coins.quantity(1615), spiderCarcass, skewerTicksOrArrowShaft, goutTuber, spade, rake,
 			fruitTreeSapling, teasingStick, knife, logs, axe, pickaxe, opal.quantity(3), tradingSticks.quantity(500),
-			karambwanVessel, rawKarambwanji, machete);
+			karambwanVessel, rawKarambwanjiOrSmallFishingNet, machete);
 	}
 
 	@Override
@@ -386,7 +387,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		allSteps.add(useGnomeGliderSteps);
 
 		PanelDetails catchAKarambwanSteps = new PanelDetails("Catch a Karambwan",
-			Collections.singletonList(catchKarambwan), fishing65, taiBwoWannaiTrio, karambwanVessel, rawKarambwanji);
+			Collections.singletonList(catchKarambwan), fishing65, taiBwoWannaiTrio, karambwanVessel, rawKarambwanjiOrSmallFishingNet);
 		catchAKarambwanSteps.setDisplayCondition(notCaughtKarambwan);
 		allSteps.add(catchAKarambwanSteps);
 

@@ -48,6 +48,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -270,6 +272,11 @@ public abstract class QuestStep implements Module
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
 	}
 
+	public void addDialogStep(Pattern pattern)
+	{
+		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), pattern));
+	}
+
 	public void resetDialogSteps()
 	{
 		choices.resetChoices();
@@ -288,6 +295,11 @@ public abstract class QuestStep implements Module
 	public void addDialogStep(int id, String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, choice));
+	}
+
+	public void addDialogStep(int id, Pattern pattern)
+	{
+		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, pattern));
 	}
 
 	public void addDialogSteps(String... newChoices)

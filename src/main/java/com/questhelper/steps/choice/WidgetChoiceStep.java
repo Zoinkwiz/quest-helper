@@ -28,6 +28,8 @@ import com.questhelper.QuestHelperConfig;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
@@ -41,6 +43,8 @@ public class WidgetChoiceStep
 
 	@Getter
 	private final String choice;
+
+	private Pattern pattern;
 
 	protected List<String> excludedStrings;
 	protected int excludedGroupId;
@@ -66,6 +70,18 @@ public class WidgetChoiceStep
 		this.groupId = groupId;
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
+		this.pattern = null;
+	}
+
+	public WidgetChoiceStep(QuestHelperConfig config, Pattern pattern, int groupId, int childId)
+	{
+		this.config = config;
+		this.choice = null;
+		this.choiceById = -1;
+		this.groupId = groupId;
+		this.groupIdForChecking = groupId;
+		this.childId = childId;
+		this.pattern = pattern;
 	}
 
 	public WidgetChoiceStep(QuestHelperConfig config, int choiceId, int groupId, int childId)
@@ -86,6 +102,17 @@ public class WidgetChoiceStep
 		this.groupId = groupId;
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
+	}
+
+	public WidgetChoiceStep(QuestHelperConfig config, int choiceId, Pattern pattern, int groupId, int childId)
+	{
+		this.config = config;
+		this.choice = null;
+		this.choiceById = choiceId;
+		this.groupId = groupId;
+		this.groupIdForChecking = groupId;
+		this.childId = childId;
+		this.pattern = pattern;
 	}
 
 	public void addExclusion(int excludedGroupId, int excludedChildId, String excludedString)
@@ -135,7 +162,9 @@ public class WidgetChoiceStep
 		{
 			if (choiceById != -1 && choices[choiceById] != null)
 			{
-				if (choice == null || choice.equals(choices[choiceById].getText()))
+				if ((choice != null && choice.equals(choices[choiceById].getText())) ||
+					(pattern != null && pattern.matcher(choices[choiceById].getText()).find()) ||
+					(choice == null && pattern == null))
 				{
 					highlightText(choices[choiceById], choiceById);
 				}
@@ -144,7 +173,8 @@ public class WidgetChoiceStep
 			{
 				for (int i = 0; i < choices.length; i++)
 				{
-					if (choices[i].getText().equals(choice))
+					if (choices[i].getText().equals(choice) ||
+						(pattern != null && pattern.matcher(choices[i].getText()).find()))
 					{
 						highlightText(choices[i], i);
 						return;

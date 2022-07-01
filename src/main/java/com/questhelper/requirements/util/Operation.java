@@ -31,6 +31,8 @@ import lombok.Getter;
 
 public enum Operation
 {
+	GREATER(">", (x,y) -> x > y),
+	LESS("<", (x,y) -> x < y),
 	LESS_EQUAL("<=", (x,y) -> x <= y),
 	EQUAL("==", Integer::equals),
 	GREATER_EQUAL(">=", (x,y) -> x >= y),

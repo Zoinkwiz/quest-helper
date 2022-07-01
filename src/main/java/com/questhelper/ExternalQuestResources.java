@@ -96,6 +96,7 @@ public enum ExternalQuestResources {
 	IN_SEARCH_OF_THE_MYREQUE("https://oldschool.runescape.wiki/w/In_Search_of_the_Myreque"),
 	JUNGLE_POTION("https://oldschool.runescape.wiki/w/Jungle_Potion"),
 	KINGS_RANSOM("https://oldschool.runescape.wiki/w/King%27s_Ransom"),
+	LAND_OF_THE_GOBLINS("https://oldschool.runescape.wiki/w/Land_of_the_Goblins"),
 	LEGENDS_QUEST("https://oldschool.runescape.wiki/w/Legends%27_Quest"),
 	LOST_CITY("https://oldschool.runescape.wiki/w/Lost_City"),
 	THE_LOST_TRIBE("https://oldschool.runescape.wiki/w/The_Lost_Tribe"),

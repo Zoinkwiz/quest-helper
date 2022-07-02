@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.npc.FollowerRequirement;
+import com.questhelper.requirements.npc.NoFollowerRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
@@ -64,17 +65,18 @@ import java.util.regex.Pattern;
 )
 public class LandOfTheGoblins extends BasicQuestHelper
 {
-	ItemRequirement noPet, lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye, purpleDye, blackDye, fishingRod, rawSlimyEel, coins, combatGear;
+	Requirement noPet;
+	ItemRequirement lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye, purpleDye, blackDye, fishingRod, rawSlimyEel, coins, combatGear;
 	ItemRequirement tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing, salveAmulet;
 	CombatLevelRequirement recommendedCombatLevel;
 	ItemRequirement pharmakosBerryHighlight, toadflaxUnfHighlight, goblinPotion, goblinPotionHighlight, noEquippedItems,
-					blackDyeHighlight, dorgeshKaanSphere, blackGoblinMail, huzamogaarbKey, hemensterWhitefish,
-					whiteGoblinMail, yellowGoblinMail, blueGoblinMail, orangeGoblinMail, purpleGoblinMail,
+					dorgeshKaanSphere, blackGoblinMail, huzamogaarbKey, hemensterWhitefish, pestleAndMortar, vial,
+					blackMushroom, whiteGoblinMail, yellowGoblinMail, blueGoblinMail, orangeGoblinMail, purpleGoblinMail,
 					saragorgakKey, yurkolgokhKey, ekeleshuunKey, nargoshuunKey, horogothgarKey;
-	Zone dorgeshKaan, goblinCave, guardArea, goblinTemple, northEastRoomSouth, northEastRoomNorth, hemenster,
-			whitePriestRoom, yellowPriestRoom, bluePriestRoom, orangePriestRoom, purplePriestRoom, crypt, dorgeshKaanF1,
-			dorgeshKaanCaveUpper, dorgeshKaanCaveLower;
-	Requirement inDorgeshKaanF0, inDorgeshKaanWithGrubfoot, invSpaceToUnequip, inGoblinCave, inGoblinCaveWithZanik,
+	Zone basement, tunnels, mines, cityF0, cityF1, dorgeshKaan, goblinCave, guardArea, goblinTemple, northEastRoomSouth,
+		northEastRoomNorth, hemenster, whitePriestRoom, yellowPriestRoom, bluePriestRoom, orangePriestRoom, purplePriestRoom,
+		crypt, dorgeshKaanF1, dorgeshKaanCaveUpper, dorgeshKaanCaveLower;
+	Requirement inMines, inTunnels, inBasement, inDorgeshKaanF0, inDorgeshKaanWithGrubfoot, invSpaceToUnequip, inGoblinCave, inGoblinCaveWithZanik,
 			inGoblinCaveWithGoblinPotion, inFrontOfGuardsWithGoblinPotion, goblinSelectionActive, isAGoblin,
 			hasBlackMushroomsOrDye, inGoblinTemple, blackGoblinMailEquipped, inNorthEastRoom, blackDyeOrBlackGoblinMail,
 			knowsAboutWhitefish, inHemenster, anyGoblinMail, inWhitePriestRoom, inYellowPriestRoom, inBluePriestRoom, inOrangePriestRoom, inPurplePriestRoom,
@@ -82,10 +84,12 @@ public class LandOfTheGoblins extends BasicQuestHelper
 			snotheadDead, snailfeetDead, mosschinDead, redeyesDead, strongbonesDead, inDorgeshKaanF1, inDorgeshKaanCaveUpper,
 			inDorgeshKaanCaveLower, learnedAboutMachine, firstGreater, firstLess, secondGreater, secondLess, thirdGreater, thirdLess, fairyRingMachineWidgetPresent,
 			fairyRingMachineFixed, inYubiusk;
-	FollowerRequirement grubfootFollowing;
-	QuestStep talkToGrubfoot, goToDorgeshKaan, talkToZanik, enterGoblinCave, talkToZanikGoblinCave, talkToGuard,
+	Requirement grubfootFollowing;
+	ConditionalStep goTalkToGrubfoot, goTalkToZanik;
+	QuestStep goDownIntoBasement, climbThroughHole, talkToKazgar;
+	QuestStep talkToGrubfoot, enterDorgeshKaan, talkToZanik, enterGoblinCave, talkToZanikGoblinCave, talkToGuard,
 			talkToMakeoverMage, pickPharmakosBerry, mixGoblinPotion, goBackToGoblinCave, goToGuards, drinkGoblinPotion,
-			confirmGoblin, pickBlackMushrooms, talkToGuardAsGoblin, getGoblinMail, dyeGoblinMail,
+			makeBlackDye, confirmGoblin, pickBlackMushrooms, talkToGuardAsGoblin, getGoblinMail, dyeGoblinMail,
 			enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell, leaveNorthEastRoom, talkToPriestInTemple,
 			goBackToGoblinCaveNoDye, goToGuardsNoDye, drinkGoblinPotionNoDye, talkToGuardAsGoblinNoDye, pickpocketPriest,
 			talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes,
@@ -108,11 +112,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		steps.put(0, talkToGrubfoot);
-
-		ConditionalStep goTalkToZanik = new ConditionalStep(this, talkToGrubfoot);
-		goTalkToZanik.addStep(inDorgeshKaanWithGrubfoot, talkToZanik);
-		goTalkToZanik.addStep(grubfootFollowing, goToDorgeshKaan);
+		steps.put(0, goTalkToGrubfoot);
 
 		steps.put(2, goTalkToZanik);
 
@@ -122,7 +122,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 		steps.put(6, goTalkToZanik);
 
-		steps.put(8, talkToZanik);
+		steps.put(8, goTalkToZanik);
 
 		ConditionalStep enterSecretTemple = new ConditionalStep(this, enterGoblinCave);
 		enterSecretTemple.addStep(inGoblinCaveWithZanik, talkToGuard);
@@ -134,19 +134,21 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 		ConditionalStep becomeGoblin = new ConditionalStep(this, pickPharmakosBerry);
 		becomeGoblin.addStep(goblinSelectionActive, confirmGoblin);
-		becomeGoblin.addStep(inFrontOfGuardsWithGoblinPotion, drinkGoblinPotion);
+		becomeGoblin.addStep(new Conditions(inFrontOfGuardsWithGoblinPotion, blackDyeOrBlackGoblinMail), drinkGoblinPotion);
+		becomeGoblin.addStep(new Conditions(inFrontOfGuardsWithGoblinPotion, blackMushroom), makeBlackDye);
+		becomeGoblin.addStep(inFrontOfGuardsWithGoblinPotion, pickBlackMushrooms);
 		becomeGoblin.addStep(inGoblinCaveWithGoblinPotion, goToGuards);
-		becomeGoblin.addStep(goblinPotion, goBackToGoblinCave);
+		becomeGoblin.addStep(goblinPotion.alsoCheckBank(questBank), goBackToGoblinCave);
 		becomeGoblin.addStep(pharmakosBerryHighlight, mixGoblinPotion);
 
 
 		steps.put(16, becomeGoblin);
 
 		ConditionalStep enterTemple = new ConditionalStep(this, goBackToGoblinCave);
-		enterTemple.addStep(new Conditions(LogicType.AND, isAGoblin, blackDyeOrBlackGoblinMail, new Conditions(LogicType.NOR, inGoblinTemple)), talkToGuardAsGoblin);
+		enterTemple.addStep(new Conditions(isAGoblin, blackDyeOrBlackGoblinMail, new Conditions(LogicType.NOR, inGoblinTemple)), talkToGuardAsGoblin);
 		enterTemple.addStep(goblinSelectionActive, confirmGoblin);
-		enterTemple.addStep(new Conditions(LogicType.AND, inFrontOfGuardsWithGoblinPotion, blackDyeOrBlackGoblinMail), drinkGoblinPotion);
-		enterTemple.addStep(new Conditions(LogicType.AND, blackDyeOrBlackGoblinMail, new Conditions(LogicType.NOR, isAGoblin)), goToGuards);
+		enterTemple.addStep(new Conditions(inFrontOfGuardsWithGoblinPotion, blackDyeOrBlackGoblinMail), drinkGoblinPotion);
+		enterTemple.addStep(new Conditions(blackDyeOrBlackGoblinMail, new Conditions(LogicType.NOR, isAGoblin)), goToGuards);
 		enterTemple.addStep(inGoblinCaveWithGoblinPotion, pickBlackMushrooms);
 
 		steps.put(18, enterTemple);
@@ -281,12 +283,15 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE);
 		orangeDye = new ItemRequirement("Orange dye", ItemID.ORANGE_DYE);
 		purpleDye = new ItemRequirement("Purple dye", ItemID.PURPLE_DYE);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		vial = new ItemRequirement("Vial", ItemID.VIAL);
+		blackMushroom = new ItemRequirement("Black mushroom", ItemID.BLACK_MUSHROOM);
 		blackDye = new ItemRequirement("Black dye", ItemID.BLACK_DYE);
 		blackDye.setTooltip("Black mushrooms obtainable during quest - bring empty vial and pestle and mortar");
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
 		rawSlimyEel = new ItemRequirement("Raw slimy eel", ItemID.RAW_SLIMY_EEL);
 		coins = new ItemRequirement("Coins", ItemID.COINS, 5);
-		noPet = new ItemRequirement("No pet following you", -1, -1);
+		noPet = new NoFollowerRequirement("No pet following you");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 
 		invSpaceToUnequip = new ItemRequirement("Inventory space to unequip all your items", -1, -1);
@@ -309,9 +314,15 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 	public void setupZones()
 	{
+		basement = new Zone(new WorldPoint(3208, 9614, 0), new WorldPoint(3219, 9625, 0));
+		tunnels = new Zone(new WorldPoint(3221, 9602, 0), new WorldPoint(3308, 9661, 0));
+		mines = new Zone(new WorldPoint(3309, 9600, 0), new WorldPoint(3327, 9655, 0));
+		cityF0 = new Zone(new WorldPoint(2688, 5248, 0), new WorldPoint(2750, 5375, 0));
+		cityF1 = new Zone(new WorldPoint(2688, 5248, 1), new WorldPoint(2750, 5375, 1));
+
 		dorgeshKaan = new Zone(10835, 0);
 		goblinCave = new Zone(10393);
-		guardArea = new Zone(new WorldPoint(2574, 9848, 0), new WorldPoint(2590, 9856, 0));
+		guardArea = new Zone(new WorldPoint(2574, 9840, 0), new WorldPoint(2590, 9856, 0));
 		goblinTemple = new Zone(14915);
 		// irregularly shaped room so split in half
 		northEastRoomSouth = new Zone(new WorldPoint(3754, 4329, 0), new WorldPoint(3757, 4337, 0));
@@ -334,8 +345,12 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 	public void setupConditions()
 	{
+		inBasement = new ZoneRequirement(basement);
+		inTunnels = new ZoneRequirement(tunnels);
+		inMines = new ZoneRequirement(mines);
 		inDorgeshKaanF0 = new ZoneRequirement(dorgeshKaan);
-		grubfootFollowing = new FollowerRequirement("Grubfoot", NpcID.GRUBFOOT_11259);
+		grubfootFollowing = new Conditions(LogicType.OR, new FollowerRequirement("Grubfoot", NpcID.GRUBFOOT_11259),
+			new VarbitRequirement(QuestHelperQuest.LAND_OF_THE_GOBLINS.getId(), 8, Operation.GREATER_EQUAL));
 		inDorgeshKaanWithGrubfoot = new Conditions(LogicType.AND, inDorgeshKaanF0, grubfootFollowing);
 		inGoblinCave = new ZoneRequirement(goblinCave);
 		FollowerRequirement zanikFollowing = new FollowerRequirement("Zanik", NpcID.ZANIK_11261);
@@ -351,7 +366,6 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		goblinPotionHighlight = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.GOBLIN_POTION1, ItemID.GOBLIN_POTION2, ItemID.GOBLIN_POTION3));
 		goblinPotionHighlight.setHighlightInInventory(true);
 		goblinSelectionActive = new WidgetPresenceRequirement(739, 31);
-		ItemRequirement blackMushroom = new ItemRequirement("Black mushroom", ItemID.BLACK_MUSHROOM);
 		hasBlackMushroomsOrDye = new Conditions(LogicType.OR, blackMushroom, blackDye);
 		isAGoblin = new VarbitRequirement(13612, 1);
 
@@ -360,7 +374,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		blackGoblinMailEquipped = new ItemRequirement("Black goblin mail", ItemID.BLACK_GOBLIN_MAIL, 1, true);
 		inNorthEastRoom = new Conditions(LogicType.OR, new ZoneRequirement(northEastRoomSouth), new ZoneRequirement(northEastRoomNorth));
 		dorgeshKaanSphere = new ItemRequirement("Dorgesh-Kaan sphere", ItemID.DORGESHKAAN_SPHERE);
-		blackDyeOrBlackGoblinMail = new Conditions(LogicType.OR, hasBlackMushroomsOrDye, blackGoblinMail);
+		blackDyeOrBlackGoblinMail = new Conditions(LogicType.OR, blackDye, blackGoblinMail);
 
 		huzamogaarbKey = new ItemRequirement("Huzamogaarb key", ItemID.HUZAMOGAARB_KEY);
 		knowsAboutWhitefish = new VarbitRequirement(13602, 1);
@@ -421,26 +435,35 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToGrubfoot = new NpcStep(this, NpcID.GRUBFOOT_11255, new WorldPoint(3318, 9611, 0), "Talk to Grubfoot in the Dorgeshuun Mines.");
+		goDownIntoBasement = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0), "Enter the Lumbridge Castle basement.");
+		climbThroughHole = new ObjectStep(this, NullObjectID.NULL_6898, new WorldPoint(3219, 9618, 0), "");
+		talkToKazgar = new NpcStep(this, NpcID.KAZGAR_7301, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
+
+		talkToGrubfoot = new NpcStep(this, NpcID.GRUBFOOT_11255, new WorldPoint(3318, 9611, 0), "");
 		talkToGrubfoot.addDialogStep("Yes.");
 		talkToGrubfoot.addDialogStep("Follow me.");
-		goToDorgeshKaan = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0), "Enter the city of Dorgesh-Kaan.");
-		talkToZanik = new NpcStep(this, NpcID.ZANIK_11260, new WorldPoint(2704, 5365, 0), "Talk to Zanik in Oldak's lab.");
+		enterDorgeshKaan = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0), "Enter the city of Dorgesh-Kaan.");
+		talkToZanik = new NpcStep(this, NpcID.ZANIK_11260, new WorldPoint(2704, 5365, 0),
+			"Talk to Zanik in Oldak's lab.");
 		talkToZanik.addDialogStep("So why have you come to talk to Zanik?");
 		talkToZanik.addDialogStep("What was this new dream?");
-		talkToZanik.addDialogStep("It's just a dream. It doesn't mean anything.");
+		talkToZanik.addDialogSteps("It's just a dream. It doesn't mean anything.", "I think it must mean something.", "I don't know.");
 		talkToZanik.addDialogStep("I'm ready.");
 
 		enterGoblinCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the Goblin Cave next to the Fishing Guild.");
 		talkToZanikGoblinCave = new NpcStep(this, NpcID.ZANIK_11260, new WorldPoint(2617, 9797, 0), "Talk to Zanik and get her to follow you.");
 		talkToZanikGoblinCave.addDialogStep("Follow me.");
-		talkToGuard = new NpcStep(this, NpcID.GOBLIN_GUARD_11314, new WorldPoint(2580, 9852, 0), "Talk to the goblin guard in the northwest of the cave. If you need mushrooms for the black dye, pick them now.");
-		talkToMakeoverMage = new NpcStep(this, new int[]{NpcID.MAKEOVER_MAGE, NpcID.MAKEOVER_MAGE_1307}, new WorldPoint(2917, 3322, 0), "Talk to the Makeover Mage southwest of Falador.", toadflaxPotionUnf);
+		talkToGuard = new NpcStep(this, NpcID.GOBLIN_GUARD_11314, new WorldPoint(2580, 9852, 0), "Talk to the goblin guard in the northwest of the cave.");
+		talkToMakeoverMage = new NpcStep(this, new int[]{NpcID.MAKEOVER_MAGE, NpcID.MAKEOVER_MAGE_1307}, new WorldPoint(2917, 3322, 0),
+			"Talk to the Makeover Mage southwest of Falador.", toadflaxPotionUnf);
 		talkToMakeoverMage.addDialogSteps("Can you turn me into a goblin?", "I need to slip past some goblin guards.", "Can you turn me into a goblin or not?");
 		pickPharmakosBerry = new ObjectStep(this, ObjectID.PHARMAKOS_BUSH, "Pick some Pharmakos berries from the bushes outside.", toadflaxPotionUnf);
 		mixGoblinPotion = new DetailedQuestStep(this, "Use the pharmakos berries on the unfinished toadflax potion.", pharmakosBerryHighlight, toadflaxUnfHighlight);
-		goBackToGoblinCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Go back to the Goblin Cave outside the Fishing Guild.", goblinPotion, blackDye, noEquippedItems);
-		pickBlackMushrooms = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(2577, 9845, 0), "Pick some black mushrooms for the black dye.", goblinPotion, blackDye, noEquippedItems);
+		goBackToGoblinCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Go back to the Goblin Cave outside the Fishing Guild.",
+			goblinPotion, vial, pestleAndMortar, noEquippedItems);
+		pickBlackMushrooms = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(2577, 9845, 0), "Pick some black mushrooms and use it on a vial to make black dye.",
+			goblinPotion, vial, pestleAndMortar, noEquippedItems);
+		makeBlackDye = new DetailedQuestStep(this, "Make black dye by using the blackmushrooms on a vial.", blackMushroom.highlighted(), vial.highlighted(), pestleAndMortar);
 		goToGuards = new DetailedQuestStep(this, new WorldPoint(2580, 9850, 0), "Go to the area outside the temple near the guards.", goblinPotion, blackDye, noEquippedItems);
 		drinkGoblinPotion = new DetailedQuestStep(this, "Drink the goblin potion.", goblinPotionHighlight, blackDye, noEquippedItems);
 		confirmGoblin = new WidgetStep(this, "Confirm to become a goblin. Your selection doesn't matter.", 739, 31);
@@ -550,14 +573,31 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		confirmFixMachine = new WidgetStep(this, "Fix the machine.", 738, 39);
 		watchYubiuskCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
 
-		goToYubiusk = new NpcStep(this, NpcID.OLDAK_11385, new WorldPoint(2741, 5220, 0), "Talk to Oldak to return to Yu'Biusk.");
-		openBox = new ObjectStep(this, ObjectID.STRANGE_BOX, WorldPoint.fromLocalInstance(client, new LocalPoint(3000, 8000)), "Walk up to the strange box and watch the cutscene. Quest complete!");
+		goToYubiusk = new NpcStep(this, NpcID.OLDAK_11385, new WorldPoint(2741, 5220, 0),
+			"Talk to Oldak to return to Yu'Biusk.");
+		openBox = new ObjectStep(this, ObjectID.STRANGE_BOX, WorldPoint.fromLocalInstance(client,
+			new LocalPoint(3000, 8000)), "Walk up to the strange box and watch the cutscene. Quest complete!");
+
+		ConditionalStep getToMine = new ConditionalStep(this, goDownIntoBasement);
+		getToMine.addStep(inTunnels, talkToKazgar);
+		getToMine.addStep(inBasement, climbThroughHole);
+
+		goTalkToGrubfoot = new ConditionalStep(this, getToMine, "Talk to Grubfoot in the Dorgeshuun Mines.");
+		goTalkToGrubfoot.addStep(inMines, talkToGrubfoot);
+
+		ConditionalStep enterCity = new ConditionalStep(this, getToMine);
+		enterCity.addStep(inMines, enterDorgeshKaan);
+
+		goTalkToZanik = new ConditionalStep(this, goTalkToGrubfoot);
+		goTalkToZanik.addStep(inDorgeshKaanWithGrubfoot, talkToZanik);
+		goTalkToZanik.addStep(grubfootFollowing, enterCity);
 	}
 
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye, purpleDye, blackDye, fishingRod, rawSlimyEel, coins, combatGear));
+		return new ArrayList<>(Arrays.asList(lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye,
+			pestleAndMortar, vial, fishingRod, rawSlimyEel, coins, combatGear));
 	}
 
 	@Override
@@ -594,15 +634,15 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> panels = new ArrayList<>();
 		panels.add(new PanelDetails("Grubfoot's Dream",
-				Arrays.asList(talkToGrubfoot, goToDorgeshKaan, talkToZanik),
+				Arrays.asList(goTalkToGrubfoot, enterDorgeshKaan, talkToZanik),
 				lightSource, noPet));
 		panels.add(new PanelDetails("Impostor Among Goblins",
 				Arrays.asList(enterGoblinCave, talkToZanikGoblinCave, talkToGuard, talkToMakeoverMage, pickPharmakosBerry, mixGoblinPotion),
 				Arrays.asList(toadflaxPotionUnf),
 				Arrays.asList(skillsNecklace, invSpaceToUnequip)));
 		panels.add(new PanelDetails("The Temple of Tribes",
-				Arrays.asList(goBackToGoblinCave, goToGuards, drinkGoblinPotion, talkToGuardAsGoblin, dyeGoblinMail, enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell, leaveNorthEastRoom, talkToPriestInTemple, pickpocketPriest),
-				Arrays.asList(noPet, goblinPotion, hasBlackMushroomsOrDye, goblinMail),
+				Arrays.asList(goBackToGoblinCave, goToGuards, pickBlackMushrooms, makeBlackDye, drinkGoblinPotion, talkToGuardAsGoblin, dyeGoblinMail, enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell, leaveNorthEastRoom, talkToPriestInTemple, pickpocketPriest),
+				Arrays.asList(noPet, goblinPotion, vial, pestleAndMortar, goblinMail),
 				Arrays.asList(invSpaceToUnequip, dorgeshKaanSphereRec)));
 		panels.add(new PanelDetails("Keys to the Crypt",
 				Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, pickpocketWhitePriest, pickpocketYellowPriest, pickpocketBluePriest, pickpocketOrangePriest, pickpocketPurplePriest, unlockCrypt),

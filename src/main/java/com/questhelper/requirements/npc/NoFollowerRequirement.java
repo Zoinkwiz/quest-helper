@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright (c) 2021, Zoinkwiz
+ *  * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without
@@ -24,29 +24,32 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package com.questhelper.requirements.util;
+package com.questhelper.requirements.npc;
 
-import java.util.function.BiFunction;
-import lombok.Getter;
+import com.questhelper.requirements.AbstractRequirement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import net.runelite.api.Client;
 
-public enum Operation
+public class NoFollowerRequirement extends AbstractRequirement
 {
-	GREATER(">", (x,y) -> x > y),
-	LESS("<", (x,y) -> x < y),
-	LESS_EQUAL("<=", (x,y) -> x <= y),
-	EQUAL("==", Integer::equals),
-	GREATER_EQUAL(">=", (x,y) -> x >= y),
-	NOT_EQUAL("=/=", (x,y) -> !x.equals(y));
+	String text;
 
-	private final BiFunction<Integer, Integer, Boolean> operation;
-	@Getter
-	private String displayText;
-	Operation(String displayText, BiFunction<Integer, Integer, Boolean> operation) {
-		this.displayText = displayText;
-		this.operation = operation;
+	public NoFollowerRequirement(String text)
+	{
+		this.text = text;
 	}
 
-	public boolean check(int numberToCheck, int numberToCheckAgainst) {
-		return operation.apply(numberToCheck, numberToCheckAgainst);
+	@Override
+	public boolean check(Client client)
+	{
+		return client.getVarpValue(447) == -1;
+	}
+
+	@Override
+	public String getDisplayText()
+	{
+		return text;
 	}
 }

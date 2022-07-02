@@ -193,7 +193,6 @@ public class TarnRoute extends ConditionalStep
 
 	public void setupSteps()
 	{
-		System.out.println(steps.get(null).getText());
 		enterHauntedMine = steps.get(null);
 		enterLair = new ObjectStep(questHelper, ObjectID.ENTRANCE_15833, new WorldPoint(3424, 9661, 0), "Enter the entrance to the north.");
 

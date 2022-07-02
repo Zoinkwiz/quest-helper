@@ -37,6 +37,7 @@ import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.steps.choice.DialogChoiceChange;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
+import com.questhelper.steps.choice.WidgetLastState;
 import com.questhelper.steps.choice.WidgetTextChange;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
@@ -336,6 +337,22 @@ public abstract class QuestStep implements Module
 	public void addWidgetChange(String choice, int groupID, int childID, String newText)
 	{
 		widgetChoices.addChoice(new WidgetTextChange(questHelper.getConfig(), choice, groupID, childID, newText));
+	}
+
+	public void addWidgetLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue,
+											 int choiceGroupId, int choiceChildId)
+	{
+		WidgetLastState conditionWidget = new WidgetLastState(questHelper.getConfig(), widgetValue, widgetGroupID, widgetChildID);
+		widgetChoices.addChoice(conditionWidget);
+
+		WidgetChoiceStep newWidgetChoice = new WidgetChoiceStep(questHelper.getConfig(), choiceValue, choiceGroupId, choiceChildId);
+		newWidgetChoice.setWidgetToCheck(conditionWidget);
+		widgetChoices.addChoice(newWidgetChoice);
+	}
+
+	public void addDialogLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue)
+	{
+		addWidgetLastLoadedCondition(widgetValue, widgetGroupID, widgetChildID, choiceValue, 219, 1);
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)

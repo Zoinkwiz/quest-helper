@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 		quest = QuestHelperQuest.LAND_OF_THE_GOBLINS
@@ -85,6 +86,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 			inDorgeshKaanCaveLower, learnedAboutMachine, firstGreater, firstLess, secondGreater, secondLess, thirdGreater, thirdLess, fairyRingMachineWidgetPresent,
 			fairyRingMachineFixed, inYubiusk;
 	Requirement grubfootFollowing;
+	WidgetTextRequirement firstQuestion;
 	ConditionalStep goTalkToGrubfoot, goTalkToZanik;
 	QuestStep goDownIntoBasement, climbThroughHole, talkToKazgar;
 	QuestStep talkToGrubfoot, enterDorgeshKaan, talkToZanik, enterGoblinCave, talkToZanikGoblinCave, talkToGuard,
@@ -376,6 +378,8 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		dorgeshKaanSphere = new ItemRequirement("Dorgesh-Kaan sphere", ItemID.DORGESHKAAN_SPHERE);
 		blackDyeOrBlackGoblinMail = new Conditions(LogicType.OR, blackDye, blackGoblinMail);
 
+		firstQuestion = new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "");
+
 		huzamogaarbKey = new ItemRequirement("Huzamogaarb key", ItemID.HUZAMOGAARB_KEY);
 		knowsAboutWhitefish = new VarbitRequirement(13602, 1);
 		inHemenster = new ZoneRequirement(hemenster);
@@ -479,6 +483,12 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToZanikInCell = new NpcStep(this, NpcID.ZANIK_11260, new WorldPoint(3751, 4343, 0), "Talk to Zanik in the cell.", dorgeshKaanSphere);
 		leaveNorthEastRoom = new NpcStep(this, NpcID.GUARD_11318, new WorldPoint(3753, 4329, 0), "Pass by the guard to leave the northeastern room.");
 		talkToPriestInTemple = new NpcStep(this, NpcID.HIGH_PRIEST_BIGHEAD, new WorldPoint(3744, 4328, 0), "Talk to High Priest Bighead. When prompted, answer in this order: True, False, False.");
+		talkToPriestInTemple.addDialogLastLoadedCondition("True or false: Those who do not believe in Big High<br>War God, whether they goblins or other races, must<br>die.", 231, 6,
+			"True.");
+		talkToPriestInTemple.addDialogLastLoadedCondition("Second question. True or false: Big High War God<br>chose goblins to be his race because goblins mighty<br>warriors.", 231, 6,
+			"False.");
+		talkToPriestInTemple.addDialogLastLoadedCondition("Third question. True or false: Goblin leaders should be<br>good at planning in order to win battles.", 231, 6,
+			"False.");
 		talkToPriestInTemple.addDialogStep("Yes.");
 		talkToPriestInTemple.addDialogStep("I understand Big High War God.");
 		talkToPriestInTemple.addDialogStep("Big High War God commands it.");

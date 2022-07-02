@@ -44,6 +44,12 @@ public class WidgetChoiceStep
 	@Getter
 	private final String choice;
 
+	@Setter
+	WidgetLastState widgetToCheck;
+
+	@Setter
+	String expectedTextInWidget;
+
 	private Pattern pattern;
 
 	protected List<String> excludedStrings;
@@ -66,6 +72,17 @@ public class WidgetChoiceStep
 	{
 		this.config = config;
 		this.choice = choice;
+		this.choiceById = -1;
+		this.groupId = groupId;
+		this.groupIdForChecking = groupId;
+		this.childId = childId;
+		this.pattern = null;
+	}
+
+	public WidgetChoiceStep(QuestHelperConfig config, int groupId, int childId)
+	{
+		this.config = config;
+		this.choice = null;
 		this.choiceById = -1;
 		this.groupId = groupId;
 		this.groupIdForChecking = groupId;
@@ -147,13 +164,21 @@ public class WidgetChoiceStep
 			}
 		}
 		Widget dialogChoice = client.getWidget(groupId, childId);
-		if (dialogChoice != null)
+
+		if (dialogChoice == null)
 		{
-			Widget[] choices = dialogChoice.getChildren();
-			checkWidgets(choices);
-			Widget[] nestedChildren = dialogChoice.getNestedChildren();
-			checkWidgets(nestedChildren);
+			return;
 		}
+
+		if (widgetToCheck != null && !widgetToCheck.priorTextMatches())
+		{
+			return;
+		}
+
+		Widget[] choices = dialogChoice.getChildren();
+		checkWidgets(choices);
+		Widget[] nestedChildren = dialogChoice.getNestedChildren();
+		checkWidgets(nestedChildren);
 	}
 
 	protected void checkWidgets(Widget[] choices)

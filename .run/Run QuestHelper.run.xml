@@ -5,7 +5,7 @@
     <option name="MAIN_CLASS_NAME" value="com.questhelper.QuestHelperPluginTest" />
     <module name="quest-helper.test" />
     <option name="PROGRAM_PARAMETERS" value="--debug --developer-mode" />
-    <option name="VM_PARAMETERS" value="-ea -Drunelite.pluginhub.version=0" />
+    <option name="VM_PARAMETERS" value="-ea" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

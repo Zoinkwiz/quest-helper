@@ -86,6 +86,9 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 	ZoneRequirement inBrimstailCave, inStronghold, inPest;
 
+	ConditionalStep copperLongtailTask, novicePestTask, gnomeAgiTask, gnomeBallTask, chompyHatTask, tpPestTask,
+		swampToadCollectTask, brimstailEssenceTask, oakShortbowTask, terrorbirdTask, mineIronTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -94,20 +97,42 @@ public class WesternEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		doEasy.addStep(notGnomeAgi, gnomeAgi);
-		doEasy.addStep(new Conditions(notOakShortbow, inStronghold), oakShortbow);
-		doEasy.addStep(notOakShortbow, moveToStronghold);
-		doEasy.addStep(new Conditions(notBrimstailEssence, inBrimstailCave), brimstailEssence);
-		doEasy.addStep(notBrimstailEssence, moveToBrim);
-		doEasy.addStep(notTerrorbird, terrorbird);
-		doEasy.addStep(notGnomeBall, gnomeBall);
-		doEasy.addStep(notSwampToadCollect, swampToadCollect);
-		doEasy.addStep(notCopperLongtail, copperLongtail);
-		doEasy.addStep(notMineIron, mineIron);
-		doEasy.addStep(notTPPest, tpPest);
-		doEasy.addStep(new Conditions(notNovicePest, inPest), novicePest);
-		doEasy.addStep(notNovicePest, moveToPest);
-		doEasy.addStep(notChompyHat, chompyHat);
+
+		gnomeAgiTask = new ConditionalStep(this, gnomeAgi);
+		doEasy.addStep(notGnomeAgi, gnomeAgiTask);
+
+		oakShortbowTask = new ConditionalStep(this, moveToStronghold);
+		oakShortbowTask.addStep(inStronghold, oakShortbow);
+		doEasy.addStep(notOakShortbow, oakShortbowTask);
+
+		brimstailEssenceTask = new ConditionalStep(this, moveToBrim);
+		brimstailEssenceTask.addStep(inBrimstailCave, brimstailEssence);
+		doEasy.addStep(notBrimstailEssence, brimstailEssenceTask);
+
+		terrorbirdTask = new ConditionalStep(this, terrorbird);
+		doEasy.addStep(notTerrorbird, terrorbirdTask);
+
+		gnomeBallTask = new ConditionalStep(this, gnomeBall);
+		doEasy.addStep(notGnomeBall, gnomeBallTask);
+
+		swampToadCollectTask = new ConditionalStep(this, swampToadCollect);
+		doEasy.addStep(notSwampToadCollect, swampToadCollectTask);
+
+		copperLongtailTask = new ConditionalStep(this, copperLongtail);
+		doEasy.addStep(notCopperLongtail, copperLongtailTask);
+
+		mineIronTask = new ConditionalStep(this, mineIron);
+		doEasy.addStep(notMineIron, mineIronTask);
+
+		tpPestTask = new ConditionalStep(this, tpPest);
+		doEasy.addStep(notTPPest, tpPestTask);
+
+		novicePestTask = new ConditionalStep(this, moveToPest);
+		novicePestTask.addStep(inPest, novicePest);
+		doEasy.addStep(notNovicePest, novicePestTask);
+
+		chompyHatTask = new ConditionalStep(this, chompyHat);
+		doEasy.addStep(notChompyHat, chompyHatTask);
 
 		return doEasy;
 	}
@@ -270,55 +295,66 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 		PanelDetails agiSteps = new PanelDetails("Gnome Agility Course", Collections.singletonList(gnomeAgi));
 		agiSteps.setDisplayCondition(notGnomeAgi);
+		agiSteps.setLockingStep(gnomeAgiTask);
 		allSteps.add(agiSteps);
 
 		PanelDetails shortbowSteps = new PanelDetails("Fletch Oak Shortbow in Gnome Stronghold",
 			Arrays.asList(moveToStronghold, oakShortbow), new SkillRequirement(Skill.FLETCHING, 20),
 			oakShortU, bowString);
 		shortbowSteps.setDisplayCondition(notOakShortbow);
+		shortbowSteps.setLockingStep(oakShortbowTask);
 		allSteps.add(shortbowSteps);
 
 		PanelDetails essSteps = new PanelDetails("Brimstail Essence Teleport", Arrays.asList(moveToBrim,
 			brimstailEssence), runeMysteries);
 		essSteps.setDisplayCondition(notBrimstailEssence);
+		essSteps.setLockingStep(brimstailEssenceTask);
 		allSteps.add(essSteps);
 
 		PanelDetails birdSteps = new PanelDetails("Kill Terrorbird", Collections.singletonList(terrorbird),
 			combatGear, food);
 		birdSteps.setDisplayCondition(notTerrorbird);
+		birdSteps.setLockingStep(terrorbirdTask);
 		allSteps.add(birdSteps);
 
 		PanelDetails ballSteps = new PanelDetails("Gnome Ball Goal", Collections.singletonList(gnomeBall));
 		ballSteps.setDisplayCondition(notGnomeBall);
+		ballSteps.setLockingStep(gnomeBallTask);
 		allSteps.add(ballSteps);
 
 		PanelDetails toadSteps = new PanelDetails("Collect Swamp Toad", Collections.singletonList(swampToadCollect));
 		toadSteps.setDisplayCondition(notSwampToadCollect);
+		toadSteps.setLockingStep(swampToadCollectTask);
 		allSteps.add(toadSteps);
 
 		PanelDetails copperSteps = new PanelDetails("Copper Longtail", Collections.singletonList(copperLongtail),
 			new SkillRequirement(Skill.HUNTER, 9), birdSnare);
 		copperSteps.setDisplayCondition(notCopperLongtail);
+		copperSteps.setLockingStep(copperLongtailTask);
 		allSteps.add(copperSteps);
 
 		PanelDetails ironSteps = new PanelDetails("Mine Iron", Collections.singletonList(mineIron),
 			new SkillRequirement(Skill.MINING, 15), pickaxe);
 		ironSteps.setDisplayCondition(notMineIron);
+		ironSteps.setLockingStep(mineIronTask);
 		allSteps.add(ironSteps);
 
 		PanelDetails tpSteps = new PanelDetails("Teleport to Pest Control", Collections.singletonList(tpPest),
 			new CombatLevelRequirement(40));
 		tpSteps.setDisplayCondition(notTPPest);
+		tpSteps.setLockingStep(tpPestTask);
 		allSteps.add(tpSteps);
 
 		PanelDetails pestSteps = new PanelDetails("Novice Pest Control", Arrays.asList(moveToPest,
 			novicePest), new CombatLevelRequirement(40), combatGear);
 		pestSteps.setDisplayCondition(notNovicePest);
+		pestSteps.setLockingStep(novicePestTask);
 		allSteps.add(pestSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
 			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
+		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

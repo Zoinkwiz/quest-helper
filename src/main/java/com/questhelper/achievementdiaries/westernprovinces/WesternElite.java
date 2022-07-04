@@ -84,6 +84,9 @@ public class WesternElite extends ComplexStateQuestHelper
 
 	ZoneRequirement inTirannwn, inSmokeDungeon, inThermyArena;
 
+	ConditionalStep magicLongTask, killThermyTask, prissyScillaTask, advancedAgiTask, fullVoidTask, chompyHatTask,
+		pickpocketElfTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -92,16 +95,30 @@ public class WesternElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(notPrissyScilla, prissyScilla);
-		doElite.addStep(notAdvancedAgi, advancedAgi);
-		doElite.addStep(new Conditions(notMagicLong, inTirannwn), magicLong);
-		doElite.addStep(notMagicLong, moveToTirannwn);
-		doElite.addStep(new Conditions(notKillThermy, inThermyArena), killThermy);
-		doElite.addStep(new Conditions(notKillThermy, inSmokeDungeon), moveToThermy);
-		doElite.addStep(notKillThermy, moveToSmoke);
-		doElite.addStep(notPickpocketElf, pickpocketElf);
-		doElite.addStep(notFullVoid, fullVoid);
-		doElite.addStep(notChompyHat, chompyHat);
+
+		prissyScillaTask = new ConditionalStep(this, prissyScilla);
+		doElite.addStep(notPrissyScilla, prissyScillaTask);
+
+		advancedAgiTask = new ConditionalStep(this, advancedAgi);
+		doElite.addStep(notAdvancedAgi, advancedAgiTask);
+
+		magicLongTask = new ConditionalStep(this, moveToTirannwn);
+		magicLongTask.addStep(inTirannwn, magicLong);
+		doElite.addStep(notMagicLong, magicLongTask);
+
+		killThermyTask = new ConditionalStep(this, moveToSmoke);
+		killThermyTask.addStep(inSmokeDungeon, moveToThermy);
+		killThermyTask.addStep(inThermyArena, killThermy);
+		doElite.addStep(notKillThermy, killThermyTask);
+
+		pickpocketElfTask = new ConditionalStep(this, pickpocketElf);
+		doElite.addStep(notPickpocketElf, pickpocketElfTask);
+
+		fullVoidTask = new ConditionalStep(this, fullVoid);
+		doElite.addStep(notFullVoid, fullVoidTask);
+
+		chompyHatTask = new ConditionalStep(this, chompyHat);
+		doElite.addStep(notChompyHat, chompyHatTask);
 
 		return doElite;
 	}
@@ -267,36 +284,44 @@ public class WesternElite extends ComplexStateQuestHelper
 			Collections.singletonList(prissyScilla), new SkillRequirement(Skill.FARMING, 75), magicSapling,
 			coconuts25, rake, spade);
 		prissySteps.setDisplayCondition(notPrissyScilla);
+		prissySteps.setLockingStep(prissyScillaTask);
 		allSteps.add(prissySteps);
 
 		PanelDetails agiSteps = new PanelDetails("Advanced Elven Shortcut", Collections.singletonList(advancedAgi),
 			undergroundPass, new SkillRequirement(Skill.AGILITY, 85));
 		agiSteps.setDisplayCondition(notAdvancedAgi);
+		agiSteps.setLockingStep(advancedAgiTask);
 		allSteps.add(agiSteps);
 
 		PanelDetails magicSteps = new PanelDetails("Magic Longbow In Tirannwn", Arrays.asList(moveToTirannwn,
 			magicLong), new SkillRequirement(Skill.FLETCHING, 85), regicide, magicLongU, bowString);
 		magicSteps.setDisplayCondition(notMagicLong);
+		magicSteps.setLockingStep(magicLongTask);
 		allSteps.add(magicSteps);
 
-		PanelDetails thermySteps = new PanelDetails("Thermonuclear Smoke Devil", Collections.singletonList(killThermy),
-			new SkillRequirement(Skill.SLAYER, 93, false), combatGear, food, mouthProtection);
+		PanelDetails thermySteps = new PanelDetails("Thermonuclear Smoke Devil", Arrays.asList(moveToSmoke,
+			moveToThermy, killThermy), new SkillRequirement(Skill.SLAYER, 93, false), combatGear,
+			food, mouthProtection);
 		thermySteps.setDisplayCondition(notKillThermy);
+		thermySteps.setLockingStep(killThermyTask);
 		allSteps.add(thermySteps);
 
 		PanelDetails elfSteps = new PanelDetails("Pickpocket An Elf", Collections.singletonList(pickpocketElf),
 			new SkillRequirement(Skill.THIEVING, 85), mourningsEndPartI);
 		elfSteps.setDisplayCondition(notPickpocketElf);
+		elfSteps.setLockingStep(pickpocketElfTask);
 		allSteps.add(elfSteps);
 
 		PanelDetails voidSteps = new PanelDetails("Equip Full Void Set", Collections.singletonList(fullVoid),
 			base42CombatSkills, voidHelm, voidTop, voidRobe, voidGloves);
 		voidSteps.setDisplayCondition(notFullVoid);
+		voidSteps.setLockingStep(fullVoidTask);
 		allSteps.add(voidSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
 			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
+		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

@@ -96,6 +96,9 @@ public class WesternMedium extends ComplexStateQuestHelper
 
 	ZoneRequirement inBrimstailCave, inApeAtoll, inPest, inStrongholdBasement, inStrongholdFirst, inEagleArea;
 
+	ConditionalStep agiShortcutTask, spiritToStrongholdTask, spinedLarupiaTask, apeBassTask, apeTeakTask, interPestTask,
+		gliderToFeldipTask, chompyHatTask, eagleFeldipTask, chocolateBombTask, gnomeDeliveryTask, crystalSawTask, mineGoldTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -104,31 +107,57 @@ public class WesternMedium extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		doMedium.addStep(notSpiritToStronghold, spiritToStronghold);
-		doMedium.addStep(new Conditions(notChocolateBomb, inStrongholdFirst), chocolateBomb);
-		doMedium.addStep(notChocolateBomb, moveToStrongFirstChoco);
-		//doMedium.addStep(new Conditions(notGnomeDelivery, inStrongholdFirst, trainingCompleted), gnomeDelivery);
-		doMedium.addStep(new Conditions(notGnomeDelivery, inStrongholdFirst), gnomeDelivery);
-		//doMedium.addStep(new Conditions(notGnomeDelivery, inStrongholdFirst), completeTraining);
-		doMedium.addStep(notGnomeDelivery, moveToStrongFirstDelivery);
-		doMedium.addStep(new Conditions(notMineGold, inStrongholdBasement), mineGold);
-		doMedium.addStep(new Conditions(notMineGold, inStrongholdFirst), moveToStrongBase2);
-		doMedium.addStep(notMineGold, moveToStrongBase);
-		doMedium.addStep(new Conditions(notCrystalSaw, inBrimstailCave), crystalSaw);
-		doMedium.addStep(notCrystalSaw, moveToBrimstailCave);
-		doMedium.addStep(notAgiShortcut, agiShortcut);
-		doMedium.addStep(new Conditions(notEagleFeldip, inEagleArea), eagleFeldip);
-		doMedium.addStep(notEagleFeldip, moveToEagle);
-		doMedium.addStep(notSpinedLarupia, spinedLarupia);
-		doMedium.addStep(notGliderToFeldip, gliderToFeldip);
-		doMedium.addStep(new Conditions(notApeBass, inApeAtoll), apeBass);
-		doMedium.addStep(notApeBass, moveToApeBass);
-		doMedium.addStep(new Conditions(notApeTeak, inApeAtoll, teakLogs, choppedLogs), apeTeakBurn);
-		doMedium.addStep(new Conditions(notApeTeak, inApeAtoll), apeTeakChop);
-		doMedium.addStep(notApeTeak, moveToApeTeak);
-		doMedium.addStep(new Conditions(notInterPest, inPest), interPest);
-		doMedium.addStep(notInterPest, moveToPest);
-		doMedium.addStep(notChompyHat, chompyHat);
+
+		spiritToStrongholdTask = new ConditionalStep(this, spiritToStronghold);
+		doMedium.addStep(notSpiritToStronghold, spiritToStrongholdTask);
+
+		chocolateBombTask = new ConditionalStep(this, moveToStrongFirstChoco);
+		chocolateBombTask.addStep(inStrongholdFirst, chocolateBomb);
+		doMedium.addStep(notChocolateBomb, chocolateBombTask);
+
+		gnomeDeliveryTask = new ConditionalStep(this, moveToStrongFirstDelivery);
+		gnomeDeliveryTask.addStep(inStrongholdFirst, gnomeDelivery);
+		//gnomeDeliveryTask.addStep(new Conditions(inStrongholdFirst, trainingCompleted), gnomeDelivery);
+		//gnomeDeliveryTask.addStep(new Conditions(inStrongholdFirst), completeTraining);
+		doMedium.addStep(notGnomeDelivery, gnomeDeliveryTask);
+
+		mineGoldTask = new ConditionalStep(this, moveToStrongBase);
+		mineGoldTask.addStep(inStrongholdFirst, moveToStrongBase2);
+		mineGoldTask.addStep(inStrongholdBasement, mineGold);
+		doMedium.addStep(notMineGold, mineGoldTask);
+
+		crystalSawTask = new ConditionalStep(this, moveToBrimstailCave);
+		crystalSawTask.addStep(inBrimstailCave, crystalSaw);
+		doMedium.addStep(notCrystalSaw, crystalSawTask);
+
+		agiShortcutTask = new ConditionalStep(this, agiShortcut);
+		doMedium.addStep(notAgiShortcut, agiShortcutTask);
+
+		eagleFeldipTask = new ConditionalStep(this, moveToEagle);
+		eagleFeldipTask.addStep(inEagleArea, eagleFeldip);
+		doMedium.addStep(notEagleFeldip, eagleFeldipTask);
+
+		spinedLarupiaTask = new ConditionalStep(this, spinedLarupia);
+		doMedium.addStep(notSpinedLarupia, spinedLarupiaTask);
+
+		gliderToFeldipTask = new ConditionalStep(this, gliderToFeldip);
+		doMedium.addStep(notGliderToFeldip, gliderToFeldipTask);
+
+		apeBassTask = new ConditionalStep(this, moveToApeBass);
+		apeBassTask.addStep(inApeAtoll, apeBass);
+		doMedium.addStep(notApeBass, apeBassTask);
+
+		apeTeakTask = new ConditionalStep(this, moveToApeTeak);
+		apeTeakTask.addStep(inApeAtoll, apeTeakChop);
+		apeTeakTask.addStep(new Conditions(inApeAtoll, teakLogs, choppedLogs), apeTeakBurn);
+		doMedium.addStep(notApeTeak, apeTeakTask);
+
+		interPestTask = new ConditionalStep(this, moveToPest);
+		interPestTask.addStep(inPest, interPest);
+		doMedium.addStep(notInterPest, interPestTask);
+
+		chompyHatTask = new ConditionalStep(this, chompyHat);
+		doMedium.addStep(notChompyHat, chompyHatTask);
 
 		return doMedium;
 	}
@@ -362,70 +391,83 @@ public class WesternMedium extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails Steps = new PanelDetails("Spirit Tree To Gnome Stronghold",
+		PanelDetails spiritSteps = new PanelDetails("Spirit Tree To Gnome Stronghold",
 			Collections.singletonList(spiritToStronghold), treeGnomeVillage);
-		Steps.setDisplayCondition(notSpiritToStronghold);
-		allSteps.add(Steps);
+		spiritSteps.setDisplayCondition(notSpiritToStronghold);
+		spiritSteps.setLockingStep(spiritToStrongholdTask);
+		allSteps.add(spiritSteps);
 
 		PanelDetails chocoSteps = new PanelDetails("Chocolate Bomb", Arrays.asList(moveToStrongFirstChoco,
 			chocolateBomb), new SkillRequirement(Skill.COOKING, 42), gnomebowl, gianneDough, chocolateBar, equaLeaf,
 			potOfCream, chocolateDust);
 		chocoSteps.setDisplayCondition(notChocolateBomb);
+		chocoSteps.setLockingStep(chocolateBombTask);
 		allSteps.add(chocoSteps);
 
 		PanelDetails restSteps = new PanelDetails("Gnome Restaurant Delivery",
 			Arrays.asList(moveToStrongFirstDelivery, gnomeDelivery), new SkillRequirement(Skill.COOKING, 42));
 		restSteps.setDisplayCondition(notGnomeDelivery);
+		restSteps.setLockingStep(gnomeDeliveryTask);
 		allSteps.add(restSteps);
 
 		PanelDetails goldSteps = new PanelDetails("Gold Under The Grand Tree",
 			Arrays.asList(moveToStrongBase, mineGold), new SkillRequirement(Skill.MINING, 40), pickaxe);
 		goldSteps.setDisplayCondition(notMineGold);
+		goldSteps.setLockingStep(mineGoldTask);
 		allSteps.add(goldSteps);
 
 		PanelDetails sawSteps = new PanelDetails("Crystal Saw", Arrays.asList(moveToBrimstailCave, crystalSaw), eyesOfGlouphrie,
 			crystalSawSeed);
 		sawSteps.setDisplayCondition(notCrystalSaw);
+		sawSteps.setLockingStep(crystalSawTask);
 		allSteps.add(sawSteps);
 
 		PanelDetails agiSteps = new PanelDetails("Agility Shortcut To Otto", Collections.singletonList(agiShortcut),
 			new SkillRequirement(Skill.AGILITY, 37), treeGnomeVillage, grandTree);
 		agiSteps.setDisplayCondition(notAgiShortcut);
+		agiSteps.setLockingStep(agiShortcutTask);
 		allSteps.add(agiSteps);
 
 		PanelDetails eagleSteps = new PanelDetails("Eagle To Feldip Hills", Arrays.asList(moveToEagle, eagleFeldip));
 		eagleSteps.setDisplayCondition(notEagleFeldip);
+		eagleSteps.setLockingStep(eagleFeldipTask);
 		allSteps.add(eagleSteps);
 
 		PanelDetails laruSteps = new PanelDetails("Spined Larupia", Collections.singletonList(spinedLarupia),
 			new SkillRequirement(Skill.HUNTER, 31), teasingStick, knife, logs);
 		laruSteps.setDisplayCondition(notSpinedLarupia);
+		laruSteps.setLockingStep(spinedLarupiaTask);
 		allSteps.add(laruSteps);
 
 		PanelDetails gliderSteps = new PanelDetails("Glider To Feldip Hills", Collections.singletonList(gliderToFeldip),
 			grandTree, oneSmallFavour);
 		gliderSteps.setDisplayCondition(notGliderToFeldip);
+		gliderSteps.setLockingStep(gliderToFeldipTask);
 		allSteps.add(gliderSteps);
 
 		PanelDetails bassSteps = new PanelDetails("Bass On Ape Atoll", Arrays.asList(moveToApeBass, apeBass),
 			new SkillRequirement(Skill.FISHING, 46), monkeyMadnessI, bigFishingNet);
 		bassSteps.setDisplayCondition(notApeBass);
+		bassSteps.setLockingStep(apeBassTask);
 		allSteps.add(bassSteps);
 
 		PanelDetails teakSteps = new PanelDetails("Teaks On Ape Atoll", Arrays.asList(moveToApeTeak, apeTeakChop,
 			apeTeakBurn), new SkillRequirement(Skill.FIREMAKING, 35), new SkillRequirement(Skill.WOODCUTTING, 35),
 			monkeyMadnessI, axe, tinderbox);
 		teakSteps.setDisplayCondition(notApeTeak);
+		teakSteps.setLockingStep(apeTeakTask);
 		allSteps.add(teakSteps);
 
 		PanelDetails pestSteps = new PanelDetails("Intermediate Pest Control", Arrays.asList(moveToPest, interPest),
 			new CombatLevelRequirement(70), combatGear);
 		pestSteps.setDisplayCondition(notInterPest);
+		pestSteps.setLockingStep(interPestTask);
 		allSteps.add(pestSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
 			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
+		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

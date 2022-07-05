@@ -190,6 +190,7 @@ public enum ExternalQuestResources {
 	THE_MAGE_ARENA_II("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
 	IN_SEARCH_OF_KNOWLEDGE("https://oldschool.runescape.wiki/w/In_Search_of_Knowledge"),
 	DADDYS_HOME("https://oldschool.runescape.wiki/w/Daddy%27s_Home"),
+	HOPESPEARS_WILL("https://oldschool.runescape.wiki/w/Hopespear%27s_Will"),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS("https://oldschool.runescape.wiki/w/Camelot_training_room"),

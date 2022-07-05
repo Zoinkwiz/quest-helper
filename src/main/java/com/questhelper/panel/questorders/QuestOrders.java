@@ -232,7 +232,7 @@ public class QuestOrders
 		QuestHelperQuest.SINS_OF_THE_FATHER,
 		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
-		//QuestHelperQuest.HOPESPEARS_WILL - Placeholder for future addition.
+		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.MONKEY_MADNESS_II,
@@ -679,7 +679,7 @@ public class QuestOrders
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		//QuestHelperQuest.THE_FROZEN_DOOR - Placeholder for future addition.
 		QuestHelperQuest.LAND_OF_THE_GOBLINS,
-		//QuestHelperQuest.HOPESPEARS_WILL - Placeholder for future addition.
+		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.SLEEPING_GIANTS,

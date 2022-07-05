@@ -25,7 +25,7 @@
 package com.questhelper;
 
 import com.questhelper.panel.questorders.QuestOrders;
-import com.questhelper.questhelpers.Quest;
+import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Color;
 import java.util.Arrays;
@@ -97,37 +97,37 @@ public interface QuestHelperConfig extends Config
 		 * Show all except generic helpers
 		 */
 		OPTIMAL("Optimal ordering",
-				q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
-						q.getQuest().getQuestType() == Quest.Type.F2P ||
-						q.getQuest().getQuestType() == Quest.Type.MINIQUEST ||
-						q.getQuest().getQuestType() == Quest.Type.ACHIEVEMENT_DIARY,
+				q -> q.getQuest().getQuestType() == QuestDetails.Type.P2P ||
+						q.getQuest().getQuestType() == QuestDetails.Type.F2P ||
+						q.getQuest().getQuestType() == QuestDetails.Type.MINIQUEST ||
+						q.getQuest().getQuestType() == QuestDetails.Type.ACHIEVEMENT_DIARY,
 				false),
 		/**
 		 * Show all free-to-play quests
 		 */
-		FREE_TO_PLAY(Quest.Type.F2P),
+		FREE_TO_PLAY(QuestDetails.Type.F2P),
 		/**
 		 * Show all members' quests
 		 */
-		MEMBERS(Quest.Type.P2P),
+		MEMBERS(QuestDetails.Type.P2P),
 		/**
 		 * Show all quests
 		 */
-		QUEST("Quests", q -> q.getQuest().getQuestType() == Quest.Type.P2P ||
-				q.getQuest().getQuestType() == Quest.Type.F2P),
+		QUEST("Quests", q -> q.getQuest().getQuestType() == QuestDetails.Type.P2P ||
+				q.getQuest().getQuestType() == QuestDetails.Type.F2P),
 		/**
 		 * Show all miniquests (all miniquests are members' only)
 		 */
-		MINIQUEST("Miniquests", Quest.Type.MINIQUEST),
+		MINIQUEST("Miniquests", QuestDetails.Type.MINIQUEST),
 		/**
 		 * Show all achievement diaries
 		 */
-		ACHIEVEMENT_DIARY("Achievement diaries", Quest.Type.ACHIEVEMENT_DIARY),
+		ACHIEVEMENT_DIARY("Achievement diaries", QuestDetails.Type.ACHIEVEMENT_DIARY),
 		/**
 		 * Show all generic helpers
 		 */
-		GENERIC_HELPER("Generic helpers", Quest.Type.GENERIC),
-		SKILL("Skill helpers", Quest.Type.SKILL);
+		GENERIC_HELPER("Generic helpers", QuestDetails.Type.GENERIC),
+		SKILL("Skill helpers", QuestDetails.Type.SKILL);
 
 		private final Predicate<QuestHelper> predicate;
 
@@ -363,9 +363,9 @@ public interface QuestHelperConfig extends Config
 		position = 2,
 		section = filterSection
 	)
-	default Quest.Difficulty difficulty()
+	default QuestDetails.Difficulty difficulty()
 	{
-		return Quest.Difficulty.ALL;
+		return QuestDetails.Difficulty.ALL;
 	}
 
 	@ConfigItem(

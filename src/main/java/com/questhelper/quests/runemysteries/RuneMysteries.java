@@ -104,7 +104,7 @@ public class RuneMysteries extends BasicQuestHelper
 		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
 		researchPackage = new ItemRequirement("Research package", ItemID.RESEARCH_PACKAGE);
 		researchPackage.setTooltip("You can get another from Sedridor if you lost it");
-		notes = new ItemRequirement("Notes", ItemID.NOTES);
+		notes = new ItemRequirement("Research notes", ItemID.RESEARCH_NOTES);
 		notes.setTooltip("You can get another from Aubury if you lost them");
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardTeleport = new ItemRequirement("A teleport to the Wizard's Tower", ItemCollections.getNecklaceOfPassages());
@@ -143,7 +143,7 @@ public class RuneMysteries extends BasicQuestHelper
 		talkToSedridor.addSubSteps(goDownToSedridor, finishTalkingToSedridor);
 
 		talkToAubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0), "Bring the Research Package to Aubury in south east Varrock.", researchPackage);
-		talkToAubury.addDialogStep("I have been sent here with a package for you.");
+		talkToAubury.addDialogStep("I've been sent here with a package for you.");
 		talkToAudburyAgain = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0), "Talk to Aubury again in south east Varrock.");
 
 		goDownToSedridor2 = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", notes);

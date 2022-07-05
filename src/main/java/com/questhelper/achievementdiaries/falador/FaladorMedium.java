@@ -340,8 +340,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, airRune3, airRune1, lawRune2, lawRune1, waterRune1,
-			crystalKey, rake, fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest, initiateLegs,
-			pickaxe, axe, brownApron, willowBranch6);
+			crystalKey, emptySack, bronzeSpear, watermelon, rake, fishingExplosive, mithGrapple, anyCrossbow, initiateHelm,
+			initiateChest, initiateLegs, pickaxe, axe, brownApron, willowBranch6);
 	}
 
 	@Override

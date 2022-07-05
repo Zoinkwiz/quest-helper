@@ -37,6 +37,7 @@ import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.steps.choice.DialogChoiceChange;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
+import com.questhelper.steps.choice.WidgetLastState;
 import com.questhelper.steps.choice.WidgetTextChange;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
@@ -48,6 +49,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -270,6 +273,11 @@ public abstract class QuestStep implements Module
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
 	}
 
+	public void addDialogStep(Pattern pattern)
+	{
+		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), pattern));
+	}
+
 	public void resetDialogSteps()
 	{
 		choices.resetChoices();
@@ -288,6 +296,11 @@ public abstract class QuestStep implements Module
 	public void addDialogStep(int id, String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, choice));
+	}
+
+	public void addDialogStep(int id, Pattern pattern)
+	{
+		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, pattern));
 	}
 
 	public void addDialogSteps(String... newChoices)
@@ -324,6 +337,22 @@ public abstract class QuestStep implements Module
 	public void addWidgetChange(String choice, int groupID, int childID, String newText)
 	{
 		widgetChoices.addChoice(new WidgetTextChange(questHelper.getConfig(), choice, groupID, childID, newText));
+	}
+
+	public void addWidgetLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue,
+											 int choiceGroupId, int choiceChildId)
+	{
+		WidgetLastState conditionWidget = new WidgetLastState(questHelper.getConfig(), widgetValue, widgetGroupID, widgetChildID);
+		widgetChoices.addChoice(conditionWidget);
+
+		WidgetChoiceStep newWidgetChoice = new WidgetChoiceStep(questHelper.getConfig(), choiceValue, choiceGroupId, choiceChildId);
+		newWidgetChoice.setWidgetToCheck(conditionWidget);
+		widgetChoices.addChoice(newWidgetChoice);
+	}
+
+	public void addDialogLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue)
+	{
+		addWidgetLastLoadedCondition(widgetValue, widgetGroupID, widgetChildID, choiceValue, 219, 1);
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)

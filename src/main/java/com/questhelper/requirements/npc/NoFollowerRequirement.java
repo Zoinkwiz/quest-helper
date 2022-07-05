@@ -1,5 +1,6 @@
 /*
- *  * Copyright (c) 2021, Senmori
+ *
+ *  * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
  *  * All rights reserved.
  *  *
  *  * Redistribution and use in source and binary forms, with or without
@@ -23,60 +24,32 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+package com.questhelper.requirements.npc;
 
-package com.questhelper.questhelpers;
+import com.questhelper.requirements.AbstractRequirement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import net.runelite.api.Client;
 
-import com.questhelper.QuestHelperQuest;
-import java.util.function.Predicate;
-
-public interface Quest
+public class NoFollowerRequirement extends AbstractRequirement
 {
-	public static boolean showCompletedQuests(QuestHelper quest)
+	String text;
+
+	public NoFollowerRequirement(String text)
 	{
-		return quest.getConfig().showCompletedQuests() && quest.isCompleted() || !quest.isCompleted();
+		this.text = text;
 	}
 
-	/**
-	 * Describes the difficulty of a {@link QuestHelperQuest}
-	 */
-	public enum Difficulty implements Predicate<QuestHelper>
+	@Override
+	public boolean check(Client client)
 	{
-		ALL,
-		NOVICE,
-		INTERMEDIATE,
-		EXPERIENCED,
-		MASTER,
-		GRANDMASTER,
-		MINIQUEST,
-		ACHIEVEMENT_DIARY,
-		GENERIC,
-		SKILL,
-		;
-
-		@Override
-		public boolean test(QuestHelper quest) {
-			return quest.getQuest().getDifficulty() == this || this == ALL;
-		}
+		return client.getVarpValue(447) == -1;
 	}
 
-	/**
-	 * Describes if the quest is free-to-play (F2P), pay-to-play(P2P),
-	 * or a miniquest.
-	 */
-	public enum Type implements Predicate<QuestHelper>
+	@Override
+	public String getDisplayText()
 	{
-		F2P,
-		P2P,
-		MINIQUEST,
-		ACHIEVEMENT_DIARY,
-		GENERIC,
-		SKILL,
-		;
-
-		@Override
-		public boolean test(QuestHelper quest)
-		{
-			return quest.getQuest().getQuestType() == this;
-		}
+		return text;
 	}
 }

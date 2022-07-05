@@ -42,7 +42,7 @@ import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
 import com.questhelper.overlays.QuestHelperWorldLineOverlay;
 import com.questhelper.overlays.QuestHelperWorldOverlay;
 import com.questhelper.panel.QuestHelperPanel;
-import com.questhelper.questhelpers.Quest;
+import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
@@ -439,7 +439,7 @@ public class QuestHelperPlugin extends Plugin
 				.stream()
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
-				.filter(Quest::showCompletedQuests)
+				.filter(QuestDetails::showCompletedQuests)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()

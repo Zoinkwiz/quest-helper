@@ -154,7 +154,7 @@ public class QuestOrders
 		QuestHelperQuest.CONTACT,
 		QuestHelperQuest.TEMPLE_OF_IKOV,
 		QuestHelperQuest.THE_EYES_OF_GLOUPHRIE,
-		//QuestHelperQuest.TEMPLE_OF_THE_EYE - Placeholder for future addition.
+		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.ONE_SMALL_FAVOUR,
 		QuestHelperQuest.THE_ASCENT_OF_ARCEUUS,
 		QuestHelperQuest.TALE_OF_THE_RIGHTEOUS,
@@ -198,7 +198,7 @@ public class QuestOrders
 		QuestHelperQuest.EAGLES_PEAK,
 		QuestHelperQuest.A_TAIL_OF_TWO_CATS,
 		QuestHelperQuest.LEGENDS_QUEST,
-		//QuestHelperQuest.LAND_OF_THE_GOBLINS - Placeholder for later addition.
+		QuestHelperQuest.LAND_OF_THE_GOBLINS,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
 		QuestHelperQuest.OLAFS_QUEST,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
@@ -384,6 +384,7 @@ public class QuestOrders
 		QuestHelperQuest.PRINCE_ALI_RESCUE,
 		QuestHelperQuest.CONTACT,
 		QuestHelperQuest.THE_EYES_OF_GLOUPHRIE,
+		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.SEA_SLUG,
 		QuestHelperQuest.OLAFS_QUEST,
 		QuestHelperQuest.TEARS_OF_GUTHIX,
@@ -433,6 +434,7 @@ public class QuestOrders
 		QuestHelperQuest.FALADOR_MEDIUM,
 		QuestHelperQuest.VARROCK_MEDIUM,
 		QuestHelperQuest.KANDARIN_MEDIUM,
+		QuestHelperQuest.LAND_OF_THE_GOBLINS,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.TALE_OF_THE_RIGHTEOUS,
 		QuestHelperQuest.THE_FORSAKEN_TOWER,
@@ -676,8 +678,9 @@ public class QuestOrders
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		//QuestHelperQuest.THE_FROZEN_DOOR - Placeholder for future addition.
+		QuestHelperQuest.LAND_OF_THE_GOBLINS,
 		//QuestHelperQuest.HOPESPEARS_WILL - Placeholder for future addition.
-		//QuestHelperQuest.TEMPLE_OF_THE_EYE - Placeholder for future addition.
+		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.SLEEPING_GIANTS,
 		// Miniquests

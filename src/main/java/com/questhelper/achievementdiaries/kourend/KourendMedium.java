@@ -152,7 +152,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		faceMask.addAlternates(ItemID.FACEMASK, ItemID.GAS_MASK);
 		hammer = new ItemRequirement("A hammer", ItemCollections.getHammer()).showConditioned(notRepairCrane);
 		nails = new ItemRequirement("Nails", ItemCollections.getNails(), 50).showConditioned(notRepairCrane);
-		planks = new ItemRequirement("3 Planks", ItemID.PLANK).showConditioned(notRepairCrane);
+		planks = new ItemRequirement("Plank", ItemID.PLANK, 3).showConditioned(notRepairCrane);
 		kingWorm = new ItemRequirement("King worm or fish chunks", ItemID.KING_WORM).showConditioned(notCatchBluegill);
 		kingWorm.addAlternates(ItemID.FISH_CHUNKS);
 		kingWorm.setTooltip("Obtainable on Molch Island");

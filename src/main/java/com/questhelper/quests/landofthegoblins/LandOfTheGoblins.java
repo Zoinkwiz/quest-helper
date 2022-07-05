@@ -49,6 +49,9 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.Collections;
 import net.runelite.api.*;
@@ -119,6 +122,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		steps.put(2, goTalkToZanik);
 
 		DetailedQuestStep watchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
+		goTalkToZanik.addSubSteps(watchTheCutscene);
 
 		steps.put(4, watchTheCutscene);
 
@@ -635,13 +639,30 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		goReturnToDorg = new ConditionalStep(this, enterCity, "Return to Dorgesh-Kaan and speak to Oldak.");
 
 		returnToDorgeshKaanOrFairyRing = new ConditionalStep(this, enterCity, "If you have access to fairy rings, travel to AJQ. Otherwise, return to Dorgesh-Kaan.");
+
+		drinkGoblinPotion.addSubSteps(confirmGoblin);
+		drinkGoblinPotionNoDye.addSubSteps(confirmGoblin);
+		dyeGoblinMail.addSubSteps(getGoblinMail);
+		talkToGuardAsGoblin.addSubSteps(talkToGuardAsGoblinNoDye, enterTempleDoorForThieving);
+		pickpocketWhitePriest.addSubSteps(passWhiteGuard);
+		pickpocketYellowPriest.addSubSteps(passYellowGuard);
+		pickpocketBluePriest.addSubSteps(passBlueGuard);
+		pickpocketOrangePriest.addSubSteps(passOrangeGuard);
+		pickpocketPurplePriest.addSubSteps(passPurpleGuard);
+		defeatSnothead.addSubSteps(learnSnailfeet);
+		defeatSnailfeet.addSubSteps(learnMosschin);
+		defeatMosschin.addSubSteps(learnRedeyes);
+		defeatRedeyes.addSubSteps(learnStrongbones);
+		talkToOldakAtMachine.addSubSteps(climbDorgeshKaanStairsF0, climbDorgeshKaanStairsF1, climbLadderTop);
+		inspectMachine.addSubSteps(decreaseFirst, increaseFirst, decreaseSecond, increaseSecond, decreaseThird, increaseThird, confirmFixMachine);
+		openBox.addSubSteps(returnToDorgeshKaanOrFairyRing);
 	}
 
 	@Override
 	public ArrayList<ItemRequirement> getItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye,
-			pestleAndMortar, vial, fishingRod, rawSlimyEel, coins, combatGear));
+			purpleDye, pestleAndMortar, vial, fishingRod, rawSlimyEel, coins, combatGear));
 	}
 
 	@Override
@@ -674,6 +695,27 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	}
 
 	@Override
+	public QuestPointReward getQuestPointReward() {
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards() {
+		return Arrays.asList(new ExperienceReward(Skill.AGILITY, 8000),
+				new ExperienceReward(Skill.FISHING, 8000),
+				new ExperienceReward(Skill.THIEVING, 8000),
+				new ExperienceReward(Skill.HERBLORE, 8000));
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards() {
+		return Arrays.asList(new UnlockReward("Access to the Goblin Temple"),
+				new UnlockReward("Access to Yu'Biusk (with fairy ring code BLQ)"),
+				new UnlockReward("Ability to purchase plain of mud spheres"),
+				new UnlockReward("Ability to make goblin potions"));
+	}
+
+	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
 		ArrayList<PanelDetails> panels = new ArrayList<>();
@@ -690,16 +732,16 @@ public class LandOfTheGoblins extends BasicQuestHelper
 				Arrays.asList(noPet, goblinPotion, vial, pestleAndMortar, goblinMail),
 				Arrays.asList(invSpaceToUnequip, dorgeshKaanSphereRec)));
 		panels.add(new PanelDetails("Keys to the Crypt",
-				Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, passWhiteGuard, pickpocketWhitePriest, dyeGoblinMailYellow,
-					passYellowGuard, pickpocketYellowPriest, dyeGoblinMailBlue, passBlueGuard, pickpocketBluePriest, dyeGoblinMailOrange, passOrangeGuard, pickpocketOrangePriest,
-					dyeGoblinMailPurple, passPurpleGuard, pickpocketPurplePriest, unlockCrypt),
+				Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, pickpocketWhitePriest, dyeGoblinMailYellow,
+					pickpocketYellowPriest, dyeGoblinMailBlue, pickpocketBluePriest, dyeGoblinMailOrange, pickpocketOrangePriest,
+					dyeGoblinMailPurple, pickpocketPurplePriest, unlockCrypt),
 				Arrays.asList(fishingRod, rawSlimyEel, coins, yellowDye, blueDye, orangeDye, purpleDye, blackGoblinMail, goblinPotion, huzamogaarbKey, combatGear),
 				Arrays.asList(draynorTeleport, combatBracelet)));
 		panels.add(new PanelDetails("High Priests of Ages Past",
 				Arrays.asList(enterCrypt, sayNameSnothead, defeatSnothead, sayNameSnailfeet, defeatSnailfeet, sayNameMosschin, defeatMosschin, sayNameRedeyes, defeatRedeyes, sayNameStrongbones, defeatStrongbones, learnYubiusk),
 				combatGear));
 		panels.add(new PanelDetails("Path to Yu'biusk",
-				Arrays.asList(goReturnToDorg, talkToOldak, climbDorgeshKaanStairsF0, talkToOldakAtMachine, inspectMachine, watchYubiuskCutscene, openBox),
+				Arrays.asList(goReturnToDorg, talkToOldak, talkToOldakAtMachine, inspectMachine, watchYubiuskCutscene, openBox),
 			Collections.singletonList(lightSource),
 				Arrays.asList(dorgeshKaanSphereRec, dramenStaff)));
 		return panels;

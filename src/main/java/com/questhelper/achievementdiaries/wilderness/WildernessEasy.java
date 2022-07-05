@@ -91,6 +91,9 @@ public class WildernessEasy extends ComplexStateQuestHelper
 
 	ZoneRequirement inWildy, inFount, inEdge, inEggs, inKbd;
 
+	ConditionalStep killMammothTask, chaosAltarTask, lowAlchTask, chaosTempleTask, wildyLeverTask, earthWarriorTask,
+		demonicPrayerTask, enterKBDLairTask, spiderEggsTask, enterAbyssTask, ironOreTask, equipTeamCapeTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -99,24 +102,48 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		doEasy.addStep(notKillMammoth, killMammoth);
-		doEasy.addStep(notIronOre, ironOre);
-		doEasy.addStep(new Conditions(notEnterAbyss, firstTimeAbyss), enterAbyss);
-		doEasy.addStep(notEnterAbyss, abyssEnable);
-		doEasy.addStep(notChaosTemple, chaosTemple);
-		doEasy.addStep(new Conditions(notEquipTeamCape, inWildy), equipTeamCape);
-		doEasy.addStep(notEquipTeamCape, moveToWildy);
-		doEasy.addStep(new Conditions(notSpiderEggs, new Conditions(LogicType.OR, inEdge, inEggs)), spiderEggs);
-		doEasy.addStep(notSpiderEggs, moveToEdgeSpider);
-		doEasy.addStep(new Conditions(notEarthWarrior, inEdge), earthWarrior);
-		doEasy.addStep(notEarthWarrior, moveToEdgeEarth);
-		doEasy.addStep(notWildyLever, wildyLever);
-		doEasy.addStep(new Conditions(notLowAlch, inFount), lowAlch);
-		doEasy.addStep(notLowAlch, moveToFount);
-		doEasy.addStep(notDemonicPrayer, demonicPrayer);
-		doEasy.addStep(notChaosAltar, chaosAltar);
-		doEasy.addStep(new Conditions(notEnterKBDLair, inKbd), enterKBDLair2);
-		doEasy.addStep(notEnterKBDLair, enterKBDLair);
+
+		killMammothTask = new ConditionalStep(this, killMammoth);
+		doEasy.addStep(notKillMammoth, killMammothTask);
+
+		ironOreTask = new ConditionalStep(this, ironOre);
+		doEasy.addStep(notIronOre, ironOreTask);
+
+		enterAbyssTask = new ConditionalStep(this, abyssEnable);
+		enterAbyssTask.addStep(firstTimeAbyss, enterAbyss);
+		doEasy.addStep(notEnterAbyss, enterAbyssTask);
+
+		chaosTempleTask = new ConditionalStep(this, chaosTemple);
+		doEasy.addStep(notChaosTemple, chaosTempleTask);
+
+		equipTeamCapeTask = new ConditionalStep(this, moveToWildy);
+		equipTeamCapeTask.addStep(inWildy, equipTeamCape);
+		doEasy.addStep(notEquipTeamCape, equipTeamCapeTask);
+
+		spiderEggsTask = new ConditionalStep(this, moveToEdgeSpider);
+		spiderEggsTask.addStep(new Conditions(LogicType.OR, inEdge, inEggs), spiderEggs);
+		doEasy.addStep(notSpiderEggs, spiderEggsTask);
+
+		earthWarriorTask = new ConditionalStep(this, moveToEdgeEarth);
+		earthWarriorTask.addStep(inEdge, earthWarrior);
+		doEasy.addStep(notEarthWarrior, earthWarriorTask);
+
+		wildyLeverTask = new ConditionalStep(this, wildyLever);
+		doEasy.addStep(notWildyLever, wildyLeverTask);
+
+		lowAlchTask = new ConditionalStep(this, moveToFount);
+		lowAlchTask.addStep(inFount, lowAlch);
+		doEasy.addStep(notLowAlch, lowAlchTask);
+
+		demonicPrayerTask = new ConditionalStep(this, demonicPrayer);
+		doEasy.addStep(notDemonicPrayer, demonicPrayerTask);
+
+		chaosAltarTask = new ConditionalStep(this, chaosAltar);
+		doEasy.addStep(notChaosAltar, chaosAltarTask);
+
+		enterKBDLairTask = new ConditionalStep(this, enterKBDLair);
+		enterKBDLairTask.addStep(inKbd, enterKBDLair2);
+		doEasy.addStep(notEnterKBDLair, enterKBDLairTask);
 
 		return doEasy;
 	}
@@ -191,9 +218,10 @@ public class WildernessEasy extends ComplexStateQuestHelper
 			"Enter the chaos altar north of Edgeville with a chaos talisman/tiara, or enter it through the Abyss.");
 		chaosTemple.addIcon(ItemID.CHAOS_TALISMAN);
 
-		moveToFount = new DetailedQuestStep(this, new WorldPoint(3373, 3893, 0), "Go to the Fountain of Rune, with an" +
-			" item you can cast Low Alchemy on.");
-		lowAlch = new DetailedQuestStep(this, "Cast Low Alchemy on anything. Be sure to bring something alch-able.");
+		moveToFount = new DetailedQuestStep(this, new WorldPoint(3374, 3893, 0),
+			"Go to the Fountain of Rune with an item you can cast Low Alchemy on.");
+		lowAlch = new ObjectStep(this, ObjectID.FOUNTAIN_OF_RUNE, new WorldPoint(3374, 3893, 0),
+			"Cast Low Alchemy on anything.");
 
 		abyssEnable = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3385, 0),
 			"Speak with the Mage of Zamorak in Varrock and ask him about the Abyss.");
@@ -286,54 +314,68 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		PanelDetails mammothSteps = new PanelDetails("Mammoth", Collections.singletonList(killMammoth), combatGear,
 			food);
 		mammothSteps.setDisplayCondition(notKillMammoth);
+		mammothSteps.setLockingStep(killMammothTask);
 		allSteps.add(mammothSteps);
 
 		PanelDetails ironOreSteps = new PanelDetails("Iron Ore", Collections.singletonList(ironOre),
 			new SkillRequirement(Skill.MINING, 15), pickaxe);
 		ironOreSteps.setDisplayCondition(notIronOre);
+		ironOreSteps.setLockingStep(ironOreTask);
 		allSteps.add(ironOreSteps);
 
-		PanelDetails abyssSteps = new PanelDetails("Enter the Abyss", Collections.singletonList(enterAbyss),
+		PanelDetails abyssSteps = new PanelDetails("Enter the Abyss", Arrays.asList(abyssEnable, enterAbyss),
 			enterTheAbyss);
 		abyssSteps.setDisplayCondition(notEnterAbyss);
+		abyssSteps.setLockingStep(enterAbyssTask);
 		allSteps.add(abyssSteps);
 
-		PanelDetails chaosSteps = new PanelDetails("Chaos Temple", Collections.singletonList(chaosTemple), chaosAccess);
+		PanelDetails chaosSteps = new PanelDetails("Chaos Temple", Collections.singletonList(chaosTemple),
+			chaosAccess);
 		chaosSteps.setDisplayCondition(notChaosTemple);
+		chaosSteps.setLockingStep(chaosTempleTask);
 		allSteps.add(chaosSteps);
 
-		PanelDetails teamCapeSteps = new PanelDetails("Team Cape", Collections.singletonList(equipTeamCape), teamCape);
+		PanelDetails teamCapeSteps = new PanelDetails("Team Cape", Arrays.asList(moveToWildy, equipTeamCape), teamCape);
 		teamCapeSteps.setDisplayCondition(notEquipTeamCape);
+		teamCapeSteps.setLockingStep(equipTeamCapeTask);
 		allSteps.add(teamCapeSteps);
 
 		PanelDetails eggsSteps = new PanelDetails("Spider Eggs", Arrays.asList(moveToEdgeSpider, spiderEggs), food);
 		eggsSteps.setDisplayCondition(notSpiderEggs);
+		eggsSteps.setLockingStep(spiderEggsTask);
 		allSteps.add(eggsSteps);
 
 		PanelDetails earthWarriorSteps = new PanelDetails("Earth Warrior", Arrays.asList(moveToEdgeEarth, earthWarrior),
 			new SkillRequirement(Skill.AGILITY, 15), combatGear, food);
 		earthWarriorSteps.setDisplayCondition(notEarthWarrior);
+		earthWarriorSteps.setLockingStep(earthWarriorTask);
 		allSteps.add(earthWarriorSteps);
 
 		PanelDetails leverSteps = new PanelDetails("Wilderness Lever", Collections.singletonList(wildyLever));
 		leverSteps.setDisplayCondition(notWildyLever);
+		leverSteps.setLockingStep(wildyLeverTask);
 		allSteps.add(leverSteps);
 
-		PanelDetails alchSteps = new PanelDetails("Free Low Alchemy", Collections.singletonList(lowAlch),
+		PanelDetails alchSteps = new PanelDetails("Free Low Alchemy", Arrays.asList(moveToFount, lowAlch),
 			new SkillRequirement(Skill.MAGIC, 21), normalBook, alchable);
 		alchSteps.setDisplayCondition(notLowAlch);
+		alchSteps.setLockingStep(lowAlchTask);
 		allSteps.add(alchSteps);
 
 		PanelDetails ruinsSteps = new PanelDetails("Demonic Ruins", Collections.singletonList(demonicPrayer));
 		ruinsSteps.setDisplayCondition(notDemonicPrayer);
+		ruinsSteps.setLockingStep(demonicPrayerTask);
 		allSteps.add(ruinsSteps);
 
 		PanelDetails altarSteps = new PanelDetails("Pray at Chaos Altar", Collections.singletonList(chaosAltar));
 		altarSteps.setDisplayCondition(notChaosAltar);
+		altarSteps.setLockingStep(chaosAltarTask);
 		allSteps.add(altarSteps);
+
 
 		PanelDetails kbdSteps = new PanelDetails("The Lair", Collections.singletonList(enterKBDLair), oneClick);
 		kbdSteps.setDisplayCondition(notEnterKBDLair);
+		kbdSteps.setLockingStep(enterKBDLairTask);
 		allSteps.add(kbdSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

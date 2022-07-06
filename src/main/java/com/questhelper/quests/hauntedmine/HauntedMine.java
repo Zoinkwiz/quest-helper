@@ -378,6 +378,11 @@ public class HauntedMine extends BasicQuestHelper
 		return reqs;
 	}
 
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return QuestUtil.toArrayList(food);
+	}
 
 	@Override
 	public List<String> getCombatRequirements()

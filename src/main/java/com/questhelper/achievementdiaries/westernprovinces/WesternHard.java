@@ -158,9 +158,9 @@ public class WesternHard extends ComplexStateQuestHelper
 		painting.setTooltip("Can be bought from Sir Renitee in White Knights' Castle for 2,000 gold ");
 		saw = new ItemRequirement("Saw", ItemCollections.getSaw()).showConditioned(notIsafdarPainting);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notIsafdarPainting);
-		lawRunes2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPApe);
-		fireRunes2 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE).showConditioned(notTPApe);
-		waterRunes2 = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notTPApe);
+		lawRunes2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2).showConditioned(notTPApe);
+		fireRunes2 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 2).showConditioned(notTPApe);
+		waterRunes2 = new ItemRequirement("Water runes", ItemID.WATER_RUNE, 2).showConditioned(notTPApe);
 		banana = new ItemRequirement("Banana", ItemID.BANANA).showConditioned(notTPApe);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notLletyaPalm);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notLletyaPalm);

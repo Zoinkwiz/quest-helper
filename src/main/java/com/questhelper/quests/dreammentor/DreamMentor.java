@@ -378,7 +378,7 @@ public class DreamMentor extends BasicQuestHelper
 	@Override
 	public List<String> getNotes()
 	{
-		return Collections.singletonList("To hand the food you could use Sack of Potatoes(10), Sack of Cabbages(10) and Sack of Onions(10). This would allow you to carry all the food in just three inventory spaces. You will need to fight all 4 bosses in a row without prayers. It's recommended that you use magic as they all have very low magic defence.");
+		return Collections.singletonList("To handle the food you could use Sack of Potatoes(10), Sack of Cabbages(10) and Sack of Onions(10). This would allow you to carry all the food in just three inventory spaces. You will need to fight all 4 bosses in a row without prayers. It's recommended that you use magic as they all have very low magic defence.");
 	}
 
 	@Override

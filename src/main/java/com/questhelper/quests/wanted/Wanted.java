@@ -69,7 +69,7 @@ public class Wanted extends BasicQuestHelper
 	private static final String TEXT_ASK_ABOUT_WANTED_QUEST = "Ask about the Wanted! Quest";
 
 	ItemRequirement commorbComponents, tenThousandGp, commorbComponentsOrTenThousandGp, lightSource, spinyHelmet, rope,
-		combatGear, commorb, highlightedCommorb, runeEssence, pureEssence, essence, amuletOfGlory, faladorTeleport,
+		combatGear, commorb, highlightedCommorb, runeEssence, pureEssence, essence, amuletOfGlory, ringOfDueling, faladorTeleport,
 		varrockTeleport, canifisTeleport;
 
 	Zone whiteKnightsCastleF1, whiteKnightsCastleF2, taverleyDungeonP1, taverleyDungeonP2, blackKnightsBase, nearCanifis,
@@ -272,7 +272,8 @@ public class Wanted extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.getAmuletOfGlories());
+		amuletOfGlory = new ItemRequirement("Amulet of Glory", ItemCollections.getAmuletOfGlories());
+		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.getRingOfDuelings());
 		faladorTeleport = new ItemRequirement("A teleport to Falador", ItemID.FALADOR_TELEPORT, -1);
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT, -1);
 		canifisTeleport = new ItemRequirement("A teleport to Canifis", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, -1);
@@ -520,7 +521,7 @@ public class Wanted extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return QuestUtil.toArrayList(amuletOfGlory, faladorTeleport, varrockTeleport, canifisTeleport, spinyHelmet);
+		return QuestUtil.toArrayList(amuletOfGlory, ringOfDueling, faladorTeleport, varrockTeleport, canifisTeleport, spinyHelmet);
 	}
 
 	@Override

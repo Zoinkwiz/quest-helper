@@ -74,7 +74,7 @@ import net.runelite.api.widgets.WidgetInfo;
 public class ZogreFleshEaters extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portrait, goodPort, strangePotionHighlighted,
+	ItemRequirement knife, backpack, tankard, tornPage, blackPrism, necroBook, hamBook, portrait, goodPort, strangePotionHighlighted, sanfew,
 		badPort, charcoal, papyrus, signedPort, cupOfTea, strangePotion, grishKey, ogreRelic, combatGear, knifeHighlighted, tankardHighlighted;
 
 	Requirement askedAboutSickies, inSurface, inTombF2, killedZombie, searchedCoffin, usedKnife, openedCoffin,
@@ -180,6 +180,10 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		signedPort = new ItemRequirement("Signed portrait", ItemID.SIGNED_PORTRAIT);
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
 		papyrus.setHighlightInInventory(true);
+		sanfew = new ItemRequirement("Sanfew serum or Relicym's balm", ItemID.SANFEW_SERUM1);
+		sanfew.addAlternates(ItemID.SANFEW_SERUM2, ItemID.SANFEW_SERUM3, ItemID.SANFEW_SERUM4, ItemID.RELICYMS_BALM1,
+		ItemID.RELICYMS_BALM2, ItemID.RELICYMS_BALM3, ItemID.RELICYMS_BALM4);
+		sanfew.setTooltip("To help prevent disease and restore stats.");
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		cupOfTea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_4838);
 		strangePotion = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION);
@@ -366,6 +370,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 5));
+		req.add(sanfew);
 		return req;
 	}
 

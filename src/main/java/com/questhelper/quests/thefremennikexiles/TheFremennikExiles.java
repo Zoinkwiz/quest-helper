@@ -262,7 +262,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 			new ItemRequirement("Coins", ItemCollections.getCoins(), 150000));
 
 		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
-		kegs2Or650Coins = new ItemRequirements(LogicType.OR, kegsOfBeer.quantity(2), coins650);
+		kegs2Or650Coins = new ItemRequirements(LogicType.OR, "2x kegs of beer or 650 coins", kegsOfBeer.quantity(2), coins650);
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		rellekkaTeleport = new ItemRequirement("Rellekka teleports", ItemID.RELLEKKA_TELEPORT, -1);

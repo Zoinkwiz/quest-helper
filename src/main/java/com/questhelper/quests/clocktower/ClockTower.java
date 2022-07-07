@@ -149,7 +149,7 @@ public class ClockTower extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		bucketOfWater = new ItemRequirement("Bucket of Water or a pair of ice gloves or smith gloves(i)", ItemID.BUCKET_OF_WATER);
+		bucketOfWater = new ItemRequirement("Bucket of Water or a pair of ice gloves or smiths gloves(i)", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.addAlternates(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I);
 		bucketOfWater.setTooltip("There is a bucket spawn next to the well east of the Clocktower. You can fill it on" +
 			" the well");

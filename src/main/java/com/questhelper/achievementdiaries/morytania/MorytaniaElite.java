@@ -89,6 +89,9 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 
 	ZoneRequirement inCanifisBank, inSlayer2, inSlayer3, inBarrows;
 
+	ConditionalStep bareHandSharkTask, cremateShadeTask, fertilizeHerbTask, craftBlackDhideBodyTask, abyssalDemonTask,
+		barrowsChestTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -97,16 +100,28 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(notBareHandShark, bareHandShark);
-		doElite.addStep(notCremateShade, cremateShade);
-		doElite.addStep(new Conditions(notBarrowsChest, inBarrows), barrowsChest);
-		doElite.addStep(notBarrowsChest, moveToBarrows);
-		doElite.addStep(new Conditions(notAbyssalDemon, inSlayer3), abyssalDemon);
-		doElite.addStep(new Conditions(notAbyssalDemon, inSlayer2), moveToSlayer3);
-		doElite.addStep(notAbyssalDemon, moveToSlayer2);
-		doElite.addStep(new Conditions(notCraftBlackDhideBody, inCanifisBank), craftBlackDhideBody);
-		doElite.addStep(notCraftBlackDhideBody, moveToCanifisBank);
-		doElite.addStep(notFertilizeHerb, fertilizeHerb);
+
+		bareHandSharkTask = new ConditionalStep(this, bareHandShark);
+		doElite.addStep(notBareHandShark, bareHandSharkTask);
+
+		cremateShadeTask = new ConditionalStep(this, cremateShade);
+		doElite.addStep(notCremateShade, cremateShadeTask);
+
+		barrowsChestTask = new ConditionalStep(this, moveToBarrows);
+		barrowsChestTask.addStep(inBarrows, barrowsChest);
+		doElite.addStep(notBarrowsChest, barrowsChestTask);
+
+		abyssalDemonTask = new ConditionalStep(this, moveToSlayer2);
+		abyssalDemonTask.addStep(inSlayer2, moveToSlayer3);
+		abyssalDemonTask.addStep(inSlayer3, abyssalDemon);
+		doElite.addStep(notAbyssalDemon, abyssalDemonTask);
+
+		craftBlackDhideBodyTask = new ConditionalStep(this, moveToCanifisBank);
+		craftBlackDhideBodyTask.addStep(inCanifisBank, craftBlackDhideBody);
+		doElite.addStep(notCraftBlackDhideBody, craftBlackDhideBodyTask);
+
+		fertilizeHerbTask = new ConditionalStep(this, fertilizeHerb);
+		doElite.addStep(notFertilizeHerb, fertilizeHerbTask);
 
 		return doElite;
 	}
@@ -307,11 +322,13 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.FISHING, 96, true), new SkillRequirement(Skill.STRENGTH, 76),
 			inAidOfTheMyreque, bareHandBarb);
 		grabSharkSteps.setDisplayCondition(notBareHandShark);
+		grabSharkSteps.setLockingStep(bareHandSharkTask);
 		allSteps.add(grabSharkSteps);
 
 		PanelDetails cremateSteps = new PanelDetails("Cremate Shade Remains", Collections.singletonList(cremateShade),
 			new SkillRequirement(Skill.FIREMAKING, 80), shadesOfMorton, magicRedwoodPyreLogs, shadeRemains, tinderbox);
 		cremateSteps.setDisplayCondition(notCremateShade);
+		cremateSteps.setLockingStep(cremateShadeTask);
 		allSteps.add(cremateSteps);
 
 		PanelDetails barrowsSteps = new PanelDetails("Barrows Looting", Arrays.asList(moveToBarrows,
@@ -319,24 +336,27 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.ATTACK, 70), new SkillRequirement(Skill.MAGIC, 70),
 			new SkillRequirement(Skill.RANGED, 70), new SkillRequirement(Skill.STRENGTH, 70), barrowsSet);
 		barrowsSteps.setDisplayCondition(notBarrowsChest);
+		barrowsSteps.setLockingStep(barrowsChestTask);
 		allSteps.add(barrowsSteps);
 
-		PanelDetails abyssalDemonSteps = new PanelDetails("Kill Abyssal Demon", Arrays.asList(moveToSlayer2,
-			moveToSlayer3, abyssalDemon), new SkillRequirement(Skill.SLAYER, 85, true), combatGear,
-			food);
+		PanelDetails abyssalDemonSteps = new PanelDetails("Kill Abyssal Demon", Arrays.asList(moveToSlayer2, moveToSlayer3,
+			abyssalDemon), new SkillRequirement(Skill.SLAYER, 85, true), combatGear, food);
 		abyssalDemonSteps.setDisplayCondition(notAbyssalDemon);
+		abyssalDemonSteps.setLockingStep(abyssalDemonTask);
 		allSteps.add(abyssalDemonSteps);
 
 		PanelDetails craftSteps = new PanelDetails("Craft Black D'hide Body", Arrays.asList(moveToCanifisBank,
-			craftBlackDhideBody), new SkillRequirement(Skill.CRAFTING, 84, true), blackLeather.quantity(3),
-			needle, thread);
+			craftBlackDhideBody), new SkillRequirement(Skill.CRAFTING, 84, true),
+			blackLeather.quantity(3), needle, thread);
 		craftSteps.setDisplayCondition(notCraftBlackDhideBody);
+		craftSteps.setLockingStep(craftBlackDhideBodyTask);
 		allSteps.add(craftSteps);
 
 		PanelDetails fertSteps = new PanelDetails("Fertilize Herb Patch", Collections.singletonList(fertilizeHerb),
 			new SkillRequirement(Skill.MAGIC, 83, true), lunarDiplomacy, lunarBook, earthRune.quantity(15),
 			astralRune.quantity(3), natureRune.quantity(2));
 		fertSteps.setDisplayCondition(notFertilizeHerb);
+		fertSteps.setLockingStep(fertilizeHerbTask);
 		allSteps.add(fertSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

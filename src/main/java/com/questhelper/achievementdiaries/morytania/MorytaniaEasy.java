@@ -32,13 +32,16 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -47,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import jdk.internal.net.http.common.Log;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -65,26 +69,31 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, chisel, snailShell, thinSnail, tannableHide, coins, scarecrow, bonemeal,
-		bucketOfSlime, wolfbane, bones, pot, bucket;
+		bucketOfSlime, wolfbane, bones, pot, bucket, haySack, emptySack, bronzeSpear, watermelon, sack, scarecrowStep2;
 
 	// Items recommended
 	ItemRequirement food, earProtection, ectoToken, ghostSpeak;
+
+	ItemRequirements scarecrowItems;
 
 	// Quests required
 	Requirement natureSpirit, ghostsAhoy;
 
 	Requirement notCraftSnelm, notCookSnail, notKillBanshee, notSbottTan, notEnterSwamp, notKillGhoul,
-		notPlaceScarecrow, notOfferBonemeal, notKillWerewolf, notRestorePrayer, notMazchnaTask;
+		notPlaceScarecrow, notOfferBonemeal, notKillWerewolf, notRestorePrayer, notMazchna;
 
 	QuestStep claimReward, craftSnelm, cookSnail, killBanshee, sbottTan, enterSwamp, killGhoul,
-		placeScarecrow, killWerewolf, restorePrayer, mazchnaTask, moveToGrotto, moveToBonemeal,
-		makeBonemeal, getSlime;
+		placeScarecrow, killWerewolf, restorePrayer, mazchna, moveToGrotto, moveToBonemeal,
+		makeBonemeal, getSlime, useSackOnSpear, useWatermelonOnSack, fillSack;
 
 	ObjectStep offerBonemeal, moveToSlime;
 
 	Zone grotto, bonezone, slimezone;
 
 	ZoneRequirement inGrotto, inBonezone, inSlimezone;
+
+	ConditionalStep craftSnelmTask, cookSnailTask, killBansheeTask, sbottTanTask, enterSwampTask, killGhoulTask,
+		placeScarecrowTask, offerBonemealTask, killWerewolfTask, restorePrayerTask, mazchnaTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -94,22 +103,47 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		doEasy.addStep(notKillGhoul, killGhoul);
-		doEasy.addStep(notEnterSwamp, enterSwamp);
-		doEasy.addStep(notCraftSnelm, craftSnelm);
-		doEasy.addStep(new Conditions(notRestorePrayer, inGrotto), restorePrayer);
-		doEasy.addStep(notRestorePrayer, moveToGrotto);
-		doEasy.addStep(notKillBanshee, killBanshee);
-		doEasy.addStep(notSbottTan, sbottTan);
-		doEasy.addStep(notKillWerewolf, killWerewolf);
-		doEasy.addStep(notMazchnaTask, mazchnaTask);
-		doEasy.addStep(notPlaceScarecrow, placeScarecrow);
-		doEasy.addStep(new Conditions(notOfferBonemeal, bonemeal, bucketOfSlime), offerBonemeal);
-		doEasy.addStep(new Conditions(notOfferBonemeal, inSlimezone), getSlime);
-		doEasy.addStep(notOfferBonemeal, moveToSlime);
-		doEasy.addStep(new Conditions(notOfferBonemeal, inBonezone), makeBonemeal);
-		doEasy.addStep(notOfferBonemeal, moveToBonemeal);
-		doEasy.addStep(notCookSnail, cookSnail);
+
+		killGhoulTask = new ConditionalStep(this, killGhoul);
+		doEasy.addStep(notKillGhoul, killGhoulTask);
+
+		enterSwampTask = new ConditionalStep(this, enterSwamp);
+		doEasy.addStep(notEnterSwamp, enterSwampTask);
+
+		craftSnelmTask = new ConditionalStep(this, craftSnelm);
+		doEasy.addStep(notCraftSnelm, craftSnelmTask);
+
+		restorePrayerTask = new ConditionalStep(this, moveToGrotto);
+		restorePrayerTask.addStep(inGrotto, restorePrayer);
+		doEasy.addStep(notRestorePrayer, restorePrayerTask);
+
+		killBansheeTask = new ConditionalStep(this, killBanshee);
+		doEasy.addStep(notKillBanshee, killBansheeTask);
+
+		sbottTanTask = new ConditionalStep(this, sbottTan);
+		doEasy.addStep(notSbottTan, sbottTanTask);
+
+		killWerewolfTask = new ConditionalStep(this, killWerewolf);
+		doEasy.addStep(notKillWerewolf, killWerewolfTask);
+
+		mazchnaTask = new ConditionalStep(this, mazchna);
+		doEasy.addStep(notMazchna, mazchnaTask);
+
+		placeScarecrowTask = new ConditionalStep(this, fillSack);
+		placeScarecrowTask.addStep(haySack, useSackOnSpear);
+		placeScarecrowTask.addStep(scarecrowStep2, useWatermelonOnSack);
+		placeScarecrowTask.addStep(scarecrow, placeScarecrow);
+		doEasy.addStep(notPlaceScarecrow, placeScarecrowTask);
+
+		offerBonemealTask = new ConditionalStep(this, moveToSlime);
+		offerBonemealTask.addStep(inSlimezone, getSlime);
+		offerBonemealTask.addStep(bucketOfSlime, moveToBonemeal);
+		offerBonemealTask.addStep(inBonezone, makeBonemeal);
+		offerBonemealTask.addStep(new Conditions(bonemeal, bucketOfSlime), offerBonemeal);
+		doEasy.addStep(notOfferBonemeal, offerBonemealTask);
+
+		cookSnailTask = new ConditionalStep(this, cookSnail);
+		doEasy.addStep(notCookSnail, cookSnailTask);
 
 		return doEasy;
 	}
@@ -118,7 +152,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	{
 		notCraftSnelm = new VarplayerRequirement(1180, false, 1);
 		notCookSnail = new VarplayerRequirement(1180, false, 2);
-		notMazchnaTask = new VarplayerRequirement(1180, false, 3);
+		notMazchna = new VarplayerRequirement(1180, false, 3);
 		notKillBanshee = new VarplayerRequirement(1180, false, 4);
 		notSbottTan = new VarplayerRequirement(1180, false, 5);
 		notEnterSwamp = new VarplayerRequirement(1180, false, 6);
@@ -135,8 +169,16 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		tannableHide = new ItemRequirement("Tannable hide", ItemCollections.getTannableHide()).showConditioned(notSbottTan);
 		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notSbottTan);
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlaceScarecrow);
-		scarecrow.setTooltip("Created by combining a bronze spear, watermelon, and hay sack (empty sack filled at a " +
-			"hay bale, nearest to Morytania is North-West of Lumbridge)");
+		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
+		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR);
+		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON);
+		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK);
+		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
+		scarecrowItems = new ItemRequirements(LogicType.OR, "1 x Scarecrow", scarecrow, new ItemRequirements(sack,
+			watermelon, bronzeSpear));
+		scarecrowItems.setTooltip("Created by combining a bronze spear, watermelon, and hay sack " +
+			"(empty sack filled at a hay bale, nearest is North-West of Lumbridge)");
+		scarecrowStep2 = new ItemRequirement("Hay Sack", ItemID.HAY_SACK_6058);
 		bonemeal = new ItemRequirement("Bonemeal", ItemCollections.getBonemeal()).showConditioned(notOfferBonemeal);
 		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_OF_SLIME).showConditioned(notOfferBonemeal);
 		wolfbane = new ItemRequirement("Wolfbane dagger", ItemID.WOLFBANE).showConditioned(notKillWerewolf);
@@ -186,11 +228,18 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 
 		killWerewolf = new NpcStep(this, NpcID.ZOJA, new WorldPoint(3501, 3488, 0),
 			"Kill any attackable NPC in Canifis with the wolfbane dagger.", wolfbane.equipped());
-		mazchnaTask = new NpcStep(this, NpcID.MAZCHNA, new WorldPoint(3513, 3510, 0),
+		mazchna = new NpcStep(this, NpcID.MAZCHNA, new WorldPoint(3513, 3510, 0),
 			"Get a slayer task from Mazchna.");
 		sbottTan = new NpcStep(this, NpcID.SBOTT, new WorldPoint(3490, 3501, 0),
 			"Tan a hide using Sbott's services.", tannableHide, coins.quantity(45));
 
+		fillSack = new ObjectStep(this, ObjectID.HAY_BALE_8713, new WorldPoint(3019, 3297, 0),
+			"Use the empty sack on the hay bale to fill it, you can buy an empty sack from Sarah for 5gp.");
+		fillSack.addIcon(ItemID.EMPTY_SACK);
+		useSackOnSpear = new DetailedQuestStep(this,
+			"Use the Hay sack on the Bronze Spear.", haySack.highlighted(), bronzeSpear.highlighted());
+		useWatermelonOnSack = new DetailedQuestStep(this,
+			"Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2.highlighted(), watermelon.highlighted());
 		placeScarecrow = new ObjectStep(this, 7850, new WorldPoint(3602, 3526, 0),
 			"Place a scarecrow at the Morytania flower patch, West of Port Phasmatys.", scarecrow.highlighted());
 		placeScarecrow.addIcon(ItemID.SCARECROW);
@@ -220,7 +269,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear, chisel, snailShell, thinSnail, tannableHide, coins.quantity(45), scarecrow,
+		return Arrays.asList(combatGear, chisel, snailShell, thinSnail, tannableHide, coins.quantity(45), scarecrowItems,
 			bonemeal, bucketOfSlime, wolfbane, bones, pot, bucket, earProtection);
 	}
 
@@ -279,55 +328,66 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		PanelDetails killGhoulSteps = new PanelDetails("Kill Ghoul", Collections.singletonList(killGhoul),
 			combatGear, food);
 		killGhoulSteps.setDisplayCondition(notKillGhoul);
+		killGhoulSteps.setLockingStep(killGhoulTask);
 		allSteps.add(killGhoulSteps);
 
 		PanelDetails enterSwampSteps = new PanelDetails("Enter Mort Myre Swamp", Collections.singletonList(enterSwamp));
 		enterSwampSteps.setDisplayCondition(notEnterSwamp);
+		enterSwampSteps.setLockingStep(enterSwampTask);
 		allSteps.add(enterSwampSteps);
 
 		PanelDetails craftSnelmSteps = new PanelDetails("Craft Snelm", Collections.singletonList(craftSnelm),
 			new SkillRequirement(Skill.CRAFTING, 15), snailShell, chisel);
 		craftSnelmSteps.setDisplayCondition(notCraftSnelm);
+		craftSnelmSteps.setLockingStep(craftSnelmTask);
 		allSteps.add(craftSnelmSteps);
 
 		PanelDetails restorePrayerSteps = new PanelDetails("Restore Prayer", Arrays.asList(moveToGrotto,
 			restorePrayer), natureSpirit);
 		restorePrayerSteps.setDisplayCondition(notRestorePrayer);
+		restorePrayerSteps.setLockingStep(restorePrayerTask);
 		allSteps.add(restorePrayerSteps);
 
 		PanelDetails killBansheeSteps = new PanelDetails("Kill Banshee", Collections.singletonList(killBanshee),
 			new SkillRequirement(Skill.SLAYER, 15), combatGear, food, earProtection);
 		killBansheeSteps.setDisplayCondition(notKillBanshee);
+		killBansheeSteps.setLockingStep(killBansheeTask);
 		allSteps.add(killBansheeSteps);
 
 		PanelDetails sbottTanningHideSteps = new PanelDetails("Sbott Tanning Hide",
 			Collections.singletonList(sbottTan), tannableHide, coins.quantity(45));
 		sbottTanningHideSteps.setDisplayCondition(notSbottTan);
+		sbottTanningHideSteps.setLockingStep(sbottTanTask);
 		allSteps.add(sbottTanningHideSteps);
 
 		PanelDetails werewolfSteps = new PanelDetails("Kill Werewolf in Human Form",
 			Collections.singletonList(killWerewolf), wolfbane, combatGear, food);
 		werewolfSteps.setDisplayCondition(notKillWerewolf);
+		werewolfSteps.setLockingStep(killWerewolfTask);
 		allSteps.add(werewolfSteps);
 
-		PanelDetails mazchnaSteps = new PanelDetails("Mazchna Slayer Task", Collections.singletonList(mazchnaTask),
+		PanelDetails mazchnaSteps = new PanelDetails("Mazchna Slayer Task", Collections.singletonList(mazchna),
 			new CombatLevelRequirement(20));
-		mazchnaSteps.setDisplayCondition(notMazchnaTask);
+		mazchnaSteps.setDisplayCondition(notMazchna);
+		mazchnaSteps.setLockingStep(mazchnaTask);
 		allSteps.add(mazchnaSteps);
 
-		PanelDetails placeScarecrowSteps = new PanelDetails("Place Scarecrow",
-			Collections.singletonList(placeScarecrow), new SkillRequirement(Skill.FARMING, 23), scarecrow);
+		PanelDetails placeScarecrowSteps = new PanelDetails("Place Scarecrow", Arrays.asList(fillSack, useSackOnSpear,
+			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23), scarecrowItems);
 		placeScarecrowSteps.setDisplayCondition(notPlaceScarecrow);
+		placeScarecrowSteps.setLockingStep(placeScarecrowTask);
 		allSteps.add(placeScarecrowSteps);
 
-		PanelDetails offerBonemealSteps = new PanelDetails("Offer Bonemeal", Collections.singletonList(offerBonemeal),
-			bones, pot, bucket);
+		PanelDetails offerBonemealSteps = new PanelDetails("Offer Bonemeal", Arrays.asList(moveToSlime,
+			getSlime, moveToBonemeal, makeBonemeal, offerBonemeal), bones, pot, bucket);
 		offerBonemealSteps.setDisplayCondition(notOfferBonemeal);
+		offerBonemealSteps.setLockingStep(offerBonemealTask);
 		allSteps.add(offerBonemealSteps);
 
 		PanelDetails cookSnailSteps = new PanelDetails("Cook Thin Snail", Collections.singletonList(cookSnail),
 			new SkillRequirement(Skill.COOKING, 12), thinSnail);
 		cookSnailSteps.setDisplayCondition(notCookSnail);
+		cookSnailSteps.setLockingStep(cookSnailTask);
 		allSteps.add(cookSnailSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

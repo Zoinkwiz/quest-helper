@@ -254,13 +254,12 @@ public class CryptPuzzle extends DetailedOwnerStep
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (!solutionFound && widgetLoaded.getGroupId() == 74)
+		if (!solutionFound && widgetLoaded.getGroupId() == 748)
 		{
 			List<Integer> potentialBusts = QuestUtil.toArrayList(AIVAS, CAMORRA, ROBERT, TRISTAN);
 
-			Widget northWidget = client.getWidget(74, 6);
-			Widget southAndWestWidget = client.getWidget(74, 7);
-
+			Widget northWidget = client.getWidget(748, 6);
+			Widget southAndWestWidget = client.getWidget(748, 7);
 			if (northWidget != null && southAndWestWidget != null)
 			{
 				northBust = locations.entrySet().stream()

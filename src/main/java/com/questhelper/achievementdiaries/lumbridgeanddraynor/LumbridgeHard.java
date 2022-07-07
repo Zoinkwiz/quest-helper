@@ -92,6 +92,9 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 	ZoneRequirement inZanaris, inBasement, inPalace, inLumby, inUnderground, inDorg1, inDorg2, inCosmicAltar, inStation;
 
+	ConditionalStep bonesToPeachesPalaceTask, juttingWallTask, cosmicsTask, wakaToEdgeTask, hundredTearsTask, trainToKeldTask,
+		barrowsGlovesTask, belladonnaTask, lightMiningHelmTask, smiteAltarTask, powerAmmyTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -100,32 +103,54 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(notSmiteAltar, smiteAltar);
-		doHard.addStep(new Conditions(notBonesToPeachesPalace, inPalace), bonesToPeachesPalace);
-		doHard.addStep(new Conditions(notBonesToPeachesPalace, bonesToPeaches), moveToPalace);
-		doHard.addStep(notBonesToPeachesPalace, unlockBonesToPeaches);
-		doHard.addStep(notWakaToEdge, wakaToEdge);
-		doHard.addStep(new Conditions(notPowerAmmy, inLumby, madeAmuletU, diamondAmulet), powerAmmy);
-		doHard.addStep(new Conditions(notPowerAmmy, inLumby, madeAmuletU, diamondAmuletU), stringAmmy);
-		doHard.addStep(new Conditions(notPowerAmmy, inLumby), smeltAmmy);
-		doHard.addStep(notPowerAmmy, moveToLumby);
-		doHard.addStep(new Conditions(notLightMiningHelm, inBasement), lightMiningHelm);
-		doHard.addStep(notLightMiningHelm, moveToBasementForHelm);
-		doHard.addStep(new Conditions(notBarrowsGloves, inBasement), barrowsGloves);
-		doHard.addStep(notLightMiningHelm, moveToBasementForGloves);
-		doHard.addStep(new Conditions(notHundredTears, inUnderground), hundredTears);
-		doHard.addStep(notHundredTears, moveToBasementForTears);
-		doHard.addStep(new Conditions(notTrainToKeld, inStation), trainToKeld);
-		doHard.addStep(new Conditions(notTrainToKeld, inDorg2), stationDoor);
-		doHard.addStep(new Conditions(notTrainToKeld, inDorg1), dorgStairs);
-		doHard.addStep(new Conditions(notTrainToKeld, inUnderground), moveToDorg);
-		doHard.addStep(notTrainToKeld, moveToBasementForTrain);
-		doHard.addStep(new Conditions(notJuttingWall, inZanaris), juttingWall);
-		doHard.addStep(notJuttingWall, moveToZanarisForWall);
-		doHard.addStep(new Conditions(notCosmics, inCosmicAltar), cosmics);
-		doHard.addStep(new Conditions(notCosmics, inZanaris), moveToCosmic);
-		doHard.addStep(notCosmics, moveToZanarisForCosmics);
-		doHard.addStep(notBelladonna, belladonna);
+
+		belladonnaTask = new ConditionalStep(this, belladonna);
+		doHard.addStep(notBelladonna, belladonnaTask);
+
+		smiteAltarTask = new ConditionalStep(this, smiteAltar);
+		doHard.addStep(notSmiteAltar, smiteAltarTask);
+
+		bonesToPeachesPalaceTask = new ConditionalStep(this, unlockBonesToPeaches);
+		bonesToPeachesPalaceTask.addStep(bonesToPeaches, moveToPalace);
+		bonesToPeachesPalaceTask.addStep(new Conditions(bonesToPeaches, inPalace), bonesToPeachesPalace);
+		doHard.addStep(notBonesToPeachesPalace, bonesToPeachesPalaceTask);
+
+		wakaToEdgeTask = new ConditionalStep(this, wakaToEdge);
+		doHard.addStep(notWakaToEdge, wakaToEdgeTask);
+
+		powerAmmyTask = new ConditionalStep(this, moveToLumby);
+		powerAmmyTask.addStep(inLumby, smeltAmmy);
+		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmuletU), stringAmmy);
+		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmulet), powerAmmy);
+		doHard.addStep(notPowerAmmy, powerAmmyTask);
+
+		lightMiningHelmTask = new ConditionalStep(this, moveToBasementForHelm);
+		lightMiningHelmTask.addStep(inBasement, lightMiningHelm);
+		doHard.addStep(notLightMiningHelm, lightMiningHelmTask);
+
+		barrowsGlovesTask = new ConditionalStep(this, moveToBasementForGloves);
+		barrowsGlovesTask.addStep(inBasement, barrowsGloves);
+		doHard.addStep(notBarrowsGloves, barrowsGlovesTask);
+
+		hundredTearsTask = new ConditionalStep(this, moveToBasementForTears);
+		hundredTearsTask.addStep(inUnderground, hundredTears);
+		doHard.addStep(notHundredTears, hundredTearsTask);
+
+		trainToKeldTask = new ConditionalStep(this, moveToBasementForTrain);
+		trainToKeldTask.addStep(inUnderground, moveToDorg);
+		trainToKeldTask.addStep(inDorg1, dorgStairs);
+		trainToKeldTask.addStep(inDorg2, stationDoor);
+		trainToKeldTask.addStep(inStation, trainToKeld);
+		doHard.addStep(notTrainToKeld, trainToKeldTask);
+
+		juttingWallTask = new ConditionalStep(this, moveToZanarisForWall);
+		juttingWallTask.addStep(inZanaris, juttingWall);
+		doHard.addStep(notJuttingWall, juttingWallTask);
+
+		cosmicsTask = new ConditionalStep(this, moveToZanarisForCosmics);
+		cosmicsTask.addStep(inZanaris, moveToCosmic);
+		cosmicsTask.addStep(inCosmicAltar, cosmics);
+		doHard.addStep(notCosmics, cosmicsTask);
 
 		return doHard;
 	}
@@ -361,9 +386,16 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails belladonnaSteps = new PanelDetails("Belladonna", Collections.singletonList(belladonna),
+			bellaSeed, seedDib, spade, rake, gloves);
+		belladonnaSteps.setDisplayCondition(notBelladonna);
+		belladonnaSteps.setLockingStep(belladonnaTask);
+		allSteps.add(belladonnaSteps);
+
 		PanelDetails smiteAltarSteps = new PanelDetails("Smite Altar", Collections.singletonList(smiteAltar),
 			new SkillRequirement(Skill.PRAYER, 52));
 		smiteAltarSteps.setDisplayCondition(notSmiteAltar);
+		smiteAltarSteps.setLockingStep(smiteAltarTask);
 		allSteps.add(smiteAltarSteps);
 
 		PanelDetails peachesPalaceSteps = new PanelDetails("Bones to Peaches Palace",
@@ -371,11 +403,13 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune4,
 			waterRune, natureRune);
 		peachesPalaceSteps.setDisplayCondition(notBonesToPeachesPalace);
+		peachesPalaceSteps.setLockingStep(bonesToPeachesPalaceTask);
 		allSteps.add(peachesPalaceSteps);
 
 		PanelDetails wakaToEdgevilleSteps = new PanelDetails("Waka to Edgeville",
 			Collections.singletonList(wakaToEdge), new SkillRequirement(Skill.WOODCUTTING, 57), axe);
 		wakaToEdgevilleSteps.setDisplayCondition(notWakaToEdge);
+		wakaToEdgevilleSteps.setLockingStep(wakaToEdgeTask);
 		allSteps.add(wakaToEdgevilleSteps);
 
 		PanelDetails powerAmuletSteps = new PanelDetails("Power Amulet", Arrays.asList(moveToLumby, smeltAmmy,
@@ -383,43 +417,45 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.MAGIC, 57), goldBar, cutDiamond, amuletMould, ballOfWool,
 			cosmicRune.quantity(1), earthRune10);
 		powerAmuletSteps.setDisplayCondition(notPowerAmmy);
+		powerAmuletSteps.setLockingStep(powerAmmyTask);
 		allSteps.add(powerAmuletSteps);
 
 		PanelDetails miningHelmetSteps = new PanelDetails("Mining Helmet", Arrays.asList(moveToBasementForHelm,
 			lightMiningHelm), new SkillRequirement(Skill.FIREMAKING, 65), miningHelm, tinderbox);
 		miningHelmetSteps.setDisplayCondition(notLightMiningHelm);
+		miningHelmetSteps.setLockingStep(lightMiningHelmTask);
 		allSteps.add(miningHelmetSteps);
 
 		PanelDetails barrowsGlovesSteps = new PanelDetails("Barrows Gloves", Arrays.asList(moveToBasementForGloves,
 			barrowsGloves), recipeForDisaster, coins);
 		barrowsGlovesSteps.setDisplayCondition(notBarrowsGloves);
+		barrowsGlovesSteps.setLockingStep(barrowsGlovesTask);
 		allSteps.add(barrowsGlovesSteps);
 
 		PanelDetails hundredTearsSteps = new PanelDetails("100 Tears", Arrays.asList(moveToBasementForTears, hundredTears),
 			tearOfGuth);
 		hundredTearsSteps.setDisplayCondition(notHundredTears);
+		hundredTearsSteps.setLockingStep(hundredTearsTask);
 		allSteps.add(hundredTearsSteps);
 
 		PanelDetails dorgeshTrainSteps = new PanelDetails("Dorgesh Train", Arrays.asList(moveToBasementForTrain,
 			moveToDorg, dorgStairs, stationDoor, trainToKeld), anotherSliceOfHAM);
 		dorgeshTrainSteps.setDisplayCondition(notTrainToKeld);
+		dorgeshTrainSteps.setLockingStep(trainToKeldTask);
 		allSteps.add(dorgeshTrainSteps);
 
 		PanelDetails juttingWallSteps = new PanelDetails("Jutting Wall", Arrays.asList(moveToZanarisForWall, juttingWall),
 			new SkillRequirement(Skill.AGILITY, 46), lostCity, fairyAccess);
 		juttingWallSteps.setDisplayCondition(notJuttingWall);
+		juttingWallSteps.setLockingStep(juttingWallTask);
 		allSteps.add(juttingWallSteps);
 
 		PanelDetails cosmicsSteps = new PanelDetails("56 Cosmic Runes", Arrays.asList(moveToZanarisForCosmics, moveToCosmic,
 			cosmics), new SkillRequirement(Skill.RUNECRAFT, 59, true), lostCity, essence,
 			cosmicAccessOrAbyss, fairyAccess);
 		cosmicsSteps.setDisplayCondition(notCosmics);
+		cosmicsSteps.setLockingStep(cosmicsTask);
 		allSteps.add(cosmicsSteps);
-
-		PanelDetails belladonnaSteps = new PanelDetails("Belladonna", Collections.singletonList(belladonna),
-			bellaSeed, seedDib, spade, rake, gloves);
-		belladonnaSteps.setDisplayCondition(notBelladonna);
-		allSteps.add(belladonnaSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

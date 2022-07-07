@@ -83,6 +83,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 
 	ZoneRequirement inUnderground, inDorg1, inDorg2, inDraySewer, inOldman, inWaterAltar, inDorgAgi;
 
+	ConditionalStep richChestTask, movarioTask, chopMagicTask, addyPlatebodyTask, waterRunesTask, qcEmoteTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -91,22 +93,34 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(new Conditions(notAddyPlatebody, inDraySewer), addyPlatebody);
-		doElite.addStep(notAddyPlatebody, moveToDraySewer);
-		doElite.addStep(new Conditions(notQCEmote, inOldman), qcEmote);
-		doElite.addStep(notQCEmote, moveToOldman);
-		doElite.addStep(new Conditions(notRichChest, inDorg2), richChest);
-		doElite.addStep(new Conditions(notRichChest, inDorg1), dorgStairsChest);
-		doElite.addStep(new Conditions(notRichChest, inUnderground), moveToDorgChest);
-		doElite.addStep(notRichChest, moveToUndergroundChest);
-		doElite.addStep(new Conditions(notMovario, inDorgAgi), movario);
-		doElite.addStep(new Conditions(notMovario, inDorg2), moveToDorgAgi);
-		doElite.addStep(new Conditions(notMovario, inDorg1), dorgStairsMovario);
-		doElite.addStep(new Conditions(notMovario, inUnderground), moveToDorgMovario);
-		doElite.addStep(notMovario, moveToUndergroundMovario);
-		doElite.addStep(new Conditions(notWaterRunes, inWaterAltar), waterRunes);
-		doElite.addStep(notWaterRunes, moveToWater);
-		doElite.addStep(notChopMagic, chopMagic);
+
+		addyPlatebodyTask = new ConditionalStep(this, moveToDraySewer);
+		addyPlatebodyTask.addStep(inDraySewer, addyPlatebody);
+		doElite.addStep(notAddyPlatebody, addyPlatebodyTask);
+
+		qcEmoteTask = new ConditionalStep(this, moveToOldman);
+		qcEmoteTask.addStep(inOldman, qcEmote);
+		doElite.addStep(notQCEmote, qcEmoteTask);
+
+		richChestTask = new ConditionalStep(this, moveToUndergroundChest);
+		richChestTask.addStep(inUnderground, moveToDorgChest);
+		richChestTask.addStep(inDorg1, dorgStairsChest);
+		richChestTask.addStep(inDorg2, richChest);
+		doElite.addStep(notRichChest, richChestTask);
+
+		movarioTask = new ConditionalStep(this, moveToUndergroundMovario);
+		movarioTask.addStep(inUnderground, moveToDorgMovario);
+		movarioTask.addStep(inDorg1, dorgStairsMovario);
+		movarioTask.addStep(inDorg2, moveToDorgAgi);
+		movarioTask.addStep(inDorgAgi, movario);
+		doElite.addStep(notMovario, movarioTask);
+
+		waterRunesTask = new ConditionalStep(this, moveToWater);
+		waterRunesTask.addStep(inWaterAltar, waterRunes);
+		doElite.addStep(notWaterRunes, waterRunesTask);
+
+		chopMagicTask = new ConditionalStep(this, chopMagic);
+		doElite.addStep(notChopMagic, chopMagicTask);
 
 		return doElite;
 	}
@@ -272,17 +286,20 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			Arrays.asList(moveToDraySewer, addyPlatebody), new SkillRequirement(Skill.SMITHING, 88),
 			addyBar.quantity(5), hammer);
 		adamantitePlatebodySteps.setDisplayCondition(notAddyPlatebody);
+		adamantitePlatebodySteps.setLockingStep(addyPlatebodyTask);
 		allSteps.add(adamantitePlatebodySteps);
 
 		PanelDetails questCapeEmoteSteps = new PanelDetails("Quest Cape Emote", Arrays.asList(moveToOldman, qcEmote),
 			allQuests, qcCape);
 		questCapeEmoteSteps.setDisplayCondition(notQCEmote);
+		questCapeEmoteSteps.setLockingStep(qcEmoteTask);
 		allSteps.add(questCapeEmoteSteps);
 
 		PanelDetails richChestSteps = new PanelDetails("Dorgesh-Kaan Rich Chest", Arrays.asList(moveToUndergroundChest,
-			moveToDorgChest, dorgStairsChest, richChest), new SkillRequirement(Skill.THIEVING, 78), deathToDorg, lightsource,
-			lockpick);
+			moveToDorgChest, dorgStairsChest, richChest), new SkillRequirement(Skill.THIEVING, 78), deathToDorg,
+			lightsource, lockpick);
 		richChestSteps.setDisplayCondition(notRichChest);
+		richChestSteps.setLockingStep(richChestTask);
 		allSteps.add(richChestSteps);
 
 		PanelDetails movarioSteps = new PanelDetails("Movario", Arrays.asList(moveToUndergroundMovario, moveToDorgMovario,
@@ -290,16 +307,19 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.AGILITY, 70), new SkillRequirement(Skill.RANGED, 70),
 			new SkillRequirement(Skill.STRENGTH, 70), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource);
 		movarioSteps.setDisplayCondition(notMovario);
+		movarioSteps.setLockingStep(movarioTask);
 		allSteps.add(movarioSteps);
 
 		PanelDetails waterRunesSteps = new PanelDetails("140 Water Runes", Arrays.asList(moveToWater, waterRunes),
 			new SkillRequirement(Skill.RUNECRAFT, 76), essence.quantity(28), waterAccessOrAbyss);
 		waterRunesSteps.setDisplayCondition(notWaterRunes);
+		waterRunesSteps.setLockingStep(waterRunesTask);
 		allSteps.add(waterRunesSteps);
 
 		PanelDetails chopMagicsSteps = new PanelDetails("Chop Magics", Collections.singletonList(chopMagic),
 			new SkillRequirement(Skill.WOODCUTTING, 75), axe);
 		chopMagicsSteps.setDisplayCondition(notChopMagic);
+		chopMagicsSteps.setLockingStep(chopMagicTask);
 		allSteps.add(chopMagicsSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

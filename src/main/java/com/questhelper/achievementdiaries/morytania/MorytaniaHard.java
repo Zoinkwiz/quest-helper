@@ -449,7 +449,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 
 		PanelDetails mahoSteps = new PanelDetails("Chop and Burn Mahogany", Arrays.asList(moveToCaptMaho, moveToMosMaho,
 			moveToCaveMaho, moveToIsland, chopMaho, burnMaho), new SkillRequirement(Skill.FIREMAKING, 50),
-			new SkillRequirement(Skill.WOODCUTTING,	50),
+			new SkillRequirement(Skill.WOODCUTTING, 50),
 			axe, tinderbox, witchwoodIcon.equipped(), lightSource);
 		mahoSteps.setDisplayCondition(notBurnMaho);
 		mahoSteps.setLockingStep(burnMahoTask);

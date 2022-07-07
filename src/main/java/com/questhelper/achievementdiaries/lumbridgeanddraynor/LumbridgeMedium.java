@@ -91,6 +91,9 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 
 	ZoneRequirement inPuroPuro, inCowPen, inZanaris, inLavaAltar;
 
+	ConditionalStep alKaridRooftopTask, grappleLumTask, upgradeDeviceTask, wizardFairyTask, tplumbTask, catchSalmonTask,
+		craftCoifTask, chopWillowTask, pickGardenerTask, chaeldarTaskTask, puroImpTask, craftLavaTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -99,23 +102,47 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		doMedium.addStep(new Conditions(notChaeldarTask, inZanaris), chaeldarTask);
-		doMedium.addStep(notChaeldarTask, moveToZanarisChaeldar);
-		doMedium.addStep(new Conditions(notPuroImp, inPuroPuro), puroImp);
-		doMedium.addStep(new Conditions(notPuroImp, inZanaris), moveToPuro);
-		doMedium.addStep(notPuroImp, moveToZanarisPuro);
-		doMedium.addStep(notWizardFairy, wizardFairy);
-		doMedium.addStep(notChopWillow, chopWillow);
-		doMedium.addStep(notPickGardener, pickGardener);
-		doMedium.addStep(notUpgradeDevice, upgradeDevice);
-		doMedium.addStep(notTPlumb, tpLumb);
-		doMedium.addStep(notCatchSalmon, catchSalmon);
-		doMedium.addStep(new Conditions(notCraftCoif, inCowPen), craftCoif);
-		doMedium.addStep(notCraftCoif, moveToCowPen);
-		doMedium.addStep(notAlKaridRooftop, alKaridRooftop);
-		doMedium.addStep(notGrappleLum, grappleLum);
-		doMedium.addStep(new Conditions(notCraftLava, inLavaAltar), craftLava);
-		doMedium.addStep(notCraftLava, moveToLavaAltar);
+
+		chaeldarTaskTask = new ConditionalStep(this, moveToZanarisChaeldar);
+		chaeldarTaskTask.addStep(inZanaris, chaeldarTask);
+		doMedium.addStep(notChaeldarTask, chaeldarTaskTask);
+
+		puroImpTask = new ConditionalStep(this, moveToZanarisPuro);
+		puroImpTask.addStep(inZanaris, moveToPuro);
+		puroImpTask.addStep(inPuroPuro, puroImp);
+		doMedium.addStep(notPuroImp, puroImpTask);
+
+		wizardFairyTask = new ConditionalStep(this, wizardFairy);
+		doMedium.addStep(notWizardFairy, wizardFairyTask);
+
+		chopWillowTask = new ConditionalStep(this, chopWillow);
+		doMedium.addStep(notChopWillow, chopWillowTask);
+
+		pickGardenerTask = new ConditionalStep(this, pickGardener);
+		doMedium.addStep(notPickGardener, pickGardenerTask);
+
+		upgradeDeviceTask = new ConditionalStep(this, upgradeDevice);
+		doMedium.addStep(notUpgradeDevice, upgradeDeviceTask);
+
+		tplumbTask = new ConditionalStep(this, tpLumb);
+		doMedium.addStep(notTPlumb, tplumbTask);
+
+		catchSalmonTask = new ConditionalStep(this, catchSalmon);
+		doMedium.addStep(notCatchSalmon, catchSalmonTask);
+
+		craftCoifTask = new ConditionalStep(this, moveToCowPen);
+		craftCoifTask.addStep(inCowPen, craftCoif);
+		doMedium.addStep(notCraftCoif, craftCoifTask);
+
+		alKaridRooftopTask = new ConditionalStep(this, alKaridRooftop);
+		doMedium.addStep(notAlKaridRooftop, alKaridRooftopTask);
+
+		grappleLumTask = new ConditionalStep(this, grappleLum);
+		doMedium.addStep(notGrappleLum, grappleLumTask);
+
+		craftLavaTask = new ConditionalStep(this, moveToLavaAltar);
+		craftLavaTask.addStep(inLavaAltar, craftLava);
+		doMedium.addStep(notCraftLava, craftLavaTask);
 
 		return doMedium;
 	}
@@ -216,18 +243,18 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		moveToZanarisChaeldar = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
 			"Go to Zanaris through the shed in Lumbridge swamp " +
 				"or any fairy ring in the world if you've partially completed Fairytale II.", fairyAccess.equipped());
+		chaeldarTask = new NpcStep(this, NpcID.CHAELDAR, new WorldPoint(2446, 4430, 0),
+			"Get a slayer task from Chaeldar in Zanaris.");
+
 		moveToZanarisPuro = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
 			"Go to Zanaris through the shed in Lumbridge swamp " +
 				"or any fairy ring in the world if you've partially completed Fairytale II.", fairyAccess.equipped(),
 			butterflyNet, implingJar);
-
 		moveToPuro = new ObjectStep(this, ObjectID.CENTRE_OF_CROP_CIRCLE_24991, new WorldPoint(2427, 4446, 0),
 			"Enter the centre of the crop circle in Zanaris.");
 		puroImp = new NpcStep(this, NpcID.ESSENCE_IMPLING, new WorldPoint(2592, 4322, 0),
 			"Catch an essence or eclectic impling in Puro-Puro.", true, butterflyNet, implingJar);
 		puroImp.addAlternateNpcs(NpcID.ESSENCE_IMPLING_1649, NpcID.ECLECTIC_IMPLING, NpcID.ECLECTIC_IMPLING_1650);
-		chaeldarTask = new NpcStep(this, NpcID.CHAELDAR, new WorldPoint(2446, 4430, 0),
-			"Get a slayer task from Chaeldar in Zanaris.");
 
 		wizardFairy = new ObjectStep(this, 29560, new WorldPoint(2412, 4434, 0),
 			"Take the nearest fairy ring and travel to the Wizards' Tower (DIS).", fairyAccess.equipped());
@@ -240,9 +267,9 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), essence, feathers.quantity(10), flyFishingRod, needle,
-			thread, leather, lawRune.quantity(1), airRune.quantity(3), steelArrows.quantity(75), avasAccumulator, axe,
-			fairyAccess, butterflyNet, implingJar);
+		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), essence, feathers.quantity(10),
+			flyFishingRod, needle, thread, leather, lawRune.quantity(1), airRune.quantity(3), steelArrows.quantity(75),
+			avasAccumulator, axe, fairyAccess, butterflyNet, implingJar);
 	}
 
 	@Override
@@ -300,51 +327,61 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		PanelDetails chaeldarSteps = new PanelDetails("Slayer Task from Chaeldar", Arrays.asList(moveToZanarisChaeldar,
 			chaeldarTask), new CombatLevelRequirement(70), fairyAccess);
 		chaeldarSteps.setDisplayCondition(notChaeldarTask);
+		chaeldarSteps.setLockingStep(chaeldarTaskTask);
 		allSteps.add(chaeldarSteps);
 
 		PanelDetails puroImpSteps = new PanelDetails("Catch Essence or Eclectic Imp", Arrays.asList(moveToZanarisPuro,
 			moveToPuro, puroImp), new SkillRequirement(Skill.HUNTER, 42), lostCity, fairyAccess, butterflyNet, implingJar);
 		puroImpSteps.setDisplayCondition(notPuroImp);
+		puroImpSteps.setLockingStep(puroImpTask);
 		allSteps.add(puroImpSteps);
 
 		PanelDetails wizardsTowerSteps = new PanelDetails("Travel to Wizards' Tower by Fairy Ring",
 			Collections.singletonList(wizardFairy), fairyTaleII, fairyAccess);
 		wizardsTowerSteps.setDisplayCondition(notWizardFairy);
+		wizardsTowerSteps.setLockingStep(wizardFairyTask);
 		allSteps.add(wizardsTowerSteps);
 
 		PanelDetails chopWillowSteps = new PanelDetails("Chop Willow", Collections.singletonList(chopWillow),
 			new SkillRequirement(Skill.WOODCUTTING, 30), axe);
 		chopWillowSteps.setDisplayCondition(notChopWillow);
+		chopWillowSteps.setLockingStep(chopWillowTask);
 		allSteps.add(chopWillowSteps);
 
 		PanelDetails pickpocketMasterGardenerSteps = new PanelDetails("Pickpocket Master Gardener",
 			Collections.singletonList(pickGardener), new SkillRequirement(Skill.THIEVING, 38));
 		pickpocketMasterGardenerSteps.setDisplayCondition(notPickGardener);
+		pickpocketMasterGardenerSteps.setLockingStep(pickGardenerTask);
 		allSteps.add(pickpocketMasterGardenerSteps);
 
 		PanelDetails upgradeSteps = new PanelDetails("Ava's Accumulator", Collections.singletonList(upgradeDevice),
 			new SkillRequirement(Skill.RANGED, 50), animalMagnetism, avasAccumulator, steelArrows.quantity(75));
 		upgradeSteps.setDisplayCondition(notUpgradeDevice);
+		upgradeSteps.setLockingStep(upgradeDeviceTask);
 		allSteps.add(upgradeSteps);
 
 		PanelDetails tpLumbSteps = new PanelDetails("Teleport to Lumbridge", Collections.singletonList(tpLumb),
 		airRune, earthRune, lawRune);
 		tpLumbSteps.setDisplayCondition(notTPlumb);
+		tpLumbSteps.setLockingStep(tplumbTask);
 		allSteps.add(tpLumbSteps);
 
 		PanelDetails catchSalmonSteps = new PanelDetails("Catch Salmon", Collections.singletonList(catchSalmon),
 			new SkillRequirement(Skill.FISHING, 30), feathers, flyFishingRod);
 		catchSalmonSteps.setDisplayCondition(notCatchSalmon);
+		catchSalmonSteps.setLockingStep(catchSalmonTask);
 		allSteps.add(catchSalmonSteps);
 
 		PanelDetails craftACoifSteps = new PanelDetails("Craft a coif", Arrays.asList(moveToCowPen, craftCoif),
 			new SkillRequirement(Skill.CRAFTING, 38), leather, needle, thread);
 		craftACoifSteps.setDisplayCondition(notCraftCoif);
+		craftACoifSteps.setLockingStep(craftCoifTask);
 		allSteps.add(craftACoifSteps);
 
 		PanelDetails alKaridRooftopCourseSteps = new PanelDetails("Al Karid Rooftop Course",
 			Collections.singletonList(alKaridRooftop), new SkillRequirement(Skill.AGILITY, 20));
 		alKaridRooftopCourseSteps.setDisplayCondition(notAlKaridRooftop);
+		alKaridRooftopCourseSteps.setLockingStep(alKaridRooftopTask);
 		allSteps.add(alKaridRooftopCourseSteps);
 
 		PanelDetails grappleRiverLumSteps = new PanelDetails("Grapple River Lum",
@@ -352,11 +389,13 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.STRENGTH, 19), new SkillRequirement(Skill.RANGED, 37),
 			crossbow, mithGrap);
 		grappleRiverLumSteps.setDisplayCondition(notGrappleLum);
+		grappleRiverLumSteps.setLockingStep(grappleLumTask);
 		allSteps.add(grappleRiverLumSteps);
 
 		PanelDetails lavaRunesSteps = new PanelDetails("Craft Lava Runes", Arrays.asList(moveToLavaAltar, craftLava),
 			new SkillRequirement(Skill.RUNECRAFT, 23), fireAccess, earthTali, earthRune, essence);
 		lavaRunesSteps.setDisplayCondition(notCraftLava);
+		lavaRunesSteps.setLockingStep(craftLavaTask);
 		allSteps.add(lavaRunesSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

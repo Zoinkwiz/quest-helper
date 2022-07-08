@@ -287,23 +287,24 @@ public enum QuestHelperQuest
 		QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Kourend & Kebos
-	KOUREND_EASY("Kourend Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	KOUREND_EASY("Kourend & Kebos Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
-	KOUREND_MEDIUM("Kourend Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	KOUREND_MEDIUM("Kourend & Kebos Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
-	KOUREND_HARD("Kourend Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	KOUREND_HARD("Kourend & Kebos Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
-	KOUREND_ELITE("Kourend Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	KOUREND_ELITE("Kourend & Kebos Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_KOUREND_ELITE, 1,
+		QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Lumbridge & Draynor
-	LUMBRIDGE_EASY("Lumbridge Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	LUMBRIDGE_EASY("Lumbridge & Draynor Easy Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_EASY, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
-	LUMBRIDGE_MEDIUM("Lumbridge Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	LUMBRIDGE_MEDIUM("Lumbridge & Draynor Medium Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_MEDIUM, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
-	LUMBRIDGE_HARD("Lumbridge Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	LUMBRIDGE_HARD("Lumbridge & Draynor Hard Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_HARD, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
-	LUMBRIDGE_ELITE("Lumbridge Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
+	LUMBRIDGE_ELITE("Lumbridge & Draynor Elite Diary", QuestVarbits.ACHIEVEMENT_DIARY_LUMBRIDGE_ELITE, 1, QuestDetails.Type.ACHIEVEMENT_DIARY,
 			QuestDetails.Difficulty.ACHIEVEMENT_DIARY),
 
 	// Morytania

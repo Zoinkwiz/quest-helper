@@ -31,6 +31,7 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.quests.woodcutting.Woodcutting;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -90,6 +91,9 @@ public class KourendHard extends ComplexStateQuestHelper
 
 	Zone forsakenTower, lizardmanTemple, titheFarm, shayzienCrypt, mountKaruulmDungeon, wyrmArea;
 
+	ConditionalStep woodcuttingGuildTask, smeltAddyBarTask, killLizardmanShamanTask, mineLovakiteTask, plantLogavanoTask,
+		killZombieTask, teleportHeartTask, deliverArtifactTask, killWyrmTask, examineMonsterTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -98,24 +102,44 @@ public class KourendHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(new Conditions(notDeliverArtifact, artifact), deliverArtifact);
-		doHard.addStep(notDeliverArtifact, talkToCaptainKhaled);
-		doHard.addStep(new Conditions(notPlantLogavano, inTitheFarm), plantLogavanoSeed);
-		doHard.addStep(new Conditions(notPlantLogavano, logavanoSeeds), enterTitheFarm);
-		doHard.addStep(notPlantLogavano, searchSeedTable);
-		doHard.addStep(notWoodcuttingGuild, enterWoodcuttingGuild);
-		doHard.addStep(new Conditions(notKillZombie, inshayzienCrypt), killZombie);
-		doHard.addStep(notKillZombie, entershayzienCrypt);
-		doHard.addStep(notMineLovakite, mineLovakiteOre);
-		doHard.addStep(new Conditions(notSmeltAddyBar, inForsakenTower), smeltAddyBar);
-		doHard.addStep(notSmeltAddyBar, enterForsakenTower);
-		doHard.addStep(new Conditions(notKillWyrm, inWyrmArea), killWyrm);
-		doHard.addStep(new Conditions(notKillWyrm, inMountKaruulmDungeon), enterWyrmArea);
-		doHard.addStep(notKillWyrm, enterMountKaruulmDungeon);
-		doHard.addStep(new Conditions(notKillLizardmanShaman, inLizardmanTemple), killLizardmanShaman);
-		doHard.addStep(notKillLizardmanShaman, enterLizardmanTemple);
-		doHard.addStep(notExamineMonster, castMonsterExamine);
-		doHard.addStep(notTeleportHeart, teleportToHeart);
+
+		deliverArtifactTask = new ConditionalStep(this, talkToCaptainKhaled);
+		deliverArtifactTask.addStep(new Conditions(artifact), deliverArtifact);
+		doHard.addStep(notDeliverArtifact, deliverArtifactTask);
+
+		plantLogavanoTask = new ConditionalStep(this, searchSeedTable);
+		plantLogavanoTask.addStep(logavanoSeeds, enterTitheFarm);
+		plantLogavanoTask.addStep(inTitheFarm, plantLogavanoSeed);
+		doHard.addStep(notPlantLogavano, plantLogavanoTask);
+
+		woodcuttingGuildTask = new ConditionalStep(this, enterWoodcuttingGuild);
+		doHard.addStep(notWoodcuttingGuild, woodcuttingGuildTask);
+
+		killZombieTask = new ConditionalStep(this, entershayzienCrypt);
+		killZombieTask.addStep(inshayzienCrypt, killZombie);
+		doHard.addStep(notKillZombie, killZombieTask);
+
+		mineLovakiteTask = new ConditionalStep(this, mineLovakiteOre);
+		doHard.addStep(notMineLovakite, mineLovakiteTask);
+
+		smeltAddyBarTask = new ConditionalStep(this, enterForsakenTower);
+		smeltAddyBarTask.addStep(inForsakenTower, smeltAddyBar);
+		doHard.addStep(notSmeltAddyBar, smeltAddyBarTask);
+
+		killWyrmTask = new ConditionalStep(this, enterMountKaruulmDungeon);
+		killWyrmTask.addStep(inMountKaruulmDungeon, enterWyrmArea);
+		killWyrmTask.addStep(inWyrmArea, killWyrm);
+		doHard.addStep(notKillWyrm, killWyrmTask);
+
+		killLizardmanShamanTask = new ConditionalStep(this, enterLizardmanTemple);
+		killLizardmanShamanTask.addStep(inLizardmanTemple, killLizardmanShaman);
+		doHard.addStep(notKillLizardmanShaman, killLizardmanShamanTask);
+
+		examineMonsterTask = new ConditionalStep(this, castMonsterExamine);
+		doHard.addStep(notExamineMonster, examineMonsterTask);
+
+		teleportHeartTask = new ConditionalStep(this, teleportToHeart);
+		doHard.addStep(notTeleportHeart, teleportHeartTask);
 
 		return doHard;
 	}
@@ -362,55 +386,65 @@ public class KourendHard extends ComplexStateQuestHelper
 		PanelDetails deliverArtifactStep = new PanelDetails("Deliver an artifact", Arrays.asList(talkToCaptainKhaled,
 			deliverArtifact), new SkillRequirement(Skill.THIEVING, 49), piscariliusFavour, lockpick);
 		deliverArtifactStep.setDisplayCondition(notDeliverArtifact);
+		deliverArtifactStep.setLockingStep(deliverArtifactTask);
 		allSteps.add(deliverArtifactStep);
 
 		PanelDetails plantLogavanoStep = new PanelDetails("Plant some logavano seeds", Arrays.asList(searchSeedTable,
 			enterTitheFarm, plantLogavanoSeed), new SkillRequirement(Skill.FARMING, 74), hosidiusFavour100,
 			seedDibber, spade, wateringCan, logavanoSeeds);
 		plantLogavanoStep.setDisplayCondition(notPlantLogavano);
+		plantLogavanoStep.setLockingStep(plantLogavanoTask);
 		allSteps.add(plantLogavanoStep);
 
 		PanelDetails woodcuttingGuildStep = new PanelDetails("Enter the woodcutting guild",
 			Collections.singletonList(enterWoodcuttingGuild), new SkillRequirement(Skill.WOODCUTTING, 60),
 			hosidiusFavour75);
 		woodcuttingGuildStep.setDisplayCondition(notWoodcuttingGuild);
+		woodcuttingGuildStep.setLockingStep(woodcuttingGuildTask);
 		allSteps.add(woodcuttingGuildStep);
 
 		PanelDetails killZombieStep = new PanelDetails("Kill a zombie in the crypt", Arrays.asList(entershayzienCrypt,
 			killZombie), lightSource, combatGear, food);
 		killZombieStep.setDisplayCondition(notKillZombie);
+		killZombieStep.setLockingStep(killZombieTask);
 		allSteps.add(killZombieStep);
 
 		PanelDetails mineLovakiteStep = new PanelDetails("Mine some lovakite", Collections.singletonList(mineLovakiteOre),
 			lovakengjFavour, pickaxe);
 		mineLovakiteStep.setDisplayCondition(notMineLovakite);
+		mineLovakiteStep.setLockingStep(mineLovakiteTask);
 		allSteps.add(mineLovakiteStep);
 
 		PanelDetails smeltBarStep = new PanelDetails("Smelt some adamantite", Arrays.asList(enterForsakenTower,
 			smeltAddyBar), new SkillRequirement(Skill.SMITHING, 70), theForsakenTower, adamantiteOre, coal.quantity(6));
 		smeltBarStep.setDisplayCondition(notSmeltAddyBar);
+		smeltBarStep.setLockingStep(smeltAddyBarTask);
 		allSteps.add(smeltBarStep);
 
 		PanelDetails killWyrmStep = new PanelDetails("Slay a wyrm", Arrays.asList(enterMountKaruulmDungeon,
 			enterWyrmArea, killWyrm), new SkillRequirement(Skill.SLAYER, 62), combatGear, food, bootsOfStone);
 		killWyrmStep.setDisplayCondition(notKillWyrm);
+		killWyrmStep.setLockingStep(killWyrmTask);
 		allSteps.add(killWyrmStep);
 
 		PanelDetails killShamanStep = new PanelDetails("Kill a lizardman shaman", Arrays.asList(enterLizardmanTemple,
 			killLizardmanShaman), shayzienFavour, shayzienHelmet, shayzienBody, shayzienGreaves, shayzienBoots, shayzienGloves,
 			antipoison, combatGear);
 		killShamanStep.setDisplayCondition(notKillLizardmanShaman);
+		killShamanStep.setLockingStep(killLizardmanShamanTask);
 		allSteps.add(killShamanStep);
 
 		PanelDetails examineMonsterStep = new PanelDetails("Cast Monster Examine",
 			Collections.singletonList(castMonsterExamine), new SkillRequirement(Skill.MAGIC, 66), dreamMentor,
 			lunarBook, mindRune, astralRune, cosmicRune);
 		examineMonsterStep.setDisplayCondition(notExamineMonster);
+		examineMonsterStep.setLockingStep(examineMonsterTask);
 		allSteps.add(examineMonsterStep);
 
 		PanelDetails teleportHeartStep = new PanelDetails("Teleport to Xeric's Heart", Collections.singletonList(
 			teleportToHeart), architecturalAlliance, xericsTalisman);
 		teleportHeartStep.setDisplayCondition(notTeleportHeart);
+		teleportHeartStep.setLockingStep(teleportHeartTask);
 		allSteps.add(teleportHeartStep);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

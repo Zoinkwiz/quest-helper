@@ -297,7 +297,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Pharaoh's sceptre can hold up to 5 charges"),
+			new UnlockReward("Pharaoh's sceptre can hold up to 25 charges"),
 			new UnlockReward("One teleport to Nardah per day on desert amulet")
 		);
 	}

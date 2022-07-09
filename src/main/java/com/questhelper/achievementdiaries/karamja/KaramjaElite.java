@@ -75,6 +75,8 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 	QuestStep enterNatureAltar, craftRunes, equipCape, checkPalm, checkCalquat, makePotion, claimReward, moveToHorseShoe;
 
+	ConditionalStep craftedRunesTask, equippedCapeTask, checkedPalmTask, checkedCalquatTask, madePotionTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -82,14 +84,23 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(notEquippedCape, equipCape);
 
-		doElite.addStep(new Conditions(notMadePotion, inHorse), makePotion);
-		doElite.addStep(notMadePotion, moveToHorseShoe);
-		doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), craftRunes);
-		doElite.addStep(notCraftedRunes, enterNatureAltar);
-		doElite.addStep(notCheckedCalquat, checkCalquat);
-		doElite.addStep(notCheckedPalm, checkPalm);
+		checkedCalquatTask = new ConditionalStep(this, checkCalquat);
+		doElite.addStep(notCheckedCalquat, checkedCalquatTask);
+
+		checkedPalmTask = new ConditionalStep(this, checkPalm);
+		doElite.addStep(notCheckedPalm, checkedPalmTask);
+
+		equippedCapeTask = new ConditionalStep(this, equipCape);
+		doElite.addStep(notEquippedCape, equippedCapeTask);
+
+		madePotionTask = new ConditionalStep(this, moveToHorseShoe);
+		madePotionTask.addStep(inHorse, makePotion);
+		doElite.addStep(notMadePotion, madePotionTask);
+
+		craftedRunesTask = new ConditionalStep(this, enterNatureAltar);
+		craftedRunesTask.addStep(inNatureAltar, craftRunes);
+		doElite.addStep(notCraftedRunes, craftedRunesTask);
 
 		return doElite;
 	}
@@ -197,30 +208,35 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails equipCapeSteps = new PanelDetails("Equip Fire / Infernal Cape",
-			Collections.singletonList(equipCape), fireCapeOrInfernal);
-		equipCapeSteps.setDisplayCondition(notEquippedCape);
-		allSteps.add(equipCapeSteps);
-
-		PanelDetails potionSteps = new PanelDetails("Create Antivenom Potion", Arrays.asList(moveToHorseShoe,
-			makePotion), herblore87, antidotePlusPlus, zulrahScales.quantity(20));
-		potionSteps.setDisplayCondition(notMadePotion);
-		allSteps.add(potionSteps);
-
-		PanelDetails craftRunesSteps = new PanelDetails("Craft 56 Nature Runes", Arrays.asList(enterNatureAltar,
-			craftRunes), runecraft91, pureEssence.quantity(28), natureTiaraOrAbyss);
-		craftRunesSteps.setDisplayCondition(notCraftedRunes);
-		allSteps.add(craftRunesSteps);
-
 		PanelDetails palmSteps = new PanelDetails("Check Palm Tree Health", Collections.singletonList(checkPalm),
 			new SkillRequirement(Skill.FARMING, 68, true), palmTreeSapling, rake, spade);
 		palmSteps.setDisplayCondition(notCheckedPalm);
+		palmSteps.setLockingStep(checkedPalmTask);
 		allSteps.add(palmSteps);
 
 		PanelDetails calquatSteps = new PanelDetails("Check Calquat Tree Health",
 			Collections.singletonList(checkCalquat), farming72, calquatSapling, rake, spade);
 		calquatSteps.setDisplayCondition(notCheckedCalquat);
+		calquatSteps.setLockingStep(checkedCalquatTask);
 		allSteps.add(calquatSteps);
+
+		PanelDetails equipCapeSteps = new PanelDetails("Equip Fire / Infernal Cape",
+			Collections.singletonList(equipCape), fireCapeOrInfernal);
+		equipCapeSteps.setDisplayCondition(notEquippedCape);
+		equipCapeSteps.setLockingStep(equippedCapeTask);
+		allSteps.add(equipCapeSteps);
+
+		PanelDetails potionSteps = new PanelDetails("Create Antivenom Potion", Arrays.asList(moveToHorseShoe,
+			makePotion), herblore87, antidotePlusPlus, zulrahScales.quantity(20));
+		potionSteps.setDisplayCondition(notMadePotion);
+		potionSteps.setLockingStep(madePotionTask);
+		allSteps.add(potionSteps);
+
+		PanelDetails craftRunesSteps = new PanelDetails("Craft 56 Nature Runes", Arrays.asList(enterNatureAltar,
+			craftRunes), runecraft91, pureEssence.quantity(28), natureTiaraOrAbyss);
+		craftRunesSteps.setDisplayCondition(notCraftedRunes);
+		craftRunesSteps.setLockingStep(craftedRunesTask);
+		allSteps.add(craftRunesSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishOffSteps);

@@ -98,6 +98,9 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	ZoneRequirement inCave, inTzhaar, inFightCaves, inBrimhavenDungeon, atDuradel, inNatureAltar,
 		inDeathwingArea1, inDeathwingArea2, inDeathwingArea3;
 
+	ConditionalStep becomeChampionTask, killedZekTask, eatenWrapTask, craftedNatureTask, cookedKarambwanTask,
+		killedDeathwingTask, usedShortcutTask, collectedLeavesTask, assignedTaskTask, killedDragonTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -106,32 +109,46 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(new Conditions(notBecomeChampion, inTzhaar), becomeChampion);
-		doHard.addStep(new Conditions(notBecomeChampion, inCave), enterTzhaarChampion);
-		doHard.addStep(notBecomeChampion, enterHoleChampion);
-		doHard.addStep(new Conditions(notKilledZek, inFightCaves), defeatZek);
-		doHard.addStep(new Conditions(notKilledZek, inTzhaar), enterFightCaves);
-		doHard.addStep(new Conditions(notKilledZek, inCave), enterTzhaar);
-		doHard.addStep(notKilledZek, enterHole);
-		doHard.addStep(notCookedKarambwan, cookKarambwan);
 
-		doHard.addStep(new Conditions(notKilledDragon, inBrimhavenDungeon), killDragon);
-		doHard.addStep(notKilledDragon, enterBrimhavenDungeon);
+		becomeChampionTask = new ConditionalStep(this, enterHoleChampion);
+		becomeChampionTask.addStep(inCave, enterTzhaarChampion);
+		becomeChampionTask.addStep(inTzhaar, becomeChampion);
+		doHard.addStep(notBecomeChampion, becomeChampionTask);
 
-		doHard.addStep(new Conditions(notCraftedNature, inNatureAltar), craftNatureRune);
-		doHard.addStep(notCraftedNature, enterNatureAltar);
+		killedZekTask = new ConditionalStep(this, enterHole);
+		killedZekTask.addStep(inCave, enterTzhaar);
+		killedZekTask.addStep(inTzhaar, enterFightCaves);
+		killedZekTask.addStep(inFightCaves, defeatZek);
+		doHard.addStep(notKilledZek, killedZekTask);
 
-		doHard.addStep(new Conditions(notAssignedTask, atDuradel), getTask);
-		doHard.addStep(notAssignedTask, goUpToDuradel);
+		cookedKarambwanTask = new ConditionalStep(this, cookKarambwan);
+		doHard.addStep(notCookedKarambwan, cookedKarambwanTask);
 
-		doHard.addStep(notCollectedLeaves, collectPalmLeaves);
+		killedDragonTask = new ConditionalStep(this, enterBrimhavenDungeon);
+		killedDragonTask.addStep(inBrimhavenDungeon, killDragon);
+		doHard.addStep(notKilledDragon, killedDragonTask);
 
-		doHard.addStep(new Conditions(notKilledDeathwing, inDeathwingArea3), killDeathwing);
-		doHard.addStep(new Conditions(notKilledDeathwing, inDeathwingArea2), enterGates);
-		doHard.addStep(new Conditions(notKilledDeathwing, inDeathwingArea1), enterBookcase);
-		doHard.addStep(notKilledDeathwing, enterKharaziHole);
+		craftedNatureTask = new ConditionalStep(this, enterNatureAltar);
+		craftedNatureTask.addStep(inNatureAltar, craftNatureRune);
+		doHard.addStep(notCraftedNature, craftedNatureTask);
 
-		doHard.addStep(notUsedShortcut, useShortcut);
+		assignedTaskTask = new ConditionalStep(this, goUpToDuradel);
+		assignedTaskTask.addStep(atDuradel, getTask);
+		doHard.addStep(notAssignedTask, assignedTaskTask);
+
+		collectedLeavesTask = new ConditionalStep(this, collectPalmLeaves);
+		doHard.addStep(notCollectedLeaves, collectedLeavesTask);
+
+		killedDeathwingTask = new ConditionalStep(this, enterKharaziHole);
+		killedDeathwingTask.addStep(inDeathwingArea1, enterBookcase);
+		killedDeathwingTask.addStep(inDeathwingArea2, enterGates);
+		killedDeathwingTask.addStep(inDeathwingArea3, killDeathwing);
+		doHard.addStep(notKilledDeathwing, killedDeathwingTask);
+
+		usedShortcutTask = new ConditionalStep(this, useShortcut);
+		doHard.addStep(notUsedShortcut, usedShortcutTask);
+
+		eatenWrapTask = new ConditionalStep(this, eatOomlie);
 		doHard.addStep(notEatenWrap, eatOomlie);
 
 		return doHard;
@@ -346,52 +363,62 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		PanelDetails championSteps = new PanelDetails("Fight Pit Champion", Arrays.asList(enterHoleChampion,
 			enterTzhaarChampion, becomeChampion));
 		championSteps.setDisplayCondition(notBecomeChampion);
+		championSteps.setLockingStep(becomeChampionTask);
 		allSteps.add(championSteps);
 
 		PanelDetails ketZekSteps = new PanelDetails("Kill Ket-Zek", Arrays.asList(enterTzhaar, enterFightCaves,
 			defeatZek), fightCaveCombatGear, food);
 		ketZekSteps.setDisplayCondition(notKilledZek);
+		ketZekSteps.setLockingStep(killedZekTask);
 		allSteps.add(ketZekSteps);
 
 		PanelDetails cookedKaramSteps = new PanelDetails("Thoroughly Cook Karambwan",
 			Collections.singletonList(cookKarambwan), cooking30, taiBwoWannaiTrio, rawKarambwan);
 		cookedKaramSteps.setDisplayCondition(notCookedKarambwan);
+		cookedKaramSteps.setLockingStep(cookedKarambwanTask);
 		allSteps.add(cookedKaramSteps);
 
 		PanelDetails killDragonSteps = new PanelDetails("Kill Metal Dragon", Arrays.asList(enterBrimhavenDungeon,
 			killDragon), combatGear, antidragonShield, axe, coins.quantity(875));
 		killDragonSteps.setDisplayCondition(notKilledDragon);
+		killDragonSteps.setLockingStep(killedDragonTask);
 		allSteps.add(killDragonSteps);
 
 		PanelDetails natureRuneSteps = new PanelDetails("Craft Nature Rune", Arrays.asList(enterNatureAltar,
 			craftNatureRune), runecrafting44, pureEssence, natureTalismanOrAbyss);
 		natureRuneSteps.setDisplayCondition(notCraftedNature);
+		natureRuneSteps.setLockingStep(craftedNatureTask);
 		allSteps.add(natureRuneSteps);
 
 		PanelDetails assignedTaskSteps = new PanelDetails("Get Task From Duradel", Arrays.asList(goUpToDuradel,
 			getTask), combat100, slayer50, shiloVillage);
 		assignedTaskSteps.setDisplayCondition(notAssignedTask);
+		assignedTaskSteps.setLockingStep(assignedTaskTask);
 		allSteps.add(assignedTaskSteps);
 
 		PanelDetails collectLeavesSteps = new PanelDetails("Collect 5 Palm Leaves",
 			Collections.singletonList(collectPalmLeaves), legendsQuest, axe, machete);
 		collectLeavesSteps.setDisplayCondition(notCollectedLeaves);
+		collectLeavesSteps.setLockingStep(collectedLeavesTask);
 		allSteps.add(collectLeavesSteps);
 
 		PanelDetails deathwingSteps = new PanelDetails("Kill a Deathwing", Arrays.asList(enterKharaziHole,
 			enterBookcase, enterGates, killDeathwing), woodcutting34, strength50, agility53, thieving50, mining52,
 			legendsQuest, axe, machete, pickaxe, lockpick);
 		deathwingSteps.setDisplayCondition(notKilledDeathwing);
+		deathwingSteps.setLockingStep(killedDeathwingTask);
 		allSteps.add(deathwingSteps);
 
-		PanelDetails shortcutSteps = new PanelDetails("Use Crossbow Shortcut", Collections.singletonList(useShortcut)
-			, crossbow, mithGrapple);
+		PanelDetails shortcutSteps = new PanelDetails("Use Crossbow Shortcut", Collections.singletonList(useShortcut),
+			crossbow, mithGrapple);
 		shortcutSteps.setDisplayCondition(notUsedShortcut);
+		shortcutSteps.setLockingStep(usedShortcutTask);
 		allSteps.add(shortcutSteps);
 
 		PanelDetails eatOomlieWrapSteps = new PanelDetails("Eat Oomlie Wrap", Collections.singletonList(eatOomlie),
 			oomlieWrap);
 		eatOomlieWrapSteps.setDisplayCondition(notEatenWrap);
+		eatOomlieWrapSteps.setLockingStep(eatenWrapTask);
 		allSteps.add(eatOomlieWrapSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

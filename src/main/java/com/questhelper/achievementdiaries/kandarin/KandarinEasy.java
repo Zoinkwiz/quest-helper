@@ -79,6 +79,9 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
     ZoneRequirement inWorkshop;
 
+    ConditionalStep catchMackerelTask, buyCandleTask, collectFlaxTask, playOrganTask, plantJuteTask, cupTeaTask,
+		killEleTask, petFishTask, buyStewTask, talkSherlockTask, logShortcutTask;
+
     @Override
     public QuestStep loadStep()
     {
@@ -87,21 +90,43 @@ public class KandarinEasy extends ComplexStateQuestHelper
         setupSteps();
 
         ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-        doEasy.addStep(notCatchMackerel, catchMackerel);
-        doEasy.addStep(new Conditions(notPetFish, fishBowlSeaweed, tinyNet), petFishFish);
-        doEasy.addStep(new Conditions(notPetFish, fishBowlSeaweed), petFish);
-        doEasy.addStep(new Conditions(notPetFish, fishBowl), petFishMix);
-		doEasy.addStep(new Conditions(notPetFish), fillFishbowl);
-        doEasy.addStep(notBuyCandle, buyCandle);
-        doEasy.addStep(notCollectFlax, collectFlax);
-        doEasy.addStep(notTalkSherlock, talkSherlock);
-        doEasy.addStep(new Conditions(notKillEle, inWorkshop), killEle);
-        doEasy.addStep(notKillEle, moveToWorkshop);
-        doEasy.addStep(notPlayOrgan, playOrgan);
-        doEasy.addStep(notPlantJute, plantJute);
-        doEasy.addStep(notBuyStew, buyStew);
-        doEasy.addStep(notCupTea, cupTea);
-        doEasy.addStep(notLogShortcut, logShortcut);
+
+		plantJuteTask = new ConditionalStep(this, plantJute);
+		doEasy.addStep(notPlantJute, plantJuteTask);
+
+		catchMackerelTask = new ConditionalStep(this, catchMackerel);
+        doEasy.addStep(notCatchMackerel, catchMackerelTask);
+
+		petFishTask = new ConditionalStep(this, fillFishbowl);
+		petFishTask.addStep(fishBowl, petFishMix);
+        petFishTask.addStep(fishBowlSeaweed, petFish);
+        petFishTask.addStep(new Conditions(fishBowlSeaweed, tinyNet), petFishFish);
+		doEasy.addStep(new Conditions(notPetFish), petFishTask);
+
+		buyCandleTask = new ConditionalStep(this, buyCandle);
+        doEasy.addStep(notBuyCandle, buyCandleTask);
+
+		collectFlaxTask = new ConditionalStep(this, collectFlax);
+		doEasy.addStep(notCollectFlax, collectFlaxTask);
+
+		talkSherlockTask = new ConditionalStep(this, talkSherlock);
+		doEasy.addStep(notTalkSherlock, talkSherlockTask);
+
+		killEleTask = new ConditionalStep(this, moveToWorkshop);
+		killEleTask.addStep(inWorkshop, killEle);
+        doEasy.addStep(notKillEle, killEleTask);
+
+		playOrganTask = new ConditionalStep(this, playOrgan);
+        doEasy.addStep(notPlayOrgan, playOrganTask);
+
+		buyStewTask = new ConditionalStep(this, buyStew);
+        doEasy.addStep(notBuyStew, buyStewTask);
+
+		cupTeaTask = new ConditionalStep(this, cupTea);
+        doEasy.addStep(notCupTea, cupTeaTask);
+
+		logShortcutTask = new ConditionalStep(this, logShortcut);
+        doEasy.addStep(notLogShortcut, logShortcutTask);
 
         return doEasy;
     }
@@ -262,56 +287,67 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails plantJuteSteps = new PanelDetails("Plant Jute", Collections.singletonList(plantJute),
+			new SkillRequirement(Skill.FARMING, 13, true), juteSeed.quantity(3), seedDibber, rake);
+		plantJuteSteps.setDisplayCondition(notPlantJute);
+		plantJuteSteps.setLockingStep(plantJuteTask);
+		allSteps.add(plantJuteSteps);
+
 		PanelDetails catchMackSteps = new PanelDetails("Catch a Mackerel", Collections.singletonList(catchMackerel),
 			new SkillRequirement(Skill.FISHING, 16, true), bigFishingNet);
 		catchMackSteps.setDisplayCondition(notCatchMackerel);
+		catchMackSteps.setLockingStep(catchMackerelTask);
 		allSteps.add(catchMackSteps);
 
 		PanelDetails getPetFishSteps = new PanelDetails("Get a Pet Fish", Arrays.asList(fillFishbowl, petFishMix,
 			petFish, petFishFish), coins.quantity(10), genericFishbowl, seaweed);
 		getPetFishSteps.setDisplayCondition(notPetFish);
+		getPetFishSteps.setLockingStep(petFishTask);
 		allSteps.add(getPetFishSteps);
 
 		PanelDetails buyCandleSteps = new PanelDetails("Buy a Candle", Collections.singletonList(buyCandle),
 			coins.quantity(3));
 		buyCandleSteps.setDisplayCondition(notBuyCandle);
+		buyCandleSteps.setLockingStep(buyCandleTask);
 		allSteps.add(buyCandleSteps);
 
 		PanelDetails collectFlaxSteps = new PanelDetails("Collect 5 Flax", Collections.singletonList(collectFlax));
 		collectFlaxSteps.setDisplayCondition(notCollectFlax);
+		collectFlaxSteps.setLockingStep(collectFlaxTask);
 		allSteps.add(collectFlaxSteps);
 
 		PanelDetails talkSherlockSteps = new PanelDetails("Talk to Sherlock", Collections.singletonList(talkSherlock));
 		talkSherlockSteps.setDisplayCondition(notTalkSherlock);
+		talkSherlockSteps.setLockingStep(talkSherlockTask);
 		allSteps.add(talkSherlockSteps);
 
 		PanelDetails killElesSteps = new PanelDetails("Defeat Elementals", Arrays.asList(moveToWorkshop, killEle),
 			eleWorkI, batteredKey, combatGear, food);
 		killElesSteps.setDisplayCondition(notKillEle);
+		killElesSteps.setLockingStep(killEleTask);
 		allSteps.add(killElesSteps);
 
 		PanelDetails playOrganSteps = new PanelDetails("Play the Church Organ", Collections.singletonList(playOrgan));
 		playOrganSteps.setDisplayCondition(notPlayOrgan);
+		playOrganSteps.setLockingStep(playOrganTask);
 		allSteps.add(playOrganSteps);
 
 		PanelDetails buyStewSteps = new PanelDetails("Buy Stew", Collections.singletonList(buyStew),
 			coins.quantity(20));
 		buyStewSteps.setDisplayCondition(notBuyStew);
+		buyStewSteps.setLockingStep(buyStewTask);
 		allSteps.add(buyStewSteps);
 
 		PanelDetails getTeaSteps = new PanelDetails("Cup of Tea with Galahad", Collections.singletonList(cupTea));
 		getTeaSteps.setDisplayCondition(notCupTea);
+		getTeaSteps.setLockingStep(cupTeaTask);
 		allSteps.add(getTeaSteps);
 
 		PanelDetails takeShortcutSteps = new PanelDetails("Log Shortcut", Collections.singletonList(logShortcut),
 			new SkillRequirement(Skill.AGILITY, 20, true));
 		takeShortcutSteps.setDisplayCondition(notLogShortcut);
+		takeShortcutSteps.setLockingStep(logShortcutTask);
 		allSteps.add(takeShortcutSteps);
-
-		PanelDetails plantJuteSteps = new PanelDetails("Plant Jute", Collections.singletonList(plantJute),
-			new SkillRequirement(Skill.FARMING, 13, true), juteSeed.quantity(3), seedDibber, rake);
-		plantJuteSteps.setDisplayCondition(notPlantJute);
-		allSteps.add(plantJuteSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishOffSteps);

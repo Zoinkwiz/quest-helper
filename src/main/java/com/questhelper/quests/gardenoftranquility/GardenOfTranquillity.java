@@ -156,9 +156,9 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		helpingBernald = new ConditionalStep(this, talkToBernald);
 		helpingBernald.addStep(curedVine, talkToBernaldForSeeds);
-		helpingBernald.addStep(hasEnhancedCure, useMagicalCureOnVine);
-		helpingBernald.addStep(hasDust, useEssenceOnCure);
-		helpingBernald.addStep(hasShards, usePestleOnShards);
+		helpingBernald.addStep(new Conditions(talkedToAlain, hasEnhancedCure), useMagicalCureOnVine);
+		helpingBernald.addStep(new Conditions(talkedToAlain, hasDust), useEssenceOnCure);
+		helpingBernald.addStep(new Conditions(talkedToAlain, hasShards), usePestleOnShards);
 		helpingBernald.addStep(talkedToAlain, useHammerOnEssence);
 		helpingBernald.addStep(usedCureOnVines, talkToAlain);
 		helpingBernald.addStep(talkedToBernald, useCureOnVine);

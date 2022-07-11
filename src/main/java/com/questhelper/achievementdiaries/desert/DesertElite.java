@@ -244,7 +244,7 @@ public class DesertElite extends ComplexStateQuestHelper
 				"directly inside the Elidinis" +
 				" shrine"),
 			new UnlockReward("100% protection against desert heat when the desert amulet is worn"),
-			new UnlockReward("Pharaoh's sceptre can hold up to 8 charges"),
+			new UnlockReward("Pharaoh's sceptre can hold up to 100 charges"),
 			new UnlockReward("Free pass-through of the Shantay Pass"),
 			new UnlockReward("Access to a crevice shortcut, requiring 86 Agility, " +
 				"in the Kalphite Lair from the entrance to the antechamber before the " +
